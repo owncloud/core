@@ -1,6 +1,8 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -21,4 +23,5 @@
 
 // Cron job for scanning user storages
 \OC::$server->getJobList()->add('OCA\Files\BackgroundJob\ScanFiles');
-\OC::$server->getJobList()->add('OCA\Files\BackgroundJob\DeleteOrphanedTagsJob');
+\OC::$server->getJobList()->add('OCA\Files\BackgroundJob\DeleteOrphanedItems');
+\OC::$server->getJobList()->add('OCA\Files\BackgroundJob\CleanupFileLocks');

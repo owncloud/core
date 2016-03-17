@@ -21,9 +21,10 @@
 
 namespace OCP\Share;
 
+use OCP\Files\Node;
 use OCP\IUser;
 
-use OC\Share20\Exception\ShareNotFound;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Interface IManager
@@ -37,13 +38,15 @@ interface IManager {
 	 * Create a Share
 	 *
 	 * @param IShare $share
-	 * @return Share The share object
+	 * @return IShare The share object
 	 * @since 9.0.0
 	 */
 	public function createShare(IShare $share);
 
 	/**
-	 * Update a share
+	 * Update a share.
+	 * The target of the share can't be changed this way: use moveShare
+	 * The share can't be removed this way (permission 0): use deleteShare
 	 *
 	 * @param IShare $share
 	 * @return IShare The share object
@@ -67,38 +70,50 @@ interface IManager {
 	 * handle this.
 	 *
 	 * @param IShare $share
-	 * @param IUser $recipient
+	 * @param string $recipientId
 	 * @since 9.0.0
 	 */
-	public function deleteFromSelf(IShare $share, IUser $recipient);
+	public function deleteFromSelf(IShare $share, $recipientId);
+
+	/**
+	 * Move the share as a recipient of the share.
+	 * This is updating the share target. So where the recipient has the share mounted.
+	 *
+	 * @param IShare $share
+	 * @param string $recipientId
+	 * @return IShare
+	 * @throws \InvalidArgumentException If $share is a link share or the $recipient does not match
+	 * @since 9.0.0
+	 */
+	public function moveShare(IShare $share, $recipientId);
 
 	/**
 	 * Get shares shared by (initiated) by the provided user.
 	 *
-	 * @param IUser $user
+	 * @param string $userId
 	 * @param int $shareType
-	 * @param \OCP\Files\File|\OCP\Files\Folder $path
+	 * @param Node|null $path
 	 * @param bool $reshares
 	 * @param int $limit The maximum number of returned results, -1 for all results
 	 * @param int $offset
 	 * @return IShare[]
 	 * @since 9.0.0
 	 */
-	public function getSharesBy(IUser $user, $shareType, $path = null, $reshares = false, $limit = 50, $offset = 0);
+	public function getSharesBy($userId, $shareType, $path = null, $reshares = false, $limit = 50, $offset = 0);
 
 	/**
 	 * Get shares shared with $user.
 	 * Filter by $node if provided
 	 *
-	 * @param IUser $user
+	 * @param string $userId
 	 * @param int $shareType
-	 * @param File|Folder|null $node
+	 * @param Node|null $node
 	 * @param int $limit The maximum number of shares returned, -1 for all
 	 * @param int $offset
 	 * @return IShare[]
 	 * @since 9.0.0
 	 */
-	public function getSharedWith(IUser $user, $shareType, $node = null, $limit = 50, $offset = 0);
+	public function getSharedWith($userId, $shareType, $node = null, $limit = 50, $offset = 0);
 
 	/**
 	 * Retrieve a share by the share id.
@@ -118,7 +133,7 @@ interface IManager {
 	 * Get the share by token possible with password
 	 *
 	 * @param string $token
-	 * @return Share
+	 * @return IShare
 	 * @throws ShareNotFound
 	 * @since 9.0.0
 	 */
@@ -209,10 +224,17 @@ interface IManager {
 	/**
 	 * Check if sharing is disabled for the given user
 	 *
-	 * @param IUser $user
+	 * @param string $userId
 	 * @return bool
 	 * @since 9.0.0
 	 */
-	public function sharingDisabledForUser(IUser $user);
+	public function sharingDisabledForUser($userId);
+
+	/**
+	 * Check if outgoing server2server shares are allowed
+	 * @return bool
+	 * @since 9.0.0
+	 */
+	public function outgoingServer2ServerSharesAllowed();
 
 }

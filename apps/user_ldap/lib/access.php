@@ -17,7 +17,6 @@
  * @author Ralph Krimmel <rkrimme1@gwdg.de>
  * @author Renaud Fortier <Renaud.Fortier@fsaa.ulaval.ca>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -521,6 +520,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 	private function ldap2ownCloudNames($ldapObjects, $isUsers) {
 		if($isUsers) {
 			$nameAttribute = $this->connection->ldapUserDisplayName;
+			$sndAttribute  = $this->connection->ldapUserDisplayName2;
 		} else {
 			$nameAttribute = $this->connection->ldapGroupDisplayName;
 		}
@@ -542,13 +542,14 @@ class Access extends LDAPUtility implements user\IUserTools {
 				if($isUsers) {
 					//cache the user names so it does not need to be retrieved
 					//again later (e.g. sharing dialogue).
-					$this->cacheUserExists($ocName);
-					if(!is_null($nameByLDAP)) {
-						$this->cacheUserDisplayName($ocName, $nameByLDAP);
+					if(is_null($nameByLDAP)) {
+						continue;
 					}
+					$sndName = isset($ldapObject[$sndAttribute][0])
+						? $ldapObject[$sndAttribute][0] : '';
+					$this->cacheUserDisplayName($ocName, $nameByLDAP, $sndName);
 				}
 			}
-			continue;
 		}
 		return $ownCloudNames;
 	}
@@ -575,8 +576,11 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * caches the user display name
 	 * @param string $ocName the internal ownCloud username
 	 * @param string $displayName the display name
+	 * @param string $displayName2 the second display name
 	 */
-	public function cacheUserDisplayName($ocName, $displayName) {
+	public function cacheUserDisplayName($ocName, $displayName, $displayName2 = '') {
+		$user = $this->userManager->get($ocName);
+		$displayName = $user->composeAndStoreDisplayName($displayName, $displayName2);
 		$cacheKeyTrunk = 'getDisplayName';
 		$this->connection->writeToCache($cacheKeyTrunk.$ocName, $displayName);
 	}
@@ -1021,14 +1025,6 @@ class Access extends LDAPUtility implements user\IUserTools {
 				return array();
 			}
 
-			// Do the server-side sorting
-			foreach(array_reverse($attr) as $sortAttr){
-				foreach($sr as $searchResource) {
-					$this->ldap->sort($cr, $searchResource, $sortAttr);
-				}
-			}
-
-
 			foreach($sr as $res) {
 				$findings = array_merge($findings, $this->ldap->getEntries($cr	, $res ));
 			}
@@ -1300,7 +1296,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 			return false;
 		}
 		$result=$testConnection->bind();
-		$this->connection->bind();
+		$this->ldap->unbind($this->connection->getConnectionResource());
 		return $result;
 	}
 

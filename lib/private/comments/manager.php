@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -21,13 +23,16 @@
 namespace OC\Comments;
 
 use Doctrine\DBAL\Exception\DriverException;
+use OCP\Comments\CommentsEvent;
 use OCP\Comments\IComment;
 use OCP\Comments\ICommentsManager;
 use OCP\Comments\NotFoundException;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Manager implements ICommentsManager {
 
@@ -37,20 +42,33 @@ class Manager implements ICommentsManager {
 	/** @var  ILogger */
 	protected $logger;
 
-	/** @var IComment[]  */
-	protected $commentsCache = [];
-
 	/** @var IConfig */
 	protected $config;
 
+	/** @var EventDispatcherInterface */
+	protected $dispatcher;
+
+	/** @var IComment[]  */
+	protected $commentsCache = [];
+
+	/**
+	 * Manager constructor.
+	 *
+	 * @param IDBConnection $dbConn
+	 * @param ILogger $logger
+	 * @param IConfig $config
+	 * @param EventDispatcherInterface $dispatcher
+	 */
 	public function __construct(
 		IDBConnection $dbConn,
 		ILogger $logger,
-		IConfig $config
+		IConfig $config,
+		EventDispatcherInterface $dispatcher
 	) {
 		$this->dbConn = $dbConn;
 		$this->logger = $logger;
 		$this->config = $config;
+		$this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -218,7 +236,7 @@ class Manager implements ICommentsManager {
 		$resultStatement = $qb->select('*')
 			->from('comments')
 			->where($qb->expr()->eq('id', $qb->createParameter('id')))
-			->setParameter('id', $id, \PDO::PARAM_INT)
+			->setParameter('id', $id, IQueryBuilder::PARAM_INT)
 			->execute();
 
 		$data = $resultStatement->fetch();
@@ -384,7 +402,7 @@ class Manager implements ICommentsManager {
 	 * saved in the used data storage. Use save() after setting other fields
 	 * of the comment (e.g. message or verb).
 	 *
-	 * @param string $actorType the actor type (e.g. 'user')
+	 * @param string $actorType the actor type (e.g. 'users')
 	 * @param string $actorId a user id
 	 * @param string $objectType the object type the comment is attached to
 	 * @param string $objectId the object id the comment is attached to
@@ -415,6 +433,13 @@ class Manager implements ICommentsManager {
 			throw new \InvalidArgumentException('Parameter must be string');
 		}
 
+		try {
+			$comment = $this->get($id);
+		} catch (\Exception $e) {
+			// Ignore exceptions, we just don't fire a hook then
+			$comment = null;
+		}
+
 		$qb = $this->dbConn->getQueryBuilder();
 		$query = $qb->delete('comments')
 			->where($qb->expr()->eq('id', $qb->createParameter('id')))
@@ -427,11 +452,19 @@ class Manager implements ICommentsManager {
 			$this->logger->logException($e, ['app' => 'core_comments']);
 			return false;
 		}
+
+		if ($affectedRows > 0 && $comment instanceof IComment) {
+			$this->dispatcher->dispatch(CommentsEvent::EVENT_DELETE, new CommentsEvent(
+				CommentsEvent::EVENT_DELETE,
+				$comment
+			));
+		}
+
 		return ($affectedRows > 0);
 	}
 
 	/**
-	 * saves the comment permanently and returns it
+	 * saves the comment permanently
 	 *
 	 * if the supplied comment has an empty ID, a new entry comment will be
 	 * saved and the instance updated with the new ID.
@@ -493,6 +526,11 @@ class Manager implements ICommentsManager {
 			$comment->setId(strval($qb->getLastInsertId()));
 		}
 
+		$this->dispatcher->dispatch(CommentsEvent::EVENT_ADD, new CommentsEvent(
+			CommentsEvent::EVENT_ADD,
+			$comment
+		));
+
 		return $affectedRows > 0;
 	}
 
@@ -526,6 +564,11 @@ class Manager implements ICommentsManager {
 			throw new NotFoundException('Comment to update does ceased to exist');
 		}
 
+		$this->dispatcher->dispatch(CommentsEvent::EVENT_UPDATE, new CommentsEvent(
+			CommentsEvent::EVENT_UPDATE,
+			$comment
+		));
+
 		return $affectedRows > 0;
 	}
 
@@ -533,7 +576,7 @@ class Manager implements ICommentsManager {
 	 * removes references to specific actor (e.g. on user delete) of a comment.
 	 * The comment itself must not get lost/deleted.
 	 *
-	 * @param string $actorType the actor type (e.g. 'user')
+	 * @param string $actorType the actor type (e.g. 'users')
 	 * @param string $actorId a user id
 	 * @return boolean
 	 * @since 9.0.0
@@ -560,7 +603,7 @@ class Manager implements ICommentsManager {
 	/**
 	 * deletes all comments made of a specific object (e.g. on file delete)
 	 *
-	 * @param string $objectType the object type (e.g. 'file')
+	 * @param string $objectType the object type (e.g. 'files')
 	 * @param string $objectId e.g. the file id
 	 * @return boolean
 	 * @since 9.0.0
@@ -629,9 +672,15 @@ class Manager implements ICommentsManager {
 		$affectedRows = $qb
 			->update('comments_read_markers')
 			->set('user_id',         $values['user_id'])
-			->set('marker_datetime', $values['marker_datetime'], 'datetime')
+			->set('marker_datetime', $values['marker_datetime'])
 			->set('object_type',     $values['object_type'])
 			->set('object_id',       $values['object_id'])
+			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
+			->andWhere($qb->expr()->eq('object_type', $qb->createParameter('object_type')))
+			->andWhere($qb->expr()->eq('object_id', $qb->createParameter('object_id')))
+			->setParameter('user_id', $user->getUID(), IQueryBuilder::PARAM_STR)
+			->setParameter('object_type', $objectType, IQueryBuilder::PARAM_STR)
+			->setParameter('object_id', $objectId, IQueryBuilder::PARAM_STR)
 			->execute();
 
 		if ($affectedRows > 0) {
@@ -661,9 +710,9 @@ class Manager implements ICommentsManager {
 			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
 			->andWhere($qb->expr()->eq('object_type', $qb->createParameter('object_type')))
 			->andWhere($qb->expr()->eq('object_id', $qb->createParameter('object_id')))
-			->setParameter('user_id', $user->getUID(), \PDO::PARAM_STR)
-			->setParameter('object_type', $objectType, \PDO::PARAM_STR)
-			->setParameter('object_id', $objectId, \PDO::PARAM_STR)
+			->setParameter('user_id', $user->getUID(), IQueryBuilder::PARAM_STR)
+			->setParameter('object_type', $objectType, IQueryBuilder::PARAM_STR)
+			->setParameter('object_id', $objectId, IQueryBuilder::PARAM_STR)
 			->execute();
 
 		$data = $resultStatement->fetch();

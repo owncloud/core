@@ -1,9 +1,11 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -25,34 +27,63 @@ namespace OC\Console;
 
 use OC_App;
 use OC_Defaults;
+use OCP\Console\ConsoleEvent;
 use OCP\IConfig;
+use OCP\IRequest;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application {
-	/**
-	 * @var IConfig
-	 */
+	/** @var IConfig */
 	private $config;
+	/** @var EventDispatcherInterface */
+	private $dispatcher;
+	/** @var IRequest */
+	private $request;
 
 	/**
 	 * @param IConfig $config
+	 * @param EventDispatcherInterface $dispatcher
+	 * @param IRequest $request
 	 */
-	public function __construct(IConfig $config) {
+	public function __construct(IConfig $config, EventDispatcherInterface $dispatcher, IRequest $request) {
 		$defaults = new OC_Defaults;
 		$this->config = $config;
 		$this->application = new SymfonyApplication($defaults->getName(), \OC_Util::getVersionString());
+		$this->dispatcher = $dispatcher;
+		$this->request = $request;
 	}
 
 	/**
+	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @throws \Exception
 	 */
-	public function loadCommands(OutputInterface $output) {
+	public function loadCommands(InputInterface $input, OutputInterface $output) {
 		// $application is required to be defined in the register_command scripts
 		$application = $this->application;
+		$inputDefinition = $application->getDefinition();
+		$inputDefinition->addOption(
+			new InputOption(
+				'no-warnings', 
+				null, 
+				InputOption::VALUE_NONE, 
+				'Skip global warnings, show command output only', 
+				null
+			)
+		);
+		try {
+			$input->bind($inputDefinition);
+		} catch (\RuntimeException $e) {
+			//expected if there are extra options
+		}
+		if ($input->getOption('no-warnings')) {
+			$output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
+		}
 		require_once __DIR__ . '/../../../core/register_command.php';
 		if ($this->config->getSystemValue('installed', false)) {
 			if (\OCP\Util::needUpgrade()) {
@@ -107,6 +138,10 @@ class Application {
 	 * @throws \Exception
 	 */
 	public function run(InputInterface $input = null, OutputInterface $output = null) {
+		$this->dispatcher->dispatch(ConsoleEvent::EVENT_RUN, new ConsoleEvent(
+			ConsoleEvent::EVENT_RUN,
+			$this->request->server['argv']
+		));
 		return $this->application->run($input, $output);
 	}
 }

@@ -35,7 +35,6 @@ namespace OC;
 
 use OC\Hooks\BasicEmitter;
 use OC\IntegrityCheck\Checker;
-use OC\IntegrityCheck\Storage;
 use OC_App;
 use OC_Installer;
 use OC_Util;
@@ -287,7 +286,6 @@ class Updater extends BasicEmitter {
 	 * @param string $installedVersion previous version from which to upgrade from
 	 *
 	 * @throws \Exception
-	 * @return bool true if the operation succeeded, false otherwise
 	 */
 	private function doUpgrade($currentVersion, $installedVersion) {
 		// Stop update if the update is over several major versions
@@ -326,9 +324,6 @@ class Updater extends BasicEmitter {
 		if ($this->updateStepEnabled) {
 			$this->doCoreUpgrade();
 
-			// install new shipped apps on upgrade
-			OC_Installer::installShippedApps();
-
 			// update all shipped apps
 			$disabledApps = $this->checkAppsRequirements();
 			$this->doAppUpgrade();
@@ -336,6 +331,9 @@ class Updater extends BasicEmitter {
 			// upgrade appstore apps
 			$this->upgradeAppStoreApps($disabledApps);
 
+			// install new shipped apps on upgrade
+			OC_App::loadApps('authentication');
+			OC_Installer::installShippedApps();
 
 			// post-upgrade repairs
 			$repair = new Repair(Repair::getRepairSteps());

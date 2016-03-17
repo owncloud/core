@@ -8,7 +8,6 @@
  * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Olivier Paroz <github@oparoz.com>
  * @author Owen Winkler <a_github@midnightcircus.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -198,7 +197,11 @@ class Scanner extends BasicEmitter implements IScanner {
 				if (!empty($newData)) {
 					$data['fileid'] = $this->addToCache($file, $newData, $fileId);
 				}
-				$data['oldSize'] = $cacheData['size'];
+				if (isset($cacheData['size'])) {
+					$data['oldSize'] = $cacheData['size'];
+				} else {
+					$data['oldSize'] = 0;
+				}
 
 				// post-emit only if it was a file. By that we avoid counting/treating folders as files
 				if ($data['mimetype'] !== 'httpd/unix-directory') {

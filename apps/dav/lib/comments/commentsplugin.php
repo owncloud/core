@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -116,7 +118,12 @@ class CommentsPlugin extends ServerPlugin {
 			$data,
 			$request->getHeader('Content-Type')
 		);
-		$url = $request->getUrl() . '/' . urlencode($comment->getId());
+
+		// update read marker for the current user/poster to avoid
+		// having their own comments marked as unread
+		$node->setReadMarker(null);
+
+		$url = rtrim($request->getUrl(), '/') . '/' . urlencode($comment->getId());
 
 		$response->setHeader('Content-Location', $url);
 
@@ -237,6 +244,9 @@ class CommentsPlugin extends ServerPlugin {
 			return $comment;
 		} catch (\InvalidArgumentException $e) {
 			throw new BadRequest('Invalid input values', 0, $e);
+		} catch (\OCP\Comments\MessageTooLongException $e) {
+			$msg = 'Message exceeds allowed character limit of ';
+			throw new BadRequest($msg . \OCP\Comments\IComment::MAX_MESSAGE_LENGTH, 0,	$e);
 		}
 	}
 

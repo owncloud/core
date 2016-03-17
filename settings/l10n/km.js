@@ -40,9 +40,9 @@ OC.L10N.register(
     "never" : "មិនដែរ",
     "add group" : "បន្ថែម​ក្រុម",
     "A valid username must be provided" : "ត្រូវ​ផ្ដល់​ឈ្មោះ​អ្នក​ប្រើ​ឲ្យ​បាន​ត្រឹម​ត្រូវ",
-    "Error creating user" : "មាន​កំហុស​ក្នុង​ការ​បង្កើត​អ្នក​ប្រើ",
     "A valid password must be provided" : "ត្រូវ​ផ្ដល់​ពាក្យ​សម្ងាត់​ឲ្យ​បាន​ត្រឹម​ត្រូវ",
     "__language_name__" : "__language_name__",
+    "Unlimited" : "មិន​កំណត់",
     "None" : "គ្មាន",
     "Login" : "ចូល",
     "SSL" : "SSL",
@@ -78,7 +78,6 @@ OC.L10N.register(
     "Username" : "ឈ្មោះ​អ្នកប្រើ",
     "Create" : "បង្កើត",
     "Admin Recovery Password" : "ការ​ស្វែង​រក​ពាក្យ​សម្ងាត់របស់ប្រធាន​វេបសាយ",
-    "Unlimited" : "មិន​កំណត់",
     "Other" : "ផ្សេងៗ",
     "set new password" : "កំណត់​ពាក្យ​សម្ងាត់​ថ្មី",
     "Default" : "លំនាំ​ដើម"

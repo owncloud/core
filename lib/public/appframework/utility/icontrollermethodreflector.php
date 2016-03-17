@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
  *
@@ -35,6 +36,7 @@ interface IControllerMethodReflector {
 	/**
 	 * @param object $object an object or classname
 	 * @param string $method the method which we want to inspect
+	 * @return void
 	 * @since 8.0.0
 	 */
 	public function reflect($object, $method);

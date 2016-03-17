@@ -1,7 +1,6 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
- * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -91,12 +90,13 @@ class GetSharedSecret extends QueuedJob{
 			$this->trustedServers = $trustedServers;
 		} else {
 			$this->trustedServers = new TrustedServers(
-					$this->dbHandler,
-					\OC::$server->getHTTPClientService(),
-					$this->logger,
-					$this->jobList,
-					\OC::$server->getSecureRandom(),
-					\OC::$server->getConfig()
+				$this->dbHandler,
+				\OC::$server->getHTTPClientService(),
+				$this->logger,
+				$this->jobList,
+				\OC::$server->getSecureRandom(),
+				\OC::$server->getConfig(),
+				\OC::$server->getEventDispatcher()
 			);
 		}
 	}
@@ -150,10 +150,14 @@ class GetSharedSecret extends QueuedJob{
 
 		} catch (ClientException $e) {
 			$status = $e->getCode();
-			$this->logger->logException($e);
+			if ($status === Http::STATUS_FORBIDDEN) {
+				$this->logger->info($target . ' refused to exchange a shared secret with you.', ['app' => 'federation']);
+			} else {
+				$this->logger->logException($e, ['app' => 'federation']);
+			}
 		} catch (\Exception $e) {
 			$status = HTTP::STATUS_INTERNAL_SERVER_ERROR;
-			$this->logger->logException($e);
+			$this->logger->logException($e, ['app' => 'federation']);
 		}
 
 		// if we received a unexpected response we try again later

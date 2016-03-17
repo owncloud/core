@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jesús Macias <jmacias@solidgear.es>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -24,6 +25,7 @@
 
 namespace OCA\Files_external\Lib;
 
+use OCA\Files_External\Lib\Auth\IUserProvided;
 use \OCA\Files_External\Lib\Backend\Backend;
 use \OCA\Files_External\Lib\Auth\AuthMechanism;
 
@@ -125,6 +127,7 @@ class StorageConfig implements \JsonSerializable {
 	 */
 	public function __construct($id = null) {
 		$this->id = $id;
+		$this->mountOptions['enable_sharing'] = false;
 	}
 
 	/**
@@ -209,6 +212,20 @@ class StorageConfig implements \JsonSerializable {
 	 * @param array $backendOptions backend options
 	 */
 	public function setBackendOptions($backendOptions) {
+		if($this->getBackend() instanceof  Backend) {
+			$parameters = $this->getBackend()->getParameters();
+			foreach($backendOptions as $key => $value) {
+				if(isset($parameters[$key])) {
+					switch ($parameters[$key]->getType()) {
+						case \OCA\Files_External\Lib\DefinitionParameter::VALUE_BOOLEAN:
+							$value = (bool)$value;
+							break;
+					}
+					$backendOptions[$key] = $value;
+				}
+			}
+		}
+
 		$this->backendOptions = $backendOptions;
 	}
 
@@ -406,6 +423,7 @@ class StorageConfig implements \JsonSerializable {
 		if (!is_null($this->statusMessage)) {
 			$result['statusMessage'] = $this->statusMessage;
 		}
+		$result['userProvided'] = $this->authMechanism instanceof IUserProvided;
 		$result['type'] = ($this->getType() === self::MOUNT_TYPE_PERSONAl) ? 'personal': 'system';
 		return $result;
 	}

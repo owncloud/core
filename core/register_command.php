@@ -6,6 +6,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
@@ -43,6 +44,13 @@ $application->add(new \OC\Core\Command\Integrity\SignCore(
 		\OC::$server->getIntegrityCodeChecker(),
 		new \OC\IntegrityCheck\Helpers\FileAccessHelper()
 ));
+$application->add(new \OC\Core\Command\Integrity\CheckApp(
+		\OC::$server->getIntegrityCodeChecker()
+));
+$application->add(new \OC\Core\Command\Integrity\CheckCore(
+		\OC::$server->getIntegrityCodeChecker()
+));
+
 
 if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\App\Disable(\OC::$server->getAppManager()));

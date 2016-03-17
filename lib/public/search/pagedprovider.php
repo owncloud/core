@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
@@ -58,7 +59,7 @@ abstract class PagedProvider extends Provider {
 	 * Search for $query
 	 * @param string $query
 	 * @param int $page pages start at page 1
-	 * @param int $size, 0 = SIZE_ALL
+	 * @param int $size 0 = SIZE_ALL
 	 * @return array An array of OCP\Search\Result's
 	 * @since 8.0.0
 	 */

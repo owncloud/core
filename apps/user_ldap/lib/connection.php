@@ -8,7 +8,6 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -35,8 +34,11 @@ use OC\ServerNotAvailableException;
  * magic properties (incomplete)
  * responsible for LDAP connections in context with the provided configuration
  *
+ * @property string ldapHost
+ * @property string ldapPort holds the port number
  * @property string ldapUserFilter
  * @property string ldapUserDisplayName
+ * @property string ldapUserDisplayName2
  * @property boolean hasPagedResultSupport
  * @property string[] ldapBaseUsers
  * @property int|string ldapPagingSize holds an integer

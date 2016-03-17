@@ -23,6 +23,7 @@
 
 namespace OCA\Files_External\Config;
 
+use OC\Files\Storage\Wrapper\Availability;
 use OCA\Files_external\Migration\StorageMigrator;
 use OCP\Files\Storage;
 use OC\Files\Mount\MountPoint;
@@ -33,7 +34,8 @@ use OCP\IUser;
 use OCA\Files_external\Service\UserStoragesService;
 use OCA\Files_External\Service\UserGlobalStoragesService;
 use OCA\Files_External\Lib\StorageConfig;
-use OCA\Files_External\Lib\FailedStorage;
+use OC\Files\Storage\FailedStorage;
+use OCP\Files\StorageNotAvailableException;
 
 /**
  * Make the old files_external config work with the new public mount config api
@@ -125,6 +127,18 @@ class ConfigAdapter implements IMountProvider {
 			try {
 				$this->prepareStorageConfig($storage, $user);
 				$impl = $this->constructStorage($storage);
+			} catch (\Exception $e) {
+				// propagate exception into filesystem
+				$impl = new FailedStorage(['exception' => $e]);
+			}
+
+			try {
+				$availability = $impl->getAvailability();
+				if (!$availability['available'] && !Availability::shouldRecheck($availability)) {
+					$impl = new FailedStorage([
+						'exception' => new StorageNotAvailableException('Storage with mount id ' . $storage->getId() . ' is not available')
+					]);
+				}
 			} catch (\Exception $e) {
 				// propagate exception into filesystem
 				$impl = new FailedStorage(['exception' => $e]);

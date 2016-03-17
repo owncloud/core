@@ -72,6 +72,7 @@ abstract class Common implements Storage, ILockingStorage {
 	protected $updater;
 
 	protected $mountOptions = [];
+	protected $owner = null;
 
 	public function __construct($parameters) {
 	}
@@ -248,12 +249,6 @@ abstract class Common implements Storage, ILockingStorage {
 		return $this->getCachedFile($path);
 	}
 
-	public function getLocalFolder($path) {
-		$baseDir = \OC::$server->getTempManager()->getTemporaryFolder();
-		$this->addLocalFolder($path, $baseDir);
-		return $baseDir;
-	}
-
 	/**
 	 * @param string $path
 	 * @param string $target
@@ -389,14 +384,18 @@ abstract class Common implements Storage, ILockingStorage {
 	 * @return string|false uid or false
 	 */
 	public function getOwner($path) {
-		return \OC_User::getUser();
+		if ($this->owner === null) {
+			$this->owner = \OC_User::getUser();
+		}
+
+		return $this->owner;
 	}
 
 	/**
 	 * get the ETag for a file or folder
 	 *
 	 * @param string $path
-	 * @return string|false
+	 * @return string
 	 */
 	public function getETag($path) {
 		return uniqid();
@@ -612,6 +611,10 @@ abstract class Common implements Storage, ILockingStorage {
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
+		}
+
+		if (!$sourceStorage->isDeletable($sourceInternalPath)) {
+			return false;
 		}
 
 		$result = $this->copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, true);

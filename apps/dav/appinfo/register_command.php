@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -23,25 +22,20 @@ use OCA\Dav\AppInfo\Application;
 use OCA\DAV\Command\CreateAddressBook;
 use OCA\DAV\Command\CreateCalendar;
 use OCA\Dav\Command\MigrateAddressbooks;
+use OCA\Dav\Command\MigrateCalendars;
+use OCA\DAV\Command\SyncBirthdayCalendar;
 use OCA\DAV\Command\SyncSystemAddressBook;
 
-$config = \OC::$server->getConfig();
 $dbConnection = \OC::$server->getDatabaseConnection();
 $userManager = OC::$server->getUserManager();
 $groupManager = OC::$server->getGroupManager();
-$config = \OC::$server->getConfig();
-$logger = \OC::$server->getLogger();
 
 $app = new Application();
 
 /** @var Symfony\Component\Console\Application $application */
-$application->add(new CreateAddressBook($userManager, $groupManager, $dbConnection, $logger));
-$application->add(new CreateCalendar($userManager, $dbConnection));
+$application->add(new CreateCalendar($userManager, $groupManager, $dbConnection));
+$application->add(new CreateAddressBook($userManager, $app->getContainer()->query('CardDavBackend')));
 $application->add(new SyncSystemAddressBook($app->getSyncService()));
-
-// the occ tool is *for now* only available in debug mode for developers to test
-if ($config->getSystemValue('debug', false)){
-	$app = new \OCA\Dav\AppInfo\Application();
-	$migration = $app->getContainer()->query('MigrateAddressbooks');
-	$application->add(new MigrateAddressbooks($userManager, $migration));
-}
+$application->add(new SyncBirthdayCalendar($userManager, $app->getContainer()->query('BirthdayService')));
+$application->add(new MigrateAddressbooks($userManager, $app->getContainer()->query('MigrateAddressbooks')));
+$application->add(new MigrateCalendars($userManager, $app->getContainer()->query('MigrateCalendars')));

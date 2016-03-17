@@ -530,8 +530,8 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 }
 
 a.action > img {
-	max-height: 16px;
-	max-width: 16px;
+	height: 16px;
+	width: 16px;
 	vertical-align: text-bottom;
 }
 
@@ -747,9 +747,6 @@ html.ie8 #controls .button.new {
 	white-space: nowrap;
 	overflow: hidden;
 }
-.newFileMenu.popovermenu .menuitem .icon {
-	margin-bottom: -2px;
-}
 .newFileMenu.popovermenu a.menuitem,
 .newFileMenu.popovermenu label.menuitem,
 .newFileMenu.popovermenu .menuitem {
@@ -788,3 +785,27 @@ html.ie8 #controls .button.new {
 	padding: 0;
 }
 
+#filestable .filename .action .icon,
+#filestable .selectedActions a .icon,
+#controls .actions .button .icon {
+	display: inline-block;
+	vertical-align: middle;
+	background-size: 16px 16px;
+}
+
+#filestable .filename .action .icon.hidden,
+#filestable .selectedActions a .icon.hidden,
+#controls .actions .button .icon.hidden {
+	display: none;
+}
+
+#filestable .filename .action .icon.loading,
+#filestable .selectedActions a .icon.loading,
+#controls .actions .button .icon.loading {
+	width: 15px;
+	height: 15px;
+}
+
+.app-files .actions .button.new .icon {
+	margin-bottom: 2px;
+}

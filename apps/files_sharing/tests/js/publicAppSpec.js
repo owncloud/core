@@ -21,13 +21,12 @@
 
 describe('OCA.Sharing.PublicApp tests', function() {
 	var App = OCA.Sharing.PublicApp;
-	var hostStub, portStub, protocolStub, webrootStub;
+	var hostStub, protocolStub, webrootStub;
 	var $preview;
 
 	beforeEach(function() {
 		protocolStub = sinon.stub(OC, 'getProtocol').returns('https');
-		hostStub = sinon.stub(OC, 'getHost').returns('example.com');
-		portStub = sinon.stub(OC, 'getPort').returns(9876);
+		hostStub = sinon.stub(OC, 'getHost').returns('example.com:9876');
 		webrootStub = sinon.stub(OC, 'getRootPath').returns('/owncloud');
 		$preview = $('<div id="preview"></div>');
 		$('#testArea').append($preview);
@@ -41,7 +40,6 @@ describe('OCA.Sharing.PublicApp tests', function() {
 	afterEach(function() {
 		protocolStub.restore();
 		hostStub.restore();
-		portStub.restore();
 		webrootStub.restore();
 	});
 
@@ -91,7 +89,7 @@ describe('OCA.Sharing.PublicApp tests', function() {
 		it('Uses public webdav endpoint', function() {
 			expect(fakeServer.requests.length).toEqual(1);
 			expect(fakeServer.requests[0].method).toEqual('PROPFIND');
-			expect(fakeServer.requests[0].url).toEqual('https://example.com/owncloud/public.php/webdav/subdir');
+			expect(fakeServer.requests[0].url).toEqual('https://example.com:9876/owncloud/public.php/webdav/subdir');
 			expect(fakeServer.requests[0].requestHeaders.Authorization).toEqual('Basic c2g0dG9rOm51bGw=');
 		});
 
@@ -104,12 +102,12 @@ describe('OCA.Sharing.PublicApp tests', function() {
 
 			it('returns correct download URL for single files', function() {
 				expect(fileList.getDownloadUrl('some file.txt'))
-					.toEqual('https://sh4tok@example.com:9876/owncloud/public.php/webdav/subdir/some file.txt');
-				expect(fileList.getDownloadUrl('some file.txt', '/another path/abc'))
-					.toEqual('https://sh4tok@example.com:9876/owncloud/public.php/webdav/another path/abc/some file.txt');
+					.toEqual(OC.webroot + '/index.php/s/sh4tok/download?path=%2Fsubdir&files=some%20file.txt');
+				expect(fileList.getDownloadUrl('some file.txt', '/anotherpath/abc'))
+					.toEqual(OC.webroot + '/index.php/s/sh4tok/download?path=%2Fanotherpath%2Fabc&files=some%20file.txt');
 				fileList.changeDirectory('/');
 				expect(fileList.getDownloadUrl('some file.txt'))
-					.toEqual('https://sh4tok@example.com:9876/owncloud/public.php/webdav/some file.txt');
+					.toEqual(OC.webroot + '/index.php/s/sh4tok/download?path=%2F&files=some%20file.txt');
 			});
 			it('returns correct download URL for multiple files', function() {
 				expect(fileList.getDownloadUrl(['a b c.txt', 'd e f.txt']))

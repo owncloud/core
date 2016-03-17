@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -178,7 +179,8 @@ class AddressBookImpl implements IAddressBook {
 	protected function createUid() {
 		do {
 			$uid = $this->getUid();
-		} while (!empty($this->backend->getContact($uid . '.vcf')));
+			$contact = $this->backend->getContact($this->getKey(), $uid . '.vcf');
+		} while (!empty($contact));
 
 		return $uid;
 	}
@@ -212,6 +214,10 @@ class AddressBookImpl implements IAddressBook {
 		$result = [];
 		foreach ($vCard->children as $property) {
 			$result[$property->name] = $property->getValue();
+		}
+		if ($this->addressBookInfo['principaluri'] === 'principals/system/system' &&
+			$this->addressBookInfo['uri'] === 'system') {
+			$result['isLocalSystemBook'] = true;
 		}
 		return $result;
 	}

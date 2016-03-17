@@ -1,9 +1,11 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -108,6 +110,7 @@ class ServerFactory {
 		if($this->request->isUserAgent([
 				'/WebDAVFS/',
 				'/Microsoft Office OneNote 2013/',
+				'/Microsoft-WebDAV-MiniRedir/',
 		])) {
 			$server->addPlugin(new \OCA\DAV\Connector\Sabre\FakeLockerPlugin());
 		}
@@ -115,10 +118,10 @@ class ServerFactory {
 		// wait with registering these until auth is handled and the filesystem is setup
 		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {
 			// ensure the skeleton is copied
-			\OC::$server->getUserFolder();
+			$userFolder = \OC::$server->getUserFolder();
 			
 			/** @var \OC\Files\View $view */
-			$view = $viewCallBack();
+			$view = $viewCallBack($server);
 			$rootInfo = $view->getFileInfo('');
 
 			// Create ownCloud Dir
@@ -135,6 +138,15 @@ class ServerFactory {
 			if($this->userSession->isLoggedIn()) {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\TagsPlugin($objectTree, $this->tagManager));
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\CommentPropertiesPlugin(\OC::$server->getCommentsManager(), $this->userSession));
+				$server->addPlugin(new \OCA\DAV\Connector\Sabre\FilesReportPlugin(
+					$objectTree,
+					$view,
+					\OC::$server->getSystemTagManager(),
+					\OC::$server->getSystemTagObjectMapper(),
+					$this->userSession,
+					\OC::$server->getGroupManager(),
+					$userFolder
+				));
 				// custom properties plugin must be the last one
 				$server->addPlugin(
 					new \Sabre\DAV\PropertyStorage\Plugin(

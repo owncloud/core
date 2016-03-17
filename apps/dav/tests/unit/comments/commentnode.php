@@ -22,6 +22,8 @@
 namespace OCA\DAV\Tests\Unit\Comments;
 
 use OCA\DAV\Comments\CommentNode;
+use OCP\Comments\IComment;
+use OCP\Comments\MessageTooLongException;
 
 class CommentsNode extends \Test\TestCase {
 
@@ -30,6 +32,7 @@ class CommentsNode extends \Test\TestCase {
 	protected $node;
 	protected $userManager;
 	protected $logger;
+	protected $userSession;
 
 	public function setUp() {
 		parent::setUp();
@@ -37,19 +40,75 @@ class CommentsNode extends \Test\TestCase {
 		$this->commentsManager = $this->getMock('\OCP\Comments\ICommentsManager');
 		$this->comment = $this->getMock('\OCP\Comments\IComment');
 		$this->userManager = $this->getMock('\OCP\IUserManager');
+		$this->userSession = $this->getMock('\OCP\IUserSession');
 		$this->logger = $this->getMock('\OCP\ILogger');
 
-		$this->node = new CommentNode($this->commentsManager, $this->comment, $this->userManager, $this->logger);
+		$this->node = new CommentNode(
+			$this->commentsManager,
+			$this->comment,
+			$this->userManager,
+			$this->userSession,
+			$this->logger
+		);
 	}
 
 	public function testDelete() {
+		$user = $this->getMock('\OCP\IUser');
+
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('alice'));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+
 		$this->comment->expects($this->once())
 			->method('getId')
 			->will($this->returnValue('19'));
 
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('users'));
+
+		$this->comment->expects($this->any())
+			->method('getActorId')
+			->will($this->returnValue('alice'));
+
 		$this->commentsManager->expects($this->once())
 			->method('delete')
 			->with('19');
+
+		$this->node->delete();
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testDeleteForbidden() {
+		$user = $this->getMock('\OCP\IUser');
+
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('mallory'));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+
+		$this->comment->expects($this->never())
+			->method('getId');
+
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('users'));
+
+		$this->comment->expects($this->any())
+			->method('getActorId')
+			->will($this->returnValue('alice'));
+
+		$this->commentsManager->expects($this->never())
+			->method('delete');
 
 		$this->node->delete();
 	}
@@ -77,9 +136,27 @@ class CommentsNode extends \Test\TestCase {
 	public function testUpdateComment() {
 		$msg = 'Hello Earth';
 
+		$user = $this->getMock('\OCP\IUser');
+
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('alice'));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+
 		$this->comment->expects($this->once())
 			->method('setMessage')
 			->with($msg);
+
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('users'));
+
+		$this->comment->expects($this->any())
+			->method('getActorId')
+			->will($this->returnValue('alice'));
 
 		$this->commentsManager->expects($this->once())
 			->method('save')
@@ -88,13 +165,31 @@ class CommentsNode extends \Test\TestCase {
 		$this->assertTrue($this->node->updateComment($msg));
 	}
 
-	public function testUpdateCommentException() {
+	public function testUpdateCommentLogException() {
 		$msg = null;
+
+		$user = $this->getMock('\OCP\IUser');
+
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('alice'));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$this->comment->expects($this->once())
 			->method('setMessage')
 			->with($msg)
 			->will($this->throwException(new \Exception('buh!')));
+
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('users'));
+
+		$this->comment->expects($this->any())
+			->method('getActorId')
+			->will($this->returnValue('alice'));
 
 		$this->commentsManager->expects($this->never())
 			->method('save');
@@ -103,6 +198,127 @@ class CommentsNode extends \Test\TestCase {
 			->method('logException');
 
 		$this->assertFalse($this->node->updateComment($msg));
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\BadRequest
+	 * @expectedExceptionMessage Message exceeds allowed character limit of
+	 */
+	public function testUpdateCommentMessageTooLongException() {
+		$user = $this->getMock('\OCP\IUser');
+
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('alice'));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+
+		$this->comment->expects($this->once())
+			->method('setMessage')
+			->will($this->throwException(new MessageTooLongException()));
+
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('users'));
+
+		$this->comment->expects($this->any())
+			->method('getActorId')
+			->will($this->returnValue('alice'));
+
+		$this->commentsManager->expects($this->never())
+			->method('save');
+
+		$this->logger->expects($this->once())
+			->method('logException');
+
+		// imagine 'foo' has >1k characters. comment is mocked anyway.
+		$this->node->updateComment('foo');
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testUpdateForbiddenByUser() {
+		$msg = 'HaXX0r';
+
+		$user = $this->getMock('\OCP\IUser');
+
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('mallory'));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+
+		$this->comment->expects($this->never())
+			->method('setMessage');
+
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('users'));
+
+		$this->comment->expects($this->any())
+			->method('getActorId')
+			->will($this->returnValue('alice'));
+
+		$this->commentsManager->expects($this->never())
+			->method('save');
+
+		$this->node->updateComment($msg);
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testUpdateForbiddenByType() {
+		$msg = 'HaXX0r';
+
+		$user = $this->getMock('\OCP\IUser');
+
+		$user->expects($this->never())
+			->method('getUID');
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+
+		$this->comment->expects($this->never())
+			->method('setMessage');
+
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('bots'));
+
+		$this->commentsManager->expects($this->never())
+			->method('save');
+
+		$this->node->updateComment($msg);
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testUpdateForbiddenByNotLoggedIn() {
+		$msg = 'HaXX0r';
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue(null));
+
+		$this->comment->expects($this->never())
+			->method('setMessage');
+
+		$this->comment->expects($this->any())
+			->method('getActorType')
+			->will($this->returnValue('users'));
+
+		$this->commentsManager->expects($this->never())
+			->method('save');
+
+		$this->node->updateComment($msg);
 	}
 
 	public function testPropPatch() {
@@ -133,6 +349,7 @@ class CommentsNode extends \Test\TestCase {
 			$ns . 'latestChildDateTime' => new \DateTime('2016-01-12 18:48:00'),
 			$ns . 'objectType' => 'files',
 			$ns . 'objectId' => '1848',
+			$ns . 'isUnread' => null,
 		];
 
 		$this->comment->expects($this->once())
@@ -198,10 +415,45 @@ class CommentsNode extends \Test\TestCase {
 		$properties = $this->node->getProperties(null);
 
 		foreach($properties as $name => $value) {
-			$this->assertTrue(isset($expected[$name]));
+			$this->assertTrue(array_key_exists($name, $expected));
 			$this->assertSame($expected[$name], $value);
 			unset($expected[$name]);
 		}
 		$this->assertTrue(empty($expected));
+	}
+
+	public function readCommentProvider() {
+		$creationDT = new \DateTime('2016-01-19 18:48:00');
+		$diff = new \DateInterval('PT2H');
+		$readDT1 = clone $creationDT; $readDT1->sub($diff);
+		$readDT2 = clone $creationDT; $readDT2->add($diff);
+		return [
+			[$creationDT, $readDT1, 'true'],
+			[$creationDT, $readDT2, 'false'],
+			[$creationDT, null, 'true'],
+		];
+	}
+
+	/**
+	 * @dataProvider readCommentProvider
+	 * @param $expected
+	 */
+	public function testGetPropertiesUnreadProperty($creationDT, $readDT, $expected) {
+		$this->comment->expects($this->any())
+			->method('getCreationDateTime')
+			->will($this->returnValue($creationDT));
+
+		$this->commentsManager->expects($this->once())
+			->method('getReadMark')
+			->will($this->returnValue($readDT));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($this->getMock('\OCP\IUser')));
+
+		$properties = $this->node->getProperties(null);
+
+		$this->assertTrue(array_key_exists(CommentNode::PROPERTY_NAME_UNREAD, $properties));
+		$this->assertSame($properties[CommentNode::PROPERTY_NAME_UNREAD], $expected);
 	}
 }

@@ -27,6 +27,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\IFile;
 use \Sabre\DAV\PropFind;
 use \Sabre\DAV\PropPatch;
@@ -47,6 +48,7 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
 	const OWNER_ID_PROPERTYNAME = '{http://owncloud.org/ns}owner-id';
 	const OWNER_DISPLAY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}owner-display-name';
+	const CHECKSUMS_PROPERTYNAME = '{http://owncloud.org/ns}checksums';
 
 	/**
 	 * Reference to main server object
@@ -107,6 +109,7 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		$server->protectedProperties[] = self::DOWNLOADURL_PROPERTYNAME;
 		$server->protectedProperties[] = self::OWNER_ID_PROPERTYNAME;
 		$server->protectedProperties[] = self::OWNER_DISPLAY_NAME_PROPERTYNAME;
+		$server->protectedProperties[] = self::CHECKSUMS_PROPERTYNAME;
 
 		// normally these cannot be changed (RFC4918), but we want them modifiable through PROPPATCH
 		$allowedProperties = ['{DAV:}getetag'];
@@ -178,8 +181,8 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 	}
 
 	/**
-	 * Plugin that adds a 'Content-Disposition: attachment' header to all files
-	 * delivered by SabreDAV.
+	 * Add headers to file download
+	 *
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
 	 */
@@ -188,7 +191,17 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		$node = $this->tree->getNodeForPath($request->getPath());
 		if (!($node instanceof IFile)) return;
 
+		// adds a 'Content-Disposition: attachment' header
 		$response->addHeader('Content-Disposition', 'attachment');
+
+		if ($node instanceof \OCA\DAV\Connector\Sabre\File) {
+			//Add OC-Checksum header
+			/** @var $node File */
+			$checksum = $node->getChecksum();
+			if ($checksum !== null && $checksum !== '') {
+				$response->addHeader('OC-Checksum', $checksum);
+			}
+		}
 	}
 
 	/**
@@ -222,6 +235,16 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 			$propFind->handle(self::GETETAG_PROPERTYNAME, function() use ($node) {
 				return $node->getEtag();
 			});
+
+			$propFind->handle(self::OWNER_ID_PROPERTYNAME, function() use ($node) {
+				$owner = $node->getOwner();
+				return $owner->getUID();
+			});
+			$propFind->handle(self::OWNER_DISPLAY_NAME_PROPERTYNAME, function() use ($node) {
+				$owner = $node->getOwner();
+				$displayName = $owner->getDisplayName();
+				return $displayName;
+			});
 		}
 
 		if ($node instanceof \OCA\DAV\Connector\Sabre\File) {
@@ -237,6 +260,16 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 				}
 				return false;
 			});
+
+			$propFind->handle(self::CHECKSUMS_PROPERTYNAME, function() use ($node) {
+				$checksum = $node->getChecksum();
+				if ($checksum === NULL || $checksum === '') {
+					return null;
+				}
+
+				return new ChecksumList($checksum);
+			});
+
 		}
 
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Directory) {
@@ -244,16 +277,6 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 				return $node->getSize();
 			});
 		}
-
-		$propFind->handle(self::OWNER_ID_PROPERTYNAME, function() use ($node) {
-			$owner = $node->getOwner();
-			return $owner->getUID();
-		});
-		$propFind->handle(self::OWNER_DISPLAY_NAME_PROPERTYNAME, function() use ($node) {
-			$owner = $node->getOwner();
-			$displayName = $owner->getDisplayName();
-			return $displayName;
-		});
 	}
 
 	/**

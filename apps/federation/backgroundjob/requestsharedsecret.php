@@ -95,7 +95,8 @@ class RequestSharedSecret extends QueuedJob {
 				$this->logger,
 				$this->jobList,
 				\OC::$server->getSecureRandom(),
-				\OC::$server->getConfig()
+				\OC::$server->getConfig(),
+				\OC::$server->getEventDispatcher()
 			);
 		}
 	}
@@ -148,10 +149,14 @@ class RequestSharedSecret extends QueuedJob {
 
 		} catch (ClientException $e) {
 			$status = $e->getCode();
-			$this->logger->logException($e);
+			if ($status === Http::STATUS_FORBIDDEN) {
+				$this->logger->info($target . ' refused to ask for a shared secret.', ['app' => 'federation']);
+			} else {
+				$this->logger->logException($e, ['app' => 'federation']);
+			}
 		} catch (\Exception $e) {
 			$status = HTTP::STATUS_INTERNAL_SERVER_ERROR;
-			$this->logger->logException($e);
+			$this->logger->logException($e, ['app' => 'federation']);
 		}
 
 		// if we received a unexpected response we try again later

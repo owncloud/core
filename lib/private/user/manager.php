@@ -4,11 +4,13 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael U <mdusher@users.noreply.github.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author RealRancor <Fisch.666@gmx.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -50,7 +52,7 @@ use OCP\IConfig;
  */
 class Manager extends PublicEmitter implements IUserManager {
 	/**
-	 * @var \OCP\UserInterface [] $backends
+	 * @var \OCP\UserInterface[] $backends
 	 */
 	private $backends = array();
 
@@ -264,6 +266,10 @@ class Manager extends PublicEmitter implements IUserManager {
 		// No empty username
 		if (trim($uid) == '') {
 			throw new \Exception($l->t('A valid username must be provided'));
+		}
+		// No whitespace at the beginning or at the end
+		if (strlen(trim($uid, "\t\n\r\0\x0B\xe2\x80\x8b")) !== strlen(trim($uid))) {
+			throw new \Exception($l->t('Username contains whitespace at the beginning or at the end'));
 		}
 		// No empty password
 		if (trim($password) == '') {

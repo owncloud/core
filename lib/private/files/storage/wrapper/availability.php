@@ -29,6 +29,16 @@ namespace OC\Files\Storage\Wrapper;
 class Availability extends Wrapper {
 	const RECHECK_TTL_SEC = 600; // 10 minutes
 
+	public static function shouldRecheck($availability) {
+		if (!$availability['available']) {
+			// trigger a recheck if TTL reached
+			if ((time() - $availability['last_checked']) > self::RECHECK_TTL_SEC) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @return bool
 	 */
@@ -47,11 +57,8 @@ class Availability extends Wrapper {
 	 */
 	private function isAvailable() {
 		$availability = $this->getAvailability();
-		if (!$availability['available']) {
-			// trigger a recheck if TTL reached
-			if ((time() - $availability['last_checked']) > self::RECHECK_TTL_SEC) {
-				return $this->updateAvailability();
-			}
+		if (self::shouldRecheck($availability)) {
+			return $this->updateAvailability();
 		}
 		return $availability['available'];
 	}
@@ -370,17 +377,6 @@ class Availability extends Wrapper {
 		$this->checkAvailability();
 		try {
 			return parent::getLocalFile($path);
-		} catch (\OCP\Files\StorageNotAvailableException $e) {
-			$this->setAvailability(false);
-			throw $e;
-		}
-	}
-
-	/** {@inheritdoc} */
-	public function getLocalFolder($path) {
-		$this->checkAvailability();
-		try {
-			return parent::getLocalFolder($path);
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			$this->setAvailability(false);
 			throw $e;

@@ -732,24 +732,20 @@ $(document).ready(function () {
 			.focus()
 			.keypress(function (event) {
 				if (event.keyCode === 13) {
-					if ($(this).val().length > 0) {
-						$tr.data('mailAddress', $input.val());
-						$input.blur();
-						$.ajax({
-							type: 'PUT',
-							url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
-							data: {
-								mailAddress: $(this).val()
-							}
-						}).fail(function (result) {
-							OC.Notification.show(result.responseJSON.data.message);
-							// reset the values
-							$tr.data('mailAddress', mailAddress);
-							$tr.children('.mailAddress').children('span').text(mailAddress);
-						});
-					} else {
-						$input.blur();
-					}
+					$tr.data('mailAddress', $input.val());
+					$input.blur();
+					$.ajax({
+						type: 'PUT',
+						url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
+						data: {
+							mailAddress: $(this).val()
+						}
+					}).fail(function (result) {
+						OC.Notification.show(result.responseJSON.data.message);
+						// reset the values
+						$tr.data('mailAddress', mailAddress);
+						$tr.children('.mailAddress').children('span').text(mailAddress);
+					});
 				}
 			})
 			.blur(function () {
@@ -771,24 +767,24 @@ $(document).ready(function () {
 		var password = $('#newuserpassword').val();
 		var email = $('#newemail').val();
 		if ($.trim(username) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid username must be provided'),
-				t('settings', 'Error creating user'));
+			OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+				message: t('settings', 'A valid username must be provided')
+			}));
 			return false;
 		}
 		if ($.trim(password) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid password must be provided'),
-				t('settings', 'Error creating user'));
+			OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+				message: t('settings', 'A valid password must be provided')
+			}));
 			return false;
 		}
 		if(!$('#CheckboxMailOnUserCreate').is(':checked')) {
 			email = '';
 		}
 		if ($('#CheckboxMailOnUserCreate').is(':checked') && $.trim(email) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid email must be provided'),
-				t('settings', 'Error creating user'));
+			OC.Notification.showTemporary( t('settings', 'Error creating user: {message}', {
+				message: t('settings', 'A valid email must be provided')
+			}));
 			return false;
 		}
 
@@ -826,8 +822,10 @@ $(document).ready(function () {
 					}
 					$('#newusername').focus();
 					GroupList.incEveryoneCount();
-				}).fail(function(result, textStatus, errorThrown) {
-					OC.dialogs.alert(result.responseJSON.message, t('settings', 'Error creating user'));
+				}).fail(function(result) {
+					OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+						message: result.responseJSON.message
+					}));
 				}).success(function(){
 					$('#newuser').get(0).reset();
 				});

@@ -7,7 +7,6 @@
  * @author Clark Tomlinson <fallen013@gmail.com>
  * @author Fabian Henze <flyser42@gmx.de>
  * @author Felix Moeller <mail@felixmoeller.de>
- * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
@@ -17,7 +16,6 @@
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
- * @author Owen Winkler <a_github@midnightcircus.com>
  * @author Pellaeon Lin <nfsmwlin@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -583,7 +581,8 @@ class OC_Helper {
 				}
 			}
 		}
-		$memcache->set($program, $result, 3600);
+		// store the value for 5 minutes
+		$memcache->set($program, $result, 300);
 		return $result;
 	}
 
@@ -609,10 +608,12 @@ class OC_Helper {
 		if ($used < 0) {
 			$used = 0;
 		}
-		$quota = 0;
+		$quota = \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		$storage = $rootInfo->getStorage();
-		if ($includeExtStorage && $storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
+		$sourceStorage = $storage;
+		if ($storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
 			$includeExtStorage = false;
+			$sourceStorage = $storage->getSourceStorage();
 		}
 		if ($includeExtStorage) {
 			$quota = OC_Util::getUserQuota(\OCP\User::getUser());
@@ -623,9 +624,9 @@ class OC_Helper {
 		}
 
 		// TODO: need a better way to get total space from storage
-		if ($storage->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota')) {
+		if ($sourceStorage->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota')) {
 			/** @var \OC\Files\Storage\Wrapper\Quota $storage */
-			$quota = $storage->getQuota();
+			$quota = $sourceStorage->getQuota();
 		}
 		$free = $storage->free_space('');
 		if ($free >= 0) {
@@ -653,6 +654,7 @@ class OC_Helper {
 		return [
 			'free' => $free,
 			'used' => $used,
+			'quota' => $quota,
 			'total' => $total,
 			'relative' => $relative,
 			'owner' => $ownerId,

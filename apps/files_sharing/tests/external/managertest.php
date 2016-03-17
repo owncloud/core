@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
@@ -24,6 +25,7 @@
 namespace OCA\Files_Sharing\Tests\External;
 
 use OC\Files\Storage\StorageFactory;
+use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
 use OCA\Files_Sharing\Tests\TestCase;
@@ -64,6 +66,10 @@ class ManagerTest extends TestCase {
 		$this->user = \OC::$server->getUserManager()->get($this->uid);
 		$this->mountManager = new \OC\Files\Mount\Manager();
 		$this->httpHelper = $httpHelper = $this->getMockBuilder('\OC\HTTPHelper')->disableOriginalConstructor()->getMock();
+		$discoveryManager = new DiscoveryManager(
+			\OC::$server->getMemCacheFactory(),
+			\OC::$server->getHTTPClientService()
+		);
 		/** @var \OC\HTTPHelper $httpHelper */
 		$this->manager = new Manager(
 			\OC::$server->getDatabaseConnection(),
@@ -71,6 +77,7 @@ class ManagerTest extends TestCase {
 			new StorageFactory(),
 			$httpHelper,
 			\OC::$server->getNotificationManager(),
+			$discoveryManager,
 			$this->uid
 		);
 		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), function() {

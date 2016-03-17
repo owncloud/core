@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -70,10 +71,6 @@ class Enable extends Command {
 		}
 
 		$groups = $input->getOption('groups');
-		if ($this->manager->isInstalled($appId) && empty($groups)) {
-			$output->writeln($appId . ' is already enabled');
-		}
-
 		if (empty($groups)) {
 			\OC_App::enable($appId);
 			$output->writeln($appId . ' enabled');

@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -264,6 +266,19 @@ interface IExpressionBuilder {
 	public function notLike($x, $y, $type = null);
 
 	/**
+	 * Creates a ILIKE() comparison expression with the given arguments.
+	 *
+	 * @param string $x Field in string format to be inspected by ILIKE() comparison.
+	 * @param mixed $y Argument to be used in ILIKE() comparison.
+	 * @param mixed|null $type one of the IQueryBuilder::PARAM_* constants
+	 *                  required when comparing text fields for oci compatibility
+	 *
+	 * @return string
+	 * @since 9.0.0
+	 */
+	public function iLike($x, $y, $type = null);
+
+	/**
 	 * Creates a IN () comparison expression with the given arguments.
 	 *
 	 * @param string $x The field in string format to be inspected by IN() comparison.
@@ -299,4 +314,14 @@ interface IExpressionBuilder {
 	 * @since 8.2.0
 	 */
 	public function literal($input, $type = null);
+
+	/**
+	 * Returns a IQueryFunction that casts the column to the given type
+	 *
+	 * @param string $column
+	 * @param mixed $type One of IQueryBuilder::PARAM_*
+	 * @return string
+	 * @since 9.0.0
+	 */
+	public function castColumn($column, $type);
 }

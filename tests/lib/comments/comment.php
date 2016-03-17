@@ -2,6 +2,7 @@
 
 namespace Test\Comments;
 
+use OCP\Comments\IComment;
 use Test\TestCase;
 
 class Test_Comments_Comment extends TestCase
@@ -15,10 +16,10 @@ class Test_Comments_Comment extends TestCase
 		$childrenCount = 6;
 		$message = 'I like to comment comment';
 		$verb = 'comment';
-		$actor = ['type' => 'user', 'id' => 'alice'];
+		$actor = ['type' => 'users', 'id' => 'alice'];
 		$creationDT = new \DateTime();
 		$latestChildDT = new \DateTime('yesterday');
-		$object = ['type' => 'file', 'id' => 'file64'];
+		$object = ['type' => 'files', 'id' => 'file64'];
 
 		$comment
 			->setId($id)
@@ -87,11 +88,11 @@ class Test_Comments_Comment extends TestCase
 	public function roleSetterProvider() {
 		return [
 			['Actor', true, true],
-			['Actor', 'user', true],
+			['Actor', 'users', true],
 			['Actor', true, 'alice'],
 			['Actor', ' ', ' '],
 			['Object', true, true],
-			['Object', 'file', true],
+			['Object', 'files', true],
 			['Object', true, 'file64'],
 			['Object', ' ', ' '],
 		];
@@ -105,6 +106,15 @@ class Test_Comments_Comment extends TestCase
 		$comment = new \OC\Comments\Comment();
 		$setter = 'set' . $role;
 		$comment->$setter($type, $id);
+	}
+
+	/**
+	 * @expectedException \OCP\Comments\MessageTooLongException
+	 */
+	public function testSetUberlongMessage() {
+		$comment = new \OC\Comments\Comment();
+		$msg = str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x');
+		$comment->setMessage($msg);
 	}
 
 

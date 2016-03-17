@@ -2,6 +2,7 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -75,13 +76,15 @@ class Application extends \OCP\AppFramework\App {
 		});
 
 		$container->registerService('TrustedServers', function(IAppContainer $c) {
+			$server = $c->getServer();
 			return new TrustedServers(
 				$c->query('DbHandler'),
-				\OC::$server->getHTTPClientService(),
-				\OC::$server->getLogger(),
-				\OC::$server->getJobList(),
-				\OC::$server->getSecureRandom(),
-				\OC::$server->getConfig()
+				$server->getHTTPClientService(),
+				$server->getLogger(),
+				$server->getJobList(),
+				$server->getSecureRandom(),
+				$server->getConfig(),
+				$server->getEventDispatcher()
 			);
 		});
 
@@ -94,6 +97,7 @@ class Application extends \OCP\AppFramework\App {
 				$c->query('TrustedServers')
 			);
 		});
+
 	}
 
 	private function registerMiddleware() {

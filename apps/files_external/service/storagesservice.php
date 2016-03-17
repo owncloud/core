@@ -4,7 +4,6 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -98,6 +97,13 @@ abstract class StoragesService {
 			return $config;
 		} catch (\UnexpectedValueException $e) {
 			// dont die if a storage backend doesn't exist
+			\OCP\Util::writeLog(
+				'files_external',
+				'Could not load storage: "' . $e->getMessage() . '"',
+				\OCP\Util::ERROR
+			);
+			return null;
+		} catch (\InvalidArgumentException $e) {
 			\OCP\Util::writeLog(
 				'files_external',
 				'Could not load storage: "' . $e->getMessage() . '"',

@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
@@ -41,6 +42,7 @@ class SystemConfig {
 		'mail_smtppassword' => true,
 		'passwordsalt' => true,
 		'secret' => true,
+		'updater.secret' => true,
 		'ldap_agent_password' => true,
 		'objectstore' => ['arguments' => ['password' => true]],
 	];

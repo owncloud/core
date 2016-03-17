@@ -1,8 +1,9 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,6 +24,7 @@ namespace OC\Files\Config;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Files\Filesystem;
+use OCA\Files_Sharing\SharedMount;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Config\ICachedMountInfo;
 use OCP\Files\Config\IUserMountCache;
@@ -74,12 +76,16 @@ class UserMountCache implements IUserMountCache {
 	public function registerMounts(IUser $user, array $mounts) {
 		// filter out non-proper storages coming from unit tests
 		$mounts = array_filter($mounts, function (IMountPoint $mount) {
-			return $mount->getStorage()->getCache();
+			return $mount instanceof SharedMount || $mount->getStorage() && $mount->getStorage()->getCache();
 		});
 		/** @var ICachedMountInfo[] $newMounts */
 		$newMounts = array_map(function (IMountPoint $mount) use ($user) {
 			$storage = $mount->getStorage();
-			$rootId = (int)$storage->getCache()->getId('');
+			if ($storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
+				$rootId = (int)$storage->getShare()['file_source'];
+			} else {
+				$rootId = (int)$storage->getCache()->getId('');
+			}
 			$storageId = (int)$storage->getStorageCache()->getNumericId();
 			// filter out any storages which aren't scanned yet since we aren't interested in files from those storages (yet)
 			if ($rootId === -1) {
@@ -129,7 +135,7 @@ class UserMountCache implements IUserMountCache {
 			'root_id' => $mount->getRootId(),
 			'user_id' => $mount->getUser()->getUID(),
 			'mount_point' => $mount->getMountPoint()
-		]);
+		], ['root_id', 'user_id']);
 	}
 
 	private function setMountPoint(ICachedMountInfo $mount) {

@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -26,6 +27,8 @@ use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCA\DAV\Connector\FedAuth;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin;
+use OCA\DAV\Connector\Sabre\DavAclPlugin;
+use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Files\CustomPropertiesBackend;
 use OCP\IRequest;
 use OCP\SabrePluginEvent;
@@ -49,7 +52,8 @@ class Server {
 		// Backends
 		$authBackend = new Auth(
 			\OC::$server->getSession(),
-			\OC::$server->getUserSession()
+			\OC::$server->getUserSession(),
+			\OC::$server->getRequest()
 		);
 
 		// Set URL explicitly due to reverse-proxy situations
@@ -70,7 +74,7 @@ class Server {
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 
 		// acl
-		$acl = new \Sabre\DAVACL\Plugin();
+		$acl = new DavAclPlugin();
 		$acl->defaultUsernamePath = 'principals/users';
 		$this->server->addPlugin($acl);
 
@@ -87,7 +91,11 @@ class Server {
 		$this->server->addPlugin(new \OCA\DAV\CardDAV\Plugin());
 
 		// system tags plugins
-		$this->server->addPlugin(new \OCA\DAV\SystemTag\SystemTagPlugin(\OC::$server->getSystemTagManager()));
+		$this->server->addPlugin(new \OCA\DAV\SystemTag\SystemTagPlugin(
+			\OC::$server->getSystemTagManager(),
+			\OC::$server->getGroupManager(),
+			\OC::$server->getUserSession()
+		));
 
 		// comments plugin
 		$this->server->addPlugin(new \OCA\DAV\Comments\CommentsPlugin(
@@ -109,6 +117,9 @@ class Server {
 			// custom properties plugin must be the last one
 			$user = \OC::$server->getUserSession()->getUser();
 			if (!is_null($user)) {
+				$view = \OC\Files\Filesystem::getView();
+				$this->server->addPlugin(new FilesPlugin($this->server->tree, $view));
+
 				$this->server->addPlugin(
 					new \Sabre\DAV\PropertyStorage\Plugin(
 						new CustomPropertiesBackend(

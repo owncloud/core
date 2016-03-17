@@ -34,7 +34,6 @@ class SyncSystemAddressBook extends Command {
 	private $syncService;
 
 	/**
-	 * @param IUserManager $userManager
 	 * @param SyncService $syncService
 	 */
 	function __construct(SyncService $syncService) {

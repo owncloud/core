@@ -3,6 +3,7 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -40,10 +41,13 @@ class Hooks {
 		if( \OCP\App::isEnabled('files_trashbin') ) {
 			$uid = $params['uid'];
 			Trashbin::deleteUser($uid);
-			}
+		}
 	}
 
 	public static function post_write_hook($params) {
-		Trashbin::resizeTrash(\OCP\User::getUser());
+		$user = \OCP\User::getUser();
+		if (!empty($user)) {
+			Trashbin::resizeTrash($user);
+		}
 	}
 }

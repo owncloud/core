@@ -10,7 +10,10 @@
 
 (function() {
 
-	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new"><img src="{{iconUrl}}" alt="{{addText}}"></img></a>';
+	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new">' +
+		'<span class="icon {{iconClass}}"></span>' +
+		'<span class="hidden-visually">{{addText}}</span>' +
+		'</a>';
 
 	/**
 	 * @class OCA.Files.FileList
@@ -329,7 +332,7 @@
 					displayName: t('files', 'Details'),
 					mime: 'all',
 					order: -50,
-					icon: OC.imagePath('core', 'actions/details'),
+					iconClass: 'icon-details',
 					permissions: OC.PERMISSION_READ,
 					actionHandler: function(fileName, context) {
 						self._updateDetailsView(fileName);
@@ -465,7 +468,7 @@
 				actionsWidth += $(action).outerWidth();
 			});
 
-			// substract app navigation toggle when visible
+			// subtract app navigation toggle when visible
 			containerWidth -= $('#app-navigation-toggle').width();
 
 			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - 10);
@@ -510,8 +513,9 @@
 				delete this._selectedFiles[$tr.data('id')];
 				this._selectionSummary.remove(data);
 			}
-			if (this._detailsView && this._selectionSummary.getTotal() === 1 && !this._detailsView.$el.hasClass('disappear')) {
-				this._updateDetailsView(_.values(this._selectedFiles)[0].name);
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
 			}
 			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.files.length);
 		},
@@ -591,8 +595,9 @@
 			this._selectFileEl($tr, state);
 			this._lastChecked = $tr;
 			this.updateSelectionSummary();
-			if (state) {
-				this._updateDetailsView($tr.attr('data-file'));
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
 			}
 		},
 
@@ -613,6 +618,10 @@
 				}
 			}
 			this.updateSelectionSummary();
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
+			}
 		},
 
 		/**
@@ -814,6 +823,10 @@
 			var mountType = $el.attr('data-mounttype');
 			if (mountType) {
 				data.mountType = mountType;
+			}
+			var path = $el.attr('data-path');
+			if (path) {
+				data.path = path;
 			}
 			return data;
 		},
@@ -1424,9 +1437,6 @@
 			this.hideMask();
 
 			if (status === 401) {
-				// TODO: append current URL to be able to get back after logging in again
-				OC.redirect(OC.generateUrl('apps/files'));
-				OC.Notification.show(result);
 				return false;
 			}
 
@@ -2712,7 +2722,7 @@
 			}
 			var $newButton = $(this._addButtonTemplate({
 				addText: t('files', 'New'),
-				iconUrl: OC.imagePath('core', 'actions/add')
+				iconClass: 'icon-add'
 			}));
 
 			$actionsContainer.prepend($newButton);

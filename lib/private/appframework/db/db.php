@@ -4,6 +4,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -25,6 +26,7 @@
 
 namespace OC\AppFramework\Db;
 
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDb;
 use OCP\IDBConnection;
 
@@ -240,7 +242,7 @@ class Db implements IDb {
 	 * @param int $type Type of the parameter.
 	 * @return string The quoted parameter.
 	 */
-	public function quote($input, $type = \PDO::PARAM_STR) {
+	public function quote($input, $type = IQueryBuilder::PARAM_STR) {
 		return $this->connection->quote($input, $type);
 	}
 

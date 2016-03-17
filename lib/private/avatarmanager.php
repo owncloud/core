@@ -1,11 +1,10 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
- * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -26,6 +25,8 @@
 
 namespace OC;
 
+use OCP\Files\Folder;
+use OCP\Files\NotFoundException;
 use OCP\IAvatarManager;
 use OCP\IUserManager;
 use OCP\Files\IRootFolder;
@@ -45,6 +46,13 @@ class AvatarManager implements IAvatarManager {
 	/** @var IL10N */
 	private $l;
 
+	/**
+	 * AvatarManager constructor.
+	 *
+	 * @param IUserManager $userManager
+	 * @param IRootFolder $rootFolder
+	 * @param IL10N $l
+	 */
 	public function __construct(
 			IUserManager $userManager,
 			IRootFolder $rootFolder,
@@ -57,15 +65,26 @@ class AvatarManager implements IAvatarManager {
 	/**
 	 * return a user specific instance of \OCP\IAvatar
 	 * @see \OCP\IAvatar
-	 * @param string $user the ownCloud user id
+	 * @param string $userId the ownCloud user id
 	 * @return \OCP\IAvatar
 	 * @throws \Exception In case the username is potentially dangerous
+	 * @throws NotFoundException In case there is no user folder yet
 	 */
 	public function getAvatar($userId) {
 		$user = $this->userManager->get($userId);
 		if (is_null($user)) {
 			throw new \Exception('user does not exist');
 		}
-		return new Avatar($this->rootFolder->getUserFolder($userId)->getParent(), $this->l, $user);
+
+		/*
+		 * Fix for #22119
+		 * Basically we do not want to copy the skeleton folder
+		 */
+		\OC\Files\Filesystem::initMountPoints($userId);
+		$dir = '/' . $userId;
+		/** @var Folder $folder */
+		$folder = $this->rootFolder->get($dir);
+
+		return new Avatar($folder, $this->l, $user);
 	}
 }

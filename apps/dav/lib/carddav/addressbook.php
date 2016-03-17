@@ -21,13 +21,11 @@
 namespace OCA\DAV\CardDAV;
 
 use OCA\DAV\DAV\Sharing\IShareable;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\PropPatch;
 
 class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
-
-	public function __construct(CardDavBackend $carddavBackend, array $addressBookInfo) {
-		parent::__construct($carddavBackend, $addressBookInfo);
-	}
 
 	/**
 	 * Updates the list of shares.
@@ -82,14 +80,14 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 		}
 
 		// add the current user
-		if (isset($this->addressBookInfo['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal'])) {
-			$owner = $this->addressBookInfo['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal'];
+		if (isset($this->addressBookInfo['{http://owncloud.org/ns}owner-principal'])) {
+			$owner = $this->addressBookInfo['{http://owncloud.org/ns}owner-principal'];
 			$acl[] = [
 					'privilege' => '{DAV:}read',
 					'principal' => $owner,
 					'protected' => true,
 				];
-			if ($this->addressBookInfo['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only']) {
+			if ($this->addressBookInfo['{http://owncloud.org/ns}read-only']) {
 				$acl[] = [
 					'privilege' => '{DAV:}write',
 					'principal' => $owner,
@@ -131,5 +129,47 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	 */
 	public function getResourceId() {
 		return $this->addressBookInfo['id'];
+	}
+
+	function getOwner() {
+		if (isset($this->addressBookInfo['{http://owncloud.org/ns}owner-principal'])) {
+			return $this->addressBookInfo['{http://owncloud.org/ns}owner-principal'];
+		}
+		return parent::getOwner();
+	}
+
+	function delete() {
+		if (isset($this->addressBookInfo['{http://owncloud.org/ns}owner-principal'])) {
+			$principal = 'principal:' . parent::getOwner();
+			$shares = $this->getShares();
+			$shares = array_filter($shares, function($share) use ($principal){
+				return $share['href'] === $principal;
+			});
+			if (empty($shares)) {
+				throw new Forbidden();
+			}
+
+			/** @var CardDavBackend $cardDavBackend */
+			$cardDavBackend = $this->carddavBackend;
+			$cardDavBackend->updateShares($this, [], [
+				'href' => $principal
+			]);
+			return;
+		}
+		parent::delete();
+	}
+
+	function propPatch(PropPatch $propPatch) {
+		if (isset($this->addressBookInfo['{http://owncloud.org/ns}owner-principal'])) {
+			throw new Forbidden();
+		}
+		parent::propPatch($propPatch);
+	}
+
+	public function getContactsGroups() {
+		/** @var CardDavBackend $cardDavBackend */
+		$cardDavBackend = $this->carddavBackend;
+
+		return $cardDavBackend->collectCardProperties($this->getResourceId(), 'CATEGORIES');
 	}
 }

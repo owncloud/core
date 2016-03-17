@@ -2,6 +2,7 @@
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -26,8 +27,8 @@ use InvalidArgumentException;
 use OCA\DAV\CardDAV\AddressBook;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
-use OCP\ILogger;
 use Sabre\DAV\PropPatch;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Property\Text;
@@ -45,7 +46,7 @@ class CardDavBackendTest extends TestCase {
 	/** @var CardDavBackend */
 	private $backend;
 
-	/** @var  Principal | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
 	private $principal;
 
 	/** @var  IDBConnection */
@@ -57,23 +58,28 @@ class CardDavBackendTest extends TestCase {
 	/** @var string */
 	private $dbCardsPropertiesTable = 'cards_properties';
 
-	const UNIT_TEST_USER = 'carddav-unit-test';
+	const UNIT_TEST_USER = 'principals/users/carddav-unit-test';
+	const UNIT_TEST_USER1 = 'principals/users/carddav-unit-test1';
+	const UNIT_TEST_GROUP = 'principals/groups/carddav-unit-test-group';
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->principal = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Principal')
 			->disableOriginalConstructor()
-			->setMethods(['getPrincipalByPath'])
+			->setMethods(['getPrincipalByPath', 'getGroupMembership'])
 			->getMock();
 		$this->principal->method('getPrincipalByPath')
 			->willReturn([
 				'uri' => 'principals/best-friend'
 			]);
+		$this->principal->method('getGroupMembership')
+			->withAnyParameters()
+			->willReturn([self::UNIT_TEST_GROUP]);
 
 		$this->db = \OC::$server->getDatabaseConnection();
 
-		$this->backend = new CardDavBackend($this->db, $this->principal);
+		$this->backend = new CardDavBackend($this->db, $this->principal, null);
 
 		// start every test with a empty cards_properties and cards table
 		$query = $this->db->getQueryBuilder();
@@ -124,11 +130,34 @@ class CardDavBackendTest extends TestCase {
 		$this->assertEquals(0, count($books));
 	}
 
+	public function testAddressBookSharing() {
+
+		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
+		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
+		$this->assertEquals(1, count($books));
+		$addressBook = new AddressBook($this->backend, $books[0]);
+		$this->backend->updateShares($addressBook, [
+			[
+				'href' => 'principal:' . self::UNIT_TEST_USER1,
+			],
+			[
+				'href' => 'principal:' . self::UNIT_TEST_GROUP,
+			]
+		], []);
+		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER1);
+		$this->assertEquals(1, count($books));
+
+		// delete the address book
+		$this->backend->deleteAddressBook($books[0]['id']);
+		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
+		$this->assertEquals(0, count($books));
+	}
+
 	public function testCardOperations() {
 
 		/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
-				->setConstructorArgs([$this->db, $this->principal])
+				->setConstructorArgs([$this->db, $this->principal, null])
 				->setMethods(['updateProperties', 'purgeProperties'])->getMock();
 
 		// create a new address book
@@ -174,7 +203,7 @@ class CardDavBackendTest extends TestCase {
 	public function testMultiCard() {
 
 		$this->backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
-			->setConstructorArgs([$this->db, $this->principal])
+			->setConstructorArgs([$this->db, $this->principal, null])
 			->setMethods(['updateProperties'])->getMock();
 
 		// create a new address book
@@ -221,7 +250,7 @@ class CardDavBackendTest extends TestCase {
 	public function testDeleteWithoutCard() {
 
 		$this->backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
-			->setConstructorArgs([$this->db, $this->principal])
+			->setConstructorArgs([$this->db, $this->principal, null])
 			->setMethods([
 				'getCardId',
 				'addChange',
@@ -241,7 +270,7 @@ class CardDavBackendTest extends TestCase {
 		// create a new address book
 		$this->backend->expects($this->once())
 			->method('getCardId')
-			->with($uri)
+			->with($bookId, $uri)
 			->willThrowException(new \InvalidArgumentException());
 		$this->backend->expects($this->exactly(2))
 			->method('addChange')
@@ -262,7 +291,7 @@ class CardDavBackendTest extends TestCase {
 	public function testSyncSupport() {
 
 		$this->backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
-			->setConstructorArgs([$this->db, $this->principal])
+			->setConstructorArgs([$this->db, $this->principal, null])
 			->setMethods(['updateProperties'])->getMock();
 
 		// create a new address book
@@ -320,7 +349,7 @@ class CardDavBackendTest extends TestCase {
 		$cardId = 2;
 
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
-			->setConstructorArgs([$this->db, $this->principal])
+			->setConstructorArgs([$this->db, $this->principal, null])
 			->setMethods(['getCardId'])->getMock();
 
 		$backend->expects($this->any())->method('getCardId')->willReturn($cardId);
@@ -418,14 +447,14 @@ class CardDavBackendTest extends TestCase {
 		$id = $query->getLastInsertId();
 
 		$this->assertSame($id,
-			$this->invokePrivate($this->backend, 'getCardId', ['uri']));
+			$this->invokePrivate($this->backend, 'getCardId', [1, 'uri']));
 	}
 
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testGetCardIdFailed() {
-		$this->invokePrivate($this->backend, 'getCardId', ['uri']);
+		$this->invokePrivate($this->backend, 'getCardId', [1, 'uri']);
 	}
 
 	/**
@@ -453,7 +482,7 @@ class CardDavBackendTest extends TestCase {
 					->values(
 							[
 									'addressbookid' => $query->createNamedParameter(0),
-									'carddata' => $query->createNamedParameter($vCards[$i]->serialize(), \PDO::PARAM_LOB),
+									'carddata' => $query->createNamedParameter($vCards[$i]->serialize(), IQueryBuilder::PARAM_LOB),
 									'uri' => $query->createNamedParameter('uri' . $i),
 									'lastmodified' => $query->createNamedParameter(time()),
 									'etag' => $query->createNamedParameter('etag' . $i),
@@ -520,8 +549,8 @@ class CardDavBackendTest extends TestCase {
 				['John', ['FN'], ['John Doe', 'John M. Doe']],
 				['M. Doe', ['FN'], ['John M. Doe']],
 				['Do', ['FN'], ['John Doe', 'John M. Doe']],
-				// check if duplicates are handled correctly
-				['John', ['FN', 'CLOUD'], ['John Doe', 'John M. Doe']],
+				'check if duplicates are handled correctly' => ['John', ['FN', 'CLOUD'], ['John Doe', 'John M. Doe']],
+				'case insensitive' => ['john', ['FN'], ['John Doe', 'John M. Doe']]
 		];
 	}
 
@@ -531,7 +560,7 @@ class CardDavBackendTest extends TestCase {
 				->values(
 						[
 								'addressbookid' => $query->createNamedParameter(1),
-								'carddata' => $query->createNamedParameter('carddata', \PDO::PARAM_LOB),
+								'carddata' => $query->createNamedParameter('carddata', IQueryBuilder::PARAM_LOB),
 								'uri' => $query->createNamedParameter('uri'),
 								'lastmodified' => $query->createNamedParameter(5489543),
 								'etag' => $query->createNamedParameter('etag'),
@@ -559,7 +588,7 @@ class CardDavBackendTest extends TestCase {
 					->values(
 							[
 									'addressbookid' => $query->createNamedParameter($i),
-									'carddata' => $query->createNamedParameter('carddata' . $i, \PDO::PARAM_LOB),
+									'carddata' => $query->createNamedParameter('carddata' . $i, IQueryBuilder::PARAM_LOB),
 									'uri' => $query->createNamedParameter('uri' . $i),
 									'lastmodified' => $query->createNamedParameter(5489543),
 									'etag' => $query->createNamedParameter('etag' . $i),
@@ -569,7 +598,7 @@ class CardDavBackendTest extends TestCase {
 			$query->execute();
 		}
 
-		$result = $this->backend->getContact('uri0');
+		$result = $this->backend->getContact(0, 'uri0');
 		$this->assertSame(7, count($result));
 		$this->assertSame(0, (int)$result['addressbookid']);
 		$this->assertSame('uri0', $result['uri']);
@@ -579,7 +608,24 @@ class CardDavBackendTest extends TestCase {
 	}
 
 	public function testGetContactFail() {
-		$this->assertEmpty($this->backend->getContact('uri'));
+		$this->assertEmpty($this->backend->getContact(0, 'uri'));
 	}
 
+	public function testCollectCardProperties() {
+		$query = $this->db->getQueryBuilder();
+		$query->insert($this->dbCardsPropertiesTable)
+			->values(
+				[
+					'addressbookid' => $query->createNamedParameter(666),
+					'cardid' => $query->createNamedParameter(777),
+					'name' => $query->createNamedParameter('FN'),
+					'value' => $query->createNamedParameter('John Doe'),
+					'preferred' => $query->createNamedParameter(0)
+				]
+			)
+		->execute();
+
+		$result = $this->backend->collectCardProperties(666, 'FN');
+		$this->assertEquals(['John Doe'], $result);
+	}
 }

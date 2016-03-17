@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -22,12 +23,12 @@
 namespace OCA\DAV;
 
 use OCA\DAV\CalDAV\CalDavBackend;
+use OCA\DAV\CalDAV\CalendarRoot;
 use OCA\DAV\CardDAV\AddressBookRoot;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
 use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCA\DAV\DAV\SystemPrincipalBackend;
-use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\Principal\Collection;
 use Sabre\DAV\SimpleCollection;
 
@@ -36,6 +37,7 @@ class RootCollection extends SimpleCollection {
 	public function __construct() {
 		$config = \OC::$server->getConfig();
 		$db = \OC::$server->getDatabaseConnection();
+		$dispatcher = \OC::$server->getEventDispatcher();
 		$userPrincipalBackend = new Principal(
 			\OC::$server->getUserManager(),
 			\OC::$server->getGroupManager()
@@ -55,7 +57,7 @@ class RootCollection extends SimpleCollection {
 		$systemPrincipals->disableListing = $disableListing;
 		$filesCollection = new Files\RootCollection($userPrincipalBackend, 'principals/users');
 		$filesCollection->disableListing = $disableListing;
-		$caldavBackend = new CalDavBackend($db);
+		$caldavBackend = new CalDavBackend($db, $userPrincipalBackend);
 		$calendarRoot = new CalendarRoot($userPrincipalBackend, $caldavBackend, 'principals/users');
 		$calendarRoot->disableListing = $disableListing;
 
@@ -68,7 +70,8 @@ class RootCollection extends SimpleCollection {
 			\OC::$server->getSystemTagManager(),
 			\OC::$server->getSystemTagObjectMapper(),
 			\OC::$server->getUserSession(),
-			\OC::$server->getGroupManager()
+			\OC::$server->getGroupManager(),
+			\OC::$server->getRootFolder()
 		);
 		$commentsCollection = new Comments\RootCollection(
 			\OC::$server->getCommentsManager(),
@@ -78,11 +81,11 @@ class RootCollection extends SimpleCollection {
 			\OC::$server->getLogger()
 		);
 
-		$usersCardDavBackend = new CardDavBackend($db, $userPrincipalBackend);
+		$usersCardDavBackend = new CardDavBackend($db, $userPrincipalBackend, $dispatcher);
 		$usersAddressBookRoot = new AddressBookRoot($userPrincipalBackend, $usersCardDavBackend, 'principals/users');
 		$usersAddressBookRoot->disableListing = $disableListing;
 
-		$systemCardDavBackend = new CardDavBackend($db, $userPrincipalBackend);
+		$systemCardDavBackend = new CardDavBackend($db, $userPrincipalBackend, $dispatcher);
 		$systemAddressBookRoot = new AddressBookRoot(new SystemPrincipalBackend(), $systemCardDavBackend, 'principals/system');
 		$systemAddressBookRoot->disableListing = $disableListing;
 

@@ -23,7 +23,7 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'		<label for="mountOptionsPreviews">{{t "files_external" "Enable previews"}}</label>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
-	'		<input id="mountOptionsSharing" name="enable_sharing" type="checkbox" value="true" checked="checked"/>' +
+	'		<input id="mountOptionsSharing" name="enable_sharing" type="checkbox" value="true"/>' +
 	'		<label for="mountOptionsSharing">{{t "files_external" "Enable sharing"}}</label>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
@@ -587,6 +587,19 @@ MountOptionsDropdown.prototype = {
 var MountConfigListView = function($el, options) {
 	this.initialize($el, options);
 };
+
+MountConfigListView.ParameterFlags = {
+	OPTIONAL: 1,
+	USER_PROVIDED: 2
+};
+
+MountConfigListView.ParameterTypes = {
+	TEXT: 0,
+	BOOLEAN: 1,
+	PASSWORD: 2,
+	HIDDEN: 3
+};
+
 /**
  * @memberOf OCA.External.Settings
  */
@@ -800,6 +813,7 @@ MountConfigListView.prototype = _.extend({
 		this.$el.find('tbody').append($tr.clone());
 
 		$tr.data('storageConfig', storageConfig);
+		$tr.show();
 		$tr.find('td').last().attr('class', 'remove');
 		$tr.find('td.mountOptionsToggle').removeClass('hidden');
 		$tr.find('td').last().removeAttr('style');
@@ -846,6 +860,9 @@ MountConfigListView.prototype = _.extend({
 				var input = $(this);
 				var val = storageConfig.backendOptions[input.data('parameter')];
 				if (val !== undefined) {
+					if(input.is('input:checkbox')) {
+						input.prop('checked', val);
+					}
 					input.val(storageConfig.backendOptions[input.data('parameter')]);
 					highlightInput(input);
 				}
@@ -875,7 +892,7 @@ MountConfigListView.prototype = _.extend({
 			$tr.find('input.mountOptions').val(JSON.stringify({
 				'encrypt': true,
 				'previews': true,
-				'enable_sharing': true,
+				'enable_sharing': false,
 				'filesystem_check_changes': 1
 			}));
 		}
@@ -961,16 +978,15 @@ MountConfigListView.prototype = _.extend({
 	 */
 	writeParameterInput: function($td, parameter, placeholder, classes) {
 		var hasFlag = function(flag) {
-			return placeholder.indexOf(flag) !== -1;
+			return (placeholder.flags & flag) === flag;
 		};
 		classes = $.isArray(classes) ? classes : [];
 		classes.push('added');
-		if (placeholder.indexOf('&') === 0) {
+		if (hasFlag(MountConfigListView.ParameterFlags.OPTIONAL)) {
 			classes.push('optional');
-			placeholder = placeholder.substring(1);
 		}
 
-		if (hasFlag('@')) {
+		if (hasFlag(MountConfigListView.ParameterFlags.USER_PROVIDED)) {
 			if (this._isPersonal) {
 				classes.push('user_provided');
 			} else {
@@ -980,17 +996,13 @@ MountConfigListView.prototype = _.extend({
 
 		var newElement;
 
-		var trimmedPlaceholder = placeholder;
-		var flags = ['@', '*', '!', '#', '&']; // used to determine what kind of parameter
-		while(flags.indexOf(trimmedPlaceholder[0]) !== -1) {
-			trimmedPlaceholder = trimmedPlaceholder.substr(1);
-		}
-		if (hasFlag('*')) {
+		var trimmedPlaceholder = placeholder.value;
+		if (placeholder.type === MountConfigListView.ParameterTypes.PASSWORD) {
 			newElement = $('<input type="password" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" placeholder="'+ trimmedPlaceholder+'" />');
-		} else if (hasFlag('!')) {
+		} else if (placeholder.type === MountConfigListView.ParameterTypes.BOOLEAN) {
 			var checkboxId = _.uniqueId('checkbox_');
 			newElement = $('<input type="checkbox" id="'+checkboxId+'" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" /><label for="'+checkboxId+'">'+ trimmedPlaceholder+'</label>');
-		} else if (hasFlag('#')) {
+		} else if (placeholder.type === MountConfigListView.ParameterTypes.HIDDEN) {
 			newElement = $('<input type="hidden" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" />');
 		} else {
 			newElement = $('<input type="text" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" placeholder="'+ trimmedPlaceholder+'" />');

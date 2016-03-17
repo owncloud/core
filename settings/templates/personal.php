@@ -72,7 +72,7 @@ if($_['displayNameChangeSupported']) {
 <?php
 } else {
 ?>
-<div class="section">
+<div id="displaynameform" class="section">
 	<h2><?php echo $l->t('Full name');?></h2>
 	<span><?php if(isset($_['displayName'][0])) { p($_['displayName']); } else { p($l->t('No display name set')); } ?></span>
 </div>
@@ -81,7 +81,7 @@ if($_['displayNameChangeSupported']) {
 ?>
 
 <?php
-if($_['passwordChangeSupported']) {
+if($_['displayNameChangeSupported']) {
 ?>
 <form id="lostpassword" class="section">
 	<h2>
@@ -96,7 +96,7 @@ if($_['passwordChangeSupported']) {
 <?php
 } else {
 ?>
-<div class="section">
+<div id="lostpassword" class="section">
 	<h2><?php echo $l->t('Email'); ?></h2>
 	<span><?php if(isset($_['email'][0])) { p($_['email']); } else { p($l->t('No email address set')); }?></span>
 </div>
@@ -139,7 +139,7 @@ if($_['passwordChangeSupported']) {
 }
 ?>
 
-<form class="section">
+<form id="language" class="section">
 	<h2>
 		<label for="languageinput"><?php p($l->t('Language'));?></label>
 	</h2>
@@ -170,7 +170,7 @@ if($_['passwordChangeSupported']) {
 <div id="clientsbox" class="section clientsbox">
 	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
 	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.png')); ?>"
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.svg')); ?>"
 			alt="<?php p($l->t('Desktop client'));?>" />
 	</a>
 	<a href="<?php p($_['clients']['android']); ?>" target="_blank">
@@ -178,7 +178,7 @@ if($_['passwordChangeSupported']) {
 			alt="<?php p($l->t('Android app'));?>" />
 	</a>
 	<a href="<?php p($_['clients']['ios']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'appstore.png')); ?>"
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'appstore.svg')); ?>"
 			alt="<?php p($l->t('iOS app'));?>" />
 	</a>
 

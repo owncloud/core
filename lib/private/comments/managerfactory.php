@@ -1,6 +1,9 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -52,7 +55,8 @@ class ManagerFactory implements ICommentsManagerFactory {
 		return new Manager(
 			$this->serverContainer->getDatabaseConnection(),
 			$this->serverContainer->getLogger(),
-			$this->serverContainer->getConfig()
+			$this->serverContainer->getConfig(),
+			$this->serverContainer->getEventDispatcher()
 		);
 	}
 }

@@ -20,9 +20,10 @@
 */
 
 describe('OC.SystemTags.SystemTagsInputField tests', function() {
-	var view, select2Stub;
+	var view, select2Stub, clock;
 
 	beforeEach(function() {
+		clock = sinon.useFakeTimers();
 		var $container = $('<div class="testInputContainer"></div>');
 		select2Stub = sinon.stub($.fn, 'select2');
 		select2Stub.returnsThis();
@@ -31,6 +32,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 	afterEach(function() {
 		select2Stub.restore();
 		OC.SystemTags.collection.reset();
+		clock.restore();
 		view.remove();
 		view = undefined;
 	});
@@ -346,6 +348,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					new OC.SystemTags.SystemTagModel({id: '1', name: 'abc'}),
 					new OC.SystemTags.SystemTagModel({id: '2', name: 'def'}),
 					new OC.SystemTags.SystemTagModel({id: '3', name: 'abd', userAssignable: false}),
+					new OC.SystemTags.SystemTagModel({id: '4', name: 'Deg'}),
 				]);
 			});
 			afterEach(function() {
@@ -374,6 +377,32 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 						name: 'abd',
 						userVisible: true,
 						userAssignable: false
+					}
+				]);
+			});
+			it('completes case insensitive', function() {
+				var callback = sinon.stub();
+				opts.query({
+					term: 'de',
+					callback: callback
+				});
+				expect(fetchStub.calledOnce).toEqual(true);
+
+				fetchStub.yieldTo('success', view.collection);
+
+				expect(callback.calledOnce).toEqual(true);
+				expect(callback.getCall(0).args[0].results).toEqual([
+					{
+						id: '2',
+						name: 'def',
+						userVisible: true,
+						userAssignable: true
+					},
+					{
+						id: '4',
+						name: 'Deg',
+						userVisible: true,
+						userAssignable: true
 					}
 				]);
 			});
@@ -446,6 +475,7 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					new OC.SystemTags.SystemTagModel({id: '1', name: 'abc'}),
 					new OC.SystemTags.SystemTagModel({id: '2', name: 'def'}),
 					new OC.SystemTags.SystemTagModel({id: '3', name: 'abd', userAssignable: false}),
+					new OC.SystemTags.SystemTagModel({id: '4', name: 'Deg'}),
 				]);
 			});
 			afterEach(function() {
@@ -466,6 +496,32 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 					{
 						id: '1',
 						name: 'abc',
+						userVisible: true,
+						userAssignable: true
+					}
+				]);
+			});
+			it('completes case insensitive', function() {
+				var callback = sinon.stub();
+				opts.query({
+					term: 'de',
+					callback: callback
+				});
+				expect(fetchStub.calledOnce).toEqual(true);
+
+				fetchStub.yieldTo('success', view.collection);
+
+				expect(callback.calledOnce).toEqual(true);
+				expect(callback.getCall(0).args[0].results).toEqual([
+					{
+						id: '2',
+						name: 'def',
+						userVisible: true,
+						userAssignable: true
+					},
+					{
+						id: '4',
+						name: 'Deg',
 						userVisible: true,
 						userAssignable: true
 					}

@@ -10,7 +10,6 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -35,6 +34,7 @@ namespace OC\Files\Storage;
 
 use Exception;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Message\ResponseInterface;
 use OC\Files\Filesystem;
 use OC\Files\Stream\Close;
 use Icewind\Streams\IteratorDirectory;
@@ -136,9 +136,13 @@ class DAV extends Common {
 			'password' => $this->password,
 		);
 
+		$proxy = \OC::$server->getConfig()->getSystemValue('proxy', '');
+		if($proxy !== '') {
+			$settings['proxy'] = $proxy;
+		}
+
 		$this->client = new Client($settings);
 		$this->client->setThrowExceptions(true);
-
 		if ($this->secure === true && $this->certPath) {
 			$this->client->addCurlSetting(CURLOPT_CAINFO, $this->certPath);
 		}
@@ -348,7 +352,8 @@ class DAV extends Common {
 									'stream' => true
 							]);
 				} catch (RequestException $e) {
-					if ($e->getResponse()->getStatusCode() === 404) {
+					if ($e->getResponse() instanceof ResponseInterface
+						&& $e->getResponse()->getStatusCode() === 404) {
 						return false;
 					} else {
 						throw $e;

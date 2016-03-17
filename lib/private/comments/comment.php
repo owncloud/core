@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -22,6 +23,7 @@ namespace OC\Comments;
 
 use OCP\Comments\IComment;
 use OCP\Comments\IllegalIDChangeException;
+use OCP\Comments\MessageTooLongException;
 
 class Comment implements IComment {
 
@@ -184,13 +186,18 @@ class Comment implements IComment {
 	 *
 	 * @param string $message
 	 * @return IComment
+	 * @throws MessageTooLongException
 	 * @since 9.0.0
 	 */
 	public function setMessage($message) {
 		if(!is_string($message)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
-		$this->data['message'] = trim($message);
+		$message = trim($message);
+		if(mb_strlen($message, 'UTF-8') > IComment::MAX_MESSAGE_LENGTH) {
+			throw new MessageTooLongException('Comment message must not exceed ' . IComment::MAX_MESSAGE_LENGTH . ' characters');
+		}
+		$this->data['message'] = $message;
 		return $this;
 	}
 
@@ -242,7 +249,7 @@ class Comment implements IComment {
 	/**
 	 * sets (overwrites) the actor type and id
 	 *
-	 * @param string $actorType e.g. 'user'
+	 * @param string $actorType e.g. 'users'
 	 * @param string $actorId e.g. 'zombie234'
 	 * @return IComment
 	 * @since 9.0.0
@@ -328,7 +335,7 @@ class Comment implements IComment {
 	/**
 	 * sets (overwrites) the object of the comment
 	 *
-	 * @param string $objectType e.g. 'file'
+	 * @param string $objectType e.g. 'files'
 	 * @param string $objectId e.g. '16435'
 	 * @return IComment
 	 * @since 9.0.0
@@ -355,7 +362,7 @@ class Comment implements IComment {
 	protected function fromArray($data) {
 		foreach(array_keys($data) as $key) {
 			// translate DB keys to internal setter names
-			$setter = 'set' . str_replace('_', '', ucwords($key,'_'));
+			$setter = 'set' . implode('', array_map('ucfirst', explode('_', $key)));
 			$setter = str_replace('Timestamp', 'DateTime', $setter);
 
 			if(method_exists($this, $setter)) {

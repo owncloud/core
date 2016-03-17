@@ -11,6 +11,7 @@ namespace Test\DB;
 
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OC\DB\MDB2SchemaManager;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 
 /**
  * Class Connection
@@ -44,6 +45,11 @@ class Connection extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->connection = \OC::$server->getDatabaseConnection();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+		$this->connection->dropTable('table');
 	}
 
 	/**
@@ -85,6 +91,7 @@ class Connection extends \Test\TestCase {
 	 * @depends testTableExists
 	 */
 	public function testDropTable() {
+		$this->makeTestTable();
 		$this->assertTableExist('table');
 		$this->connection->dropTable('table');
 		$this->assertTableNotExist('table');
@@ -94,7 +101,7 @@ class Connection extends \Test\TestCase {
 		$builder = $this->connection->getQueryBuilder();
 		$query = $builder->select('textfield')
 			->from('table')
-			->where($builder->expr()->eq('integerfield', $builder->createNamedParameter($integerField, \PDO::PARAM_INT)));
+			->where($builder->expr()->eq('integerfield', $builder->createNamedParameter($integerField, IQueryBuilder::PARAM_INT)));
 
 		$result = $query->execute();
 		return $result->fetchColumn();
@@ -110,8 +117,6 @@ class Connection extends \Test\TestCase {
 		]);
 
 		$this->assertEquals('foo', $this->getTextValueByIntergerField(1));
-
-		$this->connection->dropTable('table');
 	}
 
 	public function testSetValuesOverWrite() {
@@ -130,8 +135,6 @@ class Connection extends \Test\TestCase {
 		]);
 
 		$this->assertEquals('bar', $this->getTextValueByIntergerField(1));
-
-		$this->connection->dropTable('table');
 	}
 
 	public function testSetValuesOverWritePrecondition() {
@@ -153,8 +156,6 @@ class Connection extends \Test\TestCase {
 		]);
 
 		$this->assertEquals('bar', $this->getTextValueByIntergerField(1));
-
-		$this->connection->dropTable('table');
 	}
 
 	/**
@@ -176,6 +177,24 @@ class Connection extends \Test\TestCase {
 			'textfield' => 'bar'
 		], [
 			'booleanfield' => false
+		]);
+	}
+
+	public function testSetValuesSameNoError() {
+		$this->makeTestTable();
+		$this->connection->setValues('table', [
+			'integerfield' => 1
+		], [
+			'textfield' => 'foo',
+			'clobfield' => 'not_null'
+		]);
+
+		// this will result in 'no affected rows' on certain optimizing DBs
+		// ensure the PreConditionNotMetException isn't thrown
+		$this->connection->setValues('table', [
+			'integerfield' => 1
+		], [
+			'textfield' => 'foo'
 		]);
 	}
 }

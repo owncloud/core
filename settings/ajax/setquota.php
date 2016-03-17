@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
@@ -56,7 +57,7 @@ if($quota !== 'none' and $quota !== 'default') {
 
 // Return Success story
 if($username) {
-	\OC::$server->getConfig()->setUserValue($username, 'files', 'quota', $quota);
+	$targetUserObject->setQuota($quota);
 }else{//set the default quota when no username is specified
 	if($quota === 'default') {//'default' as default quota makes no sense
 		$quota='none';

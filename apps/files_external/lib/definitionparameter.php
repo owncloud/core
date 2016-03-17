@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -93,6 +94,22 @@ class DefinitionParameter implements \JsonSerializable {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getTypeName() {
+		switch ($this->type) {
+			case self::VALUE_BOOLEAN:
+				return 'boolean';
+			case self::VALUE_TEXT:
+				return 'text';
+			case self::VALUE_PASSWORD:
+				return 'password';
+			default:
+				return 'unknown';
+		}
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getFlags() {
@@ -131,27 +148,11 @@ class DefinitionParameter implements \JsonSerializable {
 	 * @return string
 	 */
 	public function jsonSerialize() {
-		$prefix = '';
-		switch ($this->getType()) {
-			case self::VALUE_BOOLEAN:
-				$prefix = '!';
-				break;
-			case self::VALUE_PASSWORD:
-				$prefix = '*';
-				break;
-			case self::VALUE_HIDDEN:
-				$prefix = '#';
-				break;
-		}
-
-		if ($this->isFlagSet(self::FLAG_OPTIONAL)) {
-			$prefix = '&' . $prefix;
-		}
-		if ($this->isFlagSet(self::FLAG_USER_PROVIDED)) {
-			$prefix = '@' . $prefix;
-		}
-
-		return $prefix . $this->getText();
+		return [
+			'value' => $this->getText(),
+			'flags' => $this->getFlags(),
+			'type' => $this->getType()
+		];
 	}
 
 	public function isOptional() {

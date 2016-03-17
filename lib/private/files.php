@@ -12,7 +12,6 @@
  * @author Nicolai Ehemann <en@enlightened.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thibaut GRIDEL <tgridel@free.fr>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
@@ -160,6 +159,8 @@ class OC_Files {
 	/**
 	 * @param View $view
 	 * @param string $name
+	 * @param string $dir
+	 * @param boolean $onlyHeader
 	 */
 	private static function getSingleFile($view, $dir, $name, $onlyHeader) {
 		$filename = $dir . '/' . $name;
@@ -185,7 +186,7 @@ class OC_Files {
 
 	/**
 	 * @param View $view
-	 * @param $dir
+	 * @param string $dir
 	 * @param string[]|string $files
 	 */
 	public static function lockFiles($view, $dir, $files) {
@@ -266,7 +267,7 @@ class OC_Files {
 				$pattern = vsprintf($patternMap['pattern'], [$key]);
 				$setting = vsprintf($patternMap['setting'], [$key, $size]);
 				$hasReplaced = 0;
-				$newContent = preg_replace($pattern, $setting, $content, 1, $hasReplaced);
+				$newContent = preg_replace($pattern, $setting, $content, 2, $hasReplaced);
 				if ($newContent !== null) {
 					$content = $newContent;
 				}
@@ -290,11 +291,11 @@ class OC_Files {
 	}
 
 	/**
-	 * @param $dir
+	 * @param string $dir
 	 * @param $files
-	 * @param $getType
+	 * @param integer $getType
 	 * @param View $view
-	 * @param $filename
+	 * @param string $filename
 	 */
 	private static function unlockAllTheFiles($dir, $files, $getType, $view, $filename) {
 		if ($getType === self::FILE) {

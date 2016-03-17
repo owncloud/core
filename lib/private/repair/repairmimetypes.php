@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Faruk Uzun <farukuzun@collabora.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Normal Ra <normalraw@gmail.com>
@@ -293,6 +294,17 @@ class RepairMimeTypes extends BasicEmitter implements \OC\RepairStep {
 		self::updateMimetypes($updatedMimetypes);
 	}
 
+	private function introduceRichDocumentsMimeTypes() {
+		$updatedMimetypes = array(
+			'lwp' => 'application/vnd.lotus-wordpro',
+			'one' => 'application/msonenote',
+			'vsd' => 'application/vnd.visio',
+			'wpd' => 'application/vnd.wordperfect',
+		);
+
+		self::updateMimetypes($updatedMimetypes);
+	}
+
 	/**
 	 * Fix mime types
 	 */
@@ -354,6 +366,12 @@ class RepairMimeTypes extends BasicEmitter implements \OC\RepairStep {
 
 			if ($this->introduceRtfMimeType()) {
 				$this->emit('\OC\Repair', 'info', array('Fixed rtf mime type'));
+			}
+		}
+
+		if (version_compare($ocVersionFromBeforeUpdate, '9.0.0.10', '<')) {
+			if ($this->introduceRichDocumentsMimeTypes()) {
+				$this->emit('\OC\Repair', 'info', array('Fixed richdocuments additional office mime types'));
 			}
 		}
 	}

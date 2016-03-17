@@ -6,10 +6,12 @@
  * @author Jens-Christian Fischer <jens-christian.fischer@switch.ch>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author TheSFReader <TheSFReader@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -121,7 +123,7 @@ class Cache implements ICache {
 			$params = array($file);
 		}
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`,
-					   `storage_mtime`, `encrypted`, `etag`, `permissions`
+					   `storage_mtime`, `encrypted`, `etag`, `permissions`, `checksum`
 				FROM `*PREFIX*filecache` ' . $where;
 		$result = $this->connection->executeQuery($sql, $params);
 		$data = $result->fetch();
@@ -145,6 +147,7 @@ class Cache implements ICache {
 			$data['size'] = 0 + $data['size'];
 			$data['mtime'] = (int)$data['mtime'];
 			$data['storage_mtime'] = (int)$data['storage_mtime'];
+			$data['encryptedVersion'] = (int)$data['encrypted'];
 			$data['encrypted'] = (bool)$data['encrypted'];
 			$data['storage'] = $this->storageId;
 			$data['mimetype'] = $this->mimetypeLoader->getMimetypeById($data['mimetype']);
@@ -177,7 +180,7 @@ class Cache implements ICache {
 	public function getFolderContentsById($fileId) {
 		if ($fileId > -1) {
 			$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`,
-						   `storage_mtime`, `encrypted`, `etag`, `permissions`
+						   `storage_mtime`, `encrypted`, `etag`, `permissions`, `checksum`
 					FROM `*PREFIX*filecache` WHERE `parent` = ? ORDER BY `name` ASC';
 			$result = $this->connection->executeQuery($sql, [$fileId]);
 			$files = $result->fetchAll();
@@ -201,7 +204,7 @@ class Cache implements ICache {
 	}
 
 	/**
-	 * store meta data for a file or folder
+	 * insert or update meta data for a file or folder
 	 *
 	 * @param string $file
 	 * @param array $data
@@ -214,49 +217,62 @@ class Cache implements ICache {
 			$this->update($id, $data);
 			return $id;
 		} else {
-			// normalize file
-			$file = $this->normalize($file);
+			return $this->insert($file, $data);
+		}
+	}
 
-			if (isset($this->partial[$file])) { //add any saved partial data
-				$data = array_merge($this->partial[$file], $data);
-				unset($this->partial[$file]);
+	/**
+	 * insert meta data for a new file or folder
+	 *
+	 * @param string $file
+	 * @param array $data
+	 *
+	 * @return int file id
+	 * @throws \RuntimeException
+	 */
+	public function insert($file, array $data) {
+		// normalize file
+		$file = $this->normalize($file);
+
+		if (isset($this->partial[$file])) { //add any saved partial data
+			$data = array_merge($this->partial[$file], $data);
+			unset($this->partial[$file]);
+		}
+
+		$requiredFields = array('size', 'mtime', 'mimetype');
+		foreach ($requiredFields as $field) {
+			if (!isset($data[$field])) { //data not complete save as partial and return
+				$this->partial[$file] = $data;
+				return -1;
 			}
+		}
 
-			$requiredFields = array('size', 'mtime', 'mimetype');
-			foreach ($requiredFields as $field) {
-				if (!isset($data[$field])) { //data not complete save as partial and return
-					$this->partial[$file] = $data;
-					return -1;
-				}
-			}
+		$data['path'] = $file;
+		$data['parent'] = $this->getParentId($file);
+		$data['name'] = \OC_Util::basename($file);
 
-			$data['path'] = $file;
-			$data['parent'] = $this->getParentId($file);
-			$data['name'] = \OC_Util::basename($file);
+		list($queryParts, $params) = $this->buildParts($data);
+		$queryParts[] = '`storage`';
+		$params[] = $this->getNumericStorageId();
 
-			list($queryParts, $params) = $this->buildParts($data);
-			$queryParts[] = '`storage`';
-			$params[] = $this->getNumericStorageId();
+		$queryParts = array_map(function ($item) {
+			return trim($item, "`");
+		}, $queryParts);
+		$values = array_combine($queryParts, $params);
+		if (\OC::$server->getDatabaseConnection()->insertIfNotExist('*PREFIX*filecache', $values, [
+			'storage',
+			'path_hash',
+		])
+		) {
+			return (int)$this->connection->lastInsertId('*PREFIX*filecache');
+		}
 
-			$queryParts = array_map(function ($item) {
-				return trim($item, "`");
-			}, $queryParts);
-			$values = array_combine($queryParts, $params);
-			if (\OC::$server->getDatabaseConnection()->insertIfNotExist('*PREFIX*filecache', $values, [
-				'storage',
-				'path_hash',
-			])
-			) {
-				return (int)$this->connection->lastInsertId('*PREFIX*filecache');
-			}
-
-			// The file was created in the mean time
-			if (($id = $this->getId($file)) > -1) {
-				$this->update($id, $data);
-				return $id;
-			} else {
-				throw new \RuntimeException('File entry could not be inserted with insertIfNotExist() but could also not be selected with getId() in order to perform an update. Please try again.');
-			}
+		// The file was created in the mean time
+		if (($id = $this->getId($file)) > -1) {
+			$this->update($id, $data);
+			return $id;
+		} else {
+			throw new \RuntimeException('File entry could not be inserted with insertIfNotExist() but could also not be selected with getId() in order to perform an update. Please try again.');
 		}
 	}
 
@@ -287,7 +303,10 @@ class Cache implements ICache {
 		// don't update if the data we try to set is the same as the one in the record
 		// some databases (Postgres) don't like superfluous updates
 		$sql = 'UPDATE `*PREFIX*filecache` SET ' . implode(' = ?, ', $queryParts) . '=? ' .
-			'WHERE (' . implode(' <> ? OR ', $queryParts) . ' <> ? ) AND `fileid` = ? ';
+			'WHERE (' .
+			implode(' <> ? OR ', $queryParts) . ' <> ? OR ' .
+			implode(' IS NULL OR ', $queryParts) . ' IS NULL' .
+			') AND `fileid` = ? ';
 		$this->connection->executeQuery($sql, $params);
 
 	}
@@ -303,7 +322,7 @@ class Cache implements ICache {
 	protected function buildParts(array $data) {
 		$fields = array(
 			'path', 'parent', 'name', 'mimetype', 'size', 'mtime', 'storage_mtime', 'encrypted',
-			'etag', 'permissions');
+			'etag', 'permissions', 'checksum');
 
 		$doNotCopyStorageMTime = false;
 		if (array_key_exists('mtime', $data) && $data['mtime'] === null) {
@@ -329,8 +348,12 @@ class Cache implements ICache {
 						$queryParts[] = '`mtime`';
 					}
 				} elseif ($name === 'encrypted') {
-					// Boolean to integer conversion
-					$value = $value ? 1 : 0;
+					if(isset($data['encryptedVersion'])) {
+						$value = $data['encryptedVersion'];
+					} else {
+						// Boolean to integer conversion
+						$value = $value ? 1 : 0;
+					}
 				}
 				$params[] = $value;
 				$queryParts[] = '`' . $name . '`';
@@ -567,7 +590,7 @@ class Cache implements ICache {
 		$sql = '
 			SELECT `fileid`, `storage`, `path`, `parent`, `name`,
 				`mimetype`, `mimepart`, `size`, `mtime`, `encrypted`,
-				`etag`, `permissions`
+				`etag`, `permissions`, `checksum`
 			FROM `*PREFIX*filecache`
 			WHERE `storage` = ? AND `name` ILIKE ?';
 		$result = $this->connection->executeQuery($sql,
@@ -598,7 +621,7 @@ class Cache implements ICache {
 		} else {
 			$where = '`mimepart` = ?';
 		}
-		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `etag`, `permissions`
+		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `etag`, `permissions`, `checksum`
 				FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `storage` = ?';
 		$mimetype = $this->mimetypeLoader->getId($mimetype);
 		$result = $this->connection->executeQuery($sql, array($mimetype, $this->getNumericStorageId()));
@@ -625,7 +648,7 @@ class Cache implements ICache {
 	public function searchByTag($tag, $userId) {
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, ' .
 			'`mimetype`, `mimepart`, `size`, `mtime`, ' .
-			'`encrypted`, `etag`, `permissions` ' .
+			'`encrypted`, `etag`, `permissions`, `checksum` ' .
 			'FROM `*PREFIX*filecache` `file`, ' .
 			'`*PREFIX*vcategory_to_object` `tagmap`, ' .
 			'`*PREFIX*vcategory` `tag` ' .

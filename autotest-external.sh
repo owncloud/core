@@ -39,8 +39,8 @@ PHPUNIT_VERSION=$("$PHPUNIT" --version | cut -d" " -f2)
 PHPUNIT_MAJOR_VERSION=$(echo $PHPUNIT_VERSION | cut -d"." -f1)
 PHPUNIT_MINOR_VERSION=$(echo $PHPUNIT_VERSION | cut -d"." -f2)
 
-if ! [ $PHPUNIT_MAJOR_VERSION -gt 3 -o \( $PHPUNIT_MAJOR_VERSION -eq 3 -a $PHPUNIT_MINOR_VERSION -ge 7 \) ]; then
-	echo "phpunit version >= 3.7 required. Version found: $PHPUNIT_VERSION" >&2
+if ! [ $PHPUNIT_MAJOR_VERSION -gt 4 -o \( $PHPUNIT_MAJOR_VERSION -eq 4 -a $PHPUNIT_MINOR_VERSION -ge 4 \) ]; then
+	echo "phpunit version >= 4.4 required. Version found: $PHPUNIT_VERSION" >&2
 	exit 4
 fi
 
@@ -148,7 +148,7 @@ EOF
 
 	# trigger installation
 	echo "Installing ...."
-	./occ maintenance:install --database=$1 --database-name=$DATABASENAME --database-host=localhost --database-user=$DATABASEUSER --database-pass=owncloud --database-table-prefix=oc_ --admin-user=$ADMINLOGIN --admin-pass=admin --data-dir=$DATADIR
+	./occ maintenance:install -vvv --database=$1 --database-name=$DATABASENAME --database-host=localhost --database-user=$DATABASEUSER --database-pass=owncloud --database-table-prefix=oc_ --admin-user=$ADMINLOGIN --admin-pass=admin --data-dir=$DATADIR
 
 	#test execution
 	echo "Testing with $1 ..."
@@ -161,7 +161,7 @@ EOF
 	rm -rf "coverage-external-html-$1"
 	mkdir "coverage-external-html-$1"
 	# just enable files_external
-	php ../occ app:enable files_external
+	php ../occ app:enable -vvv files_external
 	if [[ "$_XDEBUG_CONFIG" ]]; then
 		export XDEBUG_CONFIG=$_XDEBUG_CONFIG
 	fi

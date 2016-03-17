@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
@@ -7,7 +8,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -30,7 +31,6 @@
 namespace OCA\Files_Sharing\Controllers;
 
 use OC;
-use OC\Files\Filesystem;
 use OC_Files;
 use OC_Util;
 use OCP;
@@ -52,6 +52,7 @@ use OCP\Util;
 use OCA\Files_Sharing\Activity;
 use \OCP\Files\NotFoundException;
 use OCP\Files\IRootFolder;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class ShareController
@@ -70,7 +71,7 @@ class ShareController extends Controller {
 	protected $logger;
 	/** @var OCP\Activity\IManager */
 	protected $activityManager;
-	/** @var OC\Share20\Manager */
+	/** @var OCP\Share\IManager */
 	protected $shareManager;
 	/** @var ISession */
 	protected $session;
@@ -87,7 +88,7 @@ class ShareController extends Controller {
 	 * @param IUserManager $userManager
 	 * @param ILogger $logger
 	 * @param OCP\Activity\IManager $activityManager
-	 * @param \OC\Share20\Manager $shareManager
+	 * @param \OCP\Share\IManager $shareManager
 	 * @param ISession $session
 	 * @param IPreview $previewManager
 	 * @param IRootFolder $rootFolder
@@ -99,7 +100,7 @@ class ShareController extends Controller {
 								IUserManager $userManager,
 								ILogger $logger,
 								\OCP\Activity\IManager $activityManager,
-								\OC\Share20\Manager $shareManager,
+								\OCP\Share\IManager $shareManager,
 								ISession $session,
 								IPreview $previewManager,
 								IRootFolder $rootFolder) {
@@ -147,7 +148,7 @@ class ShareController extends Controller {
 		// Check whether share exists
 		try {
 			$share = $this->shareManager->getShareByToken($token);
-		} catch (\OC\Share20\Exception\ShareNotFound $e) {
+		} catch (ShareNotFound $e) {
 			return new NotFoundResponse();
 		}
 
@@ -176,6 +177,7 @@ class ShareController extends Controller {
 			if ($this->shareManager->checkPassword($share, $password)) {
 				$this->session->set('public_link_authenticated', (string)$share->getId());
 			} else {
+				$this->emitAccessShareHook($share, 403, 'Wrong password');
 				return false;
 			}
 		} else {
@@ -186,6 +188,54 @@ class ShareController extends Controller {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * throws hooks when a share is attempted to be accessed
+	 *
+	 * @param \OCP\Share\IShare|string $share the Share instance if available,
+	 * otherwise token
+	 * @param int $errorCode
+	 * @param string $errorMessage
+	 * @throws OC\HintException
+	 * @throws OC\ServerNotAvailableException
+	 */
+	protected function emitAccessShareHook($share, $errorCode = 200, $errorMessage = '') {
+		$itemType = $itemSource = $uidOwner = '';
+		$token = $share;
+		$exception = null;
+		if($share instanceof \OCP\Share\IShare) {
+			try {
+				$token = $share->getToken();
+				$uidOwner = $share->getSharedBy();
+				$itemType = $share->getNodeType();
+				$itemSource = $share->getNodeId();
+			} catch (\Exception $e) {
+				// we log what we know and pass on the exception afterwards
+				$exception = $e;
+			}
+		}
+		\OC_Hook::emit('OCP\Share', 'share_link_access', [
+			'itemType' => $itemType,
+			'itemSource' => $itemSource,
+			'uidOwner' => $uidOwner,
+			'token' => $token,
+			'errorCode' => $errorCode,
+			'errorMessage' => $errorMessage,
+		]);
+		if(!is_null($exception)) {
+			throw $exception;
+		}
+	}
+
+	/**
+	 * Validate the permissions of the share
+	 *
+	 * @param Share\IShare $share
+	 * @return bool
+	 */
+	private function validateShare(\OCP\Share\IShare $share) {
+		return $share->getNode()->isReadable() && $share->getNode()->isShareable();
 	}
 
 	/**
@@ -203,7 +253,8 @@ class ShareController extends Controller {
 		// Check whether share exists
 		try {
 			$share = $this->shareManager->getShareByToken($token);
-		} catch (\OC\Share20\Exception\ShareNotFound $e) {
+		} catch (ShareNotFound $e) {
+			$this->emitAccessShareHook($token, 404, 'Share not found');
 			return new NotFoundResponse();
 		}
 
@@ -213,9 +264,18 @@ class ShareController extends Controller {
 				array('token' => $token)));
 		}
 
-		// We can't get the path of a file share
-		if ($share->getNode() instanceof \OCP\Files\File && $path !== '') {
+		if (!$this->validateShare($share)) {
 			throw new NotFoundException();
+		}
+		// We can't get the path of a file share
+		try {
+			if ($share->getNode() instanceof \OCP\Files\File && $path !== '') {
+				$this->emitAccessShareHook($share, 404, 'Share not found');
+				throw new NotFoundException();
+			}
+		} catch (\Exception $e) {
+			$this->emitAccessShareHook($share, 404, 'Share not found');
+			throw $e;
 		}
 
 		$rootFolder = null;
@@ -226,13 +286,14 @@ class ShareController extends Controller {
 			try {
 				$path = $rootFolder->get($path);
 			} catch (\OCP\Files\NotFoundException $e) {
+				$this->emitAccessShareHook($share, 404, 'Share not found');
 				throw new NotFoundException();
 			}
 		}
 
 		$shareTmpl = [];
-		$shareTmpl['displayName'] = $share->getShareOwner()->getDisplayName();
-		$shareTmpl['owner'] = $share->getShareOwner()->getUID();
+		$shareTmpl['displayName'] = $this->userManager->get($share->getShareOwner())->getDisplayName();
+		$shareTmpl['owner'] = $share->getShareOwner();
 		$shareTmpl['filename'] = $share->getNode()->getName();
 		$shareTmpl['directory_path'] = $share->getTarget();
 		$shareTmpl['mimetype'] = $share->getNode()->getMimetype();
@@ -286,6 +347,8 @@ class ShareController extends Controller {
 		$response = new TemplateResponse($this->appName, 'public', $shareTmpl, 'base');
 		$response->setContentSecurityPolicy($csp);
 
+		$this->emitAccessShareHook($share);
+
 		return $response;
 	}
 
@@ -319,8 +382,12 @@ class ShareController extends Controller {
 			}
 		}
 
-		$userFolder = $this->rootFolder->getUserFolder($share->getShareOwner()->getUID());
+		$userFolder = $this->rootFolder->getUserFolder($share->getShareOwner());
 		$originalSharePath = $userFolder->getRelativePath($share->getNode()->getPath());
+
+		if (!$this->validateShare($share)) {
+			throw new NotFoundException();
+		}
 
 		// Single file share
 		if ($share->getNode() instanceof \OCP\Files\File) {
@@ -329,7 +396,7 @@ class ShareController extends Controller {
 			$event->setApp('files_sharing')
 				->setType(Activity::TYPE_PUBLIC_LINKS)
 				->setSubject(Activity::SUBJECT_PUBLIC_SHARED_FILE_DOWNLOADED, [$userFolder->getRelativePath($share->getNode()->getPath())])
-				->setAffectedUser($share->getShareOwner()->getUID())
+				->setAffectedUser($share->getShareOwner())
 				->setObject('files', $share->getNode()->getId(), $userFolder->getRelativePath($share->getNode()->getPath()));
 			$this->activityManager->publish($event);
 		}
@@ -343,6 +410,7 @@ class ShareController extends Controller {
 				try {
 					$node = $node->get($path);
 				} catch (NotFoundException $e) {
+					$this->emitAccessShareHook($share, 404, 'Share not found');
 					return new NotFoundResponse();
 				}
 			}
@@ -355,7 +423,7 @@ class ShareController extends Controller {
 				$event->setApp('files_sharing')
 					->setType(Activity::TYPE_PUBLIC_LINKS)
 					->setSubject(Activity::SUBJECT_PUBLIC_SHARED_FILE_DOWNLOADED, [$userFolder->getRelativePath($node->getPath())])
-					->setAffectedUser($share->getShareOwner()->getUID())
+					->setAffectedUser($share->getShareOwner())
 					->setObject('files', $node->getId(), $userFolder->getRelativePath($node->getPath()));
 				$this->activityManager->publish($event);
 			} else if (!empty($files_list)) {
@@ -368,7 +436,7 @@ class ShareController extends Controller {
 					$event = $this->activityManager->generateEvent();
 					$event->setApp('files_sharing')
 						->setType(Activity::TYPE_PUBLIC_LINKS)
-						->setAffectedUser($share->getShareOwner()->getUID())
+						->setAffectedUser($share->getShareOwner())
 						->setObject('files', $subNode->getId(), $userFolder->getRelativePath($subNode->getPath()));
 
 					if ($subNode instanceof \OCP\Files\File) {
@@ -385,7 +453,7 @@ class ShareController extends Controller {
 				$event->setApp('files_sharing')
 					->setType(Activity::TYPE_PUBLIC_LINKS)
 					->setSubject(Activity::SUBJECT_PUBLIC_SHARED_FOLDER_DOWNLOADED, [$userFolder->getRelativePath($node->getPath())])
-					->setAffectedUser($share->getShareOwner()->getUID())
+					->setAffectedUser($share->getShareOwner())
 					->setObject('files', $node->getId(), $userFolder->getRelativePath($node->getPath()));
 				$this->activityManager->publish($event);
 			}
@@ -393,7 +461,7 @@ class ShareController extends Controller {
 
 		/* FIXME: We should do this all nicely in OCP */
 		OC_Util::tearDownFS();
-		OC_Util::setupFS($share->getShareOwner()->getUID());
+		OC_Util::setupFS($share->getShareOwner());
 
 		/**
 		 * this sets a cookie to be able to recognize the start of the download
@@ -408,8 +476,10 @@ class ShareController extends Controller {
 			setcookie('ocDownloadStarted', $downloadStartSecret, time() + 20, '/');
 		}
 
+		$this->emitAccessShareHook($share);
+
 		// download selected files
-		if (!is_null($files)) {
+		if (!is_null($files) && $files !== '') {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
 			OC_Files::get($originalSharePath, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');

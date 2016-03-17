@@ -58,8 +58,13 @@ describe('OCA.External.Settings tests', function() {
 					'identifier': '\\OC\\TestBackend',
 					'name': 'Test Backend',
 					'configuration': {
-						'field1': 'Display Name 1',
-						'field2': '&Display Name 2'
+						'field1': {
+							'value': 'Display Name 1'
+						},
+						'field2': {
+							'value': 'Display Name 2',
+							'flags': 1
+						}
 					},
 					'authSchemes': {
 						'builtin': true,
@@ -70,8 +75,13 @@ describe('OCA.External.Settings tests', function() {
 					'identifier': '\\OC\\AnotherTestBackend',
 					'name': 'Another Test Backend',
 					'configuration': {
-						'field1': 'Display Name 1',
-						'field2': '&Display Name 2'
+						'field1': {
+							'value': 'Display Name 1'
+						},
+						'field2': {
+							'value': 'Display Name 2',
+							'flags': 1
+						}
 					},
 					'authSchemes': {
 						'builtin': true,
@@ -82,12 +92,30 @@ describe('OCA.External.Settings tests', function() {
 					'identifier': '\\OC\\InputsTestBackend',
 					'name': 'Inputs test backend',
 					'configuration': {
-						'field_text': 'Text field',
-						'field_password': '*Password field',
-						'field_bool': '!Boolean field',
-						'field_hidden': '#Hidden field',
-						'field_text_optional': '&Text field optional',
-						'field_password_optional': '&*Password field optional'
+						'field_text': {
+							'value': 'Text field'
+						},
+						'field_password': {
+							'value': ',Password field',
+							'type': 2
+						},
+						'field_bool': {
+							'value': 'Boolean field',
+							'type': 1
+						},
+						'field_hidden': {
+							'value': 'Hidden field',
+							'type': 3
+						},
+						'field_text_optional': {
+							'value': 'Text field optional',
+							'flags': 1
+						},
+						'field_password_optional': {
+							'value': 'Password field optional',
+							'flags': 1,
+							'type': 2
+						}
 					},
 					'authSchemes': {
 						'builtin': true,
@@ -150,6 +178,12 @@ describe('OCA.External.Settings tests', function() {
 				expect($emptyRow.find('.applicable select').length).toEqual(0);
 
 				// TODO: check "remove" button visibility
+			});
+			it('shows row even if selection row is hidden', function() {
+				view.$el.find('tr#addMountPoint').hide();
+				selectBackend('\\OC\\TestBackend');
+				expect(view.$el.find('tr:first').is(':visible')).toBe(true);
+				expect(view.$el.find('tr#addMountPoint').is(':visible')).toBe(false);
 			});
 			// TODO: test with personal mounts (no applicable fields)
 			// TODO: test suggested mount point logic
@@ -335,7 +369,7 @@ describe('OCA.External.Settings tests', function() {
 				expect(JSON.parse($tr.find('input.mountOptions').val())).toEqual({
 					encrypt: true,
 					previews: true,
-					enable_sharing: true,
+					enable_sharing: false,
 					filesystem_check_changes: 0
 				});
 			});

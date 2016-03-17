@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -58,7 +59,7 @@ class AddServerMiddleware extends Middleware {
 		if ($exception instanceof HintException) {
 			$message = $exception->getHint();
 		} else {
-			$message = $this->l->t('Unknown error');
+			$message = $exception->getMessage();
 		}
 
 		return new JSONResponse(

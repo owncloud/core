@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Robin Appelman <icewind@owncloud.com>>
+ * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -59,6 +59,8 @@ interface ICache {
 	/**
 	 * get the metadata of all files stored in $folder
 	 *
+	 * Only returns files one level deep, no recursion
+	 *
 	 * @param string $folder
 	 * @return ICacheEntry[]
 	 * @since 9.0.0
@@ -68,6 +70,8 @@ interface ICache {
 	/**
 	 * get the metadata of all files stored in $folder
 	 *
+	 * Only returns files one level deep, no recursion
+	 *
 	 * @param int $fileId the file id of the folder
 	 * @return ICacheEntry[]
 	 * @since 9.0.0
@@ -76,6 +80,7 @@ interface ICache {
 
 	/**
 	 * store meta data for a file or folder
+	 * This will automatically call either insert or update depending on if the file exists
 	 *
 	 * @param string $file
 	 * @param array $data
@@ -85,6 +90,18 @@ interface ICache {
 	 * @since 9.0.0
 	 */
 	public function put($file, array $data);
+
+	/**
+	 * insert meta data for a new file or folder
+	 *
+	 * @param string $file
+	 * @param array $data
+	 *
+	 * @return int file id
+	 * @throws \RuntimeException
+	 * @since 9.0.0
+	 */
+	public function insert($file, array $data);
 
 	/**
 	 * update the metadata of an existing file or folder in the cache
@@ -174,11 +191,12 @@ interface ICache {
 	public function getStatus($file);
 
 	/**
-	 * search for files matching $pattern
+	 * search for files matching $pattern, files are matched if their filename matches the search pattern
 	 *
 	 * @param string $pattern the search pattern using SQL search syntax (e.g. '%searchstring%')
 	 * @return ICacheEntry[] an array of cache entries where the name matches the search pattern
 	 * @since 9.0.0
+	 * @deprecated 9.0.0 due to lack of pagination, not all backends might implement this
 	 */
 	public function search($pattern);
 
@@ -189,6 +207,7 @@ interface ICache {
 	 *        where it will search for all mimetypes in the group ('image/*')
 	 * @return ICacheEntry[] an array of cache entries where the mimetype matches the search
 	 * @since 9.0.0
+	 * @deprecated 9.0.0 due to lack of pagination, not all backends might implement this
 	 */
 	public function searchByMime($mimetype);
 
@@ -201,6 +220,7 @@ interface ICache {
 	 * @param string $userId owner of the tags
 	 * @return ICacheEntry[] file data
 	 * @since 9.0.0
+	 * @deprecated 9.0.0 due to lack of pagination, not all backends might implement this
 	 */
 	public function searchByTag($tag, $userId);
 

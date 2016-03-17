@@ -16,12 +16,12 @@
 	var TEMPLATE =
 			'<ul id="shareWithList" class="shareWithList">' +
 			'{{#each sharees}}' +
-			'    <li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}" title="{{shareWith}}">' +
-			'        <a href="#" class="unshare"><span class="icon-loading-small hidden"></span><img class="svg" alt="{{unshareLabel}}" title="{{unshareLabel}}" src="{{unshareImage}}" /></a>' +
+			'    <li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
+			'        <a href="#" class="unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
 			'        {{#if avatarEnabled}}' +
 			'        <div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
 			'        {{/if}}' +
-			'        <span class="username">{{shareWithDisplayName}}</span>' +
+			'        <span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
 			'        {{#if mailNotificationEnabled}} {{#unless isRemoteShare}}' +
 			'        <input id="mail-{{cid}}-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
 			'        <label for="mail-{{cid}}-{{shareWith}}">{{notifyByMailLabel}}</label>' +
@@ -140,7 +140,6 @@
 				mailNotificationEnabled: this.configModel.isMailNotificationEnabled(),
 				notifyByMailLabel: t('core', 'notify by email'),
 				unshareLabel: t('core', 'Unshare'),
-				unshareImage: OC.imagePath('core', 'actions/delete'),
 				canShareLabel: t('core', 'can share'),
 				canEditLabel: t('core', 'can edit'),
 				createPermissionLabel: t('core', 'create'),
@@ -192,6 +191,10 @@
 					}
 				});
 			}
+
+			this.$el.find('.has-tooltip').tooltip({
+				placement: 'bottom'
+			});
 
 			this.delegateEvents();
 

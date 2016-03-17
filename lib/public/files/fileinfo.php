@@ -4,6 +4,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -237,4 +238,12 @@ interface FileInfo {
 	 * @since 9.0.0
 	 */
 	public function getOwner();
+
+	/**
+	 * Get the stored checksum for this file
+	 *
+	 * @return string
+	 * @since 9.0.0
+	 */
+	public function getChecksum();
 }

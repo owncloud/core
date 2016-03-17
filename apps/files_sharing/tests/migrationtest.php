@@ -2,6 +2,7 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -209,6 +210,40 @@ class MigrationTest extends TestCase {
 		$this->assertSame(1,
 			$query->execute()
 		);
+		$parent = $query->getLastInsertId();
+		// third re-share, should be attached to the first user share after migration
+		$query->setParameter('share_type', \OCP\Share::SHARE_TYPE_REMOTE)
+			->setParameter('share_with', 'user@server.com')
+			->setParameter('uid_owner', 'user3')
+			->setParameter('uid_initiator', '')
+			->setParameter('parent', $parent)
+			->setParameter('item_type', 'file')
+			->setParameter('item_source', '2')
+			->setParameter('item_target', '/2')
+			->setParameter('file_source', 2)
+			->setParameter('file_target', '/foobar')
+			->setParameter('permissions', 31)
+			->setParameter('stime', time());
+		$this->assertSame(1,
+			$query->execute()
+		);
+
+		// Link reshare should keep its parent
+		$query->setParameter('share_type', \OCP\Share::SHARE_TYPE_LINK)
+			->setParameter('share_with', null)
+			->setParameter('uid_owner', 'user3')
+			->setParameter('uid_initiator', '')
+			->setParameter('parent', $parent)
+			->setParameter('item_type', 'file')
+			->setParameter('item_source', '2')
+			->setParameter('item_target', '/2')
+			->setParameter('file_source', 2)
+			->setParameter('file_target', '/foobar')
+			->setParameter('permissions', 31)
+			->setParameter('stime', time());
+		$this->assertSame(1,
+			$query->execute()
+		);
 	}
 
 	public function testRemoveReShares() {
@@ -221,7 +256,7 @@ class MigrationTest extends TestCase {
 		$query = $this->connection->getQueryBuilder();
 		$query->select('*')->from($this->table)->orderBy('id');
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(8, count($result));
+		$this->assertSame(10, count($result));
 
 		// shares which shouldn't be modified
 		for ($i = 0; $i < 4; $i++) {
@@ -238,12 +273,20 @@ class MigrationTest extends TestCase {
 		$this->assertEmpty($result[5]['uid_initiator']);
 		$this->assertNull($result[5]['parent']);
 		// flatted re-shares
-		for($i = 6; $i < 8; $i++) {
+		for($i = 6; $i < 9; $i++) {
 			$this->assertSame('owner2', $result[$i]['uid_owner']);
 			$user = 'user' . ($i - 5);
 			$this->assertSame($user, $result[$i]['uid_initiator']);
 			$this->assertNull($result[$i]['parent']);
 		}
+
+		/*
+		 * The link share is flattend but has an owner to avoid invisible shares
+		 * see: https://github.com/owncloud/core/pull/22317
+		 */
+		$this->assertSame('owner2', $result[9]['uid_owner']);
+		$this->assertSame('user3', $result[9]['uid_initiator']);
+		$this->assertSame($result[7]['id'], $result[9]['parent']);
 	}
 
 	public function test1001DeepReshares() {

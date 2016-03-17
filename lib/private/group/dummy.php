@@ -7,7 +7,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -114,6 +114,7 @@ class OC_Group_Dummy extends OC_Group_Backend {
 		if(isset($this->groups[$gid])) {
 			if(($index=array_search($uid, $this->groups[$gid]))!==false) {
 				unset($this->groups[$gid][$index]);
+				return true;
 			}else{
 				return false;
 			}

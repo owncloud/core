@@ -210,13 +210,15 @@ class Test_User_User extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(array('42 GB')));
 
-		$config->expects($this->once())
-			->method('setUserValue')
-			->with($this->equalTo('alice'),
-				$this->equalTo('files'),
-				$this->equalTo('quota'),
-				$this->equalTo('42 GB'))
-			->will($this->returnValue(true));
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('setQuota')
+			->with('42 GB');
+
+		$userMgr->expects($this->once())
+			->method('get')
+			->with('alice')
+			->will($this->returnValue($user));
 
 		$uid = 'alice';
 		$dn  = 'uid=alice,dc=foo,dc=bar';
@@ -253,13 +255,15 @@ class Test_User_User extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(false));
 
-		$config->expects($this->once())
-			->method('setUserValue')
-			->with($this->equalTo('alice'),
-				$this->equalTo('files'),
-				$this->equalTo('quota'),
-				$this->equalTo('25 GB'))
-			->will($this->returnValue(true));
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('setQuota')
+			->with('25 GB');
+
+		$userMgr->expects($this->once())
+			->method('get')
+			->with('alice')
+			->will($this->returnValue($user));
 
 		$uid = 'alice';
 		$dn  = 'uid=alice,dc=foo,dc=bar';
@@ -296,13 +300,15 @@ class Test_User_User extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(array('27 GB')));
 
-		$config->expects($this->once())
-			->method('setUserValue')
-			->with($this->equalTo('alice'),
-				$this->equalTo('files'),
-				$this->equalTo('quota'),
-				$this->equalTo('27 GB'))
-			->will($this->returnValue(true));
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('setQuota')
+			->with('27 GB');
+
+		$userMgr->expects($this->once())
+			->method('get')
+			->with('alice')
+			->will($this->returnValue($user));
 
 		$uid = 'alice';
 		$dn  = 'uid=alice,dc=foo,dc=bar';
@@ -408,13 +414,15 @@ class Test_User_User extends \Test\TestCase {
 		$access->expects($this->never())
 			->method('readAttribute');
 
-		$config->expects($this->once())
-			->method('setUserValue')
-			->with($this->equalTo('alice'),
-				$this->equalTo('files'),
-				$this->equalTo('quota'),
-				$this->equalTo($readQuota))
-			->will($this->returnValue(true));
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('setQuota')
+			->with($readQuota);
+
+		$userMgr->expects($this->once())
+			->method('get')
+			->with('alice')
+			->will($this->returnValue($user));
 
 		$uid = 'alice';
 		$dn  = 'uid=alice,dc=foo,dc=bar';
@@ -749,7 +757,7 @@ class Test_User_User extends \Test\TestCase {
 			'markRefreshTime',
 			'updateQuota',
 			'updateEmail',
-			'storeDisplayName',
+			'composeAndStoreDisplayName',
 			'storeLDAPUserName',
 			'getHomePath',
 			'updateAvatar'
@@ -893,5 +901,30 @@ class Test_User_User extends \Test\TestCase {
 			$uid, $dn, $access, $config, $filesys, $image, $log, $avaMgr, $userMgr);
 
 		$user->getHomePath();
+	}
+
+	public function displayNameProvider() {
+		return [
+			['Roland Deschain', '', 'Roland Deschain'],
+			['Roland Deschain', null, 'Roland Deschain'],
+			['Roland Deschain', 'gunslinger@darktower.com', 'Roland Deschain (gunslinger@darktower.com)'],
+		];
+	}
+
+	/**
+	 * @dataProvider displayNameProvider
+	 */
+	public function testComposeAndStoreDisplayName($part1, $part2, $expected) {
+		list($access, $config, $filesys, $image, $log, $avaMgr, , $userMgr) =
+			$this->getTestInstances();
+
+		$config->expects($this->once())
+			->method('setUserValue');
+
+		$user = new User(
+			'user', 'cn=user', $access, $config, $filesys, $image, $log, $avaMgr, $userMgr);
+
+		$displayName = $user->composeAndStoreDisplayName($part1, $part2);
+		$this->assertSame($expected, $displayName);
 	}
 }

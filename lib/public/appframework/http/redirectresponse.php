@@ -2,8 +2,8 @@
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author v1r0x <vinzenz.rosenkranz@gmail.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -44,7 +44,7 @@ class RedirectResponse extends Response {
 	 */
 	public function __construct($redirectURL) {
 		$this->redirectURL = $redirectURL;
-		$this->setStatus(Http::STATUS_TEMPORARY_REDIRECT);
+		$this->setStatus(Http::STATUS_SEE_OTHER);
 		$this->addHeader('Location', $redirectURL);
 	}
 

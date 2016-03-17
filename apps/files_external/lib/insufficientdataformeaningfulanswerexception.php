@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -27,4 +28,15 @@ use \OCP\Files\StorageNotAvailableException;
  * Authentication mechanism or backend has insufficient data
  */
 class InsufficientDataForMeaningfulAnswerException extends StorageNotAvailableException {
+	/**
+	 * StorageNotAvailableException constructor.
+	 *
+	 * @param string $message
+	 * @param int $code
+	 * @param \Exception $previous
+	 * @since 6.0.0
+	 */
+	public function __construct($message = '', $code = self::STATUS_INDETERMINATE, \Exception $previous = null) {
+		parent::__construct($message, $code, $previous);
+	}
 }

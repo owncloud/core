@@ -7,7 +7,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -61,7 +61,7 @@ abstract class Proxy {
 		static $userMap;
 		static $groupMap;
 		static $db;
-		static $userManager;
+		static $coreUserManager;
 		if(is_null($fs)) {
 			$ocConfig = \OC::$server->getConfig();
 			$fs       = new FilesystemHelper();
@@ -70,10 +70,10 @@ abstract class Proxy {
 			$db       = \OC::$server->getDatabaseConnection();
 			$userMap  = new UserMapping($db);
 			$groupMap = new GroupMapping($db);
-			$userManager = \OC::$server->getUserManager();
+			$coreUserManager = \OC::$server->getUserManager();
 		}
 		$userManager =
-			new user\Manager($ocConfig, $fs, $log, $avatarM, new \OCP\Image(), $db, $userManager);
+			new user\Manager($ocConfig, $fs, $log, $avatarM, new \OCP\Image(), $db, $coreUserManager);
 		$connector = new Connection($this->ldap, $configPrefix);
 		$access = new Access($connector, $this->ldap, $userManager);
 		$access->setUserMapper($userMap);

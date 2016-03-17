@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Ross Nicoll <jrn@jrn.me.uk>
@@ -58,9 +59,7 @@ class Application extends App {
 		$backendService = $container->query('OCA\\Files_External\\Service\\BackendService');
 
 		\OCP\App::registerAdmin('files_external', 'settings');
-		if ($backendService->isUserMountingAllowed()) {
-			\OCP\App::registerPersonal('files_external', 'personal');
-		}
+		\OCP\App::registerPersonal('files_external', 'personal');
 	}
 
 	/**
@@ -108,8 +107,6 @@ class Application extends App {
 			// AuthMechanism::SCHEME_PASSWORD mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\Password\Password'),
 			$container->query('OCA\Files_External\Lib\Auth\Password\SessionCredentials'),
-			$container->query('OCA\Files_External\Lib\Auth\Password\LoginCredentials'),
-			$container->query('OCA\Files_External\Lib\Auth\Password\UserProvided'),
 
 			// AuthMechanism::SCHEME_OAUTH1 mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\OAuth1\OAuth1'),

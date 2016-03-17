@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -20,16 +21,22 @@
  */
 namespace OCA\Dav\AppInfo;
 
+use OCA\DAV\CalDAV\BirthdayService;
+use OCA\DAV\CalDAV\CalDavBackend;
+use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\CardDAV\ContactsManager;
 use OCA\DAV\CardDAV\SyncJob;
 use OCA\DAV\CardDAV\SyncService;
 use OCA\DAV\HookManager;
 use OCA\Dav\Migration\AddressBookAdapter;
+use OCA\Dav\Migration\CalendarAdapter;
 use OCA\Dav\Migration\MigrateAddressbooks;
+use OCA\Dav\Migration\MigrateCalendars;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 use OCP\Contacts\IManager;
 use OCP\IUser;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Application extends App {
 
@@ -53,7 +60,9 @@ class Application extends App {
 			/** @var IAppContainer $c */
 			return new HookManager(
 				$c->getServer()->getUserManager(),
-				$c->query('SyncService')
+				$c->query('SyncService'),
+				$c->query('CalDavBackend'),
+				$c->query('CardDavBackend')
 			);
 		});
 
@@ -61,28 +70,63 @@ class Application extends App {
 			/** @var IAppContainer $c */
 			return new SyncService(
 				$c->query('CardDavBackend'),
-				$c->getServer()->getUserManager()
+				$c->getServer()->getUserManager(),
+				$c->getServer()->getLogger()
 			);
 		});
 
 		$container->registerService('CardDavBackend', function($c) {
 			/** @var IAppContainer $c */
 			$db = $c->getServer()->getDatabaseConnection();
-			$logger = $c->getServer()->getLogger();
+			$dispatcher = $c->getServer()->getEventDispatcher();
 			$principal = new \OCA\DAV\Connector\Sabre\Principal(
 				$c->getServer()->getUserManager(),
 				$c->getServer()->getGroupManager()
 			);
-			return new \OCA\DAV\CardDAV\CardDavBackend($db, $principal, $logger);
+			return new CardDavBackend($db, $principal, $dispatcher);
+		});
+
+		$container->registerService('CalDavBackend', function($c) {
+			/** @var IAppContainer $c */
+			$db = $c->getServer()->getDatabaseConnection();
+			$principal = new \OCA\DAV\Connector\Sabre\Principal(
+				$c->getServer()->getUserManager(),
+				$c->getServer()->getGroupManager()
+			);
+			return new CalDavBackend($db, $principal);
 		});
 
 		$container->registerService('MigrateAddressbooks', function($c) {
 			/** @var IAppContainer $c */
 			$db = $c->getServer()->getDatabaseConnection();
+			$logger = $c->getServer()->getLogger();
 			return new MigrateAddressbooks(
 				new AddressBookAdapter($db),
+				$c->query('CardDavBackend'),
+				$logger,
+				null
+			);
+		});
+
+		$container->registerService('MigrateCalendars', function($c) {
+			/** @var IAppContainer $c */
+			$db = $c->getServer()->getDatabaseConnection();
+			$logger = $c->getServer()->getLogger();
+			return new MigrateCalendars(
+				new CalendarAdapter($db),
+				$c->query('CalDavBackend'),
+				$logger,
+				null
+			);
+		});
+
+		$container->registerService('BirthdayService', function($c) {
+			/** @var IAppContainer $c */
+			return new BirthdayService(
+				$c->query('CalDavBackend'),
 				$c->query('CardDavBackend')
 			);
+
 		});
 	}
 
@@ -100,6 +144,30 @@ class Application extends App {
 		/** @var HookManager $hm */
 		$hm = $this->getContainer()->query('HookManager');
 		$hm->setup();
+
+		$listener = function($event) {
+			if ($event instanceof GenericEvent) {
+				$b = $this->getContainer()->query('BirthdayService');
+				$b->onCardChanged(
+					$event->getArgument('addressBookId'),
+					$event->getArgument('cardUri'),
+					$event->getArgument('cardData')
+				);
+			}
+		};
+
+		$dispatcher = $this->getContainer()->getServer()->getEventDispatcher();
+		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::createCard', $listener);
+		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::updateCard', $listener);
+		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::deleteCard', function($event) {
+			if ($event instanceof GenericEvent) {
+				$b = $this->getContainer()->query('BirthdayService');
+				$b->onCardDeleted(
+					$event->getArgument('addressBookId'),
+					$event->getArgument('cardUri')
+				);
+			}
+		});
 	}
 
 	public function getSyncService() {
@@ -112,8 +180,8 @@ class Application extends App {
 	}
 
 	public function migrateAddressbooks() {
-
 		try {
+			/** @var MigrateAddressbooks $migration */
 			$migration = $this->getContainer()->query('MigrateAddressbooks');
 			$migration->setup();
 			$userManager = $this->getContainer()->getServer()->getUserManager();
@@ -127,4 +195,19 @@ class Application extends App {
 		}
 	}
 
+	public function migrateCalendars() {
+		try {
+			/** @var MigrateCalendars $migration */
+			$migration = $this->getContainer()->query('MigrateCalendars');
+			$migration->setup();
+			$userManager = $this->getContainer()->getServer()->getUserManager();
+
+			$userManager->callForAllUsers(function($user) use($migration) {
+				/** @var IUser $user */
+				$migration->migrateForUser($user->getUID());
+			});
+		} catch (\Exception $ex) {
+			$this->getContainer()->getServer()->getLogger()->logException($ex);
+		}
+	}
 }

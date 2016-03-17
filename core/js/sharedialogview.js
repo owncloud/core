@@ -67,6 +67,10 @@
 		/** @type {object} **/
 		shareeListView: undefined,
 
+		events: {
+			'input .shareWithField': 'onShareWithFieldChanged'
+		},
+
 		initialize: function(options) {
 			var view = this;
 
@@ -109,7 +113,18 @@
 					: options[name];
 			}
 
-			_.bindAll(this, 'autocompleteHandler', '_onSelectRecipient');
+			_.bindAll(this,
+				'autocompleteHandler',
+				'_onSelectRecipient',
+				'onShareWithFieldChanged'
+			);
+		},
+
+		onShareWithFieldChanged: function() {
+			var $el = this.$el.find('.shareWithField');
+			if ($el.val().length < 2) {
+				$el.removeClass('error').tooltip('hide');
+			}
 		},
 
 		autocompleteHandler: function (search, response) {
@@ -196,9 +211,20 @@
 						var suggestions = users.concat(groups).concat(remotes);
 
 						if (suggestions.length > 0) {
-							$('.shareWithField').autocomplete("option", "autoFocus", true);
+							$('.shareWithField').removeClass('error')
+								.tooltip('hide')
+								.autocomplete("option", "autoFocus", true);
 							response(suggestions);
 						} else {
+							$('.shareWithField').addClass('error')
+								.attr('data-original-title', t('core', 'No users or groups found for {search}', {search: $('.shareWithField').val()}))
+								.tooltip('hide')
+								.tooltip({
+									placement: 'bottom',
+									trigger: 'manual'
+								})
+								.tooltip('fixTitle')
+								.tooltip('show');
 							response();
 						}
 					} else {
@@ -217,14 +243,30 @@
 			var insert = $("<a>");
 			var text = item.label;
 			if (item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
-				text = text +  ' ('+t('core', 'group')+')';
+				text = t('core', '{sharee} (group)', {
+					sharee: text
+				});
 			} else if (item.value.shareType === OC.Share.SHARE_TYPE_REMOTE) {
-				text = text +  ' ('+t('core', 'remote')+')';
+				if (item.value.server) {
+					text = t('core', '{sharee} (at {server})', {
+						sharee: text,
+						server: item.value.server
+					});
+				} else {
+					text = t('core', '{sharee} (remote)', {
+						sharee: text
+					});
+				}
 			}
 			insert.text(text);
+			insert.attr('title', item.value.shareWith);
 			if(item.value.shareType === OC.Share.SHARE_TYPE_GROUP) {
 				insert = insert.wrapInner('<strong></strong>');
 			}
+			insert.tooltip({
+				placement: 'bottom',
+				container: 'body'
+			});
 			return $("<li>")
 				.addClass((item.value.shareType === OC.Share.SHARE_TYPE_GROUP) ? 'group' : 'user')
 				.append(insert)
@@ -233,8 +275,24 @@
 
 		_onSelectRecipient: function(e, s) {
 			e.preventDefault();
-			$(e.target).val('');
-			this.model.addShare(s.item.value);
+			$(e.target).attr('disabled', true)
+				.val(s.item.label);
+			var $loading = this.$el.find('.shareWithLoading');
+			$loading.removeClass('hidden')
+				.addClass('inlineblock');
+
+			this.model.addShare(s.item.value, {success: function() {
+				$(e.target).val('')
+					.attr('disabled', false);
+				$loading.addClass('hidden')
+					.removeClass('inlineblock');
+			}, error: function(obj, msg) {
+				OC.Notification.showTemporary(msg);
+				$(e.target).attr('disabled', false)
+					.autocomplete('search', $(e.target).val());
+				$loading.addClass('hidden')
+					.removeClass('inlineblock');
+			}});
 		},
 
 		_toggleLoading: function(state) {
@@ -276,7 +334,7 @@
 			var $shareField = this.$el.find('.shareWithField');
 			if ($shareField.length) {
 				$shareField.autocomplete({
-					minLength: 2,
+					minLength: 1,
 					delay: 750,
 					focus: function(event) {
 						event.preventDefault();

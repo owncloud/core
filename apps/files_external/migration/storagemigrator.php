@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -100,6 +101,12 @@ class StorageMigrator {
 		$this->connection->beginTransaction();
 		try {
 			foreach ($existingStorage as $storage) {
+				$mountOptions = $storage->getMountOptions();
+				if (!empty($mountOptions) && !isset($mountOptions['enable_sharing'])) {
+					// existing mounts must have sharing enabled by default to avoid surprises
+					$mountOptions['enable_sharing'] = true;
+					$storage->setMountOptions($mountOptions);
+				}
 				$storageService->addStorage($storage);
 			}
 			$this->connection->commit();

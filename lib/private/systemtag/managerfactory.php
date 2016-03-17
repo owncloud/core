@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -20,11 +21,10 @@
  */
 namespace OC\SystemTag;
 
-use OCP\SystemTag\ISystemTagManagerFactory;
-use OCP\SystemTag\ISystemTagManager;
-use OC\SystemTag\SystemTagManager;
-use OC\SystemTag\SystemTagObjectMapper;
 use OCP\IServerContainer;
+use OCP\SystemTag\ISystemTagManager;
+use OCP\SystemTag\ISystemTagManagerFactory;
+use OCP\SystemTag\ISystemTagObjectMapper;
 
 /**
  * Default factory class for system tag managers
@@ -58,7 +58,8 @@ class ManagerFactory implements ISystemTagManagerFactory {
 	 */
 	public function getManager() {
 		return new SystemTagManager(
-			$this->serverContainer->getDatabaseConnection()
+			$this->serverContainer->getDatabaseConnection(),
+			$this->serverContainer->getEventDispatcher()
 		);
 	}
 
@@ -72,7 +73,8 @@ class ManagerFactory implements ISystemTagManagerFactory {
 	public function getObjectMapper() {
 		return new SystemTagObjectMapper(
 			$this->serverContainer->getDatabaseConnection(),
-			$this->getManager()
+			$this->getManager(),
+			$this->serverContainer->getEventDispatcher()
 		);
 	}
 }

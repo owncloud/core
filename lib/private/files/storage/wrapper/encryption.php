@@ -5,6 +5,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -39,6 +40,7 @@ use OCP\Encryption\Keys\IStorage;
 use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage;
 use OCP\ILogger;
+use OCP\Files\Cache\ICacheEntry;
 
 class Encryption extends Wrapper {
 
@@ -60,7 +62,7 @@ class Encryption extends Wrapper {
 	private $uid;
 
 	/** @var array */
-	private $unencryptedSize;
+	protected $unencryptedSize;
 
 	/** @var \OCP\Encryption\IFile */
 	private $fileHelper;
@@ -76,6 +78,9 @@ class Encryption extends Wrapper {
 
 	/** @var Manager */
 	private $mountManager;
+
+	/** @var array remember for which path we execute the repair step to avoid recursions */
+	private $fixUnencryptedSizeOf = array();
 
 	/**
 	 * @param array $parameters
@@ -129,16 +134,26 @@ class Encryption extends Wrapper {
 		if (isset($this->unencryptedSize[$fullPath])) {
 			$size = $this->unencryptedSize[$fullPath];
 			// update file cache
-			$info['encrypted'] = true;
+			if ($info instanceof ICacheEntry) {
+				$info = $info->getData();
+				$info['encrypted'] = $info['encryptedVersion'];
+			} else {
+				if (!is_array($info)) {
+					$info = [];
+				}
+				$info['encrypted'] = true;
+			}
+
 			$info['size'] = $size;
-			$this->getCache()->put($path, $info->getData());
+			$this->getCache()->put($path, $info);
 
 			return $size;
 		}
 
 		if (isset($info['fileid']) && $info['encrypted']) {
-			return $info['size'];
+			return $this->verifyUnencryptedSize($path, $info['size']);
 		}
+
 		return $this->storage->filesize($path);
 	}
 
@@ -159,8 +174,8 @@ class Encryption extends Wrapper {
 		} else {
 			$info = $this->getCache()->get($path);
 			if (isset($info['fileid']) && $info['encrypted']) {
+				$data['size'] = $this->verifyUnencryptedSize($path, $info['size']);
 				$data['encrypted'] = true;
-				$data['size'] = $info['size'];
 			}
 		}
 
@@ -250,6 +265,10 @@ class Encryption extends Wrapper {
 					$this->unencryptedSize[$target] = $this->unencryptedSize[$source];
 				}
 				$this->keyStorage->renameKeys($source, $target);
+				$module = $this->getEncryptionModule($path2);
+				if ($module) {
+					$module->update($target, $this->uid, []);
+				}
 			}
 		}
 
@@ -337,6 +356,7 @@ class Encryption extends Wrapper {
 		$shouldEncrypt = false;
 		$encryptionModule = null;
 		$header = $this->getHeader($path);
+		$signed = (isset($header['signed']) && $header['signed'] === 'true') ? true : false;
 		$fullPath = $this->getFullPath($path);
 		$encryptionModuleId = $this->util->getEncryptionModuleId($header);
 
@@ -371,7 +391,7 @@ class Encryption extends Wrapper {
 					|| $mode === 'wb'
 					|| $mode === 'wb+'
 				) {
-					// don't overwrite encrypted files if encyption is not enabled
+					// don't overwrite encrypted files if encryption is not enabled
 					if ($targetIsEncrypted && $encryptionEnabled === false) {
 						throw new GenericEncryptionException('Tried to access encrypted file but encryption is not enabled');
 					}
@@ -379,6 +399,7 @@ class Encryption extends Wrapper {
 						// if $encryptionModuleId is empty, the default module will be used
 						$encryptionModule = $this->encryptionManager->getEncryptionModule($encryptionModuleId);
 						$shouldEncrypt = $encryptionModule->shouldEncrypt($fullPath);
+						$signed = true;
 					}
 				} else {
 					$info = $this->getCache()->get($path);
@@ -416,13 +437,135 @@ class Encryption extends Wrapper {
 				}
 				$handle = \OC\Files\Stream\Encryption::wrap($source, $path, $fullPath, $header,
 					$this->uid, $encryptionModule, $this->storage, $this, $this->util, $this->fileHelper, $mode,
-					$size, $unencryptedSize, $headerSize);
+					$size, $unencryptedSize, $headerSize, $signed);
 				return $handle;
 			}
 
 		}
 
 		return $this->storage->fopen($path, $mode);
+	}
+
+
+	/**
+	 * perform some plausibility checks if the the unencrypted size is correct.
+	 * If not, we calculate the correct unencrypted size and return it
+	 *
+	 * @param string $path internal path relative to the storage root
+	 * @param int $unencryptedSize size of the unencrypted file
+	 *
+	 * @return int unencrypted size
+	 */
+	protected function verifyUnencryptedSize($path, $unencryptedSize) {
+
+		$size = $this->storage->filesize($path);
+		$result = $unencryptedSize;
+
+		if ($unencryptedSize < 0 ||
+			($size > 0 && $unencryptedSize === $size)
+		) {
+			// check if we already calculate the unencrypted size for the
+			// given path to avoid recursions
+			if (isset($this->fixUnencryptedSizeOf[$this->getFullPath($path)]) === false) {
+				$this->fixUnencryptedSizeOf[$this->getFullPath($path)] = true;
+				try {
+					$result = $this->fixUnencryptedSize($path, $size, $unencryptedSize);
+				} catch (\Exception $e) {
+					$this->logger->error('Couldn\'t re-calculate unencrypted size for '. $path);
+					$this->logger->logException($e);
+				}
+				unset($this->fixUnencryptedSizeOf[$this->getFullPath($path)]);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * calculate the unencrypted size
+	 *
+	 * @param string $path internal path relative to the storage root
+	 * @param int $size size of the physical file
+	 * @param int $unencryptedSize size of the unencrypted file
+	 *
+	 * @return int calculated unencrypted size
+	 */
+	protected function fixUnencryptedSize($path, $size, $unencryptedSize) {
+
+		$headerSize = $this->getHeaderSize($path);
+		$header = $this->getHeader($path);
+		$encryptionModule = $this->getEncryptionModule($path);
+
+		$stream = $this->storage->fopen($path, 'r');
+
+		// if we couldn't open the file we return the old unencrypted size
+		if (!is_resource($stream)) {
+			$this->logger->error('Could not open ' . $path . '. Recalculation of unencrypted size aborted.');
+			return $unencryptedSize;
+		}
+
+		$newUnencryptedSize = 0;
+		$size -= $headerSize;
+		$blockSize = $this->util->getBlockSize();
+
+		// if a header exists we skip it
+		if ($headerSize > 0) {
+			fread($stream, $headerSize);
+		}
+
+		// fast path, else the calculation for $lastChunkNr is bogus
+		if ($size === 0) {
+			return 0;
+		}
+
+		$signed = (isset($header['signed']) && $header['signed'] === 'true') ? true : false;
+		$unencryptedBlockSize = $encryptionModule->getUnencryptedBlockSize($signed);
+
+		// calculate last chunk nr
+		// next highest is end of chunks, one subtracted is last one
+		// we have to read the last chunk, we can't just calculate it (because of padding etc)
+
+		$lastChunkNr = ceil($size/ $blockSize)-1;
+		// calculate last chunk position
+		$lastChunkPos = ($lastChunkNr * $blockSize);
+		// try to fseek to the last chunk, if it fails we have to read the whole file
+		if (@fseek($stream, $lastChunkPos, SEEK_CUR) === 0) {
+			$newUnencryptedSize += $lastChunkNr * $unencryptedBlockSize;
+		}
+
+		$lastChunkContentEncrypted='';
+		$count = $blockSize;
+
+		while ($count > 0) {
+			$data=fread($stream, $blockSize);
+			$count=strlen($data);
+			$lastChunkContentEncrypted .= $data;
+			if(strlen($lastChunkContentEncrypted) > $blockSize) {
+				$newUnencryptedSize += $unencryptedBlockSize;
+				$lastChunkContentEncrypted=substr($lastChunkContentEncrypted, $blockSize);
+			}
+		}
+
+		fclose($stream);
+
+		// we have to decrypt the last chunk to get it actual size
+		$encryptionModule->begin($this->getFullPath($path), $this->uid, 'r', $header, []);
+		$decryptedLastChunk = $encryptionModule->decrypt($lastChunkContentEncrypted, $lastChunkNr . 'end');
+		$decryptedLastChunk .= $encryptionModule->end($this->getFullPath($path), $lastChunkNr . 'end');
+
+		// calc the real file size with the size of the last chunk
+		$newUnencryptedSize += strlen($decryptedLastChunk);
+
+		$this->updateUnencryptedSize($this->getFullPath($path), $newUnencryptedSize);
+
+		// write to cache if applicable
+		$cache = $this->storage->getCache();
+		if ($cache) {
+			$entry = $cache->get($path);
+			$cache->update($entry['fileid'], ['size' => $newUnencryptedSize]);
+		}
+
+		return $newUnencryptedSize;
 	}
 
 	/**
@@ -442,6 +585,10 @@ class Encryption extends Wrapper {
 		// - copy the file cache update from  $this->copyBetweenStorage to this method
 		// - copy the copyKeys() call from  $this->copyBetweenStorage to this method
 		// - remove $this->copyBetweenStorage
+
+		if (!$sourceStorage->isDeletable($sourceInternalPath)) {
+			return false;
+		}
 
 		$result = $this->copyBetweenStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, true);
 		if ($result) {
@@ -474,6 +621,43 @@ class Encryption extends Wrapper {
 	}
 
 	/**
+	 * Update the encrypted cache version in the database
+	 *
+	 * @param Storage $sourceStorage
+	 * @param string $sourceInternalPath
+	 * @param string $targetInternalPath
+	 * @param bool $isRename
+	 */
+	private function updateEncryptedVersion(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename) {
+		$isEncrypted = $this->encryptionManager->isEnabled() && $this->mount->getOption('encrypt', true) ? 1 : 0;
+		$cacheInformation = [
+			'encrypted' => (bool)$isEncrypted,
+		];
+		if($isEncrypted === 1) {
+			$encryptedVersion = $sourceStorage->getCache()->get($sourceInternalPath)['encryptedVersion'];
+
+			// In case of a move operation from an unencrypted to an encrypted
+			// storage the old encrypted version would stay with "0" while the
+			// correct value would be "1". Thus we manually set the value to "1"
+			// for those cases.
+			// See also https://github.com/owncloud/core/issues/23078
+			if($encryptedVersion === 0) {
+				$encryptedVersion = 1;
+			}
+
+			$cacheInformation['encryptedVersion'] = $encryptedVersion;
+		}
+
+		// in case of a rename we need to manipulate the source cache because
+		// this information will be kept for the new target
+		if ($isRename) {
+			$sourceStorage->getCache()->put($sourceInternalPath, $cacheInformation);
+		} else {
+			$this->getCache()->put($targetInternalPath, $cacheInformation);
+		}
+	}
+
+	/**
 	 * copy file between two storages
 	 *
 	 * @param Storage $sourceStorage
@@ -500,6 +684,7 @@ class Encryption extends Wrapper {
 						$info['size']
 					);
 				}
+				$this->updateEncryptedVersion($sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename);
 			}
 			return $result;
 		}
@@ -542,15 +727,7 @@ class Encryption extends Wrapper {
 				if ($preserveMtime) {
 					$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 				}
-				$isEncrypted = $this->encryptionManager->isEnabled() && $this->mount->getOption('encrypt', true) ? 1 : 0;
-
-				// in case of a rename we need to manipulate the source cache because
-				// this information will be kept for the new target
-				if ($isRename) {
-					$sourceStorage->getCache()->put($sourceInternalPath, ['encrypted' => $isEncrypted]);
-				} else {
-					$this->getCache()->put($targetInternalPath, ['encrypted' => $isEncrypted]);
-				}
+				$this->updateEncryptedVersion($sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename);
 			} else {
 				// delete partially written target file
 				$this->unlink($targetInternalPath);

@@ -33,6 +33,7 @@
 
 namespace OC\Files\Storage;
 
+use GuzzleHttp\Exception\RequestException;
 use Icewind\Streams\IteratorDirectory;
 
 set_include_path(get_include_path().PATH_SEPARATOR.
@@ -264,7 +265,8 @@ class Google extends \OC\Files\Storage\Common {
 				foreach ($children->getItems() as $child) {
 					$name = $child->getTitle();
 					// Check if this is a Google Doc i.e. no extension in name
-					if ($child->getFileExtension() === ''
+					$extension = $child->getFileExtension();
+					if (empty($extension)
 						&& $child->getMimeType() !== self::FOLDER
 					) {
 						$name .= '.'.$this->getGoogleDocExtension($child->getMimeType());
@@ -368,8 +370,14 @@ class Google extends \OC\Files\Storage\Common {
 	public function rename($path1, $path2) {
 		$file = $this->getDriveFile($path1);
 		if ($file) {
+			$newFile = $this->getDriveFile($path2);
 			if (dirname($path1) === dirname($path2)) {
-				$file->setTitle(basename(($path2)));
+				if ($newFile) {
+					// rename to the name of the target file, could be an office file without extension
+					$file->setTitle($newFile->getTitle());
+				} else {
+					$file->setTitle(basename(($path2)));
+				}
 			} else {
 				// Change file parent
 				$parentFolder2 = $this->getDriveFile(dirname($path2));
@@ -394,8 +402,11 @@ class Google extends \OC\Files\Storage\Common {
 			if ($result) {
 				$this->setDriveFile($path1, false);
 				$this->setDriveFile($path2, $result);
-				if ($oldfile) {
-					$this->service->files->delete($oldfile->getId());
+				if ($oldfile && $newFile) {
+					// only delete if they have a different id (same id can happen for part files)
+					if ($newFile->getId() !== $oldfile->getId()) {
+						$this->service->files->delete($oldfile->getId());
+					}
 				}
 			}
 			return (bool)$result;
@@ -430,19 +441,24 @@ class Google extends \OC\Files\Storage\Common {
 						// the library's service doesn't support streaming, so we use Guzzle instead
 						$client = \OC::$server->getHTTPClientService()->newClient();
 						try {
-							$response = $client->get($downloadUrl, [
+							$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
+							$client->get($downloadUrl, [
 								'headers' => $httpRequest->getRequestHeaders(),
-								'stream' => true
+								'save_to' => $tmpFile,
 							]);
 						} catch (RequestException $e) {
-							if ($e->getResponse()->getStatusCode() === 404) {
-								return false;
+							if(!is_null($e->getResponse())) {
+								if ($e->getResponse()->getStatusCode() === 404) {
+									return false;
+								} else {
+									throw $e;
+								}
 							} else {
 								throw $e;
 							}
 						}
 
-						return $response->getBody();
+						return fopen($tmpFile, 'r');
 					}
 				}
 				return false;
@@ -520,7 +536,8 @@ class Google extends \OC\Files\Storage\Common {
 				// Download as .odp is not available
 				return 'application/pdf';
 			} else {
-				return $mimetype;
+				// use extension-based detection, could be an encrypted file
+				return parent::getMimeType($path);
 			}
 		} else {
 			return false;

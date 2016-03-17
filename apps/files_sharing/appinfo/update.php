@@ -3,6 +3,7 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -25,7 +26,7 @@ use OCA\Files_Sharing\Migration;
 $installedVersion = \OC::$server->getConfig()->getAppValue('files_sharing', 'installed_version');
 
 // Migration OC8.2 -> OC9
-if (version_compare($installedVersion, '0.9.0', '<')) {
+if (version_compare($installedVersion, '0.9.1', '<')) {
 	$m = new Migration(\OC::$server->getDatabaseConnection());
 	$m->removeReShares();
 	$m->updateInitiatorInfo();

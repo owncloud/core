@@ -15,6 +15,7 @@
  * @author Hugo Gonzalez Labrador <hglavra@gmail.com>
  * @author Individual IT Services <info@individual-it.net>
  * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joachim Bauch <bauch@struktur.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
@@ -338,16 +339,6 @@ class OC {
 	}
 
 	/**
-	 * check if the instance needs to perform an upgrade
-	 *
-	 * @return bool
-	 * @deprecated use \OCP\Util::needUpgrade() instead
-	 */
-	public static function needUpgrade() {
-		return \OCP\Util::needUpgrade();
-	}
-
-	/**
 	 * Checks if the version requires an update and shows
 	 * @param bool $showTemplate Whether an update screen should get shown
 	 * @return bool|void
@@ -508,12 +499,17 @@ class OC {
 			require_once $vendorAutoLoad;
 
 		} catch (\RuntimeException $e) {
-			OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
+			if (!self::$CLI) {
+				OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
+			}
 			// we can't use the template error page here, because this needs the
 			// DI container which isn't available yet
 			print($e->getMessage());
 			exit();
 		}
+
+		// Add default composer PSR-4 autoloader
+		require_once OC::$SERVERROOT . '/lib/composer/autoload.php';
 
 		// setup the basic server
 		self::$server = new \OC\Server(\OC::$WEBROOT, self::$config);
@@ -645,7 +641,6 @@ class OC {
 		}
 		self::registerShareHooks();
 		self::registerLogRotate();
-		self::registerLocalAddressBook();
 		self::registerEncryptionWrapper();
 		self::registerEncryptionHooks();
 
@@ -693,20 +688,12 @@ class OC {
 			);
 
 			$tmpl = new OCP\Template('core', 'untrustedDomain', 'guest');
-			$tmpl->assign('domain', $request->server['SERVER_NAME']);
+			$tmpl->assign('domain', $host);
 			$tmpl->printPage();
 
 			exit();
 		}
 		\OC::$server->getEventLogger()->end('boot');
-	}
-
-	private static function registerLocalAddressBook() {
-		self::$server->getContactsManager()->register(function() {
-			$userManager = \OC::$server->getUserManager();
-			\OC::$server->getContactsManager()->registerAddressBook(
-				new \OC\Contacts\LocalAddressBook($userManager));
-		});
 	}
 
 	/**
@@ -722,6 +709,9 @@ class OC {
 				try {
 					$cache = new \OC\Cache\File();
 					$cache->gc();
+				} catch (\OC\ServerNotAvailableException $e) {
+					// not a GC exception, pass it on
+					throw $e;
 				} catch (\Exception $e) {
 					// a GC exception should not prevent users from using OC,
 					// so log the exception
@@ -832,10 +822,26 @@ class OC {
 			exit();
 		}
 
-		$request = \OC::$server->getRequest()->getPathInfo();
-		if (substr($request, -3) !== '.js') { // we need these files during the upgrade
+		$request = \OC::$server->getRequest();
+		$requestPath = $request->getPathInfo();
+		if (substr($requestPath, -3) !== '.js') { // we need these files during the upgrade
 			self::checkMaintenanceMode();
 			self::checkUpgrade();
+		}
+
+		// emergency app disabling
+		if ($requestPath === '/disableapp'
+			&& $request->getMethod() === 'POST'
+			&& ((string)$request->getParam('appid')) !== ''
+		) {
+			\OCP\JSON::callCheck();
+			\OCP\JSON::checkAdminUser();
+			$appId = (string)$request->getParam('appid');
+			$appId = \OC_App::cleanAppId($appId);
+
+			\OC_App::disable($appId);
+			\OC_JSON::success();
+			exit();
 		}
 
 		// Always load authentication apps

@@ -1,5 +1,7 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -22,6 +24,8 @@
 namespace OCA\DAV\Tests\Unit\SystemTag;
 
 use OC\SystemTag\SystemTag;
+use OCP\IGroupManager;
+use OCP\IUserSession;
 use OCP\SystemTag\TagAlreadyExistsException;
 
 class SystemTagPlugin extends \Test\TestCase {
@@ -47,6 +51,16 @@ class SystemTagPlugin extends \Test\TestCase {
 	private $tagManager;
 
 	/**
+	 * @var IGroupManager
+	 */
+	private $groupManager;
+
+	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
+
+	/**
 	 * @var \OCA\DAV\SystemTag\SystemTagPlugin
 	 */
 	private $plugin;
@@ -60,8 +74,14 @@ class SystemTagPlugin extends \Test\TestCase {
 		$this->server = new \Sabre\DAV\Server($this->tree);
 
 		$this->tagManager = $this->getMock('\OCP\SystemTag\ISystemTagManager');
+		$this->groupManager = $this->getMock('\OCP\IGroupManager');
+		$this->userSession = $this->getMock('\OCP\IUserSession');
 
-		$this->plugin = new \OCA\DAV\SystemTag\SystemTagPlugin($this->tagManager);
+		$this->plugin = new \OCA\DAV\SystemTag\SystemTagPlugin(
+			$this->tagManager,
+			$this->groupManager,
+			$this->userSession
+		);
 		$this->plugin->initialize($this->server);
 	}
 
@@ -153,7 +173,204 @@ class SystemTagPlugin extends \Test\TestCase {
 		$this->assertEquals(200, $result[self::USERVISIBLE_PROPERTYNAME]);
 	}
 
+	/**
+	 * @expectedException \Sabre\DAV\Exception\BadRequest
+	 * @expectedExceptionMessage Not sufficient permissions
+	 */
+	public function testCreateNotAssignableTagAsRegularUser() {
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('getUID')
+			->willReturn('admin');
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(true);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('admin')
+			->willReturn(false);
+
+		$requestData = json_encode([
+			'name' => 'Test',
+			'userVisible' => true,
+			'userAssignable' => false,
+		]);
+
+		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->tagManager->expects($this->never())
+			->method('createTag');
+
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->with('/systemtags')
+			->will($this->returnValue($node));
+
+		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+			->disableOriginalConstructor()
+			->getMock();
+		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects($this->once())
+			->method('getPath')
+			->will($this->returnValue('/systemtags'));
+
+		$request->expects($this->once())
+			->method('getBodyAsString')
+			->will($this->returnValue($requestData));
+
+		$request->expects($this->once())
+			->method('getHeader')
+			->with('Content-Type')
+			->will($this->returnValue('application/json'));
+
+		$this->plugin->httpPost($request, $response);
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\BadRequest
+	 * @expectedExceptionMessage Not sufficient permissions
+	 */
+	public function testCreateInvisibleTagAsRegularUser() {
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('getUID')
+			->willReturn('admin');
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(true);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('admin')
+			->willReturn(false);
+
+		$requestData = json_encode([
+			'name' => 'Test',
+			'userVisible' => false,
+			'userAssignable' => true,
+		]);
+
+		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->tagManager->expects($this->never())
+			->method('createTag');
+
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->with('/systemtags')
+			->will($this->returnValue($node));
+
+		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+			->disableOriginalConstructor()
+			->getMock();
+		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects($this->once())
+			->method('getPath')
+			->will($this->returnValue('/systemtags'));
+
+		$request->expects($this->once())
+			->method('getBodyAsString')
+			->will($this->returnValue($requestData));
+
+		$request->expects($this->once())
+			->method('getHeader')
+			->with('Content-Type')
+			->will($this->returnValue('application/json'));
+
+		$this->plugin->httpPost($request, $response);
+	}
+
+	public function testCreateTagInByIdCollectionAsRegularUser() {
+		$systemTag = new SystemTag(1, 'Test', true, false);
+
+		$requestData = json_encode([
+			'name' => 'Test',
+			'userVisible' => true,
+			'userAssignable' => true,
+		]);
+
+		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->tagManager->expects($this->once())
+			->method('createTag')
+			->with('Test', true, true)
+			->will($this->returnValue($systemTag));
+
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->with('/systemtags')
+			->will($this->returnValue($node));
+
+		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+			->disableOriginalConstructor()
+			->getMock();
+		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$request->expects($this->once())
+			->method('getPath')
+			->will($this->returnValue('/systemtags'));
+
+		$request->expects($this->once())
+			->method('getBodyAsString')
+			->will($this->returnValue($requestData));
+
+		$request->expects($this->once())
+			->method('getHeader')
+			->with('Content-Type')
+			->will($this->returnValue('application/json'));
+
+		$request->expects($this->once())
+			->method('getUrl')
+			->will($this->returnValue('http://example.com/dav/systemtags'));
+
+		$response->expects($this->once())
+			->method('setHeader')
+			->with('Content-Location', 'http://example.com/dav/systemtags/1');
+
+		$this->plugin->httpPost($request, $response);
+	}
+
 	public function testCreateTagInByIdCollection() {
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('getUID')
+			->willReturn('admin');
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(true);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('admin')
+			->willReturn(true);
+
 		$systemTag = new SystemTag(1, 'Test', true, false);
 
 		$requestData = json_encode([
@@ -214,6 +431,24 @@ class SystemTagPlugin extends \Test\TestCase {
 	}
 
 	public function testCreateTagInMappingCollection() {
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('getUID')
+			->willReturn('admin');
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(true);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('admin')
+			->willReturn(true);
+
 		$systemTag = new SystemTag(1, 'Test', true, false);
 
 		$requestData = json_encode([
@@ -272,10 +507,62 @@ class SystemTagPlugin extends \Test\TestCase {
 	}
 
 	/**
+	 * @expectedException \Sabre\DAV\Exception\NotFound
+	 */
+	public function testCreateTagToUnknownNode() {
+		$systemTag = new SystemTag(1, 'Test', true, false);
+
+		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsObjectMappingCollection')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->will($this->throwException(new \Sabre\DAV\Exception\NotFound()));
+
+		$this->tagManager->expects($this->never())
+			->method('createTag');
+
+		$node->expects($this->never())
+			->method('createFile');
+
+		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+				->disableOriginalConstructor()
+				->getMock();
+		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
+				->disableOriginalConstructor()
+				->getMock();
+
+		$request->expects($this->once())
+			->method('getPath')
+			->will($this->returnValue('/systemtags-relations/files/12'));
+
+		$this->plugin->httpPost($request, $response);
+	}
+
+	/**
 	 * @dataProvider nodeClassProvider
-	 * @expectedException Sabre\DAV\Exception\Conflict
+	 * @expectedException \Sabre\DAV\Exception\Conflict
 	 */
 	public function testCreateTagConflict($nodeClass) {
+		$user = $this->getMock('\OCP\IUser');
+		$user->expects($this->once())
+			->method('getUID')
+			->willReturn('admin');
+		$this->userSession
+			->expects($this->once())
+			->method('isLoggedIn')
+			->willReturn(true);
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('admin')
+			->willReturn(true);
+
 		$requestData = json_encode([
 			'name' => 'Test',
 			'userVisible' => true,

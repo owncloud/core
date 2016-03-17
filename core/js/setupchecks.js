@@ -15,7 +15,6 @@
 		MESSAGE_TYPE_INFO:0,
 		MESSAGE_TYPE_WARNING:1,
 		MESSAGE_TYPE_ERROR:2,
-
 		/**
 		 * Check whether the WebDAV connection works.
 		 *
@@ -41,7 +40,8 @@
 						'<d:propfind xmlns:d="DAV:">' +
 						'<d:prop><d:resourcetype/></d:prop>' +
 						'</d:propfind>',
-				complete: afterCall
+				complete: afterCall,
+				allowAuthErrors: true
 			});
 			return deferred.promise();
 		},
@@ -97,12 +97,6 @@
 							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 						});
 					}
-					if(!data.dataDirectoryProtected) {
-						messages.push({
-							msg: t('core', 'Your data directory and your files are probably accessible from the Internet. The .htaccess file is not working. We strongly suggest that you configure your web server in a way that the data directory is no longer accessible or you move the data directory outside the web server document root.'),
-							type: OC.SetupChecks.MESSAGE_TYPE_ERROR
-						});
-					}
 					if(!data.isMemcacheConfigured) {
 						messages.push({
 							msg: t('core', 'No memory cache has been configured. To enhance your performance please configure a memcache if available. Further information can be found in our <a target="_blank" href="{docLink}">documentation</a>.', {docLink: data.memcacheDocs}),
@@ -123,7 +117,7 @@
 					}
 					if(data.phpSupported && data.phpSupported.eol) {
 						messages.push({
-							msg: t('core', 'Your PHP version ({version}) is no longer <a target="_blank" href="{phpLink}">supported by PHP</a>. We encourage you to upgrade your PHP version to take advantage of performance and security updates provided by PHP.', {version: data.phpSupported.version, phpLink: 'https://secure.php.net/supported-versions.php'}),
+							msg: t('core', 'You are currently running PHP {version}. We encourage you to upgrade your PHP version to take advantage of <a target="_blank" href="{phpLink}">performance and security updates provided by the PHP Group</a> as soon as your distribution supports it.', {version: data.phpSupported.version, phpLink: 'https://secure.php.net/supported-versions.php'}),
 							type: OC.SetupChecks.MESSAGE_TYPE_INFO
 						});
 					}
@@ -164,7 +158,8 @@
 
 			$.ajax({
 				type: 'GET',
-				url: OC.generateUrl('settings/ajax/checksetup')
+				url: OC.generateUrl('settings/ajax/checksetup'),
+				allowAuthErrors: true
 			}).then(afterCall, afterCall);
 			return deferred.promise();
 		},
@@ -188,9 +183,34 @@
 
 			$.ajax({
 				type: 'GET',
-				url: OC.generateUrl('heartbeat')
+				url: OC.generateUrl('heartbeat'),
+				allowAuthErrors: true
 			}).then(afterCall, afterCall);
 
+			return deferred.promise();
+		},
+
+		checkDataProtected: function() {
+			var deferred = $.Deferred();
+			if(oc_dataURL === false){
+				return deferred.resolve([]);
+			}
+			var afterCall = function(xhr) {
+				var messages = [];
+				if (xhr.status !== 403 && xhr.status !== 307 && xhr.status !== 301 && xhr.responseText === '') {
+					messages.push({
+						msg: t('core', 'Your data directory and your files are probably accessible from the Internet. The .htaccess file is not working. We strongly suggest that you configure your web server in a way that the data directory is no longer accessible or you move the data directory outside the web server document root.'),
+						type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+					});
+				}
+				deferred.resolve(messages);
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: OC.linkTo('', oc_dataURL+'/.ocdata'),
+				complete: afterCall
+			});
 			return deferred.promise();
 		},
 
@@ -256,7 +276,7 @@
 					var minimumSeconds = 15768000;
 					if(isNaN(transportSecurityValidity) || transportSecurityValidity <= (minimumSeconds - 1)) {
 						messages.push({
-							msg: t('core', 'The "Strict-Transport-Security" HTTP header is not configured to least "{seconds}" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="{docUrl}">security tips</a>.', {'seconds': minimumSeconds, docUrl: '#admin-tips'}),
+							msg: t('core', 'The "Strict-Transport-Security" HTTP header is not configured to at least "{seconds}" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="{docUrl}">security tips</a>.', {'seconds': minimumSeconds, docUrl: '#admin-tips'}),
 							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 						});
 					}

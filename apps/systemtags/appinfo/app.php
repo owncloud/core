@@ -1,8 +1,9 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -19,6 +20,11 @@
  *
  */
 
+use OCA\SystemTags\Activity\Extension;
+use OCA\SystemTags\Activity\Listener;
+use OCP\SystemTag\ManagerEvent;
+use OCP\SystemTag\MapperEvent;
+
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
 	'OCA\Files::loadAdditionalScripts',
@@ -34,8 +40,51 @@ $eventDispatcher->addListener(
 		\OCP\Util::addScript('systemtags/systemtagscollection');
 		\OCP\Util::addScript('systemtags/systemtagsinputfield');
 		\OCP\Util::addScript('systemtags', 'app');
+		\OCP\Util::addScript('systemtags', 'systemtagsfilelist');
 		\OCP\Util::addScript('systemtags', 'filesplugin');
 		\OCP\Util::addScript('systemtags', 'systemtagsinfoview');
 		\OCP\Util::addStyle('systemtags');
+		\OCP\Util::addStyle('systemtags', 'systemtagsfilelist');
 	}
+);
+
+$activityManager = \OC::$server->getActivityManager();
+$activityManager->registerExtension(function() {
+	$application = new \OCP\AppFramework\App('systemtags');
+	/** @var \OCA\SystemTags\Activity\Extension $extension */
+	$extension = $application->getContainer()->query('OCA\SystemTags\Activity\Extension');
+	return $extension;
+});
+
+$managerListener = function(ManagerEvent $event) use ($activityManager) {
+	$application = new \OCP\AppFramework\App('systemtags');
+	/** @var \OCA\SystemTags\Activity\Listener $listener */
+	$listener = $application->getContainer()->query('OCA\SystemTags\Activity\Listener');
+	$listener->event($event);
+};
+
+$eventDispatcher->addListener(ManagerEvent::EVENT_CREATE, $managerListener);
+$eventDispatcher->addListener(ManagerEvent::EVENT_DELETE, $managerListener);
+$eventDispatcher->addListener(ManagerEvent::EVENT_UPDATE, $managerListener);
+
+$mapperListener = function(MapperEvent $event) use ($activityManager) {
+	$application = new \OCP\AppFramework\App('systemtags');
+	/** @var \OCA\SystemTags\Activity\Listener $listener */
+	$listener = $application->getContainer()->query('OCA\SystemTags\Activity\Listener');
+	$listener->mapperEvent($event);
+};
+
+$eventDispatcher->addListener(MapperEvent::EVENT_ASSIGN, $mapperListener);
+$eventDispatcher->addListener(MapperEvent::EVENT_UNASSIGN, $mapperListener);
+
+$l = \OC::$server->getL10N('systemtags');
+
+\OCA\Files\App::getNavigationManager()->add(
+	array(
+		'id' => 'systemtagsfilter',
+		'appname' => 'systemtags',
+		'script' => 'list.php',
+		'order' => 25,
+		'name' => $l->t('Tags')
+	)
 );

@@ -139,8 +139,8 @@
 					this.$el.find('.linkPassText').focus();
 				}
 			} else {
-				$loading.removeClass('hidden');
 				if (this.model.get('linkShare').isLinkShare) {
+					$loading.removeClass('hidden');
 					this.model.removeLinkShare();
 				} else {
 					this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
@@ -193,6 +193,8 @@
 				password: password
 			}, {
 				error: function(model, msg) {
+					// destroy old tooltips
+					$input.tooltip('destroy');
 					$loading.removeClass('inlineblock').addClass('hidden');
 					$input.addClass('error');
 					$input.attr('title', msg);

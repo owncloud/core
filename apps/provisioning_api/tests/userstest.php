@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author michag86 <micha_g@arcor.de>
@@ -1015,6 +1016,9 @@ class UsersTest extends OriginalTest {
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
 		$targetUser = $this->getMock('\OCP\IUser');
+		$targetUser->expects($this->once())
+			->method('setQuota')
+			->with('2.9 MB');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1029,10 +1033,6 @@ class UsersTest extends OriginalTest {
 			->method('isAdmin')
 			->with('UserToEdit')
 			->will($this->returnValue(true));
-		$this->config
-			->expects($this->once())
-			->method('setUserValue')
-			->with('UserToEdit', 'files', 'quota', '2.9 MB');
 
 		$expected = new \OC_OCS_Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
@@ -1071,6 +1071,9 @@ class UsersTest extends OriginalTest {
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$targetUser = $this->getMock('\OCP\IUser');
+		$targetUser->expects($this->once())
+			->method('setQuota')
+			->with('2.9 MB');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1092,10 +1095,6 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
-		$this->config
-			->expects($this->once())
-			->method('setUserValue')
-			->with('UserToEdit', 'files', 'quota', '2.9 MB');
 
 		$expected = new \OC_OCS_Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
@@ -1108,6 +1107,9 @@ class UsersTest extends OriginalTest {
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->getMock('\OCP\IUser');
+		$targetUser->expects($this->once())
+			->method('setQuota')
+			->with('2.9 MB');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1129,10 +1131,6 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
-		$this->config
-			->expects($this->once())
-			->method('setUserValue')
-			->with('UserToEdit', 'files', 'quota', '2.9 MB');
 
 		$expected = new \OC_OCS_Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));

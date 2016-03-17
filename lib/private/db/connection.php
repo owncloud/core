@@ -4,6 +4,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -292,7 +293,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			$updateQb->where($where);
 			$affected = $updateQb->execute();
 
-			if ($affected === 0) {
+			if ($affected === 0 && !empty($updatePreconditionValues)) {
 				throw new PreconditionNotMetException();
 			}
 

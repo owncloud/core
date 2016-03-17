@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -176,7 +177,11 @@ class UsersController extends Controller {
 
 		$avatarAvailable = false;
 		if ($this->config->getSystemValue('enable_avatars', true) === true) {
-			$avatarAvailable = $this->avatarManager->getAvatar($user->getUID())->exists();
+			try {
+				$avatarAvailable = $this->avatarManager->getAvatar($user->getUID())->exists();
+			} catch (\Exception $e) {
+				//No avatar yet
+			}
 		}
 
 		return [
@@ -184,7 +189,7 @@ class UsersController extends Controller {
 			'displayname' => $user->getDisplayName(),
 			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user) : $userGroups,
 			'subadmin' => $subAdminGroups,
-			'quota' => $this->config->getUserValue($user->getUID(), 'files', 'quota', 'default'),
+			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin() * 1000,
 			'backend' => $user->getBackendClassName(),

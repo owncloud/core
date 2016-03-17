@@ -22,7 +22,7 @@
 namespace Test\DB\QueryBuilder;
 
 use Doctrine\DBAL\Query\Expression\ExpressionBuilder as DoctrineExpressionBuilder;
-use OC\DB\QueryBuilder\ExpressionBuilder;
+use OC\DB\QueryBuilder\ExpressionBuilder\ExpressionBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use Test\TestCase;
 
@@ -327,7 +327,7 @@ class ExpressionBuilderTest extends TestCase {
 			[1, null],
 			[1, 'string'],
 			[1, 'integer'],
-			[1, \PDO::PARAM_INT],
+			[1, IQueryBuilder::PARAM_INT],
 		];
 	}
 

@@ -21,10 +21,8 @@
 
 namespace OCP\Share;
 
-use OC\Share20\Exception\ShareNotFound;
-use OC\Share20\Exception\BackendError;
+use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Files\Node;
-use OCP\IUser;
 
 /**
  * Interface IShareProvider
@@ -74,49 +72,62 @@ interface IShareProvider {
 	 * share from their self then the original group share should still exist.
 	 *
 	 * @param \OCP\Share\IShare $share
-	 * @param IUser $recipient
+	 * @param string $recipient UserId of the recipient
 	 * @since 9.0.0
 	 */
-	public function deleteFromSelf(\OCP\Share\IShare $share, IUser $recipient);
+	public function deleteFromSelf(\OCP\Share\IShare $share, $recipient);
+
+	/**
+	 * Move a share as a recipient.
+	 * This is updating the share target. Thus the mount point of the recipient.
+	 * This may require special handling. If a user moves a group share
+	 * the target should only be changed for them.
+	 *
+	 * @param \OCP\Share\IShare $share
+	 * @param string $recipient userId of recipient
+	 * @return \OCP\Share\IShare
+	 * @since 9.0.0
+	 */
+	public function move(\OCP\Share\IShare $share, $recipient);
 
 	/**
 	 * Get all shares by the given user
 	 *
-	 * @param IUser $user
+	 * @param string $userId
 	 * @param int $shareType
-	 * @param \OCP\Files\File|\OCP\Files\Folder $node
+	 * @param Node|null $node
 	 * @param bool $reshares Also get the shares where $user is the owner instead of just the shares where $user is the initiator
 	 * @param int $limit The maximum number of shares to be returned, -1 for all shares
 	 * @param int $offset
-	 * @return \OCP\Share\I Share[]
+	 * @return \OCP\Share\IShare[]
 	 * @since 9.0.0
 	 */
-	public function getSharesBy(IUser $user, $shareType, $node, $reshares, $limit, $offset);
+	public function getSharesBy($userId, $shareType, $node, $reshares, $limit, $offset);
 
 	/**
 	 * Get share by id
 	 *
 	 * @param int $id
-	 * @param IUser|null $recipient
+	 * @param string|null $recipientId
 	 * @return \OCP\Share\IShare
 	 * @throws ShareNotFound
 	 * @since 9.0.0
 	 */
-	public function getShareById($id, $recipient = null);
+	public function getShareById($id, $recipientId = null);
 
 	/**
 	 * Get shares for a given path
 	 *
-	 * @param \OCP\Files\Node $path
+	 * @param Node $path
 	 * @return \OCP\Share\IShare[]
 	 * @since 9.0.0
 	 */
-	public function getSharesByPath(\OCP\Files\Node $path);
+	public function getSharesByPath(Node $path);
 
 	/**
 	 * Get shared with the given user
 	 *
-	 * @param IUser $user get shares where this user is the recipient
+	 * @param string $userId get shares where this user is the recipient
 	 * @param int $shareType
 	 * @param Node|null $node
 	 * @param int $limit The max number of entries returned, -1 for all
@@ -124,7 +135,7 @@ interface IShareProvider {
 	 * @return \OCP\Share\IShare[]
 	 * @since 9.0.0
 	 */
-	public function getSharedWith(IUser $user, $shareType, $node, $limit, $offset);
+	public function getSharedWith($userId, $shareType, $node, $limit, $offset);
 
 	/**
 	 * Get a share by token

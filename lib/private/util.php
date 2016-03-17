@@ -9,7 +9,6 @@
  * @author Birk Borkason <daniel.niccoli@gmail.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Brice Maron <brice@bmaron.net>
- * @author Christian Reiner <github@christian-reiner.info>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Clark Tomlinson <fallen013@gmail.com>
  * @author cmeh <cmeh@users.noreply.github.com>
@@ -31,12 +30,12 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Stefan Rado <owncloud@sradonia.net>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Schmidt <tschmidt@suse.de>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
@@ -128,7 +127,9 @@ class OC_Util {
 		\OC::$server->getEventLogger()->start('setup_fs', 'Setup filesystem');
 
 		// If we are not forced to load a specific user we load the one that is logged in
-		if ($user == "" && OC_User::isLoggedIn()) {
+		if ($user === null) {
+			$user = '';
+		} else if ($user == "" && OC_User::isLoggedIn()) {
 			$user = OC_User::getUser();
 		}
 
@@ -164,7 +165,7 @@ class OC_Util {
 
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
-			if (!$storage->isLocal()) {
+			if (!$storage->instanceOfStorage('\OC\Files\Storage\Shared') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
 			}
 			return $storage;
@@ -285,11 +286,7 @@ class OC_Util {
 	 * @return int Quota bytes
 	 */
 	public static function getUserQuota($user) {
-		$config = \OC::$server->getConfig();
-		$userQuota = $config->getUserValue($user, 'files', 'quota', 'default');
-		if ($userQuota === 'default') {
-			$userQuota = $config->getAppValue('files', 'default_quota', 'none');
-		}
+		$userQuota = \OC::$server->getUserManager()->get($user)->getQuota();
 		if($userQuota === 'none') {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}else{
@@ -729,7 +726,8 @@ class OC_Util {
 			'classes' => array(
 				'ZipArchive' => 'zip',
 				'DOMDocument' => 'dom',
-				'XMLWriter' => 'XMLWriter'
+				'XMLWriter' => 'XMLWriter',
+				'XMLReader' => 'XMLReader',
 			),
 			'functions' => [
 				'xml_parser_create' => 'libxml',
@@ -827,6 +825,14 @@ class OC_Util {
 			$errors[] = array(
 				'error' => $l->t('mbstring.func_overload is set to "%s" instead of the expected value "0"', [$iniWrapper->getString('mbstring.func_overload')]),
 				'hint' => $l->t('To fix this issue set <code>mbstring.func_overload</code> to <code>0</code> in your php.ini')
+			);
+		}
+
+		if(function_exists('xml_parser_create') &&
+			version_compare('2.7.0', LIBXML_DOTTED_VERSION) === 1) {
+			$errors[] = array(
+				'error' => $l->t('libxml2 2.7.0 is at least required. Currently %s is installed.', [LIBXML_DOTTED_VERSION]),
+				'hint' => $l->t('To fix this issue update your libxml2 version and restart your web server.')
 			);
 		}
 
@@ -973,6 +979,7 @@ class OC_Util {
 
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
 		$parameters['rememberLoginAllowed'] = self::rememberLoginAllowed();
+		$parameters['rememberLoginState'] = isset($_POST['remember_login']) ? $_POST['remember_login'] : 0;
 		\OC_Hook::emit('OC_Util', 'pre_displayLoginPage', array('parameters' => $parameters));
 		OC_Template::printGuestPage("", "login", $parameters);
 	}

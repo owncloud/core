@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -28,6 +29,7 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\SimpleCollection;
 use OCP\IUserSession;
 use OCP\IGroupManager;
+use OCP\Files\IRootFolder;
 
 class SystemTagsRelationsCollection extends SimpleCollection {
 
@@ -38,12 +40,14 @@ class SystemTagsRelationsCollection extends SimpleCollection {
 	 * @param ISystemTagObjectMapper $tagMapper
 	 * @param IUserSession $userSession
 	 * @param IGroupManager $groupManager
+	 * @param IRootFolder $fileRoot
 	 */
 	public function __construct(
 		ISystemTagManager $tagManager,
 		ISystemTagObjectMapper $tagMapper,
 		IUserSession $userSession,
-		IGroupManager $groupManager
+		IGroupManager $groupManager,
+		IRootFolder $fileRoot
 	) {
 		$children = [
 			new SystemTagsObjectTypeCollection(
@@ -51,7 +55,8 @@ class SystemTagsRelationsCollection extends SimpleCollection {
 				$tagManager,
 				$tagMapper,
 				$userSession,
-				$groupManager
+				$groupManager,
+				$fileRoot
 			),
 		];
 

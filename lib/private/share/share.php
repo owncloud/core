@@ -8,6 +8,7 @@
  * @author Daniel Hansson <enoch85@gmail.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Kuhn <suraia@ikkoku.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -38,6 +39,7 @@
 namespace OC\Share;
 
 use OC\Files\Filesystem;
+use OCA\FederatedFileSharing\DiscoveryManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IUserSession;
 use OCP\IDBConnection;
@@ -2297,6 +2299,16 @@ class Share extends Constants {
 		return $id ? $id : false;
 	}
 
+	/**
+	 * @param string $itemType
+	 * @param string $itemSource
+	 * @param int $shareType
+	 * @param string $shareWith
+	 * @param string $uidOwner
+	 * @param int $permissions
+	 * @param string|null $itemSourceName
+	 * @param null|\DateTime $expirationDate
+	 */
 	private static function checkReshare($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions, $itemSourceName, $expirationDate) {
 		$backend = self::getBackend($itemType);
 
@@ -2485,7 +2497,8 @@ class Share extends Constants {
 			if ($fileDependent) {
 				$select = '`*PREFIX*share`.`id`, `*PREFIX*share`.`parent`, `share_type`, `path`, `storage`, '
 					. '`share_with`, `uid_owner` , `file_source`, `stime`, `*PREFIX*share`.`permissions`, '
-					. '`*PREFIX*storages`.`id` AS `storage_id`, `*PREFIX*filecache`.`parent` as `file_parent`';
+					. '`*PREFIX*storages`.`id` AS `storage_id`, `*PREFIX*filecache`.`parent` as `file_parent`, '
+					. '`uid_initiator`';
 			} else {
 				$select = '`id`, `parent`, `share_type`, `share_with`, `uid_owner`, `item_source`, `stime`, `*PREFIX*share`.`permissions`';
 			}
@@ -2573,6 +2586,9 @@ class Share extends Constants {
 			$statuses = array();
 			foreach ($items as $item) {
 				if ($item['share_type'] === self::SHARE_TYPE_LINK) {
+					if ($item['uid_initiator'] !== \OC::$server->getUserSession()->getUser()->getUID()) {
+						continue;
+					}
 					$statuses[$item[$column]]['link'] = true;
 				} else if (!isset($statuses[$item[$column]])) {
 					$statuses[$item[$column]]['link'] = false;
@@ -2606,19 +2622,25 @@ class Share extends Constants {
 	/**
 	 * try http post first with https and then with http as a fallback
 	 *
-	 * @param string $url
+	 * @param string $remoteDomain
+	 * @param string $urlSuffix
 	 * @param array $fields post parameters
 	 * @return array
 	 */
-	private static function tryHttpPost($url, $fields) {
+	private static function tryHttpPostToShareEndpoint($remoteDomain, $urlSuffix, array $fields) {
 		$protocol = 'https://';
 		$result = [
 			'success' => false,
 			'result' => '',
 		];
 		$try = 0;
+		$discoveryManager = new DiscoveryManager(
+			\OC::$server->getMemCacheFactory(),
+			\OC::$server->getHTTPClientService()
+		);
 		while ($result['success'] === false && $try < 2) {
-			$result = \OC::$server->getHTTPHelper()->post($protocol . $url, $fields);
+			$endpoint = $discoveryManager->getShareEndpoint($protocol . $remoteDomain);
+			$result = \OC::$server->getHTTPHelper()->post($protocol . $remoteDomain . $endpoint . $urlSuffix . '?format=' . self::RESPONSE_FORMAT, $fields);
 			$try++;
 			$protocol = 'http://';
 		}
@@ -2641,7 +2663,7 @@ class Share extends Constants {
 		list($user, $remote) = Helper::splitUserRemote($shareWith);
 
 		if ($user && $remote) {
-			$url = $remote . self::BASE_PATH_TO_SHARE_API . '?format=' . self::RESPONSE_FORMAT;
+			$url = $remote;
 
 			$local = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
 
@@ -2655,10 +2677,10 @@ class Share extends Constants {
 			);
 
 			$url = self::removeProtocolFromUrl($url);
-			$result = self::tryHttpPost($url, $fields);
+			$result = self::tryHttpPostToShareEndpoint($url, '', $fields);
 			$status = json_decode($result['result'], true);
 
-			if ($result['success'] && $status['ocs']['meta']['statuscode'] === 100) {
+			if ($result['success'] && ($status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200)) {
 				\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $remote]);
 				return true;
 			}
@@ -2677,13 +2699,13 @@ class Share extends Constants {
 	 * @return bool
 	 */
 	private static function sendRemoteUnshare($remote, $id, $token) {
-		$url = rtrim($remote, '/') . self::BASE_PATH_TO_SHARE_API . '/' . $id . '/unshare?format=' . self::RESPONSE_FORMAT;
+		$url = rtrim($remote, '/');
 		$fields = array('token' => $token, 'format' => 'json');
 		$url = self::removeProtocolFromUrl($url);
-		$result = self::tryHttpPost($url, $fields);
+		$result = self::tryHttpPostToShareEndpoint($url, '/'.$id.'/unshare', $fields);
 		$status = json_decode($result['result'], true);
 
-		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
+		return ($result['success'] && ($status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200));
 	}
 
 	/**

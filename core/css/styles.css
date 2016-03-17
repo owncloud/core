@@ -73,13 +73,14 @@ body {
 
 /* SCROLLING */
 ::-webkit-scrollbar {
-	width: 8px;
+	width: 5px;
 }
 ::-webkit-scrollbar-track-piece {
 	background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
 	background: #ddd;
+	border-radius: 3px;
 }
 
 /* Searchbox */
@@ -650,7 +651,7 @@ td.avatar {
 	width: 100%;
 	text-align: center;
 }
-#notification, #update-notification {
+#notification {
 	margin: 0 auto;
 	max-width: 60%;
 	z-index: 8000;
@@ -665,9 +666,27 @@ td.avatar {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
 	opacity: .9;
 }
-#notification span, #update-notification span {
+#notification span {
 	cursor: pointer;
 	margin-left: 1em;
+}
+#notification {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 100px;
+}
+#notification .row {
+	position: relative;
+}
+#notification .row .close {
+	display: inline-block;
+	vertical-align: middle;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+#notification .row.closeable {
+	padding-right: 20px;
 }
 
 tr .action:not(.permanent),

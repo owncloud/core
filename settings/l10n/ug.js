@@ -24,9 +24,9 @@ OC.L10N.register(
     "never" : "ھەرگىز",
     "add group" : "گۇرۇپپا قوش",
     "A valid username must be provided" : "چوقۇم ئىناۋەتلىك ئىشلەتكۈچى ئىسمىدىن بىرنى تەمىنلەش كېرەك",
-    "Error creating user" : "ئىشلەتكۈچى قۇرۇۋاتقاندا خاتالىق كۆرۈلدى",
     "A valid password must be provided" : "چوقۇم ئىناۋەتلىك ئىم تەمىنلەش كېرەك",
     "__language_name__" : "ئۇيغۇرچە",
+    "Unlimited" : "چەكسىز",
     "None" : "يوق",
     "Login" : "تىزىمغا كىرىڭ",
     "Encryption" : "شىفىرلاش",
@@ -48,7 +48,6 @@ OC.L10N.register(
     "Help translate" : "تەرجىمىگە ياردەم",
     "Username" : "ئىشلەتكۈچى ئاتى",
     "Create" : "قۇر",
-    "Unlimited" : "چەكسىز",
     "Other" : "باشقا",
     "set new password" : "يېڭى ئىم تەڭشە",
     "Default" : "كۆڭۈلدىكى"

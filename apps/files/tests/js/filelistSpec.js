@@ -86,7 +86,7 @@ describe('OCA.Files.FileList tests', function() {
 			'<table id="filestable">' +
 			'<thead><tr>' +
 			'<th id="headerName" class="hidden column-name">' +
-			'<input type="checkbox" id="select_all_files" class="select-all">' +
+			'<input type="checkbox" id="select_all_files" class="select-all checkbox">' +
 			'<a class="name columntitle" data-sort="name"><span>Name</span><span class="sort-indicator"></span></a>' +
 			'<span id="selectedActionsList" class="selectedActions hidden">' +
 			'<a href class="download"><img src="actions/download.svg">Download</a>' +
@@ -1969,14 +1969,35 @@ describe('OCA.Files.FileList tests', function() {
 			expect($tr.hasClass('highlighted')).toEqual(true);
 			expect(fileList._detailsView.getFileInfo().id).toEqual(1);
 		});
-		it('keeps the last highlighted file when unselecting file using checkbox', function() {
+		it('removes last highlighted file when selecting via checkbox', function() {
 			var $tr = fileList.findFileEl('One.txt');
-			$tr.find('input:checkbox').click();
-			expect($tr.hasClass('highlighted')).toEqual(true);
-			$tr.find('input:checkbox').click();
 
-			expect($tr.hasClass('highlighted')).toEqual(true);
-			expect(fileList._detailsView.getFileInfo().id).toEqual(1);
+			// select
+			$tr.find('td.filename>a.name').click();
+			$tr.find('input:checkbox').click();
+			expect($tr.hasClass('highlighted')).toEqual(false);
+
+			// deselect
+			$tr.find('td.filename>a.name').click();
+			$tr.find('input:checkbox').click();
+			expect($tr.hasClass('highlighted')).toEqual(false);
+
+			expect(fileList._detailsView.getFileInfo()).toEqual(null);
+		});
+		it('removes last highlighted file when selecting all files via checkbox', function() {
+			var $tr = fileList.findFileEl('One.txt');
+
+			// select
+			$tr.find('td.filename>a.name').click();
+			fileList.$el.find('.select-all.checkbox').click();
+			expect($tr.hasClass('highlighted')).toEqual(false);
+
+			// deselect
+			$tr.find('td.filename>a.name').click();
+			fileList.$el.find('.select-all.checkbox').click();
+			expect($tr.hasClass('highlighted')).toEqual(false);
+
+			expect(fileList._detailsView.getFileInfo()).toEqual(null);
 		});
 		it('closes sidebar whenever the currently highlighted file was removed from the list', function() {
 			var $tr = fileList.findFileEl('One.txt');
@@ -2441,13 +2462,6 @@ describe('OCA.Files.FileList tests', function() {
 			getFolderContentsStub.restore();
 			fileList = undefined;
 		});
-		it('redirects to files app in case of auth error', function () {
-			deferredList.reject(401, 'Authentication error');
-
-			expect(redirectStub.calledOnce).toEqual(true);
-			expect(redirectStub.getCall(0).args[0]).toEqual(OC.webroot + '/index.php/apps/files');
-			expect(getFolderContentsStub.calledOnce).toEqual(true);
-		});
 		it('redirects to root folder in case of forbidden access', function () {
 			deferredList.reject(403);
 
@@ -2521,6 +2535,12 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileInfo.size).toEqual(12);
 			expect(fileInfo.mimetype).toEqual('text/plain');
 			expect(fileInfo.type).toEqual('file');
+			expect(fileInfo.path).not.toBeDefined();
+		});
+		it('adds path attribute if available', function() {
+			$tr.attr('data-path', '/subdir');
+			var fileInfo = fileList.elementToFile($tr);
+			expect(fileInfo.path).toEqual('/subdir');
 		});
 	});
 	describe('new file menu', function() {

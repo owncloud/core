@@ -1,9 +1,11 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -25,7 +27,7 @@ $installedVersion = \OC::$server->getConfig()->getAppValue('files', 'installed_v
 $ocVersion = explode('.', \OC::$server->getSystemConfig()->getValue('version'));
 
 /**
- * In case encryption was not enabled, we accidently set encrypted = 1 for
+ * In case encryption was not enabled, we accidentally set encrypted = 1 for
  * files inside mount points, since 8.1.0. This breaks opening the files in
  * 8.1.1 because we fixed the code that checks if a file is encrypted.
  * In order to fix the file, we need to reset the flag of the file. However,
@@ -99,4 +101,5 @@ if ($installedVersion === '1.1.9' && (
 
 // Add cron job for scanning user storages
 \OC::$server->getJobList()->add('OCA\Files\BackgroundJob\ScanFiles');
-\OC::$server->getJobList()->add('OCA\Files\BackgroundJob\DeleteOrphanedTagsJob');
+\OC::$server->getJobList()->add('OCA\Files\BackgroundJob\DeleteOrphanedItems');
+\OC::$server->getJobList()->add('OCA\Files\BackgroundJob\CleanupFileLocks');

@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -261,7 +262,7 @@ class AddressBookImplTest extends TestCase {
 		// simulate that 'uid0' already exists, so the second uid will be returned
 		$this->backend->expects($this->exactly(2))->method('getContact')
 			->willReturnCallback(
-				function($uid) {
+				function($id, $uid) {
 					return ($uid === 'uid0.vcf');
 				}
 			);

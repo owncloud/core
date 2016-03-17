@@ -2,6 +2,7 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -23,12 +24,15 @@
 
 namespace OCA\Federation;
 
+use OC\HintException;
 use OCP\AppFramework\Http;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\Security\ISecureRandom;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class TrustedServers {
 
@@ -38,6 +42,8 @@ class TrustedServers {
 	const STATUS_PENDING = 2;
 	/** something went wrong, misconfigured server, software bug,... user interaction needed */
 	const STATUS_FAILURE = 3;
+	/** remote server revoked access */
+	const STATUS_ACCESS_REVOKED = 4;
 
 	/** @var  dbHandler */
 	private $dbHandler;
@@ -57,6 +63,9 @@ class TrustedServers {
 	/** @var IConfig */
 	private $config;
 
+	/** @var EventDispatcherInterface */
+	private $dispatcher;
+
 	/**
 	 * @param DbHandler $dbHandler
 	 * @param IClientService $httpClientService
@@ -64,6 +73,7 @@ class TrustedServers {
 	 * @param IJobList $jobList
 	 * @param ISecureRandom $secureRandom
 	 * @param IConfig $config
+	 * @param EventDispatcherInterface $dispatcher
 	 */
 	public function __construct(
 		DbHandler $dbHandler,
@@ -71,7 +81,8 @@ class TrustedServers {
 		ILogger $logger,
 		IJobList $jobList,
 		ISecureRandom $secureRandom,
-		IConfig $config
+		IConfig $config,
+		EventDispatcherInterface $dispatcher
 	) {
 		$this->dbHandler = $dbHandler;
 		$this->httpClientService = $httpClientService;
@@ -79,6 +90,7 @@ class TrustedServers {
 		$this->jobList = $jobList;
 		$this->secureRandom = $secureRandom;
 		$this->config = $config;
+		$this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -153,7 +165,10 @@ class TrustedServers {
 	 * @param int $id
 	 */
 	public function removeServer($id) {
+		$server = $this->dbHandler->getServerById($id);
 		$this->dbHandler->removeServer($id);
+		$event = new GenericEvent($server['url_hash']);
+		$this->dispatcher->dispatch('OCP\Federation\TrustedServerEvent::remove', $event);
 	}
 
 	/**
@@ -202,34 +217,34 @@ class TrustedServers {
 	public function isOwnCloudServer($url) {
 		$isValidOwnCloud = false;
 		$client = $this->httpClientService->newClient();
-		try {
-			$result = $client->get(
-				$url . '/status.php',
-				[
-					'timeout' => 3,
-					'connect_timeout' => 3,
-				]
-			);
-			if ($result->getStatusCode() === Http::STATUS_OK) {
-				$isValidOwnCloud = $this->checkOwnCloudVersion($result->getBody());
-			}
-		} catch (\Exception $e) {
-			$this->logger->error($e->getMessage(), ['app' => 'federation']);
-			return false;
+		$result = $client->get(
+			$url . '/status.php',
+			[
+				'timeout' => 3,
+				'connect_timeout' => 3,
+			]
+		);
+		if ($result->getStatusCode() === Http::STATUS_OK) {
+			$isValidOwnCloud = $this->checkOwnCloudVersion($result->getBody());
 		}
+
 		return $isValidOwnCloud;
 	}
 
 	/**
 	 * check if ownCloud version is >= 9.0
 	 *
-	 * @param $statusphp
+	 * @param $status
 	 * @return bool
+	 * @throws HintException
 	 */
-	protected function checkOwnCloudVersion($statusphp) {
-		$decoded = json_decode($statusphp, true);
+	protected function checkOwnCloudVersion($status) {
+		$decoded = json_decode($status, true);
 		if (!empty($decoded) && isset($decoded['version'])) {
-			return version_compare($decoded['version'], '9.0.0', '>=');
+			if (!version_compare($decoded['version'], '9.0.0', '>=')) {
+				throw new HintException('Remote server version is too low. ownCloud 9.0 is required.');
+			}
+			return true;
 		}
 		return false;
 	}
