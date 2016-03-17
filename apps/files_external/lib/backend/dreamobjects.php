@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Caleb Boylan <caleb.boylan@dreamhost.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0

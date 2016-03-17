@@ -1,20 +1,6 @@
 <?php
 /**
- * @author André Gaul <gaul@web-yard.de>
- * @author Arthur Schiwon <blizzz@owncloud.com>
- * @author Bart Visscher <bartv@thisnet.nl>
- * @author Christian Berendt <berendt@b1-systems.de>
- * @author Christopher T. Johnson <ctjctj@gmail.com>
- * @author Johan Björk <johanimon@gmail.com>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Martin Mattel <martin.mattel@diemattels.at>
- * @author Michael Gapczynski <GapczynskiM@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Philipp Kapfer <philipp.kapfer@gmx.at>
- * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Caleb Boylan <caleb.boylan@dreamhost.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
