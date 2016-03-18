@@ -5,7 +5,7 @@ Handlebars.registerHelper('score', function() {
 		var score = Math.round( this.score / 10 );
 		var imageName = 'rating/s' + score + '.svg';
 
-		return new Handlebars.SafeString('<img src="' + OC.imagePath('core', imageName) + '">');
+		return new Handlebars.SafeString('<image src="' + OC.imagePath('core', imageName) + '">');
 	}
 	return new Handlebars.SafeString('');
 });
