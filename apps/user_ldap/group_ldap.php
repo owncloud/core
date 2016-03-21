@@ -479,7 +479,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 							// be sure to never return false if the dn could not be
 							// resolved to a name, for whatever reason.
 							$groups[] = $groupName;
-                                                }
+						}
 					}
 				} else {
 					\OCP\Util::writeLog('user_ldap', 'No search filter found on member url '.
