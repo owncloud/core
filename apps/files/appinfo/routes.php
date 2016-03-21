@@ -48,6 +48,17 @@ $application->registerRoutes(
 				'verb' => 'GET',
 				'requirements' => array('tagName' => '.+'),
 			),
+                        array(
+                                'name' => 'API#scanSingle',
+                                'url' => '/api/v1/scan/{path}',
+                                'verb' => 'GET',
+                                'requirements' => array('path' => '.+'),
+                        ),
+                        array(
+                                'name' => 'API#scanBatch',
+                                'url' => '/api/v1/scan',
+                                'verb' => 'POST',
+                        ),
 			[
 				'name' => 'view#index',
 				'url' => '/',

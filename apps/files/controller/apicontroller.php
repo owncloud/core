@@ -45,6 +45,14 @@ class ApiController extends Controller {
 	private $tagService;
 	/** @var IPreview */
 	private $previewManager;
+        /** @var int */
+        protected $foldersCounter = 0;
+        /** @var int */
+        protected $filesCounter = 0;
+	/** @var int */
+	protected $userInvalidCounter = 0;
+	/** @var int */
+	protected $pathInvalidCounter = 0;
 
 	/**
 	 * @param string $appName
@@ -146,5 +154,70 @@ class ApiController extends Controller {
 		}
 		return new DataResponse(['files' => $files]);
 	}
+
+        /**
+         * Scans a single path
+         *
+	 * @NoCSRFRequired
+	 *
+         * @param string $path path to scan
+         * @return DataResponse
+         */
+        public function scanSingle($path=null) {
+                if(!is_null($path)) {
+                        $this->scanPath($path);
+                }
+
+                return $this->scanComplete();
+        }
+
+        /**
+         * Scans paths listed in $path_list
+         *
+	 * @NoCSRFRequired
+	 *
+         * @param array|string $path_list array of paths
+         * @return DataResponse
+         */
+        public function scanBatch($path_list=null) {
+                if(!is_null($path_list)) {
+                        foreach ($path_list as $path) {
+                                $this->scanPath($path);
+                        }
+                }
+
+		return $this->scanComplete();
+	}
+
+	private function scanComplete() {
+		$result = [];
+                $result['folders'] = $this->foldersCounter;
+                $result['files'] = $this->filesCounter;
+		if ($this->userInvalidCounter || $this->pathInvalidCounter) {
+			$result['invalid_user'] = $this->userInvalidCounter;
+			$result['invalid_path'] = $this->pathInvalidCounter;
+		}
+
+                return new DataResponse($result);
+        }
+
+        private function scanPath($path=null) {
+                $path = '/' . trim($path, '/');
+                list (, $user,) = explode('/', $path, 3);
+                $scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection());
+                $scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) {
+                        $this->filesCounter += 1;
+                });
+                $scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) {
+                        $this->foldersCounter += 1;
+                });
+                try {
+                        $scanner->scan($path);
+                } catch (ForbiddenException $e) {
+			$this->userInvalidCounter += 1;
+                } catch (\InvalidArgumentException $e) {
+			$this->pathInvalidCounter += 1;
+		}
+        }
 
 }
