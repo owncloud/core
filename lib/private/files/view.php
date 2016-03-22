@@ -2057,15 +2057,15 @@ class View {
 	
 	/**
 	 * Creates parent non-existing folders
-	 * @param $filePath
+	 * 
+	 * @param string $filePath
 	 * @return bool
 	 */
-	public function createParentDirectories($filePath)
-	{
+	private function createParentDirectories($filePath) {
 		$parentDirectory = dirname($filePath);
 		while(!$this->file_exists($parentDirectory)) {
 			$result=$this->createParentDirectories($parentDirectory);
-			if($result == false) {
+			if($result === false) {
 				return false;
 			}
 		}
