@@ -2064,7 +2064,7 @@ class View {
 	private function createParentDirectories($filePath) {
 		$parentDirectory = dirname($filePath);
 		while(!$this->file_exists($parentDirectory)) {
-			$result=$this->createParentDirectories($parentDirectory);
+			$result = $this->createParentDirectories($parentDirectory);
 			if($result === false) {
 				return false;
 			}
