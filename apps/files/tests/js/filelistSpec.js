@@ -210,7 +210,7 @@ describe('OCA.Files.FileList tests', function() {
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			expect($tr.attr('data-mtime')).toEqual('123456');
 			expect($tr.find('a.name').attr('href'))
-				.toEqual(OC.webroot + '/remote.php/webdav/subdir/testName.txt');
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=testName.txt');
 			expect($tr.find('.nametext').text().trim()).toEqual('testName.txt');
 
 			expect($tr.find('.filesize').text()).toEqual('1 KB');
@@ -623,7 +623,7 @@ describe('OCA.Files.FileList tests', function() {
 
 			$tr = fileList.findFileEl('Tu_after_three.txt');
 			expect($tr.find('a.name').attr('href'))
-				.toEqual(OC.webroot + '/remote.php/webdav/some/subdir/Tu_after_three.txt');
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsome%2Fsubdir&files=Tu_after_three.txt');
 		});
 		it('Triggers "fileActionsReady" event after rename', function() {
 			var handler = sinon.stub();
@@ -1457,12 +1457,12 @@ describe('OCA.Files.FileList tests', function() {
 	describe('Download Url', function() {
 		it('returns correct download URL for single files', function() {
 			expect(fileList.getDownloadUrl('some file.txt'))
-				.toEqual(OC.webroot + '/remote.php/webdav/subdir/some%20file.txt');
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=some%20file.txt');
 			expect(fileList.getDownloadUrl('some file.txt', '/anotherpath/abc'))
-				.toEqual(OC.webroot + '/remote.php/webdav/anotherpath/abc/some%20file.txt');
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fanotherpath%2Fabc&files=some%20file.txt');
 			$('#dir').val('/');
 			expect(fileList.getDownloadUrl('some file.txt'))
-				.toEqual(OC.webroot + '/remote.php/webdav/some%20file.txt');
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2F&files=some%20file.txt');
 		});
 		it('returns correct download URL for multiple files', function() {
 			expect(fileList.getDownloadUrl(['a b c.txt', 'd e f.txt']))
