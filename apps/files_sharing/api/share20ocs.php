@@ -161,6 +161,10 @@ class Share20OCS {
 	 * @return \OC_OCS_Result
 	 */
 	public function getShare($id) {
+		if (!$this->shareManager->shareApiEnabled()) {
+			return new \OC_OCS_Result(null, 404, 'Share API is disabled');
+		}
+
 		try {
 			$share = $this->getShareById($id);
 		} catch (ShareNotFound $e) {
@@ -186,7 +190,10 @@ class Share20OCS {
 	 * @return \OC_OCS_Result
 	 */
 	public function deleteShare($id) {
-		// Try both our default and our federated provider
+		if (!$this->shareManager->shareApiEnabled()) {
+			return new \OC_OCS_Result(null, 404, 'Share API is disabled');
+		}
+
 		try {
 			$share = $this->getShareById($id);
 		} catch (ShareNotFound $e) {
@@ -207,6 +214,10 @@ class Share20OCS {
 	 */
 	public function createShare() {
 		$share = $this->shareManager->newShare();
+
+		if (!$this->shareManager->shareApiEnabled()) {
+			return new \OC_OCS_Result(null, 404, 'Share API is disabled');
+		}
 
 		// Verify path
 		$path = $this->request->getParam('path', null);
@@ -264,6 +275,10 @@ class Share20OCS {
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
 		} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+			if (!$this->shareManager->allowGroupSharing()) {
+				return new \OC_OCS_Result(null, 404, 'group sharing is disabled by the administrator');
+			}
+
 			// Valid group is required to share
 			if ($shareWith === null || !$this->groupManager->groupExists($shareWith)) {
 				return new \OC_OCS_Result(null, 404, 'please specify a valid group');
@@ -421,6 +436,10 @@ class Share20OCS {
 	 * @return \OC_OCS_Result
 	 */
 	public function getShares() {
+		if (!$this->shareManager->shareApiEnabled()) {
+			return new \OC_OCS_Result();
+		}
+
 		$sharedWithMe = $this->request->getParam('shared_with_me', null);
 		$reshares = $this->request->getParam('reshares', null);
 		$subfiles = $this->request->getParam('subfiles');
@@ -478,6 +497,10 @@ class Share20OCS {
 	 * @return \OC_OCS_Result
 	 */
 	public function updateShare($id) {
+		if (!$this->shareManager->shareApiEnabled()) {
+			return new \OC_OCS_Result(null, 404, 'Share API is disabled');
+		}
+
 		try {
 			$share = $this->getShareById($id);
 		} catch (ShareNotFound $e) {
