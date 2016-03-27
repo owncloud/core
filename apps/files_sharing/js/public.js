@@ -143,9 +143,10 @@ OCA.Sharing.PublicApp = {
 			mimetype.substr(0, mimetype.indexOf('/')) === 'image' &&
 			mimetype !== 'image/svg+xml') {
 			img.attr('src', OC.filePath('files_sharing', 'ajax', 'publicpreview.php') + '?' + OC.buildQueryString(params));
+			img.appendTo('#imgframe');
+            // ImageViewer
 			img.data('high-res-src', $('#downloadURL').val());
 			img.css('cursor', 'pointer');
-			img.appendTo('#imgframe');
 			var imageViewer = ImageViewer();
 			img.click(function(){imageViewer.show(this.src, $(this).data('high-res-src'));});
 		} else if (mimetype.substr(0, mimetype.indexOf('/')) !== 'video') {
