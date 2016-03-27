@@ -22,6 +22,10 @@ OCP\Util::addScript('files', 'files');
 OCP\Util::addScript('files', 'filelist');
 OCP\Util::addscript('files', 'keyboardshortcuts');
 
+// ImageViewer
+OCP\Util::addStyle('files_sharing', '3rdparty/ImageViewer/imageviewer');
+OCP\Util::addScript('files_sharing', '3rdparty/ImageViewer/imageviewer.min');
+
 $thumbSize = 1024;
 ?>
 
