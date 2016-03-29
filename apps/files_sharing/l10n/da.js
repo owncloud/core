@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Server to server sharing is not enabled on this server" : "Server til serverdeling er ikke slået til på denne server",
     "The mountpoint name contains invalid characters." : "Monteringspunktets navn indeholder ugyldige tegn.",
+    "Not allowed to create a federated share with the same user server" : "Det er ikke tilladt at danne et datafællesskab med samme brugerserver",
     "Invalid or untrusted SSL certificate" : "Ugyldigt eller upålideligt SSL-certifikat",
     "Could not authenticate to remote share, password might be wrong" : "Kunne ikke godkende fjerndelingen - kodeordet er muilgvis forkert",
     "Storage not valid" : "Lagerplads er ikke gyldig",
@@ -10,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Delt med dig",
     "Shared with others" : "Delt med andre",
     "Shared by link" : "Delt via link",
+    "Federated sharing" : "Datafællesskabsdeling",
     "Nothing shared with you yet" : "Der deles ikke noget med dig endnu",
     "Files and folders others share with you will show up here" : "Filer og mapper som andre deler med dig, vil blive vist her",
     "Nothing shared yet" : "Der deles endnu ikke noget",
