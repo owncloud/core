@@ -46,5 +46,13 @@ class RedisCluster extends Redis {
 		parent::__construct($prefix);
 	}
 
+	// TODO: phpredis with cluster support not currently available
+	// Assume it will be available in 2.2.8?
+	static public function isAvailable() {
+		//return extension_loaded('redis')
+		//&& version_compare(phpversion('redis'), '2.2.8', '>=');
+		return parent::isAvailable();
+	}
+
 }
 
