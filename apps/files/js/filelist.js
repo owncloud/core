@@ -1318,15 +1318,13 @@
 				return;
 			}
 			var distance = this.$container.scrollTop() ? this.$container.scrollTop().toString() : '0';
-			var key = ($('#sharingToken').val() === undefined) ? currentDir : $('#sharingToken').val()+':'+currentDir;
-			sessionStorage.setItem(key, distance);
+			sessionStorage.setItem(currentDir, distance);
 			this._setCurrentDir(targetDir, changeUrl);
 			this.reload().then(function(success){
 				if (!success) {
 					self.changeDirectory(currentDir, true);
 				} else {
-					var key = ($('#sharingToken').val() === undefined) ? targetDir : $('#sharingToken').val()+':'+targetDir;
-					self.loadAndScrollTo(parseInt(sessionStorage.getItem(key)));
+					self.loadAndScrollTo(parseInt(sessionStorage.getItem(targetDir)));
 				}
 			});
 		},
