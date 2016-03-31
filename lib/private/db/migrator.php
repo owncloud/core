@@ -90,25 +90,14 @@ class Migrator {
 	 * @throws \OC\DB\MigrationException
 	 */
 	public function checkMigrate(Schema $targetSchema) {
-		/**
-		 * @var \Doctrine\DBAL\Schema\Table[] $tables
-		 */
-		$tables = $targetSchema->getTables();
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->
-			setFilterSchemaAssetsExpression($filterExpression);
-		$existingTables = $this->connection->getSchemaManager()->listTableNames();
+		$diff = $this->getDiff($targetSchema, $this->connection);
+		if (!$this->needsMigration($targetSchema, $diff)) {
+			return;
+		}
 
-		foreach ($tables as $table) {
-			if (strpos($table->getName(), '.')) {
-				list(, $tableName) = explode('.', $table->getName());
-			} else {
-				$tableName = $table->getName();
-			}
-			// don't need to check for new tables
-			if (array_search($tableName, $existingTables) !== false) {
-				$this->checkTableMigrate($table);
-			}
+		foreach ($diff->changedTables as $tableDiff) {
+			$table = $targetSchema->getTable($tableDiff->name);
+			$this->checkTableMigrate($table);
 		}
 	}
 
@@ -253,5 +242,22 @@ class Migrator {
 
 	protected function getFilterExpression() {
 		return '/^' . preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
+	}
+
+	public function needsMigration(Schema $targetSchema, $diff = null) {
+		if (is_null($diff)) {
+			$diff = $this->getDiff($targetSchema, $this->connection);
+		}
+		return (
+			count($diff->newNamespaces) +
+			count($diff->removedNamespaces) +
+			count($diff->newTables) +
+			count($diff->changedTables) +
+			count($diff->removedTables) +
+			count($diff->newSequences) +
+			count($diff->changedSequences) +
+			count($diff->removedSequences) +
+			count($diff->orphanedForeignKeys)
+		) > 0;
 	}
 }
