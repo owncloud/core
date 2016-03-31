@@ -265,6 +265,10 @@ class SMB extends Common {
 	}
 
 	public function rmdir($path) {
+		if (empty($path) || $path === '/') {
+			return false;
+		}
+
 		try {
 			$this->statCache = array();
 			$content = $this->share->dir($this->buildPath($path));

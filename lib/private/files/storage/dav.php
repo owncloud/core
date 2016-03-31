@@ -185,6 +185,9 @@ class DAV extends Common {
 	public function rmdir($path) {
 		$this->init();
 		$path = $this->cleanPath($path);
+		if (empty($path) || $path === '/') {
+			return false;
+		}
 		// FIXME: some WebDAV impl return 403 when trying to DELETE
 		// a non-empty folder
 		$result = $this->simpleResponse('DELETE', $path . '/', null, 204);

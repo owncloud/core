@@ -208,6 +208,10 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function unlink($path) {
+		if (empty($path) || $path === '/') {
+			return false;
+		}
+
 		try {
 			$this->dropbox->delete($this->root.$path);
 			$this->deleteMetaData($path);
