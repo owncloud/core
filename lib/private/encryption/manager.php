@@ -227,14 +227,16 @@ class Manager implements IManager {
 	/**
 	 * Add storage wrapper
 	 */
-	public static function setupStorage() {
+	public function setupStorage() {
 		$util = new Util(
 			new View(),
 			\OC::$server->getUserManager(),
 			\OC::$server->getGroupManager(),
 			\OC::$server->getConfig()
 		);
-		Filesystem::addStorageWrapper('oc_encryption', array($util, 'wrapStorage'), 2);
+		if ($this->isEnabled()) {
+			Filesystem::addStorageWrapper('oc_encryption', array($util, 'wrapStorage'), 2);
+		}
 	}
 
 
