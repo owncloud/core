@@ -269,11 +269,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 		try {
 			$files = array();
-			$result = $this->getConnection()->getIterator('ListObjects', array(
-				'Bucket' => $this->bucket,
-				'Delimiter' => '/',
-				'Prefix' => $path
-			), array('return_prefixes' => true));
+			$result = $this->getIterator($path);
 
 			foreach ($result as $object) {
 				if (isset($object['Key']) && $object['Key'] === $path) {
@@ -291,6 +287,19 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			\OCP\Util::logException('files_external', $e);
 			return false;
 		}
+	}
+
+	public function getIterator($path = '') {
+		if ($this->isRoot($path)) {
+			$path = '';
+		} else if ($path !== '') {
+			$path .= '/';
+		}
+		return $this->getConnection()->getIterator('ListObjects', array(
+			'Bucket' => $this->bucket,
+			'Delimiter' => '/',
+			'Prefix' => $path
+		), array('return_prefixes' => true));
 	}
 
 	public function stat($path) {
@@ -555,6 +564,33 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	/**
+	 * FIXME use permissions in bucket
+	 * @param string $path
+	 * @return int
+	 */
+	public function getPermissions($path) {
+		$permissions = 0;
+		$permissions |= \OCP\PERMISSION_CREATE;
+		$permissions |= \OCP\PERMISSION_READ;
+		$permissions |= \OCP\PERMISSION_UPDATE;
+		$permissions |= \OCP\PERMISSION_DELETE;
+		if (!\OC_Util::isSharingDisabledForUser()) {
+			$permissions |= \OCP\PERMISSION_SHARE;
+		}
+		return $permissions;
+	}
+
+	public function getScanner($path = '', $storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if (!isset($this->scanner)) {
+			$this->scanner = new \OCA\Files_External\Cache\Scanner($storage);
+		}
+		return $this->scanner;
+	}
+
+	/**
 	 * Returns the connection
 	 *
 	 * @return S3Client connected client
@@ -600,6 +636,10 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		}
 
 		return $this->connection;
+	}
+
+	public function getBucket() {
+		return $this->bucket;
 	}
 
 	public function writeBack($tmpFile) {
