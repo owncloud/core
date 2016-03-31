@@ -370,4 +370,13 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	public function escapeLikeParameter($param) {
 		return addcslashes($param, '\\_%');
 	}
+
+	public function commit() {
+		try {
+			parent::commit();
+		} catch (\Exception $e) {
+			$this->rollBack();
+			throw $e;
+		}
+	}
 }
