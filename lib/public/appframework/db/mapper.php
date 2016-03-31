@@ -311,8 +311,7 @@ abstract class Mapper {
 	 * @return string formatted error message string
 	 * @since 9.1.0
 	 */
-	private function buildDebugMessage($msg, $sql, array $params=[],
-											  $limit=null, $offset=null) {
+	private function buildDebugMessage($msg, $sql, array $params=[], $limit=null, $offset=null) {
 		return $msg .
 					': query "' .	$sql . '"; ' .
 					'parameters ' . print_r($params, true) . '; ' .
