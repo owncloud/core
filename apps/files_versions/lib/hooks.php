@@ -56,6 +56,32 @@ class Hooks {
 
 		if (\OCP\App::isEnabled('files_versions')) {
 			$path = $params[\OC\Files\Filesystem::signal_param_path];
+
+			$user = \OCP\User::getUser();
+
+			$excluded = false;
+
+			$excludes = \OCP\Config::getSystemValue('files_versions_excludes', NULL );
+
+			if( isset($excludes) && array_key_exists($user,$excludes) ) {
+
+				$user_excludes = $excludes[ $user ];
+
+				foreach( $user_excludes as &$pat ) {
+					if( fnmatch( $pat, $path ) ) {
+						// TODO: Not certain if logging of the files names and patters is allowed.
+						\OCP\Util::writeLog('files_versions', "write_hook: user='" . $user . "', path='" . $path . "' matched to '" . $pat . "', excluding!", \OCP\Util::INFO);
+						$excluded = true;
+						break;
+					}
+				}
+				unset( $pat );
+			}
+
+			if( $excluded ) {
+				return;
+			}
+
 			if($path<>'') {
 				Storage::store($path);
 			}
