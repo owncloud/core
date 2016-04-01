@@ -52,6 +52,35 @@ class Memcached extends Cache implements IMemcache {
 				}
 			}
 			self::$cache->addServers($servers);
+
+			$options = \OC::$server->getConfig()->getSystemValue('memcached_options');
+			if ($options) {
+				$options = array($options);
+			} else {
+				// set production options
+				$options = array(
+					// Set timeouts to 50ms
+					array(\Memcached::OPT_CONNECT_TIMEOUT, 50),
+					array(\Memcached::OPT_RETRY_TIMEOUT,   50),
+					array(\Memcached::OPT_SEND_TIMEOUT,    50),
+					array(\Memcached::OPT_RECV_TIMEOUT,    50),
+					array(\Memcached::OPT_POLL_TIMEOUT,    50),
+					
+					// Enable compression
+					array(\Memcached::OPT_COMPRESSION,          true),
+					
+					// Turn on consistent hashing
+					array(\Memcached::OPT_LIBKETAMA_COMPATIBLE, true),
+					
+					// Enable Binary Protocol
+					array(\Memcached::OPT_BINARY_PROTOCOL,      true),
+				);
+				//Enable igbinary serializer if available
+				if (\Memcached::HAVE_IGBINARY) {
+					$options[] = array(\Memcached::OPT_SERIALIZER, \Memcached::SERIALIZER_IGBINARY);
+				}
+			}
+			self::$cache->setOptions($options);
 		}
 	}
 
