@@ -166,7 +166,8 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
 				OC.webroot +
-				'/remote.php/webdav/local%20path/local%20name.txt'
+				'/index.php/apps/files/ajax/download.php' +
+				'?dir=%2Flocal%20path&files=local%20name.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 
@@ -184,7 +185,8 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-id')).toEqual('8');
 			expect($tr.find('a.name').attr('href')).toEqual(
 				OC.webroot +
-				'/remote.php/webdav/b.txt'
+				'/index.php/apps/files/ajax/download.php' +
+				'?dir=%2F&files=b.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('b.txt');
 		});
@@ -336,7 +338,8 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
 				OC.webroot +
-				'/remote.php/webdav/local%20path/local%20name.txt'
+				'/index.php/apps/files/ajax/download.php' +
+				'?dir=%2Flocal%20path&files=local%20name.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -426,8 +429,9 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
-				OC.webroot + '/remote.php/webdav/local%20path/local%20name.txt'
-			);
+					OC.webroot +
+					'/index.php/apps/files/ajax/download.php' +
+					'?dir=%2Flocal%20path&files=local%20name.txt');
 
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -494,7 +498,9 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
 			expect($tr.attr('data-share-id')).toEqual('7,8,9');
 			expect($tr.find('a.name').attr('href')).toEqual(
-				OC.webroot + '/remote.php/webdav/local%20path/local%20name.txt'
+				OC.webroot +
+				'/index.php/apps/files/ajax/download.php' +
+				'?dir=%2Flocal%20path&files=local%20name.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -586,8 +592,9 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
-				OC.webroot + '/remote.php/webdav/local%20path/local%20name.txt'
-			);
+					OC.webroot +
+					'/index.php/apps/files/ajax/download.php' +
+					'?dir=%2Flocal%20path&files=local%20name.txt');
 
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -627,7 +634,8 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
 					OC.webroot +
-					'/remote.php/webdav/local%20path/local%20name.txt');
+					'/index.php/apps/files/ajax/download.php' +
+					'?dir=%2Flocal%20path&files=local%20name.txt');
 
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
