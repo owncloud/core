@@ -53,14 +53,14 @@ abstract class Image extends Provider {
 			$fileName = $fileview->getLocalFile($path);
 		}
 		$image->loadFromFile($fileName);
-		if ($useTempFile) {
-			unlink($fileName);
-		}
 		$image->fixOrientation();
 		if ($image->valid()) {
 			$image->scaleDownToFit($maxX, $maxY);
 
 			return $image;
+		}
+		if ($useTempFile) {
+			unlink($fileName);
 		}
 		return false;
 	}
