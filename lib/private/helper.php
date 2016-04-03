@@ -77,6 +77,9 @@ class OC_Helper {
 		return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_preview', ['x' => 32, 'y' => 32, 'file' => $path]);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	public static function publicPreviewIcon( $path, $token ) {
 		return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_public_preview', ['x' => 32, 'y' => 32, 'file' => $path, 't' => $token]);
 	}
@@ -591,7 +594,7 @@ class OC_Helper {
 	 *
 	 * @param string $path
 	 * @param \OCP\Files\FileInfo $rootInfo (optional)
-	 * @return array
+	 * @return string
 	 * @throws \OCP\Files\NotFoundException
 	 */
 	public static function getStorageInfo($path, $rootInfo = null) {

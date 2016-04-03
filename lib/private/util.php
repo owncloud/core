@@ -1370,7 +1370,7 @@ class OC_Util {
 	 * Normalize a unicode string
 	 *
 	 * @param string $value a not normalized string
-	 * @return bool|string
+	 * @return string
 	 */
 	public static function normalizeUnicode($value) {
 		if(Normalizer::isNormalized($value)) {
