@@ -922,6 +922,30 @@ $CONFIG = array(
 	//array('other.host.local', 11211),
 ),
 
+/**
+ * Connection options for memcached, see http://apprize.info/php/scaling/15.html
+ */
+'memcached_options' => array(
+	// Set timeouts to 50ms
+	array(\Memcached::OPT_CONNECT_TIMEOUT, 50),
+	array(\Memcached::OPT_RETRY_TIMEOUT,   50),
+	array(\Memcached::OPT_SEND_TIMEOUT,    50),
+	array(\Memcached::OPT_RECV_TIMEOUT,    50),
+	array(\Memcached::OPT_POLL_TIMEOUT,    50),
+
+	// Enable compression
+	array(\Memcached::OPT_COMPRESSION,          true),
+
+	// Turn on consistent hashing
+	array(\Memcached::OPT_LIBKETAMA_COMPATIBLE, true),
+
+	// Enable Binary Protocol
+	array(\Memcached::OPT_BINARY_PROTOCOL,      true),
+
+	// Enabling igbinary requires igbinary PECL module
+	//array(\Memcached::OPT_SERIALIZER, \Memcached::SERIALIZER_IGBINARY),
+),
+
 
 /**
  * Location of the cache folder, defaults to ``data/$user/cache`` where
