@@ -158,7 +158,19 @@ class User {
 		$attr = strtolower($this->connection->ldapQuotaAttribute);
 		if(isset($ldapEntry[$attr])) {
 			$this->updateQuota($ldapEntry[$attr][0]);
+		}else{
+			foreach($this->connection->ldapQuotaDefaultDnRegex as $line )
+			{
+				$rv = str_getcsv($line);
+				if(count($rv) == 2)
+				{
+					if(preg_match($rv[0],$this->getDN())){
+						$this->updateQuota($rv[1]);
+					}
+				}
+			}
 		}
+
 		unset($attr);
 
 		//Email
