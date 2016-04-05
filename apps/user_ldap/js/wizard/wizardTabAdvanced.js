@@ -105,6 +105,10 @@ OCA = OCA || {};
 					$element: $('#ldap_quota_def'),
 					setMethod: 'setQuotaDefault'
 				},
+				ldap_quota_def_dn_regex: {
+					$element: $('#ldap_quota_def_dn_regex'),
+					setMethod: 'setQuotaDefaultDnRegex'
+				},
 				ldap_email_attr: {
 					$element: $('#ldap_email_attr'),
 					setMethod: 'setEmailAttribute'
@@ -269,7 +273,7 @@ OCA = OCA || {};
 		setDynamicGroupMemberURL: function(attribute) {
 			this.setElementValue(this.managedItems.ldap_dynamic_group_member_url.$element, attribute);
 		},
-                
+
 		/**
 		 * enabled or disables the use of nested groups (groups in groups in
 		 * groups…)
@@ -314,6 +318,15 @@ OCA = OCA || {};
 		 */
 		setQuotaDefault: function(quota) {
 			this.setElementValue(this.managedItems.ldap_quota_def.$element, quota);
+		},
+
+		/**
+		 * sets the default quota for LDAP users with matching(REGEX) base on user DN
+		 *
+		 * @param {string} "regex1","value1" per line
+		 */
+		setQuotaDefaultDnRegex: function(rv_pairs) {
+			this.setElementValue(this.managedItems.ldap_quota_def_dn_regex.$element, rv_pairs);
 		},
 
 		/**

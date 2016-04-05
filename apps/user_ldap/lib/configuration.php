@@ -66,6 +66,7 @@ class Configuration {
 		'ldapLoginFilterAttributes' => null,
 		'ldapQuotaAttribute' => null,
 		'ldapQuotaDefault' => null,
+		'ldapQuotaDefaultDnRegex' => null,
 		'ldapEmailAttribute' => null,
 		'ldapCacheTTL' => null,
 		'ldapUuidUserAttribute' => 'auto',
@@ -169,6 +170,7 @@ class Configuration {
 				case 'ldapGroupFilterObjectclass':
 				case 'ldapGroupFilterGroups':
 				case 'ldapLoginFilterAttributes':
+				case 'ldapQuotaDefaultDnRegex':
 					$setMethod = 'setMultiLine';
 					break;
 			}
@@ -200,6 +202,7 @@ class Configuration {
 					case 'ldapGroupFilterObjectclass':
 					case 'ldapGroupFilterGroups':
 					case 'ldapLoginFilterAttributes':
+					case 'ldapQuotaDefaultDnRegex':
 						$readMethod = 'getMultiLine';
 						break;
 					case 'ldapIgnoreNamingRules':
@@ -247,6 +250,7 @@ class Configuration {
 				case 'ldapGroupFilterObjectclass':
 				case 'ldapGroupFilterGroups':
 				case 'ldapLoginFilterAttributes':
+				case 'ldapQuotaDefaultDnRegex':
 					if(is_array($value)) {
 						$value = implode("\n", $value);
 					}
@@ -282,7 +286,7 @@ class Configuration {
 
 	/**
 	 * Sets multi-line values as arrays
-	 * 
+	 *
 	 * @param string $varName name of config-key
 	 * @param array|string $value to set
 	 */
@@ -358,7 +362,7 @@ class Configuration {
 
 	/**
 	 * Sets a scalar value.
-	 * 
+	 *
 	 * @param string $varName name of config key
 	 * @param mixed $value to set
 	 */
@@ -424,6 +428,7 @@ class Configuration {
 			'ldap_group_display_name'           => 'cn',
 			'ldap_tls'                          => 0,
 			'ldap_quota_def'                    => '',
+			'ldap_quota_def_dn_regex'           => '',
 			'ldap_quota_attr'                   => '',
 			'ldap_email_attr'                   => '',
 			'ldap_group_member_assoc_attribute' => 'uniqueMember',
@@ -483,6 +488,7 @@ class Configuration {
 			'ldap_tls'                          => 'ldapTLS',
 			'ldap_quota_def'                    => 'ldapQuotaDefault',
 			'ldap_quota_attr'                   => 'ldapQuotaAttribute',
+			'ldap_quota_def_dn_regex'           => 'ldapQuotaDefaultDnRegex',
 			'ldap_email_attr'                   => 'ldapEmailAttribute',
 			'ldap_group_member_assoc_attribute' => 'ldapGroupMemberAssocAttr',
 			'ldap_cache_ttl'                    => 'ldapCacheTTL',

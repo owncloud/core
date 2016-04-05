@@ -99,6 +99,7 @@ style('user_ldap', 'settings');
 			<div>
 				<p><label for="ldap_quota_attr"><?php p($l->t('Quota Field'));?></label><input type="text" id="ldap_quota_attr" name="ldap_quota_attr" data-default="<?php p($_['ldap_quota_attr_default']); ?>"/></p>
 				<p><label for="ldap_quota_def"><?php p($l->t('Quota Default'));?></label><input type="text" id="ldap_quota_def" name="ldap_quota_def" data-default="<?php p($_['ldap_quota_def_default']); ?>" title="<?php p($l->t('in bytes'));?>" /></p>
+				<p><label for="ldap_quota_def_dn_regex"><?php p($l->t('Quota Default DN Match'));?></label><textarea id="ldap_quota_def_dn_regex" name="ldap_quota_def_dn_regex" placeholder="<?php p($l->t('Quota default User Base DN match per line:  "regex","quota value"'));?>" data-default="<?php p($_['ldap_quota_def_dn_regex_default']); ?>" title="<?php p($l->t('Quota default User Base DN match per line.  example  "/cn=admin,ou=people/i","10 GB"'));?>"></textarea></p>
 				<p><label for="ldap_email_attr"><?php p($l->t('Email Field'));?></label><input type="text" id="ldap_email_attr" name="ldap_email_attr" data-default="<?php p($_['ldap_email_attr_default']); ?>" /></p>
 				<p><label for="home_folder_naming_rule"><?php p($l->t('User Home Folder Naming Rule'));?></label><input type="text" id="home_folder_naming_rule" name="home_folder_naming_rule" title="<?php p($l->t('Leave empty for user name (default). Otherwise, specify an LDAP/AD attribute.'));?>" data-default="<?php p($_['home_folder_naming_rule_default']); ?>" /></p>
 			</div>
