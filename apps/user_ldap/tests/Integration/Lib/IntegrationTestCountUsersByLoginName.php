@@ -44,7 +44,7 @@ class IntegrationTestCountUsersByLoginName extends AbstractIntegrationTest {
 	 * @return bool
 	 */
 	protected function case1() {
-		$result = $this->access->countUsersByLoginName('nothere');
+		$result = $this->access->countUsersByLoginName('notHere');
 		return $result === 0;
 	}
 
@@ -61,6 +61,11 @@ class IntegrationTestCountUsersByLoginName extends AbstractIntegrationTest {
 }
 
 require_once(__DIR__ . '/../setup-scripts/config.php');
-$test = new IntegrationTestCountUsersByLoginName($host, $port, $adn, $apwd, $bdn);
+/** @global $host string */
+/** @global $port int */
+/** @global $adn string */
+/** @global $apw string */
+/** @global $bdn string */
+$test = new IntegrationTestCountUsersByLoginName($host, $port, $adn, $apw, $bdn);
 $test->init();
 $test->run();
