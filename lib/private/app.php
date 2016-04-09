@@ -1141,7 +1141,7 @@ class OC_App {
 			return false;
 		}
 		if (file_exists($appPath . '/appinfo/preupdate.php')) {
-			if (!array_key_exists($appId, self::$loadedApps)) {
+			if (!in_array($appId, self::$loadedApps)) {
 				self::loadApp($appId, false);
 			}
 			include $appPath . '/appinfo/preupdate.php';
@@ -1153,7 +1153,7 @@ class OC_App {
 		unset(self::$appVersion[$appId]);
 		// run upgrade code
 		if (file_exists($appPath . '/appinfo/update.php')) {
-			if (!array_key_exists($appId, self::$loadedApps)) {
+			if (!in_array($appId, self::$loadedApps)) {
 				self::loadApp($appId, false);
 			}
 			include $appPath . '/appinfo/update.php';
