@@ -1140,13 +1140,22 @@ class OC_App {
 		if($appPath === false) {
 			return false;
 		}
+		if (file_exists($appPath . '/appinfo/preupdate.php')) {
+			if (!array_key_exists($appId, self::$loadedApps)) {
+				self::loadApp($appId, false);
+			}
+			include $appPath . '/appinfo/preupdate.php';
+		}
+
 		if (file_exists($appPath . '/appinfo/database.xml')) {
 			OC_DB::updateDbFromStructure($appPath . '/appinfo/database.xml');
 		}
 		unset(self::$appVersion[$appId]);
 		// run upgrade code
 		if (file_exists($appPath . '/appinfo/update.php')) {
-			self::loadApp($appId, false);
+			if (!array_key_exists($appId, self::$loadedApps)) {
+				self::loadApp($appId, false);
+			}
 			include $appPath . '/appinfo/update.php';
 		}
 
