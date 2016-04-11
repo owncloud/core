@@ -186,11 +186,11 @@ input[type="radio"].radio--white + label:before {
 }
 
 input[type="radio"].radio--white:checked + label:before {
-	background-image: url('../img/actions/radio-checked-white.svg');
+	background-image: url('../img/actions/radio-checked.svg');
 }
 
 input[type="radio"].radio--white:disabled + label:before {
-	background-image: url('../img/actions/radio-disabled-white.svg');
+	background-image: url('../img/actions/radio-disabled.svg');
 }
 
 input[type="radio"].radio--white:checked:disabled + label:before {
