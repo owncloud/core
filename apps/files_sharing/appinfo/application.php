@@ -111,7 +111,8 @@ class Application extends App {
 			/** @var \OCP\IServerContainer $server */
 			$server = $c->query('ServerContainer');
 			return new MountProvider(
-				$server->getConfig()
+				$server->getConfig(),
+				$server->getMountManager()
 			);
 		});
 
@@ -120,7 +121,7 @@ class Application extends App {
 			$server = $c->query('ServerContainer');
 			return new \OCA\Files_Sharing\External\MountProvider(
 				$server->getDatabaseConnection(),
-				function() use ($c) {
+				function () use ($c) {
 					return $c->query('ExternalManager');
 				}
 			);
