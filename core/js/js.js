@@ -628,7 +628,7 @@ var OC={
 	registerMenu: function($toggle, $menuEl) {
 		var self = this;
 		$menuEl.addClass('menu');
-		$toggle.on('click.menu', function(event) {
+		var cb = function(event) {
 			// prevent the link event (append anchor to URL)
 			event.preventDefault();
 
@@ -644,7 +644,19 @@ var OC={
 			$menuEl.slideToggle(OC.menuSpeed);
 			OC._currentMenu = $menuEl;
 			OC._currentMenuToggle = $toggle;
-		});
+		};
+		$toggle.on('click.menu', cb);
+		$toggle.on('hover.menu', function($el, cb) {
+			return function(event) {
+				setTimeout((function($el) {
+					return function() {
+						if ($el.is(':hover')) {
+							cb(event);
+						}
+					}
+				})($el, cb), 100);
+			}
+		}($toggle, cb));
 	},
 
 	/**
