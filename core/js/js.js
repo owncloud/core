@@ -632,6 +632,13 @@ var OC={
 			// prevent the link event (append anchor to URL)
 			event.preventDefault();
 
+			// was it opened on hover?
+			if (!_.isUndefined(OC._currentMenuToggleHover) && OC._currentMenuToggleHover === true) {
+				// ignore event
+				OC._currentMenuToggleHover = null;
+				return;
+			}
+
 			if ($menuEl.is(OC._currentMenu)) {
 				self.hideMenus();
 				return;
@@ -641,6 +648,7 @@ var OC={
 				// close it
 				self.hideMenus();
 			}
+
 			$menuEl.slideToggle(OC.menuSpeed);
 			OC._currentMenu = $menuEl;
 			OC._currentMenuToggle = $toggle;
@@ -648,13 +656,19 @@ var OC={
 		$toggle.on('click.menu', cb);
 		$toggle.on('hover.menu', function($el, cb) {
 			return function(event) {
+				// has it been opened already?
+				if (OC._currentMenu) {
+					// don't close on hover
+					return;
+				}
 				setTimeout((function($el) {
 					return function() {
 						if ($el.is(':hover')) {
 							cb(event);
+							OC._currentMenuToggleHover = true;
 						}
 					}
-				})($el, cb), 100);
+				})($el, cb), 200);
 			}
 		}($toggle, cb));
 	},
@@ -689,6 +703,7 @@ var OC={
 		}
 		OC._currentMenu = null;
 		OC._currentMenuToggle = null;
+		OC._currentMenuToggleHover = null;
 	},
 
 	/**
