@@ -80,6 +80,12 @@ try {
 		exit(1);
 	}
 
+	$executer = new \OC\BackgroundJob\Executer(
+		\OC::$server->getLockingProvider(),
+		\OC::$server->getJobList(),
+		$logger
+	);
+
 	if (OC::$CLI) {
 		// set to run indefinitely if needed
 		set_time_limit(0);
@@ -129,19 +135,16 @@ try {
 		}
 
 		// Work
-		$jobList = \OC::$server->getJobList();
-
 		$executedJobs = [];
-		while ($job = $jobList->getNext()) {
+		while ($job = $executer->getNextJob()) {
 			if (isset($executedJobs[$job->getId()])) {
 				break;
 			}
 
 			$logger->debug('Run job with ID ' . $job->getId(), ['app' => 'cron']);
-			$job->execute($jobList, $logger);
+			$executer->runJob($job);
 			$logger->debug('Finished job with ID ' . $job->getId(), ['app' => 'cron']);
-
-			$jobList->setLastJob($job);
+			
 			$executedJobs[$job->getId()] = true;
 			unset($job);
 		}
@@ -158,11 +161,7 @@ try {
 		} else {
 			// Work and success :-)
 			$jobList = \OC::$server->getJobList();
-			$job = $jobList->getNext();
-			if ($job != null) {
-				$job->execute($jobList, $logger);
-				$jobList->setLastJob($job);
-			}
+			$executer->executeNextJob();
 			OC_JSON::success();
 		}
 	}
