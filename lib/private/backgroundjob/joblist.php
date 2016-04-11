@@ -31,6 +31,9 @@ use OCP\AutoloadNotAllowedException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 
 class JobList implements IJobList {
+	/** minimum time after a job is ran before we return it as a next job */
+	const MIN_AGE = 300;
+
 	/** @var \OCP\IDBConnection */
 	protected $connection;
 
@@ -169,10 +172,13 @@ class JobList implements IJobList {
 	public function getNext() {
 		$lastId = $this->getLastJob();
 
+		$since = time() - self::MIN_AGE;
+
 		$query = $this->connection->getQueryBuilder();
 		$query->select('*')
 			->from('jobs')
 			->where($query->expr()->gt('id', $query->createNamedParameter($lastId, IQueryBuilder::PARAM_INT)))
+			->andWhere($query->expr()->lt('last_run', $query->createNamedParameter($since, IQueryBuilder::PARAM_INT)))
 			->orderBy('id', 'ASC')
 			->setMaxResults(1);
 		$result = $query->execute();
@@ -187,6 +193,7 @@ class JobList implements IJobList {
 			$query = $this->connection->getQueryBuilder();
 			$query->select('*')
 				->from('jobs')
+				->where($query->expr()->lt('last_run', $query->createNamedParameter($since, IQueryBuilder::PARAM_INT)))
 				->orderBy('id', 'ASC')
 				->setMaxResults(1);
 			$result = $query->execute();
