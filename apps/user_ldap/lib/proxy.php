@@ -91,6 +91,15 @@ abstract class Proxy {
 		}
 		return self::$accesses[$configPrefix];
 	}
+	
+	/**
+	 * Return access for LDAP interaction for the specified user
+	 * @param string $uid
+	 * @return mixed
+	 */
+	public function getLDAPAccess($uid) {
+		return $this->handleRequest($uid, 'getAccess', array($uid));
+	}
 
 	/**
 	 * @param string $uid

@@ -37,10 +37,10 @@ interface ILDAPProvider {
 	public function getUserDN($uid);
 
 	/**
-	 * Return the LDAP connection for the specified user
+	 * Return access for LDAP interaction for the specified user
 	 * @param string $uid
-	 * @return \OCA\user_ldap\lib\Connection
+	 * @return Access for LDAP interaction
 	 * @since 9.1.0
 	 */
-	public function getLDAPConnection($uid);
+	public function getLDAPAccess($uid);
 }
