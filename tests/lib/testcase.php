@@ -459,8 +459,6 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		$actual->loadHTML($actualHtml);
 		$this->removeWhitespaces($actual);
 
-//		$expectedHtml1 = preg_replace('~\s+~i', '', $expected->saveHTML());
-//		$actualHtml1 = preg_replace('~\s+~i', '', $actual->saveHTML());
 		$expectedHtml1 = $expected->saveHTML();
 		$actualHtml1 = $actual->saveHTML();
 		self::assertEquals($expectedHtml1, $actualHtml1, $message);
