@@ -1,8 +1,6 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author GitHubUser4234 <i_feel_happy@yahoo.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -20,35 +18,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+namespace OCP\LDAP;
 
-namespace OCA\user_ldap\lib;
-
-
-abstract class BackendUtility {
-	protected $access;
+/**
+ * Interface ILDAPProviderFactory
+ *
+ * This class is responsible for instantiating and returning an ILDAPProvider
+ * instance.
+ *
+ * @package OCP\LDAP
+ * @since 9.1.0
+ */
+interface ILDAPProviderFactory {
 
 	/**
-	 * constructor, make sure the subclasses call this one!
-	 * @param Access $access an instance of Access for LDAP interaction
-	 */
-	public function __construct(Access $access) {
-		$this->access = $access;
-	}
-	
-	/**
-	 * Return access for LDAP interaction.
+	 * creates and returns an instance of the ILDAPProvider
 	 *
-	 * @return access
+	 * @return ILDAPProvider
+	 * @since 9.1.0
 	 */
-	public function getAccess() {
-		return $this->access;
-	}
-	
-	/**
-	 * Return access for LDAP interaction.
-	 * @return access
-	 */
-	public function getLDAPAccess() {
-		return $this->getAccess();
-	}
+	public function getLDAPProvider();
 }

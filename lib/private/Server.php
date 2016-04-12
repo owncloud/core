@@ -57,7 +57,6 @@ use OC\IntegrityCheck\Checker;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
-use OC\LDAP\LDAPProvider;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
@@ -527,8 +526,12 @@ class Server extends ServerContainer implements IServerContainer {
 				$this->getLogger()
 			);
 		});
-		$this->registerService('LDAPProvider', function ($c) {
-			return new LDAPProvider();
+		$this->registerService('LDAPProvider', function(Server $c) {
+			$config = $c->getConfig();
+			$factoryClass = $config->getSystemValue('ldapProviderFactory', '\OC\LDAP\LDAPProviderFactory');
+			/** @var \OCP\LDAP\ILDAPProviderFactory $factory */
+			$factory = new $factoryClass($this);
+			return $factory->getLDAPProvider();
 		});
 		$this->registerService('LockingProvider', function (Server $c) {
 			$ini = $c->getIniWrapper();

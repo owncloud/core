@@ -19,30 +19,47 @@
  *
  */
 
-namespace OC\LDAP;
+namespace OCA\user_ldap\lib;
 
 use OCP\LDAP\ILDAPProvider;
 
 /**
- * Dummy LDAP provider that only throws exceptions. 
- * Real implementation is done in the user_ldap app.
+ * LDAP provider for pulic access to the LDAP backend.
  */
 class LDAPProvider implements ILDAPProvider {
+
+	private $backend;
+	
 	/**
-	 * Dummy function
+	 * Create new LDAPProvider
+	 *
+	 */
+	public function __construct() {
+		foreach (\OC::$server->getUserManager()->getBackends() as $backend){
+			$name = get_class($backend);
+			\OCP\Util::writeLog('user_ldap', 'instance '.$name.' backend.', \OCP\Util::DEBUG);
+			if ($backend instanceof IUserBackend && $backend->getBackendName() == USER_LDAP::BACKEND_NAME) {
+				$this->backend=$backend;
+				break;
+			}
+        }
+	}
+	
+	/**
+	 * Translate an ownCloud username to LDAP DN
 	 * @param string $uid
 	 * @throws Exception
 	 */
 	public function getUserDN($uid) {
-		throw new \Exception("Dummy function \"getUserDN\" called");
+		return $this->backend->loginName2UserName($uid);
 	}
 	
 	/**
-	 * Dummy function
+	 * Return access for LDAP interaction for the specified user.
 	 * @param string $uid
 	 * @throws Exception
 	 */
 	public function getLDAPAccess($uid) {
-		throw new \Exception("Dummy function \"getLDAPAccess\" called");
+		return $this->backend->getLDAPAccess($uid);
 	}
 }
