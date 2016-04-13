@@ -67,10 +67,11 @@ class AddressBookAdapter {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function setup() {
-		if (!$this->dbConnection->tableExists($this->sourceBookTable)) {
-			throw new \DomainException('Contacts tables are missing. Nothing to do.');
-		}
+		return $this->dbConnection->tableExists($this->sourceBookTable);
 	}
 
 	/**
