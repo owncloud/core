@@ -80,8 +80,11 @@ class MigrateCalendars {
 		});
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function setup() {
-		$this->adapter->setup();
+		return $this->adapter->setup();
 	}
 
 	/**

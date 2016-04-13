@@ -190,13 +190,14 @@ class Application extends App {
 		try {
 			/** @var MigrateAddressbooks $migration */
 			$migration = $this->getContainer()->query('MigrateAddressbooks');
-			$migration->setup();
-			$userManager = $this->getContainer()->getServer()->getUserManager();
+			if ($migration->setup()) {
+				$userManager = $this->getContainer()->getServer()->getUserManager();
 
-			$userManager->callForAllUsers(function($user) use($migration) {
-				/** @var IUser $user */
-				$migration->migrateForUser($user->getUID());
-			});
+				$userManager->callForAllUsers(function($user) use($migration) {
+					/** @var IUser $user */
+					$migration->migrateForUser($user->getUID());
+				});
+			}
 		} catch (\Exception $ex) {
 			$this->getContainer()->getServer()->getLogger()->logException($ex);
 		}
@@ -206,13 +207,14 @@ class Application extends App {
 		try {
 			/** @var MigrateCalendars $migration */
 			$migration = $this->getContainer()->query('MigrateCalendars');
-			$migration->setup();
-			$userManager = $this->getContainer()->getServer()->getUserManager();
+			if ($migration->setup()) {
+				$userManager = $this->getContainer()->getServer()->getUserManager();
 
-			$userManager->callForAllUsers(function($user) use($migration) {
-				/** @var IUser $user */
-				$migration->migrateForUser($user->getUID());
-			});
+				$userManager->callForAllUsers(function($user) use($migration) {
+					/** @var IUser $user */
+					$migration->migrateForUser($user->getUID());
+				});
+			}
 		} catch (\Exception $ex) {
 			$this->getContainer()->getServer()->getLogger()->logException($ex);
 		}

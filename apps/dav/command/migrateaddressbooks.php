@@ -60,7 +60,10 @@ class MigrateAddressbooks extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$this->service->setup();
+		if (!$this->service->setup()) {
+			$output->writeln("No tables for data migration detected.");
+			return;
+		}
 
 		$user = $input->getArgument('user');
 		if (!is_null($user)) {

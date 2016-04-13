@@ -59,12 +59,9 @@ class AddressbookAdapterTest extends TestCase {
 		parent::tearDown();
 	}
 
-	/**
-	 * @expectedException DomainException
-	 */
 	public function testOldTablesDoNotExist() {
 		$adapter = new AddressBookAdapter(\OC::$server->getDatabaseConnection(), 'crazy_table_that_does_no_exist');
-		$adapter->setup();
+		$this->assertFalse($adapter->setup());
 	}
 
 	public function test() {
