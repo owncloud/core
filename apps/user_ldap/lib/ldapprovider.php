@@ -22,6 +22,8 @@
 namespace OCA\user_ldap\lib;
 
 use OCP\LDAP\ILDAPProvider;
+use OCP\ILogger;
+use OCP\IUserManager;
 
 /**
  * LDAP provider for pulic access to the LDAP backend.
@@ -29,17 +31,20 @@ use OCP\LDAP\ILDAPProvider;
 class LDAPProvider implements ILDAPProvider {
 
 	private $backend;
+	private $logger;
 	
 	/**
 	 * Create new LDAPProvider
-	 *
+	 * @param \OCP\IUserManager $userManager
+	 * @param \OCP\ILogger $logger
 	 */
-	public function __construct() {
-		foreach (\OC::$server->getUserManager()->getBackends() as $backend){
+	public function __construct(IUserManager $userManager, ILogger $logger) {
+		$this->logger = $logger;
+		foreach ($userManager->getBackends() as $backend){
 			$name = get_class($backend);
-			\OCP\Util::writeLog('user_ldap', 'instance '.$name.' backend.', \OCP\Util::DEBUG);
+			$this->logger->debug('instance '.$name.' backend.', ['app' => 'user_ldap']);
 			if ($backend instanceof IUserBackend && $backend->getBackendName() == USER_LDAP::BACKEND_NAME) {
-				$this->backend=$backend;
+				$this->backend = $backend;
 				break;
 			}
         }
@@ -51,7 +56,7 @@ class LDAPProvider implements ILDAPProvider {
 	 * @throws Exception
 	 */
 	public function getUserDN($uid) {
-		return $this->backend->loginName2UserName($uid);
+		return $this->backend->getLDAPAccess($uid)->username2dn($uid);
 	}
 	
 	/**

@@ -40,15 +40,7 @@ abstract class BackendUtility {
 	 *
 	 * @return access
 	 */
-	public function getAccess() {
-		return $this->access;
-	}
-	
-	/**
-	 * Return access for LDAP interaction.
-	 * @return access
-	 */
 	public function getLDAPAccess() {
-		return $this->getAccess();
+		return $this->access;
 	}
 }
