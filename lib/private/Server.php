@@ -310,6 +310,10 @@ class Server extends ServerContainer implements IServerContainer {
 				'\\OC\\Memcache\\ArrayCache'
 			);
 		});
+		$this->registerService('RedisFactory', function (Server $c) {
+			$systemConfig = $c->getSystemConfig();
+			return new RedisFactory($systemConfig);
+		});
 		$this->registerService('ActivityManager', function (Server $c) {
 			return new ActivityManager(
 				$c->getRequest(),
@@ -896,6 +900,16 @@ class Server extends ServerContainer implements IServerContainer {
 	public function getMemCacheFactory() {
 		return $this->query('MemCacheFactory');
 	}
+
+	/**
+	 * Returns an \OC\RedisFactory instance
+	 *
+	 * @return \OC\RedisFactory
+	 */
+	public function getGetRedisFactory() {
+		return $this->query('RedisFactory');
+	}
+
 
 	/**
 	 * Returns the current session
