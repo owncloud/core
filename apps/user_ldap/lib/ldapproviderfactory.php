@@ -30,6 +30,6 @@ class LDAPProviderFactory implements ILDAPProviderFactory {
 	 * @since 9.1.0
 	 */
 	public function getLDAPProvider() {
-		return new LDAPProvider();
+		return new LDAPProvider(\OC::$server->getUserManager(), \OC::$server->getLogger());
 	}
 }

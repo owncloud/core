@@ -98,7 +98,7 @@ abstract class Proxy {
 	 * @return mixed
 	 */
 	public function getLDAPAccess($uid) {
-		return $this->handleRequest($uid, 'getAccess', array($uid));
+		return $this->handleRequest($uid, 'getLDAPAccess', array($uid));
 	}
 
 	/**

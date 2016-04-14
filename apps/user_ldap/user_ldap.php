@@ -39,10 +39,7 @@ use OCA\User_LDAP\lib\User\User;
 use OCP\IConfig;
 
 class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserInterface {
-
-	/**
-     * The name of this backend.
-     */
+	/** The name of this backend */
 	const BACKEND_NAME = 'LDAP';
 
 	/** @var string[] $homesToKill */
