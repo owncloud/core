@@ -51,20 +51,26 @@ class LDAPProvider implements ILDAPProvider {
 	}
 	
 	/**
-	 * Translate an ownCloud username to LDAP DN
-	 * @param string $uid
+	 * Translate an ownCloud login name to LDAP DN
+	 * @param string $uid ownCloud user id
 	 * @throws Exception
 	 */
 	public function getUserDN($uid) {
-		return $this->backend->getLDAPAccess($uid)->username2dn($uid);
+		if($userName = $this->backend->loginName2UserName($uid)){
+			return $this->backend->getLDAPAccess($userName)->username2dn($userName);
+		}
+		return false;
 	}
 	
 	/**
 	 * Return access for LDAP interaction for the specified user.
-	 * @param string $uid
+	 * @param string $uid ownCloud user id
 	 * @throws Exception
 	 */
 	public function getLDAPAccess($uid) {
-		return $this->backend->getLDAPAccess($uid);
+		if($userName = $this->backend->loginName2UserName($uid)){
+			return $this->backend->getLDAPAccess($userName);
+		}
+		return false;
 	}
 }
