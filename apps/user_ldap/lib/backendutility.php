@@ -3,6 +3,7 @@
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author GitHubUser4234 <i_feel_happy@yahoo.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
