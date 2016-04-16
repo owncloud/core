@@ -768,4 +768,18 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		return null;
 	}
 
+	/**
+	 * Checks whether the request originates from jQuery
+	 * or if the Accept Header contains application json
+	 * @return boolean true if at least one of the headers is set, false otherwise
+	 */
+	public function isJSONRequest() {
+		if (stristr($this->server['HTTP_X_REQUEST_WITH'], 'XMLHttpRequest')
+			|| stristr($this->server['HTTP_ACCEPT'],'application/json')
+		) {
+			return true;
+		}
+		return false;
+	}
+
 }
