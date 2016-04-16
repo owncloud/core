@@ -88,10 +88,10 @@ class OCI extends AbstractDatabase {
 							.' NLS_LANG='.getenv('NLS_LANG')
 							.' tnsnames.ora is '.(is_readable(getenv('ORACLE_HOME').'/network/admin/tnsnames.ora')?'':'not ').'readable');
 		}
-		//check for roles creation rights in oracle
+		//check for permission creation rights in oracle
+		$query='SELECT CASE WHEN (count(*) = 7) THEN 1 ELSE 0 END AS all_privileges FROM user_role_privs a1 INNER JOIN role_sys_privs a2 ON a1.granted_role = a2.role'
+            ." WHERE (a2.privilege IN ('CREATE USER', 'ALTER USER') ) OR ( a2.privilege IN ('CREATE SESSION', 'CREATE TABLE', 'CREATE SEQUENCE', 'CREATE TRIGGER', 'UNLIMITED TABLESPACE') AND a2.admin_option = 'YES')";
 
-		$query='SELECT count(*) FROM user_role_privs, role_sys_privs'
-			." WHERE user_role_privs.granted_role = role_sys_privs.role AND privilege = 'CREATE ROLE'";
 		$stmt = oci_parse($connection, $query);
 		if (!$stmt) {
 			$entry = $this->trans->t('DB Error: "%s"', array($this->getLastError($connection))) . '<br />';
