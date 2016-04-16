@@ -179,14 +179,16 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 *
 	 * @param string $name
 	 * @param \OCP\Files\FileInfo $info
+	 * @param string|null $relativePath path relative to the user home
 	 * @return \Sabre\DAV\INode
 	 * @throws InvalidPath
 	 * @throws \Sabre\DAV\Exception\NotFound
 	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
-	public function getChild($name, $info = null) {
-		$path = $this->path . '/' . $name;
+	public function getChild($name, $info = null, $relativePath = null) {
 		if (is_null($info)) {
+			$path = $this->path . '/' . $name;
+
 			try {
 				$this->fileView->verifyPath($this->path, $name);
 				$info = $this->fileView->getFileInfo($path);
@@ -195,16 +197,16 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			} catch (\OCP\Files\InvalidPathException $ex) {
 				throw new InvalidPath($ex->getMessage());
 			}
-		}
 
-		if (!$info) {
-			throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
+			if (!$info) {
+				throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
+			}
 		}
 
 		if ($info['mimetype'] == 'httpd/unix-directory') {
 			$node = new \OCA\DAV\Connector\Sabre\Directory($this->fileView, $info, $this->tree);
 		} else {
-			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
+			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info, $relativePath);
 		}
 		if ($this->tree) {
 			$this->tree->cacheNode($node);
@@ -229,7 +231,8 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 
 		$nodes = array();
 		foreach ($folderContent as $info) {
-			$node = $this->getChild($info->getName(), $info);
+			$name = $info->getName();
+			$node = $this->getChild($name, $info, $this->path . '/' . $name);
 			$nodes[] = $node;
 		}
 		$this->dirContent = $nodes;
