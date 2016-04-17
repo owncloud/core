@@ -45,6 +45,7 @@ class AdapterOCI8 extends Adapter {
 		$statement = str_replace('`', '"', $statement);
 		$statement = str_ireplace('NOW()', 'CURRENT_TIMESTAMP', $statement);
 		$statement = str_ireplace('UNIX_TIMESTAMP()', self::UNIX_TIMESTAMP_REPLACEMENT, $statement);
+		$statement = preg_replace('/MD5\(([^)]+)\)/i', 'LOWER(DBMS_OBFUSCATION_TOOLKIT.md5 (input => UTL_RAW.cast_to_raw($1)))', $statement);
 		return $statement;
 	}
 }

@@ -109,8 +109,8 @@ class Cache extends \Test\TestCase {
 	 * @dataProvider folderDataProvider
 	 */
 	public function testFolder($folder) {
-		$file2 = $folder.'/bar';
-		$file3 = $folder.'/foo';
+		$file2 = $folder . '/bar';
+		$file3 = $folder . '/foo';
 		$data1 = array('size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory');
 		$fileData = array();
 		$fileData['bar'] = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file');
@@ -129,7 +129,7 @@ class Cache extends \Test\TestCase {
 			}
 		}
 
-		$file4 = $folder.'/unkownSize';
+		$file4 = $folder . '/unkownSize';
 		$fileData['unkownSize'] = array('size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file');
 		$this->cache->put($file4, $fileData['unkownSize']);
 
@@ -146,8 +146,8 @@ class Cache extends \Test\TestCase {
 		$this->assertEquals(0, $this->cache->calculateFolderSize($folder));
 
 		$this->cache->remove($folder);
-		$this->assertFalse($this->cache->inCache($folder.'/foo'));
-		$this->assertFalse($this->cache->inCache($folder.'/bar'));
+		$this->assertFalse($this->cache->inCache($folder . '/foo'));
+		$this->assertFalse($this->cache->inCache($folder . '/bar'));
 	}
 
 	public function testRemoveRecursive() {
@@ -156,7 +156,7 @@ class Cache extends \Test\TestCase {
 		$folders = ['folder', 'folder/subfolder', 'folder/sub2', 'folder/sub2/sub3'];
 		$files = ['folder/foo.txt', 'folder/bar.txt', 'folder/subfolder/asd.txt', 'folder/sub2/qwerty.txt', 'folder/sub2/sub3/foo.txt'];
 
-		foreach($folders as $folder){
+		foreach ($folders as $folder) {
 			$this->cache->put($folder, $folderData);
 		}
 		foreach ($files as $file) {
@@ -351,7 +351,9 @@ class Cache extends \Test\TestCase {
 
 		$this->assertEquals(2, count($results));
 
-		usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
+		usort($results, function ($value1, $value2) {
+			return $value1['name'] >= $value2['name'];
+		});
 
 		$this->assertEquals('folder', $results[0]['name']);
 		$this->assertEquals('foo', $results[1]['name']);
@@ -359,11 +361,15 @@ class Cache extends \Test\TestCase {
 		// use tag id
 		$tags = $tagManager->getTagsForUser($userId);
 		$this->assertNotEmpty($tags);
-		$tags = array_filter($tags, function($tag) { return $tag->getName() === 'tag2'; });
+		$tags = array_filter($tags, function ($tag) {
+			return $tag->getName() === 'tag2';
+		});
 		$results = $this->cache->searchByTag(current($tags)->getId(), $userId);
 		$this->assertEquals(3, count($results));
 
-		usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
+		usort($results, function ($value1, $value2) {
+			return $value1['name'] >= $value2['name'];
+		});
 
 		$this->assertEquals('folder', $results[0]['name']);
 		$this->assertEquals('foo2', $results[1]['name']);
@@ -399,7 +405,15 @@ class Cache extends \Test\TestCase {
 		$this->cache2->put($file4, $data);
 		$this->cache2->put($file5, $data);
 
+		$id1 = (int)$this->cache->getId('folder/foo/1');
+		$id2 = (int)$this->cache->getId('folder/foo/2');
+
 		$this->cache->move('folder/foo', 'folder/foobar');
+
+		$this->assertEquals('folder/foobar/1', $this->cache->get($id1)['path']);
+		$this->assertEquals('folder/foobar/2', $this->cache->get($id2)['path']);
+		$this->assertEquals(md5('folder/foobar/1'), $this->cache->get($id1)['path_hash']);
+		$this->assertEquals(md5('folder/foobar/2'), $this->cache->get($id2)['path_hash']);
 
 		$this->assertFalse($this->cache->inCache('folder/foo'));
 		$this->assertFalse($this->cache->inCache('folder/foo/1'));
