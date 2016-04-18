@@ -529,22 +529,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user :user is disabled$/
-	 * @param string $user
-	 */
-	public function userIsDisabled($user) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === 'admin') {
-			$options['auth'] = $this->adminUser;
-		}
-
-		$this->response = $client->get($fullUrl, $options);
-		PHPUnit_Framework_Assert::assertEquals("false", $this->response->xml()->data[0]->enabled);
-	}
-
-	/**
 	 * @Then /^user "([^"]*)" is disabled$/
 	 * @param string $user
 	 */
