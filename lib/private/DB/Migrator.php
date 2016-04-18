@@ -27,9 +27,9 @@
 
 namespace OC\DB;
 
-use Doctrine\DBAL\Connection;
 use \Doctrine\DBAL\DBALException;
 use \Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\SchemaDiff;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
 use \Doctrine\DBAL\Schema\SchemaConfig;
@@ -44,7 +44,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class Migrator {
 
 	/**
-	 * @var Connection $connection
+	 * @var \Doctrine\DBAL\Connection $connection
 	 */
 	protected $connection;
 
@@ -68,7 +68,7 @@ class Migrator {
 	 * @param IConfig $config
 	 * @param EventDispatcher $dispatcher
 	 */
-	public function __construct(Connection $connection,
+	public function __construct(\Doctrine\DBAL\Connection $connection,
 								ISecureRandom $random,
 								IConfig $config,
 								EventDispatcher $dispatcher = null) {
@@ -218,7 +218,7 @@ class Migrator {
 
 		$filterExpression = $this->getFilterExpression();
 		$this->connection->getConfiguration()->
-		setFilterSchemaAssetsExpression($filterExpression);
+			setFilterSchemaAssetsExpression($filterExpression);
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
 		// remove tables we don't know about
@@ -240,16 +240,25 @@ class Migrator {
 	}
 
 	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $targetSchema
-	 * @param Connection $connection
+	 * @param Schema $targetSchema
+	 * @param \Doctrine\DBAL\Connection $connection
 	 */
-	protected function applySchema(Schema $targetSchema, Connection $connection = null) {
+	protected function applySchema(Schema $targetSchema, \Doctrine\DBAL\Connection $connection = null) {
 		if (is_null($connection)) {
 			$connection = $this->connection;
 		}
 
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
+		$this->applyDiff($schemaDiff, $connection);
+	}
 
+	/**
+	 * @param SchemaDiff $schemaDiff
+	 * @param \Doctrine\DBAL\Connection $connection
+	 * @throws DBALException
+	 * @throws \Doctrine\DBAL\ConnectionException
+	 */
+	public function applyDiff(SchemaDiff $schemaDiff, \Doctrine\DBAL\Connection $connection) {
 		$connection->beginTransaction();
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
 		$step = 0;
