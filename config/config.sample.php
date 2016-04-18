@@ -861,12 +861,13 @@ $CONFIG = array(
  *
  * Available cache backends:
  *
- * * ``\OC\Memcache\APC``        Alternative PHP Cache backend
- * * ``\OC\Memcache\APCu``       APC user backend
- * * ``\OC\Memcache\ArrayCache`` In-memory array-based backend (not recommended)
- * * ``\OC\Memcache\Memcached``  Memcached backend
- * * ``\OC\Memcache\Redis``      Redis backend
- * * ``\OC\Memcache\XCache``     XCache backend
+ * * ``\OC\Memcache\APC``          Alternative PHP Cache backend
+ * * ``\OC\Memcache\APCu``         APC user backend
+ * * ``\OC\Memcache\ArrayCache``   In-memory array-based backend (not recommended)
+ * * ``\OC\Memcache\Memcached``    Memcached backend
+ * * ``\OC\Memcache\Redis``        Redis backend, single-server mode
+ * * ``\OC\Memcache\RedisCluster`` Redis Cluster backend
+ * * ``\OC\Memcache\XCache``       XCache backend
  *
  * Advice on choosing between the various backends:
  *
@@ -892,19 +893,41 @@ $CONFIG = array(
 'memcache.distributed' => '\OC\Memcache\Memcached',
 
 /**
- * Connection details for redis to use for memory caching.
+ * Connection details for redis to use for memory caching in a single server configuration.
  *
  * For enhanced security it is recommended to configure Redis
  * to require a password. See http://redis.io/topics/security
  * for more information.
  */
-'redis' => array(
+'redis' => [
 	'host' => 'localhost', // can also be a unix domain socket: '/tmp/redis.sock'
 	'port' => 6379,
 	'timeout' => 0.0,
 	'password' => '', // Optional, if not defined no password will be used.
 	'dbindex' => 0, // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
-),
+],
+
+/**
+ * Connection details for a Redis Cluster
+ *
+ * Only for use with Redis Clustering, for Sentinel-based setups use the single
+ * server configuration above, and perform HA on the hostname.
+ *
+ * Available failover modes:
+ *  - \RedisCluster::FAILOVER_NONE - only send commands to master nodes (default)
+ *  - \RedisCluster::FAILOVER_ERROR - failover to slaves for read commands if master is unavailable
+ *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across master and slaves
+ */
+'redis.cluster' => [
+	'seeds' => [ // provide some/all of the cluster servers to bootstrap discovery, port required
+		'localhost:7000',
+		'localhost:7001'
+	],
+	'timeout' => 0.0,
+	'read_timeout' => 0.0,
+	'failover_mode' => \RedisCluster::FAILOVER_DISTRIBUTE
+],
+
 
 /**
  * Server details for one or more memcached servers to use for memory caching.

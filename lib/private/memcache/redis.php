@@ -32,29 +32,19 @@ class Redis extends Cache implements IMemcacheTTL {
 	/**
 	 * @var \Redis $cache
 	 */
-	private static $cache = null;
+	protected static $cache = null;
 
 	public function __construct($prefix = '') {
 		parent::__construct($prefix);
 		if (is_null(self::$cache)) {
-			// TODO allow configuring a RedisArray, see https://github.com/nicolasff/phpredis/blob/master/arrays.markdown#redis-arrays
+			$systemConfig = \OC::$server->getSystemConfig();
+
+			$config = $systemConfig->getValue('redis', []);
 			self::$cache = new \Redis();
-			$config = \OC::$server->getSystemConfig()->getValue('redis', array());
-			if (isset($config['host'])) {
-				$host = $config['host'];
-			} else {
-				$host = '127.0.0.1';
-			}
-			if (isset($config['port'])) {
-				$port = $config['port'];
-			} else {
-				$port = 6379;
-			}
-			if (isset($config['timeout'])) {
-				$timeout = $config['timeout'];
-			} else {
-				$timeout = 0.0; // unlimited
-			}
+
+			$host = isset($config['host']) ? $config['host'] : '127.0.0.1';
+			$port = isset($config['port']) ? $config['port'] : 6379;
+			$timeout = isset($config['timeout']) ? $config['timeout'] : 0.0; // default: unlimited
 
 			self::$cache->connect($host, $port, $timeout);
 			if(isset($config['password']) && $config['password'] !== '') {
