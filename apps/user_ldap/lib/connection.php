@@ -142,6 +142,15 @@ class Connection extends LDAPUtility {
 			$this->validateConfiguration();
 		}
 	}
+	
+	/**
+	 * Returns new connection with the same configuration parameters
+	 * as used by this connection.
+	 * @return OCA\user_ldap\lib\Connection
+	 */
+	public function getDeepCopy() {
+		return new Connection(new LDAP(), new Configuration($this->configPrefix, !is_null($this->configID)));
+	}
 
 	/**
 	 * sets whether the result of the configuration validation shall

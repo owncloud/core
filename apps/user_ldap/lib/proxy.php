@@ -94,12 +94,12 @@ abstract class Proxy {
 	}
 	
 	/**
-	 * Return access for LDAP interaction for the specified user
+	 * Return a new LDAP connection for the specified user
 	 * @param string $uid
-	 * @return mixed
+	 * @return resource of the LDAP connection
 	 */
-	public function getLDAPAccess($uid) {
-		return $this->handleRequest($uid, 'getLDAPAccess', array($uid));
+	public function getNewLDAPConnection($uid) {
+		return $this->handleRequest($uid, 'getNewLDAPConnection', array($uid));
 	}
 
 	/**
