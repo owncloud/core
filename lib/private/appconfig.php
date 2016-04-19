@@ -184,9 +184,10 @@ class AppConfig implements IAppConfig {
 			$sql = $this->conn->getQueryBuilder();
 			$sql->update('appconfig')
 				->set('configvalue', $sql->createParameter('configvalue'))
-				->where($sql->expr()->eq('appid', $sql->createParameter('app')))
+				->where($sql->expr()->eq('appid', $sql->createParameter('appid')))
 				->andWhere($sql->expr()->eq('configkey', $sql->createParameter('configkey')))
-				->setParameter('app', $app)
+				->setParameter('configvalue', $value)
+				->setParameter('appid', $app)
 				->setParameter('configkey', $key);
 			$sql->execute();
 		}
