@@ -35,6 +35,22 @@ interface ILDAPProvider {
 	 * @since 9.1.0
 	 */
 	public function getUserDN($uid);
+	
+	/**
+	 * Convert a stored DN so it can be used as base parameter for LDAP queries.
+	 * @param string $dn the DN
+	 * @return string
+	 * @since 9.1.0
+	 */
+	public function DNasBaseParameter($dn);
+	
+	/**
+	 * Sanitize a DN received from the LDAP server
+	 * @param array $dn the DN in question
+	 * @return array the sanitized DN
+	 * @since 9.1.0
+	 */
+	public function sanitizeDN($dn);
 
 	/**
 	 * Return access for LDAP interaction for the specified user

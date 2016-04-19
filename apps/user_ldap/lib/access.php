@@ -169,7 +169,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 		// (cf. #12306), 500 is default for paging and should work everywhere.
 		$maxResults = $pagingSize > 20 ? $pagingSize : 500;
 		$this->initPagedSearch($filter, array($dn), array($attr), $maxResults, 0);
-		$dn = $this->DNasBaseParameter($dn);
+		$dn = self::DNasBaseParameter($dn);
 		$rr = @$this->ldap->read($cr, $dn, $filter, array($attr));
 		if(!$this->ldap->isResource($rr)) {
 			if(!empty($attr)) {
@@ -197,7 +197,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 			$values = array();
 			for($i=0;$i<$result[$attr]['count'];$i++) {
 				if($this->resemblesDN($attr)) {
-					$values[] = $this->sanitizeDN($result[$attr][$i]);
+					$values[] = self::sanitizeDN($result[$attr][$i]);
 				} elseif(strtolower($attr) === 'objectguid' || strtolower($attr) === 'guid') {
 					$values[] = $this->convertObjectGUID2Str($result[$attr][$i]);
 				} else {
@@ -243,12 +243,12 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @param array $dn the DN in question
 	 * @return array the sanitized DN
 	 */
-	private function sanitizeDN($dn) {
+	public static function sanitizeDN($dn) {
 		//treating multiple base DNs
 		if(is_array($dn)) {
 			$result = array();
 			foreach($dn as $singleDN) {
-				$result[] = $this->sanitizeDN($singleDN);
+				$result[] = self::sanitizeDN($singleDN);
 			}
 			return $result;
 		}
@@ -1060,10 +1060,10 @@ class Access extends LDAPUtility implements user\IUserTools {
 						}
 						if($key !== 'dn') {
 							$selection[$i][$key] = $this->resemblesDN($key) ?
-								$this->sanitizeDN($item[$key])
+								self::sanitizeDN($item[$key])
 								: $item[$key];
 						} else {
-							$selection[$i][$key] = [$this->sanitizeDN($item[$key])];
+							$selection[$i][$key] = [self::sanitizeDN($item[$key])];
 						}
 					}
 
@@ -1287,7 +1287,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @return bool
 	 */
 	public function areCredentialsValid($name, $password) {
-		$name = $this->DNasBaseParameter($name);
+		$name = self::DNasBaseParameter($name);
 		$testConnection = clone $this->connection;
 		$credentials = array(
 			'ldapAgentName' => $name,
@@ -1563,7 +1563,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @param string $dn the DN
 	 * @return string
 	 */
-	private function DNasBaseParameter($dn) {
+	public static function DNasBaseParameter($dn) {
 		return str_ireplace('\\5c', '\\', $dn);
 	}
 
@@ -1575,7 +1575,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 */
 	public function isDNPartOfBase($dn, $bases) {
 		$belongsToBase = false;
-		$bases = $this->sanitizeDN($bases);
+		$bases = self::sanitizeDN($bases);
 
 		foreach($bases as $base) {
 			$belongsToBase = true;

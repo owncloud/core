@@ -183,6 +183,15 @@ class Helper {
 
 		return $domain;
 	}
+	
+	/**
+	 *
+	 * Set the LDAPProvider in the config
+	 *
+	 */
+	public function setLDAPProvider() {
+		\OC::$server->getConfig()->setSystemValue( 'ldapProviderFactory', '\\OCA\\user_ldap\\lib\\LDAPProviderFactory' );
+	}
 
 	/**
 	 * listens to a hook thrown by server2server sharing and replaces the given

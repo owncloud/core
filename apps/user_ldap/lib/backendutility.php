@@ -37,11 +37,11 @@ abstract class BackendUtility {
 	}
 	
 	/**
-	 * Return access for LDAP interaction.
-	 *
-	 * @return access
+	 * Return a new LDAP connection resource from a deep-copied connection
+	 * of the current access.
+	 * @return resource of the LDAP connection
 	 */
-	public function getLDAPAccess() {
-		return $this->access;
+	public function getNewLDAPConnection() {
+		return $this->access->getConnection()->getDeepCopy()->getConnectionResource();
 	}
 }
