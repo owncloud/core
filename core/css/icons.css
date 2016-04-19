@@ -14,15 +14,86 @@
 	background-image: url('../img/breadcrumb.svg');
 }
 
-.icon-loading {
-	background-image: url('../img/loading.gif');
+.loading,
+.loading-small,
+.icon-loading,
+.icon-loading-dark,
+.icon-loading-small,
+.icon-loading-small-dark {
+	position: relative;
 }
-.icon-loading-dark {
-	background-image: url('../img/loading-dark.gif');
+.loading::after,
+.loading-small::after,
+.icon-loading::after,
+.icon-loading-dark::after,
+.icon-loading-small::after,
+.icon-loading-small-dark::after,
+.loading::before,
+.loading-small::before,
+.icon-loading::before,
+.icon-loading-dark::before,
+.icon-loading-small::before,
+.icon-loading-small-dark::before {
+    content: '';
+    position: absolute;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 32px;
+    width: 32px;
+    left: 50%;
+    top: 50%;
+    margin: -16px 0 0 -16px;
 }
-.icon-loading-small {
-	background-image: url('../img/loading-small.gif');
+.loading::after,
+.loading-small::after,
+.icon-loading::after,
+.icon-loading-dark::after,
+.icon-loading-small::after,
+.icon-loading-small-dark::after {
+	animation: loading-spin .8s infinite linear;
+	-webkit-animation: loading-spin .8s infinite linear;
 }
+.loading::before,
+.loading-small::before,
+.icon-loading::before,
+.icon-loading-small::before {
+	background-image: url('../img/loading-circle.svg');
+}
+.loading::after,
+.loading-small::after,
+.icon-loading::after,
+.icon-loading-small::after  {
+	background-image: url('../img/loading-rotating.svg');
+}
+.icon-loading-dark::before,
+.icon-loading-small-dark::before {
+	background-image: url('../img/loading-dark-circle.svg');
+}
+.icon-loading-dark::after,
+.icon-loading-small-dark::after {
+	background-image: url('../img/loading-dark-rotating.svg');
+}
+.loading-small::before,
+.icon-loading-small::before,
+.loading-small::after,
+.icon-loading-small::after,
+.loading-small-dark::before,
+.icon-loading-small-dark::before,
+.loading-small-dark::after,
+.icon-loading-small-dark::after {
+	background-size: 16px 16px;
+	height: 16px;
+	width: 16px;
+	margin: -8px 0 0 -8px;
+}
+@-webkit-keyframes loading-spin {
+	100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes loading-spin {
+	100% { transform: rotate(360deg); }
+}
+
 .icon-32 {
 	background-size: 32px !important;
 }
