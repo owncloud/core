@@ -29,7 +29,7 @@ namespace OCP\LDAP;
  */
 interface ILDAPProvider {
 	/**
-	 * Translate an ownCloud username to LDAP DN
+	 * Translate an ownCloud username to LDAP DN.
 	 * @param string $uid
 	 * @return string
 	 * @since 9.1.0
@@ -45,18 +45,18 @@ interface ILDAPProvider {
 	public function DNasBaseParameter($dn);
 	
 	/**
-	 * Sanitize a DN received from the LDAP server
+	 * Sanitize a DN received from the LDAP server.
 	 * @param array $dn the DN in question
 	 * @return array the sanitized DN
 	 * @since 9.1.0
 	 */
 	public function sanitizeDN($dn);
-
+	
 	/**
-	 * Return access for LDAP interaction for the specified user
-	 * @param string $uid
-	 * @return Access for LDAP interaction
+	 * Return a new LDAP connection resource for the specified user. 
+	 * @param string $uid ownCloud user id
+	 * @return resource of the LDAP connection
 	 * @since 9.1.0
 	 */
-	public function getLDAPAccess($uid);
+	public function getLDAPConnection($uid);
 }
