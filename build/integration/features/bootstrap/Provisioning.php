@@ -545,6 +545,20 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^Assure user "([^"]*)" is disabled$/
+	 */
+	public function assureUserIsDisabled($user) {
+		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/disable";
+		$client = new Client();
+		$options = [];
+		if ($this->currentUser === 'admin') {
+			$options['auth'] = $this->adminUser;
+		}
+
+		$this->response = $client->send($client->createRequest("PUT", $fullUrl, $options));
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" is enabled$/
 	 * @param string $user
 	 */
