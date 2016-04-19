@@ -217,7 +217,7 @@ class OC_App {
 			$appTypes = '';
 		}
 
-		\OC::$server->getAppConfig()->setValue($app, 'types', $appTypes);
+		\OC::$server->getConfig()->setAppValue($app, 'types', $appTypes);
 	}
 
 	/**
@@ -295,6 +295,7 @@ class OC_App {
 	 */
 	public static function enable($app, $groups = null) {
 		self::$enabledAppsCache = array(); // flush
+
 		if (!OC_Installer::isInstalled($app)) {
 			$app = self::installApp($app);
 		}
@@ -796,7 +797,7 @@ class OC_App {
 					continue;
 				}
 
-				$enabled = \OC::$server->getAppConfig()->getValue($app, 'enabled', 'no');
+				$enabled = \OC::$server->getConfig()->getAppValue($app, 'enabled', 'no');
 				$info['groups'] = null;
 				if ($enabled === 'yes') {
 					$active = true;
@@ -1167,7 +1168,7 @@ class OC_App {
 		self::setAppTypes($appId);
 
 		$version = \OC_App::getAppVersion($appId);
-		\OC::$server->getAppConfig()->setValue($appId, 'installed_version', $version);
+		\OC::$server->getConfig()->setAppValue($appId, 'installed_version', $version);
 
 		return true;
 	}
