@@ -294,9 +294,7 @@ class Server extends ServerContainer implements IServerContainer {
 			$config = $c->getConfig();
 
 			if ($config->getSystemValue('installed', false) && !(defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
-				$v = \OC_App::getAppVersions();
-				$v['core'] = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
-				$version = implode(',', $v);
+				$version = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
 				$prefix = md5($instanceId . '-' . $version . '-' . $path);
