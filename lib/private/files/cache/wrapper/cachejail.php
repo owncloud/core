@@ -293,6 +293,22 @@ class CacheJail extends CacheWrapper {
 		return $this->getJailedPath($path);
 	}
 
+	/**
+	 * Move a file or folder in the cache
+	 *
+	 * Note that this should make sure the entries are removed from the source cache
+	 *
+	 * @param \OCP\Files\Cache\ICache $sourceCache
+	 * @param string $sourcePath
+	 * @param string $targetPath
+	 */
+	public function moveFromCache(\OCP\Files\Cache\ICache $sourceCache, $sourcePath, $targetPath) {
+		if ($sourceCache === $this) {
+			return $this->move($sourcePath, $targetPath);
+		}
+		return $this->cache->moveFromCache($sourceCache, $sourcePath, $targetPath);
+	}
+
 	protected function getMoveInfo($path) {
 		return [$this->getNumericStorageId(), $this->getSourcePath($path)];
 	}
