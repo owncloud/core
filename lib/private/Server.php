@@ -264,7 +264,9 @@ class Server extends ServerContainer implements IServerContainer {
 			return new \OC\SystemConfig($config);
 		});
 		$this->registerService('AppConfig', function (Server $c) {
-			return new \OC\AppConfig($c->getDatabaseConnection());
+			$cacheFactory = $c->getMemCacheFactory();
+			$cache = $cacheFactory->create('appconfig');
+			return new \OC\AppConfig($c->getDatabaseConnection(), $cache);
 		});
 		$this->registerService('L10NFactory', function (Server $c) {
 			return new \OC\L10N\Factory(
