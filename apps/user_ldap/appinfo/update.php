@@ -2,6 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0

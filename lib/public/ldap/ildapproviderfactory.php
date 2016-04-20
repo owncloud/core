@@ -1,6 +1,6 @@
 <?php
 /**
- * @author GitHubUser4234 <i_feel_happy@yahoo.com>
+ * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0

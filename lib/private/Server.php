@@ -17,7 +17,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
- * @author GitHubUser4234 <i_feel_happy@yahoo.com>
+ * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
