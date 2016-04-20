@@ -29,4 +29,5 @@ if($state === 'doSet') {
 OCP\Backgroundjob::registerJob('OCA\user_ldap\lib\Jobs');
 OCP\Backgroundjob::registerJob('\OCA\User_LDAP\Jobs\CleanUp');
 
-(new \OCA\user_ldap\lib\Helper())->setLDAPProvider();
+$helper = new \OCA\user_ldap\lib\Helper();
+$helper->setLDAPProvider();
