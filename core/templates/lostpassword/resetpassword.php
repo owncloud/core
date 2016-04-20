@@ -33,8 +33,6 @@ script('core', 'lostpassword');
 			<input type="password" name="password" id="password" value="" placeholder="<?php p($l->t('New Password')); ?>" required />
 		</p>
 		<input type="submit" id="submit" value="<?php p($l->t('Reset password')); ?>" />
-		<p class="text-center">
-			<img class="hidden" id="float-spinner" src="<?php p(image_path('core', 'loading-dark.gif'));?>"/>
-		</p>
+		<div class="icon-loading hidden"></div>
 	</fieldset>
 </form>

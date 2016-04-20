@@ -256,11 +256,7 @@
 
 			this.fileSummary = this._createSummary();
 
-			if (options.sorting) {
-				this.setSort(options.sorting.mode, options.sorting.direction, false, false);
-			} else {
-				this.setSort('name', 'asc', false, false);
-			}
+			this.setSort('name', 'asc');
 
 			var breadcrumbOptions = {
 				onClick: _.bind(this._onClickBreadCrumb, this),
@@ -292,8 +288,7 @@
 
 			this.updateSearch();
 
-			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
-
+			this.$fileList.on('click','td.filename>a.name', _.bind(this._onClickFile, this));
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
 			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
@@ -411,11 +406,6 @@
 					model.toJSON(),
 					{updateSummary: true, silent: false, animate: true}
 				);
-
-				// restore selection state
-				var selected = !!self._selectedFiles[$tr.data('id')];
-				self._selectFileEl($tr, selected);
-
 				$tr.toggleClass('highlighted', highlightState);
 			});
 			model.on('busy', function(model, state) {
@@ -495,7 +485,7 @@
 				actionsWidth += $(action).outerWidth();
 			});
 
-			// subtract app navigation toggle when visible
+			// substract app navigation toggle when visible
 			containerWidth -= $('#app-navigation-toggle').width();
 
 			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - 10);
@@ -716,14 +706,14 @@
 			sort = $target.attr('data-sort');
 			if (sort) {
 				if (this._sort === sort) {
-					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc', true, true);
+					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc', true);
 				}
 				else {
 					if ( sort === 'name' ) {	//default sorting of name is opposite to size and mtime
-						this.setSort(sort, 'asc', true, true);
+						this.setSort(sort, 'asc', true);
 					}
 					else {
-						this.setSort(sort, 'desc', true, true);
+						this.setSort(sort, 'desc', true);
 					}
 				}
 			}
@@ -1421,9 +1411,8 @@
 		 * @param sort sort attribute name
 		 * @param direction sort direction, one of "asc" or "desc"
 		 * @param update true to update the list, false otherwise (default)
-		 * @param persist true to save changes in the database (default)
 		 */
-		setSort: function(sort, direction, update, persist) {
+		setSort: function(sort, direction, update) {
 			var comparator = FileList.Comparators[sort] || FileList.Comparators.name;
 			this._sort = sort;
 			this._sortDirection = (direction === 'desc')?'desc':'asc';
@@ -1453,13 +1442,6 @@
 				else {
 					this.reload();
 				}
-			}
-
-			if (persist) {
-				$.post(OC.generateUrl('/apps/files/api/v1/sorting'), {
-					mode: sort,
-					direction: direction
-				});
 			}
 		},
 
@@ -2176,11 +2158,9 @@
 				$tr.toggleClass('busy', state);
 
 				if (state) {
-					$thumbEl.attr('data-oldimage', $thumbEl.css('background-image'));
-					$thumbEl.css('background-image', 'url('+ OC.imagePath('core', 'loading.gif') + ')');
+					$thumbEl.addClass('icon-loading');
 				} else {
-					$thumbEl.css('background-image', $thumbEl.attr('data-oldimage'));
-					$thumbEl.removeAttr('data-oldimage');
+					$thumbEl.removeClass('icon-loading');
 				}
 			});
 		},
@@ -2280,8 +2260,8 @@
 
 			$mask = $('<div class="mask transparent"></div>');
 
-			$mask.css('background-image', 'url('+ OC.imagePath('core', 'loading.gif') + ')');
-			$mask.css('background-repeat', 'no-repeat');
+
+			$mask.addClass('icon-loading');
 			this.$el.append($mask);
 
 			$mask.removeClass('transparent');
@@ -2344,14 +2324,12 @@
 				this.$el.find('#filestable thead th').addClass('hidden');
 				this.$el.find('#emptycontent').addClass('hidden');
 				$('#searchresults').addClass('filter-empty');
-				$('#searchresults .emptycontent').addClass('emptycontent-search');
 				if ( $('#searchresults').length === 0 || $('#searchresults').hasClass('hidden') ) {
 					this.$el.find('.nofilterresults').removeClass('hidden').
 						find('p').text(t('files', "No entries in this folder match '{filter}'", {filter:this._filter},  null, {'escape': false}));
 				}
 			} else {
 				$('#searchresults').removeClass('filter-empty');
-				$('#searchresults .emptycontent').removeClass('emptycontent-search');
 				this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
 				if (!this.$el.find('.mask').exists()) {
 					this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);

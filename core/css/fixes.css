@@ -138,3 +138,28 @@ select {
 	line-height: 38px;
 }
 
+/* Svg loader fixes */
+.ie .icon-loading {
+	background-image: url('../img/loading.gif');
+	background-size: 32px 32px;
+}
+.ie .icon-loading-dark {
+	background-image: url('../img/loading-dark.gif');
+	background-size: 32px 32px;
+}
+.ie .icon-loading-small {
+	background-image: url('../img/loading-small.gif');
+	background-size: 16px 16px;
+}
+.ie .icon-loading-small-dark {
+	background-image: url('../img/loading-dark.gif');
+	background-size: 16px 16px;
+}
+.ie .loading {
+	background: url('../img/loading.gif') no-repeat center;
+	cursor: wait;
+}
+.ie .loading-small {
+	background: url('../img/loading-small.gif') no-repeat center;
+	cursor: wait;
+}

@@ -88,7 +88,7 @@
 }
 
 .ldapSpinner {
-	height: 15px;
+	height: 36px;
 	margin: 5px;
 }
 
@@ -179,12 +179,17 @@ select[multiple=multiple] + button {
 }
 
 #ldap .ldap_saving {
-	margin-right: 15px;
+	margin-right: 20px;
 	color: orange;
 	font-weight: bold;
 }
 
-#ldap .ldap_saving img { height: 15px; }
+#ldap .ldap_saving .wizSpinner {
+	height: 16px;
+	display: inline-block;
+	position: absolute;
+	padding: 8px 0;
+}
 
 .ldap_config_state_indicator_sign {
 	display: inline-block;

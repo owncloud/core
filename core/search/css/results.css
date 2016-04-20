@@ -41,10 +41,8 @@
 }
 
 #searchresults .status .spinner {
-	height: 16px;
-	width: 16px;
-	vertical-align: middle;
-	margin-left: 10px;
+	float: left;
+	padding: 3px 10px;
 }
 #searchresults table {
 	border-spacing:0;

@@ -32,8 +32,7 @@ script('core', [
 			</div>
 		<?php endif; ?>
 		<div id="message" class="hidden">
-			<img class="float-spinner" alt=""
-				src="<?php p(image_path('core', 'loading-dark.gif'));?>">
+			<div class="float-spinner icon-loading"></div>
 			<span id="messageText"></span>
 			<!-- the following div ensures that the spinner is always inside the #message div -->
 			<div style="clear: both;"></div>
