@@ -94,6 +94,15 @@ abstract class Proxy {
 	}
 	
 	/**
+	 * Return access for LDAP interaction.
+	 * @param string $uid
+	 * @return Access instance of Access for LDAP interaction
+	 */
+	public function getLDAPAccess($uid) {
+		return $this->handleRequest($uid, 'getLDAPAccess', array($uid));
+	}
+	
+	/**
 	 * Return a new LDAP connection for the specified user
 	 * @param string $uid
 	 * @return resource of the LDAP connection
