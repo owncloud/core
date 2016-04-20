@@ -37,6 +37,14 @@ abstract class BackendUtility {
 	}
 	
 	/**
+	 * Return access for LDAP interaction.
+	 * @return Access instance of Access for LDAP interaction
+	 */
+	public function getLDAPAccess() {
+		return $this->access;
+	}
+	
+	/**
 	 * Return a new LDAP connection resource from a deep-copied connection
 	 * of the current access.
 	 * @return resource of the LDAP connection
