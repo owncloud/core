@@ -11,7 +11,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
- * @author GitHubUser4234 <i_feel_happy@yahoo.com>
+ * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
