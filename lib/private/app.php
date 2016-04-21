@@ -130,26 +130,28 @@ class OC_App {
 	 * @throws \OC\NeedsUpdateException
 	 */
 	public static function loadApp($app, $checkUpgrade = true) {
-		self::$loadedApps[] = $app;
-		$appPath = self::getAppPath($app);
-		if($appPath === false) {
-			return;
-		}
-		\OC::$loader->addValidRoot($appPath); // in case someone calls loadApp() directly
-		if (is_file($appPath . '/appinfo/app.php')) {
-			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
-			if ($checkUpgrade and self::shouldUpgrade($app)) {
-				throw new \OC\NeedsUpdateException();
+		if (!in_array($app, self::$loadedApps)) {
+			self::$loadedApps[] = $app;
+			$appPath = self::getAppPath($app);
+			if($appPath === false) {
+				return;
 			}
-			self::requireAppFile($app);
-			if (self::isType($app, array('authentication'))) {
-				// since authentication apps affect the "is app enabled for group" check,
-				// the enabled apps cache needs to be cleared to make sure that the
-				// next time getEnableApps() is called it will also include apps that were
-				// enabled for groups
-				self::$enabledAppsCache = array();
+			\OC::$loader->addValidRoot($appPath); // in case someone calls loadApp() directly
+			if (is_file($appPath . '/appinfo/app.php')) {
+				\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
+				if ($checkUpgrade and self::shouldUpgrade($app)) {
+					throw new \OC\NeedsUpdateException();
+				}
+				self::requireAppFile($app);
+				if (self::isType($app, array('authentication'))) {
+					// since authentication apps affect the "is app enabled for group" check,
+					// the enabled apps cache needs to be cleared to make sure that the
+					// next time getEnableApps() is called it will also include apps that were
+					// enabled for groups
+					self::$enabledAppsCache = array();
+				}
+				\OC::$server->getEventLogger()->end('load_app_' . $app);
 			}
-			\OC::$server->getEventLogger()->end('load_app_' . $app);
 		}
 	}
 
@@ -1148,6 +1150,11 @@ class OC_App {
 		if($appPath === false) {
 			return false;
 		}
+		if (file_exists($appPath . '/appinfo/preupdate.php')) {
+			self::loadApp($appId, false);
+			include $appPath . '/appinfo/preupdate.php';
+		}
+
 		if (file_exists($appPath . '/appinfo/database.xml')) {
 			OC_DB::updateDbFromStructure($appPath . '/appinfo/database.xml');
 		}
