@@ -33,6 +33,7 @@ class LDAPProvider implements ILDAPProvider {
 
 	private $backend;
 	private $logger;
+	private $helper;
 	
 	/**
 	 * Create new LDAPProvider
@@ -41,6 +42,7 @@ class LDAPProvider implements ILDAPProvider {
 	 */
 	public function __construct(IServerContainer $serverContainer) {
 		$this->logger = $serverContainer->getLogger();
+		$this->helper = new Helper();
 		foreach ($serverContainer->getUserManager()->getBackends() as $backend){
 			$name = get_class($backend);
 			$this->logger->debug('instance '.$name.' backend.', ['app' => 'user_ldap']);
@@ -74,12 +76,27 @@ class LDAPProvider implements ILDAPProvider {
 	}
 	
 	/**
+	 * Translate a LDAP DN to an ownCloud user name
+	 * @param string $connUid ownCloud user id for the LDAP connection
+	 * @param string $dn LDAP DN
+	 * @return string with the ownCloud user name
+	 * @throws \Exception if translation was unsuccessful
+	 */
+	public function getUserName($connUid, $dn) {
+		$result = $this->backend->getLDAPAccess($connUid)->dn2username($dn);
+		if(!$result){
+			throw new \Exception('Translation to ownCloud user name unsuccessful');
+		}
+		return $result;
+	}
+	
+	/**
 	 * Convert a stored DN so it can be used as base parameter for LDAP queries.
 	 * @param string $dn the DN in question
 	 * @return string
 	 */
 	public function DNasBaseParameter($dn) {
-		return Access::DNasBaseParameter($dn);
+		return $this->helper->DNasBaseParameter($dn);
 	}
 	
 	/**
@@ -88,7 +105,7 @@ class LDAPProvider implements ILDAPProvider {
 	 * @return array the sanitized DN
 	 */
 	public function sanitizeDN($dn) {
-		return Access::sanitizeDN($dn);
+		return $this->helper->sanitizeDN($dn);
 	}
 	
 	/**

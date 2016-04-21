@@ -518,11 +518,12 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('LDAPProvider', function(Server $c) {
 			$config = $c->getConfig();
 			$factoryClass = $config->getSystemValue('ldapProviderFactory', null);
-			if(!is_null($factoryClass)) {
-				/** @var \OCP\LDAP\ILDAPProviderFactory $factory */
-				$factory = new $factoryClass($this);
-				return $factory->getLDAPProvider();
+			if(is_null($factoryClass)) {
+				throw new \Exception('ldapProviderFactory not set');
 			}
+			/** @var \OCP\LDAP\ILDAPProviderFactory $factory */
+			$factory = new $factoryClass($this);
+			return $factory->getLDAPProvider();
 		});
 		$this->registerService('LockingProvider', function (Server $c) {
 			if ($c->getConfig()->getSystemValue('filelocking.enabled', true) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
