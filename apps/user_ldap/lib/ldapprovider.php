@@ -76,7 +76,8 @@ class LDAPProvider implements ILDAPProvider {
 	}
 	
 	/**
-	 * Translate a LDAP DN to an ownCloud user name
+	 * Translate a LDAP DN to an ownCloud user name. If there is no mapping between 
+	 * the DN and the user name, a new one will be created.
 	 * @param string $connUid ownCloud user id for the LDAP connection
 	 * @param string $dn LDAP DN
 	 * @return string with the ownCloud user name
