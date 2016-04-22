@@ -99,6 +99,14 @@ class OC_App {
 		if (\OC::$server->getSystemConfig()->getValue('maintenance', false)) {
 			return false;
 		}
+
+		$failedApp = \OC::$server->getConfig()->getAppValue('core', 'last-loaded-app-failed', null);
+		if (!is_null($failedApp)) {
+			self::disable($failedApp);
+			\OC::$server->getConfig()->deleteAppValue('core', 'last-loaded-app-failed');
+			\OC::$server->getLogger()->error("App $failedApp failed to load - we are disabling it for now", ['app' => 'core']);
+		}
+
 		// Load the enabled apps here
 		$apps = self::getEnabledApps();
 
@@ -141,7 +149,9 @@ class OC_App {
 			if ($checkUpgrade and self::shouldUpgrade($app)) {
 				throw new \OC\NeedsUpdateException();
 			}
+			\OC::$server->getConfig()->setAppValue('core', 'last-loaded-app-failed', $app);
 			self::requireAppFile($app);
+			\OC::$server->getConfig()->deleteAppValue('core', 'last-loaded-app-failed');
 			if (self::isType($app, array('authentication'))) {
 				// since authentication apps affect the "is app enabled for group" check,
 				// the enabled apps cache needs to be cleared to make sure that the
