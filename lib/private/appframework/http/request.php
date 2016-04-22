@@ -590,11 +590,32 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 */
 	public function getRequestUri() {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
+
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
-			$uri = $this->getScriptName() . substr($uri, strlen($this->server['SCRIPT_NAME']));
+			$uri = $this->getScriptName() . substr($uri, strlen($this->getRawScriptName()));
 		}
 		return $uri;
 	}
+
+        /**
+         * Returns the actual scriptname. This is a workaround for https://bugs.php.net/bug.php?id=65641
+         * which was fixed in php 5.5.18. RHEL 7 and Ubuntu 14.04 have not backported this fix yet.
+         * The problem is that PATH_INFO is also part of SCRIPT_NAME.
+         * @return string
+         */
+        private function getRawScriptName() {
+            $ScriptName = $this->server['SCRIPT_NAME'];
+
+            if (array_key_exists('PATH_INFO', $this->server) === true) {
+                $pos = strpos($this->server['SCRIPT_NAME'], rawurldecode($this->server['PATH_INFO']));
+
+                if ($pos !== false) {
+                    $ScriptName = substr($this->server['SCRIPT_NAME'], 0, $pos);
+                }
+            }
+
+            return $ScriptName;
+        }
 
 	/**
 	 * Get raw PathInfo from request (not urldecoded)
@@ -615,7 +636,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$requestUri = substr($requestUri, 0, $pos);
 		}
 
-		$scriptName = $this->server['SCRIPT_NAME'];
+		$scriptName = $this->getRawScriptName();
 		$pathInfo = $requestUri;
 
 		// strip off the script name's dir and file name
@@ -671,7 +692,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string the script name
 	 */
 	public function getScriptName() {
-		$name = $this->server['SCRIPT_NAME'];
+		$name = $this->getRawScriptName();
+
 		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
 			// FIXME: This code is untestable due to __DIR__, also that hardcoded path is really dangerous
