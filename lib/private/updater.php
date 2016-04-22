@@ -8,13 +8,13 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Steffen Lindner <mail@steffen-lindner.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,12 +34,13 @@
 namespace OC;
 
 use OC\Hooks\BasicEmitter;
+use OC\IntegrityCheck\Checker;
 use OC_App;
 use OC_Installer;
-use OC_Util;
 use OCP\IConfig;
 use OC\Setup;
 use OCP\ILogger;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class that handles autoupdating of ownCloud
@@ -55,11 +56,11 @@ class Updater extends BasicEmitter {
 	/** @var ILogger $log */
 	private $log;
 	
-	/** @var \OC\HTTPHelper $helper */
-	private $httpHelper;
-	
 	/** @var IConfig */
 	private $config;
+
+	/** @var Checker */
+	private $checker;
 
 	/** @var bool */
 	private $simulateStepEnabled;
@@ -79,16 +80,16 @@ class Updater extends BasicEmitter {
 	];
 
 	/**
-	 * @param HTTPHelper $httpHelper
 	 * @param IConfig $config
+	 * @param Checker $checker
 	 * @param ILogger $log
 	 */
-	public function __construct(HTTPHelper $httpHelper,
-								IConfig $config,
+	public function __construct(IConfig $config,
+								Checker $checker,
 								ILogger $log = null) {
-		$this->httpHelper = $httpHelper;
 		$this->log = $log;
 		$this->config = $config;
+		$this->checker = $checker;
 		$this->simulateStepEnabled = true;
 		$this->updateStepEnabled = true;
 	}
@@ -125,61 +126,6 @@ class Updater extends BasicEmitter {
 	}
 
 	/**
-	 * Check if a new version is available
-	 *
-	 * @param string $updaterUrl the url to check, i.e. 'http://apps.owncloud.com/updater.php'
-	 * @return array|bool
-	 */
-	public function check($updaterUrl = null) {
-
-		// Look up the cache - it is invalidated all 30 minutes
-		if (((int)$this->config->getAppValue('core', 'lastupdatedat') + 1800) > time()) {
-			return json_decode($this->config->getAppValue('core', 'lastupdateResult'), true);
-		}
-
-		if (is_null($updaterUrl)) {
-			$updaterUrl = 'https://updates.owncloud.com/server/';
-		}
-
-		$this->config->setAppValue('core', 'lastupdatedat', time());
-
-		if ($this->config->getAppValue('core', 'installedat', '') === '') {
-			$this->config->setAppValue('core', 'installedat', microtime(true));
-		}
-
-		$version = \OC_Util::getVersion();
-		$version['installed'] = $this->config->getAppValue('core', 'installedat');
-		$version['updated'] = $this->config->getAppValue('core', 'lastupdatedat');
-		$version['updatechannel'] = \OC_Util::getChannel();
-		$version['edition'] = \OC_Util::getEditionString();
-		$version['build'] = \OC_Util::getBuild();
-		$versionString = implode('x', $version);
-
-		//fetch xml data from updater
-		$url = $updaterUrl . '?version=' . $versionString;
-
-		$tmp = [];
-		$xml = $this->httpHelper->getUrlContent($url);
-		if ($xml) {
-			$loadEntities = libxml_disable_entity_loader(true);
-			$data = @simplexml_load_string($xml);
-			libxml_disable_entity_loader($loadEntities);
-			if ($data !== false) {
-				$tmp['version'] = (string)$data->version;
-				$tmp['versionstring'] = (string)$data->versionstring;
-				$tmp['url'] = (string)$data->url;
-				$tmp['web'] = (string)$data->web;
-			}
-		} else {
-			$data = [];
-		}
-
-		// Cache the result
-		$this->config->setAppValue('core', 'lastupdateResult', json_encode($data));
-		return $tmp;
-	}
-
-	/**
 	 * runs the update actions in maintenance mode, does not upgrade the source files
 	 * except the main .htaccess file
 	 *
@@ -198,7 +144,7 @@ class Updater extends BasicEmitter {
 		}
 
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
-		$currentVersion = implode('.', \OC_Util::getVersion());
+		$currentVersion = implode('.', \OCP\Util::getVersion());
 		$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, array('app' => 'core'));
 
 		$success = true;
@@ -246,7 +192,7 @@ class Updater extends BasicEmitter {
 	 */
 	public function isUpgradePossible($oldVersion, $newVersion, $allowedPreviousVersion) {
 		return (version_compare($allowedPreviousVersion, $oldVersion, '<=')
-			&& version_compare($oldVersion, $newVersion, '<='));
+			&& (version_compare($oldVersion, $newVersion, '<=') || $this->config->getSystemValue('debug', false)));
 	}
 
 	/**
@@ -277,7 +223,6 @@ class Updater extends BasicEmitter {
 	 * @param string $installedVersion previous version from which to upgrade from
 	 *
 	 * @throws \Exception
-	 * @return bool true if the operation succeeded, false otherwise
 	 */
 	private function doUpgrade($currentVersion, $installedVersion) {
 		// Stop update if the update is over several major versions
@@ -316,9 +261,6 @@ class Updater extends BasicEmitter {
 		if ($this->updateStepEnabled) {
 			$this->doCoreUpgrade();
 
-			// install new shipped apps on upgrade
-			OC_Installer::installShippedApps();
-
 			// update all shipped apps
 			$disabledApps = $this->checkAppsRequirements();
 			$this->doAppUpgrade();
@@ -326,6 +268,14 @@ class Updater extends BasicEmitter {
 			// upgrade appstore apps
 			$this->upgradeAppStoreApps($disabledApps);
 
+			// install new shipped apps on upgrade
+			OC_App::loadApps('authentication');
+			$errors = OC_Installer::installShippedApps(true);
+			foreach ($errors as $appId => $exception) {
+				/** @var \Exception $exception */
+				$this->log->logException($exception, ['app' => $appId]);
+				$this->emit('\OC\Updater', 'failure', [$appId . ': ' . $exception->getMessage()]);
+			}
 
 			// post-upgrade repairs
 			$repair = new Repair(Repair::getRepairSteps());
@@ -335,8 +285,15 @@ class Updater extends BasicEmitter {
 			//Invalidate update feed
 			$this->config->setAppValue('core', 'lastupdatedat', 0);
 
+			// Check for code integrity if not disabled
+			if(\OC::$server->getIntegrityCodeChecker()->isCodeCheckEnforced()) {
+				$this->emit('\OC\Updater', 'startCheckCodeIntegrity');
+				$this->checker->runInstanceVerification();
+				$this->emit('\OC\Updater', 'finishedCheckCodeIntegrity');
+			}
+
 			// only set the final version if everything went well
-			$this->config->setSystemValue('version', implode('.', \OC_Util::getVersion()));
+			$this->config->setSystemValue('version', implode('.', \OCP\Util::getVersion()));
 		}
 	}
 
@@ -405,6 +362,7 @@ class Updater extends BasicEmitter {
 	 * @throws NeedsUpdateException
 	 */
 	protected function doAppUpgrade() {
+		$this->emitRepairEvents();
 		$apps = \OC_App::getEnabledApps();
 		$priorityTypes = array('authentication', 'filesystem', 'logging');
 		$pseudoOtherType = 'other';
@@ -429,9 +387,9 @@ class Updater extends BasicEmitter {
 		foreach ($stacks as $type => $stack) {
 			foreach ($stack as $appId) {
 				if (\OC_App::shouldUpgrade($appId)) {
-					$this->emit('\OC\Updater', 'appUpgradeStarted', array($appId, \OC_App::getAppVersion($appId)));
+					$this->emit('\OC\Updater', 'appUpgradeStarted', [$appId, \OC_App::getAppVersion($appId)]);
 					\OC_App::updateApp($appId);
-					$this->emit('\OC\Updater', 'appUpgrade', array($appId, \OC_App::getAppVersion($appId)));
+					$this->emit('\OC\Updater', 'appUpgrade', [$appId, \OC_App::getAppVersion($appId)]);
 				}
 				if($type !== $pseudoOtherType) {
 					// load authentication, filesystem and logging apps after
@@ -455,7 +413,7 @@ class Updater extends BasicEmitter {
 	private function checkAppsRequirements() {
 		$isCoreUpgrade = $this->isCodeUpgrade();
 		$apps = OC_App::getEnabledApps();
-		$version = OC_Util::getVersion();
+		$version = \OCP\Util::getVersion();
 		$disabledApps = [];
 		foreach ($apps as $app) {
 			// check if the app is compatible with this version of ownCloud
@@ -492,7 +450,7 @@ class Updater extends BasicEmitter {
 	 */
 	private function isCodeUpgrade() {
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
-		$currentVersion = implode('.', OC_Util::getVersion());
+		$currentVersion = implode('.', \OCP\Util::getVersion());
 		if (version_compare($currentVersion, $installedVersion, '>')) {
 			return true;
 		}
@@ -517,5 +475,33 @@ class Updater extends BasicEmitter {
 			}
 		}
 	}
+
+	/**
+	 * Forward messages emitted by the repair routine
+	 */
+	private function emitRepairEvents() {
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$dispatcher->addListener('\OC\Repair::warning', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairWarning', $event->getArguments());
+			}
+		});
+		$dispatcher->addListener('\OC\Repair::error', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairError', $event->getArguments());
+			}
+		});
+		$dispatcher->addListener('\OC\Repair::info', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairInfo', $event->getArguments());
+			}
+		});
+		$dispatcher->addListener('\OC\Repair::step', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairStep', $event->getArguments());
+			}
+		});
+	}
+
 }
 

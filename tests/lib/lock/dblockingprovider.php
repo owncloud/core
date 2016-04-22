@@ -23,6 +23,13 @@ namespace Test\Lock;
 
 use OCP\Lock\ILockingProvider;
 
+/**
+ * Class DBLockingProvider
+ *
+ * @group DB
+ *
+ * @package Test\Lock
+ */
 class DBLockingProvider extends LockingProvider {
 	/**
 	 * @var \OC\Lock\DBLockingProvider
@@ -57,7 +64,7 @@ class DBLockingProvider extends LockingProvider {
 	 */
 	protected function getInstance() {
 		$this->connection = \OC::$server->getDatabaseConnection();
-		return new \OC\Lock\DBLockingProvider($this->connection, \OC::$server->getLogger(), $this->timeFactory);
+		return new \OC\Lock\DBLockingProvider($this->connection, \OC::$server->getLogger(), $this->timeFactory, 3600);
 	}
 
 	public function tearDown() {
@@ -74,17 +81,11 @@ class DBLockingProvider extends LockingProvider {
 		$this->instance->acquireLock('bar', ILockingProvider::LOCK_EXCLUSIVE);
 		$this->instance->changeLock('asd', ILockingProvider::LOCK_SHARED);
 
-		$this->currentTime = 150 + \OC\Lock\DBLockingProvider::TTL;
+		$this->currentTime = 150 + 3600;
 
 		$this->assertEquals(3, $this->getLockEntryCount());
 
-		$this->instance->cleanEmptyLocks();
-
-		$this->assertEquals(3, $this->getLockEntryCount());
-
-		$this->instance->releaseAll();
-
-		$this->instance->cleanEmptyLocks();
+		$this->instance->cleanExpiredLocks();
 
 		$this->assertEquals(2, $this->getLockEntryCount());
 	}

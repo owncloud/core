@@ -17,7 +17,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -43,34 +43,37 @@ $urlGenerator = \OC::$server->getURLGenerator();
 
 // Highlight navigation entry
 OC_Util::addScript( 'settings', 'personal' );
+OC_Util::addScript('settings', 'certificates');
 OC_Util::addStyle( 'settings', 'settings' );
 \OC_Util::addVendorScript('strengthify/jquery.strengthify');
 \OC_Util::addVendorStyle('strengthify/strengthify');
-\OC_Util::addScript('files', 'jquery.iframe-transport');
 \OC_Util::addScript('files', 'jquery.fileupload');
 if ($config->getSystemValue('enable_avatars', true) === true) {
 	\OC_Util::addVendorScript('jcrop/js/jquery.Jcrop');
 	\OC_Util::addVendorStyle('jcrop/css/jquery.Jcrop');
 }
 
+\OC::$server->getEventDispatcher()->dispatch('OC\Settings\Personal::loadAdditionalScripts');
+
 // Highlight navigation entry
-OC_App::setActiveNavigationEntry( 'personal' );
+OC::$server->getNavigationManager()->setActiveEntry('personal');
 
 $storageInfo=OC_Helper::getStorageInfo('/');
 
-$email=$config->getUserValue(OC_User::getUser(), 'settings', 'email', '');
+$user = OC::$server->getUserManager()->get(OC_User::getUser());
+$email = $user->getEMailAddress();
 
 $userLang=$config->getUserValue( OC_User::getUser(), 'core', 'lang', OC_L10N::findLanguage() );
-$languageCodes=OC_L10N::findAvailableLanguages();
+$languageCodes = \OC::$server->getL10NFactory()->findAvailableLanguages();
 
 // array of common languages
-$commonlangcodes = array(
+$commonLangCodes = array(
 	'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
 );
 
 $languageNames=include 'languageCodes.php';
 $languages=array();
-$commonlanguages = array();
+$commonLanguages = array();
 foreach($languageCodes as $lang) {
 	$l = \OC::$server->getL10N('settings', $lang);
 	// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
@@ -82,12 +85,12 @@ foreach($languageCodes as $lang) {
 		$ln=array('code'=>$lang, 'name'=>$lang);
 	}
 
-	// put apropriate languages into apropriate arrays, to print them sorted
+	// put appropriate languages into appropriate arrays, to print them sorted
 	// used language -> common languages -> divider -> other languages
 	if ($lang === $userLang) {
 		$userLang = $ln;
-	} elseif (in_array($lang, $commonlangcodes)) {
-		$commonlanguages[array_search($lang, $commonlangcodes)]=$ln;
+	} elseif (in_array($lang, $commonLangCodes)) {
+		$commonLanguages[array_search($lang, $commonLangCodes)]=$ln;
 	} else {
 		$languages[]=$ln;
 	}
@@ -101,7 +104,7 @@ if (!is_array($userLang)) {
 	];
 }
 
-ksort($commonlanguages);
+ksort($commonLanguages);
 
 // sort now by displayed language not the iso-code
 usort( $languages, function ($a, $b) {
@@ -135,19 +138,25 @@ if ($externalStorageEnabled) {
 
 
 // Return template
+$l = \OC::$server->getL10N('settings');
 $tmpl = new OC_Template( 'settings', 'personal', 'user');
 $tmpl->assign('usage', OC_Helper::humanFileSize($storageInfo['used']));
-$tmpl->assign('total_space', OC_Helper::humanFileSize($storageInfo['total']));
+if ($storageInfo['quota'] === \OCP\Files\FileInfo::SPACE_UNLIMITED) {
+	$totalSpace = $l->t('Unlimited');
+} else {
+	$totalSpace = OC_Helper::humanFileSize($storageInfo['total']);
+}
+$tmpl->assign('total_space', $totalSpace);
 $tmpl->assign('usage_relative', $storageInfo['relative']);
 $tmpl->assign('clients', $clients);
 $tmpl->assign('email', $email);
 $tmpl->assign('languages', $languages);
-$tmpl->assign('commonlanguages', $commonlanguages);
+$tmpl->assign('commonlanguages', $commonLanguages);
 $tmpl->assign('activelanguage', $userLang);
 $tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
 $tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
 $tmpl->assign('displayName', OC_User::getDisplayName());
-$tmpl->assign('enableAvatars', $config->getSystemValue('enable_avatars', true));
+$tmpl->assign('enableAvatars', $config->getSystemValue('enable_avatars', true) === true);
 $tmpl->assign('avatarChangeSupported', OC_User::canUserChangeAvatar(OC_User::getUser()));
 $tmpl->assign('certs', $certificateManager->listCertificates());
 $tmpl->assign('showCertificates', $enableCertImport);
@@ -160,12 +169,22 @@ sort($groups2);
 $tmpl->assign('groups', $groups2);
 
 // add hardcoded forms from the template
-$l = \OC::$server->getL10N('settings');
 $formsAndMore = [];
+$formsAndMore[]= ['anchor' => 'avatar', 'section-name' => $l->t('Personal info')];
 $formsAndMore[]= ['anchor' => 'clientsbox', 'section-name' => $l->t('Sync clients')];
-$formsAndMore[]= ['anchor' => 'passwordform', 'section-name' => $l->t('Personal info')];
 
 $forms=OC_App::getForms('personal');
+
+
+// add bottom hardcoded forms from the template
+if ($enableCertImport) {
+	$certificatesTemplate = new OC_Template('settings', 'certificates');
+	$certificatesTemplate->assign('type', 'personal');
+	$certificatesTemplate->assign('uploadRoute', 'settings.Certificate.addPersonalRootCertificate');
+	$certificatesTemplate->assign('certs', $certificateManager->listCertificates());
+	$certificatesTemplate->assign('urlGenerator', $urlGenerator);
+	$forms[] = $certificatesTemplate->fetchPage();
+}
 
 $formsMap = array_map(function($form){
 	if (preg_match('%(<h2(?P<class>[^>]*)>.*?</h2>)%i', $form, $regs)) {
@@ -175,7 +194,7 @@ $formsMap = array_map(function($form){
 		$anchor = str_replace(' ', '-', $anchor);
 
 		return array(
-			'anchor' => 'goto-' . $anchor,
+			'anchor' => $anchor,
 			'section-name' => $sectionName,
 			'form' => $form
 		);
@@ -186,13 +205,6 @@ $formsMap = array_map(function($form){
 }, $forms);
 
 $formsAndMore = array_merge($formsAndMore, $formsMap);
-
-// add bottom hardcoded forms from the template
-if($enableCertImport) {
-	$formsAndMore[]= array( 'anchor' => 'ssl-root-certificates', 'section-name' => $l->t('SSL root certificates') );
-}
-
-
 
 $tmpl->assign('forms', $formsAndMore);
 $tmpl->printPage();

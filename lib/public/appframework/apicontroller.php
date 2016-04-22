@@ -3,7 +3,7 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -45,10 +45,10 @@ abstract class ApiController extends Controller {
      * constructor of the controller
      * @param string $appName the name of the app
      * @param IRequest $request an instance of the request
-     * @param string $corsMethods comma seperated string of HTTP verbs which
+     * @param string $corsMethods comma separated string of HTTP verbs which
      * should be allowed for websites or webapps when calling your API, defaults to
      * 'PUT, POST, GET, DELETE, PATCH'
-     * @param string $corsAllowedHeaders comma seperated string of HTTP headers
+     * @param string $corsAllowedHeaders comma separated string of HTTP headers
      * which should be allowed for websites or webapps when calling your API,
      * defaults to 'Authorization, Content-Type, Accept'
      * @param int $corsMaxAge number in seconds how long a preflighted OPTIONS

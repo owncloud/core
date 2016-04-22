@@ -5,11 +5,11 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ class OC_Response {
 	* @param integer $cache_time time to cache the response
 	*  >0		cache time in seconds
 	*  0 and <0	enable default browser caching
-	*  null		cache indefinitly
+	*  null		cache indefinitely
 	*/
 	static public function enableCaching($cache_time = null) {
 		if (is_numeric($cache_time)) {
@@ -113,7 +113,7 @@ class OC_Response {
 	}
 
 	/**
-	* Set reponse expire time
+	* Set response expire time
 	* @param string|DateTime $expires date-time when the response expires
 	*  string for DateInterval from now
 	*  DateTime object when to expire response
@@ -152,7 +152,7 @@ class OC_Response {
 	/**
 	* Checks and set Last-Modified header, when the request matches sends a
 	* 'not modified' response
-	* @param int|DateTime|string $lastModified time when the reponse was last modified
+	* @param int|DateTime|string $lastModified time when the response was last modified
 	*/
 	static public function setLastModifiedHeader($lastModified) {
 		if (empty($lastModified)) {
@@ -260,6 +260,8 @@ class OC_Response {
 			header('X-Content-Type-Options: nosniff'); // Disable sniffing the content type for IE
 			header('X-Frame-Options: Sameorigin'); // Disallow iFraming from other domains
 			header('X-Robots-Tag: none'); // https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
+			header('X-Download-Options: noopen'); // https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
+			header('X-Permitted-Cross-Domain-Policies: none'); // https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html
 		}
 	}
 

@@ -1,10 +1,12 @@
 /**
  * Disable console output unless DEBUG mode is enabled.
  * Add
- *      define('DEBUG', true);
- * To the end of config/config.php to enable debug mode.
+ *      'debug' => true,
+ * To the definition of $CONFIG in config/config.php to enable debug mode.
  * The undefined checks fix the broken ie8 console
  */
+
+/* global oc_isadmin */
 
 var oc_debug;
 var oc_webroot;
@@ -80,6 +82,12 @@ var OC={
 	webroot:oc_webroot,
 
 	appswebroots:(typeof oc_appswebroots !== 'undefined') ? oc_appswebroots:false,
+	/**
+	 * Currently logged in user or null if none
+	 *
+	 * @type String
+	 * @deprecated use {@link OC.getCurrentUser} instead
+	 */
 	currentUser:(typeof oc_current_user!=='undefined')?oc_current_user:false,
 	config: window.oc_config,
 	appConfig: window.oc_appconfig || {},
@@ -119,10 +127,12 @@ var OC={
 	/**
 	 * Gets the base path for the given OCS API service.
 	 * @param {string} service name
+	 * @param {int} version OCS API version
 	 * @return {string} OCS API base path
 	 */
-	linkToOCS: function(service) {
-		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v1.php/' + service + '/';
+	linkToOCS: function(service, version) {
+		version = (version !== 2) ? 1 : 2;
+		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v' + version + '.php/' + service + '/';
 	},
 
 	/**
@@ -158,7 +168,11 @@ var OC={
 			url = '/' + url;
 
 		}
-		// TODO save somewhere whether the webserver is able to skip the index.php to have shorter links (e.g. for sharing)
+
+		if(oc_config.modRewriteWorking == true) {
+			return OC.webroot + _build(url, params);
+		}
+
 		return OC.webroot + '/index.php' + _build(url, params);
 	},
 
@@ -168,7 +182,6 @@ var OC={
 	 * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
 	 * @param {string} file the filename
 	 * @return {string} Absolute URL for a file in an app
-	 * @deprecated use OC.generateUrl() instead
 	 */
 	filePath:function(app,type,file){
 		var isCore=OC.coreApps.indexOf(app)!==-1,
@@ -222,6 +235,13 @@ var OC={
 	},
 
 	/**
+	 * Reloads the current page
+	 */
+	reload: function() {
+		window.location.reload();
+	},
+
+	/**
 	 * Protocol that is used to access this ownCloud instance
 	 * @return {string} Used protocol
 	 */
@@ -230,14 +250,31 @@ var OC={
 	},
 
 	/**
-	 * Returns the host name used to access this ownCloud instance
+	 * Returns the host used to access this ownCloud instance
+	 * Host is sometimes the same as the hostname but now always.
 	 *
-	 * @return {string} host name
+	 * Examples:
+	 * http://example.com => example.com
+	 * https://example.com => example.com
+	 * http://example.com:8080 => example.com:8080
+	 *
+	 * @return {string} host
 	 *
 	 * @since 8.2
 	 */
 	getHost: function() {
 		return window.location.host;
+	},
+
+	/**
+	 * Returns the hostname used to access this ownCloud instance
+	 * The hostname is always stripped of the port
+	 *
+	 * @return {string} hostname
+	 * @since 9.0
+	 */
+	getHostName: function() {
+		return window.location.hostname;
 	},
 
 	/**
@@ -262,6 +299,23 @@ var OC={
 	 */
 	getRootPath: function() {
 		return OC.webroot;
+	},
+
+	/**
+	 * Returns the currently logged in user or null if there is no logged in
+	 * user (public page mode)
+	 *
+	 * @return {OC.CurrentUser} user spec
+	 * @since 9.0.0
+	 */
+	getCurrentUser: function() {
+		if (_.isUndefined(this._currentUserDisplayName)) {
+			this._currentUserDisplayName = document.getElementsByTagName('head')[0].getAttribute('data-user-displayname');
+		}
+		return {
+			uid: this.currentUser,
+			displayName: this._currentUserDisplayName
+		};
 	},
 
 	/**
@@ -669,8 +723,88 @@ var OC={
 	 */
 	getLocale: function() {
 		return $('html').prop('lang');
+	},
+
+	/**
+	 * Returns whether the current user is an administrator
+	 *
+	 * @return {bool} true if the user is an admin, false otherwise
+	 * @since 9.0.0
+	 */
+	isUserAdmin: function() {
+		return oc_isadmin;
+	},
+
+	/**
+	 * Process ajax error, redirects to main page
+	 * if an error/auth error status was returned.
+	 */
+	_processAjaxError: function(xhr) {
+		var self = this;
+		// purposefully aborted request ?
+		// this._userIsNavigatingAway needed to distinguish ajax calls cancelled by navigating away
+		// from calls cancelled by failed cross-domain ajax due to SSO redirect
+		if (xhr.status === 0 && (xhr.statusText === 'abort' || xhr.statusText === 'timeout' || self._reloadCalled)) {
+			return;
+		}
+
+		if (_.contains([0, 302, 303, 307, 401], xhr.status)) {
+			// sometimes "beforeunload" happens later, so need to defer the reload a bit
+			setTimeout(function() {
+				if (!self._userIsNavigatingAway && !self._reloadCalled) {
+					OC.Notification.show(t('core', 'Problem loading page, reloading in 5 seconds'));
+					setTimeout(OC.reload, 5000);
+					// only call reload once
+					self._reloadCalled = true;
+				}
+			}, 100);
+		}
+	},
+
+	/**
+	 * Registers XmlHttpRequest object for global error processing.
+	 *
+	 * This means that if this XHR object returns 401 or session timeout errors,
+	 * the current page will automatically be reloaded.
+	 *
+	 * @param {XMLHttpRequest} xhr
+	 */
+	registerXHRForErrorProcessing: function(xhr) {
+		var loadCallback = function() {
+			if (xhr.readyState !== 4) {
+				return;
+			}
+
+			if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+				return;
+			}
+
+			// fire jquery global ajax error handler
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+		};
+
+		var errorCallback = function() {
+			// fire jquery global ajax error handler
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+		};
+
+		// FIXME: also needs an IE8 way
+		if (xhr.addEventListener) {
+			xhr.addEventListener('load', loadCallback);
+			xhr.addEventListener('error', errorCallback);
+		}
+
 	}
 };
+
+/**
+ * Current user attributes
+ *
+ * @typedef {Object} OC.CurrentUser
+ *
+ * @property {String} uid user id
+ * @property {String} displayName display name
+ */
 
 /**
  * @namespace OC.Plugins
@@ -865,7 +999,11 @@ OC.msg = {
 OC.Notification={
 	queuedNotifications: [],
 	getDefaultNotificationFunction: null,
-	notificationTimer: 0,
+
+	/**
+	 * @type Array.<int> array of notification timers
+	 */
+	notificationTimers: [],
 
 	/**
 	 * @param callback
@@ -876,25 +1014,64 @@ OC.Notification={
 	},
 
 	/**
-	 * Hides a notification
-	 * @param callback
-	 * @todo Write documentation
+	 * Hides a notification.
+	 *
+	 * If a row is given, only hide that one.
+	 * If no row is given, hide all notifications.
+	 *
+	 * @param {jQuery} [$row] notification row
+	 * @param {Function} [callback] callback
 	 */
-	hide: function(callback) {
-		$('#notification').fadeOut('400', function(){
-			if (OC.Notification.isHidden()) {
-				if (OC.Notification.getDefaultNotificationFunction) {
-					OC.Notification.getDefaultNotificationFunction.call();
-				}
-			}
+	hide: function($row, callback) {
+		var self = this;
+		var $notification = $('#notification');
+
+		if (_.isFunction($row)) {
+			// first arg is the callback
+			callback = $row;
+			$row = undefined;
+		}
+
+		if (!$row) {
+			console.warn('Missing argument $row in OC.Notification.hide() call, caller needs to be adjusted to only dismiss its own notification');
+			// assume that the row to be hidden is the first one
+			$row = $notification.find('.row:first');
+		}
+
+		if ($row && $notification.find('.row').length > 1) {
+			// remove the row directly
+			$row.remove();
 			if (callback) {
 				callback.call();
 			}
-			$('#notification').empty();
-			if(OC.Notification.queuedNotifications.length > 0){
-				OC.Notification.showHtml(OC.Notification.queuedNotifications[0]);
-				OC.Notification.queuedNotifications.shift();
+			return;
+		}
+
+		_.defer(function() {
+			// fade out is supposed to only fade when there is a single row
+			// however, some code might call hide() and show() directly after,
+			// which results in more than one element
+			// in this case, simply delete that one element that was supposed to
+			// fade out
+			//
+			// FIXME: remove once all callers are adjusted to only hide their own notifications
+			if ($notification.find('.row').length > 1) {
+				$row.remove();
+				return;
 			}
+
+			// else, fade out whatever was present
+			$notification.fadeOut('400', function(){
+				if (self.isHidden()) {
+					if (self.getDefaultNotificationFunction) {
+						self.getDefaultNotificationFunction.call();
+					}
+				}
+				if (callback) {
+					callback.call();
+				}
+				$notification.empty();
+			});
 		});
 	},
 
@@ -902,66 +1079,93 @@ OC.Notification={
 	 * Shows a notification as HTML without being sanitized before.
 	 * If you pass unsanitized user input this may lead to a XSS vulnerability.
 	 * Consider using show() instead of showHTML()
+	 *
 	 * @param {string} html Message to display
+	 * @param {Object} [options] options
+	 * @param {string] [options.type] notification type
+	 * @param {int} [options.timeout=0] timeout value, defaults to 0 (permanent)
+	 * @return {jQuery} jQuery element for notification row
 	 */
-	showHtml: function(html) {
-		var notification = $('#notification');
-		if((notification.filter('span.undo').length == 1) || OC.Notification.isHidden()){
-			notification.html(html);
-			notification.fadeIn().css('display','inline-block');
-		}else{
-			OC.Notification.queuedNotifications.push(html);
+	showHtml: function(html, options) {
+		options = options || {};
+		_.defaults(options, {
+			timeout: 0
+		});
+
+		var self = this;
+		var $notification = $('#notification');
+		if (this.isHidden()) {
+			$notification.fadeIn().css('display','inline-block');
 		}
+		var $row = $('<div class="row"></div>');
+		if (options.type) {
+			$row.addClass('type-' + options.type);
+		}
+		if (options.type === 'error') {
+			// add a close button
+			var $closeButton = $('<a class="action close icon-close" href="#"></a>');
+			$closeButton.attr('alt', t('core', 'Dismiss'));
+			$row.append($closeButton);
+			$closeButton.one('click', function() {
+				self.hide($row);
+				return false;
+			});
+			$row.addClass('closeable');
+		}
+
+		$row.prepend(html);
+		$notification.append($row);
+
+		if(options.timeout > 0) {
+			// register timeout to vanish notification
+			this.notificationTimers.push(setTimeout(function() {
+				self.hide($row);
+			}, (options.timeout * 1000)));
+		}
+
+		return $row;
 	},
 
 	/**
 	 * Shows a sanitized notification
+	 *
 	 * @param {string} text Message to display
+	 * @param {Object} [options] options
+	 * @param {string] [options.type] notification type
+	 * @param {int} [options.timeout=0] timeout value, defaults to 0 (permanent)
+	 * @return {jQuery} jQuery element for notification row
 	 */
-	show: function(text) {
-		var notification = $('#notification');
-		if((notification.filter('span.undo').length == 1) || OC.Notification.isHidden()){
-			notification.text(text);
-			notification.fadeIn().css('display','inline-block');
-		}else{
-			OC.Notification.queuedNotifications.push($('<div/>').text(text).html());
-		}
+	show: function(text, options) {
+		return this.showHtml($('<div/>').text(text).html(), options);
 	},
-
 
 	/**
 	 * Shows a notification that disappears after x seconds, default is
 	 * 7 seconds
+	 *
 	 * @param {string} text Message to show
 	 * @param {array} [options] options array
 	 * @param {int} [options.timeout=7] timeout in seconds, if this is 0 it will show the message permanently
 	 * @param {boolean} [options.isHTML=false] an indicator for HTML notifications (true) or text (false)
+	 * @param {string] [options.type] notification type
 	 */
 	showTemporary: function(text, options) {
+		var self = this;
 		var defaults = {
-				isHTML: false,
-				timeout: 7
-			},
-			options = options || {};
+			isHTML: false,
+			timeout: 7
+		};
+		options = options || {};
 		// merge defaults with passed in options
 		_.defaults(options, defaults);
 
-		// clear previous notifications
-		OC.Notification.hide();
-		if(OC.Notification.notificationTimer) {
-			clearTimeout(OC.Notification.notificationTimer);
-		}
-
+		var $row;
 		if(options.isHTML) {
-			OC.Notification.showHtml(text);
+			$row = this.showHtml(text, options);
 		} else {
-			OC.Notification.show(text);
+			$row = this.show(text, options);
 		}
-
-		if(options.timeout > 0) {
-			// register timeout to vanish notification
-			OC.Notification.notificationTimer = setTimeout(OC.Notification.hide, (options.timeout * 1000));
-		}
+		return $row;
 	},
 
 	/**
@@ -969,7 +1173,7 @@ OC.Notification={
 	 * @return {boolean}
 	 */
 	isHidden: function() {
-		return ($("#notification").text() === '');
+		return !$("#notification").find('.row').length;
 	}
 };
 
@@ -1134,9 +1338,6 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
 			var item = localStorage.getItem(OC.localStorage.namespace+name);
 			if(item === null) {
 				return null;
-			} else if (typeof JSON === 'undefined') {
-				//fallback to jquery for IE6/7/8
-				return $.parseJSON(item);
 			} else {
 				return JSON.parse(item);
 			}
@@ -1236,6 +1437,48 @@ function initCore() {
 	 */
 	moment.locale(OC.getLocale());
 
+	var userAgent = window.navigator.userAgent;
+	var msie = userAgent.indexOf('MSIE ');
+	var trident = userAgent.indexOf('Trident/');
+	var edge = userAgent.indexOf('Edge/');
+
+	if (msie > 0 || trident > 0) {
+		// (IE 10 or older) || IE 11
+		$('html').addClass('ie');
+	} else if (edge > 0) {
+		// for edge
+		$('html').addClass('edge');
+	}
+
+	$(window).on('unload.main', function() {
+		OC._unloadCalled = true;
+	});
+	$(window).on('beforeunload.main', function() {
+		// super-trick thanks to http://stackoverflow.com/a/4651049
+		// in case another handler displays a confirmation dialog (ex: navigating away
+		// during an upload), there are two possible outcomes: user clicked "ok" or
+		// "cancel"
+
+		// first timeout handler is called after unload dialog is closed
+		setTimeout(function() {
+			OC._userIsNavigatingAway = true;
+
+			// second timeout event is only called if user cancelled (Chrome),
+			// but in other browsers it might still be triggered, so need to
+			// set a higher delay...
+			setTimeout(function() {
+				if (!OC._unloadCalled) {
+					OC._userIsNavigatingAway = false;
+				}
+			}, 10000);
+		},1);
+	});
+	$(document).on('ajaxError.main', function( event, request, settings ) {
+		if (settings && settings.allowAuthErrors) {
+			return;
+		}
+		OC._processAjaxError(request);
+	});
 
 	/**
 	 * Calls the server periodically to ensure that session doesn't
@@ -1257,9 +1500,15 @@ function initCore() {
 			interval = maxInterval;
 		}
 		var url = OC.generateUrl('/heartbeat');
-		setInterval(function(){
-			$.post(url);
-		}, interval * 1000);
+		var heartBeatTimeout = null;
+		var heartBeat = function() {
+			clearTimeout(heartBeatTimeout);
+			heartBeatTimeout = setInterval(function() {
+				$.post(url);
+			}, interval * 1000);
+		};
+		$(document).ajaxComplete(heartBeat);
+		heartBeat();
 	}
 
 	// session heartbeat (defaults to enabled)
@@ -1269,7 +1518,7 @@ function initCore() {
 		initSessionHeartBeat();
 	}
 
-	if(!OC.Util.hasSVGSupport()){ //replace all svg images with png images for browser that dont support svg
+	if(!OC.Util.hasSVGSupport()){ //replace all svg images with png images for browser that don't support svg
 		OC.Util.replaceSVG();
 	}else{
 		SVGSupport.checkMimeType();
@@ -1312,11 +1561,30 @@ function initCore() {
 			}
 			if(!event.ctrlKey) {
 				$app.addClass('app-loading');
+			} else {
+				// Close navigation when opening app in
+				// a new tab
+				OC.hideMenus();
 			}
 		});
 	}
 
+	function setupUserMenu() {
+		var $menu = $('#header #settings');
+
+		$menu.delegate('a', 'click', function(event) {
+			var $page = $(event.target);
+			if (!$page.is('a')) {
+				$page = $page.closest('a');
+			}
+			$page.find('img').remove();
+			$page.find('div').remove(); // prevent odd double-clicks
+			$page.prepend($('<div/>').addClass('icon-loading-dark'));
+		});
+	}
+
 	setupMainMenu();
+	setupUserMenu();
 
 	// move triangle of apps dropdown to align with app name triangle
 	// 2 is the additional offset between the triangles
@@ -1418,7 +1686,6 @@ function initCore() {
 		$('body').delegate('#app-content', 'apprendered appresized', adjustControlsWidth);
 
 	}
-
 }
 
 $(document).ready(initCore);
@@ -1437,7 +1704,7 @@ $.fn.filterAttr = function(attr_name, attr_value) {
  * @return {string}
  */
 function humanFileSize(size, skipSmallSizes) {
-	var humanList = ['B', 'kB', 'MB', 'GB', 'TB'];
+	var humanList = ['B', 'KB', 'MB', 'GB', 'TB'];
 	// Calculate Log with base 1024: size = 1024 ** order
 	var order = size > 0 ? Math.floor(Math.log(size) / Math.log(1024)) : 0;
 	// Stay in range of the byte sizes that are defined
@@ -1446,9 +1713,9 @@ function humanFileSize(size, skipSmallSizes) {
 	var relativeSize = (size / Math.pow(1024, order)).toFixed(1);
 	if(skipSmallSizes === true && order === 0) {
 		if(relativeSize !== "0.0"){
-			return '< 1 kB';
+			return '< 1 KB';
 		} else {
-			return '0 kB';
+			return '0 KB';
 		}
 	}
 	if(order < 2){

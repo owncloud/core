@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ class SFTP_Key extends Backend {
 	public function __construct(IL10N $l, RSA $legacyAuth, SFTP $sftpBackend) {
 		$this
 			->setIdentifier('\OC\Files\Storage\SFTP_Key')
-			->setStorageClass('\OC\Files\Storage\SFTP')
+			->setStorageClass('\OCA\Files_External\Lib\Storage\SFTP')
 			->setText($l->t('SFTP with secret key login'))
 			->addParameters([
 				(new DefinitionParameter('host', $l->t('Host'))),

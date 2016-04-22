@@ -1,8 +1,10 @@
 <?php
 /**
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,7 +29,6 @@ use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ServerPlugin;
-use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 
 class LockPlugin extends ServerPlugin {
@@ -39,18 +40,6 @@ class LockPlugin extends ServerPlugin {
 	private $server;
 
 	/**
-	 * @var \Sabre\DAV\Tree
-	 */
-	private $tree;
-
-	/**
-	 * @param \Sabre\DAV\Tree $tree tree
-	 */
-	public function __construct(Tree $tree) {
-		$this->tree = $tree;
-	}
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
@@ -60,13 +49,13 @@ class LockPlugin extends ServerPlugin {
 	}
 
 	public function getLock(RequestInterface $request) {
-		// we cant listen on 'beforeMethod:PUT' due to order of operations with setting up the tree
+		// we can't listen on 'beforeMethod:PUT' due to order of operations with setting up the tree
 		// so instead we limit ourselves to the PUT method manually
 		if ($request->getMethod() !== 'PUT' || isset($_SERVER['HTTP_OC_CHUNKED'])) {
 			return;
 		}
 		try {
-			$node = $this->tree->getNodeForPath($request->getPath());
+			$node = $this->server->tree->getNodeForPath($request->getPath());
 		} catch (NotFound $e) {
 			return;
 		}
@@ -84,7 +73,7 @@ class LockPlugin extends ServerPlugin {
 			return;
 		}
 		try {
-			$node = $this->tree->getNodeForPath($request->getPath());
+			$node = $this->server->tree->getNodeForPath($request->getPath());
 		} catch (NotFound $e) {
 			return;
 		}

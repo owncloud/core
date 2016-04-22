@@ -1,12 +1,13 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,10 +26,12 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OC\Files\FileInfo;
 use OC\Files\Mount\MoveableMount;
+use OCP\Files\ForbiddenException;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\LockedException;
@@ -91,13 +94,19 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		return $path;
 	}
 
+	public function cacheNode(Node $node) {
+		$this->cache[trim($node->getPath(), '/')] = $node;
+	}
+
 	/**
 	 * Returns the INode object for the requested path
 	 *
 	 * @param string $path
-	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
-	 * @throws \Sabre\DAV\Exception\NotFound
 	 * @return \Sabre\DAV\INode
+	 * @throws InvalidPath
+	 * @throws \Sabre\DAV\Exception\Locked
+	 * @throws \Sabre\DAV\Exception\NotFound
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function getNodeForPath($path) {
 		if (!$this->fileView) {
@@ -105,16 +114,17 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		}
 
 		$path = trim($path, '/');
+
+		if (isset($this->cache[$path])) {
+			return $this->cache[$path];
+		}
+
 		if ($path) {
 			try {
 				$this->fileView->verifyPath($path, basename($path));
 			} catch (\OCP\Files\InvalidPathException $ex) {
 				throw new InvalidPath($ex->getMessage());
 			}
-		}
-
-		if (isset($this->cache[$path])) {
-			return $this->cache[$path];
 		}
 
 		// Is it the root node?
@@ -128,13 +138,12 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			$mount = $this->fileView->getMount($path);
 			$storage = $mount->getStorage();
 			$internalPath = $mount->getInternalPath($absPath);
-			if ($storage) {
+			if ($storage && $storage->file_exists($internalPath)) {
 				/**
 				 * @var \OC\Files\Storage\Storage $storage
 				 */
-				$scanner = $storage->getScanner($internalPath);
 				// get data directly
-				$data = $scanner->getData($internalPath);
+				$data = $storage->getMetaData($internalPath);
 				$info = new FileInfo($absPath, $storage, $internalPath, $data, $mount);
 			} else {
 				$info = null;
@@ -160,7 +169,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		}
 
 		if ($info->getType() === 'dir') {
-			$node = new \OCA\DAV\Connector\Sabre\Directory($this->fileView, $info);
+			$node = new \OCA\DAV\Connector\Sabre\Directory($this->fileView, $info, $this);
 		} else {
 			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
 		}
@@ -188,7 +197,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		$targetNodeExists = $this->nodeExists($destinationPath);
 		$sourceNode = $this->getNodeForPath($sourcePath);
 		if ($sourceNode instanceof \Sabre\DAV\ICollection && $targetNodeExists) {
-			throw new \Sabre\DAV\Exception\Forbidden('Could not copy directory ' . $sourceNode . ', target exists');
+			throw new \Sabre\DAV\Exception\Forbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
 		}
 		list($sourceDir,) = \Sabre\HTTP\URLUtil::splitPath($sourcePath);
 		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destinationPath);
@@ -235,6 +244,8 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			}
 		} catch (StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+		} catch (ForbiddenException $ex) {
+			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
@@ -274,6 +285,8 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			$this->fileView->copy($source, $destination);
 		} catch (StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+		} catch (ForbiddenException $ex) {
+			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}

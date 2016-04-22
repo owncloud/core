@@ -29,7 +29,8 @@ OCA.Trashbin.App = {
 				scrollContainer: $('#app-content'),
 				fileActions: this._createFileActions(),
 				detailsViewEnabled: false,
-				scrollTo: urlParams.scrollto
+				scrollTo: urlParams.scrollto,
+				config: OCA.Files.App.getFilesConfig()
 			}
 		);
 	},
@@ -38,10 +39,7 @@ OCA.Trashbin.App = {
 		var fileActions = new OCA.Files.FileActions();
 		fileActions.register('dir', 'Open', OC.PERMISSION_READ, '', function (filename, context) {
 			var dir = context.fileList.getCurrentDirectory();
-			if (dir !== '/') {
-				dir = dir + '/';
-			}
-			context.fileList.changeDirectory(dir + filename);
+			context.fileList.changeDirectory(OC.joinPaths(dir, filename));
 		});
 
 		fileActions.setDefault('dir', 'Open');
@@ -52,7 +50,7 @@ OCA.Trashbin.App = {
 			type: OCA.Files.FileActions.TYPE_INLINE,
 			mime: 'all',
 			permissions: OC.PERMISSION_READ,
-			icon: OC.imagePath('core', 'actions/history'),
+			iconClass: 'icon-history',
 			actionHandler: function(filename, context) {
 				var fileList = context.fileList;
 				var tr = fileList.findFileEl(filename);
@@ -73,9 +71,7 @@ OCA.Trashbin.App = {
 			displayName: t('files', 'Delete'),
 			mime: 'all',
 			permissions: OC.PERMISSION_READ,
-			icon: function() {
-				return OC.imagePath('core', 'actions/delete');
-			},
+			iconClass: 'icon-delete',
 			render: function(actionSpec, isDefault, context) {
 				var $actionLink = fileActions._makeActionLink(actionSpec, context);
 				$actionLink.attr('original-title', t('files_trashbin', 'Delete permanently'));

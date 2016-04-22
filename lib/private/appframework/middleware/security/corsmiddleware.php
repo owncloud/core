@@ -4,7 +4,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@
 
 namespace OC\AppFramework\Middleware\Security;
 
+use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -35,7 +36,7 @@ use OCP\AppFramework\Middleware;
 /**
  * This middleware sets the correct CORS headers on a response if the
  * controller has the @CORS annotation. This is needed for webapps that want
- * to access an API and dont run on the same domain, see
+ * to access an API and don't run on the same domain, see
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
  */
 class CORSMiddleware extends Middleware {
@@ -134,7 +135,7 @@ class CORSMiddleware extends Middleware {
 	 * @param string $methodName the name of the method that will be called on
 	 *                           the controller
 	 * @param \Exception $exception the thrown exception
-	 * @throws \Exception the passed in exception if it cant handle it
+	 * @throws \Exception the passed in exception if it can't handle it
 	 * @return Response a Response object or null in case that the exception could not be handled
 	 */
 	public function afterException($controller, $methodName, \Exception $exception){

@@ -3,7 +3,7 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ class Output implements IOutput {
 	/**
 	 * @param string $path
 	 *
-	 * @return bool false if an error occured
+	 * @return bool false if an error occurred
 	 */
 	public function setReadfile($path) {
 		return @readfile($path);

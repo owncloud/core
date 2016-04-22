@@ -5,7 +5,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -44,6 +44,9 @@ class ErrorHandler {
 
 		if ($debug) {
 			set_error_handler(array($handler, 'onAll'), E_ALL);
+			if (\OC::$CLI) {
+				set_exception_handler(array('OC_Template', 'printExceptionErrorPage'));
+			}
 		} else {
 			set_error_handler(array($handler, 'onError'));
 		}

@@ -5,9 +5,10 @@ OC.L10N.register(
     "Personal" : "პირადი",
     "Grant access" : "დაშვების მინიჭება",
     "Access granted" : "დაშვება მინიჭებულია",
-    "None" : "არა",
     "Username" : "მომხმარებლის სახელი",
     "Password" : "პაროლი",
+    "Save" : "შენახვა",
+    "None" : "არა",
     "API key" : "API გასაღები",
     "Port" : "პორტი",
     "Region" : "რეგიონი",
@@ -21,7 +22,7 @@ OC.L10N.register(
     "External Storage" : "ექსტერნალ საცავი",
     "Folder name" : "ფოლდერის სახელი",
     "Configuration" : "კონფიგურაცია",
-    "Delete" : "წაშლა",
-    "Add storage" : "საცავის დამატება"
+    "Add storage" : "საცავის დამატება",
+    "Delete" : "წაშლა"
 },
 "nplurals=1; plural=0;");

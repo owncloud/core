@@ -2,7 +2,7 @@
 /**
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,44 +26,36 @@ class OCSShareWrapper {
 	 * @return Share20OCS
 	 */
 	private function getShare20OCS() {
-		return new Share20OCS(new \OC\Share20\Manager(
-		                   \OC::$server->getUserSession()->getUser(),
-		                   \OC::$server->getUserManager(),
-		                   \OC::$server->getGroupManager(),
-		                   \OC::$server->getLogger(),
-		                   \OC::$server->getAppConfig(),
-		                   \OC::$server->getUserFolder(),
-		                    new \OC\Share20\DefaultShareProvider(
-		                       \OC::$server->getDatabaseConnection(),
-							   \OC::$server->getUserManager(),
-							   \OC::$server->getGroupManager(),
-							   \OC::$server->getUserFolder()
-		                   )
-		               ),
-		               \OC::$server->getGroupManager(),
-		               \OC::$server->getUserManager(),
-		               \OC::$server->getRequest(),
-		               \OC::$server->getUserFolder());
+		return new Share20OCS(
+			\OC::$server->getShareManager(),
+			\OC::$server->getGroupManager(),
+			\OC::$server->getUserManager(),
+			\OC::$server->getRequest(),
+			\OC::$server->getRootFolder(),
+			\OC::$server->getURLGenerator(),
+			\OC::$server->getUserSession()->getUser());
 	}
 
-	public function getAllShares($params) {
-		return \OCA\Files_Sharing\API\Local::getAllShares($params);
+	public function getAllShares() {
+		return $this->getShare20OCS()->getShares();
 	}
 
-	public function createShare($params) {
-		return \OCA\Files_Sharing\API\Local::createShare($params);
+	public function createShare() {
+		return $this->getShare20OCS()->createShare();
 	}
 
 	public function getShare($params) {
-		return \OCA\Files_Sharing\API\Local::getShare($params);
+		$id = $params['id'];
+		return $this->getShare20OCS()->getShare($id);
 	}
 
 	public function updateShare($params) {
-		return \OCA\Files_Sharing\API\Local::updateShare($params);
+		$id = $params['id'];
+		return $this->getShare20OCS()->updateShare($id);
 	}
 
 	public function deleteShare($params) {
-		$id = (int)$params['id'];
+		$id = $params['id'];
 		return $this->getShare20OCS()->deleteShare($id);
 	}
 }

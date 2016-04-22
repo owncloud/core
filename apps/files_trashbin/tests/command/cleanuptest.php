@@ -2,8 +2,9 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,6 +30,13 @@ use Test\TestCase;
 use OC\User\Manager;
 use OCP\Files\IRootFolder;
 
+/**
+ * Class CleanUpTest
+ *
+ * @group DB
+ *
+ * @package OCA\Files_Trashbin\Tests\Command
+ */
 class CleanUpTest extends TestCase {
 
 	/** @var  CleanUp */

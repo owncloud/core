@@ -3,8 +3,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -99,8 +101,9 @@ class File extends Node implements \OCP\Files\File {
 	public function delete() {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
 			$this->sendHooks(array('preDelete'));
+			$fileInfo = $this->getFileInfo();
 			$this->view->unlink($this->path);
-			$nonExisting = new NonExistingFile($this->root, $this->view, $this->path);
+			$nonExisting = new NonExistingFile($this->root, $this->view, $this->path, $fileInfo);
 			$this->root->emit('\OC\Files', 'postDelete', array($nonExisting));
 			$this->exists = false;
 			$this->fileInfo = null;
@@ -162,5 +165,12 @@ class File extends Node implements \OCP\Files\File {
 	 */
 	public function hash($type, $raw = false) {
 		return $this->view->hash($type, $this->path, $raw);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getChecksum() {
+		return $this->getFileInfo()->getChecksum();
 	}
 }

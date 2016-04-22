@@ -753,13 +753,14 @@ var OCdialogs = {
 			var sorted = dirs.concat(others);
 
 			$.each(sorted, function(idx, entry) {
+				entry.icon = OC.MimeType.getIconUrl(entry.mimetype);
 				var $li = self.$listTmpl.octemplate({
 					type: entry.type,
 					dir: dir,
 					filename: entry.name,
 					date: OC.Util.relativeModifiedDate(entry.mtime)
 				});
-				if (entry.isPreviewAvailable) {
+				if (entry.type === 'file') {
 					var urlSpec = {
 						file: dir + '/' + entry.name
 					};

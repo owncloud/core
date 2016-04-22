@@ -15,17 +15,18 @@
 	var TEMPLATE_FAVORITE_ACTION =
 		'<a href="#" ' +
 		'class="action action-favorite {{#isFavorite}}permanent{{/isFavorite}}">' +
-		'<img class="svg" alt="{{altText}}" src="{{imgFile}}" />' +
+		'<span class="icon {{iconClass}}" />' +
+		'<span class="hidden-visually">{{altText}}</span>' +
 		'</a>';
 
 	/**
-	 * Returns the path to the star image
+	 * Returns the icon class for the matching state
 	 *
 	 * @param {boolean} state true if starred, false otherwise
-	 * @return {string} path to star image
+	 * @return {string} icon class for star image
 	 */
-	function getStarImage(state) {
-		return OC.imagePath('core', state ? 'actions/starred' : 'actions/star');
+	function getStarIconClass(state) {
+		return state ? 'icon-starred' : 'icon-star';
 	}
 
 	/**
@@ -41,7 +42,7 @@
 		return this._template({
 			isFavorite: state,
 			altText: state ? t('files', 'Favorited') : t('files', 'Favorite'),
-			imgFile: getStarImage(state)
+			iconClass: getStarIconClass(state)
 		});
 	}
 
@@ -52,8 +53,7 @@
 	 * @param {boolean} state true if starred, false otherwise
 	 */
 	function toggleStar($actionEl, state) {
-		$actionEl.find('img').attr('src', getStarImage(state));
-		$actionEl.hide().show(0); //force Safari to redraw element on src change
+		$actionEl.removeClass('icon-star icon-starred').addClass(getStarIconClass(state));
 		$actionEl.toggleClass('permanent', state);
 	}
 
@@ -161,6 +161,38 @@
 				fileInfo.tags = tags;
 				return fileInfo;
 			};
+
+			var NS_OC = 'http://owncloud.org/ns';
+
+			var oldGetWebdavProperties = fileList._getWebdavProperties;
+			fileList._getWebdavProperties = function() {
+				var props = oldGetWebdavProperties.apply(this, arguments);
+				props.push('{' + NS_OC + '}tags');
+				props.push('{' + NS_OC + '}favorite');
+				return props;
+			};
+
+			fileList.filesClient.addFileInfoParser(function(response) {
+				var data = {};
+				var props = response.propStat[0].properties;
+				var tags = props['{' + NS_OC + '}tags'];
+				var favorite = props['{' + NS_OC + '}favorite'];
+				if (tags && tags.length) {
+					tags = _.chain(tags).filter(function(xmlvalue) {
+						return (xmlvalue.namespaceURI === NS_OC && xmlvalue.nodeName.split(':')[1] === 'tag');
+					}).map(function(xmlvalue) {
+						return xmlvalue.textContent || xmlvalue.text;
+					}).value();
+				}
+				if (tags) {
+					data.tags = tags;
+				}
+				if (favorite && parseInt(favorite, 10) !== 0) {
+					data.tags = data.tags || [];
+					data.tags.push(OC.TAG_FAVORITE);
+				}
+				return data;
+			});
 		},
 
 		attach: function(fileList) {

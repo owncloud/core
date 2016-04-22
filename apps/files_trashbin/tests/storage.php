@@ -3,9 +3,11 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,6 +29,13 @@ namespace OCA\Files_trashbin\Tests\Storage;
 use OC\Files\Storage\Temporary;
 use OC\Files\Filesystem;
 
+/**
+ * Class Storage
+ *
+ * @group DB
+ *
+ * @package OCA\Files_trashbin\Tests\Storage
+ */
 class Storage extends \Test\TestCase {
 	/**
 	 * @var string
@@ -68,7 +77,8 @@ class Storage extends \Test\TestCase {
 	protected function tearDown() {
 		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
 		$this->logout();
-		\OC_User::deleteUser($this->user);
+		$user = \OC::$server->getUserManager()->get($this->user);
+		if ($user !== null) { $user->delete(); }
 		\OC_Hook::clear();
 		parent::tearDown();
 	}
@@ -251,9 +261,14 @@ class Storage extends \Test\TestCase {
 		$recipientUser = $this->getUniqueId('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
-		$fileinfo = $this->userView->getFileInfo('share');
-		$this->assertTrue(\OCP\Share::shareItem('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-				$recipientUser, 31));
+		$node = \OC::$server->getUserFolder($this->user)->get('share');
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedBy($this->user)
+			->setSharedWith($recipientUser)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
 
 		$this->loginAsUser($recipientUser);
 
@@ -299,9 +314,14 @@ class Storage extends \Test\TestCase {
 		$recipientUser = $this->getUniqueId('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
-		$fileinfo = $this->userView->getFileInfo('share');
-		$this->assertTrue(\OCP\Share::shareItem('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-				$recipientUser, 31));
+		$node = \OC::$server->getUserFolder($this->user)->get('share');
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedBy($this->user)
+			->setSharedWith($recipientUser)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
 
 		$this->loginAsUser($recipientUser);
 
@@ -425,7 +445,7 @@ class Storage extends \Test\TestCase {
 	}
 
 	/**
-	 * Delete should fail is the source file cant be deleted
+	 * Delete should fail if the source file can't be deleted.
 	 */
 	public function testSingleStorageDeleteFileFail() {
 		/**
@@ -462,7 +482,7 @@ class Storage extends \Test\TestCase {
 	}
 
 	/**
-	 * Delete should fail is the source folder cant be deleted
+	 * Delete should fail if the source folder can't be deleted.
 	 */
 	public function testSingleStorageDeleteFolderFail() {
 		/**
@@ -523,5 +543,18 @@ class Storage extends \Test\TestCase {
 			['/schiesbn/', '/test.txt', true, false],
 			['/schiesbn/', '/test.txt', false, false],
 		];
+	}
+
+	/**
+	 * Test that deleting a file doesn't error when nobody is logged in
+	 */
+	public function testSingleStorageDeleteFileLoggedOut() {
+		$this->logout();
+
+		if (!$this->userView->file_exists('test.txt')) {
+			$this->markTestSkipped('Skipping since the current home storage backend requires the user to logged in');
+		} else {
+			$this->userView->unlink('test.txt');
+		}
 	}
 }

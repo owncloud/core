@@ -4,17 +4,18 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Jesús Macias <jmacias@solidgear.es>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,10 +34,10 @@
 
 use phpseclib\Crypt\AES;
 use \OCA\Files_External\Appinfo\Application;
-use \OCA\Files_External\Lib\BackendConfig;
-use \OCA\Files_External\Service\BackendService;
 use \OCA\Files_External\Lib\Backend\LegacyBackend;
 use \OCA\Files_External\Lib\StorageConfig;
+use \OCA\Files_External\Lib\Backend\Backend;
+use \OCP\Files\StorageNotAvailableException;
 
 /**
  * Class to configure mount.json globally and for users
@@ -48,11 +49,6 @@ class OC_Mount_Config {
 	const MOUNT_TYPE_GROUP = 'group';
 	const MOUNT_TYPE_USER = 'user';
 	const MOUNT_TYPE_PERSONAL = 'personal';
-
-	// getBackendStatus return types
-	const STATUS_SUCCESS = 0;
-	const STATUS_ERROR = 1;
-	const STATUS_INDETERMINATE = 2;
 
 	// whether to skip backend test (for unit tests, as this static class is not mockable)
 	public static $skipTest = false;
@@ -75,36 +71,6 @@ class OC_Mount_Config {
 		return true;
 	}
 
-	/*
-	 * Hook that mounts the given user's visible mount points
-	 *
-	 * @param array $data
-	 */
-	public static function initMountPointsHook($data) {
-		if ($data['user']) {
-			$user = \OC::$server->getUserManager()->get($data['user']);
-			if (!$user) {
-				\OC::$server->getLogger()->warning(
-					'Cannot init external mount points for non-existant user "' . $data['user'] . '".',
-					['app' => 'files_external']
-				);
-				return;
-			}
-			$userView = new \OC\Files\View('/' . $user->getUID() . '/files');
-			$changePropagator = new \OC\Files\Cache\ChangePropagator($userView);
-			$etagPropagator = new \OCA\Files_External\EtagPropagator($user, $changePropagator, \OC::$server->getConfig());
-			$etagPropagator->propagateDirtyMountPoints();
-			\OCP\Util::connectHook(
-				\OC\Files\Filesystem::CLASSNAME,
-				\OC\Files\Filesystem::signal_create_mount,
-				$etagPropagator, 'updateHook');
-			\OCP\Util::connectHook(
-				\OC\Files\Filesystem::CLASSNAME,
-				\OC\Files\Filesystem::signal_delete_mount,
-				$etagPropagator, 'updateHook');
-		}
-	}
-
 	/**
 	 * Returns the mount points for the given user.
 	 * The mount point is relative to the data directory.
@@ -125,6 +91,7 @@ class OC_Mount_Config {
 		$userStoragesService->setUser($user);
 
 		foreach ($userGlobalStoragesService->getStorages() as $storage) {
+			/** @var \OCA\Files_external\Lib\StorageConfig $storage */
 			$mountPoint = '/'.$uid.'/files'.$storage->getMountPoint();
 			$mountEntry = self::prepareMountPointEntry($storage, false);
 			foreach ($mountEntry['options'] as &$option) {
@@ -244,24 +211,27 @@ class OC_Mount_Config {
 	 *
 	 * @param string $class backend class name
 	 * @param array $options backend configuration options
+	 * @param boolean $isPersonal
 	 * @return int see self::STATUS_*
+	 * @throws Exception
 	 */
 	public static function getBackendStatus($class, $options, $isPersonal) {
 		if (self::$skipTest) {
-			return self::STATUS_SUCCESS;
+			return StorageNotAvailableException::STATUS_SUCCESS;
 		}
 		foreach ($options as &$option) {
 			$option = self::setUserVars(OCP\User::getUser(), $option);
 		}
 		if (class_exists($class)) {
 			try {
+				/** @var \OC\Files\Storage\Common $storage */
 				$storage = new $class($options);
 
 				try {
 					$result = $storage->test($isPersonal);
 					$storage->setAvailability($result);
 					if ($result) {
-						return self::STATUS_SUCCESS;
+						return StorageNotAvailableException::STATUS_SUCCESS;
 					}
 				} catch (\Exception $e) {
 					$storage->setAvailability(false);
@@ -272,7 +242,7 @@ class OC_Mount_Config {
 				throw $exception;
 			}
 		}
-		return self::STATUS_ERROR;
+		return StorageNotAvailableException::STATUS_ERROR;
 	}
 
 	/**
@@ -299,30 +269,10 @@ class OC_Mount_Config {
 	}
 
 	/**
-	 * Write the mount points to the config file
-	 *
-	 * @param string|null $user If not null, personal for $user, otherwise system
-	 * @param array $data Mount points
-	 */
-	public static function writeData($user, $data) {
-		if (isset($user)) {
-			$file = \OC::$server->getUserManager()->get($user)->getHome() . '/mount.json';
-		} else {
-			$config = \OC::$server->getConfig();
-			$datadir = $config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data/');
-			$file = $config->getSystemValue('mount_file', $datadir . '/mount.json');
-		}
-
-		$content = json_encode($data, JSON_PRETTY_PRINT);
-		@file_put_contents($file, $content);
-		@chmod($file, 0640);
-	}
-
-	/**
 	 * Get backend dependency message
 	 * TODO: move into AppFramework along with templates
 	 *
-	 * @param BackendConfig[] $backends
+	 * @param Backend[] $backends
 	 * @return string
 	 */
 	public static function dependencyMessage($backends) {
@@ -361,11 +311,11 @@ class OC_Mount_Config {
 	private static function getSingleDependencyMessage(\OCP\IL10N $l, $module, $backend) {
 		switch (strtolower($module)) {
 			case 'curl':
-				return $l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
+				return (string)$l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
 			case 'ftp':
-				return $l->t('<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
+				return (string)$l->t('<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
 			default:
-				return $l->t('<b>Note:</b> "%s" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it.', array($module, $backend));
+				return (string)$l->t('<b>Note:</b> "%s" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it.', array($module, $backend));
 		}
 	}
 
@@ -429,39 +379,9 @@ class OC_Mount_Config {
 	}
 
 	/**
-	 * Merges mount points
-	 *
-	 * @param array $data Existing mount points
-	 * @param array $mountPoint New mount point
-	 * @param string $mountType
-	 * @return array
-	 */
-	private static function mergeMountPoints($data, $mountPoint, $mountType) {
-		$applicable = key($mountPoint);
-		$mountPath = key($mountPoint[$applicable]);
-		if (isset($data[$mountType])) {
-			if (isset($data[$mountType][$applicable])) {
-				// Merge priorities
-				if (isset($data[$mountType][$applicable][$mountPath])
-					&& isset($data[$mountType][$applicable][$mountPath]['priority'])
-					&& !isset($mountPoint[$applicable][$mountPath]['priority'])
-				) {
-					$mountPoint[$applicable][$mountPath]['priority']
-						= $data[$mountType][$applicable][$mountPath]['priority'];
-				}
-				$data[$mountType][$applicable]
-					= array_merge($data[$mountType][$applicable], $mountPoint[$applicable]);
-			} else {
-				$data[$mountType] = array_merge($data[$mountType], $mountPoint);
-			}
-		} else {
-			$data[$mountType] = $mountPoint;
-		}
-		return $data;
-	}
-
-	/**
 	 * Returns the encryption cipher
+	 *
+	 * @return AES
 	 */
 	private static function getCipher() {
 		$cipher = new AES(AES::MODE_CBC);
@@ -473,6 +393,9 @@ class OC_Mount_Config {
 	 * Computes a hash based on the given configuration.
 	 * This is mostly used to find out whether configurations
 	 * are the same.
+	 *
+	 * @param array $config
+	 * @return string
 	 */
 	public static function makeConfigHash($config) {
 		$data = json_encode(

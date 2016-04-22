@@ -40,15 +40,9 @@
 			'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
 			'</div>' +
 			'    {{/if}}' +
-			'    {{#if mailPublicNotificationEnabled}}' +
-			'<form id="emailPrivateLink" class="emailPrivateLinkForm">' +
-			'    <input id="email" class="emailField" value="" placeholder="{{mailPrivatePlaceholder}}" type="text" />' +
-			'    <input id="emailButton" class="emailButton" type="submit" value="{{mailButtonText}}" />' +
-			'</form>' +
-			'    {{/if}}' +
 			'{{else}}' +
 			// FIXME: this doesn't belong in this view
-			'<input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{noSharingPlaceholder}}" disabled="disabled"/>' +
+			'{{#if noSharingPlaceholder}}<input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{noSharingPlaceholder}}" disabled="disabled"/>{{/if}}' +
 			'{{/if}}'
 		;
 
@@ -76,7 +70,6 @@
 		showLink: true,
 
 		events: {
-			'submit .emailPrivateLinkForm': '_onEmailPrivateLink',
 			'focusout input.linkPassText': 'onPasswordEntered',
 			'keyup input.linkPassText': 'onPasswordKeyUp',
 			'click .linkCheckbox': 'onLinkCheckBoxChange',
@@ -112,7 +105,6 @@
 
 			_.bindAll(
 				this,
-				'_onEmailPrivateLink',
 				'onLinkCheckBoxChange',
 				'onPasswordEntered',
 				'onPasswordKeyUp',
@@ -139,8 +131,8 @@
 					this.$el.find('.linkPassText').focus();
 				}
 			} else {
-				$loading.removeClass('hidden');
 				if (this.model.get('linkShare').isLinkShare) {
+					$loading.removeClass('hidden');
 					this.model.removeLinkShare();
 				} else {
 					this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
@@ -157,8 +149,9 @@
 		onShowPasswordClick: function() {
 			this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
 			if(!this.$el.find('.showPasswordCheckbox').is(':checked')) {
-				this.model.setPassword('');
-				this.model.saveLinkShare();
+				this.model.saveLinkShare({
+					password: ''
+				});
 			} else {
 				this.$el.find('.linkPassText').focus();
 			}
@@ -171,7 +164,6 @@
 		},
 
 		onPasswordEntered: function() {
-			var self = this;
 			var $loading = this.$el.find('.linkPass .icon-loading-small');
 			if (!$loading.hasClass('hidden')) {
 				// still in process
@@ -189,9 +181,12 @@
 				.removeClass('hidden')
 				.addClass('inlineblock');
 
-			this.model.setPassword(password);
-			this.model.saveLinkShare({}, {
+			this.model.saveLinkShare({
+				password: password
+			}, {
 				error: function(model, msg) {
+					// destroy old tooltips
+					$input.tooltip('destroy');
 					$loading.removeClass('inlineblock').addClass('hidden');
 					$input.addClass('error');
 					$input.attr('title', msg);
@@ -204,49 +199,31 @@
 		onAllowPublicUploadChange: function() {
 			var $checkbox = this.$('.publicUploadCheckbox');
 			$checkbox.siblings('.icon-loading-small').removeClass('hidden').addClass('inlineblock');
-			this.model.setPublicUpload($checkbox.is(':checked'));
-			this.model.saveLinkShare();
-		},
 
-		_onEmailPrivateLink: function(event) {
-			event.preventDefault();
-
-			var $emailField = this.$el.find('.emailField');
-			var $emailButton = this.$el.find('.emailButton');
-			var email = $emailField.val();
-			if (email !== '') {
-				$emailField.prop('disabled', true);
-				$emailButton.prop('disabled', true);
-				$emailField.val(t('core', 'Sending ...'));
-				this.model.sendEmailPrivateLink(email).done(function() {
-					$emailField.css('font-weight', 'bold').val(t('core','Email sent'));
-					setTimeout(function() {
-						$emailField.val('');
-						$emailField.css('font-weight', 'normal');
-						$emailField.prop('disabled', false);
-						$emailButton.prop('disabled', false);
-					}, 2000);
-				}).fail(function() {
-					$emailField.val(email);
-					$emailField.css('font-weight', 'normal');
-					$emailField.prop('disabled', false);
-					$emailButton.prop('disabled', false);
-				});
+			var permissions = OC.PERMISSION_READ;
+			if($checkbox.is(':checked')) {
+				permissions = OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_READ;
 			}
-			return false;
+
+			this.model.saveLinkShare({
+				permissions: permissions
+			});
 		},
 
 		render: function() {
 			var linkShareTemplate = this.template();
+			var resharingAllowed = this.model.sharePermissionPossible();
 
-			if(    !this.model.sharePermissionPossible()
+			if(!resharingAllowed
 				|| !this.showLink
 				|| !this.configModel.isShareWithLinkAllowed())
 			{
-				this.$el.html(linkShareTemplate({
-					shareAllowed: false,
-					noSharingPlaceholder: t('core', 'Resharing is not allowed')
-				}));
+				var templateData = {shareAllowed: false};
+				if (!resharingAllowed) {
+					// add message
+					templateData.noSharingPlaceholder = t('core', 'Resharing is not allowed');
+				}
+				this.$el.html(linkShareTemplate(templateData));
 				return this;
 			}
 
@@ -285,39 +262,6 @@
 				mailPrivatePlaceholder: t('core', 'Email link to person'),
 				mailButtonText: t('core', 'Send')
 			}));
-
-			var $emailField = this.$el.find('.emailField');
-			if (isLinkShare && $emailField.length !== 0) {
-				$emailField.autocomplete({
-					minLength: 1,
-					source: function (search, response) {
-						$.get(
-							OC.generateUrl('core/ajax/share.php'), {
-								fetch: 'getShareWithEmail',
-								search: search.term
-							}, function(result) {
-								if (result.status == 'success' && result.data.length > 0) {
-									response(result.data);
-								}
-							});
-						},
-					select: function( event, item ) {
-						$emailField.val(item.item.email);
-						return false;
-					}
-				})
-				.data("ui-autocomplete")._renderItem = function( ul, item ) {
-					return $('<li>')
-						.append('<a>' + escapeHTML(item.displayname) + "<br>" + escapeHTML(item.email) + '</a>' )
-						.appendTo( ul );
-				};
-			}
-
-			// TODO drop with IE8 drop
-			if($('html').hasClass('ie8')) {
-				this.$el.find('#linkPassText').removeAttr('placeholder');
-				this.$el.find('#linkPassText').val('');
-			}
 
 			this.delegateEvents();
 

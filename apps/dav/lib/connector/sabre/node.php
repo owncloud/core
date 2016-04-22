@@ -11,7 +11,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,7 +30,10 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OC\Files\Mount\MoveableMount;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Share\IManager;
 
 
 abstract class Node implements \Sabre\DAV\INode {
@@ -60,15 +63,26 @@ abstract class Node implements \Sabre\DAV\INode {
 	protected $info;
 
 	/**
+	 * @var IManager
+	 */
+	protected $shareManager;
+
+	/**
 	 * Sets up the node, expects a full path name
 	 *
 	 * @param \OC\Files\View $view
 	 * @param \OCP\Files\FileInfo $info
+	 * @param IManager $shareManager
 	 */
-	public function __construct($view, $info) {
+	public function __construct($view, $info, IManager $shareManager = null) {
 		$this->fileView = $view;
 		$this->path = $this->fileView->getRelativePath($info->getPath());
 		$this->info = $info;
+		if ($shareManager) {
+			$this->shareManager = $shareManager;
+		} else {
+			$this->shareManager = \OC::$server->getShareManager();
+		}
 	}
 
 	protected function refreshInfo() {
@@ -178,7 +192,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	/**
 	 * Returns the size of the node, in bytes
 	 *
-	 * @return int|float
+	 * @return integer
 	 */
 	public function getSize() {
 		return $this->info->getSize();
@@ -207,7 +221,67 @@ abstract class Node implements \Sabre\DAV\INode {
 	}
 
 	/**
-	 * @return string|null
+	 * @return integer
+	 */
+	public function getInternalFileId() {
+		return $this->info->getId();
+	}
+
+	/**
+	 * @param string $user
+	 * @return int
+	 */
+	public function getSharePermissions($user) {
+
+		// check of we access a federated share
+		if ($user !== null) {
+			try {
+				$share = $this->shareManager->getShareByToken($user);
+				return $share->getPermissions();
+			} catch (ShareNotFound $e) {
+				// ignore
+			}
+		}
+
+		$storage = $this->info->getStorage();
+
+		$path = $this->info->getInternalPath();
+
+		if ($storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
+			/** @var \OC\Files\Storage\Shared $storage */
+			$permissions = (int)$storage->getShare()->getPermissions();
+		} else {
+			$permissions = $storage->getPermissions($path);
+		}
+
+		/*
+		 * We can always share non moveable mount points with DELETE and UPDATE
+		 * Eventually we need to do this properly
+		 */
+		$mountpoint = $this->info->getMountPoint();
+		if (!($mountpoint instanceof MoveableMount)) {
+			$mountpointpath = $mountpoint->getMountPoint();
+			if (substr($mountpointpath, -1) === '/') {
+				$mountpointpath = substr($mountpointpath, 0, -1);
+			}
+
+			if ($mountpointpath === $this->info->getPath()) {
+				$permissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
+			}
+		}
+
+		/*
+		 * Files can't have create or delete permissions
+		 */
+		if ($this->info->getType() === \OCP\Files\FileInfo::TYPE_FILE) {
+			$permissions &= ~(\OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE);
+		}
+
+		return $permissions;
+	}
+
+	/**
+	 * @return string
 	 */
 	public function getDavPermissions() {
 		$p = '';
@@ -223,7 +297,7 @@ abstract class Node implements \Sabre\DAV\INode {
 		if ($this->info->isDeletable()) {
 			$p .= 'D';
 		}
-		if ($this->info->isDeletable()) {
+		if ($this->info->isUpdateable()) {
 			$p .= 'NV'; // Renameable, Moveable
 		}
 		if ($this->info->getType() === \OCP\Files\FileInfo::TYPE_FILE) {
@@ -236,6 +310,10 @@ abstract class Node implements \Sabre\DAV\INode {
 			}
 		}
 		return $p;
+	}
+
+	public function getOwner() {
+		return $this->info->getOwner();
 	}
 
 	protected function verifyPath() {

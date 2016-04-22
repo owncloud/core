@@ -38,24 +38,30 @@
 				var tr = oldCreateRow.apply(this, arguments);
 				var sharePermissions = fileData.permissions;
 				if (fileData.mountType && fileData.mountType === "external-root"){
-					// for external storages we cant use the permissions of the mountpoint
+					// for external storages we can't use the permissions of the mountpoint
 					// instead we show all permissions and only use the share permissions from the mountpoint to handle resharing
 					sharePermissions = sharePermissions | (OC.PERMISSION_ALL & ~OC.PERMISSION_SHARE);
 				}
 				if (fileData.type === 'file') {
 					// files can't be shared with delete permissions
 					sharePermissions = sharePermissions & ~OC.PERMISSION_DELETE;
+
+					// create permissions don't mean anything for files
+					sharePermissions = sharePermissions & ~OC.PERMISSION_CREATE;
 				}
 				tr.attr('data-share-permissions', sharePermissions);
 				if (fileData.shareOwner) {
 					tr.attr('data-share-owner', fileData.shareOwner);
 					// user should always be able to rename a mount point
-					if (fileData.isShareMountPoint) {
+					if (fileData.mountType === 'shared-root') {
 						tr.attr('data-permissions', fileData.permissions | OC.PERMISSION_UPDATE);
 					}
 				}
 				if (fileData.recipientsDisplayName) {
 					tr.attr('data-share-recipients', fileData.recipientsDisplayName);
+				}
+				if (fileData.shareTypes) {
+					tr.attr('data-share-types', fileData.shareTypes.join(','));
 				}
 				return tr;
 			};
@@ -68,35 +74,68 @@
 				return fileInfo;
 			};
 
+			var NS_OC = 'http://owncloud.org/ns';
+
+			var oldGetWebdavProperties = fileList._getWebdavProperties;
+			fileList._getWebdavProperties = function() {
+				var props = oldGetWebdavProperties.apply(this, arguments);
+				props.push('{' + NS_OC + '}owner-display-name');
+				props.push('{' + NS_OC + '}share-types');
+				return props;
+			};
+
+			fileList.filesClient.addFileInfoParser(function(response) {
+				var data = {};
+				var props = response.propStat[0].properties;
+				var permissionsProp = props['{' + NS_OC + '}permissions'];
+
+				if (permissionsProp && permissionsProp.indexOf('S') >= 0) {
+					data.shareOwner = props['{' + NS_OC + '}owner-display-name'];
+				}
+
+				var shareTypesProp = props['{' + NS_OC + '}share-types'];
+				if (shareTypesProp) {
+					data.shareTypes = _.chain(shareTypesProp).filter(function(xmlvalue) {
+						return (xmlvalue.namespaceURI === NS_OC && xmlvalue.nodeName.split(':')[1] === 'share-type');
+					}).map(function(xmlvalue) {
+						return parseInt(xmlvalue.textContent || xmlvalue.text, 10);
+					}).value();
+				}
+
+				return data;
+			});
+
 			// use delegate to catch the case with multiple file lists
 			fileList.$el.on('fileActionsReady', function(ev){
-				var fileList = ev.fileList;
 				var $files = ev.$files;
 
-				function updateIcons($files) {
-					if (!$files) {
-						// if none specified, update all
-						$files = fileList.$fileList.find('tr');
+				_.each($files, function(file) {
+					var $tr = $(file);
+					var shareTypes = $tr.attr('data-share-types') || '';
+					var shareOwner = $tr.attr('data-share-owner');
+					if (shareTypes || shareOwner) {
+						var hasLink = false;
+						var hasShares = false;
+						_.each(shareTypes.split(',') || [], function(shareType) {
+							shareType = parseInt(shareType, 10);
+							if (shareType === OC.Share.SHARE_TYPE_LINK) {
+								hasLink = true;
+							} else if (shareType === OC.Share.SHARE_TYPE_USER) {
+								hasShares = true;
+							} else if (shareType === OC.Share.SHARE_TYPE_GROUP) {
+								hasShares = true;
+							} else if (shareType === OC.Share.SHARE_TYPE_REMOTE) {
+								hasShares = true;
+							}
+						});
+						OCA.Sharing.Util._updateFileActionIcon($tr, hasShares, hasLink);
 					}
-					_.each($files, function(file) {
-						var $tr = $(file);
-						var shareStatus = OC.Share.statuses[$tr.data('id')];
-						OCA.Sharing.Util._updateFileActionIcon($tr, !!shareStatus, shareStatus && shareStatus.link);
-					});
-				}
+				});
+			});
 
-				if (!OCA.Sharing.sharesLoaded){
-					OC.Share.loadIcons('file', fileList, function() {
-						// since we don't know which files are affected, just refresh them all
-						updateIcons();
-					});
-					// assume that we got all shares, so switching directories
-					// will not invalidate that list
-					OCA.Sharing.sharesLoaded = true;
-				}
-				else{
-					updateIcons($files);
-				}
+
+			fileList.$el.on('changeDirectory', function() {
+				OCA.Sharing.sharesLoaded = false;
 			});
 
 			fileActions.registerAction({
@@ -104,7 +143,7 @@
 				displayName: '',
 				mime: 'all',
 				permissions: OC.PERMISSION_ALL,
-				icon: OC.imagePath('core', 'actions/share'),
+				iconClass: 'icon-share',
 				type: OCA.Files.FileActions.TYPE_INLINE,
 				actionHandler: function(fileName) {
 					fileList.showDetailsView(fileName, 'shareTabView');

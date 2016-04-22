@@ -3,14 +3,13 @@
  * @author Christian Berendt <berendt@b1-systems.de>
  * @author j-ed <juergen@eisfair.org>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
- * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Ross Nicoll <jrn@jrn.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,17 +26,7 @@
  *
  */
 
-OC::$CLASSPATH['OC\Files\Storage\StreamWrapper'] = 'files_external/lib/streamwrapper.php';
-OC::$CLASSPATH['OC\Files\Storage\FTP'] = 'files_external/lib/ftp.php';
-OC::$CLASSPATH['OC\Files\Storage\OwnCloud'] = 'files_external/lib/owncloud.php';
-OC::$CLASSPATH['OC\Files\Storage\Google'] = 'files_external/lib/google.php';
-OC::$CLASSPATH['OC\Files\Storage\Swift'] = 'files_external/lib/swift.php';
-OC::$CLASSPATH['OC\Files\Storage\SMB'] = 'files_external/lib/smb.php';
-OC::$CLASSPATH['OC\Files\Storage\AmazonS3'] = 'files_external/lib/amazons3.php';
-OC::$CLASSPATH['OC\Files\Storage\Dropbox'] = 'files_external/lib/dropbox.php';
-OC::$CLASSPATH['OC\Files\Storage\SFTP'] = 'files_external/lib/sftp.php';
 OC::$CLASSPATH['OC_Mount_Config'] = 'files_external/lib/config.php';
-OC::$CLASSPATH['OCA\Files\External\Api'] = 'files_external/lib/api.php';
 
 require_once __DIR__ . '/../3rdparty/autoload.php';
 
@@ -45,12 +34,9 @@ require_once __DIR__ . '/../3rdparty/autoload.php';
 \OC_Mount_Config::$app = new \OCA\Files_external\Appinfo\Application();
 $appContainer = \OC_Mount_Config::$app->getContainer();
 
-$l = \OC::$server->getL10N('files_external');
+\OC_Mount_Config::$app->registerSettings();
 
-OCP\App::registerAdmin('files_external', 'settings');
-if (OCP\Config::getAppValue('files_external', 'allow_user_mounting', 'yes') == 'yes') {
-	OCP\App::registerPersonal('files_external', 'personal');
-}
+$l = \OC::$server->getL10N('files_external');
 
 \OCA\Files\App::getNavigationManager()->add([
 	"id" => 'extstoragemounts',
@@ -59,9 +45,6 @@ if (OCP\Config::getAppValue('files_external', 'allow_user_mounting', 'yes') == '
 	"order" => 30,
 	"name" => $l->t('External storage')
 ]);
-
-// connecting hooks
-OCP\Util::connectHook('OC_Filesystem', 'post_initMountPoints', '\OC_Mount_Config', 'initMountPointsHook');
 
 $mountProvider = $appContainer->query('OCA\Files_External\Config\ConfigAdapter');
 \OC::$server->getMountProviderCollection()->registerProvider($mountProvider);

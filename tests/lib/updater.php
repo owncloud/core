@@ -24,32 +24,33 @@ namespace OC;
 
 use OCP\IConfig;
 use OCP\ILogger;
+use OC\IntegrityCheck\Checker;
 
 class UpdaterTest extends \Test\TestCase {
-	/** @var IConfig */
+	/** @var IConfig|\PHPUnit_Framework_MockObject_MockObject */
 	private $config;
-	/** @var HTTPHelper */
-	private $httpHelper;
 	/** @var ILogger */
 	private $logger;
 	/** @var Updater */
 	private $updater;
+	/** @var Checker */
+	private $checker;
 
 	public function setUp() {
 		parent::setUp();
 		$this->config = $this->getMockBuilder('\\OCP\\IConfig')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->httpHelper = $this->getMockBuilder('\\OC\\HTTPHelper')
-			->disableOriginalConstructor()
-			->getMock();
 		$this->logger = $this->getMockBuilder('\\OCP\\ILogger')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
+				->disableOriginalConstructor()
+				->getMock();
 
 		$this->updater = new Updater(
-			$this->httpHelper,
 			$this->config,
+			$this->checker,
 			$this->logger
 		);
 	}
@@ -59,7 +60,7 @@ class UpdaterTest extends \Test\TestCase {
 	 * @return string
 	 */
 	private function buildUpdateUrl($baseUrl) {
-		return $baseUrl . '?version='.implode('x', \OC_Util::getVersion()).'xinstalledatxlastupdatedatx'.\OC_Util::getChannel().'x'.\OC_Util::getEditionString().'x';
+		return $baseUrl . '?version='.implode('x', \OCP\Util::getVersion()).'xinstalledatxlastupdatedatx'.\OC_Util::getChannel().'x'.\OC_Util::getEditionString().'x';
 	}
 
 	/**
@@ -129,7 +130,31 @@ class UpdaterTest extends \Test\TestCase {
 			['9.0.0.0', '8.0.0.0', '7.0', false],
 			['9.1.0.0', '8.0.0.0', '7.0', false],
 			['8.2.0.0', '8.1.0.0', '8.0', false],
+
+			// With debug enabled
+			['8.0.0.0', '8.2.0.0', '8.1', false, true],
+			['8.1.0.0', '8.2.0.0', '8.1', true, true],
+			['8.2.0.1', '8.2.0.1', '8.1', true, true],
+			['8.3.0.0', '8.2.0.0', '8.1', true, true],
 		];
+	}
+
+	/**
+	 * @dataProvider versionCompatibilityTestData
+	 *
+	 * @param string $oldVersion
+	 * @param string $newVersion
+	 * @param string $allowedVersion
+	 * @param bool $result
+	 * @param bool $debug
+	 */
+	public function testIsUpgradePossible($oldVersion, $newVersion, $allowedVersion, $result, $debug = false) {
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('debug', false)
+			->willReturn($debug);
+
+		$this->assertSame($result, $this->updater->isUpgradePossible($oldVersion, $newVersion, $allowedVersion));
 	}
 
 	public function testSetSimulateStepEnabled() {
@@ -153,249 +178,4 @@ class UpdaterTest extends \Test\TestCase {
 		$this->assertSame(false, $this->invokePrivate($this->updater, 'skip3rdPartyAppsDisable'));
 	}
 
-	/**
-	 * @dataProvider versionCompatibilityTestData
-	 *
-	 * @param string $oldVersion
-	 * @param string $newVersion
-	 * @param bool $result
-	 */
-	public function testIsUpgradePossible($oldVersion, $newVersion, $allowedVersion, $result) {
-		$updater = new Updater($this->httpHelper, $this->config, $this->logger);
-		$this->assertSame($result, $updater->isUpgradePossible($oldVersion, $newVersion, $allowedVersion));
-	}
-
-	public function testCheckInCache() {
-		$expectedResult = [
-			'version' => '8.0.4.2',
-			'versionstring' => 'ownCloud 8.0.4',
-			'url' => 'https://download.owncloud.org/community/owncloud-8.0.4.zip',
-			'web' => 'http://doc.owncloud.org/server/8.0/admin_manual/maintenance/upgrade.html',
-		];
-
-		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(time()));
-		$this->config
-			->expects($this->at(1))
-			->method('getAppValue')
-			->with('core', 'lastupdateResult')
-			->will($this->returnValue(json_encode($expectedResult)));
-
-		$this->assertSame($expectedResult, $this->updater->check());
-	}
-
-	public function testCheckWithoutUpdateUrl() {
-		$expectedResult = [
-			'version' => '8.0.4.2',
-			'versionstring' => 'ownCloud 8.0.4',
-			'url' => 'https://download.owncloud.org/community/owncloud-8.0.4.zip',
-			'web' => 'http://doc.owncloud.org/server/8.0/admin_manual/maintenance/upgrade.html',
-		];
-
-		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(3))
-			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
-		$this->config
-			->expects($this->at(4))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-		$this->config
-			->expects($this->at(5))
-			->method('setAppValue')
-			->with('core', 'lastupdateResult', json_encode($expectedResult));
-
-		$updateXml = '<?xml version="1.0"?>
-<owncloud>
-  <version>8.0.4.2</version>
-  <versionstring>ownCloud 8.0.4</versionstring>
-  <url>https://download.owncloud.org/community/owncloud-8.0.4.zip</url>
-  <web>http://doc.owncloud.org/server/8.0/admin_manual/maintenance/upgrade.html</web>
-</owncloud>';
-		$this->httpHelper
-			->expects($this->once())
-			->method('getUrlContent')
-			->with($this->buildUpdateUrl('https://updates.owncloud.com/server/'))
-			->will($this->returnValue($updateXml));
-
-		$this->assertSame($expectedResult, $this->updater->check());
-	}
-
-	public function testCheckWithInvalidXml() {
-		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(3))
-			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
-		$this->config
-			->expects($this->at(4))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-		$this->config
-			->expects($this->at(5))
-			->method('setAppValue')
-			->with('core', 'lastupdateResult', 'false');
-
-		$updateXml = 'Invalid XML Response!';
-		$this->httpHelper
-			->expects($this->once())
-			->method('getUrlContent')
-			->with($this->buildUpdateUrl('https://updates.owncloud.com/server/'))
-			->will($this->returnValue($updateXml));
-
-		$this->assertSame([], $this->updater->check());
-	}
-
-	public function testCheckWithUpdateUrl() {
-		$expectedResult = [
-			'version' => '8.0.4.2',
-			'versionstring' => 'ownCloud 8.0.4',
-			'url' => 'https://download.owncloud.org/community/owncloud-8.0.4.zip',
-			'web' => 'http://doc.owncloud.org/server/8.0/admin_manual/maintenance/upgrade.html',
-		];
-
-		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(3))
-			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
-		$this->config
-			->expects($this->at(4))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-		$this->config
-			->expects($this->at(5))
-			->method('setAppValue')
-			->with('core', 'lastupdateResult', json_encode($expectedResult));
-
-		$updateXml = '<?xml version="1.0"?>
-<owncloud>
-  <version>8.0.4.2</version>
-  <versionstring>ownCloud 8.0.4</versionstring>
-  <url>https://download.owncloud.org/community/owncloud-8.0.4.zip</url>
-  <web>http://doc.owncloud.org/server/8.0/admin_manual/maintenance/upgrade.html</web>
-</owncloud>';
-		$this->httpHelper
-			->expects($this->once())
-			->method('getUrlContent')
-			->with($this->buildUpdateUrl('https://myupdater.com/'))
-			->will($this->returnValue($updateXml));
-
-		$this->assertSame($expectedResult, $this->updater->check('https://myupdater.com/'));
-	}
-
-	public function testCheckWithEmptyValidXmlResponse() {
-		$expectedResult = [
-			'version' => '',
-			'versionstring' => '',
-			'url' => '',
-			'web' => '',
-		];
-
-		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(3))
-			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
-		$this->config
-			->expects($this->at(4))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-
-		$updateXml = '<?xml version="1.0"?>
-<owncloud>
-  <version></version>
-  <versionstring></versionstring>
-  <url></url>
-  <web></web>
-</owncloud>';
-		$this->httpHelper
-			->expects($this->once())
-			->method('getUrlContent')
-			->with($this->buildUpdateUrl('https://updates.owncloud.com/server/'))
-			->will($this->returnValue($updateXml));
-
-		$this->assertSame($expectedResult, $this->updater->check());
-	}
-
-	public function testCheckWithEmptyInvalidXmlResponse() {
-		$expectedResult = [];
-
-		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(3))
-			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
-		$this->config
-			->expects($this->at(4))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-		$this->config
-			->expects($this->at(5))
-			->method('setAppValue')
-			->with('core', 'lastupdateResult', json_encode($expectedResult));
-
-		$updateXml = '';
-		$this->httpHelper
-			->expects($this->once())
-			->method('getUrlContent')
-			->with($this->buildUpdateUrl('https://updates.owncloud.com/server/'))
-			->will($this->returnValue($updateXml));
-
-		$this->assertSame($expectedResult, $this->updater->check());
-	}
 }

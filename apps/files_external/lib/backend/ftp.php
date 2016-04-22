@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ class FTP extends Backend {
 		$this
 			->setIdentifier('ftp')
 			->addIdentifierAlias('\OC\Files\Storage\FTP') // legacy compat
-			->setStorageClass('\OC\Files\Storage\FTP')
+			->setStorageClass('\OCA\Files_External\Lib\Storage\FTP')
 			->setText($l->t('FTP'))
 			->addParameters([
 				(new DefinitionParameter('host', $l->t('Host'))),

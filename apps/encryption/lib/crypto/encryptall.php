@@ -1,8 +1,10 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,6 +33,7 @@ use OCP\IL10N;
 use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
+use OCP\Util;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
@@ -343,7 +346,7 @@ class EncryptAll {
 	 * @return string password
 	 */
 	protected function generateOneTimePassword($uid) {
-		$password = $this->secureRandom->getMediumStrengthGenerator()->generate(8);
+		$password = $this->secureRandom->generate(8);
 		$this->userPasswords[$uid] = $password;
 		return $password;
 	}
@@ -358,14 +361,15 @@ class EncryptAll {
 		$progress = new ProgressBar($this->output, count($this->userPasswords));
 		$progress->start();
 
-		foreach ($this->userPasswords as $recipient => $password) {
+		foreach ($this->userPasswords as $uid => $password) {
 			$progress->advance();
 			if (!empty($password)) {
-				$recipientDisplayName = $this->userManager->get($recipient)->getDisplayName();
-				$to = $this->config->getUserValue($recipient, 'settings', 'email', '');
+				$recipient = $this->userManager->get($uid);
+				$recipientDisplayName = $recipient->getDisplayName();
+				$to = $recipient->getEMailAddress();
 
 				if ($to === '') {
-					$noMail[] = $recipient;
+					$noMail[] = $uid;
 					continue;
 				}
 
@@ -380,12 +384,12 @@ class EncryptAll {
 					$message->setHtmlBody($htmlBody);
 					$message->setPlainBody($textBody);
 					$message->setFrom([
-						\OCP\Util::getDefaultEmailAddress('admin-noreply')
+						Util::getDefaultEmailAddress('admin-noreply')
 					]);
 
 					$this->mailer->send($message);
 				} catch (\Exception $e) {
-					$noMail[] = $recipient;
+					$noMail[] = $uid;
 				}
 			}
 		}

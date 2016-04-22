@@ -1,9 +1,9 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,7 +48,10 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		\OC_Mount_Config::$skipTest = false;
 	}
 
-	protected function getBackendMock($class = '\OCA\Files_External\Lib\Backend\SMB', $storageClass = '\OC\Files\Storage\SMB') {
+	/**
+	 * @return \OCA\Files_External\Lib\Backend\Backend
+	 */
+	protected function getBackendMock($class = '\OCA\Files_External\Lib\Backend\SMB', $storageClass = '\OCA\Files_External\Lib\Storage\SMB') {
 		$backend = $this->getMockBuilder('\OCA\Files_External\Lib\Backend\Backend')
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,6 +62,9 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		return $backend;
 	}
 
+	/**
+	 * @return \OCA\Files_External\Lib\Auth\AuthMechanism
+	 */
 	protected function getAuthMechMock($scheme = 'null', $class = '\OCA\Files_External\Lib\Auth\NullMechanism') {
 		$authMech = $this->getMockBuilder('\OCA\Files_External\Lib\Auth\AuthMechanism')
 			->disableOriginalConstructor()
@@ -98,7 +104,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$response = $this->controller->create(
 			'mount',
-			'\OC\Files\Storage\SMB',
+			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			array(),
 			[],
@@ -140,7 +146,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$response = $this->controller->update(
 			1,
 			'mount',
-			'\OC\Files\Storage\SMB',
+			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			array(),
 			[],
@@ -182,7 +188,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$response = $this->controller->create(
 			$mountPoint,
-			'\OC\Files\Storage\SMB',
+			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			array(),
 			[],
@@ -196,7 +202,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$response = $this->controller->update(
 			1,
 			$mountPoint,
-			'\OC\Files\Storage\SMB',
+			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			array(),
 			[],
@@ -273,7 +279,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$response = $this->controller->update(
 			255,
 			'mount',
-			'\OC\Files\Storage\SMB',
+			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			array(),
 			[],
@@ -369,7 +375,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$response = $this->controller->create(
 			'mount',
-			'\OC\Files\Storage\SMB',
+			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
 			array(),
 			[],

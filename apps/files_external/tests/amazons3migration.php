@@ -3,9 +3,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,8 +24,17 @@
  */
 
 
-namespace Test\Files\Storage;
+namespace OCA\Files_External\Tests;
 
+use OCA\Files_External\Lib\Storage\AmazonS3;
+
+/**
+ * Class AmazonS3Migration
+ *
+ * @group DB
+ *
+ * @package OCA\Files_External\Tests
+ */
 class AmazonS3Migration extends \Test\TestCase {
 
 	/**
@@ -69,7 +79,7 @@ class AmazonS3Migration extends \Test\TestCase {
 		$fileId = $oldCache->put('foobar', array('size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory'));
 
 		try {
-			$this->instance = new \OC\Files\Storage\AmazonS3($this->params);
+			$this->instance = new AmazonS3($this->params);
 		} catch (\Exception $e) {
 			//ignore
 		}
@@ -95,7 +105,7 @@ class AmazonS3Migration extends \Test\TestCase {
 		$fileId = $oldCache->put('/', array('size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory'));
 
 		try {
-			$this->instance = new \OC\Files\Storage\AmazonS3($this->params);
+			$this->instance = new AmazonS3($this->params);
 		} catch (\Exception $e) {
 			//ignore
 		}
@@ -123,6 +133,9 @@ class AmazonS3Migration extends \Test\TestCase {
 		return $storages;
 	}
 
+	/**
+	 * @param string $id
+	 */
 	public function deleteStorage($id) {
 		$stmt = \OC::$server->getDatabaseConnection()->prepare(
 			'DELETE FROM `*PREFIX*storages` WHERE `id` = ?'

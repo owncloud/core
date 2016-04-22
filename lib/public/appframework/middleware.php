@@ -4,7 +4,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -67,7 +67,7 @@ abstract class Middleware {
 	 * @param string $methodName the name of the method that will be called on
 	 *                           the controller
 	 * @param \Exception $exception the thrown exception
-	 * @throws \Exception the passed in exception if it cant handle it
+	 * @throws \Exception the passed in exception if it can't handle it
 	 * @return Response a Response object in case that the exception was handled
 	 * @since 6.0.0
 	 */

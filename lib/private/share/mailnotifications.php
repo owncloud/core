@@ -4,11 +4,12 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author scolebrook <scolebrook@mac.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,11 +29,13 @@
 namespace OC\Share;
 
 use DateTime;
-use OCP\IConfig;
 use OCP\IL10N;
+use OCP\IURLGenerator;
+use OCP\IUser;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
 use OCP\Defaults;
+use OCP\Util;
 
 /**
  * Class MailNotifications
@@ -41,52 +44,52 @@ use OCP\Defaults;
  */
 class MailNotifications {
 
-	/** @var string sender userId */
-	private $userId;
+	/** @var IUser sender userId */
+	private $user;
 	/** @var string sender email address */
 	private $replyTo;
 	/** @var string */
 	private $senderDisplayName;
 	/** @var IL10N */
 	private $l;
-	/** @var IConfig */
-	private $config;
 	/** @var IMailer */
 	private $mailer;
 	/** @var Defaults */
 	private $defaults;
 	/** @var ILogger */
 	private $logger;
+	/** @var IURLGenerator */
+	private $urlGenerator;
 
 	/**
-	 * @param string $uid user id
-	 * @param IConfig $config
+	 * @param IUser $user
 	 * @param IL10N $l10n
 	 * @param IMailer $mailer
 	 * @param ILogger $logger
 	 * @param Defaults $defaults
+	 * @param IURLGenerator $urlGenerator
 	 */
-	public function __construct($uid,
-								IConfig $config,
+	public function __construct(IUser $user,
 								IL10N $l10n,
 								IMailer $mailer,
 								ILogger $logger,
-								Defaults $defaults) {
+								Defaults $defaults,
+								IURLGenerator $urlGenerator) {
 		$this->l = $l10n;
-		$this->userId = $uid;
-		$this->config = $config;
+		$this->user = $user;
 		$this->mailer = $mailer;
 		$this->logger = $logger;
 		$this->defaults = $defaults;
+		$this->urlGenerator = $urlGenerator;
 
-		$this->replyTo = $this->config->getUserValue($this->userId, 'settings', 'email', null);
-		$this->senderDisplayName = \OCP\User::getDisplayName($this->userId);
+		$this->replyTo = $this->user->getEMailAddress();
+		$this->senderDisplayName = $this->user->getDisplayName();
 	}
 
 	/**
 	 * inform users if a file was shared with them
 	 *
-	 * @param array $recipientList list of recipients
+	 * @param IUser[] $recipientList list of recipients
 	 * @param string $itemSource shared item source
 	 * @param string $itemType shared item type
 	 * @return array list of user to whom the mail send operation failed
@@ -95,15 +98,15 @@ class MailNotifications {
 		$noMail = [];
 
 		foreach ($recipientList as $recipient) {
-			$recipientDisplayName = \OCP\User::getDisplayName($recipient);
-			$to = $this->config->getUserValue($recipient, 'settings', 'email', '');
+			$recipientDisplayName = $recipient->getDisplayName();
+			$to = $recipient->getEMailAddress();
 
 			if ($to === '') {
 				$noMail[] = $recipientDisplayName;
 				continue;
 			}
 
-			$items = \OCP\Share::getItemSharedWithUser($itemType, $itemSource, $recipient);
+			$items = $this->getItemSharedWithUser($itemSource, $itemType, $recipient);
 			$filename = trim($items[0]['file_target'], '/');
 			$subject = (string) $this->l->t('%s shared »%s« with you', array($this->senderDisplayName, $filename));
 			$expiration = null;
@@ -134,7 +137,10 @@ class MailNotifications {
 				);
 			}
 
-			$link = \OCP\Util::linkToAbsolute('files', 'index.php', $args);
+			$link = $this->urlGenerator->linkToRouteAbsolute(
+				'files.view.index',
+				$args
+			);
 
 			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, 'internal');
 
@@ -146,7 +152,7 @@ class MailNotifications {
 				$message->setHtmlBody($htmlBody);
 				$message->setPlainBody($textBody);
 				$message->setFrom([
-					\OCP\Util::getDefaultEmailAddress('sharing-noreply') =>
+					Util::getDefaultEmailAddress('sharing-noreply') =>
 						(string)$this->l->t('%s via %s', [
 							$this->senderDisplayName,
 							$this->defaults->getName()
@@ -174,20 +180,22 @@ class MailNotifications {
 	 * @param string $filename the shared file
 	 * @param string $link the public link
 	 * @param int $expiration expiration date (timestamp)
-	 * @return array $result of failed recipients
+	 * @return string[] $result of failed recipients
 	 */
 	public function sendLinkShareMail($recipient, $filename, $link, $expiration) {
 		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration);
 
+		$recipient = str_replace([', ', '; ', ',', ';', ' '], ',', $recipient);
+		$recipients = explode(',', $recipient);
 		try {
 			$message = $this->mailer->createMessage();
 			$message->setSubject($subject);
-			$message->setTo([$recipient]);
+			$message->setTo($recipients);
 			$message->setHtmlBody($htmlBody);
 			$message->setPlainBody($textBody);
 			$message->setFrom([
-				\OCP\Util::getDefaultEmailAddress('sharing-noreply') =>
+				Util::getDefaultEmailAddress('sharing-noreply') =>
 					(string)$this->l->t('%s via %s', [
 						$this->senderDisplayName,
 						$this->defaults->getName()
@@ -210,7 +218,7 @@ class MailNotifications {
 	 * @param string $filename the shared file
 	 * @param string $link link to the shared file
 	 * @param int $expiration expiration date (timestamp)
-	 * @param bool $prefix prefix of mail template files
+	 * @param string $prefix prefix of mail template files
 	 * @return array an array of the html mail body and the plain text mail body
 	 */
 	private function createMailBody($filename, $link, $expiration, $prefix = '') {
@@ -231,6 +239,16 @@ class MailNotifications {
 		$plainTextMail = $plainText->fetchPage();
 
 		return [$htmlMail, $plainTextMail];
+	}
+
+	/**
+	 * @param string $itemSource
+	 * @param string $itemType
+	 * @param IUser $recipient
+	 * @return array
+	 */
+	protected function getItemSharedWithUser($itemSource, $itemType, $recipient) {
+		return Share::getItemSharedWithUser($itemType, $itemSource, $recipient->getUID());
 	}
 
 }

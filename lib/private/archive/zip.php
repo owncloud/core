@@ -8,10 +8,9 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -186,7 +185,7 @@ class OC_Archive_ZIP extends OC_Archive{
 		if($mode=='r' or $mode=='rb') {
 			return $this->zip->getStream($path);
 		} else {
-			//since we cant directly get a writable stream,
+			//since we can't directly get a writable stream,
 			//make a temp copy of the file and put it back
 			//in the archive when the stream is closed
 			if(strrpos($path, '.')!==false) {

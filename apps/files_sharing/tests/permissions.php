@@ -6,7 +6,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,42 +26,32 @@ use OC\Files\Cache\Cache;
 use OC\Files\Storage\Storage;
 use OC\Files\View;
 
-
+/**
+ * Class Test_Files_Sharing_Permissions
+ *
+ * @group DB
+ */
 class Test_Files_Sharing_Permissions extends OCA\Files_sharing\Tests\TestCase {
 
-	/**
-	 * @var Storage
-	 */
+	/** @var Storage */
 	private $sharedStorageRestrictedShare;
 
-	/**
-	 * @var Storage
-	 */
+	/** @var Storage */
 	private $sharedCacheRestrictedShare;
 
-	/**
-	 * @var View
-	 */
+	/** @var View */
 	private $secondView;
 
-	/**
-	 * @var Storage
-	 */
+	/** @var Storage */
 	private $ownerStorage;
 
-	/**
-	 * @var Storage
-	 */
+	/** @var Storage */
 	private $sharedStorage;
 
-	/**
-	 * @var Cache
-	 */
+	/** @var Cache */
 	private $sharedCache;
 
-	/**
-	 * @var Cache
-	 */
+	/** @var Cache */
 	private $ownerCache;
 
 	protected function setUp() {
@@ -84,12 +74,25 @@ class Test_Files_Sharing_Permissions extends OCA\Files_sharing\Tests\TestCase {
 		$this->ownerStorage->getScanner()->scan('');
 
 		// share "shareddir" with user2
-		$fileinfo = $this->view->getFileInfo('container/shareddir');
-		\OCP\Share::shareItem('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2, 31);
-		$fileinfo2 = $this->view->getFileInfo('container/shareddirrestricted');
-		\OCP\Share::shareItem('folder', $fileinfo2['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2, 7);
+		$rootFolder = \OC::$server->getUserFolder(self::TEST_FILES_SHARING_API_USER1);
+
+		$node = $rootFolder->get('container/shareddir');
+		$share = $this->shareManager->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
+			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		$this->shareManager->createShare($share);
+
+		$node = $rootFolder->get('container/shareddirrestricted');
+		$share = $this->shareManager->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
+			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
+			->setPermissions(\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE);
+		$this->shareManager->createShare($share);
 
 		// login as user2
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
@@ -109,12 +112,10 @@ class Test_Files_Sharing_Permissions extends OCA\Files_sharing\Tests\TestCase {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
-		$fileinfo = $this->view->getFileInfo('container/shareddir');
-		\OCP\Share::unshare('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2);
-		$fileinfo2 = $this->view->getFileInfo('container/shareddirrestricted');
-		\OCP\Share::unshare('folder', $fileinfo2['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2);
+		$shares = $this->shareManager->getSharesBy(self::TEST_FILES_SHARING_API_USER1, \OCP\Share::SHARE_TYPE_USER);
+		foreach ($shares as $share) {
+			$this->shareManager->deleteShare($share);
+		}
 
 		$this->view->deleteAll('container');
 

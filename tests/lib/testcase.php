@@ -22,16 +22,66 @@
 
 namespace Test;
 
+use DOMDocument;
+use DOMNode;
 use OC\Command\QueueBus;
 use OC\Files\Filesystem;
+use OC\Template\Base;
+use OC_Defaults;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\IDBConnection;
+use OCP\IL10N;
 use OCP\Security\ISecureRandom;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase {
-	/**
-	 * @var \OC\Command\QueueBus
-	 */
+	/** @var \OC\Command\QueueBus */
 	private $commandBus;
+
+	/** @var IDBConnection */
+	static protected $realDatabase = null;
+
+	/** @var bool */
+	static private $wasDatabaseAllowed = false;
+
+	/** @var array */
+	protected $services = [];
+
+	/**
+	 * @param string $name
+	 * @param mixed $newService
+	 * @return bool
+	 */
+	public function overwriteService($name, $newService) {
+		if (isset($this->services[$name])) {
+			return false;
+		}
+
+		$this->services[$name] = \OC::$server->query($name);
+		\OC::$server->registerService($name, function () use ($newService) {
+			return $newService;
+		});
+
+		return true;
+	}
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function restoreService($name) {
+		if (isset($this->services[$name])) {
+			$oldService = $this->services[$name];
+			\OC::$server->registerService($name, function () use ($oldService) {
+				return $oldService;
+			});
+
+
+			unset($this->services[$name]);
+			return true;
+		}
+
+		return false;
+	}
 
 	protected function getTestTraits() {
 		$traits = [];
@@ -49,6 +99,18 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function setUp() {
+		// detect database access
+		self::$wasDatabaseAllowed = true;
+		if (!$this->IsDatabaseAccessAllowed()) {
+			self::$wasDatabaseAllowed = false;
+			if (is_null(self::$realDatabase)) {
+				self::$realDatabase = \OC::$server->getDatabaseConnection();
+			}
+			\OC::$server->registerService('DatabaseConnection', function () {
+				$this->fail('Your test case is not allowed to access the database.');
+			});
+		}
+
 		// overwrite the command bus with one we can run ourselves
 		$this->commandBus = new QueueBus();
 		\OC::$server->registerService('AsyncCommandBus', function () {
@@ -65,6 +127,14 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() {
+		// restore database connection
+		if (!$this->IsDatabaseAccessAllowed()) {
+			\OC::$server->registerService('DatabaseConnection', function () {
+				return self::$realDatabase;
+			});
+		}
+
+		// further cleanup
 		$hookExceptions = \OC_Hook::$thrownExceptions;
 		\OC_Hook::$thrownExceptions = [];
 		\OC::$server->getLockingProvider()->releaseAll();
@@ -72,6 +142,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			throw $hookExceptions[0];
 		}
 
+		// fail hard if xml errors have not been cleaned up
+		$errors = libxml_get_errors();
+		libxml_clear_errors();
+		$this->assertEquals([], $errors);
+
+		// tearDown the traits
 		$traits = $this->getTestTraits();
 		foreach ($traits as $trait) {
 			$methodName = 'tearDown' . basename(str_replace('\\', '/', $trait));
@@ -121,7 +197,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	 * @return string
 	 */
 	protected static function getUniqueID($prefix = '', $length = 13) {
-		return $prefix . \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(
+		return $prefix . \OC::$server->getSecureRandom()->generate(
 			$length,
 			// Do not use dots and slashes as we use the value for file names
 			ISecureRandom::CHAR_DIGITS . ISecureRandom::CHAR_LOWER . ISecureRandom::CHAR_UPPER
@@ -129,12 +205,21 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	public static function tearDownAfterClass() {
+		if (!self::$wasDatabaseAllowed && self::$realDatabase !== null) {
+			// in case an error is thrown in a test, PHPUnit jumps straight to tearDownAfterClass,
+			// so we need the database again
+			\OC::$server->registerService('DatabaseConnection', function () {
+				return self::$realDatabase;
+			});
+		}
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
-		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		if (self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()) {
+			$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
 
-		self::tearDownAfterClassCleanShares($queryBuilder);
-		self::tearDownAfterClassCleanStorages($queryBuilder);
-		self::tearDownAfterClassCleanFileCache($queryBuilder);
+			self::tearDownAfterClassCleanShares($queryBuilder);
+			self::tearDownAfterClassCleanStorages($queryBuilder);
+			self::tearDownAfterClassCleanFileCache($queryBuilder);
+		}
 		self::tearDownAfterClassCleanStrayDataFiles($dataDir);
 		self::tearDownAfterClassCleanStrayHooks();
 		self::tearDownAfterClassCleanStrayLocks();
@@ -271,7 +356,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			$user = null;
 		}
 
-		\OC_Util::tearDownFS(); // command cant reply on the fs being setup
+		\OC_Util::tearDownFS(); // command can't reply on the fs being setup
 		$this->commandBus->run();
 		\OC_Util::tearDownFS();
 
@@ -314,6 +399,81 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			// we could not acquire the counter-lock, which means
 			// the lock of $type was in place
 			return true;
+		}
+	}
+
+	private function IsDatabaseAccessAllowed() {
+		// on travis-ci.org we allow database access in any case - otherwise
+		// this will break all apps right away
+		if (true == getenv('TRAVIS')) {
+			return true;
+		}
+		$annotations = $this->getAnnotations();
+		if (isset($annotations['class']['group']) && in_array('DB', $annotations['class']['group'])) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param string $expectedHtml
+	 * @param string $template
+	 * @param array $vars
+	 */
+	protected function assertTemplate($expectedHtml, $template, $vars = []) {
+
+		require_once __DIR__.'/../../lib/private/template/functions.php';
+
+		$requestToken = 12345;
+		$theme = new OC_Defaults();
+		/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject $l10n */
+		$l10n = $this->getMockBuilder('\OCP\IL10N')
+			->disableOriginalConstructor()->getMock();
+		$l10n
+			->expects($this->any())
+			->method('t')
+			->will($this->returnCallback(function($text, $parameters = array()) {
+				return vsprintf($text, $parameters);
+			}));
+
+		$t = new Base($template, $requestToken, $l10n, $theme);
+		$buf = $t->fetchPage($vars);
+		$this->assertHtmlStringEqualsHtmlString($expectedHtml, $buf);
+	}
+
+	/**
+	 * @param string $expectedHtml
+	 * @param string $actualHtml
+	 * @param string $message
+	 */
+	protected function assertHtmlStringEqualsHtmlString($expectedHtml, $actualHtml, $message = '') {
+		$expected = new DOMDocument();
+		$expected->preserveWhiteSpace = false;
+		$expected->formatOutput = true;
+		$expected->loadHTML($expectedHtml);
+
+		$actual = new DOMDocument();
+		$actual->preserveWhiteSpace = false;
+		$actual->formatOutput = true;
+		$actual->loadHTML($actualHtml);
+		$this->removeWhitespaces($actual);
+
+		$expectedHtml1 = $expected->saveHTML();
+		$actualHtml1 = $actual->saveHTML();
+		self::assertEquals($expectedHtml1, $actualHtml1, $message);
+	}
+
+
+	private function removeWhitespaces(DOMNode $domNode) {
+		foreach ($domNode->childNodes as $node) {
+			if($node->hasChildNodes()) {
+				$this->removeWhitespaces($node);
+			} else {
+				if ($node instanceof \DOMText && $node->isWhitespaceInElementContent() ) {
+					$domNode->removeChild($node);
+				}
+			}
 		}
 	}
 }

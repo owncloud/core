@@ -4,12 +4,13 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author tbartenstein <tbartenstein@users.noreply.github.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,6 +28,9 @@
  */
 
 namespace OC\Files;
+
+use OCP\Files\Cache\ICacheEntry;
+use OCP\IUser;
 
 class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	/**
@@ -55,18 +59,30 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	private $mount;
 
 	/**
+	 * @var IUser
+	 */
+	private $owner;
+
+	/**
+	 * @var string[]
+	 */
+	private $childEtags = [];
+
+	/**
 	 * @param string|boolean $path
 	 * @param Storage\Storage $storage
 	 * @param string $internalPath
-	 * @param array $data
+	 * @param array|ICacheEntry $data
 	 * @param \OCP\Files\Mount\IMountPoint $mount
+	 * @param \OCP\IUser|null $owner
 	 */
-	public function __construct($path, $storage, $internalPath, $data, $mount) {
+	public function __construct($path, $storage, $internalPath, $data, $mount, $owner= null) {
 		$this->path = $path;
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
 		$this->data = $data;
 		$this->mount = $mount;
+		$this->owner = $owner;
 	}
 
 	public function offsetSet($offset, $value) {
@@ -84,6 +100,10 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	public function offsetGet($offset) {
 		if ($offset === 'type') {
 			return $this->getType();
+		} else if ($offset === 'etag') {
+			return $this->getEtag();
+		} elseif ($offset === 'permissions') {
+			return $this->getPermissions();
 		} elseif (isset($this->data[$offset])) {
 			return $this->data[$offset];
 		} else {
@@ -144,7 +164,12 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return string
 	 */
 	public function getEtag() {
-		return $this->data['etag'];
+		if (count($this->childEtags) > 0) {
+			$combinedEtag = $this->data['etag'] . '::' . implode('::', $this->childEtags);
+			return md5($combinedEtag);
+		} else {
+			return $this->data['etag'];
+		}
 	}
 
 	/**
@@ -169,10 +194,23 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	}
 
 	/**
+	 * Return the currently version used for the HMAC in the encryption app
+	 *
+	 * @return int
+	 */
+	public function getEncryptedVersion() {
+		return isset($this->data['encryptedVersion']) ? (int) $this->data['encryptedVersion'] : 1;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getPermissions() {
-		return $this->data['permissions'];
+		$perms = $this->data['permissions'];
+		if (\OCP\Util::isSharingDisabledForUser() || ($this->isShared() && !\OC\Share\Share::isResharingAllowed())) {
+			$perms = $perms & ~\OCP\Constants::PERMISSION_SHARE;
+		}
+		return $perms;
 	}
 
 	/**
@@ -266,5 +304,43 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 */
 	public function getMountPoint() {
 		return $this->mount;
+	}
+
+	/**
+	 * Get the owner of the file
+	 *
+	 * @return \OCP\IUser
+	 */
+	public function getOwner() {
+		return $this->owner;
+	}
+
+	/**
+	 * Add a cache entry which is the child of this folder
+	 *
+	 * Sets the size, etag and size to for cross-storage childs
+	 *
+	 * @param array $data cache entry for the child
+	 * @param string $entryPath full path of the child entry
+	 */
+	public function addSubEntry($data, $entryPath) {
+		$this->data['size'] += isset($data['size']) ? $data['size'] : 0;
+		if (isset($data['mtime'])) {
+			$this->data['mtime'] = max($this->data['mtime'], $data['mtime']);
+		}
+		if (isset($data['etag'])) {
+			// prefix the etag with the relative path of the subentry to propagate etag on mount moves
+			$relativeEntryPath = substr($entryPath, strlen($this->getPath()));
+			// attach the permissions to propagate etag on permision changes of submounts
+			$permissions = isset($data['permissions']) ? $data['permissions'] : 0;
+			$this->childEtags[] = $relativeEntryPath . '/' . $data['etag'] . $permissions;
+		}
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getChecksum() {
+		return $this->data['checksum'];
 	}
 }

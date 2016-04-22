@@ -2,8 +2,9 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,6 +27,8 @@ use OCA\Files_Sharing\Tests\TestCase;
 
 /**
  * Class FilesSharingCapabilitiesTest
+ *
+ * @group DB
  */
 class FilesSharingCapabilitiesTest extends \Test\TestCase {
 
@@ -238,6 +241,24 @@ class FilesSharingCapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertFalse($result['public']['upload']);
+	}
+
+	public function testNoGroupSharing() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_group_sharing', 'yes', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['group_sharing']);
+	}
+
+	public function testGroupSharing() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['group_sharing']);
 	}
 
 	public function testFederatedSharingIncomming() {

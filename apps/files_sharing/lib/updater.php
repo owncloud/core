@@ -8,7 +8,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -58,6 +58,54 @@ class Shared_Updater {
 	 */
 	static public function renameHook($params) {
 		self::renameChildren($params['oldpath'], $params['newpath']);
+		self::moveShareToShare($params['newpath']);
+	}
+
+	/**
+	 * Fix for https://github.com/owncloud/core/issues/20769
+	 *
+	 * The owner is allowed to move their files (if they are shared) into a receiving folder
+	 * In this case we need to update the parent of the moved share. Since they are
+	 * effectively handing over ownership of the file the rest of the code needs to know
+	 * they need to build up the reshare tree.
+	 *
+	 * @param string $path
+	 */
+	static private function moveShareToShare($path) {
+		$userFolder = \OC::$server->getUserFolder();
+
+		// If the user folder can't be constructed (e.g. link share) just return.
+		if ($userFolder === null) {
+			return;
+		}
+
+		$src = $userFolder->get($path);
+
+		$shareManager = \OC::$server->getShareManager();
+
+		$shares = $shareManager->getSharesBy($userFolder->getOwner()->getUID(), \OCP\Share::SHARE_TYPE_USER, $src, false, -1);
+		$shares = array_merge($shares, $shareManager->getSharesBy($userFolder->getOwner()->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $src, false, -1));
+
+		// If the path we move is not a share we don't care
+		if (empty($shares)) {
+			return;
+		}
+
+		// Check if the destination is inside a share
+		$mountManager = \OC::$server->getMountManager();
+		$dstMount = $mountManager->find($src->getPath());
+		if (!($dstMount instanceof \OCA\Files_Sharing\SharedMount)) {
+			return;
+		}
+
+		$newOwner = $dstMount->getShare()->getShareOwner();
+
+		//Ownership is moved over
+		foreach ($shares as $share) {
+			/** @var \OCP\Share\IShare $share */
+			$share->setShareOwner($newOwner);
+			$shareManager->updateShare($share);
+		}
 	}
 
 	/**

@@ -1,16 +1,5 @@
 <div id="controls">
 		<div class="actions creatable hidden">
-		<?php /*
-			Only show upload button for public page
-		*/ ?>
-		<?php if(isset($_['dirToken'])):?>
-			<div id="upload" class="button upload"
-				 title="<?php isset($_['uploadMaxHumanFilesize']) ? p($l->t('Upload (max. %s)', array($_['uploadMaxHumanFilesize']))) : '' ?>">
-					<label for="file_upload_start" class="svg icon-upload">
-						<span class="hidden-visually"><?php p($l->t('Upload'))?></span>
-					</label>
-			</div>
-		<?php endif; ?>
 			<div id="uploadprogresswrapper">
 				<div id="uploadprogressbar"></div>
 				<button class="stop icon-close" style="display:none">
@@ -63,9 +52,8 @@
 					<a class="name sort columntitle" data-sort="name"><span><?php p($l->t( 'Name' )); ?></span><span class="sort-indicator"></span></a>
 					<span id="selectedActionsList" class="selectedActions">
 						<a href="" class="download">
-							<img class="svg" alt=""
-								 src="<?php print_unescaped(OCP\image_path("core", "actions/download.svg")); ?>" />
-							<?php p($l->t('Download'))?>
+							<span class="icon icon-download"></span>
+							<span><?php p($l->t('Download'))?></span>
 						</a>
 					</span>
 				</div>
@@ -76,9 +64,8 @@
 			<th id="headerDate" class="hidden column-mtime">
 				<a id="modified" class="columntitle" data-sort="mtime"><span><?php p($l->t( 'Modified' )); ?></span><span class="sort-indicator"></span></a>
 					<span class="selectedActions"><a href="" class="delete-selected">
-						<?php p($l->t('Delete'))?>
-						<img class="svg" alt=""
-							 src="<?php print_unescaped(OCP\image_path("core", "actions/delete.svg")); ?>" />
+						<span><?php p($l->t('Delete'))?></span>
+						<span class="icon icon-delete"></span>
 					</a></span>
 			</th>
 		</tr>
@@ -97,13 +84,5 @@
 <div id="uploadsize-message" title="<?php p($l->t('Upload too large'))?>">
 	<p>
 	<?php p($l->t('The files you are trying to upload exceed the maximum size for file uploads on this server.'));?>
-	</p>
-</div>
-<div id="scanning-message">
-	<h3>
-		<?php p($l->t('Files are being scanned, please wait.'));?> <span id='scan-count'></span>
-	</h3>
-	<p>
-		<?php p($l->t('Currently scanning'));?> <span id='scan-current'></span>
 	</p>
 </div>

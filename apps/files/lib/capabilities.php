@@ -4,7 +4,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@
 namespace OCA\Files;
 
 use OCP\Capabilities\ICapability;
+use OCP\IConfig;
 
 /**
  * Class Capabilities
@@ -31,6 +32,17 @@ use OCP\Capabilities\ICapability;
  * @package OCA\Files
  */
 class Capabilities implements ICapability {
+	/** @var IConfig */
+	protected $config;
+
+	/**
+	 * Capabilities constructor.
+	 *
+	 * @param IConfig $config
+	 */
+	public function __construct(IConfig $config) {
+		$this->config = $config;
+	}
 
 	/**
 	 * Return this classes capabilities
@@ -41,6 +53,7 @@ class Capabilities implements ICapability {
 		return [
 			'files' => [
 				'bigfilechunking' => true,
+				'blacklisted_files' => $this->config->getSystemValue('blacklisted_files', ['.htaccess']),
 			],
 		];
 	}

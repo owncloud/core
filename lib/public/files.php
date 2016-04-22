@@ -10,7 +10,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ class Files {
 	 * @since 5.0.0
 	 */
 	static function getMimeType( $path ) {
-		return(\OC_Helper::getMimeType( $path ));
+		return \OC::$server->getMimeTypeDetector()->detect($path);
 	}
 
 	/**
@@ -123,7 +123,7 @@ class Files {
 
 	/**
 	 * Gets the Storage for an app - creates the needed folder if they are not
-	 * existant
+	 * existent
 	 * @param string $app
 	 * @return \OC\Files\View
 	 * @since 5.0.0

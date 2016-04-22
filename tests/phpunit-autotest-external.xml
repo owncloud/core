@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit bootstrap="bootstrap.php"
-		 strict="true"
 		 verbose="true"
 		 timeoutForSmallTests="900"
 		 timeoutForMediumTests="900"
@@ -9,7 +8,7 @@
 	<testsuite name='ownCloud files external'>
 		<directory suffix=".php">../apps/files_external/tests</directory>
 		<!-- exclude backends as they are called separately -->
-		<exclude>../apps/files_external/tests/backends/</exclude>
+		<exclude>../apps/files_external/tests/storage/</exclude>
 	</testsuite>
 	<!-- filters for code coverage -->
 	<filter>

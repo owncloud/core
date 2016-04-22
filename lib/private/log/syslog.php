@@ -3,9 +3,8 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Volker Fröhlich <volker27@gmx.at>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -35,7 +34,7 @@ class OC_Log_Syslog {
 	 * Init class data
 	 */
 	public static function init() {
-		openlog(OC_Config::getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
+		openlog(\OC::$server->getSystemConfig()->getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
 		// Close at shutdown
 		register_shutdown_function('closelog');
 	}

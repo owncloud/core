@@ -14,6 +14,8 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 
 /**
+ * @group DB
+ *
  * @package OC\Settings\Controller
  */
 class UsersControllerTest extends \Test\TestCase {
@@ -52,6 +54,30 @@ class UsersControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->container['OCP\\App\\IAppManager'] = $this->getMockBuilder('OCP\\App\\IAppManager')
 			->disableOriginalConstructor()->getMock();
+
+
+		/*
+		 * Set default avtar behaviour for whole testsuite
+		 */
+		$this->container['OCP\\IAvatarManager'] = $this->getMock('OCP\IAvatarManager');
+
+		$avatarExists = $this->getMock('OCP\IAvatar');
+		$avatarExists->method('exists')->willReturn(true);
+		$avatarNotExists = $this->getMock('OCP\IAvatar');
+		$avatarNotExists->method('exists')->willReturn(false);
+		$this->container['OCP\\IAvatarManager']
+			->method('getAvatar')
+			->will($this->returnValueMap([
+				['foo', $avatarExists],
+				['bar', $avatarExists],
+				['admin', $avatarNotExists],
+			]));
+
+		$this->container['Config']
+			->method('getSystemValue')
+			->with('enable_avatars', true)
+			->willReturn(true);
+
 	}
 
 	public function testIndexAdmin() {
@@ -60,13 +86,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$foo
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$foo
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('M. Foo'));
+		$foo
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('foo@bar.com'));
+		$foo
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('1024'));
 		$foo
 			->method('getLastLogin')
 			->will($this->returnValue(500));
@@ -80,13 +114,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$admin = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$admin
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$admin
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('S. Admin'));
+		$admin
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('admin@bar.com'));
+		$admin
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('404'));
 		$admin
 			->expects($this->once())
 			->method('getLastLogin')
@@ -102,13 +144,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$bar = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$bar
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('bar'));
 		$bar
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('B. Ar'));
+		$bar
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('bar@dummy.com'));
+		$bar
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('2323'));
 		$bar
 			->method('getLastLogin')
 			->will($this->returnValue(3999));
@@ -144,12 +194,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('get')
 			->with('bar')
 			->will($this->returnValue($bar));
-		$this->container['Config']
-			->expects($this->exactly(6))
-			->method('getUserValue')
-			->will($this->onConsecutiveCalls(1024, 'foo@bar.com',
-											404, 'admin@bar.com',
-											2323, 'bar@dummy.com'));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -174,7 +218,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
 
-
 		$expectedResponse = new DataResponse(
 			array(
 				0 => array(
@@ -188,6 +231,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => 'OC_User_Database',
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => true,
 				),
 				1 => array(
 					'name' => 'admin',
@@ -200,6 +244,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => '\Test\Util\User\Dummy',
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => false,
 				),
 				2 => array(
 					'name' => 'bar',
@@ -212,6 +257,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => '\Test\Util\User\Dummy',
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => true,
 				),
 			)
 		);
@@ -232,13 +278,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$foo
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$foo
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('M. Foo'));
+		$foo
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('foo@bar.com'));
+		$foo
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('1024'));
 		$foo
 			->method('getLastLogin')
 			->will($this->returnValue(500));
@@ -252,13 +306,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$admin = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$admin
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$admin
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('S. Admin'));
+		$admin
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('admin@bar.com'));
+		$admin
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('404'));
 		$admin
 			->expects($this->once())
 			->method('getLastLogin')
@@ -274,13 +336,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$bar = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$bar
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('bar'));
 		$bar
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('B. Ar'));
+		$bar
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('bar@dummy.com'));
+		$bar
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('2323'));
 		$bar
 			->method('getLastLogin')
 			->will($this->returnValue(3999));
@@ -325,14 +395,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('get')
 			->with('admin')
 			->will($this->returnValue($admin));
-		$this->container['Config']
-			->expects($this->exactly(6))
-			->method('getUserValue')
-			->will($this->onConsecutiveCalls(
-				2323, 'bar@dummy.com',
-				1024, 'foo@bar.com',
-				404, 'admin@bar.com'
-			));
 
 		$subgroup1 = $this->getMockBuilder('\OCP\IGroup')
 			->disableOriginalConstructor()
@@ -375,6 +437,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => '\Test\Util\User\Dummy',
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => true,
 				],
 				1=> [
 					'name' => 'foo',
@@ -387,6 +450,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => 'OC_User_Database',
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => true,
 				],
 				2 => [
 					'name' => 'admin',
@@ -399,6 +463,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => '\Test\Util\User\Dummy',
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => false,
 				],
 			]
 		);
@@ -417,13 +482,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$foo
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$foo
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('M. Foo'));
+		$foo
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('foo@bar.com'));
+		$foo
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('1024'));
 		$foo
 			->method('getLastLogin')
 			->will($this->returnValue(500));
@@ -437,13 +510,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$admin = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$admin
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$admin
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('S. Admin'));
+		$admin
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('admin@bar.com'));
+		$admin
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('404'));
 		$admin
 			->expects($this->once())
 			->method('getLastLogin')
@@ -459,13 +540,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$bar = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$bar
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('bar'));
 		$bar
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('B. Ar'));
+		$bar
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('bar@dummy.com'));
+		$bar
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('2323'));
 		$bar
 			->method('getLastLogin')
 			->will($this->returnValue(3999));
@@ -486,12 +575,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->exactly(3))
 			->method('getUserGroupIds')
 			->will($this->onConsecutiveCalls(array('Users', 'Support'), array('admins', 'Support'), array('External Users')));
-		$this->container['Config']
-			->expects($this->exactly(6))
-			->method('getUserValue')
-			->will($this->onConsecutiveCalls(1024, 'foo@bar.com',
-				404, 'admin@bar.com',
-				2323, 'bar@dummy.com'));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -517,6 +600,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => 'OC_User_Database',
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => true,
 				),
 				1 => array(
 					'name' => 'admin',
@@ -529,6 +613,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => '\Test\Util\User\Dummy',
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => false,
 				),
 				2 => array(
 					'name' => 'bar',
@@ -541,6 +626,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'backend' => '\Test\Util\User\Dummy',
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => true,
 				),
 			)
 		);
@@ -554,13 +640,21 @@ class UsersControllerTest extends \Test\TestCase {
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$user
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('M. Foo'));
+		$user
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue(null));
+		$user
+			->expects($this->once())
+			->method('getQuota')
+			->will($this->returnValue('none'));
 		$user
 			->method('getLastLogin')
 			->will($this->returnValue(500));
@@ -602,12 +696,13 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'M. Foo',
 					'groups' => null,
 					'subadmin' => array(),
-					'quota' => null,
+					'quota' => 'none',
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500000,
 					'backend' => 'OC_User_Database',
 					'email' => null,
 					'isRestoreDisabled' => false,
+					'isAvatarAvailable' => true,
 				)
 			)
 		);
@@ -679,6 +774,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'subadmin' => array(),
 				'email' => null,
 				'isRestoreDisabled' => false,
+				'isAvatarAvailable' => true,
 			),
 			Http::STATUS_CREATED
 		);
@@ -767,6 +863,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'subadmin' => [],
 				'email' => null,
 				'isRestoreDisabled' => false,
+				'isAvatarAvailable' => true,
 			),
 			Http::STATUS_CREATED
 		);
@@ -849,6 +946,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'subadmin' => array(),
 				'email' => null,
 				'isRestoreDisabled' => false,
+				'isAvatarAvailable' => true,
 			),
 			Http::STATUS_CREATED
 		);
@@ -944,6 +1042,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'subadmin' => [],
 				'email' => null,
 				'isRestoreDisabled' => false,
+				'isAvatarAvailable' => true,
 			),
 			Http::STATUS_CREATED
 		);
@@ -1440,6 +1539,7 @@ class UsersControllerTest extends \Test\TestCase {
 			'backend' => $backend,
 			'email' => null,
 			'isRestoreDisabled' => false,
+			'isAvatarAvailable' => true,
 		];
 
 		return [$user, $result];
@@ -1596,16 +1696,42 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->assertEquals($expectedResult, $result);
 	}
 
+	public function testNoAvatar() {
+		$this->container['IsAdmin'] = true;
+
+		list($user, $expectedResult) = $this->mockUser();
+
+		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
+			->disableOriginalConstructor()
+			->getMock();
+		$subadmin->expects($this->once())
+			->method('getSubAdminsGroups')
+			->with($user)
+			->will($this->returnValue([]));
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('getSubAdmin')
+			->will($this->returnValue($subadmin));
+
+		$this->container['OCP\\IAvatarManager']
+			->method('getAvatar')
+			->will($this->throwException(new \OCP\Files\NotFoundException()));
+		$expectedResult['isAvatarAvailable'] = false;
+
+		$result = self::invokePrivate($this->container['UsersController'], 'formatUserForIndex', [$user]);
+		$this->assertEquals($expectedResult, $result);
+	}
+
 	/**
 	 * @return array
 	 */
 	public function setEmailAddressData() {
 		return [
-			/* mailAddress,    isValid, expectsUpdate, expectsDelete, canChangeDisplayName, responseCode */
-			[ '',              true,    false,         true,          true,                 Http::STATUS_OK ],
-			[ 'foo@local',     true,    true,          false,         true,                 Http::STATUS_OK],
-			[ 'foo@bar@local', false,   false,         false,         true,                 Http::STATUS_UNPROCESSABLE_ENTITY],
-			[ 'foo@local',     true,    false,         false,         false,                Http::STATUS_FORBIDDEN],
+			/* mailAddress,    isValid, expectsUpdate, canChangeDisplayName, responseCode */
+			[ '',              true,    true,          true,                 Http::STATUS_OK ],
+			[ 'foo@local',     true,    true,          true,                 Http::STATUS_OK],
+			[ 'foo@bar@local', false,   false,         true,                 Http::STATUS_UNPROCESSABLE_ENTITY],
+			[ 'foo@local',     true,    false,         false,                Http::STATUS_FORBIDDEN],
 		];
 	}
 
@@ -1617,7 +1743,7 @@ class UsersControllerTest extends \Test\TestCase {
 	 * @param bool $expectsUpdate
 	 * @param bool $expectsDelete
 	 */
-	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $expectsDelete, $canChangeDisplayName, $responseCode) {
+	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $canChangeDisplayName, $responseCode) {
 		$this->container['IsAdmin'] = true;
 
 		$user = $this->getMockBuilder('\OC\User\User')
@@ -1630,6 +1756,13 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('canChangeDisplayName')
 			->will($this->returnValue($canChangeDisplayName));
+		$user
+			->expects($expectsUpdate ? $this->once() : $this->never())
+			->method('setEMailAddress')
+			->with(
+				$this->equalTo($mailAddress)
+			);
+
 		$this->container['UserSession']
 			->expects($this->atLeastOnce())
 			->method('getUser')
@@ -1651,26 +1784,6 @@ class UsersControllerTest extends \Test\TestCase {
 				->with('foo')
 				->will($this->returnValue($user));
 		}
-
-		$this->container['Config']
-			->expects(($expectsUpdate) ? $this->once() : $this->never())
-			->method('setUserValue')
-			->with(
-				$this->equalTo($user->getUID()),
-				$this->equalTo('settings'),
-				$this->equalTo('email'),
-				$this->equalTo($mailAddress)
-
-			);
-		$this->container['Config']
-			->expects(($expectsDelete) ? $this->once() : $this->never())
-			->method('deleteUserValue')
-			->with(
-				$this->equalTo($user->getUID()),
-				$this->equalTo('settings'),
-				$this->equalTo('email')
-
-			);
 
 		$response = $this->container['UsersController']->setMailAddress($user->getUID(), $mailAddress);
 
@@ -1746,4 +1859,173 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
+	public function testSetDisplayNameNull() {
+		$user = $this->getMock('\OCP\IUser');
+		$user->method('getUID')->willReturn('userName');
+
+		$this->container['UserSession']
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'error',
+				'data' => [
+					'message' => 'Authentication error',
+				],
+			]
+		);
+		$response = $this->container['UsersController']->setDisplayName(null, 'displayName');
+
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function dataSetDisplayName() {
+		$data = [];
+
+		$user1 = $this->getMock('\OCP\IUser');
+		$user1->method('getUID')->willReturn('user1');
+		$user1->method('canChangeDisplayName')->willReturn(true);
+		$data[] = [$user1, $user1, false, false, true];
+
+		$user1 = $this->getMock('\OCP\IUser');
+		$user1->method('getUID')->willReturn('user1');
+		$user1->method('canChangeDisplayName')->willReturn(false);
+		$data[] = [$user1, $user1, false, false, false];
+
+		$user1 = $this->getMock('\OCP\IUser');
+		$user1->method('getUID')->willReturn('user1');
+		$user2 = $this->getMock('\OCP\IUser');
+		$user2->method('getUID')->willReturn('user2');
+		$user2->method('canChangeDisplayName')->willReturn(true);
+		$data[] = [$user1, $user2, false, false, false];
+
+		$user1 = $this->getMock('\OCP\IUser');
+		$user1->method('getUID')->willReturn('user1');
+		$user2 = $this->getMock('\OCP\IUser');
+		$user2->method('getUID')->willReturn('user2');
+		$user2->method('canChangeDisplayName')->willReturn(true);
+		$data[] = [$user1, $user2, true, false, true];
+
+		$user1 = $this->getMock('\OCP\IUser');
+		$user1->method('getUID')->willReturn('user1');
+		$user2 = $this->getMock('\OCP\IUser');
+		$user2->method('getUID')->willReturn('user2');
+		$user2->method('canChangeDisplayName')->willReturn(true);
+		$data[] = [$user1, $user2, false, true, true];
+
+		return $data;
+	}
+
+	/**
+	 * @dataProvider dataSetDisplayName
+	 */
+	public function testSetDisplayName($currentUser, $editUser, $isAdmin, $isSubAdmin, $valid) {
+		$this->container['UserSession']
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($currentUser);
+		$this->container['UserManager']
+			->expects($this->once())
+			->method('get')
+			->with($editUser->getUID())
+			->willReturn($editUser);
+
+		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
+			->disableOriginalConstructor()
+			->getMock();
+		$subadmin
+			->method('isUserAccessible')
+			->with($currentUser, $editUser)
+			->willReturn($isSubAdmin);
+
+		$this->container['GroupManager']
+			->method('getSubAdmin')
+			->willReturn($subadmin);
+		$this->container['GroupManager']
+			->method('isAdmin')
+			->with($currentUser->getUID())
+			->willReturn($isAdmin);
+
+		if ($valid === true) {
+			$editUser->expects($this->once())
+				->method('setDisplayName')
+				->with('newDisplayName')
+				->willReturn(true);
+			$expectedResponse = new DataResponse(
+				[
+					'status' => 'success',
+					'data' => [
+						'message' => 'Your full name has been changed.',
+						'username' => $editUser->getUID(),
+						'displayName' => 'newDisplayName',
+					],
+				]
+			);
+		} else {
+			$editUser->expects($this->never())->method('setDisplayName');
+			$expectedResponse = new DataResponse(
+				[
+					'status' => 'error',
+					'data' => [
+						'message' => 'Authentication error',
+					],
+				]
+				);
+			}
+
+		$response = $this->container['UsersController']->setDisplayName($editUser->getUID(), 'newDisplayName');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testSetDisplayNameFails() {
+		$user = $this->getMock('\OCP\IUser');
+		$user->method('canChangeDisplayname')->willReturn(true);
+		$user->method('getUID')->willReturn('user');
+		$user->expects($this->once())
+			->method('setDisplayName')
+			->with('newDisplayName')
+			->willReturn(false);
+		$user->method('getDisplayName')->willReturn('oldDisplayName');
+
+		$this->container['UserSession']
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($user);
+		$this->container['UserManager']
+			->expects($this->once())
+			->method('get')
+			->with($user->getUID())
+			->willReturn($user);
+
+		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
+			->disableOriginalConstructor()
+			->getMock();
+		$subadmin
+			->method('isUserAccessible')
+			->with($user, $user)
+			->willReturn(false);
+
+		$this->container['GroupManager']
+			->method('getSubAdmin')
+			->willReturn($subadmin);
+		$this->container['GroupManager']
+			->expects($this->once())
+			->method('isAdmin')
+			->with($user->getUID())
+			->willReturn(false);
+
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'error',
+				'data' => [
+					'message' => 'Unable to change full name',
+					'displayName' => 'oldDisplayName',
+				],
+			]
+		);
+		$response = $this->container['UsersController']->setDisplayName($user->getUID(), 'newDisplayName');
+		$this->assertEquals($expectedResponse, $response);
+	}
 }

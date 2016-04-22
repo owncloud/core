@@ -3,8 +3,9 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -89,12 +90,12 @@ interface IUserManager {
 	/**
 	 * Check if the password is valid for the user
 	 *
-	 * @param string $loginname
+	 * @param string $loginName
 	 * @param string $password
 	 * @return mixed the User object on success, false otherwise
 	 * @since 8.0.0
 	 */
-	public function checkPassword($loginname, $password);
+	public function checkPassword($loginName, $password);
 
 	/**
 	 * search by user id
@@ -134,4 +135,11 @@ interface IUserManager {
 	 * @since 8.0.0
 	 */
 	public function countUsers();
+
+	/**
+	 * @param \Closure $callback
+	 * @param string $search
+	 * @since 9.0.0
+	 */
+	public function callForAllUsers (\Closure $callback, $search = '');
 }

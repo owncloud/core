@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,27 +25,27 @@
  *
  */
 
+/**
+ * Class Test_Files_Sharing_Watcher
+ *
+ * @group DB
+ */
 class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 
-	/**
-	 * @var \OC\Files\Storage\Storage
-	 */
+	/** @var \OC\Files\Storage\Storage */
 	private $ownerStorage;
 
-	/**
-	 * @var \OC\Files\Cache\Cache
-	 */
+	/** @var \OC\Files\Cache\Cache */
 	private $ownerCache;
 
-	/**
-	 * @var \OC\Files\Storage\Storage
-	 */
+	/** @var \OC\Files\Storage\Storage */
 	private $sharedStorage;
 
-	/**
-	 * @var \OC\Files\Cache\Cache
-	 */
+	/** @var \OC\Files\Cache\Cache */
 	private $sharedCache;
+
+	/** @var \OCP\Share\IShare */
+	private $_share;
 
 	protected function setUp() {
 		parent::setUp();
@@ -53,7 +53,6 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
 		// prepare user1's dir structure
-		$textData = "dummy file data\n";
 		$this->view->mkdir('container');
 		$this->view->mkdir('container/shareddir');
 		$this->view->mkdir('container/shareddir/subdir');
@@ -63,9 +62,13 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 		$this->ownerStorage->getScanner()->scan('');
 
 		// share "shareddir" with user2
-		$fileinfo = $this->view->getFileInfo('container/shareddir');
-		\OCP\Share::shareItem('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2, 31);
+		$this->_share = $this->share(
+			\OCP\Share::SHARE_TYPE_USER,
+			'container/shareddir',
+			self::TEST_FILES_SHARING_API_USER1,
+			self::TEST_FILES_SHARING_API_USER2,
+			\OCP\Constants::PERMISSION_ALL
+		);
 
 		// login as user2
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
@@ -83,13 +86,13 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
-		$fileinfo = $this->view->getFileInfo('container/shareddir');
-		\OCP\Share::unshare('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2);
+		if ($this->view) {
+			$this->shareManager->deleteShare($this->_share);
 
-		$this->view->deleteAll('container');
+			$this->view->deleteAll('container');
 
-		$this->ownerCache->clear();
+			$this->ownerCache->clear();
+		}
 
 		parent::tearDown();
 	}

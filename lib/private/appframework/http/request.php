@@ -5,13 +5,16 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Mitar <mitar.git@tnode.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,6 +33,8 @@
 
 namespace OC\AppFramework\Http;
 
+use OC\Security\CSRF\CsrfToken;
+use OC\Security\CSRF\CsrfTokenManager;
 use OC\Security\TrustedDomainHelper;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -39,14 +44,32 @@ use OCP\Security\ISecureRandom;
 /**
  * Class for accessing variables in the request.
  * This class provides an immutable object with request variables.
+ *
+ * @property mixed[] cookies
+ * @property mixed[] env
+ * @property mixed[] files
+ * @property string method
+ * @property mixed[] parameters
+ * @property mixed[] server
  */
 class Request implements \ArrayAccess, \Countable, IRequest {
 
-	const USER_AGENT_IE = '/MSIE/';
+	const USER_AGENT_IE = '/(MSIE)|(Trident)/';
 	const USER_AGENT_IE_8 = '/MSIE 8.0/';
+	// Microsoft Edge User Agent from https://msdn.microsoft.com/en-us/library/hh869301(v=vs.85).aspx
+	const USER_AGENT_MS_EDGE = '/^Mozilla\/5\.0 \([^)]+\) AppleWebKit\/[0-9.]+ \(KHTML, like Gecko\) Chrome\/[0-9.]+ (Mobile Safari|Safari)\/[0-9.]+ Edge\/[0-9.]+$/';
+	// Firefox User Agent from https://developer.mozilla.org/en-US/docs/Web/HTTP/Gecko_user_agent_string_reference
+	const USER_AGENT_FIREFOX = '/^Mozilla\/5\.0 \([^)]+\) Gecko\/[0-9.]+ Firefox\/[0-9.]+$/';
+	// Chrome User Agent from https://developer.chrome.com/multidevice/user-agent
+	const USER_AGENT_CHROME = '/^Mozilla\/5\.0 \([^)]+\) AppleWebKit\/[0-9.]+ \(KHTML, like Gecko\) Chrome\/[0-9.]+ (Mobile Safari|Safari)\/[0-9.]+$/';
+	// Safari User Agent from http://www.useragentstring.com/pages/Safari/
+	const USER_AGENT_SAFARI = '/^Mozilla\/5\.0 \([^)]+\) AppleWebKit\/[0-9.]+ \(KHTML, like Gecko\) Version\/[0-9.]+ Safari\/[0-9.A-Z]+$/';
 	// Android Chrome user agent: https://developers.google.com/chrome/mobile/docs/user-agent
 	const USER_AGENT_ANDROID_MOBILE_CHROME = '#Android.*Chrome/[.0-9]*#';
 	const USER_AGENT_FREEBOX = '#^Mozilla/5\.0$#';
+	const USER_AGENT_OWNCLOUD_IOS = '/^Mozilla\/5\.0 \(iOS\) ownCloud\-iOS.*$/';
+	const USER_AGENT_OWNCLOUD_ANDROID = '/^Mozilla\/5\.0 \(Android\) ownCloud\-android.*$/';
+	const USER_AGENT_OWNCLOUD_DESKTOP = '/^Mozilla\/5\.0 \([A-Za-z ]+\) (mirall|csyncoC)\/.*$/';
 	const REGEX_LOCALHOST = '/^(127\.0\.0\.1|localhost)$/';
 
 	protected $inputStream;
@@ -72,6 +95,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	protected $requestId = '';
 	/** @var ICrypto */
 	protected $crypto;
+	/** @var CsrfTokenManager|null */
+	protected $csrfTokenManager;
 
 	/** @var bool */
 	protected $contentDecoded = false;
@@ -89,17 +114,20 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 *        - string|false 'requesttoken' the requesttoken or false when not available
 	 * @param ISecureRandom $secureRandom
 	 * @param IConfig $config
+	 * @param CsrfTokenManager|null $csrfTokenManager
 	 * @param string $stream
 	 * @see http://www.php.net/manual/en/reserved.variables.php
 	 */
 	public function __construct(array $vars=array(),
 								ISecureRandom $secureRandom = null,
 								IConfig $config,
-								$stream='php://input') {
+								CsrfTokenManager $csrfTokenManager = null,
+								$stream = 'php://input') {
 		$this->inputStream = $stream;
 		$this->items['params'] = array();
 		$this->secureRandom = $secureRandom;
 		$this->config = $config;
+		$this->csrfTokenManager = $csrfTokenManager;
 
 		if(!array_key_exists('method', $vars)) {
 			$vars['method'] = 'GET';
@@ -250,7 +278,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @param string $id
 	 */
 	public function __unset($id) {
-		throw new \RunTimeException('You cannot change the contents of the request object');
+		throw new \RuntimeException('You cannot change the contents of the request object');
 	}
 
 	/**
@@ -340,7 +368,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/**
 	 * Shortcut for getting cookie variables
 	 * @param string $key the key that will be taken from the $_COOKIE array
-	 * @return array the value in the $_COOKIE element
+	 * @return string the value in the $_COOKIE element
 	 */
 	public function getCookie($key) {
 		return isset($this->cookies[$key]) ? $this->cookies[$key] : null;
@@ -418,10 +446,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/**
 	 * Checks if the CSRF check was correct
 	 * @return bool true if CSRF check passed
-	 * @see OC_Util::callRegister()
 	 */
 	public function passesCSRFCheck() {
-		if($this->items['requesttoken'] === false) {
+		if($this->csrfTokenManager === null) {
 			return false;
 		}
 
@@ -435,23 +462,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			//no token found.
 			return false;
 		}
+		$token = new CsrfToken($token);
 
-		// Deobfuscate token to prevent BREACH like attacks
-		$token = explode(':', $token);
-		if (count($token) !== 2) {
-			return false;
-		}
-
-		$obfuscatedToken = $token[0];
-		$secret = $token[1];
-		$deobfuscatedToken = base64_decode($obfuscatedToken) ^ $secret;
-
-		// Check if the token is valid
-		if(\OCP\Security\StringUtils::equals($deobfuscatedToken, $this->items['requesttoken'])) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->csrfTokenManager->isTokenValid($token);
 	}
 
 	/**
@@ -465,7 +478,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 
 		if(empty($this->requestId)) {
-			$this->requestId = $this->secureRandom->getLowStrengthGenerator()->generate(20);
+			$this->requestId = $this->secureRandom->generate(20);
 		}
 
 		return $this->requestId;
@@ -541,7 +554,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 		if (isset($this->server['HTTPS'])
 			&& $this->server['HTTPS'] !== null
-			&& $this->server['HTTPS'] !== 'off') {
+			&& $this->server['HTTPS'] !== 'off'
+			&& $this->server['HTTPS'] !== '') {
 			return 'https';
 		}
 
@@ -674,6 +688,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return bool true if at least one of the given agent matches, false otherwise
 	 */
 	public function isUserAgent(array $agent) {
+		if (!isset($this->server['HTTP_USER_AGENT'])) {
+			return false;
+		}
 		foreach ($agent as $regex) {
 			if (preg_match($regex, $this->server['HTTP_USER_AGENT'])) {
 				return true;

@@ -3,9 +3,9 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ use OCP\Constants;
  *
  * This can be used to restrict update, create, delete and/or share permissions of a storage
  *
- * Note that the read permissions cant be masked
+ * Note that the read permissions can't be masked
  */
 class PermissionsMask extends Wrapper {
 	/**

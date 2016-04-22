@@ -6,9 +6,10 @@ OC.L10N.register(
     "Grant access" : "Permitir acceso",
     "Access granted" : "Acceso permitido",
     "Saved" : "Guardado",
-    "None" : "Ninguno",
     "Username" : "Nombre de usuario",
     "Password" : "Contraseña",
+    "Save" : "Guardar",
+    "None" : "Ninguno",
     "API key" : "clave API",
     "Port" : "Puerto",
     "Region" : "Provincia",
@@ -22,7 +23,7 @@ OC.L10N.register(
     "External Storage" : "Almacenamiento externo",
     "Folder name" : "Nombre de la carpeta",
     "Configuration" : "Configuración",
-    "Delete" : "Borrar",
-    "Add storage" : "Añadir almacenamiento"
+    "Add storage" : "Añadir almacenamiento",
+    "Delete" : "Borrar"
 },
 "nplurals=2; plural=(n != 1);");

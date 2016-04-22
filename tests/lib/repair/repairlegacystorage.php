@@ -15,6 +15,8 @@ use Test\TestCase;
 /**
  * Tests for the converting of legacy storages to home storages.
  *
+ * @group DB
+ *
  * @see \OC\Repair\RepairLegacyStorages
  */
 class RepairLegacyStorages extends TestCase {
@@ -97,7 +99,7 @@ class RepairLegacyStorages extends TestCase {
 		$numRows = $this->connection->executeUpdate($sql, array($storageId));
 		$this->assertEquals(1, $numRows);
 
-		return \OC_DB::insertid('*PREFIX*storages');
+		return \OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*storages');
 	}
 
 	/**

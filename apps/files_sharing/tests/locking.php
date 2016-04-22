@@ -2,8 +2,9 @@
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,9 +25,15 @@ namespace OCA\Files_sharing\Tests;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
-use OC\Lock\MemcacheLockingProvider;
 use OCP\Lock\ILockingProvider;
 
+/**
+ * Class Locking
+ *
+ * @group DB
+ *
+ * @package OCA\Files_sharing\Tests
+ */
 class Locking extends TestCase {
 	/**
 	 * @var \Test\Util\User\Dummy
@@ -52,7 +59,13 @@ class Locking extends TestCase {
 		Filesystem::file_put_contents('/foo/bar.txt', 'asd');
 		$fileId = Filesystem::getFileInfo('/foo/bar.txt')->getId();
 
-		\OCP\Share::shareItem('file', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->recipientUid, 31);
+		$this->share(
+			\OCP\Share::SHARE_TYPE_USER,
+			'/foo/bar.txt',
+			$this->ownerUid,
+			$this->recipientUid,
+			\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE
+		);
 
 		$this->loginAsUser($this->recipientUid);
 		$this->assertTrue(Filesystem::file_exists('bar.txt'));

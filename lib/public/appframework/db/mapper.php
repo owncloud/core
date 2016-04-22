@@ -1,11 +1,12 @@
 <?php
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -202,7 +203,7 @@ abstract class Mapper {
 	/**
 	 * Returns the correct PDO constant based on the value type
 	 * @param $value
-	 * @return PDO constant
+	 * @return int PDO constant
 	 * @since 8.1.0
 	 */
 	private function getPDOType($value) {
@@ -281,16 +282,41 @@ abstract class Mapper {
 
 		if($row === false || $row === null){
 			$stmt->closeCursor();
-			throw new DoesNotExistException('No matching entry found');
+			$msg = $this->buildDebugMessage(
+				'Did expect one result but found none when executing', $sql, $params, $limit, $offset
+			);
+			throw new DoesNotExistException($msg);
 		}
 		$row2 = $stmt->fetch();
 		$stmt->closeCursor();
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if( ! ($row2 === false || $row2 === null )) {
-			throw new MultipleObjectsReturnedException('More than one result');
+			$msg = $this->buildDebugMessage(
+				'Did not expect more than one result when executing', $sql, $params, $limit, $offset
+			);
+			throw new MultipleObjectsReturnedException($msg);
 		} else {
 			return $row;
 		}
+	}
+
+	/**
+	 * Builds an error message by prepending the $msg to an error message which
+	 * has the parameters
+	 * @see findEntity
+	 * @param string $sql the sql query
+	 * @param array $params the parameters of the sql query
+	 * @param int $limit the maximum number of rows
+	 * @param int $offset from which row we want to start
+	 * @return string formatted error message string
+	 * @since 9.1.0
+	 */
+	private function buildDebugMessage($msg, $sql, array $params=[], $limit=null, $offset=null) {
+		return $msg .
+					': query "' .	$sql . '"; ' .
+					'parameters ' . print_r($params, true) . '; ' .
+					'limit "' . $limit . '"; '.
+					'offset "' . $offset . '"';
 	}
 
 

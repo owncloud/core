@@ -10,7 +10,10 @@
 
 (function() {
 
-	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new"><img src="{{iconUrl}}" alt="{{addText}}"></img></a>';
+	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new">' +
+		'<span class="icon {{iconClass}}"></span>' +
+		'<span class="hidden-visually">{{addText}}</span>' +
+		'</a>';
 
 	/**
 	 * @class OCA.Files.FileList
@@ -22,11 +25,12 @@
 	 *
 	 * @param $el container element with existing markup for the #controls
 	 * and a table
-	 * @param [options] map of options, see other parameters
-	 * @param [options.scrollContainer] scrollable container, defaults to $(window)
-	 * @param [options.dragOptions] drag options, disabled by default
-	 * @param [options.folderDropOptions] folder drop options, disabled by default
-	 * @param [options.detailsViewEnabled=true] whether to enable details view
+	 * @param {Object} [options] map of options, see other parameters
+	 * @param {Object} [options.scrollContainer] scrollable container, defaults to $(window)
+	 * @param {Object} [options.dragOptions] drag options, disabled by default
+	 * @param {Object} [options.folderDropOptions] folder drop options, disabled by default
+	 * @param {boolean} [options.detailsViewEnabled=true] whether to enable details view
+	 * @param {OC.Files.Client} [options.filesClient] files client to use
 	 */
 	var FileList = function($el, options) {
 		this.initialize($el, options);
@@ -74,6 +78,13 @@
 		_detailsView: null,
 
 		/**
+		 * Files client instance
+		 *
+		 * @type OC.Files.Client
+		 */
+		filesClient: null,
+
+		/**
 		 * Whether the file list was initialized already.
 		 * @type boolean
 		 */
@@ -92,9 +103,16 @@
 		 * Array of files in the current folder.
 		 * The entries are of file data.
 		 *
-		 * @type Array.<Object>
+		 * @type Array.<OC.Files.FileInfo>
 		 */
 		files: [],
+
+		/**
+		 * Current directory entry
+		 *
+		 * @type OC.Files.FileInfo
+		 */
+		dirInfo: null,
 
 		/**
 		 * File actions handler, defaults to OCA.Files.FileActions
@@ -127,6 +145,11 @@
 		_filter: '',
 
 		/**
+		 * @type Backbone.Model
+		 */
+		_filesConfig: undefined,
+
+		/**
 		 * Sort attribute
 		 * @type String
 		 */
@@ -149,7 +172,7 @@
 		 * When false, clicking on a table header will call reload().
 		 * When true, clicking on a table header will simply resort the list.
 		 */
-		_clientSideSort: false,
+		_clientSideSort: true,
 
 		/**
 		 * Current directory
@@ -170,6 +193,7 @@
 		 * @param options.dragOptions drag options, disabled by default
 		 * @param options.folderDropOptions folder drop options, disabled by default
 		 * @param options.scrollTo name of file to scroll to after the first load
+		 * @param {OC.Files.Client} [options.filesClient] files API client
 		 * @private
 		 */
 		initialize: function($el, options) {
@@ -179,11 +203,29 @@
 				return;
 			}
 
+			if (options.config) {
+				this._filesConfig = options.config;
+			} else if (!_.isUndefined(OCA.Files) && !_.isUndefined(OCA.Files.App)) {
+				this._filesConfig = OCA.Files.App.getFilesConfig();
+			}
+
+			if (!_.isUndefined(this._filesConfig)) {
+				this._filesConfig.on('change:showhidden', function() {
+					self.setFiles(self.files);
+				});
+			}
+
 			if (options.dragOptions) {
 				this._dragOptions = options.dragOptions;
 			}
 			if (options.folderDropOptions) {
 				this._folderDropOptions = options.folderDropOptions;
+			}
+			if (options.filesClient) {
+				this.filesClient = options.filesClient;
+			} else {
+				// default client if not specified
+				this.filesClient = OC.Files.getClient();
 			}
 
 			this.$el = $el;
@@ -209,10 +251,16 @@
 			this.files = [];
 			this._selectedFiles = {};
 			this._selectionSummary = new OCA.Files.FileSummary();
+			// dummy root dir info
+			this.dirInfo = new OC.Files.FileInfo({});
 
 			this.fileSummary = this._createSummary();
 
-			this.setSort('name', 'asc');
+			if (options.sorting) {
+				this.setSort(options.sorting.mode, options.sorting.direction, false, false);
+			} else {
+				this.setSort('name', 'asc', false, false);
+			}
 
 			var breadcrumbOptions = {
 				onClick: _.bind(this._onClickBreadCrumb, this),
@@ -244,7 +292,8 @@
 
 			this.updateSearch();
 
-			this.$fileList.on('click','td.filename>a.name', _.bind(this._onClickFile, this));
+			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
+
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
 			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
@@ -305,7 +354,7 @@
 					displayName: t('files', 'Details'),
 					mime: 'all',
 					order: -50,
-					icon: OC.imagePath('core', 'actions/details'),
+					iconClass: 'icon-details',
 					permissions: OC.PERMISSION_READ,
 					actionHandler: function(fileName, context) {
 						self._updateDetailsView(fileName);
@@ -359,9 +408,14 @@
 				var highlightState = $tr.hasClass('highlighted');
 				$tr = self.updateRow(
 					$tr,
-					_.extend({isPreviewAvailable: true}, model.toJSON()),
+					model.toJSON(),
 					{updateSummary: true, silent: false, animate: true}
 				);
+
+				// restore selection state
+				var selected = !!self._selectedFiles[$tr.data('id')];
+				self._selectFileEl($tr, selected);
+
 				$tr.toggleClass('highlighted', highlightState);
 			});
 			model.on('busy', function(model, state) {
@@ -441,7 +495,7 @@
 				actionsWidth += $(action).outerWidth();
 			});
 
-			// substract app navigation toggle when visible
+			// subtract app navigation toggle when visible
 			containerWidth -= $('#app-navigation-toggle').width();
 
 			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - 10);
@@ -486,8 +540,9 @@
 				delete this._selectedFiles[$tr.data('id')];
 				this._selectionSummary.remove(data);
 			}
-			if (this._detailsView && this._selectionSummary.getTotal() === 1 && !this._detailsView.$el.hasClass('disappear')) {
-				this._updateDetailsView(_.values(this._selectedFiles)[0].name);
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
 			}
 			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.files.length);
 		},
@@ -567,8 +622,9 @@
 			this._selectFileEl($tr, state);
 			this._lastChecked = $tr;
 			this.updateSelectionSummary();
-			if (state) {
-				this._updateDetailsView($tr.attr('data-file'));
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
 			}
 		},
 
@@ -589,6 +645,10 @@
 				}
 			}
 			this.updateSelectionSummary();
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
+			}
 		},
 
 		/**
@@ -618,7 +678,13 @@
 			};
 
 			OCA.Files.FileActions.updateFileActionSpinner(downloadFileaction, true);
-			OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir), disableLoadingState);
+			if(this.getSelectedFiles().length > 1) {
+				OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir, true), disableLoadingState);
+			}
+			else {
+				first = this.getSelectedFiles()[0];
+				OCA.Files.Files.handleDownload(this.getDownloadUrl(first.name, dir, true), disableLoadingState);
+			}
 			return false;
 		},
 
@@ -650,14 +716,14 @@
 			sort = $target.attr('data-sort');
 			if (sort) {
 				if (this._sort === sort) {
-					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc', true);
+					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc', true, true);
 				}
 				else {
 					if ( sort === 'name' ) {	//default sorting of name is opposite to size and mtime
-						this.setSort(sort, 'asc', true);
+						this.setSort(sort, 'asc', true, true);
 					}
 					else {
-						this.setSort(sort, 'desc', true);
+						this.setSort(sort, 'desc', true, true);
 					}
 				}
 			}
@@ -785,6 +851,10 @@
 			if (mountType) {
 				data.mountType = mountType;
 			}
+			var path = $el.attr('data-path');
+			if (path) {
+				data.path = path;
+			}
 			return data;
 		},
 
@@ -794,6 +864,10 @@
 		 * @return array of DOM elements of the newly added files
 		 */
 		_nextPage: function(animate) {
+			// Save full files list while rendering
+			var allFiles = this.files;
+			this.files = this._filterHiddenFiles(this.files);
+
 			var index = this.$fileList.children().length,
 				count = this.pageSize(),
 				hidden,
@@ -840,6 +914,10 @@
 					}
 				}, 0);
 			}
+
+			// Restore full files list after rendering
+			this.files = allFiles;
+
 			return newTrs;
 		},
 
@@ -877,33 +955,78 @@
 			// clear "Select all" checkbox
 			this.$el.find('.select-all').prop('checked', false);
 
+			// Save full files list while rendering
+			var allFiles = this.files;
+			this.files = this._filterHiddenFiles(this.files);
+
 			this.isEmpty = this.files.length === 0;
 			this._nextPage();
 
 			this.updateEmptyContent();
 
-			this.fileSummary.calculate(filesArray);
+			this.fileSummary.calculate(this.files);
 
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
 			this.updateSelectionSummary();
 			$(window).scrollTop(0);
 
+			// Restore full files list after rendering
+			this.files = allFiles;
+
 			this.$fileList.trigger(jQuery.Event('updated'));
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
 			});
 		},
+
+		/**
+		 * Filter hidden files of the given filesArray (dot-files)
+		 *
+		 * @param filesArray files to be filtered
+		 * @returns {array}
+		 */
+		_filterHiddenFiles: function(files) {
+			if (_.isUndefined(this._filesConfig) || this._filesConfig.get('showhidden')) {
+				return files;
+			}
+			return _.filter(files, function(file) {
+				return file.name.indexOf('.') !== 0;
+			});
+		},
+
+		/**
+		 * Returns the icon URL matching the given file info
+		 *
+		 * @param {OC.Files.FileInfo} fileInfo file info
+		 *
+		 * @return {string} icon URL
+		 */
+		_getIconUrl: function(fileInfo) {
+			var mimeType = fileInfo.mimetype || 'application/octet-stream';
+			if (mimeType === 'httpd/unix-directory') {
+				// use default folder icon
+				if (fileInfo.mountType === 'shared' || fileInfo.mountType === 'shared-root') {
+					return OC.MimeType.getIconUrl('dir-shared');
+				} else if (fileInfo.mountType === 'external-root') {
+					return OC.MimeType.getIconUrl('dir-external');
+				}
+				return OC.MimeType.getIconUrl('dir');
+			}
+			return OC.MimeType.getIconUrl(mimeType);
+		},
+
 		/**
 		 * Creates a new table row element using the given file data.
-		 * @param {OCA.Files.FileInfo} fileData file info attributes
+		 * @param {OC.Files.FileInfo} fileData file info attributes
 		 * @param options map of attributes
 		 * @return new tr element (not appended to the table)
 		 */
 		_createRow: function(fileData, options) {
 			var td, simpleSize, basename, extension, sizeColor,
-				icon = OC.MimeType.getIconUrl(fileData.mimetype),
+				icon = fileData.icon || this._getIconUrl(fileData),
 				name = fileData.name,
+				// TODO: get rid of type, only use mime type
 				type = fileData.type || 'file',
 				mtime = parseInt(fileData.mtime, 10),
 				mime = fileData.mimetype,
@@ -943,6 +1066,17 @@
 			}
 
 			if (fileData.mountType) {
+				// dirInfo (parent) only exist for the "real" file list
+				if (this.dirInfo.id) {
+					// FIXME: HACK: detect shared-root
+					if (fileData.mountType === 'shared' && this.dirInfo.mountType !== 'shared' && this.dirInfo.mountType !== 'shared-root') {
+						// if parent folder isn't share, assume the displayed folder is a share root
+						fileData.mountType = 'shared-root';
+					} else if (fileData.mountType === 'external' && this.dirInfo.mountType !== 'external' && this.dirInfo.mountType !== 'external-root') {
+						// if parent folder isn't external, assume the displayed folder is the external storage root
+						fileData.mountType = 'external-root';
+					}
+				}
 				tr.attr('data-mounttype', fileData.mountType);
 			}
 
@@ -953,24 +1087,16 @@
 				path = this.getCurrentDirectory();
 			}
 
-			if (type === 'dir') {
-				// use default folder icon
-				icon = icon || OC.imagePath('core', 'filetypes/folder');
-			}
-			else {
-				icon = icon || OC.imagePath('core', 'filetypes/file');
-			}
-
 			// filename td
 			td = $('<td class="filename"></td>');
 
 
 			// linkUrl
-			if (type === 'dir') {
+			if (mime === 'httpd/unix-directory') {
 				linkUrl = this.linkTo(path + '/' + name);
 			}
 			else {
-				linkUrl = this.getDownloadUrl(name, path);
+				linkUrl = this.getDownloadUrl(name, path, type === 'dir');
 			}
 			if (this._allowSelection) {
 				td.append(
@@ -996,7 +1122,7 @@
 				basename = '';
 				extension = name;
 			// split extension from filename for non dirs
-			} else if (type !== 'dir' && name.indexOf('.') !== -1) {
+			} else if (mime !== 'httpd/unix-directory' && name.indexOf('.') !== -1) {
 				basename = name.substr(0, name.lastIndexOf('.'));
 				extension = name.substr(name.lastIndexOf('.'));
 			} else {
@@ -1018,7 +1144,7 @@
 				nameSpan.tooltip({placement: 'right'});
 			}
 			// dirs can show the number of uploaded files
-			if (type === 'dir') {
+			if (mime === 'httpd/unix-directory') {
 				linkElem.append($('<span></span>').attr({
 					'class': 'uploadtext',
 					'currentUploads': 0
@@ -1074,7 +1200,7 @@
 		 * Adds an entry to the files array and also into the DOM
 		 * in a sorted manner.
 		 *
-		 * @param {OCA.Files.FileInfo} fileData map of file attributes
+		 * @param {OC.Files.FileInfo} fileData map of file attributes
 		 * @param {Object} [options] map of attributes
 		 * @param {boolean} [options.updateSummary] true to update the summary
 		 * after adding (default), false otherwise. Defaults to true.
@@ -1147,7 +1273,7 @@
 		 * Creates a new row element based on the given attributes
 		 * and returns it.
 		 *
-		 * @param {OCA.Files.FileInfo} fileData map of file attributes
+		 * @param {OC.Files.FileInfo} fileData map of file attributes
 		 * @param {Object} [options] map of attributes
 		 * @param {int} [options.index] index at which to insert the element
 		 * @param {boolean} [options.updateSummary] true to update the summary
@@ -1182,7 +1308,7 @@
 				filenameTd.draggable(this._dragOptions);
 			}
 			// allow dropping on folders
-			if (this._folderDropOptions && fileData.type === 'dir') {
+			if (this._folderDropOptions && mime === 'httpd/unix-directory') {
 				filenameTd.droppable(this._folderDropOptions);
 			}
 
@@ -1193,7 +1319,7 @@
 			// display actions
 			this.fileActions.display(filenameTd, !options.silent, this);
 
-			if (fileData.isPreviewAvailable && mime !== 'httpd/unix-directory') {
+			if (mime !== 'httpd/unix-directory') {
 				var iconDiv = filenameTd.find('.thumbnail');
 				// lazy load / newly inserted td ?
 				// the typeof check ensures that the default value of animate is true
@@ -1295,8 +1421,9 @@
 		 * @param sort sort attribute name
 		 * @param direction sort direction, one of "asc" or "desc"
 		 * @param update true to update the list, false otherwise (default)
+		 * @param persist true to save changes in the database (default)
 		 */
-		setSort: function(sort, direction, update) {
+		setSort: function(sort, direction, update, persist) {
 			var comparator = FileList.Comparators[sort] || FileList.Comparators.name;
 			this._sort = sort;
 			this._sortDirection = (direction === 'desc')?'desc':'asc';
@@ -1327,6 +1454,20 @@
 					this.reload();
 				}
 			}
+
+			if (persist) {
+				$.post(OC.generateUrl('/apps/files/api/v1/sorting'), {
+					mode: sort,
+					direction: direction
+				});
+			}
+		},
+
+		/**
+		 * Returns list of webdav properties to request
+		 */
+		_getWebdavProperties: function() {
+			return [].concat(this.filesClient.getPropfindProperties());
 		},
 
 		/**
@@ -1343,17 +1484,12 @@
 			this._currentFileModel = null;
 			this.$el.find('.select-all').prop('checked', false);
 			this.showMask();
-			if (this._reloadCall) {
-				this._reloadCall.abort();
-			}
-			this._reloadCall = $.ajax({
-				url: this.getAjaxUrl('list'),
-				data: {
-					dir : this.getCurrentDirectory(),
-					sort: this._sort,
-					sortdirection: this._sortDirection
+			this._reloadCall = this.filesClient.getFolderContents(
+				this.getCurrentDirectory(), {
+					includeParent: true,
+					properties: this._getWebdavProperties()
 				}
-			});
+			);
 			if (this._detailsView) {
 				// close sidebar
 				this._updateDetailsView(null);
@@ -1361,24 +1497,16 @@
 			var callBack = this.reloadCallback.bind(this);
 			return this._reloadCall.then(callBack, callBack);
 		},
-		reloadCallback: function(result) {
+		reloadCallback: function(status, result) {
 			delete this._reloadCall;
 			this.hideMask();
 
-			if (!result || result.status === 'error') {
-				// if the error is not related to folder we're trying to load, reload the page to handle logout etc
-				if (result.data.error === 'authentication_error' ||
-					result.data.error === 'token_expired' ||
-					result.data.error === 'application_not_enabled'
-				) {
-					OC.redirect(OC.generateUrl('apps/files'));
-				}
-				OC.Notification.showTemporary(result.data.message);
+			if (status === 401) {
 				return false;
 			}
 
 			// Firewall Blocked request?
-			if (result.status === 403) {
+			if (status === 403) {
 				// Go home
 				this.changeDirectory('/');
 				OC.Notification.showTemporary(t('files', 'This operation is forbidden'));
@@ -1386,32 +1514,49 @@
 			}
 
 			// Did share service die or something else fail?
-			if (result.status === 500) {
+			if (status === 500) {
 				// Go home
 				this.changeDirectory('/');
-				OC.Notification.showTemporary(t('files', 'This directory is unavailable, please check the logs or contact the administrator'));
+				OC.Notification.showTemporary(
+					t('files', 'This directory is unavailable, please check the logs or contact the administrator')
+				);
 				return false;
 			}
 
-			if (result.status === 404) {
+			if (status === 503) {
+				// Go home
+				if (this.getCurrentDirectory() !== '/') {
+					this.changeDirectory('/');
+					// TODO: read error message from exception
+					OC.Notification.showTemporary(
+						t('files', 'Storage not available')
+					);
+				}
+				return false;
+			}
+
+			if (status === 404) {
 				// go back home
 				this.changeDirectory('/');
 				return false;
 			}
 			// aborted ?
-			if (result.status === 0){
+			if (status === 0){
 				return true;
 			}
 
-			// TODO: should rather return upload file size through
-			// the files list ajax call
+			// TODO: parse remaining quota from PROPFIND response
 			this.updateStorageStatistics(true);
 
-			if (result.data.permissions) {
-				this.setDirectoryPermissions(result.data.permissions);
+			// first entry is the root
+			this.dirInfo = result.shift();
+
+			if (this.dirInfo.permissions) {
+				this.setDirectoryPermissions(this.dirInfo.permissions);
 			}
 
-			this.setFiles(result.data.files);
+			result.sort(this._sortComparator);
+			this.setFiles(result);
 			return true;
 		},
 
@@ -1419,12 +1564,15 @@
 			OCA.Files.Files.updateStorageStatistics(this.getCurrentDirectory(), force);
 		},
 
+		/**
+		 * @deprecated do not use nor override
+		 */
 		getAjaxUrl: function(action, params) {
 			return OCA.Files.Files.getAjaxUrl(action, params);
 		},
 
-		getDownloadUrl: function(files, dir) {
-			return OCA.Files.Files.getDownloadUrl(files, dir || this.getCurrentDirectory());
+		getDownloadUrl: function(files, dir, isDir) {
+			return OCA.Files.Files.getDownloadUrl(files, dir || this.getCurrentDirectory(), isDir);
 		},
 
 		/**
@@ -1489,8 +1637,6 @@
 			if (etag){
 				// use etag as cache buster
 				urlSpec.c = etag;
-			} else {
-				console.warn('OCA.Files.FileList.lazyLoadPreview(): missing etag argument');
 			}
 
 			previewURL = self.generatePreviewUrl(urlSpec);
@@ -1514,6 +1660,9 @@
 			img.src = previewURL;
 		},
 
+		/**
+		 * @deprecated
+		 */
 		setDirectoryPermissions: function(permissions) {
 			var isCreatable = (permissions & OC.PERMISSION_CREATE) !== 0;
 			this.$el.find('#permissions').val(permissions);
@@ -1610,7 +1759,7 @@
 		 * fileData should be inserted, considering the current
 		 * sorting
 		 *
-		 * @param {OCA.Files.FileInfo} fileData file info
+		 * @param {OC.Files.FileInfo} fileData file info
 		 */
 		_findInsertionIndex: function(fileData) {
 			var index = 0;
@@ -1628,6 +1777,9 @@
 		move: function(fileNames, targetPath) {
 			var self = this;
 			var dir = this.getCurrentDirectory();
+			if (dir.charAt(dir.length - 1) !== '/') {
+				dir += '/';
+			}
 			var target = OC.basename(targetPath);
 			if (!_.isArray(fileNames)) {
 				fileNames = [fileNames];
@@ -1635,46 +1787,42 @@
 			_.each(fileNames, function(fileName) {
 				var $tr = self.findFileEl(fileName);
 				self.showFileBusyState($tr, true);
-				// TODO: improve performance by sending all file names in a single call
-				$.post(
-					OC.filePath('files', 'ajax', 'move.php'),
-					{
-						dir: dir,
-						file: fileName,
-						target: targetPath
-					},
-					function(result) {
-						if (result) {
-							if (result.status === 'success') {
-								// if still viewing the same directory
-								if (self.getCurrentDirectory() === dir) {
-									// recalculate folder size
-									var oldFile = self.findFileEl(target);
-									var newFile = self.findFileEl(fileName);
-									var oldSize = oldFile.data('size');
-									var newSize = oldSize + newFile.data('size');
-									oldFile.data('size', newSize);
-									oldFile.find('td.filesize').text(OC.Util.humanFileSize(newSize));
+				if (targetPath.charAt(targetPath.length - 1) !== '/') {
+					// make sure we move the files into the target dir,
+					// not overwrite it
+					targetPath = targetPath + '/';
+				}
+				self.filesClient.move(dir + fileName, targetPath + fileName)
+					.done(function() {
+						// if still viewing the same directory
+						if (OC.joinPaths(self.getCurrentDirectory(), '/') === dir) {
+							// recalculate folder size
+							var oldFile = self.findFileEl(target);
+							var newFile = self.findFileEl(fileName);
+							var oldSize = oldFile.data('size');
+							var newSize = oldSize + newFile.data('size');
+							oldFile.data('size', newSize);
+							oldFile.find('td.filesize').text(OC.Util.humanFileSize(newSize));
 
-									// TODO: also update entry in FileList.files
-
-									self.remove(fileName);
-								}
-							} else {
-								OC.Notification.hide();
-								if (result.status === 'error' && result.data.message) {
-									OC.Notification.showTemporary(result.data.message);
-								}
-								else {
-									OC.Notification.showTemporary(t('files', 'Error moving file.'));
-								}
-							}
-						} else {
-							OC.dialogs.alert(t('files', 'Error moving file'), t('files', 'Error'));
+							// TODO: also update entry in FileList.files
+							self.remove(fileName);
 						}
+					})
+					.fail(function(status) {
+						if (status === 412) {
+							// TODO: some day here we should invoke the conflict dialog
+							OC.Notification.showTemporary(
+								t('files', 'Could not move "{file}", target exists', {file: fileName})
+							);
+						} else {
+							OC.Notification.showTemporary(
+								t('files', 'Could not move "{file}"', {file: fileName})
+							);
+						}
+					})
+					.always(function() {
 						self.showFileBusyState($tr, false);
-					}
-				);
+					});
 			});
 
 		},
@@ -1691,7 +1839,9 @@
 		updateRow: function($tr, fileInfo, options) {
 			this.files.splice($tr.index(), 1);
 			$tr.remove();
-			$tr = this.add(fileInfo, _.extend({updateSummary: false, silent: true}, options));
+			options = _.extend({silent: true}, options);
+			options = _.extend(options, {updateSummary: false});
+			$tr = this.add(fileInfo, options);
 			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $tr}));
 			return $tr;
 		},
@@ -1700,16 +1850,16 @@
 		 * Triggers file rename input field for the given file name.
 		 * If the user enters a new name, the file will be renamed.
 		 *
-		 * @param oldname file name of the file to rename
+		 * @param oldName file name of the file to rename
 		 */
-		rename: function(oldname) {
+		rename: function(oldName) {
 			var self = this;
 			var tr, td, input, form;
-			tr = this.findFileEl(oldname);
+			tr = this.findFileEl(oldName);
 			var oldFileInfo = this.files[tr.index()];
 			tr.data('renaming',true);
 			td = tr.children('td.filename');
-			input = $('<input type="text" class="filename"/>').val(oldname);
+			input = $('<input type="text" class="filename"/>').val(oldName);
 			form = $('<form></form>');
 			form.append(input);
 			td.children('a.name').hide();
@@ -1724,11 +1874,11 @@
 			input.selectRange(0, len);
 			var checkInput = function () {
 				var filename = input.val();
-				if (filename !== oldname) {
+				if (filename !== oldName) {
 					// Files.isFileNameValid(filename) throws an exception itself
 					OCA.Files.Files.isFileNameValid(filename);
 					if (self.inList(filename)) {
-						throw t('files', '{new_name} already exists', {new_name: filename});
+						throw t('files', '{newName} already exists', {newName: filename});
 					}
 				}
 				return true;
@@ -1741,6 +1891,12 @@
 				td.children('a.name').show();
 			}
 
+			function updateInList(fileInfo) {
+				self.updateRow(tr, fileInfo);
+				self._updateDetailsView(fileInfo.name, false);
+			}
+
+			// TODO: too many nested blocks, move parts into functions
 			form.submit(function(event) {
 				event.stopPropagation();
 				event.preventDefault();
@@ -1753,7 +1909,7 @@
 					input.tooltip('hide');
 					form.remove();
 
-					if (newName !== oldname) {
+					if (newName !== oldName) {
 						checkInput();
 						// mark as loading (temp element)
 						self.showFileBusyState(tr, true);
@@ -1765,34 +1921,45 @@
 						td.find('a.name span.nametext').text(basename);
 						td.children('a.name').show();
 
-						$.ajax({
-							url: OC.filePath('files','ajax','rename.php'),
-							data: {
-								dir : tr.attr('data-path') || self.getCurrentDirectory(),
-								newname: newName,
-								file: oldname
-							},
-							success: function(result) {
-								var fileInfo;
-								if (!result || result.status === 'error') {
-									OC.dialogs.alert(result.data.message, t('files', 'Could not rename file'));
-									fileInfo = oldFileInfo;
-									if (result.data.code === 'sourcenotfound') {
-										self.remove(result.data.newname, {updateSummary: true});
-										return;
-									}
+						var path = tr.attr('data-path') || self.getCurrentDirectory();
+						self.filesClient.move(OC.joinPaths(path, oldName), OC.joinPaths(path, newName))
+							.done(function() {
+								oldFileInfo.name = newName;
+								updateInList(oldFileInfo);
+							})
+							.fail(function(status) {
+								// TODO: 409 means current folder does not exist, redirect ?
+								if (status === 404) {
+									// source not found, so remove it from the list
+									OC.Notification.showTemporary(
+										t(
+											'files',
+											'Could not rename "{fileName}", it does not exist any more',
+											{fileName: oldName}
+										)
+									);
+									self.remove(newName, {updateSummary: true});
+									return;
+								} else if (status === 412) {
+									// target exists
+									OC.Notification.showTemporary(
+										t(
+											'files',
+											'The name "{targetName}" is already used in the folder "{dir}". Please choose a different name.',
+											{
+												targetName: newName,
+												dir: self.getCurrentDirectory()
+											}
+										)
+									);
+								} else {
+									// restore the item to its previous state
+									OC.Notification.showTemporary(
+										t('files', 'Could not rename "{fileName}"', {fileName: oldName})
+									);
 								}
-								else {
-									fileInfo = result.data;
-								}
-								// reinsert row
-								self.files.splice(tr.index(), 1);
-								tr.remove();
-								tr = self.add(fileInfo, {updateSummary: false, silent: true});
-								self.$fileList.trigger($.Event('fileActionsReady', {fileList: self, $files: $(tr)}));
-								self._updateDetailsView(fileInfo.name, false);
-							}
-						});
+								updateInList(oldFileInfo);
+							});
 					} else {
 						// add back the old file info when cancelled
 						self.files.splice(tr.index(), 1);
@@ -1849,32 +2016,48 @@
 			var promise = deferred.promise();
 
 			OCA.Files.Files.isFileNameValid(name);
-			name = this.getUniqueName(name);
 
 			if (this.lastAction) {
 				this.lastAction();
 			}
 
-			$.post(
-				OC.generateUrl('/apps/files/ajax/newfile.php'),
-				{
-					dir: this.getCurrentDirectory(),
-					filename: name
-				},
-				function(result) {
-					if (result.status === 'success') {
-						self.add(result.data, {animate: true, scrollTo: true});
-						deferred.resolve(result.status, result.data);
-					} else {
-						if (result.data && result.data.message) {
-							OC.Notification.showTemporary(result.data.message);
-						} else {
-							OC.Notification.showTemporary(t('core', 'Could not create file'));
-						}
-						deferred.reject(result.status, result.data);
+			name = this.getUniqueName(name);
+			var targetPath = this.getCurrentDirectory() + '/' + name;
+
+			self.filesClient.putFileContents(
+					targetPath,
+					'',
+					{
+						contentType: 'text/plain',
+						overwrite: true
 					}
-				}
-			);
+				)
+				.done(function() {
+					// TODO: error handling / conflicts
+					self.filesClient.getFileInfo(
+							targetPath, {
+								properties: self._getWebdavProperties()
+							}
+						)
+						.then(function(status, data) {
+							self.add(data, {animate: true, scrollTo: true});
+							deferred.resolve(status, data);
+						})
+						.fail(function(status) {
+							OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+							deferred.reject(status);
+						});
+				})
+				.fail(function(status) {
+					if (status === 412) {
+						OC.Notification.showTemporary(
+							t('files', 'Could not create file "{file}" because it already exists', {file: name})
+						);
+					} else {
+						OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+					}
+					deferred.reject(status);
+				});
 
 			return promise;
 		},
@@ -1895,32 +2078,58 @@
 			var promise = deferred.promise();
 
 			OCA.Files.Files.isFileNameValid(name);
-			name = this.getUniqueName(name);
 
 			if (this.lastAction) {
 				this.lastAction();
 			}
 
-			$.post(
-				OC.generateUrl('/apps/files/ajax/newfolder.php'),
-				{
-					dir: this.getCurrentDirectory(),
-					foldername: name
-				},
-				function(result) {
-					if (result.status === 'success') {
-						self.add(result.data, {animate: true, scrollTo: true});
-						deferred.resolve(result.status, result.data);
+			name = this.getUniqueName(name);
+			var targetPath = this.getCurrentDirectory() + '/' + name;
+
+			this.filesClient.createDirectory(targetPath)
+				.done(function(createStatus) {
+					self.filesClient.getFileInfo(
+							targetPath, {
+								properties: self._getWebdavProperties()
+							}
+						)
+						.done(function(status, data) {
+							self.add(data, {animate: true, scrollTo: true});
+							deferred.resolve(status, data);
+						})
+						.fail(function() {
+							OC.Notification.showTemporary(t('files', 'Could not create folder "{dir}"', {dir: name}));
+							deferred.reject(createStatus);
+						});
+				})
+				.fail(function(createStatus) {
+					// method not allowed, folder might exist already
+					if (createStatus === 405) {
+						self.filesClient.getFileInfo(
+								targetPath, {
+									properties: self._getWebdavProperties()
+								}
+							)
+							.done(function(status, data) {
+								// add it to the list, for completeness
+								self.add(data, {animate: true, scrollTo: true});
+								OC.Notification.showTemporary(
+									t('files', 'Could not create folder "{dir}" because it already exists', {dir: name})
+								);
+								// still consider a failure
+								deferred.reject(createStatus, data);
+							})
+							.fail(function() {
+								OC.Notification.showTemporary(
+									t('files', 'Could not create folder "{dir}"', {dir: name})
+								);
+								deferred.reject(status);
+							});
 					} else {
-						if (result.data && result.data.message) {
-							OC.Notification.showTemporary(result.data.message);
-						} else {
-							OC.Notification.showTemporary(t('core', 'Could not create folder'));
-						}
-						deferred.reject(result.status);
+						OC.Notification.showTemporary(t('files', 'Could not create folder "{dir}"', {dir: name}));
+						deferred.reject(createStatus);
 					}
-				}
-			);
+				});
 
 			return promise;
 		},
@@ -1946,7 +2155,7 @@
 		 */
 		showFileBusyState: function(files, state) {
 			var self = this;
-			if (!_.isArray(files)) {
+			if (!_.isArray(files) && !files.is) {
 				files = [files];
 			}
 
@@ -1954,10 +2163,13 @@
 				state = true;
 			}
 
-			_.each(files, function($tr) {
+			_.each(files, function(fileName) {
 				// jquery element already ?
-				if (!$tr.is) {
-					$tr = self.findFileEl($tr);
+				var $tr;
+				if (_.isString(fileName)) {
+					$tr = self.findFileEl(fileName);
+				} else {
+					$tr = $(fileName);
 				}
 
 				var $thumbEl = $tr.find('.thumbnail');
@@ -1981,76 +2193,59 @@
 		 */
 		do_delete:function(files, dir) {
 			var self = this;
-			var params;
 			if (files && files.substr) {
 				files=[files];
 			}
+			if (!files) {
+				// delete all files in directory
+				files = _.pluck(this.files, 'name');
+			}
 			if (files) {
 				this.showFileBusyState(files, true);
-				for (var i=0; i<files.length; i++) {
-				}
 			}
 			// Finish any existing actions
 			if (this.lastAction) {
 				this.lastAction();
 			}
 
-			params = {
-				dir: dir || this.getCurrentDirectory()
-			};
-			if (files) {
-				params.files = JSON.stringify(files);
-			}
-			else {
-				// no files passed, delete all in current dir
-				params.allfiles = true;
-				// show spinner for all files
-				this.showFileBusyState(this.$fileList.find('tr'), true);
+			dir = dir || this.getCurrentDirectory();
+
+			function removeFromList(file) {
+				var fileEl = self.remove(file, {updateSummary: false});
+				// FIXME: not sure why we need this after the
+				// element isn't even in the DOM any more
+				fileEl.find('.selectCheckBox').prop('checked', false);
+				fileEl.removeClass('selected');
+				self.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')});
+				// TODO: this info should be returned by the ajax call!
+				self.updateEmptyContent();
+				self.fileSummary.update();
+				self.updateSelectionSummary();
+				// FIXME: don't repeat this, do it once all files are done
+				self.updateStorageStatistics();
 			}
 
-			$.post(OC.filePath('files', 'ajax', 'delete.php'),
-					params,
-					function(result) {
-						if (result.status === 'success') {
-							if (params.allfiles) {
-								self.setFiles([]);
-							}
-							else {
-								$.each(files,function(index,file) {
-									var fileEl = self.remove(file, {updateSummary: false});
-									// FIXME: not sure why we need this after the
-									// element isn't even in the DOM any more
-									fileEl.find('.selectCheckBox').prop('checked', false);
-									fileEl.removeClass('selected');
-									self.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')});
-								});
-							}
-							// TODO: this info should be returned by the ajax call!
-							self.updateEmptyContent();
-							self.fileSummary.update();
-							self.updateSelectionSummary();
-							self.updateStorageStatistics();
-							// in case there was a "storage full" permanent notification
-							OC.Notification.hide();
+			_.each(files, function(file) {
+				self.filesClient.remove(dir + '/' + file)
+					.done(function() {
+						removeFromList(file);
+					})
+					.fail(function(status) {
+						if (status === 404) {
+							// the file already did not exist, remove it from the list
+							removeFromList(file);
 						} else {
-							if (result.status === 'error' && result.data.message) {
-								OC.Notification.showTemporary(result.data.message);
-							}
-							else {
-								OC.Notification.showTemporary(t('files', 'Error deleting file.'));
-							}
-							if (params.allfiles) {
-								// reload the page as we don't know what files were deleted
-								// and which ones remain
-								self.reload();
-							}
-							else {
-								$.each(files,function(index,file) {
-									self.showFileBusyState(file, false);
-								});
-							}
+							// only reset the spinner for that one file
+							OC.Notification.showTemporary(
+									t('files', 'Error deleting file "{fileName}".', {fileName: file}),
+									{timeout: 10}
+							);
+							var deleteAction = self.findFileEl(file).find('.action.delete');
+							deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
+							self.showFileBusyState(files, false);
 						}
 					});
+			});
 		},
 		/**
 		 * Creates the file summary section
@@ -2149,12 +2344,14 @@
 				this.$el.find('#filestable thead th').addClass('hidden');
 				this.$el.find('#emptycontent').addClass('hidden');
 				$('#searchresults').addClass('filter-empty');
+				$('#searchresults .emptycontent').addClass('emptycontent-search');
 				if ( $('#searchresults').length === 0 || $('#searchresults').hasClass('hidden') ) {
 					this.$el.find('.nofilterresults').removeClass('hidden').
 						find('p').text(t('files', "No entries in this folder match '{filter}'", {filter:this._filter},  null, {'escape': false}));
 				}
 			} else {
 				$('#searchresults').removeClass('filter-empty');
+				$('#searchresults .emptycontent').removeClass('emptycontent-search');
 				this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
 				if (!this.$el.find('.mask').exists()) {
 					this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
@@ -2185,7 +2382,6 @@
 		 */
 		updateSelectionSummary: function() {
 			var summary = this._selectionSummary.summary;
-			var canDelete;
 			var selection;
 
 			if (summary.totalFiles === 0 && summary.totalDirs === 0) {
@@ -2196,7 +2392,6 @@
 				this.$el.find('.selectedActions').addClass('hidden');
 			}
 			else {
-				canDelete = (this.getDirectoryPermissions() & OC.PERMISSION_DELETE) && this.isSelectedDeletable();
 				this.$el.find('.selectedActions').removeClass('hidden');
 				this.$el.find('#headerSize a>span:first').text(OC.Util.humanFileSize(summary.totalSize));
 
@@ -2218,7 +2413,7 @@
 				this.$el.find('#headerName a.name>span:first').text(selection);
 				this.$el.find('#modified a>span:first').text('');
 				this.$el.find('table').addClass('multiselect');
-				this.$el.find('.delete-selected').toggleClass('hidden', !canDelete);
+				this.$el.find('.delete-selected').toggleClass('hidden', !this.isSelectedDeletable());
 			}
 		},
 
@@ -2378,8 +2573,7 @@
 
 					var translatedText = n('files', 'Uploading %n file', 'Uploading %n files', currentUploads);
 					if (currentUploads === 1) {
-						var img = OC.imagePath('core', 'loading.gif');
-						data.context.find('.thumbnail').css('background-image', 'url(' + img + ')');
+						self.showFileBusyState(uploadText.closest('tr'), true);
 						uploadText.text(translatedText);
 						uploadText.show();
 					} else {
@@ -2402,7 +2596,7 @@
 					// fetch response from iframe
 					response = data.result[0].body.innerText;
 				}
-				var result=$.parseJSON(response);
+				var result = JSON.parse(response);
 
 				if (typeof result[0] !== 'undefined' && result[0].status === 'success') {
 					var file = result[0];
@@ -2417,8 +2611,7 @@
 						uploadText.attr('currentUploads', currentUploads);
 						var translatedText = n('files', 'Uploading %n file', 'Uploading %n files', currentUploads);
 						if (currentUploads === 0) {
-							var img = OC.imagePath('core', 'filetypes/folder');
-							data.context.find('.thumbnail').css('background-image', 'url(' + img + ')');
+							self.showFileBusyState(uploadText.closest('tr'), false);
 							uploadText.text(translatedText);
 							uploadText.hide();
 						} else {
@@ -2495,18 +2688,15 @@
 					}
 				}
 			});
-			fileUploadStart.on('fileuploadstop', function(e, data) {
-				OC.Upload.log('filelist handle fileuploadstop', e, data);
+			fileUploadStart.on('fileuploadstop', function() {
+				OC.Upload.log('filelist handle fileuploadstop');
 
-				//if user pressed cancel hide upload chrome
-				if (data.errorThrown === 'abort') {
-					//cleanup uploading to a dir
-					var uploadText = $('tr .uploadtext');
-					var img = OC.imagePath('core', 'filetypes/folder');
-					uploadText.parents('td.filename').find('.thumbnail').css('background-image', 'url(' + img + ')');
-					uploadText.fadeOut();
-					uploadText.attr('currentUploads', 0);
-				}
+				//cleanup uploading to a dir
+				var uploadText = self.$fileList.find('tr .uploadtext');
+				self.showFileBusyState(uploadText.closest('tr'), false);
+				uploadText.fadeOut();
+				uploadText.attr('currentUploads', 0);
+
 				self.updateStorageStatistics();
 			});
 			fileUploadStart.on('fileuploadfail', function(e, data) {
@@ -2515,9 +2705,8 @@
 				//if user pressed cancel hide upload chrome
 				if (data.errorThrown === 'abort') {
 					//cleanup uploading to a dir
-					var uploadText = $('tr .uploadtext');
-					var img = OC.imagePath('core', 'filetypes/folder');
-					uploadText.parents('td.filename').find('.thumbnail').css('background-image', 'url(' + img + ')');
+					var uploadText = self.$fileList.find('tr .uploadtext');
+					self.showFileBusyState(uploadText.closest('tr'), false);
 					uploadText.fadeOut();
 					uploadText.attr('currentUploads', 0);
 				}
@@ -2599,7 +2788,7 @@
 			}
 			var $newButton = $(this._addButtonTemplate({
 				addText: t('files', 'New'),
-				iconUrl: OC.imagePath('core', 'actions/add')
+				iconClass: 'icon-add'
 			}));
 
 			$actionsContainer.prepend($newButton);
@@ -2659,8 +2848,8 @@
 		 * Compares two file infos by name, making directories appear
 		 * first.
 		 *
-		 * @param {OCA.Files.FileInfo} fileInfo1 file info
-		 * @param {OCA.Files.FileInfo} fileInfo2 file info
+		 * @param {OC.Files.FileInfo} fileInfo1 file info
+		 * @param {OC.Files.FileInfo} fileInfo2 file info
 		 * @return {int} -1 if the first file must appear before the second one,
 		 * 0 if they are identify, 1 otherwise.
 		 */
@@ -2676,8 +2865,8 @@
 		/**
 		 * Compares two file infos by size.
 		 *
-		 * @param {OCA.Files.FileInfo} fileInfo1 file info
-		 * @param {OCA.Files.FileInfo} fileInfo2 file info
+		 * @param {OC.Files.FileInfo} fileInfo1 file info
+		 * @param {OC.Files.FileInfo} fileInfo2 file info
 		 * @return {int} -1 if the first file must appear before the second one,
 		 * 0 if they are identify, 1 otherwise.
 		 */
@@ -2687,8 +2876,8 @@
 		/**
 		 * Compares two file infos by timestamp.
 		 *
-		 * @param {OCA.Files.FileInfo} fileInfo1 file info
-		 * @param {OCA.Files.FileInfo} fileInfo2 file info
+		 * @param {OC.Files.FileInfo} fileInfo1 file info
+		 * @param {OC.Files.FileInfo} fileInfo2 file info
 		 * @return {int} -1 if the first file must appear before the second one,
 		 * 0 if they are identify, 1 otherwise.
 		 */
@@ -2700,23 +2889,14 @@
 	/**
 	 * File info attributes.
 	 *
-	 * @todo make this a real class in the future
-	 * @typedef {Object} OCA.Files.FileInfo
+	 * @typedef {Object} OC.Files.FileInfo
 	 *
-	 * @property {int} id file id
-	 * @property {String} name file name
-	 * @property {String} [path] file path, defaults to the list's current path
-	 * @property {String} mimetype mime type
-	 * @property {String} type "file" for files or "dir" for directories
-	 * @property {int} permissions file permissions
-	 * @property {int} mtime modification time in milliseconds
-	 * @property {boolean} [isShareMountPoint] whether the file is a share mount
-	 * point
-	 * @property {boolean} [isPreviewAvailable] whether a preview is available
-	 * for the given file type
-	 * @property {String} [icon] path to the mime type icon
-	 * @property {String} etag etag of the file
+	 * @lends OC.Files.FileInfo
+	 *
+	 * @deprecated use OC.Files.FileInfo instead
+	 *
 	 */
+	OCA.Files.FileInfo = OC.Files.FileInfo;
 
 	OCA.Files.FileList = FileList;
 })();
@@ -2729,7 +2909,7 @@ $(document).ready(function() {
 			OCA.Files.FileList.lastAction();
 		}
 	});
-	$(window).unload(function () {
+	$(window).on('unload', function () {
 		$(window).trigger('beforeunload');
 	});
 

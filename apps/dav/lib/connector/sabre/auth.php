@@ -2,16 +2,16 @@
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Christian Seiler <christian@iwakd.de>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Markus Goetz <markus@woboq.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,11 +30,15 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use Exception;
+use OC\AppFramework\Http\Request;
+use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUserSession;
 use Sabre\DAV\Auth\Backend\AbstractBasic;
 use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Exception\ServiceUnavailable;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
 
 class Auth extends AbstractBasic {
 	const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
@@ -43,15 +47,25 @@ class Auth extends AbstractBasic {
 	private $session;
 	/** @var IUserSession */
 	private $userSession;
+	/** @var IRequest */
+	private $request;
+	/** @var string */
+	private $currentUser;
 
 	/**
 	 * @param ISession $session
 	 * @param IUserSession $userSession
+	 * @param IRequest $request
+	 * @param string $principalPrefix
 	 */
 	public function __construct(ISession $session,
-								IUserSession $userSession) {
+								IUserSession $userSession,
+								IRequest $request,
+								$principalPrefix = 'principals/users/') {
 		$this->session = $session;
 		$this->userSession = $userSession;
+		$this->request = $request;
+		$this->principalPrefix = $principalPrefix;
 	}
 
 	/**
@@ -65,7 +79,7 @@ class Auth extends AbstractBasic {
 	 * @param string $username
 	 * @return bool
 	 */
-	protected function isDavAuthenticated($username) {
+	public function isDavAuthenticated($username) {
 		return !is_null($this->session->get(self::DAV_AUTHENTICATED)) &&
 		$this->session->get(self::DAV_AUTHENTICATED) === $username;
 	}
@@ -102,42 +116,15 @@ class Auth extends AbstractBasic {
 	}
 
 	/**
-	 * Returns information about the currently logged in username.
-	 *
-	 * If nobody is currently logged in, this method should return null.
-	 *
-	 * @return string|null
-	 */
-	public function getCurrentUser() {
-		$user = $this->userSession->getUser() ? $this->userSession->getUser()->getUID() : null;
-		if($user !== null && $this->isDavAuthenticated($user)) {
-			return $user;
-		}
-
-		if($user !== null && is_null($this->session->get(self::DAV_AUTHENTICATED))) {
-			return $user;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Override function here. We want to cache authentication cookies
-	 * in the syncing client to avoid HTTP-401 roundtrips.
-	 * If the sync client supplies the cookies, then OC_User::isLoggedIn()
-	 * will return true and we can see this WebDAV request as already authenticated,
-	 * even if there are no HTTP Basic Auth headers.
-	 * In other case, just fallback to the parent implementation.
-	 *
-	 * @param \Sabre\DAV\Server $server
-	 * @param string $realm
-	 * @return bool
-	 * @throws ServiceUnavailable
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return array
 	 * @throws NotAuthenticated
+	 * @throws ServiceUnavailable
 	 */
-	public function authenticate(\Sabre\DAV\Server $server, $realm) {
+	function check(RequestInterface $request, ResponseInterface $response) {
 		try {
-			$result = $this->auth($server, $realm);
+			$result = $this->auth($request, $response);
 			return $result;
 		} catch (NotAuthenticated $e) {
 			throw $e;
@@ -146,24 +133,96 @@ class Auth extends AbstractBasic {
 			$msg = $e->getMessage();
 			throw new ServiceUnavailable("$class: $msg");
 		}
-    }
+	}
 
 	/**
-	 * @param \Sabre\DAV\Server $server
-	 * @param $realm
+	 * Checks whether a CSRF check is required on the request
+	 *
 	 * @return bool
 	 */
-	private function auth(\Sabre\DAV\Server $server, $realm) {
-		if (\OC_User::handleApacheAuth() ||
-			($this->userSession->isLoggedIn() && is_null($this->session->get(self::DAV_AUTHENTICATED)))
-		) {
-			$user = $this->userSession->getUser()->getUID();
-			\OC_Util::setupFS($user);
-			$this->currentUser = $user;
-			$this->session->close();
+	private function requiresCSRFCheck() {
+		// GET requires no check at all
+		if($this->request->getMethod() === 'GET') {
+			return false;
+		}
+
+		// Official ownCloud clients require no checks
+		if($this->request->isUserAgent([
+			Request::USER_AGENT_OWNCLOUD_DESKTOP,
+			Request::USER_AGENT_OWNCLOUD_ANDROID,
+			Request::USER_AGENT_OWNCLOUD_IOS,
+		])) {
+			return false;
+		}
+
+		// If not logged-in no check is required
+		if(!$this->userSession->isLoggedIn()) {
+			return false;
+		}
+
+		// POST always requires a check
+		if($this->request->getMethod() === 'POST') {
 			return true;
 		}
 
-		return parent::authenticate($server, $realm);
+		// If logged-in AND DAV authenticated no check is required
+		if($this->userSession->isLoggedIn() &&
+			$this->isDavAuthenticated($this->userSession->getUser()->getUID())) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return array
+	 * @throws NotAuthenticated
+	 */
+	private function auth(RequestInterface $request, ResponseInterface $response) {
+		$forcedLogout = false;
+		if(!$this->request->passesCSRFCheck() &&
+			$this->requiresCSRFCheck()) {
+			// In case of a fail with POST we need to recheck the credentials
+			if($this->request->getMethod() === 'POST') {
+				$forcedLogout = true;
+			} else {
+				$response->setStatus(401);
+				throw new \Sabre\DAV\Exception\NotAuthenticated('CSRF check not passed.');
+			}
+		}
+
+		if($forcedLogout) {
+			$this->userSession->logout();
+		} else {
+			if (\OC_User::handleApacheAuth() ||
+				//Fix for broken webdav clients
+				($this->userSession->isLoggedIn() && is_null($this->session->get(self::DAV_AUTHENTICATED))) ||
+				//Well behaved clients that only send the cookie are allowed
+				($this->userSession->isLoggedIn() && $this->session->get(self::DAV_AUTHENTICATED) === $this->userSession->getUser()->getUID() && $request->getHeader('Authorization') === null)
+			) {
+				$user = $this->userSession->getUser()->getUID();
+				\OC_Util::setupFS($user);
+				$this->currentUser = $user;
+				$this->session->close();
+				return [true, $this->principalPrefix . $user];
+			}
+		}
+
+		if (!$this->userSession->isLoggedIn() && in_array('XMLHttpRequest', explode(',', $request->getHeader('X-Requested-With')))) {
+			// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
+			$response->addHeader('WWW-Authenticate','DummyBasic realm="' . $this->realm . '"');
+			$response->setStatus(401);
+			throw new \Sabre\DAV\Exception\NotAuthenticated('Cannot authenticate over ajax calls');
+		}
+
+		$data = parent::check($request, $response);
+		if($data[0] === true) {
+			$startPos = strrpos($data[1], '/') + 1;
+			$user = $this->userSession->getUser()->getUID();
+			$data[1] = substr_replace($data[1], $user, $startPos);
+		}
+		return $data;
 	}
 }

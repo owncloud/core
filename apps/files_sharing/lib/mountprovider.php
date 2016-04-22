@@ -3,7 +3,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,13 +22,11 @@
 
 namespace OCA\Files_Sharing;
 
-use OC\Files\Filesystem;
-use OC\User\NoUserException;
-use OCA\Files_Sharing\Propagation\PropagationManager;
 use OCP\Files\Config\IMountProvider;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\IUser;
+use OCP\Share\IManager;
 
 class MountProvider implements IMountProvider {
 	/**
@@ -37,17 +35,17 @@ class MountProvider implements IMountProvider {
 	protected $config;
 
 	/**
-	 * @var \OCA\Files_Sharing\Propagation\PropagationManager
+	 * @var IManager
 	 */
-	protected $propagationManager;
+	protected $shareManager;
 
 	/**
 	 * @param \OCP\IConfig $config
-	 * @param \OCA\Files_Sharing\Propagation\PropagationManager $propagationManager
+	 * @param IManager $shareManager
 	 */
-	public function __construct(IConfig $config, PropagationManager $propagationManager) {
+	public function __construct(IConfig $config, IManager $shareManager) {
 		$this->config = $config;
-		$this->propagationManager = $propagationManager;
+		$this->shareManager = $shareManager;
 	}
 
 
@@ -59,29 +57,27 @@ class MountProvider implements IMountProvider {
 	 * @return \OCP\Files\Mount\IMountPoint[]
 	 */
 	public function getMountsForUser(IUser $user, IStorageFactory $storageFactory) {
-		$shares = \OCP\Share::getItemsSharedWithUser('file', $user->getUID());
-		$propagator = $this->propagationManager->getSharePropagator($user->getUID());
-		$propagator->propagateDirtyMountPoints($shares);
-		$shares = array_filter($shares, function ($share) {
-			return $share['permissions'] > 0;
+		$shares = $this->shareManager->getSharedWith($user->getUID(), \OCP\Share::SHARE_TYPE_USER, null, -1);
+		$shares = array_merge($shares, $this->shareManager->getSharedWith($user->getUID(), \OCP\Share::SHARE_TYPE_GROUP, null, -1));
+		$shares = array_filter($shares, function (\OCP\Share\IShare $share) {
+			return $share->getPermissions() > 0;
 		});
-		$shares = array_map(function ($share) use ($user, $storageFactory) {
-			// for updating etags for the share owner when we make changes to this share.
-			$ownerPropagator = $this->propagationManager->getChangePropagator($share['uid_owner']);
 
-			return new SharedMount(
+		$mounts = [];
+		foreach ($shares as $share) {
+
+			$mounts[] = new SharedMount(
 				'\OC\Files\Storage\Shared',
-				'/' . $user->getUID() . '/' . $share['file_target'],
-				array(
-					'propagationManager' => $this->propagationManager,
-					'propagator' => $ownerPropagator,
-					'share' => $share,
-					'user' => $user->getUID()
-				),
+				$mounts,
+				[
+					'user' => $user->getUID(),
+					'newShare' => $share,
+				],
 				$storageFactory
 			);
-		}, $shares);
+		}
+
 		// array_filter removes the null values from the array
-		return array_filter($shares);
+		return array_filter($mounts);
 	}
 }

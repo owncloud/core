@@ -4,7 +4,7 @@
  * @author Clark Tomlinson <fallen013@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@
 namespace OCA\Encryption\Hooks;
 
 
+use OC\Files\Filesystem;
 use OCP\IUserManager;
 use OCP\Util as OCUtil;
 use OCA\Encryption\Hooks\Contracts\IHook;
@@ -117,22 +118,29 @@ class UserHooks implements IHook {
 	public function addHooks() {
 		OCUtil::connectHook('OC_User', 'post_login', $this, 'login');
 		OCUtil::connectHook('OC_User', 'logout', $this, 'logout');
-		OCUtil::connectHook('OC_User',
-			'post_setPassword',
-			$this,
-			'setPassphrase');
-		OCUtil::connectHook('OC_User',
-			'pre_setPassword',
-			$this,
-			'preSetPassphrase');
-		OCUtil::connectHook('OC_User',
-			'post_createUser',
-			$this,
-			'postCreateUser');
-		OCUtil::connectHook('OC_User',
-			'post_deleteUser',
-			$this,
-			'postDeleteUser');
+
+		// this hooks only make sense if no master key is used
+		if ($this->util->isMasterKeyEnabled() === false) {
+			OCUtil::connectHook('OC_User',
+				'post_setPassword',
+				$this,
+				'setPassphrase');
+
+			OCUtil::connectHook('OC_User',
+				'pre_setPassword',
+				$this,
+				'preSetPassphrase');
+
+			OCUtil::connectHook('OC_User',
+				'post_createUser',
+				$this,
+				'postCreateUser');
+
+			OCUtil::connectHook('OC_User',
+				'post_deleteUser',
+				$this,
+				'postDeleteUser');
+		}
 	}
 
 
@@ -141,7 +149,7 @@ class UserHooks implements IHook {
 	 *
 	 * @note This method should never be called for users using client side encryption
 	 * @param array $params
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function login($params) {
 
@@ -151,12 +159,10 @@ class UserHooks implements IHook {
 
 		// ensure filesystem is loaded
 		if (!\OC\Files\Filesystem::$loaded) {
-			\OC_Util::setupFS($params['uid']);
+			$this->setupFS($params['uid']);
 		}
-
-		// setup user, if user not ready force relogin
-		if (!$this->userSetup->setupUser($params['uid'], $params['password'])) {
-			return false;
+		if ($this->util->isMasterKeyEnabled() === false) {
+			$this->userSetup->setupUser($params['uid'], $params['password']);
 		}
 
 		$this->keyManager->init($params['uid'], $params['password']);
@@ -199,7 +205,7 @@ class UserHooks implements IHook {
 	 * If the password can't be changed within ownCloud, than update the key password in advance.
 	 *
 	 * @param array $params : uid, password
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function preSetPassphrase($params) {
 		if (App::isEnabled('encryption')) {
@@ -216,7 +222,7 @@ class UserHooks implements IHook {
 	 * Change a user's encryption passphrase
 	 *
 	 * @param array $params keys: uid, password
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function setPassphrase($params) {
 
@@ -243,6 +249,7 @@ class UserHooks implements IHook {
 			// used to decrypt it has changed
 		} else { // admin changed the password for a different user, create new keys and re-encrypt file keys
 			$user = $params['uid'];
+			$this->initMountPoints($user);
 			$recoveryPassword = isset($params['recoveryPassword']) ? $params['recoveryPassword'] : null;
 
 			// we generate new keys if...
@@ -281,6 +288,15 @@ class UserHooks implements IHook {
 		}
 	}
 
+	/**
+	 * init mount points for given user
+	 *
+	 * @param string $user
+	 * @throws \OC\User\NoUserException
+	 */
+	protected function initMountPoints($user) {
+		Filesystem::initMountPoints($user);
+	}
 
 
 	/**
@@ -291,7 +307,16 @@ class UserHooks implements IHook {
 	public function postPasswordReset($params) {
 		$password = $params['password'];
 
-		$this->keyManager->replaceUserKeys($params['uid']);
-		$this->userSetup->setupServerSide($params['uid'], $password);
+		$this->keyManager->deleteUserKeys($params['uid']);
+		$this->userSetup->setupUser($params['uid'], $password);
+	}
+
+	/**
+	 * setup file system for user
+	 *
+	 * @param string $uid user id
+	 */
+	protected function setupFS($uid) {
+		\OC_Util::setupFS($uid);
 	}
 }

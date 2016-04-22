@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ class Dropbox extends Backend {
 		$this
 			->setIdentifier('dropbox')
 			->addIdentifierAlias('\OC\Files\Storage\Dropbox') // legacy compat
-			->setStorageClass('\OC\Files\Storage\Dropbox')
+			->setStorageClass('\OCA\Files_External\Lib\Storage\Dropbox')
 			->setText($l->t('Dropbox'))
 			->addParameters([
 				// all parameters handled in OAuth1 mechanism

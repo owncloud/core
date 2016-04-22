@@ -1,5 +1,6 @@
 { "translations": {
+    "Delete" : "Löschen",
     "Error" : "Fehler",
-    "Delete" : "Löschen"
+    "Name" : "Name"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

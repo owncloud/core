@@ -77,20 +77,16 @@ class AutoLoader extends TestCase {
 	}
 
 	public function testLoadCoreNamespaceCore() {
-		$this->assertEquals([
-			\OC::$SERVERROOT . '/core/foo/bar.php', 
-		], $this->loader->findClass('OC\Core\Foo\Bar'));
+		$this->assertEquals([], $this->loader->findClass('OC\Core\Foo\Bar'));
 	}
 
 	public function testLoadCoreNamespaceSettings() {
-		$this->assertEquals([
-			\OC::$SERVERROOT . '/settings/foo/bar.php', 
-		], $this->loader->findClass('OC\Settings\Foo\Bar'));
+		$this->assertEquals([], $this->loader->findClass('OC\Settings\Foo\Bar'));
 	}
 
 	public function testLoadCoreNamespaceRepair() {
 		$this->assertEquals([
-			\OC::$SERVERROOT . '/lib/repair/foo/bar.php', 
+			\OC::$SERVERROOT . '/lib/private/repair/foo/bar.php',
 		], $this->loader->findClass('OC\Repair\Foo\Bar'));
 	}
 }

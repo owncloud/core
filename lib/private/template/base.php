@@ -4,10 +4,10 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,51 +29,58 @@ namespace OC\Template;
 class Base {
 	private $template; // The template
 	private $vars; // Vars
-	private $l10n; // The l10n-Object
-	private $theme; // theme defaults
+
+	/** @var \OCP\IL10N */
+	private $l10n;
+
+	/** @var \OC_Defaults */
+	private $theme;
 
 	/**
 	 * @param string $template
-	 * @param \OC_L10N $l10n
+	 * @param string $requestToken
+	 * @param \OCP\IL10N $l10n
 	 * @param \OC_Defaults $theme
 	 */
-	public function __construct( $template, $requesttoken, $l10n, $theme ) {
+	public function __construct($template, $requestToken, $l10n, $theme ) {
 		$this->vars = array();
-		$this->vars['requesttoken'] = $requesttoken;
+		$this->vars['requesttoken'] = $requestToken;
 		$this->l10n = $l10n;
 		$this->template = $template;
 		$this->theme = $theme;
 	}
 
 	/**
-	 * @param string $serverroot
+	 * @param string $serverRoot
 	 * @param string|false $app_dir
 	 * @param string $theme
 	 * @param string $app
+	 * @return string[]
 	 */
-	protected function getAppTemplateDirs($theme, $app, $serverroot, $app_dir) {
+	protected function getAppTemplateDirs($theme, $app, $serverRoot, $app_dir) {
 		// Check if the app is in the app folder or in the root
 		if( file_exists($app_dir.'/templates/' )) {
-			return array(
-				$serverroot.'/themes/'.$theme.'/apps/'.$app.'/templates/',
+			return [
+				$serverRoot.'/themes/'.$theme.'/apps/'.$app.'/templates/',
 				$app_dir.'/templates/',
-			);
+			];
 		}
-		return array(
-			$serverroot.'/themes/'.$theme.'/'.$app.'/templates/',
-			$serverroot.'/'.$app.'/templates/',
-		);
+		return [
+			$serverRoot.'/themes/'.$theme.'/'.$app.'/templates/',
+			$serverRoot.'/'.$app.'/templates/',
+		];
 	}
 
 	/**
-	 * @param string $serverroot
+	 * @param string $serverRoot
 	 * @param string $theme
+	 * @return string[]
 	 */
-	protected function getCoreTemplateDirs($theme, $serverroot) {
-		return array(
-			$serverroot.'/themes/'.$theme.'/core/templates/',
-			$serverroot.'/core/templates/',
-		);
+	protected function getCoreTemplateDirs($theme, $serverRoot) {
+		return [
+			$serverRoot.'/themes/'.$theme.'/core/templates/',
+			$serverRoot.'/core/templates/',
+		];
 	}
 
 	/**
@@ -130,35 +137,44 @@ class Base {
 
 	/**
 	 * Process the template
-	 * @return string
+	 *
+	 * @param array|null $additionalParams
+	 * @return string This function processes the template.
 	 *
 	 * This function processes the template.
 	 */
-	public function fetchPage() {
-		return $this->load($this->template);
+	public function fetchPage($additionalParams = null) {
+		return $this->load($this->template, $additionalParams);
 	}
 
 	/**
 	 * doing the actual work
+	 *
 	 * @param string $file
+	 * @param array|null $additionalParams
 	 * @return string content
 	 *
 	 * Includes the template file, fetches its output
 	 */
-	protected function load( $file, $additionalparams = null ) {
+	protected function load($file, $additionalParams = null) {
 		// Register the variables
 		$_ = $this->vars;
 		$l = $this->l10n;
 		$theme = $this->theme;
 
-		if( !is_null($additionalparams)) {
-			$_ = array_merge( $additionalparams, $this->vars );
+		if( !is_null($additionalParams)) {
+			$_ = array_merge( $additionalParams, $this->vars );
 		}
 
 		// Include
 		ob_start();
-		include $file;
-		$data = ob_get_contents();
+		try {
+			include $file;
+			$data = ob_get_contents();
+		} catch (\Exception $e) {
+			@ob_end_clean();
+			throw $e;
+		}
 		@ob_end_clean();
 
 		// Return data

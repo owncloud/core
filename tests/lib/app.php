@@ -1,11 +1,16 @@
 <?php
-
 /**
  * Copyright (c) 2012 Bernhard Posselt <dev@bernhard-posselt.com>
  * Copyright (c) 2014 Vincent Petry <pvince81@owncloud.com>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
+ */
+
+/**
+ * Class Test_App
+ *
+ * @group DB
  */
 class Test_App extends \Test\TestCase {
 
@@ -282,7 +287,7 @@ class Test_App extends \Test\TestCase {
 	 * Tests that the app order is correct
 	 */
 	public function testGetEnabledAppsIsSorted() {
-		$apps = \OC_App::getEnabledApps(true);
+		$apps = \OC_App::getEnabledApps();
 		// copy array
 		$sortedApps = $apps;
 		sort($sortedApps);
@@ -306,6 +311,8 @@ class Test_App extends \Test\TestCase {
 					'app3',
 					'appforgroup1',
 					'appforgroup12',
+					'dav',
+					'federatedfilesharing',
 				),
 				false
 			),
@@ -318,6 +325,8 @@ class Test_App extends \Test\TestCase {
 					'app3',
 					'appforgroup12',
 					'appforgroup2',
+					'dav',
+					'federatedfilesharing',
 				),
 				false
 			),
@@ -331,6 +340,8 @@ class Test_App extends \Test\TestCase {
 					'appforgroup1',
 					'appforgroup12',
 					'appforgroup2',
+					'dav',
+					'federatedfilesharing',
 				),
 				false
 			),
@@ -344,6 +355,8 @@ class Test_App extends \Test\TestCase {
 					'appforgroup1',
 					'appforgroup12',
 					'appforgroup2',
+					'dav',
+					'federatedfilesharing',
 				),
 				false,
 			),
@@ -357,6 +370,8 @@ class Test_App extends \Test\TestCase {
 					'appforgroup1',
 					'appforgroup12',
 					'appforgroup2',
+					'dav',
+					'federatedfilesharing',
 				),
 				true,
 			),
@@ -398,7 +413,7 @@ class Test_App extends \Test\TestCase {
 			)
 			);
 
-		$apps = \OC_App::getEnabledApps(true, $forceAll);
+		$apps = \OC_App::getEnabledApps(false, $forceAll);
 
 		$this->restoreAppConfig();
 		\OC_User::setUserId(null);
@@ -433,12 +448,12 @@ class Test_App extends \Test\TestCase {
 			)
 			);
 
-		$apps = \OC_App::getEnabledApps(true);
-		$this->assertEquals(array('files', 'app3'), $apps);
+		$apps = \OC_App::getEnabledApps();
+		$this->assertEquals(array('files', 'app3', 'dav', 'federatedfilesharing',), $apps);
 
 		// mock should not be called again here
-		$apps = \OC_App::getEnabledApps(false);
-		$this->assertEquals(array('files', 'app3'), $apps);
+		$apps = \OC_App::getEnabledApps();
+		$this->assertEquals(array('files', 'app3', 'dav', 'federatedfilesharing',), $apps);
 
 		$this->restoreAppConfig();
 		\OC_User::setUserId(null);
@@ -451,7 +466,7 @@ class Test_App extends \Test\TestCase {
 		$appConfig = $this->getMock(
 			'\OC\AppConfig',
 			array('getValues'),
-			array(\OC_DB::getConnection()),
+			array(\OC::$server->getDatabaseConnection()),
 			'',
 			false
 		);
@@ -470,7 +485,7 @@ class Test_App extends \Test\TestCase {
 			return $appConfig;
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
-			return new \OC\App\AppManager($c->getUserSession(), $appConfig, $c->getGroupManager(), $c->getMemCacheFactory());
+			return new \OC\App\AppManager($c->getUserSession(), $appConfig, $c->getGroupManager(), $c->getMemCacheFactory(), $c->getEventDispatcher());
 		});
 	}
 
@@ -478,15 +493,15 @@ class Test_App extends \Test\TestCase {
 	 * Restore the original app config service.
 	 */
 	private function restoreAppConfig() {
-		\OC::$server->registerService('AppConfig', function ($c) {
-			return new \OC\AppConfig(\OC_DB::getConnection());
+		\OC::$server->registerService('AppConfig', function (\OC\Server $c) {
+			return new \OC\AppConfig($c->getDatabaseConnection());
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
-			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(), $c->getGroupManager(), $c->getMemCacheFactory());
+			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(), $c->getGroupManager(), $c->getMemCacheFactory(), $c->getEventDispatcher());
 		});
 
 		// Remove the cache of the mocked apps list with a forceRefresh
-		\OC_App::getEnabledApps(true);
+		\OC_App::getEnabledApps();
 	}
 
 	/**

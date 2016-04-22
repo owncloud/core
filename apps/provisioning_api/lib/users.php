@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author michag86 <micha_g@arcor.de>
@@ -8,7 +9,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -117,18 +118,49 @@ class Users {
 	public function addUser() {
 		$userId = isset($_POST['userid']) ? $_POST['userid'] : null;
 		$password = isset($_POST['password']) ? $_POST['password'] : null;
+		$groups = isset($_POST['groups']) ? $_POST['groups'] : null;
+		$user = $this->userSession->getUser();
+		$isAdmin = $this->groupManager->isAdmin($user->getUID());
+		$subAdminManager = $this->groupManager->getSubAdmin();
+
+		if (!$isAdmin && !$subAdminManager->isSubAdmin($user)) {
+			return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED);
+		}
+
 		if($this->userManager->userExists($userId)) {
 			$this->logger->error('Failed addUser attempt: User already exists.', ['app' => 'ocs_api']);
 			return new OC_OCS_Result(null, 102, 'User already exists');
-		} else {
-			try {
-				$this->userManager->createUser($userId, $password);
-				$this->logger->info('Successful addUser call with userid: '.$_POST['userid'], ['app' => 'ocs_api']);
-				return new OC_OCS_Result(null, 100);
-			} catch (\Exception $e) {
-				$this->logger->error('Failed addUser attempt with exception: '.$e->getMessage(), ['app' => 'ocs_api']);
-				return new OC_OCS_Result(null, 101, 'Bad request');
+		}
+
+		if(is_array($groups)) {
+			foreach ($groups as $group) {
+				if(!$this->groupManager->groupExists($group)){
+					return new OC_OCS_Result(null, 104, 'group '.$group.' does not exist');
+				}
+				if(!$isAdmin && !$subAdminManager->isSubAdminofGroup($user, $this->groupManager->get($group))) {
+					return new OC_OCS_Result(null, 105, 'insufficient privileges for group '. $group);
+				}
 			}
+		} else {
+			if(!$isAdmin) {
+				return new OC_OCS_Result(null, 106, 'no group specified (required for subadmins)');
+			}
+		}
+		
+		try {
+			$newUser = $this->userManager->createUser($userId, $password);
+			$this->logger->info('Successful addUser call with userid: '.$userId, ['app' => 'ocs_api']);
+
+			if (is_array($groups)) {
+				foreach ($groups as $group) {
+					$this->groupManager->get($group)->addUser($newUser);
+					$this->logger->info('Added userid '.$userId.' to group '.$group, ['app' => 'ocs_api']);
+				}
+			}
+			return new OC_OCS_Result(null, 100);
+		} catch (\Exception $e) {
+			$this->logger->error('Failed addUser attempt with exception: '.$e->getMessage(), ['app' => 'ocs_api']);
+			return new OC_OCS_Result(null, 101, 'Bad request');
 		}
 	}
 
@@ -168,7 +200,7 @@ class Users {
 
 		// Find the data
 		$data['quota'] = $this->fillStorageInfo($userId);
-		$data['email'] = $this->config->getUserValue($userId, 'settings', 'email');
+		$data['email'] = $targetUserObject->getEMailAddress();
 		$data['displayname'] = $targetUserObject->getDisplayName();
 
 		return new OC_OCS_Result($data);
@@ -247,14 +279,14 @@ class Users {
 						$quota = \OCP\Util::humanFileSize($quota);
 					}
 				}
-				$this->config->setUserValue($targetUserId, 'files', 'quota', $quota);
+				$targetUser->setQuota($quota);
 				break;
 			case 'password':
 				$targetUser->setPassword($parameters['_put']['value']);
 				break;
 			case 'email':
 				if(filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
-					$this->config->setUserValue($targetUserId, 'settings', 'email', $parameters['_put']['value']);
+					$targetUser->setEMailAddress($parameters['_put']['value']);
 				} else {
 					return new OC_OCS_Result(null, 102);
 				}

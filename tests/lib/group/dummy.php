@@ -20,9 +20,14 @@
 *
 */
 
+/**
+ * Class Test_Group_Dummy
+ *
+ * @group DB
+ */
 class Test_Group_Dummy extends Test_Group_Backend {
 	protected function setUp() {
 		parent::setUp();
-		$this->backend=new OC_Group_Dummy();
+		$this->backend=new \Test\Util\Group\Dummy();
 	}
 }

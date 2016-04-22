@@ -14,7 +14,7 @@
  * @author Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -176,7 +176,18 @@ class Local extends \OC\Files\Storage\Common {
 	}
 
 	public function file_get_contents($path) {
-		return file_get_contents($this->getSourcePath($path));
+		// file_get_contents() has a memory leak: https://bugs.php.net/bug.php?id=61961
+		$fileName = $this->getSourcePath($path);
+
+		$fileSize = filesize($fileName);
+		if ($fileSize === 0) {
+			return '';
+		}
+
+		$handle = fopen($fileName,'rb');
+		$content = fread($handle, $fileSize);
+		fclose($handle);
+		return $content;
 	}
 
 	public function file_put_contents($path, $data) {
@@ -220,7 +231,7 @@ class Local extends \OC\Files\Storage\Common {
 		}
 
 		if ($this->is_dir($path1)) {
-			// we cant move folders across devices, use copy instead
+			// we can't move folders across devices, use copy instead
 			$stat1 = stat(dirname($this->getSourcePath($path1)));
 			$stat2 = stat(dirname($this->getSourcePath($path2)));
 			if ($stat1['dev'] !== $stat2['dev']) {
@@ -252,7 +263,15 @@ class Local extends \OC\Files\Storage\Common {
 	}
 
 	public function free_space($path) {
-		$space = @disk_free_space($this->getSourcePath($path));
+		$sourcePath = $this->getSourcePath($path);
+		// using !is_dir because $sourcePath might be a part file or
+		// non-existing file, so we'd still want to use the parent dir
+		// in such cases
+		if (!is_dir($sourcePath)) {
+			// disk_free_space doesn't work on files
+			$sourcePath = dirname($sourcePath);
+		}
+		$space = @disk_free_space($sourcePath);
 		if ($space === false || is_null($space)) {
 			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 		}

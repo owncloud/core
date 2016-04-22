@@ -5,11 +5,11 @@ OC.L10N.register(
     "Personal" : "Personīgi",
     "Grant access" : "Piešķirt pieeju",
     "Access granted" : "Piešķirta pieeja",
-    "Enable encryption" : "Ieslēgt šifrēšanu",
     "Saved" : "Saglabāts",
-    "None" : "Nav",
     "Username" : "Lietotājvārds",
     "Password" : "Parole",
+    "Save" : "Saglabāt",
+    "None" : "Nav",
     "Port" : "Ports",
     "WebDAV" : "WebDAV",
     "URL" : "URL",
@@ -18,10 +18,11 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Share" : "Dalīties",
     "Name" : "Nosaukums",
+    "Enable encryption" : "Ieslēgt šifrēšanu",
     "External Storage" : "Ārējā krātuve",
     "Folder name" : "Mapes nosaukums",
     "Configuration" : "Konfigurācija",
-    "Delete" : "Dzēst",
-    "Add storage" : "Pievienot krātuvi"
+    "Add storage" : "Pievienot krātuvi",
+    "Delete" : "Dzēst"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

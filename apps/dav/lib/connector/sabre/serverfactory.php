@@ -1,9 +1,13 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,16 +26,41 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCP\Files\Mount\IMountManager;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\ILogger;
+use OCP\IRequest;
 use OCP\ITagManager;
 use OCP\IUserSession;
 use Sabre\DAV\Auth\Backend\BackendInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ServerFactory {
+	/** @var IConfig */
+	private $config;
+	/** @var ILogger */
+	private $logger;
+	/** @var IDBConnection */
+	private $databaseConnection;
+	/** @var IUserSession */
+	private $userSession;
+	/** @var IMountManager */
+	private $mountManager;
+	/** @var ITagManager */
+	private $tagManager;
+	/** @var IRequest */
+	private $request;
+
+	/**
+	 * @param IConfig $config
+	 * @param ILogger $logger
+	 * @param IDBConnection $databaseConnection
+	 * @param IUserSession $userSession
+	 * @param IMountManager $mountManager
+	 * @param ITagManager $tagManager
+	 * @param IRequest $request
+	 */
 	public function __construct(
 		IConfig $config,
 		ILogger $logger,
@@ -39,7 +68,7 @@ class ServerFactory {
 		IUserSession $userSession,
 		IMountManager $mountManager,
 		ITagManager $tagManager,
-		EventDispatcherInterface $dispatcher
+		IRequest $request
 	) {
 		$this->config = $config;
 		$this->logger = $logger;
@@ -47,7 +76,7 @@ class ServerFactory {
 		$this->userSession = $userSession;
 		$this->mountManager = $mountManager;
 		$this->tagManager = $tagManager;
-		$this->dispatcher = $dispatcher;
+		$this->request = $request;
 	}
 
 	/**
@@ -57,7 +86,10 @@ class ServerFactory {
 	 * @param callable $viewCallBack callback that should return the view for the dav endpoint
 	 * @return Server
 	 */
-	public function createServer($baseUri, $requestUri, BackendInterface $authBackend, callable $viewCallBack) {
+	public function createServer($baseUri,
+								 $requestUri,
+								 BackendInterface $authBackend,
+								 callable $viewCallBack) {
 		// Fire up server
 		$objectTree = new \OCA\DAV\Connector\Sabre\ObjectTree();
 		$server = new \OCA\DAV\Connector\Sabre\Server($objectTree);
@@ -73,28 +105,67 @@ class ServerFactory {
 		// FIXME: The following line is a workaround for legacy components relying on being able to send a GET to /
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $this->logger));
-		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin($objectTree));
-		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ListenerPlugin($this->dispatcher));
+		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
+		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
+		// we do not provide locking we emulate it using a fake locking plugin.
+		if($this->request->isUserAgent([
+				'/WebDAVFS/',
+				'/Microsoft Office OneNote 2013/',
+				'/Microsoft-WebDAV-MiniRedir/',
+		])) {
+			$server->addPlugin(new \OCA\DAV\Connector\Sabre\FakeLockerPlugin());
+		}
+
+		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
+			$server->addPlugin(new BrowserErrorPagePlugin());
+		}
 
 		// wait with registering these until auth is handled and the filesystem is setup
 		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {
+			// ensure the skeleton is copied
+			$userFolder = \OC::$server->getUserFolder();
+			
 			/** @var \OC\Files\View $view */
-			$view = $viewCallBack();
+			$view = $viewCallBack($server);
 			$rootInfo = $view->getFileInfo('');
 
 			// Create ownCloud Dir
 			if ($rootInfo->getType() === 'dir') {
-				$root = new \OCA\DAV\Connector\Sabre\Directory($view, $rootInfo);
+				$root = new \OCA\DAV\Connector\Sabre\Directory($view, $rootInfo, $objectTree);
 			} else {
 				$root = new \OCA\DAV\Connector\Sabre\File($view, $rootInfo);
 			}
 			$objectTree->init($root, $view, $this->mountManager);
 
-			$server->addPlugin(new \OCA\DAV\Connector\Sabre\FilesPlugin($objectTree, $view));
+			$server->addPlugin(
+				new \OCA\DAV\Connector\Sabre\FilesPlugin(
+					$objectTree,
+					$view,
+					$this->config,
+					false,
+					!$this->config->getSystemValue('debug', false)
+				)
+			);
 			$server->addPlugin(new \OCA\DAV\Connector\Sabre\QuotaPlugin($view));
 
 			if($this->userSession->isLoggedIn()) {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\TagsPlugin($objectTree, $this->tagManager));
+				$server->addPlugin(new \OCA\DAV\Connector\Sabre\SharesPlugin(
+					$objectTree,
+					$this->userSession,
+					$userFolder,
+					\OC::$server->getShareManager()
+				));
+				$server->addPlugin(new \OCA\DAV\Connector\Sabre\CommentPropertiesPlugin(\OC::$server->getCommentsManager(), $this->userSession));
+				$server->addPlugin(new \OCA\DAV\Connector\Sabre\FilesReportPlugin(
+					$objectTree,
+					$view,
+					\OC::$server->getSystemTagManager(),
+					\OC::$server->getSystemTagObjectMapper(),
+					$this->userSession,
+					\OC::$server->getGroupManager(),
+					$userFolder
+				));
 				// custom properties plugin must be the last one
 				$server->addPlugin(
 					new \Sabre\DAV\PropertyStorage\Plugin(

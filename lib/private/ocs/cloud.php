@@ -5,7 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ class OC_OCS_Cloud {
 
 	public static function getCapabilities() {
 		$result = array();
-		list($major, $minor, $micro) = OC_Util::getVersion();
+		list($major, $minor, $micro) = \OCP\Util::getVersion();
 		$result['version'] = array(
 			'major' => $major,
 			'minor' => $minor,
@@ -41,11 +41,11 @@ class OC_OCS_Cloud {
 	}
 	
 	public static function getCurrentUser() {
-		$email=\OC::$server->getConfig()->getUserValue(OC_User::getUser(), 'settings', 'email', '');
+		$userObject = \OC::$server->getUserManager()->get(OC_User::getUser());
 		$data  = array(
-			'id' => OC_User::getUser(),
-			'display-name' => OC_User::getDisplayName(),
-			'email' => $email,
+			'id' => $userObject->getUID(),
+			'display-name' => $userObject->getDisplayName(),
+			'email' => $userObject->getEMailAddress(),
 		);
 		return new OC_OCS_Result($data);
 	}

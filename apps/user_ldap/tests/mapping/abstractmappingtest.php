@@ -3,7 +3,7 @@
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -112,7 +112,7 @@ abstract class AbstractMappingTest extends \Test\TestCase {
 	}
 
 	/**
-	 * tests unmap() for both successfuly and not successful removing of
+	 * tests unmap() for both successful and unsuccessful removing of
 	 * mapping entries
 	 */
 	public function testUnmap() {

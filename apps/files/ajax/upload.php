@@ -3,6 +3,7 @@
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Clark Tomlinson <fallen013@gmail.com>
  * @author Florian Pritz <bluewind@xinu.at>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Individual IT Services <info@individual-it.net>
@@ -16,7 +17,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -41,7 +42,6 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If not, check the login.
 // If no token is sent along, rely on login only
 
-$allowedPermissions = \OCP\Constants::PERMISSION_ALL;
 $errorCode = null;
 
 $l = \OC::$server->getL10N('files');
@@ -60,8 +60,6 @@ if (empty($_POST['dirToken'])) {
 
 	\OC_User::setIncognitoMode(true);
 
-	// return only read permissions for public upload
-	$allowedPermissions = \OCP\Constants::PERMISSION_READ;
 	$publicDirectory = !empty($_POST['subdir']) ? (string)$_POST['subdir'] : '/';
 
 	$linkItem = OCP\Share::getShareByToken((string)$_POST['dirToken']);
@@ -117,7 +115,7 @@ foreach ($_FILES['files']['error'] as $error) {
 		$errors = array(
 			UPLOAD_ERR_OK => $l->t('There is no error, the file uploaded with success'),
 			UPLOAD_ERR_INI_SIZE => $l->t('The uploaded file exceeds the upload_max_filesize directive in php.ini: ')
-			. ini_get('upload_max_filesize'),
+			. OC::$server->getIniWrapper()->getNumeric('upload_max_filesize'),
 			UPLOAD_ERR_FORM_SIZE => $l->t('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form'),
 			UPLOAD_ERR_PARTIAL => $l->t('The uploaded file was only partially uploaded'),
 			UPLOAD_ERR_NO_FILE => $l->t('No file was uploaded'),
@@ -138,8 +136,12 @@ $maxUploadFileSize = $storageStats['uploadMaxFilesize'];
 $maxHumanFileSize = OCP\Util::humanFileSize($maxUploadFileSize);
 
 $totalSize = 0;
-foreach ($files['size'] as $size) {
-	$totalSize += $size;
+$isReceivedShare = \OC::$server->getRequest()->getParam('isReceivedShare', false) === 'true';
+// defer quota check for received shares
+if (!$isReceivedShare && $storageStats['freeSpace'] >= 0) {
+	foreach ($files['size'] as $size) {
+		$totalSize += $size;
+	}
 }
 if ($maxUploadFileSize >= 0 and $totalSize > $maxUploadFileSize) {
 	OCP\JSON::error(array('data' => array('message' => $l->t('Not enough storage available'),
@@ -207,7 +209,7 @@ if (\OC\Files\Filesystem::isValidPath($dir) === true) {
 						$data['originalname'] = $files['name'][$i];
 						$data['uploadMaxFilesize'] = $maxUploadFileSize;
 						$data['maxHumanFilesize'] = $maxHumanFileSize;
-						$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+						$data['permissions'] = $meta['permissions'];
 						$data['directory'] = $returnedDir;
 						$result[] = $data;
 					}
@@ -234,7 +236,7 @@ if (\OC\Files\Filesystem::isValidPath($dir) === true) {
 				$data['originalname'] = $files['name'][$i];
 				$data['uploadMaxFilesize'] = $maxUploadFileSize;
 				$data['maxHumanFilesize'] = $maxHumanFileSize;
-				$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+				$data['permissions'] = $meta['permissions'];
 				$data['directory'] = $returnedDir;
 				$result[] = $data;
 			}

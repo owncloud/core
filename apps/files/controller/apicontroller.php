@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
@@ -8,7 +9,7 @@
  * @author Tobias Kaminsky <tobias@kaminsky.me>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,11 +30,16 @@ namespace OCA\Files\Controller;
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Controller;
+use OCP\IConfig;
 use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\AppFramework\Http\Response;
 use OCA\Files\Service\TagService;
 use OCP\IPreview;
+use OCP\Share\IManager;
+use OCP\Files\Node;
+use OCP\IUserSession;
 
 /**
  * Class ApiController
@@ -43,8 +49,14 @@ use OCP\IPreview;
 class ApiController extends Controller {
 	/** @var TagService */
 	private $tagService;
+	/** @var IManager **/
+	private $shareManager;
 	/** @var IPreview */
 	private $previewManager;
+	/** IUserSession */
+	private $userSession;
+	/** IConfig */
+	private $config;
 
 	/**
 	 * @param string $appName
@@ -54,11 +66,17 @@ class ApiController extends Controller {
 	 */
 	public function __construct($appName,
 								IRequest $request,
+								IUserSession $userSession,
 								TagService $tagService,
-								IPreview $previewManager){
+								IPreview $previewManager,
+								IManager $shareManager,
+								IConfig $config) {
 		parent::__construct($appName, $request);
+		$this->userSession = $userSession;
 		$this->tagService = $tagService;
 		$this->previewManager = $previewManager;
+		$this->shareManager = $shareManager;
+		$this->config = $config;
 	}
 
 	/**
@@ -127,13 +145,15 @@ class ApiController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param array|string $tagName tag name to filter by
+	 * @param string $tagName tag name to filter by
 	 * @return DataResponse
 	 */
 	public function getFilesByTag($tagName) {
 		$files = array();
-		$fileInfos = $this->tagService->getFilesByTag($tagName);
-		foreach ($fileInfos as &$fileInfo) {
+		$nodes = $this->tagService->getFilesByTag($tagName);
+		foreach ($nodes as &$node) {
+			$shareTypes = $this->getShareTypes($node);
+			$fileInfo = $node->getFileInfo();
 			$file = \OCA\Files\Helper::formatFileInfo($fileInfo);
 			$parts = explode('/', dirname($fileInfo->getPath()), 4);
 			if(isset($parts[3])) {
@@ -142,9 +162,78 @@ class ApiController extends Controller {
 				$file['path'] = '/';
 			}
 			$file['tags'] = [$tagName];
+			if (!empty($shareTypes)) {
+				$file['shareTypes'] = $shareTypes;
+			}
 			$files[] = $file;
 		}
 		return new DataResponse(['files' => $files]);
+	}
+
+	/**
+	 * Return a list of share types for outgoing shares
+	 *
+	 * @param Node $node file node
+	 *
+	 * @return int[] array of share types
+	 */
+	private function getShareTypes(Node $node) {
+		$userId = $this->userSession->getUser()->getUID();
+		$shareTypes = [];
+		$requestedShareTypes = [
+			\OCP\Share::SHARE_TYPE_USER,
+			\OCP\Share::SHARE_TYPE_GROUP,
+			\OCP\Share::SHARE_TYPE_LINK,
+			\OCP\Share::SHARE_TYPE_REMOTE
+		];
+		foreach ($requestedShareTypes as $requestedShareType) {
+			// one of each type is enough to find out about the types
+			$shares = $this->shareManager->getSharesBy(
+				$userId,
+				$requestedShareType,
+				$node,
+				false,
+				1
+			);
+			if (!empty($shares)) {
+				$shareTypes[] = $requestedShareType;
+			}
+		}
+		return $shareTypes;
+	}
+
+	/**
+	 * Change the default sort mode
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @param string $mode
+	 * @param string $direction
+	 * @return Response
+	 */
+	public function updateFileSorting($mode, $direction) {
+		$allowedMode = ['name', 'size', 'mtime'];
+		$allowedDirection = ['asc', 'desc'];
+		if (!in_array($mode, $allowedMode) || !in_array($direction, $allowedDirection)) {
+			$response = new Response();
+			$response->setStatus(Http::STATUS_UNPROCESSABLE_ENTITY);
+			return $response;
+		}
+		$this->config->setUserValue($this->userSession->getUser()->getUID(), 'files', 'file_sorting', $mode);
+		$this->config->setUserValue($this->userSession->getUser()->getUID(), 'files', 'file_sorting_direction', $direction);
+		return new Response();
+	}
+
+	/**
+	 * Toggle default for showing/hiding hidden files
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @param bool $show
+	 */
+	public function showHiddenFiles($show) {
+		$this->config->setUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', (int) $show);
+		return new Response();
 	}
 
 }

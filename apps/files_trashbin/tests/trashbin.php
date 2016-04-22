@@ -5,10 +5,11 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,6 +30,8 @@ use OCA\Files_Trashbin;
 
 /**
  * Class Test_Encryption
+ *
+ * @group DB
  */
 class Test_Trashbin extends \Test\TestCase {
 
@@ -65,14 +68,14 @@ class Test_Trashbin extends \Test\TestCase {
 		\OC::registerShareHooks();
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
-		$application->setupPropagation();
 
 		//disable encryption
 		\OC_App::disable('encryption');
 
+		$config = \OC::$server->getConfig();
 		//configure trashbin
-		self::$rememberRetentionObligation = \OC_Config::getValue('trashbin_retention_obligation', Files_Trashbin\Expiration::DEFAULT_RETENTION_OBLIGATION);
-		\OC_Config::setValue('trashbin_retention_obligation', 'auto, 2');
+		self::$rememberRetentionObligation = $config->getSystemValue('trashbin_retention_obligation', Files_Trashbin\Expiration::DEFAULT_RETENTION_OBLIGATION);
+		$config->setSystemValue('trashbin_retention_obligation', 'auto, 2');
 
 		// register hooks
 		Files_Trashbin\Trashbin::registerHooks();
@@ -83,12 +86,14 @@ class Test_Trashbin extends \Test\TestCase {
 	}
 
 
-
 	public static function tearDownAfterClass() {
 		// cleanup test user
-		\OC_User::deleteUser(self::TEST_TRASHBIN_USER1);
+		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER1);
+		if ($user !== null) {
+			$user->delete();
+		}
 
-		\OC_Config::setValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
+		\OC::$server->getConfig()->setSystemValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
 
 		\OC_Hook::clear();
 
@@ -105,6 +110,18 @@ class Test_Trashbin extends \Test\TestCase {
 		parent::setUp();
 
 		\OC::$server->getAppManager()->enableApp('files_trashbin');
+		$config = \OC::$server->getConfig();
+		$mockConfig = $this->getMock('\OCP\IConfig');
+		$mockConfig->expects($this->any())
+			->method('getSystemValue')
+			->will($this->returnCallback(function ($key, $default) use ($config) {
+				if ($key === 'filesystem_check_changes') {
+					return \OC\Files\Cache\Watcher::CHECK_ONCE;
+				} else {
+					return $config->getSystemValue($key, $default);
+				}
+			}));
+		$this->overwriteService('AllConfig', $mockConfig);
 
 		$this->trashRoot1 = '/' . self::TEST_TRASHBIN_USER1 . '/files_trashbin';
 		$this->trashRoot2 = '/' . self::TEST_TRASHBIN_USER2 . '/files_trashbin';
@@ -113,6 +130,7 @@ class Test_Trashbin extends \Test\TestCase {
 	}
 
 	protected function tearDown() {
+		$this->restoreService('AllConfig');
 		// disable trashbin to be able to properly clean up
 		\OC::$server->getAppManager()->disableApp('files_trashbin');
 
@@ -134,8 +152,8 @@ class Test_Trashbin extends \Test\TestCase {
 	public function testExpireOldFiles() {
 
 		$currentTime = time();
-		$expireAt = $currentTime - 2*24*60*60;
-		$expiredDate = $currentTime - 3*24*60*60;
+		$expireAt = $currentTime - 2 * 24 * 60 * 60;
+		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
 		// create some files
 		\OC\Files\Filesystem::file_put_contents('file1.txt', 'file1');
@@ -183,7 +201,7 @@ class Test_Trashbin extends \Test\TestCase {
 
 		$currentTime = time();
 		$folder = "trashTest-" . $currentTime . '/';
-		$expiredDate = $currentTime - 3*24*60*60;
+		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
 		// create some files
 		\OC\Files\Filesystem::mkdir($folder);
@@ -193,9 +211,14 @@ class Test_Trashbin extends \Test\TestCase {
 		\OC\Files\Filesystem::file_put_contents($folder . 'user1-4.txt', 'file4');
 
 		//share user1-4.txt with user2
-		$fileInfo = \OC\Files\Filesystem::getFileInfo($folder);
-		$result = \OCP\Share::shareItem('folder', $fileInfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_TRASHBIN_USER2, 31);
-		$this->assertTrue($result);
+		$node = \OC::$server->getUserFolder(self::TEST_TRASHBIN_USER1)->get($folder);
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setNode($node)
+			->setSharedBy(self::TEST_TRASHBIN_USER1)
+			->setSharedWith(self::TEST_TRASHBIN_USER2)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
 
 		// delete them so that they end up in the trash bin
 		\OC\Files\Filesystem::unlink($folder . 'user1-1.txt');
@@ -246,8 +269,9 @@ class Test_Trashbin extends \Test\TestCase {
 
 	/**
 	 * verify that the array contains the expected results
-	 * @param array $result
-	 * @param array $expected
+	 *
+	 * @param OCP\Files\FileInfo[] $result
+	 * @param string[] $expected
 	 */
 	private function verifyArray($result, $expected) {
 		$this->assertSame(count($expected), count($result));
@@ -261,18 +285,23 @@ class Test_Trashbin extends \Test\TestCase {
 			}
 			if (!$found) {
 				// if we didn't found the expected file, something went wrong
-				$this->assertTrue(false, "can't find expected file '" . $expectedFile .  "' in trash bin");
+				$this->assertTrue(false, "can't find expected file '" . $expectedFile . "' in trash bin");
 			}
 		}
 	}
 
+	/**
+	 * @param OCP\Files\FileInfo[] $files
+	 * @param string $trashRoot
+	 * @param integer $expireDate
+	 */
 	private function manipulateDeleteTime($files, $trashRoot, $expireDate) {
 		$counter = 0;
 		foreach ($files as &$file) {
 			// modify every second file
 			$counter = ($counter + 1) % 2;
 			if ($counter === 1) {
-				$source = $trashRoot . '/files/' . $file['name'].'.d'.$file['mtime'];
+				$source = $trashRoot . '/files/' . $file['name'] . '.d' . $file['mtime'];
 				$target = \OC\Files\Filesystem::normalizePath($trashRoot . '/files/' . $file['name'] . '.d' . $expireDate);
 				$this->rootView->rename($source, $target);
 				$file['mtime'] = $expireDate;
@@ -436,7 +465,7 @@ class Test_Trashbin extends \Test\TestCase {
 		$trashedFile = $filesInTrash[0];
 
 		$this->assertTrue(
-				OCA\Files_Trashbin\Trashbin::restore(
+			OCA\Files_Trashbin\Trashbin::restore(
 				'folder.d' . $trashedFile->getMtime() . '/file1.txt',
 				'file1.txt',
 				$trashedFile->getMtime()
@@ -625,13 +654,12 @@ class Test_Trashbin extends \Test\TestCase {
 	/**
 	 * @param string $user
 	 * @param bool $create
-	 * @param bool $password
 	 */
 	public static function loginHelper($user, $create = false) {
 		if ($create) {
 			try {
-				\OC_User::createUser($user, $user);
-			} catch(\Exception $e) { // catch username is already being used from previous aborted runs
+				\OC::$server->getUserManager()->createUser($user, $user);
+			} catch (\Exception $e) { // catch username is already being used from previous aborted runs
 
 			}
 		}
@@ -648,11 +676,20 @@ class Test_Trashbin extends \Test\TestCase {
 
 // just a dummy class to make protected methods available for testing
 class TrashbinForTesting extends Files_Trashbin\Trashbin {
+
+	/**
+	 * @param OCP\Files\FileInfo[] $files
+	 * @param integer $limit
+	 */
 	public function dummyDeleteExpiredFiles($files, $limit) {
 		// dummy value for $retention_obligation because it is not needed here
 		return parent::deleteExpiredFiles($files, \Test_Trashbin::TEST_TRASHBIN_USER1, $limit, 0);
 	}
 
+	/**
+	 * @param OCP\Files\FileInfo[] $files
+	 * @param integer $availableSpace
+	 */
 	public function dummyDeleteFiles($files, $availableSpace) {
 		return parent::deleteFiles($files, \Test_Trashbin::TEST_TRASHBIN_USER1, $availableSpace);
 	}

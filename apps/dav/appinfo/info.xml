@@ -5,20 +5,15 @@
 	<description>ownCloud WebDAV endpoint</description>
 	<licence>AGPL</licence>
 	<author>owncloud.org</author>
-	<version>0.1.2</version>
-	<requiremin>9.0</requiremin>
-	<shipped>true</shipped>
-	<standalone/>
+	<version>0.2.3</version>
 	<default_enable/>
 	<types>
 		<filesystem/>
 	</types>
-	<remote>
-		<files>appinfo/v1/webdav.php</files>
-		<webdav>appinfo/v1/webdav.php</webdav>
-		<dav>appinfo/v2/remote.php</dav>
-	</remote>
 	<public>
 		<webdav>appinfo/v1/publicwebdav.php</webdav>
 	</public>
+	<dependencies>
+		<owncloud min-version="9.1" max-version="9.1" />
+	</dependencies>
 </info>

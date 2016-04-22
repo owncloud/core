@@ -4,7 +4,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -71,29 +71,41 @@ interface IEncryptionModule {
 	 * buffer.
 	 *
 	 * @param string $path to the file
+	 * @param string $position id of the last block (looks like "<Number>end")
+	 *
 	 * @return string remained data which should be written to the file in case
 	 *                of a write operation
+	 *
 	 * @since 8.1.0
+	 * @since 9.0.0 parameter $position added
 	 */
-	public function end($path);
+	public function end($path, $position);
 
 	/**
 	 * encrypt data
 	 *
 	 * @param string $data you want to encrypt
+	 * @param string $position position of the block we want to encrypt (starts with '0')
+	 *
 	 * @return mixed encrypted data
+	 *
 	 * @since 8.1.0
+	 * @since 9.0.0 parameter $position added
 	 */
-	public function encrypt($data);
+	public function encrypt($data, $position);
 
 	/**
 	 * decrypt data
 	 *
 	 * @param string $data you want to decrypt
+	 * @param string $position position of the block we want to decrypt
+	 *
 	 * @return mixed decrypted data
+	 *
 	 * @since 8.1.0
+	 * @since 9.0.0 parameter $position added
 	 */
-	public function decrypt($data);
+	public function decrypt($data, $position);
 
 	/**
 	 * update encrypted file, e.g. give additional users access to the file
@@ -119,10 +131,11 @@ interface IEncryptionModule {
 	 * get size of the unencrypted payload per block.
 	 * ownCloud read/write files with a block size of 8192 byte
 	 *
-	 * @return integer
-	 * @since 8.1.0
+	 * @param bool $signed
+	 * @return int
+	 * @since 8.1.0 optional parameter $signed was added in 9.0.0
 	 */
-	public function getUnencryptedBlockSize();
+	public function getUnencryptedBlockSize($signed = false);
 
 	/**
 	 * check if the encryption module is able to read the file,
@@ -154,5 +167,17 @@ interface IEncryptionModule {
 	 * @since 8.2.0
 	 */
 	public function prepareDecryptAll(InputInterface $input, OutputInterface $output, $user = '');
+
+	/**
+	 * Check if the module is ready to be used by that specific user.
+	 * In case a module is not ready - because e.g. key pairs have not been generated
+	 * upon login this method can return false before any operation starts and might
+	 * cause issues during operations.
+	 *
+	 * @param string $user
+	 * @return boolean
+	 * @since 9.1.0
+	 */
+	public function isReadyForUser($user);
 
 }

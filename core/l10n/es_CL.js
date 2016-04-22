@@ -33,16 +33,15 @@ OC.L10N.register(
     "Error" : "Error",
     "Error while sharing" : "Ocurrió un error mientras compartía",
     "Error while unsharing" : "Ocurrió un error mientras dejaba de compartir",
-    "Error while changing permissions" : "Ocurrió un error mientras se cambiaban los permisos",
     "Password" : "Clave",
     "Share" : "Compartir",
+    "Rename" : "Renombrar",
     "The object type is not specified." : "El tipo de objeto no está especificado.",
     "Personal" : "Personal",
     "Users" : "Usuarios",
     "Admin" : "Administración",
     "Help" : "Ayuda",
     "Username" : "Usuario",
-    "You are accessing the server from an untrusted domain." : "Usted está accediendo al servidor desde un dominio no confiable.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domain\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Por favor contacte con su administrador. Si usted es el administrador de esta instancia, configure la opción \"trusted_domain\" en \"config/config.php\". Un ejemplo de la configuración está disponible en config/config.sample.php"
+    "You are accessing the server from an untrusted domain." : "Usted está accediendo al servidor desde un dominio no confiable."
 },
 "nplurals=2; plural=(n != 1);");

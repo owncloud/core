@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Adam Williamson <awilliam@redhat.com>
+ * @author Andreas Böhler <dev@aboehler.at>
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
@@ -8,7 +9,6 @@
  * @author Birk Borkason <daniel.niccoli@gmail.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Brice Maron <brice@bmaron.net>
- * @author Christian Reiner <github@christian-reiner.info>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Clark Tomlinson <fallen013@gmail.com>
  * @author cmeh <cmeh@users.noreply.github.com>
@@ -28,17 +28,18 @@
  * @author Michael Göhler <somebody.here@gmx.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Stefan Rado <owncloud@sradonia.net>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Schmidt <tschmidt@suse.de>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -54,6 +55,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
+use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUser;
+
 class OC_Util {
 	public static $scripts = array();
 	public static $styles = array();
@@ -67,7 +73,7 @@ class OC_Util {
 
 	private static function initLocalStorageRootFS() {
 		// mount local file backend as root
-		$configDataDirectory = OC_Config::getValue("datadirectory", OC::$SERVERROOT . "/data");
+		$configDataDirectory = \OC::$server->getSystemConfig()->getValue("datadirectory", OC::$SERVERROOT . "/data");
 		//first set up the local "root" storage
 		\OC\Files\Filesystem::initMountManager();
 		if (!self::$rootMounted) {
@@ -121,7 +127,9 @@ class OC_Util {
 		\OC::$server->getEventLogger()->start('setup_fs', 'Setup filesystem');
 
 		// If we are not forced to load a specific user we load the one that is logged in
-		if ($user == "" && OC_User::isLoggedIn()) {
+		if ($user === null) {
+			$user = '';
+		} else if ($user == "" && OC_User::isLoggedIn()) {
 			$user = OC_User::getUser();
 		}
 
@@ -145,9 +153,19 @@ class OC_Util {
 			return $storage;
 		});
 
+		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+			if (!$mount->getOption('enable_sharing', true)) {
+				return new \OC\Files\Storage\Wrapper\PermissionsMask([
+					'storage' => $storage,
+					'mask' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_SHARE
+				]);
+			}
+			return $storage;
+		});
+
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
-			if (!$storage->isLocal()) {
+			if (!$storage->instanceOfStorage('\OC\Files\Storage\Shared') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
 			}
 			return $storage;
@@ -179,7 +197,7 @@ class OC_Util {
 		OC_Hook::emit('OC_Filesystem', 'preSetup', array('user' => $user));
 
 		//check if we are using an object storage
-		$objectStore = OC_Config::getValue('objectstore');
+		$objectStore = \OC::$server->getSystemConfig()->getValue('objectstore', null);
 		if (isset($objectStore)) {
 			self::initObjectStoreRootFS($objectStore);
 		} else {
@@ -218,20 +236,21 @@ class OC_Util {
 
 	/**
 	 * check if sharing is disabled for the current user
-	 *
-	 * @return boolean
+	 * @param IConfig $config
+	 * @param IGroupManager $groupManager
+	 * @param IUser|null $user
+	 * @return bool
 	 */
-	public static function isSharingDisabledForUser() {
-		if (\OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
-			$user = \OCP\User::getUser();
-			$groupsList = \OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups_list', '');
+	public static function isSharingDisabledForUser(IConfig $config, IGroupManager $groupManager, $user) {
+		if ($config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
+			$groupsList = $config->getAppValue('core', 'shareapi_exclude_groups_list', '');
 			$excludedGroups = json_decode($groupsList);
 			if (is_null($excludedGroups)) {
 				$excludedGroups = explode(',', $groupsList);
 				$newValue = json_encode($excludedGroups);
-				\OC::$server->getAppConfig()->setValue('core', 'shareapi_exclude_groups_list', $newValue);
+				$config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
 			}
-			$usersGroups = \OC_Group::getUserGroups($user);
+			$usersGroups = $groupManager->getUserGroupIds($user);
 			if (!empty($usersGroups)) {
 				$remainingGroups = array_diff($usersGroups, $excludedGroups);
 				// if the user is only in groups which are disabled for sharing then
@@ -267,11 +286,7 @@ class OC_Util {
 	 * @return int Quota bytes
 	 */
 	public static function getUserQuota($user) {
-		$config = \OC::$server->getConfig();
-		$userQuota = $config->getUserValue($user, 'files', 'quota', 'default');
-		if ($userQuota === 'default') {
-			$userQuota = $config->getAppValue('files', 'default_quota', 'none');
-		}
+		$userQuota = \OC::$server->getUserManager()->get($user)->getQuota();
 		if($userQuota === 'none') {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}else{
@@ -425,7 +440,7 @@ class OC_Util {
 	 * generates a path for JS/CSS files. If no application is provided it will create the path for core.
 	 *
 	 * @param string $application application to get the files from
-	 * @param string $directory directory withing this application (css, js, vendor, etc)
+	 * @param string $directory directory within this application (css, js, vendor, etc)
 	 * @param string $file the file inside of the above folder
 	 * @return string the path
 	 */
@@ -451,19 +466,12 @@ class OC_Util {
 	 */
 	public static function addScript($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'js', $file);
-		//TODO eliminate double code		
-		if (!in_array($path, self::$scripts)) {
-			// core js files need separate handling
-			if ($application !== 'core' && $file !== null) {
-				self::addTranslations($application);
-			}
-			if ($prepend===true) {
-				array_unshift(self::$scripts, $path);
-			}
-			else {
-				self::$scripts[] = $path;
-			}
+
+		// core js files need separate handling
+		if ($application !== 'core' && $file !== null) {
+			self::addTranslations ( $application );
 		}
+		self::addExternalResource($application, $prepend, $path, "script");
 	}
 
 	/**
@@ -476,14 +484,7 @@ class OC_Util {
 	 */
 	public static function addVendorScript($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'vendor', $file);
-		//TODO eliminate double code		
-		if (! in_array ( $path, self::$scripts )) {
-			if ($prepend === true) {
-				array_unshift ( self::$scripts, $path );
-			} else {
-				self::$scripts [] = $path;
-			}
-		}
+		self::addExternalResource($application, $prepend, $path, "script");
 	}
 
 	/**
@@ -502,14 +503,7 @@ class OC_Util {
 		} else {
 			$path = "l10n/$languageCode";
 		}
-		//TODO eliminate double code		
-		if (!in_array($path, self::$scripts)) {
-			if ($prepend === true) {
-				array_unshift ( self::$scripts, $path );
-			} else {
-				self::$scripts [] = $path;
-			}
-		}
+		self::addExternalResource($application, $prepend, $path, "script");
 	}
 
 	/**
@@ -522,14 +516,7 @@ class OC_Util {
 	 */
 	public static function addStyle($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'css', $file);
-		//TODO eliminate double code		
-		if (!in_array($path, self::$styles)) {
-			if ($prepend === true) {
-				array_unshift ( self::$styles, $path );
-			} else {
-				self::$styles[] = $path;
-			}	
-		}
+		self::addExternalResource($application, $prepend, $path, "style");
 	}
 
 	/**
@@ -542,13 +529,36 @@ class OC_Util {
 	 */
 	public static function addVendorStyle($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'vendor', $file);
-		//TODO eliminate double code
-		if (!in_array($path, self::$styles)) {
-			if ($prepend === true) {
-				array_unshift ( self::$styles, $path );
-			} else {
-				self::$styles[] = $path;
-			}	
+		self::addExternalResource($application, $prepend, $path, "style");
+	}
+
+	/**
+	 * add an external resource css/js file
+	 *
+	 * @param string $application application id
+	 * @param bool $prepend prepend the file to the beginning of the list
+	 * @param string $path 
+	 * @param string $type (script or style)
+	 * @return void
+	 */
+	private static function addExternalResource($application, $prepend, $path, $type = "script") {
+
+		if ($type === "style") {
+			if (!in_array($path, self::$styles)) {
+				if ($prepend === true) {
+					array_unshift ( self::$styles, $path );
+				} else {
+					self::$styles[] = $path;
+				}
+			}
+		} elseif ($type === "script") {
+			if (!in_array($path, self::$scripts)) {
+				if ($prepend === true) {
+					array_unshift ( self::$scripts, $path );
+				} else {
+					self::$scripts [] = $path;
+				}
+			}
 		}
 	}
 
@@ -615,6 +625,9 @@ class OC_Util {
 		$webServerRestart = false;
 		$setup = new \OC\Setup($config, \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'),
 			new \OC_Defaults(), \OC::$server->getLogger(), \OC::$server->getSecureRandom());
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+
 		$availableDatabases = $setup->getSupportedDatabases();
 		if (empty($availableDatabases)) {
 			$errors[] = array(
@@ -638,13 +651,15 @@ class OC_Util {
 		}
 
 		// Check if config folder is writable.
-		if (!is_writable(OC::$configDir) or !is_readable(OC::$configDir)) {
-			$errors[] = array(
-				'error' => $l->t('Cannot write into "config" directory'),
-				'hint' => $l->t('This can usually be fixed by '
-					. '%sgiving the webserver write access to the config directory%s.',
-					array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
-			);
+		if(!OC_Helper::isReadOnlyConfigEnabled()) {
+			if (!is_writable(OC::$configDir) or !is_readable(OC::$configDir)) {
+				$errors[] = array(
+					'error' => $l->t('Cannot write into "config" directory'),
+					'hint' => $l->t('This can usually be fixed by '
+						. '%sgiving the webserver write access to the config directory%s.',
+						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'))
+				);
+			}
 		}
 
 		// Check if there is a writable install folder.
@@ -658,7 +673,7 @@ class OC_Util {
 					'hint' => $l->t('This can usually be fixed by '
 						. '%sgiving the webserver write access to the apps directory%s'
 						. ' or disabling the appstore in the config file.',
-						array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
+						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'))
 				);
 			}
 		}
@@ -672,15 +687,15 @@ class OC_Util {
 					$errors[] = array(
 						'error' => $l->t('Cannot create "data" directory (%s)', array($CONFIG_DATADIRECTORY)),
 						'hint' => $l->t('This can usually be fixed by '
-							. '<a href="%s" target="_blank">giving the webserver write access to the root directory</a>.',
-							array(OC_Helper::linkToDocs('admin-dir_permissions')))
+							. '<a href="%s" target="_blank" rel="noreferrer">giving the webserver write access to the root directory</a>.',
+							array($urlGenerator->linkToDocs('admin-dir_permissions')))
 					);
 				}
 			} else if (!is_writable($CONFIG_DATADIRECTORY) or !is_readable($CONFIG_DATADIRECTORY)) {
 				//common hint for all file permissions error messages
 				$permissionsHint = $l->t('Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
-					array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
+					array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'));
 				$errors[] = array(
 					'error' => 'Data directory (' . $CONFIG_DATADIRECTORY . ') not writable by ownCloud',
 					'hint' => $permissionsHint
@@ -711,7 +726,8 @@ class OC_Util {
 			'classes' => array(
 				'ZipArchive' => 'zip',
 				'DOMDocument' => 'dom',
-				'XMLWriter' => 'XMLWriter'
+				'XMLWriter' => 'XMLWriter',
+				'XMLReader' => 'XMLReader',
 			),
 			'functions' => [
 				'xml_parser_create' => 'libxml',
@@ -812,6 +828,14 @@ class OC_Util {
 			);
 		}
 
+		if(function_exists('xml_parser_create') &&
+			version_compare('2.7.0', LIBXML_DOTTED_VERSION) === 1) {
+			$errors[] = array(
+				'error' => $l->t('libxml2 2.7.0 is at least required. Currently %s is installed.', [LIBXML_DOTTED_VERSION]),
+				'hint' => $l->t('To fix this issue update your libxml2 version and restart your web server.')
+			);
+		}
+
 		if (!self::isAnnotationsWorking()) {
 			$errors[] = array(
 				'error' => $l->t('PHP is apparently set up to strip inline doc blocks. This will make several core apps inaccessible.'),
@@ -842,7 +866,7 @@ class OC_Util {
 	public static function checkDatabaseVersion() {
 		$l = \OC::$server->getL10N('lib');
 		$errors = array();
-		$dbType = \OC_Config::getValue('dbtype', 'sqlite');
+		$dbType = \OC::$server->getSystemConfig()->getValue('dbtype', 'sqlite');
 		if ($dbType === 'pgsql') {
 			// check PostgreSQL version
 			try {
@@ -858,12 +882,9 @@ class OC_Util {
 					}
 				}
 			} catch (\Doctrine\DBAL\DBALException $e) {
-				\OCP\Util::logException('core', $e);
-				$errors[] = array(
-					'error' => $l->t('Error occurred while checking PostgreSQL version'),
-					'hint' => $l->t('Please make sure you have PostgreSQL >= 9 or'
-						. ' check the logs for more information about the error')
-				);
+				$logger = \OC::$server->getLogger();
+				$logger->warning('Error occurred while checking PostgreSQL version, assuming >= 9');
+				$logger->logException($e);
 			}
 		}
 		return $errors;
@@ -926,46 +947,6 @@ class OC_Util {
 	}
 
 	/**
-	 * @param array $errors
-	 * @param string[] $messages
-	 */
-	public static function displayLoginPage($errors = array(), $messages = []) {
-		$parameters = array();
-		foreach ($errors as $value) {
-			$parameters[$value] = true;
-		}
-		$parameters['messages'] = $messages;
-		if (!empty($_REQUEST['user'])) {
-			$parameters["username"] = $_REQUEST['user'];
-			$parameters['user_autofocus'] = false;
-		} else {
-			$parameters["username"] = '';
-			$parameters['user_autofocus'] = true;
-		}
-		if (isset($_REQUEST['redirect_url'])) {
-			$parameters['redirect_url'] = $_REQUEST['redirect_url'];
-		}
-
-		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
-		$parameters['rememberLoginAllowed'] = self::rememberLoginAllowed();
-		OC_Template::printGuestPage("", "login", $parameters);
-	}
-
-
-	/**
-	 * Check if the app is enabled, redirects to home if not
-	 *
-	 * @param string $app
-	 * @return void
-	 */
-	public static function checkAppEnabled($app) {
-		if (!OC_App::isEnabled($app)) {
-			header('Location: ' . OC_Helper::linkToAbsolute('', 'index.php'));
-			exit();
-		}
-	}
-
-	/**
 	 * Check if the user is logged in, redirects to home if not. With
 	 * redirect URL parameter to the request URI.
 	 *
@@ -974,7 +955,8 @@ class OC_Util {
 	public static function checkLoggedIn() {
 		// Check if we are a user
 		if (!OC_User::isLoggedIn()) {
-			header('Location: ' . OC_Helper::linkToAbsolute('', 'index.php',
+			header('Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
+					'core.login.showLoginForm',
 					[
 						'redirect_url' => \OC::$server->getRequest()->getRequestUri()
 					]
@@ -992,7 +974,7 @@ class OC_Util {
 	public static function checkAdminUser() {
 		OC_Util::checkLoggedIn();
 		if (!OC_User::isAdminUser(OC_User::getUser())) {
-			header('Location: ' . OC_Helper::linkToAbsolute('', 'index.php'));
+			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}
 	}
@@ -1032,7 +1014,7 @@ class OC_Util {
 		}
 
 		if (!$isSubAdmin) {
-			header('Location: ' . OC_Helper::linkToAbsolute('', 'index.php'));
+			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}
 		return true;
@@ -1066,7 +1048,12 @@ class OC_Util {
 						break;
 					}
 				}
-				$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+
+				if(getenv('front_controller_active') === 'true') {
+					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
+				} else {
+					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+				}
 			}
 		}
 		return $location;
@@ -1089,71 +1076,13 @@ class OC_Util {
 	 * @return string
 	 */
 	public static function getInstanceId() {
-		$id = OC_Config::getValue('instanceid', null);
+		$id = \OC::$server->getSystemConfig()->getValue('instanceid', null);
 		if (is_null($id)) {
 			// We need to guarantee at least one letter in instanceid so it can be used as the session_name
-			$id = 'oc' . \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(10, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
-			OC_Config::$object->setValue('instanceid', $id);
+			$id = 'oc' . \OC::$server->getSecureRandom()->generate(10, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
+			\OC::$server->getSystemConfig()->setValue('instanceid', $id);
 		}
 		return $id;
-	}
-
-	protected static $obfuscatedToken;
-	/**
-	 * Register an get/post call. Important to prevent CSRF attacks.
-	 *
-	 * @return string The encrypted CSRF token, the shared secret is appended after the `:`.
-	 *
-	 * @description
-	 * Creates a 'request token' (random) and stores it inside the session.
-	 * Ever subsequent (ajax) request must use such a valid token to succeed,
-	 * otherwise the request will be denied as a protection against CSRF.
-	 * @see OC_Util::isCallRegistered()
-	 */
-	public static function callRegister() {
-		// Use existing token if function has already been called
-		if(isset(self::$obfuscatedToken)) {
-			return self::$obfuscatedToken;
-		}
-
-		$tokenLength = 30;
-
-		// Check if a token exists
-		if (!\OC::$server->getSession()->exists('requesttoken')) {
-			// No valid token found, generate a new one.
-			$requestToken = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($tokenLength);
-			\OC::$server->getSession()->set('requesttoken', $requestToken);
-		} else {
-			// Valid token already exists, send it
-			$requestToken = \OC::$server->getSession()->get('requesttoken');
-		}
-
-		// XOR the token to mitigate breach-like attacks
-		$sharedSecret = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($tokenLength);
-		self::$obfuscatedToken =  base64_encode($requestToken ^ $sharedSecret) .':'.$sharedSecret;
-
-		return self::$obfuscatedToken;
-	}
-
-	/**
-	 * Check an ajax get/post call if the request token is valid.
-	 *
-	 * @return boolean False if request token is not set or is invalid.
-	 * @see OC_Util::callRegister()
-	 */
-	public static function isCallRegistered() {
-		return \OC::$server->getRequest()->passesCSRFCheck();
-	}
-
-	/**
-	 * Check an ajax get/post call if the request token is valid. Exit if not.
-	 *
-	 * @return void
-	 */
-	public static function callCheck() {
-		if (!OC_Util::isCallRegistered()) {
-			exit();
-		}
 	}
 
 	/**
@@ -1162,14 +1091,16 @@ class OC_Util {
 	 * This function is used to sanitize HTML and should be applied on any
 	 * string or array of strings before displaying it on a web page.
 	 *
-	 * @param string|array &$value
+	 * @param string|array $value
 	 * @return string|array an array of sanitized strings or a single sanitized string, depends on the input parameter.
 	 */
-	public static function sanitizeHTML(&$value) {
+	public static function sanitizeHTML($value) {
 		if (is_array($value)) {
-			array_walk_recursive($value, 'OC_Util::sanitizeHTML');
+			$value = array_map(function($value) {
+				return self::sanitizeHTML($value);
+			}, $value);
 		} else {
-			//Specify encoding for PHP<5.4
+			// Specify encoding for PHP<5.4
 			$value = htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 		}
 		return $value;
@@ -1229,8 +1160,12 @@ class OC_Util {
 		fclose($fp);
 
 		// accessing the file via http
-		$url = OC_Helper::makeURLAbsolute(OC::$WEBROOT . '/data' . $fileName);
-		$content = self::getUrlContent($url);
+		$url = \OC::$server->getURLGenerator()->getAbsoluteURL(OC::$WEBROOT . '/data' . $fileName);
+		try {
+			$content = \OC::$server->getHTTPClientService()->newClient()->get($url)->getBody();
+		} catch (\Exception $e) {
+			$content = false;
+		}
 
 		// cleanup
 		@unlink($testFile);
@@ -1293,35 +1228,6 @@ class OC_Util {
 		}
 	}
 
-
-	/**
-	 * Generates a cryptographic secure pseudo-random string
-	 *
-	 * @param int $length of the random string
-	 * @return string
-	 * @deprecated Use \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length); instead
-	 */
-	public static function generateRandomBytes($length = 30) {
-		return \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
-	}
-
-	/**
-	 * Get URL content
-	 * @param string $url Url to get content
-	 * @throws Exception If the URL does not start with http:// or https://
-	 * @return string of the response or false on error
-	 * This function get the content of a page via curl, if curl is enabled.
-	 * If not, file_get_contents is used.
-	 * @deprecated Use \OC::$server->getHTTPClientService()->newClient()->get($url);
-	 */
-	public static function getUrlContent($url) {
-		try {
-			return \OC::$server->getHTTPHelper()->getUrlContent($url);
-		} catch (\Exception $e) {
-			throw $e;
-		}
-	}
-
 	/**
 	 * Checks whether the server is running on Windows
 	 *
@@ -1356,7 +1262,7 @@ class OC_Util {
 	 * @return string the theme
 	 */
 	public static function getTheme() {
-		$theme = OC_Config::getValue("theme", '');
+		$theme = \OC::$server->getSystemConfig()->getValue("theme", '');
 
 		if ($theme === '') {
 			if (is_dir(OC::$SERVERROOT . '/themes/default')) {
@@ -1411,7 +1317,7 @@ class OC_Util {
 		}
 		// XCache
 		if (function_exists('xcache_clear_cache')) {
-			if (ini_get('xcache.admin.enable_auth')) {
+			if (\OC::$server->getIniWrapper()->getBool('xcache.admin.enable_auth')) {
 				\OCP\Util::writeLog('core', 'XCache opcode cache will not be cleared because "xcache.admin.enable_auth" is enabled.', \OCP\Util::WARN);
 			} else {
 				@xcache_clear_cache(XC_TYPE_PHP, 0);
@@ -1497,14 +1403,28 @@ class OC_Util {
 	 *
 	 * @param \OCP\IConfig $config
 	 * @return bool whether the core or any app needs an upgrade
+	 * @throws \OC\HintException When the upgrade from the given version is not allowed
 	 */
 	public static function needUpgrade(\OCP\IConfig $config) {
 		if ($config->getSystemValue('installed', false)) {
 			$installedVersion = $config->getSystemValue('version', '0.0.0');
-			$currentVersion = implode('.', OC_Util::getVersion());
+			$currentVersion = implode('.', \OCP\Util::getVersion());
 			$versionDiff = version_compare($currentVersion, $installedVersion);
 			if ($versionDiff > 0) {
 				return true;
+			} else if ($config->getSystemValue('debug', false) && $versionDiff < 0) {
+				// downgrade with debug
+				$installedMajor = explode('.', $installedVersion);
+				$installedMajor = $installedMajor[0] . '.' . $installedMajor[1];
+				$currentMajor = explode('.', $currentVersion);
+				$currentMajor = $currentMajor[0] . '.' . $currentMajor[1];
+				if ($installedMajor === $currentMajor) {
+					// Same major, allow downgrade for developers
+					return true;
+				} else {
+					// downgrade attempt, throw exception
+					throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');
+				}
 			} else if ($versionDiff < 0) {
 				// downgrade attempt, throw exception
 				throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');

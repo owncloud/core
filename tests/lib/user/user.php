@@ -11,6 +11,13 @@ namespace Test\User;
 
 use OC\Hooks\PublicEmitter;
 
+/**
+ * Class User
+ *
+ * @group DB
+ *
+ * @package Test\User
+ */
 class User extends \Test\TestCase {
 	public function testDisplayName() {
 		/**
@@ -335,7 +342,8 @@ class User extends \Test\TestCase {
 
 		$backend->expects($this->once())
 			->method('setDisplayName')
-			->with('foo','Foo');
+			->with('foo','Foo')
+			->willReturn(true);
 
 		$user = new \OC\User\User('foo', $backend);
 		$this->assertTrue($user->setDisplayName('Foo'));
@@ -453,5 +461,22 @@ class User extends \Test\TestCase {
 		$user = new \OC\User\User('foo', $backend, $emitter);
 		$this->assertTrue($user->delete());
 		$this->assertEquals(2, $hooksCalled);
+	}
+
+	public function testGetCloudId() {
+		/**
+		 * @var \OC_User_Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 */
+		$backend = $this->getMock('\Test\Util\User\Dummy');
+		$urlGenerator = $this->getMockBuilder('\OC\URLGenerator')
+				->setMethods(['getAbsoluteURL'])
+				->disableOriginalConstructor()->getMock();
+		$urlGenerator
+				->expects($this->any())
+				->method('getAbsoluteURL')
+				->withAnyParameters()
+				->willReturn('http://localhost:8888/owncloud');
+		$user = new \OC\User\User('foo', $backend, null, null, $urlGenerator);
+		$this->assertEquals("foo@localhost:8888/owncloud", $user->getCloudId());
 	}
 }

@@ -39,8 +39,8 @@ PHPUNIT_VERSION=$("$PHPUNIT" --version | cut -d" " -f2)
 PHPUNIT_MAJOR_VERSION=$(echo $PHPUNIT_VERSION | cut -d"." -f1)
 PHPUNIT_MINOR_VERSION=$(echo $PHPUNIT_VERSION | cut -d"." -f2)
 
-if ! [ $PHPUNIT_MAJOR_VERSION -gt 3 -o \( $PHPUNIT_MAJOR_VERSION -eq 3 -a $PHPUNIT_MINOR_VERSION -ge 7 \) ]; then
-	echo "phpunit version >= 3.7 required. Version found: $PHPUNIT_VERSION" >&2
+if ! [ $PHPUNIT_MAJOR_VERSION -gt 4 -o \( $PHPUNIT_MAJOR_VERSION -eq 4 -a $PHPUNIT_MINOR_VERSION -ge 4 \) ]; then
+	echo "phpunit version >= 4.4 required. Version found: $PHPUNIT_VERSION" >&2
 	exit 4
 fi
 
@@ -148,7 +148,7 @@ EOF
 
 	# trigger installation
 	echo "Installing ...."
-	./occ maintenance:install --database=$1 --database-name=$DATABASENAME --database-host=localhost --database-user=$DATABASEUSER --database-pass=owncloud --database-table-prefix=oc_ --admin-user=$ADMINLOGIN --admin-pass=admin --data-dir=$DATADIR
+	./occ maintenance:install -vvv --database=$1 --database-name=$DATABASENAME --database-host=localhost --database-user=$DATABASEUSER --database-pass=owncloud --database-table-prefix=oc_ --admin-user=$ADMINLOGIN --admin-pass=admin --data-dir=$DATADIR
 
 	#test execution
 	echo "Testing with $1 ..."
@@ -161,7 +161,7 @@ EOF
 	rm -rf "coverage-external-html-$1"
 	mkdir "coverage-external-html-$1"
 	# just enable files_external
-	php ../occ app:enable files_external
+	php ../occ app:enable -vvv files_external
 	if [[ "$_XDEBUG_CONFIG" ]]; then
 		export XDEBUG_CONFIG=$_XDEBUG_CONFIG
 	fi
@@ -175,57 +175,64 @@ EOF
 	fi
 
 	if [ -n "$2" -a "$2" == "common-tests" ]; then
-	    return;
+		return;
 	fi
 
-    FILES_EXTERNAL_BACKEND_PATH=../apps/files_external/tests/backends
-    FILES_EXTERNAL_BACKEND_ENV_PATH=../apps/files_external/tests/env
+	FILES_EXTERNAL_BACKEND_PATH=../apps/files_external/tests/storage
+	FILES_EXTERNAL_BACKEND_ENV_PATH=../apps/files_external/tests/env
 
 	for startFile in `ls -1 $FILES_EXTERNAL_BACKEND_ENV_PATH | grep start`; do
-	    name=`echo $startFile | sed 's/start-//' | sed 's/\.sh//'`
+		name=`echo $startFile | sed 's/start-//' | sed 's/\.sh//'`
 
-	    if [ -n "$2" -a "$2" != "$name" ]; then
-	        echo "skip: $startFile"
-	        continue;
-	    fi
+		if [ -n "$2" -a "$2" != "$name" ]; then
+			echo "skip: $startFile"
+			continue;
+		fi
 
-	    echo "start: $startFile"
-	    echo "name: $name"
+		echo "start: $startFile"
+		echo "name: $name"
 
-	    # execute start file
-	    ./$FILES_EXTERNAL_BACKEND_ENV_PATH/$startFile
+		# execute start file
+		./$FILES_EXTERNAL_BACKEND_ENV_PATH/$startFile
+		if [ $? -eq 0 ]; then
+			# getting backend to test from filename
+			# it's the part between the dots startSomething.TestToRun.sh
+			testToRun=`echo $startFile | cut -d '-' -f 2`
+			testToRun="${testToRun}test.php"
 
-	    # getting backend to test from filename
-	    # it's the part between the dots startSomething.TestToRun.sh
-	    testToRun=`echo $startFile | cut -d '-' -f 2`
+			# run the specific test
+			if [ -z "$NOCOVERAGE" ]; then
+				rm -rf "coverage-external-html-$1-$name"
+				mkdir "coverage-external-html-$1-$name"
+				"$PHPUNIT" --configuration phpunit-autotest-external.xml --log-junit "autotest-external-results-$1-$name.xml" --coverage-clover "autotest-external-clover-$1-$name.xml" --coverage-html "coverage-external-html-$1-$name" "$FILES_EXTERNAL_BACKEND_PATH/$testToRun"
+				RESULT=$?
+			else
+				echo "No coverage"
+				"$PHPUNIT" --configuration phpunit-autotest-external.xml --log-junit "autotest-external-results-$1-$name.xml" "$FILES_EXTERNAL_BACKEND_PATH/$testToRun"
+				RESULT=$?
+			fi
+		else
+		    DOEXIT=1
+		fi
 
-        # run the specific test
-        if [ -z "$NOCOVERAGE" ]; then
-            rm -rf "coverage-external-html-$1-$name"
-            mkdir "coverage-external-html-$1-$name"
-            "$PHPUNIT" --configuration phpunit-autotest-external.xml --log-junit "autotest-external-results-$1-$name.xml" --coverage-clover "autotest-external-clover-$1-$name.xml" --coverage-html "coverage-external-html-$1-$name" "$FILES_EXTERNAL_BACKEND_PATH/$testToRun.php"
-            RESULT=$?
-        else
-            echo "No coverage"
-            "$PHPUNIT" --configuration phpunit-autotest-external.xml --log-junit "autotest-external-results-$1-$name.xml" "$FILES_EXTERNAL_BACKEND_PATH/$testToRun.php"
-            RESULT=$?
-        fi
-
-	    # calculate stop file
-	    stopFile=`echo "$startFile" | sed 's/start/stop/'`
-	    echo "stop: $stopFile"
-	    if [ -f $FILES_EXTERNAL_BACKEND_ENV_PATH/$stopFile ]; then
-	        # execute stop file if existant
-	        ./$FILES_EXTERNAL_BACKEND_ENV_PATH/$stopFile
-	    fi
+		# calculate stop file
+		stopFile=`echo "$startFile" | sed 's/start/stop/'`
+		echo "stop: $stopFile"
+		if [ -f $FILES_EXTERNAL_BACKEND_ENV_PATH/$stopFile ]; then
+			# execute stop file if existent
+			./$FILES_EXTERNAL_BACKEND_ENV_PATH/$stopFile
+		fi
+		if [ "$DOEXIT" ]; then
+		    echo "Error during start file execution ... terminating"
+		    exit $DOEXIT
+		fi
 	done;
 }
 
 #
 # start test execution
 #
-if [ -z "$1" ]
-  then
+if [ -z "$1" ]; then
 	# run all known database configs
 	for DBCONFIG in $DBCONFIGS; do
 		execute_tests $DBCONFIG "$2"
