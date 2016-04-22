@@ -946,7 +946,10 @@ class View {
 
 			// Create the directories if any
 			if (!$this->file_exists($filePath)) {
-				$this->mkdir($filePath);
+				$result = $this->createParentDirectories($filePath);
+				if($result === false) {
+					return false;
+				}
 			}
 
 			$source = fopen($tmpFile, 'r');
@@ -2054,5 +2057,23 @@ class View {
 			}
 		}
 		return [$uid, $filename];
+	}
+	
+	/**
+	 * Creates parent non-existing folders
+	 * 
+	 * @param string $filePath
+	 * @return bool
+	 */
+	private function createParentDirectories($filePath) {
+		$parentDirectory = dirname($filePath);
+		while(!$this->file_exists($parentDirectory)) {
+			$result = $this->createParentDirectories($parentDirectory);
+			if($result === false) {
+				return false;
+			}
+		}
+		$this->mkdir($filePath);
+		return true;
 	}
 }
