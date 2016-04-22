@@ -80,12 +80,11 @@ class LDAPProvider implements ILDAPProvider {
 	 * the DN and the user name, a new one will be created.
 	 * @param string $connUid ownCloud user id for the LDAP connection
 	 * @param string $dn LDAP DN
-	 * @param string $ldapName optional, the display name of the user
 	 * @return string with the ownCloud user name
 	 * @throws \Exception if translation was unsuccessful
 	 */
-	public function getUserName($connUid, $dn, $ldapName = null) {
-		$result = $this->backend->getLDAPAccess($connUid)->dn2username($dn, $ldapName);
+	public function getUserName($connUid, $dn) {
+		$result = $this->backend->getLDAPAccess($connUid)->dn2username($dn);
 		if(!$result){
 			throw new \Exception('Translation to ownCloud user name unsuccessful');
 		}
