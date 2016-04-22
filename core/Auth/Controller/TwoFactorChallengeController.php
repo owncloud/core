@@ -1,15 +1,29 @@
 <?php
+
 /**
- * Created by IntelliJ IDEA.
- * User: lukasreschke
- * Date: 10/13/15
- * Time: 8:00 PM
+ * @author Christoph Wurst <christoph@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OC\Core\Auth\Controller;
 
-
-use GuzzleHttp\Subscriber\Redirect;
+use Exception;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDownloadResponse;
@@ -22,7 +36,6 @@ use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\IUserSession;
-use OCP\Template;
 
 class TwoFactorChallengeController extends Controller {
 	/**
@@ -55,7 +68,7 @@ class TwoFactorChallengeController extends Controller {
 	 */
 	public function selectChallenge() {
 		return new TemplateResponse(
-			'core/auth',
+			'core/Auth',
 			'two-factor-login',
 			[
 				'provider' => $this->challengeFactory->getProvider(),
@@ -78,7 +91,7 @@ class TwoFactorChallengeController extends Controller {
 			$selectedProvider = $provider[$challengeProviderId];
 
 			return new TemplateResponse(
-				'core/auth',
+				'core/Auth',
 				'two-factor-challenge',
 				[
 					'provider' => $selectedProvider,
@@ -117,7 +130,7 @@ class TwoFactorChallengeController extends Controller {
 	 * @param string $challengeProviderId
 	 * @param string $response
 	 * @return RedirectResponse
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function solveChallenge($challengeProviderId,
 								   $response) {
@@ -127,7 +140,7 @@ class TwoFactorChallengeController extends Controller {
 		// the code path with an empty UID is reached this indicates a serious
 		// problem. To prevent potential security bugs throw a fatal exception.
 		if($supposedUid === null) {
-			throw new \Exception('Session did not contain "two_factor_auth_uid" entry.');
+			throw new Exception('Session did not contain "two_factor_auth_uid" entry.');
 		}
 
 		$user = $this->userManager->get($supposedUid);

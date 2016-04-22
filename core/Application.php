@@ -120,7 +120,6 @@ class Application extends App {
 		/**
 		 * Middleware
 		 */
-		error_log('reg');
 		$container->registerService('TwoFactorMiddleware', function(SimpleContainer $c){
 			return new TwoFactorMiddleware(
 				$c->query('Session'),
