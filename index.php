@@ -54,6 +54,7 @@ try {
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	OC_Template::printExceptionErrorPage($ex);
 } catch (Error $ex) {
+	error_log($ex);
 	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	OC_Template::printExceptionErrorPage($ex);

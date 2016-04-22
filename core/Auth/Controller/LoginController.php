@@ -123,6 +123,6 @@ class LoginController extends Controller {
 	public function logout() {
 		// TODO: Verify if cookie is reset
 		$this->userSession->logout();
-		return new RedirectResponse($this->urlGenerator->linkToRouteAbsolute('core.login.showLoginPage'));
+		return new RedirectResponse($this->urlGenerator->linkToRouteAbsolute('core.login.showLoginForm'));
 	}
 }

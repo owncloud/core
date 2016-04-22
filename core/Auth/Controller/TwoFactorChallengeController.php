@@ -140,7 +140,7 @@ class TwoFactorChallengeController extends Controller {
 				$this->session->remove('two_factor_auth_uid');
 
 				// FIXME: Use proper route
-				$redirectResponse = new RedirectResponse($this->urlGenerator->linkToRouteAbsolute('core.login.showLoginPage'));
+				$redirectResponse = new RedirectResponse($this->urlGenerator->linkToRouteAbsolute('core.login.showLoginForm'));
 				$redirectResponse->setStatus(Http::STATUS_FOUND);
 				return $redirectResponse;
 			}

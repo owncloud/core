@@ -895,7 +895,7 @@ class OC {
 			OC_Util::redirectToDefaultPage();
 		} else {
 			// Not handled and not logged in
-			header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginPage'));
+			header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
 		}
 	}
 
@@ -919,21 +919,6 @@ class OC {
 			}
 		}
 	}
-		if(!\OC::$server->getUserSession()->isLoggedIn()) {
-			$loginMessages = array(array_unique($error), $messages);
-			\OC::$server->getSession()->set('loginMessages', $loginMessages);
-			// Read current user and append if possible
-			$args = [];
-			if(isset($_POST['user'])) {
-				$args['user'] = $_POST['user'];
-			}
-
-			$redirectionTarget = \OC::$server->getURLGenerator()->linkToRoute('core.login.showLoginForm', $args);
-			header('Location: ' . $redirectionTarget);
-		}
-		if(!(\OC::$server->getRequest()->passesCSRFCheck())) {
-				$token = \OC::$server->getSecureRandom()->generate(32);
 }
-
 
 OC::init();
