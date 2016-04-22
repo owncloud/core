@@ -687,6 +687,9 @@ class Storage {
 
 			// get available disk space for user
 			$user = \OC::$server->getUserManager()->get($uid);
+			if ($user === null) {
+				return false;
+			}
 			$softQuota = true;
 			$quota = $user->getQuota();
 			if ( $quota === null || $quota === 'none' ) {
