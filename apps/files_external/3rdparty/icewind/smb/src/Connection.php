@@ -28,6 +28,7 @@ class Connection extends RawConnection {
 	/**
 	 * get all unprocessed output from smbclient until the next prompt
 	 *
+	 * @param callable $callback (optional) callback to call for every line read
 	 * @return string
 	 * @throws AuthenticationException
 	 * @throws ConnectException
@@ -35,7 +36,7 @@ class Connection extends RawConnection {
 	 * @throws InvalidHostException
 	 * @throws NoLoginServerException
 	 */
-	public function read() {
+	public function read(callable $callback = null) {
 		if (!$this->isValid()) {
 			throw new ConnectionException('Connection not valid');
 		}
@@ -57,8 +58,15 @@ class Connection extends RawConnection {
 			}
 		}
 		$length = mb_strlen(self::DELIMITER);
-		while (mb_substr($line, 0, $length) !== self::DELIMITER) { //next prompt functions as delimiter
-			$output[] .= $line;
+		while (mb_substr($line, 0, $length) !== self::DELIMITER && $line) { //next prompt functions as delimiter
+			if (is_callable($callback)) {
+				$result = $callback($line);
+				if ($result === false) { // allow the callback to close the connection for infinite running commands
+					$this->close(true);
+				}
+			} else {
+				$output[] .= $line;
+			}
 			$line = $this->readLine();
 		}
 		return $output;

@@ -301,6 +301,15 @@ class NativeShare extends AbstractShare {
 		return $this->setAttribute($path, 'system.dos_attr.mode', $mode);
 	}
 
+	/**
+	 * @param string $path
+	 * @param callable $callback callable which will be called for each received change
+	 * @return mixed
+	 */
+	public function notify($path, callable $callback) {
+		throw new \Exception('not implemented');
+	}
+
 	public function __destruct() {
 		unset($this->state);
 	}
