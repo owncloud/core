@@ -264,7 +264,9 @@ class Server extends ServerContainer implements IServerContainer {
 			return new \OC\SystemConfig($config);
 		});
 		$this->registerService('AppConfig', function (Server $c) {
-			return new \OC\AppConfig($c->getDatabaseConnection());
+			$cacheFactory = $c->getMemCacheFactory();
+			$cache = $cacheFactory->create('appconfig');
+			return new \OC\AppConfig($c->getDatabaseConnection(), $cache);
 		});
 		$this->registerService('L10NFactory', function (Server $c) {
 			return new \OC\L10N\Factory(
@@ -292,9 +294,7 @@ class Server extends ServerContainer implements IServerContainer {
 			$config = $c->getConfig();
 
 			if ($config->getSystemValue('installed', false) && !(defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
-				$v = \OC_App::getAppVersions();
-				$v['core'] = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
-				$version = implode(',', $v);
+				$version = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
 				$prefix = md5($instanceId . '-' . $version . '-' . $path);
