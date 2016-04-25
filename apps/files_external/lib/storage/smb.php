@@ -40,9 +40,21 @@ use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
+use OCP\Files\Storage\INotifyStorage;
 use OCP\Files\StorageNotAvailableException;
 
-class SMB extends \OC\Files\Storage\Common {
+class SMB extends \OC\Files\Storage\Common implements INotifyStorage {
+	// https://msdn.microsoft.com/en-us/library/dn392331.aspx
+	//const NOTIFY_ADDED = 1; // these are inherited
+	//const NOTIFY_REMOVED = 2;
+	//const NOTIFY_MODIFIED = 3;
+	const NOTIFY_RENAME_OLD = 4;
+	const NOTIFY_RENAME_NEW = 5;
+	const NOTIFY_ADDED_STREAM = 6;
+	const NOTIFY_REMOVED_STREAM = 7;
+	const NOTIFY_MODIFIED_STREAM = 8;
+	const NOTIFY_REMOVED_BY_DELETE = 9;
+
 	/**
 	 * @var \Icewind\SMB\Server
 	 */
@@ -392,5 +404,36 @@ class SMB extends \OC\Files\Storage\Common {
 		} catch (Exception $e) {
 			return false;
 		}
+	}
+
+	/**
+	 * @param string $path
+	 * @param callable $callback
+	 */
+	public function notify($path, callable $callback) {
+		// we need to create a new share since we will be blocking the process fully
+		if ($this->server instanceof NativeServer) { // notify is only supported by the smb client based backend at the moment
+			$server = new Server($this->server->getHost(), $this->server->getUser(), $this->server->getPassword());
+		} else {
+			$server = $this->server;
+		}
+		$share = $server->getShare($this->share->getName());
+
+		$renameOld = null;
+
+		$share->notify($path, function ($change, $path) use ($callback, &$renameOld) {
+			unset($this->statCache[$this->buildPath($path)]);
+			if ($change === self::NOTIFY_ADDED || $change === self::NOTIFY_REMOVED || $change === self::NOTIFY_MODIFIED) { // we can pass these directly
+				return $callback($change, $path);
+			} elseif ($change === self::NOTIFY_RENAME_OLD) {
+				$renameOld = $path;
+			} elseif ($change === self::NOTIFY_RENAME_NEW) {
+				if (!is_null($renameOld)) {
+					$oldPath = $renameOld;
+					$renameOld = null;
+					return $callback(self::NOTIFY_RENAME, $oldPath, $path);
+				}
+			}
+		});
 	}
 }
