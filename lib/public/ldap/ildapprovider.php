@@ -30,12 +30,21 @@ namespace OCP\LDAP;
 interface ILDAPProvider {
 	/**
 	 * Translate an ownCloud username to LDAP DN.
-	 * @param string $connUid ownCloud user id for the LDAP connection
 	 * @param string $uid ownCloud user id
 	 * @return string
 	 * @since 9.1.0
 	 */
-	public function getUserDN($connUid, $uid);
+	public function getUserDN($uid);
+	
+	/**
+	 * Translate a LDAP DN to an ownCloud user name.
+	 * @param string $connUid ownCloud user id for the LDAP connection
+	 * @param string $dn LDAP DN
+	 * @return string with the ownCloud user name
+	 * @throws \Exception if translation was unsuccessful
+	 * @since 9.1.0
+	 */
+	public function getUserName($connUid, $dn);
 	
 	/**
 	 * Convert a stored DN so it can be used as base parameter for LDAP queries.
