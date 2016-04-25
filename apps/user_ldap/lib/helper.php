@@ -207,7 +207,7 @@ class Helper {
 		if(is_array($dn)) {
 			$result = array();
 			foreach($dn as $singleDN) {
-				$result[] = self::sanitizeDN($singleDN);
+				$result[] = $this->sanitizeDN($singleDN);
 			}
 			return $result;
 		}
