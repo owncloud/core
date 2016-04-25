@@ -118,4 +118,46 @@ class LDAPProvider implements ILDAPProvider {
 		}
 		return $this->backend->getNewLDAPConnection($uid);
 	}
+	
+	/**
+	 * Get the LDAP base.
+	 * @param string $uid ownCloud user id
+	 * @return string the base
+	 * @throws \Exception if user id was not found in LDAP
+	 */
+	public function getLDAPBase($uid) {
+		if(!$this->backend->userExists($uid)){
+			throw new \Exception('User id not found in LDAP');
+		}
+		
+		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()->ldapBase;
+	}
+	
+	/**
+	 * Get the LDAP base for users.
+	 * @param string $uid ownCloud user id
+	 * @return string the base for users
+	 * @throws \Exception if user id was not found in LDAP
+	 */
+	public function getLDAPBaseUsers($uid) {
+		if(!$this->backend->userExists($uid)){
+			throw new \Exception('User id not found in LDAP');
+		}
+		
+		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()->ldapBaseUsers;
+	}
+	
+	/**
+	 * Get the LDAP base for groups.
+	 * @param string $uid ownCloud user id
+	 * @return string the base for groups
+	 * @throws \Exception if user id was not found in LDAP
+	 */
+	public function getLDAPBaseGroups($uid) {
+		if(!$this->backend->userExists($uid)){
+			throw new \Exception('User id not found in LDAP');
+		}
+		
+		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()->ldapBaseGroups;
+	}
 }
