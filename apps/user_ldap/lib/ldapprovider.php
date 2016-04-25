@@ -56,19 +56,15 @@ class LDAPProvider implements ILDAPProvider {
 	
 	/**
 	 * Translate an ownCloud user id to LDAP DN
-	 * @param string $connUid ownCloud user id for the LDAP connection
 	 * @param string $uid ownCloud user id
 	 * @return string with the LDAP DN
 	 * @throws \Exception if translation was unsuccessful
 	 */
-	public function getUserDN($connUid, $uid) {
-		if(!$this->backend->userExists($connUid)){
-			throw new \Exception('Connection user id not found in LDAP');
-		}
+	public function getUserDN($uid) {
 		if(!$this->backend->userExists($uid)){
 			throw new \Exception('User id not found in LDAP');
 		}
-		$result = $this->backend->getLDAPAccess($connUid)->username2dn($uid);
+		$result = $this->backend->getLDAPAccess($uid)->username2dn($uid);
 		if(!$result){
 			throw new \Exception('Translation to LDAP DN unsuccessful');
 		}
