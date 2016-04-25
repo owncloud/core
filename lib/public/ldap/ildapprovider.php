@@ -69,4 +69,31 @@ interface ILDAPProvider {
 	 * @since 9.1.0
 	 */
 	public function getLDAPConnection($uid);
+	
+	/**
+	 * Get the LDAP base.
+	 * @param string $uid ownCloud user id
+	 * @return string the base
+	 * @throws \Exception if user id was not found in LDAP
+	 * @since 9.1.0
+	 */
+	public function getLDAPBase($uid);
+	
+	/**
+	 * Get the LDAP base for users.
+	 * @param string $uid ownCloud user id
+	 * @return string the base for users
+	 * @throws \Exception if user id was not found in LDAP
+	 * @since 9.1.0
+	 */
+	public function getLDAPBaseUsers($uid);
+	
+	/**
+	 * Get the LDAP base for groups.
+	 * @param string $uid ownCloud user id
+	 * @return string the base for groups
+	 * @throws \Exception if user id was not found in LDAP
+	 * @since 9.1.0
+	 */
+	public function getLDAPBaseGroups($uid);
 }
