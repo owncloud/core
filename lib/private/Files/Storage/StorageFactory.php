@@ -50,12 +50,13 @@ class StorageFactory implements IStorageFactory {
 			return false;
 		}
 
+		$this->storageWrappers[$wrapperName] = ['wrapper' => $callback, 'priority' => $priority];
+
 		// apply to existing mounts before registering it to prevent applying it double in MountPoint::createStorage
 		foreach ($existingMounts as $mount) {
 			$mount->wrapStorage($callback);
 		}
 
-		$this->storageWrappers[$wrapperName] = ['wrapper' => $callback, 'priority' => $priority];
 		return true;
 	}
 
