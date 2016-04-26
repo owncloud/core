@@ -25,6 +25,7 @@ use OC\Core\Command\Base;
 use OCA\Files_external\NotFoundException;
 use OCA\Files_external\Service\GlobalStoragesService;
 use OCP\Files\Storage\INotifyStorage;
+use OCP\Files\Storage\IStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -68,9 +69,22 @@ class Watch extends Base {
 		$class = $mount->getBackend()->getStorageClass();
 		$storage = new $class($mount->getBackendOptions());
 
-		if ($storage instanceof INotifyStorage) {
-			$storage->notify('', function ($code, $path, $path2) {
-				var_dump($code, $path, $path2);
+		if ($storage instanceof INotifyStorage && $storage instanceof IStorage) {
+			$updater = $storage->getUpdater();
+			$storage->notify('', function ($code, $path, $path2) use ($updater, $storage) {
+				switch ($code) {
+					case INotifyStorage::NOTIFY_ADDED:
+					case INotifyStorage::NOTIFY_MODIFIED:
+						var_dump('update', $path);
+						$updater->update($path);
+						break;
+					case INotifyStorage::NOTIFY_REMOVED:
+						$updater->remove($path);
+						break;
+					case INotifyStorage::NOTIFY_RENAME:
+						$updater->renameFromStorage($storage, $path, $path2);
+						break;
+				}
 			});
 		} else {
 			$output->writeln('<error>storage backend does not support external change watching</error>');
