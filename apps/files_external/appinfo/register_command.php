@@ -30,6 +30,7 @@ use OCA\Files_External\Command\Delete;
 use OCA\Files_External\Command\Create;
 use OCA\Files_External\Command\Backends;
 use OCA\Files_External\Command\Verify;
+use OCA\Files_External\Command\Watch;
 
 $userManager = OC::$server->getUserManager();
 $userSession = OC::$server->getUserSession();
@@ -53,3 +54,4 @@ $application->add(new Delete($globalStorageService, $userStorageService, $userSe
 $application->add(new Create($globalStorageService, $userStorageService, $userManager, $userSession, $backendService));
 $application->add(new Backends($backendService));
 $application->add(new Verify($globalStorageService));
+$application->add(new Watch($globalStorageService));
