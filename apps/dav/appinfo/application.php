@@ -27,11 +27,9 @@ use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\CardDAV\ContactsManager;
 use OCA\DAV\CardDAV\SyncJob;
 use OCA\DAV\CardDAV\SyncService;
+use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCA\DAV\HookManager;
-use OCA\Dav\Migration\AddressBookAdapter;
-use OCA\Dav\Migration\CalendarAdapter;
-use OCA\Dav\Migration\MigrateAddressbooks;
-use OCA\Dav\Migration\MigrateCalendars;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
 use OCP\Contacts\IManager;
@@ -79,7 +77,7 @@ class Application extends App {
 			/** @var IAppContainer $c */
 			$db = $c->getServer()->getDatabaseConnection();
 			$dispatcher = $c->getServer()->getEventDispatcher();
-			$principal = new \OCA\DAV\Connector\Sabre\Principal(
+			$principal = new Principal(
 				$c->getServer()->getUserManager(),
 				$c->getServer()->getGroupManager()
 			);
@@ -89,44 +87,23 @@ class Application extends App {
 		$container->registerService('CalDavBackend', function($c) {
 			/** @var IAppContainer $c */
 			$db = $c->getServer()->getDatabaseConnection();
-			$principal = new \OCA\DAV\Connector\Sabre\Principal(
+			$principal = new Principal(
 				$c->getServer()->getUserManager(),
 				$c->getServer()->getGroupManager()
 			);
 			return new CalDavBackend($db, $principal);
 		});
 
-		$container->registerService('MigrateAddressbooks', function($c) {
-			/** @var IAppContainer $c */
-			$db = $c->getServer()->getDatabaseConnection();
-			$logger = $c->getServer()->getLogger();
-			return new MigrateAddressbooks(
-				new AddressBookAdapter($db),
-				$c->query('CardDavBackend'),
-				$logger,
-				null
-			);
-		});
-
-		$container->registerService('MigrateCalendars', function($c) {
-			/** @var IAppContainer $c */
-			$db = $c->getServer()->getDatabaseConnection();
-			$logger = $c->getServer()->getLogger();
-			return new MigrateCalendars(
-				new CalendarAdapter($db),
-				$c->query('CalDavBackend'),
-				$logger,
-				null
-			);
-		});
-
 		$container->registerService('BirthdayService', function($c) {
 			/** @var IAppContainer $c */
+			$g = new GroupPrincipalBackend(
+				$c->getServer()->getGroupManager()
+			);
 			return new BirthdayService(
 				$c->query('CalDavBackend'),
-				$c->query('CardDavBackend')
+				$c->query('CardDavBackend'),
+				$g
 			);
-
 		});
 	}
 
@@ -147,6 +124,7 @@ class Application extends App {
 
 		$listener = function($event) {
 			if ($event instanceof GenericEvent) {
+				/** @var BirthdayService $b */
 				$b = $this->getContainer()->query('BirthdayService');
 				$b->onCardChanged(
 					$event->getArgument('addressBookId'),
@@ -161,6 +139,7 @@ class Application extends App {
 		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::updateCard', $listener);
 		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::deleteCard', function($event) {
 			if ($event instanceof GenericEvent) {
+				/** @var BirthdayService $b */
 				$b = $this->getContainer()->query('BirthdayService');
 				$b->onCardDeleted(
 					$event->getArgument('addressBookId'),
@@ -179,32 +158,15 @@ class Application extends App {
 		$jl->add(new SyncJob());
 	}
 
-	public function migrateAddressbooks() {
+	public function generateBirthdays() {
 		try {
-			/** @var MigrateAddressbooks $migration */
-			$migration = $this->getContainer()->query('MigrateAddressbooks');
-			$migration->setup();
+			/** @var BirthdayService $migration */
+			$migration = $this->getContainer()->query('BirthdayService');
 			$userManager = $this->getContainer()->getServer()->getUserManager();
 
 			$userManager->callForAllUsers(function($user) use($migration) {
 				/** @var IUser $user */
-				$migration->migrateForUser($user->getUID());
-			});
-		} catch (\Exception $ex) {
-			$this->getContainer()->getServer()->getLogger()->logException($ex);
-		}
-	}
-
-	public function migrateCalendars() {
-		try {
-			/** @var MigrateCalendars $migration */
-			$migration = $this->getContainer()->query('MigrateCalendars');
-			$migration->setup();
-			$userManager = $this->getContainer()->getServer()->getUserManager();
-
-			$userManager->callForAllUsers(function($user) use($migration) {
-				/** @var IUser $user */
-				$migration->migrateForUser($user->getUID());
+				$migration->syncUser($user->getUID());
 			});
 		} catch (\Exception $ex) {
 			$this->getContainer()->getServer()->getLogger()->logException($ex);

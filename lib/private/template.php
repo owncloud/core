@@ -34,6 +34,8 @@
  *
  */
 
+use OC\TemplateLayout;
+
 require_once __DIR__.'/template/functions.php';
 
 /**
@@ -69,7 +71,7 @@ class OC_Template extends \OC\Template\Base {
 	public function __construct( $app, $name, $renderAs = "", $registerCall = true ) {
 		// Read the selected theme from the config file
 		self::initTemplateEngine($renderAs);
-		
+
 		$theme = OC_Util::getTheme();
 
 		$requestToken = (OC::$server->getSession() && $registerCall) ? \OCP\Util::callRegister() : '';
@@ -93,7 +95,7 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public static function initTemplateEngine($renderAs) {
 		if (self::$initTemplateEngineFirstRun){
-			
+
 			//apps that started before the template initialization can load their own scripts/styles
 			//so to make sure this scripts/styles here are loaded first we use OC_Util::addScript() with $prepend=true
 			//meaning the last script/style in this list will be loaded first
@@ -106,13 +108,13 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addStyle("tooltip",null,true);
 			OC_Util::addStyle('jquery-ui-fixes',null,true);
 			OC_Util::addVendorStyle('jquery-ui/themes/base/jquery-ui',null,true);
+			OC_Util::addStyle("mobile",null,true);
 			OC_Util::addStyle("multiselect",null,true);
 			OC_Util::addStyle("fixes",null,true);
 			OC_Util::addStyle("global",null,true);
 			OC_Util::addStyle("apps",null,true);
 			OC_Util::addStyle("fonts",null,true);
 			OC_Util::addStyle("icons",null,true);
-			OC_Util::addStyle("mobile",null,true);
 			OC_Util::addStyle("header",null,true);
 			OC_Util::addStyle("inputs",null,true);
 			OC_Util::addStyle("styles",null,true);
@@ -169,10 +171,10 @@ class OC_Template extends \OC\Template\Base {
 
 			self::$initTemplateEngineFirstRun = false;
 		}
-	
+
 	}
-	
-	
+
+
 	/**
 	 * find the template with the given name
 	 * @param string $name of the template file (without suffix)
@@ -218,11 +220,11 @@ class OC_Template extends \OC\Template\Base {
 	 * This function process the template. If $this->renderAs is set, it
 	 * will produce a full page.
 	 */
-	public function fetchPage() {
-		$data = parent::fetchPage();
+	public function fetchPage($additionalParams = null) {
+		$data = parent::fetchPage($additionalParams);
 
 		if( $this->renderAs ) {
-			$page = new \OC\TemplateLayout($this->renderAs, $this->app);
+			$page = new TemplateLayout($this->renderAs, $this->app);
 
 			// Add custom headers
 			$headers = '';
@@ -331,9 +333,9 @@ class OC_Template extends \OC\Template\Base {
 
 	/**
 	 * print error page using Exception details
-	 * @param Exception $exception
+	 * @param Exception | Throwable $exception
 	 */
-	public static function printExceptionErrorPage($exception) {
+	public static function printExceptionErrorPage($exception, $fetchPage = false) {
 		try {
 			$request = \OC::$server->getRequest();
 			$content = new \OC_Template('', 'exception', 'error', false);
@@ -346,6 +348,9 @@ class OC_Template extends \OC\Template\Base {
 			$content->assign('debugMode', \OC::$server->getSystemConfig()->getValue('debug', false));
 			$content->assign('remoteAddr', $request->getRemoteAddress());
 			$content->assign('requestID', $request->getId());
+			if ($fetchPage) {
+				return $content->fetchPage();
+			}
 			$content->printPage();
 		} catch (\Exception $e) {
 			$logger = \OC::$server->getLogger();

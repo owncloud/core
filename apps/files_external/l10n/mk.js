@@ -20,6 +20,7 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Share" : "Сподели",
     "Name" : "Име",
+    "Enable encryption" : "Овозможи енкрипција",
     "External Storage" : "Надворешно складиште",
     "Folder name" : "Име на папка",
     "Configuration" : "Конфигурација",

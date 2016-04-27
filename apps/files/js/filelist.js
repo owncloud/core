@@ -145,6 +145,11 @@
 		_filter: '',
 
 		/**
+		 * @type Backbone.Model
+		 */
+		_filesConfig: undefined,
+
+		/**
 		 * Sort attribute
 		 * @type String
 		 */
@@ -198,6 +203,18 @@
 				return;
 			}
 
+			if (options.config) {
+				this._filesConfig = options.config;
+			} else if (!_.isUndefined(OCA.Files) && !_.isUndefined(OCA.Files.App)) {
+				this._filesConfig = OCA.Files.App.getFilesConfig();
+			}
+
+			if (!_.isUndefined(this._filesConfig)) {
+				this._filesConfig.on('change:showhidden', function() {
+					self.setFiles(self.files);
+				});
+			}
+
 			if (options.dragOptions) {
 				this._dragOptions = options.dragOptions;
 			}
@@ -239,7 +256,11 @@
 
 			this.fileSummary = this._createSummary();
 
-			this.setSort('name', 'asc');
+			if (options.sorting) {
+				this.setSort(options.sorting.mode, options.sorting.direction, false, false);
+			} else {
+				this.setSort('name', 'asc', false, false);
+			}
 
 			var breadcrumbOptions = {
 				onClick: _.bind(this._onClickBreadCrumb, this),
@@ -271,7 +292,8 @@
 
 			this.updateSearch();
 
-			this.$fileList.on('click','td.filename>a.name', _.bind(this._onClickFile, this));
+			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
+
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
 			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
@@ -389,6 +411,11 @@
 					model.toJSON(),
 					{updateSummary: true, silent: false, animate: true}
 				);
+
+				// restore selection state
+				var selected = !!self._selectedFiles[$tr.data('id')];
+				self._selectFileEl($tr, selected);
+
 				$tr.toggleClass('highlighted', highlightState);
 			});
 			model.on('busy', function(model, state) {
@@ -689,14 +716,14 @@
 			sort = $target.attr('data-sort');
 			if (sort) {
 				if (this._sort === sort) {
-					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc', true);
+					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc', true, true);
 				}
 				else {
 					if ( sort === 'name' ) {	//default sorting of name is opposite to size and mtime
-						this.setSort(sort, 'asc', true);
+						this.setSort(sort, 'asc', true, true);
 					}
 					else {
-						this.setSort(sort, 'desc', true);
+						this.setSort(sort, 'desc', true, true);
 					}
 				}
 			}
@@ -837,6 +864,10 @@
 		 * @return array of DOM elements of the newly added files
 		 */
 		_nextPage: function(animate) {
+			// Save full files list while rendering
+			var allFiles = this.files;
+			this.files = this._filterHiddenFiles(this.files);
+
 			var index = this.$fileList.children().length,
 				count = this.pageSize(),
 				hidden,
@@ -883,6 +914,10 @@
 					}
 				}, 0);
 			}
+
+			// Restore full files list after rendering
+			this.files = allFiles;
+
 			return newTrs;
 		},
 
@@ -920,21 +955,43 @@
 			// clear "Select all" checkbox
 			this.$el.find('.select-all').prop('checked', false);
 
+			// Save full files list while rendering
+			var allFiles = this.files;
+			this.files = this._filterHiddenFiles(this.files);
+
 			this.isEmpty = this.files.length === 0;
 			this._nextPage();
 
 			this.updateEmptyContent();
 
-			this.fileSummary.calculate(filesArray);
+			this.fileSummary.calculate(this.files);
 
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
 			this.updateSelectionSummary();
 			$(window).scrollTop(0);
 
+			// Restore full files list after rendering
+			this.files = allFiles;
+
 			this.$fileList.trigger(jQuery.Event('updated'));
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
+			});
+		},
+
+		/**
+		 * Filter hidden files of the given filesArray (dot-files)
+		 *
+		 * @param filesArray files to be filtered
+		 * @returns {array}
+		 */
+		_filterHiddenFiles: function(files) {
+			if (_.isUndefined(this._filesConfig) || this._filesConfig.get('showhidden')) {
+				return files;
+			}
+			return _.filter(files, function(file) {
+				return file.name.indexOf('.') !== 0;
 			});
 		},
 
@@ -1364,8 +1421,9 @@
 		 * @param sort sort attribute name
 		 * @param direction sort direction, one of "asc" or "desc"
 		 * @param update true to update the list, false otherwise (default)
+		 * @param persist true to save changes in the database (default)
 		 */
-		setSort: function(sort, direction, update) {
+		setSort: function(sort, direction, update, persist) {
 			var comparator = FileList.Comparators[sort] || FileList.Comparators.name;
 			this._sort = sort;
 			this._sortDirection = (direction === 'desc')?'desc':'asc';
@@ -1395,6 +1453,13 @@
 				else {
 					this.reload();
 				}
+			}
+
+			if (persist) {
+				$.post(OC.generateUrl('/apps/files/api/v1/sorting'), {
+					mode: sort,
+					direction: direction
+				});
 			}
 		},
 
@@ -2279,12 +2344,14 @@
 				this.$el.find('#filestable thead th').addClass('hidden');
 				this.$el.find('#emptycontent').addClass('hidden');
 				$('#searchresults').addClass('filter-empty');
+				$('#searchresults .emptycontent').addClass('emptycontent-search');
 				if ( $('#searchresults').length === 0 || $('#searchresults').hasClass('hidden') ) {
 					this.$el.find('.nofilterresults').removeClass('hidden').
 						find('p').text(t('files', "No entries in this folder match '{filter}'", {filter:this._filter},  null, {'escape': false}));
 				}
 			} else {
 				$('#searchresults').removeClass('filter-empty');
+				$('#searchresults .emptycontent').removeClass('emptycontent-search');
 				this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
 				if (!this.$el.find('.mask').exists()) {
 					this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
@@ -2487,7 +2554,6 @@
 				}
 			});
 			fileUploadStart.on('fileuploadadd', function(e, data) {
-				console.log('XXXXXXX');
 				OC.Upload.log('filelist handle fileuploadadd', e, data);
 
 				//finish delete if we are uploading a deleted file
@@ -2530,7 +2596,7 @@
 					// fetch response from iframe
 					response = data.result[0].body.innerText;
 				}
-				var result=$.parseJSON(response);
+				var result = JSON.parse(response);
 
 				if (typeof result[0] !== 'undefined' && result[0].status === 'success') {
 					var file = result[0];
@@ -2843,7 +2909,7 @@ $(document).ready(function() {
 			OCA.Files.FileList.lastAction();
 		}
 	});
-	$(window).unload(function () {
+	$(window).on('unload', function () {
 		$(window).trigger('beforeunload');
 	});
 

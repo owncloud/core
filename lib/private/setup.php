@@ -400,43 +400,59 @@ class Setup {
 	 * Append the correct ErrorDocument path for Apache hosts
 	 */
 	public static function updateHtaccess() {
-		// From CLI we don't know the defined web root. Thus we can't write any
-		// directives into the .htaccess file.
+		$config = \OC::$server->getConfig();
+
+		// For CLI read the value from overwrite.cli.url
 		if(\OC::$CLI) {
-			return;
+			$webRoot = $config->getSystemValue('overwrite.cli.url', '');
+			if($webRoot === '') {
+				return;
+			}
+			$webRoot = parse_url($webRoot, PHP_URL_PATH);
+			$webRoot = rtrim($webRoot, '/');
+		} else {
+			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
-		$setupHelper = new \OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(),
+
+		$setupHelper = new \OC\Setup($config, \OC::$server->getIniWrapper(),
 			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 			\OC::$server->getSecureRandom());
 
 		$htaccessContent = file_get_contents($setupHelper->pathToHtaccess());
 		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
-		if (strpos($htaccessContent, 'ErrorDocument 403') === false) {
+		if(strpos($htaccessContent, $content) === false) {
 			//custom 403 error page
-			$content.= "\nErrorDocument 403 ".\OC::$WEBROOT."/core/templates/403.php";
-		}
-		if (strpos($htaccessContent, 'ErrorDocument 404') === false) {
+			$content.= "\nErrorDocument 403 ".$webRoot."/core/templates/403.php";
+
 			//custom 404 error page
-			$content.= "\nErrorDocument 404 ".\OC::$WEBROOT."/core/templates/404.php";
+			$content.= "\nErrorDocument 404 ".$webRoot."/core/templates/404.php";
+
+			// ownCloud may be configured to live at the root folder without a
+			// trailing slash being specified. In this case manually set the
+			// rewrite base to `/`
+			$rewriteBase = $webRoot;
+			if($webRoot === '') {
+				$rewriteBase = '/';
+			}
+
+			// Add rewrite base
+			$content .= "\n<IfModule mod_rewrite.c>";
+			$content .= "\n  RewriteRule . index.php [PT,E=PATH_INFO:$1]";
+			$content .= "\n  RewriteBase ".$rewriteBase;
+			$content .= "\n  <IfModule mod_env.c>";
+			$content .= "\n    SetEnv front_controller_active true";
+			$content .= "\n    <IfModule mod_dir.c>";
+			$content .= "\n      DirectorySlash off";
+			$content .= "\n    </IfModule>";
+			$content.="\n  </IfModule>";
+			$content.="\n</IfModule>";
+
+			if ($content !== '') {
+				//suppress errors in case we don't have permissions for it
+				@file_put_contents($setupHelper->pathToHtaccess(), $content . "\n", FILE_APPEND);
+			}
 		}
 
-		// Add rewrite base
-		$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
-		$content .= "\n<IfModule mod_rewrite.c>";
-		$content .= "\n  RewriteRule . index.php [PT,E=PATH_INFO:$1]";
-		$content .= "\n  RewriteBase ".$webRoot;
-		$content .= "\n  <IfModule mod_env.c>";
-		$content .= "\n    SetEnv front_controller_active true";
-		$content .= "\n    <IfModule mod_dir.c>";
-		$content .= "\n      DirectorySlash off";
-		$content .= "\n    </IfModule>";
-		$content.="\n  </IfModule>";
-		$content.="\n</IfModule>";
-
-		if ($content !== '') {
-			//suppress errors in case we don't have permissions for it
-			@file_put_contents($setupHelper->pathToHtaccess(), $content . "\n", FILE_APPEND);
-		}
 	}
 
 	public static function protectDataDirectory() {

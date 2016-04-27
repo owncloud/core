@@ -328,8 +328,9 @@ class Access extends LDAPUtility implements user\IUserTools {
 		$validGroupDNs = [];
 		foreach($groupDNs as $dn) {
 			$cacheKey = 'groupsMatchFilter-'.$dn;
-			if($this->connection->isCached($cacheKey)) {
-				if($this->connection->getFromCache($cacheKey)) {
+			$groupMatchFilter = $this->connection->getFromCache($cacheKey);
+			if(!is_null($groupMatchFilter)) {
+				if($groupMatchFilter) {
 					$validGroupDNs[] = $dn;
 				}
 				continue;
@@ -1259,9 +1260,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 		if(!$testConnection->setConfiguration($credentials)) {
 			return false;
 		}
-		$result=$testConnection->bind();
-		$this->ldap->unbind($this->connection->getConnectionResource());
-		return $result;
+		return $testConnection->bind();
 	}
 
 	/**
@@ -1469,8 +1468,9 @@ class Access extends LDAPUtility implements user\IUserTools {
 	public function getSID($dn) {
 		$domainDN = $this->getDomainDNFromDN($dn);
 		$cacheKey = 'getSID-'.$domainDN;
-		if($this->connection->isCached($cacheKey)) {
-			return $this->connection->getFromCache($cacheKey);
+		$sid = $this->connection->getFromCache($cacheKey);
+		if(!is_null($sid)) {
+			return $sid;
 		}
 
 		$objectSid = $this->readAttribute($domainDN, 'objectsid');

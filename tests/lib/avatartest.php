@@ -27,7 +27,7 @@ class AvatarTest extends \Test\TestCase {
 		$l = $this->getMock('\OCP\IL10N');
 		$l->method('t')->will($this->returnArgument(0));
 		$this->user = $this->getMockBuilder('\OC\User\User')->disableOriginalConstructor()->getMock();
-		$this->avatar = new \OC\Avatar($this->folder, $l, $this->user);
+		$this->avatar = new \OC\Avatar($this->folder, $l, $this->user, $this->getMock('\OCP\ILogger'));
 	}
 
 	public function testGetNoAvatar() {
@@ -148,8 +148,7 @@ class AvatarTest extends \Test\TestCase {
 			->willReturn('avatarX');
 		$nonAvatarFile->expects($this->never())->method('delete');
 
-		$this->folder->method('search')
-			->with('avatar')
+		$this->folder->method('getDirectoryListing')
 			->willReturn([$avatarFileJPG, $avatarFilePNG, $resizedAvatarFile, $nonAvatarFile]);
 
 		$newFile = $this->getMock('\OCP\Files\File');

@@ -25,6 +25,7 @@ use DateTimeZone;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\Calendar;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCP\IL10N;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Xml\Property\Href;
@@ -136,14 +137,24 @@ class CalDavBackendTest extends TestCase {
 	 */
 	public function testCalendarSharing($userCanRead, $userCanWrite, $groupCanRead, $groupCanWrite, $add) {
 
+		/** @var IL10N | \PHPUnit_Framework_MockObject_MockObject $l10n */
+		$l10n = $this->getMockBuilder('\OCP\IL10N')
+			->disableOriginalConstructor()->getMock();
+		$l10n
+			->expects($this->any())
+			->method('t')
+			->will($this->returnCallback(function ($text, $parameters = array()) {
+				return vsprintf($text, $parameters);
+			}));
+
 		$calendarId = $this->createTestCalendar();
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
 		$this->assertEquals(1, count($books));
-		$calendar = new Calendar($this->backend, $books[0]);
+		$calendar = new Calendar($this->backend, $books[0], $l10n);
 		$this->backend->updateShares($calendar, $add, []);
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER1);
 		$this->assertEquals(1, count($books));
-		$calendar = new Calendar($this->backend, $books[0]);
+		$calendar = new Calendar($this->backend, $books[0], $l10n);
 		$acl = $calendar->getACL();
 		$this->assertAcl(self::UNIT_TEST_USER, '{DAV:}read', $acl);
 		$this->assertAcl(self::UNIT_TEST_USER, '{DAV:}write', $acl);

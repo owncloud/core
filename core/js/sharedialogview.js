@@ -26,6 +26,7 @@
 		'<div class="shareeListView subView"></div>' +
 		'<div class="linkShareView subView"></div>' +
 		'<div class="expirationView subView"></div>' +
+		'<div class="mailView subView"></div>' +
 		'<div class="loading hidden" style="height: 50px"></div>';
 
 	var TEMPLATE_REMOTE_SHARE_INFO =
@@ -67,6 +68,9 @@
 		/** @type {object} **/
 		shareeListView: undefined,
 
+		/** @type {object} **/
+		mailView: undefined,
+
 		events: {
 			'input .shareWithField': 'onShareWithFieldChanged'
 		},
@@ -103,7 +107,8 @@
 				resharerInfoView: 'ShareDialogResharerInfoView',
 				linkShareView: 'ShareDialogLinkShareView',
 				expirationView: 'ShareDialogExpirationView',
-				shareeListView: 'ShareDialogShareeListView'
+				shareeListView: 'ShareDialogShareeListView',
+				mailView: 'ShareDialogMailView'
 			};
 
 			for(var name in subViews) {
@@ -216,8 +221,12 @@
 								.autocomplete("option", "autoFocus", true);
 							response(suggestions);
 						} else {
+							var title = t('core', 'No users or groups found for {search}', {search: $('.shareWithField').val()});
+							if (!view.configModel.get('allowGroupSharing')) {
+								title = t('core', 'No users found for {search}', {search: $('.shareWithField').val()});
+							}
 							$('.shareWithField').addClass('error')
-								.attr('data-original-title', t('core', 'No users or groups found for {search}', {search: $('.shareWithField').val()}))
+								.attr('data-original-title', title)
 								.tooltip('hide')
 								.tooltip({
 									placement: 'bottom',
@@ -234,7 +243,7 @@
 			).fail(function() {
 				$loading.addClass('hidden');
 				$loading.removeClass('inlineblock');
-				OC.Notification.show(t('core', 'An error occured. Please try again'));
+				OC.Notification.show(t('core', 'An error occurred. Please try again'));
 				window.setTimeout(OC.Notification.hide, 5000);
 			});
 		},
@@ -356,6 +365,9 @@
 			this.shareeListView.$el = this.$el.find('.shareeListView');
 			this.shareeListView.render();
 
+			this.mailView.$el = this.$el.find('.mailView');
+			this.mailView.render();
+
 			this.$el.find('.hasTooltip').tooltip();
 
 			return this;
@@ -386,10 +398,18 @@
 		},
 
 		_renderSharePlaceholderPart: function () {
-			var sharePlaceholder = t('core', 'Share with users or groups …');
-			if (this.configModel.get('isRemoteShareAllowed')) {
-				sharePlaceholder = t('core', 'Share with users, groups or remote users …');
+			var sharePlaceholder = t('core', 'Share with users…');
+
+			if (this.configModel.get('allowGroupSharing')) {
+				if (this.configModel.get('isRemoteShareAllowed')) {
+					sharePlaceholder = t('core', 'Share with users, groups or remote users…');
+				} else {
+					sharePlaceholder = t('core', 'Share with users or groups…')
+				}
+			} else if (this.configModel.get('isRemoteShareAllowed')) {
+					sharePlaceholder = t('core', 'Share with users or remote users…');
 			}
+
 			return sharePlaceholder;
 		},
 

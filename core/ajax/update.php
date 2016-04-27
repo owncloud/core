@@ -26,6 +26,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 set_time_limit(0);
 require_once '../../lib/base.php';
 
@@ -38,6 +40,14 @@ $eventSource = \OC::$server->createEventSource();
 $eventSource->send('success', (string)$l->t('Preparing update'));
 
 if (OC::checkUpgrade(false)) {
+
+	$config = \OC::$server->getSystemConfig();
+	if ($config->getValue('upgrade.disable-web', false)) {
+		$eventSource->send('failure', (string)$l->t('Please use the command line updater because automatic updating is disabled in the config.php.'));
+		$eventSource->close();
+		exit();
+	}
+
 	// if a user is currently logged in, their session must be ignored to
 	// avoid side effects
 	\OC_User::setIncognitoMode(true);
@@ -45,13 +55,24 @@ if (OC::checkUpgrade(false)) {
 	$logger = \OC::$server->getLogger();
 	$config = \OC::$server->getConfig();
 	$updater = new \OC\Updater(
-			\OC::$server->getHTTPHelper(),
 			$config,
 			\OC::$server->getIntegrityCodeChecker(),
 			$logger
 	);
 	$incompatibleApps = [];
 	$disabledThirdPartyApps = [];
+
+	$dispatcher = \OC::$server->getEventDispatcher();
+	$dispatcher->addListener('\OC\DB\Migrator::executeSql', function($event) use ($eventSource, $l) {
+		if ($event instanceof GenericEvent) {
+			$eventSource->send('success', (string)$l->t('[%d / %d]: %s', [$event[0], $event[1], $event->getSubject()]));
+		}
+	});
+	$dispatcher->addListener('\OC\DB\Migrator::checkTable', function($event) use ($eventSource, $l) {
+		if ($event instanceof GenericEvent) {
+			$eventSource->send('success', (string)$l->t('[%d / %d]: Checking table %s', [$event[0], $event[1], $event->getSubject()]));
+		}
+	});
 
 	$updater->listen('\OC\Updater', 'maintenanceEnabled', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Turned on maintenance mode'));

@@ -22,17 +22,18 @@
 namespace OCA\DAV\CalDAV;
 
 use OCA\DAV\DAV\Sharing\IShareable;
+use OCP\IL10N;
 use Sabre\CalDAV\Backend\BackendInterface;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\PropPatch;
 
 class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 
-	public function __construct(BackendInterface $caldavBackend, $calendarInfo) {
+	public function __construct(BackendInterface $caldavBackend, $calendarInfo, IL10N $l10n) {
 		parent::__construct($caldavBackend, $calendarInfo);
 
 		if ($this->getName() === BirthdayService::BIRTHDAY_CALENDAR_URI) {
-			$this->calendarInfo['{http://sabredav.org/ns}read-only'] = true;
+			$this->calendarInfo['{DAV:}displayname'] = $l10n->t('Contact birthdays');
 		}
 	}
 
@@ -86,7 +87,33 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	}
 
 	function getACL() {
-		$acl = parent::getACL();
+		$acl =  [
+			[
+				'privilege' => '{DAV:}read',
+				'principal' => $this->getOwner(),
+				'protected' => true,
+			]];
+		if ($this->getName() !== BirthdayService::BIRTHDAY_CALENDAR_URI) {
+			$acl[] = [
+				'privilege' => '{DAV:}write',
+				'principal' => $this->getOwner(),
+				'protected' => true,
+			];
+		}
+		if ($this->getOwner() !== parent::getOwner()) {
+			$acl[] =  [
+					'privilege' => '{DAV:}read',
+					'principal' => parent::getOwner(),
+					'protected' => true,
+				];
+			if ($this->canWrite()) {
+				$acl[] = [
+					'privilege' => '{DAV:}write',
+					'principal' => parent::getOwner(),
+					'protected' => true,
+				];
+			}
+		}
 
 		/** @var CalDavBackend $calDavBackend */
 		$calDavBackend = $this->caldavBackend;
@@ -94,11 +121,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	}
 
 	function getChildACL() {
-		$acl = parent::getChildACL();
-
-		/** @var CalDavBackend $calDavBackend */
-		$calDavBackend = $this->caldavBackend;
-		return $calDavBackend->applyShareAcl($this->getResourceId(), $acl);
+		return $this->getACL();
 	}
 
 	function getOwner() {
@@ -137,4 +160,12 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 		}
 		parent::propPatch($propPatch);
 	}
+
+	private function canWrite() {
+		if (isset($this->calendarInfo['{http://owncloud.org/ns}read-only'])) {
+			return !$this->calendarInfo['{http://owncloud.org/ns}read-only'];
+		}
+		return true;
+	}
+
 }

@@ -274,6 +274,7 @@ OC.Upload = {
 		if ( $('#file_upload_start').exists() ) {
 			var file_upload_param = {
 				dropZone: $('#content'), // restrict dropZone to content div
+				pasteZone: null, 
 				autoUpload: false,
 				sequentialUploads: true,
 				//singleFileUploads is on by default, so the data.files array will always have length 1
@@ -503,7 +504,7 @@ OC.Upload = {
 						//fetch response from iframe
 						response = data.result[0].body.innerText;
 					}
-					var result = $.parseJSON(response);
+					var result = JSON.parse(response);
 
 					delete data.jqXHR;
 

@@ -62,10 +62,6 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			'BDAY', 'UID', 'N', 'FN', 'TITLE', 'ROLE', 'NOTE', 'NICKNAME',
 			'ORG', 'CATEGORIES', 'EMAIL', 'TEL', 'IMPP', 'ADR', 'URL', 'GEO', 'CLOUD');
 
-	const ACCESS_OWNER = 1;
-	const ACCESS_READ_WRITE = 2;
-	const ACCESS_READ = 3;
-
 	/** @var EventDispatcherInterface */
 	private $dispatcher;
 
@@ -103,6 +99,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @return array
 	 */
 	function getAddressBooksForUser($principalUri) {
+		$principalUriOriginal = $principalUri;
 		$principalUri = $this->convertPrincipal($principalUri, true);
 		$query = $this->db->getQueryBuilder();
 		$query->select(['id', 'uri', 'displayname', 'principaluri', 'description', 'synctoken'])
@@ -126,7 +123,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$result->closeCursor();
 
 		// query for shared calendars
-		$principals = $this->principalBackend->getGroupMembership($principalUri);
+		$principals = $this->principalBackend->getGroupMembership($principalUriOriginal, true);
 		$principals[]= $principalUri;
 
 		$query = $this->db->getQueryBuilder();
@@ -153,7 +150,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 					'{http://calendarserver.org/ns/}getctag' => $row['synctoken'],
 					'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
 					'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal' => $row['principaluri'],
-					'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only' => $row['access'] === self::ACCESS_READ,
+					'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only' => (int)$row['access'] === Backend::ACCESS_READ,
 				];
 			}
 		}
@@ -395,7 +392,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	}
 
 	/**
-	 * Returns a specfic card.
+	 * Returns a specific card.
 	 *
 	 * The same set of properties must be returned as with getCards. The only
 	 * exception is that 'carddata' is absolutely required.

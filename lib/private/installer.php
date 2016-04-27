@@ -269,7 +269,8 @@ class OC_Installer{
 		//download the file if necessary
 		if($data['source']=='http') {
 			$pathInfo = pathinfo($data['href']);
-			$path = \OC::$server->getTempManager()->getTemporaryFile('.' . $pathInfo['extension']);
+			$extension = isset($pathInfo['extension']) ? '.' . $pathInfo['extension'] : '';
+			$path = \OC::$server->getTempManager()->getTemporaryFile($extension);
 			if(!isset($data['href'])) {
 				throw new \Exception($l->t("No href specified when installing app from http"));
 			}
@@ -342,6 +343,9 @@ class OC_Installer{
 		}
 
 		$info = OC_App::getAppInfo($extractDir.'/appinfo/info.xml', true);
+		if(!is_array($info)) {
+			throw new \Exception($l->t('App cannot be installed because appinfo file cannot be read.'));
+		}
 
 		// We can't trust the parsed info.xml file as it may have been tampered
 		// with by an attacker and thus we need to use the local data to check
@@ -526,8 +530,12 @@ class OC_Installer{
 	 * Installs shipped apps
 	 *
 	 * This function installs all apps found in the 'apps' directory that should be enabled by default;
+	 * @param bool $softErrors When updating we ignore errors and simply log them, better to have a
+	 *                         working ownCloud at the end instead of an aborted update.
+	 * @return array Array of error messages (appid => Exception)
 	 */
-	public static function installShippedApps() {
+	public static function installShippedApps($softErrors = false) {
+		$errors = [];
 		foreach(OC::$APPSROOTS as $app_dir) {
 			if($dir = opendir( $app_dir['path'] )) {
 				while( false !== ( $filename = readdir( $dir ))) {
@@ -538,7 +546,16 @@ class OC_Installer{
 								$enabled = isset($info['default_enable']);
 								if (($enabled || in_array($filename, \OC::$server->getAppManager()->getAlwaysEnabledApps()))
 									  && \OC::$server->getConfig()->getAppValue($filename, 'enabled') !== 'no') {
-									OC_Installer::installShippedApp($filename);
+									if ($softErrors) {
+										try {
+											OC_Installer::installShippedApp($filename);
+										} catch (\Doctrine\DBAL\Exception\TableExistsException $e) {
+											$errors[$filename] = $e;
+											continue;
+										}
+									} else {
+										OC_Installer::installShippedApp($filename);
+									}
 									\OC::$server->getConfig()->setAppValue($filename, 'enabled', 'yes');
 								}
 							}
@@ -548,6 +565,8 @@ class OC_Installer{
 				closedir( $dir );
 			}
 		}
+
+		return $errors;
 	}
 
 	/**

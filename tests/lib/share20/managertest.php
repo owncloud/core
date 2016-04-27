@@ -579,7 +579,7 @@ class ManagerTest extends \Test\TestCase {
 		$share->method('getShareType')->willReturn($type);
 		$share->method('getSharedWith')->willReturn($sharedWith);
 		$share->method('getSharedBy')->willReturn($sharedBy);
-		$share->method('getSharedOwner')->willReturn($shareOwner);
+		$share->method('getShareOwner')->willReturn($shareOwner);
 		$share->method('getNode')->willReturn($path);
 		$share->method('getPermissions')->willReturn($permissions);
 		$share->method('getExpirationDate')->willReturn($expireDate);
@@ -640,9 +640,20 @@ class ManagerTest extends \Test\TestCase {
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_GROUP, $limitedPermssions, $group0, $user0, $user0, null, null, null), 'A share requires permissions', true];
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_LINK,  $limitedPermssions, null, $user0, $user0, null, null, null), 'A share requires permissions', true];
 
+		$mount = $this->getMock('OC\Files\Mount\MoveableMount');
+		$limitedPermssions->method('getMountPoint')->willReturn($mount);
+
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER,  $limitedPermssions, $user2, $user0, $user0, 31, null, null), 'Cannot increase permissions of path', true];
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_GROUP, $limitedPermssions, $group0, $user0, $user0, 17, null, null), 'Cannot increase permissions of path', true];
 		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_LINK,  $limitedPermssions, null, $user0, $user0, 3, null, null), 'Cannot increase permissions of path', true];
+
+		$nonMoveableMountPermssions = $this->getMock('\OCP\Files\Folder');
+		$nonMoveableMountPermssions->method('isShareable')->willReturn(true);
+		$nonMoveableMountPermssions->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_READ);
+		$nonMoveableMountPermssions->method('getPath')->willReturn('path');
+
+		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_USER,  $nonMoveableMountPermssions, $user2, $user0, $user0, 11, null, null), 'Cannot increase permissions of path', false];
+		$data[] = [$this->createShare(null, \OCP\Share::SHARE_TYPE_GROUP, $nonMoveableMountPermssions, $group0, $user0, $user0, 11, null, null), 'Cannot increase permissions of path', false];
 
 		$rootFolder = $this->getMock('\OCP\Files\Folder');
 		$rootFolder->method('isShareable')->willReturn(true);
@@ -1149,6 +1160,22 @@ class ManagerTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException Exception
+	 * @expectedExceptionMessage Group sharing is now allowed
+	 */
+	public function testGroupCreateChecksShareWithGroupMembersGroupSharingNotAllowed() {
+		$share = $this->manager->newShare();
+
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_group_sharing', 'yes', 'no'],
+			]));
+
+		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
+	}
+
+	/**
+	 * @expectedException Exception
 	 * @expectedExceptionMessage Only sharing within your own groups is allowed
 	 */
 	public function testGroupCreateChecksShareWithGroupMembersOnlyNotInGroup() {
@@ -1167,6 +1194,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('getAppValue')
 			->will($this->returnValueMap([
 				['core', 'shareapi_only_share_with_group_members', 'no', 'yes'],
+				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
 			]));
 
 		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
@@ -1195,6 +1223,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('getAppValue')
 			->will($this->returnValueMap([
 				['core', 'shareapi_only_share_with_group_members', 'no', 'yes'],
+				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
 			]));
 
 		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
@@ -1222,6 +1251,12 @@ class ManagerTest extends \Test\TestCase {
 			->with($path)
 			->willReturn([$share2]);
 
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
+			]));
+
 		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
 	}
 
@@ -1239,6 +1274,12 @@ class ManagerTest extends \Test\TestCase {
 		$this->defaultProvider->method('getSharesByPath')
 			->with($path)
 			->willReturn([$share2]);
+
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
+			]));
 
 		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
 	}
@@ -2001,6 +2042,46 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertSame($share, $ret);
 	}
 
+	public function testGetShareByTokenWithException() {
+		$factory = $this->getMock('\OCP\Share\IProviderFactory');
+
+		$manager = new Manager(
+			$this->logger,
+			$this->config,
+			$this->secureRandom,
+			$this->hasher,
+			$this->mountManager,
+			$this->groupManager,
+			$this->l,
+			$factory,
+			$this->userManager,
+			$this->rootFolder
+		);
+
+		$share = $this->getMock('\OCP\Share\IShare');
+
+		$factory->expects($this->at(0))
+			->method('getProviderForType')
+			->with(\OCP\Share::SHARE_TYPE_LINK)
+			->willReturn($this->defaultProvider);
+		$factory->expects($this->at(1))
+			->method('getProviderForType')
+			->with(\OCP\Share::SHARE_TYPE_REMOTE)
+			->willReturn($this->defaultProvider);
+
+		$this->defaultProvider->expects($this->at(0))
+			->method('getShareByToken')
+			->with('token')
+			->will($this->throwException(new ShareNotFound()));
+		$this->defaultProvider->expects($this->at(1))
+			->method('getShareByToken')
+			->with('token')
+			->willReturn($share);
+
+		$ret = $manager->getShareByToken('token');
+		$this->assertSame($share, $ret);
+	}
+
 	/**
 	 * @expectedException \OCP\Share\Exceptions\ShareNotFound
 	 */
@@ -2041,6 +2122,25 @@ class ManagerTest extends \Test\TestCase {
 		$res = $this->manager->getShareByToken('expiredToken');
 
 		$this->assertSame($share, $res);
+	}
+
+	public function testGetShareByTokenPublicSharingDisabled() {
+		$share = $this->manager->newShare();
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK)
+			->setPermissions(\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE);
+
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_allow_public_upload', 'yes', 'no'],
+		]));
+
+		$this->defaultProvider->expects($this->once())
+			->method('getShareByToken')
+			->willReturn('validToken')
+			->willReturn($share);
+
+		$res = $this->manager->getShareByToken('validToken');
+
+		$this->assertSame(\OCP\Constants::PERMISSION_READ, $res->getPermissions());
 	}
 
 	public function testCheckPasswordNoLinkShare() {
@@ -2377,7 +2477,9 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testMoveShareUser() {
 		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_USER);
+		$share->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setId('42')
+			->setProviderId('foo');
 
 		$share->setSharedWith('recipient');
 
@@ -2408,7 +2510,9 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testMoveShareGroup() {
 		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
+		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP)
+			->setId('42')
+			->setProviderId('foo');
 
 		$group = $this->getMock('\OCP\IGroup');
 		$share->setSharedWith('group');

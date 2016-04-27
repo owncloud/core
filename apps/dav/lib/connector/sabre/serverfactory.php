@@ -26,6 +26,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCP\Files\Mount\IMountManager;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -115,6 +116,10 @@ class ServerFactory {
 			$server->addPlugin(new \OCA\DAV\Connector\Sabre\FakeLockerPlugin());
 		}
 
+		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
+			$server->addPlugin(new BrowserErrorPagePlugin());
+		}
+
 		// wait with registering these until auth is handled and the filesystem is setup
 		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {
 			// ensure the skeleton is copied
@@ -132,11 +137,25 @@ class ServerFactory {
 			}
 			$objectTree->init($root, $view, $this->mountManager);
 
-			$server->addPlugin(new \OCA\DAV\Connector\Sabre\FilesPlugin($objectTree, $view));
+			$server->addPlugin(
+				new \OCA\DAV\Connector\Sabre\FilesPlugin(
+					$objectTree,
+					$view,
+					$this->config,
+					false,
+					!$this->config->getSystemValue('debug', false)
+				)
+			);
 			$server->addPlugin(new \OCA\DAV\Connector\Sabre\QuotaPlugin($view));
 
 			if($this->userSession->isLoggedIn()) {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\TagsPlugin($objectTree, $this->tagManager));
+				$server->addPlugin(new \OCA\DAV\Connector\Sabre\SharesPlugin(
+					$objectTree,
+					$this->userSession,
+					$userFolder,
+					\OC::$server->getShareManager()
+				));
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\CommentPropertiesPlugin(\OC::$server->getCommentsManager(), $this->userSession));
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\FilesReportPlugin(
 					$objectTree,

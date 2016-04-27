@@ -23,6 +23,9 @@
 namespace OCA\DAV\Tests\Unit\Connector\Sabre;
 
 use OCP\Files\StorageNotAvailableException;
+use Sabre\DAV\PropFind;
+use Sabre\DAV\PropPatch;
+use Test\TestCase;
 
 /**
  * Copyright (c) 2015 Vincent Petry <pvince81@owncloud.com>
@@ -30,7 +33,7 @@ use OCP\Files\StorageNotAvailableException;
  * later.
  * See the COPYING-README file.
  */
-class FilesPlugin extends \Test\TestCase {
+class FilesPlugin extends TestCase {
 	const GETETAG_PROPERTYNAME = \OCA\DAV\Connector\Sabre\FilesPlugin::GETETAG_PROPERTYNAME;
 	const FILEID_PROPERTYNAME = \OCA\DAV\Connector\Sabre\FilesPlugin::FILEID_PROPERTYNAME;
 	const INTERNAL_FILEID_PROPERTYNAME = \OCA\DAV\Connector\Sabre\FilesPlugin::INTERNAL_FILEID_PROPERTYNAME;
@@ -40,14 +43,15 @@ class FilesPlugin extends \Test\TestCase {
 	const DOWNLOADURL_PROPERTYNAME = \OCA\DAV\Connector\Sabre\FilesPlugin::DOWNLOADURL_PROPERTYNAME;
 	const OWNER_ID_PROPERTYNAME = \OCA\DAV\Connector\Sabre\FilesPlugin::OWNER_ID_PROPERTYNAME;
 	const OWNER_DISPLAY_NAME_PROPERTYNAME = \OCA\DAV\Connector\Sabre\FilesPlugin::OWNER_DISPLAY_NAME_PROPERTYNAME;
+	const DATA_FINGERPRINT_PROPERTYNAME = \OCA\DAV\Connector\Sabre\FilesPlugin::DATA_FINGERPRINT_PROPERTYNAME;
 
 	/**
-	 * @var \Sabre\DAV\Server
+	 * @var \Sabre\DAV\Server | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $server;
 
 	/**
-	 * @var \Sabre\DAV\Tree
+	 * @var \Sabre\DAV\Tree | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $tree;
 
@@ -57,9 +61,14 @@ class FilesPlugin extends \Test\TestCase {
 	private $plugin;
 
 	/**
-	 * @var \OC\Files\View
+	 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $view;
+
+	/**
+	 * @var \OCP\IConfig | \PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $config;
 
 	public function setUp() {
 		parent::setUp();
@@ -72,18 +81,28 @@ class FilesPlugin extends \Test\TestCase {
 		$this->view = $this->getMockBuilder('\OC\Files\View')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->config = $this->getMock('\OCP\IConfig');
+		$this->config->method('getSystemValue')
+			->with($this->equalTo('data-fingerprint'), $this->equalTo(''))
+			->willReturn('my_fingerprint');
 
-		$this->plugin = new \OCA\DAV\Connector\Sabre\FilesPlugin($this->tree, $this->view);
+		$this->plugin = new \OCA\DAV\Connector\Sabre\FilesPlugin(
+			$this->tree,
+			$this->view,
+			$this->config
+		);
 		$this->plugin->initialize($this->server);
 	}
 
 	/**
 	 * @param string $class
+	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private function createTestNode($class) {
 		$node = $this->getMockBuilder($class)
 			->disableOriginalConstructor()
 			->getMock();
+
 		$node->expects($this->any())
 			->method('getId')
 			->will($this->returnValue(123));
@@ -110,9 +129,10 @@ class FilesPlugin extends \Test\TestCase {
 	}
 
 	public function testGetPropertiesForFile() {
+		/** @var \OCA\DAV\Connector\Sabre\File | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = $this->createTestNode('\OCA\DAV\Connector\Sabre\File');
 
-		$propFind = new \Sabre\DAV\PropFind(
+		$propFind = new PropFind(
 			'/dummyPath',
 			array(
 				self::GETETAG_PROPERTYNAME,
@@ -122,7 +142,8 @@ class FilesPlugin extends \Test\TestCase {
 				self::PERMISSIONS_PROPERTYNAME,
 				self::DOWNLOADURL_PROPERTYNAME,
 				self::OWNER_ID_PROPERTYNAME,
-				self::OWNER_DISPLAY_NAME_PROPERTYNAME
+				self::OWNER_DISPLAY_NAME_PROPERTYNAME,
+				self::DATA_FINGERPRINT_PROPERTYNAME,
 			),
 			0
 		);
@@ -160,13 +181,16 @@ class FilesPlugin extends \Test\TestCase {
 		$this->assertEquals('http://example.com/', $propFind->get(self::DOWNLOADURL_PROPERTYNAME));
 		$this->assertEquals('foo', $propFind->get(self::OWNER_ID_PROPERTYNAME));
 		$this->assertEquals('M. Foo', $propFind->get(self::OWNER_DISPLAY_NAME_PROPERTYNAME));
-		$this->assertEquals(array(self::SIZE_PROPERTYNAME), $propFind->get404Properties());
+		$this->assertEquals([self::SIZE_PROPERTYNAME, self::DATA_FINGERPRINT_PROPERTYNAME], $propFind->get404Properties());
 	}
 
 	public function testGetPropertiesForFileHome() {
-		$node = $this->createTestNode('\OCA\DAV\Files\FilesHome');
+		/** @var \OCA\DAV\Files\FilesHome | \PHPUnit_Framework_MockObject_MockObject $node */
+		$node = $this->getMockBuilder('\OCA\DAV\Files\FilesHome')
+			->disableOriginalConstructor()
+			->getMock();
 
-		$propFind = new \Sabre\DAV\PropFind(
+		$propFind = new PropFind(
 			'/dummyPath',
 			array(
 				self::GETETAG_PROPERTYNAME,
@@ -176,7 +200,8 @@ class FilesPlugin extends \Test\TestCase {
 				self::PERMISSIONS_PROPERTYNAME,
 				self::DOWNLOADURL_PROPERTYNAME,
 				self::OWNER_ID_PROPERTYNAME,
-				self::OWNER_DISPLAY_NAME_PROPERTYNAME
+				self::OWNER_DISPLAY_NAME_PROPERTYNAME,
+				self::DATA_FINGERPRINT_PROPERTYNAME,
 			),
 			0
 		);
@@ -185,9 +210,6 @@ class FilesPlugin extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$user->expects($this->never())->method('getUID');
 		$user->expects($this->never())->method('getDisplayName');
-		$node->expects($this->never())->method('getDirectDownload');
-		$node->expects($this->never())->method('getOwner');
-		$node->expects($this->never())->method('getSize');
 
 		$this->plugin->handleGetProperties(
 			$propFind,
@@ -211,12 +233,14 @@ class FilesPlugin extends \Test\TestCase {
 					'{http://owncloud.org/ns}owner-id',
 					'{http://owncloud.org/ns}owner-display-name'
 				], $propFind->get404Properties());
+		$this->assertEquals('my_fingerprint', $propFind->get(self::DATA_FINGERPRINT_PROPERTYNAME));
 	}
 
 	public function testGetPropertiesStorageNotAvailable() {
+		/** @var \OCA\DAV\Connector\Sabre\File | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = $this->createTestNode('\OCA\DAV\Connector\Sabre\File');
 
-		$propFind = new \Sabre\DAV\PropFind(
+		$propFind = new PropFind(
 			'/dummyPath',
 			array(
 				self::DOWNLOADURL_PROPERTYNAME,
@@ -237,10 +261,14 @@ class FilesPlugin extends \Test\TestCase {
 	}
 
 	public function testGetPublicPermissions() {
-		$this->plugin = new \OCA\DAV\Connector\Sabre\FilesPlugin($this->tree, $this->view, true);
+		$this->plugin = new \OCA\DAV\Connector\Sabre\FilesPlugin(
+			$this->tree,
+			$this->view,
+			$this->config,
+			true);
 		$this->plugin->initialize($this->server);
 
-		$propFind = new \Sabre\DAV\PropFind(
+		$propFind = new PropFind(
 			'/dummyPath',
 			[
 				self::PERMISSIONS_PROPERTYNAME,
@@ -248,6 +276,7 @@ class FilesPlugin extends \Test\TestCase {
 			0
 		);
 
+		/** @var \OCA\DAV\Connector\Sabre\File | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = $this->createTestNode('\OCA\DAV\Connector\Sabre\File');
 		$node->expects($this->any())
 			->method('getDavPermissions')
@@ -262,9 +291,10 @@ class FilesPlugin extends \Test\TestCase {
 	}
 
 	public function testGetPropertiesForDirectory() {
+		/** @var \OCA\DAV\Connector\Sabre\Directory | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = $this->createTestNode('\OCA\DAV\Connector\Sabre\Directory');
 
-		$propFind = new \Sabre\DAV\PropFind(
+		$propFind = new PropFind(
 			'/dummyPath',
 			array(
 				self::GETETAG_PROPERTYNAME,
@@ -272,12 +302,11 @@ class FilesPlugin extends \Test\TestCase {
 				self::SIZE_PROPERTYNAME,
 				self::PERMISSIONS_PROPERTYNAME,
 				self::DOWNLOADURL_PROPERTYNAME,
+				self::DATA_FINGERPRINT_PROPERTYNAME,
 			),
 			0
 		);
 
-		$node->expects($this->never())
-			->method('getDirectDownload');
 		$node->expects($this->once())
 			->method('getSize')
 			->will($this->returnValue(1025));
@@ -292,7 +321,30 @@ class FilesPlugin extends \Test\TestCase {
 		$this->assertEquals(1025, $propFind->get(self::SIZE_PROPERTYNAME));
 		$this->assertEquals('DWCKMSR', $propFind->get(self::PERMISSIONS_PROPERTYNAME));
 		$this->assertEquals(null, $propFind->get(self::DOWNLOADURL_PROPERTYNAME));
-		$this->assertEquals(array(self::DOWNLOADURL_PROPERTYNAME), $propFind->get404Properties());
+		$this->assertEquals([self::DOWNLOADURL_PROPERTYNAME, self::DATA_FINGERPRINT_PROPERTYNAME], $propFind->get404Properties());
+	}
+
+	public function testGetPropertiesForRootDirectory() {
+		/** @var \OCA\DAV\Connector\Sabre\Directory | \PHPUnit_Framework_MockObject_MockObject $node */
+		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+			->disableOriginalConstructor()
+			->getMock();
+		$node->method('getPath')->willReturn('/');
+
+		$propFind = new PropFind(
+			'/',
+			[
+				self::DATA_FINGERPRINT_PROPERTYNAME,
+			],
+			0
+		);
+
+		$this->plugin->handleGetProperties(
+			$propFind,
+			$node
+		);
+
+		$this->assertEquals('my_fingerprint', $propFind->get(self::DATA_FINGERPRINT_PROPERTYNAME));
 	}
 
 	public function testUpdateProps() {
@@ -310,7 +362,7 @@ class FilesPlugin extends \Test\TestCase {
 			->will($this->returnValue(true));
 
 		// properties to set
-		$propPatch = new \Sabre\DAV\PropPatch(array(
+		$propPatch = new PropPatch(array(
 			self::GETETAG_PROPERTYNAME => 'newetag',
 			self::LASTMODIFIED_PROPERTYNAME => $testDate
 		));
@@ -330,9 +382,7 @@ class FilesPlugin extends \Test\TestCase {
 	}
 
 	public function testUpdatePropsForbidden() {
-		$node = $this->createTestNode('\OCA\DAV\Connector\Sabre\File');
-
-		$propPatch = new \Sabre\DAV\PropPatch(array(
+		$propPatch = new PropPatch(array(
 			self::OWNER_ID_PROPERTYNAME => 'user2',
 			self::OWNER_DISPLAY_NAME_PROPERTYNAME => 'User Two',
 			self::FILEID_PROPERTYNAME => 12345,
@@ -366,7 +416,7 @@ class FilesPlugin extends \Test\TestCase {
 	 *  |-text.txt
 	 * |-test.txt
 	 *
-	 * FolderA is an incomming shared folder and there are no delete permissions.
+	 * FolderA is an incoming shared folder and there are no delete permissions.
 	 * Thus moving /FolderA/test.txt to /test.txt should fail already on that check
 	 *
 	 * @expectedException \Sabre\DAV\Exception\Forbidden

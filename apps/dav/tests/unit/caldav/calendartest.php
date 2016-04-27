@@ -21,12 +21,29 @@
 
 namespace OCA\DAV\Tests\Unit\CalDAV;
 
+use OCA\DAV\CalDAV\BirthdayService;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\Calendar;
+use OCP\IL10N;
 use Sabre\DAV\PropPatch;
 use Test\TestCase;
 
 class CalendarTest extends TestCase {
+
+	/** @var IL10N */
+	private $l10n;
+
+	public function setUp() {
+		parent::setUp();
+		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+			->disableOriginalConstructor()->getMock();
+		$this->l10n
+			->expects($this->any())
+			->method('t')
+			->will($this->returnCallback(function ($text, $parameters = array()) {
+				return vsprintf($text, $parameters);
+			}));
+	}
 
 	public function testDelete() {
 		/** @var \PHPUnit_Framework_MockObject_MockObject | CalDavBackend $backend */
@@ -41,7 +58,7 @@ class CalendarTest extends TestCase {
 			'id' => 666,
 			'uri' => 'cal',
 		];
-		$c = new Calendar($backend, $calendarInfo);
+		$c = new Calendar($backend, $calendarInfo, $this->l10n);
 		$c->delete();
 	}
 
@@ -61,7 +78,7 @@ class CalendarTest extends TestCase {
 			'id' => 666,
 			'uri' => 'cal',
 		];
-		$c = new Calendar($backend, $calendarInfo);
+		$c = new Calendar($backend, $calendarInfo, $this->l10n);
 		$c->delete();
 	}
 
@@ -93,7 +110,7 @@ class CalendarTest extends TestCase {
 			'id' => 666,
 			'uri' => 'default'
 		];
-		$c = new Calendar($backend, $calendarInfo);
+		$c = new Calendar($backend, $calendarInfo, $this->l10n);
 
 		if ($throws) {
 			$this->setExpectedException('\Sabre\DAV\Exception\Forbidden');
@@ -102,5 +119,73 @@ class CalendarTest extends TestCase {
 		if (!$throws) {
 			$this->assertTrue(true);
 		}
+	}
+
+	/**
+	 * @dataProvider providesReadOnlyInfo
+	 */
+	public function testAcl($expectsWrite, $readOnlyValue, $hasOwnerSet, $uri = 'default') {
+		/** @var \PHPUnit_Framework_MockObject_MockObject | CalDavBackend $backend */
+		$backend = $this->getMockBuilder('OCA\DAV\CalDAV\CalDavBackend')->disableOriginalConstructor()->getMock();
+		$backend->expects($this->any())->method('applyShareAcl')->willReturnArgument(1);
+		$calendarInfo = [
+			'principaluri' => 'user2',
+			'id' => 666,
+			'uri' => $uri
+		];
+		if (!is_null($readOnlyValue)) {
+			$calendarInfo['{http://owncloud.org/ns}read-only'] = $readOnlyValue;
+		}
+		if ($hasOwnerSet) {
+			$calendarInfo['{http://owncloud.org/ns}owner-principal'] = 'user1';
+		}
+		$c = new Calendar($backend, $calendarInfo, $this->l10n);
+		$acl = $c->getACL();
+		$childAcl = $c->getChildACL();
+
+		$expectedAcl = [[
+			'privilege' => '{DAV:}read',
+			'principal' => $hasOwnerSet ? 'user1' : 'user2',
+			'protected' => true
+		], [
+			'privilege' => '{DAV:}write',
+			'principal' => $hasOwnerSet ? 'user1' : 'user2',
+			'protected' => true
+		]];
+		if ($uri === BirthdayService::BIRTHDAY_CALENDAR_URI) {
+			$expectedAcl = [[
+				'privilege' => '{DAV:}read',
+				'principal' => $hasOwnerSet ? 'user1' : 'user2',
+				'protected' => true
+			]];
+		}
+		if ($hasOwnerSet) {
+			$expectedAcl[] = [
+				'privilege' => '{DAV:}read',
+				'principal' => 'user2',
+				'protected' => true
+			];
+			if ($expectsWrite) {
+				$expectedAcl[] = [
+					'privilege' => '{DAV:}write',
+					'principal' => 'user2',
+					'protected' => true
+				];
+			}
+		}
+		$this->assertEquals($expectedAcl, $acl);
+		$this->assertEquals($expectedAcl, $childAcl);
+	}
+
+	public function providesReadOnlyInfo() {
+		return [
+			'read-only property not set' => [true, null, true],
+			'read-only property is false' => [true, false, true],
+			'read-only property is true' => [false, true, true],
+			'read-only property not set and no owner' => [true, null, false],
+			'read-only property is false and no owner' => [true, false, false],
+			'read-only property is true and no owner' => [false, true, false],
+			'birthday calendar' => [false, false, false, BirthdayService::BIRTHDAY_CALENDAR_URI]
+		];
 	}
 }

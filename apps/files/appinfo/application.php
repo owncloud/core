@@ -40,8 +40,11 @@ class Application extends App {
 			return new ApiController(
 				$c->query('AppName'),
 				$c->query('Request'),
+				$server->getUserSession(),
 				$c->query('TagService'),
-				$server->getPreviewManager()
+				$server->getPreviewManager(),
+				$server->getShareManager(),
+				$server->getConfig()
 			);
 		});
 

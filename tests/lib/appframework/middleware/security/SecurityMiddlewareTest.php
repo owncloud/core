@@ -26,10 +26,10 @@ namespace OC\AppFramework\Middleware\Security;
 
 use OC\AppFramework\Http;
 use OC\AppFramework\Http\Request;
-use OC\Appframework\Middleware\Security\Exceptions\AppNotEnabledException;
-use OC\Appframework\Middleware\Security\Exceptions\CrossSiteRequestForgeryException;
-use OC\Appframework\Middleware\Security\Exceptions\NotAdminException;
-use OC\Appframework\Middleware\Security\Exceptions\NotLoggedInException;
+use OC\AppFramework\Middleware\Security\Exceptions\AppNotEnabledException;
+use OC\AppFramework\Middleware\Security\Exceptions\CrossSiteRequestForgeryException;
+use OC\AppFramework\Middleware\Security\Exceptions\NotAdminException;
+use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\Security\CSP\ContentSecurityPolicy;
@@ -343,9 +343,14 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 		$this->middleware = $this->getMiddleware(false, false);
 		$this->urlGenerator
 				->expects($this->once())
-				->method('getAbsoluteURL')
-				->with('index.php')
-				->will($this->returnValue('http://localhost/index.php'));
+				->method('linkToRoute')
+				->with(
+					'core.login.showLoginForm',
+					[
+						'redirect_url' => 'owncloud%2Findex.php%2Fapps%2Fspecialapp',
+					]
+				)
+				->will($this->returnValue('http://localhost/index.php/login?redirect_url=owncloud%2Findex.php%2Fapps%2Fspecialapp'));
 		$this->logger
 				->expects($this->once())
 				->method('debug')
@@ -356,7 +361,7 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 				new NotLoggedInException()
 		);
 
-		$expected = new RedirectResponse('http://localhost/index.php?redirect_url=owncloud%2Findex.php%2Fapps%2Fspecialapp');
+		$expected = new RedirectResponse('http://localhost/index.php/login?redirect_url=owncloud%2Findex.php%2Fapps%2Fspecialapp');
 		$this->assertEquals($expected , $response);
 	}
 

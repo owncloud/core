@@ -37,10 +37,10 @@ use OC\Hooks\BasicEmitter;
 use OC\IntegrityCheck\Checker;
 use OC_App;
 use OC_Installer;
-use OC_Util;
 use OCP\IConfig;
 use OC\Setup;
 use OCP\ILogger;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class that handles autoupdating of ownCloud
@@ -55,9 +55,6 @@ class Updater extends BasicEmitter {
 
 	/** @var ILogger $log */
 	private $log;
-	
-	/** @var \OC\HTTPHelper $helper */
-	private $httpHelper;
 	
 	/** @var IConfig */
 	private $config;
@@ -83,16 +80,13 @@ class Updater extends BasicEmitter {
 	];
 
 	/**
-	 * @param HTTPHelper $httpHelper
 	 * @param IConfig $config
 	 * @param Checker $checker
 	 * @param ILogger $log
 	 */
-	public function __construct(HTTPHelper $httpHelper,
-								IConfig $config,
+	public function __construct(IConfig $config,
 								Checker $checker,
 								ILogger $log = null) {
-		$this->httpHelper = $httpHelper;
 		$this->log = $log;
 		$this->config = $config;
 		$this->checker = $checker;
@@ -129,63 +123,6 @@ class Updater extends BasicEmitter {
 	 */
 	public function setSkip3rdPartyAppsDisable($flag) {
 		$this->skip3rdPartyAppsDisable = $flag;
-	}
-
-	/**
-	 * Check if a new version is available
-	 *
-	 * @param string $updaterUrl the url to check, i.e. 'http://apps.owncloud.com/updater.php'
-	 * @return array|bool
-	 */
-	public function check($updaterUrl = null) {
-
-		// Look up the cache - it is invalidated all 30 minutes
-		if (((int)$this->config->getAppValue('core', 'lastupdatedat') + 1800) > time()) {
-			return json_decode($this->config->getAppValue('core', 'lastupdateResult'), true);
-		}
-
-		if (is_null($updaterUrl)) {
-			$updaterUrl = 'https://updates.owncloud.com/server/';
-		}
-
-		$this->config->setAppValue('core', 'lastupdatedat', time());
-
-		if ($this->config->getAppValue('core', 'installedat', '') === '') {
-			$this->config->setAppValue('core', 'installedat', microtime(true));
-		}
-
-		$version = \OCP\Util::getVersion();
-		$version['installed'] = $this->config->getAppValue('core', 'installedat');
-		$version['updated'] = $this->config->getAppValue('core', 'lastupdatedat');
-		$version['updatechannel'] = \OC_Util::getChannel();
-		$version['edition'] = \OC_Util::getEditionString();
-		$version['build'] = \OC_Util::getBuild();
-		$versionString = implode('x', $version);
-
-		//fetch xml data from updater
-		$url = $updaterUrl . '?version=' . $versionString;
-
-		$tmp = [];
-		$xml = $this->httpHelper->getUrlContent($url);
-		if ($xml) {
-			$loadEntities = libxml_disable_entity_loader(true);
-			$data = @simplexml_load_string($xml);
-			libxml_disable_entity_loader($loadEntities);
-			if ($data !== false) {
-				$tmp['version'] = (string)$data->version;
-				$tmp['versionstring'] = (string)$data->versionstring;
-				$tmp['url'] = (string)$data->url;
-				$tmp['web'] = (string)$data->web;
-			} else {
-				libxml_clear_errors();
-			}
-		} else {
-			$data = [];
-		}
-
-		// Cache the result
-		$this->config->setAppValue('core', 'lastupdateResult', json_encode($data));
-		return $tmp;
 	}
 
 	/**
@@ -333,7 +270,12 @@ class Updater extends BasicEmitter {
 
 			// install new shipped apps on upgrade
 			OC_App::loadApps('authentication');
-			OC_Installer::installShippedApps();
+			$errors = OC_Installer::installShippedApps(true);
+			foreach ($errors as $appId => $exception) {
+				/** @var \Exception $exception */
+				$this->log->logException($exception, ['app' => $appId]);
+				$this->emit('\OC\Updater', 'failure', [$appId . ': ' . $exception->getMessage()]);
+			}
 
 			// post-upgrade repairs
 			$repair = new Repair(Repair::getRepairSteps());
@@ -420,6 +362,7 @@ class Updater extends BasicEmitter {
 	 * @throws NeedsUpdateException
 	 */
 	protected function doAppUpgrade() {
+		$this->emitRepairEvents();
 		$apps = \OC_App::getEnabledApps();
 		$priorityTypes = array('authentication', 'filesystem', 'logging');
 		$pseudoOtherType = 'other';
@@ -444,9 +387,9 @@ class Updater extends BasicEmitter {
 		foreach ($stacks as $type => $stack) {
 			foreach ($stack as $appId) {
 				if (\OC_App::shouldUpgrade($appId)) {
-					$this->emit('\OC\Updater', 'appUpgradeStarted', array($appId, \OC_App::getAppVersion($appId)));
+					$this->emit('\OC\Updater', 'appUpgradeStarted', [$appId, \OC_App::getAppVersion($appId)]);
 					\OC_App::updateApp($appId);
-					$this->emit('\OC\Updater', 'appUpgrade', array($appId, \OC_App::getAppVersion($appId)));
+					$this->emit('\OC\Updater', 'appUpgrade', [$appId, \OC_App::getAppVersion($appId)]);
 				}
 				if($type !== $pseudoOtherType) {
 					// load authentication, filesystem and logging apps after
@@ -532,5 +475,33 @@ class Updater extends BasicEmitter {
 			}
 		}
 	}
+
+	/**
+	 * Forward messages emitted by the repair routine
+	 */
+	private function emitRepairEvents() {
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$dispatcher->addListener('\OC\Repair::warning', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairWarning', $event->getArguments());
+			}
+		});
+		$dispatcher->addListener('\OC\Repair::error', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairError', $event->getArguments());
+			}
+		});
+		$dispatcher->addListener('\OC\Repair::info', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairInfo', $event->getArguments());
+			}
+		});
+		$dispatcher->addListener('\OC\Repair::step', function ($event) {
+			if ($event instanceof GenericEvent) {
+				$this->emit('\OC\Updater', 'repairStep', $event->getArguments());
+			}
+		});
+	}
+
 }
 

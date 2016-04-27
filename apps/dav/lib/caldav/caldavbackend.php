@@ -138,6 +138,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return array
 	 */
 	function getCalendarsForUser($principalUri) {
+		$principalUriOriginal = $principalUri;
 		$principalUri = $this->convertPrincipal($principalUri, true);
 		$fields = array_values($this->propertyMap);
 		$fields[] = 'id';
@@ -184,7 +185,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$stmt->closeCursor();
 
 		// query for shared calendars
-		$principals = $this->principalBackend->getGroupMembership($principalUri);
+		$principals = $this->principalBackend->getGroupMembership($principalUriOriginal, true);
 		$principals[]= $principalUri;
 
 		$fields = array_values($this->propertyMap);
@@ -194,6 +195,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$fields[] = 'a.components';
 		$fields[] = 'a.principaluri';
 		$fields[] = 'a.transparent';
+		$fields[] = 's.access';
 		$query = $this->db->getQueryBuilder();
 		$result = $query->select($fields)
 			->from('dav_shares', 's')
@@ -221,6 +223,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				'{' . Plugin::NS_CALDAV . '}supported-calendar-component-set' => new SupportedCalendarComponentSet($components),
 				'{' . Plugin::NS_CALDAV . '}schedule-calendar-transp' => new ScheduleCalendarTransp($row['transparent']?'transparent':'opaque'),
 				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal' => $row['principaluri'],
+				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only' => (int)$row['access'] === Backend::ACCESS_READ,
 			];
 
 			foreach($this->propertyMap as $xmlName=>$dbName) {
@@ -702,7 +705,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 *
 	 * This default may well be good enough for personal use, and calendars
 	 * that aren't very large. But if you anticipate high usage, big calendars
-	 * or high loads, you are strongly adviced to optimize certain paths.
+	 * or high loads, you are strongly advised to optimize certain paths.
 	 *
 	 * The best way to do so is override this method and to optimize
 	 * specifically for 'common filters'.
@@ -1296,7 +1299,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		}
 		if ($componentType === 'VEVENT' && $component->DTSTART) {
 			$firstOccurence = $component->DTSTART->getDateTime()->getTimeStamp();
-			// Finding the last occurence is a bit harder
+			// Finding the last occurrence is a bit harder
 			if (!isset($component->RRULE)) {
 				if (isset($component->DTEND)) {
 					$lastOccurence = $component->DTEND->getDateTime()->getTimeStamp();

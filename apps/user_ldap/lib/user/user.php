@@ -24,12 +24,12 @@
 
 namespace OCA\user_ldap\lib\user;
 
-use OCA\user_ldap\lib\user\IUserTools;
 use OCA\user_ldap\lib\Connection;
 use OCA\user_ldap\lib\FilesystemHelper;
 use OCA\user_ldap\lib\LogWrapper;
 use OCP\IAvatarManager;
 use OCP\IConfig;
+use OCP\Image;
 use OCP\IUserManager;
 
 /**
@@ -55,7 +55,7 @@ class User {
 	 */
 	protected $fs;
 	/**
-	 * @var \OCP\Image
+	 * @var Image
 	 */
 	protected $image;
 	/**
@@ -101,13 +101,13 @@ class User {
 	 * LDAP interaction
 	 * @param IConfig $config
 	 * @param FilesystemHelper $fs
-	 * @param \OCP\Image $image any empty instance
+	 * @param Image $image any empty instance
 	 * @param LogWrapper $log
 	 * @param IAvatarManager $avatarManager
 	 * @param IUserManager $userManager
 	 */
 	public function __construct($username, $dn, IUserTools $access,
-		IConfig $config, FilesystemHelper $fs, \OCP\Image $image,
+		IConfig $config, FilesystemHelper $fs, Image $image,
 		LogWrapper $log, IAvatarManager $avatarManager, IUserManager $userManager) {
 
 		$this->access        = $access;
@@ -217,7 +217,11 @@ class User {
 		foreach ($attrs as $attr)  {
 			if(isset($ldapEntry[$attr])) {
 				$this->avatarImage = $ldapEntry[$attr][0];
-				$this->updateAvatar();
+				// the call to the method that saves the avatar in the file
+				// system must be postponed after the login. It is to ensure
+				// external mounts are mounted properly (e.g. with login
+				// credentials from the session).
+				\OCP\Util::connectHook('OC_User', 'post_login', $this, 'updateAvatarPostLogin');
 				break;
 			}
 		}
@@ -293,8 +297,9 @@ class User {
 
 	public function getMemberOfGroups() {
 		$cacheKey = 'getMemberOf'.$this->getUsername();
-		if($this->connection->isCached($cacheKey)) {
-			return $this->connection->getFromCache($cacheKey);
+		$memberOfGroups = $this->connection->getFromCache($cacheKey);
+		if(!is_null($memberOfGroups)) {
+			return $memberOfGroups;
 		}
 		$groupDNs = $this->access->readAttribute($this->getDN(), 'memberOf');
 		$this->connection->writeToCache($cacheKey, $groupDNs);
@@ -428,7 +433,9 @@ class User {
 		}
 		if(!is_null($email)) {
 			$user = $this->userManager->get($this->uid);
-			$user->setEMailAddress($email);
+			if (!is_null($user)) {
+				$user->setEMailAddress($email);
+			}
 		}
 	}
 
@@ -458,6 +465,17 @@ class User {
 		}
 		if(!is_null($quota)) {
 			$user = $this->userManager->get($this->uid)->setQuota($quota);
+		}
+	}
+
+	/**
+	 * called by a post_login hook to save the avatar picture
+	 *
+	 * @param array $params
+	 */
+	public function updateAvatarPostLogin($params) {
+		if(isset($params['uid']) && $params['uid'] === $this->getUsername()) {
+			$this->updateAvatar();
 		}
 	}
 

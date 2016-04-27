@@ -25,13 +25,13 @@ script(
 <script id="categories-template" type="text/x-handlebars-template">
 {{#each this}}
 	<li id="app-category-{{ident}}" data-category-id="{{ident}}" tabindex="0">
-		<a>{{displayName}}</a>
+		<a href="#">{{displayName}}</a>
 	</li>
 {{/each}}
 
 <?php if($_['appstoreEnabled']): ?>
 	<li>
-		<a class="app-external" target="_blank" href="https://owncloud.org/dev"><?php p($l->t('Developer documentation'));?> ↗</a>
+		<a class="app-external" target="_blank" rel="noreferrer" href="https://owncloud.org/dev"><?php p($l->t('Developer documentation'));?> ↗</a>
 	</li>
 <?php endif; ?>
 </script>
@@ -53,7 +53,7 @@ script(
 	{{/if}}
 	<h2 class="app-name">
 		{{#if detailpage}}
-			<a href="{{detailpage}}" target="_blank">{{name}}</a>
+			<a href="{{detailpage}}" target="_blank" rel="noreferrer">{{name}}</a>
 		{{else}}
 			{{name}}
 		{{/if}}
@@ -82,20 +82,20 @@ script(
 			<?php p($l->t("Documentation:"));?>
 			{{#if documentation.user}}
 			<span class="userDocumentation">
-			<a id="userDocumentation" class="appslink" href="{{documentation.user}}" target="_blank"><?php p($l->t('User documentation'));?> ↗</a>
+			<a id="userDocumentation" class="appslink" href="{{documentation.user}}" target="_blank" rel="noreferrer"><?php p($l->t('User documentation'));?> ↗</a>
 			</span>
 			{{/if}}
 
 			{{#if documentation.admin}}
 			<span class="adminDocumentation">
-			<a id="adminDocumentation" class="appslink" href="{{documentation.admin}}" target="_blank"><?php p($l->t('Admin documentation'));?> ↗</a>
+			<a id="adminDocumentation" class="appslink" href="{{documentation.admin}}" target="_blank" rel="noreferrer"><?php p($l->t('Admin documentation'));?> ↗</a>
 			</span>
 			{{/if}}
 		</p>
 		{{/if}}
 	</div><!-- end app-description-container -->
-	<div class="app-description-toggle-show"><?php p($l->t("Show description …"));?></div>
-	<div class="app-description-toggle-hide hidden"><?php p($l->t("Hide description …"));?></div>
+	<div class="app-description-toggle-show" role="link"><?php p($l->t("Show description …"));?></div>
+	<div class="app-description-toggle-hide hidden" role="link"><?php p($l->t("Hide description …"));?></div>
 
 	<div class="app-dependencies update hidden">
 		<p><?php p($l->t('This app has an update available.')); ?></p>
@@ -134,7 +134,7 @@ script(
 	<br />
 	<input type="hidden" id="group_select" title="<?php p($l->t('All')); ?>" style="width: 200px">
 	{{else}}
-	<input class="enable" type="submit" data-appid="{{id}}" data-active="false" {{#unless canInstall}}disabled="disabled"{{/unless}} value="<?php p($l->t("Enable"));?>"/>
+	<input class="enable{{#if needsDownload}} needs-download{{/if}}" type="submit" data-appid="{{id}}" data-active="false" {{#unless canInstall}}disabled="disabled"{{/unless}} value="<?php p($l->t("Enable"));?>"/>
 	{{/if}}
 	{{#if canUnInstall}}
 	<input class="uninstall" type="submit" value="<?php p($l->t('Uninstall App')); ?>" data-appid="{{id}}" />
@@ -167,7 +167,7 @@ script(
 </div>
 <div id="app-content">
 	<div id="apps-list" class="icon-loading"></div>
-	<div id="apps-list-empty" class="hidden emptycontent">
+	<div id="apps-list-empty" class="hidden emptycontent emptycontent-search">
 		<div class="icon-search"></div>
 		<h2><?php p($l->t('No apps found for your version')) ?></h2>
 	</div>

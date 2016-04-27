@@ -131,6 +131,10 @@ try {
 		// Work
 		$jobList = \OC::$server->getJobList();
 
+		// We only ask for jobs for 14 minutes, because after 15 minutes the next
+		// system cron task should spawn.
+		$endTime = time() + 14 * 60;
+
 		$executedJobs = [];
 		while ($job = $jobList->getNext()) {
 			if (isset($executedJobs[$job->getId()])) {
@@ -144,6 +148,10 @@ try {
 			$jobList->setLastJob($job);
 			$executedJobs[$job->getId()] = true;
 			unset($job);
+
+			if (time() > $endTime) {
+				break;
+			}
 		}
 
 		// unlock the file
@@ -174,5 +182,7 @@ try {
 	exit();
 
 } catch (Exception $ex) {
+	\OCP\Util::writeLog('cron', $ex->getMessage(), \OCP\Util::FATAL);
+} catch (Error $ex) {
 	\OCP\Util::writeLog('cron', $ex->getMessage(), \OCP\Util::FATAL);
 }

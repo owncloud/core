@@ -100,6 +100,25 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^Downloading last public shared file inside a folder "([^"]*)" with range "([^"]*)"$/
+	 * @param string $range
+	 */
+	public function downloadPublicFileInsideAFolderWithRange($path, $range){
+		$token = $this->lastShareData->data->token;
+		$fullUrl = substr($this->baseUrl, 0, -4) . "public.php/webdav" . "$path";
+		$headers['Range'] = $range;
+
+		$client = new GClient();
+		$options = [];
+		$options['auth'] = [$token, ""];
+
+		$request = $client->createRequest("GET", $fullUrl, $options);
+		$request->addHeader('Range', $range);
+
+		$this->response = $client->send($request);
+	}
+
+	/**
 	 * @Then /^Downloaded content should be "([^"]*)"$/
 	 * @param string $content
 	 */
@@ -190,7 +209,7 @@ trait WebDav {
 	 */
 	public function theSingleResponseShouldContainAPropertyWithValue($key, $expectedValue) {
 		$keys = $this->response;
-		if (!isset($keys[$key])) {
+		if (!array_key_exists($key, $keys)) {
 			throw new \Exception("Cannot find property \"$key\" with \"$expectedValue\"");
 		}
 
@@ -199,6 +218,57 @@ trait WebDav {
 			throw new \Exception("Property \"$key\" found with value \"$value\", expected \"$expectedValue\"");
 		}
 	}
+
+	/**
+	 * @Then the response should contain a share-types property with
+	 */
+	public function theResponseShouldContainAShareTypesPropertyWith($table)
+	{
+		$keys = $this->response;
+		if (!array_key_exists('{http://owncloud.org/ns}share-types', $keys)) {
+			throw new \Exception("Cannot find property \"{http://owncloud.org/ns}share-types\"");
+		}
+
+		$foundTypes = [];
+		$data = $keys['{http://owncloud.org/ns}share-types'];
+		foreach ($data as $item) {
+			if ($item['name'] !== '{http://owncloud.org/ns}share-type') {
+				throw new \Exception('Invalid property found: "' . $item['name'] . '"');
+			}
+
+			$foundTypes[] = $item['value'];
+		}
+
+		foreach ($table->getRows() as $row) {
+			$key = array_search($row[0], $foundTypes);
+			if ($key === false) {
+				throw new \Exception('Expected type ' . $row[0] . ' not found');
+			}
+
+			unset($foundTypes[$key]);
+		}
+
+		if ($foundTypes !== []) {
+			throw new \Exception('Found more share types then specified: ' . $foundTypes);
+		}
+	}
+
+	/**
+	 * @Then the response should contain an empty property :property
+	 * @param string $property
+	 * @throws \Exception
+	 */
+	public function theResponseShouldContainAnEmptyProperty($property) {
+		$properties = $this->response;
+		if (!array_key_exists($property, $properties)) {
+			throw new \Exception("Cannot find property \"$property\"");
+		}
+
+		if ($properties[$property] !== null) {
+			throw new \Exception("Property \"$property\" is not empty");
+		}
+	}
+
 
 	/*Returns the elements of a propfind, $folderDepth requires 1 to see elements without children*/
 	public function listFolder($user, $path, $folderDepth, $properties = null){
@@ -265,6 +335,20 @@ trait WebDav {
 	}
 
 	/**
+	 * @When User :user uploads file with content :content to :destination
+	 */
+	public function userUploadsAFileWithContentTo($user, $content, $destination)
+	{
+		$file = \GuzzleHttp\Stream\Stream::factory($content);
+		try {
+			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
+		} catch (\GuzzleHttp\Exception\ServerException $e) {
+			// 4xx and 5xx responses cause an exception
+			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
 	 * @When User :user deletes file :file
 	 * @param string $user
 	 * @param string $file
@@ -307,6 +391,38 @@ trait WebDav {
 		$file = $destination . '-chunking-42-'.$total.'-'.$num;
 		$this->makeDavRequest($user, 'PUT', $file, ['OC-Chunked' => '1'], $data);
 	}
+
+	/**
+	 * @Given user :user creates a new chunking upload with id :id
+	 */
+	public function userCreatesANewChunkingUploadWithId($user, $id)
+	{
+		$destination = '/uploads/'.$user.'/'.$id;
+		$this->makeDavRequest($user, 'MKCOL', $destination, []);
+	}
+
+	/**
+	 * @Given user :user uploads new chunk file :num with :data to id :id
+	 */
+	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id)
+	{
+		$data = \GuzzleHttp\Stream\Stream::factory($data);
+		$destination = '/uploads/'.$user.'/'.$id.'/'.$num;
+		$this->makeDavRequest($user, 'PUT', $destination, [], $data);
+	}
+
+	/**
+	 * @Given user :user moves new chunk file with id :id to :dest
+	 */
+	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest)
+	{
+		$source = '/uploads/'.$user.'/'.$id.'/.file';
+		$destination = substr($this->baseUrl, 0, -4) . $this->davPath . '/files/'.$user.$dest;
+		$this->makeDavRequest($user, 'MOVE', $source, [
+			'Destination' => $destination
+		]);
+	}
+
 
 }
 

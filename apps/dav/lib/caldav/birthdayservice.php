@@ -23,6 +23,7 @@ namespace OCA\DAV\CalDAV;
 
 use Exception;
 use OCA\DAV\CardDAV\CardDavBackend;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Reader;
 
@@ -30,15 +31,20 @@ class BirthdayService {
 
 	const BIRTHDAY_CALENDAR_URI = 'contact_birthdays';
 
+	/** @var GroupPrincipalBackend */
+	private $principalBackend;
+
 	/**
 	 * BirthdayService constructor.
 	 *
 	 * @param CalDavBackend $calDavBackEnd
 	 * @param CardDavBackend $cardDavBackEnd
+	 * @param GroupPrincipalBackend $principalBackend
 	 */
-	public function __construct($calDavBackEnd, $cardDavBackEnd) {
+	public function __construct($calDavBackEnd, $cardDavBackEnd, $principalBackend) {
 		$this->calDavBackEnd = $calDavBackEnd;
 		$this->cardDavBackEnd = $cardDavBackEnd;
+		$this->principalBackend = $principalBackend;
 	}
 
 	/**
@@ -48,23 +54,26 @@ class BirthdayService {
 	 */
 	public function onCardChanged($addressBookId, $cardUri, $cardData) {
 
+		$targetPrincipals = $this->getAllAffectedPrincipals($addressBookId);
+		
 		$book = $this->cardDavBackEnd->getAddressBookById($addressBookId);
-		$principalUri = $book['principaluri'];
-		$calendarUri = self::BIRTHDAY_CALENDAR_URI;
-		$calendar = $this->ensureCalendarExists($principalUri, $calendarUri, []);
-		$objectUri = $book['uri'] . '-' . $cardUri. '.ics';
-		$calendarData = $this->buildBirthdayFromContact($cardData);
-		$existing = $this->calDavBackEnd->getCalendarObject($calendar['id'], $objectUri);
-		if (is_null($calendarData)) {
-			if (!is_null($existing)) {
-				$this->calDavBackEnd->deleteCalendarObject($calendar['id'], $objectUri);
-			}
-		} else {
-			if (is_null($existing)) {
-				$this->calDavBackEnd->createCalendarObject($calendar['id'], $objectUri, $calendarData->serialize());
+		$targetPrincipals[] = $book['principaluri'];
+		foreach ($targetPrincipals as $principalUri) {
+			$calendar = $this->ensureCalendarExists($principalUri);
+			$objectUri = $book['uri'] . '-' . $cardUri. '.ics';
+			$calendarData = $this->buildBirthdayFromContact($cardData);
+			$existing = $this->calDavBackEnd->getCalendarObject($calendar['id'], $objectUri);
+			if (is_null($calendarData)) {
+				if (!is_null($existing)) {
+					$this->calDavBackEnd->deleteCalendarObject($calendar['id'], $objectUri);
+				}
 			} else {
-				if ($this->birthdayEvenChanged($existing['calendardata'], $calendarData)) {
-					$this->calDavBackEnd->updateCalendarObject($calendar['id'], $objectUri, $calendarData->serialize());
+				if (is_null($existing)) {
+					$this->calDavBackEnd->createCalendarObject($calendar['id'], $objectUri, $calendarData->serialize());
+				} else {
+					if ($this->birthdayEvenChanged($existing['calendardata'], $calendarData)) {
+						$this->calDavBackEnd->updateCalendarObject($calendar['id'], $objectUri, $calendarData->serialize());
+					}
 				}
 			}
 		}
@@ -75,34 +84,32 @@ class BirthdayService {
 	 * @param string $cardUri
 	 */
 	public function onCardDeleted($addressBookId, $cardUri) {
+		$targetPrincipals = $this->getAllAffectedPrincipals($addressBookId);
 		$book = $this->cardDavBackEnd->getAddressBookById($addressBookId);
-		$principalUri = $book['principaluri'];
-		$calendarUri = self::BIRTHDAY_CALENDAR_URI;
-		$calendar = $this->ensureCalendarExists($principalUri, $calendarUri, []);
-		$objectUri = $book['uri'] . '-' . $cardUri. '.ics';
-		$this->calDavBackEnd->deleteCalendarObject($calendar['id'], $objectUri);
+		$targetPrincipals[] = $book['principaluri'];
+		foreach ($targetPrincipals as $principalUri) {
+			$calendar = $this->ensureCalendarExists($principalUri);
+			$objectUri = $book['uri'] . '-' . $cardUri . '.ics';
+			$this->calDavBackEnd->deleteCalendarObject($calendar['id'], $objectUri);
+		}
 	}
 
 	/**
 	 * @param string $principal
-	 * @param string $id
-	 * @param array $properties
 	 * @return array|null
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 */
-	public function ensureCalendarExists($principal, $id, $properties) {
-		$properties = array_merge([
-			'{DAV:}displayname' => 'Contact birthdays',
-			'{http://apple.com/ns/ical/}calendar-color' => '#FFFFCA',
-		], $properties);
-
-		$book = $this->calDavBackEnd->getCalendarByUri($principal, $id);
+	public function ensureCalendarExists($principal) {
+		$book = $this->calDavBackEnd->getCalendarByUri($principal, self::BIRTHDAY_CALENDAR_URI);
 		if (!is_null($book)) {
 			return $book;
 		}
-		$this->calDavBackEnd->createCalendar($principal, $id, $properties);
+		$this->calDavBackEnd->createCalendar($principal, self::BIRTHDAY_CALENDAR_URI, [
+			'{DAV:}displayname' => 'Contact birthdays',
+			'{http://apple.com/ns/ical/}calendar-color' => '#FFFFCA',
+		]);
 
-		return $this->calDavBackEnd->getCalendarByUri($principal, $id);
+		return $this->calDavBackEnd->getCalendarByUri($principal, self::BIRTHDAY_CALENDAR_URI);
 	}
 
 	/**
@@ -153,6 +160,11 @@ class BirthdayService {
 		$vEvent->{'RRULE'} = 'FREQ=YEARLY';
 		$vEvent->{'SUMMARY'} = $title . ' (*' . $date->format('Y') . ')';
 		$vEvent->{'TRANSP'} = 'TRANSPARENT';
+		$alarm = $vCal->createComponent('VALARM');
+		$alarm->add($vCal->createProperty('TRIGGER', '-PT0M', ['VALUE' => 'DURATION']));
+		$alarm->add($vCal->createProperty('ACTION', 'DISPLAY'));
+		$alarm->add($vCal->createProperty('DESCRIPTION', $vEvent->{'SUMMARY'}));
+		$vEvent->add($alarm);
 		$vCal->add($vEvent);
 		return $vCal;
 	}
@@ -161,7 +173,9 @@ class BirthdayService {
 	 * @param string $user
 	 */
 	public function syncUser($user) {
-		$books = $this->cardDavBackEnd->getAddressBooksForUser('principals/users/'.$user);
+		$principal = 'principals/users/'.$user;
+		$this->ensureCalendarExists($principal);
+		$books = $this->cardDavBackEnd->getAddressBooksForUser($principal);
 		foreach($books as $book) {
 			$cards = $this->cardDavBackEnd->getCards($book['id']);
 			foreach($cards as $card) {
@@ -187,6 +201,26 @@ class BirthdayService {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param integer $addressBookId
+	 * @return mixed
+	 */
+	protected function getAllAffectedPrincipals($addressBookId) {
+		$targetPrincipals = [];
+		$shares = $this->cardDavBackEnd->getShares($addressBookId);
+		foreach ($shares as $share) {
+			if ($share['{http://owncloud.org/ns}group-share']) {
+				$users = $this->principalBackend->getGroupMemberSet($share['{http://owncloud.org/ns}principal']);
+				foreach ($users as $user) {
+					$targetPrincipals[] = $user['uri'];
+				}
+			} else {
+				$targetPrincipals[] = $share['{http://owncloud.org/ns}principal'];
+			}
+		}
+		return array_values(array_unique($targetPrincipals, SORT_STRING));
 	}
 
 }

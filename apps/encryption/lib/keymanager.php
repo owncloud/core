@@ -174,6 +174,11 @@ class KeyManager {
 	 * check if a key pair for the master key exists, if not we create one
 	 */
 	public function validateMasterKey() {
+
+		if ($this->util->isMasterKeyEnabled() === false) {
+			return;
+		}
+
 		$masterKey = $this->getPublicMasterKey();
 		if (empty($masterKey)) {
 			$keyPair = $this->crypt->createKeyPair();
@@ -334,14 +339,13 @@ class KeyManager {
 	/**
 	 * Decrypt private key and store it
 	 *
-	 * @param string $uid userid
+	 * @param string $uid user id
 	 * @param string $passPhrase users password
 	 * @return boolean
 	 */
 	public function init($uid, $passPhrase) {
 
 		$this->session->setStatus(Session::INIT_EXECUTED);
-
 
 		try {
 			if($this->util->isMasterKeyEnabled()) {
@@ -390,17 +394,20 @@ class KeyManager {
 	public function getFileKey($path, $uid) {
 		$encryptedFileKey = $this->keyStorage->getFileKey($path, $this->fileKeyId, Encryption::ID);
 
+		if (empty($encryptedFileKey)) {
+			return '';
+		}
+
+		if ($this->util->isMasterKeyEnabled()) {
+			$uid = $this->getMasterKeyId();
+		}
+
 		if (is_null($uid)) {
 			$uid = $this->getPublicShareKeyId();
 			$shareKey = $this->getShareKey($path, $uid);
 			$privateKey = $this->keyStorage->getSystemUserKey($this->publicShareKeyId . '.privateKey', Encryption::ID);
 			$privateKey = $this->crypt->decryptPrivateKey($privateKey);
 		} else {
-
-			if ($this->util->isMasterKeyEnabled()) {
-				$uid = $this->getMasterKeyId();
-			}
-
 			$shareKey = $this->getShareKey($path, $uid);
 			$privateKey = $this->session->getPrivateKey();
 		}
@@ -493,6 +500,7 @@ class KeyManager {
 	 */
 	public function userHasKeys($userId) {
 		$privateKey = $publicKey = true;
+		$exception = null;
 
 		try {
 			$this->getPrivateKey($userId);
@@ -553,9 +561,11 @@ class KeyManager {
 	}
 
 	/**
+	 * creat a backup of the users private and public key and then  delete it
+	 *
 	 * @param string $uid
 	 */
-	public function replaceUserKeys($uid) {
+	public function deleteUserKeys($uid) {
 		$this->backupAllKeys('password_reset');
 		$this->deletePublicKey($uid);
 		$this->deletePrivateKey($uid);

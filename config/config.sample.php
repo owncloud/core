@@ -430,14 +430,14 @@ $CONFIG = array(
  * Both minimum and maximum times can be set together to explicitly define
  * version deletion. For migration purposes, this setting is installed
  * initially set to "auto", which is equivalent to the default setting in
- * ownCloud 8.1 and before.
+ * ownCloud 8.1 and before. 
  *
  * Available values:
  *
  * * ``auto``      
  *     default setting. Automatically expire versions according to expire 
- *     rules. Please refer to Files_versions online documentation for more 
- *     info.
+ *     rules. Please refer to :doc:`../configuration_files/file_versioning` for 
+ *     more information.
  * * ``D, auto``   
  *     keep versions at least for D days, apply expire rules to all versions 
  *     that are older than D days
@@ -612,21 +612,6 @@ $CONFIG = array(
  */
 
 /**
- * ownCloud uses some 3rd party PHP components to provide certain functionality.
- * These components are shipped as part of the software package and reside in
- * ``owncloud/3rdparty``. Use this option to configure a different location. 
- * For example, if your location is /var/www/owncloud/foo/3rdparty, then the 
- * correct configuration is '3rdpartyroot' => '/var/www/owncloud/foo/',
- */
-'3rdpartyroot' => '',
-
-/**
- * If you have an alternate ``3rdpartyroot``, you must also configure the URL as
- * seen by a Web browser.
- */
-'3rdpartyurl' => '',
-
-/**
  * This section is for configuring the download links for ownCloud clients, as
  * seen in the first-run wizard and on Personal pages.
  */
@@ -740,7 +725,7 @@ $CONFIG = array(
  */
 'preview_office_cl_parameters' =>
 	' --headless --nologo --nofirststartwizard --invisible --norestore '.
-	'-convert-to pdf -outdir ',
+	'--convert-to pdf --outdir ',
 
 /**
  * Only register providers that have been explicitly enabled
@@ -1010,10 +995,11 @@ $CONFIG = array(
 
 /**
  * Additional driver options for the database connection, eg. to enable SSL
- * encryption in MySQL.
+ * encryption in MySQL or specify a custom wait timeout on a cheap hoster.
  */
 'dbdriveroptions' => array(
 	PDO::MYSQL_ATTR_SSL_CA => '/file/path/to/ca_cert.pem',
+	PDO::MYSQL_ATTR_INIT_COMMAND => 'SET wait_timeout = 28800'
 ),
 
 /**
@@ -1194,6 +1180,15 @@ $CONFIG = array(
 'filelocking.enabled' => true,
 
 /**
+ * Set the time-to-live for locks in secconds.
+ *
+ * Any lock older than this will be automatically cleaned up.
+ *
+ * If not set this defaults to either 1 hour or the php max_execution_time, whichever is higher.
+ */
+'filelocking.ttl' => 3600,
+
+/**
  * Memory caching backend for file locking
  *
  * Because most memcache backends can clean values without warning using redis
@@ -1202,12 +1197,30 @@ $CONFIG = array(
 'memcache.locking' => '\\OC\\Memcache\\Redis',
 
 /**
+ * Disable the web based updater
+ */
+'upgrade.disable-web' => false,
+
+/**
  * Set this ownCloud instance to debugging mode
  *
  * Only enable this for local development and not in production environments
  * This will disable the minifier and outputs some additional debug information
  */
 'debug' => false,
+
+/**
+ * Sets the data-fingerprint of the current data served
+ *
+ * This is a property used by the clients to find out if a backup has been
+ * restored on the server. Once a backup is restored run
+ * ./occ maintenance:data-fingerprint
+ * To set this to a new value.
+ *
+ * Updating/Deleting this value can make connected clients stall until
+ * the user has resolved conflicts.
+ */
+'data-fingerprint' => '',
 
 /**
  * This entry is just here to show a warning in case somebody copied the sample

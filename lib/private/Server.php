@@ -49,6 +49,7 @@ use OC\Diagnostics\QueryLogger;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Config\UserMountCacheListener;
 use OC\Files\Node\HookConnector;
+use OC\Files\Node\LazyRoot;
 use OC\Files\Node\Root;
 use OC\Files\View;
 use OC\Http\Client\ClientService;
@@ -60,6 +61,7 @@ use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
 use OC\Mail\Mailer;
+use OC\Memcache\ArrayCache;
 use OC\Notification\Manager;
 use OC\Security\CertificateManager;
 use OC\Security\CSP\ContentSecurityPolicyManager;
@@ -73,6 +75,7 @@ use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
 use OC\Tagging\TagMapper;
+use OCP\IL10N;
 use OCP\IServerContainer;
 use OCP\Security\IContentSecurityPolicyManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -118,7 +121,8 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getLogger(),
 				$c->getL10N('core'),
 				new View(),
-				$util
+				$util,
+				new ArrayCache()
 			);
 		});
 
@@ -170,6 +174,11 @@ class Server extends ServerContainer implements IServerContainer {
 			$connector = new HookConnector($root, $view);
 			$connector->viewToNode();
 			return $root;
+		});
+		$this->registerService('LazyRootFolder', function(Server $c) {
+			return new LazyRoot(function() use ($c) {
+				return $c->getRootFolder();
+			});
 		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
@@ -262,7 +271,8 @@ class Server extends ServerContainer implements IServerContainer {
 			return new \OC\L10N\Factory(
 				$c->getConfig(),
 				$c->getRequest(),
-				$c->getUserSession()
+				$c->getUserSession(),
+				\OC::$SERVERROOT
 			);
 		});
 		$this->registerService('URLGenerator', function (Server $c) {
@@ -313,7 +323,8 @@ class Server extends ServerContainer implements IServerContainer {
 			return new AvatarManager(
 				$c->getUserManager(),
 				$c->getRootFolder(),
-				$c->getL10N('lib')
+				$c->getL10N('lib'),
+				$c->getLogger()
 			);
 		});
 		$this->registerService('Logger', function (Server $c) {
@@ -526,14 +537,17 @@ class Server extends ServerContainer implements IServerContainer {
 			return $factory->getLDAPProvider();
 		});
 		$this->registerService('LockingProvider', function (Server $c) {
-			if ($c->getConfig()->getSystemValue('filelocking.enabled', true) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
+			$ini = $c->getIniWrapper();
+			$config = $c->getConfig();
+			$ttl = $config->getSystemValue('filelocking.ttl', max(3600, $ini->getNumeric('max_execution_time')));
+			if ($config->getSystemValue('filelocking.enabled', true) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				/** @var \OC\Memcache\Factory $memcacheFactory */
 				$memcacheFactory = $c->getMemCacheFactory();
 				$memcache = $memcacheFactory->createLocking('lock');
 				if (!($memcache instanceof \OC\Memcache\NullCache)) {
-					return new MemcacheLockingProvider($memcache);
+					return new MemcacheLockingProvider($memcache, $ttl);
 				}
-				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger(), new TimeFactory());
+				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger(), new TimeFactory(), $ttl);
 			}
 			return new NoopLockingProvider();
 		});
@@ -625,7 +639,7 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getL10N('core'),
 				$factory,
 				$c->getUserManager(),
-				$c->getRootFolder()
+				$c->getLazyRootFolder()
 			);
 
 			return $manager;
@@ -729,6 +743,17 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getRootFolder() {
 		return $this->query('RootFolder');
+	}
+
+	/**
+	 * Returns the root folder of ownCloud's data directory
+	 * This is the lazy variant so this gets only initialized once it
+	 * is actually used.
+	 *
+	 * @return \OCP\Files\IRootFolder
+	 */
+	public function getLazyRootFolder() {
+		return $this->query('LazyRootFolder');
 	}
 
 	/**
@@ -844,7 +869,7 @@ class Server extends ServerContainer implements IServerContainer {
 	 *
 	 * @param string $app appid
 	 * @param string $lang
-	 * @return \OC_L10N
+	 * @return IL10N
 	 */
 	public function getL10N($app, $lang = null) {
 		return $this->getL10NFactory()->get($app, $lang);

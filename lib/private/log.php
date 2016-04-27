@@ -270,12 +270,12 @@ class Log implements ILogger {
 	/**
 	 * Logs an exception very detailed
 	 *
-	 * @param \Exception $exception
+	 * @param \Exception | \Throwable $exception
 	 * @param array $context
 	 * @return void
 	 * @since 8.2.0
 	 */
-	public function logException(\Exception $exception, array $context = array()) {
+	public function logException($exception, array $context = array()) {
 		$exception = array(
 			'Exception' => get_class($exception),
 			'Message' => $exception->getMessage(),
@@ -284,7 +284,7 @@ class Log implements ILogger {
 			'File' => $exception->getFile(),
 			'Line' => $exception->getLine(),
 		);
-		$exception['Trace'] = preg_replace('!(login|checkPassword)\(.*\)!', '$1(*** username and password replaced ***)', $exception['Trace']);
+		$exception['Trace'] = preg_replace('!(login|checkPassword|updatePrivateKeyPassword)\(.*\)!', '$1(*** username and password replaced ***)', $exception['Trace']);
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
 		$msg .= ': ' . json_encode($exception);
 		$this->error($msg, $context);

@@ -440,7 +440,7 @@ class OC_Util {
 	 * generates a path for JS/CSS files. If no application is provided it will create the path for core.
 	 *
 	 * @param string $application application to get the files from
-	 * @param string $directory directory withing this application (css, js, vendor, etc)
+	 * @param string $directory directory within this application (css, js, vendor, etc)
 	 * @param string $file the file inside of the above folder
 	 * @return string the path
 	 */
@@ -657,7 +657,7 @@ class OC_Util {
 					'error' => $l->t('Cannot write into "config" directory'),
 					'hint' => $l->t('This can usually be fixed by '
 						. '%sgiving the webserver write access to the config directory%s.',
-						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
+						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'))
 				);
 			}
 		}
@@ -673,7 +673,7 @@ class OC_Util {
 					'hint' => $l->t('This can usually be fixed by '
 						. '%sgiving the webserver write access to the apps directory%s'
 						. ' or disabling the appstore in the config file.',
-						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
+						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'))
 				);
 			}
 		}
@@ -687,7 +687,7 @@ class OC_Util {
 					$errors[] = array(
 						'error' => $l->t('Cannot create "data" directory (%s)', array($CONFIG_DATADIRECTORY)),
 						'hint' => $l->t('This can usually be fixed by '
-							. '<a href="%s" target="_blank">giving the webserver write access to the root directory</a>.',
+							. '<a href="%s" target="_blank" rel="noreferrer">giving the webserver write access to the root directory</a>.',
 							array($urlGenerator->linkToDocs('admin-dir_permissions')))
 					);
 				}
@@ -695,7 +695,7 @@ class OC_Util {
 				//common hint for all file permissions error messages
 				$permissionsHint = $l->t('Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
-					array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
+					array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'));
 				$errors[] = array(
 					'error' => 'Data directory (' . $CONFIG_DATADIRECTORY . ') not writable by ownCloud',
 					'hint' => $permissionsHint
@@ -947,44 +947,6 @@ class OC_Util {
 	}
 
 	/**
-	 * @param array $errors
-	 * @param string[] $messages
-	 */
-	public static function displayLoginPage($errors = array(), $messages = []) {
-		$parameters = array();
-		foreach ($errors as $value) {
-			$parameters[$value] = true;
-		}
-		$parameters['messages'] = $messages;
-		if (!empty($_REQUEST['user'])) {
-			$parameters["username"] = $_REQUEST['user'];
-			$parameters['user_autofocus'] = false;
-		} else {
-			$parameters["username"] = '';
-			$parameters['user_autofocus'] = true;
-		}
-		if (isset($_REQUEST['redirect_url'])) {
-			$parameters['redirect_url'] = $_REQUEST['redirect_url'];
-		}
-
-		$parameters['canResetPassword'] = true;
-		if (!\OC::$server->getSystemConfig()->getValue('lost_password_link')) {
-			if (isset($_REQUEST['user'])) {
-				$user = \OC::$server->getUserManager()->get($_REQUEST['user']);
-				if ($user instanceof IUser) {
-					$parameters['canResetPassword'] = $user->canChangePassword();
-				}
-			}
-		}
-
-		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
-		$parameters['rememberLoginAllowed'] = self::rememberLoginAllowed();
-		$parameters['rememberLoginState'] = isset($_POST['remember_login']) ? $_POST['remember_login'] : 0;
-		\OC_Hook::emit('OC_Util', 'pre_displayLoginPage', array('parameters' => $parameters));
-		OC_Template::printGuestPage("", "login", $parameters);
-	}
-
-	/**
 	 * Check if the user is logged in, redirects to home if not. With
 	 * redirect URL parameter to the request URI.
 	 *
@@ -993,7 +955,8 @@ class OC_Util {
 	public static function checkLoggedIn() {
 		// Check if we are a user
 		if (!OC_User::isLoggedIn()) {
-			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php',
+			header('Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
+					'core.login.showLoginForm',
 					[
 						'redirect_url' => \OC::$server->getRequest()->getRequestUri()
 					]

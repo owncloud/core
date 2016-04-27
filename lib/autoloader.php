@@ -110,9 +110,9 @@ class Autoloader {
 				$split[1] = strtolower($split[1]);
 
 				if ($split[1] === 'core') {
-					$paths[] = \OC::$SERVERROOT . '/core/' . strtolower(str_replace('\\', '/', $split[2])) . '.php';
+					// Covered by PSR-4 autoloader
 				} else if ($split[1] === 'settings') {
-					$paths[] = \OC::$SERVERROOT . '/settings/' . strtolower(str_replace('\\', '/', $split[2])) . '.php';
+					// Covered by PSR-4 autoloader
 				} else {
 					$paths[] = \OC::$SERVERROOT . '/lib/private/' . $split[1] . '/' . strtolower(str_replace('\\', '/', $split[2])) . '.php';
 				}
@@ -162,6 +162,10 @@ class Autoloader {
 		$pathsToRequire = null;
 		if ($this->memoryCache) {
 			$pathsToRequire = $this->memoryCache->get($class);
+		}
+
+		if(class_exists($class, false)) {
+			return false;
 		}
 
 		if (!is_array($pathsToRequire)) {

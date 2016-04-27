@@ -1,8 +1,10 @@
 OC.L10N.register(
     "comments",
     {
-    "<strong>Comments</strong> for files" : "<strong>Hozzászólások</strong> a fájlokhoz",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Hozzászólás</strong> a fájlokhoz <em>(mindig listázásra kerül a hírfolyamon)</em>",
+    "You commented" : "Hozzászólt",
     "%1$s commented" : "%1$s hozzászólt",
+    "You commented on %2$s" : "Hozzászólt ehhez: %2$s",
     "%1$s commented on %2$s" : "%1$s hozzászólt ehhez: %2$s",
     "Comments" : "Hozzászólások",
     "Type in a new comment..." : "Új hozzászólás írása...",

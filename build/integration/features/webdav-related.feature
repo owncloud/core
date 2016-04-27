@@ -68,13 +68,22 @@ Feature: webdav-related
 		And Downloading last public shared file with range "bytes=51-77"
 		Then Downloaded content should be "example file for developers"
 
+	Scenario: download a public shared file inside a folder with range
+		Given user "user0" exists
+		And As an "user0"
+		When creating a share with
+			| path | PARENT |
+			| shareType | 3 |
+		And Downloading last public shared file inside a folder "/parent.txt" with range "bytes=1-7"
+		Then Downloaded content should be "wnCloud"
+
 	Scenario: Downloading a file on the old endpoint should serve security headers
 		Given using dav path "remote.php/webdav"
 		And As an "admin"
 		When Downloading file "/welcome.txt"
 		Then The following headers should be set
 			|Content-Disposition|attachment|
-			|Content-Security-Policy|default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-src *; img-src * data: blob:; font-src 'self' data:; media-src *; connect-src *|
+			|Content-Security-Policy|default-src 'none';|
 			|X-Content-Type-Options |nosniff|
 			|X-Download-Options|noopen|
 			|X-Frame-Options|Sameorigin|
@@ -89,7 +98,7 @@ Feature: webdav-related
 		When Downloading file "/welcome.txt"
 		Then The following headers should be set
 			|Content-Disposition|attachment|
-			|Content-Security-Policy|default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-src *; img-src * data: blob:; font-src 'self' data:; media-src *; connect-src *|
+			|Content-Security-Policy|default-src 'none';|
 			|X-Content-Type-Options |nosniff|
 			|X-Download-Options|noopen|
 			|X-Frame-Options|Sameorigin|
@@ -167,4 +176,113 @@ Feature: webdav-related
 		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
 		When As an "user0"
 		And Downloading file "/myChunkedFile.txt"
+		Then Downloaded content should be "AAAAABBBBBCCCCC"
+
+	Scenario: A file that is not shared does not have a share-types property
+		Given user "user0" exists
+		And user "user0" created a folder "/test"
+		When as "user0" gets properties of folder "/test" with
+			|{http://owncloud.org/ns}share-types|
+		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
+
+	Scenario: A file that is shared to a user has a share-types property
+		Given user "user0" exists
+		And user "user1" exists
+		And user "user0" created a folder "/test"
+		And as "user0" creating a share with
+			| path | test |
+			| shareType | 0 |
+			| permissions | 31 |
+			| shareWith | user1 |
+		When as "user0" gets properties of folder "/test" with
+			|{http://owncloud.org/ns}share-types|
+		Then the response should contain a share-types property with
+			| 0 |
+
+	Scenario: A file that is shared to a group has a share-types property
+		Given user "user0" exists
+		And group "group1" exists
+		And user "user0" created a folder "/test"
+		And as "user0" creating a share with
+			| path | test |
+			| shareType | 1 |
+			| permissions | 31 |
+			| shareWith | group1 |
+		When as "user0" gets properties of folder "/test" with
+			|{http://owncloud.org/ns}share-types|
+		Then the response should contain a share-types property with
+			| 1 |
+
+	Scenario: A file that is shared by link has a share-types property
+		Given user "user0" exists
+		And user "user0" created a folder "/test"
+		And as "user0" creating a share with
+			| path | test |
+			| shareType | 3 |
+			| permissions | 31 |
+		When as "user0" gets properties of folder "/test" with
+			|{http://owncloud.org/ns}share-types|
+		Then the response should contain a share-types property with
+			| 3 |
+
+	Scenario: A file that is shared by user,group and link has a share-types property
+		Given user "user0" exists
+		And user "user1" exists
+		And group "group2" exists
+		And user "user0" created a folder "/test"
+		And as "user0" creating a share with
+			| path        | test  |
+			| shareType   | 0     |
+			| permissions | 31    |
+			| shareWith   | user1 |
+		And as "user0" creating a share with
+			| path        | test  |
+			| shareType   | 1     |
+			| permissions | 31    |
+			| shareWith   | group2 |
+		And as "user0" creating a share with
+			| path        | test  |
+			| shareType   | 3     |
+			| permissions | 31    |
+		When as "user0" gets properties of folder "/test" with
+			|{http://owncloud.org/ns}share-types|
+		Then the response should contain a share-types property with
+			| 0 |
+			| 1 |
+			| 3 |
+
+	Scenario: Upload chunked file asc with new chunking
+		Given using dav path "remote.php/dav"
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
+		When As an "user0"
+		And Downloading file "/files/user0/myChunkedFile.txt"
+		Then Downloaded content should be "AAAAABBBBBCCCCC"
+
+	Scenario: Upload chunked file desc with new chunking
+		Given using dav path "remote.php/dav"
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
+		When As an "user0"
+		And Downloading file "/files/user0/myChunkedFile.txt"
+		Then Downloaded content should be "AAAAABBBBBCCCCC"
+
+	Scenario: Upload chunked file random with new chunking
+		Given using dav path "remote.php/dav"
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
+		When As an "user0"
+		And Downloading file "/files/user0/myChunkedFile.txt"
 		Then Downloaded content should be "AAAAABBBBBCCCCC"

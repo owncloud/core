@@ -1,8 +1,10 @@
 OC.L10N.register(
     "comments",
     {
-    "<strong>Comments</strong> for files" : "<strong>Reacties</strong> voor bestanden",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Reacties</strong> voor bestanden <em>(altijd getoond in de stroom)</em>",
+    "You commented" : "U heeft gereageerd",
     "%1$s commented" : "%1$s heeft gereageerd",
+    "You commented on %2$s" : "U heeft gereageerd op %2$s",
     "%1$s commented on %2$s" : "%1$s heeft gereageerd op %2$s",
     "Comments" : "Reacties",
     "Type in a new comment..." : "Type een nieuwe reactie...",

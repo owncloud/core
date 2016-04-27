@@ -66,6 +66,11 @@ class Application extends \OCP\AppFramework\App {
 			$session = $this->getContainer()->query('Session');
 			$session->setStatus(Session::RUN_MIGRATION);
 		}
+		if ($this->encryptionManager->isEnabled() && $encryptionSystemReady) {
+			/** @var Setup $setup */
+			$setup = $this->getContainer()->query('UserSetup');
+			$setup->setupSystem();
+		}
 	}
 
 	/**
@@ -237,6 +242,7 @@ class Application extends \OCP\AppFramework\App {
 					$c->getServer()->getUserManager(),
 					new View(),
 					$c->query('KeyManager'),
+					$c->query('Util'),
 					$server->getConfig(),
 					$server->getMailer(),
 					$server->getL10N('encryption'),

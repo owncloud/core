@@ -50,9 +50,6 @@ class Connection extends LDAPUtility {
 	private $configPrefix;
 	private $configID;
 	private $configured = false;
-
-	//whether connection should be kept on __destruct
-	private $dontDestruct = false;
 	private $hasPagedResultSupport = true;
 
 	/**
@@ -86,16 +83,16 @@ class Connection extends LDAPUtility {
 		if($memcache->isAvailable()) {
 			$this->cache = $memcache->create();
 		}
-		$this->hasPagedResultSupport =
-			$this->ldap->hasPagedResultSupport();
 		$helper = new Helper();
 		$this->doNotValidate = !in_array($this->configPrefix,
 			$helper->getServerConfigurationPrefixes());
+		$this->hasPagedResultSupport =
+			intval($this->configuration->ldapPagingSize) !== 0
+			|| $this->ldap->hasPagedResultSupport();
 	}
 
 	public function __destruct() {
-		if(!$this->dontDestruct &&
-			$this->ldap->isResource($this->ldapConnectionRes)) {
+		if($this->ldap->isResource($this->ldapConnectionRes)) {
 			@$this->ldap->unbind($this->ldapConnectionRes);
 		};
 	}
@@ -104,11 +101,9 @@ class Connection extends LDAPUtility {
 	 * defines behaviour when the instance is cloned
 	 */
 	public function __clone() {
-		//a cloned instance inherits the connection resource. It may use it,
-		//but it may not disconnect it
-		$this->dontDestruct = true;
 		$this->configuration = new Configuration($this->configPrefix,
 												 !is_null($this->configID));
+		$this->ldapConnectionRes = null;
 	}
 
 	/**
@@ -213,28 +208,9 @@ class Connection extends LDAPUtility {
 		if(is_null($this->cache) || !$this->configuration->ldapCacheTTL) {
 			return null;
 		}
-		if(!$this->isCached($key)) {
-			return null;
-
-		}
 		$key = $this->getCacheKey($key);
 
 		return json_decode(base64_decode($this->cache->get($key)), true);
-	}
-
-	/**
-	 * @param string $key
-	 * @return bool
-	 */
-	public function isCached($key) {
-		if(!$this->configured) {
-			$this->readConfiguration();
-		}
-		if(is_null($this->cache) || !$this->configuration->ldapCacheTTL) {
-			return false;
-		}
-		$key = $this->getCacheKey($key);
-		return $this->cache->hasKey($key);
 	}
 
 	/**

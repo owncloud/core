@@ -123,7 +123,8 @@ class DefaultShareProviderTest extends \Test\TestCase {
 			->values([
 				'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_USER),
 				'share_with'  => $qb->expr()->literal('sharedWith'),
-				'uid_owner'   => $qb->expr()->literal('sharedBy'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
@@ -133,27 +134,18 @@ class DefaultShareProviderTest extends \Test\TestCase {
 
 		$id = $qb->getLastInsertId();
 
-		$sharedWith = $this->getMock('OCP\IUser');
 		$sharedBy = $this->getMock('OCP\IUser');
 		$sharedBy->method('getUID')->willReturn('sharedBy');
 		$shareOwner = $this->getMock('OCP\IUser');
 		$shareOwner->method('getUID')->willReturn('shareOwner');
 
-		$sharedByPath = $this->getMock('\OCP\Files\File');
 		$ownerPath = $this->getMock('\OCP\Files\File');
-
-		$sharedByPath->method('getOwner')->willReturn($shareOwner);
-
-		$sharedByFolder = $this->getMock('\OCP\Files\Folder');
-		$sharedByFolder->method('getById')->with(42)->willReturn([$sharedByPath]);
-
 		$shareOwnerFolder = $this->getMock('\OCP\Files\Folder');
 		$shareOwnerFolder->method('getById')->with(42)->willReturn([$ownerPath]);
 
 		$this->rootFolder
 			->method('getUserFolder')
 			->will($this->returnValueMap([
-				['sharedBy', $sharedByFolder],
 				['shareOwner', $shareOwnerFolder],
 			]));
 
@@ -257,7 +249,8 @@ class DefaultShareProviderTest extends \Test\TestCase {
 			->values([
 				'share_type' => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_GROUP),
 				'share_with' => $qb->expr()->literal('sharedWith'),
-				'uid_owner' => $qb->expr()->literal('sharedBy'),
+				'uid_owner' => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
@@ -268,27 +261,13 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		// Get the id
 		$id = $qb->getLastInsertId();
 
-		$sharedWith = $this->getMock('OCP\IGroup');
-		$sharedBy = $this->getMock('OCP\IUser');
-		$sharedBy->method('getUID')->willReturn('sharedBy');
-		$shareOwner = $this->getMock('OCP\IUser');
-		$shareOwner->method('getUID')->willReturn('shareOwner');
-
-		$sharedByPath = $this->getMock('\OCP\Files\Folder');
 		$ownerPath = $this->getMock('\OCP\Files\Folder');
-
-		$sharedByPath->method('getOwner')->willReturn($shareOwner);
-
-		$sharedByFolder = $this->getMock('\OCP\Files\Folder');
-		$sharedByFolder->method('getById')->with(42)->willReturn([$sharedByPath]);
-
 		$shareOwnerFolder = $this->getMock('\OCP\Files\Folder');
 		$shareOwnerFolder->method('getById')->with(42)->willReturn([$ownerPath]);
 
 		$this->rootFolder
 				->method('getUserFolder')
 				->will($this->returnValueMap([
-						['sharedBy', $sharedByFolder],
 						['shareOwner', $shareOwnerFolder],
 				]));
 
@@ -351,7 +330,8 @@ class DefaultShareProviderTest extends \Test\TestCase {
 			->values([
 				'share_type' => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK),
 				'share_with' => $qb->expr()->literal('sharedWith'),
-				'uid_owner' => $qb->expr()->literal('sharedBy'),
+				'uid_owner' => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
@@ -363,35 +343,15 @@ class DefaultShareProviderTest extends \Test\TestCase {
 
 		$id = $qb->getLastInsertId();
 
-		$sharedBy = $this->getMock('OCP\IUser');
-		$sharedBy->method('getUID')->willReturn('sharedBy');
-		$shareOwner = $this->getMock('OCP\IUser');
-		$shareOwner->method('getUID')->willReturn('shareOwner');
-
-		$sharedByPath = $this->getMock('\OCP\Files\Folder');
 		$ownerPath = $this->getMock('\OCP\Files\Folder');
-
-		$sharedByPath->method('getOwner')->willReturn($shareOwner);
-
-		$sharedByFolder = $this->getMock('\OCP\Files\Folder');
-		$sharedByFolder->method('getById')->with(42)->willReturn([$sharedByPath]);
-
 		$shareOwnerFolder = $this->getMock('\OCP\Files\Folder');
 		$shareOwnerFolder->method('getById')->with(42)->willReturn([$ownerPath]);
 
 		$this->rootFolder
 				->method('getUserFolder')
 				->will($this->returnValueMap([
-						['sharedBy', $sharedByFolder],
 						['shareOwner', $shareOwnerFolder],
 				]));
-
-		$this->userManager
-			->method('get')
-			->will($this->returnValueMap([
-				['sharedBy', $sharedBy],
-				['shareOwner', $shareOwner],
-			]));
 
 		$share = $this->provider->getShareById($id);
 
@@ -544,7 +504,8 @@ class DefaultShareProviderTest extends \Test\TestCase {
 			->values([
 				'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_USER),
 				'share_with'  => $qb->expr()->literal('sharedWith'),
-				'uid_owner'   => $qb->expr()->literal('sharedBy'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
@@ -553,22 +514,15 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		$qb->execute();
 
 		// Get the id
-		$qb = $this->dbConn->getQueryBuilder();
-		$cursor = $qb->select('id')
-			->from('share')
-			->setMaxResults(1)
-			->orderBy('id', 'DESC')
-			->execute();
-		$id = $cursor->fetch();
-		$id = $id['id'];
-		$cursor->closeCursor();
+		$id = $qb->getLastInsertId();
 
 		$qb = $this->dbConn->getQueryBuilder();
 		$qb->insert('share')
 			->values([
 				'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_USER),
 				'share_with'  => $qb->expr()->literal('user1'),
-				'uid_owner'   => $qb->expr()->literal('user2'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('user2'),
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(1),
 				'file_target' => $qb->expr()->literal('myTarget1'),
@@ -582,7 +536,8 @@ class DefaultShareProviderTest extends \Test\TestCase {
 			->values([
 				'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_GROUP),
 				'share_with'  => $qb->expr()->literal('group1'),
-				'uid_owner'   => $qb->expr()->literal('user3'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('user3'),
 				'item_type'   => $qb->expr()->literal('folder'),
 				'file_source' => $qb->expr()->literal(3),
 				'file_target' => $qb->expr()->literal('myTarget2'),
@@ -590,30 +545,6 @@ class DefaultShareProviderTest extends \Test\TestCase {
 				'parent'      => $qb->expr()->literal($id),
 			]);
 		$qb->execute();
-
-		$shareOwner = $this->getMock('OCP\IUser');
-		$shareOwner->method('getUID')->willReturn('shareOwner');
-		$user1 = $this->getMock('OCP\IUser');
-		$user2 = $this->getMock('OCP\IUser');
-		$user2->method('getUID')->willReturn('user2');
-		$user3 = $this->getMock('OCP\IUser');
-		$user3->method('getUID')->willReturn('user3');
-
-		$user2Path = $this->getMock('\OCP\Files\File');
-		$user2Path->expects($this->once())->method('getOwner')->willReturn($shareOwner);
-		$user2Folder = $this->getMock('\OCP\Files\Folder');
-		$user2Folder->expects($this->once())
-			->method('getById')
-			->with(1)
-			->willReturn([$user2Path]);
-
-		$user3Path = $this->getMock('\OCP\Files\Folder');
-		$user3Path->expects($this->once())->method('getOwner')->willReturn($shareOwner);
-		$user3Folder = $this->getMock('\OCP\Files\Folder');
-		$user3Folder->expects($this->once())
-			->method('getById')
-			->with(3)
-			->willReturn([$user3Path]);
 
 		$ownerPath = $this->getMock('\OCP\Files\Folder');
 		$ownerFolder = $this->getMock('\OCP\Files\Folder');
@@ -623,23 +554,6 @@ class DefaultShareProviderTest extends \Test\TestCase {
 			->method('getUserFolder')
 			->will($this->returnValueMap([
 				['shareOwner', $ownerFolder],
-				['user2', $user2Folder],
-				['user3', $user3Folder],
-			]));
-
-		$this->userManager
-			->method('get')
-			->will($this->returnValueMap([
-				['user1', $user1],
-				['user2', $user2],
-				['user3', $user3],
-			]));
-
-		$group1 = $this->getMock('OCP\IGroup');
-		$this->groupManager
-			->method('get')
-			->will($this->returnValueMap([
-				['group1', $group1]
 			]));
 
 		$share = $this->getMock('\OCP\Share\IShare');
@@ -1055,7 +969,7 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		$this->assertCount(1, $share);
 
 		$share = $share[0];
-		$this->assertSame($id, $share->getId());
+		$this->assertSame((string)$id, $share->getId());
 		$this->assertSame('sharedWith', $share->getSharedWith());
 		$this->assertSame('shareOwner', $share->getShareOwner());
 		$this->assertSame('sharedBy', $share->getSharedBy());
@@ -1957,5 +1871,284 @@ class DefaultShareProviderTest extends \Test\TestCase {
 
 		$share = $this->provider->getShareById($id, 'user0');
 		$this->assertSame('/ultraNewTarget', $share->getTarget());
+	}
+
+	public function dataDeleteUser() {
+		return [
+			[\OCP\Share::SHARE_TYPE_USER, 'a', 'b', 'c', 'a', true],
+			[\OCP\Share::SHARE_TYPE_USER, 'a', 'b', 'c', 'b', false],
+			[\OCP\Share::SHARE_TYPE_USER, 'a', 'b', 'c', 'c', true],
+			[\OCP\Share::SHARE_TYPE_USER, 'a', 'b', 'c', 'd', false],
+			[\OCP\Share::SHARE_TYPE_GROUP, 'a', 'b', 'c', 'a', true],
+			[\OCP\Share::SHARE_TYPE_GROUP, 'a', 'b', 'c', 'b', false],
+			// The group c is still valid but user c is deleted so group share stays
+			[\OCP\Share::SHARE_TYPE_GROUP, 'a', 'b', 'c', 'c', false],
+			[\OCP\Share::SHARE_TYPE_GROUP, 'a', 'b', 'c', 'd', false],
+			[\OCP\Share::SHARE_TYPE_LINK, 'a', 'b', 'c', 'a', true],
+			// To avoid invisible link shares delete initiated link shares as well (see #22327)
+			[\OCP\Share::SHARE_TYPE_LINK, 'a', 'b', 'c', 'b', true],
+			[\OCP\Share::SHARE_TYPE_LINK, 'a', 'b', 'c', 'c', false],
+			[\OCP\Share::SHARE_TYPE_LINK, 'a', 'b', 'c', 'd', false],
+		];
+	}
+
+	/**
+	 * @dataProvider dataDeleteUser
+	 *
+	 * @param int $type The shareType (user/group/link)
+	 * @param string $owner The owner of the share (uid)
+	 * @param string $initiator The initiator of the share (uid)
+	 * @param string $recipient The recipient of the share (uid/gid/pass)
+	 * @param string $deletedUser The user that is deleted
+	 * @param bool $rowDeleted Is the row deleted in this setup
+	 */
+	public function testDeleteUser($type, $owner, $initiator, $recipient, $deletedUser, $rowDeleted) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->setValue('share_type', $qb->createNamedParameter($type))
+			->setValue('uid_owner', $qb->createNamedParameter($owner))
+			->setValue('uid_initiator', $qb->createNamedParameter($initiator))
+			->setValue('share_with', $qb->createNamedParameter($recipient))
+			->setValue('item_type', $qb->createNamedParameter('file'))
+			->setValue('item_source', $qb->createNamedParameter(42))
+			->setValue('file_source', $qb->createNamedParameter(42))
+			->execute();
+
+		$id = $qb->getLastInsertId();
+
+		$this->provider->userDeleted($deletedUser, $type);
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('*')
+			->from('share')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($id))
+			);
+		$cursor = $qb->execute();
+		$data = $cursor->fetchAll();
+		$cursor->closeCursor();
+
+		$this->assertCount($rowDeleted ? 0 : 1, $data);
+	}
+
+	public function dataDeleteUserGroup() {
+		return [
+			['a', 'b', 'c', 'a', true, true],
+			['a', 'b', 'c', 'b', false, false],
+			['a', 'b', 'c', 'c', false, true],
+			['a', 'b', 'c', 'd', false, false],
+		];
+	}
+
+	/**
+	 * @dataProvider dataDeleteUserGroup
+	 *
+	 * @param string $owner The owner of the share (uid)
+	 * @param string $initiator The initiator of the share (uid)
+	 * @param string $recipient The recipient of the usergroup share (uid)
+	 * @param string $deletedUser The user that is deleted
+	 * @param bool $groupShareDeleted
+	 * @param bool $userGroupShareDeleted
+	 */
+	public function testDeleteUserGroup($owner, $initiator, $recipient, $deletedUser, $groupShareDeleted, $userGroupShareDeleted) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->setValue('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP))
+			->setValue('uid_owner', $qb->createNamedParameter($owner))
+			->setValue('uid_initiator', $qb->createNamedParameter($initiator))
+			->setValue('share_with', $qb->createNamedParameter('group'))
+			->setValue('item_type', $qb->createNamedParameter('file'))
+			->setValue('item_source', $qb->createNamedParameter(42))
+			->setValue('file_source', $qb->createNamedParameter(42))
+			->execute();
+		$groupId = $qb->getLastInsertId();
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->setValue('share_type', $qb->createNamedParameter(2))
+			->setValue('uid_owner', $qb->createNamedParameter($owner))
+			->setValue('uid_initiator', $qb->createNamedParameter($initiator))
+			->setValue('share_with', $qb->createNamedParameter($recipient))
+			->setValue('item_type', $qb->createNamedParameter('file'))
+			->setValue('item_source', $qb->createNamedParameter(42))
+			->setValue('file_source', $qb->createNamedParameter(42))
+			->execute();
+		$userGroupId = $qb->getLastInsertId();
+
+		$this->provider->userDeleted($deletedUser, \OCP\Share::SHARE_TYPE_GROUP);
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('*')
+			->from('share')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($userGroupId))
+			);
+		$cursor = $qb->execute();
+		$data = $cursor->fetchAll();
+		$cursor->closeCursor();
+		$this->assertCount($userGroupShareDeleted ? 0 : 1, $data);
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('*')
+			->from('share')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($groupId))
+			);
+		$cursor = $qb->execute();
+		$data = $cursor->fetchAll();
+		$cursor->closeCursor();
+		$this->assertCount($groupShareDeleted ? 0 : 1, $data);
+	}
+
+	public function dataGroupDeleted() {
+		return [
+			[
+				[
+					'type' => \OCP\Share::SHARE_TYPE_USER,
+					'recipient' => 'user',
+					'children' => []
+				], 'group', false
+			],
+			[
+				[
+					'type' => \OCP\Share::SHARE_TYPE_USER,
+					'recipient' => 'user',
+					'children' => []
+				], 'user', false
+			],
+			[
+				[
+					'type' => \OCP\Share::SHARE_TYPE_LINK,
+					'recipient' => 'user',
+					'children' => []
+				], 'group', false
+			],
+			[
+				[
+					'type' => \OCP\Share::SHARE_TYPE_GROUP,
+					'recipient' => 'group1',
+					'children' => [
+						'foo',
+						'bar'
+					]
+				], 'group2', false
+			],
+			[
+				[
+					'type' => \OCP\Share::SHARE_TYPE_GROUP,
+					'recipient' => 'group1',
+					'children' => [
+						'foo',
+						'bar'
+					]
+				], 'group1', true
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider dataGroupDeleted
+	 *
+	 * @param $shares
+	 * @param $groupToDelete
+	 * @param $shouldBeDeleted
+	 */
+	public function testGroupDeleted($shares, $groupToDelete, $shouldBeDeleted) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->setValue('share_type', $qb->createNamedParameter($shares['type']))
+			->setValue('uid_owner', $qb->createNamedParameter('owner'))
+			->setValue('uid_initiator', $qb->createNamedParameter('initiator'))
+			->setValue('share_with', $qb->createNamedParameter($shares['recipient']))
+			->setValue('item_type', $qb->createNamedParameter('file'))
+			->setValue('item_source', $qb->createNamedParameter(42))
+			->setValue('file_source', $qb->createNamedParameter(42))
+			->execute();
+		$ids = [$qb->getLastInsertId()];
+
+		foreach ($shares['children'] as $child) {
+			$qb = $this->dbConn->getQueryBuilder();
+			$qb->insert('share')
+				->setValue('share_type', $qb->createNamedParameter(2))
+				->setValue('uid_owner', $qb->createNamedParameter('owner'))
+				->setValue('uid_initiator', $qb->createNamedParameter('initiator'))
+				->setValue('share_with', $qb->createNamedParameter($child))
+				->setValue('item_type', $qb->createNamedParameter('file'))
+				->setValue('item_source', $qb->createNamedParameter(42))
+				->setValue('file_source', $qb->createNamedParameter(42))
+				->setValue('parent', $qb->createNamedParameter($ids[0]))
+				->execute();
+			$ids[] = $qb->getLastInsertId();
+		}
+
+		$this->provider->groupDeleted($groupToDelete);
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$cursor = $qb->select('*')
+			->from('share')
+			->where($qb->expr()->in('id', $qb->createNamedParameter($ids, IQueryBuilder::PARAM_INT_ARRAY)))
+			->execute();
+		$data = $cursor->fetchAll();
+		$cursor->closeCursor();
+
+		$this->assertCount($shouldBeDeleted ? 0 : count($ids), $data);
+	}
+
+	public function dataUserDeletedFromGroup() {
+		return [
+			['group1', 'user1', true],
+			['group1', 'user2', false],
+			['group2', 'user1', false],
+		];
+	}
+
+	/**
+	 * Given a group share with 'group1'
+	 * And a user specific group share with 'user1'.
+	 * User $user is deleted from group $gid.
+	 *
+	 * @dataProvider dataUserDeletedFromGroup
+	 *
+	 * @param string $group
+	 * @param string $user
+	 * @param bool $toDelete
+	 */
+	public function testUserDeletedFromGroup($group, $user, $toDelete) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->setValue('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP))
+			->setValue('uid_owner', $qb->createNamedParameter('owner'))
+			->setValue('uid_initiator', $qb->createNamedParameter('initiator'))
+			->setValue('share_with', $qb->createNamedParameter('group1'))
+			->setValue('item_type', $qb->createNamedParameter('file'))
+			->setValue('item_source', $qb->createNamedParameter(42))
+			->setValue('file_source', $qb->createNamedParameter(42));
+		$qb->execute();
+		$id1 = $qb->getLastInsertId();
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->setValue('share_type', $qb->createNamedParameter(2))
+			->setValue('uid_owner', $qb->createNamedParameter('owner'))
+			->setValue('uid_initiator', $qb->createNamedParameter('initiator'))
+			->setValue('share_with', $qb->createNamedParameter('user1'))
+			->setValue('item_type', $qb->createNamedParameter('file'))
+			->setValue('item_source', $qb->createNamedParameter(42))
+			->setValue('file_source', $qb->createNamedParameter(42))
+			->setValue('parent', $qb->createNamedParameter($id1));
+		$qb->execute();
+		$id2 = $qb->getLastInsertId();
+
+		$this->provider->userDeletedFromGroup($user, $group);
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('*')
+			->from('share')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id2)));
+		$cursor = $qb->execute();
+		$data = $cursor->fetchAll();
+		$cursor->closeCursor();
+
+		$this->assertCount($toDelete ? 0 : 1, $data);
 	}
 }

@@ -28,10 +28,13 @@ use OCA\DAV\Connector\FedAuth;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin;
 use OCA\DAV\Connector\Sabre\DavAclPlugin;
+use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
+use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\CustomPropertiesBackend;
 use OCP\IRequest;
 use OCP\SabrePluginEvent;
+use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin;
 
 class Server {
@@ -68,7 +71,13 @@ class Server {
 		$event = new SabrePluginEvent($this->server);
 		$dispatcher->dispatch('OCA\DAV\Connector\Sabre::authInit', $event);
 
-		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
+		// debugging
+		if(\OC::$server->getConfig()->getSystemValue('debug', false)) {
+			$this->server->addPlugin(new \Sabre\DAV\Browser\Plugin());
+		} else {
+			$this->server->addPlugin(new DummyGetResponsePlugin());
+		}
+
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
@@ -89,6 +98,7 @@ class Server {
 
 		// addressbook plugins
 		$this->server->addPlugin(new \OCA\DAV\CardDAV\Plugin());
+		$this->server->addPlugin(new VCFExportPlugin());
 
 		// system tags plugins
 		$this->server->addPlugin(new \OCA\DAV\SystemTag\SystemTagPlugin(
@@ -112,13 +122,25 @@ class Server {
 			$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\FakeLockerPlugin());
 		}
 
+		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
+			$this->server->addPlugin(new BrowserErrorPagePlugin());
+		}
+
 		// wait with registering these until auth is handled and the filesystem is setup
 		$this->server->on('beforeMethod', function () {
 			// custom properties plugin must be the last one
 			$user = \OC::$server->getUserSession()->getUser();
 			if (!is_null($user)) {
 				$view = \OC\Files\Filesystem::getView();
-				$this->server->addPlugin(new FilesPlugin($this->server->tree, $view));
+				$this->server->addPlugin(
+					new FilesPlugin(
+						$this->server->tree,
+						$view,
+						\OC::$server->getConfig(),
+						false,
+						!\OC::$server->getConfig()->getSystemValue('debug', false)
+					)
+				);
 
 				$this->server->addPlugin(
 					new \Sabre\DAV\PropertyStorage\Plugin(

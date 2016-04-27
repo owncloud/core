@@ -1,5 +1,7 @@
 <?php
+
 /**
+ * @author Christoph Wurst <christoph@winzerhof-wurst.at>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
@@ -43,6 +45,8 @@ use OCP\Image;
 class ApiControllerTest extends TestCase {
 	/** @var string */
 	private $appName = 'files';
+	/** @var \OCP\IUser */
+	private $user;
 	/** @var IRequest */
 	private $request;
 	/** @var TagService */
@@ -51,23 +55,42 @@ class ApiControllerTest extends TestCase {
 	private $preview;
 	/** @var ApiController */
 	private $apiController;
+	/** @var \OCP\Share\IManager */
+	private $shareManager;
+	/** @var \OCP\IConfig */
+	private $config;
 
 	public function setUp() {
 		$this->request = $this->getMockBuilder('\OCP\IRequest')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->user = $this->getMock('\OCP\IUser');
+		$this->user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user1'));
+		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($this->user));
 		$this->tagService = $this->getMockBuilder('\OCA\Files\Service\TagService')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->shareManager = $this->getMockBuilder('\OCP\Share\IManager')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->preview = $this->getMockBuilder('\OCP\IPreview')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->config = $this->getMock('\OCP\IConfig');
 
 		$this->apiController = new ApiController(
 			$this->appName,
 			$this->request,
+			$userSession,
 			$this->tagService,
-			$this->preview
+			$this->preview,
+			$this->shareManager,
+			$this->config
 		);
 	}
 
@@ -101,10 +124,32 @@ class ApiControllerTest extends TestCase {
 				->disableOriginalConstructor()
 				->getMock()
 		);
+		$node = $this->getMockBuilder('\OC\Files\Node\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$node->expects($this->once())
+			->method('getFileInfo')
+			->will($this->returnValue($fileInfo));
 		$this->tagService->expects($this->once())
 			->method('getFilesByTag')
 			->with($this->equalTo([$tagName]))
-			->will($this->returnValue([$fileInfo]));
+			->will($this->returnValue([$node]));
+
+		$this->shareManager->expects($this->any())
+			->method('getSharesBy')
+			->with(
+				$this->equalTo('user1'),
+				$this->anything(),
+				$node,
+				$this->equalTo(false),
+				$this->equalTo(1)
+			)
+			->will($this->returnCallback(function($userId, $shareType) {
+				if ($shareType === \OCP\Share::SHARE_TYPE_USER || $shareType === \OCP\Share::SHARE_TYPE_LINK) {
+					return ['dummy_share'];
+				}
+				return [];
+			}));
 
 		$expected = new DataResponse([
 			'files' => [
@@ -124,6 +169,7 @@ class ApiControllerTest extends TestCase {
 							'MyTagName'
 						]
 					],
+					'shareTypes' => [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK]
 				],
 			],
 		]);
@@ -166,10 +212,22 @@ class ApiControllerTest extends TestCase {
 				->disableOriginalConstructor()
 				->getMock()
 		);
+		$node1 = $this->getMockBuilder('\OC\Files\Node\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$node1->expects($this->once())
+			->method('getFileInfo')
+			->will($this->returnValue($fileInfo1));
+		$node2 = $this->getMockBuilder('\OC\Files\Node\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$node2->expects($this->once())
+			->method('getFileInfo')
+			->will($this->returnValue($fileInfo2));
 		$this->tagService->expects($this->once())
 			->method('getFilesByTag')
 			->with($this->equalTo([$tagName]))
-			->will($this->returnValue([$fileInfo1, $fileInfo2]));
+			->will($this->returnValue([$node1, $node2]));
 
 		$expected = new DataResponse([
 			'files' => [
@@ -285,4 +343,57 @@ class ApiControllerTest extends TestCase {
 
 		$this->assertEquals(Http::STATUS_OK, $ret->getStatus());
 	}
+
+	public function testUpdateFileSorting() {
+		$mode = 'mtime';
+		$direction = 'desc';
+
+		$this->config->expects($this->at(0))
+			->method('setUserValue')
+			->with($this->user->getUID(), 'files', 'file_sorting', $mode);
+		$this->config->expects($this->at(1))
+			->method('setUserValue')
+			->with($this->user->getUID(), 'files', 'file_sorting_direction', $direction);
+
+		$expected = new HTTP\Response();
+		$actual = $this->apiController->updateFileSorting($mode, $direction);
+		$this->assertEquals($expected, $actual);
+	}
+
+	public function invalidSortingModeData() {
+		return [
+			['color', 'asc'],
+			['name', 'size'],
+			['foo', 'bar']
+		];
+	}
+
+	/**
+	 * @dataProvider invalidSortingModeData
+	 */
+	public function testUpdateInvalidFileSorting($mode, $direction) {
+		$this->config->expects($this->never())
+			->method('setUserValue');
+
+		$expected = new Http\Response(null);
+		$expected->setStatus(Http::STATUS_UNPROCESSABLE_ENTITY);
+
+		$result = $this->apiController->updateFileSorting($mode, $direction);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testShowHiddenFiles() {
+		$show = false;
+
+		$this->config->expects($this->once())
+			->method('setUserValue')
+			->with($this->user->getUID(), 'files', 'show_hidden', $show);
+
+		$expected = new Http\Response();
+		$actual = $this->apiController->showHiddenFiles($show);
+
+		$this->assertEquals($expected, $actual);
+	}
+
 }

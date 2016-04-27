@@ -26,6 +26,7 @@ use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\TokenHandler;
 use OCP\Files\IRootFolder;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -54,6 +55,8 @@ class FederatedShareProviderTest extends TestCase {
 	protected $logger;
 	/** @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject */
 	protected $rootFolder;
+	/** @var  IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	protected $config;
 
 	/** @var IManager */
 	protected $shareManager;
@@ -78,6 +81,7 @@ class FederatedShareProviderTest extends TestCase {
 			}));
 		$this->logger = $this->getMock('OCP\ILogger');
 		$this->rootFolder = $this->getMock('OCP\Files\IRootFolder');
+		$this->config = $this->getMock('OCP\IConfig');
 		$this->addressHandler = new AddressHandler(\OC::$server->getURLGenerator(), $this->l);
 
 		$this->provider = new FederatedShareProvider(
@@ -87,7 +91,8 @@ class FederatedShareProviderTest extends TestCase {
 			$this->tokenHandler,
 			$this->l,
 			$this->logger,
-			$this->rootFolder
+			$this->rootFolder,
+			$this->config
 		);
 
 		$this->shareManager = \OC::$server->getShareManager();
@@ -461,5 +466,92 @@ class FederatedShareProviderTest extends TestCase {
 
 		$this->assertCount(1, $shares);
 		$this->assertEquals('user2@server.com', $shares[0]->getSharedWith());
+	}
+
+	public function dataDeleteUser() {
+		return [
+			['a', 'b', 'c', 'a', true],
+			['a', 'b', 'c', 'b', false],
+			// The recipient is non local.
+			['a', 'b', 'c', 'c', false],
+			['a', 'b', 'c', 'd', false],
+		];
+	}
+
+	/**
+	 * @dataProvider dataDeleteUser
+	 *
+	 * @param string $owner The owner of the share (uid)
+	 * @param string $initiator The initiator of the share (uid)
+	 * @param string $recipient The recipient of the share (uid/gid/pass)
+	 * @param string $deletedUser The user that is deleted
+	 * @param bool $rowDeleted Is the row deleted in this setup
+	 */
+	public function testDeleteUser($owner, $initiator, $recipient, $deletedUser, $rowDeleted) {
+		$qb = $this->connection->getQueryBuilder();
+		$qb->insert('share')
+			->setValue('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_REMOTE))
+			->setValue('uid_owner', $qb->createNamedParameter($owner))
+			->setValue('uid_initiator', $qb->createNamedParameter($initiator))
+			->setValue('share_with', $qb->createNamedParameter($recipient))
+			->setValue('item_type', $qb->createNamedParameter('file'))
+			->setValue('item_source', $qb->createNamedParameter(42))
+			->setValue('file_source', $qb->createNamedParameter(42))
+			->execute();
+
+		$id = $qb->getLastInsertId();
+
+		$this->provider->userDeleted($deletedUser, \OCP\Share::SHARE_TYPE_REMOTE);
+
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select('*')
+			->from('share')
+			->where(
+				$qb->expr()->eq('id', $qb->createNamedParameter($id))
+			);
+		$cursor = $qb->execute();
+		$data = $cursor->fetchAll();
+		$cursor->closeCursor();
+
+		$this->assertCount($rowDeleted ? 0 : 1, $data);
+	}
+
+	/**
+	 * @dataProvider dataTestFederatedSharingSettings
+	 *
+	 * @param string $isEnabled
+	 * @param bool $expected
+	 */
+	public function testIsOutgoingServer2serverShareEnabled($isEnabled, $expected) {
+		$this->config->expects($this->once())->method('getAppValue')
+			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')
+			->willReturn($isEnabled);
+
+		$this->assertSame($expected,
+			$this->provider->isOutgoingServer2serverShareEnabled()
+		);
+	}
+
+	/**
+	 * @dataProvider dataTestFederatedSharingSettings
+	 *
+	 * @param string $isEnabled
+	 * @param bool $expected
+	 */
+	public function testIsIncomingServer2serverShareEnabled($isEnabled, $expected) {
+		$this->config->expects($this->once())->method('getAppValue')
+			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
+			->willReturn($isEnabled);
+
+		$this->assertSame($expected,
+			$this->provider->isIncomingServer2serverShareEnabled()
+		);
+	}
+
+	public function dataTestFederatedSharingSettings() {
+		return [
+			['yes', true],
+			['no', false]
+		];
 	}
 }

@@ -25,6 +25,8 @@ namespace OCA\FederatedFileSharing;
 
 use OC\Share20\Share;
 use OCP\Files\IRootFolder;
+use OCP\IAppConfig;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\Share\IShare;
@@ -65,6 +67,9 @@ class FederatedShareProvider implements IShareProvider {
 	/** @var IRootFolder */
 	private $rootFolder;
 
+	/** @var IConfig */
+	private $config;
+
 	/**
 	 * DefaultShareProvider constructor.
 	 *
@@ -75,6 +80,7 @@ class FederatedShareProvider implements IShareProvider {
 	 * @param IL10N $l10n
 	 * @param ILogger $logger
 	 * @param IRootFolder $rootFolder
+	 * @param IConfig $config
 	 */
 	public function __construct(
 			IDBConnection $connection,
@@ -83,7 +89,8 @@ class FederatedShareProvider implements IShareProvider {
 			TokenHandler $tokenHandler,
 			IL10N $l10n,
 			ILogger $logger,
-			IRootFolder $rootFolder
+			IRootFolder $rootFolder,
+			IConfig $config
 	) {
 		$this->dbConnection = $connection;
 		$this->addressHandler = $addressHandler;
@@ -92,6 +99,7 @@ class FederatedShareProvider implements IShareProvider {
 		$this->l = $l10n;
 		$this->logger = $logger;
 		$this->rootFolder = $rootFolder;
+		$this->config = $config;
 	}
 
 	/**
@@ -563,4 +571,62 @@ class FederatedShareProvider implements IShareProvider {
 		return $nodes[0];
 	}
 
+	/**
+	 * A user is deleted from the system
+	 * So clean up the relevant shares.
+	 *
+	 * @param string $uid
+	 * @param int $shareType
+	 */
+	public function userDeleted($uid, $shareType) {
+		//TODO: probabaly a good idea to send unshare info to remote servers
+
+		$qb = $this->dbConnection->getQueryBuilder();
+
+		$qb->delete('share')
+			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_REMOTE)))
+			->andWhere($qb->expr()->eq('uid_owner', $qb->createNamedParameter($uid)))
+			->execute();
+	}
+
+	/**
+	 * This provider does not handle groups
+	 *
+	 * @param string $gid
+	 */
+	public function groupDeleted($gid) {
+		// We don't handle groups here
+		return;
+	}
+
+	/**
+	 * This provider does not handle groups
+	 *
+	 * @param string $uid
+	 * @param string $gid
+	 */
+	public function userDeletedFromGroup($uid, $gid) {
+		// We don't handle groups here
+		return;
+	}
+
+	/**
+	 * check if users from other ownCloud instances are allowed to mount public links share by this instance
+	 *
+	 * @return bool
+	 */
+	public function isOutgoingServer2serverShareEnabled() {
+		$result = $this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes');
+		return ($result === 'yes') ? true : false;
+	}
+
+	/**
+	 * check if users are allowed to mount public links from other ownClouds
+	 *
+	 * @return bool
+	 */
+	public function isIncomingServer2serverShareEnabled() {
+		$result = $this->config->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes');
+		return ($result === 'yes') ? true : false;
+	}
 }

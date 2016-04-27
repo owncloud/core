@@ -261,9 +261,14 @@ class Storage extends \Test\TestCase {
 		$recipientUser = $this->getUniqueId('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
-		$fileinfo = $this->userView->getFileInfo('share');
-		$this->assertTrue(\OCP\Share::shareItem('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-				$recipientUser, 31));
+		$node = \OC::$server->getUserFolder($this->user)->get('share');
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedBy($this->user)
+			->setSharedWith($recipientUser)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
 
 		$this->loginAsUser($recipientUser);
 
@@ -309,9 +314,14 @@ class Storage extends \Test\TestCase {
 		$recipientUser = $this->getUniqueId('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
 
-		$fileinfo = $this->userView->getFileInfo('share');
-		$this->assertTrue(\OCP\Share::shareItem('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-				$recipientUser, 31));
+		$node = \OC::$server->getUserFolder($this->user)->get('share');
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedBy($this->user)
+			->setSharedWith($recipientUser)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
 
 		$this->loginAsUser($recipientUser);
 
@@ -435,7 +445,7 @@ class Storage extends \Test\TestCase {
 	}
 
 	/**
-	 * Delete should fail is the source file cant be deleted
+	 * Delete should fail if the source file can't be deleted.
 	 */
 	public function testSingleStorageDeleteFileFail() {
 		/**
@@ -472,7 +482,7 @@ class Storage extends \Test\TestCase {
 	}
 
 	/**
-	 * Delete should fail is the source folder cant be deleted
+	 * Delete should fail if the source folder can't be deleted.
 	 */
 	public function testSingleStorageDeleteFolderFail() {
 		/**

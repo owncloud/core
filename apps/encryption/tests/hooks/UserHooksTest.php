@@ -29,6 +29,12 @@ use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\Hooks\UserHooks;
 use Test\TestCase;
 
+/**
+ * Class UserHooksTest
+ *
+ * @group DB
+ * @package OCA\Encryption\Tests\Hooks
+ */
 class UserHooksTest extends TestCase {
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject
@@ -71,7 +77,7 @@ class UserHooksTest extends TestCase {
 	private $params = ['uid' => 'testUser', 'password' => 'password'];
 
 	public function testLogin() {
-		$this->userSetupMock->expects($this->exactly(2))
+		$this->userSetupMock->expects($this->once())
 			->method('setupUser')
 			->willReturnOnConsecutiveCalls(true, false);
 
@@ -80,7 +86,6 @@ class UserHooksTest extends TestCase {
 			->with('testUser', 'password');
 
 		$this->assertNull($this->instance->login($this->params));
-		$this->assertFalse($this->instance->login($this->params));
 	}
 
 	public function testLogout() {
@@ -190,6 +195,23 @@ class UserHooksTest extends TestCase {
 			->willReturnOnConsecutiveCalls(true, false);
 
 
+		$this->instance = $this->getMockBuilder('OCA\Encryption\Hooks\UserHooks')
+			->setConstructorArgs(
+				[
+					$this->keyManagerMock,
+					$this->userManagerMock,
+					$this->loggerMock,
+					$this->userSetupMock,
+					$this->userSessionMock,
+					$this->utilMock,
+					$this->sessionMock,
+					$this->cryptMock,
+					$this->recoveryMock
+				]
+			)->setMethods(['initMountPoints'])->getMock();
+
+		$this->instance->expects($this->exactly(3))->method('initMountPoints');
+
 		// Test first if statement
 		$this->assertNull($this->instance->setPassphrase($this->params));
 
@@ -236,27 +258,31 @@ class UserHooksTest extends TestCase {
 			->with('testUser')
 			->willReturn(false);
 
-		$userHooks = new UserHooks($this->keyManagerMock,
-			$this->userManagerMock,
-			$this->loggerMock,
-			$this->userSetupMock,
-			$userSessionMock,
-			$this->utilMock,
-			$this->sessionMock,
-			$this->cryptMock,
-			$this->recoveryMock
-		);
+		$userHooks = $this->getMockBuilder('OCA\Encryption\Hooks\UserHooks')
+			->setConstructorArgs(
+				[
+					$this->keyManagerMock,
+					$this->userManagerMock,
+					$this->loggerMock,
+					$this->userSetupMock,
+					$userSessionMock,
+					$this->utilMock,
+					$this->sessionMock,
+					$this->cryptMock,
+					$this->recoveryMock
+				]
+			)->setMethods(['initMountPoints'])->getMock();
 
 		$this->assertNull($userHooks->setPassphrase($this->params));
 	}
 
 	public function testPostPasswordReset() {
 		$this->keyManagerMock->expects($this->once())
-			->method('replaceUserKeys')
+			->method('deleteUserKeys')
 			->with('testUser');
 
 		$this->userSetupMock->expects($this->once())
-			->method('setupServerSide')
+			->method('setupUser')
 			->with('testUser', 'password');
 
 		$this->assertNull($this->instance->postPasswordReset($this->params));
@@ -312,16 +338,22 @@ class UserHooksTest extends TestCase {
 		$this->sessionMock = $sessionMock;
 		$this->recoveryMock = $recoveryMock;
 		$this->utilMock = $utilMock;
-		$this->instance = new UserHooks($this->keyManagerMock,
-			$this->userManagerMock,
-			$this->loggerMock,
-			$this->userSetupMock,
-			$this->userSessionMock,
-			$this->utilMock,
-			$this->sessionMock,
-			$this->cryptMock,
-			$this->recoveryMock
-		);
+		$this->utilMock->expects($this->any())->method('isMasterKeyEnabled')->willReturn(false);
+
+		$this->instance = $this->getMockBuilder('OCA\Encryption\Hooks\UserHooks')
+			->setConstructorArgs(
+				[
+					$this->keyManagerMock,
+					$this->userManagerMock,
+					$this->loggerMock,
+					$this->userSetupMock,
+					$this->userSessionMock,
+					$this->utilMock,
+					$this->sessionMock,
+					$this->cryptMock,
+					$this->recoveryMock
+				]
+			)->setMethods(['setupFS'])->getMock();
 
 	}
 

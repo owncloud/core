@@ -9,7 +9,7 @@ script('core', [
 ?>
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
-<form method="post" name="login">
+<form method="post" name="login" action="<?php p(OC::$WEBROOT) ?>/">
 	<fieldset>
 	<?php if (!empty($_['redirect_url'])) {
 		print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
@@ -27,13 +27,13 @@ script('core', [
 		<?php endforeach; ?>
 		<?php if (isset($_['internalexception']) && ($_['internalexception'])): ?>
 			<div class="warning">
-				<?php p($l->t('An internal error occured.')); ?><br>
+				<?php p($l->t('An internal error occurred.')); ?><br>
 				<small><?php p($l->t('Please try again or contact your administrator.')); ?></small>
 			</div>
 		<?php endif; ?>
 		<div id="message" class="hidden">
 			<img class="float-spinner" alt=""
-				src="<?php p(\OCP\Util::imagePath('core', 'loading-dark.gif'));?>">
+				src="<?php p(image_path('core', 'loading-dark.gif'));?>">
 			<span id="messageText"></span>
 			<!-- the following div ensures that the spinner is always inside the #message div -->
 			<div style="clear: both;"></div>
@@ -41,7 +41,7 @@ script('core', [
 		<p class="grouptop">
 			<input type="text" name="user" id="user"
 				placeholder="<?php p($l->t('Username')); ?>"
-				value="<?php p($_['username']); ?>"
+				value="<?php p($_['loginName']); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
 				autocomplete="on" autocapitalize="off" autocorrect="off" required>
 			<label for="user" class="infield"><?php p($l->t('Username')); ?></label>

@@ -80,7 +80,10 @@ class Extension implements IExtension {
 		$l = $this->getL10N($languageCode);
 
 		return array(
-			self::APP_NAME => (string) $l->t('<strong>Comments</strong> for files'),
+			self::APP_NAME => [
+				'desc' => (string) $l->t('<strong>Comments</strong> for files <em>(always listed in stream)</em>'),
+				'methods' => [self::METHOD_MAIL], // self::METHOD_STREAM is forced true by the default value
+			],
 		);
 	}
 
@@ -105,7 +108,7 @@ class Extension implements IExtension {
 	public function getTypeIcon($type) {
 		switch ($type) {
 			case self::APP_NAME:
-				return false;
+				return 'icon-comment';
 		}
 
 		return false;
@@ -150,6 +153,9 @@ class Extension implements IExtension {
 
 		switch ($text) {
 			case self::ADD_COMMENT_SUBJECT:
+				if ($this->authorIsCurrentUser($params[0])) {
+					return (string) $l->t('You commented');
+				}
 				return (string) $l->t('%1$s commented', $params);
 			case self::ADD_COMMENT_MESSAGE:
 				return $this->convertParameterToComment($params[0], 120);
@@ -168,12 +174,30 @@ class Extension implements IExtension {
 
 		switch ($text) {
 			case self::ADD_COMMENT_SUBJECT:
+				if ($this->authorIsCurrentUser($params[0])) {
+					return (string) $l->t('You commented on %2$s', $params);
+				}
 				return (string) $l->t('%1$s commented on %2$s', $params);
 			case self::ADD_COMMENT_MESSAGE:
 				return $this->convertParameterToComment($params[0]);
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if the author is the current user
+	 *
+	 * @param string $user Parameter e.g. `<user display-name="admin">admin</user>`
+	 * @return bool
+	 */
+	protected function authorIsCurrentUser($user) {
+		try {
+			return strip_tags($user) === $this->activityManager->getCurrentUserId();
+		} catch (\UnexpectedValueException $e) {
+			// FIXME this is awkward, but we have no access to the current user in emails
+			return false;
+		}
 	}
 
 	/**
@@ -253,7 +277,11 @@ class Extension implements IExtension {
 	 */
 	public function filterNotificationTypes($types, $filter) {
 		if ($filter === self::APP_NAME) {
-			return array_intersect($types, [self::APP_NAME]);
+			return [self::APP_NAME];
+		}
+		if (in_array($filter, ['all', 'by', 'self', 'filter'])) {
+			$types[] = self::APP_NAME;
+			return $types;
 		}
 		return false;
 	}
