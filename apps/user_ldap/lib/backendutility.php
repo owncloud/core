@@ -45,11 +45,12 @@ abstract class BackendUtility {
 	}
 	
 	/**
-	 * Return a new LDAP connection resource from a deep-copied connection
+	 * Return LDAP connection resource from a cloned connection
 	 * of the current access.
 	 * @return resource of the LDAP connection
 	 */
 	public function getNewLDAPConnection() {
-		return $this->access->getConnection()->getDeepCopy()->getConnectionResource();
+		$connection = clone $this->access->getConnection();
+		return $connection->getConnectionResource();
 	}
 }
