@@ -40,6 +40,7 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Authentication\TwoFactorAuthentication\Factory;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\NullEventLogger;
@@ -426,6 +427,9 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getConfig(),
 				$c->getSession()
 			);
+		});
+		$this->registerService('TwoFactorAuthenticationFactory', function(Server $c) {
+			return new Factory();
 		});
 		$this->registerService('DateTimeFormatter', function (Server $c) {
 			$language = $c->getConfig()->getUserValue($c->getSession()->get('user_id'), 'core', 'lang', null);
@@ -1217,6 +1221,18 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getNotificationManager() {
 		return $this->query('NotificationManager');
+	}
+
+	/**
+	 * Get the two factor auth factory
+	 *
+	 * FIXME: Add to public API once API is stable enough.
+	 *
+	 * @return \OCP\Authentication\TwoFactorAuthentication\IFactory
+	 * @since 9.0.0
+	 */
+	public function getTwoFactorAuthenticationFactory() {
+		return $this->query('TwoFactorAuthenticationFactory');
 	}
 
 	/**

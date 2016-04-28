@@ -1,5 +1,7 @@
 <?php
+
 /**
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -21,8 +23,10 @@
 
 namespace OC\Core\Controller;
 
-use OC\Setup;
+use OC_App;
+use OC_Util;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
@@ -34,14 +38,19 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 
 class LoginController extends Controller {
+
 	/** @var IUserManager */
 	private $userManager;
+
 	/** @var IConfig */
 	private $config;
+
 	/** @var ISession */
 	private $session;
+
 	/** @var IUserSession */
 	private $userSession;
+
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
@@ -54,13 +63,7 @@ class LoginController extends Controller {
 	 * @param IUserSession $userSession
 	 * @param IURLGenerator $urlGenerator
 	 */
-	function __construct($appName,
-						 IRequest $request,
-						 IUserManager $userManager,
-						 IConfig $config,
-						 ISession $session,
-						 IUserSession $userSession,
-						 IURLGenerator $urlGenerator) {
+	function __construct($appName, IRequest $request, IUserManager $userManager, IConfig $config, ISession $session, IUserSession $userSession, IURLGenerator $urlGenerator) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->config = $config;
@@ -96,18 +99,16 @@ class LoginController extends Controller {
 	 *
 	 * @return TemplateResponse
 	 */
-	public function showLoginForm($user,
-								  $redirect_url,
-								  $remember_login) {
-		if($this->userSession->isLoggedIn()) {
-			return new RedirectResponse(\OC_Util::getDefaultPageUrl());
+	public function showLoginForm($user, $redirect_url, $remember_login) {
+		if ($this->userSession->isLoggedIn()) {
+			return new RedirectResponse(OC_Util::getDefaultPageUrl());
 		}
 
 		$parameters = array();
 		$loginMessages = $this->session->get('loginMessages');
 		$errors = [];
 		$messages = [];
-		if(is_array($loginMessages)) {
+		if (is_array($loginMessages)) {
 			list($errors, $messages) = $loginMessages;
 		}
 		$this->session->remove('loginMessages');
@@ -137,8 +138,8 @@ class LoginController extends Controller {
 			}
 		}
 
-		$parameters['alt_login'] = \OC_App::getAlternativeLogIns();
-		$parameters['rememberLoginAllowed'] = \OC_Util::rememberLoginAllowed();
+		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
+		$parameters['rememberLoginAllowed'] = OC_Util::rememberLoginAllowed();
 		$parameters['rememberLoginState'] = !empty($remember_login) ? $remember_login : 0;
 
 		if (!is_null($user) && $user !== '') {
@@ -150,11 +151,40 @@ class LoginController extends Controller {
 		}
 
 		return new TemplateResponse(
-			$this->appName,
-			'login',
-			$parameters,
-			'guest'
+			$this->appName, 'login', $parameters, 'guest'
 		);
+	}
+
+	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 * @UseSession
+	 *
+	 * @param string $user
+	 * @param string $password
+	 * @return RedirectResponse
+	 */
+	public function tryLogin($user, $password) {
+		// TODO: Add all the insane error handling
+		$user = $this->userManager->checkPassword($user, $password);
+		if ($user instanceof IUser) {
+			if ($user->isTwoFactorEnforced()) {
+				// TODO: Do two-factor auth by writing user ID in
+				// TODO: Check in middleware if two factor is set and allow only then
+				// 		 access to the TwoFactorChallengeController. Also do not allow
+				//		 the login view then
+				$this->session->set('two_factor_auth_uid', $user->getUID());
+
+				$redirectResponse = new RedirectResponse($this->urlGenerator->linkToRouteAbsolute('core.TwoFactorChallenge.selectChallenge'));
+				$redirectResponse->setStatus(Http::STATUS_FOUND);
+				return $redirectResponse;
+			} else {
+				$this->userSession->setUser($user);
+				return new RedirectResponse($this->urlGenerator->linkTo('files', 'index.php'));
+			}
+		}
+
+		// TODO: Show invalid login warning
 	}
 
 }
