@@ -484,16 +484,29 @@ class ShareController extends Controller {
 
 		$this->emitAccessShareHook($share);
 
+		$server_params = array( 'head' => $_SERVER['REQUEST_METHOD'] == 'HEAD' );
+
+		/**
+		 * Http range requests support
+		 */
+		if (isset($_SERVER['HTTP_RANGE'])) {
+			$ranges = array_map('intval', explode('-', substr($_SERVER['HTTP_RANGE'], 6)));
+			if (isset($ranges[0])) {
+				$server_params['range_from'] = $ranges[0];
+				if ($ranges[1]) $server_params['range_to'] = $ranges[1];
+			}
+		}
+
 		// download selected files
 		if (!is_null($files) && $files !== '') {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
-			OC_Files::get($originalSharePath, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+			OC_Files::get($originalSharePath, $files_list, $server_params);
 			exit();
 		} else {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
-			OC_Files::get(dirname($originalSharePath), basename($originalSharePath), $_SERVER['REQUEST_METHOD'] == 'HEAD');
+			OC_Files::get(dirname($originalSharePath), basename($originalSharePath), $server_params);
 			exit();
 		}
 	}
