@@ -108,7 +108,7 @@ class JobList implements IJobList {
 	/**
 	 * @param int $id
 	 */
-	protected function removeById($id) {
+	public function removeById($id) {
 		$query = $this->connection->getQueryBuilder();
 		$query->delete('jobs')
 			->where($query->expr()->eq('id', $query->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
@@ -305,9 +305,7 @@ class JobList implements IJobList {
 	}
 
 	/**
-	 * set the lastRun of $job to now
-	 *
-	 * @param IJob $job
+	 * @inheritdoc
 	 */
 	public function setLastRun($job) {
 		$query = $this->connection->getQueryBuilder();
@@ -323,5 +321,25 @@ class JobList implements IJobList {
 			->set('execution_duration', $query->createNamedParameter($timeTaken, IQueryBuilder::PARAM_INT))
 			->where($query->expr()->eq('id', $query->createNamedParameter($job->getId(), IQueryBuilder::PARAM_INT)));
 		$query->execute();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function listJobs(\Closure $callback) {
+		$query = $this->connection->getQueryBuilder();
+		$query->select('*')
+			->from('jobs');
+		$result = $query->execute();
+
+		while ($row = $result->fetch()) {
+			$job = $this->buildJob($row);
+			if ($job) {
+				if ($callback($job) === false) {
+					break;
+				}
+			}
+		}
+		$result->closeCursor();
 	}
 }
