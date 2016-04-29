@@ -259,10 +259,23 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function createUser($uid, $password) {
 		$l = \OC::$server->getL10N('lib');
 		// Check the name for bad characters
-		// Allowed are: "a-z", "A-Z", "0-9" and "_.@-'"
-		if (preg_match('/[^a-zA-Z0-9 _\.@\-\']/', $uid)) {
-			throw new \Exception($l->t('Only the following characters are allowed in a username:'
-				. ' "a-z", "A-Z", "0-9", and "_.@-\'"'));
+		// Allowed are:
+		//   alphanumeric and numbers: "a-z", "A-Z", "0-9"
+		//   RFC822 email characters, except for slashes: '!#$%&\'+-=^_`{|}~[].'
+		//   spaces (0x20)
+		//   any valid UTF-8 multibyte character
+		$baseChars = 'a-zA-Z0-9';
+		$rfc822Chars = preg_quote('!#$%&\'+-=^_`{|}~[]. ');
+		$utf8Fragment = '(?:[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|' .
+							'[\xF0-\xF7][\x80-\xBF]{3}|' .
+							'[\xF8-\xFB][\x80-\xBF]{4}|' .
+							'[\xFC-\xFD][\x80-\xBF]{5})';
+
+		$regexp = '/^([' . $baseChars . $rfc822Chars . ']|' . $utf8Fragment . ')+$/';
+
+		if (!preg_match($regexp, $uid)) {
+			throw new \Exception($l->t('Username contains invalid characters. It may contain ' .
+				'letters, numbers, special characters excluding slashes, and UTF-8 characters.'));
 		}
 		// No empty username
 		if (trim($uid) == '') {

@@ -120,7 +120,7 @@
     "Sharing %s failed, because the file could not be found in the file cache" : "การแชร์ %s ล้มเหลวเพราะไม่พบไฟล์ในแคชไฟล์",
     "Could not find category \"%s\"" : "ไม่พบหมวดหมู่ \"%s\"",
     "Apps" : "แอปฯ",
-    "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"" : "ชื่อผู้ใช้จะใช้ได้แค่อักษรดังต่อไปนี้: \"a-z\", \"A-Z\", \"0-9\" และ \"_.@-'\"",
+    "Username contains invalid characters. It may contain letters, numbers, special characters excluding slashes, and UTF-8 characters." : "ชื่อผู้ใช้จะใช้ได้แค่อักษรดังต่อไปนี้: \"a-z\", \"A-Z\", \"0-9\" และ \"_.@-'\"",
     "A valid username must be provided" : "จะต้องระบุชื่อผู้ใช้ที่ถูกต้อง",
     "A valid password must be provided" : "รหัสผ่านที่ถูกต้องจะต้องให้",
     "The username is already being used" : "มีคนใช้ชื่อผู้ใช้นี้ไปแล้ว",

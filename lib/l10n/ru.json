@@ -117,7 +117,7 @@
     "Sharing %s failed, because the file could not be found in the file cache" : "Не удалось поделиться %s, элемент не найден в файловом кеше.",
     "Could not find category \"%s\"" : "Категория \"%s\"  не найдена",
     "Apps" : "Приложения",
-    "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"" : "В качестве имени пользователя допускаются следующие символы: \"a-z\", \"A-Z\", \"0-9\" и \"_.@-'\"",
+    "Username contains invalid characters. It may contain letters, numbers, special characters excluding slashes, and UTF-8 characters." : "В качестве имени пользователя допускаются следующие символы: \"a-z\", \"A-Z\", \"0-9\" и \"_.@-'\"",
     "A valid username must be provided" : "Укажите правильное имя пользователя",
     "Username contains whitespace at the beginning or at the end" : "Имя пользователя содержит пробел в начале или в конце",
     "A valid password must be provided" : "Укажите правильный пароль",

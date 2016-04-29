@@ -121,7 +121,7 @@
     "Sharing %s failed, because the file could not be found in the file cache" : "Condivisione di %s non riuscita, poiché il file non è stato trovato nella cache",
     "Could not find category \"%s\"" : "Impossibile trovare la categoria \"%s\"",
     "Apps" : "Applicazioni",
-    "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"" : "Solo i seguenti caratteri sono consentiti in un nome utente: \"a-z\", \"A-Z\", \"0-9\", e \"_.@-'\"",
+    "Username contains invalid characters. It may contain letters, numbers, special characters excluding slashes, and UTF-8 characters." : "Solo i seguenti caratteri sono consentiti in un nome utente: \"a-z\", \"A-Z\", \"0-9\", e \"_.@-'\"",
     "A valid username must be provided" : "Deve essere fornito un nome utente valido",
     "Username contains whitespace at the beginning or at the end" : "Il nome utente contiene spazi all'inizio o alla fine",
     "A valid password must be provided" : "Deve essere fornita una password valida",
