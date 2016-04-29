@@ -425,6 +425,36 @@ class View {
 
 	/**
 	 * @param string $path
+	 * @param int $from 
+	 * @param int $to
+	 * @return bool|mixed
+	 * @throws \OCP\Files\InvalidPathException
+	 */
+	public function readfilePart($path, $from, $to) {
+		$this->assertPathLength($path);
+		@ob_end_clean();
+		$handle = $this->fopen($path, 'rb');
+		if ($handle) {
+			if (fseek($handle, $from) === 0) {
+			    $chunkSize = 8192; // 8 kB chunks
+			    $end = $to + 1;
+			    while (!feof($handle) && ftell($handle) < $end) {
+				$len = $end-ftell($handle);
+				if ($len > $chunkSize) { 
+				    $len = $chunkSize; 
+				}
+				echo fread($handle, $len);
+				flush();
+			    }
+			    $size = ftell($handle) - $from;
+			    return $size;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @param string $path
 	 * @return mixed
 	 */
 	public function isCreatable($path) {

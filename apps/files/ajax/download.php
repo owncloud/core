@@ -50,4 +50,13 @@ if(isset($_GET['downloadStartSecret'])
 	setcookie('ocDownloadStarted', $_GET['downloadStartSecret'], time() + 20, '/');
 }
 
-OC_Files::get($dir, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+$server_params = array( 'head' => $_SERVER['REQUEST_METHOD'] == 'HEAD' );
+
+/**
+ * Http range requests support
+ */
+if (isset($_SERVER['HTTP_RANGE'])) {
+	$server_params['range'] = $_SERVER['HTTP_RANGE'];
+}
+
+OC_Files::get($dir, $files_list, $server_params);
