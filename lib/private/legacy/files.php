@@ -95,7 +95,7 @@ class OC_Files {
 			if (!is_array($files)) {
 				$filename = $dir . '/' . $files;
 				if (!$view->is_dir($filename)) {
-					self::getSingleFile($view, $dir, $files, $params, $ranges);
+					self::getSingleFile($view, $dir, $files, $params);
 					return;
 				}
 			}
