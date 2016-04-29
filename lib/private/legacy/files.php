@@ -48,12 +48,15 @@ class OC_Files {
 	const ZIP_DIR = 3;
 
 	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
+	
+	const DOWNLOAD_PART_MAX_BYTES = 1048576; // 1 MiB
 
 	/**
 	 * @param string $filename
 	 * @param string $name
+	 * @param array $params ; 'range_from' / 'range_to' int range requests
 	 */
-	private static function sendHeaders($filename, $name) {
+	private static function sendHeaders($filename, $name, $params) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
 		header('Content-Transfer-Encoding: binary');
 		OC_Response::disableCaching();
@@ -61,7 +64,13 @@ class OC_Files {
 		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 		header('Content-Type: '.$type);
 		if ($fileSize > -1) {
-			OC_Response::setContentLengthHeader($fileSize);
+			if (isset($params['range_from'])) {
+			    header('HTTP/1.1 206 Partial Content');
+			    header('Accept-Ranges: bytes');
+			    OC_Response::setContentLengthHeader($params['range_to'] - $params['range_from'] + 1);
+			    header(sprintf('Content-Range: bytes %d-%d/%d', $params['range_from'], $params['range_to'], $fileSize));
+			}
+			else OC_Response::setContentLengthHeader($fileSize);
 		}
 	}
 
@@ -70,9 +79,9 @@ class OC_Files {
 	 *
 	 * @param string $dir
 	 * @param string $files ; separated list of files to download
-	 * @param boolean $onlyHeader ; boolean to only send header of the request
+	 * @param array $params ; 'head' boolean to only send header of the request ; 'range_from' / 'range_to' int range requests
 	 */
-	public static function get($dir, $files, $onlyHeader = false) {
+	public static function get($dir, $files, $params = array( 'head' => false )) {
 
 		$view = \OC\Files\Filesystem::getView();
 		$getType = self::FILE;
@@ -86,7 +95,7 @@ class OC_Files {
 			if (!is_array($files)) {
 				$filename = $dir . '/' . $files;
 				if (!$view->is_dir($filename)) {
-					self::getSingleFile($view, $dir, $files, $onlyHeader);
+					self::getSingleFile($view, $dir, $files, $params, $ranges);
 					return;
 				}
 			}
@@ -160,15 +169,27 @@ class OC_Files {
 	 * @param View $view
 	 * @param string $name
 	 * @param string $dir
-	 * @param boolean $onlyHeader
+	 * @param array $params ; 'head' boolean to only send header of the request ; 'range_from' / 'range_to' int range requests
 	 */
-	private static function getSingleFile($view, $dir, $name, $onlyHeader) {
+	private static function getSingleFile($view, $dir, $name, $params) {
 		$filename = $dir . '/' . $name;
 		OC_Util::obEnd();
 		$view->lockFile($filename, ILockingProvider::LOCK_SHARED);
-
+		
+		if (isset($params['range_from'])) {
+		    if (!isset($params['range_to'])) {
+			$fileSize = \OC\Files\Filesystem::filesize($filename);
+			if ($fileSize > 0) {
+			    $params['range_to'] = $fileSize - 1;
+			    if ($params['range_to'] - $params['range_from'] >= self::DOWNLOAD_PART_MAX_BYTES) 
+				$params['range_to'] = $params['range_from'] + self::DOWNLOAD_PART_MAX_BYTES - 1;
+			}
+			else unset($params['range_from']);
+		    }
+		}
+		
 		if (\OC\Files\Filesystem::isReadable($filename)) {
-			self::sendHeaders($filename, $name);
+			self::sendHeaders($filename, $name, $params);
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
 			header("HTTP/1.0 404 Not Found");
 			$tmpl = new OC_Template('', '404', 'guest');
@@ -178,10 +199,13 @@ class OC_Files {
 			header("HTTP/1.0 403 Forbidden");
 			die('403 Forbidden');
 		}
-		if ($onlyHeader) {
+		if (isset($params['head']) && $params['head']) {
 			return;
 		}
-		$view->readfile($filename);
+		if (isset($params['range_from'])) 
+		    $view->readfilePart($filename, $params['range_from'], $params['range_to']);
+		else 
+		    $view->readfile($filename);
 	}
 
 	/**
