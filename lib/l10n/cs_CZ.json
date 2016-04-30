@@ -121,7 +121,7 @@
     "Sharing %s failed, because the file could not be found in the file cache" : "Sdílení položky %s selhalo, protože soubor nebyl nalezen ve vyrovnávací paměti",
     "Could not find category \"%s\"" : "Nelze nalézt kategorii \"%s\"",
     "Apps" : "Aplikace",
-    "Username contains invalid characters. It may contain letters, numbers, special characters excluding slashes, and UTF-8 characters." : "Pouze následující znaky jsou povoleny pro uživatelské jméno: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"",
+    "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"" : "Pouze následující znaky jsou povoleny pro uživatelské jméno: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"",
     "A valid username must be provided" : "Musíte zadat platné uživatelské jméno",
     "Username contains whitespace at the beginning or at the end" : "Uživatelské jméno obsahuje mezery na svém začátku nebo konci",
     "A valid password must be provided" : "Musíte zadat platné heslo",

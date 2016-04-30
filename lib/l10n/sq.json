@@ -121,7 +121,7 @@
     "Sharing %s failed, because the file could not be found in the file cache" : "Ndarja e %s me të tjerët dështoi, ngaqë kartela s’u gjet dot te fshehtina e kartelave",
     "Could not find category \"%s\"" : "S’u gjet kategori \"%s\"",
     "Apps" : "Aplikacione",
-    "Username contains invalid characters. It may contain letters, numbers, special characters excluding slashes, and UTF-8 characters." : "Në një emër përdoruesi lejohen vetëm shenjat vijuese: \"a-z\", \"A-Z\", \"0-9\", dhe \"_.@-\"",
+    "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"" : "Në një emër përdoruesi lejohen vetëm shenjat vijuese: \"a-z\", \"A-Z\", \"0-9\", dhe \"_.@-\"",
     "A valid username must be provided" : "Duhet dhënë një emër i vlefshëm përdoruesi",
     "Username contains whitespace at the beginning or at the end" : "Emri i përdoruesit përmban hapësirë në fillim ose në fund",
     "A valid password must be provided" : "Duhet dhënë një fjalëkalim i vlefshëm",

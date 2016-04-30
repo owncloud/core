@@ -114,7 +114,7 @@
     "Sharing %s failed, because the file could not be found in the file cache" : "השיתוף %s נכשל, כייון שלא ניתן היה למצוא את הקובץ בזכרון המטמון",
     "Could not find category \"%s\"" : "לא ניתן למצוא את הקטגוריה „%s“",
     "Apps" : "יישומים",
-    "Username contains invalid characters. It may contain letters, numbers, special characters excluding slashes, and UTF-8 characters." : "רק התווים הבאים מאושרים לשם משתמש: \"a-z\", \"A-Z\", \"0-9\", וגם \"_.@-'\"",
+    "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-'\"" : "רק התווים הבאים מאושרים לשם משתמש: \"a-z\", \"A-Z\", \"0-9\", וגם \"_.@-'\"",
     "A valid username must be provided" : "יש לספק שם משתמש תקני",
     "Username contains whitespace at the beginning or at the end" : "שם המשתמש מכיל רווח בתחילתו או בסופו",
     "A valid password must be provided" : "יש לספק ססמה תקנית",
