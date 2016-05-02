@@ -80,7 +80,7 @@ class Memcached extends Cache implements IMemcache {
 				$options = $options + $defaultOptions;
 				self::$cache->setOptions($options);
 			} else {
-				throw new HintException("Expectod 'memcached_options' config to be an array, got $options");
+				throw new HintException("Expected 'memcached_options' config to be an array, got $options");
 			}
 		}
 	}
