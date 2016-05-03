@@ -435,10 +435,12 @@ class View {
 		@ob_end_clean();
 		$handle = $this->fopen($path, 'rb');
 		if ($handle) {
-			if (fseek($handle, $from) == 0) {
+			if (fseek($handle, $from) === 0) {
 			    $chunkSize = 8192; // 8 kB chunks
-			    while (!feof($handle) && ftell($handle) <= $to) {
-				$len = $to-ftell($handle)+1 > $chunkSize ? $chunkSize : $to-ftell($handle)+1;
+			    $end = $to + 1;
+			    while (!feof($handle) && ftell($handle) < $end) {
+				$len = $end-ftell($handle);
+				if ($len > $chunkSize) $len = $chunkSize;
 				echo fread($handle, $len);
 				flush();
 			    }
