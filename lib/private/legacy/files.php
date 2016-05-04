@@ -181,10 +181,13 @@ class OC_Files {
 			$fileSize = \OC\Files\Filesystem::filesize($filename);
 			if ($fileSize > 0) {
 			    $params['range_to'] = $fileSize - 1;
-			    if ($params['range_to'] - $params['range_from'] >= self::DOWNLOAD_PART_MAX_BYTES) 
+			    if ($params['range_to'] - $params['range_from'] >= self::DOWNLOAD_PART_MAX_BYTES) {
 				$params['range_to'] = $params['range_from'] + self::DOWNLOAD_PART_MAX_BYTES - 1;
+			    }
 			}
-			else unset($params['range_from']);
+			else {
+			    unset($params['range_from']);
+			}
 		    }
 		}
 		
@@ -202,10 +205,12 @@ class OC_Files {
 		if (isset($params['head']) && $params['head']) {
 			return;
 		}
-		if (isset($params['range_from'])) 
+		if (isset($params['range_from'])) {
 		    $view->readfilePart($filename, $params['range_from'], $params['range_to']);
-		else 
+		}
+		else {
 		    $view->readfile($filename);
+		}
 	}
 
 	/**

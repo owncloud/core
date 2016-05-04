@@ -440,7 +440,9 @@ class View {
 			    $end = $to + 1;
 			    while (!feof($handle) && ftell($handle) < $end) {
 				$len = $end-ftell($handle);
-				if ($len > $chunkSize) $len = $chunkSize;
+				if ($len > $chunkSize) { 
+				    $len = $chunkSize; 
+				}
 				echo fread($handle, $len);
 				flush();
 			    }

@@ -493,7 +493,9 @@ class ShareController extends Controller {
 			$ranges = array_map('intval', explode('-', substr($_SERVER['HTTP_RANGE'], 6)));
 			if (isset($ranges[0])) {
 				$server_params['range_from'] = $ranges[0];
-				if ($ranges[1]) $server_params['range_to'] = $ranges[1];
+				if ($ranges[1]) {
+				    $server_params['range_to'] = $ranges[1];
+				}
 			}
 		}
 
