@@ -80,7 +80,6 @@ interface IManager {
 	 *
 	 * @param IShare $share
 	 * @param string $recipientId
-	 * @return IShare
 	 * @throws \InvalidArgumentException If $share is a link share or the $recipient does not match
 	 * @since 9.0.0
 	 */
@@ -98,6 +97,17 @@ interface IManager {
 	 */
 	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares = false);
 	
+	/**
+	 * Accept the share as recipient.
+	 * This can also be reaccepting if the user deleted the share before but
+	 * th original share is still there (e.g. group shares)
+	 *
+	 * @param IShare $share
+	 * @param string $recipientId
+	 * @since 9.1.0
+	 */
+	public function acceptShare(IShare $share, $recipientId);
+
 	/**
 	 * Get shares shared by (initiated) by the provided user.
 	 *
