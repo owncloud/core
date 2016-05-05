@@ -87,7 +87,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                 throw new Exception('Wrong response code: ' . $status);
             }
         } catch (Exception $ex) {
-            Util::writeLog('USER_GITLAB', "GitLab authentication failed: " . $ex->getMessage(), Util::ERROR);
+            Util::writeLog('USER_GITLAB', "GitLab authentication failed: " . $ex->getResult(), Util::ERROR);
             return false;
         }
     }
@@ -114,7 +114,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                 throw new Exception('Wrong response code: ' . $status);
             }
         } catch (Exception $ex) {
-            Util::writeLog('USER_GITLAB', "GitLab user count failed: " . $ex->getMessage(), Util::ERROR);
+            Util::writeLog('USER_GITLAB', "GitLab user count failed: " . $ex->getResult(), Util::ERROR);
             return 0;
         }
     }
@@ -148,7 +148,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                 throw new Exception('Wrong response code: ' . $status);
             }
         } catch (Exception $ex) {
-            Util::writeLog('USER_GITLAB', "GitLab user list failed: " . $ex->getMessage(), Util::ERROR);
+            Util::writeLog('USER_GITLAB', "GitLab user list failed: " . $ex->getResult(), Util::ERROR);
             return array();
         }
     }
@@ -177,7 +177,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                     throw new Exception('Wrong response code: ' . $status);
                 }
             } catch (Exception $ex) {
-                Util::writeLog('USER_GITLAB', "GitLab user exists test failed: " . $ex->getMessage(), Util::ERROR);
+                Util::writeLog('USER_GITLAB', "GitLab user exists test failed: " . $ex->getResult(), Util::ERROR);
                 return false;
             }
         }
@@ -211,7 +211,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                     throw new Exception('Wrong response code: ' . $status);
                 }
             } catch (Exception $ex) {
-                Util::writeLog('USER_GITLAB', "GitLab user name failed: " . $ex->getMessage(), Util::ERROR);
+                Util::writeLog('USER_GITLAB', "GitLab user name failed: " . $ex->getResult(), Util::ERROR);
                 return false;
             }
         }
@@ -247,7 +247,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                 throw new Exception('Wrong response code: ' . $status);
             }
         } catch (Exception $ex) {
-            Util::writeLog('USER_GITLAB', "GitLab user list names failed: " . $ex->getMessage(), Util::ERROR);
+            Util::writeLog('USER_GITLAB', "GitLab user list names failed: " . $ex->getResult(), Util::ERROR);
             return false;
         }
     }
