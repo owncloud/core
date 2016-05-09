@@ -31,20 +31,19 @@ use Test\TestCase;
 class CryptTest extends TestCase {
 
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\ILogger|\PHPUnit_Framework_MockObject_MockObject */
 	private $logger;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
 	private $userSession;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IConfig|\PHPUnit_Framework_MockObject_MockObject */
 	private $config;
 
-
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OCP\IL10N|\PHPUnit_Framework_MockObject_MockObject */
 	private $l;
 
-	/** @var  Crypt */
+	/** @var Crypt */
 	private $crypt;
 
 	public function setUp() {
