@@ -1371,6 +1371,28 @@ describe('OCA.Files.FileList tests', function() {
 			setDirSpy.restore();
 			getFolderContentsStub.restore();
 		});
+		it('scroll distance is passed to sessionStorage', function() {
+			var setItemStub = sinon.stub(window.sessionStorage, 'setItem');
+			fileList.changeDirectory('/somedir');
+			deferredList.resolve(200, [testRoot].concat(testFiles));
+			fileList.changeDirectory('/anotherdir');
+			expect(setItemStub.getCall(0).args[0]).toEqual('/subdir');
+			expect(setItemStub.getCall(0).args[1]).toEqual('0');
+			expect(setItemStub.getCall(1).args[0]).toEqual('/somedir');
+			expect(setItemStub.getCall(1).args[1]).toEqual('0');
+			setItemStub.restore();
+			getFolderContentsStub.restore();
+		});
+		it('scroll distance is read from sessionStorage', function() {
+			var getItemStub = sinon.stub(window.sessionStorage, 'getItem');
+			fileList.changeDirectory('/somedir');
+			deferredList.resolve(200, [testRoot].concat(testFiles));
+			fileList.changeDirectory('/anotherdir');
+			expect(getItemStub.getCall(0).args[0]).toEqual('/somedir');
+			expect(getItemStub.getCall(1).args[0]).toEqual('/anotherdir');
+			getItemStub.restore();
+			getFolderContentsStub.restore();
+		});
 	});
 	describe('breadcrumb events', function() {
 		var deferredList;

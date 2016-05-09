@@ -1374,10 +1374,14 @@
 			if (!force && currentDir === targetDir) {
 				return;
 			}
+			var distance = this.$container.scrollTop() ? this.$container.scrollTop().toString() : '0';
+			sessionStorage.setItem(currentDir, distance);
 			this._setCurrentDir(targetDir, changeUrl);
 			this.reload().then(function(success){
 				if (!success) {
 					self.changeDirectory(currentDir, true);
+				} else {
+					self.loadAndScrollTo(parseInt(sessionStorage.getItem(targetDir)));
 				}
 			});
 		},
@@ -2713,6 +2717,20 @@
 				self.updateStorageStatistics();
 			});
 
+		},
+
+		/**
+		 * Load enough rows and scroll to that distance
+		 * @param distance distance in pixel to scroll to
+		 */
+		loadAndScrollTo: function(distance) {
+			if ( this.$container[0].scrollHeight - this.$container.innerHeight() > distance ) {
+				this.$container.scrollTop(distance);
+			} else {
+				while(this.$container[0].scrollHeight - this.$container.innerHeight() < distance && this._nextPage(false) !== false) {
+				}
+				this.$container.scrollTop(distance);
+			}
 		},
 
 		/**

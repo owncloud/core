@@ -172,6 +172,27 @@ OCA.Sharing.PublicApp = {
 				return OC.filePath('files_sharing', 'ajax', action + '.php') + '?' + OC.buildQueryString(params);
 			};
 
+			this.fileList.changeDirectory = function (targetDir, changeUrl, force) {
+				var self = this;
+				var currentDir = this.getCurrentDirectory();
+				targetDir = targetDir || '/';
+				if (!force && currentDir === targetDir) {
+					return;
+				}
+				var distance = this.$container.scrollTop() ? this.$container.scrollTop().toString() : '0';
+				var key = $('#sharingToken').val()+':'+currentDir;
+				sessionStorage.setItem(key, distance);
+				this._setCurrentDir(targetDir, changeUrl);
+				this.reload().then(function(success){
+					if (!success) {
+						self.changeDirectory(currentDir, true);
+					} else {
+						var key = $('#sharingToken').val()+':'+targetDir;
+						self.loadAndScrollTo(parseInt(sessionStorage.getItem(key)));
+					}
+				});
+			};
+
 			this.fileList.linkTo = function (dir) {
 				return OC.generateUrl('/s/' + token + '', {dir: dir});
 			};
