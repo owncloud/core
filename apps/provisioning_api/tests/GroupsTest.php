@@ -25,6 +25,8 @@
 
 namespace OCA\Provisioning_API\Tests;
 
+use OCA\Provisioning_API\Groups;
+use OCP\API;
 use OCP\IGroupManager;
 use OCP\IUserSession;
 use OCP\IRequest;
@@ -38,21 +40,26 @@ class GroupsTest extends \Test\TestCase {
 	protected $request;
 	/** @var \OC\SubAdmin|\PHPUnit_Framework_MockObject_MockObject */
 	protected $subAdminManager;
-	/** @var \OCA\Provisioning_API\Groups */
+	/** @var Groups */
 	protected $api;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->subAdminManager = $this->getMockBuilder('OC\SubAdmin')->disableOriginalConstructor()->getMock();
 
-		$this->groupManager = $this->getMockBuilder('OC\Group\Manager')->disableOriginalConstructor()->getMock();
+		$this->subAdminManager = $this->getMockBuilder('OC\SubAdmin')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->groupManager = $this->getMockBuilder('OC\Group\Manager')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->groupManager
 			->method('getSubAdmin')
 			->willReturn($this->subAdminManager);
 
 		$this->userSession = $this->getMock('OCP\IUserSession');
 		$this->request = $this->getMock('OCP\IRequest');
-		$this->api = new \OCA\Provisioning_API\Groups(
+		$this->api = new Groups(
 			$this->groupManager,
 			$this->userSession,
 			$this->request
@@ -130,6 +137,10 @@ class GroupsTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider dataGetGroups
+	 *
+	 * @param string|null $search
+	 * @param int|null $limit
+	 * @param int|null $offset
 	 */
 	public function testGetGroups($search, $limit, $offset) {
 		$this->request
@@ -162,7 +173,7 @@ class GroupsTest extends \Test\TestCase {
 
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertFalse($result->succeeded());
-		$this->assertEquals(\OCP\API::RESPOND_UNAUTHORISED, $result->getStatusCode());
+		$this->assertEquals(API::RESPOND_UNAUTHORISED, $result->getStatusCode());
 
 	}
 
@@ -216,7 +227,7 @@ class GroupsTest extends \Test\TestCase {
 
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertFalse($result->succeeded());
-		$this->assertEquals(\OCP\API::RESPOND_UNAUTHORISED, $result->getStatusCode());
+		$this->assertEquals(API::RESPOND_UNAUTHORISED, $result->getStatusCode());
 	}
 
 	public function testGetGroupAsAdmin() {
@@ -253,12 +264,12 @@ class GroupsTest extends \Test\TestCase {
 		$this->asUser();
 
 		$result = $this->api->getGroup([
-			'groupid' => $this->getUniqueId()
+			'groupid' => $this->getUniqueID()
 		]);
 
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertFalse($result->succeeded());
-		$this->assertEquals(\OCP\API::RESPOND_NOT_FOUND, $result->getStatusCode());
+		$this->assertEquals(API::RESPOND_NOT_FOUND, $result->getStatusCode());
 		$this->assertEquals('The requested group could not be found', $result->getMeta()['message']);
 	}
 
