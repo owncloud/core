@@ -22,13 +22,13 @@
  */
 
 
-namespace OCA\Encryption\Tests\lib\Crypto;
+namespace OCA\Encryption\Tests\Crypto;
 
 
 use OCA\Encryption\Crypto\Crypt;
 use Test\TestCase;
 
-class cryptTest extends TestCase {
+class CryptTest extends TestCase {
 
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
