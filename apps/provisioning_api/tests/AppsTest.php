@@ -48,8 +48,8 @@ class AppsTest extends TestCase {
 	/** @var OCSClient */
 	private $ocsClient;
 
-	public function setup() {
-		parent::setup();
+	protected function setUp() {
+		parent::setUp();
 		$this->appManager = \OC::$server->getAppManager();
 		$this->groupManager = \OC::$server->getGroupManager();
 		$this->userSession = \OC::$server->getUserSession();

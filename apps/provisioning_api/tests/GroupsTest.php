@@ -41,7 +41,8 @@ class GroupsTest extends \Test\TestCase {
 	/** @var \OCA\Provisioning_API\Groups */
 	protected $api;
 
-	protected function setup() {
+	protected function setUp() {
+		parent::setUp();
 		$this->subAdminManager = $this->getMockBuilder('OC\SubAdmin')->disableOriginalConstructor()->getMock();
 
 		$this->groupManager = $this->getMockBuilder('OC\Group\Manager')->disableOriginalConstructor()->getMock();
