@@ -15,13 +15,16 @@
 }
 
 .icon-loading {
-	background-image: url('../img/loading.gif');
+	background-image: url('../img/loading.svg');
 }
 .icon-loading-dark {
-	background-image: url('../img/loading-dark.gif');
+	background-image: url('../img/loading-dark.svg');
 }
 .icon-loading-small {
-	background-image: url('../img/loading-small.gif');
+	background-image: url('../img/loading-small.svg');
+}
+.icon-loading-small-dark {
+	background-image: url('../img/loading-small-dark.svg');
 }
 .icon-32 {
 	background-size: 32px !important;

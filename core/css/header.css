@@ -243,12 +243,13 @@
 
 /* loading feedback for apps */
 #navigation .app-loading .icon-loading-dark {
-	display: inline !important;
+	display: block !important;
 	position: absolute;
-	top: 20px;
-	left: 24px;
+	top: 50%;
+	left: 50%;
 	width: 32px;
 	height: 32px;
+	margin: -20px 0 0 -16px;
 }
 #navigation .app-loading .app-icon {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
@@ -294,11 +295,10 @@
 	color: #bbb;
 	cursor: pointer;
 }
-#settings .icon-loading-dark {
+#settings .icon-loading-small-dark {
 	display: inline-block;
 	margin-bottom: -3px;
 	margin-right: 6px;
-	background-size: 16px 16px;
 }
 #expand {
 	display: block;

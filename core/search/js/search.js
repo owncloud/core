@@ -129,7 +129,7 @@
 						//show spinner
 						$searchResults.removeClass('hidden');
 						$status.addClass('status');
-						$status.html(t('core', 'Searching other places')+'<img class="spinner" alt="search in progress" src="'+OC.webroot+'/core/img/loading.gif" />');
+						$status.html('<div class="spinner icon-loading-small"></div>'+t('core', 'Searching other places'));
 
 						// do the actual search query
 						$.getJSON(OC.generateUrl('core/search'), {query:query, inApps:inApps, page:page, size:size }, function(results) {
