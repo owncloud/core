@@ -49,7 +49,7 @@ class OC_Files {
 	const ZIP_DIR = 3;
 
 	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
-	
+
 
 	private static $MULTIPART_BOUNDARY = '';
 
