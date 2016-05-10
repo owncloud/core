@@ -50,7 +50,18 @@ class OC_Files {
 
 	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
 
-	const MULTIPART_BOUNDARY_SEPARATOR = '31b3c516eb6969f9f417f172a315ce8b'; // random string
+
+	private static $MULTIPART_BOUNDARY = '';
+
+	/**
+	 * @return string
+	 */
+	private static function getBoundary() {
+		if (empty(self::$MULTIPART_BOUNDARY)) {
+			self::$MULTIPART_BOUNDARY = md5(mt_rand());
+		}
+		return self::$MULTIPART_BOUNDARY;
+	}
 
 	/**
 	 * @param string $filename
@@ -68,7 +79,7 @@ class OC_Files {
 			    header('HTTP/1.1 206 Partial Content');
 			    header('Accept-Ranges: bytes');
 			    if (count($rangeArray) > 1) {
-				$type = 'multipart/byteranges; boundary='.self::MULTIPART_BOUNDARY_SEPARATOR;
+				$type = 'multipart/byteranges; boundary='.self::getBoundary();
 				// no Content-Length header here
 			    }
 			    else {
@@ -266,12 +277,12 @@ class OC_Files {
 			$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 
 			foreach ($rangeArray as $range) {
-			    echo "\r\n--".self::MULTIPART_BOUNDARY_SEPARATOR."\r\n".
+			    echo "\r\n--".self::getBoundary()."\r\n".
 			         "Content-type: ".$type."\r\n".
 			         "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
 			    $view->readfilePart($filename, $range['from'], $range['to']);
 			}
-			echo "\r\n--".self::MULTIPART_BOUNDARY_SEPARATOR."--\r\n";
+			echo "\r\n--".self::getBoundary()."--\r\n";
 		    }
 		}
 		else {
