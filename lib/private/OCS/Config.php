@@ -1,6 +1,7 @@
 <?php
 /**
- * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Morris Jobke <hey@morrisjobke.de>
  * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -20,8 +21,17 @@
  *
  */
 
-/**
- * @deprecated Since 9.1.0 use \OC\OCS\Cloud
- */
-class OC_OCS_Cloud extends \OC\OCS\Cloud {
+namespace OC\OCS;
+
+class Config {
+
+	public static function apiConfig() {
+		$xml['version'] = '1.7';
+		$xml['website'] = 'ownCloud';
+		$xml['host'] = \OCP\Util::getServerHost();
+		$xml['contact'] = '';
+		$xml['ssl'] = 'false';
+		return new \OC_OCS_Result($xml);
+	}
+
 }
