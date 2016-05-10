@@ -39,7 +39,7 @@ class Cloud {
 			
 		$result['capabilities'] = \OC::$server->getCapabilitiesManager()->getCapabilities();
 
-		return new \OC_OCS_Result($result);
+		return new Result($result);
 	}
 	
 	public static function getCurrentUser() {
@@ -49,6 +49,6 @@ class Cloud {
 			'display-name' => $userObject->getDisplayName(),
 			'email' => $userObject->getEMailAddress(),
 		);
-		return new \OC_OCS_Result($data);
+		return new Result($data);
 	}
 }

@@ -31,7 +31,7 @@ class Config {
 		$xml['host'] = \OCP\Util::getServerHost();
 		$xml['contact'] = '';
 		$xml['ssl'] = 'false';
-		return new \OC_OCS_Result($xml);
+		return new Result($xml);
 	}
 
 }

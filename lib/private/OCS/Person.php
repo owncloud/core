@@ -31,12 +31,12 @@ class Person {
 		if($login && $password) {
 			if(\OC_User::checkPassword($login, $password)) {
 				$xml['person']['personid'] = $login;
-				return new \OC_OCS_Result($xml);
+				return new Result($xml);
 			} else {
-				return new \OC_OCS_Result(null, 102);
+				return new Result(null, 102);
 			}
 		} else {
-			return new \OC_OCS_Result(null, 101);
+			return new Result(null, 101);
 		}
 	}
 

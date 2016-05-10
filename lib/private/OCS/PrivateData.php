@@ -58,7 +58,7 @@ class PrivateData {
 		 	$xml[] = $data;
 		}
 
-		return new \OC_OCS_Result($xml);
+		return new Result($xml);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class PrivateData {
 			$query->execute(array($user, $app, $key, $value));
 		}
 
-		return new \OC_OCS_Result(null, 100);
+		return new Result(null, 100);
 	}
 
 	/**
@@ -96,7 +96,7 @@ class PrivateData {
 		$user = \OC_User::getUser();
 		if (!isset($parameters['app']) or !isset($parameters['key'])) {
 			//key and app are NOT optional here
-			return new \OC_OCS_Result(null, 101);
+			return new Result(null, 101);
 		}
 
 		$app = addslashes(strip_tags($parameters['app']));
@@ -106,7 +106,7 @@ class PrivateData {
 		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? ');
 		$query->execute(array($user, $app, $key ));
 
-		return new \OC_OCS_Result(null, 100);
+		return new Result(null, 100);
 	}
 }
 
