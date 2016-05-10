@@ -57,7 +57,7 @@ class OC_Files {
 	 * @param string $name
 	 * @param array $rangeArray ('from'=>int,'to'=>int), ...
 	 */
-	private static function sendHeaders($filename, $name, $rangeArray) {
+	private static function sendHeaders($filename, $name, array $rangeArray) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
 		header('Content-Transfer-Encoding: binary');
 		OC_Response::disableCaching();
@@ -175,6 +175,58 @@ class OC_Files {
 	}
 
 	/**
+	 * @param string $rangeHeaderPos
+	 * @param int $fileSize
+	 * @return array $rangeArray ('from'=>int,'to'=>int), ...
+	 */
+	private static function parseHttpRangeHeader($rangeHeaderPos, $fileSize) {
+		$rArray=split(',', $rangeHeaderPos);
+		$minOffset = 0;
+		$ind = 0;
+
+		$rangeArray = array();
+
+		foreach ($rArray as $value) {
+			$ranges = explode('-', $value);
+			if (is_numeric($ranges[0])) {
+				if ($ranges[0] < $minOffset) { // case: bytes=500-700,601-999
+					$ranges[0] = $minOffset;
+				}
+				if ($ind > 0 && $rangeArray[$ind-1]['to']+1 == $ranges[0]) { // case: bytes=500-600,601-999
+					$ind--;
+					$ranges[0] = $rangeArray[$ind]['from'];
+				}
+			}
+
+			if (is_numeric($ranges[0]) && is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
+				// case: x-x
+				if ($ranges[1] >= $fileSize) {
+					$ranges[1] = $fileSize-1;
+				}
+				$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $ranges[1], 'size' => $fileSize );
+				$minOffset = $ranges[1] + 1;
+				if ($minOffset >= $fileSize) {
+					break;
+				}
+			}
+			elseif (is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
+				// case: x-
+				$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $fileSize-1, 'size' => $fileSize );
+				break;
+			}
+			elseif (is_numeric($ranges[1])) {
+				// case: -x
+				if ($ranges[1] > $fileSize) {
+					$ranges[1] = $fileSize;
+				}
+				$rangeArray[$ind++] = array( 'from' => $fileSize-$ranges[1], 'to' => $fileSize-1, 'size' => $fileSize );
+				break;
+			}
+		}
+		return $rangeArray;
+	}
+
+	/**
 	 * @param View $view
 	 * @param string $name
 	 * @param string $dir
@@ -188,49 +240,8 @@ class OC_Files {
 		$rangeArray = array();
 
 		if (isset($params['range']) && substr($params['range'], 0, 6) === 'bytes=') {
-
-			$fileSize = \OC\Files\Filesystem::filesize($filename);
-			$rArray=split(',', substr($params['range'], 6));
-			$minOffset = 0;
-			$ind = 0;
-
-			foreach ($rArray as $value) {
-				$ranges = explode('-', $value);
-				if (is_numeric($ranges[0])) {
-					if ($ranges[0] < $minOffset) { // case: bytes=500-700,601-999
-						$ranges[0] = $minOffset;
-					}
-					if ($ind > 0 && $rangeArray[$ind-1]['to']+1 == $ranges[0]) { // case: bytes=500-600,601-999
-						$ind--;
-						$ranges[0] = $rangeArray[$ind]['from'];
-					}
-				}
-
-				if (is_numeric($ranges[0]) && is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
-					// case: x-x
-					if ($ranges[1] >= $fileSize) {
-						$ranges[1] = $fileSize-1;
-					}
-					$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $ranges[1], 'size' => $fileSize );
-					$minOffset = $ranges[1] + 1;
-					if ($minOffset >= $fileSize) {
-						break;
-					}
-				}
-				elseif (is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
-					// case: x-
-					$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $fileSize-1, 'size' => $fileSize );
-					break;
-				}
-				elseif (is_numeric($ranges[1])) {
-					// case: -x
-					if ($ranges[1] > $fileSize) {
-						$ranges[1] = $fileSize;
-					}
-					$rangeArray[$ind++] = array( 'from' => $fileSize-$ranges[1], 'to' => $fileSize-1, 'size' => $fileSize );
-					break;
-				}
-			}
+			$rangeArray = self::parseHttpRangeHeader(substr($params['range'], 6), 
+								 \OC\Files\Filesystem::filesize($filename));
 		}
 		
 		if (\OC\Files\Filesystem::isReadable($filename)) {
