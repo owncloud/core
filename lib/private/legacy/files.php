@@ -16,6 +16,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Piotr Filiciak <piotr@filiciak.pl>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -48,30 +49,38 @@ class OC_Files {
 	const ZIP_DIR = 3;
 
 	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
-	
-	const DOWNLOAD_PART_MAX_BYTES = 1048576; // 1 MiB
+
+	const MULTIPART_BOUNDARY_SEPARATOR = '31b3c516eb6969f9f417f172a315ce8b'; // random string
 
 	/**
 	 * @param string $filename
 	 * @param string $name
-	 * @param array $params ; 'range_from' / 'range_to' int range requests
+	 * @param array $rangeArray ('from'=>int,'to'=>int), ...
 	 */
-	private static function sendHeaders($filename, $name, $params) {
+	private static function sendHeaders($filename, $name, $rangeArray) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
 		header('Content-Transfer-Encoding: binary');
 		OC_Response::disableCaching();
 		$fileSize = \OC\Files\Filesystem::filesize($filename);
 		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
-		header('Content-Type: '.$type);
 		if ($fileSize > -1) {
-			if (isset($params['range_from'])) {
+			if (!empty($rangeArray)) {
 			    header('HTTP/1.1 206 Partial Content');
 			    header('Accept-Ranges: bytes');
-			    OC_Response::setContentLengthHeader($params['range_to'] - $params['range_from'] + 1);
-			    header(sprintf('Content-Range: bytes %d-%d/%d', $params['range_from'], $params['range_to'], $fileSize));
+			    if (count($rangeArray) > 1) {
+				$type = 'multipart/byteranges; boundary='.self::MULTIPART_BOUNDARY_SEPARATOR;
+				// no Content-Length header here
+			    }
+			    else {
+				header(sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize));
+				OC_Response::setContentLengthHeader($rangeArray[0]['to'] - $rangeArray[0]['from'] + 1);
+			    }
 			}
-			else OC_Response::setContentLengthHeader($fileSize);
+			else {
+			    OC_Response::setContentLengthHeader($fileSize);
+			}
 		}
+		header('Content-Type: '.$type);
 	}
 
 	/**
@@ -79,7 +88,7 @@ class OC_Files {
 	 *
 	 * @param string $dir
 	 * @param string $files ; separated list of files to download
-	 * @param array $params ; 'head' boolean to only send header of the request ; 'range_from' / 'range_to' int range requests
+	 * @param array $params ; 'head' boolean to only send header of the request ; 'range' http range header
 	 */
 	public static function get($dir, $files, $params = array( 'head' => false )) {
 
@@ -169,30 +178,63 @@ class OC_Files {
 	 * @param View $view
 	 * @param string $name
 	 * @param string $dir
-	 * @param array $params ; 'head' boolean to only send header of the request ; 'range_from' / 'range_to' int range requests
+	 * @param array $params ; 'head' boolean to only send header of the request ; 'range' http range header
 	 */
 	private static function getSingleFile($view, $dir, $name, $params) {
 		$filename = $dir . '/' . $name;
 		OC_Util::obEnd();
 		$view->lockFile($filename, ILockingProvider::LOCK_SHARED);
 		
-		if (isset($params['range_from'])) {
-		    if (!isset($params['range_to'])) {
+		$rangeArray = array();
+
+		if (isset($params['range']) && substr($params['range'], 0, 6) === 'bytes=') {
+
 			$fileSize = \OC\Files\Filesystem::filesize($filename);
-			if ($fileSize > 0) {
-			    $params['range_to'] = $fileSize - 1;
-			    if ($params['range_to'] - $params['range_from'] >= self::DOWNLOAD_PART_MAX_BYTES) {
-				$params['range_to'] = $params['range_from'] + self::DOWNLOAD_PART_MAX_BYTES - 1;
-			    }
+			$rArray=split(',', substr($params['range'], 6));
+			$minOffset = 0;
+			$ind = 0;
+
+			foreach ($rArray as $value) {
+				$ranges = explode('-', $value);
+				if (is_numeric($ranges[0])) {
+					if ($ranges[0] < $minOffset) { // case: bytes=500-700,601-999
+						$ranges[0] = $minOffset;
+					}
+					if ($ind > 0 && $rangeArray[$ind-1]['to']+1 == $ranges[0]) { // case: bytes=500-600,601-999
+						$ind--;
+						$ranges[0] = $rangeArray[$ind]['from'];
+					}
+				}
+
+				if (is_numeric($ranges[0]) && is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
+					// case: x-x
+					if ($ranges[1] >= $fileSize) {
+						$ranges[1] = $fileSize-1;
+					}
+					$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $ranges[1], 'size' => $fileSize );
+					$minOffset = $ranges[1] + 1;
+					if ($minOffset >= $fileSize) {
+						break;
+					}
+				}
+				elseif (is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
+					// case: x-
+					$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $fileSize-1, 'size' => $fileSize );
+					break;
+				}
+				elseif (is_numeric($ranges[1])) {
+					// case: -x
+					if ($ranges[1] > $fileSize) {
+						$ranges[1] = $fileSize;
+					}
+					$rangeArray[$ind++] = array( 'from' => $fileSize-$ranges[1], 'to' => $fileSize-1, 'size' => $fileSize );
+					break;
+				}
 			}
-			else {
-			    unset($params['range_from']);
-			}
-		    }
 		}
 		
 		if (\OC\Files\Filesystem::isReadable($filename)) {
-			self::sendHeaders($filename, $name, $params);
+			self::sendHeaders($filename, $name, $rangeArray);
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
 			header("HTTP/1.0 404 Not Found");
 			$tmpl = new OC_Template('', '404', 'guest');
@@ -205,8 +247,21 @@ class OC_Files {
 		if (isset($params['head']) && $params['head']) {
 			return;
 		}
-		if (isset($params['range_from'])) {
-		    $view->readfilePart($filename, $params['range_from'], $params['range_to']);
+		if (!empty($rangeArray)) {
+		    if (count($rangeArray) == 1) {
+			$view->readfilePart($filename, $rangeArray[0]['from'], $rangeArray[0]['to']);
+		    }
+		    else {
+			$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+
+			foreach ($rangeArray as $range) {
+			    echo "\r\n--".self::MULTIPART_BOUNDARY_SEPARATOR."\r\n".
+			         "Content-type: ".$type."\r\n".
+			         "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
+			    $view->readfilePart($filename, $range['from'], $range['to']);
+			}
+			echo "\r\n--".self::MULTIPART_BOUNDARY_SEPARATOR."--\r\n";
+		    }
 		}
 		else {
 		    $view->readfile($filename);
