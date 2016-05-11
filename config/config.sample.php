@@ -927,23 +927,23 @@ $CONFIG = array(
  */
 'memcached_options' => array(
 	// Set timeouts to 50ms
-	array(\Memcached::OPT_CONNECT_TIMEOUT, 50),
-	array(\Memcached::OPT_RETRY_TIMEOUT,   50),
-	array(\Memcached::OPT_SEND_TIMEOUT,    50),
-	array(\Memcached::OPT_RECV_TIMEOUT,    50),
-	array(\Memcached::OPT_POLL_TIMEOUT,    50),
+	\Memcached::OPT_CONNECT_TIMEOUT => 50,
+	\Memcached::OPT_RETRY_TIMEOUT =>   50,
+	\Memcached::OPT_SEND_TIMEOUT =>    50,
+	\Memcached::OPT_RECV_TIMEOUT =>    50,
+	\Memcached::OPT_POLL_TIMEOUT =>    50,
 
 	// Enable compression
-	array(\Memcached::OPT_COMPRESSION,          true),
+	\Memcached::OPT_COMPRESSION =>          true,
 
 	// Turn on consistent hashing
-	array(\Memcached::OPT_LIBKETAMA_COMPATIBLE, true),
+	\Memcached::OPT_LIBKETAMA_COMPATIBLE => true,
 
 	// Enable Binary Protocol
-	array(\Memcached::OPT_BINARY_PROTOCOL,      true),
+	\Memcached::OPT_BINARY_PROTOCOL =>      true,
 
-	// Enabling igbinary requires igbinary PECL module
-	//array(\Memcached::OPT_SERIALIZER, \Memcached::SERIALIZER_IGBINARY),
+	// Binary serializer vill be enabled if the igbinary PECL module is available
+	//\Memcached::OPT_SERIALIZER => \Memcached::SERIALIZER_IGBINARY,
 ),
 
 
