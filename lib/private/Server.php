@@ -641,6 +641,9 @@ class Server extends ServerContainer implements IServerContainer {
 
 			return $manager;
 		});
+		$this->registerService('RedisFactory', function (Server $c) {
+			return new RedisFactory($c->getSystemConfig());
+		});
 	}
 
 	/**
@@ -1304,4 +1307,10 @@ class Server extends ServerContainer implements IServerContainer {
 		return $this->query('ShareManager');
 	}
 
+	/**
+	 * @return \OC\RedisFactory
+	 */
+	public function getRedisFactory() {
+		return $this->query('RedisFactory');
+	}
 }
