@@ -35,14 +35,12 @@ namespace OCA\user_ldap;
 use OC\User\NoUserException;
 use OCA\user_ldap\lib\BackendUtility;
 use OCA\user_ldap\lib\Access;
+use OCA\user_ldap\lib\IUserLDAP;
 use OCA\user_ldap\lib\user\OfflineUser;
 use OCA\User_LDAP\lib\User\User;
 use OCP\IConfig;
 
-class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserInterface {
-	/** The name of this backend */
-	const BACKEND_NAME = 'LDAP';
-
+class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserInterface, IUserLDAP {
 	/** @var string[] $homesToKill */
 	protected $homesToKill = array();
 
@@ -92,6 +90,16 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 		} catch (\Exception $e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * returns the username for the given LDAP DN, if available
+	 *
+	 * @param string $dn
+	 * @return string|false with the name to use in ownCloud
+	 */
+	public function dn2UserName($dn) {
+		return $this->access->dn2username($dn);
 	}
 
 	/**
@@ -459,7 +467,27 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	 * @return string the name of the backend to be shown
 	 */
 	public function getBackendName(){
-		return self::BACKEND_NAME;
+		return 'LDAP';
 	}
-
+	
+	/**
+	 * Return access for LDAP interaction.
+	 * @param string $uid
+	 * @return Access instance of Access for LDAP interaction
+	 */
+	public function getLDAPAccess($uid) {
+		return $this->access;
+	}
+	
+	/**
+	 * Return LDAP connection resource from a cloned connection.
+	 * The cloned connection needs to be closed manually.
+	 * of the current access.
+	 * @param string $uid
+	 * @return resource of the LDAP connection
+	 */
+	public function getNewLDAPConnection($uid) {
+		$connection = clone $this->access->getConnection();
+		return $connection->getConnectionResource();
+	}
 }

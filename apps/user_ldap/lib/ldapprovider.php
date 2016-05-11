@@ -44,9 +44,8 @@ class LDAPProvider implements ILDAPProvider {
 		$this->logger = $serverContainer->getLogger();
 		$this->helper = new Helper();
 		foreach ($serverContainer->getUserManager()->getBackends() as $backend){
-			$name = get_class($backend);
-			$this->logger->debug('instance '.$name.' backend.', ['app' => 'user_ldap']);
-			if ($backend instanceof IUserBackend && $backend->getBackendName() == USER_LDAP::BACKEND_NAME) {
+			$this->logger->debug('instance '.get_class($backend).' backend.', ['app' => 'user_ldap']);
+			if ($backend instanceof IUserLDAP) {
 				$this->backend = $backend;
 				return;
 			}
@@ -74,13 +73,12 @@ class LDAPProvider implements ILDAPProvider {
 	/**
 	 * Translate a LDAP DN to an ownCloud user name. If there is no mapping between 
 	 * the DN and the user name, a new one will be created.
-	 * @param string $connUid ownCloud user id for the LDAP connection
 	 * @param string $dn LDAP DN
 	 * @return string with the ownCloud user name
 	 * @throws \Exception if translation was unsuccessful
 	 */
-	public function getUserName($connUid, $dn) {
-		$result = $this->backend->getLDAPAccess($connUid)->dn2username($dn);
+	public function getUserName($dn) {
+		$result = $this->backend->dn2UserName($dn);
 		if(!$result){
 			throw new \Exception('Translation to ownCloud user name unsuccessful');
 		}
@@ -107,7 +105,7 @@ class LDAPProvider implements ILDAPProvider {
 	
 	/**
 	 * Return a new LDAP connection resource for the specified user. 
-	 * This should only be called once and the connection resource should be reused thereafter.
+	 * The connection must be closed manually.
 	 * @param string $uid ownCloud user id
 	 * @return resource of the LDAP connection
 	 * @throws \Exception if user id was not found in LDAP

@@ -1,8 +1,6 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -23,15 +21,28 @@
 
 namespace OCA\user_ldap\lib;
 
+interface IUserLDAP {
 
-abstract class BackendUtility {
-	protected $access;
+	//Functions used by LDAPProvider
+	
+	/**
+	 * Return access for LDAP interaction.
+	 * @param string $uid
+	 * @return Access instance of Access for LDAP interaction
+	 */
+	public function getLDAPAccess($uid);
+	
+	/**
+	 * Return a new LDAP connection for the specified user.
+	 * @param string $uid
+	 * @return resource of the LDAP connection
+	 */
+	public function getNewLDAPConnection($uid);
 
 	/**
-	 * constructor, make sure the subclasses call this one!
-	 * @param Access $access an instance of Access for LDAP interaction
+	 * Return the username for the given LDAP DN, if available.
+	 * @param string $dn
+	 * @return string|false with the name to use in ownCloud
 	 */
-	public function __construct(Access $access) {
-		$this->access = $access;
-	}
+	public function dn2UserName($dn);
 }
