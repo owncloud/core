@@ -127,7 +127,7 @@ class LDAPProvider implements ILDAPProvider {
 		if(!$this->backend->userExists($uid)){
 			throw new \Exception('User id not found in LDAP');
 		}	
-		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()->ldapBaseUsers;
+		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()['ldap_base_users'];
 	}
 	
 	/**
@@ -140,6 +140,6 @@ class LDAPProvider implements ILDAPProvider {
 		if(!$this->backend->userExists($uid)){
 			throw new \Exception('User id not found in LDAP');
 		}
-		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()->ldapBaseGroups;
+		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()['ldap_base_groups'];
 	}
 }
