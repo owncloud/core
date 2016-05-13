@@ -116,16 +116,18 @@ var UserList = {
 		/**
 		 * remove action
 		 */
-		if ($tr.find('td.remove img').length === 0 && OC.currentUser !== user.name) {
-			var deleteImage = $('<img class="svg action">').attr({
-				src: OC.imagePath('core', 'actions/delete')
-			});
-			var deleteLink = $('<a class="action delete">')
-				.attr({ href: '#', 'original-title': t('settings', 'Delete')})
-				.append(deleteImage);
-			$tr.find('td.remove').append(deleteLink);
-		} else if (OC.currentUser === user.name) {
-			$tr.find('td.remove a').remove();
+		if (OC.currentUser === 'admin') {
+			if ($tr.find('td.remove img').length === 0 && OC.currentUser !== user.name) {
+				var deleteImage = $('<img class="svg action">').attr({
+					src: OC.imagePath('core', 'actions/delete')
+				});
+				var deleteLink = $('<a class="action delete">')
+					.attr({ href: '#', 'original-title': t('settings', 'Delete')})
+					.append(deleteImage);
+				$tr.find('td.remove').append(deleteLink);
+			} else if (OC.currentUser === user.name) {
+				$tr.find('td.remove a').remove();
+			}
 		}
 
 		/**
