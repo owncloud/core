@@ -452,8 +452,8 @@ class OC_Mount_Config {
 
 		$class = $options['class'];
 		try {
-			if($class instanceof OC\Files\Storage\Storage) {
-				/** @var \OC\Files\Storage\Storage $storage */
+			if($class instanceof \OCP\Files\Storage) {
+				/** @var \OCP\Files\Storage $storage */
 				$storage = new $class($options['options']);
 			} else {
 				return false;
