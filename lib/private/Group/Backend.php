@@ -63,7 +63,7 @@ abstract class Backend implements \OCP\GroupInterface {
 	* @return int bitwise-or'ed actions
 	*
 	* Returns the supported actions as int to be
-	* compared with \OC_Group_Backend::CREATE_GROUP etc.
+	* compared with \OC\Group\Backend::CREATE_GROUP etc.
 	*/
 	public function getSupportedActions() {
 		$actions = 0;
@@ -82,7 +82,7 @@ abstract class Backend implements \OCP\GroupInterface {
 	* @return bool
 	*
 	* Returns the supported actions as int to be
-	* compared with \OC_Group_Backend::CREATE_GROUP etc.
+	* compared with \OC\Group\Backend::CREATE_GROUP etc.
 	*/
 	public function implementsActions($actions) {
 		return (bool)($this->getSupportedActions() & $actions);

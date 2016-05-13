@@ -51,7 +51,7 @@ namespace OC\Group;
 /**
  * Class for group management in a SQL Database (e.g. MySQL, SQLite)
  */
-class Database extends \OC_Group_Backend {
+class Database extends \OC\Group\Backend {
 
 	/** @var string[] */
 	private $groupCache = [];
@@ -60,7 +60,7 @@ class Database extends \OC_Group_Backend {
 	private $dbConn;
 
 	/**
-	 * OC_Group_Database constructor.
+	 * \OC\Group\Database constructor.
 	 *
 	 * @param \OCP\IDBConnection|null $dbConn
 	 */
