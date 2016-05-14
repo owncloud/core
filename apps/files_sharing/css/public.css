@@ -158,3 +158,16 @@ thead {
 	opacity: 1;
 	cursor: pointer;
 }
+
+#download.disabled,
+#download.disabled:hover,
+#download.disabled:focus {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	filter: alpha(opacity=40);
+	opacity: 0.4;
+	cursor: default;
+}
+
+#download.disabled * {
+	cursor: default;
+}
