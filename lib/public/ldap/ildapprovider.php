@@ -86,4 +86,19 @@ interface ILDAPProvider {
 	 * @since 9.1.0
 	 */
 	public function getLDAPBaseGroups($uid);
+	
+	/**
+	 * Check whether a LDAP DN exists
+	 * @param string $dn LDAP DN
+	 * @return bool whether the DN exists
+	 * @since 9.1.0
+	 */
+	public function dnExists($dn);
+	
+	/**
+	 * Clear the cache if a cache is used, otherwise do nothing.
+	 * @param string $uid ownCloud user id
+	 * @since 9.1.0
+	 */
+	public function clearCache($uid);
 }
