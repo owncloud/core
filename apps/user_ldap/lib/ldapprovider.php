@@ -23,17 +23,21 @@ namespace OCA\user_ldap\lib;
 
 use OCP\IUserBackend;
 use OCP\LDAP\ILDAPProvider;
+use OCP\LDAP\IDeletionFlagSupport;
 use OCP\IServerContainer;
 use OCA\user_ldap\USER_LDAP;
+use OCA\user_ldap\lib\User\DeletedUsersIndex;
+use OCA\user_ldap\mapping\UserMapping;
 
 /**
  * LDAP provider for pulic access to the LDAP backend.
  */
-class LDAPProvider implements ILDAPProvider {
+class LDAPProvider implements ILDAPProvider, IDeletionFlagSupport {
 
 	private $backend;
 	private $logger;
 	private $helper;
+	private $deletedUsersIndex;
 	
 	/**
 	 * Create new LDAPProvider
@@ -43,6 +47,9 @@ class LDAPProvider implements ILDAPProvider {
 	public function __construct(IServerContainer $serverContainer) {
 		$this->logger = $serverContainer->getLogger();
 		$this->helper = new Helper();
+		$dbConnection = \OC::$server->getDatabaseConnection();
+		$userMapping = new UserMapping($dbConnection);
+		$this->deletedUsersIndex = new DeletedUsersIndex($serverContainer->getConfig(), $dbConnection, $userMapping);
 		foreach ($serverContainer->getUserManager()->getBackends() as $backend){
 			$this->logger->debug('instance '.get_class($backend).' backend.', ['app' => 'user_ldap']);
 			if ($backend instanceof IUserLDAP) {
@@ -141,5 +148,43 @@ class LDAPProvider implements ILDAPProvider {
 			throw new \Exception('User id not found in LDAP');
 		}
 		return $this->backend->getLDAPAccess($uid)->getConnection()->getConfiguration()['ldap_base_groups'];
+	}
+	
+	/**
+	 * Clear the cache if a cache is used, otherwise do nothing.
+	 * @param string $uid ownCloud user id
+	 * @throws \Exception if user id was not found in LDAP
+	 */
+	public function clearCache($uid) {
+		if(!$this->backend->userExists($uid)){
+			throw new \Exception('User id not found in LDAP');
+		}
+		$this->backend->getLDAPAccess($uid)->getConnection()->clearCache();
+	}
+	
+	/**
+	 * Check whether a LDAP DN exists
+	 * @param string $dn LDAP DN
+	 * @return bool whether the DN exists
+	 */
+	public function dnExists($dn) {
+		$result = $this->backend->dn2UserName($dn);
+		return !$result ? false : true;
+	}
+	
+	/**
+	 * Flag record for deletion.
+	 * @param string $uid ownCloud user id
+	 */
+	public function flagRecord($uid) {
+		$this->deletedUsersIndex->markUser($uid);
+	}
+	
+	/**
+	 * Unflag record for deletion.
+	 * @param string $uid ownCloud user id
+	 */
+	public function unflagRecord($uid) {
+		//do nothing
 	}
 }
