@@ -196,6 +196,7 @@ OCA.Sharing.PublicApp = {
 				this.$el.find('#emptycontent .uploadmessage').text(
 					t('files_sharing', 'You can upload into this folder')
 				);
+				$('#download').toggleClass('hidden', this.isEmpty);
 				OCA.Files.FileList.prototype.updateEmptyContent.apply(this, arguments);
 			};
 
