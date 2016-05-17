@@ -29,13 +29,11 @@ use OCP\AppFramework\Db\Entity;
  * @method void setLoginName(string $loginName)
  * @method void setPassword(string $password)
  * @method void setName(string $name)
- * @method string getName()
  * @method void setToken(string $token)
  * @method string getToken()
  * @method void setType(string $type)
  * @method int getType()
  * @method void setLastActivity(int $lastActivity)
- * @method int getLastActivity()
  */
 class DefaultToken extends Entity implements IToken {
 
@@ -130,6 +128,14 @@ class DefaultToken extends Entity implements IToken {
 	 */
 	public function setLastCheck($time) {
 		return parent::setLastCheck($time);
+	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	public function getLastActivity() {
+		return $this->lastActivity;
 	}
 
 }

@@ -69,4 +69,18 @@ interface IToken extends JsonSerializable {
 	 * @param int $time
 	 */
 	public function setLastCheck($time);
+
+	/**
+	 * Get name of the token (i.e. Browser, OS, device)
+	 *
+	 * @return string name of the token
+	 */
+	public function getName();
+
+	/**
+	 * Get the last activity of this token
+	 *
+	 * @return int unix timestamp of last activity
+	 */
+	public function getLastActivity();
 }
