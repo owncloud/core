@@ -43,6 +43,9 @@ if (\OCP\Util::needUpgrade()
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
+/*
+ * First we try the routes of the appframework
+ */
 try {
 	OC_App::loadApps(['session']);
 	OC_App::loadApps(['authentication']);
@@ -53,6 +56,22 @@ try {
 	\OC::$server->getL10NFactory()->setLanguageFromRequest();
 
 	OC::$server->getRouter()->match('/ocs'.\OC::$server->getRequest()->getRawPathInfo());
+	return;
+} catch (ResourceNotFoundException $e) {
+	// Fall true the not found
+} catch (MethodNotAllowedException $e) {
+	OC_API::setContentType();
+	OC_Response::setStatus(405);
+} catch (\OC\OCS\Exception $ex) {
+	OC_API::respond($ex->getResult(), OC_API::requestedFormat());
+}
+
+/*
+ * Then we try the old OCS routes
+ */
+try {
+	OC::handleLogin(\OC::$server->getRequest());
+	OC::$server->getRouter()->match('/ocsapp'.\OC::$server->getRequest()->getRawPathInfo());
 } catch (ResourceNotFoundException $e) {
 	OC_API::setContentType();
 	OC_OCS::notFound();
