@@ -156,7 +156,7 @@ class Helper {
 		else {
 			// not authenticated ?
 			if ( ! \OC::$server->getSession()->exists('public_link_authenticated')
-				|| \OC::$server->getSession()->get('public_link_authenticated') !== $linkItem['id']) {
+				|| \OC::$server->getSession()->get('public_link_authenticated') !== (string)$linkItem['id']) {
 				return false;
 			}
 		}
