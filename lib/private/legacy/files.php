@@ -70,20 +70,20 @@ class OC_Files {
 	 */
 	private static function sendHeaders($filename, $name, array $rangeArray) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
-		header('Content-Transfer-Encoding: binary');
+		header('Content-Transfer-Encoding: binary', true);
 		OC_Response::disableCaching();
 		$fileSize = \OC\Files\Filesystem::filesize($filename);
 		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 		if ($fileSize > -1) {
 			if (!empty($rangeArray)) {
-			    header('HTTP/1.1 206 Partial Content');
-			    header('Accept-Ranges: bytes');
+			    header('HTTP/1.1 206 Partial Content', true);
+			    header('Accept-Ranges: bytes', true);
 			    if (count($rangeArray) > 1) {
 				$type = 'multipart/byteranges; boundary='.self::getBoundary();
 				// no Content-Length header here
 			    }
 			    else {
-				header(sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize));
+				header(sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize), true);
 				OC_Response::setContentLengthHeader($rangeArray[0]['to'] - $rangeArray[0]['from'] + 1);
 			    }
 			}
@@ -91,7 +91,7 @@ class OC_Files {
 			    OC_Response::setContentLengthHeader($fileSize);
 			}
 		}
-		header('Content-Type: '.$type);
+		header('Content-Type: '.$type, true);
 	}
 
 	/**
@@ -270,20 +270,33 @@ class OC_Files {
 			return;
 		}
 		if (!empty($rangeArray)) {
-		    if (count($rangeArray) == 1) {
-			$view->readfilePart($filename, $rangeArray[0]['from'], $rangeArray[0]['to']);
-		    }
-		    else {
-			$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+			try {
+			    if (count($rangeArray) == 1) {
+				$view->readfilePart($filename, $rangeArray[0]['from'], $rangeArray[0]['to']);
+			    }
+			    else {
+				// check if file is seekable (if not throw UnseekableException)
+				// we have to check it before body contents
+				$view->readfilePart($filename, $rangeArray[0]['size'], $rangeArray[0]['size']);
 
-			foreach ($rangeArray as $range) {
-			    echo "\r\n--".self::getBoundary()."\r\n".
-			         "Content-type: ".$type."\r\n".
-			         "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
-			    $view->readfilePart($filename, $range['from'], $range['to']);
+				$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+
+				foreach ($rangeArray as $range) {
+				    echo "\r\n--".self::getBoundary()."\r\n".
+				         "Content-type: ".$type."\r\n".
+				         "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
+				    $view->readfilePart($filename, $range['from'], $range['to']);
+				}
+				echo "\r\n--".self::getBoundary()."--\r\n";
+			    }
+			} catch (\OCP\Files\UnseekableException $ex) {
+			    // file is unseekable
+			    header_remove('Accept-Ranges');
+			    header_remove('Content-Range');
+			    header("HTTP/1.1 200 OK");
+			    self::sendHeaders($filename, $name, array());
+			    $view->readfile($filename);
 			}
-			echo "\r\n--".self::getBoundary()."--\r\n";
-		    }
 		}
 		else {
 		    $view->readfile($filename);
