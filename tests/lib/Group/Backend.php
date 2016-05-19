@@ -27,7 +27,7 @@
 namespace Test\Group;
 
 /**
- * Class Test_Group_Backend
+ * Class Backend
  *
  * @group DB
  */

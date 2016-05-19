@@ -11,7 +11,7 @@ namespace Test\Group;
 
 use OC\User\User;
 
-class Group extends \Test\TestCase {
+class GroupTest extends \Test\TestCase {
 	/**
 	 * @return \OC\User\Manager | \OC\User\Manager
 	 */
