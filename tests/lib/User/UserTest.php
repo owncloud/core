@@ -12,13 +12,13 @@ namespace Test\User;
 use OC\Hooks\PublicEmitter;
 
 /**
- * Class User
+ * Class UserTest
  *
  * @group DB
  *
  * @package Test\User
  */
-class User extends \Test\TestCase {
+class UserTest extends \Test\TestCase {
 	public function testDisplayName() {
 		/**
 		 * @var \OC\User\Backend | \PHPUnit_Framework_MockObject_MockObject $backend
@@ -120,7 +120,6 @@ class User extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Backend | \PHPUnit_Framework_MockObject_MockObject $backend
 		 */
-		require_once 'avataruserdummy.php';
 		$backend = $this->getMock('Test\User\AvatarUserDummy');
 		$backend->expects($this->once())
 			->method('canChangeAvatar')
@@ -145,7 +144,6 @@ class User extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Backend | \PHPUnit_Framework_MockObject_MockObject $backend
 		 */
-		require_once 'avataruserdummy.php';
 		$backend = $this->getMock('Test\User\AvatarUserDummy');
 		$backend->expects($this->once())
 			->method('canChangeAvatar')
@@ -170,7 +168,6 @@ class User extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Backend | \PHPUnit_Framework_MockObject_MockObject $backend
 		 */
-		require_once 'avataruserdummy.php';
 		$backend = $this->getMock('Test\User\AvatarUserDummy');
 		$backend->expects($this->never())
 			->method('canChangeAvatar');

@@ -20,7 +20,7 @@
  *
  */
 
-namespace Test\Update;
+namespace Test\Updater;
 
 use OC\Updater\VersionCheck;
 use OCP\IConfig;

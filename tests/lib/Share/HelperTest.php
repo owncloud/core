@@ -25,7 +25,7 @@ namespace Test\Share;
  * @group DB
  * Class Helper
  */
-class Helper extends \Test\TestCase {
+class HelperTest extends \Test\TestCase {
 
 	public function expireDateProvider() {
 		return array(

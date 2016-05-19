@@ -16,7 +16,7 @@ use OC\User\User;
  * @group DB
  * @package Test\User
  */
-class Session extends \Test\TestCase {
+class SessionTest extends \Test\TestCase {
 
 	/** @var \OCP\AppFramework\Utility\ITimeFactory */
 	private $timeFactory;

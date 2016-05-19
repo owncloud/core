@@ -9,7 +9,7 @@
 
 namespace Test\Session;
 
-class Memory extends Session {
+class MemoryTest extends Session {
 
 	protected function setUp() {
 		parent::setUp();
@@ -17,7 +17,7 @@ class Memory extends Session {
 	}
 
 	/**
-	 * @expectedException OCP\Session\Exceptions\SessionNotAvailableException
+	 * @expectedException \OCP\Session\Exceptions\SessionNotAvailableException
 	 */
 	public function testThrowsExceptionOnGetId() {
 		$this->instance->getId();

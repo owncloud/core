@@ -10,13 +10,13 @@
 namespace Test\User;
 
 /**
- * Class Manager
+ * Class ManagerTest
  *
  * @group DB
  *
  * @package Test\User
  */
-class Manager extends \Test\TestCase {
+class ManagerTest extends \Test\TestCase {
 	public function testGetBackends() {
 		$userDummyBackend = $this->getMock('\Test\Util\User\Dummy');
 		$manager = new \OC\User\Manager();

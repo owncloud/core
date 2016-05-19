@@ -10,7 +10,7 @@ namespace Test\Template;
 
 use OC\Template\ResourceNotFoundException;
 
-class ResourceLocator extends \Test\TestCase {
+class ResourceLocatorTest extends \Test\TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $logger;
 

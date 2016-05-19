@@ -26,7 +26,7 @@ namespace Test\Share;
  *
  * @group DB
  */
-class Share extends \Test\TestCase {
+class ShareTest extends \Test\TestCase {
 
 	protected $itemType;
 	protected $userBackend;

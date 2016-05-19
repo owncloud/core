@@ -23,11 +23,11 @@
 namespace Test\User;
 
 /**
- * Class Test_User_Database
+ * Class DatabaseTest
  *
  * @group DB
  */
-class Database extends Backend {
+class DatabaseTest extends Backend {
 	/** @var array */
 	private $users;
 
