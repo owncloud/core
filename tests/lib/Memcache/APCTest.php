@@ -9,7 +9,7 @@
 
 namespace Test\Memcache;
 
-class APC extends Cache {
+class APCTest extends Cache {
 	protected function setUp() {
 		parent::setUp();
 

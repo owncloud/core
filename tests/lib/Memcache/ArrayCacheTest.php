@@ -9,7 +9,7 @@
 
 namespace Test\Memcache;
 
-class ArrayCache extends Cache {
+class ArrayCacheTest extends Cache {
 	protected function setUp() {
 		parent::setUp();
 		$this->instance = new \OC\Memcache\ArrayCache('');

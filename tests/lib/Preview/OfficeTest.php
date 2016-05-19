@@ -22,22 +22,29 @@
 namespace Test\Preview;
 
 /**
- * Class Bitmap
+ * Class OfficeTest
  *
  * @group DB
  *
  * @package Test\Preview
  */
-class Bitmap extends Provider {
+class OfficeTest extends Provider {
 
 	public function setUp() {
-		parent::setUp();
+		$libreofficeBinary = \OC_Helper::findBinaryPath('libreoffice');
+		$openofficeBinary = ($libreofficeBinary) ? null : \OC_Helper::findBinaryPath('openoffice');
 
-		$fileName = 'testimage.eps';
-		$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
-		$this->width = 2400;
-		$this->height = 1707;
-		$this->provider = new \OC\Preview\Postscript;
+		if ($libreofficeBinary || $openofficeBinary) {
+			parent::setUp();
+
+			$fileName = 'testimage.odt';
+			$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
+			$this->width = 595;
+			$this->height = 842;
+			$this->provider = new \OC\Preview\OpenDocument;
+		} else {
+			$this->markTestSkipped('No Office provider present');
+		}
 	}
 
 }

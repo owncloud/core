@@ -21,7 +21,7 @@ use Test\TestCase;
  *
  * @see \OC\Repair\RepairLegacyStorages
  */
-class RepairLegacyStorages extends TestCase {
+class RepairLegacyStoragesTest extends TestCase {
 	/** @var \OCP\IDBConnection */
 	private $connection;
 	/** @var \OCP\IConfig */

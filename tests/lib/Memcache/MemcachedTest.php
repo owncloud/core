@@ -9,7 +9,7 @@
 
 namespace Test\Memcache;
 
-class Memcached extends Cache {
+class MemcachedTest extends Cache {
 	static public function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 

@@ -17,7 +17,7 @@ use OCP\Migration\IOutput;
  *
  * @see \OC\Repair\CleanTags
  */
-class CleanTags extends \Test\TestCase {
+class CleanTagsTest extends \Test\TestCase {
 
 	/** @var \OC\Repair\CleanTags */
 	protected $repair;

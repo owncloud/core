@@ -22,23 +22,22 @@
 namespace Test\Preview;
 
 /**
- * Class TXT
+ * Class BitmapTest
  *
  * @group DB
  *
  * @package Test\Preview
  */
-class TXT extends Provider {
+class BitmapTest extends Provider {
 
 	public function setUp() {
 		parent::setUp();
 
-		$fileName = 'lorem-big.txt';
+		$fileName = 'testimage.eps';
 		$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
-		// Arbitrary width and length which won't be used to calculate the ratio
-		$this->width = 500;
-		$this->height = 200;
-		$this->provider = new \OC\Preview\TXT;
+		$this->width = 2400;
+		$this->height = 1707;
+		$this->provider = new \OC\Preview\Postscript;
 	}
 
 }

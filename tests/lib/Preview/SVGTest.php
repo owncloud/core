@@ -22,22 +22,27 @@
 namespace Test\Preview;
 
 /**
- * Class Image
+ * Class SVGTest
  *
  * @group DB
  *
  * @package Test\Preview
  */
-class Image extends Provider {
+class SVGTest extends Provider {
 
 	public function setUp() {
-		parent::setUp();
+		$checkImagick = new \Imagick();
+		if (count($checkImagick->queryFormats('SVG')) === 1) {
+			parent::setUp();
 
-		$fileName = 'testimage.jpg';
-		$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
-		$this->width = 1680;
-		$this->height = 1050;
-		$this->provider = new \OC\Preview\JPEG();
+			$fileName = 'testimagelarge.svg';
+			$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
+			$this->width = 3000;
+			$this->height = 2000;
+			$this->provider = new \OC\Preview\SVG;
+		} else {
+			$this->markTestSkipped('No SVG provider present');
+		}
 	}
 
 }

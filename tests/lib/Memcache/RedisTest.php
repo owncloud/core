@@ -9,7 +9,7 @@
 
 namespace Test\Memcache;
 
-class Redis extends Cache {
+class RedisTest extends Cache {
 	static public function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 

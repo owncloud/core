@@ -22,29 +22,22 @@
 namespace Test\Preview;
 
 /**
- * Class Office
+ * Class MP3Test
  *
  * @group DB
  *
  * @package Test\Preview
  */
-class Office extends Provider {
+class MP3Test extends Provider {
 
 	public function setUp() {
-		$libreofficeBinary = \OC_Helper::findBinaryPath('libreoffice');
-		$openofficeBinary = ($libreofficeBinary) ? null : \OC_Helper::findBinaryPath('openoffice');
+		parent::setUp();
 
-		if ($libreofficeBinary || $openofficeBinary) {
-			parent::setUp();
-
-			$fileName = 'testimage.odt';
-			$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
-			$this->width = 595;
-			$this->height = 842;
-			$this->provider = new \OC\Preview\OpenDocument;
-		} else {
-			$this->markTestSkipped('No Office provider present');
-		}
+		$fileName = 'testimage.mp3';
+		$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
+		$this->width = 200;
+		$this->height = 200;
+		$this->provider = new \OC\Preview\MP3;
 	}
 
 }

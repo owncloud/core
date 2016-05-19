@@ -18,7 +18,7 @@ use OCP\Migration\IOutput;
  *
  * @see \OC\Repair\DropOldTables
  */
-class DropOldJobs extends \Test\TestCase {
+class DropOldJobsTest extends \Test\TestCase {
 	/** @var IJobList */
 	protected $jobList;
 

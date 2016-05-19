@@ -22,13 +22,13 @@
 namespace Test\Preview;
 
 /**
- * Class Movie
+ * Class MovieTest
  *
  * @group DB
  *
  * @package Test\Preview
  */
-class Movie extends Provider {
+class MovieTest extends Provider {
 
 	public function setUp() {
 		$avconvBinary = \OC_Helper::findBinaryPath('avconv');

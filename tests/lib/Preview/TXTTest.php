@@ -22,22 +22,23 @@
 namespace Test\Preview;
 
 /**
- * Class MP3
+ * Class TXTTest
  *
  * @group DB
  *
  * @package Test\Preview
  */
-class MP3 extends Provider {
+class TXTTest extends Provider {
 
 	public function setUp() {
 		parent::setUp();
 
-		$fileName = 'testimage.mp3';
+		$fileName = 'lorem-big.txt';
 		$this->imgPath = $this->prepareTestFile($fileName, \OC::$SERVERROOT . '/tests/data/' . $fileName);
-		$this->width = 200;
+		// Arbitrary width and length which won't be used to calculate the ratio
+		$this->width = 500;
 		$this->height = 200;
-		$this->provider = new \OC\Preview\MP3;
+		$this->provider = new \OC\Preview\TXT;
 	}
 
 }

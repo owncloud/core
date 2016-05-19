@@ -9,14 +9,14 @@
 
 namespace Test\Memcache;
 
-class APCu extends Cache {
+class XCacheTest extends Cache {
 	protected function setUp() {
 		parent::setUp();
 
-		if(!\OC\Memcache\APCu::isAvailable()) {
-			$this->markTestSkipped('The APCu extension is not available.');
+		if (!\OC\Memcache\XCache::isAvailable()) {
+			$this->markTestSkipped('The xcache extension is not available.');
 			return;
 		}
-		$this->instance=new \OC\Memcache\APCu($this->getUniqueID());
+		$this->instance = new \OC\Memcache\XCache($this->getUniqueID());
 	}
 }
