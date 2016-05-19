@@ -17,7 +17,7 @@ use Test\TestCase;
 
 class SimpleCommand implements ICommand {
 	public function handle() {
-		AsyncBus::$lastCommand = 'SimpleCommand';
+		AsyncBusTest::$lastCommand = 'SimpleCommand';
 	}
 }
 
@@ -29,7 +29,7 @@ class StateFullCommand implements ICommand {
 	}
 
 	public function handle() {
-		AsyncBus::$lastCommand = $this->state;
+		AsyncBusTest::$lastCommand = $this->state;
 	}
 }
 
@@ -37,18 +37,18 @@ class FilesystemCommand implements ICommand {
 	use FileAccess;
 
 	public function handle() {
-		AsyncBus::$lastCommand = 'FileAccess';
+		AsyncBusTest::$lastCommand = 'FileAccess';
 	}
 }
 
 function basicFunction() {
-	AsyncBus::$lastCommand = 'function';
+	AsyncBusTest::$lastCommand = 'function';
 }
 
 // clean class to prevent phpunit putting closure in $this
 class ThisClosureTest {
 	private function privateMethod() {
-		AsyncBus::$lastCommand = 'closure-this';
+		AsyncBusTest::$lastCommand = 'closure-this';
 	}
 
 	public function test(IBus $bus) {
@@ -58,7 +58,7 @@ class ThisClosureTest {
 	}
 }
 
-class AsyncBus extends TestCase {
+class AsyncBusTest extends TestCase {
 	/**
 	 * Basic way to check output from a command
 	 *
@@ -101,7 +101,7 @@ class AsyncBus extends TestCase {
 	}
 
 	public function testStaticCallable() {
-		$this->bus->push(['\Test\Command\AsyncBus', 'DummyCommand']);
+		$this->bus->push(['\Test\Command\AsyncBusTest', 'DummyCommand']);
 		$this->runJobs();
 		$this->assertEquals('static', self::$lastCommand);
 	}
@@ -121,7 +121,7 @@ class AsyncBus extends TestCase {
 
 	public function testClosure() {
 		$this->bus->push(function () {
-			AsyncBus::$lastCommand = 'closure';
+			AsyncBusTest::$lastCommand = 'closure';
 		});
 		$this->runJobs();
 		$this->assertEquals('closure', self::$lastCommand);

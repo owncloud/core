@@ -23,13 +23,13 @@
 namespace Test\Cache;
 
 /**
- * Class FileCache
+ * Class CappedMemoryCacheTest
  *
  * @group DB
  *
  * @package Test\Cache
  */
-class CappedMemoryCache extends TestCache {
+class CappedMemoryCacheTest extends TestCache {
 	public function setUp() {
 		parent::setUp();
 		$this->instance = new \OC\Cache\CappedMemoryCache();

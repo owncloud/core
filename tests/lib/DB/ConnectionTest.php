@@ -20,7 +20,7 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
  *
  * @package Test\DB
  */
-class Connection extends \Test\TestCase {
+class ConnectionTest extends \Test\TestCase {
 	/**
 	 * @var \OCP\IDBConnection
 	 */

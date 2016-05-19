@@ -18,7 +18,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
  *
  * @package Test\DB
  */
-class MDB2SchemaManager extends \Test\TestCase {
+class MDB2SchemaManagerTest extends \Test\TestCase {
 
 	protected function tearDown() {
 		// do not drop the table for Oracle as it will create a bogus transaction

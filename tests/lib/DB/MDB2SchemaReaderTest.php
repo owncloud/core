@@ -11,7 +11,7 @@ namespace Test\DB;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 
-class MDB2SchemaReader extends \Test\TestCase {
+class MDB2SchemaReaderTest extends \Test\TestCase {
 	/**
 	 * @var \OC\DB\MDB2SchemaReader $reader
 	 */

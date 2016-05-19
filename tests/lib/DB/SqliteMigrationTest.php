@@ -13,7 +13,7 @@ namespace Test\DB;
  *
  * @group DB
  */
-class SqliteMigration extends \Test\TestCase {
+class SqliteMigrationTest extends \Test\TestCase {
 
 	/** @var \Doctrine\DBAL\Connection */
 	private $connection;

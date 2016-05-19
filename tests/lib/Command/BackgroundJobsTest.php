@@ -33,7 +33,7 @@ use OC\Core\Command\Background\Cron;
 use OC\Core\Command\Background\WebCron;
 use OC\Core\Command\Background\Ajax;
 
-class BackgroundJobs extends TestCase {
+class BackgroundJobsTest extends TestCase {
 
 	public function testCronCommand() {
 		$config = \OC::$server->getConfig();

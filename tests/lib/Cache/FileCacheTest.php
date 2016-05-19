@@ -23,13 +23,13 @@
 namespace Test\Cache;
 
 /**
- * Class FileCache
+ * Class FileCacheTest
  *
  * @group DB
  *
  * @package Test\Cache
  */
-class FileCache extends TestCache {
+class FileCacheTest extends TestCache {
 	/**
 	 * @var string
 	 * */
