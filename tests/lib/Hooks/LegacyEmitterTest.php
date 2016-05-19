@@ -21,7 +21,7 @@ class DummyLegacyEmitter extends \OC\Hooks\LegacyEmitter {
 	}
 }
 
-class LegacyEmitter extends BasicEmitter {
+class LegacyEmitterTest extends BasicEmitterTest {
 
 	//we can't use exceptions here since OC_Hooks catches all exceptions
 	private static $emitted = false;
@@ -44,13 +44,13 @@ class LegacyEmitter extends BasicEmitter {
 	}
 
 	public function testLegacyHook() {
-		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitter', 'staticLegacyCallBack');
+		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitterTest', 'staticLegacyCallBack');
 		$this->emitter->emitEvent('Test', 'test');
 		$this->assertEquals(true, self::$emitted);
 	}
 
 	public function testLegacyArguments() {
-		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitter', 'staticLegacyArgumentsCallBack');
+		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitterTest', 'staticLegacyArgumentsCallBack');
 		$this->emitter->emitEvent('Test', 'test', array('foo' => 'foo', 'bar' => 'bar'));
 		$this->assertEquals(true, self::$emitted);
 	}

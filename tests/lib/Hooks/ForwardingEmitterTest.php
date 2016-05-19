@@ -29,7 +29,7 @@ class DummyForwardingEmitter extends \OC\Hooks\ForwardingEmitter {
  *
  * @package OC\Hooks
  */
-class ForwardingEmitter extends BasicEmitter {
+class ForwardingEmitterTest extends BasicEmitterTest {
 	public function testSingleForward() {
 		$baseEmitter = new PublicEmitter();
 		$forwardingEmitter = new DummyForwardingEmitter();

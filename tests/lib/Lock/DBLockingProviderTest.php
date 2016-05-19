@@ -30,7 +30,7 @@ use OCP\Lock\ILockingProvider;
  *
  * @package Test\Lock
  */
-class DBLockingProvider extends LockingProvider {
+class DBLockingProviderTest extends LockingProvider {
 	/**
 	 * @var \OC\Lock\DBLockingProvider
 	 */

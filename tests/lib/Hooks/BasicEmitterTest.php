@@ -31,7 +31,7 @@ class DummyEmitter extends \OC\Hooks\BasicEmitter {
 class EmittedException extends \Exception {
 }
 
-class BasicEmitter extends \Test\TestCase {
+class BasicEmitterTest extends \Test\TestCase {
 	/**
 	 * @var \OC\Hooks\Emitter $emitter
 	 */
@@ -64,7 +64,7 @@ class BasicEmitter extends \Test\TestCase {
 	 * @expectedException \Test\Hooks\EmittedException
 	 */
 	public function testStaticCallback() {
-		$this->emitter->listen('Test', 'test', array('\Test\Hooks\BasicEmitter', 'staticCallBack'));
+		$this->emitter->listen('Test', 'test', array('\Test\Hooks\BasicEmitterTest', 'staticCallBack'));
 		$this->emitter->emitEvent('Test', 'test');
 	}
 
