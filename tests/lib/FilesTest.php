@@ -22,7 +22,7 @@
 
 namespace Test;
 
-class Files extends \Test\TestCase {
+class FilesTest extends \Test\TestCase {
 
 	const UPLOAD_LIMIT_DEFAULT_STR = '513M';
 	const UPLOAD_LIMIT_SETTING_STR = '2M';

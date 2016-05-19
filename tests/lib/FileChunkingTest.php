@@ -20,7 +20,7 @@
  */
 namespace Test;
 
-class FileChunking extends \Test\TestCase {
+class FileChunkingTest extends \Test\TestCase {
 
 	public function dataIsComplete() {
 		return [

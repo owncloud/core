@@ -16,7 +16,7 @@ namespace Test;
  *
  * @package Test
  */
-class User extends TestCase {
+class UserTest extends TestCase {
 	/**
 	 * @var \OC\User\Backend | \PHPUnit_Framework_MockObject_MockObject $backend
 	 */

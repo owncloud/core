@@ -8,7 +8,7 @@
 
 namespace Test;
 
-class AutoLoader extends TestCase {
+class AutoLoaderTest extends TestCase {
 	/**
 	 * @var \OC\Autoloader $loader
 	 */

@@ -31,7 +31,7 @@ namespace Test;
  *
  * @package Test
  */
-class Server extends \Test\TestCase {
+class ServerTest extends \Test\TestCase {
 	/** @var \OC\Server */
 	protected $server;
 

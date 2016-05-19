@@ -21,7 +21,7 @@ class NullLogger extends Log {
 	}
 }
 
-class TempManager extends \Test\TestCase {
+class TempManagerTest extends \Test\TestCase {
 
 	protected $baseDir = null;
 

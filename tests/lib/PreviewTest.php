@@ -29,13 +29,13 @@ use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
 
 /**
- * Class Preview
+ * Class PreviewTest
  *
  * @group DB
  *
  * @package Test
  */
-class Preview extends TestCase {
+class PreviewTest extends TestCase {
 	use UserTrait;
 	use MountProviderTrait;
 

@@ -8,7 +8,7 @@
 
 namespace Test;
 
-class LargeFileHelper extends TestCase {
+class LargeFileHelperTest extends TestCase {
 	protected $helper;
 
 	protected function setUp() {

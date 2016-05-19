@@ -10,7 +10,7 @@ namespace Test;
 
 use OC\Log;
 
-class Logger extends TestCase {
+class LoggerTest extends TestCase {
 	/**
 	 * @var \OCP\ILogger
 	 */
@@ -25,7 +25,7 @@ class Logger extends TestCase {
 			'\OC\SystemConfig')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->logger = new Log('Test\Logger', $this->config);
+		$this->logger = new Log('Test\LoggerTest', $this->config);
 	}
 
 	public function testInterpolation() {

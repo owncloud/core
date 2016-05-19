@@ -10,13 +10,13 @@
 namespace Test;
 
 /**
- * Class AppConfig
+ * Class AppConfigTest
  *
  * @group DB
  *
  * @package Test
  */
-class AppConfig extends TestCase {
+class AppConfigTest extends TestCase {
 	/** @var \OCP\IAppConfig */
 	protected $appConfig;
 

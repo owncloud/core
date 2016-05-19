@@ -20,7 +20,7 @@
  */
 namespace Test;
 
-class SubAdmin extends \Test\TestCase {
+class SubAdminTest extends \Test\TestCase {
 
 	/** @var \OCP\IUserManager */
 	private $userManager;
