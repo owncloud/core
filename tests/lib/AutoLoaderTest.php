@@ -43,12 +43,6 @@ class AutoLoaderTest extends TestCase {
 		], $this->loader->findClass('Test\TestCase'));
 	}
 
-	public function testLoadTestNamespace() {
-		$this->assertEquals([
-			\OC::$SERVERROOT . '/tests/lib/foo/bar.php'
-		], $this->loader->findClass('Test\Foo\Bar'));
-	}
-
 	public function testLoadCore() {
 		$this->assertEquals([
 			\OC::$SERVERROOT . '/lib/private/legacy/foo/bar.php', 
