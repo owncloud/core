@@ -484,13 +484,13 @@ class ShareController extends Controller {
 
 		$this->emitAccessShareHook($share);
 
-		$server_params = array( 'head' => $_SERVER['REQUEST_METHOD'] == 'HEAD' );
+		$server_params = array( 'head' => $this->request->getMethod() == 'HEAD' );
 
 		/**
 		 * Http range requests support
 		 */
 		if (isset($_SERVER['HTTP_RANGE'])) {
-			$server_params['range'] = $_SERVER['HTTP_RANGE'];
+			$server_params['range'] = $this->request->getHeader('Range');
 		}
 
 		// download selected files

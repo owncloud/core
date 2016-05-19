@@ -53,6 +53,7 @@ use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\NotFoundException;
 use OCP\Files\ReservedWordException;
+use OCP\Files\UnseekableException;
 use OCP\Files\Storage\ILockingStorage;
 use OCP\IUser;
 use OCP\Lock\ILockingProvider;
@@ -428,7 +429,7 @@ class View {
 	 * @param int $from 
 	 * @param int $to
 	 * @return bool|mixed
-	 * @throws \OCP\Files\InvalidPathException
+	 * @throws \OCP\Files\InvalidPathException, \OCP\Files\UnseekableException
 	 */
 	public function readfilePart($path, $from, $to) {
 		$this->assertPathLength($path);
@@ -448,6 +449,9 @@ class View {
 			    }
 			    $size = ftell($handle) - $from;
 			    return $size;
+			}
+			else {
+			    throw new \OCP\Files\UnseekableException('fseek error');
 			}
 		}
 		return false;

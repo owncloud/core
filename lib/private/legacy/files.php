@@ -50,29 +50,40 @@ class OC_Files {
 
 	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
 
-	const MULTIPART_BOUNDARY_SEPARATOR = '31b3c516eb6969f9f417f172a315ce8b'; // random string
+
+	private static $MULTIPART_BOUNDARY = '';
+
+	/**
+	 * @return string
+	 */
+	private static function getBoundary() {
+		if (empty(self::$MULTIPART_BOUNDARY)) {
+			self::$MULTIPART_BOUNDARY = md5(mt_rand());
+		}
+		return self::$MULTIPART_BOUNDARY;
+	}
 
 	/**
 	 * @param string $filename
 	 * @param string $name
 	 * @param array $rangeArray ('from'=>int,'to'=>int), ...
 	 */
-	private static function sendHeaders($filename, $name, $rangeArray) {
+	private static function sendHeaders($filename, $name, array $rangeArray) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
-		header('Content-Transfer-Encoding: binary');
+		header('Content-Transfer-Encoding: binary', true);
 		OC_Response::disableCaching();
 		$fileSize = \OC\Files\Filesystem::filesize($filename);
 		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 		if ($fileSize > -1) {
 			if (!empty($rangeArray)) {
-			    header('HTTP/1.1 206 Partial Content');
-			    header('Accept-Ranges: bytes');
+			    header('HTTP/1.1 206 Partial Content', true);
+			    header('Accept-Ranges: bytes', true);
 			    if (count($rangeArray) > 1) {
-				$type = 'multipart/byteranges; boundary='.self::MULTIPART_BOUNDARY_SEPARATOR;
+				$type = 'multipart/byteranges; boundary='.self::getBoundary();
 				// no Content-Length header here
 			    }
 			    else {
-				header(sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize));
+				header(sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize), true);
 				OC_Response::setContentLengthHeader($rangeArray[0]['to'] - $rangeArray[0]['from'] + 1);
 			    }
 			}
@@ -80,7 +91,7 @@ class OC_Files {
 			    OC_Response::setContentLengthHeader($fileSize);
 			}
 		}
-		header('Content-Type: '.$type);
+		header('Content-Type: '.$type, true);
 	}
 
 	/**
@@ -175,6 +186,58 @@ class OC_Files {
 	}
 
 	/**
+	 * @param string $rangeHeaderPos
+	 * @param int $fileSize
+	 * @return array $rangeArray ('from'=>int,'to'=>int), ...
+	 */
+	private static function parseHttpRangeHeader($rangeHeaderPos, $fileSize) {
+		$rArray=split(',', $rangeHeaderPos);
+		$minOffset = 0;
+		$ind = 0;
+
+		$rangeArray = array();
+
+		foreach ($rArray as $value) {
+			$ranges = explode('-', $value);
+			if (is_numeric($ranges[0])) {
+				if ($ranges[0] < $minOffset) { // case: bytes=500-700,601-999
+					$ranges[0] = $minOffset;
+				}
+				if ($ind > 0 && $rangeArray[$ind-1]['to']+1 == $ranges[0]) { // case: bytes=500-600,601-999
+					$ind--;
+					$ranges[0] = $rangeArray[$ind]['from'];
+				}
+			}
+
+			if (is_numeric($ranges[0]) && is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
+				// case: x-x
+				if ($ranges[1] >= $fileSize) {
+					$ranges[1] = $fileSize-1;
+				}
+				$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $ranges[1], 'size' => $fileSize );
+				$minOffset = $ranges[1] + 1;
+				if ($minOffset >= $fileSize) {
+					break;
+				}
+			}
+			elseif (is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
+				// case: x-
+				$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $fileSize-1, 'size' => $fileSize );
+				break;
+			}
+			elseif (is_numeric($ranges[1])) {
+				// case: -x
+				if ($ranges[1] > $fileSize) {
+					$ranges[1] = $fileSize;
+				}
+				$rangeArray[$ind++] = array( 'from' => $fileSize-$ranges[1], 'to' => $fileSize-1, 'size' => $fileSize );
+				break;
+			}
+		}
+		return $rangeArray;
+	}
+
+	/**
 	 * @param View $view
 	 * @param string $name
 	 * @param string $dir
@@ -188,49 +251,8 @@ class OC_Files {
 		$rangeArray = array();
 
 		if (isset($params['range']) && substr($params['range'], 0, 6) === 'bytes=') {
-
-			$fileSize = \OC\Files\Filesystem::filesize($filename);
-			$rArray=split(',', substr($params['range'], 6));
-			$minOffset = 0;
-			$ind = 0;
-
-			foreach ($rArray as $value) {
-				$ranges = explode('-', $value);
-				if (is_numeric($ranges[0])) {
-					if ($ranges[0] < $minOffset) { // case: bytes=500-700,601-999
-						$ranges[0] = $minOffset;
-					}
-					if ($ind > 0 && $rangeArray[$ind-1]['to']+1 == $ranges[0]) { // case: bytes=500-600,601-999
-						$ind--;
-						$ranges[0] = $rangeArray[$ind]['from'];
-					}
-				}
-
-				if (is_numeric($ranges[0]) && is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
-					// case: x-x
-					if ($ranges[1] >= $fileSize) {
-						$ranges[1] = $fileSize-1;
-					}
-					$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $ranges[1], 'size' => $fileSize );
-					$minOffset = $ranges[1] + 1;
-					if ($minOffset >= $fileSize) {
-						break;
-					}
-				}
-				elseif (is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
-					// case: x-
-					$rangeArray[$ind++] = array( 'from' => $ranges[0], 'to' => $fileSize-1, 'size' => $fileSize );
-					break;
-				}
-				elseif (is_numeric($ranges[1])) {
-					// case: -x
-					if ($ranges[1] > $fileSize) {
-						$ranges[1] = $fileSize;
-					}
-					$rangeArray[$ind++] = array( 'from' => $fileSize-$ranges[1], 'to' => $fileSize-1, 'size' => $fileSize );
-					break;
-				}
-			}
+			$rangeArray = self::parseHttpRangeHeader(substr($params['range'], 6), 
+								 \OC\Files\Filesystem::filesize($filename));
 		}
 		
 		if (\OC\Files\Filesystem::isReadable($filename)) {
@@ -248,20 +270,33 @@ class OC_Files {
 			return;
 		}
 		if (!empty($rangeArray)) {
-		    if (count($rangeArray) == 1) {
-			$view->readfilePart($filename, $rangeArray[0]['from'], $rangeArray[0]['to']);
-		    }
-		    else {
-			$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+			try {
+			    if (count($rangeArray) == 1) {
+				$view->readfilePart($filename, $rangeArray[0]['from'], $rangeArray[0]['to']);
+			    }
+			    else {
+				// check if file is seekable (if not throw UnseekableException)
+				// we have to check it before body contents
+				$view->readfilePart($filename, $rangeArray[0]['size'], $rangeArray[0]['size']);
 
-			foreach ($rangeArray as $range) {
-			    echo "\r\n--".self::MULTIPART_BOUNDARY_SEPARATOR."\r\n".
-			         "Content-type: ".$type."\r\n".
-			         "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
-			    $view->readfilePart($filename, $range['from'], $range['to']);
+				$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+
+				foreach ($rangeArray as $range) {
+				    echo "\r\n--".self::getBoundary()."\r\n".
+				         "Content-type: ".$type."\r\n".
+				         "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
+				    $view->readfilePart($filename, $range['from'], $range['to']);
+				}
+				echo "\r\n--".self::getBoundary()."--\r\n";
+			    }
+			} catch (\OCP\Files\UnseekableException $ex) {
+			    // file is unseekable
+			    header_remove('Accept-Ranges');
+			    header_remove('Content-Range');
+			    header("HTTP/1.1 200 OK");
+			    self::sendHeaders($filename, $name, array());
+			    $view->readfile($filename);
 			}
-			echo "\r\n--".self::MULTIPART_BOUNDARY_SEPARATOR."--\r\n";
-		    }
 		}
 		else {
 		    $view->readfile($filename);
