@@ -12,7 +12,7 @@ class TestQueuedJob extends \OC\BackgroundJob\QueuedJob {
 	private $testCase;
 
 	/**
-	 * @param QueuedJob $testCase
+	 * @param QueuedJobTest $testCase
 	 */
 	public function __construct($testCase) {
 		$this->testCase = $testCase;
@@ -23,7 +23,7 @@ class TestQueuedJob extends \OC\BackgroundJob\QueuedJob {
 	}
 }
 
-class QueuedJob extends \Test\TestCase {
+class QueuedJobTest extends \Test\TestCase {
 	/**
 	 * @var DummyJobList $jobList
 	 */

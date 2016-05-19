@@ -12,7 +12,7 @@ class TestTimedJob extends \OC\BackgroundJob\TimedJob {
 	private $testCase;
 
 	/**
-	 * @param TimedJob $testCase
+	 * @param TimedJobTest $testCase
 	 */
 	public function __construct($testCase) {
 		$this->setInterval(10);
@@ -24,7 +24,7 @@ class TestTimedJob extends \OC\BackgroundJob\TimedJob {
 	}
 }
 
-class TimedJob extends \Test\TestCase {
+class TimedJobTest extends \Test\TestCase {
 	/**
 	 * @var DummyJobList $jobList
 	 */

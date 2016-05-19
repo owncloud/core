@@ -1,4 +1,7 @@
 <?php
+
+namespace Test\AppFramework\Http;
+
 /**
  * Copy of http://dk1.php.net/manual/en/stream.streamwrapper.example-1.php
  * Used to simulate php://input for Request tests

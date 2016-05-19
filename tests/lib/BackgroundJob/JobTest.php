@@ -8,7 +8,7 @@
 
 namespace Test\BackgroundJob;
 
-class Job extends \Test\TestCase {
+class JobTest extends \Test\TestCase {
 	private $run = false;
 
 	protected function setUp() {

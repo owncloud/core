@@ -18,7 +18,7 @@ class TestJob extends \OC\BackgroundJob\Job {
 	private $callback;
 
 	/**
-	 * @param Job $testCase
+	 * @param JobTest $testCase
 	 * @param callable $callback
 	 */
 	public function __construct($testCase = null, $callback = null) {

@@ -6,7 +6,7 @@
  * See the COPYING-README file.
  */
 
-namespace Test\AppCodeChecker;
+namespace Test\App\CodeChecker;
 
 use OC\App\CodeChecker\CodeChecker;
 use OC\App\CodeChecker\EmptyCheck;

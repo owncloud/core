@@ -13,7 +13,7 @@ use OC;
 use OCP\IURLGenerator;
 use Test\TestCase;
 
-class InfoParser extends TestCase {
+class InfoParserTest extends TestCase {
 
 	/** @var \OC\App\InfoParser */
 	private $parser;

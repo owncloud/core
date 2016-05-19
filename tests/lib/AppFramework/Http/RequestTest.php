@@ -34,11 +34,10 @@ class RequestTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		require_once __DIR__ . '/requeststream.php';
 		if (in_array('fakeinput', stream_get_wrappers())) {
 			stream_wrapper_unregister('fakeinput');
 		}
-		stream_wrapper_register('fakeinput', 'RequestStream');
+		stream_wrapper_register('fakeinput', 'Test\AppFramework\Http\RequestStream');
 
 		$this->secureRandom = $this->getMockBuilder('\OCP\Security\ISecureRandom')->getMock();
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();

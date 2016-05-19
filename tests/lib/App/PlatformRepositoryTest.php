@@ -11,7 +11,7 @@ namespace Test\App;
 
 use OC;
 
-class PlatformRepository extends \Test\TestCase {
+class PlatformRepositoryTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider providesVersions

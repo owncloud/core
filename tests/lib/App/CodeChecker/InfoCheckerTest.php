@@ -19,13 +19,14 @@
  *
  */
 
-namespace OC\App\CodeChecker;
+namespace Test\App\CodeChecker;
 
+use OC\App\CodeChecker\InfoChecker;
 use OC\App\InfoParser;
 use Test\TestCase;
 
 class InfoCheckerTest extends TestCase {
-	/** @var  InfoChecker */
+	/** @var InfoChecker */
 	protected $infoChecker;
 
 	public static function setUpBeforeClass() {

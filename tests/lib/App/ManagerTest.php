@@ -19,7 +19,7 @@ use Test\TestCase;
  * @package Test\App
  * @group DB
  */
-class Manager extends TestCase {
+class ManagerTest extends TestCase {
 	/**
 	 * @return \OCP\IAppConfig | \PHPUnit_Framework_MockObject_MockObject
 	 */
