@@ -144,6 +144,14 @@ OCA.Sharing.PublicApp = {
 			mimetype !== 'image/svg+xml') {
 			img.attr('src', OC.filePath('files_sharing', 'ajax', 'publicpreview.php') + '?' + OC.buildQueryString(params));
 			img.appendTo('#imgframe');
+			// ImageViewer
+			img.data('high-res-src', $('#downloadURL').val());
+			img.css('cursor', 'zoom-in');
+			var imageViewer = ImageViewer();
+			img.click(function(){
+				imageViewer.show(this.src, $(this).data('high-res-src'));
+				$('#iv-container').find('img').css('cursor', 'move');
+			});
 		} else if (mimetype.substr(0, mimetype.indexOf('/')) !== 'video') {
 			img.attr('src', OC.Util.replaceSVGIcon(mimetypeIcon));
 			img.attr('width', 128);
