@@ -18,33 +18,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-namespace OCA\Files_External\Lib\Backend;
+namespace OCA\Files_External_FTP;
 
 use \OCP\IL10N;
-use \OCA\Files_External\Lib\Backend\Backend;
 use \OCA\Files_External\Lib\DefinitionParameter;
 use \OCA\Files_External\Lib\Auth\AuthMechanism;
-use \OCA\Files_External\Service\BackendService;
-use \OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
-
 use \OCA\Files_External\Lib\Auth\Password\Password;
 
-class FTP extends Backend {
-
-	use LegacyDependencyCheckPolyfill;
+class Backend extends \OCA\Files_External\Lib\Backend\Backend {
 
 	public function __construct(IL10N $l, Password $legacyAuth) {
 		$this
 			->setIdentifier('ftp')
 			->addIdentifierAlias('\OC\Files\Storage\FTP') // legacy compat
-			->setStorageClass('\OCA\Files_External\Lib\Storage\FTP')
+			->setStorageClass('\OCA\Files_External_FTP\FTP')
 			->setText($l->t('FTP'))
 			->addParameters([
 				(new DefinitionParameter('host', $l->t('Host'))),
+				(new DefinitionParameter('port', $l->t('Port')))
+					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
 				(new DefinitionParameter('root', $l->t('Remote subfolder')))
 					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
-				(new DefinitionParameter('secure', $l->t('Secure ftps://')))
+				(new DefinitionParameter('ssl', $l->t('Secure ftps://')))
 					->setType(DefinitionParameter::VALUE_BOOLEAN),
 			])
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD)

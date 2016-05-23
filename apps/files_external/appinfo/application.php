@@ -76,7 +76,6 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 
 		$backends = [
 			$container->query('OCA\Files_External\Lib\Backend\Local'),
-			$container->query('OCA\Files_External\Lib\Backend\FTP'),
 			$container->query('OCA\Files_External\Lib\Backend\DAV'),
 			$container->query('OCA\Files_External\Lib\Backend\OwnCloud'),
 			$container->query('OCA\Files_External\Lib\Backend\SFTP'),
