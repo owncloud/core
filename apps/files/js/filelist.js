@@ -684,7 +684,7 @@
 			};
 
 			OCA.Files.FileActions.updateFileActionSpinner(downloadFileaction, true);
-			if(this.getSelectedFiles().length > 1) {
+			if(this.getSelectedFiles().length > 1 || this.isAllSelected()) {
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir, true), disableLoadingState);
 			}
 			else {
