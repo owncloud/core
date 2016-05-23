@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author Joas Schilling <coding@schilljs.com>
+ * @author Björn Schießle <schiessle@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -20,22 +19,8 @@
  *
  */
 
-$app = new \OCA\FederatedFileSharing\AppInfo\Application();
-
-use OCA\FederatedFileSharing\Notifier;
-
-$l = \OC::$server->getL10N('files_sharing');
-
-$app->registerSettings();
-
-$manager = \OC::$server->getNotificationManager();
-$manager->registerNotifier(function() {
-	return new Notifier(
-		\OC::$server->getL10NFactory()
-	);
-}, function() use ($l) {
-	return [
-		'id' => 'files_sharing',
-		'name' => $l->t('Federated sharing'),
-	];
-});
+return [
+	'routes' => [
+		['name' => 'SaveToOwnCloud#saveToOwnCloud', 'url' => '/saveToOwnCloud', 'verb' => 'POST'],
+	]
+];
