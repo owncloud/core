@@ -31,9 +31,11 @@ namespace OCA\DAV\Connector\Sabre;
 
 use Exception;
 use OC\AppFramework\Http\Request;
+use OC\User\Session;
+use OC\User\UserDisabledException;
 use OCP\IRequest;
 use OCP\ISession;
-use OC\User\Session;
+use OCP\User\LoginException;
 use Sabre\DAV\Auth\Backend\AbstractBasic;
 use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\DAV\Exception\ServiceUnavailable;
@@ -103,16 +105,26 @@ class Auth extends AbstractBasic {
 			return true;
 		} else {
 			\OC_Util::setUpFS(); //login hooks may need early access to the filesystem
-			if($this->userSession->login($username, $password)) {
-				$this->userSession->createSessionToken($this->request, $username, $password);
-				\OC_Util::setUpFS($this->userSession->getUser()->getUID());
-				$this->session->set(self::DAV_AUTHENTICATED, $this->userSession->getUser()->getUID());
+
+			try {
+				$this->userSession->login($username, $password);
+			} catch (LoginException $ex) {
 				$this->session->close();
-				return true;
-			} else {
+				if ($ex instanceof UserDisabledException) {
+					// Client should get 503, not 401
+					throw $ex;
+				}
+				return false;
+			}
+
+			if (!$this->userSession->createSessionToken($this->request, $username, $password)) {
 				$this->session->close();
 				return false;
 			}
+			\OC_Util::setUpFS($this->userSession->getUser()->getUID());
+			$this->session->set(self::DAV_AUTHENTICATED, $this->userSession->getUser()->getUID());
+			$this->session->close();
+			return true;
 		}
 	}
 

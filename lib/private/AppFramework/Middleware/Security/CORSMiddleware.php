@@ -28,10 +28,11 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IRequest;
-use OCP\IUserSession;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
+use OCP\IRequest;
+use OCP\IUserSession;
+use OCP\User\LoginException;
 
 /**
  * This middleware sets the correct CORS headers on a response if the
@@ -88,7 +89,9 @@ class CORSMiddleware extends Middleware {
 			$pass = $this->request->server['PHP_AUTH_PW'];
 
 			$this->session->logout();
-			if(!$this->session->login($user, $pass)) {
+			try {
+				$this->session->login($user, $pass);
+			} catch (LoginException $ex) {
 				throw new SecurityException('CORS requires basic auth', Http::STATUS_UNAUTHORIZED);
 			}
 		}
