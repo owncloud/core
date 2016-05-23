@@ -1,21 +1,69 @@
 <?php
 /**
- * Copyright (c) 2012 Bart Visscher <bartv@thisnet.nl>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Raghu Nayyar <me@iraghu.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OC\Settings;
 
 $application = new Application();
-$application->registerRoutes($this, array('routes' =>array(
-	array('name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/mailsettings', 'verb' => 'POST'),
-	array('name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'),
-	array('name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'),
-	array('name' => 'AppSettings#listCategories', 'url' => '/settings/apps/categories', 'verb' => 'GET'),
-	array('name' => 'AppSettings#listApps', 'url' => '/settings/apps/list', 'verb' => 'GET')
-)));
+$application->registerRoutes($this, [
+	'resources' => [
+		'groups' => ['url' => '/settings/users/groups'],
+		'users' => ['url' => '/settings/users/users'],
+		'AuthSettings' => ['url' => '/settings/personal/authtokens'],
+	],
+	'routes' => [
+		['name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/mailsettings', 'verb' => 'POST'],
+		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
+		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
+		['name' => 'Encryption#startMigration', 'url' => '/settings/admin/startmigration', 'verb' => 'POST'],
+		['name' => 'AppSettings#listCategories', 'url' => '/settings/apps/categories', 'verb' => 'GET'],
+		['name' => 'AppSettings#viewApps', 'url' => '/settings/apps', 'verb' => 'GET'],
+		['name' => 'AppSettings#listApps', 'url' => '/settings/apps/list', 'verb' => 'GET'],
+		['name' => 'AppSettings#changeExperimentalConfigState', 'url' => '/settings/apps/experimental', 'verb' => 'POST'],
+		['name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/security/trustedDomains', 'verb' => 'POST'],
+		['name' => 'Users#setDisplayName', 'url' => '/settings/users/{username}/displayName', 'verb' => 'POST'],
+		['name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'],
+		['name' => 'Users#stats', 'url' => '/settings/users/stats', 'verb' => 'GET'],
+		['name' => 'LogSettings#setLogLevel', 'url' => '/settings/admin/log/level', 'verb' => 'POST'],
+		['name' => 'LogSettings#getEntries', 'url' => '/settings/admin/log/entries', 'verb' => 'GET'],
+		['name' => 'LogSettings#download', 'url' => '/settings/admin/log/download', 'verb' => 'GET'],
+		['name' => 'CheckSetup#check', 'url' => '/settings/ajax/checksetup', 'verb' => 'GET'],
+		['name' => 'CheckSetup#getFailedIntegrityCheckFiles', 'url' => '/settings/integrity/failed', 'verb' => 'GET'],
+		['name' => 'CheckSetup#rescanFailedIntegrityCheck', 'url' => '/settings/integrity/rescan', 'verb' => 'GET'],
+		['name' => 'Certificate#addPersonalRootCertificate', 'url' => '/settings/personal/certificate', 'verb' => 'POST'],
+		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+		['name' => 'Certificate#addSystemRootCertificate', 'url' => '/settings/admin/certificate', 'verb' => 'POST'],
+		['name' => 'Certificate#removeSystemRootCertificate', 'url' => '/settings/admin/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+	]
+]);
 
 /** @var $this \OCP\Route\IRouter */
 
@@ -24,61 +72,29 @@ $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
 $this->create('settings_personal', '/settings/personal')
 	->actionInclude('settings/personal.php');
-$this->create('settings_settings', '/settings')
-	->actionInclude('settings/settings.php');
 $this->create('settings_users', '/settings/users')
 	->actionInclude('settings/users.php');
-$this->create('settings_apps', '/settings/apps')
-	->actionInclude('settings/apps.php');
 $this->create('settings_admin', '/settings/admin')
 	->actionInclude('settings/admin.php');
 // Settings ajax actions
 // users
-$this->create('settings_ajax_userlist', '/settings/ajax/userlist')
-	->actionInclude('settings/ajax/userlist.php');
-$this->create('settings_ajax_grouplist', '/settings/ajax/grouplist')
-	->actionInclude('settings/ajax/grouplist.php');
-$this->create('settings_ajax_everyonecount', '/settings/ajax/geteveryonecount')
-	->actionInclude('settings/ajax/geteveryonecount.php');
-$this->create('settings_ajax_createuser', '/settings/ajax/createuser.php')
-	->actionInclude('settings/ajax/createuser.php');
-$this->create('settings_ajax_removeuser', '/settings/ajax/removeuser.php')
-	->actionInclude('settings/ajax/removeuser.php');
 $this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
 	->actionInclude('settings/ajax/setquota.php');
-$this->create('settings_ajax_creategroup', '/settings/ajax/creategroup.php')
-	->actionInclude('settings/ajax/creategroup.php');
 $this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups.php')
 	->actionInclude('settings/ajax/togglegroups.php');
 $this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.php')
 	->actionInclude('settings/ajax/togglesubadmins.php');
-$this->create('settings_ajax_removegroup', '/settings/ajax/removegroup.php')
-	->actionInclude('settings/ajax/removegroup.php');
 $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
-$this->create('settings_ajax_changedisplayname', '/settings/ajax/changedisplayname.php')
-	->actionInclude('settings/ajax/changedisplayname.php');
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
 	->actionInclude('settings/ajax/changegroupname.php');	
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
-$this->create('settings_ajax_lostpassword', '/settings/ajax/lostpassword.php')
-	->actionInclude('settings/ajax/lostpassword.php');
 $this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')
 	->actionInclude('settings/ajax/setlanguage.php');
-$this->create('settings_ajax_decryptall', '/settings/ajax/decryptall.php')
-	->actionInclude('settings/ajax/decryptall.php');
-$this->create('settings_ajax_restorekeys', '/settings/ajax/restorekeys.php')
-	->actionInclude('settings/ajax/restorekeys.php');
-$this->create('settings_ajax_deletekeys', '/settings/ajax/deletekeys.php')
-	->actionInclude('settings/ajax/deletekeys.php');
-$this->create('settings_cert_post', '/settings/ajax/addRootCertificate')
-	->actionInclude('settings/ajax/addRootCertificate.php');
-$this->create('settings_cert_remove', '/settings/ajax/removeRootCertificate')
-	->actionInclude('settings/ajax/removeRootCertificate.php');
 // apps
 $this->create('settings_ajax_enableapp', '/settings/ajax/enableapp.php')
 	->actionInclude('settings/ajax/enableapp.php');
@@ -91,13 +107,5 @@ $this->create('settings_ajax_uninstallapp', '/settings/ajax/uninstallapp.php')
 $this->create('settings_ajax_navigationdetect', '/settings/ajax/navigationdetect.php')
 	->actionInclude('settings/ajax/navigationdetect.php');
 // admin
-$this->create('settings_ajax_getlog', '/settings/ajax/getlog.php')
-	->actionInclude('settings/ajax/getlog.php');
-$this->create('settings_ajax_setloglevel', '/settings/ajax/setloglevel.php')
-	->actionInclude('settings/ajax/setloglevel.php');
-$this->create('settings_ajax_setsecurity', '/settings/ajax/setsecurity.php')
-	->actionInclude('settings/ajax/setsecurity.php');
 $this->create('settings_ajax_excludegroups', '/settings/ajax/excludegroups.php')
 	->actionInclude('settings/ajax/excludegroups.php');
-$this->create('settings_ajax_checksetup', '/settings/ajax/checksetup')
-	->actionInclude('settings/ajax/checksetup.php');

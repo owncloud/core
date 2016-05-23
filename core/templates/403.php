@@ -1,4 +1,5 @@
 <?php
+// @codeCoverageIgnoreStart
 if(!isset($_)) {//also provide standalone error page
 	require_once '../../lib/base.php';
 	
@@ -6,10 +7,11 @@ if(!isset($_)) {//also provide standalone error page
 	$tmpl->printPage();
 	exit;
 }
+// @codeCoverageIgnoreEnd
 ?>
 <ul>
 	<li class='error'>
-		<?php p($l->t( 'Access forbidden' )); ?><br/>
+		<?php p($l->t( 'Access forbidden' )); ?><br>
 		<p class='hint'><?php if(isset($_['file'])) p($_['file'])?></p>
 	</li>
 </ul>

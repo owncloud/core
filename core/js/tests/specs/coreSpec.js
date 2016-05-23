@@ -20,6 +20,15 @@
 */
 
 describe('Core base tests', function() {
+	afterEach(function() {
+		// many tests call window.initCore so need to unregister global events
+		// ideally in the future we'll need a window.unloadCore() function
+		$(document).off('ajaxError.main');
+		$(document).off('unload.main');
+		$(document).off('beforeunload.main');
+		OC._userIsNavigatingAway = false;
+		OC._reloadCalled = false;
+	});
 	describe('Base values', function() {
 		it('Sets webroots', function() {
 			expect(OC.webroot).toBeDefined();
@@ -132,6 +141,51 @@ describe('Core base tests', function() {
 		});
 		it('Returns the string without modification if no potentially dangerous character is passed.', function() {
 			expect(escapeHTML('This is a good string without HTML.')).toEqual('This is a good string without HTML.');
+		});
+	});
+	describe('joinPaths', function() {
+		it('returns empty string with no or empty arguments', function() {
+			expect(OC.joinPaths()).toEqual('');
+			expect(OC.joinPaths('')).toEqual('');
+			expect(OC.joinPaths('', '')).toEqual('');
+		});
+		it('returns joined path sections', function() {
+			expect(OC.joinPaths('abc')).toEqual('abc');
+			expect(OC.joinPaths('abc', 'def')).toEqual('abc/def');
+			expect(OC.joinPaths('abc', 'def', 'ghi')).toEqual('abc/def/ghi');
+		});
+		it('keeps leading slashes', function() {
+			expect(OC.joinPaths('/abc')).toEqual('/abc');
+			expect(OC.joinPaths('/abc', '')).toEqual('/abc');
+			expect(OC.joinPaths('', '/abc')).toEqual('/abc');
+			expect(OC.joinPaths('/abc', 'def')).toEqual('/abc/def');
+			expect(OC.joinPaths('/abc', 'def', 'ghi')).toEqual('/abc/def/ghi');
+		});
+		it('keeps trailing slashes', function() {
+			expect(OC.joinPaths('', 'abc/')).toEqual('abc/');
+			expect(OC.joinPaths('abc/')).toEqual('abc/');
+			expect(OC.joinPaths('abc/', '')).toEqual('abc/');
+			expect(OC.joinPaths('abc', 'def/')).toEqual('abc/def/');
+			expect(OC.joinPaths('abc', 'def', 'ghi/')).toEqual('abc/def/ghi/');
+		});
+		it('splits paths in specified strings and discards extra slashes', function() {
+			expect(OC.joinPaths('//abc//')).toEqual('/abc/');
+			expect(OC.joinPaths('//abc//def//')).toEqual('/abc/def/');
+			expect(OC.joinPaths('//abc//', '//def//')).toEqual('/abc/def/');
+			expect(OC.joinPaths('//abc//', '//def//', '//ghi//')).toEqual('/abc/def/ghi/');
+			expect(OC.joinPaths('//abc//def//', '//ghi//jkl/mno/', '//pqr//'))
+				.toEqual('/abc/def/ghi/jkl/mno/pqr/');
+			expect(OC.joinPaths('/abc', '/def')).toEqual('/abc/def');
+			expect(OC.joinPaths('/abc/', '/def')).toEqual('/abc/def');
+			expect(OC.joinPaths('/abc/', 'def')).toEqual('/abc/def');
+		});
+		it('discards empty sections', function() {
+			expect(OC.joinPaths('abc', '', 'def')).toEqual('abc/def');
+		});
+		it('returns root if only slashes', function() {
+			expect(OC.joinPaths('//')).toEqual('/');
+			expect(OC.joinPaths('/', '/')).toEqual('/');
+			expect(OC.joinPaths('/', '//', '/')).toEqual('/');
 		});
 	});
 	describe('filePath', function() {
@@ -251,12 +305,15 @@ describe('Core base tests', function() {
 				counter++;
 				xhr.respond(200, {'Content-Type': 'application/json'}, '{}');
 			});
+			$(document).off('ajaxComplete'); // ignore previously registered heartbeats
 		});
 		afterEach(function() {
 			clock.restore();
 			/* jshint camelcase: false */
 			window.oc_config = oldConfig;
 			routeStub.restore();
+			$(document).off('ajaxError');
+			$(document).off('ajaxComplete');
 		});
 		it('sends heartbeat half the session lifetime when heartbeat enabled', function() {
 			/* jshint camelcase: false */
@@ -285,7 +342,7 @@ describe('Core base tests', function() {
 			clock.tick(20 * 1000);
 			expect(counter).toEqual(2);
 		});
-		it('does no send heartbeat when heartbeat disabled', function() {
+		it('does not send heartbeat when heartbeat disabled', function() {
 			/* jshint camelcase: false */
 			window.oc_config = {
 				session_keepalive: false,
@@ -393,30 +450,44 @@ describe('Core base tests', function() {
 			expect(OC.generateUrl('heartbeat')).toEqual(OC.webroot + '/index.php/heartbeat');
 			expect(OC.generateUrl('/heartbeat')).toEqual(OC.webroot + '/index.php/heartbeat');
 		});
-		it('substitutes parameters', function() {
-			expect(OC.generateUrl('apps/files/download{file}', {file: '/Welcome.txt'})).toEqual(OC.webroot + '/index.php/apps/files/download/Welcome.txt');
+		it('substitutes parameters which are escaped by default', function() {
+			expect(OC.generateUrl('apps/files/download/{file}', {file: '<">ImAnUnescapedString/!'})).toEqual(OC.webroot + '/index.php/apps/files/download/%3C%22%3EImAnUnescapedString%2F!');
+		});
+		it('substitutes parameters which can also be unescaped via option flag', function() {
+			expect(OC.generateUrl('apps/files/download/{file}', {file: 'subfolder/Welcome.txt'}, {escape: false})).toEqual(OC.webroot + '/index.php/apps/files/download/subfolder/Welcome.txt');
+		});
+		it('substitutes multiple parameters which are escaped by default', function() {
+			expect(OC.generateUrl('apps/files/download/{file}/{id}', {file: '<">ImAnUnescapedString/!', id: 5})).toEqual(OC.webroot + '/index.php/apps/files/download/%3C%22%3EImAnUnescapedString%2F!/5');
+		});
+		it('substitutes multiple parameters which can also be unescaped via option flag', function() {
+			expect(OC.generateUrl('apps/files/download/{file}/{id}', {file: 'subfolder/Welcome.txt', id: 5}, {escape: false})).toEqual(OC.webroot + '/index.php/apps/files/download/subfolder/Welcome.txt/5');
 		});
 		it('doesnt error out with no params provided', function  () {
-			expect(OC.generateUrl('apps/files/download{file}')).toEqual(OC.webroot + '/index.php/apps/files/download{file}');
+			expect(OC.generateUrl('apps/files/download{file}')).toEqual(OC.webroot + '/index.php/apps/files/download%7Bfile%7D');
 		});
 	});
 	describe('Main menu mobile toggle', function() {
 		var clock;
 		var $toggle;
 		var $navigation;
-		var clock;
 
 		beforeEach(function() {
+			jQuery.fx.off = true;
 			clock = sinon.useFakeTimers();
 			$('#testArea').append('<div id="header">' +
-				'<a class="menutoggle" href="#"></a>' +
+				'<a class="menutoggle header-appname-container" href="#">' +
+				'<h1 class="header-appname"></h1>' +
+				'<div class="icon-caret"></div>' +
+				'</a>' +
 				'</div>' +
 				'<div id="navigation"></div>');
 			$toggle = $('#header').find('.menutoggle');
 			$navigation = $('#navigation');
 		});
 		afterEach(function() {
+			jQuery.fx.off = false;
 			clock.restore();
+			$(document).off('ajaxError');
 		});
 		it('Sets up menu toggle', function() {
 			window.initCore();
@@ -424,7 +495,6 @@ describe('Core base tests', function() {
 		});
 		it('Clicking menu toggle toggles navigation in', function() {
 			window.initCore();
-			$navigation.hide(); // normally done through media query triggered CSS
 			expect($navigation.is(':visible')).toEqual(false);
 			$toggle.click();
 			clock.tick(1 * 1000);
@@ -465,8 +535,10 @@ describe('Core base tests', function() {
 			it('renders file sizes with the correct unit', function() {
 				var data = [
 					[0, '0 B'],
+					["0", '0 B'],
+					["A", 'NaN B'],
 					[125, '125 B'],
-					[128000, '125 kB'],
+					[128000, '125 KB'],
 					[128000000, '122.1 MB'],
 					[128000000000, '119.2 GB'],
 					[128000000000000, '116.4 TB']
@@ -477,9 +549,9 @@ describe('Core base tests', function() {
 			});
 			it('renders file sizes with the correct unit for small sizes', function() {
 				var data = [
-					[0, '0 kB'],
-					[125, '< 1 kB'],
-					[128000, '125 kB'],
+					[0, '0 KB'],
+					[125, '< 1 KB'],
+					[128000, '125 KB'],
 					[128000000, '122.1 MB'],
 					[128000000000, '119.2 GB'],
 					[128000000000000, '116.4 TB']
@@ -653,6 +725,295 @@ describe('Core base tests', function() {
 				'Üh.txt',
 				'Üh 2.txt'
 			]);
+		});
+	});
+	describe('Plugins', function() {
+		var plugin;
+
+		beforeEach(function() {
+			plugin = {
+				name: 'Some name',
+				attach: function(obj) {
+					obj.attached = true;
+				},
+
+				detach: function(obj) {
+					obj.attached = false;
+				}
+			};
+			OC.Plugins.register('OC.Test.SomeName', plugin);
+		});
+		it('attach plugin to object', function() {
+			var obj = {something: true};
+			OC.Plugins.attach('OC.Test.SomeName', obj);
+			expect(obj.attached).toEqual(true);
+			OC.Plugins.detach('OC.Test.SomeName', obj);
+			expect(obj.attached).toEqual(false);
+		});
+		it('only call handler for target name', function() {
+			var obj = {something: true};
+			OC.Plugins.attach('OC.Test.SomeOtherName', obj);
+			expect(obj.attached).not.toBeDefined();
+			OC.Plugins.detach('OC.Test.SomeOtherName', obj);
+			expect(obj.attached).not.toBeDefined();
+		});
+	});
+	describe('Notifications', function() {
+		var showSpy;
+		var showHtmlSpy;
+		var hideSpy;
+		var clock;
+
+		beforeEach(function() {
+			clock = sinon.useFakeTimers();
+			showSpy = sinon.spy(OC.Notification, 'show');
+			showHtmlSpy = sinon.spy(OC.Notification, 'showHtml');
+			hideSpy = sinon.spy(OC.Notification, 'hide');
+
+			$('#testArea').append('<div id="notification"></div>');
+		});
+		afterEach(function() {
+			showSpy.restore();
+			showHtmlSpy.restore();
+			hideSpy.restore();
+			// jump past animations
+			clock.tick(10000);
+			clock.restore();
+		});
+		describe('showTemporary', function() {
+			it('shows a plain text notification with default timeout', function() {
+				var $row = OC.Notification.showTemporary('My notification test');
+
+				expect(showSpy.calledOnce).toEqual(true);
+				expect(showSpy.firstCall.args[0]).toEqual('My notification test');
+				expect(showSpy.firstCall.args[1]).toEqual({isHTML: false, timeout: 7});
+
+				expect($row).toBeDefined();
+				expect($row.text()).toEqual('My notification test');
+			});
+			it('shows a HTML notification with default timeout', function() {
+				var $row = OC.Notification.showTemporary('<a>My notification test</a>', { isHTML: true });
+
+				expect(showSpy.notCalled).toEqual(true);
+				expect(showHtmlSpy.calledOnce).toEqual(true);
+				expect(showHtmlSpy.firstCall.args[0]).toEqual('<a>My notification test</a>');
+				expect(showHtmlSpy.firstCall.args[1]).toEqual({isHTML: true, timeout: 7});
+
+				expect($row).toBeDefined();
+				expect($row.text()).toEqual('My notification test');
+			});
+			it('hides itself after 7 seconds', function() {
+				var $row = OC.Notification.showTemporary('');
+
+				// travel in time +7000 milliseconds
+				clock.tick(7000);
+
+				expect(hideSpy.calledOnce).toEqual(true);
+				expect(hideSpy.firstCall.args[0]).toEqual($row);
+			});
+		});
+		describe('show', function() {
+			it('hides itself after a given time', function() {
+				OC.Notification.show('', { timeout: 10 });
+
+				// travel in time +9 seconds
+				clock.tick(9000);
+
+				expect(hideSpy.notCalled).toEqual(true);
+
+				// travel in time +1 seconds
+				clock.tick(1000);
+
+				expect(hideSpy.calledOnce).toEqual(true);
+			});
+			it('does not hide itself after a given time if a timeout of 0 is defined', function() {
+				OC.Notification.show('', { timeout: 0 });
+
+				// travel in time +1000 seconds
+				clock.tick(1000000);
+
+				expect(hideSpy.notCalled).toEqual(true);
+			});
+			it('does not hide itself if no timeout given to show', function() {
+				OC.Notification.show('');
+
+				// travel in time +1000 seconds
+				clock.tick(1000000);
+
+				expect(hideSpy.notCalled).toEqual(true);
+			});
+		});
+		it('cumulates several notifications', function() {
+			var $row1 = OC.Notification.showTemporary('One');
+			var $row2 = OC.Notification.showTemporary('Two', {timeout: 2});
+			var $row3 = OC.Notification.showTemporary('Three');
+
+			var $el = $('#notification');
+			var $rows = $el.find('.row');
+			expect($rows.length).toEqual(3);
+
+			expect($rows.eq(0).is($row1)).toEqual(true);
+			expect($rows.eq(1).is($row2)).toEqual(true);
+			expect($rows.eq(2).is($row3)).toEqual(true);
+
+			clock.tick(3000);
+
+			$rows = $el.find('.row');
+			expect($rows.length).toEqual(2);
+
+			expect($rows.eq(0).is($row1)).toEqual(true);
+			expect($rows.eq(1).is($row3)).toEqual(true);
+		});
+		it('shows close button for error types', function() {
+			var $row = OC.Notification.showTemporary('One');
+			var $rowError = OC.Notification.showTemporary('Two', {type: 'error'});
+			expect($row.find('.close').length).toEqual(0);
+			expect($rowError.find('.close').length).toEqual(1);
+
+			// after clicking, row is gone
+			$rowError.find('.close').click();
+
+			var $rows = $('#notification').find('.row');
+			expect($rows.length).toEqual(1);
+			expect($rows.eq(0).is($row)).toEqual(true);
+		});
+		it('fades out the last notification but not the other ones', function() {
+			var fadeOutStub = sinon.stub($.fn, 'fadeOut');
+			var $row1 = OC.Notification.show('One', {type: 'error'});
+			var $row2 = OC.Notification.show('Two', {type: 'error'});
+			OC.Notification.showTemporary('Three', {timeout: 2});
+
+			var $el = $('#notification');
+			var $rows = $el.find('.row');
+			expect($rows.length).toEqual(3);
+
+			clock.tick(3000);
+
+			$rows = $el.find('.row');
+			expect($rows.length).toEqual(2);
+
+			$row1.find('.close').click();
+			clock.tick(1000);
+
+			expect(fadeOutStub.notCalled).toEqual(true);
+
+			$row2.find('.close').click();
+			clock.tick(1000);
+			expect(fadeOutStub.calledOnce).toEqual(true);
+
+			expect($el.is(':empty')).toEqual(false);
+			fadeOutStub.yield();
+			expect($el.is(':empty')).toEqual(true);
+
+			fadeOutStub.restore();
+		});
+		it('hides the first notification when calling hide without arguments', function() {
+			var $row1 = OC.Notification.show('One');
+			var $row2 = OC.Notification.show('Two');
+
+			var $el = $('#notification');
+			var $rows = $el.find('.row');
+			expect($rows.length).toEqual(2);
+
+			OC.Notification.hide();
+
+			$rows = $el.find('.row');
+			expect($rows.length).toEqual(1);
+			expect($rows.eq(0).is($row2)).toEqual(true);
+		});
+		it('hides the given notification when calling hide with argument', function() {
+			var $row1 = OC.Notification.show('One');
+			var $row2 = OC.Notification.show('Two');
+
+			var $el = $('#notification');
+			var $rows = $el.find('.row');
+			expect($rows.length).toEqual(2);
+
+			OC.Notification.hide($row2);
+
+			$rows = $el.find('.row');
+			expect($rows.length).toEqual(1);
+			expect($rows.eq(0).is($row1)).toEqual(true);
+		});
+	});
+	describe('global ajax errors', function() {
+		var reloadStub, ajaxErrorStub, clock;
+		var notificationStub;
+		var waitTimeMs = 6000;
+
+		beforeEach(function() {
+			clock = sinon.useFakeTimers();
+			reloadStub = sinon.stub(OC, 'reload');
+			notificationStub = sinon.stub(OC.Notification, 'show');
+			// unstub the error processing method
+			ajaxErrorStub = OC._processAjaxError;
+			ajaxErrorStub.restore();
+			window.initCore();
+		});
+		afterEach(function() {
+			reloadStub.restore();
+			notificationStub.restore();
+			clock.restore();
+		});
+
+		it('reloads current page in case of auth error', function() {
+			var dataProvider = [
+				[200, false],
+				[400, false],
+				[0, true],
+				[401, true],
+				[302, true],
+				[303, true],
+				[307, true]
+			];
+
+			for (var i = 0; i < dataProvider.length; i++) {
+				var xhr = { status: dataProvider[i][0] };
+				var expectedCall = dataProvider[i][1];
+
+				reloadStub.reset();
+				OC._reloadCalled = false;
+
+				$(document).trigger(new $.Event('ajaxError'), xhr);
+
+				// trigger timers
+				clock.tick(waitTimeMs);
+
+				if (expectedCall) {
+					expect(reloadStub.calledOnce).toEqual(true);
+				} else {
+					expect(reloadStub.notCalled).toEqual(true);
+				}
+			}
+		});
+		it('reload only called once in case of auth error', function() {
+			var xhr = { status: 401 };
+
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+
+			// trigger timers
+			clock.tick(waitTimeMs);
+
+			expect(reloadStub.calledOnce).toEqual(true);
+		});
+		it('does not reload the page if the user was navigating away', function() {
+			var xhr = { status: 0 };
+			OC._userIsNavigatingAway = true;
+			clock.tick(100);
+
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+
+			clock.tick(waitTimeMs);
+			expect(reloadStub.notCalled).toEqual(true);
+		});
+		it('displays notification', function() {
+			var xhr = { status: 401 };
+
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+
+			clock.tick(waitTimeMs);
+			expect(notificationStub.calledOnce).toEqual(true);
 		});
 	});
 });

@@ -10,15 +10,25 @@
 (function() {
 
 	/**
-	 * Sharing file list
+	 * @class OCA.Sharing.FileList
+	 * @augments OCA.Files.FileList
 	 *
+	 * @classdesc Sharing file list.
 	 * Contains both "shared with others" and "shared with you" modes.
+	 *
+	 * @param $el container element with existing markup for the #controls
+	 * and a table
+	 * @param [options] map of options, see other parameters
+	 * @param {boolean} [options.sharedWithUser] true to return files shared with
+	 * the current user, false to return files that the user shared with others.
+	 * Defaults to false.
+	 * @param {boolean} [options.linksOnly] true to return only link shares
 	 */
 	var FileList = function($el, options) {
 		this.initialize($el, options);
 	};
-
-	FileList.prototype = _.extend({}, OCA.Files.FileList.prototype, {
+	FileList.prototype = _.extend({}, OCA.Files.FileList.prototype,
+		/** @lends OCA.Sharing.FileList.prototype */ {
 		appName: 'Shares',
 
 		/**
@@ -27,9 +37,12 @@
 		 */
 		_sharedWithUser: false,
 		_linksOnly: false,
-
 		_clientSideSort: true,
+		_allowSelection: false,
 
+		/**
+		 * @private
+		 */
 		initialize: function($el, options) {
 			OCA.Files.FileList.prototype.initialize.apply(this, arguments);
 			if (this.initialized) {
@@ -43,6 +56,7 @@
 			if (options && options.linksOnly) {
 				this._linksOnly = true;
 			}
+			OC.Plugins.attach('OCA.Sharing.FileList', this);
 		},
 
 		_renderRow: function() {
@@ -104,7 +118,12 @@
 			if (this._reloadCall) {
 				this._reloadCall.abort();
 			}
-			this._reloadCall = $.ajax({
+
+			// there is only root
+			this._setCurrentDir('/', false);
+
+			var promises = [];
+			var shares = $.ajax({
 				url: OC.linkToOCS('apps/files_sharing/api/v1') + 'shares',
 				/* jshint camelcase: false */
 				data: {
@@ -114,32 +133,88 @@
 				type: 'GET',
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader('OCS-APIREQUEST', 'true');
-				}
+				},
 			});
+			promises.push(shares);
+
+			if (!!this._sharedWithUser) {
+				var remoteShares = $.ajax({
+					url: OC.linkToOCS('apps/files_sharing/api/v1') + 'remote_shares',
+					/* jshint camelcase: false */
+					data: {
+						format: 'json'
+					},
+					type: 'GET',
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('OCS-APIREQUEST', 'true');
+					},
+				});
+				promises.push(remoteShares);
+			} else {
+				//Push empty promise so callback gets called the same way
+				promises.push($.Deferred().resolve());
+			}
+
+			this._reloadCall = $.when.apply($, promises);
 			var callBack = this.reloadCallback.bind(this);
 			return this._reloadCall.then(callBack, callBack);
 		},
 
-		reloadCallback: function(result) {
+		reloadCallback: function(shares, remoteShares) {
 			delete this._reloadCall;
 			this.hideMask();
 
 			this.$el.find('#headerSharedWith').text(
 				t('files_sharing', this._sharedWithUser ? 'Shared by' : 'Shared with')
 			);
-			if (result.ocs && result.ocs.data) {
-				this.setFiles(this._makeFilesFromShares(result.ocs.data));
+
+			var files = [];
+
+			if (shares[0].ocs && shares[0].ocs.data) {
+				files = files.concat(this._makeFilesFromShares(shares[0].ocs.data));
 			}
-			else {
-				// TODO: error handling
+
+			if (remoteShares && remoteShares[0].ocs && remoteShares[0].ocs.data) {
+				files = files.concat(this._makeFilesFromRemoteShares(remoteShares[0].ocs.data));
 			}
+
+			this.setFiles(files);
+			return true;
+		},
+
+		_makeFilesFromRemoteShares: function(data) {
+			var self = this;
+			var files = data;
+
+			files = _.chain(files)
+				// convert share data to file data
+				.map(function(share) {
+					var file = {
+						shareOwner: share.owner + '@' + share.remote.replace(/.*?:\/\//g, ""),
+						name: OC.basename(share.mountpoint),
+						mtime: share.mtime * 1000,
+						mimetype: share.mimetype,
+						type: share.type,
+						id: share.file_id,
+						path: OC.dirname(share.mountpoint),
+						permissions: share.permissions
+					};
+
+					file.shares = [{
+						id: share.id,
+						type: OC.Share.SHARE_TYPE_REMOTE
+					}];
+					return file;
+				})
+				.value();
+			return files;
 		},
 
 		/**
 		 * Converts the OCS API share response data to a file info
 		 * list
-		 * @param OCS API share array
-		 * @return array of file info maps
+		 * @param {Array} data OCS API share array
+		 * @return {Array.<OCA.Sharing.SharedFileInfo>} array of shared file info
 		 */
 		_makeFilesFromShares: function(data) {
 			/* jshint camelcase: false */
@@ -156,8 +231,10 @@
 			files = _.chain(files)
 				// convert share data to file data
 				.map(function(share) {
+					// TODO: use OC.Files.FileInfo
 					var file = {
 						id: share.file_source,
+						icon: OC.MimeType.getIconUrl(share.mimetype),
 						mimetype: share.mimetype
 					};
 					if (share.item_type === 'folder') {
@@ -166,9 +243,6 @@
 					}
 					else {
 						file.type = 'file';
-						if (share.isPreviewAvailable) {
-							file.isPreviewAvailable = true;
-						}
 					}
 					file.share = {
 						id: share.id,
@@ -212,6 +286,8 @@
 						// using a hash to make them unique,
 						// this is only a list to be displayed
 						data.recipients = {};
+						// share types
+						data.shareTypes = {};
 						// counter is cheaper than calling _.keys().length
 						data.recipientsCount = 0;
 						data.mtime = file.share.stime;
@@ -234,6 +310,8 @@
 						data.recipientsCount++;
 					}
 
+					data.shareTypes[file.share.type] = true;
+
 					delete file.share;
 					return memo;
 				}, {})
@@ -250,6 +328,12 @@
 						data.recipientsCount
 					);
 					delete data.recipientsCount;
+					if (self._sharedWithUser) {
+						// only for outgoing shres
+						delete data.shareTypes;
+					} else {
+						data.shareTypes = _.keys(data.shareTypes);
+					}
 				})
 				// Finish the chain by getting the result
 				.value();
@@ -258,6 +342,34 @@
 			return files.sort(this._sortComparator);
 		}
 	});
+
+	/**
+	 * Share info attributes.
+	 *
+	 * @typedef {Object} OCA.Sharing.ShareInfo
+	 *
+	 * @property {int} id share ID
+	 * @property {int} type share type
+	 * @property {String} target share target, either user name or group name
+	 * @property {int} stime share timestamp in milliseconds
+	 * @property {String} [targetDisplayName] display name of the recipient
+	 * (only when shared with others)
+	 *
+	 */
+
+	/**
+	 * Shared file info attributes.
+	 *
+	 * @typedef {OCA.Files.FileInfo} OCA.Sharing.SharedFileInfo
+	 *
+	 * @property {Array.<OCA.Sharing.ShareInfo>} shares array of shares for
+	 * this file
+	 * @property {int} mtime most recent share time (if multiple shares)
+	 * @property {String} shareOwner name of the share owner
+	 * @property {Array.<String>} recipients name of the first 4 recipients
+	 * (this is mostly for display purposes)
+	 * @property {String} recipientsDisplayName display name
+	 */
 
 	OCA.Sharing.FileList = FileList;
 })();

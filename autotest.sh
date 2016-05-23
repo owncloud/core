@@ -1,21 +1,41 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # ownCloud
 #
+# @author Vincent Petry
+# @author Morris Jobke
+# @author Robin McCorkell
 # @author Thomas Müller
-# @copyright 2012, 2013 Thomas Müller thomas.mueller@tmit.eu
+# @author Andreas Fischer
+# @author Joas Schilling
+# @author Lukas Reschke
+# @author Jörn Friedrich Dreyer
+# @copyright 2012-2015 Thomas Müller thomas.mueller@tmit.eu
 #
-
-set -e
 
 #$EXECUTOR_NUMBER is set by Jenkins and allows us to run autotest in parallel
 DATABASENAME=oc_autotest$EXECUTOR_NUMBER
 DATABASEUSER=oc_autotest$EXECUTOR_NUMBER
+DATABASEHOST=localhost
 ADMINLOGIN=admin$EXECUTOR_NUMBER
 BASEDIR=$PWD
 
-DBCONFIGS="sqlite mysql pgsql oci"
+PRIMARY_STORAGE_CONFIGS="local swift"
+DBCONFIGS="sqlite mysql mariadb pgsql oci"
+
+# $PHP_EXE is run through 'which' and as such e.g. 'php' or 'hhvm' is usually
+# sufficient. Due to the behaviour of 'which', $PHP_EXE may also be a path
+# (absolute or not) to an executable, e.g. ./code/projects/php-src/sapi/cli/php.
+if [ -z "$PHP_EXE" ]; then
+	PHP_EXE=php
+fi
+PHP=$(which "$PHP_EXE")
 PHPUNIT=$(which phpunit)
+
+set -e
+
+_XDEBUG_CONFIG=$XDEBUG_CONFIG
+unset XDEBUG_CONFIG
 
 function print_syntax {
 	echo -e "Syntax: ./autotest.sh [dbconfigname] [testfile]\n" >&2
@@ -26,21 +46,35 @@ function print_syntax {
 	echo -e "\nIf no arguments are specified, all tests will be run with all database configs" >&2
 }
 
+if [ -x "$PHP" ]; then
+	echo "Using PHP executable $PHP"
+else
+	echo "Could not find PHP executable $PHP_EXE" >&2
+	exit 3
+fi
+
 if ! [ -x "$PHPUNIT" ]; then
 	echo "phpunit executable not found, please install phpunit version >= 3.7" >&2
 	exit 3
 fi
 
-PHPUNIT_VERSION=$("$PHPUNIT" --version | cut -d" " -f2)
-PHPUNIT_MAJOR_VERSION=$(echo $PHPUNIT_VERSION | cut -d"." -f1)
-PHPUNIT_MINOR_VERSION=$(echo $PHPUNIT_VERSION | cut -d"." -f2)
+# PHPUnit might also be installed via a facade binary script
+if [[ "$PHPUNIT" =~ \.phar$ ]]; then
+  PHPUNIT=( "$PHP" "$PHPUNIT" )
+else
+  PHPUNIT=( "$PHPUNIT" )
+fi
 
-if ! [ $PHPUNIT_MAJOR_VERSION -gt 3 -o \( $PHPUNIT_MAJOR_VERSION -eq 3 -a $PHPUNIT_MINOR_VERSION -ge 7 \) ]; then
-	echo "phpunit version >= 3.7 required. Version found: $PHPUNIT_VERSION" >&2
+PHPUNIT_VERSION=$($PHPUNIT --version | cut -d" " -f2)
+PHPUNIT_MAJOR_VERSION=$(echo "$PHPUNIT_VERSION" | cut -d"." -f1)
+PHPUNIT_MINOR_VERSION=$(echo "$PHPUNIT_VERSION" | cut -d"." -f2)
+
+if ! [ "$PHPUNIT_MAJOR_VERSION" -gt 4 -o \( "$PHPUNIT_MAJOR_VERSION" -eq 4 -a "$PHPUNIT_MINOR_VERSION" -ge 4 \) ]; then
+	echo "phpunit version >= 4.4 required. Version found: $PHPUNIT_VERSION" >&2
 	exit 4
 fi
 
-if ! [ -w config -a -w config/config.php ]; then
+if ! [ \( -w config -a ! -f config/config.php \) -o \( -f config/config.php -a -w config/config.php \) ]; then
 	echo "Please enable write permissions on config and config/config.php" >&2
 	exit 1
 fi
@@ -48,7 +82,7 @@ fi
 if [ "$1" ]; then
 	FOUND=0
 	for DBCONFIG in $DBCONFIGS; do
-		if [ "$1" = $DBCONFIG ]; then
+		if [ "$1" = "$DBCONFIG" ]; then
 			FOUND=1
 			break
 		fi
@@ -59,21 +93,60 @@ if [ "$1" ]; then
 		exit 2
 	fi
 fi
+if [ "$PRIMARY_STORAGE_CONFIG" ]; then
+	FOUND=0
+	for PSC in $PRIMARY_STORAGE_CONFIGS; do
+		if [ "$PRIMARY_STORAGE_CONFIG" = "$PSC" ]; then
+			FOUND=1
+			break
+		fi
+	done
+	if [ $FOUND = 0 ]; then
+		echo -e "Unknown primary storage config name \"$PRIMARY_STORAGE_CONFIG\"\n" >&2
+		print_syntax
+		exit 2
+	fi
+else
+	PRIMARY_STORAGE_CONFIG="local"
+fi
 
-# Back up existing (dev) config if one exists
-if [ -f config/config.php ]; then
+# check for the presence of @since in all OCP methods
+$PHP build/OCPSinceChecker.php
+
+# Back up existing (dev) config if one exists and backup not already there
+if [ -f config/config.php ] && [ ! -f config/config-autotest-backup.php ]; then
 	mv config/config.php config/config-autotest-backup.php
 fi
 
-function restore_config {
+function cleanup_config {
+
+	if [ ! -z "$DOCKER_CONTAINER_ID" ]; then
+		echo "Kill the docker $DOCKER_CONTAINER_ID"
+		docker stop "$DOCKER_CONTAINER_ID"
+		docker rm -f "$DOCKER_CONTAINER_ID"
+	fi
+
+	cd "$BASEDIR"
+	if [ "$PRIMARY_STORAGE_CONFIG" == "swift" ] ; then
+		echo "Kill the swift docker"
+		tests/objectstore/stop-swift-ceph.sh
+	fi
 	# Restore existing config
 	if [ -f config/config-autotest-backup.php ]; then
 		mv config/config-autotest-backup.php config/config.php
 	fi
+	# Remove autotest config
+	if [ -f config/autoconfig.php ]; then
+		rm config/autoconfig.php
+	fi
+	# Remove autotest swift storage config
+	if [ -f config/autotest-storage-swift.config.php ]; then
+		rm config/autotest-storage-swift.config.php
+	fi
 }
 
-# restore config on exit, even when killed
-trap restore_config SIGINT SIGTERM
+# restore config on exit
+trap cleanup_config EXIT
 
 # use tmpfs for datadir - should speedup unit test execution
 if [ -d /dev/shm ]; then
@@ -84,69 +157,9 @@ fi
 
 echo "Using database $DATABASENAME"
 
-# create autoconfig for sqlite, mysql and postgresql
-cat > ./tests/autoconfig-sqlite.php <<DELIM
-<?php
-\$AUTOCONFIG = array (
-  'installed' => false,
-  'dbtype' => 'sqlite',
-  'dbtableprefix' => 'oc_',
-  'adminlogin' => '$ADMINLOGIN',
-  'adminpass' => 'admin',
-  'directory' => '$DATADIR',
-);
-DELIM
-
-cat > ./tests/autoconfig-mysql.php <<DELIM
-<?php
-\$AUTOCONFIG = array (
-  'installed' => false,
-  'dbtype' => 'mysql',
-  'dbtableprefix' => 'oc_',
-  'adminlogin' => '$ADMINLOGIN',
-  'adminpass' => 'admin',
-  'directory' => '$DATADIR',
-  'dbuser' => '$DATABASEUSER',
-  'dbname' => '$DATABASENAME',
-  'dbhost' => 'localhost',
-  'dbpass' => 'owncloud',
-);
-DELIM
-
-cat > ./tests/autoconfig-pgsql.php <<DELIM
-<?php
-\$AUTOCONFIG = array (
-  'installed' => false,
-  'dbtype' => 'pgsql',
-  'dbtableprefix' => 'oc_',
-  'adminlogin' => '$ADMINLOGIN',
-  'adminpass' => 'admin',
-  'directory' => '$DATADIR',
-  'dbuser' => '$DATABASEUSER',
-  'dbname' => '$DATABASENAME',
-  'dbhost' => 'localhost',
-  'dbpass' => 'owncloud',
-);
-DELIM
-
-cat > ./tests/autoconfig-oci.php <<DELIM
-<?php
-\$AUTOCONFIG = array (
-  'installed' => false,
-  'dbtype' => 'oci',
-  'dbtableprefix' => 'oc_',
-  'adminlogin' => '$ADMINLOGIN',
-  'adminpass' => 'admin',
-  'directory' => '$DATADIR',
-  'dbuser' => '$DATABASENAME',
-  'dbname' => 'XE',
-  'dbhost' => 'localhost',
-  'dbpass' => 'owncloud',
-);
-DELIM
-
 function execute_tests {
-	echo "Setup environment for $1 testing ..."
+	DB=$1
+	echo "Setup environment for $DB testing on $PRIMARY_STORAGE_CONFIG storage ..."
 	# back to root folder
 	cd "$BASEDIR"
 
@@ -157,63 +170,154 @@ function execute_tests {
 	rm -rf "$DATADIR"
 	mkdir "$DATADIR"
 
-	# remove the old config file
-	#rm -rf config/config.php
+	if [ "$PRIMARY_STORAGE_CONFIG" == "swift" ] ; then
+		tests/objectstore/start-swift-ceph.sh
+		cp tests/objectstore/swift.config.php config/autotest-storage-swift.config.php
+	fi
 	cp tests/preseed-config.php config/config.php
 
+	_DB=$DB
+
 	# drop database
-	if [ "$1" == "mysql" ] ; then
-		mysql -u $DATABASEUSER -powncloud -e "DROP DATABASE IF EXISTS $DATABASENAME" || true
-	fi
-	if [ "$1" == "pgsql" ] ; then
-		dropdb -U $DATABASEUSER $DATABASENAME || true
-	fi
-	if [ "$1" == "oci" ] ; then
-		echo "drop the database"
-		sqlplus -s -l / as sysdba <<EOF
-			drop user $DATABASENAME cascade;
-EOF
+	if [ "$DB" == "mysql" ] ; then
+		if [ ! -z "$USEDOCKER" ] ; then
+			echo "Fire up the mysql docker"
+			DOCKER_CONTAINER_ID=$(docker run \
+				-v $BASEDIR/tests/docker/mariadb:/etc/mysql/conf.d \
+				-e MYSQL_ROOT_PASSWORD=owncloud \
+				-e MYSQL_USER="$DATABASEUSER" \
+				-e MYSQL_PASSWORD=owncloud \
+				-e MYSQL_DATABASE="$DATABASENAME" \
+				-d mysql)
+			DATABASEHOST=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" "$DOCKER_CONTAINER_ID")
 
-		echo "create the database"
-		sqlplus -s -l / as sysdba <<EOF
-			create user $DATABASENAME identified by owncloud;
-			alter user $DATABASENAME default tablespace users
-			temporary tablespace temp
-			quota unlimited on users;
-			grant create session
-			, create table
-			, create procedure
-			, create sequence
-			, create trigger
-			, create view
-			, create synonym
-			, alter session
-			to $DATABASENAME;
-			exit;
-EOF
-	fi
+			echo "Waiting for MySQL initialisation ..."
+			if ! apps/files_external/tests/env/wait-for-connection $DATABASEHOST 3306 60; then
+				echo "[ERROR] Waited 60 seconds, no response" >&2
+				exit 1
+			fi
 
-	# copy autoconfig
-	cp "$BASEDIR/tests/autoconfig-$1.php" "$BASEDIR/config/autoconfig.php"
+			echo "MySQL is up."
+
+		else
+			if [ "mysql" != "$(mysql --version | grep -o mysql)" ] ; then
+				echo "Your mysql binary is not provided by mysql"
+				echo "To use the docker container set the USEDOCKER environment variable"
+				exit -1
+			fi
+			mysql -u "$DATABASEUSER" -powncloud -e "DROP DATABASE IF EXISTS $DATABASENAME" -h $DATABASEHOST || true
+		fi
+	fi
+	if [ "$DB" == "mariadb" ] ; then
+		if [ ! -z "$USEDOCKER" ] ; then
+			echo "Fire up the mariadb docker"
+			DOCKER_CONTAINER_ID=$(docker run \
+				-v $BASEDIR/tests/docker/mariadb:/etc/mysql/conf.d \
+				-e MYSQL_ROOT_PASSWORD=owncloud \
+				-e MYSQL_USER="$DATABASEUSER" \
+				-e MYSQL_PASSWORD=owncloud \
+				-e MYSQL_DATABASE="$DATABASENAME" \
+				-d mariadb)
+			DATABASEHOST=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" "$DOCKER_CONTAINER_ID")
+
+			echo "Waiting for MariaDB initialisation ..."
+			if ! apps/files_external/tests/env/wait-for-connection $DATABASEHOST 3306 60; then
+				echo "[ERROR] Waited 60 seconds, no response" >&2
+				exit 1
+			fi
+
+			echo "MariaDB is up."
+
+		else
+			if [ "MariaDB" != "$(mysql --version | grep -o MariaDB)" ] ; then
+				echo "Your mysql binary is not provided by MariaDB"
+				echo "To use the docker container set the USEDOCKER environment variable"
+				exit -1
+			fi
+			mysql -u "$DATABASEUSER" -powncloud -e "DROP DATABASE IF EXISTS $DATABASENAME" -h $DATABASEHOST || true
+		fi
+
+		#Reset _DB to mysql since that is what we use internally
+		_DB="mysql"
+	fi
+	if [ "$DB" == "pgsql" ] ; then
+		if [ ! -z "$USEDOCKER" ] ; then
+			echo "Fire up the postgres docker"
+			DOCKER_CONTAINER_ID=$(docker run -e POSTGRES_USER="$DATABASEUSER" -e POSTGRES_PASSWORD=owncloud -d postgres)
+			DATABASEHOST=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" "$DOCKER_CONTAINER_ID")
+
+			echo "Waiting for Postgres initialisation ..."
+
+			# grep exits on the first match and then the script continues
+			docker logs -f "$DOCKER_CONTAINER_ID" 2>&1 | grep -q "database system is ready to accept connections"
+
+			echo "Postgres is up."
+		else
+			dropdb -U "$DATABASEUSER" "$DATABASENAME" || true
+		fi
+	fi
+	if [ "$DB" == "oci" ] ; then
+		echo "Fire up the oracle docker"
+		DOCKER_CONTAINER_ID=$(docker run -d deepdiver/docker-oracle-xe-11g)
+		DATABASEHOST=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" "$DOCKER_CONTAINER_ID")
+
+		echo "Waiting for Oracle initialization ... "
+
+		# Try to connect to the OCI host via sqlplus to ensure that the connection is already running
+      		for i in {1..48}
+                do
+                        if sqlplus "autotest/owncloud@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=$DATABASEHOST)(Port=1521))(CONNECT_DATA=(SID=XE)))" < /dev/null | grep 'Connected to'; then
+                                break;
+                        fi
+                        sleep 5
+                done
+
+		DATABASEUSER=autotest
+		DATABASENAME='XE'
+	fi
 
 	# trigger installation
-	echo "INDEX"
-	php -f index.php | grep -i -C9999 error && echo "Error during setup" && exit 101
-	echo "END INDEX"
+	echo "Installing ...."
+	"$PHP" ./occ maintenance:install -vvv --database="$_DB" --database-name="$DATABASENAME" --database-host="$DATABASEHOST" --database-user="$DATABASEUSER" --database-pass=owncloud --database-table-prefix=oc_ --admin-user="$ADMINLOGIN" --admin-pass=admin --data-dir="$DATADIR"
 
 	#test execution
-	echo "Testing with $1 ..."
+	echo "Testing with $DB ..."
 	cd tests
-	rm -rf "coverage-html-$1"
-	mkdir "coverage-html-$1"
-	php -f enable_all.php | grep -i -C9999 error && echo "Error during setup" && exit 101
+	rm -rf "coverage-html-$DB"
+	mkdir "coverage-html-$DB"
+	"$PHP" -f enable_all.php | grep -i -C9999 error && echo "Error during setup" && exit 101
+	if [[ "$_XDEBUG_CONFIG" ]]; then
+		export XDEBUG_CONFIG=$_XDEBUG_CONFIG
+	fi
+	GROUP=''
+	if [ "$TEST_SELECTION" == "DB" ]; then
+		GROUP='--group DB'
+	fi
+	if [ "$TEST_SELECTION" == "NODB" ]; then
+		GROUP='--exclude-group DB'
+	fi
+
+	COVER=''
 	if [ -z "$NOCOVERAGE" ]; then
-		"$PHPUNIT" --configuration phpunit-autotest.xml --log-junit "autotest-results-$1.xml" --coverage-clover "autotest-clover-$1.xml" --coverage-html "coverage-html-$1" "$2" "$3"
-		RESULT=$?
+		COVER="--coverage-clover autotest-clover-$DB.xml --coverage-html coverage-html-$DB"
 	else
 		echo "No coverage"
-		"$PHPUNIT" --configuration phpunit-autotest.xml --log-junit "autotest-results-$1.xml" "$2" "$3"
+	fi
+	echo "${PHPUNIT[@]}" --configuration phpunit-autotest.xml $GROUP $COVER --log-junit "autotest-results-$DB.xml" "$2" "$3"
+	"${PHPUNIT[@]}" --configuration phpunit-autotest.xml $GROUP $COVER --log-junit "autotest-results-$DB.xml" "$2" "$3"
 		RESULT=$?
+
+	if [ "$PRIMARY_STORAGE_CONFIG" == "swift" ] ; then
+		cd ..
+		echo "Kill the swift docker"
+		tests/objectstore/stop-swift-ceph.sh
+	fi
+
+	if [ ! -z "$DOCKER_CONTAINER_ID" ] ; then
+		echo "Kill the docker $DOCKER_CONTAINER_ID"
+		docker stop $DOCKER_CONTAINER_ID
+		docker rm -f $DOCKER_CONTAINER_ID
+		unset DOCKER_CONTAINER_ID
 	fi
 }
 
@@ -224,15 +328,16 @@ if [ -z "$1" ]
   then
 	# run all known database configs
 	for DBCONFIG in $DBCONFIGS; do
-		execute_tests $DBCONFIG
+		execute_tests "$DBCONFIG"
 	done
 else
-	execute_tests "$1" "$2" "$3"
+	FILENAME="$2"
+	if [ ! -z "$2" ] && [ ! -f "tests/$FILENAME" ]; then
+		FILENAME="../$FILENAME"
+	fi
+	execute_tests "$1" "$FILENAME" "$3"
 fi
 
-cd "$BASEDIR"
-
-restore_config
 #
 # NOTES on mysql:
 #  - CREATE DATABASE oc_autotest;

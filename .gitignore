@@ -9,24 +9,32 @@
 
 # ignore all apps except core ones
 /apps*/*
+!/apps/comments
+!/apps/dav
 !/apps/files
-!/apps/files_encryption
+!/apps/federation
+!/apps/federatedfilesharing
+!/apps/encryption
 !/apps/files_external
 !/apps/files_sharing
 !/apps/files_trashbin
 !/apps/files_versions
 !/apps/user_ldap
-!/apps/user_webdavauth
+!/apps/provisioning_api
+!/apps/systemtags
+!/apps/updatenotification
 /apps/files_external/3rdparty/irodsphp/PHPUnitTest
 /apps/files_external/3rdparty/irodsphp/web
 /apps/files_external/3rdparty/irodsphp/prods/test
 /apps/files_external/3rdparty/irodsphp/prods/tutorials
 /apps/files_external/3rdparty/irodsphp/prods/test*
+/apps/files_external/tests/config.*.php
 
 
 
-# ignore themes except the README
+# ignore themes except the example and the README
 /themes/*
+!/themes/example
 !/themes/README
 
 # just sane ignores
@@ -73,6 +81,9 @@ nbproject
 
 # vim ex mode
 .vimrc
+
+# ack(-grep)
+.ackrc
 	
 # Mac OS
 .DS_Store
@@ -89,8 +100,15 @@ nbproject
 
 # nodejs
 /build/lib/
+/build/jsdocs/
 /npm-debug.log
 
+# puphpet
+puphpet
+
+# vagrant
+.vagrant
+Vagrantfile
 
 # Tests - auto-generated files
 /data-autotest
@@ -100,3 +118,6 @@ nbproject
 /tests/autotest*
 /tests/data/lorem-copy.txt
 /tests/data/testimage-copy.png
+/config/config-autotest-backup.php
+/config/autoconfig.php
+clover.xml

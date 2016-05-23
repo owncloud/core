@@ -7,6 +7,23 @@
 	-ms-user-select: none;
 }
 
+/* removed until content-focusing issue is fixed */
+#skip-to-content a {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+#skip-to-content a:focus {
+	left: 76px;
+	top: -9px;
+	color: #fff;
+	width: auto;
+	height: auto;
+}
+
 
 
 /* HEADERS ------------------------------------------------------------------ */
@@ -22,7 +39,6 @@
 	height: 45px;
 	line-height: 2.5em;
 	background-color: #1d2d44;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -37,23 +53,28 @@
 	padding: 5px;
 	padding-bottom: 0;
 	height: 45px; /* header height */
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+#owncloud:focus {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	opacity: .75;
+}
+#owncloud:hover,
+#owncloud:active {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
 }
 
 #header .logo {
-	background-image: url(../img/logo.svg);
+	background-image: url('../img/logo-icon.svg');
 	background-repeat: no-repeat;
+	background-size: 175px;
+	background-position: center 30px;
 	width: 252px;
 	height: 120px;
 	margin: 0 auto;
-}
-
-#header .logo-wide {
-	background-image: url(../img/logo-wide.svg);
-	background-repeat: no-repeat;
-	width: 150px;
-	height: 34px;
 }
 
 #header .logo-icon {
@@ -65,7 +86,7 @@
 	height: 34px;
 }
 
-#header .menutoggle {
+#header .header-appname-container {
 	display: inline-block;
 	position: absolute;
 	left: 70px;
@@ -75,20 +96,18 @@
 }
 
 /* hover effect for app switcher label */
-.menutoggle .header-appname,
+.header-appname-container .header-appname,
 .menutoggle .icon-caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
-	filter: alpha(opacity=75);
 	opacity: .75;
 }
 .menutoggle:hover .header-appname,
 .menutoggle:hover .icon-caret,
-.menutoggle:focus .header-appname
-.menutoggle:focus .icon-caret
-.menutoggle.active .header-appname
+.menutoggle:focus .header-appname,
+.menutoggle:focus .icon-caret,
+.menutoggle.active .header-appname,
 .menutoggle.active .icon-caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-	filter: alpha(opacity=100);
 	opacity: 1;
 }
 
@@ -98,6 +117,7 @@
 	position: relative;
 	color: #fff;
 	font-size: 16px;
+	font-weight: 300;
 	margin: 0;
 	margin-top: -24px;
 	padding: 7px 0 7px 5px;
@@ -125,20 +145,44 @@
 #navigation {
 	position: fixed;
 	top: 45px;
+	left: 10px;
 	width: 265px;
 	max-height: 85%;
 	margin-top: 0;
 	padding-bottom: 10px;
-	background-color: rgba(36, 40, 47, .97);
-	border-bottom-right-radius: 7px;
-	box-shadow: 0 0 7px rgba(29,45,68,.97);
+	background-color: rgba(0, 0, 0, .97);
+	box-shadow: 0 1px 10px rgba(50, 50, 50, .7);
+	border-radius: 3px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 	display: none;
-	overflow-y: auto;
-	overflow-x: hidden;
+	/*overflow-y: auto;
+	overflow-x: hidden;*/
 	z-index: 2000;
 }
+/* arrow look */
+#navigation:after, #expanddiv:after {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: rgba(0, 0, 0, .97);
+	border-width: 10px;
+	margin-left: -10px;
+}
+/* position of dropdown arrow */
+#navigation:after {
+	left: 47%;
+}
+#expanddiv:after {
+	right: 15px;
+}
+
 #navigation, #navigation * {
-	-moz-box-sizing:border-box;
 	box-sizing:border-box;
 }
 #navigation li {
@@ -167,18 +211,16 @@
 	/* icon opacity and hover effect */
 	#navigation a img,
 	#navigation a span {
-		/* 50% opacity when inactive */
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-		filter: alpha(opacity=50);
-		opacity: .5;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+		opacity: .7;
 	}
-	#navigation a:hover img, #navigation a:focus img,
-	#navigation a:hover span, #navigation a:focus span,
+	#navigation a:hover img,
+	#navigation a:focus img,
+	#navigation a:hover span,
+	#navigation a:focus span,
 	#navigation a.active img,
 	#navigation a.active span {
-		 /* full opacity for the active app or when hovered/focused */
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-		filter: alpha(opacity=100);
 		opacity: 1;
 	}
 
@@ -192,7 +234,6 @@
 /* Apps management */
 #apps-management {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-	filter: alpha(opacity=60);
 	opacity: .6;
 	min-height: initial;
 	height: initial;
@@ -211,11 +252,13 @@
 }
 #navigation .app-loading .app-icon {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
-	filter: alpha(opacity=10);
 	opacity: .1;
 }
 
-
+#apps {
+	max-height: calc(100vh - 100px);
+	overflow:auto;
+}
 
 
 /* USER MENU -----------------------------------------------------------------*/
@@ -229,7 +272,6 @@
 	height: 100%;
 	max-width: 80%;
 	white-space: nowrap;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -237,7 +279,7 @@
 #header .avatardiv {
 	float: left;
 	display: inline-block;
-	margin-right: 5px;
+	margin-right: 8px;
 	cursor: pointer;
 	height: 32px;
 	width: 32px;
@@ -252,27 +294,48 @@
 	color: #bbb;
 	cursor: pointer;
 }
+#settings .icon-loading-small-dark {
+	display: inline-block;
+	margin-bottom: -3px;
+	margin-right: 6px;
+	background-size: 16px 16px;
+}
 #expand {
 	display: block;
-	padding: 7px 12px 6px 7px;
+	padding: 7px 30px 6px 10px;
 	cursor: pointer;
 }
 #expand * {
 	cursor: pointer;
 }
-#expand:hover, #expand:focus, #expand:active { color:#fff; }
-#expand img { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter:alpha(opacity=70); opacity:.7; margin-bottom:-2px; }
-#expand:hover img, #expand:focus img, #expand:active img { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); opacity:1; }
+#expand:hover,
+#expand:focus,
+#expand:active {
+	color: #fff;
+}
+#expand img {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	opacity: .7;
+	margin-bottom: -2px;
+}
+#expand:hover img,
+#expand:focus img,
+#expand:active img {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
 #expanddiv {
 	position: absolute;
-	right: 0;
+	right: 10px;
 	top: 45px;
 	z-index: 2000;
 	display: none;
-	background-color: #383c43;
-	border-bottom-left-radius:7px; border-bottom:1px #333 solid; border-left:1px #333 solid;
-	box-shadow:0 0 7px rgb(29,45,68);
-	-moz-box-sizing: border-box; box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .97);
+	box-shadow: 0 1px 10px rgba(50, 50, 50, .7);
+	border-radius: 3px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	box-sizing: border-box;
 }
 	#expanddiv a {
 		display: block;
@@ -280,17 +343,25 @@
 		color: #fff;
 		padding: 4px 12px 0;
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-		filter: alpha(opacity=70);
 		opacity: .7;
-		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 	#expanddiv a img {
 		margin-bottom: -3px;
 		margin-right: 6px;
 	}
-	#expanddiv a:hover, #expanddiv a:focus, #expanddiv a:active {
+	#expanddiv a:hover,
+	#expanddiv a:focus,
+	#expanddiv a:active,
+	#expanddiv a.active {
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-		filter: alpha(opacity=100);
 		opacity: 1;
 	}
+
+/* do not show display name when profile picture is present */
+#header .avatardiv.avatardiv-shown + #expandDisplayName {
+	display: none;
+}
+#header #expand {
+	display: block;
+}

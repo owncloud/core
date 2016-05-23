@@ -3,15 +3,14 @@ OC.L10N.register(
     {
     "Settings" : "সেটিংস",
     "Saving..." : "সংরক্ষণ করা হচ্ছে ...",
-    "_{count} file conflict_::_{count} file conflicts_" : ["",""],
     "Cancel" : "বাতিল করা",
-    "Share" : "শেয়ার",
     "Error" : "ভুল",
+    "Share" : "শেয়ার",
     "Warning" : "সতর্কীকরণ",
     "Delete" : "মুছে ফেলা",
+    "Rename" : "পুনঃনামকরণ",
     "Add" : "যোগ করা",
-    "_download %n file_::_download %n files_" : ["",""],
     "Username" : "ইউজারনেম",
-    "Reset" : "রিসেট করুন"
+    "Search" : "অনুসন্ধান"
 },
 "nplurals=2; plural=(n != 1);");

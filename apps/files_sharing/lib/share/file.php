@@ -1,24 +1,34 @@
 <?php
+use OCA\FederatedFileSharing\FederatedShareProvider;
+
 /**
-* ownCloud
-*
-* @author Bjoern Schiessle, Michael Gapczynski
-* @copyright 2012 Michael Gapczynski <mtgap@owncloud.com>
- *           2014 Bjoern Schiessle <schiessle@owncloud.com>
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
@@ -32,16 +42,29 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
 	private $path;
 
+	/** @var FederatedShareProvider */
+	private $federatedShareProvider;
+
+	public function __construct(FederatedShareProvider $federatedShareProvider = null) {
+		if ($federatedShareProvider) {
+			$this->federatedShareProvider = $federatedShareProvider;
+		} else {
+			$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
+			$this->federatedShareProvider = $federatedSharingApp->getFederatedShareProvider();
+		}
+	}
+
 	public function isValidSource($itemSource, $uidOwner) {
-		$path = \OC\Files\Filesystem::getPath($itemSource);
-		if ($path) {
+		try {
+			$path = \OC\Files\Filesystem::getPath($itemSource);
 			// FIXME: attributes should not be set here,
 			// keeping this pattern for now to avoid unexpected
 			// regressions
 			$this->path = \OC\Files\Filesystem::normalizePath(basename($path));
 			return true;
+		} catch (\OCP\Files\NotFoundException $e) {
+			return false;
 		}
-		return false;
 	}
 
 	public function getFilePath($itemSource, $uidOwner) {
@@ -50,12 +73,13 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 			$this->path = null;
 			return $path;
 		} else {
-			$path = \OC\Files\Filesystem::getPath($itemSource);
-			if ($path) {
+			try {
+				$path = \OC\Files\Filesystem::getPath($itemSource);
 				return $path;
+			} catch (\OCP\Files\NotFoundException $e) {
+				return false;
 			}
 		}
-		return false;
 	}
 
 	/**
@@ -96,12 +120,13 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	public function formatItems($items, $format, $parameters = null) {
 		if ($format == self::FORMAT_SHARED_STORAGE) {
 			// Only 1 item should come through for this format call
+			$item = array_shift($items);
 			return array(
-				'parent' => $items[key($items)]['parent'],
-				'path' => $items[key($items)]['path'],
-				'storage' => $items[key($items)]['storage'],
-				'permissions' => $items[key($items)]['permissions'],
-				'uid_owner' => $items[key($items)]['uid_owner'],
+				'parent' => $item['parent'],
+				'path' => $item['path'],
+				'storage' => $item['storage'],
+				'permissions' => $item['permissions'],
+				'uid_owner' => $item['uid_owner'],
 			);
 		} else if ($format == self::FORMAT_GET_FOLDER_CONTENTS) {
 			$files = array();
@@ -122,12 +147,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
 				$storage = \OC\Files\Filesystem::getStorage('/');
 				$cache = $storage->getCache();
-				if ($item['encrypted'] or ($item['unencrypted_size'] > 0 and $cache->getMimetype($item['mimetype']) === 'httpd/unix-directory')) {
-					$file['size'] = $item['unencrypted_size'];
-					$file['encrypted_size'] = $item['size'];
-				} else {
-					$file['size'] = $item['size'];
-				}
+				$file['size'] = $item['size'];
 				$files[] = $file;
 			}
 			return $files;
@@ -160,6 +180,20 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	}
 
 	/**
+	 * check if server2server share is enabled
+	 *
+	 * @param int $shareType
+	 * @return boolean
+	 */
+	public function isShareTypeAllowed($shareType) {
+		if ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
+			return $this->federatedShareProvider->isOutgoingServer2serverShareEnabled();
+		}
+
+		return true;
+	}
+
+	/**
 	 * resolve reshares to return the correct source item
 	 * @param array $source
 	 * @return array source item
@@ -168,7 +202,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 		if (isset($source['parent'])) {
 			$parent = $source['parent'];
 			while (isset($parent)) {
-				$query = \OC_DB::prepare('SELECT `parent`, `uid_owner` FROM `*PREFIX*share` WHERE `id` = ?', 1);
+				$query = \OCP\DB::prepare('SELECT `parent`, `uid_owner` FROM `*PREFIX*share` WHERE `id` = ?', 1);
 				$item = $query->execute(array($parent))->fetchRow();
 				if (isset($item['parent'])) {
 					$parent = $item['parent'];
@@ -191,25 +225,15 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
 	/**
 	 * @param string $target
-	 * @param string $mountPoint
-	 * @param string $itemType
+	 * @param array $share
 	 * @return array|false source item
 	 */
-	public static function getSource($target, $mountPoint, $itemType) {
-		if ($itemType === 'folder') {
-			$source = \OCP\Share::getItemSharedWith('folder', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
-			if ($source && $target !== '') {
-				$source['path'] = $source['path'].'/'.$target;
-			}
-		} else {
-			$source = \OCP\Share::getItemSharedWith('file', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
+	public static function getSource($target, $share) {
+		if ($share['item_type'] === 'folder' && $target !== '') {
+			// note: in case of ext storage mount points the path might be empty
+			// which would cause a leading slash to appear
+			$share['path'] = ltrim($share['path'] . '/' . $target, '/');
 		}
-		if ($source) {
-			return self::resolveReshares($source);
-		}
-
-		\OCP\Util::writeLog('files_sharing', 'File source not found for: '.$target, \OCP\Util::DEBUG);
-		return false;
+		return self::resolveReshares($share);
 	}
-
 }

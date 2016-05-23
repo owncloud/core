@@ -8,16 +8,6 @@
  *
  */
 (function () {
-	var addExternalShare = function (remote, token, owner, name, password) {
-		return $.post(OC.generateUrl('apps/files_sharing/external'), {
-			remote: remote,
-			token: token,
-			owner: owner,
-			name: name,
-			password: password
-		});
-	};
-
 	/**
 	 * Shows "add external share" dialog.
 	 *
@@ -27,20 +17,12 @@
 	 * @param {String} token authentication token
 	 * @param {bool} passwordProtected true if the share is password protected
 	 */
-	OCA.Sharing.showAddExternalDialog = function (remote, token, owner, name, passwordProtected) {
+	OCA.Sharing.showAddExternalDialog = function (share, passwordProtected, callback) {
+		var remote = share.remote;
+		var owner = share.ownerDisplayName || share.owner;
+		var name = share.name;
 		var remoteClean = (remote.substr(0, 8) === 'https://') ? remote.substr(8) : remote.substr(7);
-		var callback = function (add, password) {
-			password = password || '';
-			if (add) {
-				addExternalShare(remote, token, owner, name, password).then(function (result) {
-					if (result.status === 'error') {
-						OC.Notification.show(result.data.message);
-					} else {
-						FileList.reload();
-					}
-				});
-			}
-		};
+
 		if (!passwordProtected) {
 			OC.dialogs.confirm(
 				t(
@@ -49,7 +31,9 @@
 					{name: name, owner: owner, remote: remoteClean}
 				),
 				t('files_sharing','Remote share'),
-				callback,
+				function (result) {
+					callback(result, share);
+				},
 				true
 			).then(this._adjustDialog);
 		} else {
@@ -60,7 +44,10 @@
 					{name: name, owner: owner, remote: remoteClean}
 				),
 				t('files_sharing','Remote share'),
-				callback,
+				function (result, password) {
+					share.password = password;
+					callback(result, share);
+				},
 				true,
 				t('files_sharing','Remote share password'),
 				true
@@ -76,23 +63,107 @@
 		$buttons.eq(0).text(t('core', 'Cancel'));
 		$buttons.eq(1).text(t('files_sharing', 'Add remote share'));
 	};
+
+	OCA.Sharing.ExternalShareDialogPlugin = {
+
+		filesApp: null,
+
+		attach: function(filesApp) {
+			var self = this;
+			this.filesApp = filesApp;
+			this.processIncomingShareFromUrl();
+
+			if (!$('#header').find('div.notifications').length) {
+				// No notification app, display the modal
+				this.processSharesToConfirm();
+			}
+
+			$('body').on('OCA.Notification.Action', function(e) {
+				if (e.notification.app === 'files_sharing' && e.notification.object_type === 'remote_share' && e.action.type === 'POST') {
+					// User accepted a remote share reload
+					self.filesApp.fileList.reload();
+				}
+			});
+		},
+
+		/**
+		 * Process incoming remote share that might have been passed
+		 * through the URL
+		 */
+		processIncomingShareFromUrl: function() {
+			var fileList = this.filesApp.fileList;
+			var params = OC.Util.History.parseUrlQuery();
+			//manually add server-to-server share
+			if (params.remote && params.token && params.owner && params.name) {
+
+				var callbackAddShare = function(result, share) {
+					var password = share.password || '';
+					if (result) {
+						//$.post(OC.generateUrl('/apps/files_sharing/api/externalShares'), {id: share.id});
+						$.post(OC.generateUrl('apps/files_sharing/external'), {
+							remote: share.remote,
+							token: share.token,
+							owner: share.owner,
+							ownerDisplayName: share.ownerDisplayName || share.owner,
+							name: share.name,
+							password: password}, function(result) {
+							if (result.status === 'error') {
+								OC.Notification.showTemporary(result.data.message);
+							} else {
+								fileList.reload();
+							}
+						});
+					}
+				};
+
+				// clear hash, it is unlikely that it contain any extra parameters
+				location.hash = '';
+				params.passwordProtected = parseInt(params.protected, 10) === 1;
+				OCA.Sharing.showAddExternalDialog(
+					params,
+					params.passwordProtected,
+					callbackAddShare
+				);
+			}
+		},
+
+		/**
+		 * Retrieve a list of remote shares that need to be approved
+		 */
+		processSharesToConfirm: function() {
+			var fileList = this.filesApp.fileList;
+			// check for new server-to-server shares which need to be approved
+			$.get(OC.generateUrl('/apps/files_sharing/api/externalShares'),
+			{},
+			function(shares) {
+				var index;
+				for (index = 0; index < shares.length; ++index) {
+					OCA.Sharing.showAddExternalDialog(
+							shares[index],
+							false,
+							function(result, share) {
+								if (result) {
+									// Accept
+									$.post(OC.generateUrl('/apps/files_sharing/api/externalShares'), {id: share.id})
+										.then(function() {
+											fileList.reload();
+										});
+								} else {
+									// Delete
+									$.ajax({
+										url: OC.generateUrl('/apps/files_sharing/api/externalShares/'+share.id),
+										type: 'DELETE'
+									});
+								}
+							}
+					);
+				}
+
+			});
+
+		}
+	};
 })();
 
-$(document).ready(function () {
-	// FIXME: HACK: do not init when running unit tests, need a better way
-	if (!window.TESTING && OCA.Files) {// only run in the files app
-		var params = OC.Util.History.parseUrlQuery();
-		if (params.remote && params.token && params.owner && params.name) {
-			// clear hash, it is unlikely that it contain any extra parameters
-			location.hash = '';
-			params.passwordProtected = parseInt(params.protected, 10) === 1;
-			OCA.Sharing.showAddExternalDialog(
-				params.remote,
-				params.token,
-				params.owner,
-				params.name,
-				params.passwordProtected
-			);
-		}
-	}
-});
+OC.Plugins.register('OCA.Files.App', OCA.Sharing.ExternalShareDialogPlugin);
+

@@ -1,40 +1,53 @@
 <?php
-
 /**
- * ownCloud – LDAP Backend Proxy
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Arthur Schiwon
- * @copyright 2013 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
 namespace OCA\user_ldap\lib;
 
 use OCA\user_ldap\lib\Access;
+use OCA\User_LDAP\Mapping\UserMapping;
+use OCA\User_LDAP\Mapping\GroupMapping;
 
 abstract class Proxy {
 	static private $accesses = array();
 	private $ldap = null;
+
+	/** @var \OCP\ICache|null */
+	private $cache;
 
 	/**
 	 * @param ILDAPWrapper $ldap
 	 */
 	public function __construct(ILDAPWrapper $ldap) {
 		$this->ldap = $ldap;
-		$this->cache = \OC\Cache::getGlobalCache();
+		$memcache = \OC::$server->getMemCacheFactory();
+		if($memcache->isAvailable()) {
+			$this->cache = $memcache->create();
+		}
 	}
 
 	/**
@@ -45,17 +58,27 @@ abstract class Proxy {
 		static $fs;
 		static $log;
 		static $avatarM;
+		static $userMap;
+		static $groupMap;
+		static $db;
+		static $coreUserManager;
 		if(is_null($fs)) {
 			$ocConfig = \OC::$server->getConfig();
 			$fs       = new FilesystemHelper();
 			$log      = new LogWrapper();
 			$avatarM  = \OC::$server->getAvatarManager();
+			$db       = \OC::$server->getDatabaseConnection();
+			$userMap  = new UserMapping($db);
+			$groupMap = new GroupMapping($db);
+			$coreUserManager = \OC::$server->getUserManager();
 		}
 		$userManager =
-			new user\Manager($ocConfig, $fs, $log, $avatarM, new \OCP\Image());
+			new user\Manager($ocConfig, $fs, $log, $avatarM, new \OCP\Image(), $db, $coreUserManager);
 		$connector = new Connection($this->ldap, $configPrefix);
-		self::$accesses[$configPrefix] =
-			new Access($connector, $this->ldap, $userManager);
+		$access = new Access($connector, $this->ldap, $userManager);
+		$access->setUserMapper($userMap);
+		$access->setGroupMapper($groupMap);
+		self::$accesses[$configPrefix] = $access;
 	}
 
 	/**
@@ -135,12 +158,12 @@ abstract class Proxy {
 	 * @return mixed|null
 	 */
 	public function getFromCache($key) {
-		if(!$this->isCached($key)) {
+		if(is_null($this->cache) || !$this->isCached($key)) {
 			return null;
 		}
 		$key = $this->getCacheKey($key);
 
-		return unserialize(base64_decode($this->cache->get($key)));
+		return json_decode(base64_decode($this->cache->get($key)));
 	}
 
 	/**
@@ -148,6 +171,9 @@ abstract class Proxy {
 	 * @return bool
 	 */
 	public function isCached($key) {
+		if(is_null($this->cache)) {
+			return false;
+		}
 		$key = $this->getCacheKey($key);
 		return $this->cache->hasKey($key);
 	}
@@ -157,12 +183,18 @@ abstract class Proxy {
 	 * @param mixed $value
 	 */
 	public function writeToCache($key, $value) {
+		if(is_null($this->cache)) {
+			return;
+		}
 		$key   = $this->getCacheKey($key);
-		$value = base64_encode(serialize($value));
+		$value = base64_encode(json_encode($value));
 		$this->cache->set($key, $value, '2592000');
 	}
 
 	public function clearCache() {
+		if(is_null($this->cache)) {
+			return;
+		}
 		$this->cache->clear($this->getCacheKey(null));
 	}
 }

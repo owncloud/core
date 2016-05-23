@@ -1,25 +1,30 @@
 <?php
-
 /**
-* ownCloud - ajax frontend
-*
-* @author Robin Appelman
-* @copyright 2010 Robin Appelman icewind1991@gmail.com
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Felix Moeller <mail@felixmoeller.de>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 // Check if we are a user
 OCP\User::checkLoggedIn();
@@ -34,12 +39,12 @@ if(!\OC\Files\Filesystem::file_exists($filename)) {
 	exit;
 }
 
-$ftype=\OC_Helper::getSecureMimeType(\OC\Files\Filesystem::getMimeType( $filename ));
+$ftype=\OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType( $filename ));
 
 header('Content-Type:'.$ftype);
 OCP\Response::setContentDispositionHeader(basename($filename), 'attachment');
 OCP\Response::disableCaching();
-header('Content-Length: '.\OC\Files\Filesystem::filesize($filename));
+OCP\Response::setContentLengthHeader(\OC\Files\Filesystem::filesize($filename));
 
 OC_Util::obEnd();
 \OC\Files\Filesystem::readfile( $filename );

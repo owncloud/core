@@ -172,8 +172,9 @@ DeleteHandler.prototype.cancel = function() {
  * it, defaults to false
  */
 DeleteHandler.prototype.deleteEntry = function(keepNotification) {
+	var deferred = $.Deferred();
 	if(this.canceled || this.oidToDelete === false) {
-		return false;
+		return deferred.resolve().promise();
 	}
 
 	var dh = this;
@@ -188,23 +189,22 @@ DeleteHandler.prototype.deleteEntry = function(keepNotification) {
 
 	var payload = {};
 	payload[dh.ajaxParamID] = dh.oidToDelete;
-	$.ajax({
-		type: 'POST',
-		url: OC.filePath('settings', 'ajax', dh.ajaxEndpoint),
+	return $.ajax({
+		type: 'DELETE',
+		url: OC.generateUrl(dh.ajaxEndpoint+'/{oid}',{oid: this.oidToDelete}),
 		// FIXME: do not use synchronous ajax calls as they block the browser !
 		async: false,
-		data: payload,
 		success: function (result) {
-			if (result.status === 'success') {
-				// Remove undo option, & remove user from table
+			// Remove undo option, & remove user from table
 
-				//TODO: following line
-				dh.removeCallback(dh.oidToDelete);
-				dh.canceled = true;
-			} else {
-				OC.dialogs.alert(result.data.message, t('settings', 'Unable to delete {objName}', {objName: escapeHTML(dh.oidToDelete)}));
-				dh.undoCallback(dh.oidToDelete);
-			}
+			//TODO: following line
+			dh.removeCallback(dh.oidToDelete);
+			dh.canceled = true;
+		},
+		error: function (jqXHR) {
+			OC.dialogs.alert(jqXHR.responseJSON.data.message, t('settings', 'Unable to delete {objName}', {objName: dh.oidToDelete}));
+			dh.undoCallback(dh.oidToDelete);
+
 		}
 	});
 };

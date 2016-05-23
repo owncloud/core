@@ -1,9 +1,7 @@
 OC.L10N.register(
     "user_ldap",
     {
-    "Error" : "ਗਲਤੀ",
-    "_%s group found_::_%s groups found_" : ["",""],
-    "_%s user found_::_%s users found_" : ["",""],
+    "Groups" : "ਗਰੁੱਪ",
     "Password" : "ਪਾਸਵਰ"
 },
 "nplurals=2; plural=(n != 1);");

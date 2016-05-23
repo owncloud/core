@@ -1,11 +1,12 @@
 OC.L10N.register(
     "user_ldap",
     {
-    "Error" : "Greška",
-    "_%s group found_::_%s groups found_" : ["","",""],
-    "_%s user found_::_%s users found_" : ["","",""],
-    "Save" : "Snimi",
+    "Server" : "Server",
+    "Users" : "Korisnici",
+    "Groups" : "Grupe",
     "Help" : "Pomoć",
+    "Host" : "Računar",
+    "Port" : "Port",
     "Password" : "Lozinka",
     "Continue" : "Nastavi",
     "Advanced" : "Napredno"

@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "ۋاز كەچ",
     "Shared by" : "ھەمبەھىرلىگۈچى",
+    "Sharing" : "ھەمبەھىر",
     "Password" : "ئىم",
     "Name" : "ئاتى",
     "Download" : "چۈشۈر"

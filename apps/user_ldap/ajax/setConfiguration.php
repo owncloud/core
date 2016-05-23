@@ -1,23 +1,25 @@
 <?php
-
 /**
- * ownCloud - user_ldap
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Lennart Rosam <hello@takuto.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @author Arthur Schiwon
- * @copyright 2013 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
@@ -26,13 +28,13 @@ OCP\JSON::checkAdminUser();
 OCP\JSON::checkAppEnabled('user_ldap');
 OCP\JSON::callCheck();
 
-$prefix = $_POST['ldap_serverconfig_chooser'];
+$prefix = (string)$_POST['ldap_serverconfig_chooser'];
 
 // Checkboxes are not submitted, when they are unchecked. Set them manually.
 // only legacy checkboxes (Advanced and Expert tab) need to be handled here,
 // the Wizard-like tabs handle it on their own
 $chkboxes = array('ldap_configuration_active', 'ldap_override_main_server',
-				  'ldap_nocase', 'ldap_turn_off_cert_check');
+				  'ldap_turn_off_cert_check');
 foreach($chkboxes as $boxid) {
 	if(!isset($_POST[$boxid])) {
 		$_POST[$boxid] = 0;

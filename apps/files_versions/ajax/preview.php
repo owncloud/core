@@ -1,9 +1,26 @@
 <?php
 /**
- * Copyright (c) 2013 Georg Ehrke georg@ownCloud.com
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 \OC_Util::checkLoggedIn();
 
@@ -19,27 +36,30 @@ $scalingUp = array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : 
 
 if($file === '' && $version === '') {
 	\OC_Response::setStatus(400); //400 Bad Request
-	\OC_Log::write('versions-preview', 'No file parameter was passed', \OC_Log::DEBUG);
+	\OCP\Util::writeLog('versions-preview', 'No file parameter was passed', \OCP\Util::DEBUG);
 	exit;
 }
 
 if($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(400); //400 Bad Request
-	\OC_Log::write('versions-preview', 'x and/or y set to 0', \OC_Log::DEBUG);
+	\OCP\Util::writeLog('versions-preview', 'x and/or y set to 0', \OCP\Util::DEBUG);
 	exit;
 }
 
 try {
 	list($user, $file) = \OCA\Files_Versions\Storage::getUidAndFilename($file);
 	$preview = new \OC\Preview($user, 'files_versions', $file.'.v'.$version);
-	$mimetype = \OC_Helper::getFileNameMimeType($file);
+	$mimetype = \OC::$server->getMimeTypeDetector()->detectPath($file);
 	$preview->setMimetype($mimetype);
 	$preview->setMaxX($maxX);
 	$preview->setMaxY($maxY);
 	$preview->setScalingUp($scalingUp);
 
 	$preview->showPreview();
-}catch(\Exception $e) {
+} catch (\OCP\Files\NotFoundException $e) {
+	\OC_Response::setStatus(404);
+	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
+} catch (\Exception $e) {
 	\OC_Response::setStatus(500);
-	\OC_Log::write('core', $e->getmessage(), \OC_Log::DEBUG);
+	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
 }

@@ -1,27 +1,35 @@
 <?php
-
 /**
- * ownCloud – LDAP Background Jobs
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Arthur Schiwon
- * @copyright 2012 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
 namespace OCA\user_ldap\lib;
+
+use OCA\User_LDAP\Mapping\GroupMapping;
+use OCA\User_LDAP\Mapping\UserMapping;
 
 class Jobs extends \OC\BackgroundJob\TimedJob {
 	static private $groupsFromDB;
@@ -156,18 +164,26 @@ class Jobs extends \OC\BackgroundJob\TimedJob {
 		if(!is_null(self::$groupBE)) {
 			return self::$groupBE;
 		}
-		$configPrefixes = Helper::getServerConfigurationPrefixes(true);
+		$helper = new Helper();
+		$configPrefixes = $helper->getServerConfigurationPrefixes(true);
 		$ldapWrapper = new LDAP();
 		if(count($configPrefixes) === 1) {
 			//avoid the proxy when there is only one LDAP server configured
+			$dbc = \OC::$server->getDatabaseConnection();
 			$userManager = new user\Manager(
 				\OC::$server->getConfig(),
 				new FilesystemHelper(),
 				new LogWrapper(),
 				\OC::$server->getAvatarManager(),
-				new \OCP\Image());
+				new \OCP\Image(),
+				$dbc,
+				\OC::$server->getUserManager());
 			$connector = new Connection($ldapWrapper, $configPrefixes[0]);
 			$ldapAccess = new Access($connector, $ldapWrapper, $userManager);
+			$groupMapper = new GroupMapping($dbc);
+			$userMapper  = new UserMapping($dbc);
+			$ldapAccess->setGroupMapper($groupMapper);
+			$ldapAccess->setUserMapper($userMapper);
 			self::$groupBE = new \OCA\user_ldap\GROUP_LDAP($ldapAccess);
 		} else {
 			self::$groupBE = new \OCA\user_ldap\Group_Proxy($configPrefixes, $ldapWrapper);

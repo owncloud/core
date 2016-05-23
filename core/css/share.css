@@ -3,31 +3,51 @@
  See the COPYING-README file. */
 
 #dropdown {
-	background:#eee;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	box-shadow:0 1px 1px #777;
-	display:block;
+	background: #eee;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	box-shadow: 0 2px 3px rgba(50, 50, 50, .4);
+	display: block;
 	margin-right: 0;
-	position:absolute;
-	right:0;
-	width:420px;
-	z-index:500;
-	padding:16px;
+	position: absolute;
+	right: 0;
+	width: 420px;
+	z-index: 500;
+	padding: 16px;
 }
 
-#dropdown.shareDropDown .unshare.icon-loading-small {
+@media only screen and (min-width: 768px) and (max-width: 990px) {
+	#dropdown {
+		/* this limits the dropdown to float below the sidebar for mid narrow screens */
+		left: 20px;
+	}
+}
+
+.shareTabView .unshare.icon-loading-small {
 	margin-top: 1px;
 }
 
-#dropdown.shareDropDown .shareWithLoading,
-#dropdown.shareDropDown .linkShare .icon-loading-small {
+.shareTabView .shareWithLoading,
+.shareTabView .linkShare .icon-loading-small {
 	display: inline-block !important;
 	padding-left: 10px;
 }
-
-#dropdown.shareDropDown .icon-loading-small.hidden {
+.shareTabView .shareWithLoading {
+	position: relative;
+	right: 70px;
+	top: 2px;
+}
+.shareTabView .icon-loading-small.hidden {
 	display: none !important;
+}
+
+.shareTabView .avatar {
+	margin-right: 8px;
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: middle;
+	width: 32px;
+	height: 32px;
 }
 
 #shareWithList {
@@ -43,13 +63,17 @@
 	white-space: normal;
 }
 
+#shareWithList .shareOption {
+	white-space: nowrap;
+	display: inline-block;
+}
+
 #shareWithList .unshare img, #shareWithList .showCruds img {
 	vertical-align:text-bottom; /* properly align icons */
 }
 
 #shareWithList label input[type=checkbox]{
 	margin-left: 0;
-	top: 3px;
 	position: relative;
 }
 #shareWithList .username{
@@ -64,13 +88,14 @@
 #shareWithList li label{
 	margin-right: 8px;
 }
-#dropdown label {
+.shareTabView label {
 	font-weight:400;
 	white-space: nowrap;
 }
 
-#dropdown input[type="checkbox"] {
+.shareTabView input[type="checkbox"] {
 	margin:0 3px 0 8px;
+	vertical-align: middle;
 }
 
 a.showCruds {
@@ -82,8 +107,9 @@ a.unshare {
 	display:inline;
 	float:right;
 	opacity:.5;
-	padding:5px 0 0 5px !important;
-	margin-top:-5px;
+	padding: 10px;
+	margin-top: -5px;
+	margin-right: -10px;
 }
 
 #link {
@@ -91,18 +117,20 @@ a.unshare {
 	padding-top:8px;
 }
 
-#dropdown input[type="text"],#dropdown input[type="password"] {
-	width:90%;
+.shareTabView input[type="submit"] {
+	margin-left: 7px;
 }
 
-#dropdown form {
+.shareTabView form {
 	font-size: 100%;
 	margin-left: 0;
 	margin-right: 0;
 }
 
-#linkText,#linkPass,#expiration {
-	display:none;
+.shareTabView .error {
+	color: #e9322d;
+	border-color: #e9322d;
+	box-shadow: 0 0 6px #f8b9b7;
 }
 
 #link #showPassword img {
@@ -110,8 +138,10 @@ a.unshare {
 	width:12px;
 }
 
-.reshare,#link label,#expiration label {
-	padding-left:8px;
+.reshare,#link label,
+#expiration label {
+	display: inline-block;
+	padding: 6px 4px;
 }
 
 a.showCruds:hover,a.unshare:hover {

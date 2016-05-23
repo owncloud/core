@@ -9,8 +9,7 @@
  */
 
 describe('OCA.External.FileList tests', function() {
-	var testFiles, alertStub, notificationStub, fileList, fileActions;
-	var oldFileListPrototype;
+	var testFiles, alertStub, notificationStub, fileList;
 
 	beforeEach(function() {
 		alertStub = sinon.stub(OC.dialogs, 'alert');
@@ -49,14 +48,11 @@ describe('OCA.External.FileList tests', function() {
 			'<div id="emptycontent">Empty content message</div>' +
 			'</div>'
 		);
-		fileActions = new OCA.Files.FileActions();
 	});
 	afterEach(function() {
-		OCA.Files.FileList.prototype = oldFileListPrototype;
 		testFiles = undefined;
 		fileList.destroy();
 		fileList = undefined;
-		fileActions = undefined;
 
 		notificationStub.restore();
 		alertStub.restore();
@@ -132,7 +128,7 @@ describe('OCA.External.FileList tests', function() {
 				'?dir=/another%20mount%20points/sftp%20mount'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('sftp mount');
-			expect($tr.find('.column-scope').text().trim()).toEqual('System');
+			expect($tr.find('.column-scope > span').text().trim()).toEqual('System');
 			expect($tr.find('.column-backend').text().trim()).toEqual('SFTP');
 
 			$tr = $rows.eq(1);
@@ -148,7 +144,7 @@ describe('OCA.External.FileList tests', function() {
 				'?dir=/mount%20points/smb%20mount'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('smb mount');
-			expect($tr.find('.column-scope').text().trim()).toEqual('Personal');
+			expect($tr.find('.column-scope > span').text().trim()).toEqual('Personal');
 			expect($tr.find('.column-backend').text().trim()).toEqual('SMB');
 
 		});

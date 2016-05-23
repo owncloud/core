@@ -53,7 +53,7 @@
 				settings.labels.push($(option).text().trim());
 			}
 		});
-		var button=$('<div class="multiselect button"><span>'+settings.title+'</span><span>▾</span></div>');
+		var button=$('<div class="multiselect button"><span>'+settings.title+'</span><span class="icon-triangle-s"></span></div>');
 		var span=$('<span/>');
 		span.append(button);
 		button.data('id',multiSelectId);
@@ -76,7 +76,7 @@
 		var self = this;
 		self.menuDirection = 'down';
 		button.click(function(event){
-			
+
 			var button=$(this);
 			if(button.parent().children('ul').length>0) {
 				if(self.menuDirection === 'down') {
@@ -109,14 +109,18 @@
 				var id='ms'+multiSelectId+'-option-'+item;
 				var input=$('<input type="' + inputType + '"/>');
 				input.attr('id',id);
+				if(inputType === 'checkbox') {
+					input.addClass('checkbox');
+				}
 				if(settings.singleSelect) {
 					input.attr('name', 'ms'+multiSelectId+'-option');
 				}
 				var label=$('<label/>');
-				label.attr('for',id);
+				label.attr('for', id);
 				label.text(element.text() || item);
+				label.attr('title', element.text() || item);
 				if(settings.checked.indexOf(item) !== -1 || checked) {
-					input.attr('checked', true);
+					input.prop('checked', true);
 				}
 				if(checked){
 					if(settings.singleSelect) {
@@ -141,7 +145,7 @@
 						element.attr('selected','selected');
 						if(typeof settings.oncheck === 'function') {
 							if(settings.oncheck(value)===false) {
-								$(this).attr('checked', false);
+								$(this).prop('checked', false);
 								return;
 							}
 						}
@@ -153,7 +157,7 @@
 						element.attr('selected',null);
 						if(typeof settings.onuncheck === 'function') {
 							if(settings.onuncheck(value)===false) {
-								$(this).attr('checked',true);
+								$(this).prop('checked',true);
 								return;
 							}
 						}
@@ -190,7 +194,8 @@
 			});
 			button.parent().data('preventHide',false);
 			if(settings.createText){
-				var li=$('<li class="creator">+ '+settings.createText+'</li>');
+				var li=$('<li class="creator" title="' + settings.createText +
+					'">+ ' + settings.createText + '</li>');
 				li.click(function(event){
 					li.empty();
 					var input=$('<input type="text" class="new">');
@@ -258,7 +263,7 @@
 				});
 				list.append(li);
 			}
-			
+
 			var doSort = function(list, selector) {
 				var rows = list.find('li'+selector).get();
 
@@ -299,7 +304,7 @@
 					top:pos.top - list.height(),
 					left:pos.left,
 					width:(button.outerWidth()-2)+'px'
-					
+
 				});
 				list.detach().insertBefore($(this));
 				list.addClass('up');
@@ -327,7 +332,7 @@
 				}
 			}
 		});
-		
+
 		return span;
 	};
 })( jQuery );

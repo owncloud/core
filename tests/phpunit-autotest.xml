@@ -9,6 +9,8 @@
 	<testsuite name='ownCloud'>
 		<directory suffix='.php'>lib/</directory>
 		<directory suffix='.php'>settings/</directory>
+		<directory suffix='.php'>core/</directory>
+		<directory suffix='.php'>ocs-provider/</directory>
 		<file>apps.php</file>
 	</testsuite>
 	<!-- filters for code coverage -->
@@ -18,31 +20,25 @@
 			<directory suffix=".php">..</directory>
 			<exclude>
 				<directory suffix=".php">../3rdparty</directory>
-				<directory suffix=".php">../apps/files/l10n</directory>
-				<directory suffix=".php">../apps/files_external/l10n</directory>
-				<directory suffix=".php">../apps/files_external/3rdparty</directory>
-				<directory suffix=".php">../apps/files_versions/l10n</directory>
-				<directory suffix=".php">../apps/files_encryption/l10n</directory>
-				<directory suffix=".php">../apps/files_encryption/3rdparty</directory>
-				<directory suffix=".php">../apps/files_sharing/l10n</directory>
-				<directory suffix=".php">../apps/files_trashbin/l10n</directory>
-				<directory suffix=".php">../apps/user_ldap/l10n</directory>
-				<directory suffix=".php">../apps/user_webdavauth/l10n</directory>
-				<directory suffix=".php">../lib/MDB2</directory>
-				<directory suffix=".php">../lib/l10n</directory>
-				<directory suffix=".php">../core/l10n</directory>
-				<directory suffix=".php">../settings/l10n</directory>
+				<directory suffix=".php">../apps/dav/tests</directory>
+				<directory suffix=".php">../apps/encryption/tests</directory>
+				<directory suffix=".php">../apps/federatedfilesharing/tests</directory>
+				<directory suffix=".php">../apps/federation/tests</directory>
+				<directory suffix=".php">../apps/files/tests</directory>
+				<directory suffix=".php">../apps/files_external</directory>
+				<directory suffix=".php">../apps/files_sharing/tests</directory>
+				<directory suffix=".php">../apps/files_trashbin/tests</directory>
+				<directory suffix=".php">../apps/files_versions/tests</directory>
+				<directory suffix=".php">../apps/provisioning_api/tests</directory>
+				<directory suffix=".php">../apps/updatenotification/tests</directory>
+				<directory suffix=".php">../apps/user_ldap/tests</directory>
 				<directory suffix=".php">../tests</directory>
+				<directory suffix=".php">../build</directory>
 			</exclude>
 		</whitelist>
 	</filter>
 	<listeners>
 		<listener class="StartSessionListener" file="startsessionlistener.php" />
-	  <listener class="TestCleanupListener" file="testcleanuplistener.php">
-		<arguments>
-			<string>detail</string>
-		</arguments>
-	  </listener>
 	</listeners>
 </phpunit>
 

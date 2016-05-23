@@ -1,37 +1,60 @@
 <?php
-
 /**
- * ownCloud
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Jörn Friedrich Dreyer
- * @copyright 2012 Jörn Friedrich Dreyer jfd@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 
-namespace Test\Files\Storage;
+namespace OCA\Files_External\Tests;
 
-class AmazonS3Migration extends \PHPUnit_Framework_TestCase {
+use OCA\Files_External\Lib\Storage\AmazonS3;
+
+/**
+ * Class AmazonS3Migration
+ *
+ * @group DB
+ *
+ * @package OCA\Files_External\Tests
+ */
+class AmazonS3Migration extends \Test\TestCase {
 
 	/**
 	 * @var \OC\Files\Storage\Storage instance
 	 */
 	protected $instance;
 
-	public function setUp () {
-		$uuid = uniqid();
+	/** @var array */
+	protected $params;
+
+	/** @var string */
+	protected $oldId;
+
+	/** @var string */
+	protected $newId;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$uuid = $this->getUniqueID();
 
 		$this->params['key'] = 'key'.$uuid;
 		$this->params['secret'] = 'secret'.$uuid;
@@ -41,9 +64,11 @@ class AmazonS3Migration extends \PHPUnit_Framework_TestCase {
 		$this->newId = 'amazon::' . $this->params['bucket'];
 	}
 
-	public function tearDown () {
+	protected function tearDown() {
 		$this->deleteStorage($this->oldId);
 		$this->deleteStorage($this->newId);
+
+		parent::tearDown();
 	}
 
 	public function testUpdateLegacyOnlyId () {
@@ -51,10 +76,10 @@ class AmazonS3Migration extends \PHPUnit_Framework_TestCase {
 		$oldCache = new \OC\Files\Cache\Cache($this->oldId);
 
 		// add file to old cache
-		$fileId = $oldCache->put('/', array('size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory'));
+		$fileId = $oldCache->put('foobar', array('size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory'));
 
 		try {
-			$this->instance = new \OC\Files\Storage\AmazonS3($this->params);
+			$this->instance = new AmazonS3($this->params);
 		} catch (\Exception $e) {
 			//ignore
 		}
@@ -67,7 +92,7 @@ class AmazonS3Migration extends \PHPUnit_Framework_TestCase {
 		list($storageId, $path) = \OC\Files\Cache\Cache::getById($fileId);
 
 		$this->assertSame($this->newId, $storageId);
-		$this->assertSame('/', $path);
+		$this->assertSame('foobar', $path);
 	}
 
 	public function testUpdateLegacyAndNewId () {
@@ -80,7 +105,7 @@ class AmazonS3Migration extends \PHPUnit_Framework_TestCase {
 		$fileId = $oldCache->put('/', array('size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory'));
 
 		try {
-			$this->instance = new \OC\Files\Storage\AmazonS3($this->params);
+			$this->instance = new AmazonS3($this->params);
 		} catch (\Exception $e) {
 			//ignore
 		}
@@ -108,6 +133,9 @@ class AmazonS3Migration extends \PHPUnit_Framework_TestCase {
 		return $storages;
 	}
 
+	/**
+	 * @param string $id
+	 */
 	public function deleteStorage($id) {
 		$stmt = \OC::$server->getDatabaseConnection()->prepare(
 			'DELETE FROM `*PREFIX*storages` WHERE `id` = ?'

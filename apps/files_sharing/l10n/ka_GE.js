@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "უარყოფა",
     "Shared by" : "აზიარებს",
+    "Sharing" : "გაზიარება",
     "Password" : "პაროლი",
     "Name" : "სახელი",
     "Download" : "ჩამოტვირთვა"

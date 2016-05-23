@@ -19,7 +19,8 @@
 *
 */
 
-/* global OC */
+/* global FileList */
+
 describe('OC.Upload tests', function() {
 	var $dummyUploader;
 	var testFile;
@@ -35,7 +36,14 @@ describe('OC.Upload tests', function() {
 		$('#testArea').append(
 			'<input type="file" id="file_upload_start" name="files[]" multiple="multiple">' +
 			'<input type="hidden" id="upload_limit" name="upload_limit" value="10000000">' + // 10 MB
-			'<input type="hidden" id="free_space" name="free_space" value="50000000">' // 50 MB
+			'<input type="hidden" id="free_space" name="free_space" value="50000000">' + // 50 MB
+			// TODO: handlebars!
+			'<div id="new">' +
+			'<a>New</a>' +
+			'<ul>' +
+			'<li data-type="file" data-newname="New text file.txt"><p>Text file</p></li>' +
+			'</ul>' +
+			'</div>'
 		);
 		$dummyUploader = $('#file_upload_start');
 	});
@@ -94,7 +102,7 @@ describe('OC.Upload tests', function() {
 			expect(failStub.calledOnce).toEqual(true);
 			expect(failStub.getCall(0).args[1].textStatus).toEqual('sizeexceedlimit');
 			expect(failStub.getCall(0).args[1].errorThrown).toEqual(
-				'Total file size 5 kB exceeds upload limit 1000 B'
+				'Total file size 5 KB exceeds upload limit 1000 B'
 			);
 		});
 		it('does not add file if it exceeds free space', function() {
@@ -107,21 +115,104 @@ describe('OC.Upload tests', function() {
 			expect(failStub.calledOnce).toEqual(true);
 			expect(failStub.getCall(0).args[1].textStatus).toEqual('notenoughspace');
 			expect(failStub.getCall(0).args[1].errorThrown).toEqual(
-				'Not enough free space, you are uploading 5 kB but only 1000 B is left'
+				'Not enough free space, you are uploading 5 KB but only 1000 B is left'
 			);
 		});
-		it('does not add file if it has invalid characters', function() {
-			var result;
-			testFile.name = 'stars*stars.txt';
+	});
+	describe('Upload conflicts', function() {
+		var oldFileList;
+		var conflictDialogStub;
+		var callbacks;
 
-			result = addFile(testFile);
-
-			expect(result).toEqual(false);
-			expect(failStub.calledOnce).toEqual(true);
-			expect(failStub.getCall(0).args[1].textStatus).toEqual('invalidcharacters');
-			expect(failStub.getCall(0).args[1].errorThrown.substr(0, 12)).toEqual(
-				'Invalid name'
+		beforeEach(function() {
+			oldFileList = FileList;
+			$('#testArea').append(
+				'<div id="tableContainer">' +
+				'<table id="filestable">' +
+				'<thead><tr>' +
+				'<th id="headerName" class="hidden column-name">' +
+				'<input type="checkbox" id="select_all_files" class="select-all">' +
+				'<a class="name columntitle" data-sort="name"><span>Name</span><span class="sort-indicator"></span></a>' +
+				'<span id="selectedActionsList" class="selectedActions hidden">' +
+				'<a href class="download"><img src="actions/download.svg">Download</a>' +
+				'<a href class="delete-selected">Delete</a></span>' +
+				'</th>' +
+				'<th class="hidden column-size"><a class="columntitle" data-sort="size"><span class="sort-indicator"></span></a></th>' +
+				'<th class="hidden column-mtime"><a class="columntitle" data-sort="mtime"><span class="sort-indicator"></span></a></th>' +
+				'</tr></thead>' +
+				'<tbody id="fileList"></tbody>' +
+				'<tfoot></tfoot>' +
+				'</table>' +
+				'</div>'
 			);
+			FileList = new OCA.Files.FileList($('#tableContainer'));
+
+			FileList.add({name: 'conflict.txt', mimetype: 'text/plain'});
+			FileList.add({name: 'conflict2.txt', mimetype: 'text/plain'});
+
+			conflictDialogStub = sinon.stub(OC.dialogs, 'fileexists');
+			callbacks = {
+				onNoConflicts: sinon.stub()
+			};
+		});
+		afterEach(function() {
+			conflictDialogStub.restore();
+
+			FileList.destroy();
+			FileList = oldFileList;
+		});
+		it('does not show conflict dialog when no client side conflict', function() {
+			var selection = {
+				// yes, the format of uploads is weird...
+				uploads: [
+					{files: [{name: 'noconflict.txt'}]},
+					{files: [{name: 'noconflict2.txt'}]}
+				]
+			};
+
+			OC.Upload.checkExistingFiles(selection, callbacks);
+
+			expect(conflictDialogStub.notCalled).toEqual(true);
+			expect(callbacks.onNoConflicts.calledOnce).toEqual(true);
+			expect(callbacks.onNoConflicts.calledWith(selection)).toEqual(true);
+		});
+		it('shows conflict dialog when no client side conflict', function() {
+			var selection = {
+				// yes, the format of uploads is weird...
+				uploads: [
+					{files: [{name: 'conflict.txt'}]},
+					{files: [{name: 'conflict2.txt'}]},
+					{files: [{name: 'noconflict.txt'}]}
+				]
+			};
+
+			var deferred = $.Deferred();
+			conflictDialogStub.returns(deferred.promise());
+			deferred.resolve();
+
+			OC.Upload.checkExistingFiles(selection, callbacks);
+
+			expect(conflictDialogStub.callCount).toEqual(3);
+			expect(conflictDialogStub.getCall(1).args[0])
+				.toEqual({files: [ { name: 'conflict.txt' } ]});
+			expect(conflictDialogStub.getCall(1).args[1])
+				.toEqual({ name: 'conflict.txt', mimetype: 'text/plain', directory: '/' });
+			expect(conflictDialogStub.getCall(1).args[2]).toEqual({ name: 'conflict.txt' });
+
+			// yes, the dialog must be called several times...
+			expect(conflictDialogStub.getCall(2).args[0]).toEqual({
+				files: [ { name: 'conflict2.txt' } ]
+			});
+			expect(conflictDialogStub.getCall(2).args[1])
+				.toEqual({ name: 'conflict2.txt', mimetype: 'text/plain', directory: '/' });
+			expect(conflictDialogStub.getCall(2).args[2]).toEqual({ name: 'conflict2.txt' });
+
+			expect(callbacks.onNoConflicts.calledOnce).toEqual(true);
+			expect(callbacks.onNoConflicts.calledWith({
+				uploads: [
+					{files: [{name: 'noconflict.txt'}]}
+				]
+			})).toEqual(true);
 		});
 	});
 });

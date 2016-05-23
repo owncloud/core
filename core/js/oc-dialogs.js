@@ -23,6 +23,7 @@
 
 /**
  * this class to ease the usage of jquery dialogs
+ * @lends OC.dialogs
  */
 var OCdialogs = {
 	// dialog button types
@@ -137,7 +138,7 @@ var OCdialogs = {
 	 * @param title dialog title
 	 * @param callback which will be triggered when user presses Choose
 	 * @param multiselect whether it should be possible to select multiple files
-	 * @param mimetypeFilter mimetype to filter by
+	 * @param mimetypeFilter mimetype to filter by - directories will always be included
 	 * @param modal make the dialog modal
 	*/
 	filepicker:function(title, callback, multiselect, mimetypeFilter, modal) {
@@ -169,7 +170,6 @@ var OCdialogs = {
 			}
 
 			$('body').append(self.$filePicker);
-
 
 			self.$filePicker.ready(function() {
 				self.$filelist = self.$filePicker.find('.filelist');
@@ -206,7 +206,8 @@ var OCdialogs = {
 
 			self.$filePicker.ocdialog({
 				closeOnEscape: true,
-				width: (4/5)*$(document).width(),
+				// max-width of 600
+				width: Math.min((4/5)*$(document).width(), 600),
 				height: 420,
 				modal: modal,
 				buttons: buttonlist,
@@ -310,9 +311,11 @@ var OCdialogs = {
 	 * @param {object} original file with name, size and mtime
 	 * @param {object} replacement file with name, size and mtime
 	 * @param {object} controller with onCancel, onSkip, onReplace and onRename methods
+	 * @return {Promise} jquery promise that resolves after the dialog template was loaded
 	*/
 	fileexists:function(data, original, replacement, controller) {
 		var self = this;
+		var dialogDeferred = new $.Deferred();
 
 		var getCroppedPreview = function(file) {
 			var deferred = new $.Deferred();
@@ -340,11 +343,12 @@ var OCdialogs = {
 
 		var crop = function(img) {
 			var canvas = document.createElement('canvas'),
-				width = img.width,
-				height = img.height,
-				x, y, size;
+					targetSize = 96,
+					width = img.width,
+					height = img.height,
+					x, y, size;
 
-			// calculate the width and height, constraining the proportions
+			// Calculate the width and height, constraining the proportions
 			if (width > height) {
 				y = 0;
 				x = (width - height) / 2;
@@ -354,64 +358,165 @@ var OCdialogs = {
 			}
 			size = Math.min(width, height);
 
-			// resize the canvas and draw the image data into it
-			canvas.width = 64;
-			canvas.height = 64;
+			// Set canvas size to the cropped area
+			canvas.width = size;
+			canvas.height = size;
 			var ctx = canvas.getContext("2d");
-			ctx.drawImage(img, x, y, size, size, 0, 0, 64, 64);
+			ctx.drawImage(img, x, y, size, size, 0, 0, size, size);
+
+			// Resize the canvas to match the destination (right size uses 96px)
+			resampleHermite(canvas, size, size, targetSize, targetSize);
+
 			return canvas.toDataURL("image/png", 0.7);
 		};
 
-		var addConflict = function(conflicts, original, replacement) {
+		/**
+		 * Fast image resize/resample using Hermite filter with JavaScript.
+		 *
+		 * @author: ViliusL
+		 *
+		 * @param {*} canvas
+		 * @param {number} W
+		 * @param {number} H
+		 * @param {number} W2
+		 * @param {number} H2
+		 */
+		var resampleHermite = function (canvas, W, H, W2, H2) {
+			W2 = Math.round(W2);
+			H2 = Math.round(H2);
+			var img = canvas.getContext("2d").getImageData(0, 0, W, H);
+			var img2 = canvas.getContext("2d").getImageData(0, 0, W2, H2);
+			var data = img.data;
+			var data2 = img2.data;
+			var ratio_w = W / W2;
+			var ratio_h = H / H2;
+			var ratio_w_half = Math.ceil(ratio_w / 2);
+			var ratio_h_half = Math.ceil(ratio_h / 2);
 
-			var conflict = conflicts.find('.template').clone().removeClass('template').addClass('conflict');
+			for (var j = 0; j < H2; j++) {
+				for (var i = 0; i < W2; i++) {
+					var x2 = (i + j * W2) * 4;
+					var weight = 0;
+					var weights = 0;
+					var weights_alpha = 0;
+					var gx_r = 0;
+					var gx_g = 0;
+					var gx_b = 0;
+					var gx_a = 0;
+					var center_y = (j + 0.5) * ratio_h;
+					for (var yy = Math.floor(j * ratio_h); yy < (j + 1) * ratio_h; yy++) {
+						var dy = Math.abs(center_y - (yy + 0.5)) / ratio_h_half;
+						var center_x = (i + 0.5) * ratio_w;
+						var w0 = dy * dy; //pre-calc part of w
+						for (var xx = Math.floor(i * ratio_w); xx < (i + 1) * ratio_w; xx++) {
+							var dx = Math.abs(center_x - (xx + 0.5)) / ratio_w_half;
+							var w = Math.sqrt(w0 + dx * dx);
+							if (w >= -1 && w <= 1) {
+								//hermite filter
+								weight = 2 * w * w * w - 3 * w * w + 1;
+								if (weight > 0) {
+									dx = 4 * (xx + yy * W);
+									//alpha
+									gx_a += weight * data[dx + 3];
+									weights_alpha += weight;
+									//colors
+									if (data[dx + 3] < 255)
+										weight = weight * data[dx + 3] / 250;
+									gx_r += weight * data[dx];
+									gx_g += weight * data[dx + 1];
+									gx_b += weight * data[dx + 2];
+									weights += weight;
+								}
+							}
+						}
+					}
+					data2[x2] = gx_r / weights;
+					data2[x2 + 1] = gx_g / weights;
+					data2[x2 + 2] = gx_b / weights;
+					data2[x2 + 3] = gx_a / weights_alpha;
+				}
+			}
+			canvas.getContext("2d").clearRect(0, 0, Math.max(W, W2), Math.max(H, H2));
+			canvas.width = W2;
+			canvas.height = H2;
+			canvas.getContext("2d").putImageData(img2, 0, 0);
+		};
 
-			conflict.data('data',data);
+		var addConflict = function($conflicts, original, replacement) {
 
-			conflict.find('.filename').text(original.name);
-			conflict.find('.original .size').text(humanFileSize(original.size));
-			conflict.find('.original .mtime').text(formatDate(original.mtime));
+			var $conflict = $conflicts.find('.template').clone().removeClass('template').addClass('conflict');
+			var $originalDiv = $conflict.find('.original');
+			var $replacementDiv = $conflict.find('.replacement');
+
+			$conflict.data('data',data);
+
+			$conflict.find('.filename').text(original.name);
+			$originalDiv.find('.size').text(humanFileSize(original.size));
+			$originalDiv.find('.mtime').text(formatDate(original.mtime));
 			// ie sucks
 			if (replacement.size && replacement.lastModifiedDate) {
-				conflict.find('.replacement .size').text(humanFileSize(replacement.size));
-				conflict.find('.replacement .mtime').text(formatDate(replacement.lastModifiedDate));
+				$replacementDiv.find('.size').text(humanFileSize(replacement.size));
+				$replacementDiv.find('.mtime').text(formatDate(replacement.lastModifiedDate));
 			}
 			var path = original.directory + '/' +original.name;
-			Files.lazyLoadPreview(path, original.mimetype, function(previewpath){
-				conflict.find('.original .icon').css('background-image','url('+previewpath+')');
-			}, 96, 96, original.etag);
+			var urlSpec = {
+				file:		path,
+				x:		96,
+				y:		96,
+				c:		original.etag,
+				forceIcon:	0
+			};
+			var previewpath = Files.generatePreviewUrl(urlSpec);
+			// Escaping single quotes
+			previewpath = previewpath.replace(/'/g, "%27");
+			$originalDiv.find('.icon').css({"background-image":   "url('" + previewpath + "')"});
 			getCroppedPreview(replacement).then(
 				function(path){
-					conflict.find('.replacement .icon').css('background-image','url(' + path + ')');
+					$replacementDiv.find('.icon').css('background-image','url(' + path + ')');
 				}, function(){
-					Files.getMimeIcon(replacement.type,function(path){
-						conflict.find('.replacement .icon').css('background-image','url(' + path + ')');
-					});
+					path = OC.MimeType.getIconUrl(replacement.type);
+					$replacementDiv.find('.icon').css('background-image','url(' + path + ')');
 				}
 			);
-			conflicts.append(conflict);
+			// connect checkboxes with labels
+			var checkboxId = $conflicts.find('.conflict').length;
+			$originalDiv.find('input:checkbox').attr('id', 'checkbox_original_'+checkboxId);
+			$replacementDiv.find('input:checkbox').attr('id', 'checkbox_replacement_'+checkboxId);
+
+			$conflicts.append($conflict);
 
 			//set more recent mtime bold
 			// ie sucks
 			if (replacement.lastModifiedDate && replacement.lastModifiedDate.getTime() > original.mtime) {
-				conflict.find('.replacement .mtime').css('font-weight', 'bold');
+				$replacementDiv.find('.mtime').css('font-weight', 'bold');
 			} else if (replacement.lastModifiedDate && replacement.lastModifiedDate.getTime() < original.mtime) {
-				conflict.find('.original .mtime').css('font-weight', 'bold');
+				$originalDiv.find('.mtime').css('font-weight', 'bold');
 			} else {
 				//TODO add to same mtime collection?
 			}
 
 			// set bigger size bold
 			if (replacement.size && replacement.size > original.size) {
-				conflict.find('.replacement .size').css('font-weight', 'bold');
+				$replacementDiv.find('.size').css('font-weight', 'bold');
 			} else if (replacement.size && replacement.size < original.size) {
-				conflict.find('.original .size').css('font-weight', 'bold');
+				$originalDiv.find('.size').css('font-weight', 'bold');
 			} else {
 				//TODO add to same size collection?
 			}
 
 			//TODO show skip action for files with same size and mtime in bottom row
 
+			// always keep readonly files
+
+			if (original.status === 'readonly') {
+				$originalDiv
+					.addClass('readonly')
+					.find('input[type="checkbox"]')
+						.prop('checked', true)
+						.prop('disabled', true);
+				$originalDiv.find('.message')
+					.text(t('core','read-only'))
+			}
 		};
 		//var selection = controller.getSelection(data.originalFiles);
 		//if (selection.defaultAction) {
@@ -422,8 +527,8 @@ var OCdialogs = {
 		if (this._fileexistsshown) {
 			// add conflict
 
-			var conflicts = $(dialogId+ ' .conflicts');
-			addConflict(conflicts, original, replacement);
+			var $conflicts = $(dialogId+ ' .conflicts');
+			addConflict($conflicts, original, replacement);
 
 			var count = $(dialogId+ ' .conflict').length;
 			var title = n('core',
@@ -436,7 +541,7 @@ var OCdialogs = {
 
 			//recalculate dimensions
 			$(window).trigger('resize');
-
+			dialogDeferred.resolve();
 		} else {
 			//create dialog
 			this._fileexistsshown = true;
@@ -455,8 +560,10 @@ var OCdialogs = {
 				});
 				$('body').append($dlg);
 
-				var conflicts = $($dlg).find('.conflicts');
-				addConflict(conflicts, original, replacement);
+				if (original && replacement) {
+					var $conflicts = $dlg.find('.conflicts');
+					addConflict($conflicts, original, replacement);
+				}
 
 				var buttonlist = [{
 						text: t('core', 'Cancel'),
@@ -493,22 +600,30 @@ var OCdialogs = {
 
 				$(dialogId).css('height','auto');
 
+				var $primaryButton = $dlg.closest('.oc-dialog').find('button.continue');
+				$primaryButton.prop('disabled', true);
+
+				function updatePrimaryButton() {
+					var checkedCount = $dlg.find('.conflicts .checkbox:checked').length;
+					$primaryButton.prop('disabled', checkedCount === 0);
+				}
+
 				//add checkbox toggling actions
 				$(dialogId).find('.allnewfiles').on('click', function() {
-					var checkboxes = $(dialogId).find('.conflict .replacement input[type="checkbox"]');
-					checkboxes.prop('checked', $(this).prop('checked'));
+					var $checkboxes = $(dialogId).find('.conflict .replacement input[type="checkbox"]');
+					$checkboxes.prop('checked', $(this).prop('checked'));
 				});
 				$(dialogId).find('.allexistingfiles').on('click', function() {
-					var checkboxes = $(dialogId).find('.conflict .original input[type="checkbox"]');
-					checkboxes.prop('checked', $(this).prop('checked'));
+					var $checkboxes = $(dialogId).find('.conflict .original:not(.readonly) input[type="checkbox"]');
+					$checkboxes.prop('checked', $(this).prop('checked'));
 				});
-				$(dialogId).find('.conflicts').on('click', '.replacement,.original', function() {
-					var checkbox = $(this).find('input[type="checkbox"]');
-					checkbox.prop('checked', !checkbox.prop('checked'));
+				$(dialogId).find('.conflicts').on('click', '.replacement,.original:not(.readonly)', function() {
+					var $checkbox = $(this).find('input[type="checkbox"]');
+					$checkbox.prop('checked', !$checkbox.prop('checked'));
 				});
-				$(dialogId).find('.conflicts').on('click', 'input[type="checkbox"]', function() {
-					var checkbox = $(this);
-					checkbox.prop('checked', !checkbox.prop('checked'));
+				$(dialogId).find('.conflicts').on('click', '.replacement input[type="checkbox"],.original:not(.readonly) input[type="checkbox"]', function() {
+					var $checkbox = $(this);
+					$checkbox.prop('checked', !$checkbox.prop('checked'));
 				});
 
 				//update counters
@@ -524,6 +639,7 @@ var OCdialogs = {
 						$(dialogId).find('.allnewfiles').prop('checked', false);
 						$(dialogId).find('.allnewfiles + .count').text('');
 					}
+					updatePrimaryButton();
 				});
 				$(dialogId).on('click', '.original,.allexistingfiles', function(){
 					var count = $(dialogId).find('.conflict .original input[type="checkbox"]:checked').length;
@@ -538,13 +654,18 @@ var OCdialogs = {
 						$(dialogId).find('.allexistingfiles').prop('checked', false);
 						$(dialogId).find('.allexistingfiles + .count').text('');
 					}
+					updatePrimaryButton();
 				});
+
+				dialogDeferred.resolve();
 			})
 			.fail(function() {
+				dialogDeferred.reject();
 				alert(t('core', 'Error loading file exists template'));
 			});
 		}
 		//}
+		return dialogDeferred.promise();
 	},
 	_getFilePickerTemplate: function() {
 		var defer = $.Deferred();
@@ -616,9 +737,10 @@ var OCdialogs = {
 		var dirs = [];
 		var others = [];
 		var self = this;
-		this.$filelist.empty().addClass('loading');
+		this.$filelist.empty().addClass('icon-loading');
 		this.$filePicker.data('path', dir);
 		$.when(this._getFileList(dir, this.$filePicker.data('mimetype'))).then(function(response) {
+
 			$.each(response.data.files, function(index, file) {
 				if (file.type === 'dir') {
 					dirs.push(file);
@@ -631,13 +753,14 @@ var OCdialogs = {
 			var sorted = dirs.concat(others);
 
 			$.each(sorted, function(idx, entry) {
+				entry.icon = OC.MimeType.getIconUrl(entry.mimetype);
 				var $li = self.$listTmpl.octemplate({
 					type: entry.type,
 					dir: dir,
 					filename: entry.name,
 					date: OC.Util.relativeModifiedDate(entry.mtime)
 				});
-				if (entry.isPreviewAvailable) {
+				if (entry.type === 'file') {
 					var urlSpec = {
 						file: dir + '/' + entry.name
 					};
@@ -650,7 +773,7 @@ var OCdialogs = {
 				self.$filelist.append($li);
 			});
 
-			self.$filelist.removeClass('loading');
+			self.$filelist.removeClass('icon-loading');
 			if (!OC.Util.hasSVGSupport()) {
 				OC.Util.replaceSVG(self.$filePicker.find('.dirtree'));
 			}
@@ -679,7 +802,7 @@ var OCdialogs = {
 		}
 		$template.octemplate({
 			dir: '',
-			name: '&nbsp;&nbsp;&nbsp;&nbsp;' // Ugly but works ;)
+			name: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' // Ugly but works ;)
 		}, {escapeFunction: null}).addClass('home svg').prependTo(this.$dirTree);
 	},
 	/**

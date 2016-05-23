@@ -1,11 +1,10 @@
 { "translations": {
     "Files" : "फाइलें ",
-    "Share" : "साझा करें",
-    "Error" : "त्रुटि",
-    "_%n folder_::_%n folders_" : ["",""],
-    "_%n file_::_%n files_" : ["",""],
-    "_Uploading %n file_::_Uploading %n files_" : ["",""],
+    "Close" : "बंद करें ",
+    "Details" : "विवरण ",
+    "New folder" : "नया फ़ोल्डर",
+    "Upload" : "अपलोड ",
     "Save" : "सहेजें",
-    "New folder" : "नया फ़ोल्डर"
+    "Settings" : "सेटिंग्स"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

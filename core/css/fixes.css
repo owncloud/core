@@ -20,6 +20,14 @@ select {
 	background-image: url('../img/actions/delete-hover.png');
 }
 
+.ie8 .icon-checkmark {
+	background-image: url('../img/actions/checkmark.png');
+}
+
+.ie8 .icon-close {
+	background-image: url('../img/actions/close.png');
+}
+
 .lte9 .icon-triangle-e {
 	background-image: url('../img/actions/triangle-e.png');
 }
@@ -34,6 +42,16 @@ select {
 	background-image: url('../img/actions/settings.png');
 }
 
+.lte9 input[type="submit"], .lte9 input[type="button"],
+.lte9 button, .lte9 .button,
+.lte9 #quota, .lte9 select, .lte9 .pager li a {
+	background-color: #f1f1f1;
+}
+
+/* IE8 needs PNG image for header logo */
+.ie8 #header .logo {
+	background-image: url(../img/logo-icon-175px.png);
+}
 
 /* IE8 needs background to be set to same color to make transparency look good. */
 .lte9 #body-login form input[type="text"] {
@@ -46,6 +64,15 @@ select {
 	border-right: 1px solid lightgrey;
 	border-bottom: 1px solid lightgrey;
 	background-color: white; /* don't change background on hover */
+}
+.ie8 #body-login input[type="submit"] {
+	padding: 10px 5px;
+	margin-top: 3px;
+}
+/* for whatever unexplained reason */
+.ie8 #password {
+	width: 271px !important;
+	min-width: auto !important;
 }
 
 /* disable opacity of info text on gradient
@@ -62,6 +89,7 @@ select {
 
 /* fix installation screen rendering issue for IE8+9 */
 .lte9 #body-login {
+	min-height: 100%;
 	height: auto !important;
 }
 
@@ -87,8 +115,9 @@ select {
 }
 
 /* fix background of navigation popup in IE8 */
-.ie8 #navigation {
-	background-color: #24282F;
+.ie8 #navigation,
+.ie8 #expanddiv {
+	background-color: #111;
 }
 
 /* needed else IE8 will randomly hide the borders... */

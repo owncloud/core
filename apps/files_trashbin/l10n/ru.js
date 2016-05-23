@@ -1,15 +1,21 @@
 OC.L10N.register(
     "files_trashbin",
     {
-    "Couldn't delete %s permanently" : "%s не может быть удалён навсегда",
+    "Couldn't delete %s permanently" : "%s не может быть удалён окончательно",
     "Couldn't restore %s" : "%s не может быть восстановлен",
     "Deleted files" : "Удалённые файлы",
     "Restore" : "Восстановить",
+    "Delete" : "Удалить",
+    "Delete permanently" : "Удалить окончательно",
     "Error" : "Ошибка",
+    "This operation is forbidden" : "Операция запрещена",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Директория недоступна, пожалуйста проверьте журнал сообщений или свяжитесь с администратором",
     "restored" : "восстановлен",
-    "Nothing in here. Your trash bin is empty!" : "Здесь ничего нет. Ваша корзина пуста!",
+    "No deleted files" : "Нет удалённых файлов",
+    "You will be able to recover deleted files from here" : "Здесь вы сможете восстановить удалённые файлы",
+    "No entries found in this folder" : "Нет элементов в этом каталоге",
+    "Select all" : "Выделить все",
     "Name" : "Имя",
-    "Deleted" : "Удалён",
-    "Delete" : "Удалить"
+    "Deleted" : "Удалён"
 },
-"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

@@ -1,120 +1,33 @@
 <?php
-
-$installedVersion = OCP\Config::getAppValue('files_sharing', 'installed_version');
-
-if (version_compare($installedVersion, '0.5', '<')) {
-	updateFilePermissions();
-}
-
-if (version_compare($installedVersion, '0.4', '<')) {
-	removeSharedFolder();
-}
-
-// clean up oc_share table from files which are no longer exists
-if (version_compare($installedVersion, '0.3.5.6', '<')) {
-	\OC\Files\Cache\Shared_Updater::fixBrokenSharesOnAppUpdate();
-}
-
-
 /**
- * it is no longer possible to share single files with delete permissions. User
- * should only be able to unshare single files but never to delete them.
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-function updateFilePermissions($chunkSize = 99) {
-	$query = OCP\DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `item_type` = ?');
-	$result = $query->execute(array('file'));
+use OCA\Files_Sharing\Migration;
 
-	$updatedRows = array();
+$installedVersion = \OC::$server->getConfig()->getAppValue('files_sharing', 'installed_version');
 
-	while ($row = $result->fetchRow()) {
-		if ($row['permissions'] & \OCP\PERMISSION_DELETE) {
-			$updatedRows[$row['id']] = (int)$row['permissions'] & ~\OCP\PERMISSION_DELETE;
-		}
-	}
-
-	$connection = \OC_DB::getConnection();
-	$chunkedPermissionList = array_chunk($updatedRows, $chunkSize, true);
-
-	foreach ($chunkedPermissionList as $subList) {
-		$statement = "UPDATE `*PREFIX*share` SET `permissions` = CASE `id` ";
-		//update share table
-		$ids = implode(',', array_keys($subList));
-		foreach ($subList as $id => $permission) {
-			$statement .= "WHEN " . $connection->quote($id, \PDO::PARAM_INT) . " THEN " . $permission . " ";
-		}
-		$statement .= ' END WHERE `id` IN (' . $ids . ')';
-
-		$query = OCP\DB::prepare($statement);
-		$query->execute();
-	}
-
-}
-
-/**
- * update script for the removal of the logical "Shared" folder, we create physical "Shared" folder and
- * update the users file_target so that it doesn't make any difference for the user
- * @note parameters are just for testing, please ignore them
- */
-function removeSharedFolder($mkdirs = true, $chunkSize = 99) {
-	$query = OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
-	$result = $query->execute();
-	$view = new \OC\Files\View('/');
-	$users = array();
-	$shares = array();
-	//we need to set up user backends
-	OC_User::useBackend(new OC_User_Database());
-	OC_Group::useBackend(new OC_Group_Database());
-	OC_App::loadApps(array('authentication'));
-	//we need to set up user backends, otherwise creating the shares will fail with "because user does not exist"
-	while ($row = $result->fetchRow()) {
-		//collect all user shares
-		if ((int)$row['share_type'] === 0 && ($row['item_type'] === 'file' || $row['item_type'] === 'folder')) {
-			$users[] = $row['share_with'];
-			$shares[$row['id']] = $row['file_target'];
-		} else if ((int)$row['share_type'] === 1 && ($row['item_type'] === 'file' || $row['item_type'] === 'folder')) {
-			//collect all group shares
-			$users = array_merge($users, \OC_group::usersInGroup($row['share_with']));
-			$shares[$row['id']] = $row['file_target'];
-		} else if ((int)$row['share_type'] === 2) {
-			$shares[$row['id']] = $row['file_target'];
-		}
-	}
-
-	$unique_users = array_unique($users);
-
-	if (!empty($unique_users) && !empty($shares)) {
-
-		// create folder Shared for each user
-
-		if ($mkdirs) {
-			foreach ($unique_users as $user) {
-				\OC\Files\Filesystem::initMountPoints($user);
-				if (!$view->file_exists('/' . $user . '/files/Shared')) {
-					$view->mkdir('/' . $user . '/files/Shared');
-				}
-			}
-		}
-
-		$chunkedShareList = array_chunk($shares, $chunkSize, true);
-		$connection = \OC_DB::getConnection();
-
-		foreach ($chunkedShareList as $subList) {
-
-			$statement = "UPDATE `*PREFIX*share` SET `file_target` = CASE `id` ";
-			//update share table
-			$ids = implode(',', array_keys($subList));
-			foreach ($subList as $id => $target) {
-				$statement .= "WHEN " . $connection->quote($id, \PDO::PARAM_INT) . " THEN " . $connection->quote('/Shared' . $target, \PDO::PARAM_STR);
-			}
-			$statement .= ' END WHERE `id` IN (' . $ids . ')';
-
-			$query = OCP\DB::prepare($statement);
-
-			$query->execute(array());
-		}
-
-		// set config to keep the Shared folder as the default location for new shares
-		\OCA\Files_Sharing\Helper::setShareFolder('/Shared');
-
-	}
+// Migration OC8.2 -> OC9
+if (version_compare($installedVersion, '0.9.1', '<')) {
+	$m = new Migration(\OC::$server->getDatabaseConnection());
+	$m->removeReShares();
+	$m->updateInitiatorInfo();
 }

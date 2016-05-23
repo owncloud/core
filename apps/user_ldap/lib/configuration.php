@@ -1,28 +1,36 @@
 <?php
-
 /**
- * ownCloud – LDAP Connection
+ * @author Alex Weirig <alex.weirig@technolink.lu>
+ * @author Alexander Bergolth <leo@strike.wu.ac.at>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lennart Rosam <hello@takuto.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @author Arthur Schiwon
- * @copyright 2012, 2013 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
 namespace OCA\user_ldap\lib;
 
+/**
+ * @property int ldapPagingSize holds an integer
+ */
 class Configuration {
 
 	protected $configPrefix = null;
@@ -40,10 +48,10 @@ class Configuration {
 		'ldapAgentName' => null,
 		'ldapAgentPassword' => null,
 		'ldapTLS' => null,
-		'ldapNoCase' => null,
 		'turnOffCertCheck' => null,
 		'ldapIgnoreNamingRules' => null,
 		'ldapUserDisplayName' => null,
+		'ldapUserDisplayName2' => null,
 		'ldapUserFilterObjectclass' => null,
 		'ldapUserFilterGroups' => null,
 		'ldapUserFilter' => null,
@@ -73,12 +81,14 @@ class Configuration {
 		'homeFolderNamingRule' => null,
 		'hasPagedResultSupport' => false,
 		'hasMemberOfFilterSupport' => false,
+		'useMemberOfToDetectMembership' => true,
 		'ldapExpertUsernameAttr' => null,
 		'ldapExpertUUIDUserAttr' => null,
 		'ldapExpertUUIDGroupAttr' => null,
 		'lastJpegPhotoLookup' => null,
 		'ldapNestedGroups' => false,
 		'ldapPagingSize' => null,
+		'ldapDynamicGroupMemberURL' => null,
 	);
 
 	/**
@@ -143,9 +153,13 @@ class Configuration {
 
 			$setMethod = 'setValue';
 			switch($key) {
+				case 'ldapAgentPassword':
+					$setMethod = 'setRawValue';
+					break;
 				case 'homeFolderNamingRule':
-					if(!empty($val) && strpos($val, 'attr:') === false) {
-						$val = 'attr:'.$val;
+					$trimmedVal = trim($val);
+					if(!empty($trimmedVal) && strpos($val, 'attr:') === false) {
+						$val = 'attr:'.$trimmedVal;
 					}
 					break;
 				case 'ldapBase':
@@ -198,11 +212,15 @@ class Configuration {
 					case 'ldapAgentPassword':
 						$readMethod = 'getPwd';
 						break;
-					case 'ldapUserDisplayName':
+					case 'ldapUserDisplayName2':
 					case 'ldapGroupDisplayName':
 						$readMethod = 'getLcValue';
 						break;
+					case 'ldapUserDisplayName':
 					default:
+						// user display name does not lower case because
+						// we rely on an upper case N as indicator whether to
+						// auto-detect it or not. FIXME
 						$readMethod = 'getValue';
 						break;
 				}
@@ -266,8 +284,10 @@ class Configuration {
 	}
 
 	/**
-	 * @param string $varName
-	 * @param array|string $value
+	 * Sets multi-line values as arrays
+	 * 
+	 * @param string $varName name of config-key
+	 * @param array|string $value to set
 	 */
 	protected function setMultiLine($varName, $value) {
 		if(empty($value)) {
@@ -279,7 +299,25 @@ class Configuration {
 			}
 		}
 
-		$this->setValue($varName, $value);
+		if(!is_array($value)) {
+			$finalValue = trim($value);
+		} else {
+			$finalValue = [];
+			foreach($value as $key => $val) {
+				if(is_string($val)) {
+					$val = trim($val);
+					if(!empty($val)) {
+						//accidental line breaks are not wanted and can cause
+						// odd behaviour. Thus, away with them.
+						$finalValue[] = $val;
+					}
+				} else {
+					$finalValue[] = $val;
+				}
+			}
+		}
+
+		$this->setRawValue($varName, $finalValue);
 	}
 
 	/**
@@ -322,10 +360,25 @@ class Configuration {
 	}
 
 	/**
-	 * @param string $varName
-	 * @param mixed $value
+	 * Sets a scalar value.
+	 * 
+	 * @param string $varName name of config key
+	 * @param mixed $value to set
 	 */
 	protected function setValue($varName, $value) {
+		if(is_string($value)) {
+			$value = trim($value);
+		}
+		$this->config[$varName] = $value;
+	}
+
+	/**
+	 * Sets a scalar value without trimming.
+	 *
+	 * @param string $varName name of config key
+	 * @param mixed $value to set
+	 */
+	protected function setRawValue($varName, $value) {
 		$this->config[$varName] = $value;
 	}
 
@@ -370,9 +423,9 @@ class Configuration {
 			'ldap_groupfilter_objectclass'      => '',
 			'ldap_groupfilter_groups'           => '',
 			'ldap_display_name'                 => 'displayName',
+			'ldap_user_display_name_2'			=> '',
 			'ldap_group_display_name'           => 'cn',
-			'ldap_tls'                          => 1,
-			'ldap_nocase'                       => 0,
+			'ldap_tls'                          => 0,
 			'ldap_quota_def'                    => '',
 			'ldap_quota_attr'                   => '',
 			'ldap_email_attr'                   => '',
@@ -389,10 +442,12 @@ class Configuration {
 			'ldap_expert_uuid_user_attr'        => '',
 			'ldap_expert_uuid_group_attr'       => '',
 			'has_memberof_filter_support'       => 0,
+			'use_memberof_to_detect_membership' => 1,
 			'last_jpegPhoto_lookup'             => 0,
 			'ldap_nested_groups'                => 0,
 			'ldap_paging_size'                  => 500,
 			'ldap_experienced_admin'            => 0,
+			'ldap_dynamic_group_member_url'     => '',
 		);
 	}
 
@@ -426,9 +481,9 @@ class Configuration {
 			'ldap_groupfilter_objectclass'      => 'ldapGroupFilterObjectclass',
 			'ldap_groupfilter_groups'           => 'ldapGroupFilterGroups',
 			'ldap_display_name'                 => 'ldapUserDisplayName',
+			'ldap_user_display_name_2'			=> 'ldapUserDisplayName2',
 			'ldap_group_display_name'           => 'ldapGroupDisplayName',
 			'ldap_tls'                          => 'ldapTLS',
-			'ldap_nocase'                       => 'ldapNoCase',
 			'ldap_quota_def'                    => 'ldapQuotaDefault',
 			'ldap_quota_attr'                   => 'ldapQuotaAttribute',
 			'ldap_email_attr'                   => 'ldapEmailAttribute',
@@ -443,10 +498,12 @@ class Configuration {
 			'ldap_expert_uuid_user_attr'        => 'ldapExpertUUIDUserAttr',
 			'ldap_expert_uuid_group_attr'       => 'ldapExpertUUIDGroupAttr',
 			'has_memberof_filter_support'       => 'hasMemberOfFilterSupport',
+			'use_memberof_to_detect_membership' => 'useMemberOfToDetectMembership',
 			'last_jpegPhoto_lookup'             => 'lastJpegPhotoLookup',
 			'ldap_nested_groups'                => 'ldapNestedGroups',
 			'ldap_paging_size'                  => 'ldapPagingSize',
-			'ldap_experienced_admin'            => 'ldapExperiencedAdmin'
+			'ldap_experienced_admin'            => 'ldapExperiencedAdmin',
+			'ldap_dynamic_group_member_url'     => 'ldapDynamicGroupMemberURL',
 		);
 		return $array;
 	}

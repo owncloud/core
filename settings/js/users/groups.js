@@ -5,12 +5,15 @@
  * See the COPYING-README file.
  */
 
-var $userGroupList;
+var $userGroupList,
+	$sortGroupBy;
 
 var GroupList;
 GroupList = {
 	activeGID: '',
 	everyoneGID: '_everyone',
+	filter: '',
+	filterGroups: false,
 
 	addGroup: function (gid, usercount) {
 		var $li = $userGroupList.find('.isgroup:last-child').clone();
@@ -27,6 +30,11 @@ GroupList = {
 	},
 
 	setUserCount: function (groupLiElement, usercount) {
+		if ($sortGroupBy !== 1) {
+			// If we don't sort by group count we don't display them either
+			return;
+		}
+
 		var $groupLiElement = $(groupLiElement);
 		if (usercount === undefined || usercount === 0 || usercount < 0) {
 			usercount = '';
@@ -41,18 +49,26 @@ GroupList = {
 		return parseInt($groupLiElement.data('usercount'), 10);
 	},
 
-	modEveryoneCount: function(diff) {
-		var $li = GroupList.getGroupLI(GroupList.everyoneGID);
+	modGroupCount: function(gid, diff) {
+		var $li = GroupList.getGroupLI(gid);
 		var count = GroupList.getUserCount($li) + diff;
 		GroupList.setUserCount($li, count);
 	},
 
 	incEveryoneCount: function() {
-		GroupList.modEveryoneCount(1);
+		GroupList.modGroupCount(GroupList.everyoneGID, 1);
 	},
 
 	decEveryoneCount: function() {
-		GroupList.modEveryoneCount(-1);
+		GroupList.modGroupCount(GroupList.everyoneGID, -1);
+	},
+
+	incGroupCount: function(gid) {
+		GroupList.modGroupCount(gid, 1);
+	},
+
+	decGroupCount: function(gid) {
+		GroupList.modGroupCount(gid, -1);
 	},
 
 	getCurrentGID: function () {
@@ -63,6 +79,33 @@ GroupList = {
 		var lis = $userGroupList.find('.isgroup').get();
 
 		lis.sort(function (a, b) {
+			// "Everyone" always at the top
+			if ($(a).data('gid') === '_everyone') {
+				return -1;
+			} else if ($(b).data('gid') === '_everyone') {
+				return 1;
+			}
+
+			// "admin" always as second
+			if ($(a).data('gid') === 'admin') {
+				return -1;
+			} else if ($(b).data('gid') === 'admin') {
+				return 1;
+			}
+
+			if ($sortGroupBy === 1) {
+				// Sort by user count first
+				var $usersGroupA = $(a).data('usercount'),
+					$usersGroupB = $(b).data('usercount');
+				if ($usersGroupA > 0 && $usersGroupA > $usersGroupB) {
+					return -1;
+				}
+				if ($usersGroupB > 0 && $usersGroupB > $usersGroupA) {
+					return 1;
+				}
+			}
+
+			// Fallback or sort by group name
 			return UserList.alphanum(
 				$(a).find('a span').text(),
 				$(b).find('a span').text()
@@ -84,29 +127,24 @@ GroupList = {
 
 	createGroup: function (groupname) {
 		$.post(
-			OC.filePath('settings', 'ajax', 'creategroup.php'),
+			OC.generateUrl('/settings/users/groups'),
 			{
-				groupname: groupname
+				id: groupname
 			},
 			function (result) {
-				if (result.status !== 'success') {
-					OC.dialogs.alert(result.data.message,
-						t('settings', 'Error creating group'));
-				}
-				else {
-					if (result.data.groupname) {
-						var addedGroup = result.data.groupname;
-						UserList.availableGroups = $.unique($.merge(UserList.availableGroups, [addedGroup]));
-						GroupList.addGroup(result.data.groupname);
+				if (result.groupname) {
+					var addedGroup = result.groupname;
+					UserList.availableGroups = $.unique($.merge(UserList.availableGroups, [addedGroup]));
+					GroupList.addGroup(result.groupname);
 
-						$('.groupsselect, .subadminsselect')
-							.append($('<option>', { value: result.data.groupname })
-								.text(result.data.groupname));
-					}
-					GroupList.toggleAddGroup();
+					$('.groupsselect, .subadminsselect')
+						.append($('<option>', { value: result.groupname })
+							.text(result.groupname));
 				}
-			}
-		);
+				GroupList.toggleAddGroup();
+			}).fail(function(result) {
+				OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {message: result.responseJSON.message}));
+			});
 	},
 
 	update: function () {
@@ -115,10 +153,11 @@ GroupList = {
 		}
 		GroupList.updating = true;
 		$.get(
-			OC.generateUrl('/settings/ajax/grouplist'),
+			OC.generateUrl('/settings/users/groups'),
 			{
-				pattern: filter.getPattern(),
-				filterGroups: filter.filterGroups ? 1 : 0
+				pattern: this.filter,
+				filterGroups: this.filterGroups ? 1 : 0,
+				sortGroups: $sortGroupBy
 			},
 			function (result) {
 
@@ -187,6 +226,7 @@ GroupList = {
 			$('#newgroup-form').show();
 			$('#newgroup-init').hide();
 			$('#newgroupname').focus();
+			GroupList.handleAddGroupInput('');
 		}
 		else {
 			$('#newgroup-form').hide();
@@ -195,11 +235,19 @@ GroupList = {
 		}
 	},
 
+	handleAddGroupInput: function (input) {
+		if(input.length) {
+			$('#newgroup-form input[type="submit"]').attr('disabled', null);
+		} else {
+			$('#newgroup-form input[type="submit"]').attr('disabled', 'disabled');
+		}
+	},
+
 	isGroupNameValid: function (groupname) {
 		if ($.trim(groupname) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid group name must be provided'),
-				t('settings', 'Error creating group'));
+			OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {
+				message: t('settings', 'A valid group name must be provided')
+			}));
 			return false;
 		}
 		return true;
@@ -221,7 +269,7 @@ GroupList = {
 	},
 	initDeleteHandling: function () {
 		//set up handler
-		GroupDeleteHandler = new DeleteHandler('removegroup.php', 'groupname',
+		GroupDeleteHandler = new DeleteHandler('/settings/users/groups', 'groupname',
 			GroupList.hide, GroupList.remove);
 
 		//configure undo
@@ -256,10 +304,10 @@ GroupList = {
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url: OC.generateUrl('/settings/ajax/geteveryonecount')
+			url: OC.generateUrl('/settings/users/stats')
 		}).success(function (data) {
-			$('#everyonegroup').data('usercount', data.count);
-			$('#everyonecount').text(data.count);
+			$('#everyonegroup').data('usercount', data.totalUsers);
+			$('#everyonecount').text(data.totalUsers);
 		});
 	}
 };
@@ -267,7 +315,11 @@ GroupList = {
 $(document).ready( function () {
 	$userGroupList = $('#usergrouplist');
 	GroupList.initDeleteHandling();
-	GroupList.getEveryoneCount();
+	$sortGroupBy = $userGroupList.data('sort-groups');
+	if ($sortGroupBy === 1) {
+		// Disabled due to performance issues, when we don't need it for sorting
+		GroupList.getEveryoneCount();
+	}
 
 	// Display or hide of Create Group List Element
 	$('#newgroup-form').hide();
@@ -299,5 +351,9 @@ $(document).ready( function () {
 	// click on group name
 	$userGroupList.on('click', '.isgroup', function () {
 		GroupList.showGroup(GroupList.getElementGID(this));
+	});
+
+	$('#newgroupname').on('input', function(){
+		GroupList.handleAddGroupInput(this.value);
 	});
 });

@@ -1,32 +1,35 @@
 <?php
 /**
- * ownCloud
+ * @author Jesús Macias <jmacias@solidgear.es>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Vincent Petry
- * @copyright 2014 Vincent Petry pvince81@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
-namespace OCA\Files\External;
+namespace OCA\Files_External\Lib;
 
 class Api {
 
 	/**
 	 * Formats the given mount config to a mount entry.
-	 * 
+	 *
 	 * @param string $mountPoint mount point name, relative to the data dir
 	 * @param array $mountConfig mount config to format
 	 *
@@ -45,10 +48,10 @@ class Api {
 
 		$isSystemMount = !$mountConfig['personal'];
 
-		$permissions = \OCP\PERMISSION_READ;
+		$permissions = \OCP\Constants::PERMISSION_READ;
 		// personal mounts can be deleted
 		if (!$isSystemMount) {
-			$permissions |= \OCP\PERMISSION_DELETE;
+			$permissions |= \OCP\Constants::PERMISSION_DELETE;
 		}
 
 		$entry = array(
@@ -57,7 +60,9 @@ class Api {
 			'type' => 'dir',
 			'backend' => $mountConfig['backend'],
 			'scope' => ( $isSystemMount ? 'system' : 'personal' ),
-			'permissions' => $permissions
+			'permissions' => $permissions,
+			'id' => $mountConfig['id'],
+			'class' => $mountConfig['class']
 		);
 		return $entry;
 	}
@@ -70,7 +75,7 @@ class Api {
 	 */
 	public static function getUserMounts($params) {
 		$entries = array();
-		$user = \OC_User::getUser();
+		$user = \OC::$server->getUserSession()->getUser()->getUID();
 
 		$mounts = \OC_Mount_Config::getAbsoluteMountPoints($user);
 		foreach($mounts as $mountPoint => $mount) {

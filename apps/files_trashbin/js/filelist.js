@@ -14,8 +14,8 @@
 	 * Convert a file name in the format filename.d12345 to the real file name.
 	 * This will use basename.
 	 * The name will not be changed if it has no ".d12345" suffix.
-	 * @param name file name
-	 * @return converted file name
+	 * @param {String} name file name
+	 * @return {String} converted file name
 	 */
 	function getDeletedFileName(name) {
 		name = OC.basename(name);
@@ -26,13 +26,26 @@
 		return name;
 	}
 
+	/**
+	 * @class OCA.Trashbin.FileList
+	 * @augments OCA.Files.FileList
+	 * @classdesc List of deleted files
+	 *
+	 * @param $el container element with existing markup for the #controls
+	 * and a table
+	 * @param [options] map of options
+	 */
 	var FileList = function($el, options) {
 		this.initialize($el, options);
 	};
-	FileList.prototype = _.extend({}, OCA.Files.FileList.prototype, {
+	FileList.prototype = _.extend({}, OCA.Files.FileList.prototype,
+		/** @lends OCA.Trashbin.FileList.prototype */ {
 		id: 'trashbin',
 		appName: t('files_trashbin', 'Deleted files'),
 
+		/**
+		 * @private
+		 */
 		initialize: function() {
 			var result = OCA.Files.FileList.prototype.initialize.apply(this, arguments);
 			this.$el.find('.undelete').click('click', _.bind(this._onClickRestoreSelected, this));
@@ -51,6 +64,7 @@
 				return parts;
 			};
 
+			OC.Plugins.attach('OCA.Trashbin.FileList', this);
 			return result;
 		},
 
@@ -106,6 +120,16 @@
 
 		linkTo: function(dir){
 			return OC.linkTo('files', 'index.php')+"?view=trashbin&dir="+ encodeURIComponent(dir).replace(/%2F/g, '/');
+		},
+
+		elementToFile: function($el) {
+			var fileInfo = OCA.Files.FileList.prototype.elementToFile($el);
+			if (this.getCurrentDirectory() === '/') {
+				fileInfo.displayName = getDeletedFileName(fileInfo.name);
+			}
+			// no size available
+			delete fileInfo.size;
+			return fileInfo;
 		},
 
 		updateEmptyContent: function(){
@@ -244,18 +268,96 @@
 
 		enableActions: function() {
 			this.$el.find('.action').css('display', 'inline');
-			this.$el.find(':input:checkbox').css('display', 'inline');
+			this.$el.find('input:checkbox').removeClass('u-hidden');
 		},
 
 		disableActions: function() {
 			this.$el.find('.action').css('display', 'none');
-			this.$el.find(':input:checkbox').css('display', 'none');
+			this.$el.find('input:checkbox').addClass('u-hidden');
 		},
 
 		updateStorageStatistics: function() {
 			// no op because the trashbin doesn't have
 			// storage info like free space / used space
-		}
+		},
+
+		isSelectedDeletable: function() {
+			return true;
+		},
+
+		/**
+		 * Reloads the file list using ajax call
+		 *
+		 * @return ajax call object
+		 */
+		reload: function() {
+			this._selectedFiles = {};
+			this._selectionSummary.clear();
+			this.$el.find('.select-all').prop('checked', false);
+			this.showMask();
+			if (this._reloadCall) {
+				this._reloadCall.abort();
+			}
+			this._reloadCall = $.ajax({
+				url: this.getAjaxUrl('list'),
+				data: {
+					dir : this.getCurrentDirectory(),
+					sort: this._sort,
+					sortdirection: this._sortDirection
+				}
+			});
+			var callBack = this.reloadCallback.bind(this);
+			return this._reloadCall.then(callBack, callBack);
+		},
+		reloadCallback: function(result) {
+			delete this._reloadCall;
+			this.hideMask();
+
+			if (!result || result.status === 'error') {
+				// if the error is not related to folder we're trying to load, reload the page to handle logout etc
+				if (result.data.error === 'authentication_error' ||
+					result.data.error === 'token_expired' ||
+					result.data.error === 'application_not_enabled'
+				) {
+					OC.redirect(OC.generateUrl('apps/files'));
+				}
+				OC.Notification.show(result.data.message);
+				return false;
+			}
+
+			if (result.status === 401) {
+				return false;
+			}
+
+			// Firewall Blocked request?
+			if (result.status === 403) {
+				// Go home
+				this.changeDirectory('/');
+				OC.Notification.show(t('files', 'This operation is forbidden'));
+				return false;
+			}
+
+			// Did share service die or something else fail?
+			if (result.status === 500) {
+				// Go home
+				this.changeDirectory('/');
+				OC.Notification.show(t('files', 'This directory is unavailable, please check the logs or contact the administrator'));
+				return false;
+			}
+
+			if (result.status === 404) {
+				// go back home
+				this.changeDirectory('/');
+				return false;
+			}
+			// aborted ?
+			if (result.status === 0){
+				return true;
+			}
+
+			this.setFiles(result.data.files);
+			return true;
+		},
 
 	});
 

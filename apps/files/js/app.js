@@ -11,18 +11,52 @@
  *
  */
 
-/* global dragOptions, folderDropOptions */
+/* global dragOptions, folderDropOptions, OC */
 (function() {
 
 	if (!OCA.Files) {
+		/**
+		 * Namespace for the files app
+		 * @namespace OCA.Files
+		 */
 		OCA.Files = {};
 	}
 
-	var App = {
+	/**
+	 * @namespace OCA.Files.App
+	 */
+	OCA.Files.App = {
+		/**
+		 * Navigation control
+		 *
+		 * @member {OCA.Files.Navigation}
+		 */
 		navigation: null,
 
+		/**
+		 * File list for the "All files" section.
+		 *
+		 * @member {OCA.Files.FileList}
+		 */
+		fileList: null,
+
+		/**
+		 * Backbone model for storing files preferences
+		 */
+		_filesConfig: null,
+
+		/**
+		 * Initializes the files app
+		 */
 		initialize: function() {
 			this.navigation = new OCA.Files.Navigation($('#app-navigation'));
+			this.$showHiddenFiles = $('input#showhiddenfilesToggle');
+			var showHidden = $('#showHiddenFiles').val() === "1";
+			this.$showHiddenFiles.prop('checked', showHidden);
+
+			this._filesConfig = new OC.Backbone.Model({
+				showhidden: showHidden
+			});
 
 			var urlParams = OC.Util.History.parseUrlQuery();
 			var fileActions = new OCA.Files.FileActions();
@@ -49,7 +83,13 @@
 					folderDropOptions: folderDropOptions,
 					fileActions: fileActions,
 					allowLegacyActions: true,
-					scrollTo: urlParams.scrollto
+					scrollTo: urlParams.scrollto,
+					filesClient: OC.Files.getClient(),
+					sorting: {
+						mode: $('#defaultFileSorting').val(),
+						direction: $('#defaultFileSortingDirection').val()
+					},
+					config: this._filesConfig,
 				}
 			);
 			this.files.initialize();
@@ -58,9 +98,13 @@
 			// refer to the one of the "files" view
 			window.FileList = this.fileList;
 
+			OC.Plugins.attach('OCA.Files.App', this);
+
 			this._setupEvents();
 			// trigger URL change event handlers
 			this._onPopState(urlParams);
+
+			this._debouncedPersistShowHiddenFilesState = _.debounce(this._persistShowHiddenFilesState, 1200);
 		},
 
 		/**
@@ -115,6 +159,14 @@
 		},
 
 		/**
+		 *
+		 * @returns {Backbone.Model}
+		 */
+		getFilesConfig: function() {
+			return this._filesConfig;
+		},
+
+		/**
 		 * Setup events based on URL changes
 		 */
 		_setupEvents: function() {
@@ -122,9 +174,34 @@
 
 			// detect when app changed their current directory
 			$('#app-content').delegate('>div', 'changeDirectory', _.bind(this._onDirectoryChanged, this));
+			$('#app-content').delegate('>div', 'afterChangeDirectory', _.bind(this._onAfterDirectoryChanged, this));
 			$('#app-content').delegate('>div', 'changeViewerMode', _.bind(this._onChangeViewerMode, this));
 
 			$('#app-navigation').on('itemChanged', _.bind(this._onNavigationChanged, this));
+			this.$showHiddenFiles.on('change', _.bind(this._onShowHiddenFilesChange, this));
+		},
+
+		/**
+		 * Toggle showing hidden files according to the settings checkbox
+		 *
+		 * @returns {undefined}
+		 */
+		_onShowHiddenFilesChange: function() {
+			var show = this.$showHiddenFiles.is(':checked');
+			this._filesConfig.set('showhidden', show);
+			this._debouncedPersistShowHiddenFilesState();
+		},
+
+		/**
+		 * Persist show hidden preference on ther server
+		 *
+		 * @returns {undefined}
+		 */
+		_persistShowHiddenFilesState: function() {
+			var show = this._filesConfig.get('showhidden');
+			$.post(OC.generateUrl('/apps/files/api/v1/showhidden'), {
+				show: show
+			});
 		},
 
 		/**
@@ -138,6 +215,7 @@
 					dir: '/'
 				};
 				this._changeUrl(params.view, params.dir);
+				OC.Apps.hideAppSidebar($('.detailsView'));
 				this.navigation.getActiveContainer().trigger(new $.Event('urlChanged', params));
 			}
 		},
@@ -147,7 +225,16 @@
 		 */
 		_onDirectoryChanged: function(e) {
 			if (e.dir) {
-				this._changeUrl(this.navigation.getActiveItem(), e.dir);
+				this._changeUrl(this.navigation.getActiveItem(), e.dir, e.fileId);
+			}
+		},
+
+		/**
+		 * Event handler for when an app notified that its directory changed
+		 */
+		_onAfterDirectoryChanged: function(e) {
+			if (e.dir && e.fileId) {
+				this._changeUrl(this.navigation.getActiveItem(), e.dir, e.fileId);
 			}
 		},
 
@@ -157,6 +244,9 @@
 		 */
 		_onChangeViewerMode: function(e) {
 			var state = !!e.viewerModeEnabled;
+			if (e.viewerModeEnabled) {
+				OC.Apps.hideAppSidebar($('.detailsView'));
+			}
 			$('#app-navigation').toggleClass('hidden', state);
 			$('.app-files').toggleClass('viewer-mode no-sidebar', state);
 		},
@@ -181,17 +271,37 @@
 		},
 
 		/**
+		 * Encode URL params into a string, except for the "dir" attribute
+		 * that gets encoded as path where "/" is not encoded
+		 *
+		 * @param {Object.<string>} params
+		 * @return {string} encoded params
+		 */
+		_makeUrlParams: function(params) {
+			var dir = params.dir;
+			delete params.dir;
+			return 'dir=' + OC.encodePath(dir) + '&' + OC.buildQueryString(params);
+		},
+
+		/**
 		 * Change the URL to point to the given dir and view
 		 */
-		_changeUrl: function(view, dir) {
+		_changeUrl: function(view, dir, fileId) {
 			var params = {dir: dir};
 			if (view !== 'files') {
 				params.view = view;
+			} else if (fileId) {
+				params.fileid = fileId;
 			}
-			OC.Util.History.pushState(params);
+			var currentParams = OC.Util.History.parseUrlQuery();
+			if (currentParams.dir === params.dir && currentParams.view === params.view && currentParams.fileid !== params.fileid) {
+				// if only fileid changed or was added, replace instead of push
+				OC.Util.History.replaceState(this._makeUrlParams(params));
+			} else {
+				OC.Util.History.pushState(this._makeUrlParams(params));
+			}
 		}
 	};
-	OCA.Files.App = App;
 })();
 
 $(document).ready(function() {

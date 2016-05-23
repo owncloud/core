@@ -1,3 +1,56 @@
+<?php
+
+vendor_script('user_ldap', 'ui-multiselect/src/jquery.multiselect');
+
+vendor_style('user_ldap', 'ui-multiselect/jquery.multiselect');
+
+script('user_ldap', [
+	'wizard/controller',
+	'wizard/configModel',
+	'wizard/view',
+	'wizard/wizardObject',
+	'wizard/wizardTabGeneric',
+	'wizard/wizardTabElementary',
+	'wizard/wizardTabAbstractFilter',
+	'wizard/wizardTabUserFilter',
+	'wizard/wizardTabLoginFilter',
+	'wizard/wizardTabGroupFilter',
+	'wizard/wizardTabAdvanced',
+	'wizard/wizardTabExpert',
+	'wizard/wizardDetectorQueue',
+	'wizard/wizardDetectorGeneric',
+	'wizard/wizardDetectorPort',
+	'wizard/wizardDetectorBaseDN',
+	'wizard/wizardDetectorFeatureAbstract',
+	'wizard/wizardDetectorUserObjectClasses',
+	'wizard/wizardDetectorGroupObjectClasses',
+	'wizard/wizardDetectorGroupsForUsers',
+	'wizard/wizardDetectorGroupsForGroups',
+	'wizard/wizardDetectorSimpleRequestAbstract',
+	'wizard/wizardDetectorFilterUser',
+	'wizard/wizardDetectorFilterLogin',
+	'wizard/wizardDetectorFilterGroup',
+	'wizard/wizardDetectorUserCount',
+	'wizard/wizardDetectorGroupCount',
+	'wizard/wizardDetectorEmailAttribute',
+	'wizard/wizardDetectorUserDisplayNameAttribute',
+	'wizard/wizardDetectorUserGroupAssociation',
+	'wizard/wizardDetectorAvailableAttributes',
+	'wizard/wizardDetectorTestAbstract',
+	'wizard/wizardDetectorTestLoginName',
+	'wizard/wizardDetectorTestBaseDN',
+	'wizard/wizardDetectorTestConfiguration',
+	'wizard/wizardDetectorClearUserMappings',
+	'wizard/wizardDetectorClearGroupMappings',
+	'wizard/wizardFilterOnType',
+	'wizard/wizardFilterOnTypeFactory',
+	'wizard/wizard'
+]);
+
+style('user_ldap', 'settings');
+
+?>
+
 <form id="ldap" class="section" action="#" method="post">
 	<h2><?php p($l->t('LDAP')); ?></h2>
 
@@ -25,19 +78,20 @@
 				<p><label for="ldap_backup_host"><?php p($l->t('Backup (Replica) Host'));?></label><input type="text" id="ldap_backup_host" name="ldap_backup_host" data-default="<?php p($_['ldap_backup_host_default']); ?>" title="<?php p($l->t('Give an optional backup host. It must be a replica of the main LDAP/AD server.'));?>"></p>
 				<p><label for="ldap_backup_port"><?php p($l->t('Backup (Replica) Port'));?></label><input type="number" id="ldap_backup_port" name="ldap_backup_port" data-default="<?php p($_['ldap_backup_port_default']); ?>"  /></p>
 				<p><label for="ldap_override_main_server"><?php p($l->t('Disable Main Server'));?></label><input type="checkbox" id="ldap_override_main_server" name="ldap_override_main_server" value="1" data-default="<?php p($_['ldap_override_main_server_default']); ?>"  title="<?php p($l->t('Only connect to the replica server.'));?>" /></p>
-				<p><label for="ldap_nocase"><?php p($l->t('Case insensitive LDAP server (Windows)'));?></label><input type="checkbox" id="ldap_nocase" name="ldap_nocase" data-default="<?php p($_['ldap_nocase_default']); ?>"  value="1"<?php if (isset($_['ldap_nocase']) && ($_['ldap_nocase'])) p(' checked'); ?>></p>
 				<p><label for="ldap_turn_off_cert_check"><?php p($l->t('Turn off SSL certificate validation.'));?></label><input type="checkbox" id="ldap_turn_off_cert_check" name="ldap_turn_off_cert_check" title="<?php p($l->t('Not recommended, use it for testing only! If connection only works with this option, import the LDAP server\'s SSL certificate in your %s server.', $theme->getName() ));?>" data-default="<?php p($_['ldap_turn_off_cert_check_default']); ?>" value="1"><br/></p>
 				<p><label for="ldap_cache_ttl"><?php p($l->t('Cache Time-To-Live'));?></label><input type="number" id="ldap_cache_ttl" name="ldap_cache_ttl" title="<?php p($l->t('in seconds. A change empties the cache.'));?>" data-default="<?php p($_['ldap_cache_ttl_default']); ?>" /></p>
 			</div>
 			<h3><?php p($l->t('Directory Settings'));?></h3>
 			<div>
 				<p><label for="ldap_display_name"><?php p($l->t('User Display Name Field'));?></label><input type="text" id="ldap_display_name" name="ldap_display_name" data-default="<?php p($_['ldap_display_name_default']); ?>" title="<?php p($l->t('The LDAP attribute to use to generate the user\'s display name.'));?>" /></p>
+				<p><label for="ldap_user_display_name_2"><?php p($l->t('2nd User Display Name Field'));?></label><input type="text" id="ldap_user_display_name_2" name="ldap_user_display_name_2" data-default="<?php p($_['ldap_user_display_name_2_default']); ?>" title="<?php p($l->t('Optional. An LDAP attribute to be added to the display name in brackets. Results in e.g. »John Doe (john.doe@example.org)«.'));?>" /></p>
 				<p><label for="ldap_base_users"><?php p($l->t('Base User Tree'));?></label><textarea id="ldap_base_users" name="ldap_base_users" placeholder="<?php p($l->t('One User Base DN per line'));?>" data-default="<?php p($_['ldap_base_users_default']); ?>" title="<?php p($l->t('Base User Tree'));?>"></textarea></p>
 				<p><label for="ldap_attributes_for_user_search"><?php p($l->t('User Search Attributes'));?></label><textarea id="ldap_attributes_for_user_search" name="ldap_attributes_for_user_search" placeholder="<?php p($l->t('Optional; one attribute per line'));?>" data-default="<?php p($_['ldap_attributes_for_user_search_default']); ?>" title="<?php p($l->t('User Search Attributes'));?>"></textarea></p>
 				<p><label for="ldap_group_display_name"><?php p($l->t('Group Display Name Field'));?></label><input type="text" id="ldap_group_display_name" name="ldap_group_display_name" data-default="<?php p($_['ldap_group_display_name_default']); ?>" title="<?php p($l->t('The LDAP attribute to use to generate the groups\'s display name.'));?>" /></p>
 				<p><label for="ldap_base_groups"><?php p($l->t('Base Group Tree'));?></label><textarea id="ldap_base_groups" name="ldap_base_groups" placeholder="<?php p($l->t('One Group Base DN per line'));?>" data-default="<?php p($_['ldap_base_groups_default']); ?>" title="<?php p($l->t('Base Group Tree'));?>"></textarea></p>
 				<p><label for="ldap_attributes_for_group_search"><?php p($l->t('Group Search Attributes'));?></label><textarea id="ldap_attributes_for_group_search" name="ldap_attributes_for_group_search" placeholder="<?php p($l->t('Optional; one attribute per line'));?>" data-default="<?php p($_['ldap_attributes_for_group_search_default']); ?>" title="<?php p($l->t('Group Search Attributes'));?>"></textarea></p>
 				<p><label for="ldap_group_member_assoc_attribute"><?php p($l->t('Group-Member association'));?></label><select id="ldap_group_member_assoc_attribute" name="ldap_group_member_assoc_attribute" data-default="<?php p($_['ldap_group_member_assoc_attribute_default']); ?>" ><option value="uniqueMember"<?php if (isset($_['ldap_group_member_assoc_attribute']) && ($_['ldap_group_member_assoc_attribute'] === 'uniqueMember')) p(' selected'); ?>>uniqueMember</option><option value="memberUid"<?php if (isset($_['ldap_group_member_assoc_attribute']) && ($_['ldap_group_member_assoc_attribute'] === 'memberUid')) p(' selected'); ?>>memberUid</option><option value="member"<?php if (isset($_['ldap_group_member_assoc_attribute']) && ($_['ldap_group_member_assoc_attribute'] === 'member')) p(' selected'); ?>>member (AD)</option></select></p>
+				<p><label for="ldap_dynamic_group_member_url"><?php p($l->t('Dynamic Group Member URL'));?></label><input type="text" id="ldap_dynamic_group_member_url" name="ldap_dynamic_group_member_url" title="<?php p($l->t('The LDAP attribute that on group objects contains an LDAP search URL that determines what objects belong to the group. (An empty setting disables dynamic group membership functionality.)'));?>" data-default="<?php p($_['ldap_dynamic_group_member_url_default']); ?>" /></p>
 				<p><label for="ldap_nested_groups"><?php p($l->t('Nested Groups'));?></label><input type="checkbox" id="ldap_nested_groups" name="ldap_nested_groups" value="1" data-default="<?php p($_['ldap_nested_groups_default']); ?>"  title="<?php p($l->t('When switched on, groups that contain groups are supported. (Only works if the group member attribute contains DNs.)'));?>" /></p>
 				<p><label for="ldap_paging_size"><?php p($l->t('Paging chunksize'));?></label><input type="number" id="ldap_paging_size" name="ldap_paging_size" title="<?php p($l->t('Chunksize used for paged LDAP searches that may return bulky results like user or group enumeration. (Setting it 0 disables paged LDAP searches in those situations.)'));?>" data-default="<?php p($_['ldap_paging_size_default']); ?>" /></p>
 			</div>
@@ -60,10 +114,11 @@
 		<p class="ldapIndent"><label for="ldap_expert_uuid_user_attr"><?php p($l->t('UUID Attribute for Users:'));?></label><input type="text" id="ldap_expert_uuid_user_attr" name="ldap_expert_uuid_user_attr" data-default="<?php p($_['ldap_expert_uuid_user_attr_default']); ?>" /></p>
 		<p class="ldapIndent"><label for="ldap_expert_uuid_group_attr"><?php p($l->t('UUID Attribute for Groups:'));?></label><input type="text" id="ldap_expert_uuid_group_attr" name="ldap_expert_uuid_group_attr" data-default="<?php p($_['ldap_expert_uuid_group_attr_default']); ?>" /></p>
 		<p><strong><?php p($l->t('Username-LDAP User Mapping'));?></strong></p>
-		<p class="ldapIndent"><?php p($l->t('Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have a internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage.'));?></p>
+		<p class="ldapIndent"><?php p($l->t('Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage.'));?></p>
 		<p class="ldapIndent"><button type="button" id="ldap_action_clear_user_mappings" name="ldap_action_clear_user_mappings"><?php p($l->t('Clear Username-LDAP User Mapping'));?></button><br/><button type="button" id="ldap_action_clear_group_mappings" name="ldap_action_clear_group_mappings"><?php p($l->t('Clear Groupname-LDAP Group Mapping'));?></button></p>
 		<?php print_unescaped($_['settingControls']); ?>
 	</fieldset>
 	</div>
-
+	<!-- Spinner Template -->
+	<img class="ldapSpinner hidden" src="<?php p(image_path('core', 'loading.gif')); ?>">
 </form>

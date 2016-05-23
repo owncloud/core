@@ -1,21 +1,17 @@
 { "translations": {
-    "Help" : "Adjuta",
-    "Personal" : "Personal",
-    "Settings" : "Configurationes",
-    "Users" : "Usatores",
-    "Admin" : "Administration",
     "Unknown filetype" : "Typo de file incognite",
     "Invalid image" : "Imagine invalide",
-    "web services under your control" : "servicios web sub tu controlo",
-    "seconds ago" : "secundas passate",
-    "_%n minute ago_::_%n minutes ago_" : ["","%n minutas passate"],
-    "_%n hour ago_::_%n hours ago_" : ["","%n horas passate"],
     "today" : "hodie",
     "yesterday" : "heri",
-    "_%n day go_::_%n days ago_" : ["","%n dies ante"],
     "last month" : "ultime mense",
-    "_%n month ago_::_%n months ago_" : ["","%n menses ante"],
     "last year" : "ultime anno",
-    "years ago" : "annos passate"
+    "seconds ago" : "secundas passate",
+    "For the best results, please consider using a GNU/Linux server instead." : "Pro le exitos melior, pro favor tu considera usar in loco un servitor GNU/Linux.",
+    "Apps" : "Applicationes",
+    "Help" : "Adjuta",
+    "Personal" : "Personal",
+    "Users" : "Usatores",
+    "Admin" : "Administration",
+    "web services under your control" : "servicios web sub tu controlo"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -1,47 +1,56 @@
 <?php
 /**
- * Copyright (c) 2014 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OCA\Files_Sharing\External;
 
-use OC\Files\Filesystem;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use OC\Files\Storage\DAV;
 use OC\ForbiddenException;
+use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\NotFoundException;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 
 class Storage extends DAV implements ISharedStorage {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $remoteUser;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $remote;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $mountPoint;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $token;
-
-	/**
-	 * @var \OCP\ICertificateManager
-	 */
+	/** @var \OCP\ICacheFactory */
+	private $memcacheFactory;
+	/** @var \OCP\Http\Client\IClientService */
+	private $httpClient;
+	/** @var \OCP\ICertificateManager */
 	private $certificateManager;
-
+	/** @var bool */
 	private $updateChecked = false;
 
 	/**
@@ -50,6 +59,13 @@ class Storage extends DAV implements ISharedStorage {
 	private $manager;
 
 	public function __construct($options) {
+		$this->memcacheFactory = \OC::$server->getMemCacheFactory();
+		$this->httpClient = \OC::$server->getHTTPClientService();
+		$discoveryManager = new DiscoveryManager(
+			$this->memcacheFactory,
+			\OC::$server->getHTTPClientService()
+		);
+
 		$this->manager = $options['manager'];
 		$this->certificateManager = $options['certificateManager'];
 		$this->remote = $options['remote'];
@@ -62,7 +78,7 @@ class Storage extends DAV implements ISharedStorage {
 			$root = '';
 		}
 		$secure = $protocol === 'https';
-		$root = rtrim($root, '/') . '/public.php/webdav';
+		$root = rtrim($root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		$this->mountPoint = $options['mountpoint'];
 		$this->token = $options['token'];
 		parent::__construct(array(
@@ -70,8 +86,10 @@ class Storage extends DAV implements ISharedStorage {
 			'host' => $host,
 			'root' => $root,
 			'user' => $options['token'],
-			'password' => $options['password']
+			'password' => (string)$options['password']
 		));
+
+		$this->getWatcher()->setPolicy(\OC\Files\Cache\Watcher::CHECK_ONCE);
 	}
 
 	public function getRemoteUser() {
@@ -103,7 +121,7 @@ class Storage extends DAV implements ISharedStorage {
 	}
 
 	public function getCache($path = '', $storage = null) {
-		if (!$storage) {
+		if (is_null($this->cache)) {
 			$this->cache = new Cache($this, $this->remote, $this->remoteUser);
 		}
 		return $this->cache;
@@ -142,86 +160,180 @@ class Storage extends DAV implements ISharedStorage {
 		$this->updateChecked = true;
 		try {
 			return parent::hasUpdated('', $time);
+		} catch (StorageInvalidException $e) {
+			// check if it needs to be removed
+			$this->checkStorageAvailability();
+			throw $e;
 		} catch (StorageNotAvailableException $e) {
-			// see if we can find out why the share is unavailable\
-			try {
-				$this->getShareInfo();
-			} catch (NotFoundException $shareException) {
-				// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
-				if ($this->testRemote()) {
-					// valid ownCloud instance means that the public share no longer exists
-					// since this is permanent (re-sharing the file will create a new token)
-					// we remove the invalid storage
-					$this->manager->removeShare($this->mountPoint);
-					$this->manager->getMountManager()->removeMount($this->mountPoint);
-					throw new StorageInvalidException();
-				} else {
-					// ownCloud instance is gone, likely to be a temporary server configuration error
-					throw $e;
-				}
-			} catch (\Exception $shareException) {
-				// todo, maybe handle 403 better and ask the user for a new password
-				throw $e;
-			}
+			// check if it needs to be removed or just temp unavailable
+			$this->checkStorageAvailability();
 			throw $e;
 		}
 	}
 
 	/**
-	 * check if the configured remote is a valid ownCloud instance
+	 * Check whether this storage is permanently or temporarily
+	 * unavailable
+	 *
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @throws \OCP\Files\StorageInvalidException
+	 */
+	public function checkStorageAvailability() {
+		// see if we can find out why the share is unavailable
+		try {
+			$this->getShareInfo();
+		} catch (NotFoundException $e) {
+			// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
+			if ($this->testRemote()) {
+				// valid ownCloud instance means that the public share no longer exists
+				// since this is permanent (re-sharing the file will create a new token)
+				// we remove the invalid storage
+				$this->manager->removeShare($this->mountPoint);
+				$this->manager->getMountManager()->removeMount($this->mountPoint);
+				throw new StorageInvalidException();
+			} else {
+				// ownCloud instance is gone, likely to be a temporary server configuration error
+				throw new StorageNotAvailableException();
+			}
+		} catch (ForbiddenException $e) {
+			// auth error, remove share for now (provide a dialog in the future)
+			$this->manager->removeShare($this->mountPoint);
+			$this->manager->getMountManager()->removeMount($this->mountPoint);
+			throw new StorageInvalidException();
+		} catch (\GuzzleHttp\Exception\ConnectException $e) {
+			throw new StorageNotAvailableException();
+		} catch (\GuzzleHttp\Exception\RequestException $e) {
+			throw new StorageNotAvailableException();
+		} catch (\Exception $e) {
+			throw $e;
+		}
+	}
+
+	public function file_exists($path) {
+		if ($path === '') {
+			return true;
+		} else {
+			return parent::file_exists($path);
+		}
+	}
+
+	/**
+	 * check if the configured remote is a valid federated share provider
 	 *
 	 * @return bool
 	 */
 	protected function testRemote() {
 		try {
-			$result = file_get_contents($this->remote . '/status.php');
-			$data = json_decode($result);
-			return is_object($data) and !empty($data->version);
+			return $this->testRemoteUrl($this->remote . '/ocs-provider/index.php')
+				|| $this->testRemoteUrl($this->remote . '/ocs-provider/')
+				|| $this->testRemoteUrl($this->remote . '/status.php');
 		} catch (\Exception $e) {
 			return false;
 		}
 	}
 
+	/**
+	 * @param string $url
+	 * @return bool
+	 */
+	private function testRemoteUrl($url) {
+		$cache = $this->memcacheFactory->create('files_sharing_remote_url');
+		if($cache->hasKey($url)) {
+			return (bool)$cache->get($url);
+		}
+
+		$client = $this->httpClient->newClient();
+		try {
+			$result = $client->get($url)->getBody();
+			$data = json_decode($result);
+			$returnValue = (is_object($data) && !empty($data->version));
+		} catch (ConnectException $e) {
+			$returnValue = false;
+		} catch (ClientException $e) {
+			$returnValue = false;
+		}
+
+		$cache->set($url, $returnValue);
+		return $returnValue;
+	}
+
+	/**
+	 * Whether the remote is an ownCloud, used since some sharing features are not
+	 * standardized. Let's use this to detect whether to use it.
+	 *
+	 * @return bool
+	 */
+	public function remoteIsOwnCloud() {
+		if(defined('PHPUNIT_RUN') || !$this->testRemoteUrl($this->getRemote() . '/status.php')) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @return mixed
+	 * @throws ForbiddenException
+	 * @throws NotFoundException
+	 * @throws \Exception
+	 */
 	public function getShareInfo() {
 		$remote = $this->getRemote();
 		$token = $this->getToken();
 		$password = $this->getPassword();
-		$url = $remote . '/index.php/apps/files_sharing/shareinfo?t=' . $token;
 
-		$ch = curl_init();
-
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,
-			http_build_query(array('password' => $password)));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		$path = $this->certificateManager->getCertificateBundle();
-		if (is_readable($path)) {
-			curl_setopt($ch, CURLOPT_CAINFO, $path);
+		// If remote is not an ownCloud do not try to get any share info
+		if(!$this->remoteIsOwnCloud()) {
+			return ['status' => 'unsupported'];
 		}
 
-		$result = curl_exec($ch);
+		$url = rtrim($remote, '/') . '/index.php/apps/files_sharing/shareinfo?t=' . $token;
 
-		$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		$errorMessage = curl_error($ch);
-		curl_close($ch);
-		if (!empty($errorMessage)) {
-			throw new \Exception($errorMessage);
-		}
-
-		switch ($status) {
-			case 401:
-			case 403:
+		// TODO: DI
+		$client = \OC::$server->getHTTPClientService()->newClient();
+		try {
+			$response = $client->post($url, ['body' => ['password' => $password]]);
+		} catch (\GuzzleHttp\Exception\RequestException $e) {
+			if ($e->getCode() === 401 || $e->getCode() === 403) {
 				throw new ForbiddenException();
-			case 404:
+			}
+			if ($e->getCode() === 404) {
 				throw new NotFoundException();
-			case 500:
-				throw new \Exception();
+			}
+			// throw this to be on the safe side: the share will still be visible
+			// in the UI in case the failure is intermittent, and the user will
+			// be able to decide whether to remove it if it's really gone
+			throw new StorageNotAvailableException();
 		}
 
-		return json_decode($result, true);
+		return json_decode($response->getBody(), true);
 	}
+
+	public function getOwner($path) {
+		list(, $remote) = explode('://', $this->remote, 2);
+		return $this->remoteUser . '@' . $remote;
+	}
+
+	public function isSharable($path) {
+		if (\OCP\Util::isSharingDisabledForUser() || !\OC\Share\Share::isResharingAllowed()) {
+			return false;
+		}
+		return ($this->getPermissions($path) & \OCP\Constants::PERMISSION_SHARE);
+	}
+	
+	public function getPermissions($path) {
+		$response = $this->propfind($path);
+		if (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
+			$permissions = $response['{http://open-collaboration-services.org/ns}share-permissions'];
+		} else {
+			// use default permission if remote server doesn't provide the share permissions
+			if ($this->is_dir($path)) {
+				$permissions = \OCP\Constants::PERMISSION_ALL;
+			} else {
+				$permissions = \OCP\Constants::PERMISSION_ALL & ~\OCP\Constants::PERMISSION_CREATE;
+			}
+		}
+
+		return $permissions;
+	}
+
 }

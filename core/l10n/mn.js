@@ -1,7 +1,16 @@
 OC.L10N.register(
     "core",
     {
-    "_{count} file conflict_::_{count} file conflicts_" : ["",""],
-    "_download %n file_::_download %n files_" : ["",""]
+    "Sunday" : "Ням",
+    "Monday" : "Даваа",
+    "Tuesday" : "Мягмар",
+    "Wednesday" : "Лхагва",
+    "Thursday" : "Пүрэв",
+    "Friday" : "Баасан",
+    "Saturday" : "Бямба",
+    "Settings" : "Тохиргоо",
+    "Password" : "Нууц үг",
+    "Share" : "Түгээх",
+    "Username" : "Хэрэглэгчийн нэр"
 },
 "nplurals=2; plural=(n != 1);");

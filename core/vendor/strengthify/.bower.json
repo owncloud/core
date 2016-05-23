@@ -1,0 +1,20 @@
+{
+  "name": "strengthify",
+  "version": "0.4.2",
+  "homepage": "https://github.com/MorrisJobke/strengthify",
+  "authors": [
+    "Morris Jobke <hey@morrisjobke.de>"
+  ],
+  "description": "Combine jQuery and zxcvbn to create a password strength meter.",
+  "main": "jquery.strengthify.js",
+  "license": "MIT",
+  "_release": "0.4.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.4.2",
+    "commit": "b3df9344d829063564cdced3c6328b001bc4bad1"
+  },
+  "_source": "git://github.com/MorrisJobke/strengthify.git",
+  "_target": "0.4.2",
+  "_originalSource": "strengthify"
+}

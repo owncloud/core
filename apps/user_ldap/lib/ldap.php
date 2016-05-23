@@ -1,27 +1,32 @@
 <?php
-
 /**
- * ownCloud – LDAP Wrapper
+ * @author Alexander Bergolth <leo@strike.wu.ac.at>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @author Arthur Schiwon
- * @copyright 2013 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
 namespace OCA\user_ldap\lib;
+
+use OC\ServerNotAvailableException;
 
 class LDAP implements ILDAPWrapper {
 	protected $curFunc = '';
@@ -43,7 +48,14 @@ class LDAP implements ILDAPWrapper {
 	 * @return mixed
 	 */
 	public function connect($host, $port) {
-		return $this->invokeLDAPMethod('connect', $host, $port);
+		if(strpos($host, '://') === false) {
+			$host = 'ldap://' . $host;
+		}
+		if(strpos($host, ':', strpos($host, '://') + 1) === false) {
+			//ldap_connect ignores port parameter when URLs are passed
+			$host .= ':' . $port;
+		}
+		return $this->invokeLDAPMethod('connect', $host);
 	}
 
 	/**
@@ -190,16 +202,6 @@ class LDAP implements ILDAPWrapper {
 
 	/**
 	 * @param LDAP $link
-	 * @param LDAP $result
-	 * @param string $sortFilter
-	 * @return mixed
-	 */
-	public function sort($link, $result, $sortFilter) {
-		return $this->invokeLDAPMethod('sort', $link, $result, $sortFilter);
-	}
-
-	/**
-	 * @param LDAP $link
 	 * @return mixed|true
 	 */
 	public function startTls($link) {
@@ -271,15 +273,18 @@ class LDAP implements ILDAPWrapper {
 			$errorCode = ldap_errno($this->curArgs[0]);
 			$errorMsg  = ldap_error($this->curArgs[0]);
 			if($errorCode !== 0) {
-				if($this->curFunc === 'ldap_sort' && $errorCode === -4) {
-					//You can safely ignore that decoding error.
-					//… says https://bugs.php.net/bug.php?id=18023
-				} else if($this->curFunc === 'ldap_get_entries'
+				if($this->curFunc === 'ldap_get_entries'
 						  && $errorCode === -4) {
 				} else if ($errorCode === 32) {
 					//for now
 				} else if ($errorCode === 10) {
 					//referrals, we switch them off, but then there is AD :)
+				} else if ($errorCode === -1) {
+					throw new ServerNotAvailableException('Lost connection to LDAP server.');
+				} else if ($errorCode === 48) {
+					throw new \Exception('LDAP authentication method rejected', $errorCode);
+				} else if ($errorCode === 1) {
+					throw new \Exception('LDAP Operations error', $errorCode);
 				} else {
 					\OCP\Util::writeLog('user_ldap',
 										'LDAP error '.$errorMsg.' (' .

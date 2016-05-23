@@ -9,13 +9,20 @@ A user logs into ownCloud with their LDAP or AD credentials, and is granted acce
 	</description>
 	<licence>AGPL</licence>
 	<author>Dominik Schmidt and Arthur Schiwon</author>
-	<requiremin>4.93</requiremin>
-	<shipped>true</shipped>
+	<version>0.9.0</version>
 	<types>
 		<authentication/>
 	</types>
 	<documentation>
 		<admin>admin-ldap</admin>
 	</documentation>
-	<ocsid>166061</ocsid>
+	<dependencies>
+		<lib>ldap</lib>
+		<owncloud min-version="9.1" max-version="9.1" />
+	</dependencies>
+
+	<background-jobs>
+		<job>OCA\user_ldap\lib\Jobs</job>
+		<job>\OCA\User_LDAP\Jobs\CleanUp</job>
+	</background-jobs>
 </info>

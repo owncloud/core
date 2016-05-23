@@ -21,7 +21,7 @@
  * This will make the div to jdoe's fitting avatar, with a size of 128px.
  *
  * 2. $('.avatardiv').avatar('jdoe');
- * This will make the div to jdoe's fitting avatar. If the div aready has a
+ * This will make the div to jdoe's fitting avatar. If the div already has a
  * height, it will be used for the avatars size. Otherwise this plugin will
  * search for 'size' DOM data, to use for avatar size. If neither are available
  * it will default to 64px.
@@ -47,7 +47,7 @@
  */
 
 (function ($) {
-	$.fn.avatar = function(user, size, ie8fix, hidedefault, callback) {
+	$.fn.avatar = function(user, size, ie8fix, hidedefault, callback, displayname) {
 		if (typeof(size) === 'undefined') {
 			if (this.height() > 0) {
 				size = this.height();
@@ -76,31 +76,57 @@
 		var $div = this;
 
 		var url = OC.generateUrl(
-			'/avatar/{user}/{size}?requesttoken={requesttoken}',
-			{user: user, size: size * window.devicePixelRatio, requesttoken: oc_requesttoken});
+			'/avatar/{user}/{size}',
+			{user: user, size: Math.ceil(size * window.devicePixelRatio)});
 
-		$.get(url, function(result) {
-			if (typeof(result) === 'object') {
-				if (!hidedefault) {
-					if (result.data && result.data.displayname) {
-						$div.imageplaceholder(user, result.data.displayname);
+		// If the displayname is not defined we use the old code path
+		if (typeof(displayname) === 'undefined') {
+			$.get(url).always(function(result, status) {
+				// if there is an error or an object returned (contains user information):
+				// -> show the fallback placeholder
+				if (typeof(result) === 'object' || status === 'error') {
+					if (!hidedefault) {
+						if (result.data && result.data.displayname) {
+							$div.imageplaceholder(user, result.data.displayname);
+						} else {
+							// User does not exist
+							$div.imageplaceholder(user, 'X');
+							$div.css('background-color', '#b9b9b9');
+						}
 					} else {
-						$div.imageplaceholder(user);
+						$div.hide();
 					}
+				// else an image is transferred and should be shown
 				} else {
-					$div.hide();
+					$div.show();
+					if (ie8fix === true) {
+						$div.html('<img width="' + size + '" height="' + size + '" src="'+url+'#'+Math.floor(Math.random()*1000)+'">');
+					} else {
+						$div.html('<img width="' + size + '" height="' + size + '" src="'+url+'">');
+					}
 				}
-			} else {
+				if(typeof callback === 'function') {
+					callback();
+				}
+			});
+		} else {
+			// We already have the displayname so set the placeholder (to show at least something)
+			if (!hidedefault) {
+				$div.imageplaceholder(displayname);
+			}
+
+			var img = new Image();
+
+			// If the new image loads successfully set it.
+			img.onload = function() {
 				$div.show();
-				if (ie8fix === true) {
-					$div.html('<img width="' + size + '" height="' + size + '" src="'+url+'#'+Math.floor(Math.random()*1000)+'">');
-				} else {
-					$div.html('<img width="' + size + '" height="' + size + '" src="'+url+'">');
-				}
+				$div.text('');
+				$div.append(img);
 			}
-			if(typeof callback === 'function') {
-				callback();
-			}
-		});
+
+			img.width = size;
+			img.height = size;
+			img.src = url;
+		}
 	};
 }(jQuery));

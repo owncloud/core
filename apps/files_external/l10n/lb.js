@@ -1,14 +1,18 @@
 OC.L10N.register(
     "files_external",
     {
-    "Location" : "Uert",
-    "Region" : "Regioun",
-    "Host" : "Host",
+    "Personal" : "Perséinlech",
+    "Saved" : "Gespäichert",
     "Username" : "Benotzernumm",
     "Password" : "Passwuert",
-    "Share" : "Deelen",
+    "Save" : "Späicheren",
+    "Port" : "Port",
+    "Region" : "Regioun",
     "URL" : "URL",
-    "Personal" : "Perséinlech",
+    "Host" : "Host",
+    "Location" : "Uert",
+    "ownCloud" : "ownCloud",
+    "Share" : "Deelen",
     "Name" : "Numm",
     "Folder name" : "Dossiers Numm:",
     "Delete" : "Läschen"

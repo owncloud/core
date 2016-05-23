@@ -1,38 +1,86 @@
 <?php
 /**
- * Copyright (c) 2011, Robin Appelman <icewind1991@gmail.com>
- * This file is licensed under the Affero General Public License version 3 or later.
- * See the COPYING-README file.
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Daniel Molkentin <daniel@molkentin.de>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Stephan Peijnik <speijnik@anexia-it.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 OC_Util::checkSubAdminUser();
 
-// We have some javascript foo!
-OC_Util::addScript('settings', 'users/deleteHandler');
-OC_Util::addScript('settings', 'users/filter');
-OC_Util::addScript( 'settings', 'users/users' );
-OC_Util::addScript( 'settings', 'users/groups' );
-OC_Util::addScript( 'core', 'multiselect' );
-OC_Util::addScript( 'core', 'singleselect' );
-OC_Util::addStyle( 'settings', 'settings' );
-OC_App::setActiveNavigationEntry( 'core_users' );
+\OC::$server->getNavigationManager()->setActiveEntry('core_users');
 
-$users = array();
-$userManager = \OC_User::getManager();
+$userManager = \OC::$server->getUserManager();
 $groupManager = \OC_Group::getManager();
+
+// Set the sort option: SORT_USERCOUNT or SORT_GROUPNAME
+$sortGroupsBy = \OC\Group\MetaData::SORT_USERCOUNT;
+
+if (\OC_App::isEnabled('user_ldap')) {
+	$isLDAPUsed =
+		   $groupManager->isBackendUsed('\OCA\user_ldap\GROUP_LDAP')
+		|| $groupManager->isBackendUsed('\OCA\user_ldap\Group_Proxy');
+	if ($isLDAPUsed) {
+		// LDAP user count can be slow, so we sort by group name here
+		$sortGroupsBy = \OC\Group\MetaData::SORT_GROUPNAME;
+	}
+}
+
+$config = \OC::$server->getConfig();
 
 $isAdmin = OC_User::isAdminUser(OC_User::getUser());
 
-$groupsInfo = new \OC\Group\MetaData(OC_User::getUser(), $isAdmin, $groupManager);
-$groupsInfo->setSorting($groupsInfo::SORT_USERCOUNT);
+$groupsInfo = new \OC\Group\MetaData(
+	OC_User::getUser(),
+	$isAdmin,
+	$groupManager,
+	\OC::$server->getUserSession()
+);
+$groupsInfo->setSorting($sortGroupsBy);
 list($adminGroup, $groups) = $groupsInfo->get();
 
-$recoveryAdminEnabled = OC_App::isEnabled('files_encryption') &&
-					    OC_Appconfig::getValue( 'files_encryption', 'recoveryAdminEnabled' );
+$recoveryAdminEnabled = OC_App::isEnabled('encryption') &&
+					    $config->getAppValue( 'encryption', 'recoveryAdminEnabled', null );
 
 if($isAdmin) {
-	$accessibleUsers = OC_User::getDisplayNames('', 30);
-	$subadmins = OC_SubAdmin::getAllSubAdmins();
+	$subAdmins = \OC::$server->getGroupManager()->getSubAdmin()->getAllSubAdmins();
+	// New class returns IUser[] so convert back
+	$result = [];
+	foreach ($subAdmins as $subAdmin) {
+		$result[] = [
+			'gid' => $subAdmin['group']->getGID(),
+			'uid' => $subAdmin['user']->getUID(),
+		];
+	}
+	$subAdmins = $result;
 }else{
 	/* Retrieve group IDs from $groups array, so we can pass that information into OC_Group::displayNamesInGroups() */
 	$gids = array();
@@ -41,56 +89,40 @@ if($isAdmin) {
 			$gids[] = $group['id'];
 		}
 	}
-	$accessibleUsers = OC_Group::displayNamesInGroups($gids, '', 30);
-	$subadmins = false;
+	$subAdmins = false;
 }
 
 // load preset quotas
-$quotaPreset=OC_Appconfig::getValue('files', 'quota_preset', '1 GB, 5 GB, 10 GB');
+$quotaPreset=$config->getAppValue('files', 'quota_preset', '1 GB, 5 GB, 10 GB');
 $quotaPreset=explode(',', $quotaPreset);
 foreach($quotaPreset as &$preset) {
 	$preset=trim($preset);
 }
 $quotaPreset=array_diff($quotaPreset, array('default', 'none'));
 
-$defaultQuota=OC_Appconfig::getValue('files', 'default_quota', 'none');
+$defaultQuota=$config->getAppValue('files', 'default_quota', 'none');
 $defaultQuotaIsUserDefined=array_search($defaultQuota, $quotaPreset)===false
 	&& array_search($defaultQuota, array('none', 'default'))===false;
 
-// load users and quota
-foreach($accessibleUsers as $uid => $displayName) {
-	$quota = OC_Preferences::getValue($uid, 'files', 'quota', 'default');
-	$isQuotaUserDefined = array_search($quota, $quotaPreset) === false
-		&& array_search($quota, array('none', 'default')) === false;
-
-	$name = $displayName;
-	if ($displayName !== $uid) {
-		$name = $name . ' (' . $uid . ')';
-	}
-
-	$user = $userManager->get($uid);
-	$users[] = array(
-		"name" => $uid,
-		"displayName" => $displayName,
-		"groups" => OC_Group::getUserGroups($uid),
-		'quota' => $quota,
-		'isQuotaUserDefined' => $isQuotaUserDefined,
-		'subadmin' => OC_SubAdmin::getSubAdminsGroups($uid),
-		'storageLocation' => $user->getHome(),
-		'lastLogin' => $user->getLastLogin(),
-	);
-}
+\OC::$server->getEventDispatcher()->dispatch('OC\Settings\Users::loadAdditionalScripts');
 
 $tmpl = new OC_Template("settings", "users/main", "user");
-$tmpl->assign('users', $users);
 $tmpl->assign('groups', $groups);
+$tmpl->assign('sortGroups', $sortGroupsBy);
 $tmpl->assign('adminGroup', $adminGroup);
 $tmpl->assign('isAdmin', (int)$isAdmin);
-$tmpl->assign('subadmins', $subadmins);
+$tmpl->assign('subadmins', $subAdmins);
 $tmpl->assign('numofgroups', count($groups) + count($adminGroup));
 $tmpl->assign('quota_preset', $quotaPreset);
 $tmpl->assign('default_quota', $defaultQuota);
 $tmpl->assign('defaultQuotaIsUserDefined', $defaultQuotaIsUserDefined);
 $tmpl->assign('recoveryAdminEnabled', $recoveryAdminEnabled);
-$tmpl->assign('enableAvatars', \OC::$server->getConfig()->getSystemValue('enable_avatars', true));
+$tmpl->assign('enableAvatars', \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true);
+
+$tmpl->assign('show_storage_location', $config->getAppValue('core', 'umgmt_show_storage_location', 'false'));
+$tmpl->assign('show_last_login', $config->getAppValue('core', 'umgmt_show_last_login', 'false'));
+$tmpl->assign('show_email', $config->getAppValue('core', 'umgmt_show_email', 'false'));
+$tmpl->assign('show_backend', $config->getAppValue('core', 'umgmt_show_backend', 'false'));
+$tmpl->assign('send_email', $config->getAppValue('core', 'umgmt_send_email', 'false'));
+
 $tmpl->printPage();

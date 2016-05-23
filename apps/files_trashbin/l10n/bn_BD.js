@@ -5,11 +5,10 @@ OC.L10N.register(
     "Couldn't restore %s" : "%s ফেরত আনা গেলনা",
     "Deleted files" : "মুছে ফেলা ফাইলসমূহ",
     "Restore" : "ফিরিয়ে দাও",
+    "Delete" : "মুছে",
     "Error" : "সমস্যা",
     "restored" : "পূণঃসংরক্ষিত",
-    "Nothing in here. Your trash bin is empty!" : "এখানে কিছু নেই। আপনার ট্র্যাসবিন শুন্য",
     "Name" : "নাম",
-    "Deleted" : "মুছে ফেলা",
-    "Delete" : "মুছে"
+    "Deleted" : "মুছে ফেলা"
 },
 "nplurals=2; plural=(n != 1);");

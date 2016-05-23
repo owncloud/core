@@ -1,34 +1,39 @@
 <?php
-
 /**
-* ownCloud - ajax frontend
-*
-* @author Robin Appelman
-* @copyright 2010 Robin Appelman icewind1991@gmail.com
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Michael Göhler <somebody.here@gmx.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 OCP\User::checkAdminUser();
 
 $htaccessWorking=(getenv('htaccessWorking')=='true');
-
-$upload_max_filesize = OCP\Util::computerFileSize(ini_get('upload_max_filesize'));
-$post_max_size = OCP\Util::computerFileSize(ini_get('post_max_size'));
+$upload_max_filesize = OC::$server->getIniWrapper()->getBytes('upload_max_filesize');
+$post_max_size = OC::$server->getIniWrapper()->getBytes('post_max_size');
 $maxUploadFilesize = OCP\Util::humanFileSize(min($upload_max_filesize, $post_max_size));
-if($_POST && OC_Util::isCallRegistered()) {
+if($_POST && \OC::$server->getRequest()->passesCSRFCheck()) {
 	if(isset($_POST['maxUploadSize'])) {
 		if(($setMaxSize = OC_Files::setUploadLimit(OCP\Util::computerFileSize($_POST['maxUploadSize']))) !== false) {
 			$maxUploadFilesize = OCP\Util::humanFileSize($setMaxSize);
@@ -36,12 +41,11 @@ if($_POST && OC_Util::isCallRegistered()) {
 	}
 }
 
-OCP\App::setActiveNavigationEntry( "files_administration" );
-
 $htaccessWritable=is_writable(OC::$SERVERROOT.'/.htaccess');
+$userIniWritable=is_writable(OC::$SERVERROOT.'/.user.ini');
 
 $tmpl = new OCP\Template( 'files', 'admin' );
-$tmpl->assign( 'uploadChangable', $htaccessWorking and $htaccessWritable );
+$tmpl->assign( 'uploadChangable', ($htaccessWorking and $htaccessWritable) or $userIniWritable );
 $tmpl->assign( 'uploadMaxFilesize', $maxUploadFilesize);
 // max possible makes only sense on a 32 bit system
 $tmpl->assign( 'displayMaxPossibleUploadSize', PHP_INT_SIZE===4);

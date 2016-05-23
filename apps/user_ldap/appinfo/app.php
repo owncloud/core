@@ -1,43 +1,57 @@
 <?php
-
 /**
-* ownCloud - user_ldap
-*
-* @author Dominik Schmidt
-* @copyright 2011 Dominik Schmidt dev@dominik-schmidt.de
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Dominik Schmidt <dev@dominik-schmidt.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 OCP\App::registerAdmin('user_ldap', 'settings');
 
-$configPrefixes = OCA\user_ldap\lib\Helper::getServerConfigurationPrefixes(true);
+$helper = new \OCA\user_ldap\lib\Helper();
+$configPrefixes = $helper->getServerConfigurationPrefixes(true);
 $ldapWrapper = new OCA\user_ldap\lib\LDAP();
+$ocConfig = \OC::$server->getConfig();
 if(count($configPrefixes) === 1) {
-	$ocConfig = \OC::$server->getConfig();
+	$dbc = \OC::$server->getDatabaseConnection();
 	$userManager = new OCA\user_ldap\lib\user\Manager($ocConfig,
 		new OCA\user_ldap\lib\FilesystemHelper(),
 		new OCA\user_ldap\lib\LogWrapper(),
 		\OC::$server->getAvatarManager(),
-		new \OCP\Image());
+		new \OCP\Image(),
+		$dbc,
+		\OC::$server->getUserManager()
+	);
 	$connector = new OCA\user_ldap\lib\Connection($ldapWrapper, $configPrefixes[0]);
 	$ldapAccess = new OCA\user_ldap\lib\Access($connector, $ldapWrapper, $userManager);
-	$userBackend  = new OCA\user_ldap\USER_LDAP($ldapAccess);
+
+	$ldapAccess->setUserMapper(new OCA\User_LDAP\Mapping\UserMapping($dbc));
+	$ldapAccess->setGroupMapper(new OCA\User_LDAP\Mapping\GroupMapping($dbc));
+	$userBackend  = new OCA\user_ldap\USER_LDAP($ldapAccess, $ocConfig);
 	$groupBackend = new OCA\user_ldap\GROUP_LDAP($ldapAccess);
 } else if(count($configPrefixes) > 1) {
-	$userBackend  = new OCA\user_ldap\User_Proxy($configPrefixes, $ldapWrapper);
+	$userBackend  = new OCA\user_ldap\User_Proxy(
+		$configPrefixes, $ldapWrapper, $ocConfig
+	);
 	$groupBackend  = new OCA\user_ldap\Group_Proxy($configPrefixes, $ldapWrapper);
 }
 
@@ -47,16 +61,13 @@ if(count($configPrefixes) > 0) {
 	OC_Group::useBackend($groupBackend);
 }
 
-// add settings page to navigation
-$entry = array(
-	'id' => 'user_ldap_settings',
-	'order'=>1,
-	'href' => OCP\Util::linkTo( 'user_ldap', 'settings.php' ),
-	'name' => 'LDAP'
+\OCP\Util::connectHook(
+	'\OCA\Files_Sharing\API\Server2Server',
+	'preLoginNameUsedAsUserName',
+	'\OCA\user_ldap\lib\Helper',
+	'loginName2UserName'
 );
-OCP\Util::addTranslations('user_ldap');
 
-OCP\Backgroundjob::registerJob('OCA\user_ldap\lib\Jobs');
 if(OCP\App::isEnabled('user_webdavauth')) {
 	OCP\Util::writeLog('user_ldap',
 		'user_ldap and user_webdavauth are incompatible. You may experience unexpected behaviour',

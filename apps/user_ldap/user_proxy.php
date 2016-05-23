@@ -1,31 +1,37 @@
 <?php
-
 /**
- * ownCloud
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Artuhr Schiwon
- * @copyright 2013 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
 namespace OCA\user_ldap;
 
 use OCA\user_ldap\lib\ILDAPWrapper;
+use OCA\User_LDAP\lib\User\User;
+use \OCA\user_ldap\User_LDAP;
+use OCP\IConfig;
 
-class User_Proxy extends lib\Proxy implements \OCP\UserInterface {
+class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterface {
 	private $backends = array();
 	private $refBackend = null;
 
@@ -33,11 +39,11 @@ class User_Proxy extends lib\Proxy implements \OCP\UserInterface {
 	 * Constructor
 	 * @param array $serverConfigPrefixes array containing the config Prefixes
 	 */
-	public function __construct($serverConfigPrefixes, ILDAPWrapper $ldap) {
+	public function __construct(array $serverConfigPrefixes, ILDAPWrapper $ldap, IConfig $ocConfig) {
 		parent::__construct($ldap);
 		foreach($serverConfigPrefixes as $configPrefix) {
 			$this->backends[$configPrefix] =
-				new \OCA\user_ldap\USER_LDAP($this->getAccess($configPrefix));
+				new User_LDAP($this->getAccess($configPrefix), $ocConfig);
 			if(is_null($this->refBackend)) {
 				$this->refBackend = &$this->backends[$configPrefix];
 			}
@@ -118,10 +124,20 @@ class User_Proxy extends lib\Proxy implements \OCP\UserInterface {
 	}
 
 	/**
+	 * Backend name to be shown in user management
+	 * @return string the name of the backend to be shown
+	 */
+	public function getBackendName() {
+		return $this->refBackend->getBackendName();
+	}
+
+	/**
 	 * Get a list of all users
-	 * @return string[] with all uids
 	 *
-	 * Get a list of all users.
+	 * @param string $search
+	 * @param null|int $limit
+	 * @param null|int $offset
+	 * @return string[] an array of all uids
 	 */
 	public function getUsers($search = '', $limit = 10, $offset = 0) {
 		//we do it just as the /OC_User implementation: do not play around with limit and offset but ask all backends
@@ -145,6 +161,17 @@ class User_Proxy extends lib\Proxy implements \OCP\UserInterface {
 	}
 
 	/**
+	 * check if a user exists on LDAP
+	 * @param string|\OCA\User_LDAP\lib\User\User $user either the ownCloud user
+	 * name or an instance of that user
+	 * @return boolean
+	 */
+	public function userExistsOnLDAP($user) {
+		$id = ($user instanceof User) ? $user->getUsername() : $user;
+		return $this->handleRequest($id, 'userExistsOnLDAP', array($user));
+	}
+
+	/**
 	 * Check if the password is correct
 	 * @param string $uid The username
 	 * @param string $password The password
@@ -154,6 +181,17 @@ class User_Proxy extends lib\Proxy implements \OCP\UserInterface {
 	 */
 	public function checkPassword($uid, $password) {
 		return $this->handleRequest($uid, 'checkPassword', array($uid, $password));
+	}
+
+	/**
+	 * returns the username for the given login name, if available
+	 *
+	 * @param string $loginName
+	 * @return string|false
+	 */
+	public function loginName2UserName($loginName) {
+		$id = 'LOGINNAME,' . $loginName;
+		return $this->handleRequest($id, 'loginName2UserName', array($loginName));
 	}
 
 	/**
@@ -184,10 +222,11 @@ class User_Proxy extends lib\Proxy implements \OCP\UserInterface {
 	}
 
 	/**
-	 * Get a list of all display names
-	 * @return array with all displayNames (value) and the corresponding uids (key)
-	 *
 	 * Get a list of all display names and user ids.
+	 * @param string $search
+	 * @param string|null $limit
+	 * @param string|null $offset
+	 * @return array an array of all displayNames (value) and the corresponding uids (key)
 	 */
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
 		//we do it just as the /OC_User implementation: do not play around with limit and offset but ask all backends
@@ -209,7 +248,7 @@ class User_Proxy extends lib\Proxy implements \OCP\UserInterface {
 	 * Deletes a user
 	 */
 	public function deleteUser($uid) {
-		return false;
+		return $this->handleRequest($uid, 'deleteUser', array($uid));
 	}
 
 	/**

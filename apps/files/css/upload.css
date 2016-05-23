@@ -8,8 +8,10 @@
 	margin-left: 3px;
 	overflow: hidden;
 	vertical-align: top;
+	position: relative;
+	z-index: -20;
 }
-#upload a {
+#upload .icon-upload {
 	position: relative;
 	display: block;
 	width: 100%;
@@ -22,20 +24,6 @@
 }
 .file_upload_target { display:none; }
 .file_upload_form { display:inline; float:left; margin:0; padding:0; cursor:pointer; overflow:visible; }
-#file_upload_start {
-	position: relative;
-	left: 0;
-	top: 0;
-	width: 44px;
-	height: 44px;
-	margin: -5px -3px;
-	padding: 0;
-	font-size: 16px;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter:alpha(opacity=0); opacity:0;
-	z-index: 20;
-	cursor: pointer;
-	overflow: hidden;
-}
 
 #uploadprogresswrapper, #uploadprogresswrapper * {
 	-moz-box-sizing: border-box;
@@ -59,11 +47,65 @@
 	width: 200px;
 	height: 36px;
 	display:inline-block;
+	text-align: center;
 }
+#uploadprogressbar .ui-progressbar-value.ui-widget-header.ui-corner-left {
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    overflow: hidden;
+}
+#uploadprogressbar .label {
+    top: 6px;
+    opacity: 1;
+    overflow: hidden;
+    white-space: nowrap;
+	font-weight: normal;
+}
+#uploadprogressbar .label.inner {
+    color:white; 
+    position: absolute;
+    display: block;
+    width: 200px;
+}
+#uploadprogressbar .label.outer {
+    position: relative;
+    color: black;
+}
+#uploadprogressbar .desktop {
+	display: block;
+}
+#uploadprogressbar .mobile {
+	display: none;
+}
+
 #uploadprogressbar + stop {
 	font-size: 13px;
 }
 
+.oc-dialog .fileexists {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.oc-dialog .fileexists .conflict .filename,
+.oc-dialog .fileexists .conflict .mtime,
+.oc-dialog .fileexists .conflict .size {
+	-webkit-touch-callout: initial;
+	-webkit-user-select: initial;
+	-khtml-user-select: initial;
+	-moz-user-select: initial;
+	-ms-user-select: initial;
+	user-select: initial;
+}
+.oc-dialog .fileexists .conflict .message {
+	color: #e9322d;
+}
 .oc-dialog .fileexists table {
 	width: 100%;
 }

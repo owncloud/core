@@ -1,12 +1,15 @@
 <div id="controls">
 	<form id="newuser" autocomplete="off">
 		<input id="newusername" type="text"
-			placeholder="<?php p($l->t('Login Name'))?>"
+			placeholder="<?php p($l->t('Username'))?>"
 			autocomplete="off" autocapitalize="off" autocorrect="off" />
 		<input
 			type="password" id="newuserpassword"
 			placeholder="<?php p($l->t('Password'))?>"
 			autocomplete="off" autocapitalize="off" autocorrect="off" />
+		<input id="newemail" type="text" style="display:none"
+			   placeholder="<?php p($l->t('E-Mail'))?>"
+			   autocomplete="off" autocapitalize="off" autocorrect="off" />
 		<select
 			class="groupsselect" id="newusergroups" data-placeholder="groups"
 			title="<?php p($l->t('Groups'))?>" multiple="multiple">
@@ -28,7 +31,4 @@
 		   alt="<?php p($l->t('Enter the recovery password in order to recover the users files during password change'))?>"/>
 	</div>
 	<?php endif; ?>
-	<form autocomplete="off" id="usersearchform">
-		<input type="text" class="input userFilter" placeholder="<?php p($l->t('Search Users and Groups')); ?>" />
-	</form>
 </div>

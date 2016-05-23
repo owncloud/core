@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "encryption",
+    {
+    "Recovery key successfully enabled" : "A helyreállítási kulcs sikeresen bekapcsolva",
+    "Could not enable recovery key. Please check your recovery key password!" : "A helyreállítási kulcsot nem lehetett engedélyezni. Ellenőrizze a helyreállítási kulcsa jelszavát!",
+    "Recovery key successfully disabled" : "A helyreállítási kulcs sikeresen kikapcsolva",
+    "Could not disable recovery key. Please check your recovery key password!" : "A helyreállítási kulcsot nem lehetett kikapcsolni. Ellenőrizze a helyreállítási kulcsa jelszavát!",
+    "Password successfully changed." : "A jelszót sikeresen megváltoztattuk.",
+    "Could not change the password. Maybe the old password was not correct." : "A jelszót nem lehet megváltoztatni! Lehet, hogy hibás volt a régi jelszó.",
+    "Private key password successfully updated." : "A személyes kulcsának jelszava frissítésre került.",
+    "Invalid private key for Encryption App. Please update your private key password in your personal settings to recover access to your encrypted files." : "Az állományok titkosításához használt titkos kulcsa érvénytelen. Kérjük frissítse a titkos kulcs jelszót a személyes beállításokban, hogy ismét hozzáférjen a titkosított állományaihoz!",
+    "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Az állományok titkosítása engedélyezve van, de az Ön titkos kulcsai nincsenek beállítva. Ezért kérjük, hogy jelentkezzen ki, és lépjen be újra!",
+    "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Az állományt nem sikerült dekódolni, valószínűleg ez egy megosztott fájl. Kérje meg az állomány tulajdonosát, hogy újra ossza meg Önnel ezt az állományt!",
+    "The share will expire on %s." : "A megosztás lejár ekkor %s",
+    "Cheers!" : "Üdv.",
+    "Recovery key password" : "A helyreállítási kulcs jelszava",
+    "Change recovery key password:" : "A helyreállítási kulcs jelszavának módosítása:",
+    "Change Password" : "Jelszó megváltoztatása",
+    " If you don't remember your old password you can ask your administrator to recover your files." : "Ha nem emlékszik a régi jelszavára akkor megkérheti a rendszergazdát, hogy állítsa vissza az állományait.",
+    "Old log-in password" : "Régi bejelentkezési jelszó",
+    "Current log-in password" : "Jelenlegi bejelentkezési jelszó",
+    "Update Private Key Password" : "A személyest kulcs jelszó frissítése",
+    "Enable password recovery:" : "Jelszó-visszaállítás bekapcsolása",
+    "Enabling this option will allow you to reobtain access to your encrypted files in case of password loss" : "Ez az opció lehetővé teszi, hogy a titkosított állományok tartalmát visszanyerjük abban az esetben, ha elfelejti a jelszavát",
+    "Enabled" : "Bekapcsolva",
+    "Disabled" : "Kikapcsolva"
+},
+"nplurals=2; plural=(n != 1);");

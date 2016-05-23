@@ -8,35 +8,31 @@ OC.Lostpassword = {
 			+ ('<br /><input type="checkbox" id="encrypted-continue" value="Yes" />')
 			+ '<label for="encrypted-continue">'
 			+ t('core', 'I know what I\'m doing')
-			+ '</label><br />'
-			+ '<a id="lost-password-encryption" href>'
-			+ t('core', 'Reset password')
-			+ '</a>',
+			+ '</label><br />',
 
 	resetErrorMsg : t('core', 'Password can not be changed. Please contact your administrator.'),
 
 	init : function() {
-		if ($('#lost-password-encryption').length){
-			$('#lost-password-encryption').click(OC.Lostpassword.sendLink);
-		} else {
-			$('#lost-password').click(OC.Lostpassword.sendLink);
-		}
+		$('#lost-password').click(OC.Lostpassword.resetLink);
 		$('#reset-password #submit').click(OC.Lostpassword.resetPassword);
 	},
 
-	sendLink : function(event){
+	resetLink : function(event){
 		event.preventDefault();
 		if (!$('#user').val().length){
 			$('#submit').trigger('click');
 		} else {
-			$.post(
+			if (OC.config['lost_password_link']) {
+				window.location = OC.config['lost_password_link'];
+			} else {
+				$.post(
 					OC.generateUrl('/lostpassword/email'),
 					{
-						user : $('#user').val(),
-						proceed: $('#encrypted-continue').attr('checked') ? 'Yes' : 'No'
+						user : $('#user').val()
 					},
 					OC.Lostpassword.sendLinkDone
-			);
+				);
+			}
 		}
 	},
 
@@ -84,10 +80,15 @@ OC.Lostpassword = {
 			$.post(
 					$('#password').parents('form').attr('action'),
 					{
-						password : $('#password').val()
+						password : $('#password').val(),
+						proceed: $('#encrypted-continue').is(':checked') ? 'true' : 'false'
 					},
 					OC.Lostpassword.resetDone
 			);
+		}
+		if($('#encrypted-continue').is(':checked')) {
+			$('#reset-password #submit').hide();
+			$('#reset-password #float-spinner').removeClass('hidden');
 		}
 	},
 
@@ -115,7 +116,11 @@ OC.Lostpassword = {
 	},
 
 	redirect : function(msg){
-		window.location = OC.webroot;
+		if(OC.webroot !== '') {
+			window.location = OC.webroot;
+		} else {
+			window.location = '/';
+		}
 	},
 
 	resetError : function(msg){
@@ -126,7 +131,7 @@ OC.Lostpassword = {
 
 	getResetStatusNode : function (){
 		if (!$('#lost-password').length){
-			$('<p id="lost-password"></p>').insertAfter($('#submit'));
+			$('<p id="lost-password"></p>').insertBefore($('#reset-password fieldset'));
 		} else {
 			$('#lost-password').replaceWith($('<p id="lost-password"></p>'));
 		}

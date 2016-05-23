@@ -63,6 +63,17 @@ describe('DeleteHandler tests', function() {
 		expect(fakeServer.requests.length).toEqual(0);
 	});
 	it('deletes first entry and reshows notification on second delete', function() {
+		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
+			204,
+			{ 'Content-Type': 'application/json' },
+			JSON.stringify({status: 'success'})
+		]);
+		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_other_uid/, [
+			204,
+			{ 'Content-Type': 'application/json' },
+			JSON.stringify({status: 'success'})
+		]);
+
 		var handler = init(markCallback, removeCallback, undoCallback);
 		handler.mark('some_uid');
 
@@ -79,15 +90,22 @@ describe('DeleteHandler tests', function() {
 		expect(markCallback.calledTwice).toEqual(true);
 		expect(markCallback.getCall(0).args[0]).toEqual('some_uid');
 		expect(markCallback.getCall(1).args[0]).toEqual('some_other_uid');
-		expect(removeCallback.notCalled).toEqual(true);
+		// called only once, because it is called once the second user is deleted
+		expect(removeCallback.calledOnce).toEqual(true);
 		expect(undoCallback.notCalled).toEqual(true);
 
 		// previous one was delete
 		expect(fakeServer.requests.length).toEqual(1);
 		var	request = fakeServer.requests[0];
-		expect(request.url).toEqual(OC.webroot + '/index.php/settings/ajax/dummyendpoint.php');
+		expect(request.url).toEqual(OC.webroot + '/index.php/dummyendpoint.php/some_uid');
 	});
 	it('automatically deletes after timeout', function() {
+		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
+			204,
+			{ 'Content-Type': 'application/json' },
+			JSON.stringify({status: 'success'})
+		]);
+
 		var handler = init(markCallback, removeCallback, undoCallback);
 		handler.mark('some_uid');
 
@@ -98,16 +116,35 @@ describe('DeleteHandler tests', function() {
 		clock.tick(3000);
 		expect(fakeServer.requests.length).toEqual(1);
 		var	request = fakeServer.requests[0];
-		expect(request.url).toEqual(OC.webroot + '/index.php/settings/ajax/dummyendpoint.php');
+		expect(request.url).toEqual(OC.webroot + '/index.php/dummyendpoint.php/some_uid');
 	});
 	it('deletes when deleteEntry is called', function() {
+		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
+			200,
+			{ 'Content-Type': 'application/json' },
+			JSON.stringify({status: 'success'})
+		]);
 		var handler = init(markCallback, removeCallback, undoCallback);
 		handler.mark('some_uid');
 
 		handler.deleteEntry();
 		expect(fakeServer.requests.length).toEqual(1);
 		var	request = fakeServer.requests[0];
-		expect(request.url).toEqual(OC.webroot + '/index.php/settings/ajax/dummyendpoint.php');
+		expect(request.url).toEqual(OC.webroot + '/index.php/dummyendpoint.php/some_uid');
+	});
+	it('deletes when deleteEntry is called and escapes', function() {
+		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
+			200,
+			{ 'Content-Type': 'application/json' },
+			JSON.stringify({status: 'success'})
+		]);
+		var handler = init(markCallback, removeCallback, undoCallback);
+		handler.mark('some_uid<>/"..\\');
+
+		handler.deleteEntry();
+		expect(fakeServer.requests.length).toEqual(1);
+		var	request = fakeServer.requests[0];
+		expect(request.url).toEqual(OC.webroot + '/index.php/dummyendpoint.php/some_uid%3C%3E%2F%22..%5C');
 	});
 	it('cancels deletion when undo is clicked', function() {
 		var handler = init(markCallback, removeCallback, undoCallback);
@@ -135,7 +172,7 @@ describe('DeleteHandler tests', function() {
 		expect(fakeServer.requests.length).toEqual(0);
 	});
 	it('calls removeCallback after successful server side deletion', function() {
-		fakeServer.respondWith(/\/index\.php\/settings\/ajax\/dummyendpoint.php/, [
+		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
 			200,
 			{ 'Content-Type': 'application/json' },
 			JSON.stringify({status: 'success'})
@@ -148,7 +185,6 @@ describe('DeleteHandler tests', function() {
 		expect(fakeServer.requests.length).toEqual(1);
 		var request = fakeServer.requests[0];
 		var query = OC.parseQueryString(request.requestBody);
-		expect(query.paramid).toEqual('some_uid');
 
 		expect(removeCallback.calledOnce).toEqual(true);
 		expect(undoCallback.notCalled).toEqual(true);
@@ -157,8 +193,8 @@ describe('DeleteHandler tests', function() {
 	it('calls undoCallback and shows alert after failed server side deletion', function() {
 		// stub t to avoid extra calls
 		var tStub = sinon.stub(window, 't').returns('text');
-		fakeServer.respondWith(/\/index\.php\/settings\/ajax\/dummyendpoint.php/, [
-			200,
+		fakeServer.respondWith(/\/index\.php\/dummyendpoint.php\/some_uid/, [
+			403,
 			{ 'Content-Type': 'application/json' },
 			JSON.stringify({status: 'error', data: {message: 'test error'}})
 		]);
@@ -171,7 +207,6 @@ describe('DeleteHandler tests', function() {
 		expect(fakeServer.requests.length).toEqual(1);
 		var request = fakeServer.requests[0];
 		var query = OC.parseQueryString(request.requestBody);
-		expect(query.paramid).toEqual('some_uid');
 
 		expect(removeCallback.notCalled).toEqual(true);
 		expect(undoCallback.calledOnce).toEqual(true);

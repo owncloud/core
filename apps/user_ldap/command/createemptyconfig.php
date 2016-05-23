@@ -1,9 +1,24 @@
 <?php
 /**
- * Copyright (c) 2014 Martin Konrad <info@martin-konrad.net>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Martin Konrad <konrad@frib.msu.edu>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OCA\user_ldap\Command;
@@ -17,6 +32,16 @@ use \OCA\user_ldap\lib\Helper;
 use \OCA\user_ldap\lib\Configuration;
 
 class CreateEmptyConfig extends Command {
+	/** @var \OCA\User_LDAP\lib\Helper */
+	protected $helper;
+
+	/**
+	 * @param Helper $helper
+	 */
+	public function __construct(Helper $helper) {
+		$this->helper = $helper;
+		parent::__construct();
+	}
 
 	protected function configure() {
 		$this
@@ -24,7 +49,6 @@ class CreateEmptyConfig extends Command {
 			->setDescription('creates an empty LDAP configuration')
 		;
 	}
-
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$configPrefix = $this->getNewConfigurationPrefix();
@@ -35,7 +59,7 @@ class CreateEmptyConfig extends Command {
 	}
 
 	protected function getNewConfigurationPrefix() {
-		$serverConnections = Helper::getServerConfigurationPrefixes();
+		$serverConnections = $this->helper->getServerConfigurationPrefixes();
 
 		// first connection uses no prefix
 		if(sizeof($serverConnections) == 0) {

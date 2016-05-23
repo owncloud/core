@@ -1,10 +1,15 @@
+<?php
+script('core', [
+	'jquery-showpassword',
+	'installation'
+]);
+?>
 <input type='hidden' id='hasMySQL' value='<?php p($_['hasMySQL']) ?>'>
 <input type='hidden' id='hasSQLite' value='<?php p($_['hasSQLite']) ?>'>
 <input type='hidden' id='hasPostgreSQL' value='<?php p($_['hasPostgreSQL']) ?>'>
 <input type='hidden' id='hasOracle' value='<?php p($_['hasOracle']) ?>'>
-<input type='hidden' id='hasMSSQL' value='<?php p($_['hasMSSQL']) ?>'>
 <form action="index.php" method="post">
-<input type="hidden" name="install" value="true" />
+<input type="hidden" name="install" value="true">
 	<?php if(count($_['errors']) > 0): ?>
 	<fieldset class="warning">
 		<legend><strong><?php p($l->t('Error'));?></strong></legend>
@@ -20,19 +25,12 @@
 		<?php endforeach; ?>
 	</fieldset>
 	<?php endif; ?>
-	<?php if($_['vulnerableToNullByte']): ?>
-	<fieldset class="warning">
-		<legend><strong><?php p($l->t('Security Warning'));?></strong></legend>
-		<p><?php p($l->t('Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)'));?><br/>
-		<?php p($l->t('Please update your PHP installation to use %s securely.', $theme->getName() )); ?></p>
-	</fieldset>
-	<?php endif; ?>
 	<?php if(!$_['htaccessWorking']): ?>
 	<fieldset class="warning">
-		<legend><strong><?php p($l->t('Security Warning'));?></strong></legend>
+		<legend><strong><?php p($l->t('Security warning'));?></strong></legend>
 		<p><?php p($l->t('Your data directory and files are probably accessible from the internet because the .htaccess file does not work.'));?><br>
 		<?php print_unescaped($l->t(
-			'For information how to properly configure your server, please see the <a href="%s" target="_blank">documentation</a>.',
+			'For information how to properly configure your server, please see the <a href="%s" target="_blank" rel="noreferrer">documentation</a>.',
 			link_to_docs('admin-install')
 		)); ?></p>
 	</fieldset>
@@ -43,19 +41,17 @@
 			<input type="text" name="adminlogin" id="adminlogin"
 				placeholder="<?php p($l->t( 'Username' )); ?>"
 				value="<?php p($_['adminlogin']); ?>"
-				autocomplete="off" autocapitalize="off" autocorrect="off" autofocus required />
+				autocomplete="off" autocapitalize="off" autocorrect="off" autofocus required>
 			<label for="adminlogin" class="infield"><?php p($l->t( 'Username' )); ?></label>
-			<img class="svg" src="<?php p(image_path('', 'actions/user.svg')); ?>" alt="" />
 		</p>
 		<p class="groupbottom">
 			<input type="password" name="adminpass" data-typetoggle="#show" id="adminpass"
 				placeholder="<?php p($l->t( 'Password' )); ?>"
 				value="<?php p($_['adminpass']); ?>"
-				autocomplete="off" autocapitalize="off" autocorrect="off" required />
+				autocomplete="off" autocapitalize="off" autocorrect="off" required>
 			<label for="adminpass" class="infield"><?php p($l->t( 'Password' )); ?></label>
-			<img class="svg" id="adminpass-icon" src="<?php print_unescaped(image_path('', 'actions/password.svg')); ?>" alt="" />
-			<input type="checkbox" id="show" name="show" />
-			<label for="show"></label>
+			<input type="checkbox" id="show" name="show">
+			<label for="show" class="svg"></label>
 			<div class="strengthify-wrapper"></div>
 		</p>
 	</fieldset>
@@ -73,21 +69,26 @@
 			<input type="text" name="directory" id="directory"
 				placeholder="<?php p(OC::$SERVERROOT.'/data'); ?>"
 				value="<?php p($_['directory']); ?>"
-				autocomplete="off" autocapitalize="off" autocorrect="off" />
+				autocomplete="off" autocapitalize="off" autocorrect="off">
 		</div>
 	</fieldset>
 	<?php endif; ?>
 
 	<?php if(!$_['dbIsSet'] OR count($_['errors']) > 0): ?>
 	<fieldset id='databaseBackend'>
-		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'] or $_['hasMSSQL'])
+		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'])
 			$hasOtherDB = true; else $hasOtherDB =false; //other than SQLite ?>
 		<legend><?php p($l->t( 'Configure the database' )); ?></legend>
 		<div id="selectDbType">
 		<?php foreach($_['databases'] as $type => $label): ?>
 		<?php if(count($_['databases']) === 1): ?>
-		<p class="info"><?php p($l->t( 'Only %s is available.', array($label) )); ?>.</p>
-		<input type="hidden" id="dbtype" name="dbtype" value="<?php p($type) ?>" />
+		<p class="info">
+			<?php p($l->t( 'Only %s is available.', array($label) )); ?>
+			<?php p($l->t( 'Install and activate additional PHP modules to choose other database types.' )); ?><br>
+			<a href="<?php print_unescaped(link_to_docs('admin-source_install')); ?>" target="_blank" rel="noreferrer">
+				<?php p($l->t( 'For more details check out the documentation.' )); ?> ↗</a>
+		</p>
+		<input type="hidden" id="dbtype" name="dbtype" value="<?php p($type) ?>">
 		<?php else: ?>
 		<input type="radio" name="dbtype" value="<?php p($type) ?>" id="<?php p($type) ?>"
 			<?php print_unescaped($_['dbtype'] === $type ? 'checked="checked" ' : '') ?>/>
@@ -105,15 +106,15 @@
 				<input type="text" name="dbuser" id="dbuser"
 					placeholder="<?php p($l->t( 'Database user' )); ?>"
 					value="<?php p($_['dbuser']); ?>"
-					autocomplete="off" autocapitalize="off" autocorrect="off" />
+					autocomplete="off" autocapitalize="off" autocorrect="off">
 			</p>
 			<p class="groupmiddle">
 				<input type="password" name="dbpass" id="dbpass" data-typetoggle="#dbpassword"
 					placeholder="<?php p($l->t( 'Database password' )); ?>"
 					value="<?php p($_['dbpass']); ?>"
-					autocomplete="off" autocapitalize="off" autocorrect="off" />
+					autocomplete="off" autocapitalize="off" autocorrect="off">
 				<label for="dbpass" class="infield"><?php p($l->t( 'Database password' )); ?></label>
-				<input type="checkbox" id="dbpassword" name="dbpassword" />
+				<input type="checkbox" id="dbpassword" name="dbpassword">
 				<label for="dbpassword"></label>
 			</p>
 			<p class="groupmiddle">
@@ -122,7 +123,7 @@
 					placeholder="<?php p($l->t( 'Database name' )); ?>"
 					value="<?php p($_['dbname']); ?>"
 					autocomplete="off" autocapitalize="off" autocorrect="off"
-					pattern="[0-9a-zA-Z$_-]+" />
+					pattern="[0-9a-zA-Z$_-]+">
 			</p>
 			<?php if($_['hasOracle']): ?>
 			<div id="use_oracle_db">
@@ -131,7 +132,7 @@
 					<input type="text" name="dbtablespace" id="dbtablespace"
 						placeholder="<?php p($l->t( 'Database tablespace' )); ?>"
 						value="<?php p($_['dbtablespace']); ?>"
-						autocomplete="off" autocapitalize="off" autocorrect="off" />
+						autocomplete="off" autocapitalize="off" autocorrect="off">
 				</p>
 			</div>
 			<?php endif; ?>
@@ -140,16 +141,29 @@
 				<input type="text" name="dbhost" id="dbhost"
 					placeholder="<?php p($l->t( 'Database host' )); ?>"
 					value="<?php p($_['dbhost']); ?>"
-					autocomplete="off" autocapitalize="off" autocorrect="off" />
+					autocomplete="off" autocapitalize="off" autocorrect="off">
 			</p>
 		</div>
 		</fieldset>
 		<?php endif; ?>
 	<?php endif; ?>
 
+	<div class="icon-loading-dark float-spinner">&nbsp;</div>
+
 	<?php if(!$_['dbIsSet'] OR count($_['errors']) > 0): ?>
-	<p id="sqliteInformation" class="info"><?php p($l->t('SQLite will be used as database. For larger installations we recommend to change this.'));?></p>
+		<fieldset id="sqliteInformation" class="warning">
+			<legend><?php p($l->t('Performance warning'));?></legend>
+			<p><?php p($l->t('SQLite will be used as database.'));?></p>
+			<p><?php p($l->t('For larger installations we recommend to choose a different database backend.'));?></p>
+			<p><?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?></p>
+		</fieldset>
 	<?php endif ?>
 
-	<div class="buttons"><input type="submit" class="primary" value="<?php p($l->t( 'Finish setup' )); ?>" data-finishing="<?php p($l->t( 'Finishing …' )); ?>" /></div>
+	<div class="buttons"><input type="submit" class="primary" value="<?php p($l->t( 'Finish setup' )); ?>" data-finishing="<?php p($l->t( 'Finishing …' )); ?>"></div>
+
+	<p class="info">
+		<span class="icon-info-white svg"></span>
+		<?php p($l->t('Need help?'));?>
+		<a target="_blank" rel="noreferrer" href="<?php p(link_to_docs('admin-install')); ?>"><?php p($l->t('See the documentation'));?> ↗</a>
+	</p>
 </form>

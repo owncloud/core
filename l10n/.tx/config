@@ -14,7 +14,7 @@ source_file = templates/files.pot
 source_lang = en
 type = PO
 
-[owncloud.settings]
+[owncloud.settings-1]
 file_filter = <lang>/settings.po
 source_file = templates/settings.pot
 source_lang = en
@@ -27,8 +27,8 @@ source_lang = en
 type = PO
 
 [owncloud.files_encryption]
-file_filter = <lang>/files_encryption.po
-source_file = templates/files_encryption.pot
+file_filter = <lang>/encryption.po
+source_file = templates/encryption.pot
 source_lang = en
 type = PO
 
@@ -62,9 +62,33 @@ source_file = templates/user_ldap.pot
 source_lang = en
 type = PO
 
-[owncloud.user_webdavauth]
-file_filter = <lang>/user_webdavauth.po
-source_file = templates/user_webdavauth.pot
+[owncloud.comments]
+file_filter = <lang>/comments.po
+source_file = templates/comments.pot
+source_lang = en
+type = PO
+
+[owncloud.federatedfilesharing]
+file_filter = <lang>/federatedfilesharing.po
+source_file = templates/federatedfilesharing.pot
+source_lang = en
+type = PO
+
+[owncloud.federation]
+file_filter = <lang>/federation.po
+source_file = templates/federation.pot
+source_lang = en
+type = PO
+
+[owncloud.systemtags]
+file_filter = <lang>/systemtags.po
+source_file = templates/systemtags.pot
+source_lang = en
+type = PO
+
+[owncloud.updatenotification]
+file_filter = <lang>/updatenotification.po
+source_file = templates/updatenotification.pot
 source_lang = en
 type = PO
 

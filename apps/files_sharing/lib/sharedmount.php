@@ -1,54 +1,97 @@
 <?php
 /**
- * Copyright (c) 2014 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OCA\Files_Sharing;
 
-use OC\Files\Mount\Mount;
+use OC\Files\Filesystem;
+use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
+use OC\Files\View;
 
 /**
  * Shared mount points can be moved by the user
  */
-class SharedMount extends Mount implements MoveableMount {
+class SharedMount extends MountPoint implements MoveableMount {
 	/**
 	 * @var \OC\Files\Storage\Shared $storage
 	 */
 	protected $storage = null;
 
-	public function __construct($storage, $mountpoint, $arguments = null, $loader = null) {
-		// first update the mount point before creating the parent
-		$newMountPoint = $this->verifyMountPoint($arguments['share'], $arguments['user']);
-		$absMountPoint = '/' . $arguments['user'] . '/files' . $newMountPoint;
+	/**
+	 * @var \OC\Files\View
+	 */
+	private $recipientView;
+
+	/**
+	 * @var string
+	 */
+	private $user;
+
+	/** @var \OCP\Share\IShare */
+	private $share;
+
+	/**
+	 * @param string $storage
+	 * @param SharedMount[] $mountpoints
+	 * @param array|null $arguments
+	 * @param \OCP\Files\Storage\IStorageFactory $loader
+	 */
+	public function __construct($storage, array $mountpoints, $arguments = null, $loader = null) {
+		$this->user = $arguments['user'];
+		$this->recipientView = new View('/' . $this->user . '/files');
+		$this->share = $arguments['newShare'];
+		$newMountPoint = $this->verifyMountPoint($this->share, $mountpoints);
+		$absMountPoint = '/' . $this->user . '/files' . $newMountPoint;
+		$arguments['ownerView'] = new View('/' . $this->share->getShareOwner() . '/files');
 		parent::__construct($storage, $absMountPoint, $arguments, $loader);
 	}
 
 	/**
 	 * check if the parent folder exists otherwise move the mount point up
+	 *
+	 * @param \OCP\Share\IShare $share
+	 * @param SharedMount[] $mountpoints
+	 * @return string
 	 */
-	private function verifyMountPoint(&$share, $user) {
+	private function verifyMountPoint(\OCP\Share\IShare $share, array $mountpoints) {
 
-		$mountPoint = basename($share['file_target']);
-		$parent = dirname($share['file_target']);
+		$mountPoint = basename($share->getTarget());
+		$parent = dirname($share->getTarget());
 
-		while (!\OC\Files\Filesystem::is_dir($parent)) {
-			$parent = dirname($parent);
+		if (!$this->recipientView->is_dir($parent)) {
+			$parent = Helper::getShareFolder();
 		}
 
-		$newMountPoint = \OCA\Files_Sharing\Helper::generateUniqueTarget(
-				\OC\Files\Filesystem::normalizePath($parent . '/' . $mountPoint),
-				array(),
-				new \OC\Files\View('/' . $user . '/files')
-				);
+		$newMountPoint = $this->generateUniqueTarget(
+			\OC\Files\Filesystem::normalizePath($parent . '/' . $mountPoint),
+			$this->recipientView,
+			$mountpoints
+		);
 
-		if($newMountPoint !== $share['file_target']) {
-			self::updateFileTarget($newMountPoint, $share);
-			$share['file_target'] = $newMountPoint;
-			$share['unique_name'] = true;
+		if ($newMountPoint !== $share->getTarget()) {
+			$this->updateFileTarget($newMountPoint, $share);
 		}
 
 		return $newMountPoint;
@@ -56,33 +99,46 @@ class SharedMount extends Mount implements MoveableMount {
 
 	/**
 	 * update fileTarget in the database if the mount point changed
+	 *
 	 * @param string $newPath
-	 * @param array $share reference to the share which should be modified
+	 * @param \OCP\Share\IShare $share
 	 * @return bool
 	 */
-	private static function updateFileTarget($newPath, &$share) {
-		// if the user renames a mount point from a group share we need to create a new db entry
-		// for the unique name
-		if ($share['share_type'] === \OCP\Share::SHARE_TYPE_GROUP && empty($share['unique_name'])) {
-			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*share` (`item_type`, `item_source`, `item_target`,'
-			.' `share_type`, `share_with`, `uid_owner`, `permissions`, `stime`, `file_source`,'
-			.' `file_target`, `token`, `parent`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)');
-			$arguments = array($share['item_type'], $share['item_source'], $share['item_target'],
-				2, \OCP\User::getUser(), $share['uid_owner'], $share['permissions'], $share['stime'], $share['file_source'],
-				$newPath, $share['token'], $share['id']);
-		} else {
-			// rename mount point
-			$query = \OC_DB::prepare(
-					'Update `*PREFIX*share`
-						SET `file_target` = ?
-						WHERE `id` = ?'
-					);
-			$arguments = array($newPath, $share['id']);
+	private function updateFileTarget($newPath, &$share) {
+		$share->setTarget($newPath);
+		\OC::$server->getShareManager()->moveShare($share, $this->user);
+	}
+
+
+	/**
+	 * @param string $path
+	 * @param View $view
+	 * @param SharedMount[] $mountpoints
+	 * @return mixed
+	 */
+	private function generateUniqueTarget($path, $view, array $mountpoints) {
+		$pathinfo = pathinfo($path);
+		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
+		$name = $pathinfo['filename'];
+		$dir = $pathinfo['dirname'];
+
+		// Helper function to find existing mount points
+		$mountpointExists = function($path) use ($mountpoints) {
+			foreach ($mountpoints as $mountpoint) {
+				if ($mountpoint->getShare()->getTarget() === $path) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		$i = 2;
+		while ($view->file_exists($path) || $mountpointExists($path)) {
+			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
+			$i++;
 		}
 
-		$result = $query->execute($arguments);
-
-		return $result === 1 ? true : false;
+		return $path;
 	}
 
 	/**
@@ -90,6 +146,7 @@ class SharedMount extends Mount implements MoveableMount {
 	 *
 	 * @param string $path the absolute path
 	 * @return string e.g. turns '/admin/files/test.txt' into '/test.txt'
+	 * @throws \OCA\Files_Sharing\Exceptions\BrokenPath
 	 */
 	protected function stripUserFilesPath($path) {
 		$trimmed = ltrim($path, '/');
@@ -123,20 +180,11 @@ class SharedMount extends Mount implements MoveableMount {
 
 		$result = true;
 
-		if (!empty($share['grouped'])) {
-			foreach ($share['grouped'] as $s) {
-				$result = $this->updateFileTarget($relTargetPath, $s) && $result;
-			}
-		} else {
-			$result = $this->updateFileTarget($relTargetPath, $share) && $result;
-		}
-
-		if ($result) {
+		try {
+			$this->updateFileTarget($relTargetPath, $share);
 			$this->setMountPoint($target);
-			$this->storage->setUniqueName();
 			$this->storage->setMountPoint($relTargetPath);
-
-		} else {
+		} catch (\Exception $e) {
 			\OCP\Util::writeLog('file sharing',
 				'Could not rename mount point for shared folder "' . $this->getMountPoint() . '" to "' . $target . '"',
 				\OCP\Util::ERROR);
@@ -152,11 +200,27 @@ class SharedMount extends Mount implements MoveableMount {
 	 */
 	public function removeMount() {
 		$mountManager = \OC\Files\Filesystem::getMountManager();
-		/** @var \OC\Files\Storage\Shared */
+		/** @var $storage \OC\Files\Storage\Shared */
 		$storage = $this->getStorage();
 		$result = $storage->unshareStorage();
 		$mountManager->removeMount($this->mountPoint);
 
 		return $result;
+	}
+
+	/**
+	 * @return \OCP\Share\IShare
+	 */
+	public function getShare() {
+		return $this->share;
+	}
+
+	/**
+	 * Get the file id of the root of the storage
+	 *
+	 * @return int
+	 */
+	public function getStorageRootId() {
+		return $this->share->getNodeId();
 	}
 }
