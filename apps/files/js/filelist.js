@@ -663,7 +663,7 @@
 		_onClickDownloadSelected: function(event) {
 			var files;
 			var dir = this.getCurrentDirectory();
-			if (this.isAllSelected()) {
+			if (this.isAllSelected() && this.getSelectedFiles().length > 1) {
 				files = OC.basename(dir);
 				dir = OC.dirname(dir) || '/';
 			}
@@ -684,7 +684,7 @@
 			};
 
 			OCA.Files.FileActions.updateFileActionSpinner(downloadFileaction, true);
-			if(this.getSelectedFiles().length > 1 || this.isAllSelected()) {
+			if(this.getSelectedFiles().length > 1) {
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir, true), disableLoadingState);
 			}
 			else {
