@@ -427,4 +427,43 @@ class EmptyContentSecurityPolicyTest extends TestCase {
 		$this->contentSecurityPolicy->disallowChildSrcDomain('www.owncloud.org')->disallowChildSrcDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
+
+	public function testGetAllowedFrameAncestorDomain() {
+		$expectedPolicy = "default-src 'none';manifest-src 'self';frame-ancestors owncloud.com";
+
+		$this->contentSecurityPolicy->addAllowedFrameAncestorDomain('owncloud.com');
+		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
+	}
+
+	public function testGetPolicyFrameAncestorValidMultiple() {
+		$expectedPolicy = "default-src 'none';manifest-src 'self';frame-ancestors owncloud.com owncloud.org";
+
+		$this->contentSecurityPolicy->addAllowedFrameAncestorDomain('owncloud.com');
+		$this->contentSecurityPolicy->addAllowedFrameAncestorDomain('owncloud.org');
+		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
+	}
+
+	public function testGetPolicyDisallowFrameAncestorDomain() {
+		$expectedPolicy = "default-src 'none';manifest-src 'self'";
+
+		$this->contentSecurityPolicy->addAllowedFrameAncestorDomain('owncloud.com');
+		$this->contentSecurityPolicy->disallowFrameAncestorDomain('owncloud.com');
+		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
+	}
+
+	public function testGetPolicyDisallowChildFrameAncestorMultiple() {
+		$expectedPolicy = "default-src 'none';manifest-src 'self';frame-ancestors owncloud.com";
+
+		$this->contentSecurityPolicy->addAllowedFrameAncestorDomain('owncloud.com');
+		$this->contentSecurityPolicy->disallowFrameAncestorDomain('owncloud.org');
+		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
+	}
+
+	public function testGetPolicyDisallowFrameAncestorDomainMultipleStakes() {
+		$expectedPolicy = "default-src 'none';manifest-src 'self'";
+
+		$this->contentSecurityPolicy->addAllowedFrameAncestorDomain('owncloud.com');
+		$this->contentSecurityPolicy->disallowFrameAncestorDomain('owncloud.org')->disallowFrameAncestorDomain('owncloud.com');
+		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
+	}
 }

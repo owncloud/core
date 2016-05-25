@@ -53,6 +53,7 @@ class ContentSecurityPolicyManagerTest extends TestCase {
 		$policy = new EmptyContentSecurityPolicy();
 		$policy->addAllowedChildSrcDomain('childdomain');
 		$policy->addAllowedFontDomain('anotherFontDomain');
+		$policy->addAllowedFrameAncestorDomain('ancestordomain.tld');
 		$this->contentSecurityPolicyManager->addDefaultPolicy($policy);
 
 		$expected = new ContentSecurityPolicy();
@@ -63,7 +64,8 @@ class ContentSecurityPolicyManagerTest extends TestCase {
 		$expected->addAllowedImageDomain('anotherdomain.de');
 		$expected->addAllowedImageDomain('example.org');
 		$expected->addAllowedChildSrcDomain('childdomain');
-		$expectedStringPolicy = 'default-src \'none\';manifest-src \'self\';script-src \'self\' \'unsafe-inline\' \'unsafe-eval\';style-src \'self\' \'unsafe-inline\';img-src \'self\' data: blob: anotherdomain.de example.org;font-src \'self\' mydomain.com example.com anotherFontDomain;connect-src \'self\';media-src \'self\';child-src childdomain';
+		$expected->addAllowedFrameAncestorDomain('ancestordomain.tld');
+		$expectedStringPolicy = 'default-src \'none\';manifest-src \'self\';script-src \'self\' \'unsafe-inline\' \'unsafe-eval\';style-src \'self\' \'unsafe-inline\';img-src \'self\' data: blob: anotherdomain.de example.org;font-src \'self\' mydomain.com example.com anotherFontDomain;connect-src \'self\';media-src \'self\';child-src childdomain;frame-ancestors ancestordomain.tld';
 
 		$this->assertEquals($expected, $this->contentSecurityPolicyManager->getDefaultPolicy());
 		$this->assertSame($expectedStringPolicy, $this->contentSecurityPolicyManager->getDefaultPolicy()->buildPolicy());

@@ -66,7 +66,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedScriptDomains
 	 */
-	public function setAllowedScriptDomains($allowedScriptDomains) {
+	public function setAllowedScriptDomains(array $allowedScriptDomains) {
 		$this->allowedScriptDomains = $allowedScriptDomains;
 	}
 
@@ -94,7 +94,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedStyleDomains
 	 */
-	public function setAllowedStyleDomains($allowedStyleDomains) {
+	public function setAllowedStyleDomains(array $allowedStyleDomains) {
 		$this->allowedStyleDomains = $allowedStyleDomains;
 	}
 
@@ -108,7 +108,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedImageDomains
 	 */
-	public function setAllowedImageDomains($allowedImageDomains) {
+	public function setAllowedImageDomains(array $allowedImageDomains) {
 		$this->allowedImageDomains = $allowedImageDomains;
 	}
 
@@ -122,7 +122,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedConnectDomains
 	 */
-	public function setAllowedConnectDomains($allowedConnectDomains) {
+	public function setAllowedConnectDomains(array $allowedConnectDomains) {
 		$this->allowedConnectDomains = $allowedConnectDomains;
 	}
 
@@ -136,7 +136,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedMediaDomains
 	 */
-	public function setAllowedMediaDomains($allowedMediaDomains) {
+	public function setAllowedMediaDomains(array $allowedMediaDomains) {
 		$this->allowedMediaDomains = $allowedMediaDomains;
 	}
 
@@ -150,7 +150,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedObjectDomains
 	 */
-	public function setAllowedObjectDomains($allowedObjectDomains) {
+	public function setAllowedObjectDomains(array $allowedObjectDomains) {
 		$this->allowedObjectDomains = $allowedObjectDomains;
 	}
 
@@ -164,7 +164,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedFrameDomains
 	 */
-	public function setAllowedFrameDomains($allowedFrameDomains) {
+	public function setAllowedFrameDomains(array $allowedFrameDomains) {
 		$this->allowedFrameDomains = $allowedFrameDomains;
 	}
 
@@ -178,7 +178,7 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedFontDomains
 	 */
-	public function setAllowedFontDomains($allowedFontDomains) {
+	public function setAllowedFontDomains(array $allowedFontDomains) {
 		$this->allowedFontDomains = $allowedFontDomains;
 	}
 
@@ -192,8 +192,22 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	/**
 	 * @param array $allowedChildSrcDomains
 	 */
-	public function setAllowedChildSrcDomains($allowedChildSrcDomains) {
+	public function setAllowedChildSrcDomains(array $allowedChildSrcDomains) {
 		$this->allowedChildSrcDomains = $allowedChildSrcDomains;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAllowedFrameAncestorDomains() {
+		return $this->allowedFrameAncestorDomains;
+	}
+
+	/**
+	 * @param array $allowedFrameAncestorDomains
+	 */
+	public function setAllowedFrameAncestorDomains(array $allowedFrameAncestorDomains) {
+		$this->allowedFrameAncestorDomains = $allowedFrameAncestorDomains;
 	}
 
 }
