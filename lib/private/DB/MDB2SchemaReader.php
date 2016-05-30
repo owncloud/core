@@ -94,6 +94,9 @@ class MDB2SchemaReader {
 				case 'name':
 					$name = (string)$child;
 					$name = str_replace('*dbprefix*', $this->DBTABLEPREFIX, $name);
+					if (isset($name[$this->schemaConfig->getMaxIdentifierLength()])) {
+						throw new \DomainException('Table name is too long: ' . $name);
+					}
 					$name = $this->platform->quoteIdentifier($name);
 					$table = $schema->createTable($name);
 					break;
@@ -152,6 +155,9 @@ class MDB2SchemaReader {
 			switch ($child->getName()) {
 				case 'name':
 					$name = (string)$child;
+					if (isset($name[$this->schemaConfig->getMaxIdentifierLength()])) {
+						throw new \DomainException('Column name is too long on table "' . $table->getName() . '": ' . $name);
+					}
 					$name = $this->platform->quoteIdentifier($name);
 					break;
 				case 'type':
@@ -271,6 +277,9 @@ class MDB2SchemaReader {
 			switch ($child->getName()) {
 				case 'name':
 					$name = (string)$child;
+					if (isset($name[$this->schemaConfig->getMaxIdentifierLength()])) {
+						throw new \DomainException('Index name is too long on table "' . $table->getName() . '": ' . $name);
+					}
 					break;
 				case 'primary':
 					$primary = $this->asBool($child);
