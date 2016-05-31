@@ -360,7 +360,7 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 		//Check whether the display name is configured to have a 2nd feature
 		$additionalAttribute = $this->access->connection->ldapUserDisplayName2;
 		$displayName2 = '';
-		if(!empty($additionalAttribute)) {
+		if((is_string($additionalAttribute)) && ($additionalAttribute !== '')) {
 			$displayName2 = $this->access->readAttribute(
 				$this->access->username2dn($uid),
 				$additionalAttribute);
