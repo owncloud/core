@@ -132,7 +132,7 @@ class Connection extends LDAPUtility {
 		$this->configuration->$name = $value;
 		$after = $this->configuration->$name;
 		if($before !== $after) {
-			if(!empty($this->configID)) {
+			if((is_string($this->configID)) && ($this->configID !== '')) {
 				$this->configuration->saveConfiguration();
 			}
 			$this->validateConfiguration();
@@ -353,8 +353,8 @@ class Connection extends LDAPUtility {
 			}
 		}
 
-		$backupPort = $this->configuration->ldapBackupPort;
-		if(empty($backupPort)) {
+		$backupPort = intval($this->configuration->ldapBackupPort);
+		if($backupPort <= 0) {
 			$this->configuration->backupPort = $this->configuration->ldapPort;
 		}
 
@@ -422,7 +422,8 @@ class Connection extends LDAPUtility {
 		//combinations
 		$agent = $this->configuration->ldapAgentName;
 		$pwd = $this->configuration->ldapAgentPassword;
-		if((empty($agent) && !empty($pwd)) || (!empty($agent) && empty($pwd))) {
+		if((((!is_string($agent)) || ($agent === ''))  && ((is_string($pwd)) && ($pwd !== '')))
+			|| (((is_string($agent)) && ($agent !== '')) && ((!is_string($pwd)) || ($pwd === '')))) {
 			\OCP\Util::writeLog('user_ldap',
 								$errorStr.'either no password is given for the'.
 								'user agent or a password is given, but not an'.
@@ -563,7 +564,7 @@ class Connection extends LDAPUtility {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	private function doConnect($host, $port) {
-		if(empty($host)) {
+		if((!is_string($host) || ($host === ''))) {
 			return false;
 		}
 		$this->ldapConnectionRes = $this->ldap->connect($host, $port);
