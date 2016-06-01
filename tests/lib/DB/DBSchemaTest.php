@@ -10,6 +10,7 @@ namespace Test\DB;
 
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use OC_DB;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
@@ -128,7 +129,13 @@ class DBSchemaTest extends TestCase {
 		$connection = \OC::$server->getDatabaseConnection();
 		$this->invokePrivate($connection, 'tablePrefix', [$prefix]);
 		/** @var Connection $connection */
-		$connection->getConfiguration()->setFilterSchemaAssetsExpression('/^' . $prefix . '/');
+
+		if ($connection->getDatabasePlatform() instanceof OraclePlatform) {
+			$filterExpression = '/^"' . preg_quote($prefix) . '/';
+		} else {
+			$filterExpression = '/^' . preg_quote($prefix) . '/';
+		}
+		$connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
 
 		\OC::$server->getConfig()->setSystemValue('dbtableprefix', $prefix);
 	}
