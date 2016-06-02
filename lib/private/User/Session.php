@@ -192,12 +192,12 @@ class Session implements IUserSession, Emitter {
 			if (is_null($this->activeUser)) {
 				return null;
 			}
-			$this->validateSession($this->activeUser);
+			$this->validateSession();
 		}
 		return $this->activeUser;
 	}
 
-	protected function validateSession(IUser $user) {
+	protected function validateSession() {
 		try {
 			$sessionId = $this->session->getId();
 		} catch (SessionNotAvailableException $ex) {
@@ -211,13 +211,17 @@ class Session implements IUserSession, Emitter {
 			return;
 		}
 
+		$this->checkTokenValidity($this->activeUser, $token, $sessionId);
+	}
+
+	protected function checkTokenValidity(IUser $user, IToken $token, $password) {
 		// Check whether login credentials are still valid and the user was not disabled
 		// This check is performed each 5 minutes
 		$lastCheck = $this->session->get('last_login_check') ? : 0;
 		$now = $this->timeFacory->getTime();
 		if ($lastCheck < ($now - 60 * 5)) {
 			try {
-				$pwd = $this->tokenProvider->getPassword($token, $sessionId);
+				$pwd = $this->tokenProvider->getPassword($token, $password);
 			} catch (InvalidTokenException $ex) {
 				// An invalid token password was used -> log user out
 				$this->logout();
@@ -228,9 +232,12 @@ class Session implements IUserSession, Emitter {
 				return;
 			}
 
-			if ($this->manager->checkPassword($token->getLoginName(), $pwd) === false
+			$user = $this->manager->get($token->getUID());
+			if (is_null($user)
+				|| $this->manager->checkPassword($token->getLoginName(), $pwd) === false
 				|| !$user->isEnabled()) {
-				// Password has changed or user was disabled -> log user out
+				// User does not exist anymore, assword has changed or user was disabled -> log user out
+				// TODO: save to delete device token here?
 				$this->logout();
 				return;
 			}
@@ -361,7 +368,17 @@ class Session implements IUserSession, Emitter {
 			// TODO: throw LoginException instead (https://github.com/owncloud/core/pull/24616)
 			return false;
 		}
-		return $this->login($user, $password);
+
+		if (!$isTokenPassword) {
+			// Legacy login with real password
+			return $this->login($user, $password);
+		}
+
+		$isTokenValid = $this->validateToken($password);
+		if ($isTokenValid) {
+			return $this->loginWithToken($user);
+		}
+		return false;
 	}
 
 	private function isTokenAuthEnforced() {
@@ -577,7 +594,7 @@ class Session implements IUserSession, Emitter {
 			try {
 				$this->tokenProvider->invalidateToken($this->session->getId());
 			} catch (SessionNotAvailableException $ex) {
-				
+
 			}
 		}
 		$this->setUser(null);
