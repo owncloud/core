@@ -157,7 +157,7 @@ class Movie extends Provider {
 	private function generateThumbNail($maxX, $maxY, $absPath, $second) {
 
 		$extractedCover = $this->extractMp4CoverArtwork($absPath);
-		if($extractedCover) {
+		if(false !== $extractedCover) {
 			$tmpPath = $extractedCover;
 		}
 		else {

@@ -334,12 +334,21 @@ class PreviewManager implements IPreview {
 			$ffmpegBinary = ($avconvBinary) ? null : \OC_Helper::findBinaryPath('ffmpeg');
 			$atomicParsleyBinary = \OC_Helper::findBinaryPath('AtomicParsley');
 
-			if ($avconvBinary || $ffmpegBinary || $atomicParsleyBinary) {
-				// FIXME // a bit hacky but didn't want to use subclasses
+			// FIXME // a bit hacky but didn't want to use subclasses
+			$registerProvider = false;
+			if (null !== $avconvBinary) {
 				\OC\Preview\Movie::$avconvBinary = $avconvBinary;
+				$registerProvider = true;
+			}
+			if (null !== $ffmpegBinary) {
 				\OC\Preview\Movie::$ffmpegBinary = $ffmpegBinary;
+				$registerProvider = true;
+			}
+			if (null !== $atomicParsleyBinary) {
 				\OC\Preview\Movie::$atomicParsleyBinary = $atomicParsleyBinary;
-
+				$registerProvider = true;
+			}
+			if(true === $registerProvider) {
 				$this->registerCoreProvider('\OC\Preview\Movie', '/video\/.*/');
 			}
 		}
