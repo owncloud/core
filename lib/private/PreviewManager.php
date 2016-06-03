@@ -6,6 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Lorenzo Perone <lorenzo.perone@yellowspace.net>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -328,13 +329,16 @@ class PreviewManager implements IPreview {
 		// Video requires avconv or ffmpeg and is therefor
 		// currently not supported on Windows.
 		if (in_array('OC\Preview\Movie', $this->getEnabledDefaultProvider())) {
+		// AtomicParsley would actually work under Windows.
 			$avconvBinary = \OC_Helper::findBinaryPath('avconv');
 			$ffmpegBinary = ($avconvBinary) ? null : \OC_Helper::findBinaryPath('ffmpeg');
+			$atomicParsleyBinary = \OC_Helper::findBinaryPath('AtomicParsley');
 
-			if ($avconvBinary || $ffmpegBinary) {
+			if ($avconvBinary || $ffmpegBinary || $atomicParsleyBinary) {
 				// FIXME // a bit hacky but didn't want to use subclasses
 				\OC\Preview\Movie::$avconvBinary = $avconvBinary;
 				\OC\Preview\Movie::$ffmpegBinary = $ffmpegBinary;
+				\OC\Preview\Movie::$atomicParsleyBinary = $atomicParsleyBinary;
 
 				$this->registerCoreProvider('\OC\Preview\Movie', '/video\/.*/');
 			}

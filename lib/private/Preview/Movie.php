@@ -5,6 +5,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Lorenzo Perone <lorenzo.perone@yellowspace.net>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -27,6 +28,13 @@ namespace OC\Preview;
 class Movie extends Provider {
 	public static $avconvBinary;
 	public static $ffmpegBinary;
+	public static $atomicParsleyBinary;
+
+	/**
+	 * Keep track of movies without artwork to avoid retries in same request
+	 * @var array
+	 */
+	private $noArtworkIndex = array();
 
 	/**
 	 * {@inheritDoc}
@@ -73,13 +81,48 @@ class Movie extends Provider {
 	}
 
 	/**
-	 * @param int $maxX
-	 * @param int $maxY
-	 * @param string $absPath
-	 * @param int $second
-	 * @return bool|\OCP\IImage
+	 * @param $absPath
+	 * @return bool|string
 	 */
-	private function generateThumbNail($maxX, $maxY, $absPath, $second) {
+	private function extractMp4CoverArtwork($absPath) {
+		if(isset($this->noArtworkIndex[$absPath]))
+			return false;
+
+
+		if(self::$atomicParsleyBinary) {
+			$suffix = substr($absPath, -4);
+			if('.mp4' === $suffix || '.MP4' === $suffix) {
+				$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
+				$tmpBase = $tmpFolder.'/Cover';
+				$cmd = self::$atomicParsleyBinary . ' ' .
+					escapeshellarg($absPath).
+					' --extractPixToPath ' . escapeshellarg($tmpBase) .
+					' > /dev/null 2>&1';
+
+				exec($cmd, $output, $returnCode);
+
+				if ($returnCode === 0) {
+					$endings = array('.jpg', '.png');
+					foreach($endings as $ending) {
+						$extractedFile = $tmpBase.'_artwork_1'.$ending;
+						if(is_file($extractedFile) &&
+							filesize($extractedFile) > 0) {
+							return $extractedFile;
+						}
+					}
+				}
+			}
+		}
+		$this->noArtworkIndex[$absPath] = true;
+		return false;
+	}
+
+	/**
+	 * @param $absPath
+	 * @param $second
+	 * @return bool|string
+	 */
+	private function generateFromMovie($absPath, $second) {
 		$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
 
 		if (self::$avconvBinary) {
@@ -98,16 +141,38 @@ class Movie extends Provider {
 		exec($cmd, $output, $returnCode);
 
 		if ($returnCode === 0) {
+			return $tmpPath;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param int $maxX
+	 * @param int $maxY
+	 * @param string $absPath
+	 * @param int $second
+	 * @return bool|\OCP\IImage
+	 */
+	private function generateThumbNail($maxX, $maxY, $absPath, $second) {
+
+		$extractedCover = $this->extractMp4CoverArtwork($absPath);
+		if($extractedCover) {
+			$tmpPath = $extractedCover;
+		}
+		else {
+			$tmpPath = $this->generateFromMovie($absPath, $second);
+		}
+
+		if(is_string($tmpPath) and is_file($tmpPath)) {
 			$image = new \OC_Image();
 			$image->loadFromFile($tmpPath);
 			unlink($tmpPath);
 			if ($image->valid()) {
 				$image->scaleDownToFit($maxX, $maxY);
-
 				return $image;
 			}
 		}
-		unlink($tmpPath);
 		return false;
 	}
 }
