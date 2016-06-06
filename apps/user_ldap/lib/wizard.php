@@ -921,9 +921,25 @@ class Wizard extends LDAPUtility {
 					}
 					$parts++;
 				}
+
 				//excluding computer object class
-				$filter .= '(!(objectClass=computer))';
-				$parts++;
+				$maxEntryObjC = '';
+				$dig = 3;
+				$objectclasses = array('inetOrgPerson', 'person', 'organizationalPerson', 'user', 'posixAccount', '*');
+				$p = 'objectclass=';
+				foreach($objectclasses as $key => $value) {
+	 				$objectclasses[$key] = $p.$value;
+	 			}
+				$attr = 'objectclass';
+				$availableFeatures = $this->cumulativeSearchOnAttribute($objectclasses, $attr, $dig, $maxEntryObjC);
+				if(is_array($availableFeatures) && count($availableFeatures) > 0) {
+					natcasesort($availableFeatures);
+					//excluding computer in the filter only when some objectclass has this value in LDAP server
+					if(in_array("computer", $availableFeatures)) {
+						$filter .= '(!(objectClass=computer))';
+						$parts++;
+					}
+				}
 
 				//wrap parts in AND condition
 				if($parts > 1) {
