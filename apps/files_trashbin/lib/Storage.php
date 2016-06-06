@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -150,7 +150,7 @@ class Storage extends Wrapper {
 			return false;
 		}
 
-		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path);
+		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path, true, false, true);
 		$result = true;
 		$view = Filesystem::getView();
 		if (!isset($this->deletedFiles[$normalized]) && $view instanceof View) {

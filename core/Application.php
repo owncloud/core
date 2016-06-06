@@ -2,7 +2,7 @@
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Christoph Wurst <christoph@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -33,6 +33,7 @@ use OC\Core\Controller\AvatarController;
 use OC\Core\Controller\LoginController;
 use OC\Core\Controller\LostController;
 use OC\Core\Controller\TokenController;
+use OC\Core\Controller\TwoFactorChallengeController;
 use OC\Core\Controller\UserController;
 use OC_Defaults;
 use OCP\AppFramework\App;
@@ -101,8 +102,18 @@ class Application extends App {
 				$c->query('Config'),
 				$c->query('Session'),
 				$c->query('UserSession'),
-				$c->query('URLGenerator')
+				$c->query('URLGenerator'),
+				$c->query('TwoFactorAuthManager')
 			);
+		});
+		$container->registerService('TwoFactorChallengeController', function (SimpleContainer $c) {
+			return new TwoFactorChallengeController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('TwoFactorAuthManager'),
+				$c->query('UserSession'),
+				$c->query('Session'),
+				$c->query('URLGenerator'));
 		});
 		$container->registerService('TokenController', function(SimpleContainer $c) {
 			return new TokenController(
@@ -167,6 +178,9 @@ class Application extends App {
 		});
 		$container->registerService('DefaultEmailAddress', function() {
 			return Util::getDefaultEmailAddress('lostpassword-noreply');
+		});
+		$container->registerService('TwoFactorAuthManager', function(SimpleContainer $c) {
+			return $c->query('ServerContainer')->getTwoFactorAuthManager();
 		});
 	}
 

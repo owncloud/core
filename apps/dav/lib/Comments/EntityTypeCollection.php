@@ -1,6 +1,7 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -22,7 +23,6 @@
 namespace OCA\DAV\Comments;
 
 use OCP\Comments\ICommentsManager;
-use OCP\Files\Folder;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\IUserSession;
@@ -41,27 +41,31 @@ use Sabre\DAV\Exception\NotFound;
  * @package OCA\DAV\Comments
  */
 class EntityTypeCollection extends RootCollection {
-	/** @var  Folder */
-	protected $fileRoot;
 
 	/** @var ILogger */
 	protected $logger;
 
+	/** @var IUserManager */
+	protected $userManager;
+
+	/** @var \Closure */
+	protected $childExistsFunction;
+
 	/**
 	 * @param string $name
 	 * @param ICommentsManager $commentsManager
-	 * @param Folder $fileRoot
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
 	 * @param ILogger $logger
+	 * @param \Closure $childExistsFunction
 	 */
 	public function __construct(
 		$name,
 		ICommentsManager $commentsManager,
-		Folder $fileRoot,
 		IUserManager $userManager,
 		IUserSession $userSession,
-		ILogger $logger
+		ILogger $logger,
+		\Closure $childExistsFunction
 	) {
 		$name = trim($name);
 		if(empty($name) || !is_string($name)) {
@@ -69,10 +73,10 @@ class EntityTypeCollection extends RootCollection {
 		}
 		$this->name = $name;
 		$this->commentsManager = $commentsManager;
-		$this->fileRoot = $fileRoot;
 		$this->logger = $logger;
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
+		$this->childExistsFunction = $childExistsFunction;
 	}
 
 	/**
@@ -93,7 +97,6 @@ class EntityTypeCollection extends RootCollection {
 			$name,
 			$this->name,
 			$this->commentsManager,
-			$this->fileRoot,
 			$this->userManager,
 			$this->userSession,
 			$this->logger
@@ -117,9 +120,7 @@ class EntityTypeCollection extends RootCollection {
 	 * @return bool
 	 */
 	function childExists($name) {
-		$nodes = $this->fileRoot->getById(intval($name));
-		return !empty($nodes);
+		return call_user_func($this->childExistsFunction, $name);
 	}
-
 
 }

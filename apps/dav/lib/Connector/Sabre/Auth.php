@@ -1,13 +1,13 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Markus Goetz <markus@woboq.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -103,8 +103,8 @@ class Auth extends AbstractBasic {
 			return true;
 		} else {
 			\OC_Util::setUpFS(); //login hooks may need early access to the filesystem
-			if($this->userSession->login($username, $password)) {
-				$this->userSession->createSessionToken($this->request, $username, $password);
+			if($this->userSession->logClientIn($username, $password)) {
+				$this->userSession->createSessionToken($this->request, $this->userSession->getUser()->getUID(), $username, $password);
 				\OC_Util::setUpFS($this->userSession->getUser()->getUID());
 				$this->session->set(self::DAV_AUTHENTICATED, $this->userSession->getUser()->getUID());
 				$this->session->close();

@@ -1,15 +1,15 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Bernhard Reiter <ockham@raz.or.at>
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Christoph Wurst <christoph@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -223,6 +223,7 @@ class Server extends ServerContainer implements IServerContainer {
 			$timeFactory = new TimeFactory();
 			return new \OC\Authentication\Token\DefaultTokenProvider($mapper, $crypto, $config, $logger, $timeFactory);
 		});
+		$this->registerAlias('OC\Authentication\Token\IProvider', 'OC\Authentication\Token\DefaultTokenProvider');
 		$this->registerService('UserSession', function (Server $c) {
 			$manager = $c->getUserManager();
 			$session = new \OC\Session\Memory('');
@@ -230,16 +231,12 @@ class Server extends ServerContainer implements IServerContainer {
 			// Token providers might require a working database. This code
 			// might however be called when ownCloud is not yet setup.
 			if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
-				$defaultTokenProvider = $c->query('OC\Authentication\Token\DefaultTokenProvider');
-				$tokenProviders = [
-					$defaultTokenProvider,
-				];
+				$defaultTokenProvider = $c->query('OC\Authentication\Token\IProvider');
 			} else {
 				$defaultTokenProvider = null;
-				$tokenProviders = [];
 			}
 			
-			$userSession = new \OC\User\Session($manager, $session, $timeFactory, $defaultTokenProvider, $tokenProviders);
+			$userSession = new \OC\User\Session($manager, $session, $timeFactory, $defaultTokenProvider, $c->getConfig());
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', array('run' => true, 'uid' => $uid, 'password' => $password));
 			});
@@ -279,6 +276,11 @@ class Server extends ServerContainer implements IServerContainer {
 			});
 			return $userSession;
 		});
+
+		$this->registerService('\OC\Authentication\TwoFactorAuth\Manager', function (Server $c) {
+			return new \OC\Authentication\TwoFactorAuth\Manager($c->getAppManager(), $c->getSession(), $c->getConfig());
+		});
+
 		$this->registerService('NavigationManager', function ($c) {
 			return new \OC\NavigationManager();
 		});
@@ -366,7 +368,11 @@ class Server extends ServerContainer implements IServerContainer {
 		});
 		$this->registerService('JobList', function (Server $c) {
 			$config = $c->getConfig();
-			return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
+			return new \OC\BackgroundJob\JobList(
+				$c->getDatabaseConnection(),
+				$config,
+				new TimeFactory()
+			);
 		});
 		$this->registerService('Router', function (Server $c) {
 			$cacheFactory = $c->getMemCacheFactory();
@@ -852,6 +858,13 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function setSession(\OCP\ISession $session) {
 		return $this->query('UserSession')->setSession($session);
+	}
+
+	/**
+	 * @return \OC\Authentication\TwoFactorAuth\Manager
+	 */
+	public function getTwoFactorAuthManager() {
+		return $this->query('\OC\Authentication\TwoFactorAuth\Manager');
 	}
 
 	/**

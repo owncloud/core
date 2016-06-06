@@ -4,9 +4,10 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Hendrik Leppelsack <hendrik@leppelsack.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Remco Brenninkmeijer <requist1@starmail.nl>
@@ -72,7 +73,7 @@ class TemplateLayout extends \OC_Template {
 
 			// Code integrity notification
 			$integrityChecker = \OC::$server->getIntegrityCodeChecker();
-			if(\OC_User::isAdminUser(\OC_User::getUser()) && !$integrityChecker->hasPassedCheck()) {
+			if(\OC_User::isAdminUser(\OC_User::getUser()) && $integrityChecker->isCodeCheckEnforced() && !$integrityChecker->hasPassedCheck()) {
 				\OCP\Util::addScript('core', 'integritycheck-failed-notification');
 			}
 

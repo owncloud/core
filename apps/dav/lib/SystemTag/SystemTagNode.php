@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Lukas Reschke <lukas@owncloud.com>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -32,6 +31,7 @@ use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\TagNotFoundException;
 use OCP\SystemTag\TagAlreadyExistsException;
+use OCP\IUser;
 
 /**
  * DAV node representing a system tag, with the name being the tag id.
@@ -49,6 +49,13 @@ class SystemTagNode implements \Sabre\DAV\INode {
 	protected $tagManager;
 
 	/**
+	 * User
+	 *
+	 * @var IUser
+	 */
+	protected $user;
+
+	/**
 	 * Whether to allow permissions for admins
 	 *
 	 * @var bool
@@ -59,11 +66,13 @@ class SystemTagNode implements \Sabre\DAV\INode {
 	 * Sets up the node, expects a full path name
 	 *
 	 * @param ISystemTag $tag system tag
+	 * @param IUser $user user
 	 * @param bool $isAdmin whether to allow operations for admins
-	 * @param ISystemTagManager $tagManager
+	 * @param ISystemTagManager $tagManager tag manager
 	 */
-	public function __construct(ISystemTag $tag, $isAdmin, ISystemTagManager $tagManager) {
+	public function __construct(ISystemTag $tag, IUser $user, $isAdmin, ISystemTagManager $tagManager) {
 		$this->tag = $tag;
+		$this->user = $user;
 		$this->isAdmin = $isAdmin;
 		$this->tagManager = $tagManager;
 	}
@@ -109,14 +118,15 @@ class SystemTagNode implements \Sabre\DAV\INode {
 	 */
 	public function update($name, $userVisible, $userAssignable) {
 		try {
-			if (!$this->isAdmin) {
-				if (!$this->tag->isUserVisible()) {
-					throw new NotFound('Tag with id ' . $this->tag->getId() . ' does not exist');
-				}
-				if (!$this->tag->isUserAssignable()) {
-					throw new Forbidden('No permission to update tag ' . $this->tag->getId());
-				}
+			if (!$this->tagManager->canUserSeeTag($this->tag, $this->user)) {
+				throw new NotFound('Tag with id ' . $this->tag->getId() . ' does not exist');
+			}
+			if (!$this->tagManager->canUserAssignTag($this->tag, $this->user)) {
+				throw new Forbidden('No permission to update tag ' . $this->tag->getId());
+			}
 
+			// only admin is able to change permissions, regular users can only rename
+			if (!$this->isAdmin) {
 				// only renaming is allowed for regular users
 				if ($userVisible !== $this->tag->isUserVisible()
 					|| $userAssignable !== $this->tag->isUserAssignable()
@@ -124,6 +134,7 @@ class SystemTagNode implements \Sabre\DAV\INode {
 					throw new Forbidden('No permission to update permissions for tag ' . $this->tag->getId());
 				}
 			}
+
 			$this->tagManager->updateTag($this->tag->getId(), $name, $userVisible, $userAssignable);
 		} catch (TagNotFoundException $e) {
 			throw new NotFound('Tag with id ' . $this->tag->getId() . ' does not exist');
@@ -145,14 +156,13 @@ class SystemTagNode implements \Sabre\DAV\INode {
 
 	public function delete() {
 		try {
-			if (!$this->isAdmin) {
-				if (!$this->tag->isUserVisible()) {
-					throw new NotFound('Tag with id ' . $this->tag->getId() . ' not found');
-				}
-				if (!$this->tag->isUserAssignable()) {
-					throw new Forbidden('No permission to delete tag ' . $this->tag->getId());
-				}
+			if (!$this->tagManager->canUserSeeTag($this->tag, $this->user)) {
+				throw new NotFound('Tag with id ' . $this->tag->getId() . ' not found');
 			}
+			if (!$this->tagManager->canUserAssignTag($this->tag, $this->user)) {
+				throw new Forbidden('No permission to delete tag ' . $this->tag->getId());
+			}
+
 			$this->tagManager->deleteTags($this->tag->getId());
 		} catch (TagNotFoundException $e) {
 			// can happen if concurrent deletion occurred

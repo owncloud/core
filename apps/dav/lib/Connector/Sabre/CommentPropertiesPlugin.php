@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -99,13 +99,13 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	 */
 	public function getCommentsLink(Node $node) {
 		$href =  $this->server->getBaseUri();
-		$entryPoint = strrpos($href, '/webdav/');
+		$entryPoint = strpos($href, '/remote.php/');
 		if($entryPoint === false) {
 			// in case we end up somewhere else, unexpectedly.
 			return null;
 		}
-		$href = substr_replace($href, '/dav/', $entryPoint);
-		$href .= 'comments/files/' . rawurldecode($node->getId());
+		$commentsPart = 'dav/comments/files/' . rawurldecode($node->getId());
+		$href = substr_replace($href, $commentsPart, $entryPoint + strlen('/remote.php/'));
 		return $href;
 	}
 

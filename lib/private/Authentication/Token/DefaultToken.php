@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
  *
@@ -27,8 +26,8 @@ use OCP\AppFramework\Db\Entity;
 /**
  * @method void setId(int $id)
  * @method void setUid(string $uid);
+ * @method void setLoginName(string $loginName)
  * @method void setPassword(string $password)
- * @method string getPassword()
  * @method void setName(string $name)
  * @method string getName()
  * @method void setToken(string $token)
@@ -44,6 +43,11 @@ class DefaultToken extends Entity implements IToken {
 	 * @var string user UID
 	 */
 	protected $uid;
+
+	/**
+	 * @var string login name used for generating the token
+	 */
+	protected $loginName;
 
 	/**
 	 * @var string encrypted user password
@@ -76,6 +80,33 @@ class DefaultToken extends Entity implements IToken {
 
 	public function getUID() {
 		return $this->uid;
+	}
+
+	/**
+	 * Get the login name used when generating the token
+	 *
+	 * @return string
+	 */
+	public function getLoginName() {
+		return parent::getLoginName();
+	}
+
+	/**
+	 * Get the (encrypted) login password
+	 *
+	 * @return string
+	 */
+	public function getPassword() {
+		return parent::getPassword();
+	}
+
+	public function jsonSerialize() {
+		return [
+			'id' => $this->id,
+			'name' => $this->name,
+			'lastActivity' => $this->lastActivity,
+			'type' => $this->type,
+		];
 	}
 
 }

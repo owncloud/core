@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
  *
@@ -23,8 +22,32 @@
 namespace OC\Authentication\Token;
 
 use OC\Authentication\Exceptions\InvalidTokenException;
+use OC\Authentication\Exceptions\PasswordlessTokenException;
+use OCP\IUser;
 
 interface IProvider {
+
+	/**
+	 * Create and persist a new token
+	 *
+	 * @param string $token
+	 * @param string $uid
+	 * @param string $loginName
+	 * @param string|null $password
+	 * @param string $name
+	 * @param int $type token type
+	 * @return IToken
+	 */
+	public function generateToken($token, $uid, $loginName, $password, $name, $type = IToken::TEMPORARY_TOKEN);
+
+	/**
+	 * Get a token by token id
+	 *
+	 * @param string $tokenId
+	 * @throws InvalidTokenException
+	 * @return IToken
+	 */
+	public function getToken($tokenId) ;
 
 	/**
 	 * @param string $token
@@ -34,9 +57,46 @@ interface IProvider {
 	public function validateToken($token);
 
 	/**
+	 * Invalidate (delete) the given session token
+	 *
+	 * @param string $token
+	 */
+	public function invalidateToken($token);
+
+	/**
+	 * Invalidate (delete) the given token
+	 *
+	 * @param IUser $user
+	 * @param int $id
+	 */
+	public function invalidateTokenById(IUser $user, $id);
+
+	/**
 	 * Update token activity timestamp
 	 *
 	 * @param IToken $token
 	 */
 	public function updateToken(IToken $token);
+
+	/**
+	 * Get all token of a user
+	 *
+	 * The provider may limit the number of result rows in case of an abuse
+	 * where a high number of (session) tokens is generated
+	 *
+	 * @param IUser $user
+	 * @return IToken[]
+	 */
+	public function getTokenByUser(IUser $user);
+
+	/**
+	 * Get the (unencrypted) password of the given token
+	 *
+	 * @param IToken $token
+	 * @param string $tokenId
+	 * @throws InvalidTokenException
+	 * @throws PasswordlessTokenException
+	 * @return string
+	 */
+	public function getPassword(IToken $token, $tokenId);
 }

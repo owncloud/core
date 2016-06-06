@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
  *
@@ -75,13 +74,14 @@ class TokenController extends Controller {
 			$response->setStatus(Http::STATUS_UNPROCESSABLE_ENTITY);
 			return $response;
 		}
-		if ($this->userManager->checkPassword($user, $password) === false) {
+		$loginResult = $this->userManager->checkPassword($user, $password);
+		if ($loginResult === false) {
 			$response = new Response();
 			$response->setStatus(Http::STATUS_UNAUTHORIZED);
 			return $response;
 		}
 		$token = $this->secureRandom->generate(128);
-		$this->tokenProvider->generateToken($token, $user, $password, $name, IToken::PERMANENT_TOKEN);
+		$this->tokenProvider->generateToken($token, $loginResult->getUID(), $user, $password, $name, IToken::PERMANENT_TOKEN);
 		return [
 			'token' => $token,
 		];

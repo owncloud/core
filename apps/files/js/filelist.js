@@ -507,8 +507,6 @@
 			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - 10);
 
 			this.$table.find('>thead').width($('#app-content').width() - OC.Util.getScrollBarWidth());
-
-			this.updateSearch();
 		},
 
 		/**
@@ -663,7 +661,7 @@
 		_onClickDownloadSelected: function(event) {
 			var files;
 			var dir = this.getCurrentDirectory();
-			if (this.isAllSelected()) {
+			if (this.isAllSelected() && this.getSelectedFiles().length > 1) {
 				files = OC.basename(dir);
 				dir = OC.dirname(dir) || '/';
 			}
@@ -1322,7 +1320,7 @@
 			}
 			// allow dropping on folders
 			if (this._folderDropOptions && mime === 'httpd/unix-directory') {
-				filenameTd.droppable(this._folderDropOptions);
+				tr.droppable(this._folderDropOptions);
 			}
 
 			if (options.hidden) {

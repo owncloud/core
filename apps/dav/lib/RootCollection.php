@@ -1,6 +1,7 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -77,7 +78,7 @@ class RootCollection extends SimpleCollection {
 			\OC::$server->getCommentsManager(),
 			\OC::$server->getUserManager(),
 			\OC::$server->getUserSession(),
-			\OC::$server->getRootFolder(),
+			\OC::$server->getEventDispatcher(),
 			\OC::$server->getLogger()
 		);
 

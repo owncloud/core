@@ -2,16 +2,15 @@
 /**
  * @author Aldo "xoen" Giambelluca <xoen@xoen.org>
  * @author Andreas Fischer <bantu@owncloud.com>
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bartek Przybylski <bart.p.pl@gmail.com>
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Christoph Wurst <christoph@owncloud.com>
- * @author Florian Preinstorfer <nblock@archlinux.us>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -181,6 +180,8 @@ class OC_User {
 				self::setUserId($uid);
 				self::setDisplayName($uid);
 				self::getUserSession()->setLoginName($uid);
+				$request = OC::$server->getRequest();
+				self::getUserSession()->createSessionToken($request, $uid, $uid);
 				// setup the filesystem
 				OC_Util::setupFS($uid);
 				// first call the post_login hooks, the login-process needs to be

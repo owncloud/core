@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -23,7 +22,7 @@
 
 namespace OC\Core\Controller;
 
-use OC;
+use OC\Authentication\TwoFactorAuth\Manager;
 use OC\User\Session;
 use OC_App;
 use OC_Util;
@@ -54,6 +53,9 @@ class LoginController extends Controller {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
+	/** @var Manager */
+	private $twoFactorManager;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
@@ -62,15 +64,17 @@ class LoginController extends Controller {
 	 * @param ISession $session
 	 * @param Session $userSession
 	 * @param IURLGenerator $urlGenerator
+	 * @param Manager $twoFactorManager
 	 */
 	function __construct($appName, IRequest $request, IUserManager $userManager, IConfig $config, ISession $session,
-		Session $userSession, IURLGenerator $urlGenerator) {
+		Session $userSession, IURLGenerator $urlGenerator, Manager $twoFactorManager) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->config = $config;
 		$this->session = $session;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
+		$this->twoFactorManager = $twoFactorManager;
 	}
 
 	/**
@@ -130,7 +134,8 @@ class LoginController extends Controller {
 		}
 
 		$parameters['canResetPassword'] = true;
-		if (!$this->config->getSystemValue('lost_password_link')) {
+		$parameters['resetPasswordLink'] = $this->config->getSystemValue('lost_password_link', '');
+		if (!$parameters['resetPasswordLink']) {
 			if (!is_null($user) && $user !== '') {
 				$userObj = $this->userManager->get($user);
 				if ($userObj instanceof IUser) {
@@ -167,6 +172,7 @@ class LoginController extends Controller {
 	 */
 	public function tryLogin($user, $password, $redirect_url) {
 		// TODO: Add all the insane error handling
+		/* @var $loginResult IUser */
 		$loginResult = $this->userManager->checkPassword($user, $password);
 		if ($loginResult === false) {
 			$users = $this->userManager->getByEmail($user);
@@ -184,7 +190,16 @@ class LoginController extends Controller {
 			$args = !is_null($user) ? ['user' => $user] : [];
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.login.showLoginForm', $args));
 		}
-		$this->userSession->createSessionToken($this->request, $loginResult->getUID(), $password);
+		// TODO: remove password checks from above and let the user session handle failures
+		// requires https://github.com/owncloud/core/pull/24616
+		$this->userSession->login($user, $password);
+		$this->userSession->createSessionToken($this->request, $loginResult->getUID(), $user, $password);
+
+		if ($this->twoFactorManager->isTwoFactorAuthenticated($loginResult)) {
+			$this->twoFactorManager->prepareTwoFactorLogin($loginResult);
+			return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge'));
+		}
+
 		if (!is_null($redirect_url) && $this->userSession->isLoggedIn()) {
 			$location = $this->urlGenerator->getAbsoluteURL(urldecode($redirect_url));
 			// Deny the redirect if the URL contains a @

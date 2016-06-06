@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
  *
@@ -26,6 +25,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Mapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
+use OCP\IUser;
 
 class DefaultTokenMapper extends Mapper {
 
@@ -70,7 +70,7 @@ class DefaultTokenMapper extends Mapper {
 	public function getToken($token) {
 		/* @var $qb IQueryBuilder */
 		$qb = $this->db->getQueryBuilder();
-		$result = $qb->select('id', 'uid', 'password', 'name', 'type', 'token', 'last_activity')
+		$result = $qb->select('id', 'uid', 'login_name', 'password', 'name', 'type', 'token', 'last_activity')
 			->from('authtoken')
 			->where($qb->expr()->eq('token', $qb->createParameter('token')))
 			->setParameter('token', $token)
@@ -81,6 +81,46 @@ class DefaultTokenMapper extends Mapper {
 			throw new DoesNotExistException('token does not exist');
 		}
 		return DefaultToken::fromRow($data);
+	}
+
+	/**
+	 * Get all token of a user
+	 *
+	 * The provider may limit the number of result rows in case of an abuse
+	 * where a high number of (session) tokens is generated
+	 *
+	 * @param IUser $user
+	 * @return DefaultToken[]
+	 */
+	public function getTokenByUser(IUser $user) {
+		/* @var $qb IQueryBuilder */
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('id', 'uid', 'login_name', 'password', 'name', 'type', 'token', 'last_activity')
+			->from('authtoken')
+			->where($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())))
+			->setMaxResults(1000);
+		$result = $qb->execute();
+		$data = $result->fetchAll();
+		$result->closeCursor();
+
+		$entities = array_map(function ($row) {
+			return DefaultToken::fromRow($row);
+		}, $data);
+
+		return $entities;
+	}
+
+	/**
+	 * @param IUser $user
+	 * @param int $id
+	 */
+	public function deleteById(IUser $user, $id) {
+		/* @var $qb IQueryBuilder */
+		$qb = $this->db->getQueryBuilder();
+		$qb->delete('authtoken')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
+			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())));
+		$qb->execute();
 	}
 
 }

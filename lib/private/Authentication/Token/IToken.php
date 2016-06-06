@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
  *
@@ -22,10 +21,9 @@
 
 namespace OC\Authentication\Token;
 
-/**
- * @since 9.1.0
- */
-interface IToken {
+use JsonSerializable;
+
+interface IToken extends JsonSerializable {
 
 	const TEMPORARY_TOKEN = 0;
 	const PERMANENT_TOKEN = 1;
@@ -33,7 +31,7 @@ interface IToken {
 	/**
 	 * Get the token ID
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function getId();
 
@@ -43,4 +41,18 @@ interface IToken {
 	 * @return string
 	 */
 	public function getUID();
+
+	/**
+	 * Get the login name used when generating the token
+	 *
+	 * @return string
+	 */
+	public function getLoginName();
+
+	/**
+	 * Get the (encrypted) login password
+	 *
+	 * @return string
+	 */
+	public function getPassword();
 }

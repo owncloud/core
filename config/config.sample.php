@@ -195,6 +195,13 @@ $CONFIG = array(
 'session_keepalive' => true,
 
 /**
+ * Enforce token authentication for clients, which blocks requests using the user
+ * password for enhanced security. Users need to generate tokens in personal settings
+ * which can be used as passwords on their clients.
+ */
+'token_auth_enforced' => false,
+
+/**
  * The directory where the skeleton files are located. These files will be
  * copied to the data directory of new users. Leave empty to not copy any
  * skeleton files.
@@ -615,17 +622,6 @@ $CONFIG = array(
 'cron_log' => true,
 
 /**
- * Location of the lock file for cron executions can be specified here.
- * Default is within the tmp directory. The file is named in the following way:
- * owncloud-server-$INSTANCEID-cron.lock
- * where $INSTANCEID is the string specified in the ``instanceid`` field.
- * Because the cron lock file is accessed at regular intervals, it may prevent
- * enabled disk drives from spinning down. A different location for this file
- * can solve such issues.
- */
-'cron.lockfile.location' => '',
-
-/**
  * Enables log rotation and limits the total size of logfiles. The default is 0,
  * or no rotation. Specify a size in bytes, for example 104857600 (100 megabytes
  * = 100 * 1024 * 1024 bytes). A new logfile is created with a new name when the
@@ -981,6 +977,14 @@ $CONFIG = array(
 'cache_path' => '',
 
 /**
+ * TTL of chunks located in the cache folder before they're removed by
+ * garbage collection (in seconds). Increase this value if users have
+ * issues uploading very large files via the ownCloud Client as upload isn't
+ * completed within one day.
+ */
+'cache_chunk_gc_ttl' => 86400, // 60*60*24 = 1 day
+
+/**
  * Using Object Store with ownCloud
  */
 
@@ -1137,8 +1141,9 @@ $CONFIG = array(
 'quota_include_external_storage' => false,
 
 /**
- * Specifies how often the filesystem is checked for changes made outside
- * ownCloud.
+ * Specifies how often the local filesystem (the ownCloud data/ directory, and 
+ * NFS mounts in data/) is checked for changes made outside ownCloud. This 
+ * does not apply to external storages.
  *
  * 0 -> Never check the filesystem for outside changes, provides a performance
  * increase when it's certain that no changes are made directly to the
