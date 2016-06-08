@@ -60,6 +60,13 @@ class Log implements ILogger {
 	/** @var Normalizer */
 	private $normalizer;
 
+	protected $methodsWithSensitiveParameters = [
+		'login',
+		'checkPassword',
+		'updatePrivateKeyPassword',
+		'validateUserPass',
+	];
+
 	/**
 	 * @param string $logger The logger that should be used
 	 * @param SystemConfig $config the system config object
@@ -286,7 +293,7 @@ class Log implements ILogger {
 			'File' => $exception->getFile(),
 			'Line' => $exception->getLine(),
 		);
-		$exception['Trace'] = preg_replace('!(login|checkPassword|updatePrivateKeyPassword|validateUserPass)\(.*\)!', '$1(*** username and password replaced ***)', $exception['Trace']);
+		$exception['Trace'] = preg_replace('!(' . implode('|', $this->methodsWithSensitiveParameters) . ')\(.*\)!', '$1(*** sensitive parameters replaced ***)', $exception['Trace']);
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
 		$msg .= ': ' . json_encode($exception);
 		$this->error($msg, $context);
