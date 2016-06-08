@@ -61,10 +61,29 @@ class Log implements ILogger {
 	private $normalizer;
 
 	protected $methodsWithSensitiveParameters = [
+		// Session/User
 		'login',
 		'checkPassword',
 		'updatePrivateKeyPassword',
 		'validateUserPass',
+
+		// TokenProvider
+		'getToken',
+		'isTokenPassword',
+		'getPassword',
+		'decryptPassword',
+		'logClientIn',
+		'generateToken',
+		'validateToken',
+
+		// TwoFactorAuth
+		'solveChallenge',
+		'verifyChallenge',
+
+		//ICrypto
+		'calculateHMAC',
+		'encrypt',
+		'decrypt',
 	];
 
 	/**
