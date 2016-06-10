@@ -22,7 +22,7 @@ Feature: dav-v2
 		And As an "admin"
 		When Downloading file "welcome.txt"
 		Then The following headers should be set
-			|Content-Disposition|attachment|
+			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
 			|Content-Security-Policy|default-src 'none';|
 			|X-Content-Type-Options |nosniff|
 			|X-Download-Options|noopen|
