@@ -296,7 +296,7 @@ class Session implements IUserSession, Emitter {
 	 * @throws LoginException
 	 */
 	public function login($uid, $password) {
-		$this->session->regenerateId();
+		$this->session->regenerateId(true);
 		if ($this->validateToken($password)) {
 			$user = $this->getUser();
 
@@ -367,6 +367,11 @@ class Session implements IUserSession, Emitter {
 				return $this->login($users[0]->getUID(), $password);
 			}
 			return false;
+		}
+		if ($isTokenPassword) {
+			// Let's use the device token as session token
+			$this->session->setId($password);
+			$y = $this->session->getId();
 		}
 		return true;
 	}

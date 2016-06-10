@@ -103,6 +103,18 @@ class Memory extends Session {
 	}
 
 	/**
+	 * Wrapper around session_id($id)
+	 *
+	 * @param string $id new session id
+	 * @param bool $copyData copy data into new session
+	 * @throws SessionNotAvailableException
+	 * @since 9.1.0
+	 */
+	public function setId($id, $copyData) {
+		throw new SessionNotAvailableException('Memory session does not have an ID');
+	}
+
+	/**
 	 * Helper function for PHPUnit execution - don't use in non-test code
 	 */
 	public function reopen() {
