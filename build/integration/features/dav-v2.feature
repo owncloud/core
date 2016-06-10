@@ -12,6 +12,8 @@ Feature: dav-v2
 	Scenario: download a file with range using new endpoint
 		Given using dav path "remote.php/dav"
 		And As an "admin"
+		And user "user0" exists
+		And As an "user0"
 		When Downloading file "/files/user0/welcome.txt" with range "bytes=51-77"
 		Then Downloaded content should be "example file for developers"
 
