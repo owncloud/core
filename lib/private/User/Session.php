@@ -372,6 +372,10 @@ class Session implements IUserSession, Emitter {
 			// Let's use the device token as session token
 			$this->session->setId($password);
 			$y = $this->session->getId();
+		} else {
+			// Ideally only devices that support tokens should get a session token
+			// See https://github.com/owncloud/core/pull/24742
+			$this->createSessionToken(OC::$server->getRequest(), $this->getUser()->getUID(), $user, $password);
 		}
 		return true;
 	}
