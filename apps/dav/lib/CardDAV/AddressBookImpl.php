@@ -83,11 +83,11 @@ class AddressBookImpl implements IAddressBook {
 	 * @since 5.0.0
 	 */
 	public function search($pattern, $searchProperties, $options) {
-		$result = $this->backend->search($this->getKey(), $pattern, $searchProperties);
+		$results = $this->backend->search($this->getKey(), $pattern, $searchProperties);
 
 		$vCards = [];
-		foreach ($result as $cardData) {
-			$vCards[] = $this->vCard2Array($this->readCard($cardData));
+		foreach ($results as $result) {
+			$vCards[] = $this->vCard2Array($result['uri'], $this->readCard($result['carddata']));
 		}
 
 		return $vCards;
@@ -100,13 +100,12 @@ class AddressBookImpl implements IAddressBook {
 	 */
 	public function createOrUpdate($properties) {
 		$update = false;
-		if (!isset($properties['UID'])) { // create a new contact
+		if (!isset($properties['URI'])) { // create a new contact
 			$uid = $this->createUid();
 			$uri = $uid . '.vcf';
 			$vCard = $this->createEmptyVCard($uid);
 		} else { // update existing contact
-			$uid = $properties['UID'];
-			$uri = $uid . '.vcf';
+			$uri = $properties['URI'];
 			$vCardData = $this->backend->getCard($this->getKey(), $uri);
 			$vCard = $this->readCard($vCardData['carddata']);
 			$update = true;
@@ -122,7 +121,7 @@ class AddressBookImpl implements IAddressBook {
 			$this->backend->createCard($this->getKey(), $uri, $vCard->serialize());
 		}
 
-		return $this->vCard2Array($vCard);
+		return $this->vCard2Array($uri, $vCard);
 
 	}
 
@@ -207,11 +206,15 @@ class AddressBookImpl implements IAddressBook {
 	/**
 	 * create array with all vCard properties
 	 *
+	 * @param string $uri
 	 * @param VCard $vCard
 	 * @return array
 	 */
-	protected function vCard2Array(VCard $vCard) {
-		$result = [];
+	protected function vCard2Array($uri, VCard $vCard) {
+		$result = [
+			'URI' => $uri,
+		];
+
 		foreach ($vCard->children as $property) {
 			$result[$property->name] = $property->getValue();
 		}
