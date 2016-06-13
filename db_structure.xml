@@ -991,10 +991,27 @@
 				<notnull>false</notnull>
 			</field>
 
+			<field>
+				<!-- sha1 hash of the class+arguments to have more efficient checking -->
+				<name>hash</name>
+				<type>text</type>
+				<default></default>
+				<length>40</length>
+				<notnull>false</notnull>
+			</field>
+
 			<index>
 				<name>job_class_index</name>
 				<field>
 					<name>class</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
+				<name>job_hash</name>
+				<field>
+					<name>hash</name>
 					<sorting>ascending</sorting>
 				</field>
 			</index>
