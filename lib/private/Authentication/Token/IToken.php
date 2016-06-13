@@ -27,6 +27,7 @@ interface IToken extends JsonSerializable {
 
 	const TEMPORARY_TOKEN = 0;
 	const PERMANENT_TOKEN = 1;
+	const TEMPORARY_CLIENT_TOKEN = 2;
 
 	/**
 	 * Get the token ID
