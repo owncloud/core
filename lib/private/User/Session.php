@@ -368,6 +368,10 @@ class Session implements IUserSession, Emitter {
 			}
 			return false;
 		}
+
+		// TODO: only create the session token if the client supports cookies
+		$this->createSessionToken(OC::$server->getRequest(), $this->getUser()->getUID(), $user, $password, !$isTokenPassword);
+
 		return true;
 	}
 
@@ -471,9 +475,10 @@ class Session implements IUserSession, Emitter {
 	 * @param string $uid user UID
 	 * @param string $loginName login name
 	 * @param string $password
+	 * @param boolean $isBrowser false if the token is generated for a client
 	 * @return boolean
 	 */
-	public function createSessionToken(IRequest $request, $uid, $loginName, $password = null) {
+	public function createSessionToken(IRequest $request, $uid, $loginName, $password = null, $isBrowser = true) {
 		if (is_null($this->manager->get($uid))) {
 			// User does not exist
 			return false;
@@ -482,7 +487,11 @@ class Session implements IUserSession, Emitter {
 		try {
 			$sessionId = $this->session->getId();
 			$pwd = $this->getPassword($password);
-			$this->tokenProvider->generateToken($sessionId, $uid, $loginName, $pwd, $name);
+			if ($isBrowser) {
+				$this->tokenProvider->generateToken($sessionId, $uid, $loginName, $pwd, $name, IToken::TEMPORARY_TOKEN);
+			} else {
+				$this->tokenProvider->generateToken($sessionId, $uid, $loginName, $pwd, $name, IToken::TEMPORARY_CLIENT_TOKEN);
+			}
 			return true;
 		} catch (SessionNotAvailableException $ex) {
 			// This can happen with OCC, where a memory session is used
