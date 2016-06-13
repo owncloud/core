@@ -144,15 +144,14 @@ class Internal extends Session {
 				$oldData[$k] = $this->get($k);
 			}
 		}
+		session_write_close();
 
 		$newId = @session_id($id);
-		@session_start();
-		if ($newId === '') {
+		if ($newId === '' || session_start() === false) {
 			throw new SessionNotAvailableException();
 		}
 
 		if ($copyData) {
-			@session_start();
 			foreach ($oldData as $k => $v) {
 				$this->set($k, $v);
 			}
