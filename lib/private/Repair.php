@@ -51,6 +51,7 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Repair\ClearStrayFileLocks;
 
 class Repair implements IOutput{
 	/* @var IRepairStep[] */
@@ -128,6 +129,7 @@ class Repair implements IOutput{
 			new AssetCache(),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection()),
+			new ClearStrayFileLocks(\OC::$server->getDatabaseConnection()),
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
 			new DropOldJobs(\OC::$server->getJobList()),
 			new RemoveGetETagEntries(\OC::$server->getDatabaseConnection()),
