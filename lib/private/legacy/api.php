@@ -103,7 +103,6 @@ class OC_API {
 	 * api actions
 	 */
 	protected static $actions = array();
-	private static $logoutRequired = false;
 	private static $isLoggedIn = false;
 
 	/**
@@ -180,9 +179,6 @@ class OC_API {
 		}
 		$response = self::mergeResponses($responses);
 		$format = self::requestedFormat();
-		if (self::$logoutRequired) {
-			\OC::$server->getUserSession()->logout();
-		}
 
 		self::respond($response, $format);
 	}
@@ -369,10 +365,8 @@ class OC_API {
 		} catch (\OC\User\LoginException $e) {
 			return false;
 		}
-	
-		if ($loginSuccess === true) {
-			self::$logoutRequired = true;
 
+		if ($loginSuccess === true) {
 			// initialize the user's filesystem
 			\OC_Util::setupFS(\OC_User::getUser());
 			self::$isLoggedIn = true;

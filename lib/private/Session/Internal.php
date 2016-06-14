@@ -130,6 +130,35 @@ class Internal extends Session {
 	}
 
 	/**
+	 * Wrapper around session_id($id)
+	 *
+	 * @param string $id new session id
+	 * @param bool $copyData copy data into new session
+	 * @throws SessionNotAvailableException
+	 * @since 9.1.0
+	 */
+	public function setId($id, $copyData = true) {
+		if ($copyData) {
+			$oldData = [];
+			foreach ($_SESSION as $k => $v) {
+				$oldData[$k] = $this->get($k);
+			}
+		}
+		session_write_close();
+
+		$newId = @session_id($id);
+		if ($newId === '' || session_start() === false) {
+			throw new SessionNotAvailableException();
+		}
+
+		if ($copyData) {
+			foreach ($oldData as $k => $v) {
+				$this->set($k, $v);
+			}
+		}
+	}
+
+	/**
 	 * @throws \Exception
 	 */
 	public function reopen() {

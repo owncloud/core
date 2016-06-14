@@ -155,6 +155,26 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	}
 
 	/**
+	 * Wrapper around session_id($id)
+	 *
+	 * @param string $id new session id
+	 * @param bool $copyData copy data into new session
+	 * @throws SessionNotAvailableException
+	 * @since 9.1.0
+	 */
+	public function setId($id, $copyData) {
+		// Flush data
+		if($this->isModified) {
+			$encryptedValue = $this->crypto->encrypt(json_encode($this->sessionValues), $this->passphrase);
+			$this->session->set(self::encryptedSessionName, $encryptedValue);
+		}
+		// Get new session
+		$this->session->setId($id, $copyData);
+		// Copy data back
+		$this->initializeSession();
+	}
+
+	/**
 	 * Close the session and release the lock, also writes all changed data in batch
 	 */
 	public function close() {

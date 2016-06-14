@@ -105,4 +105,14 @@ interface ISession {
 	 * @since 9.1.0
 	 */
 	public function getId();
+
+	/**
+	 * Wrapper around session_id($id)
+	 *
+	 * @param string new session id
+	 * @param bool copy data into new session
+	 * @throws SessionNotAvailableException
+	 * @since 9.1.0
+	 */
+	public function setId($id, $copyData);
 }
