@@ -210,6 +210,11 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 		if (\OCP\Util::isSharingDisabledForUser() || ($this->isShared() && !\OC\Share\Share::isResharingAllowed())) {
 			$perms = $perms & ~\OCP\Constants::PERMISSION_SHARE;
 		}
+		if ($this->isShared() && ($this->internalPath == "")) {
+			if (\OC::$server->getConfig()->getAppValue('core', 'shareapi_allow_delete_root_share', 'yes') !== 'yes') {
+				$perms = $perms & ~\OCP\Constants::PERMISSION_DELETE;
+			}
+		}
 		return $perms;
 	}
 

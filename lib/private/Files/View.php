@@ -767,6 +767,10 @@ class View {
 				$this->changeLock($path2, ILockingProvider::LOCK_EXCLUSIVE, true);
 
 				if ($internalPath1 === '' and $mount1 instanceof MoveableMount) {
+					if (\OC::$server->getConfig()->getAppValue('core', 'shareapi_allow_rename_root_share', 'yes') !== 'yes') {
+						$result = false;
+						return false;
+					}
 					if ($this->isTargetAllowed($absolutePath2)) {
 						/**
 						 * @var \OC\Files\Mount\MountPoint | \OC\Files\Mount\MoveableMount $mount1

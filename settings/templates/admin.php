@@ -278,6 +278,16 @@ if ($_['cronErrors']) {
 				<?php if ($_['allowShareDialogUserEnumeration'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="shareapi_allow_share_dialog_user_enumeration"><?php p($l->t('Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered.'));?></label><br />
 		</p>
+		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
+			<input type="checkbox" name="shareapi_allow_delete_root_share" value="1" id="shareapi_allow_delete_root_share" class="checkbox"
+				<?php if ($_['allowDeleteRootShare'] === 'yes') print_unescaped('checked="checked"'); ?> />
+			<label for="shareapi_allow_delete_root_share"><?php p($l->t('Allow user to delete a root share folder or file.'));?></label><br />
+		</p>
+		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
+			<input type="checkbox" name="shareapi_allow_rename_root_share" value="1" id="shareapi_allow_rename_root_share" class="checkbox"
+				<?php if ($_['allowRenameRootShare'] === 'yes') print_unescaped('checked="checked"'); ?> />
+			<label for="shareapi_allow_rename_root_share"><?php p($l->t('Allow user to rename a root share folder or file.'));?></label><br />
+		</p>
 
 		<?php print_unescaped($_['fileSharingSettings']); ?>
 	</div>
