@@ -912,7 +912,15 @@ class Manager implements IManager {
 				$shares = $provider->getSharesBy($userId, $shareType, $path, $reshares, $limit, $offset);
 
 				// No more shares means we are done
-				if (empty($shares)) {
+				if (empty($shares) || !array_udiff($shares, $shares2, function(Share $a, Share $b) {
+						if ($a->getId() < $b->getId()) {
+							return -1;
+						} elseif ($a->getId() > $b->getId()) {
+							return 1;
+						} else {
+							return 0;
+						}
+					})) {
 					break;
 				}
 			}
