@@ -77,6 +77,9 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 		if ($type === self::LOCK_SHARED) {
 			if (isset($this->acquiredLocks['shared'][$path]) and $this->acquiredLocks['shared'][$path] > 0) {
 				$this->acquiredLocks['shared'][$path]--;
+				if ($this->acquiredLocks['shared'][$path] === 0) {
+					unset($this->acquiredLocks['shared'][$path]);
+				}
 			}
 		} else if ($type === self::LOCK_EXCLUSIVE) {
 			unset($this->acquiredLocks['exclusive'][$path]);
@@ -115,5 +118,9 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 		foreach ($this->acquiredLocks['exclusive'] as $path => $hasLock) {
 			$this->releaseLock($path, self::LOCK_EXCLUSIVE);
 		}
+	}
+
+	protected function getOwnSharedLockCount($path) {
+		return isset($this->acquiredLocks['shared'][$path]) ? $this->acquiredLocks['shared'][$path] : 0;
 	}
 }

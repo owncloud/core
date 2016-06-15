@@ -14,7 +14,7 @@ var UserList = {
 	availableGroups: [],
 	offset: 0,
 	usersToLoad: 10, //So many users will be loaded when user scrolls down
-	initialUsersToLoad: 250, //initial number of users to load
+	initialUsersToLoad: 50, //initial number of users to load
 	currentGid: '',
 	filter: '',
 
@@ -840,7 +840,7 @@ $(document).ready(function () {
 				}).fail(function(result) {
 					OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
 						message: result.responseJSON.message
-					}));
+					}, undefined, {escape: false}));
 				}).success(function(){
 					$('#newuser').get(0).reset();
 				});

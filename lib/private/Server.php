@@ -1,14 +1,15 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Bernhard Reiter <ockham@raz.or.at>
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -48,6 +49,9 @@ use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Config\UserMountCacheListener;
+use OC\Files\Mount\CacheMountProvider;
+use OC\Files\Mount\LocalHomeMountProvider;
+use OC\Files\Mount\ObjectHomeMountProvider;
 use OC\Files\Node\HookConnector;
 use OC\Files\Node\LazyRoot;
 use OC\Files\Node\Root;
@@ -208,12 +212,32 @@ class Server extends ServerContainer implements IServerContainer {
 			});
 			return $groupManager;
 		});
+		$this->registerService('OC\Authentication\Token\DefaultTokenMapper', function (Server $c) {
+			$dbConnection = $c->getDatabaseConnection();
+			return new Authentication\Token\DefaultTokenMapper($dbConnection);
+		});
+		$this->registerService('OC\Authentication\Token\DefaultTokenProvider', function (Server $c) {
+			$mapper = $c->query('OC\Authentication\Token\DefaultTokenMapper');
+			$crypto = $c->getCrypto();
+			$config = $c->getConfig();
+			$logger = $c->getLogger();
+			$timeFactory = new TimeFactory();
+			return new \OC\Authentication\Token\DefaultTokenProvider($mapper, $crypto, $config, $logger, $timeFactory);
+		});
+		$this->registerAlias('OC\Authentication\Token\IProvider', 'OC\Authentication\Token\DefaultTokenProvider');
 		$this->registerService('UserSession', function (Server $c) {
 			$manager = $c->getUserManager();
-
 			$session = new \OC\Session\Memory('');
-
-			$userSession = new \OC\User\Session($manager, $session);
+			$timeFactory = new TimeFactory();
+			// Token providers might require a working database. This code
+			// might however be called when ownCloud is not yet setup.
+			if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
+				$defaultTokenProvider = $c->query('OC\Authentication\Token\IProvider');
+			} else {
+				$defaultTokenProvider = null;
+			}
+			
+			$userSession = new \OC\User\Session($manager, $session, $timeFactory, $defaultTokenProvider, $c->getConfig());
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', array('run' => true, 'uid' => $uid, 'password' => $password));
 			});
@@ -253,6 +277,11 @@ class Server extends ServerContainer implements IServerContainer {
 			});
 			return $userSession;
 		});
+
+		$this->registerService('\OC\Authentication\TwoFactorAuth\Manager', function (Server $c) {
+			return new \OC\Authentication\TwoFactorAuth\Manager($c->getAppManager(), $c->getSession(), $c->getConfig());
+		});
+
 		$this->registerService('NavigationManager', function ($c) {
 			return new \OC\NavigationManager();
 		});
@@ -312,8 +341,12 @@ class Server extends ServerContainer implements IServerContainer {
 				'\\OC\\Memcache\\ArrayCache'
 			);
 		});
+		$this->registerService('RedisFactory', function (Server $c) {
+			$systemConfig = $c->getSystemConfig();
+			return new RedisFactory($systemConfig);
+		});
 		$this->registerService('ActivityManager', function (Server $c) {
-			return new ActivityManager(
+			return new \OC\Activity\Manager(
 				$c->getRequest(),
 				$c->getUserSession(),
 				$c->getConfig()
@@ -329,14 +362,18 @@ class Server extends ServerContainer implements IServerContainer {
 		});
 		$this->registerService('Logger', function (Server $c) {
 			$logClass = $c->query('AllConfig')->getSystemValue('log_type', 'owncloud');
-			$logger = 'OC_Log_' . ucfirst($logClass);
+			$logger = 'OC\\Log\\' . ucfirst($logClass);
 			call_user_func(array($logger, 'init'));
 
 			return new Log($logger);
 		});
 		$this->registerService('JobList', function (Server $c) {
 			$config = $c->getConfig();
-			return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
+			return new \OC\BackgroundJob\JobList(
+				$c->getDatabaseConnection(),
+				$config,
+				new TimeFactory()
+			);
 		});
 		$this->registerService('Router', function (Server $c) {
 			$cacheFactory = $c->getMemCacheFactory();
@@ -445,7 +482,16 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('MountConfigManager', function (Server $c) {
 			$loader = \OC\Files\Filesystem::getLoader();
 			$mountCache = $c->query('UserMountCache');
-			return new \OC\Files\Config\MountProviderCollection($loader, $mountCache);
+			$manager =  new \OC\Files\Config\MountProviderCollection($loader, $mountCache);
+
+			// builtin providers
+
+			$config = $c->getConfig();
+			$manager->registerProvider(new CacheMountProvider($config));
+			$manager->registerHomeProvider(new LocalHomeMountProvider());
+			$manager->registerHomeProvider(new ObjectHomeMountProvider($config));
+
+			return $manager;
 		});
 		$this->registerService('IniWrapper', function ($c) {
 			return new IniGetWrapper();
@@ -626,7 +672,7 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('ShareManager', function(Server $c) {
 			$config = $c->getConfig();
 			$factoryClass = $config->getSystemValue('sharing.managerFactory', '\OC\Share20\ProviderFactory');
-			/** @var \OC\Share20\IProviderFactory $factory */
+			/** @var \OCP\Share\IProviderFactory $factory */
 			$factory = new $factoryClass($this);
 
 			$manager = new \OC\Share20\Manager(
@@ -826,6 +872,13 @@ class Server extends ServerContainer implements IServerContainer {
 	}
 
 	/**
+	 * @return \OC\Authentication\TwoFactorAuth\Manager
+	 */
+	public function getTwoFactorAuthManager() {
+		return $this->query('\OC\Authentication\TwoFactorAuth\Manager');
+	}
+
+	/**
 	 * @return \OC\NavigationManager
 	 */
 	public function getNavigationManager() {
@@ -840,8 +893,7 @@ class Server extends ServerContainer implements IServerContainer {
 	}
 
 	/**
-	 * For internal use only
-	 *
+	 * @internal For internal use only
 	 * @return \OC\SystemConfig
 	 */
 	public function getSystemConfig() {
@@ -908,6 +960,16 @@ class Server extends ServerContainer implements IServerContainer {
 	public function getMemCacheFactory() {
 		return $this->query('MemCacheFactory');
 	}
+
+	/**
+	 * Returns an \OC\RedisFactory instance
+	 *
+	 * @return \OC\RedisFactory
+	 */
+	public function getGetRedisFactory() {
+		return $this->query('RedisFactory');
+	}
+
 
 	/**
 	 * Returns the current session
@@ -1183,7 +1245,7 @@ class Server extends ServerContainer implements IServerContainer {
 		return $this->query('MountManager');
 	}
 
-	/*
+	/**
 	 * Get the MimeTypeDetector
 	 *
 	 * @return \OCP\Files\IMimeTypeDetector

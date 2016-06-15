@@ -2,11 +2,11 @@
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Björn Schießle <schiessle@owncloud.com>
- * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Frank Karlitschek <frank@karlitschek.de>
  * @author Jesús Macias <jmacias@solidgear.es>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
@@ -33,7 +33,7 @@
  */
 
 use phpseclib\Crypt\AES;
-use \OCA\Files_External\Appinfo\Application;
+use \OCA\Files_External\AppInfo\Application;
 use \OCA\Files_External\Lib\Backend\LegacyBackend;
 use \OCA\Files_External\Lib\StorageConfig;
 use \OCA\Files_External\Lib\Backend\Backend;
@@ -91,7 +91,7 @@ class OC_Mount_Config {
 		$userStoragesService->setUser($user);
 
 		foreach ($userGlobalStoragesService->getStorages() as $storage) {
-			/** @var \OCA\Files_external\Lib\StorageConfig $storage */
+			/** @var \OCA\Files_External\Lib\StorageConfig $storage */
 			$mountPoint = '/'.$uid.'/files'.$storage->getMountPoint();
 			$mountEntry = self::prepareMountPointEntry($storage, false);
 			foreach ($mountEntry['options'] as &$option) {
@@ -215,7 +215,7 @@ class OC_Mount_Config {
 	 * @return int see self::STATUS_*
 	 * @throws Exception
 	 */
-	public static function getBackendStatus($class, $options, $isPersonal) {
+	public static function getBackendStatus($class, $options, $isPersonal, $testOnly = true) {
 		if (self::$skipTest) {
 			return StorageNotAvailableException::STATUS_SUCCESS;
 		}
@@ -228,7 +228,7 @@ class OC_Mount_Config {
 				$storage = new $class($options);
 
 				try {
-					$result = $storage->test($isPersonal);
+					$result = $storage->test($isPersonal, $testOnly);
 					$storage->setAvailability($result);
 					if ($result) {
 						return StorageNotAvailableException::STATUS_SUCCESS;

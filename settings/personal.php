@@ -1,14 +1,15 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -42,6 +43,9 @@ $config = \OC::$server->getConfig();
 $urlGenerator = \OC::$server->getURLGenerator();
 
 // Highlight navigation entry
+OC_Util::addScript('settings', 'authtoken');
+OC_Util::addScript('settings', 'authtoken_collection');
+OC_Util::addScript('settings', 'authtoken_view');
 OC_Util::addScript( 'settings', 'personal' );
 OC_Util::addScript('settings', 'certificates');
 OC_Util::addStyle( 'settings', 'settings' );
@@ -77,8 +81,9 @@ $commonLanguages = array();
 foreach($languageCodes as $lang) {
 	$l = \OC::$server->getL10N('settings', $lang);
 	// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
-	if(substr($l->t('__language_name__'), 0, 1) !== '_') {//first check if the language name is in the translation file
-		$ln=array('code'=>$lang, 'name'=> (string)$l->t('__language_name__'));
+	$potentialName = (string) $l->t('__language_name__');
+	if($l->getLanguageCode() === $lang && substr($potentialName, 0, 1) !== '_') {//first check if the language name is in the translation file
+		$ln=array('code'=>$lang, 'name'=> $potentialName);
 	}elseif(isset($languageNames[$lang])) {
 		$ln=array('code'=>$lang, 'name'=>$languageNames[$lang]);
 	}else{//fallback to language code
@@ -171,6 +176,8 @@ $tmpl->assign('groups', $groups2);
 // add hardcoded forms from the template
 $formsAndMore = [];
 $formsAndMore[]= ['anchor' => 'avatar', 'section-name' => $l->t('Personal info')];
+$formsAndMore[]= ['anchor' => 'sessions', 'section-name' => $l->t('Sessions')];
+$formsAndMore[]= ['anchor' => 'devices', 'section-name' => $l->t('Devices')];
 $formsAndMore[]= ['anchor' => 'clientsbox', 'section-name' => $l->t('Sync clients')];
 
 $forms=OC_App::getForms('personal');

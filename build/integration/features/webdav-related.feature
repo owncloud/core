@@ -82,7 +82,7 @@ Feature: webdav-related
 		And As an "admin"
 		When Downloading file "/welcome.txt"
 		Then The following headers should be set
-			|Content-Disposition|attachment|
+			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
 			|Content-Security-Policy|default-src 'none';|
 			|X-Content-Type-Options |nosniff|
 			|X-Download-Options|noopen|
@@ -97,7 +97,7 @@ Feature: webdav-related
 		And As an "admin"
 		When Downloading file "/welcome.txt"
 		Then The following headers should be set
-			|Content-Disposition|attachment|
+			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
 			|Content-Security-Policy|default-src 'none';|
 			|X-Content-Type-Options |nosniff|
 			|X-Download-Options|noopen|
@@ -286,3 +286,11 @@ Feature: webdav-related
 		When As an "user0"
 		And Downloading file "/files/user0/myChunkedFile.txt"
 		Then Downloaded content should be "AAAAABBBBBCCCCC"
+
+	Scenario: A disabled user cannot use webdav
+		Given user "userToBeDisabled" exists
+		And As an "admin"
+		And assure user "userToBeDisabled" is disabled
+		When Downloading file "/welcome.txt" as "userToBeDisabled"
+		Then the HTTP status code should be "503"
+

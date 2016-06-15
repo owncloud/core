@@ -1,13 +1,12 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Florin Peter <github@florin-peter.de>
- * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -58,6 +57,7 @@
 
 namespace OC\Files;
 
+use OC\Cache\CappedMemoryCache;
 use OC\Files\Config\MountProviderCollection;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\StorageFactory;
@@ -81,7 +81,7 @@ class Filesystem {
 
 	static private $usersSetup = array();
 
-	static private $normalizedPathCache = array();
+	static private $normalizedPathCache = null;
 
 	static private $listeningForProviders = false;
 
@@ -207,12 +207,30 @@ class Filesystem {
 	 */
 	private static $loader;
 
+	/** @var bool */
+	private static $logWarningWhenAddingStorageWrapper = true;
+
+	/**
+	 * @param bool $shouldLog
+	 * @internal
+	 */
+	public static function logWarningWhenAddingStorageWrapper($shouldLog) {
+		self::$logWarningWhenAddingStorageWrapper = (bool) $shouldLog;
+	}
+
 	/**
 	 * @param string $wrapperName
 	 * @param callable $wrapper
 	 * @param int $priority
 	 */
 	public static function addStorageWrapper($wrapperName, $wrapper, $priority = 50) {
+		if (self::$logWarningWhenAddingStorageWrapper) {
+			\OC::$server->getLogger()->warning("Storage wrapper '{wrapper}' was not registered via the 'OC_Filesystem - preSetup' hook which could cause potential problems.", [
+				'wrapper' => $wrapperName,
+				'app' => 'filesystem',
+			]);
+		}
+
 		$mounts = self::getMountManager()->getAll();
 		if (!self::getLoader()->addStorageWrapper($wrapperName, $wrapper, $priority, $mounts)) {
 			// do not re-wrap if storage with this name already existed
@@ -378,7 +396,6 @@ class Filesystem {
 		if (isset(self::$usersSetup[$user])) {
 			return;
 		}
-		$root = \OC_User::getHome($user);
 
 		$userManager = \OC::$server->getUserManager();
 		$userObject = $userManager->get($user);
@@ -390,52 +407,26 @@ class Filesystem {
 
 		self::$usersSetup[$user] = true;
 
-		$homeStorage = \OC::$server->getConfig()->getSystemValue('objectstore');
-		if (!empty($homeStorage)) {
-			// sanity checks
-			if (empty($homeStorage['class'])) {
-				\OCP\Util::writeLog('files', 'No class given for objectstore', \OCP\Util::ERROR);
-			}
-			if (!isset($homeStorage['arguments'])) {
-				$homeStorage['arguments'] = array();
-			}
-			// instantiate object store implementation
-			$homeStorage['arguments']['objectstore'] = new $homeStorage['class']($homeStorage['arguments']);
-			// mount with home object store implementation
-			$homeStorage['class'] = '\OC\Files\ObjectStore\HomeObjectStoreStorage';
-		} else {
-			$homeStorage = array(
-				//default home storage configuration:
-				'class' => '\OC\Files\Storage\Home',
-				'arguments' => array()
-			);
-		}
-		$homeStorage['arguments']['user'] = $userObject;
-
-		// check for legacy home id (<= 5.0.12)
-		if (\OC\Files\Cache\Storage::exists('local::' . $root . '/')) {
-			$homeStorage['arguments']['legacy'] = true;
-		}
-
-		$mount = new MountPoint($homeStorage['class'], '/' . $user, $homeStorage['arguments'], self::getLoader());
-		self::getMountManager()->addMount($mount);
-
-		$home = \OC\Files\Filesystem::getStorage($user);
-
-		self::mountCacheDir($user);
-
-		// Chance to mount for other storages
 		/** @var \OC\Files\Config\MountProviderCollection $mountConfigManager */
 		$mountConfigManager = \OC::$server->getMountProviderCollection();
+
+		// home mounts are handled seperate since we need to ensure this is mounted before we call the other mount providers
+		$homeMount = $mountConfigManager->getHomeMountForUser($userObject);
+
+		self::getMountManager()->addMount($homeMount);
+
+		\OC\Files\Filesystem::getStorage($user);
+
+		// Chance to mount for other storages
 		if ($userObject) {
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
 			array_walk($mounts, array(self::$mounts, 'addMount'));
-			$mounts[] = $mount;
+			$mounts[] = $homeMount;
 			$mountConfigManager->registerMounts($userObject, $mounts);
 		}
 
 		self::listenForNewMountProviders($mountConfigManager, $userManager);
-		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user, 'user_dir' => $root));
+		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user));
 	}
 
 	/**
@@ -456,23 +447,6 @@ class Filesystem {
 					}
 				}
 			});
-		}
-	}
-
-	/**
-	 * Mounts the cache directory
-	 *
-	 * @param string $user user name
-	 */
-	private static function mountCacheDir($user) {
-		$cacheBaseDir = \OC::$server->getConfig()->getSystemValue('cache_path', '');
-		if ($cacheBaseDir !== '') {
-			$cacheDir = rtrim($cacheBaseDir, '/') . '/' . $user;
-			if (!file_exists($cacheDir)) {
-				mkdir($cacheDir, 0770, true);
-			}
-			// mount external cache dir to "/$user/cache" mount point
-			self::mount('\OC\Files\Storage\Local', array('datadir' => $cacheDir), '/' . $user . '/cache');
 		}
 	}
 
@@ -789,11 +763,16 @@ class Filesystem {
 	 * Fix common problems with a file path
 	 *
 	 * @param string $path
-	 * @param bool $stripTrailingSlash
-	 * @param bool $isAbsolutePath
+	 * @param bool $stripTrailingSlash whether to strip the trailing slash
+	 * @param bool $isAbsolutePath whether the given path is absolute
+	 * @param bool $keepUnicode true to disable unicode normalization
 	 * @return string
 	 */
-	public static function normalizePath($path, $stripTrailingSlash = true, $isAbsolutePath = false) {
+	public static function normalizePath($path, $stripTrailingSlash = true, $isAbsolutePath = false, $keepUnicode = false) {
+		if (is_null(self::$normalizedPathCache)) {
+			self::$normalizedPathCache = new CappedMemoryCache();
+		}
+
 		/**
 		 * FIXME: This is a workaround for existing classes and files which call
 		 *        this function with another type than a valid string. This
@@ -802,7 +781,7 @@ class Filesystem {
 		 */
 		$path = (string)$path;
 
-		$cacheKey = json_encode([$path, $stripTrailingSlash, $isAbsolutePath]);
+		$cacheKey = json_encode([$path, $stripTrailingSlash, $isAbsolutePath, $keepUnicode]);
 
 		if (isset(self::$normalizedPathCache[$cacheKey])) {
 			return self::$normalizedPathCache[$cacheKey];
@@ -813,18 +792,12 @@ class Filesystem {
 		}
 
 		//normalize unicode if possible
-		$path = \OC_Util::normalizeUnicode($path);
+		if (!$keepUnicode) {
+			$path = \OC_Util::normalizeUnicode($path);
+		}
 
 		//no windows style slashes
 		$path = str_replace('\\', '/', $path);
-
-		// When normalizing an absolute path, we need to ensure that the drive-letter
-		// is still at the beginning on windows
-		$windows_drive_letter = '';
-		if ($isAbsolutePath && \OC_Util::runningOnWindows() && preg_match('#^([a-zA-Z])$#', $path[0]) && $path[1] == ':' && $path[2] == '/') {
-			$windows_drive_letter = substr($path, 0, 2);
-			$path = substr($path, 2);
-		}
 
 		//add leading slash
 		if ($path[0] !== '/') {
@@ -851,7 +824,7 @@ class Filesystem {
 			$path = substr($path, 0, -2);
 		}
 
-		$normalizedPath = $windows_drive_letter . $path;
+		$normalizedPath = $path;
 		self::$normalizedPathCache[$cacheKey] = $normalizedPath;
 
 		return $normalizedPath;

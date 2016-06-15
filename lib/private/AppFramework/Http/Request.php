@@ -4,7 +4,7 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Mitar <mitar.git@tnode.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -271,6 +271,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return bool
 	 */
 	public function __isset($name) {
+		if (in_array($name, $this->allowedKeys, true)) {
+			return true;
+		}
 		return isset($this->items['parameters'][$name]);
 	}
 

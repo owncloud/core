@@ -1,8 +1,10 @@
 <?php
 /**
+ * @author Daniel Jagszent <daniel@jagszent.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -303,6 +305,6 @@ class CacheJail extends CacheWrapper {
 		if ($sourceCache === $this) {
 			return $this->move($sourcePath, $targetPath);
 		}
-		return $this->cache->moveFromCache($sourceCache, $sourcePath, $targetPath);
+		return $this->cache->moveFromCache($sourceCache, $sourcePath, $this->getSourcePath($targetPath));
 	}
 }

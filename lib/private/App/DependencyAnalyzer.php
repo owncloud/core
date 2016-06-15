@@ -2,8 +2,9 @@
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Stefan Weil <sw@weilnetz.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -143,6 +144,12 @@ class DependencyAnalyzer {
 			$maxVersion = $dependencies['php']['@attributes']['max-version'];
 			if ($this->compareBigger($this->platform->getPhpVersion(), $maxVersion)) {
 				$missing[] = (string)$this->l->t('PHP with a version lower than %s is required.', $maxVersion);
+			}
+		}
+		if (isset($dependencies['php']['@attributes']['min-int-size'])) {
+			$intSize = $dependencies['php']['@attributes']['min-int-size'];
+			if ($intSize > $this->platform->getIntSize()*8) {
+				$missing[] = (string)$this->l->t('%sbit or higher PHP required.', $intSize);
 			}
 		}
 		return $missing;

@@ -25,6 +25,7 @@
 
 namespace OC\Files\Utils;
 
+use OC\Files\Cache\Cache;
 use OC\Files\Filesystem;
 use OC\ForbiddenException;
 use OC\Hooks\PublicEmitter;
@@ -123,9 +124,23 @@ class Scanner extends PublicEmitter {
 			if ($mount->getStorage()->instanceOfStorage('\OC\Files\Storage\Local') && $mount->getMountPoint() === '/') {
 				continue;
 			}
-			$scanner = $mount->getStorage()->getScanner();
+			$storage = $mount->getStorage();
+			$scanner = $storage->getScanner();
 			$this->attachListener($mount);
+
+			$scanner->listen('\OC\Files\Cache\Scanner', 'removeFromCache', function ($path) use ($storage) {
+				$this->triggerPropagator($storage, $path);
+			});
+			$scanner->listen('\OC\Files\Cache\Scanner', 'updateCache', function ($path) use ($storage) {
+				$this->triggerPropagator($storage, $path);
+			});
+			$scanner->listen('\OC\Files\Cache\Scanner', 'addToCache', function ($path) use ($storage) {
+				$this->triggerPropagator($storage, $path);
+			});
+
+			$storage->getPropagator()->beginBatch();
 			$scanner->backgroundScan();
+			$storage->getPropagator()->commitBatch();
 		}
 	}
 
@@ -147,7 +162,12 @@ class Scanner extends PublicEmitter {
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
 				(!$storage->isCreatable('') or !$storage->isCreatable('files'))
 			) {
-				throw new ForbiddenException();
+				if ($storage->file_exists('') or $storage->getCache()->inCache('')) {
+					throw new ForbiddenException();
+				} else {// if the root exists in neither the cache nor the storage the user isn't setup yet
+					break;
+				}
+
 			}
 			$relativePath = $mount->getInternalPath($dir);
 			$scanner = $storage->getScanner();
@@ -169,7 +189,14 @@ class Scanner extends PublicEmitter {
 				$this->db->beginTransaction();
 			}
 			try {
+				$storage->getPropagator()->beginBatch();
 				$scanner->scan($relativePath, \OC\Files\Cache\Scanner::SCAN_RECURSIVE, \OC\Files\Cache\Scanner::REUSE_ETAG | \OC\Files\Cache\Scanner::REUSE_SIZE);
+				$cache = $storage->getCache();
+				if ($cache instanceof Cache) {
+					// only re-calculate for the root folder we scanned, anything below that is taken care of by the scanner
+					$cache->correctFolderSize($relativePath);
+				}
+				$storage->getPropagator()->commitBatch();
 			} catch (StorageNotAvailableException $e) {
 				$this->logger->error('Storage ' . $storage->getId() . ' not available');
 				$this->logger->logException($e);

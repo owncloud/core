@@ -619,7 +619,7 @@
 
 			this.register('dir', 'Open', OC.PERMISSION_READ, '', function (filename, context) {
 				var dir = context.$file.attr('data-path') || context.fileList.getCurrentDirectory();
-				context.fileList.changeDirectory(OC.joinPaths(dir, filename));
+				context.fileList.changeDirectory(OC.joinPaths(dir, filename), true, false, parseInt(context.$file.attr('data-id'), 10));
 			});
 
 			this.registerAction({
@@ -665,11 +665,11 @@
 	OCA.Files.FileActions.updateFileActionSpinner = function($downloadButtonElement, showIt) {
 		var $icon = $downloadButtonElement.find('.icon');
 		if (showIt) {
-			var $loadingIcon = $('<span class="icon loading"></span>');
+			var $loadingIcon = $('<span class="icon icon-loading-small"></span>');
 			$icon.after($loadingIcon);
 			$icon.addClass('hidden');
 		} else {
-			$downloadButtonElement.find('.loading').remove();
+			$downloadButtonElement.find('.icon-loading-small').remove();
 			$downloadButtonElement.find('.icon').removeClass('hidden');
 		}
 	};

@@ -1,7 +1,8 @@
 <?php
 /**
  * @author cetra3 <peter@parashift.com.au>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Christoph Wurst <christoph@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Phil Davis <phil.davis@inf.org>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -25,6 +26,8 @@
  */
 
 namespace OC\Session;
+
+use OCP\Session\Exceptions\SessionNotAvailableException;
 
 /**
  * Class Internal
@@ -109,6 +112,21 @@ class Internal extends Session {
 	 */
 	public function regenerateId($deleteOldSession = true) {
 		@session_regenerate_id($deleteOldSession);
+	}
+
+	/**
+	 * Wrapper around session_id
+	 *
+	 * @return string
+	 * @throws SessionNotAvailableException
+	 * @since 9.1.0
+	 */
+	public function getId() {
+		$id = @session_id();
+		if ($id === '') {
+			throw new SessionNotAvailableException();
+		}
+		return $id;
 	}
 
 	/**

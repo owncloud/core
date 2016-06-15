@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -22,6 +22,8 @@
 
 namespace OC\Encryption;
 
+use OC\Cache\CappedMemoryCache;
+
 class File implements \OCP\Encryption\IFile {
 
 	/** @var Util */
@@ -36,6 +38,7 @@ class File implements \OCP\Encryption\IFile {
 
 	public function __construct(Util $util) {
 		$this->util = $util;
+		$this->cache = new CappedMemoryCache();
 	}
 
 

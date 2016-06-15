@@ -69,7 +69,12 @@
 		}
 	},
 	"repair-steps": {
+		"install": [],
 		"pre-migration": [],
-		"post-migration": []
-	}
+		"post-migration": [],
+		"live-migration": [],
+		"uninstall": []
+	},
+	"background-jobs": [],
+	"two-factor-providers": []
 }

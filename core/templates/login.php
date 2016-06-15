@@ -9,7 +9,7 @@ script('core', [
 ?>
 
 <!--[if IE 8]><style>input[type="checkbox"]{padding:0;}</style><![endif]-->
-<form method="post" name="login" action="<?php p(OC::$WEBROOT) ?>/">
+<form method="post" name="login">
 	<fieldset>
 	<?php if (!empty($_['redirect_url'])) {
 		print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
@@ -40,11 +40,11 @@ script('core', [
 		</div>
 		<p class="grouptop">
 			<input type="text" name="user" id="user"
-				placeholder="<?php p($l->t('Username')); ?>"
+				placeholder="<?php p($l->t('Username or email')); ?>"
 				value="<?php p($_['loginName']); ?>"
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
 				autocomplete="on" autocapitalize="off" autocorrect="off" required>
-			<label for="user" class="infield"><?php p($l->t('Username')); ?></label>
+			<label for="user" class="infield"><?php p($l->t('Username or email')); ?></label>
 		</p>
 
 		<p class="groupbottom">
@@ -57,7 +57,7 @@ script('core', [
 		</p>
 
 		<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) { ?>
-		<a id="lost-password" class="warning" href="">
+		<a id="lost-password" class="warning" href="<?php p($_['resetPasswordLink']); ?>">
 			<?php p($l->t('Wrong password. Reset it?')); ?>
 		</a>
 		<?php } else if (!empty($_['invalidpassword'])) { ?>

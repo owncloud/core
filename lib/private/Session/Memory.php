@@ -1,9 +1,9 @@
 <?php
 /**
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Phil Davis <phil.davis@inf.org>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
@@ -25,6 +25,9 @@
  */
 
 namespace OC\Session;
+
+use Exception;
+use OCP\Session\Exceptions\SessionNotAvailableException;
 
 /**
  * Class Internal
@@ -89,6 +92,17 @@ class Memory extends Session {
 	public function regenerateId($deleteOldSession = true) {}
 
 	/**
+	 * Wrapper around session_id
+	 *
+	 * @return string
+	 * @throws SessionNotAvailableException
+	 * @since 9.1.0
+	 */
+	public function getId() {
+		throw new SessionNotAvailableException('Memory session does not have an ID');
+	}
+
+	/**
 	 * Helper function for PHPUnit execution - don't use in non-test code
 	 */
 	public function reopen() {
@@ -98,11 +112,11 @@ class Memory extends Session {
 	/**
 	 * In case the session has already been locked an exception will be thrown
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private function validateSession() {
 		if ($this->sessionClosed) {
-			throw new \Exception('Session has been closed - no further changes to the session are allowed');
+			throw new Exception('Session has been closed - no further changes to the session are allowed');
 		}
 	}
 }

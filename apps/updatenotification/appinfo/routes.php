@@ -1,6 +1,7 @@
 <?php
 /**
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -19,7 +20,7 @@
  *
  */
 
-namespace OCA\UpdateNotification\AppInfo;
+use OCA\UpdateNotification\AppInfo\Application;
 
 $application = new Application();
 $application->registerRoutes($this, ['routes' => [

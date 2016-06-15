@@ -1,13 +1,13 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -519,4 +519,16 @@ interface IServerContainer {
 	 * @since 9.0.0
 	 */
 	public function getContentSecurityPolicyManager();
+
+	/**
+	 * @return \OCP\IDateTimeZone
+	 * @since 8.0.0
+	 */
+	public function getDateTimeZone();
+
+	/**
+	 * @return \OCP\IDateTimeFormatter
+	 * @since 8.0.0
+	 */
+	public function getDateTimeFormatter();
 }

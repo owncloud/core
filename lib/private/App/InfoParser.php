@@ -1,7 +1,8 @@
 <?php
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Christoph Wurst <christoph@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
@@ -74,11 +75,26 @@ class InfoParser {
 		if (!array_key_exists('repair-steps', $array)) {
 			$array['repair-steps'] = [];
 		}
+		if (!array_key_exists('install', $array['repair-steps'])) {
+			$array['repair-steps']['install'] = [];
+		}
 		if (!array_key_exists('pre-migration', $array['repair-steps'])) {
 			$array['repair-steps']['pre-migration'] = [];
 		}
 		if (!array_key_exists('post-migration', $array['repair-steps'])) {
 			$array['repair-steps']['post-migration'] = [];
+		}
+		if (!array_key_exists('live-migration', $array['repair-steps'])) {
+			$array['repair-steps']['live-migration'] = [];
+		}
+		if (!array_key_exists('uninstall', $array['repair-steps'])) {
+			$array['repair-steps']['uninstall'] = [];
+		}
+		if (!array_key_exists('background-jobs', $array)) {
+			$array['background-jobs'] = [];
+		}
+		if (!array_key_exists('two-factor-providers', $array)) {
+			$array['two-factor-providers'] = [];
 		}
 
 		if (array_key_exists('documentation', $array) && is_array($array['documentation'])) {
@@ -104,11 +120,23 @@ class InfoParser {
 				$array['types'] = [];
 			}
 		}
+		if (isset($array['repair-steps']['install']['step']) && is_array($array['repair-steps']['install']['step'])) {
+			$array['repair-steps']['install'] = $array['repair-steps']['install']['step'];
+		}
 		if (isset($array['repair-steps']['pre-migration']['step']) && is_array($array['repair-steps']['pre-migration']['step'])) {
 			$array['repair-steps']['pre-migration'] = $array['repair-steps']['pre-migration']['step'];
 		}
 		if (isset($array['repair-steps']['post-migration']['step']) && is_array($array['repair-steps']['post-migration']['step'])) {
 			$array['repair-steps']['post-migration'] = $array['repair-steps']['post-migration']['step'];
+		}
+		if (isset($array['repair-steps']['live-migration']['step']) && is_array($array['repair-steps']['live-migration']['step'])) {
+			$array['repair-steps']['live-migration'] = $array['repair-steps']['live-migration']['step'];
+		}
+		if (isset($array['repair-steps']['uninstall']['step']) && is_array($array['repair-steps']['uninstall']['step'])) {
+			$array['repair-steps']['uninstall'] = $array['repair-steps']['uninstall']['step'];
+		}
+		if (isset($array['background-jobs']['job']) && is_array($array['background-jobs']['job'])) {
+			$array['background-jobs'] = $array['background-jobs']['job'];
 		}
 		return $array;
 	}
@@ -129,10 +157,7 @@ class InfoParser {
 			if (!isset($array[$element])) {
 				$array[$element] = "";
 			}
-			/**
-			 * @var \SimpleXMLElement $node
-			 */
-
+			/** @var \SimpleXMLElement $node */
 			// Has attributes
 			if ($attributes = $node->attributes()) {
 				$data = [

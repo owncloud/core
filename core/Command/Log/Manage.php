@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -77,7 +78,8 @@ class Manage extends Command {
 			$toBeSet['log_type'] = $backend;
 		}
 
-		if ($level = $input->getOption('level')) {
+		$level = $input->getOption('level');
+		if ($level !== null) {
 			if (is_numeric($level)) {
 				$levelNum = $level;
 				// sanity check
@@ -115,7 +117,7 @@ class Manage extends Command {
 	 * @throws \InvalidArgumentException
 	 */
 	protected function validateBackend($backend) {
-		if (!class_exists('OC_Log_'.$backend)) {
+		if (!class_exists('OC\\Log\\'.ucfirst($backend))) {
 			throw new \InvalidArgumentException('Invalid backend');
 		}
 	}

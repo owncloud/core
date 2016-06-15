@@ -33,8 +33,12 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'			<option value="1" selected="selected">{{t "files_external" "Once every direct access"}}</option>' +
 	'		</select>' +
 	'	</div>' +
+	'	<div class="optionRow">' +
+	'		<input id="mountOptionsEncoding" name="encoding_compatibility" type="checkbox" value="true"/>' +
+	'		<label for="mountOptionsEncoding">{{mountOptionsEncodingLabel}}</label>' +
+	'	</div>' +
 	'</div>';
-	
+
 /**
  * Returns the selection of applicable users in the given configuration row
  *
@@ -295,7 +299,8 @@ StorageConfig.prototype = {
 			mountPoint: this.mountPoint,
 			backend: this.backend,
 			authMechanism: this.authMechanism,
-			backendOptions: this.backendOptions
+			backendOptions: this.backendOptions,
+			testOnly: true
 		};
 		if (this.id) {
 			data.id = this.id;
@@ -322,6 +327,7 @@ StorageConfig.prototype = {
 		$.ajax({
 			type: 'GET',
 			url: OC.generateUrl(this._url + '/{id}', {id: this.id}),
+			data: {'testOnly': true},
 			success: options.success,
 			error: options.error
 		});
@@ -476,9 +482,9 @@ MountOptionsDropdown.prototype = {
 	 *
 	 * @param {Object} $container container
 	 * @param {Object} mountOptions mount options
-	 * @param {Array} enabledOptions enabled mount options
+	 * @param {Array} visibleOptions enabled mount options
 	 */
-	show: function($container, mountOptions, enabledOptions) {
+	show: function($container, mountOptions, visibleOptions) {
 		if (MountOptionsDropdown._last) {
 			MountOptionsDropdown._last.hide();
 		}
@@ -489,10 +495,12 @@ MountOptionsDropdown.prototype = {
 			MountOptionsDropdown._template = template;
 		}
 
-		var $el = $(template());
+		var $el = $(template({
+			mountOptionsEncodingLabel: t('files_external', 'Compatibility with Mac NFD encoding (slow)')
+		}));
 		this.$el = $el;
 
-		this.setOptions(mountOptions, enabledOptions);
+		this.setOptions(mountOptions, visibleOptions);
 
 		this.$el.appendTo($container);
 		MountOptionsDropdown._last = this;
@@ -538,9 +546,9 @@ MountOptionsDropdown.prototype = {
 	 * Sets the mount options to the dropdown controls
 	 *
 	 * @param {Object} options mount options
-	 * @param {Array} enabledOptions enabled mount options
+	 * @param {Array} visibleOptions enabled mount options
 	 */
-	setOptions: function(options, enabledOptions) {
+	setOptions: function(options, visibleOptions) {
 		var $el = this.$el;
 		_.each(options, function(value, key) {
 			var $optionEl = $el.find('input, select').filterAttr('name', key);
@@ -556,7 +564,7 @@ MountOptionsDropdown.prototype = {
 		$el.find('.optionRow').each(function(i, row){
 			var $row = $(row);
 			var optionId = $row.find('input, select').attr('name');
-			if (enabledOptions.indexOf(optionId) === -1) {
+			if (visibleOptions.indexOf(optionId) === -1) {
 				$row.hide();
 			} else {
 				$row.show();
@@ -883,7 +891,8 @@ MountConfigListView.prototype = _.extend({
 				'encrypt': true,
 				'previews': true,
 				'enable_sharing': false,
-				'filesystem_check_changes': 1
+				'filesystem_check_changes': 1,
+				'encoding_compatibility': false
 			}));
 		}
 
@@ -901,6 +910,7 @@ MountConfigListView.prototype = _.extend({
 			$.ajax({
 				type: 'GET',
 				url: OC.generateUrl('apps/files_external/userglobalstorages'),
+				data: {'testOnly' : true},
 				contentType: 'application/json',
 				success: function(result) {
 					var onCompletion = jQuery.Deferred();
@@ -1253,11 +1263,16 @@ MountConfigListView.prototype = _.extend({
 		var storage = this.getStorageConfig($tr);
 		var $toggle = $tr.find('.mountOptionsToggle');
 		var dropDown = new MountOptionsDropdown();
-		var enabledOptions = ['previews', 'filesystem_check_changes', 'enable_sharing'];
+		var visibleOptions = [
+			'previews',
+			'filesystem_check_changes',
+			'enable_sharing',
+			'encoding_compatibility'
+		];
 		if (this._encryptionEnabled) {
-			enabledOptions.push('encrypt');
+			visibleOptions.push('encrypt');
 		}
-		dropDown.show($toggle, storage.mountOptions || [], enabledOptions);
+		dropDown.show($toggle, storage.mountOptions || [], visibleOptions);
 		$('body').on('mouseup.mountOptionsDropdown', function(event) {
 			var $target = $(event.target);
 			if ($toggle.has($target).length) {

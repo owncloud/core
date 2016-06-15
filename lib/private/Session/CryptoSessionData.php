@@ -1,7 +1,8 @@
 <?php
 /**
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -24,6 +25,7 @@ namespace OC\Session;
 
 use OCP\ISession;
 use OCP\Security\ICrypto;
+use OCP\Session\Exceptions\SessionNotAvailableException;
 
 /**
  * Class CryptoSessionData
@@ -139,6 +141,17 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 */
 	public function regenerateId($deleteOldSession = true) {
 		$this->session->regenerateId($deleteOldSession);
+	}
+
+	/**
+	 * Wrapper around session_id
+	 *
+	 * @return string
+	 * @throws SessionNotAvailableException
+	 * @since 9.1.0
+	 */
+	public function getId() {
+		return $this->session->getId();
 	}
 
 	/**

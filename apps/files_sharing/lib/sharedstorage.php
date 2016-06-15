@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -318,14 +318,14 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 		if (!$storage) {
 			$storage = $this;
 		}
-		return new \OC\Files\Cache\Shared_Cache($storage, $this->sourceStorage, $this->sourceRootInfo);
+		return new \OCA\Files_Sharing\Cache($storage, $this->sourceStorage, $this->sourceRootInfo);
 	}
 
 	public function getScanner($path = '', $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
-		return new \OC\Files\Cache\SharedScanner($storage);
+		return new \OCA\Files_Sharing\Scanner($storage);
 	}
 
 	public function getPropagator($storage = null) {
@@ -413,6 +413,24 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 
 	public function getSourceStorage() {
 		return $this->sourceStorage;
+	}
+
+	public function file_get_contents($path) {
+		$info = [
+			'target' => $this->getMountPoint() . '/' . $path,
+			'source' => $this->getSourcePath($path),
+		];
+		\OCP\Util::emitHook('\OC\Files\Storage\Shared', 'file_get_contents', $info);
+		return parent::file_get_contents($path);
+	}
+
+	public function file_put_contents($path, $data) {
+		$info = [
+			'target' => $this->getMountPoint() . '/' . $path,
+			'source' => $this->getSourcePath($path),
+		];
+		\OCP\Util::emitHook('\OC\Files\Storage\Shared', 'file_put_contents', $info);
+		return parent::file_put_contents($path, $data);
 	}
 
 }

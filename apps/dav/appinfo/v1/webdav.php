@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
@@ -42,6 +42,7 @@ $authBackend = new \OCA\DAV\Connector\Sabre\Auth(
 	\OC::$server->getSession(),
 	\OC::$server->getUserSession(),
 	\OC::$server->getRequest(),
+	\OC::$server->getTwoFactorAuthManager(),
 	'principals/'
 );
 $requestUri = \OC::$server->getRequest()->getRequestUri();

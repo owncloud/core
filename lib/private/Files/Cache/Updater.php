@@ -1,6 +1,7 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Daniel Jagszent <daniel@jagszent.de>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -230,7 +231,10 @@ class Updater implements IUpdater {
 		$parentId = $this->cache->getParentId($internalPath);
 		$parent = dirname($internalPath);
 		if ($parentId != -1) {
-			$this->cache->update($parentId, array('storage_mtime' => $this->storage->filemtime($parent)));
+			$mtime = $this->storage->filemtime($parent);
+			if ($mtime !== false) {
+				$this->cache->update($parentId, array('storage_mtime' => $mtime));
+			}
 		}
 	}
 }

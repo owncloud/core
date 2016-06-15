@@ -2,6 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -55,12 +56,15 @@ class DropOldTables implements IRepairStep {
 	 * @throws \Exception in case of failure
 	 */
 	public function run(IOutput $output) {
+		$tables = $this->oldDatabaseTables();
+		$output->startProgress(count($tables));
 		foreach ($this->oldDatabaseTables() as $tableName) {
 			if ($this->connection->tableExists($tableName)){
-				$output->info(sprintf('Table %s has been deleted', $tableName));
 				$this->connection->dropTable($tableName);
 			}
+			$output->advance(1, "Drop old database table: $tableName");
 		}
+		$output->finishProgress();
 	}
 
 	/**

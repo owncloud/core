@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
@@ -46,6 +47,13 @@ class Platform {
 	 */
 	public function getPhpVersion() {
 		return phpversion();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getIntSize() {
+		return PHP_INT_SIZE;
 	}
 
 	/**

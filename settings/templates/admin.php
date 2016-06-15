@@ -97,6 +97,15 @@ if (!$_['isAnnotationsWorking']) {
 <?php
 }
 
+// Is the Transaction isolation level READ_COMMITED?
+if ($_['invalidTransactionIsolationLevel']) {
+	?>
+	<li>
+		<?php p($l->t('Your database does not run with "READ COMMITED" transaction isolation level. This can cause problems when multiple actions are executed in parallel.')); ?>
+	</li>
+<?php
+}
+
 // Windows Warning
 if ($_['WindowsWarning']) {
 	?>
@@ -208,21 +217,21 @@ if ($_['cronErrors']) {
 		</p>
 
 		<p id="publicLinkSettings" class="indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareAPIEnabled'] === 'no') p('hidden'); ?>">
-			<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword" class="checkbox"
-				   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
-			<label for="enforceLinkPassword"><?php p($l->t('Enforce password protection'));?></label><br/>
-
 			<input type="checkbox" name="shareapi_allow_public_upload" id="allowPublicUpload" class="checkbox"
 				   value="1" <?php if ($_['allowPublicUpload'] == 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowPublicUpload"><?php p($l->t('Allow public uploads'));?></label><br/>
 
-			<input type="checkbox" name="shareapi_allow_public_notification" id="allowPublicMailNotification" class="checkbox"
-				   value="1" <?php if ($_['allowPublicMailNotification'] == 'yes') print_unescaped('checked="checked"'); ?> />
-			<label for="allowPublicMailNotification"><?php p($l->t('Allow users to send mail notification for shared files'));?></label><br/>
+			<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword" class="checkbox"
+				   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
+			<label for="enforceLinkPassword"><?php p($l->t('Enforce password protection'));?></label><br/>
 
 			<input type="checkbox" name="shareapi_default_expire_date" id="shareapiDefaultExpireDate" class="checkbox"
 				   value="1" <?php if ($_['shareDefaultExpireDateSet'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="shareapiDefaultExpireDate"><?php p($l->t('Set default expiration date'));?></label><br/>
+
+			<input type="checkbox" name="shareapi_allow_public_notification" id="allowPublicMailNotification" class="checkbox"
+				   value="1" <?php if ($_['allowPublicMailNotification'] == 'yes') print_unescaped('checked="checked"'); ?> />
+			<label for="allowPublicMailNotification"><?php p($l->t('Allow users to send mail notification for shared files'));?></label><br/>
 
 		</p>
 		<p id="setDefaultExpireDate" class="double-indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareDefaultExpireDateSet'] === 'no' || $_['shareAPIEnabled'] === 'no') p('hidden');?>">
