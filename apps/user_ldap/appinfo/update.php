@@ -1,7 +1,5 @@
 <?php
 /**
- * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -20,9 +18,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-OCP\Backgroundjob::registerJob('OCA\user_ldap\lib\Jobs');
-OCP\Backgroundjob::registerJob('\OCA\User_LDAP\Jobs\CleanUp');
-
 $helper = new \OCA\user_ldap\lib\Helper();
 $helper->setLDAPProvider();
