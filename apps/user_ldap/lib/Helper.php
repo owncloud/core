@@ -192,7 +192,7 @@ class Helper {
 	public function setLDAPProvider() {
 		$current = \OC::$server->getConfig()->getSystemValue('ldapProviderFactory', null);
 		if(is_null($current)) {
-			\OC::$server->getConfig()->setSystemValue('ldapProviderFactory', '\\OCA\\user_ldap\\lib\\LDAPProviderFactory');
+			\OC::$server->getConfig()->setSystemValue('ldapProviderFactory', '\\OCA\\User_LDAP\\LDAPProviderFactory');
 		}
 	}
 	

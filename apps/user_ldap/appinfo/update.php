@@ -18,5 +18,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-$helper = new \OCA\user_ldap\lib\Helper();
+$helper = new \OCA\User_LDAP\Helper();
 $helper->setLDAPProvider();
