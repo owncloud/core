@@ -78,7 +78,7 @@ class Access extends LDAPUtility implements IUserTools {
 	protected $groupMapper;
 	
 	/**
-	 * @var \OCA\user_ldap\lib\Helper
+	 * @var \OCA\User_LDAP\Helper
 	 */
 	private $helper;
 
