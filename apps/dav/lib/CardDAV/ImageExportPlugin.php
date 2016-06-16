@@ -49,7 +49,7 @@ class ImageExportPlugin extends ServerPlugin {
 	}
 
 	/**
-	 * Intercepts GET requests on addressbook urls ending with ?export.
+	 * Intercepts GET requests on addressbook urls ending with ?photo.
 	 *
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
