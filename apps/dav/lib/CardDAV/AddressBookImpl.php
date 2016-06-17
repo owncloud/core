@@ -24,6 +24,7 @@ namespace OCA\DAV\CardDAV;
 
 use OCP\Constants;
 use OCP\IAddressBook;
+use OCP\IURLGenerator;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Property\Text;
 use Sabre\VObject\Reader;
@@ -40,21 +41,27 @@ class AddressBookImpl implements IAddressBook {
 	/** @var AddressBook */
 	private $addressBook;
 
+	/** @var IURLGenerator */
+	private $urlGenerator;
+
 	/**
 	 * AddressBookImpl constructor.
 	 *
 	 * @param AddressBook $addressBook
 	 * @param array $addressBookInfo
 	 * @param CardDavBackend $backend
+	 * @param IUrlGenerator $urlGenerator
 	 */
 	public function __construct(
 			AddressBook $addressBook,
 			array $addressBookInfo,
-			CardDavBackend $backend) {
+			CardDavBackend $backend,
+			IURLGenerator $urlGenerator) {
 
 		$this->addressBook = $addressBook;
 		$this->addressBookInfo = $addressBookInfo;
 		$this->backend = $backend;
+		$this->urlGenerator = $urlGenerator;
 	}
 
 	/**
@@ -217,6 +224,20 @@ class AddressBookImpl implements IAddressBook {
 
 		foreach ($vCard->children as $property) {
 			$result[$property->name] = $property->getValue();
+			if ($property->name === 'PHOTO' && $property->getValueType() === 'BINARY') {
+				$url = $this->urlGenerator->getAbsoluteURL(
+					$this->urlGenerator->linkTo('', 'remote.php') . '/dav/');
+				$url .= implode('/', [
+					'addressbooks',
+					substr($this->addressBookInfo['principaluri'], 11), //cut off 'principals/'
+					$this->addressBookInfo['uri'],
+					$uri
+				]) . '?photo';
+
+				$result['PHOTO'] = 'VALUE=uri:' . $url;
+			} else {
+				$result[$property->name] = $property->getValue();
+			}
 		}
 		if ($this->addressBookInfo['principaluri'] === 'principals/system/system' &&
 			$this->addressBookInfo['uri'] === 'system') {
