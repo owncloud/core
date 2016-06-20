@@ -104,7 +104,7 @@ class Server {
 		// addressbook plugins
 		$this->server->addPlugin(new \OCA\DAV\CardDAV\Plugin());
 		$this->server->addPlugin(new VCFExportPlugin());
-		$this->server->addPlugin(new ImageExportPlugin());
+		$this->server->addPlugin(new ImageExportPlugin(\OC::$server->getLogger()));
 
 		// system tags plugins
 		$this->server->addPlugin(new \OCA\DAV\SystemTag\SystemTagPlugin(
