@@ -117,6 +117,28 @@ class ManagerTest extends TestCase {
 		$this->manager->getProviders($this->user);
 	}
 
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Could not load two-factor auth provider \OCA\MyFaulty2faApp\DoesNotExist
+	 */
+	public function testFailHardIfProviderCanNotBeLoaded() {
+		$this->appManager->expects($this->once())
+			->method('getEnabledAppsForUser')
+			->with($this->user)
+			->will($this->returnValue(['faulty2faapp']));
+
+		$this->appManager->expects($this->once())
+			->method('getAppInfo')
+			->with('faulty2faapp')
+			->will($this->returnValue([
+					'two-factor-providers' => [
+						'\OCA\MyFaulty2faApp\DoesNotExist',
+					],
+		]));
+
+		$this->manager->getProviders($this->user);
+	}
+
 	public function testIsTwoFactorAuthenticated() {
 		$this->prepareProviders();
 
