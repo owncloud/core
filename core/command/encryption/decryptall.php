@@ -111,7 +111,8 @@ class DecryptAll extends Command {
 		$this->addArgument(
 			'user',
 			InputArgument::OPTIONAL,
-			'user for which you want to decrypt all files (optional)'
+			'user for which you want to decrypt all files (optional)',
+			''
 		);
 	}
 
@@ -128,7 +129,6 @@ class DecryptAll extends Command {
 			}
 
 			$uid = $input->getArgument('user');
-			//FIXME WHEN https://github.com/owncloud/core/issues/24994 is fixed
 			if ($uid === null) {
 				$message = 'your ownCloud';
 			} else {
