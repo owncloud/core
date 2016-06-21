@@ -73,6 +73,13 @@ class JobHashTest extends \Test\TestCase {
 			['\OC\My\Class', json_encode('my arguments'), 'my arguments'],
 			['\OC\My\Class', json_encode(''), ''],
 			['\OC\My\Class', json_encode(null), null],
+			['\OC\My\Class', json_encode([]), []],
+			['\OC\My\Class', json_encode([[], []]), [[], []]],
+			['\OC\My\Class', json_encode([[true], [false], [1]]), [[true], [false], [1]]],
+			['\OC\My\Class', json_encode(['one' => 1, 'two' => 2, 'true' => true]), ['one' => 1, 'two' => 2, 'true' => true]],
+			['\OC\My\Class', json_encode(1), 1],
+			['\OC\My\Class', json_encode(new \stdclass()), new \stdclass()],
+			['\OC\My\Class', json_encode((array)(new \stdclass())), (array)(new \stdclass())],
 			['\OC\My\Class', null, null],
 		];
 	}
