@@ -23,8 +23,9 @@ namespace OC\Core\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IRequest;
 use OC\Console\Application;
+use OCP\IConfig;
+use OCP\IRequest;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -42,6 +43,26 @@ class OccController extends Controller {
 		'status',
 		'upgrade'
 	];
+
+	/** @var IConfig */
+	private $config;
+	/** @var Application */
+	private $console;
+
+	/**
+	 * OccController constructor.
+	 *
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param IConfig $config
+	 * @param Application $console
+	 */
+	public function __construct($appName, IRequest $request,
+								IConfig $config, Application $console) {
+		parent::__construct($appName, $request);
+		$this->config = $config;
+		$this->console = $console;
+	}
 
 	/**
 	 * @PublicPage
@@ -72,14 +93,13 @@ class OccController extends Controller {
 			$output = new BufferedOutput();
 			$formatter = $output->getFormatter();
 			$formatter->setDecorated(false);
-			$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), $this->request);
-			$application->setAutoExit(false);
-			$application->loadCommands(new ArrayInput([]), $output);
+			$this->console->setAutoExit(false);
+			$this->console->loadCommands(new ArrayInput([]), $output);
 
 			$inputArray = array_merge(['command' => $command], $params);
 			$input = new ArrayInput($inputArray);
 
-			$exitCode = $application->run($input, $output);
+			$exitCode = $this->console->run($input, $output);
 			$response = $output->fetch();
 
 			$json = [
@@ -104,14 +124,14 @@ class OccController extends Controller {
 	 */
 	protected function validateRequest($command, $token){
 		if (!in_array($this->request->getRemoteAddress(), ['::1', '127.0.0.1', 'localhost'])) {
-			throw new \UnexpectedValueException(sprintf('Web executor is not allowed to run from a different host', $command));
+			throw new \UnexpectedValueException('Web executor is not allowed to run from a different host');
 		}
 
 		if (!in_array($command, $this->allowedCommands)) {
 			throw new \UnexpectedValueException(sprintf('Command "%s" is not allowed to run via web request', $command));
 		}
 
-		$coreToken = \OC::$server->getConfig()->getSystemValue('updater.secret', '');
+		$coreToken = $this->config->getSystemValue('updater.secret', '');
 		if ($coreToken === '') {
 			throw new \UnexpectedValueException(
 				'updater.secret is undefined in config/config.php. Either browse the admin settings in your ownCloud and click "Open updater" or define a strong secret using <pre>php -r \'echo password_hash("MyStrongSecretDoUseYourOwn!", PASSWORD_DEFAULT)."\n";\'</pre> and set this in the config.php.'

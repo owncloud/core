@@ -21,31 +21,29 @@
 
 namespace Tests\Core\Controller;
 
+use OC\Console\Application;
+use OC\Core\Controller\OccController;
+use OCP\IConfig;
+use Symfony\Component\Console\Output\Output;
 use Test\TestCase;
 
 /**
  * Class OccControllerTest
  *
- * @group DB
  * @package OC\Core\Controller
  */
 class OccControllerTest extends TestCase {
 
-	private static $oldSecret;
 	const TEMP_SECRET = 'test';
 
+	/** @var \OC\AppFramework\Http\Request | \PHPUnit_Framework_MockObject_MockObject */
 	private $request;
-
+	/** @var  \OC\Core\Controller\OccController | \PHPUnit_Framework_MockObject_MockObject */
 	private $controller;
-
-	public static function setUpBeforeClass(){
-		self::$oldSecret = \OC::$server->getConfig()->setSystemValue('updater.secret', '');
-		\OC::$server->getConfig()->setSystemValue('updater.secret', password_hash(self::TEMP_SECRET, PASSWORD_DEFAULT));
-	}
-
-	public static function tearDownAfterClass(){
-		\OC::$server->getConfig()->setSystemValue('updater.secret', self::$oldSecret);
-	}
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	private $config;
+	/** @var  Application | \PHPUnit_Framework_MockObject_MockObject */
+	private $console;
 
 	public function testFromInvalidLocation(){
 		$this->getControllerMock('example.org');
@@ -88,6 +86,14 @@ class OccControllerTest extends TestCase {
 
 	public function testSuccess(){
 		$this->getControllerMock('localhost');
+		$this->console->expects($this->once())->method('run')
+			->willReturnCallback(
+				function ($input, $output) {
+					/** @var Output $output */
+					$output->writeln('{"installed":true,"version":"9.1.0.8","versionstring":"9.1.0 beta 2","edition":""}');
+					return 0;
+				}
+			);
 
 		$response = $this->controller->execute('status', self::TEMP_SECRET, ['--output'=>'json']);
 		$responseData = $response->getData();
@@ -103,18 +109,6 @@ class OccControllerTest extends TestCase {
 	}
 
 	private function getControllerMock($host){
-		$this->getRequestMock($host);
-		$this->controller = $this->getMockBuilder('OC\Core\Controller\OccController')
-			->setConstructorArgs([
-				'core',
-				$this->request
-			])
-			->setMethods(null)
-			->getMock()
-		;
-	}
-
-	private function getRequestMock($host){
 		$this->request = $this->getMockBuilder('OC\AppFramework\Http\Request')
 			->setConstructorArgs([
 				['server' => []],
@@ -122,10 +116,28 @@ class OccControllerTest extends TestCase {
 				\OC::$server->getConfig()
 			])
 			->setMethods(['getRemoteAddress'])
-			->getMock()
-		;
-		$this->request->method('getRemoteAddress')
-			->will($this->returnValue($host))
-		;
+			->getMock();
+
+		$this->request->expects($this->any())->method('getRemoteAddress')
+			->will($this->returnValue($host));
+
+		$this->config = $this->getMockBuilder('\OCP\IConfig')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->config->expects($this->any())->method('getSystemValue')
+			->with('updater.secret')
+			->willReturn(password_hash(self::TEMP_SECRET, PASSWORD_DEFAULT));
+
+		$this->console = $this->getMockBuilder('\OC\Console\Application')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->controller = new OccController(
+			'core',
+			$this->request,
+			$this->config,
+			$this->console
+		);
 	}
+
 }
