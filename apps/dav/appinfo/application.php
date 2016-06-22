@@ -137,7 +137,8 @@ class Application extends App {
 	public function setupContactsProvider(IManager $contactsManager, $userID) {
 		/** @var ContactsManager $cm */
 		$cm = $this->getContainer()->query('ContactsManager');
-		$cm->setupContactsProvider($contactsManager, $userID);
+		$urlGenerator = $this->getContainer()->getServer()->getURLGenerator();
+		$cm->setupContactsProvider($contactsManager, $userID, $urlGenerator);
 	}
 
 	public function registerHooks() {
