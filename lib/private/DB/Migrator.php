@@ -196,8 +196,14 @@ class Migrator {
 		return new Table($newName, $table->getColumns(), $newIndexes, array(), 0, $table->getOptions());
 	}
 
+	/**
+	 * @param Schema $targetSchema
+	 * @param \Doctrine\DBAL\Connection $connection
+	 * @return \Doctrine\DBAL\Schema\SchemaDiff
+	 * @throws DBALException
+	 */
 	protected function getDiff(Schema $targetSchema, \Doctrine\DBAL\Connection $connection) {
-		// adjust varchar columns with a length higher then 4000 to clob
+		// adjust varchar columns with a length higher then getVarcharMaxLength to clob
 		foreach ($targetSchema->getTables() as $table) {
 			foreach ($table->getColumns() as $column) {
 				if ($column->getType() instanceof StringType) {
