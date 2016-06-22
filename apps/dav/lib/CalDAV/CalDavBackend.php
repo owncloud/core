@@ -1083,18 +1083,19 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			if (isset($properties[$xmlName])) {
 
 				$values[$dbName] = $properties[$xmlName];
-				$fieldNames[] = $dbName;
+			} else {
+				$values[$dbName] = '';
 			}
 		}
 
 		$query = $this->db->getQueryBuilder();
+
+		foreach (array_keys($values) as $name) {
+			$valuesToInsert[$name] = $query->createNamedParameter($values[$name]);
+		}
+
 		$query->insert('calendarsubscriptions')
-			->values([
-				'principaluri' => $query->createNamedParameter($values['principaluri']),
-				'uri'          => $query->createNamedParameter($values['uri']),
-				'source'       => $query->createNamedParameter($values['source']),
-				'lastmodified' => $query->createNamedParameter($values['lastmodified']),
-			])
+			->values($valuesToInsert)
 			->execute();
 
 		return $this->db->lastInsertId('*PREFIX*calendarsubscriptions');
