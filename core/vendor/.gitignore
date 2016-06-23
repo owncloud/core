@@ -2,6 +2,7 @@ test/
 src/
 bower.json
 .gitignore
+!/.gitignore
 .jshintrc
 .travis.yml
 CHANGELOG*
@@ -36,6 +37,8 @@ moment/templates
 # jquery
 jquery/**
 !jquery/.bower.json
+!jquery/dist/
+jquery/dist/*
 !jquery/dist/jquery.*
 !jquery/MIT-LICENSE.txt
 
