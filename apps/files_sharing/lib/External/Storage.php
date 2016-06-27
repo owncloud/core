@@ -32,6 +32,7 @@ use OC\Files\Storage\DAV;
 use OC\ForbiddenException;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\ISharedStorage;
+use OCP\AppFramework\Http;
 use OCP\Files\NotFoundException;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
@@ -310,10 +311,10 @@ class Storage extends DAV implements ISharedStorage {
 				'connect_timeout' => 10,
 			]);
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			if ($e->getCode() === 401 || $e->getCode() === 403) {
+			if ($e->getCode() === Http::STATUS_UNAUTHORIZED || $e->getCode() === Http::STATUS_FORBIDDEN) {
 				throw new ForbiddenException();
 			}
-			if ($e->getCode() === 404) {
+			if ($e->getCode() === Http::STATUS_NOT_FOUND) {
 				throw new NotFoundException();
 			}
 			// throw this to be on the safe side: the share will still be visible
