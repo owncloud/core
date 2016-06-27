@@ -284,30 +284,7 @@ class Session implements IUserSession, Emitter {
 		if ($this->validateToken($password, $uid)) {
 			return $this->loginWithToken($password);
 		} else {
-			$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
-			$user = $this->manager->checkPassword($uid, $password);
-			if ($user === false) {
-				// Password check failed
-				return false;
-			}
-
-			if ($user->isEnabled()) {
-				$this->setUser($user);
-				$this->setLoginName($uid);
-				$this->manager->emit('\OC\User', 'postLogin', array($user, $password));
-				if ($this->isLoggedIn()) {
-					$this->prepareUserLogin();
-					return true;
-				} else {
-					// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-					throw new LoginException($message);
-				}
-			} else {
-				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-				$message = \OC::$server->getL10N('lib')->t('User disabled');
-				throw new LoginException($message);
-			}
+			return $this->loginWithPassword($uid, $password);
 		}
 		return false;
 	}
@@ -437,6 +414,34 @@ class Session implements IUserSession, Emitter {
 		return false;
 	}
 
+	private function loginWithPassword($uid, $password) {
+		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
+		$user = $this->manager->checkPassword($uid, $password);
+		if ($user === false) {
+			// Password check failed
+			return false;
+		}
+
+		if ($user->isEnabled()) {
+			$this->setUser($user);
+			$this->setLoginName($uid);
+			$this->manager->emit('\OC\User', 'postLogin', array($user, $password));
+			if ($this->isLoggedIn()) {
+				$this->prepareUserLogin();
+				return true;
+			} else {
+				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+				throw new LoginException($message);
+			}
+		} else {
+			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
+		return false;
+	}
+
 	private function loginWithToken($token) {
 		try {
 			$dbToken = $this->tokenProvider->getToken($token);
@@ -452,6 +457,8 @@ class Session implements IUserSession, Emitter {
 		} catch (PasswordlessTokenException $ex) {
 			// Ignore and use empty string instead
 		}
+
+		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
 
 		$user = $this->manager->get($uid);
 		if (is_null($user)) {
@@ -469,7 +476,6 @@ class Session implements IUserSession, Emitter {
 		$this->setUser($user);
 		$this->setLoginName($dbToken->getLoginName());
 
-		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
 		if ($this->isLoggedIn()) {
 			$this->prepareUserLogin();
 		} else {
