@@ -414,6 +414,14 @@ class Session implements IUserSession, Emitter {
 		return false;
 	}
 
+	/**
+	 * Log an user in via login name and password
+	 *
+	 * @param string $uid
+	 * @param string $password
+	 * @return boolean
+	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 */
 	private function loginWithPassword($uid, $password) {
 		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
 		$user = $this->manager->checkPassword($uid, $password);
@@ -442,6 +450,13 @@ class Session implements IUserSession, Emitter {
 		return false;
 	}
 
+	/**
+	 * Log an user in with a given token (id)
+	 *
+	 * @param string $token
+	 * @return boolean
+	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 */
 	private function loginWithToken($token) {
 		try {
 			$dbToken = $this->tokenProvider->getToken($token);
@@ -475,6 +490,7 @@ class Session implements IUserSession, Emitter {
 		//login
 		$this->setUser($user);
 		$this->setLoginName($dbToken->getLoginName());
+		$this->manager->emit('\OC\User', 'postLogin', array($user, $password));
 
 		if ($this->isLoggedIn()) {
 			$this->prepareUserLogin();
@@ -484,7 +500,6 @@ class Session implements IUserSession, Emitter {
 			throw new LoginException($message);
 		}
 
-		$this->manager->emit('\OC\User', 'postLogin', array($user, $password));
 		return true;
 	}
 
