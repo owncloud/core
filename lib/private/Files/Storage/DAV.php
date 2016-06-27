@@ -816,6 +816,7 @@ class DAV extends Common {
 	 * which might be temporary
 	 */
 	private function convertException(Exception $e, $path = '') {
+		\OC::$server->getLogger()->logException($e);
 		Util::writeLog('files_external', $e->getMessage(), Util::ERROR);
 		if ($e instanceof ClientHttpException) {
 			if ($e->getHttpStatus() === 423) {
