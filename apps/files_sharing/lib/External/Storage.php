@@ -182,6 +182,20 @@ class Storage extends DAV implements ISharedStorage {
 		}
 	}
 
+	public function test() {
+		try {
+			parent::test();
+		} catch (StorageInvalidException $e) {
+			// check if it needs to be removed
+			$this->checkStorageAvailability();
+			throw $e;
+		} catch (StorageNotAvailableException $e) {
+			// check if it needs to be removed or just temp unavailable
+			$this->checkStorageAvailability();
+			throw $e;
+		}
+	}
+
 	/**
 	 * Check whether this storage is permanently or temporarily
 	 * unavailable
