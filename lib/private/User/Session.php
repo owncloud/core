@@ -282,7 +282,7 @@ class Session implements IUserSession, Emitter {
 		$this->session->regenerateId();
 
 		if ($this->validateToken($password, $uid)) {
-			$this->loginWithToken($password);
+			return $this->loginWithToken($password);
 		} else {
 			$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
 			$user = $this->manager->checkPassword($uid, $password);
