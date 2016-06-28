@@ -194,7 +194,7 @@ class CoordinatorTest extends TestCase {
 	/**
 	 * @expectedException \OC\Authentication\Exceptions\ClientLoginPendingException
 	 */
-	public function testGetClientTOkenPendingState() {
+	public function testGetClientTokenPendingState() {
 		$accessToken = 'secrettoken';
 		$dbToken = $this->getMockBuilder('\OC\Authentication\ClientLogin\AccessToken')
 			->disableOriginalConstructor()
@@ -215,6 +215,43 @@ class CoordinatorTest extends TestCase {
 			->will($this->returnValue(AccessToken::STATUS_PENDING));
 
 		$this->coordinator->getClientToken($accessToken);
+	}
+
+	public function testGetClientName() {
+		$accessToken = 'secrettoken';
+		$dbToken = new AccessToken();
+		$dbToken->setClientName('My client');
+
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('secret')
+			->will($this->returnValue('abc'));
+		$this->mapper->expects($this->once())
+			->method('getToken')
+			->with(hash('sha512', 'secrettokenabc'))
+			->will($this->returnValue($dbToken));
+
+		$this->assertEquals('My client', $this->coordinator->getClientName($accessToken));
+	}
+
+	/**
+	 * @expectedException \OC\Authentication\Exceptions\InvalidAccessTokenException
+	 */
+	public function testGetClientNameInvalidToken() {
+		$accessToken = 'secrettoken';
+		$dbToken = new AccessToken();
+		$dbToken->setClientName('My client');
+
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('secret')
+			->will($this->returnValue('abc'));
+		$this->mapper->expects($this->once())
+			->method('getToken')
+			->with(hash('sha512', 'secrettokenabc'))
+			->will($this->throwException(new DoesNotExistException('')));
+
+		$this->coordinator->getClientName($accessToken);
 	}
 
 }

@@ -127,6 +127,21 @@ class Coordinator implements IClientLoginCoordinator {
 		return $this->createDeviceToken($dbToken);
 	}
 
+	/**
+	 * @param string $accessToken
+	 * @throws InvalidAccessTokenException
+	 * @return string
+	 */
+	public function getClientName($accessToken) {
+		$hashedToken = $this->hashToken($accessToken);
+		try {
+			$dbToken = $this->mapper->getToken($hashedToken);
+		} catch (DoesNotExistException $ex) {
+			throw new InvalidAccessTokenException();
+		}
+		return $dbToken->getClientName();
+	}
+
 	private function hashToken($token) {
 		$secret = $this->config->getSystemValue('secret');
 		return hash('sha512', $token . $secret);

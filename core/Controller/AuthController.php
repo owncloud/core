@@ -72,7 +72,7 @@ class AuthController extends Controller {
 
 		$token = $this->coordinator->startClientLogin($name);
 
-		$clientUrl = $this->urlGenerator->linkToRoute('core.auth.check', [
+		$clientUrl = $this->urlGenerator->linkToRoute('core.auth.askPermissions', [
 			'accesstoken' => $token
 		]);
 		$fullClientUrl = $this->urlGenerator->getAbsoluteURL($clientUrl);
@@ -91,16 +91,43 @@ class AuthController extends Controller {
 	 * @NoCSRFRequired
 	 *
 	 * @param string $accesstoken
-	 * @return TemplateResponse
+	 * @return TemplateResponse|RedirectResponse
 	 */
-	public function check($accesstoken) {
+	public function askPermissions($accesstoken) {
+		try {
+			$clientName = $this->coordinator->getClientName($accesstoken);
+			return new TemplateResponse('core', 'clientauthorize', [
+				'clientName' => $clientName
+				], 'guest');
+		} catch (InvalidAccessTokenException $ex) {
+			return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index'));
+		}
+	}
+
+	/**
+	 * @NoAdminRequired
+	 *
+	 * @param string $accesstoken
+	 * @return RedirectResponse
+	 */
+	public function grantPermissions($accesstoken) {
 		try {
 			$user = $this->userSession->getUser();
 			$this->coordinator->finishClientLogin($accesstoken, $user);
 		} catch (InvalidAccessTokenException $ex) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index'));
 		}
-		return new TemplateResponse('core', 'authsuccess', [], 'guest');
+		return new RedirectResponse($this->urlGenerator->linkToRoute('core.auth.success'));
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return TemplateResponse
+	 */
+	public function success() {
+		return new TemplateResponse('core', 'clientauthsuccess', [], 'guest');
 	}
 
 	/**

@@ -47,4 +47,11 @@ interface IClientLoginCoordinator {
 	 * @return string
 	 */
 	public function getClientToken($accessToken);
+
+	/**
+	 * @param string $accessToken
+	 * @throws InvalidAccessTokenException
+	 * @return string
+	 */
+	public function getClientName($accessToken);
 }

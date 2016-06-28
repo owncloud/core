@@ -82,7 +82,7 @@ class AuthControllerTest extends TestCase {
 			->will($this->returnValue('tokenxyz'));
 		$this->urlGenerator->expects($this->at(0))
 			->method('linkToRoute')
-			->with('core.auth.check', [
+			->with('core.auth.askPermissions', [
 				'accesstoken' => $token,
 			])
 			->will($this->returnValue('token/url'));
@@ -108,7 +108,39 @@ class AuthControllerTest extends TestCase {
 		$this->assertEquals($expected, $this->controller->start($name));
 	}
 
-	public function testCheck() {
+	public function testAskPermissions() {
+		$token = 'abcdefg';
+		$user = $this->getMock('\OCP\IUser');
+
+		$this->coordinator->expects($this->once())
+			->method('getClientName')
+			->with($token)
+			->will($this->returnValue('client name'));
+		$expected = new TemplateResponse('core', 'clientauthorize', [
+			'clientName' => 'client name',
+		], 'guest');
+
+		$this->assertEquals($expected, $this->controller->askPermissions($token));
+	}
+
+	public function testAskPermissionsInvalidToken() {
+		$token = 'abcdefg';
+		$user = $this->getMock('\OCP\IUser');
+
+		$this->coordinator->expects($this->once())
+			->method('getClientName')
+			->with($token)
+			->will($this->throwException(new InvalidAccessTokenException()));
+		$this->urlGenerator->expects($this->once())
+			->method('linkToRoute')
+			->with('files.view.index')
+			->will($this->returnValue('files/url'));
+		$expected = new RedirectResponse('files/url');
+
+		$this->assertEquals($expected, $this->controller->askPermissions($token));
+	}
+
+	public function testGrantPermissions() {
 		$token = 'abcdefg';
 		$user = $this->getMock('\OCP\IUser');
 
@@ -118,12 +150,12 @@ class AuthControllerTest extends TestCase {
 		$this->coordinator->expects($this->once())
 			->method('finishClientLogin')
 			->with($token, $user);
-		$expected = new TemplateResponse('core', 'authsuccess', [], 'guest');
+		$expected = new RedirectResponse($this->urlGenerator->linkToRoute('core.auth.success'));
 
-		$this->assertEquals($expected, $this->controller->check($token));
+		$this->assertEquals($expected, $this->controller->grantPermissions($token));
 	}
 
-	public function testCheckInvalidToken() {
+	public function testGrantPermissionsInvalidToken() {
 		$token = 'abcdefg';
 		$user = $this->getMock('\OCP\IUser');
 
@@ -140,7 +172,13 @@ class AuthControllerTest extends TestCase {
 			->will($this->returnValue('files/url'));
 		$expected = new RedirectResponse('files/url');
 
-		$this->assertEquals($expected, $this->controller->check($token));
+		$this->assertEquals($expected, $this->controller->grantPermissions($token));
+	}
+
+	public function testSuccess() {
+		$expected = new TemplateResponse('core', 'clientauthsuccess', [], 'guest');
+
+		$this->assertEquals($expected, $this->controller->success());
 	}
 
 	public function testStatus() {
