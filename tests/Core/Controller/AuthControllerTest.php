@@ -50,30 +50,59 @@ class AuthControllerTest extends TestCase {
 		$this->coordinator = $this->getMock('\OC\Authentication\ClientLogin\IClientLoginCoordinator');
 		$this->urlGenerator = $this->getMock('\OCP\IURLGenerator');
 		$this->userSession = $this->getMock('\OCP\IUserSession');
+		$this->l10n = $this->getMock('\OCP\IL10N');
 
-		$this->controller = new AuthController($this->appName, $this->request, $this->coordinator, $this->urlGenerator, $this->userSession);
+		$this->controller = new AuthController($this->appName, $this->request, $this->coordinator, $this->urlGenerator, $this->userSession, $this->l10n);
 	}
 
-	public function testStart() {
-		$name = 'my client';
+	public function startData() {
+		return [
+			['my client', 'my client'],
+			[null, 'unknown client'],
+			['', 'unknown client'],
+		];
+	}
+
+	/**
+	 * @dataProvider startData
+	 */
+	public function testStart($name, $clientName) {
 		$token = 'tokenxyz';
+
+		if (is_null($name) || strlen($name) === 0) {
+			$this->l10n->expects($this->once())
+				->method('t')
+				->with('unknown client')
+				->will($this->returnArgument(0));
+		}
+
 		$this->coordinator->expects($this->once())
 			->method('startClientLogin')
-			->with($name)
+			->with($clientName)
 			->will($this->returnValue('tokenxyz'));
-		$this->urlGenerator->expects($this->once())
+		$this->urlGenerator->expects($this->at(0))
 			->method('linkToRoute')
 			->with('core.auth.check', [
 				'accesstoken' => $token,
 			])
 			->will($this->returnValue('token/url'));
-		$this->urlGenerator->expects($this->once())
+		$this->urlGenerator->expects($this->at(1))
 			->method('getAbsoluteURL')
 			->with('token/url')
 			->will($this->returnValue('absolute/token/url'));
+		$this->urlGenerator->expects($this->at(2))
+			->method('linkToRoute')
+			->with('core.auth.status', [
+				'accesstoken' => $token,
+			])
+			->will($this->returnValue('poll/url'));
+		$this->urlGenerator->expects($this->at(3))
+			->method('getAbsoluteURL')
+			->with('poll/url')
+			->will($this->returnValue('absolute/poll/url'));
 		$expected = [
-			'url' => 'absolute/token/url',
-			'accessToken' => $token,
+			'clientUrl' => 'absolute/token/url',
+			'pollUrl' => 'absolute/poll/url',
 		];
 
 		$this->assertEquals($expected, $this->controller->start($name));

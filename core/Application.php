@@ -89,7 +89,8 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('ServerContainer')->query('OC\Authentication\ClientLogin\IClientLoginCoordinator'),
 				$c->query('URLGenerator'),
-				$c->query('UserSession')
+				$c->query('UserSession'),
+				$c->query('L10N')
 			);
 		});
 		$container->registerService('AvatarController', function(SimpleContainer $c) {

@@ -31,6 +31,7 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
@@ -46,11 +47,15 @@ class AuthController extends Controller {
 	/** @var IUserSession */
 	private $userSession;
 
-	public function __construct($appName, IRequest $request, IClientLoginCoordinator $coordinator, IURLGenerator $urlGenerator, IUserSession $userSession) {
+	/** @var IL10N */
+	private $l10n;
+
+	public function __construct($appName, IRequest $request, IClientLoginCoordinator $coordinator, IURLGenerator $urlGenerator, IUserSession $userSession, IL10N $l10n) {
 		parent::__construct($appName, $request);
 		$this->coordinator = $coordinator;
 		$this->urlGenerator = $urlGenerator;
 		$this->userSession = $userSession;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -60,16 +65,24 @@ class AuthController extends Controller {
 	 * @param string $name client name
 	 * @return JSONResponse
 	 */
-	public function start($name = 'unknown client') {
+	public function start($name = null) {
+		if (is_null($name) || strlen($name) === 0) {
+			$name = $this->l10n->t('unknown client');
+		}
+
 		$token = $this->coordinator->startClientLogin($name);
 
-		$url = $this->urlGenerator->linkToRoute('core.auth.check', [
+		$clientUrl = $this->urlGenerator->linkToRoute('core.auth.check', [
 			'accesstoken' => $token
 		]);
-		$fullUrl = $this->urlGenerator->getAbsoluteURL($url);
+		$fullClientUrl = $this->urlGenerator->getAbsoluteURL($clientUrl);
+		$pollUrl = $this->urlGenerator->linkToRoute('core.auth.status', [
+			'accesstoken' => $token
+		]);
+		$fullPollUrl = $this->urlGenerator->getAbsoluteURL($pollUrl);
 		return [
-			'url' => $fullUrl,
-			'accessToken' => $token,
+			'clientUrl' => $fullClientUrl,
+			'pollUrl' => $fullPollUrl,
 		];
 	}
 
