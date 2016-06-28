@@ -24,7 +24,6 @@ namespace Test\Authentication\ClientLogin;
 
 use OC\Authentication\ClientLogin\AccessToken;
 use OC\Authentication\ClientLogin\Coordinator;
-use OC\Authentication\Exceptions\InvalidAccessTokenException;
 use OC\Authentication\Token\IToken;
 use OCP\AppFramework\Db\DoesNotExistException;
 use Test\TestCase;
@@ -168,7 +167,7 @@ class CoordinatorTest extends TestCase {
 			->will($this->returnValue('sync client'));
 		$this->tokenProvider->expects($this->once())
 			->method('generateToken')
-			->with('securerandom', 'user123', '?', '?', 'sync client', IToken::PERMANENT_TOKEN)
+			->with('securerandom', 'user123', '?', null, 'sync client', IToken::PERMANENT_TOKEN)
 			->will($this->returnValue($clientToken));
 
 		$this->assertEquals('securerandom', $this->coordinator->getClientToken($accessToken));
