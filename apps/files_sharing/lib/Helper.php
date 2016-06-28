@@ -128,6 +128,7 @@ class Helper {
 				if(\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
 					// Save item id in session for future requests
 					\OC::$server->getSession()->set('public_link_authenticated', (string) $linkItem['id']);
+					\OC::$server->getSession()->set('public_link_password', $password);
 
 					/**
 					 * FIXME: Migrate old hashes to new hash format

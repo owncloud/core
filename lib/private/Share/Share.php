@@ -2495,7 +2495,9 @@ class Share extends Constants {
 		}
 
 		if ( \OC::$server->getSession()->exists('public_link_authenticated')
-			&& \OC::$server->getSession()->get('public_link_authenticated') === (string)$linkItem['id'] ) {
+			&& \OC::$server->getSession()->get('public_link_authenticated') === (string)$linkItem['id']
+			&& \OC::$server->getSession()->exists('public_link_password')
+			&& \OC::$server->getShareManager()->checkPassword(\OC::$server->getShareManager()->getShareById($linkItem['id']), \OC::$server->getSession()->get('public_link_password')) ) {
 			return true;
 		}
 
