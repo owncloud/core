@@ -1084,7 +1084,11 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 				$values[$dbName] = $properties[$xmlName];
 			} else {
-				$values[$dbName] = '';
+				if ($dbName == 'calendarorder') {
+					$values[$dbName] = 0;	
+				} else {
+					$values[$dbName] = null;
+				}
 			}
 		}
 
