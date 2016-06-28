@@ -87,6 +87,7 @@ class AvatarManager implements IAvatarManager {
 		 * Fix for #22119
 		 * Basically we do not want to copy the skeleton folder
 		 */
+		\OC\Files\Filesystem::tearDown();
 		\OC\Files\Filesystem::initMountPoints($userId);
 		$dir = '/' . $userId;
 		/** @var Folder $folder */
