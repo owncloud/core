@@ -84,10 +84,14 @@ class AvatarManager implements IAvatarManager {
 		}
 
 		/*
+		 * Resetup FS to free memory of old storage wrappers
+		 */
+		\OC_Util::tearDownFS();
+		\OC_Util::setupFS($userId);
+		/*
 		 * Fix for #22119
 		 * Basically we do not want to copy the skeleton folder
 		 */
-		\OC\Files\Filesystem::tearDown();
 		\OC\Files\Filesystem::initMountPoints($userId);
 		$dir = '/' . $userId;
 		/** @var Folder $folder */
