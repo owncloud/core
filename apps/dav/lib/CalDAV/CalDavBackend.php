@@ -1079,12 +1079,14 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			'lastmodified' => time(),
 		];
 
-		foreach($this->subscriptionPropertyMap as $xmlName=>$dbName) {
-			if (isset($properties[$xmlName])) {
+		$propertiesBoolean = array('striptodos', 'stripalarms', 'stripattachments');
 
-				$values[$dbName] = $properties[$xmlName];
-			} else {
-				$values[$dbName] = '';
+		foreach($this->subscriptionPropertyMap as $xmlName=>$dbName) {
+			if (array_key_exists($xmlName, $properties)) {
+					$values[$dbName] = $properties[$xmlName];
+					if (in_array($dbName, $propertiesBoolean)) {
+						$values[$dbName] = true;
+				}
 			}
 		}
 

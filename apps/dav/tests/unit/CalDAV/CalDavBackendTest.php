@@ -335,11 +335,13 @@ EOD;
 		$id = $this->backend->createSubscription(self::UNIT_TEST_USER, 'Subscription', [
 			'{http://calendarserver.org/ns/}source' => new Href('test-source'),
 			'{http://apple.com/ns/ical/}calendar-color' => '#1C4587',
+			'{http://calendarserver.org/ns/}subscribed-strip-todos' => ''
 		]);
 
 		$subscriptions = $this->backend->getSubscriptionsForUser(self::UNIT_TEST_USER);
 		$this->assertEquals(1, count($subscriptions));
-		$this->assertEquals('#1C4587',$subscriptions[0]['{http://apple.com/ns/ical/}calendar-color']);
+		$this->assertEquals('#1C4587', $subscriptions[0]['{http://apple.com/ns/ical/}calendar-color']);
+		$this->assertEquals(true, $subscriptions[0]['{http://calendarserver.org/ns/}subscribed-strip-todos']);
 		$this->assertEquals($id, $subscriptions[0]['id']);
 
 		$patch = new PropPatch([
