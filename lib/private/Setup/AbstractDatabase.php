@@ -23,6 +23,7 @@
  */
 namespace OC\Setup;
 
+use OC\DB\MigrationService;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\Security\ISecureRandom;
@@ -97,4 +98,13 @@ abstract class AbstractDatabase {
 	 * @param string $userName
 	 */
 	abstract public function setupDatabase($userName);
+
+	public function runMigrations() {
+		if (!is_dir(\OC::$SERVERROOT."/core/Migrations")) {
+			return;
+		}
+		$ms = new MigrationService();
+		$mc = $ms->buildConfiguration('core', \OC::$server->getDatabaseConnection());
+		$ms->migrate($mc, true);
+	}
 }
