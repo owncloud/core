@@ -1396,6 +1396,12 @@ describe('OCA.Files.FileList tests', function() {
 			setDirSpy.restore();
 			getFolderContentsStub.restore();
 		});
+		it('prepends a slash to directory if none was given', function() {
+			fileList.changeDirectory('');
+			expect(fileList.getCurrentDirectory()).toEqual('/');
+			fileList.changeDirectory('noslash');
+			expect(fileList.getCurrentDirectory()).toEqual('/noslash');
+		});
 	});
 	describe('breadcrumb events', function() {
 		var deferredList;
