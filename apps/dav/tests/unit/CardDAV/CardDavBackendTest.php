@@ -535,8 +535,8 @@ class CardDavBackendTest extends TestCase {
 		$found = [];
 		foreach ($result as $r) {
 			foreach ($expected as $exp) {
-				if (strpos($r, $exp) > 0) {
-					$found[$exp] = true;
+				if ($r['uri'] === $exp[0] && strpos($r['carddata'], $exp[1]) > 0) {
+					$found[$exp[1]] = true;
 					break;
 				}
 			}
@@ -547,11 +547,11 @@ class CardDavBackendTest extends TestCase {
 
 	public function dataTestSearch() {
 		return [
-				['John', ['FN'], ['John Doe', 'John M. Doe']],
-				['M. Doe', ['FN'], ['John M. Doe']],
-				['Do', ['FN'], ['John Doe', 'John M. Doe']],
-				'check if duplicates are handled correctly' => ['John', ['FN', 'CLOUD'], ['John Doe', 'John M. Doe']],
-				'case insensitive' => ['john', ['FN'], ['John Doe', 'John M. Doe']]
+				['John', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]],
+				['M. Doe', ['FN'], [['uri1', 'John M. Doe']]],
+				['Do', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]],
+				'check if duplicates are handled correctly' => ['John', ['FN', 'CLOUD'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]],
+				'case insensitive' => ['john', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]]
 		];
 	}
 
@@ -606,6 +606,10 @@ class CardDavBackendTest extends TestCase {
 		$this->assertSame(5489543, (int)$result['lastmodified']);
 		$this->assertSame('etag0', $result['etag']);
 		$this->assertSame(120, (int)$result['size']);
+
+		// this shouldn't return any result because 'uri1' is in address book 1
+		$result = $this->backend->getContact(0, 'uri1');
+		$this->assertEmpty($result);
 	}
 
 	public function testGetContactFail() {

@@ -24,6 +24,9 @@ docker_image=xenopathic/ceph-keystone
 echo "Fetch recent ${docker_image} docker image"
 docker pull ${docker_image}
 
+# debian 8 default comes without loaded loop module. please run "sudo modprobe loop" if you get an error here:
+lsmod | grep '^loop' || { echo "Error: kernel module loop not loaded. Needed by docker image ${docker_image}"; exit 1; }
+
 # retrieve current folder to place the config in the parent folder
 thisFolder=`echo $0 | sed 's#env/start-swift-ceph\.sh##'`
 
@@ -67,6 +70,11 @@ echo $container >> $thisFolder/dockerContainerCeph.$EXECUTOR_NUMBER.swift
 echo "Waiting for ceph initialization"
 ready=$(timeout 600 cat "$notify_sock")
 if [[ $ready != 'READY=1' ]]; then
+    echo "[ERROR] Waited 600 seconds, no response" >&2
+    docker logs $container
+    exit 1
+fi
+if ! "$thisFolder"/env/wait-for-connection ${host} 80 600; then
     echo "[ERROR] Waited 600 seconds, no response" >&2
     docker logs $container
     exit 1
