@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Type in a new comment..." : "Digita un nuovo commento...",
     "Delete comment" : "Elimina commento",
-    "Post" : "Post",
+    "Post" : "Pubblica",
     "Cancel" : "Annulla",
     "Edit comment" : "Modifica commento",
     "[Deleted user]" : "[Utente eliminato]",
@@ -12,6 +12,9 @@ OC.L10N.register(
     "More comments..." : "Altri commenti...",
     "Save" : "Salva",
     "Allowed characters {count} of {max}" : "Caratteri consentiti {count} di {max}",
+    "Error occurred while retrieving comment with id {id}" : "Si è verificato un errore durante il tentativo di recupero del commento con id {id}",
+    "Error occurred while updating comment with id {id}" : "Si è verificato un errore durante il tentativo di aggiornamento del commento con id {id}",
+    "Error occurred while posting comment" : "Si è verificato un errore durante la pubblicazione del commento.",
     "{count} unread comments" : "{count} commenti non letti",
     "Comment" : "Commento",
     "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Commenti</strong> sui file <em>(elencati sempre nel flusso)</em>",

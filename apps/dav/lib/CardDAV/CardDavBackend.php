@@ -780,7 +780,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		}
 		$query2->andWhere($query2->expr()->eq('cp.addressbookid', $query->createNamedParameter($addressBookId)));
 
-		$query->select('c.carddata')->from($this->dbCardsTable, 'c')
+		$query->select('c.carddata', 'c.uri')->from($this->dbCardsTable, 'c')
 			->where($query->expr()->in('c.id', $query->createFunction($query2->getSQL())));
 
 		$result = $query->execute();
@@ -788,8 +788,10 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 		$result->closeCursor();
 
-		return array_map(function($array) {return $this->readBlob($array['carddata']);}, $cards);
-
+		return array_map(function($array) {
+			$array['carddata'] = $this->readBlob($array['carddata']);
+			return $array;
+		}, $cards);
 	}
 
 	/**
@@ -846,7 +848,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$query = $this->db->getQueryBuilder();
 		$query->select('*')->from($this->dbCardsTable)
 				->where($query->expr()->eq('uri', $query->createNamedParameter($uri)))
-				->where($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)));
+				->andWhere($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)));
 		$queryResult = $query->execute();
 		$contact = $queryResult->fetch();
 		$queryResult->closeCursor();

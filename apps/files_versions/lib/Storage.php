@@ -320,8 +320,16 @@ class Storage {
 			// add expected leading slash
 			$file = '/' . ltrim($file, '/');
 			list($uid, $filename) = self::getUidAndFilename($file);
+			if ($uid === null || trim($filename, '/') === '') {
+				return false;
+			}
 			$users_view = new View('/'.$uid);
 			$files_view = new View('/'. User::getUser().'/files');
+
+			if (!$files_view->isUpdatable($filename)) {
+				return false;
+			}
+
 			$versionCreated = false;
 
 			//first create a new version
@@ -336,9 +344,16 @@ class Storage {
 			// Restore encrypted version of the old file for the newly restored file
 			// This has to happen manually here since the file is manually copied below
 			$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
+			$oldFileInfo = $users_view->getFileInfo($fileToRestore);
 			$newFileInfo = $files_view->getFileInfo($filename);
 			$cache = $newFileInfo->getStorage()->getCache();
-			$cache->update($newFileInfo->getId(), ['encrypted' => $oldVersion, 'encryptedVersion' => $oldVersion]);
+			$cache->update(
+				$newFileInfo->getId(), [
+					'encrypted' => $oldVersion,
+					'encryptedVersion' => $oldVersion,
+					'size' => $oldFileInfo->getSize()
+				]
+			);
 
 			// rollback
 			if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
