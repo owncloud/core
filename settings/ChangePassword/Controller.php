@@ -45,7 +45,7 @@ class Controller {
 			\OC_JSON::error(array("data" => array("message" => $l->t("Wrong password")) ));
 			exit();
 		}
-        if ($oldPassword == $password) {
+        if ($oldPassword === $password) {
             $l = new \OC_L10n('settings');
 			\OC_JSON::error(array("data" => array("message" => $l->t("The new password can not be the same as the previous one")) ));
 			exit();
