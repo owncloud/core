@@ -218,6 +218,29 @@ class Access extends LDAPUtility implements IUserTools {
 		\OCP\Util::writeLog('user_ldap', 'Requested attribute '.$attr.' not found for '.$dn, \OCP\Util::DEBUG);
 		return false;
 	}
+	
+	/**
+	 * Set password for an LDAP user identified by a DN
+	 * @param string $userDN the user in question
+	 * @param LDAP $password the new password
+	 * @return bool
+	 */
+	public function setPassword($userDN, $password) {
+		if(!$this->checkConnection()) {
+			\OCP\Util::writeLog('user_ldap',
+				'No LDAP Connector assigned, access impossible for setPassword.',
+				\OCP\Util::WARN);
+			return false;
+		}
+		$cr = $this->connection->getConnectionResource();
+		if(!$this->ldap->isResource($cr)) {
+			//LDAP not available
+			\OCP\Util::writeLog('user_ldap', 'LDAP resource not available.', \OCP\Util::DEBUG);
+			return false;
+		}
+		
+		return $this->ldap->setPassword($cr, $userDN, $password);
+	}
 
 	/**
 	 * checks whether the given attributes value is probably a DN

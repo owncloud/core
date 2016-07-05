@@ -190,6 +190,16 @@ class LDAP implements ILDAPWrapper {
 	public function search($link, $baseDN, $filter, $attr, $attrsOnly = 0, $limit = 0) {
 		return $this->invokeLDAPMethod('search', $link, $baseDN, $filter, $attr, $attrsOnly, $limit);
 	}
+	
+	/**
+	 * @param LDAP $link
+	 * @param string $userDN
+	 * @param string $password
+	 * @return bool
+	 */
+	public function setPassword($link, $userDN, $password) {
+		return $this->invokeLDAPMethod('mod_replace', $link, $userDN, array('userPassword' => $password));
+	}
 
 	/**
 	 * @param LDAP $link

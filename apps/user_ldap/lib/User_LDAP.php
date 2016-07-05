@@ -158,6 +158,41 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 
 		return false;
 	}
+	
+	/**
+	 * Set password
+	 * @param string $uid The username
+	 * @param string $password The new password
+	 * @return bool
+	 *
+	 */
+	public function setPassword($uid, $password) {
+		if(!$this->access->connection->configuration->turnOnPasswordChange) {
+			return false;
+		}
+		
+		try {
+			$ldapRecord = $this->getLDAPUserByLoginName($uid);
+		} catch(\Exception $e) {
+			\OC::$server->getLogger()->logException($e, ['app' => 'user_ldap']);
+			return false;
+		}
+		$dn = $ldapRecord['dn'][0];
+		$user = $this->access->userManager->get($dn);
+
+		if(!$user instanceof User) {
+			\OCP\Util::writeLog('user_ldap',
+				'LDAP Login: Could not get user object for DN ' . $dn .
+				'. Maybe the LDAP entry has no set display name attribute?',
+				\OCP\Util::WARN);
+			return false;
+		}
+		if($user->getUsername() !== false) {
+			return $this->access->setPassword($this->access->username2dn($uid), $password);
+		}
+
+		return false;
+	}
 
 	/**
 	 * Get a list of all users
@@ -430,6 +465,7 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	*/
 	public function implementsActions($actions) {
 		return (bool)((\OC\User\Backend::CHECK_PASSWORD
+			| \OC\User\Backend::SET_PASSWORD
 			| \OC\User\Backend::GET_HOME
 			| \OC\User\Backend::GET_DISPLAYNAME
 			| \OC\User\Backend::PROVIDE_AVATAR
