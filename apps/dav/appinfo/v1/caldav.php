@@ -69,7 +69,6 @@ $server->setBaseUri($baseuri);
 $server->addPlugin(new MaintenancePlugin());
 $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'ownCloud'));
 $server->addPlugin(new \Sabre\CalDAV\Plugin());
-$server->addPlugin(new \OCA\DAV\CalDAV\Publishing\PublishPlugin());
 
 $server->addPlugin(new LegacyDAVACL());
 if ($debugging) {
