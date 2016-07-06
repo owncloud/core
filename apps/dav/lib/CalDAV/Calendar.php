@@ -23,13 +23,14 @@
 namespace OCA\DAV\CalDAV;
 
 use OCA\DAV\DAV\Sharing\IShareable;
+use Sabre\CalDAV\IShareableCalendar;
 use OCP\IL10N;
 use Sabre\CalDAV\Backend\BackendInterface;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
 
-class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
+class Calendar extends \Sabre\CalDAV\Calendar implements IShareable, IShareableCalendar {
 
 	public function __construct(BackendInterface $caldavBackend, $calendarInfo, IL10N $l10n) {
 		parent::__construct($caldavBackend, $calendarInfo);
@@ -86,6 +87,13 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	 */
 	public function getResourceId() {
 		return $this->calendarInfo['id'];
+	}
+
+	/**
+	 * @return str
+	 */
+	public function getPrincipalURI() {
+		return $this->calendarInfo['principaluri'];
 	}
 
 	function getACL() {
@@ -233,6 +241,20 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 		}
 
 		return $uris;
+	}
+
+	/**
+	 * @param boolean $value
+	 */
+	function setPublishStatus($value) {
+		$this->caldavBackend->setPublishStatus($value, $this);
+	}
+
+	/**
+	 * @return boolean $value
+	 */
+	function getPublishStatus() {
+		return $this->caldavBackend->getPublishStatus($this);
 	}
 
 	private function canWrite() {
