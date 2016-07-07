@@ -34,6 +34,7 @@ $tmpl = new OCP\Template('user_ldap', 'settings');
 
 $helper = new \OCA\User_LDAP\Helper();
 $prefixes = $helper->getServerConfigurationPrefixes();
+$activePrefixes = $helper->getServerConfigurationPrefixes(true);
 $hosts = $helper->getServerConfigurationHosts();
 
 $wizardHtml = '';
@@ -56,6 +57,7 @@ for($i = 0; $i < $wizTabsCount; $i++) {
 	$tab = new OCP\Template('user_ldap', $wizTabs[$i]['tpl']);
 	if($i === 0) {
 		$tab->assign('serverConfigurationPrefixes', $prefixes);
+		$tab->assign('serverConfigurationActivePrefixes', $activePrefixes);
 		$tab->assign('serverConfigurationHosts', $hosts);
 	}
 	$tab->assign('wizardControls', $wControls);
