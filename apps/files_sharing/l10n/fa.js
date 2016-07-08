@@ -34,6 +34,7 @@ OC.L10N.register(
     "No entries found in this folder" : "هیچ ورودی‌ای در این پوشه وجود ندارد",
     "Name" : "نام",
     "Share time" : "زمان به اشتراک گذاری",
+    "Expiration date" : "تاریخ انقضا",
     "Sorry, this link doesn’t seem to work anymore." : "متاسفانه این پیوند دیگر کار نمی کند",
     "Reasons might be:" : "ممکن است به این دلایل باشد:",
     "the item was removed" : "این مورد حذف شده است",

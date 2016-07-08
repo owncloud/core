@@ -21,15 +21,36 @@
 namespace OCA\User_LDAP;
 
 use OCP\LDAP\ILDAPProviderFactory;
+use OCA\User_LDAP\User\DeletedUsersIndex;
+use OCA\User_LDAP\Mapping\UserMapping;
 
 class LDAPProviderFactory implements ILDAPProviderFactory {
+	/**
+	 * Server container
+	 *
+	 * @var IServerContainer
+	 */
+	private $serverContainer;
+	
+	/**
+	 * Constructor for the LDAP provider factory
+	 *
+	 * @param IServerContainer $serverContainer server container
+	 */
+	public function __construct(IServerContainer $serverContainer) {
+		$this->serverContainer = $serverContainer;
+	}
+	
 	/**
 	 * creates and returns an instance of the ILDAPProvider
 	 *
 	 * @return OCP\LDAP\ILDAPProvider
-	 * @since 9.1.0
 	 */
 	public function getLDAPProvider() {
-		return new LDAPProvider(\OC::$server);
+		$dbConnection = $this->serverContainer->getDatabaseConnection();
+		$userMapping = new UserMapping($dbConnection);
+		return new LDAPProvider($this->serverContainer, new Helper(), 
+					new DeletedUsersIndex($this->serverContainer->getConfig(), 
+					$dbConnection, $userMapping));
 	}
 }

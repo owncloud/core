@@ -39,6 +39,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Нема ништо во оваа папка",
     "Name" : "Име",
     "Share time" : "Сподели време",
+    "Expiration date" : "Рок на траење",
     "Sorry, this link doesn’t seem to work anymore." : "Извенете, но овој линк изгледа дека повеќе не функционира.",
     "Reasons might be:" : "Причината може да биде:",
     "the item was removed" : "предметот беше одстранет",

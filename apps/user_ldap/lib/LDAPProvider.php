@@ -44,12 +44,10 @@ class LDAPProvider implements ILDAPProvider, IDeletionFlagSupport {
 	 * @param \OCP\IServerContainer $serverContainer
 	 * @throws \Exception if user_ldap app was not enabled
 	 */
-	public function __construct(IServerContainer $serverContainer) {
+	public function __construct(IServerContainer $serverContainer, Helper $helper, DeletedUsersIndex $deletedUsersIndex) {
 		$this->logger = $serverContainer->getLogger();
-		$this->helper = new Helper();
-		$dbConnection = \OC::$server->getDatabaseConnection();
-		$userMapping = new UserMapping($dbConnection);
-		$this->deletedUsersIndex = new DeletedUsersIndex($serverContainer->getConfig(), $dbConnection, $userMapping);
+		$this->helper = $helper;
+		$this->deletedUsersIndex = $deletedUsersIndex;
 		foreach ($serverContainer->getUserManager()->getBackends() as $backend){
 			$this->logger->debug('instance '.get_class($backend).' backend.', ['app' => 'user_ldap']);
 			if ($backend instanceof IUserLDAP) {

@@ -1371,7 +1371,7 @@ class Server extends ServerContainer implements IServerContainer {
 	}
 
 	/**
-	 * Returns the preview manager which can create preview images for a given file
+	 * Returns the LDAP Provider
 	 *
 	 * @return \OCP\LDAP\ILDAPProvider
 	 */

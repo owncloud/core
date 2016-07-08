@@ -58,6 +58,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Cap d'entrada pas trobada dins aqueste dorsièr",
     "Name" : "Nom",
     "Share time" : "Data de partiment",
+    "Expiration date" : "Data d'expiracion",
     "Sorry, this link doesn’t seem to work anymore." : "O planhèm, mas sembla qu'aqueste ligam fonciona pas mai.",
     "Reasons might be:" : "Las rasons pòdon èsser :",
     "the item was removed" : "l'element es estat suprimit",

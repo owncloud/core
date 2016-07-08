@@ -42,6 +42,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Nema unosa u ovom direktorijumu",
     "Name" : "Ime",
     "Share time" : "Vreme deljenja",
+    "Expiration date" : "Datum isteka",
     "Sorry, this link doesn’t seem to work anymore." : "Žao nam je, ali ova prečica više ne radi.",
     "Reasons might be:" : "Razlozi mogu biti:",
     "the item was removed" : "stavka je uklonjena",

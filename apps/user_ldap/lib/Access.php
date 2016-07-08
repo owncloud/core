@@ -83,12 +83,12 @@ class Access extends LDAPUtility implements IUserTools {
 	private $helper;
 
 	public function __construct(Connection $connection, ILDAPWrapper $ldap,
-		Manager $userManager) {
+		Manager $userManager, Helper $helper) {
 		parent::__construct($ldap);
 		$this->connection = $connection;
 		$this->userManager = $userManager;
 		$this->userManager->setLdapAccess($this);
-		$this->helper = new Helper();
+		$this->helper = $helper;
 	}
 
 	/**

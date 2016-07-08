@@ -69,6 +69,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Šajā mapē nekas nav atrasts",
     "Name" : "Nosaukums",
     "Share time" : "Koplietošanas laiks",
+    "Expiration date" : "Termiņa datums",
     "Sorry, this link doesn’t seem to work anymore." : "Izskatās, ka šī saite vairs nedarbojas",
     "Reasons might be:" : "Iespējamie iemesli:",
     "the item was removed" : "vienums tika dzēsts",

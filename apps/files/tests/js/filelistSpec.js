@@ -1334,6 +1334,31 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.changeDirectory('/another\\subdir');
 			expect(fileList.getCurrentDirectory()).toEqual('/another/subdir');
 		});
+		it('switches to root dir when current directory is invalid', function() {
+			_.each([
+				'..',
+				'/..',
+				'../',
+				'/../',
+				'/../abc',
+				'/abc/..',
+				'/abc/../',
+				'/../abc/'
+			], function(path) {
+				fileList.changeDirectory(path);
+				expect(fileList.getCurrentDirectory()).toEqual('/');
+			});
+		});
+		it('allows paths with dotdot at the beginning or end', function() {
+			_.each([
+				'/..abc',
+				'/def..',
+				'/...'
+			], function(path) {
+				fileList.changeDirectory(path);
+				expect(fileList.getCurrentDirectory()).toEqual(path);
+			});
+		});
 		it('switches to root dir when current directory does not exist', function() {
 			fileList.changeDirectory('/unexist');
 			deferredList.reject(404);
@@ -1390,6 +1415,12 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileList.breadcrumb.setDirectory.calledWith('/anothersubdir')).toEqual(true);
 			setDirSpy.restore();
 			getFolderContentsStub.restore();
+		});
+		it('prepends a slash to directory if none was given', function() {
+			fileList.changeDirectory('');
+			expect(fileList.getCurrentDirectory()).toEqual('/');
+			fileList.changeDirectory('noslash');
+			expect(fileList.getCurrentDirectory()).toEqual('/noslash');
 		});
 	});
 	describe('breadcrumb events', function() {

@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "このフォルダーにはエントリーがありません",
     "Name" : "名前",
     "Share time" : "共有した時刻",
+    "Expiration date" : "有効期限",
     "Sorry, this link doesn’t seem to work anymore." : "すみません。このリンクはもう利用できません。",
     "Reasons might be:" : "理由は以下の通りと考えられます：",
     "the item was removed" : "アイテムが削除されました",

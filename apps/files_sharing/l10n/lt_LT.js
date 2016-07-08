@@ -59,6 +59,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Nerasta įrašų šiame aplanke",
     "Name" : "Pavadinimas",
     "Share time" : "Dalijimosi laikas",
+    "Expiration date" : "Galiojimo laikas",
     "Sorry, this link doesn’t seem to work anymore." : "Atleiskite, panašu, kad nuoroda yra neveiksni.",
     "Reasons might be:" : "Galimos priežastys:",
     "the item was removed" : "elementas buvo pašalintas",

@@ -10,6 +10,7 @@ OC.L10N.register(
     "Shares" : "teilt",
     "Password" : "Passwort",
     "Name" : "Name",
+    "Expiration date" : "Ablaufdatum",
     "Download" : "Herunterladen"
 },
 "nplurals=2; plural=(n != 1);");
