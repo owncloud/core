@@ -84,6 +84,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Engar skrár fundust í þessari möppu",
     "Name" : "Nafn",
     "Share time" : "Deilingartími",
+    "Expiration date" : "Gildir til",
     "Sorry, this link doesn’t seem to work anymore." : "Því miður, þessi tengill virðist ekki virka lengur.",
     "Reasons might be:" : "Mögulegar ástæður gætu verið:",
     "the item was removed" : "atriðið var fjarlægt",

@@ -78,6 +78,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Ei kohteita tässä kansiossa",
     "Name" : "Nimi",
     "Share time" : "Jakamisen ajankohta",
+    "Expiration date" : "Päättymispäivä",
     "Sorry, this link doesn’t seem to work anymore." : "Valitettavasti linkki ei vaikuta enää toimivan.",
     "Reasons might be:" : "Mahdollisia syitä:",
     "the item was removed" : "kohde poistettiin",

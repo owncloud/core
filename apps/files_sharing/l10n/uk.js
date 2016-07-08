@@ -46,6 +46,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Записів не знайдено в цій папці",
     "Name" : "Ім’я",
     "Share time" : "Дата публікації",
+    "Expiration date" : "Термін дії",
     "Sorry, this link doesn’t seem to work anymore." : "На жаль, посилання більше не працює.",
     "Reasons might be:" : "Можливі причини:",
     "the item was removed" : "цей пункт був вилучений",

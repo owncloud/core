@@ -10,6 +10,7 @@ OC.L10N.register(
     "Password" : "Passwuert",
     "No entries found in this folder" : "Keng Elementer an dësem Dossier fonnt",
     "Name" : "Numm",
+    "Expiration date" : "Verfallsdatum",
     "Download" : "Download",
     "Direct link" : "Direkte Link"
 },

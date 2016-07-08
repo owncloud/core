@@ -10,6 +10,7 @@ OC.L10N.register(
     "Shares" : "Comparti",
     "Password" : "Contrasigno",
     "Name" : "Nomine",
+    "Expiration date" : "Data de expiration",
     "Download" : "Discargar"
 },
 "nplurals=2; plural=(n != 1);");

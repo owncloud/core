@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "ไม่พบรายการในโฟลเดอร์นี้",
     "Name" : "ชื่อ",
     "Share time" : "แชร์เวลา",
+    "Expiration date" : "วันที่หมดอายุ",
     "Sorry, this link doesn’t seem to work anymore." : "ขออภัยลิงค์นี้ดูเหมือนจะไม่ทำงานอีกต่อไป",
     "Reasons might be:" : "เหตุผลอาจจะ:",
     "the item was removed" : "รายการที่ถูกลบออก",

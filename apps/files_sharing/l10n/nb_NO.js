@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Ingen oppføringer funnet i denne mappen",
     "Name" : "Navn",
     "Share time" : "Delingstidspunkt",
+    "Expiration date" : "Utløpsdato",
     "Sorry, this link doesn’t seem to work anymore." : "Beklager, denne lenken ser ikke ut til å virke lenger.",
     "Reasons might be:" : "Mulige årsaker:",
     "the item was removed" : "elementet er fjernet",

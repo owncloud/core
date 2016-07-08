@@ -42,6 +42,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Няма намерени записи в тази директория",
     "Name" : "Име",
     "Share time" : "Споделено на",
+    "Expiration date" : "Дата на изтичане",
     "Sorry, this link doesn’t seem to work anymore." : "Съжаляваме, връзката вече не е активна.",
     "Reasons might be:" : "Причините може да са:",
     "the item was removed" : "съдържанието е премахнато",

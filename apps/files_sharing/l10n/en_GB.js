@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "No entries found in this folder",
     "Name" : "Name",
     "Share time" : "Share time",
+    "Expiration date" : "Expiration date",
     "Sorry, this link doesn’t seem to work anymore." : "Sorry, this link doesn’t seem to work anymore.",
     "Reasons might be:" : "Reasons might be:",
     "the item was removed" : "the item was removed",

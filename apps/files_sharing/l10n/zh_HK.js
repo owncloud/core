@@ -8,6 +8,7 @@ OC.L10N.register(
     "Shares" : "分享",
     "Password" : "密碼",
     "Name" : "名稱",
+    "Expiration date" : "分享期限",
     "Download" : "下載"
 },
 "nplurals=1; plural=0;");

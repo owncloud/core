@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "రద్దుచేయి",
     "Password" : "సంకేతపదం",
-    "Name" : "పేరు"
+    "Name" : "పేరు",
+    "Expiration date" : "కాలం చెల్లు తేదీ"
 },
 "nplurals=2; plural=(n != 1);");
