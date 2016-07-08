@@ -156,6 +156,9 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type) {
+		if (strlen($path) > 64) { // max length in file_locks
+			throw new \InvalidArgumentException("Lock key length too long");
+		}
 		$expire = $this->getExpireTime();
 		if ($type === self::LOCK_SHARED) {
 			if (!$this->isLocallyLocked($path)) {

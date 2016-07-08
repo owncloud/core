@@ -530,4 +530,36 @@ class SharedStorageTest extends TestCase {
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
 	}
+
+
+	public function testLongLock() {
+		// https://github.com/owncloud/core/issues/25376
+		$fn = str_repeat("x", 250); // maximum name length in oc_filecache
+		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		$view1 = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER1 . '/files');
+		$view1->mkdir($fn);
+		$view1->mkdir($fn . '/' . 'vincent');
+		$view1->file_put_contents($fn . '/vincent/' . $fn, "dummy file data\n");
+
+		$share = $this->share(
+			\OCP\Share::SHARE_TYPE_USER,
+			$fn,
+			self::TEST_FILES_SHARING_API_USER1,
+			self::TEST_FILES_SHARING_API_USER2,
+			\OCP\Constants::PERMISSION_ALL
+		);
+		$this->assertTrue($share !== false && $share !== null);
+
+		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
+		$user2View = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2 . '/files');
+		$this->assertTrue($user2View->file_exists($fn . '/vincent/' . $fn));
+
+		list($sharedStorage, $bla) = $user2View->resolvePath($fn . '/vincent/' . $fn);
+		$cache = $sharedStorage->getCache();
+		$scanner = $sharedStorage->getScanner();
+		$scanner->scan('');
+		$this->assertTrue($cache->inCache('/vincent'));
+		$this->assertTrue($cache->inCache('/vincent/' . $fn));
+		$this->assertEquals(16, $cache->get('/vincent/' . $fn)['size']);
+	}
 }
