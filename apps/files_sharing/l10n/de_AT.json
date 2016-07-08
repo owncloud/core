@@ -8,6 +8,7 @@
     "Shares" : "teilt",
     "Password" : "Passwort",
     "Name" : "Name",
+    "Expiration date" : "Ablaufdatum",
     "Download" : "Herunterladen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

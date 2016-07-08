@@ -8,6 +8,7 @@ OC.L10N.register(
     "The password is wrong. Try again." : "La contraseña introducida es errónea. Inténtelo de nuevo.",
     "Password" : "Contraseña",
     "Name" : "Nombre",
+    "Expiration date" : "Fecha de caducidad",
     "Sorry, this link doesn’t seem to work anymore." : "Lo siento, este enlace al parecer ya no funciona.",
     "Reasons might be:" : "Las causas podrían ser:",
     "the item was removed" : "el elemento fue eliminado",

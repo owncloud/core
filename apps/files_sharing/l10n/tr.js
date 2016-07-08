@@ -93,6 +93,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Bu klasörde hiçbir girdi bulunamadı",
     "Name" : "Ad",
     "Share time" : "Paylaşma zamanı",
+    "Expiration date" : "Son kullanım tarihi",
     "Sorry, this link doesn’t seem to work anymore." : "Üzgünüz, bu bağlantı artık çalışıyor gibi görünmüyor.",
     "Reasons might be:" : "Sebepleri şunlar olabilir:",
     "the item was removed" : "öge kaldırılmış",

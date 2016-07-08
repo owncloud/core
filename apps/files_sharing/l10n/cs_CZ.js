@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "V tomto adresáři nebylo nic nalezeno",
     "Name" : "Název",
     "Share time" : "Čas sdílení",
+    "Expiration date" : "Datum vypršení platnosti",
     "Sorry, this link doesn’t seem to work anymore." : "Je nám líto, ale tento odkaz již není funkční.",
     "Reasons might be:" : "Možné důvody:",
     "the item was removed" : "položka byla odebrána",

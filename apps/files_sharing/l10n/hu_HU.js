@@ -59,6 +59,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Nincsenek bejegyzések ebben a könyvtárban",
     "Name" : "Név",
     "Share time" : "A megosztás időpontja",
+    "Expiration date" : "Lejárati idő",
     "Sorry, this link doesn’t seem to work anymore." : "Sajnos úgy tűnik, ez a link már nem működik.",
     "Reasons might be:" : "Ennek az oka a következő lehet:",
     "the item was removed" : "az állományt időközben eltávolították",

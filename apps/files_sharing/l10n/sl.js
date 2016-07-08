@@ -84,6 +84,7 @@ OC.L10N.register(
     "No entries found in this folder" : "V tej mapi ni najdenih predmetov.",
     "Name" : "Ime",
     "Share time" : "Čas souporabe",
+    "Expiration date" : "Datum preteka",
     "Sorry, this link doesn’t seem to work anymore." : "Povezava očitno ni več v uporabi.",
     "Reasons might be:" : "Vzrok je lahko:",
     "the item was removed" : "predmet je odstranjen,",

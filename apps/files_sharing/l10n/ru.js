@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Нет элементов в этом каталоге",
     "Name" : "Имя",
     "Share time" : "Дата публикации",
+    "Expiration date" : "Дата окончания",
     "Sorry, this link doesn’t seem to work anymore." : "Эта ссылка устарела и более не действительна.",
     "Reasons might be:" : "Причиной может быть:",
     "the item was removed" : "элемент был удалён",

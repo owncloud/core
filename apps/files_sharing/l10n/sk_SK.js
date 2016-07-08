@@ -58,6 +58,7 @@ OC.L10N.register(
     "No entries found in this folder" : "V tomto priečinku nebolo nič nájdené",
     "Name" : "Názov",
     "Share time" : "Čas zdieľania",
+    "Expiration date" : "Dátum expirácie",
     "Sorry, this link doesn’t seem to work anymore." : "To je nepríjemné, ale tento odkaz už nie je funkčný.",
     "Reasons might be:" : "Možné dôvody:",
     "the item was removed" : "položka bola presunutá",
