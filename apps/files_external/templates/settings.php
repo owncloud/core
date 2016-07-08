@@ -1,8 +1,8 @@
 <?php
-	use \OCA\Files_External\Lib\Backend\Backend;
-	use \OCA\Files_External\Lib\Auth\AuthMechanism;
-	use \OCA\Files_External\Lib\DefinitionParameter;
-	use \OCA\Files_External\Service\BackendService;
+	use \OCP\Files\External\Backend\Backend;
+	use \OCP\Files\External\Auth\AuthMechanism;
+	use \OCP\Files\External\DefinitionParameter;
+	use \OCP\Files\External\IStoragesBackendService;
 
 	$l->t("Enable encryption");
 	$l->t("Enable previews");
@@ -87,7 +87,7 @@
 <form id="files_external" class="section" data-encryption-enabled="<?php echo $_['encryptionEnabled']?'true': 'false'; ?>">
 	<h2><?php p($l->t('External Storage')); ?></h2>
 	<?php if (isset($_['dependencies']) and ($_['dependencies']<>'')) print_unescaped(''.$_['dependencies'].''); ?>
-	<table id="externalStorage" class="grid" data-admin='<?php print_unescaped(json_encode($_['visibilityType'] === BackendService::VISIBILITY_ADMIN)); ?>'>
+	<table id="externalStorage" class="grid" data-admin='<?php print_unescaped(json_encode($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN)); ?>'>
 		<thead>
 			<tr>
 				<th></th>
@@ -95,14 +95,14 @@
 				<th><?php p($l->t('External storage')); ?></th>
 				<th><?php p($l->t('Authentication')); ?></th>
 				<th><?php p($l->t('Configuration')); ?></th>
-				<?php if ($_['visibilityType'] === BackendService::VISIBILITY_ADMIN) print_unescaped('<th>'.$l->t('Available for').'</th>'); ?>
+				<?php if ($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN) print_unescaped('<th>'.$l->t('Available for').'</th>'); ?>
 				<th>&nbsp;</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr id="addMountPoint"
-			<?php if ($_['visibilityType'] === BackendService::VISIBILITY_PERSONAL && $_['allowUserMounting'] === false): ?>
+			<?php if ($_['visibilityType'] === IStoragesBackendService::VISIBILITY_PERSONAL && $_['allowUserMounting'] === false): ?>
 				style="display: none;"
 			<?php endif; ?>
 			>
@@ -134,7 +134,7 @@
 				</td>
 				<td class="authentication" data-mechanisms='<?php p(json_encode($_['authMechanisms'])); ?>'></td>
 				<td class="configuration"></td>
-				<?php if ($_['visibilityType'] === BackendService::VISIBILITY_ADMIN): ?>
+				<?php if ($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN): ?>
 					<td class="applicable" align="right">
 						<input type="hidden" class="applicableUsers" style="width:20em;" value="" />
 					</td>
@@ -159,7 +159,7 @@
 	</table>
 	<br />
 
-	<?php if ($_['visibilityType'] === BackendService::VISIBILITY_ADMIN): ?>
+	<?php if ($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN): ?>
 		<br />
 		<input type="checkbox" name="allowUserMounting" id="allowUserMounting" class="checkbox"
 			value="1" <?php if ($_['allowUserMounting'] == 'yes') print_unescaped(' checked="checked"'); ?> />
@@ -169,14 +169,14 @@
 			<?php p($l->t('Allow users to mount the following external storage')); ?><br />
 			<?php
 				$userBackends = array_filter($_['backends'], function($backend) {
-					return $backend->isAllowedVisibleFor(BackendService::VISIBILITY_PERSONAL);
+					return $backend->isAllowedVisibleFor(IStoragesBackendService::VISIBILITY_PERSONAL);
 				});
 			?>
 			<?php $i = 0; foreach ($userBackends as $backend): ?>
 				<?php if ($deprecateTo = $backend->getDeprecateTo()): ?>
 					<input type="hidden" id="allowUserMountingBackends<?php p($i); ?>" name="allowUserMountingBackends[]" value="<?php p($backend->getIdentifier()); ?>" data-deprecate-to="<?php p($deprecateTo->getIdentifier()); ?>" />
 				<?php else: ?>
-					<input type="checkbox" id="allowUserMountingBackends<?php p($i); ?>" class="checkbox" name="allowUserMountingBackends[]" value="<?php p($backend->getIdentifier()); ?>" <?php if ($backend->isVisibleFor(BackendService::VISIBILITY_PERSONAL)) print_unescaped(' checked="checked"'); ?> />
+					<input type="checkbox" id="allowUserMountingBackends<?php p($i); ?>" class="checkbox" name="allowUserMountingBackends[]" value="<?php p($backend->getIdentifier()); ?>" <?php if ($backend->isVisibleFor(IStoragesBackendService::VISIBILITY_PERSONAL)) print_unescaped(' checked="checked"'); ?> />
 					<label for="allowUserMountingBackends<?php p($i); ?>"><?php p($backend->getText()); ?></label> <br />
 				<?php endif; ?>
 				<?php $i++; ?>

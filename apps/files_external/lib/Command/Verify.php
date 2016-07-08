@@ -23,12 +23,12 @@
 namespace OCA\Files_External\Command;
 
 use OC\Core\Command\Base;
-use OCA\Files_External\Lib\Auth\AuthMechanism;
-use OCA\Files_External\Lib\Backend\Backend;
-use OCA\Files_External\Lib\InsufficientDataForMeaningfulAnswerException;
-use OCA\Files_External\Lib\StorageConfig;
-use OCA\Files_External\NotFoundException;
-use OCA\Files_External\Service\GlobalStoragesService;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\InsufficientDataForMeaningfulAnswerException;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\Files\StorageNotAvailableException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,11 +37,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Verify extends Base {
 	/**
-	 * @var GlobalStoragesService
+	 * @var IGlobalStoragesService
 	 */
 	protected $globalService;
 
-	function __construct(GlobalStoragesService $globalService) {
+	function __construct(IGlobalStoragesService $globalService) {
 		parent::__construct();
 		$this->globalService = $globalService;
 	}
@@ -83,7 +83,7 @@ class Verify extends Base {
 		]);
 	}
 
-	private function manipulateStorageConfig(StorageConfig $storage) {
+	private function manipulateStorageConfig(IStorageConfig $storage) {
 		/** @var AuthMechanism */
 		$authMechanism = $storage->getAuthMechanism();
 		$authMechanism->manipulateStorageConfig($storage);
@@ -92,7 +92,7 @@ class Verify extends Base {
 		$backend->manipulateStorageConfig($storage);
 	}
 
-	private function updateStorageStatus(StorageConfig &$storage, $configInput, OutputInterface $output) {
+	private function updateStorageStatus(IStorageConfig &$storage, $configInput, OutputInterface $output) {
 		try {
 			try {
 				$this->manipulateStorageConfig($storage);

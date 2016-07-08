@@ -21,15 +21,14 @@
 
 namespace OCA\Files_External\Lib\Backend;
 
-use \OCP\IL10N;
-use \OCA\Files_External\Lib\Backend\Backend;
-use \OCA\Files_External\Lib\DefinitionParameter;
-use \OCA\Files_External\Lib\Auth\AuthMechanism;
-use \OCA\Files_External\Service\BackendService;
-use \OCA\Files_External\Lib\Auth\Password\SessionCredentials;
-use \OCA\Files_External\Lib\StorageConfig;
-use \OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
-use \OCA\Files_External\Lib\Backend\SMB;
+use OCP\IL10N;
+use OCP\Files\External\DefinitionParameter;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\IStoragesBackendService;
+use OCP\Files\External\IStorageConfig;
+use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
+use OCA\Files_External\Lib\Backend\SMB;
 use OCP\IUser;
 
 /**
@@ -39,7 +38,7 @@ class SMB_OC extends Backend {
 
 	use LegacyDependencyCheckPolyfill;
 
-	public function __construct(IL10N $l, SessionCredentials $legacyAuth, SMB $smbBackend) {
+	public function __construct(IL10N $l, SMB $smbBackend) {
 		$this
 			->setIdentifier('\OC\Files\Storage\SMB_OC')
 			->setStorageClass('\OCA\Files_External\Lib\Storage\SMB')
@@ -53,14 +52,13 @@ class SMB_OC extends Backend {
 				(new DefinitionParameter('root', $l->t('Remote subfolder')))
 					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
 			])
-			->setPriority(BackendService::PRIORITY_DEFAULT - 10)
+			->setPriority(IStoragesBackendService::PRIORITY_DEFAULT - 10)
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD)
-			->setLegacyAuthMechanism($legacyAuth)
 			->deprecateTo($smbBackend)
 		;
 	}
 
-	public function manipulateStorageConfig(StorageConfig &$storage, IUser $user = null) {
+	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
 		$username_as_share = ($storage->getBackendOption('username_as_share') === true);
 
 		if ($username_as_share) {

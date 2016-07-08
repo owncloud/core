@@ -147,8 +147,8 @@ class CertificateController extends Controller {
 	protected function isCertificateImportAllowed() {
 		$externalStorageEnabled = $this->appManager->isEnabledForUser('files_external');
 		if ($externalStorageEnabled) {
-			/** @var \OCA\Files_External\Service\BackendService $backendService */
-			$backendService = \OC_Mount_Config::$app->getContainer()->query('\OCA\Files_External\Service\BackendService');
+			/** @var \OCP\Files\External\IStoragesBackendService $backendService */
+			$backendService = \OC::$server->query('StoragesBackendService');
 			if ($backendService->isUserMountingAllowed()) {
 				return true;
 			}

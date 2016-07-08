@@ -23,9 +23,9 @@
 namespace OCA\Files_External\Command;
 
 use OC\Core\Command\Base;
-use OCA\Files_External\Lib\StorageConfig;
-use OCA\Files_External\NotFoundException;
-use OCA\Files_External\Service\GlobalStoragesService;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\IGroupManager;
 use OCP\IUserManager;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Applicable extends Base {
 	/**
-	 * @var GlobalStoragesService
+	 * @var IGlobalStoragesService
 	 */
 	protected $globalService;
 
@@ -50,7 +50,7 @@ class Applicable extends Base {
 	private $groupManager;
 
 	function __construct(
-		GlobalStoragesService $globalService,
+		IGlobalStoragesService $globalService,
 		IUserManager $userManager,
 		IGroupManager $groupManager
 	) {
@@ -106,7 +106,7 @@ class Applicable extends Base {
 			return 404;
 		}
 
-		if ($mount->getType() === StorageConfig::MOUNT_TYPE_PERSONAl) {
+		if ($mount->getType() === IStorageConfig::MOUNT_TYPE_PERSONAl) {
 			$output->writeln('<error>Can\'t change applicables on personal mounts</error>');
 			return 1;
 		}
