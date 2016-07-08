@@ -30,9 +30,6 @@ use OCP\Share\IShare;
 use OCP\Share\IManager;
 use OCP\Files\Mount\IMountPoint;
 
-/**
- * @group DB
- */
 class MountProviderTest extends \Test\TestCase {
 
 	/** @var MountProvider */
