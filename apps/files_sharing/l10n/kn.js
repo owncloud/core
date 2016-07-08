@@ -5,6 +5,7 @@ OC.L10N.register(
     "Sharing" : "﻿ಹಂಚಿಕೆ",
     "Password" : "ಗುಪ್ತ ಪದ",
     "Name" : "﻿ಹೆಸರು",
+    "Expiration date" : "ಮುಕ್ತಾಯ ದಿನಾಂಕ",
     "Download" : "ಪ್ರತಿಯನ್ನು ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಸಿಕೊಳ್ಳಿ"
 },
 "nplurals=1; plural=0;");

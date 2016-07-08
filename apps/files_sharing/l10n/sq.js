@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "S’u gjetën zëra në këtë dosje",
     "Name" : "Emër",
     "Share time" : "Kohë ndarjeje",
+    "Expiration date" : "Datë skadimi",
     "Sorry, this link doesn’t seem to work anymore." : "Na ndjeni, kjo lidhje duket se nuk funksionon më.",
     "Reasons might be:" : "Arsyet mund të jenë:",
     "the item was removed" : "objekti është hequr",

@@ -46,6 +46,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Нема ничега у овој фасцикли",
     "Name" : "Назив",
     "Share time" : "Време дељења",
+    "Expiration date" : "Датум истека",
     "Sorry, this link doesn’t seem to work anymore." : "Нажалост, изгледа да веза више не ради.",
     "Reasons might be:" : "Разлози могу бити:",
     "the item was removed" : "ставка је уклоњена",

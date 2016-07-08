@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "No hay entradas en esta carpeta",
     "Name" : "Nombre",
     "Share time" : "Compartido hace",
+    "Expiration date" : "Fecha de caducidad",
     "Sorry, this link doesn’t seem to work anymore." : "Vaya, este enlace parece que no volverá a funcionar.",
     "Reasons might be:" : "Las causas podrían ser:",
     "the item was removed" : "el elemento fue eliminado",

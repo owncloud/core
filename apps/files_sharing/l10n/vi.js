@@ -20,6 +20,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Chưa có mục nào trong thư mục",
     "Name" : "Tên",
     "Share time" : "Chia sẻ thời gian",
+    "Expiration date" : "Ngày kết thúc",
     "Reasons might be:" : "Lý do có thể là:",
     "the item was removed" : "đối tượng đã bị xóa",
     "the link expired" : "liên kết đã hết hạn",

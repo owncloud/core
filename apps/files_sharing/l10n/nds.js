@@ -6,6 +6,7 @@ OC.L10N.register(
     "The password is wrong. Try again." : "Dieses Passwort ist falsch. Bitte versuche es erneut.",
     "Password" : "Passwort",
     "Name" : "Name",
+    "Expiration date" : "Auslaufdatum",
     "Add to your ownCloud" : "Zu deiner ownCloud hinzufügen",
     "Download" : "Download"
 },
