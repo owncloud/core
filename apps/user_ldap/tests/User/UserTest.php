@@ -70,8 +70,9 @@ class UserTest extends \Test\TestCase {
 			$umMethods, array($cfMock, $fsMock, $logMock, $avaMgr, $im, $dbc, $userMgr));
 		$connector = $this->getMock('\OCA\User_LDAP\Connection',
 			$conMethods, array($lw, null, null));
+		$helper = $this->getMock('\OCA\User_LDAP\Helper');
 		$access = $this->getMock('\OCA\User_LDAP\Access',
-			$accMethods, array($connector, $lw, $um));
+			$accMethods, array($connector, $lw, $um, $helper));
 
 		return array($access, $connector);
 	}

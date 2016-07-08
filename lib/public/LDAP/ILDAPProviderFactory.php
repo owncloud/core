@@ -27,15 +27,23 @@ namespace OCP\LDAP;
  * instance.
  *
  * @package OCP\LDAP
- * @since 9.1.0
+ * @since 9.2.0
  */
 interface ILDAPProviderFactory {
 
 	/**
+	 * Constructor for the LDAP provider factory
+	 *
+	 * @param IServerContainer $serverContainer server container
+	 * @since 9.2.0
+	 */
+	public function __construct(IServerContainer $serverContainer);
+	
+	/**
 	 * creates and returns an instance of the ILDAPProvider
 	 *
 	 * @return ILDAPProvider
-	 * @since 9.1.0
+	 * @since 9.2.0
 	 */
 	public function getLDAPProvider();
 }
