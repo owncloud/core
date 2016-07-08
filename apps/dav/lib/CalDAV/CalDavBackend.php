@@ -108,6 +108,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	/** @var Principal */
 	private $principalBackend;
 
+	/** @var \OCP\IConfig */
+	private $config;
+
 	/**
 	 * CalDavBackend constructor.
 	 *
@@ -118,6 +121,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$this->db = $db;
 		$this->principalBackend = $principalBackend;
 		$this->sharingBackend = new Backend($this->db, $principalBackend, 'calendar');
+		// TODO: inject
+		$this->config = \OC::$server->getConfig();
 	}
 
 	/**
@@ -226,6 +231,58 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 				'id' => $row['id'],
 				'uri' => $uri,
 				'principaluri' => $principalUri,
+				'{' . Plugin::NS_CALENDARSERVER . '}getctag' => 'http://sabre.io/ns/sync/' . ($row['synctoken']?$row['synctoken']:'0'),
+				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
+				'{' . Plugin::NS_CALDAV . '}supported-calendar-component-set' => new SupportedCalendarComponentSet($components),
+				'{' . Plugin::NS_CALDAV . '}schedule-calendar-transp' => new ScheduleCalendarTransp($row['transparent']?'transparent':'opaque'),
+				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal' => $row['principaluri'],
+				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only' => (int)$row['access'] === Backend::ACCESS_READ,
+			];
+
+			foreach($this->propertyMap as $xmlName=>$dbName) {
+				$calendar[$xmlName] = $row[$dbName];
+			}
+
+			if (!isset($calendars[$calendar['id']])) {
+				$calendars[$calendar['id']] = $calendar;
+			}
+		}
+		$result->closeCursor();
+
+		return array_values($calendars);
+	}
+
+
+	public function getPublicCalendars() {
+		$fields = array_values($this->propertyMap);
+		$fields[] = 'a.id';
+		$fields[] = 'a.uri';
+		$fields[] = 'a.synctoken';
+		$fields[] = 'a.components';
+		$fields[] = 'a.principaluri';
+		$fields[] = 'a.transparent';
+		$fields[] = 's.access';
+		$calendars = [];
+		$query = $this->db->getQueryBuilder();
+		$result = $query->select($fields)
+			->from('dav_shares', 's')
+			->join('s', 'calendars', 'a', $query->expr()->eq('s.resourceid', 'a.id'))
+			->where($query->expr()->in('s.access', $query->createNamedParameter(self::ACCESS_PUBLIC)))
+			->andWhere($query->expr()->eq('s.type', $query->createNamedParameter('calendar')))
+			->execute();
+
+		while($row = $result->fetch()) {
+			list(, $name) = URLUtil::splitPath($row['principaluri']);
+			$row['displayname'] = $row['displayname'] . "($name)";
+			$components = [];
+			if ($row['components']) {
+				$components = explode(',',$row['components']);
+			}
+			$uri = md5($this->config->getSystemValue('secret', '') . $row['id']);
+			$calendar = [
+				'id' => $row['id'],
+				'uri' => $uri,
+				'principaluri' => $row['principaluri'],
 				'{' . Plugin::NS_CALENDARSERVER . '}getctag' => 'http://sabre.io/ns/sync/' . ($row['synctoken']?$row['synctoken']:'0'),
 				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
 				'{' . Plugin::NS_CALDAV . '}supported-calendar-component-set' => new SupportedCalendarComponentSet($components),
