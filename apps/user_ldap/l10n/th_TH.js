@@ -124,6 +124,7 @@ OC.L10N.register(
     "User Display Name Field" : "ช่องแสดงชื่อผู้ใช้งาน",
     "The LDAP attribute to use to generate the user's display name." : "คุณลักษณะ LDAP เพื่อใช้ในการสร้างชื่อที่ปรากฏของผู้ใช้",
     "2nd User Display Name Field" : "ช่องแสดงชื่อผู้ใช้งานคนที่ 2",
+    "Optional. An LDAP attribute to be added to the display name in brackets. Results in e.g. »John Doe (john.doe@example.org)«." : "ตัวเลือก แอตทริบิวต์ LDAP จะถูกเพิ่มหลังชื่อที่แสดงในวงเล็บของผลการค้นหาในเช่น »สัญชัย (sun.chai@example.org)«",
     "Base User Tree" : "รายการผู้ใช้งานหลักแบบ Tree",
     "One User Base DN per line" : "หนึ่งผู้ใช้ Base DN ต่อหนึ่งบรรทัด",
     "User Search Attributes" : "คุณลักษณะการค้นหาชื่อผู้ใช้",
