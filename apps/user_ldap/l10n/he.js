@@ -156,6 +156,7 @@ OC.L10N.register(
     "UUID Attribute for Users:" : "מאפייני UUID למשתמשים:",
     "UUID Attribute for Groups:" : "מאפייני UUID לקבוצות:",
     "Username-LDAP User Mapping" : "מיפוי שם משתמש LDAP:",
+    "Usernames are used to store and assign (meta) data. In order to precisely identify and recognize users, each LDAP user will have an internal username. This requires a mapping from username to LDAP user. The created username is mapped to the UUID of the LDAP user. Additionally the DN is cached as well to reduce LDAP interaction, but it is not used for identification. If the DN changes, the changes will be found. The internal username is used all over. Clearing the mappings will have leftovers everywhere. Clearing the mappings is not configuration sensitive, it affects all LDAP configurations! Never clear the mappings in a production environment, only in a testing or experimental stage." : "שמות משתמש משמשים לאחסון ושיוך (מטא-דטה) מידע. במטרה לזהוי מדוייק של משתמשים, לכל משתמש LDAP יהיה שם משתמש פנימי. זה מחייב מיפוי משם משתמש למשתמש LDAP. שם המשתמש שנוצר ממופה ל- UUID של משתמש ה- LDAP. בנוסף ה- DN נשמר גם הוא בזכרון המטמון להפחתת פעולת גומלין LDAP, אבל זה אינו משמש לזיהוי. אם ה- DN משתנה, השינויים יאותרו. שם המשתמש הפנימי משמש לכל הרוחב. ניקוי המיפויים ישאיר שאריות בכל מקום. ניקוי המיפויים אינו הגדרה רגישה, הוא משפיע על כל הגדרות ה-LDAP! אין לנקות את המיפויים בסביבה פעילה, רק בסביבת בדיקה או ניסוי.",
     "Clear Username-LDAP User Mapping" : "ניקוי מיפוי שם משתמש LDAP:",
     "Clear Groupname-LDAP Group Mapping" : "ניקוי מיפוי שם משתמש קבוצה LDAP:"
 },
