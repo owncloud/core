@@ -147,7 +147,7 @@ abstract class AbstractMapping {
 			WHERE `owncloud_name` LIKE ?
 		');
 
-		$res = $query->execute(array($search));
+		$res = $query->execute(array($this->connection->escapeLikeParameter($search)));
 		$names = array();
 		if($res !== false) {
 			while($row = $query->fetch()) {
