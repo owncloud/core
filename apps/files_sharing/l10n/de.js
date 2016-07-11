@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Du kannst in diesen Ordner hochladen",
     "No ownCloud installation (7 or higher) found at {remote}" : "Keine OwnCloud-Installation (7 oder höher) auf {remote} gefunden",
     "Invalid ownCloud url" : "Ungültige OwnCloud-URL",
+    "No expiration date set" : "Kein Ablaufdatum angegeben",
     "Shared by" : "Geteilt von ",
     "Sharing" : "Teilen",
     "Share API is disabled" : "Teilen-API ist deaktivert",
