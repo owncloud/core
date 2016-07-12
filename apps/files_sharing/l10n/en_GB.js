@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "You can upload into this folder",
     "No ownCloud installation (7 or higher) found at {remote}" : "No ownCloud installation (7 or higher) found at {remote}",
     "Invalid ownCloud url" : "Invalid ownCloud URL",
+    "No expiration date set" : "No expiration date set",
     "Shared by" : "Shared by",
     "Sharing" : "Sharing",
     "Share API is disabled" : "Share API is disabled",

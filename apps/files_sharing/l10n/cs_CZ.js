@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Můžete nahrávat do tohoto adresáře",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nebyla nalezena instalace ownCloud (7 nebo vyšší) na {remote}",
     "Invalid ownCloud url" : "Neplatná ownCloud url",
+    "No expiration date set" : "Není nastaveno datum vypršení platnosti",
     "Shared by" : "Sdílí",
     "Sharing" : "Sdílení",
     "Share API is disabled" : "Sdílení API je zakázané",
