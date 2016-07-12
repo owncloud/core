@@ -157,19 +157,6 @@ Feature: provisioning
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
-	Scenario: get users using a subadmin
-		Given As an "admin"
-		And user "brand-new-user" exists
-		And group "new-group" exists
-		And user "brand-new-user" belongs to group "new-group"
-		And user "brand-new-user" is subadmin of group "new-group"
-		And As an "brand-new-user"
-		When sending "GET" to "/cloud/users"
-		Then users returned are
-			| brand-new-user |
-		And the OCS status code should be "100"
-		And the HTTP status code should be "200"
-
 	Scenario: removing a user from a group which doesn't exists
 		Given As an "admin"
 		And user "brand-new-user" exists
