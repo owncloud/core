@@ -219,7 +219,7 @@ Feature: sharing
     When sending "GET" to "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And File "textfile0.txt" should be included in the response
+    And File "textfile0 (2).txt" should be included in the response
 
   Scenario: getting all shares of a user using another user
     Given user "user0" exists
@@ -261,20 +261,6 @@ Feature: sharing
     And User "user2" should be included in the response
     And User "user3" should not be included in the response
 
-  Scenario: Reshared files can be still accessed if a user in the middle removes it.
-    Given user "user0" exists
-    And user "user1" exists
-    And user "user2" exists
-    And user "user3" exists
-    And file "textfile0.txt" of user "user0" is shared with user "user1"
-    And file "textfile0 (2).txt" of user "user1" is shared with user "user2"
-    And file "textfile0 (2).txt" of user "user2" is shared with user "user3"
-    And As an "user1"
-    When User "user1" deletes file "/textfile0 (2).txt"
-    And As an "user3"
-    And Downloading file "/textfile0 (2).txt" with range "bytes=1-7"
-    Then Downloaded content should be "wnCloud"
-
   Scenario: getting share info of a share
     Given user "user0" exists
     And user "user1" exists
@@ -290,9 +276,9 @@ Feature: sharing
       | share_type | 0 |
       | share_with | user1 |
       | file_source | A_NUMBER |
-      | file_target | /textfile0.txt |
+      | file_target | /textfile0 (2).txt |
       | path | /textfile0.txt |
-      | permissions | 19 |
+      | permissions | 23 |
       | stime | A_NUMBER |
       | storage | A_NUMBER |
       | mail_send | 0 |
@@ -600,16 +586,3 @@ Feature: sharing
     Then user "user2" should see following elements
       | /foo/       |
       | /foo%20(2)/ |
-
-  Scenario: Creating a new share with a disabled user
-    Given As an "admin"
-    And user "user0" exists
-    And user "user1" exists
-    And assure user "user0" is disabled
-    And As an "user0"
-    When sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | welcome.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
-    Then the OCS status code should be "997"
-    And the HTTP status code should be "401"
