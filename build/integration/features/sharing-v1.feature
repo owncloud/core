@@ -76,11 +76,10 @@ Feature: sharing
     And the HTTP status code should be "200"
     And Share fields of last share match with
       | id | A_NUMBER |
-      | permissions | 15 |
+      | permissions | 7 |
       | expiration | +3 days |
       | url | AN_URL |
       | token | A_TOKEN |
-      | mimetype | httpd/unix-directory |
 
   Scenario: Creating a new public share with password and adding an expiration date
     Given user "user0" exists
@@ -124,7 +123,6 @@ Feature: sharing
       | file_parent | A_NUMBER |
       | displayname_owner | user0 |
       | url | AN_URL |
-      | mimetype | httpd/unix-directory |
 
   Scenario: Creating a new public share, updating its password and getting its info
     Given user "user0" exists
@@ -154,7 +152,6 @@ Feature: sharing
       | file_parent | A_NUMBER |
       | displayname_owner | user0 |
       | url | AN_URL |
-      | mimetype | httpd/unix-directory |
 
   Scenario: Creating a new public share, updating its permissions and getting its info
     Given user "user0" exists
@@ -174,7 +171,7 @@ Feature: sharing
       | share_type | 3 |
       | file_source | A_NUMBER |
       | file_target | /FOLDER |
-      | permissions | 15 |
+      | permissions | 7 |
       | stime | A_NUMBER |
       | token | A_TOKEN |
       | storage | A_NUMBER |
@@ -184,7 +181,6 @@ Feature: sharing
       | file_parent | A_NUMBER |
       | displayname_owner | user0 |
       | url | AN_URL |
-      | mimetype | httpd/unix-directory |
 
   Scenario: Creating a new public share, updating publicUpload option and getting its info
     Given user "user0" exists
@@ -204,7 +200,7 @@ Feature: sharing
       | share_type | 3 |
       | file_source | A_NUMBER |
       | file_target | /FOLDER |
-      | permissions | 15 |
+      | permissions | 7 |
       | stime | A_NUMBER |
       | token | A_TOKEN |
       | storage | A_NUMBER |
@@ -214,7 +210,6 @@ Feature: sharing
       | file_parent | A_NUMBER |
       | displayname_owner | user0 |
       | url | AN_URL |
-      | mimetype | httpd/unix-directory |
 
   Scenario: getting all shares of a user using that user
     Given user "user0" exists
@@ -306,7 +301,6 @@ Feature: sharing
       | file_parent | A_NUMBER |
       | share_with_displayname | user1 |
       | displayname_owner | user0 |
-      | mimetype          | text/plain |
 
   Scenario: keep group permissions in sync
     Given As an "admin"
@@ -337,7 +331,6 @@ Feature: sharing
       | storage_id | home::user0 |
       | file_parent | A_NUMBER |
       | displayname_owner | user0 |
-      | mimetype          | text/plain |
 
   Scenario: Sharee can see the share
     Given user "user0" exists
