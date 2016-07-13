@@ -175,22 +175,6 @@ Feature: webdav-related
 		Then Downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
-	Scenario: Doing a GET with a web login should work with CSRF token on the old backend
-		Given Logging in using web as "admin"
-		When Sending a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken
-		Then Downloaded content should start with "Welcome to your ownCloud account!"
-		And the HTTP status code should be "200"
-
-	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the old backend
-		Given Logging in using web as "admin"
-		When Sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" without requesttoken
-		Then the HTTP status code should be "401"
-
-	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the old backend
-		Given Logging in using web as "admin"
-		When Sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken
-		Then the HTTP status code should be "207"
-
 	Scenario: Upload chunked file asc
 		Given user "user0" exists
 		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
@@ -217,77 +201,3 @@ Feature: webdav-related
 		When As an "user0"
 		And Downloading file "/myChunkedFile.txt"
 		Then Downloaded content should be "AAAAABBBBBCCCCC"
-
-	Scenario: A file that is not shared does not have a share-types property
-		Given user "user0" exists
-		And user "user0" created a folder "/test"
-		When as "user0" gets properties of folder "/test" with
-			|{http://owncloud.org/ns}share-types|
-		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
-
-	Scenario: A file that is shared to a user has a share-types property
-		Given user "user0" exists
-		And user "user1" exists
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
-			| path | test |
-			| shareType | 0 |
-			| permissions | 31 |
-			| shareWith | user1 |
-		When as "user0" gets properties of folder "/test" with
-			|{http://owncloud.org/ns}share-types|
-		Then the response should contain a share-types property with
-			| 0 |
-
-	Scenario: A file that is shared to a group has a share-types property
-		Given user "user0" exists
-		And group "group1" exists
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
-			| path | test |
-			| shareType | 1 |
-			| permissions | 31 |
-			| shareWith | group1 |
-		When as "user0" gets properties of folder "/test" with
-			|{http://owncloud.org/ns}share-types|
-		Then the response should contain a share-types property with
-			| 1 |
-
-	Scenario: A file that is shared by link has a share-types property
-		Given user "user0" exists
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
-			| path | test |
-			| shareType | 3 |
-			| permissions | 31 |
-		When as "user0" gets properties of folder "/test" with
-			|{http://owncloud.org/ns}share-types|
-		Then the response should contain a share-types property with
-			| 3 |
-
-	Scenario: A file that is shared by user,group and link has a share-types property
-		Given user "user0" exists
-		And user "user1" exists
-		And group "group2" exists
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
-			| path        | test  |
-			| shareType   | 0     |
-			| permissions | 31    |
-			| shareWith   | user1 |
-		And as "user0" creating a share with
-			| path        | test  |
-			| shareType   | 1     |
-			| permissions | 31    |
-			| shareWith   | group2 |
-		And as "user0" creating a share with
-			| path        | test  |
-			| shareType   | 3     |
-			| permissions | 31    |
-		When as "user0" gets properties of folder "/test" with
-			|{http://owncloud.org/ns}share-types|
-		Then the response should contain a share-types property with
-			| 0 |
-			| 1 |
-			| 3 |
-
