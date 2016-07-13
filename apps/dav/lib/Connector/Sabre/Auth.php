@@ -34,7 +34,6 @@ use OC\AppFramework\Http\Request;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\TwoFactorAuth\Manager;
 use OC\User\Session;
-use OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden;
 use OCP\IRequest;
 use OCP\ISession;
 use Sabre\DAV\Auth\Backend\AbstractBasic;
@@ -129,7 +128,7 @@ class Auth extends AbstractBasic {
 				}
 			} catch (PasswordLoginForbiddenException $ex) {
 				$this->session->close();
-				throw new PasswordLoginForbidden();
+				return false;
 			}
 		}
 	}
