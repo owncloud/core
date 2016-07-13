@@ -124,15 +124,6 @@ Feature: webdav-related
 		When User "user0" uploads file "data/textfile.txt" to "/asdf.txt"
 		Then the HTTP status code should be "507"
 
-	Scenario: Retrieving folder quota when no quota is set
-		Given using dav path "remote.php/webdav"
-		And As an "admin"
-		And user "user0" exists
-		When user "user0" has unlimited quota
-		Then as "user0" gets properties of folder "/" with
-		  |{DAV:}quota-available-bytes|
-		And the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
-
 	Scenario: Retrieving folder quota when quota is set
 		Given using dav path "remote.php/webdav"
 		And As an "admin"
