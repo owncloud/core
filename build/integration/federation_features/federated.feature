@@ -12,21 +12,7 @@ Feature: federated
 		And the HTTP status code should be "200"
 		And Share fields of last share match with
 			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 6 |
-			| file_source | A_NUMBER |
-			| path | /textfile0.txt |
-			| permissions | 19 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user0 |
-			| share_with | user1@REMOTE |
-			| share_with_displayname | user1@REMOTE |
+			| permissions | 23 |
 
 	Scenario: Federate share a file with local server
 		Given Using server "LOCAL"
@@ -38,21 +24,8 @@ Feature: federated
 		And the HTTP status code should be "200"
 		And Share fields of last share match with
 			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 6 |
-			| file_source | A_NUMBER |
-			| path | /textfile0.txt |
-			| permissions | 19 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user1 |
-			| storage_id | home::user1 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user1 |
-			| share_with | user0@LOCAL |
-			| share_with_displayname | user0@LOCAL |
+			| permissions | 23 |
+			
 
 	Scenario: Remote sharee can see the pending share
 		Given Using server "REMOTE"
@@ -105,20 +78,7 @@ Feature: federated
 		And the HTTP status code should be "200"
 		And Share fields of last share match with
 			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 0 |
-			| file_source | A_NUMBER |
-			| path | /textfile0 (2).txt |
 			| permissions | 19 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user1 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user1 |
-			| share_with | user2 |
-			| share_with_displayname | user2 |
 
 	Scenario: Overwrite a federated shared file as recipient
 		Given Using server "REMOTE"
