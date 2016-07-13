@@ -211,6 +211,7 @@ trait Sharing {
 		if ((string)$field == 'expiration'){
 			$contentExpected = date('Y-m-d', strtotime($contentExpected)) . " 00:00:00";
 		}
+
 		if (count($data->element) > 0){
 			foreach($data as $element) {
 				if ($contentExpected == "A_TOKEN"){
@@ -375,12 +376,36 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^last share_id is included in the answer as parent$/
+	 */
+	public function checkingLastShareIDIsIncludedAsParent(){
+		$share_id = $this->lastShareData->data[0]->id;
+		//This is a problem before 9.0, setupFS is called with every api call so a new share id is created
+		//we just need to check the parent id to match with the returned id.
+		if (!$this->isFieldInResponse('parent', $share_id)){
+			PHPUnit_Framework_Assert::fail("Share id $share_id not found in response as parent");
+		}
+	}
+
+	/**
 	 * @Then /^last share_id is not included in the answer$/
 	 */
 	public function checkingLastShareIDIsNotIncluded(){
 		$share_id = $this->lastShareData->data[0]->id;
 		if ($this->isFieldInResponse('id', $share_id)){
 			PHPUnit_Framework_Assert::fail("Share id $share_id has been found in response");
+		}
+	}
+
+	/**
+	 * @Then /^last share_id is not included in the answer as parent$/
+	 */
+	public function checkingLastShareIDIsNotIncludedAsParent(){
+		$share_id = $this->lastShareData->data[0]->id;
+		//This is a problem before 9.0, setupFS is called with every api call so a new share id is created
+		//we just need to check the parent id to match with the returned id.
+		if ($this->isFieldInResponse('parent', $share_id)){
+			PHPUnit_Framework_Assert::fail("Share id $share_id has been found in response as parent");
 		}
 	}
 

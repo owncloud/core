@@ -348,7 +348,7 @@ Feature: sharing
     When sending "GET" to "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile0 (2).txt"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And last share_id is not included in the answer
+    And last share_id is not included in the answer as parent
 
   Scenario: Sharee can see the group share
     Given As an "admin"
@@ -361,7 +361,7 @@ Feature: sharing
     When sending "GET" to "/apps/files_sharing/api/v1/shares?shared_with_me=true"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And last share_id is included in the answer
+    And last share_id is included in the answer as parent
 
   Scenario: User is not allowed to reshare file
     As an "admin"
