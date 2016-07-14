@@ -258,11 +258,6 @@ class GroupsTest extends TestCase {
 	}
 
 	public function testAddGroupWithSpecialChar() {
-		$this->request
-			->method('getParam')
-			->with('groupid')
-			->willReturn('Iñtërnâtiônàlizætiøn');
-
 		$this->groupManager
 			->method('groupExists')
 			->with('Iñtërnâtiônàlizætiøn')
