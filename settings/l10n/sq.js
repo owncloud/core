@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Fjalëkalim i gabuar",
+    "The new password can not be the same as the previous one" : "Fjalëkalimi i ri s’mund të jetë i njëjtë me të mëparshmin",
     "No user supplied" : "S’u dha përdorues",
     "Authentication error" : "Gabim mirëfilltësimi",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Ju lutemi, jepni një fjalëkalim rikthimesh për përgjegjësin, në të kundërt të gjitha të dhënat do të humbasin",
