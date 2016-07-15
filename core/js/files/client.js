@@ -787,7 +787,7 @@
 		var client = new OC.Files.Client({
 			host: OC.getHost(),
 			port: OC.getPort(),
-			root: OC.linkToRemoteBase('webdav'),
+			root: OC.linkToRemoteBase('dav') + '/files/' + encodeURIComponent(OC.getCurrentUser().uid) + '/',
 			useHTTPS: OC.getProtocol() === 'https'
 		});
 		OC.Files._defaultClient = client;
