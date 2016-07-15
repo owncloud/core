@@ -496,11 +496,18 @@ var UserList = {
 			width: 150,
 			placeholder: t('settings', 'Groups'),
 			createSearchChoice: function(term) {
-				GroupList.addGroup(escapeHTML(term));
+				//GroupList.addGroup(escapeHTML(term));
 				return {
 					id: term,
-					displayname: term + ' (' + t('settings', 'add group') + ')'
+					displayname: term + ' (' + t('settings', 'create group') + ')',
+					isNew: true
 				};
+			}
+		});
+		$element.on('select2-selecting', function(e) {
+			if (e.object && e.object.isNew) {
+				e.object.displayname = e.object.id;
+				delete e.object.isNew;
 			}
 		});
 		if (selectedGroups) {
