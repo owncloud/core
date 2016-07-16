@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Nesprávné heslo",
+    "The new password can not be the same as the previous one" : "Nové heslo nemůže být stejné jako to předchozí",
     "No user supplied" : "Nebyl uveden uživatel",
     "Authentication error" : "Chyba přihlášení",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Zadejte prosím administrátorské heslo pro obnovu, jinak budou všechna data ztracena",

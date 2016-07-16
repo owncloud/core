@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Onjuist wachtwoord",
+    "The new password can not be the same as the previous one" : "Het nieuwe password mag niet gelijk zijn aan het oude",
     "No user supplied" : "Geen gebruiker opgegeven",
     "Authentication error" : "Authenticatie fout",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Voer een beheerdersherstelwachtwoord in, anders zullen alle gebruikersgegevens verloren gaan",

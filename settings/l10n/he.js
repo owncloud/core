@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "סיסמא שגוייה",
+    "The new password can not be the same as the previous one" : "הסיסמא החדשה אינה יכולה להיות זהה לסיסמא הקודמת",
     "No user supplied" : "לא סופק שם משתמש",
     "Authentication error" : "שגיאת הזדהות",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "יש לספק את סיסמת המנהל לשחזור, אחרת כל מידע המשתמש יאבד",
