@@ -18,6 +18,7 @@ OC.L10N.register(
     "SSL" : "SSL",
     "TLS" : "TLS",
     "days" : "օր",
+    "More" : "Ավելի",
     "Cancel" : "Չեղարկել",
     "Email" : "Էլ. հասցե",
     "Password" : "Գաղտնաբառ",
@@ -27,6 +28,7 @@ OC.L10N.register(
     "Help translate" : "Օգնել թարգմանել",
     "Name" : "Անուն",
     "Username" : "Օգտանուն",
+    "Create" : "Ստեղծել",
     "Group" : "Խումբ",
     "Other" : "Այլ"
 },

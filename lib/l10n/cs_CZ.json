@@ -122,6 +122,7 @@
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "Aplikace \"%s\" nemůže být nainstalována, protože není kompatibilní s touto verzí ownCloud.",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Aplikaci \"%s\" nelze nainstalovat, protože nejsou splněny následující závislosti: %s",
     "No app name specified" : "Nebyl zadan název aplikace",
+    "App '%s' could not be installed!" : "Aplikaci '%s' nelze nainstalovat!",
     "web services under your control" : "webové služby pod vlastní kontrolou",
     "File is currently busy, please try again later" : "Soubor je používán, zkus to později",
     "Can't read file" : "Nelze přečíst soubor",

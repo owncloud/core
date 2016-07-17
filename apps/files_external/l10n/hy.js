@@ -8,6 +8,7 @@ OC.L10N.register(
     "Save" : "Պահպանել",
     "URL" : "URL",
     "Dropbox" : "Dropbox",
+    "Host" : "Հոստ",
     "Share" : "Կիսվել",
     "Name" : "Անուն",
     "Never" : "Երբեք",
