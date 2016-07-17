@@ -3,7 +3,9 @@ OC.L10N.register(
     {
     "Groups" : "Խմբեր",
     "Help" : "Օգնություն",
+    "Host" : "Հոստ",
     "Password" : "Գաղտնաբառ",
+    "Back" : "Հետ",
     "Continue" : "Շարունակել"
 },
 "nplurals=2; plural=(n != 1);");

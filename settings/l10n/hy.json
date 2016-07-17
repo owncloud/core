@@ -16,6 +16,7 @@
     "SSL" : "SSL",
     "TLS" : "TLS",
     "days" : "օր",
+    "More" : "Ավելի",
     "Cancel" : "Չեղարկել",
     "Email" : "Էլ. հասցե",
     "Password" : "Գաղտնաբառ",
@@ -25,6 +26,7 @@
     "Help translate" : "Օգնել թարգմանել",
     "Name" : "Անուն",
     "Username" : "Օգտանուն",
+    "Create" : "Ստեղծել",
     "Group" : "Խումբ",
     "Other" : "Այլ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

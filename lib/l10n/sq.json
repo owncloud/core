@@ -122,6 +122,7 @@
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "Përditësimi \"%s\" s’instalohet dot, ngaqë s’është i përputhshëm me këtë version të ownCloud-it.",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Përditësimi \"%s\" s’instalohet dot, ngaqë s’plotësohen varësitë vijuese: %s.",
     "No app name specified" : "S’u dha emër aplikacioni",
+    "App '%s' could not be installed!" : "S’u instalua dot aplikacioni '%s'!",
     "web services under your control" : "shërbime web nën kontrollin tuaj",
     "File is currently busy, please try again later" : "Kartela tani është e zënë, ju lutemi, riprovoni më vonë.",
     "Can't read file" : "S'lexohet dot kartela",

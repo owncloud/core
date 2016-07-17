@@ -122,6 +122,7 @@
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "ไม่สามารถติดตั้งแอพฯ \"%s\" เพราะมันเข้ากันไม่ได้กับรุ่นของ ownCloud นี้",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "แอพฯ \"%s\" ไม่สามารถติดตั้งเพราะไม่ได้ปฏิบัติตามการอ้างอิงต่อไปนี้: %s",
     "No app name specified" : "ไม่ได้ระบุชื่อแอพพลิเคชัน",
+    "App '%s' could not be installed!" : "ไม่สามารถติดตั้งแอพฯ '%s'!",
     "web services under your control" : "translate by <a href=\"https://fb.me/kauw5164\">kauw5164</a>",
     "File is currently busy, please try again later" : "ขณะนี้ไฟล์กำลังใช้งานอยู่ โปรดลองอีกครั้งในภายหลัง",
     "Can't read file" : "ไม่สามารถอ่านไฟล์",
