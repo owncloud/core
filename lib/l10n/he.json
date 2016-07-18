@@ -119,6 +119,7 @@
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "היישום \"%s\" לא ניתן להתקנה כיוון שאינו תואם לגרסה זו של ownCloud.",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "היישום \"%s\" לא ניתן להתקנה כיוון שיחסי התלות הבאים אינם מתקיימים: %s",
     "No app name specified" : "לא הוגדר שם יישום",
+    "App '%s' could not be installed!" : "לא ניתן היה להתקין יישום '%s'!",
     "web services under your control" : "שירותי רשת תחת השליטה שלך",
     "File is currently busy, please try again later" : "הקובץ בשימוש כרגע, יש לנסות שוב מאוחר יותר",
     "Can't read file" : "לא ניתן לקרוא קובץ",

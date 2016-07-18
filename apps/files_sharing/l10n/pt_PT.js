@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Não foram encontradas entradas nesta pasta",
     "Name" : "Nome",
     "Share time" : "Hora da Partilha",
+    "Expiration date" : "Data de expiração",
     "Sorry, this link doesn’t seem to work anymore." : "Desculpe, mas esta hiperligação parece já não estar a funcionar.",
     "Reasons might be:" : "As razões poderão ser:",
     "the item was removed" : "o item foi removido",

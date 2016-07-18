@@ -105,6 +105,7 @@
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "Sovelluksen \"%s\" asennus ei onnistu, koska se ei ole yhteensopiva tämän ownCloud-version kanssa.",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Sovelluksen \"%s\" asennus ei onnistu, koska seuraavia riippuvuuksia ei ole täytetty: %s",
     "No app name specified" : "Sovelluksen nimeä ei määritelty",
+    "App '%s' could not be installed!" : "Sovellusta '%s' ei voitu asentaa!",
     "web services under your control" : "verkkopalvelut hallinnassasi",
     "File is currently busy, please try again later" : "Tiedosto on parhaillaan käytössä, yritä myöhemmin uudelleen",
     "Can't read file" : "Tiedostoa ei voi lukea",

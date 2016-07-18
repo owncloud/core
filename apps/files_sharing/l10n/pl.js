@@ -41,6 +41,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Brak wpisów w tym folderze",
     "Name" : "Nazwa",
     "Share time" : "Czas współdzielenia",
+    "Expiration date" : "Data wygaśnięcia",
     "Sorry, this link doesn’t seem to work anymore." : "Przepraszamy ale wygląda na to, że ten link już nie działa.",
     "Reasons might be:" : "Możliwe powody:",
     "the item was removed" : "element został usunięty",

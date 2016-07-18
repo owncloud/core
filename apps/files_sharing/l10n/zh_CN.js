@@ -95,6 +95,7 @@ OC.L10N.register(
     "No entries found in this folder" : "此文件夹中无项目",
     "Name" : "名称",
     "Share time" : "分享时间",
+    "Expiration date" : "过期日期",
     "Sorry, this link doesn’t seem to work anymore." : "抱歉，此链接已失效",
     "Reasons might be:" : "可能原因是：",
     "the item was removed" : "此项已移除",

@@ -59,6 +59,7 @@ OC.L10N.register(
     "No entries found in this folder" : "在此資料夾中沒有任何項目",
     "Name" : "名稱",
     "Share time" : "分享時間",
+    "Expiration date" : "到期日",
     "Sorry, this link doesn’t seem to work anymore." : "抱歉，此連結已經失效",
     "Reasons might be:" : "可能的原因：",
     "the item was removed" : "項目已經移除",

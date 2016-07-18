@@ -14,6 +14,7 @@ OC.L10N.register(
     "The password is wrong. Try again." : "ពាក្យ​សម្ងាត់​ខុស​ហើយ។ ព្យាយាម​ម្ដង​ទៀត។",
     "Password" : "ពាក្យសម្ងាត់",
     "Name" : "ឈ្មោះ",
+    "Expiration date" : "ពេល​ផុត​កំណត់",
     "Sorry, this link doesn’t seem to work anymore." : "សូម​ទោស តំណ​នេះ​ហាក់​ដូច​ជា​លែង​ដើរ​ហើយ។",
     "Reasons might be:" : "មូលហេតុ​អាច​ជា៖",
     "the item was removed" : "របស់​ត្រូវ​បាន​ដក​ចេញ",

@@ -1,6 +1,7 @@
 { "translations": {
     "Cancel" : "రద్దుచేయి",
     "Password" : "సంకేతపదం",
-    "Name" : "పేరు"
+    "Name" : "పేరు",
+    "Expiration date" : "కాలం చెల్లు తేదీ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

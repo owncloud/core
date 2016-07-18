@@ -29,6 +29,7 @@ OC.L10N.register(
     "No entries found in this folder" : "No hi ha entrades en aquesta carpeta",
     "Name" : "Nom",
     "Share time" : "Temps de compartició",
+    "Expiration date" : "Data de venciment",
     "Sorry, this link doesn’t seem to work anymore." : "Aquest enllaç sembla que no funciona.",
     "Reasons might be:" : "Les raons podrien ser:",
     "the item was removed" : "l'element ha estat eliminat",

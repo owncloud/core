@@ -54,6 +54,7 @@ OC.L10N.register(
     "Configuration" : "Configuración",
     "Available for" : "Disponible pa",
     "Add storage" : "Amestar almacenamientu",
+    "Advanced settings" : "Axustes avanzaos",
     "Delete" : "Desaniciar",
     "Allow users to mount the following external storage" : "Permitir a los usuarios montar el siguiente almacenamientu esternu"
 },

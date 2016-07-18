@@ -51,6 +51,7 @@ OC.L10N.register(
     "Password" : "Parolă",
     "No entries found in this folder" : "Niciun element găsit în acest director",
     "Name" : "Nume",
+    "Expiration date" : "Data expirării",
     "Reasons might be:" : "Motive posibile ar fi:",
     "the item was removed" : "acest articol a fost șters",
     "the link expired" : "linkul a expirat",

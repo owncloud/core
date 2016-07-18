@@ -21,6 +21,7 @@ OC.L10N.register(
     "Invalid directory." : "Neveljavna mapa.",
     "Files" : "Datoteke",
     "All files" : "Vse datoteke",
+    "File could not be found" : "Datoteke ni mogoče najti",
     "Home" : "Domači naslov",
     "Close" : "Zapri",
     "Favorites" : "Priljubljene",

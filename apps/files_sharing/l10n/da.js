@@ -59,6 +59,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Der blev ikke fundet poster i denne mappe",
     "Name" : "Navn",
     "Share time" : "Dele periode",
+    "Expiration date" : "Udløbsdato",
     "Sorry, this link doesn’t seem to work anymore." : "Desværre, dette link ser ikke ud til at fungerer længere.",
     "Reasons might be:" : "Årsagen kan være:",
     "the item was removed" : "Filen blev fjernet",

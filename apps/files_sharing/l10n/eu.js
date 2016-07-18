@@ -40,6 +40,7 @@ OC.L10N.register(
     "No entries found in this folder" : "Karpeta honetan ez da sarreraik aurkitu",
     "Name" : "Izena",
     "Share time" : "Elkarbanatze unea",
+    "Expiration date" : "Muga data",
     "Sorry, this link doesn’t seem to work anymore." : "Barkatu, lotura ez dirudi eskuragarria dagoenik.",
     "Reasons might be:" : "Arrazoiak hurrengoak litezke:",
     "the item was removed" : "fitxategia ezbatua izan da",
