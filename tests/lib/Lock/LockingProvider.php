@@ -34,11 +34,11 @@ abstract class LockingProvider extends TestCase {
 	/**
 	 * @return \OCP\Lock\ILockingProvider
 	 */
-	abstract protected function getInstance();
+	abstract protected function createInstance();
 
 	protected function setUp() {
 		parent::setUp();
-		$this->instance = $this->getInstance();
+		$this->instance = $this->createInstance();
 	}
 
 	public function testExclusiveLock() {
@@ -249,5 +249,29 @@ abstract class LockingProvider extends TestCase {
 	 */
 	public function testTooLongLockName() {
 		$this->instance->acquireLock(str_repeat("x", 250), ILockingProvider::LOCK_EXCLUSIVE);
+	}
+
+	public function testConcurrentSharedLock() {
+		$second = $this->createInstance();
+
+		$this->instance->acquireLock('foo', ILockingProvider::LOCK_SHARED);
+		$second->acquireLock('foo', ILockingProvider::LOCK_SHARED);
+
+		$this->assertTrue($this->instance->isLocked('foo', ILockingProvider::LOCK_SHARED));
+		$this->assertTrue($second->isLocked('foo', ILockingProvider::LOCK_SHARED));
+	}
+
+	/**
+	 * @expectedException \OCP\Lock\LockedException
+	 */
+	public function testConcurrentExclusiveLock() {
+		$second = $this->createInstance();
+
+		try {
+			$this->instance->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		} catch (\Exception $e) {
+			$this->assertFalse(true, 'Exception occurred in wrong locking provider');
+		}
+		$second->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
 	}
 }

@@ -33,7 +33,7 @@ class MemcacheLockingProviderTest extends LockingProvider {
 	/**
 	 * @return \OCP\Lock\ILockingProvider
 	 */
-	protected function getInstance() {
+	protected function createInstance() {
 		$this->memcache = new ArrayCache();
 		return new \OC\Lock\MemcacheLockingProvider($this->memcache);
 	}
