@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Du kan laste opp til denne mappen",
     "No ownCloud installation (7 or higher) found at {remote}" : "Ingen ownCloud-installasjon (7 eller høyere) funnet på {remote}",
     "Invalid ownCloud url" : "Ugyldig ownCloud-url",
+    "No expiration date set" : "Utløpsdato ikke satt",
     "Shared by" : "Delt av",
     "Sharing" : "Deling",
     "Share API is disabled" : "Delings-API er deaktivert",
