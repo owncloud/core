@@ -20,7 +20,7 @@
  */
 
 
-require_once(dirname(__DIR__) . '/3rdparty/autoload.php');
+require_once __DIR__ . '/../lib/composer/autoload.php';
 
 /**
  * Class SinceTagCheckVisitor
