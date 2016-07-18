@@ -315,6 +315,7 @@ Feature: webdav-related
 			| 1 |
 			| 3 |
 
+
 	Scenario: Upload chunked file asc with new chunking
 		Given using dav path "remote.php/dav"
 		And user "user0" exists
@@ -357,4 +358,34 @@ Feature: webdav-related
 		And assure user "userToBeDisabled" is disabled
 		When Downloading file "/welcome.txt" as "userToBeDisabled"
 		Then the HTTP status code should be "503"
+
+	Scenario: Retrieving permissions for parent entry and entry itself
+		Given using dav path "remote.php/webdav"
+		And user "user0" exists
+		And As an "user0"
+		And user "user0" created a folder "/testperms"
+		When as "user0" gets properties of folder "/testperms" with
+			|{http://owncloud.org/ns}permissions|
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK"
+		When as "user0" gets list of folder "/" with
+			|{http://owncloud.org/ns}permissions|
+		Then the response for "/testperms" should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK"
+
+	Scenario: Retrieving permissions for parent entry and entry itself for share recipient
+		Given using dav path "remote.php/webdav"
+		And user "user0" exists
+		And user "user1" exists
+		And As an "user1"
+		And user "user1" created a folder "/testperms"
+		And as "user1" creating a share with
+		  | path | testperms |
+		  | shareType | 0 |
+		  | permissions | 31 |
+		  | shareWith | user0 |
+		When as "user0" gets properties of folder "/testperms" with
+			|{http://owncloud.org/ns}permissions|
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+		When as "user0" gets list of folder "/" with
+			|{http://owncloud.org/ns}permissions|
+		Then the response for "/testperms" should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
 
