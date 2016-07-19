@@ -236,10 +236,11 @@ if ($lockingProvider instanceof NoopLockingProvider) {
 }
 
 $formsMap = array_map(function ($form) {
-	if (preg_match('%(<h2(?P<class>[^>]*)>.*?</h2>)%i', $form, $regs)) {
+	if (preg_match('%(<h2(?P<class>[^>]*)>.*?</h2>)%i', $form['page'], $regs)) {
 		$sectionName = str_replace('<h2'.$regs['class'].'>', '', $regs[0]);
 		$sectionName = str_replace('</h2>', '', $sectionName);
-		$anchor = strtolower($sectionName);
+
+		$anchor = strtolower($form['appId']);
 		$anchor = str_replace(' ', '-', $anchor);
 
 		return array(
