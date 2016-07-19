@@ -105,10 +105,7 @@ class Activity implements IExtension {
 		return [
 			self::TYPE_SHARE_CREATED => (string) $l->t('A new file or folder has been <strong>created</strong>'),
 			self::TYPE_SHARE_CHANGED => (string) $l->t('A file or folder has been <strong>changed</strong>'),
-			self::TYPE_FAVORITES => [
-				'desc' => (string) $l->t('Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>'),
-				'methods' => [self::METHOD_STREAM],
-			],
+			self::TYPE_FAVORITES     => (string) $l->t('Limit notifications about creation and changes to your <strong>favorite files</strong>'),
 			self::TYPE_SHARE_DELETED => (string) $l->t('A file or folder has been <strong>deleted</strong>'),
 			self::TYPE_SHARE_RESTORED => (string) $l->t('A file or folder has been <strong>restored</strong>'),
 		];
@@ -420,6 +417,7 @@ class Activity implements IExtension {
 	 * @return bool
 	 */
 	protected function userSettingFavoritesOnly($user) {
-		return (bool) $this->config->getUserValue($user, 'activity', 'notify_' . self::METHOD_STREAM . '_' . self::TYPE_FAVORITES, false);
+		return (bool)$this->config->getUserValue($user, 'activity', 'notify_' . self::METHOD_STREAM . '_' . self::TYPE_FAVORITES, false) ||
+			(bool)$this->config->getUserValue($user, 'activity', 'notify_' . self::METHOD_MAIL . '_' . self::TYPE_FAVORITES, false);
 	}
 }
