@@ -71,7 +71,7 @@
     "_%n folder_::_%n folders_" : ["%n 文件夹"],
     "_%n file_::_%n files_" : ["%n个文件"],
     "{dirs} and {files}" : "{dirs} 和 {files}",
-    "You don’t have permission to upload or create files here" : "您没有权限来上传湖州哦和创建文件",
+    "You don’t have permission to upload or create files here" : "您在这没有上传和创建文件的权限",
     "_Uploading %n file_::_Uploading %n files_" : ["上传 %n 个文件"],
     "New" : "新建",
     "\"{name}\" is an invalid file name." : "“{name}”是一个无效的文件名。",
