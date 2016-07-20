@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Faruk Uzun <farukuzun@collabora.com>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Normal Ra <normalraw@gmail.com>
  * @author Olivier Paroz <github@oparoz.com>
@@ -10,7 +10,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

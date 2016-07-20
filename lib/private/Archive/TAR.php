@@ -4,7 +4,7 @@
  * @author Christian Weiske <cweiske@cweiske.de>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Felix Moeller <mail@felixmoeller.de>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Remco Brenninkmeijer <requist1@starmail.nl>
@@ -13,7 +13,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
