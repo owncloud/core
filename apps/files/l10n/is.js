@@ -21,6 +21,7 @@ OC.L10N.register(
     "Invalid directory." : "Ógild mappa.",
     "Files" : "Skrár",
     "All files" : "Allar skrár",
+    "File could not be found" : "Þessi skrá fannst ekki",
     "Home" : "Heim",
     "Close" : "Loka",
     "Favorites" : "Eftirlæti",

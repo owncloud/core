@@ -47,6 +47,7 @@ OC.L10N.register(
     "Name" : "Nome",
     "Storage type" : "Triba d'almacenamientu",
     "Scope" : "Ámbitu",
+    "Enable encryption" : "Habilitar encriptación",
     "External Storage" : "Almacenamientu esternu",
     "Folder name" : "Nome de la carpeta",
     "Configuration" : "Configuración",
