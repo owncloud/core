@@ -34,11 +34,13 @@ node('SLAVE') {
         ./autotest-external.sh sqlite webdav-ownCloud
         ./autotest-external.sh sqlite smb-silvershell
         ./autotest-external.sh sqlite swift-ceph
+        ./autotest-external.sh sqlite smb-windows
         '''
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-webdav-ownCloud.xml'])
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-smb-silvershell.xml'])
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-swift-ceph.xml'])
+        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-smb-windows.xml'])
 
     stage 'Primary Objectstore Test - Swift'
         sh '''phpenv local 7.0
