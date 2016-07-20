@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Väärä salasana",
+    "The new password can not be the same as the previous one" : "Uusi salasana ei voi sama kuin aiempi salasana",
     "No user supplied" : "Käyttäjää ei määritetty",
     "Authentication error" : "Tunnistautumisvirhe",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Anna ylläpitäjän palautussalasana, muuten kaikki käyttäjien data menetetään",

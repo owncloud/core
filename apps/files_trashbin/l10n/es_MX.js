@@ -9,6 +9,7 @@ OC.L10N.register(
     "Delete permanently" : "Eliminar permanentemente",
     "Error" : "Error",
     "restored" : "recuperado",
+    "Select all" : "Seleccionar todo",
     "Name" : "Nombre",
     "Deleted" : "Eliminado"
 },
