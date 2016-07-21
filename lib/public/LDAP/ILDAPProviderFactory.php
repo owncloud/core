@@ -20,6 +20,8 @@
  */
 namespace OCP\LDAP;
 
+use OCP\IServerContainer;
+
 /**
  * Interface ILDAPProviderFactory
  *

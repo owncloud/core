@@ -25,7 +25,6 @@ use OCP\IUserBackend;
 use OCP\LDAP\ILDAPProvider;
 use OCP\LDAP\IDeletionFlagSupport;
 use OCP\IServerContainer;
-use OCA\User_LDAP\User_LDAP;
 use OCA\User_LDAP\User\DeletedUsersIndex;
 use OCA\User_LDAP\Mapping\UserMapping;
 

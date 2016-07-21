@@ -59,7 +59,7 @@ class AccessTest extends \Test\TestCase {
 				$this->getMock('\OCP\Image'),
 				$this->getMock('\OCP\IDBConnection'),
 				$this->getMock('\OCP\IUserManager')));
-		$helper = $this->getMock('\OCA\User_LDAP\Helper');
+		$helper = new \OCA\User_LDAP\Helper();
 
 		return array($lw, $connector, $um, $helper);
 	}
