@@ -4,6 +4,8 @@ OC.L10N.register(
     "Files" : "Ֆայլեր",
     "All files" : "Բոլոր ֆայլերը",
     "Close" : "Փակել",
+    "{hours}:{minutes}:{seconds} hour{plural_s} left" : "մնաց {hours}:{minutes}:{seconds} ժամ{plural_s}",
+    "Actions" : "Գործողություններ",
     "Download" : "Ներբեռնել",
     "Rename" : "Վերանվանել",
     "Delete" : "Ջնջել",

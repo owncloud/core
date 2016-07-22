@@ -1,6 +1,9 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Shared with you" : "Կիսված քո հետ",
+    "Shared with others" : "Կիսված այլոց հետ",
+    "Shared by link" : "Կիսված հղմամբ",
     "Cancel" : "Չեղարկել",
     "Password" : "Գաղտնաբառ",
     "Name" : "Անուն",

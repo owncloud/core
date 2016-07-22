@@ -1,6 +1,8 @@
 OC.L10N.register(
     "core",
     {
+    "File is too big" : "Ֆայլը չափազանց մեծ է",
+    "Tag already exists" : "Նիշքը արդեն գոյություն ունի",
     "Sunday" : "Կիրակի",
     "Monday" : "Երկուշաբթի",
     "Tuesday" : "Երեքշաբթի",
@@ -60,8 +62,8 @@ OC.L10N.register(
     "So-so password" : "Միջինոտ գաղտնաբառ",
     "Good password" : "Լավ գաղտնաբառ",
     "Strong password" : "Ուժեղ գաղտնաբառ",
-    "Shared" : "Տարածած",
-    "Shared with {recipients}" : "Տարածած {recipients}ի հետ",
+    "Shared" : "Կիսված",
+    "Shared with {recipients}" : "{recipients}ի հետ կիսված",
     "Error" : "Սխալ",
     "Error while sharing" : "Սխալ տարածելիս",
     "Share link" : "Կիսվել հղմամբ",
@@ -92,6 +94,7 @@ OC.L10N.register(
     "Personal" : "Անձնական",
     "Help" : "Օգնություն",
     "File not found" : "Ֆայլը չգտնվեց",
+    "Cheers!" : "Չը՛խկ",
     "Type: %s" : "Տիպ. %s",
     "Code: %s" : "Կոդ. %s",
     "Message: %s" : "Նամակ. %s",
