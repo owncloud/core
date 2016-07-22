@@ -39,30 +39,5 @@ node('SLAVE') {
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-webdav-ownCloud.xml'])
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-smb-silvershell.xml'])
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-swift-ceph.xml'])
-
-    stage 'Primary Objectstore Test - Swift'
-        sh '''phpenv local 7.0
-
-        export NOCOVERAGE=1
-        export RUN_OBJECTSTORE_TESTS=1
-        export PRIMARY_STORAGE_CONFIG="swift"
-        unset USEDOCKER
-
-        rm tests/autotest-results-*.xml
-        ./autotest.sh mysql
-        '''
-        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-results-mysql.xml'])
-
-    stage 'Integration Testing'
-        sh '''phpenv local 7.0
-        rm -rf config/config.php
-        ./occ maintenance:install --admin-pass=admin
-        rm -rf build/integration/output
-        rm -rf build/integration/vendor
-        rm -rf build/integration/composer.lock
-        cd build/integration
-        ./run.sh
-       '''
-        step([$class: 'JUnitResultArchiver', testResults: 'build/integration/output/*.xml'])
 }
 
