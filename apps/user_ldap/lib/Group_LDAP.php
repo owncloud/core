@@ -1,14 +1,14 @@
 <?php
 /**
- * @author Alex Weirig <alex.weirig@technolink.lu>
  * @author Alexander Bergolth <leo@strike.wu.ac.at>
+ * @author Alex Weirig <alex.weirig@technolink.lu>
  * @author alexweirig <alex.weirig@technolink.lu>
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Frédéric Fortier <frederic.fortier@oronospolytechnique.com>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Nicolas Grekas <nicolas.grekas@gmail.com>
@@ -17,7 +17,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

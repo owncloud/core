@@ -1,11 +1,11 @@
 <?php
 /**
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -172,7 +172,7 @@ class RepairLegacyStorages implements IRepairStep{
 		$sql = 'SELECT `id`, `numeric_id` FROM `*PREFIX*storages`'
 			. ' WHERE `id` LIKE ?'
 			. ' ORDER BY `id`';
-		$result = $this->connection->executeQuery($sql, array($dataDirId . '%'));
+		$result = $this->connection->executeQuery($sql, array($this->connection->escapeLikeParameter($dataDirId) . '%'));
 
 		while ($row = $result->fetch()) {
 			$currentId = $row['id'];

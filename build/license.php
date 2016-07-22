@@ -18,8 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-class Licenses
-{
+class Licenses {
 	protected $paths = [];
 	protected $mailMap = [];
 	public $authors = [];
@@ -29,7 +28,7 @@ class Licenses
 /**
 @AUTHORS@
  *
- * @copyright Copyright (c) @YEAR@, ownCloud, Inc.
+ * @copyright Copyright (c) @YEAR@, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -256,6 +255,7 @@ if (isset($argv[1])) {
 		'../core',
 		'../lib',
 		'../ocs',
+		'../ocs-provider',
 		'../settings',
 		'../console.php',
 		'../cron.php',

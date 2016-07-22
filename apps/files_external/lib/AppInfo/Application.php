@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -8,7 +8,7 @@
  * @author Ross Nicoll <jrn@jrn.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -81,7 +81,6 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 
 		$backends = [
 			$container->query('OCA\Files_External\Lib\Backend\Local'),
-			$container->query('OCA\Files_External\Lib\Backend\FTP'),
 			$container->query('OCA\Files_External\Lib\Backend\DAV'),
 			$container->query('OCA\Files_External\Lib\Backend\OwnCloud'),
 			$container->query('OCA\Files_External\Lib\Backend\SFTP'),

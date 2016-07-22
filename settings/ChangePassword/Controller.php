@@ -3,6 +3,7 @@
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Christoph Wurst <christoph@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
  * @author cmeh <cmeh@users.noreply.github.com>
  * @author Florin Peter <github@florin-peter.de>
@@ -11,8 +12,9 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Sam Tuke <mail@samtuke.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Yarno Boelens <yarnoboelens@gmail.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -45,6 +47,11 @@ class Controller {
 			\OC_JSON::error(array("data" => array("message" => $l->t("Wrong password")) ));
 			exit();
 		}
+	        if ($oldPassword === $password) {
+			$l = new \OC_L10n('settings');
+			\OC_JSON::error(array("data" => array("message" => $l->t("The new password can not be the same as the previous one")) ));
+			exit();
+	        }
 		if (!is_null($password) && \OC_User::setPassword($username, $password)) {
 			\OC::$server->getUserSession()->updateSessionTokenPassword($password);
 			\OC_JSON::success();

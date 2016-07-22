@@ -2,12 +2,12 @@
 /**
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Christopher Schäpers <kondou@ts.unde.re>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Lennart Rosam <hello@takuto.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

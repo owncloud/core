@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,13 +33,6 @@ if (file_exists($privateConfigFile)) {
 
 // this is now more a template now for your private configurations
 return array(
-	'ftp'=>array(
-		'run'=>false,
-		'host'=>'localhost',
-		'user'=>'test',
-		'password'=>'test',
-		'root'=>'/test',
-	),
 	'webdav'=>array(
 		'run'=>false,
 		'host'=>'localhost',

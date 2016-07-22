@@ -8,7 +8,7 @@
  * @author Frank Karlitschek <frank@karlitschek.de>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Kamil Domanski <kdomanski@kdemail.net>
  * @author Lukas Reschke <lukas@statuscode.ch>
@@ -20,7 +20,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -367,7 +367,7 @@ class Installer {
 			$appBelongingToId = $info['id'];
 			$previouslySigned = 'false';
 		}
-		if($data['appdata']['level'] === OC_App::officialApp || $previouslySigned === 'true') {
+		if (file_exists($extractDir . '/appinfo/signature.json') || $previouslySigned === 'true') {
 			\OC::$server->getConfig()->setAppValue($appBelongingToId, 'signed', 'true');
 			$integrityResult = \OC::$server->getIntegrityCodeChecker()->verifyAppSignature(
 					$appBelongingToId,

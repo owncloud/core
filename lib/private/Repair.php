@@ -2,14 +2,15 @@
 /**
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Georg Ehrke <georg@owncloud.com>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -47,6 +48,7 @@ use OC\Repair\RepairMimeTypes;
 use OC\Repair\SearchLuceneTables;
 use OC\Repair\UpdateOutdatedOcsIds;
 use OC\Repair\RepairInvalidShares;
+use OC\Repair\RepairUnmergedShares;
 use OCP\AppFramework\QueryException;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -138,6 +140,12 @@ class Repair implements IOutput{
 			new RemoveOldShares(\OC::$server->getDatabaseConnection()),
 			new AvatarPermissions(\OC::$server->getDatabaseConnection()),
 			new RemoveRootShares(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager(), \OC::$server->getLazyRootFolder()),
+			new RepairUnmergedShares(
+				\OC::$server->getConfig(),
+				\OC::$server->getDatabaseConnection(),
+				\OC::$server->getUserManager(),
+				\OC::$server->getGroupManager()
+			),
 		];
 	}
 

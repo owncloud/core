@@ -1,13 +1,13 @@
 <?php
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -281,6 +281,11 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			$this->fileView->verifyPath($destinationDir, $destinationName);
 		} catch (\OCP\Files\InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());
+		}
+
+		// Webdav's copy will implicitly do a delete+create, so only create+delete permissions are required
+		if (!$this->fileView->isCreatable($destinationDir)) {
+			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
 		try {

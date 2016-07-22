@@ -2,7 +2,7 @@
 /**
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -285,7 +285,7 @@ class Database extends \OC\Group\Backend {
 		$parameters = [$gid];
 		$searchLike = '';
 		if ($search !== '') {
-			$parameters[] = '%' . $search . '%';
+			$parameters[] = '%' . $this->dbConn->escapeLikeParameter($search) . '%';
 			$searchLike = ' AND `uid` LIKE ?';
 		}
 
@@ -311,7 +311,7 @@ class Database extends \OC\Group\Backend {
 		$parameters = [$gid];
 		$searchLike = '';
 		if ($search !== '') {
-			$parameters[] = '%' . $search . '%';
+			$parameters[] = '%' . $this->dbConn->escapeLikeParameter($search) . '%';
 			$searchLike = ' AND `uid` LIKE ?';
 		}
 

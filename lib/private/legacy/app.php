@@ -12,9 +12,10 @@
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Kamil Domanski <kdomanski@kdemail.net>
+ * @author Klaas Freitag <freitag@owncloud.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Markus Goetz <markus@woboq.com>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -28,7 +29,7 @@
  * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -1089,6 +1090,7 @@ class OC_App {
 	 * @throws Exception if no app-name was specified
 	 */
 	public static function installApp($app) {
+		$appName = $app; // $app will be overwritten, preserve name for error logging
 		$l = \OC::$server->getL10N('core');
 		$config = \OC::$server->getConfig();
 		$ocsClient = new OCSClient(
@@ -1161,7 +1163,11 @@ class OC_App {
 			}
 			\OC_Hook::emit('OC_App', 'post_enable', array('app' => $app));
 		} else {
-			throw new \Exception($l->t("No app name specified"));
+			if(empty($appName) ) {
+				throw new \Exception($l->t("No app name specified"));
+			} else {
+				throw new \Exception($l->t("App '%s' could not be installed!", $appName));
+			}
 		}
 
 		return $app;

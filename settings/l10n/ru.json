@@ -1,5 +1,6 @@
 { "translations": {
     "Wrong password" : "Неправильный пароль",
+    "The new password can not be the same as the previous one" : "Новый пароль не может совпадать со старым",
     "No user supplied" : "Пользователь не задан",
     "Authentication error" : "Ошибка аутентификации",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Введите пароль восстановления администратора, в противном случае все пользовательские данные будут утеряны",

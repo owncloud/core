@@ -11,7 +11,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -381,6 +381,19 @@ class SMB extends \OC\Files\Storage\Common {
 	}
 
 	public function isUpdatable($path) {
+		try {
+			$info = $this->getFileInfo($path);
+			// following windows behaviour for read-only folders: they can be written into
+			// (https://support.microsoft.com/en-us/kb/326549 - "cause" section)
+			return !$info->isHidden() && (!$info->isReadOnly() || $this->is_dir($path));
+		} catch (NotFoundException $e) {
+			return false;
+		} catch (ForbiddenException $e) {
+			return false;
+		}
+	}
+
+	public function isDeletable($path) {
 		try {
 			$info = $this->getFileInfo($path);
 			return !$info->isHidden() && !$info->isReadOnly();

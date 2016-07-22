@@ -3,8 +3,9 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -73,16 +74,20 @@ class MountProvider implements IMountProvider {
 			return $share->getPermissions() > 0 && $share->getShareOwner() !== $user->getUID();
 		});
 
-		$mounts = [];
-		foreach ($shares as $share) {
+		$superShares = $this->buildSuperShares($shares);
 
+		$mounts = [];
+		foreach ($superShares as $share) {
 			try {
 				$mounts[] = new SharedMount(
 					'\OC\Files\Storage\Shared',
 					$mounts,
 					[
 						'user' => $user->getUID(),
-						'newShare' => $share,
+						// parent share
+						'superShare' => $share[0],
+						// children/component of the superShare
+						'groupedShares' => $share[1],
 					],
 					$storageFactory
 				);
@@ -94,5 +99,74 @@ class MountProvider implements IMountProvider {
 
 		// array_filter removes the null values from the array
 		return array_filter($mounts);
+	}
+
+	/**
+	 * Groups shares by path (nodeId) and target path
+	 *
+	 * @param \OCP\Share\IShare[] $shares
+	 * @return \OCP\Share\IShare[][] array of grouped shares, each element in the
+	 * array is a group which itself is an array of shares
+	 */
+	private function groupShares(array $shares) {
+		$tmp = [];
+
+		foreach ($shares as $share) {
+			if (!isset($tmp[$share->getNodeId()])) {
+				$tmp[$share->getNodeId()] = [];
+			}
+			$tmp[$share->getNodeId()][$share->getTarget()][] = $share;
+		}
+
+		$result = [];
+		foreach ($tmp as $tmp2) {
+			foreach ($tmp2 as $item) {
+				$result[] = $item;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Build super shares (virtual share) by grouping them by node id and target,
+	 * then for each group compute the super share and return it along with the matching
+	 * grouped shares. The most permissive permissions are used based on the permissions
+	 * of all shares within the group.
+	 *
+	 * @param \OCP\Share\IShare[] $allShares
+	 * @return array Tuple of [superShare, groupedShares]
+	 */
+	private function buildSuperShares(array $allShares) {
+		$result = [];
+
+		$groupedShares = $this->groupShares($allShares);
+
+		/** @var \OCP\Share\IShare[] $shares */
+		foreach ($groupedShares as $shares) {
+			if (count($shares) === 0) {
+				continue;
+			}
+
+			$superShare = $this->shareManager->newShare();
+
+			// compute super share based on first entry of the group
+			$superShare->setId($shares[0]->getId())
+				->setShareOwner($shares[0]->getShareOwner())
+				->setNodeId($shares[0]->getNodeId())
+				->setTarget($shares[0]->getTarget());
+
+			// use most permissive permissions
+			$permissions = 0;
+			foreach ($shares as $share) {
+				$permissions |= $share->getPermissions();
+			}
+
+			$superShare->setPermissions($permissions);
+
+			$result[] = [$superShare, $shares];
+		}
+
+		return $result;
 	}
 }

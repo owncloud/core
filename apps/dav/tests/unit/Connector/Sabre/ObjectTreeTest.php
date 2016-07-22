@@ -1,12 +1,12 @@
 <?php
 /**
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -140,6 +140,88 @@ class ObjectTreeTest extends \Test\TestCase {
 		$mountManager = \OC\Files\Filesystem::getMountManager();
 		$objectTree->init($rootDir, $view, $mountManager);
 		$objectTree->move($source, $destination);
+	}
+
+	public function copyDataProvider() {
+		return [
+			// copy into same dir
+			['a', 'b', ''],
+			// copy into same dir
+			['a/a', 'a/b', 'a'],
+			// copy into another dir
+			['a', 'sub/a', 'sub'],
+		];
+	}
+
+	/**
+	 * @dataProvider copyDataProvider
+	 */
+	public function testCopy($sourcePath, $targetPath, $targetParent) {
+		$view = $this->getMock('\OC\Files\View');
+		$view->expects($this->once())
+			->method('verifyPath')
+			->with($targetParent)
+			->will($this->returnValue(true));
+		$view->expects($this->once())
+			->method('isCreatable')
+			->with($targetParent)
+			->will($this->returnValue(true));
+		$view->expects($this->once())
+			->method('copy')
+			->with($sourcePath, $targetPath)
+			->will($this->returnValue(true));
+
+		$info = new FileInfo('', null, null, array(), null);
+
+		$rootDir = new \OCA\DAV\Connector\Sabre\Directory($view, $info);
+		$objectTree = $this->getMock('\OCA\DAV\Connector\Sabre\ObjectTree',
+			array('nodeExists', 'getNodeForPath'),
+			array($rootDir, $view));
+
+		$objectTree->expects($this->once())
+			->method('getNodeForPath')
+			->with($this->identicalTo($sourcePath))
+			->will($this->returnValue(false));
+
+		/** @var $objectTree \OCA\DAV\Connector\Sabre\ObjectTree */
+		$mountManager = \OC\Files\Filesystem::getMountManager();
+		$objectTree->init($rootDir, $view, $mountManager);
+		$objectTree->copy($sourcePath, $targetPath);
+	}
+
+	/**
+	 * @dataProvider copyDataProvider
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
+	public function testCopyFailNotCreatable($sourcePath, $targetPath, $targetParent) {
+		$view = $this->getMock('\OC\Files\View');
+		$view->expects($this->once())
+			->method('verifyPath')
+			->with($targetParent)
+			->will($this->returnValue(true));
+		$view->expects($this->once())
+			->method('isCreatable')
+			->with($targetParent)
+			->will($this->returnValue(false));
+		$view->expects($this->never())
+			->method('copy');
+
+		$info = new FileInfo('', null, null, array(), null);
+
+		$rootDir = new \OCA\DAV\Connector\Sabre\Directory($view, $info);
+		$objectTree = $this->getMock('\OCA\DAV\Connector\Sabre\ObjectTree',
+			array('nodeExists', 'getNodeForPath'),
+			array($rootDir, $view));
+
+		$objectTree->expects($this->once())
+			->method('getNodeForPath')
+			->with($this->identicalTo($sourcePath))
+			->will($this->returnValue(false));
+
+		/** @var $objectTree \OCA\DAV\Connector\Sabre\ObjectTree */
+		$mountManager = \OC\Files\Filesystem::getMountManager();
+		$objectTree->init($rootDir, $view, $mountManager);
+		$objectTree->copy($sourcePath, $targetPath);
 	}
 
 	/**

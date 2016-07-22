@@ -67,7 +67,27 @@ trait WebDav {
 	public function userMovesFile($user, $fileSource, $fileDestination){
 		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath;
 		$headers['Destination'] = $fullUrl . $fileDestination;
-		$this->response = $this->makeDavRequest($user, "MOVE", $fileSource, $headers);
+		try {
+			$this->response = $this->makeDavRequest($user, "MOVE", $fileSource, $headers);
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
+	 * @When /^User "([^"]*)" copies file "([^"]*)" to "([^"]*)"$/
+	 * @param string $user
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 */
+	public function userCopiesFile($user, $fileSource, $fileDestination){
+		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath;
+		$headers['Destination'] = $fullUrl . $fileDestination;
+		try {
+			$this->response = $this->makeDavRequest($user, "COPY", $fileSource, $headers);
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		}
 	}
 
 	/**
@@ -142,7 +162,11 @@ trait WebDav {
 	 * @param string $fileName
 	 */
 	public function downloadingFile($fileName) {
-		$this->response = $this->makeDavRequest($this->currentUser, 'GET', $fileName, []);
+		try {
+			$this->response = $this->makeDavRequest($this->currentUser, 'GET', $fileName, []);
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		}
 	}
 
 	/**
@@ -199,6 +223,32 @@ trait WebDav {
 			}
 		}
 		$this->response = $this->listFolder($user, $path, 0, $properties);
+	}
+
+	/**
+	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" does not exist$/
+	 * @param string $user
+	 * @param string $path
+	 * @param \Behat\Gherkin\Node\TableNode|null $propertiesTable
+	 */
+	public function asTheFileOrFolderDoesNotExist($user, $entry, $path) {
+		$client = $this->getSabreClient($user);
+		$response = $client->request('HEAD', $this->makeSabrePath($path));
+		if ($response['statusCode'] !== 404) {
+			throw new \Exception($entry . ' "' . $path . '" expected to not exist (status code ' . $response['statusCode'] . ', expected 404)');
+		}
+
+		return $response;
+	}
+
+	/**
+	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" exists$/
+	 * @param string $user
+	 * @param string $path
+	 * @param \Behat\Gherkin\Node\TableNode|null $propertiesTable
+	 */
+	public function asTheFileOrFolderExists($user, $entry, $path) {
+		$this->response = $this->listFolder($user, $path, 0);
 	}
 
 	/**
@@ -269,9 +319,25 @@ trait WebDav {
 		}
 	}
 
-
 	/*Returns the elements of a propfind, $folderDepth requires 1 to see elements without children*/
 	public function listFolder($user, $path, $folderDepth, $properties = null){
+		$client = $this->getSabreClient($user);
+		if (!$properties) {
+			$properties = [
+				'{DAV:}getetag'
+			];
+		}
+
+		$response = $client->propfind($this->makeSabrePath($path), $properties, $folderDepth);
+
+		return $response;
+	}
+
+	public function makeSabrePath($path) {
+		return $this->encodePath($this->davPath . '/' . ltrim($path, '/'));
+	}
+
+	public function getSabreClient($user) {
 		$fullUrl = substr($this->baseUrl, 0, -4);
 
 		$settings = array(
@@ -285,17 +351,7 @@ trait WebDav {
 			$settings['password'] = $this->regularUser;
 		}
 
-		$client = new SClient($settings);
-
-		if (!$properties) {
-			$properties = [
-				'{DAV:}getetag'
-			];
-		}
-
-		$response = $client->propfind($this->davPath . '/' . ltrim($path, '/'), $properties, $folderDepth);
-
-		return $response;
+		return new SClient($settings);
 	}
 
 	/**
@@ -369,7 +425,7 @@ trait WebDav {
 	 */
 	public function userCreatedAFolder($user, $destination){
 		try {
-			$this->response = $this->makeDavRequest($user, "MKCOL", $destination, []);
+			$this->response = $this->makeDavRequest($user, "MKCOL", '/' . ltrim($destination, '/'), []);
 		} catch (\GuzzleHttp\Exception\ServerException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
@@ -433,6 +489,17 @@ trait WebDav {
 		} catch (\GuzzleHttp\Exception\ServerException $ex) {
 			$this->response = $ex->getResponse();
 		}
+	}
+
+	/**
+	 * URL encodes the given path but keeps the slashes
+	 *
+	 * @param string $path to encode
+	 * @return string encoded path
+	 */
+	private function encodePath($path) {
+		// slashes need to stay
+		return str_replace('%2F', '/', rawurlencode($path));
 	}
 
 	/**

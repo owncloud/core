@@ -3,7 +3,7 @@
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Georg Ehrke <georg@owncloud.com>
- * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Piotr Filiciak <piotr@filiciak.pl>
@@ -12,7 +12,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

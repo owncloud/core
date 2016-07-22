@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Senha errada",
+    "The new password can not be the same as the previous one" : "A nova senha não pode ser igual a anterior",
     "No user supplied" : "Nenhum usuário fornecido",
     "Authentication error" : "Erro de autenticação",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Por favor, forneça uma senha de recuperação admin, caso contrário todos os dados do usuário serão perdidos",

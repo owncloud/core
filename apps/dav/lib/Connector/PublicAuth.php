@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -98,7 +98,7 @@ class PublicAuth extends AbstractBasic {
 				if ($this->shareManager->checkPassword($share, $password)) {
 					return true;
 				} else if ($this->session->exists('public_link_authenticated')
-					&& $this->session->get('public_link_authenticated') === $share->getId()) {
+					&& $this->session->get('public_link_authenticated') === (string)$share->getId()) {
 					return true;
 				} else {
 					if (in_array('XMLHttpRequest', explode(',', $this->request->getHeader('X-Requested-With')))) {
