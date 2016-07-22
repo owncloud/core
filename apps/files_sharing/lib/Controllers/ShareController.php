@@ -344,10 +344,15 @@ class ShareController extends Controller {
 		}
 
 		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', ['token' => $token]);
+		$shareTmpl['shareUrl'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $token]);
 		$shareTmpl['maxSizeAnimateGif'] = $this->config->getSystemValue('max_filesize_animated_gifs_public_sharing', 10);
 		$shareTmpl['previewEnabled'] = $this->config->getSystemValue('enable_previews', true);
 		$shareTmpl['previewMaxX'] = $this->config->getSystemValue('preview_max_x', 1024);
 		$shareTmpl['previewMaxY'] = $this->config->getSystemValue('preview_max_y', 1024);
+		if ($shareTmpl['previewSupported']) {
+			$shareTmpl['previewImage'] = $this->urlGenerator->linkToRouteAbsolute( 'core_ajax_public_preview',
+				['x' => $shareTmpl['previewMaxX'], 'y' => $shareTmpl['previewMaxY'], 'file' => $shareTmpl['directory_path'], 't' => $shareTmpl['dirToken']]);
+		}
 
 		$csp = new OCP\AppFramework\Http\ContentSecurityPolicy();
 		$csp->addAllowedFrameDomain('\'self\'');
