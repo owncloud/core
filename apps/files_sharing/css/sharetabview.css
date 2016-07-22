@@ -94,3 +94,10 @@
 	display: inline-block;
 	background-size: 16px 16px;
 }
+
+.shareTabView .icon-social {
+	display: inline-block;
+	background-size: 32px 32px;
+	min-width: 32px;
+	min-height: 32px;
+}

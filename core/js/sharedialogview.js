@@ -27,6 +27,7 @@
 		'<div class="linkShareView subView"></div>' +
 		'<div class="expirationView subView"></div>' +
 		'<div class="mailView subView"></div>' +
+		'<div class="socialView subView"></div>' +
 		'<div class="loading hidden" style="height: 50px"></div>';
 
 	var TEMPLATE_REMOTE_SHARE_INFO =
@@ -71,6 +72,9 @@
 		/** @type {object} **/
 		mailView: undefined,
 
+		/** @type {object} **/
+		socialView: undefined,
+
 		events: {
 			'input .shareWithField': 'onShareWithFieldChanged'
 		},
@@ -108,7 +112,8 @@
 				linkShareView: 'ShareDialogLinkShareView',
 				expirationView: 'ShareDialogExpirationView',
 				shareeListView: 'ShareDialogShareeListView',
-				mailView: 'ShareDialogMailView'
+				mailView: 'ShareDialogMailView',
+				socialView: 'ShareDialogLinkSocialView'
 			};
 
 			for(var name in subViews) {
@@ -367,6 +372,9 @@
 
 			this.mailView.$el = this.$el.find('.mailView');
 			this.mailView.render();
+
+			this.socialView.$el = this.$el.find('.socialView');
+			this.socialView.render();
 
 			this.$el.find('.hasTooltip').tooltip();
 
