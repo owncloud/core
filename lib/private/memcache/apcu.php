@@ -110,7 +110,7 @@ class APCu extends Cache implements IMemcache {
 	static public function isAvailable() {
 		if (!extension_loaded('apcu')) {
 			return false;
-		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enabled')) {
+		} elseif (!ini_get('apc.enabled')) {
 			return false;
 		} elseif (!ini_get('apc.enable_cli') && \OC::$CLI) {
 			return false;
