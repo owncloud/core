@@ -988,7 +988,7 @@ class OC_App {
 		$currentVersion = OC_App::getAppVersion($app);
 		if ($currentVersion && isset($versions[$app])) {
 			$installedVersion = $versions[$app];
-			if (version_compare($currentVersion, $installedVersion, '>')) {
+			if (!version_compare($currentVersion, $installedVersion, '=')) {
 				return true;
 			}
 		}
