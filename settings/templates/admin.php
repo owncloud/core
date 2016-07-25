@@ -233,6 +233,10 @@ if ($_['cronErrors']) {
 				   value="1" <?php if ($_['allowPublicMailNotification'] == 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowPublicMailNotification"><?php p($l->t('Allow users to send mail notification for shared files'));?></label><br/>
 
+			<input type="checkbox" name="shareapi_allow_social_share" id="allowSocialShare" class="checkbox"
+				   value="1" <?php if ($_['allowSocialShare'] == 'yes') print_unescaped('checked="checked"'); ?> />
+			<label for="allowSocialShare"><?php p($l->t('Allow users to share file via social media'));?></label><br/>
+
 		</p>
 		<p id="setDefaultExpireDate" class="double-indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareDefaultExpireDateSet'] === 'no' || $_['shareAPIEnabled'] === 'no') p('hidden');?>">
 			<?php p($l->t( 'Expire after ' )); ?>

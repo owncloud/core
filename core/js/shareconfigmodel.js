@@ -56,8 +56,7 @@
 		 * @returns {boolean}
 		 */
 		isSocialShareEnabled: function() {
-			return true;
-			// return $('input:hidden[name=socialShareEnabled]').val() === 'yes';
+			return $('input:hidden[name=socialShareEnabled]').val() === 'yes';
 		},
 
 		/**
