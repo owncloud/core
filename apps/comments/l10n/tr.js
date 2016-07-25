@@ -17,6 +17,7 @@ OC.L10N.register(
     "Error occurred while posting comment" : "Yorum gönderilirken hata oluştu",
     "{count} unread comments" : "{count} okunmamış yorum",
     "Comment" : "Yorum",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "Dosyalar için <strong>Yorumlar</strong> <em>(hep akış olarak listelenir)</em>",
     "You commented" : "Yorum yaptınız",
     "%1$s commented" : "%1$s yorumlanmış",
     "You commented on %2$s" : "%2$s için yorum yaptınız",
