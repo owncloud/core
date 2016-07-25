@@ -10,6 +10,7 @@ OC.L10N.register(
     "Port" : "連接埠",
     "WebDAV" : "WebDAV",
     "URL" : "網址",
+    "Location" : "位置",
     "Host" : "主機",
     "Share" : "分享",
     "Name" : "名稱",

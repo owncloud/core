@@ -16,6 +16,7 @@
     "Error generating key pair" : "Anahtar çifti üretirken hata",
     "All users. Type to select user or group." : "Tüm kullanıcılar. Kullanıcı veya grup seçmek için yazın.",
     "(group)" : "(grup)",
+    "Compatibility with Mac NFD encoding (slow)" : "Mac NFD şifrelemesi ile uyumluluk (yavaş)",
     "Admin defined" : "Yönetici tanımlandı",
     "Saved" : "Kaydedildi",
     "Empty response from the server" : "Sunucudan boş yanıt",
