@@ -39,5 +39,17 @@ node('SLAVE') {
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-webdav-ownCloud.xml'])
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-smb-silvershell.xml'])
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite-swift-ceph.xml'])
+
+    stage 'Integration Testing'
+        sh '''phpenv local 7.0
+        rm -rf config/config.php
+        ./occ maintenance:install --admin-pass=admin
+        rm -rf build/integration/output
+        rm -rf build/integration/vendor
+        rm -rf build/integration/composer.lock
+        cd build/integration
+        ./run.sh
+       '''
+        step([$class: 'JUnitResultArchiver', testResults: 'build/integration/output/*.xml'])
 }
 
