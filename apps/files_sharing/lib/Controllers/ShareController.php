@@ -251,7 +251,7 @@ class ShareController extends Controller {
 	 *
 	 * @param string $token
 	 * @param string $path
-	 * @return TemplateResponse|RedirectResponse
+	 * @return NotFoundResponse|RedirectResponse|TemplateResponse
 	 * @throws NotFoundException
 	 */
 	public function showShare($token, $path = '') {
@@ -351,7 +351,9 @@ class ShareController extends Controller {
 		$shareTmpl['previewMaxY'] = $this->config->getSystemValue('preview_max_y', 1024);
 		if ($shareTmpl['previewSupported']) {
 			$shareTmpl['previewImage'] = $this->urlGenerator->linkToRouteAbsolute( 'core_ajax_public_preview',
-				['x' => $shareTmpl['previewMaxX'], 'y' => $shareTmpl['previewMaxY'], 'file' => $shareTmpl['directory_path'], 't' => $shareTmpl['dirToken']]);
+				['x' => 200, 'y' => 200, 'file' => $shareTmpl['directory_path'], 't' => $shareTmpl['dirToken']]);
+		} else {
+			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('core', 'favicon-fb.png'));
 		}
 
 		$csp = new OCP\AppFramework\Http\ContentSecurityPolicy();
@@ -372,7 +374,7 @@ class ShareController extends Controller {
 	 * @param string $files
 	 * @param string $path
 	 * @param string $downloadStartSecret
-	 * @return void|RedirectResponse
+	 * @return NotFoundResponse|RedirectResponse|void
 	 */
 	public function downloadShare($token, $files = null, $path = '', $downloadStartSecret = '') {
 		\OC_User::setIncognitoMode(true);

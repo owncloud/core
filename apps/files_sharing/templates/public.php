@@ -28,11 +28,7 @@ OCP\Util::addHeader('meta', ['property' => "og:description", 'content' => $l->t(
 OCP\Util::addHeader('meta', ['property' => "og:site_name", 'content' => $theme->getName()]);
 OCP\Util::addHeader('meta', ['property' => "og:url", 'content' => $_['shareUrl']]);
 OCP\Util::addHeader('meta', ['property' => "og:type", 'content' => "object"]);
-if ($_['previewSupported']) {
-	OCP\Util::addHeader('meta', ['property' => "og:type", 'content' => "image"]);
-	OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewImage']]);
-}
-
+OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewImage']]);
 ?>
 
 <?php if ($_['previewSupported']): /* This enables preview images for links (e.g. on Facebook, Google+, ...)*/?>
