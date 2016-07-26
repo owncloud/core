@@ -1,31 +1,48 @@
 #!groovy
 
-node('SLAVE') {
+timestampedNode('SLAVE') {
     stage 'Checkout'
         checkout scm
         sh '''git submodule update --init'''
 
     stage 'JavaScript Testing'
-        sh '''./autotest-js.sh'''
-        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-results-js.xml'])
+        executeAndReport('tests/autotest-results-js.xml') {
+            sh '''./autotest-js.sh'''
+        }
 
     stage 'PHPUnit'
-        sh '''
-        export NOCOVERAGE=1
-        unset USEDOCKER
-        phpenv local 7.0
-        ./autotest.sh sqlite
-        phpenv local 5.4
-        ./autotest.sh mysql
-        phpenv local 5.6
-        ./autotest.sh pgsql
-        phpenv local 5.5
-        ./autotest.sh oci
-        '''
-        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-results-sqlite.xml'])
-        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-results-mysql.xml'])
-        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-results-oci.xml'])
-        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-results-pgsql.xml'])
+        executeAndReport('tests/autotest-results-sqlite.xml') {
+            sh '''
+            export NOCOVERAGE=1
+            unset USEDOCKER
+            phpenv local 7.0
+            ./autotest.sh sqlite
+            '''
+        }
+        executeAndReport('tests/autotest-results-mysql.xml') {
+            sh '''
+            export NOCOVERAGE=1
+            unset USEDOCKER
+            phpenv local 5.4
+            ./autotest.sh mysql
+            '''
+        }
+        executeAndReport('tests/autotest-results-pgsql.xml') {
+            sh '''
+            export NOCOVERAGE=1
+            unset USEDOCKER
+            phpenv local 5.6
+            ./autotest.sh pgsql
+            '''
+        }
+        executeAndReport('tests/autotest-results-oci.xml') {
+            sh '''
+            export NOCOVERAGE=1
+            unset USEDOCKER
+            phpenv local 5.5
+            ./autotest.sh oci
+            '''
+        }
 
     stage 'Files External Testing'
         sh '''phpenv local 7.0
@@ -68,3 +85,21 @@ node('SLAVE') {
         step([$class: 'JUnitResultArchiver', testResults: 'build/integration/output/*.xml'])
 }
 
+void executeAndReport(String testResultLocation, def body) {
+    try {
+        body.call()
+    } catch (Exception e) {
+        echo "Test execution failed: ${e}"
+    } finally {
+        step([$class: 'JUnitResultArchiver', testResults: testResultLocation])
+    }
+}
+
+// Runs the given body within a Timestamper wrapper on the given label.
+def timestampedNode(String label, Closure body) {
+    node(label) {
+        wrap([$class: 'TimestamperBuildWrapper']) {
+            body.call()
+        }
+    }
+}
