@@ -16,19 +16,19 @@
 	var TEMPLATE = 
 			'{{#if shareAllowed}}' +
 			'    {{#if socialShareEnabled}}' +
-			'<button class="icon-social icon-social-twitter pop-up hasTooltip"' +
+			'<button class="icon icon-social-twitter pop-up hasTooltip"' +
 			'	title="{{shareToolTipTwitter}}"' +
 			'	data-url="https://twitter.com/intent/tweet?text={{reference}}"></button>' +
-			'<button class="icon-social icon-social-facebook pop-up hasTooltip"' +
+			'<button class="icon icon-social-facebook pop-up hasTooltip"' +
 			'	title="{{shareToolTipFacebook}}"' +
 			'	data-url="https://www.facebook.com/sharer/sharer.php?u={{reference}}"></button>' +
-			'<button class="icon-social icon-social-diaspora pop-up hasTooltip"' +
+			'<button class="icon icon-social-diaspora pop-up hasTooltip"' +
 			'	title="{{shareToolTipDiaspora}}"' +
-			'	data-url="https://sharetodiaspora.github.io/?title={{message}}&url={{reference}}"></button>' +
-			'<button class="icon-social icon-social-googleplus pop-up hasTooltip"' +
+			'	data-url="https://sharetodiaspora.github.io/?url={{reference}}"></button>' +
+			'<button class="icon icon-social-googleplus pop-up hasTooltip"' +
 			'	title="{{shareToolTipGoogle}}"' +
 			'	data-url="https://plus.google.com/share?url={{reference}}"></button>' +
-			'<button class="icon-social icon-mail-grey pop-up hasTooltip"' +
+			'<button class="icon icon-mail-grey pop-up hasTooltip"' +
 			'	title="{{shareToolTipMail}}"' +
 			'	data-url="mailto:?subject=&body={{reference}}"></button>' +
 			'    {{/if}}' +
