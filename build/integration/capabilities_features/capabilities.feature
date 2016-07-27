@@ -16,7 +16,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -36,7 +36,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -75,7 +75,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -95,7 +95,7 @@ Feature: capabilities
 			| files_sharing | resharing | EMPTY |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -115,7 +115,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | EMPTY |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -135,7 +135,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | EMPTY |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -156,7 +156,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -177,7 +177,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -198,7 +198,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
@@ -221,7 +221,7 @@ Feature: capabilities
 			| files_sharing | resharing | 1 |
 			| files_sharing | federation@@@outgoing | 1 |
 			| files_sharing | federation@@@incoming | 1 |
-			| files_sharing | group_sharing         | 1 |
+			| files_sharing | group_sharing         | EMPTY |
 			| files | bigfilechunking | 1 |
 			| files | undelete | 1 |
 			| files | versioning | 1 |
