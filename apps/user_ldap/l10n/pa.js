@@ -2,6 +2,8 @@ OC.L10N.register(
     "user_ldap",
     {
     "Groups" : "ਗਰੁੱਪ",
-    "Password" : "ਪਾਸਵਰ"
+    "Help" : "ਮਦਦ",
+    "Password" : "ਪਾਸਵਰ",
+    "Back" : "ਪਿੱਛੇ"
 },
 "nplurals=2; plural=(n != 1);");

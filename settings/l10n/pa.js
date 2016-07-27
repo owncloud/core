@@ -1,6 +1,7 @@
 OC.L10N.register(
     "settings",
     {
+    "Sharing" : "ਸਾਂਝ",
     "Language changed" : "ਭਾਸ਼ਾ ਬਦਲੀ",
     "Please wait...." : "...ਉਡੀਕੋ ਜੀ",
     "Disable" : "ਬੰਦ",
@@ -14,6 +15,7 @@ OC.L10N.register(
     "__language_name__" : "__ਭਾਸ਼ਾ_ਨਾਂ__",
     "Login" : "ਲਾਗਇਨ",
     "Server address" : "ਸਰਵਰ ਐਡਰੈਸ",
+    "More" : "ਹੋਰ",
     "Cancel" : "ਰੱਦ ਕਰੋ",
     "Password" : "ਪਾਸਵਰ",
     "Change password" : "ਪਾਸਵਰਡ ਬਦਲੋ",

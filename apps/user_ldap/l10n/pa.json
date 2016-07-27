@@ -1,5 +1,7 @@
 { "translations": {
     "Groups" : "ਗਰੁੱਪ",
-    "Password" : "ਪਾਸਵਰ"
+    "Help" : "ਮਦਦ",
+    "Password" : "ਪਾਸਵਰ",
+    "Back" : "ਪਿੱਛੇ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

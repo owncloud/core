@@ -1,9 +1,11 @@
 OC.L10N.register(
     "updatenotification",
     {
+    "Update notifications" : "Opdater notifikationer",
     "{version} is available. Get more information on how to update." : "{version} er tilgængelig. Få mere information om hvordan du opdaterer.",
     "Updated channel" : "Kanal opdateret",
     "ownCloud core" : "ownCloud kerne",
+    "Update for %1$s to version %2$s is available." : "Opdatering fra %1$s til version %2$s er tilgængelig",
     "Updater" : "Updater",
     "A new version is available: %s" : "Der er en ny version tligængelig: %s",
     "Open updater" : "Åbn for opdatering",
