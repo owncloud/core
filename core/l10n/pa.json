@@ -28,11 +28,16 @@
     "Cancel" : "ਰੱਦ ਕਰੋ",
     "Error" : "ਗਲ",
     "Password" : "ਪਾਸਵਰ",
+    "Allow editing" : "ਸੰਪਾਦਨ ਦੀ ਇਜ਼ਾਜਤ",
     "Send" : "ਭੇਜੋ",
+    "create" : "ਬਣਾਓ",
+    "change" : "ਬਦਲੋ",
+    "delete" : "ਹਟਾਓ",
     "Share" : "ਸਾਂਝਾ ਕਰੋ",
     "Warning" : "ਚੇਤਾਵਨੀ",
     "Delete" : "ਹਟਾਓ",
     "Rename" : "ਨਾਂ ਬਦਲੋ",
+    "Help" : "ਮਦਦ",
     "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
     "Search" : "ਖੋਜ"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

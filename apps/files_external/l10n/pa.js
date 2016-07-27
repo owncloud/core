@@ -5,6 +5,7 @@ OC.L10N.register(
     "Password" : "ਪਾਸਵਰ",
     "ownCloud" : "ਓਵਨਕਲਾਉਡ",
     "Share" : "ਸਾਂਝਾ ਕਰੋ",
+    "Folder name" : "ਫੋਲਡਰ ਨਾਂ",
     "Delete" : "ਹਟਾਓ"
 },
 "nplurals=2; plural=(n != 1);");
