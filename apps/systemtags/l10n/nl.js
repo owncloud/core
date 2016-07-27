@@ -7,7 +7,7 @@ OC.L10N.register(
     "Please select tags to filter by" : "Selecteer tags om op te filteren",
     "No files found for the selected tags" : "Geen bestanden gevonden voor de geselecteerde tags",
     "<strong>System tags</strong> for a file have been modified" : "<strong>Systeem tags</strong> voor een bestand zijn gewijzigd",
-    "You assigned system tag %3$s" : "Je wees systeem tag %3$s toe",
+    "You assigned system tag %3$s" : "U wees systeemtag %3$s toe",
     "%1$s assigned system tag %3$s" : "%1$s wees systeem tag %3$s toe",
     "You unassigned system tag %3$s" : "Je maakte toewijzing systeem tag %3$s ongedaan",
     "%1$s unassigned system tag %3$s" : "%1$s verwijderde systeem tag %3$s",

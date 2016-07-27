@@ -54,7 +54,7 @@ OC.L10N.register(
     "You received a new remote share from %s" : "U ontving een nieuwe externe share van %s",
     "%1$s accepted remote share %2$s" : "%1$s accepteerde externe share %2$s",
     "%1$s declined remote share %2$s" : "%1$s weigerde externe share %2$s",
-    "%1$s unshared %2$s from you" : "%1$s stopte met delen van %2$s met je",
+    "%1$s unshared %2$s from you" : "%1$s stopte met delen met u van %2$s",
     "Public shared folder %1$s was downloaded" : "Openbaar gedeelde map %1$s werd gedownloaded",
     "Public shared file %1$s was downloaded" : "Openbaar gedeeld bestand %1$s werd gedownloaded",
     "You shared %1$s with %2$s" : "U deelde %1$s met %2$s",
