@@ -6,7 +6,7 @@ Feature: dav-v2
 		Given using dav path "remote.php/dav"
 		And As an "admin"
 		And user "user0" exists
-		When User "user0" moves file "/files/user0/textfile0.txt" to "/files/user0/FOLDER/textfile0.txt"
+		When User "user0" moves file "/files/user0/textfile0.txt" to "/files/user0/abcde.txt"
 		Then the HTTP status code should be "201"
 
 	Scenario: download a file with range using new endpoint
@@ -23,7 +23,7 @@ Feature: dav-v2
 		When Downloading file "welcome.txt"
 		Then The following headers should be set
 			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
-			|Content-Security-Policy|default-src 'none';|
+			|Content-Security-Policy|default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-src *; img-src * data: blob:; font-src 'self' data:; media-src *; connect-src *|
 			|X-Content-Type-Options |nosniff|
 			|X-Download-Options|noopen|
 			|X-Frame-Options|Sameorigin|

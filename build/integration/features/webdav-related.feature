@@ -184,7 +184,7 @@ Feature: webdav-related
 		When Downloading file "/welcome.txt"
 		Then The following headers should be set
 			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
-			|Content-Security-Policy|default-src 'none';|
+			|Content-Security-Policy|default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-src *; img-src * data: blob:; font-src 'self' data:; media-src *; connect-src *|
 			|X-Content-Type-Options |nosniff|
 			|X-Download-Options|noopen|
 			|X-Frame-Options|Sameorigin|
