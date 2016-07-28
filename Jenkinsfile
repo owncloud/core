@@ -1,4 +1,8 @@
 #!groovy
+/*
+ * This Jenkinsfile is intended to run on https://ci.owncloud.org and may fail anywhere else.
+ * It makes assumptions about plugins being installed, labels mapping to nodes that can build what is needed, etc.
+ */
 
 timestampedNode('SLAVE') {
     stage 'Checkout'
@@ -85,9 +89,12 @@ timestampedNode('SLAVE') {
         step([$class: 'JUnitResultArchiver', testResults: 'build/integration/output/*.xml'])
 }
 
-void executeAndReport(String testResultLocation, def body) {
+void executeAndReport(String testResultLocation, timeout = 180, def body) {
+    // We're wrapping this in a timeout - if it takes longer, kill it.
     try {
-        body.call()
+        timeout(time: timeout, unit: 'MINUTES') {
+            body.call()
+        }
     } catch (Exception e) {
         echo "Test execution failed: ${e}"
     } finally {
