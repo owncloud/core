@@ -89,10 +89,10 @@ timestampedNode('SLAVE') {
         step([$class: 'JUnitResultArchiver', testResults: 'build/integration/output/*.xml'])
 }
 
-void executeAndReport(String testResultLocation, timeout = 180, def body) {
+void executeAndReport(String testResultLocation, def body) {
     // We're wrapping this in a timeout - if it takes longer, kill it.
     try {
-        timeout(time: timeout, unit: 'MINUTES') {
+        timeout(time: 120, unit: 'MINUTES') {
             body.call()
         }
     } catch (Exception e) {
