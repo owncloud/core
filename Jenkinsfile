@@ -90,15 +90,21 @@ timestampedNode('SLAVE') {
 }
 
 void executeAndReport(String testResultLocation, def body) {
+    def failed = false
     // We're wrapping this in a timeout - if it takes longer, kill it.
     try {
         timeout(time: 120, unit: 'MINUTES') {
             body.call()
         }
     } catch (Exception e) {
+        failed = true
         echo "Test execution failed: ${e}"
     } finally {
         step([$class: 'JUnitResultArchiver', testResults: testResultLocation])
+    }
+
+    if (failed) {
+        error "Test execution failed. Terminating the build"
     }
 }
 
