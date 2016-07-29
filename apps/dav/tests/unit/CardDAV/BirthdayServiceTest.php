@@ -39,16 +39,16 @@ class BirthdayServiceTest extends TestCase {
 	/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject */
 	private $cardDav;
 	/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject */
-	private $groupPrincialBackend;
+	private $groupPrincipalBackend;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->calDav = $this->getMockBuilder('OCA\DAV\CalDAV\CalDavBackend')->disableOriginalConstructor()->getMock();
-		$this->cardDav = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
-		$this->groupPrincialBackend = $this->getMockBuilder('OCA\DAV\DAV\GroupPrincipalBackend')->disableOriginalConstructor()->getMock();
+		$this->calDav = $this->getMockBuilder(CalDavBackend::class)->disableOriginalConstructor()->getMock();
+		$this->cardDav = $this->getMockBuilder(CardDavBackend::class)->disableOriginalConstructor()->getMock();
+		$this->groupPrincipalBackend = $this->getMockBuilder(GroupPrincipalBackend::class)->disableOriginalConstructor()->getMock();
 
-		$this->service = new BirthdayService($this->calDav, $this->cardDav, $this->groupPrincialBackend);
+		$this->service = new BirthdayService($this->calDav, $this->cardDav, $this->groupPrincipalBackend);
 	}
 
 	/**
@@ -108,8 +108,8 @@ class BirthdayServiceTest extends TestCase {
 
 		/** @var BirthdayService | \PHPUnit_Framework_MockObject_MockObject $service */
 		$service = $this->getMockBuilder(BirthdayService::class)
-			->setMethods(['buildBirthdayFromContact', 'birthdayEvenChanged'])
-			->setConstructorArgs([$this->calDav, $this->cardDav, $this->groupPrincialBackend])
+			->setMethods(['buildDateFromContact', 'birthdayEvenChanged'])
+			->setConstructorArgs([$this->calDav, $this->cardDav, $this->groupPrincipalBackend])
 			->getMock();
 
 		if ($expectedOp === 'delete') {
@@ -173,7 +173,7 @@ class BirthdayServiceTest extends TestCase {
 				'{http://owncloud.org/ns}principal' => 'principals/groups/users'
 			],
 		]);
-		$this->groupPrincialBackend->expects($this->once())->method('getGroupMemberSet')
+		$this->groupPrincipalBackend->expects($this->once())->method('getGroupMemberSet')
 			->willReturn([
 				[
 					'uri' => 'principals/users/user01',
