@@ -240,7 +240,7 @@ class FederatedShareProvider implements IShareProvider {
 			$ownerAddress = $this->addressHandler->getLocalUserFederatedAddress($owner);
 			$sharedWith = $share->getSharedWith();
 			$shareWithAddress = new Address($sharedWith);
-			$send = $this->notifications->sendRemoteShare(
+			$status = $this->notifications->sendRemoteShare(
 				$shareWithAddress,
 				$ownerAddress,
 				$sharedByAddress,
@@ -249,9 +249,17 @@ class FederatedShareProvider implements IShareProvider {
 				$shareId
 			);
 
-			if ($send === false) {
-				$message_t = $this->l->t('Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
-					[$share->getNode()->getName(), $share->getSharedWith()]);
+			/* Check for failure or null return from sending and pick up an error message
+			 * if there is one coming from the remote server, otherwise use a generic one.
+			 */
+			if (!$status || $status['ocs']['meta']['status'] === 'failure') {
+				$msg = $status['ocs']['meta']['message'];
+				if (!$msg) {
+					$message_t = $this->l->t('Sharing %s failed, could not find %s, maybe the server is currently unreachable.',
+						[$share->getNode()->getName(), $share->getSharedWith()]);
+				} else {
+					$message_t = $this->l->t("Federated Sharing failed: %s", [$msg]);
+				}
 				throw new \Exception($message_t);
 			}
 		} catch (\Exception $e) {
