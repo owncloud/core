@@ -57,7 +57,7 @@ class BirthdayServiceTest extends TestCase {
 	 * @param string | null $data
 	 */
 	public function testBuildBirthdayFromContact($nullExpected, $data) {
-		$cal = $this->service->buildBirthdayFromContact($data);
+		$cal = $this->service->buildDateFromContact($data);
 		if ($nullExpected) {
 			$this->assertNull($cal);
 		} else {
