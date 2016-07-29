@@ -30,6 +30,7 @@ use OCP\AppFramework\Http;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClientService;
 use OCP\IConfig;
+use GuzzleHttp\Exception\ClientException;
 
 class Notifications {
 	const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
@@ -85,10 +86,11 @@ class Notifications {
 	 * @param string $name
 	 * @param string $remote_id
 	 *
-	 * @return bool
+	 * @return bool|array true if successful or status information
 	 *
 	 * @throws \OC\HintException
 	 * @throws \OC\ServerNotAvailableException
+	 * @throws \Exception
 	 */
 	public function sendRemoteShare(Address $shareWithAddress,
 		Address $ownerAddress,
@@ -108,7 +110,7 @@ class Notifications {
 				);
 			}
 		}
-		if ($remoteShareSuccess) {
+		if ($remoteShareSuccess === true) {
 			\OC_Hook::emit(
 				'OCP\Share',
 				'federated_share_added',
@@ -127,7 +129,7 @@ class Notifications {
 	 * @param string $remote remote address of the owner
 	 * @param string $shareWith
 	 * @param int $permission
-	 * @return bool
+	 * @return bool|array
 	 * @throws \Exception
 	 */
 	public function requestReShare($token, $id, $shareId, $remote, $shareWith, $permission) {
@@ -348,6 +350,13 @@ class Notifications {
 				$result['statusCode'] = $response->getStatusCode();
 				$result['success'] = true;
 				break;
+			} catch (ClientException $e) {
+				// this exceptions happens for http error code 40x which the server sends
+				// if any data of the request is bad, ie. the username does not exist.
+				// In that case we want to retrieve an error message.
+				$response = $e->getResponse();
+				$result['result'] = $response->getBody();
+				$try++;
 			} catch (\Exception $e) {
 				// if flat re-sharing is not supported by the remote server
 				// we re-throw the exception and fall back to the old behaviour.
@@ -367,6 +376,16 @@ class Notifications {
 		return $result;
 	}
 
+	/**
+	 * @param Address $shareWithAddress
+	 * @param Address $ownerAddress
+	 * @param Address $sharedByAddress
+	 * @param $token
+	 * @param $name
+	 * @param $remote_id
+	 * @return bool
+	 * @throws \Exception
+	 */
 	protected function sendOcmRemoteShare(Address $shareWithAddress, Address $ownerAddress, Address $sharedByAddress, $token, $name, $remote_id) {
 		$fields = [
 			'shareWith' => $shareWithAddress->getCloudId(),
@@ -395,6 +414,16 @@ class Notifications {
 		return false;
 	}
 
+	/**
+	 * @param Address $shareWithAddress
+	 * @param Address $ownerAddress
+	 * @param Address $sharedByAddress
+	 * @param $token
+	 * @param $name
+	 * @param $remote_id
+	 * @return array|bool
+	 * @throws \Exception
+	 */
 	protected function sendPreOcmRemoteShare(Address $shareWithAddress, Address $ownerAddress, Address $sharedByAddress, $token, $name, $remote_id) {
 		$fields = [
 			'shareWith' => $shareWithAddress->getUserId(),
@@ -410,11 +439,10 @@ class Notifications {
 		$url = $shareWithAddress->getHostName();
 		$result = $this->tryHttpPostToShareEndpoint($url, '', $fields);
 		$status = \json_decode($result['result'], true);
-
 		if ($result['success'] && $this->isOcsStatusOk($status)) {
 			return true;
 		}
-		return false;
+		return $status;
 	}
 
 	/**
