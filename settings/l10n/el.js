@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Εσφαλμένο συνθηματικό",
+    "The new password can not be the same as the previous one" : "Το νέο συνθηματικό δεν μπορεί να είναι το ίδιο με το προηγούμενο",
     "No user supplied" : "Δεν εισήχθη χρήστης",
     "Authentication error" : "Σφάλμα πιστοποίησης",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Παρακαλώ παρέχετε έναν κωδικό ανάκτησης διαχειριστή, διαφορετικά όλα τα δεδομένα χρήστη θα χαθούν",
@@ -80,6 +81,7 @@ OC.L10N.register(
     "Uninstall" : "Απεγκατάσταση",
     "The app has been enabled but needs to be updated. You will be redirected to the update page in 5 seconds." : "Η εφαρμογή έχει ενεργοποιηθεί αλλά χρειάζεται ενημέρωση. Θα μεταφερθείτε στη σελίδα ενημέρωσης σε 5 δευτερόλεπτα.",
     "App update" : "Ενημέρωση εφαρμογής",
+    "Disconnect" : "Αποσύνδεση",
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Προέκυψε σφάλμα. Παρακαλούμε μεταφορτώστε ένα πιστοποιητικό PEM κωδικοποιημένο κατά ASCII.",
     "Valid until {date}" : "Έγκυρο έως {date}",
     "Delete" : "Διαγραφή",
