@@ -160,7 +160,7 @@
     "days" : "Tagen",
     "Enforce expiration date" : "Ablaufdatum erzwingen",
     "Allow resharing" : "Weiterverteilen erlauben",
-    "Allow sharing with groups" : "Mit Gruppen teilen erlauben",
+    "Allow sharing with groups" : "Das Teilen mit Gruppen erlauben",
     "Restrict users to only share with users in their groups" : "Benutzer auf das Teilen innerhalb ihrer Gruppen beschränken",
     "Allow users to send mail notification for shared files to other users" : "Benutzern erlauben, E-Mail-Benachrichtigungen für freigegebene Dateien an andere Benutzer zu senden",
     "Exclude groups from sharing" : "Gruppen von Freigaben ausschließen",
