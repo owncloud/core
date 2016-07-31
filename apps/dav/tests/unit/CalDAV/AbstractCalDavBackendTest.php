@@ -61,7 +61,8 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 			->willReturn([self::UNIT_TEST_GROUP]);
 
 		$db = \OC::$server->getDatabaseConnection();
-		$this->backend = new CalDavBackend($db, $this->principal);
+		$config = \OC::$server->getConfig();
+		$this->backend = new CalDavBackend($db, $this->principal, $config);
 
 		$this->tearDown();
 	}

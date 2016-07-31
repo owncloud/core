@@ -87,11 +87,12 @@ class Application extends App {
 		$container->registerService('CalDavBackend', function($c) {
 			/** @var IAppContainer $c */
 			$db = $c->getServer()->getDatabaseConnection();
+			$config = $c->getServer()->getConfig();
 			$principal = new Principal(
 				$c->getServer()->getUserManager(),
 				$c->getServer()->getGroupManager()
 			);
-			return new CalDavBackend($db, $principal);
+			return new CalDavBackend($db, $principal, $config);
 		});
 
 		$container->registerService('BirthdayService', function($c) {
