@@ -108,6 +108,8 @@ class BirthdayService {
 
 	/**
 	 * @param string $cardData
+	 * @param string $dateField
+	 * @param string $summarySymbol
 	 * @return null|VCalendar
 	 */
 	public function buildDateFromContact($cardData, $dateField, $summarySymbol) {
