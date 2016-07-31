@@ -44,6 +44,8 @@ OC.L10N.register(
     "Unable to determine date" : "Nemožno určiť dátum",
     "This operation is forbidden" : "Táto operácia je zakázaná",
     "This directory is unavailable, please check the logs or contact the administrator" : "Priečinok je nedostupný, skontrolujte prosím logy, alebo kontaktujte správcu",
+    "Could not move \"{file}\", target exists" : "Nie je možné presunúť „{file}“, cieľ už existuje",
+    "Could not move \"{file}\"" : "Nie je možné presunúť „{file}“",
     "No entries in this folder match '{filter}'" : "V tomto priečinku nič nezodpovedá '{filter}'",
     "Name" : "Názov",
     "Size" : "Veľkosť",
