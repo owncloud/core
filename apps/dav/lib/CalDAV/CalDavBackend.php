@@ -1476,9 +1476,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	}
 
 	/**
-	* @param boolean $value
-	* @param \OCA\DAV\CalDAV\Calendar $calendar
-	*/
+	 * @param boolean $value
+	 * @param \OCA\DAV\CalDAV\Calendar $calendar
+	 */
 	public function setPublishStatus($value, $calendar) {
 		$query = $this->db->getQueryBuilder();
 		if ($value) {
