@@ -39,6 +39,7 @@ use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\DAV;
 use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\PropPatch;
 use Sabre\HTTP\URLUtil;
 use Sabre\VObject\DateTimeParser;
@@ -253,7 +254,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		return array_values($calendars);
 	}
 
-
+	/**
+	 * @return array
+	 */
 	public function getPublicCalendars() {
 		$fields = array_values($this->propertyMap);
 		$fields[] = 'a.id';
@@ -304,6 +307,22 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		$result->closeCursor();
 
 		return array_values($calendars);
+	}
+
+	/**
+	 * @param string $uri
+	 * @return Calendar
+	 * @throws NotFound
+	 */
+	public function getPublicCalendar($uri) {
+		$l10n = \OC::$server->getL10N('dav');
+		foreach ($this->getPublicCalendars() as $calendar) {
+			if ($calendar['uri'] === $uri) {
+				// TODO: maybe implement a new class PublicCalendar ???
+				return new Calendar($this, $calendar, $l10n);
+			}
+		}
+		throw new NotFound('Node with name \'' . $uri . '\' could not be found');
 	}
 
 	/**
