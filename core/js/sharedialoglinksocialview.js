@@ -18,7 +18,7 @@
 			'    {{#if socialShareEnabled}}' +
 			'<button class="icon icon-social-twitter pop-up hasTooltip"' +
 			'	title="{{shareToolTipTwitter}}"' +
-			'	data-url="https://twitter.com/intent/tweet?text={{reference}}"></button>' +
+			'	data-url="https://twitter.com/intent/tweet?url={{reference}}"></button>' +
 			'<button class="icon icon-social-facebook pop-up hasTooltip"' +
 			'	title="{{shareToolTipFacebook}}"' +
 			'	data-url="https://www.facebook.com/sharer/sharer.php?u={{reference}}"></button>' +
