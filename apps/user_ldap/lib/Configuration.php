@@ -160,7 +160,7 @@ class Configuration {
 					break;
 				case 'homeFolderNamingRule':
 					$trimmedVal = trim($val);
-					if(is_string($trimmedVal) && ($trimmedVal !== '') && strpos($val, 'attr:') === false) {
+					if($trimmedVal !== '' && strpos($val, 'attr:') === false) {
 						$val = 'attr:'.$trimmedVal;
 					}
 					break;

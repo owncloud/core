@@ -174,7 +174,7 @@ class Access extends LDAPUtility implements IUserTools {
 		$dn = $this->DNasBaseParameter($dn);
 		$rr = @$this->ldap->read($cr, $dn, $filter, array($attr));
 		if(!$this->ldap->isResource($rr)) {
-			if(is_string($attr) && ($attr !== '')) {
+			if($attr !== '') {
 				//do not throw this message on userExists check, irritates
 				\OCP\Util::writeLog('user_ldap', 'readAttribute failed for DN '.$dn, \OCP\Util::DEBUG);
 			}
@@ -1272,7 +1272,7 @@ class Access extends LDAPUtility implements IUserTools {
 		$allowEnum = $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes');
 
 		$result = $term;
-		if((!is_string($term)) || ($term === '')) {
+		if(!is_string($term) || $term === '') {
 			$result = '*';
 		} else if ($allowEnum !== 'no') {
 			$result = $term . '*';
