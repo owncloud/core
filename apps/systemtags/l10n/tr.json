@@ -9,7 +9,7 @@
     "%1$s assigned system tag %3$s" : "%1$s, %3$s sistem etiketini atadı",
     "You unassigned system tag %3$s" : "%3$s sistem etiketini kaldırdınız",
     "%1$s unassigned system tag %3$s" : "%1$s, %3$s sistem etiket atamasını kaldırdı",
-    "You created system tag %2$s" : "%2$s sistem etkiketini oluşturdunuz",
+    "You created system tag %2$s" : "%2$s sistem etiketini oluşturdunuz",
     "%1$s created system tag %2$s" : "%1$s, %2$s sistem etiketini oluşturdu",
     "You deleted system tag %2$s" : "%2$s sistem etiketini sildiniz",
     "%1$s deleted system tag %2$s" : "%1$s, %2$s sistem etiketini sildi",
