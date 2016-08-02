@@ -132,7 +132,7 @@ class Connection extends LDAPUtility {
 		$this->configuration->$name = $value;
 		$after = $this->configuration->$name;
 		if($before !== $after) {
-			if((is_string($this->configID)) && ($this->configID !== '')) {
+			if($this->configID !== '') {
 				$this->configuration->saveConfiguration();
 			}
 			$this->validateConfiguration();
@@ -422,8 +422,10 @@ class Connection extends LDAPUtility {
 		//combinations
 		$agent = $this->configuration->ldapAgentName;
 		$pwd = $this->configuration->ldapAgentPassword;
-		if((((!is_string($agent)) || ($agent === ''))  && ((is_string($pwd)) && ($pwd !== '')))
-			|| (((is_string($agent)) && ($agent !== '')) && ((!is_string($pwd)) || ($pwd === '')))) {
+		if(
+			($agent === ''  && $pwd !== '')
+			|| ($agent !== '' && $pwd === '')
+		) {
 			\OCP\Util::writeLog('user_ldap',
 								$errorStr.'either no password is given for the'.
 								'user agent or a password is given, but not an'.
@@ -564,7 +566,7 @@ class Connection extends LDAPUtility {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	private function doConnect($host, $port) {
-		if((!is_string($host) || ($host === ''))) {
+		if($host === '') {
 			return false;
 		}
 		$this->ldapConnectionRes = $this->ldap->connect($host, $port);

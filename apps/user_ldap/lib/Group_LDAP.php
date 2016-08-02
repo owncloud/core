@@ -356,9 +356,6 @@ class Group_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		if($groupID === false) {
 			throw new \Exception('Not a valid group');
 		}
-		if(!is_string($search)) {
-			throw new \InvalidArgumentException('String expected as search parameter');
-		}
 
 		$filterParts = [];
 		$filterParts[] = $this->access->getFilterForUserCount();
@@ -716,7 +713,7 @@ class Group_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			return false;
 		}
 
-		if(is_string($search) && $search === '') {
+		if($search === '') {
 			$groupUsers = count($members) + $primaryUserCount;
 			$this->access->connection->writeToCache($cacheKey, $groupUsers);
 			return $groupUsers;

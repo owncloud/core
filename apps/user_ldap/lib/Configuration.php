@@ -308,7 +308,7 @@ class Configuration {
 			foreach($value as $key => $val) {
 				if(is_string($val)) {
 					$val = trim($val);
-					if((is_string($val)) && ($val !== '')) {
+					if($val !== '') {
 						//accidental line breaks are not wanted and can cause
 						// odd behaviour. Thus, away with them.
 						$finalValue[] = $val;

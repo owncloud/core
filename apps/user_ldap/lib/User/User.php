@@ -172,13 +172,13 @@ class User {
 		$displayName = $displayName2 = '';
 		$attr = strtolower($this->connection->ldapUserDisplayName);
 		if(isset($ldapEntry[$attr])) {
-			$displayName = $ldapEntry[$attr][0];
+			$displayName = strval($ldapEntry[$attr][0]);
 		}
 		$attr = strtolower($this->connection->ldapUserDisplayName2);
 		if(isset($ldapEntry[$attr])) {
-			$displayName2 = $ldapEntry[$attr][0];
+			$displayName2 = strval($ldapEntry[$attr][0]);
 		}
-		if((is_string($displayName)) && ($displayName !== '')) {
+		if($displayName !== '') {
 			$this->composeAndStoreDisplayName($displayName);
 			$this->access->cacheUserDisplayName(
 				$this->getUsername(),
@@ -250,10 +250,10 @@ class User {
 	 * @throws \Exception
 	 */
 	public function getHomePath($valueFromLDAP = null) {
-		$path = $valueFromLDAP;
+		$path = strval($valueFromLDAP);
 		$attr = null;
 
-		if(   is_null($path)
+		if(   is_null($valueFromLDAP)
 		   && strpos($this->access->connection->homeFolderNamingRule, 'attr:') === 0
 		   && $this->access->connection->homeFolderNamingRule !== 'attr:')
 		{
@@ -265,7 +265,7 @@ class User {
 			}
 		}
 
-		if((is_string($path)) && ($path !== '')) {
+		if($path !== '') {
 			//if attribute's value is an absolute path take this, otherwise append it to data dir
 			//check for / at the beginning or pattern c:\ resp. c:/
 			if(   '/' !== $path[0]
@@ -382,7 +382,8 @@ class User {
 	 * @returns string the effective display name
 	 */
 	public function composeAndStoreDisplayName($displayName, $displayName2 = '') {
-		if((is_string($displayName2)) && ($displayName2 !== '')) {
+		$displayName2 = strval($displayName2);
+		if($displayName2 !== '') {
 			$displayName .= ' (' . $displayName2 . ')';
 		}
 		$this->store('displayName', $displayName);
@@ -421,20 +422,20 @@ class User {
 		if($this->wasRefreshed('email')) {
 			return;
 		}
-		$email = $valueFromLDAP;
+		$email = strval($valueFromLDAP);
 		if(is_null($valueFromLDAP)) {
 			$emailAttribute = $this->connection->ldapEmailAttribute;
-			if((is_string($emailAttribute)) && ($emailAttribute !== '')) {
+			if($emailAttribute !== '') {
 				$aEmail = $this->access->readAttribute($this->dn, $emailAttribute);
 				if(is_array($aEmail) && (count($aEmail) > 0)) {
-					$email = $aEmail[0];
+					$email = strval($aEmail[0]);
 				}
 			}
 		}
-		if(!is_null($email)) {
+		if($email !== '') {
 			$user = $this->userManager->get($this->uid);
 			if (!is_null($user)) {
-				$currentEmail = $user->getEMailAddress();
+				$currentEmail = strval($user->getEMailAddress());
 				if ($currentEmail !== $email) {
 					$user->setEMailAddress($email);
 				}
@@ -459,7 +460,7 @@ class User {
 
 		if(is_null($valueFromLDAP)) {
 			$quotaAttribute = $this->connection->ldapQuotaAttribute;
-			if((is_string($quotaAttribute)) && ($quotaAttribute !== '')) {
+			if($quotaAttribute !== '') {
 				$aQuota = $this->access->readAttribute($this->dn, $quotaAttribute);
 				if($aQuota && (count($aQuota) > 0)) {
 					$quota = $aQuota[0];
