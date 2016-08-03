@@ -39,6 +39,7 @@ class Classification implements IRepairStep {
 	 * Classification constructor.
 	 *
 	 * @param CalDavBackend $calDavBackend
+	 * @param IDBConnection $connection
 	 */
 	public function __construct(CalDavBackend $calDavBackend, IDBConnection $connection) {
 		$this->calDavBackend = $calDavBackend;
