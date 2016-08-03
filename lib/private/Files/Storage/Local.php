@@ -173,7 +173,7 @@ class Local extends \OC\Files\Storage\Common {
 			return false;
 		}
 		if (PHP_INT_SIZE === 4) {
-			return exec ('stat -c %Y '. escapeshellarg ($fullPath));
+			return (int) exec ('stat -c %Y '. escapeshellarg ($fullPath));
 		}
 		return filemtime($fullPath);
 	}
