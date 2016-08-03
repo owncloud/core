@@ -365,7 +365,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			$calendar[$xmlName] = $row[$dbName];
 		}
 
-		return array_values($calendar);
+		return $calendar;
 
 	}
 
