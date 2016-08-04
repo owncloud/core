@@ -112,18 +112,26 @@ try {
 		$endTime = time() + 14 * 60;
 
 		$executedJobs = [];
+		$lockingProvider = \OC::$server->getLockingProvider();
 		while ($job = $jobList->getNext()) {
 			if (isset($executedJobs[$job->getId()])) {
 				$jobList->unlockJob($job);
 				break;
 			}
+			$path = $instanceId."_cron_".$job->getId();
+			try {
+				$lockingProvider->acquireLock($path, \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE);
 
-			$logger->debug('Run job with ID ' . $job->getId(), ['app' => 'cron']);
-			$job->execute($jobList, $logger);
-			$logger->debug('Finished job with ID ' . $job->getId(), ['app' => 'cron']);
+				$logger->debug('Run job with ID ' . $job->getId(), ['app' => 'cron']);
+				$job->execute($jobList, $logger);
+				$logger->debug('Finished job with ID ' . $job->getId(), ['app' => 'cron']);
 
-			$jobList->setLastJob($job);
-			$executedJobs[$job->getId()] = true;
+				$jobList->setLastJob($job);
+				$executedJobs[$job->getId()] = true;
+				$lockingProvider->releaseLock($path, \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE);
+			} catch (\OCP\Lock\LockedException $e) {
+				$logger->debug('Could not get lock for job with ID ' . $job->getId().'. Maybe already running?.', ['app' => 'cron']);
+			}
 			unset($job);
 
 			if (time() > $endTime) {
@@ -138,11 +146,19 @@ try {
 			OC_JSON::error(array('data' => array('message' => 'Backgroundjobs are using system cron!')));
 		} else {
 			// Work and success :-)
+			$lockingProvider = \OC::$server->getLockingProvider();
 			$jobList = \OC::$server->getJobList();
 			$job = $jobList->getNext();
 			if ($job != null) {
-				$job->execute($jobList, $logger);
-				$jobList->setLastJob($job);
+				$path = $instanceId."_cron_".$job->getId();
+				try {
+					$lockingProvider->acquireLock($path, \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE);
+					$job->execute($jobList, $logger);
+					$jobList->setLastJob($job);
+					$lockingProvider->releaseLock($path, \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE);
+				} catch (\OCP\Lock\LockedException $e) {
+					$logger->debug('Could not get lock for job with ID ' . $job->getId().'. Maybe locked in the meantime?.', ['app' => 'cron']);
+				}
 			}
 			OC_JSON::success();
 		}
