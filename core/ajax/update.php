@@ -10,6 +10,12 @@ if (OC::checkUpgrade(false)) {
 	$l = new \OC_L10N('core');
 	$eventSource = new OC_EventSource();
 	$updater = new \OC\Updater(\OC_Log::$object);
+
+	if (\OC::$server->getConfig()->getSystemValue('update.skip-migration-test', false)) {
+		$eventSource->send('success', (string)$l->t('Migration tests are skipped - "update.skip-migration-test" is activated in config.php'));
+		$updater->setSimulateStepEnabled(false);
+	}
+
 	$updater->listen('\OC\Updater', 'maintenanceStart', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Turned on maintenance mode'));
 	});
