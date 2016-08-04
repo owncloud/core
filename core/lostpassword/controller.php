@@ -84,7 +84,7 @@ class Controller {
 
 	public static function resetPassword($args) {
 		if (self::checkToken($args['user'], $args['token'])) {
-			if (isset($_POST['password'])) {
+			if (isset($_POST['password']) && isset($_POST['confirm-password']) && $_POST['password'] === $_POST['confirm-password']) {
 				if (\OC_User::setPassword($args['user'], $_POST['password'])) {
 					\OC_Preferences::deleteKey($args['user'], 'owncloud', 'lostpassword');
 					\OC_User::unsetMagicInCookie();
