@@ -213,6 +213,10 @@ class Server {
 						$userFolder
 					));
 				}
+
+				//TODO:verify if this is a proper place for the plugin
+				$this->server->addPlugin(
+					new \OCA\DAV\Files\BundlingPlugin($view));
 			}
 		});
 	}

@@ -232,7 +232,7 @@ class File extends Node implements IFile {
 		return '"' . $this->info->getEtag() . '"';
 	}
 
-	private function getPartFileBasePath($path) {
+	protected function getPartFileBasePath($path) {
 		$partFileInStorage = \OC::$server->getConfig()->getSystemValue('part_file_in_storage', true);
 		if ($partFileInStorage) {
 			return $path;
@@ -244,7 +244,7 @@ class File extends Node implements IFile {
 	/**
 	 * @param string $path
 	 */
-	private function emitPreHooks($exists, $path = null) {
+	protected function emitPreHooks($exists, $path = null) {
 		if (is_null($path)) {
 			$path = $this->path;
 		}
@@ -272,7 +272,7 @@ class File extends Node implements IFile {
 	/**
 	 * @param string $path
 	 */
-	private function emitPostHooks($exists, $path = null) {
+	protected function emitPostHooks($exists, $path = null) {
 		if (is_null($path)) {
 			$path = $this->path;
 		}
@@ -502,7 +502,7 @@ class File extends Node implements IFile {
 	 * @param \OCP\Files\Storage $storage
 	 * @return bool true if the storage needs part file handling
 	 */
-	private function needsPartFile($storage) {
+	protected function needsPartFile($storage) {
 		// TODO: in the future use ChunkHandler provided by storage
 		// and/or add method on Storage called "needsPartFile()"
 		return !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage') &&
@@ -516,7 +516,7 @@ class File extends Node implements IFile {
 	 *
 	 * @throws \Sabre\DAV\Exception
 	 */
-	private function convertToSabreException(\Exception $e) {
+	protected function convertToSabreException(\Exception $e) {
 		if ($e instanceof \Sabre\DAV\Exception) {
 			throw $e;
 		}
