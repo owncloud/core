@@ -262,16 +262,24 @@ class Cache {
 
 			$data['path'] = $file;
 			$data['parent'] = $this->getParentId($file);
-			$data['name'] = basename($file);
 
 			list($queryParts, $params) = $this->buildParts($data);
 			$queryParts[] = '`storage`';
 			$params[] = $this->numericId;
-			$valuesPlaceholder = array_fill(0, count($queryParts), '?');
+			$types = array_fill(0, count($queryParts), null);
+			
+			//add name with explicit type 'text'
+			$data['name'] = basename($file);
+			$queryParts[] = '`name`';
+			$params[] = basename($file);
+			$types[] = 'text';
 
-			\OC_DB::executeAudited('
+			$valuesPlaceholder = array_fill(0, count($queryParts), '?');
+			
+			\OC_DB::executeAudited(array('sql' => '
 				INSERT INTO `*PREFIX*filecache`(' . implode(', ', $queryParts) . ')
 				VALUES(' . implode(', ', $valuesPlaceholder) . ')',
+				'types'=>$types),
 				$params
 			);
 
