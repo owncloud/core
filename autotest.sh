@@ -313,6 +313,18 @@ function execute_tests {
 		tests/objectstore/stop-swift-ceph.sh
 	fi
 
+	echo "Warnings in owncloud.log:"
+	grep '"level":2' "$DATADIR/owncloud.log" || echo "Nothing found"
+	echo "Errors in owncloud.log:"
+	grep '"level":3' "$DATADIR/owncloud.log" || echo "Nothing found"
+	echo "Fatals in owncloud.log:"
+	grep '"level":4' "$DATADIR/owncloud.log" || echo "Nothing found"
+
+	warnings=$(grep '"level":2' "$DATADIR/owncloud.log" | wc -l)
+	errors=$(grep '"level":3' "$DATADIR/owncloud.log" | wc -l)
+	fatals=$(grep '"level":4' "$DATADIR/owncloud.log" | wc -l)
+	echo "$warnings warnings, $errors errors, $fatals fatals"
+
 	if [ ! -z "$DOCKER_CONTAINER_ID" ] ; then
 		echo "Kill the docker $DOCKER_CONTAINER_ID"
 		docker stop $DOCKER_CONTAINER_ID
