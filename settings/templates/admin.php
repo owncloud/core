@@ -68,12 +68,22 @@ if ($_['mail_smtpmode'] == 'qmail') {
 	<h2><?php p($l->t('Security & setup warnings'));?></h2>
 	<ul>
 <?php
+
 // is php setup properly to query system environment variables like getenv('PATH')
 if ($_['getenvServerNotWorking']) {
 ?>
 	<li>
 		<?php p($l->t('php does not seem to be setup properly to query system environment variables. The test with getenv("PATH") only returns an empty response.')); ?><br>
 		<?php print_unescaped($l->t('Please check the <a target="_blank" rel="noreferrer" href="%s">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm.', link_to_docs('admin-php-fpm'))); ?>
+	</li>
+<?php
+}
+
+// is the php module "pcntl" available (used in eg occ files:scan command to interrtupt scans) 
+if ($_['phpModulePcntlAvailable']) {
+?>
+	<li>
+		<?php print_unescaped($l->t('The php module <em>pcntl</em> is not available for command line processing. Some occ commands are therefore not user interruptable by pressing <em>ctrl-c</em>. Please check if the <em>pcntl</em> module/extension has been disabled for the command line or is missing at all. For a quick check, type on the command line <em>php -m | grep -i pcntl</em>. If you do not get a result, follow the php guidelines of your server to set it up and/or enable it.')); ?>
 	</li>
 <?php
 }

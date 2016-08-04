@@ -155,6 +155,11 @@ $template->assign('cronErrors', $appConfig->getValue('core', 'cronErrors'));
 $path = getenv('PATH');
 $template->assign('getenvServerNotWorking', empty($path));
 
+// warn if the php module pcntl is missing for command line processing
+// not using function_exists('pcntl_signal') as this check would not run on the command line...
+$php_pcntl = exec('php -m | grep -i pcntl');
+$template->assign('phpModulePcntlAvailable', empty($php_pcntl));
+
 // warn if Windows is used
 $template->assign('WindowsWarning', OC_Util::runningOnWindows());
 
