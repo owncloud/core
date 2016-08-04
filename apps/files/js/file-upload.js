@@ -699,6 +699,9 @@ OC.Upload = {
 
 		// warn user not to leave the page while upload is in progress
 		$(window).on('beforeunload', function(e) {
+			setTimeout(function() {
+				$('#apps ul li a').removeClass('app-loading');
+			}, 500);
 			if (OC.Upload.isProcessing()) {
 				return t('files', 'File upload is in progress. Leaving the page now will cancel the upload.');
 			}
