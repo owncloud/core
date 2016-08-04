@@ -189,8 +189,9 @@ class Session implements Emitter, \OCP\IUserSession {
 	public function setMagicInCookie($username, $token) {
 		$secure_cookie = \OC_Config::getValue("forcessl", false); //TODO: DI for cookies and OC_Config
 		$expires = time() + \OC_Config::getValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		$session_expires = time() + \OC_Config::getValue('session_lifetime', 60 * 60 * 24);
 		setcookie("oc_username", $username, $expires, \OC::$WEBROOT, '', $secure_cookie);
-		setcookie("oc_token", $token, $expires, \OC::$WEBROOT, '', $secure_cookie, true);
+		setcookie("oc_token", $token, $session_expires, \OC::$WEBROOT, '', $secure_cookie, true);
 		setcookie("oc_remember_login", true, $expires, \OC::$WEBROOT, '', $secure_cookie);
 	}
 
