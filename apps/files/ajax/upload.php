@@ -16,6 +16,7 @@
  * @author TheSFReader <TheSFReader@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Timothy Lee <grumpy@paragoncds.com>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -184,8 +185,13 @@ if (\OC\Files\Filesystem::isValidPath($dir) === true) {
 			$returnedDir = $dir . $relativePath;
 		}
 		$returnedDir = \OC\Files\Filesystem::normalizePath($returnedDir);
+		
+		$officialFileName = $files['name'][$i];
+		$stringFileName = explode(".", $officialFileName);
+		$allowedExts = array("png", "jpg", "jpeg", "gif", "webm"); //update with the types of files you want to allow.
+		$listExtensions = listAllowedExts($allowedExts);
 
-
+		if (in_array($stringFileName[1], $allowedExts)) {
 		$exists = \OC\Files\Filesystem::file_exists($target);
 		if ($exists) {
 			$updatable = \OC\Files\Filesystem::isUpdatable($target);
@@ -241,6 +247,9 @@ if (\OC\Files\Filesystem::isValidPath($dir) === true) {
 				$result[] = $data;
 			}
 		}
+		} else {
+			$error = $l->t('Upload failed. Invalid file extension. You are only allowed to upload: '.$listExtensions.' files.');	
+		}
 	}
 } else {
 	$error = $l->t('Invalid directory.');
@@ -250,4 +259,20 @@ if ($error === false) {
 	OCP\JSON::encodedPrint($result);
 } else {
 	OCP\JSON::error(array(array('data' => array_merge(array('message' => $error, 'code' => $errorCode), $storageStats))));
+}
+
+function listAllowedExts($allowedExts) {
+	$index = 0;
+	$indexMax = count($allowedExts)-1;
+	foreach ($allowedExts as $value) {
+		if($index == 0) {
+			$allowedExtsInfo .= $value;
+		} else if($index < $indexMax) {
+			$allowedExtsInfo .= ", ".$value;
+		} else if($index == $indexMax) {
+			$allowedExtsInfo .= " and ".$value;
+		}
+		$index++;
+	}
+	return $allowedExtsInfo;
 }
