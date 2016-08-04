@@ -168,7 +168,7 @@ class Local extends \OC\Files\Storage\Common {
 
 	public function filemtime($path) {
 		clearstatcache($this->getSourcePath($path));
-		return $this->file_exists($path) ? filemtime($this->getSourcePath($path)) : false;
+		return $this->file_exists($path) ? exec ('stat -c %Y '. escapeshellarg ($this->getSourcePath($path))) : false;
 	}
 
 	public function touch($path, $mtime = null) {
