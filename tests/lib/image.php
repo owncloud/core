@@ -72,6 +72,20 @@ class Test_Image extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('', $img->mimeType());
 	}
 
+	public function testImageType() {
+		$img = new \OC_Image(OC::$SERVERROOT.'/tests/data/testimage.png');
+		$this->assertEquals(IMAGETYPE_PNG, $img->imageType());
+		
+		$img = new \OC_Image(file_get_contents(OC::$SERVERROOT.'/tests/data/testimage.jpg'));
+		$this->assertEquals(IMAGETYPE_JPEG, $img->imageType());
+
+		$img = new \OC_Image(base64_encode(file_get_contents(OC::$SERVERROOT.'/tests/data/testimage.gif')));
+		$this->assertEquals(IMAGETYPE_GIF, $img->imageType());
+
+		$img = new \OC_Image(null);
+		$this->assertEquals('', $img->mimeType());
+	}
+
 	public function testWidth() {
 		$img = new \OC_Image(OC::$SERVERROOT.'/tests/data/testimage.png');
 		$this->assertEquals(128, $img->width());
