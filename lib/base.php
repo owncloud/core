@@ -419,15 +419,10 @@ class OC {
 		$sessionName = OC_Util::getInstanceId();
 
 		try {
-			// Allow session apps to create a custom session object
-			$useCustomSession = false;
-			$session = self::$server->getSession();
-			OC_Hook::emit('OC', 'initSession', array('session' => &$session, 'sessionName' => &$sessionName, 'useCustomSession' => &$useCustomSession));
-			if (!$useCustomSession) {
-				// set the session name to the instance id - which is unique
-				$session = new \OC\Session\Internal($sessionName);
-			}
+			// set the session name to the instance id - which is unique
+			$session = new \OC\Session\Internal($sessionName);
 
+			// Wrap the crypto wrapper
 			$cryptoWrapper = \OC::$server->getSessionCryptoWrapper();
 			$session = $cryptoWrapper->wrapSession($session);
 			self::$server->setSession($session);
