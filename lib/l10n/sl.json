@@ -78,7 +78,7 @@
     "Sharing %s failed, because the user %s does not exist" : "Nastavljanje souporabe %s je spodletelo, ker uporabnik %s ne obstaja.",
     "Sharing %s failed, because the user %s is not a member of any groups that %s is a member of" : "Nastavljanje souporabe %s je spodletelo, ker uporabnik %s ni član nobene skupine, v kateri je tudi uporabnik %s.",
     "Sharing %s failed, because this item is already shared with %s" : "Nastavljanje souporabe %s je spodletela, ker je ima uporabnik %s predmet že v souporabi.",
-    "Sharing %s failed, because this item is already shared with user %s" : "Nastavljanje souporabe %s je spodletelo, ker je predmet že v souporabi z uporabnikom %s.",
+    "Sharing %s failed, because this item is already shared with user %s" : "Nastavljanje souporabe %s je spodletelo, ker je predmet z uporabnikom %s že v souporabi.",
     "Sharing %s failed, because the group %s does not exist" : "Nastavljanje souporabe %s je spodletelo, ker je skupina %s ne obstaja.",
     "Sharing %s failed, because %s is not a member of the group %s" : "Nastavljanje souporabe %s je spodletelo, ker uporabnik %s ni član skupine %s.",
     "You need to provide a password to create a public link, only protected links are allowed" : "Navesti je treba geslo za ustvarjanje javne povezave, saj so dovoljene le zaščitene.",
