@@ -573,7 +573,7 @@ class Group_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			$this->access->connection->ldapGroupMemberAssocAttr.'='.$dn
 		));
 		$groups = $this->access->fetchListOfGroups($filter,
-			array($this->access->connection->ldapGroupDisplayName, 'dn'));
+			array($this->access->connection->ldapGroupDisplayName, 'dn'), 500);
 		if (is_array($groups)) {
 			foreach ($groups as $groupobj) {
 				$groupDN = $groupobj['dn'][0];
