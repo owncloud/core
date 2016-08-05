@@ -11,7 +11,6 @@ OC.L10N.register(
     "Email saved" : "បាន​រក្សា​ទុក​អ៊ីមែល",
     "Sharing" : "ការ​ចែក​រំលែក",
     "External Storage" : "ឃ្លាំងផ្ទុក​ខាងក្រៅ",
-    "Cron" : "Cron",
     "Log" : "Log",
     "Language changed" : "បាន​ប្ដូរ​ភាសា",
     "Invalid request" : "សំណើ​មិន​ត្រឹម​ត្រូវ",
