@@ -255,7 +255,7 @@ OC.L10N.register(
     "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Spodaj so navedeni spletni brskalniki in drugi programi, ki so trenutno povezani z ownCloud.",
     "Browser" : "Brskalnik",
     "Most recent activity" : "Zadnja dejavnost",
-    "You've linked these apps." : "Vi ste povezali te aplikacije.",
+    "You've linked these apps." : "Povezali ste povezali te programe.",
     "Name" : "Ime",
     "An app password is a passcode that gives an app or device permissions to access your %s account." : "Programsko geslo je geslo, s katerim se program lahko poveže v račun %s.",
     "App name" : "Naziv programa",
