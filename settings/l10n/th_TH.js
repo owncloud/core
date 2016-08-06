@@ -278,6 +278,7 @@ OC.L10N.register(
     "Most recent activity" : "กิจกรรมล่าสุด",
     "You've linked these apps." : "คุณได้เชื่อมโยงแอพพลิเคชันเหล่านี้",
     "Name" : "ชื่อ",
+    "An app password is a passcode that gives an app or device permissions to access your %s account." : "รหัสผ่านของแอพฯ เป็นรหัสผ่านที่จะทำให้แอพฯหรืออุปกรณ์มีสิทธิ์ในการเข้าถึงบัญชี %s ของคุณ",
     "App name" : "ชื่อแอพฯ",
     "Create new app password" : "สร้างรหัสผ่านแอพฯใหม่",
     "Use the credentials below to configure your app or device." : "ใช้ข้อมูลประจำตัวด้านล่างนี้เพื่อกำหนดค่าแอพฯหรืออุปกรณ์ของคุณ",

@@ -152,6 +152,8 @@
     "Expiration" : "期限切れ",
     "Expiration date" : "有効期限",
     "Choose a password for the public link" : "URLによる共有のパスワードを入力",
+    "Copied!" : "コピーしました",
+    "Not supported!" : "サポートされていません",
     "Resharing is not allowed" : "再共有は許可されていません",
     "Share link" : "URLで共有",
     "Link" : "リンク",
