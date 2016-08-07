@@ -50,6 +50,8 @@ OC.L10N.register(
     "Could not move \"{file}\", target exists" : "Kunne ikke flytte \"{file}\" - der findes allerede en fil med dette navn",
     "Could not move \"{file}\"" : "Kunne ikke flytte \"{file}\"",
     "{newName} already exists" : "{newName} eksistere allerede",
+    "Could not create file \"{file}\"" : "Kunne ikke oprette filen \"{file}\"",
+    "Could not create file \"{file}\" because it already exists" : "Kunne ikke oprette filen \"{file}\", fordi den allerede findes",
     "Error deleting file \"{fileName}\"." : "Fejl under sletning af filen \"{fileName}\"",
     "No entries in this folder match '{filter}'" : "Der er ingen poster i denne mappe, der matcher '{filter}'",
     "Name" : "Navn",
