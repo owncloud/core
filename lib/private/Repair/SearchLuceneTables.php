@@ -67,7 +67,7 @@ class SearchLuceneTables implements IRepairStep {
 						FROM `*PREFIX*lucene_status`
 						GROUP BY `fileid`
 						HAVING count(`fileid`) > 1
-					) AS `mysqlerr1093hack`
+					) `mysqlerr1093hack`
 				)');
 			$query->execute();
 		} else {
