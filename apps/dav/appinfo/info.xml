@@ -20,12 +20,4 @@
 	<background-jobs>
 		<job>OCA\DAV\CardDAV\Sync\SyncJob</job>
 	</background-jobs>
-	<repair-steps>
-		<post-migration>
-			<job>OCA\DAV\Migration\Classification</job>
-		</post-migration>
-		<live-migration>
-			<job>OCA\DAV\Migration\GenerateBirthdays</job>
-		</live-migration>
-	</repair-steps>
 </info>
