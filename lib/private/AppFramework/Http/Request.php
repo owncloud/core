@@ -779,7 +779,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
      * @return string
      */
     private function getRawScriptName() {
-        if (strpos($this->server['SCRIPT_NAME'], '.php') !== false) {
+        $name = $this->server['SCRIPT_NAME'];
+        if (strpos($name, '.php') !== false) {
             $name = DIRECTORY_SEPARATOR . basename($this->server['SCRIPT_FILENAME']);
         }
         return $name;
