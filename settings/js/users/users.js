@@ -669,7 +669,6 @@ $(document).ready(function () {
 							{username: uid, password: $(this).val(), recoveryPassword: recoveryPasswordVal},
 							function (result) {
 								if(result.status == 'success') {
-									OC.Notification.showTemporary(t('admin', 'User password updated'));
 								} else {
 									OC.Notification.showTemporary(t('admin', result.data.message));
 								}
