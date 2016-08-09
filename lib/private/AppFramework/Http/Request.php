@@ -594,7 +594,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	public function getRequestUri() {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
-			$uri = $this->getScriptName() . substr($uri, strlen($this->server['SCRIPT_NAME']));
+			$uri = $this->getScriptName() . substr($uri, strlen($this->getRawScriptName()));
 		}
 		return $uri;
 	}
@@ -618,7 +618,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$requestUri = substr($requestUri, 0, $pos);
 		}
 
-		$scriptName = $this->server['SCRIPT_NAME'];
+		$scriptName = $this->getRawScriptName();
 		$pathInfo = $requestUri;
 
 		// strip off the script name's dir and file name
@@ -674,7 +674,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string the script name
 	 */
 	public function getScriptName() {
-		$name = $this->server['SCRIPT_NAME'];
+		$name = $this->getRawScriptName();
 		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
 			// FIXME: This code is untestable due to __DIR__, also that hardcoded path is really dangerous
@@ -770,5 +770,18 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 		return null;
 	}
-
+    
+    /**
+     * Fixes major bug in Apache 2.4 / PHP FPM where script_name contains full
+     * uri not just script name e.g /index.php/app/files instead of expected /index.php 
+     * @see https://bugs.php.net/bug.php?id=65641
+     * @param string $name
+     * @return string
+     */
+    private function getRawScriptName() {
+        if (strpos($this->server['SCRIPT_NAME'], '.php') !== false) {
+            $name = DIRECTORY_SEPARATOR . basename($this->server['SCRIPT_FILENAME']);
+        }
+        return $name;
+    }
 }
