@@ -1089,6 +1089,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => '/foo.php',
 					'SCRIPT_NAME' => '/var/www/index.php',
+                    'SCRIPT_FILENAME' => '/var/www/index.php',
 				]
 			],
 			$this->secureRandom,
@@ -1102,7 +1103,7 @@ class RequestTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException \Exception
-	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/var/www/index.php')
+	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script 'index.php')
 	 */
 	public function testGetRawPathInfoNotProcessible() {
 		$request = new Request(
@@ -1110,6 +1111,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => '/foo.php',
 					'SCRIPT_NAME' => '/var/www/index.php',
+                    'SCRIPT_FILENAME' => '/var/www/index.php',
 				]
 			],
 			$this->secureRandom,
@@ -1119,6 +1121,30 @@ class RequestTest extends \Test\TestCase {
 		);
 
 		$request->getRawPathInfo();
+	}
+    
+	/**
+	 * @dataProvider genericPathInfoProvider
+	 * @param string $requestUri
+	 * @param string $scriptName
+	 * @param string $expected
+	 */
+	public function testGetPathInfoWhereScriptNameFpmInvalid($requestUri, $scriptName, $expected) {
+		$request = new Request(
+			[
+				'server' => [
+					'REQUEST_URI' => $requestUri,
+					'SCRIPT_NAME' => $scriptName,
+                    'SCRIPT_FILENAME' => '/var/www/index.php',
+				]
+			],
+			$this->secureRandom,
+			$this->config,
+			$this->csrfTokenManager,
+			$this->stream
+		);
+
+		$this->assertSame($expected, $request->getPathInfo());
 	}
 
 	/**
@@ -1133,6 +1159,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+                    'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1156,6 +1183,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+                    'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1179,6 +1207,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+                    'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1202,6 +1231,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+					'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1297,6 +1327,7 @@ class RequestTest extends \Test\TestCase {
 					'server' => [
 						'REQUEST_URI' => '/test.php/some/PathInfo',
 						'SCRIPT_NAME' => '/test.php',
+						'SCRIPT_FILENAME' => '/var/www/test.php',
 					]
 				],
 				$this->secureRandom,
