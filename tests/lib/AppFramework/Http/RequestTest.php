@@ -1122,30 +1122,6 @@ class RequestTest extends \Test\TestCase {
 
 		$request->getRawPathInfo();
 	}
-    
-	/**
-	 * @dataProvider genericPathInfoProvider
-	 * @param string $requestUri
-	 * @param string $scriptName
-	 * @param string $expected
-	 */
-	public function testGetPathInfoWhereScriptNameFpmInvalid($requestUri, $scriptName, $expected) {
-		$request = new Request(
-			[
-				'server' => [
-					'REQUEST_URI' => $requestUri,
-					'SCRIPT_NAME' => $scriptName,
-                    'SCRIPT_FILENAME' => '/var/www/index.php',
-				]
-			],
-			$this->secureRandom,
-			$this->config,
-			$this->csrfTokenManager,
-			$this->stream
-		);
-
-		$this->assertSame($expected, $request->getPathInfo());
-	}
 
 	/**
 	 * @dataProvider genericPathInfoProvider
@@ -1252,7 +1228,7 @@ class RequestTest extends \Test\TestCase {
 			['/index.php/apps/files/', 'index.php', '/apps/files/'],
 			['/index.php/apps/files/../&amp;/&?someQueryParameter=QueryParam', 'index.php', '/apps/files/../&amp;/&'],
 			['/remote.php/漢字編碼方法 / 汉字编码方法', 'remote.php', '/漢字編碼方法 / 汉字编码方法'],
-			['///removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
+			['/remote.php/removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
 			['/', '/', ''],
 			['', '', ''],
 		];
