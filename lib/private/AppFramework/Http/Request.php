@@ -623,12 +623,12 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 		// strip off the script name's dir and file name
 		// FIXME: Sabre does not really belong here
-		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($scriptName);
+		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->server['SCRIPT_NAME']);
 		if (!empty($path)) {
 			if($path === $pathInfo || strpos($pathInfo, $path.'/') === 0) {
 				$pathInfo = substr($pathInfo, strlen($path));
 			} else {
-				throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
+				throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$name')");
 			}
 		}
 		if (strpos($pathInfo, '/'.$name) === 0) {
