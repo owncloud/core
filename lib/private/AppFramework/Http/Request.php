@@ -623,7 +623,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		$name = $this->getRawScriptName();
 		$path = $requestUri;
         
-        if(!(strpos($requestUri, $name.'/') === 0)) {
+        if(!(strpos($requestUri, $name.'/'))) {
             throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$name')");
         }
 
