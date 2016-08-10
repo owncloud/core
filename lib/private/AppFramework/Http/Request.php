@@ -606,7 +606,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 */
 	public function getRawPathInfo() {
         
-        $requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
+        $requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '/';
 
 		// remove too many leading slashes - can be caused by reverse proxy configuration
 		if (strpos($requestUri, '/') === 0) {
@@ -620,24 +620,32 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$requestUri = substr($requestUri, 0, $pos);
 		}
 
-		$name = $this->getRawScriptName();
-		$path = $requestUri;
-        
-        if( (strpos($requestUri, $name.'/') === false )) {
-            throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$name')");
-        }
+        /** convert script name to only the .php file name */
+		$scriptName = $this->getRawScriptName();
 
-		if (strpos($path, '/'.$name) === 0) {
-			$path = substr($path, strlen($name) + 1);
-		}
-		if (strpos($path, $name) === 0) {
-			$path = substr($path, strlen($name));
-		}
+        if(empty($scriptName) && !empty($requestUri)) {
+            $scriptName='/';
+        }
         
-		if($path === false || $path === '/'){
+        if(!empty($scriptName)) {
+  
+            $position = strpos($requestUri, $scriptName) + strlen($scriptName);//get end position of SCRIPT_NAME
+            $pathInfo= substr($requestUri, $position); // get the remaining path after SCRIPT_NAME for PATH_INFO
+
+        } else {
+            $pathInfo = $requestUri;
+        }
+        #var_dump($requestUri, $scriptName, $pathInfo);
+        #die();
+        
+        if(!empty($scriptName) && (strpos($requestUri, $scriptName) === false )) {
+            throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
+        }
+        
+		if($pathInfo === false || $pathInfo === '/'){
 			return '';
 		} else {
-			return $path;
+			return $pathInfo;
 		}
 	}
 
