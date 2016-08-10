@@ -1081,14 +1081,14 @@ class RequestTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException \Exception
-	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/var/www/index.php')
+	 * @expectedExceptionMessage The requested uri(/foo.php/test) cannot be processed by the script '/index.php')
 	 */
 	public function testGetPathInfoNotProcessible() {
 		$request = new Request(
 			[
 				'server' => [
-					'REQUEST_URI' => '/foo.php',
-					'SCRIPT_NAME' => '/var/www/index.php',
+					'REQUEST_URI' => '/foo.php/test',
+					'SCRIPT_NAME' => '/var/www/index.php/test',
                     'SCRIPT_FILENAME' => '/var/www/index.php',
 				]
 			],
@@ -1103,7 +1103,7 @@ class RequestTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException \Exception
-	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script 'index.php')
+	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/index.php')
 	 */
 	public function testGetRawPathInfoNotProcessible() {
 		$request = new Request(
