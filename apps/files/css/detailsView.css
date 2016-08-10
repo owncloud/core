@@ -18,6 +18,10 @@
 	display: inline-block;
 }
 
+#app-sidebar .mainFileInfoView .icon-external {
+	opacity: .5;
+}
+
 #app-sidebar .mainFileInfoView .permalink {
 	margin-left: 10px;
 	opacity: .5;

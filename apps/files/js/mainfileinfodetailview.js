@@ -18,6 +18,7 @@
 				'<span class="icon icon-public"></span>' +
 				'<span class="hidden-visually">{{permalinkTitle}}</span>' +
 			'</a>' +
+			'<a class="{{#unless showWebDavCopyButton}}hidden-visually{{/unless}} clipboardButton icon icon-external" data-clipboard-text="{{webDavUrl}}"></a>' +
 		'</div>' +
 		'	<div class="file-details ellipsis">' +
 		'		<a href="#" ' +
@@ -81,6 +82,8 @@
 			if (!this._fileActions) {
 				throw 'Missing required parameter "fileActions"';
 			}
+
+			OC.Util.setupClipboard('.clipboardButton');
 		},
 
 		_onClickPermalink: function() {
@@ -117,6 +120,17 @@
 			return baseUrl + OC.generateUrl('/f/{fileId}', {fileId: fileId});
 		},
 
+		_makeWebDavUrl: function (fullPath) {
+			var pathSections = fullPath.split('/');
+			var encodedPath = '';
+			_.each(pathSections, function(section) {
+				if (section !== '') {
+					encodedPath += '/' + encodeURIComponent(section);
+				}
+			});
+			return OC.linkToRemote('webdav') + encodedPath;
+		},
+
 		setFileInfo: function(fileInfo) {
 			if (this.model) {
 				this.model.off('change', this._onModelChanged, this);
@@ -150,7 +164,9 @@
 					starAltText: isFavorite ? t('files', 'Favorited') : t('files', 'Favorite'),
 					starIcon: OC.imagePath('core', isFavorite ? 'actions/starred' : 'actions/star'),
 					permalink: this._makePermalink(this.model.get('id')),
-					permalinkTitle: t('files', 'Local link')
+					permalinkTitle: t('files', 'Local link'),
+					showWebDavCopyButton: this.model.isDirectory(),
+					webDavUrl: this._makeWebDavUrl(this.model.getFullPath())
 				}));
 
 				// TODO: we really need OC.Previews

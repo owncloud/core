@@ -1933,6 +1933,39 @@ OC.Util = {
 			}
 		}
 		return false;
+	},
+
+	setupClipboard: function(element) {
+		var clipboard = new Clipboard(element);
+		clipboard.on('success', function(e) {
+			$input = $(e.trigger);
+			$input.tooltip({placement: 'bottom', trigger: 'manual', title: t('core', 'Copied!')});
+			$input.tooltip('show');
+			_.delay(function() {
+				$input.tooltip('hide');
+			}, 3000);
+		});
+		clipboard.on('error', function (e) {
+			$input = $(e.trigger);
+			var actionMsg = '';
+			if (/iPhone|iPad/i.test(navigator.userAgent)) {
+				actionMsg = t('core', 'Not supported!');
+			} else if (/Mac/i.test(navigator.userAgent)) {
+				actionMsg = t('core', 'Press ⌘-C to copy.');
+			} else {
+				actionMsg = t('core', 'Press Ctrl-C to copy.');
+			}
+
+			$input.tooltip({
+				placement: 'bottom',
+				trigger: 'manual',
+				title: actionMsg
+			});
+			$input.tooltip('show');
+			_.delay(function () {
+				$input.tooltip('hide');
+			}, 3000);
+		});
 	}
 };
 
@@ -2234,4 +2267,4 @@ jQuery.fn.tipsy = function(argument) {
 		jQuery.fn.tooltip.call(this, argument);
 	}
 	return this;
-}
+};
