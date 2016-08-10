@@ -605,7 +605,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string Path info
 	 */
 	public function getRawPathInfo() {
-		$requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
+        
+        $requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
+
 		// remove too many leading slashes - can be caused by reverse proxy configuration
 		if (strpos($requestUri, '/') === 0) {
 			$requestUri = '/' . ltrim($requestUri, '/');
@@ -618,29 +620,24 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$requestUri = substr($requestUri, 0, $pos);
 		}
 
-		$scriptName = $this->getRawScriptName();
-		$pathInfo = $requestUri;
+		$name = $this->getRawScriptName();
+		$path = $requestUri;
+        
+        if(!(strpos($requestUri, $name.'/') === 0)) {
+            throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$name')");
+        }
 
-		// strip off the script name's dir and file name
-		// FIXME: Sabre does not really belong here
-		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->server['SCRIPT_NAME']);
-		if (!empty($path)) {
-			if($path === $pathInfo || strpos($pathInfo, $path.'/') === 0) {
-				$pathInfo = substr($pathInfo, strlen($path));
-			} else {
-				throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$name')");
-			}
+		if (strpos($path, '/'.$name) === 0) {
+			$path = substr($path, strlen($name) + 1);
 		}
-		if (strpos($pathInfo, '/'.$name) === 0) {
-			$pathInfo = substr($pathInfo, strlen($name) + 1);
+		if (strpos($path, $name) === 0) {
+			$path = substr($path, strlen($name));
 		}
-		if (strpos($pathInfo, $name) === 0) {
-			$pathInfo = substr($pathInfo, strlen($name));
-		}
-		if($pathInfo === false || $pathInfo === '/'){
+        
+		if($path === false || $path === '/'){
 			return '';
 		} else {
-			return $pathInfo;
+			return $path;
 		}
 	}
 
@@ -653,7 +650,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		if(isset($this->server['PATH_INFO'])) {
 			return $this->server['PATH_INFO'];
 		}
-
+        
 		$pathInfo = $this->getRawPathInfo();
 		// following is taken from \Sabre\HTTP\URLUtil::decodePathSegment
 		$pathInfo = rawurldecode($pathInfo);
