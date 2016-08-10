@@ -142,9 +142,9 @@
 				<length>64</length>
 			</field>
 			<field>
+				<!-- null / emptystring possible -->
 				<name>value</name>
 				<type>text</type>
-				<notnull>true</notnull>
 				<length>4096</length>
 			</field>
 
