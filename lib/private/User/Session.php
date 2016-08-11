@@ -162,7 +162,7 @@ class Session implements IUserSession, Emitter {
 	/**
 	 * set the currently active user
 	 *
-	 * @param User|null $user
+	 * @param IUser|null $user
 	 */
 	public function setUser($user) {
 		if (is_null($user)) {
@@ -283,10 +283,8 @@ class Session implements IUserSession, Emitter {
 
 		if ($this->validateToken($password, $uid)) {
 			return $this->loginWithToken($password);
-		} else {
-			return $this->loginWithPassword($uid, $password);
 		}
-		return false;
+		return $this->loginWithPassword($uid, $password);
 	}
 
 	/**
@@ -447,7 +445,6 @@ class Session implements IUserSession, Emitter {
 			$message = \OC::$server->getL10N('lib')->t('User disabled');
 			throw new LoginException($message);
 		}
-		return false;
 	}
 
 	/**
@@ -635,6 +632,7 @@ class Session implements IUserSession, Emitter {
 	/**
 	 * Tries to login the user with auth token header
 	 *
+	 * @param IRequest $request
 	 * @todo check remember me cookie
 	 * @return boolean
 	 */
