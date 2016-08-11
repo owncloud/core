@@ -654,9 +654,6 @@ class Request implements \ArrayAccess, \Countable, IRequest {
             $pathInfo = $requestUri;
         }
         
-        #var_dump($requestUri, $scriptName, $pathInfo);
-        #die();
-        
         if(!empty($scriptName) && (strpos($requestUri, $scriptName) === false )) {
             throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
         }
