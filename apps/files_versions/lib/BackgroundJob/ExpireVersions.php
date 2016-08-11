@@ -22,7 +22,6 @@
 
 namespace OCA\Files_Versions\BackgroundJob;
 
-use OCP\IUser;
 use OCP\IUserManager;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Storage;
@@ -66,13 +65,16 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$this->userManager->callForAllUsers(function(IUser $user) {
+		$users = $this->userManager->search('');
+		foreach ($users as $user) {
 			$uid = $user->getUID();
 			if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
-				return;
+				continue;
 			}
 			Storage::expireOlderThanMaxForUser($uid);
-		});
+		}
+
+		\OC_Util::tearDownFS();
 	}
 
 	/**
@@ -82,14 +84,13 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 	 */
 	protected function setupFS($user) {
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($user);
-
-		// Check if this user has a versions directory
-		$view = new \OC\Files\View('/' . $user);
-		if (!$view->is_dir('/files_versions')) {
-			return false;
+		if (\OC_Util::setupFS($user)) {
+			// Check if this user has a versions directory
+			$view = new \OC\Files\View('/' . $user);
+			if (!$view->is_dir('/files_versions')) {
+				return false;
+			}
 		}
-
 		return true;
 	}
 }
