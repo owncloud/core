@@ -623,18 +623,37 @@ class Request implements \ArrayAccess, \Countable, IRequest {
         /** convert script name to only the .php file name */
 		$scriptName = $this->getRawScriptName();
 
-        if(empty($scriptName) && !empty($requestUri)) {
-            $scriptName='/';
-        }
-        
-        if(!empty($scriptName)) {
-  
+        if(!empty($scriptName) && !empty($requestUri) && strpos($requestUri, '.php') !== false) {
+            /** manual fix for php fpm script name containing path_info appended */
             $position = strpos($requestUri, $scriptName) + strlen($scriptName);//get end position of SCRIPT_NAME
-            $pathInfo= substr($requestUri, $position); // get the remaining path after SCRIPT_NAME for PATH_INFO
+            $pathInfo = substr($requestUri, $position); // get the remaining path after SCRIPT_NAME for PATH_INFO
+        } elseif(!empty($requestUri) && strpos($requestUri, '.php') === false) {
+
+            if(empty($scriptName) && !empty($requestUri) && $requestUri !== DIRECTORY_SEPARATOR) {
+                
+                $scriptName=DIRECTORY_SEPARATOR;
+                
+                if(strpos($requestUri, $scriptName) === 0) {
+                    $requestUri = ltrim($requestUri, $scriptName);
+                    $pathInfo = $requestUri;
+                }
+            } elseif(empty($requestUri)) {
+                
+                $pathInfo = $requestUri;
+                
+            } else {
+                /** 
+                * Add script name to the front of requesturi if no 
+                * script name found to pass uri script processing check below
+                */
+                $pathInfo = $requestUri;
+                $requestUri = $scriptName . $requestUri;
+            }
 
         } else {
             $pathInfo = $requestUri;
         }
+        
         #var_dump($requestUri, $scriptName, $pathInfo);
         #die();
         
