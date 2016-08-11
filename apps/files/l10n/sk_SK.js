@@ -46,6 +46,8 @@ OC.L10N.register(
     "This directory is unavailable, please check the logs or contact the administrator" : "Priečinok je nedostupný, skontrolujte prosím logy, alebo kontaktujte správcu",
     "Could not move \"{file}\", target exists" : "Nie je možné presunúť „{file}“, cieľ už existuje",
     "Could not move \"{file}\"" : "Nie je možné presunúť „{file}“",
+    "Could not create file \"{file}\"" : "Nemožno vytvoriť súbor \"{file}\"",
+    "Could not create file \"{file}\" because it already exists" : "Nemožno vytvoriť súbor \"{file}\", lebo už existuje",
     "No entries in this folder match '{filter}'" : "V tomto priečinku nič nezodpovedá '{filter}'",
     "Name" : "Názov",
     "Size" : "Veľkosť",
