@@ -1229,6 +1229,7 @@ class RequestTest extends \Test\TestCase {
 			['/index.php/apps/files/../&amp;/&?someQueryParameter=QueryParam', 'index.php', '/apps/files/../&amp;/&'],
 			['/remote.php/漢字編碼方法 / 汉字编码方法', 'remote.php', '/漢字編碼方法 / 汉字编码方法'],
 			['/remote.php/removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
+            ['/token/generate', '/index.php', '/token/generate'],
 			['/', '/', ''],
 			['', '', ''],
 		];
