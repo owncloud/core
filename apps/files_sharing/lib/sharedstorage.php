@@ -92,7 +92,7 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 		$this->initialized = true;
 		try {
 			Filesystem::initMountPoints($this->newShare->getShareOwner());
-			$sourcePath = $this->ownerView->getPath($this->newShare->getNodeId());
+			$sourcePath = $this->ownerView->getPath($this->newShare->getNodeId(), false);
 			list($this->sourceStorage, $sourceInternalPath) = $this->ownerView->resolvePath($sourcePath);
 			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
 			// adjust jail
