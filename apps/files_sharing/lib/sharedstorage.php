@@ -37,6 +37,7 @@ use OCP\Constants;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
+use OC\Files\Storage\FailedStorage;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -96,11 +97,12 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 			list($this->sourceStorage, $sourceInternalPath) = $this->ownerView->resolvePath($sourcePath);
 			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
 			// adjust jail
-			$this->storage = $this->sourceStorage;
 			$this->rootPath = $sourceInternalPath;
 		} catch (\Exception $e) {
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
 			$this->logger->logException($e);
 		}
+		$this->storage = $this->sourceStorage;
 	}
 
 	private function isValid() {
@@ -311,7 +313,7 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 
 	public function getCache($path = '', $storage = null) {
 		$this->init();
-		if (is_null($this->sourceStorage)) {
+		if (is_null($this->sourceStorage) || $this->sourceStorage instanceof FailedStorage) {
 			return new FailedCache(false);
 		}
 		if (!$storage) {
@@ -437,5 +439,4 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 
 		return $this->sourceStorage;
 	}
-
 }
