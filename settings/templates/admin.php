@@ -285,8 +285,8 @@ if ($_['cronErrors']) {
 <?php print_unescaped($_['filesExternal']); ?>
 
 <?php foreach($_['forms'] as $form) {
-	if (isset($form['form'])) {?>
-		<div id="<?php isset($form['anchor']) ? p($form['anchor']) : p('');?>"><?php print_unescaped($form['form']);?></div>
+	if (isset($form['form']) and isset($form['form']['page'])) {?>
+		<div id="<?php isset($form['anchor']) ? p($form['anchor']) : p('');?>"><?php print_unescaped($form['form']['page']);?></div>
 	<?php }
 };?>
 
