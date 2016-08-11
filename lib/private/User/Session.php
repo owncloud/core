@@ -283,10 +283,8 @@ class Session implements IUserSession, Emitter {
 
 		if ($this->validateToken($password, $uid)) {
 			return $this->loginWithToken($password);
-		} else {
-			return $this->loginWithPassword($uid, $password);
 		}
-		return false;
+		return $this->loginWithPassword($uid, $password);
 	}
 
 	/**
@@ -447,7 +445,6 @@ class Session implements IUserSession, Emitter {
 			$message = \OC::$server->getL10N('lib')->t('User disabled');
 			throw new LoginException($message);
 		}
-		return false;
 	}
 
 	/**
