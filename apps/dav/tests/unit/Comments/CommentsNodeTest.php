@@ -24,7 +24,6 @@
 namespace OCA\DAV\Tests\unit\Comments;
 
 use OCA\DAV\Comments\CommentNode;
-use OCP\Comments\IComment;
 use OCP\Comments\MessageTooLongException;
 
 class CommentsNodeTest extends \Test\TestCase {

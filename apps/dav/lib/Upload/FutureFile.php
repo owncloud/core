@@ -22,7 +22,6 @@
 namespace OCA\DAV\Upload;
 
 use OCA\DAV\Connector\Sabre\Directory;
-use OCA\DAV\Upload\AssemblyStream;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\IFile;
 

@@ -11,6 +11,7 @@
     "Checked on %s" : "检查于 %s",
     "Update channel:" : "更新通道：",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "您可以随时更新到新版本 / 实验通道。但你永远不能降级到更稳定的通道。",
-    "Notify members of the following groups about available updates:" : "将可用的更新通知下列组的成员："
+    "Notify members of the following groups about available updates:" : "将可用的更新通知下列组的成员：",
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "只有应用更新通知可用，因为所选择的更新通道禁止通知。"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
