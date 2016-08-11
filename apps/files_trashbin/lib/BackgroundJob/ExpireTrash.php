@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
@@ -87,27 +88,48 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$offset = $this->config->getAppValue('files_trashbin', 'cronjob_user_offset', 0);
-		$users = $this->userManager->search('', self::USERS_PER_SESSION, $offset);
-		if (!count($users)) {
-			// No users found, reset offset and retry
-			$offset = 0;
-			$users = $this->userManager->search('', self::USERS_PER_SESSION);
-		}
+		$connection = \OC::$server->getDatabaseConnection();
+		$connection->beginTransaction();
+		// move offset to next chunk
+		$sql = 'UPDATE `*PREFIX*appconfig`
+		        SET `configvalue` = TO_CLOB(TO_NUMBER(`configvalue`) + ?)
+		        WHERE `appid` = ? AND `configkey` = ?';
+		$connection->executeUpdate($sql, array(self::USERS_PER_SESSION, 'files_trashbin', 'cronjob_user_offset'));
 
-		$offset += self::USERS_PER_SESSION;
-		$this->config->setAppValue('files_trashbin', 'cronjob_user_offset', $offset);
+		// get next offset
+		$sql = 'SELECT `configvalue`
+				FROM `*PREFIX*appconfig`
+				WHERE `appid` = ? AND `configkey` = ?';
+		$result = $connection->executeQuery($sql, array('files_trashbin', 'cronjob_user_offset'));
+		if ($row = $result->fetch()) {
+			// use previous chunk
+			$offset = (int)$row['configvalue'] - self::USERS_PER_SESSION;
 
-		foreach ($users as $user) {
-			$uid = $user->getUID();
-			if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
-				continue;
+			// check if there is at least one user at this offset
+			$users = $this->userManager->search('', 1, $offset);
+			if (count($users)) {
+				$connection->commit();
+
+				// fetch the whole chunk
+				$users = $this->userManager->search('', self::USERS_PER_SESSION, $offset);
+				foreach ($users as $user) {
+					$uid = $user->getUID();
+					if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
+						continue;
+					}
+					$dirContent = Helper::getTrashFiles('/', $uid, 'mtime');
+					Trashbin::deleteExpiredFiles($dirContent, $uid);
+				}
+
+				\OC_Util::tearDownFS();
+
+				return;
 			}
-			$dirContent = Helper::getTrashFiles('/', $uid, 'mtime');
-			Trashbin::deleteExpiredFiles($dirContent, $uid);
 		}
-		
-		\OC_Util::tearDownFS();
+		// reset offset to make the next run start at the beginning
+		$this->config->setAppValue('files_trashbin', 'cronjob_user_offset', 0);
+		$connection->commit();
+
 	}
 
 	/**
@@ -124,6 +146,7 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 				return false;
 			}
 		}
+
 		return true;
 	}
 }
