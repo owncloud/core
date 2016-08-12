@@ -54,6 +54,7 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Repair\MoveAvatarOutsideHome;
 
 class Repair implements IOutput{
 	/* @var IRepairStep[] */
@@ -139,6 +140,11 @@ class Repair implements IOutput{
 			new SharePropagation(\OC::$server->getConfig()),
 			new RemoveOldShares(\OC::$server->getDatabaseConnection()),
 			new AvatarPermissions(\OC::$server->getDatabaseConnection()),
+			new MoveAvatarOutsideHome(
+				\OC::$server->getConfig(),
+				\OC::$server->getDatabaseConnection(),
+				\OC::$server->getUserManager()
+			),
 			new RemoveRootShares(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager(), \OC::$server->getLazyRootFolder()),
 			new RepairUnmergedShares(
 				\OC::$server->getConfig(),
