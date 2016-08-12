@@ -1230,11 +1230,12 @@ class RequestTest extends \Test\TestCase {
 			['/remote.php/漢字編碼方法 / 汉字编码方法', 'remote.php', '/漢字編碼方法 / 汉字编码方法'],
 			['/remote.php/removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
             ['/token/generate', '/index.php', '/token/generate'],
+            ['/ocs/v2.php/cloud/users/user0', '/ocs/v2.php', '/cloud/users/user0'],
 			['/', '/', ''],
 			['', '', ''],
 		];
 	}
-
+    
 	/**
 	 * @return array
 	 */
