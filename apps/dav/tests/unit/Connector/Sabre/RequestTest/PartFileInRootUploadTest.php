@@ -22,9 +22,6 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre\RequestTest;
 
-use OC\Files\View;
-use Test\Traits\EncryptionTrait;
-
 /**
  * Class PartFileInRootUploadTest
  *
