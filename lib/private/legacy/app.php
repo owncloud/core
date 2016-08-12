@@ -733,7 +733,11 @@ class OC_App {
 				return array();
 		}
 		foreach ($source as $form) {
-			$forms[] = include $form;
+			$page = include $form['page'];
+			$forms[] = [
+				'appId' => $form['appId'],
+				'page' => $page,
+			];
 		}
 		return $forms;
 	}
@@ -745,7 +749,10 @@ class OC_App {
 	 * @param string $page
 	 */
 	public static function registerAdmin($app, $page) {
-		self::$adminForms[] = $app . '/' . $page . '.php';
+		self::$adminForms[] = [
+			'appId' => $app,
+			'page' => $app . '/' . $page . '.php',
+		];
 	}
 
 	/**
@@ -754,7 +761,10 @@ class OC_App {
 	 * @param string $page
 	 */
 	public static function registerPersonal($app, $page) {
-		self::$personalForms[] = $app . '/' . $page . '.php';
+		self::$personalForms[] = [
+			'appId' => $app,
+			'page' => $app . '/' . $page . '.php',
+		];
 	}
 
 	/**
