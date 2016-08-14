@@ -23,6 +23,8 @@ namespace OCA\DAV\Tests\unit\CalDAV;
 
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCP\IL10N;
+use OCP\IConfig;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Test\TestCase;
 
@@ -40,6 +42,9 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 
 	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
 	protected $principal;
+
+	/** var OCP\IConfig */
+	protected $config;
 
 	const UNIT_TEST_USER = 'principals/users/caldav-unit-test';
 	const UNIT_TEST_USER1 = 'principals/users/caldav-unit-test1';
@@ -61,8 +66,8 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 			->willReturn([self::UNIT_TEST_GROUP]);
 
 		$db = \OC::$server->getDatabaseConnection();
-		$config = \OC::$server->getConfig();
-		$this->backend = new CalDavBackend($db, $this->principal, $config);
+		$this->config = \OC::$server->getConfig();
+		$this->backend = new CalDavBackend($db, $this->principal, $this->config);
 
 		$this->tearDown();
 	}
