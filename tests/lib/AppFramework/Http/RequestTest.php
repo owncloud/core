@@ -1081,14 +1081,15 @@ class RequestTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException \Exception
-	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/var/www/index.php')
+	 * @expectedExceptionMessage The requested uri(/foo.php/test) cannot be processed by the script '/index.php')
 	 */
 	public function testGetPathInfoNotProcessible() {
 		$request = new Request(
 			[
 				'server' => [
-					'REQUEST_URI' => '/foo.php',
-					'SCRIPT_NAME' => '/var/www/index.php',
+					'REQUEST_URI' => '/foo.php/test',
+					'SCRIPT_NAME' => '/var/www/index.php/test',
+					'SCRIPT_FILENAME' => '/var/www/index.php',
 				]
 			],
 			$this->secureRandom,
@@ -1102,7 +1103,7 @@ class RequestTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException \Exception
-	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/var/www/index.php')
+	 * @expectedExceptionMessage The requested uri(/foo.php) cannot be processed by the script '/index.php')
 	 */
 	public function testGetRawPathInfoNotProcessible() {
 		$request = new Request(
@@ -1110,6 +1111,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => '/foo.php',
 					'SCRIPT_NAME' => '/var/www/index.php',
+					'SCRIPT_FILENAME' => '/var/www/index.php',
 				]
 			],
 			$this->secureRandom,
@@ -1133,6 +1135,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+					'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1156,6 +1159,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+					'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1179,6 +1183,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+					'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1202,6 +1207,7 @@ class RequestTest extends \Test\TestCase {
 				'server' => [
 					'REQUEST_URI' => $requestUri,
 					'SCRIPT_NAME' => $scriptName,
+					'SCRIPT_FILENAME' => $scriptName,
 				]
 			],
 			$this->secureRandom,
@@ -1222,12 +1228,14 @@ class RequestTest extends \Test\TestCase {
 			['/index.php/apps/files/', 'index.php', '/apps/files/'],
 			['/index.php/apps/files/../&amp;/&?someQueryParameter=QueryParam', 'index.php', '/apps/files/../&amp;/&'],
 			['/remote.php/漢字編碼方法 / 汉字编码方法', 'remote.php', '/漢字編碼方法 / 汉字编码方法'],
-			['///removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
+			['/remote.php/removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
+			['/token/generate', '/index.php', '/token/generate'],
+			['/ocs/v2.php/cloud/users/user0', '/ocs/v2.php', '/cloud/users/user0'],
 			['/', '/', ''],
 			['', '', ''],
 		];
 	}
-
+	
 	/**
 	 * @return array
 	 */
@@ -1297,6 +1305,7 @@ class RequestTest extends \Test\TestCase {
 					'server' => [
 						'REQUEST_URI' => '/test.php/some/PathInfo',
 						'SCRIPT_NAME' => '/test.php',
+						'SCRIPT_FILENAME' => '/var/www/test.php',
 					]
 				],
 				$this->secureRandom,
