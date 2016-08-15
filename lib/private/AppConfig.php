@@ -29,6 +29,7 @@
 namespace OC;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use OCP\IAppConfig;
 use OCP\IDBConnection;
 
@@ -210,6 +211,11 @@ class AppConfig implements IAppConfig {
 			// so we need type casting magic in oracle
 			$sql = 'UPDATE `*PREFIX*appconfig`
 					SET `configvalue` = TO_CLOB(TO_NUMBER(`configvalue`) + ?)
+					WHERE `appid` = ? AND `configkey` = ?';
+		} else if ($this->conn->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+				// and we need type casting magic in postgresql
+				$sql = 'UPDATE `*PREFIX*appconfig`
+					SET `configvalue` = CAST(`configvalue` AS INT) + ?
 					WHERE `appid` = ? AND `configkey` = ?';
 		} else {
 			$sql = 'UPDATE `*PREFIX*appconfig`
