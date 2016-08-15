@@ -164,6 +164,18 @@ class AllConfig implements \OCP\IConfig {
 	}
 
 	/**
+	 * increases an existing app wide value
+	 *
+	 * @param string $appName the appName that we want to store the value under
+	 * @param string|float|int $key the key of the value, under which will be saved
+	 * @param int $amount the value that should be stored
+	 * @return int
+	 * @since 9.2.0
+	 */
+	public function increaseAppValue($appName, $key, $amount) {
+		return \OC::$server->getAppConfig()->increaseAppValue($appName, $key, $amount);
+	}
+	/**
 	 * Looks up an app wide defined value
 	 *
 	 * @param string $appName the appName that we stored the value under

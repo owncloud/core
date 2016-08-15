@@ -90,20 +90,10 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 
 		$connection = \OC::$server->getDatabaseConnection();
 		$connection->beginTransaction();
-		// move offset to next chunk
-		$sql = 'UPDATE `*PREFIX*appconfig`
-		        SET `configvalue` = TO_CLOB(TO_NUMBER(`configvalue`) + ?)
-		        WHERE `appid` = ? AND `configkey` = ?';
-		$connection->executeUpdate($sql, array(self::USERS_PER_SESSION, 'files_trashbin', 'cronjob_user_offset'));
-
-		// get next offset
-		$sql = 'SELECT `configvalue`
-				FROM `*PREFIX*appconfig`
-				WHERE `appid` = ? AND `configkey` = ?';
-		$result = $connection->executeQuery($sql, array('files_trashbin', 'cronjob_user_offset'));
-		if ($row = $result->fetch()) {
+		$result = $this->config->increaseAppValue('files_trashbin', 'cronjob_user_offset', self::USERS_PER_SESSION);
+		if ($result !== null) {
 			// use previous chunk
-			$offset = (int)$row['configvalue'] - self::USERS_PER_SESSION;
+			$offset = $result - self::USERS_PER_SESSION;
 
 			// check if there is at least one user at this offset
 			$users = $this->userManager->search('', 1, $offset);

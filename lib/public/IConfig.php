@@ -110,6 +110,17 @@ interface IConfig {
 	 * @since 6.0.0
 	 */
 	public function setAppValue($appName, $key, $value);
+	
+	/**
+	 * increases an existing app wide value
+	 *
+	 * @param string $appName the appName that we want to store the value under
+	 * @param string|float|int $key the key of the value, under which will be saved
+	 * @param int $amount the value that should be stored
+	 * @return int
+	 * @since 9.2.0
+	 */
+	public function increaseAppValue($appName, $key, $amount);
 
 	/**
 	 * Looks up an app wide defined value

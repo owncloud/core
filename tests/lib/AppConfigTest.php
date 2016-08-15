@@ -232,6 +232,26 @@ class AppConfigTest extends TestCase {
 		}
 	}
 
+	public function testIncreaseAppValue() {
+		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+
+		$this->assertFalse($config->hasKey('someapp', 'somekey'));
+		$this->assertNull($config->getValue('someapp', 'somekey'));
+		$this->assertNull($config->increaseAppValue('someapp', 'somekey', 10));
+
+		$this->assertTrue($config->setValue('someapp', 'somekey', 0));
+
+		$this->assertTrue($config->hasKey('someapp', 'somekey'));
+		$this->assertEquals('0', $config->getValue('someapp', 'somekey'));
+		$this->assertEquals(10, $config->increaseAppValue('someapp', 'somekey', 10));
+		$this->assertEquals('10', $config->getValue('someapp', 'somekey'));
+		$this->assertConfigKey('someapp', 'somekey', '10');
+
+		$this->assertEquals(20, $config->increaseAppValue('someapp', 'somekey', 10));
+		$this->assertEquals('20', $config->getValue('someapp', 'somekey'));
+		$this->assertConfigKey('someapp', 'somekey', '20');
+	}
+
 	public function testDeleteKey() {
 		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
 

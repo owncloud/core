@@ -213,6 +213,7 @@ class ExpirationTest extends \Test\TestCase {
 						'deleteSystemValue',
 						'getAppKeys',
 						'setAppValue',
+						'increaseAppValue',
 						'getAppValue',
 						'deleteAppValue',
 						'deleteAppValues',
