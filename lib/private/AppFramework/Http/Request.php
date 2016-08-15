@@ -606,29 +606,20 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 */
 	public function getRawPathInfo() {
         
-        $requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '/';
+        /** cleans leading slashes and query params before use */
+        $requestUri = $this->getCleanRequestUri();
 
-		// remove too many leading slashes - can be caused by reverse proxy configuration
-		if (strpos($requestUri, '/') === 0) {
-			$requestUri = '/' . ltrim($requestUri, '/');
-		}
+        /** fixes php-fpm proxypassmatch setups - convert script name to only the .php file name */
+		$scriptName = $this->getRawScriptName($requestUri);
 
-		$requestUri = preg_replace('%/{2,}%', '/', $requestUri);
-
-		// Remove the query string from REQUEST_URI
-		if ($pos = strpos($requestUri, '?')) {
-			$requestUri = substr($requestUri, 0, $pos);
-		}
-
-        /** convert script name to only the .php file name */
-		$scriptName = $this->getRawScriptName();
-
-        if(!empty($scriptName) && !empty($requestUri) && strpos($requestUri, '.php') !== false) {
-            /** manual fix for php fpm script name containing path_info appended */
-            $position = strpos($requestUri, $scriptName) + strlen($scriptName);//get end position of SCRIPT_NAME
+        if(!empty($scriptName) && !empty($requestUri) && strpos($requestUri, $scriptName) !== false) {
+            /** fixes php-fpm sethandler setups - remove script name from path_info */
+            $scriptNameInRequestUri = strpos($requestUri, $scriptName);
+            $position = $scriptNameInRequestUri + strlen($scriptName);//get end position of SCRIPT_NAME
             $pathInfo = substr($requestUri, $position); // get the remaining path after SCRIPT_NAME for PATH_INFO
-        } elseif(!empty($requestUri) && strpos($requestUri, '.php') === false) {
 
+        } elseif(!empty($requestUri) && strpos($requestUri, '.php') === false) {
+            
             if(empty($scriptName) && !empty($requestUri) && $requestUri !== DIRECTORY_SEPARATOR) {
                 
                 $scriptName=DIRECTORY_SEPARATOR;
@@ -637,6 +628,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
                     $requestUri = ltrim($requestUri, $scriptName);
                     $pathInfo = $requestUri;
                 }
+                
             } elseif(empty($requestUri)) {
                 
                 $pathInfo = $requestUri;
@@ -651,9 +643,15 @@ class Request implements \ArrayAccess, \Countable, IRequest {
             }
 
         } else {
+            
             $pathInfo = $requestUri;
+            
+            /** stop empty uri with / scriptnames causing errors as this would go to index.php */
+            if(empty($requestUri)) {
+                $requestUri = $scriptName;
+            }
         }
-        
+
         if(!empty($scriptName) && (strpos($requestUri, $scriptName) === false )) {
             throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
         }
@@ -695,7 +693,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string the script name
 	 */
 	public function getScriptName() {
-		$name = $this->getRawScriptName();
+		$name = $this->getRawScriptName($this->getCleanRequestUri());
 		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
 			// FIXME: This code is untestable due to __DIR__, also that hardcoded path is really dangerous
@@ -793,17 +791,54 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	}
     
     /**
-     * Fixes major bug in Apache 2.4 / PHP FPM where script_name contains full
+     * Fixes bug in Apache 2.4 / PHP FPM where script_name contains full
      * uri not just script name e.g /index.php/app/files instead of expected /index.php 
      * @see https://bugs.php.net/bug.php?id=65641
      * @param string $name
      * @return string
      */
-    private function getRawScriptName() {
-        $name = $this->server['SCRIPT_NAME'];
-        if (strpos($name, '.php') !== false) {
-            $name = DIRECTORY_SEPARATOR . basename($this->server['SCRIPT_FILENAME']);
+    private function getRawScriptName($requestUri=null) {
+        $scriptName = $this->server['SCRIPT_NAME'];
+        
+        if (strpos($scriptName, '.php') !== false) {
+            
+            $scriptName = DIRECTORY_SEPARATOR . basename($this->server['SCRIPT_FILENAME']);
+            
+            if(!empty($scriptName) && !empty($requestUri) && strpos($requestUri, $scriptName) !== false) {
+                
+                /** fixes php-fpm sethandler setups - remove script name from path_info */
+                $scriptNameInRequestUri = strpos($requestUri, $scriptName);
+                $position = $scriptNameInRequestUri + strlen($scriptName);//get end position of SCRIPT_NAME
+                $scriptName = substr($requestUri, 0, $position);
+            }
+
+        } elseif(strlen($scriptName) === 0) {
+            $scriptName = DIRECTORY_SEPARATOR;
         }
-        return $name;
+        
+        return $scriptName;
+    }
+    
+    /**
+     * Removes leading extra slashes and query params
+     * @return string
+     */
+    private function getCleanRequestUri()
+    {
+        $requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '/';
+
+		// remove too many leading slashes - can be caused by reverse proxy configuration
+		if (strpos($requestUri, '/') === 0) {
+			$requestUri = '/' . ltrim($requestUri, '/');
+		}
+
+		$requestUri = preg_replace('%/{2,}%', '/', $requestUri);
+
+		// Remove the query string from REQUEST_URI
+		if ($pos = strpos($requestUri, '?')) {
+			$requestUri = substr($requestUri, 0, $pos);
+		}
+        
+        return $requestUri;
     }
 }
