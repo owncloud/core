@@ -81,6 +81,8 @@ class AvatarManager implements IAvatarManager {
 		$user = $this->userManager->get($userId);
 		if (is_null($user)) {
 			throw new \Exception('user does not exist');
+		} else if ($user->getLastLogin() === 0) {
+			throw new \Exception('user never logged in, yet');
 		}
 
 		/*
