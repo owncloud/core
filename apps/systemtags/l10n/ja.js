@@ -6,7 +6,7 @@ OC.L10N.register(
     "Select tags to filter by" : "フィルターするタグを選択してください",
     "Please select tags to filter by" : "フィルターするタグを入力してください",
     "No files found for the selected tags" : "そのタグに割りあてられているファイルはありません",
-    "<strong>System tags</strong> for a file have been modified" : "ファイルの<strong>タグ</strong> が更新されています",
+    "<strong>System tags</strong> for a file have been modified" : "ファイルの<strong>タグ</strong> が更新されたとき",
     "You assigned system tag %3$s" : "%3$s タグを追加",
     "%1$s assigned system tag %3$s" : "%1$s が タグ %3$s を追加",
     "You unassigned system tag %3$s" : "%3$s タグを解除",

@@ -44,7 +44,7 @@ OC.L10N.register(
     "An unspecified error occurred. Please check the settings and the log." : "不明なエラーが発生しました。設定とログを確認してください。",
     "The search filter is invalid, probably due to syntax issues like uneven number of opened and closed brackets. Please revise." : "検索フィルターが不正です。恐らく文法の問題で、開き括弧と閉じ括弧がマッチしていません。修正をお願いします。",
     "A connection error to LDAP / AD occurred, please check host, port and credentials." : "LDAP / AD の接続エラーが発生しました。ホスト名、ポート、権限をチェックしてください。",
-    "The %uid placeholder is missing. It will be replaced with the login name when querying LDAP / AD." : "%uid のプレースフォルダがありません。プレースフォルダでは、LDAP /ADで問合せするときにログイン名で置き換えられます。",
+    "The %uid placeholder is missing. It will be replaced with the login name when querying LDAP / AD." : "%uid のプレースホルダがありません。LDAP / ADで問合せする際にプレースホルダはログイン名に置き換えられます。",
     "Please provide a login name to test against" : "テストの為にログイン名を入力してください。",
     "The group box was disabled, because the LDAP / AD server does not support memberOf." : "グループボックスは無効にされました。LDAP/AD サーバーが MemberOf オプションをサポートしていないからです。",
     "_%s group found_::_%s groups found_" : ["%s グループが見つかりました"],

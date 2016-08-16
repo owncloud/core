@@ -17,7 +17,7 @@ OC.L10N.register(
     "Error occurred while posting comment" : "コメント投稿時にエラーが発生",
     "{count} unread comments" : "未読コメント数 {count}",
     "Comment" : "コメント",
-    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "ファイルに対する<strong>コメント</strong><em>(常時ストリームに表示)</em>",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "ファイルに対する<strong>コメント</strong>があったとき<em>(常時ストリームに表示)</em>",
     "You commented" : "コメント済",
     "%1$s commented" : "%1$s がコメントを追加",
     "You commented on %2$s" : "%2$s にコメント済",

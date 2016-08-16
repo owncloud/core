@@ -113,7 +113,7 @@ OC.L10N.register(
     "Invalid quota value \"{val}\"" : "クオータ \"{val}\" は不正な値です。",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "このユーザーのデータ復旧が無効になっていますので、パスワードを変更するとユーザーはデータに二度とアクセスできません。",
     "A valid username must be provided" : "有効なユーザー名を指定する必要があります",
-    "Error creating user: {message}" : "ユーザ作成エラー {message}",
+    "Error creating user: {message}" : "ユーザー作成エラー: {message}",
     "A valid password must be provided" : "有効なパスワードを指定する必要があります",
     "A valid email must be provided" : "有効なメールアドレスを指定する必要があります",
     "__language_name__" : "Japanese (日本語)",
