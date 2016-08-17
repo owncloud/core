@@ -40,6 +40,7 @@ OC.L10N.register(
     "Public upload disabled by the administrator" : "Javno pošiljanje v oblak je skrbniško onemogočeno",
     "Public upload is only possible for publicly shared folders" : "Javno pošiljanje v oblak je mogoče le za javne mape v skupni rabi.",
     "Invalid date, date format must be YYYY-MM-DD" : "Neveljaven zapis časa; biti mora v zapisu YYYY-MM-DD",
+    "Sharing %s failed because the back end does not allow shares from type %s" : "Omogočanje souporabe %s je spodletelo, ker ozadnji program ne dopušča souporabe vrste %s.",
     "Unknown share type" : "Neznana vrsta mesta souporabe",
     "Not a directory" : "Predmet ni mapa",
     "Could not lock path" : "Poti ni mogoče zakleniti",
