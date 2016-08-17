@@ -24,6 +24,7 @@ describe('OCA.Files.FileList tests', function() {
 	var testFiles, testRoot, notificationStub, fileList, pageSizeStub;
 	var bcResizeStub;
 	var filesClient;
+	var filesConfig;
 	var redirectStub;
 
 	/**
@@ -54,6 +55,10 @@ describe('OCA.Files.FileList tests', function() {
 	}
 
 	beforeEach(function() {
+		filesConfig = new OC.Backbone.Model({
+			showhidden: true
+		});
+
 		filesClient = new OC.Files.Client({
 			host: 'localhost',
 			port: 80,
@@ -153,7 +158,8 @@ describe('OCA.Files.FileList tests', function() {
 		})];
 		pageSizeStub = sinon.stub(OCA.Files.FileList.prototype, 'pageSize').returns(20);
 		fileList = new OCA.Files.FileList($('#app-content-files'), {
-			filesClient: filesClient
+			filesClient: filesClient,
+			config: filesConfig
 		});
 	});
 	afterEach(function() {
@@ -366,6 +372,52 @@ describe('OCA.Files.FileList tests', function() {
 			expect($tr.index()).toEqual(4);
 			expect(fileList.files[4]).toEqual(fileData);
 		});
+		it('inserts new folder at correct position with hidden files present', function() {
+			filesConfig.set({'showhidden': false});
+			testFiles = [
+				new FileInfo({
+					id: 1,
+					type: 'dir',
+					name: '.hidden',
+					mimetype: 'httpd/unix-directory',
+					mtime: 123456789,
+					size: 12,
+					etag: 'xxx',
+					permissions: OC.PERMISSION_ALL
+				}),
+				new FileInfo({
+					id: 2,
+					type: 'dir',
+					name: 'def',
+					mimetype: 'httpd/unix-directory',
+					mtime: 123456789,
+					size: 100,
+					etag: 'def',
+					permissions: OC.PERMISSION_ALL
+				}),
+			];
+			fileList.setFiles(testFiles);
+
+			fileList.add(
+				new FileInfo({
+					id: 3,
+					type: 'dir',
+					name: 'abc',
+					mimetype: 'httpd/unix-directory',
+					mtime: 123456789,
+					size: 150,
+					etag: 'abc',
+					permissions: OC.PERMISSION_ALL
+				})
+			);
+
+			var $trs = fileList.$fileList.find('tr');
+			expect($trs.length).toEqual(2);
+			expect($trs.eq(0).attr('data-id')).toEqual('3');
+			expect($trs.eq(0).attr('data-file')).toEqual('abc');
+			expect($trs.eq(1).attr('data-id')).toEqual('2');
+			expect($trs.eq(1).attr('data-file')).toEqual('def');
+		});
 		it('removes empty content message and shows summary when adding first file', function() {
 			var $summary;
 			var fileData = {
@@ -541,6 +593,70 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileList.$fileList.find('tr').length).toEqual(2);
 
 			expect(notificationStub.notCalled).toEqual(true);
+		});
+		it('removes from correct position when hidden files are present', function() {
+			filesConfig.set({'showhidden': false});
+			testFiles = [
+				new FileInfo({
+					id: 1,
+					type: 'dir',
+					name: '.hidden',
+					mimetype: 'httpd/unix-directory',
+					mtime: 123456789,
+					size: 12,
+					etag: 'xxx',
+					permissions: OC.PERMISSION_ALL
+				}),
+				new FileInfo({
+					id: 2,
+					type: 'dir',
+					name: 'abc',
+					mimetype: 'httpd/unix-directory',
+					mtime: 123456789,
+					size: 100,
+					etag: 'def',
+					permissions: OC.PERMISSION_ALL
+				}),
+				new FileInfo({
+					id: 3,
+					type: 'dir',
+					name: 'def',
+					mimetype: 'httpd/unix-directory',
+					mtime: 123456789,
+					size: 100,
+					etag: 'def',
+					permissions: OC.PERMISSION_ALL
+				}),
+				new FileInfo({
+					id: 4,
+					type: 'dir',
+					name: 'ghi',
+					mimetype: 'httpd/unix-directory',
+					mtime: 123456789,
+					size: 100,
+					etag: 'ghi',
+					permissions: OC.PERMISSION_ALL
+				}),
+			];
+			fileList.setFiles(testFiles);
+
+			expect(fileList.files[0].name).toEqual('.hidden');
+			expect(fileList.files[1].name).toEqual('abc');
+			expect(fileList.files[2].name).toEqual('def');
+			expect(fileList.files[3].name).toEqual('ghi');
+
+			fileList.remove('abc');
+
+			var $trs = fileList.$fileList.find('tr');
+			expect($trs.length).toEqual(3);
+			expect($trs.eq(0).attr('data-id')).toEqual('3');
+			expect($trs.eq(0).attr('data-file')).toEqual('def');
+			expect($trs.eq(1).attr('data-id')).toEqual('4');
+			expect($trs.eq(1).attr('data-file')).toEqual('ghi');
+
+			expect(fileList.files[0].name).toEqual('.hidden');
+			expect(fileList.files[1].name).toEqual('def');
+			expect(fileList.files[2].name).toEqual('ghi');
 		});
 	});
 	describe('Renaming files', function() {
@@ -1052,6 +1168,44 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.setFilter('');
 			expect($emptycontent.hasClass('hidden')).toEqual(true);
 			expect($nofilterresults.hasClass('hidden')).toEqual(true);
+		});
+		it('renders hidden files if option is enabled', function() {
+			filesConfig.set({'showhidden': true});
+			expect(fileList.files.length).toEqual(0);
+			expect(fileList.files).toEqual([]);
+			testFiles.unshift(new FileInfo({
+				id: 999,
+				name: '.hidden',
+				type: 'file',
+				mimetype: 'application/octet-stream'
+			}));
+			fileList.setFiles(testFiles);
+
+			var $summary = $('#filestable .summary');
+
+			expect($('#fileList tr').length).toEqual(5);
+			expect(fileList.files.length).toEqual(5);
+			expect($summary.hasClass('hidden')).toEqual(false);
+			expect($summary.find('.info').text()).toEqual("1 folder and 4 files");
+		});
+		it('does not render hidden files if option is disabled', function() {
+			filesConfig.set({'showhidden': false});
+			expect(fileList.files.length).toEqual(0);
+			expect(fileList.files).toEqual([]);
+			testFiles.unshift(new FileInfo({
+				id: 999,
+				name: '.hidden',
+				type: 'file',
+				mimetype: 'application/octet-stream'
+			}));
+			fileList.setFiles(testFiles);
+
+			var $summary = $('#filestable .summary');
+
+			expect($('#fileList tr').length).toEqual(4);
+			expect(fileList.files.length).toEqual(5);
+			expect($summary.hasClass('hidden')).toEqual(false);
+			expect($summary.find('.info').text()).toEqual("1 folder and 3 files");
 		});
 	});
 	describe('Rendering next page on scroll', function() {

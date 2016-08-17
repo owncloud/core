@@ -998,12 +998,24 @@
 		 * @returns {array}
 		 */
 		_filterHiddenFiles: function(files) {
+			var self = this;
 			if (_.isUndefined(this._filesConfig) || this._filesConfig.get('showhidden')) {
 				return files;
 			}
 			return _.filter(files, function(file) {
-				return file.name.indexOf('.') !== 0;
+				return !self._isHiddenFile(file);
 			});
+		},
+
+		/**
+		 * Returns whether the given file info must be hidden
+		 *
+		 * @param {OC.Files.FileInfo} fileInfo file info
+		 * 
+		 * @return {boolean} true if the file is a hidden file, false otherwise
+		 */
+		_isHiddenFile: function(file) {
+			return file.name && file.name.charAt(0) === '.';
 		},
 
 		/**
@@ -1808,11 +1820,26 @@
 		 * @param {OC.Files.FileInfo} fileData file info
 		 */
 		_findInsertionIndex: function(fileData) {
+			var insertionIndex = 0;
 			var index = 0;
-			while (index < this.files.length && this._sortComparator(fileData, this.files[index]) > 0) {
+			
+			var checkHidden = !(_.isUndefined(this._filesConfig) || this._filesConfig.get('showhidden'));
+			while (index < this.files.length) {
+				var currentFile = this.files[index];
+				// skip hidden files
+				if (checkHidden && this._isHiddenFile(currentFile)) {
+					index++;
+					continue;
+				}
+
+				if (this._sortComparator(fileData, currentFile) <= 0) {
+					break;
+				}
+
 				index++;
+				insertionIndex++;
 			}
-			return index;
+			return insertionIndex;
 		},
 		/**
 		 * Moves a file to a given target folder.
