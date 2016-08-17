@@ -725,6 +725,20 @@
 				}
 			}
 			return time;
+		},
+
+		/**
+		 * Returns a list of share types from the existing shares.
+		 *
+		 * @return {Array.<int>} array of share types
+		 */
+		getShareTypes: function() {
+			var result;
+			result = _.pluck(this.getSharesWithCurrentItem(), 'share_type');
+			if (this.hasLinkShare()) {
+				result.push(OC.Share.SHARE_TYPE_LINK);
+			}
+			return _.uniq(result);
 		}
 	});
 
