@@ -258,6 +258,7 @@ class LDAP implements ILDAPWrapper {
 			}
 			return $result;
 		}
+		return null;
 	}
 
 	/**

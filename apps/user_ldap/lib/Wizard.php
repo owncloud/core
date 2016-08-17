@@ -942,7 +942,6 @@ class Wizard extends LDAPUtility {
 				$cns = $this->configuration->ldapGroupFilterGroups;
 				if(is_array($cns) && count($cns) > 0) {
 					$filter .= '(|';
-					$base = $this->configuration->ldapBase[0];
 					foreach($cns as $cn) {
 						$filter .= '(cn=' . $cn . ')';
 					}

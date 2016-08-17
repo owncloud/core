@@ -199,6 +199,7 @@ class AccessTest extends \Test\TestCase {
 						return $case['interResult'];
 					}
 				}
+				return null;
 			}));
 
 		foreach($cases as $case) {
