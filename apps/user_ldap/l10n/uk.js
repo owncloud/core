@@ -11,6 +11,7 @@ OC.L10N.register(
     "No data specified" : "Немає даних",
     " Could not set configuration %s" : "Не вдалося встановити конфігурацію %s",
     "Action does not exist" : "Дія не існує",
+    "Testing configuration…" : "Перевірка налаштування... ",
     "Configuration incorrect" : "Невірна конфігурація",
     "Configuration incomplete" : "Конфігурація неповна",
     "Configuration OK" : "Конфігурація OK",

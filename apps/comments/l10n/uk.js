@@ -12,9 +12,12 @@ OC.L10N.register(
     "More comments..." : "Більше коментарів...",
     "Save" : "Зберегти",
     "Allowed characters {count} of {max}" : "Доступно символів {count} з {max}",
+    "Error occurred while posting comment" : "При збереженні коментаря трапилася помилка",
     "{count} unread comments" : "{count} непрочитаних коментарів",
     "Comment" : "Коментар",
+    "You commented" : "Ви прокоментували",
     "%1$s commented" : "%1$s прокоментовано",
+    "You commented on %2$s" : "Ви прокоментували в %2$s",
     "%1$s commented on %2$s" : "%1$s прокоментовано у %2$s"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
