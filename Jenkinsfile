@@ -7,7 +7,7 @@
 timestampedNode('SLAVE') {
     stage 'Checkout'
         checkout scm
-        sh '''git submodule update --init'''
+        sh '''make'''
 
     stage 'JavaScript Testing'
         executeAndReport('tests/autotest-results-js.xml') {

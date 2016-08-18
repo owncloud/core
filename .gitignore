@@ -6,6 +6,7 @@
 /config/mount.php
 /apps/inc.php
 /assets
+/build/composer.phar
 
 # ignore all apps except core ones
 /apps*/*
@@ -31,7 +32,7 @@
 /apps/files_external/3rdparty/irodsphp/prods/test*
 /apps/files_external/tests/config.*.php
 
-
+/lib/composer
 
 # ignore themes except the example and the README
 /themes/*
