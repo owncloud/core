@@ -5,7 +5,7 @@ SCRIPTPATH=`dirname $SCRIPT`
 
 if [ ! -f CalDAVTester/run.py ]; then
 	cd "$SCRIPTPATH"
-    git clone https://github.com/DeepDiver1975/CalDAVTester.git
+    git clone https://github.com/apple/ccs-caldavtester.git CalDAVTester
 	cd "$SCRIPTPATH/CalDAVTester"
     python run.py -s
 	cd "$SCRIPTPATH"
