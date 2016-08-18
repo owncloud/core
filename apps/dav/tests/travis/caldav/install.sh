@@ -3,12 +3,12 @@ SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 
 
-if [ ! -f CalDAVTester/run.py ]; then
-	cd "$SCRIPTPATH"
+cd "$SCRIPTPATH"
+if [ ! -f CalDAVTester/testcaldav.py ]; then
     git clone https://github.com/apple/ccs-caldavtester.git CalDAVTester
-	cd "$SCRIPTPATH/CalDAVTester"
-    python run.py -s
-	cd "$SCRIPTPATH"
+fi
+if [ ! -f pycalendar/setup.py ]; then
+    git clone https://github.com/apple/ccs-pycalendar.git pycalendar
 fi
 
 # create test user
