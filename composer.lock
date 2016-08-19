@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c879df8a6396ff790df238f3c5c69362",
-    "content-hash": "d0efb90d0cfb438126be081b840cfcbc",
+    "hash": "b095089dd77fc0cefa47222f6e6689e4",
+    "content-hash": "955e3c017d6c4fbfb83f9b88f0ac7a94",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1352,16 +1352,16 @@
         },
         {
             "name": "natxet/CssMin",
-            "version": "dev-master",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/natxet/CssMin.git",
-                "reference": "0b2170454eed9024c7e26b036fbccf2d7f6f2c53"
+                "reference": "92de3fe3ccb4f8298d31952490ef7d5395855c39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/natxet/CssMin/zipball/0b2170454eed9024c7e26b036fbccf2d7f6f2c53",
-                "reference": "0b2170454eed9024c7e26b036fbccf2d7f6f2c53",
+                "url": "https://api.github.com/repos/natxet/CssMin/zipball/92de3fe3ccb4f8298d31952490ef7d5395855c39",
+                "reference": "92de3fe3ccb4f8298d31952490ef7d5395855c39",
                 "shasum": ""
             },
             "require": {
@@ -1395,7 +1395,7 @@
                 "css",
                 "minify"
             ],
-            "time": "2015-10-13 07:27:08"
+            "time": "2015-09-25 11:13:11"
         },
         {
             "name": "nikic/php-parser",
@@ -3193,7 +3193,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "natxet/cssmin": 20,
         "swiftmailer/swiftmailer": 0
     },
     "prefer-stable": false,

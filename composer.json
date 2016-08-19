@@ -23,7 +23,7 @@
         "rackspace/php-opencloud": "v1.9.2",
         "jeremeamia/superclosure": "2.1.0",
         "bantu/ini-get-wrapper": "v1.0.1",
-        "natxet/CssMin": "dev-master",
+        "natxet/CssMin": "v3.0.4",
         "punic/punic": "1.6.3",
         "pear/archive_tar": "1.4.1",
         "patchwork/utf8": "1.2.6",
