@@ -66,6 +66,7 @@
     "_%n folder_::_%n folders_" : ["%n kansio","%n kansiota"],
     "_%n file_::_%n files_" : ["%n tiedosto","%n tiedostoa"],
     "{dirs} and {files}" : "{dirs} ja {files}",
+    "_including %n hidden_::_including %n hidden_" : ["mukaan lukien %n piilotettu","mukaan lukien %n piilotettua"],
     "You don’t have permission to upload or create files here" : "Käyttöoikeutesi eivät riitä tiedostojen lähettämiseen tai kansioiden luomiseen tähän sijaintiin",
     "_Uploading %n file_::_Uploading %n files_" : ["Lähetetään %n tiedosto","Lähetetään %n tiedostoa"],
     "New" : "Uusi",

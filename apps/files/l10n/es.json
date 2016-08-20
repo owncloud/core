@@ -71,6 +71,7 @@
     "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetas"],
     "_%n file_::_%n files_" : ["%n archivo","%n archivos"],
     "{dirs} and {files}" : "{dirs} y {files}",
+    "_including %n hidden_::_including %n hidden_" : ["Incluyendo %n ocultos","including %n hidden"],
     "You don’t have permission to upload or create files here" : "No tiene permisos para subir o crear archivos aquí.",
     "_Uploading %n file_::_Uploading %n files_" : ["Subiendo %n archivo","Subiendo %n archivos"],
     "New" : "Nuevo",

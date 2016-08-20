@@ -113,6 +113,7 @@ OC.L10N.register(
     "add group" : "añadir grupo",
     "Invalid quota value \"{val}\"" : "Valor de quota inválido \"{val}\"",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Cambiar la contraseña provocará pérdida de datos porque la recuperación de datos no está disponible para este usuario",
+    "Password successfully changed" : "Contraseña cambiada",
     "A valid username must be provided" : "Se debe proporcionar un nombre de usuario válido",
     "Error creating user: {message}" : "Error creando el usuario: {message}",
     "A valid password must be provided" : "Se debe proporcionar una contraseña válida",

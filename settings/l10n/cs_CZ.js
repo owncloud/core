@@ -113,6 +113,7 @@ OC.L10N.register(
     "add group" : "přidat skupinu",
     "Invalid quota value \"{val}\"" : "Neplatná hodnota kvóty \"{val}\"",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Změna hesla bude mít za následek ztrátu dat, protože jejich obnova není pro tohoto uživatele dostupná.",
+    "Password successfully changed" : "Heslo bylo úspěšně změněno",
     "A valid username must be provided" : "Musíte zadat platné uživatelské jméno",
     "Error creating user: {message}" : "Chyba vytvoření uživatele: {message}",
     "A valid password must be provided" : "Musíte zadat platné heslo",

@@ -73,6 +73,7 @@ OC.L10N.register(
     "_%n folder_::_%n folders_" : ["%n dosje","%n dosje"],
     "_%n file_::_%n files_" : ["%n kartelë","%n kartela"],
     "{dirs} and {files}" : "{dirs} dhe {files}",
+    "_including %n hidden_::_including %n hidden_" : ["përfshi %n të fshehur","përfshi %n të fshehura"],
     "You don’t have permission to upload or create files here" : "S’keni leje për të ngarkuar apo krijuar kartela këtu",
     "_Uploading %n file_::_Uploading %n files_" : ["Po ngarkohet %n kartelë","Po ngarkohen %n kartela"],
     "New" : "E re",
