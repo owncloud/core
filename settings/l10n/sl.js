@@ -112,6 +112,7 @@ OC.L10N.register(
     "add group" : "dodaj skupino",
     "Invalid quota value \"{val}\"" : "Neveljavna vrednost količinske omejitve \"{val}\"",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Sprememba gesla bo povzročila izgubo podatkov, ker obnova podatkov za tega uporabnika ni na voljo.",
+    "Password successfully changed" : "Geslo je uspešno spremenjeno.",
     "A valid username must be provided" : "Navedeno mora biti veljavno uporabniško ime",
     "Error creating user: {message}" : "Napaka ustvarjanja uporabnika: {message}",
     "A valid password must be provided" : "Navedeno mora biti veljavno geslo",

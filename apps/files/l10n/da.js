@@ -73,6 +73,7 @@ OC.L10N.register(
     "_%n folder_::_%n folders_" : ["%n mappe","%n mapper"],
     "_%n file_::_%n files_" : ["%n fil","%n filer"],
     "{dirs} and {files}" : "{dirs} og {files}",
+    "_including %n hidden_::_including %n hidden_" : ["herunder %n skjult","herunder %n skjulte"],
     "You don’t have permission to upload or create files here" : "Du har ikke tilladelse til at uploade eller oprette filer her",
     "_Uploading %n file_::_Uploading %n files_" : ["Uploader %n fil","Uploader %n filer"],
     "New" : "Ny",
