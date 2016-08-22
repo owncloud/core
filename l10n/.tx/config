@@ -92,3 +92,9 @@ source_file = templates/updatenotification.pot
 source_lang = en
 type = PO
 
+[owncloud.dav]
+file_filter = <lang>/dav.po
+source_file = templates/dav.pot
+source_lang = en
+type = PO
+
