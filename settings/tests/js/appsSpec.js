@@ -67,6 +67,11 @@ describe('OC.Settings.Apps tests', function() {
 			]);
 		});
 
+		afterEach(function() {
+			// reset filter
+			Apps.filter('');
+		});
+
 		it('returns no results when query does not match anything', function() {
 			expect(getResultsFromDom().length).toEqual(4);
 			expect($('#apps-list:not(.hidden)').length).toEqual(1);
@@ -239,6 +244,39 @@ describe('OC.Settings.Apps tests', function() {
 					level: 200
 				}
 			});
+		});
+		it('applies filter even when it was set before loading', function() {
+			Apps.filter('filt');
+			Apps.loadCategory('TestId');
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json'
+				},
+				JSON.stringify({
+					apps: [
+						{
+							id: 'foo',
+							name: 'Filtered app',
+							description: 'Desc',
+							author: 'Someone',
+							level: 200
+						},
+						{
+							id: 'alpha',
+							name: 'Irrelevant app',
+							description: 'Boring',
+							author: 'No one',
+							level: 200
+						}
+					]
+				})
+			);
+
+			var results = getResultsFromDom();
+			expect(results.length).toEqual(1);
+			expect(results).toEqual(['foo']);
 		});
 	});
 

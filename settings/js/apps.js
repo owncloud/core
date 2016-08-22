@@ -67,6 +67,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 	},
 
 	loadCategory: function(categoryId) {
+		var self = this;
 		if (OC.Settings.Apps.State.currentCategory === categoryId) {
 			return;
 		}
@@ -82,6 +83,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		$('#app-category-' + categoryId).addClass('active');
 		OC.Settings.Apps.State.currentCategory = categoryId;
 
+		this._loading = true;
 		this._loadCategoryCall = $.ajax(OC.generateUrl('settings/apps/list?category={categoryId}&includeUpdateInfo=0', {
 			categoryId: categoryId
 		}), {
@@ -150,6 +152,14 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				});
 			}
 		});
+		this._loadCategoryCall.always(function() {
+			self._loading = false;
+			if (self._filterQuery) {
+				// re-set filter
+				self.filter(self._filterQuery);
+			}
+		});
+		return this._loadCategoryCall;
 	},
 
 	renderApp: function(app, template, selector, firstExperimental) {
@@ -453,11 +463,19 @@ OC.Settings.Apps = OC.Settings.Apps || {
 	},
 
 	filter: function(query) {
+		// FIXME: the caller doesn't properly set the "this" context
+		var self = OC.Settings.Apps;
+		self._filterQuery = query;
+
 		var $appList = $('#apps-list'),
 			$emptyList = $('#apps-list-empty');
 		$appList.removeClass('hidden');
 		$appList.find('.section').removeClass('hidden');
 		$emptyList.addClass('hidden');
+
+		if (self._loading) {
+			return;
+		}
 
 		if (query === '') {
 			return;
