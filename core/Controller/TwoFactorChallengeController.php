@@ -111,7 +111,7 @@ class TwoFactorChallengeController extends Controller {
 			$error = false;
 		}
 		//Attempt to get custom ContentSecurityPolicy(CSP) from 2FA provider
-                $csp  = $provider->getCSP();
+		$csp  = $provider->getCSP();
 		$tmpl = $provider->getTemplate($user);
 		$tmpl->assign('redirect_url', $redirect_url);
 		$data = [
@@ -121,12 +121,12 @@ class TwoFactorChallengeController extends Controller {
 			'template' => $tmpl->fetchPage(),
 		];
 		//Generate the response and add the custom CSP (if defined)
-                $response = new TemplateResponse($this->appName, 'twofactorshowchallenge', $data, 'guest');
-                if (!is_null($csp)) {
-                        $response->setContentSecurityPolicy($csp);
-                }
-                return $response;
-	}
+		$response = new TemplateResponse($this->appName, 'twofactorshowchallenge', $data, 'guest');
+		if (!is_null($csp)) {
+			$response->setContentSecurityPolicy($csp);
+		}
+		return $response;
+	}	
 
 	/**
 	 * @NoAdminRequired
