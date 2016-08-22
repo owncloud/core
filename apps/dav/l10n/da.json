@@ -1,0 +1,15 @@
+{ "translations": {
+    "Contact birthdays" : "Kontakters fødselsdage",
+    "Personal" : "Personligt",
+    "Contacts" : "Kontakter",
+    "Technical details" : "Tekniske detaljer",
+    "Remote Address: %s" : "Fjernadresse: %s",
+    "Request ID: %s" : "Forespørgsels-ID: %s",
+    "Type: %s" : "Indtast: %s",
+    "Code: %s" : "Kode: %s",
+    "Message: %s" : "Besked: %s",
+    "File: %s" : "Fil: %s",
+    "Line: %s" : "Linje: %s",
+    "Trace" : "Sporing"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

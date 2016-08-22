@@ -1,0 +1,10 @@
+{ "translations": {
+    "Personal" : "Անձնական",
+    "Type: %s" : "Տիպ. %s",
+    "Code: %s" : "Կոդ. %s",
+    "Message: %s" : "Նամակ. %s",
+    "File: %s" : "Ֆայլ. %s",
+    "Line: %s" : "Տող. %s",
+    "Trace" : "Հետք"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}

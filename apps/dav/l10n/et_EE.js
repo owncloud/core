@@ -1,0 +1,17 @@
+OC.L10N.register(
+    "dav",
+    {
+    "Contact birthdays" : "Kontakti sünnipäevad",
+    "Personal" : "Isiklik",
+    "Contacts" : "Kontaktid",
+    "Technical details" : "Tehnilised andmed",
+    "Remote Address: %s" : "Kaugaadress: %s",
+    "Request ID: %s" : "Päringu ID: %s",
+    "Type: %s" : "Tüüp: %s",
+    "Code: %s" : "Kood: %s",
+    "Message: %s" : "Sõnum: %s",
+    "File: %s" : "Fail: %s",
+    "Line: %s" : "Rida: %s",
+    "Trace" : "Jälita"
+},
+"nplurals=2; plural=(n != 1);");
