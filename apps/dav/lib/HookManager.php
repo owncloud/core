@@ -20,6 +20,7 @@
  */
 namespace OCA\DAV;
 
+use OC\L10N\L10N;
 use OCA\DAV\CalDAV\BirthdayService;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CardDAV\CardDavBackend;
@@ -45,14 +46,19 @@ class HookManager {
 	/** @var CardDavBackend */
 	private $cardDav;
 
+	/** @var L10N */
+	private $l10n;
+
 	public function __construct(IUserManager $userManager,
 								SyncService $syncService,
 								CalDavBackend $calDav,
-								CardDavBackend $cardDav) {
+								CardDavBackend $cardDav,
+								L10N $l10n) {
 		$this->userManager = $userManager;
 		$this->syncService = $syncService;
 		$this->calDav = $calDav;
 		$this->cardDav = $cardDav;
+		$this->l10n = $l10n;
 	}
 
 	public function setup() {
@@ -107,7 +113,8 @@ class HookManager {
 			if (empty($calendars) || (count($calendars) === 1 && $calendars[0]['uri'] === BirthdayService::BIRTHDAY_CALENDAR_URI)) {
 				try {
 					$this->calDav->createCalendar($principal, 'personal', [
-						'{DAV:}displayname' => 'Personal']);
+						'{DAV:}displayname' => $this->l10n->t('Personal'),
+						'{http://apple.com/ns/ical/}calendar-color' => '#1d2d44']);
 				} catch (\Exception $ex) {
 					\OC::$server->getLogger()->logException($ex);
 				}
@@ -116,7 +123,7 @@ class HookManager {
 			if (empty($books)) {
 				try {
 					$this->cardDav->createAddressBook($principal, 'contacts', [
-						'{DAV:}displayname' => 'Contacts']);
+						'{DAV:}displayname' => $this->l10n->t('Contacts')]);
 				} catch (\Exception $ex) {
 					\OC::$server->getLogger()->logException($ex);
 				}

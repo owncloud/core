@@ -60,7 +60,8 @@ class Application extends App {
 				$c->getServer()->getUserManager(),
 				$c->query('SyncService'),
 				$c->query('CalDavBackend'),
-				$c->query('CardDavBackend')
+				$c->query('CardDavBackend'),
+				$c->getServer()->getL10N('dav')
 			);
 		});
 
