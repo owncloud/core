@@ -157,7 +157,7 @@
 				if (_.isFunction(options.success)) {
 					var propsMapping = _.invert(options.davProperties);
 					var results = parsePropFindResult(response.body, propsMapping);
-					if (options.depth > 0) {
+					if (options.depth > 0 && !options.includeRoot) {
 						// discard root entry
 						results.shift();
 					}
