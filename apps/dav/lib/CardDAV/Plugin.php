@@ -22,17 +22,145 @@
 namespace OCA\DAV\CardDAV;
 
 use OCA\DAV\CardDAV\Xml\Groups;
+use Sabre\CardDAV\IAddressBook;
+use Sabre\DAV\Exception\UnsupportedMediaType;
+use Sabre\DAV\ICollection;
 use Sabre\DAV\INode;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
+use Sabre\DAV\StringUtil;
+use Sabre\DAV\UUIDUtil;
 use Sabre\HTTP\URLUtil;
+use Sabre\VObject\Node;
+use Sabre\VObject\ParseException;
+use Sabre\VObject\Reader;
 
 class Plugin extends \Sabre\CardDAV\Plugin {
 
 	function initialize(Server $server) {
 		$server->on('propFind', [$this, 'propFind']);
+		$server->on('beforeCreateFile', [$this, 'beforeCreateFile']);
+
 		parent::initialize($server);
 	}
+
+
+	/**
+	 * This method is triggered before a new file is created.
+	 *
+	 * This plugin uses this method to ensure that Card nodes receive valid
+	 * vcard data.
+	 *
+	 * @param string $path
+	 * @param resource $data
+	 * @param ICollection $parentNode
+	 * @param bool $modified Should be set to true, if this event handler
+	 *                       changed &$data.
+	 * @return void
+	 */
+	function beforeCreateFile($path, &$data, ICollection $parentNode, &$modified) {
+		if (!$parentNode instanceof IAddressBook)
+			return;
+
+		$this->validateVCard($data, $modified);
+
+
+	}
+
+	/**
+	 * Checks if the submitted iCalendar data is in fact, valid.
+	 *
+	 * An exception is thrown if it's not.
+	 *
+	 * @param resource|string $data
+	 * @param bool $modified Should be set to true, if this event handler
+	 *                       changed &$data.
+	 * @return void
+	 */
+	protected function validateVCard(&$data, &$modified) {
+
+		// If it's a stream, we convert it to a string first.
+		if (is_resource($data)) {
+			$data = stream_get_contents($data);
+		}
+
+		$before = md5($data);
+
+		// Converting the data to unicode, if needed.
+		$data = StringUtil::ensureUTF8($data);
+
+		if (md5($data) !== $before) {
+			$modified = true;
+		}
+
+		try {
+
+			// If the data starts with a [, we can reasonably assume we're dealing
+			// with a jCal object.
+			if (substr($data, 0, 1) === '[') {
+				$vobj = Reader::readJson($data);
+
+				// Converting $data back to iCalendar, as that's what we
+				// technically support everywhere.
+				$data = $vobj->serialize();
+				$modified = true;
+			} else {
+				$vobj = Reader::read($data);
+			}
+
+		} catch (ParseException $e) {
+
+			throw new UnsupportedMediaType('This resource only supports valid vCard or jCard data. Parse error: ' . $e->getMessage());
+
+		}
+
+		if ($vobj->name !== 'VCARD') {
+			throw new UnsupportedMediaType('This collection can only support vcard objects.');
+		}
+
+		$options = Node::PROFILE_CARDDAV;
+		$prefer = $this->server->getHTTPPrefer();
+		if ($prefer['handling'] !== 'strict') {
+			$options |= Node::REPAIR;
+		}
+		$messages = $vobj->validate($options);
+		$highestLevel = 0;
+		$warningMessage = null;
+		// $messages contains a list of problems with the vcard, along with
+		// their severity.
+		foreach ($messages as $message) {
+			if ($message['level'] > $highestLevel) {
+				// Recording the highest reported error level.
+				$highestLevel = $message['level'];
+				$warningMessage = $message['message'];
+			}
+			switch ($message['level']) {
+				case 1 :
+					// Level 1 means that there was a problem, but it was repaired.
+					$modified = true;
+					break;
+				case 2 :
+					// Level 2 means a warning, but not critical
+					break;
+				case 3 :
+					// Level 3 means a critical error
+					throw new UnsupportedMediaType('Validation error in vCard: ' . $message['message']);
+			}
+		}
+		if ($warningMessage) {
+			$this->server->httpResponse->setHeader(
+				'X-Sabre-Ew-Gross',
+				'vCard validation warning: ' . $warningMessage
+			);
+			// Re-serializing object.
+			$data = $vobj->serialize();
+			if (!$modified && strcmp($data, $before) !== 0) {
+				// This ensures that the system does not send an ETag back.
+				$modified = true;
+			}
+		}
+	}
+
 
 	/**
 	 * Returns the addressbook home for a given principal
