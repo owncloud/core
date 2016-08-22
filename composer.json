@@ -36,7 +36,7 @@
         "nikic/php-parser": "1.4.1",
         "icewind/Streams": "0.4.1",
         "swiftmailer/swiftmailer": "@stable",
-        "guzzlehttp/guzzle": "5.3.0",
+        "guzzlehttp/guzzle": "5.3.1",
         "league/flysystem": "1.0.20",
         "pear/pear-core-minimal": "v1.10.1",
         "interfasys/lognormalizer": "^v1.0",
