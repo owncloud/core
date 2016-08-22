@@ -553,6 +553,7 @@ class Connection extends LDAPUtility {
 			}
 			return $bindStatus;
 		}
+		return null;
 	}
 
 	/**
@@ -575,6 +576,7 @@ class Connection extends LDAPUtility {
 		} else {
 			throw new \OC\ServerNotAvailableException('Could not set required LDAP Protocol version.');
 		}
+		return true;
 	}
 
 	/**

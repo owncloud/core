@@ -43,7 +43,6 @@ class UpdateGroups extends \OC\BackgroundJob\TimedJob {
 	static private $groupsFromDB;
 
 	static private $groupBE;
-	static private $connector;
 
 	public function __construct(){
 		$this->interval = self::getRefreshInterval();
