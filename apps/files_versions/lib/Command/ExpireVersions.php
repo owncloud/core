@@ -116,7 +116,7 @@ class ExpireVersions extends Command {
 
 		// Check if this user has a version directory
 		$view = new \OC\Files\View('/' . $user);
-		if (!$view->is_dir('/files_versions/files')) {
+		if (!$view->is_dir('/files_versions')) {
 			return false;
 		}
 
