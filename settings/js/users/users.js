@@ -91,22 +91,16 @@ var UserList = {
 		 */
 		// make them look like the multiselect buttons
 		// until they get time to really get initialized
-		groupsSelect = $('<select multiple="multiple" class="groupsselect multiselect button" data-placehoder="Groups" title="' + t('settings', 'no group') + '"></select>')
+		groupsSelect = $('<input type="hidden" class="groupsselect">')
 			.data('username', user.name)
 			.data('user-groups', user.groups);
 		if ($tr.find('td.subadmins').length > 0) {
-			subAdminSelect = $('<select multiple="multiple" class="subadminsselect multiselect button" data-placehoder="subadmins" title="' + t('settings', 'no group') + '">')
+			subAdminSelect = $('<input type="hidden" class="subadminsselect">')
 				.data('username', user.name)
 				.data('user-groups', user.groups)
 				.data('subadmin', user.subadmin);
 			$tr.find('td.subadmins').empty();
 		}
-		$.each(this.availableGroups, function (i, group) {
-			groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
-			if (typeof subAdminSelect !== 'undefined' && group !== 'admin') {
-				subAdminSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
-			}
-		});
 		$tr.find('td.groups').empty().append(groupsSelect);
 		subAdminsEl = $tr.find('td.subadmins');
 		if (subAdminsEl.length > 0) {
@@ -198,9 +192,9 @@ var UserList = {
 		// defer init so the user first sees the list appear more quickly
 		window.setTimeout(function(){
 			$quotaSelect.singleSelect();
-			UserList.applyGroupSelect(groupsSelect);
+			UserList.applyGroupSelect(groupsSelect, user.groups);
 			if (subAdminSelect) {
-				UserList.applySubadminSelect(subAdminSelect);
+				UserList.applySubadminSelect(subAdminSelect, user.subadmin);
 			}
 		}, 0);
 		return $tr;
@@ -438,7 +432,7 @@ var UserList = {
 			});
 	},
 
-	applyGroupSelect: function (element) {
+	applyGroupSelect: function (element, selectedGroups) {
 		var checked = [];
 		var $element = $(element);
 		var user = UserList.getUID($element);
@@ -489,35 +483,39 @@ var UserList = {
 				);
 			};
 		}
-		var addGroup = function (select, group) {
-			$('select[multiple]').each(function (index, element) {
-				$element = $(element);
-				if ($element.find('option').filterAttr('value', group).length === 0 &&
-					select.data('msid') !== $element.data('msid')) {
-					$element.append('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>');
+		if (user) {
+			$element.change(function(ev) {
+				if (ev.added) {
+					checkHandler(ev.added.id);
+				} else if (ev.removed) {
+					checkHandler(ev.removed.id);
 				}
 			});
-			GroupList.addGroup(escapeHTML(group));
-		};
-		var label;
-		if (oc_isadmin) {
-			label = t('settings', 'add group');
 		}
-		else {
-			label = null;
-		}
-		$element.multiSelect({
-			createCallback: addGroup,
-			createText: label,
-			selectedFirst: true,
-			checked: checked,
-			oncheck: checkHandler,
-			onuncheck: checkHandler,
-			minWidth: 100
+		OC.Settings.setupGroupsSelect($element, {
+			width: 150,
+			placeholder: t('settings', 'Groups'),
+			createSearchChoice: function(term) {
+				//GroupList.addGroup(escapeHTML(term));
+				return {
+					id: term,
+					displayname: term + ' (' + t('settings', 'create group') + ')',
+					isNew: true
+				};
+			}
 		});
+		$element.on('select2-selecting', function(e) {
+			if (e.object && e.object.isNew) {
+				e.object.displayname = e.object.id;
+				delete e.object.isNew;
+			}
+		});
+		if (selectedGroups) {
+			$element.select2('val', selectedGroups);
+		}
 	},
 
-	applySubadminSelect: function (element) {
+	applySubadminSelect: function (element, selectedGroups) {
 		var checked = [];
 		var $element = $(element);
 		var user = UserList.getUID($element);
@@ -545,21 +543,20 @@ var UserList = {
 			);
 		};
 
-		var addSubAdmin = function (group) {
-			$('select[multiple]').each(function (index, element) {
-				if ($(element).find('option').filterAttr('value', group).length === 0) {
-					$(element).append('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>');
-				}
-			});
-		};
-		$element.multiSelect({
-			createCallback: addSubAdmin,
-			createText: null,
-			checked: checked,
-			oncheck: checkHandler,
-			onuncheck: checkHandler,
-			minWidth: 100
+		$element.change(function(ev) {
+			if (ev.added) {
+				checkHandler(ev.added.id);
+			} else if (ev.removed) {
+				checkHandler(ev.removed.id);
+			}
 		});
+		OC.Settings.setupGroupsSelect($element, {
+			width: 150,
+			placeholder: t('settings', 'Group Admin')
+		});
+		if (selectedGroups) {
+			$element.select2('val', selectedGroups);
+		}
 	},
 
 	_onScroll: function() {
@@ -826,6 +823,10 @@ $(document).ready(function () {
 
 		promise.then(function() {
 			var groups = $('#newusergroups').val() || [];
+			if (groups && groups !== '') {
+				groups = groups.split('|');
+			}
+			$('#newuser').get(0).reset();
 			$.post(
 				OC.generateUrl('/settings/users/users'),
 				{
