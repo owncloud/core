@@ -7,7 +7,7 @@
 timestampedNode('SLAVE') {
     stage 'Checkout'
         checkout scm
-        sh '''make'''
+        sh '''composer install'''
 
     stage 'JavaScript Testing'
         executeAndReport('tests/autotest-results-js.xml') {

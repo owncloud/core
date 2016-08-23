@@ -21,6 +21,7 @@ addons:
     - realpath
 
 before_install:
+  - composer install
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash tests/travis/before_install.sh $DB; fi"
 
 install:
