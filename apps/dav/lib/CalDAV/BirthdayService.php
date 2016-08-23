@@ -23,6 +23,7 @@
 namespace OCA\DAV\CalDAV;
 
 use Exception;
+use OC\L10N\L10N;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\DAV\GroupPrincipalBackend;
 use Sabre\VObject\Component\VCalendar;
@@ -35,17 +36,22 @@ class BirthdayService {
 	/** @var GroupPrincipalBackend */
 	private $principalBackend;
 
+	/** @var L10N */
+	private $l10n;
+
 	/**
 	 * BirthdayService constructor.
 	 *
 	 * @param CalDavBackend $calDavBackEnd
 	 * @param CardDavBackend $cardDavBackEnd
 	 * @param GroupPrincipalBackend $principalBackend
+	 * @param L10N $l10n
 	 */
-	public function __construct($calDavBackEnd, $cardDavBackEnd, $principalBackend) {
+	public function __construct($calDavBackEnd, $cardDavBackEnd, $principalBackend, L10N $l10n) {
 		$this->calDavBackEnd = $calDavBackEnd;
 		$this->cardDavBackEnd = $cardDavBackEnd;
 		$this->principalBackend = $principalBackend;
+		$this->l10n = $l10n;
 	}
 
 	/**
@@ -106,7 +112,7 @@ class BirthdayService {
 			return $book;
 		}
 		$this->calDavBackEnd->createCalendar($principal, self::BIRTHDAY_CALENDAR_URI, [
-			'{DAV:}displayname' => 'Contact birthdays',
+			'{DAV:}displayname' => $this->l10n->t('Contact birthdays'),
 			'{http://apple.com/ns/ical/}calendar-color' => '#FFFFCA',
 		]);
 
