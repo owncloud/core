@@ -141,4 +141,20 @@ class LoggerTest extends TestCase {
 		}
 	}
 
+	//loginWithPassword
+	/**
+	 * @dataProvider userAndPasswordData
+	 */
+	public function testDetectloginWithPassword($user, $password) {
+		$e = new \Exception('test');
+		$this->logger->logException($e);
+		$logLines = $this->getLogs();
+
+		foreach($logLines as $logLine) {
+			$this->assertNotContains($user, $logLine);
+			$this->assertNotContains($password, $logLine);
+			$this->assertContains('loginWithPassword(*** sensitive parameters replaced ***)', $logLine);
+		}
+	}
+
 }
