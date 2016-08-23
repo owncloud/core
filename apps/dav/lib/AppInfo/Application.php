@@ -103,7 +103,8 @@ class Application extends App {
 			return new BirthdayService(
 				$c->query('CalDavBackend'),
 				$c->query('CardDavBackend'),
-				$g
+				$g,
+				$c->getServer()->getL10N('dav')
 			);
 		});
 
