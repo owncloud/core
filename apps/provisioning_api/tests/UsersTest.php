@@ -732,7 +732,7 @@ class UsersTest extends OriginalTest {
 				'quota' => ['DummyValue'],
 				'email' => 'demo@owncloud.org',
 				'displayname' => 'Demo User',
-				'two_factor_auth_enabled' => false
+				'two_factor_auth_enabled' => 'false'
 			]
 		);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
@@ -796,7 +796,7 @@ class UsersTest extends OriginalTest {
 				'quota' => ['DummyValue'],
 				'email' => 'demo@owncloud.org',
 				'displayname' => 'Demo User',
-				'two_factor_auth_enabled' => false
+				'two_factor_auth_enabled' => 'false'
 			]
 		);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
@@ -891,7 +891,7 @@ class UsersTest extends OriginalTest {
 			'quota' => ['DummyValue'],
 			'email' => 'subadmin@owncloud.org',
 			'displayname' => 'Subadmin User',
-			'two_factor_auth_enabled' => false
+			'two_factor_auth_enabled' => 'false'
 		]);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'subadmin']));
 	}
