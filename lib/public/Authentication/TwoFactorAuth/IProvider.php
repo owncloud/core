@@ -89,15 +89,4 @@ interface IProvider {
 	 * @return boolean
 	 */
 	public function isTwoFactorAuthEnabledForUser(IUser $user);
-
-
-	/**
-	 * Get the Content Security Policy for the template (required for showing external content, otherwise optional)
-	 *
-	 * @since 9.2.0
-	 *
-	 * @return \OCP\AppFramework\Http\ContentSecurityPolicy
-	 */
-
-	public function getCSP();
 }
