@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Incorrect password",
+    "The new password can not be the same as the previous one" : "The new password can not be the same as the previous one",
     "No user supplied" : "No user supplied",
     "Authentication error" : "Authentication error",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Please provide an admin recovery password, otherwise all user data will be lost",
@@ -112,6 +113,7 @@ OC.L10N.register(
     "add group" : "add group",
     "Invalid quota value \"{val}\"" : "Invalid quota value \"{val}\"",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Changing the password will result in data loss, because data recovery is not available for this user",
+    "Password successfully changed" : "Password successfully changed",
     "A valid username must be provided" : "A valid username must be provided",
     "Error creating user: {message}" : "Error creating user: {message}",
     "A valid password must be provided" : "A valid password must be provided",

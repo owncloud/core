@@ -73,6 +73,7 @@ OC.L10N.register(
     "_%n folder_::_%n folders_" : ["%n folder","%n folders"],
     "_%n file_::_%n files_" : ["%n file","%n files"],
     "{dirs} and {files}" : "{dirs} and {files}",
+    "_including %n hidden_::_including %n hidden_" : ["including %n hidden","including %n hidden"],
     "You don’t have permission to upload or create files here" : "You don’t have permission to upload or create files here",
     "_Uploading %n file_::_Uploading %n files_" : ["Uploading %n file","Uploading %n files"],
     "New" : "New",

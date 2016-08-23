@@ -113,6 +113,7 @@ OC.L10N.register(
     "add group" : "הוספת קבוצה",
     "Invalid quota value \"{val}\"" : "ערך מכסה לא חוקי \"{val}\"",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "שינוי הסיסמא יגרום איבוד מידע, וזאת בגלל ששחזור מידע אינו זמין למשתמש זה",
+    "Password successfully changed" : "סיסמא שונתה בהצלחה",
     "A valid username must be provided" : "יש לספק שם משתמש תקני",
     "Error creating user: {message}" : "שגיאה ביצירת משתמש: {message}",
     "A valid password must be provided" : "יש לספק סיסמא תקנית",

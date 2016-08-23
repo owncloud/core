@@ -71,6 +71,7 @@
     "_%n folder_::_%n folders_" : ["%n carpeta","%n carpetes"],
     "_%n file_::_%n files_" : ["%n ficheru","%n ficheros"],
     "{dirs} and {files}" : "{dirs} y {files}",
+    "_including %n hidden_::_including %n hidden_" : ["incluyendo %n ocultu","incluyendo %n ocultos"],
     "You don’t have permission to upload or create files here" : "Nun tienes permisu pa xubir o crear ficheros equí",
     "_Uploading %n file_::_Uploading %n files_" : ["Xubiendo %n ficheru","Xubiendo %n ficheros"],
     "New" : "Nuevu",

@@ -122,6 +122,7 @@
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud.",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s",
     "No app name specified" : "No app name specified",
+    "App '%s' could not be installed!" : "App '%s' could not be installed!",
     "web services under your control" : "web services under your control",
     "File is currently busy, please try again later" : "File is currently busy, please try again later",
     "Can't read file" : "Can't read file",

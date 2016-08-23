@@ -73,6 +73,7 @@ OC.L10N.register(
     "_%n folder_::_%n folders_" : ["%n תיקייה","%n תיקיות"],
     "_%n file_::_%n files_" : ["%n קובץ","%n קבצים"],
     "{dirs} and {files}" : "{dirs} וכן {files}",
+    "_including %n hidden_::_including %n hidden_" : ["מכיל %n מוסתר","מכיל %n מוסתרים"],
     "You don’t have permission to upload or create files here" : "אין לך הרשאות להעלות או ליצור קבצים כאן",
     "_Uploading %n file_::_Uploading %n files_" : ["מעלה %n קובץ","מעלה %n קבצים"],
     "New" : "חדש",
