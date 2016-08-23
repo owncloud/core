@@ -111,7 +111,9 @@ class TwoFactorChallengeController extends Controller {
 			$error = false;
 		}
 		//Attempt to get custom ContentSecurityPolicy(CSP) from 2FA provider
-		$csp  = $provider->getCSP();
+		if ($provider instanceof \OCP\Authentication\TwoFactorAuth\IProvider2) {
+			$csp  = $provider->getCSP();
+		}
 		$tmpl = $provider->getTemplate($user);
 		$tmpl->assign('redirect_url', $redirect_url);
 		$data = [
