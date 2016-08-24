@@ -20,7 +20,7 @@ timestampedNode('SLAVE') {
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-            ./autotest.sh sqlite
+            build/autotest.sh sqlite
             '''
         }
         executeAndReport('tests/autotest-results-mysql.xml') {
@@ -28,7 +28,7 @@ timestampedNode('SLAVE') {
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-            ./autotest.sh mysql
+            build/autotest.sh mysql
             '''
         }
         executeAndReport('tests/autotest-results-pgsql.xml') {
@@ -36,7 +36,7 @@ timestampedNode('SLAVE') {
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 5.6
-            ./autotest.sh pgsql
+            build/autotest.sh pgsql
             '''
         }
         executeAndReport('tests/autotest-results-oci.xml') {
@@ -44,7 +44,7 @@ timestampedNode('SLAVE') {
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 5.6
-            ./autotest.sh oci
+            build/autotest.sh oci
             '''
         }
 
@@ -53,28 +53,28 @@ timestampedNode('SLAVE') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite webdav-ownCloud
+            build/autotest-external.sh sqlite webdav-ownCloud
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite smb-silvershell
+            build/autotest-external.sh sqlite smb-silvershell
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite swift-ceph
+            build/autotest-external.sh sqlite swift-ceph
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite smb-windows
+            build/autotest-external.sh sqlite smb-windows
             '''
         }
 
@@ -90,7 +90,7 @@ timestampedNode('SLAVE') {
             unset USEDOCKER
 
             rm tests/autotest-results-*.xml
-            ./autotest.sh mysql
+            build/autotest.sh mysql
             '''
         }
 
