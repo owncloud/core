@@ -35,7 +35,7 @@ update-js-deps: install-nodejs-deps
 	$(BOWER) update
 
 clean-js-deps:
-	rm -Rf core/vendor/
+	rm -Rf core/vendor/*
 
 test-php:
 	./autotest.sh sqlite
