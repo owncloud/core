@@ -46,13 +46,13 @@ test-external:
 	# TODO: more precise targets/envs
 	build/autotest-external.sh
 
-test-js: install-nodejs-deps
+test-js: install-nodejs-deps install-js-deps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 test-integration:
 	$(MAKE) -C build/integration
 
-test: test-js test-php
+test: test-js test-php test-integration
 
 clean-test-results:
 	rm -Rf tests/autotest-results*.xml
