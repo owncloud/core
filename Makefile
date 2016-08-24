@@ -8,7 +8,8 @@ all: install-composer-deps install-nodejs-deps install-js-deps
 clean: clean-composer-deps clean-nodejs-deps clean-js-deps
 
 composer.phar:
-	test -x build/composer.phar || cd build && curl -sS https://getcomposer.org/installer | php
+	# TODO: find a way to only download it once
+	cd build && curl -sS https://getcomposer.org/installer | php
 
 install-composer-deps: composer.phar
 	$(COMPOSER) install
