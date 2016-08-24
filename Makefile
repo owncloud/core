@@ -49,6 +49,9 @@ test-external:
 test-js: install-nodejs-deps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
+test-integration:
+	$(MAKE) -C build/integration
+
 test: test-js test-php
 
 clean-test-results:

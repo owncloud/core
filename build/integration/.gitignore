@@ -1,3 +1,4 @@
 vendor
 output
 composer.lock
+composer.phar
