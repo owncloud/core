@@ -13,10 +13,10 @@
     "tests"
   ],
   "dependencies": {
-    "blueimp-md5": "~1.1.0",
+    "blueimp-md5": "~1.0.1",
     "handlebars": "~1.3.0",
     "jcrop": "~0.9.12",
-    "jquery": "~2.2.0",
+    "jquery": "~2.1.4",
     "jquery-migrate": "~1.4.0",
     "jquery-ui": "1.10.0",
     "jsTimezoneDetect": "~1.0.5",
@@ -25,10 +25,10 @@
     "zxcvbn": "*",
     "snapjs": "~2.0.0-rc1",
     "strengthify": "0.4.2",
-    "underscore": "~1.8.0",
+    "underscore": "~1.8.3",
     "bootstrap": "~3.3.6",
     "backbone": "~1.2.3",
-    "davclient.js": "https://github.com/evert/davclient.js.git",
+    "davclient.js": "https://github.com/evert/davclient.js.git#99e6b3a718ceb93e8f571824ff4026c2016a9559",
     "es6-promise": "https://github.com/jakearchibald/es6-promise.git#~2.3.0",
     "base64": "~0.3.0",
     "clipboard": "^1.5.12"
