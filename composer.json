@@ -17,6 +17,7 @@
         "jakub-onderka/php-console-highlighter": "^0.3.2"
     },
     "require": {
+        "php": ">=5.4.1",
         "doctrine/dbal": "2.5.4",
         "mcnetic/zipstreamer": "^1.0",
         "phpseclib/phpseclib": "2.0.0",

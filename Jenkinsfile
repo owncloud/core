@@ -27,7 +27,7 @@ timestampedNode('SLAVE') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
-            phpenv local 5.4
+            phpenv local 7.0
             ./autotest.sh mysql
             '''
         }
@@ -43,7 +43,7 @@ timestampedNode('SLAVE') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
-            phpenv local 5.5
+            phpenv local 5.6
             ./autotest.sh oci
             '''
         }
