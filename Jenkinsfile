@@ -11,7 +11,7 @@ timestampedNode('SLAVE') {
 
     stage 'JavaScript Testing'
         executeAndReport('tests/autotest-results-js.xml') {
-            sh '''./autotest-js.sh'''
+            sh '''make test-js'''
         }
 
     stage 'PHPUnit'

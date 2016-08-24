@@ -5,7 +5,7 @@ BOWER="$(NODE_PREFIX)/node_modules/bower/bin/bower"
 COMPOSER=php build/composer.phar
 
 all: install-composer-deps install-nodejs-deps install-js-deps
-clean: clean-composer-deps clean-nodejs-deps clean-js-deps
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results
 
 build/composer.phar:
 	# TODO: find a way to only download it once
@@ -44,6 +44,9 @@ test-js: install-nodejs-deps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 test: test-js test-php
+
+clean-test-results:
+	rm -Rf tests/autotest-results*.xml
 
 php-lint: install-composer-deps
 	lib/composer/bin/parallel-lint --exclude lib/composer --exclude build .
