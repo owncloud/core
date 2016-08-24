@@ -2,24 +2,24 @@ NODE_PREFIX=build
 NPM=npm
 KARMA="$(NODE_PREFIX)/node_modules/karma/bin/karma"
 BOWER="$(NODE_PREFIX)/node_modules/bower/bin/bower"
-COMPOSER="php build/composer.phar"
+COMPOSER=php build/composer.phar
 
 all: install-composer-deps install-nodejs-deps install-js-deps
 clean: clean-composer-deps clean-nodejs-deps clean-js-deps
 
-composer.phar:
+build/composer.phar:
 	# TODO: find a way to only download it once
 	cd build && curl -sS https://getcomposer.org/installer | php
 
-install-composer-deps: composer.phar
+install-composer-deps: build/composer.phar
 	$(COMPOSER) install
 
-update-composer: composer.phar
+update-composer: build/composer.phar
 	rm -f composer.lock
 	$(COMPOSER) install --prefer-dist
 
 clean-composer-deps:
-	rm build/composer.phar
+	rm -f build/composer.phar
 	rm -Rf lib/composer
 
 install-nodejs-deps:
