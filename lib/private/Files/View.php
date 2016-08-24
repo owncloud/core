@@ -1408,7 +1408,7 @@ class View {
 			/**
 			 * @var \OC\Files\FileInfo[] $files
 			 */
-			$files = array_filter(function(ICacheEntry $content) {
+			$files = array_filter($contents, function(ICacheEntry $content) {
 				return (!\OC\Files\Filesystem::isForbiddenFileOrDir($content['path']));
 			});
 			$files = array_map(function (ICacheEntry $content) use ($path, $storage, $mount, $sharingDisabled) {
@@ -1417,7 +1417,7 @@ class View {
 				}
 				$owner = $this->getUserObjectForOwner($storage->getOwner($content['path']));
 				return new FileInfo($path . '/' . $content['name'], $storage, $content['path'], $content, $mount, $owner);
-			}, $contents);
+			}, $files);
 
 			//add a folder for any mountpoint in this directory and add the sizes of other mountpoints to the folders
 			$mounts = Filesystem::getMountManager()->findIn($path);
