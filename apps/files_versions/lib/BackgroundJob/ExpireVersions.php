@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
@@ -22,7 +23,7 @@
 
 namespace OCA\Files_Versions\BackgroundJob;
 
-use OCP\IUser;
+use OCP\IConfig;
 use OCP\IUserManager;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Storage;
@@ -30,25 +31,33 @@ use OCA\Files_Versions\Expiration;
 
 class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 
-	const ITEMS_PER_SESSION = 1000;
-
 	/**
 	 * @var Expiration
 	 */
 	private $expiration;
-	
+
+	/**
+	 * @var IConfig
+	 */
+	private $config;
+
 	/**
 	 * @var IUserManager
 	 */
 	private $userManager;
 
-	public function __construct(IUserManager $userManager = null, Expiration $expiration = null) {
+	const USERS_PER_SESSION = 1000;
+
+	public function __construct(IConfig $config = null,
+								IUserManager $userManager = null,
+								Expiration $expiration = null) {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
 
-		if (is_null($expiration) || is_null($userManager)) {
+		if (is_null($expiration) || is_null($userManager) || is_null($config)) {
 			$this->fixDIForJobs();
 		} else {
+			$this->config = $config;
 			$this->expiration = $expiration;
 			$this->userManager = $userManager;
 		}
@@ -56,6 +65,7 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 
 	protected function fixDIForJobs() {
 		$application = new Application();
+		$this->config = \OC::$server->getConfig();
 		$this->expiration = $application->getContainer()->query('Expiration');
 		$this->userManager = \OC::$server->getUserManager();
 	}
@@ -66,13 +76,35 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$this->userManager->callForAllUsers(function(IUser $user) {
-			$uid = $user->getUID();
-			if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$connection->beginTransaction();
+		$result = $this->config->increaseAppValue('files_versions', 'cronjob_user_offset', self::USERS_PER_SESSION);
+		if ($result) {
+			// use previous chunk
+			$offset = $result - self::USERS_PER_SESSION;
+
+			// check if there is at least one user at this offset
+			$users = $this->userManager->search('', 1, $offset);
+			if (count($users)) {
+				$connection->commit();
+
+				// fetch the whole chunk
+				$users = $this->userManager->search('', self::USERS_PER_SESSION, $offset);
+				foreach ($users as $user) {
+					$uid = $user->getUID();
+					if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
+						continue;
+					}
+					Storage::expireOlderThanMaxForUser($uid);
+				}
+
 				return;
 			}
-			Storage::expireOlderThanMaxForUser($uid);
-		});
+		}
+		// reset offset to make the next run start at the beginning
+		$this->config->setAppValue('files_versions', 'cronjob_user_offset', 0);
+		$connection->commit();
+
 	}
 
 	/**
@@ -82,12 +114,12 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 	 */
 	protected function setupFS($user) {
 		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($user);
-
-		// Check if this user has a versions directory
-		$view = new \OC\Files\View('/' . $user);
-		if (!$view->is_dir('/files_versions')) {
-			return false;
+		if (\OC_Util::setupFS($user)) {
+			// Check if this user has a versions directory
+			$view = new \OC\Files\View('/' . $user);
+			if (!$view->is_dir('/files_versions')) {
+				return false;
+			}
 		}
 
 		return true;

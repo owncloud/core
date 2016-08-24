@@ -28,6 +28,8 @@
 
 namespace OC;
 
+use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use OCP\IAppConfig;
 use OCP\IDBConnection;
 
@@ -192,6 +194,52 @@ class AppConfig implements IAppConfig {
 		$this->cache[$app][$key] = $value;
 
 		return $changedRow;
+	}
+	/**
+	 * increases an existing app wide value
+	 *
+	 * @param string $appName the appName that we want to store the value under
+	 * @param string|float|int $key the key of the value, under which will be saved
+	 * @param int $amount the value that should be stored
+	 * @return int
+	 * @since 9.2.0
+	 */
+	public function increaseAppValue($appName, $key, $amount) {
+
+		// move offset to next chunk, the column is defied as text
+		if ($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
+			// so we need type casting magic in oracle
+			$sql = 'UPDATE `*PREFIX*appconfig`
+					SET `configvalue` = TO_CLOB(TO_NUMBER(`configvalue`) + ?)
+					WHERE `appid` = ? AND `configkey` = ?';
+		} else if ($this->conn->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+				// and we need type casting magic in postgresql
+				$sql = 'UPDATE `*PREFIX*appconfig`
+					SET `configvalue` = CAST(`configvalue` AS INT) + ?
+					WHERE `appid` = ? AND `configkey` = ?';
+		} else {
+			$sql = 'UPDATE `*PREFIX*appconfig`
+					SET `configvalue` = `configvalue` + ?
+					WHERE `appid` = ? AND `configkey` = ?';
+		}
+		$this->conn->executeUpdate($sql, array($amount, $appName, $key));
+
+		// get next offset
+		$sql = 'SELECT `configvalue`
+				FROM `*PREFIX*appconfig`
+				WHERE `appid` = ? AND `configkey` = ?';
+		$result = $this->conn->executeQuery($sql, array($appName, $key));
+		if ($row = $result->fetch()) {
+			// update cache
+			if (!isset($this->cache[$appName])) {
+				$this->cache[$appName] = [];
+			}
+
+			$this->cache[$appName][$key] = (int)$row['configvalue'];
+			return $this->cache[$appName][$key];
+		} else {
+			return null;
+		}
 	}
 
 	/**
