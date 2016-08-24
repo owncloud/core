@@ -18,7 +18,8 @@
     "karma-coverage": "*",
     "karma-phantomjs-launcher": "*",
     "phantomjs-prebuilt": "*",
-    "jasmine-core": "~2.3.4"
+    "jasmine-core": "~2.3.4",
+    "jsdoc": "~3.4.0"
   },
   "engine": "node >= 0.8"
 }

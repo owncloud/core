@@ -2,6 +2,7 @@ NODE_PREFIX=build
 NPM=npm
 KARMA="$(NODE_PREFIX)/node_modules/karma/bin/karma"
 BOWER="$(NODE_PREFIX)/node_modules/bower/bin/bower"
+JSDOC="$(NODE_PREFIX)/node_modules/jsdoc/jsdoc.js"
 COMPOSER=php build/composer.phar
 
 all: install-composer-deps install-nodejs-deps install-js-deps
@@ -23,7 +24,7 @@ clean-composer-deps:
 	rm -Rf lib/composer
 
 install-nodejs-deps:
-	$(NPM) install --link --prefix $(NODE_PREFIX)
+	$(NPM) install --prefix $(NODE_PREFIX)
 
 clean-nodejs-deps:
 	rm -Rf $(NODE_PREFIX)/node_modules/
@@ -37,8 +38,13 @@ update-js-deps: install-nodejs-deps
 clean-js-deps:
 	rm -Rf core/vendor/*
 
-test-php:
-	./autotest.sh sqlite
+test-php: install-composer-deps
+	# TODO: ability to specify DB type
+	build/autotest.sh sqlite
+
+test-external:
+	# TODO: more precise targets/envs
+	build/autotest-external.sh
 
 test-js: install-nodejs-deps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
@@ -47,6 +53,11 @@ test: test-js test-php
 
 clean-test-results:
 	rm -Rf tests/autotest-results*.xml
+
+docs-js: install-nodejs-deps
+	$(JSDOC) -d build/jsdocs core/js/*.js core/js/**/*.js apps/*/js/*.js
+
+docs: docs-js
 
 php-lint: install-composer-deps
 	lib/composer/bin/parallel-lint --exclude lib/composer --exclude build .
