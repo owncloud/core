@@ -44,3 +44,6 @@ test-js: nodejs-deps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 test: test-js test-php
+
+php-lint: install-composer-deps
+	lib/composer/bin/parallel-lint --exclude lib/composer --exclude build .
