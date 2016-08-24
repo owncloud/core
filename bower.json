@@ -1,6 +1,6 @@
 {
   "name": "ownCloud",
-  "version": "8.2 pre alpha",
+  "version": "9.2 pre alpha",
   "homepage": "https://www.owncloud.org",
   "license": "AGPL",
   "private": true,
