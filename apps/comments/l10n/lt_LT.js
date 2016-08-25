@@ -8,6 +8,7 @@ OC.L10N.register(
     "Edit comment" : "Redaguoti komentarą",
     "[Deleted user]" : "[Ištrinti naudotojai]",
     "Comments" : "Komentarai",
+    "More comments..." : "Daugiau komentarų...",
     "Save" : "Išsaugoti",
     "Comment" : "Komentaras",
     "You commented" : "Jūs pakomentavote",

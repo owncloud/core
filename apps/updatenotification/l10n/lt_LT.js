@@ -4,7 +4,9 @@ OC.L10N.register(
     "Update notifications" : "Atnaujinti pranešimus",
     "ownCloud core" : "ownCloud branduolys",
     "Updater" : "Atnaujinimo programa",
+    "A new version is available: %s" : "Yra prieinama nauja versija: %s",
     "Your version is up to date." : "Jūsų versija atnaujinta.",
+    "Checked on %s" : "Tikrinta %s",
     "Update channel:" : "Atnaujinimo kanalas:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Visada galite atnaujinti į naujesnę versiją / bandomąjį kanalą. Bet niekada žeminti versijos ar pakeisti į stabilų kanalą."
 },
