@@ -69,3 +69,8 @@ docs: docs-js
 php-lint: install-composer-deps
 	lib/composer/bin/parallel-lint --exclude lib/composer --exclude build .
 
+php-license-header:
+	php build/license.php
+
+
+
