@@ -22,15 +22,27 @@
 
 namespace Test\Core\Controller;
 
+use OC\Authentication\TwoFactorAuth\Manager;
 use OC\Core\Controller\TwoFactorChallengeController;
+use OCP\AppFramework\Http\RedirectResponse;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IRequest;
+use OCP\ISession;
+use OCP\IURLGenerator;
+use OCP\IUserSession;
 use Test\TestCase;
 
 class TwoFactorChallengeControllerTest extends TestCase {
 
+	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
 	private $request;
+	/** @var Manager | \PHPUnit_Framework_MockObject_MockObject */
 	private $twoFactorManager;
+	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
 	private $userSession;
+	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject */
 	private $session;
+	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
 	private $urlGenerator;
 
 	/** @var TwoFactorChallengeController|\PHPUnit_Framework_MockObject_MockObject */
@@ -78,7 +90,7 @@ class TwoFactorChallengeControllerTest extends TestCase {
 			->with($user)
 			->will($this->returnValue($providers));
 
-		$expected = new \OCP\AppFramework\Http\TemplateResponse('core', 'twofactorselectchallenge', [
+		$expected = new TemplateResponse('core', 'twofactorselectchallenge', [
 			'providers' => $providers,
 			'redirect_url' => '/some/url',
 			'logout_attribute' => 'logoutAttribute',
@@ -119,7 +131,7 @@ class TwoFactorChallengeControllerTest extends TestCase {
 			->method('fetchPage')
 			->will($this->returnValue('<html/>'));
 
-		$expected = new \OCP\AppFramework\Http\TemplateResponse('core', 'twofactorshowchallenge', [
+		$expected = new TemplateResponse('core', 'twofactorshowchallenge', [
 			'error' => true,
 			'provider' => $provider,
 			'logout_attribute' => 'logoutAttribute',
@@ -144,7 +156,7 @@ class TwoFactorChallengeControllerTest extends TestCase {
 			->with('core.TwoFactorChallenge.selectChallenge')
 			->will($this->returnValue('select/challenge/url'));
 
-		$expected = new \OCP\AppFramework\Http\RedirectResponse('select/challenge/url');
+		$expected = new RedirectResponse('select/challenge/url');
 
 		$this->assertEquals($expected, $this->controller->showChallenge('myprovider', 'redirect/url'));
 	}
@@ -172,7 +184,7 @@ class TwoFactorChallengeControllerTest extends TestCase {
 			->with('files.view.index')
 			->will($this->returnValue('files/index/url'));
 
-		$expected = new \OCP\AppFramework\Http\RedirectResponse('files/index/url');
+		$expected = new RedirectResponse('files/index/url');
 		$this->assertEquals($expected, $this->controller->solveChallenge('myprovider', 'token'));
 	}
 
@@ -191,7 +203,7 @@ class TwoFactorChallengeControllerTest extends TestCase {
 			->with('core.TwoFactorChallenge.selectChallenge')
 			->will($this->returnValue('select/challenge/url'));
 
-		$expected = new \OCP\AppFramework\Http\RedirectResponse('select/challenge/url');
+		$expected = new RedirectResponse('select/challenge/url');
 
 		$this->assertEquals($expected, $this->controller->solveChallenge('myprovider', 'token'));
 	}
@@ -228,7 +240,7 @@ class TwoFactorChallengeControllerTest extends TestCase {
 			->method('getId')
 			->will($this->returnValue('myprovider'));
 
-		$expected = new \OCP\AppFramework\Http\RedirectResponse('files/index/url');
+		$expected = new RedirectResponse('files/index/url');
 		$this->assertEquals($expected, $this->controller->solveChallenge('myprovider', 'token', '/url'));
 	}
 
