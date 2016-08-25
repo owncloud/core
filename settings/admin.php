@@ -198,23 +198,23 @@ $formsAndMore[] = ['anchor' => 'encryptionAPI', 'section-name' => $l->t('Server-
 // Prioritize fileSharingSettings and files_external and move updater to the version
 $fileSharingSettings = $filesExternal = $updaterAppPanel = $ocDefaultEncryptionModulePanel = '';
 foreach ($forms as $index => $form) {
-	if (strpos($form, 'id="fileSharingSettings"')) {
-		$fileSharingSettings = $form;
+	if (strpos($form['page'], 'id="fileSharingSettings"')) {
+		$fileSharingSettings = $form['page'];
 		unset($forms[$index]);
 		continue;
 	}
-	if (strpos($form, 'id="files_external"')) {
-		$filesExternal = $form;
+	if (strpos($form['page'], 'id="files_external"')) {
+		$filesExternal = $form['page'];
 		unset($forms[$index]);
 		continue;
 	}
-	if (strpos($form, 'class="updater-admin"')) {
-		$updaterAppPanel = $form;
+	if (strpos($form['page'], 'class="updater-admin"')) {
+		$updaterAppPanel = $form['page'];
 		unset($forms[$index]);
 		continue;
 	}
-	if (strpos($form, 'id="ocDefaultEncryptionModule"')) {
-		$ocDefaultEncryptionModulePanel = $form;
+	if (strpos($form['page'], 'id="ocDefaultEncryptionModule"')) {
+		$ocDefaultEncryptionModulePanel = $form['page'];
 		unset($forms[$index]);
 		continue;
 	}
