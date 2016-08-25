@@ -108,7 +108,7 @@ class LoginController extends Controller {
 	 */
 	public function showLoginForm($user, $redirect_url, $remember_login) {
 		if ($this->userSession->isLoggedIn()) {
-			return new RedirectResponse(OC_Util::getDefaultPageUrl());
+			return new RedirectResponse($this->getDefaultUrl());
 		}
 
 		$parameters = array();
@@ -198,6 +198,9 @@ class LoginController extends Controller {
 		$this->userSession->login($user, $password);
 		$this->userSession->createSessionToken($this->request, $loginResult->getUID(), $user, $password);
 
+		// User has successfully logged in, now remove the password reset link, when it is available
+		$this->config->deleteUserValue($loginResult->getUID(), 'owncloud', 'lostpassword');
+
 		if ($this->twoFactorManager->isTwoFactorAuthenticated($loginResult)) {
 			$this->twoFactorManager->prepareTwoFactorLogin($loginResult);
 			if (!is_null($redirect_url)) {
@@ -217,7 +220,14 @@ class LoginController extends Controller {
 			}
 		}
 
-		return new RedirectResponse(OC_Util::getDefaultPageUrl());
+		return new RedirectResponse($this->getDefaultUrl());
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getDefaultUrl() {
+		return OC_Util::getDefaultPageUrl();
 	}
 
 }
