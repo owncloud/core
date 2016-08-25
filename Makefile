@@ -5,11 +5,13 @@ BOWER="$(NODE_PREFIX)/node_modules/bower/bin/bower"
 JSDOC="$(NODE_PREFIX)/node_modules/jsdoc/jsdoc.js"
 COMPOSER=php build/composer.phar
 
+TEST_DATABASE=sqlite
+TEST_EXTERNAL_ENV=smb-silvershell
+
 all: install-composer-deps install-nodejs-deps install-js-deps
 clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results
 
 build/composer.phar:
-	# TODO: find a way to only download it once
 	cd build && curl -sS https://getcomposer.org/installer | php
 
 install-composer-deps: build/composer.phar
@@ -39,12 +41,10 @@ clean-js-deps:
 	rm -Rf core/vendor/*
 
 test-php: install-composer-deps
-	# TODO: ability to specify DB type
-	build/autotest.sh sqlite
+	build/autotest.sh $(TEST_DATABASE)
 
 test-external:
-	# TODO: more precise targets/envs
-	build/autotest-external.sh
+	build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV)
 
 test-js: install-nodejs-deps install-js-deps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
@@ -54,8 +54,12 @@ test-integration:
 
 test: test-js test-php test-integration
 
+clean-test-integration:
+	$(MAKE) -C build/integration clean
+
 clean-test-results:
-	rm -Rf tests/autotest-results*.xml
+	rm -Rf tests/autotest-*results*.xml
+	$(MAKE) -C build/integration clean-test-results
 
 docs-js: install-nodejs-deps
 	$(JSDOC) -d build/jsdocs core/js/*.js core/js/**/*.js apps/*/js/*.js
