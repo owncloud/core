@@ -227,7 +227,7 @@ class Root extends Folder implements IRootFolder {
 	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function getStorage() {
-		throw new NotFoundException();
+		throw new NotFoundException("Root has no storage.");
 	}
 
 	/**
@@ -319,7 +319,7 @@ class Root extends Folder implements IRootFolder {
 	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function getParent() {
-		throw new NotFoundException();
+		throw new NotFoundException("Root has no parent.");
 	}
 
 	/**

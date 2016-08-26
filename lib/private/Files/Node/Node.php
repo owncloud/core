@@ -94,7 +94,7 @@ class Node implements \OCP\Files\Node {
 			if ($fileInfo instanceof FileInfo) {
 				$this->fileInfo = $fileInfo;
 			} else {
-				throw new NotFoundException();
+				throw new NotFoundException("{$this->path} not found.");
 			}
 		}
 		return $this->fileInfo;

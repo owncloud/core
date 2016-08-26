@@ -121,7 +121,7 @@ class Share20OCS {
 		$nodes = $userFolder->getById($share->getNodeId());
 
 		if (empty($nodes)) {
-			throw new NotFoundException();
+			throw new NotFoundException("Unknown fileid:{$share->getNodeId()}, target:{$share->getTarget()}");
 		}
 
 		$node = $nodes[0];
