@@ -73,6 +73,7 @@ OC.L10N.register(
     "Expiration date" : "Termiņa datums",
     "Resharing is not allowed" : "Atkārtota dalīšanās nav atļauta",
     "Share link" : "Dalīt saiti",
+    "Link" : "Saite",
     "Password protect" : "Aizsargāt ar paroli",
     "Password" : "Parole",
     "Email link to person" : "Sūtīt saiti personai pa e-pastu",
