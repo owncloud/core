@@ -11,6 +11,7 @@ TEST_EXTERNAL_ENV=smb-silvershell
 
 # internal aliases
 composer_deps=lib/composer
+composer_dev_deps=lib/composer/phpunit
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
 
@@ -33,10 +34,19 @@ $(COMPOSER_BIN):
 # ownCloud core PHP dependencies
 #
 $(composer_deps): $(COMPOSER_BIN)
-	php $(COMPOSER_BIN) install
+	php $(COMPOSER_BIN) install --no-dev
+
+$(composer_dev_deps): $(COMPOSER_BIN)
+	php $(COMPOSER_BIN) install --dev
+
+.PHONY: install-composer-release-deps
+install-composer-release-deps: $(composer_deps)
+
+.PHONY: install-composer-dev-deps
+install-composer-dev-deps: $(composer_dev_deps)
 
 .PHONY: install-composer-deps
-install-composer-deps: $(composer_deps)
+install-composer-deps: install-composer-dev-deps
 
 .PHONY: update-composer
 update-composer: $(COMPOSER_BIN)
@@ -46,7 +56,7 @@ update-composer: $(COMPOSER_BIN)
 .PHONY: clean-composer-deps
 clean-composer-deps:
 	rm -f $(COMPOSER_BIN)
-	rm -Rf $(composer_deps)
+	rm -Rf lib/composer
 
 #
 # Node JS dependencies for tools
