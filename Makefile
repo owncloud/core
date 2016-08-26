@@ -3,6 +3,7 @@ NPM=npm
 KARMA="$(NODE_PREFIX)/node_modules/karma/bin/karma"
 BOWER="$(NODE_PREFIX)/node_modules/bower/bin/bower"
 JSDOC="$(NODE_PREFIX)/node_modules/jsdoc/jsdoc.js"
+PHPUNIT="$(PWD)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER=php build/composer.phar
 
 TEST_DATABASE=sqlite
@@ -56,10 +57,10 @@ clean-js-deps:
 # Tests
 #
 test-php: install-composer-deps
-	build/autotest.sh $(TEST_DATABASE)
+	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE)
 
 test-external:
-	build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV)
+	PHPUNIT=$(PHPUNIT) build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV)
 
 test-js: install-nodejs-deps install-js-deps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run

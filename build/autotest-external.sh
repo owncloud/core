@@ -15,7 +15,9 @@ ADMINLOGIN=admin$EXECUTOR_NUMBER
 BASEDIR=$PWD
 
 DBCONFIGS="sqlite mysql pgsql oci"
-PHPUNIT=$(which phpunit)
+if test -z "$PHPUNIT"; then
+	PHPUNIT=$(which phpunit)
+fi
 
 _XDEBUG_CONFIG=$XDEBUG_CONFIG
 unset XDEBUG_CONFIG
