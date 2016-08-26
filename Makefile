@@ -11,9 +11,15 @@ TEST_EXTERNAL_ENV=smb-silvershell
 all: install-composer-deps install-nodejs-deps install-js-deps
 clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results
 
+#
+# Basic required tools
+#
 build/composer.phar:
 	cd build && curl -sS https://getcomposer.org/installer | php
 
+#
+# ownCloud core PHP dependencies
+#
 install-composer-deps: build/composer.phar
 	$(COMPOSER) install
 
@@ -25,12 +31,18 @@ clean-composer-deps:
 	rm -f build/composer.phar
 	rm -Rf lib/composer
 
+#
+# Node JS dependencies for tools
+#
 install-nodejs-deps:
 	$(NPM) install --prefix $(NODE_PREFIX)
 
 clean-nodejs-deps:
 	rm -Rf $(NODE_PREFIX)/node_modules/
 
+#
+# ownCloud core JS dependencies
+#
 install-js-deps: install-nodejs-deps
 	$(BOWER) install
 
@@ -40,6 +52,9 @@ update-js-deps: install-nodejs-deps
 clean-js-deps:
 	rm -Rf core/vendor/*
 
+#
+# Tests
+#
 test-php: install-composer-deps
 	build/autotest.sh $(TEST_DATABASE)
 
@@ -52,7 +67,10 @@ test-js: install-nodejs-deps install-js-deps
 test-integration:
 	$(MAKE) -C build/integration
 
-test: test-js test-php test-integration
+test-php-lint: install-composer-deps
+	lib/composer/bin/parallel-lint --exclude lib/composer --exclude build .
+
+test: test-php-lint test-php test-js test-integration
 
 clean-test-integration:
 	$(MAKE) -C build/integration clean
@@ -61,16 +79,18 @@ clean-test-results:
 	rm -Rf tests/autotest-*results*.xml
 	$(MAKE) -C build/integration clean-test-results
 
+#
+# Documentation
+#
 docs-js: install-nodejs-deps
 	$(JSDOC) -d build/jsdocs core/js/*.js core/js/**/*.js apps/*/js/*.js
 
 docs: docs-js
 
-php-lint: install-composer-deps
-	lib/composer/bin/parallel-lint --exclude lib/composer --exclude build .
-
-php-license-header:
+#
+# Miscellaneous tools
+#
+update-php-license-header:
 	php build/license.php
-
 
 
