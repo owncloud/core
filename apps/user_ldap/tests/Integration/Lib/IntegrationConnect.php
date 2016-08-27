@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
- * @author Joas Schilling <coding@schilljs.com>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,17 +21,18 @@
 
 namespace OCA\User_LDAP\Tests\Integration\Lib;
 
+use OC\ServerNotAvailableException;
 use OCA\User_LDAP\Tests\Integration\AbstractIntegrationTest;
 use OCA\User_LDAP\Mapping\UserMapping;
 use OCA\User_LDAP\User_LDAP;
 
 require_once __DIR__  . '/../../../../../lib/base.php';
 
-class IntegrationTestConnect extends AbstractIntegrationTest {
+class IntegrationConnect extends AbstractIntegrationTest {
 	/** @var  UserMapping */
 	protected $mapping;
 
-	/** @var User_LDAP */
+	/** @var USER_LDAP */
 	protected $backend;
 
 	/** @var  string */
@@ -67,7 +67,7 @@ class IntegrationTestConnect extends AbstractIntegrationTest {
 		]);
 		try {
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return true;
 		}
 		return false;
@@ -86,7 +86,7 @@ class IntegrationTestConnect extends AbstractIntegrationTest {
 		]);
 		try {
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return false;
 		}
 		return true;
@@ -105,7 +105,7 @@ class IntegrationTestConnect extends AbstractIntegrationTest {
 		]);
 		try {
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return false;
 		}
 		return true;
@@ -124,7 +124,7 @@ class IntegrationTestConnect extends AbstractIntegrationTest {
 		]);
 		try {
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return false;
 		}
 		return true;
@@ -143,7 +143,7 @@ class IntegrationTestConnect extends AbstractIntegrationTest {
 		]);
 		try {
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return false;
 		}
 		return true;
@@ -166,6 +166,7 @@ require_once(__DIR__ . '/../setup-scripts/config.php');
 /** @global $adn string */
 /** @global $apwd string */
 /** @global $bdn string */
-$test = new IntegrationTestConnect($host, $port, $adn, $apwd, $bdn);
+
+$test = new IntegrationConnect($host, $port, $adn, $apwd, $bdn);
 $test->init();
 $test->run();

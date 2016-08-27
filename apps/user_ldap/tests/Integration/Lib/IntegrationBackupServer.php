@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
- * @author Joas Schilling <coding@schilljs.com>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,13 +21,14 @@
 
 namespace OCA\User_LDAP\Tests\Integration\Lib;
 
+use OC\ServerNotAvailableException;
 use OCA\User_LDAP\Tests\Integration\AbstractIntegrationTest;
 use OCA\User_LDAP\Mapping\UserMapping;
 use OCA\User_LDAP\User_LDAP;
 
 require_once __DIR__  . '/../../../../../lib/base.php';
 
-class IntegrationTestBackupServer extends AbstractIntegrationTest {
+class IntegrationBackupServer extends AbstractIntegrationTest {
 	/** @var  UserMapping */
 	protected $mapping;
 
@@ -63,7 +63,7 @@ class IntegrationTestBackupServer extends AbstractIntegrationTest {
 	protected function case1() {
 		try {
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return false;
 		}
 		return true;
@@ -84,7 +84,7 @@ class IntegrationTestBackupServer extends AbstractIntegrationTest {
 				'ldap_backup_port' => '32123',
 			]);
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return true;
 		}
 		return false;
@@ -105,7 +105,7 @@ class IntegrationTestBackupServer extends AbstractIntegrationTest {
 				'ldap_backup_port' => '',
 			]);
 			$this->connection->getConnectionResource();
-		} catch (\OC\ServerNotAvailableException $e) {
+		} catch (ServerNotAvailableException $e) {
 			return true;
 		}
 		return false;
@@ -118,6 +118,7 @@ require_once(__DIR__ . '/../setup-scripts/config.php');
 /** @global $adn string */
 /** @global $apwd string */
 /** @global $bdn string */
-$test = new IntegrationTestBackupServer($host, $port, $adn, $apwd, $bdn);
+
+$test = new IntegrationBackupServer($host, $port, $adn, $apwd, $bdn);
 $test->init();
 $test->run();

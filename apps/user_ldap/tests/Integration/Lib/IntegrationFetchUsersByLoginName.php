@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
- * @author Joas Schilling <coding@schilljs.com>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,10 +22,17 @@
 namespace OCA\User_LDAP\Tests\Integration\Lib;
 
 use OCA\User_LDAP\Tests\Integration\AbstractIntegrationTest;
+use OCA\User_LDAP\Mapping\UserMapping;
+use OCA\User_LDAP\User_LDAP;
 
 require_once __DIR__  . '/../../../../../lib/base.php';
 
-class IntegrationTestCountUsersByLoginName extends AbstractIntegrationTest {
+class IntegrationFetchUsersByLoginName extends AbstractIntegrationTest {
+	/** @var  UserMapping */
+	protected $mapping;
+
+	/** @var USER_LDAP */
+	protected $backend;
 
 	/**
 	 * prepares the LDAP environment and sets up a test configuration for
@@ -35,29 +41,35 @@ class IntegrationTestCountUsersByLoginName extends AbstractIntegrationTest {
 	public function init() {
 		require(__DIR__ . '/../setup-scripts/createExplicitUsers.php');
 		parent::init();
+
+		$this->mapping = new UserMapping(\OC::$server->getDatabaseConnection());
+		$this->mapping->clear();
+		$this->access->setUserMapper($this->mapping);
+		$this->backend = new USER_LDAP($this->access, \OC::$server->getConfig());
 	}
 
 	/**
-	 * tests countUsersByLoginName where it is expected that the login name does
+	 * tests fetchUserByLoginName where it is expected that the login name does
 	 * not match any LDAP user
 	 *
 	 * @return bool
 	 */
 	protected function case1() {
-		$result = $this->access->countUsersByLoginName('notHere');
-		return $result === 0;
+		$result = $this->access->fetchUsersByLoginName('notHere');
+		return $result === [];
 	}
 
 	/**
-	 * tests countUsersByLoginName where it is expected that the login name does
+	 * tests fetchUserByLoginName where it is expected that the login name does
 	 * match one LDAP user
 	 *
 	 * @return bool
 	 */
 	protected function case2() {
-		$result = $this->access->countUsersByLoginName('alice');
-		return $result === 1;
+		$result = $this->access->fetchUsersByLoginName('alice');
+		return count($result) === 1;
 	}
+
 }
 
 require_once(__DIR__ . '/../setup-scripts/config.php');
@@ -66,6 +78,7 @@ require_once(__DIR__ . '/../setup-scripts/config.php');
 /** @global $adn string */
 /** @global $apwd string */
 /** @global $bdn string */
-$test = new IntegrationTestCountUsersByLoginName($host, $port, $adn, $apwd, $bdn);
+
+$test = new IntegrationFetchUsersByLoginName($host, $port, $adn, $apwd, $bdn);
 $test->init();
 $test->run();
