@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "パスワードが間違っています",
+    "The new password can not be the same as the previous one" : "新しいパスワードは前回のパスワードと同じにはできません",
     "No user supplied" : "ユーザーが指定されていません",
     "Authentication error" : "認証エラー",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "リカバリ用の管理者パスワードを入力してください。そうでない場合は、全ユーザーのデータが失われます。",
@@ -112,6 +113,7 @@ OC.L10N.register(
     "Invalid quota value \"{val}\"" : "クオータ \"{val}\" は不正な値です。",
     "no group" : "未グループ",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "このユーザーのデータ復旧が無効になっていますので、パスワードを変更するとユーザーはデータに二度とアクセスできません。",
+    "Password successfully changed" : "パスワードは正常に変更されました",
     "A valid username must be provided" : "有効なユーザー名を指定する必要があります",
     "Error creating user: {message}" : "ユーザー作成エラー: {message}",
     "A valid password must be provided" : "有効なパスワードを指定する必要があります",
