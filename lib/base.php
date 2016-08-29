@@ -501,8 +501,15 @@ class OC {
 
 		self::$CLI = (php_sapi_name() == 'cli');
 
+		// setup 3rdparty autoloader
+		$vendorAutoLoad = OC::$SERVERROOT . '/lib/composer/autoload.php';
+		if (!file_exists($vendorAutoLoad)) {
+			printf('Composer autoloader not found, unable to continue. Please run "make".');
+			exit();
+		}
+
 		// Add default composer PSR-4 autoloader
-		self::$composerAutoloader = require OC::$SERVERROOT . '/lib/composer/autoload.php';
+		self::$composerAutoloader = require $vendorAutoLoad;
 		if (!self::$composerAutoloader) {
 			print('Composer autoloader not found!');
 			exit();
