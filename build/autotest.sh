@@ -30,7 +30,10 @@ if [ -z "$PHP_EXE" ]; then
 	PHP_EXE=php
 fi
 PHP=$(which "$PHP_EXE")
-PHPUNIT=$(which phpunit)
+
+if test -z "$PHPUNIT"; then
+	PHPUNIT=$(which phpunit)
+fi
 
 set -e
 

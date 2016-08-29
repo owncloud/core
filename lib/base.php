@@ -501,18 +501,22 @@ class OC {
 
 		self::$CLI = (php_sapi_name() == 'cli');
 
+		// setup 3rdparty autoloader
+		$vendorAutoLoad = OC::$SERVERROOT . '/lib/composer/autoload.php';
+		if (!file_exists($vendorAutoLoad)) {
+			printf('Composer autoloader not found, unable to continue. Please run "make".');
+			exit();
+		}
+
 		// Add default composer PSR-4 autoloader
-		self::$composerAutoloader = require_once OC::$SERVERROOT . '/lib/composer/autoload.php';
+		self::$composerAutoloader = require $vendorAutoLoad;
+		if (!self::$composerAutoloader) {
+			print('Composer autoloader not found!');
+			exit();
+		}
 
 		try {
 			self::initPaths();
-			// setup 3rdparty autoloader
-			$vendorAutoLoad = OC::$SERVERROOT. '/3rdparty/autoload.php';
-			if (!file_exists($vendorAutoLoad)) {
-				throw new \RuntimeException('Composer autoloader not found, unable to continue. Check the folder "3rdparty". Running "git submodule update --init" will initialize the git submodule that handles the subfolder "3rdparty".');
-			}
-			require_once $vendorAutoLoad;
-
 		} catch (\RuntimeException $e) {
 			if (!self::$CLI) {
 				OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);

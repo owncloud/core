@@ -7,11 +7,11 @@
 timestampedNode('SLAVE') {
     stage 'Checkout'
         checkout scm
-        sh '''git submodule update --init'''
+        sh '''composer install'''
 
     stage 'JavaScript Testing'
         executeAndReport('tests/autotest-results-js.xml') {
-            sh '''./autotest-js.sh'''
+            sh '''make test-js'''
         }
 
     stage 'PHPUnit'
@@ -20,15 +20,15 @@ timestampedNode('SLAVE') {
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-            ./autotest.sh sqlite
+			make test-php TEST_DATABASE=sqlite
             '''
         }
         executeAndReport('tests/autotest-results-mysql.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
-            phpenv local 5.4
-            ./autotest.sh mysql
+            phpenv local 7.0
+			make test-php TEST_DATABASE=mysql
             '''
         }
         executeAndReport('tests/autotest-results-pgsql.xml') {
@@ -36,15 +36,15 @@ timestampedNode('SLAVE') {
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 5.6
-            ./autotest.sh pgsql
+			make test-php TEST_DATABASE=pgsql
             '''
         }
         executeAndReport('tests/autotest-results-oci.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
-            phpenv local 5.5
-            ./autotest.sh oci
+            phpenv local 5.6
+			make test-php TEST_DATABASE=oci
             '''
         }
 
@@ -53,28 +53,28 @@ timestampedNode('SLAVE') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite webdav-ownCloud
+			make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite smb-silvershell
+			make test-external TEST_EXTERNAL_ENV=smb-silvershell
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite swift-ceph
+			make test-external TEST_EXTERNAL_ENV=swift-ceph
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-            ./autotest-external.sh sqlite smb-windows
+			make test-external TEST_EXTERNAL_ENV=smb-windows
             '''
         }
 
@@ -89,8 +89,8 @@ timestampedNode('SLAVE') {
             export PRIMARY_STORAGE_CONFIG="swift"
             unset USEDOCKER
 
-            rm tests/autotest-results-*.xml
-            ./autotest.sh mysql
+			make clean-test-results
+			make test-php TEST_DATABASE=mysql
             '''
         }
 
@@ -99,11 +99,8 @@ timestampedNode('SLAVE') {
             sh '''phpenv local 7.0
             rm -rf config/config.php
             ./occ maintenance:install --admin-pass=admin
-            rm -rf build/integration/output
-            rm -rf build/integration/vendor
-            rm -rf build/integration/composer.lock
-            cd build/integration
-            ./run.sh
+			make clean-test-integration
+			make test-integration
            '''
         }
 }

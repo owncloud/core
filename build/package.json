@@ -1,5 +1,5 @@
 {
-  "name": "owncloud-js-tests",
+  "name": "owncloud-js-dev",
   "description": "ownCloud tests",
   "version": "0.0.1",
   "author": {
@@ -11,13 +11,15 @@
   "contributors": [],
   "dependencies": {},
   "devDependencies": {
+    "bower": "~1.7.9",
     "karma": "~0.12.0",
     "karma-jasmine": "~0.3.0",
     "karma-junit-reporter": "*",
     "karma-coverage": "*",
     "karma-phantomjs-launcher": "*",
     "phantomjs-prebuilt": "*",
-    "jasmine-core": "~2.3.4"
+    "jasmine-core": "~2.3.4",
+    "jsdoc": "~3.4.0"
   },
   "engine": "node >= 0.8"
 }
