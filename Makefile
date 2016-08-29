@@ -91,11 +91,11 @@ clean-js-deps:
 # Tests
 #
 .PHONY: test-php
-test-php: $(composer_deps)
+test-php: $(composer_dev_deps)
 	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE)
 
 .PHONY: test-external
-test-external: $(composer_deps)
+test-external: $(composer_dev_deps)
 	PHPUNIT=$(PHPUNIT) build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV)
 
 .PHONY: test-js
@@ -103,11 +103,11 @@ test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 .PHONY: test-integration
-test-integration: $(composer_deps)
+test-integration: $(composer_dev_deps)
 	$(MAKE) -C build/integration
 
 .PHONY: test-php-lint
-test-php-lint: $(composer_deps)
+test-php-lint: $(composer_dev_deps)
 	$(composer_deps)/bin/parallel-lint --exclude lib/composer --exclude build .
 
 .PHONY: test

@@ -53,28 +53,28 @@ timestampedNode('SLAVE') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL=webdav-ownCloud
+			make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL=smb-silvershell
+			make test-external TEST_EXTERNAL_ENV=smb-silvershell
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL=swift-ceph
+			make test-external TEST_EXTERNAL_ENV=swift-ceph
             '''
         }
         executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL=smb-windows
+			make test-external TEST_EXTERNAL_ENV=smb-windows
             '''
         }
 
@@ -90,7 +90,7 @@ timestampedNode('SLAVE') {
             unset USEDOCKER
 
 			make clean-test-results
-			make test-external TEST_DATABASE=mysql
+			make test-php TEST_DATABASE=mysql
             '''
         }
 
