@@ -44,7 +44,8 @@ $principalBackend = new Principal(
 	'principals/'
 );
 $db = \OC::$server->getDatabaseConnection();
-$calDavBackend = new CalDavBackend($db, $principalBackend);
+$config = \OC::$server->getConfig();
+$calDavBackend = new CalDavBackend($db, $principalBackend, $config);
 
 $debugging = \OC::$server->getConfig()->getSystemValue('debug', false);
 

@@ -88,6 +88,13 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 		return $this->calendarInfo['id'];
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getPrincipalURI() {
+		return $this->calendarInfo['principaluri'];
+	}
+
 	function getACL() {
 		$acl =  [
 			[
@@ -115,6 +122,13 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 					'protected' => true,
 				];
 			}
+		}
+		if ($this->isPublic()) {
+			$acl[] = [
+				'privilege' => '{DAV:}read',
+				'principal' => 'principals/system/public',
+				'protected' => true,
+			];
 		}
 
 		/** @var CalDavBackend $calDavBackend */
@@ -235,6 +249,20 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 		return $uris;
 	}
 
+	/**
+	 * @param boolean $value
+	 */
+	function setPublishStatus($value) {
+		$this->caldavBackend->setPublishStatus($value, $this);
+	}
+
+	/**
+	 * @return boolean $value
+	 */
+	function getPublishStatus() {
+		return $this->caldavBackend->getPublishStatus($this);
+	}
+
 	private function canWrite() {
 		if (isset($this->calendarInfo['{http://owncloud.org/ns}read-only'])) {
 			return !$this->calendarInfo['{http://owncloud.org/ns}read-only'];
@@ -242,8 +270,16 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 		return true;
 	}
 
+	private function isPublic() {
+		return isset($this->calendarInfo['{http://owncloud.org/ns}public']);
+	}
+
 	private function isShared() {
 		return isset($this->calendarInfo['{http://owncloud.org/ns}owner-principal']);
+	}
+
+	public function isSubscription() {
+		return isset($this->calendarInfo['{http://calendarserver.org/ns/}source']);
 	}
 
 }

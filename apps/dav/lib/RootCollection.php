@@ -25,6 +25,7 @@ namespace OCA\DAV;
 
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\CalendarRoot;
+use OCA\DAV\CalDAV\PublicCalendarRoot;
 use OCA\DAV\CardDAV\AddressBookRoot;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
@@ -58,9 +59,11 @@ class RootCollection extends SimpleCollection {
 		$systemPrincipals->disableListing = $disableListing;
 		$filesCollection = new Files\RootCollection($userPrincipalBackend, 'principals/users');
 		$filesCollection->disableListing = $disableListing;
-		$caldavBackend = new CalDavBackend($db, $userPrincipalBackend);
+		$caldavBackend = new CalDavBackend($db, $userPrincipalBackend, $config);
 		$calendarRoot = new CalendarRoot($userPrincipalBackend, $caldavBackend, 'principals/users');
 		$calendarRoot->disableListing = $disableListing;
+		$publicCalendarRoot = new PublicCalendarRoot($caldavBackend);
+		$publicCalendarRoot->disableListing = $disableListing;
 
 		$systemTagCollection = new SystemTag\SystemTagsByIdCollection(
 			\OC::$server->getSystemTagManager(),
@@ -100,6 +103,7 @@ class RootCollection extends SimpleCollection {
 						$systemPrincipals]),
 				$filesCollection,
 				$calendarRoot,
+				$publicCalendarRoot,
 				new SimpleCollection('addressbooks', [
 						$usersAddressBookRoot,
 						$systemAddressBookRoot]),

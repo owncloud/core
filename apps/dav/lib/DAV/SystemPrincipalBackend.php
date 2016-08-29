@@ -50,6 +50,10 @@ class SystemPrincipalBackend extends AbstractBackend {
 				'uri' => 'principals/system/system',
 				'{DAV:}displayname' => 'system',
 			];
+			$principals[] = [
+				'uri' => 'principals/system/public',
+				'{DAV:}displayname' => 'public',
+			];
 		}
 
 		return $principals;
@@ -69,6 +73,13 @@ class SystemPrincipalBackend extends AbstractBackend {
 			$principal = [
 				'uri' => 'principals/system/system',
 				'{DAV:}displayname' => 'system',
+			];
+			return $principal;
+		}
+		if ($path === 'principals/system/public') {
+			$principal = [
+				'uri' => 'principals/system/public',
+				'{DAV:}displayname' => 'public',
 			];
 			return $principal;
 		}
