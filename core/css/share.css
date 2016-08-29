@@ -50,6 +50,13 @@
 	height: 32px;
 }
 
+.autocomplete-item {
+	display: flex;
+}
+.autocomplete-item-text {
+	margin: 10px;
+}
+
 #shareWithList {
 	list-style-type:none;
 	padding:8px;
