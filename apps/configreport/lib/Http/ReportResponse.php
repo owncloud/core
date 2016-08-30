@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Felix Boehm <felix@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -18,16 +18,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+namespace OCA\ConfigReport\Http;
 
-namespace OCA;
 
-use OCP\Template;
-use OCP\Util;
+use OCP\AppFramework\Http\DownloadResponse;
 
-\OCP\User::checkAdminUser();
-Util::addscript( 'config_report', 'admin' );
+class ReportResponse extends DownloadResponse {
 
-$template = new Template( 'config_report', 'settings');
-$l = \OC::$server->getL10N('config_report');
-return $template->fetchPage();
+	/**
+	 * @var array $data
+	 */
+	private $data;
 
+	public function __construct(array $data) {
+		parent::__construct('config_report_' . date('Ymd') . '.json', 'text/json');
+		$this->data = $data;
+	}
+
+	public function render() {
+		$settings = defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0;
+		return json_encode($this->data, $settings);
+	}
+}

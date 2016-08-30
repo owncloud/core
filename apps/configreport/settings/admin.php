@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Felix Boehm <felix@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -19,5 +20,16 @@
  *
  */
 
-// register settings page
-OCP\App::registerAdmin('config_report', 'settings');
+namespace OCA;
+
+use OCP\Template;
+use OCP\Util;
+use OCP\User;
+
+User::checkAdminUser();
+Util::addScript( 'configreport', 'admin' );
+
+$template = new Template( 'configreport', 'settings/admin');
+$l = \OC::$server->getL10N('configreport');
+return $template->fetchPage();
+

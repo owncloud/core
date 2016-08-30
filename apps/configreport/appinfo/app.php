@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Felix Boehm <felix@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -19,13 +20,5 @@
  *
  */
 
-/** @var $l OC_L10N */
-/** @var $_ array */
-?>
-<form action="" method="POST" class="section">
-	<h2><?php p($l->t('Generate Config Report'));?></h2>
-	<button id="download_config_report"><?php p($l->t('Download ownCloud config report'));?>
-		<img class="hidden" src="<?php print_unescaped(\OC::$server->getURLGenerator()->imagePath('core', 'loading.gif')); ?>" style="width:16px;height:16px"></button>
-	<input type="hidden" name="sendreport" value="ok">
-	<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>" id="requesttoken">
-</form>
+// register settings page
+OCP\App::registerAdmin('configreport', 'settings/admin');

@@ -1,5 +1,5 @@
-config_report_
-============
+Admin Config Report
+===================
 
 This application creates a configuration summary with the click of a button in the ownCloud Admin panel. 
 

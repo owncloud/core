@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Felix Boehm <felix@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -19,7 +20,18 @@
  *
  */
 
-/** @var $this OC\Route\Router */
+use OCP\AppFramework\App;
 
-$this->create('generate_report', 'ajax/generate_report.php')
-	->actionInclude('config_report/ajax/generate_report.php');
+$application = new App('configreport');
+$application->registerRoutes(
+	$this,
+	[
+		'routes' => [
+			[
+				'name' => 'Report#getReport',
+				'url' => '/report',
+				'verb' => 'GET',
+			],
+		],
+	]
+);

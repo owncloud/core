@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <info>
-	<id>config_report</id>
+	<id>configreport</id>
 	<name>Admin Config Report</name>
 	<description>Generate a Config Report</description>
 	<licence>AGPL</licence>
 	<author>owncloud.org</author>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
+	<namespace>ConfigReport</namespace>
 	<default_enable/>
 	<types>
 		<filesystem/>

@@ -23,7 +23,10 @@ $(document).ready(function(){
 		'click',
 		'#download_config_report',
 		function() {
-			location.href = OC.filePath( 'config_report', 'ajax', 'generate_report.php' ) + '?download=1&requesttoken=' + encodeURIComponent(oc_requesttoken);
+			location.href = OC.generateUrl(
+				'apps/configreport/report',
+				{requesttoken: encodeURIComponent(oc_requesttoken) }
+			);
 			return false;
 		}
 	);
