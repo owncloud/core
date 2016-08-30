@@ -415,7 +415,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When User :user deletes file :file
+	 * @When User :user deletes (file|folder) :file
 	 * @param string $user
 	 * @param string $file
 	 */
