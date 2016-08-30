@@ -29,7 +29,7 @@
         "punic/punic": "1.6.3",
         "pear/archive_tar": "1.4.1",
         "patchwork/utf8": "1.2.6",
-        "symfony/console": "2.8.3",
+        "symfony/console": "^3.1",
         "symfony/event-dispatcher": "2.8.3",
         "symfony/routing": "2.8.1",
         "symfony/process": "2.8.1",
