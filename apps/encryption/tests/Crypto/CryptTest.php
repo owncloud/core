@@ -61,7 +61,7 @@ class CryptTest extends TestCase {
 		$this->config = $this->getMockBuilder('OCP\IConfig')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->l = $this->getMock('OCP\IL10N');
+		$this->l = $this->createMock('OCP\IL10N');
 
 		$this->crypt = new Crypt($this->logger, $this->userSession, $this->config, $this->l);
 	}

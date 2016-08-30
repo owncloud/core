@@ -45,10 +45,10 @@ class DefaultTokenProviderTest extends TestCase {
 		$this->mapper = $this->getMockBuilder('\OC\Authentication\Token\DefaultTokenMapper')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->crypto = $this->getMock('\OCP\Security\ICrypto');
-		$this->config = $this->getMock('\OCP\IConfig');
-		$this->logger = $this->getMock('\OCP\ILogger');
-		$this->timeFactory = $this->getMock('\OCP\AppFramework\Utility\ITimeFactory');
+		$this->crypto = $this->createMock('\OCP\Security\ICrypto');
+		$this->config = $this->createMock('\OCP\IConfig');
+		$this->logger = $this->createMock('\OCP\ILogger');
+		$this->timeFactory = $this->createMock('\OCP\AppFramework\Utility\ITimeFactory');
 		$this->time = 1313131;
 		$this->timeFactory->expects($this->any())
 			->method('getTime')
@@ -118,7 +118,7 @@ class DefaultTokenProviderTest extends TestCase {
 	}
 	
 	public function testGetTokenByUser() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$this->mapper->expects($this->once())
 			->method('getTokenByUser')
 			->with($user)
@@ -212,7 +212,7 @@ class DefaultTokenProviderTest extends TestCase {
 	 * @expectedException \OC\Authentication\Exceptions\InvalidTokenException
 	 */
 	public function testSetPasswordInvalidToken() {
-		$token = $this->getMock('\OC\Authentication\Token\IToken');
+		$token = $this->createMock('\OC\Authentication\Token\IToken');
 		$tokenId = 'token123';
 		$password = '123456';
 
@@ -229,7 +229,7 @@ class DefaultTokenProviderTest extends TestCase {
 
 	public function testInvaildateTokenById() {
 		$id = 123;
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$this->mapper->expects($this->once())
 			->method('deleteById')

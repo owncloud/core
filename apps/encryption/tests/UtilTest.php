@@ -69,16 +69,16 @@ class UtilTest extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->mountMock = $this->getMock('\OCP\Files\Mount\IMountPoint');
-		$this->filesMock = $this->getMock('OC\Files\View');
-		$this->userManagerMock = $this->getMock('\OCP\IUserManager');
+		$this->mountMock = $this->createMock('\OCP\Files\Mount\IMountPoint');
+		$this->filesMock = $this->createMock('OC\Files\View');
+		$this->userManagerMock = $this->createMock('\OCP\IUserManager');
 
 		/** @var \OCA\Encryption\Crypto\Crypt $cryptMock */
 		$cryptMock = $this->getMockBuilder('OCA\Encryption\Crypto\Crypt')
 			->disableOriginalConstructor()
 			->getMock();
 		/** @var \OCP\ILogger $loggerMock */
-		$loggerMock = $this->getMock('OCP\ILogger');
+		$loggerMock = $this->createMock('OCP\ILogger');
 		/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject $userSessionMock */
 		$userSessionMock = $this->getMockBuilder('OCP\IUserSession')
 			->disableOriginalConstructor()
@@ -101,7 +101,7 @@ class UtilTest extends TestCase {
 			->will($this->returnSelf());
 
 
-		$this->configMock = $this->getMock('OCP\IConfig');
+		$this->configMock = $this->createMock('OCP\IConfig');
 
 		$this->configMock->expects($this->any())
 			->method('getUserValue')

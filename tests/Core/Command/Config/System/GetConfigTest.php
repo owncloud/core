@@ -44,8 +44,8 @@ class GetConfigTest extends TestCase {
 		$systemConfig = $this->systemConfig = $this->getMockBuilder(SystemConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->getMock(InputInterface::class);
-		$this->consoleOutput = $this->getMock(OutputInterface::class);
+		$this->consoleInput = $this->createMock(InputInterface::class);
+		$this->consoleOutput = $this->createMock(OutputInterface::class);
 
 		/** @var \OC\SystemConfig $systemConfig */
 		$this->command = new GetConfig($systemConfig);

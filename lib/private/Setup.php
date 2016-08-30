@@ -92,7 +92,7 @@ class Setup {
 	 * @param string $name
 	 * @return bool
 	 */
-	protected function class_exists($name) {
+	protected function IsClassExisting($name) {
 		return class_exists($name);
 	}
 
@@ -163,7 +163,7 @@ class Setup {
 				$call = $availableDatabases[$database]['call'];
 
 				if($type === 'class') {
-					$working = $this->class_exists($call);
+					$working = $this->IsClassExisting($call);
 				} elseif ($type === 'function') {
 					$working = $this->is_callable($call);
 				} elseif($type === 'pdo') {
@@ -310,7 +310,7 @@ class Setup {
 		}
 
 		//use sqlite3 when available, otherwise sqlite2 will be used.
-		if($dbType=='sqlite' and class_exists('SQLite3')) {
+		if($dbType=='sqlite' and $this->IsClassExisting('SQLite3')) {
 			$dbType='sqlite3';
 		}
 

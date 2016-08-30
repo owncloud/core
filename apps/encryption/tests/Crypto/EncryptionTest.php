@@ -411,9 +411,9 @@ class EncryptionTest extends TestCase {
 
 	public function testPrepareDecryptAll() {
 		/** @var \Symfony\Component\Console\Input\InputInterface $input */
-		$input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
+		$input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
 		/** @var \Symfony\Component\Console\Output\OutputInterface $output */
-		$output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
 		$this->decryptAllMock->expects($this->once())->method('prepare')
 			->with($input, $output, 'user');

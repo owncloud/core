@@ -586,7 +586,7 @@ class AuthTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		/** @var IUser */
-		$user = $this->getMock('OCP\IUser');
+		$user = $this->createMock('OCP\IUser');
 		$user->method('getUID')->willReturn('MyTestUser');
 		$this->userSession
 			->expects($this->any())

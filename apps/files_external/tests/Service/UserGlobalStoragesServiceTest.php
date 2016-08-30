@@ -62,13 +62,13 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 
 		$this->user = new \OC\User\User(self::USER_ID, null);
 		/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject $userSession */
-		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession
 			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 
-		$this->groupManager = $this->getMock('\OCP\IGroupManager');
+		$this->groupManager = $this->createMock('\OCP\IGroupManager');
 		$this->groupManager->method('isInGroup')
 			->will($this->returnCallback(function ($userId, $groupId) {
 				if ($userId === self::USER_ID) {

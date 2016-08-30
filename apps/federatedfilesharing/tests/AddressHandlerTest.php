@@ -42,8 +42,8 @@ class AddressHandlerTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->urlGenerator = $this->getMock('OCP\IURLGenerator');
-		$this->il10n = $this->getMock('OCP\IL10N');
+		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
+		$this->il10n = $this->createMock('OCP\IL10N');
 
 		$this->addressHandler = new AddressHandler($this->urlGenerator, $this->il10n);
 	}

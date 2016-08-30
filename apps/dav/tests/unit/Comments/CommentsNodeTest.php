@@ -38,11 +38,11 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->commentsManager = $this->getMock('\OCP\Comments\ICommentsManager');
-		$this->comment = $this->getMock('\OCP\Comments\IComment');
-		$this->userManager = $this->getMock('\OCP\IUserManager');
-		$this->userSession = $this->getMock('\OCP\IUserSession');
-		$this->logger = $this->getMock('\OCP\ILogger');
+		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
+		$this->comment = $this->createMock('\OCP\Comments\IComment');
+		$this->userManager = $this->createMock('\OCP\IUserManager');
+		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->logger = $this->createMock('\OCP\ILogger');
 
 		$this->node = new CommentNode(
 			$this->commentsManager,
@@ -54,7 +54,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	public function testDelete() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -87,7 +87,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteForbidden() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -137,7 +137,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function testUpdateComment() {
 		$msg = 'Hello Earth';
 
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -173,7 +173,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function testUpdateCommentLogException() {
 		$msg = null;
 
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -210,7 +210,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	 * @expectedExceptionMessage Message exceeds allowed character limit of
 	 */
 	public function testUpdateCommentMessageTooLongException() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -248,7 +248,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function testUpdateForbiddenByUser() {
 		$msg = 'HaXX0r';
 
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->once())
 			->method('getUID')
@@ -281,7 +281,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	public function testUpdateForbiddenByType() {
 		$msg = 'HaXX0r';
 
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$user->expects($this->never())
 			->method('getUID');
@@ -454,7 +454,7 @@ class CommentsNodeTest extends \Test\TestCase {
 
 		$this->userSession->expects($this->once())
 			->method('getUser')
-			->will($this->returnValue($this->getMock('\OCP\IUser')));
+			->will($this->returnValue($this->createMock('\OCP\IUser')));
 
 		$properties = $this->node->getProperties(null);
 

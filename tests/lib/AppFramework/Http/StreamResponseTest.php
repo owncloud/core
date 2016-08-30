@@ -37,7 +37,7 @@ class StreamResponseTest extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->output = $this->getMock('OCP\\AppFramework\\Http\\IOutput');
+		$this->output = $this->createMock('OCP\\AppFramework\\Http\\IOutput');
 	}
 
 	public function testOutputNotModified(){

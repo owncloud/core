@@ -39,8 +39,8 @@ class DirectoryTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->view = $this->getMock('OC\Files\View', array(), array(), '', false);
-		$this->info = $this->getMock('OC\Files\FileInfo', array(), array(), '', false);
+		$this->view = $this->createMock('OC\Files\View', array(), array(), '', false);
+		$this->info = $this->createMock('OC\Files\FileInfo', array(), array(), '', false);
 	}
 
 	private function getDir($path = '/') {

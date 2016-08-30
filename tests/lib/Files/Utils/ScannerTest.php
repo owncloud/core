@@ -107,7 +107,7 @@ class ScannerTest extends \Test\TestCase {
 		$uid = $this->getUniqueID();
 		$this->userBackend->createUser($uid, 'test');
 
-		$mountProvider = $this->getMock('\OCP\Files\Config\IMountProvider');
+		$mountProvider = $this->createMock('\OCP\Files\Config\IMountProvider');
 
 		$storage = new Temporary(array());
 		$mount = new MountPoint($storage, '/' . $uid . '/files/foo');

@@ -43,7 +43,7 @@ class DummyGetResponsePluginTest extends TestCase {
 
 	public function testInitialize() {
 		/** @var \Sabre\DAV\Server $server */
-		$server = $this->getMock('\Sabre\DAV\Server');
+		$server = $this->createMock('\Sabre\DAV\Server');
 		$server
 			->expects($this->once())
 			->method('on')
@@ -55,9 +55,9 @@ class DummyGetResponsePluginTest extends TestCase {
 
 	public function testHttpGet() {
 		/** @var \Sabre\HTTP\RequestInterface $request */
-		$request = $this->getMock('\Sabre\HTTP\RequestInterface');
+		$request = $this->createMock('\Sabre\HTTP\RequestInterface');
 		/** @var \Sabre\HTTP\ResponseInterface $response */
-		$response = $server = $this->getMock('\Sabre\HTTP\ResponseInterface');
+		$response = $server = $this->createMock('\Sabre\HTTP\ResponseInterface');
 		$response
 			->expects($this->once())
 			->method('setBody');

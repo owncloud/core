@@ -35,8 +35,8 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->commentsManager = $this->getMock('\OCP\Comments\ICommentsManager');
-		$this->userSession = $this->getMock('\OCP\IUserSession');
+		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
+		$this->userSession = $this->createMock('\OCP\IUserSession');
 
 		$this->server = $this->getMockBuilder('\Sabre\DAV\Server')
 			->disableOriginalConstructor()
@@ -114,7 +114,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 
 	public function userProvider() {
 		return [
-			[$this->getMock('\OCP\IUser')],
+			[$this->createMock('\OCP\IUser')],
 			[null]
 		];
 	}

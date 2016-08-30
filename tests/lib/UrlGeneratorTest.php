@@ -22,8 +22,8 @@ class UrlGeneratorTest extends \Test\TestCase {
 	 */
 	public function testLinkToDocRoot($app, $file, $args, $expectedResult) {
 		\OC::$WEBROOT = '';
-		$config = $this->getMock('\OCP\IConfig');
-		$cacheFactory = $this->getMock('\OCP\ICacheFactory');
+		$config = $this->createMock('\OCP\IConfig');
+		$cacheFactory = $this->createMock('\OCP\ICacheFactory');
 		$urlGenerator = new \OC\URLGenerator($config, $cacheFactory);
 		$result = $urlGenerator->linkTo($app, $file, $args);
 
@@ -37,8 +37,8 @@ class UrlGeneratorTest extends \Test\TestCase {
 	 */
 	public function testLinkToSubDir($app, $file, $args, $expectedResult) {
 		\OC::$WEBROOT = '/owncloud';
-		$config = $this->getMock('\OCP\IConfig');
-		$cacheFactory = $this->getMock('\OCP\ICacheFactory');
+		$config = $this->createMock('\OCP\IConfig');
+		$cacheFactory = $this->createMock('\OCP\ICacheFactory');
 		$urlGenerator = new \OC\URLGenerator($config, $cacheFactory);
 		$result = $urlGenerator->linkTo($app, $file, $args);
 
@@ -50,8 +50,8 @@ class UrlGeneratorTest extends \Test\TestCase {
 	 */
 	public function testLinkToRouteAbsolute($route, $expected) {
 		\OC::$WEBROOT = '/owncloud';
-		$config = $this->getMock('\OCP\IConfig');
-		$cacheFactory = $this->getMock('\OCP\ICacheFactory');
+		$config = $this->createMock('\OCP\IConfig');
+		$cacheFactory = $this->createMock('\OCP\ICacheFactory');
 		$urlGenerator = new \OC\URLGenerator($config, $cacheFactory);
 		$result = $urlGenerator->linkToRouteAbsolute($route);
 		$this->assertEquals($expected, $result);
@@ -89,8 +89,8 @@ class UrlGeneratorTest extends \Test\TestCase {
 	function testGetAbsoluteURLDocRoot($url, $expectedResult) {
 
 		\OC::$WEBROOT = '';
-		$config = $this->getMock('\OCP\IConfig');
-		$cacheFactory = $this->getMock('\OCP\ICacheFactory');
+		$config = $this->createMock('\OCP\IConfig');
+		$cacheFactory = $this->createMock('\OCP\ICacheFactory');
 		$urlGenerator = new \OC\URLGenerator($config, $cacheFactory);
 		$result = $urlGenerator->getAbsoluteURL($url);
 
@@ -105,8 +105,8 @@ class UrlGeneratorTest extends \Test\TestCase {
 	function testGetAbsoluteURLSubDir($url, $expectedResult) {
 
 		\OC::$WEBROOT = '/owncloud';
-		$config = $this->getMock('\OCP\IConfig');
-		$cacheFactory = $this->getMock('\OCP\ICacheFactory');
+		$config = $this->createMock('\OCP\IConfig');
+		$cacheFactory = $this->createMock('\OCP\ICacheFactory');
 		$urlGenerator = new \OC\URLGenerator($config, $cacheFactory);
 		$result = $urlGenerator->getAbsoluteURL($url);
 

@@ -26,11 +26,11 @@ class L10nTest extends TestCase {
 	 */
 	protected function getFactory() {
 		/** @var \OCP\IConfig $config */
-		$config = $this->getMock('OCP\IConfig');
+		$config = $this->createMock('OCP\IConfig');
 		/** @var \OCP\IRequest $request */
-		$request = $this->getMock('OCP\IRequest');
+		$request = $this->createMock('OCP\IRequest');
 		/** @var IUserSession $userSession */
-		$userSession = $this->getMock('OCP\IUserSession');
+		$userSession = $this->createMock('OCP\IUserSession');
 		return new Factory($config, $request, $userSession, \OC::$SERVERROOT);
 	}
 

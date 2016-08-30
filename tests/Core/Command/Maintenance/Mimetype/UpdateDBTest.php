@@ -50,8 +50,8 @@ class UpdateDBTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->consoleInput = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
 		$this->command = new UpdateDB($this->detector, $this->loader);
 	}

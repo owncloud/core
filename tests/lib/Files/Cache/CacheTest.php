@@ -9,7 +9,11 @@
 namespace Test\Files\Cache;
 
 
-class LongId extends \OC\Files\Storage\Temporary {
+use OC\Files\Cache\Cache;
+use OC\Files\Storage\Temporary;
+use Test\TestCase;
+
+class LongId extends Temporary {
 	public function getId() {
 		return 'long:' . str_repeat('foo', 50) . parent::getId();
 	}
@@ -22,22 +26,22 @@ class LongId extends \OC\Files\Storage\Temporary {
  *
  * @package Test\Files\Cache
  */
-class CacheTest extends \Test\TestCase {
+class CacheTest extends TestCase {
 	/**
-	 * @var \OC\Files\Storage\Temporary $storage ;
+	 * @var Temporary $storage ;
 	 */
 	protected $storage;
 	/**
-	 * @var \OC\Files\Storage\Temporary $storage2 ;
+	 * @var Temporary $storage2 ;
 	 */
 	protected $storage2;
 
 	/**
-	 * @var \OC\Files\Cache\Cache $cache
+	 * @var Cache $cache
 	 */
 	protected $cache;
 	/**
-	 * @var \OC\Files\Cache\Cache $cache2
+	 * @var Cache $cache2
 	 */
 	protected $cache2;
 
@@ -254,13 +258,13 @@ class CacheTest extends \Test\TestCase {
 	}
 
 	function testStatus() {
-		$this->assertEquals(\OC\Files\Cache\Cache::NOT_FOUND, $this->cache->getStatus('foo'));
+		$this->assertEquals(Cache::NOT_FOUND, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', array('size' => -1));
-		$this->assertEquals(\OC\Files\Cache\Cache::PARTIAL, $this->cache->getStatus('foo'));
+		$this->assertEquals(Cache::PARTIAL, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', array('size' => -1, 'mtime' => 20, 'mimetype' => 'foo/file'));
-		$this->assertEquals(\OC\Files\Cache\Cache::SHALLOW, $this->cache->getStatus('foo'));
+		$this->assertEquals(Cache::SHALLOW, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', array('size' => 10));
-		$this->assertEquals(\OC\Files\Cache\Cache::COMPLETE, $this->cache->getStatus('foo'));
+		$this->assertEquals(Cache::COMPLETE, $this->cache->getStatus('foo'));
 	}
 
 	public function putWithAllKindOfQuotesData() {
@@ -277,7 +281,7 @@ class CacheTest extends \Test\TestCase {
 	 */
 	public function testPutWithAllKindOfQuotes($fileName) {
 
-		$this->assertEquals(\OC\Files\Cache\Cache::NOT_FOUND, $this->cache->get($fileName));
+		$this->assertEquals(Cache::NOT_FOUND, $this->cache->get($fileName));
 		$this->cache->put($fileName, array('size' => 20, 'mtime' => 25, 'mimetype' => 'foo/file', 'etag' => $fileName));
 
 		$cacheEntry = $this->cache->get($fileName);
@@ -450,7 +454,7 @@ class CacheTest extends \Test\TestCase {
 		if (strlen($storageId) > 64) {
 			$storageId = md5($storageId);
 		}
-		$this->assertEquals(array($storageId, 'foo'), \OC\Files\Cache\Cache::getById($id));
+		$this->assertEquals(array($storageId, 'foo'), Cache::getById($id));
 	}
 
 	function testStorageMTime() {
@@ -476,7 +480,7 @@ class CacheTest extends \Test\TestCase {
 		$storageId = $storage->getId();
 		$data = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file');
 		$id = $cache->put('foo', $data);
-		$this->assertEquals(array(md5($storageId), 'foo'), \OC\Files\Cache\Cache::getById($id));
+		$this->assertEquals(array(md5($storageId), 'foo'), Cache::getById($id));
 	}
 
 	/**
@@ -490,9 +494,12 @@ class CacheTest extends \Test\TestCase {
 		$folderWith0308 = "\x53\x63\x68\x6f\xcc\x88\x6e";
 
 		/**
-		 * @var \OC\Files\Cache\Cache | \PHPUnit_Framework_MockObject_MockObject $cacheMock
+		 * @var Cache | \PHPUnit_Framework_MockObject_MockObject $cacheMock
 		 */
-		$cacheMock = $this->getMock('\OC\Files\Cache\Cache', array('normalize'), array($this->storage), '', true);
+		$cacheMock = $this->getMockBuilder('\OC\Files\Cache\Cache')
+			->setMethods(['normalize'])
+			->setConstructorArgs([$this->storage])
+			->getMock();
 
 		$cacheMock->expects($this->any())
 			->method('normalize')
@@ -670,9 +677,9 @@ class CacheTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->storage = new \OC\Files\Storage\Temporary(array());
-		$this->storage2 = new \OC\Files\Storage\Temporary(array());
-		$this->cache = new \OC\Files\Cache\Cache($this->storage);
-		$this->cache2 = new \OC\Files\Cache\Cache($this->storage2);
+		$this->storage = new Temporary(array());
+		$this->storage2 = new Temporary(array());
+		$this->cache = new Cache($this->storage);
+		$this->cache2 = new Cache($this->storage2);
 	}
 }

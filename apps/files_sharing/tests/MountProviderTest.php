@@ -57,17 +57,17 @@ class MountProviderTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->config = $this->getMock('OCP\IConfig');
-		$this->user = $this->getMock('OCP\IUser');
-		$this->loader = $this->getMock('OCP\Files\Storage\IStorageFactory');
-		$this->shareManager = $this->getMock('\OCP\Share\IManager');
-		$this->logger = $this->getMock('\OCP\ILogger');
+		$this->config = $this->createMock('OCP\IConfig');
+		$this->user = $this->createMock('OCP\IUser');
+		$this->loader = $this->createMock('OCP\Files\Storage\IStorageFactory');
+		$this->shareManager = $this->createMock('\OCP\Share\IManager');
+		$this->logger = $this->createMock('\OCP\ILogger');
 
 		$this->provider = new MountProvider($this->config, $this->shareManager, $this->logger);
 	}
 
 	private function makeMockShare($id, $nodeId, $owner = 'user2', $target = null, $permissions = 31) {
-		$share = $this->getMock('\OCP\Share\IShare');
+		$share = $this->createMock('\OCP\Share\IShare');
 		$share->expects($this->any())
 			->method('getPermissions')
 			->will($this->returnValue($permissions));
@@ -98,8 +98,8 @@ class MountProviderTest extends \Test\TestCase {
 	 * - shares with a group in which the owner is already in
 	 */
 	public function testExcludeShares() {
-		$rootFolder = $this->getMock('\OCP\Files\IRootFolder');
-		$userManager = $this->getMock('\OCP\IUserManager');
+		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
+		$userManager = $this->createMock('\OCP\IUserManager');
 
 		$userShares = [
 			$this->makeMockShare(1, 100, 'user2', '/share2', 0), 
@@ -284,8 +284,8 @@ class MountProviderTest extends \Test\TestCase {
 	 * @param array $expectedShares array of expected supershare specs
 	 */
 	public function testMergeShares($userShares, $groupShares, $expectedShares) {
-		$rootFolder = $this->getMock('\OCP\Files\IRootFolder');
-		$userManager = $this->getMock('\OCP\IUserManager');
+		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
+		$userManager = $this->createMock('\OCP\IUserManager');
 
 		$userShares = array_map(function($shareSpec) {
 			return $this->makeMockShare($shareSpec[0], $shareSpec[1], $shareSpec[2], $shareSpec[3], $shareSpec[4]);

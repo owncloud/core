@@ -60,8 +60,8 @@ class OCSAuthAPITest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->request = $this->getMock('OCP\IRequest');
-		$this->secureRandom = $this->getMock('OCP\Security\ISecureRandom');
+		$this->request = $this->createMock('OCP\IRequest');
+		$this->secureRandom = $this->createMock('OCP\Security\ISecureRandom');
 		$this->trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
 			->disableOriginalConstructor()->getMock();
 		$this->dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')

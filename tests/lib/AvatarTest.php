@@ -23,12 +23,12 @@ class AvatarTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->folder = $this->getMock('\OCP\Files\Folder');
+		$this->folder = $this->createMock('\OCP\Files\Folder');
 		/** @var \OCP\IL10N | \PHPUnit_Framework_MockObject_MockObject $l */
-		$l = $this->getMock('\OCP\IL10N');
+		$l = $this->createMock('\OCP\IL10N');
 		$l->method('t')->will($this->returnArgument(0));
 		$this->user = $this->getMockBuilder('\OC\User\User')->disableOriginalConstructor()->getMock();
-		$this->avatar = new \OC\Avatar($this->folder, $l, $this->user, $this->getMock('\OCP\ILogger'));
+		$this->avatar = new \OC\Avatar($this->folder, $l, $this->user, $this->createMock('\OCP\ILogger'));
 	}
 
 	public function testGetNoAvatar() {
@@ -44,7 +44,7 @@ class AvatarTest extends \Test\TestCase {
 
 		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
 
-		$file = $this->getMock('\OCP\Files\File');
+		$file = $this->createMock('\OCP\Files\File');
 		$file->method('getContent')->willReturn($expected->data());
 		$this->folder->method('get')->with('avatar.128.jpg')->willReturn($file);
 
@@ -59,7 +59,7 @@ class AvatarTest extends \Test\TestCase {
 
 		$expected = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
 
-		$file = $this->getMock('\OCP\Files\File');
+		$file = $this->createMock('\OCP\Files\File');
 		$file->method('getContent')->willReturn($expected->data());
 		$this->folder->method('get')->with('avatar.jpg')->willReturn($file);
 
@@ -77,7 +77,7 @@ class AvatarTest extends \Test\TestCase {
 		$expected2 = new \OC_Image(\OC::$SERVERROOT . '/tests/data/testavatar.png');
 		$expected2->resize(32);
 
-		$file = $this->getMock('\OCP\Files\File');
+		$file = $this->createMock('\OCP\Files\File');
 		$file->method('getContent')->willReturn($expected->data());
 
 		$this->folder->method('get')
@@ -91,7 +91,7 @@ class AvatarTest extends \Test\TestCase {
 				}
 			));
 
-		$newFile = $this->getMock('\OCP\Files\File');
+		$newFile = $this->createMock('\OCP\Files\File');
 		$newFile->expects($this->once())
 			->method('putContent')
 			->with($expected2->data());
@@ -129,22 +129,22 @@ class AvatarTest extends \Test\TestCase {
 	}
 
 	public function testSetAvatar() {
-		$avatarFileJPG = $this->getMock('\OCP\Files\File');
+		$avatarFileJPG = $this->createMock('\OCP\Files\File');
 		$avatarFileJPG->method('getName')
 			->willReturn('avatar.jpg');
 		$avatarFileJPG->expects($this->once())->method('delete');
 
-		$avatarFilePNG = $this->getMock('\OCP\Files\File');
+		$avatarFilePNG = $this->createMock('\OCP\Files\File');
 		$avatarFilePNG->method('getName')
 			->willReturn('avatar.png');
 		$avatarFilePNG->expects($this->once())->method('delete');
 
-		$resizedAvatarFile = $this->getMock('\OCP\Files\File');
+		$resizedAvatarFile = $this->createMock('\OCP\Files\File');
 		$resizedAvatarFile->method('getName')
 			->willReturn('avatar.32.jpg');
 		$resizedAvatarFile->expects($this->once())->method('delete');
 
-		$nonAvatarFile = $this->getMock('\OCP\Files\File');
+		$nonAvatarFile = $this->createMock('\OCP\Files\File');
 		$nonAvatarFile->method('getName')
 			->willReturn('avatarX');
 		$nonAvatarFile->expects($this->never())->method('delete');
@@ -152,7 +152,7 @@ class AvatarTest extends \Test\TestCase {
 		$this->folder->method('getDirectoryListing')
 			->willReturn([$avatarFileJPG, $avatarFilePNG, $resizedAvatarFile, $nonAvatarFile]);
 
-		$newFile = $this->getMock('\OCP\Files\File');
+		$newFile = $this->createMock('\OCP\Files\File');
 		$this->folder->expects($this->once())
 			->method('newFile')
 			->with('avatar.png')

@@ -66,8 +66,8 @@ class DecryptAllTest extends TestCase {
 			->getMock();
 		$this->decryptAll = $this->getMockBuilder('OC\Encryption\DecryptAll')
 			->disableOriginalConstructor()->getMock();
-		$this->consoleInput = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
 		$this->config->expects($this->any())
 			->method('getSystemValue')

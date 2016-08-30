@@ -66,7 +66,7 @@ class NodeTest extends \Test\TestCase {
 		$info->expects($this->any())
 			->method('getType')
 			->will($this->returnValue($type));
-		$view = $this->getMock('\OC\Files\View');
+		$view = $this->createMock('\OC\Files\View');
 
 		$node = new  \OCA\DAV\Connector\Sabre\File($view, $info);
 		$this->assertEquals($expected, $node->getDavPermissions());
@@ -116,10 +116,10 @@ class NodeTest extends \Test\TestCase {
 	 * @dataProvider sharePermissionsProvider
 	 */
 	public function testSharePermissions($type, $user, $permissions, $expected) {
-		$storage = $this->getMock('\OCP\Files\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage');
 		$storage->method('getPermissions')->willReturn($permissions);
 
-		$mountpoint = $this->getMock('\OCP\Files\Mount\IMountPoint');
+		$mountpoint = $this->createMock('\OCP\Files\Mount\IMountPoint');
 		$mountpoint->method('getMountPoint')->willReturn('myPath');
 		$shareManager = $this->getMockBuilder('OCP\Share\IManager')->disableOriginalConstructor()->getMock();
 		$share = $this->getMockBuilder('OCP\Share\IShare')->disableOriginalConstructor()->getMock();
@@ -142,7 +142,7 @@ class NodeTest extends \Test\TestCase {
 		$info->method('getType')->willReturn($type);
 		$info->method('getMountPoint')->willReturn($mountpoint);
 
-		$view = $this->getMock('\OC\Files\View');
+		$view = $this->createMock('\OC\Files\View');
 
 		$node = new  \OCA\DAV\Connector\Sabre\File($view, $info);
 		$this->invokePrivate($node, 'shareManager', [$shareManager]);

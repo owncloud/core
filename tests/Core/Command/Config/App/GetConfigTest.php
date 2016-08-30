@@ -42,9 +42,11 @@ class GetConfigTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$config = $this->config = $this->getMock(IConfig::class);
-		$this->consoleInput = $this->getMock(InputInterface::class);
-		$this->consoleOutput = $this->getMock(OutputInterface::class);
+		$config = $this->config = $this->getMockBuilder(IConfig::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->consoleInput = $this->createMock(InputInterface::class);
+		$this->consoleOutput = $this->createMock(OutputInterface::class);
 
 		/** @var \OCP\IConfig $config */
 		$this->command = new GetConfig($config);

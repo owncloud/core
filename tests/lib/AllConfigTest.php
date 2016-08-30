@@ -189,7 +189,7 @@ class AllConfigTest extends \Test\TestCase {
 			->method('fetchColumn')
 			->will($this->returnValue('valueSetUnchanged'));
 
-		$connectionMock = $this->getMock('\OCP\IDBConnection');
+		$connectionMock = $this->createMock('\OCP\IDBConnection');
 		$connectionMock->expects($this->once())
 			->method('executeQuery')
 			->with($this->equalTo('SELECT `configvalue` FROM `*PREFIX*preferences` '.

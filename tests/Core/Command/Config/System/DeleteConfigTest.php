@@ -43,8 +43,8 @@ class DeleteConfigTest extends TestCase {
 		$systemConfig = $this->systemConfig = $this->getMockBuilder('OC\SystemConfig')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
 		/** @var \OC\SystemConfig $systemConfig */
 		$this->command = new DeleteConfig($systemConfig);

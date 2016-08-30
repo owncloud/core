@@ -72,22 +72,22 @@ class ViewControllerTest extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->request = $this->getMock('\OCP\IRequest');
-		$this->urlGenerator = $this->getMock('\OCP\IURLGenerator');
-		$this->navigationManager = $this->getMock('\OCP\INavigationManager');
-		$this->l10n = $this->getMock('\OCP\IL10N');
-		$this->config = $this->getMock('\OCP\IConfig');
-		$this->eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
-		$this->userSession = $this->getMock('\OCP\IUserSession');
-		$this->appManager = $this->getMock('\OCP\App\IAppManager');
-		$this->user = $this->getMock('\OCP\IUser');
+		$this->request = $this->createMock('\OCP\IRequest');
+		$this->urlGenerator = $this->createMock('\OCP\IURLGenerator');
+		$this->navigationManager = $this->createMock('\OCP\INavigationManager');
+		$this->l10n = $this->createMock('\OCP\IL10N');
+		$this->config = $this->createMock('\OCP\IConfig');
+		$this->eventDispatcher = $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->appManager = $this->createMock('\OCP\App\IAppManager');
+		$this->user = $this->createMock('\OCP\IUser');
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('testuser1'));
 		$this->userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
-		$this->rootFolder = $this->getMock('\OCP\Files\Folder');
+		$this->rootFolder = $this->createMock('\OCP\Files\Folder');
 		$this->viewController = $this->getMockBuilder('\OCA\Files\Controller\ViewController')
 			->setConstructorArgs([
 			'files',
@@ -315,12 +315,12 @@ class ViewControllerTest extends TestCase {
 	 * @dataProvider showFileMethodProvider
 	 */
 	public function testShowFileRouteWithFolder($useShowFile) {
-		$node = $this->getMock('\OCP\Files\Folder');
+		$node = $this->createMock('\OCP\Files\Folder');
 		$node->expects($this->once())
 			->method('getPath')
 			->will($this->returnValue('/testuser1/files/test/sub'));
 
-		$baseFolder = $this->getMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\OCP\Files\Folder');
 
 		$this->rootFolder->expects($this->once())
 			->method('get')
@@ -354,19 +354,19 @@ class ViewControllerTest extends TestCase {
 	 * @dataProvider showFileMethodProvider
 	 */
 	public function testShowFileRouteWithFile($useShowFile) {
-		$parentNode = $this->getMock('\OCP\Files\Folder');
+		$parentNode = $this->createMock('\OCP\Files\Folder');
 		$parentNode->expects($this->once())
 			->method('getPath')
 			->will($this->returnValue('testuser1/files/test'));
 
-		$baseFolder = $this->getMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\OCP\Files\Folder');
 
 		$this->rootFolder->expects($this->once())
 			->method('get')
 			->with('testuser1/files/')
 			->will($this->returnValue($baseFolder));
 
-		$node = $this->getMock('\OCP\Files\File');
+		$node = $this->createMock('\OCP\Files\File');
 		$node->expects($this->once())
 			->method('getParent')
 			->will($this->returnValue($parentNode));
@@ -401,7 +401,7 @@ class ViewControllerTest extends TestCase {
 	 * @dataProvider showFileMethodProvider
 	 */
 	public function testShowFileRouteWithInvalidFileId($useShowFile) {
-		$baseFolder = $this->getMock('\OCP\Files\Folder');
+		$baseFolder = $this->createMock('\OCP\Files\Folder');
 		$this->rootFolder->expects($this->once())
 			->method('get')
 			->with('testuser1/files/')
@@ -432,13 +432,13 @@ class ViewControllerTest extends TestCase {
 			->with('files_trashbin')
 			->will($this->returnValue(true));
 
-		$parentNode = $this->getMock('\OCP\Files\Folder');
+		$parentNode = $this->createMock('\OCP\Files\Folder');
 		$parentNode->expects($this->once())
 			->method('getPath')
 			->will($this->returnValue('testuser1/files_trashbin/files/test.d1462861890/sub'));
 
-		$baseFolderFiles = $this->getMock('\OCP\Files\Folder');
-		$baseFolderTrash = $this->getMock('\OCP\Files\Folder');
+		$baseFolderFiles = $this->createMock('\OCP\Files\Folder');
+		$baseFolderTrash = $this->createMock('\OCP\Files\Folder');
 
 		$this->rootFolder->expects($this->at(0))
 			->method('get')
@@ -454,7 +454,7 @@ class ViewControllerTest extends TestCase {
 			->with(123)
 			->will($this->returnValue([]));
 
-		$node = $this->getMock('\OCP\Files\File');
+		$node = $this->createMock('\OCP\Files\File');
 		$node->expects($this->once())
 			->method('getParent')
 			->will($this->returnValue($parentNode));

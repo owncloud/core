@@ -85,12 +85,12 @@ class ManagerTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->userSession = $this->getMock('\OCP\IUserSession');
-		$this->groupManager = $this->getMock('\OCP\IGroupManager');
+		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->groupManager = $this->createMock('\OCP\IGroupManager');
 		$this->appConfig = $this->getAppConfig();
-		$this->cacheFactory = $this->getMock('\OCP\ICacheFactory');
-		$this->cache = $this->getMock('\OCP\ICache');
-		$this->eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+		$this->cacheFactory = $this->createMock('\OCP\ICacheFactory');
+		$this->cache = $this->createMock('\OCP\ICache');
+		$this->eventDispatcher = $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
 		$this->cacheFactory->expects($this->any())
 			->method('create')
 			->with('settings')

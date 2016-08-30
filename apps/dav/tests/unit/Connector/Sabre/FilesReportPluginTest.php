@@ -81,11 +81,11 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tagManager = $this->getMock('\OCP\SystemTag\ISystemTagManager');
-		$this->tagMapper = $this->getMock('\OCP\SystemTag\ISystemTagObjectMapper');
-		$this->userSession = $this->getMock('\OCP\IUserSession');
+		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
+		$this->tagMapper = $this->createMock('\OCP\SystemTag\ISystemTagObjectMapper');
+		$this->userSession = $this->createMock('\OCP\IUserSession');
 
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('testuser'));
@@ -113,7 +113,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->will($this->returnValue($this->getMock('\Sabre\DAV\INode')));
+			->will($this->returnValue($this->createMock('\Sabre\DAV\INode')));
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
@@ -132,7 +132,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
 			->with('/' . $path)
-			->will($this->returnValue($this->getMock('\Sabre\DAV\INode')));
+			->will($this->returnValue($this->createMock('\Sabre\DAV\INode')));
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
@@ -336,14 +336,14 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('getSize')
 			->will($this->returnValue(1024));
 
-		$config = $this->getMock('\OCP\IConfig');
+		$config = $this->createMock('\OCP\IConfig');
 
 		$this->server->addPlugin(
 			new \OCA\DAV\Connector\Sabre\FilesPlugin(
 				$this->tree,
 				$this->view,
 				$config,
-				$this->getMock('\OCP\IRequest')
+				$this->createMock('\OCP\IRequest')
 			)
 		);
 		$this->plugin->initialize($this->server);
@@ -493,7 +493,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('isAdmin')
 			->will($this->returnValue(true));
 
-		$tag1 = $this->getMock('\OCP\SystemTag\ISystemTag');
+		$tag1 = $this->createMock('\OCP\SystemTag\ISystemTag');
 		$tag1->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('123'));
@@ -501,7 +501,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('isUserVisible')
 			->will($this->returnValue(true));
 
-		$tag2 = $this->getMock('\OCP\SystemTag\ISystemTag');
+		$tag2 = $this->createMock('\OCP\SystemTag\ISystemTag');
 		$tag2->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('123'));
@@ -538,7 +538,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('isAdmin')
 			->will($this->returnValue(false));
 
-		$tag1 = $this->getMock('\OCP\SystemTag\ISystemTag');
+		$tag1 = $this->createMock('\OCP\SystemTag\ISystemTag');
 		$tag1->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('123'));
@@ -546,7 +546,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('isUserVisible')
 			->will($this->returnValue(true));
 
-		$tag2 = $this->getMock('\OCP\SystemTag\ISystemTag');
+		$tag2 = $this->createMock('\OCP\SystemTag\ISystemTag');
 		$tag2->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('123'));
@@ -572,7 +572,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('isAdmin')
 			->will($this->returnValue(false));
 
-		$tag1 = $this->getMock('\OCP\SystemTag\ISystemTag');
+		$tag1 = $this->createMock('\OCP\SystemTag\ISystemTag');
 		$tag1->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('123'));
@@ -580,7 +580,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('isUserVisible')
 			->will($this->returnValue(true));
 
-		$tag2 = $this->getMock('\OCP\SystemTag\ISystemTag');
+		$tag2 = $this->createMock('\OCP\SystemTag\ISystemTag');
 		$tag2->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('123'));

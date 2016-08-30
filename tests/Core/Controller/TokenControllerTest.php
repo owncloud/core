@@ -41,15 +41,15 @@ class TokenControllerTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->request = $this->getMock('\OCP\IRequest');
+		$this->request = $this->createMock('\OCP\IRequest');
 		$this->userManager = $this->getMockBuilder('\OC\User\Manager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->tokenProvider = $this->getMock('\OC\Authentication\Token\IProvider');
+		$this->tokenProvider = $this->createMock('\OC\Authentication\Token\IProvider');
 		$this->twoFactorAuthManager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->secureRandom = $this->getMock('\OCP\Security\ISecureRandom');
+		$this->secureRandom = $this->createMock('\OCP\Security\ISecureRandom');
 
 		$this->tokenController = new TokenController('core', $this->request, $this->userManager, $this->tokenProvider, $this->twoFactorAuthManager, $this->secureRandom);
 	}
@@ -77,7 +77,7 @@ class TokenControllerTest extends TestCase {
 	}
 
 	public function testWithValidCredentials() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$this->userManager->expects($this->once())
 			->method('checkPassword')
 			->with('john', '123456')
@@ -106,7 +106,7 @@ class TokenControllerTest extends TestCase {
 	}
 
 	public function testWithValidCredentialsBut2faEnabled() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$this->userManager->expects($this->once())
 			->method('checkPassword')
 			->with('john', '123456')

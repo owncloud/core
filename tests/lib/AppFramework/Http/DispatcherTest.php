@@ -24,13 +24,15 @@
 
 namespace Test\AppFramework\Http;
 
+use OC\AppFramework\Http;
 use OC\AppFramework\Http\Dispatcher;
 use OC\AppFramework\Http\Request;
+use OC\AppFramework\Middleware\MiddlewareDispatcher;
 use OC\AppFramework\Utility\ControllerMethodReflector;
-use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\Response;
 
 
 class TestController extends Controller {
@@ -74,15 +76,22 @@ class TestController extends Controller {
 
 
 class DispatcherTest extends \Test\TestCase {
+	/** @var MiddlewareDispatcher | \PHPUnit_Framework_MockObject_MockObject */
 	private $middlewareDispatcher;
+	/** @var Dispatcher | \PHPUnit_Framework_MockObject_MockObject */
 	private $dispatcher;
 	private $controllerMethod;
+	/** @var Response | \PHPUnit_Framework_MockObject_MockObject */
 	private $response;
 	private $request;
 	private $lastModified;
 	private $etag;
+	/** @var Http | \PHPUnit_Framework_MockObject_MockObject */
 	private $http;
 	private $reflector;
+
+	/** @var Controller | \PHPUnit_Framework_MockObject_MockObject */
+	private $controller;
 
 	protected function setUp() {
 		parent::setUp();
@@ -105,9 +114,10 @@ class DispatcherTest extends \Test\TestCase {
 			'\OC\AppFramework\Middleware\MiddlewareDispatcher')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->controller = $this->getMock(
-			'\OCP\AppFramework\Controller',
-			array($this->controllerMethod), array($app, $request));
+		$this->controller = $this->getMockBuilder('\OCP\AppFramework\Controller')
+			->setMethods([$this->controllerMethod])
+			->setConstructorArgs([$app, $request])
+			->getMock();
 
 		$this->request = $this->getMockBuilder(
 			'\OC\AppFramework\Http\Request')
@@ -264,7 +274,7 @@ class DispatcherTest extends \Test\TestCase {
 		$responseHeaders = array('hell' => 'yeah');
 		$this->setMiddlewareExpectations($out, $httpHeaders, $responseHeaders, true, false);
 
-		$this->setExpectedException('\Exception');
+		$this->expectException('\Exception');
 		$response = $this->dispatcher->dispatch($this->controller,
 			$this->controllerMethod);
 
@@ -296,8 +306,8 @@ class DispatcherTest extends \Test\TestCase {
 				],
 				'method' => 'POST'
 			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
@@ -323,8 +333,8 @@ class DispatcherTest extends \Test\TestCase {
 				],
 				'method' => 'POST',
 			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
@@ -353,8 +363,8 @@ class DispatcherTest extends \Test\TestCase {
 				],
 				'method' => 'GET'
 			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
@@ -382,8 +392,8 @@ class DispatcherTest extends \Test\TestCase {
 				],
 				'method' => 'GET'
 			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
@@ -412,8 +422,8 @@ class DispatcherTest extends \Test\TestCase {
 				],
 				'method' => 'PUT'
 			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
@@ -444,8 +454,8 @@ class DispatcherTest extends \Test\TestCase {
 				],
 				'method' => 'POST'
 			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
 		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,

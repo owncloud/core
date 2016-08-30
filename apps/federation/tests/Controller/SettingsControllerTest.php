@@ -44,8 +44,8 @@ class SettingsControllerTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->request = $this->getMock('OCP\IRequest');
-		$this->l10n = $this->getMock('OCP\IL10N');
+		$this->request = $this->createMock('OCP\IRequest');
+		$this->l10n = $this->createMock('OCP\IL10N');
 		$this->trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
 			->disableOriginalConstructor()->getMock();
 

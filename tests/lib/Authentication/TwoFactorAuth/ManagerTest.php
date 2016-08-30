@@ -48,19 +48,19 @@ class ManagerTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->user = $this->getMock('\OCP\IUser');
+		$this->user = $this->createMock('\OCP\IUser');
 		$this->appManager = $this->getMockBuilder('\OC\App\AppManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->session = $this->getMock('\OCP\ISession');
-		$this->config = $this->getMock('\OCP\IConfig');
+		$this->session = $this->createMock('\OCP\ISession');
+		$this->config = $this->createMock('\OCP\IConfig');
 
 		$this->manager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
 			->setConstructorArgs([$this->appManager, $this->session, $this->config])
 			->setMethods(['loadTwoFactorApp']) // Do not actually load the apps
 			->getMock();
 
-		$this->fakeProvider = $this->getMock('\OCP\Authentication\TwoFactorAuth\IProvider');
+		$this->fakeProvider = $this->createMock('\OCP\Authentication\TwoFactorAuth\IProvider');
 		$this->fakeProvider->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('email'));

@@ -25,11 +25,11 @@ class ClientTest extends \Test\TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->config = $this->getMock('\OCP\IConfig');
+		$this->config = $this->createMock('\OCP\IConfig');
 		$this->guzzleClient = $this->getMockBuilder('\GuzzleHttp\Client')
 			->disableOriginalConstructor()
 			->getMock();
-		$certificateManager = $this->getMock('\OCP\ICertificateManager');
+		$certificateManager = $this->createMock('\OCP\ICertificateManager');
 		$this->client = new Client(
 			$this->config,
 			$certificateManager,

@@ -54,7 +54,7 @@ class FileChunkingTest extends \Test\TestCase {
 			]])
 			->getMock();
 
-		$cache = $this->getMock('\OCP\ICache');
+		$cache = $this->createMock('\OCP\ICache');
 
 		$cache->expects($this->atLeastOnce())
 			->method('hasKey')

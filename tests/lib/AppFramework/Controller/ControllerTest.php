@@ -76,11 +76,11 @@ class ControllerTest extends \Test\TestCase {
 				'session' => ['sezession' => 'kein'],
 				'method' => 'hi',
 			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
 		);
 
-		$this->app = $this->getMock('OC\AppFramework\DependencyInjection\DIContainer',
+		$this->app = $this->createMock('OC\AppFramework\DependencyInjection\DIContainer',
 									array('getAppName'), array('test'));
 		$this->app->expects($this->any())
 				->method('getAppName')

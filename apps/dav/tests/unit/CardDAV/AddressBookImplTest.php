@@ -64,8 +64,8 @@ class AddressBookImplTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->backend = $this->getMockBuilder('\OCA\DAV\CardDAV\CardDavBackend')
 			->disableOriginalConstructor()->getMock();
-		$this->vCard = $this->getMock('Sabre\VObject\Component\VCard');
-		$this->urlGenerator = $this->getMock('OCP\IURLGenerator');
+		$this->vCard = $this->createMock('Sabre\VObject\Component\VCard');
+		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
 
 		$this->addressBookImpl = new AddressBookImpl(
 			$this->addressBook,

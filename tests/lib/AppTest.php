@@ -466,7 +466,7 @@ class AppTest extends \Test\TestCase {
 
 
 	private function setupAppConfigMock() {
-		$appConfig = $this->getMock(
+		$appConfig = $this->createMock(
 			'\OC\AppConfig',
 			array('getValues'),
 			array(\OC::$server->getDatabaseConnection()),

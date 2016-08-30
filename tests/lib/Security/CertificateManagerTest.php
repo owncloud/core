@@ -38,7 +38,7 @@ class CertificateManagerTest extends \Test\TestCase {
 		\OC\Files\Filesystem::tearDown();
 		\OC_Util::setupFS($this->username);
 
-		$config = $this->getMock('OCP\IConfig');
+		$config = $this->createMock('OCP\IConfig');
 		$config->expects($this->any())->method('getSystemValue')
 			->with('installed', false)->willReturn(true);
 

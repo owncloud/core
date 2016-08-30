@@ -37,7 +37,7 @@ class MetaDataTest extends \Test\TestCase {
 		$this->groupManager = $this->getMockBuilder('\OC\Group\Manager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->userSession = $this->getMock('\OCP\IUserSession');
+		$this->userSession = $this->createMock('\OCP\IUserSession');
 		$this->groupMetadata = new \OC\Group\MetaData(
 			'foo',
 			$this->isAdmin,

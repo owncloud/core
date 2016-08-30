@@ -56,17 +56,17 @@ class SharesPluginTest extends \Test\TestCase {
 		$this->tree = $this->getMockBuilder('\Sabre\DAV\Tree')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->shareManager = $this->getMock('\OCP\Share\IManager');
-		$user = $this->getMock('\OCP\IUser');
+		$this->shareManager = $this->createMock('\OCP\Share\IManager');
+		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('user1'));
-		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($user));
 
-		$this->userFolder = $this->getMock('\OCP\Files\Folder');
+		$this->userFolder = $this->createMock('\OCP\Files\Folder');
 
 		$this->plugin = new \OCA\DAV\Connector\Sabre\SharesPlugin(
 			$this->tree,
@@ -92,7 +92,7 @@ class SharesPluginTest extends \Test\TestCase {
 			->will($this->returnValue('/subdir'));
 
 		// node API nodes
-		$node = $this->getMock('\OCP\Files\Folder');
+		$node = $this->createMock('\OCP\Files\Folder');
 
 		$this->userFolder->expects($this->once())
 			->method('get')
@@ -168,15 +168,15 @@ class SharesPluginTest extends \Test\TestCase {
 			->will($this->returnValue('/subdir'));
 
 		// node API nodes
-		$node = $this->getMock('\OCP\Files\Folder');
+		$node = $this->createMock('\OCP\Files\Folder');
 		$node->expects($this->any())
 			->method('getId')
 			->will($this->returnValue(123));
-		$node1 = $this->getMock('\OCP\Files\File');
+		$node1 = $this->createMock('\OCP\Files\File');
 		$node1->expects($this->any())
 			->method('getId')
 			->will($this->returnValue(111));
-		$node2 = $this->getMock('\OCP\Files\File');
+		$node2 = $this->createMock('\OCP\Files\File');
 		$node2->expects($this->any())
 			->method('getId')
 			->will($this->returnValue(222));

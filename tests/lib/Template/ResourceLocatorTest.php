@@ -16,7 +16,7 @@ class ResourceLocatorTest extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->logger = $this->getMock('OCP\ILogger');
+		$this->logger = $this->createMock('OCP\ILogger');
 	}
 
 	/**

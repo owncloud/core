@@ -42,8 +42,8 @@ class DeleteTest extends TestCase {
 		$userManager = $this->userManager = $this->getMockBuilder('OCP\IUserManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
 		/** @var \OCP\IUserManager $userManager */
 		$this->command = new Delete($userManager);
@@ -64,7 +64,7 @@ class DeleteTest extends TestCase {
 	 * @param string $expectedString
 	 */
 	public function testValidUser($deleteSuccess, $expectedString) {
-		$user = $this->getMock('OCP\IUser');
+		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->once())
 			->method('delete')
 			->willReturn($deleteSuccess);

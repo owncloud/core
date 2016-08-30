@@ -38,10 +38,10 @@ class EntityCollectionTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->commentsManager = $this->getMock('\OCP\Comments\ICommentsManager');
-		$this->userManager = $this->getMock('\OCP\IUserManager');
-		$this->userSession = $this->getMock('\OCP\IUserSession');
-		$this->logger = $this->getMock('\OCP\ILogger');
+		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
+		$this->userManager = $this->createMock('\OCP\IUserManager');
+		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->logger = $this->createMock('\OCP\ILogger');
 
 		$this->collection = new \OCA\DAV\Comments\EntityCollection(
 			'19',
@@ -61,7 +61,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$this->commentsManager->expects($this->once())
 			->method('get')
 			->with('55')
-			->will($this->returnValue($this->getMock('\OCP\Comments\IComment')));
+			->will($this->returnValue($this->createMock('\OCP\Comments\IComment')));
 
 		$node = $this->collection->getChild('55');
 		$this->assertTrue($node instanceof \OCA\DAV\Comments\CommentNode);
@@ -83,7 +83,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$this->commentsManager->expects($this->once())
 			->method('getForObject')
 			->with('files', '19')
-			->will($this->returnValue([$this->getMock('\OCP\Comments\IComment')]));
+			->will($this->returnValue([$this->createMock('\OCP\Comments\IComment')]));
 
 		$result = $this->collection->getChildren();
 
@@ -96,7 +96,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$this->commentsManager->expects($this->once())
 			->method('getForObject')
 			->with('files', '19', 5, 15, $dt)
-			->will($this->returnValue([$this->getMock('\OCP\Comments\IComment')]));
+			->will($this->returnValue([$this->createMock('\OCP\Comments\IComment')]));
 
 		$result = $this->collection->findChildren(5, 15, $dt);
 

@@ -40,7 +40,7 @@ class MaintenancePluginTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->config = $this->getMock('\OCP\IConfig');
+		$this->config = $this->createMock('\OCP\IConfig');
 		$this->maintenancePlugin = new MaintenancePlugin($this->config);
 	}
 

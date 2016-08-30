@@ -23,7 +23,11 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCA\DAV\Connector\Sabre\FakeLockerPlugin;
+use Sabre\DAV\INode;
+use Sabre\DAV\PropFind;
+use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\Response;
+use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
 /**
@@ -41,8 +45,8 @@ class FakeLockerPluginTest extends TestCase {
 	}
 
 	public function testInitialize() {
-		/** @var \Sabre\DAV\Server $server */
-		$server = $this->getMock('\Sabre\DAV\Server');
+		/** @var \Sabre\DAV\Server | \PHPUnit_Framework_MockObject_MockObject $server */
+		$server = $this->createMock(\Sabre\DAV\Server::class);
 		$server
 			->expects($this->at(0))
 			->method('on')
@@ -79,10 +83,10 @@ class FakeLockerPluginTest extends TestCase {
 	}
 
 	public function testPropFind() {
-		$propFind = $this->getMockBuilder('\Sabre\DAV\PropFind')
+		$propFind = $this->getMockBuilder(PropFind::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$node = $this->getMock('\Sabre\DAV\INode');
+		$node = $this->createMock(INode::class);
 
 		$propFind->expects($this->at(0))
 			->method('handle')
@@ -137,15 +141,16 @@ class FakeLockerPluginTest extends TestCase {
 	 * @param array $expected
 	 */
 	public function testValidateTokens(array $input, array $expected) {
-		$request = $this->getMock('\Sabre\HTTP\RequestInterface');
+		$request = $this->createMock(RequestInterface::class);
 		$this->fakeLockerPlugin->validateTokens($request, $input);
 		$this->assertSame($expected, $input);
 	}
 
 	public function testFakeLockProvider() {
-		$request = $this->getMock('\Sabre\HTTP\RequestInterface');
+		$request = $this->createMock(RequestInterface::class);
 		$response = new Response();
-		$server = $this->getMock('\Sabre\DAV\Server');
+		$server = $this->getMockBuilder(\Sabre\DAV\Server::class)
+			->getMock();
 		$this->fakeLockerPlugin->initialize($server);
 
 		$request->expects($this->exactly(2))
@@ -160,8 +165,8 @@ class FakeLockerPluginTest extends TestCase {
 	}
 
 	public function testFakeUnlockProvider() {
-		$request = $this->getMock('\Sabre\HTTP\RequestInterface');
-		$response = $this->getMock('\Sabre\HTTP\ResponseInterface');
+		$request = $this->createMock(RequestInterface::class);
+		$response = $this->createMock(ResponseInterface::class);
 
 		$response->expects($this->once())
 				->method('setStatus')
