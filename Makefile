@@ -33,10 +33,10 @@ $(COMPOSER_BIN):
 #
 # ownCloud core PHP dependencies
 #
-$(composer_deps): $(COMPOSER_BIN)
+$(composer_deps): $(COMPOSER_BIN) composer.json composer.lock
 	php $(COMPOSER_BIN) install --no-dev
 
-$(composer_dev_deps): $(COMPOSER_BIN)
+$(composer_dev_deps): $(COMPOSER_BIN) composer.json composer.lock
 	php $(COMPOSER_BIN) install --dev
 
 .PHONY: install-composer-release-deps
@@ -61,7 +61,7 @@ clean-composer-deps:
 #
 # Node JS dependencies for tools
 #
-$(nodejs_deps):
+$(nodejs_deps): build/package.json
 	$(NPM) install --prefix $(NODE_PREFIX)
 
 .PHONY: install-nodejs-deps
@@ -73,7 +73,7 @@ clean-nodejs-deps:
 
 #
 # ownCloud core JS dependencies
-$(core_vendor): $(nodejs_deps)
+$(core_vendor): $(nodejs_deps) bower.json
 	$(BOWER) install
 
 .PHONY: install-js-deps
