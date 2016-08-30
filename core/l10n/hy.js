@@ -2,7 +2,6 @@ OC.L10N.register(
     "core",
     {
     "File is too big" : "Ֆայլը չափազանց մեծ է",
-    "Tag already exists" : "Նիշքը արդեն գոյություն ունի",
     "Sunday" : "Կիրակի",
     "Monday" : "Երկուշաբթի",
     "Tuesday" : "Երեքշաբթի",
