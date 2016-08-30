@@ -9,20 +9,28 @@ COMPOSER_BIN=build/composer.phar
 TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
 
+RELEASE_CHANNEL=git
+
 # internal aliases
 composer_deps=lib/composer
 composer_dev_deps=lib/composer/phpunit
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
 
+core_doc_files=AUTHORS COPYING-AGPL README.md
+core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini
+core_src_dirs=apps core l10n lib occ ocs ocs-provider settings themes
+core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
+dist_dir=build/dist
+
 #
 # Catch-all rules
 #
 .PHONY: all
-all: $(composer_deps) $(core_vendor)
+all: $(composer_dev_deps) $(core_vendor)
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results clean-dist
 
 #
 # Basic required tools
@@ -136,6 +144,39 @@ docs: docs-js
 clean-docs:
 	rm -Rf build/jsdocs
 
+#
+# Build distribution
+
+$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
+	rm -Rf $$@; mkdir -p $@/config
+	cp -R $(core_all_src) $@
+	cp -R config/config.sample.php $@/config
+	rm -Rf $(dist_dir)/owncloud/apps/testing
+	find $@ -name .gitkeep -delete
+	find $@ -name .gitignore -delete
+	find $@ -name no-php -delete
+	rm -Rf $@/{apps/*/tests,lib/composer/*/*/{tests,bin,examples}}
+	find $@/{core/,l10n/,apps/,lib/composer/} -iname \*.sh -delete
+	find $@/{apps/,lib/composer/} -name travis -print | xargs rm -Rf
+	# Set build
+	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
+	# Replace channel in version.php
+	sed -i \
+		-e 's/$$OC_Channel.*$$/$$OC_Channel = '"'"$(RELEASE_CHANNEL)"'"';/g' \
+		-e 's/$$OC_Build.*$$/$$OC_Build = '"'"$(_BUILD)"'"';/g' \
+		$(dist_dir)/owncloud/version.php
+
+$(dist_dir)/owncloud-core.tar.bz2: $(dist_dir)/owncloud
+	cd $(dist_dir) && tar cjf owncloud-core.tar.bz2 owncloud --format=gnu
+
+$(dist_dir)/owncloud-core.zip: $(dist_dir)/owncloud
+	cd $(dist_dir) && zip -rq9 owncloud-core.zip owncloud
+
+.PHONY: dist
+dist: $(dist_dir)/owncloud-core.tar.bz2 $(dist_dir)/owncloud-core.zip
+
+clean-dist:
+	rm -Rf $(dist_dir)
 #
 # Miscellaneous tools
 #
