@@ -1533,16 +1533,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.2.6",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tchwork/utf8.git",
-                "reference": "f986d18f4e37ab70b792e977c7d85970cf84f164"
+                "reference": "30ec6451aec7d2536f0af8fe535f70c764f2c47a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tchwork/utf8/zipball/f986d18f4e37ab70b792e977c7d85970cf84f164",
-                "reference": "f986d18f4e37ab70b792e977c7d85970cf84f164",
+                "url": "https://api.github.com/repos/tchwork/utf8/zipball/30ec6451aec7d2536f0af8fe535f70c764f2c47a",
+                "reference": "30ec6451aec7d2536f0af8fe535f70c764f2c47a",
                 "shasum": ""
             },
             "require": {
@@ -1558,7 +1558,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.3-dev"
                 }
             },
             "autoload": {
@@ -1588,7 +1588,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2015-12-15 15:33:41"
+            "time": "2016-05-18 13:57:10"
         },
         {
             "name": "pear/archive_tar",
