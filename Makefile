@@ -8,9 +8,9 @@ ifndef NPM
     $(error npm is not available on your system, please install npm)
 endif
 
-KARMA="$(NODE_PREFIX)/node_modules/.bin/karma"
-BOWER="$(NODE_PREFIX)/node_modules/.bin/bower"
-JSDOC="$(NODE_PREFIX)/node_modules/.bin/jsdoc"
+KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
+BOWER=$(NODE_PREFIX)/node_modules/bower/bin/bower
+JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(PWD)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN=build/composer.phar
 
@@ -80,6 +80,11 @@ clean-composer-deps:
 $(nodejs_deps): build/package.json
 	$(NPM) install --prefix $(NODE_PREFIX)
 
+# in some cases installing bower alone could be enough
+$(BOWER):
+	$(NPM) install --prefix $(NODE_PREFIX) bower
+	touch $(BOWER)
+
 .PHONY: install-nodejs-deps
 install-nodejs-deps: $(nodejs_deps)
 
@@ -89,7 +94,7 @@ clean-nodejs-deps:
 
 #
 # ownCloud core JS dependencies
-$(core_vendor): $(nodejs_deps) bower.json
+$(core_vendor): $(BOWER) bower.json
 	$(BOWER) install
 
 .PHONY: install-js-deps
@@ -163,9 +168,15 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete
-	rm -Rf $@/{apps/*/tests,lib/composer/*/*/{tests,bin,examples}}
+	rm -Rf $@/core/js/tests
+	rm -Rf $@/settings/tests
+	rm -Rf $@/apps/*/tests
+	rm -Rf $@/lib/composer/*/*/{tests,bin,examples}
+	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,test,tests,testem.json,demo,demos}
 	find $@/{core/,l10n/,apps/,lib/composer/} -iname \*.sh -delete
 	find $@/{apps/,lib/composer/} -name travis -print | xargs rm -Rf
+	find $@/{apps/,lib/composer/} -name doc -print | xargs rm -Rf
+	find $@/{apps/,lib/composer/} -iname \*.exe -delete
 	# Set build
 	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
 	# Replace channel in version.php
@@ -183,6 +194,10 @@ $(dist_dir)/owncloud-core.zip: $(dist_dir)/owncloud
 .PHONY: dist
 dist: $(dist_dir)/owncloud-core.tar.bz2 $(dist_dir)/owncloud-core.zip
 
+.PHONY: dist-dir
+dist-dir: $(dist_dir)/owncloud
+
+.PHONY: clean-dist
 clean-dist:
 	rm -Rf $(dist_dir)
 #
