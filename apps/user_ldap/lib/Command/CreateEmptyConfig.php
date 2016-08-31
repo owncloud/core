@@ -25,6 +25,7 @@
 namespace OCA\User_LDAP\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use \OCA\User_LDAP\Helper;
@@ -46,19 +47,33 @@ class CreateEmptyConfig extends Command {
 		$this
 			->setName('ldap:create-empty-config')
 			->setDescription('creates an empty LDAP configuration')
+			->addArgument(
+				'configID',
+				InputArgument::OPTIONAL,
+				'create a configuration with the specified id'
+			)
 		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$configPrefix = $this->getNewConfigurationPrefix();
+		$availableConfigs = $this->helper->getServerConfigurationPrefixes();
+		$configID = $input->getArgument('configID');
+		if(is_null($configID)) {
+			$configPrefix = $this->getNewConfigurationPrefix($availableConfigs);
+		} else {
+			if(in_array($configID, $availableConfigs)) {
+				$output->writeln("configID already exists");
+				return;
+			}
+			$configPrefix = $configID;
+		}
 		$output->writeln("Created new configuration with configID '{$configPrefix}'");
 
 		$configHolder = new Configuration($configPrefix);
 		$configHolder->saveConfiguration();
 	}
 
-	protected function getNewConfigurationPrefix() {
-		$serverConnections = $this->helper->getServerConfigurationPrefixes();
+	protected function getNewConfigurationPrefix(array $serverConnections) {
 
 		// first connection uses no prefix
 		if(sizeof($serverConnections) == 0) {
