@@ -1,5 +1,13 @@
 NODE_PREFIX=build
-NPM=npm
+
+#
+# Define NPM and check if it is available on the system.
+#
+NPM := $(shell command -v npm 2> /dev/null)
+ifndef NPM
+    $(error npm is not available on your system, please install npm)
+endif
+
 KARMA="$(NODE_PREFIX)/node_modules/.bin/karma"
 BOWER="$(NODE_PREFIX)/node_modules/.bin/bower"
 JSDOC="$(NODE_PREFIX)/node_modules/.bin/jsdoc"
