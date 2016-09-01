@@ -108,6 +108,8 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 			if (!$e instanceof NotFoundException) {
 				$this->logger->logException($e);
 			}
+			$this->rootPath = '';
+			$this->sourceRootInfo = null;
 		}
 		$this->storage = $this->sourceStorage;
 	}
@@ -131,7 +133,10 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 
 	private function isValid() {
 		$this->init();
-		return $this->sourceRootInfo && ($this->sourceRootInfo->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
+		if (is_null($this->sourceRootInfo)) {
+			return false;
+		}
+		return ($this->sourceRootInfo->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
 	}
 
 	/**
@@ -315,8 +320,7 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 	}
 
 	public function getCache($path = '', $storage = null) {
-		$this->init();
-		if (is_null($this->sourceStorage) || $this->sourceStorage instanceof FailedStorage) {
+		if (!$this->isValid()) {
 			return new FailedCache(false);
 		}
 		if (!$storage) {

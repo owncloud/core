@@ -30,6 +30,7 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\Share\IManager;
+use OCP\Share\IShare;
 
 class MountProvider implements IMountProvider {
 	/**
@@ -79,6 +80,10 @@ class MountProvider implements IMountProvider {
 		$mounts = [];
 		foreach ($superShares as $share) {
 			try {
+				// don't mount inaccessible shares
+				if (!$this->isShareAccessible($share[0])) {
+					continue;
+				}
 				$mounts[] = new SharedMount(
 					'\OC\Files\Storage\Shared',
 					$mounts,
@@ -179,5 +184,39 @@ class MountProvider implements IMountProvider {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Checks whether the source of the share is accessible
+	 *
+	 * @param IShare $share
+	 * 
+	 * @return bool true if the share is accessible, false otherwise
+	 */
+	private function isShareAccessible(IShare $share) {
+		// note: we don't want to use the shared storage as initializing it
+		// is expensive and requires mounting the storages of the owner
+		// instead, we just rely to the database entries for a quick check
+
+		$qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$qb->select('path')
+			->from('filecache')
+			->where($qb->expr()->eq('fileid', $qb->createNamedParameter($share->getNodeId())));
+
+		$result = $qb->execute();
+		$row = $result->fetch();
+		$result->closeCursor();
+
+		if (!$row) {
+			return false;
+		}
+
+		$sections = explode('/', $row['path']);
+		if ($sections[0] === 'files_trashbin') {
+			// FIXME: false positive if an ext storage has a "files_trashbin" folder
+			return false;
+		}
+
+		return true;
 	}
 }
