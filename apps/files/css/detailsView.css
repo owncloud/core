@@ -18,8 +18,13 @@
 	display: inline-block;
 }
 
+#app-sidebar .mainFileInfoView .hidden {
+	display: none;
+}
+
 #app-sidebar .mainFileInfoView .icon-external {
 	opacity: .5;
+	padding-left: 8px;
 }
 
 #app-sidebar .mainFileInfoView .permalink {

@@ -18,7 +18,7 @@
 				'<span class="icon icon-public"></span>' +
 				'<span class="hidden-visually">{{permalinkTitle}}</span>' +
 			'</a>' +
-			'<a class="{{#unless showWebDavCopyButton}}hidden-visually{{/unless}} clipboardButton icon icon-external" data-clipboard-text="{{webDavUrl}}"></a>' +
+			'<a class="{{#unless showWebDavCopyButton}}hidden{{/unless}} webDavUrlCopyButton icon icon-external" title="{{webDavUrlTitle}}" data-clipboard-text="{{webDavUrl}}"></a>' +
 		'</div>' +
 		'	<div class="file-details ellipsis">' +
 		'		<a href="#" ' +
@@ -83,7 +83,10 @@
 				throw 'Missing required parameter "fileActions"';
 			}
 
-			OC.Util.setupClipboard('.clipboardButton');
+			OC.Util.setupClipboard('.webDavUrlCopyButton', {
+				notificationMode: 'notification',
+				successMessage: t('files', 'WebDAV link copied!')
+			});
 		},
 
 		_onClickPermalink: function() {
@@ -166,7 +169,8 @@
 					permalink: this._makePermalink(this.model.get('id')),
 					permalinkTitle: t('files', 'Local link'),
 					showWebDavCopyButton: this.model.isDirectory(),
-					webDavUrl: this._makeWebDavUrl(this.model.getFullPath())
+					webDavUrl: this._makeWebDavUrl(this.model.getFullPath()),
+					webDavUrlTitle: t('files', 'Direct WebDAV link')
 				}));
 
 				// TODO: we really need OC.Previews
