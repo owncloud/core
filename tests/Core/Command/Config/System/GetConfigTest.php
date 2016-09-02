@@ -23,28 +23,29 @@ namespace Tests\Core\Command\Config\System;
 
 
 use OC\Core\Command\Config\System\GetConfig;
+use OC\SystemConfig;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
 class GetConfigTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $systemConfig;
-
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $consoleInput;
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $consoleOutput;
-
 	/** @var \Symfony\Component\Console\Command\Command */
 	protected $command;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$systemConfig = $this->systemConfig = $this->getMockBuilder('OC\SystemConfig')
+		$systemConfig = $this->systemConfig = $this->getMockBuilder(SystemConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->getMock(InputInterface::class);
+		$this->consoleOutput = $this->getMock(OutputInterface::class);
 
 		/** @var \OC\SystemConfig $systemConfig */
 		$this->command = new GetConfig($systemConfig);
@@ -144,8 +145,8 @@ class GetConfigTest extends TestCase {
 		$this->consoleInput->expects($this->any())
 			->method('hasParameterOption')
 			->willReturnMap([
-				['--output', true],
-				['--default-value', $hasDefault],
+				['--output', false, true],
+				['--default-value', false, $hasDefault],
 			]);
 
 		if ($expectedMessage !== null) {
