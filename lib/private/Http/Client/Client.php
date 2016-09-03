@@ -62,6 +62,10 @@ class Client implements IClient {
 			return;
 		}
 		$this->configured = true;
+		// TODO - Someone who knows more about onecloud's CA bundle stuff should
+		// take a look at this.
+		// @see https://github.com/guzzle/guzzle/blob/3b45e7675e8997ac96142b0265d158343958f708/UPGRADING.md
+		/**
 		// Either use user bundle or the system bundle if nothing is specified
 		if ($this->certificateManager->listCertificates() !== []) {
 			$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath());
@@ -80,6 +84,7 @@ class Client implements IClient {
 		if ($this->getProxyUri() !== '') {
 			$this->client->setDefaultOption('proxy', $this->getProxyUri());
 		}
+		 */
 	}
 
 	/**

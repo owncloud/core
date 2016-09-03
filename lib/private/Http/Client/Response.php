@@ -23,7 +23,7 @@
 namespace OC\Http\Client;
 
 use OCP\Http\Client\IResponse;
-use GuzzleHttp\Message\Response as GuzzleResponse;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 /**
  * Class Response
