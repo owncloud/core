@@ -2747,8 +2747,13 @@
 				if (OC.isSamePath(OC.dirname(upload.getFullPath() + '/'), self.getCurrentDirectory())) {
 					self._uploads[fileName] = fetchInfoPromise;
 				}
+
+				var uploadText = self.$fileList.find('tr .uploadtext');
+				self.showFileBusyState(uploadText.closest('tr'), false);
+				uploadText.fadeOut();
+				uploadText.attr('currentUploads', 0);
 			});
-			uploader.on('createdfolder', function(e, fullPath) {
+			uploader.on('createdfolder', function(fullPath) {
 				self.addAndFetchFileInfo(OC.basename(fullPath), OC.dirname(fullPath));
 			});
 			uploader.on('stop', function() {
@@ -2766,6 +2771,11 @@
 					self.highlightFiles(fileNames);
 				});
 				self.updateStorageStatistics();
+
+				var uploadText = self.$fileList.find('tr .uploadtext');
+				self.showFileBusyState(uploadText.closest('tr'), false);
+				uploadText.fadeOut();
+				uploadText.attr('currentUploads', 0);
 			});
 			uploader.on('fail', function(e, data) {
 				self._uploader.log('filelist handle fileuploadfail', e, data);
@@ -2773,13 +2783,11 @@
 				self._uploads = [];
 
 				//if user pressed cancel hide upload chrome
-				if (data.errorThrown === 'abort') {
-					//cleanup uploading to a dir
-					var uploadText = self.$fileList.find('tr .uploadtext');
-					self.showFileBusyState(uploadText.closest('tr'), false);
-					uploadText.fadeOut();
-					uploadText.attr('currentUploads', 0);
-				}
+				//cleanup uploading to a dir
+				var uploadText = self.$fileList.find('tr .uploadtext');
+				self.showFileBusyState(uploadText.closest('tr'), false);
+				uploadText.fadeOut();
+				uploadText.attr('currentUploads', 0);
 				self.updateStorageStatistics();
 			});
 
