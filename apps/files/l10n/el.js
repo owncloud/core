@@ -31,6 +31,7 @@ OC.L10N.register(
     "Could not get result from server." : "Αδυναμία λήψης αποτελέσματος από το διακομιστή.",
     "Uploading..." : "Μεταφόρτωση...",
     "..." : "...",
+    "{hours}:{minutes}h" : "{hours}:{minutes}h",
     "Soon..." : "Σύντομα...",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Η αποστολή του αρχείου βρίσκεται σε εξέλιξη. Το κλείσιμο της σελίδας θα ακυρώσει την αποστολή.",
     "Actions" : "Ενέργειες",

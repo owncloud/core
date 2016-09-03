@@ -25,6 +25,7 @@ OC.L10N.register(
     "Password" : "Κωδικός πρόσβασης",
     "Credentials saved" : "Τα διαπιστευτήρια αποθηκεύτηκαν",
     "Credentials saving failed" : "Αποτυχία αποθήκευσης διαπιστευτηρίων",
+    "Credentials required" : "Απαιτούνται διαπιστευτήρια",
     "Save" : "Αποθήκευση",
     "Storage with id \"%i\" not found" : "Αποθήκευση με id \"%i\" δεν βρέθηκε",
     "Invalid backend or authentication mechanism class" : "Μη έγκυρη κλάση συστήματος ή μηχανισμού πιστοποίησης",
