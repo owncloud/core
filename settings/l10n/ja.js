@@ -310,7 +310,7 @@ OC.L10N.register(
     "Other" : "その他",
     "Full Name" : "名前",
     "Group Admin for" : "グループ管理者",
-    "Quota" : "クオータ",
+    "Quota" : "クォータ",
     "Storage Location" : "データの保存場所",
     "User Backend" : "ユーザーバックエンド",
     "Last Login" : "最終ログイン",
