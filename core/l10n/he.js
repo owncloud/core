@@ -225,7 +225,7 @@ OC.L10N.register(
     "Personal" : "אישי",
     "Users" : "משתמשים",
     "Apps" : "יישומים",
-    "Admin" : "מנהל",
+    "Admin" : "ניהול",
     "Help" : "עזרה",
     "Access forbidden" : "הגישה נחסמה",
     "File not found" : "קובץ לא נמצא",
