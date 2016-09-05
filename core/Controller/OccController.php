@@ -135,7 +135,12 @@ class OccController extends Controller {
 	 * @param $token
 	 */
 	protected function validateRequest($command, $token){
-		if (!in_array($this->request->getRemoteAddress(), ['::1', '127.0.0.1', 'localhost'])) {
+		$allowedHosts = ['::1', '127.0.0.1', 'localhost'];
+		if (isset($this->request->server['SERVER_ADDR'])){
+			array_push($allowedHosts, $this->request->server['SERVER_ADDR']);
+		}
+
+		if (!in_array($this->request->getRemoteAddress(), $allowedHosts)) {
 			throw new \UnexpectedValueException('Web executor is not allowed to run from a host ' . $this->request->getRemoteAddress());
 		}
 
