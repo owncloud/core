@@ -427,17 +427,16 @@ class FilesPlugin extends ServerPlugin {
 	 * @return null|false
 	 */
 	public function httpPost(RequestInterface $request, ResponseInterface $response) {
-		// TODO: move this to another plugin ?
-		if (!\OC::$CLI && !\OC::$server->getRequest()->passesCSRFCheck()) {
-			throw new BadRequest('Invalid CSRF token');
-		}
-
 		list($parentPath, $name) = \Sabre\HTTP\URLUtil::splitPath($request->getPath());
 
 		// Making sure the parent node exists and is a directory
 		$node = $this->tree->getNodeForPath($parentPath);
 
 		if ($node instanceof Directory) {
+			// TODO: move this to another plugin ?
+			if (!\OC::$CLI && !\OC::$server->getRequest()->passesCSRFCheck()) {
+				throw new BadRequest('Invalid CSRF token');
+			}
 			// no Add-Member found
 			if (empty($name) || $name[0] !== '&') {
 				// suggested name required
