@@ -297,7 +297,8 @@ OCA = OCA || {};
 		 */
 		onPortButtonClick: function(event) {
 			event.preventDefault();
-			this.configModel.requestWizard('ldap_port');
+			this.configModel.executeAfterSet(this.configModel.requestWizard, this.configModel, 'ldap_port');
+			// this.configModel.requestWizard('ldap_port');
 		},
 
 		/**
@@ -307,7 +308,8 @@ OCA = OCA || {};
 		 */
 		onBaseDNButtonClick: function(event) {
 			event.preventDefault();
-			this.configModel.requestWizard('ldap_base');
+			this.configModel.executeAfterSet(this.configModel.requestWizard, this.configModel, 'ldap_base');
+			// this.configModel.requestWizard('ldap_base');
 		},
 
 		/**
@@ -317,9 +319,12 @@ OCA = OCA || {};
 		 */
 		onBaseDNTestButtonClick: function(event) {
 			event.preventDefault();
-			this.baseDNTestTriggered = true;
-			this.configModel.requestWizard('ldap_test_base');
-			this.disableElement(this.managedItems.ldap_base.$testButton);
+			var callbackFunc = function() {
+				this.baseDNTestTriggered = true;
+				this.configModel.requestWizard('ldap_test_base');
+				this.disableElement(this.managedItems.ldap_base.$testButton);
+			}
+			this.configModel.executeAfterSet(callbackFunc, this);
 		},
 
 		/**

@@ -33,6 +33,7 @@ OCA = OCA || {};
 		 * @param {OCA.LDAP.Wizard.WizardDetectorQueue} detectorQueue
 		 */
 		init: function (detectorQueue) {
+			this.modifyingAjaxCalls = [];
 			/** @type {object} holds the configuration in key-value-pairs */
 			this.configuration     = {};
 			/** @type {object} holds the subscribers that listen to the events */
@@ -179,7 +180,12 @@ OCA = OCA || {};
 			};
 			var strParams = OC.buildQueryString(objParams);
 			var model = this;
-			$.post(url, strParams, function(result) { model._processSetResult(model, result, objParams) });
+			var ajaxCall = $.post(url, strParams, function(result) {
+				model._processSetResult(model, result, objParams);
+				// remove this ajax call from the list to clean up
+				model.modifyingAjaxCalls = _.without(model.modifyingAjaxCalls, ajaxCall);
+			});
+			this.modifyingAjaxCalls.push(ajaxCall);
 			return true;
 		},
 
@@ -314,14 +320,36 @@ OCA = OCA || {};
 		},
 
 		/**
+		 * Execute the callback after all the "set" calls have been made. This should ensure the
+		 * callbacks always use the latest configuration, without race conditions.
+		 * Additional arguments passed to this function will be forwarded to the callback function
+		 *
+		 * @param {function} [callback] - the function to be executed
+		 * @param {object} [thisContext] - the context where the callback will run ("this" will be
+		 * that object for that function)
+		 */
+		executeAfterSet: function(callback, thisContext) {
+			// get the rest of the parameters (excluding "callback" and "thisContext") as an array
+			var additionalArgs = Array.prototype.slice.call(arguments, 2);
+			// $.when(ajaxCall1, ajaxCall2, ajaxCall3, ...).then()
+			$.when.apply($, this.modifyingAjaxCalls).always(function(){
+				// make sure we forward the parameters to the callback function, and use the appropiate
+				// context
+				callback.apply(thisContext, additionalArgs);
+			});
+		},
+
+		/**
 		 * starts a configuration test on the ownCloud server
 		 */
 		requestConfigurationTest: function() {
 			var url = OC.generateUrl('apps/user_ldap/ajax/testConfiguration.php');
 			var params = OC.buildQueryString({ldap_serverconfig_chooser: this.configID});
 			var model = this;
-			$.post(url, params, function(result) { model._processTestResult(model, result) });
-			//TODO: make sure only one test is running at a time
+			this.executeAfterSet(function(){
+				$.post(url, params, function(result) { model._processTestResult(model, result) });
+				//TODO: make sure only one test is running at a time
+			});
 		},
 
 		/**
