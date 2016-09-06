@@ -19,6 +19,9 @@ OCA = OCA || {};
 
 		baseDNTestTriggered: false,
 
+		/** @property {bool} */
+		activeAjaxRequests: false,
+
 		/**
 		 * initializes the instance. Always call it after initialization.
 		 *
@@ -66,9 +69,39 @@ OCA = OCA || {};
 			};
 			this.setManagedItems(items);
 			_.bindAll(this, 'onPortButtonClick', 'onBaseDNButtonClick', 'onBaseDNTestButtonClick');
-			this.managedItems.ldap_port.$relatedElements.click(this.onPortButtonClick);
-			this.managedItems.ldap_base.$detectButton.click(this.onBaseDNButtonClick);
-			this.managedItems.ldap_base.$testButton.click(this.onBaseDNTestButtonClick);
+			var self = this;
+			this.managedItems.ldap_port.$relatedElements.click(function(ev) {
+				self.runAfterAjaxRequests(self.onPortButtonClick, [ev], self);
+			});
+			this.managedItems.ldap_base.$detectButton.click(function(ev) {
+				self.runAfterAjaxRequests(self.onBaseDNButtonClick, [ev], self);
+			});
+			this.managedItems.ldap_base.$testButton.click(function(ev) {
+				self.runAfterAjaxRequests(self.onBaseDNTestButtonClick, [ev], self);
+			});
+			$(document).on('ajaxStart.ajaxCounter', function(){
+				self.activeAjaxRequests = true;
+			});
+			$(document).on('ajaxStop.ajaxCounter', function(){
+				self.activeAjaxRequests = false;
+			});
+		},
+
+		runAfterAjaxRequests: function(func, args, thisContext) {
+			if (thisContext.activeAjaxRequests) {
+				var randomId = Math.random().toString().slice(2);
+				// there are ajax requests running very likely one to save data, so wait until all
+				// requests finish
+				$(document).on('ajaxStop.' + randomId, function(){
+					// send the click event to the function
+					func.apply(thisContext, args);
+					// remove this event
+					$(document).off('ajaxStop.' + randomId);
+				});
+			} else {
+				// can send the request without waiting
+				func.apply(thisContext, args);
+			}
 		},
 
 		/**
