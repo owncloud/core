@@ -656,13 +656,17 @@ class Group_LDAP extends BackendUtility implements \OCP\GroupInterface {
 				}
 				$groupUsers[] = $this->access->dn2username($ldap_users[0]['dn'][0]);
 			} else {
+				$filter = $this->access->connection->ldapUserFilter;
 				//we got DNs, check if we need to filter by search or we can give back all of them
 				if(!empty($search)) {
-					if(!$this->access->readAttribute($member,
+					$filter = $this->access->combineFilterWithAnd(array(
+						$this->access->connection->ldapUserFilter,
+						$this->access->getFilterPartForUserSearch($search)));
+				}
+				if(!is_array($this->access->readAttribute($member,
 						$this->access->connection->ldapUserDisplayName,
-						$this->access->getFilterPartForUserSearch($search))) {
-						continue;
-					}
+						$filter))) {
+					continue;
 				}
 				// dn2username will also check if the users belong to the allowed base
 				if($ocname = $this->access->dn2username($member)) {
