@@ -402,9 +402,6 @@ OCA = OCA || {};
 					$indicator.addClass('ldap_grey');
 					$indicatorLight.removeClass('error');
 					$indicatorLight.addClass('success');
-					if(!this.tabs.server.isActive) {
-						this.configModel.set('ldap_configuration_active', 1);
-					}
 					break;
 			}
 		},
