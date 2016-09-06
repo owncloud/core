@@ -16,6 +16,7 @@ COMPOSER_BIN=build/composer.phar
 
 TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
+TEST_PHP_SUITE=
 
 RELEASE_CHANNEL=git
 
@@ -108,11 +109,11 @@ clean-js-deps:
 #
 .PHONY: test-php
 test-php: $(composer_dev_deps)
-	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE)
+	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE) $(TEST_PHP_SUITE)
 
 .PHONY: test-external
 test-external: $(composer_dev_deps)
-	PHPUNIT=$(PHPUNIT) build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV)
+	PHPUNIT=$(PHPUNIT) build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV) $(TEST_PHP_SUITE)
 
 .PHONY: test-js
 test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
