@@ -35,7 +35,7 @@ $prefix = (string)$_POST['ldap_serverconfig_chooser'];
 // only legacy checkboxes (Advanced and Expert tab) need to be handled here,
 // the Wizard-like tabs handle it on their own
 $chkboxes = array('ldap_configuration_active', 'ldap_override_main_server',
-				  'ldap_turn_off_cert_check');
+				  'ldap_turn_off_cert_check', 'ldap_turn_on_pwd_change');
 foreach($chkboxes as $boxid) {
 	if(!isset($_POST[$boxid])) {
 		$_POST[$boxid] = 0;

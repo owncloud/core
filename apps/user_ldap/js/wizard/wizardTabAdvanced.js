@@ -45,6 +45,10 @@ OCA = OCA || {};
 					$element: $('#ldap_turn_off_cert_check'),
 					setMethod: 'setCertCheckDisabled'
 				},
+				ldap_turn_on_pwd_change: {
+					$element: $('#ldap_turn_on_pwd_change'),
+					setMethod: 'setPasswordChangeEnabled'
+				},
 				ldap_cache_ttl: {
 					$element: $('#ldap_cache_ttl'),
 					setMethod: 'setCacheTTL'
@@ -177,6 +181,17 @@ OCA = OCA || {};
 		setCertCheckDisabled: function(doCertCheck) {
 			this.setElementValue(
 				this.managedItems.ldap_turn_off_cert_check.$element, doCertCheck
+			);
+		},
+		
+		/**
+		 * sets whether the password changes per user should be enabled
+		 *
+		 * @param {string} doPasswordChange contains an int
+		 */
+		setPasswordChangeEnabled: function(doPasswordChange) {
+			this.setElementValue(
+				this.managedItems.ldap_turn_on_pwd_change.$element, doPasswordChange
 			);
 		},
 

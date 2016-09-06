@@ -13,6 +13,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
+ * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -38,7 +39,7 @@ use OCA\User_LDAP\User\OfflineUser;
 use OCA\User_LDAP\User\User;
 use OCP\IConfig;
 
-class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserInterface {
+class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserInterface, IUserLDAP {
 	/** @var string[] $homesToKill */
 	protected $homesToKill = array();
 
@@ -88,6 +89,16 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 		} catch (\Exception $e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * returns the username for the given LDAP DN, if available
+	 *
+	 * @param string $dn
+	 * @return string|false with the name to use in ownCloud
+	 */
+	public function dn2UserName($dn) {
+		return $this->access->dn2username($dn);
 	}
 
 	/**
@@ -144,6 +155,41 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 			$user->markLogin();
 
 			return $user->getUsername();
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Set password
+	 * @param string $uid The username
+	 * @param string $password The new password
+	 * @return bool
+	 *
+	 */
+	public function setPassword($uid, $password) {
+		if(!$this->access->connection->configuration->turnOnPasswordChange) {
+			return false;
+		}
+		
+		try {
+			$ldapRecord = $this->getLDAPUserByLoginName($uid);
+		} catch(\Exception $e) {
+			\OC::$server->getLogger()->logException($e, ['app' => 'user_ldap']);
+			return false;
+		}
+		$dn = $ldapRecord['dn'][0];
+		$user = $this->access->userManager->get($dn);
+
+		if(!$user instanceof User) {
+			\OCP\Util::writeLog('user_ldap',
+				'LDAP Login: Could not get user object for DN ' . $dn .
+				'. Maybe the LDAP entry has no set display name attribute?',
+				\OCP\Util::WARN);
+			return false;
+		}
+		if($user->getUsername() !== false) {
+			return $this->access->setPassword($this->access->username2dn($uid), $password);
 		}
 
 		return false;
@@ -419,6 +465,7 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	*/
 	public function implementsActions($actions) {
 		return (bool)((\OC\User\Backend::CHECK_PASSWORD
+			| \OC\User\Backend::SET_PASSWORD
 			| \OC\User\Backend::GET_HOME
 			| \OC\User\Backend::GET_DISPLAYNAME
 			| \OC\User\Backend::PROVIDE_AVATAR
@@ -456,5 +503,25 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	public function getBackendName(){
 		return 'LDAP';
 	}
-
+	
+	/**
+	 * Return access for LDAP interaction.
+	 * @param string $uid
+	 * @return Access instance of Access for LDAP interaction
+	 */
+	public function getLDAPAccess($uid) {
+		return $this->access;
+	}
+	
+	/**
+	 * Return LDAP connection resource from a cloned connection.
+	 * The cloned connection needs to be closed manually.
+	 * of the current access.
+	 * @param string $uid
+	 * @return resource of the LDAP connection
+	 */
+	public function getNewLDAPConnection($uid) {
+		$connection = clone $this->access->getConnection();
+		return $connection->getConnectionResource();
+	}
 }
