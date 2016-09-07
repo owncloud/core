@@ -39,6 +39,22 @@ use OCA\User_LDAP\Connection;
  * @package OCA\User_LDAP\Tests
  */
 class Group_LDAPTest extends \Test\TestCase {
+
+	private $ocUserManagerMock;
+	private $ocGroupManagerMock;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->ocUserManagerMock = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->ocGroupManagerMock = $this->getMockBuilder('\OC\Group\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	private function getAccessMock() {
 		static $conMethods;
 		static $accMethods;
@@ -54,9 +70,10 @@ class Group_LDAPTest extends \Test\TestCase {
 		$um = $this->getMockBuilder('\OCA\User_LDAP\User\Manager')
 			->disableOriginalConstructor()
 			->getMock();
+
 		$access = $this->getMock('\OCA\User_LDAP\Access',
 								 $accMethods,
-								 array($connector, $lw, $um));
+								 [$connector, $lw, $um, $this->ocUserManagerMock, $this->ocGroupManagerMock]);
 
 		$access->expects($this->any())
 			->method('getConnection')

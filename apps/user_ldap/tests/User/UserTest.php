@@ -36,6 +36,21 @@ use OCP\IUserManager;
  */
 class UserTest extends \Test\TestCase {
 
+	private $ocUserManagerMock;
+	private $ocGroupManagerMock;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->ocUserManagerMock = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->ocGroupManagerMock = $this->getMockBuilder('\OC\Group\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	private function getTestInstances() {
 		$access  = $this->getMock('\OCA\User_LDAP\User\IUserTools');
 		$config  = $this->getMock('\OCP\IConfig');
@@ -46,7 +61,7 @@ class UserTest extends \Test\TestCase {
 		$dbc     = $this->getMock('\OCP\IDBConnection');
 		$userMgr  = $this->getMock('\OCP\IUserManager');
 
-		return array($access, $config, $filesys, $image, $log, $avaMgr, $dbc, $userMgr);
+		return [$access, $config, $filesys, $image, $log, $avaMgr, $dbc, $userMgr];
 	}
 
 	private function getAdvancedMocks($cfMock, $fsMock, $logMock, $avaMgr, $dbc, $userMgr = null) {
@@ -70,8 +85,9 @@ class UserTest extends \Test\TestCase {
 			$umMethods, array($cfMock, $fsMock, $logMock, $avaMgr, $im, $dbc, $userMgr));
 		$connector = $this->getMock('\OCA\User_LDAP\Connection',
 			$conMethods, array($lw, null, null));
+
 		$access = $this->getMock('\OCA\User_LDAP\Access',
-			$accMethods, array($connector, $lw, $um));
+			$accMethods, array($connector, $lw, $um, $this->ocUserManagerMock, $this->ocGroupManagerMock));
 
 		return array($access, $connector);
 	}

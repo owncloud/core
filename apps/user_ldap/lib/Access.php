@@ -52,6 +52,10 @@ class Access extends LDAPUtility implements IUserTools {
 	 */
 	public $connection;
 	public $userManager;
+
+	public $ocUserManager;
+	public $ocGroupManager;
+
 	//never ever check this var directly, always use getPagedSearchResultState
 	protected $pagedSearchedSuccessful;
 
@@ -77,11 +81,14 @@ class Access extends LDAPUtility implements IUserTools {
 	protected $groupMapper;
 
 	public function __construct(Connection $connection, ILDAPWrapper $ldap,
-		Manager $userManager) {
+		Manager $userManager, \OCP\IUserManager $ocUserManager,
+		\OCP\IGroupManager $ocGroupManager) {
 		parent::__construct($ldap);
 		$this->connection = $connection;
 		$this->userManager = $userManager;
 		$this->userManager->setLdapAccess($this);
+		$this->ocUserManager = $ocUserManager;
+		$this->ocGroupManager = $ocGroupManager;
 	}
 
 	/**
@@ -446,15 +453,6 @@ class Access extends LDAPUtility implements IUserTools {
 			return false;
 		}
 
-		if(is_null($ldapName)) {
-			$ldapName = $this->readAttribute($fdn, $nameAttribute);
-			if(!isset($ldapName[0]) && empty($ldapName[0])) {
-				\OCP\Util::writeLog('user_ldap', 'No or empty name for '.$fdn.'.', \OCP\Util::INFO);
-				return false;
-			}
-			$ldapName = $ldapName[0];
-		}
-
 		if($isUser) {
 			$usernameAttribute = $this->connection->ldapExpertUsernameAttr;
 			if(!empty($usernameAttribute)) {
@@ -465,6 +463,15 @@ class Access extends LDAPUtility implements IUserTools {
 			}
 			$intName = $this->sanitizeUsername($username);
 		} else {
+			if(is_null($ldapName)) {
+				$ldapName = $this->readAttribute($fdn, $nameAttribute);
+				if(!isset($ldapName[0]) && empty($ldapName[0])) {
+					\OCP\Util::writeLog('user_ldap', 'No or empty name for '.$fdn.'.', \OCP\Util::INFO);
+					return false;
+				}
+				$ldapName = $ldapName[0];
+			}
+
 			$intName = $ldapName;
 		}
 
@@ -474,8 +481,8 @@ class Access extends LDAPUtility implements IUserTools {
 		// outside of core user management will still cache the user as non-existing.
 		$originalTTL = $this->connection->ldapCacheTTL;
 		$this->connection->setConfiguration(array('ldapCacheTTL' => 0));
-		if(($isUser && !\OCP\User::userExists($intName))
-			|| (!$isUser && !\OC_Group::groupExists($intName))) {
+		if(($isUser && !$this->ocUserManager->userExists($intName))
+			|| (!$isUser && !$this->ocGroupManager->groupExists($intName))) {
 			if($mapper->map($fdn, $intName, $uuid)) {
 				$this->connection->setConfiguration(array('ldapCacheTTL' => $originalTTL));
 				return $intName;

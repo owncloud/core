@@ -35,6 +35,10 @@ use \OCA\User_LDAP\Wizard;
  * @package OCA\User_LDAP\Tests
  */
 class WizardTest extends \Test\TestCase {
+
+	private $ocUserManagerMock;
+	private $ocGroupManagerMock;
+
 	protected function setUp() {
 		parent::setUp();
 		//we need to make sure the consts are defined, otherwise tests will fail
@@ -46,6 +50,14 @@ class WizardTest extends \Test\TestCase {
 				define($const, 42);
 			}
 		}
+
+		$this->ocUserManagerMock = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->ocGroupManagerMock = $this->getMockBuilder('\OC\Group\Manager')
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	private function getWizardAndMocks() {
@@ -68,10 +80,11 @@ class WizardTest extends \Test\TestCase {
 		$um = $this->getMockBuilder('\OCA\User_LDAP\User\Manager')
 					->disableOriginalConstructor()
 					->getMock();
-		$access = $this->getMock('\OCA\User_LDAP\Access',
-			$accMethods, array($connector, $lw, $um));
 
-		return array(new Wizard($conf, $lw, $access), $conf, $lw, $access);
+		$access = $this->getMock('\OCA\User_LDAP\Access',
+			$accMethods, array($connector, $lw, $um, $this->ocUserManagerMock, $this->ocGroupManagerMock));
+
+		return [new Wizard($conf, $lw, $access), $conf, $lw, $access];
 	}
 
 	private function prepareLdapWrapperForConnections(&$ldap) {

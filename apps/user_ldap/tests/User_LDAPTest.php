@@ -42,12 +42,24 @@ class User_LDAPTest extends \Test\TestCase {
 	protected $backend;
 	protected $access;
 	protected $configMock;
+	
+	private $ocUserManagerMock;
+	private $ocGroupManagerMock;
+
 
 	protected function setUp() {
 		parent::setUp();
 
 		\OC_User::clearBackends();
 		\OC_Group::clearBackends();
+
+		$this->ocUserManagerMock = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->ocGroupManagerMock = $this->getMockBuilder('\OC\Group\Manager')
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	private function getAccessMock() {
@@ -94,7 +106,7 @@ class User_LDAPTest extends \Test\TestCase {
 
 		$access = $this->getMock('\OCA\User_LDAP\Access',
 								 $accMethods,
-								 array($connector, $lw, $um));
+								 [$connector, $lw, $um, $this->ocUserManagerMock, $this->ocGroupManagerMock]);
 
 		$um->setLdapAccess($access);
 

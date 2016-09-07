@@ -42,8 +42,10 @@ if(count($configPrefixes) === 1) {
 		$dbc,
 		\OC::$server->getUserManager()
 	);
+	
 	$connector = new OCA\User_LDAP\Connection($ldapWrapper, $configPrefixes[0]);
-	$ldapAccess = new OCA\User_LDAP\Access($connector, $ldapWrapper, $userManager);
+	$ldapAccess = new OCA\User_LDAP\Access($connector, $ldapWrapper, $userManager,
+						\OC::$server->getUserManager(), \OC::$server->getGroupManager());
 
 	$ldapAccess->setUserMapper(new OCA\User_LDAP\Mapping\UserMapping($dbc));
 	$ldapAccess->setGroupMapper(new OCA\User_LDAP\Mapping\GroupMapping($dbc));
