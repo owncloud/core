@@ -16,8 +16,9 @@
 			$i = 1;
 			$sel = ' selected';
 			foreach($_['serverConfigurationPrefixes'] as $prefix) {
+				$confActive = (in_array($prefix, $_['serverConfigurationActivePrefixes'], true)) ? '' : '(inactive)';
 				?>
-				<option value="<?php p($prefix); ?>"<?php p($sel); $sel = ''; ?>><?php p($l->t('%s. Server:', array($i++)));?> <?php p(' '.$_['serverConfigurationHosts'][$prefix]); ?></option>
+				<option value="<?php p($prefix); ?>"<?php p($sel); $sel = ''; ?>><?php p($l->t('%s. Server:', array($i++)));?> <?php p(' '.$_['serverConfigurationHosts'][$prefix]); ?> <?php p($confActive); ?></option>
 				<?php
 			}
 		}

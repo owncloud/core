@@ -83,6 +83,7 @@ OCA = OCA || {};
 			this.configModel.on('newConfiguration', this.onNewConfiguration, this);
 			this.configModel.on('deleteConfiguration', this.onDeleteConfiguration, this);
 			this.configModel.on('receivedLdapFeature', this.onTestResultReceived, this);
+			this.configModel.on('setCompleted', this.onConfigurationActiveChange, this);
 			this._enableConfigChooser();
 			this._enableConfigButtons();
 		},
@@ -287,6 +288,24 @@ OCA = OCA || {};
 					}
 				}
 				OC.Notification.showTemporary(message);
+			}
+		},
+
+		onConfigurationActiveChange: function(view, result) {
+			if(result.isSuccess === true) {
+				if (result.key === 'ldap_configuration_active') {
+					var selectedOpt = view.$configChooser.find('option:selected');
+					var selectedOptText = selectedOpt.text();
+					if (parseInt(result.value) === 1) {
+						// configuration active -> remove the "(inactive)" text
+						selectedOpt.text(selectedOptText.replace(/ \(inactive\)$/, ''));
+					} else {
+						// configuration inactive -> add "(inactive)" text
+						selectedOpt.text(selectedOptText + ' (inactive)');
+					}
+				}
+			} else {
+				OC.Notification.showTemporary(result.errorMessage);
 			}
 		},
 
