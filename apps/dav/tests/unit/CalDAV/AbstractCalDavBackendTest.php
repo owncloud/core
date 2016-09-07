@@ -25,6 +25,7 @@ use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
 use OCP\IL10N;
 use OCP\IConfig;
+use OCP\Security\ISecureRandom;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Test\TestCase;
 
@@ -50,6 +51,9 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	const UNIT_TEST_USER1 = 'principals/users/caldav-unit-test1';
 	const UNIT_TEST_GROUP = 'principals/groups/caldav-unit-test-group';
 
+	/** @var ISecureRandom */
+	private $random;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -67,7 +71,8 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 
 		$db = \OC::$server->getDatabaseConnection();
 		$this->config = \OC::$server->getConfig();
-		$this->backend = new CalDavBackend($db, $this->principal, $this->config);
+		$this->random = \OC::$server->getSecureRandom();
+		$this->backend = new CalDavBackend($db, $this->principal, $this->config, $this->random);
 
 		$this->tearDown();
 	}

@@ -4,11 +4,10 @@ namespace OCA\DAV\Tests\unit\CalDAV;
 
 use OCA\DAV\CalDAV\Calendar;
 use OCP\IL10N;
-use OCP\IConfig;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\PublicCalendarRoot;
+use OCP\Security\ISecureRandom;
 use Test\TestCase;
-use Sabre\Uri;
 
 /**
  * Class PublicCalendarRootTest
@@ -35,6 +34,9 @@ class PublicCalendarRootTest extends TestCase {
 
 	private $principal;
 
+	/** @var ISecureRandom */
+	private $random;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -43,13 +45,26 @@ class PublicCalendarRootTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$this->config = \OC::$server->getConfig();
+		$this->random = \OC::$server->getSecureRandom();
 
-		$this->backend = new CalDavBackend($db, $this->principal, $this->config);
+		$this->backend = new CalDavBackend($db, $this->principal, $this->config, $this->random);
 
 		$this->publicCalendarRoot = new PublicCalendarRoot($this->backend);
 
 		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
 			->disableOriginalConstructor()->getMock();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		if (is_null($this->backend)) {
+			return;
+		}
+		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
+		foreach ($books as $book) {
+			$this->backend->deleteCalendar($book['id']);
+		}
 	}
 
 	public function testGetName() {
@@ -61,13 +76,18 @@ class PublicCalendarRootTest extends TestCase {
 
 		$calendar = $this->createPublicCalendar();
 
-		$publicCalendarURI = md5($this->config->getSystemValue('secret', '') . $calendar->getResourceId());
+		$publicCalendars = $this->backend->getPublicCalendars();
+		$this->assertEquals(1, count($publicCalendars));
+		$this->assertEquals(true, $publicCalendars[0]['{http://owncloud.org/ns}public']);
+
+		$publicCalendarURI = $publicCalendars[0]['uri'];
 
 		$calendarResult = $this->publicCalendarRoot->getChild($publicCalendarURI);
 		$this->assertEquals($calendar, $calendarResult);
 	}
 
 	public function testGetChildren() {
+		$this->createPublicCalendar();
 
 		$publicCalendars = $this->backend->getPublicCalendars();
 
@@ -75,7 +95,6 @@ class PublicCalendarRootTest extends TestCase {
 
 		$this->assertEquals(1, count($calendarResults));
 		$this->assertEquals(new Calendar($this->backend, $publicCalendars[0], $this->l10n), $calendarResults[0]);
-
 	}
 
 	/**
@@ -85,16 +104,11 @@ class PublicCalendarRootTest extends TestCase {
 		$this->backend->createCalendar(self::UNIT_TEST_USER, 'Example', []);
 
 		$calendarInfo = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER)[0];
-
-		$calendarInfo['uri'] = md5($this->config->getSystemValue('secret', '') . $calendarInfo['id']);
-		list(, $name) = Uri\split($calendarInfo['principaluri']);
-		$calendarInfo['{DAV:}displayname'] = $calendarInfo['{DAV:}displayname'] . ' (' . $name . ')';
-		$calendarInfo['{http://owncloud.org/ns}owner-principal'] = $calendarInfo['principaluri'];
-		$calendarInfo['{http://owncloud.org/ns}read-only'] = false;
-		$calendarInfo['{http://owncloud.org/ns}public'] = true;
-
 		$calendar = new Calendar($this->backend, $calendarInfo, $this->l10n);
-		$calendar->setPublishStatus(true);
+		$publicUri = $calendar->setPublishStatus(true);
+
+		$calendarInfo = $this->backend->getPublicCalendar($publicUri);
+		$calendar = new Calendar($this->backend, $calendarInfo, $this->l10n);
 
 		return $calendar;
 	}
