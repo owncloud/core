@@ -94,18 +94,17 @@ class SettingTest extends TestCase {
 			[
 				[['uid', 'username'], ['key', 'configkey']],
 				[['ignore-missing-user', true]],
-				[['--default-value', true]],
+				[['--default-value', false, true]],
 				false,
 				false,
 			],
 			[
 				[['uid', 'username'], ['key', '']],
 				[['ignore-missing-user', true]],
-				[['--default-value', true]],
+				[['--default-value', false, true]],
 				false,
 				'The "default-value" option can only be used when specifying a key.',
 			],
-
 			[
 				[['uid', 'username'], ['key', 'configkey']],
 				[['ignore-missing-user', true]],
@@ -116,28 +115,28 @@ class SettingTest extends TestCase {
 			[
 				[['uid', 'username'], ['key', '']],
 				[['ignore-missing-user', true]],
-				[['--value', true]],
+				[['--value', false, true]],
 				false,
 				'The "value" option can only be used when specifying a key.',
 			],
 			[
 				[['uid', 'username'], ['key', 'configkey']],
 				[['ignore-missing-user', true]],
-				[['--value', true], ['--default-value', true]],
+				[['--value', false, true], ['--default-value', false, true]],
 				false,
 				'The "value" option can not be used together with "default-value".',
 			],
 			[
 				[['uid', 'username'], ['key', 'configkey']],
 				[['ignore-missing-user', true], ['update-only', true]],
-				[['--value', true]],
+				[['--value', false, true]],
 				false,
 				false,
 			],
 			[
 				[['uid', 'username'], ['key', 'configkey']],
 				[['ignore-missing-user', true], ['update-only', true]],
-				[['--value', false]],
+				[['--value', false, false]],
 				false,
 				'The "update-only" option can only be used together with "value".',
 			],
@@ -159,14 +158,14 @@ class SettingTest extends TestCase {
 			[
 				[['uid', 'username'], ['key', 'configkey']],
 				[['ignore-missing-user', true], ['delete', true]],
-				[['--default-value', true]],
+				[['--default-value', false, true]],
 				false,
 				'The "delete" option can not be used together with "default-value".',
 			],
 			[
 				[['uid', 'username'], ['key', 'configkey']],
 				[['ignore-missing-user', true], ['delete', true]],
-				[['--value', true]],
+				[['--value', false, true]],
 				false,
 				'The "delete" option can not be used together with "value".',
 			],
@@ -278,8 +277,8 @@ class SettingTest extends TestCase {
 		$this->consoleInput->expects($this->atLeastOnce())
 			->method('hasParameterOption')
 			->willReturnMap([
-				['--delete', true],
-				['--error-if-not-exists', $errorIfNotExists],
+				['--delete', false, true],
+				['--error-if-not-exists', false, $errorIfNotExists],
 			]);
 
 		if ($expectedLine === null) {
@@ -343,8 +342,8 @@ class SettingTest extends TestCase {
 		$this->consoleInput->expects($this->atLeastOnce())
 			->method('hasParameterOption')
 			->willReturnMap([
-				['--value', true],
-				['--update-only', $updateOnly],
+				['--value', false, true],
+				['--update-only', false, $updateOnly],
 			]);
 
 		if ($expectedLine === null) {
@@ -414,13 +413,13 @@ class SettingTest extends TestCase {
 				$this->consoleInput->expects($this->atLeastOnce())
 					->method('hasParameterOption')
 					->willReturnMap([
-						['--default-value', false],
+						['--default-value', false, false],
 					]);
 			} else {
 				$this->consoleInput->expects($this->atLeastOnce())
 					->method('hasParameterOption')
 					->willReturnMap([
-						['--default-value', true],
+						['--default-value', false, true],
 					]);
 				$this->consoleInput->expects($this->once())
 					->method('getOption')
