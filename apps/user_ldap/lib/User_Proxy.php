@@ -7,6 +7,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Roger Szabo <roger.szabo@web.de>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -30,7 +31,7 @@ namespace OCA\User_LDAP;
 use OCA\User_LDAP\User\User;
 use OCP\IConfig;
 
-class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface {
+class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface, IUserLDAP {
 	private $backends = array();
 	private $refBackend = null;
 
@@ -192,6 +193,17 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 		$id = 'LOGINNAME,' . $loginName;
 		return $this->handleRequest($id, 'loginName2UserName', array($loginName));
 	}
+	
+	/**
+	 * returns the username for the given LDAP DN, if available
+	 *
+	 * @param string $dn
+	 * @return string|false with the name to use in ownCloud
+	 */
+	public function dn2UserName($dn) {
+		$id = 'DN,' . $dn;
+		return $this->handleRequest($id, 'dn2UserName', array($dn));
+	}
 
 	/**
 	 * get the user's home directory
@@ -272,4 +284,22 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 		return $users;
 	}
 
+	/**
+	 * Return access for LDAP interaction.
+	 * @param string $uid
+	 * @return Access instance of Access for LDAP interaction
+	 */
+	public function getLDAPAccess($uid) {
+		return $this->handleRequest($uid, 'getLDAPAccess', array($uid));
+	}
+	
+	/**
+	 * Return a new LDAP connection for the specified user.
+	 * The connection needs to be closed manually.
+	 * @param string $uid
+	 * @return resource of the LDAP connection
+	 */
+	public function getNewLDAPConnection($uid) {
+		return $this->handleRequest($uid, 'getNewLDAPConnection', array($uid));
+	}
 }
