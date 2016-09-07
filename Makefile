@@ -96,7 +96,7 @@ clean-nodejs-deps:
 #
 # ownCloud core JS dependencies
 $(core_vendor): $(BOWER) bower.json
-	$(BOWER) install
+	$(BOWER) install --allow-root
 
 .PHONY: install-js-deps
 install-js-deps: $(nodejs_deps)
