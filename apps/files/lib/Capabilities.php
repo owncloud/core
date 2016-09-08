@@ -55,6 +55,8 @@ class Capabilities implements ICapability {
 			'files' => [
 				'bigfilechunking' => true,
 				'blacklisted_files' => $this->config->getSystemValue('blacklisted_files', ['.htaccess']),
+				'upload_max_filesize' => (int)\OC::$server->getIniWrapper()->getBytes('upload_max_filesize'),
+				'post_max_size' => (int)\OC::$server->getIniWrapper()->getBytes('post_max_size'),
 			],
 		];
 	}
