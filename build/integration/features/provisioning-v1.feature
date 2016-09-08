@@ -301,21 +301,21 @@ Feature: provisioning
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
-	Scenario: enable an app
-		Given As an "admin"
-		And app "user_ldap" is disabled
-		When sending "POST" to "/cloud/apps/user_ldap"
-		Then the OCS status code should be "100"
-		And the HTTP status code should be "200"
-		And app "user_ldap" is enabled
-
-	Scenario: disable an app
-		Given As an "admin"
-		And app "user_ldap" is enabled
-		When sending "DELETE" to "/cloud/apps/user_ldap"
-		Then the OCS status code should be "100"
-		And the HTTP status code should be "200"
-		And app "user_ldap" is disabled
+#	Scenario: enable an app
+#		Given As an "admin"
+#		And app "comments" is disabled
+#		When sending "POST" to "/cloud/apps/comments"
+#		Then the OCS status code should be "100"
+#		And the HTTP status code should be "200"
+#		And app "comments" is enabled
+#
+#	Scenario: disable an app
+#		Given As an "admin"
+#		And app "comments" is enabled
+#		When sending "DELETE" to "/cloud/apps/comments"
+#		Then the OCS status code should be "100"
+#		And the HTTP status code should be "200"
+#		And app "comments" is disabled
 
 	Scenario: disable an user
 		Given As an "admin"
