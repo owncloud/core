@@ -66,8 +66,6 @@ $application->registerRoutes(
 
 $this->create('files_ajax_download', 'ajax/download.php')
 	->actionInclude('files/ajax/download.php');
-$this->create('files_ajax_getstoragestats', 'ajax/getstoragestats.php')
-	->actionInclude('files/ajax/getstoragestats.php');
 $this->create('files_ajax_list', 'ajax/list.php')
 	->actionInclude('files/ajax/list.php');
 

@@ -149,11 +149,6 @@
 			return OC.PERMISSION_READ | OC.PERMISSION_DELETE;
 		},
 
-		updateStorageStatistics: function() {
-			// no op because it doesn't have
-			// storage info like free space / used space
-		},
-
 		reload: function() {
 			this.showMask();
 			if (this._reloadCall) {

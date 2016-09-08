@@ -335,10 +335,6 @@ class ShareController extends Controller {
 			$folder->assign('permissions', \OCP\Constants::PERMISSION_READ);
 			$folder->assign('isPublic', true);
 			$folder->assign('publicUploadEnabled', 'no');
-			$folder->assign('uploadMaxFilesize', $maxUploadFilesize);
-			$folder->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
-			$folder->assign('freeSpace', $freeSpace);
-			$folder->assign('usedSpacePercent', 0);
 			$folder->assign('trash', false);
 			$shareTmpl['folder'] = $folder->fetchPage();
 		}

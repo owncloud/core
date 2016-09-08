@@ -24,6 +24,7 @@ describe('OC.Upload tests', function() {
 	var testFile;
 	var uploader;
 	var failStub;
+	var fileList;
 
 	beforeEach(function() {
 		testFile = {
@@ -35,7 +36,6 @@ describe('OC.Upload tests', function() {
 		// need a dummy button because file-upload checks on it
 		$('#testArea').append(
 			'<input type="file" id="file_upload_start" name="files[]" multiple="multiple">' +
-			'<input type="hidden" id="free_space" name="free_space" value="50000000">' + // 50 MB
 			// TODO: handlebars!
 			'<div id="new">' +
 			'<a>New</a>' +
@@ -44,12 +44,40 @@ describe('OC.Upload tests', function() {
 			'</ul>' +
 			'</div>'
 		);
-		$dummyUploader = $('#file_upload_start');
-		uploader = new OC.Uploader($dummyUploader);
+
+		$('#testArea').append(
+			'<div id="tableContainer">' +
+			'<table id="filestable">' +
+			'<thead><tr>' +
+			'<th id="headerName" class="hidden column-name">' +
+			'<input type="checkbox" id="select_all_files" class="select-all">' +
+			'<a class="name columntitle" data-sort="name"><span>Name</span><span class="sort-indicator"></span></a>' +
+			'<span id="selectedActionsList" class="selectedActions hidden">' +
+			'<a href class="download"><img src="actions/download.svg">Download</a>' +
+			'<a href class="delete-selected">Delete</a></span>' +
+			'</th>' +
+			'<th class="hidden column-size"><a class="columntitle" data-sort="size"><span class="sort-indicator"></span></a></th>' +
+			'<th class="hidden column-mtime"><a class="columntitle" data-sort="mtime"><span class="sort-indicator"></span></a></th>' +
+			'</tr></thead>' +
+			'<tbody id="fileList"></tbody>' +
+			'<tfoot></tfoot>' +
+			'</table>' +
+			'</div>'
+		);
+		fileList = new OCA.Files.FileList($('#tableContainer'));
+		fileList.dirInfo = {
+			freeSpace: 5000000 // 50 MB
+		};
+
+		$dummyUploader = $('#file_upload_start', fileList);
+		uploader = new OC.Uploader($dummyUploader, {
+			fileList: fileList
+		});
 		failStub = sinon.stub();
 		uploader.on('fail', failStub);
 	});
 	afterEach(function() {
+		fileList.destroy();
 		$dummyUploader = undefined;
 		failStub = undefined;
 	});
@@ -88,7 +116,7 @@ describe('OC.Upload tests', function() {
 		});
 		it('adds file when free space is unknown', function() {
 			var result;
-			$('#free_space').val(-2);
+			fileList.dirInfo.freeSpace = -2;
 
 			result = addFiles(uploader, [testFile]);
 
@@ -98,7 +126,7 @@ describe('OC.Upload tests', function() {
 		});
 		it('does not add file if it exceeds free space', function() {
 			var result;
-			$('#free_space').val(1000);
+			fileList.dirInfo.freeSpace = 1000;
 
 			result = addFiles(uploader, [testFile]);
 
@@ -112,30 +140,8 @@ describe('OC.Upload tests', function() {
 	});
 	describe('Upload conflicts', function() {
 		var conflictDialogStub;
-		var fileList;
 
 		beforeEach(function() {
-			$('#testArea').append(
-				'<div id="tableContainer">' +
-				'<table id="filestable">' +
-				'<thead><tr>' +
-				'<th id="headerName" class="hidden column-name">' +
-				'<input type="checkbox" id="select_all_files" class="select-all">' +
-				'<a class="name columntitle" data-sort="name"><span>Name</span><span class="sort-indicator"></span></a>' +
-				'<span id="selectedActionsList" class="selectedActions hidden">' +
-				'<a href class="download"><img src="actions/download.svg">Download</a>' +
-				'<a href class="delete-selected">Delete</a></span>' +
-				'</th>' +
-				'<th class="hidden column-size"><a class="columntitle" data-sort="size"><span class="sort-indicator"></span></a></th>' +
-				'<th class="hidden column-mtime"><a class="columntitle" data-sort="mtime"><span class="sort-indicator"></span></a></th>' +
-				'</tr></thead>' +
-				'<tbody id="fileList"></tbody>' +
-				'<tfoot></tfoot>' +
-				'</table>' +
-				'</div>'
-			);
-			fileList = new OCA.Files.FileList($('#tableContainer'));
-
 			fileList.add({name: 'conflict.txt', mimetype: 'text/plain'});
 			fileList.add({name: 'conflict2.txt', mimetype: 'text/plain'});
 
@@ -151,8 +157,6 @@ describe('OC.Upload tests', function() {
 		});
 		afterEach(function() {
 			conflictDialogStub.restore();
-
-			fileList.destroy();
 		});
 		it('does not show conflict dialog when no client side conflict', function() {
 			var result = addFiles(uploader, [{name: 'noconflict.txt'}, {name: 'noconflict2.txt'}]);

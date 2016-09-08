@@ -14,69 +14,6 @@
  */
 (function() {
 	var Files = {
-		// file space size sync
-		_updateStorageStatistics: function(currentDir) {
-			var state = Files.updateStorageStatistics;
-			if (state.dir){
-				if (state.dir === currentDir) {
-					return;
-				}
-				// cancel previous call, as it was for another dir
-				state.call.abort();
-			}
-			state.dir = currentDir;
-			state.call = $.getJSON(OC.filePath('files','ajax','getstoragestats.php') + '?dir=' + encodeURIComponent(currentDir),function(response) {
-				state.dir = null;
-				state.call = null;
-				Files.updateMaxUploadFilesize(response);
-			});
-		},
-		/**
-		 * Update storage statistics such as free space, max upload,
-		 * etc based on the given directory.
-		 *
-		 * Note this function is debounced to avoid making too
-		 * many ajax calls in a row.
-		 *
-		 * @param dir directory
-		 * @param force whether to force retrieving
-		 */
-		updateStorageStatistics: function(dir, force) {
-			if (!OC.currentUser) {
-				return;
-			}
-
-			if (force) {
-				Files._updateStorageStatistics(dir);
-			}
-			else {
-				Files._updateStorageStatisticsDebounced(dir);
-			}
-		},
-
-		updateMaxUploadFilesize:function(response) {
-			if (response === undefined) {
-				return;
-			}
-			if (response.data !== undefined && response.data.uploadMaxFilesize !== undefined) {
-				$('#free_space').val(response.data.freeSpace);
-				$('#upload.button').attr('data-original-title', response.data.maxHumanFilesize);
-				$('#usedSpacePercent').val(response.data.usedSpacePercent);
-				$('#owner').val(response.data.owner);
-				$('#ownerDisplayName').val(response.data.ownerDisplayName);
-				Files.displayStorageWarnings();
-			}
-			if (response[0] === undefined) {
-				return;
-			}
-			if (response[0].uploadMaxFilesize !== undefined) {
-				$('#upload.button').attr('data-original-title', response[0].maxHumanFilesize);
-				$('#usedSpacePercent').val(response[0].usedSpacePercent);
-				Files.displayStorageWarnings();
-			}
-
-		},
-
 		/**
 		 * Fix path name by removing double slash at the beginning, if any
 		 */
@@ -103,33 +40,6 @@
 				throw t('files', 'File name cannot be empty.');
 			}
 			return true;
-		},
-		displayStorageWarnings: function() {
-			if (!OC.Notification.isHidden()) {
-				return;
-			}
-
-			var usedSpacePercent = $('#usedSpacePercent').val(),
-				owner = $('#owner').val(),
-				ownerDisplayName = $('#ownerDisplayName').val();
-			if (usedSpacePercent > 98) {
-				if (owner !== oc_current_user) {
-					OC.Notification.showTemporary(t('files', 'Storage of {owner} is full, files can not be updated or synced anymore!',
-						{ owner: ownerDisplayName }));
-					return;
-				}
-				OC.Notification.show(t('files', 'Your storage is full, files can not be updated or synced anymore!'));
-				return;
-			}
-			if (usedSpacePercent > 90) {
-				if (owner !== oc_current_user) {
-					OC.Notification.showTemporary(t('files', 'Storage of {owner} is almost full ({usedSpacePercent}%)',
-						{ usedSpacePercent: usedSpacePercent,  owner: ownerDisplayName }));
-					return;
-				}
-				OC.Notification.show(t('files', 'Your storage is almost full ({usedSpacePercent}%)',
-					{usedSpacePercent: usedSpacePercent}));
-			}
 		},
 
 		/**
@@ -229,34 +139,6 @@
 			$(document).bind('drop dragover', function (e) {
 					e.preventDefault(); // prevent browser from doing anything, if file isn't dropped in dropZone
 				});
-
-			// display storage warnings
-			setTimeout(Files.displayStorageWarnings, 100);
-
-			// only possible at the moment if user is logged in or the files app is loaded
-			if (OC.currentUser && OCA.Files.App) {
-				// start on load - we ask the server every 5 minutes
-				var func = _.bind(OCA.Files.App.fileList.updateStorageStatistics, OCA.Files.App.fileList);
-				var updateStorageStatisticsInterval = 5*60*1000;
-				var updateStorageStatisticsIntervalId = setInterval(func, updateStorageStatisticsInterval);
-
-				// TODO: this should also stop when switching to another view
-				// Use jquery-visibility to de-/re-activate file stats sync
-				if ($.support.pageVisibility) {
-					$(document).on({
-						'show': function() {
-							if (!updateStorageStatisticsIntervalId) {
-								updateStorageStatisticsIntervalId = setInterval(func, updateStorageStatisticsInterval);
-							}
-						},
-						'hide': function() {
-							clearInterval(updateStorageStatisticsIntervalId);
-							updateStorageStatisticsIntervalId = 0;
-						}
-					});
-				}
-			}
-
 
 			$('#webdavurl').on('click touchstart', function () {
 				this.focus();

@@ -95,7 +95,11 @@
 		/**
 		 * File sizes
 		 */
-		[Client.NS_DAV, 'getcontentlength']
+		[Client.NS_DAV, 'getcontentlength'],
+		/**
+		 * Available space
+		 */
+		[Client.NS_DAV, 'quota-available-bytes']
 	];
 
 	/**
@@ -267,6 +271,11 @@
 			var sizeProp = props['{' + Client.NS_DAV + '}getcontentlength'];
 			if (!_.isUndefined(sizeProp)) {
 				data.size = parseInt(sizeProp, 10);
+			}
+
+			var freeSpaceProp = props['{' + Client.NS_DAV + '}quota-available-bytes'];
+			if (!_.isUndefined(freeSpaceProp)) {
+				data.freeSpace = parseInt(freeSpaceProp, 10);
 			}
 
 			sizeProp = props['{' + Client.NS_OWNCLOUD + '}size'];

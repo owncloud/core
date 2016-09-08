@@ -254,9 +254,6 @@ class ViewControllerTest extends TestCase {
 			'files',
 			'index',
 			[
-				'usedSpacePercent' => 123,
-				'owner' => 'MyName',
-				'ownerDisplayName' => 'MyDisplayName',
 				'isPublic' => false,
 				'defaultFileSorting' => 'name',
 				'defaultFileSortingDirection' => 'asc',
