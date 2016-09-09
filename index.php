@@ -48,11 +48,20 @@ try {
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 	OC_Template::printErrorPage($ex->getMessage(), $ex->getHint());
 } catch (Exception $ex) {
-	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
+	try {
+		\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 
-	//show the user a detailed error page
-	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
-	OC_Template::printExceptionErrorPage($ex);
+		//show the user a detailed error page
+		OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+		OC_Template::printExceptionErrorPage($ex);
+	} catch (\Exception $ex2) {
+		// with some env issues, it can happen that the logger couldn't log properly,
+		// so print out the exception directly
+		echo('<html><body>');
+		echo('Exception occurred while logging exception: ' . $ex->getMessage() . '<br/>');
+		echo(str_replace("\n", '<br/>', $ex->getTraceAsString()));
+		echo('</body></html>');
+	}
 } catch (Error $ex) {
 	\OC::$server->getLogger()->logException($ex, ['app' => 'index']);
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
