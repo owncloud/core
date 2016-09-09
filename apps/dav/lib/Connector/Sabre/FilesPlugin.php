@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
+ * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -9,7 +10,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,7 +30,6 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\Files\View;
-use OCA\DAV\Upload\FutureFile;
 use OCP\Files\ForbiddenException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -157,8 +157,6 @@ class FilesPlugin extends ServerPlugin {
 		$this->server = $server;
 		$this->server->on('propFind', array($this, 'handleGetProperties'));
 		$this->server->on('propPatch', array($this, 'handleUpdateProperties'));
-		// RFC5995 to add file to the collection with a suggested name
-		$this->server->on('method:POST', [$this, 'httpPost']);
 		$this->server->on('afterBind', array($this, 'sendFileIdHeader'));
 		$this->server->on('afterWriteContent', array($this, 'sendFileIdHeader'));
 		$this->server->on('afterMethod:GET', [$this,'httpGet']);
@@ -415,54 +413,6 @@ class FilesPlugin extends ServerPlugin {
 			if (!is_null($fileId)) {
 				$this->server->httpResponse->setHeader('OC-FileId', $fileId);
 			}
-		}
-	}
-
-	/**
-	 * POST operation on directories to create a new file
-	 * with suggested name
-	 *
-	 * @param RequestInterface $request request object
-	 * @param ResponseInterface $response response object
-	 * @return null|false
-	 */
-	public function httpPost(RequestInterface $request, ResponseInterface $response) {
-		// TODO: move this to another plugin ?
-		if (!\OC::$CLI && !\OC::$server->getRequest()->passesCSRFCheck()) {
-			throw new BadRequest('Invalid CSRF token');
-		}
-
-		list($parentPath, $name) = \Sabre\HTTP\URLUtil::splitPath($request->getPath());
-
-		// Making sure the parent node exists and is a directory
-		$node = $this->tree->getNodeForPath($parentPath);
-
-		if ($node instanceof Directory) {
-			// no Add-Member found
-			if (empty($name) || $name[0] !== '&') {
-				// suggested name required
-				throw new BadRequest('Missing suggested file name');
-			}
-
-			$name = substr($name, 1);
-
-			if (empty($name)) {
-				// suggested name required
-				throw new BadRequest('Missing suggested file name');
-			}
-
-			// make sure the name is unique
-			$name = basename(\OC_Helper::buildNotExistingFileNameForView($parentPath, $name, $this->fileView));
-
-			$node->createFile($name, $request->getBodyAsStream());
-
-			list($parentUrl, ) = \Sabre\HTTP\URLUtil::splitPath($request->getUrl());
-
-			$response->setHeader('Content-Location', $parentUrl . '/' . rawurlencode($name));
-
-			// created
-			$response->setStatus(201);
-			return false;
 		}
 	}
 }
