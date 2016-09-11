@@ -29,6 +29,7 @@ namespace OCA\DAV\Tests\unit\CardDAV;
 use OCA\DAV\CardDAV\AddressBook;
 use OCA\DAV\CardDAV\AddressBookImpl;
 use OCA\DAV\CardDAV\CardDavBackend;
+use OCP\IURLGenerator;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Property\Text;
 use Test\TestCase;
@@ -44,7 +45,7 @@ class AddressBookImplTest extends TestCase {
 	/** @var  AddressBook | \PHPUnit_Framework_MockObject_MockObject */
 	private $addressBook;
 
-	/** @var \OCP\IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
 	private $urlGenerator;
 
 	/** @var  CardDavBackend | \PHPUnit_Framework_MockObject_MockObject */
@@ -60,12 +61,12 @@ class AddressBookImplTest extends TestCase {
 			'id' => 42,
 			'{DAV:}displayname' => 'display name'
 		];
-		$this->addressBook = $this->getMockBuilder('OCA\DAV\CardDAV\AddressBook')
+		$this->addressBook = $this->getMockBuilder(AddressBook::class)
 			->disableOriginalConstructor()->getMock();
-		$this->backend = $this->getMockBuilder('\OCA\DAV\CardDAV\CardDavBackend')
+		$this->backend = $this->getMockBuilder(CardDavBackend::class)
 			->disableOriginalConstructor()->getMock();
-		$this->vCard = $this->createMock('Sabre\VObject\Component\VCard');
-		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
+		$this->vCard = $this->createMock(VCard::class);
+		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 
 		$this->addressBookImpl = new AddressBookImpl(
 			$this->addressBook,
@@ -88,7 +89,7 @@ class AddressBookImplTest extends TestCase {
 	public function testSearch() {
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | AddressBookImpl $addressBookImpl */
-		$addressBookImpl = $this->getMockBuilder('OCA\DAV\CardDAV\AddressBookImpl')
+		$addressBookImpl = $this->getMockBuilder(AddressBookImpl::class)
 			->setConstructorArgs(
 				[
 					$this->addressBook,
@@ -135,7 +136,7 @@ class AddressBookImplTest extends TestCase {
 		$uid = 'uid';
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | AddressBookImpl $addressBookImpl */
-		$addressBookImpl = $this->getMockBuilder('OCA\DAV\CardDAV\AddressBookImpl')
+		$addressBookImpl = $this->getMockBuilder(AddressBookImpl::class)
 			->setConstructorArgs(
 				[
 					$this->addressBook,
@@ -176,7 +177,7 @@ class AddressBookImplTest extends TestCase {
 		$properties = ['URI' => $uri, 'UID' => $uid, 'FN' => 'John Doe'];
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | AddressBookImpl $addressBookImpl */
-		$addressBookImpl = $this->getMockBuilder('OCA\DAV\CardDAV\AddressBookImpl')
+		$addressBookImpl = $this->getMockBuilder(AddressBookImpl::class)
 			->setConstructorArgs(
 				[
 					$this->addressBook,
@@ -259,7 +260,7 @@ class AddressBookImplTest extends TestCase {
 
 	public function testCreateUid() {
 		/** @var \PHPUnit_Framework_MockObject_MockObject | AddressBookImpl $addressBookImpl */
-		$addressBookImpl = $this->getMockBuilder('OCA\DAV\CardDAV\AddressBookImpl')
+		$addressBookImpl = $this->getMockBuilder(AddressBookImpl::class)
 			->setConstructorArgs(
 				[
 					$this->addressBook,
@@ -291,7 +292,7 @@ class AddressBookImplTest extends TestCase {
 	public function testCreateEmptyVCard() {
 		$uid = 'uid';
 		$expectedVCard = new VCard();
-		$expectedVCard->add(new Text($expectedVCard, 'UID', $uid));
+		$expectedVCard->UID = $uid;
 		$expectedVCardSerialized = $expectedVCard->serialize();
 
 		$result = $this->invokePrivate($this->addressBookImpl, 'createEmptyVCard', [$uid]);
