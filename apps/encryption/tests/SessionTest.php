@@ -174,7 +174,7 @@ class SessionTest extends TestCase {
 	 */
 	protected function setUp() {
 		parent::setUp();
-		$this->sessionMock = $this->getMock('OCP\ISession');
+		$this->sessionMock = $this->createMock('OCP\ISession');
 
 		$this->sessionMock->expects($this->any())
 			->method('set')

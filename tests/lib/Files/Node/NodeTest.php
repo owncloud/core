@@ -19,7 +19,7 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	protected function getMockStorage() {
-		$storage = $this->getMock('\OCP\Files\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage');
 		$storage->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('home::someuser'));
@@ -31,12 +31,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testStat() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -59,12 +59,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetId() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -86,12 +86,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetSize() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -114,12 +114,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetEtag() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -141,12 +141,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetMTime() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -168,19 +168,19 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetStorage() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		/**
 		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
 		 */
-		$storage = $this->getMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OC\Files\Storage\Storage');
 
 		$view->expects($this->once())
 			->method('resolvePath')
@@ -193,12 +193,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetPath() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -208,19 +208,19 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetInternalPath() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		/**
 		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
 		 */
-		$storage = $this->getMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OC\Files\Storage\Storage');
 
 		$view->expects($this->once())
 			->method('resolvePath')
@@ -233,12 +233,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testGetName() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -248,12 +248,12 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	public function testTouchSetMTime() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -297,11 +297,11 @@ class NodeTest extends \Test\TestCase {
 		/**
 		 * @var \OC\Files\Mount\Manager $manager
 		 */
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
+		$view = $this->createMock('\OC\Files\View');
 		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 		$root->listen('\OC\Files', 'preTouch', $preListener);
 		$root->listen('\OC\Files', 'postTouch', $postListener);
@@ -330,12 +330,12 @@ class NodeTest extends \Test\TestCase {
 	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testTouchNotPermitted() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -353,12 +353,12 @@ class NodeTest extends \Test\TestCase {
 	 * @expectedException \OCP\Files\InvalidPathException
 	 */
 	public function testInvalidPath() {
-		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
-		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
 
 		$node = new \OC\Files\Node\Node($root, $view, '/../foo');
 		$node->getFileInfo();

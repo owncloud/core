@@ -45,13 +45,13 @@ class AuthSettingsControllerTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->request = $this->getMock('\OCP\IRequest');
-		$this->tokenProvider = $this->getMock('\OC\Authentication\Token\IProvider');
-		$this->userManager = $this->getMock('\OCP\IUserManager');
-		$this->session = $this->getMock('\OCP\ISession');
-		$this->secureRandom = $this->getMock('\OCP\Security\ISecureRandom');
+		$this->request = $this->createMock('\OCP\IRequest');
+		$this->tokenProvider = $this->createMock('\OC\Authentication\Token\IProvider');
+		$this->userManager = $this->createMock('\OCP\IUserManager');
+		$this->session = $this->createMock('\OCP\ISession');
+		$this->secureRandom = $this->createMock('\OCP\Security\ISecureRandom');
 		$this->uid = 'jane';
-		$this->user = $this->getMock('\OCP\IUser');
+		$this->user = $this->createMock('\OCP\IUser');
 
 		$this->controller = new AuthSettingsController('core', $this->request, $this->tokenProvider, $this->userManager, $this->session, $this->secureRandom, $this->uid);
 	}
@@ -104,8 +104,8 @@ class AuthSettingsControllerTest extends TestCase {
 
 	public function testCreate() {
 		$name = 'Nexus 4';
-		$sessionToken = $this->getMock('\OC\Authentication\Token\IToken');
-		$deviceToken = $this->getMock('\OC\Authentication\Token\IToken');
+		$sessionToken = $this->createMock('\OC\Authentication\Token\IToken');
+		$deviceToken = $this->createMock('\OC\Authentication\Token\IToken');
 		$password = '123456';
 
 		$this->session->expects($this->once())
@@ -174,7 +174,7 @@ class AuthSettingsControllerTest extends TestCase {
 
 	public function testDestroy() {
 		$id = 123;
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 
 		$this->userManager->expects($this->once())
 			->method('get')

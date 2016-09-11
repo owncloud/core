@@ -63,11 +63,11 @@ class ApiControllerTest extends TestCase {
 		$this->request = $this->getMockBuilder('\OCP\IRequest')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->user = $this->getMock('\OCP\IUser');
+		$this->user = $this->createMock('\OCP\IUser');
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user1'));
-		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -80,7 +80,7 @@ class ApiControllerTest extends TestCase {
 		$this->preview = $this->getMockBuilder('\OCP\IPreview')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->getMock('\OCP\IConfig');
+		$this->config = $this->createMock('\OCP\IConfig');
 
 		$this->apiController = new ApiController(
 			$this->appName,

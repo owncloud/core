@@ -108,7 +108,7 @@ class EncryptionTest extends Storage {
 			->method('getEncryptionModule')
 			->willReturn($mockModule);
 
-		$this->arrayCache = $this->getMock('OC\Memcache\ArrayCache');
+		$this->arrayCache = $this->createMock('OC\Memcache\ArrayCache');
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()
 			->getMock();
@@ -116,10 +116,10 @@ class EncryptionTest extends Storage {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->util = $this->getMock(
-			'\OC\Encryption\Util',
-			['getUidAndFilename', 'isFile', 'isExcluded'],
-			[new View(), new Manager(), $this->groupManager, $this->config, $this->arrayCache]);
+		$this->util = $this->getMockBuilder('\OC\Encryption\Util')
+			->setMethods(['getUidAndFilename', 'isFile', 'isExcluded'])
+			->setConstructorArgs([new View(), new Manager(), $this->groupManager, $this->config, $this->arrayCache])
+			->getMock();
 		$this->util->expects($this->any())
 			->method('getUidAndFilename')
 			->willReturnCallback(function ($path) {
@@ -132,7 +132,7 @@ class EncryptionTest extends Storage {
 			->getMock();
 		$this->file->expects($this->any())->method('getAccessList')->willReturn([]);
 
-		$this->logger = $this->getMock('\OC\Log');
+		$this->logger = $this->createMock('\OC\Log');
 
 		$this->sourceStorage = new Temporary(array());
 
@@ -713,7 +713,7 @@ class EncryptionTest extends Storage {
 				$temp = \OC::$server->getTempManager();
 				return fopen($temp->getTemporaryFile(), $mode);
 			});
-		$cache = $this->getMock('\OCP\Files\Cache\ICache');
+		$cache = $this->createMock('\OCP\Files\Cache\ICache');
 		$cache->expects($this->once())
 			->method('get')
 			->with($sourceInternalPath)
@@ -763,7 +763,7 @@ class EncryptionTest extends Storage {
 				return fopen($temp->getTemporaryFile(), $mode);
 			});
 		if($expectedEncrypted) {
-			$cache = $this->getMock('\OCP\Files\Cache\ICache');
+			$cache = $this->createMock('\OCP\Files\Cache\ICache');
 			$cache->expects($this->once())
 				->method('get')
 				->with($sourceInternalPath)

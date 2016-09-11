@@ -81,7 +81,7 @@ class ApiTest extends TestCase {
 	 * @return \OCP\IRequest
 	 */
 	private function createRequest(array $data) {
-		$request = $this->getMock('\OCP\IRequest');
+		$request = $this->createMock('\OCP\IRequest');
 		$request->method('getParam')
 			->will($this->returnCallback(function($param, $default = null) use ($data) {
 				if (isset($data[$param])) {
@@ -100,7 +100,7 @@ class ApiTest extends TestCase {
 	private function createOCS($request, $userId) {
 		$currentUser = \OC::$server->getUserManager()->get($userId);
 
-		$l = $this->getMock('\OCP\IL10N');
+		$l = $this->createMock('\OCP\IL10N');
 		$l->method('t')
 			->will($this->returnCallback(function($text, $parameters = []) {
 				return vsprintf($text, $parameters);

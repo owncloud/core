@@ -93,7 +93,7 @@ abstract class StoragesServiceTest extends \Test\TestCase {
 		);
 		\OC_Mount_Config::$skipTest = true;
 
-		$this->mountCache = $this->getMock('OCP\Files\Config\IUserMountCache');
+		$this->mountCache = $this->createMock('OCP\Files\Config\IUserMountCache');
 
 		// prepare BackendService mock
 		$this->backendService =
@@ -149,7 +149,7 @@ abstract class StoragesServiceTest extends \Test\TestCase {
 			Filesystem::signal_delete_mount,
 			get_class($this), 'deleteHookCallback');
 
-		$containerMock = $this->getMock('\OCP\AppFramework\IAppContainer');
+		$containerMock = $this->createMock('\OCP\AppFramework\IAppContainer');
 		$containerMock->method('query')
 			->will($this->returnCallback(function ($name) {
 				if ($name === 'OCA\Files_External\Service\BackendService') {

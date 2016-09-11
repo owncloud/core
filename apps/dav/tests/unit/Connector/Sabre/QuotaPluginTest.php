@@ -212,7 +212,7 @@ class QuotaPluginTest extends \Test\TestCase {
 
 	private function buildFileViewMock($quota, $checkedPath) {
 		// mock filesysten
-		$view = $this->getMock('\OC\Files\View', array('free_space'), array(), '', false);
+		$view = $this->createMock('\OC\Files\View', array('free_space'), array(), '', false);
 		$view->expects($this->any())
 			->method('free_space')
 			->with($this->identicalTo($checkedPath))

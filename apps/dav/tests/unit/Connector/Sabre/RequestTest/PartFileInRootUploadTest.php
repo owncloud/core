@@ -32,7 +32,7 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre\RequestTest;
 class PartFileInRootUploadTest extends UploadTest {
 	protected function setUp() {
 		$config = \OC::$server->getConfig();
-		$mockConfig = $this->getMock('\OCP\IConfig');
+		$mockConfig = $this->createMock('\OCP\IConfig');
 		$mockConfig->expects($this->any())
 			->method('getSystemValue')
 			->will($this->returnCallback(function ($key, $default) use ($config) {

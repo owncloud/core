@@ -42,8 +42,8 @@ class ManageTest extends TestCase {
 		$config = $this->config = $this->getMockBuilder('OCP\IConfig')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
 		$this->command = new Manage($config);
 	}

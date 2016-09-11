@@ -78,7 +78,7 @@ class VersioningTest extends \Test\TestCase {
 		parent::setUp();
 
 		$config = \OC::$server->getConfig();
-		$mockConfig = $this->getMock('\OCP\IConfig');
+		$mockConfig = $this->createMock('\OCP\IConfig');
 		$mockConfig->expects($this->any())
 			->method('getSystemValue')
 			->will($this->returnCallback(function ($key, $default) use ($config) {

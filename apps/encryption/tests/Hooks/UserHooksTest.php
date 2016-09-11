@@ -140,7 +140,7 @@ class UserHooksTest extends TestCase {
 			->setMethods(['setPassphrase'])
 			->getMock();
 
-		$userMock = $this->getMock('OCP\IUser');
+		$userMock = $this->createMock('OCP\IUser');
 
 		$this->userManagerMock->expects($this->once())
 			->method('get')
@@ -299,7 +299,7 @@ class UserHooksTest extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->loggerMock = $this->getMock('OCP\ILogger');
+		$this->loggerMock = $this->createMock('OCP\ILogger');
 		$this->keyManagerMock = $this->getMockBuilder('OCA\Encryption\KeyManager')
 			->disableOriginalConstructor()
 			->getMock();

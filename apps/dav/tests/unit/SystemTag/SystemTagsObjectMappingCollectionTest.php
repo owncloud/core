@@ -46,10 +46,10 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->tagManager = $this->getMock('\OCP\SystemTag\ISystemTagManager');
-		$this->tagMapper = $this->getMock('\OCP\SystemTag\ISystemTagObjectMapper');
+		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
+		$this->tagMapper = $this->createMock('\OCP\SystemTag\ISystemTagObjectMapper');
 
-		$this->user = $this->getMock('\OCP\IUser');
+		$this->user = $this->createMock('\OCP\IUser');
 	}
 
 	public function getNode() {

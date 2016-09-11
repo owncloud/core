@@ -44,7 +44,7 @@ class SetupTest extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$logMock = $this->getMock('OCP\ILogger');
+		$logMock = $this->createMock('OCP\ILogger');
 		$userSessionMock = $this->getMockBuilder('OCP\IUserSession')
 			->disableOriginalConstructor()
 			->getMock();

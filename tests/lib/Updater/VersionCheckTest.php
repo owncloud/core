@@ -25,8 +25,9 @@ namespace Test\Updater;
 use OC\Updater\VersionCheck;
 use OCP\IConfig;
 use OCP\Util;
+use Test\TestCase;
 
-class VersionCheckTest extends \Test\TestCase {
+class VersionCheckTest extends TestCase {
 	/** @var IConfig| \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
 	/** @var VersionCheck | \PHPUnit_Framework_MockObject_MockObject*/
@@ -41,8 +42,10 @@ class VersionCheckTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->updater = $this->getMock('\OC\Updater\VersionCheck',
-			['getUrlContent'], [$clientService, $this->config]);
+		$this->updater = $this->getMockBuilder('\OC\Updater\VersionCheck')
+			->setMethods(['getUrlContent'])
+			->setConstructorArgs([$clientService, $this->config])
+			->getMock();
 	}
 
 	/**

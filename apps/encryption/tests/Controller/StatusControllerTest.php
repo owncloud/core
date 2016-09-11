@@ -48,7 +48,7 @@ class StatusControllerTest extends TestCase {
 
 		$this->sessionMock = $this->getMockBuilder('OCA\Encryption\Session')
 			->disableOriginalConstructor()->getMock();
-		$this->requestMock = $this->getMock('OCP\IRequest');
+		$this->requestMock = $this->createMock('OCP\IRequest');
 
 		$this->l10nMock = $this->getMockBuilder('OCP\IL10N')
 			->disableOriginalConstructor()->getMock();

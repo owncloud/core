@@ -52,7 +52,7 @@ class DbHandlerTest extends TestCase {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$this->il10n = $this->getMock('OCP\IL10N');
+		$this->il10n = $this->createMock('OCP\IL10N');
 
 		$this->dbHandler = new DbHandler(
 			$this->connection,

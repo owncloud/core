@@ -57,8 +57,6 @@ use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\NotFoundException;
 use OCP\Files\ReservedWordException;
-use OCP\Files\UnseekableException;
-use OCP\Files\Storage\ILockingStorage;
 use OCP\IUser;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
@@ -1960,9 +1958,9 @@ class View {
 						$this->lockingProvider
 					);
 				}
-			} catch (\OCP\Lock\LockedException $e) {
+			} catch (LockedException $e) {
 				// rethrow with the a human-readable path
-				throw new \OCP\Lock\LockedException(
+				throw new LockedException(
 					$this->getPathRelativeToFiles($absolutePath),
 					$e
 				);

@@ -27,7 +27,7 @@ class RepairSharePropagationTest extends \Test\TestCase {
 	 */
 	public function testRemovePropagationEntries(array $startKeys, array $expectedRemovedKeys) {
 		/** @var \PHPUnit_Framework_MockObject_MockObject|\OCP\IConfig $config */
-		$config = $this->getMock('\OCP\IConfig');
+		$config = $this->createMock('\OCP\IConfig');
 		$config->expects($this->once())
 			->method('getAppKeys')
 			->with('files_sharing')

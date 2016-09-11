@@ -7,13 +7,15 @@
  */
 
 namespace Test;
+use OC\Files\Filesystem;
+use OC\Files\Storage\Temporary;
 
 /**
  * Test the storage functions of OC_Helper
  *
  * @group DB
  */
-class HelperStorageTest extends \Test\TestCase {
+class HelperStorageTest extends TestCase {
 	/** @var string */
 	private $user;
 	/** @var \OC\Files\Storage\Storage */
@@ -27,11 +29,11 @@ class HelperStorageTest extends \Test\TestCase {
 		$this->user = $this->getUniqueID('user_');
 		\OC::$server->getUserManager()->createUser($this->user, $this->user);
 
-		$this->storage = \OC\Files\Filesystem::getStorage('/');
-		\OC\Files\Filesystem::tearDown();
+		$this->storage = Filesystem::getStorage('/');
+		Filesystem::tearDown();
 		\OC_User::setUserId($this->user);
-		\OC\Files\Filesystem::init($this->user, '/' . $this->user . '/files');
-		\OC\Files\Filesystem::clearMounts();
+		Filesystem::init($this->user, '/' . $this->user . '/files');
+		Filesystem::clearMounts();
 
 		$this->storageMock = null;
 	}
@@ -43,8 +45,8 @@ class HelperStorageTest extends \Test\TestCase {
 			$this->storageMock->getCache()->clear();
 			$this->storageMock = null;
 		}
-		\OC\Files\Filesystem::tearDown();
-		\OC\Files\Filesystem::mount($this->storage, array(), '/');
+		Filesystem::tearDown();
+		Filesystem::mount($this->storage, array(), '/');
 
 		\OC_User::setUserId('');
 		$user = \OC::$server->getUserManager()->get($this->user);
@@ -62,12 +64,10 @@ class HelperStorageTest extends \Test\TestCase {
 	 * @return \OC\Files\Storage\Storage
 	 */
 	private function getStorageMock($freeSpace = 12) {
-		$this->storageMock = $this->getMock(
-			'\OC\Files\Storage\Temporary',
-			array('free_space'),
-			array('')
-		);
-
+		$this->storageMock = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+			->setMethods(['free_space'])
+			->setConstructorArgs([''])
+			->getMock();
 
 		$this->storageMock->expects($this->once())
 			->method('free_space')
@@ -80,7 +80,7 @@ class HelperStorageTest extends \Test\TestCase {
 	 */
 	function testGetStorageInfo() {
 		$homeStorage = $this->getStorageMock(12);
-		\OC\Files\Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
+		Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
 		$homeStorage->file_put_contents('test.txt', '01234');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
@@ -94,14 +94,14 @@ class HelperStorageTest extends \Test\TestCase {
 	 */
 	function testGetStorageInfoExcludingExtStorage() {
 		$homeStorage = $this->getStorageMock(12);
-		\OC\Files\Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
+		Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
 		$homeStorage->file_put_contents('test.txt', '01234');
 
-		$extStorage = new \OC\Files\Storage\Temporary(array());
+		$extStorage = new Temporary(array());
 		$extStorage->file_put_contents('extfile.txt', 'abcdefghijklmnopq');
 		$extStorage->getScanner()->scan(''); // update root size
 
-		\OC\Files\Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
+		Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
 		$this->assertEquals(12, $storageInfo['free']);
@@ -113,15 +113,15 @@ class HelperStorageTest extends \Test\TestCase {
 	 * Test getting the storage info, including extra mount points
 	 */
 	function testGetStorageInfoIncludingExtStorage() {
-		$homeStorage = new \OC\Files\Storage\Temporary(array());
-		\OC\Files\Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
+		$homeStorage = new Temporary(array());
+		Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
 		$homeStorage->file_put_contents('test.txt', '01234');
 
-		$extStorage = new \OC\Files\Storage\Temporary(array());
+		$extStorage = new Temporary(array());
 		$extStorage->file_put_contents('extfile.txt', 'abcdefghijklmnopq');
 		$extStorage->getScanner()->scan(''); // update root size
 
-		\OC\Files\Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
+		Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
 
 		$config = \OC::$server->getConfig();
 		$oldConfig = $config->getSystemValue('quota_include_external_storage', false);
@@ -145,14 +145,14 @@ class HelperStorageTest extends \Test\TestCase {
 	 */
 	function testGetStorageInfoIncludingExtStorageWithNoUserQuota() {
 		$homeStorage = $this->getStorageMock(12);
-		\OC\Files\Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
+		Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
 		$homeStorage->file_put_contents('test.txt', '01234');
 
-		$extStorage = new \OC\Files\Storage\Temporary(array());
+		$extStorage = new Temporary(array());
 		$extStorage->file_put_contents('extfile.txt', 'abcdefghijklmnopq');
 		$extStorage->getScanner()->scan(''); // update root size
 
-		\OC\Files\Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
+		Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
 
 		$config = \OC::$server->getConfig();
 		$oldConfig = $config->getSystemValue('quota_include_external_storage', false);
@@ -179,7 +179,7 @@ class HelperStorageTest extends \Test\TestCase {
 				'quota' => 7
 			)
 		);
-		\OC\Files\Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
+		Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
 		$this->assertEquals(2, $storageInfo['free']);
@@ -199,7 +199,7 @@ class HelperStorageTest extends \Test\TestCase {
 				'quota' => 7
 			)
 		);
-		\OC\Files\Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
+		Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
 		$this->assertEquals(0, $storageInfo['free']);
@@ -221,7 +221,7 @@ class HelperStorageTest extends \Test\TestCase {
 				'quota' => 18
 			)
 		);
-		\OC\Files\Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
+		Filesystem::mount($homeStorage, array(), '/' . $this->user . '/files');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
 		$this->assertEquals(12, $storageInfo['free']);

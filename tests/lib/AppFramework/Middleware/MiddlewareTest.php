@@ -53,20 +53,20 @@ class MiddlewareTest extends \Test\TestCase {
 				->disableOriginalConstructor()
 				->getMock();
 
-		$this->controller = $this->getMock(
+		$this->controller = $this->createMock(
 			'OCP\AppFramework\Controller',
 			[],
 			[
 				$this->api,
 				new Request(
 					[],
-					$this->getMock('\OCP\Security\ISecureRandom'),
-					$this->getMock('\OCP\IConfig')
+					$this->createMock('\OCP\Security\ISecureRandom'),
+					$this->createMock('\OCP\IConfig')
 				)
 			]
 		);
 		$this->exception = new \Exception();
-		$this->response = $this->getMock('OCP\AppFramework\Http\Response');
+		$this->response = $this->createMock('OCP\AppFramework\Http\Response');
 	}
 
 

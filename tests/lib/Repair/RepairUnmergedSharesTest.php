@@ -69,8 +69,8 @@ class RepairUnmergedSharesTest extends TestCase {
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->deleteAllShares();
 
-		$this->userManager = $this->getMock('\OCP\IUserManager');
-		$this->groupManager = $this->getMock('\OCP\IGroupManager');
+		$this->userManager = $this->createMock('\OCP\IUserManager');
+		$this->groupManager = $this->createMock('\OCP\IGroupManager');
 
 		// used to generate incremental stimes
 		$this->lastShareTime = time();
@@ -487,12 +487,12 @@ class RepairUnmergedSharesTest extends TestCase {
 	 * @dataProvider sharesDataProvider
 	 */
 	public function testMergeGroupShares($shares, $expectedShares) {
-		$user1 = $this->getMock('\OCP\IUser');
+		$user1 = $this->createMock('\OCP\IUser');
 		$user1->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user1'));
 
-		$user2 = $this->getMock('\OCP\IUser');
+		$user2 = $this->createMock('\OCP\IUser');
 		$user2->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user2'));

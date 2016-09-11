@@ -68,19 +68,19 @@ class KeyManagerTest extends TestCase {
 		parent::setUp();
 		$this->userId = 'user1';
 		$this->systemKeyId = 'systemKeyId';
-		$this->keyStorageMock = $this->getMock('OCP\Encryption\Keys\IStorage');
+		$this->keyStorageMock = $this->createMock('OCP\Encryption\Keys\IStorage');
 		$this->cryptMock = $this->getMockBuilder('OCA\Encryption\Crypto\Crypt')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->configMock = $this->getMock('OCP\IConfig');
+		$this->configMock = $this->createMock('OCP\IConfig');
 		$this->configMock->expects($this->any())
 			->method('getAppValue')
 			->willReturn($this->systemKeyId);
-		$this->userMock = $this->getMock('OCP\IUserSession');
+		$this->userMock = $this->createMock('OCP\IUserSession');
 		$this->sessionMock = $this->getMockBuilder('OCA\Encryption\Session')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->logMock = $this->getMock('OCP\ILogger');
+		$this->logMock = $this->createMock('OCP\ILogger');
 		$this->utilMock = $this->getMockBuilder('OCA\Encryption\Util')
 			->disableOriginalConstructor()
 			->getMock();

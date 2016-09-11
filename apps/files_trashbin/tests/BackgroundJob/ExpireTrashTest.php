@@ -27,11 +27,11 @@ use \OCA\Files_Trashbin\BackgroundJob\ExpireTrash;
 class ExpireTrashTest extends \Test\TestCase {
 	public function testConstructAndRun() {
 		$backgroundJob = new ExpireTrash(
-			$this->getMock('OCP\IUserManager'),
+			$this->createMock('OCP\IUserManager'),
 			$this->getMockBuilder('OCA\Files_Trashbin\Expiration')->disableOriginalConstructor()->getMock()
 		);
 
-		$jobList = $this->getMock('\OCP\BackgroundJob\IJobList');
+		$jobList = $this->createMock('\OCP\BackgroundJob\IJobList');
 
 		/** @var \OC\BackgroundJob\JobList $jobList */
 		$backgroundJob->execute($jobList);

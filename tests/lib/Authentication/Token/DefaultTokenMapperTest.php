@@ -150,7 +150,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testGetTokenByUser() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('user1'));
@@ -159,7 +159,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testGetTokenByUserNotFound() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('user1000'));
@@ -168,7 +168,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testDeleteById() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('id')
 			->from('authtoken')
@@ -184,7 +184,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testDeleteByIdWrongUser() {
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$id = 33;
 		$user->expects($this->once())
 			->method('getUID')

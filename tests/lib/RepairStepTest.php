@@ -87,7 +87,7 @@ class RepairTest extends TestCase {
 	}
 
 	public function testRunRepairStepsWithException() {
-		$mock = $this->getMock('\Test\TestRepairStep');
+		$mock = $this->createMock('\Test\TestRepairStep');
 		$mock->expects($this->any())
 			->method('run')
 			->will($this->throwException(new \Exception()));

@@ -64,13 +64,13 @@ class UsersTest extends OriginalTest {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->userManager = $this->getMock('OCP\IUserManager');
-		$this->config = $this->getMock('OCP\IConfig');
+		$this->userManager = $this->createMock('OCP\IUserManager');
+		$this->config = $this->createMock('OCP\IConfig');
 		$this->groupManager = $this->getMockBuilder('OC\Group\Manager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->userSession = $this->getMock('OCP\IUserSession');
-		$this->logger = $this->getMock('OCP\ILogger');
+		$this->userSession = $this->createMock('OCP\IUserSession');
+		$this->logger = $this->createMock('OCP\ILogger');
 		$this->twoFactorAuthManager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
 			->disableOriginalConstructor()
 			->setMethods(['isTwoFactorAuthenticated', 'enableTwoFactorAuthentication'])
@@ -104,7 +104,7 @@ class UsersTest extends OriginalTest {
 	public function testGetUsersAsAdmin() {
 		$_GET['search'] = 'MyCustomSearch';
 
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -136,7 +136,7 @@ class UsersTest extends OriginalTest {
 	public function testGetUsersAsSubAdmin() {
 		$_GET['search'] = 'MyCustomSearch';
 
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -149,12 +149,12 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('isAdmin')
 			->will($this->returnValue(false));
-		$firstGroup = $this->getMock('OCP\IGroup');
+		$firstGroup = $this->createMock('OCP\IGroup');
 		$firstGroup
 			->expects($this->once())
 			->method('getGID')
 			->will($this->returnValue('FirstGroup'));
-		$secondGroup = $this->getMock('OCP\IGroup');
+		$secondGroup = $this->createMock('OCP\IGroup');
 		$secondGroup
 			->expects($this->once())
 			->method('getGID')
@@ -192,7 +192,7 @@ class UsersTest extends OriginalTest {
 	public function testGetUsersAsRegularUser() {
 		$_GET['search'] = 'MyCustomSearch';
 
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -232,7 +232,7 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('error')
 			->with('Failed addUser attempt: User already exists.', ['app' => 'ocs_api']);
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -259,7 +259,7 @@ class UsersTest extends OriginalTest {
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -291,7 +291,7 @@ class UsersTest extends OriginalTest {
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -337,7 +337,7 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('info')
 			->with('Successful addUser call with userid: NewUser', ['app' => 'ocs_api']);
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -365,7 +365,7 @@ class UsersTest extends OriginalTest {
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -384,13 +384,13 @@ class UsersTest extends OriginalTest {
 			->method('groupExists')
 			->with('ExistingGroup')
 			->willReturn(true);
-		$user = $this->getMock('OCP\IUser');
+		$user = $this->createMock('OCP\IUser');
 		$this->userManager
 			->expects($this->once())
 			->method('createUser')
 			->with('NewUser', 'PasswordOfTheNewUser')
 			->willReturn($user);
-		$group = $this->getMock('OCP\IGroup');
+		$group = $this->createMock('OCP\IGroup');
 		$group
 			->expects($this->once())
 			->method('addUser')
@@ -429,7 +429,7 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('error')
 			->with('Failed addUser attempt with exception: User backend not found.', ['app' => 'ocs_api']);
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -451,7 +451,7 @@ class UsersTest extends OriginalTest {
 	public function testAddUserAsRegularUser() {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -485,7 +485,7 @@ class UsersTest extends OriginalTest {
 	public function testAddUserAsSubAdminNoGroup() {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -520,7 +520,7 @@ class UsersTest extends OriginalTest {
 		$_POST['userid'] = 'NewUser';
 		$_POST['password'] = 'PasswordOfTheNewUser';
 		$_POST['groups'] = ['ExistingGroup'];
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -534,7 +534,7 @@ class UsersTest extends OriginalTest {
 			->method('isAdmin')
 			->with('regularUser')
 			->willReturn(false);
-		$existingGroup = $this->getMock('OCP\IGroup');
+		$existingGroup = $this->createMock('OCP\IGroup');
 		$this->groupManager
 			->expects($this->once())
 			->method('get')
@@ -576,7 +576,7 @@ class UsersTest extends OriginalTest {
 			->method('userExists')
 			->with('NewUser')
 			->willReturn(false);
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
@@ -598,14 +598,14 @@ class UsersTest extends OriginalTest {
 				['ExistingGroup2']
 			)
 			->willReturn(true);
-		$user = $this->getMock('OCP\IUser');
+		$user = $this->createMock('OCP\IUser');
 		$this->userManager
 			->expects($this->once())
 			->method('createUser')
 			->with('NewUser', 'PasswordOfTheNewUser')
 			->willReturn($user);
-		$existingGroup1 = $this->getMock('OCP\IGroup');
-		$existingGroup2 = $this->getMock('OCP\IGroup');
+		$existingGroup1 = $this->createMock('OCP\IGroup');
+		$existingGroup2 = $this->createMock('OCP\IGroup');
 		$existingGroup1
 			->expects($this->once())
 			->method('addUser')
@@ -672,7 +672,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUserTargetDoesNotExist() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -688,12 +688,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUserAsAdmin() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser->expects($this->once())
 			->method('getEMailAddress')
 			->willReturn('demo@owncloud.org');
@@ -739,12 +739,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUserAsSubAdminAndUserIsAccessible() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 				->expects($this->once())
 				->method('getEMailAddress')
@@ -803,12 +803,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUserAsSubAdminAndUserIsNotAccessible() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -841,12 +841,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUserAsSubAdminSelfLookup() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -907,12 +907,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserRegularUserSelfEditChangeDisplayName() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -932,12 +932,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserRegularUserSelfEditChangeEmailValid() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -957,12 +957,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserRegularUserSelfEditChangeEmailInvalid() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -978,12 +978,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserRegularUserSelfEditChangePassword() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1003,12 +1003,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserRegularUserSelfEditChangeQuota() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1024,12 +1024,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditTwoFactor() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1048,12 +1048,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserAdminUserSelfEditChangeValidQuota() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser->expects($this->once())
 			->method('setQuota')
 			->with('2.9 MB');
@@ -1077,12 +1077,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserAdminUserSelfEditChangeInvalidQuota() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1103,12 +1103,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserAdminUserEditChangeValidQuota() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser->expects($this->once())
 			->method('setQuota')
 			->with('2.9 MB');
@@ -1139,12 +1139,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserSubadminUserAccessible() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser->expects($this->once())
 			->method('setQuota')
 			->with('2.9 MB');
@@ -1175,12 +1175,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEditUserSubadminUserInaccessible() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1218,7 +1218,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDeleteUserNotExistingUser() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
@@ -1238,12 +1238,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDeleteUserSelf() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToDelete'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1263,12 +1263,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDeleteSuccessfulUserAsAdmin() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1297,12 +1297,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDeleteUnsuccessfulUserAsAdmin() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1331,12 +1331,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDeleteSuccessfulUserAsSubadmin() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1376,12 +1376,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDeleteUnsuccessfulUserAsSubadmin() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1421,12 +1421,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDeleteUserAsSubAdminAndUserIsNotAccessible() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1472,7 +1472,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUsersGroupsTargetUserNotExisting() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1483,12 +1483,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUsersGroupsSelfTargetted() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('UserToLookup'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1513,12 +1513,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUsersGroupsForAdminUser() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1548,12 +1548,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUsersGroupsForSubAdminUserAndUserIsAccessible() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1583,12 +1583,12 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
-		$group1 = $this->getMock('OCP\IGroup');
+		$group1 = $this->createMock('OCP\IGroup');
 		$group1
 			->expects($this->any())
 			->method('getGID')
 			->will($this->returnValue('Group1'));
-		$group2 = $this->getMock('OCP\IGroup');
+		$group2 = $this->createMock('OCP\IGroup');
 		$group2
 			->expects($this->any())
 			->method('getGID')
@@ -1610,12 +1610,12 @@ class UsersTest extends OriginalTest {
 
 
 	public function testGetUsersGroupsForSubAdminUserAndUserIsInaccessible() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
 			->expects($this->once())
 			->method('getUID')
@@ -1668,7 +1668,7 @@ class UsersTest extends OriginalTest {
 	public function testAddToGroupWithTargetGroupNotExisting() {
 		$_POST['groupid'] = 'GroupToAddTo';
 
-		$loggedInUser = $this->getMock('\OCP\IUser');
+		$loggedInUser = $this->createMock('\OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1684,7 +1684,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testAddToGroupWithNoGroupSpecified() {
-		$loggedInUser = $this->getMock('\OCP\IUser');
+		$loggedInUser = $this->createMock('\OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1697,12 +1697,12 @@ class UsersTest extends OriginalTest {
 	public function testAddToGroupWithTargetUserNotExisting() {
 		$_POST['groupid'] = 'GroupToAddTo';
 
-		$loggedInUser = $this->getMock('\OCP\IUser');
+		$loggedInUser = $this->createMock('\OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetGroup = $this->getMock('\OCP\IGroup');
+		$targetGroup = $this->createMock('\OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1725,12 +1725,12 @@ class UsersTest extends OriginalTest {
 	public function testAddToGroupWithoutPermission() {
 		$_POST['groupid'] = 'GroupToAddTo';
 
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('unauthorizedUser'));
-		$targetGroup = $this->getMock('\OCP\IGroup');
+		$targetGroup = $this->createMock('\OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1759,17 +1759,17 @@ class UsersTest extends OriginalTest {
 	public function testAddToOutsideGroupAsSubAdminFromSubAdmin() {
 		$_POST['groupid'] = 'outsidegroup';
 
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$subadminGroup = $this->getMock('\OCP\IGroup');
+		$subadminGroup = $this->createMock('\OCP\IGroup');
 		$subadminGroup
 			->expects($this->any())
 			->method('getGID')
 			->will($this->returnValue('subadmin'));
-		$targetGroup = $this->getMock('\OCP\IGroup');
+		$targetGroup = $this->createMock('\OCP\IGroup');
 		$targetGroup
 			->expects($this->any())
 			->method('getGID')
@@ -1808,13 +1808,13 @@ class UsersTest extends OriginalTest {
 
 	public function testAddToGroupSuccessful() {
 		$_POST['groupid'] = 'admin';
-		$loggedInUser = $this->getMock('\OCP\IUser');
+		$loggedInUser = $this->createMock('\OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('\OCP\IUser');
-		$targetGroup = $this->getMock('\OCP\IGroup');
+		$targetUser = $this->createMock('\OCP\IUser');
+		$targetGroup = $this->createMock('\OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1845,13 +1845,13 @@ class UsersTest extends OriginalTest {
 
 	public function testAddToGroupSuccessfulAsSubadmin() {
 		$_POST['groupid'] = 'group1';
-		$loggedInUser = $this->getMock('\OCP\IUser');
+		$loggedInUser = $this->createMock('\OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('\OCP\IUser');
-		$targetGroup = $this->getMock('\OCP\IGroup');
+		$targetUser = $this->createMock('\OCP\IUser');
+		$targetGroup = $this->createMock('\OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1901,7 +1901,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupWithNoTargetGroup() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1911,7 +1911,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupWithNotExistingTargetGroup() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1927,12 +1927,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupWithNotExistingTargetUser() {
-		$loggedInUser = $this->getMock('\OCP\IUser');
+		$loggedInUser = $this->createMock('\OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetGroup = $this->getMock('\OCP\IGroup');
+		$targetGroup = $this->createMock('\OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -1969,12 +1969,12 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupWithoutPermission() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('unauthorizedUser'));
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -2001,13 +2001,13 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupAsAdminFromAdmin() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$targetGroup
 			->expects($this->once())
 			->method('getGID')
@@ -2037,13 +2037,13 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupAsSubAdminFromSubAdmin() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$targetGroup
 			->expects($this->any())
 			->method('getGID')
@@ -2089,13 +2089,13 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupSuccessful() {
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('admin'));
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -2125,13 +2125,13 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveFromGroupSuccessfulAsSubadmin() {
-		$loggedInUser = $this->getMock('\OCP\IUser');
+		$loggedInUser = $this->createMock('\OCP\IUser');
 		$loggedInUser
 			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
-		$targetUser = $this->getMock('\OCP\IUser');
-		$targetGroup = $this->getMock('\OCP\IGroup');
+		$targetUser = $this->createMock('\OCP\IUser');
+		$targetGroup = $this->createMock('\OCP\IGroup');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -2185,7 +2185,7 @@ class UsersTest extends OriginalTest {
 	public function testAddSubAdminWithNotExistingTargetGroup() {
 		$_POST['groupid'] = 'NotExistingGroup';
 
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2204,8 +2204,8 @@ class UsersTest extends OriginalTest {
 	public function testAddSubAdminToAdminGroup() {
 		$_POST['groupid'] = 'ADmiN';
 
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2224,8 +2224,8 @@ class UsersTest extends OriginalTest {
 	public function testAddSubAdminTwice() {
 		$_POST['groupid'] = 'TargetGroup';
 
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2255,8 +2255,8 @@ class UsersTest extends OriginalTest {
 	public function testAddSubAdminSuccessful() {
 		$_POST['groupid'] = 'TargetGroup';
 
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2291,8 +2291,8 @@ class UsersTest extends OriginalTest {
 	public function testAddSubAdminUnsuccessful() {
 		$_POST['groupid'] = 'TargetGroup';
 
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2336,7 +2336,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveSubAdminNotExistingTargetGroup() {
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2353,8 +2353,8 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveSubAdminFromNotASubadmin() {
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2382,8 +2382,8 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveSubAdminSuccessful() {
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2416,8 +2416,8 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testRemoveSubAdminUnsuccessful() {
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2461,8 +2461,8 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUserSubAdminGroupsWithGroups() {
-		$targetUser = $this->getMock('OCP\IUser');
-		$targetGroup = $this->getMock('OCP\IGroup');
+		$targetUser = $this->createMock('OCP\IUser');
+		$targetGroup = $this->createMock('OCP\IGroup');
 		$targetGroup
 			->expects($this->once())
 			->method('getGID')
@@ -2489,7 +2489,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testGetUserSubAdminGroupsWithoutGroups() {
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
@@ -2512,7 +2512,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testEnableUser() {
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser->expects($this->once())
 			->method('setEnabled')
 			->with(true);
@@ -2521,7 +2521,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('RequestedUser')
 			->will($this->returnValue($targetUser));
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')
@@ -2540,7 +2540,7 @@ class UsersTest extends OriginalTest {
 	}
 
 	public function testDisableUser() {
-		$targetUser = $this->getMock('OCP\IUser');
+		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser->expects($this->once())
 			->method('setEnabled')
 			->with(false);
@@ -2549,7 +2549,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('RequestedUser')
 			->will($this->returnValue($targetUser));
-		$loggedInUser = $this->getMock('OCP\IUser');
+		$loggedInUser = $this->createMock('OCP\IUser');
 		$loggedInUser
 			->expects($this->exactly(2))
 			->method('getUID')

@@ -22,6 +22,7 @@
 namespace Tests\Core\Controller;
 
 use OC\Core\Controller\AvatarController;
+use OC\NotSquareException;
 use OCP\AppFramework\Http;
 use OCP\Files\File;
 use OCP\Files\Folder;
@@ -77,29 +78,32 @@ class AvatarControllerTest extends TestCase {
 		$this->createUser('userid', 'pass');
 		$this->loginAsUser('userid');
 		
-		$this->avatarManager = $this->getMock('OCP\IAvatarManager');
+		$this->avatarManager = $this->createMock('OCP\IAvatarManager');
 		$this->cache = $this->getMockBuilder('OC\Cache\File')->disableOriginalConstructor()->getMock();
-		$this->l10N = $this->getMock('OCP\IL10N');
+		$this->l10N = $this->createMock('OCP\IL10N');
 		$this->l10N->expects($this->any())->method('t')->will($this->returnArgument(0));
-		$this->userManager = $this->getMock('OCP\IUserManager');
-		$this->userSession = $this->getMock('OCP\IUserSession');
-		$this->request = $this->getMock('OCP\IRequest');
-		$this->userFolder = $this->getMock('OCP\Files\Folder');
-		$this->logger = $this->getMock('OCP\ILogger');
+		$this->userManager = $this->createMock('OCP\IUserManager');
+		$this->userSession = $this->createMock('OCP\IUserSession');
+		$this->request = $this->createMock('OCP\IRequest');
+		$this->userFolder = $this->createMock('OCP\Files\Folder');
+		$this->logger = $this->createMock('OCP\ILogger');
 
-		$this->avatarMock = $this->getMock('OCP\IAvatar');
-		$this->userMock = $this->getMock('OCP\IUser');
+		$this->avatarMock = $this->createMock('OCP\IAvatar');
+		$this->userMock = $this->createMock('OCP\IUser');
 
-		$this->avatarController = $this->getMock('OC\Core\Controller\AvatarController', ['isUploadFile'],[
-			'core',
-			$this->request,
-			$this->avatarManager,
-			$this->cache,
-			$this->l10N,
-			$this->userManager,
-			$this->userSession,
-			$this->userFolder,
-			$this->logger]);
+		$this->avatarController = $this->getMockBuilder(AvatarController::class)
+			->setMethods(['isUploadFile'])
+			->setConstructorArgs([
+				'core',
+				$this->request,
+				$this->avatarManager,
+				$this->cache,
+				$this->l10N,
+				$this->userManager,
+				$this->userSession,
+				$this->userFolder,
+				$this->logger])
+			->getMock();
 		$this->avatarController
 			->expects($this->any())
 			->method('isUploadFile')
@@ -114,7 +118,7 @@ class AvatarControllerTest extends TestCase {
 			->willReturnMap([['userId', $this->userMock]]);
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($this->userMock);
 
-		$this->avatarFile = $this->getMock('OCP\Files\File');
+		$this->avatarFile = $this->createMock('OCP\Files\File');
 		$this->avatarFile->expects($this->any())->method('getContent')->willReturn('image data');
 		$this->avatarFile->expects($this->any())->method('getMimeType')->willReturn('image type');
 		$this->avatarFile->expects($this->any())->method('getEtag')->willReturn('my etag');
@@ -350,7 +354,7 @@ class AvatarControllerTest extends TestCase {
 	 * Test posting avatar from existing folder
 	 */
 	public function testPostAvatarFromNoFile() {
-		$file = $this->getMock('OCP\Files\Node');
+		$file = $this->createMock('OCP\Files\Node');
 		$this->userFolder
 			->expects($this->once())
 			->method('get')
@@ -408,7 +412,7 @@ class AvatarControllerTest extends TestCase {
 	public function testPostCroppedAvatarNoSquareCrop() {
 		$this->cache->expects($this->once())->method('get')->willReturn(file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.jpg'));
 
-		$this->avatarMock->expects($this->any())->method('set')->will($this->throwException(new \OC\NotSquareException));
+		$this->avatarMock->expects($this->any())->method('set')->will($this->throwException(new NotSquareException));
 		$this->avatarManager->expects($this->any())->method('getAvatar')->willReturn($this->avatarMock);
 		$response = $this->avatarController->postCroppedAvatar(['x' => 0, 'y' => 0, 'w' => 10, 'h' => 11]);
 

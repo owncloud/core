@@ -42,8 +42,8 @@ class SetDefaultModuleTest extends TestCase {
 		$manager = $this->manager = $this->getMockBuilder('OCP\Encryption\IManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
 		/** @var \OCP\Encryption\IManager $manager */
 		$this->command = new SetDefaultModule($manager);

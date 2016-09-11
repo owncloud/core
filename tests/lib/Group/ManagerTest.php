@@ -16,7 +16,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->any())
 			->method('groupExists')
 			->with('group1')
@@ -25,7 +25,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -38,7 +38,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 
 		$this->assertNull($manager->get('group1'));
@@ -48,7 +48,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('groupExists')
 			->with('group1')
@@ -57,7 +57,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -71,7 +71,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -84,7 +84,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend1 = $this->getMock('\OC\Group\Database');
+		$backend1 = $this->createMock('\OC\Group\Database');
 		$backend1->expects($this->any())
 			->method('groupExists')
 			->with('group1')
@@ -93,7 +93,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend2
 		 */
-		$backend2 = $this->getMock('\OC\Group\Database');
+		$backend2 = $this->createMock('\OC\Group\Database');
 		$backend2->expects($this->any())
 			->method('groupExists')
 			->with('group1')
@@ -102,7 +102,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend1);
 		$manager->addBackend($backend2);
@@ -117,7 +117,7 @@ class ManagerTest extends \Test\TestCase {
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
 		$backendGroupCreated = false;
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->any())
 			->method('groupExists')
 			->with('group1')
@@ -136,7 +136,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -148,7 +148,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->any())
 			->method('groupExists')
 			->with('group1')
@@ -159,7 +159,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -171,7 +171,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('getGroups')
 			->with('1')
@@ -184,7 +184,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -198,7 +198,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend1 = $this->getMock('\OC\Group\Database');
+		$backend1 = $this->createMock('\OC\Group\Database');
 		$backend1->expects($this->once())
 			->method('getGroups')
 			->with('1')
@@ -210,7 +210,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend2
 		 */
-		$backend2 = $this->getMock('\OC\Group\Database');
+		$backend2 = $this->createMock('\OC\Group\Database');
 		$backend2->expects($this->once())
 			->method('getGroups')
 			->with('1')
@@ -222,7 +222,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend1);
 		$manager->addBackend($backend2);
@@ -239,7 +239,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend1 = $this->getMock('\OC\Group\Database');
+		$backend1 = $this->createMock('\OC\Group\Database');
 		$backend1->expects($this->once())
 			->method('getGroups')
 			->with('1', 2, 1)
@@ -251,7 +251,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend2
 		 */
-		$backend2 = $this->getMock('\OC\Group\Database');
+		$backend2 = $this->createMock('\OC\Group\Database');
 		$backend2->expects($this->once())
 			->method('getGroups')
 			->with('1', 2, 1)
@@ -263,7 +263,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend1);
 		$manager->addBackend($backend2);
@@ -280,7 +280,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
@@ -293,8 +293,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -334,7 +334,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
@@ -346,8 +346,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -358,7 +358,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
@@ -370,8 +370,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -382,7 +382,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
@@ -394,8 +394,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -406,7 +406,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend1 = $this->getMock('\OC\Group\Database');
+		$backend1 = $this->createMock('\OC\Group\Database');
 		$backend1->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
@@ -418,7 +418,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend2
 		 */
-		$backend2 = $this->getMock('\OC\Group\Database');
+		$backend2 = $this->createMock('\OC\Group\Database');
 		$backend2->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
@@ -430,8 +430,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend1);
 		$manager->addBackend($backend2);
@@ -448,7 +448,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->exactly(1))
 			->method('groupExists')
 			->with('testgroup')
@@ -470,8 +470,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 
 		$userManager->expects($this->any())
 			->method('searchDisplayName')
@@ -512,7 +512,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->exactly(1))
 			->method('groupExists')
 			->with('testgroup')
@@ -535,8 +535,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 
 		$userManager->expects($this->any())
 			->method('searchDisplayName')
@@ -579,7 +579,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->exactly(1))
 			->method('groupExists')
 			->with('testgroup')
@@ -602,8 +602,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 
 		$userManager->expects($this->any())
 			->method('searchDisplayName')
@@ -649,7 +649,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->exactly(1))
 			->method('groupExists')
 			->with('testgroup')
@@ -663,8 +663,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 
 		$userManager->expects($this->any())
 			->method('get')
@@ -694,7 +694,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->exactly(1))
 			->method('groupExists')
 			->with('testgroup')
@@ -707,8 +707,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 
 		$userManager->expects($this->any())
 			->method('get')
@@ -738,7 +738,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->exactly(1))
 			->method('groupExists')
 			->with('testgroup')
@@ -752,8 +752,8 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 
 		$userManager->expects($this->any())
 			->method('get')
@@ -783,7 +783,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$expectedGroups = array();
 		$backend->expects($this->any())
 			->method('getUserGroups')
@@ -802,7 +802,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -827,7 +827,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$expectedGroups = array('group1');
 		$backend->expects($this->any())
 			->method('getUserGroups')
@@ -852,7 +852,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
@@ -877,7 +877,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->any())
 			->method('getUserGroups')
 			->with('user1')
@@ -886,7 +886,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 

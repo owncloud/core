@@ -60,14 +60,14 @@ class RequestSharedSecretTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->httpClient = $this->getMock('OCP\Http\Client\IClient');
-		$this->jobList = $this->getMock('OCP\BackgroundJob\IJobList');
-		$this->urlGenerator = $this->getMock('OCP\IURLGenerator');
+		$this->httpClient = $this->createMock('OCP\Http\Client\IClient');
+		$this->jobList = $this->createMock('OCP\BackgroundJob\IJobList');
+		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
 		$this->trustedServers = $this->getMockBuilder('OCA\Federation\TrustedServers')
 			->disableOriginalConstructor()->getMock();
 		$this->dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')
 			->disableOriginalConstructor()->getMock();
-		$this->response = $this->getMock('OCP\Http\Client\IResponse');
+		$this->response = $this->createMock('OCP\Http\Client\IResponse');
 
 		$this->requestSharedSecret = new RequestSharedSecret(
 			$this->httpClient,

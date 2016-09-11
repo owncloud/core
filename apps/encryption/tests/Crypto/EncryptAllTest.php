@@ -100,7 +100,7 @@ class EncryptAllTest extends TestCase {
 
 
 		$this->outputInterface->expects($this->any())->method('getFormatter')
-			->willReturn($this->getMock('\Symfony\Component\Console\Formatter\OutputFormatterInterface'));
+			->willReturn($this->createMock('\Symfony\Component\Console\Formatter\OutputFormatterInterface'));
 
 		$this->userManager->expects($this->any())->method('getBackends')->willReturn([$this->userInterface]);
 		$this->userInterface->expects($this->any())->method('getUsers')->willReturn(['user1', 'user2']);

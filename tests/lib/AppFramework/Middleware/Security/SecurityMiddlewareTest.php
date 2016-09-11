@@ -338,8 +338,8 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 										'REQUEST_URI' => 'owncloud/index.php/apps/specialapp'
 								]
 				],
-				$this->getMock('\OCP\Security\ISecureRandom'),
-				$this->getMock('\OCP\IConfig')
+				$this->createMock('\OCP\Security\ISecureRandom'),
+				$this->createMock('\OCP\IConfig')
 		);
 		$this->middleware = $this->getMiddleware(false, false);
 		$this->urlGenerator
@@ -396,8 +396,8 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 										'REQUEST_URI' => 'owncloud/index.php/apps/specialapp'
 								]
 				],
-				$this->getMock('\OCP\Security\ISecureRandom'),
-				$this->getMock('\OCP\IConfig')
+				$this->createMock('\OCP\Security\ISecureRandom'),
+				$this->createMock('\OCP\IConfig')
 		);
 		$this->middleware = $this->getMiddleware(false, false);
 		$this->logger

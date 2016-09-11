@@ -76,12 +76,12 @@ class RequestHandlerTest extends TestCase {
 
 		$config = $this->getMockBuilder('\OCP\IConfig')
 				->disableOriginalConstructor()->getMock();
-		$clientService = $this->getMock('\OCP\Http\Client\IClientService');
+		$clientService = $this->createMock('\OCP\Http\Client\IClientService');
 		$httpHelperMock = $this->getMockBuilder('\OC\HTTPHelper')
 				->setConstructorArgs([$config, $clientService])
 				->getMock();
 		$httpHelperMock->expects($this->any())->method('post')->with($this->anything())->will($this->returnValue(true));
-		$this->share = $this->getMock('\OCP\Share\IShare');
+		$this->share = $this->createMock('\OCP\Share\IShare');
 		$this->federatedShareProvider = $this->getMockBuilder('OCA\FederatedFileSharing\FederatedShareProvider')
 			->disableOriginalConstructor()->getMock();
 		$this->federatedShareProvider->expects($this->any())
@@ -95,7 +95,7 @@ class RequestHandlerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')
 			->disableOriginalConstructor()->getMock();
-		$this->userManager = $this->getMock('OCP\IUserManager');
+		$this->userManager = $this->createMock('OCP\IUserManager');
 		
 		$this->registerHttpHelper($httpHelperMock);
 

@@ -26,25 +26,24 @@ namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http;
+use Test\TestCase;
 
 
-class TemplateResponseTest extends \Test\TestCase {
+class TemplateResponseTest extends TestCase {
 
-	/**
-	 * @var \OCP\AppFramework\Http\TemplateResponse
-	 */
+	/** @var \OCP\AppFramework\Http\TemplateResponse */
 	private $tpl;
 
-	/**
-	 * @var \OCP\AppFramework\IApi
-	 */
+	/** @var \OCP\AppFramework\IApi */
 	private $api;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->api = $this->getMock('OC\AppFramework\Core\API',
-								array('getAppName'), array('test'));
+		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')
+			->setMethods(['getAppName'])
+			->setConstructorArgs(['test'])
+			->getMock();
 		$this->api->expects($this->any())
 				->method('getAppName')
 				->will($this->returnValue('app'));

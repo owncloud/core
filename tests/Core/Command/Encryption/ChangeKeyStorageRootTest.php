@@ -65,16 +65,16 @@ class ChangeKeyStorageRootTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->view = $this->getMock('\OC\Files\View');
-		$this->userManager = $this->getMock('\OCP\IUserManager');
-		$this->config = $this->getMock('\OCP\IConfig');
+		$this->view = $this->createMock('\OC\Files\View');
+		$this->userManager = $this->createMock('\OCP\IUserManager');
+		$this->config = $this->createMock('\OCP\IConfig');
 		$this->util = $this->getMockBuilder('OC\Encryption\Util')->disableOriginalConstructor()->getMock();
-		$this->questionHelper = $this->getMock('Symfony\Component\Console\Helper\QuestionHelper');
-		$this->inputInterface = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-		$this->outputInterface = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-		$this->userInterface = $this->getMock('\OCP\UserInterface');
+		$this->questionHelper = $this->createMock('Symfony\Component\Console\Helper\QuestionHelper');
+		$this->inputInterface = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+		$this->outputInterface = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->userInterface = $this->createMock('\OCP\UserInterface');
 
-		$outputFormatterInterface = $this->getMock('Symfony\Component\Console\Formatter\OutputFormatterInterface');
+		$outputFormatterInterface = $this->createMock('Symfony\Component\Console\Formatter\OutputFormatterInterface');
 		$this->outputInterface->expects($this->any())->method('getFormatter')
 			->willReturn($outputFormatterInterface);
 

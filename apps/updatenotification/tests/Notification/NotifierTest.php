@@ -37,8 +37,8 @@ class NotifierTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->notificationManager = $this->getMock('OCP\Notification\IManager');
-		$this->l10nFactory = $this->getMock('OCP\L10n\IFactory');
+		$this->notificationManager = $this->createMock('OCP\Notification\IManager');
+		$this->l10nFactory = $this->createMock('OCP\L10n\IFactory');
 	}
 
 	/**
@@ -80,7 +80,7 @@ class NotifierTest extends TestCase {
 	public function testUpdateAlreadyInstalledCheck($versionNotification, $versionInstalled, $exception) {
 		$notifier = $this->getNotifier();
 
-		$notification = $this->getMock('OCP\Notification\INotification');
+		$notification = $this->createMock('OCP\Notification\INotification');
 		$notification->expects($this->once())
 			->method('getObjectId')
 			->willReturn($versionNotification);

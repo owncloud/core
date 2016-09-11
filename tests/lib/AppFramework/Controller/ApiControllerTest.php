@@ -38,8 +38,8 @@ class ApiControllerTest extends \Test\TestCase {
     public function testCors() {
         $request = new Request(
             ['server' => ['HTTP_ORIGIN' => 'test']],
-            $this->getMock('\OCP\Security\ISecureRandom'),
-            $this->getMock('\OCP\IConfig')
+            $this->createMock('\OCP\Security\ISecureRandom'),
+            $this->createMock('\OCP\IConfig')
         );
         $this->controller = new ChildApiController('app', $request, 'verbs',
             'headers', 100);

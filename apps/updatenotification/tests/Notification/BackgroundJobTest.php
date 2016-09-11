@@ -50,12 +50,12 @@ class BackgroundJobTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->config = $this->getMock('OCP\IConfig');
-		$this->notificationManager = $this->getMock('OCP\Notification\IManager');
-		$this->groupManager = $this->getMock('OCP\IGroupManager');
-		$this->appManager = $this->getMock('OCP\App\IAppManager');
-		$this->client = $this->getMock('OCP\Http\Client\IClientService');
-		$this->urlGenerator = $this->getMock('OCP\IURLGenerator');
+		$this->config = $this->createMock('OCP\IConfig');
+		$this->notificationManager = $this->createMock('OCP\Notification\IManager');
+		$this->groupManager = $this->createMock('OCP\IGroupManager');
+		$this->appManager = $this->createMock('OCP\App\IAppManager');
+		$this->client = $this->createMock('OCP\Http\Client\IClientService');
+		$this->urlGenerator = $this->createMock('OCP\IURLGenerator');
 	}
 
 	/**
@@ -278,7 +278,7 @@ class BackgroundJobTest extends TestCase {
 		}
 
 		if ($createNotification) {
-			$notification = $this->getMock('OCP\Notification\INotification');
+			$notification = $this->createMock('OCP\Notification\INotification');
 			$notification->expects($this->once())
 				->method('setApp')
 				->with('updatenotification')
@@ -379,7 +379,7 @@ class BackgroundJobTest extends TestCase {
 	 * @param string $version
 	 */
 	public function testDeleteOutdatedNotifications($app, $version) {
-		$notification = $this->getMock('OCP\Notification\INotification');
+		$notification = $this->createMock('OCP\Notification\INotification');
 		$notification->expects($this->once())
 			->method('setApp')
 			->with('updatenotification')
@@ -407,7 +407,7 @@ class BackgroundJobTest extends TestCase {
 	protected function getUsers(array $userIds) {
 		$users = [];
 		foreach ($userIds as $uid) {
-			$user = $this->getMock('OCP\IUser');
+			$user = $this->createMock('OCP\IUser');
 			$user->expects($this->any())
 				->method('getUID')
 				->willReturn($uid);
@@ -421,7 +421,7 @@ class BackgroundJobTest extends TestCase {
 	 * @return \OCP\IGroup|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getGroup($gid) {
-		$group = $this->getMock('OCP\IGroup');
+		$group = $this->createMock('OCP\IGroup');
 		$group->expects($this->any())
 			->method('getGID')
 			->willReturn($gid);

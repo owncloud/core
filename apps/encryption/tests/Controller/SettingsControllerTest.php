@@ -63,7 +63,7 @@ class SettingsControllerTest extends TestCase {
 
 		parent::setUp();
 
-		$this->requestMock = $this->getMock('OCP\IRequest');
+		$this->requestMock = $this->createMock('OCP\IRequest');
 
 		$this->l10nMock = $this->getMockBuilder('OCP\IL10N')
 			->disableOriginalConstructor()->getMock();

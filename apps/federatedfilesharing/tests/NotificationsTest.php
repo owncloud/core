@@ -46,10 +46,10 @@ class NotificationsTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->jobList = $this->getMock('OCP\BackgroundJob\IJobList');
+		$this->jobList = $this->createMock('OCP\BackgroundJob\IJobList');
 		$this->discoveryManager = $this->getMockBuilder('OCA\FederatedFileSharing\DiscoveryManager')
 			->disableOriginalConstructor()->getMock();
-		$this->httpClientService = $this->getMock('OCP\Http\Client\IClientService');
+		$this->httpClientService = $this->createMock('OCP\Http\Client\IClientService');
 		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')
 			->disableOriginalConstructor()->getMock();
 

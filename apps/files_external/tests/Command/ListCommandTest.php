@@ -36,21 +36,21 @@ class ListCommandTest extends CommandTest {
 	 */
 	private function getInstance() {
 		/** @var \OCA\Files_External\Service\GlobalStoragesService|\PHPUnit_Framework_MockObject_MockObject $globalService */
-		$globalService = $this->getMock('\OCA\Files_External\Service\GlobalStoragesService', null, [], '', false);
+		$globalService = $this->createMock('\OCA\Files_External\Service\GlobalStoragesService', null, [], '', false);
 		/** @var \OCA\Files_External\Service\UserStoragesService|\PHPUnit_Framework_MockObject_MockObject $userService */
-		$userService = $this->getMock('\OCA\Files_External\Service\UserStoragesService', null, [], '', false);
+		$userService = $this->createMock('\OCA\Files_External\Service\UserStoragesService', null, [], '', false);
 		/** @var \OCP\IUserManager|\PHPUnit_Framework_MockObject_MockObject $userManager */
-		$userManager = $this->getMock('\OCP\IUserManager');
+		$userManager = $this->createMock('\OCP\IUserManager');
 		/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject $userSession */
-		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\OCP\IUserSession');
 
 		return new ListCommand($globalService, $userService, $userSession, $userManager);
 	}
 
 	public function testListAuthIdentifier() {
-		$l10n = $this->getMock('\OC_L10N', null, [], '', false);
-		$session = $this->getMock('\OCP\ISession');
-		$crypto = $this->getMock('\OCP\Security\ICrypto');
+		$l10n = $this->createMock('\OC_L10N', null, [], '', false);
+		$session = $this->createMock('\OCP\ISession');
+		$crypto = $this->createMock('\OCP\Security\ICrypto');
 		$instance = $this->getInstance();
 		$mount1 = new StorageConfig();
 		$mount1->setAuthMechanism(new Password($l10n));

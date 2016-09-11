@@ -17,8 +17,8 @@ use OC\Http\Client\ClientService;
  */
 class ClientServiceTest extends \Test\TestCase {
 	public function testNewClient() {
-		$config = $this->getMock('\OCP\IConfig');
-		$certificateManager = $this->getMock('\OCP\ICertificateManager');
+		$config = $this->createMock('\OCP\IConfig');
+		$certificateManager = $this->createMock('\OCP\ICertificateManager');
 
 		$expected = new Client($config, $certificateManager, new GuzzleClient());
 		$clientService = new ClientService($config, $certificateManager);

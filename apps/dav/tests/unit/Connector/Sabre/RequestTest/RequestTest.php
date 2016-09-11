@@ -58,7 +58,7 @@ abstract class RequestTest extends TestCase {
 			\OC::$server->getUserSession(),
 			\OC::$server->getMountManager(),
 			\OC::$server->getTagManager(),
-			$this->getMock('\OCP\IRequest')
+			$this->createMock('\OCP\IRequest')
 		);
 	}
 

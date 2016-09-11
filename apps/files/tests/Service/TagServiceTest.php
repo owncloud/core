@@ -65,7 +65,7 @@ class TagServiceTest extends \Test\TestCase {
 		/**
 		 * @var \OCP\IUserSession
 		 */
-		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession->expects($this->any())
 			->method('getUser')
 			->withAnyParameters()

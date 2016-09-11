@@ -102,11 +102,10 @@ class FileCacheTest extends TestCache {
 	}
 
 	private function setupMockStorage() {
-		$mockStorage = $this->getMock(
-			'\OC\Files\Storage\Local',
-			['filemtime', 'unlink'],
-			[['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]]
-		);
+		$mockStorage = $this->getMockBuilder('\OC\Files\Storage\Local')
+			->setMethods(['filemtime', 'unlink'])
+			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
+			->getMock();
 
 		\OC\Files\Filesystem::mount($mockStorage, array(), '/test/cache');
 

@@ -50,7 +50,7 @@ class DBLockingProviderTest extends LockingProvider {
 
 	public function setUp() {
 		$this->currentTime = time();
-		$this->timeFactory = $this->getMock('\OCP\AppFramework\Utility\ITimeFactory');
+		$this->timeFactory = $this->createMock('\OCP\AppFramework\Utility\ITimeFactory');
 		$this->timeFactory->expects($this->any())
 			->method('getTime')
 			->will($this->returnCallback(function () {

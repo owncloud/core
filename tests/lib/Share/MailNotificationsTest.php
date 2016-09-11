@@ -28,11 +28,13 @@ use OCP\Mail\IMailer;
 use OCP\ILogger;
 use OCP\Defaults;
 use OCP\IURLGenerator;
+use OCP\Util;
+use Test\TestCase;
 
 /**
  * Class MailNotificationsTest
  */
-class MailNotificationsTest extends \Test\TestCase {
+class MailNotificationsTest extends TestCase {
 	/** @var IL10N */
 	private $l10n;
 	/** @var IMailer | \PHPUnit_Framework_MockObject_MockObject */
@@ -60,7 +62,7 @@ class MailNotificationsTest extends \Test\TestCase {
 				->disableOriginalConstructor()->getMock();
 		$this->user = $this->getMockBuilder('\OCP\IUser')
 				->disableOriginalConstructor()->getMock();
-		$this->urlGenerator = $this->getMock('\OCP\IURLGenerator');
+		$this->urlGenerator = $this->createMock('\OCP\IURLGenerator');
 
 		$this->l10n->expects($this->any())
 			->method('t')
@@ -105,7 +107,7 @@ class MailNotificationsTest extends \Test\TestCase {
 		$message
 			->expects($this->once())
 			->method('setFrom')
-			->with([\OCP\Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
+			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
 
 		$this->mailer
 			->expects($this->once())
@@ -166,7 +168,7 @@ class MailNotificationsTest extends \Test\TestCase {
 		$message
 			->expects($this->once())
 			->method('setFrom')
-			->with([\OCP\Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
+			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
 		$message
 			->expects($this->once())
 			->method('setReplyTo')
@@ -212,14 +214,17 @@ class MailNotificationsTest extends \Test\TestCase {
 		$this->setupMailerMock('TestUser shared »welcome.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
 
 		/** @var MailNotifications | \PHPUnit_Framework_MockObject_MockObject $mailNotifications */
-		$mailNotifications = $this->getMock('OC\Share\MailNotifications',['getItemSharedWithUser'], [
+		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
+			->setMethods(['getItemSharedWithUser'])
+			->setConstructorArgs([
 				$this->user,
 				$this->l10n,
 				$this->mailer,
 				$this->logger,
 				$this->defaults,
 				$this->urlGenerator
-		]);
+			])
+			->getMock();
 
 		$mailNotifications->method('getItemSharedWithUser')
 			->withAnyParameters()
@@ -277,7 +282,7 @@ class MailNotificationsTest extends \Test\TestCase {
 		$message
 				->expects($this->once())
 				->method('setFrom')
-				->with([\OCP\Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
+				->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
 
 		$this->mailer
 				->expects($this->once())

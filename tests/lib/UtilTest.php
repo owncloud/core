@@ -292,7 +292,7 @@ class UtilTest extends \Test\TestCase {
 		$oldWebRoot = \OC::$WEBROOT;
 		\OC::$WEBROOT = '';
 
-		$appManager = $this->getMock('\OCP\App\IAppManager');
+		$appManager = $this->createMock('\OCP\App\IAppManager');
 		$appManager->expects($this->any())
 			->method('isEnabledForUser')
 			->will($this->returnCallback(function($appId) use ($enabledApps){

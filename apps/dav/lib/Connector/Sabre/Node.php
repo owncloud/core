@@ -115,6 +115,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @param string $name The new name
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 * @throws \Sabre\DAV\Exception\Forbidden
+	 * @throws InvalidPath
 	 */
 	public function setName($name) {
 
