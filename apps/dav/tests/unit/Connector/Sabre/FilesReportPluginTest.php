@@ -29,6 +29,7 @@ use OC\Files\View;
 use OCP\Files\Folder;
 use OCP\IGroupManager;
 use OCP\SystemTag\ISystemTagManager;
+use OCP\ITags;
 
 class FilesReportPluginTest extends \Test\TestCase {
 	/** @var \Sabre\DAV\Server|\PHPUnit_Framework_MockObject_MockObject */
@@ -42,6 +43,9 @@ class FilesReportPluginTest extends \Test\TestCase {
 
 	/** @var ISystemTagManager|\PHPUnit_Framework_MockObject_MockObject */
 	private $tagManager;
+
+	/** @var ITags|\PHPUnit_Framework_MockObject_MockObject */
+	private $privateTags;
 
 	/** @var  \OCP\IUserSession */
 	private $userSession;
@@ -84,6 +88,12 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->tagManager = $this->createMock('\OCP\SystemTag\ISystemTagManager');
 		$this->tagMapper = $this->createMock('\OCP\SystemTag\ISystemTagObjectMapper');
 		$this->userSession = $this->createMock('\OCP\IUserSession');
+		$this->privateTags = $this->createMock('\OCP\ITags');
+		$privateTagManager = $this->createMock('\OCP\ITagManager');
+		$privateTagManager->expects($this->any())
+			->method('load')
+			->with('files')
+			->will($this->returnValue($this->privateTags));
 
 		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->any())
@@ -98,6 +108,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			$this->view,
 			$this->tagManager,
 			$this->tagMapper,
+			$privateTagManager,
 			$this->userSession,
 			$this->groupManager,
 			$this->userFolder
@@ -608,5 +619,17 @@ class FilesReportPluginTest extends \Test\TestCase {
 		];
 
 		$this->assertEquals(['222'], array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
+	}
+
+	public function testProcessFavoriteFilter() {
+		$rules = [
+			['name' => '{http://owncloud.org/ns}favorite', 'value' => '1'],
+		];
+
+		$this->privateTags->expects($this->once())
+			->method('getFavorites')
+			->will($this->returnValue(['456', '789']));
+
+		$this->assertEquals(['456', '789'], array_values($this->invokePrivate($this->plugin, 'processFilterRules', [$rules])));
 	}
 }

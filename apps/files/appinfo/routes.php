@@ -44,12 +44,6 @@ $application->registerRoutes(
 				'requirements' => array('path' => '.+'),
 			),
 			array(
-				'name' => 'API#getFilesByTag',
-				'url' => '/api/v1/tags/{tagName}/files',
-				'verb' => 'GET',
-				'requirements' => array('tagName' => '.+'),
-			),
-			array(
 				'name' => 'API#updateFileSorting',
 				'url' => '/api/v1/sorting',
 				'verb' => 'POST'
