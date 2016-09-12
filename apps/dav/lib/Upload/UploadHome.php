@@ -29,7 +29,7 @@ use Sabre\DAV\ICollection;
 
 class UploadHome implements ICollection {
 	/**
-	 * FilesHome constructor.
+	 * UploadHome constructor.
 	 *
 	 * @param array $principalInfo
 	 */
