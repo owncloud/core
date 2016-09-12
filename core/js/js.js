@@ -26,19 +26,6 @@ if (typeof oc_webroot === "undefined") {
 		oc_webroot = oc_webroot.substr(0, oc_webroot.lastIndexOf('/'));
 	}
 }
-if (
-	oc_debug !== true || typeof console === "undefined" ||
-	typeof console.log === "undefined"
-) {
-	if (!window.console) {
-		window.console = {};
-	}
-	var noOp = function() { };
-	var methods = ['log', 'debug', 'warn', 'info', 'error', 'assert', 'time', 'timeEnd'];
-	for (var i = 0; i < methods.length; i++) {
-		console[methods[i]] = noOp;
-	}
-}
 
 /**
 * Sanitizes a HTML string by replacing all potential dangerous characters with HTML entities
