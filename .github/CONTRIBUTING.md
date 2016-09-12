@@ -24,7 +24,7 @@ If you have questions about how to install or use ownCloud, please direct these 
 
 Help us to maximize the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
 
-[template]: https://raw.github.com/owncloud/core/master/issue_template.md
+[template]: https://raw.github.com/owncloud/core/master/.github/issue_template.md
 [mailinglist]: https://mailman.owncloud.org/mailman/listinfo/owncloud
 [forum]: https://central.owncloud.org/
 [irc]: https://webchat.freenode.net/?channels=owncloud&uio=d4
