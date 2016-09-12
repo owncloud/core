@@ -18,7 +18,6 @@
 		<whitelist>
 			<directory suffix=".php">..</directory>
 			<exclude>
-				<directory suffix=".php">../3rdparty</directory>
 				<directory suffix=".php">../apps/dav/tests</directory>
 				<directory suffix=".php">../apps/encryption/tests</directory>
 				<directory suffix=".php">../apps/federatedfilesharing/tests</directory>
@@ -30,9 +29,9 @@
 				<directory suffix=".php">../apps/files_versions/tests</directory>
 				<directory suffix=".php">../apps/provisioning_api/tests</directory>
 				<directory suffix=".php">../apps/updatenotification/tests</directory>
-				<directory suffix=".php">../apps/user_ldap/tests</directory>
 				<directory suffix=".php">../tests</directory>
 				<directory suffix=".php">../build</directory>
+				<directory suffix=".php">../lib/composer</directory>
 			</exclude>
 		</whitelist>
 	</filter>
