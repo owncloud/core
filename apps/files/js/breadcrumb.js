@@ -134,6 +134,7 @@
 					over: this.onOver,
 					out: this.onOut,
 					tolerance: 'pointer',
+					greedy: true,
 					hoverClass: 'canDrop'
 				});
 			}
