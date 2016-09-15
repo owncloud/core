@@ -7,6 +7,7 @@
  */
 
 namespace Test\Files\Cache;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class WatcherTest
@@ -18,7 +19,7 @@ namespace Test\Files\Cache;
 class WatcherTest extends \Test\TestCase {
 
 	/**
-	 * @var \OC\Files\Storage\Storage[] $storages
+	 * @var IStorage[] $storages
 	 */
 	private $storages = [];
 
@@ -174,7 +175,7 @@ class WatcherTest extends \Test\TestCase {
 
 	/**
 	 * @param bool $scan
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 */
 	private function getTestStorage($scan = true) {
 		$storage = new \OC\Files\Storage\Temporary([]);

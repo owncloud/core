@@ -27,6 +27,7 @@ namespace OCA\Encryption;
 
 use OC\Files\View;
 use OCA\Encryption\Crypto\Crypt;
+use OCP\Files\Storage\IStorage;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
@@ -191,7 +192,7 @@ class Util {
 	 * get storage of path
 	 *
 	 * @param string $path
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 */
 	public function getStorage($path) {
 		$storage = $this->files->getMount($path)->getStorage();

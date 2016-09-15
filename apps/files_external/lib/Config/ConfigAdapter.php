@@ -27,7 +27,7 @@ namespace OCA\Files_External\Config;
 
 use OC\Files\Storage\Wrapper\Availability;
 use OCA\Files_External\Migration\StorageMigrator;
-use OCP\Files\Storage;
+use OCP\Files\Storage\IStorage;
 use OC\Files\Mount\MountPoint;
 use OCP\Files\Storage\IStorageFactory;
 use OCA\Files_External\Lib\PersonalMount;
@@ -97,7 +97,7 @@ class ConfigAdapter implements IMountProvider {
 	 * Construct the storage implementation
 	 *
 	 * @param StorageConfig $storageConfig
-	 * @return Storage
+	 * @return IStorage
 	 */
 	private function constructStorage(StorageConfig $storageConfig) {
 		$class = $storageConfig->getBackend()->getStorageClass();

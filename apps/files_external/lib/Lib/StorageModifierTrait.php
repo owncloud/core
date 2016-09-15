@@ -22,9 +22,7 @@
 namespace OCA\Files_External\Lib;
 
 use \OCP\IUser;
-use \OCP\Files\Storage;
-use \OCA\Files_External\Lib\StorageConfig;
-use \OCA\Files_External\Lib\InsufficientDataForMeaningfulAnswerException;
+use \OCP\Files\Storage\IStorage;
 use \OCP\Files\StorageNotAvailableException;
 
 /**
@@ -56,12 +54,12 @@ trait StorageModifierTrait {
 	/**
 	 * Wrap a Storage if necessary
 	 *
-	 * @param Storage $storage
-	 * @return Storage
+	 * @param IStorage $storage
+	 * @return IStorage
 	 * @throws InsufficientDataForMeaningfulAnswerException
 	 * @throws StorageNotAvailableException
 	 */
-	public function wrapStorage(Storage $storage) {
+	public function wrapStorage(IStorage $storage) {
 		return $storage;
 	}
 

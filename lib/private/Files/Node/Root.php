@@ -33,6 +33,7 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OC\Hooks\PublicEmitter;
 use OCP\Files\IRootFolder;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class Root
@@ -119,7 +120,7 @@ class Root extends Folder implements IRootFolder {
 	}
 
 	/**
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param string|IStorage $storage FIXME only use IStorage?
 	 * @param string $mountPoint
 	 * @param array $arguments
 	 */
@@ -221,7 +222,7 @@ class Root extends Folder implements IRootFolder {
 	}
 
 	/**
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function getStorage() {

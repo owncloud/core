@@ -35,6 +35,7 @@ use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\ISharedStorage;
 use OCP\AppFramework\Http;
 use OCP\Files\NotFoundException;
+use OCP\Files\Storage\IStorage;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 
@@ -93,7 +94,7 @@ class Storage extends DAV implements ISharedStorage {
 		]);
 	}
 
-	public function getWatcher($path = '', $storage = null) {
+	public function getWatcher($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
@@ -132,7 +133,7 @@ class Storage extends DAV implements ISharedStorage {
 		return 'shared::' . md5($this->token . '@' . $this->remote);
 	}
 
-	public function getCache($path = '', $storage = null) {
+	public function getCache($path = '', IStorage $storage = null) {
 		if (is_null($this->cache)) {
 			$this->cache = new Cache($this, $this->remote, $this->remoteUser);
 		}
@@ -141,10 +142,10 @@ class Storage extends DAV implements ISharedStorage {
 
 	/**
 	 * @param string $path
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param IStorage $storage
 	 * @return \OCA\Files_Sharing\External\Scanner
 	 */
-	public function getScanner($path = '', $storage = null) {
+	public function getScanner($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}

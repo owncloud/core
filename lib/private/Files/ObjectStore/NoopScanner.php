@@ -24,11 +24,11 @@
 
 namespace OC\Files\ObjectStore;
 use \OC\Files\Cache\Scanner;
-use \OC\Files\Storage\Storage;
+use OCP\Files\Storage\IStorage;
 
 class NoopScanner extends Scanner {
 
-	public function __construct(Storage $storage) {
+	public function __construct(IStorage $storage) {
 		//we don't need the storage, so do nothing here
 	}
 

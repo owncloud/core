@@ -25,6 +25,7 @@
 namespace OC\Files\Storage;
 
 use OCP\Files\Mount\IMountPoint;
+use OCP\Files\Storage\IStorage;
 use OCP\Files\Storage\IStorageFactory;
 
 class StorageFactory implements IStorageFactory {
@@ -76,18 +77,18 @@ class StorageFactory implements IStorageFactory {
 	 * @param \OCP\Files\Mount\IMountPoint $mountPoint
 	 * @param string $class
 	 * @param array $arguments
-	 * @return \OCP\Files\Storage
+	 * @return IStorage
 	 */
 	public function getInstance(IMountPoint $mountPoint, $class, $arguments) {
 		return $this->wrap($mountPoint, new $class($arguments));
 	}
 
 	/**
-	 * @param \OCP\Files\Mount\IMountPoint $mountPoint
-	 * @param \OCP\Files\Storage $storage
-	 * @return \OCP\Files\Storage
+	 * @param IMountPoint $mountPoint
+	 * @param IStorage $storage
+	 * @return IStorage
 	 */
-	public function wrap(IMountPoint $mountPoint, $storage) {
+	public function wrap(IMountPoint $mountPoint, IStorage $storage) {
 		$wrappers = array_values($this->storageWrappers);
 		usort($wrappers, function ($a, $b) {
 			return $b['priority'] - $a['priority'];
@@ -98,7 +99,7 @@ class StorageFactory implements IStorageFactory {
 		}, $wrappers);
 		foreach ($wrappers as $wrapper) {
 			$storage = $wrapper($mountPoint->getMountPoint(), $storage, $mountPoint);
-			if (!($storage instanceof \OCP\Files\Storage)) {
+			if (!($storage instanceof IStorage)) { // FIXME Storage API: why is instanceof enough, why not instanceOfStorage()
 				throw new \Exception('Invalid result from storage wrapper');
 			}
 		}

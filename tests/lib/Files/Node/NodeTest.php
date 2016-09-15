@@ -9,6 +9,7 @@
 namespace Test\Files\Node;
 
 use OC\Files\FileInfo;
+use OCP\Files\Storage\IStorage;
 
 class NodeTest extends \Test\TestCase {
 	private $user;
@@ -19,7 +20,7 @@ class NodeTest extends \Test\TestCase {
 	}
 
 	protected function getMockStorage() {
-		$storage = $this->createMock('\OCP\Files\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 		$storage->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('home::someuser'));
@@ -178,9 +179,9 @@ class NodeTest extends \Test\TestCase {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var IStorage | \PHPUnit_Framework_MockObject_MockObject $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 
 		$view->expects($this->once())
 			->method('resolvePath')
@@ -218,9 +219,9 @@ class NodeTest extends \Test\TestCase {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var IStorage | \PHPUnit_Framework_MockObject_MockObject $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 
 		$view->expects($this->once())
 			->method('resolvePath')

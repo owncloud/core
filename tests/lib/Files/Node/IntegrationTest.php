@@ -12,6 +12,7 @@ use OC\Files\Node\Root;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\User\User;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class IntegrationTest
@@ -27,7 +28,7 @@ class IntegrationTest extends \Test\TestCase {
 	private $root;
 
 	/**
-	 * @var \OC\Files\Storage\Storage[]
+	 * @var IStorage[]
 	 */
 	private $storages;
 

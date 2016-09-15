@@ -23,6 +23,7 @@ namespace OC\Files\Cache;
 
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Cache\IPropagator;
+use OCP\Files\Storage\IStorage;
 use OCP\IDBConnection;
 
 /**
@@ -34,7 +35,7 @@ class Propagator implements IPropagator {
 	private $batch = [];
 
 	/**
-	 * @var \OC\Files\Storage\Storage
+	 * @var IStorage
 	 */
 	protected $storage;
 
@@ -44,10 +45,10 @@ class Propagator implements IPropagator {
 	private $connection;
 
 	/**
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param IStorage $storage
 	 * @param IDBConnection $connection
 	 */
-	public function __construct(\OC\Files\Storage\Storage $storage, IDBConnection $connection) {
+	public function __construct(IStorage $storage, IDBConnection $connection) {
 		$this->storage = $storage;
 		$this->connection = $connection;
 	}

@@ -38,6 +38,7 @@ namespace OC\Files\Cache;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
 use \OCP\Files\IMimeTypeLoader;
+use OCP\Files\Storage\IStorage;
 use OCP\IDBConnection;
 
 /**
@@ -79,10 +80,10 @@ class Cache implements ICache {
 	protected $connection;
 
 	/**
-	 * @param \OC\Files\Storage\Storage|string $storage
+	 * @param IStorage|string $storage
 	 */
 	public function __construct($storage) {
-		if ($storage instanceof \OC\Files\Storage\Storage) {
+		if ($storage instanceof IStorage) {
 			$this->storageId = $storage->getId();
 		} else {
 			$this->storageId = $storage;

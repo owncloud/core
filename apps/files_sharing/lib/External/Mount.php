@@ -25,6 +25,7 @@ namespace OCA\Files_Sharing\External;
 
 use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
+use OCP\Files\Storage\IStorage;
 
 class Mount extends MountPoint implements MoveableMount {
 
@@ -34,7 +35,7 @@ class Mount extends MountPoint implements MoveableMount {
 	protected $manager;
 
 	/**
-	 * @param string|\OC\Files\Storage\Storage $storage
+	 * @param string|IStorage $storage
 	 * @param string $mountpoint
 	 * @param array $options
 	 * @param \OCA\Files_Sharing\External\Manager $manager

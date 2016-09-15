@@ -144,7 +144,7 @@ class OC_Util {
 		\OC\Files\Filesystem::initMountManager();
 
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(false);
-		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, \OCP\Files\Storage\IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Common')) {
 				/** @var \OC\Files\Storage\Common $storage */
 				$storage->setMountOptions($mount->getOptions());
@@ -152,7 +152,7 @@ class OC_Util {
 			return $storage;
 		});
 
-		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, \OCP\Files\Storage\IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if (!$mount->getOption('enable_sharing', true)) {
 				return new \OC\Files\Storage\Wrapper\PermissionsMask([
 					'storage' => $storage,
@@ -163,28 +163,24 @@ class OC_Util {
 		});
 
 		// install storage availability wrapper, before most other wrappers
-		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
-			/** @var \OCP\Files\Storage $storage */
+		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, \OCP\Files\Storage\IStorage $storage) {
 			if (!$storage->instanceOfStorage('\OC\Files\Storage\Shared') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
 			}
 			return $storage;
 		});
 
-		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage\IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OC\Files\Storage\Shared') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
 			}
 			return $storage;
 		});
 
-		\OC\Files\Filesystem::addStorageWrapper('oc_quota', function ($mountPoint, $storage) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_quota', function ($mountPoint, \OCP\Files\Storage\IStorage $storage) {
 			// set up quota for home storages, even for other users
 			// which can happen when using sharing
 
-			/**
-			 * @var \OC\Files\Storage\Storage $storage
-			 */
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Home')
 				|| $storage->instanceOfStorage('\OC\Files\ObjectStore\HomeObjectStoreStorage')
 			) {

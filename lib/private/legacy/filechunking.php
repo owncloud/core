@@ -161,13 +161,13 @@ class OC_FileChunking {
 	 * Assembles the chunks into the file specified by the path.
 	 * Also triggers the relevant hooks and proxies.
 	 *
-	 * @param \OC\Files\Storage\Storage $storage storage
+	 * @param \OCP\Files\Storage\IStorage $storage storage
 	 * @param string $path target path relative to the storage
 	 * @return bool true on success or false if file could not be created
 	 *
 	 * @throws \OC\ServerNotAvailableException
 	 */
-	public function file_assemble($storage, $path) {
+	public function file_assemble(\OCP\Files\Storage\IStorage $storage, $path) {
 		// use file_put_contents as method because that best matches what this function does
 		if (\OC\Files\Filesystem::isValidPath($path)) {
 			$target = $storage->fopen($path, 'w');

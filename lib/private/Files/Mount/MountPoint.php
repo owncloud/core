@@ -30,12 +30,12 @@ namespace OC\Files\Mount;
 
 use \OC\Files\Filesystem;
 use OC\Files\Storage\StorageFactory;
-use OC\Files\Storage\Storage;
 use OCP\Files\Mount\IMountPoint;
+use OCP\Files\Storage\IStorage;
 
 class MountPoint implements IMountPoint {
 	/**
-	 * @var \OC\Files\Storage\Storage $storage
+	 * @var IStorage $storage
 	 */
 	protected $storage = null;
 	protected $class;
@@ -70,7 +70,7 @@ class MountPoint implements IMountPoint {
 	private $invalidStorage = false;
 
 	/**
-	 * @param string|\OC\Files\Storage\Storage $storage
+	 * @param string|IStorage $storage
 	 * @param string $mountpoint
 	 * @param array $arguments (optional) configuration for the storage backend
 	 * @param \OCP\Files\Storage\IStorageFactory $loader
@@ -92,7 +92,7 @@ class MountPoint implements IMountPoint {
 
 		$mountpoint = $this->formatPath($mountpoint);
 		$this->mountPoint = $mountpoint;
-		if ($storage instanceof Storage) {
+		if ($storage instanceof IStorage) {
 			$this->class = get_class($storage);
 			$this->storage = $this->loader->wrap($this, $storage);
 		} else {
@@ -126,7 +126,7 @@ class MountPoint implements IMountPoint {
 	/**
 	 * create the storage that is mounted
 	 *
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 */
 	private function createStorage() {
 		if ($this->invalidStorage) {
@@ -154,7 +154,7 @@ class MountPoint implements IMountPoint {
 	}
 
 	/**
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 */
 	public function getStorage() {
 		if (is_null($this->storage)) {

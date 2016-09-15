@@ -28,6 +28,7 @@ namespace OC\Files\Stream;
 
 use Icewind\Streams\Wrapper;
 use OC\Encryption\Exceptions\EncryptionHeaderKeyExistsException;
+use OCP\Files\Storage\IStorage;
 
 class Encryption extends Wrapper {
 
@@ -40,7 +41,7 @@ class Encryption extends Wrapper {
 	/** @var \OCP\Encryption\IEncryptionModule */
 	protected $encryptionModule;
 
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	protected $storage;
 
 	/** @var \OC\Files\Storage\Wrapper\Encryption */
@@ -129,7 +130,7 @@ class Encryption extends Wrapper {
 	 * @param array $header
 	 * @param string $uid
 	 * @param \OCP\Encryption\IEncryptionModule $encryptionModule
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param IStorage $storage
 	 * @param \OC\Files\Storage\Wrapper\Encryption $encStorage
 	 * @param \OC\Encryption\Util $util
 	 * @param \OC\Encryption\File $file
@@ -146,7 +147,7 @@ class Encryption extends Wrapper {
 	public static function wrap($source, $internalPath, $fullPath, array $header,
 								$uid,
 								\OCP\Encryption\IEncryptionModule $encryptionModule,
-								\OC\Files\Storage\Storage $storage,
+								IStorage $storage,
 								\OC\Files\Storage\Wrapper\Encryption $encStorage,
 								\OC\Encryption\Util $util,
 								 \OC\Encryption\File $file,

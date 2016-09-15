@@ -44,6 +44,7 @@ use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\LockNotAcquiredException;
 use OCP\Files\NotPermittedException;
+use OCP\Files\Storage\IStorage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
@@ -118,9 +119,9 @@ class File extends Node implements IFile {
 		}
 
 		// the part file and target file might be on a different storage in case of a single file storage (e.g. single file share)
-		/** @var \OC\Files\Storage\Storage $partStorage */
+		/** @var IStorage $partStorage */
 		list($partStorage, $internalPartPath) = $this->fileView->resolvePath($partFilePath);
-		/** @var \OC\Files\Storage\Storage $storage */
+		/** @var IStorage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		try {
 			$target = $partStorage->fopen($internalPartPath, 'wb');
@@ -367,7 +368,7 @@ class File extends Node implements IFile {
 		if (\OCP\App::isEnabled('encryption')) {
 			return [];
 		}
-		/** @var \OCP\Files\Storage $storage */
+		/** @var IStorage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		if (is_null($storage)) {
 			return [];
@@ -413,7 +414,7 @@ class File extends Node implements IFile {
 			$partFile = null;
 
 			$targetPath = $path . '/' . $info['name'];
-			/** @var \OC\Files\Storage\Storage $targetStorage */
+			/** @var IStorage $targetStorage */
 			list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
 
 			$exists = $this->fileView->file_exists($targetPath);
@@ -423,13 +424,13 @@ class File extends Node implements IFile {
 
 				$this->emitPreHooks($exists, $targetPath);
 				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_EXCLUSIVE);
-				/** @var \OC\Files\Storage\Storage $targetStorage */
+				/** @var IStorage $targetStorage */
 				list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
 
 				if ($needsPartFile) {
 					// we first assembly the target file as a part file
 					$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
-					/** @var \OC\Files\Storage\Storage $targetStorage */
+					/** @var IStorage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
 
 
@@ -499,10 +500,10 @@ class File extends Node implements IFile {
 	 * or whether the file can be assembled/uploaded directly on the
 	 * target storage.
 	 *
-	 * @param \OCP\Files\Storage $storage
+	 * @param IStorage $storage
 	 * @return bool true if the storage needs part file handling
 	 */
-	private function needsPartFile($storage) {
+	private function needsPartFile(IStorage $storage) {
 		// TODO: in the future use ChunkHandler provided by storage
 		// and/or add method on Storage called "needsPartFile()"
 		return !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage') &&

@@ -151,9 +151,10 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			$internalPath = $mount->getInternalPath($absPath);
 			if ($storage && $storage->file_exists($internalPath)) {
 				/**
-				 * @var \OC\Files\Storage\Storage $storage
+				 * @var IStorage $storage
 				 */
 				// get data directly
+				//FIXME Storage API: add interface for getMetaData?
 				$data = $storage->getMetaData($internalPath);
 				$info = new FileInfo($absPath, $storage, $internalPath, $data, $mount);
 			} else {

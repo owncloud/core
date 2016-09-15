@@ -11,8 +11,10 @@
  */
 namespace Test\Files\ObjectStore;
 
+use OCP\Files\Storage\IStorage;
+
 class NoopScannerTest extends \Test\TestCase {
-	/** @var \OC\Files\Storage\Storage $storage */
+	/** @var IStorage $storage */
 	private $storage;
 
 	/** @var \OC\Files\ObjectStore\NoopScanner $scanner */

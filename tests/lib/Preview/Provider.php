@@ -21,6 +21,8 @@
 
 namespace Test\Preview;
 
+use OCP\Files\Storage\IStorage;
+
 abstract class Provider extends \Test\TestCase {
 
 	/** @var string */
@@ -41,7 +43,7 @@ abstract class Provider extends \Test\TestCase {
 	protected $userId;
 	/** @var \OC\Files\View */
 	protected $rootView;
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	protected $storage;
 
 	protected function setUp() {

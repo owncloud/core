@@ -26,6 +26,7 @@
  */
 
 namespace OCA\Files_Sharing\Tests;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class SharedStorageTest
@@ -96,7 +97,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertFalse($user2View->is_dir($this->folder));
 
 		// delete the local folder
-		/** @var \OC\Files\Storage\Storage $storage */
+		/** @var IStorage $storage */
 		list($storage, $internalPath)  = \OC\Files\Filesystem::resolvePath('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/localfolder');
 		$storage->rmdir($internalPath);
 
@@ -432,7 +433,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($view->file_exists($this->folder));
 
 		/**
-		 * @var \OCP\Files\Storage $sharedStorage
+		 * @var IStorage $sharedStorage
 		 */
 		list($sharedStorage,) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
@@ -465,7 +466,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($view->file_exists($this->folder));
 
 		/**
-		 * @var \OCP\Files\Storage $sharedStorage
+		 * @var IStorage $sharedStorage
 		 */
 		list($sharedStorage,) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));

@@ -25,6 +25,7 @@
 
 namespace OC\Files\Storage;
 use OC\Files\Cache\HomePropagator;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Specialized version of Local storage for home directory usage
@@ -80,10 +81,10 @@ class Home extends Local implements \OCP\Files\IHomeStorage {
 	/**
 	 * get a propagator instance for the cache
 	 *
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @param IStorage (optional) the storage to pass to the watcher
 	 * @return \OC\Files\Cache\Propagator
 	 */
-	public function getPropagator($storage = null) {
+	public function getPropagator(IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}

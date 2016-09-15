@@ -49,6 +49,7 @@ use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\ReservedWordException;
 use OCP\Files\Storage\ILockingStorage;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -62,7 +63,7 @@ use OCP\Lock\ILockingProvider;
  * Some \OC\Files\Storage\Common methods call functions which are first defined
  * in classes which extend it, e.g. $this->stat() .
  */
-abstract class Common implements Storage, ILockingStorage {
+abstract class Common implements IStorage, ILockingStorage {
 
 	use LocalTempFileTrait;
 
@@ -346,10 +347,10 @@ abstract class Common implements Storage, ILockingStorage {
 	/**
 	 * get a propagator instance for the cache
 	 *
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @param IStorage (optional) the storage to pass to the watcher
 	 * @return \OC\Files\Cache\Propagator
 	 */
-	public function getPropagator($storage = null) {
+	public function getPropagator(IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
@@ -369,6 +370,7 @@ abstract class Common implements Storage, ILockingStorage {
 		return $storage->updater;
 	}
 
+	// FIXME Storage API: add ICachedStorage for this method? hm seems to only cache numeric storage ids
 	public function getStorageCache($storage = null) {
 		if (!$storage) {
 			$storage = $this;
@@ -558,13 +560,13 @@ abstract class Common implements Storage, ILockingStorage {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @return bool
 	 */
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		if ($sourceStorage === $this) {
 			return $this->copy($sourceInternalPath, $targetInternalPath);
 		}
@@ -605,12 +607,12 @@ abstract class Common implements Storage, ILockingStorage {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}
@@ -633,6 +635,7 @@ abstract class Common implements Storage, ILockingStorage {
 	/**
 	 * @inheritdoc
 	 */
+	//FIXME Storage API: add interface for getMetaData or add to IStorage?
 	public function getMetaData($path) {
 		$permissions = $this->getPermissions($path);
 		if (!$permissions & \OCP\Constants::PERMISSION_READ) {

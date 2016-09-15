@@ -24,12 +24,11 @@ namespace OCA\Files_External\Lib\Auth\Password;
 
 use \OCP\IUser;
 use \OCP\IL10N;
-use \OCA\Files_External\Lib\DefinitionParameter;
 use \OCA\Files_External\Lib\Auth\AuthMechanism;
 use \OCA\Files_External\Lib\StorageConfig;
 use \OCP\ISession;
 use \OCP\Security\ICrypto;
-use \OCP\Files\Storage;
+use \OCP\Files\Storage\IStorage;
 use \OCA\Files_External\Lib\SessionStorageWrapper;
 use \OCA\Files_External\Lib\InsufficientDataForMeaningfulAnswerException;
 
@@ -79,7 +78,7 @@ class SessionCredentials extends AuthMechanism {
 		$storage->setBackendOption('password', $credentials['password']);
 	}
 
-	public function wrapStorage(Storage $storage) {
+	public function wrapStorage(IStorage $storage) {
 		return new SessionStorageWrapper(['storage' => $storage]);
 	}
 

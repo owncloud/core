@@ -27,6 +27,7 @@
  */
 
 namespace OCA\Files_Sharing\Tests;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class WatcherTest
@@ -35,13 +36,13 @@ namespace OCA\Files_Sharing\Tests;
  */
 class WatcherTest extends TestCase {
 
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	private $ownerStorage;
 
 	/** @var \OC\Files\Cache\Cache */
 	private $ownerCache;
 
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	private $sharedStorage;
 
 	/** @var \OC\Files\Cache\Cache */

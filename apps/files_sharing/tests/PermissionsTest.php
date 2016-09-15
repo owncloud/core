@@ -28,8 +28,8 @@
 namespace OCA\Files_Sharing\Tests;
 
 use OC\Files\Cache\Cache;
-use OC\Files\Storage\Storage;
 use OC\Files\View;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class PermissionsTest
@@ -38,19 +38,19 @@ use OC\Files\View;
  */
 class PermissionsTest extends TestCase {
 
-	/** @var Storage */
+	/** @var IStorage */
 	private $sharedStorageRestrictedShare;
 
-	/** @var Storage */
+	/** @var IStorage */
 	private $sharedCacheRestrictedShare;
 
 	/** @var View */
 	private $secondView;
 
-	/** @var Storage */
+	/** @var IStorage */
 	private $ownerStorage;
 
-	/** @var Storage */
+	/** @var IStorage */
 	private $sharedStorage;
 
 	/** @var Cache */

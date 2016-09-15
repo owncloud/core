@@ -34,9 +34,6 @@ class File extends Node implements \OCP\Files\File {
 	 */
 	public function getContent() {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_READ)) {
-			/**
-			 * @var \OC\Files\Storage\Storage $storage;
-			 */
 			return $this->view->file_get_contents($this->path);
 		} else {
 			throw new NotPermittedException();

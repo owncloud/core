@@ -30,6 +30,7 @@
 namespace OC\Files;
 
 use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\Storage\IStorage;
 use OCP\IUser;
 
 class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
@@ -44,7 +45,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	private $path;
 
 	/**
-	 * @var \OC\Files\Storage\Storage $storage
+	 * @var IStorage $storage
 	 */
 	private $storage;
 
@@ -70,13 +71,13 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 
 	/**
 	 * @param string|boolean $path
-	 * @param Storage\Storage $storage
+	 * @param IStorage|null $storage
 	 * @param string $internalPath
 	 * @param array|ICacheEntry $data
 	 * @param \OCP\Files\Mount\IMountPoint $mount
 	 * @param \OCP\IUser|null $owner
 	 */
-	public function __construct($path, $storage, $internalPath, $data, $mount, $owner= null) {
+	public function __construct($path, IStorage $storage = null, $internalPath, $data, $mount, $owner= null) {
 		$this->path = $path;
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
@@ -119,7 +120,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	}
 
 	/**
-	 * @return \OCP\Files\Storage
+	 * @return IStorage
 	 */
 	public function getStorage() {
 		return $this->storage;

@@ -11,6 +11,7 @@ namespace Test\Files\Cache;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class UpdaterTest
@@ -21,7 +22,7 @@ use OC\Files\View;
  */
 class UpdaterTest extends \Test\TestCase {
 	/**
-	 * @var \OC\Files\Storage\Storage
+	 * @var IStorage
 	 */
 	protected $storage;
 

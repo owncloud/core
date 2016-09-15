@@ -59,7 +59,7 @@ $path = $data['realPath'];
 
 $isWritable = $linkItem['permissions'] & (\OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_CREATE);
 if (!$isWritable) {
-	\OC\Files\Filesystem::addStorageWrapper('readonly', function ($mountPoint, $storage) {
+	\OC\Files\Filesystem::addStorageWrapper('readonly', function ($mountPoint, \OCP\Files\Storage\IStorage $storage) {
 		return new \OC\Files\Storage\Wrapper\PermissionsMask(['storage' => $storage, 'mask' => \OCP\Constants::PERMISSION_READ + \OCP\Constants::PERMISSION_SHARE]);
 	});
 }

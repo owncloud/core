@@ -25,6 +25,7 @@
 namespace OC\Files\Cache;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\Cache\IWatcher;
+use OCP\Files\Storage\IStorage;
 
 /**
  * check the storage backends for updates and change the cache accordingly
@@ -36,7 +37,7 @@ class Watcher implements IWatcher {
 	protected $checkedPaths = [];
 
 	/**
-	 * @var \OC\Files\Storage\Storage $storage
+	 * @var IStorage $storage
 	 */
 	protected $storage;
 
@@ -51,9 +52,9 @@ class Watcher implements IWatcher {
 	protected $scanner;
 
 	/**
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param IStorage $storage
 	 */
-	public function __construct(\OC\Files\Storage\Storage $storage) {
+	public function __construct(IStorage $storage) {
 		$this->storage = $storage;
 		$this->cache = $storage->getCache();
 		$this->scanner = $storage->getScanner();

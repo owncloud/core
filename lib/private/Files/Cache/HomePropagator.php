@@ -21,15 +21,16 @@
 
 namespace OC\Files\Cache;
 
+use OCP\Files\Storage\IStorage;
 use OCP\IDBConnection;
 
 class HomePropagator extends Propagator {
 	private $ignoredBaseFolders;
 
 	/**
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param IStorage $storage
 	 */
-	public function __construct(\OC\Files\Storage\Storage $storage, IDBConnection $connection) {
+	public function __construct(IStorage $storage, IDBConnection $connection) {
 		parent::__construct($storage, $connection);
 		$this->ignoredBaseFolders = ['files_encryption'];
 	}

@@ -21,6 +21,7 @@
  */
 
 namespace OCP\Files\Mount;
+use OCP\Files\Storage\IStorage;
 
 /**
  * A storage mounted to folder on the filesystem
@@ -47,7 +48,7 @@ interface IMountPoint {
 	/**
 	 * Get the storage that is mounted
 	 *
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 * @since 8.0.0
 	 */
 	public function getStorage();

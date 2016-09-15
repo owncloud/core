@@ -7,6 +7,7 @@
  */
 
 namespace Test;
+use OCP\Files\Storage\IStorage;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
 
@@ -18,9 +19,9 @@ use OC\Files\Storage\Temporary;
 class HelperStorageTest extends TestCase {
 	/** @var string */
 	private $user;
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	private $storageMock;
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	private $storage;
 
 	protected function setUp() {
@@ -61,7 +62,7 @@ class HelperStorageTest extends TestCase {
 	 * free space
 	 *
 	 * @param int $freeSpace free space value
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 */
 	private function getStorageMock($freeSpace = 12) {
 		$this->storageMock = $this->getMockBuilder('\OC\Files\Storage\Temporary')

@@ -305,7 +305,7 @@ class Filesystem {
 	 * get the storage mounted at $mountPoint
 	 *
 	 * @param string $mountPoint
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 */
 	public static function getStorage($mountPoint) {
 		if (!self::$mounts) {
@@ -494,7 +494,7 @@ class Filesystem {
 	/**
 	 * mount an \OC\Files\Storage\Storage in our virtual filesystem
 	 *
-	 * @param \OC\Files\Storage\Storage|string $class
+	 * @param IStorage|string $class
 	 * @param array $arguments
 	 * @param string $mountpoint
 	 */

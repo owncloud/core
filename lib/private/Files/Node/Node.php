@@ -31,6 +31,7 @@ use OCP\Files\FileInfo;
 use OCP\Files\InvalidPathException;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
+use OCP\Files\Storage\IStorage;
 
 class Node implements \OCP\Files\Node {
 	/**
@@ -147,8 +148,8 @@ class Node implements \OCP\Files\Node {
 	}
 
 	/**
-	 * @return \OC\Files\Storage\Storage
-	 * @throws \OCP\Files\NotFoundException
+	 * @return IStorage
+	 * @throws NotFoundException
 	 */
 	public function getStorage() {
 		list($storage,) = $this->view->resolvePath($this->path);

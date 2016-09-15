@@ -382,22 +382,22 @@ interface IStorage {
 	public function verifyPath($path, $fileName);
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 * @since 9.0.0
 	 */
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath);
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath);
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 * @since 9.0.0
 	 */
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath);
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath);
 
 	/**
 	 * Test a storage for availability
@@ -429,29 +429,29 @@ interface IStorage {
 	 * @return ICache
 	 * @since 9.0.0
 	 */
-	public function getCache();
+	public function getCache(); //FIXME Storage API: all implementations have $path and $storage
 
 	/**
 	 * @return IPropagator
 	 * @since 9.0.0
 	 */
-	public function getPropagator();
+	public function getPropagator(); // FIXME Storage API: all implementations have $storage
 
 	/**
 	 * @return IScanner
 	 * @since 9.0.0
 	 */
-	public function getScanner();
+	public function getScanner(); // FIXME Storage API: all implementations have $path and $storage
 
 	/**
 	 * @return IUpdater
 	 * @since 9.0.0
 	 */
-	public function getUpdater();
+	public function getUpdater(); // FIXME Storage API: all implementations have $storage
 
 	/**
 	 * @return IWatcher
 	 * @since 9.0.0
 	 */
-	public function getWatcher();
+	public function getWatcher(); // FIXME Storage API: all implementations have $path and $storage
 }

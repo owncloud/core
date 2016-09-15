@@ -27,6 +27,7 @@
 namespace OCA\Files_External\Tests;
 
 use OCA\Files_External\Lib\Storage\AmazonS3;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class AmazonS3Migration
@@ -38,7 +39,7 @@ use OCA\Files_External\Lib\Storage\AmazonS3;
 class AmazonS3MigrationTest extends \Test\TestCase {
 
 	/**
-	 * @var \OC\Files\Storage\Storage instance
+	 * @var IStorage instance
 	 */
 	protected $instance;
 

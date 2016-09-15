@@ -23,6 +23,7 @@
 namespace OCA\Encryption\Tests\Crypto;
 
 use OCA\Encryption\Exceptions\PublicKeyMissingException;
+use OCP\Files\Storage\IStorage;
 use Test\TestCase;
 use OCA\Encryption\Crypto\Encryption;
 
@@ -55,13 +56,13 @@ class EncryptionTest extends TestCase {
 	/** @var \OCP\IL10N|\PHPUnit_Framework_MockObject_MockObject */
 	private $l10nMock;
 
-	/** @var \OCP\Files\Storage|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IStorage|\PHPUnit_Framework_MockObject_MockObject */
 	private $storageMock;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->storageMock = $this->getMockBuilder('OCP\Files\Storage')
+		$this->storageMock = $this->getMockBuilder('OCP\Files\Storage\IStorage')
 			->disableOriginalConstructor()->getMock();
 		$this->cryptMock = $this->getMockBuilder('OCA\Encryption\Crypto\Crypt')
 			->disableOriginalConstructor()

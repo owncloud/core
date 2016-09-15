@@ -24,6 +24,7 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OC\Files\Cache\Wrapper\CacheJail;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -376,10 +377,10 @@ class Jail extends Wrapper {
 	 * get a cache instance for the storage
 	 *
 	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the cache
+	 * @param IStorage (optional) the storage to pass to the cache
 	 * @return \OC\Files\Cache\Cache
 	 */
-	public function getCache($path = '', $storage = null) {
+	public function getCache($path = '', IStorage $storage = null) {
 		if ($this->rootPath === null) {
 			throw new \InvalidArgumentException('Jail rootPath is null');
 		}
@@ -404,10 +405,10 @@ class Jail extends Wrapper {
 	 * get a watcher instance for the cache
 	 *
 	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @param IStorage (optional) the storage to pass to the watcher
 	 * @return \OC\Files\Cache\Watcher
 	 */
-	public function getWatcher($path = '', $storage = null) {
+	public function getWatcher($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
@@ -471,12 +472,12 @@ class Jail extends Wrapper {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->copy($sourceInternalPath, $targetInternalPath);
 		}
@@ -484,12 +485,12 @@ class Jail extends Wrapper {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}
