@@ -428,57 +428,6 @@
 		 */
 		getModelForFile: function(fileName) {
 			return this.findFile(fileName);
-			// TODO: integrate the rest
-			/*
-			var self = this;
-			var $tr;
-			// jQuery object ?
-			if (fileName.is) {
-				$tr = fileName;
-				fileName = $tr.attr('data-file');
-			} else {
-				$tr = this.findFileEl(fileName);
-			}
-
-			if (!$tr || !$tr.length) {
-				return null;
-			}
-
-			// if requesting the selected model, return it
-			if (this._currentFileModel && this._currentFileModel.get('name') === fileName) {
-				return this._currentFileModel;
-			}
-
-			// TODO: note, this is a temporary model required for synchronising
-			// state between different views.
-			// In the future the FileList should work with Backbone.Collection
-			// and contain existing models that can be used.
-			// This method would in the future simply retrieve the matching model from the collection.
-			var model = new OCA.Files.FileInfoModel(this.elementToFile($tr));
-			if (!model.get('path')) {
-				model.set('path', this.getCurrentDirectory(), {silent: true});
-			}
-
-			// TODO: register this on collection directly
-			model.on('change', function(model) {
-				// re-render row
-				var highlightState = $tr.hasClass('highlighted');
-				$tr = self.updateRow(
-					$tr,
-					model.toJSON(),
-					{updateSummary: true, silent: false, animate: true}
-				);
-
-				// restore selection state
-				var selected = !!self._selectedFiles[$tr.data('id')];
-				self._selectFileEl($tr, selected);
-
-				$tr.toggleClass('highlighted', highlightState);
-			});
-			model.on('busy', function(model, state) {
-				self.showFileBusyState($tr, state);
-			});
-			*/
 		},
 
 		/**
@@ -1239,7 +1188,6 @@
 		 *
 		 * @param {OC.Files.FileInfo} fileData map of file attributes
 		 * @param {Object} [options] map of attributes
-		 * @param {boolean} [options.updateSummary] true to update the summary
 		 * after adding (default), false otherwise. Defaults to true.
 		 * @param {boolean} [options.silent] true to prevent firing events like "fileActionsReady",
 		 * defaults to false.
@@ -1291,8 +1239,8 @@
 				this.scrollTo(model.get('name'));
 			}
 
-			// defaults to true if not defined
-			if (typeof(options.updateSummary) === 'undefined' || !!options.updateSummary) {
+			// just added a file
+			if (this.collection.length === 1) {
 				this.updateEmptyContent();
 			}
 
@@ -1305,15 +1253,11 @@
 			var $row
 			var highlightState = $oldRow.hasClass('highlighted');
 
-			options = _.extend({animate: true, updateSummary: true}, options);
+			options = _.extend({animate: true}, options);
 			$row = this._renderRow(model, options);
 
 			// replace the whole row
 			$oldRow.replaceWith($row);
-
-			if (options.updateSummary) {
-				this.updateEmptyContent();
-			}
 
 			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $row}));
 
@@ -1340,8 +1284,6 @@
 		 * @param {OCA.Files.FileInfoModel} fileData map of file attributes
 		 * @param {Object} [options] map of attributes
 		 * @param {int} [options.index] index at which to insert the element
-		 * @param {boolean} [options.updateSummary] true to update the summary
-		 * after adding (default), false otherwise. Defaults to true.
 		 * @param {boolean} [options.animate] true to animate the thumbnail image after load
 		 * defaults to true.
 		 * @return new tr element (not appended to the table)
@@ -1826,8 +1768,6 @@
 		 * Removes a file entry from the list
 		 * @param name name of the file to remove
 		 * @param {Object} [options] map of attributes
-		 * @param {boolean} [options.updateSummary] true to update the summary
-		 * after removing, false otherwise. Defaults to true.
 		 * @return deleted element
 		 *
 		 * @deprecated always remove directly on the collection
@@ -1845,7 +1785,6 @@
 			options = options || {};
 			var name = model.get('name');
 			var fileEl = this.findFileEl(name);
-			var fileId = fileEl.data('id');
 			if (!fileEl.length) {
 				return null;
 			}
@@ -1855,8 +1794,9 @@
 				fileEl.find('td.filename').draggable('destroy');
 			}
 			fileEl.remove();
-			// TODO: improve performance on batch update
-			if (typeof(options.updateSummary) === 'undefined' || !!options.updateSummary) {
+
+			// removed last file ?
+			if (!this.collection.length) {
 				this.updateEmptyContent();
 			}
 
@@ -1899,7 +1839,6 @@
 							oldFile.data('size', newSize);
 							oldFile.find('td.filesize').text(OC.Util.humanFileSize(newSize));
 
-							// TODO: also update entry in FileList.files
 							self.remove(fileName);
 						}
 					})
@@ -1934,7 +1873,6 @@
 		updateRow: function($tr, fileInfo, options) {
 			$tr.remove();
 			options = _.extend({silent: true}, options);
-			options = _.extend(options, {updateSummary: false});
 			$tr = this.onAddFile(this.collection.get(fileInfo.id), this.collection, options);
 			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $tr}));
 			return $tr;
@@ -2022,7 +1960,7 @@
 											{fileName: oldName}
 										)
 									);
-									self.collection.remove(model, {updateSummary: true});
+									self.collection.remove(model);
 									return;
 								} else if (status === 412) {
 									// target exists
@@ -2332,7 +2270,7 @@
 			dir = dir || this.getCurrentDirectory();
 
 			function removeFromList(file) {
-				var fileEl = self.remove(file, {updateSummary: false});
+				var fileEl = self.remove(file);
 				// FIXME: not sure why we need this after the
 				// element isn't even in the DOM any more
 				fileEl.find('.selectCheckBox').prop('checked', false);
