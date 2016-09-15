@@ -41,6 +41,12 @@
 		 */
 		_sortDirection: 'asc',
 
+		/**
+		 * Filter string
+		 * @type String
+		 */
+		_filter: null,
+
 		initialize: function(models, options) {
 			options = options || {};
 
@@ -98,7 +104,19 @@
 			} else {
 				this.comparator = comparator;
 			}
-		}
+		},
+
+		/**
+		 * Set a filter for the collection.
+		 *
+		 * Note that this doesn't filter the collection and is only for information purposes.
+		 */
+		setFilter: function(filter, options) {
+			if (filter !== this._filter) {
+				this._filter = filter;
+				this.trigger('filter', this, filter, options);
+			}
+		},
 	});
 
 	/**

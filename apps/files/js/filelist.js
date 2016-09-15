@@ -960,8 +960,6 @@
 
 			this.updateEmptyContent();
 
-			this.fileSummary.calculate(this.collection.toJSON());
-
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
 			this.updateSelectionSummary();
@@ -1266,7 +1264,6 @@
 
 			// defaults to true if not defined
 			if (typeof(options.updateSummary) === 'undefined' || !!options.updateSummary) {
-				this.fileSummary.add(model.toJSON(), true);
 				this.updateEmptyContent();
 			}
 
@@ -1286,9 +1283,6 @@
 			$oldRow.replaceWith($row);
 
 			if (options.updateSummary) {
-				// FIXME: update summary
-				//this.fileSummary.remove(oldModel.toJSON(), false);
-				//this.fileSummary.add(model.toJSON(), true);
 				this.updateEmptyContent();
 			}
 
@@ -1839,7 +1833,6 @@
 			// TODO: improve performance on batch update
 			if (typeof(options.updateSummary) === 'undefined' || !!options.updateSummary) {
 				this.updateEmptyContent();
-				this.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')}, true);
 			}
 
 			return fileEl;
@@ -2319,10 +2312,8 @@
 				// element isn't even in the DOM any more
 				fileEl.find('.selectCheckBox').prop('checked', false);
 				fileEl.removeClass('selected');
-				self.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')});
 				// TODO: this info should be returned by the ajax call!
 				self.updateEmptyContent();
-				self.fileSummary.update();
 				self.updateSelectionSummary();
 				// FIXME: don't repeat this, do it once all files are done
 				self.updateStorageStatistics();
@@ -2357,7 +2348,10 @@
 			var $tr = $('<tr class="summary"></tr>');
 			this.$el.find('tfoot').append($tr);
 
-			return new OCA.Files.FileSummary($tr, {config: this._filesConfig});
+			return new OCA.Files.FileSummary($tr, {
+				collection: this.collection,
+				config: this._filesConfig
+			});
 		},
 		updateEmptyContent: function() {
 			var permissions = this.getDirectoryPermissions();

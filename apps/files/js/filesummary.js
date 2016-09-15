@@ -36,13 +36,22 @@
 	 * @constructs FileSummary
 	 * @memberof OCA.Files
 	 *
-	 * @param $tr table row element
+	 * @param $tr table row element on which to render
+	 * @param {OCA.Files.FileInfoCollection} [options.collection] collection to track
 	 * @param {OC.Backbone.Model} [options.filesConfig] files app configuration
 	 */
 	var FileSummary = function($tr, options) {
 		options = options || {};
 		var self = this;
 		this.$el = $tr;
+		this.collection = options.collection;
+
+		if (this.collection) {
+			this.collection.on('add', this._onAddEntry, this);
+			this.collection.on('remove', this._onRemoveEntry, this);
+			this.collection.on('reset', this._onResetCollection, this);
+		}
+
 		var filesConfig = options.config;
 		if (filesConfig) {
 			this._showHidden = !!filesConfig.get('showhidden');
@@ -76,6 +85,28 @@
 		 */
 		_isHiddenFile: function(file) {
 			return file.name && file.name.charAt(0) === '.';
+		},
+
+		_onAddEntry: function(model, collection, options) {
+			var update = true;
+			options = _.extend({}, options || {});
+			if (!_.isUndefined(options.update)) {
+				update = !!options.update;
+			}
+			this.add(model.toJSON(), update);
+		},
+
+		_onRemoveEntry: function(model, collection, options) {
+			var update = true;
+			options = _.extend({}, options || {});
+			if (!_.isUndefined(options.update)) {
+				update = !!options.update;
+			}
+			this.remove(model.toJSON(), update);
+		},
+
+		_onResetCollection: function() {
+			this.calculate(this.collection.toJSON());
 		},
 
 		/**
