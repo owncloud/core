@@ -226,7 +226,9 @@
 			if (options.model) {
 				this.model = options.model;
 			} else {
-				this.model = new OCA.Files.FileInfoModel({path: '', name: ''}, {filesClient: this.filesClient});
+				this.model = new OCA.Files.FileInfoModel({path: '', name: ''}, {
+					filesClient: this.filesClient
+				});
 			}
 
 			this.collection = this.model.getChildrenCollection();
@@ -2126,31 +2128,39 @@
 			var targetPath = OC.joinPaths(dir, fileName);
 
 			if ((OC.dirname(targetPath) || '/') !== this.getCurrentDirectory()) {
-				// no need to fetch information
+				// no need to fetch information as this is outside the current view
 				deferred.resolve();
 				return deferred.promise();
 			}
 
-			var addOptions = _.extend({
-				animate: true,
-				scrollTo: false
-			}, options || {});
+			var model = this.newModel(OC.basename(fileName));
 
-			this.filesClient.getFileInfo(targetPath, {
-					properties: this._getWebdavProperties()
-				})
-				.then(function(status, data) {
-					// remove first to avoid duplicates
-					self.remove(data.name);
-					self.add(data, addOptions);
-					deferred.resolve(status, data);
-				})
-				.fail(function(status) {
-					OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
-					deferred.reject(status);
-				});
+			model.fetch({
+				animate: true,
+				scrollTo: true
+			}).then(function() {
+				self.collection.add(model);
+				deferred.resolve(200, model);
+			}, function() {
+				OC.Notification.showTemporary(t('files', 'Could not find file "{file}"', {file: fileName}));
+				deferred.reject(status);
+			});
 
 			return deferred.promise();
+		},
+
+		/**
+		 * Creates a new model properly wired up for this list
+		 *
+		 * @param {String} name name
+		 */
+		newModel: function(name) {
+			return new OCA.Files.FileInfoModel({
+				path: this.model.getFullPath(),
+				name: name
+			}, {
+				filesClient: this.filesClient
+			});
 		},
 
 		/**

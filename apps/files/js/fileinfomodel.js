@@ -13,6 +13,11 @@
 	var NS_OWNCLOUD = 'http://owncloud.org/ns';
 	var NS_DAV = 'DAV:';
 
+	function splitUrl(href, baseUrl) {
+		var s = decodeURIComponent(_.str.rtrim(href.substr(baseUrl.length), '/'));
+		return [OC.dirname(s), OC.basename(s)];
+	}
+
 	function parseEtag(etag) {
 		if (etag.charAt(0) === '"') {
 			return etag.split('"')[1];
@@ -22,7 +27,10 @@
 
 	function parsePermissions(result, isFile) {
 		var permString = result.permissions;
-		data = {mountType: null};
+		data = {
+			mountType: null,
+			permissions: OC.PERMISSION_READ
+		};
 		for (var i = 0; i < permString.length; i++) {
 			var c = permString.charAt(i);
 			switch (c) {
@@ -107,13 +115,13 @@
 			 */
 			'permissions': '{' + NS_OWNCLOUD + '}permissions',
 			/**
-			 * File sizes
-			 */
-			'size': '{' + NS_OWNCLOUD + '}size',
-			/**
 			 * Folder sizes
 			 */
-			'folderSize': '{' + NS_DAV + '}getcontentlength'
+			'folderSize': '{' + NS_OWNCLOUD + '}size',
+			/**
+			 * File sizes
+			 */
+			'size': '{' + NS_DAV + '}getcontentlength'
 		},
 
 		defaults: {
@@ -141,6 +149,9 @@
 				);
 			}
 			this._filesClient = options.filesClient || OC.Files.getClient();
+			if (options.davProperties) {
+				this.davProperties = options.davProperties;
+			}
 		},
 
 		url: function() {
@@ -201,7 +212,7 @@
 				delete result.folderSize;
 			}
 			result.size = parseInt(result.size, 10);
-			result.id = parseInt(result.id, 10);
+			result.id = parseInt(result.fileid, 10);
 			if (result.etag) {
 				result.etag = parseEtag(result.etag);
 			}
@@ -221,6 +232,12 @@
 			if (result.mtime) {
 				result.mtime = new Date(result.mtime).getTime();
 			}
+
+			if (!result.path && !result.name) {
+				var parts = splitUrl(result.href, this._baseUrl);
+				result.path = parts[0];
+				result.name = parts[1];
+			}
 			return result;
 		},
 
@@ -238,29 +255,44 @@
 		},
 
 		fetch: function(options) {
-			options = options || {};
+			var model = this;
+			var deferred = $.Deferred();
+			options = _.extend({depth: 0}, options || {});
 			var success = options.success;
 			var error = options.error;
 			var self = this;
-			return OC.Backbone.davSync('PROPFIND', this, {
-				depth: 1,
+			var depth = options.depth;
+
+			OC.Backbone.davSync('PROPFIND', this, {
+				depth: depth,
 				includeRoot: true,
 				success: function(results) {
-					var collection = self.getChildrenCollection();
-					var rootResult = results.shift();
-					self.set(self.parse(rootResult));
-					collection.reset(results, {parse: true});
-					collection.trigger('sync', 'PROPFIND', collection, options);
+					if (depth === 0) {
+						self.set(self.parse(results));
+					} else {
+						var rootResult = results.shift();
+						self.set(self.parse(rootResult));
+
+						// also populate children collection
+						var collection = self.getChildrenCollection();
+						collection.reset(results, {parse: true});
+						collection.trigger('sync', 'PROPFIND', collection, options);
+					}
+
 					if (success) {
 						success.apply(null, arguments);
 					}
+					deferred.resolve(model, options);
 				},
 				error: function() {
 					if (error) {
 						error.apply(null, arguments);
 					}
+					deferred.reject.call(deferred, arguments);
 				}
 			});
+
+			return deferred.promise();
 		},
 
 		getId: function() {
