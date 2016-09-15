@@ -503,6 +503,7 @@
 		 * @param {boolean} [show=true] whether to open the sidebar if it was closed
 		 */
 		_updateDetailsView: function(fileName, show) {
+			var self = this;
 			if (!this._detailsView) {
 				return;
 			}
@@ -515,10 +516,15 @@
 				this.$fileList.children().filterAttr('data-id', '' + oldFileInfo.get('id')).removeClass('highlighted');
 			}
 
+			function onRemoveCurrentFile() {
+				OC.Apps.hideAppSidebar(self._detailsView.$el);
+				self._currentFileModel = null;
+			}
+
 			if (!fileName) {
 				this._detailsView.setFileInfo(null);
 				if (this._currentFileModel) {
-					this._currentFileModel.off();
+					this._currentFileModel.off('remove', onRemoveCurrentFile);
 				}
 				this._currentFileModel = null;
 				OC.Apps.hideAppSidebar(this._detailsView.$el);
@@ -533,6 +539,8 @@
 			var model = this.findFile(fileName);
 
 			this._currentFileModel = model;
+			// close sidebar if current file is removed
+			this._currentFileModel.on('remove', onRemoveCurrentFile)
 
 			$tr.addClass('highlighted');
 
