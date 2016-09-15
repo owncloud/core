@@ -151,15 +151,15 @@
 		 * Get the collection object for this folder's contents.
 		 * The collection is initially unpopulated.
 		 *
-		 * @return {OCA.Files.FileInfoCollection} collection
+		 * @return {OCA.Files.FileInfoCollection} children collection
 		 */
-		getCollection: function() {
-			if (!this._collection) {
-				this._collection = new OCA.Files.FileInfoCollection(null, {
+		getChildrenCollection: function() {
+			if (!this._childrenCollection) {
+				this._childrenCollection = new OCA.Files.FileInfoCollection(null, {
 					path: this.get('path')
 				});
 			}
-			return this._collection;
+			return this._childrenCollection;
 		},
 
 		/**
@@ -246,7 +246,7 @@
 				depth: 1,
 				includeRoot: true,
 				success: function(results) {
-					var collection = self.getCollection();
+					var collection = self.getChildrenCollection();
 					var rootResult = results.shift();
 					self.set(self.parse(rootResult));
 					collection.reset(results, {parse: true});
@@ -342,6 +342,44 @@
 					newModel.set('name', newName, {silent: true});
 					if (collection) {
 						collection.add(newModel, {sort: true});
+					}
+					deferred.resolve(status, newModel);
+				})
+				.fail(function(status) {
+					deferred.reject(status);
+				});
+
+			return deferred.promise();
+		},
+
+		/**
+		 * Move this file/folder to the given target path.
+		 *
+		 * @param {String} targetPath full path including the target name
+		 */
+		move: function(targetPath) {
+			var deferred = $.Deferred();
+			var model = this;
+
+			this._filesClient.move(model.getFullPath(), targetPath)
+				.done(function() {
+					var collection = model.collection;
+					var newModel = model.clone();
+					newModel.set({
+						'name': OC.basename(targetPath),
+						'path': OC.dirname(targetPath)
+					}, {silent: true});
+
+					// update collection if applicable
+					if (collection) {
+						if (newModel.getPath() === model.getPath()) {
+							// simple rename, reinsert
+							collection.remove(model, {sort: false});
+							collection.add(model);
+						} else {
+							// simply remove, the file disappears
+							collection.remove(model);
+						}
 					}
 					deferred.resolve(status, newModel);
 				})

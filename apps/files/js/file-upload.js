@@ -661,7 +661,7 @@ OC.Uploader.prototype = _.extend({
 				// no list to check against
 				return true;
 			}
-			var fileInfo = fileListModel.getCollection().findWhere({name: file.name});
+			var fileInfo = fileListModel.getChildrenCollection().findWhere({name: file.name});
 			if (fileInfo) {
 				conflicts.push([
 					// original

@@ -381,6 +381,9 @@ var dragOptions={
 		$selectedFiles.closest('tr').addClass('animate-opacity dragging');
 		$selectedFiles.closest('tr').filter('.ui-droppable').droppable( 'disable' );
 
+		if (!FileList._selectedCollection.length) {
+			FileList._selectFileEl($selectedFiles.closest('tr'), true);
+		}
 	},
 	stop: function(event, ui) {
 		var $selectedFiles = $('td.filename input:checkbox:checked');
@@ -443,7 +446,7 @@ var folderDropOptions = {
 			return $(el).attr('data-file');
 		});
 
-		FileList.move(fileNames, targetPath);
+		FileList._moveSelected(targetPath);
 	},
 	tolerance: 'pointer'
 };

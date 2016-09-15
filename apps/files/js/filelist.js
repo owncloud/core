@@ -229,7 +229,7 @@
 				this.model = new OCA.Files.FileInfoModel({path: '', name: ''}, {filesClient: this.filesClient});
 			}
 
-			this.collection = this.model.getCollection();
+			this.collection = this.model.getChildrenCollection();
 			this.collection.on('reset', this._onCollectionReset, this);
 			this.collection.on('sort', this._onCollectionSort, this);
 			this.collection.on('add', this._onAddFile, this);
@@ -356,7 +356,7 @@
 				var $uploadEl = this.$el.find('#file_upload_start');
 				if ($uploadEl.exists()) {
 					this._uploader = new OC.Uploader($uploadEl, {
-						fileList: this,
+						fileListModel: this.model,
 						filesClient: this.filesClient,
 						dropZone: $('#content')
 					});
@@ -428,6 +428,18 @@
 		 */
 		getModelForFile: function(fileName) {
 			return this.findFile(fileName);
+		},
+
+		/**
+		 * Find all models matching the given file names
+		 *
+		 * @param {Array.<String>} fileNames
+		 * @return {Array.<OCA.Files.FileInfoModel>} models
+		 */
+		getModelsForFiles: function(fileNames) {
+			return this.collection.filter(function(model) {
+				return (fileNames.indexOf(model.getName()) >= 0);
+			});
 		},
 
 		/**
@@ -816,11 +828,7 @@
 				return;
 			}
 
-			var fileNames = _.map(ui.helper.find('tr'), function(el) {
-				return $(el).attr('data-file');
-			});
-
-			this.move(fileNames, targetPath);
+			this._moveSelected(targetPath);
 
 			// re-enable td elements to be droppable
 			// sometimes the filename drop handler is still called after re-enable,
@@ -1741,15 +1749,6 @@
 		},
 
 		/**
-		 * @deprecated
-		 */
-		setDirectoryPermissions: function(permissions) {
-			var isCreatable = (permissions & OC.PERMISSION_CREATE) !== 0;
-			this.$el.find('#permissions').val(permissions);
-			this.$el.find('.creatable').toggleClass('hidden', !isCreatable);
-			this.$el.find('.notCreatable').toggleClass('hidden', isCreatable);
-		},
-		/**
 		 * Shows/hides action buttons
 		 *
 		 * @param show true for enabling, false for disabling
@@ -1822,61 +1821,21 @@
 		},
 
 		/**
-		 * Moves a file to a given target folder.
+		 * Moves the current selected entries to the given target path
 		 *
-		 * @param fileNames array of file names to move
-		 * @param targetPath absolute target path
+		 * @param {String} targetPath absolute target path
 		 */
-		move: function(fileNames, targetPath) {
+		_moveSelected: function(targetPath) {
 			var self = this;
-			var dir = this.getCurrentDirectory();
-			if (dir.charAt(dir.length - 1) !== '/') {
-				dir += '/';
-			}
-			var target = OC.basename(targetPath);
-			if (!_.isArray(fileNames)) {
-				fileNames = [fileNames];
-			}
-			_.each(fileNames, function(fileName) {
-				var $tr = self.findFileEl(fileName);
-				self.showFileBusyState($tr, true);
-				if (targetPath.charAt(targetPath.length - 1) !== '/') {
-					// make sure we move the files into the target dir,
-					// not overwrite it
-					targetPath = targetPath + '/';
-				}
-				self.filesClient.move(dir + fileName, targetPath + fileName)
-					.done(function() {
-						// if still viewing the same directory
-						if (OC.joinPaths(self.getCurrentDirectory(), '/') === dir) {
-							// recalculate folder size
-							var oldFile = self.findFileEl(target);
-							var newFile = self.findFileEl(fileName);
-							var oldSize = oldFile.data('size');
-							var newSize = oldSize + newFile.data('size');
-							oldFile.data('size', newSize);
-							oldFile.find('td.filesize').text(OC.Util.humanFileSize(newSize));
-
-							self.remove(fileName);
-						}
-					})
-					.fail(function(status) {
-						if (status === 412) {
-							// TODO: some day here we should invoke the conflict dialog
-							OC.Notification.showTemporary(
-								t('files', 'Could not move "{file}", target exists', {file: fileName})
-							);
-						} else {
-							OC.Notification.showTemporary(
-								t('files', 'Could not move "{file}"', {file: fileName})
-							);
-						}
-					})
-					.always(function() {
-						self.showFileBusyState($tr, false);
-					});
+			var promises = this._selectedCollection.map(function(model) {
+				var target = OC.joinPaths(targetPath, model.getName());
+				return model.move(target);
 			});
-
+			// TODO: error handling
+			$.when.apply($, promises)
+				.then(function() {
+					self.updateStorageStatistics();
+				});
 		},
 
 		/**
