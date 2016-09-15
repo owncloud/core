@@ -236,6 +236,7 @@
 			this.collection.on('add', this._onAddFile, this);
 			this.collection.on('remove', this._onRemoveFile, this);
 			this.collection.on('change', this._onChangeFile, this);
+			this.collection.on('busy', this._onFileBusy, this);
 
 			this.$el = $el;
 			if (options.id) {
@@ -586,7 +587,7 @@
 				// hide sidebar
 				this._updateDetailsView(null);
 			}
-			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.files.length);
+			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.collection.length);
 		},
 
 		/**
@@ -680,11 +681,12 @@
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
 			if (checked) {
-				for (var i = 0; i < this.files.length; i++) {
-					var fileData = this.files[i];
+				this.collection.each(function(model) {
+					// TODO: store real model
+					var fileData = model.toJSON();
 					this._selectedFiles[fileData.id] = fileData;
 					this._selectionSummary.add(fileData);
-				}
+				});
 			}
 			this.updateSelectionSummary();
 			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
@@ -858,6 +860,8 @@
 		 * @return {OCA.Files.FileInfo} file info or null if it was not found
 		 *
 		 * @since 8.2
+		 *
+		 * @deprecated search the file name on the collection instead
 		 */
 		findFile: function(fileName) {
 			return this.collection.findWhere({name: fileName});
@@ -956,7 +960,7 @@
 
 			this.updateEmptyContent();
 
-			this.fileSummary.calculate(this.files);
+			this.fileSummary.calculate(this.collection.toJSON());
 
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
@@ -1216,7 +1220,7 @@
 		 * defaults to true.
 		 * @return new tr element (not appended to the table)
 		 *
-		 * @deprecated always add directly to the model
+		 * @deprecated always add directly to the collection
 		 */
 		add: function(fileData, options) {
 			//options = _.extend({sort: false}, options || {});
@@ -1271,19 +1275,37 @@
 
 		_onChangeFile: function(model, collection, options) {
 			// re-render row
-			var $tr = this.findFileEl(model.get('name'));
-			var highlightState = $tr.hasClass('highlighted');
-			$tr = this.updateRow(
-				$tr,
-				model.toJSON(),
-				{updateSummary: true, silent: false, animate: true}
-			);
+			var $oldRow = this.findFileEl(model.previous('name'));
+			var $row
+			var highlightState = $oldRow.hasClass('highlighted');
+
+			options = _.extend({animate: true, updateSummary: true}, options);
+			$row = this._renderRow(model, options);
+
+			// replace the whole row
+			$oldRow.replaceWith($row);
+
+			if (options.updateSummary) {
+				// FIXME: update summary
+				//this.fileSummary.remove(oldModel.toJSON(), false);
+				//this.fileSummary.add(model.toJSON(), true);
+				this.updateEmptyContent();
+			}
+
+			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $row}));
+
+			if (options.animate) {
+				$row.addClass('appear transparent');
+				window.setTimeout(function() {
+					$row.removeClass('transparent');
+				});
+			}
 
 			// restore selection state
-			var selected = !!this._selectedFiles[$tr.data('id')];
-			this._selectFileEl($tr, selected);
+			var selected = !!this._selectedFiles[$row.data('id')];
+			this._selectFileEl($row, selected);
 
-			$tr.toggleClass('highlighted', highlightState);
+			$row.toggleClass('highlighted', highlightState);
 		},
 
 		/**
@@ -1785,7 +1807,7 @@
 		 * after removing, false otherwise. Defaults to true.
 		 * @return deleted element
 		 *
-		 * @deprecated always remove directly on the model
+		 * @deprecated always remove directly on the collection
 		 */
 		remove: function(name, options) {
 			var fileEl = this.findFileEl(name);
@@ -1892,11 +1914,10 @@
 		 * @return {Object} new row element
 		 */
 		updateRow: function($tr, fileInfo, options) {
-			this.files.splice($tr.index(), 1);
 			$tr.remove();
 			options = _.extend({silent: true}, options);
 			options = _.extend(options, {updateSummary: false});
-			$tr = this.add(fileInfo, options);
+			$tr = this.onAddFile(this.collection.get(fileInfo.id), this.collection, options);
 			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $tr}));
 			return $tr;
 		},
@@ -1962,19 +1983,15 @@
 					if (newName !== oldName) {
 						checkInput();
 						// mark as loading (temp element)
-						self.showFileBusyState(tr, true);
-						tr.attr('data-file', newName);
+						model.setBusy(true);
 						var basename = newName;
-						if (newName.indexOf('.') > 0 && tr.data('type') !== 'dir') {
-							basename = newName.substr(0, newName.lastIndexOf('.'));
-						}
-						td.find('a.name span.nametext').text(basename);
+						var path = model.get('path');
 						td.children('a.name').show();
-
-						var path = tr.attr('data-path') || self.getCurrentDirectory();
 						self.filesClient.move(OC.joinPaths(path, oldName), OC.joinPaths(path, newName))
 							.done(function() {
-								model.set('name', newName);
+								// set new name, this will implicitly trigger a re-render of the row
+								// TODO: in the future the model will do the server request
+								model.rename(newName);
 							})
 							.fail(function(status) {
 								// TODO: 409 means current folder does not exist, redirect ?
@@ -1987,7 +2004,7 @@
 											{fileName: oldName}
 										)
 									);
-									self.remove(newName, {updateSummary: true});
+									self.collection.remove(model, {updateSummary: true});
 									return;
 								} else if (status === 412) {
 									// target exists
@@ -2215,9 +2232,18 @@
 		 * @param {string} file file name
 		 *
 		 * @return {bool} true if the file exists in the list, false otherwise
+		 *
+		 * @deprecated search the file name on the collection instead
 		 */
 		inList:function(file) {
 			return this.findFile(file);
+		},
+
+		/**
+		 * Event handler whenever a file's "busy" event was called
+		 */
+		_onFileBusy: function(model, options) {
+			this.showFileBusyState(model.get('name'), !!options.busy);
 		},
 
 		/**
@@ -2227,6 +2253,8 @@
 		 * @param {bool} [busy=true] busy state, true for busy, false to remove busy state
 		 *
 		 * @since 8.2
+		 *
+		 * @deprecated call model.setBusy() instead
 		 */
 		showFileBusyState: function(files, state) {
 			var self = this;

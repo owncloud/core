@@ -287,6 +287,37 @@
 		getDownloadUrl: function(files, isDir) {
 			return OCA.Files.Files.getDownloadUrl(files, this.getFullPath(), isDir);
 		},
+
+		/**
+		 * Lock file in busy state
+		 *
+		 * @param {bool} busyState busyState
+		 */
+		setBusy: function(busyState) {
+			busyState = !!busyState;
+			if (busyState !== this._busyState) {
+				this._busyState = busyState;
+				this.trigger('busy', this, {busy: busyState});
+			}
+		},
+
+		/**
+		 * Rename the model and returns a clone of the renamed model
+		 *
+		 * @return {OCA.Files.FileInfoModel} renamed model
+		 */
+		rename: function(newName) {
+			var collection = this.collection;
+			var newModel = this.clone();
+			if (collection) {
+				collection.remove(this, {sort: false});
+			}
+			newModel.set('name', newName, {silent: true});
+			if (collection) {
+				collection.add(newModel, {sort: true});
+			}
+			return this.newModel;
+		}
 	});
 
 	FileInfoModel.getFromPath = function(dir) {
