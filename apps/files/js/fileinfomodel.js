@@ -116,8 +116,6 @@
 			'folderSize': '{' + NS_DAV + '}getcontentlength'
 		},
 
-		idAttribute: 'href',
-
 		defaults: {
 			mimetype: 'application/octet-stream',
 			path: ''

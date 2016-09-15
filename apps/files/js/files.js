@@ -439,15 +439,11 @@ var folderDropOptions = {
 		}
 		var targetPath = FileList.getCurrentDirectory() + '/' + $tr.data('file');
 
-		var files = FileList.getSelectedFiles();
-		if (files.length === 0) {
-			// single one selected without checkbox?
-			files = _.map(ui.helper.find('tr'), function(el) {
-				return FileList.elementToFile($(el));
-			});
-		}
+		var fileNames = _.map(ui.helper.find('tr'), function(el) {
+			return $(el).attr('data-file');
+		});
 
-		FileList.move(_.pluck(files, 'name'), targetPath);
+		FileList.move(fileNames, targetPath);
 	},
 	tolerance: 'pointer'
 };

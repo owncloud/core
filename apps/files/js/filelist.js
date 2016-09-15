@@ -129,10 +129,9 @@
 		_allowSelection: true,
 
 		/**
-		 * Map of file id to file data
-		 * @type Object.<int, Object>
+		 * Collection of selected entries
 		 */
-		_selectedFiles: {},
+		_selectedCollection: null,
 
 		/**
 		 * Summary of selected files.
@@ -250,6 +249,7 @@
 				this._filesConfig.on('change:showhidden', function() {
 					var showHidden = this.get('showhidden');
 					self.$el.toggleClass('hide-hidden-files', !showHidden);
+					// TODO: when FileSummary is a model, listen to change event
 					self.updateSelectionSummary();
 
 					if (!showHidden) {
@@ -275,11 +275,21 @@
 			}
 
 			this.files = [];
-			this._selectedFiles = {};
-			this._selectionSummary = new OCA.Files.FileSummary(undefined, {config: this._filesConfig});
-			// dummy root dir info
 
 			this.fileSummary = this._createSummary();
+
+			// use a regular collection for now
+			this._selectedCollection = new OC.Backbone.Collection();
+			this._selectionSummary = new OCA.Files.FileSummary(
+				undefined, {
+					collection: this._selectedCollection,
+					config: this._filesConfig
+				}
+			);
+			// register events after summary did so it gets a chance to update
+			this._selectedCollection.on('add', this._onToggleSelectedFile, this);
+			this._selectedCollection.on('remove', this._onToggleSelectedFile, this);
+			this._selectedCollection.on('reset', this._onResetSelection, this);
 
 			if (options.sorting) {
 				this.setSort(options.sorting.mode, options.sorting.direction, false, false);
@@ -564,30 +574,59 @@
 		 * @param {Object} $tr single file row element
 		 * @param {bool} state true to select, false to deselect
 		 */
-		_selectFileEl: function($tr, state, showDetailsView) {
-			var $checkbox = $tr.find('td.filename>.selectCheckBox');
-			var oldData = !!this._selectedFiles[$tr.data('id')];
-			var data;
-			$checkbox.prop('checked', state);
-			$tr.toggleClass('selected', state);
-			// already selected ?
-			if (state === oldData) {
+		_selectFileEl: function($tr, state) {
+			var model = this.collection.findWhere({name: $tr.attr('data-file')});
+			if (!model) {
 				return;
 			}
-			data = this.elementToFile($tr);
+
 			if (state) {
-				this._selectedFiles[$tr.data('id')] = data;
-				this._selectionSummary.add(data);
+				this._selectedCollection.add(model);
+			} else {
+				this._selectedCollection.remove(model);
 			}
-			else {
-				delete this._selectedFiles[$tr.data('id')];
-				this._selectionSummary.remove(data);
-			}
+		},
+
+		_onToggleSelectedFile: function(model, collection, options) {
+			var state = options.add ? true : false;
+			var $tr = this.findFileEl(model.get('name'));
+			var $checkbox = $tr.find('td.filename>.selectCheckBox');
+
+			$checkbox.prop('checked', state);
+			$tr.toggleClass('selected', state);
 			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
 				// hide sidebar
 				this._updateDetailsView(null);
 			}
-			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.collection.length);
+
+			this.updateSelectionSummary();
+
+			this.$el.find('.select-all').prop('checked', this.isAllSelected());
+		},
+
+		_onResetSelection: function() {
+			var self = this;
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
+			}
+
+			if (!this._selectedCollection.length || !this.collection.length) {
+				// nothing selected or empty list
+				this.$fileList.find('td.filename>.selectCheckBox').prop('checked', false)
+					.closest('tr').toggleClass('selected', false);
+			} else if (this.isAllSelected()) {
+				// don't bother iterating, tick all checkboxes
+				this.$fileList.find('td.filename>.selectCheckBox').prop('checked', true)
+					.closest('tr').toggleClass('selected', true);
+			} else {
+				// custom list given, select them one by one
+				this._selectedCollection.each(function(model) {
+					self._onToggleSelectedFile(model, self._selectedCollection, {add: true});
+				});
+			}
+
+			this.updateSelectionSummary();
 		},
 
 		/**
@@ -676,22 +715,10 @@
 		 */
 		_onClickSelectAll: function(e) {
 			var checked = $(e.target).prop('checked');
-			this.$fileList.find('td.filename>.selectCheckBox').prop('checked', checked)
-				.closest('tr').toggleClass('selected', checked);
-			this._selectedFiles = {};
-			this._selectionSummary.clear();
 			if (checked) {
-				this.collection.each(function(model) {
-					// TODO: store real model
-					var fileData = model.toJSON();
-					this._selectedFiles[fileData.id] = fileData;
-					this._selectionSummary.add(fileData);
-				});
-			}
-			this.updateSelectionSummary();
-			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
-				// hide sidebar
-				this._updateDetailsView(null);
+				this._selectedCollection.reset(this.collection.models);
+			} else {
+				this._selectedCollection.reset([]);
 			}
 		},
 
@@ -701,12 +728,12 @@
 		_onClickDownloadSelected: function(event) {
 			var files;
 			var dir = this.getCurrentDirectory();
-			if (this.isAllSelected() && this.getSelectedFiles().length > 1) {
+			if (this.isAllSelected() && this._selectedCollection.length > 1) {
 				files = OC.basename(dir);
 				dir = OC.dirname(dir) || '/';
 			}
 			else {
-				files = _.pluck(this.getSelectedFiles(), 'name');
+				files = this._selectedCollection.pluck('name');
 			}
 
 			var downloadFileaction = $('#selectedActionsList').find('.download');
@@ -722,11 +749,11 @@
 			};
 
 			OCA.Files.FileActions.updateFileActionSpinner(downloadFileaction, true);
-			if(this.getSelectedFiles().length > 1) {
+			if(this._selectedCollection.length > 1) {
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir, true), disableLoadingState);
 			}
 			else {
-				first = this.getSelectedFiles()[0];
+				var first = this._selectedCollection.at(0).toJSON();
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(first.name, dir, true), disableLoadingState);
 			}
 			return false;
@@ -738,7 +765,7 @@
 		_onClickDeleteSelected: function(event) {
 			var files = null;
 			if (!this.isAllSelected()) {
-				files = _.pluck(this.getSelectedFiles(), 'name');
+				files = this._selectedCollection.pluck('name');
 			}
 			this.do_delete(files);
 			event.preventDefault();
@@ -820,15 +847,11 @@
 				return;
 			}
 
-			var files = this.getSelectedFiles();
-			if (files.length === 0) {
-				// single one selected without checkbox?
-				files = _.map(ui.helper.find('tr'), function(el) {
-					return self.elementToFile($(el));
-				});
-			}
+			var fileNames = _.map(ui.helper.find('tr'), function(el) {
+				return $(el).attr('data-file');
+			});
 
-			this.move(_.pluck(files, 'name'), targetPath);
+			this.move(fileNames, targetPath);
 
 			// re-enable td elements to be droppable
 			// sometimes the filename drop handler is still called after re-enable,
@@ -947,6 +970,7 @@
 		},
 
 		_onCollectionReset: function() {
+			this._selectedCollection.reset([]);
 			this._rerenderList();
 		},
 
@@ -960,9 +984,6 @@
 
 			this.updateEmptyContent();
 
-			this._selectedFiles = {};
-			this._selectionSummary.clear();
-			this.updateSelectionSummary();
 			$(window).scrollTop(0);
 
 			var isAllSelected = this.isAllSelected();
@@ -1104,10 +1125,10 @@
 			}
 			if (this._allowSelection) {
 				td.append(
-					'<input id="select-' + this.id + '-' + fileData.id +
+					'<input id="select-' + this.id + '-' + fileData.get('id') +
 					'" type="checkbox" class="selectCheckBox checkbox"' +
 					(options.selected ? ' checked="checked" ' : '') +
-					'/><label for="select-' + this.id + '-' + fileData.id + '">' +
+					'/><label for="select-' + this.id + '-' + fileData.get('id') + '">' +
 					'<div class="thumbnail" style="background-image:url(' + icon + '); background-size: 32px;"></div>' +
 					'<span class="hidden-visually">' + t('files', 'Select') + '</span>' +
 					'</label>'
@@ -1296,8 +1317,10 @@
 			}
 
 			// restore selection state
-			var selected = !!this._selectedFiles[$row.data('id')];
-			this._selectFileEl($row, selected);
+			var selectedModel = this._selectedCollection.get(model.id);
+			if (selectedModel) {
+				this._selectFileEl($row, true);
+			}
 
 			$row.toggleClass('highlighted', highlightState);
 		},
@@ -1533,8 +1556,6 @@
 		 * @return ajax call object
 		 */
 		reload: function() {
-			this._selectedFiles = {};
-			this._selectionSummary.clear();
 			if (this._currentFileModel) {
 				this._currentFileModel.off();
 			}
@@ -1820,11 +1841,7 @@
 			if (!fileEl.length) {
 				return null;
 			}
-			if (this._selectedFiles[fileId]) {
-				// remove from selection first
-				this._selectFileEl(fileEl, false);
-				this.updateSelectionSummary();
-			}
+			this._selectedCollection.remove(model);
 			if (this._dragOptions && (fileEl.data('permissions') & OC.PERMISSION_DELETE)) {
 				// file is only draggable when delete permissions are set
 				fileEl.find('td.filename').draggable('destroy');
@@ -2312,9 +2329,6 @@
 				// element isn't even in the DOM any more
 				fileEl.find('.selectCheckBox').prop('checked', false);
 				fileEl.removeClass('selected');
-				// TODO: this info should be returned by the ajax call!
-				self.updateEmptyContent();
-				self.updateSelectionSummary();
 				// FIXME: don't repeat this, do it once all files are done
 				self.updateStorageStatistics();
 			}
@@ -2541,7 +2555,7 @@
 		 * @return true if all files are selected, false otherwise
 		 */
 		isAllSelected: function() {
-			return this.$el.find('.select-all').prop('checked');
+			return this._selectedCollection.length === this.collection.length;
 		},
 
 		/**
@@ -2550,7 +2564,7 @@
 		 * @return array of file names
 		 */
 		getSelectedFiles: function() {
-			return _.values(this._selectedFiles);
+			return this._selectedCollection.toJSON();
 		},
 
 		getUniqueName: function(name) {
