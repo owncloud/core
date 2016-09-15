@@ -26,6 +26,7 @@
     "snapjs": "2.0.0-rc1",
     "strengthify": "0.5.0",
     "underscore": "1.8.3",
+    "underscore.string": "2.3.3",
     "bootstrap": "3.3.6",
     "backbone": "1.2.3",
     "davclient.js": "https://github.com/evert/davclient.js.git#0.0.1",
