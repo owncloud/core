@@ -164,12 +164,6 @@
 		_sortDirection: 'asc',
 
 		/**
-		 * Sort comparator function for the current sort
-		 * @type Function
-		 */
-		_sortComparator: null,
-
-		/**
 		 * Whether to do a client side sort.
 		 * When false, clicking on a table header will call reload().
 		 * When true, clicking on a table header will simply resort the list.
@@ -233,15 +227,15 @@
 			if (options.model) {
 				this.model = options.model;
 			} else {
-				this.model = new OCA.Files.FileInfoModel({path: ''}, {filesClient: this.filesClient});
+				this.model = new OCA.Files.FileInfoModel({path: '', name: ''}, {filesClient: this.filesClient});
 			}
 
 			this.collection = this.model.getCollection();
-			this.collection.on('sync', this._onCollectionReset, this);
+			this.collection.on('reset', this._onCollectionReset, this);
+			this.collection.on('sort', this._onCollectionSort, this);
 			this.collection.on('add', this._onAddFile, this);
 			this.collection.on('remove', this._onRemoveFile, this);
 			this.collection.on('change', this._onChangeFile, this);
-			//this.collection.on('sort', this._onCollectionReset, this);
 
 			this.$el = $el;
 			if (options.id) {
@@ -797,7 +791,7 @@
 		 */
 		_onScroll: function(e) {
 			if (this.$container.scrollTop() + this.$container.height() > this.$el.height() - 300) {
-				this._nextPage(true);
+				//this._nextPage(true);
 			}
 		},
 
@@ -913,67 +907,6 @@
 		},
 
 		/**
-		 * Appends the next page of files into the table
-		 * @param animate true to animate the new elements
-		 * @return array of DOM elements of the newly added files
-		 */
-		_nextPage: function(animate) {
-			// TODO: do this on the collection directly and use "add" events
-			var index = this.$fileList.children().length,
-				count = this.pageSize(),
-				hidden,
-				tr,
-				fileData,
-				newTrs = [],
-				isAllSelected = this.isAllSelected(),
-				showHidden = this._filesConfig.get('showhidden');
-
-			if (index >= this.collection.length) {
-				return false;
-			}
-
-			while (count > 0 && index < this.collection.length) {
-				fileData = this.collection.at(index);
-				if (this._filter) {
-					hidden = fileData.get('name').toLowerCase().indexOf(this._filter.toLowerCase()) === -1;
-				} else {
-					hidden = false;
-				}
-				tr = this._renderRow(fileData, {updateSummary: false, silent: true, hidden: hidden});
-				this.$fileList.append(tr);
-				if (isAllSelected || this._selectedFiles[fileData.id]) {
-					tr.addClass('selected');
-					tr.find('.selectCheckBox').prop('checked', true);
-				}
-				if (animate) {
-					tr.addClass('appear transparent');
-				}
-				newTrs.push(tr);
-				index++;
-				// only count visible rows
-				if (showHidden || !tr.hasClass('hidden-file')) {
-					count--;
-				}
-			}
-
-			// trigger event for newly added rows
-			if (newTrs.length > 0) {
-				this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: newTrs}));
-			}
-
-			if (animate) {
-				// defer, for animation
-				window.setTimeout(function() {
-					for (var i = 0; i < newTrs.length; i++ ) {
-						newTrs[i].removeClass('transparent');
-					}
-				}, 0);
-			}
-
-			return newTrs;
-		},
-
-		/**
 		 * Event handler for when file actions were updated.
 		 * This will refresh the file actions on the list.
 		 */
@@ -1002,17 +935,24 @@
 			this.collection.reset(filesArray);
 		},
 
+		_onCollectionSort: function(collection, options) {
+			// only rerender on real sort, not on add+sort
+			if (!options.add) {
+				this._rerenderList();
+			}
+		},
+
 		_onCollectionReset: function() {
+			this._rerenderList();
+		},
+
+		_rerenderList: function() {
 			var self = this;
 
 			this.$fileList.empty();
 
 			// clear "Select all" checkbox
 			this.$el.find('.select-all').prop('checked', false);
-
-			// Save full files list while rendering
-
-			this._nextPage();
 
 			this.updateEmptyContent();
 
@@ -1022,6 +962,19 @@
 			this._selectionSummary.clear();
 			this.updateSelectionSummary();
 			$(window).scrollTop(0);
+
+			var isAllSelected = this.isAllSelected();
+			var $newTrs = this.collection.map(function(entryModel) {
+				return self._onAddFile(
+					entryModel, self.collection, {
+						silent: true,
+						selected: isAllSelected,
+						animate: false,
+						append: true
+					});
+			});
+
+			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $newTrs}));
 
 			this.$fileList.trigger(jQuery.Event('updated'));
 			_.defer(function() {
@@ -1150,7 +1103,9 @@
 			if (this._allowSelection) {
 				td.append(
 					'<input id="select-' + this.id + '-' + fileData.id +
-					'" type="checkbox" class="selectCheckBox checkbox"/><label for="select-' + this.id + '-' + fileData.id + '">' +
+					'" type="checkbox" class="selectCheckBox checkbox"' +
+					(options.selected ? ' checked="checked" ' : '') +
+					'/><label for="select-' + this.id + '-' + fileData.id + '">' +
 					'<div class="thumbnail" style="background-image:url(' + icon + '); background-size: 32px;"></div>' +
 					'<span class="hidden-visually">' + t('files', 'Select') + '</span>' +
 					'</label>'
@@ -1264,44 +1219,33 @@
 		 * @deprecated always add directly to the model
 		 */
 		add: function(fileData, options) {
+			//options = _.extend({sort: false}, options || {});
+			// FIXME: prevent sort and provide "at" to insert at correct index !
+			// because backbone will still internally re-sort the list
 			var model = this.collection.add(fileData, options);
 			return this.findFileEl(model.get('name'));
 		},
 
-		_onAddFile: function(model, options) {
-			var fileData = model.toJSON(); // for now
-			var index = -1;
+		_onAddFile: function(model, collection, options) {
+			var index;
 			var $tr;
 			var $rows;
 			var $insertionPoint;
 			options = _.extend({animate: true}, options || {});
 
-			// there are three situations to cover:
-			// 1) insertion point is visible on the current page
-			// 2) insertion point is on a not visible page (visible after scrolling)
-			// 3) insertion point is at the end of the list
+			$tr = this._renderRow(model, options);
 
-			$rows = this.$fileList.children();
-			index = options.at || this.collection.length;
-			if (index > this.files.length) {
-				index = this.files.length;
-			}
-			else {
+			if (options.append) {
+				this.$fileList.append($tr);
+			} else {
+				// find insertion index
+				$rows = this.$fileList.children();
+				index = this.collection.indexOf(model);
 				$insertionPoint = $rows.eq(index);
-			}
-
-			// is the insertion point visible ?
-			if ($insertionPoint.length) {
-				// only render if it will really be inserted
-				$tr = this._renderRow(fileData, options);
-				$insertionPoint.before($tr);
-			}
-			else {
-				// if insertion point is after the last visible
-				// entry, append
-				if (index === $rows.length) {
-					$tr = this._renderRow(fileData, options);
+				if (!$insertionPoint.length) {
 					this.$fileList.append($tr);
+				} else {
+					$insertionPoint.before($tr);
 				}
 			}
 
@@ -1313,19 +1257,19 @@
 			}
 
 			if (options.scrollTo) {
-				this.scrollTo(fileData.name);
+				this.scrollTo(model.get('name'));
 			}
 
 			// defaults to true if not defined
 			if (typeof(options.updateSummary) === 'undefined' || !!options.updateSummary) {
-				this.fileSummary.add(fileData, true);
+				this.fileSummary.add(model.toJSON(), true);
 				this.updateEmptyContent();
 			}
 
 			return $tr;
 		},
 
-		_onChangeFile: function(model, options) {
+		_onChangeFile: function(model, collection, options) {
 			// re-render row
 			var $tr = this.findFileEl(model.get('name'));
 			var highlightState = $tr.hasClass('highlighted');
@@ -1425,7 +1369,7 @@
 		 * @return current directory
 		 */
 		getCurrentDirectory: function(){
-			return this.model.get('path');
+			return this.model.getFullPath();
 		},
 		/**
 		 * Returns the directory permissions
@@ -1505,10 +1449,7 @@
 				targetDir = '/' + targetDir;
 			}
 
-			// legacy stuff
-			this.$el.find('#dir').val(targetDir);
-
-			this.model.set({'path': targetDir});
+			this.model.set({'path': OC.dirname(targetDir), 'name': OC.basename(targetDir)});
 
 			if (changeUrl !== false) {
 				var params = {
@@ -1531,16 +1472,10 @@
 		 * @param persist true to save changes in the database (default)
 		 */
 		setSort: function(sort, direction, update, persist) {
-			var comparator = FileList.Comparators[sort] || FileList.Comparators.name;
+			this.collection.setSort(sort, direction);
 			this._sort = sort;
 			this._sortDirection = (direction === 'desc')?'desc':'asc';
-			this._sortComparator = comparator;
 
-			if (direction === 'desc') {
-				this._sortComparator = function(fileInfo1, fileInfo2) {
-					return -comparator(fileInfo1, fileInfo2);
-				};
-			}
 			this.$el.find('thead th .sort-indicator')
 				.removeClass(this.SORT_INDICATOR_ASC_CLASS)
 				.removeClass(this.SORT_INDICATOR_DESC_CLASS)
@@ -1554,7 +1489,7 @@
 				.addClass(direction === 'desc' ? this.SORT_INDICATOR_DESC_CLASS : this.SORT_INDICATOR_ASC_CLASS);
 			if (update) {
 				if (this._clientSideSort) {
-					this.collection.sort(this._sortComparator);
+					this.collection.sort();
 				}
 				else {
 					this.reload();
@@ -1591,7 +1526,13 @@
 			this.$el.find('.select-all').prop('checked', false);
 			this.showMask();
 
-			this._reloadCall = this.model.fetch();
+			//this._reloadCall = this.model.fetch();
+			this._reloadCall = this.filesClient.getFolderContents(
+				this.getCurrentDirectory(), {
+					includeParent: true,
+					properties: this._getWebdavProperties()
+				}
+			);
 
 			if (this._detailsView) {
 				// close sidebar
@@ -1648,26 +1589,20 @@
 				return true;
 			}
 
-			/*
 			// TODO: parse remaining quota from PROPFIND response
 			this.updateStorageStatistics(true);
 
-			// first entry is the root
-			this.dirInfo = result.shift();
+			this.model.set(result.shift());
+			this.collection.reset(result);
 
-			if (this.dirInfo.permissions) {
-				this.setDirectoryPermissions(this.dirInfo.permissions);
-			}
+			// FIXME: not sure why this is needed
+			this.setViewerMode(false);
 
-			result.sort(this._sortComparator);
-			this.setFiles(result);
-			*/
-
-			if (this.rootModel) {
-				var newFileId = this.rootModel.id;
+			if (this.model) {
+				var newFileId = this.model.id;
 				// update fileid in URL
 				var params = {
-					dir: this.rootModel.get('path')
+					dir: this.model.get('path')
 				};
 				if (newFileId) {
 					params.fileId = newFileId;
@@ -1856,7 +1791,7 @@
 			return fileEl;
 		},
 
-		_onRemoveFile: function(model, options) {
+		_onRemoveFile: function(model, collection, options) {
 			options = options || {};
 			var name = model.get('name');
 			var fileEl = this.findFileEl(name);
@@ -1880,30 +1815,9 @@
 				this.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')}, true);
 			}
 
-			var lastIndex = this.$fileList.children().length;
-			// if there are less elements visible than one page
-			// but there are still pending elements in the array,
-			// then directly append the next page
-			if (lastIndex < this.files.length && lastIndex < this.pageSize()) {
-				this._nextPage(true);
-			}
-
 			return fileEl;
 		},
-		/**
-		 * Finds the index of the row before which the given
-		 * fileData should be inserted, considering the current
-		 * sorting
-		 *
-		 * @param {OC.Files.FileInfo} fileData file info
-		 */
-		_findInsertionIndex: function(fileData) {
-			var index = 0;
-			while (index < this.files.length && this._sortComparator(fileData, this.files[index]) > 0) {
-				index++;
-			}
-			return index;
-		},
+
 		/**
 		 * Moves a file to a given target folder.
 		 *
@@ -2501,16 +2415,6 @@
 					$e.removeClass('hidden');
 				}
 			}
-
-			var $trs = this.$fileList.find('tr');
-			do {
-				_.each($trs, filterRows);
-				if (visibleCount < total) {
-					$trs = this._nextPage(false);
-				}
-			} while (visibleCount < total && $trs.length > 0);
-
-			this.$container.trigger('scroll');
 		},
 		hideIrrelevantUIWhenNoFilesMatch:function() {
 			if (this._filter && this.fileSummary.summary.totalDirs + this.fileSummary.summary.totalFiles === 0) {
@@ -2841,10 +2745,6 @@
 			var filename = files[files.length - 1];
 			var $fileRow = this.findFileEl(filename);
 
-			while(!$fileRow.exists() && this._nextPage(false) !== false) { // Checking element existence
-				$fileRow = this.findFileEl(filename);
-			}
-
 			if (!$fileRow.exists()) { // Element not present in the file list
 				return;
 			}
@@ -2949,54 +2849,6 @@
 			if (this._detailsView) {
 				this._detailsView.addDetailView(detailView);
 			}
-		}
-	};
-
-	/**
-	 * Sort comparators.
-	 * @namespace OCA.Files.FileList.Comparators
-	 * @private
-	 */
-	FileList.Comparators = {
-		/**
-		 * Compares two file infos by name, making directories appear
-		 * first.
-		 *
-		 * @param {OC.Files.FileInfo} fileInfo1 file info
-		 * @param {OC.Files.FileInfo} fileInfo2 file info
-		 * @return {int} -1 if the first file must appear before the second one,
-		 * 0 if they are identify, 1 otherwise.
-		 */
-		name: function(fileInfo1, fileInfo2) {
-			if (fileInfo1.type === 'dir' && fileInfo2.type !== 'dir') {
-				return -1;
-			}
-			if (fileInfo1.type !== 'dir' && fileInfo2.type === 'dir') {
-				return 1;
-			}
-			return OC.Util.naturalSortCompare(fileInfo1.name, fileInfo2.name);
-		},
-		/**
-		 * Compares two file infos by size.
-		 *
-		 * @param {OC.Files.FileInfo} fileInfo1 file info
-		 * @param {OC.Files.FileInfo} fileInfo2 file info
-		 * @return {int} -1 if the first file must appear before the second one,
-		 * 0 if they are identify, 1 otherwise.
-		 */
-		size: function(fileInfo1, fileInfo2) {
-			return fileInfo1.size - fileInfo2.size;
-		},
-		/**
-		 * Compares two file infos by timestamp.
-		 *
-		 * @param {OC.Files.FileInfo} fileInfo1 file info
-		 * @param {OC.Files.FileInfo} fileInfo2 file info
-		 * @return {int} -1 if the first file must appear before the second one,
-		 * 0 if they are identify, 1 otherwise.
-		 */
-		mtime: function(fileInfo1, fileInfo2) {
-			return fileInfo1.mtime - fileInfo2.mtime;
 		}
 	};
 
