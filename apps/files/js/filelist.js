@@ -1244,6 +1244,12 @@
 				this.updateEmptyContent();
 			}
 
+			// all was selected, we added a new file
+			if (this._selectedCollection.length > 0 && this._selectedCollection.length + 1 === this.collection.length) {
+				// also select that file
+				this._selectedCollection.add(model);
+			}
+
 			return $tr;
 		},
 
@@ -2501,7 +2507,7 @@
 		 * @return true if all files are selected, false otherwise
 		 */
 		isAllSelected: function() {
-			return this._selectedCollection.length === this.collection.length;
+			return this._selectedCollection.length > 0 && this._selectedCollection.length === this.collection.length;
 		},
 
 		/**

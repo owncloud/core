@@ -35,12 +35,6 @@
 
 		comparator: null,
 
-		/**
-		 * Sort direction: 'asc' or 'desc'
-		 * @type String
-		 */
-		_sortDirection: 'asc',
-
 		initialize: function(models, options) {
 			options = options || {};
 
