@@ -2390,18 +2390,18 @@
 				this.hideIrrelevantUIWhenNoFilesMatch();
 			}
 
-			var visibleCount = 0;
 			filter = filter.toLowerCase();
 
-			function filterRows(tr) {
-				var $e = $(tr);
-				if ($e.data('file').toString().toLowerCase().indexOf(filter) === -1) {
-					$e.addClass('hidden');
+			function filterRows() {
+				var $e = $(this);
+				if ($e.attr('data-file').toLowerCase().indexOf(filter) === -1) {
+					$e.addClass('filtered-out');
 				} else {
-					visibleCount++;
-					$e.removeClass('hidden');
+					$e.removeClass('filtered-out');
 				}
 			}
+
+			this.$fileList.find('>tr').each(filterRows);
 		},
 		hideIrrelevantUIWhenNoFilesMatch:function() {
 			if (this._filter && this.fileSummary.summary.totalDirs + this.fileSummary.summary.totalFiles === 0) {

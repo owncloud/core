@@ -164,9 +164,11 @@
 				this.update();
 			}
 		},
-		setFilter: function(filter, files){
+		setFilter: function(filter){
 			this.summary.filter = filter.toLowerCase();
-			this.calculate(files);
+			if (this.collection) {
+				this.calculate(this.collection.toJSON());
+			}
 		},
 		/**
 		 * Returns the total of files and directories
