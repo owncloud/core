@@ -644,7 +644,12 @@
 					if((context.$file.data('permissions') & OC.PERMISSION_DELETE) === 0) {
 						return;
 					}
-					context.fileList.do_delete(fileName, context.dir);
+					context.fileInfoModel.setBusy(true);
+					context.fileInfoModel.once('error', function(model) {
+						OC.Notification.showTemporary(t('files', 'Error deleting file "{fileName}".', {fileName: model.getName()}));
+						model.setBusy(false);
+					});
+					context.fileInfoModel.destroy({wait: true});
 					$('.tipsy').remove();
 				}
 			});

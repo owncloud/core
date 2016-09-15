@@ -720,11 +720,23 @@
 		 * Event handler for when clicking on "Delete" for the selected files
 		 */
 		_onClickDeleteSelected: function(event) {
-			var files = null;
-			if (!this.isAllSelected()) {
-				files = this._selectedCollection.pluck('name');
-			}
-			this.do_delete(files);
+			var self = this;
+			var errorHandler = function(model) {
+				OC.Notification.showTemporary(t('files', 'Error deleting file "{fileName}".', {fileName: model.getName()}));
+				model.setBusy(false);
+			};
+			var promises = this._selectedCollection.map(function(model) {
+				// passing "wait" to avoid modifying the collection
+				// while we iterate on it, it will only remove the elements
+				// after success
+				model.setBusy(true);
+				model.once('error', errorHandler);
+				return model.destroy({wait: true});
+			});
+			Promise.all(promises)
+				.then(function() {
+					self.updateStorageStatistics();
+				});
 			event.preventDefault();
 			return false;
 		},
@@ -1946,17 +1958,11 @@
 						checkInput();
 						// mark as loading (temp element)
 						model.setBusy(true);
-						var basename = newName;
-						var path = model.get('path');
 						td.children('a.name').show();
-						self.filesClient.move(OC.joinPaths(path, oldName), OC.joinPaths(path, newName))
-							.done(function() {
-								// set new name, this will implicitly trigger a re-render of the row
-								// TODO: in the future the model will do the server request
-								model.rename(newName);
-							})
+						model.rename(newName)
 							.fail(function(status) {
 								// TODO: 409 means current folder does not exist, redirect ?
+								model.setBusy(false);
 								if (status === 404) {
 									// source not found, so remove it from the list
 									OC.Notification.showTemporary(
@@ -2250,63 +2256,6 @@
 			});
 		},
 
-		/**
-		 * Delete the given files from the given dir
-		 * @param files file names list (without path)
-		 * @param dir directory in which to delete the files, defaults to the current
-		 * directory
-		 */
-		do_delete:function(files, dir) {
-			var self = this;
-			if (files && files.substr) {
-				files=[files];
-			}
-			if (!files) {
-				// delete all files in directory
-				files = _.pluck(this.files, 'name');
-			}
-			if (files) {
-				this.showFileBusyState(files, true);
-			}
-			// Finish any existing actions
-			if (this.lastAction) {
-				this.lastAction();
-			}
-
-			dir = dir || this.getCurrentDirectory();
-
-			function removeFromList(file) {
-				var fileEl = self.remove(file);
-				// FIXME: not sure why we need this after the
-				// element isn't even in the DOM any more
-				fileEl.find('.selectCheckBox').prop('checked', false);
-				fileEl.removeClass('selected');
-				// FIXME: don't repeat this, do it once all files are done
-				self.updateStorageStatistics();
-			}
-
-			_.each(files, function(file) {
-				self.filesClient.remove(dir + '/' + file)
-					.done(function() {
-						removeFromList(file);
-					})
-					.fail(function(status) {
-						if (status === 404) {
-							// the file already did not exist, remove it from the list
-							removeFromList(file);
-						} else {
-							// only reset the spinner for that one file
-							OC.Notification.showTemporary(
-									t('files', 'Error deleting file "{fileName}".', {fileName: file}),
-									{timeout: 10}
-							);
-							var deleteAction = self.findFileEl(file).find('.action.delete');
-							deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
-							self.showFileBusyState(files, false);
-						}
-					});
-			});
-		},
 		/**
 		 * Creates the file summary section
 		 */

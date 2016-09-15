@@ -144,7 +144,7 @@
 		},
 
 		url: function() {
-			return this._baseUrl + '/' + this.get('path');
+			return OC.joinPaths(this._baseUrl, this.getFullPath());
 		},
 
 		/**
@@ -287,6 +287,25 @@
 		},
 
 		/**
+		 * Returns the path leading to this file.
+		 * The path doesn't contain the file's name.
+		 *
+		 * @return {String} path
+		 */
+		getPath: function() {
+			return this.get('path');
+		},
+
+		/**
+		 * Returns the name of this file without path.
+		 *
+		 * @return {string} name
+		 */
+		getName: function() {
+			return this.get('name');
+		},
+
+		/**
 		 * Lock file in busy state
 		 *
 		 * @param {bool} busyState busyState
@@ -300,21 +319,37 @@
 		},
 
 		/**
-		 * Rename the model and returns a clone of the renamed model
+		 * Rename the model and returns a clone of the renamed model.
+		 * If the model is in a collection, the old model will be removed
+		 * and the new one added automatically.
 		 *
-		 * @return {OCA.Files.FileInfoModel} renamed model
+		 * @return {Promise<OCA.Files.FileInfoModel>} promise that resolves to new model
+		 * representing the renamed entry
 		 */
 		rename: function(newName) {
-			var collection = this.collection;
-			var newModel = this.clone();
-			if (collection) {
-				collection.remove(this, {sort: false});
-			}
-			newModel.set('name', newName, {silent: true});
-			if (collection) {
-				collection.add(newModel, {sort: true});
-			}
-			return this.newModel;
+			var model = this;
+			var deferred = $.Deferred();
+			var sourcePath = model.getFullPath();
+			var targetPath = OC.joinPaths(model.getPath(), newName);
+
+			this._filesClient.move(sourcePath, targetPath)
+				.done(function() {
+					var collection = model.collection;
+					var newModel = model.clone();
+					if (collection) {
+						collection.remove(model, {sort: false});
+					}
+					newModel.set('name', newName, {silent: true});
+					if (collection) {
+						collection.add(newModel, {sort: true});
+					}
+					deferred.resolve(status, newModel);
+				})
+				.fail(function(status) {
+					deferred.reject(status);
+				});
+
+			return deferred.promise();
 		}
 	});
 
