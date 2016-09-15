@@ -35,8 +35,8 @@ OC.FileUpload = function(uploader, data) {
 	this.uploader = uploader;
 	this.data = data;
 	var path = '';
-	if (this.uploader.fileList) {
-		path = OC.joinPaths(this.uploader.fileList.getCurrentDirectory(), this.getFile().name);
+	if (this.uploader.fileListModel) {
+		path = OC.joinPaths(this.uploader.fileListModel.getFullPath(), this.getFile().name);
 	} else {
 		path = this.getFile().name;
 	}
@@ -201,8 +201,8 @@ OC.FileUpload.prototype = {
 			folderPromise = $.Deferred().resolve().promise();
 		}
 
-		if (this.uploader.fileList) {
-			this.data.url = this.uploader.fileList.getUploadUrl(this.getFileName(), this.getFullPath());
+		if (this.uploader.fileListModel) {
+			this.data.url = this.uploader.fileListModel.getUploadUrl(file.name);
 		}
 
 		if (!this.data.headers) {
@@ -370,9 +370,9 @@ OC.Uploader.prototype = _.extend({
 	_knownDirs: {},
 
 	/**
-	 * @type OCA.Files.FileList
+	 * @type OCA.Files.FileInfoModel
 	 */
-	fileList: null,
+	fileListModel: null,
 
 	/**
 	 * @type OC.Files.Client
@@ -441,9 +441,9 @@ OC.Uploader.prototype = _.extend({
 		var self = this;
 		var promise = this._knownDirs[fullPath];
 
-		if (this.fileList) {
+		if (this.fileListModel) {
 			// assume the current folder exists
-			this._knownDirs[this.fileList.getCurrentDirectory()] = $.Deferred().resolve().promise();
+			this._knownDirs[this.fileListModel.getFullPath()] = $.Deferred().resolve().promise();
 		}
 
 		if (!promise) {
@@ -648,7 +648,7 @@ OC.Uploader.prototype = _.extend({
 	 * @param {function} callbacks.onCancel
 	 */
 	checkExistingFiles: function (selection, callbacks) {
-		var fileList = this.fileList;
+		var fileListModel = this.fileListModel;
 		var conflicts = [];
 		// only keep non-conflicting uploads
 		selection.uploads = _.filter(selection.uploads, function(upload) {
@@ -661,12 +661,12 @@ OC.Uploader.prototype = _.extend({
 				// no list to check against
 				return true;
 			}
-			var fileInfo = fileList.findFile(file.name);
+			var fileInfo = fileListModel.getCollection().findWhere({name: file.name});
 			if (fileInfo) {
 				conflicts.push([
 					// original
 					_.extend(fileInfo, {
-						directory: fileInfo.directory || fileInfo.path || fileList.getCurrentDirectory()
+						directory: fileInfo.directory || fileInfo.path || fileListModel.getFullPath()
 					}),
 					// replacement (File object)
 					upload
@@ -727,7 +727,7 @@ OC.Uploader.prototype = _.extend({
 	 *
 	 * @param {Object} $uploadEl upload element
 	 * @param {Object} options
-	 * @param {OCA.Files.FileList} [options.fileList] file list object
+	 * @param {OCA.Files.FileInfoModel} [options.fileListModel] populated file info model
 	 * @param {OC.Files.Client} [options.filesClient] files client object
 	 * @param {Object} [options.dropZone] drop zone for drag and drop upload
 	 */
@@ -735,7 +735,11 @@ OC.Uploader.prototype = _.extend({
 		var self = this;
 		options = options || {};
 
-		this.fileList = options.fileList;
+		this.fileListModel = options.fileListModel;
+		if (!this.fileListModel && options.fileList) {
+			// grab it from the passed list
+			this.fileListModel = options.fileList.model;
+		}
 		this.filesClient = options.filesClient || OC.Files.getClient();
 
 		$uploadEl = $($uploadEl);

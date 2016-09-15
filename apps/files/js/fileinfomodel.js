@@ -267,8 +267,39 @@
 
 		getId: function() {
 			return this.get('fileid');
-		}
+		},
+
+		getUploadUrl: function(fileName) {
+			var dir = this.getFullPath();
+			var pathSections = dir.split('/');
+			if (!_.isUndefined(fileName)) {
+				pathSections.push(fileName);
+			}
+			var encodedPath = '';
+			_.each(pathSections, function(section) {
+				if (section !== '') {
+					encodedPath += '/' + encodeURIComponent(section);
+				}
+			});
+			return OC.linkToRemoteBase('webdav') + encodedPath;
+		},
+
+		getDownloadUrl: function(files, isDir) {
+			return OCA.Files.Files.getDownloadUrl(files, this.getFullPath(), isDir);
+		},
 	});
+
+	FileInfoModel.getFromPath = function(dir) {
+		dir = dir || '/';
+		if (dir.charAt(0) !== '/') {
+			dir = '/' + dir;
+		}
+		var attrs = {
+			path: OC.dirname(dir),
+			name: OC.basename(dir)
+		};
+		return new OCA.Files.FileInfoModel(attrs);
+	};
 
 	if (!OCA.Files) {
 		OCA.Files = {};

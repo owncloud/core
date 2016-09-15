@@ -1623,26 +1623,31 @@
 			return OCA.Files.Files.getAjaxUrl(action, params);
 		},
 
+
+		/**
+		 * @deprecated use getDownloadUrl on the FileInfoModel instead
+		 */
 		getDownloadUrl: function(files, dir, isDir) {
-			return OCA.Files.Files.getDownloadUrl(files, dir || this.getCurrentDirectory(), isDir);
+			var model;
+			if (_.isUndefined(dir)) {
+				model = this.model;
+			} else {
+				model = OCA.Files.FileInfoModel.getFromPath(dir);
+			}
+			return model.getDownloadUrl(files, isDir);
 		},
 
+		/**
+		 * @deprecated use getDownloadUrl on the FileInfoModel instead
+		 */
 		getUploadUrl: function(fileName, dir) {
+			var model;
 			if (_.isUndefined(dir)) {
-				dir = this.getCurrentDirectory();
+				model = this.model;
+			} else {
+				model = OCA.Files.FileInfoModel.getFromPath(dir);
 			}
-
-			var pathSections = dir.split('/');
-			if (!_.isUndefined(fileName)) {
-				pathSections.push(fileName);
-			}
-			var encodedPath = '';
-			_.each(pathSections, function(section) {
-				if (section !== '') {
-					encodedPath += '/' + encodeURIComponent(section);
-				}
-			});
-			return OC.linkToRemoteBase('webdav') + encodedPath;
+			return model.getUploadUrl(fileName);
 		},
 
 		/**
