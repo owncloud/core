@@ -20,6 +20,23 @@ OCP\Util::addScript('files', 'newfilemenu');
 OCP\Util::addScript('files', 'files');
 OCP\Util::addScript('files', 'filelist');
 OCP\Util::addscript('files', 'keyboardshortcuts');
+
+OCP\Util::addHeader('meta', array('property' => 'og:title','content' => 'OwnCloud - ' . $l->t('Shared by link')));
+if ($_['previewSupported']):
+	$og_size_x = 400;
+	$og_size_y = 400;
+	OCP\Util::addHeader('meta', array('property' => 'og:image:width','content' => $og_size_x));
+	OCP\Util::addHeader('meta', array('property' => 'og:image:height','content' => $og_size_y));
+	OCP\Util::addHeader('meta', array(
+		'property' => 'og:image',
+		'content' => OC::$server->getURLGenerator()->linkToRoute(
+			'core_ajax_public_preview',
+			array('x' => $og_size_x,
+			'y' => $og_size_y,
+			'file' => $_['directory_path'],
+			't' => $_['dirToken']))));
+endif;
+
 ?>
 
 <?php if ($_['previewSupported']): /* This enables preview images for links (e.g. on Facebook, Google+, ...)*/?>
