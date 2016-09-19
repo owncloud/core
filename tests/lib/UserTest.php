@@ -8,6 +8,7 @@
  */
 
 namespace Test;
+use OC_User_Backend;
 
 /**
  * Class User
@@ -41,7 +42,7 @@ class UserTest extends TestCase {
 		$this->backend->expects($this->any())
 			->method('implementsActions')
 			->will($this->returnCallback(function ($actions) {
-				if ($actions === \OC_USER_BACKEND_CHECK_PASSWORD) {
+				if ($actions === OC_User_Backend::CHECK_PASSWORD) {
 					return true;
 				} else {
 					return false;

@@ -39,7 +39,6 @@ use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
 use \OC_Defaults;
-use OCP\Security\StringUtils;
 
 /**
  * Class LostController
@@ -127,7 +126,7 @@ class LostController extends Controller {
 		} catch (\Exception $e) {
 			return new TemplateResponse(
 				'core', 'error', [
-					"errors" => array(array("error" => $e->getMessage()))
+					"errors" => [["error" => $e->getMessage()]]
 				],
 				'guest'
 			);
@@ -137,7 +136,7 @@ class LostController extends Controller {
 			'core',
 			'lostpassword/resetpassword',
 			array(
-				'link' => $this->urlGenerator->linkToRouteAbsolute('core.lost.setPassword', array('userId' => $userId, 'token' => $token)),
+				'link' => $this->urlGenerator->linkToRouteAbsolute('core.lost.setPassword', ['userId' => $userId, 'token' => $token]),
 			),
 			'guest'
 		);
@@ -153,15 +152,18 @@ class LostController extends Controller {
 
 		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
 		if(count($splittedToken) !== 2) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Couldn\'t reset password because the token is invalid'));
 		}
 
 		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12) ||
 			$user->getLastLogin() > $splittedToken[0]) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Couldn\'t reset password because the token is expired'));
 		}
 
-		if (!StringUtils::equals($splittedToken[1], $token)) {
+		if (!hash_equals($splittedToken[1], $token)) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Couldn\'t reset password because the token is invalid'));
 		}
 	}
@@ -171,8 +173,8 @@ class LostController extends Controller {
 	 * @param array $additional
 	 * @return array
 	 */
-	private function error($message, array $additional=array()) {
-		return array_merge(array('status' => 'error', 'msg' => $message), $additional);
+	private function error($message, array $additional= []) {
+		return array_merge(['status' => 'error', 'msg' => $message], $additional);
 	}
 
 	/**
@@ -221,8 +223,6 @@ class LostController extends Controller {
 			}
 
 			\OC_Hook::emit('\OC\Core\LostPassword\Controller\LostController', 'post_passwordReset', array('uid' => $userId, 'password' => $password));
-
-			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			@\OC_User::unsetMagicInCookie();
 		} catch (\Exception $e){
 			return $this->error($e->getMessage());

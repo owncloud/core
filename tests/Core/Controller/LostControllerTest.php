@@ -434,10 +434,6 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->method('get')
 			->with('ValidTokenUser')
 			->will($this->returnValue($user));
-		$this->config
-			->expects($this->once())
-			->method('deleteUserValue')
-			->with('ValidTokenUser', 'owncloud', 'lostpassword');
 		$this->timeFactory
 			->expects($this->once())
 			->method('getTime')
