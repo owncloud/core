@@ -93,18 +93,14 @@ class Add extends Command {
 				return 1;
 			}
 		} elseif ($input->isInteractive()) {
-			/** @var $dialog \Symfony\Component\Console\Helper\DialogHelper */
-			$dialog = $this->getHelperSet()->get('dialog');
-			$password = $dialog->askHiddenResponse(
-				$output,
-				'<question>Enter password: </question>',
-				false
-			);
-			$confirm = $dialog->askHiddenResponse(
-				$output,
-				'<question>Confirm password: </question>',
-				false
-			);
+			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
+			$dialog = $this->getHelperSet()->get('question');
+			$q = new Question('<question>Enter password: </question>',false);
+			$q->setHidden(true);
+			$password = $dialog->ask($input, $output, $q);
+			$q = new Question('<question>Confirm password: </question>',false);
+			$q->setHidden(true);
+			$confirm = $dialog->ask($input, $output, $q);
 
 			if ($password !== $confirm) {
 				$output->writeln("<error>Passwords did not match!</error>");
