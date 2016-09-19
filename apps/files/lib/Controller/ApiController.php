@@ -149,7 +149,7 @@ class ApiController extends Controller {
 	 * @return DataResponse
 	 */
 	public function getFilesByTag($tagName) {
-		$files = array();
+		$files = [];
 		$nodes = $this->tagService->getFilesByTag($tagName);
 		foreach ($nodes as &$node) {
 			$shareTypes = $this->getShareTypes($node);

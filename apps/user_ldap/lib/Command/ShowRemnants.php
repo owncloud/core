@@ -64,23 +64,23 @@ class ShowRemnants extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		/** @var \Symfony\Component\Console\Helper\Table $table */
 		$table = $this->getHelperSet()->get('table');
-		$table->setHeaders(array(
+		$table->setHeaders([
 			'ownCloud name', 'Display Name', 'LDAP UID', 'LDAP DN', 'Last Login',
-			'Dir', 'Sharer'));
-		$rows = array();
+			'Dir', 'Sharer']);
+		$rows = [];
 		$resultSet = $this->dui->getUsers();
 		foreach($resultSet as $user) {
 			$hAS = $user->getHasActiveShares() ? 'Y' : 'N';
 			$lastLogin = ($user->getLastLogin() > 0) ?
 				$this->dateFormatter->formatDate($user->getLastLogin()) : '-';
-			$rows[] = array('ocName'      => $user->getOCName(),
+			$rows[] = ['ocName'      => $user->getOCName(),
 							'displayName' => $user->getDisplayName(),
 							'uid'         => $user->getUID(),
 							'dn'          => $user->getDN(),
 							'lastLogin'   => $lastLogin,
 							'homePath'    => $user->getHomePath(),
 							'sharer'      => $hAS
-			);
+			];
 		}
 
 		if ($input->getOption('json')) {

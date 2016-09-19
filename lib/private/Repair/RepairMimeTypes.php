@@ -106,26 +106,26 @@ class RepairMimeTypes implements IRepairStep {
 	private function repairMimetypes($wrongMimetypes) {
 		foreach ($wrongMimetypes as $wrong => $correct) {
 			// do we need to remove a wrong mimetype?
-			$result = \OC_DB::executeAudited(self::getIdStmt(), array($wrong));
+			$result = \OC_DB::executeAudited(self::getIdStmt(), [$wrong]);
 			$wrongId = $result->fetchOne();
 
 			if ($wrongId !== false) {
 				// do we need to insert the correct mimetype?
-				$result = \OC_DB::executeAudited(self::existsStmt(), array($correct));
+				$result = \OC_DB::executeAudited(self::existsStmt(), [$correct]);
 				$exists = $result->fetchOne();
 
 				if (!is_null($correct)) {
 					if (!$exists) {
 						// insert mimetype
-						\OC_DB::executeAudited(self::insertStmt(), array($correct));
+						\OC_DB::executeAudited(self::insertStmt(), [$correct]);
 					}
 
 					// change wrong mimetype to correct mimetype in filecache
-					\OC_DB::executeAudited(self::updateWrongStmt(), array($correct, $wrongId));
+					\OC_DB::executeAudited(self::updateWrongStmt(), [$correct, $wrongId]);
 				}
 
 				// delete wrong mimetype
-				\OC_DB::executeAudited(self::deleteStmt(), array($wrongId));
+				\OC_DB::executeAudited(self::deleteStmt(), [$wrongId]);
 
 			}
 		}
@@ -133,42 +133,42 @@ class RepairMimeTypes implements IRepairStep {
 
 	private function updateMimetypes($updatedMimetypes) {
 		if (empty($this->folderMimeTypeId)) {
-			$result = \OC_DB::executeAudited(self::getIdStmt(), array('httpd/unix-directory'));
+			$result = \OC_DB::executeAudited(self::getIdStmt(), ['httpd/unix-directory']);
 			$this->folderMimeTypeId = (int)$result->fetchOne();
 		}
 
 		foreach ($updatedMimetypes as $extension => $mimetype) {
-			$result = \OC_DB::executeAudited(self::existsStmt(), array($mimetype));
+			$result = \OC_DB::executeAudited(self::existsStmt(), [$mimetype]);
 			$exists = $result->fetchOne();
 
 			if (!$exists) {
 				// insert mimetype
-				\OC_DB::executeAudited(self::insertStmt(), array($mimetype));
+				\OC_DB::executeAudited(self::insertStmt(), [$mimetype]);
 			}
 			
 			// get target mimetype id
-			$result = \OC_DB::executeAudited(self::getIdStmt(), array($mimetype));
+			$result = \OC_DB::executeAudited(self::getIdStmt(), [$mimetype]);
 			$mimetypeId = $result->fetchOne();
 
 			// change mimetype for files with x extension
-			\OC_DB::executeAudited(self::updateByNameStmt(), array($mimetypeId, $this->folderMimeTypeId, $mimetypeId, '%.' . $extension));
+			\OC_DB::executeAudited(self::updateByNameStmt(), [$mimetypeId, $this->folderMimeTypeId, $mimetypeId, '%.' . $extension]);
 		}
 	}
 
 	private function fixOfficeMimeTypes() {
 		// update wrong mimetypes
-		$wrongMimetypes = array(
+		$wrongMimetypes = [
 			'application/mspowerpoint' => 'application/vnd.ms-powerpoint',
 			'application/msexcel' => 'application/vnd.ms-excel',
-		);
+		];
 
 		self::repairMimetypes($wrongMimetypes);
 
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 			'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-		);
+		];
 
 
 		// separate doc from docx etc
@@ -177,43 +177,43 @@ class RepairMimeTypes implements IRepairStep {
 	}
 
 	private function fixApkMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'apk' => 'application/vnd.android.package-archive',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function fixFontsMimeTypes() {
 		// update wrong mimetypes
-		$wrongMimetypes = array(
+		$wrongMimetypes = [
 			'font' => null,
 			'font/opentype' => 'application/font-sfnt',
 			'application/x-font-ttf' => 'application/font-sfnt',
-		);
+		];
 
 		self::repairMimetypes($wrongMimetypes);
 
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'ttf' => 'application/font-sfnt',
 			'otf' => 'application/font-sfnt',
 			'pfb' => 'application/x-font',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function fixPostscriptMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'eps' => 'application/postscript',
 			'ps' => 'application/postscript',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceRawMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'arw' => 'image/x-dcraw',
 			'cr2' => 'image/x-dcraw',
 			'dcr' => 'image/x-dcraw',
@@ -231,78 +231,78 @@ class RepairMimeTypes implements IRepairStep {
 			'srf' => 'image/x-dcraw',
 			'sr2' => 'image/x-dcraw',
 			'xrf' => 'image/x-dcraw',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduce3dImagesMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'jps' => 'image/jpeg',
 			'mpo' => 'image/jpeg',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceConfMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'conf' => 'text/plain',
 			'cnf' => 'text/plain',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceYamlMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'yaml' => 'application/yaml',
 			'yml' => 'application/yaml',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceJavaMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'class' => 'application/java',
 			'java' => 'text/x-java-source',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceHppMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'hpp' => 'text/x-h',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceRssMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'rss' => 'application/rss+xml',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceRtfMimeType() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'rtf' => 'text/rtf',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}
 
 	private function introduceRichDocumentsMimeTypes() {
-		$updatedMimetypes = array(
+		$updatedMimetypes = [
 			'lwp' => 'application/vnd.lotus-wordpro',
 			'one' => 'application/msonenote',
 			'vsd' => 'application/vnd.visio',
 			'wpd' => 'application/vnd.wordperfect',
-		);
+		];
 
 		self::updateMimetypes($updatedMimetypes);
 	}

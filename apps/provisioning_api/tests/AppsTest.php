@@ -110,7 +110,7 @@ class AppsTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
 		$apps = \OC_App::listAllApps(false, true, $this->ocsClient);
-		$list =  array();
+		$list =  [];
 		foreach($apps as $app) {
 			$list[] = $app['id'];
 		}

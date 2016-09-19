@@ -76,7 +76,7 @@ class AmazonS3MigrationTest extends \Test\TestCase {
 		$oldCache = new \OC\Files\Cache\Cache($this->oldId);
 
 		// add file to old cache
-		$fileId = $oldCache->put('foobar', array('size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory'));
+		$fileId = $oldCache->put('foobar', ['size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory']);
 
 		try {
 			$this->instance = new AmazonS3($this->params);
@@ -102,7 +102,7 @@ class AmazonS3MigrationTest extends \Test\TestCase {
 		new \OC\Files\Cache\Cache($this->newId);
 
 		// add file to old cache
-		$fileId = $oldCache->put('/', array('size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory'));
+		$fileId = $oldCache->put('/', ['size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory']);
 
 		try {
 			$this->instance = new AmazonS3($this->params);
@@ -122,11 +122,11 @@ class AmazonS3MigrationTest extends \Test\TestCase {
 	 * @return array
 	 */
 	public function getStorages() {
-		$storages = array();
+		$storages = [];
 		$stmt = \OC::$server->getDatabaseConnection()->prepare(
 			'SELECT `numeric_id`, `id` FROM `*PREFIX*storages` WHERE `id` IN (?, ?)'
 		);
-		$stmt->execute(array($this->oldId, $this->newId));
+		$stmt->execute([$this->oldId, $this->newId]);
 		while ($row = $stmt->fetch()) {
 			$storages[$row['id']] = $row['numeric_id'];
 		}
@@ -140,6 +140,6 @@ class AmazonS3MigrationTest extends \Test\TestCase {
 		$stmt = \OC::$server->getDatabaseConnection()->prepare(
 			'DELETE FROM `*PREFIX*storages` WHERE `id` = ?'
 		);
-		$stmt->execute(array($id));
+		$stmt->execute([$id]);
 	}
 }

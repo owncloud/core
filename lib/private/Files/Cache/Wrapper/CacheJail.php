@@ -193,9 +193,9 @@ class CacheJail extends CacheWrapper {
 	}
 
 	private function formatSearchResults($results) {
-		$results = array_filter($results, array($this, 'filterCacheEntry'));
+		$results = array_filter($results, [$this, 'filterCacheEntry']);
 		$results = array_values($results);
-		return array_map(array($this, 'formatCacheEntry'), $results);
+		return array_map([$this, 'formatCacheEntry'], $results);
 	}
 
 	/**
@@ -267,7 +267,7 @@ class CacheJail extends CacheWrapper {
 	 */
 	public function getAll() {
 		// not supported
-		return array();
+		return [];
 	}
 
 	/**

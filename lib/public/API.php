@@ -68,7 +68,7 @@ class API {
 	 * @since 5.0.0
 	 */
 	public static function register($method, $url, $action, $app, $authLevel = self::USER_AUTH,
-		$defaults = array(), $requirements = array()){
+									$defaults = [], $requirements = []){
 		\OC_API::register($method, $url, $action, $app, $authLevel, $defaults, $requirements);
 	}
 

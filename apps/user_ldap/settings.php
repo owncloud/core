@@ -37,7 +37,7 @@ $prefixes = $helper->getServerConfigurationPrefixes();
 $hosts = $helper->getServerConfigurationHosts();
 
 $wizardHtml = '';
-$toc = array();
+$toc = [];
 
 $wControls = new OCP\Template('user_ldap', 'part.wizardcontrols');
 $wControls = $wControls->fetchPage();
@@ -46,11 +46,11 @@ $sControls = $sControls->fetchPage();
 
 $l = \OC::$server->getL10N('user_ldap');
 
-$wizTabs = array();
-$wizTabs[] = array('tpl' => 'part.wizard-server',      'cap' => $l->t('Server'));
-$wizTabs[] = array('tpl' => 'part.wizard-userfilter',  'cap' => $l->t('Users'));
-$wizTabs[] = array('tpl' => 'part.wizard-loginfilter', 'cap' => $l->t('Login Attributes'));
-$wizTabs[] = array('tpl' => 'part.wizard-groupfilter', 'cap' => $l->t('Groups'));
+$wizTabs = [];
+$wizTabs[] = ['tpl' => 'part.wizard-server',      'cap' => $l->t('Server')];
+$wizTabs[] = ['tpl' => 'part.wizard-userfilter',  'cap' => $l->t('Users')];
+$wizTabs[] = ['tpl' => 'part.wizard-loginfilter', 'cap' => $l->t('Login Attributes')];
+$wizTabs[] = ['tpl' => 'part.wizard-groupfilter', 'cap' => $l->t('Groups')];
 $wizTabsCount = count($wizTabs);
 for($i = 0; $i < $wizTabsCount; $i++) {
 	$tab = new OCP\Template('user_ldap', $wizTabs[$i]['tpl']);

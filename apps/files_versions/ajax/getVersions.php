@@ -46,10 +46,10 @@ if( $versions ) {
 		unset($version['path']);
 	}
 
-	\OCP\JSON::success(array('data' => array('versions' => $versions, 'endReached' => $endReached)));
+	\OCP\JSON::success(['data' => ['versions' => $versions, 'endReached' => $endReached]]);
 
 } else {
 
-	\OCP\JSON::success(array('data' => array('versions' => [], 'endReached' => true)));
+	\OCP\JSON::success(['data' => ['versions' => [], 'endReached' => true]]);
 
 }

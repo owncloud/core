@@ -40,7 +40,7 @@ class OC_DB_StatementWrapper {
 	 */
 	private $statement = null;
 	private $isManipulation = false;
-	private $lastArguments = array();
+	private $lastArguments = [];
 
 	/**
 	 * @param boolean $isManipulation
@@ -54,7 +54,7 @@ class OC_DB_StatementWrapper {
 	 * pass all other function directly to the \Doctrine\DBAL\Driver\Statement
 	 */
 	public function __call($name,$arguments) {
-		return call_user_func_array(array($this->statement,$name), $arguments);
+		return call_user_func_array([$this->statement,$name], $arguments);
 	}
 
 	/**
@@ -63,7 +63,7 @@ class OC_DB_StatementWrapper {
 	 * @param array $input
 	 * @return \OC_DB_StatementWrapper|int
 	 */
-	public function execute($input=array()) {
+	public function execute($input= []) {
 		if(\OC::$server->getSystemConfig()->getValue( "log_query", false)) {
 			$params_str = str_replace("\n", " ", var_export($input, true));
 			\OCP\Util::writeLog('core', 'DB execute with arguments : '.$params_str, \OCP\Util::DEBUG);

@@ -19,7 +19,7 @@ class PermissionsMaskTest extends \Test\Files\Storage\Storage {
 
 	public function setUp() {
 		parent::setUp();
-		$this->sourceStorage = new \OC\Files\Storage\Temporary(array());
+		$this->sourceStorage = new \OC\Files\Storage\Temporary([]);
 		$this->instance = $this->getMaskedStorage(Constants::PERMISSION_ALL);
 	}
 
@@ -29,10 +29,10 @@ class PermissionsMaskTest extends \Test\Files\Storage\Storage {
 	}
 
 	protected function getMaskedStorage($mask) {
-		return new \OC\Files\Storage\Wrapper\PermissionsMask(array(
+		return new \OC\Files\Storage\Wrapper\PermissionsMask([
 			'storage' => $this->sourceStorage,
 			'mask' => $mask
-		));
+		]);
 	}
 
 	public function testMkdirNoCreate() {

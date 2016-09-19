@@ -222,13 +222,13 @@ class ConvertType extends Command {
 
 	protected function getToDBConnection(InputInterface $input, OutputInterface $output) {
 		$type = $input->getArgument('type');
-		$connectionParams = array(
+		$connectionParams = [
 			'host' => $input->getArgument('hostname'),
 			'user' => $input->getArgument('username'),
 			'password' => $input->getOption('password'),
 			'dbname' => $input->getArgument('database'),
 			'tablePrefix' => $this->config->getSystemValue('dbtableprefix', 'oc_'),
-		);
+		];
 		if ($input->getOption('port')) {
 			$connectionParams['port'] = $input->getOption('port');
 		}

@@ -134,7 +134,7 @@ class Owncloud {
 	public static function getEntries($limit=50, $offset=0) {
 		self::init();
 		$minLevel = \OC::$server->getSystemConfig()->getValue("loglevel", \OCP\Util::WARN);
-		$entries = array();
+		$entries = [];
 		$handle = @fopen(self::$logFile, 'rb');
 		if ($handle) {
 			fseek($handle, 0, SEEK_END);

@@ -102,7 +102,7 @@ class OC_API {
 	/**
 	 * api actions
 	 */
-	protected static $actions = array();
+	protected static $actions = [];
 	private static $logoutRequired = false;
 	private static $isLoggedIn = false;
 
@@ -118,10 +118,10 @@ class OC_API {
 	 */
 	public static function register($method, $url, $action, $app,
 				$authLevel = API::USER_AUTH,
-				$defaults = array(),
-				$requirements = array()) {
+				$defaults = [],
+				$requirements = []) {
 		$name = strtolower($method).$url;
-		$name = str_replace(array('/', '{', '}'), '_', $name);
+		$name = str_replace(['/', '{', '}'], '_', $name);
 		if(!isset(self::$actions[$name])) {
 			$oldCollection = OC::$server->getRouter()->getCurrentCollection();
 			OC::$server->getRouter()->useCollection('ocs');
@@ -130,10 +130,10 @@ class OC_API {
 				->defaults($defaults)
 				->requirements($requirements)
 				->action('OC_API', 'call');
-			self::$actions[$name] = array();
+			self::$actions[$name] = [];
 			OC::$server->getRouter()->useCollection($oldCollection);
 		}
-		self::$actions[$name][] = array('app' => $app, 'action' => $action, 'authlevel' => $authLevel);
+		self::$actions[$name][] = ['app' => $app, 'action' => $action, 'authlevel' => $authLevel];
 	}
 
 	/**
@@ -152,31 +152,31 @@ class OC_API {
 		}
 		$name = $parameters['_route'];
 		// Foreach registered action
-		$responses = array();
+		$responses = [];
 		foreach(self::$actions[$name] as $action) {
 			// Check authentication and availability
 			if(!self::isAuthorised($action)) {
-				$responses[] = array(
+				$responses[] = [
 					'app' => $action['app'],
 					'response' => new OC_OCS_Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'),
 					'shipped' => OC_App::isShipped($action['app']),
-					);
+				];
 				continue;
 			}
 			if(!is_callable($action['action'])) {
-				$responses[] = array(
+				$responses[] = [
 					'app' => $action['app'],
 					'response' => new OC_OCS_Result(null, API::RESPOND_NOT_FOUND, 'Api method not found'),
 					'shipped' => OC_App::isShipped($action['app']),
-					);
+				];
 				continue;
 			}
 			// Run the action
-			$responses[] = array(
+			$responses[] = [
 				'app' => $action['app'],
 				'response' => call_user_func($action['action'], $parameters),
 				'shipped' => OC_App::isShipped($action['app']),
-				);
+			];
 		}
 		$response = self::mergeResponses($responses);
 		$format = self::requestedFormat();
@@ -194,14 +194,14 @@ class OC_API {
 	 */
 	public static function mergeResponses($responses) {
 		// Sort into shipped and third-party
-		$shipped = array(
-			'succeeded' => array(),
-			'failed' => array(),
-			);
-		$thirdparty = array(
-			'succeeded' => array(),
-			'failed' => array(),
-			);
+		$shipped = [
+			'succeeded' => [],
+			'failed' => [],
+		];
+		$thirdparty = [
+			'succeeded' => [],
+			'failed' => [],
+		];
 
 		foreach($responses as $response) {
 			if($response['shipped'] || ($response['app'] === 'core')) {
@@ -226,7 +226,7 @@ class OC_API {
 			// Which response code should we return?
 			// Maybe any that are not \OCP\API::RESPOND_SERVER_ERROR
 			// Merge failed responses if more than one
-			$data = array();
+			$data = [];
 			foreach($shipped['failed'] as $failure) {
 				$data = array_merge_recursive($data, $failure['response']->getData());
 			}
@@ -240,7 +240,7 @@ class OC_API {
 			$responses = array_merge($shipped['succeeded'], $thirdparty['succeeded']);
 		} elseif(!empty($thirdparty['failed'])) {
 			// Merge failed responses if more than one
-			$data = array();
+			$data = [];
 			foreach($thirdparty['failed'] as $failure) {
 				$data = array_merge_recursive($data, $failure['response']->getData());
 			}
@@ -446,7 +446,7 @@ class OC_API {
 	 * @return string
 	 */
 	public static function requestedFormat() {
-		$formats = array('json', 'xml');
+		$formats = ['json', 'xml'];
 
 		$format = !empty($_GET['format']) && in_array($_GET['format'], $formats) ? $_GET['format'] : 'xml';
 		return $format;
@@ -512,12 +512,12 @@ class OC_API {
 	 * @return string
 	 */
 	public static function renderResult($format, $meta, $data) {
-		$response = array(
-			'ocs' => array(
+		$response = [
+			'ocs' => [
 				'meta' => $meta,
 				'data' => $data,
-			),
-		);
+			],
+		];
 		if ($format == 'json') {
 			return OC_JSON::encode($response);
 		}

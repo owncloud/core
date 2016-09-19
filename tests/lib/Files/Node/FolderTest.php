@@ -49,7 +49,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -59,7 +59,7 @@ class FolderTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_ALL))));
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL])));
 
 		$view->expects($this->once())
 			->method('rmdir')
@@ -108,7 +108,7 @@ class FolderTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1))));
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
 
 		$view->expects($this->once())
 			->method('rmdir')
@@ -118,7 +118,7 @@ class FolderTest extends \Test\TestCase {
 		$view->expects($this->any())
 			->method('resolvePath')
 			->with('/bar/foo')
-			->will($this->returnValue(array(null, 'foo')));
+			->will($this->returnValue([null, 'foo']));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$node->delete();
@@ -134,7 +134,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -142,7 +142,7 @@ class FolderTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_READ))));
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_READ])));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$node->delete();
@@ -154,7 +154,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -162,10 +162,10 @@ class FolderTest extends \Test\TestCase {
 		$view->expects($this->any())
 			->method('getDirectoryContent')
 			->with('/bar/foo')
-			->will($this->returnValue(array(
+			->will($this->returnValue([
 				new FileInfo('/bar/foo/asd', null, 'foo/asd', ['fileid' => 2, 'path' => '/bar/foo/asd', 'name' => 'asd', 'size' => 100, 'mtime' => 50, 'mimetype' => 'text/plain'], null),
 				new FileInfo('/bar/foo/qwerty', null, 'foo/qwerty', ['fileid' => 3, 'path' => '/bar/foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'httpd/unix-directory'], null)
-			)));
+			]));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$children = $node->getDirectoryListing();
@@ -184,7 +184,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -203,7 +203,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -225,7 +225,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -245,7 +245,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -253,7 +253,7 @@ class FolderTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_ALL))));
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL])));
 
 		$view->expects($this->once())
 			->method('mkdir')
@@ -275,7 +275,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -283,7 +283,7 @@ class FolderTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_READ))));
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_READ])));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$node->newFolder('asd');
@@ -295,7 +295,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -303,7 +303,7 @@ class FolderTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_ALL))));
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL])));
 
 		$view->expects($this->once())
 			->method('touch')
@@ -325,7 +325,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -333,7 +333,7 @@ class FolderTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_READ))));
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_READ])));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$node->newFile('asd');
@@ -345,7 +345,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -365,12 +365,12 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 
 		$storage->expects($this->once())
 			->method('getCache')
@@ -387,14 +387,14 @@ class FolderTest extends \Test\TestCase {
 		$cache->expects($this->once())
 			->method('search')
 			->with('%qw%')
-			->will($this->returnValue(array(
-				array('fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
-			)));
+			->will($this->returnValue([
+				['fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain']
+			]));
 
 		$root->expects($this->once())
 			->method('getMountsIn')
 			->with('/bar/foo')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -413,12 +413,12 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', ['getUser', 'getMountsIn', 'getMount'], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 
 		$mount = $this->getMock('\OCP\Files\Mount\IMountPoint');
 		$mount->expects($this->once())
@@ -435,15 +435,15 @@ class FolderTest extends \Test\TestCase {
 		$cache->expects($this->once())
 			->method('search')
 			->with('%qw%')
-			->will($this->returnValue(array(
-				array('fileid' => 3, 'path' => 'files/foo', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain'),
-				array('fileid' => 3, 'path' => 'files_trashbin/foo2.d12345', 'name' => 'foo2.d12345', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain'),
-			)));
+			->will($this->returnValue([
+				['fileid' => 3, 'path' => 'files/foo', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain'],
+				['fileid' => 3, 'path' => 'files_trashbin/foo2.d12345', 'name' => 'foo2.d12345', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain'],
+			]));
 
 		$root->expects($this->once())
 			->method('getMountsIn')
 			->with('')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -461,12 +461,12 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 
 		$mount = $this->getMock('\OCP\Files\Mount\IMountPoint');
 		$mount->expects($this->once())
@@ -483,14 +483,14 @@ class FolderTest extends \Test\TestCase {
 		$cache->expects($this->once())
 			->method('search')
 			->with('%qw%')
-			->will($this->returnValue(array(
-				array('fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
-			)));
+			->will($this->returnValue([
+				['fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain']
+			]));
 
 		$root->expects($this->once())
 			->method('getMountsIn')
 			->with('/bar')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -509,12 +509,12 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 
 		$mount = $this->getMock('\OCP\Files\Mount\IMountPoint');
 		$mount->expects($this->once())
@@ -531,14 +531,14 @@ class FolderTest extends \Test\TestCase {
 		$cache->expects($this->once())
 			->method('searchByTag')
 			->with('tag1', 'user1')
-			->will($this->returnValue(array(
-				array('fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
-			)));
+			->will($this->returnValue([
+				['fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain']
+			]));
 
 		$root->expects($this->once())
 			->method('getMountsIn')
 			->with('/bar/foo')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -557,15 +557,15 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
-		$subCache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
+		$subCache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 		$subStorage = $this->getMock('\OC\Files\Storage\Storage');
-		$subMount = $this->getMock('\OC\Files\Mount\MountPoint', array(), array(null, ''));
+		$subMount = $this->getMock('\OC\Files\Mount\MountPoint', [], [null, '']);
 
 		$mount = $this->getMock('\OCP\Files\Mount\IMountPoint');
 		$mount->expects($this->once())
@@ -594,21 +594,21 @@ class FolderTest extends \Test\TestCase {
 		$cache->expects($this->once())
 			->method('search')
 			->with('%qw%')
-			->will($this->returnValue(array(
-				array('fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
-			)));
+			->will($this->returnValue([
+				['fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain']
+			]));
 
 		$subCache->expects($this->once())
 			->method('search')
 			->with('%qw%')
-			->will($this->returnValue(array(
-				array('fileid' => 4, 'path' => 'asd/qweasd', 'name' => 'qweasd', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
-			)));
+			->will($this->returnValue([
+				['fileid' => 4, 'path' => 'asd/qweasd', 'name' => 'qweasd', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain']
+			]));
 
 		$root->expects($this->once())
 			->method('getMountsIn')
 			->with('/bar/foo')
-			->will($this->returnValue(array($subMount)));
+			->will($this->returnValue([$subMount]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -637,13 +637,13 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', ['getUser', 'getMountsIn', 'getMount'], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
 		$mount = new MountPoint($storage, '/bar');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 
 		$view->expects($this->once())
 			->method('getFileInfo')
@@ -661,7 +661,7 @@ class FolderTest extends \Test\TestCase {
 		$root->expects($this->once())
 			->method('getMountsIn')
 			->with('/bar/foo')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -680,13 +680,13 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', ['getUser', 'getMountsIn', 'getMount'], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
 		$mount = new MountPoint($storage, '/bar');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 
 		$storage->expects($this->once())
 			->method('getCache')
@@ -700,7 +700,7 @@ class FolderTest extends \Test\TestCase {
 		$root->expects($this->once())
 			->method('getMountsIn')
 			->with('/bar/foo')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -718,14 +718,14 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', ['getUser', 'getMountsIn', 'getMount'], [$manager, $view, $this->user]);
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
 		$storage = $this->getMock('\OC\Files\Storage\Storage');
 		$mount1 = new MountPoint($storage, '/bar');
 		$mount2 = new MountPoint($storage, '/bar/foo/asd');
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$cache = $this->getMock('\OC\Files\Cache\Cache', [], ['']);
 
 		$view->expects($this->any())
 			->method('getFileInfo')
@@ -743,7 +743,7 @@ class FolderTest extends \Test\TestCase {
 		$root->expects($this->any())
 			->method('getMountsIn')
 			->with('/bar/foo')
-			->will($this->returnValue(array($mount2)));
+			->will($this->returnValue([$mount2]));
 
 		$root->expects($this->once())
 			->method('getMount')
@@ -776,7 +776,7 @@ class FolderTest extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', ['getUser', 'getMountsIn', 'getMount'], [$manager, $view, $this->user]);
 
 		$view->expects($this->any())
 			->method('file_exists')

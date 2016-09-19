@@ -71,8 +71,8 @@ class Helper {
 
 		$stmt = \OCP\DB::prepare($sql);
 
-		$serverConfigs = $stmt->execute(array('%'.$referenceConfigkey))->fetchAll();
-		$prefixes = array();
+		$serverConfigs = $stmt->execute(['%'.$referenceConfigkey])->fetchAll();
+		$prefixes = [];
 
 		foreach($serverConfigs as $serverConfig) {
 			$len = strlen($serverConfig['configkey']) - strlen($referenceConfigkey);
@@ -98,8 +98,8 @@ class Helper {
 				AND `configkey` LIKE ?
 		';
 		$query = \OCP\DB::prepare($query);
-		$configHosts = $query->execute(array('%'.$referenceConfigkey))->fetchAll();
-		$result = array();
+		$configHosts = $query->execute(['%'.$referenceConfigkey])->fetchAll();
+		$result = [];
 
 		foreach($configHosts as $configHost) {
 			$len = strlen($configHost['configkey']) - strlen($referenceConfigkey);
@@ -133,7 +133,7 @@ class Helper {
 				AND `appid` = \'user_ldap\'
 				AND `configkey` NOT IN (\'enabled\', \'installed_version\', \'types\', \'bgjUpdateGroupsLastRun\')
 		');
-		$delRows = $query->execute(array($prefix.'%'));
+		$delRows = $query->execute([$prefix.'%']);
 
 		if(\OCP\DB::isError($delRows)) {
 			return false;

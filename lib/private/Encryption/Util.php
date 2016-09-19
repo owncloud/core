@@ -159,8 +159,8 @@ class Util {
 	 * @return array with list of files relative to the users files folder
 	 */
 	public function getAllFiles($dir) {
-		$result = array();
-		$dirList = array($dir);
+		$result = [];
+		$dirList = [$dir];
 
 		while ($dirList) {
 			$dir = array_pop($dirList);
@@ -234,7 +234,7 @@ class Util {
 
 		$ownerPath = implode('/', array_slice($parts, 2));
 
-		return array($uid, Filesystem::normalizePath($ownerPath));
+		return [$uid, Filesystem::normalizePath($ownerPath)];
 
 	}
 
@@ -266,7 +266,7 @@ class Util {
 	}
 
 	public function getUserWithAccessToMountPoint($users, $groups) {
-		$result = array();
+		$result = [];
 		if (in_array('all', $users)) {
 			$result = \OCP\User::getUsers();
 		} else {
@@ -307,7 +307,7 @@ class Util {
 	 * @return boolean
 	 */
 	private function isMountPointApplicableToUser($mount, $uid) {
-		$acceptedUids = array('all', $uid);
+		$acceptedUids = ['all', $uid];
 		// check if mount point is applicable for the user
 		$intersection = array_intersect($acceptedUids, $mount['applicable']['users']);
 		if (!empty($intersection)) {

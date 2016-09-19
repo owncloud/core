@@ -52,7 +52,7 @@ class Message {
 			return $addresses;
 		}
 
-		$convertedAddresses = array();
+		$convertedAddresses = [];
 
 		foreach($addresses as $email => $readableName) {
 			if(!is_numeric($email)) {

@@ -24,7 +24,7 @@
 namespace OC\Files\Stream;
 
 class Dir {
-	private static $dirs = array();
+	private static $dirs = [];
 	private $name;
 	private $index;
 
@@ -32,7 +32,7 @@ class Dir {
 		$this->name = substr($path, strlen('fakedir://'));
 		$this->index = 0;
 		if (!isset(self::$dirs[$this->name])) {
-			self::$dirs[$this->name] = array();
+			self::$dirs[$this->name] = [];
 		}
 		return true;
 	}

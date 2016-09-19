@@ -123,23 +123,23 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testTranslate() {
-		$result = $this->activityManager->translate('APP0', '', array(), false, false, 'en');
+		$result = $this->activityManager->translate('APP0', '', [], false, false, 'en');
 		$this->assertEquals('Stupid translation', $result);
 
-		$result = $this->activityManager->translate('APP1', '', array(), false, false, 'en');
+		$result = $this->activityManager->translate('APP1', '', [], false, false, 'en');
 		$this->assertFalse($result);
 	}
 
 	public function testGetSpecialParameterList() {
 		$result = $this->activityManager->getSpecialParameterList('APP0', '');
-		$this->assertEquals(array(0 => 'file', 1 => 'username'), $result);
+		$this->assertEquals([0 => 'file', 1 => 'username'], $result);
 
 		$result = $this->activityManager->getSpecialParameterList('APP1', '');
 		$this->assertFalse($result);
 	}
 
 	public function testGroupParameter() {
-		$result = $this->activityManager->getGroupParameter(array());
+		$result = $this->activityManager->getGroupParameter([]);
 		$this->assertEquals(5, $result);
 	}
 
@@ -158,11 +158,11 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testFilterNotificationTypes() {
-		$result = $this->activityManager->filterNotificationTypes(array('NT0', 'NT1', 'NT2', 'NT3'), 'fv01');
+		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'fv01');
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(3, sizeof($result));
 
-		$result = $this->activityManager->filterNotificationTypes(array('NT0', 'NT1', 'NT2', 'NT3'), 'InvalidFilter');
+		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'InvalidFilter');
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(4, sizeof($result));
 	}
@@ -175,14 +175,14 @@ class ManagerTest extends TestCase {
 
 		$result = $this->activityManager->getQueryForFilter('fv01');
 		$this->assertEquals(
-			array(
+			[
 				' and ((`app` = ? and `message` like ?) or (`app` = ? and `message` like ?))',
-				array('mail', 'ownCloud%', 'mail', 'ownCloud%')
-			), $result
+				['mail', 'ownCloud%', 'mail', 'ownCloud%']
+			], $result
 		);
 
 		$result = $this->activityManager->getQueryForFilter('InvalidFilter');
-		$this->assertEquals(array(null, null), $result);
+		$this->assertEquals([null, null], $result);
 	}
 
 	public function getUserFromTokenThrowInvalidTokenData() {
@@ -452,15 +452,15 @@ class ManagerTest extends TestCase {
 class SimpleExtension implements \OCP\Activity\IExtension {
 
 	public function getNotificationTypes($languageCode) {
-		return array('NT1', 'NT2');
+		return ['NT1', 'NT2'];
 	}
 
 	public function getDefaultTypes($method) {
 		if ($method === 'stream') {
-			return array('DT0');
+			return ['DT0'];
 		}
 
-		return array();
+		return [];
 	}
 
 	public function getTypeIcon($type) {
@@ -480,7 +480,7 @@ class SimpleExtension implements \OCP\Activity\IExtension {
 
 	public function getSpecialParameterList($app, $text) {
 		if ($app === 'APP0') {
-			return array(0 => 'file', 1 => 'username');
+			return [0 => 'file', 1 => 'username'];
 		}
 
 		return false;
@@ -491,10 +491,10 @@ class SimpleExtension implements \OCP\Activity\IExtension {
 	}
 
 	public function getNavigation() {
-		return array(
-			'apps' => array('nav1', 'nav2', 'nav3', 'nav4'),
-			'top'  => array('top1', 'top2')
-		);
+		return [
+			'apps' => ['nav1', 'nav2', 'nav3', 'nav4'],
+			'top'  => ['top1', 'top2']
+		];
 	}
 
 	public function isFilterValid($filterValue) {
@@ -514,7 +514,7 @@ class SimpleExtension implements \OCP\Activity\IExtension {
 
 	public function getQueryForFilter($filter) {
 		if ($filter === 'fv01') {
-			return array('`app` = ? and `message` like ?', array('mail', 'ownCloud%'));
+			return ['`app` = ? and `message` like ?', ['mail', 'ownCloud%']];
 		}
 
 		return false;

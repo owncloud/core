@@ -138,7 +138,7 @@ script(
 	</div>
 	{{/unless}}
 
-	<input class="update hidden" type="submit" value="<?php p($l->t('Update to %s', array('{{update}}'))); ?>" data-appid="{{id}}" />
+	<input class="update hidden" type="submit" value="<?php p($l->t('Update to %s', ['{{update}}'])); ?>" data-appid="{{id}}" />
 	{{#if active}}
 	<input class="enable" type="submit" data-appid="{{id}}" data-active="true" value="<?php p($l->t("Disable"));?>"/>
 	<span class="groups-enable">

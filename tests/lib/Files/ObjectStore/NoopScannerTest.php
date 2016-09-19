@@ -21,7 +21,7 @@ class NoopScannerTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->storage = new \OC\Files\Storage\Temporary(array());
+		$this->storage = new \OC\Files\Storage\Temporary([]);
 		$this->scanner = new \OC\Files\ObjectStore\NoopScanner($this->storage);
 	}
 

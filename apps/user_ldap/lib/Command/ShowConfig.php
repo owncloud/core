@@ -91,8 +91,8 @@ class ShowConfig extends Command {
 			ksort($configuration);
 
 			$table = $this->getHelperSet()->get('table');
-			$table->setHeaders(array('Configuration', $id));
-			$rows = array();
+			$table->setHeaders(['Configuration', $id]);
+			$rows = [];
 			foreach($configuration as $key => $value) {
 				if($key === 'ldapAgentPassword' && !$withPassword) {
 					$value = '***';
@@ -100,7 +100,7 @@ class ShowConfig extends Command {
 				if(is_array($value)) {
 					$value = implode(';', $value);
 				}
-				$rows[] = array($key, $value);
+				$rows[] = [$key, $value];
 			}
 			$table->setRows($rows);
 			$table->render($output);

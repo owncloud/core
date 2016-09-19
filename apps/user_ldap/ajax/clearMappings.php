@@ -44,5 +44,5 @@ try {
 	}
 	OCP\JSON::success();
 } catch (\Exception $e) {
-	OCP\JSON::error(array('message' => $e->getMessage()));
+	OCP\JSON::error(['message' => $e->getMessage()]);
 }

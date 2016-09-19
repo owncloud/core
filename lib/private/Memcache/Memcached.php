@@ -49,9 +49,9 @@ class Memcached extends Cache implements IMemcache {
 			if (!$servers) {
 				$server = \OC::$server->getSystemConfig()->getValue('memcached_server');
 				if ($server) {
-					$servers = array($server);
+					$servers = [$server];
 				} else {
-					$servers = array(array('localhost', 11211));
+					$servers = [['localhost', 11211]];
 				}
 			}
 			self::$cache->addServers($servers);
@@ -134,7 +134,7 @@ class Memcached extends Cache implements IMemcache {
 			self::$cache->flush();
 			return true;
 		}
-		$keys = array();
+		$keys = [];
 		$prefixLength = strlen($prefix);
 		foreach ($allKeys as $key) {
 			if (substr($key, 0, $prefixLength) === $prefix) {

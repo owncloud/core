@@ -142,7 +142,7 @@ class OC_Helper {
 			return floatval($str);
 		}
 
-		$bytes_array = array(
+		$bytes_array = [
 			'b' => 1,
 			'k' => 1024,
 			'kb' => 1024,
@@ -154,7 +154,7 @@ class OC_Helper {
 			't' => 1024 * 1024 * 1024 * 1024,
 			'pb' => 1024 * 1024 * 1024 * 1024 * 1024,
 			'p' => 1024 * 1024 * 1024 * 1024 * 1024,
-		);
+		];
 
 		$bytes = floatval($str);
 
@@ -256,11 +256,11 @@ class OC_Helper {
 		// check method depends on operating system
 		if (!strncmp(PHP_OS, "WIN", 3)) {
 			// on Windows an appropriate COM or EXE file needs to exist
-			$exts = array(".exe", ".com");
+			$exts = [".exe", ".com"];
 			$check_fn = "file_exists";
 		} else {
 			// anywhere else we look for an executable file of that name
-			$exts = array("");
+			$exts = [""];
 			$check_fn = "is_executable";
 		}
 		// Default check will be done with $path directories :
@@ -293,7 +293,7 @@ class OC_Helper {
 	 */
 	public static function streamCopy($source, $target) {
 		if (!$source or !$target) {
-			return array(0, false);
+			return [0, false];
 		}
 		$bufSize = 8192;
 		$result = true;
@@ -314,7 +314,7 @@ class OC_Helper {
 				break;
 			}
 		}
-		return array($count, $result);
+		return [$count, $result];
 	}
 
 	/**
@@ -416,7 +416,7 @@ class OC_Helper {
 	 */
 	public static function mb_array_change_key_case($input, $case = MB_CASE_LOWER, $encoding = 'UTF-8') {
 		$case = ($case != MB_CASE_UPPER) ? MB_CASE_LOWER : MB_CASE_UPPER;
-		$ret = array();
+		$ret = [];
 		foreach ($input as $k => $v) {
 			$ret[mb_convert_case($k, $case, $encoding)] = $v;
 		}
@@ -660,7 +660,7 @@ class OC_Helper {
 			$relative = 0;
 		}
 
-		return array('free' => $free, 'used' => $used, 'total' => $total, 'relative' => $relative);
+		return ['free' => $free, 'used' => $used, 'total' => $total, 'relative' => $relative];
 
 	}
 

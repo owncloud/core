@@ -50,13 +50,13 @@ class Group_LDAPTest extends \Test\TestCase {
 		$lw  = $this->getMock('\OCA\User_LDAP\ILDAPWrapper');
 		$connector = $this->getMock('\OCA\User_LDAP\Connection',
 									$conMethods,
-									array($lw, null, null));
+									[$lw, null, null]);
 		$um = $this->getMockBuilder('\OCA\User_LDAP\User\Manager')
 			->disableOriginalConstructor()
 			->getMock();
 		$access = $this->getMock('\OCA\User_LDAP\Access',
 								 $accMethods,
-								 array($connector, $lw, $um));
+								 [$connector, $lw, $um]);
 
 		$access->expects($this->any())
 			->method('getConnection')
@@ -87,7 +87,7 @@ class Group_LDAPTest extends \Test\TestCase {
 
 		$access->expects($this->any())
 			->method('readAttribute')
-			->will($this->returnValue(array('u11', 'u22', 'u33', 'u34')));
+			->will($this->returnValue(['u11', 'u22', 'u33', 'u34']));
 
 		// for primary groups
 		$access->expects($this->once())
@@ -111,7 +111,7 @@ class Group_LDAPTest extends \Test\TestCase {
 
 		$access->expects($this->any())
 			->method('fetchListOfUsers')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$access->expects($this->any())
 			->method('readAttribute')
@@ -124,7 +124,7 @@ class Group_LDAPTest extends \Test\TestCase {
 				if(strpos($name, 'u') === 0) {
 					return strpos($name, '3');
 				}
-				return array('u11', 'u22', 'u33', 'u34');
+				return ['u11', 'u22', 'u33', 'u34'];
 			}));
 
 		$access->expects($this->any())
@@ -203,7 +203,7 @@ class Group_LDAPTest extends \Test\TestCase {
 
 		$access->expects($this->once())
 			->method('searchGroups')
-			->will($this->returnValue(array()));
+			->will($this->returnValue([]));
 
 		$access->expects($this->never())
 			->method('dn2groupname');
@@ -253,7 +253,7 @@ class Group_LDAPTest extends \Test\TestCase {
 		$access->expects($this->once())
 			->method('readAttribute')
 			->with($dn, $attr)
-			->will($this->returnValue(array('3117')));
+			->will($this->returnValue(['3117']));
 
 		$groupBackend = new GroupLDAP($access);
 
@@ -313,7 +313,7 @@ class Group_LDAPTest extends \Test\TestCase {
 
 		$access->expects($this->once())
 			->method('ownCloudGroupNames')
-			->will($this->returnValue(array('group1', 'group2')));
+			->will($this->returnValue(['group1', 'group2']));
 
 		$groupBackend = new GroupLDAP($access);
 		$groups = $groupBackend->getGroups('', 2, 2);
@@ -337,9 +337,9 @@ class Group_LDAPTest extends \Test\TestCase {
 			->method('readAttribute')
 			->will($this->returnCallback(function($dn, $attr) {
 				if($attr === 'primaryGroupToken') {
-					return array(1337);
+					return [1337];
 				}
-				return array();
+				return [];
 			}));
 
 		$access->expects($this->any())
@@ -348,7 +348,7 @@ class Group_LDAPTest extends \Test\TestCase {
 
 		$access->expects($this->once())
 			->method('ownCloudUserNames')
-			->will($this->returnValue(array('lisa', 'bart', 'kira', 'brad')));
+			->will($this->returnValue(['lisa', 'bart', 'kira', 'brad']));
 
 		$groupBackend = new GroupLDAP($access);
 		$users = $groupBackend->usersInGroup('foobar');
@@ -372,9 +372,9 @@ class Group_LDAPTest extends \Test\TestCase {
 			->method('readAttribute')
 			->will($this->returnCallback(function($dn, $attr) {
 				if($attr === 'primaryGroupToken') {
-					return array(1337);
+					return [1337];
 				}
-				return array();
+				return [];
 			}));
 
 		$access->expects($this->any())

@@ -269,7 +269,7 @@ class ShareControllerTest extends \Test\TestCase {
 			}));
 
 		$response = $this->shareController->authenticate('token', 'invalidpassword');
-		$expectedResponse =  new TemplateResponse($this->appName, 'authenticate', array('wrongpw' => true), 'guest');
+		$expectedResponse =  new TemplateResponse($this->appName, 'authenticate', ['wrongpw' => true], 'guest');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -353,7 +353,7 @@ class ShareControllerTest extends \Test\TestCase {
 		$this->userManager->method('get')->with('ownerUID')->willReturn($owner);
 
 		$response = $this->shareController->showShare('token');
-		$sharedTmplParams = array(
+		$sharedTmplParams = [
 			'displayName' => 'ownerDisplay',
 			'owner' => 'ownerUID',
 			'filename' => 'file1.txt',
@@ -372,7 +372,7 @@ class ShareControllerTest extends \Test\TestCase {
 			'previewEnabled' => true,
 			'previewMaxX' => 1024,
 			'previewMaxY' => 1024,
-		);
+		];
 
 		$csp = new \OCP\AppFramework\Http\ContentSecurityPolicy();
 		$csp->addAllowedFrameDomain('\'self\'');

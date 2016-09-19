@@ -136,7 +136,7 @@ class BirthdayService {
 			return null;
 		}
 		$title = str_replace('{name}',
-			strtr((string)$doc->FN, array('\,' => ',', '\;' => ';')),
+			strtr((string)$doc->FN, ['\,' => ',', '\;' => ';']),
 			'{name}'
 		);
 		try {

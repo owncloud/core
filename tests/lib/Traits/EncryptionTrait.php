@@ -74,7 +74,7 @@ trait EncryptionTrait {
 			\OC::$server->getLogger()
 		);
 
-		$this->registerStorageWrapper('oc_encryption', array($encryptionWrapper, 'wrapStorage'));
+		$this->registerStorageWrapper('oc_encryption', [$encryptionWrapper, 'wrapStorage']);
 	}
 
 	protected function setUpEncryptionTrait() {

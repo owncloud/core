@@ -83,7 +83,7 @@ class Detection implements IMimeTypeDetector {
 	public function registerType($extension,
 								 $mimetype,
 								 $secureMimeType = null) {
-		$this->mimetypes[$extension] = array($mimetype, $secureMimeType);
+		$this->mimetypes[$extension] = [$mimetype, $secureMimeType];
 		$this->secureMimeTypes[$mimetype] = $secureMimeType ?: $mimetype;
 	}
 

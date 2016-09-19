@@ -11,56 +11,56 @@ class RoutingTest extends \Test\TestCase
 
 	public function testSimpleRoute()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'GET')
-		));
+		$routes = ['routes' => [
+			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'GET']
+		]];
 
 		$this->assertSimpleRoute($routes, 'folders.open', 'GET', '/folders/{folderId}/open', 'FoldersController', 'open');
 	}
 
 	public function testSimpleRouteWithMissingVerb()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open')
-		));
+		$routes = ['routes' => [
+			['name' => 'folders#open', 'url' => '/folders/{folderId}/open']
+		]];
 
 		$this->assertSimpleRoute($routes, 'folders.open', 'GET', '/folders/{folderId}/open', 'FoldersController', 'open');
 	}
 
 	public function testSimpleRouteWithLowercaseVerb()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete')
-		));
+		$routes = ['routes' => [
+			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete']
+		]];
 
 		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open');
 	}
 
 	public function testSimpleRouteWithRequirements()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'requirements' => array('something'))
-		));
+		$routes = ['routes' => [
+			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'requirements' => ['something']]
+		]];
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', array('something'));
+		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', ['something']);
 	}
 
 	public function testSimpleRouteWithDefaults()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', array(), 'defaults' => array('param' => 'foobar'))
-		));
+		$routes = ['routes' => [
+			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', [], 'defaults' => ['param' => 'foobar']]
+		]];
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', array(), array('param' => 'foobar'));
+		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', [], ['param' => 'foobar']);
 	}
 
 	public function testSimpleRouteWithPostfix()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'postfix' => '_something')
-		));
+		$routes = ['routes' => [
+			['name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'postfix' => '_something']
+		]];
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', array(), array(), '_something');
+		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', [], [], '_something');
 	}
 
 
@@ -69,12 +69,12 @@ class RoutingTest extends \Test\TestCase
 	 */
 	public function testSimpleRouteWithBrokenName()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'folders_open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete')
-		));
+		$routes = ['routes' => [
+			['name' => 'folders_open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete']
+		]];
 
 		// router mock
-		$router = $this->getMock("\OC\Route\Router", array('create'), [\OC::$server->getLogger()]);
+		$router = $this->getMock("\OC\Route\Router", ['create'], [\OC::$server->getLogger()]);
 
 		// load route configuration
 		$container = new DIContainer('app1');
@@ -85,23 +85,23 @@ class RoutingTest extends \Test\TestCase
 
 	public function testSimpleRouteWithUnderScoreNames()
 	{
-		$routes = array('routes' => array(
-			array('name' => 'admin_folders#open_current', 'url' => '/folders/{folderId}/open', 'verb' => 'delete')
-		));
+		$routes = ['routes' => [
+			['name' => 'admin_folders#open_current', 'url' => '/folders/{folderId}/open', 'verb' => 'delete']
+		]];
 
 		$this->assertSimpleRoute($routes, 'admin_folders.open_current', 'DELETE', '/folders/{folderId}/open', 'AdminFoldersController', 'openCurrent');
 	}
 
 	public function testResource()
 	{
-		$routes = array('resources' => array('account' => array('url' => '/accounts')));
+		$routes = ['resources' => ['account' => ['url' => '/accounts']]];
 
 		$this->assertResource($routes, 'account', '/accounts', 'AccountController', 'id');
 	}
 
 	public function testResourceWithUnderScoreName()
 	{
-		$routes = array('resources' => array('admin_accounts' => array('url' => '/admin/accounts')));
+		$routes = ['resources' => ['admin_accounts' => ['url' => '/admin/accounts']]];
 
 		$this->assertResource($routes, 'admin_accounts', '/admin/accounts', 'AdminAccountsController', 'id');
 	}
@@ -113,7 +113,7 @@ class RoutingTest extends \Test\TestCase
 	 * @param string $controllerName
 	 * @param string $actionName
 	 */
-	private function assertSimpleRoute($routes, $name, $verb, $url, $controllerName, $actionName, array $requirements=array(), array $defaults=array(), $postfix='')
+	private function assertSimpleRoute($routes, $name, $verb, $url, $controllerName, $actionName, array $requirements= [], array $defaults= [], $postfix='')
 	{
 		if ($postfix) {
 			$name .= $postfix;
@@ -124,7 +124,7 @@ class RoutingTest extends \Test\TestCase
 		$route = $this->mockRoute($container, $verb, $controllerName, $actionName, $requirements, $defaults);
 
 		// router mock
-		$router = $this->getMock("\OC\Route\Router", array('create'), [\OC::$server->getLogger()]);
+		$router = $this->getMock("\OC\Route\Router", ['create'], [\OC::$server->getLogger()]);
 
 		// we expect create to be called once:
 		$router
@@ -148,7 +148,7 @@ class RoutingTest extends \Test\TestCase
 	private function assertResource($yaml, $resourceName, $url, $controllerName, $paramName)
 	{
 		// router mock
-		$router = $this->getMock("\OC\Route\Router", array('create'), [\OC::$server->getLogger()]);
+		$router = $this->getMock("\OC\Route\Router", ['create'], [\OC::$server->getLogger()]);
 
 		// route mocks
 		$container = new DIContainer('app1');
@@ -211,10 +211,10 @@ class RoutingTest extends \Test\TestCase
 		$verb,
 		$controllerName,
 		$actionName,
-		array $requirements=array(),
-		array $defaults=array()
+		array $requirements= [],
+		array $defaults= []
 	) {
-		$route = $this->getMock("\OC\Route\Route", array('method', 'action', 'requirements', 'defaults'), array(), '', false);
+		$route = $this->getMock("\OC\Route\Route", ['method', 'action', 'requirements', 'defaults'], [], '', false);
 		$route
 			->expects($this->exactly(1))
 			->method('method')

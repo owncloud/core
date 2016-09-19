@@ -83,7 +83,7 @@ class EncryptionTest extends \Test\TestCase {
 		$fileMock->expects($this->once())->method('getAccessList')
 			->will($this->returnCallback(function($sharePath) use ($expectedSharePath) {
 				$this->assertSame($expectedSharePath, $sharePath);
-				return array();
+				return [];
 			}));
 
 		$utilMock = $this->getMockBuilder('\OC\Encryption\Util')
@@ -120,7 +120,7 @@ class EncryptionTest extends \Test\TestCase {
 		$fullPathP->setAccessible(false);
 		$header = $stream->getProperty('header');
 		$header->setAccessible(true);
-		$header->setValue($streamWrapper, array());
+		$header->setValue($streamWrapper, []);
 		$header->setAccessible(false);
 		$this->invokePrivate($streamWrapper, 'signed', [true]);
 
@@ -152,11 +152,11 @@ class EncryptionTest extends \Test\TestCase {
 	}
 
 	public function dataProviderStreamOpen() {
-		return array(
-			array('r', '/foo/bar/test.txt', true, '/foo/bar/test.txt', null, null, true),
-			array('r', '/foo/bar/test.txt', false, '/foo/bar', null, null, true),
-			array('w', '/foo/bar/test.txt', true, '/foo/bar/test.txt', 8192, 0, false),
-		);
+		return [
+			['r', '/foo/bar/test.txt', true, '/foo/bar/test.txt', null, null, true],
+			['r', '/foo/bar/test.txt', false, '/foo/bar', null, null, true],
+			['w', '/foo/bar/test.txt', true, '/foo/bar/test.txt', 8192, 0, false],
+		];
 	}
 
 	public function testWriteRead() {

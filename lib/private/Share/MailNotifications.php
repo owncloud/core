@@ -109,7 +109,7 @@ class MailNotifications {
 
 			$items = $this->getItemSharedWithUser($itemSource, $itemType, $recipient);
 			$filename = trim($items[0]['file_target'], '/');
-			$subject = (string) $this->l->t('%s shared »%s« with you', array($this->senderDisplayName, $filename));
+			$subject = (string) $this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 			$expiration = null;
 			if (isset($items[0]['expiration'])) {
 				try {

@@ -31,7 +31,7 @@ use OC\ServerNotAvailableException;
 
 class LDAP implements ILDAPWrapper {
 	protected $curFunc = '';
-	protected $curArgs = array();
+	protected $curArgs = [];
 
 	/**
 	 * @param resource $link
@@ -67,7 +67,7 @@ class LDAP implements ILDAPWrapper {
 	 */
 	public function controlPagedResultResponse($link, $result, &$cookie) {
 		$this->preFunctionCall('ldap_control_paged_result_response',
-			array($link, $result, $cookie));
+			[$link, $result, $cookie]);
 		$result = ldap_control_paged_result_response($link, $result, $cookie);
 		$this->postFunctionCall();
 
@@ -298,6 +298,6 @@ class LDAP implements ILDAPWrapper {
 		}
 
 		$this->curFunc = '';
-		$this->curArgs = array();
+		$this->curArgs = [];
 	}
 }

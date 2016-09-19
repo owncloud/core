@@ -99,21 +99,21 @@ class UpdateGroups extends \OC\BackgroundJob\TimedJob {
 			$actualUsers = self::getGroupBE()->usersInGroup($group);
 			$hasChanged = false;
 			foreach(array_diff($knownUsers, $actualUsers) as $removedUser) {
-				\OCP\Util::emitHook('OC_User', 'post_removeFromGroup', array('uid' => $removedUser, 'gid' => $group));
+				\OCP\Util::emitHook('OC_User', 'post_removeFromGroup', ['uid' => $removedUser, 'gid' => $group]);
 				\OCP\Util::writeLog('user_ldap',
 				'bgJ "updateGroups" – "'.$removedUser.'" removed from "'.$group.'".',
 				\OCP\Util::INFO);
 				$hasChanged = true;
 			}
 			foreach(array_diff($actualUsers, $knownUsers) as $addedUser) {
-				\OCP\Util::emitHook('OC_User', 'post_addToGroup', array('uid' => $addedUser, 'gid' => $group));
+				\OCP\Util::emitHook('OC_User', 'post_addToGroup', ['uid' => $addedUser, 'gid' => $group]);
 				\OCP\Util::writeLog('user_ldap',
 				'bgJ "updateGroups" – "'.$addedUser.'" added to "'.$group.'".',
 				\OCP\Util::INFO);
 				$hasChanged = true;
 			}
 			if($hasChanged) {
-				$query->execute(array(serialize($actualUsers), $group));
+				$query->execute([serialize($actualUsers), $group]);
 			}
 		}
 		\OCP\Util::writeLog('user_ldap',
@@ -136,7 +136,7 @@ class UpdateGroups extends \OC\BackgroundJob\TimedJob {
 				'bgJ "updateGroups" – new group "'.$createdGroup.'" found.',
 				\OCP\Util::INFO);
 			$users = serialize(self::getGroupBE()->usersInGroup($createdGroup));
-			$query->execute(array($createdGroup, $users));
+			$query->execute([$createdGroup, $users]);
 		}
 		\OCP\Util::writeLog('user_ldap',
 			'bgJ "updateGroups" – FINISHED dealing with created Groups.',
@@ -157,7 +157,7 @@ class UpdateGroups extends \OC\BackgroundJob\TimedJob {
 			\OCP\Util::writeLog('user_ldap',
 				'bgJ "updateGroups" – group "'.$removedGroup.'" was removed.',
 				\OCP\Util::INFO);
-			$query->execute(array($removedGroup));
+			$query->execute([$removedGroup]);
 		}
 		\OCP\Util::writeLog('user_ldap',
 			'bgJ "updateGroups" – FINISHED dealing with removed groups.',
@@ -211,7 +211,7 @@ class UpdateGroups extends \OC\BackgroundJob\TimedJob {
 			FROM `*PREFIX*ldap_group_members`
 		');
 		$result = $query->execute()->fetchAll();
-		self::$groupsFromDB = array();
+		self::$groupsFromDB = [];
 		foreach($result as $dataset) {
 			self::$groupsFromDB[$dataset['owncloudname']] = $dataset;
 		}

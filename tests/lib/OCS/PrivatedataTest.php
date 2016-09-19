@@ -39,20 +39,20 @@ class PrivatedataTest extends \Test\TestCase {
 	}
 
 	public function testGetEmptyOne() {
-		$params = array('app' => $this->appKey, 'key' => '123');
+		$params = ['app' => $this->appKey, 'key' => '123'];
 		$result = OC_OCS_Privatedata::get($params);
 		$this->assertOcsResult(0, $result);
 	}
 
 	public function testGetEmptyAll() {
-		$params = array('app' => $this->appKey);
+		$params = ['app' => $this->appKey];
 		$result = OC_OCS_Privatedata::get($params);
 		$this->assertOcsResult(0, $result);
 	}
 
 	public function testSetOne() {
-		$_POST = array('value' => 123456789);
-		$params = array('app' => $this->appKey, 'key' => 'k-1');
+		$_POST = ['value' => 123456789];
+		$params = ['app' => $this->appKey, 'key' => 'k-1'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
@@ -61,8 +61,8 @@ class PrivatedataTest extends \Test\TestCase {
 	}
 
 	public function testSetExisting() {
-		$_POST = array('value' => 123456789);
-		$params = array('app' => $this->appKey, 'key' => 'k-10');
+		$_POST = ['value' => 123456789];
+		$params = ['app' => $this->appKey, 'key' => 'k-10'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
@@ -72,8 +72,8 @@ class PrivatedataTest extends \Test\TestCase {
 		$data = $data[0];
 		$this->assertEquals('123456789', $data['value']);
 
-		$_POST = array('value' => 'updated');
-		$params = array('app' => $this->appKey, 'key' => 'k-10');
+		$_POST = ['value' => 'updated'];
+		$params = ['app' => $this->appKey, 'key' => 'k-10'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
@@ -85,8 +85,8 @@ class PrivatedataTest extends \Test\TestCase {
 	}
 
 	public function testSetSameValue() {
-		$_POST = array('value' => 123456789);
-		$params = array('app' => $this->appKey, 'key' => 'k-10');
+		$_POST = ['value' => 123456789];
+		$params = ['app' => $this->appKey, 'key' => 'k-10'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
@@ -97,8 +97,8 @@ class PrivatedataTest extends \Test\TestCase {
 		$this->assertEquals('123456789', $data['value']);
 
 		// set the same value again
-		$_POST = array('value' => 123456789);
-		$params = array('app' => $this->appKey, 'key' => 'k-10');
+		$_POST = ['value' => 123456789];
+		$params = ['app' => $this->appKey, 'key' => 'k-10'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
@@ -110,29 +110,29 @@ class PrivatedataTest extends \Test\TestCase {
 	}
 
 	public function testSetMany() {
-		$_POST = array('value' => 123456789);
+		$_POST = ['value' => 123456789];
 
 		// set key 'k-1'
-		$params = array('app' => $this->appKey, 'key' => 'k-1');
+		$params = ['app' => $this->appKey, 'key' => 'k-1'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
 		// set key 'k-2'
-		$params = array('app' => $this->appKey, 'key' => 'k-2');
+		$params = ['app' => $this->appKey, 'key' => 'k-2'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
 		// query for all
-		$params = array('app' => $this->appKey);
+		$params = ['app' => $this->appKey];
 		$result = OC_OCS_Privatedata::get($params);
 		$this->assertOcsResult(2, $result);
 	}
 
 	public function testDelete() {
-		$_POST = array('value' => 123456789);
+		$_POST = ['value' => 123456789];
 
 		// set key 'k-1'
-		$params = array('app' => $this->appKey, 'key' => 'k-3');
+		$params = ['app' => $this->appKey, 'key' => 'k-3'];
 		$result = OC_OCS_Privatedata::set($params);
 		$this->assertEquals(100, $result->getStatusCode());
 
@@ -152,11 +152,11 @@ class PrivatedataTest extends \Test\TestCase {
 	}
 
 	public function deleteWithEmptyKeysProvider() {
-		return array(
-			array(array()),
-			array(array('app' => '123')),
-			array(array('key' => '123')),
-		);
+		return [
+			[[]],
+			[['app' => '123']],
+			[['key' => '123']],
+		];
 	}
 
 	/**

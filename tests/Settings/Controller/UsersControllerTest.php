@@ -41,7 +41,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['L10N']
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($text, $parameters = array()) {
+			->will($this->returnCallback(function($text, $parameters = []) {
 				return vsprintf($text, $parameters);
 			}));
 		$this->container['Defaults'] = $this->getMockBuilder('\OC_Defaults')
@@ -175,11 +175,11 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('displayNamesInGroup')
 			->with('gid', 'pattern')
-			->will($this->returnValue(array('foo' => 'M. Foo', 'admin' => 'S. Admin', 'bar' => 'B. Ar')));
+			->will($this->returnValue(['foo' => 'M. Foo', 'admin' => 'S. Admin', 'bar' => 'B. Ar']));
 		$this->container['GroupManager']
 			->expects($this->exactly(3))
 			->method('getUserGroupIds')
-			->will($this->onConsecutiveCalls(array('Users', 'Support'), array('admins', 'Support'), array('External Users')));
+			->will($this->onConsecutiveCalls(['Users', 'Support'], ['admins', 'Support'], ['External Users']));
 		$this->container['UserManager']
 			->expects($this->at(0))
 			->method('get')
@@ -220,12 +220,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($subadmin));
 
 		$expectedResponse = new DataResponse(
-			array(
-				0 => array(
+			[
+				0 => [
 					'name' => 'foo',
 					'displayname' => 'M. Foo',
-					'groups' => array('Users', 'Support'),
-					'subadmin' => array(),
+					'groups' => ['Users', 'Support'],
+					'subadmin' => [],
 					'quota' => 1024,
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500000,
@@ -233,12 +233,12 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-				),
-				1 => array(
+				],
+				1 => [
 					'name' => 'admin',
 					'displayname' => 'S. Admin',
-					'groups' => array('admins', 'Support'),
-					'subadmin' => array(),
+					'groups' => ['admins', 'Support'],
+					'subadmin' => [],
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12000,
@@ -246,12 +246,12 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
-				),
-				2 => array(
+				],
+				2 => [
 					'name' => 'bar',
 					'displayname' => 'B. Ar',
-					'groups' => array('External Users'),
-					'subadmin' => array(),
+					'groups' => ['External Users'],
+					'subadmin' => [],
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
 					'lastLogin' => 3999000,
@@ -259,8 +259,8 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-				),
-			)
+				],
+			]
 		);
 		$response = $this->container['UsersController']->index(0, 10, 'gid', 'pattern');
 		$this->assertEquals($expectedResponse, $response);
@@ -575,7 +575,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['GroupManager']
 			->expects($this->exactly(3))
 			->method('getUserGroupIds')
-			->will($this->onConsecutiveCalls(array('Users', 'Support'), array('admins', 'Support'), array('External Users')));
+			->will($this->onConsecutiveCalls(['Users', 'Support'], ['admins', 'Support'], ['External Users']));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -589,12 +589,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($subadmin));
 
 		$expectedResponse = new DataResponse(
-			array(
-				0 => array(
+			[
+				0 => [
 					'name' => 'foo',
 					'displayname' => 'M. Foo',
-					'groups' => array('Users', 'Support'),
-					'subadmin' => array(),
+					'groups' => ['Users', 'Support'],
+					'subadmin' => [],
 					'quota' => 1024,
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500000,
@@ -602,12 +602,12 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'foo@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-				),
-				1 => array(
+				],
+				1 => [
 					'name' => 'admin',
 					'displayname' => 'S. Admin',
-					'groups' => array('admins', 'Support'),
-					'subadmin' => array(),
+					'groups' => ['admins', 'Support'],
+					'subadmin' => [],
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12000,
@@ -615,12 +615,12 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'admin@bar.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => false,
-				),
-				2 => array(
+				],
+				2 => [
 					'name' => 'bar',
 					'displayname' => 'B. Ar',
-					'groups' => array('External Users'),
-					'subadmin' => array(),
+					'groups' => ['External Users'],
+					'subadmin' => [],
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
 					'lastLogin' => 3999000,
@@ -628,8 +628,8 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => 'bar@dummy.com',
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-				),
-			)
+				],
+			]
 		);
 		$response = $this->container['UsersController']->index(0, 10, '', 'pattern');
 		$this->assertEquals($expectedResponse, $response);
@@ -691,12 +691,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($subadmin));
 
 		$expectedResponse = new DataResponse(
-			array(
-				0 => array(
+			[
+				0 => [
 					'name' => 'foo',
 					'displayname' => 'M. Foo',
 					'groups' => null,
-					'subadmin' => array(),
+					'subadmin' => [],
 					'quota' => 'none',
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500000,
@@ -704,8 +704,8 @@ class UsersControllerTest extends \Test\TestCase {
 					'email' => null,
 					'isRestoreDisabled' => false,
 					'isAvatarAvailable' => true,
-				)
-			)
+				]
+			]
 		);
 		$response = $this->container['UsersController']->index(0, 10, '','', '\Test\Util\User\Dummy');
 		$this->assertEquals($expectedResponse, $response);
@@ -764,7 +764,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($subadmin));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'name' => 'foo',
 				'groups' => null,
 				'storageLocation' => '/home/user',
@@ -772,14 +772,14 @@ class UsersControllerTest extends \Test\TestCase {
 				'lastLogin' => null,
 				'displayname' => null,
 				'quota' => null,
-				'subadmin' => array(),
+				'subadmin' => [],
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-			),
+			],
 			Http::STATUS_CREATED
 		);
-		$response = $this->container['UsersController']->create('foo', 'password', array());
+		$response = $this->container['UsersController']->create('foo', 'password', []);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -853,7 +853,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($subadmin));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'name' => 'foo',
 				'groups' => ['SubGroup1', 'SubGroup2'],
 				'storageLocation' => '/home/user',
@@ -865,7 +865,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-			),
+			],
 			Http::STATUS_CREATED
 		);
 		$response = $this->container['UsersController']->create('foo', 'password');
@@ -920,7 +920,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getUserGroupIds')
 			->with($user)
-			->will($this->onConsecutiveCalls(array('NewGroup', 'ExistingGroup')));
+			->will($this->onConsecutiveCalls(['NewGroup', 'ExistingGroup']));
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -936,22 +936,22 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($subadmin));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'name' => 'foo',
-				'groups' => array('NewGroup', 'ExistingGroup'),
+				'groups' => ['NewGroup', 'ExistingGroup'],
 				'storageLocation' => '/home/user',
 				'backend' => 'bar',
 				'lastLogin' => null,
 				'displayname' => null,
 				'quota' => null,
-				'subadmin' => array(),
+				'subadmin' => [],
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-			),
+			],
 			Http::STATUS_CREATED
 		);
-		$response = $this->container['UsersController']->create('foo', 'password', array('NewGroup', 'ExistingGroup'));
+		$response = $this->container['UsersController']->create('foo', 'password', ['NewGroup', 'ExistingGroup']);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -1032,7 +1032,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($subadmin));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'name' => 'foo',
 				'groups' => ['SubGroup1'],
 				'storageLocation' => '/home/user',
@@ -1044,7 +1044,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'email' => null,
 				'isRestoreDisabled' => false,
 				'isAvatarAvailable' => true,
-			),
+			],
 			Http::STATUS_CREATED
 		);
 		$response = $this->container['UsersController']->create('foo', 'password', ['SubGroup1', 'ExistingGroup']);
@@ -1059,12 +1059,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->throwException(new \Exception()));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'message' => 'Unable to create user.'
-			),
+			],
 			Http::STATUS_FORBIDDEN
 		);
-		$response = $this->container['UsersController']->create('foo', 'password', array());
+		$response = $this->container['UsersController']->create('foo', 'password', []);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -1115,7 +1115,7 @@ class UsersControllerTest extends \Test\TestCase {
 			],
 			Http::STATUS_FORBIDDEN
 		);
-		$response = $this->container['UsersController']->create('foo', 'password', array());
+		$response = $this->container['UsersController']->create('foo', 'password', []);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -1133,12 +1133,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($user));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'status' => 'error',
-				'data' => array(
+				'data' => [
 					'message' => 'Unable to delete user.'
-				)
-			),
+				]
+			],
 			Http::STATUS_FORBIDDEN
 		);
 		$response = $this->container['UsersController']->destroy('myself');
@@ -1159,12 +1159,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($user));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'status' => 'error',
-				'data' => array(
+				'data' => [
 					'message' => 'Unable to delete user.'
-				)
-			),
+				]
+			],
 			Http::STATUS_FORBIDDEN
 		);
 		$response = $this->container['UsersController']->destroy('myself');
@@ -1195,12 +1195,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($toDeleteUser));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'status' => 'success',
-				'data' => array(
+				'data' => [
 					'username' => 'UserToDelete'
-				)
-			),
+				]
+			],
 			Http::STATUS_NO_CONTENT
 		);
 		$response = $this->container['UsersController']->destroy('UserToDelete');
@@ -1284,12 +1284,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue($toDeleteUser));
 
 		$expectedResponse = new DataResponse(
-			array(
+			[
 				'status' => 'error',
-				'data' => array(
+				'data' => [
 					'message' => 'Unable to delete user.'
-				)
-			),
+				]
+			],
 			Http::STATUS_FORBIDDEN
 		);
 		$response = $this->container['UsersController']->destroy('UserToDelete');
@@ -1533,7 +1533,7 @@ class UsersControllerTest extends \Test\TestCase {
 			'name' => $userId,
 			'displayname' => $displayName,
 			'groups' => null,
-			'subadmin' => array(),
+			'subadmin' => [],
 			'quota' => null,
 			'storageLocation' => $home,
 			'lastLogin' => $lastLogin * 1000,

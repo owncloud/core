@@ -238,7 +238,7 @@ class Database extends \OC\Group\Backend {
 
 		$stmt = \OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups`' . $searchLike . ' ORDER BY `gid` ASC', $limit, $offset);
 		$result = $stmt->execute($parameters);
-		$groups = array();
+		$groups = [];
 		while ($row = $result->fetchRow()) {
 			$groups[] = $row['gid'];
 		}
@@ -293,7 +293,7 @@ class Database extends \OC\Group\Backend {
 			$limit,
 			$offset);
 		$result = $stmt->execute($parameters);
-		$users = array();
+		$users = [];
 		while ($row = $result->fetchRow()) {
 			$users[] = $row['uid'];
 		}

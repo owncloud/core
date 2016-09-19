@@ -45,7 +45,7 @@ abstract class Backend implements UserInterface {
 	const PROVIDE_AVATAR	= 16777216;		// 1 << 24
 	const COUNT_USERS		= 268435456;	// 1 << 28
 
-	protected $possibleActions = array(
+	protected $possibleActions = [
 		self::CREATE_USER => 'createUser',
 		self::SET_PASSWORD => 'setPassword',
 		self::CHECK_PASSWORD => 'checkPassword',
@@ -54,7 +54,7 @@ abstract class Backend implements UserInterface {
 		self::SET_DISPLAYNAME => 'setDisplayName',
 		self::PROVIDE_AVATAR => 'canChangeAvatar',
 		self::COUNT_USERS => 'countUsers',
-	);
+	];
 
 	/**
 	* Get all supported actions
@@ -106,7 +106,7 @@ abstract class Backend implements UserInterface {
 	 * @return string[] an array of all uids
 	 */
 	public function getUsers($search = '', $limit = null, $offset = null) {
-		return array();
+		return [];
 	}
 
 	/**
@@ -145,7 +145,7 @@ abstract class Backend implements UserInterface {
 	 * @return array an array of all displayNames (value) and the corresponding uids (key)
 	 */
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
-		$displayNames = array();
+		$displayNames = [];
 		$users = $this->getUsers($search, $limit, $offset);
 		foreach ( $users as $user) {
 			$displayNames[$user] = $user;

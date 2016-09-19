@@ -197,7 +197,7 @@ class UserStoragesController extends StoragesController {
 		} catch (NotFoundException $e) {
 			return new DataResponse(
 				[
-					'message' => (string)$this->l10n->t('Storage with id "%i" not found', array($id))
+					'message' => (string)$this->l10n->t('Storage with id "%i" not found', [$id])
 				],
 				Http::STATUS_NOT_FOUND
 			);

@@ -247,7 +247,7 @@ class AppSettingsController extends Controller {
 
 					$apps = \OC_App::getAppstoreApps($filter, $category, $this->ocsClient);
 					if (!$apps) {
-						$apps = array();
+						$apps = [];
 					} else {
 						// don't list installed apps
 						$installedApps = $this->getInstalledApps(false);
@@ -286,7 +286,7 @@ class AppSettingsController extends Controller {
 		$apps = array_map(function($app) use ($dependencyAnalyzer) {
 
 			// fix groups
-			$groups = array();
+			$groups = [];
 			if (is_string($app['groups'])) {
 				$groups = json_decode($app['groups']);
 			}

@@ -59,26 +59,26 @@ class UrlGeneratorTest extends \Test\TestCase {
 	}
 
 	public function provideRoutes() {
-		return array(
-			array('files_ajax_list', 'http://localhost/owncloud/index.php/apps/files/ajax/list.php'),
-			array('core_ajax_preview', 'http://localhost/owncloud/index.php/core/preview.png'),
-		);
+		return [
+			['files_ajax_list', 'http://localhost/owncloud/index.php/apps/files/ajax/list.php'],
+			['core_ajax_preview', 'http://localhost/owncloud/index.php/core/preview.png'],
+		];
 	}
 
 	public function provideDocRootAppUrlParts() {
-		return array(
-			array('files', 'ajax/list.php', array(), '/index.php/apps/files/ajax/list.php'),
-			array('files', 'ajax/list.php', array('trut' => 'trat', 'dut' => 'dat'), '/index.php/apps/files/ajax/list.php?trut=trat&dut=dat'),
-			array('', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), '/index.php?trut=trat&dut=dat'),
-		);
+		return [
+			['files', 'ajax/list.php', [], '/index.php/apps/files/ajax/list.php'],
+			['files', 'ajax/list.php', ['trut' => 'trat', 'dut' => 'dat'], '/index.php/apps/files/ajax/list.php?trut=trat&dut=dat'],
+			['', 'index.php', ['trut' => 'trat', 'dut' => 'dat'], '/index.php?trut=trat&dut=dat'],
+		];
 	}
 
 	public function provideSubDirAppUrlParts() {
-		return array(
-			array('files', 'ajax/list.php', array(), '/owncloud/index.php/apps/files/ajax/list.php'),
-			array('files', 'ajax/list.php', array('trut' => 'trat', 'dut' => 'dat'), '/owncloud/index.php/apps/files/ajax/list.php?trut=trat&dut=dat'),
-			array('', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), '/owncloud/index.php?trut=trat&dut=dat'),
-		);
+		return [
+			['files', 'ajax/list.php', [], '/owncloud/index.php/apps/files/ajax/list.php'],
+			['files', 'ajax/list.php', ['trut' => 'trat', 'dut' => 'dat'], '/owncloud/index.php/apps/files/ajax/list.php?trut=trat&dut=dat'],
+			['', 'index.php', ['trut' => 'trat', 'dut' => 'dat'], '/owncloud/index.php?trut=trat&dut=dat'],
+		];
 	}
 
 	/**
@@ -114,21 +114,21 @@ class UrlGeneratorTest extends \Test\TestCase {
 	}
 
 	public function provideDocRootURLs() {
-		return array(
-			array("index.php", "http://localhost/index.php"),
-			array("/index.php", "http://localhost/index.php"),
-			array("/apps/index.php", "http://localhost/apps/index.php"),
-			array("apps/index.php", "http://localhost/apps/index.php"),
-			);
+		return [
+			["index.php", "http://localhost/index.php"],
+			["/index.php", "http://localhost/index.php"],
+			["/apps/index.php", "http://localhost/apps/index.php"],
+			["apps/index.php", "http://localhost/apps/index.php"],
+		];
 	}
 
 	public function provideSubDirURLs() {
-		return array(
-			array("index.php", "http://localhost/owncloud/index.php"),
-			array("/index.php", "http://localhost/owncloud/index.php"),
-			array("/apps/index.php", "http://localhost/owncloud/apps/index.php"),
-			array("apps/index.php", "http://localhost/owncloud/apps/index.php"),
-			);
+		return [
+			["index.php", "http://localhost/owncloud/index.php"],
+			["/index.php", "http://localhost/owncloud/index.php"],
+			["/apps/index.php", "http://localhost/owncloud/apps/index.php"],
+			["apps/index.php", "http://localhost/owncloud/apps/index.php"],
+		];
 	}
 }
 

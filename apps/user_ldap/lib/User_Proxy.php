@@ -31,7 +31,7 @@ use OCA\User_LDAP\User\User;
 use OCP\IConfig;
 
 class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface {
-	private $backends = array();
+	private $backends = [];
 	private $refBackend = null;
 
 	/**
@@ -64,7 +64,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 				&& method_exists($this->getAccess($configPrefix), $method)) {
 				$instance = $this->getAccess($configPrefix);
 			}
-			if($result = call_user_func_array(array($instance, $method), $parameters)) {
+			if($result = call_user_func_array([$instance, $method], $parameters)) {
 				$this->writeToCache($cacheKey, $configPrefix);
 				return $result;
 			}
@@ -91,13 +91,13 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 					&& method_exists($this->getAccess($prefix), $method)) {
 					$instance = $this->getAccess($prefix);
 				}
-				$result = call_user_func_array(array($instance, $method), $parameters);
+				$result = call_user_func_array([$instance, $method], $parameters);
 				if($result === $passOnWhen) {
 					//not found here, reset cache to null if user vanished
 					//because sometimes methods return false with a reason
 					$userExists = call_user_func_array(
-						array($this->backends[$prefix], 'userExists'),
-						array($uid)
+						[$this->backends[$prefix], 'userExists'],
+						[$uid]
 					);
 					if(!$userExists) {
 						$this->writeToCache($cacheKey, null);
@@ -140,7 +140,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 */
 	public function getUsers($search = '', $limit = 10, $offset = 0) {
 		//we do it just as the /OC_User implementation: do not play around with limit and offset but ask all backends
-		$users = array();
+		$users = [];
 		foreach($this->backends as $backend) {
 			$backendUsers = $backend->getUsers($search, $limit, $offset);
 			if (is_array($backendUsers)) {
@@ -156,7 +156,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 * @return boolean
 	 */
 	public function userExists($uid) {
-		return $this->handleRequest($uid, 'userExists', array($uid));
+		return $this->handleRequest($uid, 'userExists', [$uid]);
 	}
 
 	/**
@@ -167,7 +167,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 */
 	public function userExistsOnLDAP($user) {
 		$id = ($user instanceof User) ? $user->getUsername() : $user;
-		return $this->handleRequest($id, 'userExistsOnLDAP', array($user));
+		return $this->handleRequest($id, 'userExistsOnLDAP', [$user]);
 	}
 
 	/**
@@ -179,7 +179,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 * Check if the password is correct without logging in the user
 	 */
 	public function checkPassword($uid, $password) {
-		return $this->handleRequest($uid, 'checkPassword', array($uid, $password));
+		return $this->handleRequest($uid, 'checkPassword', [$uid, $password]);
 	}
 
 	/**
@@ -190,7 +190,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 */
 	public function loginName2UserName($loginName) {
 		$id = 'LOGINNAME,' . $loginName;
-		return $this->handleRequest($id, 'loginName2UserName', array($loginName));
+		return $this->handleRequest($id, 'loginName2UserName', [$loginName]);
 	}
 
 	/**
@@ -199,7 +199,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 * @return boolean
 	 */
 	public function getHome($uid) {
-		return $this->handleRequest($uid, 'getHome', array($uid));
+		return $this->handleRequest($uid, 'getHome', [$uid]);
 	}
 
 	/**
@@ -208,7 +208,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 * @return string display name
 	 */
 	public function getDisplayName($uid) {
-		return $this->handleRequest($uid, 'getDisplayName', array($uid));
+		return $this->handleRequest($uid, 'getDisplayName', [$uid]);
 	}
 
 	/**
@@ -217,7 +217,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 * @return boolean either the user can or cannot
 	 */
 	public function canChangeAvatar($uid) {
-		return $this->handleRequest($uid, 'canChangeAvatar', array($uid), true);
+		return $this->handleRequest($uid, 'canChangeAvatar', [$uid], true);
 	}
 
 	/**
@@ -229,7 +229,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 */
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
 		//we do it just as the /OC_User implementation: do not play around with limit and offset but ask all backends
-		$users = array();
+		$users = [];
 		foreach($this->backends as $backend) {
 			$backendUsers = $backend->getDisplayNames($search, $limit, $offset);
 			if (is_array($backendUsers)) {
@@ -247,7 +247,7 @@ class User_Proxy extends Proxy implements \OCP\IUserBackend, \OCP\UserInterface 
 	 * Deletes a user
 	 */
 	public function deleteUser($uid) {
-		return $this->handleRequest($uid, 'deleteUser', array($uid));
+		return $this->handleRequest($uid, 'deleteUser', [$uid]);
 	}
 
 	/**

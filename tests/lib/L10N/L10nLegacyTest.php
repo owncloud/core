@@ -63,39 +63,39 @@ class L10nLegacyTest extends \Test\TestCase {
 	}
 
 	public function localizationDataProvider() {
-		return array(
+		return [
 			// timestamp as string
-			array('February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', '1234567890'),
-			array('13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', '1234567890'),
-			array('February 13, 2009', 'en', 'date', '1234567890'),
-			array('13. Februar 2009', 'de', 'date', '1234567890'),
-			array('11:31:30 PM GMT+0', 'en', 'time', '1234567890'),
-			array('23:31:30 GMT+0', 'de', 'time', '1234567890'),
+			['February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', '1234567890'],
+			['13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', '1234567890'],
+			['February 13, 2009', 'en', 'date', '1234567890'],
+			['13. Februar 2009', 'de', 'date', '1234567890'],
+			['11:31:30 PM GMT+0', 'en', 'time', '1234567890'],
+			['23:31:30 GMT+0', 'de', 'time', '1234567890'],
 
 			// timestamp as int
-			array('February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', 1234567890),
-			array('13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', 1234567890),
-			array('February 13, 2009', 'en', 'date', 1234567890),
-			array('13. Februar 2009', 'de', 'date', 1234567890),
-			array('11:31:30 PM GMT+0', 'en', 'time', 1234567890),
-			array('23:31:30 GMT+0', 'de', 'time', 1234567890),
+			['February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', 1234567890],
+			['13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', 1234567890],
+			['February 13, 2009', 'en', 'date', 1234567890],
+			['13. Februar 2009', 'de', 'date', 1234567890],
+			['11:31:30 PM GMT+0', 'en', 'time', 1234567890],
+			['23:31:30 GMT+0', 'de', 'time', 1234567890],
 
 			// DateTime object
-			array('February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', new DateTime('@1234567890')),
-			array('13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', new DateTime('@1234567890')),
-			array('February 13, 2009', 'en', 'date', new DateTime('@1234567890')),
-			array('13. Februar 2009', 'de', 'date', new DateTime('@1234567890')),
-			array('11:31:30 PM GMT+0', 'en', 'time', new DateTime('@1234567890')),
-			array('23:31:30 GMT+0', 'de', 'time', new DateTime('@1234567890')),
+			['February 13, 2009 at 11:31:30 PM GMT+0', 'en', 'datetime', new DateTime('@1234567890')],
+			['13. Februar 2009 um 23:31:30 GMT+0', 'de', 'datetime', new DateTime('@1234567890')],
+			['February 13, 2009', 'en', 'date', new DateTime('@1234567890')],
+			['13. Februar 2009', 'de', 'date', new DateTime('@1234567890')],
+			['11:31:30 PM GMT+0', 'en', 'time', new DateTime('@1234567890')],
+			['23:31:30 GMT+0', 'de', 'time', new DateTime('@1234567890')],
 
 			// en_GB
-			array('13 February 2009 at 23:31:30 GMT+0', 'en_GB', 'datetime', new DateTime('@1234567890')),
-			array('13 February 2009', 'en_GB', 'date', new DateTime('@1234567890')),
-			array('23:31:30 GMT+0', 'en_GB', 'time', new DateTime('@1234567890')),
-			array('13 February 2009 at 23:31:30 GMT+0', 'en-GB', 'datetime', new DateTime('@1234567890')),
-			array('13 February 2009', 'en-GB', 'date', new DateTime('@1234567890')),
-			array('23:31:30 GMT+0', 'en-GB', 'time', new DateTime('@1234567890')),
-		);
+			['13 February 2009 at 23:31:30 GMT+0', 'en_GB', 'datetime', new DateTime('@1234567890')],
+			['13 February 2009', 'en_GB', 'date', new DateTime('@1234567890')],
+			['23:31:30 GMT+0', 'en_GB', 'time', new DateTime('@1234567890')],
+			['13 February 2009 at 23:31:30 GMT+0', 'en-GB', 'datetime', new DateTime('@1234567890')],
+			['13 February 2009', 'en-GB', 'date', new DateTime('@1234567890')],
+			['23:31:30 GMT+0', 'en-GB', 'time', new DateTime('@1234567890')],
+		];
 	}
 
 	/**
@@ -107,10 +107,10 @@ class L10nLegacyTest extends \Test\TestCase {
 	}
 
 	public function firstDayDataProvider() {
-		return array(
-			array(1, 'de'),
-			array(0, 'en'),
-		);
+		return [
+			[1, 'de'],
+			[0, 'en'],
+		];
 	}
 
 	/**

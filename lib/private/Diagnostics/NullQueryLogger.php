@@ -40,6 +40,6 @@ class NullQueryLogger implements IQueryLogger {
 	 * @return \OCP\Diagnostics\IQuery[]
 	 */
 	public function getQueries() {
-		return array();
+		return [];
 	}
 }

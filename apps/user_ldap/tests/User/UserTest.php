@@ -46,7 +46,7 @@ class UserTest extends \Test\TestCase {
 		$dbc     = $this->getMock('\OCP\IDBConnection');
 		$userMgr  = $this->getMock('\OCP\IUserManager');
 
-		return array($access, $config, $filesys, $image, $log, $avaMgr, $dbc, $userMgr);
+		return [$access, $config, $filesys, $image, $log, $avaMgr, $dbc, $userMgr];
 	}
 
 	private function getAdvancedMocks($cfMock, $fsMock, $logMock, $avaMgr, $dbc, $userMgr = null) {
@@ -67,13 +67,13 @@ class UserTest extends \Test\TestCase {
 			$userMgr = $this->getMock('\OCP\IUserManager');
 		}
 		$um = $this->getMock('\OCA\User_LDAP\User\Manager',
-			$umMethods, array($cfMock, $fsMock, $logMock, $avaMgr, $im, $dbc, $userMgr));
+			$umMethods, [$cfMock, $fsMock, $logMock, $avaMgr, $im, $dbc, $userMgr]);
 		$connector = $this->getMock('\OCA\User_LDAP\Connection',
-			$conMethods, array($lw, null, null));
+			$conMethods, [$lw, null, null]);
 		$access = $this->getMock('\OCA\User_LDAP\Access',
-			$accMethods, array($connector, $lw, $um));
+			$accMethods, [$connector, $lw, $um]);
 
-		return array($access, $connector);
+		return [$access, $connector];
 	}
 
 	public function testGetDNandUsername() {
@@ -106,7 +106,7 @@ class UserTest extends \Test\TestCase {
 			->method('readAttribute')
 			->with($this->equalTo('uid=alice,dc=foo,dc=bar'),
 				$this->equalTo('email'))
-			->will($this->returnValue(array('alice@foo.bar')));
+			->will($this->returnValue(['alice@foo.bar']));
 
 		$uid = 'alice';
 		$dn  = 'uid=alice,dc=foo,dc=bar';
@@ -208,7 +208,7 @@ class UserTest extends \Test\TestCase {
 			->method('readAttribute')
 			->with($this->equalTo('uid=alice,dc=foo,dc=bar'),
 				$this->equalTo('myquota'))
-			->will($this->returnValue(array('42 GB')));
+			->will($this->returnValue(['42 GB']));
 
 		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
@@ -298,7 +298,7 @@ class UserTest extends \Test\TestCase {
 			->method('readAttribute')
 			->with($this->equalTo('uid=alice,dc=foo,dc=bar'),
 				$this->equalTo('myquota'))
-			->will($this->returnValue(array('27 GB')));
+			->will($this->returnValue(['27 GB']));
 
 		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
@@ -445,7 +445,7 @@ class UserTest extends \Test\TestCase {
 			->method('readAttribute')
 			->with($this->equalTo('uid=alice,dc=foo,dc=bar'),
 				$this->equalTo('jpegPhoto'))
-			->will($this->returnValue(array('this is a photo')));
+			->will($this->returnValue(['this is a photo']));
 
 		$image->expects($this->once())
 			->method('valid')
@@ -500,7 +500,7 @@ class UserTest extends \Test\TestCase {
 			->method('readAttribute')
 			->with($this->equalTo('uid=alice,dc=foo,dc=bar'),
 				$this->equalTo('thumbnailPhoto'))
-			->will($this->returnValue(array('this is a photo')));
+			->will($this->returnValue(['this is a photo']));
 
 		$access->expects($this->exactly(2))
 			->method('readAttribute');
@@ -728,7 +728,7 @@ class UserTest extends \Test\TestCase {
 			->method('readAttribute')
 			->with($this->equalTo('uid=alice,dc=foo,dc=bar'),
 				$this->equalTo('jpegPhoto'))
-			->will($this->returnValue(array('this is a photo')));
+			->will($this->returnValue(['this is a photo']));
 
 		$uid = 'alice';
 		$dn  = 'uid=alice,dc=foo,dc=bar';
@@ -753,7 +753,7 @@ class UserTest extends \Test\TestCase {
 		$uid = 'alice';
 		$dn = 'uid=alice';
 
-		$requiredMethods = array(
+		$requiredMethods = [
 			'markRefreshTime',
 			'updateQuota',
 			'updateEmail',
@@ -761,16 +761,16 @@ class UserTest extends \Test\TestCase {
 			'storeLDAPUserName',
 			'getHomePath',
 			'updateAvatar'
-		);
+		];
 
 		$userMock = $this->getMockBuilder('OCA\User_LDAP\User\User')
-			->setConstructorArgs(array($uid, $dn, $access, $config, $filesys, $image, $log, $avaMgr, $userMgr))
+			->setConstructorArgs([$uid, $dn, $access, $config, $filesys, $image, $log, $avaMgr, $userMgr])
 			->setMethods($requiredMethods)
 			->getMock();
 
-		$connection->setConfiguration(array(
+		$connection->setConfiguration([
 			'homeFolderNamingRule' => 'homeDirectory'
-		));
+		]);
 
 		$connection->expects($this->any())
 			->method('__get')
@@ -782,15 +782,15 @@ class UserTest extends \Test\TestCase {
 				return $name;
 			}));
 
-		$record = array(
-			strtolower($connection->ldapQuotaAttribute) => array('4096'),
-			strtolower($connection->ldapEmailAttribute) => array('alice@wonderland.org'),
-			strtolower($connection->ldapUserDisplayName) => array('Aaaaalice'),
-			'uid' => array($uid),
-			'homedirectory' => array('Alice\'s Folder'),
-			'memberof' => array('cn=groupOne', 'cn=groupTwo'),
-			'jpegphoto' => array('here be an image')
-		);
+		$record = [
+			strtolower($connection->ldapQuotaAttribute) => ['4096'],
+			strtolower($connection->ldapEmailAttribute) => ['alice@wonderland.org'],
+			strtolower($connection->ldapUserDisplayName) => ['Aaaaalice'],
+			'uid' => [$uid],
+			'homedirectory' => ['Alice\'s Folder'],
+			'memberof' => ['cn=groupOne', 'cn=groupTwo'],
+			'jpegphoto' => ['here be an image']
+		];
 
 		foreach($requiredMethods as $method) {
 			$userMock->expects($this->once())
@@ -798,14 +798,14 @@ class UserTest extends \Test\TestCase {
 		}
 
 		$userMock->processAttributes($record);
-		\OC_Hook::emit('OC_User', 'post_login', array('uid' => $uid));
+		\OC_Hook::emit('OC_User', 'post_login', ['uid' => $uid]);
 	}
 
 	public function emptyHomeFolderAttributeValueProvider() {
-		return array(
-			'empty' => array(''),
-			'prefixOnly' => array('attr:'),
-		);
+		return [
+			'empty' => [''],
+			'prefixOnly' => ['attr:'],
+		];
 	}
 
 	/**

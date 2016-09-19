@@ -33,43 +33,43 @@ namespace OCA\Files_Sharing\Tests;
 class ExternalStorageTest extends \Test\TestCase {
 
 	function optionsProvider() {
-		return array(
-			array(
+		return [
+			[
 				'http://remoteserver:8080/owncloud',
 				'http://remoteserver:8080/owncloud/public.php/webdav/',
-			),
+			],
 			// extra slash
-			array(
+			[
 				'http://remoteserver:8080/owncloud/',
 				'http://remoteserver:8080/owncloud/public.php/webdav/',
-			),
+			],
 			// extra path
-			array(
+			[
 				'http://remoteserver:8080/myservices/owncloud/',
 				'http://remoteserver:8080/myservices/owncloud/public.php/webdav/',
-			),
+			],
 			// root path
-			array(
+			[
 				'http://remoteserver:8080/',
 				'http://remoteserver:8080/public.php/webdav/',
-			),
+			],
 			// without port
-			array(
+			[
 				'http://remoteserver/oc.test',
 				'http://remoteserver/oc.test/public.php/webdav/',
-			),
+			],
 			// https
-			array(
+			[
 				'https://remoteserver/',
 				'https://remoteserver/public.php/webdav/',
-			),
-		);
+			],
+		];
 	}
 
 	private function getTestStorage($uri) {
 		$certificateManager = \OC::$server->getCertificateManager();
 		return new TestSharingExternalStorage(
-			array(
+			[
 				'remote' => $uri,
 				'owner' => 'testOwner',
 				'mountpoint' => 'remoteshare',
@@ -77,7 +77,7 @@ class ExternalStorageTest extends \Test\TestCase {
 				'password' => '',
 				'manager' => null,
 				'certificateManager' => $certificateManager
-			)
+			]
 		);
 	}
 

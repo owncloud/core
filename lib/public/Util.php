@@ -277,7 +277,7 @@ class Util {
 	 * @return string the url
 	 * @since 4.0.0 - parameter $args was added in 4.5.0
 	 */
-	public static function linkToAbsolute( $app, $file, $args = array() ) {
+	public static function linkToAbsolute( $app, $file, $args = []) {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return $urlGenerator->getAbsoluteURL(
 			$urlGenerator->linkTo($app, $file, $args)
@@ -317,7 +317,7 @@ class Util {
 	 * @deprecated 8.1.0 Use \OC::$server->getURLGenerator()->linkToRoute($route, $parameters)
 	 * @since 5.0.0
 	 */
-	public static function linkToRoute( $route, $parameters = array() ) {
+	public static function linkToRoute( $route, $parameters = []) {
 		return \OC::$server->getURLGenerator()->linkToRoute($route, $parameters);
 	}
 
@@ -331,7 +331,7 @@ class Util {
 	 * @deprecated 8.1.0 Use \OC::$server->getURLGenerator()->linkTo($app, $file, $args)
 	 * @since 4.0.0 - parameter $args was added in 4.5.0
 	 */
-	public static function linkTo( $app, $file, $args = array() ) {
+	public static function linkTo( $app, $file, $args = []) {
 		return \OC::$server->getURLGenerator()->linkTo($app, $file, $args);
 	}
 
@@ -484,7 +484,7 @@ class Util {
 	 * TODO: write example
 	 * @since 4.0.0
 	 */
-	static public function emitHook( $signalclass, $signalname, $params = array()) {
+	static public function emitHook( $signalclass, $signalname, $params = []) {
 		return(\OC_Hook::emit( $signalclass, $signalname, $params ));
 	}
 

@@ -370,7 +370,7 @@ class Sharees {
 			$remote = substr($id, $pos + 1);
 			$remote = $this->fixRemoteURL($remote);
 			if (!empty($user) && !empty($remote)) {
-				return array($user, $remote);
+				return [$user, $remote];
 			}
 		}
 

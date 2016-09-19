@@ -44,15 +44,15 @@ class PrivateData {
 		
 		if(empty($key)) {
 			$query = \OCP\DB::prepare('SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? ');
-			$result = $query->execute(array($user, $app));
+			$result = $query->execute([$user, $app]);
 		} else {
 			$query = \OCP\DB::prepare('SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? ');
-			$result = $query->execute(array($user, $app, $key));
+			$result = $query->execute([$user, $app, $key]);
 		}
 		
-		$xml = array();
+		$xml = [];
 		while ($row = $result->fetchRow()) {
-			$data=array();
+			$data= [];
 			$data['key']=$row['key'];
 			$data['app']=$row['app'];
 			$data['value']=$row['value'];
@@ -76,12 +76,12 @@ class PrivateData {
 
 		// update in DB
 		$query = \OCP\DB::prepare('UPDATE `*PREFIX*privatedata` SET `value` = ?  WHERE `user` = ? AND `app` = ? AND `key` = ?');
-		$numRows = $query->execute(array($value, $user, $app, $key));
+		$numRows = $query->execute([$value, $user, $app, $key]);
                 
 		if ($numRows === false || $numRows === 0) {
 			// store in DB
 			$query = \OCP\DB::prepare('INSERT INTO `*PREFIX*privatedata` (`user`, `app`, `key`, `value`)' . ' VALUES(?, ?, ?, ?)');
-			$query->execute(array($user, $app, $key, $value));
+			$query->execute([$user, $app, $key, $value]);
 		}
 
 		return new Result(null, 100);
@@ -105,7 +105,7 @@ class PrivateData {
 
 		// delete in DB
 		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? ');
-		$query->execute(array($user, $app, $key ));
+		$query->execute([$user, $app, $key]);
 
 		return new Result(null, 100);
 	}

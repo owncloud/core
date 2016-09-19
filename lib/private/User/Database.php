@@ -80,7 +80,7 @@ class Database extends Backend implements IUserBackend {
 	public function createUser($uid, $password) {
 		if (!$this->userExists($uid)) {
 			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
-			$result = $query->execute(array($uid, \OC::$server->getHasher()->hash($password)));
+			$result = $query->execute([$uid, \OC::$server->getHasher()->hash($password)]);
 
 			return $result ? true : false;
 		}
@@ -98,7 +98,7 @@ class Database extends Backend implements IUserBackend {
 	public function deleteUser($uid) {
 		// Delete user-group-relation
 		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*users` WHERE `uid` = ?');
-		$result = $query->execute(array($uid));
+		$result = $query->execute([$uid]);
 
 		if (isset($this->cache[$uid])) {
 			unset($this->cache[$uid]);
@@ -118,7 +118,7 @@ class Database extends Backend implements IUserBackend {
 	public function setPassword($uid, $password) {
 		if ($this->userExists($uid)) {
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*users` SET `password` = ? WHERE `uid` = ?');
-			$result = $query->execute(array(\OC::$server->getHasher()->hash($password), $uid));
+			$result = $query->execute([\OC::$server->getHasher()->hash($password), $uid]);
 
 			return $result ? true : false;
 		}
@@ -137,7 +137,7 @@ class Database extends Backend implements IUserBackend {
 	public function setDisplayName($uid, $displayName) {
 		if ($this->userExists($uid)) {
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*users` SET `displayname` = ? WHERE LOWER(`uid`) = LOWER(?)');
-			$query->execute(array($displayName, $uid));
+			$query->execute([$displayName, $uid]);
 			$this->cache[$uid]['displayname'] = $displayName;
 
 			return true;
@@ -174,7 +174,7 @@ class Database extends Backend implements IUserBackend {
 				. 'LOWER(`uid`) LIKE LOWER(?)';
 		}
 
-		$displayNames = array();
+		$displayNames = [];
 		$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
 			. $searchLike .' ORDER BY `uid` ASC', $limit, $offset);
 		$result = $query->execute($parameters);
@@ -196,7 +196,7 @@ class Database extends Backend implements IUserBackend {
 	 */
 	public function checkPassword($uid, $password) {
 		$query = \OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
-		$result = $query->execute(array($uid));
+		$result = $query->execute([$uid]);
 
 		$row = $result->fetchRow();
 		if ($row) {
@@ -222,7 +222,7 @@ class Database extends Backend implements IUserBackend {
 	private function loadUser($uid) {
 		if (empty($this->cache[$uid])) {
 			$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
-			$result = $query->execute(array($uid));
+			$result = $query->execute([$uid]);
 
 			if ($result === false) {
 				Util::writeLog('core', \OC_DB::getErrorMessage(), Util::ERROR);
@@ -256,7 +256,7 @@ class Database extends Backend implements IUserBackend {
 
 		$query = \OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
 		$result = $query->execute($parameters);
-		$users = array();
+		$users = [];
 		while ($row = $result->fetchRow()) {
 			$users[] = $row['uid'];
 		}

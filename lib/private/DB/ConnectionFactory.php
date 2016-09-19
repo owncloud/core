@@ -38,30 +38,30 @@ class ConnectionFactory {
 	* Array mapping DBMS type to default connection parameters passed to
 	* \Doctrine\DBAL\DriverManager::getConnection().
 	*/
-	protected $defaultConnectionParams = array(
-		'mysql' => array(
+	protected $defaultConnectionParams = [
+		'mysql' => [
 			'adapter' => '\OC\DB\AdapterMySQL',
 			'charset' => 'UTF8',
 			'driver' => 'pdo_mysql',
 			'wrapperClass' => 'OC\DB\Connection',
-		),
-		'oci' => array(
+		],
+		'oci' => [
 			'adapter' => '\OC\DB\AdapterOCI8',
 			'charset' => 'AL32UTF8',
 			'driver' => 'oci8',
 			'wrapperClass' => 'OC\DB\OracleConnection',
-		),
-		'pgsql' => array(
+		],
+		'pgsql' => [
 			'adapter' => '\OC\DB\AdapterPgSql',
 			'driver' => 'pdo_pgsql',
 			'wrapperClass' => 'OC\DB\Connection',
-		),
-		'sqlite3' => array(
+		],
+		'sqlite3' => [
 			'adapter' => '\OC\DB\AdapterSqlite',
 			'driver' => 'pdo_sqlite',
 			'wrapperClass' => 'OC\DB\Connection',
-		),
-	);
+		],
+	];
 
 	/**
 	* @brief Get default connection parameters for a given DBMS.
@@ -78,9 +78,9 @@ class ConnectionFactory {
 		// \PDO::MYSQL_ATTR_FOUND_ROWS may not be defined, e.g. when the MySQL
 		// driver is missing. In this case, we won't be able to connect anyway.
 		if ($normalizedType === 'mysql' && defined('\PDO::MYSQL_ATTR_FOUND_ROWS')) {
-			$result['driverOptions'] = array(
+			$result['driverOptions'] = [
 				\PDO::MYSQL_ATTR_FOUND_ROWS => true,
-			);
+			];
 		}
 		return $result;
 	}
@@ -150,10 +150,10 @@ class ConnectionFactory {
 	public function createConnectionParams($config) {
 		$type = $config->getValue('dbtype', 'sqlite');
 
-		$connectionParams = array(
+		$connectionParams = [
 			'user' => $config->getValue('dbuser', ''),
 			'password' => $config->getValue('dbpassword', ''),
-		);
+		];
 		$name = $config->getValue('dbname', 'owncloud');
 
 		if ($this->normalizeType($type) === 'sqlite3') {

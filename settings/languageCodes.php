@@ -24,7 +24,7 @@
  *
  */
 
-return array(
+return [
 'el'=>'Ελληνικά',
 'en'=>'English',
 'fa'=>'فارسى',
@@ -59,4 +59,4 @@ return array(
 'ka'=>'Kartuli (Georgian)',
 'my_MM'=>'Burmese - MYANMAR ',
 'ur_PK'	=>'Urdu (Pakistan)'
-);
+];

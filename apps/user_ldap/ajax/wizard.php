@@ -32,13 +32,13 @@ OCP\JSON::callCheck();
 $l = \OC::$server->getL10N('user_ldap');
 
 if(!isset($_POST['action'])) {
-	\OCP\JSON::error(array('message' => $l->t('No action specified')));
+	\OCP\JSON::error(['message' => $l->t('No action specified')]);
 }
 $action = (string)$_POST['action'];
 
 
 if(!isset($_POST['ldap_serverconfig_chooser'])) {
-	\OCP\JSON::error(array('message' => $l->t('No configuration specified')));
+	\OCP\JSON::error(['message' => $l->t('No configuration specified')]);
 }
 $prefix = (string)$_POST['ldap_serverconfig_chooser'];
 
@@ -87,7 +87,7 @@ switch($action) {
 				exit;
 			}
 		} catch (\Exception $e) {
-			\OCP\JSON::error(array('message' => $e->getMessage(), 'code' => $e->getCode()));
+			\OCP\JSON::error(['message' => $e->getMessage(), 'code' => $e->getCode()]);
 			exit;
 		}
 		\OCP\JSON::error();
@@ -103,7 +103,7 @@ switch($action) {
 				exit;
 			}
 		} catch (\Exception $e) {
-			\OCP\JSON::error(array('message' => $e->getMessage()));
+			\OCP\JSON::error(['message' => $e->getMessage()]);
 			exit;
 		}
 		\OCP\JSON::error();
@@ -115,15 +115,15 @@ switch($action) {
 		$key = isset($_POST['cfgkey']) ? $_POST['cfgkey'] : false;
 		$val = isset($_POST['cfgval']) ? $_POST['cfgval'] : null;
 		if($key === false || is_null($val)) {
-			\OCP\JSON::error(array('message' => $l->t('No data specified')));
+			\OCP\JSON::error(['message' => $l->t('No data specified')]);
 			exit;
 		}
-		$cfg = array($key => $val);
-		$setParameters = array();
+		$cfg = [$key => $val];
+		$setParameters = [];
 		$configuration->setConfiguration($cfg, $setParameters);
 		if(!in_array($key, $setParameters)) {
-			\OCP\JSON::error(array('message' => $l->t($key.
-				' Could not set configuration %s', $setParameters[0])));
+			\OCP\JSON::error(['message' => $l->t($key.
+				' Could not set configuration %s', $setParameters[0])]);
 			exit;
 		}
 		$configuration->saveConfiguration();
@@ -133,6 +133,6 @@ switch($action) {
 		OCP\JSON::success();
 		break;
 	default:
-		\OCP\JSON::error(array('message' => $l->t('Action does not exist')));
+		\OCP\JSON::error(['message' => $l->t('Action does not exist')]);
 		break;
 }

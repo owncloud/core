@@ -188,7 +188,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @return int file id of updated file or -1 on failure
 	 */
 	public function setETag($etag) {
-		return $this->fileView->putFileInfo($this->path, array('etag' => $etag));
+		return $this->fileView->putFileInfo($this->path, ['etag' => $etag]);
 	}
 
 	/**

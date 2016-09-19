@@ -58,7 +58,7 @@ class Access extends LDAPUtility implements IUserTools {
 	/**
 	 * @var string[] $cookies an array of returned Paged Result cookies
 	 */
-	protected $cookies = array();
+	protected $cookies = [];
 
 	/**
 	 * @var string $lastCookie the last cookie returned from a Paged Results
@@ -170,9 +170,9 @@ class Access extends LDAPUtility implements IUserTools {
 		// 0 won't result in replies, small numbers may leave out groups
 		// (cf. #12306), 500 is default for paging and should work everywhere.
 		$maxResults = $pagingSize > 20 ? $pagingSize : 500;
-		$this->initPagedSearch($filter, array($dn), array($attr), $maxResults, 0);
+		$this->initPagedSearch($filter, [$dn], [$attr], $maxResults, 0);
 		$dn = $this->DNasBaseParameter($dn);
-		$rr = @$this->ldap->read($cr, $dn, $filter, array($attr));
+		$rr = @$this->ldap->read($cr, $dn, $filter, [$attr]);
 		if(!$this->ldap->isResource($rr)) {
 			if(!empty($attr)) {
 				//do not throw this message on userExists check, irritates
@@ -183,7 +183,7 @@ class Access extends LDAPUtility implements IUserTools {
 		}
 		if (empty($attr) && ($filter === 'objectclass=*' || $this->ldap->countEntries($cr, $rr) === 1)) {
 			\OCP\Util::writeLog('user_ldap', 'readAttribute: '.$dn.' found', \OCP\Util::DEBUG);
-			return array();
+			return [];
 		}
 		$er = $this->ldap->firstEntry($cr, $rr);
 		if(!$this->ldap->isResource($er)) {
@@ -196,7 +196,7 @@ class Access extends LDAPUtility implements IUserTools {
 		$attr = mb_strtolower($attr, 'UTF-8');
 
 		if(isset($result[$attr]) && $result[$attr]['count'] > 0) {
-			$values = array();
+			$values = [];
 			for($i=0;$i<$result[$attr]['count'];$i++) {
 				if($this->resemblesDN($attr)) {
 					$values[] = $this->sanitizeDN($result[$attr][$i]);
@@ -218,13 +218,13 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @return boolean if so true, otherwise false
 	 */
 	private function resemblesDN($attr) {
-		$resemblingAttributes = array(
+		$resemblingAttributes = [
 			'dn',
 			'uniquemember',
 			'member',
 			// memberOf is an "operational" attribute, without a definition in any RFC
 			'memberof'
-		);
+		];
 		return in_array($attr, $resemblingAttributes);
 	}
 
@@ -248,7 +248,7 @@ class Access extends LDAPUtility implements IUserTools {
 	private function sanitizeDN($dn) {
 		//treating multiple base DNs
 		if(is_array($dn)) {
-			$result = array();
+			$result = [];
 			foreach($dn as $singleDN) {
 				$result[] = $this->sanitizeDN($singleDN);
 			}
@@ -265,7 +265,7 @@ class Access extends LDAPUtility implements IUserTools {
 		//escape DN values according to RFC 2253 – this is already done by ldap_explode_dn
 		//to use the DN in search filters, \ needs to be escaped to \5c additionally
 		//to use them in bases, we convert them back to simple backslashes in readAttribute()
-		$replacements = array(
+		$replacements = [
 			'\,' => '\5c2C',
 			'\=' => '\5c3D',
 			'\+' => '\5c2B',
@@ -277,7 +277,7 @@ class Access extends LDAPUtility implements IUserTools {
 			'('  => '\28',
 			')'  => '\29',
 			'*'  => '\2A',
-		);
+		];
 		$dn = str_replace(array_keys($replacements), array_values($replacements), $dn);
 
 		return $dn;
@@ -296,7 +296,7 @@ class Access extends LDAPUtility implements IUserTools {
 			//not a valid DN
 			return '';
 		}
-		$domainParts = array();
+		$domainParts = [];
 		$dcFound = false;
 		foreach($allParts as $part) {
 			if(!$dcFound && strpos($part, 'dc=') === 0) {
@@ -473,15 +473,15 @@ class Access extends LDAPUtility implements IUserTools {
 		//NOTE: mind, disabling cache affects only this instance! Using it
 		// outside of core user management will still cache the user as non-existing.
 		$originalTTL = $this->connection->ldapCacheTTL;
-		$this->connection->setConfiguration(array('ldapCacheTTL' => 0));
+		$this->connection->setConfiguration(['ldapCacheTTL' => 0]);
 		if(($isUser && !\OCP\User::userExists($intName))
 			|| (!$isUser && !\OC_Group::groupExists($intName))) {
 			if($mapper->map($fdn, $intName, $uuid)) {
-				$this->connection->setConfiguration(array('ldapCacheTTL' => $originalTTL));
+				$this->connection->setConfiguration(['ldapCacheTTL' => $originalTTL]);
 				return $intName;
 			}
 		}
-		$this->connection->setConfiguration(array('ldapCacheTTL' => $originalTTL));
+		$this->connection->setConfiguration(['ldapCacheTTL' => $originalTTL]);
 
 		$altName = $this->createAltInternalOwnCloudName($intName, $isUser);
 		if(is_string($altName) && $mapper->map($fdn, $altName, $uuid)) {
@@ -527,7 +527,7 @@ class Access extends LDAPUtility implements IUserTools {
 		} else {
 			$nameAttribute = $this->connection->ldapGroupDisplayName;
 		}
-		$ownCloudNames = array();
+		$ownCloudNames = [];
 
 		foreach($ldapObjects as $ldapObject) {
 			$nameByLDAP = null;
@@ -656,13 +656,13 @@ class Access extends LDAPUtility implements IUserTools {
 	 */
 	private function createAltInternalOwnCloudName($name, $isUser) {
 		$originalTTL = $this->connection->ldapCacheTTL;
-		$this->connection->setConfiguration(array('ldapCacheTTL' => 0));
+		$this->connection->setConfiguration(['ldapCacheTTL' => 0]);
 		if($isUser) {
 			$altName = $this->_createAltInternalOwnCloudNameForUsers($name);
 		} else {
 			$altName = $this->_createAltInternalOwnCloudNameForGroups($name);
 		}
-		$this->connection->setConfiguration(array('ldapCacheTTL' => $originalTTL));
+		$this->connection->setConfiguration(['ldapCacheTTL' => $originalTTL]);
 
 		return $altName;
 	}
@@ -675,7 +675,7 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @param array $attributes optional, list of attributes to read
 	 * @return array
 	 */
-	public function fetchUsersByLoginName($loginName, $attributes = array('dn')) {
+	public function fetchUsersByLoginName($loginName, $attributes = ['dn']) {
 		$loginName = $this->escapeFilterPart($loginName);
 		$filter = str_replace('%uid', $loginName, $this->connection->ldapLoginFilter);
 		$users = $this->fetchListOfUsers($filter, $attributes);
@@ -768,13 +768,13 @@ class Access extends LDAPUtility implements IUserTools {
 					$attribute = array_keys($item)[0];
 					$carry[] = $item[$attribute][0];
 					return $carry;
-				}, array());
+				}, []);
 				return array_unique($list, SORT_LOCALE_STRING);
 			}
 		}
 
 		//error cause actually, maybe throw an exception in future.
-		return array();
+		return [];
 	}
 
 	/**
@@ -798,7 +798,7 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @param int $offset
 	 * @return false|int
 	 */
-	public function countUsers($filter, $attr = array('dn'), $limit = null, $offset = null) {
+	public function countUsers($filter, $attr = ['dn'], $limit = null, $offset = null) {
 		return $this->count($filter, $this->connection->ldapBaseUsers, $attr, $limit, $offset);
 	}
 
@@ -824,7 +824,7 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @param int|null $offset
 	 * @return int|bool
 	 */
-	public function countGroups($filter, $attr = array('dn'), $limit = null, $offset = null) {
+	public function countGroups($filter, $attr = ['dn'], $limit = null, $offset = null) {
 		return $this->count($filter, $this->connection->ldapBaseGroups, $attr, $limit, $offset);
 	}
 
@@ -836,7 +836,7 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @return int|bool
 	 */
 	public function countObjects($limit = null, $offset = null) {
-		return $this->count('objectclass=*', $this->connection->ldapBase, array('dn'), $limit, $offset);
+		return $this->count('objectclass=*', $this->connection->ldapBase, ['dn'], $limit, $offset);
 	}
 
 	/**
@@ -848,7 +848,7 @@ class Access extends LDAPUtility implements IUserTools {
 	 */
 	private function executeSearch($filter, $base, &$attr = null, $limit = null, $offset = null) {
 		if(!is_null($attr) && !is_array($attr)) {
-			$attr = array(mb_strtolower($attr, 'UTF-8'));
+			$attr = [mb_strtolower($attr, 'UTF-8')];
 		}
 
 		// See if we have a resource, in case not cancel with message
@@ -863,7 +863,7 @@ class Access extends LDAPUtility implements IUserTools {
 		//check whether paged search should be attempted
 		$pagedSearchOK = $this->initPagedSearch($filter, $base, $attr, intval($limit), $offset);
 
-		$linkResources = array_pad(array(), count($base), $cr);
+		$linkResources = array_pad([], count($base), $cr);
 		$sr = $this->ldap->search($linkResources, $base, $filter, $attr);
 		$error = $this->ldap->errno($cr);
 		if(!is_array($sr) || $error !== 0) {
@@ -875,7 +875,7 @@ class Access extends LDAPUtility implements IUserTools {
 			return false;
 		}
 
-		return array($sr, $pagedSearchOK);
+		return [$sr, $pagedSearchOK];
 	}
 
 	/**
@@ -1014,12 +1014,12 @@ class Access extends LDAPUtility implements IUserTools {
 		 * loops through until we get $continue equals true and
 		 * $findings['count'] < $limit
 		 */
-		$findings = array();
+		$findings = [];
 		$savedoffset = $offset;
 		do {
 			$search = $this->executeSearch($filter, $base, $attr, $limit, $offset);
 			if($search === false) {
-				return array();
+				return [];
 			}
 			list($sr, $pagedSearchOK) = $search;
 			$cr = $this->connection->getConnectionResource();
@@ -1031,7 +1031,7 @@ class Access extends LDAPUtility implements IUserTools {
 				$this->processPagedSearchStatus($sr, $filter, $base, 1, $limit,
 								$offset, $pagedSearchOK,
 								$skipHandling);
-				return array();
+				return [];
 			}
 
 			foreach($sr as $res) {
@@ -1049,11 +1049,11 @@ class Access extends LDAPUtility implements IUserTools {
 		// if we're here, probably no connection resource is returned.
 		// to make ownCloud behave nicely, we simply give back an empty array.
 		if(is_null($findings)) {
-			return array();
+			return [];
 		}
 
 		if(!is_null($attr)) {
-			$selection = array();
+			$selection = [];
 			$i = 0;
 			foreach($findings as $item) {
 				if(!is_array($item)) {
@@ -1129,8 +1129,8 @@ class Access extends LDAPUtility implements IUserTools {
 			$asterisk = '*';
 			$input = mb_substr($input, 1, null, 'UTF-8');
 		}
-		$search  = array('*', '\\', '(', ')');
-		$replace = array('\\*', '\\\\', '\\(', '\\)');
+		$search  = ['*', '\\', '(', ')'];
+		$replace = ['\\*', '\\\\', '\\(', '\\)'];
 		return $asterisk . str_replace($search, $replace, $input);
 	}
 
@@ -1207,11 +1207,11 @@ class Access extends LDAPUtility implements IUserTools {
 			throw new \Exception('searchAttributes must be an array with at least two string');
 		}
 		$searchWords = explode(' ', trim($search));
-		$wordFilters = array();
+		$wordFilters = [];
 		foreach($searchWords as $word) {
 			$word = $this->prepareSearchTerm($word);
 			//every word needs to appear at least once
-			$wordMatchOneAttrFilters = array();
+			$wordMatchOneAttrFilters = [];
 			foreach($searchAttributes as $attr) {
 				$wordMatchOneAttrFilters[] = $attr . '=' . $word;
 			}
@@ -1229,7 +1229,7 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @return string the final filter part to use in LDAP searches
 	 */
 	private function getFilterPartForSearch($search, $searchAttributes, $fallbackAttribute) {
-		$filter = array();
+		$filter = [];
 		$haveMultiSearchAttributes = (is_array($searchAttributes) && count($searchAttributes) > 0);
 		if($haveMultiSearchAttributes && strpos(trim($search), ' ') !== false) {
 			try {
@@ -1281,10 +1281,10 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @return string
 	 */
 	public function getFilterForUserCount() {
-		$filter = $this->combineFilterWithAnd(array(
+		$filter = $this->combineFilterWithAnd([
 			$this->connection->ldapUserFilter,
 			$this->connection->ldapUserDisplayName . '=*'
-		));
+		]);
 
 		return $filter;
 	}
@@ -1297,10 +1297,10 @@ class Access extends LDAPUtility implements IUserTools {
 	public function areCredentialsValid($name, $password) {
 		$name = $this->DNasBaseParameter($name);
 		$testConnection = clone $this->connection;
-		$credentials = array(
+		$credentials = [
 			'ldapAgentName' => $name,
 			'ldapAgentPassword' => $password
-		);
+		];
 		if(!$testConnection->setConfiguration($credentials)) {
 			return false;
 		}
@@ -1381,7 +1381,7 @@ class Access extends LDAPUtility implements IUserTools {
 		}
 
 		// for now, supported attributes are entryUUID, nsuniqueid, objectGUID, ipaUniqueID
-		$testAttributes = array('entryuuid', 'nsuniqueid', 'objectguid', 'guid', 'ipauniqueid');
+		$testAttributes = ['entryuuid', 'nsuniqueid', 'objectguid', 'guid', 'ipauniqueid'];
 
 		foreach($testAttributes as $attribute) {
 			$value = $this->readAttribute($dn, $attribute);
@@ -1556,7 +1556,7 @@ class Access extends LDAPUtility implements IUserTools {
 		// precision (see https://gist.github.com/bantu/886ac680b0aef5812f71)
 		$iav = number_format(hexdec(bin2hex(substr($sid, 2, 6))), 0, '', '');
 
-		$subIDs = array();
+		$subIDs = [];
 		for ($i = 0; $i < $numberSubID; $i++) {
 			$subID = unpack('V', substr($sid, $subIdStart + $subIdLength * $i, $subIdLength));
 			$subIDs[] = sprintf('%u', $subID[1]);
@@ -1606,7 +1606,7 @@ class Access extends LDAPUtility implements IUserTools {
 			$this->ldap->controlPagedResult($cr, 0, false, $this->lastCookie);
 			$this->getPagedSearchResultState();
 			$this->lastCookie = '';
-			$this->cookies = array();
+			$this->cookies = [];
 		}
 	}
 
@@ -1717,7 +1717,7 @@ class Access extends LDAPUtility implements IUserTools {
 					$reOffset = ($offset - $limit) < 0 ? 0 : $offset - $limit;
 					//a bit recursive, $offset of 0 is the exit
 					\OCP\Util::writeLog('user_ldap', 'Looking for cookie L/O '.$limit.'/'.$reOffset, \OCP\Util::INFO);
-					$this->search($filter, array($base), $attr, $limit, $reOffset, true);
+					$this->search($filter, [$base], $attr, $limit, $reOffset, true);
 					$cookie = $this->getPagedResultCookie($base, $filter, $limit, $offset);
 					//still no cookie? obviously, the server does not like us. Let's skip paging efforts.
 					//TODO: remember this, probably does not change in the next request...

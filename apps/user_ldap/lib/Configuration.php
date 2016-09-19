@@ -38,7 +38,7 @@ class Configuration {
 	protected $configRead = false;
 
 	//settings
-	protected $config = array(
+	protected $config = [
 		'ldapHost' => null,
 		'ldapPort' => null,
 		'ldapBackupHost' => null,
@@ -90,7 +90,7 @@ class Configuration {
 		'ldapNestedGroups' => false,
 		'ldapPagingSize' => null,
 		'ldapDynamicGroupMemberURL' => null,
-	);
+	];
 
 	/**
 	 * @param string $configPrefix
@@ -119,7 +119,7 @@ class Configuration {
 	 * @param mixed $value
 	 */
 	public function __set($name, $value) {
-		$this->setConfiguration(array($name => $value));
+		$this->setConfiguration([$name => $value]);
 	}
 
 	/**
@@ -400,7 +400,7 @@ class Configuration {
 	 * to config-value entries in the database table
 	 */
 	public function getDefaults() {
-		return array(
+		return [
 			'ldap_host'                         => '',
 			'ldap_port'                         => '',
 			'ldap_backup_host'                  => '',
@@ -450,7 +450,7 @@ class Configuration {
 			'ldap_paging_size'                  => 500,
 			'ldap_experienced_admin'            => 0,
 			'ldap_dynamic_group_member_url'     => '',
-		);
+		];
 	}
 
 	/**
@@ -458,7 +458,7 @@ class Configuration {
 	 */
 	public function getConfigTranslationArray() {
 		//TODO: merge them into one representation
-		static $array = array(
+		static $array = [
 			'ldap_host'                         => 'ldapHost',
 			'ldap_port'                         => 'ldapPort',
 			'ldap_backup_host'                  => 'ldapBackupHost',
@@ -506,7 +506,7 @@ class Configuration {
 			'ldap_paging_size'                  => 'ldapPagingSize',
 			'ldap_experienced_admin'            => 'ldapExperiencedAdmin',
 			'ldap_dynamic_group_member_url'     => 'ldapDynamicGroupMemberURL',
-		);
+		];
 		return $array;
 	}
 

@@ -49,9 +49,9 @@ class SecuritySettingsController extends Controller {
 	 * @return array
 	 */
 	protected function returnSuccess() {
-		return array(
+		return [
 			'status' => 'success'
-		);
+		];
 	}
 
 	/**

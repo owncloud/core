@@ -63,15 +63,15 @@ class LegacyGroupTest extends \Test\TestCase {
 
 		$this->assertTrue(OC_Group::addToGroup($user1, $group1));
 
-		$this->assertEquals(array($user1), OC_Group::usersInGroup($group1));
-		$this->assertEquals(array(), OC_Group::usersInGroup($group2));
+		$this->assertEquals([$user1], OC_Group::usersInGroup($group1));
+		$this->assertEquals([], OC_Group::usersInGroup($group2));
 
-		$this->assertEquals(array($group1), OC_Group::getUserGroups($user1));
-		$this->assertEquals(array(), OC_Group::getUserGroups($user2));
+		$this->assertEquals([$group1], OC_Group::getUserGroups($user1));
+		$this->assertEquals([], OC_Group::getUserGroups($user2));
 
 		OC_Group::deleteGroup($group1);
-		$this->assertEquals(array(), OC_Group::getUserGroups($user1));
-		$this->assertEquals(array(), OC_Group::usersInGroup($group1));
+		$this->assertEquals([], OC_Group::getUserGroups($user1));
+		$this->assertEquals([], OC_Group::usersInGroup($group1));
 		$this->assertFalse(OC_Group::inGroup($user1, $group1));
 	}
 
@@ -92,7 +92,7 @@ class LegacyGroupTest extends \Test\TestCase {
 		$groupCopy = $group;
 
 		OC_Group::createGroup($groupCopy);
-		$this->assertEquals(array($group), OC_Group::getGroups());
+		$this->assertEquals([$group], OC_Group::getGroups());
 	}
 
 
@@ -102,7 +102,7 @@ class LegacyGroupTest extends \Test\TestCase {
 		OC_Group::createGroup($adminGroup);
 
 		$this->assertFalse(OC_Group::deleteGroup($adminGroup));
-		$this->assertEquals(array($adminGroup), OC_Group::getGroups());
+		$this->assertEquals([$adminGroup], OC_Group::getGroups());
 	}
 
 
@@ -112,7 +112,7 @@ class LegacyGroupTest extends \Test\TestCase {
 		$user = $this->getUniqueID();
 
 		$this->assertEquals(false, OC_Group::addToGroup($user, $groupNonExistent));
-		$this->assertEquals(array(), OC_Group::getGroups());
+		$this->assertEquals([], OC_Group::getGroups());
 	}
 
 	public function testUsersInGroup() {
@@ -139,8 +139,8 @@ class LegacyGroupTest extends \Test\TestCase {
 		OC_Group::addToGroup($user3, $group1);
 		OC_Group::addToGroup($user3, $group2);
 
-		$this->assertEquals(array($user1, $user2, $user3),
-			OC_Group::usersInGroups(array($group1, $group2, $group3)));
+		$this->assertEquals([$user1, $user2, $user3],
+			OC_Group::usersInGroups([$group1, $group2, $group3]));
 
 		// FIXME: needs more parameter variation
 	}
@@ -158,16 +158,16 @@ class LegacyGroupTest extends \Test\TestCase {
 		OC_Group::createGroup($group1);
 
 		//groups should be added to the first registered backend
-		$this->assertEquals(array($group1), $backend1->getGroups());
-		$this->assertEquals(array(), $backend2->getGroups());
+		$this->assertEquals([$group1], $backend1->getGroups());
+		$this->assertEquals([], $backend2->getGroups());
 
-		$this->assertEquals(array($group1), OC_Group::getGroups());
+		$this->assertEquals([$group1], OC_Group::getGroups());
 		$this->assertTrue(OC_Group::groupExists($group1));
 		$this->assertFalse(OC_Group::groupExists($group2));
 
 		$backend1->createGroup($group2);
 
-		$this->assertEquals(array($group1, $group2), OC_Group::getGroups());
+		$this->assertEquals([$group1, $group2], OC_Group::getGroups());
 		$this->assertTrue(OC_Group::groupExists($group1));
 		$this->assertTrue(OC_Group::groupExists($group2));
 
@@ -189,14 +189,14 @@ class LegacyGroupTest extends \Test\TestCase {
 
 		OC_Group::addToGroup($user1, $group1);
 
-		$this->assertEquals(array($user1), OC_Group::usersInGroup($group1));
+		$this->assertEquals([$user1], OC_Group::usersInGroup($group1));
 
-		$this->assertEquals(array($group1), OC_Group::getUserGroups($user1));
-		$this->assertEquals(array(), OC_Group::getUserGroups($user2));
+		$this->assertEquals([$group1], OC_Group::getUserGroups($user1));
+		$this->assertEquals([], OC_Group::getUserGroups($user2));
 
 		OC_Group::deleteGroup($group1);
-		$this->assertEquals(array(), OC_Group::getUserGroups($user1));
-		$this->assertEquals(array(), OC_Group::usersInGroup($group1));
+		$this->assertEquals([], OC_Group::getUserGroups($user1));
+		$this->assertEquals([], OC_Group::usersInGroup($group1));
 		$this->assertFalse(OC_Group::inGroup($user1, $group1));
 	}
 }

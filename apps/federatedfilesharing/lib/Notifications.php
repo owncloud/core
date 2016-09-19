@@ -85,7 +85,7 @@ class Notifications {
 			$url = $remote;
 			$local = $this->addressHandler->generateRemoteURL();
 
-			$fields = array(
+			$fields = [
 				'shareWith' => $user,
 				'token' => $token,
 				'name' => $name,
@@ -95,7 +95,7 @@ class Notifications {
 				'sharedBy' => $sharedBy,
 				'sharedByFederatedId' => $sharedByFederatedId,
 				'remote' => $local,
-			);
+			];
 
 			$url = $this->addressHandler->removeProtocolFromUrl($url);
 			$result = $this->tryHttpPostToShareEndpoint($url, '', $fields);
@@ -126,12 +126,12 @@ class Notifications {
 	 */
 	public function requestReShare($token, $id, $shareId, $remote, $shareWith, $permission) {
 
-		$fields = array(
+		$fields = [
 			'shareWith' => $shareWith,
 			'token' => $token,
 			'permission' => $permission,
 			'remoteId' => $shareId
-		);
+		];
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
 		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $id . '/reshare', $fields);
@@ -224,7 +224,7 @@ class Notifications {
 	 */
 	public function sendUpdateToRemote($remote, $remoteId, $token, $action, $data = [], $try = 0) {
 
-		$fields = array('token' => $token);
+		$fields = ['token' => $token];
 		foreach ($data as $key => $value) {
 			$fields[$key] = $value;
 		}

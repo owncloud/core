@@ -111,7 +111,7 @@ class LoginController extends Controller {
 			return new RedirectResponse($this->getDefaultUrl());
 		}
 
-		$parameters = array();
+		$parameters = [];
 		$loginMessages = $this->session->get('loginMessages');
 		$errors = [];
 		$messages = [];

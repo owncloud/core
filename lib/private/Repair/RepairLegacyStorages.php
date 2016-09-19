@@ -105,7 +105,7 @@ class RepairLegacyStorages implements IRepairStep{
 			$newNumericId = (int)$newNumericId;
 			// try and resolve the conflict
 			// check which one of "local::" or "home::" needs to be kept
-			$this->findStorageInCacheStatement->execute(array($oldNumericId, $newNumericId));
+			$this->findStorageInCacheStatement->execute([$oldNumericId, $newNumericId]);
 			$row1 = $this->findStorageInCacheStatement->fetch();
 			$row2 = $this->findStorageInCacheStatement->fetch();
 			$this->findStorageInCacheStatement->closeCursor();
@@ -142,7 +142,7 @@ class RepairLegacyStorages implements IRepairStep{
 		// rename old id to new id
 		$newId = Storage::adjustStorageId($newId);
 		$oldId = Storage::adjustStorageId($oldId);
-		$rowCount = $this->renameStorageStatement->execute(array($newId, $oldId));
+		$rowCount = $this->renameStorageStatement->execute([$newId, $oldId]);
 		$this->renameStorageStatement->closeCursor();
 		return ($rowCount === 1);
 	}
@@ -172,7 +172,7 @@ class RepairLegacyStorages implements IRepairStep{
 		$sql = 'SELECT `id`, `numeric_id` FROM `*PREFIX*storages`'
 			. ' WHERE `id` LIKE ?'
 			. ' ORDER BY `id`';
-		$result = $this->connection->executeQuery($sql, array($this->connection->escapeLikeParameter($dataDirId) . '%'));
+		$result = $this->connection->executeQuery($sql, [$this->connection->escapeLikeParameter($dataDirId) . '%']);
 
 		while ($row = $result->fetch()) {
 			$currentId = $row['id'];
@@ -210,7 +210,7 @@ class RepairLegacyStorages implements IRepairStep{
 			do {
 				// query the next page of users
 				$results = $userManager->search('', $limit, $offset);
-				$storageIds = array();
+				$storageIds = [];
 				foreach ($results as $uid => $userObject) {
 					$storageId = $dataDirId . $uid . '/';
 					if (strlen($storageId) <= 64) {

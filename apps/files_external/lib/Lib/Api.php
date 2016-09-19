@@ -54,7 +54,7 @@ class Api {
 			$permissions |= \OCP\Constants::PERMISSION_DELETE;
 		}
 
-		$entry = array(
+		$entry = [
 			'name' => basename($mountPoint),
 			'path' => $path,
 			'type' => 'dir',
@@ -63,7 +63,7 @@ class Api {
 			'permissions' => $permissions,
 			'id' => $mountConfig['id'],
 			'class' => $mountConfig['class']
-		);
+		];
 		return $entry;
 	}
 
@@ -74,7 +74,7 @@ class Api {
 	 * @return \OC_OCS_Result share information
 	 */
 	public static function getUserMounts($params) {
-		$entries = array();
+		$entries = [];
 		$user = \OC::$server->getUserSession()->getUser()->getUID();
 
 		$mounts = \OC_Mount_Config::getAbsoluteMountPoints($user);

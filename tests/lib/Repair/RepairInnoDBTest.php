@@ -71,7 +71,7 @@ class RepairInnoDBTest extends \Test\TestCase {
 
 		$result = $this->connection->fetchColumn(
 			"SELECT count(*) FROM information_schema.tables WHERE table_schema = ? and table_name = ? AND engine = 'MyISAM'",
-			array($dbName, $this->tableName)
+			[$dbName, $this->tableName]
 		);
 		return $result;
 	}

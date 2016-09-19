@@ -69,7 +69,7 @@ class DeletedUsersIndex {
 		$deletedUsers = $this->config->getUsersForUserValue(
 			'user_ldap', 'isDeleted', '1');
 
-		$userObjects = array();
+		$userObjects = [];
 		foreach($deletedUsers as $user) {
 			$userObjects[] = new OfflineUser($user, $this->config, $this->db, $this->mapping);
 		}

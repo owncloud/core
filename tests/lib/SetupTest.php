@@ -46,7 +46,7 @@ class SetupTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getSystemValue')
 			->will($this->returnValue(
-				array('sqlite', 'mysql', 'oci')
+				['sqlite', 'mysql', 'oci']
 			));
 		$this->setupClass
 			->expects($this->once())
@@ -61,9 +61,9 @@ class SetupTest extends \Test\TestCase {
 			->method('getAvailableDbDriversForPdo')
 			->will($this->returnValue([]));
 		$result = $this->setupClass->getSupportedDatabases();
-		$expectedResult = array(
+		$expectedResult = [
 			'sqlite' => 'SQLite'
-		);
+		];
 
 		$this->assertSame($expectedResult, $result);
 	}
@@ -73,7 +73,7 @@ class SetupTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getSystemValue')
 			->will($this->returnValue(
-				array('sqlite', 'mysql', 'oci', 'pgsql')
+				['sqlite', 'mysql', 'oci', 'pgsql']
 			));
 		$this->setupClass
 			->expects($this->once())
@@ -89,7 +89,7 @@ class SetupTest extends \Test\TestCase {
 			->will($this->returnValue([]));
 		$result = $this->setupClass->getSupportedDatabases();
 
-		$this->assertSame(array(), $result);
+		$this->assertSame([], $result);
 	}
 
 	public function testGetSupportedDatabasesWithAllWorking() {
@@ -97,7 +97,7 @@ class SetupTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getSystemValue')
 			->will($this->returnValue(
-				array('sqlite', 'mysql', 'pgsql', 'oci')
+				['sqlite', 'mysql', 'pgsql', 'oci']
 			));
 		$this->setupClass
 			->expects($this->once())
@@ -112,12 +112,12 @@ class SetupTest extends \Test\TestCase {
 			->method('getAvailableDbDriversForPdo')
 			->will($this->returnValue(['mysql']));
 		$result = $this->setupClass->getSupportedDatabases();
-		$expectedResult = array(
+		$expectedResult = [
 			'sqlite' => 'SQLite',
 			'mysql' => 'MySQL/MariaDB',
 			'pgsql' => 'PostgreSQL',
 			'oci' => 'Oracle'
-		);
+		];
 		$this->assertSame($expectedResult, $result);
 	}
 

@@ -76,7 +76,7 @@ abstract class Controller {
 		$this->request = $request;
 
 		// default responders
-		$this->responders = array(
+		$this->responders = [
 			'json' => function ($data) {
 				if ($data instanceof DataResponse) {
 					$response = new JSONResponse(
@@ -95,7 +95,7 @@ abstract class Controller {
 					return new JSONResponse($data);
 				}
 			}
-		);
+		];
 	}
 
 
@@ -246,8 +246,8 @@ abstract class Controller {
 	 * @return \OCP\AppFramework\Http\TemplateResponse containing the page
 	 * @since 6.0.0
 	 */
-	public function render($templateName, array $params=array(),
-							$renderAs='user', array $headers=array()){
+	public function render($templateName, array $params= [],
+							$renderAs='user', array $headers= []){
 		$response = new TemplateResponse($this->appName, $templateName);
 		$response->setParams($params);
 		$response->renderAs($renderAs);

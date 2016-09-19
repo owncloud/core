@@ -80,9 +80,9 @@ class Collation implements IRepairStep {
 			"	WHERE TABLE_SCHEMA = ?" .
 			"	AND (COLLATION_NAME <> 'utf8_bin' OR CHARACTER_SET_NAME <> 'utf8')" .
 			"	AND TABLE_NAME LIKE \"*PREFIX*%\"",
-			array($dbName)
+			[$dbName]
 		);
-		$result = array();
+		$result = [];
 		foreach ($rows as $row) {
 			$result[] = $row['table'];
 		}

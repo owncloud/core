@@ -58,7 +58,7 @@ class Cache implements ICache {
 	/**
 	 * @var array partial data for the cache
 	 */
-	protected $partial = array();
+	protected $partial = [];
 
 	/**
 	 * @var string
@@ -117,10 +117,10 @@ class Cache implements ICache {
 			$file = $this->normalize($file);
 
 			$where = 'WHERE `storage` = ? AND `path_hash` = ?';
-			$params = array($this->getNumericStorageId(), md5($file));
+			$params = [$this->getNumericStorageId(), md5($file)];
 		} else { //file id
 			$where = 'WHERE `fileid` = ?';
-			$params = array($file);
+			$params = [$file];
 		}
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`,
 					   `storage_mtime`, `encrypted`, `etag`, `permissions`, `checksum`
@@ -199,7 +199,7 @@ class Cache implements ICache {
 				return new CacheEntry($data);
 			}, $files);
 		} else {
-			return array();
+			return [];
 		}
 	}
 
@@ -239,7 +239,7 @@ class Cache implements ICache {
 			unset($this->partial[$file]);
 		}
 
-		$requiredFields = array('size', 'mtime', 'mimetype');
+		$requiredFields = ['size', 'mtime', 'mimetype'];
 		foreach ($requiredFields as $field) {
 			if (!isset($data[$field])) { //data not complete save as partial and return
 				$this->partial[$file] = $data;
@@ -320,9 +320,9 @@ class Cache implements ICache {
 	 *        $params: mixed[], the new values for the columns, to be passed as params to the query
 	 */
 	protected function buildParts(array $data) {
-		$fields = array(
+		$fields = [
 			'path', 'parent', 'name', 'mimetype', 'size', 'mtime', 'storage_mtime', 'encrypted',
-			'etag', 'permissions', 'checksum');
+			'etag', 'permissions', 'checksum'];
 
 		$doNotCopyStorageMTime = false;
 		if (array_key_exists('mtime', $data) && $data['mtime'] === null) {
@@ -331,8 +331,8 @@ class Cache implements ICache {
 			$doNotCopyStorageMTime = true;
 		}
 
-		$params = array();
-		$queryParts = array();
+		$params = [];
+		$queryParts = [];
 		foreach ($data as $name => $value) {
 			if (array_search($name, $fields) !== false) {
 				if ($name === 'path') {
@@ -359,7 +359,7 @@ class Cache implements ICache {
 				$queryParts[] = '`' . $name . '`';
 			}
 		}
-		return array($queryParts, $params);
+		return [$queryParts, $params];
 	}
 
 	/**
@@ -379,7 +379,7 @@ class Cache implements ICache {
 		$pathHash = md5($file);
 
 		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
-		$result = $this->connection->executeQuery($sql, array($this->getNumericStorageId(), $pathHash));
+		$result = $this->connection->executeQuery($sql, [$this->getNumericStorageId(), $pathHash]);
 		if ($row = $result->fetch()) {
 			return $row['fileid'];
 		} else {
@@ -430,7 +430,7 @@ class Cache implements ICache {
 	public function remove($file) {
 		$entry = $this->get($file);
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
-		$this->connection->executeQuery($sql, array($entry['fileid']));
+		$this->connection->executeQuery($sql, [$entry['fileid']]);
 		if ($entry['mimetype'] === 'httpd/unix-directory') {
 			$this->removeChildren($entry);
 		}
@@ -461,7 +461,7 @@ class Cache implements ICache {
 			$this->removeChildren($folder);
 		}
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `parent` = ?';
-		$this->connection->executeQuery($sql, array($entry['fileid']));
+		$this->connection->executeQuery($sql, [$entry['fileid']]);
 	}
 
 	/**
@@ -536,10 +536,10 @@ class Cache implements ICache {
 	 */
 	public function clear() {
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
-		$this->connection->executeQuery($sql, array($this->getNumericStorageId()));
+		$this->connection->executeQuery($sql, [$this->getNumericStorageId()]);
 
 		$sql = 'DELETE FROM `*PREFIX*storages` WHERE `id` = ?';
-		$this->connection->executeQuery($sql, array($this->storageId));
+		$this->connection->executeQuery($sql, [$this->storageId]);
 	}
 
 	/**
@@ -560,7 +560,7 @@ class Cache implements ICache {
 
 		$pathHash = md5($file);
 		$sql = 'SELECT `size` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
-		$result = $this->connection->executeQuery($sql, array($this->getNumericStorageId(), $pathHash));
+		$result = $this->connection->executeQuery($sql, [$this->getNumericStorageId(), $pathHash]);
 		if ($row = $result->fetch()) {
 			if ((int)$row['size'] === -1) {
 				return self::SHALLOW;
@@ -624,8 +624,8 @@ class Cache implements ICache {
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `etag`, `permissions`, `checksum`
 				FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `storage` = ?';
 		$mimetype = $this->mimetypeLoader->getId($mimetype);
-		$result = $this->connection->executeQuery($sql, array($mimetype, $this->getNumericStorageId()));
-		$files = array();
+		$result = $this->connection->executeQuery($sql, [$mimetype, $this->getNumericStorageId()]);
+		$files = [];
 		while ($row = $result->fetch()) {
 			$row['mimetype'] = $this->mimetypeLoader->getMimetypeById($row['mimetype']);
 			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
@@ -674,7 +674,7 @@ class Cache implements ICache {
 				$tag
 			]
 		);
-		$files = array();
+		$files = [];
 		while ($row = $result->fetch()) {
 			$files[] = $row;
 		}
@@ -717,7 +717,7 @@ class Cache implements ICache {
 			$sql = 'SELECT SUM(`size`) AS f1, MIN(`size`) AS f2 ' .
 				'FROM `*PREFIX*filecache` ' .
 				'WHERE `parent` = ? AND `storage` = ?';
-			$result = $this->connection->executeQuery($sql, array($id, $this->getNumericStorageId()));
+			$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
 			if ($row = $result->fetch()) {
 				$result->closeCursor();
 				list($sum, $min) = array_values($row);
@@ -728,7 +728,7 @@ class Cache implements ICache {
 				} else {
 					$totalSize = $sum;
 				}
-				$update = array();
+				$update = [];
 				if ($entry['size'] !== $totalSize) {
 					$update['size'] = $totalSize;
 				}
@@ -749,8 +749,8 @@ class Cache implements ICache {
 	 */
 	public function getAll() {
 		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ?';
-		$result = $this->connection->executeQuery($sql, array($this->getNumericStorageId()));
-		$ids = array();
+		$result = $this->connection->executeQuery($sql, [$this->getNumericStorageId()]);
+		$ids = [];
 		while ($row = $result->fetch()) {
 			$ids[] = $row['fileid'];
 		}
@@ -785,7 +785,7 @@ class Cache implements ICache {
 	 */
 	public function getPathById($id) {
 		$sql = 'SELECT `path` FROM `*PREFIX*filecache` WHERE `fileid` = ? AND `storage` = ?';
-		$result = $this->connection->executeQuery($sql, array($id, $this->getNumericStorageId()));
+		$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
 		if ($row = $result->fetch()) {
 			// Oracle stores empty strings as null...
 			if ($row['path'] === null) {
@@ -809,7 +809,7 @@ class Cache implements ICache {
 	static public function getById($id) {
 		$connection = \OC::$server->getDatabaseConnection();
 		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
-		$result = $connection->executeQuery($sql, array($id));
+		$result = $connection->executeQuery($sql, [$id]);
 		if ($row = $result->fetch()) {
 			$numericId = $row['storage'];
 			$path = $row['path'];
@@ -818,7 +818,7 @@ class Cache implements ICache {
 		}
 
 		if ($id = Storage::getStorageId($numericId)) {
-			return array($id, $path);
+			return [$id, $path];
 		} else {
 			return null;
 		}

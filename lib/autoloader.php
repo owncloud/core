@@ -90,7 +90,7 @@ class Autoloader {
 	public function findClass($class) {
 		$class = trim($class, '\\');
 
-		$paths = array();
+		$paths = [];
 		if ($this->useGlobalClassPath && array_key_exists($class, \OC::$CLASSPATH)) {
 			$paths[] = \OC::$CLASSPATH[$class];
 			/**
@@ -151,7 +151,7 @@ class Autoloader {
 
 		if (!is_array($pathsToRequire)) {
 			// No cache or cache miss
-			$pathsToRequire = array();
+			$pathsToRequire = [];
 			foreach ($this->findClass($class) as $path) {
 				$fullPath = stream_resolve_include_path($path);
 				if ($fullPath && $this->isValidPath($fullPath)) {

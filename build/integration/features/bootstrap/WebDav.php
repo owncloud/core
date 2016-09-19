@@ -350,10 +350,10 @@ trait WebDav {
 	public function getSabreClient($user) {
 		$fullUrl = substr($this->baseUrl, 0, -4);
 
-		$settings = array(
+		$settings = [
 			'baseUri' => $fullUrl,
 			'userName' => $user,
-		);
+		];
 
 		if ($user === 'admin') {
 			$settings['password'] = $this->adminUser[1];
@@ -529,10 +529,10 @@ trait WebDav {
 	/*Set the elements of a proppatch, $folderDepth requires 1 to see elements without children*/
 	public function changeFavStateOfAnElement($user, $path, $favOrUnfav, $folderDepth, $properties = null){
 		$fullUrl = substr($this->baseUrl, 0, -4);
-		$settings = array(
+		$settings = [
 			'baseUri' => $fullUrl,
 			'userName' => $user,
-		);
+		];
 		if ($user === 'admin') {
 			$settings['password'] = $this->adminUser[1];
 		} else {

@@ -56,7 +56,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('getConnection')
 			->will($this->returnValue($connection));
 
-		return array($access, $config, $filesys, $image, $log, $avaMgr, $dbc, $userMgr);
+		return [$access, $config, $filesys, $image, $log, $avaMgr, $dbc, $userMgr];
 	}
 
 	public function testGetByDNExisting() {
@@ -232,7 +232,7 @@ class ManagerTest extends \Test\TestCase {
 		$manager->setLdapAccess($access);
 
 		$connection = $access->getConnection();
-		$connection->setConfiguration(array('ldapEmailAttribute' => 'mail'));
+		$connection->setConfiguration(['ldapEmailAttribute' => 'mail']);
 
 		$attributes = $manager->getAttributes();
 

@@ -81,7 +81,7 @@ abstract class AbstractMapping {
 			WHERE `' . $compareCol . '` = ?
 		');
 
-		$res = $query->execute(array($search));
+		$res = $query->execute([$search]);
 		if($res !== false) {
 			return $query->fetchColumn();
 		}
@@ -123,7 +123,7 @@ abstract class AbstractMapping {
 			WHERE `directory_uuid` = ?
 		');
 
-		return $this->modify($query, array($fdn, $uuid));
+		return $this->modify($query, [$fdn, $uuid]);
 	}
 
 	/**
@@ -149,8 +149,8 @@ abstract class AbstractMapping {
 			WHERE `owncloud_name` LIKE ?
 		');
 
-		$res = $query->execute(array($prefixMatch.$this->dbc->escapeLikeParameter($search).$postfixMatch));
-		$names = array();
+		$res = $query->execute([$prefixMatch.$this->dbc->escapeLikeParameter($search).$postfixMatch]);
+		$names = [];
 		if($res !== false) {
 			while($row = $query->fetch()) {
 				$names[] = $row['owncloud_name'];
@@ -207,11 +207,11 @@ abstract class AbstractMapping {
 	 * @return bool
 	 */
 	public function map($fdn, $name, $uuid) {
-		$row = array(
+		$row = [
 			'ldap_dn'        => $fdn,
 			'owncloud_name'  => $name,
 			'directory_uuid' => $uuid
-		);
+		];
 
 		try {
 			$result = $this->dbc->insertIfNotExist($this->getTableName(), $row);
@@ -232,7 +232,7 @@ abstract class AbstractMapping {
 			DELETE FROM `'. $this->getTableName() .'`
 			WHERE `owncloud_name` = ?');
 
-		return $this->modify($query, array($name));
+		return $this->modify($query, [$name]);
 	}
 
 	/**

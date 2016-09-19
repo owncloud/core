@@ -43,7 +43,7 @@ class Application extends App {
 	 *
 	 * @param array $urlParams
 	 */
-	public function __construct (array $urlParams=array()) {
+	public function __construct (array $urlParams= []) {
 		parent::__construct('dav', $urlParams);
 
 		$container = $this->getContainer();

@@ -39,7 +39,7 @@ class DIContainerTest extends \Test\TestCase {
 		$this->container = $this->getMock('OC\AppFramework\DependencyInjection\DIContainer',
 				['isAdminUser'], ['name']
 		);
-		$this->api = $this->getMock('OC\AppFramework\Core\API', array(), array('hi'));
+		$this->api = $this->getMock('OC\AppFramework\Core\API', [], ['hi']);
 	}
 
 	public function testProvidesAPI(){

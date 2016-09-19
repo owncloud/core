@@ -40,7 +40,7 @@ class RedisFactory {
 	private function create() {
 		$this->instance = new \Redis();
 		// TODO allow configuring a RedisArray, see https://github.com/nicolasff/phpredis/blob/master/arrays.markdown#redis-arrays
-		$config = $this->config->getValue('redis', array());
+		$config = $this->config->getValue('redis', []);
 		if (isset($config['host'])) {
 			$host = $config['host'];
 		} else {

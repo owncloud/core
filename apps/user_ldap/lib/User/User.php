@@ -81,7 +81,7 @@ class User {
 	/**
 	 * @var string[]
 	 */
-	protected $refreshedFeatures = array();
+	protected $refreshedFeatures = [];
 	/**
 	 * @var string
 	 */
@@ -213,7 +213,7 @@ class User {
 		$this->connection->writeToCache($cacheKey, $groups);
 
 		//Avatar
-		$attrs = array('jpegphoto', 'thumbnailphoto');
+		$attrs = ['jpegphoto', 'thumbnailphoto'];
 		foreach ($attrs as $attr)  {
 			if(isset($ldapEntry[$attr])) {
 				$this->avatarImage = $ldapEntry[$attr][0];
@@ -316,7 +316,7 @@ class User {
 		}
 
 		$this->avatarImage = false;
-		$attributes = array('jpegPhoto', 'thumbnailPhoto');
+		$attributes = ['jpegPhoto', 'thumbnailPhoto'];
 		foreach($attributes as $attribute) {
 			$result = $this->access->readAttribute($this->dn, $attribute);
 			if($result !== false && is_array($result) && isset($result[0])) {
@@ -509,7 +509,7 @@ class User {
 			return;
 		}
 		//make sure it is a square and not bigger than 128x128
-		$size = min(array($this->image->width(), $this->image->height(), 128));
+		$size = min([$this->image->width(), $this->image->height(), 128]);
 		if(!$this->image->centerCrop($size)) {
 			$this->log->log('croping image for avatar failed for '.$this->dn, \OCP\Util::ERROR);
 			return;

@@ -97,7 +97,7 @@ class RepairLegacyStoragesTest extends TestCase {
 			. ' VALUES (?)';
 
 		$storageId = Storage::adjustStorageId($storageId);
-		$numRows = $this->connection->executeUpdate($sql, array($storageId));
+		$numRows = $this->connection->executeUpdate($sql, [$storageId]);
 		$this->assertSame(1, $numRows);
 
 		return (int)\OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*storages');
@@ -112,7 +112,7 @@ class RepairLegacyStoragesTest extends TestCase {
 		$cache = new Cache($storageId);
 		$cache->put(
 			'dummyfile.txt',
-			array('size' => 5, 'mtime' => 12, 'mimetype' => 'text/plain')
+			['size' => 5, 'mtime' => 12, 'mimetype' => 'text/plain']
 		);
 	}
 
@@ -284,23 +284,23 @@ class RepairLegacyStoragesTest extends TestCase {
 	 * Provides data dir and user name
 	 */
 	function settingsProvider() {
-		return array(
+		return [
 			// regular data dir
-			array(
+			[
 				'/tmp/oc-autotest/datadir/',
 				$this->getUniqueID('user_'),
-			),
+			],
 			// long datadir / short user
-			array(
+			[
 				'/tmp/oc-autotest/datadir01234567890123456789012345678901234567890123456789END/',
 				$this->getUniqueID('user_'),
-			),
+			],
 			// short datadir / long user
-			array(
+			[
 				'/tmp/oc-autotest/datadir/',
 				'u123456789012345678901234567890123456789012345678901234567890END', // 64 chars
-			),
-		);
+			],
+		];
 	}
 
 	/**

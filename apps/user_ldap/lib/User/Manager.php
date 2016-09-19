@@ -142,13 +142,13 @@ class Manager {
 	 * @return string[]
 	 */
 	public function getAttributes($minimal = false) {
-		$attributes = array('dn', 'uid', 'samaccountname', 'memberof');
-		$possible = array(
+		$attributes = ['dn', 'uid', 'samaccountname', 'memberof'];
+		$possible = [
 			$this->access->getConnection()->ldapQuotaAttribute,
 			$this->access->getConnection()->ldapEmailAttribute,
 			$this->access->getConnection()->ldapUserDisplayName,
 			$this->access->getConnection()->ldapUserDisplayName2,
-		);
+		];
 		foreach($possible as $attr) {
 			if(!is_null($attr)) {
 				$attributes[] = $attr;
@@ -163,10 +163,10 @@ class Manager {
 		if(!$minimal) {
 			// attributes that are not really important but may come with big
 			// payload.
-			$attributes = array_merge($attributes, array(
+			$attributes = array_merge($attributes, [
 				'jpegphoto',
 				'thumbnailphoto'
-			));
+			]);
 		}
 
 		return $attributes;

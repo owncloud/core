@@ -43,23 +43,23 @@ abstract class AbstractMappingTest extends \Test\TestCase {
 	 * @return array
 	 */
 	protected function getTestData() {
-		$data = array(
-			array(
+		$data = [
+			[
 				'dn' => 'uid=foobar,dc=example,dc=org',
 				'name' => 'Foobar',
 				'uuid' => '1111-AAAA-1234-CDEF',
-			),
-			array(
+			],
+			[
 				'dn' => 'uid=barfoo,dc=example,dc=org',
 				'name' => 'Barfoo',
 				'uuid' => '2222-BBBB-1234-CDEF',
-			),
-			array(
+			],
+			[
 				'dn' => 'uid=barabara,dc=example,dc=org',
 				'name' => 'BaraBara',
 				'uuid' => '3333-CCCC-1234-CDEF',
-			)
-		);
+			]
+		];
 
 		return $data;
 	}
@@ -91,7 +91,7 @@ abstract class AbstractMappingTest extends \Test\TestCase {
 		$mapper->clear();
 		$this->mapEntries($mapper, $data);
 
-		return array($mapper, $data);
+		return [$mapper, $data];
 	}
 
 	/**
@@ -102,7 +102,7 @@ abstract class AbstractMappingTest extends \Test\TestCase {
 		list($mapper, $data) = $this->initTest();
 
 		// test that mapping will not happen when it shall not
-		$paramKeys = array('', 'dn', 'name', 'uuid');
+		$paramKeys = ['', 'dn', 'name', 'uuid'];
 		foreach($paramKeys as $key) {
 			$failEntry = $data[0];
 			if(!empty($key)) {

@@ -1165,7 +1165,7 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
 				$this->shareManager
 			])
-			->setMethods(array('searchSharees', 'isRemoteSharingAllowed'))
+			->setMethods(['searchSharees', 'isRemoteSharingAllowed'])
 			->getMock();
 		$sharees->expects($this->once())
 			->method('searchSharees')
@@ -1250,7 +1250,7 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
 				$this->shareManager
 			])
-			->setMethods(array('searchSharees', 'isRemoteSharingAllowed'))
+			->setMethods(['searchSharees', 'isRemoteSharingAllowed'])
 			->getMock();
 		$sharees->expects($this->never())
 			->method('searchSharees');
@@ -1403,7 +1403,7 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
 				$this->shareManager
 			])
-			->setMethods(array('getShareesForShareIds', 'getUsers', 'getGroups', 'getRemote'))
+			->setMethods(['getShareesForShareIds', 'getUsers', 'getGroups', 'getRemote'])
 			->getMock();
 		$sharees->expects(($mockedUserResult === null) ? $this->never() : $this->once())
 			->method('getUsers')
@@ -1555,21 +1555,21 @@ class ShareesTest extends TestCase {
 	}
 
 	public function dataTestSplitUserRemoteError() {
-		return array(
+		return [
 			// Invalid path
-			array('user@'),
+			['user@'],
 
 			// Invalid user
-			array('@server'),
-			array('us/er@server'),
-			array('us:er@server'),
+			['@server'],
+			['us/er@server'],
+			['us:er@server'],
 
 			// Invalid splitting
-			array('user'),
-			array(''),
-			array('us/erserver'),
-			array('us:erserver'),
-		);
+			['user'],
+			[''],
+			['us/erserver'],
+			['us:erserver'],
+		];
 	}
 
 	/**

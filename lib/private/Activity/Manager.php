@@ -67,29 +67,29 @@ class Manager implements IManager {
 	}
 
 	/** @var \Closure[] */
-	private $consumersClosures = array();
+	private $consumersClosures = [];
 
 	/** @var IConsumer[] */
-	private $consumers = array();
+	private $consumers = [];
 
 	/** @var \Closure[] */
-	private $extensionsClosures = array();
+	private $extensionsClosures = [];
 
 	/** @var IExtension[] */
-	private $extensions = array();
+	private $extensions = [];
 
 	/** @var array list of filters "name" => "is valid" */
-	protected $validFilters = array(
+	protected $validFilters = [
 		'all'	=> true,
 		'by'	=> true,
 		'self'	=> true,
-	);
+	];
 
 	/** @var array list of type icons "type" => "css class" */
-	protected $typeIcons = array();
+	protected $typeIcons = [];
 
 	/** @var array list of special parameters "app" => ["text" => ["parameter" => "type"]] */
-	protected $specialParameters = array();
+	protected $specialParameters = [];
 
 	/**
 	 * @return \OCP\Activity\IConsumer[]
@@ -254,7 +254,7 @@ class Manager implements IManager {
 		$filesNotificationTypes = [];
 		$sharingNotificationTypes = [];
 
-		$notificationTypes = array();
+		$notificationTypes = [];
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getNotificationTypes($languageCode);
 			if (is_array($result)) {
@@ -279,7 +279,7 @@ class Manager implements IManager {
 	 * @return array
 	 */
 	public function getDefaultTypes($method) {
-		$defaultTypes = array();
+		$defaultTypes = [];
 		foreach ($this->getExtensions() as $c) {
 			$types = $c->getDefaultTypes($method);
 			if (is_array($types)) {
@@ -359,7 +359,7 @@ class Manager implements IManager {
 		}
 
 		if (!isset($this->specialParameters[$app])) {
-			$this->specialParameters[$app] = array();
+			$this->specialParameters[$app] = [];
 		}
 
 		foreach ($this->getExtensions() as $c) {
@@ -393,10 +393,10 @@ class Manager implements IManager {
 	 * @return array
 	 */
 	public function getNavigation() {
-		$entries = array(
-			'apps' => array(),
-			'top' => array(),
-		);
+		$entries = [
+			'apps' => [],
+			'top' => [],
+		];
 		foreach ($this->getExtensions() as $c) {
 			$additionalEntries = $c->getNavigation();
 			if (is_array($additionalEntries)) {
@@ -456,8 +456,8 @@ class Manager implements IManager {
 			return [null, null];
 		}
 
-		$conditions = array();
-		$parameters = array();
+		$conditions = [];
+		$parameters = [];
 
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getQueryForFilter($filter);
@@ -471,10 +471,10 @@ class Manager implements IManager {
 		}
 
 		if (empty($conditions)) {
-			return array(null, null);
+			return [null, null];
 		}
 
-		return array(' and ((' . implode(') or (', $conditions) . '))', $parameters);
+		return [' and ((' . implode(') or (', $conditions) . '))', $parameters];
 	}
 
 	/**

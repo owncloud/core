@@ -47,7 +47,7 @@ class SessionTest extends \Test\TestCase {
 		$expectedUser->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user123'));
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$session->expects($this->at(0))
 			->method('get')
 			->with('user_id')
@@ -106,7 +106,7 @@ class SessionTest extends \Test\TestCase {
 	 * @dataProvider isLoggedInData
 	 */
 	public function testIsLoggedIn($isLoggedIn) {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 
 		$manager = $this->getMockBuilder('\OC\User\Manager')
 			->disableOriginalConstructor()
@@ -126,7 +126,7 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testSetUser() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$session->expects($this->once())
 			->method('set')
 			->with('user_id', 'foo');
@@ -135,7 +135,7 @@ class SessionTest extends \Test\TestCase {
 
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 
-		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
+		$user = $this->getMock('\OC\User\User', [], ['foo', $backend]);
 		$user->expects($this->once())
 			->method('getUID')
 			->will($this->returnValue('foo'));
@@ -145,7 +145,7 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testLoginValidPasswordEnabled() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$session->expects($this->once())
 			->method('regenerateId');
 		$this->tokenProvider->expects($this->once())
@@ -169,18 +169,18 @@ class SessionTest extends \Test\TestCase {
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
 		//working
-		$doNotMock = array('__construct', 'emit', 'listen');
+		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
 			$i = array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
 		}
-		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
+		$manager = $this->getMock('\OC\User\Manager', $managerMethods, []);
 
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 
-		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
+		$user = $this->getMock('\OC\User\User', [], ['foo', $backend]);
 		$user->expects($this->any())
 			->method('isEnabled')
 			->will($this->returnValue(true));
@@ -211,7 +211,7 @@ class SessionTest extends \Test\TestCase {
 	 * @expectedException \OC\User\LoginException
 	 */
 	public function testLoginValidPasswordDisabled() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$session->expects($this->never())
 			->method('set');
 		$session->expects($this->once())
@@ -224,18 +224,18 @@ class SessionTest extends \Test\TestCase {
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
 		//working
-		$doNotMock = array('__construct', 'emit', 'listen');
+		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
 			$i = array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
 		}
-		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
+		$manager = $this->getMock('\OC\User\Manager', $managerMethods, []);
 
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 
-		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
+		$user = $this->getMock('\OC\User\User', [], ['foo', $backend]);
 		$user->expects($this->any())
 			->method('isEnabled')
 			->will($this->returnValue(false));
@@ -252,22 +252,22 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testLoginInvalidPassword() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
 		//working
-		$doNotMock = array('__construct', 'emit', 'listen');
+		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
 			$i = array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
 		}
-		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
+		$manager = $this->getMock('\OC\User\Manager', $managerMethods, []);
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 		$userSession = new \OC\User\Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
 
-		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
+		$user = $this->getMock('\OC\User\User', [], ['foo', $backend]);
 
 		$session->expects($this->never())
 			->method('set');
@@ -292,7 +292,7 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testLoginNonExisting() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$manager = $this->getMock('\OC\User\Manager');
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 		$userSession = new \OC\User\Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
@@ -319,7 +319,7 @@ class SessionTest extends \Test\TestCase {
 	 * when generating the token on the browser.
 	 */
 	public function testLoginWithDifferentTokenLoginName() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$manager = $this->getMock('\OC\User\Manager');
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 		$userSession = new \OC\User\Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
@@ -437,7 +437,7 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testRememberLoginValidToken() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$session->expects($this->exactly(1))
 			->method('set')
 			->with($this->callback(function ($key) {
@@ -454,18 +454,18 @@ class SessionTest extends \Test\TestCase {
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
 		//working
-		$doNotMock = array('__construct', 'emit', 'listen');
+		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
 			$i = array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
 		}
-		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
+		$manager = $this->getMock('\OC\User\Manager', $managerMethods, []);
 
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 
-		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
+		$user = $this->getMock('\OC\User\User', [], ['foo', $backend]);
 
 		$user->expects($this->any())
 			->method('getUID')
@@ -485,9 +485,9 @@ class SessionTest extends \Test\TestCase {
 		$userSession = $this->getMock(
 			'\OC\User\Session',
 			//override, otherwise tests will fail because of setcookie()
-			array('setMagicInCookie'),
+			['setMagicInCookie'],
 			//there  are passed as parameters to the constructor
-			array($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config));
+			[$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config]);
 
 		$granted = $userSession->loginWithCookie('foo', $token);
 
@@ -495,7 +495,7 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testRememberLoginInvalidToken() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$session->expects($this->never())
 			->method('set');
 		$session->expects($this->once())
@@ -504,18 +504,18 @@ class SessionTest extends \Test\TestCase {
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
 		//working
-		$doNotMock = array('__construct', 'emit', 'listen');
+		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
 			$i = array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
 		}
-		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
+		$manager = $this->getMock('\OC\User\Manager', $managerMethods, []);
 
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 
-		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
+		$user = $this->getMock('\OC\User\User', [], ['foo', $backend]);
 
 		$user->expects($this->any())
 			->method('getUID')
@@ -539,7 +539,7 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testRememberLoginInvalidUser() {
-		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session = $this->getMock('\OC\Session\Memory', [], ['']);
 		$session->expects($this->never())
 			->method('set');
 		$session->expects($this->once())
@@ -548,18 +548,18 @@ class SessionTest extends \Test\TestCase {
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
 		//working
-		$doNotMock = array('__construct', 'emit', 'listen');
+		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
 			$i = array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
 		}
-		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
+		$manager = $this->getMock('\OC\User\Manager', $managerMethods, []);
 
 		$backend = $this->getMock('\Test\Util\User\Dummy');
 
-		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
+		$user = $this->getMock('\OC\User\User', [], ['foo', $backend]);
 
 		$user->expects($this->never())
 			->method('getUID');
@@ -582,10 +582,10 @@ class SessionTest extends \Test\TestCase {
 	}
 
 	public function testActiveUserAfterSetSession() {
-		$users = array(
+		$users = [
 			'foo' => new User('foo', null),
 			'bar' => new User('bar', null)
-		);
+		];
 
 		$manager = $this->getMockBuilder('\OC\User\Manager')
 			->disableOriginalConstructor()

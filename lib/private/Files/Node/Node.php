@@ -93,7 +93,7 @@ class Node implements \OCP\Files\Node {
 	 */
 	protected function sendHooks($hooks) {
 		foreach ($hooks as $hook) {
-			$this->root->emit('\OC\Files', $hook, array($this));
+			$this->root->emit('\OC\Files', $hook, [$this]);
 		}
 	}
 
@@ -132,9 +132,9 @@ class Node implements \OCP\Files\Node {
 	 */
 	public function touch($mtime = null) {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_UPDATE)) {
-			$this->sendHooks(array('preTouch'));
+			$this->sendHooks(['preTouch']);
 			$this->view->touch($this->path, $mtime);
-			$this->sendHooks(array('postTouch'));
+			$this->sendHooks(['postTouch']);
 			if ($this->fileInfo) {
 				if (is_null($mtime)) {
 					$mtime = time();

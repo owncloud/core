@@ -60,7 +60,7 @@ class InnoDB implements IRepairStep {
 		$dbName = \OC::$server->getConfig()->getSystemValue("dbname");
 		$result = $connection->fetchArray(
 			"SELECT table_name FROM information_schema.tables WHERE table_schema = ? AND engine = 'MyISAM' AND TABLE_NAME LIKE \"*PREFIX*%\"",
-			array($dbName)
+			[$dbName]
 		);
 
 		return $result;

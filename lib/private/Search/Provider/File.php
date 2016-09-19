@@ -38,7 +38,7 @@ class File extends \OCP\Search\Provider {
 	 */
 	function search($query) {
 		$files = Filesystem::search($query);
-		$results = array();
+		$results = [];
 		// edit results
 		foreach ($files as $fileData) {
 			// skip versions
