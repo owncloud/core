@@ -162,11 +162,15 @@ abstract class Storage extends \Test\TestCase {
 		// filename does not contain a dot / extension, but parent dirs do ...
 		$path = '/something/that/is/not.supposed/to happen/lorem';
 		$lorem = 'lorem ipsum dolor sit ...';
+		self::assertTrue($this->instance->mkdir('/something/that/is/not.supposed/to happen'));
 
-		$this->instance->mkdir(dirname($path));
-		$this->instance->file_put_contents($path, $lorem);
+		//use fopen with w+ to walk affected code path
+		$handle = $this->instance->fopen($path, 'w+');
+		self::assertNotFalse($handle);
+		self::assertSame(strlen($lorem), fwrite($handle, $lorem));
+		self::assertTrue(fclose($handle));
 
-		$this->assertEquals( $this->instance->file_get_contents($path), $lorem, 'data returned from file_get_contents is not equal to the source data');
+		self::assertEquals( $this->instance->file_get_contents($path), $lorem, 'data returned from file_get_contents is not equal to the source data');
 	}
 
 	/**

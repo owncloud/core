@@ -512,9 +512,18 @@ class SMB extends Common {
 	public function mkdir($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
 		$result = false;
-		$path = $this->buildPath($path);
+		$dirs = explode('/', $path);
+		$currDir = '';
 		try {
-			$result = $this->share->mkdir($path);
+			foreach ($dirs as $dir) {
+				$currDir .= '/'.$dir;
+				try {
+					$path = $this->buildPath($currDir);
+					$result = $this->share->mkdir($path);
+				} catch (AlreadyExistsException $e) {
+					$this->swallow(__FUNCTION__, $e);
+				}
+			}
 		} catch (ConnectException $e) {
 			$ex = new StorageNotAvailableException(
 				$e->getMessage(), $e->getCode(), $e);
