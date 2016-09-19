@@ -45,6 +45,9 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		'Sabre\DAV\Exception\Forbidden' => true,
 		// Custom exception similar to NotAuthenticated
 		'OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden' => true,
+		// Happens when an external storage or federated share is temporarily
+		// not available
+		'Sabre\DAV\Exception\StorageNotAvailableException' => true,
 	];
 
 	/** @var string */
