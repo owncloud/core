@@ -131,7 +131,7 @@ class MultipartContentsParser {
      *
      * @param  String $boundary
      *
-     * @throws \Sabre\DAV\Exception\BadRequest
+     * @throws \Exception
      * @return array (array $headers, resource $bodyStream)
      */
     public function getPartHeaders($boundary) {
@@ -150,14 +150,14 @@ class MultipartContentsParser {
                     break;
                 }
                 else{
-                    throw new BadRequest('An error appears while reading and parsing header of content part using fgets');
+                    throw new \Exception('An error appears while reading and parsing header of content part using fgets');
                 }
             }
 
             if ($boundaryCount == 0) {
                 if ($line != $delimiter) {
                     if ($this->getCursor() == strlen($line)) {
-                        throw new BadRequest('Expected boundary delimiter in content part - not a multipart/related request');
+                        throw new \Exception('Expected boundary delimiter in content part - this is not a multipart request');
                     }
                     elseif ($line == $endDelimiter || $line == $endDelimiter."\r\n") {
                         $this->endDelimiterReached = true;
@@ -262,20 +262,21 @@ class MultipartContentsParser {
      *
      * @param string $content
      * 
-     * @throws \Sabre\DAV\Exception\BadRequest
      * @return Array $headers
      */
     public function readHeaders($content) {
+        $headers = null;
         $headerLimitation = strpos($content, "\r\n\r\n");
         if ($headerLimitation === false) {
-            throw new BadRequest('Unable to determine headers limit for content part');
+            return null;
         }
         $headersContent = substr($content, 0, $headerLimitation);
         $headersContent = trim($headersContent);
         foreach (explode("\r\n", $headersContent) as $header) {
-            $parts = explode(':', $header);
+            $parts = explode(':', $header, 2);
             if (count($parts) != 2) {
-                throw new BadRequest('Header of content part contains incorrect headers');
+                //has incorrect header, try to continue
+                continue;
             }
             $headers[strtolower(trim($parts[0]))] = trim($parts[1]);
         }

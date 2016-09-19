@@ -29,77 +29,96 @@ use Sabre\DAV\Exception;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use OCA\DAV\Connector\Sabre\File;
+use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
+use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
+use OCP\Files\ForbiddenException;
+use Sabre\DAV\Exception\BadRequest;
 
 class BundledFile extends File {
 
-	private $partFilePath = null;
-
 	/**
-	 * TODO
+	 * Updates the data
 	 *
-	 * @throws TODO
-	 * @return resource $property
+	 * The $data['data] argument is a readable stream resource.
+	 * The other $data key-values should be header fields in form of string
+	 *
+	 * After a successful put operation, you may choose to return an ETag. The
+	 * etag must always be surrounded by double-quotes. These quotes must
+	 * appear in the actual string you're returning.
+	 *
+	 * Clients may use the ETag from a PUT request to later on make sure that
+	 * when they update the file, the contents haven't changed in the mean
+	 * time.
+	 *
+	 * If you don't plan to store the file byte-by-byte, and you return a
+	 * different object on a subsequent GET you are strongly recommended to not
+	 * return an ETag, and just return null.
+	 *
+	 * @param array $data
+	 *
+	 * @throws Forbidden
+	 * @throws UnsupportedMediaType
+	 * @throws BadRequest
+	 * @throws Exception
+	 * @throws EntityTooLarge
+	 * @throws ServiceUnavailable
+	 * @throws FileLocked
+	 * @return array $properties
 	 */
-	public function getPartFileResource() {
+	public function putFile($data) {
+		$properties = array();
+		try {
+			$exists = $this->fileView->file_exists($this->path);
+			if ($this->info && $exists && !$this->info->isUpdateable()) {
+				throw new Forbidden();
+			}
+		} catch (StorageNotAvailableException $e) {
+			throw new ServiceUnavailable("File is not updatable: " . $e->getMessage());
+		}
+
 		// verify path of the target
 		$this->verifyPath();
-
-		$this->partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . rand() . '.part';
+		
+		$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . rand();
 
 		// the part file and target file might be on a different storage in case of a single file storage (e.g. single file share)
 		/** @var \OC\Files\Storage\Storage $partStorage */
-		list($partStorage, $internalPartPath) = $this->fileView->resolvePath($this->partFilePath);
-
-		$target = $partStorage->fopen($internalPartPath, 'wb');
-		if ($target === false) {
-			\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
-				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
-			$this->partFilePath = null;
-			throw new Exception('Could not write file contents');
-		}
-
-		return $target;
-	}
-
-	/**
-	 * TODO
-	 *
-	 * @return void
-	 */
-	public function unlinkPartFile() {
-		//Prerequisite here is that partFile has to be already existing
-		if ($this->partFilePath != null) {
-			list($partStorage, $internalPartPath) = $this->fileView->resolvePath($this->partFilePath);
-			$partStorage->unlink($internalPartPath);
-		}
-	}
-	/**
-	 * Creates the data
-	 *
-	 * The data argument is a readable stream
-	 *
-	 * @param resource $fileData
-	 * @param array $fileAttributes
-	 *
-	 * @throws TODO
-	 * @return Array $property
-	 */
-	public function createFile($fileAttributes) {
-		//Prerequisite here is that partFile has to be already existing
-		if ($this->partFilePath == null) {
-			throw new Forbidden('Part file does not exists, cannot create target file');
-		}
-
-		$exists = $this->fileView->file_exists($this->path);
-		if ($this->info && $exists) {
-			throw new Forbidden('File does exists, cannot create file');
-		}
-		// verify path of the target
-		$this->verifyPath();
-
+		list($partStorage, $internalPartPath) = $this->fileView->resolvePath($partFilePath);
 		/** @var \OC\Files\Storage\Storage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
-		list($partStorage, $internalPartPath) = $this->fileView->resolvePath($this->partFilePath);
+		try {
+			$target = $partStorage->fopen($internalPartPath, 'wb');
+			if ($target === false) {
+				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
+				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
+				throw new Exception('Could not write file contents');
+			}
+			list($count, $result) = \OC_Helper::streamCopy($data['data'], $target);
+			fclose($target);
+
+			if ($result === false) {
+				$expected = -1;
+				if (isset($data['content-length'])) {
+					$expected = $data['content-length'];
+				}
+				throw new Exception('Error while copying file to target location (copied bytes: ' . $count . ', expected filesize: ' . $expected . ' )');
+			}
+
+			// if content length is sent by client:
+			// double check if the file was fully received
+			// compare expected and actual size
+			if (isset($data['content-length'])) {
+				$expected = $data['content-length'];
+				if ($count != $expected) {
+					throw new BadRequest('Expected filesize ' . $expected . ' got ' . $count);
+				}
+			}
+
+		} catch (\Exception $e) {
+			$partStorage->unlink($internalPartPath);
+			$this->convertToSabreException($e);
+		}
 
 		try {
 			$view = \OC\Files\Filesystem::getView();
@@ -125,8 +144,10 @@ class BundledFile extends File {
 					\OCP\Util::writeLog('webdav', 'renaming part file to final file failed', \OCP\Util::ERROR);
 					throw new Exception('Could not rename part file to final file');
 				}
+			} catch (ForbiddenException $ex) {
+				throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
 			} catch (\Exception $e) {
-				$this->unlinkPartFile();
+				$partStorage->unlink($internalPartPath);
 				$this->convertToSabreException($e);
 			}
 
@@ -136,40 +157,44 @@ class BundledFile extends File {
 			try {
 				$this->changeLock(ILockingProvider::LOCK_SHARED);
 			} catch (LockedException $e) {
-				$this->unlinkPartFile();
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
 			if ($view) {
 				$this->emitPostHooks($exists);
 			}
-			
+
 			// allow sync clients to send the mtime along in a header
-			if (isset($fileAttributes['x-oc-mtime'])) {
-				if ($this->fileView->touch($this->path, $fileAttributes['x-oc-mtime'])) {
-					$property['{DAV:}x-oc-mtime'] = 'accepted'; //TODO: not sure about that
+			$request = \OC::$server->getRequest();
+			if (isset($data['x-oc-mtime'])) {
+				if ($this->fileView->touch($this->path, $data['x-oc-mtime'])) {
+					$properties['{DAV:}x-oc-mtime'] = 'accepted';
 				}
 			}
 
 			$this->refreshInfo();
 
+			if (isset($data['x-oc-checksum'])) {
+				$checksum = trim($data['x-oc-checksum']);
+				$this->fileView->putFileInfo($this->path, ['checksum' => $checksum]);
+				$this->refreshInfo();
+			} else if ($this->getChecksum() !== null && $this->getChecksum() !== '') {
+				$this->fileView->putFileInfo($this->path, ['checksum' => '']);
+				$this->refreshInfo();
+			}
+
 		} catch (StorageNotAvailableException $e) {
-			$this->unlinkPartFile();
 			throw new ServiceUnavailable("Failed to check file size: " . $e->getMessage());
 		}
 
-		//TODO add proper attributes
 		$etag = $this->getEtag();
-		$property['{DAV:}etag'] = $etag; //TODO: not sure about that
-		$property['{DAV:}oc-etag'] = $etag; //TODO: not sure about that
-		$property['{DAV:}oc-fileid'] = $this->getFileId();//TODO: not sure about that
-		return $property;
+		$properties['{DAV:}etag'] = $etag;
+		$properties['{DAV:}oc-etag'] = $etag;
+		$properties['{DAV:}oc-fileid'] = $this->getFileId();
+		return $properties;
 	}
 
-	/**
-	 *
-	 * TODO: description
-	 *
+	/*
 	 * @param resource $data
 	 *
 	 * @throws Forbidden
