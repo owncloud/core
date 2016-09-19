@@ -155,11 +155,12 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function setEMailAddress($mailAddress) {
-		if($mailAddress === '') {
+		if(is_null($mailAddress) || $mailAddress === '') {
 			$this->config->deleteUserValue($this->uid, 'settings', 'email');
 		} else {
 			$this->config->setUserValue($this->uid, 'settings', 'email', $mailAddress);
 		}
+		$this->config->deleteUserValue($this->getUID(), 'owncloud', 'lostpassword');
 		$this->triggerChange('eMailAddress', $mailAddress);
 	}
 
@@ -238,8 +239,11 @@ class User implements IUser {
 		}
 		if ($this->backend->implementsActions(\OC\User\Backend::SET_PASSWORD)) {
 			$result = $this->backend->setPassword($this->uid, $password);
-			if ($this->emitter) {
-				$this->emitter->emit('\OC\User', 'postSetPassword', array($this, $password, $recoveryPassword));
+			if ($result) {
+				if ($this->emitter) {
+					$this->emitter->emit('\OC\User', 'postSetPassword', array($this, $password, $recoveryPassword));
+				}
+				$this->config->deleteUserValue($this->getUID(), 'owncloud', 'lostpassword');
 			}
 			return !($result === false);
 		} else {
