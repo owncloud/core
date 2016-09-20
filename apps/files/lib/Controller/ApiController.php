@@ -141,68 +141,6 @@ class ApiController extends Controller {
 	}
 
 	/**
-	 * Returns a list of all files tagged with the given tag.
-	 *
-	 * @NoAdminRequired
-	 *
-	 * @param string $tagName tag name to filter by
-	 * @return DataResponse
-	 */
-	public function getFilesByTag($tagName) {
-		$files = array();
-		$nodes = $this->tagService->getFilesByTag($tagName);
-		foreach ($nodes as &$node) {
-			$shareTypes = $this->getShareTypes($node);
-			$fileInfo = $node->getFileInfo();
-			$file = \OCA\Files\Helper::formatFileInfo($fileInfo);
-			$parts = explode('/', dirname($fileInfo->getPath()), 4);
-			if(isset($parts[3])) {
-				$file['path'] = '/' . $parts[3];
-			} else {
-				$file['path'] = '/';
-			}
-			$file['tags'] = [$tagName];
-			if (!empty($shareTypes)) {
-				$file['shareTypes'] = $shareTypes;
-			}
-			$files[] = $file;
-		}
-		return new DataResponse(['files' => $files]);
-	}
-
-	/**
-	 * Return a list of share types for outgoing shares
-	 *
-	 * @param Node $node file node
-	 *
-	 * @return int[] array of share types
-	 */
-	private function getShareTypes(Node $node) {
-		$userId = $this->userSession->getUser()->getUID();
-		$shareTypes = [];
-		$requestedShareTypes = [
-			\OCP\Share::SHARE_TYPE_USER,
-			\OCP\Share::SHARE_TYPE_GROUP,
-			\OCP\Share::SHARE_TYPE_LINK,
-			\OCP\Share::SHARE_TYPE_REMOTE
-		];
-		foreach ($requestedShareTypes as $requestedShareType) {
-			// one of each type is enough to find out about the types
-			$shares = $this->shareManager->getSharesBy(
-				$userId,
-				$requestedShareType,
-				$node,
-				false,
-				1
-			);
-			if (!empty($shares)) {
-				$shareTypes[] = $requestedShareType;
-			}
-		}
-		return $shareTypes;
-	}
-
-	/**
 	 * Change the default sort mode
 	 *
 	 * @NoAdminRequired
