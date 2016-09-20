@@ -36,7 +36,7 @@ dist_dir=build/dist
 # Catch-all rules
 #
 .PHONY: all
-all: $(composer_dev_deps) $(core_vendor)
+all: $(composer_dev_deps) $(core_vendor) $(nodejs_deps)
 
 .PHONY: clean
 clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results clean-dist
