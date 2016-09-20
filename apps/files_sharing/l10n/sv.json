@@ -40,6 +40,8 @@
     "Invalid date, date format must be YYYY-MM-DD" : "Ogiltigt datum, datumformat måste vara YYYY-MM-DD",
     "Sharing %s failed because the back end does not allow shares from type %s" : "Delning %s misslyckades därför att \"back-end-sidan\" inte tillåter delningar av typen %s",
     "Unknown share type" : "Okänd delningstyp",
+    "Not a directory" : "Inte en mapp",
+    "Could not lock path" : "Kunde inte låsa sökväg",
     "Can't change permissions for public share links" : "Kan inte ändra rättigheter på publika delningslänkar",
     "Wrong or no update parameter given" : "Fel eller ingen uppdateringsparameter angiven",
     "Cannot increase permissions" : "Kan inte öka rättigheter",

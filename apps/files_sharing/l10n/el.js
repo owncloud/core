@@ -28,6 +28,8 @@ OC.L10N.register(
     "Shared by" : "Διαμοιράστηκε από",
     "Sharing" : "Διαμοιρασμός",
     "Could not delete share" : "Αδυναμία διαγραφής διαμοιρασμένου",
+    "Please specify a file or folder path" : "Παρακαλώ καθορίστε την διαδρομή του αρχείου ή του φακέλου",
+    "Please specify a valid user" : "Παρακαλώ καθορίστε έγκυρο χρήστη",
     "Please specify a valid group" : "Παρακαλώ καθορίστε μια έγκυρη ομάδα",
     "Invalid date, date format must be YYYY-MM-DD" : "Μη έγκυρη ημερομηνία, η μορφή ημερομηνίας πρέπει να είναι YYYY-MM-DD",
     "A file or folder has been <strong>shared</strong>" : "Ένα αρχείο ή φάκελος <strong>διαμοιράστηκε</strong>",

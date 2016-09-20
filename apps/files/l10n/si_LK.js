@@ -1,13 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "No file was uploaded. Unknown error" : "ගොනුවක් උඩුගත නොවුනි. නොහැඳිනු දෝෂයක්",
-    "There is no error, the file uploaded with success" : "දෝෂයක් නොමැත. සාර්ථකව ගොනුව උඩුගත කෙරුණි",
-    "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form" : "උඩුගත කළ ගොනුවේ විශාලත්වය HTML පෝරමයේ නියම කළ ඇති MAX_FILE_SIZE විශාලත්වයට වඩා වැඩිය",
-    "The uploaded file was only partially uploaded" : "උඩුගත කළ ගොනුවේ කොටසක් පමණක් උඩුගත විය",
-    "No file was uploaded" : "ගොනුවක් උඩුගත නොවුණි",
-    "Missing a temporary folder" : "තාවකාලික ෆොල්ඩරයක් අතුරුදහන්",
-    "Failed to write to disk" : "තැටිගත කිරීම අසාර්ථකයි",
     "Files" : "ගොනු",
     "Home" : "නිවස",
     "Close" : "වසන්න",

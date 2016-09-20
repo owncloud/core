@@ -2,11 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "يوچۇن خاتالىق",
-    "No file was uploaded. Unknown error" : "ھېچقانداق ھۆججەت يۈكلەنمىدى. يوچۇن خاتالىق",
-    "No file was uploaded" : "ھېچقانداق ھۆججەت يۈكلەنمىدى",
-    "Missing a temporary folder" : "ۋاقىتلىق قىسقۇچ كەم.",
-    "Failed to write to disk" : "دىسكىغا يازالمىدى",
-    "Not enough storage available" : "يېتەرلىك ساقلاش بوشلۇقى يوق",
     "Files" : "ھۆججەتلەر",
     "Home" : "ئۆي",
     "Close" : "ياپ",

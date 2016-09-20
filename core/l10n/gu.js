@@ -1,8 +1,16 @@
 OC.L10N.register(
     "core",
     {
-    "_{count} file conflict_::_{count} file conflicts_" : ["",""],
-    "_download %n file_::_download %n files_" : ["",""],
-    "_{count} search result in other places_::_{count} search results in other places_" : ["",""]
+    "Delete" : "કાઢો",
+    "Personal" : "વ્યક્તિગત",
+    "Technical details" : " તકનીકી  વિગતો ",
+    "Remote Address: %s" : "દૂરનું એડ્રેસ: %s",
+    "Request ID: %s" : "રિક્વેસ્ટ આઈ ડી : %s ",
+    "Type: %s" : "પ્રકાર : %s",
+    "Code: %s" : "કોડ : %s",
+    "Message: %s" : "સંદેશ : %s ",
+    "File: %s" : "ફાઇલ : %s",
+    "Line: %s" : "લાઇન : %s",
+    "Trace" : "ટ્રૈસ"
 },
 "nplurals=2; plural=(n != 1);");

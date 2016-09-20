@@ -12,6 +12,7 @@ OC.L10N.register(
     "More comments..." : "Περισσότερα σχόλια...",
     "Save" : "Αποθήκευση",
     "Allowed characters {count} of {max}" : "Επιτρεπόμενοι χαρακτήρες {count} από {max}",
+    "Error occurred while posting comment" : "Παρουσιάστηκε σφάλμα κατά την δημοσίευση σχολείου",
     "{count} unread comments" : "{count} μη αναγνωσμένα σχόλια",
     "Comment" : "Σχόλιο",
     "You commented" : "Σχολιάσατε",

@@ -2,8 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "មិន​ស្គាល់​កំហុស",
-    "No file was uploaded. Unknown error" : "មិន​មាន​ឯកសារ​ដែល​បាន​ផ្ទុក​ឡើង។ មិន​ស្គាល់​កំហុស",
-    "There is no error, the file uploaded with success" : "មិន​មាន​កំហុស​អ្វី​ទេ ហើយ​ឯកសារ​ត្រូវ​បាន​ផ្ទុកឡើង​ដោយ​ជោគជ័យ",
     "Files" : "ឯកសារ",
     "Close" : "បិទ",
     "Upload cancelled." : "បាន​បោះបង់​ការ​ផ្ទុក​ឡើង។",

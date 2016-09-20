@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Invalid Federated Cloud ID" : "Μη έγκυρο Federated Cloud ID",
     "Sharing %s failed, because this item is already shared with %s" : "Ο διαμοιρασμός του %s απέτυχε, γιατί το αντικείμενο είναι διαμοιρασμένο ήδη με τον χρήστη %s",
+    "File is already shared with %s" : "Το αρχείο διαμοιράζεται ήδη με τον %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Αποτυχία διαμοιρασμού %s, δεν βρέθηκε το %s, μπορεί ο διακομιστής να είναι προσωρινά απροσπέλαστος.",
     "Accept" : "Αποδοχή",
     "Decline" : "Απόρριψη",

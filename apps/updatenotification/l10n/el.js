@@ -1,9 +1,11 @@
 OC.L10N.register(
     "updatenotification",
     {
+    "Update notifications" : "Ειδοποιήσεις ενημέρωσης",
     "{version} is available. Get more information on how to update." : "Η έκδοση {version} είναι διαθέσιμη. Δείτε περισσότερες πληροφορίες για το πως να κάνετε την ενημέρωση.",
     "Updated channel" : "Ενημερωμένο κανάλι",
     "ownCloud core" : "Πυρήνας ownCloud",
+    "Update for %1$s to version %2$s is available." : "Εϊναι διαθέσιμη η ενημέρωση για την έκδοση %1$s στην %2$s",
     "Updater" : "Εφαρμογή Ενημέρωσης",
     "A new version is available: %s" : "Μία νέα έκδοση είναι διαθέσιμη: %s",
     "Open updater" : "Άνοιγμα εφαρμογής ενημέρωσης",
