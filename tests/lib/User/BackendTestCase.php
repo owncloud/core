@@ -32,7 +32,7 @@ namespace Test\User;
  * For an example see /tests/lib/user/dummy.php
  */
 
-abstract class Backend extends \Test\TestCase {
+abstract class BackendTestCase extends \Test\TestCase {
 	/**
 	 * @var \OC\User\Backend $backend
 	 */

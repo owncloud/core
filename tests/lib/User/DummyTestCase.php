@@ -22,9 +22,11 @@
 
 namespace Test\User;
 
-class Dummy extends Backend {
+use Test\Util\User\Dummy;
+
+class DummyTestCase extends BackendTestCase {
 	protected function setUp() {
 		parent::setUp();
-		$this->backend=new \Test\Util\User\Dummy();
+		$this->backend = new Dummy();
 	}
 }

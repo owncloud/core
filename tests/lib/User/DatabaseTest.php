@@ -27,7 +27,7 @@ namespace Test\User;
  *
  * @group DB
  */
-class DatabaseTest extends Backend {
+class DatabaseTest extends BackendTestCase {
 	/** @var array */
 	private $users;
 
