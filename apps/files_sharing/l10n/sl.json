@@ -63,7 +63,7 @@
     "%2$s shared %1$s with group %3$s" : "%2$s souporablja %1$s s skupino %3$s",
     "You removed the share of group %2$s for %1$s" : "Odstranili ste souporabo skupine %2$s za %1$s",
     "%2$s removed the share of group %3$s for %1$s" : "%2$s je odstranil souporabo skupine %3$s za %1$s",
-    "%2$s shared %1$s via link" : "%2$s souporablja %1$s preko povezave",
+    "%2$s shared %1$s via link" : "%2$s je omogočil souporabo %1$s prek povezave",
     "You shared %1$s via link" : "Omogočili ste souporabo %1$s preko povezave",
     "You removed the public link for %1$s" : "Odstranili ste javno povezavo za %1$s",
     "%2$s removed the public link for %1$s" : "%2$s je odstranil javno povezavo za %1$s",

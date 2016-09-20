@@ -12,6 +12,8 @@
     "Upload cancelled." : "Upload abgebrochen.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Die Datei {filename} kann nicht hochgeladen werden, da sie entweder ein Verzeichnis oder 0 Bytes groß ist",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Nicht genügend freier Speicherplatz, Sie möchten {size1} hochladen, es sind jedoch nur noch {size2} verfügbar.",
+    "Target folder \"{dir}\" does not exist any more" : "Zielverzeichnis \"{dir}\" existiert nicht mehr",
+    "Not enough free space" : "nicht genug freier Speicher vorhanden",
     "Uploading..." : "Hochladen…",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{hours}:{minutes}:{seconds} Stunde{plural_s} übrig",

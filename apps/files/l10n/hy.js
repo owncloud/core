@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Unknown error" : "Անհայտ սխալ",
     "Files" : "Ֆայլեր",
     "All files" : "Բոլոր ֆայլերը",
     "Close" : "Փակել",

@@ -12,6 +12,8 @@
     "Upload cancelled." : "Ngarkimi u anulua.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "S’arrihet të ngarkohet {filename}, ngaqë është drejtori ose ka 0 bajte",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Nuk ka hapësirë të mjaftueshme, po ngarkoni {size1}, por ka vetëm {size2} të lira",
+    "Target folder \"{dir}\" does not exist any more" : "Dosja vendmbërritje \"{dir}\" s’ekziston më",
+    "Not enough free space" : "Pa hapësirë të lirë të mjaftueshme",
     "Uploading..." : "Po ngarkohet...",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{orë}:{minuta}:{sekonda} orë{shumë_s} majtas",

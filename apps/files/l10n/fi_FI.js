@@ -14,6 +14,8 @@ OC.L10N.register(
     "Upload cancelled." : "Lähetys peruttu.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Kohdetta {filename} ei voi lähettää, koska se on joko kansio tai sen koko on 0 tavua",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Ei riittävästi vapaata tilaa. Lähetyksesi koko on {size1}, mutta vain {size2} on jäljellä",
+    "Target folder \"{dir}\" does not exist any more" : "Kohdekansio \"{dir}\" ei ole enää olemassa",
+    "Not enough free space" : "Ei riittävästi vapaata tilaa",
     "Uploading..." : "Lähetetään...",
     "..." : "...",
     "{seconds}s" : "{seconds} s",
