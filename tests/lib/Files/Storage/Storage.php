@@ -460,6 +460,9 @@ abstract class Storage extends \Test\TestCase {
 		$this->instance->rename('source.txt', 'target.txt');
 		$this->assertEquals('bar', $this->instance->file_get_contents('target.txt'));
 		$this->assertFalse($this->instance->file_exists('source.txt'));
+		$listing = $this->getListing('/');
+		$this->assertNotContains('source.txt', $listing);
+		$this->assertContains('target.txt', $listing);
 	}
 
 	public function testRenameDirectory() {
@@ -627,5 +630,19 @@ abstract class Storage extends \Test\TestCase {
 		$this->instance->file_put_contents('bar.txt.part', 'bar');
 		$this->instance->rename('bar.txt.part', 'bar.txt');
 		$this->assertEquals('bar', $this->instance->file_get_contents('bar.txt'));
+		$listing = $this->getListing('/');
+		$this->assertNotContains('bar.txt.part', $listing);
+		$this->assertContains('bar.txt', $listing);
+	}
+
+	private function getListing($path) {
+		$content = [];
+		$dh = $this->instance->opendir($path);
+		while ($file = readdir($dh)) {
+			if ($file != '.' and $file != '..') {
+				$content[] = $file;
+			}
+		}
+		return $content;
 	}
 }
