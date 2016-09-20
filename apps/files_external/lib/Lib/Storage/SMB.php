@@ -408,7 +408,8 @@ class SMB extends Common {
 						if (!$this->isCreatable(dirname($path))) {
 							break;
 						}
-						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
+						$ext = \OCP\Files::pathinfo($path, PATHINFO_EXTENSION);
+						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
 					}
 					$source = fopen($tmpFile, $mode);
 					$share = $this->share;
@@ -512,18 +513,9 @@ class SMB extends Common {
 	public function mkdir($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
 		$result = false;
-		$dirs = explode('/', $path);
-		$currDir = '';
+		$path = $this->buildPath($path);
 		try {
-			foreach ($dirs as $dir) {
-				$currDir .= '/'.$dir;
-				try {
-					$path = $this->buildPath($currDir);
-					$result = $this->share->mkdir($path);
-				} catch (AlreadyExistsException $e) {
-					$this->swallow(__FUNCTION__, $e);
-				}
-			}
+			$result = $this->share->mkdir($path);
 		} catch (ConnectException $e) {
 			$ex = new StorageNotAvailableException(
 				$e->getMessage(), $e->getCode(), $e);

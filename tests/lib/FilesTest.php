@@ -132,4 +132,152 @@ class FilesTest extends \Test\TestCase {
 		);
 		$this->assertEquals($userIniSize + $userIniSizeMod, filesize($files['.user.ini']));
 	}
+
+
+
+	public function pathinfoProvider() {
+		return [
+			[
+				'/www/htdocs/inc/lib.inc.php',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/www/htdocs/inc',
+					'basename' => 'lib.inc.php',
+					'extension' => 'php',
+					'filename' => 'lib.inc',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.gz',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => 'lorem.gz',
+					'extension' => 'gz',
+					'filename' => 'lorem',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.gz',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => 'lorem.tar.gz',
+					'extension' => 'tar.gz',
+					'filename' => 'lorem',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.bz2',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => 'lorem.bz2',
+					'extension' => 'bz2',
+					'filename' => 'lorem',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.bz2',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => 'lorem.tar.bz2',
+					'extension' => 'tar.bz2',
+					'filename' => 'lorem',
+				]
+			],
+
+			[
+				'/www/htdocs/inc/lib.inc.php',
+				PATHINFO_DIRNAME, '/www/htdocs/inc',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.gz',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.gz',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.bz2',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.bz2',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+
+			[
+				'/www/htdocs/inc/lib.inc.php',
+				PATHINFO_BASENAME, 'lib.inc.php',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.gz',
+				PATHINFO_BASENAME, 'lorem.gz'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.gz',
+				PATHINFO_BASENAME, 'lorem.tar.gz'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.bz2',
+				PATHINFO_BASENAME, 'lorem.bz2'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.bz2',
+				PATHINFO_BASENAME, 'lorem.tar.bz2'
+			],
+
+			[
+				'/www/htdocs/inc/lib.inc.php',
+				PATHINFO_EXTENSION, 'php',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.gz',
+				PATHINFO_EXTENSION, 'gz',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.gz',
+				PATHINFO_EXTENSION, 'tar.gz',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.bz2',
+				PATHINFO_EXTENSION, 'bz2',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.bz2',
+				PATHINFO_EXTENSION, 'tar.bz2',
+			],
+
+			[
+				'/www/htdocs/inc/lib.inc.php',
+				PATHINFO_FILENAME, 'lib.inc',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.gz',
+				PATHINFO_FILENAME, 'lorem',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.gz',
+				PATHINFO_FILENAME, 'lorem',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.bz2',
+				PATHINFO_FILENAME, 'lorem',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.tar.bz2',
+				PATHINFO_FILENAME, 'lorem',
+			],
+		];
+	}
+	/**
+	 * @dataProvider pathinfoProvider
+	 */
+	public function testPathinfo($path, $options, $expectedResult) {
+		$result = \OCP\Files::pathinfo($path, $options);
+		self::assertEquals($expectedResult, $result);
+	}
 }

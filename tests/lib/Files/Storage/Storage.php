@@ -162,6 +162,12 @@ abstract class Storage extends \Test\TestCase {
 		// filename does not contain a dot / extension, but parent dirs do ...
 		$path = '/something/that/is/not.supposed/to happen/lorem';
 		$lorem = 'lorem ipsum dolor sit ...';
+
+		//FIXME test and implement recursive mkdir
+		self::assertTrue($this->instance->mkdir('/something'));
+		self::assertTrue($this->instance->mkdir('/something/that'));
+		self::assertTrue($this->instance->mkdir('/something/that/is'));
+		self::assertTrue($this->instance->mkdir('/something/that/is/not.supposed'));
 		self::assertTrue($this->instance->mkdir('/something/that/is/not.supposed/to happen'));
 
 		//use fopen with w+ to walk affected code path

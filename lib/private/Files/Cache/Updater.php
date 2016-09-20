@@ -198,7 +198,7 @@ class Updater implements IUpdater {
 			}
 		}
 
-		if (pathinfo($source, PATHINFO_EXTENSION) !== pathinfo($target, PATHINFO_EXTENSION)) {
+		if (\OCP\Files::pathinfo($source, PATHINFO_EXTENSION) !== \OCP\Files::pathinfo($target, PATHINFO_EXTENSION)) {
 			// handle mime type change
 			$mimeType = $this->storage->getMimeType($target);
 			$fileId = $this->cache->getId($target);

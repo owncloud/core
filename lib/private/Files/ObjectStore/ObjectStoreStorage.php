@@ -279,11 +279,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			case 'x+':
 			case 'c':
 			case 'c+':
-				if (strrpos($path, '.') !== false) {
-					$ext = substr($path, strrpos($path, '.'));
-				} else {
-					$ext = '';
-				}
+				$ext = \OCP\Files::pathinfo($path, PATHINFO_EXTENSION);
 				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
 				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				if ($this->file_exists($path)) {

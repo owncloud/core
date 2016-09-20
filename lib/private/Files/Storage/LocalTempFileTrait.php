@@ -66,7 +66,8 @@ trait LocalTempFileTrait {
 		if (!$source) {
 			return false;
 		}
-		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
+		$ext = \OCP\Files::pathinfo($path, PATHINFO_EXTENSION);
+		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
 		$target = fopen($tmpFile, 'w');
 		\OC_Helper::streamCopy($source, $target);
 		fclose($target);

@@ -54,7 +54,7 @@ class Files {
 	}
 
 	/**
-	 * Get the mimetype form a local file
+	 * Get the mimetype of a local file
 	 * @param string $path
 	 * @return string
 	 * does NOT work for ownClouds filesystem, use OC_FileSystem::getMimeType instead
@@ -62,6 +62,44 @@ class Files {
 	 */
 	static function getMimeType( $path ) {
 		return \OC::$server->getMimeTypeDetector()->detect($path);
+	}
+
+	/**
+	 * Get the pathinfo of a path with special handling for tar.(gz|bz2) which
+	 * have different mimetypes
+	 * @param string $path
+	 * @return array|string|null
+	 * @since 9.2.0
+	 */
+	static function pathinfo( $path, $options = PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME ) {
+		$result = pathinfo($path, $options);
+		// handle .tar.(gz|bz2)
+		if (is_array($result)) {
+			if (isset($result['extension'])) {
+				if ($result['extension'] === 'gz' && substr($path, -7) === '.tar.gz') {
+					$result['extension'] = 'tar.gz';
+					if (isset($result['filename'])) {
+						$result['filename'] = substr($result['filename'], 0, -4);
+					}
+				} else if ($result['extension'] === 'bz2' && substr($path, -8) === '.tar.bz2') {
+					$result['extension'] = 'tar.bz2';
+					if (isset($result['filename'])) {
+						$result['filename'] = substr($result['filename'], 0, -4);
+					}
+				}
+			}
+		} else if ($options === PATHINFO_EXTENSION) {
+			if ($result === 'gz' && substr($path, -7) === '.tar.gz') {
+				$result = 'tar.gz';
+			} else if ($result === 'bz2' && substr($path, -8) === '.tar.bz2') {
+				$result = 'tar.bz2';
+			}
+		} else if ($options === PATHINFO_FILENAME) {
+			if (substr($path, -7) === '.tar.gz' || substr($path, -8) === '.tar.bz2' ) {
+				$result = substr($result, 0, -4);
+			}
+		}
+		return $result;
 	}
 
 	/**

@@ -971,8 +971,8 @@ class View {
 		if (Filesystem::isValidPath($path)) {
 			$source = $this->fopen($path, 'r');
 			if ($source) {
-				$extension = pathinfo($path, PATHINFO_EXTENSION);
-				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($extension);
+				$ext = \OCP\Files::pathinfo($path, PATHINFO_EXTENSION);
+				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
 				file_put_contents($tmpFile, $source);
 				return $tmpFile;
 			} else {

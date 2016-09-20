@@ -271,25 +271,24 @@ class Installer {
 	public static function downloadApp($data = []) {
 		$l = \OC::$server->getL10N('lib');
 
-		if(!isset($data['source'])) {
+		if (!isset($data['source'])) {
 			throw new \Exception($l->t("No source specified when installing app"));
 		}
 
 		//download the file if necessary
-		if($data['source']=='http') {
-			$pathInfo = pathinfo($data['href']);
-			$extension = isset($pathInfo['extension']) ? '.' . $pathInfo['extension'] : '';
-			$path = \OC::$server->getTempManager()->getTemporaryFile($extension);
+		if ($data['source'] === 'http') {
 			if(!isset($data['href'])) {
 				throw new \Exception($l->t("No href specified when installing app from http"));
 			}
+			$ext = \OCP\Files::pathinfo($data['href'], PATHINFO_EXTENSION);
+			$path = \OC::$server->getTempManager()->getTemporaryFile($ext);
 			$client = \OC::$server->getHTTPClientService()->newClient();
 			$client->get($data['href'], ['save_to' => $path]);
 		} else {
 			if(!isset($data['path'])) {
 				throw new \Exception($l->t("No path specified when installing app from local file"));
 			}
-			$path=$data['path'];
+			$path = $data['path'];
 		}
 
 		//detect the archive type
@@ -302,11 +301,11 @@ class Installer {
 		$extractDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		OC_Helper::rmdirr($extractDir);
 		mkdir($extractDir);
-		if($archive=\OC\Archive\Archive::open($path)) {
+		if ($archive=\OC\Archive\Archive::open($path)) {
 			$archive->extract($extractDir);
 		} else {
 			OC_Helper::rmdirr($extractDir);
-			if($data['source']=='http') {
+			if ($data['source']=='http') {
 				unlink($path);
 			}
 			throw new \Exception($l->t("Failed to open archive when installing app"));
