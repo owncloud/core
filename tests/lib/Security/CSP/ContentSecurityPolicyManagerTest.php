@@ -22,9 +22,12 @@
 namespace Test\Security\CSP;
 
 
+use OC\Security\CSP\ContentSecurityPolicy;
 use OC\Security\CSP\ContentSecurityPolicyManager;
+use OCP\AppFramework\Http\EmptyContentSecurityPolicy;
+use Test\TestCase;
 
-class ContentSecurityPolicyManagerTest extends \Test\TestCase {
+class ContentSecurityPolicyManagerTest extends TestCase {
 	/** @var ContentSecurityPolicyManager */
 	private $contentSecurityPolicyManager;
 
@@ -47,12 +50,12 @@ class ContentSecurityPolicyManagerTest extends \Test\TestCase {
 		$policy->addAllowedImageDomain('example.org');
 		$policy->allowInlineScript(true);
 		$this->contentSecurityPolicyManager->addDefaultPolicy($policy);
-		$policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();
+		$policy = new EmptyContentSecurityPolicy();
 		$policy->addAllowedChildSrcDomain('childdomain');
 		$policy->addAllowedFontDomain('anotherFontDomain');
 		$this->contentSecurityPolicyManager->addDefaultPolicy($policy);
 
-		$expected = new \OC\Security\CSP\ContentSecurityPolicy();
+		$expected = new ContentSecurityPolicy();
 		$expected->allowInlineScript(true);
 		$expected->addAllowedFontDomain('mydomain.com');
 		$expected->addAllowedFontDomain('example.com');
@@ -60,7 +63,7 @@ class ContentSecurityPolicyManagerTest extends \Test\TestCase {
 		$expected->addAllowedImageDomain('anotherdomain.de');
 		$expected->addAllowedImageDomain('example.org');
 		$expected->addAllowedChildSrcDomain('childdomain');
-		$expectedStringPolicy = 'default-src \'none\';script-src \'self\' \'unsafe-inline\' \'unsafe-eval\';style-src \'self\' \'unsafe-inline\';img-src \'self\' data: blob: anotherdomain.de example.org;font-src \'self\' mydomain.com example.com anotherFontDomain;connect-src \'self\';media-src \'self\';child-src childdomain';
+		$expectedStringPolicy = 'default-src \'none\';manifest-src \'self\';script-src \'self\' \'unsafe-inline\' \'unsafe-eval\';style-src \'self\' \'unsafe-inline\';img-src \'self\' data: blob: anotherdomain.de example.org;font-src \'self\' mydomain.com example.com anotherFontDomain;connect-src \'self\';media-src \'self\';child-src childdomain';
 
 		$this->assertEquals($expected, $this->contentSecurityPolicyManager->getDefaultPolicy());
 		$this->assertSame($expectedStringPolicy, $this->contentSecurityPolicyManager->getDefaultPolicy()->buildPolicy());
