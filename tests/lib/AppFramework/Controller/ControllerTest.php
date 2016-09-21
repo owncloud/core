@@ -24,18 +24,22 @@
 
 namespace Test\AppFramework\Controller;
 
+use OC\AppFramework\DependencyInjection\DIContainer;
 use OC\AppFramework\Http\Request;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\IConfig;
+use OCP\Security\ISecureRandom;
+use Test\TestCase;
 
 
 class ChildController extends Controller {
 
 	public function __construct($appName, $request) {
 		parent::__construct($appName, $request);
-		$this->registerResponder('tom', function ($respone) {
+		$this->registerResponder('tom', function ($response) {
 			return 'hi';
 		});
 	}
@@ -48,6 +52,10 @@ class ChildController extends Controller {
 		return $in;
 	}
 
+	/**
+	 * @param $in
+	 * @return DataResponse
+	 */
 	public function customDataResponse($in) {
 		$response = new DataResponse($in, 300);
 		$response->addHeader('test', 'something');
@@ -55,12 +63,11 @@ class ChildController extends Controller {
 	}
 };
 
-class ControllerTest extends \Test\TestCase {
+class ControllerTest extends TestCase {
 
-	/**
-	 * @var Controller
-	 */
+	/** @var ChildController */
 	private $controller;
+	/** @var DIContainer */
 	private $app;
 
 	protected function setUp(){
@@ -76,12 +83,14 @@ class ControllerTest extends \Test\TestCase {
 				'session' => ['sezession' => 'kein'],
 				'method' => 'hi',
 			],
-			$this->createMock('\OCP\Security\ISecureRandom'),
-			$this->createMock('\OCP\IConfig')
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		);
 
-		$this->app = $this->createMock('OC\AppFramework\DependencyInjection\DIContainer',
-									array('getAppName'), array('test'));
+		$this->app = $this->getMockBuilder(DIContainer::class)
+			->setMethods(['getAppName'])
+			->setConstructorArgs(['test'])
+			->getMock();
 		$this->app->expects($this->any())
 				->method('getAppName')
 				->will($this->returnValue('apptemplate_advanced'));
@@ -167,6 +176,7 @@ class ControllerTest extends \Test\TestCase {
 
 
 	public function testFormat() {
+		/** @var DataResponse $response */
 		$response = $this->controller->buildResponse(array('hi'), 'json');
 
 		$this->assertEquals(array('hi'), $response->getData());
@@ -178,12 +188,12 @@ class ControllerTest extends \Test\TestCase {
 			'test' => 'something',
 			'Cache-Control' => 'no-cache, must-revalidate',
 			'Content-Type' => 'application/json; charset=utf-8',
-			'Content-Security-Policy' => "default-src 'none';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'",
+			'Content-Security-Policy' => "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'",
 		];
 
 		$response = $this->controller->customDataResponse(array('hi'));
+		/** @var DataResponse $response */
 		$response = $this->controller->buildResponse($response, 'json');
-
 		$this->assertEquals(array('hi'), $response->getData());
 		$this->assertEquals(300, $response->getStatus());
 		$this->assertEquals($expectedHeaders, $response->getHeaders());
@@ -192,6 +202,7 @@ class ControllerTest extends \Test\TestCase {
 
 	public function testCustomFormatter() {
 		$response = $this->controller->custom('hi');
+		/** @var DataResponse $response */
 		$response = $this->controller->buildResponse($response, 'json');
 
 		$this->assertEquals(array(2), $response->getData());

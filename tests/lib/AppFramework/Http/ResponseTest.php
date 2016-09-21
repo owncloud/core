@@ -25,11 +25,15 @@
 namespace Test\AppFramework\Http;
 
 
+use DateTime;
+use DateTimeZone;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http;
+use Test\TestCase;
 
 
-class ResponseTest extends \Test\TestCase {
+class ResponseTest extends TestCase {
 
 	/**
 	 * @var \OCP\AppFramework\Http\Response
@@ -58,7 +62,7 @@ class ResponseTest extends \Test\TestCase {
 
 		$this->childResponse->setHeaders($expected);
 		$headers = $this->childResponse->getHeaders();
-		$expected['Content-Security-Policy'] = "default-src 'none';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
+		$expected['Content-Security-Policy'] = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->assertEquals($expected, $headers);
 	}
@@ -67,7 +71,7 @@ class ResponseTest extends \Test\TestCase {
 		$expected = [
 			'Content-Security-Policy' => "default-src 'none';script-src 'self' 'unsafe-inline' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self';font-src 'self';connect-src 'self';media-src 'self'",
 		];
-		$policy = new Http\ContentSecurityPolicy();
+		$policy = new ContentSecurityPolicy();
 		$policy->allowInlineScript(true);
 
 		$this->childResponse->setContentSecurityPolicy($policy);
@@ -77,7 +81,7 @@ class ResponseTest extends \Test\TestCase {
 	}
 
 	public function testGetCsp() {
-		$policy = new Http\ContentSecurityPolicy();
+		$policy = new ContentSecurityPolicy();
 		$policy->allowInlineScript(true);
 
 		$this->childResponse->setContentSecurityPolicy($policy);
@@ -103,7 +107,7 @@ class ResponseTest extends \Test\TestCase {
 
 	public function testAddCookie() {
 		$this->childResponse->addCookie('foo', 'bar');
-		$this->childResponse->addCookie('bar', 'foo', new \DateTime('1970-01-01'));
+		$this->childResponse->addCookie('bar', 'foo', new DateTime('1970-01-01'));
 
 		$expectedResponse = array(
 			'foo' => array(
@@ -112,7 +116,7 @@ class ResponseTest extends \Test\TestCase {
 			),
 			'bar' => array(
 				'value' => 'foo',
-				'expireDate' => new \DateTime('1970-01-01')
+				'expireDate' => new DateTime('1970-01-01')
 			)
 		);
 		$this->assertEquals($expectedResponse, $this->childResponse->getCookies());
@@ -127,7 +131,7 @@ class ResponseTest extends \Test\TestCase {
 			),
 			'bar' => array(
 				'value' => 'foo',
-				'expireDate' => new \DateTime('1970-01-01')
+				'expireDate' => new DateTime('1970-01-01')
 			)
 		);
 
@@ -144,7 +148,7 @@ class ResponseTest extends \Test\TestCase {
 		$expected = array(
 			'foo' => array(
 				'value' => 'expired',
-				'expireDate' => new \DateTime('1971-01-01')
+				'expireDate' => new DateTime('1971-01-01')
 			)
 		);
 
@@ -174,11 +178,11 @@ class ResponseTest extends \Test\TestCase {
 		$expected = array(
 			'foo' => array(
 				'value' => 'expired',
-				'expireDate' => new \DateTime('1971-01-01')
+				'expireDate' => new DateTime('1971-01-01')
 			),
 			'bar' => array(
 				'value' => 'expired',
-				'expireDate' => new \DateTime('1971-01-01')
+				'expireDate' => new DateTime('1971-01-01')
 			)
 		);
 
@@ -203,13 +207,13 @@ class ResponseTest extends \Test\TestCase {
 
 
 	public function testGetEtag() {
-		$this->childResponse->setEtag('hi');
-		$this->assertSame('hi', $this->childResponse->getEtag());
+		$this->childResponse->setETag('hi');
+		$this->assertSame('hi', $this->childResponse->getETag());
 	}
 
 
 	public function testGetLastModified() {
-		$lastModified = new \DateTime(null, new \DateTimeZone('GMT'));
+		$lastModified = new DateTime(null, new DateTimeZone('GMT'));
 		$lastModified->setTimestamp(1);
 		$this->childResponse->setLastModified($lastModified);
 		$this->assertEquals($lastModified, $this->childResponse->getLastModified());
@@ -236,7 +240,7 @@ class ResponseTest extends \Test\TestCase {
 
 
 	public function testEtagLastModifiedHeaders() {
-		$lastModified = new \DateTime(null, new \DateTimeZone('GMT'));
+		$lastModified = new DateTime(null, new DateTimeZone('GMT'));
 		$lastModified->setTimestamp(1);
 		$this->childResponse->setLastModified($lastModified);
 		$headers = $this->childResponse->getHeaders();
@@ -244,10 +248,10 @@ class ResponseTest extends \Test\TestCase {
 	}
 
 	public function testChainability() {
-		$lastModified = new \DateTime(null, new \DateTimeZone('GMT'));
+		$lastModified = new DateTime(null, new DateTimeZone('GMT'));
 		$lastModified->setTimestamp(1);
 
-		$this->childResponse->setEtag('hi')
+		$this->childResponse->setETag('hi')
 			->setStatus(Http::STATUS_NOT_FOUND)
 			->setLastModified($lastModified)
 			->cacheFor(33)
@@ -257,7 +261,7 @@ class ResponseTest extends \Test\TestCase {
 
 		$this->assertEquals('world', $headers['hello']);
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $this->childResponse->getStatus());
-		$this->assertEquals('hi', $this->childResponse->getEtag());
+		$this->assertEquals('hi', $this->childResponse->getETag());
 		$this->assertEquals('Thu, 01 Jan 1970 00:00:01 +0000', $headers['Last-Modified']);
 		$this->assertEquals('max-age=33, must-revalidate',
 			$headers['Cache-Control']);

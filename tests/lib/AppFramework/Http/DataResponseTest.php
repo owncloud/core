@@ -27,9 +27,10 @@ namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http;
+use Test\TestCase;
 
 
-class DataResponseTest extends \Test\TestCase {
+class DataResponseTest extends TestCase {
 
 	/**
 	 * @var DataResponse
@@ -68,7 +69,7 @@ class DataResponseTest extends \Test\TestCase {
 
 		$expectedHeaders = [
 			'Cache-Control' => 'no-cache, must-revalidate',
-			'Content-Security-Policy' => "default-src 'none';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'",
+			'Content-Security-Policy' => "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'",
 		];
 		$expectedHeaders = array_merge($expectedHeaders, $headers);
 
