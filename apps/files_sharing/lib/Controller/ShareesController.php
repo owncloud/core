@@ -21,9 +21,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\Files_Sharing\API;
+
+namespace OCA\Files_Sharing\Controller;
 
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\OCSController;
 use OCP\Contacts\IManager;
 use OCP\IGroup;
 use OCP\IGroupManager;
@@ -36,7 +39,7 @@ use OCP\IUserSession;
 use OCP\IURLGenerator;
 use OCP\Share;
 
-class Sharees {
+class ShareesController extends OCSController  {
 
 	/** @var IGroupManager */
 	protected $groupManager;
@@ -102,15 +105,18 @@ class Sharees {
 	 * @param ILogger $logger
 	 * @param \OCP\Share\IManager $shareManager
 	 */
-	public function __construct(IGroupManager $groupManager,
-								IUserManager $userManager,
-								IManager $contactsManager,
-								IConfig $config,
-								IUserSession $userSession,
-								IURLGenerator $urlGenerator,
-								IRequest $request,
-								ILogger $logger,
-								\OCP\Share\IManager $shareManager) {
+	public function __construct($appName,
+			IRequest $request,
+			IGroupManager $groupManager,
+			IUserManager $userManager,
+			IManager $contactsManager,
+			IConfig $config,
+			IUserSession $userSession,
+			IURLGenerator $urlGenerator,
+			ILogger $logger,
+			\OCP\Share\IManager $shareManager) {
+		parent::__construct($appName, $request);
+
 		$this->groupManager = $groupManager;
 		$this->userManager = $userManager;
 		$this->contactsManager = $contactsManager;
@@ -400,19 +406,24 @@ class Sharees {
 	}
 
 	/**
-	 * @return \OC_OCS_Result
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param string $search
+	 * @param string $itemType
+	 * @param int $page
+	 * @param int $perPage
+	 * @return DataResponse
 	 */
-	public function search() {
-		$search = isset($_GET['search']) ? (string) $_GET['search'] : '';
-		$itemType = isset($_GET['itemType']) ? (string) $_GET['itemType'] : null;
-		$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-		$perPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 200;
+	public function search($search = '', $itemType = null, $page = 1, $perPage = 200) {
 
 		if ($perPage <= 0) {
-			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST, 'Invalid perPage argument');
+			return [ 'statuscode' => Http::STATUS_BAD_REQUEST,
+				'message' => 'Invalid perPage argument'];
 		}
 		if ($page <= 0) {
-			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST, 'Invalid page');
+			return [ 'statuscode' => Http::STATUS_BAD_REQUEST,
+				'message' => 'Invalid page'];
 		}
 
 		$shareTypes = [
@@ -470,12 +481,13 @@ class Sharees {
 	 * @param array $shareTypes
 	 * @param int $page
 	 * @param int $perPage
-	 * @return \OC_OCS_Result
+	 * @return DataResponse
 	 */
 	protected function searchSharees($search, $itemType, array $shareTypes, $page, $perPage) {
 		// Verify arguments
 		if ($itemType === null) {
-			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST, 'Missing itemType');
+			return [ 'statuscode' => Http::STATUS_BAD_REQUEST,
+				'message' => 'Missing itemType'];
 		}
 
 		// Get users
@@ -493,8 +505,7 @@ class Sharees {
 			$this->getRemote($search);
 		}
 
-		$response = new \OC_OCS_Result($this->result);
-		$response->setItemsPerPage($perPage);
+		$response = new DataResponse(['data' => $this->result]);
 
 		if (sizeof($this->reachedEndFor) < 3) {
 			$response->addHeader('Link', $this->getPaginationLink($page, [
