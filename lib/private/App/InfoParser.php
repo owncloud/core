@@ -25,19 +25,7 @@
 
 namespace OC\App;
 
-use OCP\IURLGenerator;
-
 class InfoParser {
-
-	/** @var IURLGenerator */
-	private $urlGenerator;
-
-	/**
-	 * @param IURLGenerator $urlGenerator
-	 */
-	public function __construct(IURLGenerator $urlGenerator) {
-		$this->urlGenerator = $urlGenerator;
-	}
 
 	/**
 	 * @param string $file the xml file to be loaded
@@ -100,17 +88,6 @@ class InfoParser {
 			$array['two-factor-providers'] = [];
 		}
 
-		if (array_key_exists('documentation', $array) && is_array($array['documentation'])) {
-			foreach ($array['documentation'] as $key => $url) {
-				// If it is not an absolute URL we assume it is a key
-				// i.e. admin-ldap will get converted to go.php?to=admin-ldap
-				if (!$this->isHTTPURL($url)) {
-					$url = $this->urlGenerator->linkToDocs($url);
-				}
-
-				$array['documentation'][$key] = $url;
-			}
-		}
 		if (array_key_exists('types', $array)) {
 			if (is_array($array['types'])) {
 				foreach ($array['types'] as $type => $v) {
@@ -194,9 +171,5 @@ class InfoParser {
 		}
 
 		return $array;
-	}
-
-	private function isHTTPURL($url) {
-		return stripos($url, 'https://') === 0 || stripos($url, 'http://') === 0;
 	}
 }
