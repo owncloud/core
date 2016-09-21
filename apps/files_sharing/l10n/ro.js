@@ -24,6 +24,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Poți încărca în acest director",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nu s-a găsit nicio instanță ownCloud (versiunea 7 sau mai mare) la {remote}",
     "Invalid ownCloud url" : "URL ownCloud invalid",
+    "Share" : "Partajează",
     "Shared by" : "impartite in ",
     "Sharing" : "Partajare",
     "Share API is disabled" : "API-ul de partajare este dezactivat",

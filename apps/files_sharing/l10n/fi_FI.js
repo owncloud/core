@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Voit lähettää tiedostoja tähän kansioon",
     "No ownCloud installation (7 or higher) found at {remote}" : "ownCloud-asennusta (versiota 7 tai uudempaa) ei löytynyt osoitteesta {remote}",
     "Invalid ownCloud url" : "Virheellinen ownCloud-osoite",
+    "Share" : "Jaa",
     "No expiration date set" : "Vanhenemispäivää ei ole asetettu",
     "Shared by" : "Jakanut",
     "Sharing" : "Jakaminen",

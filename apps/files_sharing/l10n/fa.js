@@ -20,6 +20,7 @@ OC.L10N.register(
     "Add remote share" : "افزودن اشتراک از راه دور",
     "You can upload into this folder" : "می‌توانید در این پوشه آپلود کنید",
     "Invalid ownCloud url" : "آدرس نمونه ownCloud  غیر معتبر است",
+    "Share" : "هم‌رسانی",
     "Shared by" : "اشتراک گذاشته شده به وسیله",
     "Sharing" : "اشتراک گذاری",
     "A file or folder has been <strong>shared</strong>" : "فایل یا پوشه ای به <strong>اشتراک</strong> گذاشته شد",

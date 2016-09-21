@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Mund të ngarkoni te kjo dosje",
     "No ownCloud installation (7 or higher) found at {remote}" : "Te {remote} s’u gjet instalim ownCloud (7 ose më sipër)",
     "Invalid ownCloud url" : "URL ownCloud e pavlefshme",
+    "Share" : "Ndaje",
     "No expiration date set" : "S’ka të caktuar datë skadimi",
     "Shared by" : "Ndarë nga",
     "Sharing" : "Ndarje",

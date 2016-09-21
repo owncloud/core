@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Cancel" : "I-cancel",
+    "Share" : "I-share",
     "Password" : "Password",
     "Download" : "I-download"
 },

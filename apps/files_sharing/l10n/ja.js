@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "このフォルダーにアップロードできます",
     "No ownCloud installation (7 or higher) found at {remote}" : "{remote} にはownCloud (7以上)がインストールされていません",
     "Invalid ownCloud url" : "無効なownCloud URL です",
+    "Share" : "共有",
     "No expiration date set" : "有効期限が設定されていません",
     "Shared by" : "共有者：",
     "Sharing" : "共有",

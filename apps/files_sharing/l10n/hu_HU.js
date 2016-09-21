@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Ebbe a könyvtárba fel tud tölteni",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nem található ownCloud telepítés (7 vagy nagyobb verzió) itt  {remote}",
     "Invalid ownCloud url" : "Érvénytelen ownCloud webcím",
+    "Share" : "Megosztás",
     "Shared by" : "Megosztotta Önnel",
     "Sharing" : "Megosztás",
     "A file or folder has been <strong>shared</strong>" : "Fájl vagy könyvtár <strong>megosztása</strong>",

@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Puedes xubir dientro esta carpeta",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nun s'atopó nenguna instalación ownCloud (7 o cimera) en { } remotu",
     "Invalid ownCloud url" : "Url ownCloud inválida",
+    "Share" : "Compartir",
     "No expiration date set" : "Nun s'afitó nenguna data de caducidá",
     "Shared by" : "Compartíos por",
     "Sharing" : "Compartiendo",

@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "V to mapo je dovoljeno poslati datoteke",
     "No ownCloud installation (7 or higher) found at {remote}" : "Na mestu {remote} ni nameščenega okolja ownCloud (različice 7 ali višje)",
     "Invalid ownCloud url" : "Naveden je neveljaven naslov URL strežnika ownCloud",
+    "Share" : "Souporaba",
     "No expiration date set" : "Ni nastavljenega datuma preteka.",
     "Shared by" : "V souporabi z",
     "Sharing" : "Souporaba",

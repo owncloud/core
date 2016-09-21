@@ -18,6 +18,7 @@ OC.L10N.register(
     "Add remote share" : "Додади оддалечно споделување",
     "You can upload into this folder" : "Можете да прикачите во оваа папка",
     "Invalid ownCloud url" : "Неисправен ownCloud url",
+    "Share" : "Сподели",
     "Shared by" : "Споделено од",
     "Sharing" : "Споделување",
     "A file or folder has been <strong>shared</strong>" : "Датотека или фолдер беше <strong>споделен</strong>",

@@ -5,6 +5,7 @@ OC.L10N.register(
     "Shared with others" : "Կիսված այլոց հետ",
     "Shared by link" : "Կիսված հղմամբ",
     "Cancel" : "Չեղարկել",
+    "Share" : "Կիսվել",
     "Password" : "Գաղտնաբառ",
     "Name" : "Անուն",
     "Download" : "Ներբեռնել",

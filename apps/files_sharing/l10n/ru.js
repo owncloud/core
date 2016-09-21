@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Вы можете загружать в эту папку",
     "No ownCloud installation (7 or higher) found at {remote}" : "На удаленном ресурсе {remote} не установлен ownCloud версии 7 или выше",
     "Invalid ownCloud url" : "Неверный адрес ownCloud",
+    "Share" : "Общий доступ",
     "No expiration date set" : "Не установлен срок действия",
     "Shared by" : "Поделился",
     "Sharing" : "Общий доступ",

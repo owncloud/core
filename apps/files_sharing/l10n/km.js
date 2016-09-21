@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Cancel" : "បោះបង់",
+    "Share" : "ចែក​រំលែក",
     "Shared by" : "បាន​ចែក​រំលែក​ដោយ",
     "Sharing" : "ការ​ចែក​រំលែក",
     "A file or folder has been <strong>shared</strong>" : "<strong>បាន​ចែករំលែក</strong> ឯកសារ​ឬ​ថត",

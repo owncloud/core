@@ -9,6 +9,7 @@ OC.L10N.register(
     "Remote share" : "দুরবর্তী ভাগাভাগি",
     "Cancel" : "বাতিল",
     "Invalid ownCloud url" : "অবৈধ ওউনক্লাউড url",
+    "Share" : "ভাগাভাগি কর",
     "Shared by" : "যাদের মাঝে ভাগাভাগি করা হয়েছে",
     "Sharing" : "ভাগাভাগিরত",
     "A file or folder has been <strong>shared</strong>" : "একটি ফাইল বা ফোলডার <strong>ভাগাভাগি</strong> করা হয়েছে",

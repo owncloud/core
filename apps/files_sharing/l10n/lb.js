@@ -4,6 +4,7 @@ OC.L10N.register(
     "Nothing shared yet" : "Nach näischt gedeelt",
     "No shared links" : "Keng gedeelte Linken",
     "Cancel" : "Ofbriechen",
+    "Share" : "Deelen",
     "Shared by" : "Gedeelt vun",
     "Sharing" : "Gedeelt",
     "The password is wrong. Try again." : "Den Passwuert ass incorrect. Probeier ed nach eng keier.",

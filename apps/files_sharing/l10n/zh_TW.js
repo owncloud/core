@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "你可以上傳內容到此資料夾",
     "No ownCloud installation (7 or higher) found at {remote}" : "沒有在 {remote} 找到 ownCloud (本版7 或 更新版)",
     "Invalid ownCloud url" : "無效的 ownCloud URL",
+    "Share" : "分享",
     "Shared by" : "分享自",
     "Sharing" : "分享",
     "A file or folder has been <strong>shared</strong>" : "檔案或目錄已被 <strong>分享</strong>",

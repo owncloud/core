@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Du kan overføre til denne mappe",
     "No ownCloud installation (7 or higher) found at {remote}" : "Der er ingen ownCloud-installation (7 eller højere) på {remote}",
     "Invalid ownCloud url" : "Ugyldig ownCloud-URL",
+    "Share" : "Del",
     "No expiration date set" : "Der er ikke sat nogen udløbsdato",
     "Shared by" : "Delt af",
     "Sharing" : "Deling",

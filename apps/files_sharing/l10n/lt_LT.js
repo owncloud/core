@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Gali įkelti į šį aplanką",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nerastas ownCloud (7 ar aukštesnė versiją) {remote} serveryje.",
     "Invalid ownCloud url" : "Neteisinga ownCloud nuoroda",
+    "Share" : "Dalintis",
     "Shared by" : "Dalinasi",
     "Sharing" : "Dalijimasis",
     "A file or folder has been <strong>shared</strong>" : "Failas ar aplankas buvo <strong>pasidalintas</strong>",

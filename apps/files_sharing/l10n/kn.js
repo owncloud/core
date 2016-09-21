@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_sharing",
     {
     "Cancel" : "﻿ರದ್ದು",
+    "Share" : "﻿ಹಂಚಿಕೊಳ್ಳಿ",
     "Sharing" : "﻿ಹಂಚಿಕೆ",
     "Password" : "ಗುಪ್ತ ಪದ",
     "Name" : "﻿ಹೆಸರು",

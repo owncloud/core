@@ -24,6 +24,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Jūs variet augšuplādēt šajā mapē",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nav atrasta neviena ownCloud (7. vai augstāka) instalācija {remote}",
     "Invalid ownCloud url" : "Nederīga ownCloud saite",
+    "Share" : "Dalīties",
     "Shared by" : "Dalījās",
     "Sharing" : "Dalīšanās",
     "Share API is disabled" : "Koplietošanas API ir atslēgta",

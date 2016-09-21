@@ -24,6 +24,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Μπορείτε να μεταφορτώσετε σε αυτόν τον φάκελο",
     "No ownCloud installation (7 or higher) found at {remote}" : "Δεν βρέθηκε εγκατάστση ownCloud (7 ή νεώτερη) στο {remote}",
     "Invalid ownCloud url" : "Άκυρη url ownCloud ",
+    "Share" : "Διαμοιράστε",
     "No expiration date set" : "Δεν καθορίστηκε ημερομηνία λήξης",
     "Shared by" : "Διαμοιράστηκε από",
     "Sharing" : "Διαμοιρασμός",

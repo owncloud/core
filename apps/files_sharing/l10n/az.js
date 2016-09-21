@@ -24,6 +24,7 @@ OC.L10N.register(
     "You can upload into this folder" : "Siz bu qovluğun içinə yükləyə bilərsiniz",
     "No ownCloud installation (7 or higher) found at {remote}" : "Yüklənmiş (7 yada yuxarı) ownCloud {uzaq} unvanında tapılmadı ",
     "Invalid ownCloud url" : "Yalnış ownCloud url-i",
+    "Share" : "Paylaş",
     "Shared by" : "Tərəfindən yayımlanıb",
     "Sharing" : "Paylaşılır",
     "A file or folder has been <strong>shared</strong>" : "Fayl və ya direktoriya <strong>yayımlandı</strong>",

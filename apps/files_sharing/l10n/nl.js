@@ -25,6 +25,7 @@ OC.L10N.register(
     "You can upload into this folder" : "U kunt uploaden naar deze map",
     "No ownCloud installation (7 or higher) found at {remote}" : "Geen recente ownCloud installatie (7 of hoger) gevonden op {remote}",
     "Invalid ownCloud url" : "Ongeldige ownCloud url",
+    "Share" : "Deel",
     "No expiration date set" : "Geen vervaldatum ingesteld",
     "Shared by" : "Gedeeld door",
     "Sharing" : "Delen",

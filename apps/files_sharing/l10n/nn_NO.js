@@ -17,6 +17,7 @@ OC.L10N.register(
     "Add remote share" : "Legg til eksternt delt mappe",
     "You can upload into this folder" : "Du kan lste opp til denne mappa",
     "Invalid ownCloud url" : "Ugyldig ownClud url",
+    "Share" : "Del",
     "No expiration date set" : "Ingen dato for utløp er sett",
     "Shared by" : "Delt av",
     "Sharing" : "Deling",
