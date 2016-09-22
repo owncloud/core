@@ -28,6 +28,7 @@ use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\CardDAV\SyncService;
 use OCA\DAV\HookManager;
+use OCP\IUser;
 use OCP\IUserManager;
 use Test\TestCase;
 
@@ -50,24 +51,24 @@ class HookManagerTest extends TestCase {
 	}
 
 	public function test() {
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$user->expects($this->once())->method('getUID')->willReturn('newUser');
 
 		/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject $userManager */
-		$userManager = $this->getMockBuilder('\OCP\IUserManager')
+		$userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$userManager->expects($this->once())->method('get')->willReturn($user);
 
 		/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject $syncService */
-		$syncService = $this->getMockBuilder('OCA\DAV\CardDAV\SyncService')
+		$syncService = $this->getMockBuilder(SyncService::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		/** @var CalDavBackend | \PHPUnit_Framework_MockObject_MockObject $cal */
-		$cal = $this->getMockBuilder('OCA\DAV\CalDAV\CalDavBackend')
+		$cal = $this->getMockBuilder(CalDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$cal->expects($this->once())->method('getCalendarsForUser')->willReturn([]);
@@ -80,7 +81,7 @@ class HookManagerTest extends TestCase {
 			]);
 
 		/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject $card */
-		$card = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
+		$card = $this->getMockBuilder(CardDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$card->expects($this->once())->method('getAddressBooksForUser')->willReturn([]);
@@ -93,24 +94,24 @@ class HookManagerTest extends TestCase {
 	}
 
 	public function testWithExisting() {
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$user->expects($this->once())->method('getUID')->willReturn('newUser');
 
 		/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject $userManager */
-		$userManager = $this->getMockBuilder('\OCP\IUserManager')
+		$userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$userManager->expects($this->once())->method('get')->willReturn($user);
 
 		/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject $syncService */
-		$syncService = $this->getMockBuilder('OCA\DAV\CardDAV\SyncService')
+		$syncService = $this->getMockBuilder(SyncService::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		/** @var CalDavBackend | \PHPUnit_Framework_MockObject_MockObject $cal */
-		$cal = $this->getMockBuilder('OCA\DAV\CalDAV\CalDavBackend')
+		$cal = $this->getMockBuilder(CalDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$cal->expects($this->once())->method('getCalendarsForUser')->willReturn([
@@ -119,7 +120,7 @@ class HookManagerTest extends TestCase {
 		$cal->expects($this->never())->method('createCalendar');
 
 		/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject $card */
-		$card = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
+		$card = $this->getMockBuilder(CardDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$card->expects($this->once())->method('getAddressBooksForUser')->willReturn([
@@ -132,24 +133,24 @@ class HookManagerTest extends TestCase {
 	}
 
 	public function testWithBirthdayCalendar() {
-		$user = $this->getMockBuilder('\OCP\IUser')
+		$user = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$user->expects($this->once())->method('getUID')->willReturn('newUser');
 
 		/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject $userManager */
-		$userManager = $this->getMockBuilder('\OCP\IUserManager')
+		$userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$userManager->expects($this->once())->method('get')->willReturn($user);
 
 		/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject $syncService */
-		$syncService = $this->getMockBuilder('OCA\DAV\CardDAV\SyncService')
+		$syncService = $this->getMockBuilder(SyncService::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		/** @var CalDavBackend | \PHPUnit_Framework_MockObject_MockObject $cal */
-		$cal = $this->getMockBuilder('OCA\DAV\CalDAV\CalDavBackend')
+		$cal = $this->getMockBuilder(CalDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$cal->expects($this->once())->method('getCalendarsForUser')->willReturn([
@@ -164,7 +165,7 @@ class HookManagerTest extends TestCase {
 			]);
 
 		/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject $card */
-		$card = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')
+		$card = $this->getMockBuilder(CardDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$card->expects($this->once())->method('getAddressBooksForUser')->willReturn([]);
@@ -174,5 +175,46 @@ class HookManagerTest extends TestCase {
 
 		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
 		$hm->postLogin(['uid' => 'newUser']);
+	}
+
+	public function testDeleteCalendar() {
+		$user = $this->getMockBuilder(IUser::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject $userManager */
+		$userManager = $this->getMockBuilder(IUserManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$userManager->expects($this->once())->method('get')->willReturn($user);
+
+		/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject $syncService */
+		$syncService = $this->getMockBuilder(SyncService::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$syncService->expects($this->once())
+			->method('deleteUser');
+
+		/** @var CalDavBackend | \PHPUnit_Framework_MockObject_MockObject $cal */
+		$cal = $this->getMockBuilder(CalDavBackend::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$cal->expects($this->once())->method('getCalendarsForUser')->willReturn([
+			['id' => 'personal']
+		]);
+		$cal->expects($this->once())->method('deleteCalendar');
+
+		/** @var CardDavBackend | \PHPUnit_Framework_MockObject_MockObject $card */
+		$card = $this->getMockBuilder(CardDavBackend::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$card->expects($this->once())->method('getAddressBooksForUser')->willReturn([
+			['id' => 'personal']
+		]);
+		$card->expects($this->once())->method('deleteAddressBook');
+
+		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
+		$hm->preDeleteUser(['uid' => 'newUser']);
+		$hm->postDeleteUser(['uid' => 'newUser']);
 	}
 }
