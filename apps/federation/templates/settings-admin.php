@@ -19,6 +19,7 @@ style('federation', 'settings-admin')
 	<p id="ocFederationAddServer">
 		<button id="ocFederationAddServerButton" class=""><?php p($l->t('+ Add ownCloud server')); ?></button>
 		<input id="serverUrl" class="hidden" type="text" value="" placeholder="<?php p($l->t('ownCloud Server')); ?>" name="server_url"/>
+		<button id="ocFederationSubmit" class="hidden"><?php p($l->t('Add')); ?></button>
 		<span class="msg"></span>
 	</p>
 	<ul id="listOfTrustedServers">
