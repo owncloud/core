@@ -204,7 +204,8 @@ class FilesReportPlugin extends ServerPlugin {
 		// find sabre nodes by file id, restricted to the root node path
 		$results = $this->findNodesByFileIds($reportTargetNode, $resultFileIds);
 
-		$responses = $this->prepareResponses($requestedProps, $results);
+		$filesUri = $this->getFilesBaseUri($uri, $reportTargetNode->getPath());
+		$responses = $this->prepareResponses($filesUri, $requestedProps, $results);
 
 		$xml = $this->server->xml->write(
 			'{DAV:}multistatus',
@@ -216,6 +217,31 @@ class FilesReportPlugin extends ServerPlugin {
 		$this->server->httpResponse->setBody($xml);
 
 		return false;
+	}
+
+	/**
+	 * Returns the base uri of the files root by removing
+	 * the subpath from the URI
+	 *
+	 * @param string $uri URI from this request
+	 * @param string $subPath subpath to remove from the URI
+	 *
+	 * @return string files base uri
+	 */
+	private function getFilesBaseUri($uri, $subPath) {
+		$uri = trim($uri, '/');
+		$subPath = trim($subPath, '/');
+		$filesUri = '';
+		if (empty($subPath)) {
+			$filesUri = $uri;
+		} else {
+			$filesUri = substr($uri, 0, strlen($uri) - strlen($subPath));
+		}
+		$filesUri = trim($filesUri, '/');
+		if (empty($filesUri)) {
+			return '';
+		}
+		return '/' . $filesUri;
 	}
 
 	/**
@@ -305,14 +331,16 @@ class FilesReportPlugin extends ServerPlugin {
 	/**
 	 * Prepare propfind response for the given nodes
 	 *
+	 * @param string $filesUri $filesUri URI leading to root of the files URI,
+	 * with a leading slash but no trailing slash
 	 * @param string[] $requestedProps requested properties
 	 * @param Node[] nodes nodes for which to fetch and prepare responses
 	 * @return Response[]
 	 */
-	public function prepareResponses($requestedProps, $nodes) {
+	public function prepareResponses($filesUri, $requestedProps, $nodes) {
 		$responses = [];
 		foreach ($nodes as $node) {
-			$propFind = new PropFind($node->getPath(), $requestedProps);
+			$propFind = new PropFind($filesUri . $node->getPath(), $requestedProps);
 
 			$this->server->getPropertiesByNode($propFind, $node);
 			// copied from Sabre Server's getPropertiesForPath
@@ -325,7 +353,7 @@ class FilesReportPlugin extends ServerPlugin {
 			}
 
 			$responses[] = new Response(
-				rtrim($this->server->getBaseUri(), '/') . $node->getPath(),
+				rtrim($this->server->getBaseUri(), '/') . $filesUri . $node->getPath(),
 				$result,
 				200
 			);
