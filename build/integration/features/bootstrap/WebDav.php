@@ -22,10 +22,10 @@ trait WebDav {
 		$this->davPath = $davPath;
 	}
 
-	public function getFilesPath(){
+	public function getFilesPath($user){
 		$basePath = '';
 		if ($this->davPath === "remote.php/dav"){
-			$basePath = '/files/' . $this->currentUser . '/';
+			$basePath = '/files/' . $user . '/';
 		} else {
 			$basePath = '/';
 		}
@@ -243,7 +243,7 @@ trait WebDav {
 	 */
 	public function asTheFileOrFolderDoesNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
-		$response = $client->request('HEAD', $this->makeSabrePath($path));
+		$response = $client->request('HEAD', $this->makeSabrePath($user, $path));
 		if ($response['statusCode'] !== 404) {
 			throw new \Exception($entry . ' "' . $path . '" expected to not exist (status code ' . $response['statusCode'] . ', expected 404)');
 		}
@@ -338,13 +338,13 @@ trait WebDav {
 			];
 		}
 
-		$response = $client->propfind($this->makeSabrePath($path), $properties, $folderDepth);
+		$response = $client->propfind($this->makeSabrePath($user, $path), $properties, $folderDepth);
 
 		return $response;
 	}
 
-	public function makeSabrePath($path) {
-		return $this->encodePath($this->davPath . '/' . ltrim($path, '/'));
+	public function makeSabrePath($user, $path) {
+		return $this->encodePath($this->davPath . $this->getFilesPath($user) . ltrim($path, '/'));
 	}
 
 	public function getSabreClient($user) {
@@ -435,7 +435,7 @@ trait WebDav {
 	 */
 	public function userCreatedAFolder($user, $destination){
 		try {
-			$this->response = $this->makeDavRequest($user, "MKCOL", $this->getFilesPath() . ltrim($destination, $this->getFilesPath()), []);
+			$this->response = $this->makeDavRequest($user, "MKCOL", $this->getFilesPath($user) . ltrim($destination, $this->getFilesPath($user)), []);
 		} catch (\GuzzleHttp\Exception\ServerException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
@@ -545,7 +545,7 @@ trait WebDav {
 			];
 		}
 
-		$response = $client->proppatch($this->davPath . '/' . ltrim($path, '/'), $properties, $folderDepth);
+		$response = $client->proppatch($this->davPath . $this->getFilesPath($user) . ltrim($path, '/'), $properties, $folderDepth);
 		return $response;
 	}
 
