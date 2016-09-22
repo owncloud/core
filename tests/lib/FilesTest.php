@@ -271,6 +271,220 @@ class FilesTest extends \Test\TestCase {
 				'/something/that/is/not.supposed/to happen/lorem.tar.bz2',
 				PATHINFO_FILENAME, 'lorem',
 			],
+
+			// .files
+			[
+				'/www/htdocs/inc/.hidden-without-further-dots',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/www/htdocs/inc',
+					'basename' => '.hidden-without-further-dots',
+					'extension' => 'hidden-without-further-dots',
+					'filename' => '',
+				]
+			],
+			[
+				'/www/htdocs/inc/.lib.inc.php',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/www/htdocs/inc',
+					'basename' => '.lib.inc.php',
+					'extension' => 'php',
+					'filename' => '.lib.inc',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.gz',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => '.lorem.gz',
+					'extension' => 'gz',
+					'filename' => '.lorem',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.gz',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => '.lorem.tar.gz',
+					'extension' => 'tar.gz',
+					'filename' => '.lorem',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.bz2',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => '.lorem.bz2',
+					'extension' => 'bz2',
+					'filename' => '.lorem',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.bz2',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => '.lorem.tar.bz2',
+					'extension' => 'tar.bz2',
+					'filename' => '.lorem',
+				]
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.....',
+				PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME,
+				[
+					'dirname' => '/something/that/is/not.supposed/to happen',
+					'basename' => '.....',
+					'extension' => '',
+					'filename' => '....',
+				]
+			],
+
+			[
+				'/www/htdocs/inc/.hidden-without-further-dots',
+				PATHINFO_DIRNAME, '/www/htdocs/inc',
+			],
+			[
+				'/www/htdocs/inc/.lib.inc.php',
+				PATHINFO_DIRNAME, '/www/htdocs/inc',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.gz',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.gz',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.bz2',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.bz2',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.....',
+				PATHINFO_DIRNAME, '/something/that/is/not.supposed/to happen'
+			],
+
+			[
+				'/www/htdocs/inc/.hidden-without-further-dots',
+				PATHINFO_BASENAME, '.hidden-without-further-dots',
+			],
+			[
+				'/www/htdocs/inc/.lib.inc.php',
+				PATHINFO_BASENAME, '.lib.inc.php',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.gz',
+				PATHINFO_BASENAME, '.lorem.gz'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.gz',
+				PATHINFO_BASENAME, '.lorem.tar.gz'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.bz2',
+				PATHINFO_BASENAME, '.lorem.bz2'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.bz2',
+				PATHINFO_BASENAME, '.lorem.tar.bz2'
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.....',
+				PATHINFO_BASENAME, '.....',
+			],
+
+			[
+				'/www/htdocs/inc/.hidden-without-further-dots',
+				PATHINFO_EXTENSION, 'hidden-without-further-dots',
+			],
+			[
+				'/www/htdocs/inc/.lib.inc.php',
+				PATHINFO_EXTENSION, 'php',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.gz',
+				PATHINFO_EXTENSION, 'gz',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.gz',
+				PATHINFO_EXTENSION, 'tar.gz',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.bz2',
+				PATHINFO_EXTENSION, 'bz2',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.bz2',
+				PATHINFO_EXTENSION, 'tar.bz2',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.....',
+				PATHINFO_EXTENSION, '',
+			],
+
+			[
+				'/www/htdocs/inc/.hidden-without-further-dots',
+				PATHINFO_FILENAME, '',
+			],
+			[
+				'/www/htdocs/inc/.lib.inc.php',
+				PATHINFO_FILENAME, '.lib.inc',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.gz',
+				PATHINFO_FILENAME, '.lorem',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.gz',
+				PATHINFO_FILENAME, '.lorem',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.bz2',
+				PATHINFO_FILENAME, '.lorem',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.lorem.tar.bz2',
+				PATHINFO_FILENAME, '.lorem',
+			],
+			[
+				'/something/that/is/not.supposed/to happen/.....',
+				PATHINFO_FILENAME, '....',
+			],
+
+			// invalid option combinations
+			[
+				'/something/that/is/not.supposed/to happen/lorem.txt',
+				PATHINFO_FILENAME | PATHINFO_DIRNAME,
+				pathinfo(
+					'/something/that/is/not.supposed/to happen/lorem.txt',
+					PATHINFO_FILENAME | PATHINFO_DIRNAME
+				)
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.txt',
+				PATHINFO_FILENAME | PATHINFO_DIRNAME | PATHINFO_EXTENSION,
+				pathinfo(
+					'/something/that/is/not.supposed/to happen/lorem.txt',
+					PATHINFO_FILENAME | PATHINFO_DIRNAME | PATHINFO_EXTENSION
+				)
+			],
+			[
+				'/something/that/is/not.supposed/to happen/lorem.txt',
+				PATHINFO_FILENAME | PATHINFO_EXTENSION,
+				pathinfo(
+					'/something/that/is/not.supposed/to happen/lorem.txt',
+					PATHINFO_FILENAME | PATHINFO_EXTENSION
+				)
+			],
 		];
 	}
 	/**
