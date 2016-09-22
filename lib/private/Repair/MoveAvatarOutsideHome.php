@@ -21,6 +21,9 @@
 namespace OC\Repair;
 
 use OCP\IDBConnection;
+use OCP\IL10N;
+use OCP\ILogger;
+use OCP\IUserManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use OCP\IUser;
@@ -43,6 +46,12 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	/** @var IUserManager */
 	private $userManager;
 
+	/** @var \OCP\ILogger */
+	private $logger;
+
+	/** @var \OCP\IL10N */
+	private $l;
+
 	/**
 	 * @param IConfig $config config
 	 * @param IDBConnection $connection database connection
@@ -51,11 +60,15 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	public function __construct(
 		IConfig $config,
 		IDBConnection $connection,
-		IUserManager $userManager
+		IUserManager $userManager,
+		IL10N $l10n,
+		ILogger $logger
 	) {
 		$this->config = $config;
 		$this->connection = $connection;
 		$this->userManager = $userManager;
+		$this->l = $l10n;
+		$this->logger = $logger;
 	}
 
 	/**

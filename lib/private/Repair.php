@@ -143,7 +143,9 @@ class Repair implements IOutput{
 			new MoveAvatarOutsideHome(
 				\OC::$server->getConfig(),
 				\OC::$server->getDatabaseConnection(),
-				\OC::$server->getUserManager()
+				\OC::$server->getUserManager(),
+				\OC::$server->getL10N('core'),
+				\OC::$server->getLogger()
 			),
 			new RemoveRootShares(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager(), \OC::$server->getLazyRootFolder()),
 			new RepairUnmergedShares(
