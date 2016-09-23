@@ -568,10 +568,12 @@ class SMB extends Common {
 		$this->log('enter: '.__FUNCTION__."($path)");
 		$result = false;
 		try {
-			$info = $this->getFileInfo($path);
-			// following windows behaviour for read-only folders: they can be written into
-			// (https://support.microsoft.com/en-us/kb/326549 - "cause" section)
-			$result = !$info->isHidden() && (!$info->isReadOnly() || $this->is_dir($path));
+			if (!$this->isRootDir($path)) {
+				$info = $this->getFileInfo($path);
+				// following windows behaviour for read-only folders: they can be written into
+				// (https://support.microsoft.com/en-us/kb/326549 - "cause" section)
+				$result = !$info->isHidden() && (!$info->isReadOnly() || $this->is_dir($path));
+			}
 		} catch (NotFoundException $e) {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
@@ -584,8 +586,10 @@ class SMB extends Common {
 		$this->log('enter: '.__FUNCTION__."($path)");
 		$result = false;
 		try {
-			$info = $this->getFileInfo($path);
-			$result = !$info->isHidden() && !$info->isReadOnly();
+			if (!$this->isRootDir($path)) {
+				$info = $this->getFileInfo($path);
+				$result = !$info->isHidden() && !$info->isReadOnly();
+			}
 		} catch (NotFoundException $e) {
 			$this->swallow(__FUNCTION__, $e);
 		} catch (ForbiddenException $e) {
