@@ -28,14 +28,19 @@ namespace OCA\DAV;
 
 use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCA\DAV\CardDAV\ImageExportPlugin;
+use OCA\DAV\Comments\CommentsPlugin;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin;
+use OCA\DAV\Connector\Sabre\CopyEtagHeaderPlugin;
 use OCA\DAV\Connector\Sabre\DavAclPlugin;
 use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
+use OCA\DAV\Connector\Sabre\FakeLockerPlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\DAV\PublicAuth;
+use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\CustomPropertiesBackend;
+use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCP\IRequest;
 use OCP\SabrePluginEvent;
 use Sabre\CardDAV\VCFExportPlugin;
@@ -111,7 +116,7 @@ class Server {
 		$this->server->addPlugin(new DAV\Sharing\Plugin($authBackend, \OC::$server->getRequest()));
 		$this->server->addPlugin(new \OCA\DAV\CalDAV\Publishing\PublishPlugin(
 			\OC::$server->getConfig(),
-			\OC::$server->getUrlGenerator()
+			\OC::$server->getURLGenerator()
 		));
 
 		// addressbook plugins
@@ -120,17 +125,19 @@ class Server {
 		$this->server->addPlugin(new ImageExportPlugin(\OC::$server->getLogger()));
 
 		// system tags plugins
-		$this->server->addPlugin(new \OCA\DAV\SystemTag\SystemTagPlugin(
+		$this->server->addPlugin(new SystemTagPlugin(
 			\OC::$server->getSystemTagManager(),
 			\OC::$server->getGroupManager(),
 			\OC::$server->getUserSession()
 		));
 
 		// comments plugin
-		$this->server->addPlugin(new \OCA\DAV\Comments\CommentsPlugin(
+		$this->server->addPlugin(new CommentsPlugin(
 			\OC::$server->getCommentsManager(),
 			\OC::$server->getUserSession()
 		));
+
+		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 
 		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
 		// we do not provide locking we emulate it using a fake locking plugin.
@@ -138,7 +145,7 @@ class Server {
 			'/WebDAVFS/',
 			'/Microsoft Office OneNote 2013/',
 		])) {
-			$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\FakeLockerPlugin());
+			$this->server->addPlugin(new FakeLockerPlugin());
 		}
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
@@ -172,7 +179,7 @@ class Server {
 					)
 				);
 				$this->server->addPlugin(
-					new \OCA\DAV\Connector\Sabre\QuotaPlugin($view));
+					new QuotaPlugin($view));
 				$this->server->addPlugin(
 					new TagsPlugin(
 						$this->server->tree, \OC::$server->getTagManager()
