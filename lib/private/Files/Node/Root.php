@@ -349,7 +349,6 @@ class Root extends Folder implements IRootFolder {
 			$folder = $folder->get($dir);
 		} catch (NotFoundException $e) {
 			$folder = $folder->newFolder($dir);
-			\OC_Util::copySkeleton($userId, $folder);
 		}
 
 		return $folder;
