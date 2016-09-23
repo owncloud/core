@@ -22,7 +22,7 @@
 
 namespace OCA\Encryption\AppInfo;
 
-\OCP\Util::addscript('encryption', 'encryption');
+\OCP\Util::addScript('encryption', 'encryption');
 
 $encryptionSystemReady = \OC::$server->getEncryptionManager()->isReady();
 
