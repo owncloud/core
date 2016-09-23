@@ -20,6 +20,8 @@
  *
  */
 use OCA\DAV\AppInfo\Application;
+use OCA\DAV\CalDAV\BirthdayService;
+use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\Command\CreateAddressBook;
 use OCA\DAV\Command\CreateCalendar;
 use OCA\DAV\Command\SyncBirthdayCalendar;
@@ -33,6 +35,6 @@ $app = new Application();
 
 /** @var Symfony\Component\Console\Application $application */
 $application->add(new CreateCalendar($userManager, $groupManager, $dbConnection));
-$application->add(new CreateAddressBook($userManager, $app->getContainer()->query('CardDavBackend')));
+$application->add(new CreateAddressBook($userManager, $app->getContainer()->query(CardDavBackend::class)));
 $application->add(new SyncSystemAddressBook($app->getSyncService()));
-$application->add(new SyncBirthdayCalendar($userManager, $app->getContainer()->query('BirthdayService')));
+$application->add(new SyncBirthdayCalendar($userManager, $app->getContainer()->query(BirthdayService::class)));

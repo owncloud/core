@@ -20,11 +20,11 @@
  */
 namespace OCA\DAV;
 
-use OC\L10N\L10N;
 use OCA\DAV\CalDAV\BirthdayService;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\CardDAV\SyncService;
+use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Util;
@@ -46,14 +46,14 @@ class HookManager {
 	/** @var CardDavBackend */
 	private $cardDav;
 
-	/** @var L10N */
+	/** @var IL10N */
 	private $l10n;
 
 	public function __construct(IUserManager $userManager,
 								SyncService $syncService,
 								CalDavBackend $calDav,
 								CardDavBackend $cardDav,
-								L10N $l10n) {
+								IL10N $l10n) {
 		$this->userManager = $userManager;
 		$this->syncService = $syncService;
 		$this->calDav = $calDav;

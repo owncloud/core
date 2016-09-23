@@ -19,7 +19,10 @@
  *
  */
 
-$app = new \OCA\UpdateNotification\AppInfo\Application();
+use OCA\UpdateNotification\AppInfo\Application;
+use OCA\UpdateNotification\Controller\AdminController;
+
+$app = new Application();
 /** @var OCA\UpdateNotification\Controller\AdminController $controller */
-$controller = $app->getContainer()->query('AdminController');
+$controller = $app->getContainer()->query(AdminController::class);
 return $controller->displayPanel()->render();

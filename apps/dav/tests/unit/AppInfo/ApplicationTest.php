@@ -23,6 +23,8 @@
 namespace OCA\DAV\Tests\unit\AppInfo;
 
 use OCA\DAV\AppInfo\Application;
+use OCA\DAV\CardDAV\CardDavBackend;
+use OCA\DAV\CardDAV\ContactsManager;
 use OCP\Contacts\IManager;
 use Test\TestCase;
 
@@ -39,16 +41,16 @@ class ApplicationTest extends TestCase {
 		$c = $app->getContainer();
 
 		// assert service instances in the container are properly setup
-		$s = $c->query('ContactsManager');
+		$s = $c->query(ContactsManager::class);
 		$this->assertInstanceOf('OCA\DAV\CardDAV\ContactsManager', $s);
-		$s = $c->query('CardDavBackend');
+		$s = $c->query(CardDavBackend::class);
 		$this->assertInstanceOf('OCA\DAV\CardDAV\CardDavBackend', $s);
 	}
 
 	public function testContactsManagerSetup() {
 		$app = new Application();
 		$c = $app->getContainer();
-		$c->registerService('CardDavBackend', function($c) {
+		$c->registerService(CardDavBackend::class, function($c) {
 			$service = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
 			$service->method('getAddressBooksForUser')->willReturn([]);
 			return $service;

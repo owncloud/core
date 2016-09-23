@@ -32,25 +32,5 @@ use OCP\AppFramework\IAppContainer;
 class Application extends App {
 	public function __construct (array $urlParams = array()) {
 		parent::__construct('updatenotification', $urlParams);
-		$container = $this->getContainer();
-
-		$container->registerService('AdminController', function(IAppContainer $c) {
-			$updater = new \OC\Updater\VersionCheck(
-				\OC::$server->getHTTPClientService(),
-				\OC::$server->getConfig()
-			);
-			return new AdminController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->getServer()->getJobList(),
-				$c->getServer()->getSecureRandom(),
-				$c->getServer()->getConfig(),
-				new TimeFactory(),
-				$c->getServer()->getL10N($c->query('AppName')),
-				new UpdateChecker($updater),
-				$c->getServer()->getDateTimeFormatter()
-			);
-		});
 	}
-
 }
