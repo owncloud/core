@@ -46,6 +46,7 @@
  *
  */
 use OC\App\DependencyAnalyzer;
+use OC\App\InfoParser;
 use OC\App\Platform;
 use OC\Installer;
 use OC\OCSClient;
@@ -659,7 +660,7 @@ class OC_App {
 			$file = $appPath . '/appinfo/info.xml';
 		}
 
-		$parser = new \OC\App\InfoParser(\OC::$server->getURLGenerator());
+		$parser = new InfoParser();
 		$data = $parser->parse($file);
 
 		if (is_array($data)) {
@@ -832,6 +833,7 @@ class OC_App {
 		//we don't want to show configuration for these
 		$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
 		$appList = array();
+		$urlGenerator = \OC::$server->getURLGenerator();
 
 		foreach ($installedApps as $app) {
 			if (array_search($app, $blacklist) === false) {
@@ -885,6 +887,19 @@ class OC_App {
 						}
 					}
 				}
+				// fix documentation
+				if (isset($info['documentation']) && is_array($info['documentation'])) {
+					foreach ($info['documentation'] as $key => $url) {
+						// If it is not an absolute URL we assume it is a key
+						// i.e. admin-ldap will get converted to go.php?to=admin-ldap
+						if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0) {
+							$url = $urlGenerator->linkToDocs($url);
+						}
+
+						$info['documentation'][$key] = $url;
+					}
+				}
+
 				$info['version'] = OC_App::getAppVersion($app);
 				$appList[] = $info;
 			}
