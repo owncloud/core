@@ -95,7 +95,7 @@ namespace OCP\Contacts {
 		 * @return array an array of contacts which are arrays of key-value-pairs
 		 * @since 6.0.0
 		 */
-		function search($pattern, $searchProperties = array(), $options = array());
+		function search($pattern, $searchProperties = [], $options = []);
 
 		/**
 		 * This function can be used to delete the contact identified by the given id

@@ -102,54 +102,54 @@ class QuotaPluginTest extends \Test\TestCase {
 	}
 
 	public function quotaOkayProvider() {
-		return array(
-			array(1024, array()),
-			array(1024, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(1024, array('CONTENT-LENGTH' => '512')),
-			array(1024, array('OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512')),
+		return [
+			[1024, []],
+			[1024, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[1024, ['CONTENT-LENGTH' => '512']],
+			[1024, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
 			// \OCP\Files\FileInfo::SPACE-UNKNOWN = -2
-			array(-2, array()),
-			array(-2, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(-2, array('CONTENT-LENGTH' => '512')),
-			array(-2, array('OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512')),
-		);
+			[-2, []],
+			[-2, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[-2, ['CONTENT-LENGTH' => '512']],
+			[-2, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
+		];
 	}
 
 	public function quotaExceededProvider() {
-		return array(
-			array(1023, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(511, array('CONTENT-LENGTH' => '512')),
-			array(2047, array('OC-TOTAL-LENGTH' => '2048', 'CONTENT-LENGTH' => '1024')),
-		);
+		return [
+			[1023, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[511, ['CONTENT-LENGTH' => '512']],
+			[2047, ['OC-TOTAL-LENGTH' => '2048', 'CONTENT-LENGTH' => '1024']],
+		];
 	}
 
 	public function lengthProvider() {
-		return array(
-			array(null, array()),
-			array(1024, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(512, array('CONTENT-LENGTH' => '512')),
-			array(2048, array('OC-TOTAL-LENGTH' => '2048', 'CONTENT-LENGTH' => '1024')),
-			array(4096, array('OC-TOTAL-LENGTH' => '2048', 'X-EXPECTED-ENTITY-LENGTH' => '4096')),
-		);
+		return [
+			[null, []],
+			[1024, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[512, ['CONTENT-LENGTH' => '512']],
+			[2048, ['OC-TOTAL-LENGTH' => '2048', 'CONTENT-LENGTH' => '1024']],
+			[4096, ['OC-TOTAL-LENGTH' => '2048', 'X-EXPECTED-ENTITY-LENGTH' => '4096']],
+		];
 	}
 
 	public function quotaChunkedOkProvider() {
-		return array(
-			array(1024, 0, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(1024, 0, array('CONTENT-LENGTH' => '512')),
-			array(1024, 0, array('OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512')),
+		return [
+			[1024, 0, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[1024, 0, ['CONTENT-LENGTH' => '512']],
+			[1024, 0, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
 			// with existing chunks (allowed size = total length - chunk total size)
-			array(400, 128, array('X-EXPECTED-ENTITY-LENGTH' => '512')),
-			array(400, 128, array('CONTENT-LENGTH' => '512')),
-			array(400, 128, array('OC-TOTAL-LENGTH' => '512', 'CONTENT-LENGTH' => '500')),
+			[400, 128, ['X-EXPECTED-ENTITY-LENGTH' => '512']],
+			[400, 128, ['CONTENT-LENGTH' => '512']],
+			[400, 128, ['OC-TOTAL-LENGTH' => '512', 'CONTENT-LENGTH' => '500']],
 			// \OCP\Files\FileInfo::SPACE-UNKNOWN = -2
-			array(-2, 0, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(-2, 0, array('CONTENT-LENGTH' => '512')),
-			array(-2, 0, array('OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512')),
-			array(-2, 128, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(-2, 128, array('CONTENT-LENGTH' => '512')),
-			array(-2, 128, array('OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512')),
-		);
+			[-2, 0, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[-2, 0, ['CONTENT-LENGTH' => '512']],
+			[-2, 0, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
+			[-2, 128, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[-2, 128, ['CONTENT-LENGTH' => '512']],
+			[-2, 128, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
+		];
 	}
 
 	/**
@@ -176,15 +176,15 @@ class QuotaPluginTest extends \Test\TestCase {
 	}
 
 	public function quotaChunkedFailProvider() {
-		return array(
-			array(400, 0, array('X-EXPECTED-ENTITY-LENGTH' => '1024')),
-			array(400, 0, array('CONTENT-LENGTH' => '512')),
-			array(400, 0, array('OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512')),
+		return [
+			[400, 0, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[400, 0, ['CONTENT-LENGTH' => '512']],
+			[400, 0, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
 			// with existing chunks (allowed size = total length - chunk total size)
-			array(380, 128, array('X-EXPECTED-ENTITY-LENGTH' => '512')),
-			array(380, 128, array('CONTENT-LENGTH' => '512')),
-			array(380, 128, array('OC-TOTAL-LENGTH' => '512', 'CONTENT-LENGTH' => '500')),
-		);
+			[380, 128, ['X-EXPECTED-ENTITY-LENGTH' => '512']],
+			[380, 128, ['CONTENT-LENGTH' => '512']],
+			[380, 128, ['OC-TOTAL-LENGTH' => '512', 'CONTENT-LENGTH' => '500']],
+		];
 	}
 
 	/**
@@ -212,7 +212,7 @@ class QuotaPluginTest extends \Test\TestCase {
 
 	private function buildFileViewMock($quota, $checkedPath) {
 		// mock filesysten
-		$view = $this->createMock('\OC\Files\View', array('free_space'), array(), '', false);
+		$view = $this->createMock('\OC\Files\View', ['free_space'], [], '', false);
 		$view->expects($this->any())
 			->method('free_space')
 			->with($this->identicalTo($checkedPath))

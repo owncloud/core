@@ -37,8 +37,8 @@ class OC_L10N implements \OCP\IL10N {
 	/**
 	 * cache
 	 */
-	protected static $cache = array();
-	protected static $availableLanguages = array();
+	protected static $cache = [];
+	protected static $availableLanguages = [];
 
 	/**
 	 * The best language
@@ -58,7 +58,7 @@ class OC_L10N implements \OCP\IL10N {
 	/**
 	 * Translations
 	 */
-	private $translations = array();
+	private $translations = [];
 
 	/**
 	 * Plural forms (string)
@@ -84,7 +84,7 @@ class OC_L10N implements \OCP\IL10N {
 		$this->app = $app;
 
 		if ($lang !== null) {
-			$lang = str_replace(array('\0', '/', '\\', '..'), '', $lang);
+			$lang = str_replace(['\0', '/', '\\', '..'], '', $lang);
 		}
 
 		// Find the right language
@@ -144,7 +144,7 @@ class OC_L10N implements \OCP\IL10N {
 	 * Returns the translation. If no translation is found, $text will be
 	 * returned.
 	 */
-	public function t($text, $parameters = array()) {
+	public function t($text, $parameters = []) {
 		return new OC_L10N_String($this, $text, $parameters);
 	}
 
@@ -163,7 +163,7 @@ class OC_L10N implements \OCP\IL10N {
 	 * provided by the po file.
 	 *
 	 */
-	public function n($text_singular, $text_plural, $count, $parameters = array()) {
+	public function n($text_singular, $text_plural, $count, $parameters = []) {
 		$this->init();
 		$identifier = "_${text_singular}_::_${text_plural}_";
 		if( array_key_exists($identifier, $this->translations)) {
@@ -224,7 +224,7 @@ class OC_L10N implements \OCP\IL10N {
 	 *  - firstday: Returns the first day of the week (0 sunday - 6 saturday)
 	 *  - jsdate: Returns the short JS date format
 	 */
-	public function l($type, $data, $options = array()) {
+	public function l($type, $data, $options = []) {
 		if ($type === 'firstday') {
 			return $this->getFirstWeekDay();
 		}
@@ -246,7 +246,7 @@ class OC_L10N implements \OCP\IL10N {
 		// Use the language of the instance
 		$locale = $this->transformToCLDRLocale($this->getLanguageCode());
 
-		$options = array_merge(array('width' => 'long'), $options);
+		$options = array_merge(['width' => 'long'], $options);
 		$width = $options['width'];
 		switch($type) {
 			case 'date':

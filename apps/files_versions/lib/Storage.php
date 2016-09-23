@@ -60,24 +60,24 @@ class Storage {
 	const DELETE_TRIGGER_QUOTA_EXCEEDED = 2;
 
 	// files for which we can remove the versions after the delete operation was successful
-	private static $deletedFiles = array();
+	private static $deletedFiles = [];
 
-	private static $sourcePathAndUser = array();
+	private static $sourcePathAndUser = [];
 
-	private static $max_versions_per_interval = array(
+	private static $max_versions_per_interval = [
 		//first 10sec, one version every 2sec
-		1 => array('intervalEndsAfter' => 10,      'step' => 2),
+		1 => ['intervalEndsAfter' => 10,      'step' => 2],
 		//next minute, one version every 10sec
-		2 => array('intervalEndsAfter' => 60,      'step' => 10),
+		2 => ['intervalEndsAfter' => 60,      'step' => 10],
 		//next hour, one version every minute
-		3 => array('intervalEndsAfter' => 3600,    'step' => 60),
+		3 => ['intervalEndsAfter' => 3600,    'step' => 60],
 		//next 24h, one version every hour
-		4 => array('intervalEndsAfter' => 86400,   'step' => 3600),
+		4 => ['intervalEndsAfter' => 86400,   'step' => 3600],
 		//next 30days, one version per day
-		5 => array('intervalEndsAfter' => 2592000, 'step' => 86400),
+		5 => ['intervalEndsAfter' => 2592000, 'step' => 86400],
 		//until the end one version per week
-		6 => array('intervalEndsAfter' => -1,      'step' => 604800),
-	);
+		6 => ['intervalEndsAfter' => -1,      'step' => 604800],
+	];
 	
 	/** @var \OCA\Files_Versions\AppInfo\Application */
 	private static $application;
@@ -122,7 +122,7 @@ class Storage {
 	 */
 	public static function setSourcePathAndUser($source) {
 		list($uid, $path) = self::getUidAndFilename($source);
-		self::$sourcePathAndUser[$source] = array('uid' => $uid, 'path' => $path);
+		self::$sourcePathAndUser[$source] = ['uid' => $uid, 'path' => $path];
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Storage {
 		} else {
 			$uid = $path = false;
 		}
-		return array($uid, $path);
+		return [$uid, $path];
 	}
 
 	/**
@@ -203,9 +203,9 @@ class Storage {
 	 */
 	public static function markDeletedFile($path) {
 		list($uid, $filename) = self::getUidAndFilename($path);
-		self::$deletedFiles[$path] = array(
+		self::$deletedFiles[$path] = [
 			'uid' => $uid,
-			'filename' => $filename);
+			'filename' => $filename];
 	}
 
 	/**
@@ -241,9 +241,9 @@ class Storage {
 			$versions = self::getVersions($uid, $filename);
 			if (!empty($versions)) {
 				foreach ($versions as $v) {
-					\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED));
+					\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED]);
 					self::deleteVersion($view, $filename . '.v' . $v['version']);
-					\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED));
+					\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED]);
 				}
 			}
 		}
@@ -360,10 +360,10 @@ class Storage {
 			if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
 				$files_view->touch($file, $revision);
 				Storage::scheduleExpire($uid, $file);
-				\OC_Hook::emit('\OCP\Versions', 'rollback', array(
+				\OC_Hook::emit('\OCP\Versions', 'rollback', [
 					'path' => $filename,
 					'revision' => $revision,
-				));
+				]);
 				return true;
 			} else if ($versionCreated) {
 				self::deleteVersion($users_view, $version);
@@ -420,7 +420,7 @@ class Storage {
 	 * @return array versions newest version first
 	 */
 	public static function getVersions($uid, $filename, $userFullPath = '') {
-		$versions = array();
+		$versions = [];
 		if (empty($filename)) {
 			return $versions;
 		}
@@ -456,7 +456,7 @@ class Storage {
 						if (empty($userFullPath)) {
 							$versions[$key]['preview'] = '';
 						} else {
-							$versions[$key]['preview'] = \OCP\Util::linkToRoute('core_ajax_versions_preview', array('file' => $userFullPath, 'version' => $timestamp));
+							$versions[$key]['preview'] = \OCP\Util::linkToRoute('core_ajax_versions_preview', ['file' => $userFullPath, 'version' => $timestamp]);
 						}
 						$versions[$key]['path'] = Filesystem::normalizePath($pathinfo['dirname'] . '/' . $filename);
 						$versions[$key]['name'] = $versionedFile;
@@ -498,9 +498,9 @@ class Storage {
 		$view = new View('/' . $uid . '/files_versions');
 		if (!empty($toDelete)) {
 			foreach ($toDelete as $version) {
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT));
+				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT]);
 				self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
-				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT));
+				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT]);
 			}
 		}
 	}
@@ -539,8 +539,8 @@ class Storage {
 	 */
 	private static function getAllVersions($uid) {
 		$view = new View('/' . $uid . '/');
-		$dirs = array(self::VERSIONS_ROOT);
-		$versions = array();
+		$dirs = [self::VERSIONS_ROOT];
+		$versions = [];
 
 		while (!empty($dirs)) {
 			$dir = array_pop($dirs);
@@ -557,7 +557,7 @@ class Storage {
 					$version = substr($filePath, $versionsBegin + 2);
 					$relpath = substr($filePath, $relPathStart, $versionsBegin - $relPathStart);
 					$key = $version . '#' . $relpath;
-					$versions[$key] = array('path' => $relpath, 'timestamp' => $version);
+					$versions[$key] = ['path' => $relpath, 'timestamp' => $version];
 				}
 			}
 		}
@@ -565,7 +565,7 @@ class Storage {
 		// newest version first
 		krsort($versions);
 
-		$result = array();
+		$result = [];
 
 		foreach ($versions as $key => $value) {
 			$size = $view->filesize(self::VERSIONS_ROOT.'/'.$value['path'].'.v'.$value['timestamp']);
@@ -618,7 +618,7 @@ class Storage {
 	 */
 	protected static function getAutoExpireList($time, $versions) {
 		$size = 0;
-		$toDelete = array();  // versions we want to delete
+		$toDelete = [];  // versions we want to delete
 
 		$interval = 1;
 		$step = Storage::$max_versions_per_interval[$interval]['step'];
@@ -662,7 +662,7 @@ class Storage {
 			}
 		}
 
-		return array($toDelete, $size);
+		return [$toDelete, $size];
 	}
 
 	/**
@@ -759,9 +759,9 @@ class Storage {
 			}
 
 			foreach($toDelete as $key => $path) {
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
+				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				self::deleteVersion($versionsFileview, $path);
-				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
+				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				unset($allVersions[$key]); // update array with the versions we keep
 				\OCP\Util::writeLog('files_versions', "Expire: " . $path, \OCP\Util::INFO);
 			}
@@ -776,9 +776,9 @@ class Storage {
 			reset($allVersions);
 			while ($availableSpace < 0 && $i < $numOfVersions) {
 				$version = current($allVersions);
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
+				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
-				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
+				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'] , \OCP\Util::INFO);
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];

@@ -33,7 +33,7 @@ class QueryLogger implements IQueryLogger {
 	/**
 	 * @var \OC\Diagnostics\Query[]
 	 */
-	protected $queries = array();
+	protected $queries = [];
 
 	/**
 	 * @param string $sql

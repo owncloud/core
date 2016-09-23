@@ -12,9 +12,9 @@
 <td width="20px">&nbsp;</td>
 <td style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
 <?php
-print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href="%s">View it!</a><br><br>', array($_['user_displayname'], $_['filename'], $_['link'])));
+print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href="%s">View it!</a><br><br>', [$_['user_displayname'], $_['filename'], $_['link']]));
 if ( isset($_['expiration']) ) {
-	p($l->t("The share will expire on %s.", array($_['expiration'])));
+	p($l->t("The share will expire on %s.", [$_['expiration']]));
 	print_unescaped('<br><br>');
 }
 // TRANSLATORS term at the end of a mail

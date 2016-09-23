@@ -219,7 +219,7 @@ trait Provisioning {
 		}
 
 		$this->response = $client->get($fullUrl, $options);
-		$groups = array($group);
+		$groups = [$group];
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		PHPUnit_Framework_Assert::assertNotEquals($groups, $respondedArray, "", 0.0, 10, true);
 		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());

@@ -30,7 +30,7 @@ use \OCP\IContainer;
 use OCA\Files\Controller\ViewController;
 
 class Application extends App {
-	public function __construct(array $urlParams=array()) {
+	public function __construct(array $urlParams= []) {
 		parent::__construct('files', $urlParams);
 		$container = $this->getContainer();
 		$server = $container->getServer();

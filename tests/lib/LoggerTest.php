@@ -15,7 +15,7 @@ use OCP\Util;
 class LoggerTest extends TestCase {
 	/** @var \OCP\ILogger */
 	private $logger;
-	static private $logs = array();
+	static private $logs = [];
 
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
@@ -23,7 +23,7 @@ class LoggerTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		self::$logs = array();
+		self::$logs = [];
 		$this->config = $this->getMockBuilder(
 			'\OC\SystemConfig')
 			->disableOriginalConstructor()
@@ -33,9 +33,9 @@ class LoggerTest extends TestCase {
 
 	public function testInterpolation() {
 		$logger = $this->logger;
-		$logger->warning('{Message {nothing} {user} {foo.bar} a}', array('user' => 'Bob', 'foo.bar' => 'Bar'));
+		$logger->warning('{Message {nothing} {user} {foo.bar} a}', ['user' => 'Bob', 'foo.bar' => 'Bar']);
 
-		$expected = array('2 {Message {nothing} Bob Bar a}');
+		$expected = ['2 {Message {nothing} Bob Bar a}'];
 		$this->assertEquals($expected, $this->getLogs());
 	}
 

@@ -134,11 +134,11 @@ class DAV extends Common {
 		}
 		$this->ready = true;
 
-		$settings = array(
+		$settings = [
 			'baseUri' => $this->createBaseUri(),
 			'userName' => $this->user,
 			'password' => $this->password,
-		);
+		];
 
 		$proxy = \OC::$server->getConfig()->getSystemValue('proxy', '');
 		if($proxy !== '') {
@@ -204,11 +204,11 @@ class DAV extends Common {
 		try {
 			$response = $this->client->propfind(
 				$this->encodePath($path),
-				array(),
+				[],
 				1
 			);
 			$id = md5('webdav' . $this->root . $path);
-			$content = array();
+			$content = [];
 			$files = array_keys($response);
 			array_shift($files); //the first entry is the current directory
 
@@ -263,7 +263,7 @@ class DAV extends Common {
 			try {
 				$response = $this->client->propfind(
 					$this->encodePath($path),
-					array(
+					[
 						'{DAV:}getlastmodified',
 						'{DAV:}getcontentlength',
 						'{DAV:}getcontenttype',
@@ -271,7 +271,7 @@ class DAV extends Common {
 						'{http://open-collaboration-services.org/ns}share-permissions',
 						'{DAV:}resourcetype',
 						'{DAV:}getetag',
-					)
+					]
 				);
 				$this->statCache->set($path, $response);
 			} catch (NotFound $e) {
@@ -290,7 +290,7 @@ class DAV extends Common {
 	public function filetype($path) {
 		try {
 			$response = $this->propfind($path);
-			$responseType = array();
+			$responseType = [];
 			if (isset($response["{DAV:}resourcetype"])) {
 				/** @var ResourceType[] $response */
 				$responseType = $response["{DAV:}resourcetype"]->getValue();
@@ -408,7 +408,7 @@ class DAV extends Common {
 					}
 					$tmpFile = $tempManager->getTemporaryFile($ext);
 				}
-				Close::registerCallback($tmpFile, array($this, 'writeBack'));
+				Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				self::$tempFiles[$tmpFile] = $path;
 				return fopen('close://' . $tmpFile, $mode);
 		}
@@ -430,7 +430,7 @@ class DAV extends Common {
 		$path = $this->cleanPath($path);
 		try {
 			// TODO: cacheable ?
-			$response = $this->client->propfind($this->encodePath($path), array('{DAV:}quota-available-bytes'));
+			$response = $this->client->propfind($this->encodePath($path), ['{DAV:}quota-available-bytes']);
 			if (isset($response['{DAV:}quota-available-bytes'])) {
 				return (int)$response['{DAV:}quota-available-bytes'];
 			} else {
@@ -578,26 +578,26 @@ class DAV extends Common {
 	public function stat($path) {
 		try {
 			$response = $this->propfind($path);
-			return array(
+			return [
 				'mtime' => strtotime($response['{DAV:}getlastmodified']),
 				'size' => (int)isset($response['{DAV:}getcontentlength']) ? $response['{DAV:}getcontentlength'] : 0,
-			);
+			];
 		} catch (ClientHttpException $e) {
 			if ($e->getHttpStatus() === 404) {
-				return array();
+				return [];
 			}
 			$this->convertException($e, $path);
 		} catch (\Exception $e) {
 			$this->convertException($e, $path);
 		}
-		return array();
+		return [];
 	}
 
 	/** {@inheritdoc} */
 	public function getMimeType($path) {
 		try {
 			$response = $this->propfind($path);
-			$responseType = array();
+			$responseType = [];
 			if (isset($response["{DAV:}resourcetype"])) {
 				/** @var ResourceType[] $response */
 				$responseType = $response["{DAV:}resourcetype"]->getValue();

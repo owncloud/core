@@ -135,10 +135,10 @@ class ShareController extends Controller {
 		$share = $this->shareManager->getShareByToken($token);
 
 		if($this->linkShareAuth($share)) {
-			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', array('token' => $token)));
+			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', ['token' => $token]));
 		}
 
-		return new TemplateResponse($this->appName, 'authenticate', array(), 'guest');
+		return new TemplateResponse($this->appName, 'authenticate', [], 'guest');
 	}
 
 	/**
@@ -162,10 +162,10 @@ class ShareController extends Controller {
 		$authenticate = $this->linkShareAuth($share, $password);
 
 		if($authenticate === true) {
-			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', array('token' => $token)));
+			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', ['token' => $token]));
 		}
 
-		return new TemplateResponse($this->appName, 'authenticate', array('wrongpw' => true), 'guest');
+		return new TemplateResponse($this->appName, 'authenticate', ['wrongpw' => true], 'guest');
 	}
 
 	/**
@@ -268,7 +268,7 @@ class ShareController extends Controller {
 		// Share is password protected - check whether the user is permitted to access the share
 		if ($share->getPassword() !== null && !$this->linkShareAuth($share)) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
-				array('token' => $token)));
+				['token' => $token]));
 		}
 
 		if (!$this->validateShare($share)) {
@@ -343,7 +343,7 @@ class ShareController extends Controller {
 			$shareTmpl['folder'] = $folder->fetchPage();
 		}
 
-		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', array('token' => $token));
+		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', ['token' => $token]);
 		$shareTmpl['maxSizeAnimateGif'] = $this->config->getSystemValue('max_filesize_animated_gifs_public_sharing', 10);
 		$shareTmpl['previewEnabled'] = $this->config->getSystemValue('enable_previews', true);
 		$shareTmpl['previewMaxX'] = $this->config->getSystemValue('preview_max_x', 1024);
@@ -485,7 +485,7 @@ class ShareController extends Controller {
 
 		$this->emitAccessShareHook($share);
 
-		$server_params = array( 'head' => $this->request->getMethod() == 'HEAD' );
+		$server_params = ['head' => $this->request->getMethod() == 'HEAD'];
 
 		/**
 		 * Http range requests support

@@ -116,7 +116,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			1,
 			'25'
 		);
-		$expectedResponse = array('data' => array('message' =>'Saved'), 'status' => 'success');
+		$expectedResponse = ['data' => ['message' =>'Saved'], 'status' => 'success'];
 		$this->assertSame($expectedResponse, $response);
 
 		// Without authentication (testing the deletion of the stored password)
@@ -130,7 +130,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			0,
 			'25'
 		);
-		$expectedResponse = array('data' => array('message' =>'Saved'), 'status' => 'success');
+		$expectedResponse = ['data' => ['message' =>'Saved'], 'status' => 'success'];
 		$this->assertSame($expectedResponse, $response);
 
 	}
@@ -150,7 +150,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			]);
 
 		$response = $this->container['MailSettingsController']->storeCredentials('UsernameToStore', 'PasswordToStore');
-		$expectedResponse = array('data' => array('message' =>'Saved'), 'status' => 'success');
+		$expectedResponse = ['data' => ['message' =>'Saved'], 'status' => 'success'];
 
 		$this->assertSame($expectedResponse, $response);
 	}
@@ -171,16 +171,16 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			->method('t')
 			->will(
 				$this->returnValueMap(
-					array(
-						array('You need to set your user email before being able to send test emails.', array(),
-							'You need to set your user email before being able to send test emails.'),
-						array('A problem occurred while sending the e-mail. Please revisit your settings.', array(),
-							'A problem occurred while sending the e-mail. Please revisit your settings.'),
-						array('Email sent', array(), 'Email sent'),
-						array('test email settings', array(), 'test email settings'),
-						array('If you received this email, the settings seem to be correct.', array(),
-							'If you received this email, the settings seem to be correct.')
-					)
+					[
+						['You need to set your user email before being able to send test emails.', [],
+							'You need to set your user email before being able to send test emails.'],
+						['A problem occurred while sending the e-mail. Please revisit your settings.', [],
+							'A problem occurred while sending the e-mail. Please revisit your settings.'],
+						['Email sent', [], 'Email sent'],
+						['test email settings', [], 'test email settings'],
+						['If you received this email, the settings seem to be correct.', [],
+							'If you received this email, the settings seem to be correct.']
+					]
 				));
 		$this->container['UserSession']
 			->expects($this->any())
@@ -189,7 +189,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 
 		// Ensure that it fails when no mail address has been specified
 		$response = $this->container['MailSettingsController']->sendTestMail();
-		$expectedResponse = array('data' => array('message' =>'You need to set your user email before being able to send test emails.'), 'status' => 'error');
+		$expectedResponse = ['data' => ['message' =>'You need to set your user email before being able to send test emails.'], 'status' => 'error'];
 		$this->assertSame($expectedResponse, $response);
 
 		// If no exception is thrown it should work
@@ -198,7 +198,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			->method('getUserValue')
 			->will($this->returnValue('mail@example.invalid'));
 		$response = $this->container['MailSettingsController']->sendTestMail();
-		$expectedResponse = array('data' => array('message' =>'Email sent'), 'status' => 'success');
+		$expectedResponse = ['data' => ['message' =>'Email sent'], 'status' => 'success'];
 		$this->assertSame($expectedResponse, $response);
 	}
 

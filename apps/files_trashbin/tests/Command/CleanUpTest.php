@@ -77,12 +77,12 @@ class CleanUpTest extends TestCase {
 		$query->delete($this->trashTable)->execute();
 		for ($i = 0; $i < 10; $i++) {
 			$query->insert($this->trashTable)
-				->values(array(
+				->values([
 					'id' => $query->expr()->literal('file'.$i),
 					'timestamp' => $query->expr()->literal($i),
 					'location' => $query->expr()->literal('.'),
 					'user' => $query->expr()->literal('user'.$i%2)
-				))->execute();
+				])->execute();
 		}
 		$getAllQuery = $this->dbConnection->getQueryBuilder();
 		$result = $getAllQuery->select('id')
@@ -139,10 +139,10 @@ class CleanUpTest extends TestCase {
 
 	}
 	public function dataTestRemoveDeletedFiles() {
-		return array(
-			array(true),
-			array(false)
-		);
+		return [
+			[true],
+			[false]
+		];
 	}
 
 	/**

@@ -29,8 +29,8 @@ namespace OC;
  * Manages the ownCloud navigation
  */
 class NavigationManager implements \OCP\INavigationManager {
-	protected $entries = array();
-	protected $closureEntries = array();
+	protected $entries = [];
+	protected $closureEntries = [];
 	protected $activeEntry;
 
 	/**
@@ -62,7 +62,7 @@ class NavigationManager implements \OCP\INavigationManager {
 		foreach ($this->closureEntries as $c) {
 			$this->add($c());
 		}
-		$this->closureEntries = array();
+		$this->closureEntries = [];
 		return $this->entries;
 	}
 
@@ -70,8 +70,8 @@ class NavigationManager implements \OCP\INavigationManager {
 	 * removes all the entries
 	 */
 	public function clear() {
-		$this->entries = array();
-		$this->closureEntries = array();
+		$this->entries = [];
+		$this->closureEntries = [];
 	}
 
 	/**

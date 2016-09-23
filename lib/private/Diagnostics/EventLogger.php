@@ -28,7 +28,7 @@ class EventLogger implements IEventLogger {
 	/**
 	 * @var \OC\Diagnostics\Event[]
 	 */
-	private $events = array();
+	private $events = [];
 
 	public function start($id, $description) {
 		$this->events[$id] = new Event($id, $description, microtime(true));

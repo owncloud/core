@@ -39,7 +39,7 @@ class CustomPropertiesBackend implements BackendInterface {
 	 *
 	 * @var array
 	 */
-	private $ignoredProperties = array(
+	private $ignoredProperties = [
 		'{DAV:}getcontentlength',
 		'{DAV:}getcontenttype',
 		'{DAV:}getetag',
@@ -50,7 +50,7 @@ class CustomPropertiesBackend implements BackendInterface {
 		'{http://owncloud.org/ns}downloadURL',
 		'{http://owncloud.org/ns}dDC',
 		'{http://owncloud.org/ns}size',
-	);
+	];
 
 	/**
 	 * @var Tree
@@ -113,7 +113,7 @@ class CustomPropertiesBackend implements BackendInterface {
 			// (soft fail)
 			\OC::$server->getLogger()->warning(
 				'Could not get node for path: \"' . $path . '\" : ' . $e->getMessage(),
-				array('app' => 'files')
+				['app' => 'files']
 			);
 			return;
 		}
@@ -171,7 +171,7 @@ class CustomPropertiesBackend implements BackendInterface {
 		$statement = $this->connection->prepare(
 			'DELETE FROM `*PREFIX*properties` WHERE `userid` = ? AND `propertypath` = ?'
 		);
-		$statement->execute(array($this->user, '/' . $path));
+		$statement->execute([$this->user, '/' . $path]);
 		$statement->closeCursor();
 
 		unset($this->cache[$path]);
@@ -190,7 +190,7 @@ class CustomPropertiesBackend implements BackendInterface {
 			'UPDATE `*PREFIX*properties` SET `propertypath` = ?' .
 			' WHERE `userid` = ? AND `propertypath` = ?'
 		);
-		$statement->execute(array('/' . $destination, $this->user, '/' . $source));
+		$statement->execute(['/' . $destination, $this->user, '/' . $source]);
 		$statement->closeCursor();
 	}
 
@@ -213,8 +213,8 @@ class CustomPropertiesBackend implements BackendInterface {
 		// TODO: chunking if more than 1000 properties
 		$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `userid` = ? AND `propertypath` = ?';
 
-		$whereValues = array($this->user, $path);
-		$whereTypes = array(null, null);
+		$whereValues = [$this->user, $path];
+		$whereTypes = [null, null];
 
 		if (!empty($requestedProperties)) {
 			// request only a subset
@@ -261,38 +261,38 @@ class CustomPropertiesBackend implements BackendInterface {
 			' WHERE `userid` = ? AND `propertypath` = ? AND `propertyname` = ?';
 
 		// TODO: use "insert or update" strategy ?
-		$existing = $this->getProperties($node, array());
+		$existing = $this->getProperties($node, []);
 		$this->connection->beginTransaction();
 		foreach ($properties as $propertyName => $propertyValue) {
 			// If it was null, we need to delete the property
 			if (is_null($propertyValue)) {
 				if (array_key_exists($propertyName, $existing)) {
 					$this->connection->executeUpdate($deleteStatement,
-						array(
+						[
 							$this->user,
 							$path,
 							$propertyName
-						)
+						]
 					);
 				}
 			} else {
 				if (!array_key_exists($propertyName, $existing)) {
 					$this->connection->executeUpdate($insertStatement,
-						array(
+						[
 							$this->user,
 							$path,
 							$propertyName,
 							$propertyValue
-						)
+						]
 					);
 				} else {
 					$this->connection->executeUpdate($updateStatement,
-						array(
+						[
 							$propertyValue,
 							$this->user,
 							$path,
 							$propertyName
-						)
+						]
 					);
 				}
 			}
@@ -330,8 +330,8 @@ class CustomPropertiesBackend implements BackendInterface {
 
 		$result = $this->connection->executeQuery(
 			$sql,
-			array($this->user, $this->connection->escapeLikeParameter(rtrim($path, '/')) . '/%', $requestedProperties),
-			array(null, null, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
+			[$this->user, $this->connection->escapeLikeParameter(rtrim($path, '/')) . '/%', $requestedProperties],
+			[null, null, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
 		);
 
 		$oldPath = null;

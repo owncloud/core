@@ -29,7 +29,7 @@ class OracleConnection extends Connection {
 	 * Quote the keys of the array
 	 */
 	private function quoteKeys(array $data) {
-		$return = array();
+		$return = [];
 		foreach($data as $key => $value) {
 			$return[$this->quoteIdentifier($key)] = $value;
 		}
@@ -39,7 +39,7 @@ class OracleConnection extends Connection {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function insert($tableName, array $data, array $types = array()) {
+	public function insert($tableName, array $data, array $types = []) {
 		$tableName = $this->quoteIdentifier($tableName);
 		$data = $this->quoteKeys($data);
 		return parent::insert($tableName, $data, $types);
@@ -48,7 +48,7 @@ class OracleConnection extends Connection {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function update($tableName, array $data, array $identifier, array $types = array()) {
+	public function update($tableName, array $data, array $identifier, array $types = []) {
 		$tableName = $this->quoteIdentifier($tableName);
 		$data = $this->quoteKeys($data);
 		$identifier = $this->quoteKeys($identifier);
@@ -58,7 +58,7 @@ class OracleConnection extends Connection {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function delete($tableExpression, array $identifier, array $types = array()) {
+	public function delete($tableExpression, array $identifier, array $types = []) {
 		$tableName = $this->quoteIdentifier($tableExpression);
 		$identifier = $this->quoteKeys($identifier);
 		return parent::delete($tableName, $identifier);
@@ -73,7 +73,7 @@ class OracleConnection extends Connection {
 		$table = $this->tablePrefix . trim($table);
 		$table = $this->quoteIdentifier($table);
 		$schema = $this->getSchemaManager();
-		if($schema->tablesExist(array($table))) {
+		if($schema->tablesExist([$table])) {
 			$schema->dropTable($table);
 		}
 	}
@@ -88,6 +88,6 @@ class OracleConnection extends Connection {
 		$table = $this->tablePrefix . trim($table);
 		$table = $this->quoteIdentifier($table);
 		$schema = $this->getSchemaManager();
-		return $schema->tablesExist(array($table));
+		return $schema->tablesExist([$table]);
 	}
 }

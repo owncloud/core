@@ -203,7 +203,7 @@ class DecryptAll {
 	protected function decryptUsersFiles($uid, ProgressBar $progress, $userCount) {
 
 		$this->setupUserFS($uid);
-		$directories = array();
+		$directories = [];
 		$directories[] = '/' . $uid . '/files';
 
 		while ($root = array_pop($directories)) {

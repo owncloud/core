@@ -143,18 +143,18 @@ class Updater extends BasicEmitter {
 
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
 		$currentVersion = implode('.', \OCP\Util::getVersion());
-		$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, array('app' => 'core'));
+		$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, ['app' => 'core']);
 
 		$success = true;
 		try {
 			$this->doUpgrade($currentVersion, $installedVersion);
 		} catch (\Exception $exception) {
 			$this->log->logException($exception, ['app' => 'core']);
-			$this->emit('\OC\Updater', 'failure', array(get_class($exception) . ': ' .$exception->getMessage()));
+			$this->emit('\OC\Updater', 'failure', [get_class($exception) . ': ' .$exception->getMessage()]);
 			$success = false;
 		}
 
-		$this->emit('\OC\Updater', 'updateEnd', array($success));
+		$this->emit('\OC\Updater', 'updateEnd', [$success]);
 
 		if(!$wasMaintenanceModeEnabled && $success) {
 			$this->config->setSystemValue('maintenance', false);
@@ -349,7 +349,7 @@ class Updater extends BasicEmitter {
 					$this->includePreUpdate($appId);
 				}
 				if (file_exists(\OC_App::getAppPath($appId) . '/appinfo/database.xml')) {
-					$this->emit('\OC\Updater', 'appSimulateUpdate', array($appId));
+					$this->emit('\OC\Updater', 'appSimulateUpdate', [$appId]);
 					\OC_DB::simulateUpdateDbFromStructure(\OC_App::getAppPath($appId) . '/appinfo/database.xml');
 				}
 			}
@@ -374,15 +374,15 @@ class Updater extends BasicEmitter {
 	 */
 	protected function doAppUpgrade() {
 		$apps = \OC_App::getEnabledApps();
-		$priorityTypes = array('authentication', 'filesystem', 'logging');
+		$priorityTypes = ['authentication', 'filesystem', 'logging'];
 		$pseudoOtherType = 'other';
-		$stacks = array($pseudoOtherType => array());
+		$stacks = [$pseudoOtherType => []];
 
 		foreach ($apps as $appId) {
 			$priorityType = false;
 			foreach ($priorityTypes as $type) {
 				if(!isset($stacks[$type])) {
-					$stacks[$type] = array();
+					$stacks[$type] = [];
 				}
 				if (\OC_App::isType($appId, $type)) {
 					$stacks[$type][] = $appId;
@@ -430,7 +430,7 @@ class Updater extends BasicEmitter {
 			$info = OC_App::getAppInfo($app);
 			if(!OC_App::isAppCompatible($version, $info)) {
 				OC_App::disable($app);
-				$this->emit('\OC\Updater', 'incompatibleAppDisabled', array($app));
+				$this->emit('\OC\Updater', 'incompatibleAppDisabled', [$app]);
 			}
 			// no need to disable any app in case this is a non-core upgrade
 			if (!$isCoreUpgrade) {
@@ -449,7 +449,7 @@ class Updater extends BasicEmitter {
 			if(!$this->skip3rdPartyAppsDisable) {
 				\OC_App::disable($app);
 				$disabledApps[]= $app;
-				$this->emit('\OC\Updater', 'thirdPartyAppDisabled', array($app));
+				$this->emit('\OC\Updater', 'thirdPartyAppDisabled', [$app]);
 			};
 		}
 		return $disabledApps;
@@ -477,7 +477,7 @@ class Updater extends BasicEmitter {
 				if (Installer::isUpdateAvailable($app)) {
 					$ocsId = \OC::$server->getConfig()->getAppValue($app, 'ocsid', '');
 
-					$this->emit('\OC\Updater', 'upgradeAppStoreApp', array($app));
+					$this->emit('\OC\Updater', 'upgradeAppStoreApp', [$app]);
 					Installer::updateAppByOCSId($ocsId);
 				}
 			} catch (\Exception $ex) {

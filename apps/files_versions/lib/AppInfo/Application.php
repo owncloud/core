@@ -26,7 +26,7 @@ use OCP\AppFramework\App;
 use OCA\Files_Versions\Expiration;
 
 class Application extends App {
-	public function __construct(array $urlParams = array()) {
+	public function __construct(array $urlParams = []) {
 		parent::__construct('files_versions', $urlParams);
 
 		$container = $this->getContainer();

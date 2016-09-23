@@ -38,7 +38,6 @@ use OCP\AppFramework\Http\Response;
 use OCA\Files\Service\TagService;
 use OCP\IPreview;
 use OCP\Share\IManager;
-use OCP\Files\Node;
 use OCP\IUserSession;
 
 /**
@@ -61,8 +60,11 @@ class ApiController extends Controller {
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
+	 * @param IUserSession $userSession
 	 * @param TagService $tagService
 	 * @param IPreview $previewManager
+	 * @param IManager $shareManager
+	 * @param IConfig $config
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -168,6 +170,7 @@ class ApiController extends Controller {
 	 * @NoAdminRequired
 	 *
 	 * @param bool $show
+	 * @return Response
 	 */
 	public function showHiddenFiles($show) {
 		$this->config->setUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', (int) $show);

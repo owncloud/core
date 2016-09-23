@@ -48,8 +48,8 @@ class IntegrationTest extends \Test\TestCase {
 
 		$this->view = new View();
 		$this->root = new Root($manager, $this->view, $user);
-		$storage = new Temporary(array());
-		$subStorage = new Temporary(array());
+		$storage = new Temporary([]);
+		$subStorage = new Temporary([]);
 		$this->storages[] = $storage;
 		$this->storages[] = $subStorage;
 		$this->root->mount($storage, '/');

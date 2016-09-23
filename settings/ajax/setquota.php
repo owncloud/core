@@ -44,7 +44,7 @@ if(($username === '' && !OC_User::isAdminUser(OC_User::getUser()))
 	|| (!OC_User::isAdminUser(OC_User::getUser())
 		&& !$isUserAccessible)) {
 	$l = \OC::$server->getL10N('core');
-	OC_JSON::error(array( 'data' => array( 'message' => $l->t('Authentication error') )));
+	OC_JSON::error(['data' => ['message' => $l->t('Authentication error')]]);
 	exit();
 }
 
@@ -64,5 +64,5 @@ if($username) {
 	}
 	\OC::$server->getAppConfig()->setValue('files', 'default_quota', $quota);
 }
-OC_JSON::success(array("data" => array( "username" => $username , 'quota' => $quota)));
+OC_JSON::success(["data" => ["username" => $username , 'quota' => $quota]]);
 

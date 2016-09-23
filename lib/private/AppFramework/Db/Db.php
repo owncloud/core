@@ -106,7 +106,7 @@ class Db implements IDb {
 	 * @param array $types The types the previous parameters are in.
 	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
 	 */
-	public function executeQuery($query, array $params = array(), $types = array()) {
+	public function executeQuery($query, array $params = [], $types = []) {
 		return $this->connection->executeQuery($query, $params, $types);
 	}
 
@@ -121,7 +121,7 @@ class Db implements IDb {
 	 * @param array $types The parameter types.
 	 * @return integer The number of affected rows.
 	 */
-	public function executeUpdate($query, array $params = array(), array $types = array()) {
+	public function executeUpdate($query, array $params = [], array $types = []) {
 		return $this->connection->executeUpdate($query, $params, $types);
 	}
 

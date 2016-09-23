@@ -71,9 +71,9 @@ class Extension implements IExtension {
 	public function getNotificationTypes($languageCode) {
 		$l = $this->getL10N($languageCode);
 
-		return array(
+		return [
 			self::APP_NAME => (string) $l->t('<strong>System tags</strong> for a file have been modified'),
-		);
+		];
 	}
 
 	/**
@@ -233,24 +233,24 @@ class Extension implements IExtension {
 			switch ($text) {
 				case self::CREATE_TAG:
 				case self::DELETE_TAG:
-					return array(
+					return [
 						0 => 'username',
 						//1 => 'systemtag description',
-					);
+					];
 				case self::UPDATE_TAG:
-					return array(
+					return [
 						0 => 'username',
 						//1 => 'systemtag description',
 						//2 => 'systemtag description',
-					);
+					];
 
 				case self::ASSIGN_TAG:
 				case self::UNASSIGN_TAG:
-					return array(
+					return [
 						0 => 'username',
 						1 => 'file',
 						//2 => 'systemtag description',
-					);
+					];
 			}
 		}
 

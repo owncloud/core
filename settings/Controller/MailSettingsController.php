@@ -111,12 +111,12 @@ class MailSettingsController extends Controller {
 
 		$this->config->setSystemValues($configs);
 
-		return array('data' =>
-			array('message' =>
+		return ['data' =>
+			['message' =>
 				(string) $this->l10n->t('Saved')
-			),
+			],
 			'status' => 'success'
-		);
+		];
 	}
 
 	/**
@@ -131,12 +131,12 @@ class MailSettingsController extends Controller {
 			'mail_smtppassword'	=> $mail_smtppassword,
 		]);
 
-		return array('data' =>
-			array('message' =>
+		return ['data' =>
+			['message' =>
 				(string) $this->l10n->t('Saved')
-			),
+			],
 			'status' => 'success'
-		);
+		];
 	}
 
 	/**
@@ -162,20 +162,20 @@ class MailSettingsController extends Controller {
 				];
 			}
 
-			return array('data' =>
-				array('message' =>
+			return ['data' =>
+				['message' =>
 					(string) $this->l10n->t('Email sent')
-				),
+				],
 				'status' => 'success'
-			);
+			];
 		}
 
-		return array('data' =>
-			array('message' =>
+		return ['data' =>
+			['message' =>
 				(string) $this->l10n->t('You need to set your user email before being able to send test emails.'),
-			),
+			],
 			'status' => 'error'
-		);
+		];
 	}
 
 }

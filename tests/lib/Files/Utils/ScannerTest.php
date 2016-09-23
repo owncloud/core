@@ -18,7 +18,7 @@ class TestScanner extends \OC\Files\Utils\Scanner {
 	/**
 	 * @var \OC\Files\Mount\MountPoint[] $mounts
 	 */
-	private $mounts = array();
+	private $mounts = [];
 
 	/**
 	 * @param \OC\Files\Mount\MountPoint $mount
@@ -60,7 +60,7 @@ class ScannerTest extends \Test\TestCase {
 	}
 
 	public function testReuseExistingRoot() {
-		$storage = new Temporary(array());
+		$storage = new Temporary([]);
 		$mount = new MountPoint($storage, '');
 		Filesystem::getMountManager()->addMount($mount);
 		$cache = $storage->getCache();
@@ -82,7 +82,7 @@ class ScannerTest extends \Test\TestCase {
 	}
 
 	public function testReuseExistingFile() {
-		$storage = new Temporary(array());
+		$storage = new Temporary([]);
 		$mount = new MountPoint($storage, '');
 		Filesystem::getMountManager()->addMount($mount);
 		$cache = $storage->getCache();
@@ -109,7 +109,7 @@ class ScannerTest extends \Test\TestCase {
 
 		$mountProvider = $this->createMock('\OCP\Files\Config\IMountProvider');
 
-		$storage = new Temporary(array());
+		$storage = new Temporary([]);
 		$mount = new MountPoint($storage, '/' . $uid . '/files/foo');
 
 		$mountProvider->expects($this->any())
@@ -165,7 +165,7 @@ class ScannerTest extends \Test\TestCase {
 	}
 
 	public function testPropagateEtag() {
-		$storage = new Temporary(array());
+		$storage = new Temporary([]);
 		$mount = new MountPoint($storage, '');
 		Filesystem::getMountManager()->addMount($mount);
 		$cache = $storage->getCache();

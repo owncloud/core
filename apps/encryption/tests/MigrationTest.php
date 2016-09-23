@@ -482,13 +482,13 @@ class MigrationTest extends \Test\TestCase {
 		$query = $connection->getQueryBuilder();
 		$query->insert('filecache')
 			->values(
-				array(
+				[
 					'storage' => $query->createParameter('storage'),
 					'path_hash' => $query->createParameter('path_hash'),
 					'encrypted' => $query->createParameter('encrypted'),
 					'size' => $query->createParameter('size'),
 					'unencrypted_size' => $query->createParameter('unencrypted_size'),
-				)
+				]
 			);
 		for ($i = 1; $i < 20; $i++) {
 			$query->setParameter('storage', 1)

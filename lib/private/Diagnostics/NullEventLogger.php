@@ -52,6 +52,6 @@ class NullEventLogger implements IEventLogger {
 	 * @return \OCP\Diagnostics\IEvent[]
 	 */
 	public function getEvents() {
-		return array();
+		return [];
 	}
 }

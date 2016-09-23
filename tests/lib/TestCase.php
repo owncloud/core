@@ -165,7 +165,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	 * @param array $parameters
 	 * @return mixed
 	 */
-	protected static function invokePrivate($object, $methodName, array $parameters = array()) {
+	protected static function invokePrivate($object, $methodName, array $parameters = []) {
 		if (is_string($object)) {
 			$className = $object;
 		} else {
@@ -268,13 +268,13 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	 * @param string $dataDir
 	 */
 	static protected function tearDownAfterClassCleanStrayDataFiles($dataDir) {
-		$knownEntries = array(
+		$knownEntries = [
 			'owncloud.log' => true,
 			'owncloud.db' => true,
 			'.ocdata' => true,
 			'..' => true,
 			'.' => true,
-		);
+		];
 
 		if ($dh = opendir($dataDir)) {
 			while (($file = readdir($dh)) !== false) {
@@ -438,7 +438,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		$l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($text, $parameters = array()) {
+			->will($this->returnCallback(function($text, $parameters = []) {
 				return vsprintf($text, $parameters);
 			}));
 

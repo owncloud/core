@@ -128,7 +128,7 @@ class RequestHandler {
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',
-				array('uid' => &$shareWith)
+				['uid' => &$shareWith]
 			);
 			\OCP\Util::writeLog('files_sharing', 'shareWith after, ' . $shareWith, \OCP\Util::DEBUG);
 
@@ -166,7 +166,7 @@ class RequestHandler {
 				}
 
 				\OC::$server->getActivityManager()->publishActivity(
-					Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_RECEIVED, array($ownerFederatedId, trim($name, '/')), '', array(),
+					Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_RECEIVED, [$ownerFederatedId, trim($name, '/')], '', [],
 					'', '', $shareWith, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_LOW);
 
 				$urlGenerator = \OC::$server->getURLGenerator();
@@ -390,7 +390,7 @@ class RequestHandler {
 		$token = isset($_POST['token']) ? $_POST['token'] : null;
 
 		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share_external` WHERE `remote_id` = ? AND `share_token` = ?');
-		$query->execute(array($id, $token));
+		$query->execute([$id, $token]);
 		$share = $query->fetchRow();
 
 		if ($token && $id && !empty($share)) {
@@ -402,7 +402,7 @@ class RequestHandler {
 			$user = $share['user'];
 
 			$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*share_external` WHERE `remote_id` = ? AND `share_token` = ?');
-			$query->execute(array($id, $token));
+			$query->execute([$id, $token]);
 
 			if ($share['accepted']) {
 				$path = trim($mountpoint, '/');
@@ -418,7 +418,7 @@ class RequestHandler {
 			$notificationManager->markProcessed($notification);
 
 			\OC::$server->getActivityManager()->publishActivity(
-				Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_UNSHARED, array($owner, $path), '', array(),
+				Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_UNSHARED, [$owner, $path], '', [],
 				'', '', $user, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_MEDIUM);
 		}
 
@@ -491,10 +491,10 @@ class RequestHandler {
 		} catch (NotFoundException $e) {
 			$file = null;
 		}
-		$args = \OC\Files\Filesystem::is_dir($file) ? array('dir' => $file) : array('dir' => dirname($file), 'scrollto' => $file);
+		$args = \OC\Files\Filesystem::is_dir($file) ? ['dir' => $file] : ['dir' => dirname($file), 'scrollto' => $file];
 		$link = \OCP\Util::linkToAbsolute('files', 'index.php', $args);
 
-		return array($file, $link);
+		return [$file, $link];
 
 	}
 

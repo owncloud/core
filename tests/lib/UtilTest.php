@@ -57,14 +57,14 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function formatDateWithTZFromSessionData() {
-		return array(
-			array(3, 'October 13, 2012 at 2:53:25 PM GMT+3', 'Etc/GMT-3'),
-			array(15, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'),
-			array(-13, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'),
-			array(9.5, 'October 13, 2012 at 9:23:25 PM GMT+9:30', 'Australia/Darwin'),
-			array(-4.5, 'October 13, 2012 at 7:23:25 AM GMT-4:30', 'America/Caracas'),
-			array(15.5, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'),
-		);
+		return [
+			[3, 'October 13, 2012 at 2:53:25 PM GMT+3', 'Etc/GMT-3'],
+			[15, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
+			[-13, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
+			[9.5, 'October 13, 2012 at 9:23:25 PM GMT+9:30', 'Australia/Darwin'],
+			[-4.5, 'October 13, 2012 at 7:23:25 AM GMT-4:30', 'America/Caracas'],
+			[15.5, 'October 13, 2012 at 11:53:25 AM GMT+0', 'UTC'],
+		];
 	}
 
 	/**
@@ -177,13 +177,13 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function baseNameProvider() {
-		return array(
-			array('public_html', '/home/user/public_html/'),
-			array('public_html', '/home/user/public_html'),
-			array('', '/'),
-			array('public_html', 'public_html'),
-			array('442aa682de2a64db1e010f50e60fd9c9', 'local::C:\Users\ADMINI~1\AppData\Local\Temp\2/442aa682de2a64db1e010f50e60fd9c9/')
-		);
+		return [
+			['public_html', '/home/user/public_html/'],
+			['public_html', '/home/user/public_html'],
+			['', '/'],
+			['public_html', 'public_html'],
+			['442aa682de2a64db1e010f50e60fd9c9', 'local::C:\Users\ADMINI~1\AppData\Local\Temp\2/442aa682de2a64db1e010f50e60fd9c9/']
+		];
 	}
 
 	/**
@@ -197,41 +197,41 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function filenameValidationProvider() {
-		return array(
+		return [
 			// valid names
-			array('boringname', true),
-			array('something.with.extension', true),
-			array('now with spaces', true),
-			array('.a', true),
-			array('..a', true),
-			array('.dotfile', true),
-			array('single\'quote', true),
-			array('  spaces before', true),
-			array('spaces after   ', true),
-			array('allowed chars including the crazy ones $%&_-^@!,()[]{}=;#', true),
-			array('汉字也能用', true),
-			array('und Ümläüte sind auch willkommen', true),
+			['boringname', true],
+			['something.with.extension', true],
+			['now with spaces', true],
+			['.a', true],
+			['..a', true],
+			['.dotfile', true],
+			['single\'quote', true],
+			['  spaces before', true],
+			['spaces after   ', true],
+			['allowed chars including the crazy ones $%&_-^@!,()[]{}=;#', true],
+			['汉字也能用', true],
+			['und Ümläüte sind auch willkommen', true],
 			// disallowed names
-			array('', false),
-			array('     ', false),
-			array('.', false),
-			array('..', false),
-			array('back\\slash', false),
-			array('sl/ash', false),
-			array('lt<lt', true),
-			array('gt>gt', true),
-			array('col:on', true),
-			array('double"quote', true),
-			array('pi|pe', true),
-			array('dont?ask?questions?', true),
-			array('super*star', true),
-			array('new\nline', false),
+			['', false],
+			['     ', false],
+			['.', false],
+			['..', false],
+			['back\\slash', false],
+			['sl/ash', false],
+			['lt<lt', true],
+			['gt>gt', true],
+			['col:on', true],
+			['double"quote', true],
+			['pi|pe', true],
+			['dont?ask?questions?', true],
+			['super*star', true],
+			['new\nline', false],
 			// better disallow these to avoid unexpected trimming to have side effects
-			array(' ..', false),
-			array('.. ', false),
-			array('. ', false),
-			array(' .', false),
-		);
+			[' ..', false],
+			['.. ', false],
+			['. ', false],
+			[' .', false],
+		];
 	}
 
 	/**
@@ -269,16 +269,16 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function dataProviderForTestIsSharingDisabledForUser() {
-		return array(
+		return [
 			// existing groups, groups the user belong to, groups excluded from sharing, expected result
-			array(array('g1', 'g2', 'g3'), array(), array('g1'), false),
-			array(array('g1', 'g2', 'g3'), array(), array(), false),
-			array(array('g1', 'g2', 'g3'), array('g2'), array('g1'), false),
-			array(array('g1', 'g2', 'g3'), array('g2'), array(), false),
-			array(array('g1', 'g2', 'g3'), array('g1', 'g2'), array('g1'), false),
-			array(array('g1', 'g2', 'g3'), array('g1', 'g2'), array('g1', 'g2'), true),
-			array(array('g1', 'g2', 'g3'), array('g1', 'g2'), array('g1', 'g2', 'g3'), true),
-		);
+			[['g1', 'g2', 'g3'], [], ['g1'], false],
+			[['g1', 'g2', 'g3'], [], [], false],
+			[['g1', 'g2', 'g3'], ['g2'], ['g1'], false],
+			[['g1', 'g2', 'g3'], ['g2'], [], false],
+			[['g1', 'g2', 'g3'], ['g1', 'g2'], ['g1'], false],
+			[['g1', 'g2', 'g3'], ['g1', 'g2'], ['g1', 'g2'], true],
+			[['g1', 'g2', 'g3'], ['g1', 'g2'], ['g1', 'g2', 'g3'], true],
+		];
 	}
 
 	/**
@@ -312,32 +312,32 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	function defaultAppsProvider() {
-		return array(
+		return [
 			// none specified, default to files
-			array(
+			[
 				'',
 				'index.php/apps/files/',
-				array('files'),
-			),
+				['files'],
+			],
 			// unexisting or inaccessible app specified, default to files
-			array(
+			[
 				'unexist',
 				'index.php/apps/files/',
-				array('files'),
-			),
+				['files'],
+			],
 			// non-standard app
-			array(
+			[
 				'calendar',
 				'index.php/apps/calendar/',
-				array('files', 'calendar'),
-			),
+				['files', 'calendar'],
+			],
 			// non-standard app with fallback
-			array(
+			[
 				'contacts,calendar',
 				'index.php/apps/calendar/',
-				array('files', 'calendar'),
-			),
-		);
+				['files', 'calendar'],
+			],
+		];
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlWithoutFrontController() {
@@ -371,14 +371,14 @@ class UtilTest extends \Test\TestCase {
 		$this->assertFalse(\OCP\Util::needUpgrade());
 
 		$config->setSystemValue('version', '7.0.0.0');
-		\OC::$server->getSession()->set('OC_Version', array(7, 0, 0, 1));
-		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', array(null));
+		\OC::$server->getSession()->set('OC_Version', [7, 0, 0, 1]);
+		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', [null]);
 
 		$this->assertTrue(\OCP\Util::needUpgrade());
 
 		$config->setSystemValue('version', $oldConfigVersion);
 		\OC::$server->getSession()->set('OC_Version', $oldSessionVersion);
-		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', array(null));
+		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', [null]);
 
 		$this->assertFalse(\OCP\Util::needUpgrade());
 	}

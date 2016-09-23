@@ -430,7 +430,7 @@ class Users {
 					$getSubAdminsGroups,
 					$this->groupManager->getUserGroupIds($targetUser)
 				);
-				return new Result(array('groups' => $groups));
+				return new Result(['groups' => $groups]);
 			} else {
 				// Not permitted
 				return new Result(null, 997);

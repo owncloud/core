@@ -163,7 +163,7 @@ if (OC::checkUpgrade(false)) {
 		$eventSource->send('success', (string)$l->t('Checked database schema update for apps'));
 	});
 	$updater->listen('\OC\Updater', 'appUpgrade', function ($app, $version) use ($eventSource, $l) {
-		$eventSource->send('success', (string)$l->t('Updated "%s" to %s', array($app, $version)));
+		$eventSource->send('success', (string)$l->t('Updated "%s" to %s', [$app, $version]));
 	});
 	$updater->listen('\OC\Updater', 'incompatibleAppDisabled', function ($app) use (&$incompatibleApps) {
 		$incompatibleApps[]= $app;

@@ -167,9 +167,9 @@ class OC_Group {
 		$group = self::getManager()->get($gid);
 		$user = self::getUserManager()->get($uid);
 		if ($group and $user) {
-			OC_Hook::emit("OC_Group", "pre_removeFromGroup", array("run" => true, "uid" => $uid, "gid" => $gid));
+			OC_Hook::emit("OC_Group", "pre_removeFromGroup", ["run" => true, "uid" => $uid, "gid" => $gid]);
 			$group->removeUser($user);
-			OC_Hook::emit("OC_User", "post_removeFromGroup", array("uid" => $uid, "gid" => $gid));
+			OC_Hook::emit("OC_User", "post_removeFromGroup", ["uid" => $uid, "gid" => $gid]);
 			return true;
 		} else {
 			return false;
@@ -190,7 +190,7 @@ class OC_Group {
 		if ($user) {
 			return self::getManager()->getUserGroupIds($user);
 		} else {
-			return array();
+			return [];
 		}
 	}
 
@@ -205,7 +205,7 @@ class OC_Group {
 	 */
 	public static function getGroups($search = '', $limit = null, $offset = null) {
 		$groups = self::getManager()->search($search, $limit, $offset);
-		$groupIds = array();
+		$groupIds = [];
 		foreach ($groups as $group) {
 			$groupIds[] = $group->getGID();
 		}
@@ -235,13 +235,13 @@ class OC_Group {
 		$group = self::getManager()->get($gid);
 		if ($group) {
 			$users = $group->searchUsers($search, $limit, $offset);
-			$userIds = array();
+			$userIds = [];
 			foreach ($users as $user) {
 				$userIds[] = $user->getUID();
 			}
 			return $userIds;
 		} else {
-			return array();
+			return [];
 		}
 	}
 
@@ -254,7 +254,7 @@ class OC_Group {
 	 * @return array an array of user ids
 	 */
 	public static function usersInGroups($gids, $search = '', $limit = -1, $offset = 0) {
-		$users = array();
+		$users = [];
 		foreach ($gids as $gid) {
 			// TODO Need to apply limits to groups as total
 			$users = array_merge(array_diff(self::usersInGroup($gid, $search, $limit, $offset), $users), $users);
@@ -284,7 +284,7 @@ class OC_Group {
 	 * @return array an array of display names (Key) user ids (value)
 	 */
 	public static function displayNamesInGroups($gids, $search = '', $limit = -1, $offset = 0) {
-		$displayNames = array();
+		$displayNames = [];
 		foreach ($gids as $gid) {
 			// TODO Need to apply limits to groups as total
 			$diff = array_diff(

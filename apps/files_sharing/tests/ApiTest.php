@@ -712,12 +712,12 @@ class ApiTest extends TestCase {
 			->setPermissions(1);
 		$share3 = $this->shareManager->createShare($share3);
 
-		$testValues=array(
-			array('query' => $this->folder,
-				'expectedResult' => $this->folder . $this->filename),
-			array('query' => $this->folder . $this->subfolder,
-				'expectedResult' => $this->folder . $this->subfolder . $this->filename),
-		);
+		$testValues= [
+			['query' => $this->folder,
+				'expectedResult' => $this->folder . $this->filename],
+			['query' => $this->folder . $this->subfolder,
+				'expectedResult' => $this->folder . $this->subfolder . $this->filename],
+		];
 		foreach ($testValues as $value) {
 
 			$request = $this->createRequest(['path' => $value['query'], 'subfiles' => 'true']);
@@ -1002,7 +1002,7 @@ class ApiTest extends TestCase {
 		$share2 = $this->shareManager->createShare($share2);
 
 		// update permissions
-		$params = array();
+		$params = [];
 		$params['permissions'] = 1;
 
 		$request = $this->createRequest(['permissions' => 1]);
@@ -1292,7 +1292,7 @@ class ApiTest extends TestCase {
 	 */
 	public static function initTestMountPointsHook($data) {
 		if ($data['user'] === self::TEST_FILES_SHARING_API_USER1) {
-			\OC\Files\Filesystem::mount(self::$tempStorage, array(), '/' . self::TEST_FILES_SHARING_API_USER1 . '/files' . self::TEST_FOLDER_NAME);
+			\OC\Files\Filesystem::mount(self::$tempStorage, [], '/' . self::TEST_FILES_SHARING_API_USER1 . '/files' . self::TEST_FOLDER_NAME);
 		}
 	}
 
@@ -1300,7 +1300,7 @@ class ApiTest extends TestCase {
 	 * Tests mounting a folder that is an external storage mount point.
 	 */
 	public function testShareStorageMountPoint() {
-		self::$tempStorage = new \OC\Files\Storage\Temporary(array());
+		self::$tempStorage = new \OC\Files\Storage\Temporary([]);
 		self::$tempStorage->file_put_contents('test.txt', 'abcdef');
 		self::$tempStorage->getScanner()->scan('');
 
@@ -1401,10 +1401,10 @@ class ApiTest extends TestCase {
 		//manipulate stime so that both shares are older then the default expire date
 		$statement = "UPDATE `*PREFIX*share` SET `stime` = ? WHERE `share_type` = ?";
 		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute(array($shareCreated, \OCP\Share::SHARE_TYPE_LINK));
+		$result = $query->execute([$shareCreated, \OCP\Share::SHARE_TYPE_LINK]);
 		$this->assertSame(1, $result);
 		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute(array($shareCreated, \OCP\Share::SHARE_TYPE_USER));
+		$result = $query->execute([$shareCreated, \OCP\Share::SHARE_TYPE_USER]);
 		$this->assertSame(1, $result);
 
 		// now the link share should expire because of enforced default expire date

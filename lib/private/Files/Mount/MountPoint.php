@@ -46,7 +46,7 @@ class MountPoint implements IMountPoint {
 	 *
 	 * @var array
 	 */
-	protected $arguments = array();
+	protected $arguments = [];
 	protected $mountPoint;
 
 	/**
@@ -54,7 +54,7 @@ class MountPoint implements IMountPoint {
 	 *
 	 * @var array
 	 */
-	protected $mountOptions = array();
+	protected $mountOptions = [];
 
 	/**
 	 * @var \OC\Files\Storage\StorageFactory $loader
@@ -78,7 +78,7 @@ class MountPoint implements IMountPoint {
 	 */
 	public function __construct($storage, $mountpoint, $arguments = null, $loader = null, $mountOptions = null) {
 		if (is_null($arguments)) {
-			$arguments = array();
+			$arguments = [];
 		}
 		if (is_null($loader)) {
 			$this->loader = new StorageFactory();

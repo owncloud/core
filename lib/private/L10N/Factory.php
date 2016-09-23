@@ -93,7 +93,7 @@ class Factory implements IFactory {
 	public function get($app, $lang = null) {
 		$app = \OC_App::cleanAppId($app);
 		if ($lang !== null) {
-			$lang = str_replace(array('\0', '/', '\\', '..'), '', (string) $lang);
+			$lang = str_replace(['\0', '/', '\\', '..'], '', (string) $lang);
 		}
 		if ($lang === null || !$this->languageExists($app, $lang)) {
 			$lang = $this->findLanguage($app);
@@ -344,8 +344,8 @@ class Factory implements IFactory {
 			$plural = preg_replace( '#[^n0-9:\(\)\?\|\&=!<>+*/\%-]#', '', $matches[2] );
 
 			$body = str_replace(
-				array( 'plural', 'n', '$n$plurals', ),
-				array( '$plural', '$n', '$nplurals', ),
+				['plural', 'n', '$n$plurals',],
+				['$plural', '$n', '$nplurals',],
 				'nplurals='. $nplurals . '; plural=' . $plural
 			);
 

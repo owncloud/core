@@ -48,7 +48,7 @@ class Hasher implements IHasher {
 	/** @var IConfig */
 	private $config;
 	/** @var array Options passed to password_hash and password_needs_rehash */
-	private $options = array();
+	private $options = [];
 	/** @var string Salt used for legacy passwords */
 	private $legacySalt = null;
 	/** @var int Current version of the generated hash */
@@ -87,7 +87,7 @@ class Hasher implements IHasher {
 		$explodedString = explode('|', $prefixedHash, 2);
 		if(sizeof($explodedString) === 2) {
 			if((int)$explodedString[0] > 0) {
-				return array('version' => (int)$explodedString[0], 'hash' => $explodedString[1]);
+				return ['version' => (int)$explodedString[0], 'hash' => $explodedString[1]];
 			}
 		}
 

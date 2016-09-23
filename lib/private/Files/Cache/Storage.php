@@ -78,7 +78,7 @@ class Storage {
 	 */
 	public static function getStorageById($storageId) {
 		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
-		$result = \OC_DB::executeAudited($sql, array($storageId));
+		$result = \OC_DB::executeAudited($sql, [$storageId]);
 		return $result->fetchRow();
 	}
 
@@ -113,7 +113,7 @@ class Storage {
 	public static function getStorageId($numericId) {
 
 		$sql = 'SELECT `id` FROM `*PREFIX*storages` WHERE `numeric_id` = ?';
-		$result = \OC_DB::executeAudited($sql, array($numericId));
+		$result = \OC_DB::executeAudited($sql, [$numericId]);
 		if ($row = $result->fetchRow()) {
 			return $row['id'];
 		} else {
@@ -157,7 +157,7 @@ class Storage {
 	public function setAvailability($isAvailable) {
 		$sql = 'UPDATE `*PREFIX*storages` SET `available` = ?, `last_checked` = ? WHERE `id` = ?';
 		$available = $isAvailable ? 1 : 0;
-		\OC_DB::executeAudited($sql, array($available, time(), $this->storageId));
+		\OC_DB::executeAudited($sql, [$available, time(), $this->storageId]);
 	}
 
 	/**
@@ -179,11 +179,11 @@ class Storage {
 		$storageId = self::adjustStorageId($storageId);
 		$numericId = self::getNumericStorageId($storageId);
 		$sql = 'DELETE FROM `*PREFIX*storages` WHERE `id` = ?';
-		\OC_DB::executeAudited($sql, array($storageId));
+		\OC_DB::executeAudited($sql, [$storageId]);
 
 		if (!is_null($numericId)) {
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
-			\OC_DB::executeAudited($sql, array($numericId));
+			\OC_DB::executeAudited($sql, [$numericId]);
 		}
 	}
 }

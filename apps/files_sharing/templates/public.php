@@ -23,7 +23,7 @@ OCP\Util::addscript('files', 'keyboardshortcuts');
 ?>
 
 <?php if ($_['previewSupported']): /* This enables preview images for links (e.g. on Facebook, Google+, ...)*/?>
-	<link rel="image_src" href="<?php p(\OC::$server->getURLGenerator()->linkToRoute( 'core_ajax_public_preview', array('x' => $_['previewMaxX'], 'y' => $_['previewMaxY'], 'file' => $_['directory_path'], 't' => $_['dirToken']))); ?>" />
+	<link rel="image_src" href="<?php p(\OC::$server->getURLGenerator()->linkToRoute( 'core_ajax_public_preview', ['x' => $_['previewMaxX'], 'y' => $_['previewMaxY'], 'file' => $_['directory_path'], 't' => $_['dirToken']])); ?>" />
 <?php endif; ?>
 
 <div id="notification-container">
@@ -103,7 +103,7 @@ OCP\Util::addscript('files', 'keyboardshortcuts');
 				<div class="directDownload">
 					<a href="<?php p($_['downloadURL']); ?>" id="downloadFile" class="button">
 						<img class="svg" alt="" src="<?php print_unescaped(image_path("core", "actions/download.svg")); ?>"/>
-						<?php p($l->t('Download %s', array($_['filename'])))?> (<?php p($_['fileSize']) ?>)
+						<?php p($l->t('Download %s', [$_['filename']]))?> (<?php p($_['fileSize']) ?>)
 					</a>
 				</div>
 				<div class="directLink">

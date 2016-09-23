@@ -71,23 +71,23 @@ $userLang=$config->getUserValue( OC_User::getUser(), 'core', 'lang', OC_L10N::fi
 $languageCodes = \OC::$server->getL10NFactory()->findAvailableLanguages();
 
 // array of common languages
-$commonLangCodes = array(
+$commonLangCodes = [
 	'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
-);
+];
 
 $languageNames=include 'languageCodes.php';
-$languages=array();
-$commonLanguages = array();
+$languages= [];
+$commonLanguages = [];
 foreach($languageCodes as $lang) {
 	$l = \OC::$server->getL10N('settings', $lang);
 	// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
 	$potentialName = (string) $l->t('__language_name__');
 	if($l->getLanguageCode() === $lang && substr($potentialName, 0, 1) !== '_') {//first check if the language name is in the translation file
-		$ln=array('code'=>$lang, 'name'=> $potentialName);
+		$ln= ['code'=>$lang, 'name'=> $potentialName];
 	}elseif(isset($languageNames[$lang])) {
-		$ln=array('code'=>$lang, 'name'=>$languageNames[$lang]);
+		$ln= ['code'=>$lang, 'name'=>$languageNames[$lang]];
 	}else{//fallback to language code
-		$ln=array('code'=>$lang, 'name'=>$lang);
+		$ln= ['code'=>$lang, 'name'=>$lang];
 	}
 
 	// put appropriate languages into appropriate arrays, to print them sorted
@@ -126,11 +126,11 @@ usort( $languages, function ($a, $b) {
 });
 
 //links to clients
-$clients = array(
+$clients = [
 	'desktop' => $config->getSystemValue('customclient_desktop', $defaults->getSyncClientUrl()),
 	'android' => $config->getSystemValue('customclient_android', $defaults->getAndroidClientUrl()),
 	'ios'     => $config->getSystemValue('customclient_ios', $defaults->getiOSClientUrl())
-);
+];
 
 // only show root certificate import if external storages are enabled
 $enableCertImport = false;
@@ -201,15 +201,15 @@ $formsMap = array_map(function($form){
 		$anchor = strtolower($form['appId']);
 		$anchor = str_replace(' ', '-', $anchor);
 
-		return array(
+		return [
 			'anchor' => $anchor,
 			'section-name' => $sectionName,
 			'form' => $form
-		);
+		];
 	}
-	return array(
+	return [
 		'form' => $form
-	);
+	];
 }, $forms);
 
 $formsAndMore = array_merge($formsAndMore, $formsMap);

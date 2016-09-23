@@ -29,37 +29,37 @@ namespace OCA\Files\AppInfo;
 $application = new Application();
 $application->registerRoutes(
 	$this,
-	array(
-		'routes' => array(
-			array(
+	[
+		'routes' => [
+			[
 				'name' => 'API#getThumbnail',
 				'url' => '/api/v1/thumbnail/{x}/{y}/{file}',
 				'verb' => 'GET',
-				'requirements' => array('file' => '.+')
-			),
-			array(
+				'requirements' => ['file' => '.+']
+			],
+			[
 				'name' => 'API#updateFileTags',
 				'url' => '/api/v1/files/{path}',
 				'verb' => 'POST',
-				'requirements' => array('path' => '.+'),
-			),
-			array(
+				'requirements' => ['path' => '.+'],
+			],
+			[
 				'name' => 'API#updateFileSorting',
 				'url' => '/api/v1/sorting',
 				'verb' => 'POST'
-			),
-			array(
+			],
+			[
 				'name' => 'API#showHiddenFiles',
 				'url' => '/api/v1/showhidden',
 				'verb' => 'POST'
-			),
+			],
 			[
 				'name' => 'view#index',
 				'url' => '/',
 				'verb' => 'GET',
 			],
-		)
-	)
+		]
+	]
 );
 
 /** @var $this \OC\Route\Router */
@@ -72,6 +72,6 @@ $this->create('files_ajax_list', 'ajax/list.php')
 	->actionInclude('files/ajax/list.php');
 
 $this->create('download', 'download{file}')
-	->requirements(array('file' => '.*'))
+	->requirements(['file' => '.*'])
 	->actionInclude('files/download.php');
 

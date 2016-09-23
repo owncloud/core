@@ -39,7 +39,7 @@ use \OCA\Files_External\Lib\Config\IAuthMechanismProvider;
  */
 class Application extends App implements IBackendProvider, IAuthMechanismProvider {
 
-	public function __construct(array $urlParams = array()) {
+	public function __construct(array $urlParams = []) {
 		parent::__construct('files_external', $urlParams);
 
 		$container = $this->getContainer();

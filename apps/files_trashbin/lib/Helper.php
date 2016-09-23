@@ -40,7 +40,7 @@ class Helper {
 	 * @return \OCP\Files\FileInfo[]
 	 */
 	public static function getTrashFiles($dir, $user, $sortAttribute = '', $sortDescending = false) {
-		$result = array();
+		$result = [];
 		$timestamp = null;
 
 		$view = new \OC\Files\View('/' . $user . '/files_trashbin/files');
@@ -77,7 +77,7 @@ class Helper {
 					$originalPath = substr($originalPath, 0, -1);
 				}
 			}
-			$i = array(
+			$i = [
 				'name' => $name,
 				'mtime' => $timestamp,
 				'mimetype' => $entry->getMimeType(),
@@ -86,7 +86,7 @@ class Helper {
 				'size' => $entry->getSize(),
 				'etag' => '',
 				'permissions' => Constants::PERMISSION_ALL - Constants::PERMISSION_SHARE
-			);
+			];
 			if ($originalPath) {
 				$i['extraData'] = $originalPath . '/' . $id;
 			}
@@ -105,7 +105,7 @@ class Helper {
 	 * @param \OCP\Files\FileInfo[] $fileInfos file infos
 	 */
 	public static function formatFileInfos($fileInfos) {
-		$files = array();
+		$files = [];
 		$id = 0;
 		foreach ($fileInfos as $i) {
 			$entry = \OCA\Files\Helper::formatFileInfo($i);

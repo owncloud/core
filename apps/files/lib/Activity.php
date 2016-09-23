@@ -122,7 +122,7 @@ class Activity implements IExtension {
 	 */
 	public function getDefaultTypes($method) {
 		if ($method === self::METHOD_STREAM) {
-			$settings = array();
+			$settings = [];
 			$settings[] = self::TYPE_SHARE_CREATED;
 			$settings[] = self::TYPE_SHARE_CHANGED;
 			$settings[] = self::TYPE_SHARE_DELETED;

@@ -109,13 +109,13 @@ class Trashbin {
 	public static function getLocations($user) {
 		$query = \OC_DB::prepare('SELECT `id`, `timestamp`, `location`'
 			. ' FROM `*PREFIX*files_trash` WHERE `user`=?');
-		$result = $query->execute(array($user));
-		$array = array();
+		$result = $query->execute([$user]);
+		$array = [];
 		while ($row = $result->fetchRow()) {
 			if (isset($array[$row['id']])) {
 				$array[$row['id']][$row['timestamp']] = $row['location'];
 			} else {
-				$array[$row['id']] = array($row['timestamp'] => $row['location']);
+				$array[$row['id']] = [$row['timestamp'] => $row['location']];
 			}
 		}
 		return $array;
@@ -132,7 +132,7 @@ class Trashbin {
 	public static function getLocation($user, $filename, $timestamp) {
 		$query = \OC_DB::prepare('SELECT `location` FROM `*PREFIX*files_trash`'
 			. ' WHERE `user`=? AND `id`=? AND `timestamp`=?');
-		$result = $query->execute(array($user, $filename, $timestamp))->fetchAll();
+		$result = $query->execute([$user, $filename, $timestamp])->fetchAll();
 		if (isset($result[0]['location'])) {
 			return $result[0]['location'];
 		} else {
@@ -183,7 +183,7 @@ class Trashbin {
 
 		if ($view->file_exists($target)) {
 			$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
-			$result = $query->execute(array($targetFilename, $timestamp, $targetLocation, $user));
+			$result = $query->execute([$targetFilename, $timestamp, $targetLocation, $user]);
 			if (!$result) {
 				\OCP\Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated for the files owner', \OCP\Util::ERROR);
 			}
@@ -251,12 +251,12 @@ class Trashbin {
 
 		if ($moveSuccessful) {
 			$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
-			$result = $query->execute(array($filename, $timestamp, $location, $owner));
+			$result = $query->execute([$filename, $timestamp, $location, $owner]);
 			if (!$result) {
 				\OCP\Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated', \OCP\Util::ERROR);
 			}
-			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', array('filePath' => Filesystem::normalizePath($file_path),
-				'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp)));
+			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', ['filePath' => Filesystem::normalizePath($file_path),
+				'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp)]);
 
 			self::retainVersions($filename, $owner, $ownerPath, $timestamp);
 
@@ -400,14 +400,14 @@ class Trashbin {
 			$view->chroot('/' . $user . '/files');
 			$view->touch('/' . $location . '/' . $uniqueFilename, $mtime);
 			$view->chroot($fakeRoot);
-			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', array('filePath' => Filesystem::normalizePath('/' . $location . '/' . $uniqueFilename),
-				'trashPath' => Filesystem::normalizePath($file)));
+			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', ['filePath' => Filesystem::normalizePath('/' . $location . '/' . $uniqueFilename),
+				'trashPath' => Filesystem::normalizePath($file)]);
 
 			self::restoreVersions($view, $file, $filename, $uniqueFilename, $location, $timestamp);
 
 			if ($timestamp) {
 				$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
-				$query->execute(array($user, $filename, $timestamp));
+				$query->execute([$user, $filename, $timestamp]);
 			}
 
 			return true;
@@ -472,14 +472,14 @@ class Trashbin {
 		$fileInfos = $view->getDirectoryContent('files_trashbin/files');
 
 		// Array to store the relative path in (after the file is deleted, the view won't be able to relativise the path anymore)
-		$filePaths = array();
+		$filePaths = [];
 		foreach($fileInfos as $fileInfo){
 			$filePaths[] = $view->getRelativePath($fileInfo->getPath());
 		}
 		unset($fileInfos); // save memory
 
 		// Bulk PreDelete-Hook
-		\OC_Hook::emit('\OCP\Trashbin', 'preDeleteAll', array('paths' => $filePaths));
+		\OC_Hook::emit('\OCP\Trashbin', 'preDeleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
 		foreach($filePaths as $path){
@@ -489,10 +489,10 @@ class Trashbin {
 		// actual file deletion
 		$view->deleteAll('files_trashbin');
 		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=?');
-		$query->execute(array($user));
+		$query->execute([$user]);
 
 		// Bulk PostDelete-Hook
-		\OC_Hook::emit('\OCP\Trashbin', 'deleteAll', array('paths' => $filePaths));
+		\OC_Hook::emit('\OCP\Trashbin', 'deleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
 		foreach($filePaths as $path){
@@ -510,7 +510,7 @@ class Trashbin {
 	 * @param string $path
 	 */
 	protected static function emitTrashbinPreDelete($path){
-		\OC_Hook::emit('\OCP\Trashbin', 'preDelete', array('path' => $path));
+		\OC_Hook::emit('\OCP\Trashbin', 'preDelete', ['path' => $path]);
 	}
 
 	/**
@@ -518,7 +518,7 @@ class Trashbin {
 	 * @param string $path
 	 */
 	protected static function emitTrashbinPostDelete($path){
-		\OC_Hook::emit('\OCP\Trashbin', 'delete', array('path' => $path));
+		\OC_Hook::emit('\OCP\Trashbin', 'delete', ['path' => $path]);
 	}
 
 	/**
@@ -536,7 +536,7 @@ class Trashbin {
 
 		if ($timestamp) {
 			$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=? AND `id`=? AND `timestamp`=?');
-			$query->execute(array($user, $filename, $timestamp));
+			$query->execute([$user, $filename, $timestamp]);
 			$file = $filename . '.d' . $timestamp;
 		} else {
 			$file = $filename;
@@ -614,7 +614,7 @@ class Trashbin {
 	 */
 	public static function deleteUser($uid) {
 		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_trash` WHERE `user`=?');
-		return $query->execute(array($uid));
+		return $query->execute([$uid]);
 	}
 
 	/**
@@ -766,7 +766,7 @@ class Trashbin {
 			}
 		}
 
-		return array($size, $count);
+		return [$size, $count];
 	}
 
 	/**
@@ -816,7 +816,7 @@ class Trashbin {
 	 */
 	private static function getVersionsFromTrash($filename, $timestamp, $user) {
 		$view = new View('/' . $user . '/files_trashbin/versions');
-		$versions = array();
+		$versions = [];
 
 		//force rescan of versions, local storage may not have updated the cache
 		if (!self::$scannedVersions) {
@@ -965,6 +965,6 @@ class Trashbin {
 	 * @return string
 	 */
 	public static function preview_icon($path) {
-		return \OCP\Util::linkToRoute('core_ajax_trashbin_preview', array('x' => 32, 'y' => 32, 'file' => $path));
+		return \OCP\Util::linkToRoute('core_ajax_trashbin_preview', ['x' => 32, 'y' => 32, 'file' => $path]);
 	}
 }

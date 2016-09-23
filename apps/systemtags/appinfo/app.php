@@ -80,11 +80,11 @@ $eventDispatcher->addListener(MapperEvent::EVENT_UNASSIGN, $mapperListener);
 $l = \OC::$server->getL10N('systemtags');
 
 \OCA\Files\App::getNavigationManager()->add(
-	array(
+	[
 		'id' => 'systemtagsfilter',
 		'appname' => 'systemtags',
 		'script' => 'list.php',
 		'order' => 25,
 		'name' => $l->t('Tags')
-	)
+	]
 );

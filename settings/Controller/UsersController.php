@@ -306,12 +306,12 @@ class UsersController extends Controller {
 	 * @param string $email
 	 * @return DataResponse
 	 */
-	public function create($username, $password, array $groups=array(), $email='') {
+	public function create($username, $password, array $groups= [], $email='') {
 		if($email !== '' && !$this->mailer->validateMailAddress($email)) {
 			return new DataResponse(
-				array(
+				[
 					'message' => (string)$this->l10n->t('Invalid mail address')
-				),
+				],
 				Http::STATUS_UNPROCESSABLE_ENTITY
 			);
 		}
@@ -346,9 +346,9 @@ class UsersController extends Controller {
 
 		if ($this->userManager->userExists($username)) {
 			return new DataResponse(
-				array(
+				[
 					'message' => (string)$this->l10n->t('A user with that name already exists.')
-				),
+				],
 				Http::STATUS_CONFLICT
 			);
 		}
@@ -361,9 +361,9 @@ class UsersController extends Controller {
 				$message = $this->l10n->t('Unable to create user.');
 			}
 			return new DataResponse(
-				array(
+				[
 					'message' => (string) $message,
-				),
+				],
 				Http::STATUS_FORBIDDEN
 			);
 		}
@@ -386,10 +386,10 @@ class UsersController extends Controller {
 				$user->setEMailAddress($email);
 
 				// data for the mail template
-				$mailData = array(
+				$mailData = [
 					'username' => $username,
 					'url' => $this->urlGenerator->getAbsoluteURL('/')
-				);
+				];
 
 				$mail = new TemplateResponse('settings', 'email.new_user', $mailData, 'blank');
 				$mailContent = $mail->render();
@@ -408,7 +408,7 @@ class UsersController extends Controller {
 					$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
 					$this->mailer->send($message);
 				} catch(\Exception $e) {
-					$this->log->error("Can't send new user mail to $email: " . $e->getMessage(), array('app' => 'settings'));
+					$this->log->error("Can't send new user mail to $email: " . $e->getMessage(), ['app' => 'settings']);
 				}
 			}
 			// fetch users groups
@@ -421,9 +421,9 @@ class UsersController extends Controller {
 		}
 
 		return new DataResponse(
-			array(
+			[
 				'message' => (string)$this->l10n->t('Unable to create user.')
-			),
+			],
 			Http::STATUS_FORBIDDEN
 		);
 
@@ -441,24 +441,24 @@ class UsersController extends Controller {
 
 		if($userId === $id) {
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Unable to delete user.')
-					)
-				),
+					]
+				],
 				Http::STATUS_FORBIDDEN
 			);
 		}
 
 		if(!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Authentication error')
-					)
-				),
+					]
+				],
 				Http::STATUS_FORBIDDEN
 			);
 		}
@@ -466,24 +466,24 @@ class UsersController extends Controller {
 		if($user) {
 			if($user->delete()) {
 				return new DataResponse(
-					array(
+					[
 						'status' => 'success',
-						'data' => array(
+						'data' => [
 							'username' => $id
-						)
-					),
+						]
+					],
 					Http::STATUS_NO_CONTENT
 				);
 			}
 		}
 
 		return new DataResponse(
-			array(
+			[
 				'status' => 'error',
-				'data' => array(
+				'data' => [
 					'message' => (string)$this->l10n->t('Unable to delete user.')
-				)
-			),
+				]
+			],
 			Http::STATUS_FORBIDDEN
 		);
 	}
@@ -506,36 +506,36 @@ class UsersController extends Controller {
 			&& !$this->isAdmin
 			&& !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Forbidden')
-					)
-				),
+					]
+				],
 				Http::STATUS_FORBIDDEN
 			);
 		}
 
 		if($mailAddress !== '' && !$this->mailer->validateMailAddress($mailAddress)) {
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Invalid mail address')
-					)
-				),
+					]
+				],
 				Http::STATUS_UNPROCESSABLE_ENTITY
 			);
 		}
 
 		if(!$user){
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Invalid user')
-					)
-				),
+					]
+				],
 				Http::STATUS_UNPROCESSABLE_ENTITY
 			);
 		}
@@ -544,12 +544,12 @@ class UsersController extends Controller {
 		// for the permission of setting a email address
 		if(!$user->canChangeDisplayName()){
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Unable to change mail address')
-					)
-				),
+					]
+				],
 				Http::STATUS_FORBIDDEN
 			);
 		}
@@ -558,14 +558,14 @@ class UsersController extends Controller {
 		$user->setEMailAddress($mailAddress);
 
 		return new DataResponse(
-			array(
+			[
 				'status' => 'success',
-				'data' => array(
+				'data' => [
 					'username' => $id,
 					'mailAddress' => $mailAddress,
 					'message' => (string)$this->l10n->t('Email saved')
-				)
-			),
+				]
+			],
 			Http::STATUS_OK
 		);
 	}

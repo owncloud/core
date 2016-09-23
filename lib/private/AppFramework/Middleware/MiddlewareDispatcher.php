@@ -52,7 +52,7 @@ class MiddlewareDispatcher {
 	 * Constructor
 	 */
 	public function __construct(){
-		$this->middlewares = array();
+		$this->middlewares = [];
 		$this->middlewareCounter = 0;
 	}
 

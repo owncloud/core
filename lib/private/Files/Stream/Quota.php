@@ -31,7 +31,7 @@ namespace OC\Files\Stream;
  * or:    resource \OC\Files\Stream\Quota::wrap($stream, $limit)
  */
 class Quota {
-	private static $streams = array();
+	private static $streams = [];
 
 	/**
 	 * @var resource $source
@@ -49,14 +49,14 @@ class Quota {
 	 * @param int $limit
 	 */
 	public static function register($id, $stream, $limit) {
-		self::$streams[$id] = array($stream, $limit);
+		self::$streams[$id] = [$stream, $limit];
 	}
 
 	/**
 	 * remove all registered streams
 	 */
 	public static function clear() {
-		self::$streams = array();
+		self::$streams = [];
 	}
 
 	/**

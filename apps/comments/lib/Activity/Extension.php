@@ -79,12 +79,12 @@ class Extension implements IExtension {
 	public function getNotificationTypes($languageCode) {
 		$l = $this->getL10N($languageCode);
 
-		return array(
+		return [
 			self::APP_NAME => [
 				'desc' => (string) $l->t('<strong>Comments</strong> for files <em>(always listed in stream)</em>'),
 				'methods' => [self::METHOD_MAIL], // self::METHOD_STREAM is forced true by the default value
 			],
-		);
+		];
 	}
 
 	/**

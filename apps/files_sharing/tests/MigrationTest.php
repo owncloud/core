@@ -66,7 +66,7 @@ class MigrationTest extends TestCase {
 		$query = $this->connection->getQueryBuilder();
 		$query->insert($this->table)
 			->values(
-				array(
+				[
 					'share_type' => $query->createParameter('share_type'),
 					'share_with' => $query->createParameter('share_with'),
 					'uid_owner' => $query->createParameter('uid_owner'),
@@ -79,7 +79,7 @@ class MigrationTest extends TestCase {
 					'file_target' => $query->createParameter('file_target'),
 					'permissions' => $query->createParameter('permissions'),
 					'stime' => $query->createParameter('stime'),
-				)
+				]
 			);
 		// shared contact, shouldn't be modified
 		$query->setParameter('share_type', \OCP\Share::SHARE_TYPE_CONTACT)

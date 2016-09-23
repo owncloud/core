@@ -44,7 +44,7 @@ interface IURLGenerator {
 	 * @return string the url
 	 * @since 6.0.0
 	 */
-	public function linkToRoute($routeName, $arguments = array());
+	public function linkToRoute($routeName, $arguments = []);
 
 	/**
 	 * Returns the absolute URL for a route
@@ -53,7 +53,7 @@ interface IURLGenerator {
 	 * @return string the absolute url
 	 * @since 8.0.0
 	 */
-	public function linkToRouteAbsolute($routeName, $arguments = array());
+	public function linkToRouteAbsolute($routeName, $arguments = []);
 
 	/**
 	 * Returns an URL for an image or file
@@ -64,7 +64,7 @@ interface IURLGenerator {
 	 * @return string the url
 	 * @since 6.0.0
 	 */
-	public function linkTo($appName, $file, $args = array());
+	public function linkTo($appName, $file, $args = []);
 
 	/**
 	 * Returns the link to an image, like linkTo but only with prepending img/

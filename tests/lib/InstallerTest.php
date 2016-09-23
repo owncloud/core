@@ -40,14 +40,14 @@ class InstallerTest extends TestCase {
 		$tmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
 		\OC_Helper::copyr($pathOfTestApp, $tmp);
 
-		$data = array(
+		$data = [
 			'path' => $tmp,
 			'source' => 'path',
 			'appdata' => [
 				'id' => 'Bar',
 				'level' => 100,
 			]
-		);
+		];
 
 		Installer::installApp($data);
 		$isInstalled = Installer::isInstalled(self::$appid);
@@ -63,14 +63,14 @@ class InstallerTest extends TestCase {
 		$oldTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
 		\OC_Helper::copyr($pathOfOldTestApp, $oldTmp);
 
-		$oldData = array(
+		$oldData = [
 			'path' => $oldTmp,
 			'source' => 'path',
 			'appdata' => [
 				'id' => 'Bar',
 				'level' => 100,
 			]
-		);
+		];
 
 		$pathOfNewTestApp  = __DIR__;
 		$pathOfNewTestApp .= '/../data/';
@@ -79,14 +79,14 @@ class InstallerTest extends TestCase {
 		$newTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
 		\OC_Helper::copyr($pathOfNewTestApp, $newTmp);
 
-		$newData = array(
+		$newData = [
 			'path' => $newTmp,
 			'source' => 'path',
 			'appdata' => [
 				'id' => 'Bar',
 				'level' => 100,
 			]
-		);
+		];
 
 		Installer::installApp($oldData);
 		$oldVersionNumber = \OC_App::getAppVersion(self::$appid);

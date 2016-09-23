@@ -55,7 +55,7 @@ class OC_JSON{
 	public static function checkAppEnabled($app) {
 		if( !OC_App::isEnabled($app)) {
 			$l = \OC::$server->getL10N('lib');
-			self::error(array( 'data' => array( 'message' => $l->t('Application is not enabled'), 'error' => 'application_not_enabled' )));
+			self::error(['data' => ['message' => $l->t('Application is not enabled'), 'error' => 'application_not_enabled']]);
 			exit();
 		}
 	}
@@ -70,7 +70,7 @@ class OC_JSON{
 			|| $twoFactorAuthManger->needsSecondFactor()) {
 			$l = \OC::$server->getL10N('lib');
 			http_response_code(\OCP\AppFramework\Http::STATUS_UNAUTHORIZED);
-			self::error(array( 'data' => array( 'message' => $l->t('Authentication error'), 'error' => 'authentication_error' )));
+			self::error(['data' => ['message' => $l->t('Authentication error'), 'error' => 'authentication_error']]);
 			exit();
 		}
 	}
@@ -82,7 +82,7 @@ class OC_JSON{
 	public static function callCheck() {
 		if( !(\OC::$server->getRequest()->passesCSRFCheck())) {
 			$l = \OC::$server->getL10N('lib');
-			self::error(array( 'data' => array( 'message' => $l->t('Token expired. Please reload page.'), 'error' => 'token_expired' )));
+			self::error(['data' => ['message' => $l->t('Token expired. Please reload page.'), 'error' => 'token_expired']]);
 			exit();
 		}
 	}
@@ -94,7 +94,7 @@ class OC_JSON{
 	public static function checkAdminUser() {
 		if( !OC_User::isAdminUser(OC_User::getUser())) {
 			$l = \OC::$server->getL10N('lib');
-			self::error(array( 'data' => array( 'message' => $l->t('Authentication error'), 'error' => 'authentication_error' )));
+			self::error(['data' => ['message' => $l->t('Authentication error'), 'error' => 'authentication_error']]);
 			exit();
 		}
 	}
@@ -107,7 +107,7 @@ class OC_JSON{
 	public static function checkUserExists($user) {
 		if (!OCP\User::userExists($user)) {
 			$l = \OC::$server->getL10N('lib');
-			OCP\JSON::error(array('data' => array('message' => $l->t('Unknown user'), 'error' => 'unknown_user' )));
+			OCP\JSON::error(['data' => ['message' => $l->t('Unknown user'), 'error' => 'unknown_user']]);
 			exit;
 		}
 	}
@@ -126,7 +126,7 @@ class OC_JSON{
 
 		if(!$isSubAdmin) {
 			$l = \OC::$server->getL10N('lib');
-			self::error(array( 'data' => array( 'message' => $l->t('Authentication error'), 'error' => 'authentication_error' )));
+			self::error(['data' => ['message' => $l->t('Authentication error'), 'error' => 'authentication_error']]);
 			exit();
 		}
 	}
@@ -135,7 +135,7 @@ class OC_JSON{
 	 * Send json error msg
 	 * @deprecated Use a AppFramework JSONResponse instead
 	 */
-	public static function error($data = array()) {
+	public static function error($data = []) {
 		$data['status'] = 'error';
 		self::encodedPrint($data);
 	}
@@ -144,7 +144,7 @@ class OC_JSON{
 	 * Send json success msg
 	 * @deprecated Use a AppFramework JSONResponse instead
 	 */
-	public static function success($data = array()) {
+	public static function success($data = []) {
 		$data['status'] = 'success';
 		self::encodedPrint($data);
 	}
@@ -175,7 +175,7 @@ class OC_JSON{
 	 */
 	public static function encode($data) {
 		if (is_array($data)) {
-			array_walk_recursive($data, array('OC_JSON', 'to_string'));
+			array_walk_recursive($data, ['OC_JSON', 'to_string']);
 		}
 		return json_encode($data, JSON_HEX_TAG);
 	}

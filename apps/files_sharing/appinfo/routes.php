@@ -89,32 +89,32 @@ API::register('delete',
 
 API::register('get',
 		'/apps/files_sharing/api/v1/remote_shares',
-		array('\OCA\Files_Sharing\API\Remote', 'getShares'),
+		['\OCA\Files_Sharing\API\Remote', 'getShares'],
 		'files_sharing');
 
 API::register('get',
 		'/apps/files_sharing/api/v1/remote_shares/pending',
-		array('\OCA\Files_Sharing\API\Remote', 'getOpenShares'),
+		['\OCA\Files_Sharing\API\Remote', 'getOpenShares'],
 		'files_sharing');
 
 API::register('post',
 		'/apps/files_sharing/api/v1/remote_shares/pending/{id}',
-		array('\OCA\Files_Sharing\API\Remote', 'acceptShare'),
+		['\OCA\Files_Sharing\API\Remote', 'acceptShare'],
 		'files_sharing');
 
 API::register('delete',
 		'/apps/files_sharing/api/v1/remote_shares/pending/{id}',
-		array('\OCA\Files_Sharing\API\Remote', 'declineShare'),
+		['\OCA\Files_Sharing\API\Remote', 'declineShare'],
 		'files_sharing');
 
 API::register('get',
 		'/apps/files_sharing/api/v1/remote_shares/{id}',
-		array('\OCA\Files_Sharing\API\Remote', 'getShare'),
+		['\OCA\Files_Sharing\API\Remote', 'getShare'],
 		'files_sharing');
 
 API::register('delete',
 		'/apps/files_sharing/api/v1/remote_shares/{id}',
-		array('\OCA\Files_Sharing\API\Remote', 'unshare'),
+		['\OCA\Files_Sharing\API\Remote', 'unshare'],
 		'files_sharing');
 
 

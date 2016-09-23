@@ -35,5 +35,5 @@ try {
 	OC_JSON::success(['data' => ['update_required' => \OC_App::shouldUpgrade($app)]]);
 } catch (Exception $e) {
 	\OCP\Util::writeLog('core', $e->getMessage(), \OCP\Util::ERROR);
-	OC_JSON::error(array("data" => array("message" => $e->getMessage()) ));
+	OC_JSON::error(["data" => ["message" => $e->getMessage()]]);
 }

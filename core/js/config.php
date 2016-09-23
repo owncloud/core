@@ -46,7 +46,7 @@ $l = \OC::$server->getL10N('core');
 $defaults = new OC_Defaults();
 
 // Get the config
-$apps_paths = array();
+$apps_paths = [];
 foreach(OC_App::getEnabledApps() as $app) {
 	$apps_paths[$app] = OC_App::getAppWebPath($app);
 }
@@ -69,7 +69,7 @@ if($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())){
 	$dataLocation = false;
 }
 
-$array = array(
+$array = [
 	"oc_debug" => $config->getSystemValue('debug', false) ? 'true' : 'false',
 	"oc_isadmin" => OC_User::isAdminUser(OC_User::getUser()) ? 'true' : 'false',
 	"oc_dataURL" => is_string($dataLocation) ? "\"".$dataLocation."\"" : 'false',
@@ -77,7 +77,7 @@ $array = array(
 	"oc_appswebroots" =>  str_replace('\\/', '/', json_encode($apps_paths)), // Ugly unescape slashes waiting for better solution
 	"datepickerFormatDate" => json_encode($l->l('jsdate', null)),
 	"dayNames" =>  json_encode(
-		array(
+		[
 			(string)$l->t('Sunday'),
 			(string)$l->t('Monday'),
 			(string)$l->t('Tuesday'),
@@ -85,10 +85,10 @@ $array = array(
 			(string)$l->t('Thursday'),
 			(string)$l->t('Friday'),
 			(string)$l->t('Saturday')
-		)
+		]
 	),
 	"dayNamesShort" =>  json_encode(
-		array(
+		[
 			(string)$l->t('Sun.'),
 			(string)$l->t('Mon.'),
 			(string)$l->t('Tue.'),
@@ -96,10 +96,10 @@ $array = array(
 			(string)$l->t('Thu.'),
 			(string)$l->t('Fri.'),
 			(string)$l->t('Sat.')
-		)
+		]
 	),
 	"dayNamesMin" =>  json_encode(
-		array(
+		[
 			(string)$l->t('Su'),
 			(string)$l->t('Mo'),
 			(string)$l->t('Tu'),
@@ -107,10 +107,10 @@ $array = array(
 			(string)$l->t('Th'),
 			(string)$l->t('Fr'),
 			(string)$l->t('Sa')
-		)
+		]
 	),
 	"monthNames" => json_encode(
-		array(
+		[
 			(string)$l->t('January'),
 			(string)$l->t('February'),
 			(string)$l->t('March'),
@@ -123,10 +123,10 @@ $array = array(
 			(string)$l->t('October'),
 			(string)$l->t('November'),
 			(string)$l->t('December')
-		)
+		]
 	),
 	"monthNamesShort" => json_encode(
-		array(
+		[
 			(string)$l->t('Jan.'),
 			(string)$l->t('Feb.'),
 			(string)$l->t('Mar.'),
@@ -139,11 +139,11 @@ $array = array(
 			(string)$l->t('Oct.'),
 			(string)$l->t('Nov.'),
 			(string)$l->t('Dec.')
-		)
+		]
 	),
 	"firstDay" => json_encode($l->l('firstday', null)) ,
 	"oc_config" => json_encode(
-		array(
+		[
 			'session_lifetime'	=> min(\OCP\Config::getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
 			'session_keepalive'	=> \OCP\Config::getSystemValue('session_keepalive', true),
 			'version'			=> implode('.', \OCP\Util::getVersion()),
@@ -151,10 +151,10 @@ $array = array(
 			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
 			'lost_password_link'=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
 			'modRewriteWorking'	=> (getenv('front_controller_active') === 'true'),
-		)
+		]
 	),
 	"oc_appconfig" => json_encode(
-			array("core" => array(
+			["core" => [
 				'defaultExpireDateEnabled' => $defaultExpireDateEnabled,
 				'defaultExpireDate' => $defaultExpireDate,
 				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
@@ -164,11 +164,11 @@ $array = array(
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,
 				'federatedCloudShareDoc' => \OC::$server->getURLGenerator()->linkToDocs('user-sharing-federated'),
 				'allowGroupSharing' => \OC::$server->getShareManager()->allowGroupSharing()
-				)
-			)
+			]
+			]
 	),
 	"oc_defaults" => json_encode(
-		array(
+		[
 			'entity' => $defaults->getEntity(),
 			'name' => $defaults->getName(),
 			'title' => $defaults->getTitle(),
@@ -181,12 +181,12 @@ $array = array(
 			'shortFooter' => $defaults->getShortFooter(),
 			'longFooter' => $defaults->getLongFooter(),
 			'folder' => OC_Util::getTheme(),
-		)
+		]
 	)
-);
+];
 
 // Allow hooks to modify the output values
-OC_Hook::emit('\OCP\Config', 'js', array('array' => &$array));
+OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
 
 // Echo it
 foreach ($array as  $setting => $value) {

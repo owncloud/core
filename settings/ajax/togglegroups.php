@@ -33,7 +33,7 @@ $group = (string)$_POST['group'];
 
 if($username === OC_User::getUser() && $group === "admin" &&  OC_User::isAdminUser($username)) {
 	$l = \OC::$server->getL10N('core');
-	OC_JSON::error(array( 'data' => array( 'message' => $l->t('Admins can\'t remove themself from the admin group'))));
+	OC_JSON::error(['data' => ['message' => $l->t('Admins can\'t remove themself from the admin group')]]);
 	exit();
 }
 
@@ -51,7 +51,7 @@ if(!OC_User::isAdminUser(OC_User::getUser())
 	&& (!$isUserAccessible
 		|| !$isGroupAccessible)) {
 	$l = \OC::$server->getL10N('core');
-	OC_JSON::error(array( 'data' => array( 'message' => $l->t('Authentication error') )));
+	OC_JSON::error(['data' => ['message' => $l->t('Authentication error')]]);
 	exit();
 }
 
@@ -77,8 +77,8 @@ else{
 
 // Return Success story
 if( $success ) {
-	OC_JSON::success(array("data" => array( "username" => $username, "action" => $action, "groupname" => $group )));
+	OC_JSON::success(["data" => ["username" => $username, "action" => $action, "groupname" => $group]]);
 }
 else{
-	OC_JSON::error(array("data" => array( "message" => $error )));
+	OC_JSON::error(["data" => ["message" => $error]]);
 }

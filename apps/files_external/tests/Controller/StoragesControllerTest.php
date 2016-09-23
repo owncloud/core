@@ -107,7 +107,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			'mount',
 			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],
@@ -149,7 +149,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			'mount',
 			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],
@@ -162,11 +162,11 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	}
 
 	function mountPointNamesProvider() {
-		return array(
-			array(''),
-			array('/'),
-			array('//'),
-		);
+		return [
+			[''],
+			['/'],
+			['//'],
+		];
 	}
 
 	/**
@@ -191,7 +191,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			$mountPoint,
 			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],
@@ -205,7 +205,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			$mountPoint,
 			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],
@@ -228,7 +228,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			'mount',
 			'\OC\Files\Storage\InvalidStorage',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],
@@ -242,7 +242,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			'mount',
 			'\OC\Files\Storage\InvalidStorage',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],
@@ -282,7 +282,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			'mount',
 			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],
@@ -378,7 +378,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 			'mount',
 			'\OCA\Files_External\Lib\Storage\SMB',
 			'\OCA\Files_External\Lib\Auth\NullMechanism',
-			array(),
+			[],
 			[],
 			[],
 			[],

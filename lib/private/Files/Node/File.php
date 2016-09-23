@@ -49,10 +49,10 @@ class File extends Node implements \OCP\Files\File {
 	 */
 	public function putContent($data) {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_UPDATE)) {
-			$this->sendHooks(array('preWrite'));
+			$this->sendHooks(['preWrite']);
 			$this->view->file_put_contents($this->path, $data);
 			$this->fileInfo = null;
-			$this->sendHooks(array('postWrite'));
+			$this->sendHooks(['postWrite']);
 		} else {
 			throw new NotPermittedException();
 		}
@@ -64,8 +64,8 @@ class File extends Node implements \OCP\Files\File {
 	 * @throws \OCP\Files\NotPermittedException
 	 */
 	public function fopen($mode) {
-		$preHooks = array();
-		$postHooks = array();
+		$preHooks = [];
+		$postHooks = [];
 		$requiredPermissions = \OCP\Constants::PERMISSION_READ;
 		switch ($mode) {
 			case 'r+':
@@ -100,11 +100,11 @@ class File extends Node implements \OCP\Files\File {
 
 	public function delete() {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
-			$this->sendHooks(array('preDelete'));
+			$this->sendHooks(['preDelete']);
 			$fileInfo = $this->getFileInfo();
 			$this->view->unlink($this->path);
 			$nonExisting = new NonExistingFile($this->root, $this->view, $this->path, $fileInfo);
-			$this->root->emit('\OC\Files', 'postDelete', array($nonExisting));
+			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
 			$this->exists = false;
 			$this->fileInfo = null;
 		} else {
@@ -122,12 +122,12 @@ class File extends Node implements \OCP\Files\File {
 		$parent = $this->root->get(dirname($targetPath));
 		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
 			$nonExisting = new NonExistingFile($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preCopy', array($this, $nonExisting));
-			$this->root->emit('\OC\Files', 'preWrite', array($nonExisting));
+			$this->root->emit('\OC\Files', 'preCopy', [$this, $nonExisting]);
+			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
 			$this->view->copy($this->path, $targetPath);
 			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postCopy', array($this, $targetNode));
-			$this->root->emit('\OC\Files', 'postWrite', array($targetNode));
+			$this->root->emit('\OC\Files', 'postCopy', [$this, $targetNode]);
+			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
 			return $targetNode;
 		} else {
 			throw new NotPermittedException();
@@ -144,12 +144,12 @@ class File extends Node implements \OCP\Files\File {
 		$parent = $this->root->get(dirname($targetPath));
 		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
 			$nonExisting = new NonExistingFile($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preRename', array($this, $nonExisting));
-			$this->root->emit('\OC\Files', 'preWrite', array($nonExisting));
+			$this->root->emit('\OC\Files', 'preRename', [$this, $nonExisting]);
+			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
 			$this->view->rename($this->path, $targetPath);
 			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postRename', array($this, $targetNode));
-			$this->root->emit('\OC\Files', 'postWrite', array($targetNode));
+			$this->root->emit('\OC\Files', 'postRename', [$this, $targetNode]);
+			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
 			$this->path = $targetPath;
 			$this->fileInfo = null;
 			return $targetNode;

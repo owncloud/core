@@ -342,7 +342,7 @@ class Session implements IUserSession, Emitter {
 		Util::emitHook(
 			'\OCA\Files_Sharing\API\Server2Server',
 			'preLoginNameUsedAsUserName',
-			array('uid' => &$username)
+			['uid' => &$username]
 		);
 		$user = $this->manager->get($username);
 		if (is_null($user)) {
@@ -421,7 +421,7 @@ class Session implements IUserSession, Emitter {
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
 	 */
 	private function loginWithPassword($uid, $password) {
-		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
+		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
 		$user = $this->manager->checkPassword($uid, $password);
 		if ($user === false) {
 			// Password check failed
@@ -431,7 +431,7 @@ class Session implements IUserSession, Emitter {
 		if ($user->isEnabled()) {
 			$this->setUser($user);
 			$this->setLoginName($uid);
-			$this->manager->emit('\OC\User', 'postLogin', array($user, $password));
+			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin();
 				return true;
@@ -470,7 +470,7 @@ class Session implements IUserSession, Emitter {
 			// Ignore and use empty string instead
 		}
 
-		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
+		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
 
 		$user = $this->manager->get($uid);
 		if (is_null($user)) {
@@ -487,7 +487,7 @@ class Session implements IUserSession, Emitter {
 		//login
 		$this->setUser($user);
 		$this->setLoginName($dbToken->getLoginName());
-		$this->manager->emit('\OC\User', 'postLogin', array($user, $password));
+		$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
 		if ($this->isLoggedIn()) {
 			$this->prepareUserLogin();
@@ -667,7 +667,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function loginWithCookie($uid, $currentToken) {
 		$this->session->regenerateId();
-		$this->manager->emit('\OC\User', 'preRememberedLogin', array($uid));
+		$this->manager->emit('\OC\User', 'preRememberedLogin', [$uid]);
 		$user = $this->manager->get($uid);
 		if (is_null($user)) {
 			// user does not exist
@@ -688,7 +688,7 @@ class Session implements IUserSession, Emitter {
 
 		//login
 		$this->setUser($user);
-		$this->manager->emit('\OC\User', 'postRememberedLogin', array($user));
+		$this->manager->emit('\OC\User', 'postRememberedLogin', [$user]);
 		return true;
 	}
 
