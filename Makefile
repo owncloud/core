@@ -11,7 +11,7 @@ endif
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 BOWER=$(NODE_PREFIX)/node_modules/bower/bin/bower
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
-PHPUNIT="$(PWD)/lib/composer/phpunit/phpunit/phpunit"
+PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN=build/composer.phar
 
 TEST_DATABASE=sqlite
