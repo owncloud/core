@@ -6,7 +6,7 @@ OC.L10N.register(
     "Unknown error" : "Error desconegut",
     "Files" : "Fitxers",
     "All files" : "Tots els fitxers",
-    "Home" : "Casa",
+    "Home" : "Inici",
     "Close" : "Tanca",
     "Favorites" : "Preferits",
     "Upload cancelled." : "La pujada s'ha cancel·lat.",
