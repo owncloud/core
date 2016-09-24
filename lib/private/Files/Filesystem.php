@@ -79,7 +79,7 @@ class Filesystem {
 	 */
 	static private $defaultInstance;
 
-	static private $usersSetup = array();
+	static private $usersSetup = [];
 
 	static private $normalizedPathCache = null;
 
@@ -293,7 +293,7 @@ class Filesystem {
 		if (!self::$mounts) {
 			\OC_Util::setupFS();
 		}
-		$result = array();
+		$result = [];
 		$mounts = self::$mounts->findIn($path);
 		foreach ($mounts as $mount) {
 			$result[] = $mount->getMountPoint();
@@ -349,9 +349,9 @@ class Filesystem {
 		}
 		$mount = self::$mounts->find($path);
 		if ($mount) {
-			return array($mount->getStorage(), rtrim($mount->getInternalPath($path), '/'));
+			return [$mount->getStorage(), rtrim($mount->getInternalPath($path), '/')];
 		} else {
-			return array(null, null);
+			return [null, null];
 		}
 	}
 
@@ -420,13 +420,13 @@ class Filesystem {
 		// Chance to mount for other storages
 		if ($userObject) {
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
-			array_walk($mounts, array(self::$mounts, 'addMount'));
+			array_walk($mounts, [self::$mounts, 'addMount']);
 			$mounts[] = $homeMount;
 			$mountConfigManager->registerMounts($userObject, $mounts);
 		}
 
 		self::listenForNewMountProviders($mountConfigManager, $userManager);
-		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user));
+		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', ['user' => $user]);
 	}
 
 	/**
@@ -443,7 +443,7 @@ class Filesystem {
 					$userObject = $userManager->get($user);
 					if ($userObject) {
 						$mounts = $provider->getMountsForUser($userObject, Filesystem::getLoader());
-						array_walk($mounts, array(self::$mounts, 'addMount'));
+						array_walk($mounts, [self::$mounts, 'addMount']);
 					}
 				}
 			});
@@ -486,7 +486,7 @@ class Filesystem {
 	 */
 	public static function clearMounts() {
 		if (self::$mounts) {
-			self::$usersSetup = array();
+			self::$usersSetup = [];
 			self::$mounts->clear();
 		}
 	}
@@ -612,12 +612,12 @@ class Filesystem {
 	* @param array $ed
 	* @return boolean
 	*/
-	static public function isForbiddenFileOrDir($FileOrDir, $ed = array()) {
-		$excluded = array();
-		$blacklist = array();
-		$path_parts = array();
-		$ppx = array();
-		$blacklist = \OC::$server->getSystemConfig()->getValue('blacklisted_files', array('.htaccess'));
+	static public function isForbiddenFileOrDir($FileOrDir, $ed = []) {
+		$excluded = [];
+		$blacklist = [];
+		$path_parts = [];
+		$ppx = [];
+		$blacklist = \OC::$server->getSystemConfig()->getValue('blacklisted_files', ['.htaccess']);
 		if ($ed) {
 			$excluded = $ed;
 		} else {

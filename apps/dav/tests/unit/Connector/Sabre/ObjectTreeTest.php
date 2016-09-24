@@ -101,28 +101,28 @@ class ObjectTreeTest extends TestCase {
 	}
 
 	function moveFailedInvalidCharsProvider() {
-		return array(
-			array('a/b', 'a/*', array('a' => true, 'a/b' => true, 'a/c*' => false), array()),
-		);
+		return [
+			['a/b', 'a/*', ['a' => true, 'a/b' => true, 'a/c*' => false], []],
+		];
 	}
 
 	function moveFailedProvider() {
-		return array(
-			array('a/b', 'a/c', array('a' => false, 'a/b' => false, 'a/c' => false), array()),
-			array('a/b', 'b/b', array('a' => false, 'a/b' => false, 'b' => false, 'b/b' => false), array()),
-			array('a/b', 'b/b', array('a' => false, 'a/b' => true, 'b' => false, 'b/b' => false), array()),
-			array('a/b', 'b/b', array('a' => true, 'a/b' => true, 'b' => false, 'b/b' => false), array()),
-			array('a/b', 'b/b', array('a' => true, 'a/b' => true, 'b' => true, 'b/b' => false), array('a/b' => false)),
-			array('a/b', 'a/c', array('a' => false, 'a/b' => true, 'a/c' => false), array()),
-		);
+		return [
+			['a/b', 'a/c', ['a' => false, 'a/b' => false, 'a/c' => false], []],
+			['a/b', 'b/b', ['a' => false, 'a/b' => false, 'b' => false, 'b/b' => false], []],
+			['a/b', 'b/b', ['a' => false, 'a/b' => true, 'b' => false, 'b/b' => false], []],
+			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => false, 'b/b' => false], []],
+			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false], ['a/b' => false]],
+			['a/b', 'a/c', ['a' => false, 'a/b' => true, 'a/c' => false], []],
+		];
 	}
 
 	function moveSuccessProvider() {
-		return array(
-			array('a/b', 'b/b', array('a' => true, 'a/b' => true, 'b' => true, 'b/b' => false), array('a/b' => true)),
+		return [
+			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false], ['a/b' => true]],
 			// older files with special chars can still be renamed to valid names
-			array('a/b*', 'b/b', array('a' => true, 'a/b*' => true, 'b' => true, 'b/b' => false), array('a/b*' => true)),
-		);
+			['a/b*', 'b/b', ['a' => true, 'a/b*' => true, 'b' => true, 'b/b' => false], ['a/b*' => true]],
+		];
 	}
 
 	/**
@@ -221,7 +221,7 @@ class ObjectTreeTest extends TestCase {
 
 		$rootDir = new Directory($view, $info);
 		$objectTree = $this->getMockBuilder(ObjectTree::class)
-			->setMethods(array('nodeExists', 'getNodeForPath'))
+			->setMethods(['nodeExists', 'getNodeForPath'])
 			->setConstructorArgs([$rootDir, $view])
 			->getMock();
 
@@ -287,72 +287,72 @@ class ObjectTreeTest extends TestCase {
 	}
 
 	function nodeForPathProvider() {
-		return array(
+		return [
 			// regular file
-			array(
+			[
 				'regularfile.txt',
 				'regularfile.txt',
 				'regularfile.txt',
 				'file',
 				false
-			),
+			],
 			// regular directory
-			array(
+			[
 				'regulardir',
 				'regulardir',
 				'regulardir',
 				'dir',
 				false
-			),
+			],
 			// regular file with chunking
-			array(
+			[
 				'regularfile.txt',
 				'regularfile.txt',
 				'regularfile.txt',
 				'file',
 				true
-			),
+			],
 			// regular directory with chunking
-			array(
+			[
 				'regulardir',
 				'regulardir',
 				'regulardir',
 				'dir',
 				true
-			),
+			],
 			// file with chunky file name
-			array(
+			[
 				'regularfile.txt-chunking-123566789-10-1',
 				'regularfile.txt',
 				'regularfile.txt',
 				'file',
 				true
-			),
+			],
 			// regular file in subdir
-			array(
+			[
 				'subdir/regularfile.txt',
 				'subdir/regularfile.txt',
 				'regularfile.txt',
 				'file',
 				false
-			),
+			],
 			// regular directory in subdir
-			array(
+			[
 				'subdir/regulardir',
 				'subdir/regulardir',
 				'regulardir',
 				'dir',
 				false
-			),
+			],
 			// file with chunky file name in subdir
-			array(
+			[
 				'subdir/regularfile.txt-chunking-123566789-10-1',
 				'subdir/regularfile.txt',
 				'regularfile.txt',
 				'file',
 				true
-			),
-		);
+			],
+		];
 	}
 
 	/**

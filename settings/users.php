@@ -83,7 +83,7 @@ if($isAdmin) {
 	$subAdmins = $result;
 }else{
 	/* Retrieve group IDs from $groups array, so we can pass that information into OC_Group::displayNamesInGroups() */
-	$gids = array();
+	$gids = [];
 	foreach($groups as $group) {
 		if (isset($group['id'])) {
 			$gids[] = $group['id'];
@@ -98,11 +98,11 @@ $quotaPreset=explode(',', $quotaPreset);
 foreach($quotaPreset as &$preset) {
 	$preset=trim($preset);
 }
-$quotaPreset=array_diff($quotaPreset, array('default', 'none'));
+$quotaPreset=array_diff($quotaPreset, ['default', 'none']);
 
 $defaultQuota=$config->getAppValue('files', 'default_quota', 'none');
 $defaultQuotaIsUserDefined=array_search($defaultQuota, $quotaPreset)===false
-	&& array_search($defaultQuota, array('none', 'default'))===false;
+	&& array_search($defaultQuota, ['none', 'default'])===false;
 
 \OC::$server->getEventDispatcher()->dispatch('OC\Settings\Users::loadAdditionalScripts');
 

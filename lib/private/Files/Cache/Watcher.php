@@ -33,7 +33,7 @@ class Watcher implements IWatcher {
 
 	protected $watchPolicy = self::CHECK_ONCE;
 
-	protected $checkedPaths = array();
+	protected $checkedPaths = [];
 
 	/**
 	 * @var \OC\Files\Storage\Storage $storage

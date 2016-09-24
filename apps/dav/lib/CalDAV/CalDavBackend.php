@@ -1221,7 +1221,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			}
 		}
 
-		$valuesToInsert = array();
+		$valuesToInsert = [];
 
 		$query = $this->db->getQueryBuilder();
 

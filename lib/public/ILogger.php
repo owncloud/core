@@ -40,7 +40,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function emergency($message, array $context = array());
+	public function emergency($message, array $context = []);
 
 	/**
 	 * Action must be taken immediately.
@@ -50,7 +50,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function alert($message, array $context = array());
+	public function alert($message, array $context = []);
 
 	/**
 	 * Critical conditions.
@@ -60,7 +60,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function critical($message, array $context = array());
+	public function critical($message, array $context = []);
 
 	/**
 	 * Runtime errors that do not require immediate action but should typically
@@ -71,7 +71,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function error($message, array $context = array());
+	public function error($message, array $context = []);
 
 	/**
 	 * Exceptional occurrences that are not errors.
@@ -81,7 +81,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function warning($message, array $context = array());
+	public function warning($message, array $context = []);
 
 	/**
 	 * Normal but significant events.
@@ -91,7 +91,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function notice($message, array $context = array());
+	public function notice($message, array $context = []);
 
 	/**
 	 * Interesting events.
@@ -101,7 +101,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function info($message, array $context = array());
+	public function info($message, array $context = []);
 
 	/**
 	 * Detailed debug information.
@@ -111,7 +111,7 @@ interface ILogger {
 	 * @return null
 	 * @since 7.0.0
 	 */
-	public function debug($message, array $context = array());
+	public function debug($message, array $context = []);
 
 	/**
 	 * Logs with an arbitrary level.
@@ -122,7 +122,7 @@ interface ILogger {
 	 * @return mixed
 	 * @since 7.0.0
 	 */
-	public function log($level, $message, array $context = array());
+	public function log($level, $message, array $context = []);
 
 	/**
 	 * Logs an exception very detailed
@@ -140,5 +140,5 @@ interface ILogger {
 	 * @return void
 	 * @since 8.2.0
 	 */
-	public function logException($exception, array $context = array());
+	public function logException($exception, array $context = []);
 }

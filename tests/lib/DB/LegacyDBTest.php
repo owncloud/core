@@ -74,15 +74,15 @@ class LegacyDBTest extends \Test\TestCase {
 
 	public function testQuotes() {
 		$query = OC_DB::prepare('SELECT `fullname` FROM `*PREFIX*'.$this->table2.'` WHERE `uri` = ?');
-		$result = $query->execute(array('uri_1'));
+		$result = $query->execute(['uri_1']);
 		$this->assertTrue((bool)$result);
 		$row = $result->fetchRow();
 		$this->assertFalse($row);
 		$query = OC_DB::prepare('INSERT INTO `*PREFIX*'.$this->table2.'` (`fullname`,`uri`) VALUES (?,?)');
-		$result = $query->execute(array('fullname test', 'uri_1'));
+		$result = $query->execute(['fullname test', 'uri_1']);
 		$this->assertEquals(1, $result);
 		$query = OC_DB::prepare('SELECT `fullname`,`uri` FROM `*PREFIX*'.$this->table2.'` WHERE `uri` = ?');
-		$result = $query->execute(array('uri_1'));
+		$result = $query->execute(['uri_1']);
 		$this->assertTrue((bool)$result);
 		$row = $result->fetchRow();
 		$this->assertArrayHasKey('fullname', $row);
@@ -96,50 +96,50 @@ class LegacyDBTest extends \Test\TestCase {
 	 */
 	public function testNOW() {
 		$query = OC_DB::prepare('INSERT INTO `*PREFIX*'.$this->table2.'` (`fullname`,`uri`) VALUES (NOW(),?)');
-		$result = $query->execute(array('uri_2'));
+		$result = $query->execute(['uri_2']);
 		$this->assertEquals(1, $result);
 		$query = OC_DB::prepare('SELECT `fullname`,`uri` FROM `*PREFIX*'.$this->table2.'` WHERE `uri` = ?');
-		$result = $query->execute(array('uri_2'));
+		$result = $query->execute(['uri_2']);
 		$this->assertTrue((bool)$result);
 	}
 
 	public function testUNIX_TIMESTAMP() {
 		$query = OC_DB::prepare('INSERT INTO `*PREFIX*'.$this->table2.'` (`fullname`,`uri`) VALUES (UNIX_TIMESTAMP(),?)');
-		$result = $query->execute(array('uri_3'));
+		$result = $query->execute(['uri_3']);
 		$this->assertEquals(1, $result);
 		$query = OC_DB::prepare('SELECT `fullname`,`uri` FROM `*PREFIX*'.$this->table2.'` WHERE `uri` = ?');
-		$result = $query->execute(array('uri_3'));
+		$result = $query->execute(['uri_3']);
 		$this->assertTrue((bool)$result);
 	}
 	
 	public function testLastInsertId() {
 		$query = OC_DB::prepare('INSERT INTO `*PREFIX*'.$this->table2.'` (`fullname`,`uri`) VALUES (?,?)');
-		$result1 = OC_DB::executeAudited($query, array('insertid 1','uri_1'));
+		$result1 = OC_DB::executeAudited($query, ['insertid 1','uri_1']);
 		$id1 = \OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*'.$this->table2);
 		
 		// we don't know the id we should expect, so insert another row
-		$result2 = OC_DB::executeAudited($query, array('insertid 2','uri_2'));
+		$result2 = OC_DB::executeAudited($query, ['insertid 2','uri_2']);
 		$id2 = \OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*'.$this->table2);
 		// now we can check if the two ids are in correct order
 		$this->assertGreaterThan($id1, $id2);
 	}
 	
 	public function testinsertIfNotExist() {
-		$categoryEntries = array(
-				array('user' => 'test', 'type' => 'contact', 'category' => 'Family',    'expectedResult' => 1),
-				array('user' => 'test', 'type' => 'contact', 'category' => 'Friends',   'expectedResult' => 1),
-				array('user' => 'test', 'type' => 'contact', 'category' => 'Coworkers', 'expectedResult' => 1),
-				array('user' => 'test', 'type' => 'contact', 'category' => 'Coworkers', 'expectedResult' => 0),
-				array('user' => 'test', 'type' => 'contact', 'category' => 'School',    'expectedResult' => 1),
-			);
+		$categoryEntries = [
+				['user' => 'test', 'type' => 'contact', 'category' => 'Family',    'expectedResult' => 1],
+				['user' => 'test', 'type' => 'contact', 'category' => 'Friends',   'expectedResult' => 1],
+				['user' => 'test', 'type' => 'contact', 'category' => 'Coworkers', 'expectedResult' => 1],
+				['user' => 'test', 'type' => 'contact', 'category' => 'Coworkers', 'expectedResult' => 0],
+				['user' => 'test', 'type' => 'contact', 'category' => 'School',    'expectedResult' => 1],
+		];
 
 		foreach($categoryEntries as $entry) {
 			$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table3,
-				array(
+				[
 					'uid' => $entry['user'],
 					'type' => $entry['type'],
 					'category' => $entry['category'],
-				));
+				]);
 			$this->assertEquals($entry['expectedResult'], $result);
 		}
 
@@ -150,18 +150,18 @@ class LegacyDBTest extends \Test\TestCase {
 	}
 
 	public function testInsertIfNotExistNull() {
-		$categoryEntries = array(
-			array('addressbookid' => 123, 'fullname' => null, 'expectedResult' => 1),
-			array('addressbookid' => 123, 'fullname' => null, 'expectedResult' => 0),
-			array('addressbookid' => 123, 'fullname' => 'test', 'expectedResult' => 1),
-		);
+		$categoryEntries = [
+			['addressbookid' => 123, 'fullname' => null, 'expectedResult' => 1],
+			['addressbookid' => 123, 'fullname' => null, 'expectedResult' => 0],
+			['addressbookid' => 123, 'fullname' => 'test', 'expectedResult' => 1],
+		];
 
 		foreach($categoryEntries as $entry) {
 			$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table2,
-				array(
+				[
 					'addressbookid' => $entry['addressbookid'],
 					'fullname' => $entry['fullname'],
-				));
+				]);
 			$this->assertEquals($entry['expectedResult'], $result);
 		}
 
@@ -178,10 +178,10 @@ class LegacyDBTest extends \Test\TestCase {
 
 		// Normal test to have same known data inserted.
 		$query = OC_DB::prepare('INSERT INTO `*PREFIX*'.$this->table2.'` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)');
-		$result = $query->execute(array($fullName, $uri, $carddata));
+		$result = $query->execute([$fullName, $uri, $carddata]);
 		$this->assertEquals(1, $result);
 		$query = OC_DB::prepare('SELECT `fullname`, `uri`, `carddata` FROM `*PREFIX*'.$this->table2.'` WHERE `uri` = ?');
-		$result = $query->execute(array($uri));
+		$result = $query->execute([$uri]);
 		$this->assertTrue((bool)$result);
 		$rowset = $result->fetchAll();
 		$this->assertEquals(1, count($rowset));
@@ -190,14 +190,14 @@ class LegacyDBTest extends \Test\TestCase {
 
 		// Try to insert a new row
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table2,
-			array(
+			[
 				'fullname' => $fullName,
 				'uri' => $uri,
-			));
+			]);
 		$this->assertEquals(0, $result);
 
 		$query = OC_DB::prepare('SELECT `fullname`, `uri`, `carddata` FROM `*PREFIX*'.$this->table2.'` WHERE `uri` = ?');
-		$result = $query->execute(array($uri));
+		$result = $query->execute([$uri]);
 		$this->assertTrue((bool)$result);
 		// Test that previously inserted data isn't overwritten
 		// And that a new row hasn't been inserted.
@@ -209,19 +209,19 @@ class LegacyDBTest extends \Test\TestCase {
 
 	public function testInsertIfNotExistsViolating() {
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
-			array(
+			[
 				'storage' => 1,
 				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			));
+			]);
 		$this->assertEquals(1, $result);
 
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
-			array(
+			[
 				'storage' => 1,
 				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			),['storage', 'path_hash']);
+			],['storage', 'path_hash']);
 
 		$this->assertEquals(0, $result);
 	}
@@ -241,19 +241,19 @@ class LegacyDBTest extends \Test\TestCase {
 	 */
 	public function testInsertIfNotExistsViolatingThrows($compareKeys) {
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
-			array(
+			[
 				'storage' => 1,
 				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			));
+			]);
 		$this->assertEquals(1, $result);
 
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
-			array(
+			[
 				'storage' => 1,
 				'path_hash' => md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			), $compareKeys);
+			], $compareKeys);
 
 		$this->assertEquals(0, $result);
 	}
@@ -263,7 +263,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$expected = "Ћö雙喜\xE2\x80\xA2";
 
 		$query = OC_DB::prepare("INSERT INTO `$table` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)");
-		$result = $query->execute(array($expected, 'uri_1', 'This is a vCard'));
+		$result = $query->execute([$expected, 'uri_1', 'This is a vCard']);
 		$this->assertEquals(1, $result);
 
 		$actual = OC_DB::prepare("SELECT `fullname` FROM `$table`")->execute()->fetchOne();
@@ -279,7 +279,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$rowname = 'decimaltest';
 
 		$query = OC_DB::prepare('INSERT INTO `' . $table . '` (`' . $rowname . '`) VALUES (?)');
-		$result = $query->execute(array($insert));
+		$result = $query->execute([$insert]);
 		$this->assertEquals(1, $result);
 		$query = OC_DB::prepare('SELECT `' . $rowname . '` FROM `' . $table . '`');
 		$result = $query->execute();
@@ -328,35 +328,35 @@ class LegacyDBTest extends \Test\TestCase {
 		// updating to. MySQL reports 1 here when the PDO::MYSQL_ATTR_FOUND_ROWS
 		// flag is not specified.
 		$query = OC_DB::prepare("UPDATE `*PREFIX*{$this->table2}` SET `uri` = ?");
-		$this->assertSame(2, $query->execute(array('uri1')));
+		$this->assertSame(2, $query->execute(['uri1']));
 	}
 
 	protected function insertCardData($fullname, $uri) {
 		$query = OC_DB::prepare("INSERT INTO `*PREFIX*{$this->table2}` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)");
-		$this->assertSame(1, $query->execute(array($fullname, $uri, $this->getUniqueID())));
+		$this->assertSame(1, $query->execute([$fullname, $uri, $this->getUniqueID()]));
 	}
 
 	protected function updateCardData($fullname, $uri) {
 		$query = OC_DB::prepare("UPDATE `*PREFIX*{$this->table2}` SET `uri` = ? WHERE `fullname` = ?");
-		return $query->execute(array($uri, $fullname));
+		return $query->execute([$uri, $fullname]);
 	}
 
 	public function testILIKE() {
 		$table = "*PREFIX*{$this->table2}";
 
 		$query = OC_DB::prepare("INSERT INTO `$table` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)");
-		$query->execute(array('fooBAR', 'foo', 'bar'));
+		$query->execute(['fooBAR', 'foo', 'bar']);
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` LIKE ?");
-		$result = $query->execute(array('foobar'));
+		$result = $query->execute(['foobar']);
 		$this->assertCount(0, $result->fetchAll());
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` ILIKE ?");
-		$result = $query->execute(array('foobar'));
+		$result = $query->execute(['foobar']);
 		$this->assertCount(1, $result->fetchAll());
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` ILIKE ?");
-		$result = $query->execute(array('foo'));
+		$result = $query->execute(['foo']);
 		$this->assertCount(0, $result->fetchAll());
 	}
 
@@ -364,30 +364,30 @@ class LegacyDBTest extends \Test\TestCase {
 		$table = "*PREFIX*{$this->table2}";
 
 		$query = OC_DB::prepare("INSERT INTO `$table` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)");
-		$query->execute(array('FooBAR', 'foo', 'bar'));
+		$query->execute(['FooBAR', 'foo', 'bar']);
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` LIKE ?");
-		$result = $query->execute(array('%bar'));
+		$result = $query->execute(['%bar']);
 		$this->assertCount(0, $result->fetchAll());
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` LIKE ?");
-		$result = $query->execute(array('foo%'));
+		$result = $query->execute(['foo%']);
 		$this->assertCount(0, $result->fetchAll());
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` LIKE ?");
-		$result = $query->execute(array('%ba%'));
+		$result = $query->execute(['%ba%']);
 		$this->assertCount(0, $result->fetchAll());
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` ILIKE ?");
-		$result = $query->execute(array('%bar'));
+		$result = $query->execute(['%bar']);
 		$this->assertCount(1, $result->fetchAll());
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` ILIKE ?");
-		$result = $query->execute(array('foo%'));
+		$result = $query->execute(['foo%']);
 		$this->assertCount(1, $result->fetchAll());
 
 		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `fullname` ILIKE ?");
-		$result = $query->execute(array('%ba%'));
+		$result = $query->execute(['%ba%']);
 		$this->assertCount(1, $result->fetchAll());
 	}
 }

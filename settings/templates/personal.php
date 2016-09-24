@@ -27,7 +27,7 @@
 		<?php if($_['usage_relative'] > 80): ?> class="quota-warning" <?php endif; ?>>
 		<p id="quotatext">
 			<?php print_unescaped($l->t('You are using <strong>%s</strong> of <strong>%s</strong>',
-			array($_['usage'], $_['total_space'])));?>
+			[$_['usage'], $_['total_space']]));?>
 		</p>
 	</div>
 </div>

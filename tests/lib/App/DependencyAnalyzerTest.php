@@ -63,7 +63,7 @@ class DependencyAnalyzerTest extends TestCase {
 			->getMock();
 		$this->l10nMock->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($text, $parameters = array()) {
+			->will($this->returnCallback(function($text, $parameters = []) {
 				return vsprintf($text, $parameters);
 			}));
 
@@ -79,11 +79,11 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param string $intSize
 	 */
 	public function testPhpVersion($expectedMissing, $minVersion, $maxVersion, $intSize) {
-		$app = array(
-			'dependencies' => array(
-				'php' => array()
-			)
-		);
+		$app = [
+			'dependencies' => [
+				'php' => []
+			]
+		];
 		if (!is_null($minVersion)) {
 			$app['dependencies']['php']['@attributes']['min-version'] = $minVersion;
 		}
@@ -103,10 +103,10 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @dataProvider providesDatabases
 	 */
 	public function testDatabases($expectedMissing, $databases) {
-		$app = array(
-			'dependencies' => array(
-			)
-		);
+		$app = [
+			'dependencies' => [
+			]
+		];
 		if (!is_null($databases)) {
 			$app['dependencies']['database'] = $databases;
 		}
@@ -123,10 +123,10 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param string|null $commands
 	 */
 	public function testCommand($expectedMissing, $commands) {
-		$app = array(
-			'dependencies' => array(
-			)
-		);
+		$app = [
+			'dependencies' => [
+			]
+		];
 		if (!is_null($commands)) {
 			$app['dependencies']['command'] = $commands;
 		}
@@ -142,10 +142,10 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param $libs
 	 */
 	function testLibs($expectedMissing, $libs) {
-		$app = array(
-			'dependencies' => array(
-			)
-		);
+		$app = [
+			'dependencies' => [
+			]
+		];
 		if (!is_null($libs)) {
 			$app['dependencies']['lib'] = $libs;
 		}
@@ -162,9 +162,9 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param $oss
 	 */
 	function testOS($expectedMissing, $oss) {
-		$app = array(
-			'dependencies' => array()
-		);
+		$app = [
+			'dependencies' => []
+		];
 		if (!is_null($oss)) {
 			$app['dependencies']['os'] = $oss;
 		}
@@ -181,9 +181,9 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param $oc
 	 */
 	function testOC($expectedMissing, $oc) {
-		$app = array(
-			'dependencies' => array()
-		);
+		$app = [
+			'dependencies' => []
+		];
 		if (!is_null($oc)) {
 			$app['dependencies']['owncloud'] = $oc;
 		}
@@ -198,101 +198,101 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @return array
 	 */
 	function providesOC() {
-		return array(
+		return [
 			// no version -> no missing dependency
-			array(array(), null),
-			array(array(), array('@attributes' => array('min-version' => '8', 'max-version' => '8'))),
-			array(array(), array('@attributes' => array('min-version' => '8.0', 'max-version' => '8.0'))),
-			array(array(), array('@attributes' => array('min-version' => '8.0.2', 'max-version' => '8.0.2'))),
-			array(array('ownCloud 8.0.3 or higher is required.'), array('@attributes' => array('min-version' => '8.0.3'))),
-			array(array('ownCloud 9 or higher is required.'), array('@attributes' => array('min-version' => '9'))),
+			[[], null],
+			[[], ['@attributes' => ['min-version' => '8', 'max-version' => '8']]],
+			[[], ['@attributes' => ['min-version' => '8.0', 'max-version' => '8.0']]],
+			[[], ['@attributes' => ['min-version' => '8.0.2', 'max-version' => '8.0.2']]],
+			[['ownCloud 8.0.3 or higher is required.'], ['@attributes' => ['min-version' => '8.0.3']]],
+			[['ownCloud 9 or higher is required.'], ['@attributes' => ['min-version' => '9']]],
 			[['ownCloud 8.0.1 or lower is required.'], ['@attributes' => ['max-version' => '8.0.1']]],
-		);
+		];
 	}
 
 	/**
 	 * @return array
 	 */
 	function providesOS() {
-		return array(
-			array(array(), null),
-			array(array(), array()),
-			array(array('Following platforms are supported: ANDROID'), 'ANDROID'),
-			array(array('Following platforms are supported: WINNT'), array('WINNT'))
-		);
+		return [
+			[[], null],
+			[[], []],
+			[['Following platforms are supported: ANDROID'], 'ANDROID'],
+			[['Following platforms are supported: WINNT'], ['WINNT']]
+		];
 	}
 
 	/**
 	 * @return array
 	 */
 	function providesLibs() {
-		return array(
+		return [
 			// we expect curl to exist
-			array(array(), 'curl'),
+			[[], 'curl'],
 			// we expect abcde to exist
-			array(array('The library abcde is not available.'), array('abcde')),
+			[['The library abcde is not available.'], ['abcde']],
 			// curl in version 100.0 does not exist
-			array(array('Library curl with a version higher than 100.0 is required - available version 2.3.4.'),
-				array(array('@attributes' => array('min-version' => '100.0'), '@value' => 'curl'))),
+			[['Library curl with a version higher than 100.0 is required - available version 2.3.4.'],
+				[['@attributes' => ['min-version' => '100.0'], '@value' => 'curl']]],
 			// curl in version 100.0 does not exist
-			array(array('Library curl with a version lower than 1.0.0 is required - available version 2.3.4.'),
-				array(array('@attributes' => array('max-version' => '1.0.0'), '@value' => 'curl'))),
-			array(array('Library curl with a version lower than 2.3.3 is required - available version 2.3.4.'),
-				array(array('@attributes' => array('max-version' => '2.3.3'), '@value' => 'curl'))),
-			array(array('Library curl with a version higher than 2.3.5 is required - available version 2.3.4.'),
-				array(array('@attributes' => array('min-version' => '2.3.5'), '@value' => 'curl'))),
-			array(array(),
-				array(array('@attributes' => array('min-version' => '2.3.4', 'max-version' => '2.3.4'), '@value' => 'curl'))),
-			array(array(),
-				array(array('@attributes' => array('min-version' => '2.3', 'max-version' => '2.3'), '@value' => 'curl'))),
-			array(array(),
-				array(array('@attributes' => array('min-version' => '2', 'max-version' => '2'), '@value' => 'curl'))),
-		);
+			[['Library curl with a version lower than 1.0.0 is required - available version 2.3.4.'],
+				[['@attributes' => ['max-version' => '1.0.0'], '@value' => 'curl']]],
+			[['Library curl with a version lower than 2.3.3 is required - available version 2.3.4.'],
+				[['@attributes' => ['max-version' => '2.3.3'], '@value' => 'curl']]],
+			[['Library curl with a version higher than 2.3.5 is required - available version 2.3.4.'],
+				[['@attributes' => ['min-version' => '2.3.5'], '@value' => 'curl']]],
+			[[],
+				[['@attributes' => ['min-version' => '2.3.4', 'max-version' => '2.3.4'], '@value' => 'curl']]],
+			[[],
+				[['@attributes' => ['min-version' => '2.3', 'max-version' => '2.3'], '@value' => 'curl']]],
+			[[],
+				[['@attributes' => ['min-version' => '2', 'max-version' => '2'], '@value' => 'curl']]],
+		];
 	}
 
 	/**
 	 * @return array
 	 */
 	function providesCommands() {
-		return array(
-			array(array(), null),
+		return [
+			[[], null],
 			// grep is known on linux
-			array(array(), array(array('@attributes' => array('os' => 'Linux'), '@value' => 'grep'))),
+			[[], [['@attributes' => ['os' => 'Linux'], '@value' => 'grep']]],
 			// grepp is not known on linux
-			array(array('The command line tool grepp could not be found'), array(array('@attributes' => array('os' => 'Linux'), '@value' => 'grepp'))),
+			[['The command line tool grepp could not be found'], [['@attributes' => ['os' => 'Linux'], '@value' => 'grepp']]],
 			// we don't care about tools on Windows - we are on Linux
-			array(array(), array(array('@attributes' => array('os' => 'Windows'), '@value' => 'grepp'))),
+			[[], [['@attributes' => ['os' => 'Windows'], '@value' => 'grepp']]],
 			// grep is known on all systems
-			array(array(), 'grep'),
-		);
+			[[], 'grep'],
+		];
 	}
 
 	/**
 	 * @return array
 	 */
 	function providesDatabases() {
-		return array(
+		return [
 			// non BC - in case on databases are defined -> all are supported
-			array(array(), null),
-			array(array(), array()),
-			array(array('Following databases are supported: mongodb'), 'mongodb'),
-			array(array('Following databases are supported: sqlite, postgres'), array('sqlite', array('@value' => 'postgres'))),
-		);
+			[[], null],
+			[[], []],
+			[['Following databases are supported: mongodb'], 'mongodb'],
+			[['Following databases are supported: sqlite, postgres'], ['sqlite', ['@value' => 'postgres']]],
+		];
 	}
 
 	/**
 	 * @return array
 	 */
 	function providesPhpVersion() {
-		return array(
-			array(array(), null, null, null),
-			array(array(), '5.4', null, null),
-			array(array(), null, '5.5', null),
-			array(array(), '5.4', '5.5', null),
-			array(array('PHP 5.4.4 or higher is required.'), '5.4.4', null, null),
-			array(array('PHP with a version lower than 5.4.2 is required.'), null, '5.4.2', null),
-			array(array('64bit or higher PHP required.'), null, null, 64),
-			array(array(), '5.4', '5.4', null),
-		);
+		return [
+			[[], null, null, null],
+			[[], '5.4', null, null],
+			[[], null, '5.5', null],
+			[[], '5.4', '5.5', null],
+			[['PHP 5.4.4 or higher is required.'], '5.4.4', null, null],
+			[['PHP with a version lower than 5.4.2 is required.'], null, '5.4.2', null],
+			[['64bit or higher PHP required.'], null, null, 64],
+			[[], '5.4', '5.4', null],
+		];
 	}
 }

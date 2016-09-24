@@ -139,12 +139,12 @@ class Folder extends Node implements \OCP\Files\Folder {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_CREATE)) {
 			$fullPath = $this->getFullPath($path);
 			$nonExisting = new NonExistingFolder($this->root, $this->view, $fullPath);
-			$this->root->emit('\OC\Files', 'preWrite', array($nonExisting));
-			$this->root->emit('\OC\Files', 'preCreate', array($nonExisting));
+			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
+			$this->root->emit('\OC\Files', 'preCreate', [$nonExisting]);
 			$this->view->mkdir($fullPath);
 			$node = new Folder($this->root, $this->view, $fullPath);
-			$this->root->emit('\OC\Files', 'postWrite', array($node));
-			$this->root->emit('\OC\Files', 'postCreate', array($node));
+			$this->root->emit('\OC\Files', 'postWrite', [$node]);
+			$this->root->emit('\OC\Files', 'postCreate', [$node]);
 			return $node;
 		} else {
 			throw new NotPermittedException();
@@ -160,12 +160,12 @@ class Folder extends Node implements \OCP\Files\Folder {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_CREATE)) {
 			$fullPath = $this->getFullPath($path);
 			$nonExisting = new NonExistingFile($this->root, $this->view, $fullPath);
-			$this->root->emit('\OC\Files', 'preWrite', array($nonExisting));
-			$this->root->emit('\OC\Files', 'preCreate', array($nonExisting));
+			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
+			$this->root->emit('\OC\Files', 'preCreate', [$nonExisting]);
 			$this->view->touch($fullPath);
 			$node = new File($this->root, $this->view, $fullPath);
-			$this->root->emit('\OC\Files', 'postWrite', array($node));
-			$this->root->emit('\OC\Files', 'postCreate', array($node));
+			$this->root->emit('\OC\Files', 'postWrite', [$node]);
+			$this->root->emit('\OC\Files', 'postCreate', [$node]);
 			return $node;
 		} else {
 			throw new NotPermittedException();
@@ -179,7 +179,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return \OC\Files\Node\Node[]
 	 */
 	public function search($query) {
-		return $this->searchCommon('search', array('%' . $query . '%'));
+		return $this->searchCommon('search', ['%' . $query . '%']);
 	}
 
 	/**
@@ -189,7 +189,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return Node[]
 	 */
 	public function searchByMime($mimetype) {
-		return $this->searchCommon('searchByMime', array($mimetype));
+		return $this->searchCommon('searchByMime', [$mimetype]);
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return Node[]
 	 */
 	public function searchByTag($tag, $userId) {
-		return $this->searchCommon('searchByTag', array($tag, $userId));
+		return $this->searchCommon('searchByTag', [$tag, $userId]);
 	}
 
 	/**
@@ -209,7 +209,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return \OC\Files\Node\Node[]
 	 */
 	private function searchCommon($method, $args) {
-		$files = array();
+		$files = [];
 		$rootLength = strlen($this->path);
 		$mount = $this->root->getMount($this->path);
 		$storage = $mount->getStorage();
@@ -222,7 +222,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 		$cache = $storage->getCache('');
 
-		$results = call_user_func_array(array($cache, $method), $args);
+		$results = call_user_func_array([$cache, $method], $args);
 		foreach ($results as $result) {
 			if ($internalRootLength === 0 or substr($result['path'], 0, $internalRootLength) === $internalPath) {
 				$result['internalPath'] = $result['path'];
@@ -239,7 +239,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 				$cache = $storage->getCache('');
 
 				$relativeMountPoint = substr($mount->getMountPoint(), $rootLength);
-				$results = call_user_func_array(array($cache, $method), $args);
+				$results = call_user_func_array([$cache, $method], $args);
 				foreach ($results as $result) {
 					$result['internalPath'] = $result['path'];
 					$result['path'] = $relativeMountPoint . $result['path'];
@@ -265,7 +265,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 		// which is the most likely to contain the file we're looking for
 		$mounts = array_reverse($mounts);
 
-		$nodes = array();
+		$nodes = [];
 		foreach ($mounts as $mount) {
 			/**
 			 * @var \OC\Files\Mount\MountPoint $mount
@@ -290,11 +290,11 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 	public function delete() {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
-			$this->sendHooks(array('preDelete'));
+			$this->sendHooks(['preDelete']);
 			$fileInfo = $this->getFileInfo();
 			$this->view->rmdir($this->path);
 			$nonExisting = new NonExistingFolder($this->root, $this->view, $this->path, $fileInfo);
-			$this->root->emit('\OC\Files', 'postDelete', array($nonExisting));
+			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
 			$this->exists = false;
 		} else {
 			throw new NotPermittedException();
@@ -311,12 +311,12 @@ class Folder extends Node implements \OCP\Files\Folder {
 		$parent = $this->root->get(dirname($targetPath));
 		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
 			$nonExisting = new NonExistingFolder($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preCopy', array($this, $nonExisting));
-			$this->root->emit('\OC\Files', 'preWrite', array($nonExisting));
+			$this->root->emit('\OC\Files', 'preCopy', [$this, $nonExisting]);
+			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
 			$this->view->copy($this->path, $targetPath);
 			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postCopy', array($this, $targetNode));
-			$this->root->emit('\OC\Files', 'postWrite', array($targetNode));
+			$this->root->emit('\OC\Files', 'postCopy', [$this, $targetNode]);
+			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
 			return $targetNode;
 		} else {
 			throw new NotPermittedException();
@@ -333,12 +333,12 @@ class Folder extends Node implements \OCP\Files\Folder {
 		$parent = $this->root->get(dirname($targetPath));
 		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
 			$nonExisting = new NonExistingFolder($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preRename', array($this, $nonExisting));
-			$this->root->emit('\OC\Files', 'preWrite', array($nonExisting));
+			$this->root->emit('\OC\Files', 'preRename', [$this, $nonExisting]);
+			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
 			$this->view->rename($this->path, $targetPath);
 			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postRename', array($this, $targetNode));
-			$this->root->emit('\OC\Files', 'postWrite', array($targetNode));
+			$this->root->emit('\OC\Files', 'postRename', [$this, $targetNode]);
+			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
 			$this->path = $targetPath;
 			return $targetNode;
 		} else {

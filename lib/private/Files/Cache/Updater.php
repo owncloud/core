@@ -243,7 +243,7 @@ class Updater implements IUpdater {
 		if ($parentId != -1) {
 			$mtime = $this->storage->filemtime($parent);
 			if ($mtime !== false) {
-				$this->cache->update($parentId, array('storage_mtime' => $mtime));
+				$this->cache->update($parentId, ['storage_mtime' => $mtime]);
 			}
 		}
 	}

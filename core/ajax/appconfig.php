@@ -36,7 +36,7 @@ if(isset($_POST['app']) || isset($_GET['app'])) {
 // This change is due the fact that an admin may not be expected 
 // to execute arbitrary code in every environment.
 if($app === 'core' && isset($_POST['key']) &&(substr((string)$_POST['key'],0,7) === 'remote_' || substr((string)$_POST['key'],0,7) === 'public_')) {
-	OC_JSON::error(array('data' => array('message' => 'Unexpected error!')));
+	OC_JSON::error(['data' => ['message' => 'Unexpected error!']]);
 	return;
 }
 
@@ -65,5 +65,5 @@ switch($action) {
 		$result=$appConfig->deleteApp($app);
 		break;
 }
-OC_JSON::success(array('data'=>$result));
+OC_JSON::success(['data'=>$result]);
 

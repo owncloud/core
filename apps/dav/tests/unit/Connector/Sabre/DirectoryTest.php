@@ -39,8 +39,8 @@ class DirectoryTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->view = $this->createMock('OC\Files\View', array(), array(), '', false);
-		$this->info = $this->createMock('OC\Files\FileInfo', array(), array(), '', false);
+		$this->view = $this->createMock('OC\Files\View', [], [], '', false);
+		$this->info = $this->createMock('OC\Files\FileInfo', [], [], '', false);
 	}
 
 	private function getDir($path = '/') {
@@ -160,7 +160,7 @@ class DirectoryTest extends \Test\TestCase {
 		$this->view->expects($this->once())
 			->method('getDirectoryContent')
 			->with('')
-			->will($this->returnValue(array($info1, $info2)));
+			->will($this->returnValue([$info1, $info2]));
 
 		$this->view->expects($this->any())
 			->method('getRelativePath')

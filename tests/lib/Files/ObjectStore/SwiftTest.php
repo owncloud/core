@@ -49,7 +49,7 @@ class SwiftTest extends \Test\Files\Storage\Storage {
 		\OC_User::useBackend('database');
 
 		// create users
-		$users = array('test');
+		$users = ['test'];
 		foreach($users as $userName) {
 			$user = \OC::$server->getUserManager()->get($userName);
 			if ($user !== null) { $user->delete(); }
@@ -75,7 +75,7 @@ class SwiftTest extends \Test\Files\Storage\Storage {
 		$this->objectStorage->deleteContainer(true);
 		$this->instance->getCache()->clear();
 
-		$users = array('test');
+		$users = ['test'];
 		foreach($users as $userName) {
 			$user = \OC::$server->getUserManager()->get($userName);
 			if ($user !== null) { $user->delete(); }

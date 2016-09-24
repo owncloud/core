@@ -232,7 +232,7 @@ class AllConfig implements \OCP\IConfig {
 		// only add to the cache if we already loaded data for the user
 		if (isset($this->userCache[$userId])) {
 			if (!isset($this->userCache[$userId][$appName])) {
-				$this->userCache[$userId][$appName] = array();
+				$this->userCache[$userId][$appName] = [];
 			}
 			$this->userCache[$userId][$appName][$key] = $value;
 		}
@@ -268,7 +268,7 @@ class AllConfig implements \OCP\IConfig {
 		if (isset($data[$appName])) {
 			return array_keys($data[$appName]);
 		} else {
-			return array();
+			return [];
 		}
 	}
 
@@ -285,7 +285,7 @@ class AllConfig implements \OCP\IConfig {
 
 		$sql  = 'DELETE FROM `*PREFIX*preferences` '.
 				'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?';
-		$this->connection->executeUpdate($sql, array($userId, $appName, $key));
+		$this->connection->executeUpdate($sql, [$userId, $appName, $key]);
 
 		if (isset($this->userCache[$userId]) and isset($this->userCache[$userId][$appName])) {
 			unset($this->userCache[$userId][$appName][$key]);
@@ -303,7 +303,7 @@ class AllConfig implements \OCP\IConfig {
 
 		$sql  = 'DELETE FROM `*PREFIX*preferences` '.
 			'WHERE `userid` = ?';
-		$this->connection->executeUpdate($sql, array($userId));
+		$this->connection->executeUpdate($sql, [$userId]);
 
 		unset($this->userCache[$userId]);
 	}
@@ -319,7 +319,7 @@ class AllConfig implements \OCP\IConfig {
 
 		$sql  = 'DELETE FROM `*PREFIX*preferences` '.
 				'WHERE `appid` = ?';
-		$this->connection->executeUpdate($sql, array($appName));
+		$this->connection->executeUpdate($sql, [$appName]);
 
 		foreach ($this->userCache as &$userCache) {
 			unset($userCache[$appName]);
@@ -342,13 +342,13 @@ class AllConfig implements \OCP\IConfig {
 		if (isset($this->userCache[$userId])) {
 			return $this->userCache[$userId];
 		}
-		$data = array();
+		$data = [];
 		$query = 'SELECT `appid`, `configkey`, `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?';
-		$result = $this->connection->executeQuery($query, array($userId));
+		$result = $this->connection->executeQuery($query, [$userId]);
 		while ($row = $result->fetch()) {
 			$appId = $row['appid'];
 			if (!isset($data[$appId])) {
-				$data[$appId] = array();
+				$data[$appId] = [];
 			}
 			$data[$appId][$row['configkey']] = $row['configvalue'];
 		}
@@ -369,13 +369,13 @@ class AllConfig implements \OCP\IConfig {
 		$this->fixDIInit();
 
 		if (empty($userIds) || !is_array($userIds)) {
-			return array();
+			return [];
 		}
 
 		$chunkedUsers = array_chunk($userIds, 50, true);
 		$placeholders50 = implode(',', array_fill(0, 50, '?'));
 
-		$userValues = array();
+		$userValues = [];
 		foreach ($chunkedUsers as $chunk) {
 			$queryParams = $chunk;
 			// create [$app, $key, $chunkedUsers]
@@ -420,9 +420,9 @@ class AllConfig implements \OCP\IConfig {
 			$sql .= 'AND `configvalue` = ?';
 		}
 
-		$result = $this->connection->executeQuery($sql, array($appName, $key, $value));
+		$result = $this->connection->executeQuery($sql, [$appName, $key, $value]);
 
-		$userIDs = array();
+		$userIDs = [];
 		while ($row = $result->fetch()) {
 			$userIDs[] = $row['userid'];
 		}

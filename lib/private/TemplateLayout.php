@@ -144,7 +144,7 @@ class TemplateLayout extends \OC_Template {
 		} else {
 			// Add the js files
 			$jsFiles = self::findJavascriptFiles(\OC_Util::$scripts);
-			$this->assign('jsfiles', array());
+			$this->assign('jsfiles', []);
 			if ($this->config->getSystemValue('installed', false) && $renderAs != 'error') {
 				$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
 			}
@@ -156,7 +156,7 @@ class TemplateLayout extends \OC_Template {
 
 			// Add the css files
 			$cssFiles = self::findStylesheetFiles(\OC_Util::$styles);
-			$this->assign('cssfiles', array());
+			$this->assign('cssfiles', []);
 			$this->assign('printcssfiles', []);
 			foreach($cssFiles as $info) {
 				$web = $info[1];
@@ -182,8 +182,8 @@ class TemplateLayout extends \OC_Template {
 		$locator = new \OC\Template\CSSResourceLocator(
 			\OC::$server->getLogger(),
 			$theme,
-			array( \OC::$SERVERROOT => \OC::$WEBROOT ),
-			array( \OC::$SERVERROOT => \OC::$WEBROOT ));
+			[\OC::$SERVERROOT => \OC::$WEBROOT],
+			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($styles);
 		return $locator->getResources();
 	}
@@ -199,8 +199,8 @@ class TemplateLayout extends \OC_Template {
 		$locator = new \OC\Template\JSResourceLocator(
 			\OC::$server->getLogger(),
 			$theme,
-			array( \OC::$SERVERROOT => \OC::$WEBROOT ),
-			array( \OC::$SERVERROOT => \OC::$WEBROOT ));
+			[\OC::$SERVERROOT => \OC::$WEBROOT],
+			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($scripts);
 		return $locator->getResources();
 	}
@@ -216,14 +216,14 @@ class TemplateLayout extends \OC_Template {
 				$file = $item[2];
 				// no need to minifiy minified files
 				if (substr($file, -strlen('.min.js')) === '.min.js') {
-					return new FileAsset($root . '/' . $file, array(
+					return new FileAsset($root . '/' . $file, [
 						new SeparatorFilter(';')
-					), $root, $file);
+					], $root, $file);
 				}
-				return new FileAsset($root . '/' . $file, array(
+				return new FileAsset($root . '/' . $file, [
 					new JSqueezeFilter(),
 					new SeparatorFilter(';')
-				), $root, $file);
+				], $root, $file);
 			}, $jsFiles);
 			$jsCollection = new AssetCollection($jsFiles);
 			$jsCollection->setTargetPath("assets/$jsHash.js");
@@ -269,11 +269,11 @@ class TemplateLayout extends \OC_Template {
 				$sourcePath = substr($assetPath, strlen(\OC::$SERVERROOT));
 				return new FileAsset(
 					$assetPath,
-					array(
+					[
 						new CssRewriteFilter(),
 						new CssMinFilter(),
 						new CssImportFilter()
-					),
+					],
 					$sourceRoot,
 					$sourcePath
 				);

@@ -41,7 +41,7 @@ class AppConfig implements IAppConfig {
 	 */
 	protected $conn;
 
-	private $cache = array();
+	private $cache = [];
 
 	/**
 	 * @param IDBConnection $conn

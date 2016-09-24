@@ -41,10 +41,10 @@ class Dropbox extends \OC\Files\Storage\Common {
 	private $dropbox;
 	private $root;
 	private $id;
-	private $metaData = array();
+	private $metaData = [];
 	private $oauth;
 
-	private static $tempFiles = array();
+	private static $tempFiles = [];
 
 	public function __construct($params) {
 		if (isset($params['configured']) && $params['configured'] == 'true'
@@ -101,7 +101,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 					return false;
 				}
-				$contents = array();
+				$contents = [];
 				if ($response && isset($response['contents'])) {
 					// Cache folder's contents
 					foreach ($response['contents'] as $file) {
@@ -166,7 +166,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	public function opendir($path) {
 		$contents = $this->getDropBoxMetaData($path, true);
 		if ($contents !== false) {
-			$files = array();
+			$files = [];
 			foreach ($contents as $file) {
 				$files[] = basename($file['path']);
 			}
@@ -304,7 +304,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 					$ext = '';
 				}
 				$tmpFile = \OCP\Files::tmpFile($ext);
-				\OC\Files\Stream\Close::registerCallback($tmpFile, array($this, 'writeBack'));
+				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
 					file_put_contents($tmpFile, $source);

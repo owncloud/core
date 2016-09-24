@@ -56,12 +56,12 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * @var \OCP\UserInterface[] $backends
 	 */
-	private $backends = array();
+	private $backends = [];
 
 	/**
 	 * @var \OC\User\User[] $cachedUsers
 	 */
-	private $cachedUsers = array();
+	private $cachedUsers = [];
 
 	/**
 	 * @var \OCP\IConfig $config
@@ -111,7 +111,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \OCP\UserInterface $backend
 	 */
 	public function removeBackend($backend) {
-		$this->cachedUsers = array();
+		$this->cachedUsers = [];
 		if (($i = array_search($backend, $this->backends)) !== false) {
 			unset($this->backends[$i]);
 		}
@@ -121,8 +121,8 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * remove all user backends
 	 */
 	public function clearBackends() {
-		$this->cachedUsers = array();
-		$this->backends = array();
+		$this->cachedUsers = [];
+		$this->backends = [];
 	}
 
 	/**
@@ -217,7 +217,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function search($pattern, $limit = null, $offset = null) {
-		$users = array();
+		$users = [];
 		foreach ($this->backends as $backend) {
 			$backendUsers = $backend->getUsers($pattern, $limit, $offset);
 			if (is_array($backendUsers)) {
@@ -246,7 +246,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
-		$users = array();
+		$users = [];
 		foreach ($this->backends as $backend) {
 			$backendUsers = $backend->getDisplayNames($pattern, $limit, $offset);
 			if (is_array($backendUsers)) {
@@ -298,12 +298,12 @@ class Manager extends PublicEmitter implements IUserManager {
 			throw new \Exception($l->t('The username is already being used'));
 		}
 
-		$this->emit('\OC\User', 'preCreateUser', array($uid, $password));
+		$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(Backend::CREATE_USER)) {
 				$backend->createUser($uid, $password);
 				$user = $this->getUserObject($uid, $backend);
-				$this->emit('\OC\User', 'postCreateUser', array($user, $password));
+				$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
 				return $user;
 			}
 		}
@@ -316,7 +316,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return array an array of backend class as key and count number as value
 	 */
 	public function countUsers() {
-		$userCountStatistics = array();
+		$userCountStatistics = [];
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(Backend::COUNT_USERS)) {
 				$backendUsers = $backend->countUsers();

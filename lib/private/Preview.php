@@ -74,8 +74,8 @@ class Preview {
 
 	//filemapper used for deleting previews
 	// index is path, value is fileinfo
-	static public $deleteFileMapper = array();
-	static public $deleteChildrenMapper = array();
+	static public $deleteFileMapper = [];
+	static public $deleteChildrenMapper = [];
 
 	/**
 	 * preview images object
@@ -687,7 +687,7 @@ class Preview {
 		}
 
 		//array for usable cached thumbnails
-		$possibleThumbnails = array();
+		$possibleThumbnails = [];
 		foreach ($allThumbnails as $thumbnail) {
 			$name = rtrim($thumbnail['name'], '.png');
 			list($x, $y, $aspectRatio) = $this->getDimensionsFromFilename($name);
@@ -717,7 +717,7 @@ class Preview {
 		$y = (int)$size[1];
 		$aspectRatio = (float)($x / $y);
 
-		return array($x, $y, $aspectRatio);
+		return [$x, $y, $aspectRatio];
 	}
 
 	/**
@@ -1292,7 +1292,7 @@ class Preview {
 	 */
 	private static function getAllChildren($view, $path) {
 		$children = $view->getDirectoryContent($path);
-		$childrensFiles = array();
+		$childrensFiles = [];
 
 		$fakeRootLength = strlen($view->getRoot());
 

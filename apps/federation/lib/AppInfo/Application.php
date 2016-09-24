@@ -44,7 +44,7 @@ class Application extends \OCP\AppFramework\App {
 	/**
 	 * @param array $urlParams
 	 */
-	public function __construct($urlParams = array()) {
+	public function __construct($urlParams = []) {
 		parent::__construct('federation', $urlParams);
 		$this->registerService();
 		$this->registerMiddleware();
@@ -125,14 +125,14 @@ class Application extends \OCP\AppFramework\App {
 
 		API::register('get',
 			'/apps/federation/api/v1/shared-secret',
-			array($auth, 'getSharedSecret'),
+			[$auth, 'getSharedSecret'],
 			'federation',
 			API::GUEST_AUTH
 		);
 
 		API::register('post',
 			'/apps/federation/api/v1/request-shared-secret',
-			array($auth, 'requestSharedSecret'),
+			[$auth, 'requestSharedSecret'],
 			'federation',
 			API::GUEST_AUTH
 		);

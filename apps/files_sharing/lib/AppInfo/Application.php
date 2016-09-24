@@ -36,7 +36,7 @@ use \OCP\IContainer;
 use OCA\Files_Sharing\Capabilities;
 
 class Application extends App {
-	public function __construct(array $urlParams = array()) {
+	public function __construct(array $urlParams = []) {
 		parent::__construct('files_sharing', $urlParams);
 
 		$container = $this->getContainer();

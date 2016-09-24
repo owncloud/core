@@ -17,7 +17,7 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	/**
 	 * @var \OC\BackgroundJob\Job[]
 	 */
-	private $jobs = array();
+	private $jobs = [];
 
 	private $last = 0;
 

@@ -120,7 +120,7 @@ try {
 $encryptionModules = \OC::$server->getEncryptionManager()->getEncryptionModules();
 $defaultEncryptionModuleId = \OC::$server->getEncryptionManager()->getDefaultEncryptionModuleId();
 
-$encModulues = array();
+$encModulues = [];
 foreach ($encryptionModules as $module) {
 	$encModulues[$module['id']]['displayName'] = $module['displayName'];
 	$encModulues[$module['id']]['default'] = false;
@@ -185,14 +185,14 @@ if ($config->getSystemValue('enable_certificate_management', false)) {
 	$forms[] = $certificatesTemplate->fetchPage();
 }
 
-$formsAndMore = array();
+$formsAndMore = [];
 if ($request->getServerProtocol()  !== 'https' || !OC_Util::isAnnotationsWorking() ||
 	$suggestedOverwriteCliUrl || !OC_Util::isSetLocaleWorking()  ||
 	!OC_Util::fileInfoLoaded() || $databaseOverload
 ) {
-	$formsAndMore[] = array('anchor' => 'security-warning', 'section-name' => $l->t('Security & setup warnings'));
+	$formsAndMore[] = ['anchor' => 'security-warning', 'section-name' => $l->t('Security & setup warnings')];
 }
-$formsAndMore[] = array('anchor' => 'shareAPI', 'section-name' => $l->t('Sharing'));
+$formsAndMore[] = ['anchor' => 'shareAPI', 'section-name' => $l->t('Sharing')];
 $formsAndMore[] = ['anchor' => 'encryptionAPI', 'section-name' => $l->t('Server-side encryption')];
 
 // Prioritize fileSharingSettings and files_external and move updater to the version
@@ -220,7 +220,7 @@ foreach ($forms as $index => $form) {
 	}
 }
 if ($filesExternal) {
-	$formsAndMore[] = array('anchor' => 'files_external', 'section-name' => $l->t('External Storage'));
+	$formsAndMore[] = ['anchor' => 'files_external', 'section-name' => $l->t('External Storage')];
 }
 
 $template->assign('fileSharingSettings', $fileSharingSettings);
@@ -244,15 +244,15 @@ $formsMap = array_map(function ($form) {
 		$anchor = strtolower($form['appId']);
 		$anchor = str_replace(' ', '-', $anchor);
 
-		return array(
+		return [
 			'anchor' => $anchor,
 			'section-name' => $sectionName,
 			'form' => $form
-		);
+		];
 	}
-	return array(
+	return [
 		'form' => $form
-	);
+	];
 }, $forms);
 
 $formsAndMore = array_merge($formsAndMore, $formsMap);

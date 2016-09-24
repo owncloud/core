@@ -43,10 +43,10 @@ class StreamWrappersTest extends \Test\TestCase {
 	}
 
 	public function testFakeDir() {
-		$items = array('foo', 'bar');
+		$items = ['foo', 'bar'];
 		\OC\Files\Stream\Dir::register('test', $items);
 		$dh = opendir('fakedir://test');
-		$result = array();
+		$result = [];
 		while ($file = readdir($dh)) {
 			$result[] = $file;
 			$this->assertContains($file, $items);
@@ -84,17 +84,17 @@ class StreamWrappersTest extends \Test\TestCase {
 		$originalStorage = \OC\Files\Filesystem::getStorage('/');
 		\OC\Files\Filesystem::clearMounts();
 
-		$storage = new \OC\Files\Storage\Temporary(array());
+		$storage = new \OC\Files\Storage\Temporary([]);
 		$storage->file_put_contents('foo.txt', 'asd');
-		\OC\Files\Filesystem::mount($storage, array(), '/');
+		\OC\Files\Filesystem::mount($storage, [], '/');
 
 		$this->assertTrue(file_exists('oc:///foo.txt'));
 		$this->assertEquals('asd', file_get_contents('oc:///foo.txt'));
-		$this->assertEquals(array('.', '..', 'foo.txt'), scandir('oc:///'));
+		$this->assertEquals(['.', '..', 'foo.txt'], scandir('oc:///'));
 
 		file_put_contents('oc:///bar.txt', 'qwerty');
 		$this->assertEquals('qwerty', $storage->file_get_contents('bar.txt'));
-		$this->assertEquals(array('.', '..', 'bar.txt', 'foo.txt'), scandir('oc:///'));
+		$this->assertEquals(['.', '..', 'bar.txt', 'foo.txt'], scandir('oc:///'));
 		$this->assertEquals('qwerty', file_get_contents('oc:///bar.txt'));
 
 		$fh = fopen('oc:///bar.txt', 'rb');
@@ -108,9 +108,9 @@ class StreamWrappersTest extends \Test\TestCase {
 		$this->assertSame(0, ftell($fh));
 
 		unlink('oc:///foo.txt');
-		$this->assertEquals(array('.', '..', 'bar.txt'), scandir('oc:///'));
+		$this->assertEquals(['.', '..', 'bar.txt'], scandir('oc:///'));
 
 		\OC\Files\Filesystem::clearMounts();
-		\OC\Files\Filesystem::mount($originalStorage, array(), '/');
+		\OC\Files\Filesystem::mount($originalStorage, [], '/');
 	}
 }

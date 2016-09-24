@@ -193,7 +193,7 @@ abstract class TestCase extends \Test\TestCase {
 	 */
 	protected function getShareFromId($shareID) {
 		$sql = 'SELECT `item_source`, `share_type`, `share_with`, `item_type`, `permissions` FROM `*PREFIX*share` WHERE `id` = ?';
-		$args = array($shareID);
+		$args = [$shareID];
 		$query = \OCP\DB::prepare($sql);
 		$result = $query->execute($args);
 

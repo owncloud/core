@@ -233,11 +233,11 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 						}
 					}
 			}
-			$info = array(
+			$info = [
 				'target' => $this->getMountPoint() . $path,
 				'source' => $source,
 				'mode' => $mode,
-			);
+			];
 			\OCP\Util::emitHook('\OC\Files\Storage\Shared', 'fopen', $info);
 			return parent::fopen($path, $mode);
 		}

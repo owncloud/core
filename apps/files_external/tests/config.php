@@ -32,8 +32,8 @@ if (file_exists($privateConfigFile)) {
 }
 
 // this is now more a template now for your private configurations
-return array(
-	'webdav'=>array(
+return [
+	'webdav'=> [
 		'run'=>false,
 		'host'=>'localhost',
 		'user'=>'test',
@@ -43,22 +43,22 @@ return array(
 		// (only in tests)
 		// set to higher value for lighttpd webdav
 		'wait'=> 0
-	),
-	'owncloud'=>array(
+	],
+	'owncloud'=> [
 		'run'=>false,
 		'host'=>'localhost/owncloud',
 		'user'=>'test',
 		'password'=>'test',
 		'root'=>'',
-	),
-	'google'=>array(
+	],
+	'google'=> [
 		'run'=> false,
 		'configured' => 'true',
 		'client_id' => '',
 		'client_secret' => '',
 		'token' => '',
-	),
-	'swift' => array(
+	],
+	'swift' => [
 		'run' => false,
 		'user' => 'test',
 		'bucket' => 'test',
@@ -69,16 +69,16 @@ return array(
 		//'service_name' => 'swift', //should be 'swift' for OpenStack Object Storage and 'cloudFiles' for Rackspace Cloud Files (default value)
 		//'url' => 'https://identity.api.rackspacecloud.com/v2.0/', //to be used with Rackspace Cloud Files and OpenStack Object Storage
 		//'timeout' => 5 // timeout of HTTP requests in seconds
-	),
-	'smb'=>array(
+	],
+	'smb'=> [
 		'run'=>false,
 		'user'=>'test',
 		'password'=>'test',
 		'host'=>'localhost',
 		'share'=>'/test',
 		'root'=>'/test/',
-	),
-	'amazons3'=>array(
+	],
+	'amazons3'=> [
 		'run'=>false,
 		'key'=>'test',
 		'secret'=>'test',
@@ -89,8 +89,8 @@ return array(
 		//'region' => 'eu-west-1',
 		//'test'=>'true',
 		//'timeout'=>20
-	),
-	'dropbox' => array (
+	],
+	'dropbox' => [
 		'run'=>false,
 		'root'=>'owncloud',
 		'configured' => 'true',
@@ -98,20 +98,20 @@ return array(
 		'app_secret' => '',
 		'token' => '',
 		'token_secret' => ''
-	),
-	'sftp' => array (
+	],
+	'sftp' => [
 		'run'=>false,
 		'host'=>'localhost',
 		'user'=>'test',
 		'password'=>'test',
 		'root'=>'/test'
-	),
-	'sftp_key' => array (
+	],
+	'sftp_key' => [
                 'run'=>false,
                 'host'=>'localhost',
                 'user'=>'test',
                 'public_key'=>'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDJPTvz3OLonF2KSGEKP/nd4CPmRYvemG2T4rIiNYjDj0U5y+2sKEWbjiUlQl2bsqYuVoJ+/UNJlGQbbZ08kQirFeo1GoWBzqioaTjUJfbLN6TzVVKXxR9YIVmH7Ajg2iEeGCndGgbmnPfj+kF9TR9IH8vMVvtubQwf7uEwB0ALhw== phpseclib-generated-key',
 		'private_key'=>'test',
                 'root'=>'/test'
-        ),
-);
+	],
+];

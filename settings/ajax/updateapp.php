@@ -27,9 +27,9 @@ OCP\JSON::checkAdminUser();
 OCP\JSON::callCheck();
 
 if (!array_key_exists('appid', $_POST)) {
-	OCP\JSON::error(array(
+	OCP\JSON::error([
 		'message' => 'No AppId given!'
-	));
+	]);
 	return;
 }
 
@@ -38,9 +38,9 @@ $appId = (string)$_POST['appid'];
 if (!is_numeric($appId)) {
 	$appId = \OC::$server->getAppConfig()->getValue($appId, 'ocsid', null);
 	if ($appId === null) {
-		OCP\JSON::error(array(
+		OCP\JSON::error([
 			'message' => 'No OCS-ID found for app!'
-		));
+		]);
 		exit;
 	}
 }
@@ -54,13 +54,13 @@ try {
 	$config->setSystemValue('maintenance', false);
 } catch(Exception $ex) {
 	$config->setSystemValue('maintenance', false);
-	OC_JSON::error(array("data" => array( "message" => $ex->getMessage() )));
+	OC_JSON::error(["data" => ["message" => $ex->getMessage()]]);
 	return;
 }
 
 if($result !== false) {
-	OC_JSON::success(array('data' => array('appid' => $appId)));
+	OC_JSON::success(['data' => ['appid' => $appId]]);
 } else {
 	$l = \OC::$server->getL10N('settings');
-	OC_JSON::error(array("data" => array( "message" => $l->t("Couldn't update app.") )));
+	OC_JSON::error(["data" => ["message" => $l->t("Couldn't update app.")]]);
 }

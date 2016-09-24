@@ -135,15 +135,15 @@ class LostController extends Controller {
 		return new TemplateResponse(
 			'core',
 			'lostpassword/resetpassword',
-			array(
+			[
 				'link' => $this->urlGenerator->linkToRouteAbsolute('core.lost.setPassword', ['userId' => $userId, 'token' => $token]),
-			),
+			],
 			'guest'
 		);
 	}
 
 	/**
-	 * @param string $userId
+	 * @param string $token
 	 * @param string $userId
 	 * @throws \Exception
 	 */
@@ -181,7 +181,7 @@ class LostController extends Controller {
 	 * @return array
 	 */
 	private function success() {
-		return array('status'=>'success');
+		return ['status'=>'success'];
 	}
 
 	/**
@@ -211,7 +211,7 @@ class LostController extends Controller {
 	 */
 	public function setPassword($token, $userId, $password, $proceed) {
 		if ($this->isDataEncrypted && !$proceed) {
-			return $this->error('', array('encryption' => true));
+			return $this->error('', ['encryption' => true]);
 		}
 
 		try {
@@ -222,7 +222,7 @@ class LostController extends Controller {
 				throw new \Exception();
 			}
 
-			\OC_Hook::emit('\OC\Core\LostPassword\Controller\LostController', 'post_passwordReset', array('uid' => $userId, 'password' => $password));
+			\OC_Hook::emit('\OC\Core\LostPassword\Controller\LostController', 'post_passwordReset', ['uid' => $userId, 'password' => $password]);
 			@\OC_User::unsetMagicInCookie();
 		} catch (\Exception $e){
 			return $this->error($e->getMessage());
@@ -255,7 +255,7 @@ class LostController extends Controller {
 			ISecureRandom::CHAR_UPPER);
 		$this->config->setUserValue($user, 'owncloud', 'lostpassword', $this->timeFactory->getTime() .':'. $token);
 
-		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', array('userId' => $user, 'token' => $token));
+		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $user, 'token' => $token]);
 
 		$tmpl = new \OC_Template('core', 'lostpassword/email');
 		$tmpl->assign('link', $link);

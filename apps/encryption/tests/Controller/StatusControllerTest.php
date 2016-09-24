@@ -80,12 +80,12 @@ class StatusControllerTest extends TestCase {
 	}
 
 	public function dataTestGetStatus() {
-		return array(
-			array(Session::RUN_MIGRATION, 'interactionNeeded'),
-			array(Session::INIT_EXECUTED, 'interactionNeeded'),
-			array(Session::INIT_SUCCESSFUL, 'success'),
-			array(Session::NOT_INITIALIZED, 'interactionNeeded'),
-			array('unknown', 'error'),
-		);
+		return [
+			[Session::RUN_MIGRATION, 'interactionNeeded'],
+			[Session::INIT_EXECUTED, 'interactionNeeded'],
+			[Session::INIT_SUCCESSFUL, 'success'],
+			[Session::NOT_INITIALIZED, 'interactionNeeded'],
+			['unknown', 'error'],
+		];
 	}
 }

@@ -73,7 +73,7 @@ class HomeTest extends Storage {
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->userId = $this->getUniqueID('user_');
 		$this->user = new DummyUser($this->userId, $this->tmpDir);
-		$this->instance = new \OC\Files\Storage\Home(array('user' => $this->user));
+		$this->instance = new \OC\Files\Storage\Home(['user' => $this->user]);
 	}
 
 	protected function tearDown() {
@@ -92,7 +92,7 @@ class HomeTest extends Storage {
 	 * Tests that the legacy home id is in the format local::/path/to/datadir/user1/
 	 */
 	public function testLegacyId() {
-		$this->instance = new \OC\Files\Storage\Home(array('user' => $this->user, 'legacy' => true));
+		$this->instance = new \OC\Files\Storage\Home(['user' => $this->user, 'legacy' => true]);
 		$this->assertEquals('local::' . $this->tmpDir . '/', $this->instance->getId());
 	}
 

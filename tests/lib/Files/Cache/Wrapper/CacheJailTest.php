@@ -33,7 +33,7 @@ class CacheJailTest extends CacheTest {
 	function testSearchOutsideJail() {
 		$file1 = 'foo/foobar';
 		$file2 = 'folder/foobar';
-		$data1 = array('size' => 100, 'mtime' => 50, 'mimetype' => 'foo/folder');
+		$data1 = ['size' => 100, 'mtime' => 50, 'mimetype' => 'foo/folder'];
 
 		$this->sourceCache->put($file1, $data1);
 		$this->sourceCache->put($file2, $data1);
@@ -49,7 +49,7 @@ class CacheJailTest extends CacheTest {
 		$file1 = 'foo/foobar';
 		$file2 = 'foo/foobar/asd';
 		$file3 = 'folder/foobar';
-		$data1 = array('size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory');
+		$data1 = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
 
 		$this->sourceCache->put('foo', $data1);
 		$this->sourceCache->put($file1, $data1);
@@ -63,7 +63,7 @@ class CacheJailTest extends CacheTest {
 	}
 
 	function testGetById() {
-		$data1 = array('size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory');
+		$data1 = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
 		$id = $this->sourceCache->put('foo/bar', $data1);
 
 		// path from jailed foo of foo/bar is bar

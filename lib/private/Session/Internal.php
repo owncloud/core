@@ -43,7 +43,7 @@ class Internal extends Session {
 	 */
 	public function __construct($name) {
 		session_name($name);
-		set_error_handler(array($this, 'trapError'));
+		set_error_handler([$this, 'trapError']);
 		try {
 			session_start();
 		} catch (\Exception $e) {
@@ -96,7 +96,7 @@ class Internal extends Session {
 		session_unset();
 		$this->regenerateId();
 		@session_start();
-		$_SESSION = array();
+		$_SESSION = [];
 	}
 
 	public function close() {

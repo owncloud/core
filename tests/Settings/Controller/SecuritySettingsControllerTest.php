@@ -36,15 +36,15 @@ class SecuritySettingsControllerTest extends \PHPUnit_Framework_TestCase {
 		$this->container['Config']
 			->expects($this->once())
 			->method('setSystemValue')
-			->with('trusted_domains', array('owncloud.org', 'owncloud.com', 'newdomain.com'));
+			->with('trusted_domains', ['owncloud.org', 'owncloud.com', 'newdomain.com']);
 		$this->container['Config']
 			->expects($this->once())
 			->method('getSystemValue')
 			->with('trusted_domains')
-			->will($this->returnValue(array('owncloud.org', 'owncloud.com')));
+			->will($this->returnValue(['owncloud.org', 'owncloud.com']));
 
 		$response = $this->securitySettingsController->trustedDomains('newdomain.com');
-		$expectedResponse = array('status' => 'success');
+		$expectedResponse = ['status' => 'success'];
 
 		$this->assertSame($expectedResponse, $response);
 	}
@@ -53,7 +53,7 @@ class SecuritySettingsControllerTest extends \PHPUnit_Framework_TestCase {
 		$this->container['Config']
 			->expects($this->once())
 			->method('setSystemValue')
-			->with('trusted_domains', array('newdomain.com'));
+			->with('trusted_domains', ['newdomain.com']);
 		$this->container['Config']
 			->expects($this->once())
 			->method('getSystemValue')
@@ -61,7 +61,7 @@ class SecuritySettingsControllerTest extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(''));
 
 		$response = $this->securitySettingsController->trustedDomains('newdomain.com');
-		$expectedResponse = array('status' => 'success');
+		$expectedResponse = ['status' => 'success'];
 
 		$this->assertSame($expectedResponse, $response);
 	}

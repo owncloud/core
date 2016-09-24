@@ -72,28 +72,28 @@ class MapperTest extends MapperTestUtility {
 
 	public function testFindQuery(){
 		$sql = 'hi';
-		$params = array('jo');
-		$rows = array(
-			array('hi')
-		);
+		$params = ['jo'];
+		$rows = [
+			['hi']
+		];
 		$this->setMapperResult($sql, $params, $rows);
 		$this->mapper->find($sql, $params);
 	}
 
 	public function testFindEntity(){
 		$sql = 'hi';
-		$params = array('jo');
-		$rows = array(
-			array('pre_name' => 'hi')
-		);
+		$params = ['jo'];
+		$rows = [
+			['pre_name' => 'hi']
+		];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
 		$this->mapper->findOneEntity($sql, $params);
 	}
 
 	public function testFindNotFound(){
 		$sql = 'hi';
-		$params = array('jo');
-		$rows = array();
+		$params = ['jo'];
+		$rows = [];
 		$this->setMapperResult($sql, $params, $rows);
 		$this->setExpectedException(
 			'\OCP\AppFramework\Db\DoesNotExistException');
@@ -102,8 +102,8 @@ class MapperTest extends MapperTestUtility {
 
 	public function testFindEntityNotFound(){
 		$sql = 'hi';
-		$params = array('jo');
-		$rows = array();
+		$params = ['jo'];
+		$rows = [];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
 		$this->setExpectedException(
 			'\OCP\AppFramework\Db\DoesNotExistException');
@@ -112,10 +112,10 @@ class MapperTest extends MapperTestUtility {
 
 	public function testFindMultiple(){
 		$sql = 'hi';
-		$params = array('jo');
-		$rows = array(
-			array('jo'), array('ho')
-		);
+		$params = ['jo'];
+		$rows = [
+			['jo'], ['ho']
+		];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
 		$this->setExpectedException(
 			'\OCP\AppFramework\Db\MultipleObjectsReturnedException');
@@ -124,10 +124,10 @@ class MapperTest extends MapperTestUtility {
 
 	public function testFindEntityMultiple(){
 		$sql = 'hi';
-		$params = array('jo');
-		$rows = array(
-			array('jo'), array('ho')
-		);
+		$params = ['jo'];
+		$rows = [
+			['jo'], ['ho']
+		];
 		$this->setMapperResult($sql, $params, $rows, null, null, true);
 		$this->setExpectedException(
 			'\OCP\AppFramework\Db\MultipleObjectsReturnedException');
@@ -137,7 +137,7 @@ class MapperTest extends MapperTestUtility {
 
 	public function testDelete(){
 		$sql = 'DELETE FROM `*PREFIX*table` WHERE `id` = ?';
-		$params = array(2);
+		$params = [2];
 
 		$this->setMapperResult($sql, $params, [], null, null, true);
 		$entity = new Example();
@@ -156,7 +156,7 @@ class MapperTest extends MapperTestUtility {
 
 		$sql = 'INSERT INTO `*PREFIX*table`(`pre_name`,`email`) ' .
 				'VALUES(?,?)';
-		$params = array('john', 'my@email');
+		$params = ['john', 'my@email'];
 		$entity = new Example();
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
@@ -176,7 +176,7 @@ class MapperTest extends MapperTestUtility {
 
 		$sql = 'INSERT INTO `*PREFIX*table`(`pre_name`,`email`) ' .
 				'VALUES(?,?)';
-		$params = array('john', 'my@email');
+		$params = ['john', 'my@email'];
 		$entity = new Example();
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
@@ -205,7 +205,7 @@ class MapperTest extends MapperTestUtility {
 				'`email` = ? ' .
 				'WHERE `id` = ?';
 
-		$params = array('john', 'my@email', 1);
+		$params = ['john', 'my@email', 1];
 		$entity = new Example();
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
@@ -218,7 +218,7 @@ class MapperTest extends MapperTestUtility {
 
 
 	public function testUpdateNoId(){
-		$params = array('john', 'my@email');
+		$params = ['john', 'my@email'];
 		$entity = new Example();
 		$entity->setPreName($params[0]);
 		$entity->setEmail($params[1]);
@@ -230,7 +230,7 @@ class MapperTest extends MapperTestUtility {
 
 
 	public function testUpdateNothingChangedNoQuery(){
-		$params = array('john', 'my@email');
+		$params = ['john', 'my@email'];
 		$entity = new Example();
 		$entity->setId(3);
 		$entity->setEmail($params[1]);
@@ -244,7 +244,7 @@ class MapperTest extends MapperTestUtility {
 
 
 	public function testMapRowToEntity(){
-		$entity1 = $this->mapper->mapRow(array('pre_name' => 'test1', 'email' => 'test2'));
+		$entity1 = $this->mapper->mapRow(['pre_name' => 'test1', 'email' => 'test2']);
 		$entity2 = new Example();
 		$entity2->setPreName('test1');
 		$entity2->setEmail('test2');
@@ -254,38 +254,38 @@ class MapperTest extends MapperTestUtility {
 
 	public function testFindEntities(){
 		$sql = 'hi';
-		$rows = array(
-			array('pre_name' => 'hi')
-		);
+		$rows = [
+			['pre_name' => 'hi']
+		];
 		$entity = new Example();
 		$entity->setPreName('hi');
 		$entity->resetUpdatedFields();
-		$this->setMapperResult($sql, array(), $rows, null, null, true);
+		$this->setMapperResult($sql, [], $rows, null, null, true);
 		$result = $this->mapper->findAllEntities($sql);
-		$this->assertEquals(array($entity), $result);
+		$this->assertEquals([$entity], $result);
 	}
 
 	public function testFindEntitiesNotFound(){
 		$sql = 'hi';
-		$rows = array();
-		$this->setMapperResult($sql, array(), $rows);
+		$rows = [];
+		$this->setMapperResult($sql, [], $rows);
 		$result = $this->mapper->findAllEntities($sql);
-		$this->assertEquals(array(), $result);
+		$this->assertEquals([], $result);
 	}
 
 	public function testFindEntitiesMultiple(){
 		$sql = 'hi';
-		$rows = array(
-			array('pre_name' => 'jo'), array('email' => 'ho')
-		);
+		$rows = [
+			['pre_name' => 'jo'], ['email' => 'ho']
+		];
 		$entity1 = new Example();
 		$entity1->setPreName('jo');
 		$entity1->resetUpdatedFields();
 		$entity2 = new Example();
 		$entity2->setEmail('ho');
 		$entity2->resetUpdatedFields();
-		$this->setMapperResult($sql, array(), $rows);
+		$this->setMapperResult($sql, [], $rows);
 		$result = $this->mapper->findAllEntities($sql);
-		$this->assertEquals(array($entity1, $entity2), $result);
+		$this->assertEquals([$entity1, $entity2], $result);
 	}
 }

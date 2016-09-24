@@ -142,7 +142,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 
 			$path = $this->fileView->getAbsolutePath($this->path) . '/' . $name;
 			// using a dummy FileInfo is acceptable here since it will be refreshed after the put is complete
-			$info = new \OC\Files\FileInfo($path, null, null, array(), null);
+			$info = new \OC\Files\FileInfo($path, null, null, [], null);
 			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
 			$node->acquireLock(ILockingProvider::LOCK_SHARED);
 			return $node->put($data);
@@ -254,7 +254,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			throw new Locked();
 		}
 
-		$nodes = array();
+		$nodes = [];
 		foreach ($folderContent as $info) {
 			$node = $this->getChild($info->getName(), $info);
 			$nodes[] = $node;
@@ -323,13 +323,13 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			} else {
 				$free = $storageInfo['free'];
 			}
-			$this->quotaInfo = array(
+			$this->quotaInfo = [
 				$storageInfo['used'],
 				$free
-			);
+			];
 			return $this->quotaInfo;
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
-			return array(0, 0);
+			return [0, 0];
 		}
 	}
 

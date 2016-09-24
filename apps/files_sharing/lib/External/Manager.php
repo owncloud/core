@@ -152,15 +152,15 @@ class Manager {
 					(`remote`, `share_token`, `password`, `name`, `owner`, `user`, `mountpoint`, `mountpoint_hash`, `accepted`, `remote_id`)
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			');
-		$query->execute(array($remote, $token, $password, $name, $owner, $user, $mountPoint, $hash, $accepted, $remoteId));
+		$query->execute([$remote, $token, $password, $name, $owner, $user, $mountPoint, $hash, $accepted, $remoteId]);
 
-		$options = array(
+		$options = [
 			'remote'	=> $remote,
 			'token'		=> $token,
 			'password'	=> $password,
 			'mountpoint'	=> $mountPoint,
 			'owner'		=> $owner
-		);
+		];
 		return $this->mountShare($options);
 	}
 
@@ -175,7 +175,7 @@ class Manager {
 			SELECT `id`, `remote`, `remote_id`, `share_token`, `name`, `owner`, `user`, `mountpoint`, `accepted`
 			FROM  `*PREFIX*share_external`
 			WHERE `id` = ? AND `user` = ?');
-		$result = $getShare->execute(array($id, $this->uid));
+		$result = $getShare->execute([$id, $this->uid]);
 
 		return $result ? $getShare->fetch() : false;
 	}
@@ -201,7 +201,7 @@ class Manager {
 					`mountpoint` = ?,
 					`mountpoint_hash` = ?
 				WHERE `id` = ? AND `user` = ?');
-			$acceptShare->execute(array(1, $mountPoint, $hash, $id, $this->uid));
+			$acceptShare->execute([1, $mountPoint, $hash, $id, $this->uid]);
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'accept');
 
 			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
@@ -226,7 +226,7 @@ class Manager {
 		if ($share) {
 			$removeShare = $this->connection->prepare('
 				DELETE FROM `*PREFIX*share_external` WHERE `id` = ? AND `user` = ?');
-			$removeShare->execute(array($id, $this->uid));
+			$removeShare->execute([$id, $this->uid]);
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
 
 			$this->processNotification($id);
@@ -259,7 +259,7 @@ class Manager {
 	private function sendFeedbackToRemote($remote, $token, $remoteId, $feedback) {
 
 		$url = rtrim($remote, '/') . $this->discoveryManager->getShareEndpoint($remote) . '/' . $remoteId . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
-		$fields = array('token' => $token);
+		$fields = ['token' => $token];
 
 		$result = $this->httpHelper->post($url, $fields);
 		$status = json_decode($result['result'], true);
@@ -320,7 +320,7 @@ class Manager {
 			WHERE `mountpoint_hash` = ?
 			AND `user` = ?
 		');
-		$result = (bool)$query->execute(array($target, $targetHash, $sourceHash, $this->uid));
+		$result = (bool)$query->execute([$target, $targetHash, $sourceHash, $this->uid]);
 
 		return $result;
 	}
@@ -337,7 +337,7 @@ class Manager {
 			SELECT `remote`, `share_token`, `remote_id`
 			FROM  `*PREFIX*share_external`
 			WHERE `mountpoint_hash` = ? AND `user` = ?');
-		$result = $getShare->execute(array($hash, $this->uid));
+		$result = $getShare->execute([$hash, $this->uid]);
 
 		if ($result) {
 			$share = $getShare->fetch();
@@ -350,7 +350,7 @@ class Manager {
 			WHERE `mountpoint_hash` = ?
 			AND `user` = ?
 		');
-		$result = (bool)$query->execute(array($hash, $this->uid));
+		$result = (bool)$query->execute([$hash, $this->uid]);
 
 		if($result) {
 			$this->removeReShares($id);
@@ -393,7 +393,7 @@ class Manager {
 			SELECT `remote`, `share_token`, `remote_id`
 			FROM  `*PREFIX*share_external`
 			WHERE `user` = ?');
-		$result = $getShare->execute(array($uid));
+		$result = $getShare->execute([$uid]);
 
 		if ($result) {
 			$shares = $getShare->fetchAll();
@@ -406,7 +406,7 @@ class Manager {
 			DELETE FROM `*PREFIX*share_external`
 			WHERE `user` = ?
 		');
-		return (bool)$query->execute(array($uid));
+		return (bool)$query->execute([$uid]);
 	}
 
 	/**

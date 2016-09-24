@@ -59,12 +59,12 @@ use OC\Repair;
  */
 class OC_App {
 	static private $appVersion = [];
-	static private $adminForms = array();
-	static private $personalForms = array();
-	static private $appInfo = array();
-	static private $appTypes = array();
-	static private $loadedApps = array();
-	static private $altLogin = array();
+	static private $adminForms = [];
+	static private $personalForms = [];
+	static private $appInfo = [];
+	static private $appTypes = [];
+	static private $loadedApps = [];
+	static private $altLogin = [];
 	const officialApp = 200;
 
 	/**
@@ -74,7 +74,7 @@ class OC_App {
 	 * @return string
 	 */
 	public static function cleanAppId($app) {
-		return str_replace(array('\0', '/', '\\', '..'), '', $app);
+		return str_replace(['\0', '/', '\\', '..'], '', $app);
 	}
 
 	/**
@@ -149,12 +149,12 @@ class OC_App {
 				throw new \OC\NeedsUpdateException();
 			}
 			self::requireAppFile($app);
-			if (self::isType($app, array('authentication'))) {
+			if (self::isType($app, ['authentication'])) {
 				// since authentication apps affect the "is app enabled for group" check,
 				// the enabled apps cache needs to be cleared to make sure that the
 				// next time getEnableApps() is called it will also include apps that were
 				// enabled for groups
-				self::$enabledAppsCache = array();
+				self::$enabledAppsCache = [];
 			}
 			\OC::$server->getEventLogger()->end('load_app_' . $app);
 		}
@@ -204,7 +204,7 @@ class OC_App {
 	 */
 	public static function isType($app, $types) {
 		if (is_string($types)) {
-			$types = array($types);
+			$types = [$types];
 		}
 		$appTypes = self::getAppTypes($app);
 		foreach ($types as $type) {
@@ -230,7 +230,7 @@ class OC_App {
 		if (isset(self::$appTypes[$app])) {
 			return explode(',', self::$appTypes[$app]);
 		} else {
-			return array();
+			return [];
 		}
 	}
 
@@ -267,7 +267,7 @@ class OC_App {
 	/**
 	 * get all enabled apps
 	 */
-	protected static $enabledAppsCache = array();
+	protected static $enabledAppsCache = [];
 
 	/**
 	 * Returns apps enabled for the current user.
@@ -279,7 +279,7 @@ class OC_App {
 	 */
 	public static function getEnabledApps($forceRefresh = false, $all = false) {
 		if (!\OC::$server->getSystemConfig()->getValue('installed', false)) {
-			return array();
+			return [];
 		}
 		// in incognito mode or when logged out, $user will be false,
 		// which is also the case during an upgrade
@@ -326,7 +326,7 @@ class OC_App {
 	 * This function set an app as enabled in appconfig.
 	 */
 	public static function enable($app, $groups = null) {
-		self::$enabledAppsCache = array(); // flush
+		self::$enabledAppsCache = []; // flush
 		if (!Installer::isInstalled($app)) {
 			$app = self::installApp($app);
 		}
@@ -362,7 +362,7 @@ class OC_App {
 		if(isset($download['downloadlink']) and $download['downloadlink']!='') {
 			// Replace spaces in download link without encoding entire URL
 			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
-			$info = array('source' => 'http', 'href' => $download['downloadlink'], 'appdata' => $appData);
+			$info = ['source' => 'http', 'href' => $download['downloadlink'], 'appdata' => $appData];
 			$app = Installer::installApp($info);
 		}
 		return $app;
@@ -393,7 +393,7 @@ class OC_App {
 		}
 
 		// flush
-		self::$enabledAppsCache = array();
+		self::$enabledAppsCache = [];
 
 		// run uninstall steps
 		$appData = OC_App::getAppInfo($app);
@@ -402,7 +402,7 @@ class OC_App {
 		}
 
 		// emit disable hook - needed anymore ?
-		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
+		\OC_Hook::emit('OC_App', 'pre_disable', ['app' => $app]);
 
 		// finally disable it
 		$appManager = \OC::$server->getAppManager();
@@ -421,32 +421,32 @@ class OC_App {
 		$l = \OC::$server->getL10N('lib');
 		$urlGenerator = \OC::$server->getURLGenerator();
 
-		$settings = array();
+		$settings = [];
 		// by default, settings only contain the help menu
 		if (OC_Util::getEditionString() === '' &&
 			\OC::$server->getSystemConfig()->getValue('knowledgebaseenabled', true) == true
 		) {
-			$settings = array(
-				array(
+			$settings = [
+				[
 					"id" => "help",
 					"order" => 1000,
 					"href" => $urlGenerator->linkToRoute('settings_help'),
 					"name" => $l->t("Help"),
 					"icon" => $urlGenerator->imagePath("settings", "help.svg")
-				)
-			);
+				]
+			];
 		}
 
 		// if the user is logged-in
 		if (OC_User::isLoggedIn()) {
 			// personal menu
-			$settings[] = array(
+			$settings[] = [
 				"id" => "personal",
 				"order" => 1,
 				"href" => $urlGenerator->linkToRoute('settings_personal'),
 				"name" => $l->t("Personal"),
 				"icon" => $urlGenerator->imagePath("settings", "personal.svg")
-			);
+			];
 
 			//SubAdmins are also allowed to access user management
 			$userObject = \OC::$server->getUserSession()->getUser();
@@ -456,25 +456,25 @@ class OC_App {
 			}
 			if ($isSubAdmin) {
 				// admin users menu
-				$settings[] = array(
+				$settings[] = [
 					"id" => "core_users",
 					"order" => 2,
 					"href" => $urlGenerator->linkToRoute('settings_users'),
 					"name" => $l->t("Users"),
 					"icon" => $urlGenerator->imagePath("settings", "users.svg")
-				);
+				];
 			}
 
 			// if the user is an admin
 			if (OC_User::isAdminUser(OC_User::getUser())) {
 				// admin settings
-				$settings[] = array(
+				$settings[] = [
 					"id" => "admin",
 					"order" => 1000,
 					"href" => $urlGenerator->linkToRoute('settings_admin'),
 					"name" => $l->t("Admin"),
 					"icon" => $urlGenerator->imagePath("settings", "admin.svg")
-				);
+				];
 			}
 		}
 
@@ -531,13 +531,13 @@ class OC_App {
 		if($sanitizedAppId !== $appId) {
 			return false;
 		}
-		static $app_dir = array();
+		static $app_dir = [];
 
 		if (isset($app_dir[$appId])) {
 			return $app_dir[$appId];
 		}
 
-		$possibleApps = array();
+		$possibleApps = [];
 		foreach (OC::$APPSROOTS as $dir) {
 			if (file_exists($dir['path'] . '/' . $appId)) {
 				$possibleApps[] = $dir;
@@ -551,14 +551,14 @@ class OC_App {
 			$app_dir[$appId] = $dir;
 			return $dir;
 		} else {
-			$versionToLoad = array();
+			$versionToLoad = [];
 			foreach ($possibleApps as $possibleApp) {
 				$version = self::getAppVersionByPath($possibleApp['path']);
 				if (empty($versionToLoad) || version_compare($version, $versionToLoad['version'], '>')) {
-					$versionToLoad = array(
+					$versionToLoad = [
 						'dir' => $possibleApp,
 						'version' => $version,
-					);
+					];
 				}
 			}
 			$app_dir[$appId] = $versionToLoad['dir'];
@@ -722,7 +722,7 @@ class OC_App {
 	 * @return array
 	 */
 	public static function getForms($type) {
-		$forms = array();
+		$forms = [];
 		switch ($type) {
 			case 'admin':
 				$source = self::$adminForms;
@@ -731,7 +731,7 @@ class OC_App {
 				$source = self::$personalForms;
 				break;
 			default:
-				return array();
+				return [];
 		}
 		foreach ($source as $form) {
 			$page = include $form['page'];
@@ -790,7 +790,7 @@ class OC_App {
 	 */
 	public static function getAllApps() {
 
-		$apps = array();
+		$apps = [];
 
 		foreach (OC::$APPSROOTS as $apps_dir) {
 			if (!is_readable($apps_dir['path'])) {
@@ -832,7 +832,7 @@ class OC_App {
 
 		//we don't want to show configuration for these
 		$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
-		$appList = array();
+		$appList = [];
 		$urlGenerator = \OC::$server->getURLGenerator();
 
 		foreach ($installedApps as $app) {
@@ -1165,7 +1165,7 @@ class OC_App {
 			if (!self::isAppCompatible($version, $info)) {
 				throw new \Exception(
 					$l->t('App "%s" cannot be installed because it is not compatible with this version of ownCloud.',
-						array($info['name'])
+						[$info['name']]
 					)
 				);
 			}
@@ -1177,7 +1177,7 @@ class OC_App {
 				$missingMsg = join(PHP_EOL, $missing);
 				throw new \Exception(
 					$l->t('App "%s" cannot be installed because the following dependencies are not fulfilled: %s',
-						array($info['name'], $missingMsg)
+						[$info['name'], $missingMsg]
 					)
 				);
 			}
@@ -1186,7 +1186,7 @@ class OC_App {
 			if (isset($appData['id'])) {
 				$config->setAppValue($app, 'ocsid', $appData['id']);
 			}
-			\OC_Hook::emit('OC_App', 'post_enable', array('app' => $app));
+			\OC_Hook::emit('OC_App', 'post_enable', ['app' => $app]);
 		} else {
 			if(empty($appName) ) {
 				throw new \Exception($l->t("No app name specified"));

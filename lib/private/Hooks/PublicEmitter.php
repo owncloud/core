@@ -28,7 +28,7 @@ class PublicEmitter extends BasicEmitter {
 	 * @param string $method
 	 * @param array $arguments optional
 	 */
-	public function emit($scope, $method, array $arguments = array()) {
+	public function emit($scope, $method, array $arguments = []) {
 		parent::emit($scope, $method, $arguments);
 	}
 }

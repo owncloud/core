@@ -294,12 +294,12 @@ class SystemTagPluginTest extends \Test\TestCase {
 			->with($systemTag, ['group1', 'group2']);
 
 		// properties to set
-		$propPatch = new \Sabre\DAV\PropPatch(array(
+		$propPatch = new \Sabre\DAV\PropPatch([
 			self::DISPLAYNAME_PROPERTYNAME => 'Test changed',
 			self::USERVISIBLE_PROPERTYNAME => 'false',
 			self::USERASSIGNABLE_PROPERTYNAME => 'true',
 			self::GROUPS_PROPERTYNAME => 'group1|group2',
-		));
+		]);
 
 		$this->plugin->handleUpdateProperties(
 			'/systemtag/1',
@@ -350,9 +350,9 @@ class SystemTagPluginTest extends \Test\TestCase {
 			->method('setTagGroups');
 
 		// properties to set
-		$propPatch = new \Sabre\DAV\PropPatch(array(
+		$propPatch = new \Sabre\DAV\PropPatch([
 			self::GROUPS_PROPERTYNAME => 'group1|group2',
-		));
+		]);
 
 		$this->plugin->handleUpdateProperties(
 			'/systemtag/1',

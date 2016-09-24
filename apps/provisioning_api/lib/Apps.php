@@ -58,11 +58,11 @@ class Apps {
 		if($filter){
 			switch($filter){
 				case 'enabled':
-					return new OC_OCS_Result(array('apps' => \OC_App::getEnabledApps()));
+					return new OC_OCS_Result(['apps' => \OC_App::getEnabledApps()]);
 					break;
 				case 'disabled':
 					$enabled = OC_App::getEnabledApps();
-					return new OC_OCS_Result(array('apps' => array_diff($list, $enabled)));
+					return new OC_OCS_Result(['apps' => array_diff($list, $enabled)]);
 					break;
 				default:
 					// Invalid filter variable
@@ -71,7 +71,7 @@ class Apps {
 			}
 
 		} else {
-			return new OC_OCS_Result(array('apps' => $list));
+			return new OC_OCS_Result(['apps' => $list]);
 		}
 	}
 

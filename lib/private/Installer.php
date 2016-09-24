@@ -84,7 +84,7 @@ class Installer {
 	 * @throws \Exception
 	 * @return integer
 	 */
-	public static function installApp( $data = array()) {
+	public static function installApp( $data = []) {
 		$l = \OC::$server->getL10N('lib');
 
 		list($extractDir, $path) = self::downloadApp($data);
@@ -111,7 +111,7 @@ class Installer {
 			if($data['source']=='http') {
 				unlink($path);
 			}
-			throw new \Exception($l->t("Can't create app folder. Please fix permissions. %s", array($basedir)));
+			throw new \Exception($l->t("Can't create app folder. Please fix permissions. %s", [$basedir]));
 		}
 
 		$extractDir .= '/' . $info['id'];
@@ -205,7 +205,7 @@ class Installer {
 	 * upgrade.php can determine the current installed version of the app using
 	 * "\OC::$server->getAppConfig()->getValue($appid, 'installed_version')"
 	 */
-	public static function updateApp($info=array(), $isShipped=false) {
+	public static function updateApp($info= [], $isShipped=false) {
 		list($extractDir, $path) = self::downloadApp($info);
 		$info = self::checkAppsIntegrity($info, $extractDir, $path, $isShipped);
 
@@ -251,11 +251,11 @@ class Installer {
 
 		if (isset($download['downloadlink']) && trim($download['downloadlink']) !== '') {
 			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
-			$info = array(
+			$info = [
 				'source' => 'http',
 				'href' => $download['downloadlink'],
 				'appdata' => $appData
-			);
+			];
 		} else {
 			throw new \Exception('Could not fetch app info!');
 		}
@@ -268,7 +268,7 @@ class Installer {
 	 * @return array
 	 * @throws \Exception
 	 */
-	public static function downloadApp($data = array()) {
+	public static function downloadApp($data = []) {
 		$l = \OC::$server->getL10N('lib');
 
 		if(!isset($data['source'])) {
@@ -295,7 +295,7 @@ class Installer {
 		//detect the archive type
 		$mime = \OC::$server->getMimeTypeDetector()->detect($path);
 		if ($mime !=='application/zip' && $mime !== 'application/x-gzip' && $mime !== 'application/x-bzip2') {
-			throw new \Exception($l->t("Archives of type %s are not supported", array($mime)));
+			throw new \Exception($l->t("Archives of type %s are not supported", [$mime]));
 		}
 
 		//extract the archive in a temporary folder
@@ -312,10 +312,10 @@ class Installer {
 			throw new \Exception($l->t("Failed to open archive when installing app"));
 		}
 
-		return array(
+		return [
 			$extractDir,
 			$path
-		);
+		];
 	}
 
 	/**

@@ -31,7 +31,7 @@ use OCP\IGroupManager;
 abstract class TestCase extends \Test\TestCase {
 
 	/** @var IUser[] */
-	protected $users = array();
+	protected $users = [];
 
 	/** @var IUserManager */
 	protected $userManager;
@@ -53,7 +53,7 @@ abstract class TestCase extends \Test\TestCase {
 	 * @return IUser[]|IUser
 	 */
 	protected function generateUsers($num = 1) {
-		$users = array();
+		$users = [];
 		for ($i = 0; $i < $num; $i++) {
 			$user = $this->userManager->createUser($this->getUniqueID(), 'password');
 			$this->users[] = $user;

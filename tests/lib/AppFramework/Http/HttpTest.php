@@ -39,7 +39,7 @@ class HttpTest extends \Test\TestCase {
 	protected function setUp(){
 		parent::setUp();
 
-		$this->server = array();
+		$this->server = [];
 		$this->http = new Http($this->server);
 	}
 
@@ -58,7 +58,7 @@ class HttpTest extends \Test\TestCase {
 
 
 	public function testEtagMatchReturnsNotModified() {
-		$http = new Http(array('HTTP_IF_NONE_MATCH' => 'hi'));
+		$http = new Http(['HTTP_IF_NONE_MATCH' => 'hi']);
 
 		$header = $http->getStatusHeader(Http::STATUS_OK, null, 'hi');
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
@@ -66,7 +66,7 @@ class HttpTest extends \Test\TestCase {
 
 
 	public function testQuotedEtagMatchReturnsNotModified() {
-		$http = new Http(array('HTTP_IF_NONE_MATCH' => '"hi"'));
+		$http = new Http(['HTTP_IF_NONE_MATCH' => '"hi"']);
 
 		$header = $http->getStatusHeader(Http::STATUS_OK, null, 'hi');
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
@@ -78,8 +78,8 @@ class HttpTest extends \Test\TestCase {
 		$dateTime->setTimestamp('12');
 
 		$http = new Http(
-			array(
-				'HTTP_IF_MODIFIED_SINCE' => 'Thu, 01 Jan 1970 00:00:12 +0000')
+			[
+				'HTTP_IF_MODIFIED_SINCE' => 'Thu, 01 Jan 1970 00:00:12 +0000']
 			);
 
 		$header = $http->getStatusHeader(Http::STATUS_OK, $dateTime);
@@ -89,7 +89,7 @@ class HttpTest extends \Test\TestCase {
 
 
 	public function testTempRedirectBecomesFoundInHttp10() {
-		$http = new Http(array(), 'HTTP/1.0');
+		$http = new Http([], 'HTTP/1.0');
 
 		$header = $http->getStatusHeader(Http::STATUS_TEMPORARY_REDIRECT);
 		$this->assertEquals('HTTP/1.0 302 Found', $header);

@@ -23,15 +23,15 @@ class LegacyHelperTest extends \Test\TestCase {
 
 	public function humanFileSizeProvider()
 	{
-		return array(
-			array('0 B', 0),
-			array('1 KB', 1024),
-			array('9.5 MB', 10000000),
-			array('1.3 GB', 1395864371),
-			array('465.7 GB', 500000000000),
-			array('454.7 TB', 500000000000000),
-			array('444.1 PB', 500000000000000000),
-		);
+		return [
+			['0 B', 0],
+			['1 KB', 1024],
+			['9.5 MB', 10000000],
+			['1.3 GB', 1395864371],
+			['465.7 GB', 500000000000],
+			['454.7 TB', 500000000000000],
+			['444.1 PB', 500000000000000000],
+		];
 	}
 
 	/**
@@ -45,15 +45,15 @@ class LegacyHelperTest extends \Test\TestCase {
 
 	public function phpFileSizeProvider()
 	{
-		return array(
-			array('0B', 0),
-			array('1K', 1024),
-			array('9.5M', 10000000),
-			array('1.3G', 1395864371),
-			array('465.7G', 500000000000),
-			array('465661.3G', 500000000000000),
-			array('465661287.3G', 500000000000000000),
-		);
+		return [
+			['0B', 0],
+			['1K', 1024],
+			['9.5M', 10000000],
+			['1.3G', 1395864371],
+			['465.7G', 500000000000],
+			['465661.3G', 500000000000000],
+			['465661287.3G', 500000000000000000],
+		];
 	}
 
 	/**
@@ -89,36 +89,36 @@ class LegacyHelperTest extends \Test\TestCase {
 	}
 
 	function testMb_array_change_key_case() {
-		$arrayStart = array(
+		$arrayStart = [
 			"Foo" => "bar",
 			"Bar" => "foo",
-			);
-		$arrayResult = array(
+		];
+		$arrayResult = [
 			"foo" => "bar",
 			"bar" => "foo",
-			);
+		];
 		$result = OC_Helper::mb_array_change_key_case($arrayStart);
 		$expected = $arrayResult;
 		$this->assertEquals($result, $expected);
 
-		$arrayStart = array(
+		$arrayStart = [
 			"foo" => "bar",
 			"bar" => "foo",
-			);
-		$arrayResult = array(
+		];
+		$arrayResult = [
 			"FOO" => "bar",
 			"BAR" => "foo",
-			);
+		];
 		$result = OC_Helper::mb_array_change_key_case($arrayStart, MB_CASE_UPPER);
 		$expected = $arrayResult;
 		$this->assertEquals($result, $expected);
 	}
 
 	function testRecursiveArraySearch() {
-		$haystack = array(
+		$haystack = [
 			"Foo" => "own",
 			"Bar" => "Cloud",
-			);
+		];
 
 		$result = OC_Helper::recursiveArraySearch($haystack, "own");
 		$expected = "Foo";
@@ -129,7 +129,7 @@ class LegacyHelperTest extends \Test\TestCase {
 	}
 
 	function testBuildNotExistingFileNameForView() {
-		$viewMock = $this->createMock('\OC\Files\View', array(), array(), '', false);
+		$viewMock = $this->createMock('\OC\Files\View', [], [], '', false);
 		$this->assertEquals('/filename', OC_Helper::buildNotExistingFileNameForView('/', 'filename', $viewMock));
 		$this->assertEquals('dir/filename.ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename.ext', $viewMock));
 
@@ -215,12 +215,12 @@ class LegacyHelperTest extends \Test\TestCase {
 
 
 	function streamCopyDataProvider() {
-		return array(
-			array(0, false, false, false),
-			array(0, false, \OC::$SERVERROOT . '/tests/data/lorem.txt', false),
-			array(filesize(\OC::$SERVERROOT . '/tests/data/lorem.txt'), true, \OC::$SERVERROOT . '/tests/data/lorem.txt', \OC::$SERVERROOT . '/tests/data/lorem-copy.txt'),
-			array(3670, true, \OC::$SERVERROOT . '/tests/data/testimage.png', \OC::$SERVERROOT . '/tests/data/testimage-copy.png'),
-		);
+		return [
+			[0, false, false, false],
+			[0, false, \OC::$SERVERROOT . '/tests/data/lorem.txt', false],
+			[filesize(\OC::$SERVERROOT . '/tests/data/lorem.txt'), true, \OC::$SERVERROOT . '/tests/data/lorem.txt', \OC::$SERVERROOT . '/tests/data/lorem-copy.txt'],
+			[3670, true, \OC::$SERVERROOT . '/tests/data/testimage.png', \OC::$SERVERROOT . '/tests/data/testimage-copy.png'],
+		];
 	}
 
 	// Url generator methods
@@ -295,7 +295,7 @@ class LegacyHelperTest extends \Test\TestCase {
 	 * @return mixed
 	 * @deprecated Please extend \Test\TestCase and use self::invokePrivate() then
 	 */
-	public static function invokePrivate($object, $methodName, array $parameters = array()) {
+	public static function invokePrivate($object, $methodName, array $parameters = []) {
 		return parent::invokePrivate($object, $methodName, $parameters);
 	}
 }

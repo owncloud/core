@@ -67,7 +67,7 @@ class Manager implements IManager {
 	 * @param ArrayCache $arrayCache
 	 */
 	public function __construct(IConfig $config, ILogger $logger, IL10N $l10n, View $rootView, Util $util, ArrayCache $arrayCache) {
-		$this->encryptionModules = array();
+		$this->encryptionModules = [];
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->l = $l10n;
@@ -254,7 +254,7 @@ class Manager implements IManager {
 	 */
 	public function setupStorage() {
 		$encryptionWrapper = new EncryptionWrapper($this->arrayCache, $this, $this->logger);
-		Filesystem::addStorageWrapper('oc_encryption', array($encryptionWrapper, 'wrapStorage'), 2);
+		Filesystem::addStorageWrapper('oc_encryption', [$encryptionWrapper, 'wrapStorage'], 2);
 	}
 
 

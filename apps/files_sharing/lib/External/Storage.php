@@ -84,13 +84,13 @@ class Storage extends DAV implements ISharedStorage {
 		$root = rtrim($root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		$this->mountPoint = $options['mountpoint'];
 		$this->token = $options['token'];
-		parent::__construct(array(
+		parent::__construct([
 			'secure' => $secure,
 			'host' => $host,
 			'root' => $root,
 			'user' => $options['token'],
 			'password' => (string)$options['password']
-		));
+		]);
 	}
 
 	public function getWatcher($path = '', $storage = null) {

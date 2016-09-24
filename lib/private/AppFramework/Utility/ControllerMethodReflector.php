@@ -39,9 +39,9 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 	private $parameters;
 
 	public function __construct() {
-		$this->types = array();
-		$this->parameters = array();
-		$this->annotations = array();
+		$this->types = [];
+		$this->parameters = [];
+		$this->annotations = [];
 	}
 
 

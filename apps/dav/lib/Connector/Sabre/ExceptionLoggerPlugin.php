@@ -31,7 +31,7 @@ use Sabre\DAV\Exception;
 use Sabre\HTTP\Response;
 
 class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
-	protected $nonFatalExceptions = array(
+	protected $nonFatalExceptions = [
 		'Sabre\DAV\Exception\NotAuthenticated' => true,
 		// the sync client uses this to find out whether files exist,
 		// so it is not always an error, log it as debug
@@ -45,7 +45,7 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		'Sabre\DAV\Exception\Forbidden' => true,
 		// Custom exception similar to NotAuthenticated
 		'OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden' => true,
-	);
+	];
 
 	/** @var string */
 	private $appName;
@@ -75,7 +75,7 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
 
-		$server->on('exception', array($this, 'logException'), 10);
+		$server->on('exception', [$this, 'logException'], 10);
 	}
 
 	/**

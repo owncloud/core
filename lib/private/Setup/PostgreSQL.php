@@ -120,8 +120,8 @@ class PostgreSQL extends AbstractDatabase {
 		$query = "select datname from pg_database where datname = '$e_name'";
 		$result = pg_query($connection, $query);
 		if(!$result) {
-			$entry = $this->trans->t('DB Error: "%s"', array(pg_last_error($connection))) . '<br />';
-			$entry .= $this->trans->t('Offending command was: "%s"', array($query)) . '<br />';
+			$entry = $this->trans->t('DB Error: "%s"', [pg_last_error($connection)]) . '<br />';
+			$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 			\OCP\Util::writeLog('setup.pg', $entry, \OCP\Util::WARN);
 		}
 		if(! pg_fetch_row($result)) {
@@ -129,8 +129,8 @@ class PostgreSQL extends AbstractDatabase {
 			$query = "CREATE DATABASE \"$e_name\" OWNER \"$e_user\"";
 			$result = pg_query($connection, $query);
 			if(!$result) {
-				$entry = $this->trans->t('DB Error: "%s"', array(pg_last_error($connection))) . '<br />';
-				$entry .= $this->trans->t('Offending command was: "%s"', array($query)) . '<br />';
+				$entry = $this->trans->t('DB Error: "%s"', [pg_last_error($connection)]) . '<br />';
+				$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 				\OCP\Util::writeLog('setup.pg', $entry, \OCP\Util::WARN);
 			}
 			else {
@@ -146,8 +146,8 @@ class PostgreSQL extends AbstractDatabase {
 		$query = "select * from pg_roles where rolname='$e_name';";
 		$result = pg_query($connection, $query);
 		if(!$result) {
-			$entry = $this->trans->t('DB Error: "%s"', array(pg_last_error($connection))) . '<br />';
-			$entry .= $this->trans->t('Offending command was: "%s"', array($query)) . '<br />';
+			$entry = $this->trans->t('DB Error: "%s"', [pg_last_error($connection)]) . '<br />';
+			$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 			\OCP\Util::writeLog('setup.pg', $entry, \OCP\Util::WARN);
 		}
 
@@ -156,8 +156,8 @@ class PostgreSQL extends AbstractDatabase {
 			$query = "CREATE USER \"$e_name\" CREATEDB PASSWORD '$e_password';";
 			$result = pg_query($connection, $query);
 			if(!$result) {
-				$entry = $this->trans->t('DB Error: "%s"', array(pg_last_error($connection))) . '<br />';
-				$entry .= $this->trans->t('Offending command was: "%s"', array($query)) . '<br />';
+				$entry = $this->trans->t('DB Error: "%s"', [pg_last_error($connection)]) . '<br />';
+				$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 				\OCP\Util::writeLog('setup.pg', $entry, \OCP\Util::WARN);
 			}
 		}
@@ -165,8 +165,8 @@ class PostgreSQL extends AbstractDatabase {
 			$query = "ALTER ROLE \"$e_name\" WITH PASSWORD '$e_password';";
 			$result = pg_query($connection, $query);
 			if(!$result) {
-				$entry = $this->trans->t('DB Error: "%s"', array(pg_last_error($connection))) . '<br />';
-				$entry .= $this->trans->t('Offending command was: "%s"', array($query)) . '<br />';
+				$entry = $this->trans->t('DB Error: "%s"', [pg_last_error($connection)]) . '<br />';
+				$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
 				\OCP\Util::writeLog('setup.pg', $entry, \OCP\Util::WARN);
 			}
 		}

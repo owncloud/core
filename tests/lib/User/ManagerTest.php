@@ -203,7 +203,7 @@ class ManagerTest extends TestCase {
 		$backend->expects($this->once())
 			->method('getUsers')
 			->with($this->equalTo('fo'))
-			->will($this->returnValue(array('foo', 'afoo')));
+			->will($this->returnValue(['foo', 'afoo']));
 
 		$manager = new \OC\User\Manager();
 		$manager->registerBackend($backend);
@@ -222,7 +222,7 @@ class ManagerTest extends TestCase {
 		$backend1->expects($this->once())
 			->method('getUsers')
 			->with($this->equalTo('fo'), $this->equalTo(3), $this->equalTo(1))
-			->will($this->returnValue(array('foo1', 'foo2')));
+			->will($this->returnValue(['foo1', 'foo2']));
 
 		/**
 		 * @var \Test\Util\User\Dummy | \PHPUnit_Framework_MockObject_MockObject $backend2
@@ -231,7 +231,7 @@ class ManagerTest extends TestCase {
 		$backend2->expects($this->once())
 			->method('getUsers')
 			->with($this->equalTo('fo'), $this->equalTo(3), $this->equalTo(1))
-			->will($this->returnValue(array('foo3')));
+			->will($this->returnValue(['foo3']));
 
 		$manager = new \OC\User\Manager();
 		$manager->registerBackend($backend1);

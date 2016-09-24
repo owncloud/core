@@ -71,7 +71,7 @@ class Swift extends \OC\Files\Storage\Common {
 	/**
 	 * @var array
 	 */
-	private static $tmpFiles = array();
+	private static $tmpFiles = [];
 
 	/**
 	 * Key value cache mapping path to data object. Maps path to
@@ -192,8 +192,8 @@ class Swift extends \OC\Files\Storage\Common {
 		}
 
 		try {
-			$customHeaders = array('content-type' => 'httpd/unix-directory');
-			$metadataHeaders = DataObject::stockHeaders(array());
+			$customHeaders = ['content-type' => 'httpd/unix-directory'];
+			$metadataHeaders = DataObject::stockHeaders([]);
 			$allHeaders = $customHeaders + $metadataHeaders;
 			$this->getContainer()->uploadObject($path, '', $allHeaders);
 			// invalidate so that the next access gets the real object
@@ -260,12 +260,12 @@ class Swift extends \OC\Files\Storage\Common {
 		$path = str_replace('%23', '#', $path); // the prefix is sent as a query param, so revert the encoding of #
 
 		try {
-			$files = array();
+			$files = [];
 			/** @var OpenCloud\Common\Collection $objects */
-			$objects = $this->getContainer()->objectList(array(
+			$objects = $this->getContainer()->objectList([
 				'prefix' => $path,
 				'delimiter' => '/'
-			));
+			]);
 
 			/** @var OpenCloud\ObjectStore\Resource\DataObject $object */
 			foreach ($objects as $object) {
@@ -319,7 +319,7 @@ class Swift extends \OC\Files\Storage\Common {
 			$mtime = floor($mtime);
 		}
 
-		$stat = array();
+		$stat = [];
 		$stat['size'] = (int)$object->getContentLength();
 		$stat['mtime'] = $mtime;
 		$stat['atime'] = time();
@@ -405,7 +405,7 @@ class Swift extends \OC\Files\Storage\Common {
 					$ext = '';
 				}
 				$tmpFile = \OCP\Files::tmpFile($ext);
-				\OC\Files\Stream\Close::registerCallback($tmpFile, array($this, 'writeBack'));
+				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				// Fetch existing file if required
 				if ($mode[0] !== 'w' && $this->file_exists($path)) {
 					if ($mode[0] === 'x') {
@@ -430,7 +430,7 @@ class Swift extends \OC\Files\Storage\Common {
 		if (is_null($mtime)) {
 			$mtime = time();
 		}
-		$metadata = array('timestamp' => $mtime);
+		$metadata = ['timestamp' => $mtime];
 		if ($this->file_exists($path)) {
 			if ($this->is_dir($path) && $path != '.') {
 				$path .= '/';
@@ -444,7 +444,7 @@ class Swift extends \OC\Files\Storage\Common {
 			return true;
 		} else {
 			$mimeType = \OC::$server->getMimeTypeDetector()->detectPath($path);
-			$customHeaders = array('content-type' => $mimeType);
+			$customHeaders = ['content-type' => $mimeType];
 			$metadataHeaders = DataObject::stockHeaders($metadata);
 			$allHeaders = $customHeaders + $metadataHeaders;
 			$this->getContainer()->uploadObject($path, '', $allHeaders);
@@ -549,9 +549,9 @@ class Swift extends \OC\Files\Storage\Common {
 			return $this->connection;
 		}
 
-		$settings = array(
+		$settings = [
 			'username' => $this->params['user'],
-		);
+		];
 
 		if (!empty($this->params['password'])) {
 			$settings['password'] = $this->params['password'];
@@ -627,7 +627,7 @@ class Swift extends \OC\Files\Storage\Common {
 		}
 		$path = $this->normalizePath($path);
 		$dh = $this->opendir($path);
-		$content = array();
+		$content = [];
 		while (($file = readdir($dh)) !== false) {
 			$content[] = $file;
 		}

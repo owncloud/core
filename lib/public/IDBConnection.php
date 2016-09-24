@@ -72,7 +72,7 @@ interface IDBConnection {
 	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
 	 * @since 8.0.0
 	 */
-	public function executeQuery($query, array $params = array(), $types = array());
+	public function executeQuery($query, array $params = [], $types = []);
 
 	/**
 	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
@@ -86,7 +86,7 @@ interface IDBConnection {
 	 * @return integer The number of affected rows.
 	 * @since 8.0.0
 	 */
-	public function executeUpdate($query, array $params = array(), array $types = array());
+	public function executeUpdate($query, array $params = [], array $types = []);
 
 	/**
 	 * Used to get the id of the just inserted element

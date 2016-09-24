@@ -26,7 +26,7 @@ class StaticStream {
 	const MODE_FILE = 0100000;
 
 	public $context;
-	protected static $data = array();
+	protected static $data = [];
 
 	protected $path = '';
 	protected $pointer = 0;
@@ -43,7 +43,7 @@ class StaticStream {
 	}
 
 	public static function clear() {
-		self::$data = array();
+		self::$data = [];
 	}
 
 	public function stream_open($path, $mode, $options, &$opened_path) {
@@ -148,7 +148,7 @@ class StaticStream {
 		if (isset(self::$data[$path])) {
 			$size = strlen(self::$data[$path]);
 			$time = time();
-			$data = array(
+			$data = [
 				'dev' => 0,
 				'ino' => 0,
 				'mode' => self::MODE_FILE | 0777,
@@ -162,7 +162,7 @@ class StaticStream {
 				'ctime' => $time,
 				'blksize' => -1,
 				'blocks' => -1,
-			);
+			];
 			return array_values($data) + $data;
 		}
 		return false;

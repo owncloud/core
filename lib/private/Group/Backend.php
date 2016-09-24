@@ -40,13 +40,13 @@ abstract class Backend implements \OCP\GroupInterface {
 	//OBSOLETE const GET_DISPLAYNAME	= 0x00010000;
 	const COUNT_USERS		= 0x00100000;
 
-	protected $possibleActions = array(
+	protected $possibleActions = [
 		self::CREATE_GROUP => 'createGroup',
 		self::DELETE_GROUP => 'deleteGroup',
 		self::ADD_TO_GROUP => 'addToGroup',
 		self::REMOVE_FROM_GOUP => 'removeFromGroup',
 		self::COUNT_USERS => 'countUsersInGroup',
-	);
+	];
 
 	/**
 	* Get all supported actions
@@ -99,7 +99,7 @@ abstract class Backend implements \OCP\GroupInterface {
 	 * if the user exists at all.
 	 */
 	public function getUserGroups($uid) {
-		return array();
+		return [];
 	}
 
 	/**
@@ -113,7 +113,7 @@ abstract class Backend implements \OCP\GroupInterface {
 	 */
 
 	public function getGroups($search = '', $limit = -1, $offset = 0) {
-		return array();
+		return [];
 	}
 
 	/**
@@ -134,6 +134,6 @@ abstract class Backend implements \OCP\GroupInterface {
 	 * @return array an array of user ids
 	 */
 	public function usersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
-		return array();
+		return [];
 	}
 }

@@ -192,7 +192,7 @@ class User implements IUser {
 	 */
 	public function delete() {
 		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'preDelete', array($this));
+			$this->emitter->emit('\OC\User', 'preDelete', [$this]);
 		}
 		$result = $this->backend->deleteUser($this->uid);
 		if ($result) {
@@ -217,7 +217,7 @@ class User implements IUser {
 		}
 
 		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'postDelete', array($this));
+			$this->emitter->emit('\OC\User', 'postDelete', [$this]);
 		}
 		return !($result === false);
 	}
@@ -231,13 +231,13 @@ class User implements IUser {
 	 */
 	public function setPassword($password, $recoveryPassword = null) {
 		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'preSetPassword', array($this, $password, $recoveryPassword));
+			$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
 		}
 		if ($this->backend->implementsActions(Backend::SET_PASSWORD)) {
 			$result = $this->backend->setPassword($this->uid, $password);
 			if ($result) {
 				if ($this->emitter) {
-					$this->emitter->emit('\OC\User', 'postSetPassword', array($this, $password, $recoveryPassword));
+					$this->emitter->emit('\OC\User', 'postSetPassword', [$this, $password, $recoveryPassword]);
 				}
 				$this->config->deleteUserValue($this->getUID(), 'owncloud', 'lostpassword');
 			}
@@ -420,7 +420,7 @@ class User implements IUser {
 
 	public function triggerChange($feature, $value = null) {
 		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'changeUser', array($this, $feature, $value));
+			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);
 		}
 	}
 }

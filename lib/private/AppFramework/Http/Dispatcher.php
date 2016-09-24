@@ -77,7 +77,7 @@ class Dispatcher {
 	 * @throws \Exception
 	 */
 	public function dispatch(Controller $controller, $methodName) {
-		$out = array(null, array(), null);
+		$out = [null, [], null];
 
 		try {
 			// prefill reflector with everything thats needed for the
@@ -125,10 +125,10 @@ class Dispatcher {
 	 * @return Response
 	 */
 	private function executeController($controller, $methodName) {
-		$arguments = array();
+		$arguments = [];
 
 		// valid types that will be casted
-		$types = array('int', 'integer', 'bool', 'boolean', 'float');
+		$types = ['int', 'integer', 'bool', 'boolean', 'float'];
 
 		foreach($this->reflector->getParameters() as $param => $default) {
 
@@ -156,7 +156,7 @@ class Dispatcher {
 			$arguments[] = $value;
 		}
 
-		$response = call_user_func_array(array($controller, $methodName), $arguments);
+		$response = call_user_func_array([$controller, $methodName], $arguments);
 
 		// format response
 		if($response instanceof DataResponse || !($response instanceof Response)) {

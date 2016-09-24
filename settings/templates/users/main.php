@@ -17,8 +17,8 @@ script('core', [
 ]);
 style('settings', 'settings');
 
-$userlistParams = array();
-$allGroups=array();
+$userlistParams = [];
+$allGroups= [];
 foreach($_["adminGroup"] as $group) {
 	$allGroups[] = $group['name'];
 }

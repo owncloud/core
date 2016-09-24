@@ -100,7 +100,7 @@ class JSON {
 	 * @return string json formatted string.
 	 * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
 	 */
-	public static function success( $data = array() ) {
+	public static function success( $data = []) {
 		\OC_JSON::success($data);
 	}
 
@@ -123,7 +123,7 @@ class JSON {
 	 * @return string json formatted error string.
 	 * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
 	 */
-	public static function error( $data = array() ) {
+	public static function error( $data = []) {
 		\OC_JSON::error( $data );
 	}
 

@@ -57,7 +57,7 @@ class Home extends Local implements \OCP\Files\IHomeStorage {
 		    $this->id = 'home::' . $this->user->getUID();
 		}
 
-		parent::__construct(array('datadir' => $datadir));
+		parent::__construct(['datadir' => $datadir]);
 	}
 
 	public function getId() {

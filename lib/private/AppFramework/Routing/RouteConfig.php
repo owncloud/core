@@ -71,7 +71,7 @@ class RouteConfig {
 	 */
 	private function processSimpleRoutes($routes)
 	{
-		$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : array();
+		$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : [];
 		foreach ($simpleRoutes as $simpleRoute) {
 			$name = $simpleRoute['name'];
 			$postfix = '';
@@ -127,15 +127,15 @@ class RouteConfig {
 	private function processResources($routes)
 	{
 		// declaration of all restful actions
-		$actions = array(
-			array('name' => 'index', 'verb' => 'GET', 'on-collection' => true),
-			array('name' => 'show', 'verb' => 'GET'),
-			array('name' => 'create', 'verb' => 'POST', 'on-collection' => true),
-			array('name' => 'update', 'verb' => 'PUT'),
-			array('name' => 'destroy', 'verb' => 'DELETE'),
-		);
+		$actions = [
+			['name' => 'index', 'verb' => 'GET', 'on-collection' => true],
+			['name' => 'show', 'verb' => 'GET'],
+			['name' => 'create', 'verb' => 'POST', 'on-collection' => true],
+			['name' => 'update', 'verb' => 'PUT'],
+			['name' => 'destroy', 'verb' => 'DELETE'],
+		];
 
-		$resources = isset($routes['resources']) ? $routes['resources'] : array();
+		$resources = isset($routes['resources']) ? $routes['resources'] : [];
 		foreach ($resources as $resource => $config) {
 
 			// the url parameter used as id to the resource

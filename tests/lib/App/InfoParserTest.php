@@ -36,9 +36,9 @@ class InfoParserTest extends TestCase {
 	}
 
 	function providesInfoXml() {
-		return array(
-			array('expected-info.json', 'valid-info.xml'),
-			array(null, 'invalid-info.xml'),
-		);
+		return [
+			['expected-info.json', 'valid-info.xml'],
+			[null, 'invalid-info.xml'],
+		];
 	}
 }

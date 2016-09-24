@@ -101,12 +101,12 @@ class MySQL extends AbstractDatabase {
 	 */
 	private function connect() {
 
-		$connectionParams = array(
+		$connectionParams = [
 				'host' => $this->dbHost,
 				'user' => $this->dbUser,
 				'password' => $this->dbPassword,
 				'tablePrefix' => $this->tablePrefix,
-		);
+		];
 
 		// adding port support
 		if (strpos($this->dbHost, ':')) {

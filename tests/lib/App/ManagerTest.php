@@ -24,7 +24,7 @@ class ManagerTest extends TestCase {
 	 * @return \OCP\IAppConfig | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getAppConfig() {
-		$appConfig = array();
+		$appConfig = [];
 		$config = $this->getMockBuilder('\OCP\IAppConfig')
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +38,7 @@ class ManagerTest extends TestCase {
 			->method('setValue')
 			->will($this->returnCallback(function ($app, $key, $value) use (&$appConfig) {
 				if (!isset($appConfig[$app])) {
-					$appConfig[$app] = array();
+					$appConfig[$app] = [];
 				}
 				$appConfig[$app][$key] = $value;
 			}));
@@ -48,7 +48,7 @@ class ManagerTest extends TestCase {
 				if ($app) {
 					return $appConfig[$app];
 				} else {
-					$values = array();
+					$values = [];
 					foreach ($appConfig as $app => $appData) {
 						if (isset($appData[$key])) {
 							$values[$app] = $appData[$key];
@@ -117,10 +117,10 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testEnableAppForGroups() {
-		$groups = array(
-			new Group('group1', array(), null),
-			new Group('group2', array(), null)
-		);
+		$groups = [
+			new Group('group1', [], null),
+			new Group('group2', [], null)
+		];
 		$this->expectClearCache();
 		$this->manager->enableAppForGroups('test', $groups);
 		$this->assertEquals('["group1","group2"]', $this->appConfig->getValue('test', 'enabled', 'no'));
@@ -144,10 +144,10 @@ class ManagerTest extends TestCase {
 	 * @param array $appInfo
 	 */
 	public function testEnableAppForGroupsAllowedTypes(array $appInfo) {
-		$groups = array(
-			new Group('group1', array(), null),
-			new Group('group2', array(), null)
-		);
+		$groups = [
+			new Group('group1', [], null),
+			new Group('group2', [], null)
+		];
 		$this->expectClearCache();
 
 		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
@@ -188,10 +188,10 @@ class ManagerTest extends TestCase {
 	 * @expectedExceptionMessage test can't be enabled for groups.
 	 */
 	public function testEnableAppForGroupsForbiddenTypes($type) {
-		$groups = array(
-			new Group('group1', array(), null),
-			new Group('group2', array(), null)
-		);
+		$groups = [
+			new Group('group1', [], null),
+			new Group('group2', [], null)
+		];
 
 		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->getMockBuilder('OC\App\AppManager')
@@ -245,7 +245,7 @@ class ManagerTest extends TestCase {
 		$this->groupManager->expects($this->once())
 			->method('getUserGroupIds')
 			->with($user)
-			->will($this->returnValue(array('foo', 'bar')));
+			->will($this->returnValue(['foo', 'bar']));
 
 		$this->appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertTrue($this->manager->isEnabledForUser('test', $user));
@@ -256,7 +256,7 @@ class ManagerTest extends TestCase {
 		$this->groupManager->expects($this->once())
 			->method('getUserGroupIds')
 			->with($user)
-			->will($this->returnValue(array('bar')));
+			->will($this->returnValue(['bar']));
 
 		$this->appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertFalse($this->manager->isEnabledForUser('test', $user));
@@ -276,7 +276,7 @@ class ManagerTest extends TestCase {
 		$this->groupManager->expects($this->once())
 			->method('getUserGroupIds')
 			->with($user)
-			->will($this->returnValue(array('foo', 'bar')));
+			->will($this->returnValue(['foo', 'bar']));
 
 		$this->appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertTrue($this->manager->isEnabledForUser('test'));
@@ -294,7 +294,7 @@ class ManagerTest extends TestCase {
 		$this->groupManager->expects($this->any())
 			->method('getUserGroupIds')
 			->with($user)
-			->will($this->returnValue(array('foo', 'bar')));
+			->will($this->returnValue(['foo', 'bar']));
 
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
