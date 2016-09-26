@@ -109,7 +109,7 @@ class Message {
 	/**
 	 * Returns the Reply-To address of this message
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function getReplyTo() {
 		return $this->swiftMessage->getReplyTo();
@@ -162,7 +162,7 @@ class Message {
 	/**
 	 * Set the BCC recipients of this message.
 	 *
-	 * @param array $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
+	 * @param string[] $recipients Example: array('recipient@domain.org', 'other@domain.org' => 'A name')
 	 * @return $this
 	 */
 	public function setBcc(array $recipients) {

@@ -130,13 +130,16 @@ class ImageExportPlugin extends ServerPlugin {
 		return false;
 	}
 
+	/**
+	 * @param string $cardData
+	 */
 	private function readCard($cardData) {
 		return Reader::read($cardData);
 	}
 
 	/**
 	 * @param Binary $photo
-	 * @return Parameter
+	 * @return string|null
 	 */
 	private function getType($photo) {
 		$params = $photo->parameters();

@@ -71,7 +71,7 @@ class CertificateController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
-	 * @return array
+	 * @return DataResponse
 	 */
 	public function addPersonalRootCertificate() {
 		return $this->addCertificate($this->userCertificateManager);
@@ -81,7 +81,7 @@ class CertificateController extends Controller {
 	 * Add a new root certificate to a trust store
 	 *
 	 * @param ICertificateManager $certificateManager
-	 * @return array
+	 * @return DataResponse
 	 */
 	private function addCertificate(ICertificateManager $certificateManager) {
 		$headers = [];
@@ -159,7 +159,7 @@ class CertificateController extends Controller {
 	/**
 	 * Add a new personal root certificate to the system's trust store
 	 *
-	 * @return array
+	 * @return DataResponse
 	 */
 	public function addSystemRootCertificate() {
 		return $this->addCertificate($this->systemCertificateManager);

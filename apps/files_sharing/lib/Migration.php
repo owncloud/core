@@ -130,7 +130,6 @@ class Migration {
 	/**
 	 * Get $n re-shares from the database
 	 *
-	 * @param int $n The max number of shares to fetch
 	 * @return \Doctrine\DBAL\Driver\Statement
 	 */
 	private function getReShares() {

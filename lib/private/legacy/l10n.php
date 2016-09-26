@@ -323,7 +323,7 @@ class OC_L10N implements \OCP\IL10N {
 	/**
 	 * find all available languages for an app
 	 * @param string $app App that needs to be translated
-	 * @return array an array of available languages
+	 * @return string[] an array of available languages
 	 * @deprecated 9.0.0 Use \OC::$server->getL10NFactory()->findAvailableLanguages() instead
 	 */
 	public static function findAvailableLanguages($app=null) {

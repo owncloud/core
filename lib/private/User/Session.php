@@ -298,7 +298,7 @@ class Session implements IUserSession, Emitter {
 	 * @param IRequest $request
 	 * @throws LoginException
 	 * @throws PasswordLoginForbiddenException
-	 * @return boolean
+	 * @return boolean|null
 	 */
 	public function logClientIn($user, $password, IRequest $request) {
 		$isTokenPassword = $this->isTokenPassword($password);
@@ -338,6 +338,9 @@ class Session implements IUserSession, Emitter {
 		return $this->config->getSystemValue('token_auth_enforced', false);
 	}
 
+	/**
+	 * @param string $username
+	 */
 	protected function isTwoFactorEnforced($username) {
 		Util::emitHook(
 			'\OCA\Files_Sharing\API\Server2Server',

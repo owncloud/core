@@ -104,7 +104,7 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @param ITagManager $fileTagger manager for private tags
 	 * @param IUserSession $userSession
 	 * @param IGroupManager $groupManager
-	 * @param Folder $userfolder
+	 * @param Folder $userFolder
 	 */
 	public function __construct(Tree $tree,
 								View $view,
@@ -150,7 +150,7 @@ class FilesReportPlugin extends ServerPlugin {
 	 * This will be used in the {DAV:}supported-report-set property.
 	 *
 	 * @param string $uri
-	 * @return array
+	 * @return string[]
 	 */
 	public function getSupportedReportSet($uri) {
 		return [self::REPORT_NAME];
@@ -307,6 +307,7 @@ class FilesReportPlugin extends ServerPlugin {
 	 *
 	 * @param string[] $requestedProps requested properties
 	 * @param Node[] nodes nodes for which to fetch and prepare responses
+	 * @param Node[] $nodes
 	 * @return Response[]
 	 */
 	public function prepareResponses($requestedProps, $nodes) {

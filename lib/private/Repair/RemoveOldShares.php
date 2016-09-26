@@ -37,7 +37,6 @@ class RemoveOldShares implements IRepairStep {
 	/**
 	 * RemoveOldCalendarShares constructor.
 	 *
-	 * @param IDBConnection $db
 	 */
 	public function __construct(IDBConnection $connection) {
 		$this->connection = $connection;

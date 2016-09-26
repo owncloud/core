@@ -263,6 +263,9 @@ class SMB extends Common {
 		return $this->leave(__FUNCTION__, $result);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function removeFromCache($path) {
 		$path = trim($path, '/');
 		// TODO The CappedCache does not really clear by prefix. It just clears all.
@@ -635,7 +638,7 @@ class SMB extends Common {
 	 * if wnd.logging.enable is set to true in the config will log a leave line
 	 * with the given function, the return value or the exception
 	 *
-	 * @param $function
+	 * @param string $function
 	 * @param mixed $result an exception will be logged and then returned
 	 * @return mixed
 	 */
@@ -662,6 +665,9 @@ class SMB extends Common {
 		return $result;
 	}
 
+	/**
+	 * @param string $function
+	 */
 	private function swallow($function, \Exception $exception) {
 		if (\OC::$server->getConfig()->getSystemValue('wnd.logging.enable', false) === true) {
 			Util::writeLog('wnd', "$function swallowing ".get_class($exception)

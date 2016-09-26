@@ -360,7 +360,7 @@ class ExpressionBuilder implements IExpressionBuilder {
 	 *
 	 * @param string $column
 	 * @param mixed $type One of IQueryBuilder::PARAM_*
-	 * @return string
+	 * @return QueryFunction
 	 */
 	public function castColumn($column, $type) {
 		return new QueryFunction(

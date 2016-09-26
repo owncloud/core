@@ -143,7 +143,7 @@ class SystemPrincipalBackend extends AbstractBackend {
 	 * Returns the list of members for a group-principal
 	 *
 	 * @param string $principal
-	 * @return array
+	 * @return string[]
 	 */
 	function getGroupMemberSet($principal) {
 		// TODO: for now the group principal has only one member, the user itself

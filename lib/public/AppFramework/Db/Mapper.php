@@ -308,6 +308,7 @@ abstract class Mapper {
 	 * @param array $params the parameters of the sql query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
+	 * @param string $msg
 	 * @return string formatted error message string
 	 * @since 9.1.0
 	 */
@@ -360,7 +361,7 @@ abstract class Mapper {
 	 * Returns an db result and throws exceptions when there are more or less
 	 * results
 	 * @param string $sql the sql query
-	 * @param array $params the parameters of the sql query
+	 * @param string[] $params the parameters of the sql query
 	 * @param int $limit the maximum number of rows
 	 * @param int $offset from which row we want to start
 	 * @throws DoesNotExistException if the item does not exist

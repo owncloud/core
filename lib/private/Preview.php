@@ -928,7 +928,7 @@ class Preview {
 	 * @param int $previewWidth
 	 * @param int $previewHeight
 	 *
-	 * @return int[]
+	 * @return double[]
 	 */
 	private function scale($image, $askedWidth, $askedHeight, $previewWidth, $previewHeight) {
 		$scalingUp = $this->getScalingUp();

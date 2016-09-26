@@ -742,11 +742,19 @@ class Tags implements \OCP\ITags {
 	}
 
 	// case-insensitive array_search
+
+	/**
+	 * @param string $needle
+	 */
 	protected function array_searchi($needle, $haystack, $mem='getName') {
 		if(!is_array($haystack)) {
 			return false;
 		}
 		return array_search(strtolower($needle), array_map(
+
+			/**
+			 * @param string $tag
+			 */
 			function($tag) use($mem) {
 				return strtolower(call_user_func([$tag, $mem]));
 			}, $haystack)
@@ -771,7 +779,7 @@ class Tags implements \OCP\ITags {
 	* Get a tag by its name.
 	*
 	* @param string $name The tag name.
-	* @return integer|bool The tag object's offset within the $this->tags
+	* @return \OCP\AppFramework\Db\Entity The tag object's offset within the $this->tags
 	*                      array or false if it doesn't exist.
 	*/
 	private function getTagByName($name) {
@@ -782,7 +790,7 @@ class Tags implements \OCP\ITags {
 	* Get a tag by its ID.
 	*
 	* @param string $id The tag ID to look for.
-	* @return integer|bool The tag object's offset within the $this->tags
+	* @return \OCP\AppFramework\Db\Entity The tag object's offset within the $this->tags
 	*                      array or false if it doesn't exist.
 	*/
 	private function getTagById($id) {

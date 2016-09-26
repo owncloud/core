@@ -176,7 +176,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 
 	/**
 	 * @param mixed $offset
-	 * @return mixed
+	 * @return string|null
 	 */
 	public function offsetGet($offset) {
 		return $this->get($offset);

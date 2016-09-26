@@ -50,7 +50,7 @@ class TokenController extends Controller {
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
-	 * @param Manager $userManager
+	 * @param UserManager $userManager
 	 * @param DefaultTokenProvider $tokenProvider
 	 * @param ISecureRandom $secureRandom
 	 */

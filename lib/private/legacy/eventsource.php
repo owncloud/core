@@ -88,7 +88,7 @@ class OC_EventSource implements \OCP\IEventSource {
 	 * send a message to the client
 	 *
 	 * @param string $type
-	 * @param mixed $data
+	 * @param string $data
 	 *
 	 * @throws \BadMethodCallException
 	 * if only one parameter is given, a typeless message will be send with that parameter as data

@@ -64,6 +64,9 @@ class LegacyDAVACL extends DavAclPlugin {
 		);
 	}
 
+	/**
+	 * @param boolean $toV2
+	 */
 	private function convertPrincipal($principal, $toV2) {
 		list(, $name) = URLUtil::splitPath($principal);
 		if ($toV2) {

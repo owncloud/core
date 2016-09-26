@@ -60,7 +60,7 @@ class ShareTypeList implements Element {
 	 * The deserialize method is called during xml parsing.
 	 *
 	 * @param Reader $reader
-	 * @return mixed
+	 * @return null|ShareTypeList
 	 */
 	static function xmlDeserialize(Reader $reader) {
 		$shareTypes = [];

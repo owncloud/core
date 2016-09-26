@@ -391,6 +391,14 @@ class Scanner extends BasicEmitter implements IScanner {
 		return $size;
 	}
 
+	/**
+	 * @param string $path
+	 * @param boolean $recursive
+	 * @param integer $reuse
+	 * @param integer|null $folderId
+	 * @param boolean $lock
+	 * @param integer $size
+	 */
 	private function handleChildren($path, $recursive, $reuse, $folderId, $lock, &$size) {
 		// we put this in it's own function so it cleans up the memory before we start recursing
 		$existingChildren = $this->getExistingChildren($folderId);
@@ -490,6 +498,9 @@ class Scanner extends BasicEmitter implements IScanner {
 		}
 	}
 
+	/**
+	 * @param string|boolean $path
+	 */
 	private function runBackgroundScanJob(callable $callback, $path) {
 		try {
 			$callback();

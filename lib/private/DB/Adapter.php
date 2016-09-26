@@ -43,7 +43,7 @@ class Adapter {
 
 	/**
 	 * @param string $table name
-	 * @return int id of last insert statement
+	 * @return string id of last insert statement
 	 */
 	public function lastInsertId($table) {
 		return $this->conn->realLastInsertId($table);

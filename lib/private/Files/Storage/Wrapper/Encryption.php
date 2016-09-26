@@ -982,7 +982,7 @@ class Encryption extends Wrapper {
 	/**
 	 * check if path points to a files version
 	 *
-	 * @param $path
+	 * @param string $path
 	 * @return bool
 	 */
 	protected function isVersion($path) {

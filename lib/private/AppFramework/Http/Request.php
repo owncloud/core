@@ -448,7 +448,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 	/**
 	 * Checks if the CSRF check was correct
-	 * @return bool true if CSRF check passed
+	 * @return null|boolean true if CSRF check passed
 	 */
 	public function passesCSRFCheck() {
 		if($this->csrfTokenManager === null) {

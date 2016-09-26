@@ -131,8 +131,8 @@ class OccController extends Controller {
 
 	/**
 	 * Check if command is allowed and has a valid security token
-	 * @param $command
-	 * @param $token
+	 * @param string $command
+	 * @param string $token
 	 */
 	protected function validateRequest($command, $token){
 		$allowedHosts = ['::1', '127.0.0.1', 'localhost'];

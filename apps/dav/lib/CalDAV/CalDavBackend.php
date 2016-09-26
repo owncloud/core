@@ -1195,7 +1195,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @param string $principalUri
 	 * @param string $uri
 	 * @param array $properties
-	 * @return mixed
+	 * @return integer
 	 */
 	function createSubscription($principalUri, $uri, array $properties) {
 
@@ -1598,6 +1598,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		return $this->sharingBackend->applyShareAcl($resourceId, $acl);
 	}
 
+	/**
+	 * @param boolean $toV2
+	 */
 	private function convertPrincipal($principalUri, $toV2) {
 		if ($this->principalBackend->getPrincipalPrefix() === 'principals') {
 			list(, $name) = URLUtil::splitPath($principalUri);

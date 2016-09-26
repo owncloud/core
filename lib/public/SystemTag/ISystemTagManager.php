@@ -102,17 +102,19 @@ interface ISystemTagManager {
 	 * with the same attributes
 	 *
 	 * @since 9.0.0
+	 * @return void
 	 */
 	public function updateTag($tagId, $newName, $userVisible, $userAssignable);
 
 	/**
 	 * Delete the given tags from the database and all their relationships.
 	 *
-	 * @param string|array $tagIds array of tag ids
+	 * @param string $tagIds array of tag ids
 	 *
 	 * @throws \OCP\SystemTag\TagNotFoundException if at least one tag did not exist
 	 *
 	 * @since 9.0.0
+	 * @return void
 	 */
 	public function deleteTags($tagIds);
 
@@ -123,7 +125,7 @@ interface ISystemTagManager {
 	 * @param ISystemTag $tag tag to check permission for
 	 * @param IUser $user user to check permission for
 	 *
-	 * @return true if the user is allowed to assign/unassign the tag, false otherwise
+	 * @return boolean if the user is allowed to assign/unassign the tag, false otherwise
 	 *
 	 * @since 9.1.0
 	 */
@@ -133,9 +135,9 @@ interface ISystemTagManager {
 	 * Checks whether the given user is allowed to see the tag with the given id.
 	 *
 	 * @param ISystemTag $tag tag to check permission for
-	 * @param IUser $user user to check permission for
+	 * @param IUser $userId user to check permission for
 	 *
-	 * @return true if the user can see the tag, false otherwise
+	 * @return boolean if the user can see the tag, false otherwise
 	 *
 	 * @since 9.1.0
 	 */
@@ -148,6 +150,7 @@ interface ISystemTagManager {
 	 * @param string[] $groupIds group ids of groups that can assign/unassign the tag
 	 *
 	 * @since 9.1.0
+	 * @return void
 	 */
 	public function setTagGroups(ISystemTag $tag, $groupIds);
 

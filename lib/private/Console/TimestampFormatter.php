@@ -71,7 +71,7 @@ class TimestampFormatter implements OutputFormatterInterface {
 	 * Checks if output formatter has style with specified name.
 	 *
 	 * @param string $name
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function hasStyle($name) {
 		$this->formatter->hasStyle($name);

@@ -20,9 +20,7 @@
  */
 namespace OC\Files\Node;
 
-use OC\Files\Mount\MountPoint;
 use OCP\Files\IRootFolder;
-use OCP\Files\NotPermittedException;
 
 /**
  * Class LazyRoot
@@ -52,7 +50,7 @@ class LazyRoot implements IRootFolder {
 	 * Magic method to first get the real rootFolder and then
 	 * call $method with $args on it
 	 *
-	 * @param $method
+	 * @param string $method
 	 * @param $args
 	 * @return mixed
 	 */

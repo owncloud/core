@@ -30,7 +30,6 @@ class PublicAuth implements BackendInterface {
 	private $publicURLs;
 
 	/**
-	 * @param string[] $publicURLs
 	 */
 	public function __construct() {
 		$this->publicURLs = [

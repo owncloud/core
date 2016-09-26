@@ -2,7 +2,6 @@
 
 namespace OCA\DAV\CalDAV\Publishing\Xml;
 
-use OCA\DAV\CalDAV\Publishing\PublishPlugin as Plugin;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 

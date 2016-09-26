@@ -62,7 +62,6 @@ use OC\Files\Config\MountProviderCollection;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\StorageFactory;
 use OCP\Files\Config\IMountProvider;
-use OCP\Files\Mount\IMountPoint;
 use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 
@@ -355,6 +354,9 @@ class Filesystem {
 		}
 	}
 
+	/**
+	 * @param string $root
+	 */
 	static public function init($user, $root) {
 		if (self::$defaultInstance) {
 			return false;
@@ -494,7 +496,7 @@ class Filesystem {
 	/**
 	 * mount an \OC\Files\Storage\Storage in our virtual filesystem
 	 *
-	 * @param \OC\Files\Storage\Storage|string $class
+	 * @param string $class
 	 * @param array $arguments
 	 * @param string $mountpoint
 	 */
@@ -671,6 +673,9 @@ class Filesystem {
 		return self::$defaultInstance->is_dir($path);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	static public function is_file($path) {
 		return self::$defaultInstance->is_file($path);
 	}
@@ -683,6 +688,9 @@ class Filesystem {
 		return self::$defaultInstance->filetype($path);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	static public function filesize($path) {
 		return self::$defaultInstance->filesize($path);
 	}
@@ -695,6 +703,9 @@ class Filesystem {
 		return self::$defaultInstance->isCreatable($path);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	static public function isReadable($path) {
 		return self::$defaultInstance->isReadable($path);
 	}
@@ -707,6 +718,9 @@ class Filesystem {
 		return self::$defaultInstance->isDeletable($path);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	static public function isSharable($path) {
 		return self::$defaultInstance->isSharable($path);
 	}
@@ -724,6 +738,7 @@ class Filesystem {
 	}
 
 	/**
+	 * @param string $path
 	 * @return string
 	 */
 	static public function file_get_contents($path) {
@@ -746,6 +761,10 @@ class Filesystem {
 		return self::$defaultInstance->copy($path1, $path2);
 	}
 
+	/**
+	 * @param string $path
+	 * @param string $mode
+	 */
 	static public function fopen($path, $mode) {
 		return self::$defaultInstance->fopen($path, $mode);
 	}
@@ -761,6 +780,9 @@ class Filesystem {
 		return self::$defaultInstance->fromTmpFile($tmpFile, $path);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	static public function getMimeType($path) {
 		return self::$defaultInstance->getMimeType($path);
 	}
@@ -773,6 +795,9 @@ class Filesystem {
 		return self::$defaultInstance->free_space($path);
 	}
 
+	/**
+	 * @param string $query
+	 */
 	static public function search($query) {
 		return self::$defaultInstance->search($query);
 	}
@@ -881,7 +906,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param boolean $includeMountPoints whether to add mountpoint sizes,
 	 * defaults to true
-	 * @return \OC\Files\FileInfo|bool False if file does not exist
+	 * @return \OCP\Files\FileInfo|null False if file does not exist
 	 */
 	public static function getFileInfo($path, $includeMountPoints = true) {
 		return self::$defaultInstance->getFileInfo($path, $includeMountPoints);

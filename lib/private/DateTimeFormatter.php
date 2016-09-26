@@ -93,7 +93,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 	/**
 	 * Formats the date of the given timestamp
 	 *
-	 * @param int|\DateTime	$timestamp	Either a Unix timestamp or DateTime object
+	 * @param integer	$timestamp	Either a Unix timestamp or DateTime object
 	 * @param string	$format			Either 'full', 'long', 'medium' or 'short'
 	 * 				full:	e.g. 'EEEE, MMMM d, y'	=> 'Wednesday, August 20, 2014'
 	 * 				long:	e.g. 'MMMM d, y'		=> 'August 20, 2014'
@@ -192,7 +192,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 	/**
 	 * Gives the relative past time of the timestamp
 	 *
-	 * @param int|\DateTime	$timestamp	Either a Unix timestamp or DateTime object
+	 * @param integer	$timestamp	Either a Unix timestamp or DateTime object
 	 * @param int|\DateTime	$baseTimestamp	Timestamp to compare $timestamp against, defaults to current time
 	 * @return string	Dates returned are:
 	 * 				< 60 sec	=> seconds ago
@@ -228,7 +228,7 @@ class DateTimeFormatter implements \OCP\IDateTimeFormatter {
 	/**
 	 * Formats the date and time of the given timestamp
 	 *
-	 * @param int|\DateTime $timestamp	Either a Unix timestamp or DateTime object
+	 * @param integer $timestamp	Either a Unix timestamp or DateTime object
 	 * @param string		$formatDate		See formatDate() for description
 	 * @param string		$formatTime		See formatTime() for description
 	 * @param \DateTimeZone	$timeZone	The timezone to use

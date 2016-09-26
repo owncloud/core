@@ -87,8 +87,6 @@ class BrowserErrorPagePlugin extends ServerPlugin {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @param \Exception $ex
-	 * @param int $httpCode
 	 * @return bool|string
 	 */
 	public function generateBody(\Exception $exception) {

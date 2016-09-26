@@ -566,7 +566,7 @@ class RequestHandler {
 	/**
 	 * update permissions in database
 	 *
-	 * @param IShare $share
+	 * @param Share\IShare $share
 	 * @param int $permissions
 	 */
 	protected function updatePermissionsInDatabase(IShare $share, $permissions) {

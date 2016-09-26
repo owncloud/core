@@ -189,7 +189,8 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	}
 
 	/**
-	 * @param $addressBookUri
+	 * @param string $addressBookUri
+	 * @param string $principal
 	 * @return array|null
 	 */
 	public function getAddressBooksByUri($principal, $addressBookUri) {
@@ -871,6 +872,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 *   * readOnly - boolean
 	 *   * summary - Optional, a description for the share
 	 *
+	 * @param integer $addressBookId
 	 * @return array
 	 */
 	public function getShares($addressBookId) {
@@ -970,7 +972,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 	/**
 	 * For shared address books the sharee is set in the ACL of the address book
-	 * @param $addressBookId
+	 * @param integer $addressBookId
 	 * @param $acl
 	 * @return array
 	 */
@@ -978,6 +980,9 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		return $this->sharingBackend->applyShareAcl($addressBookId, $acl);
 	}
 
+	/**
+	 * @param boolean $toV2
+	 */
 	private function convertPrincipal($principalUri, $toV2) {
 		if ($this->principalBackend->getPrincipalPrefix() === 'principals') {
 			list(, $name) = URLUtil::splitPath($principalUri);

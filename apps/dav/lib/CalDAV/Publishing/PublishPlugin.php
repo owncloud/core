@@ -116,7 +116,7 @@ class PublishPlugin extends ServerPlugin {
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
 	 *
-	 * @return null|bool
+	 * @return null|false
 	 */
 	public function httpPost(RequestInterface $request, ResponseInterface $response) {
 		$path = $request->getPath();

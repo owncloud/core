@@ -30,7 +30,6 @@ class StorageConnectionException extends StorageNotAvailableException {
 	 * StorageConnectionException constructor.
 	 *
 	 * @param string $message
-	 * @param int $code
 	 * @param \Exception $previous
 	 * @since 9.0.0
 	 */
