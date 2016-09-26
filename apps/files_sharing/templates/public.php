@@ -19,7 +19,7 @@ OCP\Util::addScript('files', 'fileinfomodel');
 OCP\Util::addScript('files', 'newfilemenu');
 OCP\Util::addScript('files', 'files');
 OCP\Util::addScript('files', 'filelist');
-OCP\Util::addscript('files', 'keyboardshortcuts');
+OCP\Util::addScript('files', 'keyboardshortcuts');
 ?>
 
 <?php if ($_['previewSupported']): /* This enables preview images for links (e.g. on Facebook, Google+, ...)*/?>
