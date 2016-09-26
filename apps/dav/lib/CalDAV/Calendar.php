@@ -260,7 +260,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	}
 
 	/**
-	 * @return boolean $value
+	 * @return mixed $value
 	 */
 	function getPublishStatus() {
 		return $this->caldavBackend->getPublishStatus($this);
