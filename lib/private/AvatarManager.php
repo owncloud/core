@@ -97,16 +97,8 @@ class AvatarManager implements IAvatarManager {
 	}
 
 	private function buildAvatarPath($userId) {
-		$prefix = $userId;
-		if (strlen($userId) < 2 || !ctype_alnum($userId[0]) || !ctype_alnum($userId[1])) {
-			$prefix = md5($userId);
-		}
-
-		return [
-			$prefix[0],
-			$prefix[1],
-			$userId,
-		];
+		$avatar = substr_replace(substr_replace(md5($userId), '/', 4, 0), '/', 2, 0);
+		return explode('/', $avatar);
 	}
 
 	/**

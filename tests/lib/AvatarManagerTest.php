@@ -91,9 +91,10 @@ class AvatarManagerTest extends TestCase {
 
 	public function providesUserIds() {
 		return [
-			['a/d/admin', 'admin'],
-			['c/4/1', '1'],
-			['f/9/{', '{']
+			['21/23/2f297a57a5a743894a0e4a801fc3', 'admin'],
+			['c4/ca/4238a0b923820dcc509a6f75849b', '1'],
+			['f9/5b/70fdc3088560732a5ac135644506', '{'],
+			['d4/1d/8cd98f00b204e9800998ecf8427e', ''],
 		];
 	}
 }
