@@ -169,7 +169,7 @@ class FilesReportPlugin extends ServerPlugin {
 	public function onReport($reportName, $report, $uri) {
 		$reportTargetNode = $this->server->tree->getNodeForPath($uri);
 		if (!$reportTargetNode instanceof Directory || $reportName !== self::REPORT_NAME) {
-			throw new ReportNotSupported();
+			return;
 		}
 
 		$ns = '{' . $this::NS_OWNCLOUD . '}';
