@@ -84,10 +84,8 @@ class AvatarManager implements IAvatarManager {
 			throw new \Exception('user does not exist');
 		}
 
-		$avatarsFolder = $this->getFolder($this->rootFolder, 'metadata-avatars');
-		$usersAvatarsFolder = $this->getFolder($avatarsFolder, $userId);
-
-		return new Avatar($usersAvatarsFolder, $this->l, $user, $this->logger);
+		$avatarsFolder = $this->getAvatarFolder($userId);
+		return new Avatar($avatarsFolder, $this->l, $user, $this->logger);
 	}
 
 	private function getFolder(Folder $folder, $path) {
@@ -96,5 +94,31 @@ class AvatarManager implements IAvatarManager {
 		} catch (NotFoundException $e) {
 			return $folder->newFolder($path);
 		}
+	}
+
+	private function buildAvatarPath($userId) {
+		$prefix = $userId;
+		if (strlen($userId) < 2 || !ctype_alnum($userId[0]) || !ctype_alnum($userId[1])) {
+			$prefix = md5($userId);
+		}
+
+		return [
+			$prefix[0],
+			$prefix[1],
+			$userId,
+		];
+	}
+
+	/**
+	 * @param $userId
+	 * @return Folder|\OCP\Files\Node
+	 */
+	protected function getAvatarFolder($userId) {
+		$avatarsFolder = $this->getFolder($this->rootFolder, 'avatars');
+		$parts = $this->buildAvatarPath($userId);
+		foreach ($parts as $part) {
+			$avatarsFolder = $this->getFolder($avatarsFolder, $part);
+		}
+		return $avatarsFolder;
 	}
 }

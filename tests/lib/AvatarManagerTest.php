@@ -22,32 +22,43 @@
 namespace Test;
 
 use OC\AvatarManager;
-use Test\Traits\UserTrait;
-use Test\Traits\MountProviderTrait;
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
+use OCP\IL10N;
+use OCP\ILogger;
+use OCP\IUser;
+use OCP\IUserManager;
 
 /**
  * Class AvatarManagerTest
- * @group DB
  */
-class AvatarManagerTest extends \Test\TestCase {
-	use UserTrait;
-	use MountProviderTrait;
+class AvatarManagerTest extends TestCase {
 
-	/** @var AvatarManager */
+	/** @var AvatarManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $avatarManager;
 
-	/** @var \OC\Files\Storage\Temporary */
-	private $storage;
+	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $userManager;
+
+	/** @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject */
+	private $rootFolder;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->createUser('valid-user', 'valid-user');
+		$this->userManager = $this->createMock(IUserManager::class);
+		$this->rootFolder = $this->createMock(IRootFolder::class);
+		$l = $this->createMock(IL10N::class);
+		$logger = $this->createMock(ILogger::class);
 
-		$this->storage = new \OC\Files\Storage\Temporary();
-		$this->registerMount('valid-user', $this->storage, '/valid-user/');
 
-		$this->avatarManager = \OC::$server->getAvatarManager();
+		$this->avatarManager = $this->getMockBuilder(AvatarManager::class)
+			->setMethods(['getAvatarFolder'])
+			->setConstructorArgs([$this->userManager,
+				$this->rootFolder,
+				$l,
+				$logger])
+			->getMock();
 	}
 
 	/**
@@ -59,10 +70,30 @@ class AvatarManagerTest extends \Test\TestCase {
 	}
 
 	public function testGetAvatarValidUser() {
+		$user = $this->createMock(IUser::class);
+		$this->userManager->expects($this->once())->method('get')->willReturn($user);
+
+		$folder = $this->createMock(Folder::class);
+		$this->avatarManager->expects($this->once())->method('getAvatarFolder')->willReturn($folder);
+
 		$avatar = $this->avatarManager->getAvatar('valid-user');
 
 		$this->assertInstanceOf('\OCP\IAvatar', $avatar);
-		$this->assertFalse($this->storage->file_exists('files'));
 	}
 
+	/**
+	 * @dataProvider providesUserIds
+	 */
+	public function testPathBuilding($expectedPath, $userId) {
+		$path = $this->invokePrivate($this->avatarManager, 'buildAvatarPath', [$userId]);
+		$this->assertEquals($expectedPath, implode('/', $path));
+	}
+
+	public function providesUserIds() {
+		return [
+			['a/d/admin', 'admin'],
+			['c/4/1', '1'],
+			['f/9/{', '{']
+		];
+	}
 }
