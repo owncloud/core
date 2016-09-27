@@ -126,55 +126,6 @@ class Owncloud {
 	}
 
 	/**
-	 * get entries from the log in reverse chronological order
-	 * @param int $limit
-	 * @param int $offset
-	 * @return array
-	 */
-	public static function getEntries($limit=50, $offset=0) {
-		self::init();
-		$minLevel = \OC::$server->getSystemConfig()->getValue("loglevel", \OCP\Util::WARN);
-		$entries = [];
-		$handle = @fopen(self::$logFile, 'rb');
-		if ($handle) {
-			fseek($handle, 0, SEEK_END);
-			$pos = ftell($handle);
-			$line = '';
-			$entriesCount = 0;
-			$lines = 0;
-			// Loop through each character of the file looking for new lines
-			while ($pos >= 0 && ($limit === null ||$entriesCount < $limit)) {
-				fseek($handle, $pos);
-				$ch = fgetc($handle);
-				if ($ch == "\n" || $pos == 0) {
-					if ($line != '') {
-						// Add the first character if at the start of the file,
-						// because it doesn't hit the else in the loop
-						if ($pos == 0) {
-							$line = $ch.$line;
-						}
-						$entry = json_decode($line);
-						// Add the line as an entry if it is passed the offset and is equal or above the log level
-						if ($entry->level >= $minLevel) {
-							$lines++;
-							if ($lines > $offset) {
-								$entries[] = $entry;
-								$entriesCount++;
-							}
-						}
-						$line = '';
-					}
-				} else {
-					$line = $ch.$line;
-				}
-				$pos--;
-			}
-			fclose($handle);
-		}
-		return $entries;
-	}
-
-	/**
 	 * @return string
 	 */
 	public static function getLogFilePath() {

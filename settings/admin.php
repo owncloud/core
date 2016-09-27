@@ -45,10 +45,6 @@ OC_Util::addScript('files', 'jquery.fileupload');
 \OC::$server->getEventDispatcher()->dispatch('OC\Settings\Admin::loadAdditionalScripts');
 
 $showLog = (\OC::$server->getConfig()->getSystemValue('log_type', 'owncloud') === 'owncloud');
-$numEntriesToLoad = 3;
-$entries = \OC\Log\Owncloud::getEntries($numEntriesToLoad + 1);
-$entriesRemaining = count($entries) > $numEntriesToLoad;
-$entries = array_slice($entries, 0, $numEntriesToLoad);
 $logFilePath = \OC\Log\Owncloud::getLogFilePath();
 $doesLogFileExist = file_exists($logFilePath);
 $logFileSize = 0;
@@ -76,8 +72,6 @@ $template->assign('mail_smtpauthtype', $config->getSystemValue("mail_smtpauthtyp
 $template->assign('mail_smtpauth', $config->getSystemValue("mail_smtpauth", false));
 $template->assign('mail_smtpname', $config->getSystemValue("mail_smtpname", ''));
 $template->assign('mail_smtppassword', $config->getSystemValue("mail_smtppassword", ''));
-$template->assign('entries', $entries);
-$template->assign('entriesremain', $entriesRemaining);
 $template->assign('logFileSize', $logFileSize);
 $template->assign('doesLogFileExist', $doesLogFileExist);
 $template->assign('showLog', $showLog);
