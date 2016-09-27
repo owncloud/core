@@ -2,7 +2,6 @@ OC.L10N.register(
     "files_external",
     {
     "Saved" : "সংরক্ষিত",
-    "Username" : "ইউজারনেম",
     "Save" : "সেভ",
     "URL" : "URL",
     "Host" : "হোস্ট",
