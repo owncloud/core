@@ -413,7 +413,7 @@ class ShareesController extends OCSController  {
 	 * @param string $itemType
 	 * @param int $page
 	 * @param int $perPage
-	 * @return DataResponse
+	 * @return array|DataResponse
 	 */
 	public function search($search = '', $itemType = null, $page = 1, $perPage = 200) {
 
@@ -481,7 +481,7 @@ class ShareesController extends OCSController  {
 	 * @param array $shareTypes
 	 * @param int $page
 	 * @param int $perPage
-	 * @return DataResponse
+	 * @return DataResponse|array
 	 */
 	protected function searchSharees($search, $itemType, array $shareTypes, $page, $perPage) {
 		// Verify arguments

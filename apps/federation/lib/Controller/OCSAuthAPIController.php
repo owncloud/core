@@ -97,7 +97,7 @@ class OCSAuthAPIController extends OCSController  {
 
 		if ($this->trustedServers->isTrustedServer($url) === false) {
 			$this->logger->error('remote server not trusted (' . $url . ') while requesting shared secret', ['app' => 'federation']);
-			return ['statuscode' => HTTP::STATUS_FORBIDDEN];
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		// if both server initiated the exchange of the shared secret the greater
@@ -108,7 +108,7 @@ class OCSAuthAPIController extends OCSController  {
 				'remote server (' . $url . ') presented lower token. We will initiate the exchange of the shared secret.',
 				['app' => 'federation']
 			);
-			return ['statuscode' => HTTP::STATUS_FORBIDDEN];
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		// we ask for the shared secret so we no longer have to ask the other server
@@ -142,7 +142,7 @@ class OCSAuthAPIController extends OCSController  {
 
 		if ($this->trustedServers->isTrustedServer($url) === false) {
 			$this->logger->error('remote server not trusted (' . $url . ') while getting shared secret', ['app' => 'federation']);
-			return ['statuscode' => HTTP::STATUS_FORBIDDEN];
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		if ($this->isValidToken($url, $token) === false) {
@@ -151,7 +151,7 @@ class OCSAuthAPIController extends OCSController  {
 				'remote server (' . $url . ') didn\'t send a valid token (got "' . $token . '" but expected "'. $expectedToken . '") while getting shared secret',
 				['app' => 'federation']
 			);
-			return ['statuscode' => HTTP::STATUS_FORBIDDEN];
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		$sharedSecret = $this->secureRandom->generate(32);
@@ -160,7 +160,7 @@ class OCSAuthAPIController extends OCSController  {
 		// reset token after the exchange of the shared secret was successful
 		$this->dbHandler->addToken($url, '');
 
-		return ['statuscode' => HTTP::STATUS_OK,
+		return ['statuscode' => Http::STATUS_OK,
 			'data' => ['sharedSecret' => $sharedSecret]];
 	}
 
