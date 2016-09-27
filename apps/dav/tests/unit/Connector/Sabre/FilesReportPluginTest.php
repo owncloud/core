@@ -119,9 +119,6 @@ class FilesReportPluginTest extends \Test\TestCase {
 		);
 	}
 
-	/**
-	 * @expectedException \Sabre\DAV\Exception\ReportNotSupported
-	 */
 	public function testOnReportInvalidNode() {
 		$path = 'totally/unrelated/13';
 
@@ -135,12 +132,9 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->will($this->returnValue($path));
 		$this->plugin->initialize($this->server);
 
-		$this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, [], '/' . $path);
+		$this->assertNull($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, [], '/' . $path));
 	}
 
-	/**
-	 * @expectedException \Sabre\DAV\Exception\ReportNotSupported
-	 */
 	public function testOnReportInvalidReportName() {
 		$path = 'test';
 
@@ -154,7 +148,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->will($this->returnValue($path));
 		$this->plugin->initialize($this->server);
 
-		$this->plugin->onReport('{whoever}whatever', [], '/' . $path);
+		$this->assertNull($this->plugin->onReport('{whoever}whatever', [], '/' . $path));
 	}
 
 	public function testOnReport() {
@@ -236,7 +230,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->server->httpResponse = $response;
 		$this->plugin->initialize($this->server);
 
-		$this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path);
+		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
 	}
 
 	public function testFindNodesByFileIdsRoot() {
