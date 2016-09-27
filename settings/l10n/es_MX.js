@@ -62,8 +62,6 @@ OC.L10N.register(
     "Authentication required" : "Se necesita autenticación",
     "Server address" : "Dirección del servidor",
     "Port" : "Puerto",
-    "More" : "Más",
-    "Less" : "Menos",
     "Version" : "Versión",
     "Cheers!" : "¡Saludos!",
     "Forum" : "Foro",

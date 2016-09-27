@@ -50,8 +50,6 @@ OC.L10N.register(
     "Execute one task with each page loaded" : "Utfør éi oppgåve for kvar sidelasting",
     "Encryption" : "Kryptering",
     "Server address" : "Tenaradresse",
-    "More" : "Meir",
-    "Less" : "Mindre",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Spesielt ved bruk av klient for å synkronisera bør ein ikkje bruka SQLite.",
     "Version" : "Utgåve",
     "Cheers!" : "Skål!",

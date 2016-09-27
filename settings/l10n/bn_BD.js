@@ -47,8 +47,6 @@ OC.L10N.register(
     "Server address" : "সার্ভার ঠিকানা",
     "Port" : "পোর্ট",
     "Send email" : "ইমেইল পাঠান ",
-    "More" : "বেশী",
-    "Less" : "কম",
     "Version" : "ভার্সন",
     "Cheers!" : "শুভেচ্ছা!",
     "Forum" : "ফোরাম",

@@ -14,7 +14,6 @@ OC.L10N.register(
     "__language_name__" : "_nama_bahasa_",
     "Login" : "Log masuk",
     "Server address" : "Alamat pelayan",
-    "More" : "Lanjutan",
     "Profile picture" : "Gambar profil",
     "Cancel" : "Batal",
     "Email" : "Email",

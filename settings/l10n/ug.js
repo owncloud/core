@@ -32,8 +32,6 @@ OC.L10N.register(
     "Encryption" : "شىفىرلاش",
     "Server address" : "مۇلازىمېتىر ئادرىسى",
     "Port" : "ئېغىز",
-    "More" : "تېخىمۇ كۆپ",
-    "Less" : "ئاز",
     "Version" : "نەشرى",
     "Forum" : "مۇنبەر",
     "Cancel" : "ۋاز كەچ",

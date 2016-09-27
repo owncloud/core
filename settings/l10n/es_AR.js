@@ -85,8 +85,6 @@ OC.L10N.register(
     "SMTP Password" : "Contraseña SMTP",
     "Test email settings" : "Configuracion de correo de prueba.",
     "Send email" : "Enviar correo",
-    "More" : "Más",
-    "Less" : "Menos",
     "Version" : "Versión",
     "Documentation:" : "Documentación:",
     "Cheers!" : "¡Saludos!",

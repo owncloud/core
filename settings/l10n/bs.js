@@ -126,8 +126,6 @@ OC.L10N.register(
     "Store credentials" : "Spremi vjerodajnice",
     "Test email settings" : "Postavke za testnu e-poštu",
     "Send email" : "Pošalji e-poštu",
-    "More" : "Više",
-    "Less" : "Manje",
     "Version" : "Verzija",
     "Documentation:" : "Dokumentacija:",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Ova aplikacija se ne može instalirati zbog slijedećih neispunjenih ovisnosti:",

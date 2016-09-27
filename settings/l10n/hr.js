@@ -109,8 +109,6 @@ OC.L10N.register(
     "SMTP Password" : "Lozinka SMPT",
     "Test email settings" : "Postavke za testnu e-poštu",
     "Send email" : "Pošaljite e-poštu",
-    "More" : "Više",
-    "Less" : "Manje",
     "Version" : "Verzija",
     "Documentation:" : "Dokumentacija:",
     "Enable only for specific groups" : "Omogućite samo za specifične grupe",

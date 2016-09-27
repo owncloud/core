@@ -73,8 +73,6 @@ OC.L10N.register(
     "Authentication method" : "أسلوب التطابق",
     "Server address" : "عنوان الخادم",
     "Port" : "المنفذ",
-    "More" : "المزيد",
-    "Less" : "أقل",
     "Version" : "إصدار",
     "Documentation:" : "التوثيق",
     "Uninstall App" : "أزالة تطبيق",

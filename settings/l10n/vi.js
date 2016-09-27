@@ -41,8 +41,6 @@ OC.L10N.register(
     "Server address" : "Địa chỉ máy chủ",
     "Port" : "Cổng",
     "Credentials" : "Giấy chứng nhận",
-    "More" : "hơn",
-    "Less" : "ít",
     "Version" : "Phiên bản",
     "Cheers!" : "Chúc mừng!",
     "Forum" : "Diễn đàn",

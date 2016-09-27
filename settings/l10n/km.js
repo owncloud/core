@@ -55,8 +55,6 @@ OC.L10N.register(
     "Server address" : "អាសយដ្ឋាន​ម៉ាស៊ីន​បម្រើ",
     "Port" : "ច្រក",
     "Send email" : "ផ្ញើ​អ៊ីមែល",
-    "More" : "ច្រើន​ទៀត",
-    "Less" : "តិច",
     "Version" : "កំណែ",
     "Forum" : "វេទិកាពិភាក្សា",
     "Profile picture" : "រូបភាព​ប្រវត្តិរូប",

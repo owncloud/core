@@ -29,7 +29,6 @@ OC.L10N.register(
     "TLS" : "TLS",
     "days" : "օր",
     "Server address" : "Սերվերի հասցե",
-    "More" : "Ավելի",
     "Version" : "Տարբերակ",
     "Cheers!" : "Չը՛խկ",
     "Forum" : "Ֆորում",

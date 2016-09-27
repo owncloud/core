@@ -110,8 +110,6 @@ OC.L10N.register(
     "SMTP Password" : "SMTP parole",
     "Test email settings" : "Izmēģināt e-pasta iestatījumus",
     "Send email" : "Sūtīt e-pastu",
-    "More" : "Vairāk",
-    "Less" : "Mazāk",
     "Version" : "Versija",
     "Documentation:" : "Dokumentācija:",
     "User documentation" : "Lietotāja dokumentācija",

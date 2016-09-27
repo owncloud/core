@@ -23,8 +23,6 @@ OC.L10N.register(
     "Encryption" : "ගුප්ත කේතනය",
     "Server address" : "සේවාදායකයේ ලිපිනය",
     "Port" : "තොට",
-    "More" : "වැඩි",
-    "Less" : "අඩු",
     "Cancel" : "එපා",
     "Email" : "විද්‍යුත් තැපෑල",
     "Your email address" : "ඔබගේ විද්‍යුත් තැපෑල",

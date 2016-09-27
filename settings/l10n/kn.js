@@ -90,8 +90,6 @@ OC.L10N.register(
     "SMTP Password" : "﻿SMTP ಗುಪ್ತ ಪದ",
     "Test email settings" : "ಪರೀರ್ಕ್ಷಾತ ﻿ಇ-ಅಂಚೆಯ ಆಯ್ಕೇ",
     "Send email" : "ಇ-ಅಂಚೆಯನ್ನು  ಕಳುಹಿಸಿ",
-    "More" : "﻿ಇನ್ನಷ್ಟು",
-    "Less" : "﻿ಕಡಿಮೆ",
     "Version" : "﻿ಆವೃತ್ತಿ",
     "Documentation:" : "﻿ದಾಖಲೆ:",
     "Enable only for specific groups" : "﻿ಕೇವಲ ನಿರ್ದಿಷ್ಟ ಗುಂಪುಗಳಿಗೆ ಸಕ್ರಿಯಗೊಳಿಸಿ",

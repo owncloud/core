@@ -40,8 +40,6 @@ OC.L10N.register(
     "Server address" : "სერვერის მისამართი",
     "Port" : "პორტი",
     "Credentials" : "იუზერ/პაროლი",
-    "More" : "უფრო მეტი",
-    "Less" : "უფრო ნაკლები",
     "Version" : "ვერსია",
     "Forum" : "ფორუმი",
     "Cancel" : "უარყოფა",

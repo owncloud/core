@@ -18,7 +18,6 @@ OC.L10N.register(
     "Groups" : "Gruppos",
     "never" : "nunquam",
     "__language_name__" : "Interlingua",
-    "More" : "Plus",
     "Cheers!" : "Acclamationes!",
     "Profile picture" : "Imagine de profilo",
     "Cancel" : "Cancellar",

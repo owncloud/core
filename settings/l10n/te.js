@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Delete" : "తొలగించు",
     "Server address" : "సేవకి చిరునామా",
-    "More" : "మరిన్ని",
     "Cancel" : "రద్దుచేయి",
     "Email" : "ఈమెయిలు",
     "Your email address" : "మీ ఈమెయిలు చిరునామా",
