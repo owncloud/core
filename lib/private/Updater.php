@@ -34,8 +34,8 @@ use OC\Hooks\BasicEmitter;
 use OC\IntegrityCheck\Checker;
 use OC_App;
 use OCP\IConfig;
-use OC\Setup;
 use OCP\ILogger;
+use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -59,12 +59,6 @@ class Updater extends BasicEmitter {
 	private $checker;
 
 	/** @var bool */
-	private $simulateStepEnabled;
-
-	/** @var bool */
-	private $updateStepEnabled;
-
-	/** @var bool */
 	private $skip3rdPartyAppsDisable;
 
 	private $logLevelNames = [
@@ -86,29 +80,6 @@ class Updater extends BasicEmitter {
 		$this->log = $log;
 		$this->config = $config;
 		$this->checker = $checker;
-		$this->simulateStepEnabled = true;
-		$this->updateStepEnabled = true;
-	}
-
-	/**
-	 * Sets whether the database migration simulation must
-	 * be enabled.
-	 * This can be set to false to skip this test.
-	 *
-	 * @param bool $flag true to enable simulation, false otherwise
-	 */
-	public function setSimulateStepEnabled($flag) {
-		$this->simulateStepEnabled = $flag;
-	}
-
-	/**
-	 * Sets whether the update must be performed.
-	 * This can be set to false to skip the actual update.
-	 *
-	 * @param bool $flag true to enable update, false otherwise
-	 */
-	public function setUpdateStepEnabled($flag) {
-		$this->updateStepEnabled = $flag;
 	}
 
 	/**
@@ -130,9 +101,9 @@ class Updater extends BasicEmitter {
 	public function upgrade() {
 		$this->emitRepairEvents();
 
-		$logLevel = $this->config->getSystemValue('loglevel', \OCP\Util::WARN);
+		$logLevel = $this->config->getSystemValue('loglevel', Util::WARN);
 		$this->emit('\OC\Updater', 'setDebugLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
-		$this->config->setSystemValue('loglevel', \OCP\Util::DEBUG);
+		$this->config->setSystemValue('loglevel', Util::DEBUG);
 
 		$wasMaintenanceModeEnabled = $this->config->getSystemValue('maintenance', false);
 
@@ -142,7 +113,7 @@ class Updater extends BasicEmitter {
 		}
 
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
-		$currentVersion = implode('.', \OCP\Util::getVersion());
+		$currentVersion = implode('.', Util::getVersion());
 		$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, ['app' => 'core']);
 
 		$success = true;
@@ -253,68 +224,48 @@ class Updater extends BasicEmitter {
 		$repair = new Repair(Repair::getBeforeUpgradeRepairSteps(), \OC::$server->getEventDispatcher());
 		$repair->run();
 
-		// simulate DB upgrade
-		if ($this->simulateStepEnabled) {
-			$this->checkCoreUpgrade();
+		$this->doCoreUpgrade();
 
-			// simulate apps DB upgrade
-			$this->checkAppUpgrade($currentVersion);
-
+		try {
+			// TODO: replace with the new repair step mechanism https://github.com/owncloud/core/pull/24378
+			Setup::installBackgroundJobs();
+		} catch (\Exception $e) {
+			throw new \Exception($e->getMessage());
 		}
 
-		if ($this->updateStepEnabled) {
-			$this->doCoreUpgrade();
+		// update all shipped apps
+		$disabledApps = $this->checkAppsRequirements();
+		$this->doAppUpgrade();
 
-			try {
-				// TODO: replace with the new repair step mechanism https://github.com/owncloud/core/pull/24378
-				Setup::installBackgroundJobs();
-			} catch (\Exception $e) {
-				throw new \Exception($e->getMessage());
-			}
+		// upgrade appstore apps
+		$this->upgradeAppStoreApps($disabledApps);
 
-			// update all shipped apps
-			$disabledApps = $this->checkAppsRequirements();
-			$this->doAppUpgrade();
-
-			// upgrade appstore apps
-			$this->upgradeAppStoreApps($disabledApps);
-
-			// install new shipped apps on upgrade
-			OC_App::loadApps('authentication');
-			$errors = Installer::installShippedApps(true);
-			foreach ($errors as $appId => $exception) {
-				/** @var \Exception $exception */
-				$this->log->logException($exception, ['app' => $appId]);
-				$this->emit('\OC\Updater', 'failure', [$appId . ': ' . $exception->getMessage()]);
-			}
-
-			// post-upgrade repairs
-			$repair = new Repair(Repair::getRepairSteps(), \OC::$server->getEventDispatcher());
-			$repair->run();
-
-			//Invalidate update feed
-			$this->config->setAppValue('core', 'lastupdatedat', 0);
-
-			// Check for code integrity if not disabled
-			if(\OC::$server->getIntegrityCodeChecker()->isCodeCheckEnforced()) {
-				$this->emit('\OC\Updater', 'startCheckCodeIntegrity');
-				$this->checker->runInstanceVerification();
-				$this->emit('\OC\Updater', 'finishedCheckCodeIntegrity');
-			}
-
-			// only set the final version if everything went well
-			$this->config->setSystemValue('version', implode('.', \OCP\Util::getVersion()));
-			$this->config->setAppValue('core', 'vendor', $this->getVendor());
+		// install new shipped apps on upgrade
+		OC_App::loadApps('authentication');
+		$errors = Installer::installShippedApps(true);
+		foreach ($errors as $appId => $exception) {
+			/** @var \Exception $exception */
+			$this->log->logException($exception, ['app' => $appId]);
+			$this->emit('\OC\Updater', 'failure', [$appId . ': ' . $exception->getMessage()]);
 		}
-	}
 
-	protected function checkCoreUpgrade() {
-		$this->emit('\OC\Updater', 'dbSimulateUpgradeBefore');
+		// post-upgrade repairs
+		$repair = new Repair(Repair::getRepairSteps(), \OC::$server->getEventDispatcher());
+		$repair->run();
 
-		// simulate core DB upgrade
-		\OC_DB::simulateUpdateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
+		//Invalidate update feed
+		$this->config->setAppValue('core', 'lastupdatedat', 0);
 
-		$this->emit('\OC\Updater', 'dbSimulateUpgrade');
+		// Check for code integrity if not disabled
+		if(\OC::$server->getIntegrityCodeChecker()->isCodeCheckEnforced()) {
+			$this->emit('\OC\Updater', 'startCheckCodeIntegrity');
+			$this->checker->runInstanceVerification();
+			$this->emit('\OC\Updater', 'finishedCheckCodeIntegrity');
+		}
+
+		// only set the final version if everything went well
+		$this->config->setSystemValue('version', implode('.', Util::getVersion()));
+		$this->config->setAppValue('core', 'vendor', $this->getVendor());
 	}
 
 	protected function doCoreUpgrade() {
@@ -324,46 +275,6 @@ class Updater extends BasicEmitter {
 		\OC_DB::updateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
 
 		$this->emit('\OC\Updater', 'dbUpgrade');
-	}
-
-	/**
-	 * @param string $version the oc version to check app compatibility with
-	 */
-	protected function checkAppUpgrade($version) {
-		$apps = \OC_App::getEnabledApps();
-		$this->emit('\OC\Updater', 'appUpgradeCheckBefore');
-
-		foreach ($apps as $appId) {
-			$info = \OC_App::getAppInfo($appId);
-			$compatible = \OC_App::isAppCompatible($version, $info);
-			$isShipped = \OC_App::isShipped($appId);
-
-			if ($compatible && $isShipped && \OC_App::shouldUpgrade($appId)) {
-				/**
-				 * FIXME: The preupdate check is performed before the database migration, otherwise database changes
-				 * are not possible anymore within it. - Consider this when touching the code.
-				 * @link https://github.com/owncloud/core/issues/10980
-				 * @see \OC_App::updateApp
-				 */
-				if (file_exists(\OC_App::getAppPath($appId) . '/appinfo/preupdate.php')) {
-					$this->includePreUpdate($appId);
-				}
-				if (file_exists(\OC_App::getAppPath($appId) . '/appinfo/database.xml')) {
-					$this->emit('\OC\Updater', 'appSimulateUpdate', [$appId]);
-					\OC_DB::simulateUpdateDbFromStructure(\OC_App::getAppPath($appId) . '/appinfo/database.xml');
-				}
-			}
-		}
-
-		$this->emit('\OC\Updater', 'appUpgradeCheck');
-	}
-
-	/**
-	 * Includes the pre-update file. Done here to prevent namespace mixups.
-	 * @param string $appId
-	 */
-	private function includePreUpdate($appId) {
-		include \OC_App::getAppPath($appId) . '/appinfo/preupdate.php';
 	}
 
 	/**
@@ -423,7 +334,7 @@ class Updater extends BasicEmitter {
 	private function checkAppsRequirements() {
 		$isCoreUpgrade = $this->isCodeUpgrade();
 		$apps = OC_App::getEnabledApps();
-		$version = \OCP\Util::getVersion();
+		$version = Util::getVersion();
 		$disabledApps = [];
 		foreach ($apps as $app) {
 			// check if the app is compatible with this version of ownCloud
@@ -460,7 +371,7 @@ class Updater extends BasicEmitter {
 	 */
 	private function isCodeUpgrade() {
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
-		$currentVersion = implode('.', \OCP\Util::getVersion());
+		$currentVersion = implode('.', Util::getVersion());
 		if (version_compare($currentVersion, $installedVersion, '>')) {
 			return true;
 		}
