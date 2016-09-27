@@ -96,7 +96,7 @@ class Util {
 		$this->config = $config;
 
 		$this->excludedPaths[] = 'files_encryption';
-		$this->excludedPaths[] = 'metadata-avatars';
+		$this->excludedPaths[] = 'avatars';
 		$this->excludedPaths[] = 'avatar.png';
 		$this->excludedPaths[] = 'avatar.jpg';
 	}
