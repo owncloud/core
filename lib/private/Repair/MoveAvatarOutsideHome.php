@@ -31,6 +31,7 @@ use OC\Avatar;
 use OCP\IConfig;
 use OCP\Files\Folder;
 use OCP\IAvatarManager;
+use OCP\Files\NotFoundException;
 
 /**
  * Move avatars outside of their homes to the new location
@@ -98,15 +99,19 @@ class MoveAvatarOutsideHome implements IRepairStep {
 		\OC\Files\Filesystem::initMountPoints($userId);
 
 		// call get instead of getUserFolder to avoid needless skeleton copy
-		$oldAvatarUserFolder = $this->rootFolder->get('/' . $userId);
-		$oldAvatar = new Avatar($oldAvatarUserFolder, $this->l, $user, $this->logger);
-		if ($oldAvatar->exists()) {
-			$newAvatarsUserFolder = $this->avatarManager->getAvatarFolder($userId);
+		try {
+			$oldAvatarUserFolder = $this->rootFolder->get('/' . $userId);
+			$oldAvatar = new Avatar($oldAvatarUserFolder, $this->l, $user, $this->logger);
+			if ($oldAvatar->exists()) {
+				$newAvatarsUserFolder = $this->avatarManager->getAvatarFolder($userId);
 
-			// get original file
-			$oldAvatarFile = $oldAvatar->getFile(-1);
-			$oldAvatarFile->move($newAvatarsUserFolder->getPath() . '/' . $oldAvatarFile->getName());
-			$oldAvatar->remove();
+				// get original file
+				$oldAvatarFile = $oldAvatar->getFile(-1);
+				$oldAvatarFile->move($newAvatarsUserFolder->getPath() . '/' . $oldAvatarFile->getName());
+				$oldAvatar->remove();
+			}
+		} catch (NotFoundException $e) {
+			// not all users have a home, ignore
 		}
 
 		\OC_Util::tearDownFS();
