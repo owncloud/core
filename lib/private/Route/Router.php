@@ -71,7 +71,7 @@ class Router implements IRouter {
 		$this->logger = $logger;
 		$baseUrl = \OC::$WEBROOT;
 		if(!(getenv('front_controller_active') === 'true')) {
-			$baseUrl = \OC::$server->getURLGenerator()->linkTo('', 'index.php');
+			$baseUrl .= 'index.php';
 		}
 		if (!\OC::$CLI) {
 			$method = $_SERVER['REQUEST_METHOD'];
@@ -94,7 +94,7 @@ class Router implements IRouter {
 	public function getRoutingFiles() {
 		if (!isset($this->routingFiles)) {
 			$this->routingFiles = [];
-			foreach (\OC_APP::getEnabledApps() as $app) {
+			foreach (\OC_App::getEnabledApps() as $app) {
 				$appPath = \OC_App::getAppPath($app);
 				if($appPath !== false) {
 					$file = $appPath . '/appinfo/routes.php';

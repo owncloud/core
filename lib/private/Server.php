@@ -78,6 +78,7 @@ use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
 use OC\Tagging\TagMapper;
+use OC\URLGenerator;
 use OCP\IDateTimeFormatter;
 use OCP\IL10N;
 use OCP\IServerContainer;
@@ -307,9 +308,11 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('URLGenerator', function (Server $c) {
 			$config = $c->getConfig();
 			$cacheFactory = $c->getMemCacheFactory();
-			return new \OC\URLGenerator(
+			$router = $c->getRouter();
+			return new URLGenerator(
 				$config,
-				$cacheFactory
+				$cacheFactory,
+				$router
 			);
 		});
 		$this->registerService('AppHelper', function ($c) {
