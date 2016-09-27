@@ -35,14 +35,19 @@ use OCP\Route\IRouter;
  * @package OC\AppFramework\routing
  */
 class RouteConfig {
+	/** @var DIContainer */
 	private $container;
+	/** @var IRouter */
 	private $router;
+	/** @var array */
 	private $routes;
+	/** @var string */
 	private $appName;
 
 	/**
 	 * @param \OC\AppFramework\DependencyInjection\DIContainer $container
 	 * @param \OCP\Route\IRouter $router
+	 * @param $routes
 	 * @internal param $appName
 	 */
 	public function __construct(DIContainer $container, IRouter $router, $routes) {
@@ -82,7 +87,7 @@ class RouteConfig {
 			$postFix = '';
 
 			if (isset($ocsRoute['postfix'])) {
-				$postfix = $ocsRoute['postfix'];
+				$postFix = $ocsRoute['postfix'];
 			}
 
 			$url = $ocsRoute['url'];
@@ -101,7 +106,7 @@ class RouteConfig {
 			// register the route
 			$handler = new RouteActionHandler($this->container, $controllerName, $actionName);
 
-			$router = $this->router->create('ocs.'.$this->appName.'.'.$controller.'.'.$action . $postfix, $url)
+			$router = $this->router->create('ocs.'.$this->appName.'.'.$controller.'.'.$action . $postFix, $url)
 				->method($verb)
 				->action($handler);
 
