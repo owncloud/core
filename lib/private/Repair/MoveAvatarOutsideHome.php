@@ -30,6 +30,7 @@ use OCP\IUser;
 use OC\Avatar;
 use OCP\IConfig;
 use OCP\Files\Folder;
+use OCP\IAvatarManager;
 
 /**
  * Move avatars outside of their homes to the new location
@@ -46,6 +47,12 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	/** @var IUserManager */
 	private $userManager;
 
+	/** @var IAvatarManager */
+	private $avatarManager;
+
+	/** @var IRootFolder */
+	private $rootFolder;
+
 	/** @var \OCP\ILogger */
 	private $logger;
 
@@ -61,12 +68,16 @@ class MoveAvatarOutsideHome implements IRepairStep {
 		IConfig $config,
 		IDBConnection $connection,
 		IUserManager $userManager,
+		IAvatarManager $avatarManager,
+		IRootFolder $rootFolder,
 		IL10N $l10n,
 		ILogger $logger
 	) {
 		$this->config = $config;
 		$this->connection = $connection;
 		$this->userManager = $userManager;
+		$this->avatarManager = $avatarManager;
+		$this->rootFolder = $rootFolder;
 		$this->l = $l10n;
 		$this->logger = $logger;
 	}
@@ -86,13 +97,11 @@ class MoveAvatarOutsideHome implements IRepairStep {
 
 		\OC\Files\Filesystem::initMountPoints($userId);
 
-		// TODO: inject
-		$rootFolder = \OC::$server->getRootFolder();
-
-		$oldAvatarUserFolder = $rootFolder->get('/' . $userId);
+		// call get instead of getUserFolder to avoid needless skeleton copy
+		$oldAvatarUserFolder = $this->rootFolder->get('/' . $userId);
 		$oldAvatar = new Avatar($oldAvatarUserFolder, $this->l, $user, $this->logger);
 		if ($oldAvatar->exists()) {
-			$newAvatarsUserFolder = $newAvatarsFolder->newFolder($userId);
+			$newAvatarsUserFolder = $this->avatarManager->getAvatarFolder($userId);
 
 			// get original file
 			$oldAvatarFile = $oldAvatar->getFile(-1);
@@ -125,11 +134,8 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
 		if (version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
-			$rootFolder = \OC::$server->getRootFolder();
-			$newAvatarsFolder = $rootFolder->newFolder('metadata-avatars');
-
-			$function = function(IUser $user) use ($output, $newAvatarsFolder) {
-				$this->moveAvatars($output, $user, $newAvatarsFolder);
+			$function = function(IUser $user) use ($output) {
+				$this->moveAvatars($output, $user);
 				$output->advance();
 			};
 

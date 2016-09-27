@@ -144,6 +144,8 @@ class Repair implements IOutput{
 				\OC::$server->getConfig(),
 				\OC::$server->getDatabaseConnection(),
 				\OC::$server->getUserManager(),
+				\OC::$server->getAvatarManager(),
+				\OC::$server->getLazyRootFolder(),
 				\OC::$server->getL10N('core'),
 				\OC::$server->getLogger()
 			),

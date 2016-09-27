@@ -102,10 +102,14 @@ class AvatarManager implements IAvatarManager {
 	}
 
 	/**
-	 * @param $userId
+	 * Returns the avatar folder for the given user
+	 *
+	 * @param $userId user id
 	 * @return Folder|\OCP\Files\Node
+	 *
+	 * @internal
 	 */
-	protected function getAvatarFolder($userId) {
+	public function getAvatarFolder($userId) {
 		$avatarsFolder = $this->getFolder($this->rootFolder, 'avatars');
 		$parts = $this->buildAvatarPath($userId);
 		foreach ($parts as $part) {
