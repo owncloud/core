@@ -66,8 +66,13 @@ trait WebDav {
 		return $basePath;
 	}
 
-	public function makeDavRequest($user, $method, $path, $headers, $body = null){
-		$fullUrl = substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . "$path";
+	public function makeDavRequest($user, $method, $path, $headers, $body = null, $type = "files"){
+		if ( $type === "files" ){
+			echo "user: " . $user . " method: " . $method . " path: " . $path . " type: " . $type;
+			$fullUrl = substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . "$path";
+		} else if ( $type === "uploads" ){
+			$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . "$path";
+		} 
 		$client = new GClient();
 		$options = [];
 		if ($user === 'admin') {
@@ -488,8 +493,8 @@ trait WebDav {
 	{
 		$num -= 1;
 		$data = \GuzzleHttp\Stream\Stream::factory($data);
-		$file = $destination . '-chunking-42-'.$total.'-'.$num;
-		$this->makeDavRequest($user, 'PUT', $file, ['OC-Chunked' => '1'], $data);
+		$file = $destination . '-chunking-42-' . $total . '-' . $num;
+		$this->makeDavRequest($user, 'PUT', $file, ['OC-Chunked' => '1'], $data,  "uploads");
 	}
 
 	/**
@@ -498,7 +503,7 @@ trait WebDav {
 	public function userCreatesANewChunkingUploadWithId($user, $id)
 	{
 		$destination = '/uploads/'.$user.'/'.$id;
-		$this->makeDavRequest($user, 'MKCOL', $destination, []);
+		$this->makeDavRequest($user, 'MKCOL', $destination, [], null, "uploads");
 	}
 
 	/**
@@ -507,8 +512,8 @@ trait WebDav {
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id)
 	{
 		$data = \GuzzleHttp\Stream\Stream::factory($data);
-		$destination = '/uploads/'.$user.'/'.$id.'/'.$num;
-		$this->makeDavRequest($user, 'PUT', $destination, [], $data);
+		$destination = '/uploads/'. $user .'/'. $id .'/' . $num;
+		$this->makeDavRequest($user, 'PUT', $destination, [], $data, "uploads");
 	}
 
 	/**
@@ -516,11 +521,11 @@ trait WebDav {
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest)
 	{
-		$source = '/uploads/'.$user.'/'.$id.'/.file';
+		$source = '/uploads/' . $user . '/' . $id . '/.file';
 		$destination = substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . $dest;
 		$this->makeDavRequest($user, 'MOVE', $source, [
 			'Destination' => $destination
-		]);
+		], null, "uploads");
 	}
 
 
@@ -579,7 +584,7 @@ trait WebDav {
 			];
 		}
 
-		$response = $client->proppatch($this->getDavFilesPath($user), $properties, $folderDepth);
+		$response = $client->proppatch($this->getDavFilesPath($user) . $path, $properties, $folderDepth);
 		return $response;
 	}
 
