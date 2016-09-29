@@ -297,7 +297,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
 			$this->exists = false;
 		} else {
-			throw new NotPermittedException('No delete permission for path ' . $this->getFullPath($path));
+			throw new NotPermittedException('No delete permission for path ' . $this->getFullPath($this->path));
 		}
 	}
 
