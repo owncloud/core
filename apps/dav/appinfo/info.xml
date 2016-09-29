@@ -25,4 +25,10 @@
 			<step>OCA\DAV\Migration\FixBirthdayCalendarComponent</step>
 		</post-migration>
 	</repair-steps>
+	<commands>
+		<command>OCA\DAV\Command\CreateAddressBook</command>
+		<command>OCA\DAV\Command\CreateCalendar</command>
+		<command>OCA\DAV\Command\SyncBirthdayCalendar</command>
+		<command>OCA\DAV\Command\SyncSystemAddressBook</command>
+	</commands>
 </info>

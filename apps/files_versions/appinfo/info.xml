@@ -6,7 +6,7 @@
 	<author>Frank Karlitschek, Bjoern Schiessle</author>
 	<description>
 	This application enables ownCloud to automatically maintain older versions of files that are changed. When enabled, a hidden versions folder is provisioned in every user’s directory and is used to store old file versions. A user can revert to an older version through the web interface at any time, with the replaced file becoming a version. ownCloud then automatically manages the versions folder to ensure the user doesn’t run out of Quota because of versions.
-In addition to the expiry of versions, ownCloud’s versions app makes certain never to use more than 50% of the user’s currently available free space. If stored versions exceed this limit, ownCloud will delete the oldest versions first until it meets this limit. More information is available in the Versions documentation. 
+In addition to the expiry of versions, ownCloud’s versions app makes certain never to use more than 50% of the user’s currently available free space. If stored versions exceed this limit, ownCloud will delete the oldest versions first until it meets this limit. More information is available in the Versions documentation.
 
 	</description>
 	<version>1.3.0</version>
@@ -25,4 +25,9 @@ In addition to the expiry of versions, ownCloud’s versions app makes certain n
 	<background-jobs>
 		<job>OCA\Files_Versions\BackgroundJob\ExpireVersions</job>
 	</background-jobs>
+
+	<commands>
+		<command>OCA\Files_Versions\Command\CleanUp</command>
+		<command>OCA\Files_Versions\Command\ExpireVersions</command>
+	</commands>
 </info>

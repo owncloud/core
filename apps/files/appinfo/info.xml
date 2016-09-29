@@ -22,4 +22,10 @@
 		<job>OCA\Files\BackgroundJob\DeleteOrphanedItems</job>
 		<job>OCA\Files\BackgroundJob\CleanupFileLocks</job>
 	</background-jobs>
+
+	<commands>
+		<command>OCA\Files\Command\Scan</command>
+		<command>OCA\Files\Command\DeleteOrphanedFiles</command>
+		<command>OCA\Files\Command\TransferOwnership</command>
+	</commands>
 </info>
