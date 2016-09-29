@@ -202,6 +202,7 @@
     "Test email settings" : "Configurações de e-mail de teste",
     "Send email" : "Enviar email",
     "What to log" : "O que colocar no log",
+    "Download logfile (%s)" : "Baixar o arquivo de log (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "O arquivo de log é maior que 100 MB. Baixar esse arquivo requer algum tempo!",
     "SQLite is used as database. For larger installations we recommend to switch to a different database backend." : "SQLite é usada como base de dados. Para instalações maiores recomendamos mudar para um backend de banco de dados diferente.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Especialmente quando se utiliza o cliente de desktop para sincronização de arquivos o uso de SQLite é desencorajado.",

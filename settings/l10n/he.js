@@ -204,6 +204,7 @@ OC.L10N.register(
     "Test email settings" : "בדיקת הגדרות דואר אלקטרוני",
     "Send email" : "שליחת דואר אלקטרוני",
     "What to log" : "מה לנטר בלוג",
+    "Download logfile (%s)" : "הורדת קובץ לוג (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "קובץ הלוג גדול מ- 100 מגה-בייט. הורדה עלולה לקחת זמן רב!",
     "SQLite is used as database. For larger installations we recommend to switch to a different database backend." : "המערכת משתמשת ב- SQLite כמסד נתונים. להתקנות גדולות אנו ממליצים לעבור למסדי נתונים צד אחורי אחרים.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "במיוחד כאשר משתמשים במחשב שולחני לסנכרון קבצים השימוש ב SQLite אינו מומלץ.",
