@@ -44,6 +44,7 @@ use OC\AppFramework\Utility\SimpleContainer;
 use OC\Core\Middleware\TwoFactorMiddleware;
 use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
+use OCP\Files\Mount\IMountManager;
 use OCP\IDateTimeFormatter;
 
 
@@ -294,6 +295,9 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 		$this->registerService(IDateTimeFormatter::class, function () {
 			return $this->getServer()->getDateTimeFormatter();
+		});
+		$this->registerService(IMountManager::class, function () {
+			return $this->getServer()->getMountManager();
 		});
 
 		// commonly used attributes

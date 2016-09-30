@@ -19,4 +19,7 @@
 	<background-jobs>
 		<job>OCA\Federation\SyncJob</job>
 	</background-jobs>
+	<commands>
+		<command>OCA\Federation\Command\SyncFederationAddressBooks</command>
+	</commands>
 </info>
