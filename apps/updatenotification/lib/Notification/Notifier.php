@@ -102,6 +102,9 @@ class Notifier implements INotifier {
 		return \OC_App::getAppVersions();
 	}
 
+	/**
+	 * @param string $appId
+	 */
 	protected function getAppInfo($appId) {
 		return \OC_App::getAppInfo($appId);
 	}

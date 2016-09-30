@@ -200,7 +200,7 @@ class View {
 	 * and does not take the chroot into account )
 	 *
 	 * @param string $path
-	 * @return \OCP\Files\Mount\IMountPoint
+	 * @return Mount\MountPoint|null
 	 */
 	public function getMount($path) {
 		return Filesystem::getMountManager()->find($this->getAbsolutePath($path));
@@ -963,7 +963,7 @@ class View {
 
 	/**
 	 * @param string $path
-	 * @return bool|string
+	 * @return string|false
 	 * @throws \OCP\Files\InvalidPathException
 	 */
 	public function toTmpFile($path) {
@@ -1081,7 +1081,7 @@ class View {
 	 * @param string $path
 	 * @param array $hooks (optional)
 	 * @param mixed $extraParam (optional)
-	 * @return mixed
+	 * @return string
 	 * @throws \Exception
 	 *
 	 * This method takes requests for basic filesystem functions (e.g. reading & writing
@@ -2098,7 +2098,7 @@ class View {
 
 	/**
 	 * @param string $filename
-	 * @return array
+	 * @return string[]
 	 * @throws \OC\User\NoUserException
 	 * @throws NotFoundException
 	 */

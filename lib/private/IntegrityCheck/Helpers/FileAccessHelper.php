@@ -52,7 +52,7 @@ class FileAccessHelper {
 	 * Wrapper around file_put_contents($filename, $data)
 	 *
 	 * @param string $filename
-	 * @param $data
+	 * @param string $data
 	 * @return int|false
 	 */
 	public function file_put_contents($filename, $data) {

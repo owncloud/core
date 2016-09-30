@@ -79,7 +79,7 @@ class TagList implements Element {
 	 * the next element.
 	 *
 	 * @param Reader $reader
-	 * @return mixed
+	 * @return null|TagList
 	 */
 	static function xmlDeserialize(Reader $reader) {
 		$tags = [];

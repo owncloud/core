@@ -418,6 +418,10 @@ class User implements IUser {
 		return $url;
 	}
 
+	/**
+	 * @param string $feature
+	 * @param string $value
+	 */
 	public function triggerChange($feature, $value = null) {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);

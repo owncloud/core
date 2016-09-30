@@ -150,7 +150,6 @@ class OC_DB {
 	/**
 	 * saves database schema to xml file
 	 * @param string $file name of file
-	 * @param int $mode
 	 * @return bool
 	 *
 	 * TODO: write more documentation

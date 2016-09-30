@@ -299,8 +299,8 @@ class DbHandler {
 	}
 
 	/**
-	 * @param $username
-	 * @param $password
+	 * @param string $username
+	 * @param string $password
 	 * @return bool
 	 */
 	public function auth($username, $password) {

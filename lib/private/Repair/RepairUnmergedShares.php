@@ -269,7 +269,7 @@ class RepairUnmergedShares implements IRepairStep {
 	 * @param array $groupSharesById
 	 * @param array $subShares
 	 *
-	 * @return true if the share is valid, false if it needs repair
+	 * @return boolean if the share is valid, false if it needs repair
 	 */
 	private function isThisShareValid($groupSharesById, $subShares) {
 		$foundTargets = [];

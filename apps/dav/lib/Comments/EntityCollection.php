@@ -115,7 +115,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	/**
 	 * Returns an array with all the child nodes
 	 *
-	 * @return \Sabre\DAV\INode[]
+	 * @return CommentNode[]
 	 */
 	function getChildren() {
 		return $this->findChildren();

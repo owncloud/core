@@ -169,7 +169,7 @@ class LostController extends Controller {
 	}
 
 	/**
-	 * @param $message
+	 * @param string $message
 	 * @param array $additional
 	 * @return array
 	 */

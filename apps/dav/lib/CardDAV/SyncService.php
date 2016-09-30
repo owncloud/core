@@ -246,7 +246,7 @@ class SyncService {
 	}
 
 	/**
-	 * @return array|null
+	 * @return string
 	 */
 	public function getLocalSystemAddressBook() {
 		if (is_null($this->localSystemAddressBook)) {

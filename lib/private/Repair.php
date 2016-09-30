@@ -153,7 +153,7 @@ class Repair implements IOutput{
 	 * Returns expensive repair steps to be run on the
 	 * command line with a special option.
 	 *
-	 * @return IRepairStep[]
+	 * @return OldGroupMembershipShares[]
 	 */
 	public static function getExpensiveRepairSteps() {
 		return [
@@ -230,7 +230,6 @@ class Repair implements IOutput{
 	}
 
 	/**
-	 * @param int $max
 	 */
 	public function finishProgress() {
 		// for now just emit as we did in the past

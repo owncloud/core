@@ -482,7 +482,7 @@ class Installer {
 
 	/**
 	 * Removes an app
-	 * @param string $name name of the application to remove
+	 * @param string $appId
 	 * @return boolean
 	 *
 	 *

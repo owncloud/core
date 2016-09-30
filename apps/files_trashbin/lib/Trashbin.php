@@ -714,7 +714,7 @@ class Trashbin {
 	 * if the size limit for the trash bin is reached, we delete the oldest
 	 * files in the trash bin until we meet the limit again
 	 *
-	 * @param array $files
+	 * @param \OCP\Files\FileInfo[] $files
 	 * @param string $user
 	 * @param int $availableSpace available disc space
 	 * @return int size of deleted files
@@ -742,7 +742,7 @@ class Trashbin {
 	/**
 	 * delete files older then max storage time
 	 *
-	 * @param array $files list of files sorted by mtime
+	 * @param \OCP\Files\FileInfo[] $files list of files sorted by mtime
 	 * @param string $user
 	 * @return integer[] size of deleted files and number of deleted files
 	 */

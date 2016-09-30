@@ -205,7 +205,7 @@ class Manager implements ICommentsManager {
 	/**
 	 * removes an entry from the comments run time cache
 	 *
-	 * @param mixed $id the comment's id
+	 * @param string $id the comment's id
 	 */
 	protected function uncache($id) {
 		$id = strval($id);

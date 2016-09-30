@@ -142,7 +142,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 
 	/**
 	 * @param string $data
-	 * @return int
+	 * @return boolean
 	 */
 	public function stream_write($data) {
 		return false;
@@ -248,7 +248,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 	}
 
 	/**
-	 * @param $pos
+	 * @param integer $pos
 	 * @return IFile | null
 	 */
 	private function getNodeForPosition($pos) {

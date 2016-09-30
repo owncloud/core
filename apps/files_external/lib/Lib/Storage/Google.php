@@ -216,7 +216,7 @@ class Google extends \OC\Files\Storage\Common {
 	 *
 	 * @param \Google_Service_Drive_DriveFile
 	 *
-	 * @return true if the file is a Google Doc file, false otherwise
+	 * @return boolean if the file is a Google Doc file, false otherwise
 	 */
 	private function isGoogleDocFile($file) {
 		return $this->getGoogleDocExtension($file->getMimeType()) !== '';

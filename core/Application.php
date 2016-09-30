@@ -32,7 +32,6 @@ use OC\AppFramework\Utility\TimeFactory;
 use OC\Core\Controller\AvatarController;
 use OC\Core\Controller\LoginController;
 use OC\Core\Controller\LostController;
-use OC\Core\Controller\OccController;
 use OC\Core\Controller\TokenController;
 use OC\Core\Controller\TwoFactorChallengeController;
 use OC\Core\Controller\UserController;

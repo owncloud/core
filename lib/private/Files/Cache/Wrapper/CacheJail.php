@@ -73,7 +73,7 @@ class CacheJail extends CacheWrapper {
 
 	/**
 	 * @param array $entry
-	 * @return array
+	 * @return string
 	 */
 	protected function formatCacheEntry($entry) {
 		if (isset($entry['path'])) {
@@ -192,6 +192,9 @@ class CacheJail extends CacheWrapper {
 		return $this->cache->getStatus($this->getSourcePath($file));
 	}
 
+	/**
+	 * @param \OCP\Files\Cache\ICacheEntry[] $results
+	 */
 	private function formatSearchResults($results) {
 		$results = array_filter($results, [$this, 'filterCacheEntry']);
 		$results = array_values($results);

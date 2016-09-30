@@ -279,6 +279,7 @@ class Helper {
 	 * get default share folder
 	 *
 	 * @param \OC\Files\View
+	 * @param View $view
 	 * @return string
 	 */
 	public static function getShareFolder($view = null) {

@@ -118,7 +118,7 @@ class AppManager implements IAppManager {
 	/**
 	 * List all installed apps
 	 *
-	 * @return string[]
+	 * @return integer[]
 	 */
 	public function getInstalledApps() {
 		return array_keys($this->getInstalledAppsValues());
@@ -275,7 +275,7 @@ class AppManager implements IAppManager {
 	/**
 	 * Returns a list of apps that need upgrade
 	 *
-	 * @param array $version ownCloud version as array of version components
+	 * @param array $ocVersion ownCloud version as array of version components
 	 * @return array list of app info from apps that need an upgrade
 	 *
 	 * @internal
@@ -345,6 +345,9 @@ class AppManager implements IAppManager {
 		return in_array($appId, $this->shippedApps);
 	}
 
+	/**
+	 * @param string $appId
+	 */
 	private function isAlwaysEnabled($appId) {
 		$alwaysEnabled = $this->getAlwaysEnabledApps();
 		return in_array($appId, $alwaysEnabled);

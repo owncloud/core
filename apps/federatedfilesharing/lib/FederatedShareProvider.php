@@ -396,7 +396,7 @@ class FederatedShareProvider implements IShareProvider {
 	/**
 	 * store remote ID in federated reShare table
 	 *
-	 * @param $shareId
+	 * @param integer $shareId
 	 * @param $remoteId
 	 */
 	public function storeRemoteId($shareId, $remoteId) {
@@ -743,7 +743,7 @@ class FederatedShareProvider implements IShareProvider {
 	/**
 	 * get database row of a give share
 	 *
-	 * @param $id
+	 * @param integer $id
 	 * @return array
 	 * @throws ShareNotFound
 	 */

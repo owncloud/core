@@ -159,7 +159,7 @@ class Quota extends Wrapper {
 	 * Checks whether the given path is a part file
 	 *
 	 * @param string $path Path that may identify a .part file
-	 * @return string File path without .part extension
+	 * @return boolean File path without .part extension
 	 * @note this is needed for reusing keys
 	 */
 	private function isPartFile($path) {

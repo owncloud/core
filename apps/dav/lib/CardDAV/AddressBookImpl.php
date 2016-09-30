@@ -51,7 +51,7 @@ class AddressBookImpl implements IAddressBook {
 	 * @param AddressBook $addressBook
 	 * @param array $addressBookInfo
 	 * @param CardDavBackend $backend
-	 * @param IUrlGenerator $urlGenerator
+	 * @param IURLGenerator $urlGenerator
 	 */
 	public function __construct(
 			AddressBook $addressBook,
@@ -134,7 +134,7 @@ class AddressBookImpl implements IAddressBook {
 	}
 
 	/**
-	 * @return mixed
+	 * @return integer
 	 * @since 5.0.0
 	 */
 	public function getPermissions() {

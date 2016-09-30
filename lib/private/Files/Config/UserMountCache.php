@@ -23,8 +23,6 @@
 
 namespace OC\Files\Config;
 
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use OC\Files\Filesystem;
 use OCA\Files_Sharing\SharedMount;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Config\ICachedMountInfo;
@@ -222,7 +220,7 @@ class UserMountCache implements IUserMountCache {
 	}
 
 	/**
-	 * @param $fileId
+	 * @param integer $fileId
 	 * @return array
 	 * @throws \OCP\Files\NotFoundException
 	 */

@@ -335,7 +335,7 @@ class Sharees {
 	 * split user and remote from federated cloud id
 	 *
 	 * @param string $address federated share address
-	 * @return array [user, remoteURL]
+	 * @return string[] [user, remoteURL]
 	 * @throws \Exception
 	 */
 	public function splitUserRemote($address) {

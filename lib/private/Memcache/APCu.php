@@ -70,7 +70,7 @@ class APCu extends Cache implements IMemcache {
 	 * Set a value in the cache if it's not already stored
 	 *
 	 * @param string $key
-	 * @param mixed $value
+	 * @param integer $value
 	 * @param int $ttl Time To Live in seconds. Defaults to 60*60*24
 	 * @return bool
 	 */

@@ -110,7 +110,7 @@ class Storage extends Wrapper {
 	 * check if it is a file located in data/user/files only files in the
 	 * 'files' directory should be moved to the trash
 	 *
-	 * @param $path
+	 * @param string $path
 	 * @return bool
 	 */
 	protected function shouldMoveToTrash($path){

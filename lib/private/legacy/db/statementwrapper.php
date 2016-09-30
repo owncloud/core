@@ -44,6 +44,7 @@ class OC_DB_StatementWrapper {
 
 	/**
 	 * @param boolean $isManipulation
+	 * @param Doctrine\DBAL\Driver\Statement $statement
 	 */
 	public function __construct($statement, $isManipulation) {
 		$this->statement = $statement;

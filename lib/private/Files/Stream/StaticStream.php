@@ -144,6 +144,9 @@ class StaticStream {
 		return true;
 	}
 
+	/**
+	 * @param string $path
+	 */
 	public function url_stat($path) {
 		if (isset(self::$data[$path])) {
 			$size = strlen(self::$data[$path]);

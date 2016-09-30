@@ -241,6 +241,9 @@ class NodeVisitor extends NodeVisitorAbstract {
 		}
 	}
 
+	/**
+	 * @param string $name
+	 */
 	private function checkBlackList($name, $errorCode, Node $node) {
 		$lowerName = strtolower($name);
 
@@ -254,6 +257,9 @@ class NodeVisitor extends NodeVisitorAbstract {
 		}
 	}
 
+	/**
+	 * @param string $constantName
+	 */
 	private function checkBlackListConstant($class, $constantName, Node $node) {
 		$name = $class . '::' . $constantName;
 		$lowerName = strtolower($name);
@@ -268,6 +274,9 @@ class NodeVisitor extends NodeVisitorAbstract {
 		}
 	}
 
+	/**
+	 * @param string $class
+	 */
 	private function checkBlackListFunction($class, $functionName, Node $node) {
 		$name = $class . '::' . $functionName;
 		$lowerName = strtolower($name);
@@ -282,6 +291,9 @@ class NodeVisitor extends NodeVisitorAbstract {
 		}
 	}
 
+	/**
+	 * @param string $class
+	 */
 	private function checkBlackListMethod($class, $functionName, Node $node) {
 		$name = $class . '::' . $functionName;
 		$lowerName = strtolower($name);
@@ -296,6 +308,9 @@ class NodeVisitor extends NodeVisitorAbstract {
 		}
 	}
 
+	/**
+	 * @param string $name
+	 */
 	private function buildReason($name, $errorCode) {
 		if (isset($this->errorMessages[$errorCode])) {
 			$desc = $this->list->getDescription($errorCode, $name);

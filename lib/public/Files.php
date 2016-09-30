@@ -46,6 +46,7 @@ namespace OCP;
 class Files {
 	/**
 	 * Recusive deletion of folders
+	 * @param string $dir
 	 * @return bool
 	 * @since 5.0.0
 	 */
@@ -67,7 +68,7 @@ class Files {
 	/**
 	 * Search for files by mimetype
 	 * @param string $mimetype
-	 * @return array
+	 * @return \OC\Files\FileInfo[]
 	 * @since 6.0.0
 	 */
 	static public function searchByMime( $mimetype ) {

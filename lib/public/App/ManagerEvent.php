@@ -46,7 +46,7 @@ class ManagerEvent extends Event {
 	 * DispatcherEvent constructor.
 	 *
 	 * @param string $event
-	 * @param $appID
+	 * @param string $appID
 	 * @param \OCP\IGroup[] $groups
 	 * @since 9.0.0
 	 */

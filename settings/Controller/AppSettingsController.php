@@ -98,7 +98,7 @@ class AppSettingsController extends Controller {
 	}
 
 	/**
-	 * @param string|int $category
+	 * @param string $category
 	 * @return int
 	 */
 	protected function getCategory($category) {

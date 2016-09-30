@@ -92,9 +92,9 @@ class File implements ICache {
 
 	/**
 	 * @param string $key
-	 * @param mixed $value
+	 * @param string|null $value
 	 * @param int $ttl
-	 * @return bool|mixed
+	 * @return boolean
 	 * @throws \OC\ForbiddenException
 	 */
 	public function set($key, $value, $ttl = 0) {

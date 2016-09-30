@@ -111,6 +111,9 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		return true;
 	}
 
+	/**
+	 * @param string[] $info
+	 */
 	public function getFileChunking($info) {
 		// FIXME: need a factory for better mocking support
 		return new \OC_FileChunking($info);
