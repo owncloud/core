@@ -27,5 +27,8 @@
 		<lib>openssl</lib>
 		<owncloud min-version="9.2" max-version="9.2" />
 	</dependencies>
-
+	<commands>
+		<command>OCA\Encryption\Command\EnableMasterKey</command>
+		<command>OCA\Encryption\Command\MigrateKeys</command>
+	</commands>
 </info>
