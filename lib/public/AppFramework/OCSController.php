@@ -31,6 +31,7 @@ namespace OCP\AppFramework;
 
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\OCSResponse;
+use OCP\AppFramework\Http\Response;
 use OCP\IRequest;
 
 
@@ -100,4 +101,20 @@ abstract class OCSController extends ApiController {
 		);
 	}
 
+	/**
+	 * Serializes and formats a response
+	 * @param mixed $response the value that was returned from a controller and
+	 * is not a Response instance
+	 * @param string $format the format for which a formatter has been registered
+	 * @throws \DomainException if format does not match a registered formatter
+	 * @return Response
+	 * @since 7.0.0
+	 */
+	function buildResponse($response, $format = 'json') {
+		$format = $this->request->getParam('format');
+		if (is_null($format)) {
+			$format = 'xml';
+		}
+		return parent::buildResponse($response, $format);
+	}
 }
