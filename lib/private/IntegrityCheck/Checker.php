@@ -249,6 +249,7 @@ class Checker {
 
 		$privateKey->setSignatureMode(RSA::SIGNATURE_PSS);
 		$privateKey->setMGFHash('sha512');
+		$privateKey->setSaltLength(0);
 		$signature = $privateKey->sign(json_encode($hashes));
 
 		return [
@@ -364,6 +365,7 @@ class Checker {
 		$rsa = new \phpseclib\Crypt\RSA();
 		$rsa->loadKey($x509->currentCert['tbsCertificate']['subjectPublicKeyInfo']['subjectPublicKey']);
 		$rsa->setSignatureMode(RSA::SIGNATURE_PSS);
+		$rsa->setSaltLength(0);
 		$rsa->setMGFHash('sha512');
 		if(!$rsa->verify(json_encode($expectedHashes), $signature)) {
 			throw new InvalidSignatureException('Signature could not get verified.');
