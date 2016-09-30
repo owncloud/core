@@ -14,7 +14,7 @@ use OC\User\User;
 use Test\TestCase;
 
 /**
- * Class Manager
+ * Class ManagerTest
  *
  * @package Test\App
  * @group DB
@@ -64,7 +64,7 @@ class ManagerTest extends TestCase {
 	/** @var \OCP\IUserSession */
 	protected $userSession;
 
-	/** @var \OCP\IGroupManager */
+	/** @var \OCP\IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
 	protected $groupManager;
 
 	/** @var \OCP\IAppConfig */
@@ -73,7 +73,7 @@ class ManagerTest extends TestCase {
 	/** @var \OCP\ICache */
 	protected $cache;
 
-	/** @var \OCP\ICacheFactory */
+	/** @var \OCP\ICacheFactory | \PHPUnit_Framework_MockObject_MockObject */
 	protected $cacheFactory;
 
 	/** @var \OCP\App\IAppManager */
@@ -286,7 +286,7 @@ class ManagerTest extends TestCase {
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
-		$this->assertEquals(['dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getInstalledApps());
+		$this->assertEquals(['core', 'dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getInstalledApps());
 	}
 
 	public function testGetAppsForUser() {
@@ -300,7 +300,7 @@ class ManagerTest extends TestCase {
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
 		$this->appConfig->setValue('test4', 'enabled', '["asd"]');
-		$this->assertEquals(['dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
+		$this->assertEquals(['core', 'dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
 	}
 
 	public function testGetAppsNeedingUpgrade() {
@@ -310,6 +310,7 @@ class ManagerTest extends TestCase {
 			->getMock();
 
 		$appInfos = [
+			'core' => ['id' => 'core'],
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
 			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
@@ -351,6 +352,7 @@ class ManagerTest extends TestCase {
 			->getMock();
 
 		$appInfos = [
+			'core' => ['id' => 'core'],
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
 			'federatedfilesharing' => ['id' => 'federatedfilesharing'],

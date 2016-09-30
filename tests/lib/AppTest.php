@@ -15,7 +15,7 @@ use OCP\IAppConfig;
  *
  * @group DB
  */
-class AppTest extends \Test\TestCase {
+class AppTest extends TestCase {
 
 	const TEST_USER1 = 'user1';
 	const TEST_USER2 = 'user2';
@@ -314,6 +314,7 @@ class AppTest extends \Test\TestCase {
 					'app3',
 					'appforgroup1',
 					'appforgroup12',
+					'core',
 					'dav',
 					'federatedfilesharing',
 				],
@@ -328,6 +329,7 @@ class AppTest extends \Test\TestCase {
 					'app3',
 					'appforgroup12',
 					'appforgroup2',
+					'core',
 					'dav',
 					'federatedfilesharing',
 				],
@@ -343,6 +345,7 @@ class AppTest extends \Test\TestCase {
 					'appforgroup1',
 					'appforgroup12',
 					'appforgroup2',
+					'core',
 					'dav',
 					'federatedfilesharing',
 				],
@@ -358,6 +361,7 @@ class AppTest extends \Test\TestCase {
 					'appforgroup1',
 					'appforgroup12',
 					'appforgroup2',
+					'core',
 					'dav',
 					'federatedfilesharing',
 				],
@@ -373,6 +377,7 @@ class AppTest extends \Test\TestCase {
 					'appforgroup1',
 					'appforgroup12',
 					'appforgroup2',
+					'core',
 					'dav',
 					'federatedfilesharing',
 				],
@@ -452,11 +457,11 @@ class AppTest extends \Test\TestCase {
 			);
 
 		$apps = \OC_App::getEnabledApps();
-		$this->assertEquals(['files', 'app3', 'dav', 'federatedfilesharing',], $apps);
+		$this->assertEquals(['files', 'app3', 'core', 'dav', 'federatedfilesharing',], $apps);
 
 		// mock should not be called again here
 		$apps = \OC_App::getEnabledApps();
-		$this->assertEquals(['files', 'app3', 'dav', 'federatedfilesharing',], $apps);
+		$this->assertEquals(['files', 'app3', 'core', 'dav', 'federatedfilesharing',], $apps);
 
 		$this->restoreAppConfig();
 		\OC_User::setUserId(null);
@@ -465,6 +470,9 @@ class AppTest extends \Test\TestCase {
 	}
 
 
+	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject | \OC\AppConfig
+	 */
 	private function setupAppConfigMock() {
 		$appConfig = $this->createMock(
 			'\OC\AppConfig',
