@@ -499,7 +499,7 @@ class OC {
 		// setup 3rdparty autoloader
 		$vendorAutoLoad = OC::$SERVERROOT . '/lib/composer/autoload.php';
 		if (!file_exists($vendorAutoLoad)) {
-			printf('Composer autoloader not found, unable to continue. Please run "make".');
+			printf('Composer autoloader not found, unable to continue. Please run "make".' . PHP_EOL);
 			exit();
 		}
 
