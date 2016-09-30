@@ -204,6 +204,7 @@ OC.L10N.register(
     "Test email settings" : "Probar configuración de correo electrónico",
     "Send email" : "Enviar mensaje",
     "What to log" : "Que registrar",
+    "Download logfile (%s)" : "Descargar archivo de registro (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "El archivo de registro es mayor de 100 MB. Descargarlo puede tardar.",
     "SQLite is used as database. For larger installations we recommend to switch to a different database backend." : "Se utiliza SQLite como base de datos. Para instalaciones mas grandes se recomiende cambiar a otro sistema de base de datos. ",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "El uso de SQLite está desaconsejado especialmente cuando se usa el cliente de escritorio para sincronizar los ficheros.",

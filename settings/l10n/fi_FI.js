@@ -190,6 +190,7 @@ OC.L10N.register(
     "Test email settings" : "Testaa sähköpostiasetukset",
     "Send email" : "Lähetä sähköpostiviesti",
     "What to log" : "Mitä kerätään lokiin",
+    "Download logfile (%s)" : "Lataa lokitiedosto (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Lokitiedosto on kooltaan yli 100 megatavua. Sen lataaminen saattaa kestää hetken.",
     "SQLite is used as database. For larger installations we recommend to switch to a different database backend." : "SQLitea käytetään tietokantana. Suuria asennuksia varten on suositeltavaa vaihtaa muuhun tietokantaan.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Varsinkin työpöytäsovelluksen tiedostosynkronointia käyttäessä SQLiten käyttö ei ole suositeltavaa.",
