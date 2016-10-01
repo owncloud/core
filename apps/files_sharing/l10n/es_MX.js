@@ -8,6 +8,7 @@ OC.L10N.register(
     "This share is password-protected" : "Este elemento compartido esta protegido por contraseña",
     "The password is wrong. Try again." : "La contraseña introducida es errónea. Inténtelo de nuevo.",
     "Password" : "Contraseña",
+    "No entries found in this folder" : "No se encontraron entradas en esta carpeta",
     "Name" : "Nombre",
     "Expiration date" : "Fecha de caducidad",
     "Sorry, this link doesn’t seem to work anymore." : "Lo siento, este enlace al parecer ya no funciona.",

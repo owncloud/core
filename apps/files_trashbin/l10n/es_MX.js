@@ -8,7 +8,10 @@ OC.L10N.register(
     "Delete" : "Eliminar",
     "Delete permanently" : "Eliminar permanentemente",
     "Error" : "Error",
+    "This operation is forbidden" : "Esta operación esta prohibida",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Este directorio no está disponible, por favor, comprueba los registros o ponte en contacto con el administrador",
     "restored" : "recuperado",
+    "No entries found in this folder" : "No se encontraron entradas en esta carpeta",
     "Select all" : "Seleccionar todo",
     "Name" : "Nombre",
     "Deleted" : "Eliminado"
