@@ -204,6 +204,7 @@ OC.L10N.register(
     "Test email settings" : "Test nastavení emailu",
     "Send email" : "Odeslat email",
     "What to log" : "Co se má logovat",
+    "Download logfile (%s)" : "Stáhnout soubor logu (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Soubor logu je větší než 100 MB. Jeho stažení zabere nějaký čas!",
     "SQLite is used as database. For larger installations we recommend to switch to a different database backend." : "Je použita databáze SQLite. Pro větší instalace doporučujeme přejít na robustnější databázi.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Obzvláště při používání klientské aplikace pro synchronizaci s desktopem není SQLite doporučeno.",
