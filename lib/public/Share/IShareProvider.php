@@ -177,4 +177,16 @@ interface IShareProvider {
 	 * @since 9.1.0
 	 */
 	public function userDeletedFromGroup($uid, $gid);
+
+	/**
+	 * @return int the number of deleted shares
+	 * @since 9.1.1
+	 */
+	public function deleteOrphanedShares();
+
+	/**
+	 * @return int the number of deleted expired shares
+	 * @since 9.1.1
+	 */
+	public function deleteExpiredShares();
 }

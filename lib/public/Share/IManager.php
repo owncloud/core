@@ -273,4 +273,16 @@ interface IManager {
 	 */
 	public function outgoingServer2ServerSharesAllowed();
 
+	/**
+	 * @return int the number of deleted shares
+	 * @since 9.1.1
+	 */
+	public function deleteOrphanedShares();
+
+	/**
+	 * @return int the number of deleted expired shares
+	 * @since 9.1.1
+	 */
+	public function deleteExpiredShares();
+
 }

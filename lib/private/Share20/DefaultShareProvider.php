@@ -979,4 +979,56 @@ class DefaultShareProvider implements IShareProvider {
 			}
 		}
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function deleteOrphanedShares() {
+		$sql =
+			'DELETE FROM `*PREFIX*share` ' .
+			'WHERE `item_type` in (\'file\', \'folder\') ' .
+			'AND NOT EXISTS (SELECT `fileid` FROM `*PREFIX*filecache` WHERE `file_source` = `fileid`)';
+		return $this->dbConn->executeUpdate($sql);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function deleteExpiredShares() {
+		$connection = $this->dbConn;
+
+		//Current time
+		$now = new \DateTime();
+		$now = $now->format('Y-m-d H:i:s');
+
+		/*
+		 * Expire file link shares only (for now)
+		 */
+		$qb = $connection->getQueryBuilder();
+		$qb->select('id', 'file_source', 'uid_owner', 'item_type')
+			->from('share')
+			->where(
+				$qb->expr()->andX(
+					$qb->expr()->eq('share_type', $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK)),
+					$qb->expr()->lte('expiration', $qb->expr()->literal($now)),
+					$qb->expr()->orX(
+						$qb->expr()->eq('item_type', $qb->expr()->literal('file')),
+						$qb->expr()->eq('item_type', $qb->expr()->literal('folder'))
+					)
+				)
+			);
+
+		$expired = 0;
+		$shares = $qb->execute();
+		while($share = $shares->fetch()) {
+			$ok = \OCP\Share::unshare($share['item_type'], $share['file_source'], \OCP\Share::SHARE_TYPE_LINK, null, $share['uid_owner']);
+			if($ok) {
+				$expired++;
+			}
+		}
+		$shares->closeCursor();
+		return $expired;
+	}
+
+
 }

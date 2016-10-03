@@ -1248,4 +1248,28 @@ class Manager implements IManager {
 		return $this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	public function deleteOrphanedShares() {
+		$total = 0;
+		$providers = $this->factory->getProviders();
+		foreach($providers as $provider) {
+			$total += $provider->deleteOrphanedShares();
+		}
+		return $total;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function deleteExpiredShares() {
+		$total = 0;
+		$providers = $this->factory->getProviders();
+		foreach($providers as $provider) {
+			$total += $provider->deleteExpiredShares();
+		}
+		return $total;
+	}
+
 }
