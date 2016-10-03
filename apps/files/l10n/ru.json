@@ -12,6 +12,8 @@
     "Upload cancelled." : "Загрузка отменена.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Невозможно загрузить {filename}, так как это либо каталог, либо файл нулевого размера",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Недостаточно свободного места, Вы загружаете {size1}, но осталось только {size2}",
+    "Target folder \"{dir}\" does not exist any more" : "Целевой каталог \"{dir}\" больше не существует",
+    "Not enough free space" : "Не хватает свободного места",
     "Uploading..." : "Загрузка...",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "Осталось часов {hours}:{minutes}:{seconds} {plural_s}",

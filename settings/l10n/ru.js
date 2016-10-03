@@ -204,6 +204,7 @@ OC.L10N.register(
     "Test email settings" : "Проверить настройки почты",
     "Send email" : "Отправить email",
     "What to log" : "Что записывать в журнал",
+    "Download logfile (%s)" : "Скачать файл журнала (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Лог-файл - больше 100 мб. Его скачивание может занять некоторое время!",
     "SQLite is used as database. For larger installations we recommend to switch to a different database backend." : "В качестве базы данных используется SQLite. Для больших установок мы рекомендуем переключиться на другую серверную базу данных.",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Особенно вызывает сомнение использование SQLite при синхронизации файлов с использованием клиента для ПК.",
