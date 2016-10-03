@@ -30,6 +30,7 @@ use OCA\FederatedFileSharing\TokenHandler;
 use OCP\Share\IProviderFactory;
 use OC\Share20\Exception\ProviderException;
 use OCP\IServerContainer;
+use OCP\Share\IShareProvider;
 
 /**
  * Class ProviderFactory
@@ -161,5 +162,12 @@ class ProviderFactory implements IProviderFactory {
 		}
 
 		return $provider;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getProviders() {
+		return array($this->defaultProvider, $this->federatedProvider);
 	}
 }

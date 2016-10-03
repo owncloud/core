@@ -50,15 +50,9 @@ class DeleteOrphanedSharesJob extends TimedJob {
 	 * @param array $argument unused argument
 	 */
 	public function run($argument) {
-		$connection = \OC::$server->getDatabaseConnection();
 		$logger = \OC::$server->getLogger();
-
-		$sql =
-			'DELETE FROM `*PREFIX*share` ' .
-			'WHERE `item_type` in (\'file\', \'folder\') ' .
-			'AND NOT EXISTS (SELECT `fileid` FROM `*PREFIX*filecache` WHERE `file_source` = `fileid`)';
-
-		$deletedEntries = $connection->executeUpdate($sql);
+		$shareManager = \OC::$server->getShareManager();
+		$deletedEntries = $shareManager->deleteOrphanedShares();
 		$logger->debug("$deletedEntries orphaned share(s) deleted", ['app' => 'DeleteOrphanedSharesJob']);
 	}
 
