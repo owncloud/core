@@ -28,14 +28,19 @@ use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
+use Test\Traits\MountProviderTrait;
 
 /**
  * Class AvatarManagerTest
  */
 class AvatarManagerTest extends TestCase {
+	use MountProviderTrait;
 
 	/** @var AvatarManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $avatarManager;
+
+	/** @var \OC\Files\Storage\Temporary */
+	private $storage;
 
 	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $userManager;
@@ -51,6 +56,8 @@ class AvatarManagerTest extends TestCase {
 		$l = $this->createMock(IL10N::class);
 		$logger = $this->createMock(ILogger::class);
 
+		$this->storage = new \OC\Files\Storage\Temporary();
+		$this->registerMount('valid-user', $this->storage, '/valid-user/');
 
 		$this->avatarManager = $this->getMockBuilder(AvatarManager::class)
 			->setMethods(['getAvatarFolder'])
@@ -79,6 +86,7 @@ class AvatarManagerTest extends TestCase {
 		$avatar = $this->avatarManager->getAvatar('valid-user');
 
 		$this->assertInstanceOf('\OCP\IAvatar', $avatar);
+		$this->assertFalse($this->storage->file_exists('files'));
 	}
 
 	/**
@@ -96,5 +104,27 @@ class AvatarManagerTest extends TestCase {
 			['f9/5b/70fdc3088560732a5ac135644506', '{'],
 			['d4/1d/8cd98f00b204e9800998ecf8427e', ''],
 		];
+	}
+
+	public function testGetAvatarValidUserDifferentCasing() {
+		$user = $this->createMock(IUser::class);
+		$this->userManager->expects($this->once())
+			->method('get')
+			->with('vaLid-USER')
+			->willReturn($user);
+
+		$user->expects($this->once())
+			->method('getUID')
+			->willReturn('valid-user');
+
+		$folder = $this->createMock(Folder::class);
+		$this->avatarManager->expects($this->once())
+			->method('getAvatarFolder')
+			->with('valid-user')
+			->willReturn($folder);
+
+		$avatar = $this->avatarManager->getAvatar('vaLid-USER');
+		$this->assertInstanceOf('\OCP\IAvatar', $avatar);
+		$this->assertFalse($this->storage->file_exists('files'));
 	}
 }
