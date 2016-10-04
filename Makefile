@@ -26,7 +26,7 @@ composer_dev_deps=lib/composer/phpunit
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
 
-core_doc_files=AUTHORS COPYING-AGPL README.md
+core_doc_files=AUTHORS COPYING README.md
 core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini
 core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings themes
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
