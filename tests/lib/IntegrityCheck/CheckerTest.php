@@ -103,7 +103,13 @@ class CheckerTest extends TestCase {
 			->method('file_put_contents')
 			->with(
 					\OC::$SERVERROOT . '/tests/data/integritycheck/app//appinfo/signature.json',
-					$expectedSignatureFileData
+					$this->callback(function ($arg) use ($expectedSignatureFileData) {
+						$this->assertEquals(
+							json_decode($expectedSignatureFileData, true),
+							json_decode($arg, true)
+						);
+						return true;
+					})
 			);
 
 		$keyBundle = file_get_contents(__DIR__ .'/../../data/integritycheck/SomeApp.crt');
@@ -456,7 +462,13 @@ class CheckerTest extends TestCase {
 				->method('file_put_contents')
 				->with(
 						\OC::$SERVERROOT . '/tests/data/integritycheck/app//core/signature.json',
-						$expectedSignatureFileData
+						$this->callback(function ($arg) use ($expectedSignatureFileData) {
+							$this->assertEquals(
+								json_decode($expectedSignatureFileData, true),
+								json_decode($arg, true)
+							);
+							return true;
+						})
 				);
 
 		$keyBundle = file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
@@ -486,7 +498,13 @@ class CheckerTest extends TestCase {
 				->method('file_put_contents')
 				->with(
 						\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessUnmodified//core/signature.json',
-						$expectedSignatureFileData
+						$this->callback(function ($arg) use ($expectedSignatureFileData) {
+							$this->assertEquals(
+								json_decode($expectedSignatureFileData, true),
+								json_decode($arg, true)
+							);
+							return true;
+						})
 				);
 
 		$keyBundle = file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
@@ -511,7 +529,13 @@ class CheckerTest extends TestCase {
 				->method('file_put_contents')
 				->with(
 						\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithInvalidModifiedContent//core/signature.json',
-						$expectedSignatureFileData
+						$this->callback(function ($arg) use ($expectedSignatureFileData) {
+							$this->assertEquals(
+								json_decode($expectedSignatureFileData, true),
+								json_decode($arg, true)
+							);
+							return true;
+						})
 				);
 
 		$keyBundle = file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
@@ -542,7 +566,13 @@ class CheckerTest extends TestCase {
 				->method('file_put_contents')
 				->with(
 						\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent/core/signature.json',
-						$expectedSignatureFileData
+						$this->callback(function ($arg) use ($expectedSignatureFileData) {
+							$this->assertEquals(
+								json_decode($expectedSignatureFileData, true),
+								json_decode($arg, true)
+							);
+							return true;
+						})
 				);
 
 		$keyBundle = file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
