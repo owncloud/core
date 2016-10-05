@@ -27,6 +27,7 @@ namespace OCA\Files_Trashbin;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Wrapper\Wrapper;
 use OC\Files\View;
+use OCP\Files\Storage\IStorage;
 use OCP\IUserManager;
 
 class Storage extends Wrapper {
@@ -178,7 +179,7 @@ class Storage extends Wrapper {
 	 * Setup the storate wrapper callback
 	 */
 	public static function setupStorage() {
-		\OC\Files\Filesystem::addStorageWrapper('oc_trashbin', function ($mountPoint, $storage) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_trashbin', function ($mountPoint, IStorage $storage) {
 			return new \OCA\Files_Trashbin\Storage(
 				['storage' => $storage, 'mountPoint' => $mountPoint],
 				\OC::$server->getUserManager()

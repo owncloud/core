@@ -21,6 +21,7 @@
  */
 
 namespace Test\Cache;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class FileCacheTest
@@ -39,7 +40,7 @@ class FileCacheTest extends TestCache {
 	 * */
 	private $datadir;
 	/**
-	 * @var \OC\Files\Storage\Storage
+	 * @var IStorage
 	 * */
 	private $storage;
 	/**

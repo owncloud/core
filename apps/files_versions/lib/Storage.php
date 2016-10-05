@@ -46,6 +46,7 @@ use OC\Files\View;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
 use OCP\Files\NotFoundException;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\User;
 
@@ -217,7 +218,7 @@ class Storage {
 	protected static function deleteVersion($view, $path) {
 		$view->unlink($path);
 		/**
-		 * @var \OC\Files\Storage\Storage $storage
+		 * @var IStorage $storage
 		 * @var string $internalPath
 		 */
 		list($storage, $internalPath) = $view->resolvePath($path);
@@ -383,9 +384,9 @@ class Storage {
 	 * @return bool true for success, false otherwise
 	 */
 	private static function copyFileContents($view, $path1, $path2) {
-		/** @var \OC\Files\Storage\Storage $storage1 */
+		/** @var IStorage $storage1 */
 		list($storage1, $internalPath1) = $view->resolvePath($path1);
-		/** @var \OC\Files\Storage\Storage $storage2 */
+		/** @var IStorage $storage2 */
 		list($storage2, $internalPath2) = $view->resolvePath($path2);
 
 		$view->lockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);

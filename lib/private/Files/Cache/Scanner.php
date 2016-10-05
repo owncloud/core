@@ -40,6 +40,7 @@ use OCP\Config;
 use OCP\Files\Cache\IScanner;
 use OCP\Files\ForbiddenException;
 use OCP\Files\Storage\ILockingStorage;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -55,7 +56,7 @@ use OCP\Lock\ILockingProvider;
  */
 class Scanner extends BasicEmitter implements IScanner {
 	/**
-	 * @var \OC\Files\Storage\Storage $storage
+	 * @var IStorage|ILockingStorage $storage
 	 */
 	protected $storage;
 
@@ -84,7 +85,7 @@ class Scanner extends BasicEmitter implements IScanner {
 	 */
 	protected $lockingProvider;
 
-	public function __construct(\OC\Files\Storage\Storage $storage) {
+	public function __construct(IStorage $storage) {
 		$this->storage = $storage;
 		$this->storageId = $this->storage->getId();
 		$this->cache = $storage->getCache();

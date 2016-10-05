@@ -42,6 +42,7 @@ use OC\Files\View;
 use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Command\Expire;
 use OCP\Files\NotFoundException;
+use OCP\Files\Storage\IStorage;
 use OCP\User;
 
 class Trashbin {
@@ -224,9 +225,9 @@ class Trashbin {
 		// disable proxy to prevent recursive calls
 		$trashPath = '/files_trashbin/files/' . $filename . '.d' . $timestamp;
 
-		/** @var \OC\Files\Storage\Storage $trashStorage */
+		/** @var IStorage $trashStorage */
 		list($trashStorage, $trashInternalPath) = $ownerView->resolvePath($trashPath);
-		/** @var \OC\Files\Storage\Storage $sourceStorage */
+		/** @var IStorage $sourceStorage */
 		list($sourceStorage, $sourceInternalPath) = $ownerView->resolvePath('/files/' . $ownerPath);
 		try {
 			$moveSuccessful = true;
@@ -316,11 +317,11 @@ class Trashbin {
 	 * @return bool
 	 */
 	private static function move(View $view, $source, $target) {
-		/** @var \OC\Files\Storage\Storage $sourceStorage */
+		/** @var IStorage $sourceStorage */
 		list($sourceStorage, $sourceInternalPath) = $view->resolvePath($source);
-		/** @var \OC\Files\Storage\Storage $targetStorage */
+		/** @var IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $view->resolvePath($target);
-		/** @var \OC\Files\Storage\Storage $ownerTrashStorage */
+		/** @var IStorage $ownerTrashStorage */
 
 		$result = $targetStorage->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 		if ($result) {
@@ -338,11 +339,11 @@ class Trashbin {
 	 * @return bool
 	 */
 	private static function copy(View $view, $source, $target) {
-		/** @var \OC\Files\Storage\Storage $sourceStorage */
+		/** @var IStorage $sourceStorage */
 		list($sourceStorage, $sourceInternalPath) = $view->resolvePath($source);
-		/** @var \OC\Files\Storage\Storage $targetStorage */
+		/** @var IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $view->resolvePath($target);
-		/** @var \OC\Files\Storage\Storage $ownerTrashStorage */
+		/** @var IStorage $ownerTrashStorage */
 
 		$result = $targetStorage->copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 		if ($result) {
@@ -820,7 +821,7 @@ class Trashbin {
 
 		//force rescan of versions, local storage may not have updated the cache
 		if (!self::$scannedVersions) {
-			/** @var \OC\Files\Storage\Storage $storage */
+			/** @var IStorage $storage */
 			list($storage,) = $view->resolvePath('/');
 			$storage->getScanner()->scan('files_trashbin/versions');
 			self::$scannedVersions = true;

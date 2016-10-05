@@ -27,6 +27,7 @@ namespace OC\Files\Storage\Wrapper;
 
 use OC\Files\Cache\Wrapper\CachePermissionsMask;
 use OCP\Constants;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Mask the permissions of a storage
@@ -119,10 +120,10 @@ class PermissionsMask extends Wrapper {
 	 * get a cache instance for the storage
 	 *
 	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the cache
+	 * @param IStorage (optional) the storage to pass to the cache
 	 * @return \OC\Files\Cache\Cache
 	 */
-	public function getCache($path = '', $storage = null) {
+	public function getCache($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}

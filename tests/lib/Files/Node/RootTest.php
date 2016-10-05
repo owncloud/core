@@ -11,6 +11,7 @@ namespace Test\Files\Node;
 use OC\Files\FileInfo;
 use OCP\Files\NotPermittedException;
 use OC\Files\Mount\Manager;
+use OCP\Files\Storage\IStorage;
 
 /**
  * @group DB
@@ -30,9 +31,9 @@ class RootTest extends \Test\TestCase {
 	public function testGet() {
 		$manager = new Manager();
 		/**
-		 * @var \OC\Files\Storage\Storage $storage
+		 * @var IStorage $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
@@ -56,9 +57,9 @@ class RootTest extends \Test\TestCase {
 	public function testGetNotFound() {
 		$manager = new Manager();
 		/**
-		 * @var \OC\Files\Storage\Storage $storage
+		 * @var IStorage $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */

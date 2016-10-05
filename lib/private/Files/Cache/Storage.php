@@ -26,6 +26,7 @@
  */
 
 namespace OC\Files\Cache;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Handle the mapping between the string and numeric storage ids
@@ -43,12 +44,12 @@ class Storage {
 	private $numericId;
 
 	/**
-	 * @param \OC\Files\Storage\Storage|string $storage
+	 * @param IStorage|string $storage
 	 * @param bool $isAvailable
 	 * @throws \RuntimeException
 	 */
 	public function __construct($storage, $isAvailable = true) {
-		if ($storage instanceof \OC\Files\Storage\Storage) {
+		if ($storage instanceof IStorage) {
 			$this->storageId = $storage->getId();
 		} else {
 			$this->storageId = $storage;

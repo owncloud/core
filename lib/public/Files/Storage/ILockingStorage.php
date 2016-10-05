@@ -32,6 +32,12 @@ use OCP\Lock\ILockingProvider;
  * @since 9.0.0
  */
 interface ILockingStorage {
+	// FIXME Storag API: the name ILockingStorage has unclear meaning,
+	// FIXME the comment says 'do not need to implement their own locking
+	// FIXME implementation but should use the provided lockingprovider'.
+	// FIXME If this is how the class is used check if ILockableStorage makes
+	// FIXME more sense. If the a storage does not implement it OC can take care
+	// FIXME of the locking with the locking provider
 	/**
 	 * @param string $path The path of the file to acquire the lock for
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE

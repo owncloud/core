@@ -314,7 +314,7 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 		return $this->superShare->getNodeType();
 	}
 
-	public function getCache($path = '', $storage = null) {
+	public function getCache($path = '', IStorage $storage = null) {
 		$this->init();
 		if (is_null($this->sourceStorage) || $this->sourceStorage instanceof FailedStorage) {
 			return new FailedCache(false);
@@ -325,14 +325,14 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 		return new \OCA\Files_Sharing\Cache($storage, $this->sourceStorage, $this->sourceRootInfo);
 	}
 
-	public function getScanner($path = '', $storage = null) {
+	public function getScanner($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
 		return new \OCA\Files_Sharing\Scanner($storage);
 	}
 
-	public function getPropagator($storage = null) {
+	public function getPropagator(IStorage $storage = null) {
 		if (isset($this->propagator)) {
 			return $this->propagator;
 		}
@@ -367,9 +367,9 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
-		$targetStorage->acquireLock($targetInternalPath, $type, $provider);
+		$targetStorage->acquireLock($targetInternalPath, $type, $provider); //FIXME acquireLock is in the ILockingStorage
 		// lock the parent folders of the owner when locking the share as recipient
 		if ($path === '') {
 			$sourcePath = $this->ownerView->getPath($this->superShare->getNodeId());
@@ -383,9 +383,9 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 	 * @param \OCP\Lock\ILockingProvider $provider
 	 */
 	public function releaseLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
-		$targetStorage->releaseLock($targetInternalPath, $type, $provider);
+		$targetStorage->releaseLock($targetInternalPath, $type, $provider); //FIXME releaseLock is in the ILockingStorage
 		// unlock the parent folders of the owner when unlocking the share as recipient
 		if ($path === '') {
 			$sourcePath = $this->ownerView->getPath($this->superShare->getNodeId());
@@ -399,9 +399,9 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 	 * @param \OCP\Lock\ILockingProvider $provider
 	 */
 	public function changeLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
-		$targetStorage->changeLock($targetInternalPath, $type, $provider);
+		$targetStorage->changeLock($targetInternalPath, $type, $provider); //FIXME changeLock is in the ILockingStorage
 	}
 
 	/**

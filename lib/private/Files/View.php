@@ -48,7 +48,6 @@ namespace OC\Files;
 
 use Icewind\Streams\CallbackWrapper;
 use OC\Files\Mount\MoveableMount;
-use OC\Files\Storage\Storage;
 use OC\User\User;
 use OCP\Constants;
 use OCP\Files\Cache\ICacheEntry;
@@ -57,6 +56,9 @@ use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\NotFoundException;
 use OCP\Files\ReservedWordException;
+use OCP\Files\Storage\IStorage;
+use OCP\Files\UnseekableException;
+use OCP\Files\Storage\ILockingStorage;
 use OCP\IUser;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
@@ -305,7 +307,7 @@ class View {
 		$this->updaterEnabled = true;
 	}
 
-	protected function writeUpdate(Storage $storage, $internalPath, $time = null) {
+	protected function writeUpdate(IStorage $storage, $internalPath, $time = null) {
 		if ($this->updaterEnabled) {
 			if (is_null($time)) {
 				$time = time();
@@ -314,13 +316,13 @@ class View {
 		}
 	}
 
-	protected function removeUpdate(Storage $storage, $internalPath) {
+	protected function removeUpdate(IStorage $storage, $internalPath) {
 		if ($this->updaterEnabled) {
 			$storage->getUpdater()->remove($internalPath);
 		}
 	}
 
-	protected function renameUpdate(Storage $sourceStorage, Storage $targetStorage, $sourceInternalPath, $targetInternalPath) {
+	protected function renameUpdate(IStorage $sourceStorage, IStorage $targetStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($this->updaterEnabled) {
 			$targetStorage->getUpdater()->renameFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 		}
@@ -641,7 +643,7 @@ class View {
 
 				$this->changeLock($path, ILockingProvider::LOCK_EXCLUSIVE);
 
-				/** @var \OC\Files\Storage\Storage $storage */
+				/** @var IStorage $storage */
 				list($storage, $internalPath) = $this->resolvePath($path);
 				$target = $storage->fopen($internalPath, 'w');
 				if ($target) {
@@ -1105,7 +1107,7 @@ class View {
 			}
 
 			$run = $this->runHooks($hooks, $path);
-			/** @var \OC\Files\Storage\Storage $storage */
+			/** @var IStorage $storage */
 			list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
 			if ($run and $storage) {
 				if (in_array('write', $hooks) || in_array('delete', $hooks)) {
@@ -1273,7 +1275,7 @@ class View {
 	 * If the file is not in cached it will be scanned
 	 * If the file has changed on storage the cache will be updated
 	 *
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param IStorage $storage
 	 * @param string $internalPath
 	 * @param string $relativePath
 	 * @return array|bool
@@ -1523,15 +1525,15 @@ class View {
 		}
 		$path = Filesystem::normalizePath($this->fakeRoot . '/' . $path);
 		/**
-		 * @var \OC\Files\Storage\Storage $storage
+		 * @var IStorage $storage
 		 * @var string $internalPath
 		 */
 		list($storage, $internalPath) = Filesystem::resolvePath($path);
 		if ($storage) {
-			$cache = $storage->getCache($path);
+			$cache = $storage->getCache($path); // FIXME Storage API: app params to IStorage
 
 			if (!$cache->inCache($internalPath)) {
-				$scanner = $storage->getScanner($internalPath);
+				$scanner = $storage->getScanner($internalPath); // FIXME Storage API: app params to IStorage
 				$scanner->scan($internalPath, Cache\Scanner::SCAN_SHALLOW);
 			}
 
@@ -1595,7 +1597,7 @@ class View {
 		$mountPoint = $mount->getMountPoint();
 		$storage = $mount->getStorage();
 		if ($storage) {
-			$cache = $storage->getCache('');
+			$cache = $storage->getCache(''); // FIXME Storage API: add params to IStorage
 
 			$results = call_user_func_array([$cache, $method], $args);
 			foreach ($results as $result) {
@@ -1823,7 +1825,7 @@ class View {
 		}
 
 		try {
-			/** @type \OCP\Files\Storage $storage */
+			/** @type IStorage $storage */
 			list($storage, $internalPath) = $this->resolvePath($path);
 			$storage->verifyPath($internalPath, $fileName);
 		} catch (ReservedWordException $ex) {

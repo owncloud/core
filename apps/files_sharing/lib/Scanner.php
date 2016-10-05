@@ -25,6 +25,7 @@
 namespace OCA\Files_Sharing;
 
 use OC\Files\ObjectStore\NoopScanner;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Scanner for SharedStorage
@@ -55,7 +56,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 			return $this->sourceScanner;
 		}
 		if ($this->storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
-			/** @var \OC\Files\Storage\Storage $storage */
+			/** @var IStorage $storage */
 			list($storage) = $this->storage->resolvePath('');
 			$this->sourceScanner = $storage->getScanner();
 			return $this->sourceScanner;

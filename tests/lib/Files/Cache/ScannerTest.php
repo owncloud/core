@@ -9,6 +9,7 @@
 namespace Test\Files\Cache;
 
 use OC\Files\Cache\CacheEntry;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class ScannerTest
@@ -19,7 +20,7 @@ use OC\Files\Cache\CacheEntry;
  */
 class ScannerTest extends \Test\TestCase {
 	/**
-	 * @var \OC\Files\Storage\Storage $storage
+	 * @var IStorage $storage
 	 */
 	private $storage;
 

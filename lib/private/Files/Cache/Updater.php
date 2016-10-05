@@ -41,7 +41,7 @@ class Updater implements IUpdater {
 	protected $enabled = true;
 
 	/**
-	 * @var \OC\Files\Storage\Storage
+	 * @var IStorage
 	 */
 	protected $storage;
 
@@ -61,9 +61,9 @@ class Updater implements IUpdater {
 	protected $cache;
 
 	/**
-	 * @param \OC\Files\Storage\Storage $storage
+	 * @param IStorage $storage
 	 */
-	public function __construct(\OC\Files\Storage\Storage $storage) {
+	public function __construct(IStorage $storage) {
 		$this->storage = $storage;
 		$this->propagator = $storage->getPropagator();
 		$this->scanner = $storage->getScanner();

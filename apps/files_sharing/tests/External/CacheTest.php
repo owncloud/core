@@ -24,6 +24,7 @@
 namespace OCA\Files_Sharing\Tests\External;
 
 use OCA\Files_Sharing\Tests\TestCase;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class Cache
@@ -35,7 +36,7 @@ use OCA\Files_Sharing\Tests\TestCase;
 class CacheTest extends TestCase {
 
 	/**
-	 * @var \OC\Files\Storage\Storage
+	 * @var IStorage
 	 **/
 	private $storage;
 

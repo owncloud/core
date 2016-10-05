@@ -12,6 +12,7 @@ use OC\Files\FileInfo;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OC\Files\View;
+use OCP\Files\Storage\IStorage;
 
 class FileTest extends \Test\TestCase {
 	private $user;
@@ -22,7 +23,7 @@ class FileTest extends \Test\TestCase {
 	}
 
 	protected function getMockStorage() {
-		$storage = $this->createMock('\OCP\Files\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 		$storage->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('home::someuser'));
@@ -472,9 +473,9 @@ class FileTest extends \Test\TestCase {
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var IStorage | \PHPUnit_Framework_MockObject_MockObject $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 
 		$root->expects($this->never())
 			->method('getMount');
@@ -632,9 +633,9 @@ class FileTest extends \Test\TestCase {
 		$view = $this->createMock('\OC\Files\View');
 		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
 		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
+		 * @var IStorage | \PHPUnit_Framework_MockObject_MockObject $storage
 		 */
-		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$storage = $this->createMock('\OCP\Files\Storage\IStorage');
 
 		$storage->expects($this->never())
 			->method('rename');

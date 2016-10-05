@@ -33,6 +33,7 @@ use OCA\Files_External\NotFoundException;
 use \OCA\Files_External\Lib\Backend\Backend;
 use \OCA\Files_External\Lib\Auth\AuthMechanism;
 use OCP\Files\Config\IUserMountCache;
+use OCP\Files\Storage\IStorage;
 use \OCP\Files\StorageNotAvailableException;
 
 /**
@@ -514,13 +515,14 @@ abstract class StoragesService {
 	private function getStorageId(StorageConfig $storageConfig) {
 		try {
 			$class = $storageConfig->getBackend()->getStorageClass();
-			/** @var \OC\Files\Storage\Storage $storage */
+			/** @var IStorage $storage */
 			$storage = new $class($storageConfig->getBackendOptions());
 
 			// auth mechanism should fire first
 			$storage = $storageConfig->getBackend()->wrapStorage($storage);
 			$storage = $storageConfig->getAuthMechanism()->wrapStorage($storage);
 
+			// FIXME Storage API: check if is ICachedStorage
 			return $storage->getStorageCache()->getNumericId();
 		} catch (\Exception $e) {
 			return -1;

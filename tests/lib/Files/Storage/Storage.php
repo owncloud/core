@@ -23,10 +23,11 @@
 namespace Test\Files\Storage;
 
 use OC\Files\Cache\Watcher;
+use OCP\Files\Storage\IStorage;
 
 abstract class Storage extends \Test\TestCase {
 	/**
-	 * @var \OC\Files\Storage\Storage instance
+	 * @var IStorage instance
 	 */
 	protected $instance;
 	protected $waitDelay = 0;

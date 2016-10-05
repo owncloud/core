@@ -21,6 +21,7 @@
 
 namespace OC\Files\Storage\Wrapper;
 
+use OCP\Files\Storage\IStorage;
 use OCP\ICache;
 use OC\Cache\CappedMemoryCache;
 
@@ -447,10 +448,10 @@ class Encoding extends Wrapper {
 	 * get a cache instance for the storage
 	 *
 	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the cache
+	 * @param IStorage (optional) the storage to pass to the cache
 	 * @return \OC\Files\Cache\Cache
 	 */
-	public function getCache($path = '', $storage = null) {
+	public function getCache($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
@@ -461,10 +462,10 @@ class Encoding extends Wrapper {
 	 * get a scanner instance for the storage
 	 *
 	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the scanner
+	 * @param IStorage (optional) the storage to pass to the scanner
 	 * @return \OC\Files\Cache\Scanner
 	 */
-	public function getScanner($path = '', $storage = null) {
+	public function getScanner($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}
@@ -482,12 +483,12 @@ class Encoding extends Wrapper {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->copy($sourceInternalPath, $this->findPathToUse($targetInternalPath));
 		}
@@ -500,12 +501,12 @@ class Encoding extends Wrapper {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			$result = $this->rename($sourceInternalPath, $this->findPathToUse($targetInternalPath));
 			if ($result) {

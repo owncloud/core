@@ -28,6 +28,7 @@
  */
 
 namespace OCA\Files_Sharing\Tests;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class CacheTest
@@ -47,10 +48,10 @@ class CacheTest extends TestCase {
 	/** @var \OC\Files\Cache\Cache */
 	protected $sharedCache;
 
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	protected $ownerStorage;
 
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	protected $sharedStorage;
 
 	/** @var \OCP\Share\IManager */

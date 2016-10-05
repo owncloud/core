@@ -15,6 +15,7 @@ use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OCP\Files\FileInfo;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\Util;
 use Test\TestCase;
@@ -26,11 +27,11 @@ class TemporaryNoTouch extends Temporary {
 }
 
 class TemporaryNoCross extends Temporary {
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		return Common::copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 	}
 
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		return Common::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 	}
 }
@@ -54,7 +55,7 @@ class TemporaryNoLocal extends Temporary {
  */
 class ViewTest extends TestCase {
 	/**
-	 * @var \OC\Files\Storage\Storage[] $storages
+	 * @var IStorage[] $storages
 	 */
 	private $storages = [];
 
@@ -73,7 +74,7 @@ class ViewTest extends TestCase {
 	 */
 	private $groupObject;
 
-	/** @var \OC\Files\Storage\Storage */
+	/** @var IStorage */
 	private $tempStorage;
 
 	protected function setUp() {
@@ -603,11 +604,11 @@ class ViewTest extends TestCase {
 	/**
 	 * @param bool $scan
 	 * @param string $class
-	 * @return \OC\Files\Storage\Storage
+	 * @return IStorage
 	 */
 	private function getTestStorage($scan = true, $class = '\OC\Files\Storage\Temporary') {
 		/**
-		 * @var \OC\Files\Storage\Storage $storage
+		 * @var IStorage $storage
 		 */
 		$storage = new $class([]);
 		$textData = "dummy file data\n";

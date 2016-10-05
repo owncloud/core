@@ -11,6 +11,7 @@ namespace Test\Files\Cache;
 use \OC\Files\Filesystem as Filesystem;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class UpdaterLegacyTest
@@ -21,7 +22,7 @@ use OC\Files\View;
  */
 class UpdaterLegacyTest extends \Test\TestCase {
 	/**
-	 * @var \OC\Files\Storage\Storage $storage
+	 * @var IStorage $storage
 	 */
 	private $storage;
 

@@ -24,6 +24,7 @@
  *
  */
 namespace OCP\Files;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Interface FileInfo
@@ -124,7 +125,7 @@ interface FileInfo {
 	/**
 	 * Get the storage the file or folder is storage on
 	 *
-	 * @return \OCP\Files\Storage
+	 * @return IStorage
 	 * @since 7.0.0
 	 */
 	public function getStorage();

@@ -27,6 +27,7 @@ namespace OC\Files\ObjectStore;
 use Icewind\Streams\IteratorDirectory;
 use OC\Files\Cache\CacheEntry;
 use OCP\Files\ObjectStore\IObjectStore;
+use OCP\Files\Storage\IStorage;
 
 class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
@@ -129,10 +130,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * the file cache and cannot really scan the filesystem. The storage passed in is not used anywhere.
 	 *
 	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the scanner
+	 * @param IStorage (optional) the storage to pass to the scanner
 	 * @return \OC\Files\ObjectStore\NoopScanner
 	 */
-	public function getScanner($path = '', $storage = null) {
+	public function getScanner($path = '', IStorage $storage = null) {
 		if (!$storage) {
 			$storage = $this;
 		}

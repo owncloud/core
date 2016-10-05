@@ -26,6 +26,7 @@ namespace OCA\Files_External\Lib;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
 use OCA\Files_External\Service\UserStoragesService;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Person mount points can be moved by the user
@@ -40,7 +41,7 @@ class PersonalMount extends MountPoint implements MoveableMount {
 	/**
 	 * @param UserStoragesService $storagesService
 	 * @param int $storageId
-	 * @param \OCP\Files\Storage $storage
+	 * @param IStorage $storage
 	 * @param string $mountpoint
 	 * @param array $arguments (optional) configuration for the storage backend
 	 * @param \OCP\Files\Storage\IStorageFactory $loader
