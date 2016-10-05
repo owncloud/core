@@ -267,7 +267,7 @@
 					});
 				}
 			}
-			var insert = $("<div class='autocomplete-item'/>");
+			var insert = $("<div class='share-autocomplete-item'/>");
 			var avatar = $("<div class='avatardiv'></div>").appendTo(insert);
 			if (item.value.shareType === OC.Share.SHARE_TYPE_USER) {
 				avatar.avatar(item.value.shareWith, 32, undefined, undefined, undefined, item.label);

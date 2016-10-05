@@ -50,11 +50,17 @@
 	height: 32px;
 }
 
-.autocomplete-item {
+.share-autocomplete-item {
 	display: flex;
 }
-.autocomplete-item-text {
-	margin: 10px;
+.share-autocomplete-item .autocomplete-item-text {
+	margin-left: 10px;
+	margin-right: 10px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	line-height: 32px;
+	vertical-align: middle;
 }
 
 #shareWithList {
