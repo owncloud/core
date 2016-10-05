@@ -45,6 +45,10 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		'Sabre\DAV\Exception\Forbidden' => true,
 		// Custom exception similar to NotAuthenticated
 		'OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden' => true,
+		// Happens when an external storage or federated share is temporarily
+		// not available
+		'Sabre\DAV\Exception\StorageNotAvailableException' => true,
+		'OCP\Files\StorageNotAvailableException' => true,
 	];
 
 	/** @var string */
@@ -87,6 +91,14 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		$level = \OCP\Util::FATAL;
 		if (isset($this->nonFatalExceptions[$exceptionClass])) {
 			$level = \OCP\Util::DEBUG;
+		}
+
+		$previous = $ex->getPrevious();
+		if ($previous !== null) {
+			$previousExceptionClass = get_class($previous);
+			if (isset($this->nonFatalExceptions[$previousExceptionClass])) {
+				$level = \OCP\Util::DEBUG;
+			}
 		}
 
 		$message = $ex->getMessage();
