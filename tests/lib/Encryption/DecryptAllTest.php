@@ -239,7 +239,7 @@ class DecryptAllTest extends TestCase {
 	}
 
 	public function testDecryptUsersFiles() {
-		$storage = $this->getMockBuilder('OC\Files\Storage\Shared')
+		$storage = $this->getMockBuilder('OCA\Files_Sharing\SharedStorage')
 			->disableOriginalConstructor()
 			->getMock();
 
