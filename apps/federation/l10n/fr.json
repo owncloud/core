@@ -8,6 +8,7 @@
     "Add server automatically once a federated share was created successfully" : "Ajouter un serveur automatiquement une fois que le partage a été créé avec succès",
     "Trusted ownCloud Servers" : "Serveur ownCloud de confiance ",
     "+ Add ownCloud server" : "Ajouter un serveur Owncloud",
-    "ownCloud Server" : "Serveur OwnCloud"
+    "ownCloud Server" : "Serveur OwnCloud",
+    "Add" : "Ajouter"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

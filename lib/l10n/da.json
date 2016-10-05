@@ -18,6 +18,7 @@
     "ownCloud %s or lower is required." : "ownCloud %s eller lavere er påkrævet.",
     "Unknown filetype" : "Ukendt filtype",
     "Invalid image" : "Ugyldigt billede",
+    "Avatar image is not square" : "Avatar billede er ikke kvadratisk",
     "today" : "i dag",
     "yesterday" : "i går",
     "_%n day ago_::_%n days ago_" : ["%n dag siden","%n dage siden"],
@@ -165,7 +166,6 @@
     "Storage unauthorized. %s" : "Lager uautoriseret. %s",
     "Storage incomplete configuration. %s" : "Ufærdig lagerkonfiguration. %s",
     "Storage connection error. %s" : "Lager tilslutningsfejl. %s",
-    "Storage not available" : "Lagerplads er ikke tilgængeligt",
     "Storage connection timeout. %s" : "Lager tilslutningstidsudløb. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Pohrana je nedostupna",
     "Storage invalid" : "Pohrana je neispravna",
     "Unknown error" : "Nepoznata greška",
     "Files" : "Datoteke",

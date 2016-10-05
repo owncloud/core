@@ -18,6 +18,7 @@
     "ownCloud %s or lower is required." : "ownCloud %s of lager vereist.",
     "Unknown filetype" : "Onbekend bestandsformaat",
     "Invalid image" : "Ongeldige afbeelding",
+    "Avatar image is not square" : "Avatarafbeelding is niet vierkant",
     "today" : "vandaag",
     "yesterday" : "gisteren",
     "_%n day ago_::_%n days ago_" : ["%n dag geleden","%n dagen geleden"],
@@ -165,7 +166,6 @@
     "Storage unauthorized. %s" : "Opslag niet toegestaan. %s",
     "Storage incomplete configuration. %s" : "Incomplete opslagconfiguratie. %s",
     "Storage connection error. %s" : "Opslagverbindingsfout. %s",
-    "Storage not available" : "Opslag niet beschikbaar",
     "Storage connection timeout. %s" : "Opslagverbinding time-out. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

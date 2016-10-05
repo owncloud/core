@@ -165,7 +165,6 @@
     "Storage unauthorized. %s" : "権限のないストレージです。 %s",
     "Storage incomplete configuration. %s" : "設定が未完了のストレージです。 %s",
     "Storage connection error. %s" : "ストレージへの接続エラー｡ %s",
-    "Storage not available" : "ストレージが利用できません",
     "Storage connection timeout. %s" : "ストレージへの接続がタイムアウト。 %s"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

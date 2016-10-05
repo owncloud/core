@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Lagerplads er ikke tilgængeligt",
     "Storage invalid" : "Lagerplads er ugyldig",
     "Unknown error" : "Ukendt fejl",
     "Files" : "Filer",
@@ -14,6 +13,7 @@ OC.L10N.register(
     "Upload cancelled." : "Upload afbrudt.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Kan ikke upload {filename} da det er enten en mappe eller indholder 0 bytes.",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Der er ikke tilstrækkeligt friplads. Du uplaoder {size1} men der er kun {size2} tilbage",
+    "Not enough free space" : "Ikke nok ledig plads",
     "Uploading..." : "Uploader...",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{hours}:{minutes}:{seconds} time(r) tilbage",

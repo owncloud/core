@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Pa depozitë gati",
     "Storage invalid" : "Depozitë e pavlefshme",
     "Unknown error" : "Gabim i panjohur",
     "Files" : "Kartela",

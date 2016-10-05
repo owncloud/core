@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "저장소를 사용할 수 없음",
     "Storage invalid" : "저장소가 잘못됨",
     "Unknown error" : "알 수 없는 오류",
     "Files" : "파일",

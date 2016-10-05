@@ -161,7 +161,6 @@
     "Storage unauthorized. %s" : "Armazenamento desautorizado. %s",
     "Storage incomplete configuration. %s" : "Configuração incompleta do armazenamento. %s",
     "Storage connection error. %s" : "Erro de ligação ao armazenamento. %s",
-    "Storage not available" : "Armazenamento indisposinvel",
     "Storage connection timeout. %s" : "Tempo de ligação ao armazenamento expirou. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

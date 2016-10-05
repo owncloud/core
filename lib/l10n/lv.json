@@ -32,7 +32,6 @@
     "web services under your control" : "tīmekļa servisi tavā varā",
     "Application is not enabled" : "Lietotne nav aktivēta",
     "Authentication error" : "Autentifikācijas kļūda",
-    "Token expired. Please reload page." : "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu.",
-    "Storage not available" : "Glabātuve nav pieejama"
+    "Token expired. Please reload page." : "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu."
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);"
 }

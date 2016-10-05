@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "Shtoje vetvetiu shërbyesin pasi të jetë krijuar me sukses një ndarje e federuar",
     "Trusted ownCloud Servers" : "Shërbyes ownCloud të Besuar",
     "+ Add ownCloud server" : "+ Shtoni shërbyes ownCloud",
-    "ownCloud Server" : "Shërbyes ownCloud"
+    "ownCloud Server" : "Shërbyes ownCloud",
+    "Add" : "Shtoje"
 },
 "nplurals=2; plural=(n != 1);");

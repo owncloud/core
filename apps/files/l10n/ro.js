@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Spațiu de stocare indisponibil",
     "Storage invalid" : "Spațiu de stocare invalid",
     "Unknown error" : "Eroare necunoscută",
     "Files" : "Fișiere",

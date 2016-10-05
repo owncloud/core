@@ -165,7 +165,6 @@
     "Storage unauthorized. %s" : "Lager uautorisert: %s",
     "Storage incomplete configuration. %s" : "Ikke komplett oppsett for lager. %s",
     "Storage connection error. %s" : "Tilkoblingsfeil for lager. %s",
-    "Storage not available" : "Lagringsplass ikke tilgjengelig",
     "Storage connection timeout. %s" : "Tidsavbrudd ved tilkobling av lager: %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

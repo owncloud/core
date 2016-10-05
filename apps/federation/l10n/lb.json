@@ -8,6 +8,7 @@
     "Add server automatically once a federated share was created successfully" : "Setz de Server automatesch derbäi soubal e federativen Undeel erfollegräich erstallt gouf",
     "Trusted ownCloud Servers" : "Zouverlässeg ownCloud Serveren",
     "+ Add ownCloud server" : "+ ownCloud Server derbäi setzen",
-    "ownCloud Server" : "ownCloud Server"
+    "ownCloud Server" : "ownCloud Server",
+    "Add" : "Dobäisetzen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -4,6 +4,7 @@ OC.L10N.register(
     "No ownCloud server found" : "Cap de servidor ownCloud pas trobat",
     "Could not add server" : "Impossible d'apondre un servidor",
     "Federation" : "Federacion",
-    "ownCloud Server" : "Servidor ownCloud"
+    "ownCloud Server" : "Servidor ownCloud",
+    "Add" : "Apondre"
 },
 "nplurals=2; plural=(n > 1);");

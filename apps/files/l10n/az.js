@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "İnformasiya daşıyıcısı mövcud deyil",
     "Storage invalid" : "İnformasiya daşıyıcısı yalnışdır",
     "Unknown error" : "Bəlli olmayan səhv baş verdi",
     "Files" : "Fayllar",

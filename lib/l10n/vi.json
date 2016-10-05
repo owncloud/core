@@ -21,7 +21,6 @@
     "web services under your control" : "dịch vụ web dưới sự kiểm soát của bạn",
     "Application is not enabled" : "Ứng dụng không được BẬT",
     "Authentication error" : "Lỗi xác thực",
-    "Token expired. Please reload page." : "Mã Token đã hết hạn. Hãy tải lại trang.",
-    "Storage not available" : "Lưu trữ không có sẵn"
+    "Token expired. Please reload page." : "Mã Token đã hết hạn. Hãy tải lại trang."
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -8,6 +8,7 @@
     "Add server automatically once a federated share was created successfully" : "Birleşmiş bir paylaşım başarıyla eklenildiğinde sunucuyu otomatik olarak ekle",
     "Trusted ownCloud Servers" : "Güvenilen ownCloud Sunucuları",
     "+ Add ownCloud server" : "+ ownCloud sunucusu ekle",
-    "ownCloud Server" : "ownCloud Sunucusu"
+    "ownCloud Server" : "ownCloud Sunucusu",
+    "Add" : "Ekle"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

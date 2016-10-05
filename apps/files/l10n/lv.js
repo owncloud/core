@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Glabātuve nav pieejama",
     "Storage invalid" : "Nepareiza krātuve",
     "Unknown error" : "Nezināma kļūda",
     "Files" : "Datnes",

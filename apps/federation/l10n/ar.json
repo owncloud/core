@@ -8,6 +8,7 @@
     "Add server automatically once a federated share was created successfully" : "أضف الخادم تلقائياً حال نجاح إنشاء حصة في الاتحاد",
     "Trusted ownCloud Servers" : "خادمات ownCloud الموثوق بها",
     "+ Add ownCloud server" : "+ أضف خادم ownCloud",
-    "ownCloud Server" : "خادم ownCloud"
+    "ownCloud Server" : "خادم ownCloud",
+    "Add" : "اضف"
 },"pluralForm" :"nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;"
 }

@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "연합 공유를 생성했을 때 자동으로 서버 추가",
     "Trusted ownCloud Servers" : "신뢰할 수 있는 ownCloud 서버",
     "+ Add ownCloud server" : "+ ownCloud 서버 추가",
-    "ownCloud Server" : "ownCloud 서버"
+    "ownCloud Server" : "ownCloud 서버",
+    "Add" : "추가"
 },
 "nplurals=1; plural=0;");

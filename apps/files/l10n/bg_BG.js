@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Липсва дисковото устройство.",
     "Storage invalid" : "Невалидно дисково устройство.",
     "Unknown error" : "Непозната грешка.",
     "Files" : "Файлове",

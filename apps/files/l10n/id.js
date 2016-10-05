@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Penyimpanan tidak tersedia",
     "Storage invalid" : "Penyimpanan tidak sah",
     "Unknown error" : "Kesalahan tidak diketahui",
     "Files" : "Berkas",

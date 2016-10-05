@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "เพิ่มเซิร์ฟเวอร์โดยอัตโนมัติเมื่อแชร์ของสหพันธ์สร้างเสร็จเรียบร้อยแล้ว",
     "Trusted ownCloud Servers" : "เซิร์ฟเวอร์ ownCloud ที่เชื่อถือได้",
     "+ Add ownCloud server" : "+ เพิ่มเซิร์ฟเวอร์ ownCloud",
-    "ownCloud Server" : "เซิร์ฟเวอร์ ownCloud"
+    "ownCloud Server" : "เซิร์ฟเวอร์ ownCloud",
+    "Add" : "เพิ่ม"
 },
 "nplurals=1; plural=0;");

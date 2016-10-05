@@ -7,6 +7,7 @@ OC.L10N.register(
     "Could not add server" : "Αδυναμία προσθήκης διακομιστή",
     "Trusted ownCloud Servers" : "Έμπιστοι διακομιστές ownCloud",
     "+ Add ownCloud server" : "+ Προσθήκη διακομιστή ownCloud",
-    "ownCloud Server" : "Διακομιστής ownCloud"
+    "ownCloud Server" : "Διακομιστής ownCloud",
+    "Add" : "Προσθήκη"
 },
 "nplurals=2; plural=(n != 1);");

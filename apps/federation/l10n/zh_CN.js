@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "一旦联合共享创建成功自动添加服务器",
     "Trusted ownCloud Servers" : "可信 ownCloud 服务器",
     "+ Add ownCloud server" : "+ 添加 ownCloud 服务器",
-    "ownCloud Server" : "ownCloud 服务器"
+    "ownCloud Server" : "ownCloud 服务器",
+    "Add" : "增加"
 },
 "nplurals=1; plural=0;");

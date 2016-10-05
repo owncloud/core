@@ -5,6 +5,7 @@ OC.L10N.register(
     "Server is already in the list of trusted servers." : "Servilo jam estas en la listo de fidataj serviloj.",
     "No ownCloud server found" : "Ne troviĝis ownCloud-servilo",
     "Could not add server" : "Ne eblas aldoni servilon",
-    "Federation" : "Federado"
+    "Federation" : "Federado",
+    "Add" : "Aldoni"
 },
 "nplurals=2; plural=(n != 1);");

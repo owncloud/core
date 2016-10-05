@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "Lisää palvelin automaattisesti, kun federoitu jako on luotu onnistuneesti",
     "Trusted ownCloud Servers" : "Luotetut ownCloud-palvelimet",
     "+ Add ownCloud server" : "+ Lisää ownCloud-palvelin",
-    "ownCloud Server" : "ownCloud-palvelin"
+    "ownCloud Server" : "ownCloud-palvelin",
+    "Add" : "Lisää"
 },
 "nplurals=2; plural=(n != 1);");

@@ -18,6 +18,7 @@
     "ownCloud %s or lower is required." : "Se requiere ownCloud %s o una versión inferior.",
     "Unknown filetype" : "Tipo de archivo desconocido",
     "Invalid image" : "Imagen inválida",
+    "Avatar image is not square" : "La imagen de avatar no es un cuadrado",
     "today" : "hoy",
     "yesterday" : "ayer",
     "_%n day ago_::_%n days ago_" : ["Hace %n día","hace %n días"],
@@ -165,7 +166,6 @@
     "Storage unauthorized. %s" : "Almacenamiento no autorizado. %s",
     "Storage incomplete configuration. %s" : "Configuración de almacenamiento incompleta. %s",
     "Storage connection error. %s" : "Error de conexión de almacenamiento. %s",
-    "Storage not available" : "Almacenamiento no disponible",
     "Storage connection timeout. %s" : "Tiempo de conexión de almacenamiento agotado. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

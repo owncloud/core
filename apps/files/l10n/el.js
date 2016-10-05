@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Μη διαθέσιμος αποθηκευτικός χώρος",
     "Storage invalid" : "Μη έγκυρος αποθηκευτικός χώρος",
     "Unknown error" : "Άγνωστο σφάλμα",
     "Files" : "Αρχεία",

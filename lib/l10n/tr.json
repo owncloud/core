@@ -165,7 +165,6 @@
     "Storage unauthorized. %s" : "Depolamaya erişim izni yok. %s",
     "Storage incomplete configuration. %s" : "Depolamada tamamlanmamış yapılandırma. %s",
     "Storage connection error. %s" : "Depolama bağlantı hatası. %s",
-    "Storage not available" : "Depolama mevcut değil",
     "Storage connection timeout. %s" : "Depolama bağlantı zaman aşımı. %s"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

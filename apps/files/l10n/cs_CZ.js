@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Úložiště není dostupné",
     "Storage invalid" : "Neplatné úložiště",
     "Unknown error" : "Neznámá chyba",
     "Files" : "Soubory",

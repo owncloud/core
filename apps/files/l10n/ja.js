@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "ストレージが利用できません",
     "Storage invalid" : "ストレージが無効です",
     "Unknown error" : "不明なエラー",
     "Files" : "ファイル",
