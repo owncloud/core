@@ -78,6 +78,7 @@
 
 		onPopUpClick: function(event) {
 			var url = $(event.target).data('url');
+			$(event.target).tooltip('hide');
 			if (url) {
 				var width = 600;
 				var height = 400;
@@ -120,7 +121,7 @@
 				shareToolTipMail: t('core', 'Share via email. Opens your mail client.')
 			}));
 
-			this.$el.find('.hasTooltip').tooltip();
+			this.$el.find('.hasTooltip').tooltip({trigger: 'hover'});
 
 			this.delegateEvents();
 
