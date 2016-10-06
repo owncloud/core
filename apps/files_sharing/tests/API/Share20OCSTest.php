@@ -1770,7 +1770,7 @@ class Share20OCSTest extends \Test\TestCase {
 
 		$date = new \DateTime('2000-01-01');
 
-		$folder = $this->getMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\OCP\Files\Folder');
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share
@@ -1823,7 +1823,7 @@ class Share20OCSTest extends \Test\TestCase {
 
 		$date = new \DateTime('2000-01-01');
 
-		$folder = $this->getMock('\OCP\Files\Folder');
+		$folder = $this->createMock('\OCP\Files\Folder');
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share
