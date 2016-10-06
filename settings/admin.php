@@ -139,6 +139,8 @@ $template->assign('allowResharing', $appConfig->getValue('core', 'shareapi_allow
 $template->assign('allowPublicMailNotification', $appConfig->getValue('core', 'shareapi_allow_public_notification', 'no'));
 $template->assign('allowMailNotification', $appConfig->getValue('core', 'shareapi_allow_mail_notification', 'no'));
 $template->assign('allowShareDialogUserEnumeration', $appConfig->getValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
+$template->assign('allowDeleteRootShare', $appConfig->getValue('core', 'shareapi_allow_delete_root_share', 'yes'));
+$template->assign('allowRenameRootShare', $appConfig->getValue('core', 'shareapi_allow_rename_root_share', 'yes'));
 $template->assign('onlyShareWithGroupMembers', \OC\Share\Share::shareWithGroupMembersOnly());
 $template->assign('allowGroupSharing', $appConfig->getValue('core', 'shareapi_allow_group_sharing', 'yes'));
 $databaseOverload = (strpos(\OCP\Config::getSystemValue('dbtype'), 'sqlite') !== false);
