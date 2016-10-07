@@ -53,7 +53,6 @@ if($doesLogFileExist) {
 }
 
 $config = \OC::$server->getConfig();
-$appConfig = \OC::$server->getAppConfig();
 $request = \OC::$server->getRequest();
 $certificateManager = \OC::$server->getCertificateManager(null);
 $urlGenerator = \OC::$server->getURLGenerator();
@@ -80,16 +79,16 @@ $template->assign('isLocaleWorking', OC_Util::isSetLocaleWorking());
 $template->assign('isAnnotationsWorking', OC_Util::isAnnotationsWorking());
 $template->assign('checkForWorkingWellKnownSetup', $config->getSystemValue('check_for_working_wellknown_setup', true));
 $template->assign('has_fileinfo', OC_Util::fileInfoLoaded());
-$template->assign('backgroundjobs_mode', $appConfig->getValue('core', 'backgroundjobs_mode', 'ajax'));
+$template->assign('backgroundjobs_mode', $config->getAppValue('core', 'backgroundjobs_mode', 'ajax'));
 $template->assign('cron_log', $config->getSystemValue('cron_log', true));
-$template->assign('lastcron', $appConfig->getValue('core', 'lastcron', false));
-$template->assign('shareAPIEnabled', $appConfig->getValue('core', 'shareapi_enabled', 'yes'));
-$template->assign('shareDefaultExpireDateSet', $appConfig->getValue('core', 'shareapi_default_expire_date', 'no'));
-$template->assign('shareExpireAfterNDays', $appConfig->getValue('core', 'shareapi_expire_after_n_days', '7'));
-$template->assign('shareEnforceExpireDate', $appConfig->getValue('core', 'shareapi_enforce_expire_date', 'no'));
-$excludeGroups = $appConfig->getValue('core', 'shareapi_exclude_groups', 'no') === 'yes' ? true : false;
+$template->assign('lastcron', $config->getAppValue('core', 'lastcron', false));
+$template->assign('shareAPIEnabled', $config->getAppValue('core', 'shareapi_enabled', 'yes'));
+$template->assign('shareDefaultExpireDateSet', $config->getAppValue('core', 'shareapi_default_expire_date', 'no'));
+$template->assign('shareExpireAfterNDays', $config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
+$template->assign('shareEnforceExpireDate', $config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
+$excludeGroups = $config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes' ? true : false;
 $template->assign('shareExcludeGroups', $excludeGroups);
-$excludedGroupsList = $appConfig->getValue('core', 'shareapi_exclude_groups_list', '');
+$excludedGroupsList = $config->getAppValue('core', 'shareapi_exclude_groups_list', '');
 $excludedGroupsList = json_decode($excludedGroupsList);
 $template->assign('shareExcludedGroupsList', !is_null($excludedGroupsList) ? implode('|', $excludedGroupsList) : '');
 $template->assign('encryptionEnabled', \OC::$server->getEncryptionManager()->isEnabled());
@@ -132,18 +131,19 @@ $shouldSuggestOverwriteCliUrl = $config->getAppValue('core', 'backgroundjobs_mod
 $suggestedOverwriteCliUrl = ($shouldSuggestOverwriteCliUrl) ? \OC::$WEBROOT : '';
 $template->assign('suggestedOverwriteCliUrl', $suggestedOverwriteCliUrl);
 
-$template->assign('allowLinks', $appConfig->getValue('core', 'shareapi_allow_links', 'yes'));
+$template->assign('allowLinks', $config->getAppValue('core', 'shareapi_allow_links', 'yes'));
 $template->assign('enforceLinkPassword', \OCP\Util::isPublicLinkPasswordRequired());
-$template->assign('allowPublicUpload', $appConfig->getValue('core', 'shareapi_allow_public_upload', 'yes'));
-$template->assign('allowResharing', $appConfig->getValue('core', 'shareapi_allow_resharing', 'yes'));
-$template->assign('allowPublicMailNotification', $appConfig->getValue('core', 'shareapi_allow_public_notification', 'no'));
-$template->assign('allowMailNotification', $appConfig->getValue('core', 'shareapi_allow_mail_notification', 'no'));
-$template->assign('allowShareDialogUserEnumeration', $appConfig->getValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
+$template->assign('allowPublicUpload', $config->getAppValue('core', 'shareapi_allow_public_upload', 'yes'));
+$template->assign('allowResharing', $config->getAppValue('core', 'shareapi_allow_resharing', 'yes'));
+$template->assign('allowPublicMailNotification', $config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));
+$template->assign('allowSocialShare', $config->getAppValue('core', 'shareapi_allow_social_share', 'yes'));
+$template->assign('allowMailNotification', $config->getAppValue('core', 'shareapi_allow_mail_notification', 'no'));
+$template->assign('allowShareDialogUserEnumeration', $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
 $template->assign('onlyShareWithGroupMembers', \OC\Share\Share::shareWithGroupMembersOnly());
-$template->assign('allowGroupSharing', $appConfig->getValue('core', 'shareapi_allow_group_sharing', 'yes'));
+$template->assign('allowGroupSharing', $config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes'));
 $databaseOverload = (strpos(\OCP\Config::getSystemValue('dbtype'), 'sqlite') !== false);
 $template->assign('databaseOverload', $databaseOverload);
-$template->assign('cronErrors', $appConfig->getValue('core', 'cronErrors'));
+$template->assign('cronErrors', $config->getAppValue('core', 'cronErrors'));
 
 // warn if php is not setup properly to get system variables with getenv
 $path = getenv('PATH');
