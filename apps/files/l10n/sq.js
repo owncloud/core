@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Depozitimi është përkohësisht jashtë pune",
     "Storage invalid" : "Depozitë e pavlefshme",
     "Unknown error" : "Gabim i panjohur",
     "Files" : "Kartela",

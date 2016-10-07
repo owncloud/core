@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "אחסון באופן זמני אינו זמין",
     "Storage invalid" : "אחסון לא חוקי",
     "Unknown error" : "שגיאה בלתי ידועה",
     "Files" : "קבצים",

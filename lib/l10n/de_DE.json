@@ -166,6 +166,7 @@
     "Storage unauthorized. %s" : "Speicher ungültig. %s",
     "Storage incomplete configuration. %s" : "Speicher-Konfiguration unvollständig. %s",
     "Storage connection error. %s" : "Speicher-Verbindungsfehler. %s",
+    "Storage is temporarily not available" : "Speicher ist vorübergehend nicht verfügbar",
     "Storage connection timeout. %s" : "Speicher-Verbindungszeitüberschreitung. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

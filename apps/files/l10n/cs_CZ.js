@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Úložiště je dočasně nedostupné",
     "Storage invalid" : "Neplatné úložiště",
     "Unknown error" : "Neznámá chyba",
     "Files" : "Soubory",

@@ -166,6 +166,7 @@
     "Storage unauthorized. %s" : "Opslag niet toegestaan. %s",
     "Storage incomplete configuration. %s" : "Incomplete opslagconfiguratie. %s",
     "Storage connection error. %s" : "Opslagverbindingsfout. %s",
+    "Storage is temporarily not available" : "Opslag is tijdelijk niet beschikbaar",
     "Storage connection timeout. %s" : "Opslagverbinding time-out. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

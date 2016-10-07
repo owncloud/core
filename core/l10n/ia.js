@@ -125,6 +125,7 @@ OC.L10N.register(
     "Technical details" : "Detalios technic",
     "Remote Address: %s" : "Adresse remote: %s",
     "Request ID: %s" : "ID de requesta: %s",
+    "Type: %s" : "Typo: %s",
     "Code: %s" : "Codice: %s",
     "Message: %s" : "Message: %s",
     "File: %s" : "File: %s",

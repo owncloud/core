@@ -1,4 +1,5 @@
 { "translations": {
+    "Storage is temporarily not available" : "Хранилище временно не доступно",
     "Storage invalid" : "Хранилище неисправно",
     "Unknown error" : "Неизвестная ошибка",
     "Files" : "Файлы",

@@ -166,6 +166,7 @@
     "Storage unauthorized. %s" : "Úložiště neověřeno. %s",
     "Storage incomplete configuration. %s" : "Nekompletní konfigurace úložiště. %s",
     "Storage connection error. %s" : "Chyba připojení úložiště. %s",
+    "Storage is temporarily not available" : "Úložiště je dočasně nedostupné",
     "Storage connection timeout. %s" : "Vypršení připojení k úložišti. %s"
 },"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
 }

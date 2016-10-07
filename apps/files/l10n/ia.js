@@ -6,6 +6,7 @@ OC.L10N.register(
     "Home" : "Domo",
     "Close" : "Clauder",
     "Uploading..." : "Incargante...",
+    "..." : "...",
     "Download" : "Discargar",
     "Delete" : "Deler",
     "Unshare" : "Leva compartir",

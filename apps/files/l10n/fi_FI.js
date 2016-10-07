@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Tallennustila ei juuri nyt ole käytettävissä",
     "Storage invalid" : "Virheellinen tallennustila",
     "Unknown error" : "Tuntematon virhe",
     "Files" : "Tiedostot",
