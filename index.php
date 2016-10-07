@@ -33,8 +33,8 @@ if (version_compare(PHP_VERSION, '5.6.0') === -1) {
 }
 
 try {
-	
-	require_once 'lib/base.php';
+
+	require_once __DIR__ . '/lib/base.php';
 
 	OC::handleRequest();
 

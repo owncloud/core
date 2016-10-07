@@ -27,7 +27,7 @@
  *
  */
 
-require_once '../lib/base.php';
+require_once __DIR__ . '/../lib/base.php';
 
 if (\OCP\Util::needUpgrade()
 	|| \OC::$server->getSystemConfig()->getValue('maintenance', false)

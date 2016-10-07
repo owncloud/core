@@ -28,7 +28,7 @@
 
 try {
 
-	require_once 'lib/base.php';
+	require_once __DIR__ . '/lib/base.php';
 
 	$systemConfig = \OC::$server->getSystemConfig();
 
