@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <bjoern@schiessle.org>
@@ -198,12 +199,13 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 	$array['oc_defaults']['docBaseUrl'] = $defaults->getDocBaseUrl();
 	$array['oc_defaults']['docPlaceholderUrl'] = $defaults->buildDocLinkToKey('PLACEHOLDER');
 }
-$array['oc_appconfig'] = json_encode($array['oc_appconfig']);
-$array['oc_config'] = json_encode($array['oc_config']);
-$array['oc_defaults'] = json_encode($array['oc_defaults']);
 
 // Allow hooks to modify the output values
 OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
+
+$array['oc_appconfig'] = json_encode($array['oc_appconfig']);
+$array['oc_config'] = json_encode($array['oc_config']);
+$array['oc_defaults'] = json_encode($array['oc_defaults']);
 
 // Echo it
 foreach ($array as  $setting => $value) {
