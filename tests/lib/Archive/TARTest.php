@@ -14,10 +14,6 @@ use OC\Archive\TAR;
 class TARTest extends TestBase {
 	protected function setUp() {
 		parent::setUp();
-
-		if (\OC_Util::runningOnWindows()) {
-			$this->markTestSkipped('[Windows] tar archives are not supported on Windows');
-		}
 	}
 
 	protected function getExisting() {
