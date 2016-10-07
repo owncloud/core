@@ -20,6 +20,7 @@
  */
 namespace OC\Repair;
 
+use OCP\Files\IRootFolder;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -29,7 +30,6 @@ use OCP\Migration\IRepairStep;
 use OCP\IUser;
 use OC\Avatar;
 use OCP\IConfig;
-use OCP\Files\Folder;
 use OCP\IAvatarManager;
 use OCP\Files\NotFoundException;
 
@@ -64,6 +64,10 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	 * @param IConfig $config config
 	 * @param IDBConnection $connection database connection
 	 * @param IUserManager $userManager user manager
+	 * @param IAvatarManager $avatarManager
+	 * @param IRootFolder $rootFolder
+	 * @param IL10N $l10n
+	 * @param ILogger $logger
 	 */
 	public function __construct(
 		IConfig $config,
@@ -92,8 +96,11 @@ class MoveAvatarOutsideHome implements IRepairStep {
 
 	/**
 	 * Move avatars outside of their homes
+	 *
+	 * @param IOutput $out
+	 * @param IUser $user
 	 */
-	private function moveAvatars(IOutput $out, IUser $user, Folder $newAvatarsFolder) {
+	private function moveAvatars(IOutput $out, IUser $user) {
 		$userId = $user->getUID();
 
 		\OC\Files\Filesystem::initMountPoints($userId);
