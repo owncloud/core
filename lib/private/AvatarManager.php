@@ -84,15 +84,37 @@ class AvatarManager implements IAvatarManager {
 			throw new \Exception('user does not exist');
 		}
 
-		/*
-		 * Fix for #22119
-		 * Basically we do not want to copy the skeleton folder
-		 */
-		\OC\Files\Filesystem::initMountPoints($userId);
-		$dir = '/' . $userId;
-		/** @var Folder $folder */
-		$folder = $this->rootFolder->get($dir);
+		$avatarsFolder = $this->getAvatarFolder($userId);
+		return new Avatar($avatarsFolder, $this->l, $user, $this->logger);
+	}
 
-		return new Avatar($folder, $this->l, $user, $this->logger);
+	private function getFolder(Folder $folder, $path) {
+		try {
+			return $folder->get($path);
+		} catch (NotFoundException $e) {
+			return $folder->newFolder($path);
+		}
+	}
+
+	private function buildAvatarPath($userId) {
+		$avatar = substr_replace(substr_replace(md5($userId), '/', 4, 0), '/', 2, 0);
+		return explode('/', $avatar);
+	}
+
+	/**
+	 * Returns the avatar folder for the given user
+	 *
+	 * @param $userId user id
+	 * @return Folder|\OCP\Files\Node
+	 *
+	 * @internal
+	 */
+	public function getAvatarFolder($userId) {
+		$avatarsFolder = $this->getFolder($this->rootFolder, 'avatars');
+		$parts = $this->buildAvatarPath($userId);
+		foreach ($parts as $part) {
+			$avatarsFolder = $this->getFolder($avatarsFolder, $part);
+		}
+		return $avatarsFolder;
 	}
 }
