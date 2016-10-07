@@ -36,6 +36,7 @@
 		}
 
 		url += options.host + this._root;
+		this._host = options.host;
 		this._defaultHeaders = options.defaultHeaders || {
 				'X-Requested-With': 'XMLHttpRequest',
 				'requesttoken': OC.requestToken
@@ -761,6 +762,16 @@
 		 */
 		getBaseUrl: function() {
 			return this._client.baseUrl;
+		},
+
+		/**
+		 * Returns the host
+		 *
+		 * @since 9.2
+		 * @return {String} base URL
+		 */
+		getHost: function() {
+			return this._host;
 		}
 	};
 
@@ -798,7 +809,6 @@
 
 		var client = new OC.Files.Client({
 			host: OC.getHost(),
-			port: OC.getPort(),
 			root: OC.linkToRemoteBase('webdav'),
 			useHTTPS: OC.getProtocol() === 'https'
 		});
