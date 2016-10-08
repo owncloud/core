@@ -24,6 +24,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "未发现 {remote} 安装有ownCloud (7 或更高版本)",
     "Invalid ownCloud url" : "无效的 ownCloud 网址",
     "Share" : "共享",
+    "No expiration date set" : "过期时间未设置",
     "Shared by" : "共享人",
     "Sharing" : "共享",
     "Share API is disabled" : "共享 API 已被禁用",

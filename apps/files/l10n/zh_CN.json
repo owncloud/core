@@ -1,4 +1,5 @@
 { "translations": {
+    "Storage is temporarily not available" : "存储临时性不可用",
     "Storage invalid" : "存储空间无效",
     "Unknown error" : "未知错误",
     "Files" : "文件",
@@ -11,6 +12,8 @@
     "Upload cancelled." : "上传已取消",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "不能上传文件 {filename} ，由于它是一个目录或者为0字节",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "没有足够的可用空间，您正在上传 {size1} 的文件但是只有 {size2} 可用。",
+    "Target folder \"{dir}\" does not exist any more" : "目标目录“{dir}”不存在",
+    "Not enough free space" : "空闲空间不足",
     "Uploading..." : "上传中...",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "剩余时间：{hours}:{minutes}:{seconds} ",
@@ -52,6 +55,7 @@
     "_%n folder_::_%n folders_" : ["%n 文件夹"],
     "_%n file_::_%n files_" : ["%n个文件"],
     "{dirs} and {files}" : "{dirs} 和 {files}",
+    "_including %n hidden_::_including %n hidden_" : ["包含 %n 隐藏项"],
     "You don’t have permission to upload or create files here" : "您在这没有上传和创建文件的权限",
     "_Uploading %n file_::_Uploading %n files_" : ["上传 %n 个文件"],
     "New" : "新建",
