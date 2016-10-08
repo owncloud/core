@@ -29,9 +29,7 @@ class LargeFileHelperGetFileSizeTest extends TestCase {
 		$path = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
 		$filePaths = [[$path . 'lorem.txt', 446]];
-		if (!\OC_Util::runningOnWindows()) {
-			$filePaths[] = [$path . 'strängé filename (duplicate #2).txt', 446];
-		}
+		$filePaths[] = [$path . 'strängé filename (duplicate #2).txt', 446];
 
 		return $filePaths;
 	}

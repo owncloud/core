@@ -658,6 +658,8 @@ class OC_Util {
 					'in <a href="%s">our documentation</a>.',
 					['https://owncloud.org/install/', 'owncloud.org/install/', 'https://owncloud.org/?p=8045'])
 			];
+			// don't bother with further checks
+			return $errors;
 		}
 
 		// Check if config folder is writable.
@@ -909,22 +911,18 @@ class OC_Util {
 	public static function checkDataDirectoryPermissions($dataDirectory) {
 		$l = \OC::$server->getL10N('lib');
 		$errors = [];
-		if (self::runningOnWindows()) {
-			//TODO: permissions checks for windows hosts
-		} else {
-			$permissionsModHint = $l->t('Please change the permissions to 0770 so that the directory'
-				. ' cannot be listed by other users.');
+		$permissionsModHint = $l->t('Please change the permissions to 0770 so that the directory'
+			. ' cannot be listed by other users.');
+		$perms = substr(decoct(@fileperms($dataDirectory)), -3);
+		if (substr($perms, -1) != '0') {
+			chmod($dataDirectory, 0770);
+			clearstatcache();
 			$perms = substr(decoct(@fileperms($dataDirectory)), -3);
-			if (substr($perms, -1) != '0') {
-				chmod($dataDirectory, 0770);
-				clearstatcache();
-				$perms = substr(decoct(@fileperms($dataDirectory)), -3);
-				if (substr($perms, 2, 1) != '0') {
-					$errors[] = [
-						'error' => $l->t('Data directory (%s) is readable by other users', [$dataDirectory]),
-						'hint' => $permissionsModHint
-					];
-				}
+			if (substr($perms, 2, 1) != '0') {
+				$errors[] = [
+					'error' => $l->t('Data directory (%s) is readable by other users', [$dataDirectory]),
+					'hint' => $permissionsModHint
+				];
 			}
 		}
 		return $errors;
@@ -940,7 +938,7 @@ class OC_Util {
 	public static function checkDataDirectoryValidity($dataDirectory) {
 		$l = \OC::$server->getL10N('lib');
 		$errors = [];
-		if (!self::runningOnWindows() && $dataDirectory[0] !== '/') {
+		if ($dataDirectory[0] !== '/') {
 			$errors[] = [
 				'error' => $l->t('Data directory (%s) must be an absolute path', [$dataDirectory]),
 				'hint' => $l->t('Check the value of "datadirectory" in your configuration')
@@ -1211,11 +1209,6 @@ class OC_Util {
 	 * @return bool
 	 */
 	public static function isSetLocaleWorking() {
-		// setlocale test is pointless on Windows
-		if (OC_Util::runningOnWindows()) {
-			return true;
-		}
-
 		\Patchwork\Utf8\Bootup::initLocale();
 		if ('' === basename('§')) {
 			return false;

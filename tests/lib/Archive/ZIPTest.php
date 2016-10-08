@@ -14,10 +14,6 @@ use OC\Archive\ZIP;
 class ZIPTest extends TestBase {
 	protected function setUp() {
 		parent::setUp();
-
-		if (\OC_Util::runningOnWindows()) {
-			$this->markTestSkipped('[Windows] ');
-		}
 	}
 
 	protected function getExisting() {
