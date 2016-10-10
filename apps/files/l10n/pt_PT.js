@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "O armazenamento está temporariamente indisponível",
     "Storage invalid" : "Armazenamento inválido",
     "Unknown error" : "Erro desconhecido",
     "Files" : "Ficheiros",
@@ -13,6 +14,7 @@ OC.L10N.register(
     "Upload cancelled." : "Envio cancelado.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Não é possível enviar {filename}, porque este é uma diretoria ou tem 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Não existe espaço suficiente, está a enviar {size1} mas resta apenas {size2}",
+    "Not enough free space" : "Não há espaço livre suficiente",
     "Uploading..." : "A enviar...",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "Tempo restante: {hours}:{minutes}:{seconds} hora{plural_s}",
