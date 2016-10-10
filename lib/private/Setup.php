@@ -40,11 +40,17 @@ namespace OC;
 
 use bantu\IniGetWrapper\IniGetWrapper;
 use Exception;
+use OC\Setup\MySQL;
+use OC\Setup\OCI;
+use OC\Setup\PostgreSQL;
+use OC\Setup\Sqlite;
+use OC_Util;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IURLGenerator;
 use OCP\Security\ISecureRandom;
+use OCP\Util;
 
 class Setup {
 	/** @var \OCP\IConfig */
@@ -65,7 +71,11 @@ class Setup {
 	/**
 	 * @param IConfig $config
 	 * @param IniGetWrapper $iniWrapper
+	 * @param IL10N $l10n
 	 * @param \OC_Defaults $defaults
+	 * @param ILogger $logger
+	 * @param ISecureRandom $random
+	 * @param IURLGenerator $urlGenerator
 	 */
 	function __construct(IConfig $config,
 						 IniGetWrapper $iniWrapper,
@@ -85,11 +95,11 @@ class Setup {
 	}
 
 	static $dbSetupClasses = [
-		'mysql' => '\OC\Setup\MySQL',
-		'pgsql' => '\OC\Setup\PostgreSQL',
-		'oci'   => '\OC\Setup\OCI',
-		'sqlite' => '\OC\Setup\Sqlite',
-		'sqlite3' => '\OC\Setup\Sqlite',
+		'mysql' => MySQL::class,
+		'pgsql' => PostgreSQL::class,
+		'oci'   => OCI::class,
+		'sqlite' => Sqlite::class,
+		'sqlite3' => Sqlite::class,
 	];
 
 	/**
@@ -187,6 +197,7 @@ class Setup {
 	 * Gathers system information like database type and does
 	 * a few system checks.
 	 *
+	 * @param bool $allowAllDatabases
 	 * @return array of system info, including an "errors" value
 	 * in case of errors/warnings
 	 */
@@ -206,12 +217,12 @@ class Setup {
 		$htAccessWorking = true;
 		if (is_dir($dataDir) && is_writable($dataDir)) {
 			// Protect data directory here, so we can test if the protection is working
-			\OC\Setup::protectDataDirectory();
+			self::protectDataDirectory();
 
 			try {
-				$util = new \OC_Util();
+				$util = new OC_Util();
 				$htAccessWorking = $util->isHtaccessWorking(\OC::$server->getConfig());
-			} catch (\OC\HintException $e) {
+			} catch (HintException $e) {
 				$errors[] = [
 					'error' => $e->getMessage(),
 					'hint' => $e->getHint()
@@ -220,7 +231,7 @@ class Setup {
 			}
 		}
 
-		if (\OC_Util::runningOnMac()) {
+		if (OC_Util::runningOnMac()) {
 			$errors[] = [
 				'error' => $this->l10n->t(
 					'Mac OS X is not supported and %s will not work properly on this platform. ' .
@@ -255,14 +266,12 @@ class Setup {
 	}
 
 	/**
-	 * @param $options
+	 * @param string $dataDir
 	 * @return array
 	 */
-	public function everyTimeChecks($options) {
+	public function everyTimeChecks($dataDir) {
 		$l = $this->l10n;
 		$error = [];
-
-		$dataDir = htmlspecialchars_decode($options['directory']);
 
 		// validate the data directory
 		if (
@@ -306,6 +315,7 @@ class Setup {
 
 		$username = htmlspecialchars_decode($options['adminlogin']);
 		$password = htmlspecialchars_decode($options['adminpass']);
+		$dataDir = htmlspecialchars_decode($options['directory']);
 
 		$class = self::$dbSetupClasses[$dbType];
 		/** @var \OC\Setup\AbstractDatabase $dbSetup */
@@ -313,7 +323,7 @@ class Setup {
 			$this->logger, $this->random);
 		$error = array_merge($error, $dbSetup->validate($options));
 
-		$everyTimeChecks = $this->everyTimeChecks($options);
+		$everyTimeChecks = $this->everyTimeChecks($dataDir);
 		$error = array_merge($error, $everyTimeChecks);
 
 		if(count($error) != 0) {
@@ -348,13 +358,13 @@ class Setup {
 			'datadirectory'		=> $dataDir,
 			'overwrite.cli.url'	=> $request->getServerProtocol() . '://' . $request->getInsecureServerHost() . \OC::$WEBROOT,
 			'dbtype'			=> $dbType,
-			'version'			=> implode('.', \OCP\Util::getVersion()),
+			'version'			=> implode('.', Util::getVersion()),
 		]);
 
 		try {
 			$dbSetup->initialize($options);
 			$dbSetup->setupDatabase($username);
-		} catch (\OC\DatabaseSetupException $e) {
+		} catch (DatabaseSetupException $e) {
 			$error[] = [
 				'error' => $e->getMessage(),
 				'hint' => $e->getHint()
@@ -450,7 +460,7 @@ class Setup {
 			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
 
-		$setupHelper = new \OC\Setup($config, \OC::$server->getIniWrapper(),
+		$setupHelper = new Setup($config, \OC::$server->getIniWrapper(),
 			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 			\OC::$server->getSecureRandom(), \OC::$server->getURLGenerator());
 
