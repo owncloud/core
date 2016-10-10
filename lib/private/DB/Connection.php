@@ -32,6 +32,7 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Exception\DriverException;
 use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
@@ -278,7 +279,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 					}, array_merge($keys, $values))
 				);
 			return $insertQb->execute();
-		} catch (\Doctrine\DBAL\Exception\ConstraintViolationException $e) {
+		} catch (DriverException $e) {
 			// value already exists, try update
 			$updateQb = $this->getQueryBuilder();
 			$updateQb->update($table);
