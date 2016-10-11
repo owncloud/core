@@ -61,6 +61,7 @@ class OCSAuthAPIController extends OCSController  {
 	/**
 	 * OCSAuthAPI constructor.
 	 *
+	 * @param string $appName
 	 * @param IRequest $request
 	 * @param ISecureRandom $secureRandom
 	 * @param IJobList $jobList
@@ -87,6 +88,9 @@ class OCSAuthAPIController extends OCSController  {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * request received to ask remote server for a shared secret
 	 *
 	 * @param string $url
@@ -132,6 +136,9 @@ class OCSAuthAPIController extends OCSController  {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * create shared secret and return it
 	 *
 	 * @param string $url
