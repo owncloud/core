@@ -59,6 +59,12 @@ class LastSeen extends Base  {
 				'the username'
 			)
 			->addOption(
+				'least-recent',
+				null,
+				InputOption::VALUE_NONE,
+				'show least recently logged in users'
+			)
+			->addOption(
 				'limit',
 				10,
 				InputOption::VALUE_OPTIONAL,
@@ -66,7 +72,7 @@ class LastSeen extends Base  {
 			);
 	}
 
-	protected function getLastLogins($userId = null, $limit = 10) {
+	protected function getLastLogins($userId = null, $order = 'DESC', $limit = 10) {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select(['userid', 'configvalue'])
 			->from('preferences')
@@ -78,7 +84,7 @@ class LastSeen extends Base  {
 			)
 			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
 			)
-			->orderBy('configvalue', 'DESC');
+			->orderBy('configvalue', $order);
 
 		if ($userId) {
 			$queryBuilder->andWhere($queryBuilder->expr()->eq(
@@ -102,7 +108,12 @@ class LastSeen extends Base  {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
-		$users = $this->getLastLogins($uid, $input->getOption('limit'));
+		if ($input->getOption('least-recent')) {
+			$order = 'ASC';
+		} else {
+			$order = 'DESC';
+		}
+		$users = $this->getLastLogins($uid, $order, $input->getOption('limit'));
 		$outputFormat = $input->getOption('output');
 		if (empty($users)) {
 			if ($uid) {
