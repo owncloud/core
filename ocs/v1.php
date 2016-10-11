@@ -61,7 +61,7 @@ try {
 	OC::$server->getRouter()->match('/ocs'.\OC::$server->getRequest()->getRawPathInfo());
 	return;
 } catch (ResourceNotFoundException $e) {
-	// Fall true the not found
+	// Fall through the not found
 } catch (MethodNotAllowedException $e) {
 	OC_API::setContentType();
 	OC_Response::setStatus(405);
