@@ -2552,4 +2552,13 @@ class DummyFactory implements IProviderFactory {
 	public function getProviderForType($shareType) {
 		return $this->provider;
 	}
+
+	/**
+	 * @return IShareProvider[]
+	 */
+	public function getProviders() {
+		return array($this->provider);
+	}
+
+
 }
