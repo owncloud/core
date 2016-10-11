@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Lagerplads er ikke tilgængelig lige nu",
     "Storage invalid" : "Lagerplads er ugyldig",
     "Unknown error" : "Ukendt fejl",
     "Files" : "Filer",

@@ -22,7 +22,7 @@ OC.L10N.register(
     "{hours}:{minutes}h" : "{hours}:{minutes}h",
     "{minutes}:{seconds} minute{plural_s} left" : "{minutes}:{seconds} minuten{plural_s} over",
     "{minutes}:{seconds}m" : "{minutes}:{seconds}m",
-    "{seconds} second{plural_s} left" : "{seconds} seconden{plural_s} over",
+    "{seconds} second{plural_s} left" : "{seconds} seconde{plural_n} over",
     "{seconds}s" : "{seconds}en",
     "Any moment now..." : "Heel snel nu...",
     "Soon..." : "Binnenkort...",
