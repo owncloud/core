@@ -64,7 +64,12 @@ class OCSControllerTest extends TestCase {
 
 	public function testXML() {
 		$controller = new ChildOCSController('app', new Request(
-			[],
+			[
+				'server' => [
+					'SCRIPT_NAME' => '',
+					'SCRIPT_FILENAME' => '',
+				],
+			],
 			$this->createMock(ISecureRandom::class),
 			$this->createMock(IConfig::class)
 		));
@@ -96,7 +101,12 @@ class OCSControllerTest extends TestCase {
 
 	public function testXMLDataResponse() {
 		$controller = new ChildOCSController('app', new Request(
-			[],
+			[
+				'server' => [
+					'SCRIPT_NAME' => '',
+					'SCRIPT_FILENAME' => '',
+				],
+			],
 			$this->createMock(ISecureRandom::class),
 			$this->createMock(IConfig::class)
 		));
@@ -130,8 +140,12 @@ class OCSControllerTest extends TestCase {
 		$controller = new ChildOCSController('app', new Request(
 			[
 				'urlParams' => [
-					'format' => 'json'
-				]
+					'format' => 'json',
+				],
+				'server' => [
+					'SCRIPT_NAME' => '',
+					'SCRIPT_FILENAME' => '',
+				],
 			],
 			$this->createMock(ISecureRandom::class),
 			$this->createMock(IConfig::class)
