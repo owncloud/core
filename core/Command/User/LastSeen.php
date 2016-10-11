@@ -135,7 +135,7 @@ class LastSeen extends Base  {
 					case self::OUTPUT_FORMAT_JSON:
 					case self::OUTPUT_FORMAT_JSON_PRETTY:
 						if ($users[$key]['lastLogin'] !== null) {
-							$users[$key]['lastLogin'] = $date->format('Y-m-d\TH:i:s');
+							$users[$key]['lastLogin'] = $date->format('Y-m-d\TH:i:s\Z');
 						}
 						// make the json output useful by adding more info
 						if ($user) {
