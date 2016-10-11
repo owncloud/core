@@ -23,28 +23,25 @@
  *
  */
 
-
-namespace OCA\Federation\API;
+namespace OCA\Federation\Controller;
 
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\OCSController;
 use OCP\BackgroundJob\IJobList;
 use OCP\ILogger;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 
 /**
- * Class OCSAuthAPI
+ * Class OCSAuthAPIController
  *
  * OCS API end-points to exchange shared secret between two connected ownClouds
  *
- * @package OCA\Federation\API
+ * @package OCA\Federation\Controller
  */
-class OCSAuthAPI {
-
-	/** @var IRequest */
-	private $request;
+class OCSAuthAPIController extends OCSController  {
 
 	/** @var ISecureRandom  */
 	private $secureRandom;
@@ -64,6 +61,7 @@ class OCSAuthAPI {
 	/**
 	 * OCSAuthAPI constructor.
 	 *
+	 * @param string $appName
 	 * @param IRequest $request
 	 * @param ISecureRandom $secureRandom
 	 * @param IJobList $jobList
@@ -72,6 +70,7 @@ class OCSAuthAPI {
 	 * @param ILogger $logger
 	 */
 	public function __construct(
+		$appName,
 		IRequest $request,
 		ISecureRandom $secureRandom,
 		IJobList $jobList,
@@ -79,7 +78,8 @@ class OCSAuthAPI {
 		DbHandler $dbHandler,
 		ILogger $logger
 	) {
-		$this->request = $request;
+		parent::__construct($appName, $request);
+
 		$this->secureRandom = $secureRandom;
 		$this->jobList = $jobList;
 		$this->trustedServers = $trustedServers;
@@ -88,18 +88,20 @@ class OCSAuthAPI {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * request received to ask remote server for a shared secret
 	 *
-	 * @return \OC_OCS_Result
+	 * @param string $url
+	 * @param string $token
+	 * @return array()
 	 */
-	public function requestSharedSecret() {
-
-		$url = $this->request->getParam('url');
-		$token = $this->request->getParam('token');
+	public function requestSharedSecret($url, $token) {
 
 		if ($this->trustedServers->isTrustedServer($url) === false) {
 			$this->logger->error('remote server not trusted (' . $url . ') while requesting shared secret', ['app' => 'federation']);
-			return new \OC_OCS_Result(null, HTTP::STATUS_FORBIDDEN);
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		// if both server initiated the exchange of the shared secret the greater
@@ -110,7 +112,7 @@ class OCSAuthAPI {
 				'remote server (' . $url . ') presented lower token. We will initiate the exchange of the shared secret.',
 				['app' => 'federation']
 			);
-			return new \OC_OCS_Result(null, HTTP::STATUS_FORBIDDEN);
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		// we ask for the shared secret so we no longer have to ask the other server
@@ -130,23 +132,24 @@ class OCSAuthAPI {
 			]
 		);
 
-		return new \OC_OCS_Result(null, Http::STATUS_OK);
-
+		return ['statuscode' => Http::STATUS_OK];
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * create shared secret and return it
 	 *
-	 * @return \OC_OCS_Result
+	 * @param string $url
+	 * @param string $token
+	 * @return array
 	 */
-	public function getSharedSecret() {
-
-		$url = $this->request->getParam('url');
-		$token = $this->request->getParam('token');
+	public function getSharedSecret($url, $token) {
 
 		if ($this->trustedServers->isTrustedServer($url) === false) {
 			$this->logger->error('remote server not trusted (' . $url . ') while getting shared secret', ['app' => 'federation']);
-			return new \OC_OCS_Result(null, HTTP::STATUS_FORBIDDEN);
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		if ($this->isValidToken($url, $token) === false) {
@@ -155,7 +158,7 @@ class OCSAuthAPI {
 				'remote server (' . $url . ') didn\'t send a valid token (got "' . $token . '" but expected "'. $expectedToken . '") while getting shared secret',
 				['app' => 'federation']
 			);
-			return new \OC_OCS_Result(null, HTTP::STATUS_FORBIDDEN);
+			return ['statuscode' => Http::STATUS_FORBIDDEN];
 		}
 
 		$sharedSecret = $this->secureRandom->generate(32);
@@ -164,8 +167,8 @@ class OCSAuthAPI {
 		// reset token after the exchange of the shared secret was successful
 		$this->dbHandler->addToken($url, '');
 
-		return new \OC_OCS_Result(['sharedSecret' => $sharedSecret], Http::STATUS_OK);
-
+		return ['statuscode' => Http::STATUS_OK,
+			'data' => ['sharedSecret' => $sharedSecret]];
 	}
 
 	protected function isValidToken($url, $token) {

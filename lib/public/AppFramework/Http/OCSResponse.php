@@ -87,5 +87,20 @@ class OCSResponse extends Response {
 		return \OC_API::renderResult($this->format, $r->getMeta(), $r->getData());
 	}
 
+	/**
+	 * @return int
+	 * @since 9.2.0
+	 */
+	public function getStatusCode() {
+		return $this->statuscode;
+	}
+
+	/**
+	 * @param int $statuscode
+	 * @since 9.2.0
+	 */
+	public function setStatusCode($statuscode) {
+		$this->statuscode = $statuscode;
+	}
 
 }

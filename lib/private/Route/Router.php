@@ -67,11 +67,13 @@ class Router implements IRouter {
 	/**
 	 * @param ILogger $logger
 	 */
-	public function __construct(ILogger $logger) {
+	public function __construct(ILogger $logger, $baseUrl = null) {
 		$this->logger = $logger;
-		$baseUrl = \OC::$WEBROOT;
+		if (is_null($baseUrl)) {
+			$baseUrl = \OC::$WEBROOT;
+		}
 		if(!(getenv('front_controller_active') === 'true')) {
-			$baseUrl = \OC::$server->getURLGenerator()->linkTo('', 'index.php');
+			$baseUrl = rtrim($baseUrl, '/') . '/index.php';
 		}
 		if (!\OC::$CLI) {
 			$method = $_SERVER['REQUEST_METHOD'];
@@ -94,7 +96,7 @@ class Router implements IRouter {
 	public function getRoutingFiles() {
 		if (!isset($this->routingFiles)) {
 			$this->routingFiles = [];
-			foreach (\OC_APP::getEnabledApps() as $app) {
+			foreach (\OC_App::getEnabledApps() as $app) {
 				$appPath = \OC_App::getAppPath($app);
 				if($appPath !== false) {
 					$file = $appPath . '/appinfo/routes.php';
@@ -149,6 +151,11 @@ class Router implements IRouter {
 				$this->requireRouteFile($file, $app);
 				$collection = $this->getCollection($app);
 				$collection->addPrefix('/apps/' . $app);
+				$this->root->addCollection($collection);
+
+				// Also add the OCS collection
+				$collection = $this->getCollection($app.'.ocs');
+				$collection->addPrefix('/ocsapp/apps/' . $app);
 				$this->root->addCollection($collection);
 			}
 		}
@@ -237,6 +244,13 @@ class Router implements IRouter {
 		if (substr($url, 0, 6) === '/apps/') {
 			// empty string / 'apps' / $app / rest of the route
 			list(, , $app,) = explode('/', $url, 4);
+
+			$app = \OC_App::cleanAppId($app);
+			\OC::$REQUESTEDAPP = $app;
+			$this->loadRoutes($app);
+		} else if (substr($url, 0, 13) === '/ocsapp/apps/') {
+			// empty string / 'ocsapp' / 'apps' / $app / rest of the route
+			list(, , , $app,) = explode('/', $url, 5);
 
 			$app = \OC_App::cleanAppId($app);
 			\OC::$REQUESTEDAPP = $app;

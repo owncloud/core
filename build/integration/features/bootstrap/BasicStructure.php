@@ -128,10 +128,12 @@ trait BasicStructure {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php" . $url;
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$this->currentUser, $this->regularUser];
+		if ($this->currentUser !== 'UNAUTHORIZED_USER') {
+			if ($this->currentUser === 'admin') {
+				$options['auth'] = $this->adminUser;
+			} else {
+				$options['auth'] = [$this->currentUser, $this->regularUser];
+			}
 		}
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();

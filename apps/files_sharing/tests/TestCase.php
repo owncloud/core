@@ -32,6 +32,7 @@ namespace OCA\Files_Sharing\Tests;
 
 use OC\Files\Filesystem;
 use OCA\Files_Sharing\AppInfo\Application;
+use OCA\Files_Sharing\SharedStorage;
 
 /**
  * Class TestCase
@@ -179,7 +180,7 @@ abstract class TestCase extends \Test\TestCase {
 	 * reset init status for the share storage
 	 */
 	protected static function resetStorage() {
-		$storage = new \ReflectionClass('\OCA\Files_Sharing\SharedStorage');
+		$storage = new \ReflectionClass(SharedStorage::class);
 		$isInitialized = $storage->getProperty('initialized');
 		$isInitialized->setAccessible(true);
 		$isInitialized->setValue($storage, false);

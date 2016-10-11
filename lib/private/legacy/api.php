@@ -385,7 +385,7 @@ class OC_API {
 
 	/**
 	 * respond to a call
-	 * @param OC_OCS_Result $result
+	 * @param OC_OCS_Result | \OC\OCS\Result $result
 	 * @param string $format the format xml|json
 	 */
 	public static function respond($result, $format='xml') {
