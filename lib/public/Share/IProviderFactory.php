@@ -58,7 +58,7 @@ interface IProviderFactory {
 	/**
 	 * Returns all the registered share providers
 	 * @return IShareProvider[]
-	 * @since 9.1.1
+	 * @since 9.2
 	 */
 	public function getProviders();
 }

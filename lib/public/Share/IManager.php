@@ -275,13 +275,13 @@ interface IManager {
 
 	/**
 	 * @return int the number of deleted shares
-	 * @since 9.1.1
+	 * @since 9.2
 	 */
 	public function deleteOrphanedShares();
 
 	/**
 	 * @return int the number of deleted expired shares
-	 * @since 9.1.1
+	 * @since 9.2
 	 */
 	public function deleteExpiredShares();
 
