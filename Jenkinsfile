@@ -15,13 +15,14 @@ timestampedNode('SLAVE') {
         }
 
     stage 'PHPUnit on 7.1'
-        sh '''
-        export NOCOVERAGE=1
-        unset USEDOCKER
-        phpenv local 7.1
-	make test-php TEST_DATABASE=sqlite
-        '''
-        step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-results-sqlite.xml'])
+        executeAndReport('tests/autotest-results-sqlite.xml') {
+	        sh '''
+        	export NOCOVERAGE=1
+        	unset USEDOCKER
+        	phpenv local 7.1
+		make test-php TEST_DATABASE=sqlite
+        	'''
+	}
 
     stage 'PHPUnit'
         executeAndReport('tests/autotest-results-sqlite.xml') {
@@ -29,7 +30,7 @@ timestampedNode('SLAVE') {
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-			make test-php TEST_DATABASE=sqlite
+		make test-php TEST_DATABASE=sqlite
             '''
         }
         executeAndReport('tests/autotest-results-mysql.xml') {
