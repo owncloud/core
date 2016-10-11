@@ -25,6 +25,7 @@
 namespace OC\Core\Command\User;
 
 use OC\Core\Command\Base;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IUserManager;
 use Symfony\Component\Console\Input\InputInterface;
@@ -82,7 +83,8 @@ class LastSeen extends Base  {
 			->andWhere($queryBuilder->expr()->eq(
 				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
 			)
-			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
+			// isNotNull has problems on oracle because configvaluo is a CLOB, so use LENGTH(`configvalue`) > 0 instead
+			->andWhere($queryBuilder->expr()->gt($queryBuilder->createFunction('LENGTH(`configvalue`)'), $queryBuilder->createFunction('0'))
 			)
 			->orderBy('configvalue', $order);
 

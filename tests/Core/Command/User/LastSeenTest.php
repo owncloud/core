@@ -150,9 +150,13 @@ class LastSeenTest extends TestCase {
 			->willReturn($userId);
 		$this->consoleInput->expects($this->at(1))
 			->method('getOption')
+			->with('least-recent')
+			->willReturn(null);
+		$this->consoleInput->expects($this->at(2))
+			->method('getOption')
 			->with('limit')
 			->willReturn(10);
-		$this->consoleInput->expects($this->at(2))
+		$this->consoleInput->expects($this->at(3))
 			->method('getOption')
 			->with('output')
 			->willReturn(LastSeen::OUTPUT_FORMAT_PLAIN);
@@ -176,9 +180,13 @@ class LastSeenTest extends TestCase {
 			->willReturn('user3');
 		$this->consoleInput->expects($this->at(1))
 			->method('getOption')
+			->with('least-recent')
+			->willReturn(null);
+		$this->consoleInput->expects($this->at(2))
+			->method('getOption')
 			->with('limit')
 			->willReturn(10);
-		$this->consoleInput->expects($this->at(2))
+		$this->consoleInput->expects($this->at(3))
 			->method('getOption')
 			->with('output')
 			->willReturn(LastSeen::OUTPUT_FORMAT_PLAIN);
@@ -201,9 +209,9 @@ class LastSeenTest extends TestCase {
 			['user', 'User Name', 'user@e.mail',
 				'[{"displayname":"User Name","email":"user@e.mail","lastLogin":null,"userid":"user"}]'],
 			['user1','User1 Name', 'user1@e.mail',
-				'[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20","userid":"user1"}]'],
+				'[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"}]'],
 			['user2', 'User2 Name',	'user2@e.mail',
-				'[{"displayname":"User2 Name","email":"user2@e.mail","lastLogin":"2016-09-05T09:29:58","userid":"user2"}]'],
+				'[{"displayname":"User2 Name","email":"user2@e.mail","lastLogin":"2016-09-05T09:29:58Z","userid":"user2"}]'],
 		];
 	}
 
@@ -231,13 +239,17 @@ class LastSeenTest extends TestCase {
 			->willReturn($userId);
 		$this->consoleInput->expects($this->at(1))
 			->method('getOption')
+			->with('least-recent')
+			->willReturn(null);
+		$this->consoleInput->expects($this->at(2))
+			->method('getOption')
 			->with('limit')
 			->willReturn(10);
-		$this->consoleInput->expects($this->at(2))
+		$this->consoleInput->expects($this->at(3))
 			->method('getOption')
 			->with('output')
 			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
-		$this->consoleInput->expects($this->at(3))
+		$this->consoleInput->expects($this->at(4))
 			->method('getOption')
 			->with('output')
 			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
@@ -254,7 +266,22 @@ class LastSeenTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function testValidUsersJSON() {
+	public function validUsersJSON() {
+		return [
+			[null,
+				'[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"},{"displayname":"User2 Name","email":"user2@e.mail","lastLogin":"2016-09-05T09:29:58Z","userid":"user2"}]'],
+			[true,
+				'[{"displayname":"User2 Name","email":"user2@e.mail","lastLogin":"2016-09-05T09:29:58Z","userid":"user2"},{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"}]'],
+		];
+	}
+
+	/**
+	 * @dataProvider validUsersJSON
+	 *
+	 * @param string $leastRecent
+	 * @param string $expectedString
+	 */
+	public function testValidUsersJSON($leastRecent, $expectedString) {
 
 		$user1 = $this->createMock('OCP\IUser');
 		$user1->expects($this->any())
@@ -278,33 +305,63 @@ class LastSeenTest extends TestCase {
 			->willReturn(null);
 		$this->consoleInput->expects($this->at(1))
 			->method('getOption')
-			->with('limit')
-			->willReturn(10);
+			->with('least-recent')
+			->willReturn($leastRecent);
 		$this->consoleInput->expects($this->at(2))
 			->method('getOption')
-			->with('output')
-			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
+			->with('limit')
+			->willReturn(10);
 		$this->consoleInput->expects($this->at(3))
 			->method('getOption')
 			->with('output')
 			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
+		$this->consoleInput->expects($this->at(4))
+			->method('getOption')
+			->with('output')
+			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
 
-		$this->userManager->expects($this->at(0))
-			->method('get')
-			->with('user1')
-			->willReturn($user1);
-		$this->userManager->expects($this->at(1))
-			->method('get')
-			->with('user2')
-			->willReturn($user2);
-
+		if ($leastRecent) {
+			$this->userManager->expects($this->at(0))
+				->method('get')
+				->with('user2')
+				->willReturn($user2);
+			$this->userManager->expects($this->at(1))
+				->method('get')
+				->with('user1')
+				->willReturn($user1);
+		} else {
+			$this->userManager->expects($this->at(0))
+				->method('get')
+				->with('user1')
+				->willReturn($user1);
+			$this->userManager->expects($this->at(1))
+				->method('get')
+				->with('user2')
+				->willReturn($user2);
+		}
 		$this->consoleOutput->expects($this->once())
 			->method('writeln')
-			->with($this->stringContains('[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20","userid":"user1"},{"displayname":"User2 Name","email":"user2@e.mail","lastLogin":"2016-09-05T09:29:58","userid":"user2"}]'));
+			->with($expectedString);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
-	public function testInalidUsersJSON() {
+
+	public function invalidUsersJSON() {
+		return [
+			[null,
+				'[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"},{"displayname":null,"email":null,"lastLogin":"2016-09-05T09:29:58Z","userid":"user2"}]'],
+			[true,
+				'[{"displayname":null,"email":null,"lastLogin":"2016-09-05T09:29:58Z","userid":"user2"},{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"}]'],
+		];
+	}
+
+	/**
+	 * @dataProvider invalidUsersJSON
+	 *
+	 * @param string $leastRecent
+	 * @param string $expectedString
+	 */
+	public function testInvalidUsersJSON($leastRecent, $expectedString) {
 
 		$user1 = $this->createMock('OCP\IUser');
 		$user1->expects($this->any())
@@ -320,29 +377,45 @@ class LastSeenTest extends TestCase {
 			->willReturn(null);
 		$this->consoleInput->expects($this->at(1))
 			->method('getOption')
-			->with('limit')
-			->willReturn(10);
+			->with('least-recent')
+			->willReturn($leastRecent);
 		$this->consoleInput->expects($this->at(2))
 			->method('getOption')
-			->with('output')
-			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
+			->with('limit')
+			->willReturn(10);
 		$this->consoleInput->expects($this->at(3))
 			->method('getOption')
 			->with('output')
 			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
+		$this->consoleInput->expects($this->at(4))
+			->method('getOption')
+			->with('output')
+			->willReturn(LastSeen::OUTPUT_FORMAT_JSON);
 
-		$this->userManager->expects($this->at(0))
-			->method('get')
-			->with('user1')
-			->willReturn($user1);
-		$this->userManager->expects($this->at(1))
-			->method('get')
-			->with('user2')
-			->willReturn(null);
+		if ($leastRecent) {
+			$this->userManager->expects($this->at(0))
+				->method('get')
+				->with('user2')
+				->willReturn(null);
+			$this->userManager->expects($this->at(1))
+				->method('get')
+				->with('user1')
+				->willReturn($user1);
+		} else {
+			$this->userManager->expects($this->at(0))
+				->method('get')
+				->with('user1')
+				->willReturn($user1);
+			$this->userManager->expects($this->at(1))
+				->method('get')
+				->with('user2')
+				->willReturn(null);
+
+		}
 
 		$this->consoleOutput->expects($this->once())
 			->method('writeln')
-			->with($this->stringContains('[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20","userid":"user1"},{"displayname":null,"email":null,"lastLogin":"2016-09-05T09:29:58","userid":"user2"}]'));
+			->with($expectedString);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
