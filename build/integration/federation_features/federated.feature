@@ -182,7 +182,12 @@ Feature: federated
 		When Downloading file "/PARENT (2)/textfile0.txt" with range "bytes=3-13"
 		Then Downloaded content should be "AABBBBBCCCC"
 
-
+	Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
+		Given Using server "LOCAL"
+		And using api version "2"
+		And As an "UNAUTHORIZED_USER"
+		When sending "POST" to "/apps/federation/api/v1/request-shared-secret"
+		Then the HTTP status code should be "403"
 
 
 

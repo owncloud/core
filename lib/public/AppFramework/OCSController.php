@@ -115,6 +115,17 @@ abstract class OCSController extends ApiController {
 		if (is_null($format)) {
 			$format = 'xml';
 		}
-		return parent::buildResponse($response, $format);
+		/** @var OCSResponse $resp */
+		$resp = parent::buildResponse($response, $format);
+		$script = $this->request->getScriptName();
+
+		if (substr($script, -11) === '/ocs/v2.php') {
+			$statusCode = \OC_API::mapStatusCodes($resp->getStatusCode());
+			if (!is_null($statusCode)) {
+				$resp->setStatus($statusCode);
+			}
+		}
+
+		return $resp;
 	}
 }
