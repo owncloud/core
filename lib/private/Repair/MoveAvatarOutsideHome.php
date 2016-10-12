@@ -125,22 +125,6 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	}
 
 	/**
-	 * Count all the users
-	 *
-	 * @return int
-	 */
-	private function countUsers() {
-		$allCount = $this->userManager->countUsers();
-
-		$totalCount = 0;
-		foreach ($allCount as $backend => $count) {
-			$totalCount += $count;
-		}
-
-		return $totalCount;
-	}
-
-	/**
 	 * @param IOutput $output
 	 */
 	public function run(IOutput $output) {
@@ -151,10 +135,9 @@ class MoveAvatarOutsideHome implements IRepairStep {
 				$output->advance();
 			};
 
-			$userCount = $this->countUsers();
-			$output->startProgress($userCount);
+			$output->startProgress($this->userManager->countSeenUsers());
 
-			$this->userManager->callForAllUsers($function);
+			$this->userManager->callForSeenUsers($function);
 
 			$output->finishProgress();
 		}

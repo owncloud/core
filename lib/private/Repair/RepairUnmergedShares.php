@@ -335,22 +335,6 @@ class RepairUnmergedShares implements IRepairStep {
 		}
 	}
 
-	/**
-	 * Count all the users
-	 *
-	 * @return int
-	 */
-	private function countUsers() {
-		$allCount = $this->userManager->countUsers();
-
-		$totalCount = 0;
-		foreach ($allCount as $backend => $count) {
-			$totalCount += $count;
-		}
-
-		return $totalCount;
-	}
-
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
 		if (version_compare($ocVersionFromBeforeUpdate, '9.2.0.1', '<')) {
@@ -363,8 +347,7 @@ class RepairUnmergedShares implements IRepairStep {
 
 			$this->buildPreparedQueries();
 
-			$userCount = $this->countUsers();
-			$output->startProgress($userCount);
+			$output->startProgress($this->userManager->countSeenUsers());
 
 			$this->userManager->callForAllUsers($function);
 
