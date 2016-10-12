@@ -153,6 +153,16 @@ class SharedMount extends MountPoint implements MoveableMount {
 
 		if (!is_null($stack)) {
 			list($storage, $internalPath) = $view->resolvePath($originalPath);
+			function encodeShare($share) {
+				return [
+					'id' => $share->getId(),
+					'nodeid' => $share->getNodeId(),
+					'shared_with' => $share->getSharedWith(),
+					'share_owner' => $share->getShareOwner(),
+					'share_type' => $share->getShareType(),
+					'shared_by' => $share->getSharedBy(),
+				];
+			}
 			$mountManager = \OC\Files\Filesystem::getMountManager();
 			$info = [
 				'stack' => $stack,
@@ -163,6 +173,8 @@ class SharedMount extends MountPoint implements MoveableMount {
 				'already_mounted_storageId' => $storage->getId(),
 				'already_mounted_internal_path' => $internalPath,
 				'all_mounts' => $mountManager->mounts,
+				'superShare' => encodeShare($this->superShare),
+				'groupedShares' => array_map(function($share) { return encodeShare($share);}, $this->groupedShares)
 			];
 			\OCP\Util::writeLog('DEBUG', 'Share two DEBUG: ' . json_encode($info), \OCP\Util::DEBUG);
 		}
