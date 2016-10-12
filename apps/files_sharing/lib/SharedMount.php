@@ -143,6 +143,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		};
 
 		$stack = null;
+		$originalPath = $path;
 		$i = 2;
 		while ($view->file_exists($path) || $mountpointExists($path)) {
 			$stack = debug_backtrace();
@@ -151,11 +152,17 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		if (!is_null($stack)) {
+			list($storage, $internalPath) = $view->resolvePath($originalPath);
+			$mountManager = \OC\Files\Filesystem::getMountManager();
 			$info = [
 				'stack' => $stack,
 				'user' => $this->user,
-				'path' => $path,
+				'original_path' => $originalPath,
+				'renamed_path' => $path,
 				'url' => \OC::$server->getRequest()->getRequestUri(),
+				'already_mounted_storageId' => $storage->getId(),
+				'already_mounted_internal_path' => $internalPath,
+				'all_mounts' => $mountManager->mounts,
 			];
 			\OCP\Util::writeLog('DEBUG', 'Share two DEBUG: ' . json_encode($info), \OCP\Util::DEBUG);
 		}

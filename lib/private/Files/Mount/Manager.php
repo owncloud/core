@@ -32,7 +32,7 @@ class Manager implements IMountManager {
 	/**
 	 * @var MountPoint[]
 	 */
-	private $mounts = array();
+	public $mounts = array();
 
 	/**
 	 * @param IMountPoint $mount
