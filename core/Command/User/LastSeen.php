@@ -67,9 +67,10 @@ class LastSeen extends Base  {
 			)
 			->addOption(
 				'limit',
-				10,
+				null,
 				InputOption::VALUE_OPTIONAL,
-				'limit to n users'
+				'limit to n users',
+				10
 			);
 	}
 
@@ -83,9 +84,6 @@ class LastSeen extends Base  {
 			->andWhere($queryBuilder->expr()->eq(
 				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
 			)
-			// isNotNull has problems on oracle because configvaluo is a CLOB, so use LENGTH(`configvalue`) > 0 instead
-			->andWhere($queryBuilder->expr()->gt($queryBuilder->createFunction('LENGTH(`configvalue`)'), $queryBuilder->createFunction('0'))
-			)
 			->orderBy('configvalue', $order);
 
 		if ($userId) {
@@ -97,12 +95,32 @@ class LastSeen extends Base  {
 		if (!empty($limit)) {
 			$queryBuilder->setMaxResults($limit);
 		}
-
 		$query = $queryBuilder->execute();
 		$result = [];
 
 		while ($row = $query->fetch()) {
-			$result[] = ['userid' => $row['userid'], 'lastLogin' => $row['configvalue']];
+			if (!empty($row['configvalue'])) {
+				$result[] = ['userid' => $row['userid'], 'lastLogin' => $row['configvalue']];
+			}
+		}
+
+		if (empty($limit) || count($result) >= $limit) {
+			return $result;
+		} else {
+			// we need to fetch additional results
+			$offset = $limit;
+			do {
+				$queryBuilder->setFirstResult($offset);
+				$query = $queryBuilder->execute();
+				$rows = 0;
+				while ($row = $query->fetch()) {
+					$rows++;
+					if (!empty($row['configvalue'])) {
+						$result[] = ['userid' => $row['userid'], 'lastLogin' => $row['configvalue']];
+					}
+				}
+				$offset += $limit;
+			} while (count($result) < $limit && $rows >= $limit);
 		}
 
 		return $result;
