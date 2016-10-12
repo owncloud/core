@@ -142,10 +142,22 @@ class SharedMount extends MountPoint implements MoveableMount {
 			return false;
 		};
 
+		$stack = null;
 		$i = 2;
 		while ($view->file_exists($path) || $mountpointExists($path)) {
+			$stack = debug_backtrace();
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
+		}
+
+		if (!is_null($stack)) {
+			$info = [
+				'stack' => $stack,
+				'user' => $this->user,
+				'path' => $path,
+				'url' => \OC::$server->getRequest()->getRequestUri(),
+			];
+			\OCP\Util::writeLog('DEBUG', 'Share two DEBUG: ' . json_encode($info), \OCP\Util::DEBUG);
 		}
 
 		return $path;
