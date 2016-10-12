@@ -36,6 +36,7 @@ use Sabre\DAV\INode;
 class DavAclPlugin extends \Sabre\DAVACL\Plugin {
 	public function __construct() {
 		$this->hideNodesFromListings = true;
+		$this->allowUnauthenticatedAccess = false;
 	}
 
 	function checkPrivileges($uri, $privileges, $recursion = self::R_PARENT, $throwExceptions = true) {
