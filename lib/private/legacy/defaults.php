@@ -66,11 +66,14 @@ class OC_Defaults {
 		$this->defaultLogoClaim = '';
 		$this->defaultMailHeaderColor = '#1d2d44'; /* header color of mail notifications */
 
-		$themePath = OC::$SERVERROOT . '/themes/' . OC_Util::getTheme() . '/defaults.php';
-		if (file_exists($themePath)) {
+
+		$themePath = OC_Util::getTheme()->getDirectory();
+
+		$defaultsPath = OC::$SERVERROOT . '/' .$themePath . 'defaults.php';
+		if (file_exists($defaultsPath)) {
 			// prevent defaults.php from printing output
 			ob_start();
-			require_once $themePath;
+			require_once $defaultsPath;
 			ob_end_clean();
 			if (class_exists('OC_Theme')) {
 				$this->theme = new OC_Theme();
