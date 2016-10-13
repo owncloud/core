@@ -74,15 +74,13 @@ class OC_Template extends \OC\Template\Base {
 		// Read the selected theme from the config file
 		self::initTemplateEngine($renderAs);
 
-		$theme = OC_Util::getTheme();
-
 		$requestToken = (OC::$server->getSession() && $registerCall) ? \OCP\Util::callRegister() : '';
 
 		$parts = explode('/', $app); // fix translation when app is something like core/lostpassword
 		$l10n = \OC::$server->getL10N($parts[0]);
 		$themeDefaults = new OC_Defaults();
 
-		list($path, $template) = $this->findTemplate($theme, $app, $name);
+		list($path, $template) = $this->findTemplate(OC_Util::getTheme(), $app, $name);
 
 		// Set the private data
 		$this->renderAs = $renderAs;
@@ -182,7 +180,7 @@ class OC_Template extends \OC\Template\Base {
 	 *
 	 * Will select the template file for the selected theme.
 	 * Checking all the possible locations.
-	 * @param string $theme
+	 * @param \OC\Theme\Theme $theme
 	 * @param string $app
 	 * @return string[]
 	 */
