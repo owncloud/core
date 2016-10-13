@@ -25,7 +25,12 @@
 
 namespace OC\Template;
 
+use OC\Theme\Theme;
+
 abstract class ResourceLocator {
+	/**
+	 * @var Theme
+	 */
 	protected $theme;
 
 	protected $mapping;
@@ -40,7 +45,7 @@ abstract class ResourceLocator {
 
 	/**
 	 * @param \OCP\ILogger $logger
-	 * @param string $theme
+	 * @param Theme $theme
 	 * @param array $core_map
 	 * @param array $party_map
 	 */
