@@ -509,10 +509,10 @@ class RepairUnmergedSharesTest extends TestCase {
 			]));
 
 		$this->userManager->expects($this->once())
-			->method('countSeenUsers')
+			->method('countUsers')
 			->will($this->returnValue([2]));
 		$this->userManager->expects($this->once())
-			->method('callForSeenUsers')
+			->method('callForAllUsers')
 			->will($this->returnCallback(function(\Closure $closure) use ($users) {
 				foreach ($users as $user) {
 					$closure($user);

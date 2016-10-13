@@ -347,7 +347,7 @@ class RepairUnmergedShares implements IRepairStep {
 
 			$this->buildPreparedQueries();
 
-			$output->startProgress($this->userManager->countSeenUsers());
+			$output->startProgress($this->userManager->countUsers());
 
 			$this->userManager->callForAllUsers($function);
 
