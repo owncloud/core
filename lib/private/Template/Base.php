@@ -27,6 +27,8 @@
 
 namespace OC\Template;
 
+use OC\Theme\Theme;
+
 class Base {
 	private $template; // The template
 	private $vars; // Vars
@@ -54,7 +56,7 @@ class Base {
 	/**
 	 * @param string $serverRoot
 	 * @param string|false $app_dir
-	 * @param string $theme
+	 * @param Theme $theme
 	 * @param string $app
 	 * @return string[]
 	 */
@@ -62,24 +64,24 @@ class Base {
 		// Check if the app is in the app folder or in the root
 		if( file_exists($app_dir.'/templates/' )) {
 			return [
-				$serverRoot.'/themes/'.$theme.'/apps/'.$app.'/templates/',
+				$serverRoot.'/'.$theme->getDirectory().'apps/'.$app.'/templates/',
 				$app_dir.'/templates/',
 			];
 		}
 		return [
-			$serverRoot.'/themes/'.$theme.'/'.$app.'/templates/',
+			$serverRoot.'/'.$theme->getDirectory().$app.'/templates/',
 			$serverRoot.'/'.$app.'/templates/',
 		];
 	}
 
 	/**
 	 * @param string $serverRoot
-	 * @param string $theme
+	 * @param Theme $theme
 	 * @return string[]
 	 */
 	protected function getCoreTemplateDirs($theme, $serverRoot) {
 		return [
-			$serverRoot.'/themes/'.$theme.'/core/templates/',
+			$serverRoot.'/'.$theme->getDirectory().'core/templates/',
 			$serverRoot.'/core/templates/',
 		];
 	}
