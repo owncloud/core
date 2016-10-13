@@ -29,6 +29,7 @@
  */
 
 namespace OC;
+use OC\Theme\Theme;
 use OC_Defaults;
 use OCP\ICacheFactory;
 use OCP\IConfig;
@@ -150,8 +151,9 @@ class URLGenerator implements IURLGenerator {
 			return $key;
 		}
 
-		// Read the selected theme from the config file
+		/** @var Theme $theme */
 		$theme = \OC_Util::getTheme();
+		$themeName = $theme->getName();
 
 		//if a theme has a png but not an svg always use the png
 		$basename = substr(basename($image),0,-4);
@@ -160,21 +162,21 @@ class URLGenerator implements IURLGenerator {
 
 		// Check if the app is in the app folder
 		$path = '';
-		if (file_exists(\OC::$SERVERROOT . "/themes/$theme/apps/$app/img/$image")) {
-			$path = \OC::$WEBROOT . "/themes/$theme/apps/$app/img/$image";
-		} elseif (!file_exists(\OC::$SERVERROOT . "/themes/$theme/apps/$app/img/$basename.svg")
-			&& file_exists(\OC::$SERVERROOT . "/themes/$theme/apps/$app/img/$basename.png")) {
-			$path =  \OC::$WEBROOT . "/themes/$theme/apps/$app/img/$basename.png";
-		} elseif (!empty($app) and file_exists(\OC::$SERVERROOT . "/themes/$theme/$app/img/$image")) {
-			$path =  \OC::$WEBROOT . "/themes/$theme/$app/img/$image";
-		} elseif (!empty($app) and (!file_exists(\OC::$SERVERROOT . "/themes/$theme/$app/img/$basename.svg")
-			&& file_exists(\OC::$SERVERROOT . "/themes/$theme/$app/img/$basename.png"))) {
-			$path =  \OC::$WEBROOT . "/themes/$theme/$app/img/$basename.png";
-		} elseif (file_exists(\OC::$SERVERROOT . "/themes/$theme/core/img/$image")) {
-			$path =  \OC::$WEBROOT . "/themes/$theme/core/img/$image";
-		} elseif (!file_exists(\OC::$SERVERROOT . "/themes/$theme/core/img/$basename.svg")
-			&& file_exists(\OC::$SERVERROOT . "/themes/$theme/core/img/$basename.png")) {
-			$path =  \OC::$WEBROOT . "/themes/$theme/core/img/$basename.png";
+		if (file_exists(\OC::$SERVERROOT . "/themes/$themeName/apps/$app/img/$image")) {
+			$path = \OC::$WEBROOT . "/themes/$themeName/apps/$app/img/$image";
+		} elseif (!file_exists(\OC::$SERVERROOT . "/themes/$themeName/apps/$app/img/$basename.svg")
+			&& file_exists(\OC::$SERVERROOT . "/themes/$themeName/apps/$app/img/$basename.png")) {
+			$path =  \OC::$WEBROOT . "/themes/$themeName/apps/$app/img/$basename.png";
+		} elseif (!empty($app) and file_exists(\OC::$SERVERROOT . "/themes/$themeName/$app/img/$image")) {
+			$path =  \OC::$WEBROOT . "/themes/$themeName/$app/img/$image";
+		} elseif (!empty($app) and (!file_exists(\OC::$SERVERROOT . "/themes/$themeName/$app/img/$basename.svg")
+			&& file_exists(\OC::$SERVERROOT . "/themes/$themeName/$app/img/$basename.png"))) {
+			$path =  \OC::$WEBROOT . "/themes/$themeName/$app/img/$basename.png";
+		} elseif (file_exists(\OC::$SERVERROOT . "/themes/$themeName/core/img/$image")) {
+			$path =  \OC::$WEBROOT . "/themes/$themeName/core/img/$image";
+		} elseif (!file_exists(\OC::$SERVERROOT . "/themes/$themeName/core/img/$basename.svg")
+			&& file_exists(\OC::$SERVERROOT . "/themes/$themeName/core/img/$basename.png")) {
+			$path =  \OC::$WEBROOT . "/themes/$themeName/core/img/$basename.png";
 		} elseif ($appPath && file_exists($appPath . "/img/$image")) {
 			$path =  \OC_App::getAppWebPath($app) . "/img/$image";
 		} elseif ($appPath && !file_exists($appPath . "/img/$basename.svg")
@@ -189,7 +191,7 @@ class URLGenerator implements IURLGenerator {
 			$path =  \OC::$WEBROOT . "/core/img/$image";
 		} elseif (!file_exists(\OC::$SERVERROOT . "/core/img/$basename.svg")
 			&& file_exists(\OC::$SERVERROOT . "/core/img/$basename.png")) {
-			$path =  \OC::$WEBROOT . "/themes/$theme/core/img/$basename.png";
+			$path =  \OC::$WEBROOT . "/themes/$themeName/core/img/$basename.png";
 		}
 
 		if($path !== '') {
