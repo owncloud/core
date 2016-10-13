@@ -2,7 +2,6 @@
 
 namespace Test\Theme;
 
-use OC\Theme\Theme;
 use OC\Theme\ThemeService;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -19,16 +18,14 @@ class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 	}
 
-	public function testCreatesThemeByGivenName()
-	{
+	public function testCreatesThemeByGivenName() {
 		$themeService = new ThemeService('theme-name');
 		$theme = $themeService->getTheme();
 		$this->assertEquals('theme-name', $theme->getName());
 		$this->assertEquals('themes/theme-name/', $theme->getDirectory());
 	}
 
-	public function testCreatesEmptyThemeIfDefaultDoesNotExist()
-	{
+	public function testCreatesEmptyThemeIfDefaultDoesNotExist() {
 		$structure = [];
 		$this->root = vfsStream::setup('root', null, $structure);
 
@@ -39,8 +36,7 @@ class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals('', $theme->getDirectory());
 	}
 
-	public function testCreatesDefaultThemeIfItExists()
-	{
+	public function testCreatesDefaultThemeIfItExists() {
 		$structure = [
 			'themes' => [
 				'default' => []
@@ -55,5 +51,4 @@ class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals('default', $theme->getName());
 		$this->assertEquals('themes/default/', $theme->getDirectory());
 	}
-
 }

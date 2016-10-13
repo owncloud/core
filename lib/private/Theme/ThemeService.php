@@ -18,8 +18,7 @@ class ThemeService {
 	 * @param string $themeName
 	 * @param string $defaultThemeDirectory
 	 */
-	public function __construct($themeName = '', $defaultThemeDirectory = '')
-	{
+	public function __construct($themeName = '', $defaultThemeDirectory = '') {
 		$this->setDefaultThemeDirectory($defaultThemeDirectory);
 		$this->createTheme($themeName);
 	}
@@ -27,8 +26,7 @@ class ThemeService {
 	/**
 	 * @param string $defaultThemeDirectory
 	 */
-	private function setDefaultThemeDirectory($defaultThemeDirectory = '')
-	{
+	private function setDefaultThemeDirectory($defaultThemeDirectory = '') {
 		if ($defaultThemeDirectory === '') {
 			$this->defaultThemeDirectory = \OC::$SERVERROOT . '/themes/default';
 		} else {
@@ -39,8 +37,7 @@ class ThemeService {
 	/**
 	 * @param string $themeName
 	 */
-	private function createTheme($themeName = '')
-	{
+	private function createTheme($themeName = '') {
 		if ($themeName === '' && $this->defaultThemeExists()) {
 			$themeName = 'default';
 		}
@@ -52,8 +49,7 @@ class ThemeService {
 	 * @param string $themeName
 	 * @return string
 	 */
-	private function getThemeDirectory($themeName)
-	{
+	private function getThemeDirectory($themeName) {
 		if ($themeName !== '') {
 			return 'themes/' . $themeName . '/';
 		} else {
@@ -64,8 +60,7 @@ class ThemeService {
 	/**
 	 * @return bool
 	 */
-	private function defaultThemeExists()
-	{
+	private function defaultThemeExists() {
 		if (is_dir($this->defaultThemeDirectory)) {
 			return true;
 		}
@@ -76,16 +71,14 @@ class ThemeService {
 	/**
 	 * @return Theme
 	 */
-	public function getTheme()
-	{
+	public function getTheme() {
 		return $this->theme;
 	}
 
 	/**
 	 * @param string $appName
 	 */
-	public function setAppTheme($appName = '')
-	{
+	public function setAppTheme($appName = '') {
 		if ($appName !== '') {
 			$this->theme->setDirectory(
 				ltrim(\OC_App::getAppWebPath('theme-owncloud'), '/') . '/'

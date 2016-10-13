@@ -16,8 +16,7 @@ class ThemeTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 	}
 
-	public function testConstructorSetsNameAndDirectory()
-	{
+	public function testConstructorSetsNameAndDirectory() {
 		$this->assertEmpty($this->sut->getName());
 		$this->assertEmpty($this->sut->getDirectory());
 		$this->sut = new Theme('name', 'directory/directory');
@@ -25,8 +24,7 @@ class ThemeTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals('directory/directory', $this->sut->getDirectory());
 	}
 
-	public function testDirectoryCanBeSet()
-	{
+	public function testDirectoryCanBeSet() {
 		$this->assertEmpty($this->sut->getDirectory());
 		$this->sut->setDirectory('test/directory');
 		$this->assertEquals('test/directory', $this->sut->getDirectory());
