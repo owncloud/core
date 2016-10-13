@@ -1255,18 +1255,13 @@ class OC_Util {
 	 * Handles the case that there may not be a theme, then check if a "default"
 	 * theme exists and take that one
 	 *
-	 * @return string the theme
+	 * @return \OC\Theme\Theme the theme
 	 */
-	public static function getTheme() {
-		$theme = \OC::$server->getSystemConfig()->getValue("theme", '');
-
-		if ($theme === '') {
-			if (is_dir(OC::$SERVERROOT . '/themes/default')) {
-				$theme = 'default';
-			}
-		}
-
-		return $theme;
+	public static function getTheme()
+	{
+		/** @var \OC\Theme\ThemeService $themeService */
+		$themeService = \OC::$server->query('ThemeService');
+		return $themeService->getTheme();
 	}
 
 	/**
