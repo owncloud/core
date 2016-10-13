@@ -28,24 +28,21 @@ class Theme {
 	/**
 	 * @return string
 	 */
-	public function getName()
-	{
+	public function getName() {
 		return $this->name;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getDirectory()
-	{
+	public function getDirectory() {
 		return $this->directory;
 	}
 
 	/**
 	 * @param string $directory
 	 */
-	public function setDirectory($directory)
-	{
+	public function setDirectory($directory) {
 		$this->directory = $directory;
 	}
 }
