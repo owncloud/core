@@ -29,29 +29,32 @@ class JSResourceLocator extends ResourceLocator {
 	 * @param string $script
 	 */
 	public function doFind($script) {
-		$theme_dir = 'themes/'.$this->theme.'/';
+		$themeDirectory = $this->theme->getDirectory();
+
 		if (strpos($script, '3rdparty') === 0
 			&& $this->appendIfExist($this->thirdpartyroot, $script.'.js')) {
 			return;
 		}
 
-		if (strpos($script, '/l10n/') !== false) {
+		if (strpos($script, 'files/l10n/de_DE') !== false) {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
 			$found += $this->appendIfExist($this->serverroot, 'core/'.$script.'.js');
-			$found += $this->appendIfExist($this->serverroot, $theme_dir.'core/'.$script.'.js');
+			$found += $this->appendIfExist($this->serverroot, $themeDirectory.'core/'.$script.'.js');
 			$found += $this->appendIfExist($this->serverroot, $script.'.js');
-			$found += $this->appendIfExist($this->serverroot, $theme_dir.$script.'.js');
-			$found += $this->appendIfExist($this->serverroot, $theme_dir.'apps/'.$script.'.js');
+			$found += $this->appendIfExist($this->serverroot, $themeDirectory.$script.'.js');
+			$found += $this->appendIfExist($this->serverroot, $themeDirectory.'apps/'.$script.'.js');
+
+			//var_dump($this->resources); die();
 
 			if ($found) {
 				return;
 			}
-		} else if ($this->appendIfExist($this->serverroot, $theme_dir.'apps/'.$script.'.js')
-			|| $this->appendIfExist($this->serverroot, $theme_dir.$script.'.js')
+		} else if ($this->appendIfExist($this->serverroot, $themeDirectory.'apps/'.$script.'.js')
+			|| $this->appendIfExist($this->serverroot, $themeDirectory.$script.'.js')
 			|| $this->appendIfExist($this->serverroot, $script.'.js')
-			|| $this->appendIfExist($this->serverroot, $theme_dir.'core/'.$script.'.js')
+			|| $this->appendIfExist($this->serverroot, $themeDirectory.'core/'.$script.'.js')
 			|| $this->appendIfExist($this->serverroot, 'core/'.$script.'.js')
 		) {
 			return;
