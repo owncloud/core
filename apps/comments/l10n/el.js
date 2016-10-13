@@ -1,7 +1,7 @@
 OC.L10N.register(
     "comments",
     {
-    "Type in a new comment..." : "Αυτό είναι ένα νέο σχόλιο...",
+    "Type in a new comment..." : "Πληκτρολογήστε νέο σχόλιο...",
     "Delete comment" : "Διαγραφή σχολίου",
     "Post" : "Δημοσίευση",
     "Cancel" : "Άκυρο",
