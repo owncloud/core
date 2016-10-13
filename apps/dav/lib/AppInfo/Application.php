@@ -24,6 +24,7 @@
 namespace OCA\DAV\AppInfo;
 
 use OCA\DAV\CalDAV\BirthdayService;
+use OCA\DAV\Capabilities;
 use OCA\DAV\CardDAV\ContactsManager;
 use OCA\DAV\CardDAV\SyncService;
 use OCA\DAV\HookManager;
@@ -41,6 +42,11 @@ class Application extends App {
 	 */
 	public function __construct (array $urlParams= []) {
 		parent::__construct('dav', $urlParams);
+
+		/*
+		 * Register capabilities
+		 */
+		$this->getContainer()->registerCapability(Capabilities::class);
 	}
 
 	/**
