@@ -176,12 +176,9 @@ class TemplateLayout extends \OC_Template {
 	 * @return array
 	 */
 	static public function findStylesheetFiles($styles) {
-		// Read the selected theme from the config file
-		$theme = \OC_Util::getTheme();
-
 		$locator = new \OC\Template\CSSResourceLocator(
 			\OC::$server->getLogger(),
-			$theme,
+			\OC_Util::getTheme(),
 			[\OC::$SERVERROOT => \OC::$WEBROOT],
 			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($styles);
@@ -193,12 +190,9 @@ class TemplateLayout extends \OC_Template {
 	 * @return array
 	 */
 	static public function findJavascriptFiles($scripts) {
-		// Read the selected theme from the config file
-		$theme = \OC_Util::getTheme();
-
 		$locator = new \OC\Template\JSResourceLocator(
 			\OC::$server->getLogger(),
-			$theme,
+			\OC_Util::getTheme(),
 			[\OC::$SERVERROOT => \OC::$WEBROOT],
 			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($scripts);
