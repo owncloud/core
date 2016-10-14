@@ -36,7 +36,7 @@ class JSResourceLocator extends ResourceLocator {
 			return;
 		}
 
-		if (strpos($script, 'files/l10n/de_DE') !== false) {
+		if (strpos($script, '/l10n/') !== false) {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
