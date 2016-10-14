@@ -22,6 +22,7 @@
 namespace Test\Files\Type;
 
 use \OC\Files\Type\Detection;
+use org\bovigo\vfs\vfsStream;
 
 class DetectionTest extends \Test\TestCase {
 	/** @var Detection */
@@ -88,19 +89,11 @@ class DetectionTest extends \Test\TestCase {
 	}
 
 	public function testMimeTypeIcon() {
-		if (!class_exists('org\\bovigo\\vfs\\vfsStream')) {
-			$this->markTestSkipped('Package vfsStream not installed');
-		}
-		$confDir = \org\bovigo\vfs\vfsStream::setup();
-		$mimetypealiases_dist = \org\bovigo\vfs\vfsStream::newFile('mimetypealiases.dist.json')->at($confDir);
+		$confDir = vfsStream::setup();
+		$mimetypealiases_dist = vfsStream::newFile('mimetypealiases.dist.json')->at($confDir);
 
 		//Empty alias file
 		$mimetypealiases_dist->setContent(json_encode([], JSON_FORCE_OBJECT));
-
-
-		/*
-		 * Test dir mimetype
-		 */
 
 		//Mock UrlGenerator
 		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
@@ -110,7 +103,7 @@ class DetectionTest extends \Test\TestCase {
 		//Only call the url generator once
 		$urlGenerator->expects($this->once())
 			->method('imagePath')
-			->with($this->equalTo('core'), $this->equalTo('filetypes/folder.png'))
+			->with($this->equalTo('core'), $this->equalTo('filetypes/folder.svg'))
 			->willReturn('folder.svg');
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
@@ -129,7 +122,7 @@ class DetectionTest extends \Test\TestCase {
 		//Only call the url generator once
 		$urlGenerator->expects($this->once())
 			->method('imagePath')
-			->with($this->equalTo('core'), $this->equalTo('filetypes/folder-shared.png'))
+			->with($this->equalTo('core'), $this->equalTo('filetypes/folder-shared.svg'))
 			->willReturn('folder-shared.svg');
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
@@ -149,7 +142,7 @@ class DetectionTest extends \Test\TestCase {
 		//Only call the url generator once
 		$urlGenerator->expects($this->once())
 			->method('imagePath')
-			->with($this->equalTo('core'), $this->equalTo('filetypes/folder-external.png'))
+			->with($this->equalTo('core'), $this->equalTo('filetypes/folder-external.svg'))
 			->willReturn('folder-external.svg');
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
@@ -169,7 +162,7 @@ class DetectionTest extends \Test\TestCase {
 		//Only call the url generator once
 		$urlGenerator->expects($this->once())
 			->method('imagePath')
-			->with($this->equalTo('core'), $this->equalTo('filetypes/my-type.png'))
+			->with($this->equalTo('core'), $this->equalTo('filetypes/my-type.svg'))
 			->willReturn('my-type.svg');
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
@@ -190,12 +183,12 @@ class DetectionTest extends \Test\TestCase {
 		$urlGenerator->expects($this->exactly(2))
 			->method('imagePath')
 			->withConsecutive(
-				[$this->equalTo('core'), $this->equalTo('filetypes/my-type.png')],
-				[$this->equalTo('core'), $this->equalTo('filetypes/my.png')]
+				[$this->equalTo('core'), $this->equalTo('filetypes/my-type.svg')],
+				[$this->equalTo('core'), $this->equalTo('filetypes/my.svg')]
 			)
 			->will($this->returnCallback(
 				function($appName, $file) {
-					if ($file === 'filetypes/my.png') {
+					if ($file === 'filetypes/my.svg') {
 						return 'my.svg';
 					}
 					throw new \RuntimeException();
@@ -220,13 +213,13 @@ class DetectionTest extends \Test\TestCase {
 		$urlGenerator->expects($this->exactly(3))
 			->method('imagePath')
 			->withConsecutive(
-				[$this->equalTo('core'), $this->equalTo('filetypes/foo-bar.png')],
-				[$this->equalTo('core'), $this->equalTo('filetypes/foo.png')],
-				[$this->equalTo('core'), $this->equalTo('filetypes/file.png')]
+				[$this->equalTo('core'), $this->equalTo('filetypes/foo-bar.svg')],
+				[$this->equalTo('core'), $this->equalTo('filetypes/foo.svg')],
+				[$this->equalTo('core'), $this->equalTo('filetypes/file.svg')]
 			)
 			->will($this->returnCallback(
 				function($appName, $file) {
-					if ($file === 'filetypes/file.png') {
+					if ($file === 'filetypes/file.svg') {
 						return 'file.svg';
 					}
 					throw new \RuntimeException();
@@ -249,7 +242,7 @@ class DetectionTest extends \Test\TestCase {
 		//Only call the url generator once
 		$urlGenerator->expects($this->once())
 			->method('imagePath')
-			->with($this->equalTo('core'), $this->equalTo('filetypes/foo-bar.png'))
+			->with($this->equalTo('core'), $this->equalTo('filetypes/foo-bar.svg'))
 			->willReturn('foo-bar.svg');
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
@@ -275,7 +268,7 @@ class DetectionTest extends \Test\TestCase {
 		//Only call the url generator once
 		$urlGenerator->expects($this->once())
 			->method('imagePath')
-			->with($this->equalTo('core'), $this->equalTo('filetypes/foobar-baz.png'))
+			->with($this->equalTo('core'), $this->equalTo('filetypes/foobar-baz.svg'))
 			->willReturn('foobar-baz.svg');
 
 		$detection = new Detection($urlGenerator, $confDir->url(), $confDir->url());
