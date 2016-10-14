@@ -30,6 +30,7 @@ namespace OC\Core;
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Core\Controller\AvatarController;
+use OC\Core\Controller\CloudController;
 use OC\Core\Controller\LoginController;
 use OC\Core\Controller\LostController;
 use OC\Core\Controller\OccController;
@@ -124,6 +125,12 @@ class Application extends App {
 				$c->query('ServerContainer')->query('OC\Authentication\Token\IProvider'),
 				$c->query('TwoFactorAuthManager'),
 				$c->query('SecureRandom')
+			);
+		});
+		$container->registerService('CloudController', function(SimpleContainer $c) {
+			return new CloudController(
+				$c->query('AppName'),
+				$c->query('Request')
 			);
 		});
 
