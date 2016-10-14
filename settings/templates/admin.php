@@ -221,6 +221,10 @@ if ($_['cronErrors']) {
 				   value="1" <?php if ($_['allowPublicUpload'] == 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowPublicUpload"><?php p($l->t('Allow public uploads'));?></label><br/>
 
+			<input type="checkbox" name="shareapi_endorse_links_password" id="endorseLinkPassword" class="checkbox"
+				   value="1" <?php if ($_['endorseLinkPassword'] === 'yes') print_unescaped('checked="checked"'); ?> />
+			<label for="endorseLinkPassword"><?php p($l->t('Endorse password protection'));?></label><br/>
+
 			<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword" class="checkbox"
 				   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
 			<label for="enforceLinkPassword"><?php p($l->t('Enforce password protection'));?></label><br/>
