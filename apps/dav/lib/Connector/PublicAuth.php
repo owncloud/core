@@ -99,7 +99,7 @@ class PublicAuth extends AbstractBasic {
 					return true;
 				} else if ($this->session->exists('public_link_authenticated')
 					&& $this->session->get('public_link_authenticated') === (string)$share->getId()
-					&& $this->session->exists('public_link_authenticated')
+					&& $this->session->exists('public_link_password')
 					&& $this->shareManager->checkPassword($share, $this->session->get('public_link_password'))) {
 					return true;
 				} else {
