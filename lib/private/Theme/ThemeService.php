@@ -81,7 +81,7 @@ class ThemeService {
 	public function setAppTheme($appName = '') {
 		if ($appName !== '') {
 			$this->theme->setDirectory(
-				ltrim(\OC_App::getAppWebPath('theme-owncloud'), '/') . '/'
+				ltrim(\OC_App::getAppWebPath($appName), '/') . '/'
 			);
 		}
 	}
