@@ -41,6 +41,13 @@ if (version_compare(PHP_VERSION, '5.6.0') === -1) {
 	return;
 }
 
+// running oC on Windows is unsupported since 8.1, this has to happen here because
+// is seems that the autoloader on Windows fails later and just throws an exception.
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+	echo 'ownCloud Server does not support Microsoft Windows.';
+	return;
+}
+
 function exceptionHandler($exception) {
 	echo "An unhandled exception has been thrown:" . PHP_EOL;
 	echo $exception;
@@ -59,20 +66,18 @@ try {
 
 	set_exception_handler('exceptionHandler');
 
-	if (!OC_Util::runningOnWindows())  {
-		if (!function_exists('posix_getuid')) {
-			echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
-			exit(1);
-		}
-		$user = posix_getpwuid(posix_getuid());
-		$configUser = posix_getpwuid(fileowner(OC::$configDir . 'config.php'));
-		if ($user['name'] !== $configUser['name']) {
-			echo "Console has to be executed with the user that owns the file config/config.php" . PHP_EOL;
-			echo "Current user: " . $user['name'] . PHP_EOL;
-			echo "Owner of config.php: " . $configUser['name'] . PHP_EOL;
-			echo "Try adding 'sudo -u " . $configUser['name'] . " ' to the beginning of the command (without the single quotes)" . PHP_EOL;
-			exit(1);
-		}
+	if (!function_exists('posix_getuid')) {
+		echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
+		exit(1);
+	}
+	$user = posix_getpwuid(posix_getuid());
+	$configUser = posix_getpwuid(fileowner(OC::$configDir . 'config.php'));
+	if ($user['name'] !== $configUser['name']) {
+		echo "Console has to be executed with the user that owns the file config/config.php" . PHP_EOL;
+		echo "Current user: " . $user['name'] . PHP_EOL;
+		echo "Owner of config.php: " . $configUser['name'] . PHP_EOL;
+		echo "Try adding 'sudo -u " . $configUser['name'] . " ' to the beginning of the command (without the single quotes)" . PHP_EOL;
+		exit(1);
 	}
 
 	$oldWorkingDir = getcwd();
