@@ -18,6 +18,7 @@
     "ownCloud %s or lower is required." : "Zahtevana je različica ownCloud %s ali nižja.",
     "Unknown filetype" : "Neznana vrsta datoteke",
     "Invalid image" : "Neveljavna slika",
+    "Avatar image is not square" : "Sličica podobe uporabnika ni kvadratna",
     "today" : "danes",
     "yesterday" : "včeraj",
     "_%n day ago_::_%n days ago_" : ["pred %n dnevom","pred %n dnevoma","pred %n dnevi","pred %n dnevi"],
