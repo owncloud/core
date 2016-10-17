@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Складиште није доступно",
     "Storage invalid" : "Неисправно складиште",
     "Unknown error" : "Непозната грешка",
     "Files" : "Фајлови",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Saugykla nepasiekiama",
     "Storage invalid" : "Saugykla neteisinga",
     "Unknown error" : "Neatpažinta klaida",
     "Files" : "Failai",

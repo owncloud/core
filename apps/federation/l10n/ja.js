@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "サーバー連携共有で一度でも共有が作成できた場合にサーバーを自動的に追加する",
     "Trusted ownCloud Servers" : "信頼済 ownCloudサーバー",
     "+ Add ownCloud server" : "＋ownCloudサーバーを追加",
-    "ownCloud Server" : "ownCloudサーバー"
+    "ownCloud Server" : "ownCloudサーバー",
+    "Add" : "追加"
 },
 "nplurals=1; plural=0;");

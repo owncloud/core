@@ -159,6 +159,7 @@ OC.L10N.register(
     "Enforce password protection" : "Detyro mbrojtje me fjalëkalim",
     "Set default expiration date" : "Caktoni datë parazgjedhje skadimi",
     "Allow users to send mail notification for shared files" : "Lejoju përdoruesve të dërgojnë njoftime me email për kartela të ndara me të tjerët",
+    "Allow users to share file via social media" : "Lejoji përdoruesit të ndajnë gjëra përmes mediash shoqërore",
     "Expire after " : "Skadon pas ",
     "days" : "ditësh",
     "Enforce expiration date" : "Detyro datë skadimi",

@@ -534,7 +534,7 @@ class OC_Helper {
 			return $memcache->get($program);
 		}
 		$result = null;
-		if (!\OC_Util::runningOnWindows() && self::is_function_enabled('exec')) {
+		if (self::is_function_enabled('exec')) {
 			$exeSniffer = new ExecutableFinder();
 			// Returns null if nothing is found
 			$result = $exeSniffer->find($program);
@@ -582,7 +582,7 @@ class OC_Helper {
 		$quota = \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		$storage = $rootInfo->getStorage();
 		$sourceStorage = $storage;
-		if ($storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
+		if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 			$includeExtStorage = false;
 			$sourceStorage = $storage->getSourceStorage();
 		}

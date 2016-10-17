@@ -56,6 +56,13 @@
 		/**
 		 * @returns {boolean}
 		 */
+		isSocialShareEnabled: function() {
+			return $('input:hidden[name=socialShareEnabled]').val() === 'yes';
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
 		isMailNotificationEnabled: function() {
 			return $('input:hidden[name=mailNotificationEnabled]').val() === 'yes';
 		},

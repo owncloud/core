@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Lagring inte tillgänglig",
     "Storage invalid" : "Lagring ogiltig",
     "Unknown error" : "Okänt fel",
     "Files" : "Filer",

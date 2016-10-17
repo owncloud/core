@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "وحدة التخزين غير متوفرة ",
     "Storage invalid" : "وحدة تخزين غير صالحه ",
     "Unknown error" : "خطأ غير معروف. ",
     "Files" : "الملفات",

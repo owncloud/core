@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Memoro ne disponeblas",
     "Storage invalid" : "Memoro ne validas",
     "Unknown error" : "Nekonata eraro",
     "Files" : "Dosieroj",

@@ -47,14 +47,14 @@ function exceptionHandler($exception) {
 	exit(1);
 }
 try {
-	require_once 'lib/base.php';
+	require_once __DIR__ . '/lib/base.php';
 
 	// set to run indefinitely if needed
 	set_time_limit(0);
 
 	if (!OC::$CLI) {
 		echo "This script can be run from the command line only" . PHP_EOL;
-		exit(0);
+		exit(1);
 	}
 
 	set_exception_handler('exceptionHandler');
@@ -62,7 +62,7 @@ try {
 	if (!OC_Util::runningOnWindows())  {
 		if (!function_exists('posix_getuid')) {
 			echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
-			exit(0);
+			exit(1);
 		}
 		$user = posix_getpwuid(posix_getuid());
 		$configUser = posix_getpwuid(fileowner(OC::$configDir . 'config.php'));
@@ -70,8 +70,8 @@ try {
 			echo "Console has to be executed with the user that owns the file config/config.php" . PHP_EOL;
 			echo "Current user: " . $user['name'] . PHP_EOL;
 			echo "Owner of config.php: " . $configUser['name'] . PHP_EOL;
-			echo "Try adding 'sudo -u " . $configUser['name'] . " ' to the beginning of the command (without the single quotes)" . PHP_EOL;  
-			exit(0);
+			echo "Try adding 'sudo -u " . $configUser['name'] . " ' to the beginning of the command (without the single quotes)" . PHP_EOL;
+			exit(1);
 		}
 	}
 

@@ -5,9 +5,6 @@
 	min-height: 16px;
 }
 
-
-
-
 /* general assets */
 
 .icon-breadcrumb {
@@ -375,4 +372,20 @@ img.icon-loading-small-dark, object.icon-loading-small-dark, video.icon-loading-
 
 .icon-clippy {
 	background-image: url('../img/actions/clippy.svg');
+}
+
+.icon-social-gnu {
+	background-image: url('../img/social/social-gnu.svg');
+}
+.icon-social-diaspora {
+	background-image: url('../img/social/social-diaspora.svg');
+}
+.icon-social-twitter {
+	background-image: url('../img/social/social-twitter.svg');
+}
+.icon-social-facebook {
+	background-image: url('../img/social/social-facebook.svg');
+}
+.icon-social-googleplus {
+	background-image: url('../img/social/social-googleplus.svg');
 }

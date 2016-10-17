@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "無法存取儲存空間",
     "Storage invalid" : "無效的儲存空間",
     "Unknown error" : "未知的錯誤",
     "Files" : "檔案",

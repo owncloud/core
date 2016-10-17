@@ -1,7 +1,7 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Хранилище недоступно",
+    "Storage is temporarily not available" : "Хранилище временно не доступно",
     "Storage invalid" : "Хранилище неисправно",
     "Unknown error" : "Неизвестная ошибка",
     "Files" : "Файлы",

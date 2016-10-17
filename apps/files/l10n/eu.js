@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Biltegia ez dago eskuragarri",
     "Storage invalid" : "Biltegi bliogabea",
     "Unknown error" : "Errore ezezaguna",
     "Files" : "Fitxategiak",

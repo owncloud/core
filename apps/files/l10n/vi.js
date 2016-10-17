@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Lưu trữ không có sẵn",
     "Storage invalid" : "Lưu trữ không hợp lệ",
     "Unknown error" : "Lỗi chưa biết",
     "Files" : "Tập tin",

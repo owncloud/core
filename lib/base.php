@@ -537,7 +537,9 @@ class OC {
 		@ini_set('display_errors', 0);
 		@ini_set('log_errors', 1);
 
-		date_default_timezone_set('UTC');
+		if(!date_default_timezone_set('UTC')) {
+			\OC::$server->getLogger()->error('Could not set timezone to UTC');
+		};
 
 		//try to configure php to enable big file uploads.
 		//this doesn´t work always depending on the webserver and php configuration.
@@ -572,7 +574,6 @@ class OC {
 		stream_wrapper_register('static', 'OC\Files\Stream\StaticStream');
 		stream_wrapper_register('close', 'OC\Files\Stream\Close');
 		stream_wrapper_register('quota', 'OC\Files\Stream\Quota');
-		stream_wrapper_register('oc', 'OC\Files\Stream\OC');
 
 		\OC::$server->getEventLogger()->start('init_session', 'Initialize session');
 		OC_App::loadApps(['session']);
@@ -939,7 +940,7 @@ class OC {
 	 * @param OCP\IRequest $request
 	 * @return boolean
 	 */
-	private static function handleLogin(OCP\IRequest $request) {
+	static function handleLogin(OCP\IRequest $request) {
 		$userSession = self::$server->getUserSession();
 		if (OC_User::handleApacheAuth()) {
 			return true;

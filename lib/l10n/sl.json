@@ -18,6 +18,7 @@
     "ownCloud %s or lower is required." : "Zahtevana je različica ownCloud %s ali nižja.",
     "Unknown filetype" : "Neznana vrsta datoteke",
     "Invalid image" : "Neveljavna slika",
+    "Avatar image is not square" : "Sličica podobe uporabnika ni kvadratna",
     "today" : "danes",
     "yesterday" : "včeraj",
     "_%n day ago_::_%n days ago_" : ["pred %n dnevom","pred %n dnevoma","pred %n dnevi","pred %n dnevi"],
@@ -120,9 +121,9 @@
     "Recommended" : "Priporočljivo",
     "App \"%s\" cannot be installed because appinfo file cannot be read." : "Programa \\\"%s\\\" ni mogoče namestiti, ker ni mogoče brati datoteke appinfo.",
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "Programa \"%s\" ni mogoče namestiti, ker ni skladen s trenutno nameščeno različico oblaka ownCloud.",
-    "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Programa \"%s\" ni mogoče namestiti zaradi nerešenih odvisnosti: %s",
     "No app name specified" : "Ni podanega imena programa",
     "App '%s' could not be installed!" : "Programa '%s' ni mogoče namestiti!",
+    "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Programa \"%s\" ni mogoče namestiti zaradi nerešenih odvisnosti: %s",
     "web services under your control" : "spletne storitve pod vašim nadzorom",
     "File is currently busy, please try again later" : "Datoteka je trenutno v uporabi. Poskusite znova kasneje.",
     "Can't read file" : "Datoteke ni mogoče prebrati.",
@@ -165,7 +166,7 @@
     "Storage unauthorized. %s" : "Dostop do shrambe ni overjen. %s",
     "Storage incomplete configuration. %s" : "Nepopolna nastavitev shrambe. %s",
     "Storage connection error. %s" : "Napaka povezave do shrambe. %s",
-    "Storage not available" : "Shramba ni na voljo",
+    "Storage is temporarily not available" : "Shramba trenutno ni na voljo",
     "Storage connection timeout. %s" : "Povezava do shrambe je časovno potekla. %s"
 },"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"
 }

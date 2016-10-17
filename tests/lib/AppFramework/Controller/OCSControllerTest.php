@@ -27,14 +27,15 @@ namespace Test\AppFramework\Controller;
 use OC\AppFramework\Http\Request;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
+use OCP\IConfig;
+use OCP\Security\ISecureRandom;
+use Test\TestCase;
 
 
 class ChildOCSController extends OCSController {}
 
 
-class OCSControllerTest extends \Test\TestCase {
-
-	private $controller;
+class OCSControllerTest extends TestCase {
 
 	public function testCors() {
 		$request = new Request(
@@ -43,8 +44,8 @@ class OCSControllerTest extends \Test\TestCase {
 					'HTTP_ORIGIN' => 'test',
 				],
 			],
-			$this->createMock('\OCP\Security\ISecureRandom'),
-			$this->createMock('\OCP\IConfig')
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		);
 		$controller = new ChildOCSController('app', $request, 'verbs',
 			'headers', 100);
@@ -63,9 +64,14 @@ class OCSControllerTest extends \Test\TestCase {
 
 	public function testXML() {
 		$controller = new ChildOCSController('app', new Request(
-			[],
-			$this->createMock('\OCP\Security\ISecureRandom'),
-			$this->createMock('\OCP\IConfig')
+			[
+				'server' => [
+					'SCRIPT_NAME' => '',
+					'SCRIPT_FILENAME' => '',
+				],
+			],
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		));
 		$expected = "<?xml version=\"1.0\"?>\n" .
 		"<ocs>\n" .
@@ -95,9 +101,14 @@ class OCSControllerTest extends \Test\TestCase {
 
 	public function testXMLDataResponse() {
 		$controller = new ChildOCSController('app', new Request(
-			[],
-			$this->createMock('\OCP\Security\ISecureRandom'),
-			$this->createMock('\OCP\IConfig')
+			[
+				'server' => [
+					'SCRIPT_NAME' => '',
+					'SCRIPT_FILENAME' => '',
+				],
+			],
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		));
 		$expected = "<?xml version=\"1.0\"?>\n" .
 		"<ocs>\n" .
@@ -127,9 +138,17 @@ class OCSControllerTest extends \Test\TestCase {
 
 	public function testJSON() {
 		$controller = new ChildOCSController('app', new Request(
-			[],
-			$this->createMock('\OCP\Security\ISecureRandom'),
-			$this->createMock('\OCP\IConfig')
+			[
+				'urlParams' => [
+					'format' => 'json',
+				],
+				'server' => [
+					'SCRIPT_NAME' => '',
+					'SCRIPT_FILENAME' => '',
+				],
+			],
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		));
 		$expected = '{"ocs":{"meta":{"status":"failure","statuscode":400,"message":"OK",' .
 		            '"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';

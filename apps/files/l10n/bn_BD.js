@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "সংরক্ষণের স্থান নেই",
     "Storage invalid" : "সংরক্ষণাগার বৈধ নয়",
     "Unknown error" : "অজানা জটিলতা",
     "Files" : "ফাইল",

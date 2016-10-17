@@ -7,6 +7,7 @@ OC.L10N.register(
     "Federation" : "Федерация",
     "Trusted ownCloud Servers" : "Сигурни ownCloud сървъри",
     "+ Add ownCloud server" : "+ Добавяне ownCloud сървър",
-    "ownCloud Server" : "ownCloud сървър"
+    "ownCloud Server" : "ownCloud сървър",
+    "Add" : "Добави"
 },
 "nplurals=2; plural=(n != 1);");

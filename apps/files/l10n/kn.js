@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "﻿ಲಭ್ಯವಿಲ್ಲ ಸಂಗ್ರಹ",
     "Storage invalid" : "ಸಂಗ್ರಹ ಅಮಾನ್ಯವಾಗಿದೆ",
     "Unknown error" : "ಗೊತ್ತಿಲ್ಲದ ದೋಷ",
     "Files" : "﻿ಕಡತಗಳು",

@@ -1,7 +1,7 @@
 OC.L10N.register(
     "dav",
     {
-    "Contact birthdays" : "Γενέθλια Επαφής",
+    "Contact birthdays" : "Γενέθλια επαφής",
     "Personal" : "Προσωπικά",
     "Contacts" : "Επαφές",
     "Technical details" : "Τεχνικές λεπτομέρειες",

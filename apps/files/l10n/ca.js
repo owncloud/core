@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Emmagatzemament no disponible",
     "Storage invalid" : "Emmagatzemament no vàlid",
     "Unknown error" : "Error desconegut",
     "Files" : "Fitxers",

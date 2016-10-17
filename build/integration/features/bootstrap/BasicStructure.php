@@ -128,10 +128,12 @@ trait BasicStructure {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php" . $url;
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$this->currentUser, $this->regularUser];
+		if ($this->currentUser !== 'UNAUTHORIZED_USER') {
+			if ($this->currentUser === 'admin') {
+				$options['auth'] = $this->adminUser;
+			} else {
+				$options['auth'] = [$this->currentUser, $this->regularUser];
+			}
 		}
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
@@ -143,6 +145,15 @@ trait BasicStructure {
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}
+	}
+
+	/**
+	 * @When /^sending "([^"]*)" with exact url to "([^"]*)"$/
+	 * @param string $verb
+	 * @param string $url
+	 */
+	public function sendingToDirectUrl($verb, $url) {
+		$this->sendingToWithDirectUrl($verb, $url, null);
 	}
 
 	public function sendingToWithDirectUrl($verb, $url, $body) {

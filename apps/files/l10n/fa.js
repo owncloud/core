@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "فضای ذخیره سازی موجود نیست",
     "Storage invalid" : "فضای ذخیره‌سازی نامعتبر",
     "Unknown error" : "خطای نامشخص",
     "Files" : "پرونده‌ها",

@@ -159,6 +159,7 @@ OC.L10N.register(
     "Enforce password protection" : "חייב הגנת סיסמא",
     "Set default expiration date" : "הגדרת תאריך תפוגה ברירת מחדל",
     "Allow users to send mail notification for shared files" : "אפשר למשתמשים לשלוח הודעות דואר אלקטרוני לשיתוף קבצים",
+    "Allow users to share file via social media" : "מאפשר למשתמשים לשתף קובץ באמצעות מדייה חברתית",
     "Expire after " : "פג אחרי",
     "days" : "ימים",
     "Enforce expiration date" : "חייב תאריך תפוגה",

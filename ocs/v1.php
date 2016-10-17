@@ -27,7 +27,13 @@
  *
  */
 
-require_once '../lib/base.php';
+use OC\OCS\Exception;
+use OC\OCS\Result;
+use OC\User\LoginException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+
+require_once __DIR__ . '/../lib/base.php';
 
 if (\OCP\Util::needUpgrade()
 	|| \OC::$server->getSystemConfig()->getValue('maintenance', false)
@@ -35,14 +41,14 @@ if (\OCP\Util::needUpgrade()
 	// since the behavior of apps or remotes are unpredictable during
 	// an upgrade, return a 503 directly
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
-	$response = new OC_OCS_Result(null, OC_Response::STATUS_SERVICE_UNAVAILABLE, 'Service unavailable');
+	$response = new Result(null, OC_Response::STATUS_SERVICE_UNAVAILABLE, 'Service unavailable');
 	OC_API::respond($response, OC_API::requestedFormat());
 	exit;
 }
 
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-
+/*
+ * First we try the routes of the appframework
+ */
 try {
 	OC_App::loadApps(['session']);
 	OC_App::loadApps(['authentication']);
@@ -53,13 +59,33 @@ try {
 	\OC::$server->getL10NFactory()->setLanguageFromRequest();
 
 	OC::$server->getRouter()->match('/ocs'.\OC::$server->getRequest()->getRawPathInfo());
+	return;
+} catch (ResourceNotFoundException $e) {
+	// Fall through the not found
+} catch (MethodNotAllowedException $e) {
+	OC_API::setContentType();
+	OC_Response::setStatus(405);
+} catch (Exception $ex) {
+	OC_API::respond($ex->getResult(), OC_API::requestedFormat());
+}
+
+/*
+ * Then we try the old OCS routes
+ */
+try {
+	if(!\OC::$server->getUserSession()->isLoggedIn()) {
+		OC::handleLogin(\OC::$server->getRequest());
+	}
+	OC::$server->getRouter()->match('/ocsapp'.\OC::$server->getRequest()->getRawPathInfo());
+} catch (LoginException $e) {
+	OC_API::respond(new Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'Unauthorised'), OC_API::requestedFormat());
 } catch (ResourceNotFoundException $e) {
 	OC_API::setContentType();
 	OC_OCS::notFound();
 } catch (MethodNotAllowedException $e) {
 	OC_API::setContentType();
 	OC_Response::setStatus(405);
-} catch (\OC\OCS\Exception $ex) {
+} catch (Exception $ex) {
 	OC_API::respond($ex->getResult(), OC_API::requestedFormat());
 }
 

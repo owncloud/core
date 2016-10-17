@@ -102,41 +102,7 @@ class Application extends \OCP\AppFramework\App {
 
 	private function registerMiddleware() {
 		$container = $this->getContainer();
-		$container->registerMiddleware('addServerMiddleware');
-	}
-
-	/**
-	 * register OCS API Calls
-	 */
-	public function registerOCSApi() {
-
-		$container = $this->getContainer();
-		$server = $container->getServer();
-
-		$auth = new OCSAuthAPI(
-			$server->getRequest(),
-			$server->getSecureRandom(),
-			$server->getJobList(),
-			$container->query('TrustedServers'),
-			$container->query('DbHandler'),
-			$server->getLogger()
-
-		);
-
-		API::register('get',
-			'/apps/federation/api/v1/shared-secret',
-			[$auth, 'getSharedSecret'],
-			'federation',
-			API::GUEST_AUTH
-		);
-
-		API::register('post',
-			'/apps/federation/api/v1/request-shared-secret',
-			[$auth, 'requestSharedSecret'],
-			'federation',
-			API::GUEST_AUTH
-		);
-
+		$container->registerMiddleWare('addServerMiddleware');
 	}
 
 	/**

@@ -9,6 +9,7 @@
     "Unable to change password" : "Nie można zmienić hasła",
     "Enabled" : "Włączone",
     "Not enabled" : "Nie włączone",
+    "Federated Cloud Sharing" : "Współdzielenie przez chmurę stowarzyszoną",
     "A problem occurred, please check your log files (Error: %s)" : "Wystąpił problem, sprawdź logi (Błąd: %s)",
     "Migration Completed" : "Migracja Zakończona",
     "Group already exists." : "Grupa już istnieje.",

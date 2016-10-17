@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Almacenamento non dispoñíbel",
     "Storage invalid" : "Almacenamento incorrecto",
     "Unknown error" : "Produciuse un erro descoñecido",
     "Files" : "Ficheiros",

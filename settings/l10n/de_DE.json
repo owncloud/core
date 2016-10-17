@@ -157,6 +157,7 @@
     "Enforce password protection" : "Passwortschutz erzwingen",
     "Set default expiration date" : "Standardmäßiges Ablaufdatum setzen",
     "Allow users to send mail notification for shared files" : "Benutzern erlauben, E-Mail-Benachrichtigungen für freigegebene Dateien zu senden",
+    "Allow users to share file via social media" : "Benutzern erlauben, Inhalte über die sozialen Medien zu teilen",
     "Expire after " : "Ablauf nach ",
     "days" : "Tagen",
     "Enforce expiration date" : "Ablaufdatum erzwingen",

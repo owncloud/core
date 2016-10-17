@@ -159,6 +159,7 @@ OC.L10N.register(
     "Enforce password protection" : "Dwing wachtwoordbeveiliging af",
     "Set default expiration date" : "Stel standaard vervaldatum in",
     "Allow users to send mail notification for shared files" : "Sta gebruikers toe om e-mailnotificaties  te versturen voor gedeelde bestanden",
+    "Allow users to share file via social media" : "Toestaan dat gebruikers delen via sociale media",
     "Expire after " : "Vervalt na",
     "days" : "dagen",
     "Enforce expiration date" : "Verplicht de vervaldatum",

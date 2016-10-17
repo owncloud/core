@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Andmehoidla pole saadaval",
     "Storage invalid" : "Vigane andmehoidla",
     "Unknown error" : "Tundmatu viga",
     "Files" : "Failid",

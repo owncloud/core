@@ -8,6 +8,7 @@
     "Add server automatically once a federated share was created successfully" : "Adaugă serverul automat odată ce elementul partajat federat a fost creat cu succes",
     "Trusted ownCloud Servers" : "Servere ownCloud de încredere",
     "+ Add ownCloud server" : "+ Adaugă server ownCloud",
-    "ownCloud Server" : "Server ownCloud"
+    "ownCloud Server" : "Server ownCloud",
+    "Add" : "Adaugă"
 },"pluralForm" :"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));"
 }

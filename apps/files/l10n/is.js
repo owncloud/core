@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Geymsla ekki tiltæk",
     "Storage invalid" : "Ógild geymsla",
     "Unknown error" : "Óþekkt villa",
     "Files" : "Skrár",

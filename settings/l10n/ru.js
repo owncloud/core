@@ -159,6 +159,7 @@ OC.L10N.register(
     "Enforce password protection" : "Защита паролем обязательна",
     "Set default expiration date" : "Установить дату истечения по умолчанию",
     "Allow users to send mail notification for shared files" : "Разрешить пользователям отправлять email об открытии доступа к файлам",
+    "Allow users to share file via social media" : "Разрешить пользователям делиться файлом через социальные сети",
     "Expire after " : "Истечение через",
     "days" : "дней",
     "Enforce expiration date" : "Срок действия обязателен",

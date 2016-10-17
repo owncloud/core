@@ -1,7 +1,7 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Na voljo ni dovolj prostora",
+    "Storage is temporarily not available" : "Shramba trenutno ni na voljo",
     "Storage invalid" : "Določen prostor ni veljaven",
     "Unknown error" : "Neznana napaka",
     "Files" : "Datoteke",

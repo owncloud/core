@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "Adicionar o servidor automaticamente assim que uma partilha federada tenha sido criada com sucesso",
     "Trusted ownCloud Servers" : "Servidores ownCloud de confiança",
     "+ Add ownCloud server" : "+ Adicionar servidor ownCloud",
-    "ownCloud Server" : "Servidor ownCloud"
+    "ownCloud Server" : "Servidor ownCloud",
+    "Add" : "Adicionar"
 },
 "nplurals=2; plural=(n != 1);");

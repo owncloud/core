@@ -165,7 +165,6 @@
     "Storage unauthorized. %s" : "Almacenamientu desautorizáu. %s",
     "Storage incomplete configuration. %s" : "Configuración d'almacenamientu incompleta. %s",
     "Storage connection error. %s" : "Fallu de conexón al almacenamientu. %s",
-    "Storage not available" : "Almacenamientu non disponible",
     "Storage connection timeout. %s" : "Tiempu escosao de conexón al almacenamientu. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

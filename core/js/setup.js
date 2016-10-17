@@ -103,14 +103,15 @@ $(document).ready(function() {
 	}
 
 	$('#adminpass').strengthify({
-		zxcvbn: OC.linkTo('core','vendor/zxcvbn/zxcvbn.js'),
+		zxcvbn: OC.linkTo('core','vendor/zxcvbn/dist/zxcvbn.js'),
 		titles: [
 			t('core', 'Very weak password'),
 			t('core', 'Weak password'),
 			t('core', 'So-so password'),
 			t('core', 'Good password'),
 			t('core', 'Strong password')
-		]
+		],
+		drawTitles: true
 	});
 
 	// centers the database chooser if it is too wide

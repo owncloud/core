@@ -8,6 +8,7 @@
     "Add server automatically once a federated share was created successfully" : "Strežnik dodaj samodejno, ko je povezava zveznega oblaka uspešno ustvarjena",
     "Trusted ownCloud Servers" : "Zaupanja vredni strežniki ownCloud",
     "+ Add ownCloud server" : "+ Dodaj strežnik ownCloud",
-    "ownCloud Server" : "Strežnik ownCloud"
+    "ownCloud Server" : "Strežnik ownCloud",
+    "Add" : "Dodaj"
 },"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"
 }

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Supòrt d'emmagazinatge pas disponible",
     "Storage invalid" : "Supòrt d'emmagazinatge pas valable",
     "Unknown error" : "Error Desconeguda ",
     "Files" : "Fichièrs",

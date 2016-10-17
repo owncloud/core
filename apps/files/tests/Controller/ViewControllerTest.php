@@ -264,6 +264,7 @@ class ViewControllerTest extends TestCase {
 				'fileNotFound' => 0,
 				'mailNotificationEnabled' => 'no',
 				'mailPublicNotificationEnabled' => 'no',
+				'socialShareEnabled' => 'yes',
 				'allowShareWithLink' => 'yes',
 				'appNavigation' => $nav,
 				'appContents' => [

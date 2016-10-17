@@ -33,6 +33,7 @@ use OC_Defaults;
 use OCP\ICacheFactory;
 use OCP\IConfig;
 use OCP\IURLGenerator;
+use OCP\Route\IRouter;
 use RuntimeException;
 
 /**
@@ -43,15 +44,20 @@ class URLGenerator implements IURLGenerator {
 	private $config;
 	/** @var ICacheFactory */
 	private $cacheFactory;
+	/** @var IRouter */
+	private $router;
 
 	/**
 	 * @param IConfig $config
 	 * @param ICacheFactory $cacheFactory
+	 * @param IRouter $router
 	 */
 	public function __construct(IConfig $config,
-								ICacheFactory $cacheFactory) {
+								ICacheFactory $cacheFactory,
+								IRouter $router) {
 		$this->config = $config;
 		$this->cacheFactory = $cacheFactory;
+		$this->router = $router;
 	}
 
 	/**
@@ -63,8 +69,7 @@ class URLGenerator implements IURLGenerator {
 	 * Returns a url to the given route.
 	 */
 	public function linkToRoute($route, $parameters = []) {
-		// TODO: mock router
-		$urlLinkTo = \OC::$server->getRouter()->generate($route, $parameters);
+		$urlLinkTo = $this->router->generate($route, $parameters);
 		return $urlLinkTo;
 	}
 

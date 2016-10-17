@@ -10,6 +10,7 @@ OC.L10N.register(
     "Add server automatically once a federated share was created successfully" : "Bæta þjóni við sjálfkrafa, hafi tekist að búa til sambandssameign",
     "Trusted ownCloud Servers" : "Treystir ownCloud-þjónar",
     "+ Add ownCloud server" : "+ Bæta við ownCloud-þjóni",
-    "ownCloud Server" : "ownCloud-þjónn"
+    "ownCloud Server" : "ownCloud-þjónn",
+    "Add" : "Bæta við"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

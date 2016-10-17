@@ -1,11 +1,11 @@
 OC.L10N.register(
     "files",
     {
-    "Storage not available" : "Сховище не доступне",
     "Storage invalid" : "Неправильне сховище",
     "Unknown error" : "Невідома помилка",
     "Files" : "Файли",
     "All files" : "Усі файли",
+    "File could not be found" : "Файл не знайдено",
     "Home" : "Домашня адреса",
     "Close" : "Закрити",
     "Favorites" : "Улюблені",

@@ -141,7 +141,6 @@
     "Data directory (%s) must be an absolute path" : "Az adatkönyvtárnak (%s) abszolút elérési útnak kell lennie",
     "Data directory (%s) is invalid" : "Érvénytelen a megadott adatkönyvtár (%s) ",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Kérjük ellenőrizze, hogy az adatkönyvtár tartalmaz a gyökerében egy \".ocdata\" nevű állományt!",
-    "Could not obtain lock type %d on \"%s\"." : "Nem sikerült %d típusú zárolást elérni itt: \"%s\".",
-    "Storage not available" : "A tároló elérhetetlen."
+    "Could not obtain lock type %d on \"%s\"." : "Nem sikerült %d típusú zárolást elérni itt: \"%s\"."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
