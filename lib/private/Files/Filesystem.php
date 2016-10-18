@@ -397,15 +397,17 @@ class Filesystem {
 			return;
 		}
 
+		self::$usersSetup[$user] = true;
+
 		$userManager = \OC::$server->getUserManager();
 		$userObject = $userManager->get($user);
 
 		if (is_null($userObject)) {
 			\OCP\Util::writeLog('files', ' Backends provided no user object for ' . $user, \OCP\Util::ERROR);
+			// reset flag, this will make it possible to rethrow the exception if called again
+			self::$usersSetup[$user] = false;
 			throw new \OC\User\NoUserException('Backends provided no user object for ' . $user);
 		}
-
-		self::$usersSetup[$user] = true;
 
 		/** @var \OC\Files\Config\MountProviderCollection $mountConfigManager */
 		$mountConfigManager = \OC::$server->getMountProviderCollection();
