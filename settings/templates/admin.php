@@ -223,7 +223,7 @@ if ($_['cronErrors']) {
 
 			<input type="checkbox" name="shareapi_enable_link_password_by_default" id="enableLinkPasswordByDefault" class="checkbox"
 				   value="1" <?php if ($_['enableLinkPasswordByDefault'] === 'yes') print_unescaped('checked="checked"'); ?> />
-			<label for="enableLinkPasswordByDefault"><?php p($l->t('Enable password by default for link shares'));?></label><br/>
+			<label for="enableLinkPasswordByDefault"><?php p($l->t('Always ask for a password'));?></label><br/>
 
 			<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword" class="checkbox"
 				   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
