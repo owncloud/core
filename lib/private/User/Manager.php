@@ -396,7 +396,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * @param \Closure $callback
 	 * @param string $search
-	 * @since 9.0.0
+	 * @since 9.2.0
 	 */
 	public function callForSeenUsers (\Closure $callback) {
 		$limit = 1000;
