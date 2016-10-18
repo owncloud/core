@@ -133,6 +133,7 @@ $template->assign('suggestedOverwriteCliUrl', $suggestedOverwriteCliUrl);
 
 $template->assign('allowLinks', $config->getAppValue('core', 'shareapi_allow_links', 'yes'));
 $template->assign('enforceLinkPassword', \OCP\Util::isPublicLinkPasswordRequired());
+$template->assign('enableLinkPasswordByDefault', $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no'));
 $template->assign('allowPublicUpload', $config->getAppValue('core', 'shareapi_allow_public_upload', 'yes'));
 $template->assign('allowResharing', $config->getAppValue('core', 'shareapi_allow_resharing', 'yes'));
 $template->assign('allowPublicMailNotification', $config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));
