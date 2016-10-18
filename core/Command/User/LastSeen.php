@@ -24,6 +24,7 @@
 
 namespace OC\Core\Command\User;
 
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use OC\Core\Command\Base;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
@@ -71,10 +72,23 @@ class LastSeen extends Base  {
 				InputOption::VALUE_OPTIONAL,
 				'limit to n users',
 				10
+			)
+			->addOption(
+				'before',
+				null,
+				InputOption::VALUE_OPTIONAL,
+				'show users that last logged in before the given date string, eg. 2016-09-01 or "90 days ago"'
 			);
 	}
 
-	protected function getLastLogins($userId = null, $order = 'DESC', $limit = 10) {
+	/**
+	 * @param null $userId
+	 * @param string $order
+	 * @param int $before unix timestamp
+	 * @param int $limit
+	 * @return array
+	 */
+	protected function getLastLogins($userId = null, $order = 'DESC', $before = null, $limit = 10) {
 		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select(['userid', 'configvalue'])
 			->from('preferences')
@@ -83,8 +97,14 @@ class LastSeen extends Base  {
 			)
 			->andWhere($queryBuilder->expr()->eq(
 				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
-			)
-			->orderBy('configvalue', $order);
+			);
+
+		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			//convert 10 chars of the CLOB to string
+			$queryBuilder->orderBy($queryBuilder->createFunction('dbms_lob.substr(`configvalue`, 0, 10)'), $order);
+		} else {
+			$queryBuilder->orderBy('configvalue', $order);
+		}
 
 		if ($userId) {
 			$queryBuilder->andWhere($queryBuilder->expr()->eq(
@@ -99,7 +119,7 @@ class LastSeen extends Base  {
 		$result = [];
 
 		while ($row = $query->fetch()) {
-			if (!empty($row['configvalue'])) {
+			if (!empty($row['configvalue']) && ($before === null || $row['configvalue'] <= $before )) {
 				$result[] = ['userid' => $row['userid'], 'lastLogin' => $row['configvalue']];
 			}
 		}
@@ -133,7 +153,14 @@ class LastSeen extends Base  {
 		} else {
 			$order = 'DESC';
 		}
-		$users = $this->getLastLogins($uid, $order, $input->getOption('limit'));
+		$before = $input->getOption('before');
+		if ($before) {
+			$beforeDate = new \DateTime($before);
+			$beforeTimestamp = $beforeDate->getTimestamp();
+		} else {
+			$beforeTimestamp = null;
+		}
+		$users = $this->getLastLogins($uid, $order, $beforeTimestamp, $input->getOption('limit'));
 		$outputFormat = $input->getOption('output');
 		if (empty($users)) {
 			if ($uid) {
