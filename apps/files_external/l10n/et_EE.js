@@ -43,6 +43,7 @@ OC.L10N.register(
     "Client secret" : "Kliendi salasõna",
     "OpenStack" : "OpenStack",
     "API key" : "API võti",
+    "Username and password" : "Kasutajanimi ja parool",
     "RSA public key" : "RSA avalik võti",
     "Public key" : "Avalik võti",
     "Amazon S3" : "Amazon S3",

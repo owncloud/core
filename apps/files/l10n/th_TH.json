@@ -1,4 +1,5 @@
 { "translations": {
+    "Storage is temporarily not available" : "ไม่สามารถใช้พื้นที่จัดเก็บได้ชั่วคราว",
     "Storage invalid" : "การจัดเก็บข้อมูลไม่ถูกต้อง",
     "Unknown error" : "ข้อผิดพลาดที่ไม่ทราบสาเหตุ",
     "Files" : "ไฟล์",
@@ -11,6 +12,8 @@
     "Upload cancelled." : "การอัพโหลดถูกยกเลิก",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "ไม่สามารถอัพโหลด {filename} มันเป็นไดเรกทอรีหรือมี 0 ไบต์",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "พื้นที่ว่างไม่เพียงพอคุณจะอัพโหลด {size1} แต่มีพืนที่แค่ {size2}",
+    "Target folder \"{dir}\" does not exist any more" : "ไม่พบโฟลเดอร์ \"{dir}\"",
+    "Not enough free space" : "พื้นที่ว่างไม่เพียงพอ",
     "Uploading..." : "กำลังอัพโหลด...",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "เหลือเวลาอีก {hours} ชั่วโมง : {minutes} นาที : {seconds} วินาที",

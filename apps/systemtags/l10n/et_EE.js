@@ -4,6 +4,7 @@ OC.L10N.register(
     "Tags" : "Sildid",
     "Tagged files" : "Sildistatud failid",
     "Select tags to filter by" : "Vali sildid, mille järgi filtreerida",
+    "%s (restricted)" : "%s (piiratud)",
     "%s (invisible)" : "%s (nähtamatu)",
     "No files in here" : "Siin ei ole faile",
     "No entries found in this folder" : "Selles kaustast ei leitud kirjeid",

@@ -89,7 +89,6 @@
     "Token expired. Please reload page." : "Token 过期，请刷新页面。",
     "Unknown user" : "未知用户",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "没有安装数据库驱动 (SQLite、MySQL 或 PostgreSQL)。",
-    "Microsoft Windows Platform is not supported" : "不支持 Microsoft Windows Platform！",
     "Cannot write into \"config\" directory" : "无法写入“config”目录",
     "Cannot write into \"apps\" directory" : "无法写入“apps”目录",
     "Cannot create \"data\" directory (%s)" : "无法创建“apps”目录 (%s)",

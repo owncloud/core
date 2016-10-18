@@ -137,7 +137,6 @@ OC.L10N.register(
     "TLS" : "TLS",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "Preverite <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentacijo namestitve ↗</a> za opombe k nastavitvam php in nastavitve strežnika; še posebej, kadar je v uporabi php-fpm.",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Napako je najverjetneje povzročil predpomnilniški program ali pospeševalnik, kot sta Zend OPcache ali eAccelerator.",
-    "Your server is running on Microsoft Windows. We highly recommend Linux for optimal user experience." : "Strežnik ownCloud je nameščen v okolju Microsoft Windows. Toplo priporočamo okolje Linux za najboljšo uporabniško izkušnjo.",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "Manjka modul PHP 'fileinfo'. Priporočljivo je omogočiti ta modul za popolno zaznavanje vrst MIME.",
     "System locale can not be set to a one which supports UTF-8." : "Sistemskih jezikovnih nastavitev ni mogoče nastaviti na možnost, ki podpira nabor UTF-8.",
     "This means that there might be problems with certain characters in file names." : "To pomeni, da se lahko pojavijo napake pri nekaterih znakih v imenih datotek.",

@@ -18,6 +18,7 @@
     "ownCloud %s or lower is required." : "ต้องการ ownCloud %s หรือรุ่นที่ต่ำกว่า",
     "Unknown filetype" : "ไม่รู้จักชนิดของไฟล์",
     "Invalid image" : "รูปภาพไม่ถูกต้อง",
+    "Avatar image is not square" : "รูปประจำตัวจะต้องเป็นสี่เหลี่ยมจัตุรัส",
     "today" : "วันนี้",
     "yesterday" : "เมื่อวานนี้",
     "_%n day ago_::_%n days ago_" : ["%n วันที่ผ่านมา"],
@@ -120,9 +121,9 @@
     "Recommended" : "แนะนำ",
     "App \"%s\" cannot be installed because appinfo file cannot be read." : "แอพฯ \"%s\" ไม่สามารถติดตั้งได้เพราะไฟล์ appInfo ไม่สามารถอ่านได้",
     "App \"%s\" cannot be installed because it is not compatible with this version of ownCloud." : "ไม่สามารถติดตั้งแอพฯ \"%s\" เพราะมันเข้ากันไม่ได้กับรุ่นของ ownCloud นี้",
-    "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "แอพฯ \"%s\" ไม่สามารถติดตั้งเพราะไม่ได้ปฏิบัติตามการอ้างอิงต่อไปนี้: %s",
     "No app name specified" : "ไม่ได้ระบุชื่อแอพพลิเคชัน",
     "App '%s' could not be installed!" : "ไม่สามารถติดตั้งแอพฯ '%s'!",
+    "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "แอพฯ \"%s\" ไม่สามารถติดตั้งเพราะไม่ได้ปฏิบัติตามการอ้างอิงต่อไปนี้: %s",
     "web services under your control" : "translate by <a href=\"https://fb.me/kauw5164\">kauw5164</a>",
     "File is currently busy, please try again later" : "ขณะนี้ไฟล์กำลังใช้งานอยู่ โปรดลองอีกครั้งในภายหลัง",
     "Can't read file" : "ไม่สามารถอ่านไฟล์",
@@ -131,8 +132,6 @@
     "Token expired. Please reload page." : "รหัสยืนยันความถูกต้องหมดอายุแล้ว กรุณาโหลดหน้าเว็บใหม่อีกครั้ง",
     "Unknown user" : "ไม่รู้จักผู้ใช้",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "ไม่มีไดรเวอร์ฐานข้อมูล (sqlite, mysql, or postgresql) ที่ถูกติดตั้ง",
-    "Microsoft Windows Platform is not supported" : "ไม่สนับสนุนแพลตฟอร์ม Microsoft Windows",
-    "Running ownCloud Server on the Microsoft Windows platform is not supported. We suggest you use a Linux server in a virtual machine if you have no option for migrating the server itself. Find Linux packages as well as easy to deploy virtual machine images on <a href=\"%s\">%s</a>. For migrating existing installations to Linux you can find some tips and a migration script in <a href=\"%s\">our documentation</a>." : "ไม่สนับสนุนการเรียกใช้เซิร์ฟเวอร์ ownCloud บนแพลตฟอร์ม Microsoft Windows เราขอแนะนำให้คุณใช้เซิร์ฟเวอร์ลินุกซ์ในเครื่องเสมือนถ้าคุณไม่มีตัวเลือกสำหรับการย้ายเซิร์ฟเวอร์เอง ค้นหาแพคเกจลินุกซ์เช่นเดียวกับที่ง่ายต่อการปรับใช้อิมเมจบนเครื่องเสมือน <a href=\"%s\">%s</a> สำหรับการย้ายการติดตั้งลินุกซ์ที่มีอยู่เพื่อให้คุณสามารถค้นหาเคล็ดลับและการย้ายในสคริปต์ <a href=\"%s\">เอกสารของเรา</a>",
     "Cannot write into \"config\" directory" : "ไม่สามารถเขียนลงในไดเรกทอรี \"การตั้งค่า\"",
     "Cannot write into \"apps\" directory" : "ไม่สามารถเขียนลงในไดเรกทอรี \"แอพฯ\"",
     "This can usually be fixed by %sgiving the webserver write access to the apps directory%s or disabling the appstore in the config file." : "นี้มักจะสามารถแก้ไขโดย %s ให้เข้าถึงการเขียนเว็บเซิร์ฟเวอร์ไปยังไดเรกทอรีแอพพลิเคชัน %s หรือปิดการใช้ AppStore ในไฟล์ config",
@@ -165,6 +164,7 @@
     "Storage unauthorized. %s" : "การจัดเก็บข้อมูลไม่ได้รับอนุญาต %s",
     "Storage incomplete configuration. %s" : "การตั้งค่าการจัดเก็บข้อมูลไม่สำเร็จ %s",
     "Storage connection error. %s" : "ข้อผิดพลาดการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s",
+    "Storage is temporarily not available" : "ไม่สามารถใช้พื้นที่จัดเก็บได้ชั่วคราว",
     "Storage connection timeout. %s" : "หมดเวลาการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

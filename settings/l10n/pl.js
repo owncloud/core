@@ -120,7 +120,6 @@ OC.L10N.register(
     "TLS" : "TLS",
     "PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible." : "Wygląda na to, że ustawienia PHP ucinają bloki wklejonych dokumentów. To sprawi, że niektóre wbudowane aplikacje będą niedostępne.",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Dzieje się tak prawdopodobnie przez cache lub akcelerator taki jak Zend OPcache lub eAccelerator.",
-    "Your server is running on Microsoft Windows. We highly recommend Linux for optimal user experience." : "Twój serwer działa na platformie Windows. Zalecamy Linuxa dla optymalnych doświadczeń użytkownika.",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "Brak modułu PHP „fileinfo”. Zalecamy włączenie tego modułu, aby uzyskać najlepsze wyniki podczas wykrywania typów MIME.",
     "System locale can not be set to a one which supports UTF-8." : "Ustawienia regionalne systemu nie można ustawić na jeden, który obsługuje UTF-8.",
     "This means that there might be problems with certain characters in file names." : "Oznacza to, że mogą być problemy z niektórymi znakami w nazwach plików.",
