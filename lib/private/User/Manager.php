@@ -305,13 +305,13 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * returns how many users per backend exist (if supported by backend)
 	 *
-	 * @param boolean $onlySeen when true only users that have a lastLogin entry
-	 *                in the preferences table will be affected
+	 * @param boolean $hasLoggedIn when true only users that have a lastLogin
+	 *                entry in the preferences table will be affected
 	 * @return array|int an array of backend class as key and count number as value
-	 *                   if $onlySeen is true only an int is returned
+	 *                if $hasLoggedIn is true only an int is returned
 	 */
-	public function countUsers($onlySeen = false) {
-		if ($onlySeen) {
+	public function countUsers($hasLoggedIn = false) {
+		if ($hasLoggedIn) {
 			return $this->countSeenUsers();
 		}
 		$userCountStatistics = [];
@@ -377,15 +377,20 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.2.0
 	 */
 	public function countSeenUsers() {
-		$limit = 10000;
-		$offset = 0;
-		$result = 0;
-		do {
-			list($userIds, $rowCount) = $this->getSeenUserIds($limit, $offset);
-			$offset += $limit;
-			$result += count($userIds);
-		} while ($rowCount >= $limit);
-		return $result;
+		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$queryBuilder->select($queryBuilder->createFunction('COUNT(*)'))
+			->from('preferences')
+			->where($queryBuilder->expr()->eq(
+				'appid', $queryBuilder->createNamedParameter('login'))
+			)
+			->andWhere($queryBuilder->expr()->eq(
+				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
+			)
+			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
+			);
+
+		$query = $queryBuilder->execute();
+		return (int)$query->fetchColumn();
 	}
 
 	/**
@@ -397,7 +402,7 @@ class Manager extends PublicEmitter implements IUserManager {
 		$limit = 1000;
 		$offset = 0;
 		do {
-			list($userIds, $rowCount) = $this->getSeenUserIds($limit, $offset);
+			$userIds = $this->getSeenUserIds($limit, $offset);
 			$offset += $limit;
 			foreach ($userIds as $userId) {
 				foreach ($this->backends as $backend) {
@@ -410,7 +415,7 @@ class Manager extends PublicEmitter implements IUserManager {
 					}
 				}
 			}
-		} while ($rowCount >= $limit);
+		} while (count($userIds) >= $limit);
 	}
 
 	/**
@@ -420,36 +425,35 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * 
 	 * @param int $limit
 	 * @param int $offset
-	 * @return array with (string[]) user ids and (int) row count
+	 * @return string[] with user ids
 	 */
-	private function getSeenUserIds($limit = 1000, $offset = 0) {
+	private function getSeenUserIds($limit = null, $offset = null) {
 		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
-		$queryBuilder->select(['userid', 'configvalue'])
+		$queryBuilder->select(['userid'])
 			->from('preferences')
 			->where($queryBuilder->expr()->eq(
 				'appid', $queryBuilder->createNamedParameter('login'))
 			)
 			->andWhere($queryBuilder->expr()->eq(
 				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
+			)
+			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
 			);
-			// we cannot do the timestamp comparison in SQL because oracle does
-			// not support a CLOB in the WHERE clause
 
-		$queryBuilder->setMaxResults($limit);
-		$queryBuilder->setFirstResult($offset);
+		if ($limit !== null) {
+			$queryBuilder->setMaxResults($limit);
+		}
+		if ($offset !== null) {
+			$queryBuilder->setFirstResult($offset);
+		}
 		$query = $queryBuilder->execute();
 		$result = [];
-		$rowCount = 0;
 
 		while ($row = $query->fetch()) {
-			$rowCount++;
-			// so we do the timestamp comparison here
-			if (!empty($row['configvalue'])) {
-				$result[] = $row['userid'];
-			}
+			$result[] = $row['userid'];
 		}
 
-		return [$result, $rowCount];
+		return $result;
 	}
 	/**
 	 * @param string $email
