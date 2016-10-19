@@ -139,7 +139,9 @@ interface IUserManager {
 	/**
 	 * @param \Closure $callback
 	 * @param string $search
+	 * @param boolean $hasLoggedIn when true only users that have a lastLogin entry
+	 *                in the preferences table will be affected
 	 * @since 9.0.0
 	 */
-	public function callForAllUsers (\Closure $callback, $search = '');
+	public function callForAllUsers (\Closure $callback, $search = '', $hasLoggedIn = false);
 }

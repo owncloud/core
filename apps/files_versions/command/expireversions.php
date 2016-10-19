@@ -91,7 +91,7 @@ class ExpireVersions extends Command {
 			$this->userManager->callForAllUsers(function(IUser $user) use ($p) {
 				$p->advance();
 				$this->expireVersionsForUser($user);
-			});
+			}, '', true);
 			$p->finish();
 			$output->writeln('');
 		}
@@ -99,7 +99,7 @@ class ExpireVersions extends Command {
 
 	function expireVersionsForUser(IUser $user) {
 		$uid = $user->getUID();
-		if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
+		if (!$this->setupFS($uid)) {
 			return;
 		}
 		Storage::expireOlderThanMaxForUser($uid);

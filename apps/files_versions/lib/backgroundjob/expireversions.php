@@ -67,11 +67,11 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 
 		$this->userManager->callForAllUsers(function(IUser $user) {
 			$uid = $user->getUID();
-			if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
+			if (!$this->setupFS($uid)) {
 				return;
 			}
 			Storage::expireOlderThanMaxForUser($uid);
-		});
+		}, '', true);
 	}
 
 	/**

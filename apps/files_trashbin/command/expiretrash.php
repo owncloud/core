@@ -92,7 +92,7 @@ class ExpireTrash extends Command {
 			$this->userManager->callForAllUsers(function(IUser $user) use ($p) {
 				$p->advance();
 				$this->expireTrashForUser($user);
-			});
+			}, '', true);
 			$p->finish();
 			$output->writeln('');
 		}
@@ -100,7 +100,7 @@ class ExpireTrash extends Command {
 
 	function expireTrashForUser(IUser $user) {
 		$uid = $user->getUID();
-		if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
+		if (!$this->setupFS($uid)) {
 			return;
 		}
 		$dirContent = Helper::getTrashFiles('/', $uid, 'mtime');
