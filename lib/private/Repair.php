@@ -53,6 +53,7 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Repair\RepairShareMountEntries;
 
 class Repair implements IOutput{
 	/* @var IRepairStep[] */
@@ -144,6 +145,10 @@ class Repair implements IOutput{
 				\OC::$server->getDatabaseConnection(),
 				\OC::$server->getUserManager(),
 				\OC::$server->getGroupManager()
+			),
+			new RepairShareMountEntries(
+				\OC::$server->getConfig(),
+				\OC::$server->getDatabaseConnection()
 			),
 		];
 	}
