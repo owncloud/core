@@ -202,10 +202,6 @@ class File extends Node implements IFile {
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
-			if ($view) {
-				$this->emitPostHooks($exists);
-			}
-
 			// allow sync clients to send the mtime along in a header
 			$request = \OC::$server->getRequest();
 			if (isset($request->server['HTTP_X_OC_MTIME'])) {
@@ -213,7 +209,11 @@ class File extends Node implements IFile {
 					header('X-OC-MTime: accepted');
 				}
 			}
-
+			
+			if ($view) {
+				$this->emitPostHooks($exists);
+			}
+			
 			$this->refreshInfo();
 
 			if (isset($request->server['HTTP_OC_CHECKSUM'])) {
