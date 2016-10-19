@@ -223,4 +223,26 @@ interface IConfig {
 	 * @since 8.0.0
 	 */
 	public function getUsersForUserValue($appName, $key, $value);
+
+	/**
+	 * Counts the users that have a value set for a specific app-key-pair
+	 *
+	 * @param string $appName the app to get the user for
+	 * @param string $key the key to get the user for
+	 * @return int
+	 * @since 9.2.0
+	 */
+	public function countUsersHavingUserValue($appName, $key);
+
+	/**
+	 * The callback is executed for each user having a not null value for the
+	 * given app-key pair ard that exists in a user backend.
+	 * If the callback returns false no further users will be retrieved.
+	 *
+	 * @param string $appName
+	 * @param string $key
+	 * @param \Closure $callback with parameters userid and value
+	 * @since 9.2.0
+	 */
+	public function callForUsersHavingUserValue($appName, $key, \Closure $callback);
 }

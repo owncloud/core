@@ -24,8 +24,6 @@
 namespace OCA\Files_Trashbin\BackgroundJob;
 
 use OCP\IConfig;
-use OCP\IUser;
-use OCP\IUserManager;
 use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Expiration;
 use OCA\Files_Trashbin\Helper;
@@ -39,30 +37,30 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 	private $expiration;
 	
 	/**
-	 * @var IUserManager
+	 * @var IConfig
 	 */
-	private $userManager;
+	private $config;
 
 	/**
-	 * @param IUserManager|null $userManager
+	 * @param IConfig|null $userManager
 	 * @param Expiration|null $expiration
 	 */
-	public function __construct(IUserManager $userManager = null,
+	public function __construct(IConfig $config = null,
 								Expiration $expiration = null) {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
 
-		if (is_null($expiration) || is_null($userManager)) {
+		if (is_null($expiration) || is_null($config)) {
 			$this->fixDIForJobs();
 		} else {
-			$this->userManager = $userManager;
+			$this->config = $config;
 			$this->expiration = $expiration;
 		}
 	}
 
 	protected function fixDIForJobs() {
 		$application = new Application();
-		$this->userManager = \OC::$server->getUserManager();
+		$this->config = \OC::$server->getConfig();
 		$this->expiration = $application->getContainer()->query('Expiration');
 	}
 
@@ -76,8 +74,7 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$this->userManager->callForSeenUsers(function(IUser $user) {
-			$uid = $user->getUID();
+		$this->config->callForUsersHavingUserValue('login', 'lastLogin', function($uid) {
 			if (!$this->setupFS($uid)) {
 				return;
 			}

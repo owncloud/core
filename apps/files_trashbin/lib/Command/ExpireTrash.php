@@ -21,6 +21,7 @@
 
 namespace OCA\Files_Trashbin\Command;
 
+use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCA\Files_Trashbin\Expiration;
@@ -38,22 +39,30 @@ class ExpireTrash extends Command {
 	 * @var Expiration
 	 */
 	private $expiration;
-	
+
 	/**
 	 * @var IUserManager
 	 */
 	private $userManager;
 
 	/**
+	 * @var IConfig
+	 */
+	private $config;
+
+	/**
 	 * @param IUserManager|null $userManager
 	 * @param Expiration|null $expiration
+	 * @param IConfig|null $config
 	 */
 	public function __construct(IUserManager $userManager = null,
-								Expiration $expiration = null) {
+								Expiration $expiration = null,
+								IConfig $config = null) {
 		parent::__construct();
 
 		$this->userManager = $userManager;
 		$this->expiration = $expiration;
+		$this->config = $config;
 	}
 
 	protected function configure() {
@@ -63,7 +72,7 @@ class ExpireTrash extends Command {
 			->addArgument(
 				'user_id',
 				InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-				'expires the trashbin of the given user(s), if no user is given the trash for all users will be expired'
+				'expires the trashbin of the given user(s), if no user is given the trash for all users that logged in once will be expired'
 			);
 	}
 
@@ -78,9 +87,9 @@ class ExpireTrash extends Command {
 		$users = $input->getArgument('user_id');
 		if (!empty($users)) {
 			foreach ($users as $user) {
-				if ($this->userManager->userExists($user)) {
-					$output->writeln("Remove deleted files of   <info>$user</info>");
-					$userObject = $this->userManager->get($user);
+				$userObject = $this->userManager->get($user);
+				if ($userObject instanceof IUser) {
+					$output->writeln("Remove deleted files of <info>{$userObject->getUID()}</info>");
 					$this->expireTrashForUser($userObject);
 				} else {
 					$output->writeln("<error>Unknown user $user</error>");
@@ -88,10 +97,11 @@ class ExpireTrash extends Command {
 			}
 		} else {
 			$p = new ProgressBar($output);
-			$p->start();
-			$this->userManager->callForSeenUsers(function(IUser $user) use ($p) {
+			$p->start($this->config->countUsersHavingUserValue('login', 'lastLogin'));
+			$this->config->callForUsersHavingUserValue('login', 'lastLogin', function($userId) use ($p) {
 				$p->advance();
-				$this->expireTrashForUser($user);
+				$userObject = $this->userManager->get($userId);
+				$this->expireTrashForUser($userObject);
 			});
 			$p->finish();
 			$output->writeln('');

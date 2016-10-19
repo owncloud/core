@@ -21,9 +21,9 @@
 namespace OC\Repair;
 
 use OCP\Files\IRootFolder;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IUser;
-use OCP\IUserManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -37,8 +37,8 @@ class RemoveRootShares implements IRepairStep {
 	/** @var IDBConnection */
 	protected $connection;
 
-	/** @var IUserManager */
-	protected $userManager;
+	/** @var IConfig */
+	private $config;
 
 	/** @var IRootFolder */
 	protected $rootFolder;
@@ -47,14 +47,14 @@ class RemoveRootShares implements IRepairStep {
 	 * RemoveRootShares constructor.
 	 *
 	 * @param IDBConnection $connection
-	 * @param IUserManager $userManager
+	 * @param IConfig $config
 	 * @param IRootFolder $rootFolder
 	 */
 	public function __construct(IDBConnection $connection,
-								IUserManager $userManager,
+								IConfig $config,
 								IRootFolder $rootFolder) {
 		$this->connection = $connection;
-		$this->userManager = $userManager;
+		$this->config = $config;
 		$this->rootFolder = $rootFolder;
 	}
 
@@ -78,8 +78,8 @@ class RemoveRootShares implements IRepairStep {
 	 * @param IOutput $output
 	 */
 	private function removeRootShares(IOutput $output) {
-		$function = function(IUser $user) use ($output) {
-			$userFolder = $this->rootFolder->getUserFolder($user->getUID());
+		$function = function($userId) use ($output) {
+			$userFolder = $this->rootFolder->getUserFolder($userId);
 			$fileId = $userFolder->getId();
 
 			$qb = $this->connection->getQueryBuilder();
@@ -95,9 +95,9 @@ class RemoveRootShares implements IRepairStep {
 			$output->advance();
 		};
 
-		$output->startProgress($this->userManager->countSeenUsers());
+		$output->startProgress($this->config->countUsersHavingUserValue('login', 'lastLogin'));
 
-		$this->userManager->callForSeenUsers($function);
+		$this->config->callForUsersHavingUserValue('login', 'lastLogin', $function);
 
 		$output->finishProgress();
 	}

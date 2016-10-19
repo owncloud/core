@@ -435,4 +435,73 @@ class AllConfigTest extends \Test\TestCase {
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');
 	}
 
+	public function testCountUsersOnlySeen() {
+		$config = $this->getConfig();
+
+		// count other users in the db before adding our own
+		$countBefore = $config->countUsersHavingUserValue('appFetch9', 'keyFetch9');
+
+		// preparation - add something to the database
+		$data = [
+			['user1', 'appFetch9', 'keyFetch9', 'value9'],
+			['user2', 'appFetch9', 'keyFetch9', null],
+			['user3', 'appFetch9', 'keyFetch9', 'value8'],
+			['user4', 'appFetch9', 'keyFetch8', 'value9'],
+			['user5', 'appFetch8', 'keyFetch9', 'value9'],
+			['user6', 'appFetch9', 'keyFetch9', 'value9'],
+		];
+		foreach ($data as $entry) {
+			$this->connection->executeUpdate(
+				'INSERT INTO `*PREFIX*preferences` (`userid`, `appid`, ' .
+				'`configkey`, `configvalue`) VALUES (?, ?, ?, ?)',
+				$entry
+			);
+		}
+
+		// check
+		$countAfter = $config->countUsersHavingUserValue('appFetch9', 'keyFetch9');
+		$this->assertEquals($countBefore + 3, $countAfter);
+
+		// cleanup
+		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');
+	}
+
+	public function testCallForSeenUsers() {
+		$config = $this->getConfig();
+		// count other users in the db before adding our own
+		$count = 0;
+		$function = function ($userId) use (&$count) {
+			$count++;
+		};
+		// count other users in the db before adding our own
+		$config->callForUsersHavingUserValue('appFetch9', 'keyFetch9', $function);
+		$countBefore = $count;
+
+
+		// preparation - add something to the database
+		$data = [
+			['user1', 'appFetch9', 'keyFetch9', 'value9'],
+			['user2', 'appFetch9', 'keyFetch9', null],
+			['user3', 'appFetch9', 'keyFetch9', 'value8'],
+			['user4', 'appFetch9', 'keyFetch8', 'value9'],
+			['user5', 'appFetch8', 'keyFetch9', 'value9'],
+			['user6', 'appFetch9', 'keyFetch9', 'value9'],
+		];
+		foreach ($data as $entry) {
+			$this->connection->executeUpdate(
+				'INSERT INTO `*PREFIX*preferences` (`userid`, `appid`, ' .
+				'`configkey`, `configvalue`) VALUES (?, ?, ?, ?)',
+				$entry
+			);
+		}
+
+		// check
+		$count = 0;
+		$config->callForUsersHavingUserValue('appFetch9', 'keyFetch9', $function);
+
+		$this->assertEquals($countBefore + 3, $count);
+
+		//cleanup
+		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');
+	}
 }

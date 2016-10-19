@@ -429,4 +429,58 @@ class AllConfig implements \OCP\IConfig {
 
 		return $userIDs;
 	}
+	/**
+	 * Counts the users that have a value set for a specific app-key-pair
+	 *
+	 * @param string $appName the app to get the user for
+	 * @param string $key the key to get the user for
+	 * @return int
+	 * @since 9.2.0
+	 */
+	public function countUsersHavingUserValue($appName, $key) {
+		$this->fixDIInit();
+		$queryBuilder = $this->connection->getQueryBuilder();
+		$queryBuilder->select($queryBuilder->createFunction('COUNT(*)'))
+			->from('preferences')
+			->where($queryBuilder->expr()->eq(
+				'appid', $queryBuilder->createNamedParameter($appName))
+			)
+			->andWhere($queryBuilder->expr()->eq(
+				'configkey', $queryBuilder->createNamedParameter($key))
+			)
+			->andWhere($queryBuilder->expr()->isNotNull('configvalue'));
+
+		$query = $queryBuilder->execute();
+
+		return (int)$query->fetchColumn();
+	}
+
+	/**
+	 * @param string $appName
+	 * @param string $key
+	 * @param \Closure $callback
+	 * @since 9.2.0
+	 */
+	public function callForUsersHavingUserValue($appName, $key, \Closure $callback) {
+		$this->fixDIInit();
+		$queryBuilder = $this->connection->getQueryBuilder();
+		$queryBuilder->select(['userid', 'configvalue'])
+			->from('preferences')
+			->where($queryBuilder->expr()->eq(
+				'appid', $queryBuilder->createNamedParameter($appName))
+			)
+			->andWhere($queryBuilder->expr()->eq(
+				'configkey', $queryBuilder->createNamedParameter($key))
+			)
+			->andWhere($queryBuilder->expr()->isNotNull('configvalue'));
+
+		$query = $queryBuilder->execute();
+
+		while ($row = $query->fetch()) {
+			$return = $callback($row['userid'], $row['configvalue']);
+			if ($return === false) {
+				return;
+			}
+		}
+	}
 }

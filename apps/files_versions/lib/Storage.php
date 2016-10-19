@@ -476,13 +476,14 @@ class Storage {
 	/**
 	 * Expire versions that older than max version retention time
 	 * @param string $uid
+	 * @return int number of deleted versions
 	 */
 	public static function expireOlderThanMaxForUser($uid){
 		$expiration = self::getExpiration();
 		$threshold = $expiration->getMaxAgeAsTimestamp();
 		$versions = self::getAllVersions($uid);
 		if (!$threshold || !array_key_exists('all', $versions)) {
-			return;
+			return 0;
 		}
 
 		$toDelete = [];
@@ -503,6 +504,7 @@ class Storage {
 				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT]);
 			}
 		}
+		return count($toDelete);
 	}
 
 	/**

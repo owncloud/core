@@ -23,8 +23,8 @@ namespace OCA\Files_Versions\Command;
 
 use OCA\Files_Versions\Expiration;
 use OCA\Files_Versions\Storage;
+use OCP\IConfig;
 use OCP\IUser;
-use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,21 +37,21 @@ class ExpireVersions extends Command {
 	 * @var Expiration
 	 */
 	private $expiration;
-	
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
 
 	/**
-	 * @param IUserManager|null $userManager
+	 * @var IConfig
+	 */
+	private $config;
+
+	/**
+	 * @param IConfig|null $userManager
 	 * @param Expiration|null $expiration
 	 */
-	public function __construct(IUserManager $userManager = null,
+	public function __construct(IConfig $config = null,
 								Expiration $expiration = null) {
 		parent::__construct();
 
-		$this->userManager = $userManager;
+		$this->config = $config;
 		$this->expiration = $expiration;
 	}
 
@@ -62,7 +62,7 @@ class ExpireVersions extends Command {
 			->addArgument(
 				'user_id',
 				InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-				'expire file versions of the given user(s), if no user is given file versions for all users will be expired.'
+				'expire file versions of the given user(s), if no user is given file versions for all users that logged in once will be expired.'
 			);
 	}
 
@@ -77,32 +77,34 @@ class ExpireVersions extends Command {
 		$users = $input->getArgument('user_id');
 		if (!empty($users)) {
 			foreach ($users as $user) {
-				if ($this->userManager->userExists($user)) {
-					$output->writeln("Remove deleted files of   <info>$user</info>");
-					$userObject = $this->userManager->get($user);
-					$this->expireVersionsForUser($userObject);
+				$result = $this->expireVersionsForUser($user);
+				if ($result) {
+					$output->writeln("Removed {$result[0]} old versions for <info>$user</info>");
 				} else {
-					$output->writeln("<error>Unknown user $user</error>");
+					$output->writeln("<error>Could not set up filesystem for $user</error>");
 				}
 			}
 		} else {
 			$p = new ProgressBar($output);
-			$p->start();
-			$this->userManager->callForSeenUsers(function(IUser $user) use ($p) {
+			$p->start($this->config->countUsersHavingUserValue('login', 'lastLogin'));
+			$this->config->callForUsersHavingUserValue('login', 'lastLogin', function($userId) use ($p) {
 				$p->advance();
-				$this->expireVersionsForUser($user);
+				$this->expireVersionsForUser($userId);
 			});
 			$p->finish();
 			$output->writeln('');
 		}
 	}
 
-	function expireVersionsForUser(IUser $user) {
-		$uid = $user->getUID();
+	/**
+	 * @param $uid string
+	 * @return int number of deleted versions
+	 */
+	function expireVersionsForUser($uid) {
 		if (!$this->setupFS($uid)) {
-			return;
+			return false;
 		}
-		Storage::expireOlderThanMaxForUser($uid);
+		return Storage::expireOlderThanMaxForUser($uid);
 	}
 
 	/**
