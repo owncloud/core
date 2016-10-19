@@ -268,6 +268,7 @@ class DependencyAnalyzerTest extends TestCase {
 			[[], [['@attributes' => ['os' => 'Windows'], '@value' => 'grepp']]],
 			// grep is known on all systems
 			[[], 'grep'],
+			[[], ['@attributes' => ['os' => 'Linux'], '@value' => 'grep']],
 		];
 	}
 
