@@ -33,6 +33,7 @@ use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Files\IRootFolder;
 use OCP\IL10N;
+use OCP\IUser;
 
 /**
  * This class implements methods to access Avatar functionality
@@ -86,7 +87,7 @@ class AvatarManager implements IAvatarManager {
 
 		$userId = $user->getUID();
 
-		$avatarsFolder = $this->getAvatarFolder($userId);
+		$avatarsFolder = $this->getAvatarFolder($user);
 		return new Avatar($avatarsFolder, $this->l, $user, $this->logger);
 	}
 
@@ -106,14 +107,14 @@ class AvatarManager implements IAvatarManager {
 	/**
 	 * Returns the avatar folder for the given user
 	 *
-	 * @param $userId user id
+	 * @param IUser $user user
 	 * @return Folder|\OCP\Files\Node
 	 *
 	 * @internal
 	 */
-	public function getAvatarFolder($userId) {
+	public function getAvatarFolder(IUser $user) {
 		$avatarsFolder = $this->getFolder($this->rootFolder, 'avatars');
-		$parts = $this->buildAvatarPath($userId);
+		$parts = $this->buildAvatarPath($user->getUID());
 		foreach ($parts as $part) {
 			$avatarsFolder = $this->getFolder($avatarsFolder, $part);
 		}

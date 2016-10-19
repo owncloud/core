@@ -110,7 +110,7 @@ class MoveAvatarOutsideHome implements IRepairStep {
 			$oldAvatarUserFolder = $this->rootFolder->get('/' . $userId);
 			$oldAvatar = new Avatar($oldAvatarUserFolder, $this->l, $user, $this->logger);
 			if ($oldAvatar->exists()) {
-				$newAvatarsUserFolder = $this->avatarManager->getAvatarFolder($userId);
+				$newAvatarsUserFolder = $this->avatarManager->getAvatarFolder($user);
 
 				// get original file
 				$oldAvatarFile = $oldAvatar->getFile(-1);

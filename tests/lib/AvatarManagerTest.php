@@ -120,7 +120,7 @@ class AvatarManagerTest extends TestCase {
 		$folder = $this->createMock(Folder::class);
 		$this->avatarManager->expects($this->once())
 			->method('getAvatarFolder')
-			->with('valid-user')
+			->with($user)
 			->willReturn($folder);
 
 		$avatar = $this->avatarManager->getAvatar('vaLid-USER');
