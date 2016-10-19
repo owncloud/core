@@ -147,6 +147,7 @@ OC.L10N.register(
     "Expiration" : "תפוגה",
     "Expiration date" : "תאריך התפוגה",
     "Choose a password for the public link" : "בחירת סיסמא לקישור ציבורי",
+    "Choose a password for the public link or press enter" : "בחירת סיסמא לקישור ציבורי או לחיצה על enter",
     "Copied!" : "הועתק!",
     "Not supported!" : "לא נתמך!",
     "Press ⌘-C to copy." : "יש ללחוץ ⌘-C להעתקה.",

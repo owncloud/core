@@ -155,6 +155,7 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "לאפשר ליישום להשתמש ב־API השיתוף",
     "Allow users to share via link" : "אפשר למשתמשים לשתף באמצעות קישור",
     "Allow public uploads" : "אפשר העלאות ציבוריות",
+    "Always ask for a password" : "מבקש סיסמא תמיד",
     "Enforce password protection" : "חייב הגנת סיסמא",
     "Set default expiration date" : "הגדרת תאריך תפוגה ברירת מחדל",
     "Allow users to send mail notification for shared files" : "אפשר למשתמשים לשלוח הודעות דואר אלקטרוני לשיתוף קבצים",
