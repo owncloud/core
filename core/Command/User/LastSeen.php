@@ -100,8 +100,8 @@ class LastSeen extends Base  {
 			);
 
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
-			//convert 10 chars of the CLOB to string
-			$queryBuilder->orderBy($queryBuilder->createFunction('dbms_lob.substr(`configvalue`, 0, 10)'), $order);
+			//convert first 10 bytes of the CLOB to string - yes, that is oracle starting to count at 1
+			$queryBuilder->orderBy($queryBuilder->createFunction('dbms_lob.substr(`configvalue`, 10, 1)'), $order);
 		} else {
 			$queryBuilder->orderBy('configvalue', $order);
 		}

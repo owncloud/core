@@ -384,11 +384,10 @@ class LastSeenTest extends TestCase {
 
 		$pos = 0;
 		foreach ($users as $userId) {
-			$this->userManager->expects($this->at($pos))
+			$this->userManager->expects($this->at($pos++))
 				->method('get')
 				->with($userId)
 				->willReturn($this->userMocks[$userId]);
-			$pos++;
 		}
 		$this->consoleOutput->expects($this->once())
 			->method('writeln')
