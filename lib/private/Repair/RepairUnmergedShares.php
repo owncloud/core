@@ -335,22 +335,6 @@ class RepairUnmergedShares implements IRepairStep {
 		}
 	}
 
-	/**
-	 * Count all the users
-	 *
-	 * @return int
-	 */
-	private function countUsers() {
-		$allCount = $this->userManager->countUsers();
-
-		$totalCount = 0;
-		foreach ($allCount as $backend => $count) {
-			$totalCount += $count;
-		}
-
-		return $totalCount;
-	}
-
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
 		// this situation was only possible between 9.0.0 and 9.0.3 included, and 9.1.0
@@ -368,8 +352,7 @@ class RepairUnmergedShares implements IRepairStep {
 
 			$this->buildPreparedQueries();
 
-			$userCount = $this->countUsers();
-			$output->startProgress($userCount);
+			$output->startProgress($this->userManager->countUsers());
 
 			$this->userManager->callForAllUsers($function);
 
