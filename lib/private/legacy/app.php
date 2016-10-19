@@ -143,6 +143,8 @@ class OC_App {
 		// in case someone calls loadApp() directly
 		self::registerAutoloading($app, $appPath);
 
+		self::enableTheme($app);
+
 		if (is_file($appPath . '/appinfo/app.php')) {
 			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
 			if ($checkUpgrade and self::shouldUpgrade($app)) {
@@ -157,6 +159,18 @@ class OC_App {
 				self::$enabledAppsCache = [];
 			}
 			\OC::$server->getEventLogger()->end('load_app_' . $app);
+		}
+	}
+
+	/**
+	 * Enables the app as a theme if it has the type "theme"
+	 * @param $app
+	 */
+	private static function enableTheme($app) {
+		if (self::isType($app, 'theme')) {
+			/** @var \OC\Theme\ThemeService $themeManager */
+			$themeManager = \OC::$server->query('ThemeService');
+			$themeManager->setAppTheme($app);
 		}
 	}
 
