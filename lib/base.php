@@ -854,6 +854,7 @@ class OC {
 	}
 
 	private static function initializeContainer() {
+		// TODO: debug variable should be provided through the index php and set to false by default
 		$debug = true;
 		$cacheFile = __DIR__ . '/../cache/container.php';
 
