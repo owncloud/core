@@ -35,6 +35,11 @@
 
 /lib/composer
 
+# ignore generated cache files
+!/cache
+/cache/*
+!/cache/.gitkeep
+
 # ignore themes except the example and the README
 /themes/*
 !/themes/example
