@@ -186,7 +186,7 @@ class OC_App {
 		try {
 			// encapsulated here to avoid variable scope conflicts
 			require_once $app . '/appinfo/app.php';
-		} catch (Error $ex) {
+		} catch (Exception $ex) {
 			\OC::$server->getLogger()->logException($ex);
 			$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
 			if (!in_array($app, $blacklist)) {

@@ -53,6 +53,10 @@ $application->registerRoutes($this, [
 		['name' => 'TwoFactorChallenge#showChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'GET'],
 		['name' => 'TwoFactorChallenge#solveChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'POST'],
 	],
+	'ocs' => [
+		['name' => 'Cloud#getCapabilities', 'url' => '/cloud/capabilities', 'verb' => 'GET'],
+		['name' => 'Cloud#getCurrentUser', 'url' => '/cloud/user', 'verb' => 'GET'],
+	]
 ]);
 
 // Post installation check

@@ -22,11 +22,24 @@
  *
  */
 
-namespace OC\OCS;
+namespace OC\Core\Controller;
 
-class Cloud {
+use OCP\AppFramework\OCSController;
+use OCP\IRequest;
 
-	public static function getCapabilities() {
+class CloudController extends OCSController {
+
+	public function __construct($appName, IRequest $request) {
+		parent::__construct($appName, $request);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return array
+	 */
+	public function getCapabilities() {
 		$result = [];
 		list($major, $minor, $micro) = \OCP\Util::getVersion();
 		$result['version'] = [
@@ -39,16 +52,22 @@ class Cloud {
 			
 		$result['capabilities'] = \OC::$server->getCapabilitiesManager()->getCapabilities();
 
-		return new Result($result);
+		return ['data' => $result];
 	}
-	
-	public static function getCurrentUser() {
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return array
+	 */
+	public function getCurrentUser() {
 		$userObject = \OC::$server->getUserManager()->get(\OC_User::getUser());
 		$data  = [
 			'id' => $userObject->getUID(),
 			'display-name' => $userObject->getDisplayName(),
 			'email' => $userObject->getEMailAddress(),
 		];
-		return new Result($data);
+		return ['data' => $data];
 	}
 }
