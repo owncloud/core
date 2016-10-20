@@ -28,6 +28,7 @@
  */
 
 namespace OC;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use OC\Cache\CappedMemoryCache;
 use OCP\IDBConnection;
 use OCP\PreConditionNotMetException;
@@ -410,20 +411,33 @@ class AllConfig implements \OCP\IConfig {
 		// TODO - FIXME
 		$this->fixDIInit();
 
-		$sql  = 'SELECT `userid` FROM `*PREFIX*preferences` ' .
-				'WHERE `appid` = ? AND `configkey` = ? ';
+		$queryBuilder = $this->connection->getQueryBuilder();
+		$queryBuilder->select(['userid', 'value'])
+			->from('preferences')
+			->where($queryBuilder->expr()->eq(
+				'appid', $queryBuilder->createNamedParameter($appName))
+			)
+			->andWhere($queryBuilder->expr()->eq(
+				'configkey', $queryBuilder->createNamedParameter($key))
+			)
+			->andWhere($queryBuilder->expr()->isNotNull('configvalue'));
 
-		if($this->getSystemValue('dbtype', 'sqlite') === 'oci') {
-			//oracle hack: need to explicitly cast CLOB to CHAR for comparison
-			$sql .= 'AND to_char(`configvalue`) = ?';
+
+		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			//oracle can only compare the first 4000 bytes of a CLOB column
+			$queryBuilder->andWhere($queryBuilder->expr()->eq(
+				$queryBuilder->createFunction('dbms_lob.substr(`configvalue`, 4000, 1)'),
+				$queryBuilder->createNamedParameter($value))
+			);
 		} else {
-			$sql .= 'AND `configvalue` = ?';
+			$queryBuilder->andWhere($queryBuilder->expr()->eq(
+				'configvalue', $queryBuilder->createNamedParameter($value))
+			);
 		}
-
-		$result = $this->connection->executeQuery($sql, [$appName, $key, $value]);
+		$query = $queryBuilder->execute();
 
 		$userIDs = [];
-		while ($row = $result->fetch()) {
+		while ($row = $query->fetch()) {
 			$userIDs[] = $row['userid'];
 		}
 
