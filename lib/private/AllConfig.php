@@ -412,7 +412,7 @@ class AllConfig implements \OCP\IConfig {
 		$this->fixDIInit();
 
 		$queryBuilder = $this->connection->getQueryBuilder();
-		$queryBuilder->select(['userid', 'value'])
+		$queryBuilder->select('userid')
 			->from('preferences')
 			->where($queryBuilder->expr()->eq(
 				'appid', $queryBuilder->createNamedParameter($appName))
@@ -440,6 +440,8 @@ class AllConfig implements \OCP\IConfig {
 		while ($row = $query->fetch()) {
 			$userIDs[] = $row['userid'];
 		}
+
+		$query->closeCursor();
 
 		return $userIDs;
 	}
