@@ -171,12 +171,19 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	find $@ -name no-php -delete
 	rm -Rf $@/core/js/tests
 	rm -Rf $@/settings/tests
-	rm -Rf $@/apps/*/tests
-	rm -Rf $@/lib/composer/*/*/{tests,bin,examples}
-	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,test,tests,testem.json,demo,demos}
-	find $@/{core/,l10n/,apps/,lib/composer/} -iname \*.sh -delete
-	find $@/{apps/,lib/composer/} -name travis -print | xargs rm -Rf
-	find $@/{apps/,lib/composer/} -name doc -print | xargs rm -Rf
+	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
+	find $@/{core/,l10n/} -iname \*.sh -delete
+	find $@/{apps/,lib/composer/,core/vendor/} \( \
+		-name bin -o \
+		-name test -o \
+		-name tests -o \
+		-name examples -o \
+		-name demo -o \
+		-name demos -o \
+		-name doc -o \
+		-name travis -o \
+		-iname \*.sh \
+		\) -print | xargs rm -Rf
 	find $@/{apps/,lib/composer/} -iname \*.exe -delete
 	# Set build
 	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
