@@ -147,6 +147,7 @@ OC.L10N.register(
     "Expiration" : "Konec platnosti",
     "Expiration date" : "Datum vypršení platnosti",
     "Choose a password for the public link" : "Zadej heslo pro tento veřejný odkaz",
+    "Choose a password for the public link or press enter" : "Zadej heslo pro tento veřejný odkaz nebo stiskněte enter",
     "Copied!" : "Zkopírováno!",
     "Not supported!" : "Nepodporováno!",
     "Press ⌘-C to copy." : "Zmáčknout ⌘-C pro kopírování.",

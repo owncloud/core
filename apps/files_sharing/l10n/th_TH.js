@@ -104,6 +104,7 @@ OC.L10N.register(
     "the link expired" : "ลิงค์หมดอายุ",
     "sharing is disabled" : "การแชร์ถูกปิดใช้งาน",
     "For more info, please ask the person who sent this link." : "สำหรับข้อมูลเพิ่มเติมกรุณาสอบถามผู้ที่ส่งลิงค์นี้",
+    "%s is publicly shared" : "%s ได้ถูกแชร์สู่สาธารณะแล้ว",
     "Add to your ownCloud" : "เพิ่มลงใน ownCloud ของคุณ",
     "Download" : "ดาวน์โหลด",
     "Download %s" : "ดาวน์โหลด %s",
