@@ -147,6 +147,7 @@ OC.L10N.register(
     "Expiration" : "Срок действия",
     "Expiration date" : "Дата окончания",
     "Choose a password for the public link" : "Укажите пароль для публичной ссылки",
+    "Choose a password for the public link or press enter" : "Укажите пароль для публичной ссылки или нажмите Ввод",
     "Copied!" : "Скопировано!",
     "Not supported!" : "Не поддерживается!",
     "Press ⌘-C to copy." : "Нажмите ⌘-C чтобы скопировать.",
