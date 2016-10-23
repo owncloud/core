@@ -411,6 +411,12 @@ class OC {
 		// prevents javascript from accessing php session cookies
 		ini_set('session.cookie_httponly', true);
 
+		// give session cookie Secure flag when on https
+		if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                || $_SERVER['SERVER_PORT'] == 443) {
+                        ini_set('session.cookie_secure', true);
+                }
+		
 		// set the cookie path to the ownCloud directory
 		$cookie_path = OC::$WEBROOT ? : '/';
 		ini_set('session.cookie_path', $cookie_path);
