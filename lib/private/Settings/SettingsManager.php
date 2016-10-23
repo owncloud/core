@@ -25,20 +25,27 @@ use OCP\Settings\ISettingsManager;
 use OCP\Settings\ISection;
 use OC\App\AppManager;
 use OCP\Settings\IPanel;
-use \OCP\ILogger;
+use OCP\ILogger;
 use OCP\IL10N;
 use OCP\IUserSession;
+use OCP\AppFramework\QueryException;
 
 /*
  * @since 9.2
  */
 class SettingsManager implements ISettingsManager {
 
-  /** @var IL10N */
-	private $l;
+  /* @var IL10N */
+	protected $l;
 
-  /** @var AppManager */
-	private $appManager;
+  /* @var AppManager */
+	protected $appManager;
+
+  /* @var ILogger */
+  protected $logger;
+
+  /* @var IUser */
+  protected $user;
 
   /**
    * Holds a cache of IPanels with keys for type
@@ -52,6 +59,10 @@ class SettingsManager implements ISettingsManager {
 
   /**
     * @param IL10N $l
+    * @param AppManager $appManager
+    * @param IUserSession $userSession
+    * @param ILogger $logger
+
     */
   public function __construct(IL10N $l, AppManager $appManager, IUserSession $userSession, ILogger $logger) {
     $this->l = $l;
@@ -88,8 +99,8 @@ class SettingsManager implements ISettingsManager {
   }
 
   /**
-  * Returns IPanels for the admin settings in the given section
-  * @param string $sectionID
+   * Returns IPanels for the admin settings in the given section
+   * @param string $sectionID
    * @return array of ISection
    */
   public function getAdminPanels($sectionID) {
@@ -102,8 +113,11 @@ class SettingsManager implements ISettingsManager {
     }
   }
 
-
-
+  /**
+   * Returns the default set of ISections used in core
+   * @param string $type the type of sections to return
+   * @return array of ISection
+   */
   private function getBuiltInSections($type) {
     if($type === 'admin') {
       return [
@@ -122,15 +136,50 @@ class SettingsManager implements ISettingsManager {
     }
   }
 
+  /**
+   * Returns an array of classnames for built in settings panels
+   * @return array of strings
+   */
+  private function getBuiltInPanels() {
+      return [
+        'personal' => [
+          'OC\Settings\Panels\Personal\Profile',
+          'OC\Settings\Panels\Personal\SyncClients',
+          'OC\Settings\Panels\Personal\Version',
+        ],
+        'admin' => [
+          'OC\Settings\Panels\Admin\Tips',
+          'OC\Settings\Panels\Admin\MailTempaltes',
+          'OC\Settings\Panels\Admin\Cron',
+          'OC\Settings\Panels\Admin\MailServer',
+          'OC\Settings\Panels\Admin\Logs',
+          'OC\Settings\Panels\Admin\SetupAndSecurityTips',
+          'OC\Settings\Panels\Admin\Version',
+        ]
+      ];
+
+  }
+
+  /**
+   * Gets all the panels for ownCloud
+   * @param string $type the type of sections to return
+   * @return array of strings
+   */
+  protected function getPanelsList($type) {
+    $registered = isset($this->findRegisteredPanels()[$type]) ? $this->findRegisteredPanels()[$type] : [];
+    $builtIn = isset($this->getBuiltInPanels()[$type]) ? $this->getBuiltInPanels()[$type] : [];
+    return array_merge($registered, $builtIn);
+  }
 
 
   /**
    * Searches through the currently enabled apps and returns the panels registered
-   * @return array
+   * @return array of strings
    */
-  protected function findRegisteredPanels($apps) {
+  protected function findRegisteredPanels() {
     $panels = [];
-    foreach($apps as $app) {
+    foreach($this->appManager->getEnabledAppsForUser($this->user) as $app) {
+      \OC_App::registerAutoloading($app, \OC_App::getAppPath($app));
       if(array_key_exists('settings', $this->appManager->getAppInfo($app))) {
         $panels[] = $this->appManager->getAppInfo($app)['settings'];
       }
@@ -141,6 +190,7 @@ class SettingsManager implements ISettingsManager {
   /**
    * Attempts to load a IPanel using the class name
    * @param string $className
+   * @throws QueryException
    * @return IPanel
    */
   protected function loadPanel($className) {
@@ -163,7 +213,7 @@ class SettingsManager implements ISettingsManager {
 
   /**
    * Find and return IPanels for the given type
-   * @param string $type
+   * @param string $type of panels to load
    * @return array of IPanels
    */
   public function loadPanels($type) {
@@ -172,26 +222,22 @@ class SettingsManager implements ISettingsManager {
       return $this->panels[$type];
     }
     // Find the panels from info xml
-    $panels = $this->findRegisteredPanels($this->appManager->getEnabledAppsForUser($this->user));
+    $panels = $this->getPanelsList($type);
     // Load the classes using the server container
-    if(empty($panels[$type])) {
+    if(empty($panels)) {
       return [];
     }
-    foreach($panels[$type] as $panelClassName) {
+    foreach($panels as $panelClassName) {
       // Attempt to load the panel
       try {
-        $panel = $this->loadPanel();
+        $panel = $this->loadPanel($panelClassName);
         $section = $this->loadSection($type, $panel->getSectionID());
         $this->panels[$type][$section->getID()] = $panel;
-        $this->sections[$type] = $section;
+        $this->sections[$type][$section->getID] = $section;
         // Now try and initialise the ISection from the panel
       } catch (QueryException $e) {
-        // Just skip this panel
+        // Just skip this panel, either its section of panel could not be loaded
       }
-    }
-    // Load built in sections
-    foreach($this->getBuiltInSections() as $section) {
-      $this->panels[$type][$section->getID()] = $section;
     }
     // Return the panel array sorted
     foreach($this->panels[$type] as $sectionID => $section) {
@@ -201,8 +247,23 @@ class SettingsManager implements ISettingsManager {
   }
 
   /**
+   * Return the section object for the corresponding type and sectionID
+   * @param string $type
+   * @param string $sectionID
+   * @return ISection
+   */
+  protected function loadSection($type, $sectionID) {
+    // Load sections from defalt list
+    foreach($this->getBuiltInSections($type) as $section) {
+      if($section->getID() === $sectionID) {
+        return $section;
+      }
+    }
+  }
+
+  /**
    * Sort the array of IPanels or ISections by their priority attribute
-   * @param array of ISections of IPanels
+   * @param array $objects (ISections of IPanels)
    * @return array
    */
   protected function sortOrder($objects) {

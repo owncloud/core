@@ -22,22 +22,28 @@
 namespace OCP\Settings;
 
 /*
+ * Interface to register 'categories' for OCP\Settings\ISection objects within the UI.
  * @since 9.2
  */
 interface ISection {
 
   /**
+   * A string used for section identification, eg: in HTML
    * @since 9.2
+   * @return string
    */
   public function getID();
 
   /**
+   * A string to be displayed to the user for the section
    * @since 9.2
+   * @return string
    */
   public function getName();
 
   /**
    * @since 9.2
+   * @return int
    */
   public function getPriority();
 

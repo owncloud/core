@@ -22,27 +22,38 @@
 namespace OCP\Settings;
 
 /*
+ * Interface representing one small panel in the UI to hold settings for
+ * various functionality within ownCloud. May be used by apps to register panes
+ * in the personal and admin settings pages
  * @since 9.2
  */
 interface IPanel {
 
   /**
+   * The panel controller method that returns a template to the UI
    * @since 9.2
+   * @return OCP\TemplateResponse
    */
   public function getTemplate();
 
   /**
+   * A string to identify the section in the UI / HTML and URL
    * @since 9.2
+   * @return string
    */
   public function getSectionID();
 
   /**
+   * The name shown to the user in the UI
    * @since 9.2
+   * @return string
    */
   public function getName();
 
   /**
+   * The number used to order the section in the UI.
    * @since 9.2
+   * @return int between 0 and 100, with 100 being the highest priority
    */
   public function getPriority();
 

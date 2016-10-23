@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -22,12 +21,11 @@
 
 namespace OC\Settings\Controller;
 
-use \OCP\Settings\ISettingsManager;
-use \OCP\AppFramework\Controller;
-use \OCP\IURLGenerator;
-use \OCP\IRequest;
-use \OCP\AppFramework\Http\TemplateResponse;
-
+use OCP\Settings\ISettingsManager;
+use OCP\AppFramework\Controller;
+use OCP\IURLGenerator;
+use OCP\IRequest;
+use OCP\AppFramework\Http\TemplateResponse;
 
 /**
  * @package OC\Settings\Controller
@@ -39,6 +37,7 @@ class SettingsPageController extends Controller {
 
 	/** @var IURLGenerator */
 	private $urlGenerator;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
@@ -54,8 +53,11 @@ class SettingsPageController extends Controller {
 	}
 
 	/**
+	 * Creates the personal settings page
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @param string $sectionID
+	 * @return \OCP\TemplateResponse
 	 */
   public function getPersonal($sectionID) {
 		$this->currentSectionID = $sectionID;
@@ -63,13 +65,21 @@ class SettingsPageController extends Controller {
   }
 
 	/**
+	* Creates the admin settings page
 	 * @NoCSRFRequired
+	 * @param string $sectionID
+	 * @return \OCP\TemplateResponse
 	 */
 	public function getAdmin($sectionID) {
 		$this->currentSectionID = $sectionID;
 		return $this->createSettingsPage('admin');
   }
 
+	/**
+	 * Generates a settings page given the type (personal/admin)
+	 * @param string $type
+	 * @return \OCP\TemplateResponse
+	 */
 	protected function createSettingsPage($type) {
 		// Load sections and panels
 		if($type == 'personal') {
@@ -90,6 +100,13 @@ class SettingsPageController extends Controller {
 
 	}
 
+	/**
+	 * Gets an array used to generate the navigation in the UI
+	 * @param array $sections array of ISections
+	 * @param string $currentSectionID
+	 * @param string $type
+	 * @return array
+	 */
 	protected function getNavigation($sections, $currentSectionID, $type) {
 		$nav = [];
 		// Iterate through sections and get id, name and see if currently active
@@ -106,11 +123,13 @@ class SettingsPageController extends Controller {
 
 	/**
 	 * Iterate through the panels and retrieve the html content
+	 * @param array $panels array of IPanels
+	 * @return string the rendered HTML
 	 */
 	protected function getPanelsHtml($panels) {
 		$html = '';
 		foreach($panels as $panel) {
-			$html .= $panel->getForm()->renderAs('')->render();
+			$html .= $panel->getPanel()->renderAs('')->render();
 		}
 		return $html;
 	}
