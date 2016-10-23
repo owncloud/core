@@ -41,6 +41,8 @@ $application->registerRoutes($this, [
 		'AuthSettings' => ['url' => '/settings/personal/authtokens'],
 	],
 	'routes' => [
+		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal/{sectionid}', 'verb' => 'GET', 'defaults' => ['sectionid' => 'general']],
+		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
 		['name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/mailsettings', 'verb' => 'POST'],
 		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
 		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
@@ -70,8 +72,6 @@ $application->registerRoutes($this, [
 // Settings pages
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
-$this->create('settings_personal', '/settings/personal')
-	->actionInclude('settings/personal.php');
 $this->create('settings_users', '/settings/users')
 	->actionInclude('settings/users.php');
 $this->create('settings_admin', '/settings/admin')
@@ -88,7 +88,7 @@ $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
-	->actionInclude('settings/ajax/changegroupname.php');	
+	->actionInclude('settings/ajax/changegroupname.php');
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()

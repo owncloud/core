@@ -16,6 +16,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -77,6 +78,7 @@ use OC\Security\CredentialsManager;
 use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
+use OC\Settings\SettingsManager;
 use OC\Tagging\TagMapper;
 use OC\URLGenerator;
 use OC\Theme\ThemeService;
@@ -110,6 +112,17 @@ class Server extends ServerContainer implements IServerContainer {
 	public function __construct($webRoot, \OC\Config $config) {
 		parent::__construct();
 		$this->webRoot = $webRoot;
+
+		$this->registerService('SettingsManager', function($c) {
+			return new SettingsManager(
+				$c->getL10N('core'),
+				$c->getAppManager(),
+				$c->getUserSession(),
+				$c->getLogger(),
+				$c->getGroupManager(),
+				$c->getConfig()
+			);
+		});
 
 		$this->registerService('ContactsManager', function ($c) {
 			return new ContactsManager();
@@ -247,7 +260,7 @@ class Server extends ServerContainer implements IServerContainer {
 			} else {
 				$defaultTokenProvider = null;
 			}
-			
+
 			$userSession = new \OC\User\Session($manager, $session, $timeFactory, $defaultTokenProvider, $c->getConfig());
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
@@ -1087,6 +1100,16 @@ class Server extends ServerContainer implements IServerContainer {
 	public function getLogger() {
 		return $this->query('Logger');
 	}
+
+	/**
+	 * Returns a logger instance
+	 *
+	 * @return \OCP\Settings\ISettingsManager
+	 */
+	public function getSettingsManager() {
+		return $this->query('SettingsManager');
+	}
+
 
 	/**
 	 * Returns a router for generating and matching urls

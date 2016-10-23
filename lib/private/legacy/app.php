@@ -464,7 +464,7 @@ class OC_App {
 			$settings[] = [
 				"id" => "personal",
 				"order" => 1,
-				"href" => $urlGenerator->linkToRoute('settings_personal'),
+				"href" => $urlGenerator->linkToRoute('settings.SettingsPage.getPersonal'),
 				"name" => $l->t("Personal"),
 				"icon" => $urlGenerator->imagePath("settings", "personal.svg")
 			];
