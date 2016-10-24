@@ -51,6 +51,7 @@ class AppConfig implements IAppConfig {
 
 	/**
 	 * @param IDBConnection $conn
+	 * @param ICache $cache
 	 */
 	public function __construct(IDBConnection $conn, ICache $cache) {
 		$this->conn = $conn;
