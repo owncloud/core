@@ -1696,15 +1696,15 @@
 		 */
 		lazyLoadPreview : function(options) {
 			var mime = options.mime;
+			var ready = options.callback;
 
 			// get mime icon url
 			var iconURL = OC.MimeType.getIconUrl(mime);
 			ready(iconURL); // set mimeicon URL
 
-			if (mime.indexOf("text") == 0 || mime.indexOf("image") == 0){
+			if (mime.indexOf("text") === 0 || mime.indexOf("image") === 0){
 				var self = this;
 				var path = options.path;
-				var ready = options.callback;
 				var etag = options.etag;
 				var previewURL,
 					urlSpec = {};
