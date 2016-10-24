@@ -1430,7 +1430,7 @@
 			}
 			var specialChars = [decodeURIComponent('%00'), decodeURIComponent('%0A')];
 			for (i = 0; i < specialChars.length; i++) {
-				if (path.indexOf(specialChars[i]) >= 0) {
+				if (path.indexOf(specialChars[i]) !== -1) {
 					return false;
 				}
 			}
@@ -1557,8 +1557,8 @@
 					}
 				);
 			} catch (e) {
-				console.error(e);
 				if (e instanceof DOMException) {
+					console.error(e);
 					this.changeDirectory('/');
 					OC.Notification.showTemporary(t('files', 'Invalid path'));
 					return;
