@@ -46,8 +46,6 @@ class JSResourceLocator extends ResourceLocator {
 			$found += $this->appendIfExist($this->serverroot, $themeDirectory.$script.'.js');
 			$found += $this->appendIfExist($this->serverroot, $themeDirectory.'apps/'.$script.'.js');
 
-			//var_dump($this->resources); die();
-
 			if ($found) {
 				return;
 			}
