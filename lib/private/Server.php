@@ -322,19 +322,17 @@ class Server extends ServerContainer implements IServerContainer {
 			return new Cache\File();
 		});
 		$this->registerService('MemCacheFactory', function (Server $c) {
-			$config = $c->getConfig();
+			$config = $c->getSystemConfig();
 
-			if ($config->getSystemValue('installed', false) && !(defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
-				$v = \OC_App::getAppVersions();
-				$v['core'] = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
-				$version = implode(',', $v);
+			if ($config->getValue('installed', false) && !(defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
+				$version = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
 				$prefix = md5($instanceId . '-' . $version . '-' . $path);
 				return new \OC\Memcache\Factory($prefix, $c->getLogger(),
-					$config->getSystemValue('memcache.local', null),
-					$config->getSystemValue('memcache.distributed', null),
-					$config->getSystemValue('memcache.locking', null)
+					$config->getValue('memcache.local', null),
+					$config->getValue('memcache.distributed', null),
+					$config->getValue('memcache.locking', null)
 				);
 			}
 
