@@ -42,8 +42,6 @@
     "Unlimited" : "មិន​កំណត់",
     "None" : "គ្មាន",
     "Login" : "ចូល",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "ខ្វះ​ម៉ូឌុល 'fileinfo' ។ យើង​សូម​ណែនាំ​ឲ្យ​បើក​ម៉ូឌុល​នេះ ដើម្បី​ទទួល​បាន​លទ្ធផល​ល្អ​នៃ​ការ​សម្គាល់​ប្រភេទ mime ។",
     "Allow apps to use the Share API" : "អនុញ្ញាត​ឲ្យ​កម្មវិធី​ប្រើ API ចែក​រំលែក",
     "Allow public uploads" : "អនុញ្ញាត​ការ​ផ្ទុក​ឡើង​ជា​សាធារណៈ",

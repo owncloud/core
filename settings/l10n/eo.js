@@ -64,8 +64,6 @@ OC.L10N.register(
     "Fatal issues only" : "Fatalaĵoj nur",
     "None" : "Nenio",
     "Login" : "Ensaluti",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "Open documentation" : "Malfermi la dokumentaron",
     "Allow apps to use the Share API" : "Kapabligi aplikaĵojn uzi la API-on pri Kunhavigo",
     "Allow users to share via link" : "Permesi uzantojn kunhavigi ligile",

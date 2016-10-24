@@ -26,8 +26,6 @@ OC.L10N.register(
     "Unlimited" : "無限",
     "None" : "空",
     "Login" : "登入",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "days" : "天",
     "Encryption" : "加密",
     "Server address" : "伺服器地址",

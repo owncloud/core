@@ -25,8 +25,6 @@ OC.L10N.register(
     "never" : "երբեք",
     "add group" : "խումբ ավելացնել",
     "Unlimited" : "Անսահման",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "days" : "օր",
     "Server address" : "Սերվերի հասցե",
     "Version" : "Տարբերակ",

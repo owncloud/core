@@ -82,8 +82,6 @@
     "Login" : "Prijava",
     "Plain" : "Čisti tekst",
     "NT LAN Manager" : "NT LAN menedžer",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update." : "Samo-čitajuća konfiguracija je podešena. Ovo spriječava postavljanje neke konfiguracije putem web-sučelja. Nadalje, datoteka mora biti omogućena ručnu izmjenu pri svakom ažuriranju.",
     "PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible." : "PHP je očigledno postavljen da se skine inline doc blokova. To će nekoliko osnovnih aplikacija učiniti nedostupnim.",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Uzrok tome je vjerojatno neki ubrzivač predmemorisanja kao što je Zend OPcache ili eAccelerator.",

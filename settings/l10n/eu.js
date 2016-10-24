@@ -88,8 +88,6 @@ OC.L10N.register(
     "Login" : "Saio hasiera",
     "Plain" : "Arrunta",
     "NT LAN Manager" : "NT LAN Manager",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update." : "Bakarrik irakurtzeko konfigurazioa gaitu da. Honek web-interfazearen bidez konfigurazio batzuk aldatzea ekiditzen du. Are gehiago, fitxategia eskuz ezarri behar da idazteko moduan eguneraketa bakoitzerako.",
     "PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible." : "Badirudi PHP konfiguratuta dagoela lineako dokumentu blokeak aldatzeko. Honek zenbait oinarrizko aplikazio eskuraezin bihurtuko ditu.",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Hau ziur aski cache/accelerator batek eragin du, hala nola Zend OPcache edo eAccelerator.",

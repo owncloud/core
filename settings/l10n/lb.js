@@ -120,8 +120,6 @@ OC.L10N.register(
     "None" : "Keng",
     "Login" : "Login",
     "Plain" : "Kloer",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "This means that there might be problems with certain characters in file names." : "Dëst heescht dass Problemer mat bestëmmte Charaktere bei de Fichier Nimm optauche kéinten.",
     "All checks passed." : "All d'Tester bestanen.",
     "Open documentation" : "Dokumentatioun opmaachen",

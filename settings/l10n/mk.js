@@ -104,8 +104,6 @@ OC.L10N.register(
     "Login" : "Најава",
     "Plain" : "Чиста",
     "NT LAN Manager" : "NT LAN Менаџер",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "All checks passed." : "Сите проверки се поминати.",
     "Open documentation" : "Отвори ја документацијата",
     "Allow apps to use the Share API" : "Дозволете апликациите да го користат API-то за споделување",

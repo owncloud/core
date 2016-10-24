@@ -95,8 +95,6 @@ OC.L10N.register(
     "Login" : "Giriş",
     "Plain" : "Adi",
     "NT LAN Manager" : "NT LAN Manager",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update." : "Yalnız-Oxuma işə salınıb. Bu web-interface vasitəsilə edilən bəzi konfiqlərin qarşısını alır. Bundan başqa, fayl əllə edilən istənilən yenilınmə üçün yazılma yetkisinə sahib olmalıdır. ",
     "PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible." : "PHP göründüyü kimi, daxili doc bloklarının ayrılması işini görəcək. Bu bəzi özək proqramlarını əlçatılmaz edə bilər.",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Bu ola bilər ki, cache/accelerator such tərəfindən cağırılıb hansi ki, Zend OPcache və eAccelerator-da olduğu kimidir.",

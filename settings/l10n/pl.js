@@ -116,8 +116,6 @@ OC.L10N.register(
     "Login" : "Login",
     "Plain" : "Czysty tekst",
     "NT LAN Manager" : "NT LAN Manager",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible." : "Wygląda na to, że ustawienia PHP ucinają bloki wklejonych dokumentów. To sprawi, że niektóre wbudowane aplikacje będą niedostępne.",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Dzieje się tak prawdopodobnie przez cache lub akcelerator taki jak Zend OPcache lub eAccelerator.",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "Brak modułu PHP „fileinfo”. Zalecamy włączenie tego modułu, aby uzyskać najlepsze wyniki podczas wykrywania typów MIME.",

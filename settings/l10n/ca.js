@@ -108,8 +108,6 @@ OC.L10N.register(
     "Login" : "Inici de sessió",
     "Plain" : "Pla",
     "NT LAN Manager" : "Gestor NT LAN",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update." : "S'ha habilitat la configuració de només lectura. Això no permet ajustar algunes configuracions a través de la interfície web. A més, l'arxiu ha de fer-se modificable manualment per a cada actualització.",
     "PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible." : "Aparentment PHP està configurat per mostrar blocs en línia de documentació. Això farà que algunes aplicacions core siguin inaccessibles.",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Això probablement està provocat per una cau/accelerador com Zend OPcache o eAccelerator.",

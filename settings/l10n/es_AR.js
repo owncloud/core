@@ -61,8 +61,6 @@ OC.L10N.register(
     "Login" : "Ingresar",
     "Plain" : "Plano",
     "NT LAN Manager" : "Administrador NT LAN",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "El módulo PHP 'fileinfo' no existe. Es recomendable que actives este módulo para obtener mejores resultados con la detección mime-type",
     "System locale can not be set to a one which supports UTF-8." : "La localización del sistema no puede cambiarse a una que soporta UTF-8",
     "This means that there might be problems with certain characters in file names." : "Esto significa que puede haber problemas con ciertos caracteres en los nombres de archivos.",

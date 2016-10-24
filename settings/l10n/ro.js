@@ -110,8 +110,6 @@ OC.L10N.register(
     "None" : "Niciuna",
     "Login" : "Autentificare",
     "NT LAN Manager" : "NT LAN Manager",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "Modulul PHP \"Fileinfo\" lipsește. Va recomandam sa activaţi acest modul pentru a obține cele mai bune rezultate cu detectarea mime-type.",
     "All checks passed." : "Toate verificările s-au terminat fără erori.",
     "Open documentation" : "Deschide documentația",

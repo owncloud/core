@@ -106,8 +106,6 @@
     "Fatal issues only" : "Tik kritinės problemos",
     "None" : "Nieko",
     "Login" : "Prisijungti",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "Trūksta PHP modulio „fileinfo“. Labai rekomenduojame įjungti šį modulį, kad gauti geriausius rezultatus nustatant mime-tipą.",
     "Open documentation" : "Atidaryti dokumentą",
     "Allow apps to use the Share API" : "Leidžia programoms naudoti Share API",

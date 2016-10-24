@@ -122,8 +122,6 @@ OC.L10N.register(
     "Login" : "Innskráning",
     "Plain" : "Einfalt",
     "NT LAN Manager" : "NT LAN stjórnun",
-    "SSL" : "SSL",
-    "TLS" : "TLS",
     "System locale can not be set to a one which supports UTF-8." : "Ekki var hægt að setja staðfærslu kerfisins á neina sem styður UTF-8.",
     "All checks passed." : "Stóðst allar prófanir.",
     "Open documentation" : "Opna hjálparskjöl",
