@@ -497,7 +497,10 @@ class AppTest extends \Test\TestCase {
 	 */
 	private function restoreAppConfig() {
 		\OC::$server->registerService('AppConfig', function (\OC\Server $c) {
-			return new \OC\AppConfig($c->getDatabaseConnection());
+			return new \OC\AppConfig(
+				\OC::$server->getDatabaseConnection(),
+				\OC::$server->getMemCacheFactory()->create('appconfig')
+			);
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
 			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(), $c->getGroupManager(), $c->getMemCacheFactory(), $c->getEventDispatcher());

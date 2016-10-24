@@ -40,7 +40,10 @@ class AppConfigTest extends TestCase {
 		$sql->delete('appconfig');
 		$sql->execute();
 
-		$this->registerAppConfig(new \OC\AppConfig($this->connection));
+		$this->registerAppConfig(new \OC\AppConfig(
+			$this->connection,
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		));
 
 		$sql = $this->connection->getQueryBuilder();
 		$sql->insert('appconfig')
@@ -130,7 +133,10 @@ class AppConfigTest extends TestCase {
 			$sql->execute();
 		}
 
-		$this->registerAppConfig(new \OC\AppConfig(\OC::$server->getDatabaseConnection()));
+		$this->registerAppConfig(new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		));
 		parent::tearDown();
 	}
 
@@ -146,7 +152,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testGetApps() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$this->assertEquals([
 			'anotherapp',
@@ -157,7 +166,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testGetKeys() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$keys = $config->getKeys('testapp');
 		$this->assertEquals([
@@ -170,7 +182,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testGetValue() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$value = $config->getValue('testapp', 'installed_version');
 		$this->assertConfigKey('testapp', 'installed_version', $value);
@@ -183,7 +198,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testHasKey() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$this->assertTrue($config->hasKey('testapp', 'installed_version'));
 		$this->assertFalse($config->hasKey('testapp', 'nonexistant'));
@@ -191,7 +209,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testSetValueUpdate() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$this->assertEquals('1.2.3', $config->getValue('testapp', 'installed_version'));
 		$this->assertConfigKey('testapp', 'installed_version', '1.2.3');
@@ -215,7 +236,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testSetValueInsert() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$this->assertFalse($config->hasKey('someapp', 'somekey'));
 		$this->assertNull($config->getValue('someapp', 'somekey'));
@@ -233,7 +257,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testDeleteKey() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$this->assertTrue($config->hasKey('testapp', 'deletethis'));
 
@@ -255,7 +282,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testDeleteApp() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$this->assertTrue($config->hasKey('someapp', 'otherkey'));
 
@@ -275,7 +305,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testGetValuesNotAllowed() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$this->assertFalse($config->getValues('testapp', 'enabled'));
 
@@ -283,7 +316,10 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testGetValues() {
-		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$config = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 
 		$sql = \OC::$server->getDatabaseConnection()->getQueryBuilder();
 		$sql->select(['configkey', 'configvalue'])
@@ -317,8 +353,14 @@ class AppConfigTest extends TestCase {
 	}
 
 	public function testSettingConfigParallel() {
-		$appConfig1 = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
-		$appConfig2 = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+		$appConfig1 = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
+		$appConfig2 = new \OC\AppConfig(
+			\OC::$server->getDatabaseConnection(),
+			\OC::$server->getMemCacheFactory()->create('appconfig')
+		);
 		$appConfig1->getValue('testapp', 'foo', 'v1');
 		$appConfig2->getValue('testapp', 'foo', 'v1');
 
