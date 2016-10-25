@@ -101,9 +101,6 @@ class ResetPassword extends Command {
 				$output->writeln("<error>Passwords did not match or you didn't enter one!</error>");
 				return 1;
 			}
-
-
-
 		} else {
 			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a new password!</error>");
 			return 1;
