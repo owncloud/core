@@ -90,21 +90,19 @@ class ResetPassword extends Command {
 					return 1;
 				}
 			}
-			{
-			do {
-				$q = new Question('<question>Enter a new password: </question>', false);
-				$q->setHidden(true);
-				$password = $dialog->ask($input, $output, $q);
-				$q = new Question('<question>Confirm the new password: </question>', false);
-				$q->setHidden(true);
-				$confirm = $dialog->ask($input, $output, $q);
-				if ($password !== $confirm || (strlen($password) == 0)) {
-					$output->writeln("<error>Passwords did not match or you didn't enter one!</error>");
-					return 1;
-				}
-				}while (strlen($password) == 0);
 
+			$q = new Question('<question>Enter a new password: </question>', false);
+			$q->setHidden(true);
+			$password = $dialog->ask($input, $output, $q);
+			$q = new Question('<question>Confirm the new password: </question>', false);
+			$q->setHidden(true);
+			$confirm = $dialog->ask($input, $output, $q);
+			if ($password !== $confirm || (strlen($password) === 0)) {
+				$output->writeln("<error>Passwords did not match or you didn't enter one!</error>");
+				return 1;
 			}
+
+
 
 		} else {
 			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a new password!</error>");
