@@ -133,6 +133,8 @@ OC.L10N.register(
     "Login" : "התחברות",
     "Plain" : "רגיל",
     "NT LAN Manager" : "מנהל רשת NT",
+    "SSL/TLS" : "SSL/TLS",
+    "STARTTLS" : "STARTTLS",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response.",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "יש לבדוק את <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">הגדרות ההתקנה ↗</a> אחר הערות תצורת php ותצורת php של השרת שלך, בעיקר כשמשתמשים ב- php-fpm.",
     "The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update." : "תצורת קריאה בלבד הופעלה. תצורה זו מונעת קביעת מספר הגדרות באמצעות ממשק האינטרנט. יתר על כן, יש צורך להגדיר ההרשאות כתיבה באופן ידני לכל עדכון.",

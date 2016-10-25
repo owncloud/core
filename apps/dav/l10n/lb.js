@@ -6,12 +6,6 @@ OC.L10N.register(
     "Contacts" : "Kontakter",
     "Technical details" : "Technesch Detailer",
     "Remote Address: %s" : "D'Adress op Distanz: %s",
-    "Request ID: %s" : "ID ufroen: %s",
-    "Type: %s" : "Typ: %s",
-    "Code: %s" : "Code: %s",
-    "Message: %s" : "Noriicht: %s",
-    "File: %s" : "Fichier: %s",
-    "Line: %s" : "Zeil: %s",
-    "Trace" : "Spuren"
+    "Request ID: %s" : "ID ufroen: %s"
 },
 "nplurals=2; plural=(n != 1);");

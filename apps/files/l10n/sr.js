@@ -24,6 +24,7 @@ OC.L10N.register(
     "Select" : "Изабери",
     "Pending" : "На чекању",
     "Unable to determine date" : "Не могу да одредим датум",
+    "Invalid path" : "Неисправна путања",
     "This operation is forbidden" : "Ова радња је забрањена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Овај директоријум није доступан, проверите записе или контактирајте администратора",
     "No entries in this folder match '{filter}'" : "У овој фасцикли ништа се не поклапа са '{filter}'",

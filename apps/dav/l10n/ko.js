@@ -6,12 +6,6 @@ OC.L10N.register(
     "Contacts" : "연락처",
     "Technical details" : "기술 정보",
     "Remote Address: %s" : "원격 주소: %s",
-    "Request ID: %s" : "요청 ID: %s",
-    "Type: %s" : "종류: %s",
-    "Code: %s" : "코드: %s",
-    "Message: %s" : "메시지: %s",
-    "File: %s" : "파일: %s",
-    "Line: %s" : "줄: %s",
-    "Trace" : "추적"
+    "Request ID: %s" : "요청 ID: %s"
 },
 "nplurals=1; plural=0;");

@@ -23,6 +23,7 @@ OC.L10N.register(
     "Select" : "Избери",
     "Pending" : "Чакащо",
     "Unable to determine date" : "Неуспешно установяване на дата",
+    "Invalid path" : "Невалиден път",
     "No entries in this folder match '{filter}'" : "Нищо в тази папка не отговаря на '{filter}'",
     "Name" : "Име",
     "Size" : "Размер",

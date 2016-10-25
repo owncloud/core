@@ -25,6 +25,7 @@ OC.L10N.register(
     "Select" : "Оберіть",
     "Pending" : "Очікування",
     "Unable to determine date" : "Неможливо визначити дату",
+    "Invalid path" : "Невірний шлях",
     "This operation is forbidden" : "Ця операція заборонена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Директорія недоступна, будь ласка, перевірте файл журналу або зверніться до адміністратора  ",
     "No entries in this folder match '{filter}'" : "Нічого не знайдено в цій теці  '{filter}'",

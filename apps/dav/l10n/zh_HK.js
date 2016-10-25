@@ -2,8 +2,6 @@ OC.L10N.register(
     "dav",
     {
     "Personal" : "個人",
-    "Contacts" : "聯絡人",
-    "Message: %s" : "訊息: %s",
-    "File: %s" : "檔案: %s"
+    "Contacts" : "聯絡人"
 },
 "nplurals=1; plural=0;");

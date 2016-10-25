@@ -24,6 +24,7 @@ OC.L10N.register(
     "Select" : "Elekti",
     "Pending" : "Traktotaj",
     "Unable to determine date" : "Ne eblas determini daton",
+    "Invalid path" : "Nevalida vojo",
     "This operation is forbidden" : "Ĉi tiu operacio malpermesatas",
     "This directory is unavailable, please check the logs or contact the administrator" : "Ĉi tiu dosierujo maldisponeblas, bonvolu kontroli la protokolojn aŭ kontakti la administranton",
     "Could not move \"{file}\", target exists" : "Ne eblas movi “{file}”-n, celo jam ekzistas",

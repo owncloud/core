@@ -6,12 +6,6 @@ OC.L10N.register(
     "Contacts" : "Contautos",
     "Technical details" : "Detalles teúnicos",
     "Remote Address: %s" : "Accesu Remotu: %s",
-    "Request ID: %s" : "Solicitú d'ID: %s",
-    "Type: %s" : "Triba: %s",
-    "Code: %s" : "Códigu: %s",
-    "Message: %s" : "Mensaxe: %s",
-    "File: %s" : "Ficheru: %s",
-    "Line: %s" : "Llínea: %s",
-    "Trace" : "Traza"
+    "Request ID: %s" : "Solicitú d'ID: %s"
 },
 "nplurals=2; plural=(n != 1);");

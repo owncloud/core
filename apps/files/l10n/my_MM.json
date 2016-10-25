@@ -1,5 +1,6 @@
 { "translations": {
     "Files" : "ဖိုင်များ",
-    "Download" : "ဒေါင်းလုတ်"
+    "Download" : "ဒေါင်းလုတ်",
+    "Invalid path" : "လမ်း‌ေြကာင်းမှား"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

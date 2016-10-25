@@ -25,6 +25,7 @@ OC.L10N.register(
     "Select" : "Kiválaszt",
     "Pending" : "Folyamatban",
     "Unable to determine date" : "Nem lehet meghatározni a dátumot",
+    "Invalid path" : "Érvénytelen útvonal",
     "This operation is forbidden" : "Tiltott művelet",
     "This directory is unavailable, please check the logs or contact the administrator" : "Ez a könyvtár nem elérhető, kérem nézze meg a naplófájlokat vagy keresse az adminisztrátort",
     "Could not move \"{file}\", target exists" : "{file} fájl nem áthelyezhető, mert a cél már létezik",

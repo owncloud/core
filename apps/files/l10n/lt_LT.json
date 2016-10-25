@@ -25,6 +25,7 @@
     "Select" : "Pasirinkiti",
     "Pending" : "Laukiantis",
     "Unable to determine date" : "Nepavyksta nustatyti datos",
+    "Invalid path" : "Netinkamas kelias",
     "This operation is forbidden" : "Ši operacija yra uždrausta",
     "This directory is unavailable, please check the logs or contact the administrator" : "Katalogas nepasiekiamas, prašome peržiūrėti žurnalo įrašus arba susisiekti su administratoriumi",
     "Could not move \"{file}\", target exists" : "Nepavyko perkelti \"{file}\", toks jau egzistuoja",

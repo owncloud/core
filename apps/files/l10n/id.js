@@ -23,6 +23,7 @@ OC.L10N.register(
     "Select" : "Pilih",
     "Pending" : "Tertunda",
     "Unable to determine date" : "Tidak dapat menentukan tanggal",
+    "Invalid path" : "Jalur lokasi salah.",
     "This operation is forbidden" : "Operasi ini dilarang",
     "This directory is unavailable, please check the logs or contact the administrator" : "Direktori ini tidak tersedia, silakan periksa log atau hubungi kontak",
     "No entries in this folder match '{filter}'" : "Tidak ada entri di folder ini yang cocok dengan '{filter}'",

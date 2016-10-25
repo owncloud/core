@@ -27,6 +27,7 @@
     "Select" : "Vali",
     "Pending" : "Ootel",
     "Unable to determine date" : "Kuupäeva tuvastamine ei õnnestunud",
+    "Invalid path" : "Vigane tee",
     "This operation is forbidden" : "See toiming on keelatud",
     "This directory is unavailable, please check the logs or contact the administrator" : "See kaust pole saadaval. Palun kontrolli logifaile või võta ühendust administraatoriga",
     "Could not move \"{file}\"" : "\"{file}\" liigutamine ebaõnnestus",

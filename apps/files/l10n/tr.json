@@ -33,6 +33,7 @@
     "Select" : "Seç",
     "Pending" : "Bekliyor",
     "Unable to determine date" : "Tarih tespit edilemedi",
+    "Invalid path" : "Geçersiz yol",
     "This operation is forbidden" : "Bu işlem yasak",
     "This directory is unavailable, please check the logs or contact the administrator" : "Bu dizine yazılamıyor, lütfen günlüğü kontrol edin veya yönetici ile iletişime geçin",
     "Could not move \"{file}\", target exists" : "\"{file}\" taşınamadı, hedef mevcut",

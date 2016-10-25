@@ -35,6 +35,7 @@ OC.L10N.register(
     "Select" : "Esbillar",
     "Pending" : "Pendiente",
     "Unable to determine date" : "Imposible determinar la fecha",
+    "Invalid path" : "Camín inválidu",
     "This operation is forbidden" : "La operación ta prohibida",
     "This directory is unavailable, please check the logs or contact the administrator" : "Esti direutoriu nun ta disponible, por favor verifica'l rexistru o contacta l'alministrador",
     "Could not move \"{file}\", target exists" : "Nun pudo movese \"{file}\", destín yá esiste",

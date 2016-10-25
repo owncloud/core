@@ -24,6 +24,7 @@ OC.L10N.register(
     "Select" : "Selecciona",
     "Pending" : "Pendent",
     "Unable to determine date" : "No s'ha pogut determinar la data",
+    "Invalid path" : "El camí no és vàlid",
     "No entries in this folder match '{filter}'" : "No hi ha resultats que coincideixin amb '{filter}'",
     "Name" : "Nom",
     "Size" : "Mida",

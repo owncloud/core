@@ -22,6 +22,7 @@ OC.L10N.register(
     "Select" : "انتخاب",
     "Pending" : "در انتظار",
     "Unable to determine date" : "امکان تعیین تاریخ وجود ندارد",
+    "Invalid path" : "مسیر اشتباه",
     "This operation is forbidden" : "این عملیات غیرمجاز است",
     "This directory is unavailable, please check the logs or contact the administrator" : "پوشه‌ در دسترس نیست، لطفا لاگ‌ها را بررسی کنید یا به مدیر سیستم اطلاع دهید",
     "No entries in this folder match '{filter}'" : "هیچ ورودی‌ای با  '{filter}' تطبیق ندارد",

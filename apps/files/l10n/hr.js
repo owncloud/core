@@ -22,6 +22,7 @@ OC.L10N.register(
     "Select" : "Selektiraj",
     "Pending" : "Na čekanju",
     "Unable to determine date" : "Nemogucnost odredjivanja datuma",
+    "Invalid path" : "Pogrešna putanja",
     "No entries in this folder match '{filter}'" : "Nema zapisa u ovom folderu match '{filter}'",
     "Name" : "Naziv",
     "Size" : "Veličina",

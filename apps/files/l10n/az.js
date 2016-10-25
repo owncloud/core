@@ -23,6 +23,7 @@ OC.L10N.register(
     "Select" : "Seç",
     "Pending" : "Gözləmə",
     "Unable to determine date" : "Tarixi təyin etmək mümkün olmadı",
+    "Invalid path" : "Yalnış ünvan",
     "This operation is forbidden" : "Bu əməliyyat qadağandır",
     "This directory is unavailable, please check the logs or contact the administrator" : "Bu qovluq tapılmir. Xahiş olunur jurnalları yoxlayın ya da inzibatçı ilə əlaqə saxlayın",
     "No entries in this folder match '{filter}'" : "Bu qovluqda '{filter}' uyğunluğunda heç bir verilən tapılmadı",

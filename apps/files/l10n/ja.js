@@ -36,6 +36,7 @@ OC.L10N.register(
     "Select" : "選択",
     "Pending" : "中断",
     "Unable to determine date" : "更新日不明",
+    "Invalid path" : "無効なパス",
     "This operation is forbidden" : "この操作は禁止されています",
     "This directory is unavailable, please check the logs or contact the administrator" : "このディレクトリは利用できません。ログを確認するか管理者に問い合わせてください。",
     "Could not move \"{file}\", target exists" : "ターゲットが存在するため，ファイル \"{file}\"を移動できませんでした",

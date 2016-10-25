@@ -29,6 +29,7 @@ OC.L10N.register(
     "Select" : "Επιλογή",
     "Pending" : "Εκκρεμεί",
     "Unable to determine date" : "Αδυναμία προσδιορισμού ημερομηνίας ",
+    "Invalid path" : "Άκυρη διαδρομή",
     "This operation is forbidden" : "Αυτή η ενέργεια δεν επιτρέπεται",
     "This directory is unavailable, please check the logs or contact the administrator" : "Ο κατάλογος δεν είναι διαθέσιμος, παρακαλώ ελέγξτε τα αρχεία καταγραφής ή επικοινωνήστε με το διαχειριστή",
     "Could not move \"{file}\", target exists" : "Αδυναμία μετακίνησης του \"{file}\", υπάρχει ήδη αρχείο με αυτό το όνομα",

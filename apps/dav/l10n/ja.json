@@ -4,12 +4,6 @@
     "Contacts" : "アドレス帳",
     "Technical details" : "技術詳細",
     "Remote Address: %s" : "リモートアドレス: %s",
-    "Request ID: %s" : "リクエスト ID: %s",
-    "Type: %s" : "種類: %s",
-    "Code: %s" : "コード: %s",
-    "Message: %s" : "メッセージ: %s",
-    "File: %s" : "ファイル: %s",
-    "Line: %s" : "行: %s",
-    "Trace" : "トレース"
+    "Request ID: %s" : "リクエスト ID: %s"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

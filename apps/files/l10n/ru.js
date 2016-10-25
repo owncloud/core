@@ -38,6 +38,7 @@ OC.L10N.register(
     "Select" : "Выбрать",
     "Pending" : "Ожидается",
     "Unable to determine date" : "Невозможно определить дату",
+    "Invalid path" : "Некорректный путь",
     "This operation is forbidden" : "Операция запрещена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Директория недоступна, пожалуйста проверьте журнал сообщений или свяжитесь с администратором",
     "Could not move \"{file}\", target exists" : "Невозможно переместить \"{file}\", цель отсутствует",

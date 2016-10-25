@@ -8,6 +8,7 @@ OC.L10N.register(
     "Rename" : "পুনঃনামকরণ",
     "Delete" : "মুছে ফেলা",
     "Pending" : "মুলতুবি",
+    "Invalid path" : "অবৈধ পথ",
     "Name" : "নাম",
     "Size" : "আকার",
     "Folder" : "ফোল্ডার",

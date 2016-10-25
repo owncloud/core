@@ -22,6 +22,7 @@ OC.L10N.register(
     "Select" : "Seleccionar",
     "Pending" : "Pendientes",
     "Unable to determine date" : "No fue posible determinar la fecha",
+    "Invalid path" : "Ruta no válida",
     "Name" : "Nombre",
     "Size" : "Tamaño",
     "Modified" : "Modificado",

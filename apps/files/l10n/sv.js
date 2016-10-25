@@ -35,6 +35,7 @@ OC.L10N.register(
     "Select" : "Välj",
     "Pending" : "Väntar",
     "Unable to determine date" : "Misslyckades avgöra datum",
+    "Invalid path" : "Ogiltig sökväg",
     "This operation is forbidden" : "Denna operation är förbjuden",
     "This directory is unavailable, please check the logs or contact the administrator" : "Denna katalog är inte tillgänglig, kontrollera loggarna eller kontakta administratören",
     "Could not move \"{file}\", target exists" : "Kunde inte flytta \"{file}\", filen existerar redan",

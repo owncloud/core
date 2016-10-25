@@ -38,6 +38,7 @@ OC.L10N.register(
     "Select" : "Vybrat",
     "Pending" : "Nevyřízené",
     "Unable to determine date" : "Nelze určit datum",
+    "Invalid path" : "Chybná cesta",
     "This operation is forbidden" : "Tato operace je zakázána",
     "This directory is unavailable, please check the logs or contact the administrator" : "Tento adresář není dostupný, zkontrolujte prosím logy nebo kontaktujte svého správce systému",
     "Could not move \"{file}\", target exists" : "Nelze přesunout \"{file}\", cíl existuje",

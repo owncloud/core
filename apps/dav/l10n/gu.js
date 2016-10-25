@@ -6,12 +6,6 @@ OC.L10N.register(
     "Contacts" : "કોન્ટાક્ટ",
     "Technical details" : " તકનીકી  વિગતો ",
     "Remote Address: %s" : "દૂરનું એડ્રેસ: %s",
-    "Request ID: %s" : "રિક્વેસ્ટ આઈ ડી : %s ",
-    "Type: %s" : "પ્રકાર : %s",
-    "Code: %s" : "કોડ : %s",
-    "Message: %s" : "સંદેશ : %s ",
-    "File: %s" : "ફાઇલ : %s",
-    "Line: %s" : "લાઇન : %s",
-    "Trace" : "ટ્રૈસ"
+    "Request ID: %s" : "રિક્વેસ્ટ આઈ ડી : %s "
 },
 "nplurals=2; plural=(n != 1);");

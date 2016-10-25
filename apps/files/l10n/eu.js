@@ -24,6 +24,7 @@ OC.L10N.register(
     "Select" : "hautatu",
     "Pending" : "Zain",
     "Unable to determine date" : "Ezin izan da data zehaztu",
+    "Invalid path" : "Baliogabeko bidea",
     "No entries in this folder match '{filter}'" : "Karpeta honetan ez dago sarrerarik '{filter}' iragazkiarekin bat egiten dutenak",
     "Name" : "Izena",
     "Size" : "Tamaina",

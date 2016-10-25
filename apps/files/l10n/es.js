@@ -38,6 +38,7 @@ OC.L10N.register(
     "Select" : "Seleccionar",
     "Pending" : "Pendiente",
     "Unable to determine date" : "No se ha podido determinar la fecha",
+    "Invalid path" : "Ruta inválida",
     "This operation is forbidden" : "Esta operación está prohibida",
     "This directory is unavailable, please check the logs or contact the administrator" : "Esta carpeta no está disponible, por favor verifique los registros o contáctese con el administrador",
     "Could not move \"{file}\", target exists" : "No se pudo mover \"{file}\", destino ya existe",

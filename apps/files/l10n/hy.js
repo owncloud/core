@@ -12,6 +12,7 @@ OC.L10N.register(
     "Delete" : "Ջնջել",
     "Details" : "Մանրամասներ",
     "Select" : "Նշել",
+    "Invalid path" : "Անվավեր ուղի",
     "Name" : "Անուն",
     "Size" : "Չափս",
     "Modified" : "Փոփոխված",

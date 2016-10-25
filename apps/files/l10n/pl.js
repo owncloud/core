@@ -35,6 +35,7 @@ OC.L10N.register(
     "Select" : "Wybierz",
     "Pending" : "Oczekujące",
     "Unable to determine date" : "Nie można ustalić daty",
+    "Invalid path" : "niewłaściwa ścieżka",
     "This operation is forbidden" : "Ta operacja jest niedozwolona",
     "This directory is unavailable, please check the logs or contact the administrator" : "Ten folder jest niedostępny, proszę sprawdzić logi lub skontaktować się z administratorem.",
     "Could not move \"{file}\", target exists" : "Nie można było przenieść „{file}” – plik o takiej nazwie już istnieje",

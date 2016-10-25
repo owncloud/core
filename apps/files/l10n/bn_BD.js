@@ -18,6 +18,7 @@ OC.L10N.register(
     "Unshare" : "ভাগাভাগি বাতিল ",
     "Details" : "বিস্তারিত",
     "Pending" : "মুলতুবি",
+    "Invalid path" : "পথটি সঠিক নয়",
     "Name" : "রাম",
     "Size" : "আকার",
     "Modified" : "পরিবর্তিত",

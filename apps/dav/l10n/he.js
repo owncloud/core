@@ -6,12 +6,6 @@ OC.L10N.register(
     "Contacts" : "אנשי קשר",
     "Technical details" : "פרטים טכנים",
     "Remote Address: %s" : "כתובת מרוחקת: %s",
-    "Request ID: %s" : "מספר זיהוי מבוקש: %s",
-    "Type: %s" : "סוג: %s",
-    "Code: %s" : "קוד: %s",
-    "Message: %s" : "הודעה: %s",
-    "File: %s" : "קובץ: %s",
-    "Line: %s" : "שורה: %s",
-    "Trace" : "עקבות"
+    "Request ID: %s" : "מספר זיהוי מבוקש: %s"
 },
 "nplurals=2; plural=(n != 1);");

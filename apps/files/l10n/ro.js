@@ -31,6 +31,7 @@ OC.L10N.register(
     "Select" : "Alege",
     "Pending" : "În așteptare",
     "Unable to determine date" : "Nu s-a putut determina data",
+    "Invalid path" : "Cale invalidă",
     "This operation is forbidden" : "Operațiunea este interzisă",
     "This directory is unavailable, please check the logs or contact the administrator" : "Acest director nu este disponibil, te rugăm verifică logurile sau contactează un administrator",
     "Could not move \"{file}\", target exists" : "Nu s-a putut muta fișierul \"{file}\", există deja un altul cu același nume în directorul destinație",

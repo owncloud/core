@@ -19,6 +19,7 @@ OC.L10N.register(
     "Details" : "Детали:",
     "Select" : "Избери",
     "Pending" : "Чека",
+    "Invalid path" : "Грешна патека",
     "This operation is forbidden" : "Операцијата не е дозволена",
     "Name" : "Име",
     "Size" : "Големина",

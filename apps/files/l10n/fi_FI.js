@@ -33,6 +33,7 @@ OC.L10N.register(
     "Select" : "Valitse",
     "Pending" : "Odottaa",
     "Unable to determine date" : "Päivämäärän määrittäminen epäonnistui",
+    "Invalid path" : "Virheellinen polku",
     "This operation is forbidden" : "Tämä toiminto on kielletty",
     "This directory is unavailable, please check the logs or contact the administrator" : "Hakemisto ei ole käytettävissä. Tarkista lokit tai ole yhteydessä ylläpitoon.",
     "Could not move \"{file}\", target exists" : "Tiedoston \"{file}\" siirtäminen ei onnistunut, kohde on olemassa",

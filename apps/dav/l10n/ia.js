@@ -6,12 +6,6 @@ OC.L10N.register(
     "Contacts" : "Contactos",
     "Technical details" : "Detalios technic",
     "Remote Address: %s" : "Adresse remote: %s",
-    "Request ID: %s" : "ID de requesta: %s",
-    "Type: %s" : "Typo: %s",
-    "Code: %s" : "Codice: %s",
-    "Message: %s" : "Message: %s",
-    "File: %s" : "File: %s",
-    "Line: %s" : "Rango: %s",
-    "Trace" : "Tracia"
+    "Request ID: %s" : "ID de requesta: %s"
 },
 "nplurals=2; plural=(n != 1);");
