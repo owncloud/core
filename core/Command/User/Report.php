@@ -28,6 +28,7 @@ use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\Table;
 
 class Report extends Command {
 	/** @var IUserManager */
@@ -48,8 +49,7 @@ class Report extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		/** @var \Symfony\Component\Console\Helper\TableHelper $table */
-		$table = $this->getHelperSet()->get('table');
+		$table = new Table($output);
 		$table->setHeaders(['User Report', '']);
 		$userCountArray = $this->countUsers();
 		if(!empty($userCountArray)) {
