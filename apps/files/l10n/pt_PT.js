@@ -14,6 +14,7 @@ OC.L10N.register(
     "Upload cancelled." : "Envio cancelado.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Não é possível enviar {filename}, porque este é uma diretoria ou tem 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Não existe espaço suficiente, está a enviar {size1} mas resta apenas {size2}",
+    "Target folder \"{dir}\" does not exist any more" : "A pasta pretendida \"{dir}\" não existe mais",
     "Not enough free space" : "Não há espaço livre suficiente",
     "Uploading..." : "A enviar...",
     "..." : "...",
