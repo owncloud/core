@@ -40,11 +40,7 @@ $application->registerRoutes($this, [
 		],
 	],
 	'ocs' => [
-		[
-			'name' => 'sharees#search',
-			'url' => '/api/v1/sharees',
-			'verb' => 'GET',
-		]
+		['name' => 'sharees#search', 'url' => '/api/v1/sharees', 'verb' => 'GET'],
 	]
 ]);
 
