@@ -107,8 +107,8 @@ class ManagerTest extends TestCase {
 		$this->assertSame($comment->getVerb(), 'comment');
 		$this->assertSame($comment->getObjectType(), 'files');
 		$this->assertSame($comment->getObjectId(), 'file64');
-		$this->assertEquals($comment->getCreationDateTime(), $creationDT);
-		$this->assertEquals($comment->getLatestChildDateTime(), $latestChildDT);
+		$this->assertEquals($comment->getCreationDateTime()->format(\DateTime::ISO8601), $creationDT->format(\DateTime::ISO8601));
+		$this->assertEquals($comment->getLatestChildDateTime()->format(\DateTime::ISO8601), $latestChildDT->format(\DateTime::ISO8601));
 	}
 
 	/**
@@ -369,7 +369,7 @@ class ManagerTest extends TestCase {
 
 		$loadedComment = $manager->get($comment->getId());
 		$this->assertSame($comment->getMessage(), $loadedComment->getMessage());
-		$this->assertEquals($comment->getCreationDateTime(), $loadedComment->getCreationDateTime());
+		$this->assertEquals($comment->getCreationDateTime()->format(\DateTime::ISO8601), $loadedComment->getCreationDateTime()->format(\DateTime::ISO8601));
 	}
 
 	public function testSaveUpdate() {
@@ -573,7 +573,7 @@ class ManagerTest extends TestCase {
 
 		$dateTimeGet = $manager->getReadMark('robot', '36',  $user);
 
-		$this->assertEquals($dateTimeGet, $dateTimeSet);
+		$this->assertEquals($dateTimeGet->format(\DateTime::ISO8601), $dateTimeSet->format(\DateTime::ISO8601));
 	}
 
 	public function testSetMarkReadUpdate() {

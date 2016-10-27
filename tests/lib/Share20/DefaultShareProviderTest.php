@@ -744,7 +744,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame($path, $share2->getNode());
 		$this->assertSame('password', $share2->getPassword());
 		$this->assertSame('token', $share2->getToken());
-		$this->assertEquals($expireDate, $share2->getExpirationDate());
+		$this->assertEquals($expireDate->format(\DateTime::ISO8601), $share2->getExpirationDate()->format(\DateTime::ISO8601));
 	}
 
 	public function testGetShareByToken() {
