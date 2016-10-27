@@ -29,6 +29,10 @@ class Application extends App {
 	/** @var FederatedShareProvider */
 	protected $federatedShareProvider;
 
+	public function __construct(array $urlParams = []) {
+		parent::__construct('federatedfilesharing', $urlParams);
+	}
+
 	/**
 	 * get instance of federated share provider
 	 *

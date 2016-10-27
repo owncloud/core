@@ -28,6 +28,7 @@ namespace OCA\FederatedFileSharing;
 
 use OCA\Files_Sharing\Activity;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\OCSController;
 use OCP\Constants;
 use OCP\Files\NotFoundException;
 use OCP\IDBConnection;
@@ -40,9 +41,9 @@ use OCP\Share;
  * 
  * handles OCS Request to the federated share API
  *
- * @package OCA\FederatedFileSharing\API
+ * @package OCA\FederatedFileSharing
  */
-class RequestHandler {
+class RequestHandler extends OCSController {
 
 	/** @var FederatedShareProvider */
 	private $federatedShareProvider;
@@ -71,22 +72,25 @@ class RequestHandler {
 	/**
 	 * Server2Server constructor.
 	 *
+	 * @param string $appName
+	 * @param IRequest $request
 	 * @param FederatedShareProvider $federatedShareProvider
 	 * @param IDBConnection $connection
 	 * @param Share\IManager $shareManager
-	 * @param IRequest $request
 	 * @param Notifications $notifications
 	 * @param AddressHandler $addressHandler
 	 * @param IUserManager $userManager
 	 */
-	public function __construct(FederatedShareProvider $federatedShareProvider,
+	public function __construct($appName,
+								IRequest $request,
+								FederatedShareProvider $federatedShareProvider,
 								IDBConnection $connection,
 								Share\IManager $shareManager,
-								IRequest $request,
 								Notifications $notifications,
 								AddressHandler $addressHandler,
 								IUserManager $userManager
 	) {
+		parent::__construct($appName, $request);
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->connection = $connection;
 		$this->shareManager = $shareManager;
@@ -97,6 +101,8 @@ class RequestHandler {
 	}
 
 	/**
+	 * @PublicPage
+	 *
 	 * create a new share
 	 *
 	 * @param array $params
@@ -202,6 +208,8 @@ class RequestHandler {
 	}
 
 	/**
+	 * @PublicPage
+	 *
 	 * create re-share on behalf of another user
 	 *
 	 * @param $params
@@ -262,6 +270,8 @@ class RequestHandler {
 	}
 
 	/**
+	 * @PublicPage
+	 *
 	 * accept server-to-server share
 	 *
 	 * @param array $params
@@ -308,6 +318,8 @@ class RequestHandler {
 	}
 
 	/**
+	 * @PublicPage
+	 *
 	 * decline server-to-server share
 	 *
 	 * @param array $params
@@ -375,6 +387,8 @@ class RequestHandler {
 	}
 
 	/**
+	 * @PublicPage
+	 *
 	 * remove server-to-server share if it was unshared by the owner
 	 *
 	 * @param array $params
@@ -433,6 +447,8 @@ class RequestHandler {
 
 
 	/**
+	 * @PublicPage
+	 *
 	 * federated share was revoked, either by the owner or the re-sharer
 	 *
 	 * @param $params
@@ -536,6 +552,8 @@ class RequestHandler {
 	}
 
 	/**
+	 * @PublicPage
+	 *
 	 * update share information to keep federated re-shares in sync
 	 *
 	 * @param array $params
