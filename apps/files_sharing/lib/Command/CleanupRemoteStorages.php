@@ -29,7 +29,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Delete all storage entries that have no matching entries in the shares_external table.
+ * Cleanup 'shared::' storage entries that have no matching entries in the
+ * shares_external table.
  */
 class CleanupRemoteStorages extends Command {
 
@@ -46,7 +47,7 @@ class CleanupRemoteStorages extends Command {
 	protected function configure() {
 		$this
 			->setName('sharing:cleanup-remote-storages')
-			->setDescription('Show or delete storage entries that have no matching entries in the shares_external table')
+			->setDescription('Cleanup \'shared::\' storage entries that have no matching entries in the shares_external table')
 			->addOption(
 				'dry-run',
 				null,
@@ -81,6 +82,7 @@ class CleanupRemoteStorages extends Command {
 			foreach ($remoteStorages as $id => $numericId) {
 				if ($dryRun) {
 					$output->writeln("$id [$numericId] can be deleted");
+					$this->countFiles($numericId, $output);
 				} else {
 					$this->deleteStorage($id, $numericId, $output);
 				}
@@ -88,8 +90,22 @@ class CleanupRemoteStorages extends Command {
 		}
 	}
 
+	public function countFiles ($numericId, OutputInterface $output) {
+		$queryBuilder = $this->connection->getQueryBuilder();
+		$queryBuilder->select($queryBuilder->createFunction('count(fileid)'))
+			->from('filecache')
+			->where($queryBuilder->expr()->eq(
+				'storage',
+				$queryBuilder->createNamedParameter($numericId, IQueryBuilder::PARAM_STR),
+				IQueryBuilder::PARAM_STR)
+			);
+		$result = $queryBuilder->execute();
+		$count = $result->fetchColumn();
+		$output->writeln("$count files can be deleted for storage $numericId");
+	}
+
 	public function deleteStorage ($id, $numericId, OutputInterface $output) {
-		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->delete('storages')
 			->where($queryBuilder->expr()->eq(
 				'id',
@@ -99,20 +115,36 @@ class CleanupRemoteStorages extends Command {
 		$output->write("deleting $id [$numericId] ... ");
 		$count = $queryBuilder->execute();
 		$output->writeln("deleted $count");
+		$this->deleteFiles($numericId, $output);
+	}
+
+	public function deleteFiles ($numericId, OutputInterface $output) {
+		$queryBuilder = $this->connection->getQueryBuilder();
+		$queryBuilder->delete('filecache')
+			->where($queryBuilder->expr()->eq(
+				'storage',
+				$queryBuilder->createNamedParameter($numericId, IQueryBuilder::PARAM_STR),
+				IQueryBuilder::PARAM_STR)
+			);
+		$output->write("deleting files for storage $numericId ... ");
+		$count = $queryBuilder->execute();
+		$output->writeln("deleted $count");
 	}
 
 	public function getRemoteStorages() {
 
-		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select(['id', 'numeric_id'])
 			->from('storages')
 			->where($queryBuilder->expr()->like(
 				'id',
+				// match all 'shared::' + 32 characters storages
 				$queryBuilder->createNamedParameter('shared::________________________________', IQueryBuilder::PARAM_STR),
 				IQueryBuilder::PARAM_STR)
 			)
 			->andWhere($queryBuilder->expr()->notLike(
 				'id',
+				// but not the ones starting with a '/', they are for normal shares
 				$queryBuilder->createNamedParameter('shared::/%', IQueryBuilder::PARAM_STR),
 				IQueryBuilder::PARAM_STR)
 			);
@@ -129,7 +161,7 @@ class CleanupRemoteStorages extends Command {
 
 	public function getRemoteShareIds() {
 
-		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$queryBuilder = $this->connection->getQueryBuilder();
 		$queryBuilder->select(['id', 'share_token', 'remote'])
 			->from('share_external');
 		$query = $queryBuilder->execute();

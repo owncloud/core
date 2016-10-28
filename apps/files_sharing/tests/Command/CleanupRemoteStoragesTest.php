@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\Files\Tests\Command;
+namespace OCA\Files_Sharing\Tests\Command;
 
 use OCA\Files_Sharing\Command\CleanupRemoteStorages;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -30,7 +30,7 @@ use Test\TestCase;
  *
  * @group DB
  *
- * @package OCA\Files\Tests\Command
+ * @package OCA\Files_Sharing\Tests\Command
  */
 class CleanupRemoteStoragesTest extends TestCase {
 
