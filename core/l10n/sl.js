@@ -147,6 +147,7 @@ OC.L10N.register(
     "Expiration" : "Datum preteka",
     "Expiration date" : "Datum preteka",
     "Choose a password for the public link" : "Izberite geslo za javno povezavo",
+    "Choose a password for the public link or press enter" : "Izberite geslo za javno povezavo, ali pa pritisnite vnosno tipko",
     "Copied!" : "Kopirano!",
     "Not supported!" : "Možnost ni podprta!",
     "Press ⌘-C to copy." : "Pritisnite tipki ⌘-C za kopiranje.",

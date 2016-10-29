@@ -147,6 +147,7 @@ OC.L10N.register(
     "Expiration" : "Scadenza",
     "Expiration date" : "Data di scadenza",
     "Choose a password for the public link" : "Scegli una password per il collegamento pubblico",
+    "Choose a password for the public link or press enter" : "Scegli una password per il collegamento pubblico o premi Invio",
     "Copied!" : "Copiato!",
     "Not supported!" : "Non supportato!",
     "Press ⌘-C to copy." : "Premi ⌘-C per copiare.",
