@@ -44,9 +44,9 @@ class SettingsPageController extends Controller {
 	 * @param ISettingsManager $settingsManager
 	 */
 	public function __construct($appName,
-		IRequest $request,
-        ISettingsManager $settingsManager,
-		IURLGenerator $urlGenerator) {
+								IRequest $request,
+						        ISettingsManager $settingsManager,
+								IURLGenerator $urlGenerator) {
 		parent::__construct($appName, $request);
     	$this->settingsManager = $settingsManager;
 		$this->urlGenerator = $urlGenerator;

@@ -26,8 +26,7 @@ use OCP\Template;
 use OCP\IUser;
 use OCP\IGroupManager;
 use OCP\IUserSession;
-use OCP\IConfig
-
+use OCP\IConfig;
 
 class Profile implements IPanel {
 
