@@ -914,7 +914,8 @@
 				tr,
 				fileData,
 				newTrs = [],
-				isAllSelected = this.isAllSelected();
+				isAllSelected = this.isAllSelected(),
+				showHidden = this._filesConfig.get('showhidden');
 
 			if (index >= this.files.length) {
 				return false;
@@ -938,7 +939,10 @@
 				}
 				newTrs.push(tr);
 				index++;
-				count--;
+				// only count visible rows
+				if (showHidden || !tr.hasClass('hidden-file')) {
+					count--;
+				}
 			}
 
 			// trigger event for newly added rows
