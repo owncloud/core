@@ -41,14 +41,14 @@ class SettingsPageController extends Controller {
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
-   * @param ISettingsManager $settingsManager
+	 * @param ISettingsManager $settingsManager
 	 */
 	public function __construct($appName,
-								IRequest $request,
-                ISettingsManager $settingsManager,
-								IURLGenerator $urlGenerator) {
+		IRequest $request,
+        ISettingsManager $settingsManager,
+		IURLGenerator $urlGenerator) {
 		parent::__construct($appName, $request);
-    $this->settingsManager = $settingsManager;
+    	$this->settingsManager = $settingsManager;
 		$this->urlGenerator = $urlGenerator;
 	}
 
@@ -58,14 +58,14 @@ class SettingsPageController extends Controller {
 	 * @NoCSRFRequired
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
-	 */
-  public function getPersonal($sectionID) {
+	*/
+	public function getPersonal($sectionID) {
 		$this->currentSectionID = $sectionID;
 		return $this->createSettingsPage('personal');
-  }
+	}
 
 	/**
-	* Creates the admin settings page
+	 * Creates the admin settings page
 	 * @NoCSRFRequired
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
@@ -73,7 +73,7 @@ class SettingsPageController extends Controller {
 	public function getAdmin($sectionID) {
 		$this->currentSectionID = $sectionID;
 		return $this->createSettingsPage('admin');
-  }
+	}
 
 	/**
 	 * Generates a settings page given the type (personal/admin)
@@ -97,7 +97,6 @@ class SettingsPageController extends Controller {
 		// Send the response
 		$response = new TemplateResponse($this->appName, 'settingsPage', $params);
 		return $response;
-
 	}
 
 	/**

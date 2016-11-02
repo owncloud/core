@@ -47,7 +47,6 @@ use OC\Settings\Middleware\SubadminMiddleware;
 use OCP\AppFramework\App;
 use OCP\IContainer;
 use OCP\Util;
-use OC\Settings\Panels\Personal\Profile;
 
 /**
  * @package OC\Settings
@@ -62,16 +61,13 @@ class Application extends App {
 
 		$container = $this->getContainer();
 
-		/**
-		 * UI setting panels
-		 */
-		$container->registerService('Profile', function($c) {
-			return new Profile(
-				$c->query('Config'),
-				$c->query('GroupManager'),
-				$c->query('UserSession')
-			);
-		});
+		$container->registerService('Profile', function(IContainer $c) {
+		   return new \OC\Settings\Panels\Personal\Profile(
+			   $c->query('Config'),
+			   $c->query('GroupManager'),
+			   $c->query('ServerContainer')->getURLGenerator()
+		   );
+	   });
 
 		/**
 		 * Controllers

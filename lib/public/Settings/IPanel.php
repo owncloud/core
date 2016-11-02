@@ -34,7 +34,7 @@ interface IPanel {
    * @since 9.2
    * @return OCP\TemplateResponse
    */
-  public function getTemplate();
+  public function getPanel();
 
   /**
    * A string to identify the section in the UI / HTML and URL
