@@ -514,7 +514,9 @@ class OC {
 			self::initPaths();
 		} catch (\RuntimeException $e) {
 			if (!self::$CLI) {
-				OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
+				// can`t use OC_Response::setStatus because server is not
+				// initialized here
+				http_response_code(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 			}
 			// we can't use the template error page here, because this needs the
 			// DI container which isn't available yet
