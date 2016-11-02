@@ -197,9 +197,9 @@
 			return _.extend({
 				formattedTimestamp: OC.Util.formatDate(timestamp),
 				relativeTimestamp: OC.Util.relativeModifiedDate(timestamp),
-                                humanReadableSize: OC.Util.humanFileSize(size, true),
-                                altSize: n('files', '%n byte', '%n bytes', size),
-                                hasDetails: version.has('size'),
+				humanReadableSize: OC.Util.humanFileSize(size, true),
+				altSize: n('files', '%n byte', '%n bytes', size),
+				hasDetails: version.has('size'),
 				downloadUrl: version.getDownloadUrl(),
 				downloadIconUrl: OC.imagePath('core', 'actions/download'),
 				revertIconUrl: OC.imagePath('core', 'actions/history'),
