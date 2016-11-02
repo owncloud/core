@@ -10,27 +10,27 @@
 
 (function() {
 	var TEMPLATE_ITEM =
-                '<li data-revision="{{timestamp}}">' +
-                '<div>' +
-                '<div class="preview-container">' +
-	        '<img class="preview" src="{{previewUrl}}"/>' +
-                '</div>' +
-                '<div class="version-container">' +
-                '<div>' +
-                '<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
-                '<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
+		'<li data-revision="{{timestamp}}">' +
+		'<div>' +
+		'<div class="preview-container">' +
+		'<img class="preview" src="{{previewUrl}}"/>' +
+		'</div>' +
+		'<div class="version-container">' +
+		'<div>' +
+		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
+		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
 		'</a>' +
-                '</div>' +
-                '{{#hasDetails}}' +
-                '<div class="version-details">' +
-                '<span class="size has-tooltip" title="{{altSize}}">{{humanReadableSize}}</span>' +
-                '</div>' +
-                '{{/hasDetails}}' +
-                '</div>' +
+		'</div>' +
+		'{{#hasDetails}}' +
+		'<div class="version-details">' +
+		'<span class="size has-tooltip" title="{{altSize}}">{{humanReadableSize}}</span>' +
+		'</div>' +
+		'{{/hasDetails}}' +
+		'</div>' +
 		'{{#canRevert}}' +
 		'<a href="#" class="revertVersion" title="{{revertLabel}}"><img src="{{revertIconUrl}}" /></a>' +
 		'{{/canRevert}}' +
-                '</div>' +
+		'</div>' +
 		'</li>';
 
 	var TEMPLATE =
