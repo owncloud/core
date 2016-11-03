@@ -1,3 +1,10 @@
+# This Makefile has many targets. 
+# Use ... for ...
+# Detailled Documentation see: ...
+#
+# Requirements to run make here:
+# sudo apt-get install npm node
+
 NODE_PREFIX=build
 
 #
