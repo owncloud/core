@@ -4,10 +4,10 @@
 #    - node
 #    - npm
 #
-# Not recommended:
-# sudo apt-get install npm node
-# These are too old in e.g. Ubuntu 14.04
-# 
+# Both can be installed following e.g. the Debian/Ubuntu instructions at
+# https://nodejs.org/en/download/package-manager/
+# (sudo apt-get install node # not recommended, often old versions)
+#
 #
 # Usage:
 #
