@@ -138,7 +138,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$qb->execute();
 
@@ -167,7 +167,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals('shareOwner', $share->getShareOwner());
 		$this->assertEquals($ownerPath, $share->getNode());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals(null, $share->getToken());
 		$this->assertEquals(null, $share->getExpirationDate());
 		$this->assertEquals('myTarget', $share->getTarget());
@@ -185,7 +185,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$qb->execute();
 
@@ -202,7 +202,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('sharedWith', $share->getSharedWith());
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals('shareOwner', $share->getShareOwner());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals(null, $share->getToken());
 		$this->assertEquals(null, $share->getExpirationDate());
 		$this->assertEquals('myTarget', $share->getTarget());
@@ -220,7 +220,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$qb->execute();
 
@@ -246,7 +246,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals('shareOwner', $share->getShareOwner());
 		$this->assertEquals($ownerPath, $share->getNode());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals(null, $share->getToken());
 		$this->assertEquals(null, $share->getExpirationDate());
 		$this->assertEquals('myTarget', $share->getTarget());
@@ -264,7 +264,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 
@@ -289,7 +289,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals('shareOwner', $share->getShareOwner());
 		$this->assertEquals($ownerPath, $share->getNode());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals(null, $share->getToken());
 		$this->assertEquals(null, $share->getExpirationDate());
 		$this->assertEquals('myTarget', $share->getTarget());
@@ -345,7 +345,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 				'token' => $qb->expr()->literal('token'),
 				'expiration' => $qb->expr()->literal('2000-01-02 00:00:00'),
 			]);
@@ -371,7 +371,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals('shareOwner', $share->getShareOwner());
 		$this->assertEquals($ownerPath, $share->getNode());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals('token', $share->getToken());
 		$this->assertEquals(\DateTime::createFromFormat('Y-m-d H:i:s', '2000-01-02 00:00:00'), $share->getExpirationDate());
 		$this->assertEquals('myTarget', $share->getTarget());
@@ -387,7 +387,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 
@@ -431,7 +431,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 
@@ -463,7 +463,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id = $qb->getLastInsertId();
@@ -477,7 +477,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 				'parent'      => $qb->expr()->literal($id),
 			]);
 		$this->assertEquals(1, $qb->execute());
@@ -521,7 +521,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$qb->execute();
 
@@ -759,7 +759,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'     => $qb->expr()->literal('file'),
 				'file_source'   => $qb->expr()->literal(42),
 				'file_target'   => $qb->expr()->literal('myTarget'),
-				'permissions'   => $qb->expr()->literal(13),
+				'permissions'   => $qb->expr()->literal(19),
 				'token'         => $qb->expr()->literal('secrettoken'),
 			]);
 		$qb->execute();
@@ -837,7 +837,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal($fileId),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id = $qb->getLastInsertId();
@@ -902,7 +902,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal($fileId),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id = $qb->getLastInsertId();
@@ -964,7 +964,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal($fileId),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id = $qb->getLastInsertId();
@@ -1156,7 +1156,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal($deletedFileId),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 
@@ -1205,7 +1205,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id = $qb->getLastInsertId();
@@ -1239,7 +1239,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('shareOwner', $share->getShareOwner());
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals('myTarget', $share->getTarget());
 	}
 
@@ -1254,7 +1254,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type'   => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id = $qb->getLastInsertId();
@@ -1289,7 +1289,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('shareOwner', $share->getShareOwner());
 		$this->assertEquals('sharedBy', $share->getSharedBy());
 		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals('myTarget', $share->getTarget());
 	}
 
@@ -1304,7 +1304,7 @@ class DefaultShareProviderTest extends TestCase {
 				'item_type' => $qb->expr()->literal('file'),
 				'file_source' => $qb->expr()->literal(42),
 				'file_target' => $qb->expr()->literal('myTarget'),
-				'permissions' => $qb->expr()->literal(13),
+				'permissions' => $qb->expr()->literal(19),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		$id1 = $qb->getLastInsertId();
@@ -1339,7 +1339,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('shareOwner', $share->getShareOwner());
 		$this->assertSame('shareOwner', $share->getSharedBy());
 		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
-		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(19, $share->getPermissions());
 		$this->assertEquals('myTarget', $share->getTarget());
 
 		$share = $shares[1];
@@ -1350,6 +1350,54 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
 		$this->assertEquals(0, $share->getPermissions());
 		$this->assertEquals('userTarget', $share->getTarget());
+	}
+
+	public function permissionMaskProvider() {
+		return [
+			['file', 23, 19],
+			['folder', 23, 23],
+		];
+	}
+
+	/**
+	 * @dataProvider permissionMaskProvider
+	 */
+	public function testGetShareMasksInvalidFileSharePermissions($itemType, $dbPerms, $returnedPerms) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->insert('share')
+			->values([
+				'share_type'  => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+				'share_with'  => $qb->expr()->literal('sharedWith'),
+				'uid_owner'   => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
+				'item_type'   => $qb->expr()->literal($itemType),
+				'file_source' => $qb->expr()->literal(42),
+				'file_target' => $qb->expr()->literal('myTarget'),
+				'permissions' => $qb->expr()->literal($dbPerms),
+			]);
+		$qb->execute();
+
+		$id = $qb->getLastInsertId();
+
+		$sharedBy = $this->createMock(IUser::class);
+		$sharedBy->method('getUID')->willReturn('sharedBy');
+		$shareOwner = $this->createMock(IUser::class);
+		$shareOwner->method('getUID')->willReturn('shareOwner');
+
+		$ownerPath = $this->createMock(File::class);
+		$shareOwnerFolder = $this->createMock(Folder::class);
+		$shareOwnerFolder->method('getById')->with(42)->willReturn([$ownerPath]);
+
+		$this->rootFolder
+			->method('getUserFolder')
+			->will($this->returnValueMap([
+				['shareOwner', $shareOwnerFolder],
+			]));
+
+		$share = $this->provider->getShareById($id);
+
+		$this->assertEquals($returnedPerms, $share->getPermissions());
 	}
 
 	public function testDeleteFromSelfGroupNoCustomShare() {
