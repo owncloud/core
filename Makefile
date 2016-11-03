@@ -23,9 +23,9 @@
 #   make test-js
 #      - testing targets
 
-# Detailled documentation in https://github.com/owncloud/documentation:
-#      - developer_manual/general/devenv.rst
-#      - developer_manual/core/unit-testing.rst 
+# Detailed documentation in https://github.com/owncloud/documentation:
+#      - https://doc.owncloud.org/server/9.2/developer_manual/general/devenv.html#check-out-the-code
+#      - https://doc.owncloud.org/server/9.2/developer_manual/core/unit-testing.html#running-unit-tests-for-the-owncloud-core-project
 #
 
 NODE_PREFIX=build
