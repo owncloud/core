@@ -6,17 +6,21 @@
 #
 # Both can be installed following e.g. the Debian/Ubuntu instructions at
 # https://nodejs.org/en/download/package-manager/
-# (sudo apt-get install node # not recommended, often old versions)
+#
+#  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+#  sudo apt-get install -y nodejs build-essential
+#  
+# (installation from distro packages is not recommended, often old versions)
 #
 #
 # Usage:
 #
-# make
+#   make
 #      - prepare everything
-# make clean
+#   make clean
 #      - clean up
-# make test-php
-# make test-js
+#   make test-php
+#   make test-js
 #      - testing targets
 
 # Detailled documentation in https://github.com/owncloud/documentation:
