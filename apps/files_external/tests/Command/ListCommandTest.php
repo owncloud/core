@@ -31,6 +31,7 @@ use OCA\Files_External\Lib\Backend\Local;
 use OC\Files\External\StorageConfig;
 use OCP\Files\External\IStorageConfig;
 use Symfony\Component\Console\Output\BufferedOutput;
+use OCP\Files\External\Backend\InvalidBackend;
 
 class ListCommandTest extends CommandTest {
 	/**
@@ -70,5 +71,27 @@ class ListCommandTest extends CommandTest {
 		$output = json_decode($output->fetch(), true);
 
 		$this->assertNotEquals($output[0]['authentication_type'], $output[1]['authentication_type']);
+	}
+
+	public function testDisplayWarningForIncomplete() {
+		$l10n = $this->createMock('\OCP\IL10N', null, [], '', false);
+		$session = $this->createMock('\OCP\ISession');
+		$crypto = $this->createMock('\OCP\Security\ICrypto');
+		$instance = $this->getInstance();
+		// FIXME: use mock of IStorageConfig
+		$mount1 = new StorageConfig();
+		$mount1->setAuthMechanism(new Password());
+		$mount1->setBackend(new InvalidBackend('InvalidId'));
+		$mount2 = new StorageConfig();
+		$mount2->setAuthMechanism(new SessionCredentials($session, $crypto));
+		$mount2->setBackend(new Local($l10n, new NullMechanism()));
+		$input = $this->getInput($instance);
+		$output = new BufferedOutput();
+
+		$instance->listMounts('', [$mount1, $mount2], $input, $output);
+		$output = $output->fetch();
+
+		$lines = explode($output, "\n");
+		$this->assertRegexp('/Number of invalid storages found/', $output);
 	}
 }

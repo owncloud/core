@@ -31,6 +31,9 @@ use OC\Files\External\Service\StoragesService;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\IStoragesBackendService;
 use Test\TestCase;
+use OCP\Files\External\Backend\InvalidBackend;
+use OCP\Files\External\Auth\InvalidAuth;
+use OCP\Files\External\Backend\Backend;
 
 /**
  * @group DB
@@ -66,6 +69,11 @@ abstract class StoragesServiceTest extends TestCase {
 	 * @var \PHPUnit_Framework_MockObject_MockObject | \OCP\Files\Config\IUserMountCache
 	 */
 	protected $mountCache;
+
+	/**
+	 * @var Backend[]
+	 */
+	protected $backends;
 
 	public function setUp() {
 		parent::setUp();
@@ -108,21 +116,24 @@ abstract class StoragesServiceTest extends TestCase {
 
 		$sftpBackend = $this->getBackendMock('\OCA\Files_External\Lib\Backend\SFTP', '\OCA\Files_External\Lib\Storage\SFTP');
 		$dummyBackend = $this->getBackendMock('\Test\Files\External\Backend\DummyBackend', '\Test\Files\External\Backend\DummyStorage');
-		$backends = [
+		$this->backends = [
 			'identifier:\OCA\Files_External\Lib\Backend\SMB' => $this->getBackendMock('\OCA\Files_External\Lib\Backend\SMB', '\OCA\Files_External\Lib\Storage\SMB'),
 			'identifier:\OCA\Files_External\Lib\Backend\SFTP' => $sftpBackend,
 			'identifier:\Test\Files\External\Backend\DummyBackend' => $dummyBackend,
 			'identifier:sftp_alias' => $sftpBackend,
 		];
 		$this->backendService->method('getBackend')
-			->will($this->returnCallback(function ($backendClass) use ($backends) {
-				if (isset($backends[$backendClass])) {
-					return $backends[$backendClass];
+			->will($this->returnCallback(function ($backendClass) {
+				if (isset($this->backends[$backendClass])) {
+					return $this->backends[$backendClass];
 				}
 				return null;
 			}));
 		$this->backendService->method('getBackends')
-			->will($this->returnValue($backends));
+			->will($this->returnCallback(function () {
+				// in case they changed
+				return $this->backends;
+			}));
 
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
@@ -349,27 +360,29 @@ abstract class StoragesServiceTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testCreateStorageInvalidClass() {
-		$this->service->createStorage(
+		$storageConfig = $this->service->createStorage(
 			'mount',
 			'identifier:\OC\Not\A\Backend',
 			'identifier:\Auth\Mechanism',
 			[]
 		);
+
+		$this->assertInstanceOf(InvalidBackend::class, $storageConfig->getBackend());
+
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testCreateStorageInvalidAuthMechanismClass() {
-		$this->service->createStorage(
+		$storageConfig = $this->service->createStorage(
 			'mount',
 			'identifier:\OCA\Files_External\Lib\Backend\SMB',
 			'identifier:\Not\An\Auth\Mechanism',
 			[]
 		);
+		$this->assertInstanceOf(InvalidAuth::class, $storageConfig->getAuthMechanism());
 	}
 
 	public function testGetStoragesBackendNotVisible() {
@@ -485,5 +498,29 @@ abstract class StoragesServiceTest extends TestCase {
 		$this->assertEquals('/mountpoint2', $savedStorage->getMountPoint());
 		$this->assertEquals($newAuthMechanism, $savedStorage->getAuthMechanism());
 		$this->assertEquals('password2', $savedStorage->getBackendOption('password'));
+	}
+
+	/**
+	 * @expectedException OCP\Files\External\NotFoundException
+	 */
+	public function testCannotEditInvalidBackend() {
+		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
+		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
+
+		$storage = new StorageConfig();
+		$storage->setMountPoint('mountpoint');
+		$storage->setBackend($backend);
+		$storage->setAuthMechanism($authMechanism);
+		$storage->setBackendOptions(['password' => 'testPassword']);
+
+		$savedStorage = $this->service->addStorage($storage);
+
+		// make it invalid
+		$this->backends['identifier:\Test\Files\External\Backend\DummyBackend'] = new InvalidBackend('identifier:\Test\Files\External\Backend\DummyBackend');
+
+		$updatedStorage = new StorageConfig($savedStorage->getId());
+		$updatedStorage->setBackendOptions(['password' => 'password2']);
+
+		$this->service->updateStorage($updatedStorage);
 	}
 }

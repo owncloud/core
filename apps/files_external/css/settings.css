@@ -102,3 +102,13 @@ td.mountPoint, td.backend { width:160px; }
 #externalStorage .mountOptionsDropdown {
 	margin-right: 40px;
 }
+
+#externalStorage td.configuration .error-invalid,
+#externalStorage td.authentication .error-invalid {
+	white-space: normal;
+
+}
+
+#externalStorage tr.invalid {
+	background-color: #F2DEDE;
+}
