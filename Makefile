@@ -1,9 +1,28 @@
-# This Makefile has many targets. 
-# Use ... for ...
-# Detailled Documentation see: ...
+# Main Makefile for ownCloud development
 #
 # Requirements to run make here:
+#    - node
+#    - npm
+#
+# Not recommended:
 # sudo apt-get install npm node
+# These are too old in e.g. Ubuntu 14.04
+# 
+#
+# Usage:
+#
+# make
+#      - prepare everything
+# make clean
+#      - clean up
+# make test-php
+# make test-js
+#      - testing targets
+
+# Detailled documentation in https://github.com/owncloud/documentation:
+#      - developer_manual/general/devenv.rst
+#      - developer_manual/core/unit-testing.rst 
+#
 
 NODE_PREFIX=build
 
