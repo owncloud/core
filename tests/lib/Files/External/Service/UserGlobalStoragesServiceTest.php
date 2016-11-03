@@ -366,4 +366,9 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 		// we don't test this here
 		$this->assertTrue(true);
 	}
+
+	public function testCannotEditInvalidBackend() {
+		// we don't test this here
+		$this->assertTrue(true);
+	}
 }
