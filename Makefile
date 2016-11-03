@@ -1,3 +1,33 @@
+# Main Makefile for ownCloud development
+#
+# Requirements to run make here:
+#    - node
+#    - npm
+#
+# Both can be installed following e.g. the Debian/Ubuntu instructions at
+# https://nodejs.org/en/download/package-manager/
+#
+#  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+#  sudo apt-get install -y nodejs build-essential
+#  
+# (installation from distro packages is not recommended, often old versions)
+#
+#
+# Usage:
+#
+#   make
+#      - prepare everything
+#   make clean
+#      - clean up
+#   make test-php
+#   make test-js
+#      - testing targets
+
+# Detailed documentation in https://github.com/owncloud/documentation:
+#      - https://doc.owncloud.org/server/9.2/developer_manual/general/devenv.html#check-out-the-code
+#      - https://doc.owncloud.org/server/9.2/developer_manual/core/unit-testing.html#running-unit-tests-for-the-owncloud-core-project
+#
+
 NODE_PREFIX=build
 
 #
