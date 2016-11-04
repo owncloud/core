@@ -79,6 +79,7 @@ use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
 use OC\Tagging\TagMapper;
 use OC\URLGenerator;
+use OC\Theme\ThemeService;
 use OCP\IDateTimeFormatter;
 use OCP\IL10N;
 use OCP\IServerContainer;
@@ -682,6 +683,10 @@ class Server extends ServerContainer implements IServerContainer {
 			);
 
 			return $manager;
+		});
+
+		$this->registerService('ThemeService', function ($c) {
+			return new ThemeService($this->getSystemConfig()->getValue('theme'));
 		});
 	}
 
