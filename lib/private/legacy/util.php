@@ -1262,8 +1262,7 @@ class OC_Util {
 	 *
 	 * @return \OC\Theme\Theme the theme
 	 */
-	public static function getTheme()
-	{
+	public static function getTheme() {
 		/** @var \OC\Theme\ThemeService $themeService */
 		$themeService = \OC::$server->query('ThemeService');
 		return $themeService->getTheme();
