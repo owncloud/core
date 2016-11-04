@@ -50,7 +50,7 @@ $requestUri = \OC::$server->getRequest()->getRequestUri();
 
 $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function() {
 	// use the view for the logged in user
-	return \OC\Files\Filesystem::getView();
+	return \OC::$server->getUserFolder();
 });
 
 // And off we go!

@@ -53,8 +53,19 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\IFile;
+use OCP\Share\IManager;
 
 class File extends Node implements IFile {
+
+	/**
+	 * Sets up the file node
+	 *
+	 * @param \OCP\Files\File $info node from the files API
+	 * @param IManager $shareManager
+	 */
+	public function __construct(\OCP\Files\File $info, IManager $shareManager = null) {
+		parent::__construct($info, $shareManager);
+	}
 
 	/**
 	 * Updates the data
@@ -86,7 +97,7 @@ class File extends Node implements IFile {
 	 */
 	public function put($data) {
 		try {
-			$exists = $this->fileView->file_exists($this->path);
+			$exists = !empty($this->info->stat());
 			if ($this->info && $exists && !$this->info->isUpdateable()) {
 				throw new Forbidden();
 			}
@@ -106,22 +117,23 @@ class File extends Node implements IFile {
 			}
 		}
 
-		list($partStorage) = $this->fileView->resolvePath($this->path);
-		$needsPartFile = $this->needsPartFile($partStorage) && (strlen($this->path) > 1);
+		$path = $this->info->getPath();
+
+		$storage = $this->info->getStorage();
+		$partStorage = $storage;
+		$internalPath = $this->info->getInternalPath();
+		$needsPartFile = $this->needsPartFile($partStorage) && (strlen($path) > 1);
 
 		if ($needsPartFile) {
 			// mark file as partial while uploading (ignored by the scanner)
-			$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . rand() . '.part';
+			// FIXME: find a way when part file location / storage changes
+			//$partFilePath = $this->getPartFileBasePath($path) . '.ocTransferId' . rand() . '.part';
+			$internalPartPath = dirname($internalPath) . '.ocTransferId' . rand() . '.part';
 		} else {
 			// upload file directly as the final path
-			$partFilePath = $this->path;
+			$internalPartPath = $path;
 		}
 
-		// the part file and target file might be on a different storage in case of a single file storage (e.g. single file share)
-		/** @var \OC\Files\Storage\Storage $partStorage */
-		list($partStorage, $internalPartPath) = $this->fileView->resolvePath($partFilePath);
-		/** @var \OC\Files\Storage\Storage $storage */
-		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		try {
 			$target = $partStorage->fopen($internalPartPath, 'wb');
 			if ($target === false) {
@@ -158,6 +170,7 @@ class File extends Node implements IFile {
 		}
 
 		try {
+			// FIXME: find a way without the view
 			$view = \OC\Files\Filesystem::getView();
 			if ($view) {
 				$run = $this->emitPreHooks($exists);
@@ -205,7 +218,7 @@ class File extends Node implements IFile {
 			// allow sync clients to send the mtime along in a header
 			$request = \OC::$server->getRequest();
 			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
+				if ($this->info->touch($request->server['HTTP_X_OC_MTIME'])) {
 					header('X-OC-MTime: accepted');
 				}
 			}
@@ -216,12 +229,13 @@ class File extends Node implements IFile {
 			
 			$this->refreshInfo();
 
+			$cache = $storage->getCache($internalPath);
 			if (isset($request->server['HTTP_OC_CHECKSUM'])) {
 				$checksum = trim($request->server['HTTP_OC_CHECKSUM']);
-				$this->fileView->putFileInfo($this->path, ['checksum' => $checksum]);
+				$cache->put($internalPath, ['checksum' => $checksum]);
 				$this->refreshInfo();
 			} else if ($this->getChecksum() !== null && $this->getChecksum() !== '') {
-				$this->fileView->putFileInfo($this->path, ['checksum' => '']);
+				$cache->put($internalPath, ['checksum' => '']);
 				$this->refreshInfo();
 			}
 
@@ -244,11 +258,12 @@ class File extends Node implements IFile {
 	/**
 	 * @param string $path
 	 */
-	private function emitPreHooks($exists, $path = null) {
+	private function emitPreHooks($exists, $path = '') {
 		if (is_null($path)) {
-			$path = $this->path;
+			$path = $this->getPath();
 		}
-		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
+		// FIXME path
+		$hookPath = $this->info->getParent()->getRelativePath($path);
 		$run = true;
 
 		if (!$exists) {
@@ -272,11 +287,12 @@ class File extends Node implements IFile {
 	/**
 	 * @param string $path
 	 */
-	private function emitPostHooks($exists, $path = null) {
+	private function emitPostHooks($exists, $path = '') {
 		if (is_null($path)) {
-			$path = $this->path;
+			$path = $this->getPath();
 		}
-		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
+		// FIXME path
+		$hookPath = $this->info->getParent()->getRelativePath($path);
 		if (!$exists) {
 			\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_post_create, [
 				\OC\Files\Filesystem::signal_param_path => $hookPath
@@ -301,7 +317,7 @@ class File extends Node implements IFile {
 	public function get() {
 		//throw exception if encryption is disabled but files are still encrypted
 		try {
-			$res = $this->fileView->fopen(ltrim($this->path, '/'), 'rb');
+			$res = $this->info->fopen('rb');
 			if ($res === false) {
 				throw new ServiceUnavailable("Could not open file");
 			}
@@ -330,7 +346,7 @@ class File extends Node implements IFile {
 		}
 
 		try {
-			if (!$this->fileView->unlink($this->path)) {
+			if (!$this->info->delete()) {
 				// assume it wasn't possible to delete due to permissions
 				throw new Forbidden();
 			}
@@ -368,7 +384,8 @@ class File extends Node implements IFile {
 			return [];
 		}
 		/** @var \OCP\Files\Storage $storage */
-		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
+		$storage = $this->info->getStorage();
+		$internalPath = $this->info->getInternalPath();
 		if (is_null($storage)) {
 			return [];
 		}
@@ -385,7 +402,7 @@ class File extends Node implements IFile {
 	 * @throws ServiceUnavailable
 	 */
 	private function createFileChunked($data) {
-		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->path);
+		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->getPath());
 
 		$info = \OC_FileChunking::decodeName($name);
 		if (empty($info)) {
@@ -408,30 +425,33 @@ class File extends Node implements IFile {
 		}
 
 		if ($chunk_handler->isComplete()) {
-			list($storage,) = $this->fileView->resolvePath($path);
+			$storage = $this->info->getStorage();
 			$needsPartFile = $this->needsPartFile($storage);
 			$partFile = null;
 
 			$targetPath = $path . '/' . $info['name'];
 			/** @var \OC\Files\Storage\Storage $targetStorage */
-			list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
+			// FIXME: handle case where target storage is a different location
+			//list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
+			$targetStorage = $storage;
+			$targetInternalPath = dirname($this->info->getInternalPath()) . '/' . $info['name'];
 
-			$exists = $this->fileView->file_exists($targetPath);
+			$exists = !!$this->info->stat();
 
 			try {
-				$this->fileView->lockFile($targetPath, ILockingProvider::LOCK_SHARED);
+				$this->info->lock(ILockingProvider::LOCK_SHARED);
 
 				$this->emitPreHooks($exists, $targetPath);
-				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_EXCLUSIVE);
-				/** @var \OC\Files\Storage\Storage $targetStorage */
-				list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
+				$this->info->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
 
 				if ($needsPartFile) {
 					// we first assembly the target file as a part file
-					$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
+					//$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
 					/** @var \OC\Files\Storage\Storage $targetStorage */
-					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
-
+					// FIXME: handle case where target storage is a different location
+					//list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
+					$partStorage = $storage;
+					$partInternalPath = dirname($targetInternalPath) . '/' . $info['name'] . '.ocTransferId' . $info['transferid'] . '.part';
 
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
@@ -447,7 +467,7 @@ class File extends Node implements IFile {
 							$partFile = null;
 							$targetStorage->unlink($targetInternalPath);
 						}
-						$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_SHARED);
+						$this->info->changeLock(ILockingProvider::LOCK_SHARED);
 						throw new Exception('Could not rename part file assembled from chunks');
 					}
 				} else {
@@ -466,21 +486,22 @@ class File extends Node implements IFile {
 				// since we skipped the view we need to scan and emit the hooks ourselves
 				$targetStorage->getUpdater()->update($targetInternalPath);
 
-				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_SHARED);
+				$this->info->changeLock(ILockingProvider::LOCK_SHARED);
 
 				$this->emitPostHooks($exists, $targetPath);
 
 				// FIXME: should call refreshInfo but can't because $this->path is not the of the final file
-				$info = $this->fileView->getFileInfo($targetPath);
+				$info = $this->info->getParent()->get(basename($targetPath));
 
+				$cache = $storage->getCache($internalPath);
 				if (isset($request->server['HTTP_OC_CHECKSUM'])) {
 					$checksum = trim($request->server['HTTP_OC_CHECKSUM']);
-					$this->fileView->putFileInfo($targetPath, ['checksum' => $checksum]);
+					$cache->put($internalPath, ['checksum' => $checksum]);
 				} else if ($info->getChecksum() !== null && $info->getChecksum() !== '') {
-					$this->fileView->putFileInfo($this->path, ['checksum' => '']);
+					$cache->put($internalPath, ['checksum' => '']);
 				}
 
-				$this->fileView->unlockFile($targetPath, ILockingProvider::LOCK_SHARED);
+				$this->info->unlock(ILockingProvider::LOCK_SHARED);
 
 				return $info->getEtag();
 			} catch (\Exception $e) {

@@ -36,6 +36,8 @@ use OCP\Files\ForbiddenException;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\Locked;
+use Sabre\DAV\Exception\NotFound;
+use OCP\Files\NotPermittedException;
 
 class Directory extends \OCA\DAV\Connector\Sabre\Node
 	implements \Sabre\DAV\ICollection, \Sabre\DAV\IQuota {
@@ -43,7 +45,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	/**
 	 * Cached directory content
 	 *
-	 * @var \OCP\Files\FileInfo[]
+	 * @var \OCP\Files\Node[]
 	 */
 	private $dirContent;
 
@@ -62,13 +64,12 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	/**
 	 * Sets up the node, expects a full path name
 	 *
-	 * @param \OC\Files\View $view
-	 * @param \OCP\Files\FileInfo $info
+	 * @param \OCP\Files\Folder $info folder info
 	 * @param ObjectTree|null $tree
 	 * @param \OCP\Share\IManager $shareManager
 	 */
-	public function __construct($view, $info, $tree = null, $shareManager = null) {
-		parent::__construct($view, $info, $shareManager);
+	public function __construct(\OCP\Files\Folder $info, $tree = null, $shareManager = null) {
+		parent::__construct($info, $shareManager);
 		$this->tree = $tree;
 	}
 
@@ -125,27 +126,29 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 
 				// exit if we can't create a new file and we don't updatable existing file
 				$info = \OC_FileChunking::decodeName($name);
-				if (!$this->fileView->isCreatable($this->path) &&
-					!$this->fileView->isUpdatable($this->path . '/' . $info['name'])
+				if (!$this->info->isCreatable() &&
+					!$this->info->get($info['name'])->isUpdatable()
 				) {
 					throw new \Sabre\DAV\Exception\Forbidden();
 				}
 
 			} else {
 				// For non-chunked upload it is enough to check if we can create a new file
-				if (!$this->fileView->isCreatable($this->path)) {
+				if (!$this->info->isCreatable()) {
 					throw new \Sabre\DAV\Exception\Forbidden();
 				}
 			}
 
-			$this->fileView->verifyPath($this->path, $name);
-
-			$path = $this->fileView->getAbsolutePath($this->path) . '/' . $name;
-			// using a dummy FileInfo is acceptable here since it will be refreshed after the put is complete
-			$info = new \OC\Files\FileInfo($path, null, null, [], null);
-			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
+			// FIXME: need verifyPath alternative
+			//$this->fileView->verifyPath($this->path, $name);
+		
+			// FIXME: this does an additional "touch" to create the file
+			$newInfo = $this->info->newFile($name);
+			$node = new \OCA\DAV\Connector\Sabre\File($newInfo);
 			$node->acquireLock(ILockingProvider::LOCK_SHARED);
 			return $node->put($data);
+		} catch (\OCP\Files\NotFoundException $ex) {
+			throw new NotFound($ex->getMessage());
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
 		} catch (\OCP\Files\InvalidPathException $ex) {
@@ -183,9 +186,10 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 				throw new \Sabre\DAV\Exception\Forbidden();
 			}
 
-			$this->fileView->verifyPath($this->path, $name);
-			$newPath = $this->path . '/' . $name;
-			if (!$this->fileView->mkdir($newPath)) {
+			// FIXME: need verifyPath alternative
+			//$this->fileView->verifyPath($this->path, $name);
+			if (!$this->info->newFolder($name)) {
+				$newPath = $this->getPath() . '/' . $name;
 				throw new \Sabre\DAV\Exception\Forbidden('Could not create directory ' . $newPath);
 			}
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
@@ -210,11 +214,14 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function getChild($name, $info = null) {
-		$path = $this->path . '/' . $name;
+		$path = $this->getPath() . '/' . $name;
 		if (is_null($info)) {
 			try {
-				$this->fileView->verifyPath($this->path, $name);
-				$info = $this->fileView->getFileInfo($path);
+				// FIXME: need verifyPath alternative
+				//$this->fileView->verifyPath($this->path, $name);
+				$info = $this->info->get($name);
+			} catch (\OCP\Files\NotFoundException $e) {
+				throw new NotFound('File with name ' . $path . ' could not be located');
 			} catch (\OCP\Files\StorageNotAvailableException $e) {
 				throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
 			} catch (\OCP\Files\InvalidPathException $ex) {
@@ -225,13 +232,13 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 		}
 
 		if (!$info) {
-			throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
+			throw new NotFound('File with name ' . $path . ' could not be located');
 		}
 
-		if ($info['mimetype'] == 'httpd/unix-directory') {
-			$node = new \OCA\DAV\Connector\Sabre\Directory($this->fileView, $info, $this->tree, $this->shareManager);
+		if ($info instanceof \OCP\Files\Folder) {
+			$node = new \OCA\DAV\Connector\Sabre\Directory($info, $this->tree, $this->shareManager);
 		} else {
-			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info, $this->shareManager);
+			$node = new \OCA\DAV\Connector\Sabre\File($info, $this->shareManager);
 		}
 		if ($this->tree) {
 			$this->tree->cacheNode($node);
@@ -249,7 +256,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			return $this->dirContent;
 		}
 		try {
-			$folderContent = $this->fileView->getDirectoryContent($this->path);
+			$folderContent = $this->info->getDirectoryListing();
 		} catch (LockedException $e) {
 			throw new Locked();
 		}
@@ -277,8 +284,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 		// (required old code) instead of "updateFile".
 		//
 		// TODO: resolve chunk file name here and implement "updateFile"
-		$path = $this->path . '/' . $name;
-		return $this->fileView->file_exists($path);
+		return $this->info->nodeExists($name);
 
 	}
 
@@ -290,16 +296,19 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 * @throws \Sabre\DAV\Exception\Forbidden
 	 */
 	public function delete() {
-
-		if ($this->path === '' || $this->path === '/' || !$this->info->isDeletable()) {
+		// prevent deleting user's home
+		$path = $this->getPath();
+		if ($path === '' || $path === '/' || !$this->info->isDeletable()) {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
 		try {
-			if (!$this->fileView->rmdir($this->path)) {
+			if (!$this->info->delete()) {
 				// assume it wasn't possible to remove due to permission issue
 				throw new \Sabre\DAV\Exception\Forbidden();
 			}
+		} catch (NotPermittedException $ex) {
+			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {

@@ -29,7 +29,6 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
-use OC\Files\View;
 use OCP\Files\ForbiddenException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -84,11 +83,6 @@ class FilesPlugin extends ServerPlugin {
 	private $isPublic;
 
 	/**
-	 * @var View
-	 */
-	private $fileView;
-
-	/**
 	 * @var bool
 	 */
 	private $downloadAttachment;
@@ -105,20 +99,17 @@ class FilesPlugin extends ServerPlugin {
 
 	/**
 	 * @param Tree $tree
-	 * @param View $view
 	 * @param IConfig $config
 	 * @param IRequest $request
 	 * @param bool $isPublic
 	 * @param bool $downloadAttachment
 	 */
 	public function __construct(Tree $tree,
-								View $view,
 								IConfig $config,
 								IRequest $request,
 								$isPublic = false,
 								$downloadAttachment = true) {
 		$this->tree = $tree;
-		$this->fileView = $view;
 		$this->config = $config;
 		$this->request = $request;
 		$this->isPublic = $isPublic;

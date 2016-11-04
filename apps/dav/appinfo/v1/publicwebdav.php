@@ -72,13 +72,10 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 		return new \OC\Files\Storage\Wrapper\PermissionsMask(['storage' => $storage, 'mask' => $share->getPermissions() | \OCP\Constants::PERMISSION_SHARE]);
 	});
 
-	OC_Util::setupFS($owner);
-	$ownerView = \OC\Files\Filesystem::getView();
-	$path = $ownerView->getPath($fileId);
-	$fileInfo = $ownerView->getFileInfo($path);
-	$linkCheckPlugin->setFileInfo($fileInfo);
+	$rootInfo = \OC::$server->getRootFolder()->getUserFolder($owner)->getById($fileId);
+	$linkCheckPlugin->setFileInfo($rootInfo);
 
-	return new \OC\Files\View($ownerView->getAbsolutePath($path));
+	return $rootInfo;
 });
 
 $server->addPlugin($linkCheckPlugin);
