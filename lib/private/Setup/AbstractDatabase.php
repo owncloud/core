@@ -29,7 +29,7 @@ use OCP\Security\ISecureRandom;
 
 abstract class AbstractDatabase {
 
-	/** @var \OC_L10N */
+	/** @var \OCP\IL10N */
 	protected $trans;
 	/** @var string */
 	protected $dbDefinitionFile;

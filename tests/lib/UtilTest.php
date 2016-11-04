@@ -78,7 +78,7 @@ class UtilTest extends \Test\TestCase {
 
 		$selectedTimeZone = \OC::$server->getDateTimeZone()->getTimeZone(1350129205);
 		$this->assertEquals($expectedTimeZone, $selectedTimeZone->getName());
-		$newDateTimeFormatter = new \OC\DateTimeFormatter($selectedTimeZone, new \OC_L10N('lib', 'en'));
+		$newDateTimeFormatter = new \OC\DateTimeFormatter($selectedTimeZone, \OC::$server->getL10NFactory()->get('lib', 'en'));
 		$this->setDateFormatter($newDateTimeFormatter);
 
 		$result = OC_Util::formatDate(1350129205, false);

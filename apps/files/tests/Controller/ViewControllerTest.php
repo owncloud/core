@@ -26,7 +26,6 @@ namespace OCA\Files\Tests\Controller;
 
 use OCA\Files\Controller\ViewController;
 use OCP\AppFramework\Http;
-use OCP\Files\NotFoundException;
 use OCP\IUser;
 use OCP\Template;
 use Test\TestCase;
@@ -47,27 +46,27 @@ use OCP\App\IAppManager;
  * @package OCA\Files\Tests\Controller
  */
 class ViewControllerTest extends TestCase {
-	/** @var IRequest */
+	/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject */
 	private $request;
-	/** @var IURLGenerator */
+	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
 	private $urlGenerator;
 	/** @var INavigationManager */
 	private $navigationManager;
 	/** @var IL10N */
 	private $l10n;
-	/** @var IConfig */
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
-	/** @var ViewController */
+	/** @var ViewController | \PHPUnit_Framework_MockObject_MockObject */
 	private $viewController;
 	/** @var IUser */
 	private $user;
 	/** @var IUserSession */
 	private $userSession;
-	/** @var IAppManager */
+	/** @var IAppManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $appManager;
-	/** @var Folder */
+	/** @var Folder | \PHPUnit_Framework_MockObject_MockObject */
 	private $rootFolder;
 
 	public function setUp() {
@@ -190,7 +189,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files',
 				'script' => 'list.php',
 				'order' => 0,
-				'name' => new \OC_L10N_String(new \OC_L10N('files'), 'All files', []),
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files'), 'All files', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -208,7 +207,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 10,
-				'name' => new \OC_L10N_String(new \OC_L10N('files_sharing'), 'Shared with you', []),
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared with you', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -217,7 +216,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 15,
-				'name' => new \OC_L10N_String(new \OC_L10N('files_sharing'), 'Shared with others', []),
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared with others', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -226,7 +225,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 20,
-				'name' => new \OC_L10N_String(new \OC_L10N('files_sharing'), 'Shared by link', []),
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared by link', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -235,7 +234,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'systemtags',
 				'script' => 'list.php',
 				'order' => 25,
-				'name' => new \OC_L10N_String(new \OC_L10N('systemtags'), 'Tags', []),
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('systemtags'), 'Tags', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -244,7 +243,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_trashbin',
 				'script' => 'list.php',
 				'order' => 50,
-				'name' => new \OC_L10N_String(new \OC_L10N('files_trashbin'), 'Deleted files', []),
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_trashbin'), 'Deleted files', []),
 				'active' => false,
 				'icon' => '',
 				],

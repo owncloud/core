@@ -79,7 +79,7 @@ class ActivityTest extends TestCase {
 		$this->l10nFactory = $this->getMockBuilder('OCP\L10N\IFactory')
 			->disableOriginalConstructor()
 			->getMock();
-		$deL10n = $this->getMockBuilder('OC_L10N')
+		$deL10n = $this->getMockBuilder('\OCP\IL10N')
 			->disableOriginalConstructor()
 			->getMock();
 		$deL10n->expects($this->any())
@@ -91,8 +91,8 @@ class ActivityTest extends TestCase {
 		$this->l10nFactory->expects($this->any())
 			->method('get')
 			->willReturnMap([
-				['files', null, new \OC_L10N('files', 'en')],
-				['files', 'en', new \OC_L10N('files', 'en')],
+				['files', null, \OC::$server->getL10NFactory()->get('files', 'en')],
+				['files', 'en', \OC::$server->getL10NFactory()->get('files', 'en')],
 				['files', 'de', $deL10n],
 			]);
 
