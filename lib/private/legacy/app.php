@@ -143,7 +143,7 @@ class OC_App {
 		// in case someone calls loadApp() directly
 		self::registerAutoloading($app, $appPath);
 
-		self::enableTheme($app);
+		self::enableThemeIfApplicable($app);
 
 		if (is_file($appPath . '/appinfo/app.php')) {
 			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
@@ -166,7 +166,7 @@ class OC_App {
 	 * Enables the app as a theme if it has the type "theme"
 	 * @param $app
 	 */
-	private static function enableTheme($app) {
+	private static function enableThemeIfApplicable($app) {
 		if (self::isType($app, 'theme')) {
 			/** @var \OC\Theme\ThemeService $themeManager */
 			$themeManager = \OC::$server->query('ThemeService');
