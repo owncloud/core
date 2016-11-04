@@ -80,8 +80,12 @@ class CommandLineContext implements \Behat\Behat\Context\Context {
 	 * @When /^transfering ownership from "([^"]+)" to "([^"]+)"/
 	 */
 	public function transferingOwnership($user1, $user2) {
-		$this->runOcc(['files:transfer-ownership', $user1, $user2]);
-		$this->lastTransferPath = $this->findLastTransferFolderForUser($user1, $user2);
+		if ($this->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
+			$this->lastTransferPath = $this->findLastTransferFolderForUser($user1, $user2);
+		} else {
+			// failure
+			$this->lastTransferPath = null;
+		}
 	}
 
 	/**
