@@ -9,7 +9,6 @@
  */
 
 (function(OC, OCA) {
-	var NS_OWNCLOUD = 'http://owncloud.org/ns';
 	/**
 	 * @class OCA.Comments.CommentModel
 	 * @classdesc
@@ -27,15 +26,15 @@
 		},
 
 		davProperties: {
-			'id': '{' + NS_OWNCLOUD + '}id',
-			'message': '{' + NS_OWNCLOUD + '}message',
-			'actorType': '{' + NS_OWNCLOUD + '}actorType',
-			'actorId': '{' + NS_OWNCLOUD + '}actorId',
-			'actorDisplayName': '{' + NS_OWNCLOUD + '}actorDisplayName',
-			'creationDateTime': '{' + NS_OWNCLOUD + '}creationDateTime',
-			'objectType': '{' + NS_OWNCLOUD + '}objectType',
-			'objectId': '{' + NS_OWNCLOUD + '}objectId',
-			'isUnread': '{' + NS_OWNCLOUD + '}isUnread'
+			'id': 				OC.CLIENT.PROPERTY.FILEID,
+			'message': 			OC.CLIENT.PROPERTY.MESSAGE,
+			'actorType': 		OC.CLIENT.PROPERTY.ACTORTYPE,
+			'actorId': 			OC.CLIENT.PROPERTY.ACTORID,
+			'actorDisplayName': OC.CLIENT.PROPERTY.ACTORDISPLAYNAME,
+			'creationDateTime': OC.CLIENT.PROPERTY.CREATEIONDATETIME,
+			'objectType': 		OC.CLIENT.PROPERTY.OBJECTTYPE,
+			'objectId':			OC.CLIENT.PROPERTY.OBJECTID,
+			'isUnread':			OC.CLIENT.PROPERTY.ISUNREAD
 		},
 
 		parse: function(data) {
@@ -55,4 +54,3 @@
 
 	OCA.Comments.CommentModel = CommentModel;
 })(OC, OCA);
-

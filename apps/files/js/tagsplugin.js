@@ -46,17 +46,6 @@
 		});
 	}
 
-	/**
-	 * Toggle star icon on action element
-	 *
-	 * @param {Object} action element
-	 * @param {boolean} state true if starred, false otherwise
-	 */
-	function toggleStar($actionEl, state) {
-		$actionEl.removeClass('icon-star icon-starred').addClass(getStarIconClass(state));
-		$actionEl.toggleClass('permanent', state);
-	}
-
 	OCA.Files = OCA.Files || {};
 
 	/**
@@ -113,7 +102,7 @@
 					}
 
 					// pre-toggle the star
-					toggleStar($actionEl, !isFavorite);
+					OCA.Files.TagsPlugin.toggleStar($actionEl, !isFavorite);
 
 					context.fileInfoModel.trigger('busy', context.fileInfoModel, true);
 
@@ -166,24 +155,22 @@
 				return fileInfo;
 			};
 
-			var NS_OC = 'http://owncloud.org/ns';
-
 			var oldGetWebdavProperties = fileList._getWebdavProperties;
 			fileList._getWebdavProperties = function() {
 				var props = oldGetWebdavProperties.apply(this, arguments);
-				props.push('{' + NS_OC + '}tags');
-				props.push('{' + NS_OC + '}favorite');
+				props.push(OC.CLIENT.PROPERTY.TAGS);
+				props.push(OC.CLIENT.PROPERTY.FAVORITE);
 				return props;
 			};
 
 			fileList.filesClient.addFileInfoParser(function(response) {
 				var data = {};
 				var props = response.propStat[0].properties;
-				var tags = props['{' + NS_OC + '}tags'];
-				var favorite = props['{' + NS_OC + '}favorite'];
+				var tags = props[OC.CLIENT.PROPERTY.TAGS];
+				var favorite = props[OC.CLIENT.PROPERTY.FAVORITE];
 				if (tags && tags.length) {
 					tags = _.chain(tags).filter(function(xmlvalue) {
-						return (xmlvalue.namespaceURI === NS_OC && xmlvalue.nodeName.split(':')[1] === 'tag');
+						return (xmlvalue.namespaceURI === OC.CLIENT.NS_OWNCLOUD && xmlvalue.nodeName.split(':')[1] === 'tag');
 					}).map(function(xmlvalue) {
 						return xmlvalue.textContent || xmlvalue.text;
 					}).value();
@@ -235,10 +222,22 @@
 					message = ': ' + response.responseJSON.message;
 				}
 				OC.Notification.showTemporary(t('files', 'An error occurred while trying to update the tags') + message);
-				toggleStar($actionEl, isFavorite);
+				OCA.Files.TagsPlugin.toggleStar($actionEl, isFavorite);
 			});
+		},
+
+		/**
+		 * Toggle star icon on action element
+		 *
+		 * @param {Object} action element
+		 * @param {boolean} state true if starred, false otherwise
+		 */
+		toggleStar: function($actionEl, state) {
+			$actionEl.removeClass('icon-star icon-starred').addClass(getStarIconClass(state));
+			$actionEl.toggleClass('permanent', state);
 		}
 	};
+
 })(OCA);
 
 OC.Plugins.register('OCA.Files.FileList', OCA.Files.TagsPlugin);
