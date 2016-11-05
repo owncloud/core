@@ -1652,7 +1652,6 @@
 		},
 
 		reloadProperties: function(fileInfo, properties) {
-			var self = this;
 			var deferred = $.Deferred();
 
 			var targetPath = OC.joinPaths(fileInfo.attributes.path + '/', fileInfo.attributes.name);
