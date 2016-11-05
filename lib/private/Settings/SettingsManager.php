@@ -111,8 +111,8 @@ class SettingsManager implements ISettingsManager {
     public function getAdminPanels($sectionID) {
         // Trigger a load of all admin panels to discover sections
         $this->loadPanels('admin');
-        if(array_key_exists($this->panels['personal'][$sectionID])) {
-            return $this->panels['personal'][$sectionID];
+        if(isset($this->panels['admin'][$sectionID])) {
+            return $this->panels['admin'][$sectionID];
         } else {
             return [];
         }
@@ -132,11 +132,13 @@ class SettingsManager implements ISettingsManager {
                 new Section('monitoring', $this->l->t('Monitoring'), 0),
                 new Section('general', $this->l->t('Tips and tricks'), 100),
                 new Section('general', $this->l->t('Email'), 0),
+                new Section('additional', $this->l->t('Additional'), 0),
             ];
         } else if($type === 'personal') {
             return [
                 new Section('general', $this->l->t('General'), 0),
                 new Section('security', $this->l->t('Security'), 0),
+                new Section('additional', $this->l->t('Additional'), 0),
             ];
         }
     }
@@ -149,8 +151,11 @@ class SettingsManager implements ISettingsManager {
         return [
             'personal' => [
                 'OC\Settings\Panels\Personal\Profile',
+                'OC\Settings\Panels\Personal\Legacy',
             ],
-            'admin' => []
+            'admin' => [
+                'OC\Settings\Panels\Admin\Legacy',
+            ]
         ];
     }
 
@@ -161,6 +166,8 @@ class SettingsManager implements ISettingsManager {
     private function getBuiltInPanel($className) {
         $panels = [
             'OC\Settings\Panels\Personal\Profile' => new \OC\Settings\Panels\Personal\Profile($this->config, $this->groupManager, $this->userSession),
+            'OC\Settings\Panels\Personal\Legacy' => new \OC\Settings\Panels\Personal\Legacy(),
+            'OC\Settings\Panels\Admin\Legacy' => new \OC\Settings\Panels\Admin\Legacy(),
         ];
         if(isset($panels[$className])) {
             return $panels[$className];
@@ -188,7 +195,6 @@ class SettingsManager implements ISettingsManager {
     protected function findRegisteredPanels() {
         $panels = [];
         foreach($this->appManager->getEnabledAppsForUser($this->user) as $app) {
-            \OC_App::registerAutoloading($app, \OC_App::getAppPath($app));
             if(array_key_exists('settings', $this->appManager->getAppInfo($app))) {
                 $panels[] = $this->appManager->getAppInfo($app)['settings'];
             }

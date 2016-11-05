@@ -25,6 +25,7 @@ use OCP\Settings\ISettingsManager;
 use OCP\AppFramework\Controller;
 use OCP\IURLGenerator;
 use OCP\IRequest;
+use OCP\Template;
 use OCP\AppFramework\Http\TemplateResponse;
 
 /**
@@ -59,8 +60,8 @@ class SettingsPageController extends Controller {
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
 	*/
-	public function getPersonal($sectionID='general') {
-		$this->currentSectionID = $sectionID;
+	public function getPersonal($sectionid) {
+		$this->currentSectionID = $sectionid;
 		return $this->createSettingsPage('personal');
 	}
 
@@ -70,8 +71,8 @@ class SettingsPageController extends Controller {
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
 	 */
-	public function getAdmin($sectionID) {
-		$this->currentSectionID = $sectionID;
+	public function getAdmin($sectionid) {
+		$this->currentSectionID = $sectionid;
 		return $this->createSettingsPage('admin');
 	}
 
@@ -112,6 +113,7 @@ class SettingsPageController extends Controller {
 		foreach($sections as $section) {
 			$nav[] = [
 				'id' => $section->getID(),
+				'link' => $this->urlGenerator->linkToRoute('settings.SettingsPage.get'.ucwords($type), ['sectionid' => $section->getID()]),
 				'name' => ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
 			];
