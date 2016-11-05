@@ -9,7 +9,6 @@
  */
 
 (function(OC) {
-	var NS_OWNCLOUD = 'http://owncloud.org/ns';
 	/**
 	 * @class OCA.SystemTags.SystemTagsCollection
 	 * @classdesc
@@ -28,12 +27,12 @@
 		},
 
 		davProperties: {
-			'id': '{' + NS_OWNCLOUD + '}id',
-			'name': '{' + NS_OWNCLOUD + '}display-name',
-			'userVisible': '{' + NS_OWNCLOUD + '}user-visible',
-			'userAssignable': '{' + NS_OWNCLOUD + '}user-assignable',
+			'id': 				OC.CLIENT.PROPERTY.FILEID,
+			'name': 			OC.CLIENT.PROPERTY.DISPLAYNAME,
+			'userVisible': 		OC.CLIENT.PROPERTY.USERVISIBLE,
+			'userAssignable': 	OC.CLIENT.PROPERTY.USERASSIGNABLE,
 			// read-only, effective permissions computed by the server,
-			'canAssign': '{' + NS_OWNCLOUD + '}can-assign'
+			'canAssign': 		OC.CLIENT.PROPERTY.CAN_ASSIGN
 		},
 
 		parse: function(data) {
@@ -50,4 +49,3 @@
 	OC.SystemTags = OC.SystemTags || {};
 	OC.SystemTags.SystemTagModel = SystemTagModel;
 })(OC);
-
