@@ -379,9 +379,7 @@ var dragOptions={
 			$selectedFiles = $(this);
 		}
 		$selectedFiles.closest('tr').addClass('animate-opacity dragging');
-		if( $selectedFiles.closest('tr').hasClass('ui-droppable') ){
-			$selectedFiles.closest('tr').droppable( 'disable' );
-		}
+		$selectedFiles.closest('tr').filter('.ui-droppable').droppable( 'disable' );
 
 	},
 	stop: function(event, ui) {
@@ -389,12 +387,10 @@ var dragOptions={
 		if (!$selectedFiles.length) {
 			$selectedFiles = $(this);
 		}
+
 		var $tr = $selectedFiles.closest('tr');
 		$tr.removeClass('dragging');
-
-		if( $tr.hasClass('ui-droppable') ){
-			$tr.droppable( 'enable' );
-		}
+		$tr.filter('.ui-droppable').droppable( 'enable' );
 
 		setTimeout(function() {
 			$tr.removeClass('animate-opacity');
