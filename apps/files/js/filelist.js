@@ -883,10 +883,13 @@
 				mimetype: $el.attr('data-mime'),
 				mtime: parseInt($el.attr('data-mtime'), 10),
 				type: $el.attr('data-type'),
-				size: parseInt($el.attr('data-size'), 10),
 				etag: $el.attr('data-etag'),
 				permissions: parseInt($el.attr('data-permissions'), 10)
 			};
+			var size = $el.attr('data-size');
+			if( size ){
+				data.size = parseInt(size, 10);
+			}
 			var icon = $el.attr('data-icon');
 			if (icon) {
 				data.icon = icon;
@@ -1016,7 +1019,7 @@
 		 * Returns whether the given file info must be hidden
 		 *
 		 * @param {OC.Files.FileInfo} fileInfo file info
-		 * 
+		 *
 		 * @return {boolean} true if the file is a hidden file, false otherwise
 		 */
 		_isHiddenFile: function(file) {
@@ -1572,6 +1575,7 @@
 			var callBack = this.reloadCallback.bind(this);
 			return this._reloadCall.then(callBack, callBack);
 		},
+
 		reloadCallback: function(status, result) {
 			delete this._reloadCall;
 			this.hideMask();
@@ -1645,6 +1649,36 @@
 				this.$el.trigger(jQuery.Event('afterChangeDirectory', params));
 			}
 			return true;
+		},
+
+		reloadProperties: function(fileInfo, properties) {
+			var self = this;
+			var deferred = $.Deferred();
+
+			var targetPath = OC.joinPaths(fileInfo.attributes.path + '/', fileInfo.attributes.name);
+
+			this.filesClient.getFileInfo(targetPath, {
+					properties: properties
+				})
+				.then(function(status, data) {
+					// the following lines should be extracted to a mapper
+
+					if( properties.indexOf(OC.CLIENT.PROPERTY.SIZE) !== -1){
+						fileInfo.set('size', data.size);
+					}
+
+					if( properties.indexOf(OC.CLIENT.PROPERTY.FAVORITE) !== -1){
+						fileInfo.set('tags', data.tags || []);
+					}
+
+					deferred.resolve(status, data);
+				})
+				.fail(function(status) {
+					OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+					deferred.reject(status);
+				});
+
+			return deferred.promise();
 		},
 
 		updateStorageStatistics: function(force) {
@@ -2797,7 +2831,7 @@
 			});
 			uploader.on('fail', function(e, data) {
 				self._uploader.log('filelist handle fileuploadfail', e, data);
-				
+
 				self._uploads = [];
 
 				//if user pressed cancel hide upload chrome

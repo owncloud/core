@@ -31,9 +31,9 @@
 			this._root = this._root.substr(0, this._root.length - 1);
 		}
 
-		var url = 'http://';
+		var url = OC.CLIENT.PROTOCOL.HTTP + '://';
 		if (options.useHTTPS) {
-			url = 'https://';
+			url = OC.CLIENT.PROTOCOL.HTTPS + '://';
 		}
 
 		url += options.host + this._root;
@@ -59,43 +59,83 @@
 		this._client = new dav.Client(clientOptions);
 		this._client.xhrProvider = _.bind(this._xhrProvider, this);
 	};
+	OC.CLIENT = {};
+	OC.CLIENT.NS_OWNCLOUD = 'http://owncloud.org/ns';
+	OC.CLIENT.NS_DAV = 'DAV:';
 
-	Client.NS_OWNCLOUD = 'http://owncloud.org/ns';
-	Client.NS_DAV = 'DAV:';
+	OC.CLIENT.PROPERTY = {};
+	OC.CLIENT.PROPERTY.ACTORDISPLAYNAME		= '{' + OC.CLIENT.NS_OWNCLOUD + '}actorDisplayName';
+	OC.CLIENT.PROPERTY.ACTORID 				= '{' + OC.CLIENT.NS_OWNCLOUD + '}actorId';
+	OC.CLIENT.PROPERTY.ACTORTYPE			= '{' + OC.CLIENT.NS_OWNCLOUD + '}actorType';
+	OC.CLIENT.PROPERTY.COMMENTS_UNREAD		= '{' + OC.CLIENT.NS_OWNCLOUD + '}comments-unread';
+	OC.CLIENT.PROPERTY.CREATEIONDATETIME	= '{' + OC.CLIENT.NS_OWNCLOUD + '}creationDateTime';
+	OC.CLIENT.PROPERTY.FAVORITE 			= '{' + OC.CLIENT.NS_OWNCLOUD + '}favorite';
+	OC.CLIENT.PROPERTY.FILEID 				= '{' + OC.CLIENT.NS_OWNCLOUD + '}id';
+	OC.CLIENT.PROPERTY.INTERNAL_FILEID	   	= '{' + OC.CLIENT.NS_OWNCLOUD + '}fileid';
+	OC.CLIENT.PROPERTY.ISUNREAD	   			= '{' + OC.CLIENT.NS_OWNCLOUD + '}isUnread';
+	OC.CLIENT.PROPERTY.PERMISSIONS		 	= '{' + OC.CLIENT.NS_OWNCLOUD + '}permissions';
+	OC.CLIENT.PROPERTY.SHARE_PERMISSIONS	= '{' + OC.CLIENT.NS_OWNCLOUD + '}share-permissions';
+	OC.CLIENT.PROPERTY.CAN_ASSIGN			= '{' + OC.CLIENT.NS_OWNCLOUD + '}can-assign';
+	OC.CLIENT.PROPERTY.DISPLAYNAME			= '{' + OC.CLIENT.NS_OWNCLOUD + '}display-name';
+	OC.CLIENT.PROPERTY.DOWNLOADURL			= '{' + OC.CLIENT.NS_OWNCLOUD + '}downloadURL';
+	OC.CLIENT.PROPERTY.MESSAGE				= '{' + OC.CLIENT.NS_OWNCLOUD + '}message';
+	OC.CLIENT.PROPERTY.SIZE 				= '{' + OC.CLIENT.NS_OWNCLOUD + '}size';
+	OC.CLIENT.PROPERTY.GETETAG				= '{' + OC.CLIENT.NS_DAV + '}getetag';
+	OC.CLIENT.PROPERTY.LASTMODIFIED			= '{' + OC.CLIENT.NS_DAV + '}lastmodified';
+	OC.CLIENT.PROPERTY.GETLASTMODIFIED		= '{' + OC.CLIENT.NS_DAV + '}getlastmodified';
+	OC.CLIENT.PROPERTY.GETCONTENTLENGTH		= '{' + OC.CLIENT.NS_DAV + '}getcontentlength';
+	OC.CLIENT.PROPERTY.GETCONTENTTYPE		= '{' + OC.CLIENT.NS_DAV + '}getcontenttype';
+	OC.CLIENT.PROPERTY.RESOURCETYPE			= '{' + OC.CLIENT.NS_DAV + '}resourcetype';
+	OC.CLIENT.PROPERTY.OBJECTID				= '{' + OC.CLIENT.NS_OWNCLOUD + '}objectId';
+	OC.CLIENT.PROPERTY.OBJECTTYPE			= '{' + OC.CLIENT.NS_OWNCLOUD + '}objectType';
+	OC.CLIENT.PROPERTY.OWNER_ID				= '{' + OC.CLIENT.NS_OWNCLOUD + '}owner-id';
+	OC.CLIENT.PROPERTY.OWNER_DISPLAY_NAME	= '{' + OC.CLIENT.NS_OWNCLOUD + '}owner-display-name';
+	OC.CLIENT.PROPERTY.READMARKER			= '{' + OC.CLIENT.NS_OWNCLOUD + '}readMarker';
+	OC.CLIENT.PROPERTY.SHARE_TYPES			= '{' + OC.CLIENT.NS_OWNCLOUD + '}share-types';
+	OC.CLIENT.PROPERTY.TAGS					= '{' + OC.CLIENT.NS_OWNCLOUD + '}tags';
+	OC.CLIENT.PROPERTY.USERASSIGNABLE		= '{' + OC.CLIENT.NS_OWNCLOUD + '}user-assignable';
+	OC.CLIENT.PROPERTY.USERVISIBLE			= '{' + OC.CLIENT.NS_OWNCLOUD + '}user-visible';
+	OC.CLIENT.PROPERTY.CHECKSUMS			= '{' + OC.CLIENT.NS_OWNCLOUD + '}checksums';
+	OC.CLIENT.PROPERTY.DATA_FINGERPRINT		= '{' + OC.CLIENT.NS_OWNCLOUD + '}data-fingerprint';
+
+	OC.CLIENT.PROTOCOL = {};
+	OC.CLIENT.PROTOCOL.HTTP			= 'http';
+	OC.CLIENT.PROTOCOL.HTTPS		= 'https';
+
 	Client._PROPFIND_PROPERTIES = [
 		/**
 		 * Modified time
 		 */
-		[Client.NS_DAV, 'getlastmodified'],
+		[OC.CLIENT.NS_DAV, 'getlastmodified'],
 		/**
 		 * Etag
 		 */
-		[Client.NS_DAV, 'getetag'],
+		[OC.CLIENT.NS_DAV, 'getetag'],
 		/**
 		 * Mime type
 		 */
-		[Client.NS_DAV, 'getcontenttype'],
+		[OC.CLIENT.NS_DAV, 'getcontenttype'],
 		/**
 		 * Resource type "collection" for folders, empty otherwise
 		 */
-		[Client.NS_DAV, 'resourcetype'],
+		[OC.CLIENT.NS_DAV, 'resourcetype'],
 		/**
 		 * File id
 		 */
-		[Client.NS_OWNCLOUD, 'fileid'],
+		[OC.CLIENT.NS_OWNCLOUD, 'fileid'],
 		/**
 		 * Letter-coded permissions
 		 */
-		[Client.NS_OWNCLOUD, 'permissions'],
+		[OC.CLIENT.NS_OWNCLOUD, 'permissions'],
 		//[Client.NS_OWNCLOUD, 'downloadURL'],
 		/**
 		 * Folder sizes
 		 */
-		[Client.NS_OWNCLOUD, 'size'],
+		[OC.CLIENT.NS_OWNCLOUD, 'size'],
 		/**
 		 * File sizes
 		 */
-		[Client.NS_DAV, 'getcontentlength']
+		[OC.CLIENT.NS_DAV, 'getcontentlength'],
 	];
 
 	/**
@@ -253,44 +293,44 @@
 			var props = response.propStat[0].properties;
 
 			var data = {
-				id: props['{' + Client.NS_OWNCLOUD + '}fileid'],
+				id: props[OC.CLIENT.PROPERTY.INTERNAL_FILEID],
 				path: OC.dirname(path) || '/',
 				name: OC.basename(path),
-				mtime: (new Date(props['{' + Client.NS_DAV + '}getlastmodified'])).getTime()
+				mtime: (new Date(props[OC.CLIENT.PROPERTY.GETLASTMODIFIED])).getTime()
 			};
 
-			var etagProp = props['{' + Client.NS_DAV + '}getetag'];
+			var etagProp = props[OC.CLIENT.PROPERTY.GETETAG];
 			if (!_.isUndefined(etagProp)) {
 				data.etag = this._parseEtag(etagProp);
 			}
 
-			var sizeProp = props['{' + Client.NS_DAV + '}getcontentlength'];
+			var sizeProp = props[OC.CLIENT.PROPERTY.GETCONTENTLENGTH];
 			if (!_.isUndefined(sizeProp)) {
 				data.size = parseInt(sizeProp, 10);
 			}
 
-			sizeProp = props['{' + Client.NS_OWNCLOUD + '}size'];
+			sizeProp = props[OC.CLIENT.PROPERTY.SIZE];
 			if (!_.isUndefined(sizeProp)) {
 				data.size = parseInt(sizeProp, 10);
 			}
 
-			var contentType = props['{' + Client.NS_DAV + '}getcontenttype'];
+			var contentType = props[OC.CLIENT.PROPERTY.GETCONTENTTYPE];
 			if (!_.isUndefined(contentType)) {
 				data.mimetype = contentType;
 			}
 
-			var resType = props['{' + Client.NS_DAV + '}resourcetype'];
+			var resType = props[OC.CLIENT.PROPERTY.RESOURCETYPE];
 			var isFile = true;
 			if (!data.mimetype && resType) {
 				var xmlvalue = resType[0];
-				if (xmlvalue.namespaceURI === Client.NS_DAV && xmlvalue.nodeName.split(':')[1] === 'collection') {
+				if (xmlvalue.namespaceURI === OC.CLIENT.NS_DAV && xmlvalue.nodeName.split(':')[1] === 'collection') {
 					data.mimetype = 'httpd/unix-directory';
 					isFile = false;
 				}
 			}
 
 			data.permissions = OC.PERMISSION_READ;
-			var permissionProp = props['{' + Client.NS_OWNCLOUD + '}permissions'];
+			var permissionProp = props[OC.CLIENT.PROPERTY.PERMISSIONS];
 			if (!_.isUndefined(permissionProp)) {
 				var permString = permissionProp || '';
 				data.mountType = null;
@@ -732,7 +772,7 @@
 		},
 
 		/**
-		 * Returns the password 
+		 * Returns the password
 		 *
 		 * @since 9.2
 		 * @return {String} password
@@ -796,4 +836,3 @@
 
 	OC.Files.Client = Client;
 })(OC, OC.Files.FileInfo);
-

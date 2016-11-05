@@ -9,7 +9,6 @@
  */
 
 (function(OC, OCA) {
-	var NS_OWNCLOUD = 'http://owncloud.org/ns';
 	/**
 	 * @class OCA.Comments.CommentSummaryModel
 	 * @classdesc
@@ -37,7 +36,7 @@
 		_objectId: null,
 
 		davProperties: {
-			'readMarker': '{' + NS_OWNCLOUD + '}readMarker'
+			'readMarker': OC.CLIENT.PROPERTY.READMARKER
 		},
 
 		/**
@@ -62,4 +61,3 @@
 
 	OCA.Comments.CommentSummaryModel = CommentSummaryModel;
 })(OC, OCA);
-
