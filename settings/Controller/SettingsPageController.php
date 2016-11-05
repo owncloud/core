@@ -59,7 +59,7 @@ class SettingsPageController extends Controller {
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
 	*/
-	public function getPersonal($sectionID) {
+	public function getPersonal($sectionID='general') {
 		$this->currentSectionID = $sectionID;
 		return $this->createSettingsPage('personal');
 	}
@@ -92,7 +92,7 @@ class SettingsPageController extends Controller {
 		// Init the template
 		// Generate the html and nav params
 		$params = [];
-		$params['panelsContent'] = $this->getPanelsHtml($panels);
+		$params['content'] = $this->getPanelsHtml($panels);
 		$params['nav'] = $this->getNavigation($sections, $this->currentSectionID, $type);
 		// Send the response
 		$response = new TemplateResponse($this->appName, 'settingsPage', $params);
@@ -114,7 +114,6 @@ class SettingsPageController extends Controller {
 				'id' => $section->getID(),
 				'name' => ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
-				'link' => $this->urlGenerator->linkToRoute('settings.PageController.'.$type, ['sectionid' => $section->getID()])
 			];
 		}
 		return $nav;
@@ -128,7 +127,7 @@ class SettingsPageController extends Controller {
 	protected function getPanelsHtml($panels) {
 		$html = '';
 		foreach($panels as $panel) {
-			$html .= $panel->getPanel()->renderAs('')->render();
+			$html .= $panel->getPanel()->fetchPage();
 		}
 		return $html;
 	}

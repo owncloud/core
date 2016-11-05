@@ -11,7 +11,7 @@
 <div id="app-navigation">
 	<ul>
 	<?php foreach($_['nav'] as $item) {
-		print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($anchor), \OCP\Util::sanitizeHTML($sectionName)));
+		print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($item['id']), \OCP\Util::sanitizeHTML($item['name'])));
 	}?>
 	</ul>
 </div>

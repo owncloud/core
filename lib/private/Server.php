@@ -113,7 +113,9 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getL10N('core'),
 				$c->getAppManager(),
 				$c->getUserSession(),
-				$c->getLogger()
+				$c->getLogger(),
+				$c->getGroupManager(),
+				$c->getConfig()
 			);
 		});
 

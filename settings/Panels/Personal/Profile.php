@@ -55,9 +55,9 @@ class Profile implements IPanel {
         $tmpl = new Template('settings', 'panels/personal/profile');
         $tmpl->assign('displayName', $this->user->getDisplayName());
         $tmpl->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
-        $tmpl->assign('avatarChangeSupported', $this->user->canUserChangeAvatar());
-        $tmpl->assign('displayNameChangeSupported', $this->user->canUserChangeDisplayName());
-        $tmpl->assign('passwordChangeSupported', $this->user->canUserChangePassword());
+        $tmpl->assign('avatarChangeSupported', $this->user->canChangeAvatar());
+        $tmpl->assign('displayNameChangeSupported', $this->user->canChangeDisplayName());
+        $tmpl->assign('passwordChangeSupported', $this->user->canChangePassword());
         //$tmpl->assign('email', $email);
         $groups = $this->groupManager->getUserIdGroups($this->user);
         $groups2 = array_map(function($group) { return $group->getGID(); }, $groups);

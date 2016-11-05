@@ -29,6 +29,9 @@ use OCP\ILogger;
 use OCP\IL10N;
 use OCP\IUserSession;
 use OCP\AppFramework\QueryException;
+use OCP\IConfig;
+use OCP\IGroupManager;
+
 
 /*
  * @since 9.2
@@ -63,23 +66,26 @@ class SettingsManager implements ISettingsManager {
      * @param IUserSession $userSession
      * @param ILogger $logger
      */
-    public function __construct(IL10N $l, AppManager $appManager, IUserSession $userSession, ILogger $logger) {
+    public function __construct(IL10N $l, AppManager $appManager, IUserSession $userSession, ILogger $logger, IGroupManager $groupManager, IConfig $config) {
         $this->l = $l;
         $this->appManager = $appManager;
-        $this->user = $userSession->getUser();
+        $this->userSession = $userSession;
+        $this->user = $this->userSession->getUser();
+        $this->config = $config;
+        $this->groupManager = $groupManager;
         $this->log = $logger;
     }
 
     public function getPersonalSections() {
         // Trigger a load of all personal panels to discover sections
         $this->loadPanels('personal');
-        return isset($this->sections['personal']) ? $this->sections['personal'] : [];
+        return $this->sections['personal'];
     }
 
     public function getAdminSections() {
         // Trigger a load of all admin panels to discover sections
         $this->loadPanels('admin');
-        return isset($this->sections['admin']) ? $this->sections['admin'] : [];
+        return $this->sections['admin'];
     }
 
     /**
@@ -90,7 +96,7 @@ class SettingsManager implements ISettingsManager {
     public function getPersonalPanels($sectionID) {
         // Trigger a load of all personal panels to discover sections
         $this->loadPanels('personal');
-        if(array_key_exists($sectionID, $this->panels['personal'])) {
+        if(isset($this->panels['personal'][$sectionID])) {
             return $this->panels['personal'][$sectionID];
         } else {
             return [];
@@ -129,7 +135,7 @@ class SettingsManager implements ISettingsManager {
             ];
         } else if($type === 'personal') {
             return [
-                new Section('profile', $this->l->t('Profile'), 0),
+                new Section('general', $this->l->t('General'), 0),
                 new Section('security', $this->l->t('Security'), 0),
             ];
         }
@@ -142,10 +148,25 @@ class SettingsManager implements ISettingsManager {
     private function getBuiltInPanels() {
         return [
             'personal' => [
-            'OC\Settings\Panels\Personal\Profile'
-        ],
+                'OC\Settings\Panels\Personal\Profile',
+            ],
             'admin' => []
         ];
+    }
+
+    /**
+     * Gets panel objects with dependancies instantiated from the container
+     * @param string $className
+     */
+    private function getBuiltInPanel($className) {
+        $panels = [
+            'OC\Settings\Panels\Personal\Profile' => new \OC\Settings\Panels\Personal\Profile($this->config, $this->groupManager, $this->userSession),
+        ];
+        if(isset($panels[$className])) {
+            return $panels[$className];
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -183,7 +204,9 @@ class SettingsManager implements ISettingsManager {
      */
     protected function loadPanel($className) {
         try {
-            $panel = \OC::$server->query($className);
+            if(!$panel = $this->getBuiltInPanel($className)) {
+                $panel = \OC::$server->query($className);
+            }
             if(!$panel instanceof IPanel) {
                 $this->log->error(
                     'Class: {class} not an instance of OCP\Settings\IPanel',
@@ -220,11 +243,11 @@ class SettingsManager implements ISettingsManager {
             try {
                 $panel = $this->loadPanel($panelClassName);
                 $section = $this->loadSection($type, $panel->getSectionID());
-                $this->panels[$type][$section->getID()] = $panel;
-                $this->sections[$type][$section->getID] = $section;
+                $this->panels[$type][$section->getID()][] = $panel;
+                $this->sections[$type][$section->getID()] = $section;
                 // Now try and initialise the ISection from the panel
             } catch (QueryException $e) {
-            // Just skip this panel, either its section of panel could not be loaded
+                // Just skip this panel, either its section of panel could not be loaded
             }
         }
         // Return the panel array sorted
