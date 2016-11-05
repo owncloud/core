@@ -379,6 +379,10 @@ var dragOptions={
 			$selectedFiles = $(this);
 		}
 		$selectedFiles.closest('tr').addClass('animate-opacity dragging');
+		if( $selectedFiles.closest('tr').hasClass('ui-droppable') ){
+			$selectedFiles.closest('tr').droppable( 'disable' );
+		}
+
 	},
 	stop: function(event, ui) {
 		var $selectedFiles = $('td.filename input:checkbox:checked');
@@ -387,6 +391,11 @@ var dragOptions={
 		}
 		var $tr = $selectedFiles.closest('tr');
 		$tr.removeClass('dragging');
+
+		if( $tr.hasClass('ui-droppable') ){
+			$tr.droppable( 'enable' );
+		}
+
 		setTimeout(function() {
 			$tr.removeClass('animate-opacity');
 		}, 300);
@@ -454,4 +463,3 @@ function fileDownloadPath(dir, file) {
 
 // for backward compatibility
 window.Files = OCA.Files.Files;
-
