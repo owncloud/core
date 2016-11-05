@@ -19,37 +19,30 @@
  *
  */
 
-namespace OC\Settings;
+namespace OC\Settings\Panels\Personal;
 
-use OCP\Settings\ISection;
+use OCP\Settings\IPanel;
+use OCP\Template;
 
-/*
- * @since 9.2
- */
-class Section implements ISection {
+class Legacy implements IPanel {
 
-    protected $id;
-    protected $name;
-
-    /** @var int */
-    protected $priority;
-
-    public function __construct($id, $name, $priority) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->priority = $priority;
+    public function getPriority() {
+        return 0;
     }
 
-    public function getID() {
-        return $this->id;
+    public function getPanel() {
+        $tmpl = new Template('settings', 'panels/legacy');
+        $forms = \OC_App::getForms('personal');
+        $tmpl->assign('forms', $forms);
+        return $tmpl;
+    }
+
+    public function getSectionID() {
+        return 'additional';
     }
 
     public function getName() {
-        return $this->name;
-    }
-
-    public function getPriority() {
-        return $this->priority;
+        return 'Additional';
     }
 
 }

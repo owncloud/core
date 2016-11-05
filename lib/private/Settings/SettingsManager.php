@@ -32,22 +32,25 @@ use OCP\AppFramework\QueryException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 
+use OC\Settings\Panels\Personal\Profile;
+use OC\Settings\Panels\Personal\Legacy as LegacyPersonal;
+use OC\Settings\Panels\Admin\Legacy as LegacyAdmin;
 
 /*
  * @since 9.2
  */
 class SettingsManager implements ISettingsManager {
 
-    /* @var IL10N */
+    /** @var IL10N */
     protected $l;
 
-    /* @var AppManager */
+    /** @var AppManager */
     protected $appManager;
 
-    /* @var ILogger */
+    /** @var ILogger */
     protected $logger;
 
-    /* @var IUser */
+    /** @var IUser */
     protected $user;
 
     /**
@@ -66,7 +69,12 @@ class SettingsManager implements ISettingsManager {
      * @param IUserSession $userSession
      * @param ILogger $logger
      */
-    public function __construct(IL10N $l, AppManager $appManager, IUserSession $userSession, ILogger $logger, IGroupManager $groupManager, IConfig $config) {
+    public function __construct(IL10N $l,
+                                AppManager $appManager,
+                                IUserSession $userSession,
+                                ILogger $logger,
+                                IGroupManager $groupManager,
+                                IConfig $config) {
         $this->l = $l;
         $this->appManager = $appManager;
         $this->userSession = $userSession;
@@ -111,8 +119,8 @@ class SettingsManager implements ISettingsManager {
     public function getAdminPanels($sectionID) {
         // Trigger a load of all admin panels to discover sections
         $this->loadPanels('admin');
-        if(array_key_exists($this->panels['personal'][$sectionID])) {
-            return $this->panels['personal'][$sectionID];
+        if(isset($this->panels['admin'][$sectionID])) {
+            return $this->panels['admin'][$sectionID];
         } else {
             return [];
         }
@@ -132,11 +140,13 @@ class SettingsManager implements ISettingsManager {
                 new Section('monitoring', $this->l->t('Monitoring'), 0),
                 new Section('general', $this->l->t('Tips and tricks'), 100),
                 new Section('general', $this->l->t('Email'), 0),
+                new Section('additional', $this->l->t('Additional'), 0),
             ];
         } else if($type === 'personal') {
             return [
                 new Section('general', $this->l->t('General'), 0),
                 new Section('security', $this->l->t('Security'), 0),
+                new Section('additional', $this->l->t('Additional'), 0),
             ];
         }
     }
@@ -148,9 +158,12 @@ class SettingsManager implements ISettingsManager {
     private function getBuiltInPanels() {
         return [
             'personal' => [
-                'OC\Settings\Panels\Personal\Profile',
+                Profile::class,
+                LegacyPersonal::class,
             ],
-            'admin' => []
+            'admin' => [
+                LegacyAdmin::class,
+            ]
         ];
     }
 
@@ -160,7 +173,9 @@ class SettingsManager implements ISettingsManager {
      */
     private function getBuiltInPanel($className) {
         $panels = [
-            'OC\Settings\Panels\Personal\Profile' => new \OC\Settings\Panels\Personal\Profile($this->config, $this->groupManager, $this->userSession),
+            Profile::class => new Profile($this->config, $this->groupManager, $this->userSession),
+            LegacyPersonal::class => new LegacyPersonal(),
+            LegacyAdmin::class => new LegacyAdmin(),
         ];
         if(isset($panels[$className])) {
             return $panels[$className];
@@ -188,7 +203,6 @@ class SettingsManager implements ISettingsManager {
     protected function findRegisteredPanels() {
         $panels = [];
         foreach($this->appManager->getEnabledAppsForUser($this->user) as $app) {
-            \OC_App::registerAutoloading($app, \OC_App::getAppPath($app));
             if(array_key_exists('settings', $this->appManager->getAppInfo($app))) {
                 $panels[] = $this->appManager->getAppInfo($app)['settings'];
             }
@@ -226,7 +240,7 @@ class SettingsManager implements ISettingsManager {
      * Find and return IPanels for the given type
      * @param string $type of panels to load
      * @return array of IPanels
-    */
+     */
     public function loadPanels($type) {
         // If already loaded just return
         if(!empty($this->panels[$type])) {

@@ -1,4 +1,5 @@
-<?php /**
+<?php
+/**
  * Copyright (c) 2011, Robin Appelman <icewind1991@gmail.com>
  * This file is licensed under the Affero General Public License version 3 or later.
  * See the COPYING-README file.
@@ -11,7 +12,7 @@
 <div id="app-navigation">
 	<ul>
 	<?php foreach($_['nav'] as $item) {
-		print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($item['id']), \OCP\Util::sanitizeHTML($item['name'])));
+		print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($item['link']), \OCP\Util::sanitizeHTML($item['name'])));
 	}?>
 	</ul>
 </div>

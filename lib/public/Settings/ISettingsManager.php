@@ -28,34 +28,34 @@ namespace OCP\Settings;
  */
 interface ISettingsManager {
 
-  /**
-   * Retrieves sections for a personal
-   * @since 9.2
-   * @return array of OCP\Settings\ISection (sorted by priority)
-   */
-  public function getPersonalSections();
+    /**
+     * Retrieves sections for a personal
+     * @since 9.2
+     * @return array of OCP\Settings\ISection (sorted by priority)
+     */
+    public function getPersonalSections();
 
-  /**
-   * Retrieves sections for a admin
-   * @since 9.2
-   * @return array of OCP\Settings\ISection (sorted by priority)
-   */
-  public function getAdminSections();
+    /**
+     * Retrieves sections for a admin
+     * @since 9.2
+     * @return array of OCP\Settings\ISection (sorted by priority)
+     */
+    public function getAdminSections();
 
-  /**
-   * Retrives all personal panels for a given section
-   * @since 9.2
-   * @param string $sectionID
-   * @return array of IPanels (sorted by priority)
-   */
-  public function getPersonalPanels($sectionID);
+    /**
+     * Retrives all personal panels for a given section
+     * @since 9.2
+     * @param string $sectionID
+     * @return array of IPanels (sorted by priority)
+     */
+    public function getPersonalPanels($sectionID);
 
-  /**
-   * Retrives all admin panels for a given section
-   * @since 9.2
-   * @param string $sectionID
-   * @return array of IPanels (sorted by priority)
-   */
-  public function getAdminPanels($sectionID);
+    /**
+     * Retrives all admin panels for a given section
+     * @since 9.2
+     * @param string $sectionID
+     * @return array of IPanels (sorted by priority)
+     */
+    public function getAdminPanels($sectionID);
 
 }

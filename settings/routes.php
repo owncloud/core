@@ -42,7 +42,7 @@ $application->registerRoutes($this, [
 	],
 	'routes' => [
 		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal/{sectionid}', 'verb' => 'GET', 'defaults' => ['sectionid' => 'general']],
-		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
+		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin/{sectionid}', 'verb' => 'GET', 'defaults' => ['sectionid' => 'general']],
 		['name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/mailsettings', 'verb' => 'POST'],
 		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
 		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],

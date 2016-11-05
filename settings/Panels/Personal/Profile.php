@@ -58,14 +58,10 @@ class Profile implements IPanel {
         $tmpl->assign('avatarChangeSupported', $this->user->canChangeAvatar());
         $tmpl->assign('displayNameChangeSupported', $this->user->canChangeDisplayName());
         $tmpl->assign('passwordChangeSupported', $this->user->canChangePassword());
-        //$tmpl->assign('email', $email);
-        $groups = $this->groupManager->getUserIdGroups($this->user);
-        $groups2 = array_map(function($group) { return $group->getGID(); }, $groups);
-        sort($groups2);
-        $tmpl->assign('groups', $groups2);
-        //$tmpl->assign('languages', $languages);
-        //$tmpl->assign('activelanguage', $userLang);
-        //$tmpl->assign('commonlanguages', $commonLanguages);
+        $groups = $this->groupManager->getUserGroupIds($this->user);
+        sort($groups);
+        $tmpl->assign('groups', $groups);
+
         return $tmpl;
     }
 

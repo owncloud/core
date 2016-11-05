@@ -6,10 +6,10 @@
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License, version 3,
- * as published by the Free Software Foundation.
+ *  it under the terms of the GNU Affero General Public License, version 3,
+ *  as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
@@ -25,6 +25,7 @@ use OCP\Settings\ISettingsManager;
 use OCP\AppFramework\Controller;
 use OCP\IURLGenerator;
 use OCP\IRequest;
+use OCP\Template;
 use OCP\AppFramework\Http\TemplateResponse;
 
 /**
@@ -45,10 +46,10 @@ class SettingsPageController extends Controller {
 	 */
 	public function __construct($appName,
 								IRequest $request,
-						        ISettingsManager $settingsManager,
+								ISettingsManager $settingsManager,
 								IURLGenerator $urlGenerator) {
 		parent::__construct($appName, $request);
-    	$this->settingsManager = $settingsManager;
+		$this->settingsManager = $settingsManager;
 		$this->urlGenerator = $urlGenerator;
 	}
 
@@ -58,9 +59,9 @@ class SettingsPageController extends Controller {
 	 * @NoCSRFRequired
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
-	*/
-	public function getPersonal($sectionID='general') {
-		$this->currentSectionID = $sectionID;
+	 */
+	public function getPersonal($sectionid) {
+		$this->currentSectionID = $sectionid;
 		return $this->createSettingsPage('personal');
 	}
 
@@ -70,8 +71,8 @@ class SettingsPageController extends Controller {
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
 	 */
-	public function getAdmin($sectionID) {
-		$this->currentSectionID = $sectionID;
+	public function getAdmin($sectionid) {
+		$this->currentSectionID = $sectionid;
 		return $this->createSettingsPage('admin');
 	}
 
@@ -88,6 +89,8 @@ class SettingsPageController extends Controller {
 		} else if($type == 'admin') {
 			$sections = $this->settingsManager->getAdminSections();
 			$panels = $this->settingsManager->getAdminPanels($this->currentSectionID);
+		} else {
+			return false;
 		}
 		// Init the template
 		// Generate the html and nav params
@@ -112,6 +115,7 @@ class SettingsPageController extends Controller {
 		foreach($sections as $section) {
 			$nav[] = [
 				'id' => $section->getID(),
+				'link' => $this->urlGenerator->linkToRoute('settings.SettingsPage.get'.ucwords($type), ['sectionid' => $section->getID()]),
 				'name' => ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
 			];
