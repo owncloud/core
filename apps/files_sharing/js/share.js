@@ -77,6 +77,12 @@
 					fileInfo.shareTypes = shareTypes;
 				}
 
+				if( $el.attr('data-expiration')){
+					var expirationTimestamp = parseInt($el.attr('data-expiration'));
+					fileInfo.shares = [];
+					fileInfo.shares.push({expiration: expirationTimestamp});
+				}
+
 				fileInfo.recipientsDisplayName = $el.attr('data-share-recipients') || undefined;
 				return fileInfo;
 			};
