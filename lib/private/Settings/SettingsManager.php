@@ -32,6 +32,9 @@ use OCP\AppFramework\QueryException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 
+use OC\Settings\Panels\Personal\Profile;
+use OC\Settings\Panels\Personal\Legacy as LegacyPersonal;
+use OC\Settings\Panels\Admin\Legacy as LegacyAdmin;
 
 /*
  * @since 9.2
@@ -150,11 +153,11 @@ class SettingsManager implements ISettingsManager {
     private function getBuiltInPanels() {
         return [
             'personal' => [
-                'OC\Settings\Panels\Personal\Profile',
-                'OC\Settings\Panels\Personal\Legacy',
+                Profile::class,
+                LegacyPersonal::class,
             ],
             'admin' => [
-                'OC\Settings\Panels\Admin\Legacy',
+                LegacyAdmin::class,
             ]
         ];
     }
@@ -165,9 +168,9 @@ class SettingsManager implements ISettingsManager {
      */
     private function getBuiltInPanel($className) {
         $panels = [
-            'OC\Settings\Panels\Personal\Profile' => new \OC\Settings\Panels\Personal\Profile($this->config, $this->groupManager, $this->userSession),
-            'OC\Settings\Panels\Personal\Legacy' => new \OC\Settings\Panels\Personal\Legacy(),
-            'OC\Settings\Panels\Admin\Legacy' => new \OC\Settings\Panels\Admin\Legacy(),
+            Profile::class => new \OC\Settings\Panels\Personal\Profile($this->config, $this->groupManager, $this->userSession),
+            LegacyPersonal::class => new \OC\Settings\Panels\Personal\Legacy(),
+            LegacyAdmin::class => new \OC\Settings\Panels\Admin\Legacy(),
         ];
         if(isset($panels[$className])) {
             return $panels[$className];
