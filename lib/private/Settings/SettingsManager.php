@@ -168,9 +168,9 @@ class SettingsManager implements ISettingsManager {
      */
     private function getBuiltInPanel($className) {
         $panels = [
-            Profile::class => new \OC\Settings\Panels\Personal\Profile($this->config, $this->groupManager, $this->userSession),
-            LegacyPersonal::class => new \OC\Settings\Panels\Personal\Legacy(),
-            LegacyAdmin::class => new \OC\Settings\Panels\Admin\Legacy(),
+            Profile::class => new Profile($this->config, $this->groupManager, $this->userSession),
+            LegacyPersonal::class => new LegacyPersonal(),
+            LegacyAdmin::class => new LegacyAdmin(),
         ];
         if(isset($panels[$className])) {
             return $panels[$className];
