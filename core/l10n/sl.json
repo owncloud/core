@@ -33,7 +33,7 @@
     "Checking updates of apps" : "Poteka preverjanje za posodobitve programov",
     "Checking whether the database schema for %s can be updated (this can take a long time depending on the database size)" : "Poteka preverjanje, ali je shemo podatkovne zbirke za %s mogoče posodobiti (trajanje posodobitve je odvisno od velikosti zbirke).",
     "Checked database schema update for apps" : "Izbrana posodobitev sheme podatkovne zbirke za programe",
-    "Updated \"%s\" to %s" : "Datoteka \"%s\" je posodobljena na %s",
+    "Updated \"%s\" to %s" : "Datoteka »%s« je posodobljena na %s",
     "Set log level to debug" : "Nastavi raven beleženja za razhroščevanje",
     "Reset log level" : "Počisti raven beleženja",
     "Starting code integrity check" : "Začenjanje preverjanja stanja kode",
