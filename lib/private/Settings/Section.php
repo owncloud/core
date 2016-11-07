@@ -28,7 +28,11 @@ use OCP\Settings\ISection;
  */
 class Section implements ISection {
 
-    protected $id, $name, $priority;
+    protected $id;
+    protected $name;
+
+    /** @var int */
+    protected $priority;
 
     public function __construct($id, $name, $priority) {
         $this->id = $id;

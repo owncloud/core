@@ -41,16 +41,16 @@ use OC\Settings\Panels\Admin\Legacy as LegacyAdmin;
  */
 class SettingsManager implements ISettingsManager {
 
-    /* @var IL10N */
+    /** @var IL10N */
     protected $l;
 
-    /* @var AppManager */
+    /** @var AppManager */
     protected $appManager;
 
-    /* @var ILogger */
+    /** @var ILogger */
     protected $logger;
 
-    /* @var IUser */
+    /** @var IUser */
     protected $user;
 
     /**
@@ -69,7 +69,12 @@ class SettingsManager implements ISettingsManager {
      * @param IUserSession $userSession
      * @param ILogger $logger
      */
-    public function __construct(IL10N $l, AppManager $appManager, IUserSession $userSession, ILogger $logger, IGroupManager $groupManager, IConfig $config) {
+    public function __construct(IL10N $l,
+                                AppManager $appManager,
+                                IUserSession $userSession,
+                                ILogger $logger,
+                                IGroupManager $groupManager,
+                                IConfig $config) {
         $this->l = $l;
         $this->appManager = $appManager;
         $this->userSession = $userSession;
@@ -235,7 +240,7 @@ class SettingsManager implements ISettingsManager {
      * Find and return IPanels for the given type
      * @param string $type of panels to load
      * @return array of IPanels
-    */
+     */
     public function loadPanels($type) {
         // If already loaded just return
         if(!empty($this->panels[$type])) {

@@ -26,8 +26,6 @@ use OCP\Template;
 
 class Legacy implements IPanel {
 
-    public function __construct() {}
-
     public function getPriority() {
         return 0;
     }
