@@ -62,12 +62,13 @@ if ($config->getSystemValue('enable_avatars', true) === true) {
 // Highlight navigation entry
 OC::$server->getNavigationManager()->setActiveEntry('personal');
 
-$storageInfo=OC_Helper::getStorageInfo('/');
+$storageInfo = OC_Helper::getStorageInfo('/');
 
 $user = OC::$server->getUserManager()->get(OC_User::getUser());
 $email = $user->getEMailAddress();
 
-$userLang=$config->getUserValue( OC_User::getUser(), 'core', 'lang', OC_L10N::findLanguage() );
+$lang = \OC::$server->getL10NFactory()->findLanguage();
+$userLang = $config->getUserValue( OC_User::getUser(), 'core', 'lang', $lang);
 $languageCodes = \OC::$server->getL10NFactory()->findAvailableLanguages();
 
 // array of common languages

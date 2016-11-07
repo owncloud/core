@@ -43,12 +43,12 @@ class Controller {
 		$oldPassword = isset($_POST['oldpassword']) ? $_POST['oldpassword'] : '';
 
 		if (!\OC_User::checkPassword($username, $oldPassword)) {
-			$l = new \OC_L10n('settings');
+			$l = \OC::$server->getL10NFactory()->get('settings');
 			\OC_JSON::error(["data" => ["message" => $l->t("Wrong password")]]);
 			exit();
 		}
-	        if ($oldPassword === $password) {
-			$l = new \OC_L10n('settings');
+		if ($oldPassword === $password) {
+			$l = \OC::$server->getL10NFactory()->get('settings');
 			\OC_JSON::error(["data" => ["message" => $l->t("The new password can not be the same as the previous one")]]);
 			exit();
 	        }
@@ -65,7 +65,7 @@ class Controller {
 		\OC_JSON::callCheck();
 		\OC_JSON::checkLoggedIn();
 
-		$l = new \OC_L10n('settings');
+		$l = \OC::$server->getL10NFactory()->get('settings');
 		if (isset($_POST['username'])) {
 			$username = $_POST['username'];
 		} else {

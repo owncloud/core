@@ -82,7 +82,7 @@ try {
 	OC_API::respond(new Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'Unauthorised'), OC_API::requestedFormat());
 } catch (ResourceNotFoundException $e) {
 	OC_API::setContentType();
-	OC_OCS::notFound();
+	OC_API::notFound();
 } catch (MethodNotAllowedException $e) {
 	OC_API::setContentType();
 	OC_Response::setStatus(405);

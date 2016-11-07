@@ -26,7 +26,7 @@
  */
 
 class OC_L10N_String implements JsonSerializable {
-	/** @var \OC_L10N|\OC\L10N\L10N */
+	/** @var \OC\L10N\L10N */
 	protected $l10n;
 
 	/** @var string */
@@ -39,7 +39,7 @@ class OC_L10N_String implements JsonSerializable {
 	protected $count;
 
 	/**
-	 * @param \OC_L10N|\OC\L10N\L10N $l10n
+	 * @param \OC\L10N\L10N $l10n
 	 * @param string|string[] $text
 	 * @param array $parameters
 	 * @param int $count
