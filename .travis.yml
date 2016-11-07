@@ -5,7 +5,9 @@ php:
 
 cache:
   directories:
+    - $HOME/.cache/bower
     - $HOME/.composer/cache
+    - $HOME/.npm
     - build/node_modules
 
 env:
