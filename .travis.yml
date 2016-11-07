@@ -3,6 +3,11 @@ language: php
 php:
   - 5.6
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - build/node_modules
+
 env:
   global:
     - TEST_DAV=$(tests/travis/changed_app.sh dav)
