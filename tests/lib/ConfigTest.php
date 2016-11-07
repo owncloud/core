@@ -48,6 +48,12 @@ class ConfigTest extends TestCase {
 		$this->assertSame(['Appenzeller', 'Guinness', 'Kölsch'], $this->config->getValue('beers'));
 	}
 
+	public function testGetValueReturnsEnvironmentValueIfSet() {
+		$this->assertEquals('bar', $this->config->getValue('foo'));
+		$_ENV['OC_foo'] = 'baz';
+		$this->assertEquals('baz', $this->config->getValue('foo'));
+	}
+
 	public function testSetValue() {
 		$this->config->setValue('foo', 'moo');
 		$expectedConfig = $this->initialConfig;
