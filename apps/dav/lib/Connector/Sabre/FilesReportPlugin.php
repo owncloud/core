@@ -23,9 +23,7 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\Files\View;
-use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\PreconditionFailed;
-use Sabre\DAV\Exception\ReportNotSupported;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\ServerPlugin;
 use Sabre\DAV\Tree;
@@ -104,7 +102,7 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @param ITagManager $fileTagger manager for private tags
 	 * @param IUserSession $userSession
 	 * @param IGroupManager $groupManager
-	 * @param Folder $userfolder
+	 * @param Folder $userFolder
 	 */
 	public function __construct(Tree $tree,
 								View $view,
@@ -160,11 +158,12 @@ class FilesReportPlugin extends ServerPlugin {
 	 * REPORT operations to look for files
 	 *
 	 * @param string $reportName
-	 * @param [] $report
+	 * @param $report
 	 * @param string $uri
 	 * @return bool
-	 * @throws NotFound
-	 * @throws ReportNotSupported
+	 * @throws BadRequest
+	 * @throws PreconditionFailed
+	 * @internal param $ [] $report
 	 */
 	public function onReport($reportName, $report, $uri) {
 		$reportTargetNode = $this->server->tree->getNodeForPath($uri);
@@ -231,7 +230,6 @@ class FilesReportPlugin extends ServerPlugin {
 	private function getFilesBaseUri($uri, $subPath) {
 		$uri = trim($uri, '/');
 		$subPath = trim($subPath, '/');
-		$filesUri = '';
 		if (empty($subPath)) {
 			$filesUri = $uri;
 		} else {
