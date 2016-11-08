@@ -235,6 +235,8 @@ class Helper {
 				}
 			}
 
+			
+
 			foreach ($fileList as $key => $file) {
 				if (!array_key_exists('tags', $file)) {
 					$fileList[$key]['tags'] = [];
@@ -242,6 +244,7 @@ class Helper {
 			}
 
 		}
+
 		return $fileList;
 	}
 
