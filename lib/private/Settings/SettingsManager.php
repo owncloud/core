@@ -35,6 +35,19 @@ use OCP\IGroupManager;
 use OC\Settings\Panels\Personal\Profile;
 use OC\Settings\Panels\Personal\Legacy as LegacyPersonal;
 use OC\Settings\Panels\Admin\Legacy as LegacyAdmin;
+use OC\Settings\Panels\Personal\Clients;
+use OC\Settings\Panels\Personal\Version;
+use OC\Settings\Panels\Personal\AppPasswords;
+use OC\Settings\Panels\Admin\BackgroundJobs;
+use OC\Settings\Panels\Admin\Certificates;
+use OC\Settings\Panels\Admin\Encryption;
+use OC\Settings\Panels\Admin\FilesExternal;
+use OC\Settings\Panels\Admin\FileSharing;
+use OC\Settings\Panels\Admin\Mail;
+use OC\Settings\Panels\Admin\Logging;
+use OC\Settings\Panels\Admin\SecurityWarning;
+use OC\Settings\Panels\Admin\Updater;
+use OC\Settings\Panels\Admin\Tips;
 
 /*
  * @since 9.2
@@ -134,18 +147,17 @@ class SettingsManager implements ISettingsManager {
     private function getBuiltInSections($type) {
         if($type === 'admin') {
             return [
-                new Section('security', $this->l->t('Security'), 0),
-                new Section('sharing', $this->l->t('Sharing'), 0),
-                new Section('general', $this->l->t('Updates'), 80),
-                new Section('monitoring', $this->l->t('Monitoring'), 0),
-                new Section('general', $this->l->t('Tips and tricks'), 100),
-                new Section('general', $this->l->t('Email'), 0),
+                new Section('security', $this->l->t('Security'), 5),
+                new Section('sharing', $this->l->t('Sharing'), 4),
+                new Section('updates', $this->l->t('Updates'), 3),
+                new Section('monitoring', $this->l->t('Monitoring'), 1),
+                new Section('general', $this->l->t('General'), 2),
                 new Section('additional', $this->l->t('Additional'), 0),
             ];
         } else if($type === 'personal') {
             return [
-                new Section('general', $this->l->t('General'), 0),
-                new Section('security', $this->l->t('Security'), 0),
+                new Section('general', $this->l->t('General'), 1),
+                new Section('security', $this->l->t('Security'), 2),
                 new Section('additional', $this->l->t('Additional'), 0),
             ];
         }
@@ -159,10 +171,23 @@ class SettingsManager implements ISettingsManager {
         return [
             'personal' => [
                 Profile::class,
+                Clients::class,
                 LegacyPersonal::class,
+                Version::class,
+                AppPasswords::class,
             ],
             'admin' => [
                 LegacyAdmin::class,
+                Updater::class,
+                BackgroundJobs::class,
+                Logging::class,
+                Tips::class,
+                SecurityWarning::class,
+                Mail::class,
+                FilesExternal::class,
+                FileSharing::class,
+                Encryption::class,
+                Certificates::class
             ]
         ];
     }
@@ -173,8 +198,23 @@ class SettingsManager implements ISettingsManager {
      */
     private function getBuiltInPanel($className) {
         $panels = [
+            // Personal
             Profile::class => new Profile($this->config, $this->groupManager, $this->userSession),
             LegacyPersonal::class => new LegacyPersonal(),
+            Clients::class => new Clients(),
+            Version::class => new Version(),
+            AppPasswords::class => new AppPasswords(),
+            // Admin
+            BackgroundJobs::class => new BackgroundJobs(),
+            Certificates::class => new Certificates(),
+            Encryption::class => new Encryption(),
+            FilesExternal::class => new FilesExternal(),
+            FileSharing::class => new FileSharing(),
+            Logging::class => new Logging(),
+            Mail::class => new Mail(),
+            SecurityWarning::class => new SecurityWarning(),
+            Tips::class => new Tips(),
+            Updater::class => new Updater(),
             LegacyAdmin::class => new LegacyAdmin(),
         ];
         if(isset($panels[$className])) {
@@ -293,7 +333,7 @@ class SettingsManager implements ISettingsManager {
      */
     protected function sortOrder($objects) {
         usort($objects, function($a, $b) {
-            return $a->getPriority() > $b->getPriority();
+            return $a->getPriority() < $b->getPriority();
         });
         return $objects;
     }
