@@ -419,7 +419,7 @@ class Share20OCS {
 	 * @param \OCP\Files\File|\OCP\Files\Folder $node
 	 * @return \OC_OCS_Result
 	 */
-	private function getSharedWithMe($node = null) {
+	private function getSharedWithMe($node = null, $showTags) {
 		$userShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, -1, 0);
 		$groupShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0);
 
@@ -434,6 +434,10 @@ class Share20OCS {
 					// Ignore this share
 				}
 			}
+		}
+
+		if ($showTags) {
+			$formatted = \OCA\Files\Helper::populateTags($formatted, 'file_source');
 		}
 
 		return new \OC_OCS_Result($formatted);
@@ -492,6 +496,8 @@ class Share20OCS {
 		$reshares = $this->request->getParam('reshares', null);
 		$subfiles = $this->request->getParam('subfiles');
 		$path = $this->request->getParam('path', null);
+		
+		$showTags = $this->request->getParam('show_tags', false);
 
 		if ($path !== null) {
 			$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
@@ -506,7 +512,7 @@ class Share20OCS {
 		}
 
 		if ($sharedWithMe === 'true') {
-			$result = $this->getSharedWithMe($path);
+			$result = $this->getSharedWithMe($path, $showTags);
 			if ($path !== null) {
 				$path->unlock(ILockingProvider::LOCK_SHARED);
 			}
@@ -546,7 +552,11 @@ class Share20OCS {
 				//Ignore share
 			}
 		}
-
+		
+		if ($showTags) {
+			$formatted = \OCA\Files\Helper::populateTags($formatted, 'file_source');
+		}
+		
 		if ($path !== null) {
 			$path->unlock(ILockingProvider::LOCK_SHARED);
 		}

@@ -169,7 +169,8 @@
 				/* jshint camelcase: false */
 				data: {
 					format: 'json',
-					shared_with_me: !!this._sharedWithUser
+					shared_with_me: !!this._sharedWithUser,
+					show_tags: true
 				},
 				type: 'GET',
 				beforeSend: function(xhr) {
@@ -183,7 +184,8 @@
 					url: OC.linkToOCS('apps/files_sharing/api/v1') + 'remote_shares',
 					/* jshint camelcase: false */
 					data: {
-						format: 'json'
+						format: 'json',
+						show_tags: true
 					},
 					type: 'GET',
 					beforeSend: function(xhr) {

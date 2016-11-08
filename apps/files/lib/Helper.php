@@ -209,10 +209,10 @@ class Helper {
 	 * @param array $fileList
 	 * @return array file list populated with tags
 	 */
-	public static function populateTags(array $fileList) {
+	public static function populateTags(array $fileList, $fileIdentifier = 'fileid') {
 		$filesById = [];
 		foreach ($fileList as $fileData) {
-			$filesById[$fileData['fileid']] = $fileData;
+			$filesById[$fileData[$fileIdentifier]] = $fileData;
 		}
 		$tagger = \OC::$server->getTagManager()->load('files');
 		$tags = $tagger->getTagsForObjects(array_keys($filesById));
@@ -220,6 +220,21 @@ class Helper {
 			foreach ($tags as $fileId => $fileTags) {
 				$filesById[$fileId]['tags'] = $fileTags;
 			}
+			
+			foreach ($filesById as $key => $fileWithTags) {
+				foreach($fileList as $key2 => $file){
+					if( $file[$fileIdentifier] == $key){
+						$fileList[$key2] = $fileWithTags;
+					}
+				}
+			}
+			
+			foreach ($fileList as $key => $file) {
+				if (!array_key_exists('tags', $file)) {
+					$fileList[$key]['tags'] = [];
+				}
+			}
+			
 		}
 		return $fileList;
 	}
