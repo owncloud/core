@@ -95,8 +95,9 @@ class SettingsPageController extends Controller {
 		// Init the template
 		// Generate the html and nav params
 		$params = [];
-		$params['content'] = $this->getPanelsHtml($panels);
+		$params['panels'] = $this->getPanelsData($panels);
 		$params['nav'] = $this->getNavigation($sections, $this->currentSectionID, $type);
+		$params['type'] = $type;
 		// Send the response
 		$response = new TemplateResponse($this->appName, 'settingsPage', $params);
 		return $response;
@@ -126,14 +127,18 @@ class SettingsPageController extends Controller {
 	/**
 	 * Iterate through the panels and retrieve the html content
 	 * @param array $panels array of IPanels
-	 * @return string the rendered HTML
+	 * @return array containing panel html
 	 */
-	protected function getPanelsHtml($panels) {
-		$html = '';
+	protected function getPanelsData($panels) {
+		$data = [];
 		foreach($panels as $panel) {
-			$html .= $panel->getPanel()->fetchPage();
+			$data[] = [
+				'title' => $panel->getName(),
+				'id' => str_replace(' ', '-', strtolower($panel->getName())),
+				'content' => $panel->getPanel()->fetchPage()
+			];
 		}
-		return $html;
+		return $data;
 	}
 
 }

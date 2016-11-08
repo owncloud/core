@@ -61,7 +61,6 @@ class Profile implements IPanel {
         $groups = $this->groupManager->getUserGroupIds($this->user);
         sort($groups);
         $tmpl->assign('groups', $groups);
-
         return $tmpl;
     }
 

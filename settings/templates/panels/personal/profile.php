@@ -1,3 +1,8 @@
+<?php
+\OC_Util::addScript('files', 'jquery.fileupload');
+\OC_Util::addVendorScript('strengthify/jquery.strengthify');
+\OC_Util::addVendorStyle('strengthify/strengthify');
+?>
 <?php if ($_['enableAvatars']): ?>
 <form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">
 	<h2><?php p($l->t('Profile picture')); ?></h2>
