@@ -404,11 +404,6 @@ class AllConfigTest extends \Test\TestCase {
 		$systemConfig = $this->getMockBuilder('\OC\SystemConfig')
 			->disableOriginalConstructor()
 			->getMock();
-		$systemConfig->expects($this->once())
-			->method('getValue')
-			->with($this->equalTo('dbtype'),
-				$this->equalTo('sqlite'))
-			->will($this->returnValue(\OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite')));
 		$config = $this->getConfig($systemConfig);
 
 		// preparation - add something to the database
