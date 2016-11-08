@@ -9,6 +9,19 @@
  */
 
 (function(OC, OCA) {
+
+	_.extend(OC.Files.Client, {
+		PROPERTY_FILEID:	'{' + OC.Files.Client.NS_OWNCLOUD + '}id',
+		PROPERTY_MESSAGE: 	'{' + OC.Files.Client.NS_OWNCLOUD + '}message',
+		PROPERTY_ACTORTYPE:	'{' + OC.Files.Client.NS_OWNCLOUD + '}actorType',
+		PROPERTY_ACTORID:	'{' + OC.Files.Client.NS_OWNCLOUD + '}actorId',
+		PROPERTY_ISUNREAD:	'{' + OC.Files.Client.NS_OWNCLOUD + '}isUnread',
+		PROPERTY_OBJECTID:	'{' + OC.Files.Client.NS_OWNCLOUD + '}objectId',
+		PROPERTY_OBJECTTYPE:	'{' + OC.Files.Client.NS_OWNCLOUD + '}objectType',
+		PROPERTY_ACTORDISPLAYNAME:	'{' + OC.Files.Client.NS_OWNCLOUD + '}actorDisplayName',
+		PROPERTY_CREATEIONDATETIME:	'{' + OC.Files.Client.NS_OWNCLOUD + '}creationDateTime'
+	});
+
 	/**
 	 * @class OCA.Comments.CommentModel
 	 * @classdesc
@@ -26,15 +39,15 @@
 		},
 
 		davProperties: {
-			'id': 				OC.CLIENT.PROPERTY.FILEID,
-			'message': 			OC.CLIENT.PROPERTY.MESSAGE,
-			'actorType': 		OC.CLIENT.PROPERTY.ACTORTYPE,
-			'actorId': 			OC.CLIENT.PROPERTY.ACTORID,
-			'actorDisplayName': OC.CLIENT.PROPERTY.ACTORDISPLAYNAME,
-			'creationDateTime': OC.CLIENT.PROPERTY.CREATEIONDATETIME,
-			'objectType': 		OC.CLIENT.PROPERTY.OBJECTTYPE,
-			'objectId':			OC.CLIENT.PROPERTY.OBJECTID,
-			'isUnread':			OC.CLIENT.PROPERTY.ISUNREAD
+			'id': 				OC.Files.Client.PROPERTY_FILEID,
+			'message': 			OC.Files.Client.PROPERTY_MESSAGE,
+			'actorType': 		OC.Files.Client.PROPERTY_ACTORTYPE,
+			'actorId': 			OC.Files.Client.PROPERTY_ACTORID,
+			'actorDisplayName': OC.Files.Client.PROPERTY_ACTORDISPLAYNAME,
+			'creationDateTime': OC.Files.Client.PROPERTY_CREATEIONDATETIME,
+			'objectType': 		OC.Files.Client.PROPERTY_OBJECTTYPE,
+			'objectId':			OC.Files.Client.PROPERTY_OBJECTID,
+			'isUnread':			OC.Files.Client.PROPERTY_ISUNREAD
 		},
 
 		parse: function(data) {

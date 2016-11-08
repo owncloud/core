@@ -9,6 +9,12 @@
  */
 
 (function() {
+
+	_.extend(OC.Files.Client, {
+		PROPERTY_SHARE_TYPES:	'{' + OC.Files.Client.NS_OWNCLOUD + '}share-types',
+		PROPERTY_OWNER_DISPLAY_NAME:	'{' + OC.Files.Client.NS_OWNCLOUD + '}owner-display-name'
+	});
+
 	if (!OCA.Sharing) {
 		OCA.Sharing = {};
 	}
@@ -91,24 +97,24 @@
 			var oldGetWebdavProperties = fileList._getWebdavProperties;
 			fileList._getWebdavProperties = function() {
 				var props = oldGetWebdavProperties.apply(this, arguments);
-				props.push(OC.CLIENT.PROPERTY.OWNER_DISPLAY_NAME);
-				props.push(OC.CLIENT.PROPERTY.SHARE_TYPES);
+				props.push(OC.Files.Client.PROPERTY_OWNER_DISPLAY_NAME);
+				props.push(OC.Files.Client.PROPERTY_SHARE_TYPES);
 				return props;
 			};
 
 			fileList.filesClient.addFileInfoParser(function(response) {
 				var data = {};
 				var props = response.propStat[0].properties;
-				var permissionsProp = props[OC.CLIENT.PROPERTY.PERMISSIONS];
+				var permissionsProp = props[OC.Files.Client.PROPERTY_PERMISSIONS];
 
 				if (permissionsProp && permissionsProp.indexOf('S') >= 0) {
-					data.shareOwner = props[OC.CLIENT.PROPERTY.OWNER_DISPLAY_NAME];
+					data.shareOwner = props[OC.Files.Client.PROPERTY_OWNER_DISPLAY_NAME];
 				}
 
-				var shareTypesProp = props[OC.CLIENT.PROPERTY.SHARE_TYPES];
+				var shareTypesProp = props[OC.Files.Client.PROPERTY_SHARE_TYPES];
 				if (shareTypesProp) {
 					data.shareTypes = _.chain(shareTypesProp).filter(function(xmlvalue) {
-						return (xmlvalue.namespaceURI === OC.CLIENT.NS_OWNCLOUD && xmlvalue.nodeName.split(':')[1] === 'share-type');
+						return (xmlvalue.namespaceURI === OC.Files.Client.NS_OWNCLOUD && xmlvalue.nodeName.split(':')[1] === 'share-type');
 					}).map(function(xmlvalue) {
 						return parseInt(xmlvalue.textContent || xmlvalue.text, 10);
 					}).value();

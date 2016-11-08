@@ -9,12 +9,17 @@
  */
 
 (function(OC, OCA) {
+
+	_.extend(OC.Files.Client, {
+		PROPERTY_READMARKER:	'{' + OC.Files.Client.NS_OWNCLOUD + '}readMarker'
+	});
+
 	/**
 	 * @class OCA.Comments.CommentSummaryModel
 	 * @classdesc
 	 *
 	 * Model containing summary information related to comments
-	 * like the read marker. 
+	 * like the read marker.
 	 *
 	 */
 	var CommentSummaryModel = OC.Backbone.Model.extend(
@@ -36,7 +41,7 @@
 		_objectId: null,
 
 		davProperties: {
-			'readMarker': OC.CLIENT.PROPERTY.READMARKER
+			'readMarker': OC.Files.Client.PROPERTY_READMARKER
 		},
 
 		/**

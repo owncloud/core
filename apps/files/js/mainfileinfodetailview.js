@@ -9,6 +9,12 @@
  */
 
 (function() {
+
+	_.extend(OC.Files.Client, {
+		PROPERTY_TAGS:	'{' + OC.Files.Client.NS_OWNCLOUD + '}tags',
+		PROPERTY_FAVORITE:	'{' + OC.Files.Client.NS_OWNCLOUD + '}favorite'
+	});
+
 	var TEMPLATE =
 		'<div class="thumbnailContainer"><a href="#" class="thumbnail action-default"><div class="stretcher"/></a></div>' +
 		'<div class="file-details-container">' +
@@ -212,11 +218,11 @@
 			if (this.model) {
 				var properties = [];
 				if (!this.model.has('tags') ) {
-					properties.push(OC.CLIENT.PROPERTY.TAGS);
-					properties.push(OC.CLIENT.PROPERTY.FAVORITE);
+					properties.push(OC.Files.Client.PROPERTY_TAGS);
+					properties.push(OC.Files.Client.PROPERTY_FAVORITE);
 				}
 				if( !this.model.has('size') ) {
-					properties.push(OC.CLIENT.PROPERTY.SIZE);
+					properties.push(OC.Files.Client.PROPERTY_SIZE);
 				}
 
 				if( properties.length > 0){

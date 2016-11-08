@@ -10,6 +10,11 @@
 
 (function() {
 
+	_.extend(OC.Files.Client, {
+		PROPERTY_TAGS:	'{' + OC.Files.Client.NS_OWNCLOUD + '}tags',
+		PROPERTY_FAVORITE:	'{' + OC.Files.Client.NS_OWNCLOUD + '}favorite'
+	});
+
 	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new">' +
 		'<span class="icon {{iconClass}}"></span>' +
 		'<span class="hidden-visually">{{addText}}</span>' +
@@ -1661,12 +1666,11 @@
 				})
 				.then(function(status, data) {
 					// the following lines should be extracted to a mapper
-
-					if( properties.indexOf(OC.CLIENT.PROPERTY.SIZE) !== -1){
+					if( properties.indexOf(OC.Files.Client.PROPERTY_SIZE) !== -1){
 						fileInfo.set('size', data.size);
 					}
 
-					if( properties.indexOf(OC.CLIENT.PROPERTY.FAVORITE) !== -1){
+					if( properties.indexOf(OC.Files.Client.PROPERTY_FAVORITE) !== -1){
 						fileInfo.set('tags', data.tags || []);
 					}
 
