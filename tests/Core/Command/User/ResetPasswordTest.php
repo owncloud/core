@@ -60,6 +60,39 @@ class ResetPasswordTest extends TestCase
 			->method ('writeln')
 			->with('<error>User does not exist</error>');
 
+
 		$resetPasswordCommand->run($inputInterfaceMock, $outputInterfaceMock);
+	}
+
+	public function PasswordFromEnvGivenButOC_PASSIsEmpty(){
+
+		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')
+			->getMock();
+
+		$userManagerMock
+			->method('get')
+			->willReturn(null);
+
+		$resetPasswordCommand = new ResetPassword($userManagerMock);
+
+		$inputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
+			->getMock();
+		$inputInterfaceMock
+			->method('getOption')
+			->with ('password-from-env')
+			->willReturn('OC_PASS');
+
+		$outputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')
+			->getMock();
+
+		$outputInterfaceMock
+			->expects($this->once())
+			->method ('writeln')
+			->with('<error>--password-from-env given, but OC_PASS is empty!</error>');
+
+		$resetPasswordCommand->run($inputInterfaceMock, $outputInterfaceMock);
+	}
+	public function EncryptionResetCausesLossOfData() {
+
 	}
 }
