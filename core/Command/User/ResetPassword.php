@@ -97,8 +97,12 @@ class ResetPassword extends Command {
 			$q = new Question('<question>Confirm the new password: </question>', false);
 			$q->setHidden(true);
 			$confirm = $dialog->ask($input, $output, $q);
-			if ($password !== $confirm || (strlen($password) === 0)) {
-				$output->writeln("<error>Passwords did not match or you didn't enter one!</error>");
+			if (strlen($password) === 0) {
+				$output->writeln("<error>You did not enter a Password!</error>");
+				return 1;
+			}
+			if ($password !== $confirm ) {
+				$output->writeln("<error>Passwords did not match! Please try again!</error>");
 				return 1;
 			}
 		} else {
