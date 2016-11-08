@@ -177,8 +177,6 @@ class FilesPluginTest extends TestCase {
 		$node->expects($this->exactly(2))
 			->method('getOwner')
 			->will($this->returnValue($user));
-		$node->expects($this->never())
-			->method('getSize');
 
 		$this->plugin->handleGetProperties(
 			$propFind,
