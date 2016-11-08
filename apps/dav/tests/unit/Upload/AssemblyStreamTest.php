@@ -32,6 +32,9 @@ class AssemblyStreamTest extends \Test\TestCase {
 		$content = stream_get_contents($stream);
 
 		$this->assertEquals($expected, $content);
+
+		$obj = (stream_get_meta_data($stream)['wrapper_data']);
+		$this->assertEquals($obj->getChecksum(), "SHA1:".sha1($expected));
 	}
 
 	/**
@@ -46,6 +49,9 @@ class AssemblyStreamTest extends \Test\TestCase {
 		}
 
 		$this->assertEquals($expected, $content);
+
+		$obj = (stream_get_meta_data($stream)['wrapper_data']);
+		$this->assertEquals($obj->getChecksum(), "SHA1:".sha1($expected));
 	}
 
 	function providesNodes() {

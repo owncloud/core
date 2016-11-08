@@ -80,6 +80,10 @@ class AssemblyStream implements \Icewind\Streams\File {
 			$start += $size;
 			$this->size = $start;
 		}
+
+		// Calculate the sha1 iteratively in stream_read
+		$this->hasher = hash_init("sha1");
+
 		return true;
 	}
 
@@ -137,6 +141,8 @@ class AssemblyStream implements \Icewind\Streams\File {
 
 		// update position
 		$this->pos += $read;
+
+		hash_update($this->hasher, $data);
 		return $data;
 	}
 
@@ -271,6 +277,24 @@ class AssemblyStream implements \Icewind\Streams\File {
 		}
 
 		return fopen('data://text/plain,' . $data,'r');
+	}
+
+	protected $hasher = null;
+	protected $sha1 = null;
+	/**
+	 * Call this only after having read the whole stream!
+	 * @return string
+	 */
+	public function getChecksum() {
+		if ($this->hasher) {
+			$this->sha1 = hash_final($this->hasher);
+			$this->hasher = null;
+		}
+		if ($this->sha1) {
+			return "SHA1:" . $this->sha1; // Same format we use at other places
+		}
+
+		return null;
 	}
 
 }

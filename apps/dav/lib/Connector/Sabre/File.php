@@ -140,6 +140,18 @@ class File extends Node implements IFile {
 				throw new Exception('Error while copying file to target location (copied bytes: ' . $count . ', expected filesize: ' . $expected . ' )');
 			}
 
+			if (substr( stream_get_meta_data($data)['uri'], 0, 11 ) == "assembly://") {
+				$assemblyStream = (stream_get_meta_data($data)['wrapper_data']);
+				$checksum = $assemblyStream->getChecksum();
+				// Only verify if it was actually computed and actually sent by client
+				if ($checksum && isset($_SERVER['HTTP_OC_CHECKSUM'])) {
+					if (strpos($_SERVER['HTTP_OC_CHECKSUM'], $checksum) === false) {
+						// We use "strpos" because client might send multiple checksums
+						throw new BadRequest('invalid checksum computed ' . $checksum . ' got ' . $_SERVER['HTTP_OC_CHECKSUM']);
+					}
+				}
+			}
+
 			// if content length is sent by client:
 			// double check if the file was fully received
 			// compare expected and actual size
@@ -216,6 +228,7 @@ class File extends Node implements IFile {
 			
 			$this->refreshInfo();
 
+			// FIXME: We're not doing verification yet here #11811
 			if (isset($request->server['HTTP_OC_CHECKSUM'])) {
 				$checksum = trim($request->server['HTTP_OC_CHECKSUM']);
 				$this->fileView->putFileInfo($this->path, ['checksum' => $checksum]);
