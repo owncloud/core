@@ -359,9 +359,12 @@ span.version {
 #apps-list {
 	position: relative;
 	height: 100%;
+	min-height: 100px;
 }
 .section {
 	position: relative;
+	padding: 10px;
+	margin-bottom: 5px;
 }
 .section h2.app-name {
 	margin-bottom: 8px;
