@@ -1,4 +1,5 @@
-<h2><?php p($l->t('Tips & tricks'));?></h2>
+<div class="section">
+	<h2><?php p($l->t('Tips & tricks'));?></h2>
 	<ul>
 		<?php
 		// SQLite database performance issue
@@ -17,3 +18,4 @@
 		<li><a target="_blank" rel="noreferrer" href="<?php p(link_to_docs('developer-theming')); ?>"><?php p($l->t('Theming'));?> ↗</a></li>
 		<li><a target="_blank" rel="noreferrer" href="<?php p(link_to_docs('admin-security')); ?>"><?php p($l->t('Hardening and security guidance'));?> ↗</a></li>
 	</ul>
+</div>

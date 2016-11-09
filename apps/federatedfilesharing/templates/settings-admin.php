@@ -4,7 +4,7 @@
 script('federatedfilesharing', 'settings-admin');
 ?>
 
-<div id="fileSharingSettings">
+<div id="fileSharingSettings" class="section">
 	<h2><?php p($l->t('Federated Cloud Sharing'));?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info svg"
 		title="<?php p($l->t('Open documentation'));?>"

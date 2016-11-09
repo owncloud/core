@@ -1,4 +1,5 @@
-<h2 class="inlineblock"><?php p($l->t('Cron'));?></h2>
+<div class="section">
+	<h2 class="inlineblock"><?php p($l->t('Cron'));?></h2>
 	<?php if ($_['cron_log']): ?>
 	<p class="cronlog inlineblock">
 		<?php if ($_['lastcron'] !== false):
@@ -49,3 +50,4 @@
 				<label for="backgroundjobs_cron">Cron</label><br/>
 				<em><?php p($l->t("Use system's cron service to call the cron.php file every 15 minutes.")); ?></em>
 	</p>
+</div>

@@ -117,7 +117,10 @@ class SettingsPageController extends Controller {
 		foreach($sections as $section) {
 			$nav[] = [
 				'id' => $section->getID(),
-				'link' => $this->urlGenerator->linkToRoute('settings.SettingsPage.get'.ucwords($type), ['sectionid' => $section->getID()]),
+				'link' => $this->urlGenerator->linkToRoute(
+					'settings.SettingsPage.get'.ucwords($type),
+					['sectionid' => $section->getID()]
+				),
 				'name' => ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
 			];
@@ -135,7 +138,7 @@ class SettingsPageController extends Controller {
 		foreach($panels as $panel) {
 			$template = $panel->getPanel();
 			$data[] = [
-				'id' => str_replace(' ', '-', strtolower(get_class($panel))),
+				'id' => get_class($panel),
 				'content' => ($template instanceof Template) ? $template->fetchPage() : $template->render()
 			];
 		}

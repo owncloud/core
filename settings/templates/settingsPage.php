@@ -14,11 +14,10 @@ script('settings', $_['type']);
 script('files', 'jquery.fileupload');
 vendor_script('select2/select2');
 vendor_style('select2/select2');
+script('core', 'multiselect');
 
 if($_['type'] === 'admin') {
 	script('core', ['multiselect', 'setupchecks']);
-	vendor_script('select2/select2');
-	vendor_style('select2/select2');
 }
 ?>
 
@@ -31,7 +30,7 @@ if($_['type'] === 'admin') {
 </div>
 <div id="app-content">
 	<?php foreach($_['panels'] as $panel) { ?>
-        <div class="section" id="<?php print($panel['id']); ?>">
+        <div id="<?php print($panel['id']); ?>">
             <?php print_unescaped($panel['content']); ?>
         </div>
     <?php } ?>

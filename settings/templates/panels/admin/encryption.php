@@ -1,4 +1,5 @@
-<h2><?php p($l->t('Server-side encryption')); ?></h2>
+<div class="section">
+	<h2><?php p($l->t('Server-side encryption')); ?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info"
 		title="<?php p($l->t('Open documentation'));?>"
 		href="<?php p(link_to_docs('admin-encryption')); ?>"></a>
@@ -60,3 +61,4 @@
 			<?php } ?>
 		</div>
 	</div>
+</div>
