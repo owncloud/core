@@ -32,6 +32,7 @@ use OCP\IUserSession;
 use OCP\AppFramework\QueryException;
 use OCP\IConfig;
 use OCP\IGroupManager;
+use OCP\Defaults;
 
 use OC\Settings\Panels\Personal\Profile;
 use OC\Settings\Panels\Personal\Legacy as LegacyPersonal;
@@ -88,7 +89,8 @@ class SettingsManager implements ISettingsManager {
                                 IUserSession $userSession,
                                 ILogger $logger,
                                 IGroupManager $groupManager,
-                                IConfig $config) {
+                                IConfig $config,
+                                Defaults $defaults) {
         $this->l = $l;
         $this->appManager = $appManager;
         $this->userSession = $userSession;
@@ -96,6 +98,7 @@ class SettingsManager implements ISettingsManager {
         $this->config = $config;
         $this->groupManager = $groupManager;
         $this->log = $logger;
+        $this->defaults = $defaults;
     }
 
     public function getPersonalSections() {
@@ -204,7 +207,7 @@ class SettingsManager implements ISettingsManager {
             // Personal
             Profile::class => new Profile($this->config, $this->groupManager, $this->userSession),
             LegacyPersonal::class => new LegacyPersonal(),
-            Clients::class => new Clients(),
+            Clients::class => new Clients($this->config, $this->defaults),
             Version::class => new Version(),
             AppPasswords::class => new AppPasswords(),
             // Admin

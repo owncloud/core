@@ -27,6 +27,7 @@ script('files', 'jquery.fileupload');
 	</div>
 </form>
 <?php endif;
+
 if($_['displayNameChangeSupported']) {
 ?>
 <form id="displaynameform" class="section">
