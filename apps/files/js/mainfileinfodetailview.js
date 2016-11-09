@@ -63,13 +63,6 @@
 		 */
 		_fileActions: null,
 
-		/**
-		 * Local file actions
-		 *
-		 * @type {OCA.Files.FileActions}
-		 */
-		_localFileActions: null,
-
 		events: {
 			'click a.action-favorite': '_onClickFavorite',
 			'click a.action-default': '_onClickDefaultAction',
@@ -94,8 +87,6 @@
 			if (!this._fileActions) {
 				throw 'Missing required parameter "fileActions"';
 			}
-
-			this._localFileActions = new OCA.Files.FileActions();
 		},
 
 		_onClickPermalink: function() {
@@ -114,12 +105,12 @@
 
 		_onClickFavorite: function(event) {
 			event.preventDefault();
-			this._triggerAction('Favorite', this.model, this._fileList);
+			this._fileActions.triggerAction('Favorite', this.model, this._fileList);
 		},
 
 		_onClickDefaultAction: function(event) {
 			event.preventDefault();
-			this._triggerAction(null, this.model, this._fileList);
+			this._fileActions.triggerAction(null, this.model, this._fileList);
 		},
 
 		_onModelChanged: function() {
@@ -130,80 +121,6 @@
 		_makePermalink: function(fileId) {
 			var baseUrl = OC.getProtocol() + '://' + OC.getHost();
 			return baseUrl + OC.generateUrl('/f/{fileId}', {fileId: fileId});
-		},
-
-		_createLocalFavoriteActionIfNotExisting: function(actionName){
-			var self = this;
-			// check if favorite action is already registered
-			var actions = this._fileActions.get(
-				self.model.get('mimetype'),
-				self.model.isDirectory() ? 'dir' : 'file',
-				self.model.get('permissions')
-			);
-
-			if( !actions[actionName] ){
-				// create a local action Handler
-				self._localFileActions.registerAction({
-					name: actionName,
-					displayName: t('files', actionName),
-					mime: 'all',
-					permissions: OC.PERMISSION_READ,
-					type: OCA.Files.FileActions.TYPE_INLINE,
-					actionHandler: function(fileName, context) {
-						var $actionEl = context.$file.find('.action-favorite');
-						var dir = context.dir || context.fileList.getCurrentDirectory();
-						var tags = self.model.attributes.tags;
-						if (_.isUndefined(tags)) {
-							tags = [];
-						}
-						var isFavorite = tags.indexOf(OC.TAG_FAVORITE) >= 0;
-						if (isFavorite) {
-							// remove tag from list
-							tags = _.without(tags, OC.TAG_FAVORITE);
-						} else {
-							tags.push(OC.TAG_FAVORITE);
-						}
-
-						// pre-toggle the star
-						OCA.Files.TagsPlugin.toggleStar($actionEl, !isFavorite);
-
-						context.fileInfoModel.trigger('busy', context.fileInfoModel, true);
-
-						OCA.Files.TagsPlugin.applyFileTags(
-							dir + '/' + fileName,
-							tags,
-							$actionEl,
-							isFavorite
-						).then(function(result) {
-							context.fileInfoModel.trigger('busy', context.fileInfoModel, false);
-							// response from server should contain updated tags
-							var newTags = result.tags;
-							if (_.isUndefined(newTags)) {
-								newTags = tags;
-							}
-							context.fileInfoModel.set({
-								'tags': newTags,
-								'favorite': !isFavorite
-							});
-						});
-					}
-				});
-
-				return self._localFileActions;
-			} else {
-				return self._fileActions;
-			}
-		},
-
-		_triggerAction: function(actionName, fileModel, fileList){
-
-			var fileActions = null;
-			if( actionName === 'Favorite'){
-				fileActions = this._createLocalFavoriteActionIfNotExisting(actionName);
-			}
-
-			fileActions = fileActions ? fileActions : this._fileActions;
-			fileActions.triggerAction(actionName, fileModel, fileList);
 		},
 
 		setFileInfo: function(fileInfo) {
@@ -217,10 +134,6 @@
 
 			if (this.model) {
 				var properties = [];
-				if (!this.model.has('tags') ) {
-					properties.push(OC.Files.Client.PROPERTY_TAGS);
-					properties.push(OC.Files.Client.PROPERTY_FAVORITE);
-				}
 				if( !this.model.has('size') ) {
 					properties.push(OC.Files.Client.PROPERTY_SIZE);
 				}
