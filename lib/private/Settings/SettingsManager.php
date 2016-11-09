@@ -21,6 +21,7 @@
 
 namespace OC\Settings;
 
+use OC\Settings\Panels\Admin\Apps;
 use OCP\Settings\ISettingsManager;
 use OCP\Settings\ISection;
 use OC\App\AppManager;
@@ -153,6 +154,7 @@ class SettingsManager implements ISettingsManager {
                 new Section('monitoring', $this->l->t('Monitoring'), 1),
                 new Section('general', $this->l->t('General'), 2),
                 new Section('additional', $this->l->t('Additional'), 0),
+				new Section('apps', $this->l->t('Apps'), 6),
             ];
         } else if($type === 'personal') {
             return [
@@ -187,7 +189,8 @@ class SettingsManager implements ISettingsManager {
                 FilesExternal::class,
                 FileSharing::class,
                 Encryption::class,
-                Certificates::class
+                Certificates::class,
+				Apps::class
             ]
         ];
     }
