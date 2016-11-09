@@ -222,7 +222,7 @@ class Helper {
 			throw new \UnexpectedValueException('$tags must be an array');
 		}
 
-		if ($tags) {
+		if (!empty($tags)) {
 			foreach ($tags as $fileId => $fileTags) {
 				$filesById[$fileId]['tags'] = $fileTags;
 			}
