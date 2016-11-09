@@ -417,6 +417,7 @@ class Share20OCS {
 
 	/**
 	 * @param \OCP\Files\File|\OCP\Files\Folder $node
+	 * @param boolean $includeTags 
 	 * @return \OC\OCS\Result
 	 */
 	private function getSharedWithMe($node = null, $includeTags) {
