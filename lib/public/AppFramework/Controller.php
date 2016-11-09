@@ -85,11 +85,8 @@ abstract class Controller {
 					);
 					$dataHeaders = $data->getHeaders();
 					$headers = $response->getHeaders();
-					// do not overwrite Content-Type if it already exists
-					if (isset($dataHeaders['Content-Type'])) {
-						unset($headers['Content-Type']);
-					}
-					$response->setHeaders(array_merge($dataHeaders, $headers));
+					// allow overwriting default Content-Type or Cache-Control
+					$response->setHeaders(array_merge($headers, $dataHeaders));
 					return $response;
 				} else {
 					return new JSONResponse($data);
