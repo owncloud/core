@@ -1,5 +1,10 @@
+<?php
+/** @var \OCP\IL10N $l */
+/** @var array $_ */
+?>
+
 <h2><?php p($l->t('Sharing'));?></h2>
-		<a target="_blank"  el="noreferrer" class="icon-info"
+		<a target="_blank" rel="noreferrer" class="icon-info"
 			title="<?php p($l->t('Open documentation'));?>"
 			href="<?php p(link_to_docs('admin-sharing')); ?>"></a>
 		<p id="enable">

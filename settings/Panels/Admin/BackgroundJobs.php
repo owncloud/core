@@ -38,9 +38,4 @@ class BackgroundJobs implements IPanel {
     public function getSectionID() {
         return 'general';
     }
-
-    public function getName() {
-        return 'Backgroudn Jobs';
-    }
-
 }

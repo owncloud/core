@@ -32,7 +32,6 @@ if($_['type'] === 'admin') {
 <div id="app-content">
 	<?php foreach($_['panels'] as $panel) { ?>
         <div class="section" id="<?php print($panel['id']); ?>">
-			<h2><?php print($panel['title']); ?></h2>
             <?php print_unescaped($panel['content']); ?>
         </div>
     <?php } ?>

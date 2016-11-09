@@ -39,8 +39,4 @@ class Certificates implements IPanel {
         return 'general';
     }
 
-    public function getName() {
-        return 'Certificates';
-    }
-
 }

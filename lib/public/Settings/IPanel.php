@@ -27,12 +27,15 @@ namespace OCP\Settings;
  * in the personal and admin settings pages
  * @since 9.2
  */
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\Template;
+
 interface IPanel {
 
   /**
    * The panel controller method that returns a template to the UI
    * @since 9.2
-   * @return OCP\TemplateResponse
+   * @return TemplateResponse | Template
    */
   public function getPanel();
 
@@ -42,13 +45,6 @@ interface IPanel {
    * @return string
    */
   public function getSectionID();
-
-  /**
-   * The name shown to the user in the UI
-   * @since 9.2
-   * @return string
-   */
-  public function getName();
 
   /**
    * The number used to order the section in the UI.

@@ -38,9 +38,4 @@ class Updater implements IPanel {
     public function getSectionID() {
         return 'general';
     }
-
-    public function getName() {
-        return 'Updater';
-    }
-
 }
