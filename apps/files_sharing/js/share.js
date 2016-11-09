@@ -76,7 +76,7 @@
 					var shareTypes = $el.attr('data-share-types').split(',');
 					fileInfo.shareTypes = shareTypes;
 				}
-
+				
 				return fileInfo;
 			};
 
