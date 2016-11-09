@@ -9,18 +9,17 @@
 /** @var \OC_Defaults $theme */
 
 style('settings', 'settings');
+script('settings', $_['type']);
+script('files', 'jquery.fileupload');
+vendor_script('select2/select2');
+vendor_style('select2/select2');
 
 if($_['type'] === 'admin') {
-	script('settings', [ 'settings', 'admin'] );
 	script('core', ['multiselect', 'setupchecks']);
 	vendor_script('select2/select2');
 	vendor_style('select2/select2');
-} else {
-	script('settings', 'personal');
-	OC_Util::addScript( 'settings', 'personal' );
-	OC_Util::addScript('settings', 'certificates');
-	OC_Util::addStyle( 'settings', 'settings' );
-} ?>
+}
+?>
 
 <div id="app-navigation">
 	<ul>

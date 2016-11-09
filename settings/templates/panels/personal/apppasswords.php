@@ -1,7 +1,8 @@
 <?php
-	OC_Util::addScript('settings', 'authtoken');
-	OC_Util::addScript('settings', 'authtoken_collection');
-	OC_Util::addScript('settings', 'authtoken_view');
+script('settings', 'panels/tokens');
+script('settings', 'panels/authtoken');
+script('settings', 'panels/authtoken_collection');
+script('settings', 'panels/authtoken_view');
 ?>
 <div id="apppasswords" class="section">
 	<h2><?php p($l->t('App passwords'));?></h2>

@@ -96,4 +96,3 @@ OC.Settings = _.extend(OC.Settings, {
 		}
 	}
 });
-
