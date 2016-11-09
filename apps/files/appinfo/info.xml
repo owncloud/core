@@ -28,4 +28,7 @@
 		<command>OCA\Files\Command\DeleteOrphanedFiles</command>
 		<command>OCA\Files\Command\TransferOwnership</command>
 	</commands>
+	<settings>
+		<admin>OCA\Files\Panels\Admin</admin>
+	</settings>
 </info>

@@ -249,8 +249,10 @@ class SettingsManager implements ISettingsManager {
     protected function findRegisteredPanels() {
         $panels = [];
         foreach($this->appManager->getEnabledAppsForUser($this->user) as $app) {
-            if(array_key_exists('settings', $this->appManager->getAppInfo($app))) {
-                $panels[] = $this->appManager->getAppInfo($app)['settings'];
+            if(isset($this->appManager->getAppInfo($app)['settings'])) {
+                foreach($this->appManager->getAppInfo($app)['settings'] as $type => $panel) {
+                    $panels[$type][] = $panel;
+                }
             }
         }
         return $panels;
@@ -330,6 +332,10 @@ class SettingsManager implements ISettingsManager {
                 return $section;
             }
         }
+        $this->log->error(
+            'Failed to load section with id: {id}',
+            ['id' => $sectionID]);
+        throw new QueryException('Panel could not be loaded');
     }
 
     /**

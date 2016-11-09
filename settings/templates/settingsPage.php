@@ -9,6 +9,7 @@
 /** @var \OC_Defaults $theme */
 
 style('settings', 'settings');
+script('settings', 'settings');
 script('settings', $_['type']);
 script('files', 'jquery.fileupload');
 vendor_script('select2/select2');
