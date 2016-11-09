@@ -64,6 +64,7 @@
 	Client.NS_DAV = 'DAV:';
 
 	Client.PROPERTY_LASTMODIFIED		= '{' + Client.NS_DAV + '}lastmodified';
+	Client.PROPERTY_GETLASTMODIFIED		= '{' + Client.NS_DAV + '}getlastmodified';
 	Client.PROPERTY_GETETAG				= '{' + Client.NS_DAV + '}getetag';
 	Client.PROPERTY_GETCONTENTTYPE		= '{' + Client.NS_DAV + '}getcontenttype';
 	Client.PROPERTY_RESOURCETYPE		= '{' + Client.NS_DAV + '}resourcetype';

@@ -51,6 +51,17 @@
 		});
 	}
 
+	/**
+	 * Toggle star icon on action element
+	 *
+	 * @param {Object} action element
+	 * @param {boolean} state true if starred, false otherwise
+	 */
+	function toggleStar($actionEl, state) {
+		$actionEl.removeClass('icon-star icon-starred').addClass(getStarIconClass(state));
+		$actionEl.toggleClass('permanent', state);
+	}
+
 	OCA.Files = OCA.Files || {};
 
 	/**
@@ -107,7 +118,7 @@
 					}
 
 					// pre-toggle the star
-					OCA.Files.TagsPlugin.toggleStar($actionEl, !isFavorite);
+					toggleStar($actionEl, !isFavorite);
 
 					context.fileInfoModel.trigger('busy', context.fileInfoModel, true);
 
@@ -227,20 +238,9 @@
 					message = ': ' + response.responseJSON.message;
 				}
 				OC.Notification.showTemporary(t('files', 'An error occurred while trying to update the tags') + message);
-				OCA.Files.TagsPlugin.toggleStar($actionEl, isFavorite);
+				toggleStar($actionEl, isFavorite);
 			});
 		},
-
-		/**
-		 * Toggle star icon on action element
-		 *
-		 * @param {Object} action element
-		 * @param {boolean} state true if starred, false otherwise
-		 */
-		toggleStar: function($actionEl, state) {
-			$actionEl.removeClass('icon-star icon-starred').addClass(getStarIconClass(state));
-			$actionEl.toggleClass('permanent', state);
-		}
 	};
 
 })(OCA);

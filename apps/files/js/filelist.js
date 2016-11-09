@@ -10,11 +10,6 @@
 
 (function() {
 
-	_.extend(OC.Files.Client, {
-		PROPERTY_TAGS:	'{' + OC.Files.Client.NS_OWNCLOUD + '}tags',
-		PROPERTY_FAVORITE:	'{' + OC.Files.Client.NS_OWNCLOUD + '}favorite'
-	});
-
 	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new">' +
 		'<span class="icon {{iconClass}}"></span>' +
 		'<span class="hidden-visually">{{addText}}</span>' +
@@ -1660,6 +1655,15 @@
 			return true;
 		},
 
+		/**
+		 *
+		 */
+	 	/**
+		 * Reloads missing properties from server and set them in the model.
+		 * @param {OCA.Files.FileInfo} fileInfo file info
+		 * @param properties array of properties to be reloaded
+		 * @return ajax call object
+		 */
 		reloadProperties: function(fileInfo, properties) {
 			var deferred = $.Deferred();
 
@@ -1672,10 +1676,6 @@
 					// the following lines should be extracted to a mapper
 					if( properties.indexOf(OC.Files.Client.PROPERTY_SIZE) !== -1){
 						fileInfo.set('size', data.size);
-					}
-
-					if( properties.indexOf(OC.Files.Client.PROPERTY_FAVORITE) !== -1){
-						fileInfo.set('tags', data.tags || []);
 					}
 
 					deferred.resolve(status, data);

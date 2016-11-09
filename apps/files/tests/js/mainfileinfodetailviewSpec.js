@@ -233,19 +233,7 @@ describe('OCA.Files.MainFileInfoDetailView tests', function() {
 			expect(actionHandler.getCall(0).args[1].fileActions).toEqual(fileActions);
 			expect(actionHandler.getCall(0).args[1].fileInfoModel).toEqual(testFileInfo);
 		});
-		it('triggers "Favorite" action when clicking on the star with local Action creation', function() {
-			var actionHandler = sinon.stub();
-
-			view.setFileInfo(testFileInfo);
-
-			view.$el.find('.action-favorite').click();
-
-			expect(actionHandler.calledOnce).toEqual(false);
-			expect(view._localFileActions.actions.all.Favorite.name).toEqual('Favorite');
-		});
-	});
-	describe('events 2', function() {
-		it('triggers "Favorite" action when clicking on the star without local Action creation', function() {
+		it('triggers "Favorite" action when clicking on the star', function() {
 			var actionHandler = sinon.stub();
 
 			fileActions.registerAction({
