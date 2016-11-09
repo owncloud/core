@@ -1,8 +1,11 @@
 <?php
-script('files', 'jquery.fileupload');
-\OC_Util::addScript('files', 'jquery.fileupload');
-\OC_Util::addVendorScript('strengthify/jquery.strengthify');
-\OC_Util::addVendorStyle('strengthify/strengthify');
+script('settings', 'panels/profile');
+vendor_script('strengthify/jquery.strengthify');
+vendor_style('strengthify/strengthify');
+if ($_['enableAvatars']) {
+	vendor_script('jcrop/js/jquery.Jcrop');
+	vendor_style('jcrop/css/jquery.Jcrop');
+}
 ?>
 <?php if ($_['enableAvatars']): ?>
 <form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">

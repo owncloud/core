@@ -106,6 +106,7 @@ class Profile implements IPanel {
         	// Otherwise compare the names
         	return strcmp($a['name'], $b['name']);
         });
+        $tmpl->assign('email', $this->user->getEmailAddress());
         $tmpl->assign('languages', $languages);
         $tmpl->assign('commonlanguages', $commonLanguages);
         $tmpl->assign('activelanguage', $userLang);
