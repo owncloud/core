@@ -66,14 +66,6 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 	}
 
 	/**
-	 * Register settings templates
-	 */
-	public function registerSettings() {
-		\OCP\App::registerAdmin('files_external', 'settings');
-		\OCP\App::registerPersonal('files_external', 'personal');
-	}
-
-	/**
 	 * @{inheritdoc}
 	 */
 	public function getBackends() {

@@ -33,8 +33,9 @@ use OCP\IDateTimeFormatter;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
+use OCP\Settings\IPanel;
 
-class AdminController extends Controller {
+class AdminController extends Controller implements IPanel {
 	/** @var IJobList */
 	private $jobList;
 	/** @var ISecureRandom */
@@ -78,6 +79,18 @@ class AdminController extends Controller {
 		$this->l10n = $l10n;
 		$this->updateChecker = $updateChecker;
 		$this->dateTimeFormatter = $dateTimeFormatter;
+	}
+
+	public function getPriority() {
+		return 0;
+	}
+
+	public function getSectionID() {
+		return 'general';
+	}
+
+	public function getPanel() {
+		return $this->displayPanel();
 	}
 
 	/**
