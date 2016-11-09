@@ -152,7 +152,7 @@ test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
 
 .PHONY: test-integration
 test-integration: $(composer_dev_deps)
-	$(MAKE) -C build/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME)
+	$(MAKE) -C build/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED)
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)

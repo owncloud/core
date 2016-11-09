@@ -135,6 +135,22 @@ timestampedNode('SLAVE') {
                 make test-integration OC_TEST_ALT_HOME=1
                '''
             }
+			executeAndReport('build/integration/output/*.xml') {
+				sh '''phpenv local 7.0
+				rm -rf config/config.php
+				./occ maintenance:install --admin-pass=admin
+				make clean-test-integration
+				make test-integration OC_TEST_ENCRYPTION_ENABLED=1
+			   '''
+			}
+			executeAndReport('build/integration/output/*.xml') {
+				sh '''phpenv local 7.0
+				rm -rf config/config.php
+				./occ maintenance:install --admin-pass=admin
+				make clean-test-integration
+				make test-integration OC_TEST_ALT_HOME=1 OC_TEST_ENCRYPTION_ENABLED=1
+			   '''
+			}
     }
 }
 
