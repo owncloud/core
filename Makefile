@@ -152,7 +152,7 @@ test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
 
 .PHONY: test-integration
 test-integration: $(composer_dev_deps)
-	$(MAKE) -C build/integration
+	$(MAKE) -C build/integration ENCRYPTION_ENABLED=$(ENCRYPTION_ENABLED)
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)

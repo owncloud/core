@@ -37,6 +37,12 @@ ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
 
 $OCC files_external:option $ID_STORAGE enable_sharing true
 
+# Enable encryption if requested
+if test "$ENCRYPTION_ENABLED" = "1"; then
+	$OCC app:enable encryption
+	$OCC encryption:enable
+fi
+
 vendor/bin/behat --strict -f junit -f pretty $SCENARIO_TO_RUN
 RESULT=$?
 
