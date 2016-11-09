@@ -1,4 +1,5 @@
 <?php
+script('files', 'jquery.fileupload');
 \OC_Util::addScript('files', 'jquery.fileupload');
 \OC_Util::addVendorScript('strengthify/jquery.strengthify');
 \OC_Util::addVendorStyle('strengthify/strengthify');
@@ -25,9 +26,7 @@
 		<div class="inlineblock button primary" id="sendcropperbutton"><?php p($l->t('Choose as profile picture')); ?></div>
 	</div>
 </form>
-<?php endif; ?>
-
-<?php
+<?php endif;
 if($_['displayNameChangeSupported']) {
 ?>
 <form id="displaynameform" class="section">
