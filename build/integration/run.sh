@@ -17,6 +17,16 @@ function env_alt_home_clear {
 	$OCC app:disable testing
 }
 
+function env_encryption_enable {
+	$OCC app:enable encryption
+	$OCC encryption:enable
+}
+
+function env_encryption_disable {
+	$OCC encryption:disable
+	$OCC app:disable encryption
+}
+
 # avoid port collision on jenkins - use $EXECUTOR_NUMBER
 if [ -z "$EXECUTOR_NUMBER" ]; then
     EXECUTOR_NUMBER=0
@@ -50,6 +60,11 @@ if test "$OC_TEST_ALT_HOME" = "1"; then
 	env_alt_home_enable
 fi
 
+# Enable encryption if requested
+if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
+	env_encryption_enable
+fi
+
 vendor/bin/behat --strict -f junit -f pretty $SCENARIO_TO_RUN
 RESULT=$?
 
@@ -63,6 +78,11 @@ $OCC app:disable files_external
 
 if test "$OC_TEST_ALT_HOME" = "1"; then
 	env_alt_home_clear
+fi
+
+# Disable encryption if requested
+if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
+	env_encryption_disable
 fi
 
 if [ -z $HIDE_OC_LOGS ]; then
