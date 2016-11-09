@@ -420,7 +420,6 @@ class Share20OCS {
 	 * @param boolean $includeTags 
 	 * @return \OC\OCS\Result
 	 */
-
 	private function getSharedWithMe($node = null, $includeTags) {
 		$userShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, -1, 0);
 		$groupShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0);
@@ -498,8 +497,8 @@ class Share20OCS {
 		$reshares = $this->request->getParam('reshares', null);
 		$subfiles = $this->request->getParam('subfiles');
 		$path = $this->request->getParam('path', null);
-		
-		$showTags = $this->request->getParam('show_tags', false);
+
+		$includeTags = $this->request->getParam('include_tags', false);
 
 		$includeTags = $this->request->getParam('include_tags', false);
 
