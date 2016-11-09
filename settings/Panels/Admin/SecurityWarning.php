@@ -38,9 +38,4 @@ class SecurityWarning implements IPanel {
     public function getSectionID() {
         return 'general';
     }
-
-    public function getName() {
-        return 'Security Warning';
-    }
-
 }

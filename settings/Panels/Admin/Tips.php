@@ -38,9 +38,4 @@ class Tips implements IPanel {
     public function getSectionID() {
         return 'general';
     }
-
-    public function getName() {
-        return 'Tips and Tricks';
-    }
-
 }

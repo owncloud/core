@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Controller;
 
+use OCP\Settings\IPanel;
 use OCP\Settings\ISettingsManager;
 use OCP\AppFramework\Controller;
 use OCP\IURLGenerator;
@@ -126,16 +127,16 @@ class SettingsPageController extends Controller {
 
 	/**
 	 * Iterate through the panels and retrieve the html content
-	 * @param array $panels array of IPanels
+	 * @param IPanel[] $panels array of IPanels
 	 * @return array containing panel html
 	 */
 	protected function getPanelsData($panels) {
 		$data = [];
 		foreach($panels as $panel) {
+			$template = $panel->getPanel();
 			$data[] = [
-				'title' => $panel->getName(),
-				'id' => str_replace(' ', '-', strtolower($panel->getName())),
-				'content' => $panel->getPanel()->fetchPage()
+				'id' => str_replace(' ', '-', strtolower(get_class($panel))),
+				'content' => ($template instanceof Template) ? $template->fetchPage() : $template->render()
 			];
 		}
 		return $data;

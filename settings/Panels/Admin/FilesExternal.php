@@ -39,8 +39,4 @@ class FilesExternal implements IPanel {
         return 'general';
     }
 
-    public function getName() {
-        return 'External Files';
-    }
-
 }

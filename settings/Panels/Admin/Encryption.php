@@ -39,8 +39,4 @@ class Encryption implements IPanel {
         return 'general';
     }
 
-    public function getName() {
-        return 'Encryption';
-    }
-
 }

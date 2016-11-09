@@ -31,16 +31,18 @@ class FileSharing implements IPanel {
     }
 
     public function getPanel() {
-        $tmpl = new Template('settings', 'panels/admin/filesharing');
-        return $tmpl;
+		// TODO: inject
+		$config = \OC::$server->getConfig();
+		$template = new Template('settings', 'panels/admin/filesharing');
+		$template->assign('shareAPIEnabled', $config->getAppValue('core', 'shareapi_enabled', 'yes'));
+		$template->assign('shareDefaultExpireDateSet', $config->getAppValue('core', 'shareapi_default_expire_date', 'no'));
+		$template->assign('shareExpireAfterNDays', $config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
+		$template->assign('shareEnforceExpireDate', $config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
+		return $template;
     }
 
     public function getSectionID() {
         return 'sharing';
-    }
-
-    public function getName() {
-        return 'Sharing';
     }
 
 }

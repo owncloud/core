@@ -39,8 +39,4 @@ class Mail implements IPanel {
         return 'general';
     }
 
-    public function getName() {
-        return 'Mail';
-    }
-
 }

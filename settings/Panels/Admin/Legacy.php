@@ -40,9 +40,4 @@ class Legacy implements IPanel {
     public function getSectionID() {
         return 'additional';
     }
-
-    public function getName() {
-        return 'Additional';
-    }
-
 }

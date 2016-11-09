@@ -38,7 +38,7 @@ class SettingsManagerTest extends TestCase {
 
   public function testLoadPanel() {}
 
-  public function testLoadPanels() {
+  public function testLoadPanels() {}
 
   public function testGetPanels() {}
 
