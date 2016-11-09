@@ -207,6 +207,7 @@ class Helper {
 	 * Populate the result set with file tags
 	 *
 	 * @param array $fileList
+	 * @param string $fileIdentifier identifier attribute name for values in $fileList
 	 * @return array file list populated with tags
 	 */
 	public static function populateTags(array $fileList, $fileIdentifier = 'fileid') {
