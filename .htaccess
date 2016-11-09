@@ -20,9 +20,14 @@
     SetEnv modHeadersAvailable true
   </IfModule>
 
-  # Add cache control for CSS and JS files
+  # Let browsers cache CSS, JS files for half a year
   <FilesMatch "\.(css|js)$">
-    Header set Cache-Control "max-age=7200, public"
+    Header set Cache-Control "max-age=15778463"
+  </FilesMatch>
+  
+  # Let browsers cache WOFF files for a week
+  <FilesMatch "\.woff$">
+    Header set Cache-Control "max-age=604800"
   </FilesMatch>
 </IfModule>
 <IfModule mod_php5.c>
