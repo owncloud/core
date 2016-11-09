@@ -70,7 +70,11 @@
 
 		allowedLists: [
 			'files',
-			'favorites'
+			'favorites',
+			'systemtags',
+			'shares.self',
+			'shares.others',
+			'shares.link'
 		],
 
 		_extendFileActions: function(fileActions) {
@@ -238,4 +242,3 @@
 })(OCA);
 
 OC.Plugins.register('OCA.Files.FileList', OCA.Files.TagsPlugin);
-

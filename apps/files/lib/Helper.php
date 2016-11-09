@@ -216,11 +216,16 @@ class Helper {
 		}
 		$tagger = \OC::$server->getTagManager()->load('files');
 		$tags = $tagger->getTagsForObjects(array_keys($filesById));
+
+		if (!is_array($tags)) {
+			throw new \UnexpectedValueException('$tags must be an array');
+		}
+
 		if ($tags) {
 			foreach ($tags as $fileId => $fileTags) {
 				$filesById[$fileId]['tags'] = $fileTags;
 			}
-			
+
 			foreach ($filesById as $key => $fileWithTags) {
 				foreach($fileList as $key2 => $file){
 					if( $file[$fileIdentifier] == $key){
@@ -228,13 +233,13 @@ class Helper {
 					}
 				}
 			}
-			
+
 			foreach ($fileList as $key => $file) {
 				if (!array_key_exists('tags', $file)) {
 					$fileList[$key]['tags'] = [];
 				}
 			}
-			
+
 		}
 		return $fileList;
 	}
