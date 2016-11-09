@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Lagring är temporärt inte tillgänglig",
     "Storage invalid" : "Lagring ogiltig",
     "Unknown error" : "Okänt fel",
     "Files" : "Filer",
@@ -13,6 +14,8 @@ OC.L10N.register(
     "Upload cancelled." : "Uppladdning avbruten.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Kan inte ladda upp {filename} eftersom den antingen är en mapp eller har 0 bytes.",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Inte tillräckligt med ledigt utrymme, du laddar upp {size1} men endast {size2} finns kvar.",
+    "Target folder \"{dir}\" does not exist any more" : "Destinationsmappen \"{dir}\" finns inte längre",
+    "Not enough free space" : "Inte tillräckligt med ledigt utrymme",
     "Uploading..." : "Laddar upp...",
     "..." : "...",
     "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{hours}:{minutes}:{seconds} timme/ar kvar",

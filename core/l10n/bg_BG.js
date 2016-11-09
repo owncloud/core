@@ -141,6 +141,7 @@ OC.L10N.register(
     "delete" : "изтриване",
     "access control" : "контрол на достъпа",
     "Share" : "Споделяне",
+    "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Споделете с хора на други ownClouds използвайки синтаксиса username@example.com/ownCloud",
     "Warning" : "Предупреждение",
     "Delete" : "Изтриване",
     "Rename" : "Преименуване",
