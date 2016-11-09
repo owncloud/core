@@ -1,4 +1,5 @@
-<form id="mail_general_settings_form" class="mail_settings">
+<div class="section">
+	<form id="mail_general_settings_form" class="mail_settings">
 		<h2><?php p($l->t('Email server'));?></h2>
 		<a target="_blank" rel="noreferrer" class="icon-info"
 			title="<?php p($l->t('Open documentation'));?>"
@@ -83,3 +84,4 @@
 	<em><?php p($l->t( 'Test email settings' )); ?></em>
 	<input type="submit" name="sendtestemail" id="sendtestemail" value="<?php p($l->t( 'Send email' )); ?>"/>
 	<span id="sendtestmail_msg" class="msg"></span>
+</div>
