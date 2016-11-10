@@ -26,6 +26,7 @@ use OC\Connector\Sabre\TagList;
 abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
 	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
+	const GETLASTMODIFIED_PROPERTYNAME = '{DAV:}getlastmodified';
 
 	/**
 	 * Allow configuring the method used to generate Etags
@@ -159,9 +160,11 @@ abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\I
 			} else {
 				if (strcmp($propertyName, self::GETETAG_PROPERTYNAME) === 0) {
 					\OC\Files\Filesystem::putFileInfo($this->path, array('etag' => $propertyValue));
-				} elseif (strcmp($propertyName, self::LASTMODIFIED_PROPERTYNAME) === 0) {
-					$this->touch($propertyValue);
-				} else {
+				} elseif (strcmp($propertyName, self::LASTMODIFIED_PROPERTYNAME) === 0 ||
+                                          strcmp($propertyName, self::GETLASTMODIFIED_PROPERTYNAME) === 0
+                                          ) {
+                                        $this->touch($propertyValue);
+                                } else {
 					if (!array_key_exists($propertyName, $existing)) {
 						$query = OC_DB::prepare('INSERT INTO `*PREFIX*properties`'
 							. ' (`userid`,`propertypath`,`propertyname`,`propertyvalue`) VALUES(?,?,?,?)');
