@@ -20,17 +20,21 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 */
 	protected $storage = null;
 
+	/** @var  string */
+	protected $user;
+
 	public function __construct($storage, $mountpoint, $arguments = null, $loader = null) {
+		$this->user = $arguments['user'];
 		// first update the mount point before creating the parent
-		$newMountPoint = $this->verifyMountPoint($arguments['share'], $arguments['user']);
-		$absMountPoint = '/' . $arguments['user'] . '/files' . $newMountPoint;
+		$newMountPoint = $this->verifyMountPoint($arguments['share']);
+		$absMountPoint = '/' . $this->user . '/files' . $newMountPoint;
 		parent::__construct($storage, $absMountPoint, $arguments, $loader);
 	}
 
 	/**
 	 * check if the parent folder exists otherwise move the mount point up
 	 */
-	private function verifyMountPoint(&$share, $user) {
+	private function verifyMountPoint(&$share) {
 
 		$mountPoint = basename($share['file_target']);
 		$parent = dirname($share['file_target']);
@@ -42,11 +46,11 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$newMountPoint = \OCA\Files_Sharing\Helper::generateUniqueTarget(
 				\OC\Files\Filesystem::normalizePath($parent . '/' . $mountPoint),
 				array(),
-				new \OC\Files\View('/' . $user . '/files')
+				new \OC\Files\View('/' . $this->user . '/files')
 				);
 
 		if($newMountPoint !== $share['file_target']) {
-			self::updateFileTarget($newMountPoint, $share);
+			$this->updateFileTarget($newMountPoint, $share);
 			$share['file_target'] = $newMountPoint;
 			$share['unique_name'] = true;
 		}
@@ -60,7 +64,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @param array $share reference to the share which should be modified
 	 * @return bool
 	 */
-	private static function updateFileTarget($newPath, &$share) {
+	private function updateFileTarget($newPath, &$share) {
 		// if the user renames a mount point from a group share we need to create a new db entry
 		// for the unique name
 		if ($share['share_type'] === \OCP\Share::SHARE_TYPE_GROUP && empty($share['unique_name'])) {
@@ -68,7 +72,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 			.' `share_type`, `share_with`, `uid_owner`, `permissions`, `stime`, `file_source`,'
 			.' `file_target`, `token`, `parent`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)');
 			$arguments = array($share['item_type'], $share['item_source'], $share['item_target'],
-				2, \OCP\User::getUser(), $share['uid_owner'], $share['permissions'], $share['stime'], $share['file_source'],
+				2, $this->user, $share['uid_owner'], $share['permissions'], $share['stime'], $share['file_source'],
 				$newPath, $share['token'], $share['id']);
 		} else {
 			// rename mount point
