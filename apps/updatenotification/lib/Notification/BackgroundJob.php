@@ -81,7 +81,6 @@ class BackgroundJob extends TimedJob {
 
 	protected function run($argument) {
 		$this->checkCoreUpdate();
-		$this->checkAppUpdates();
 	}
 
 	/**
@@ -99,20 +98,6 @@ class BackgroundJob extends TimedJob {
 		if (isset($status['version'])) {
 			$url = $this->urlGenerator->linkToRouteAbsolute('settings_admin') . '#updater';
 			$this->createNotifications('core', $status['version'], $url);
-		}
-	}
-
-	/**
-	 * Check all installed apps for updates
-	 */
-	protected function checkAppUpdates() {
-		$apps = $this->appManager->getInstalledApps();
-		foreach ($apps as $app) {
-			$update = $this->isUpdateAvailable($app);
-			if ($update !== false) {
-				$url = $this->urlGenerator->linkToRouteAbsolute('settings.AppSettings.viewApps') . '#app-' . $app;
-				$this->createNotifications($app, $update, $url);
-			}
 		}
 	}
 
@@ -201,13 +186,5 @@ class BackgroundJob extends TimedJob {
 	 */
 	protected function getChannel() {
 		return \OC_Util::getChannel();
-	}
-
-	/**
-	 * @param string $app
-	 * @return string|false
-	 */
-	protected function isUpdateAvailable($app) {
-		return Installer::isUpdateAvailable($app);
 	}
 }
