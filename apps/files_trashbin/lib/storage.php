@@ -108,7 +108,10 @@ class Storage extends Wrapper {
 	 * @return bool true if the operation succeeded, false otherwise
 	 */
 	private function doDelete($path, $method) {
-		if (self::$disableTrash) {
+		if (self::$disableTrash
+			|| !\OC_App::isEnabled('files_trashbin')
+			|| (pathinfo($path, PATHINFO_EXTENSION) === 'part')
+		) {
 			return call_user_func_array([$this->storage, $method], [$path]);
 		}
 		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path);
