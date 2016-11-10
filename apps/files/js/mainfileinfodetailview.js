@@ -9,6 +9,12 @@
  */
 
 (function() {
+
+	_.extend(OC.Files.Client, {
+		PROPERTY_TAGS:	'{' + OC.Files.Client.NS_OWNCLOUD + '}tags',
+		PROPERTY_FAVORITE:	'{' + OC.Files.Client.NS_OWNCLOUD + '}favorite'
+	});
+
 	var TEMPLATE =
 		'<div class="thumbnailContainer"><a href="#" class="thumbnail action-default"><div class="stretcher"/></a></div>' +
 		'<div class="file-details-container">' +
@@ -124,6 +130,18 @@
 			this.model = fileInfo;
 			if (this.model) {
 				this.model.on('change', this._onModelChanged, this);
+			}
+
+			if (this.model) {
+				var properties = [];
+				if( !this.model.has('size') ) {
+					properties.push(OC.Files.Client.PROPERTY_SIZE);
+				}
+
+				if( properties.length > 0){
+					this._fileList.reloadProperties(fileInfo, properties);
+				}
+
 			}
 			this.render();
 		},

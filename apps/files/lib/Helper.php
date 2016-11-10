@@ -242,6 +242,7 @@ class Helper {
 			}
 
 		}
+
 		return $fileList;
 	}
 
