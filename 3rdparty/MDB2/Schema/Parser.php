@@ -551,34 +551,40 @@ class MDB2_Schema_Parser extends XML_Parser
                          $error_class = null,
                          $skipmsg = false)
     {
-        if (is_null($this->error)) {
-            $error = '';
-            if (is_resource($msg)) {
-                $error .= 'Parser error: '.xml_error_string(xml_get_error_code($msg));
-                $xp     = $msg;
-            } else {
-                $error .= 'Parser error: '.$msg;
-                if (!is_resource($xp)) {
-                    $xp = $this->parser;
-                }
-            }
-
-            if ($error_string = xml_error_string($xmlecode)) {
-                $error .= ' - '.$error_string;
-            }
-
-            if (is_resource($xp)) {
-                $byte   = @xml_get_current_byte_index($xp);
-                $line   = @xml_get_current_line_number($xp);
-                $column = @xml_get_current_column_number($xp);
-                $error .= " - Byte: $byte; Line: $line; Col: $column";
-            }
-
-            $error .= "\n";
-
-            $this->error = MDB2_Schema::raiseError($ecode, null, null, $error);
+        if (isset($this) && isset($this->error)) {
+            return $this->error;
         }
-        return $this->error;
+        $err = '';
+        if (is_resource($msg)) {
+            $err .= 'Parser error: '.xml_error_string(xml_get_error_code($msg));
+            $xp     = $msg;
+        } else {
+            $err .= 'Parser error: '.$msg;
+            if (!is_resource($xp) && isset($this)) {
+                $xp = $this->parser;
+            }
+        }
+
+        if ($error_string = xml_error_string($xmlecode)) {
+            $err .= ' - '.$error_string;
+        }
+
+        if (is_resource($xp)) {
+            $byte   = @xml_get_current_byte_index($xp);
+            $line   = @xml_get_current_line_number($xp);
+            $column = @xml_get_current_column_number($xp);
+            $err .= " - Byte: $byte; Line: $line; Col: $column";
+        }
+
+        $err .= "\n";
+
+        $error = MDB2_Schema::raiseError($ecode, null, null, $err);
+
+        if (isset($this)) {
+            $this->error = $error;
+        }
+
+        return $error;
     }
 
     /**
