@@ -409,4 +409,63 @@ class OC_Mount_Config {
 		);
 		return hash('md5', $data);
 	}
+
+	/**
+	 * Add storage id to the storage configurations that did not have any.
+	 *
+	 * @param string $user user for which to process storage configs
+	 */
+	private static function addStorageIdToConfig($user) {
+		$config = self::readData($user);
+
+		$needUpdate = false;
+		foreach ($config as &$applicables) {
+			foreach ($applicables as &$mountPoints) {
+				foreach ($mountPoints as &$options) {
+					$needUpdate |= !isset($options['storage_id']);
+				}
+			}
+		}
+
+		if ($needUpdate) {
+			self::writeData($user, $config);
+		}
+	}
+
+	/**
+	 * Get storage id from the numeric storage id and set
+	 * it into the given options argument. Only do this
+	 * if there was no storage id set yet.
+	 *
+	 * This might also fail if a storage wasn't fully configured yet
+	 * and couldn't be mounted, in which case this will simply return false.
+	 *
+	 * @param array $options storage options
+	 *
+	 * @return bool true if the storage id was added, false otherwise
+	 */
+	private static function addStorageId(&$options) {
+		if (isset($options['storage_id'])) {
+			return false;
+		}
+
+		$class = $options['class'];
+		try {
+			if($class instanceof \OCP\Files\Storage) {
+				/** @var \OCP\Files\Storage $storage */
+				$storage = new $class($options['options']);
+			} else {
+				return false;
+			}
+			// TODO: introduce StorageConfigException
+		} catch (\Exception $e) {
+			// storage might not be fully configured yet (ex: Dropbox)
+			// note that storage instances aren't supposed to open any connections
+			// in the constructor, so this exception is likely to be a config exception
+			return false;
+		}
+
+		$options['storage_id'] = $storage->getCache()->getNumericStorageId();
+		return true;
+	}
 }
