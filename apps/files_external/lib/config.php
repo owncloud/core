@@ -407,6 +407,6 @@ class OC_Mount_Config {
 				'mo' => isset($config['mountOptions']) ? $config['mountOptions'] : [],
 			]
 		);
-		return hash('md5', $data);
+		return md5($data);
 	}
 }
