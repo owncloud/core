@@ -1663,21 +1663,23 @@
 		reloadProperties: function(fileInfo, properties) {
 			var deferred = $.Deferred();
 
-			var targetPath = OC.joinPaths(fileInfo.attributes.path + '/', fileInfo.attributes.name);
+			var targetPath = OC.joinPaths(fileInfo.get('path') + '/', fileInfo.get('name'));
 
 			this.filesClient.getFileInfo(targetPath, {
 					properties: properties
 				})
 				.then(function(status, data) {
 					// the following lines should be extracted to a mapper
-					if( properties.indexOf(OC.Files.Client.PROPERTY_SIZE) !== -1){
+
+					if( properties.indexOf(OC.Files.Client.PROPERTY_GETCONTENTLENGTH) !== -1
+					||  properties.indexOf(OC.Files.Client.PROPERTY_SIZE) !== -1 ) {
 						fileInfo.set('size', data.size);
 					}
 
 					deferred.resolve(status, data);
 				})
 				.fail(function(status) {
-					OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+					OC.Notification.showTemporary(t('files', 'Could not load info for file "{file}"', {file: fileInfo.get('name')}));
 					deferred.reject(status);
 				});
 
