@@ -78,14 +78,16 @@ class Proxy extends \OC_FileProxy {
 			$normalizedPath = dirname($normalizedPath);
 		}
 
-		// we don't encrypt server-to-server shares
-		list($storage, ) = \OC\Files\Filesystem::resolvePath($normalizedPath);
+		// we don't encrypt for SecureStorage or server-to-server shares
+		list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath($normalizedPath);
 		/**
 		 * @var \OCP\Files\Storage $storage
 		 */
 		if ($storage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
 			return true;
-		}
+		} elseif ($storage->instanceOfStorage('OCP\Files\SecureStorage')) {
+            return $storage->shouldEncrypt($internalPath);
+        }
 
 		return false;
 	}
