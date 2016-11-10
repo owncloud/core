@@ -168,8 +168,10 @@ class Server {
 						)
 					)
 				);
-				$this->server->addPlugin(
-					new QuotaPlugin($view));
+				if (!is_null($view)) {
+					$this->server->addPlugin(
+						new QuotaPlugin($view));
+				}
 			}
 		});
 	}
