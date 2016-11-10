@@ -106,7 +106,7 @@ msgstr "Der Benutzer konnte nicht aus der Gruppe %s entfernt werden"
 
 #: ajax/updateapp.php:14
 msgid "Couldn't update app."
-msgstr "Die App konnte nicht geupdated werden."
+msgstr "Die App konnte nicht aktualisiert werden."
 
 #: js/apps.js:30
 msgid "Update to {appversion}"
@@ -126,7 +126,7 @@ msgstr "Bitte warten...."
 
 #: js/apps.js:84
 msgid "Updating...."
-msgstr "Update..."
+msgstr "Aktualisierung..."
 
 #: js/apps.js:87
 msgid "Error while updating app"
@@ -179,7 +179,7 @@ msgstr "Es muss ein gültiger Benutzername angegeben werden"
 
 #: js/users.js:353 js/users.js:359 js/users.js:374
 msgid "Error creating user"
-msgstr "Beim Erstellen des Benutzers ist ein Fehler aufgetreten"
+msgstr "Beim Anlegen des Benutzers ist ein Fehler aufgetreten"
 
 #: js/users.js:358
 msgid "A valid password must be provided"
@@ -291,7 +291,7 @@ msgstr "Links erlauben"
 
 #: templates/admin.php:143
 msgid "Allow users to share items to the public with links"
-msgstr "Erlaube es Benutzern, Items per öffentlichem Link zu teilen"
+msgstr "Erlaube es Benutzern, Inhalte per öffentlichem Link zu teilen"
 
 #: templates/admin.php:150
 msgid "Allow resharing"
@@ -299,15 +299,15 @@ msgstr "Erlaube weiterverteilen"
 
 #: templates/admin.php:151
 msgid "Allow users to share items shared with them again"
-msgstr "Erlaubt Nutzern mit ihnen geteilte Inhalte erneut zu teilen"
+msgstr "Erlaubt Benutzern, mit ihnen geteilte Inhalte erneut zu teilen"
 
 #: templates/admin.php:158
 msgid "Allow users to share with anyone"
-msgstr "Erlaube Nutzern mit jedem zu teilen"
+msgstr "Erlaube Benutzern, mit jedem zu teilen"
 
 #: templates/admin.php:161
 msgid "Allow users to only share with users in their groups"
-msgstr "Erlaube Nutzern nur mit Nutzern in ihrer Gruppe zu teilen"
+msgstr "Erlaube Benutzern, nur mit Nutzern in ihrer Gruppe zu teilen"
 
 #: templates/admin.php:168
 msgid "Security"
