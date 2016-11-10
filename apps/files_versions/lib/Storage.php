@@ -683,10 +683,11 @@ class Storage {
 	/**
 	 * Expire versions which exceed the quota
 	 *
-	 * @param string $filename
+	 * @param string $filename path to file to expire
+	 * @param string $uid user for which to expire the version
 	 * @return bool|int|null
 	 */
-	public static function expire($filename) {
+	public static function expire($filename, $uid) {
 		$config = \OC::$server->getConfig();
 		$expiration = self::getExpiration();
 		
@@ -696,7 +697,6 @@ class Storage {
 				return false;
 			}
 
-			list($uid, $filename) = self::getUidAndFilename($filename);
 			if (empty($filename)) {
 				// file maybe renamed or deleted
 				return false;
@@ -705,6 +705,10 @@ class Storage {
 
 			// get available disk space for user
 			$user = \OC::$server->getUserManager()->get($uid);
+			if (is_null($user)) {
+				\OCP\Util::writeLog('files_versions', 'Backends provided no user object for ' . $uid, \OCP\Util::ERROR);
+				throw new \OC\User\NoUserException('Backends provided no user object for ' . $uid);
+			}
 			$softQuota = true;
 			$quota = $user->getQuota();
 			if ( $quota === null || $quota === 'none' ) {
