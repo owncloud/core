@@ -80,7 +80,6 @@ class JobHashTest extends \Test\TestCase {
 			['\OC\My\Class', json_encode(1), 1],
 			['\OC\My\Class', json_encode(new \stdclass()), new \stdclass()],
 			['\OC\My\Class', json_encode((array)(new \stdclass())), (array)(new \stdclass())],
-			['\OC\My\Class', null, null],
 		];
 	}
 
@@ -91,8 +90,8 @@ class JobHashTest extends \Test\TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('jobs')
 			->values([
-				'class' => $qb->expr()->literal($class),
-				'argument' => $qb->expr()->literal($arguments),
+				'class' => $qb->createNamedParameter($class),
+				'argument' => $qb->createNamedParameter($arguments),
 			]);
 		$qb->execute();
 
