@@ -47,7 +47,11 @@ class Scanner extends BasicEmitter {
 	/**
 	 * @var bool $useTransactions whether to use transactions
 	 */
-	protected $useTransactions = true;
+	// FIXME Instead of using a transaction we should lock the table.
+	// FIXME Transactions cause a problem, if two scanChildren() calls run.
+	// FIXME Then insertIfNotExists() of the second one fails to insert, but the
+	// FIXME select can not find the value, because it still has the old state.
+	protected $useTransactions = false;// FIXME true;
 
 	const SCAN_RECURSIVE = true;
 	const SCAN_SHALLOW = false;
