@@ -90,6 +90,7 @@
 
 	Client.PROTOCOL_HTTP	= 'http';
 	Client.PROTOCOL_HTTPS	= 'https';
+
 	Client._PROPFIND_PROPERTIES = [
 		/**
 		 * Modified time

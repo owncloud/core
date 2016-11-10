@@ -500,8 +500,6 @@ class Share20OCS {
 
 		$includeTags = $this->request->getParam('include_tags', false);
 
-		$includeTags = $this->request->getParam('include_tags', false);
-
 		if ($path !== null) {
 			$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
 			try {
