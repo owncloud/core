@@ -280,17 +280,20 @@ class OC_API {
 			return OC_User::getUser();
 		}
 
-		// basic auth
-		$authUser = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
-		$authPw = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
-		$return = OC_User::login($authUser, $authPw);
-		if ($return === true) {
-			self::$logoutRequired = true;
+		// basic auth - because OC_User::login will create a new session we shall only try to login
+		// if user and pass are set
+		if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) ) {
+			$authUser = $_SERVER['PHP_AUTH_USER'];
+			$authPw = $_SERVER['PHP_AUTH_PW'];
+			$return = OC_User::login($authUser, $authPw);
+			if ($return === true) {
+				self::$logoutRequired = true;
 
-			// initialize the user's filesystem
-			\OC_Util::setUpFS(\OC_User::getUser());
+				// initialize the user's filesystem
+				\OC_Util::setUpFS(\OC_User::getUser());
 
-			return $authUser;
+				return $authUser;
+			}
 		}
 
 		return false;
