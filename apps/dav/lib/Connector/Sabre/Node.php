@@ -41,18 +41,6 @@ use OCP\Share\IManager;
 abstract class Node implements \Sabre\DAV\INode {
 
 	/**
-	 * @var \OC\Files\View
-	 */
-	protected $fileView;
-
-	/**
-	 * The path to the current node
-	 *
-	 * @var string
-	 */
-	protected $path;
-
-	/**
 	 * node properties cache
 	 *
 	 * @var array
@@ -60,7 +48,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	protected $property_cache = null;
 
 	/**
-	 * @var \OCP\Files\FileInfo
+	 * @var \OCP\Files\Node
 	 */
 	protected $info;
 
@@ -70,15 +58,12 @@ abstract class Node implements \Sabre\DAV\INode {
 	protected $shareManager;
 
 	/**
-	 * Sets up the node, expects a full path name
+	 * Sets up the node
 	 *
-	 * @param \OC\Files\View $view
-	 * @param \OCP\Files\FileInfo $info
+	 * @param \OCP\Files\Node $info node from the files API
 	 * @param IManager $shareManager
 	 */
-	public function __construct($view, $info, IManager $shareManager = null) {
-		$this->fileView = $view;
-		$this->path = $this->fileView->getRelativePath($info->getPath());
+	protected function __construct(\OCP\Files\Node $info, IManager $shareManager = null) {
 		$this->info = $info;
 		if ($shareManager) {
 			$this->shareManager = $shareManager;
@@ -88,7 +73,8 @@ abstract class Node implements \Sabre\DAV\INode {
 	}
 
 	protected function refreshInfo() {
-		$this->info = $this->fileView->getFileInfo($this->path);
+		// refetch the node
+		$this->info = $this->info->getParent()->get(basename($this->info->getPath()));
 	}
 
 	/**
@@ -106,7 +92,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @return string
 	 */
 	public function getPath() {
-		return $this->path;
+		return $this->info->getPath();
 	}
 
 	/**
@@ -124,7 +110,7 @@ abstract class Node implements \Sabre\DAV\INode {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
-		list($parentPath,) = \Sabre\HTTP\URLUtil::splitPath($this->path);
+		list($parentPath,) = \Sabre\HTTP\URLUtil::splitPath($this->getPath());
 		list(, $newName) = \Sabre\HTTP\URLUtil::splitPath($name);
 
 		// verify path of the target
@@ -132,11 +118,7 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		$newPath = $parentPath . '/' . $newName;
 
-		$this->fileView->rename($this->path, $newPath);
-
-		$this->path = $newPath;
-
-		$this->refreshInfo();
+		$this->info = $this->info->move($newPath);
 	}
 
 	public function setPropertyCache($property_cache) {
@@ -162,8 +144,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 *  Even if the modification time is set to a custom value the access time is set to now.
 	 */
 	public function touch($mtime) {
-		$this->fileView->touch($this->path, $mtime);
-		$this->refreshInfo();
+		$this->info->touch($mtime);
 	}
 
 	/**
@@ -189,7 +170,8 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @return int file id of updated file or -1 on failure
 	 */
 	public function setETag($etag) {
-		return $this->fileView->putFileInfo($this->path, ['etag' => $etag]);
+		$cache = $this->info->getStorage()->getCache($this->info->getInternalPath());
+		return $cache->put($this->info->getInternalPath(), ['etag' => $etag]);
 	}
 
 	/**
@@ -326,7 +308,9 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		try {
 			$fileName = basename($this->info->getPath());
-			$this->fileView->verifyPath($this->path, $fileName);
+			// FIXME: need an alternative, maybe move the impl into $this->info->isValidPath + put it on the interface
+			// or do it on storage level
+			//$this->fileView->verifyPath($this->path, $fileName);
 		} catch (\OCP\Files\InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());
 		}
@@ -336,23 +320,26 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
 	 */
 	public function acquireLock($type) {
-		$this->fileView->lockFile($this->path, $type);
+		$this->info->lock($type);
 	}
 
 	/**
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
 	 */
 	public function releaseLock($type) {
-		$this->fileView->unlockFile($this->path, $type);
+		$this->info->unlock($type);
 	}
 
 	/**
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
 	 */
 	public function changeLock($type) {
-		$this->fileView->changeLock($this->path, $type);
+		$this->info->changeLock($type);
 	}
 
+	/**
+	 * @return \OCP\Files\Node
+	 */
 	public function getFileInfo() {
 		return $this->info;
 	}

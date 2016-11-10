@@ -40,9 +40,9 @@ use Sabre\HTTP\URLUtil;
 class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 	/**
-	 * @var \OC\Files\View
+	 * @var \OCP\Files\Node
 	 */
-	private $view;
+	private $info;
 
 	/**
 	 * Reference to main server object
@@ -52,10 +52,10 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	private $server;
 
 	/**
-	 * @param \OC\Files\View $view
+	 * @param \OCP\Files\Node $node
 	 */
-	public function __construct($view) {
-		$this->view = $view;
+	public function __construct($info) {
+		$this->info = $info;
 	}
 
 	/**
@@ -143,7 +143,9 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function getFreeSpace($uri) {
 		try {
-			$freeSpace = $this->view->free_space(ltrim($uri, '/'));
+			$storage = $this->info->getStorage();
+			$internalPath = rtrim($this->info->getInternalPath(), '/');
+			$freeSpace = $storage->free_space($internalPath . '/' . ltrim($uri, '/'));
 			return $freeSpace;
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable($e->getMessage());

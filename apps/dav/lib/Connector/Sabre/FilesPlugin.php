@@ -29,7 +29,6 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
-use OC\Files\View;
 use OCP\Files\ForbiddenException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -82,11 +81,6 @@ class FilesPlugin extends ServerPlugin {
 	 * @var bool
 	 */
 	private $isPublic;
-
-	/**
-	 * @var View
-	 */
-	private $fileView;
 
 	/**
 	 * @var bool

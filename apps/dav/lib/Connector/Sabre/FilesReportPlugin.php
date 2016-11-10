@@ -22,7 +22,6 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
-use OC\Files\View;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\PreconditionFailed;
 use Sabre\DAV\Exception\ReportNotSupported;
@@ -60,11 +59,6 @@ class FilesReportPlugin extends ServerPlugin {
 	private $tree;
 
 	/**
-	 * @var View
-	 */
-	private $fileView;
-
-	/**
 	 * @var ISystemTagManager
 	 */
 	private $tagManager;
@@ -98,7 +92,6 @@ class FilesReportPlugin extends ServerPlugin {
 
 	/**
 	 * @param Tree $tree
-	 * @param View $view
 	 * @param ISystemTagManager $tagManager
 	 * @param ISystemTagObjectMapper $tagMapper
 	 * @param ITagManager $fileTagger manager for private tags
@@ -107,7 +100,6 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @param Folder $userfolder
 	 */
 	public function __construct(Tree $tree,
-								View $view,
 								ISystemTagManager $tagManager,
 								ISystemTagObjectMapper $tagMapper,
 								ITagManager $fileTagger,
@@ -116,7 +108,6 @@ class FilesReportPlugin extends ServerPlugin {
 								Folder $userFolder
 	) {
 		$this->tree = $tree;
-		$this->fileView = $view;
 		$this->tagManager = $tagManager;
 		$this->tagMapper = $tagMapper;
 		$this->fileTagger = $fileTagger;
@@ -380,9 +371,9 @@ class FilesReportPlugin extends ServerPlugin {
 			if ($entry) {
 				$entry = current($entry);
 				if ($entry instanceof \OCP\Files\File) {
-					$results[] = new File($this->fileView, $entry);
+					$results[] = new File($entry);
 				} else if ($entry instanceof \OCP\Files\Folder) {
-					$results[] = new Directory($this->fileView, $entry);
+					$results[] = new Directory($entry, $this->tree);
 				}
 			}
 		}

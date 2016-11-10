@@ -75,13 +75,10 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	});
 	\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper($previousLog);
 
-	OC_Util::setupFS($owner);
-	$ownerView = \OC\Files\Filesystem::getView();
-	$path = $ownerView->getPath($fileId);
-	$fileInfo = $ownerView->getFileInfo($path);
-	$linkCheckPlugin->setFileInfo($fileInfo);
+	$rootInfo = \OC::$server->getRootFolder()->getUserFolder($owner)->getById($fileId);
+	$linkCheckPlugin->setFileInfo($rootInfo);
 
-	return new \OC\Files\View($ownerView->getAbsolutePath($path));
+	return $rootInfo;
 });
 
 $server->addPlugin($linkCheckPlugin);

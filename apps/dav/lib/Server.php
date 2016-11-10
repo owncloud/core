@@ -199,7 +199,6 @@ class Server {
 				));
 				$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\FilesReportPlugin(
 					$this->server->tree,
-					$view,
 					\OC::$server->getSystemTagManager(),
 					\OC::$server->getSystemTagObjectMapper(),
 					\OC::$server->getTagManager(),

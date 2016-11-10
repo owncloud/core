@@ -85,13 +85,13 @@ class ServerFactory {
 	 * @param string $baseUri
 	 * @param string $requestUri
 	 * @param BackendInterface $authBackend
-	 * @param callable $viewCallBack callback that should return the view for the dav endpoint
+	 * @param callable $rootInfoCallback callback that should return the root info for the dav endpoint
 	 * @return Server
 	 */
 	public function createServer($baseUri,
 								 $requestUri,
 								 BackendInterface $authBackend,
-								 callable $viewCallBack) {
+								 callable $rootInfoCallback) {
 		// Fire up server
 		$objectTree = new \OCA\DAV\Connector\Sabre\ObjectTree();
 		$server = new \OCA\DAV\Connector\Sabre\Server($objectTree);
@@ -122,21 +122,20 @@ class ServerFactory {
 		}
 
 		// wait with registering these until auth is handled and the filesystem is setup
-		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {
+		$server->on('beforeMethod', function () use ($server, $objectTree, $rootInfoCallback) {
 			// ensure the skeleton is copied
 			$userFolder = \OC::$server->getUserFolder();
 			
-			/** @var \OC\Files\View $view */
-			$view = $viewCallBack($server);
-			$rootInfo = $view->getFileInfo('');
+			/** @var \OCP\Files\Folder $rootInfo */
+			$rootInfo = $rootInfoCallback($server);
 
 			// Create ownCloud Dir
 			if ($rootInfo->getType() === 'dir') {
-				$root = new \OCA\DAV\Connector\Sabre\Directory($view, $rootInfo, $objectTree);
+				$root = new \OCA\DAV\Connector\Sabre\Directory($rootInfo, $objectTree);
 			} else {
-				$root = new \OCA\DAV\Connector\Sabre\File($view, $rootInfo);
+				$root = new \OCA\DAV\Connector\Sabre\File($rootInfo);
 			}
-			$objectTree->init($root, $view, $this->mountManager);
+			$objectTree->init($root, $userFolder, $this->mountManager);
 
 			$server->addPlugin(
 				new \OCA\DAV\Connector\Sabre\FilesPlugin(
@@ -147,7 +146,7 @@ class ServerFactory {
 					!$this->config->getSystemValue('debug', false)
 				)
 			);
-			$server->addPlugin(new \OCA\DAV\Connector\Sabre\QuotaPlugin($view));
+			$server->addPlugin(new \OCA\DAV\Connector\Sabre\QuotaPlugin($rootInfo));
 
 			if($this->userSession->isLoggedIn()) {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\TagsPlugin($objectTree, $this->tagManager));
@@ -160,7 +159,6 @@ class ServerFactory {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\CommentPropertiesPlugin(\OC::$server->getCommentsManager(), $this->userSession));
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\FilesReportPlugin(
 					$objectTree,
-					$view,
 					\OC::$server->getSystemTagManager(),
 					\OC::$server->getSystemTagObjectMapper(),
 					\OC::$server->getTagManager(),
