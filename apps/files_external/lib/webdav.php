@@ -14,6 +14,7 @@ class DAV extends \OC\Files\Storage\Common{
 	private $host;
 	private $secure;
 	private $root;
+	private $certPath;
 	private $ready;
 	/**
 	 * @var \Sabre_DAV_Client
@@ -39,6 +40,15 @@ class DAV extends \OC\Files\Storage\Common{
 				}
 			} else {
 				$this->secure = false;
+			}
+			if ($this->secure === true) {
+				$caview = \OCP\Files::getStorage('files_external');
+				if ($caview) {
+					$certPath=\OCP\Config::getSystemValue('datadirectory').$caview->getAbsolutePath("").'rootcerts.crt';
+					if (file_exists($certPath)) {
+						$this->certPath=$certPath;
+					}
+				}
 			}
 			$this->root=isset($params['root'])?$params['root']:'/';
 			if ( ! $this->root || $this->root[0]!='/') {
@@ -66,12 +76,8 @@ class DAV extends \OC\Files\Storage\Common{
 
 		$this->client = new \Sabre_DAV_Client($settings);
 
-		$caview = \OCP\Files::getStorage('files_external');
-		if ($caview) {
-			$certPath=\OCP\Config::getSystemValue('datadirectory').$caview->getAbsolutePath("").'rootcerts.crt';
-			if (file_exists($certPath)) {
-				$this->client->addTrustedCertificates($certPath);
-			}
+		if ($this->certPath) {
+			$this->client->addTrustedCertificates($this->certPath);
 		}
 	}
 
@@ -173,6 +179,11 @@ class DAV extends \OC\Files\Storage\Common{
 				curl_setopt($curl, CURLOPT_USERPWD, $this->user.':'.$this->password);
 				curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().$path);
 				curl_setopt($curl, CURLOPT_FILE, $fp);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+				if($this->certPath){
+					curl_setopt($curl, CURLOPT_CAINFO, $this->certPath);
+				}
 
 				curl_exec ($curl);
 				curl_close ($curl);
@@ -260,6 +271,11 @@ class DAV extends \OC\Files\Storage\Common{
 		curl_setopt($curl, CURLOPT_INFILE, $source); // file pointer
 		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($path));
 		curl_setopt($curl, CURLOPT_PUT, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+		if($this->certPath){
+			curl_setopt($curl, CURLOPT_CAINFO, $this->certPath);
+		}
 		curl_exec ($curl);
 		curl_close ($curl);
 	}
