@@ -55,6 +55,10 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		self::setupHooks();
 
+		// cleanup test user
+		\OC_User::deleteUser(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
+		\OC_User::deleteUser(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_LEGACY_USER);
+
 		// create test user
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1, true);
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER2, true);
@@ -222,8 +226,6 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	 * @brief test checking whether account is not ready for encryption,
 	 */
 	function testIsLegacyUser() {
-		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_LEGACY_USER);
-
 		$userView = new \OC_FilesystemView('/' . \Test_Encryption_Util::TEST_ENCRYPTION_UTIL_LEGACY_USER);
 
 		// Disable encryption proxy to prevent recursive calls
@@ -232,6 +234,8 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		$encryptionKeyContent = file_get_contents($this->legacyEncryptedDataKey);
 		$userView->file_put_contents('/encryption.key', $encryptionKeyContent);
+
+		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_LEGACY_USER);
 
 		\OC_FileProxy::$enabled = $proxyStatus;
 
