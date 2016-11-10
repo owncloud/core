@@ -4,6 +4,7 @@ composer install
 
 OC_PATH=../../
 OCC=${OC_PATH}occ
+BEHAT=vendor/bin/behat
 
 SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2
@@ -63,9 +64,20 @@ fi
 # Enable encryption if requested
 if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
 	env_encryption_enable
+	BEHAT_FILTER_TAGS="~@no_encryption"
 fi
 
-vendor/bin/behat --strict -f junit -f pretty $SCENARIO_TO_RUN
+if test "$BEHAT_FILTER_TAGS"; then
+	BEHAT_PARAMS='{ 
+		"gherkin": {
+			"filters": {
+				"tags": "'"$BEHAT_FILTER_TAGS"'"
+			}
+		}
+	}'
+fi
+
+BEHAT_PARAMS="$BEHAT_PARAMS" $BEHAT --strict -f junit -f pretty $SCENARIO_TO_RUN
 RESULT=$?
 
 kill $PHPPID

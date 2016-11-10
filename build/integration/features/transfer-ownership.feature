@@ -1,5 +1,6 @@
 Feature: transfer-ownership
 
+	@no_encryption
 	Scenario: transfering ownership of a file
 		Given user "user0" exists
 		And user "user1" exists
@@ -10,6 +11,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		Then Downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
+	@no_encryption
 	Scenario: transfering ownership of a folder
 		Given user "user0" exists
 		And user "user1" exists
@@ -21,6 +23,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		Then Downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
+	@no_encryption
 	Scenario: transfering ownership of file shares
 		Given user "user0" exists
 		And user "user1" exists
@@ -32,6 +35,7 @@ Feature: transfer-ownership
 		And As an "user2"
 		Then Downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
+	@no_encryption
 	Scenario: transfering ownership of folder shared with third user
 		Given user "user0" exists
 		And user "user1" exists
@@ -44,6 +48,7 @@ Feature: transfer-ownership
 		And As an "user2"
 		Then Downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
+	@no_encryption
 	Scenario: transfering ownership of folder shared with transfer recipient
 		Given user "user0" exists
 		And user "user1" exists
@@ -57,6 +62,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And Downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
+	@no_encryption
 	Scenario: transfering ownership of folder doubly shared with third user
 		Given group "group1" exists
 		And user "user0" exists
@@ -72,6 +78,7 @@ Feature: transfer-ownership
 		And As an "user2"
 		Then Downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
+	@no_encryption
 	Scenario: transfering ownership does not transfer received shares
 		Given user "user0" exists
 		And user "user1" exists
@@ -84,6 +91,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		Then as "user1" the folder "/test" does not exist
 
+	@no_encryption
 	@local_storage
 	Scenario: transfering ownership does not transfer external storage
 		Given user "user0" exists
@@ -94,6 +102,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		Then as "user1" the folder "/local_storage" does not exist
 
+	@no_encryption
 	Scenario: transfering ownership does not fail with shared trashed files
 		Given user "user0" exists
 		And user "user1" exists
