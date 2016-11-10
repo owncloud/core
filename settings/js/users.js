@@ -232,7 +232,7 @@ var UserList = {
 		var user = element.attr('data-username');
 		if ($(element).attr('class') == 'groupsselect') {
 			if (element.data('userGroups')) {
-				checked = element.data('userGroups');
+				checked = String(element.data('userGroups'));
 			}
 			if (user) {
 				var checkHandeler = function (group) {
@@ -288,7 +288,7 @@ var UserList = {
 		}
 		if ($(element).attr('class') == 'subadminsselect') {
 			if (element.data('subadmin')) {
-				checked = element.data('subadmin');
+				checked = String(element.data('subadmin'));
 			}
 			var checkHandeler = function (group) {
 				if (group == 'admin') {
