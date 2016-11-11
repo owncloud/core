@@ -91,22 +91,6 @@ class Share extends Constants {
 					'collectionOf' => $collectionOf,
 					'supportedFileExtensions' => $supportedFileExtensions
 				];
-				if (\count(self::$backendTypes) === 1) {
-					\OC_Util::addScript('core', 'shareconfigmodel');
-					\OC_Util::addScript('core', 'sharemodel');
-					\OC_Util::addScript('core', 'sharescollection');
-					\OC_Util::addScript('core', 'shareitemmodel');
-					\OC_Util::addScript('core', 'sharedialogresharerinfoview');
-					\OC_Util::addScript('core', 'sharedialoglinklistview');
-					\OC_Util::addScript('core', 'sharedialoglinkshareview');
-					\OC_Util::addScript('core', 'sharedialogmailview');
-					\OC_Util::addScript('core', 'sharedialoglinksocialview');
-					\OC_Util::addScript('core', 'sharedialogexpirationview');
-					\OC_Util::addScript('core', 'sharedialogshareelistview');
-					\OC_Util::addScript('core', 'sharedialogview');
-					\OC_Util::addScript('core', 'share');
-					\OC_Util::addStyle('core', 'share');
-				}
 				return true;
 			}
 			\OCP\Util::writeLog('OCP\Share',

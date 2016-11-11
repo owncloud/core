@@ -156,6 +156,20 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addScript('files/fileinfo');
 			OC_Util::addScript('files/client');
 
+			if (\OCP\Share::isEnabled()) {
+				\OC_Util::addScript('core', 'shareconfigmodel');
+				\OC_Util::addScript('core', 'shareitemmodel');
+				\OC_Util::addScript('core', 'sharedialogresharerinfoview');
+				\OC_Util::addScript('core', 'sharedialoglinkshareview');
+				\OC_Util::addScript('core', 'sharedialoglinksocialview');
+				\OC_Util::addScript('core', 'sharedialogmailview');
+				\OC_Util::addScript('core', 'sharedialogexpirationview');
+				\OC_Util::addScript('core', 'sharedialogshareelistview');
+				\OC_Util::addScript('core', 'sharedialogview');
+				\OC_Util::addScript('core', 'share');
+				\OC_Util::addStyle('core', 'share');
+			}
+
 			// Add the stuff we need always
 			// following logic will import all vendor libraries that are
 			// specified in core/js/core.json
