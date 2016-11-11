@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Georg Ehrke <georg@owncloud.com>
@@ -24,6 +25,9 @@
  *
  */
 
+// FIXME: rewrite this as a controller
+use OCP\Share\Exceptions\ShareNotFound;
+
 OCP\JSON::checkAppEnabled('files_sharing');
 
 \OC_User::setIncognitoMode(true);
@@ -41,40 +45,36 @@ if($token === ''){
 	exit;
 }
 
-$linkedItem = \OCP\Share::getShareByToken($token);
-if($linkedItem === false || ($linkedItem['item_type'] !== 'file' && $linkedItem['item_type'] !== 'folder')) {
+$shareManager = \OC::$server->getShareManager();
+try {
+	$linkedItem = $shareManager->getShareByToken($token);
+} catch (ShareNotFound $e) {
 	\OC_Response::setStatus(\OC_Response::STATUS_NOT_FOUND);
 	\OCP\Util::writeLog('core-preview', 'Passed token parameter is not valid', \OCP\Util::DEBUG);
 	exit;
 }
 
-if(!isset($linkedItem['uid_owner']) || !isset($linkedItem['file_source'])) {
+$userId = $linkedItem->getShareOwner();
+if(is_null($userId)) {
 	\OC_Response::setStatus(\OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	\OCP\Util::writeLog('core-preview', 'Passed token seems to be valid, but it does not contain all necessary information . ("' . $token . '")', \OCP\Util::WARN);
 	exit;
 }
 
-$rootLinkItem = OCP\Share::resolveReShare($linkedItem);
-$userId = $rootLinkItem['uid_owner'];
+OCP\JSON::checkUserExists($userId);
 
-OCP\JSON::checkUserExists($rootLinkItem['uid_owner']);
-\OC_Util::setupFS($userId);
-\OC\Files\Filesystem::initMountPoints($userId);
-$view = new \OC\Files\View('/' . $userId . '/files');
-
-$pathId = $linkedItem['file_source'];
-$path = $view->getPath($pathId);
-
-if($path === null) {
+// FS setup and file existence check is already done in getNode()
+try {
+	$node = $linkedItem->getNode();
+} catch (\OCP\Files\NotFoundException $e) {
 	\OC_Response::setStatus(\OC_Response::STATUS_NOT_FOUND);
 	\OCP\Util::writeLog('core-preview', 'Could not resolve file for shared item', \OCP\Util::WARN);
 	exit;
 }
 
-$pathInfo = $view->getFileInfo($path);
-$sharedFile = null;
+$path = $node->getPath();
 
-if($linkedItem['item_type'] === 'folder') {
+if($linkedItem->getNodeType() === 'folder') {
 	$isValid = \OC\Files\Filesystem::isValidPath($file);
 	if(!$isValid) {
 		\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
@@ -84,16 +84,12 @@ if($linkedItem['item_type'] === 'folder') {
 	$sharedFile = \OC\Files\Filesystem::normalizePath($file);
 }
 
-if($linkedItem['item_type'] === 'file') {
-	$parent = $pathInfo['parent'];
-	$path = $view->getPath($parent);
-	$sharedFile = $pathInfo['name'];
+if($linkedItem->getNodeType() === 'file') {
+	$path = $node->getParent()->getPath();
+	$sharedFile = $node->getName();
 }
 
-$path = \OC\Files\Filesystem::normalizePath($path, false);
-if(substr($path, 0, 1) === '/') {
-	$path = substr($path, 1);
-}
+$path = ltrim(\OC\Files\Filesystem::normalizePath($path, false), '/');
 
 if($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
@@ -101,7 +97,9 @@ if($maxX === 0 || $maxY === 0) {
 	exit;
 }
 
-$root = 'files/' . $path;
+// $path is relative to the data directory but Preview expects it to be relative to the user's
+// so strip the first component
+$root = substr($path, strpos($path, '/') + 1);
 
 try{
 	$preview = new \OC\Preview($userId, $root);
@@ -112,6 +110,9 @@ try{
 	$preview->setKeepAspect($keepAspect);
 
 	$preview->showPreview();
+} catch (\OCP\Files\NotFoundException $e) {
+	\OC_Response::setStatus(\OC_Response::STATUS_NOT_FOUND);
+	\OCP\Util::writeLog('core-preview', 'Requested file not found', \OCP\Util::WARN);
 } catch (\Exception $e) {
 	\OC_Response::setStatus(\OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
