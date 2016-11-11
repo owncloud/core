@@ -27,6 +27,8 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use OCP\Share\Exceptions\ShareNotFound;
+
 /**
  * Class UpdaterTest
  *
@@ -68,7 +70,7 @@ class UpdaterTest extends TestCase {
 	 * points should be unshared before the folder gets deleted so
 	 * that the mount point doesn't end up at the trash bin
 	 */
-	function testDeleteParentFolder() {
+	public function testDeleteParentFolder() {
 		$status = \OC_App::isEnabled('files_trashbin');
 		\OC_App::enable('files_trashbin');
 
@@ -77,7 +79,7 @@ class UpdaterTest extends TestCase {
 		$fileinfo = \OC\Files\Filesystem::getFileInfo($this->folder);
 		$this->assertTrue($fileinfo instanceof \OC\Files\FileInfo);
 
-		$this->share(
+		$share = $this->share(
 			\OCP\Share::SHARE_TYPE_USER,
 			$this->folder,
 			self::TEST_FILES_SHARING_API_USER1,
@@ -91,8 +93,8 @@ class UpdaterTest extends TestCase {
 		// check if user2 can see the shared folder
 		$this->assertTrue($view->file_exists($this->folder));
 
-		$foldersShared = \OCP\Share::getItemsSharedWith('folder');
-		$this->assertSame(1, count($foldersShared));
+		// share still exists, no exception
+		$this->shareManager->getShareById($share->getFullId());
 
 		$view->mkdir("localFolder");
 		$view->file_put_contents("localFolder/localFile.txt", "local file");
@@ -108,8 +110,14 @@ class UpdaterTest extends TestCase {
 		$this->loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
 		// shared folder should be unshared
-		$foldersShared = \OCP\Share::getItemsSharedWith('folder');
-		$this->assertTrue(empty($foldersShared));
+		$caught = null;
+		try {
+			$this->shareManager->getShareById($share->getFullId());
+		} catch (ShareNotFound $e) {
+			$caught = $e;
+		}
+
+		$this->assertNotNull($caught);
 
 		// trashbin should contain the local file but not the mount point
 		$rootView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2);
