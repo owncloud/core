@@ -41,6 +41,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
 use OCA\Files_Sharing\SharingBlacklist;
+use OCA\FederatedFileSharing\FederatedShareProvider;
 
 class ShareesController extends OCSController {
 
@@ -70,6 +71,9 @@ class ShareesController extends OCSController {
 
 	/** @var \OCP\Share\IManager */
 	protected $shareManager;
+
+	/** @var FederatedShareProvider */
+	protected $federatedShareProvider;
 
 	/** @var bool */
 	protected $shareWithGroupOnly = false;
@@ -132,7 +136,9 @@ class ShareesController extends OCSController {
 			IURLGenerator $urlGenerator,
 			ILogger $logger,
 			\OCP\Share\IManager $shareManager,
-			SharingBlacklist $sharingBlacklist) {
+			SharingBlacklist $sharingBlacklist,
+			FederatedShareProvider $federatedShareProvider
+		) {
 		parent::__construct($appName, $request);
 
 		$this->groupManager = $groupManager;
@@ -146,6 +152,7 @@ class ShareesController extends OCSController {
 		$this->shareManager = $shareManager;
 		$this->sharingBlacklist = $sharingBlacklist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
+		$this->federatedShareProvider = $federatedShareProvider;
 	}
 
 	/**
@@ -579,6 +586,9 @@ class ShareesController extends OCSController {
 	 */
 	protected function isRemoteSharingAllowed($itemType) {
 		try {
+			if ($itemType === 'file' || $itemType === 'folder') {
+				return $this->federatedShareProvider->isOutgoingServer2serverShareEnabled();
+			}
 			$backend = Share::getBackend($itemType);
 			return $backend->isShareTypeAllowed(Share::SHARE_TYPE_REMOTE);
 		} catch (\Exception $e) {

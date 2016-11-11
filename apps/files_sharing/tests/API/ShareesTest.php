@@ -41,6 +41,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCA\FederatedFileSharing\FederatedShareProvider;
 
 /**
  * Class ShareesTest
@@ -107,6 +108,10 @@ class ShareesTest extends TestCase {
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
+		$federatedShareProviderMock = $this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock();
+		$federatedShareProviderMock->expects($this->any())
+			->method('isOutgoingServer2serverShareEnabled')
+			->willReturn(true);
 
 		$this->sharingBlacklist = $this->getMockBuilder(SharingBlacklist::class)
 			->disableOriginalConstructor()
@@ -123,7 +128,8 @@ class ShareesTest extends TestCase {
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 			$this->shareManager,
-			$this->sharingBlacklist
+			$this->sharingBlacklist,
+			$federatedShareProviderMock
 		);
 	}
 
@@ -1523,7 +1529,8 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
-				$this->sharingBlacklist
+				$this->sharingBlacklist,
+				$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
 			])
 			->setMethods(['searchSharees', 'isRemoteSharingAllowed'])
 			->getMock();
@@ -1673,7 +1680,8 @@ class ShareesTest extends TestCase {
 				$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
 				$this->shareManager,
-				$this->sharingBlacklist
+				$this->sharingBlacklist,
+				$this->getMockBuilder(FederatedShareProvider::class)->disableOriginalConstructor()->getMock()
 			])
 			->setMethods(['getShareesForShareIds', 'getUsers', 'getGroups', 'getRemote'])
 			->getMock();
