@@ -307,6 +307,9 @@ class FilesPlugin extends ServerPlugin {
 				$displayName = $owner->getDisplayName();
 				return $displayName;
 			});
+			$propFind->handle(self::SIZE_PROPERTYNAME, function() use ($node) {
+				return $node->getSize();
+			});
 		}
 
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Node) {

@@ -125,6 +125,18 @@
 			if (this.model) {
 				this.model.on('change', this._onModelChanged, this);
 			}
+
+			if (this.model) {
+				var properties = [];
+				if( !this.model.has('size') ) {
+					properties.push(OC.Files.Client.PROPERTY_SIZE);
+				}
+
+				if( properties.length > 0){
+					this._fileList.reloadProperties(fileInfo, properties);
+				}
+			}
+
 			this.render();
 		},
 
