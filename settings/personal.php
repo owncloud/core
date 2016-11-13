@@ -39,6 +39,7 @@ OC_Util::checkLoggedIn();
 
 $defaults = new OC_Defaults(); // initialize themable default strings and urls
 $certificateManager = \OC::$server->getCertificateManager();
+$accountManager = new \OC\Accounts\AccountManager(\OC::$server->getDatabaseConnection());
 $config = \OC::$server->getConfig();
 $urlGenerator = \OC::$server->getURLGenerator();
 
@@ -46,7 +47,10 @@ $urlGenerator = \OC::$server->getURLGenerator();
 OC_Util::addScript('settings', 'authtoken');
 OC_Util::addScript('settings', 'authtoken_collection');
 OC_Util::addScript('settings', 'authtoken_view');
-OC_Util::addScript( 'settings', 'personal' );
+OC_Util::addScript('settings', 'usersettings');
+OC_Util::addScript('settings', 'federationsettingsview');
+OC_Util::addScript('settings', 'federationscopemenu');
+OC_Util::addScript('settings', 'personal');
 OC_Util::addScript('settings', 'certificates');
 \OC_Util::addVendorScript('strengthify/jquery.strengthify');
 \OC_Util::addVendorStyle('strengthify/strengthify');
@@ -152,6 +156,8 @@ if ($storageInfo['quota'] === \OCP\Files\FileInfo::SPACE_UNLIMITED) {
 } else {
 	$totalSpace = OC_Helper::humanFileSize($storageInfo['total']);
 }
+$userData = $accountManager->getUser($user->getUID());
+
 $tmpl->assign('total_space', $totalSpace);
 $tmpl->assign('usage_relative', $storageInfo['relative']);
 $tmpl->assign('clients', $clients);
@@ -162,6 +168,18 @@ $tmpl->assign('activelanguage', $userLang);
 $tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
 $tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
 $tmpl->assign('displayName', OC_User::getDisplayName());
+
+$tmpl->assign('phone', isset($userData['phone'][0]['value']) ? $userData['phone'][0]['value'] : null);
+$tmpl->assign('website', isset($userData['website'][0]['value']) ? $userData['website'][0]['value'] : null);
+$tmpl->assign('address', isset($userData['address'][0]['value']) ? $userData['address'][0]['value'] : null);
+
+$tmpl->assign('avatarScope', isset($userData['avatar']['scope']) ? $userData['avatar']['scope'] : 'contacts');
+$tmpl->assign('displayNameScope', isset($userData['displayName']['scope']) ? $userData['displayName']['scope'] : 'contacts');
+$tmpl->assign('phoneScope', isset($userData['phone'][0]['scope']) ? $userData['phone'][0]['scope'] : 'private');
+$tmpl->assign('emailScope', isset($userData['email'][0]['scope']) ? $userData['email'][0]['scope'] : 'private');
+$tmpl->assign('websiteScope', isset($userData['website'][0]['scope']) ? $userData['website'][0]['scope'] : 'private');
+$tmpl->assign('addressScope', isset($userData['address'][0]['scope']) ? $userData['address'][0]['scope'] : 'private');
+
 $tmpl->assign('enableAvatars', $config->getSystemValue('enable_avatars', true) === true);
 $tmpl->assign('avatarChangeSupported', OC_User::canUserChangeAvatar(OC_User::getUser()));
 $tmpl->assign('certs', $certificateManager->listCertificates());
