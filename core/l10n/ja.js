@@ -147,6 +147,7 @@ OC.L10N.register(
     "Expiration" : "期限切れ",
     "Expiration date" : "有効期限",
     "Choose a password for the public link" : "URLによる共有のパスワードを入力",
+    "Choose a password for the public link or press enter" : "公開リンクのパスワードを入力するか、Enterキーを押します。",
     "Copied!" : "コピーしました",
     "Not supported!" : "サポートされていません",
     "Press ⌘-C to copy." : "⌘-Cを押してコピーします。",
