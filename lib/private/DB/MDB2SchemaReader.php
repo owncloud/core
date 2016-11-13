@@ -35,29 +35,27 @@ use Doctrine\DBAL\Schema\SchemaConfig;
 use OCP\IConfig;
 
 class MDB2SchemaReader {
-	/**
-	 * @var string $DBNAME
-	 */
+	/** @var string $DBNAME */
 	protected $DBNAME;
 
-	/**
-	 * @var string $DBTABLEPREFIX
-	 */
+	/** @var string $DBTABLEPREFIX */
 	protected $DBTABLEPREFIX;
 
-	/**
-	 * @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-	 */
+	/** @var AbstractPlatform $platform */
 	protected $platform;
 
-	/** @var \Doctrine\DBAL\Schema\SchemaConfig $schemaConfig */
+	/** @var SchemaConfig $schemaConfig */
 	protected $schemaConfig;
 
+	/** @var boolean */
+	private $isCreate;
+
 	/**
-	 * @param \OCP\IConfig $config
-	 * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+	 * @param IConfig $config
+	 * @param AbstractPlatform $platform
 	 */
-	public function __construct(IConfig $config, AbstractPlatform $platform) {
+	public function __construct(IConfig $config, AbstractPlatform $platform, $isCreate) {
+		$this->isCreate = $isCreate;
 		$this->platform = $platform;
 		$this->DBNAME = $config->getSystemValue('dbname', 'owncloud');
 		$this->DBTABLEPREFIX = $config->getSystemValue('dbtableprefix', 'oc_');
@@ -286,11 +284,19 @@ class MDB2SchemaReader {
 	private function loadIndex($table, $xml) {
 		$name = null;
 		$fields = [];
+		$lengths = [];
+
 		foreach ($xml->children() as $child) {
 			/**
 			 * @var \SimpleXMLElement $child
 			 */
 			switch ($child->getName()) {
+				case 'only-on-create':
+					// the index will only be created in case the instance is newly being installed
+					if (!$this->isCreate) {
+						return;
+					}
+				break;
 				case 'name':
 					$name = (string)$child;
 					break;
@@ -301,23 +307,29 @@ class MDB2SchemaReader {
 					$unique = $this->asBool($child);
 					break;
 				case 'field':
+					$fieldName = null;
+					$length = null;
 					foreach ($child->children() as $field) {
-						/**
-						 * @var \SimpleXMLElement $field
-						 */
+						/** @var \SimpleXMLElement $field */
 						switch ($field->getName()) {
 							case 'name':
-								$field_name = (string)$field;
-								$field_name = $this->platform->quoteIdentifier($field_name);
-								$fields[] = $field_name;
+								$fieldName = (string)$field;
+								$fieldName = $this->platform->quoteIdentifier($fieldName);
 								break;
 							case 'sorting':
 								break;
+							case 'length':
+								$length = (string)$field;
+								break;
 							default:
 								throw new \DomainException('Unknown element: ' . $field->getName());
-
 						}
 					}
+					$fields[] = $fieldName;
+					if (!is_null($length)) {
+						$lengths[$fieldName] = $length;
+					}
+
 					break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
@@ -331,10 +343,14 @@ class MDB2SchemaReader {
 				}
 				$table->setPrimaryKey($fields, $name);
 			} else {
+				$options = [];
+				if (count($lengths) > 0) {
+					$options['oc-length'] = $lengths;
+				}
 				if (isset($unique) && $unique) {
-					$table->addUniqueIndex($fields, $name);
+					$table->addUniqueIndex($fields, $name, $options);
 				} else {
-					$table->addIndex($fields, $name);
+					$table->addIndex($fields, $name, [], $options);
 				}
 			}
 		} else {

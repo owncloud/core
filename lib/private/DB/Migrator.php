@@ -29,6 +29,7 @@ namespace OC\DB;
 
 use \Doctrine\DBAL\DBALException;
 use \Doctrine\DBAL\Schema\Index;
+use Doctrine\DBAL\Schema\SchemaDiff;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
 use \Doctrine\DBAL\Schema\SchemaConfig;
@@ -62,7 +63,7 @@ class Migrator {
 	private $noEmit = false;
 
 	/**
-	 * @param \Doctrine\DBAL\Connection|Connection $connection
+	 * @param Connection|Connection $connection
 	 * @param ISecureRandom $random
 	 * @param IConfig $config
 	 * @param EventDispatcher $dispatcher
@@ -217,7 +218,7 @@ class Migrator {
 
 		$filterExpression = $this->getFilterExpression();
 		$this->connection->getConfiguration()->
-		setFilterSchemaAssetsExpression($filterExpression);
+			setFilterSchemaAssetsExpression($filterExpression);
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
 		// remove tables we don't know about
@@ -239,7 +240,7 @@ class Migrator {
 	}
 
 	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $targetSchema
+	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
 	 */
 	protected function applySchema(Schema $targetSchema, \Doctrine\DBAL\Connection $connection = null) {
@@ -248,7 +249,16 @@ class Migrator {
 		}
 
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
+		$this->applyDiff($schemaDiff, $connection);
+	}
 
+	/**
+	 * @param SchemaDiff $schemaDiff
+	 * @param \Doctrine\DBAL\Connection $connection
+	 * @throws DBALException
+	 * @throws \Doctrine\DBAL\ConnectionException
+	 */
+	public function applyDiff(SchemaDiff $schemaDiff, \Doctrine\DBAL\Connection $connection) {
 		$connection->beginTransaction();
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
 		$step = 0;
