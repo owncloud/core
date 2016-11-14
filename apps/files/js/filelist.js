@@ -437,7 +437,9 @@
 			// In the future the FileList should work with Backbone.Collection
 			// and contain existing models that can be used.
 			// This method would in the future simply retrieve the matching model from the collection.
-			var model = new OCA.Files.FileInfoModel(this.elementToFile($tr));
+			var model = new OCA.Files.FileInfoModel(this.elementToFile($tr), {
+				filesClient: this.filesClient
+			});
 			if (!model.get('path')) {
 				model.set('path', this.getCurrentDirectory(), {silent: true});
 			}
@@ -1652,38 +1654,6 @@
 				this.$el.trigger(jQuery.Event('afterChangeDirectory', params));
 			}
 			return true;
-		},
-
-		/**
-		 * Reloads missing properties from server and set them in the model.
-		 * @param {OCA.Files.FileInfo} fileInfo file info
-		 * @param properties array of properties to be reloaded
-		 * @return ajax call object
-		 */
-		reloadProperties: function(fileInfo, properties) {
-			var deferred = $.Deferred();
-
-			var targetPath = OC.joinPaths(fileInfo.get('path') + '/', fileInfo.get('name'));
-
-			this.filesClient.getFileInfo(targetPath, {
-					properties: properties
-				})
-				.then(function(status, data) {
-					// the following lines should be extracted to a mapper
-
-					if( properties.indexOf(OC.Files.Client.PROPERTY_GETCONTENTLENGTH) !== -1
-					||  properties.indexOf(OC.Files.Client.PROPERTY_SIZE) !== -1 ) {
-						fileInfo.set('size', data.size);
-					}
-
-					deferred.resolve(status, data);
-				})
-				.fail(function(status) {
-					OC.Notification.showTemporary(t('files', 'Could not load info for file "{file}"', {file: fileInfo.get('name')}));
-					deferred.reject(status);
-				});
-
-			return deferred.promise();
 		},
 
 		updateStorageStatistics: function(force) {

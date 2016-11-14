@@ -134,7 +134,7 @@
 				}
 
 				if( properties.length > 0){
-					this._fileList.reloadProperties(fileInfo, properties);
+					this.model.reloadProperties(properties);
 				}
 			}
 
