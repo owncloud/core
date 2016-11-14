@@ -57,8 +57,6 @@
 
 			fileList.registerTabView(new OCA.Comments.CommentsTabView('commentsTabView'));
 
-			var NS_OC = 'http://owncloud.org/ns';
-
 			var oldGetWebdavProperties = fileList._getWebdavProperties;
 			fileList._getWebdavProperties = function() {
 				var props = oldGetWebdavProperties.apply(this, arguments);

@@ -63,13 +63,13 @@
 	Client.NS_OWNCLOUD = 'http://owncloud.org/ns';
 	Client.NS_DAV = 'DAV:';
 
-	Client.PROPERTY_GETLASTMODIFIED		= '{' + Client.NS_DAV + '}getlastmodified';
-	Client.PROPERTY_GETETAG				= '{' + Client.NS_DAV + '}getetag';
-	Client.PROPERTY_GETCONTENTTYPE		= '{' + Client.NS_DAV + '}getcontenttype';
-	Client.PROPERTY_RESOURCETYPE		= '{' + Client.NS_DAV + '}resourcetype';
-	Client.PROPERTY_INTERNAL_FILEID	   	= '{' + Client.NS_OWNCLOUD + '}fileid';
-	Client.PROPERTY_PERMISSIONS		 	= '{' + Client.NS_OWNCLOUD + '}permissions';
-	Client.PROPERTY_SIZE 				= '{' + Client.NS_OWNCLOUD + '}size';
+	Client.PROPERTY_GETLASTMODIFIED	= '{' + Client.NS_DAV + '}getlastmodified';
+	Client.PROPERTY_GETETAG	= '{' + Client.NS_DAV + '}getetag';
+	Client.PROPERTY_GETCONTENTTYPE	= '{' + Client.NS_DAV + '}getcontenttype';
+	Client.PROPERTY_RESOURCETYPE	= '{' + Client.NS_DAV + '}resourcetype';
+	Client.PROPERTY_INTERNAL_FILEID	= '{' + Client.NS_OWNCLOUD + '}fileid';
+	Client.PROPERTY_PERMISSIONS	= '{' + Client.NS_OWNCLOUD + '}permissions';
+	Client.PROPERTY_SIZE	= '{' + Client.NS_OWNCLOUD + '}size';
 	Client.PROPERTY_GETCONTENTLENGTH	= '{' + Client.NS_DAV + '}getcontentlength';
 
 	Client.PROTOCOL_HTTP	= 'http';

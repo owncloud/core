@@ -87,26 +87,34 @@
 		 * @return ajax call object
 		 */
 		reloadProperties: function(properties) {
-			if( !this._filesClient )
+			if( !this._filesClient ){
 				return;
+			}
 
 			var self = this;
+			var deferred = $.Deferred();
 
 			var targetPath = OC.joinPaths(this.get('path') + '/', this.get('name'));
 
 			this._filesClient.getFileInfo(targetPath, {
 					properties: properties
-			})
-			.then(function(status, data) {
-				// the following lines should be extracted to a mapper
-				if( properties.indexOf(OC.Files.Client.PROPERTY_GETCONTENTLENGTH) !== -1
-				||  properties.indexOf(OC.Files.Client.PROPERTY_SIZE) !== -1 ) {
-					self.set('size', data.size);
-				}
-			})
-			.fail(function(status) {
-				OC.Notification.showTemporary(t('files', 'Could not load info for file "{file}"', {file: fileInfo.get('name')}));
-			});
+				})
+				.then(function(status, data) {
+					// the following lines should be extracted to a mapper
+
+					if( properties.indexOf(OC.Files.Client.PROPERTY_GETCONTENTLENGTH) !== -1
+					||  properties.indexOf(OC.Files.Client.PROPERTY_SIZE) !== -1 ) {
+						self.set('size', data.size);
+					}
+
+					deferred.resolve(status, data);
+				})
+				.fail(function(status) {
+					OC.Notification.showTemporary(t('files', 'Could not load info for file "{file}"', {file: fileInfo.get('name')}));
+					deferred.reject(status);
+				});
+
+			return deferred.promise();
 		}
 	});
 
