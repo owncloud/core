@@ -2,7 +2,7 @@
 /** @var \OCP\IL10N $l */
 /** @var array $_ */
 ?>
-<div class="section">
+<div id="shareAPI" class="section">
 	<h2><?php p($l->t('Sharing'));?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info"
 		title="<?php p($l->t('Open documentation'));?>"

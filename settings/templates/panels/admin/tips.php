@@ -1,4 +1,11 @@
-<div class="section">
+<?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ * @var OC_Defaults $theme
+ */
+?>
+<div id="admin-tips" class="section">
 	<h2><?php p($l->t('Tips & tricks'));?></h2>
 	<ul>
 		<?php

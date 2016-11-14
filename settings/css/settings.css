@@ -364,7 +364,6 @@ span.version {
 .section {
 	position: relative;
 	padding: 10px;
-	margin-bottom: 5px;
 }
 .section h2.app-name {
 	margin-bottom: 8px;
@@ -472,7 +471,7 @@ table.grid td.date{
 #shareAPI .double-indent {
 	padding-left: 56px;
 }
-#fileSharingSettings h3 {
+#fileSharingSettings h2 {
 	display: inline-block;
 }
 

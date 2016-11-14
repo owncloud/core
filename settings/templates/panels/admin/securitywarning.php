@@ -1,6 +1,13 @@
-<div class="section">
-		<h2><?php p($l->t('Security & setup warnings'));?></h2>
-		<ul>
+<?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ * @var OC_Defaults $theme
+ */
+?>
+<div id="security-warning" class="section">
+	<h2><?php p($l->t('Security & setup warnings'));?></h2>
+	<ul>
 	<?php
 	// is php setup properly to query system environment variables like getenv('PATH')
 	if ($_['getenvServerNotWorking']) {
