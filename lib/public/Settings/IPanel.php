@@ -21,15 +21,15 @@
 
 namespace OCP\Settings;
 
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\Template;
+
 /*
  * Interface representing one small panel in the UI to hold settings for
  * various functionality within ownCloud. May be used by apps to register panes
  * in the personal and admin settings pages
  * @since 9.2
  */
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\Template;
-
 interface IPanel {
 
   /**
