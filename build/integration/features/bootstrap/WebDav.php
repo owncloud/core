@@ -263,7 +263,7 @@ trait WebDav {
 	 */
 	public function asTheFileOrFolderDoesNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
-		$response = $client->request('HEAD', $this->makeSabrePath($path));
+		$response = $client->request('HEAD', $this->makeSabrePath($user, $path));
 		if ($response['statusCode'] !== 404) {
 			throw new \Exception($entry . ' "' . $path . '" expected to not exist (status code ' . $response['statusCode'] . ', expected 404)');
 		}
@@ -358,7 +358,7 @@ trait WebDav {
 			];
 		}
 
-		$response = $client->propfind($this->makeSabrePath($path), $properties, $folderDepth);
+		$response = $client->propfind($this->makeSabrePath($user, $path), $properties, $folderDepth);
 
 		return $response;
 	}
