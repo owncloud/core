@@ -742,4 +742,70 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$node->move('/bar/asd');
 	}
+
+	/**
+	 * @expectedException \OCP\Files\NotPermittedException
+	 */
+	public function testMoveFailed() {
+		/**
+		 * @var \OC\Files\Mount\Manager $manager
+		 */
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
+		/**
+		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
+
+		$view->expects($this->any())
+			->method('rename')
+			->with('/bar/foo', '/bar/asd')
+			->will($this->returnValue(false));
+
+		$view->expects($this->any())
+			->method('getFileInfo')
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
+
+		$node = $this->createTestNode($root, $view, '/bar/foo');
+		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
+
+		$root->expects($this->any())
+			->method('get')
+			->will($this->returnValueMap([['/bar', $parentNode], ['/bar/asd', $node]]));
+
+		$node->move('/bar/asd');
+	}
+
+	/**
+	 * @expectedException \OCP\Files\NotPermittedException
+	 */
+	public function testCopyFailed() {
+		/**
+		 * @var \OC\Files\Mount\Manager $manager
+		 */
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
+		/**
+		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
+
+		$view->expects($this->any())
+			->method('copy')
+			->with('/bar/foo', '/bar/asd')
+			->will($this->returnValue(false));
+
+		$view->expects($this->any())
+			->method('getFileInfo')
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
+
+		$node = $this->createTestNode($root, $view, '/bar/foo');
+		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
+
+		$root->expects($this->any())
+			->method('get')
+			->will($this->returnValueMap([['/bar', $parentNode], ['/bar/asd', $node]]));
+
+		$node->copy('/bar/asd');
+	}
 }

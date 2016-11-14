@@ -29,6 +29,16 @@ use OCP\Files\NotPermittedException;
 
 class File extends Node implements \OCP\Files\File {
 	/**
+	 * Creates a Folder that represents a non-existing path
+	 *
+	 * @param string $path path
+	 * @return string non-existing node class
+	 */
+	protected function createNonExistingNode($path) {
+		return new NonExistingFile($this->root, $this->view, $path);
+	}
+
+	/**
 	 * @return string
 	 * @throws \OCP\Files\NotPermittedException
 	 */
@@ -107,52 +117,6 @@ class File extends Node implements \OCP\Files\File {
 			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
 			$this->exists = false;
 			$this->fileInfo = null;
-		} else {
-			throw new NotPermittedException();
-		}
-	}
-
-	/**
-	 * @param string $targetPath
-	 * @throws \OCP\Files\NotPermittedException
-	 * @return \OC\Files\Node\Node
-	 */
-	public function copy($targetPath) {
-		$targetPath = $this->normalizePath($targetPath);
-		$parent = $this->root->get(dirname($targetPath));
-		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
-			$nonExisting = new NonExistingFile($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preCopy', [$this, $nonExisting]);
-			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
-			$this->view->copy($this->path, $targetPath);
-			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postCopy', [$this, $targetNode]);
-			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
-			return $targetNode;
-		} else {
-			throw new NotPermittedException();
-		}
-	}
-
-	/**
-	 * @param string $targetPath
-	 * @throws \OCP\Files\NotPermittedException
-	 * @return \OC\Files\Node\Node
-	 */
-	public function move($targetPath) {
-		$targetPath = $this->normalizePath($targetPath);
-		$parent = $this->root->get(dirname($targetPath));
-		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
-			$nonExisting = new NonExistingFile($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preRename', [$this, $nonExisting]);
-			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
-			$this->view->rename($this->path, $targetPath);
-			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postRename', [$this, $targetNode]);
-			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
-			$this->path = $targetPath;
-			$this->fileInfo = null;
-			return $targetNode;
 		} else {
 			throw new NotPermittedException();
 		}
