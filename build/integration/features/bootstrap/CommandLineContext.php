@@ -69,7 +69,7 @@ class CommandLineContext implements \Behat\Behat\Context\Context {
 			return $a['date'] - $b['date'];
 		});
 
-		$davPath = rtrim($this->featureContext->getDavFilesPath($targetUser), '/');
+		$davPath = rtrim($this->featureContext->getFilesPath(), '/');
 
 		$foundPath = end($foundPaths)['path'];
 		// strip dav path
@@ -92,7 +92,7 @@ class CommandLineContext implements \Behat\Behat\Context\Context {
 	 * @When /^using received transfer folder of "([^"]+)" as dav path$/
 	 */
 	public function usingTransferFolderAsDavPath($user) {
-		$davPath = $this->featureContext->getDavFilesPath($user);
+		$davPath = $this->featureContext->getFilesPath();
 		$davPath = rtrim($davPath, '/') . $this->lastTransferPath;
 		$this->featureContext->usingDavPath($davPath);
 	}
