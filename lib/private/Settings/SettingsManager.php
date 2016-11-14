@@ -22,6 +22,7 @@
 namespace OC\Settings;
 
 use OC\Settings\Panels\Admin\Apps;
+use OCP\IUser;
 use OCP\Settings\ISettingsManager;
 use OCP\Settings\ISection;
 use OC\App\AppManager;
@@ -43,7 +44,6 @@ use OC\Settings\Panels\Personal\AppPasswords;
 use OC\Settings\Panels\Admin\BackgroundJobs;
 use OC\Settings\Panels\Admin\Certificates;
 use OC\Settings\Panels\Admin\Encryption;
-use OC\Settings\Panels\Admin\FilesExternal;
 use OC\Settings\Panels\Admin\FileSharing;
 use OC\Settings\Panels\Admin\Mail;
 use OC\Settings\Panels\Admin\Logging;
@@ -151,19 +151,19 @@ class SettingsManager implements ISettingsManager {
     private function getBuiltInSections($type) {
         if($type === 'admin') {
             return [
-                new Section('security', $this->l->t('Security'), 5),
-                new Section('sharing', $this->l->t('Sharing'), 4),
-                new Section('updates', $this->l->t('Updates'), 3),
-                new Section('monitoring', $this->l->t('Monitoring'), 1),
-                new Section('general', $this->l->t('General'), 2),
-                new Section('additional', $this->l->t('Additional'), 0),
-				new Section('apps', $this->l->t('Apps'), 6),
+				new Section('general', $this->l->t('General'), 100),
+				new Section('sharing', $this->l->t('Sharing'), 99),
+				new Section('security', $this->l->t('Security'), 98),
+				new Section('monitoring', $this->l->t('Monitoring'), 30),
+				new Section('updates', $this->l->t('Updates'), 20),
+				new Section('apps', $this->l->t('Apps'), 10),
+				new Section('additional', $this->l->t('Additional'), 5),
             ];
         } else if($type === 'personal') {
             return [
-                new Section('general', $this->l->t('General'), 1),
-                new Section('security', $this->l->t('Security'), 2),
-                new Section('additional', $this->l->t('Additional'), 0),
+                new Section('general', $this->l->t('General'), 0),
+                new Section('security', $this->l->t('Security'), 1),
+                new Section('additional', $this->l->t('Additional'), 2),
             ];
         }
     }
@@ -189,7 +189,6 @@ class SettingsManager implements ISettingsManager {
                 Tips::class,
                 SecurityWarning::class,
                 Mail::class,
-                FilesExternal::class,
                 FileSharing::class,
                 Encryption::class,
                 Certificates::class,
@@ -214,7 +213,6 @@ class SettingsManager implements ISettingsManager {
             BackgroundJobs::class => new BackgroundJobs(),
             Certificates::class => new Certificates(),
             Encryption::class => new Encryption(),
-            FilesExternal::class => new FilesExternal(),
             FileSharing::class => new FileSharing(),
             Logging::class => new Logging(),
             Mail::class => new Mail(),
@@ -312,10 +310,12 @@ class SettingsManager implements ISettingsManager {
                 // Just skip this panel, either its section of panel could not be loaded
             }
         }
-        // Return the panel array sorted
-        foreach($this->panels[$type] as $sectionID => $section) {
-            $this->panels[$type][$sectionID] = $this->sortOrder($this->panels[$type][$sectionID]);
-        }
+		// Return the panel array sorted
+		foreach($this->panels[$type] as $sectionID => $section) {
+			$this->panels[$type][$sectionID] = $this->sortOrder($this->panels[$type][$sectionID]);
+		}
+		// sort section array
+		$this->sections[$type] = $this->sortOrder($this->sections[$type]);
         return $this->panels[$type];
     }
 
@@ -345,6 +345,8 @@ class SettingsManager implements ISettingsManager {
      */
     protected function sortOrder($objects) {
         usort($objects, function($a, $b) {
+			/** @var ISection | IPanel $a */
+			/** @var ISection | IPanel $b */
             return $a->getPriority() < $b->getPriority();
         });
         return $objects;

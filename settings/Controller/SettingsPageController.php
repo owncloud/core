@@ -70,7 +70,7 @@ class SettingsPageController extends Controller {
 	 * Creates the admin settings page
 	 * @NoCSRFRequired
 	 * @param string $sectionID
-	 * @return \OCP\TemplateResponse
+	 * @return TemplateResponse
 	 */
 	public function getAdmin($sectionid) {
 		$this->currentSectionID = $sectionid;
@@ -80,7 +80,7 @@ class SettingsPageController extends Controller {
 	/**
 	 * Generates a settings page given the type (personal/admin)
 	 * @param string $type
-	 * @return \OCP\TemplateResponse
+	 * @return TemplateResponse
 	 */
 	protected function createSettingsPage($type) {
 		// Load sections and panels

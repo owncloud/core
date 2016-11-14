@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ * @var OC_Defaults $theme
+ */
+?>
 <div class="section">
 	<h2><?php p($l->t('Log'));?></h2>
 	<?php if ($_['showLog'] && $_['doesLogFileExist']): ?>
