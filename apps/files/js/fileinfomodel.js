@@ -43,8 +43,10 @@
 				data.id = parseInt(data.id, 10);
 			}
 
-			if (options.filesClient) {
-				this._filesClient = options.filesClient;
+			if( options ){
+				if (options.filesClient) {
+					this._filesClient = options.filesClient;
+				}
 			}
 		},
 
