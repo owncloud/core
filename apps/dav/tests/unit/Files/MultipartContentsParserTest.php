@@ -33,7 +33,11 @@ class MultipartContentsParserTest extends TestCase {
 
 	}
 
+	/*TESTS*/
+
 	/**
+	 * Test basic gets() functionality, that if passed string instead of resource, it should fail
+	 *
 	 * @expectedException \Sabre\DAV\Exception\BadRequest
 	 * @expectedExceptionMessage Unable to get request content
 	 */
@@ -53,8 +57,8 @@ class MultipartContentsParserTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
-	 * @expectedExceptionMessage Unable to determine headers limit for content part
+	 * Test function readHeaders(), so if passed empty string, it will return null
+	 *
 	 */
 	public function testReadHeadersThrowEmptyHeader() {
 		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
@@ -63,19 +67,7 @@ class MultipartContentsParserTest extends TestCase {
 
 		$mcp = new \OCA\DAV\Files\MultipartContentsParser($request);
 		$mcp->readHeaders('');
-	}
-
-	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
-	 * @expectedExceptionMessage Header of content part contains incorrect headers
-	 */
-	public function testReadHeadersThrowIncorrectHeader() {
-		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$mcp = new \OCA\DAV\Files\MultipartContentsParser($request);
-		$mcp->readHeaders("Content-ID: 1\r\nContent-MD5\r\n\r\n");
+		$this->assertEquals(null, $mcp->readHeaders(''));
 	}
 
 	/**
@@ -146,7 +138,7 @@ class MultipartContentsParserTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
+	 * @expectedException \Exception
 	 * @expectedExceptionMessage An error appears while reading and parsing header of content part using fgets
 	 */
 	public function testGetPartThrowFailfgets() {
@@ -173,7 +165,7 @@ class MultipartContentsParserTest extends TestCase {
 	/**
 	 * If one one the content parts does not contain boundrary, means that received wrong request
 	 *
-	 * @expectedException \Sabre\DAV\Exception\BadRequest
+	 * @expectedException \Exception
 	 * @expectedExceptionMessage Expected boundary delimiter in content part
 	 */
 	public function testGetPartThrowNoBoundraryFound() {
@@ -225,15 +217,17 @@ class MultipartContentsParserTest extends TestCase {
 		$this->assertEquals(true,$mcp->multipartContentSeekToContentLength($length));
 	}
 
-	public function testGetPartWrongBoundaryCases() {
+	/**
+	 *  Test cases with wrong or incomplete boundraries
+	 *
+	 */
+	public function testGetPartHeadersWrongBoundaryCases() {
 		// Calling multipletimes getPart on parts without contents should return null and signal immedietaly that endDelimiter was reached
 		$bodyFull = "--boundary\r\n--boundary_wrong\r\n--boundary--";
 		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
 		$this->assertEquals(null,$multipartContentsParser->getPartHeaders($this->boundrary));
 		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
-	}
 
-	public function testGetPartContents() {
 		// Test empty content
 		$bodyFull = "--boundary\r\n";
 		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
@@ -257,91 +251,133 @@ class MultipartContentsParserTest extends TestCase {
 		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
 		$this->assertEquals(null,$multipartContentsParser->getPartHeaders($this->boundrary));
 		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
+	}
 
+	/**
+	 *  Test will check if we can correctly parse headers and content using streamReadToString
+	 *
+	 */
+	public function testReadHeaderBodyCorrect() {
+		//multipart part will have some content bodyContent and some headers
 		$bodyContent = 'blabla';
-		$bodyFull = '--boundary'
-			."\r\nContent-ID: 0\r\nContent-Type: application/json; charset=UTF-8\r\nContent-length: 6\r\n\r\n"
-			."$bodyContent\r\n--boundary";
-		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
 		$headers['content-length'] = '6';
-		$headers['content-type'] = 'application/json; charset=UTF-8';
-		$headers['content-id'] = '0';
-		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
-		$bodyParsed = $multipartContentsParser->streamReadToString(6);
-		$this->assertEquals(false,$multipartContentsParser->getEndDelimiterReached());
-		$this->assertEquals($bodyContent, $bodyParsed);
-		$this->assertEquals($headers, $headersParsed);
-		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
-		$this->assertEquals(null,$headersParsed);
-		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
+		$headers['content-type'] = 'text/xml; charset=utf-8';
 
-		// Test First part with content and second without content returning null
-		// The behaviour is motivated by the fact that if there is noting between start content boundrary and the end of multipart boundrary,
-		// it should not raise and error, but simply skip contents returning null and setting endDelimiterReached to true.
-		$bodyContent = 'blabla';
+		//this part will have some arbitrary, correct headers
 		$bodyFull = '--boundary'
-			."\r\nContent-ID: 0\r\nContent-Type: application/json; charset=UTF-8\r\nContent-length: 6\r\n\r\n"
-			."$bodyContent\r\n--boundary\r\n--boundary--";
-		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
-		$headers['content-length'] = '6';
-		$headers['content-type'] = 'application/json; charset=UTF-8';
-		$headers['content-id'] = '0';
-		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
-		$bodyParsed = $multipartContentsParser->streamReadToString(6);
-		$this->assertEquals(false,$multipartContentsParser->getEndDelimiterReached());
-		$this->assertEquals($bodyContent, $bodyParsed);
-		$this->assertEquals($headers, $headersParsed);
-		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
-		$this->assertEquals(null,$headersParsed);
-		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
-
-		// Test First part without content and second with content, expects that it will just skip the empty boundrary and read the next contents within the same run of getPart
-		// The behaviour is motivated by the fact that iterator at the first boundrary occurence expects next line to be contents and it will iterate till it finds it.
-		// It should set endDelimiterReached to true after next call for header
-		$bodyContent = 'blabla';
-		$bodyFull = '--boundary'
-			."\r\n--boundary\r\nContent-ID: 0\r\nContent-Type: application/json; charset=UTF-8\r\nContent-length: 6\r\n\r\n"
+			."\r\nContent-Type: ".$headers['content-type']
+			."\r\nContent-length: ".$headers['content-length']
+			."\r\n\r\n"
 			."$bodyContent\r\n--boundary--";
 		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
-		$headers['content-length'] = '6';
-		$headers['content-type'] = 'application/json; charset=UTF-8';
-		$headers['content-id'] = '0';
-		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
-		$bodyParsed = $multipartContentsParser->streamReadToString(6);
-		$this->assertEquals(false,$multipartContentsParser->getEndDelimiterReached());
-		$this->assertEquals($bodyContent, $bodyParsed);
-		$this->assertEquals($headers, $headersParsed);
-		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
-		$this->assertEquals(null,$headersParsed);
-		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
 
-		// Test First part without content and second with content, expects that it will return first empty string and next will be content
-		$bodyContent = 'blabla';
-		$bodyFull = '--boundary'
-			."\r\nContent-ID: 0\r\nContent-Type: application/json; charset=UTF-8\r\nContent-length: 0\r\n\r\n"
-			."\r\n--boundary\r\nContent-ID: 1\r\nContent-Type: application/json; charset=UTF-8\r\nContent-length: 6\r\n\r\n"
-			."$bodyContent\r\n--boundary--";
-		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
-		$headers['content-length'] = '0';
-		$headers['content-type'] = 'application/json; charset=UTF-8';
-		$headers['content-id'] = '0';
-		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
-		$bodyParsed = $multipartContentsParser->streamReadToString(0);
-		$this->assertEquals(false,$multipartContentsParser->getEndDelimiterReached());
-		$this->assertEquals("", $bodyParsed);
-		$this->assertEquals($headers, $headersParsed);
-		$headers['content-length'] = '6';
-		$headers['content-type'] = 'application/json; charset=UTF-8';
-		$headers['content-id'] = '1';
+		//parse it
 		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
 		$bodyParsed = $multipartContentsParser->streamReadToString(6);
+
+		//check if end delimiter is not reached, since we just read 6 bytes, and stopped at \r\n
 		$this->assertEquals(false,$multipartContentsParser->getEndDelimiterReached());
+
+		//check that we parsed correct headers
 		$this->assertEquals($bodyContent, $bodyParsed);
 		$this->assertEquals($headers, $headersParsed);
+
+		//parse further to check if there is new part. There is no, so headers are null and delimiter reached
 		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
 		$this->assertEquals(null,$headersParsed);
 		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
 	}
+
+	/**
+	 *  Test will check parsing incorrect headers and content using streamReadToString
+	 *
+	 */
+	public function testReadHeaderBodyIncorrect() {
+
+		//multipart part will have some content bodyContent and some headers
+		$bodyContent = 'blabla';
+		$headers['content-length'] = '6';
+		$headers['content-type'] = 'text/xml; charset=utf-8';
+
+		//this part will one correct and one incorrect header
+		$bodyFull = '--boundary'
+			."\r\nContent-Type: ".$headers['content-type']
+			."\r\nContent-length"
+			."\r\n\r\n"
+			."$bodyContent\r\n--boundary--";
+		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
+
+		//parse it and expect null, since contains incorrect headers
+		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
+		$this->assertEquals(null, $headersParsed);
+		$this->assertEquals(false,$multipartContentsParser->getEndDelimiterReached());
+
+		//parse further to check if next call with not read headers again
+		//this should return null again and get to end of delimiter
+		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
+		$this->assertEquals(null,$headersParsed);
+		$this->assertEquals(true,$multipartContentsParser->getEndDelimiterReached());
+	}
+
+	/**
+	 *  Test will check reading error in StreamReadToString
+	 *
+	 * @expectedException \Sabre\DAV\Exception\BadRequest
+	 * @expectedExceptionMessage Method streamRead read 20 expeceted 60
+	 */
+	public function testReadBodyIncorrect() {
+		//multipart part will have some content bodyContent and content-length header will specify to big value
+		//this
+		$bodyContent = 'blabla';
+		$headers['content-length'] = '60';
+		$headers['content-type'] = 'text/xml; charset=utf-8';
+
+		//this part will have some arbitrary, correct headers
+		$bodyFull = '--boundary'
+			."\r\nContent-Type: ".$headers['content-type']
+			."\r\nContent-length: ".$headers['content-length']
+			."\r\n\r\n"
+			."$bodyContent\r\n--boundary--";
+		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
+
+		//parse headers
+		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
+		$this->assertEquals($headers, $headersParsed);
+
+		$this->assertEquals(true, array_key_exists('content-length',$headersParsed));
+		$multipartContentsParser->streamReadToString($headersParsed['content-length']);
+	}
+
+	/**
+	 *  Test will check reading error in StreamReadToString return false
+	 *
+	 */
+	public function testReadBodyStreamIncorrect() {
+		//multipart part will have some content bodyContent and content-length header will specify to big value
+		//this
+		$bodyContent = 'blabla';
+		$headers['content-length'] = '60';
+		$headers['content-type'] = 'text/xml; charset=utf-8';
+
+		//this part will have some arbitrary, correct headers
+		$bodyFull = '--boundary'
+			."\r\nContent-Type: ".$headers['content-type']
+			."\r\nContent-length: ".$headers['content-length']
+			."\r\n\r\n"
+			."$bodyContent\r\n--boundary--";
+		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
+
+		//parse headers
+		$headersParsed = $multipartContentsParser->getPartHeaders($this->boundrary);
+		$this->assertEquals($headers, $headersParsed);
+
+		$this->assertEquals(true, array_key_exists('content-length',$headersParsed));
+		$target = fopen('php://temp', 'r+');
+		$bodyParsed = $multipartContentsParser->streamReadToStream($target, $headersParsed['content-length']);
+		$this->assertEquals(false, $bodyParsed);
+	}
+
+	/*UTILITIES*/
 
 	private function fillMultipartContentsParserStreamWithChars($length){
 		$bodyStream = fopen('php://temp', 'r+');

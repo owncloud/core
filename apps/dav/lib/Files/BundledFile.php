@@ -37,6 +37,19 @@ use Sabre\DAV\Exception\BadRequest;
 
 class BundledFile extends File {
 
+
+	/**
+	 * This class is a wrapper around the bundled request body and provides access to its contents
+	 *
+	 * @var \OCA\DAV\Files\MultipartContentsParser
+	 *
+	 */
+	private $contentHandler;
+
+	public function __construct($view, $info, $contentHandler){
+		$this->contentHandler = $contentHandler;
+		parent::__construct($view, $info);
+	}
 	/**
 	 * Updates the data
 	 *
@@ -70,16 +83,22 @@ class BundledFile extends File {
 		$properties = array();
 		try {
 			$exists = $this->fileView->file_exists($this->path);
-			if ($this->info && $exists && !$this->info->isUpdateable()) {
-				throw new Forbidden();
+			if ($this->info && $exists) {
+				throw new Forbidden('Bundling not supported for already existing files');
 			}
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("File is not updatable: " . $e->getMessage());
 		}
 
+		if (!isset($data['oc-total-length'])) {
+			//this should not happen, since upper layer takes care of that
+			//Thus, return Forbidden as sign of code inconsistency
+			throw new Forbidden('File requires oc-total-length header to be read');
+		}
+
 		// verify path of the target
 		$this->verifyPath();
-		
+
 		$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . rand();
 
 		// the part file and target file might be on a different storage in case of a single file storage (e.g. single file share)
@@ -94,25 +113,11 @@ class BundledFile extends File {
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
 				throw new Exception('Could not write file contents');
 			}
-			list($count, $result) = \OC_Helper::streamCopy($data['data'], $target);
-			fclose($target);
+
+			$result = $this->contentHandler->streamReadToStream($target, $data['oc-total-length']);
 
 			if ($result === false) {
-				$expected = -1;
-				if (isset($data['content-length'])) {
-					$expected = $data['content-length'];
-				}
-				throw new Exception('Error while copying file to target location (copied bytes: ' . $count . ', expected filesize: ' . $expected . ' )');
-			}
-
-			// if content length is sent by client:
-			// double check if the file was fully received
-			// compare expected and actual size
-			if (isset($data['content-length'])) {
-				$expected = $data['content-length'];
-				if ($count != $expected) {
-					throw new BadRequest('Expected filesize ' . $expected . ' got ' . $count);
-				}
+				throw new Exception('Error while copying file to target location (expected filesize: ' . $data['oc-total-length'] . ' )');
 			}
 
 		} catch (\Exception $e) {
@@ -166,16 +171,16 @@ class BundledFile extends File {
 
 			// allow sync clients to send the mtime along in a header
 			$request = \OC::$server->getRequest();
-			if (isset($data['x-oc-mtime'])) {
-				if ($this->fileView->touch($this->path, $data['x-oc-mtime'])) {
-					$properties['{DAV:}x-oc-mtime'] = 'accepted';
+			if (isset($data['oc-mtime'])) {
+				if ($this->fileView->touch($this->path, $data['oc-mtime'])) {
+					$properties['{DAV:}oc-mtime'] = 'accepted';
 				}
 			}
 
 			$this->refreshInfo();
 
-			if (isset($data['x-oc-checksum'])) {
-				$checksum = trim($data['x-oc-checksum']);
+			if (isset($data['oc-checksum'])) {
+				$checksum = trim($data['oc-checksum']);
 				$this->fileView->putFileInfo($this->path, ['checksum' => $checksum]);
 				$this->refreshInfo();
 			} else if ($this->getChecksum() !== null && $this->getChecksum() !== '') {

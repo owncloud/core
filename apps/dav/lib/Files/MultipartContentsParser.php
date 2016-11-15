@@ -113,6 +113,7 @@ class MultipartContentsParser {
      */
     public function getContent() {
         if ($this->content === null) {
+            // pass body by reference, so other objects can have global access
             $this->content = $this->request->getBody();
 
             if (!$this->content) {
@@ -122,7 +123,7 @@ class MultipartContentsParser {
 
         return $this->content;
     }
-
+    
     /**
      * Get a part of request separated by boundrary $boundary.
      *
@@ -132,7 +133,7 @@ class MultipartContentsParser {
      * @param  String $boundary
      *
      * @throws \Exception
-     * @return array (array $headers, resource $bodyStream)
+     * @return array $headers
      */
     public function getPartHeaders($boundary) {
         $delimiter = '--'.$boundary."\r\n";
@@ -216,6 +217,10 @@ class MultipartContentsParser {
             $count -= $bufSize;
         }
 
+        $bytesWritten = strlen($buf);
+        if ($length != $bytesWritten){
+            throw new BadRequest('Method streamRead read '.$bytesWritten.' expeceted '.$length);
+        }
         return $buf;
     }
 
@@ -244,7 +249,7 @@ class MultipartContentsParser {
             // note: strlen is expensive so only use it when necessary,
             // on the last block
             if ($bytesWritten === false
-                || ($bytesWritten < $bufSize && $bytesWritten < strlen($buf))
+                || ($bytesWritten < $bufSize)
             ) {
                 // write error, could be disk full ?
                 $returnStatus = false;
@@ -262,7 +267,7 @@ class MultipartContentsParser {
      *
      * @param string $content
      * 
-     * @return Array $headers
+     * @return Array $headers or null in case of error
      */
     public function readHeaders($content) {
         $headers = null;
@@ -275,8 +280,8 @@ class MultipartContentsParser {
         foreach (explode("\r\n", $headersContent) as $header) {
             $parts = explode(':', $header, 2);
             if (count($parts) != 2) {
-                //has incorrect header, try to continue
-                continue;
+                //has incorrect header, abort
+                return null;
             }
             $headers[strtolower(trim($parts[0]))] = trim($parts[1]);
         }

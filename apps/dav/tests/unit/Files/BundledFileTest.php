@@ -41,6 +41,8 @@ class BundledFileTest extends \Test\TestCase {
 	 */
 	private $user;
 
+	/* BASICS */
+
 	public function setUp() {
 		parent::setUp();
 
@@ -61,6 +63,57 @@ class BundledFileTest extends \Test\TestCase {
 		parent::tearDown();
 	}
 
+	/* TESTS */
+
+	/**
+	 * Test basic successful bundled file PutFile
+	 */
+	public function testPutFile() {
+		$bodyContent = 'blabla';
+		$headers['oc-total-length'] = 6;
+		$headers['oc-path'] = '/foo.txt';
+		$headers['oc-mtime'] = '1473336321';
+		$headers['response'] = null;
+
+		//this part will have some arbitrary, correct headers
+		$bodyFull = "$bodyContent\r\n--boundary--";
+		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
+
+		$this->doPutFIle($headers, $multipartContentsParser);
+	}
+
+	/**
+	 * Test basic successful bundled file PutFile
+	 *
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 * @expectedExceptionMessage File requires oc-total-length header to be read
+	 */
+	public function testPutFileNoLength() {
+		$bodyContent = 'blabla';
+		$headers['oc-path'] = '/foo.txt';
+		$headers['oc-mtime'] = '1473336321';
+		$headers['response'] = null;
+
+		//this part will have some arbitrary, correct headers
+		$bodyFull = "$bodyContent\r\n--boundary--";
+		$multipartContentsParser = $this->fillMultipartContentsParserStreamWithBody($bodyFull);
+
+		$this->doPutFIle($headers, $multipartContentsParser);
+	}
+
+	/**
+	 * Test putting a single file
+	 *
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 * @expectedExceptionMessage PUT method not supported for bundling
+	 */
+	public function testThrowIfPut() {
+		$fileContents = $this->getStream('test data');
+		$this->doPut('/foo.txt', $fileContents);
+	}
+
+	/* UTILITIES */
+
 	private function getMockStorage() {
 		$storage = $this->getMockBuilder('\OCP\Files\Storage')
 			->getMock();
@@ -80,44 +133,53 @@ class BundledFileTest extends \Test\TestCase {
 		return $stream;
 	}
 
-//	/**
-//	 * Simulate putting a file to the given path.
-//	 *
-//	 * @param string $path path to put the file into
-//	 * @param string $viewRoot root to use for the view
-//	 *
-//	 * @return null|string of the PUT operaiton which is usually the etag
-//	 */
-//	private function doCreate($path, $fileContents, $viewRoot = null) {
-//		$view = \OC\Files\Filesystem::getView();
-//		if (!is_null($viewRoot)) {
-//			$view = new \OC\Files\View($viewRoot);
-//		} else {
-//			$viewRoot = '/' . $this->user . '/files';
-//		}
-//
-//		$info = new \OC\Files\FileInfo(
-//			$viewRoot . '/' . ltrim($path, '/'),
-//			$this->getMockStorage(),
-//			null,
-//			['permissions' => \OCP\Constants::PERMISSION_ALL],
-//			null
-//		);
-//
-//		$file = new BundledFile($view, $info);
-//
-//		// beforeMethod locks
-//		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
-//
-//		$fileAttributes['content-id'] = 0;
-//		$fileAttributes['x-oc-mtime'] = "1471254375";
-//		$result = $file->createFile($fileContents, $fileAttributes);
-//
-//		// afterMethod unlocks
-//		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
-//
-//		return $result;
-//	}
+	/**
+	 * TODO:
+	 */
+	private function doPutFIle($fileMetadata, $contentHandler, $viewRoot = null) {
+		$path = $fileMetadata['oc-path'];
+		$view = \OC\Files\Filesystem::getView();
+		if (!is_null($viewRoot)) {
+			$view = new \OC\Files\View($viewRoot);
+		} else {
+			$viewRoot = '/' . $this->user . '/files';
+		}
+
+		$info = new \OC\Files\FileInfo(
+			$viewRoot . '/' . ltrim($path, '/'),
+			$this->getMockStorage(),
+			null,
+			['permissions' => \OCP\Constants::PERMISSION_ALL],
+			null
+		);
+
+		$file = new BundledFile($view, $info, $contentHandler);
+
+		// beforeMethod locks
+		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
+
+		$result = $file->putFile($fileMetadata);
+
+		// afterMethod unlocks
+		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
+
+		return $result;
+	}
+
+	private function fillMultipartContentsParserStreamWithBody($bodyString){
+		$bodyStream = fopen('php://temp', 'r+');
+		fwrite($bodyStream, $bodyString);
+		rewind($bodyStream);
+		$request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')
+			->disableOriginalConstructor()
+			->getMock();
+		$request->expects($this->any())
+			->method('getBody')
+			->willReturn($bodyStream);
+
+		$mcp = new \OCA\DAV\Files\MultipartContentsParser($request);
+		return $mcp;
+	}
 
 	/**
 	 * Simulate putting a file to the given path.
@@ -143,7 +205,7 @@ class BundledFileTest extends \Test\TestCase {
 			null
 		);
 
-		$file = new BundledFile($view, $info);
+		$file = new BundledFile($view, $info, null);
 
 		// beforeMethod locks
 		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
@@ -154,16 +216,5 @@ class BundledFileTest extends \Test\TestCase {
 		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
 
 		return $result;
-	}
-
-	/**
-	 * Test putting a single file
-	 * 
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage PUT method not supported for bundling
-	 */
-	public function testThrowPutSingleFile() {
-		$fileContents = $this->getStream('test data');
-		$this->doPut('/foo.txt', $fileContents);
 	}
 }
