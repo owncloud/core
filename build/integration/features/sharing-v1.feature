@@ -976,3 +976,37 @@ Feature: sharing
     Then etag of element "/" of user "user1" has changed
     And etag of element "/PARENT" of user "user0" has not changed
 
+  Scenario: Increasing permissions is allowed for owner
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "new-group" exists
+    And user "user0" belongs to group "new-group"
+    And user "user1" belongs to group "new-group"
+    And Assure user "user0" is subadmin of group "new-group"
+    And As an "user0"
+    And folder "/FOLDER" of user "user0" is shared with group "new-group"
+    And Updating last share with
+      | permissions | 0 |
+    When Updating last share with
+      | permissions | 31 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+
+  Scenario: Adding public upload to a shared folder as recipient is not allowed
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1"
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | publicUpload | false |
+    When Updating last share with
+      | publicUpload | true |
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+
