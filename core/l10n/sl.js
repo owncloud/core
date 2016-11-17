@@ -111,7 +111,7 @@ OC.L10N.register(
     "New Files" : "Nove datoteke",
     "Already existing files" : "Obstoječe datoteke",
     "Which files do you want to keep?" : "Katare datoteke želite ohraniti?",
-    "If you select both versions, the copied file will have a number added to its name." : "Če izberete obe različici, bo kopirani datoteki k imenu dodana številka.",
+    "If you select both versions, the copied file will have a number added to its name." : "Če izberete obe različici, bo k imenu na novo kopirane datoteke dodana številka.",
     "Cancel" : "Prekliči",
     "Continue" : "Nadaljuj",
     "(all selected)" : "(vse izbrano)",
