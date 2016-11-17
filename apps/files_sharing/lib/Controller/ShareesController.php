@@ -334,7 +334,10 @@ class ShareesController extends OCSController  {
 			$this->result['remotes'] = [];
 		}
 
-		if (!$foundRemoteById && substr_count($search, '@') >= 1 && $this->offset === 0) {
+		if (!$foundRemoteById && substr_count($search, '@') >= 1 && $this->offset === 0
+			// only add remote user if not found already an exact match (ex: local account like email address)
+			&& empty($this->result['exact']['users'])
+		) {
 			$this->result['exact']['remotes'][] = [
 				'label' => $search,
 				'value' => [

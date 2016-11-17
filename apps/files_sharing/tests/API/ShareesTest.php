@@ -1047,6 +1047,20 @@ class ShareesTest extends TestCase {
 				[],
 				true,
 			],
+			// if exact user found, skip generated remote entry
+			[
+				'test@domain.tld',
+				[],
+				true,
+				[],
+				[],
+				true,
+				[
+					'users' => [
+						['label' => 'test@domain.tld', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test@domain.tld']],
+					]
+				]
+			],
 		];
 	}
 
@@ -1059,8 +1073,16 @@ class ShareesTest extends TestCase {
 	 * @param array $exactExpected
 	 * @param array $expected
 	 * @param bool $reachedEnd
+	 * @param array $previousExact
 	 */
-	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd) {
+	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $previousExact = []) {
+		// inject previous results if needed
+		if (!empty($previousExact)) {
+			$result = $this->invokePrivate($this->sharees, 'result');
+			$result['exact'] = array_merge($result['exact'], $previousExact);
+			$this->invokePrivate($this->sharees, 'result', [$result]);
+		}
+
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->contactsManager->expects($this->any())
 			->method('search')
