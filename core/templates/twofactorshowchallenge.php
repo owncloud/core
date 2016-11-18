@@ -3,6 +3,8 @@
 /** @var $_ array */
 /* @var $error boolean */
 $error = $_['error'];
+/* @var $error_message string */
+$error_message = $_['error_message'];
 /* @var $provider OCP\Authentication\TwoFactorAuth\IProvider */
 $provider = $_['provider'];
 /* @var $template string */
@@ -14,7 +16,11 @@ $template = $_['template'];
 		<p><?php p($l->t('Please authenticate using the selected factor.')) ?></p>
 </fieldset>
 <?php if ($error): ?>
-<span class="warning"><?php p($l->t('An error occured while verifying the token')); ?></span>
+	<?php if ($error_message){ ?>
+		<span class="warning"><?php p($l->t($error_message)); ?></span>
+	<?php } else {?>
+		<span class="warning"><?php p($l->t('An error occurred while verifying the token')); ?></span>
+	<?php }; ?>
 <?php endif; ?>
 <?php print_unescaped($template); ?>
 <a class="two-factor-cancel" <?php print_unescaped($_['logout_attribute']); ?>><?php p($l->t('Cancel login')) ?></a>
