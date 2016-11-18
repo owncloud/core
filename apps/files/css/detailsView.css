@@ -16,6 +16,7 @@
 
 #app-sidebar .mainFileInfoView .icon {
 	display: inline-block;
+    background-size: 16px 16px;
 }
 
 #app-sidebar .mainFileInfoView .permalink {
@@ -111,9 +112,10 @@
 }
 
 #app-sidebar .action-favorite {
-	vertical-align: text-bottom;
+	vertical-align: sub;
 	padding: 10px;
 	margin: -10px;
+	opacity: .7;
 }
 
 #app-sidebar .detailList {
