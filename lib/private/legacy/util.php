@@ -687,7 +687,7 @@ class OC_Util {
 					$errors = array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
 				} else {
 					$errors[] = [
-						'error' => $l->t('Cannot create "data" directory (%s)', [$CONFIG_DATADIRECTORY]),
+						'error' => $l->t('Cannot create "data" directory'),
 						'hint' => $l->t('This can usually be fixed by '
 							. '<a href="%s" target="_blank" rel="noreferrer">giving the webserver write access to the root directory</a>.',
 							[$urlGenerator->linkToDocs('admin-dir_permissions')])
@@ -699,7 +699,7 @@ class OC_Util {
 					. '%sgiving the webserver write access to the root directory%s.',
 					['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>']);
 				$errors[] = [
-					'error' => 'Data directory (' . $CONFIG_DATADIRECTORY . ') not writable by ownCloud',
+					'error' => 'Your Data directory is not writable by ownCloud',
 					'hint' => $permissionsHint
 				];
 			} else {
@@ -910,7 +910,7 @@ class OC_Util {
 			$perms = substr(decoct(@fileperms($dataDirectory)), -3);
 			if (substr($perms, 2, 1) != '0') {
 				$errors[] = [
-					'error' => $l->t('Data directory (%s) is readable by other users', [$dataDirectory]),
+					'error' => $l->t('Your Data directory is readable by other users'),
 					'hint' => $permissionsModHint
 				];
 			}
@@ -930,13 +930,13 @@ class OC_Util {
 		$errors = [];
 		if ($dataDirectory[0] !== '/') {
 			$errors[] = [
-				'error' => $l->t('Data directory (%s) must be an absolute path', [$dataDirectory]),
+				'error' => $l->t('Your Data directory must be an absolute path'),
 				'hint' => $l->t('Check the value of "datadirectory" in your configuration')
 			];
 		}
 		if (!file_exists($dataDirectory . '/.ocdata')) {
 			$errors[] = [
-				'error' => $l->t('Data directory (%s) is invalid', [$dataDirectory]),
+				'error' => $l->t('Your Data directory  is invalid'),
 				'hint' => $l->t('Please check that the data directory contains a file' .
 					' ".ocdata" in its root.')
 			];
