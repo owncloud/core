@@ -57,8 +57,6 @@ class Expire implements ICommand {
 			return;
 		}
 
-		\OC_Util::setupFS($this->user);
 		Storage::expire($this->fileName, $this->user);
-		\OC_Util::tearDownFS();
 	}
 }

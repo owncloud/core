@@ -690,8 +690,16 @@ class Storage {
 	public static function expire($filename, $uid) {
 		$config = \OC::$server->getConfig();
 		$expiration = self::getExpiration();
-		
+
 		if($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
+			// get available disk space for user
+			$user = \OC::$server->getUserManager()->get($uid);
+			if (is_null($user)) {
+				\OCP\Util::writeLog('files_versions', 'Backends provided no user object for ' . $uid, \OCP\Util::ERROR);
+				throw new \OC\User\NoUserException('Backends provided no user object for ' . $uid);
+			}
+
+			\OC_Util::setupFS($uid);
 
 			if (!Filesystem::file_exists($filename)) {
 				return false;
@@ -703,12 +711,6 @@ class Storage {
 			}
 			$versionsFileview = new View('/'.$uid.'/files_versions');
 
-			// get available disk space for user
-			$user = \OC::$server->getUserManager()->get($uid);
-			if (is_null($user)) {
-				\OCP\Util::writeLog('files_versions', 'Backends provided no user object for ' . $uid, \OCP\Util::ERROR);
-				throw new \OC\User\NoUserException('Backends provided no user object for ' . $uid);
-			}
 			$softQuota = true;
 			$quota = $user->getQuota();
 			if ( $quota === null || $quota === 'none' ) {
