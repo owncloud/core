@@ -21,7 +21,7 @@
 		'</div>' +
 		'	<div class="file-details ellipsis">' +
 		'		<a href="#" class="action action-favorite favorite permanent">' +
-		'			<span alt="{{starAltText}}" class="icon {{starClass}}"></span>' +
+		'			<span title="{{starAltText}}" class="icon {{starClass}}"></span>' +
 		'		</a>' +
 		'		{{#if hasSize}}<span class="size" title="{{altSize}}">{{size}}</span>, {{/if}}<span class="date" title="{{altDate}}">{{date}}</span>' +
 		'	</div>' +
