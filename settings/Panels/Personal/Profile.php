@@ -48,7 +48,7 @@ class Profile implements IPanel {
     }
 
     public function getPriority() {
-        return 0;
+        return 100;
     }
 
     public function getPanel() {

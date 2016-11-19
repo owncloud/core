@@ -32,7 +32,7 @@ class Quota implements IPanel {
 	}
 
     public function getPriority() {
-        return 100;
+        return 105;
     }
 
     public function getPanel() {

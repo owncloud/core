@@ -13,5 +13,6 @@
     </dependencies>
     <settings>
         <admin>OCA\FederatedFileSharing\AdminPanel</admin>
+		<personal>OCA\FederatedFileSharing\PersonalPanel</personal>
     </settings>
 </info>
