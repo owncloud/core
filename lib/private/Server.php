@@ -116,7 +116,8 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getLogger(),
 				$c->getGroupManager(),
 				$c->getConfig(),
-				new \OCP\Defaults()
+				new \OCP\Defaults(),
+				$c->getURLGenerator()
 			);
 		});
 

@@ -23,16 +23,35 @@ namespace OC\Settings\Panels\Admin;
 
 use OCP\Settings\IPanel;
 use OCP\Template;
+use OCP\IConfig;
+use OCP\IURLGenerator;
 
 class Certificates implements IPanel {
+
+	/** @var IConfig */
+	protected $config;
+
+	public function __construct(IConfig $config, IURLGenerator $urlGenerator) {
+		$this->config = $config;
+		$this->urlGenerator = $urlGenerator;
+	}
 
     public function getPriority() {
         return 0;
     }
 
     public function getPanel() {
-        $tmpl = new Template('settings', 'panels/admin/certificates');
-        return $tmpl;
+		if ($this->config->getSystemValue('enable_certificate_management', false)) {
+			$certificateManager = \OC::$server->getCertificateManager(null);
+			$tmpl = new Template('settings', 'panels/admin/certificates');
+			$tmpl->assign('type', 'admin');
+			$tmpl->assign('uploadRoute', 'settings.Certificate.addSystemRootCertificate');
+			$tmpl->assign('certs', $certificateManager->listCertificates());
+			$tmpl->assign('urlGenerator', $this->urlGenerator);
+	        return $tmpl;
+		} else {
+			return null;
+		}
     }
 
     public function getSectionID() {

@@ -1,5 +1,5 @@
 <div class="section">
-	<h2 class="app-name"><?php p($l->t('Cron'));?></h2>
+	<h2 class="app-name has-documentation"><?php p($l->t('Cron'));?></h2>
 	<?php if ($_['cron_log']): ?>
 	<p class="cronlog inlineblock">
 		<?php if ($_['lastcron'] !== false):
