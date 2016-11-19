@@ -74,11 +74,11 @@ class ResourceLocatorTest extends \Test\TestCase {
 		$locator->find(['foo']);
 	}
 
-	public function testAppendIfExist() {
+	public function testAppendOnceIfExist() {
 		$locator = $this->getResourceLocator('theme',
 			[__DIR__=>'map'], ['3rd'=>'party'], ['foo'=>'bar']);
 		/** @var \OC\Template\ResourceLocator $locator */
-		$method = new \ReflectionMethod($locator, 'appendIfExist');
+		$method = new \ReflectionMethod($locator, 'appendOnceIfExist');
 		$method->setAccessible(true);
 
 		$method->invoke($locator, __DIR__, basename(__FILE__), 'webroot');
@@ -86,10 +86,9 @@ class ResourceLocatorTest extends \Test\TestCase {
 		$this->assertEquals([$resource1], $locator->getResources());
 
 		$method->invoke($locator, __DIR__, basename(__FILE__));
-		$resource2 = [__DIR__, 'map', basename(__FILE__)];
-		$this->assertEquals([$resource1, $resource2], $locator->getResources());
+		$this->assertEquals([$resource1], $locator->getResources());
 
 		$method->invoke($locator, __DIR__, 'does-not-exist');
-		$this->assertEquals([$resource1, $resource2], $locator->getResources());
+		$this->assertEquals([$resource1], $locator->getResources());
 	}
 }

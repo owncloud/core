@@ -95,15 +95,15 @@ abstract class ResourceLocator {
 	}
 
 	/**
-	 * append the $file resource if exist at $root
+	 * append the $file resource once if exist at $root
 	 *
 	 * @param string $root path to check
 	 * @param string $file the filename
 	 * @param string|null $webRoot base for path, default map $root to $webRoot
 	 * @return bool True if the resource was found, false otherwise
 	 */
-	protected function appendIfExist($root, $file, $webRoot = null) {
-		if (is_file($root.'/'.$file)) {
+	protected function appendOnceIfExist($root, $file, $webRoot = null) {
+		if (!$this->contains($root, $file) && is_file($root.'/'.$file)) {
 			$this->append($root, $file, $webRoot, false);
 			return true;
 		}
@@ -128,6 +128,26 @@ abstract class ResourceLocator {
 		if ($throw && !is_file($root . '/' . $file)) {
 			throw new ResourceNotFoundException($file, $webRoot);
 		}
+	}
+	
+	/**
+	 * check if resource is already in $this->resources
+	 *
+	 * @param string $root path to check
+	 * @param string $file the filename
+	 * @return bool True if the resource is already in $this->resource, false otherwise
+	 */
+	protected function contains($root, $file) {
+		$isInList = false;
+		
+		foreach ($this->resources as $resource) {
+			if ($resource[0] . '/' . $resource[2] == $root . '/'. $file) {
+				$isInList = true;
+				break;
+			}
+		}
+		
+		return $isInList;
 	}
 
 	/**

@@ -30,9 +30,9 @@ class CSSResourceLocator extends ResourceLocator {
 	 */
 	public function doFind($style) {
 		if (strpos($style, '3rdparty') === 0
-			&& $this->appendIfExist($this->thirdpartyroot, $style.'.css')
-			|| $this->appendIfExist($this->serverroot, $style.'.css')
-			|| $this->appendIfExist($this->serverroot, 'core/'.$style.'.css')
+			&& $this->appendOnceIfExist($this->thirdpartyroot, $style.'.css')
+			|| $this->appendOnceIfExist($this->serverroot, $style.'.css')
+			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$style.'.css')
 		) {
 			return;
 		}
@@ -40,7 +40,7 @@ class CSSResourceLocator extends ResourceLocator {
 		$style = substr($style, strpos($style, '/')+1);
 		$app_path = \OC_App::getAppPath($app);
 		$app_url = \OC_App::getAppWebPath($app);
-		$this->append($app_path, $style.'.css', $app_url);
+		$this->appendOnceIfExist($app_path, $style.'.css', $app_url);
 	}
 
 	/**
@@ -49,8 +49,8 @@ class CSSResourceLocator extends ResourceLocator {
 	public function doFindTheme($style) {
 		$themeDirectory = $this->theme->getDirectory();
 
-		$this->appendIfExist($this->serverroot, $themeDirectory.'apps/'.$style.'.css')
-			|| $this->appendIfExist($this->serverroot, $themeDirectory.$style.'.css')
-			|| $this->appendIfExist($this->serverroot, $themeDirectory.'core/'.$style.'.css');
+		$this->appendOnceIfExist($this->serverroot, $themeDirectory.'apps/'.$style.'.css')
+			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory.$style.'.css')
+			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory.'core/'.$style.'.css');
 	}
 }
