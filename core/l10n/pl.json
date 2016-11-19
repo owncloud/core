@@ -276,7 +276,6 @@
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Dla Twojego konta uruchomiono wzmocnioną ochronę. Uwierzytelnij przy pomocy drugiego składnika.",
     "Cancel login" : "Anuluj logowanie",
     "Please authenticate using the selected factor." : "Uwierzytelnij przy pomocy wybranego składnika",
-    "An error occured while verifying the token" : "Wystąpił błąd podczas weryfikacji tokena",
     "You are accessing the server from an untrusted domain." : "Dostajesz się do serwera z niezaufanej domeny.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "W zależności od konfiguracji, jako administrator możesz także użyć poniższego przycisku aby zaufać tej domenie.",
     "Add \"%s\" as trusted domain" : "Dodaj \"%s\" jako domenę zaufaną",

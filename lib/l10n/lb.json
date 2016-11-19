@@ -25,7 +25,6 @@
     "Users" : "Benotzer",
     "Admin" : "Admin",
     "web services under your control" : "Web-Servicer ënnert denger Kontroll",
-    "Authentication error" : "Authentifikatioun's Fehler",
-    "Data directory (%s) is invalid" : "Daten-Dossier (%s) ass ongëlteg"
+    "Authentication error" : "Authentifikatioun's Fehler"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

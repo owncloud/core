@@ -300,7 +300,6 @@
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "您的帐户已启用增强安全性，请使用第二因子验证。",
     "Cancel login" : "取消登录",
     "Please authenticate using the selected factor." : "请使用所选择的因素验证。",
-    "An error occured while verifying the token" : "在验证令牌时出错",
     "You are accessing the server from an untrusted domain." : "您正在访问来自不信任域名的服务器。",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "请联系你的系统管理员。如果你是系统管理员，配置 config/config.php 文件中参数 \"trusted_domain\" 设置。可以在 config/config.sample.php 文件中找到例子。",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "基于你的配置，作为系统管理员，你可能还能点击下面的按钮来信任这个域。",

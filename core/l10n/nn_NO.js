@@ -290,7 +290,6 @@ OC.L10N.register(
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Forbetra sikkerheit er tilgjengeleg for din konto. Ver venleg å autentiser ved å bruke to-faktor pålogging.",
     "Cancel login" : "Avbryta pålogging",
     "Please authenticate using the selected factor." : "Ver venleg å autentiser med vald faktor.",
-    "An error occured while verifying the token" : "Feil ved verifikasjon av symbol.",
     "You are accessing the server from an untrusted domain." : "Du når denne tenaren frå eit domene som ikkje er klarert.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Kontakt din administrator. Hvis du er administrator for denne tenaren, konfigurer \"trusted_domains\" setting i config/config.php. Eksempel finst i config/config.sample.php.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "AVhengig av oppsett kan du som administrator bruke knappen nedanfor for å stole på dette domenet.",
