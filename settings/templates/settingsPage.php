@@ -24,7 +24,15 @@ if($_['type'] === 'admin') {
 <div id="app-navigation">
 	<ul>
 	<?php foreach($_['nav'] as $item) {
-		print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($item['link']), \OCP\Util::sanitizeHTML($item['name'])));
+		$active = $item['active'] ? 'class="active"' : '';
+		print_unescaped(
+			sprintf(
+				"<li><a %shref='%s'>%s</a></li>",
+				$active,
+				\OCP\Util::sanitizeHTML($item['link']),
+				\OCP\Util::sanitizeHTML($item['name'])
+			)
+		);
 	}?>
 	</ul>
 </div>
