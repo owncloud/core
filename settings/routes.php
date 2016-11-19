@@ -38,32 +38,32 @@ $application->registerRoutes($this, [
 	'resources' => [
 		'groups' => ['url' => '/settings/users/groups'],
 		'users' => ['url' => '/settings/users/users'],
-		'AuthSettings' => ['url' => '/settings/personal/authtokens'],
+		'AuthSettings' => ['url' => '/settings/personal/ajax/authtokens'],
 	],
 	'routes' => [
 		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal/{sectionid}', 'verb' => 'GET', 'defaults' => ['sectionid' => 'general']],
 		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin/{sectionid}', 'verb' => 'GET', 'defaults' => ['sectionid' => 'general']],
-		['name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/mailsettings', 'verb' => 'POST'],
-		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
-		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
-		['name' => 'Encryption#startMigration', 'url' => '/settings/admin/startmigration', 'verb' => 'POST'],
+		['name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/ajax/mailsettings', 'verb' => 'POST'],
+		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/ajax/mailsettings/credentials', 'verb' => 'POST'],
+		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/ajax/mailtest', 'verb' => 'POST'],
+		['name' => 'Encryption#startMigration', 'url' => '/settings/admin/ajax/startmigration', 'verb' => 'POST'],
 		['name' => 'AppSettings#listCategories', 'url' => '/settings/apps/categories', 'verb' => 'GET'],
 		['name' => 'AppSettings#viewApps', 'url' => '/settings/apps', 'verb' => 'GET'],
 		['name' => 'AppSettings#listApps', 'url' => '/settings/apps/list', 'verb' => 'GET'],
 		['name' => 'AppSettings#changeExperimentalConfigState', 'url' => '/settings/apps/experimental', 'verb' => 'POST'],
-		['name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/security/trustedDomains', 'verb' => 'POST'],
+		['name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/ajax/security/trustedDomains', 'verb' => 'POST'],
 		['name' => 'Users#setDisplayName', 'url' => '/settings/users/{username}/displayName', 'verb' => 'POST'],
 		['name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'],
 		['name' => 'Users#stats', 'url' => '/settings/users/stats', 'verb' => 'GET'],
-		['name' => 'LogSettings#setLogLevel', 'url' => '/settings/admin/log/level', 'verb' => 'POST'],
-		['name' => 'LogSettings#download', 'url' => '/settings/admin/log/download', 'verb' => 'GET'],
-		['name' => 'CheckSetup#check', 'url' => '/settings/ajax/checksetup', 'verb' => 'GET'],
-		['name' => 'CheckSetup#getFailedIntegrityCheckFiles', 'url' => '/settings/integrity/failed', 'verb' => 'GET'],
-		['name' => 'CheckSetup#rescanFailedIntegrityCheck', 'url' => '/settings/integrity/rescan', 'verb' => 'GET'],
-		['name' => 'Certificate#addPersonalRootCertificate', 'url' => '/settings/personal/certificate', 'verb' => 'POST'],
-		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
-		['name' => 'Certificate#addSystemRootCertificate', 'url' => '/settings/admin/certificate', 'verb' => 'POST'],
-		['name' => 'Certificate#removeSystemRootCertificate', 'url' => '/settings/admin/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+		['name' => 'LogSettings#setLogLevel', 'url' => '/settings/admin/ajax/log/level', 'verb' => 'POST'],
+		['name' => 'LogSettings#download', 'url' => '/settings/admin/ajax/log/download', 'verb' => 'GET'],
+		['name' => 'CheckSetup#check', 'url' => '/settings/admin/ajax/checksetup', 'verb' => 'GET'],
+		['name' => 'CheckSetup#getFailedIntegrityCheckFiles', 'url' => '/settings/admin/ajax/integrity/failed', 'verb' => 'GET'],
+		['name' => 'CheckSetup#rescanFailedIntegrityCheck', 'url' => '/settings/admin/ajax/integrity/rescan', 'verb' => 'GET'],
+		['name' => 'Certificate#addPersonalRootCertificate', 'url' => '/settings/personal/ajax/certificate', 'verb' => 'POST'],
+		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/ajax/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+		['name' => 'Certificate#addSystemRootCertificate', 'url' => '/settings/admin/ajax/certificate', 'verb' => 'POST'],
+		['name' => 'Certificate#removeSystemRootCertificate', 'url' => '/settings/admin/ajax/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
 	]
 ]);
 
@@ -88,7 +88,7 @@ $this->create('settings_users_changepassword', '/settings/users/changepassword')
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
 	->actionInclude('settings/ajax/changegroupname.php');
 // personal
-$this->create('settings_personal_changepassword', '/settings/personal/changepassword')
+$this->create('settings_personal_changepassword', '/settings/personal/ajax/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
 $this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')

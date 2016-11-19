@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section" id="encryptionAPI">
 	<h2 class="app-name has-documentation"><?php p($l->t('Server-side encryption')); ?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info"
 		title="<?php p($l->t('Open documentation'));?>"

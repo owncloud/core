@@ -179,7 +179,7 @@
 			this._toggleAddingToken(true);
 
 			var deviceName = this._tokenName.val();
-			var creatingToken = $.ajax(OC.generateUrl('/settings/personal/authtokens'), {
+			var creatingToken = $.ajax(OC.generateUrl('/settings/personal/ajax/authtokens'), {
 				method: 'POST',
 				data: {
 					name: deviceName

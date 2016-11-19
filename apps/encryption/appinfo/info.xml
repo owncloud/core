@@ -33,5 +33,6 @@
 	</commands>
 	<settings>
 		<admin>OCA\Encryption\Panels\Admin</admin>
+		<personal>OCA\Encryption\Panels\Personal</personal>
 	</settings>
 </info>

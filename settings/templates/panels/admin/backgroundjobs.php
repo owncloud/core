@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section" id="backgroundjobs">
 	<h2 class="app-name has-documentation"><?php p($l->t('Cron'));?></h2>
 	<?php if ($_['cron_log']): ?>
 	<p class="cronlog inlineblock">

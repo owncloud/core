@@ -42,4 +42,10 @@ if($_['type'] === 'admin') {
             <?php print_unescaped($panel['content']); ?>
         </div>
     <?php } ?>
+	<?php if(empty($_['panles'])) { ?>
+		<div class="section">
+			<h2><?php p($l->t('Error')); ?></h2>
+			<p><?php p($l->t('No panels for this section.')); ?></p>
+		</div>
+	<?php } ?>
 </div>
