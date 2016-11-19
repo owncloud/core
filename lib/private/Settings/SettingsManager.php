@@ -42,6 +42,7 @@ use OC\Settings\Panels\Admin\Legacy as LegacyAdmin;
 use OC\Settings\Panels\Personal\Clients;
 use OC\Settings\Panels\Personal\Version;
 use OC\Settings\Panels\Personal\AppPasswords;
+use OC\Settings\Panels\Personal\Quota;
 use OC\Settings\Panels\Admin\BackgroundJobs;
 use OC\Settings\Panels\Admin\Certificates;
 use OC\Settings\Panels\Admin\Encryption;
@@ -180,26 +181,27 @@ class SettingsManager implements ISettingsManager {
      */
     private function getBuiltInPanels() {
         return [
-            'personal' => [
-                Profile::class,
-                Clients::class,
-                LegacyPersonal::class,
-                Version::class,
-                AppPasswords::class,
-            ],
-            'admin' => [
-                LegacyAdmin::class,
-                Updater::class,
-                BackgroundJobs::class,
-                Logging::class,
-                Tips::class,
-                SecurityWarning::class,
-                Mail::class,
-                FileSharing::class,
-                Encryption::class,
-                Certificates::class,
+			'personal' => [
+				Profile::class,
+				Clients::class,
+				LegacyPersonal::class,
+				Version::class,
+				AppPasswords::class,
+				Quota::class,
+			],
+			'admin' => [
+				LegacyAdmin::class,
+				Updater::class,
+				BackgroundJobs::class,
+				Logging::class,
+				Tips::class,
+				SecurityWarning::class,
+				Mail::class,
+				FileSharing::class,
+				Encryption::class,
+				Certificates::class,
 				Apps::class
-            ]
+			]
         ];
     }
 
@@ -215,6 +217,7 @@ class SettingsManager implements ISettingsManager {
             Clients::class => new Clients($this->config, $this->defaults),
             Version::class => new Version(),
             AppPasswords::class => new AppPasswords(),
+            Quota::class => new Quota($this->config),
             // Admin
             BackgroundJobs::class => new BackgroundJobs($this->config),
             Certificates::class => new Certificates($this->config, $this->urlGenerator),
