@@ -163,7 +163,7 @@ $(document).ready(function () {
 			$('#passwordchanged').hide();
 			$('#passworderror').hide();
 			// Ajax foo
-			$.post(OC.generateUrl('/settings/personal/changepassword'), post, function (data) {
+			$.post(OC.generateUrl('/settings/personal/ajax/changepassword'), post, function (data) {
 				if (data.status === "success") {
 					$('#pass1').val('');
 					$('#pass2').val('').change();
