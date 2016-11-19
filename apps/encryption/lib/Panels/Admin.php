@@ -2,7 +2,7 @@
 
 namespace OCA\Encryption\Panels;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\Util;
@@ -14,7 +14,7 @@ use OCP\IUserManager;
 use OCP\ISession;
 use OCP\IUserSession;
 
-class Admin implements IPanel {
+class Admin implements ISettings {
 
     protected $config;
 

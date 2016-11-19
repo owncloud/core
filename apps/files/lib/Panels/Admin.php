@@ -2,11 +2,11 @@
 
 namespace OCA\Files\Panels;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IURLGenerator;
 
-class Admin implements IPanel {
+class Admin implements ISettings {
 
 	public function __construct(IURLGenerator $urlGenerator) {
 		$this->urlGenerator = $urlGenerator;

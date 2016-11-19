@@ -21,10 +21,10 @@
 
 namespace OC\Settings\Panels\Personal;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 
-class AppPasswords implements IPanel {
+class AppPasswords implements ISettings {
 
     public function getPriority() {
         return 0;

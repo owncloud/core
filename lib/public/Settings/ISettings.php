@@ -30,7 +30,7 @@ use OCP\Template;
  * in the personal and admin settings pages
  * @since 9.2
  */
-interface IPanel {
+interface ISettings {
 
   /**
    * The panel controller method that returns a template to the UI

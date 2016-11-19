@@ -2,11 +2,11 @@
 
 namespace OCA\Files_External\Panels;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use \OCA\Files_External\Service\BackendService;
 
-class Personal implements IPanel {
+class Personal implements ISettings {
 
     public function getPriority() {
         return 0;

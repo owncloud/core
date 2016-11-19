@@ -33,9 +33,9 @@ use OCP\IDateTimeFormatter;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 
-class AdminController extends Controller implements IPanel {
+class AdminController extends Controller implements ISettings {
 	/** @var IJobList */
 	private $jobList;
 	/** @var ISecureRandom */

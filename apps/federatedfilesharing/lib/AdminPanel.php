@@ -2,11 +2,11 @@
 
 namespace OCA\FederatedFileSharing;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCA\FederatedFileSharing\AppInfo\Application;
 
-class AdminPanel implements IPanel {
+class AdminPanel implements ISettings {
 
     public function getPriority() {
         return 0;

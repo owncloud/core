@@ -26,7 +26,7 @@ use OCP\IUser;
 use OCP\Settings\ISettingsManager;
 use OCP\Settings\ISection;
 use OC\App\AppManager;
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\ILogger;
 use OCP\IL10N;
 use OCP\IUserSession;
@@ -74,7 +74,7 @@ class SettingsManager implements ISettingsManager {
 	protected $urlGenerator;
 
     /**
-     * Holds a cache of IPanels with keys for type
+     * Holds a cache of ISettingss with keys for type
      */
     protected $panels = [];
 
@@ -121,7 +121,7 @@ class SettingsManager implements ISettingsManager {
     }
 
     /**
-     * Returns IPanels for the personal settings in the given section
+     * Returns ISettingss for the personal settings in the given section
      * @param string $sectionID
      * @return array of ISection
      */
@@ -136,7 +136,7 @@ class SettingsManager implements ISettingsManager {
     }
 
     /**
-     * Returns IPanels for the admin settings in the given section
+     * Returns ISettingss for the admin settings in the given section
      * @param string $sectionID
      * @return array of ISection
      */
@@ -266,19 +266,19 @@ class SettingsManager implements ISettingsManager {
     }
 
     /**
-     * Attempts to load a IPanel using the class name
+     * Attempts to load a ISettings using the class name
      * @param string $className
      * @throws QueryException
-     * @return IPanel
+     * @return ISettings
      */
     protected function loadPanel($className) {
         try {
             if(!$panel = $this->getBuiltInPanel($className)) {
                 $panel = \OC::$server->query($className);
             }
-            if(!$panel instanceof IPanel) {
+            if(!$panel instanceof ISettings) {
                 $this->log->error(
-                    'Class: {class} not an instance of OCP\Settings\IPanel',
+                    'Class: {class} not an instance of OCP\Settings\ISettings',
                     ['class' => $className]);
             } else {
                 return $panel;
@@ -292,9 +292,9 @@ class SettingsManager implements ISettingsManager {
     }
 
     /**
-     * Find and return IPanels for the given type
+     * Find and return ISettingss for the given type
      * @param string $type of panels to load
-     * @return array of IPanels
+     * @return array of ISettingss
      */
     public function loadPanels($type) {
         // If already loaded just return
@@ -348,14 +348,14 @@ class SettingsManager implements ISettingsManager {
     }
 
     /**
-     * Sort the array of IPanels or ISections by their priority attribute
-     * @param array $objects (ISections of IPanels)
+     * Sort the array of ISettingss or ISections by their priority attribute
+     * @param array $objects (ISections of ISettingss)
      * @return array
      */
     protected function sortOrder($objects) {
         usort($objects, function($a, $b) {
-			/** @var ISection | IPanel $a */
-			/** @var ISection | IPanel $b */
+			/** @var ISection | ISettings $a */
+			/** @var ISection | ISettings $b */
             return $a->getPriority() < $b->getPriority();
         });
         return $objects;

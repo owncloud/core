@@ -21,12 +21,12 @@
 
 namespace OC\Settings\Panels\Admin;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
 use OCP\IURLGenerator;
 
-class Logging implements IPanel {
+class Logging implements ISettings {
 
 	protected $config, $urlGenerator;
 
