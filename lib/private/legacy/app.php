@@ -492,7 +492,7 @@ class OC_App {
 				$settings[] = [
 					"id" => "admin",
 					"order" => 1000,
-					"href" => $urlGenerator->linkToRoute('settings_admin'),
+					"href" => $urlGenerator->linkToRoute('settings.SettingsPage.getAdmin'),
 					"name" => $l->t("Admin"),
 					"icon" => $urlGenerator->imagePath("settings", "admin.svg")
 				];
@@ -769,6 +769,7 @@ class OC_App {
 	 *
 	 * @param string $app
 	 * @param string $page
+	 * @deprecated Register settings panels in info.xml
 	 */
 	public static function registerAdmin($app, $page) {
 		self::$adminForms[] = [
@@ -781,6 +782,7 @@ class OC_App {
 	 * register a personal form to be shown
 	 * @param string $app
 	 * @param string $page
+	 * @deprecated Register settings panels in info.xml
 	 */
 	public static function registerPersonal($app, $page) {
 		self::$personalForms[] = [
