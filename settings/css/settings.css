@@ -367,7 +367,13 @@ span.version {
 }
 .section h2.app-name {
 	margin-bottom: 8px;
+	display: inline-block;
 }
+
+.section ul {
+	margin-left: 20px;
+}
+
 .app-image {
 	float: left;
 	padding-right: 10px;

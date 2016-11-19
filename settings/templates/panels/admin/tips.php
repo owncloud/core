@@ -6,7 +6,7 @@
  */
 ?>
 <div id="admin-tips" class="section">
-	<h2><?php p($l->t('Tips & tricks'));?></h2>
+	<h2 class="app-name"><?php p($l->t('Tips & tricks'));?></h2>
 	<ul>
 		<?php
 		// SQLite database performance issue

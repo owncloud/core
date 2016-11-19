@@ -9,7 +9,7 @@ if ($_['enableAvatars']) {
 ?>
 <?php if ($_['enableAvatars']): ?>
 <form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">
-	<h2><?php p($l->t('Profile picture')); ?></h2>
+	<h2 class="app-name"><?php p($l->t('Profile picture')); ?></h2>
 	<div id="displayavatar">
 		<div class="avatardiv"></div>
 		<div class="warning hidden"></div>
