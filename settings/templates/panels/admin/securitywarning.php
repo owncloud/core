@@ -6,7 +6,7 @@
  */
 ?>
 <div id="security-warning" class="section">
-	<h2><?php p($l->t('Security & setup warnings'));?></h2>
+	<h2 class="app-name"><?php p($l->t('Security & setup warnings'));?></h2>
 	<ul>
 	<?php
 	// is php setup properly to query system environment variables like getenv('PATH')

@@ -161,9 +161,9 @@ class SettingsManager implements ISettingsManager {
             ];
         } else if($type === 'personal') {
             return [
-                new Section('general', $this->l->t('General'), 0),
-                new Section('security', $this->l->t('Security'), 1),
-                new Section('additional', $this->l->t('Additional'), 2),
+                new Section('general', $this->l->t('General'), 100),
+                new Section('security', $this->l->t('Security'), 50),
+                new Section('additional', $this->l->t('Additional'), 5),
             ];
         }
     }

@@ -6,7 +6,7 @@
  */
 ?>
 <div class="section">
-	<h2><?php p($l->t('Log'));?></h2>
+	<h2 class="app-name"><?php p($l->t('Log'));?></h2>
 	<?php if ($_['showLog'] && $_['doesLogFileExist']): ?>
 		<p><?php p($l->t('What to log'));?> <select name='loglevel' id='loglevel'>
 		<?php for ($i = 0; $i < 5; $i++):

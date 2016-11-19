@@ -1,6 +1,6 @@
 <div class="section">
 	<form id="mail_general_settings_form" class="mail_settings">
-		<h2><?php p($l->t('Email server'));?></h2>
+		<h2 class="app-name"><?php p($l->t('Email server'));?></h2>
 		<a target="_blank" rel="noreferrer" class="icon-info"
 			title="<?php p($l->t('Open documentation'));?>"
 			href="<?php p(link_to_docs('admin-email')); ?>"></a>

@@ -1,5 +1,5 @@
 <div id="clientsbox" class="section clientsbox">
-	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
+	<h2 class="app-name"><?php p($l->t('Get the apps to sync your files'));?></h2>
 	<a href="<?php p($_['clients']['desktop']); ?>" rel="noreferrer" target="_blank">
 		<img src="<?php print_unescaped(image_path('core', 'desktopapp.svg')); ?>"
 		alt="<?php p($l->t('Desktop client'));?>" />

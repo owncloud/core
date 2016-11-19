@@ -5,7 +5,7 @@ script('settings', 'panels/authtoken_collection');
 script('settings', 'panels/authtoken_view');
 ?>
 <div id="apppasswords" class="section">
-	<h2><?php p($l->t('App passwords'));?></h2>
+	<h2 class="app-name"><?php p($l->t('App passwords'));?></h2>
 	<span class="hidden-when-empty"><?php p($l->t("You've linked these apps."));?></span>
 	<table>
 		<thead class="hidden-when-empty">

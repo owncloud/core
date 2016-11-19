@@ -27,7 +27,7 @@ script(
  */
 ?>
 <div class="section">
-<h2><?php p($l->t('Apps Management'));?></h2>
+<h2 class="app-name"><?php p($l->t('Apps Management'));?></h2>
 <script id="categories-template" type="text/x-handlebars-template">
 	{{#each this}}
 	<li id="app-category-{{ident}}" data-category-id="{{ident}}" tabindex="0">
