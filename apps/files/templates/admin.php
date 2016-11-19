@@ -1,6 +1,6 @@
 <?php script('files', 'admin'); ?>
 
-<form name="filesForm" class="section" action="#" method="post">
+<form name="filesForm" class="section" action="<?php p($_['urlGenerator']->linkToRoute('settings.SettingsPage.getAdmin', ['sectionid' => 'general'])); ?>" method="post">
 	<h2><?php p($l->t('File handling')); ?></h2>
 	<label for="maxUploadSize"><?php p($l->t( 'Maximum upload size' )); ?> </label>
 	<input type="text" name='maxUploadSize' id="maxUploadSize" value='<?php p($_['uploadMaxFilesize']) ?>' <?php if(!$_['uploadChangable']) { p('disabled'); } ?> />

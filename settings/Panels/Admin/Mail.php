@@ -23,16 +23,34 @@ namespace OC\Settings\Panels\Admin;
 
 use OCP\Settings\IPanel;
 use OCP\Template;
+use OCP\IConfig;
 
 class Mail implements IPanel {
+
+	public function __construct(IConfig $config) {
+		$this->config = $config;
+	}
 
     public function getPriority() {
         return 0;
     }
 
     public function getPanel() {
-        $tmpl = new Template('settings', 'panels/admin/mail');
-        return $tmpl;
+		$template = new Template('settings', 'panels/admin/mail');
+		// Should we display sendmail as an option?
+		$template->assign('sendmail_is_available', (bool) \OC_Helper::findBinaryPath('sendmail'));
+		$template->assign('loglevel', $this->config->getSystemValue("loglevel", 2));
+		$template->assign('mail_domain', $this->config->getSystemValue("mail_domain", ''));
+		$template->assign('mail_from_address', $this->config->getSystemValue("mail_from_address", ''));
+		$template->assign('mail_smtpmode', $this->config->getSystemValue("mail_smtpmode", ''));
+		$template->assign('mail_smtpsecure', $this->config->getSystemValue("mail_smtpsecure", ''));
+		$template->assign('mail_smtphost', $this->config->getSystemValue("mail_smtphost", ''));
+		$template->assign('mail_smtpport', $this->config->getSystemValue("mail_smtpport", ''));
+		$template->assign('mail_smtpauthtype', $this->config->getSystemValue("mail_smtpauthtype", ''));
+		$template->assign('mail_smtpauth', $this->config->getSystemValue("mail_smtpauth", false));
+		$template->assign('mail_smtpname', $this->config->getSystemValue("mail_smtpname", ''));
+		$template->assign('mail_smtppassword', $this->config->getSystemValue("mail_smtppassword", ''));
+        return $template;
     }
 
     public function getSectionID() {

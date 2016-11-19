@@ -1,4 +1,26 @@
-<div class="section">
+<?php
+$mail_smtpauthtype = [
+	''	=> $l->t('None'),
+	'LOGIN'	=> $l->t('Login'),
+	'PLAIN'	=> $l->t('Plain'),
+	'NTLM'	=> $l->t('NT LAN Manager'),
+];
+$mail_smtpsecure = [
+	''		=> $l->t('None'),
+	'ssl'	=> $l->t('SSL/TLS'),
+	'tls'	=> $l->t('STARTTLS'),
+];
+$mail_smtpmode = [
+	'php',
+	'smtp',
+];
+if ($_['sendmail_is_available']) {
+	$mail_smtpmode[] = 'sendmail';
+}
+if ($_['mail_smtpmode'] == 'qmail') {
+	$mail_smtpmode[] = 'qmail';
+}
+?><div class="section">
 	<form id="mail_general_settings_form" class="mail_settings">
 		<h2 class="app-name has-documentation"><?php p($l->t('Email server'));?></h2>
 		<a target="_blank" rel="noreferrer" class="icon-info"
