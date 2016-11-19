@@ -21,11 +21,11 @@
 
 namespace OC\Settings\Panels\Admin;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
 
-class BackgroundJobs implements IPanel {
+class BackgroundJobs implements ISettings {
 
 	protected $config;
 

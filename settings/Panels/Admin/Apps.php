@@ -21,10 +21,10 @@
 
 namespace OC\Settings\Panels\Admin;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 
-class Apps implements IPanel {
+class Apps implements ISettings {
 
     public function getPriority() {
         return 0;

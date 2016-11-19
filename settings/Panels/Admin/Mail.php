@@ -21,11 +21,11 @@
 
 namespace OC\Settings\Panels\Admin;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
 
-class Mail implements IPanel {
+class Mail implements ISettings {
 
 	public function __construct(IConfig $config) {
 		$this->config = $config;

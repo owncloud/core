@@ -21,14 +21,14 @@
 
 namespace OC\Settings\Panels\Personal;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IUser;
 use OCP\IGroupManager;
 use OCP\IUserSession;
 use OCP\IConfig;
 
-class Profile implements IPanel {
+class Profile implements ISettings {
 
     /* @var Config */
     protected $config;

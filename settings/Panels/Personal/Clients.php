@@ -21,12 +21,12 @@
 
 namespace OC\Settings\Panels\Personal;
 
-use OCP\Settings\IPanel;
+use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
 use OCP\Defaults;
 
-class Clients implements IPanel {
+class Clients implements ISettings {
 
     /** @var OCP\IConfig */
     protected $config;
