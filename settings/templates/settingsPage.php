@@ -41,8 +41,11 @@ if($_['type'] === 'admin') {
         <div id="<?php print($panel['id']); ?>">
             <?php print_unescaped($panel['content']); ?>
         </div>
-    <?php } ?>
-	<?php if(empty($_['panles'])) { ?>
+	<?php }
+	$numPanels = count($_['panels']);
+	$firstPanel = $_['panels'][0];
+	$legacyClass = OC\Settings\Panels\Personal\Legacy::class;
+	if($numPanels === 1 && $firstPanel['id'] === $legacyClass && empty(trim($firstPanel['content']))) { ?>
 		<div class="section">
 			<h2><?php p($l->t('Error')); ?></h2>
 			<p><?php p($l->t('No panels for this section.')); ?></p>
