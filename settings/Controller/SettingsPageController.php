@@ -137,10 +137,12 @@ class SettingsPageController extends Controller {
 		$data = [];
 		foreach($panels as $panel) {
 			$template = $panel->getPanel();
-			$data[] = [
-				'id' => get_class($panel),
-				'content' => ($template instanceof Template) ? $template->fetchPage() : $template->render()
-			];
+			if($template instanceof Template || $template instanceof TemplateResponse) {
+				$data[] = [
+					'id' => get_class($panel),
+					'content' => ($template instanceof Template) ? $template->fetchPage() : $template->render()
+				];
+			}
 		}
 		return $data;
 	}

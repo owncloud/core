@@ -367,6 +367,9 @@ span.version {
 }
 .section h2.app-name {
 	margin-bottom: 8px;
+}
+
+.section h2.app-name.has-documentation {
 	display: inline-block;
 }
 
@@ -390,7 +393,6 @@ span.version {
 	padding: 10px;
 	border-radius: 3px;
 }
-.app-name,
 .app-version,
 .app-score,
 .app-level {

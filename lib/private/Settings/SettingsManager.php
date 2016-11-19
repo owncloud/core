@@ -34,6 +34,7 @@ use OCP\AppFramework\QueryException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\Defaults;
+use OCP\IURLGenerator;
 
 use OC\Settings\Panels\Personal\Profile;
 use OC\Settings\Panels\Personal\Legacy as LegacyPersonal;
@@ -68,6 +69,9 @@ class SettingsManager implements ISettingsManager {
     /** @var IUser */
     protected $user;
 
+	/** @var IURLGenerator */
+	protected $urlGenerator;
+
     /**
      * Holds a cache of IPanels with keys for type
      */
@@ -85,12 +89,13 @@ class SettingsManager implements ISettingsManager {
      * @param ILogger $logger
      */
     public function __construct(IL10N $l,
-                                AppManager $appManager,
-                                IUserSession $userSession,
-                                ILogger $logger,
-                                IGroupManager $groupManager,
-                                IConfig $config,
-                                Defaults $defaults) {
+								AppManager $appManager,
+								IUserSession $userSession,
+								ILogger $logger,
+								IGroupManager $groupManager,
+								IConfig $config,
+								Defaults $defaults,
+								IURLGenerator $urlGenerator) {
         $this->l = $l;
         $this->appManager = $appManager;
         $this->userSession = $userSession;
@@ -99,6 +104,7 @@ class SettingsManager implements ISettingsManager {
         $this->groupManager = $groupManager;
         $this->log = $logger;
         $this->defaults = $defaults;
+		$this->urlGenerator = $urlGenerator;
     }
 
     public function getPersonalSections() {
@@ -210,11 +216,11 @@ class SettingsManager implements ISettingsManager {
             Version::class => new Version(),
             AppPasswords::class => new AppPasswords(),
             // Admin
-            BackgroundJobs::class => new BackgroundJobs(),
-            Certificates::class => new Certificates(),
+            BackgroundJobs::class => new BackgroundJobs($this->config),
+            Certificates::class => new Certificates($this->config, $this->urlGenerator),
             Encryption::class => new Encryption(),
             FileSharing::class => new FileSharing(),
-            Logging::class => new Logging(),
+            Logging::class => new Logging($this->config, $this->urlGenerator),
             Mail::class => new Mail(),
             SecurityWarning::class => new SecurityWarning(),
             Tips::class => new Tips(),

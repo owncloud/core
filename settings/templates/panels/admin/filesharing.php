@@ -3,7 +3,7 @@
 /** @var array $_ */
 ?>
 <div id="shareAPI" class="section">
-	<h2 class="app-name"><?php p($l->t('Sharing'));?></h2>
+	<h2 class="app-name has-documentation"><?php p($l->t('Sharing'));?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info"
 		title="<?php p($l->t('Open documentation'));?>"
 		href="<?php p(link_to_docs('admin-sharing')); ?>"></a>

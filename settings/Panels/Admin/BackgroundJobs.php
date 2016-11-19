@@ -23,8 +23,15 @@ namespace OC\Settings\Panels\Admin;
 
 use OCP\Settings\IPanel;
 use OCP\Template;
+use OCP\IConfig;
 
 class BackgroundJobs implements IPanel {
+
+	protected $config;
+
+	public function __construct(IConfig $config) {
+		$this->config = $config;
+	}
 
     public function getPriority() {
         return 0;
@@ -32,6 +39,9 @@ class BackgroundJobs implements IPanel {
 
     public function getPanel() {
         $tmpl = new Template('settings', 'panels/admin/backgroundjobs');
+		$tmpl->assign('cron_log', $this->config->getSystemValue('cron_log', true));
+		$tmpl->assign('lastcron', $this->config->getAppValue('core', 'lastcron', false));
+		$tmpl->assign('backgroundjobs_mode', $this->config->getAppValue('core', 'backgroundjobs_mode', 'ajax'));
         return $tmpl;
     }
 
