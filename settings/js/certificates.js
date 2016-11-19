@@ -2,7 +2,7 @@ $(document).ready(function () {
 	var type = $('#sslCertificate').data('type');
 	$('#sslCertificate').on('click', 'td.remove', function () {
 		var row = $(this).parent();
-		$.ajax(OC.generateUrl('settings/' + type + '/ajax/certificate/{certificate}', {certificate: row.data('name')}), {
+		$.ajax(OC.generateUrl('settings/' + type + '/certificate/{certificate}', {certificate: row.data('name')}), {
 			type: 'DELETE'
 		});
 		row.remove();

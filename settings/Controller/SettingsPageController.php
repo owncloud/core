@@ -61,7 +61,7 @@ class SettingsPageController extends Controller {
 	 * @param string $sectionID
 	 * @return \OCP\TemplateResponse
 	 */
-	public function getPersonal($sectionid) {
+	public function getPersonal($sectionid='general') {
 		$this->currentSectionID = $sectionid;
 		return $this->createSettingsPage('personal');
 	}
@@ -72,7 +72,7 @@ class SettingsPageController extends Controller {
 	 * @param string $sectionID
 	 * @return TemplateResponse
 	 */
-	public function getAdmin($sectionid) {
+	public function getAdmin($sectionid='general') {
 		$this->currentSectionID = $sectionid;
 		return $this->createSettingsPage('admin');
 	}

@@ -9,7 +9,7 @@ $(document).ready(function(){
 				if(answer) {
 					$.ajax({
 						type: 'POST',
-						url: OC.generateUrl('settings/admin/ajax/security/trustedDomains'),
+						url: OC.generateUrl('settings/admin/security/trustedDomains'),
 						data: { newTrustedDomain: params.trustDomain }
 					}).done(function() {
 						window.location.replace(OC.generateUrl('settings/admin/security'));
@@ -30,7 +30,7 @@ $(document).ready(function(){
 
 
 	$('#loglevel').change(function(){
-		$.post(OC.generateUrl('/settings/admin/ajax/log/level'), {level: $(this).val()},function(){
+		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()},function(){
 			OC.Log.reload();
 		} );
 	});
@@ -70,7 +70,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		$('#startmigration').prop('disabled', true);
 		OC.msg.startAction('#startmigration_msg', t('settings', 'Migration started …'));
-		$.post(OC.generateUrl('/settings/admin/ajax/startmigration'), '', function(data){
+		$.post(OC.generateUrl('/settings/admin/startmigration'), '', function(data){
 			OC.msg.finishedAction('#startmigration_msg', data);
 			if (data['status'] === 'success') {
 				$('#encryptionAPI div#selectEncryptionModules').toggleClass('hidden');
@@ -140,7 +140,7 @@ $(document).ready(function(){
 	$('#mail_general_settings_form').change(function(){
 		OC.msg.startSaving('#mail_settings_msg');
 		var post = $( "#mail_general_settings_form" ).serialize();
-		$.post(OC.generateUrl('/settings/admin/ajax/mailsettings'), post, function(data){
+		$.post(OC.generateUrl('/settings/admin/mailsettings'), post, function(data){
 			OC.msg.finishedSaving('#mail_settings_msg', data);
 		});
 	});
@@ -148,7 +148,7 @@ $(document).ready(function(){
 	$('#mail_credentials_settings_submit').click(function(){
 		OC.msg.startSaving('#mail_settings_msg');
 		var post = $( "#mail_credentials_settings" ).serialize();
-		$.post(OC.generateUrl('/settings/admin/ajax/mailsettings/credentials'), post, function(data){
+		$.post(OC.generateUrl('/settings/admin/mailsettings/credentials'), post, function(data){
 			OC.msg.finishedSaving('#mail_settings_msg', data);
 		});
 	});
@@ -156,7 +156,7 @@ $(document).ready(function(){
 	$('#sendtestemail').click(function(event){
 		event.preventDefault();
 		OC.msg.startAction('#sendtestmail_msg', t('settings', 'Sending...'));
-		$.post(OC.generateUrl('/settings/admin/ajax/mailtest'), '', function(data){
+		$.post(OC.generateUrl('/settings/admin/mailtest'), '', function(data){
 			OC.msg.finishedAction('#sendtestmail_msg', data);
 		});
 	});

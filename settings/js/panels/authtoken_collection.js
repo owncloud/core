@@ -44,7 +44,7 @@
 
 		tokenType: null,
 
-		url: OC.generateUrl('/settings/personal/ajax/authtokens')
+		url: OC.generateUrl('/settings/personal/authtokens')
 	});
 
 	OC.Settings.AuthTokenCollection = AuthTokenCollection;
