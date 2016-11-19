@@ -32,6 +32,23 @@ class Encryption implements IPanel {
 
     public function getPanel() {
         $tmpl = new Template('settings', 'panels/admin/encryption');
+		$tmpl->assign('encryptionEnabled', \OC::$server->getEncryptionManager()->isEnabled());
+		$tmpl->assign('encryptionReady', \OC::$server->getEncryptionManager()->isReady());
+		$encryptionModules = \OC::$server->getEncryptionManager()->getEncryptionModules();
+		$defaultEncryptionModuleId = \OC::$server->getEncryptionManager()->getDefaultEncryptionModuleId();
+		$encModulues = [];
+		foreach ($encryptionModules as $module) {
+			$encModulues[$module['id']]['displayName'] = $module['displayName'];
+			$encModulues[$module['id']]['default'] = false;
+			if ($module['id'] === $defaultEncryptionModuleId) {
+				$encModulues[$module['id']]['default'] = true;
+			}
+		}
+		$backends = \OC::$server->getUserManager()->getBackends();
+		$externalBackends = (count($backends) > 1) ? true : false;
+		$tmpl->assign('externalBackendsEnabled', $externalBackends);
+
+		$tmpl->assign('encryptionModules', $encModulues);
         return $tmpl;
     }
 

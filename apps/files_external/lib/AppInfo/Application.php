@@ -63,15 +63,6 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 	}
 
 	/**
-	 * Register settings templates
-	 */
-	public function registerSettings() {
-		$container = $this->getContainer();
-		$backendService = $container->query('OCA\\Files_External\\Service\\BackendService');
-		\OCP\App::registerPersonal('files_external', 'personal');
-	}
-
-	/**
 	 * @{inheritdoc}
 	 */
 	public function getBackends() {
