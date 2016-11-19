@@ -26,23 +26,34 @@ use OCP\Template;
 
 class FileSharing implements IPanel {
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getPanel() {
-		// TODO: inject
+	public function getPanel() {
 		$config = \OC::$server->getConfig();
 		$template = new Template('settings', 'panels/admin/filesharing');
+		$template->assign('allowResharing', $config->getAppValue('core', 'shareapi_allow_resharing', 'yes'));
 		$template->assign('shareAPIEnabled', $config->getAppValue('core', 'shareapi_enabled', 'yes'));
+		$template->assign('allowLinks', $config->getAppValue('core', 'shareapi_allow_links', 'yes'));
+		$template->assign('allowPublicUpload', $config->getAppValue('core', 'shareapi_allow_public_upload', 'yes'));
+		$template->assign('enableLinkPasswordByDefault', $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no'));
+		$template->assign('enforceLinkPassword', \OCP\Util::isPublicLinkPasswordRequired());
 		$template->assign('shareDefaultExpireDateSet', $config->getAppValue('core', 'shareapi_default_expire_date', 'no'));
+		$template->assign('allowPublicMailNotification', $config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));
+		$template->assign('allowSocialShare', $config->getAppValue('core', 'shareapi_allow_social_share', 'yes'));
+		$template->assign('allowGroupSharing', $config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes'));
+		$template->assign('onlyShareWithGroupMembers', \OC\Share\Share::shareWithGroupMembersOnly());
+		$template->assign('allowMailNotification', $config->getAppValue('core', 'shareapi_allow_mail_notification', 'no'));
+		$template->assign('allowShareDialogUserEnumeration', $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
+		$template->assign('shareExcludeGroups', $excludeGroups);
 		$template->assign('shareExpireAfterNDays', $config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
 		$template->assign('shareEnforceExpireDate', $config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
 		return $template;
-    }
+	}
 
-    public function getSectionID() {
-        return 'sharing';
-    }
+	public function getSectionID() {
+		return 'sharing';
+	}
 
 }
