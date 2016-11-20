@@ -303,6 +303,7 @@ OC.L10N.register(
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Siguria e zgjeruar është aktivizuar për llogarinë tuaj. Ju lutemi, bëni mirëfilltësimin duke përdorur një faktor të dytë.",
     "Cancel login" : "Anuloje hyrjen",
     "Please authenticate using the selected factor." : "Ju lutemi, bëni mirëfilltësimin duke përdorur faktorin e përzgjedhur.",
+    "An error occurred while verifying the token" : "Ndodhi një gabim gjatë verifikimit të token-it",
     "You are accessing the server from an untrusted domain." : "Po hyni në shërbyes nga një përkatësi jo e besuar.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Ju lutemi, lidhuni me përgjegjësin tuaj. Nëse jeni një përgjegjës në këtë instancë, formësoni rregullimin \"trusted_domains\" te config/config.php. Një formësim shembull jepet te config/config.sample.php.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Në varësi të formësimit tuaj, si administrator mundet gjithashtu të jeni në gjendje të përdorni butonin më poshtë për ta besuar këtë përkatësi.",

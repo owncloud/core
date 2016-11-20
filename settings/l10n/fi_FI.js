@@ -143,6 +143,7 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Salli sovellusten käyttää jakamisen ohjelmointirajapintaa",
     "Allow users to share via link" : "Salli käyttäjien jakaa linkkien kautta",
     "Allow public uploads" : "Salli julkiset lähetykset",
+    "Always ask for a password" : "Kysy aina salasanaa",
     "Enforce password protection" : "Pakota salasanasuojaus",
     "Set default expiration date" : "Aseta oletusvanhenemispäivä",
     "Allow users to send mail notification for shared files" : "Salli käyttäjien lähettää sähköposti-ilmoituksia jaetuista tiedostoista",
