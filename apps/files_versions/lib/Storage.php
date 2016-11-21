@@ -681,7 +681,10 @@ class Storage {
 	}
 
 	/**
-	 * Expire versions which exceed the quota
+	 * Expire versions which exceed the quota.
+	 *
+	 * This will setup the filesystem for the given user but will not
+	 * tear it down afterwards.
 	 *
 	 * @param string $filename path to file to expire
 	 * @param string $uid user for which to expire the version
