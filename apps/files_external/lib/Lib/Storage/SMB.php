@@ -43,11 +43,10 @@ use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
-use OC\Files\Storage\Common;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 
-class SMB extends Common {
+class SMB extends \OCP\Files\Storage\StorageAdapter {
 	/**
 	 * @var \Icewind\SMB\Server
 	 */

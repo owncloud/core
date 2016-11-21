@@ -42,7 +42,7 @@ set_include_path(get_include_path().PATH_SEPARATOR.
 	\OC_App::getAppPath('files_external').'/3rdparty/google-api-php-client/src');
 require_once 'Google/autoload.php';
 
-class Google extends \OC\Files\Storage\Common {
+class Google extends \OCP\Files\Storage\StorageAdapter {
 
 	private $client;
 	private $id;
