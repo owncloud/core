@@ -162,6 +162,10 @@ test-integration: $(composer_dev_deps)
 test-php-lint: $(composer_dev_deps)
 	$(composer_deps)/bin/parallel-lint --exclude lib/composer --exclude build .
 
+.PHONY: test-php-cs
+test-php-cs: $(composer_dev_deps)
+	$(composer_deps)/bin/php-cs-fixer fix . --dry-run --diff --level=psr0
+
 .PHONY: test
 test: test-php-lint test-php test-js test-integration
 

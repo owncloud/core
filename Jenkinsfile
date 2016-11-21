@@ -14,6 +14,12 @@ timestampedNode('SLAVE') {
             sh '''make test-js'''
         }
 
+    stage 'php-cs-fixer'
+        sh '''
+        phpenv local 7.1
+		make test-php-cs
+       	'''
+
     stage 'PHPUnit on 7.1'
         executeAndReport('tests/autotest-results-sqlite.xml') {
 	        sh '''
