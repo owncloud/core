@@ -109,18 +109,6 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 			}
 			$message = "HTTP/1.1 {$ex->getHTTPCode()} $message";
 		}
-
-		$user = \OC_User::getUser();
-
-		$exception = [
-			'Message' => $message,
-			'Exception' => $exceptionClass,
-			'Code' => $ex->getCode(),
-			'Trace' => $ex->getTraceAsString(),
-			'File' => $ex->getFile(),
-			'Line' => $ex->getLine(),
-			'User' => $user,
-		];
-		$this->logger->log($level, 'Exception: ' . json_encode($exception), ['app' => $this->appName]);
+		$this->logger->log($level, $message, ['app' => $this->appName, 'exception' => $ex]);
 	}
 }
