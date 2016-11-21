@@ -21,20 +21,19 @@
 
 namespace OCA\Files_External\Lib\Backend;
 
-use \OCP\IL10N;
-use \OCA\Files_External\Lib\Backend\Backend;
-use \OCA\Files_External\Lib\DefinitionParameter;
-use \OCA\Files_External\Lib\Auth\AuthMechanism;
-use \OCA\Files_External\Service\BackendService;
-use \OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
+use OCP\IL10N;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\DefinitionParameter;
+use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 
-use \OCA\Files_External\Lib\Auth\AmazonS3\AccessKey;
+use OCA\Files_External\Lib\Auth\AmazonS3\AccessKey;
 
 class AmazonS3 extends Backend {
 
 	use LegacyDependencyCheckPolyfill;
 
-	public function __construct(IL10N $l, AccessKey $legacyAuth) {
+	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('amazons3')
 			->addIdentifierAlias('\OC\Files\Storage\AmazonS3') // legacy compat
@@ -53,8 +52,7 @@ class AmazonS3 extends Backend {
 				(new DefinitionParameter('use_path_style', $l->t('Enable Path Style')))
 					->setType(DefinitionParameter::VALUE_BOOLEAN),
 			])
-			->addAuthScheme(AccessKey::SCHEME_AMAZONS3_ACCESSKEY)
-			->setLegacyAuthMechanism($legacyAuth)
+			->addAuthScheme(AccessKey::SCHEME_AMAZONS3_ACCESSKEY);
 		;
 	}
 

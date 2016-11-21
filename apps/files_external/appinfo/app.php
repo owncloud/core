@@ -46,5 +46,3 @@ $l = \OC::$server->getL10N('files_external');
 	"name" => $l->t('External storage')
 ]);
 
-$mountProvider = $appContainer->query('OCA\Files_External\Config\ConfigAdapter');
-\OC::$server->getMountProviderCollection()->registerProvider($mountProvider);

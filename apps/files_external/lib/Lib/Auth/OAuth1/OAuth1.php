@@ -21,9 +21,9 @@
 
 namespace OCA\Files_External\Lib\Auth\OAuth1;
 
-use \OCP\IL10N;
-use \OCA\Files_External\Lib\DefinitionParameter;
-use \OCA\Files_External\Lib\Auth\AuthMechanism;
+use OCP\IL10N;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\DefinitionParameter;
 
 /**
  * OAuth1 authentication

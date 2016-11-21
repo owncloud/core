@@ -74,6 +74,7 @@ class Api {
 	 * @return \OC_OCS_Result share information
 	 */
 	public static function getUserMounts($params) {
+		// FIXME: use the service API for this
 		$entries = [];
 		$user = \OC::$server->getUserSession()->getUser()->getUID();
 

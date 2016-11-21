@@ -23,9 +23,9 @@
 namespace OCA\Files_External\Command;
 
 use OC\Core\Command\Base;
-use OCA\Files_External\Lib\StorageConfig;
-use OCA\Files_External\NotFoundException;
-use OCA\Files_External\Service\GlobalStoragesService;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\Service\IGlobalStoragesService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableHelper;
@@ -36,11 +36,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Config extends Base {
 	/**
-	 * @var GlobalStoragesService
+	 * @var IGlobalStoragesService
 	 */
 	protected $globalService;
 
-	function __construct(GlobalStoragesService $globalService) {
+	function __construct(IGlobalStoragesService $globalService) {
 		parent::__construct();
 		$this->globalService = $globalService;
 	}
@@ -84,11 +84,11 @@ class Config extends Base {
 	}
 
 	/**
-	 * @param StorageConfig $mount
+	 * @param IStorageConfig $mount
 	 * @param string $key
 	 * @param OutputInterface $output
 	 */
-	protected function getOption(StorageConfig $mount, $key, OutputInterface $output) {
+	protected function getOption(IStorageConfig $mount, $key, OutputInterface $output) {
 		if ($key === 'mountpoint' || $key === 'mount_point') {
 			$value = $mount->getMountPoint();
 		} else {
@@ -101,12 +101,12 @@ class Config extends Base {
 	}
 
 	/**
-	 * @param StorageConfig $mount
+	 * @param IStorageConfig $mount
 	 * @param string $key
 	 * @param string $value
 	 * @param OutputInterface $output
 	 */
-	protected function setOption(StorageConfig $mount, $key, $value, OutputInterface $output) {
+	protected function setOption(IStorageConfig $mount, $key, $value, OutputInterface $output) {
 		$decoded = json_decode($value, true);
 		if (!is_null($decoded)) {
 			$value = $decoded;

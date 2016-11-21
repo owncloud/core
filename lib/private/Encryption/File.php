@@ -85,7 +85,7 @@ class File implements \OCP\Encryption\IFile {
 
 		// check if it is a group mount
 		if (\OCP\App::isEnabled("files_external")) {
-			$mounts = \OC_Mount_Config::getSystemMountPoints();
+			$mounts = \OC\Files\External\LegacyUtil::getSystemMountPoints();
 			foreach ($mounts as $mount) {
 				if ($mount['mountpoint'] == substr($ownerPath, 1, strlen($mount['mountpoint']))) {
 					$mountedFor = $this->util->getUserWithAccessToMountPoint($mount['applicable']['users'], $mount['applicable']['groups']);

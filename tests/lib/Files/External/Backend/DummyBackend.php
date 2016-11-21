@@ -1,0 +1,44 @@
+<?php
+/**
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
+
+namespace Test\Files\External\Backend;
+
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\DefinitionParameter;
+use OCP\Files\External\Auth\AuthMechanism;
+
+class DummyBackend extends Backend {
+
+	public function __construct() {
+		$this
+			->setIdentifier('dummy')
+			->addIdentifierAlias('\Test\Files\External\Backend\DummyBackend') // legacy compat
+			->setStorageClass('\Test\Files\External\Backend\DummyStorage')
+			->setText('Dummy')
+			->addParameters([
+				(new DefinitionParameter('param1', 'Param One')),
+				(new DefinitionParameter('param2', 'Param Two'))
+					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
+			])
+			->addAuthScheme(AuthMechanism::SCHEME_NULL)
+		;
+	}
+}

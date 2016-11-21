@@ -28,18 +28,18 @@ namespace OCA\Files_External\Controller;
 
 
 use OCP\ILogger;
-use \OCP\IRequest;
-use \OCP\IL10N;
-use \OCP\AppFramework\Http\DataResponse;
-use \OCP\AppFramework\Controller;
-use \OCP\AppFramework\Http;
-use OCA\Files_External\Service\StoragesService;
-use OCA\Files_External\NotFoundException;
-use OCA\Files_External\Lib\StorageConfig;
-use \OCA\Files_External\Lib\Backend\Backend;
-use \OCA\Files_External\Lib\Auth\AuthMechanism;
-use \OCP\Files\StorageNotAvailableException;
-use \OCA\Files_External\Lib\InsufficientDataForMeaningfulAnswerException;
+use OCP\IRequest;
+use OCP\IL10N;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
+use OCP\Files\External\Service\IStoragesService;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\StorageNotAvailableException;
+use OCP\Files\External\InsufficientDataForMeaningfulAnswerException;
 
 /**
  * Base class for storages controllers
@@ -56,7 +56,7 @@ abstract class StoragesController extends Controller {
 	/**
 	 * Storages service
 	 *
-	 * @var StoragesService
+	 * @var IStoragesService
 	 */
 	protected $service;
 
@@ -71,14 +71,14 @@ abstract class StoragesController extends Controller {
 	 * @param string $AppName application name
 	 * @param IRequest $request request object
 	 * @param IL10N $l10n l10n service
-	 * @param StoragesService $storagesService storage service
+	 * @param IStoragesService $storagesService storage service
 	 * @param ILogger $logger
 	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
-		StoragesService $storagesService,
+		IStoragesService $storagesService,
 		ILogger $logger
 	) {
 		parent::__construct($AppName, $request);
@@ -99,7 +99,7 @@ abstract class StoragesController extends Controller {
 	 * @param array|null $applicableGroups groups for which to mount the storage
 	 * @param int|null $priority priority
 	 *
-	 * @return StorageConfig|DataResponse
+	 * @return IStorageConfig|DataResponse
 	 */
 	protected function createStorage(
 		$mountPoint,
@@ -136,11 +136,11 @@ abstract class StoragesController extends Controller {
 	/**
 	 * Validate storage config
 	 *
-	 * @param StorageConfig $storage storage config
+	 * @param IStorageConfig $storage storage config
 	 *1
 	 * @return DataResponse|null returns response in case of validation error
 	 */
-	protected function validate(StorageConfig $storage) {
+	protected function validate(IStorageConfig $storage) {
 		$mountPoint = $storage->getMountPoint();
 		if ($mountPoint === '' || $mountPoint === '/') {
 			return new DataResponse(
@@ -222,7 +222,7 @@ abstract class StoragesController extends Controller {
 		return null;
 	}
 
-	protected function manipulateStorageConfig(StorageConfig $storage) {
+	protected function manipulateStorageConfig(IStorageConfig $storage) {
 		/** @var AuthMechanism */
 		$authMechanism = $storage->getAuthMechanism();
 		$authMechanism->manipulateStorageConfig($storage);
@@ -237,10 +237,10 @@ abstract class StoragesController extends Controller {
 	 * Note that this operation can be time consuming depending
 	 * on whether the remote storage is available or not.
 	 *
-	 * @param StorageConfig $storage storage configuration
+	 * @param IStorageConfig $storage storage configuration
 	 * @param bool $testOnly whether to storage should only test the connection or do more things
 	 */
-	protected function updateStorageStatus(StorageConfig &$storage, $testOnly = true) {
+	protected function updateStorageStatus(IStorageConfig &$storage, $testOnly = true) {
 		try {
 			$this->manipulateStorageConfig($storage);
 

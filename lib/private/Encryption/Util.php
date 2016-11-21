@@ -290,7 +290,7 @@ class Util {
 	 */
 	public function isSystemWideMountPoint($path, $uid) {
 		if (\OCP\App::isEnabled("files_external")) {
-			$mounts = \OC_Mount_Config::getSystemMountPoints();
+			$mounts = \OC\Files\External\LegacyUtil::getSystemMountPoints();
 			foreach ($mounts as $mount) {
 				if (strpos($path, '/files/' . $mount['mountpoint']) === 0) {
 					if ($this->isMountPointApplicableToUser($mount, $uid)) {

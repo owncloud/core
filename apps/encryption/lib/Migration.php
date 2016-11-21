@@ -320,7 +320,7 @@ class Migration {
 	 * @return array
 	 */
 	protected function getSystemMountPoints() {
-		return \OC_Mount_Config::getSystemMountPoints();
+		return \OC\Files\External\LegacyUtil::getSystemMountPoints();
 	}
 
 	/**
