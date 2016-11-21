@@ -13,10 +13,29 @@ use OC\Template\ResourceNotFoundException;
 class ResourceLocatorTest extends \Test\TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $logger;
+	protected static $jsResourcePath;
 
+	public static function setUpBeforeClass()
+	{
+		self::$jsResourcePath = __DIR__ . '/jsresource.js';
+		$jsResource = fopen(self::$jsResourcePath, 'w');
+		fclose($jsResource);
+	}
+	
+	public static function tearDownAfterClass()
+	{
+		unlink(self::$jsResourcePath);
+	}
+	
 	protected function setUp() {
 		parent::setUp();
 		$this->logger = $this->createMock('OCP\ILogger');
+		
+	}
+	
+	protected function tearDown() {
+		parent::tearDown();
+		
 	}
 
 	/**
@@ -83,12 +102,16 @@ class ResourceLocatorTest extends \Test\TestCase {
 
 		$method->invoke($locator, __DIR__, basename(__FILE__), 'webroot');
 		$resource1 = [__DIR__, 'webroot', basename(__FILE__)];
-		$this->assertEquals([$resource1], $locator->getResources());
+		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 
 		$method->invoke($locator, __DIR__, basename(__FILE__));
-		$this->assertEquals([$resource1], $locator->getResources());
+		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 
 		$method->invoke($locator, __DIR__, 'does-not-exist');
-		$this->assertEquals([$resource1], $locator->getResources());
+		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
+		
+		$method->invoke($locator, __DIR__, 'jsresource.js');
+		$resource2 = [__DIR__, 'map', 'jsresource.js'];
+		$this->assertEquals([__FILE__ => $resource1, self::$jsResourcePath => $resource2], $locator->getResources());
 	}
 }

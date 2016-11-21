@@ -103,7 +103,10 @@ abstract class ResourceLocator {
 	 * @return bool True if the resource was found, false otherwise
 	 */
 	protected function appendOnceIfExist($root, $file, $webRoot = null) {
-		if (!$this->contains($root, $file) && is_file($root.'/'.$file)) {
+
+		$path = $this->buildPath([$root, $file]);
+		
+		if (!$this->contains($path) && is_file($path)) {
 			$this->append($root, $file, $webRoot, false);
 			return true;
 		}
@@ -123,31 +126,37 @@ abstract class ResourceLocator {
 		if (!$webRoot) {
 			$webRoot = $this->mapping[$root];
 		}
-		$this->resources[] = [$root, $webRoot, $file];
+		
+		$path = $this->buildPath([$root, $file]);
+		$this->resources[$path] = [$root, $webRoot, $file];
 
-		if ($throw && !is_file($root . '/' . $file)) {
+		if ($throw && !is_file($path) ) {
 			throw new ResourceNotFoundException($file, $webRoot);
 		}
 	}
 	
 	/**
+	 * build a path by given parts concatenated with a '/' (DIRECTORY_SEPARATOR)
+	 *
+	 * @param string[] $parts path parts to concatenate
+	 * @return string $parts concatenated
+	 */
+	private function buildPath($parts){
+		return join(DIRECTORY_SEPARATOR, $parts);
+	}
+	
+	/**
 	 * check if resource is already in $this->resources
 	 *
-	 * @param string $root path to check
-	 * @param string $file the filename
+	 * @param string $path path to check
 	 * @return bool True if the resource is already in $this->resource, false otherwise
 	 */
-	protected function contains($root, $file) {
-		$isInList = false;
-		
-		foreach ($this->resources as $resource) {
-			if ($resource[0] . '/' . $resource[2] == $root . '/'. $file) {
-				$isInList = true;
-				break;
-			}
+	protected function contains($path) {
+		if( isset( $this->resources[$path]) ){
+			return true;
+		} else {
+			return false;
 		}
-		
-		return $isInList;
 	}
 
 	/**

@@ -61,13 +61,11 @@ class JSResourceLocator extends ResourceLocator {
 		$app = substr($script, 0, strpos($script, '/'));
 		$script = substr($script, strpos($script, '/')+1);
 		$app_path = \OC_App::getAppPath($app);
+		if( !$app_path ) return;
 		$app_url = \OC_App::getAppWebPath($app);
+		$app_url = ($app_url !== false) ? $app_url : null;
 
 		// missing translations files fill be ignored
-		if (strpos($script, 'l10n/') === 0) {
-			$this->appendOnceIfExist($app_path, $script . '.js', $app_url);
-			return;
-		}
 		$this->appendOnceIfExist($app_path, $script . '.js', $app_url);
 	}
 
