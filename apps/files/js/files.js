@@ -381,6 +381,9 @@ var dragOptions={
 		$selectedFiles.closest('tr').addClass('animate-opacity dragging');
 		$selectedFiles.closest('tr').filter('.ui-droppable').droppable( 'disable' );
 
+		if (!FileList._selectedCollection.length) {
+			FileList._selectFileEl($selectedFiles.closest('tr'), true);
+		}
 	},
 	stop: function(event, ui) {
 		var $selectedFiles = $('td.filename input:checkbox:checked');
@@ -439,15 +442,11 @@ var folderDropOptions = {
 		}
 		var targetPath = FileList.getCurrentDirectory() + '/' + $tr.data('file');
 
-		var files = FileList.getSelectedFiles();
-		if (files.length === 0) {
-			// single one selected without checkbox?
-			files = _.map(ui.helper.find('tr'), function(el) {
-				return FileList.elementToFile($(el));
-			});
-		}
+		var fileNames = _.map(ui.helper.find('tr'), function(el) {
+			return $(el).attr('data-file');
+		});
 
-		FileList.move(_.pluck(files, 'name'), targetPath);
+		FileList._moveSelected(targetPath);
 	},
 	tolerance: 'pointer'
 };

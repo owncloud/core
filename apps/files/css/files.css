@@ -329,6 +329,7 @@ table td.filename .nametext {
 	margin-right: 50px;
 }
 
+#fileList tr.filtered-out,
 .hide-hidden-files #fileList tr.hidden-file,
 .hide-hidden-files #fileList tr.hidden-file.dragging {
 	display: none;

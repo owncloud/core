@@ -45,7 +45,6 @@
 
 		id: 'files',
 		appName: t('files', 'Files'),
-		isEmpty: true,
 		useUndo:true,
 
 		/**
@@ -101,19 +100,21 @@
 		},
 
 		/**
-		 * Array of files in the current folder.
-		 * The entries are of file data.
+		 * Collection of file models
 		 *
-		 * @type Array.<OC.Files.FileInfo>
+		 * @type OCA.Files.FileInfoCollection
+		 *
+		 * @since 9.2
 		 */
-		files: [],
+		collection: null,
 
 		/**
-		 * Current directory entry
+		 * Model for the current folder
 		 *
-		 * @type OC.Files.FileInfo
+		 * @type OCA.Files.FileInfoModel
+		 * @since 9.2
 		 */
-		dirInfo: null,
+		model: null,
 
 		/**
 		 * File actions handler, defaults to OCA.Files.FileActions
@@ -128,10 +129,9 @@
 		_allowSelection: true,
 
 		/**
-		 * Map of file id to file data
-		 * @type Object.<int, Object>
+		 * Collection of selected entries
 		 */
-		_selectedFiles: {},
+		_selectedCollection: null,
 
 		/**
 		 * Summary of selected files.
@@ -163,23 +163,11 @@
 		_sortDirection: 'asc',
 
 		/**
-		 * Sort comparator function for the current sort
-		 * @type Function
-		 */
-		_sortComparator: null,
-
-		/**
 		 * Whether to do a client side sort.
 		 * When false, clicking on a table header will call reload().
 		 * When true, clicking on a table header will simply resort the list.
 		 */
 		_clientSideSort: true,
-
-		/**
-		 * Current directory
-		 * @type String
-		 */
-		_currentDirectory: null,
 
 		_dragOptions: null,
 		_folderDropOptions: null,
@@ -206,6 +194,7 @@
 		initialize: function($el, options) {
 			var self = this;
 			options = options || {};
+
 			if (this.initialized) {
 				return;
 			}
@@ -233,6 +222,23 @@
 				this.filesClient = OC.Files.getClient();
 			}
 
+
+			if (options.model) {
+				this.model = options.model;
+			} else {
+				this.model = new OCA.Files.FileInfoModel({path: '', name: ''}, {
+					filesClient: this.filesClient
+				});
+			}
+
+			this.collection = this.model.getChildrenCollection();
+			this.collection.on('reset', this._onCollectionReset, this);
+			this.collection.on('sort', this._onCollectionSort, this);
+			this.collection.on('add', this._onAddFile, this);
+			this.collection.on('remove', this._onRemoveFile, this);
+			this.collection.on('change', this._onChangeFile, this);
+			this.collection.on('busy', this._onFileBusy, this);
+
 			this.$el = $el;
 			if (options.id) {
 				this.id = options.id;
@@ -245,6 +251,7 @@
 				this._filesConfig.on('change:showhidden', function() {
 					var showHidden = this.get('showhidden');
 					self.$el.toggleClass('hide-hidden-files', !showHidden);
+					// TODO: when FileSummary is a model, listen to change event
 					self.updateSelectionSummary();
 
 					if (!showHidden) {
@@ -270,12 +277,21 @@
 			}
 
 			this.files = [];
-			this._selectedFiles = {};
-			this._selectionSummary = new OCA.Files.FileSummary(undefined, {config: this._filesConfig});
-			// dummy root dir info
-			this.dirInfo = new OC.Files.FileInfo({});
 
 			this.fileSummary = this._createSummary();
+
+			// use a regular collection for now
+			this._selectedCollection = new OC.Backbone.Collection();
+			this._selectionSummary = new OCA.Files.FileSummary(
+				undefined, {
+					collection: this._selectedCollection,
+					config: this._filesConfig
+				}
+			);
+			// register events after summary did so it gets a chance to update
+			this._selectedCollection.on('add', this._onToggleSelectedFile, this);
+			this._selectedCollection.on('remove', this._onToggleSelectedFile, this);
+			this._selectedCollection.on('reset', this._onResetSelection, this);
 
 			if (options.sorting) {
 				this.setSort(options.sorting.mode, options.sorting.direction, false, false);
@@ -342,7 +358,7 @@
 				var $uploadEl = this.$el.find('#file_upload_start');
 				if ($uploadEl.exists()) {
 					this._uploader = new OC.Uploader($uploadEl, {
-						fileList: this,
+						fileListModel: this.model,
 						filesClient: this.filesClient,
 						dropZone: $('#content')
 					});
@@ -413,55 +429,19 @@
 		 * @return {OCA.Files.FileInfoModel} file info model
 		 */
 		getModelForFile: function(fileName) {
-			var self = this;
-			var $tr;
-			// jQuery object ?
-			if (fileName.is) {
-				$tr = fileName;
-				fileName = $tr.attr('data-file');
-			} else {
-				$tr = this.findFileEl(fileName);
-			}
+			return this.findFile(fileName);
+		},
 
-			if (!$tr || !$tr.length) {
-				return null;
-			}
-
-			// if requesting the selected model, return it
-			if (this._currentFileModel && this._currentFileModel.get('name') === fileName) {
-				return this._currentFileModel;
-			}
-
-			// TODO: note, this is a temporary model required for synchronising
-			// state between different views.
-			// In the future the FileList should work with Backbone.Collection
-			// and contain existing models that can be used.
-			// This method would in the future simply retrieve the matching model from the collection.
-			var model = new OCA.Files.FileInfoModel(this.elementToFile($tr));
-			if (!model.get('path')) {
-				model.set('path', this.getCurrentDirectory(), {silent: true});
-			}
-
-			model.on('change', function(model) {
-				// re-render row
-				var highlightState = $tr.hasClass('highlighted');
-				$tr = self.updateRow(
-					$tr,
-					model.toJSON(),
-					{updateSummary: true, silent: false, animate: true}
-				);
-
-				// restore selection state
-				var selected = !!self._selectedFiles[$tr.data('id')];
-				self._selectFileEl($tr, selected);
-
-				$tr.toggleClass('highlighted', highlightState);
+		/**
+		 * Find all models matching the given file names
+		 *
+		 * @param {Array.<String>} fileNames
+		 * @return {Array.<OCA.Files.FileInfoModel>} models
+		 */
+		getModelsForFiles: function(fileNames) {
+			return this.collection.filter(function(model) {
+				return (fileNames.indexOf(model.getName()) >= 0);
 			});
-			model.on('busy', function(model, state) {
-				self.showFileBusyState($tr, state);
-			});
-
-			return model;
 		},
 
 		/**
@@ -486,6 +466,7 @@
 		 * @param {boolean} [show=true] whether to open the sidebar if it was closed
 		 */
 		_updateDetailsView: function(fileName, show) {
+			var self = this;
 			if (!this._detailsView) {
 				return;
 			}
@@ -496,13 +477,17 @@
 			if (oldFileInfo) {
 				// TODO: use more efficient way, maybe track the highlight
 				this.$fileList.children().filterAttr('data-id', '' + oldFileInfo.get('id')).removeClass('highlighted');
-				oldFileInfo.off('change', this._onSelectedModelChanged, this);
+			}
+
+			function onRemoveCurrentFile() {
+				OC.Apps.hideAppSidebar(self._detailsView.$el);
+				self._currentFileModel = null;
 			}
 
 			if (!fileName) {
 				this._detailsView.setFileInfo(null);
 				if (this._currentFileModel) {
-					this._currentFileModel.off();
+					this._currentFileModel.off('remove', onRemoveCurrentFile);
 				}
 				this._currentFileModel = null;
 				OC.Apps.hideAppSidebar(this._detailsView.$el);
@@ -514,9 +499,11 @@
 			}
 
 			var $tr = this.findFileEl(fileName);
-			var model = this.getModelForFile($tr);
+			var model = this.findFile(fileName);
 
 			this._currentFileModel = model;
+			// close sidebar if current file is removed
+			this._currentFileModel.on('remove', onRemoveCurrentFile)
 
 			$tr.addClass('highlighted');
 
@@ -558,30 +545,59 @@
 		 * @param {Object} $tr single file row element
 		 * @param {bool} state true to select, false to deselect
 		 */
-		_selectFileEl: function($tr, state, showDetailsView) {
-			var $checkbox = $tr.find('td.filename>.selectCheckBox');
-			var oldData = !!this._selectedFiles[$tr.data('id')];
-			var data;
-			$checkbox.prop('checked', state);
-			$tr.toggleClass('selected', state);
-			// already selected ?
-			if (state === oldData) {
+		_selectFileEl: function($tr, state) {
+			var model = this.collection.findWhere({name: $tr.attr('data-file')});
+			if (!model) {
 				return;
 			}
-			data = this.elementToFile($tr);
+
 			if (state) {
-				this._selectedFiles[$tr.data('id')] = data;
-				this._selectionSummary.add(data);
+				this._selectedCollection.add(model);
+			} else {
+				this._selectedCollection.remove(model);
 			}
-			else {
-				delete this._selectedFiles[$tr.data('id')];
-				this._selectionSummary.remove(data);
-			}
+		},
+
+		_onToggleSelectedFile: function(model, collection, options) {
+			var state = options.add ? true : false;
+			var $tr = this.findFileEl(model.get('name'));
+			var $checkbox = $tr.find('td.filename>.selectCheckBox');
+
+			$checkbox.prop('checked', state);
+			$tr.toggleClass('selected', state);
 			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
 				// hide sidebar
 				this._updateDetailsView(null);
 			}
-			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.files.length);
+
+			this.updateSelectionSummary();
+
+			this.$el.find('.select-all').prop('checked', this.isAllSelected());
+		},
+
+		_onResetSelection: function() {
+			var self = this;
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
+			}
+
+			if (!this._selectedCollection.length || !this.collection.length) {
+				// nothing selected or empty list
+				this.$fileList.find('td.filename>.selectCheckBox').prop('checked', false)
+					.closest('tr').toggleClass('selected', false);
+			} else if (this.isAllSelected()) {
+				// don't bother iterating, tick all checkboxes
+				this.$fileList.find('td.filename>.selectCheckBox').prop('checked', true)
+					.closest('tr').toggleClass('selected', true);
+			} else {
+				// custom list given, select them one by one
+				this._selectedCollection.each(function(model) {
+					self._onToggleSelectedFile(model, self._selectedCollection, {add: true});
+				});
+			}
+
+			this.updateSelectionSummary();
 		},
 
 		/**
@@ -670,21 +686,10 @@
 		 */
 		_onClickSelectAll: function(e) {
 			var checked = $(e.target).prop('checked');
-			this.$fileList.find('td.filename>.selectCheckBox').prop('checked', checked)
-				.closest('tr').toggleClass('selected', checked);
-			this._selectedFiles = {};
-			this._selectionSummary.clear();
 			if (checked) {
-				for (var i = 0; i < this.files.length; i++) {
-					var fileData = this.files[i];
-					this._selectedFiles[fileData.id] = fileData;
-					this._selectionSummary.add(fileData);
-				}
-			}
-			this.updateSelectionSummary();
-			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
-				// hide sidebar
-				this._updateDetailsView(null);
+				this._selectedCollection.reset(this.collection.models);
+			} else {
+				this._selectedCollection.reset([]);
 			}
 		},
 
@@ -694,12 +699,12 @@
 		_onClickDownloadSelected: function(event) {
 			var files;
 			var dir = this.getCurrentDirectory();
-			if (this.isAllSelected() && this.getSelectedFiles().length > 1) {
+			if (this.isAllSelected() && this._selectedCollection.length > 1) {
 				files = OC.basename(dir);
 				dir = OC.dirname(dir) || '/';
 			}
 			else {
-				files = _.pluck(this.getSelectedFiles(), 'name');
+				files = this._selectedCollection.pluck('name');
 			}
 
 			var downloadFileaction = $('#selectedActionsList').find('.download');
@@ -715,11 +720,11 @@
 			};
 
 			OCA.Files.FileActions.updateFileActionSpinner(downloadFileaction, true);
-			if(this.getSelectedFiles().length > 1) {
+			if(this._selectedCollection.length > 1) {
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir, true), disableLoadingState);
 			}
 			else {
-				first = this.getSelectedFiles()[0];
+				var first = this._selectedCollection.at(0).toJSON();
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(first.name, dir, true), disableLoadingState);
 			}
 			return false;
@@ -729,11 +734,23 @@
 		 * Event handler for when clicking on "Delete" for the selected files
 		 */
 		_onClickDeleteSelected: function(event) {
-			var files = null;
-			if (!this.isAllSelected()) {
-				files = _.pluck(this.getSelectedFiles(), 'name');
-			}
-			this.do_delete(files);
+			var self = this;
+			var errorHandler = function(model) {
+				OC.Notification.showTemporary(t('files', 'Error deleting file "{fileName}".', {fileName: model.getName()}));
+				model.setBusy(false);
+			};
+			var promises = this._selectedCollection.map(function(model) {
+				// passing "wait" to avoid modifying the collection
+				// while we iterate on it, it will only remove the elements
+				// after success
+				model.setBusy(true);
+				model.once('error', errorHandler);
+				return model.destroy({wait: true});
+			});
+			Promise.all(promises)
+				.then(function() {
+					self.updateStorageStatistics();
+				});
 			event.preventDefault();
 			return false;
 		},
@@ -786,7 +803,7 @@
 		 */
 		_onScroll: function(e) {
 			if (this.$container.scrollTop() + this.$container.height() > this.$el.height() - 300) {
-				this._nextPage(true);
+				//this._nextPage(true);
 			}
 		},
 
@@ -813,15 +830,7 @@
 				return;
 			}
 
-			var files = this.getSelectedFiles();
-			if (files.length === 0) {
-				// single one selected without checkbox?
-				files = _.map(ui.helper.find('tr'), function(el) {
-					return self.elementToFile($(el));
-				});
-			}
-
-			this.move(_.pluck(files, 'name'), targetPath);
+			this._moveSelected(targetPath);
 
 			// re-enable td elements to be droppable
 			// sometimes the filename drop handler is still called after re-enable,
@@ -853,12 +862,13 @@
 		 * @return {OCA.Files.FileInfo} file info or null if it was not found
 		 *
 		 * @since 8.2
+		 *
+		 * @deprecated search the file name on the collection instead
 		 */
 		findFile: function(fileName) {
-			return _.find(this.files, function(aFile) {
-				return (aFile.name === fileName);
-			}) || null;
+			return this.collection.findWhere({name: fileName});
 		},
+
 		/**
 		 * Returns the tr element for a given file name, but only if it was already rendered.
 		 *
@@ -903,66 +913,6 @@
 		},
 
 		/**
-		 * Appends the next page of files into the table
-		 * @param animate true to animate the new elements
-		 * @return array of DOM elements of the newly added files
-		 */
-		_nextPage: function(animate) {
-			var index = this.$fileList.children().length,
-				count = this.pageSize(),
-				hidden,
-				tr,
-				fileData,
-				newTrs = [],
-				isAllSelected = this.isAllSelected(),
-				showHidden = this._filesConfig.get('showhidden');
-
-			if (index >= this.files.length) {
-				return false;
-			}
-
-			while (count > 0 && index < this.files.length) {
-				fileData = this.files[index];
-				if (this._filter) {
-					hidden = fileData.name.toLowerCase().indexOf(this._filter.toLowerCase()) === -1;
-				} else {
-					hidden = false;
-				}
-				tr = this._renderRow(fileData, {updateSummary: false, silent: true, hidden: hidden});
-				this.$fileList.append(tr);
-				if (isAllSelected || this._selectedFiles[fileData.id]) {
-					tr.addClass('selected');
-					tr.find('.selectCheckBox').prop('checked', true);
-				}
-				if (animate) {
-					tr.addClass('appear transparent');
-				}
-				newTrs.push(tr);
-				index++;
-				// only count visible rows
-				if (showHidden || !tr.hasClass('hidden-file')) {
-					count--;
-				}
-			}
-
-			// trigger event for newly added rows
-			if (newTrs.length > 0) {
-				this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: newTrs}));
-			}
-
-			if (animate) {
-				// defer, for animation
-				window.setTimeout(function() {
-					for (var i = 0; i < newTrs.length; i++ ) {
-						newTrs[i].removeClass('transparent');
-					}
-				}, 0);
-			}
-
-			return newTrs;
-		},
-
-		/**
 		 * Event handler for when file actions were updated.
 		 * This will refresh the file actions on the list.
 		 */
@@ -984,31 +934,49 @@
 		 * Sets the files to be displayed in the list.
 		 * This operation will re-render the list and update the summary.
 		 * @param filesArray array of file data (map)
+		 *
+		 * @deprecated use the collection directly
 		 */
 		setFiles: function(filesArray) {
-			var self = this;
+			this.collection.reset(filesArray);
+		},
 
-			// detach to make adding multiple rows faster
-			this.files = filesArray;
+		_onCollectionSort: function(collection, options) {
+			// only rerender on real sort, not on add+sort
+			if (!options.add) {
+				this._rerenderList();
+			}
+		},
+
+		_onCollectionReset: function() {
+			this._selectedCollection.reset([]);
+			this._rerenderList();
+		},
+
+		_rerenderList: function() {
+			var self = this;
 
 			this.$fileList.empty();
 
 			// clear "Select all" checkbox
 			this.$el.find('.select-all').prop('checked', false);
 
-			// Save full files list while rendering
-
-			this.isEmpty = this.files.length === 0;
-			this._nextPage();
-
 			this.updateEmptyContent();
 
-			this.fileSummary.calculate(this.files);
-
-			this._selectedFiles = {};
-			this._selectionSummary.clear();
-			this.updateSelectionSummary();
 			$(window).scrollTop(0);
+
+			var isAllSelected = this.isAllSelected();
+			var $newTrs = this.collection.map(function(entryModel) {
+				return self._onAddFile(
+					entryModel, self.collection, {
+						silent: true,
+						selected: isAllSelected,
+						animate: false,
+						append: true
+					});
+			});
+
+			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $newTrs}));
 
 			this.$fileList.trigger(jQuery.Event('updated'));
 			_.defer(function() {
@@ -1035,12 +1003,13 @@
 		 * @return {string} icon URL
 		 */
 		_getIconUrl: function(fileInfo) {
-			var mimeType = fileInfo.mimetype || 'application/octet-stream';
+			var mimeType = fileInfo.get('mimetype') || 'application/octet-stream';
 			if (mimeType === 'httpd/unix-directory') {
+				var mountType = fileInfo.get('mountType');
 				// use default folder icon
-				if (fileInfo.mountType === 'shared' || fileInfo.mountType === 'shared-root') {
+				if (mountType === 'shared' || mountType === 'shared-root') {
 					return OC.MimeType.getIconUrl('dir-shared');
-				} else if (fileInfo.mountType === 'external-root') {
+				} else if (mountType === 'external-root') {
 					return OC.MimeType.getIconUrl('dir-external');
 				}
 				return OC.MimeType.getIconUrl('dir');
@@ -1050,19 +1019,18 @@
 
 		/**
 		 * Creates a new table row element using the given file data.
-		 * @param {OC.Files.FileInfo} fileData file info attributes
+		 * @param {OCA.Files.FileInfoModel} fileData file info attributes
 		 * @param options map of attributes
 		 * @return new tr element (not appended to the table)
 		 */
 		_createRow: function(fileData, options) {
 			var td, simpleSize, basename, extension, sizeColor,
-				icon = fileData.icon || this._getIconUrl(fileData),
-				name = fileData.name,
-				// TODO: get rid of type, only use mime type
-				type = fileData.type || 'file',
-				mtime = parseInt(fileData.mtime, 10),
-				mime = fileData.mimetype,
-				path = fileData.path,
+				icon = fileData.get('icon') || this._getIconUrl(fileData),
+				name = fileData.get('name'),
+				mtime = parseInt(fileData.get('mtime'), 10),
+				mime = fileData.get('mimetype'),
+				path = fileData.get('path'),
+				type,
 				dataIcon = null,
 				linkUrl;
 			options = options || {};
@@ -1071,25 +1039,26 @@
 				mtime = new Date().getTime();
 			}
 
-			if (type === 'dir') {
-				mime = mime || 'httpd/unix-directory';
-
-				if (fileData.mountType && fileData.mountType.indexOf('external') === 0) {
+			if (fileData.isDirectory()) {
+				type = 'dir';
+				if (fileData.get('mountType') && fileData.get('mountType').indexOf('external') === 0) {
 					icon = OC.MimeType.getIconUrl('dir-external');
 					dataIcon = icon;
 				}
+			} else {
+				type = 'file';
 			}
 
 			//containing tr
 			var tr = $('<tr></tr>').attr({
 				"data-id" : fileData.id,
 				"data-type": type,
-				"data-size": fileData.size,
+				"data-size": fileData.get('size'),
 				"data-file": name,
 				"data-mime": mime,
 				"data-mtime": mtime,
-				"data-etag": fileData.etag,
-				"data-permissions": fileData.permissions || this.getDirectoryPermissions()
+				"data-etag": fileData.get('etag'),
+				"data-permissions": fileData.get('permissions') || this.getDirectoryPermissions()
 			});
 
 			if (dataIcon) {
@@ -1097,6 +1066,8 @@
 				tr.attr('data-icon', dataIcon);
 			}
 
+			// FIXME: solve this on model level
+			/*
 			if (fileData.mountType) {
 				// dirInfo (parent) only exist for the "real" file list
 				if (this.dirInfo.id) {
@@ -1111,6 +1082,7 @@
 				}
 				tr.attr('data-mounttype', fileData.mountType);
 			}
+			*/
 
 			if (!_.isUndefined(path)) {
 				tr.attr('data-path', path);
@@ -1132,8 +1104,10 @@
 			}
 			if (this._allowSelection) {
 				td.append(
-					'<input id="select-' + this.id + '-' + fileData.id +
-					'" type="checkbox" class="selectCheckBox checkbox"/><label for="select-' + this.id + '-' + fileData.id + '">' +
+					'<input id="select-' + this.id + '-' + fileData.get('id') +
+					'" type="checkbox" class="selectCheckBox checkbox"' +
+					(options.selected ? ' checked="checked" ' : '') +
+					'/><label for="select-' + this.id + '-' + fileData.get('id') + '">' +
 					'<div class="thumbnail" style="background-image:url(' + icon + '); background-size: 32px;"></div>' +
 					'<span class="hidden-visually">' + t('files', 'Select') + '</span>' +
 					'</label>'
@@ -1147,7 +1121,7 @@
 			});
 
 			// from here work on the display name
-			name = fileData.displayName || name;
+			name = fileData.get('displayName') || name;
 
 			// show hidden files (starting with a dot) completely in gray
 			if(name.indexOf('.') === 0) {
@@ -1168,11 +1142,12 @@
 			if (extension) {
 				nameSpan.append($('<span></span>').addClass('extension').text(extension));
 			}
-			if (fileData.extraData) {
-				if (fileData.extraData.charAt(0) === '/') {
-					fileData.extraData = fileData.extraData.substr(1);
+			var extraData = fileData.get('extraData');
+			if (extraData) {
+				if (extraData.charAt(0) === '/') {
+					extraData = extraData.substr(1);
 				}
-				nameSpan.addClass('extra-data').attr('title', fileData.extraData);
+				nameSpan.addClass('extra-data').attr('title', extraData);
 				nameSpan.tooltip({placement: 'right'});
 			}
 			// dirs can show the number of uploaded files
@@ -1186,9 +1161,10 @@
 			tr.append(td);
 
 			// size column
-			if (typeof(fileData.size) !== 'undefined' && fileData.size >= 0) {
-				simpleSize = humanFileSize(parseInt(fileData.size, 10), true);
-				sizeColor = Math.round(160-Math.pow((fileData.size/(1024*1024)),2));
+			var size = fileData.get('size');
+			if (typeof(size) !== 'undefined' && size >= 0) {
+				simpleSize = humanFileSize(parseInt(size, 10), true);
+				sizeColor = Math.round(160-Math.pow((size/(1024*1024)),2));
 			} else {
 				simpleSize = t('files', 'Pending');
 			}
@@ -1234,52 +1210,45 @@
 		 *
 		 * @param {OC.Files.FileInfo} fileData map of file attributes
 		 * @param {Object} [options] map of attributes
-		 * @param {boolean} [options.updateSummary] true to update the summary
 		 * after adding (default), false otherwise. Defaults to true.
 		 * @param {boolean} [options.silent] true to prevent firing events like "fileActionsReady",
 		 * defaults to false.
 		 * @param {boolean} [options.animate] true to animate the thumbnail image after load
 		 * defaults to true.
 		 * @return new tr element (not appended to the table)
+		 *
+		 * @deprecated always add directly to the collection
 		 */
 		add: function(fileData, options) {
-			var index = -1;
+			//options = _.extend({sort: false}, options || {});
+			// FIXME: prevent sort and provide "at" to insert at correct index !
+			// because backbone will still internally re-sort the list
+			var model = this.collection.add(fileData, options);
+			return this.findFileEl(model.get('name'));
+		},
+
+		_onAddFile: function(model, collection, options) {
+			var index;
 			var $tr;
 			var $rows;
 			var $insertionPoint;
 			options = _.extend({animate: true}, options || {});
 
-			// there are three situations to cover:
-			// 1) insertion point is visible on the current page
-			// 2) insertion point is on a not visible page (visible after scrolling)
-			// 3) insertion point is at the end of the list
+			$tr = this._renderRow(model, options);
 
-			$rows = this.$fileList.children();
-			index = this._findInsertionIndex(fileData);
-			if (index > this.files.length) {
-				index = this.files.length;
-			}
-			else {
+			if (options.append) {
+				this.$fileList.append($tr);
+			} else {
+				// find insertion index
+				$rows = this.$fileList.children();
+				index = this.collection.indexOf(model);
 				$insertionPoint = $rows.eq(index);
-			}
-
-			// is the insertion point visible ?
-			if ($insertionPoint.length) {
-				// only render if it will really be inserted
-				$tr = this._renderRow(fileData, options);
-				$insertionPoint.before($tr);
-			}
-			else {
-				// if insertion point is after the last visible
-				// entry, append
-				if (index === $rows.length) {
-					$tr = this._renderRow(fileData, options);
+				if (!$insertionPoint.length) {
 					this.$fileList.append($tr);
+				} else {
+					$insertionPoint.before($tr);
 				}
 			}
-
-			this.isEmpty = false;
-			this.files.splice(index, 0, fileData);
 
 			if ($tr && options.animate) {
 				$tr.addClass('appear transparent');
@@ -1289,45 +1258,74 @@
 			}
 
 			if (options.scrollTo) {
-				this.scrollTo(fileData.name);
+				this.scrollTo(model.get('name'));
 			}
 
-			// defaults to true if not defined
-			if (typeof(options.updateSummary) === 'undefined' || !!options.updateSummary) {
-				this.fileSummary.add(fileData, true);
+			// just added a file
+			if (this.collection.length === 1) {
 				this.updateEmptyContent();
 			}
 
+			// all was selected, we added a new file
+			if (this._selectedCollection.length > 0 && this._selectedCollection.length + 1 === this.collection.length) {
+				// also select that file
+				this._selectedCollection.add(model);
+			}
+
 			return $tr;
+		},
+
+		_onChangeFile: function(model, collection, options) {
+			// re-render row
+			var $oldRow = this.findFileEl(model.previous('name'));
+			var $row
+			var highlightState = $oldRow.hasClass('highlighted');
+
+			options = _.extend({animate: true}, options);
+			$row = this._renderRow(model, options);
+
+			// replace the whole row
+			$oldRow.replaceWith($row);
+
+			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $row}));
+
+			if (options.animate) {
+				$row.addClass('appear transparent');
+				window.setTimeout(function() {
+					$row.removeClass('transparent');
+				});
+			}
+
+			// restore selection state
+			var selectedModel = this._selectedCollection.get(model.id);
+			if (selectedModel) {
+				this._selectFileEl($row, true);
+			}
+
+			$row.toggleClass('highlighted', highlightState);
 		},
 
 		/**
 		 * Creates a new row element based on the given attributes
 		 * and returns it.
 		 *
-		 * @param {OC.Files.FileInfo} fileData map of file attributes
+		 * @param {OCA.Files.FileInfoModel} fileData map of file attributes
 		 * @param {Object} [options] map of attributes
 		 * @param {int} [options.index] index at which to insert the element
-		 * @param {boolean} [options.updateSummary] true to update the summary
-		 * after adding (default), false otherwise. Defaults to true.
 		 * @param {boolean} [options.animate] true to animate the thumbnail image after load
 		 * defaults to true.
 		 * @return new tr element (not appended to the table)
 		 */
 		_renderRow: function(fileData, options) {
 			options = options || {};
-			var type = fileData.type || 'file',
-				mime = fileData.mimetype,
-				path = fileData.path || this.getCurrentDirectory(),
-				permissions = parseInt(fileData.permissions, 10) || 0;
+			var mime = fileData.get('mimetype'),
+				path = fileData.get('path') || this.getCurrentDirectory(),
+				permissions = fileData.get('permissions');
 
 			if (fileData.isShareMountPoint) {
 				permissions = permissions | OC.PERMISSION_UPDATE;
 			}
 
-			if (type === 'dir') {
-				mime = mime || 'httpd/unix-directory';
-			}
 			var tr = this._createRow(
 				fileData,
 				options
@@ -1348,7 +1346,7 @@
 				tr.addClass('hidden');
 			}
 
-			if (this._isHiddenFile(fileData)) {
+			if (fileData.isHiddenFile()) {
 				tr.addClass('hidden-file');
 			}
 
@@ -1361,7 +1359,7 @@
 				// the typeof check ensures that the default value of animate is true
 				if (typeof(options.animate) === 'undefined' || !!options.animate) {
 					this.lazyLoadPreview({
-						path: path + '/' + fileData.name,
+						path: path + '/' + fileData.get('name'),
 						mime: mime,
 						etag: fileData.etag,
 						callback: function(url) {
@@ -1372,8 +1370,8 @@
 				else {
 					// set the preview URL directly
 					var urlSpec = {
-							file: path + '/' + fileData.name,
-							c: fileData.etag
+							file: path + '/' + fileData.get('name'),
+							c: fileData.get('etag')
 						};
 					var previewUrl = this.generatePreviewUrl(urlSpec);
 					previewUrl = previewUrl.replace('(', '%28').replace(')', '%29');
@@ -1388,14 +1386,14 @@
 		 * @return current directory
 		 */
 		getCurrentDirectory: function(){
-			return this._currentDirectory || this.$el.find('#dir').val() || '/';
+			return this.model.getFullPath();
 		},
 		/**
 		 * Returns the directory permissions
 		 * @return permission value as integer
 		 */
 		getDirectoryPermissions: function() {
-			return parseInt(this.$el.find('#permissions').val(), 10);
+			return this.model.get('permissions');
 		},
 		/**
 		 * Changes the current directory and reload the file list.
@@ -1467,10 +1465,8 @@
 			if (targetDir.length > 0 && targetDir[0] !== '/') {
 				targetDir = '/' + targetDir;
 			}
-			this._currentDirectory = targetDir;
 
-			// legacy stuff
-			this.$el.find('#dir').val(targetDir);
+			this.model.set({'path': OC.dirname(targetDir), 'name': OC.basename(targetDir)});
 
 			if (changeUrl !== false) {
 				var params = {
@@ -1493,16 +1489,10 @@
 		 * @param persist true to save changes in the database (default)
 		 */
 		setSort: function(sort, direction, update, persist) {
-			var comparator = FileList.Comparators[sort] || FileList.Comparators.name;
+			this.collection.setSort(sort, direction);
 			this._sort = sort;
 			this._sortDirection = (direction === 'desc')?'desc':'asc';
-			this._sortComparator = comparator;
 
-			if (direction === 'desc') {
-				this._sortComparator = function(fileInfo1, fileInfo2) {
-					return -comparator(fileInfo1, fileInfo2);
-				};
-			}
 			this.$el.find('thead th .sort-indicator')
 				.removeClass(this.SORT_INDICATOR_ASC_CLASS)
 				.removeClass(this.SORT_INDICATOR_DESC_CLASS)
@@ -1516,8 +1506,7 @@
 				.addClass(direction === 'desc' ? this.SORT_INDICATOR_DESC_CLASS : this.SORT_INDICATOR_ASC_CLASS);
 			if (update) {
 				if (this._clientSideSort) {
-					this.files.sort(this._sortComparator);
-					this.setFiles(this.files);
+					this.collection.sort();
 				}
 				else {
 					this.reload();
@@ -1545,30 +1534,21 @@
 		 * @return ajax call object
 		 */
 		reload: function() {
-			this._selectedFiles = {};
-			this._selectionSummary.clear();
 			if (this._currentFileModel) {
 				this._currentFileModel.off();
 			}
 			this._currentFileModel = null;
 			this.$el.find('.select-all').prop('checked', false);
 			this.showMask();
-			try {
-				this._reloadCall = this.filesClient.getFolderContents(
-					this.getCurrentDirectory(), {
-						includeParent: true,
-						properties: this._getWebdavProperties()
-					}
-				);
-			} catch (e) {
-				if (e instanceof DOMException) {
-					console.error(e);
-					this.changeDirectory('/');
-					OC.Notification.showTemporary(t('files', 'Invalid path'));
-					return;
+
+			//this._reloadCall = this.model.fetch();
+			this._reloadCall = this.filesClient.getFolderContents(
+				this.getCurrentDirectory(), {
+					includeParent: true,
+					properties: this._getWebdavProperties()
 				}
-				throw e;
-			}
+			);
+
 			if (this._detailsView) {
 				// close sidebar
 				this._updateDetailsView(null);
@@ -1627,21 +1607,17 @@
 			// TODO: parse remaining quota from PROPFIND response
 			this.updateStorageStatistics(true);
 
-			// first entry is the root
-			this.dirInfo = result.shift();
+			this.model.set(result.shift());
+			this.collection.reset(result);
 
-			if (this.dirInfo.permissions) {
-				this.setDirectoryPermissions(this.dirInfo.permissions);
-			}
+			// FIXME: not sure why this is needed
+			this.setViewerMode(false);
 
-			result.sort(this._sortComparator);
-			this.setFiles(result);
-
-			if (this.dirInfo) {
-				var newFileId = this.dirInfo.id;
+			if (this.model) {
+				var newFileId = this.model.id;
 				// update fileid in URL
 				var params = {
-					dir: this.getCurrentDirectory()
+					dir: this.model.get('path')
 				};
 				if (newFileId) {
 					params.fileId = newFileId;
@@ -1662,26 +1638,31 @@
 			return OCA.Files.Files.getAjaxUrl(action, params);
 		},
 
+
+		/**
+		 * @deprecated use getDownloadUrl on the FileInfoModel instead
+		 */
 		getDownloadUrl: function(files, dir, isDir) {
-			return OCA.Files.Files.getDownloadUrl(files, dir || this.getCurrentDirectory(), isDir);
+			var model;
+			if (_.isUndefined(dir)) {
+				model = this.model;
+			} else {
+				model = OCA.Files.FileInfoModel.getFromPath(dir);
+			}
+			return model.getDownloadUrl(files, isDir);
 		},
 
+		/**
+		 * @deprecated use getDownloadUrl on the FileInfoModel instead
+		 */
 		getUploadUrl: function(fileName, dir) {
+			var model;
 			if (_.isUndefined(dir)) {
-				dir = this.getCurrentDirectory();
+				model = this.model;
+			} else {
+				model = OCA.Files.FileInfoModel.getFromPath(dir);
 			}
-
-			var pathSections = dir.split('/');
-			if (!_.isUndefined(fileName)) {
-				pathSections.push(fileName);
-			}
-			var encodedPath = '';
-			_.each(pathSections, function(section) {
-				if (section !== '') {
-					encodedPath += '/' + encodeURIComponent(section);
-				}
-			});
-			return OC.linkToRemoteBase('webdav') + encodedPath;
+			return model.getUploadUrl(fileName);
 		},
 
 		/**
@@ -1770,15 +1751,6 @@
 		},
 
 		/**
-		 * @deprecated
-		 */
-		setDirectoryPermissions: function(permissions) {
-			var isCreatable = (permissions & OC.PERMISSION_CREATE) !== 0;
-			this.$el.find('#permissions').val(permissions);
-			this.$el.find('.creatable').toggleClass('hidden', !isCreatable);
-			this.$el.find('.notCreatable').toggleClass('hidden', isCreatable);
-		},
-		/**
 		 * Shows/hides action buttons
 		 *
 		 * @param show true for enabling, false for disabling
@@ -1815,125 +1787,57 @@
 		 * Removes a file entry from the list
 		 * @param name name of the file to remove
 		 * @param {Object} [options] map of attributes
-		 * @param {boolean} [options.updateSummary] true to update the summary
-		 * after removing, false otherwise. Defaults to true.
 		 * @return deleted element
+		 *
+		 * @deprecated always remove directly on the collection
 		 */
-		remove: function(name, options){
-			options = options || {};
+		remove: function(name, options) {
 			var fileEl = this.findFileEl(name);
-			var fileId = fileEl.data('id');
-			var index = fileEl.index();
+			var model = this.collection.findWhere({name: name});
+			if (model) {
+				this.collection.remove(model);
+			}
+			return fileEl;
+		},
+
+		_onRemoveFile: function(model, collection, options) {
+			options = options || {};
+			var name = model.get('name');
+			var fileEl = this.findFileEl(name);
 			if (!fileEl.length) {
 				return null;
 			}
-			if (this._selectedFiles[fileId]) {
-				// remove from selection first
-				this._selectFileEl(fileEl, false);
-				this.updateSelectionSummary();
-			}
+			this._selectedCollection.remove(model);
 			if (this._dragOptions && (fileEl.data('permissions') & OC.PERMISSION_DELETE)) {
 				// file is only draggable when delete permissions are set
 				fileEl.find('td.filename').draggable('destroy');
 			}
-			this.files.splice(index, 1);
-			if (this._currentFileModel && this._currentFileModel.get('id') === fileId) {
-				// Note: in the future we should call destroy() directly on the model
-				// and the model will take care of the deletion.
-				// Here we only trigger the event to notify listeners that
-				// the file was removed.
-				this._currentFileModel.trigger('destroy');
-				this._updateDetailsView(null);
-			}
 			fileEl.remove();
-			// TODO: improve performance on batch update
-			this.isEmpty = !this.files.length;
-			if (typeof(options.updateSummary) === 'undefined' || !!options.updateSummary) {
-				this.updateEmptyContent();
-				this.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')}, true);
-			}
 
-			var lastIndex = this.$fileList.children().length;
-			// if there are less elements visible than one page
-			// but there are still pending elements in the array,
-			// then directly append the next page
-			if (lastIndex < this.files.length && lastIndex < this.pageSize()) {
-				this._nextPage(true);
+			// removed last file ?
+			if (!this.collection.length) {
+				this.updateEmptyContent();
 			}
 
 			return fileEl;
 		},
+
 		/**
-		 * Finds the index of the row before which the given
-		 * fileData should be inserted, considering the current
-		 * sorting
+		 * Moves the current selected entries to the given target path
 		 *
-		 * @param {OC.Files.FileInfo} fileData file info
+		 * @param {String} targetPath absolute target path
 		 */
-		_findInsertionIndex: function(fileData) {
-			var index = 0;
-			while (index < this.files.length && this._sortComparator(fileData, this.files[index]) > 0) {
-				index++;
-			}
-			return index;
-		},
-		/**
-		 * Moves a file to a given target folder.
-		 *
-		 * @param fileNames array of file names to move
-		 * @param targetPath absolute target path
-		 */
-		move: function(fileNames, targetPath) {
+		_moveSelected: function(targetPath) {
 			var self = this;
-			var dir = this.getCurrentDirectory();
-			if (dir.charAt(dir.length - 1) !== '/') {
-				dir += '/';
-			}
-			var target = OC.basename(targetPath);
-			if (!_.isArray(fileNames)) {
-				fileNames = [fileNames];
-			}
-			_.each(fileNames, function(fileName) {
-				var $tr = self.findFileEl(fileName);
-				self.showFileBusyState($tr, true);
-				if (targetPath.charAt(targetPath.length - 1) !== '/') {
-					// make sure we move the files into the target dir,
-					// not overwrite it
-					targetPath = targetPath + '/';
-				}
-				self.filesClient.move(dir + fileName, targetPath + fileName)
-					.done(function() {
-						// if still viewing the same directory
-						if (OC.joinPaths(self.getCurrentDirectory(), '/') === dir) {
-							// recalculate folder size
-							var oldFile = self.findFileEl(target);
-							var newFile = self.findFileEl(fileName);
-							var oldSize = oldFile.data('size');
-							var newSize = oldSize + newFile.data('size');
-							oldFile.data('size', newSize);
-							oldFile.find('td.filesize').text(OC.Util.humanFileSize(newSize));
-
-							// TODO: also update entry in FileList.files
-							self.remove(fileName);
-						}
-					})
-					.fail(function(status) {
-						if (status === 412) {
-							// TODO: some day here we should invoke the conflict dialog
-							OC.Notification.showTemporary(
-								t('files', 'Could not move "{file}", target exists', {file: fileName})
-							);
-						} else {
-							OC.Notification.showTemporary(
-								t('files', 'Could not move "{file}"', {file: fileName})
-							);
-						}
-					})
-					.always(function() {
-						self.showFileBusyState($tr, false);
-					});
+			var promises = this._selectedCollection.map(function(model) {
+				var target = OC.joinPaths(targetPath, model.getName());
+				return model.move(target);
 			});
-
+			// TODO: error handling
+			$.when.apply($, promises)
+				.then(function() {
+					self.updateStorageStatistics();
+				});
 		},
 
 		/**
@@ -1946,11 +1850,9 @@
 		 * @return {Object} new row element
 		 */
 		updateRow: function($tr, fileInfo, options) {
-			this.files.splice($tr.index(), 1);
 			$tr.remove();
 			options = _.extend({silent: true}, options);
-			options = _.extend(options, {updateSummary: false});
-			$tr = this.add(fileInfo, options);
+			$tr = this.onAddFile(this.collection.get(fileInfo.id), this.collection, options);
 			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $tr}));
 			return $tr;
 		},
@@ -1965,7 +1867,7 @@
 			var self = this;
 			var tr, td, input, form;
 			tr = this.findFileEl(oldName);
-			var oldFileInfo = this.files[tr.index()];
+			var model = this.collection.findWhere({name: oldName});
 			tr.data('renaming',true);
 			td = tr.children('td.filename');
 			input = $('<input type="text" class="filename"/>').val(oldName);
@@ -2000,11 +1902,6 @@
 				td.children('a.name').show();
 			}
 
-			function updateInList(fileInfo) {
-				self.updateRow(tr, fileInfo);
-				self._updateDetailsView(fileInfo.name, false);
-			}
-
 			// TODO: too many nested blocks, move parts into functions
 			form.submit(function(event) {
 				event.stopPropagation();
@@ -2021,23 +1918,12 @@
 					if (newName !== oldName) {
 						checkInput();
 						// mark as loading (temp element)
-						self.showFileBusyState(tr, true);
-						tr.attr('data-file', newName);
-						var basename = newName;
-						if (newName.indexOf('.') > 0 && tr.data('type') !== 'dir') {
-							basename = newName.substr(0, newName.lastIndexOf('.'));
-						}
-						td.find('a.name span.nametext').text(basename);
+						model.setBusy(true);
 						td.children('a.name').show();
-
-						var path = tr.attr('data-path') || self.getCurrentDirectory();
-						self.filesClient.move(OC.joinPaths(path, oldName), OC.joinPaths(path, newName))
-							.done(function() {
-								oldFileInfo.name = newName;
-								updateInList(oldFileInfo);
-							})
+						model.rename(newName)
 							.fail(function(status) {
 								// TODO: 409 means current folder does not exist, redirect ?
+								model.setBusy(false);
 								if (status === 404) {
 									// source not found, so remove it from the list
 									OC.Notification.showTemporary(
@@ -2047,7 +1933,7 @@
 											{fileName: oldName}
 										)
 									);
-									self.remove(newName, {updateSummary: true});
+									self.collection.remove(model);
 									return;
 								} else if (status === 412) {
 									// target exists
@@ -2067,14 +1953,7 @@
 										t('files', 'Could not rename "{fileName}"', {fileName: oldName})
 									);
 								}
-								updateInList(oldFileInfo);
 							});
-					} else {
-						// add back the old file info when cancelled
-						self.files.splice(tr.index(), 1);
-						tr.remove();
-						tr = self.add(oldFileInfo, {updateSummary: false, silent: true});
-						self.$fileList.trigger($.Event('fileActionsReady', {fileList: self, $files: $(tr)}));
 					}
 				} catch (error) {
 					input.attr('title', error);
@@ -2249,31 +2128,39 @@
 			var targetPath = OC.joinPaths(dir, fileName);
 
 			if ((OC.dirname(targetPath) || '/') !== this.getCurrentDirectory()) {
-				// no need to fetch information
+				// no need to fetch information as this is outside the current view
 				deferred.resolve();
 				return deferred.promise();
 			}
 
-			var addOptions = _.extend({
-				animate: true,
-				scrollTo: false
-			}, options || {});
+			var model = this.newModel(OC.basename(fileName));
 
-			this.filesClient.getFileInfo(targetPath, {
-					properties: this._getWebdavProperties()
-				})
-				.then(function(status, data) {
-					// remove first to avoid duplicates
-					self.remove(data.name);
-					self.add(data, addOptions);
-					deferred.resolve(status, data);
-				})
-				.fail(function(status) {
-					OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
-					deferred.reject(status);
-				});
+			model.fetch({
+				animate: true,
+				scrollTo: true
+			}).then(function() {
+				self.collection.add(model);
+				deferred.resolve(200, model);
+			}, function() {
+				OC.Notification.showTemporary(t('files', 'Could not find file "{file}"', {file: fileName}));
+				deferred.reject(status);
+			});
 
 			return deferred.promise();
+		},
+
+		/**
+		 * Creates a new model properly wired up for this list
+		 *
+		 * @param {String} name name
+		 */
+		newModel: function(name) {
+			return new OCA.Files.FileInfoModel({
+				path: this.model.getFullPath(),
+				name: name
+			}, {
+				filesClient: this.filesClient
+			});
 		},
 
 		/**
@@ -2282,9 +2169,18 @@
 		 * @param {string} file file name
 		 *
 		 * @return {bool} true if the file exists in the list, false otherwise
+		 *
+		 * @deprecated search the file name on the collection instead
 		 */
 		inList:function(file) {
 			return this.findFile(file);
+		},
+
+		/**
+		 * Event handler whenever a file's "busy" event was called
+		 */
+		_onFileBusy: function(model, options) {
+			this.showFileBusyState(model.get('name'), !!options.busy);
 		},
 
 		/**
@@ -2294,6 +2190,8 @@
 		 * @param {bool} [busy=true] busy state, true for busy, false to remove busy state
 		 *
 		 * @since 8.2
+		 *
+		 * @deprecated call model.setBusy() instead
 		 */
 		showFileBusyState: function(files, state) {
 			var self = this;
@@ -2328,82 +2226,23 @@
 		},
 
 		/**
-		 * Delete the given files from the given dir
-		 * @param files file names list (without path)
-		 * @param dir directory in which to delete the files, defaults to the current
-		 * directory
-		 */
-		do_delete:function(files, dir) {
-			var self = this;
-			if (files && files.substr) {
-				files=[files];
-			}
-			if (!files) {
-				// delete all files in directory
-				files = _.pluck(this.files, 'name');
-			}
-			if (files) {
-				this.showFileBusyState(files, true);
-			}
-			// Finish any existing actions
-			if (this.lastAction) {
-				this.lastAction();
-			}
-
-			dir = dir || this.getCurrentDirectory();
-
-			function removeFromList(file) {
-				var fileEl = self.remove(file, {updateSummary: false});
-				// FIXME: not sure why we need this after the
-				// element isn't even in the DOM any more
-				fileEl.find('.selectCheckBox').prop('checked', false);
-				fileEl.removeClass('selected');
-				self.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')});
-				// TODO: this info should be returned by the ajax call!
-				self.updateEmptyContent();
-				self.fileSummary.update();
-				self.updateSelectionSummary();
-				// FIXME: don't repeat this, do it once all files are done
-				self.updateStorageStatistics();
-			}
-
-			_.each(files, function(file) {
-				self.filesClient.remove(dir + '/' + file)
-					.done(function() {
-						removeFromList(file);
-					})
-					.fail(function(status) {
-						if (status === 404) {
-							// the file already did not exist, remove it from the list
-							removeFromList(file);
-						} else {
-							// only reset the spinner for that one file
-							OC.Notification.showTemporary(
-									t('files', 'Error deleting file "{fileName}".', {fileName: file}),
-									{timeout: 10}
-							);
-							var deleteAction = self.findFileEl(file).find('.action.delete');
-							deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
-							self.showFileBusyState(files, false);
-						}
-					});
-			});
-		},
-		/**
 		 * Creates the file summary section
 		 */
 		_createSummary: function() {
 			var $tr = $('<tr class="summary"></tr>');
 			this.$el.find('tfoot').append($tr);
 
-			return new OCA.Files.FileSummary($tr, {config: this._filesConfig});
+			return new OCA.Files.FileSummary($tr, {
+				collection: this.collection,
+				config: this._filesConfig
+			});
 		},
 		updateEmptyContent: function() {
 			var permissions = this.getDirectoryPermissions();
 			var isCreatable = (permissions & OC.PERMISSION_CREATE) !== 0;
-			this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
-			this.$el.find('#emptycontent .uploadmessage').toggleClass('hidden', !isCreatable || !this.isEmpty);
-			this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
+			this.$el.find('#emptycontent').toggleClass('hidden', !!this.collection.length);
+			this.$el.find('#emptycontent .uploadmessage').toggleClass('hidden', !isCreatable || !!this.collection.length);
+			this.$el.find('#filestable thead th').toggleClass('hidden', !this.collection.length);
 		},
 		/**
 		 * Shows the loading mask.
@@ -2475,28 +2314,18 @@
 				this.hideIrrelevantUIWhenNoFilesMatch();
 			}
 
-			var visibleCount = 0;
 			filter = filter.toLowerCase();
 
-			function filterRows(tr) {
-				var $e = $(tr);
-				if ($e.data('file').toString().toLowerCase().indexOf(filter) === -1) {
-					$e.addClass('hidden');
+			function filterRows() {
+				var $e = $(this);
+				if ($e.attr('data-file').toLowerCase().indexOf(filter) === -1) {
+					$e.addClass('filtered-out');
 				} else {
-					visibleCount++;
-					$e.removeClass('hidden');
+					$e.removeClass('filtered-out');
 				}
 			}
 
-			var $trs = this.$fileList.find('tr');
-			do {
-				_.each($trs, filterRows);
-				if (visibleCount < total) {
-					$trs = this._nextPage(false);
-				}
-			} while (visibleCount < total && $trs.length > 0);
-
-			this.$container.trigger('scroll');
+			this.$fileList.find('>tr').each(filterRows);
 		},
 		hideIrrelevantUIWhenNoFilesMatch:function() {
 			if (this._filter && this.fileSummary.summary.totalDirs + this.fileSummary.summary.totalFiles === 0) {
@@ -2511,9 +2340,9 @@
 			} else {
 				$('#searchresults').removeClass('filter-empty');
 				$('#searchresults .emptycontent').removeClass('emptycontent-search');
-				this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
+				this.$el.find('#filestable thead th').toggleClass('hidden', !this.collection.length);
 				if (!this.$el.find('.mask').exists()) {
-					this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
+					this.$el.find('#emptycontent').toggleClass('hidden', !!this.collection.length);
 				}
 				this.$el.find('.nofilterresults').addClass('hidden');
 			}
@@ -2596,7 +2425,7 @@
 		 * @return true if all files are selected, false otherwise
 		 */
 		isAllSelected: function() {
-			return this.$el.find('.select-all').prop('checked');
+			return this._selectedCollection.length > 0 && this._selectedCollection.length === this.collection.length;
 		},
 
 		/**
@@ -2605,7 +2434,7 @@
 		 * @return array of file names
 		 */
 		getSelectedFiles: function() {
-			return _.values(this._selectedFiles);
+			return this._selectedCollection.toJSON();
 		},
 
 		getUniqueName: function(name) {
@@ -2827,10 +2656,6 @@
 			var filename = files[files.length - 1];
 			var $fileRow = this.findFileEl(filename);
 
-			while(!$fileRow.exists() && this._nextPage(false) !== false) { // Checking element existence
-				$fileRow = this.findFileEl(filename);
-			}
-
 			if (!$fileRow.exists()) { // Element not present in the file list
 				return;
 			}
@@ -2935,54 +2760,6 @@
 			if (this._detailsView) {
 				this._detailsView.addDetailView(detailView);
 			}
-		}
-	};
-
-	/**
-	 * Sort comparators.
-	 * @namespace OCA.Files.FileList.Comparators
-	 * @private
-	 */
-	FileList.Comparators = {
-		/**
-		 * Compares two file infos by name, making directories appear
-		 * first.
-		 *
-		 * @param {OC.Files.FileInfo} fileInfo1 file info
-		 * @param {OC.Files.FileInfo} fileInfo2 file info
-		 * @return {int} -1 if the first file must appear before the second one,
-		 * 0 if they are identify, 1 otherwise.
-		 */
-		name: function(fileInfo1, fileInfo2) {
-			if (fileInfo1.type === 'dir' && fileInfo2.type !== 'dir') {
-				return -1;
-			}
-			if (fileInfo1.type !== 'dir' && fileInfo2.type === 'dir') {
-				return 1;
-			}
-			return OC.Util.naturalSortCompare(fileInfo1.name, fileInfo2.name);
-		},
-		/**
-		 * Compares two file infos by size.
-		 *
-		 * @param {OC.Files.FileInfo} fileInfo1 file info
-		 * @param {OC.Files.FileInfo} fileInfo2 file info
-		 * @return {int} -1 if the first file must appear before the second one,
-		 * 0 if they are identify, 1 otherwise.
-		 */
-		size: function(fileInfo1, fileInfo2) {
-			return fileInfo1.size - fileInfo2.size;
-		},
-		/**
-		 * Compares two file infos by timestamp.
-		 *
-		 * @param {OC.Files.FileInfo} fileInfo1 file info
-		 * @param {OC.Files.FileInfo} fileInfo2 file info
-		 * @return {int} -1 if the first file must appear before the second one,
-		 * 0 if they are identify, 1 otherwise.
-		 */
-		mtime: function(fileInfo1, fileInfo2) {
-			return fileInfo1.mtime - fileInfo2.mtime;
 		}
 	};
 

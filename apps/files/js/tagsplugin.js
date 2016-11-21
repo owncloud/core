@@ -144,9 +144,10 @@
 			var oldCreateRow = fileList._createRow;
 			fileList._createRow = function(fileData) {
 				var $tr = oldCreateRow.apply(this, arguments);
-				if (fileData.tags) {
-					$tr.attr('data-tags', fileData.tags.join('|'));
-					if (fileData.tags.indexOf(OC.TAG_FAVORITE) >= 0) {
+				var tags = fileData.get('tags');
+				if (tags) {
+					$tr.attr('data-tags', tags.join('|'));
+					if (tags.indexOf(OC.TAG_FAVORITE) >= 0) {
 						$tr.attr('data-favorite', true);
 					}
 				}
