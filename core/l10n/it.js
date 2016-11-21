@@ -303,6 +303,7 @@ OC.L10N.register(
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "La sicurezza migliorata è stata abilitata per il tuo account. Autenticati utilizzando un secondo fattore.",
     "Cancel login" : "Annulla l'accesso",
     "Please authenticate using the selected factor." : "Autentica utilizzando il fattore selezionato.",
+    "An error occurred while verifying the token" : "Si è verificato un errore durante la verifica del token",
     "You are accessing the server from an untrusted domain." : "Stai accedendo al server da un dominio non attendibile.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Contatta il tuo amministratore di sistema. Se sei un amministratore di questa istanza, configura l'impostazione \"trusted_domains\" in config/config.php. Una configurazione di esempio è disponibile in config/config.sample.php.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "In base alla tua configurazione, come amministratore potrai utilizzare anche il pulsante in basso per rendere attendibile questo dominio.",
