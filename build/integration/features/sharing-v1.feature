@@ -993,7 +993,7 @@ Feature: sharing
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
 
-  Scenario: Adding public upload to a shared folder as recipient is not allowed
+  Scenario: Adding public upload to a read only shared folder as recipient is not allowed
     Given As an "admin"
     And user "user0" exists
     And user "user1" exists
@@ -1008,5 +1008,22 @@ Feature: sharing
     When Updating last share with
       | publicUpload | true |
     Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+
+  Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 31
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | publicUpload | false |
+    When Updating last share with
+      | publicUpload | true |
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
 
