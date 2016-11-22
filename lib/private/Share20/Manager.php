@@ -205,20 +205,17 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('Path should be either a file or a folder');
 		}
 
-		// And you can't share your rootfolder
+		$sharer = null;
 		if ($this->userManager->userExists($share->getSharedBy())) {
-			$sharedPath = $this->rootFolder->getUserFolder($share->getSharedBy())->getPath();
+			$sharer = $share->getSharedBy();
 		} else {
-			$sharedPath = $this->rootFolder->getUserFolder($share->getShareOwner())->getPath();
+			$sharer = $share->getShareOwner();
 		}
-		if ($sharedPath === $share->getNode()->getPath()) {
-			throw new \InvalidArgumentException('You can\'t share your root folder');
-		}
+		$sharerHome = $this->rootFolder->getUserFolder($sharer);
 
-		// Check if we actually have share permissions
-		if (!$share->getNode()->isShareable()) {
-			$message_t = $this->l->t('You are not allowed to share %s', [$share->getNode()->getPath()]);
-			throw new GenericShareException($message_t, $message_t, 404);
+		// And you can't share your rootfolder
+		if ($sharerHome->getPath() === $share->getNode()->getPath()) {
+			throw new \InvalidArgumentException('You can\'t share your root folder');
 		}
 
 		// Permissions should be set
@@ -226,12 +223,28 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('A share requires permissions');
 		}
 
+		// Actual permissions need to be taken from the user who is created the share.
+		// Note that the node inside the share is not guaranteed to be from the perspective
+		// of the sharer
+		$nodes = $sharerHome->getById($share->getNode()->getId());
+		// shared by user has no access to this node
+		if (empty($nodes)) {
+			throw new NotFoundException('Node with id ' . $share->getNode()->getId() . ' not found for user "' . $sharer . '"');
+		}
+		$node = current($nodes);
+		$permissions = $node->getPermissions();
+
+		// Check if we actually have share permissions
+		if (($permissions & \OCP\Constants::PERMISSION_SHARE) === 0) {
+			$message_t = $this->l->t('You are not allowed to share %s', [$share->getNode()->getPath()]);
+			throw new GenericShareException($message_t, $message_t, 404);
+		}
+
 		/*
 		 * Quick fix for #23536
 		 * Non moveable mount points do not have update and delete permissions
 		 * while we 'most likely' do have that on the storage.
 		 */
-		$permissions = $share->getNode()->getPermissions();
 		$mount = $share->getNode()->getMountPoint();
 		if (!($mount instanceof MoveableMount)) {
 			$permissions |= \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_UPDATE;
