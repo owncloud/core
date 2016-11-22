@@ -999,7 +999,7 @@ Feature: sharing
     And user "user1" exists
     And As an "user0"
     And user "user0" created a folder "/test"
-    And folder "/test" of user "user0" is shared with user "user1"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 17
     And As an "user1"
     And creating a share with
       | path | /test |
