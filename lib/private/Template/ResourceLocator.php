@@ -106,7 +106,7 @@ abstract class ResourceLocator {
 
 		$path = $this->buildPath([$root, $file]);
 		
-		if (!$this->contains($path) && is_file($path)) {
+		if (!isset( $this->resources[$path] ) && is_file($path)) {
 			$this->append($root, $file, $webRoot, false);
 			return true;
 		}
@@ -143,20 +143,6 @@ abstract class ResourceLocator {
 	 */
 	private function buildPath($parts){
 		return join(DIRECTORY_SEPARATOR, $parts);
-	}
-	
-	/**
-	 * check if resource is already in $this->resources
-	 *
-	 * @param string $path path to check
-	 * @return bool True if the resource is already in $this->resource, false otherwise
-	 */
-	protected function contains($path) {
-		if( isset( $this->resources[$path]) ){
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	/**

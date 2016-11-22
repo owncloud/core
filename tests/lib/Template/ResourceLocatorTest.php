@@ -15,27 +15,19 @@ class ResourceLocatorTest extends \Test\TestCase {
 	protected $logger;
 	protected static $jsResourcePath;
 
-	public static function setUpBeforeClass()
-	{
+	public static function setUpBeforeClass() {
 		self::$jsResourcePath = __DIR__ . '/jsresource.js';
 		$jsResource = fopen(self::$jsResourcePath, 'w');
 		fclose($jsResource);
 	}
 	
-	public static function tearDownAfterClass()
-	{
+	public static function tearDownAfterClass() {
 		unlink(self::$jsResourcePath);
 	}
 	
 	protected function setUp() {
 		parent::setUp();
 		$this->logger = $this->createMock('OCP\ILogger');
-		
-	}
-	
-	protected function tearDown() {
-		parent::tearDown();
-		
 	}
 
 	/**
