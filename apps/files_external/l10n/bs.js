@@ -6,7 +6,6 @@ OC.L10N.register(
     "Username" : "Korisničko ime",
     "Password" : "Lozinka",
     "Save" : "Spremi",
-    "None" : "Ništa",
     "Port" : "Priključak",
     "WebDAV" : "WebDAV",
     "Local" : "Lokalno",

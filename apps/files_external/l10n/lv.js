@@ -8,7 +8,6 @@ OC.L10N.register(
     "Username" : "Lietotājvārds",
     "Password" : "Parole",
     "Save" : "Saglabāt",
-    "None" : "Nav",
     "Port" : "Ports",
     "WebDAV" : "WebDAV",
     "URL" : "URL",

@@ -6,7 +6,6 @@ OC.L10N.register(
     "Username" : "පරිශීලක නම",
     "Password" : "මුර පදය",
     "Save" : "සුරකින්න",
-    "None" : "කිසිවක් නැත",
     "Port" : "තොට",
     "Region" : "කළාපය",
     "URL" : "URL",

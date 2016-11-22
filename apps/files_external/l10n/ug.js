@@ -6,7 +6,6 @@ OC.L10N.register(
     "Username" : "ئىشلەتكۈچى ئاتى",
     "Password" : "ئىم",
     "Save" : "ساقلا",
-    "None" : "يوق",
     "Port" : "ئېغىز",
     "WebDAV" : "WebDAV",
     "URL" : "URL",

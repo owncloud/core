@@ -5,7 +5,6 @@ OC.L10N.register(
     "Username" : "Enw defnyddiwr",
     "Password" : "Cyfrinair",
     "Save" : "Cadw",
-    "None" : "Dim",
     "URL" : "URL",
     "Location" : "Lleoliad",
     "ownCloud" : "ownCloud",

@@ -17,7 +17,6 @@ OC.L10N.register(
     "Save" : "Запазване",
     "Storage with id \"%i\" not found" : "Хранилище с име \"%i\" не е намерено",
     "Invalid mount point" : "Невалиден път за мониторане на файлова система",
-    "None" : "Няма",
     "App key" : "App key",
     "App secret" : "App secret",
     "Client ID" : "Client ID",

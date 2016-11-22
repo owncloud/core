@@ -13,7 +13,6 @@ OC.L10N.register(
     "Password" : "Slaptažodis",
     "Save" : "Išsaugoti",
     "%s" : "%s",
-    "None" : "Nieko",
     "OpenStack" : "OpenStack",
     "API key" : "API raktas",
     "Public key" : "Viešasis raktas",

@@ -18,7 +18,6 @@ OC.L10N.register(
     "Storage with id \"%i\" not found" : "No s'ha trobat emmagatzematge amb id \"%i\"",
     "Invalid mount point" : "Punt de muntatge no vàlid",
     "Invalid storage backend \"%s\"" : "Motor d'emmagatzematge no vàlid \"%s\"",
-    "None" : "Cap",
     "App key" : "Clau de l'aplicació",
     "App secret" : "Secret de l'aplicació",
     "Client ID" : "Client ID",
