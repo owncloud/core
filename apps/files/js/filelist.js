@@ -1722,56 +1722,58 @@
 		 * @param etag file etag (for caching)
 		 */
 		lazyLoadPreview : function(options) {
-			var self = this;
-			var path = options.path;
 			var mime = options.mime;
 			var ready = options.callback;
-			var etag = options.etag;
 
 			// get mime icon url
 			var iconURL = OC.MimeType.getIconUrl(mime);
-			var previewURL,
-				urlSpec = {};
 			ready(iconURL); // set mimeicon URL
 
-			urlSpec.file = OCA.Files.Files.fixPath(path);
-			if (options.x) {
-				urlSpec.x = options.x;
-			}
-			if (options.y) {
-				urlSpec.y = options.y;
-			}
-			if (options.a) {
-				urlSpec.a = options.a;
-			}
-			if (options.mode) {
-				urlSpec.mode = options.mode;
-			}
-
-			if (etag){
-				// use etag as cache buster
-				urlSpec.c = etag;
-			}
-
-			previewURL = self.generatePreviewUrl(urlSpec);
-			previewURL = previewURL.replace('(', '%28');
-			previewURL = previewURL.replace(')', '%29');
-
-			// preload image to prevent delay
-			// this will make the browser cache the image
-			var img = new Image();
-			img.onload = function(){
-				// if loading the preview image failed (no preview for the mimetype) then img.width will < 5
-				if (img.width > 5) {
-					ready(previewURL, img);
-				} else if (options.error) {
-					options.error();
+			if (mime.indexOf("text") === 0 || mime.indexOf("image") === 0){
+				var self = this;
+				var path = options.path;
+				var etag = options.etag;
+				var previewURL,
+					urlSpec = {};
+				urlSpec.file = OCA.Files.Files.fixPath(path);
+				if (options.x) {
+					urlSpec.x = options.x;
 				}
-			};
-			if (options.error) {
-				img.onerror = options.error;
+				if (options.y) {
+					urlSpec.y = options.y;
+				}
+				if (options.a) {
+					urlSpec.a = options.a;
+				}
+				if (options.mode) {
+					urlSpec.mode = options.mode;
+				}
+
+				if (etag){
+					// use etag as cache buster
+					urlSpec.c = etag;
+				}
+
+				previewURL = self.generatePreviewUrl(urlSpec);
+				previewURL = previewURL.replace('(', '%28');
+				previewURL = previewURL.replace(')', '%29');
+
+				// preload image to prevent delay
+				// this will make the browser cache the image
+				var img = new Image();
+				img.onload = function(){
+					// if loading the preview image failed (no preview for the mimetype) then img.width will < 5
+					if (img.width > 5) {
+						ready(previewURL, img);
+					} else if (options.error) {
+						options.error();
+					}
+				};
+				if (options.error) {
+					img.onerror = options.error;
+				}
+				img.src = previewURL;
 			}
-			img.src = previewURL;
 		},
 
 		/**
