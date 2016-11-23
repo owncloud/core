@@ -1,4 +1,6 @@
 { "translations": {
+    "Username" : "Хэрэглэгчийн нэр",
+    "Password" : "Нууц үг",
     "Authentication error" : "Нотолгооны алдаа"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

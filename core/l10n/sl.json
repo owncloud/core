@@ -301,6 +301,7 @@
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Za račun je omogočena povečana varnost. Račun overite z uporabo drugega faktorja.",
     "Cancel login" : "Prekliči prijavo",
     "Please authenticate using the selected factor." : "Overite z uporabo izbranega faktorja.",
+    "An error occurred while verifying the token" : "Prišlo je do napake med preverjanjem žetona",
     "You are accessing the server from an untrusted domain." : "Trenutno je vzpostavljena povezava s strežnikom preko ne-varne domene.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Stopite v stik s skrbnikom ali pa nastavite možnost \"varna_domena\" v datoteki config/config.php. Primer nastavitve je razložen v datoteki config/config.sample.php.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Glede na nastavitve bi lahko kot skrbnik uporabili spodnji gumb in domeno ročno določili kot varno.",

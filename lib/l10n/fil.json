@@ -1,5 +1,7 @@
 { "translations": {
     "seconds ago" : "(na) segundo ang nakalipas",
+    "Username" : "Username",
+    "Password" : "Password",
     "Help" : "Tulong"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

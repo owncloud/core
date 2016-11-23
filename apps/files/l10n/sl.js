@@ -34,6 +34,7 @@ OC.L10N.register(
     "Delete" : "Izbriši",
     "Disconnect storage" : "Odklopi shrambo",
     "Unshare" : "Prekini souporabo",
+    "Could not load info for file \"{file}\"" : "Ni mogoče naložiti podrobnosti za datoteko »{file}«",
     "Details" : "Podrobnosti",
     "Select" : "Izberi",
     "Pending" : "V čakanju ...",

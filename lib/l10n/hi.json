@@ -1,4 +1,6 @@
 { "translations": {
+    "Username" : "उपभोक्ता  का नाम",
+    "Password" : "पासवर्ड",
     "Apps" : "Apps",
     "Help" : "सहयोग",
     "Personal" : "यक्तिगत",
