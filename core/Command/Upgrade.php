@@ -196,7 +196,7 @@ class Upgrade extends Command {
 				$output->writeln('<info>Maintenance mode is kept active</info>');
 			});
 			$updater->listen('\OC\Updater', 'updateEnd',
-				function ($success) use($output, $updateStepEnabled, $self) {
+				function ($success) use($output) {
 					if ($success) {
 						$message = "<info>Update successful</info>";
 					} else {
