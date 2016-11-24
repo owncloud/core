@@ -157,7 +157,8 @@ $array = [
 		]
 	),
 	"oc_appconfig" => json_encode(
-			["core" => [
+		[
+			"core" => [
 				'defaultExpireDateEnabled' => $defaultExpireDateEnabled,
 				'defaultExpireDate' => $defaultExpireDate,
 				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
@@ -168,9 +169,9 @@ $array = [
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,
 				'federatedCloudShareDoc' => \OC::$server->getURLGenerator()->linkToDocs('user-sharing-federated'),
 				'allowGroupSharing' => \OC::$server->getShareManager()->allowGroupSharing(),
-                'previewsEnabled' => \OC::$server->getConfig()->getSystemValue('enable_previews', true) === true,
+				'previewsEnabled' => \OC::$server->getConfig()->getSystemValue('enable_previews', true) === true,
 			]
-			]
+		]
 	),
 	"oc_defaults" => json_encode(
 		[
