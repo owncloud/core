@@ -589,39 +589,10 @@ abstract class NodeTest extends \Test\TestCase {
 
 	public function testMoveSameStorage() {
 		/**
-		 * @var \OC\Files\Mount\Manager $manager
-		 */
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
-		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
 		$root = $this->createMock('\OC\Files\Node\Root');
-
-		$hooksRun = 0;
-		/**
-		 * @param \OC\Files\Node\File $node
-		 */
-		$preListener = function ($node) use (&$hooksRun) {
-			$test->assertInstanceOf($this->nodeClass, $node);
-			$test->assertEquals('foo', $node->getInternalPath());
-			$test->assertEquals('/bar/foo', $node->getPath());
-			$test->assertEquals(1, $node->getId());
-			$hooksRun++;
-		};
-
-		/**
-		 * @param \OC\Files\Node\File $node
-		 */
-		$postListener = function ($node) use (&$hooksRun) {
-			$test->assertInstanceOf($this->nonExistingNodeClass, $node);
-			$test->assertEquals('foo', $node->getInternalPath());
-			$test->assertEquals('/bar/foo', $node->getPath());
-			$test->assertEquals(1, $node->getId());
-			$test->assertEquals('text/plain', $node->getMimeType());
-			$hooksRun++;
-		};
 
 		$view->expects($this->any())
 			->method('rename')
@@ -635,19 +606,108 @@ abstract class NodeTest extends \Test\TestCase {
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
 
+		$targetTestNode = $this->createTestNode($root, $view, '/bar/asd');
+
 		$root->expects($this->any())
 			->method('get')
-			->will($this->returnValueMap([['/bar', $parentNode], ['/bar/asd', $node]]));
-
-		$root->listen('\OC\Files', 'preDelete', $preListener);
-		$root->listen('\OC\Files', 'postDelete', $postListener);
+			->will($this->returnValueMap([['/bar', $parentNode], ['/bar/asd', $targetTestNode]]));
 
 		$target = $node->move('/bar/asd');
 		$this->assertInstanceOf($this->nodeClass, $target);
 		$this->assertEquals(1, $target->getId());
 		$this->assertEquals('/bar/asd', $node->getPath());
+	}
 
-		$this->assertEquals(2, $hooksRun);
+	public function moveOrCopyProvider() {
+		return [
+			['move', 'rename', 'preRename', 'postRename'],
+			['copy', 'copy', 'preCopy', 'postCopy'],
+		];
+	}
+
+	/**
+	 * @dataProvider moveOrCopyProvider
+	 */
+	public function testMoveCopyHooks($operationMethod, $viewMethod, $preHookName, $postHookName) {
+		/**
+		 * @var \OC\Files\Mount\Manager $manager
+		 */
+		$manager = $this->createMock('\OC\Files\Mount\Manager');
+		/**
+		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->createMock('\OC\Files\View');
+		$root = $this->getMockBuilder('\OC\Files\Node\Root')
+			->setConstructorArgs([$manager, $view, $this->user])
+			->setMethods(['get'])
+			->getMock();
+
+		$view->expects($this->any())
+			->method($viewMethod)
+			->with('/bar/foo', '/bar/asd')
+			->will($this->returnValue(true));
+
+		$view->expects($this->any())
+			->method('getFileInfo')
+			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
+
+		$node = $this->createTestNode($root, $view, '/bar/foo');
+		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
+		$targetTestNode = $this->createTestNode($root, $view, '/bar/asd');
+
+		$root->expects($this->any())
+			->method('get')
+			->will($this->returnValueMap([['/bar', $parentNode], ['/bar/asd', $targetTestNode]]));
+
+		$hooksRun = 0;
+		/**
+		 * @param \OC\Files\Node\File $node
+		 */
+		$preListener = function ($sourceNode, $targetNode) use (&$hooksRun, $node) {
+			$this->assertSame($node, $sourceNode);
+			$this->assertInstanceOf($this->nodeClass, $sourceNode);
+			$this->assertInstanceOf($this->nonExistingNodeClass, $targetNode);
+			$this->assertEquals('/bar/asd', $targetNode->getPath());
+			$hooksRun++;
+		};
+
+		/**
+		 * @param \OC\Files\Node\File $node
+		 */
+		$postListener = function ($sourceNode, $targetNode) use (&$hooksRun, $node, $targetTestNode) {
+			$this->assertSame($node, $sourceNode);
+			$this->assertNotSame($node, $targetNode);
+			$this->assertSame($targetTestNode, $targetNode);
+			$this->assertInstanceOf($this->nodeClass, $sourceNode);
+			$this->assertInstanceOf($this->nodeClass, $targetNode);
+			$hooksRun++;
+		};
+
+		/**
+		 * @param \OC\Files\Node\File $node
+		 */
+		$preWriteListener = function ($targetNode) use (&$hooksRun) {
+			$this->assertInstanceOf($this->nonExistingNodeClass, $targetNode);
+			$this->assertEquals('/bar/asd', $targetNode->getPath());
+			$hooksRun++;
+		};
+
+		/**
+		 * @param \OC\Files\Node\File $node
+		 */
+		$postWriteListener = function ($targetNode) use (&$hooksRun, $targetTestNode) {
+			$this->assertSame($targetTestNode, $targetNode);
+			$hooksRun++;
+		};
+
+		$root->listen('\OC\Files', $preHookName, $preListener);
+		$root->listen('\OC\Files', 'preWrite', $preWriteListener);
+		$root->listen('\OC\Files', $postHookName, $postListener);
+		$root->listen('\OC\Files', 'postWrite', $postWriteListener);
+
+		$target = $node->$operationMethod('/bar/asd');
+
+		$this->assertEquals(4, $hooksRun);
 	}
 
 	/**
