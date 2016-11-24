@@ -61,12 +61,11 @@ class FileTest extends NodeTest {
 	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetContentNotPermitted() {
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
-		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
+		$root = $this->createMock('\OC\Files\Node\Root');
 
 		$root->expects($this->any())
 			->method('getUser')
@@ -82,12 +81,11 @@ class FileTest extends NodeTest {
 	}
 
 	public function testPutContent() {
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
-		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
+		$root = $this->createMock('\OC\Files\Node\Root');
 
 		$root->expects($this->any())
 			->method('getUser')
@@ -111,12 +109,11 @@ class FileTest extends NodeTest {
 	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testPutContentNotPermitted() {
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
-		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
+		$root = $this->createMock('\OC\Files\Node\Root');
 
 		$view->expects($this->once())
 			->method('getFileInfo')
@@ -128,12 +125,11 @@ class FileTest extends NodeTest {
 	}
 
 	public function testGetMimeType() {
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->createMock('\OC\Files\View');
-		$root = $this->createMock('\OC\Files\Node\Root', [], [$manager, $view, $this->user]);
+		$root = $this->createMock('\OC\Files\Node\Root');
 
 		$view->expects($this->once())
 			->method('getFileInfo')
