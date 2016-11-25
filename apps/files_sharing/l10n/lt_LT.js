@@ -6,7 +6,7 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user server" : "Neleidžiama dalintis tarp serverių, nes vartotojas tame pačiame serveryje.",
     "Invalid or untrusted SSL certificate" : "Netinkamas arba nepatikimas SSL sertifikatas",
     "Could not authenticate to remote share, password might be wrong" : "Nepavyko identifikuotis serveryje, gal netinkamas slaptažodis",
-    "Storage not valid" : "Talpykla negalioja",
+    "Storage not valid" : "Saugykla negalioja",
     "Couldn't add remote share" : "Nepavyko pridėti nutolusio dalijimosi",
     "Shared with you" : "Pasidalinta su tavimi",
     "Shared with others" : "Pasidalinta su kitais",

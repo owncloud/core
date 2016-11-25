@@ -1,4 +1,5 @@
 { "translations": {
+    "Storage is temporarily not available" : "Saugykla yra laikinai neprieinama",
     "Storage invalid" : "Saugykla neteisinga",
     "Unknown error" : "Neatpažinta klaida",
     "Files" : "Failai",

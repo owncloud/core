@@ -12,6 +12,7 @@ OC.L10N.register(
     "Username" : "Prisijungimo vardas",
     "Password" : "Slaptažodis",
     "Save" : "Išsaugoti",
+    "Storage with id \"%i\" not found" : "Saugykla, kurios id \"%i\" nerasta",
     "%s" : "%s",
     "OpenStack" : "OpenStack",
     "API key" : "API raktas",
@@ -35,13 +36,16 @@ OC.L10N.register(
     "Share" : "Dalintis",
     "Domain" : "Domenas",
     "<b>Note:</b> " : "<b>Užrašai:</b> ",
+    "You can add external storages in the personal settings" : "Jūs galite pridėti išorines saugyklas asmeniniuose nustatymuose",
     "Name" : "Pavadinimas",
+    "Storage type" : "Saugyklos tipas",
     "Enable encryption" : "Įjungti šifravimą",
     "Never" : "Niekada",
     "External Storage" : "Išorinės saugyklos",
     "Folder name" : "Katalogo pavadinimas",
     "Configuration" : "Konfigūracija",
     "Add storage" : "Pridėti saugyklą",
-    "Delete" : "Ištrinti"
+    "Delete" : "Ištrinti",
+    "Allow users to mount external storage" : "Leisti naudotojams prijungti išorines saugyklas"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");
