@@ -31,10 +31,6 @@ use OC\Files\FileInfo;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
-use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
-use OCA\DAV\Connector\Sabre\Exception\FileLocked;
-use OCP\Files\ForbiddenException;
-use OCP\Lock\LockedException;
 
 /**
  * This plugin is responsible for interconnecting three components of the OC server:
@@ -138,7 +134,7 @@ class BundlingPlugin extends ServerPlugin {
 		//Update the content handler of the bundle body
 		$this->contentHandler = $this->getContentHandler($this->request);
 
-		$multipleRequestsData = $this->parseBundleHeader();
+		$multipleRequestsData = $this->parseBundleMetadata();
 
 		//Process bundle and send a multistatus response
 		$result = $this->processBundle($multipleRequestsData);
@@ -149,7 +145,6 @@ class BundlingPlugin extends ServerPlugin {
 	/**
 	 * Check multipart headers.
 	 *
-	 * @throws /Sabre\DAV\Exception\BadRequest
 	 * @throws /Sabre\DAV\Exception\Forbidden
 	 * @return void
 	 */
@@ -166,9 +161,9 @@ class BundlingPlugin extends ServerPlugin {
 		foreach ($headers as $header) {
 			$value = $this->request->getHeader($header);
 			if ($value === null) {
-				throw new BadRequest(sprintf('%s header is needed', $header));
+				throw new Forbidden(sprintf('%s header is needed', $header));
 			} elseif (!is_int($value) && empty($value)) {
-				throw new BadRequest(sprintf('%s header must not be empty', $header));
+				throw new Forbidden(sprintf('%s header must not be empty', $header));
 			}
 		}
 
@@ -180,7 +175,7 @@ class BundlingPlugin extends ServerPlugin {
 		$contentType = trim($contentParts[0]);
 		$expectedContentType = 'multipart/related';
 		if ($contentType != $expectedContentType) {
-			throw new BadRequest(sprintf(
+			throw new Forbidden(sprintf(
 				'Content-Type must be %s',
 				$expectedContentType
 			));
@@ -190,7 +185,7 @@ class BundlingPlugin extends ServerPlugin {
 		$boundaryPart = trim($contentParts[1]);
 		$shouldStart = 'boundary=';
 		if (substr($boundaryPart, 0, strlen($shouldStart)) != $shouldStart) {
-			throw new BadRequest('Boundary is not set');
+			throw new Forbidden('Boundary is not set');
 		}
 		$boundary = substr($boundaryPart, strlen($shouldStart));
 		if (substr($boundary, 0, 1) == '"' && substr($boundary, -1) == '"') {
@@ -202,19 +197,13 @@ class BundlingPlugin extends ServerPlugin {
 	/**
 	 * Parses multipart contents and send appropriete response
 	 *
-	 * @throws \Sabre\DAV\Exception\BadRequest
+	 * @throws \Sabre\DAV\Exception\Forbidden
 	 *
 	 * @return array $multipleRequestsData
 	 */
-	private function parseBundleHeader() {
+	private function parseBundleMetadata() {
 		$multipleRequestsData = array();
 		try {
-			//get multipart header for one of the contents
-			if ($this->contentHandler->getEndDelimiterReached()){
-				//endDelimiter reached, break
-				return $multipleRequestsData;
-			}
-
 			// Verify metadata part headers
 			$bundleMetadata = null;
 			try{
@@ -243,22 +232,31 @@ class BundlingPlugin extends ServerPlugin {
 			$bundleMetadataBody = $this->contentHandler->streamReadToString($bundleMetadata['content-length']);
 
 			$bundleMetadataBody = preg_replace("/xmlns(:[A-Za-z0-9_])?=(\"|\')DAV:(\"|\')/","xmlns\\1=\"urn:DAV\"",$bundleMetadataBody);
+
+			//Try to load xml
 			$xml = simplexml_load_string($bundleMetadataBody);
-			unset($bundleMetadataBody);
+			if (false === $xml) {
+				$mlerror = libxml_get_errors();
+				throw new \Exception('Bundle metadata contains incorrect xml structure. Unable to parse whole bundle request');
+			}
 			$xml->registerXPathNamespace('d','urn:DAV');
+			unset($bundleMetadataBody);
 
 			if(1 != count($xml->xpath('/d:multipart'))){
-				throw new \Exception('Bundle metadata does not contain d:multipart children element. Unable to parse whole bundle request');
+				throw new \Exception('Bundle metadata does not contain d:multipart children elements');
 			}
 
-			foreach ($xml->xpath('/d:multipart/d:part/d:prop') as $prop) {
+			$fileMetadataObjectXML = $xml->xpath('/d:multipart/d:part/d:prop');
+
+			if(0 == count($fileMetadataObjectXML)){
+				throw new \Exception('Bundle metadata does not contain d:multipart/d:part/d:prop children elements');
+			}
+
+			foreach ($fileMetadataObjectXML as $prop) {
 				$fileMetadata = get_object_vars($prop->children('d', TRUE));
-				$headers = array('oc-path', 'oc-mtime', 'oc-id', 'oc-total-length');
-				foreach ($headers as $header) {
-					if (in_array($header,$fileMetadata) && (count($fileMetadata->{$header} == 1))) {
-						throw new \Exception($header.' header is needed in the bundle metadata for each file. Unable to parse whole bundle request');
-					}
-				}
+
+				// if any of the field is not contained,
+				// bthe try-catch clausule will raise Undefined index exception
 				$contentID = intval($fileMetadata['oc-id']);
 				if(array_key_exists($contentID, $multipleRequestsData)){
 					throw new \Exception('One or more files have the same Content-ID '.$contentID.'. Unable to parse whole bundle request');
@@ -269,7 +267,8 @@ class BundlingPlugin extends ServerPlugin {
 				$multipleRequestsData[$contentID]['response'] = null;
 			}
 		} catch (\Exception $e) {
-			throw new BadRequest($e->getMessage());
+			libxml_clear_errors();
+			throw new Forbidden($e->getMessage());
 		}
 		return $multipleRequestsData;
 	}
@@ -303,43 +302,10 @@ class BundlingPlugin extends ServerPlugin {
 			$fileMetadata = $multipleRequestsData[$fileID];
 
 			$filePath = $fileMetadata['oc-path'];
-
-			if ($this->server->tree->nodeExists($filePath)) {
-				//set error response for that object
-				$exc = new BadRequest('Method not allowed - file exists - update of the file is not supported!');
-				$multipleRequestsData[$fileID]['response'] = $this->handleFileMultiStatusError($filePath, $exc);
-				continue;
-			}
-
+			
 			list($folderPath, $fileName) = URLUtil::splitPath($filePath);
 
-			if ($folderPath === ''){
-				$fullFolderPath = $this->userFilesHome;
-			}
-			else{
-				$fullFolderPath = $this->userFilesHome . '/' . $folderPath;
-			}
-
-			// For non-chunked upload it is enough to check if we can create a new file in a parent folder
-			if (!isset($this->cacheValidParents[$folderPath])){
-				$this->cacheValidParents[$folderPath] = ($this->server->tree->nodeExists($fullFolderPath) && $this->fileView->isCreatable($folderPath));
-			}
-
-			if (!$this->cacheValidParents[$folderPath]) {
-				$exc = new BadRequest('File creation on not existing or without creation permission parent folder is not permitted');
-				$multipleRequestsData[$fileID]['response'] = $this->handleFileMultiStatusError($filePath, $exc);
-				continue;
-			}
-
 			try {
-				# the check here is necessary, because createFile uses put covered in sabre/file.php
-				# and not touch covered in files/view.php
-				if (\OC\Files\Filesystem::isForbiddenFileOrDir($fileName)) {
-					throw new \Sabre\DAV\Exception\Forbidden();
-				}
-
-				$this->fileView->verifyPath($folderPath, $fileName);
-				
 				//get absolute path of the file
 				$absoluteFilePath = $this->fileView->getAbsolutePath($folderPath) . '/' . $fileName;
 				$info = new FileInfo($absoluteFilePath, null, null, array(), null);
@@ -348,11 +314,13 @@ class BundlingPlugin extends ServerPlugin {
 				$properties = $node->putFile($fileMetadata);
 				$multipleRequestsData[$fileID]['response'] = $this->handleFileMultiStatus($filePath, $properties);
 			} catch (\Exception $exc) {
+				//TODO: This should not be BadRequest! This should be any exception - how to do it carefully?
 				$exc = new BadRequest($exc->getMessage());
 				$multipleRequestsData[$fileID]['response'] = $this->handleFileMultiStatusError($filePath, $exc);
 				continue;
 			}
 
+			//TODO: do we need to unlock file if putFile failed? In this version we dont (does continue)
 			//release lock as in dav/lib/Connector/Sabre/LockPlugin.php
 			$node->releaseLock(ILockingProvider::LOCK_SHARED);
 			$this->server->tree->markDirty($filePath);
@@ -381,7 +349,7 @@ class BundlingPlugin extends ServerPlugin {
 	 *
 	 * @return array $entry
 	 */
-	protected function handleFileMultiStatusError($ocPath, $exc){
+	private function handleFileMultiStatusError($ocPath, $exc){
 		$status = $exc->getHTTPCode();
 		$entry['href'] = $this->userFilesHome;
 		$entry[$status]['{DAV:}error']['{http://sabredav.org/ns}exception'] = get_class($exc);
@@ -395,7 +363,7 @@ class BundlingPlugin extends ServerPlugin {
 	 *
 	 * @return array $entry
 	 */
-	protected function handleFileMultiStatus($ocPath, $properties){
+	private function handleFileMultiStatus($ocPath, $properties){
 		$entry['href'] = $this->userFilesHome;
 		$entry[200] = $properties;
 		$entry[200]['{DAV:}oc-path'] = $ocPath;
@@ -408,7 +376,7 @@ class BundlingPlugin extends ServerPlugin {
 	 * @param  RequestInterface $request
 	 * @return \OCA\DAV\Files\MultipartContentsParser
 	 */
-	protected function getContentHandler(RequestInterface $request) {
+	private function getContentHandler(RequestInterface $request) {
 		if ($this->contentHandler === null) {
 			return new MultipartContentsParser($request);
 		}

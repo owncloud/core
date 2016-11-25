@@ -21,10 +21,6 @@
 
 namespace OCA\DAV\Files;
 
-use OC\Files\Storage\Local;
-use OCP\Files\ForbiddenException;
-use Test\HookHelper;
-use OC\Files\Filesystem;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -53,14 +49,6 @@ class BundledFileTest extends \Test\TestCase {
 		$userManager->createUser($this->user, 'pass');
 
 		$this->loginAsUser($this->user);
-	}
-
-	public function tearDown() {
-		$userManager = \OC::$server->getUserManager();
-		$userManager->get($this->user)->delete();
-		unset($_SERVER['HTTP_OC_CHUNKED']);
-
-		parent::tearDown();
 	}
 
 	/* TESTS */
@@ -123,6 +111,14 @@ class BundledFileTest extends \Test\TestCase {
 		return $storage;
 	}
 
+	public function tearDown() {
+		$userManager = \OC::$server->getUserManager();
+		$userManager->get($this->user)->delete();
+		unset($_SERVER['HTTP_OC_CHUNKED']);
+
+		parent::tearDown();
+	}
+
 	/**
 	 * @param string $string
 	 */
@@ -134,11 +130,14 @@ class BundledFileTest extends \Test\TestCase {
 	}
 
 	/**
-	 * TODO:
+	 * Do basic put for single bundled file
 	 */
-	private function doPutFIle($fileMetadata, $contentHandler, $viewRoot = null) {
+	private function doPutFIle($fileMetadata, $contentHandler, $view = null, $viewRoot = null) {
 		$path = $fileMetadata['oc-path'];
-		$view = \OC\Files\Filesystem::getView();
+
+		if(is_null($view)){
+			$view = \OC\Files\Filesystem::getView();
+		}
 		if (!is_null($viewRoot)) {
 			$view = new \OC\Files\View($viewRoot);
 		} else {

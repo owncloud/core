@@ -81,19 +81,22 @@ class BundledFile extends File {
 	 */
 	public function putFile($data) {
 		$properties = array();
-		try {
-			$exists = $this->fileView->file_exists($this->path);
-			if ($this->info && $exists) {
-				throw new Forbidden('Bundling not supported for already existing files');
-			}
-		} catch (StorageNotAvailableException $e) {
-			throw new ServiceUnavailable("File is not updatable: " . $e->getMessage());
-		}
 
 		if (!isset($data['oc-total-length'])) {
 			//this should not happen, since upper layer takes care of that
 			//Thus, return Forbidden as sign of code inconsistency
 			throw new Forbidden('File requires oc-total-length header to be read');
+		}
+
+		try {
+			$exists = $this->fileView->file_exists($this->path);
+			if ($this->info && $exists) {
+				$this->contentHandler->multipartContentSeekToContentLength($data['oc-total-length']);
+				throw new Forbidden('Bundling not supported for already existing files');
+			}
+		} catch (StorageNotAvailableException $e) {
+			$this->contentHandler->multipartContentSeekToContentLength($data['oc-total-length']);
+			throw new ServiceUnavailable("StorageNotAvailableException raised");
 		}
 
 		// verify path of the target
@@ -108,9 +111,10 @@ class BundledFile extends File {
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		try {
 			$target = $partStorage->fopen($internalPartPath, 'wb');
-			if ($target === false) {
+			if ($target === false || $target === null) {
 				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
+				$this->contentHandler->multipartContentSeekToContentLength($data['oc-total-length']);
 				throw new Exception('Could not write file contents');
 			}
 
@@ -170,7 +174,6 @@ class BundledFile extends File {
 			}
 
 			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest();
 			if (isset($data['oc-mtime'])) {
 				if ($this->fileView->touch($this->path, $data['oc-mtime'])) {
 					$properties['{DAV:}oc-mtime'] = 'accepted';
