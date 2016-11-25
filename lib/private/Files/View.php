@@ -1144,12 +1144,15 @@ class View {
 				$unlockLater = false;
 				if ($this->lockingEnabled && $operation === 'fopen' && is_resource($result)) {
 					$unlockLater = true;
-					$result = CallbackWrapper::wrap($result, null, null, function () use ($hooks, $path) {
+					// create additional reference to avoid PHP 7's hungry GC to discard it too early...
+					$normalizedPathCache = \OC\Files\Filesystem::$normalizedPathCache;
+					$result = CallbackWrapper::wrap($result, null, null, function () use ($hooks, $path, &$normalizedPathCache) {
 						if (in_array('write', $hooks)) {
 							$this->unlockFile($path, ILockingProvider::LOCK_EXCLUSIVE);
 						} else if (in_array('read', $hooks)) {
 							$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
 						}
+						$normalizedPathCache = null;
 					});
 				}
 

@@ -81,7 +81,7 @@ class Filesystem {
 
 	static private $usersSetup = array();
 
-	static private $normalizedPathCache = null;
+	static public $normalizedPathCache = null;
 
 	static private $listeningForProviders = false;
 
