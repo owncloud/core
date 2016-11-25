@@ -67,4 +67,15 @@ class Mount extends MountPoint implements MoveableMount {
 	public function removeMount() {
 		return $this->manager->removeShare($this->mountPoint);
 	}
+
+	/**
+	 * Returns true
+	 * 
+	 * @param string $target unused
+	 * @return bool true
+	 */
+	public function isTargetAllowed($target) {
+		// note: home storage check already done in View
+		return true;
+	}
 }
