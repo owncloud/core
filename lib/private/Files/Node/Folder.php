@@ -31,6 +31,16 @@ use OCP\Files\NotPermittedException;
 
 class Folder extends Node implements \OCP\Files\Folder {
 	/**
+	 * Creates a Folder that represents a non-existing path
+	 *
+	 * @param string $path path
+	 * @return string non-existing node class
+	 */
+	protected function createNonExistingNode($path) {
+		return new NonExistingFolder($this->root, $this->view, $path);
+	}
+
+	/**
 	 * @param string $path path relative to the folder
 	 * @return string
 	 * @throws \OCP\Files\NotPermittedException
@@ -298,51 +308,6 @@ class Folder extends Node implements \OCP\Files\Folder {
 			$this->exists = false;
 		} else {
 			throw new NotPermittedException('No delete permission for path ' . $this->getFullPath($this->path));
-		}
-	}
-
-	/**
-	 * @param string $targetPath
-	 * @throws \OCP\Files\NotPermittedException
-	 * @return \OC\Files\Node\Node
-	 */
-	public function copy($targetPath) {
-		$targetPath = $this->normalizePath($targetPath);
-		$parent = $this->root->get(dirname($targetPath));
-		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
-			$nonExisting = new NonExistingFolder($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preCopy', [$this, $nonExisting]);
-			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
-			$this->view->copy($this->path, $targetPath);
-			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postCopy', [$this, $targetNode]);
-			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
-			return $targetNode;
-		} else {
-			throw new NotPermittedException('No permission to copy to path ' . $targetPath);
-		}
-	}
-
-	/**
-	 * @param string $targetPath
-	 * @throws \OCP\Files\NotPermittedException
-	 * @return \OC\Files\Node\Node
-	 */
-	public function move($targetPath) {
-		$targetPath = $this->normalizePath($targetPath);
-		$parent = $this->root->get(dirname($targetPath));
-		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
-			$nonExisting = new NonExistingFolder($this->root, $this->view, $targetPath);
-			$this->root->emit('\OC\Files', 'preRename', [$this, $nonExisting]);
-			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
-			$this->view->rename($this->path, $targetPath);
-			$targetNode = $this->root->get($targetPath);
-			$this->root->emit('\OC\Files', 'postRename', [$this, $targetNode]);
-			$this->root->emit('\OC\Files', 'postWrite', [$targetNode]);
-			$this->path = $targetPath;
-			return $targetNode;
-		} else {
-			throw new NotPermittedException('No permission to move to path ' . $targetPath);
 		}
 	}
 
