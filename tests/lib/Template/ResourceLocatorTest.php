@@ -9,25 +9,32 @@
 namespace Test\Template;
 
 use OC\Template\ResourceNotFoundException;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamWrapper;
 
 class ResourceLocatorTest extends \Test\TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $logger;
-	protected static $jsResourcePath;
-
-	public static function setUpBeforeClass() {
-		self::$jsResourcePath = __DIR__ . '/jsresource.js';
-		$jsResource = fopen(self::$jsResourcePath, 'w');
-		fclose($jsResource);
-	}
+	protected $root;
 	
-	public static function tearDownAfterClass() {
-		unlink(self::$jsResourcePath);
-	}
+	protected $filenames = [
+		'test1.js',
+		'test2.js'
+	];
 	
 	protected function setUp() {
 		parent::setUp();
 		$this->logger = $this->createMock('OCP\ILogger');
+		
+		vfsStreamWrapper::register();
+		$root = vfsStream::newDirectory('resources');
+		vfsStreamWrapper::setRoot($root);
+		
+		$file = vfsStream::newFile($this->filenames[0]);
+		$root->addChild($file);
+		
+		$file = vfsStream::newFile($this->filenames[1]);
+		$root->addChild($file);
 	}
 
 	/**
@@ -86,11 +93,14 @@ class ResourceLocatorTest extends \Test\TestCase {
 	}
 
 	public function testAppendOnceIfExist() {
-		$locator = $this->getResourceLocator('theme',
-			[__DIR__=>'map'], ['3rd'=>'party'], ['foo'=>'bar']);
+		
 		/** @var \OC\Template\ResourceLocator $locator */
+		$locator = $this->getResourceLocator('theme',
+			[__DIR__=>'map'], [vfsStream::url('resources')=>'party'], ['foo'=>'bar']);
+		
 		$method = new \ReflectionMethod($locator, 'appendOnceIfExist');
 		$method->setAccessible(true);
+
 
 		$method->invoke($locator, __DIR__, basename(__FILE__), 'webroot');
 		$resource1 = [__DIR__, 'webroot', basename(__FILE__)];
@@ -102,8 +112,21 @@ class ResourceLocatorTest extends \Test\TestCase {
 		$method->invoke($locator, __DIR__, 'does-not-exist');
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 		
-		$method->invoke($locator, __DIR__, 'jsresource.js');
-		$resource2 = [__DIR__, 'map', 'jsresource.js'];
-		$this->assertEquals([__FILE__ => $resource1, self::$jsResourcePath => $resource2], $locator->getResources());
+		
+		$method->invoke($locator, vfsStream::url('resources'), $this->filenames[0]);
+		$resource2 = [vfsStream::url('resources'), 'party', $this->filenames[0]];
+		$this->assertEquals([
+				__FILE__ => $resource1,
+				vfsStream::url('resources') . '/' . $this->filenames[0] => $resource2
+		], $locator->getResources());
+		
+		$method->invoke($locator, vfsStream::url('resources'), $this->filenames[1]);
+		$resource3 = [vfsStream::url('resources'), 'party', $this->filenames[1]];
+		$this->assertEquals([
+				__FILE__ => $resource1,
+				vfsStream::url('resources') . '/' . $this->filenames[0] => $resource2,
+				vfsStream::url('resources') . '/' . $this->filenames[1] => $resource3
+		], $locator->getResources());
 	}
 }
+
