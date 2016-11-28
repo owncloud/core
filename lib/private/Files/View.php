@@ -422,14 +422,20 @@ class View {
 	public function readfile($path) {
 		$this->assertPathLength($path);
 		@ob_end_clean();
+		\OCP\Util::writeLog('DEBUG', 'readfile: fopen', \OCP\Util::DEBUG);
 		$handle = $this->fopen($path, 'rb');
 		if ($handle) {
 			$chunkSize = 8192; // 8 kB chunks
+			\OCP\Util::writeLog('DEBUG', 'readfile: before loop', \OCP\Util::DEBUG);
 			while (!feof($handle)) {
 				echo fread($handle, $chunkSize);
 				flush();
 			}
+			\OCP\Util::writeLog('DEBUG', 'readfile: after loop, preparing to fclose', \OCP\Util::DEBUG);
+			fclose($handle);
+			\OCP\Util::writeLog('DEBUG', 'readfile: fclose called', \OCP\Util::DEBUG);
 			$size = $this->filesize($path);
+			\OCP\Util::writeLog('DEBUG', 'readfile: got filesize: ' . $size, \OCP\Util::DEBUG);
 			return $size;
 		}
 		return false;
@@ -446,11 +452,14 @@ class View {
 	public function readfilePart($path, $from, $to) {
 		$this->assertPathLength($path);
 		@ob_end_clean();
+		\OCP\Util::writeLog('DEBUG', 'readfilePart: fopen', \OCP\Util::DEBUG);
 		$handle = $this->fopen($path, 'rb');
 		if ($handle) {
+			\OCP\Util::writeLog('DEBUG', 'readfilePart: fseek', \OCP\Util::DEBUG);
 			if (fseek($handle, $from) === 0) {
 				$chunkSize = 8192; // 8 kB chunks
 				$end = $to + 1;
+				\OCP\Util::writeLog('DEBUG', 'readfilePart: before loop', \OCP\Util::DEBUG);
 				while (!feof($handle) && ftell($handle) < $end) {
 					$len = $end - ftell($handle);
 					if ($len > $chunkSize) {
@@ -459,7 +468,11 @@ class View {
 					echo fread($handle, $len);
 					flush();
 				}
+				\OCP\Util::writeLog('DEBUG', 'readfilePart: after loop', \OCP\Util::DEBUG);
 				$size = ftell($handle) - $from;
+				\OCP\Util::writeLog('DEBUG', 'readfilePart: preparing to fclose', \OCP\Util::DEBUG);
+				fclose($handle);
+				\OCP\Util::writeLog('DEBUG', 'readfile: fclose called', \OCP\Util::DEBUG);
 				return $size;
 			}
 
@@ -1144,7 +1157,10 @@ class View {
 				$unlockLater = false;
 				if ($this->lockingEnabled && $operation === 'fopen' && is_resource($result)) {
 					$unlockLater = true;
+					\OCP\Util::writeLog('DEBUG', 'before registering callback: ' . json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50), JSON_UNESCAPED_SLASHES), \OCP\Util::DEBUG);
 					$result = CallbackWrapper::wrap($result, null, null, function () use ($hooks, $path) {
+						$backtrace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50), JSON_UNESCAPED_SLASHES);
+						\OCP\Util::writeLog('DEBUG', 'in callback: ' . $backtrace, \OCP\Util::DEBUG);
 						if (in_array('write', $hooks)) {
 							$this->unlockFile($path, ILockingProvider::LOCK_EXCLUSIVE);
 						} else if (in_array('read', $hooks)) {
