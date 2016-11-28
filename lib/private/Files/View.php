@@ -430,10 +430,14 @@ class View {
 			\OCP\Util::writeLog('DEBUG', 'readfile: before loop', \OCP\Util::DEBUG);
 			while (!feof($handle)) {
 				echo fread($handle, $chunkSize);
-				flush();
+				// keep the last flush for after fclose
+				if (!feof($handle)) {
+					flush();
+				}
 			}
 			\OCP\Util::writeLog('DEBUG', 'readfile: after loop, preparing to fclose', \OCP\Util::DEBUG);
 			fclose($handle);
+			flush();
 			\OCP\Util::writeLog('DEBUG', 'readfile: fclose called', \OCP\Util::DEBUG);
 			$size = $this->filesize($path);
 			\OCP\Util::writeLog('DEBUG', 'readfile: got filesize: ' . $size, \OCP\Util::DEBUG);
@@ -468,12 +472,16 @@ class View {
 						$len = $chunkSize;
 					}
 					echo fread($handle, $len);
-					flush();
+					// keep the last flush for after fclose
+					if (!feof($handle)) {
+						flush();
+					}
 				}
 				\OCP\Util::writeLog('DEBUG', 'readfilePart: after loop', \OCP\Util::DEBUG);
 				$size = ftell($handle) - $from;
 				\OCP\Util::writeLog('DEBUG', 'readfilePart: preparing to fclose', \OCP\Util::DEBUG);
 				fclose($handle);
+				flush();
 				\OCP\Util::writeLog('DEBUG', 'readfile: fclose called', \OCP\Util::DEBUG);
 				return $size;
 			}
