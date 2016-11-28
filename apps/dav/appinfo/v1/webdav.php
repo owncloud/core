@@ -38,14 +38,21 @@ $serverFactory = new \OCA\DAV\Connector\Sabre\ServerFactory(
 	\OC::$server->getRequest()
 );
 
+if (strpos(\OC::$server->getRequest()->getHeader('Authorization'), 'Bearer') !== false) {
+	// OAuth 2.0
+	$authBackend = new \OCA\DAV\Connector\Sabre\OAuth2();
+} else {
+	// Basic Auth
+	$authBackend = new \OCA\DAV\Connector\Sabre\Auth(
+		\OC::$server->getSession(),
+		\OC::$server->getUserSession(),
+		\OC::$server->getRequest(),
+		\OC::$server->getTwoFactorAuthManager(),
+		'principals/'
+	);
+}
+
 // Backends
-$authBackend = new \OCA\DAV\Connector\Sabre\Auth(
-	\OC::$server->getSession(),
-	\OC::$server->getUserSession(),
-	\OC::$server->getRequest(),
-	\OC::$server->getTwoFactorAuthManager(),
-	'principals/'
-);
 $requestUri = \OC::$server->getRequest()->getRequestUri();
 
 $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function() {
