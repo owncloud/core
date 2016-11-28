@@ -420,6 +420,7 @@ class View {
 	 * @throws \OCP\Files\InvalidPathException
 	 */
 	public function readfile($path) {
+		ignore_user_abort();
 		$this->assertPathLength($path);
 		@ob_end_clean();
 		\OCP\Util::writeLog('DEBUG', 'readfile: fopen', \OCP\Util::DEBUG);
@@ -450,6 +451,7 @@ class View {
 	 * @throws \OCP\Files\UnseekableException
 	 */
 	public function readfilePart($path, $from, $to) {
+		ignore_user_abort();
 		$this->assertPathLength($path);
 		@ob_end_clean();
 		\OCP\Util::writeLog('DEBUG', 'readfilePart: fopen', \OCP\Util::DEBUG);
