@@ -29,6 +29,7 @@ OC.L10N.register(
     "Delete" : "Poista",
     "Disconnect storage" : "Katkaise yhteys tallennustilaan",
     "Unshare" : "Peru jakaminen",
+    "Could not load info for file \"{file}\"" : "Tietojen lataaminen tiedoston \"{file}\" osalta epäonnistui",
     "Details" : "Tiedot",
     "Select" : "Valitse",
     "Pending" : "Odottaa",
