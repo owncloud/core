@@ -1,6 +1,9 @@
 <?php
 
 namespace OCA\DAV\Connector\Sabre;
+use OCA\OAuth2\Db\AccessTokenMapper;
+use OCP\AppFramework\App;
+use OCP\AppFramework\Db\DoesNotExistException;
 
 /**
  * ownCloud - dav_oauth2
@@ -36,12 +39,22 @@ class OAuth2 extends AbstractBearer {
 	 * @return null|string
 	 */
 	protected function determineUsername($token) {
-		// TODO: Check tokens in database
+		if (empty($token)) {
+			return null;
+		}
 
-		if ($token === "2YotnFZFEjr1zCsicMWpAA") {
-			\OC_Util::setupFS("admin");
-			return "admin";
-		} else {
+		$app = new App('oauth2');
+		$container = $app->getContainer();
+		$accessTokenMapper = new AccessTokenMapper($container->query('ServerContainer')->getDb());
+
+		try {
+			$accessToken = $accessTokenMapper->find($token);
+			$username = $accessToken->getUserId();
+
+			\OC_Util::setupFS($username);
+
+			return $username;
+		} catch (DoesNotExistException $exception) {
 			return null;
 		}
 	}
