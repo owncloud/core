@@ -131,6 +131,12 @@ if ($_['fileLockingType'] === 'none') {
 		<?php print_unescaped($l->t('Transactional file locking is disabled, this might lead to issues with race conditions. Enable \'filelocking.enabled\' in config.php to avoid these problems. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
 	</li>
 	<?php
+} else if ($_['fileLockingType'] === 'db') {
+	?>
+	<li>
+		<?php print_unescaped($l->t('Transactional file locking should be configured to use memory-based locking, not the default slow database-based locking. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
+	</li>
+	<?php
 }
 
 // is locale working ?
@@ -172,6 +178,14 @@ if ($_['databaseOverload']) {
 	</li>
 
 <?php
+}
+if ($_['backgroundjobs_mode'] !== "cron") {
+	?>
+	<li>
+		<?php p($l->t('We recommend to enable system cron as any other cron method has possible performance and reliability implications.')); ?><br>
+	</li>
+
+	<?php
 }
 
 if ($_['cronErrors']) {
