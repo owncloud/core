@@ -158,9 +158,10 @@ class ShareesController extends OCSController  {
 		}
 
 		$foundUserById = false;
+		$lowerSearch = strtolower($search);
 		foreach ($users as $uid => $userDisplayName) {
-			if (strtolower($uid) === strtolower($search) || strtolower($userDisplayName) === strtolower($search)) {
-				if (strtolower($uid) === strtolower($search)) {
+			if (strtolower($uid) === $lowerSearch || strtolower($userDisplayName) === $lowerSearch) {
+				if (strtolower($uid) === $lowerSearch) {
 					$foundUserById = true;
 				}
 				$this->result['exact']['users'][] = [
@@ -218,7 +219,7 @@ class ShareesController extends OCSController  {
 		$this->result['groups'] = $this->result['exact']['groups'] = [];
 
 		$groups = $this->groupManager->search($search, $this->limit, $this->offset);
-		$groups = array_map(function (IGroup $group) { return $group->getGID(); }, $groups);
+		$groupIds = array_map(function (IGroup $group) { return $group->getGID(); }, $groups);
 
 		if (!$this->shareeEnumeration || sizeof($groups) < $this->limit) {
 			$this->reachedEndFor[] = 'groups';
@@ -229,13 +230,19 @@ class ShareesController extends OCSController  {
 			// Intersect all the groups that match with the groups this user is a member of
 			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser());
 			$userGroups = array_map(function (IGroup $group) { return $group->getGID(); }, $userGroups);
-			$groups = array_intersect($groups, $userGroups);
+			$groupIds = array_intersect($groupIds, $userGroups);
 		}
 
-		foreach ($groups as $gid) {
-			if (strtolower($gid) === strtolower($search)) {
+		$lowerSearch = strtolower($search);
+		foreach ($groups as $group) {
+			// FIXME: use a more efficient approach
+			$gid = $group->getGID();
+			if (!in_array($gid, $groupIds)) {
+				continue;
+			}
+			if (strtolower($gid) === $lowerSearch || strtolower($group->getDisplayName()) === $lowerSearch) {
 				$this->result['exact']['groups'][] = [
-					'label' => $gid,
+					'label' => $group->getDisplayName(),
 					'value' => [
 						'shareType' => Share::SHARE_TYPE_GROUP,
 						'shareWith' => $gid,
@@ -243,7 +250,7 @@ class ShareesController extends OCSController  {
 				];
 			} else {
 				$this->result['groups'][] = [
-					'label' => $gid,
+					'label' => $group->getDisplayName(),
 					'value' => [
 						'shareType' => Share::SHARE_TYPE_GROUP,
 						'shareWith' => $gid,
@@ -258,7 +265,7 @@ class ShareesController extends OCSController  {
 			$group = $this->groupManager->get($search);
 			if ($group instanceof IGroup && (!$this->shareWithGroupOnly || in_array($group->getGID(), $userGroups))) {
 				array_push($this->result['exact']['groups'], [
-					'label' => $group->getGID(),
+					'label' => $group->getDisplayName(),
 					'value' => [
 						'shareType' => Share::SHARE_TYPE_GROUP,
 						'shareWith' => $group->getGID(),
@@ -292,10 +299,11 @@ class ShareesController extends OCSController  {
 				if (!is_array($cloudIds)) {
 					$cloudIds = [$cloudIds];
 				}
+				$lowerSearch = strtolower($search);
 				foreach ($cloudIds as $cloudId) {
 					list(, $serverUrl) = $this->splitUserRemote($cloudId);
-					if (strtolower($contact['FN']) === strtolower($search) || strtolower($cloudId) === strtolower($search)) {
-						if (strtolower($cloudId) === strtolower($search)) {
+					if (strtolower($contact['FN']) === $lowerSearch || strtolower($cloudId) === $lowerSearch) {
+						if (strtolower($cloudId) === $lowerSearch) {
 							$foundRemoteById = true;
 						}
 						$this->result['exact']['remotes'][] = [
