@@ -29,6 +29,7 @@
 namespace OC;
 
 use OCP\IAppConfig;
+use OCP\ICache;
 use OCP\IDBConnection;
 
 /**
@@ -41,28 +42,20 @@ class AppConfig implements IAppConfig {
 	 */
 	protected $conn;
 
-	private $cache = [];
+	/**
+	 * @var \OCP\ICache
+	 */
+	private $cache;
+
+	private $ttl = 300;
 
 	/**
 	 * @param IDBConnection $conn
+	 * @param ICache $cache
 	 */
-	public function __construct(IDBConnection $conn) {
+	public function __construct(IDBConnection $conn, ICache $cache) {
 		$this->conn = $conn;
-		$this->configLoaded = false;
-	}
-
-	/**
-	 * @param string $app
-	 * @return array
-	 */
-	private function getAppValues($app) {
-		$this->loadConfigValues();
-
-		if (isset($this->cache[$app])) {
-			return $this->cache[$app];
-		}
-
-		return [];
+		$this->cache = $cache;
 	}
 
 	/**
@@ -74,9 +67,20 @@ class AppConfig implements IAppConfig {
 	 * entry in the appconfig table.
 	 */
 	public function getApps() {
-		$this->loadConfigValues();
+		$result = $this->cache->get('apps');
+		if (empty($result)) {
+			$sql = $this->conn->getQueryBuilder();
+			$sql->selectDistinct('appid')
+				->from('appconfig')
+				->orderBy('appid');
+			$query = $sql->execute();
 
-		return $this->getSortedKeys($this->cache);
+			$result = $query->fetchAll();
+			$query->closeCursor();
+
+			$this->cache->set('apps', $result, $this->ttl);
+		}
+		return $result;
 	}
 
 	/**
@@ -89,19 +93,23 @@ class AppConfig implements IAppConfig {
 	 * not returned.
 	 */
 	public function getKeys($app) {
-		$this->loadConfigValues();
+		$result = $this->cache->get('keysbyapp:'.$app);
+		if (empty($result)) {
+			$sql = $this->conn->getQueryBuilder();
+			$sql->selectDistinct('configvalue')
+				->from('appconfig')
+				->where($sql->expr()->eq(
+					'appid', $sql->createNamedParameter($app)
+				))
+				->orderBy('configvalue');
+			$query = $sql->execute();
 
-		if (isset($this->cache[$app])) {
-			return $this->getSortedKeys($this->cache[$app]);
+			$result = $query->fetchAll();
+			$query->closeCursor();
+
+			$this->cache->set('apps', $result, $this->ttl);
 		}
-
-		return [];
-	}
-
-	public function getSortedKeys($data) {
-		$keys = array_keys($data);
-		sort($keys);
-		return $keys;
+		return $result;
 	}
 
 	/**
@@ -116,10 +124,27 @@ class AppConfig implements IAppConfig {
 	 * not exist the default value will be returned
 	 */
 	public function getValue($app, $key, $default = null) {
-		$this->loadConfigValues();
+		if ($this->cache->hasKey($app.':'.$key)) {
+			return $this->cache->get($app.':'.$key);
+		} else {
+			$sql = $this->conn->getQueryBuilder();
+			$sql->select('configvalue')
+				->from('appconfig')
+				->where($sql->expr()->eq(
+					'appid', $sql->createNamedParameter($app)
+				))
+				->andWhere($sql->expr()->eq(
+					'configkey', $sql->createNamedParameter($key)
+				));
+			$query = $sql->execute();
 
-		if ($this->hasKey($app, $key)) {
-			return $this->cache[$app][$key];
+			$result = $query->fetchColumn();
+			$query->closeCursor();
+
+			if ($result !== false) {
+				$this->cache->set($app.':'.$key, $result, $this->ttl);
+				return $result;
+			}
 		}
 
 		return $default;
@@ -133,9 +158,31 @@ class AppConfig implements IAppConfig {
 	 * @return bool
 	 */
 	public function hasKey($app, $key) {
-		$this->loadConfigValues();
+		if ($this->cache->hasKey($app.':'.$key)) {
+			return true;
+		} else {
+			$sql = $this->conn->getQueryBuilder();
+			$sql->select('configvalue')
+				->from('appconfig')
+				->where($sql->expr()->eq(
+					'appid', $sql->createNamedParameter($app)
+				))
+				->andWhere($sql->expr()->eq(
+					'configkey', $sql->createNamedParameter($key)
+				));
+			$query = $sql->execute();
 
-		return isset($this->cache[$app][$key]);
+			$result = $query->fetchColumn();
+			$query->closeCursor();
+
+			if ($result !== false) {
+				$this->cache->set($app.':'.$key, $result, $this->ttl);
+				return true;
+			} else {
+				return false;
+			}
+
+		}
 	}
 
 	/**
@@ -158,23 +205,22 @@ class AppConfig implements IAppConfig {
 			]);
 
 			if ($inserted) {
-				if (!isset($this->cache[$app])) {
-					$this->cache[$app] = [];
-				}
-
-				$this->cache[$app][$key] = $value;
+				$this->cache->set($app.':'.$key, $value, $this->ttl);
+				$this->cache->clear('valuesbykey:'.$key);
+				$this->cache->clear('valuesbyapp:'.$app);
 				return true;
 			}
 		}
 
-		$sql = $this->conn->getQueryBuilder();
-		$sql->update('appconfig')
-			->set('configvalue', $sql->createParameter('configvalue'))
-			->where($sql->expr()->eq('appid', $sql->createParameter('app')))
-			->andWhere($sql->expr()->eq('configkey', $sql->createParameter('configkey')))
-			->setParameter('configvalue', $value)
-			->setParameter('app', $app)
-			->setParameter('configkey', $key);
+		$query = $this->conn->getQueryBuilder();
+		$query->update('appconfig')
+			->set('configvalue', $query->createNamedParameter($value))
+			->where($query->expr()->eq(
+				'appid', $query->createNamedParameter($app)
+			))
+			->andWhere($query->expr()->eq(
+				'configkey', $query->createNamedParameter($key)
+			));
 
 		/*
 		 * Only limit to the existing value for non-Oracle DBs:
@@ -183,13 +229,16 @@ class AppConfig implements IAppConfig {
 		 */
 		if (!($this->conn instanceof \OC\DB\OracleConnection)) {
 			// Only update the value when it is not the same
-			$sql->andWhere($sql->expr()->neq('configvalue', $sql->createParameter('configvalue')))
-				->setParameter('configvalue', $value);
+			$query->andWhere($query->expr()->neq(
+				'configvalue', $query->createNamedParameter($value)
+			));
 		}
 
-		$changedRow = (bool) $sql->execute();
+		$changedRow = (bool) $query->execute();
 
-		$this->cache[$app][$key] = $value;
+		$this->cache->set($app.':'.$key, $value, $this->ttl);
+		$this->cache->clear('valuesbykey:'.$key);
+		$this->cache->clear('valuesbyapp:'.$app);
 
 		return $changedRow;
 	}
@@ -202,17 +251,20 @@ class AppConfig implements IAppConfig {
 	 * @return boolean|null
 	 */
 	public function deleteKey($app, $key) {
-		$this->loadConfigValues();
 
 		$sql = $this->conn->getQueryBuilder();
 		$sql->delete('appconfig')
-			->where($sql->expr()->eq('appid', $sql->createParameter('app')))
-			->andWhere($sql->expr()->eq('configkey', $sql->createParameter('configkey')))
-			->setParameter('app', $app)
-			->setParameter('configkey', $key);
+			->where($sql->expr()->eq(
+				'appid', $sql->createNamedParameter($app)
+			))
+			->andWhere($sql->expr()->eq(
+				'configkey', $sql->createNamedParameter($key)
+			));
 		$sql->execute();
 
-		unset($this->cache[$app][$key]);
+		$this->cache->remove($app.':'.$key);
+		$this->cache->clear('valuesbykey:'.$key);
+		$this->cache->clear('valuesbyapp:');
 	}
 
 	/**
@@ -224,19 +276,22 @@ class AppConfig implements IAppConfig {
 	 * Removes all keys in appconfig belonging to the app.
 	 */
 	public function deleteApp($app) {
-		$this->loadConfigValues();
 
 		$sql = $this->conn->getQueryBuilder();
 		$sql->delete('appconfig')
-			->where($sql->expr()->eq('appid', $sql->createParameter('app')))
-			->setParameter('app', $app);
+			->where($sql->expr()->eq(
+				'appid', $sql->createNamedParameter($app)
+			));
 		$sql->execute();
 
-		unset($this->cache[$app]);
+		$this->cache->clear($app);
+		$this->cache->clear('valuesbykey:');
+		$this->cache->clear('valuesbyapp:'.$app);
 	}
 
 	/**
-	 * get multiple values, either the app or key can be used as wildcard by setting it to false
+	 * get multiple values, either the app or key can be used as wildcard by
+	 * setting it to false
 	 *
 	 * @param string|false $app
 	 * @param string|false $key
@@ -248,42 +303,46 @@ class AppConfig implements IAppConfig {
 		}
 
 		if ($key === false) {
-			return $this->getAppValues($app);
-		} else {
-			$appIds = $this->getApps();
-			$values = array_map(function($appId) use ($key) {
-				return isset($this->cache[$appId][$key]) ? $this->cache[$appId][$key] : null;
-			}, $appIds);
-			$result = array_combine($appIds, $values);
+			$result = $this->cache->get('valuesbyapp:'.$app);
+			if (empty($result)) {
+				$sql = $this->conn->getQueryBuilder();
+				$sql->select(['configkey', 'configvalue'])
+					->from('appconfig')
+					->where($sql->expr()->eq(
+						'appid', $sql->createNamedParameter($app)
+					));
+				$query = $sql->execute();
 
-			return array_filter($result);
-		}
-	}
+				$result = [];
+				while ($row = $query->fetch()) {
+					$result[$row['configkey']] = $row['configvalue'];
+				}
+				$query->closeCursor();
 
-	/**
-	 * Load all the app config values
-	 */
-	protected function loadConfigValues() {
-		if ($this->configLoaded) return;
-
-		$this->cache = [];
-
-		$sql = $this->conn->getQueryBuilder();
-		$sql->select('*')
-			->from('appconfig');
-		$result = $sql->execute();
-
-		// we are going to store the result in memory anyway
-		$rows = $result->fetchAll();
-		foreach ($rows as $row) {
-			if (!isset($this->cache[$row['appid']])) {
-				$this->cache[$row['appid']] = [];
+				$this->cache->set('valuesbyapp:' . $app, $result, $this->ttl);
 			}
+			return $result;
+		} else {
+			$result = $this->cache->get('valuesbykey:'.$key);
+			if (empty($result)) {
+				$sql = $this->conn->getQueryBuilder();
+				$sql->select(['appid', 'configvalue'])
+					->from('appconfig')
+					->where($sql->expr()->eq(
+						'configkey', $sql->createNamedParameter($key)
+					));
+				$query = $sql->execute();
 
-			$this->cache[$row['appid']][$row['configkey']] = $row['configvalue'];
+				$result = [];
+				while ($row = $query->fetch()) {
+					$result[$row['appid']] = $row['configvalue'];
+				}
+				$query->closeCursor();
+
+				$this->cache->set('valuesbykey:' . $key, $result, $this->ttl);
+			}
+			return $result;
 		}
-		$result->closeCursor();
-
-		$this->configLoaded = true;
 	}
+
 }
