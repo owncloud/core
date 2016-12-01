@@ -40,7 +40,7 @@ class SecurityWarning implements ISettings {
 	}
 
     public function getPriority() {
-        return 0;
+        return 1000;
     }
 
     public function getPanel() {
