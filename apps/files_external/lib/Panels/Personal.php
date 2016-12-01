@@ -19,7 +19,8 @@ class Personal implements ISettings {
     public function getPanel() {
 		// we must use the same container
 		$appContainer = \OC_Mount_Config::$app->getContainer();
-		$backendService = $appContainer->query('OCA\Files_External\Service\BackendService');
+		/** @var \OCP\Files\External\IStoragesBackendService $backendService */
+		$backendService = \OC::$server->query('StoragesBackendService');
 		$userStoragesService = $appContainer->query('OCA\Files_External\Service\UserStoragesService');
 		$tmpl = new Template('files_external', 'settings');
 		$tmpl->assign('encryptionEnabled', \OC::$server->getEncryptionManager()->isEnabled());
@@ -29,7 +30,7 @@ class Personal implements ISettings {
 		$tmpl->assign('backends', $backendService->getAvailableBackends());
 		$tmpl->assign('authMechanisms', $backendService->getAuthMechanisms());
 		$tmpl->assign('allowUserMounting', $backendService->isUserMountingAllowed());
-        return $tmpl;
+		return $tmpl;
     }
 
 }

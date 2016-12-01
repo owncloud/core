@@ -225,7 +225,7 @@ class SettingsManager implements ISettingsManager {
             FileSharing::class => new FileSharing(),
             Logging::class => new Logging($this->config, $this->urlGenerator),
             Mail::class => new Mail($this->config),
-            SecurityWarning::class => new SecurityWarning(),
+            SecurityWarning::class => new SecurityWarning($this->l, $this->config),
             Tips::class => new Tips(),
             Updater::class => new Updater(),
             LegacyAdmin::class => new LegacyAdmin(),
