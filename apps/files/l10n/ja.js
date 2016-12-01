@@ -34,6 +34,7 @@ OC.L10N.register(
     "Delete" : "削除",
     "Disconnect storage" : "ストレージを切断する",
     "Unshare" : "共有解除",
+    "Could not load info for file \"{file}\"" : "ファイル \"{file}\" の情報を読み込めませんでした",
     "Details" : "詳細",
     "Select" : "選択",
     "Pending" : "中断",

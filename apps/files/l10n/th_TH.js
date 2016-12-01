@@ -34,6 +34,7 @@ OC.L10N.register(
     "Delete" : "ลบ",
     "Disconnect storage" : "ยกเลิกการเชื่อมต่อการจัดเก็บข้อมูล",
     "Unshare" : "ยกเลิกการแชร์",
+    "Could not load info for file \"{file}\"" : "ไม่สามารถโหลดข้อมูลของไฟล์ \"{file}\"",
     "Details" : "รายละเอียด",
     "Select" : "เลือก",
     "Pending" : "อยู่ระหว่างดำเนินการ",
