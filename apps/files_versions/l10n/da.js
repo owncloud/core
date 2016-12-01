@@ -4,6 +4,7 @@ OC.L10N.register(
     "Could not revert: %s" : "Kunne ikke genskabe: %s",
     "Versions" : "Versioner",
     "Failed to revert {file} to revision {timestamp}." : "Kunne ikke tilbagerulle {file} til den tidligere udgave: {timestamp}.",
+    "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Restore" : "Gendan",
     "No other versions available" : "Ingen andre versioner tilgængelig",
     "More versions..." : "Flere versioner..."

@@ -18,7 +18,6 @@ OC.L10N.register(
     "Storage with id \"%i\" not found" : "\"%i\"-li depo tapılmadı",
     "Invalid mount point" : "Yalnış mount nöqtəsi",
     "Invalid storage backend \"%s\"" : "Yalnış depo arxasonu \"%s\"",
-    "None" : "Heç bir",
     "App key" : "Proqram açarı",
     "App secret" : "Proqram sirri",
     "Client ID" : "Müştəri İD-s",

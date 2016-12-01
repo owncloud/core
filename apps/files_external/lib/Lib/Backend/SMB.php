@@ -21,22 +21,20 @@
 
 namespace OCA\Files_External\Lib\Backend;
 
-use \OCP\IL10N;
-use \OCA\Files_External\Lib\Backend\Backend;
-use \OCA\Files_External\Lib\DefinitionParameter;
-use \OCA\Files_External\Lib\Auth\AuthMechanism;
-use \OCA\Files_External\Service\BackendService;
-use \OCA\Files_External\Lib\StorageConfig;
-use \OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
+use OCP\IL10N;
+use OCP\Files\External\DefinitionParameter;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\IStorageConfig;
+use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 
-use \OCA\Files_External\Lib\Auth\Password\Password;
 use OCP\IUser;
 
 class SMB extends Backend {
 
 	use LegacyDependencyCheckPolyfill;
 
-	public function __construct(IL10N $l, Password $legacyAuth) {
+	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('smb')
 			->addIdentifierAlias('\OC\Files\Storage\SMB') // legacy compat
@@ -51,7 +49,6 @@ class SMB extends Backend {
 					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
 			])
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD)
-			->setLegacyAuthMechanism($legacyAuth)
 		;
 	}
 
@@ -59,7 +56,7 @@ class SMB extends Backend {
 	 * @param StorageConfig $storage
 	 * @param IUser $user
 	 */
-	public function manipulateStorageConfig(StorageConfig &$storage, IUser $user = null) {
+	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
 		$user = $storage->getBackendOption('user');
 		if ($domain = $storage->getBackendOption('domain')) {
 			$storage->setBackendOption('user', $domain.'\\'.$user);

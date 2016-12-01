@@ -21,16 +21,15 @@
 
 namespace OCA\Files_External\Lib\Backend;
 
-use \OCP\IL10N;
-use \OCA\Files_External\Lib\Backend\Backend;
-use \OCA\Files_External\Lib\DefinitionParameter;
-use \OCA\Files_External\Lib\Auth\AuthMechanism;
-use \OCA\Files_External\Service\BackendService;
-use \OCA\Files_External\Lib\Auth\NullMechanism;
+use OCP\IL10N;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\DefinitionParameter;
+use OCP\Files\External\IStoragesBackendService;
 
 class Local extends Backend {
 
-	public function __construct(IL10N $l, NullMechanism $legacyAuth) {
+	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('local')
 			->addIdentifierAlias('\OC\Files\Storage\Local') // legacy compat
@@ -39,10 +38,9 @@ class Local extends Backend {
 			->addParameters([
 				(new DefinitionParameter('datadir', $l->t('Location'))),
 			])
-			->setAllowedVisibility(BackendService::VISIBILITY_ADMIN)
-			->setPriority(BackendService::PRIORITY_DEFAULT + 50)
+			->setAllowedVisibility(IStoragesBackendService::VISIBILITY_ADMIN)
+			->setPriority(IStoragesBackendService::PRIORITY_DEFAULT + 50)
 			->addAuthScheme(AuthMechanism::SCHEME_NULL)
-			->setLegacyAuthMechanism($legacyAuth)
 		;
 	}
 

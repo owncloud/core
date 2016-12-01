@@ -34,6 +34,7 @@ OC.L10N.register(
     "Delete" : "Fshije",
     "Disconnect storage" : "Shkëpute depozitën",
     "Unshare" : "Hiqe ndarjen",
+    "Could not load info for file \"{file}\"" : "S’u ngarkuan dot të dhëna ose kartelë \"{file}\"",
     "Details" : "Hollësi",
     "Select" : "Përzgjidhe",
     "Pending" : "Në pritje",

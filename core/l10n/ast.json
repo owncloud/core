@@ -295,7 +295,6 @@
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Habilitóse pa la so cuenta la seguridá ameyorada. Por favor autentica por aciu d'un segundu factor.",
     "Cancel login" : "Encaboxar aniciu de sesión",
     "Please authenticate using the selected factor." : "Por favor autentificate usando'l factor escoyíu.",
-    "An error occured while verifying the token" : "Hebo un fallu mientres se verificaba'l token",
     "You are accessing the server from an untrusted domain." : "Tas accediendo al sirvidor dende un dominiu non confiáu.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Por favor, contauta col alministrador. Si yes l'alministrador d'esta instancia, configura l'axuste \"trusted_domain\" en config/config.php. Hai un exemplu en config/config.sample.php.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Dependiendo la so configuración , como administrador también puedes utilizar el botón d'abaxu p'afitar esti dominiu.",

@@ -7,7 +7,6 @@ OC.L10N.register(
     "Username" : "إسم المستخدم",
     "Password" : "كلمة السر",
     "Save" : "حفظ",
-    "None" : "لا شيء",
     "App key" : "مفتاح التطبيق",
     "App secret" : "التطبيق السري",
     "Bucket" : "الحزمة",

@@ -7,7 +7,6 @@ OC.L10N.register(
     "Username" : "მომხმარებლის სახელი",
     "Password" : "პაროლი",
     "Save" : "შენახვა",
-    "None" : "არა",
     "API key" : "API გასაღები",
     "Port" : "პორტი",
     "Region" : "რეგიონი",

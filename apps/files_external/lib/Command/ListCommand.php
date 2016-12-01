@@ -24,9 +24,9 @@ namespace OCA\Files_External\Command;
 
 use OC\Core\Command\Base;
 use OC\User\NoUserException;
-use OCA\Files_External\Lib\StorageConfig;
-use OCA\Files_External\Service\GlobalStoragesService;
-use OCA\Files_External\Service\UserStoragesService;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\Files\External\Service\IUserStoragesService;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use Symfony\Component\Console\Helper\Table;
@@ -37,12 +37,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ListCommand extends Base {
 	/**
-	 * @var GlobalStoragesService
+	 * @var IGlobalStoragesService
 	 */
 	protected $globalService;
 
 	/**
-	 * @var UserStoragesService
+	 * @var IUserStoragesService
 	 */
 	protected $userService;
 
@@ -58,7 +58,7 @@ class ListCommand extends Base {
 
 	const ALL = -1;
 
-	function __construct(GlobalStoragesService $globalService, UserStoragesService $userService, IUserSession $userSession, IUserManager $userManager) {
+	function __construct(IGlobalStoragesService $globalService, IUserStoragesService $userService, IUserSession $userSession, IUserManager $userManager) {
 		parent::__construct();
 		$this->globalService = $globalService;
 		$this->userService = $userService;
@@ -95,14 +95,14 @@ class ListCommand extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		if ($input->getOption('all')) {
-			/** @var  $mounts StorageConfig[] */
+			/** @var  $mounts IStorageConfig[] */
 			$mounts = $this->globalService->getStorageForAllUsers();
 			$userId = self::ALL;
 		} else {
 			$userId = $input->getArgument('user_id');
 			$storageService = $this->getStorageService($userId);
 
-			/** @var  $mounts StorageConfig[] */
+			/** @var  $mounts IStorageConfig[] */
 			$mounts = $storageService->getAllStorages();
 		}
 
@@ -111,7 +111,7 @@ class ListCommand extends Base {
 
 	/**
 	 * @param $userId $userId
-	 * @param StorageConfig[] $mounts
+	 * @param IStorageConfig[] $mounts
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 */
@@ -159,7 +159,7 @@ class ListCommand extends Base {
 				return strtolower(str_replace(' ', '_', $header));
 			}, $headers);
 
-			$pairs = array_map(function (StorageConfig $config) use ($keys, $userId) {
+			$pairs = array_map(function (IStorageConfig $config) use ($keys, $userId) {
 				$values = [
 					$config->getId(),
 					$config->getMountPoint(),
@@ -173,7 +173,7 @@ class ListCommand extends Base {
 					$values[] = $config->getApplicableGroups();
 				}
 				if ($userId === self::ALL) {
-					$values[] = $config->getType() === StorageConfig::MOUNT_TYPE_ADMIN ? 'admin' : 'personal';
+					$values[] = $config->getType() === IStorageConfig::MOUNT_TYPE_ADMIN ? 'admin' : 'personal';
 				}
 
 				return array_combine($keys, $values);
@@ -192,7 +192,7 @@ class ListCommand extends Base {
 				'enable_sharing' => false,
 				'encoding_compatibility' => false
 			];
-			$rows = array_map(function (StorageConfig $config) use ($userId, $defaultMountOptions, $full) {
+			$rows = array_map(function (IStorageConfig $config) use ($userId, $defaultMountOptions, $full) {
 				$storageConfig = $config->getBackendOptions();
 				$keys = array_keys($storageConfig);
 				$values = array_values($storageConfig);
@@ -246,7 +246,7 @@ class ListCommand extends Base {
 					$values[] = $applicableGroups;
 				}
 				if ($userId === self::ALL) {
-					$values[] = $config->getType() === StorageConfig::MOUNT_TYPE_ADMIN ? 'Admin' : 'Personal';
+					$values[] = $config->getType() === IStorageConfig::MOUNT_TYPE_ADMIN ? 'Admin' : 'Personal';
 				}
 
 				return $values;

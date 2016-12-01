@@ -6,6 +6,8 @@
     "last month" : "førre månad",
     "last year" : "i fjor",
     "seconds ago" : "sekund sidan",
+    "Username" : "Brukarnamn",
+    "Password" : "Passord",
     "%s shared »%s« with you" : "%s delte «%s» med deg",
     "Apps" : "Program",
     "A valid username must be provided" : "Du må oppgje eit gyldig brukarnamn",

@@ -88,6 +88,11 @@ use OCP\IServerContainer;
 use OCP\Security\IContentSecurityPolicyManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use OC\Files\External\StoragesBackendService;
+use OC\Files\External\Service\UserStoragesService;
+use OC\Files\External\Service\UserGlobalStoragesService;
+use OC\Files\External\Service\GlobalStoragesService;
+use OC\Files\External\Service\DBConfigService;
 
 /**
  * Class Server
@@ -413,6 +418,7 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('Crypto', function (Server $c) {
 			return new Crypto($c->getConfig(), $c->getSecureRandom());
 		});
+		$this->registerAlias('OCP\Security\ICrypto', 'Crypto');
 		$this->registerService('Hasher', function (Server $c) {
 			return new Hasher($c->getConfig());
 		});
@@ -509,6 +515,12 @@ class Server extends ServerContainer implements IServerContainer {
 			$manager->registerProvider(new CacheMountProvider($config));
 			$manager->registerHomeProvider(new LocalHomeMountProvider());
 			$manager->registerHomeProvider(new ObjectHomeMountProvider($config));
+
+			// external storage
+			$manager->registerProvider(new \OC\Files\External\ConfigAdapter(
+				$c->query('UserStoragesService'),
+				$c->query('UserGlobalStoragesService')
+			));
 
 			return $manager;
 		});
@@ -678,6 +690,67 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('ContentSecurityPolicyManager', function (Server $c) {
 			return new ContentSecurityPolicyManager();
 		});
+		$this->registerService('StoragesDBConfigService', function (Server $c) {
+			return new DBConfigService(
+				$c->getDatabaseConnection(),
+				$c->getCrypto()
+			);
+		});
+		$this->registerService('StoragesBackendService', function (Server $c) {
+			$service = new StoragesBackendService($c->query('AllConfig'));
+
+			// register auth mechanisms provided by core
+			$provider = new \OC\Files\External\Auth\CoreAuthMechanismProvider($c, [
+				// AuthMechanism::SCHEME_NULL mechanism
+				'OC\Files\External\Auth\NullMechanism',
+
+				// AuthMechanism::SCHEME_BUILTIN mechanism
+				'OC\Files\External\Auth\Builtin',
+
+				// AuthMechanism::SCHEME_PASSWORD mechanisms
+				'OC\Files\External\Auth\Password\Password',
+			]);
+
+			$service->registerAuthMechanismProvider($provider);
+
+			// force-load the session one as it will register hooks...
+			// TODO: obsolete it and use the TokenProvider to get the user's password from the session
+			$sessionCreds = new \OC\Files\External\Auth\Password\SessionCredentials(
+				$c->getSession(),
+				$c->getCrypto()
+			);
+			$service->registerAuthMechanism($sessionCreds);
+
+			return $service;
+		});
+		$this->registerAlias('OCP\Files\External\IStoragesBackendService', 'StoragesBackendService');
+		$this->registerService('GlobalStoragesService', function (Server $c) {
+			return new GlobalStoragesService(
+				$c->query('StoragesBackendService'),
+				$c->query('StoragesDBConfigService'),
+				$c->query('UserMountCache')
+			);
+		});
+		$this->registerAlias('OCP\Files\External\Service\IGlobalStoragesService', 'GlobalStoragesService');
+		$this->registerService('UserGlobalStoragesService', function (Server $c) {
+			return new UserGlobalStoragesService(
+				$c->query('StoragesBackendService'),
+				$c->query('StoragesDBConfigService'),
+				$c->query('UserSession'),
+				$c->query('GroupManager'),
+				$c->query('UserMountCache')
+			);
+		});
+		$this->registerAlias('OCP\Files\External\Service\IUserGlobalStoragesService', 'UserGlobalStoragesService');
+		$this->registerService('UserStoragesService', function (Server $c) {
+			return new UserStoragesService(
+				$c->query('StoragesBackendService'),
+				$c->query('StoragesDBConfigService'),
+				$c->query('UserSession'),
+				$c->query('UserMountCache')
+			);
+		});
+		$this->registerAlias('OCP\Files\External\Service\IUserStoragesService', 'UserStoragesService');
 		$this->registerService('ShareManager', function(Server $c) {
 			$config = $c->getConfig();
 			$factoryClass = $config->getSystemValue('sharing.managerFactory', '\OC\Share20\ProviderFactory');
@@ -703,6 +776,8 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('ThemeService', function ($c) {
 			return new ThemeService($this->getSystemConfig()->getValue('theme'));
 		});
+		$this->registerAlias('OCP\IUserSession', 'UserSession');
+		$this->registerAlias('OCP\Security\ICrypto', 'Crypto');
 	}
 
 	/**
@@ -1351,39 +1426,31 @@ class Server extends ServerContainer implements IServerContainer {
 	}
 
 	/**
-	 * Not a public API as of 8.2, wait for 9.0
-	 *
-	 * @return \OCA\Files_External\Service\BackendService
+	 * @return \OCP\Files\External\IStoragesBackendService
 	 */
 	public function getStoragesBackendService() {
-		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\BackendService');
+		return $this->query('StoragesBackendService');
 	}
 
 	/**
-	 * Not a public API as of 8.2, wait for 9.0
-	 *
-	 * @return \OCA\Files_External\Service\GlobalStoragesService
+	 * @return \OCP\Files\External\Service\IGlobalStoragesService
 	 */
 	public function getGlobalStoragesService() {
-		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\GlobalStoragesService');
+		return $this->query('GlobalStoragesService');
 	}
 
 	/**
-	 * Not a public API as of 8.2, wait for 9.0
-	 *
-	 * @return \OCA\Files_External\Service\UserGlobalStoragesService
+	 * @return \OCP\Files\External\Service\IUserGlobalStoragesService
 	 */
 	public function getUserGlobalStoragesService() {
-		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserGlobalStoragesService');
+		return $this->query('UserGlobalStoragesService');
 	}
 
 	/**
-	 * Not a public API as of 8.2, wait for 9.0
-	 *
-	 * @return \OCA\Files_External\Service\UserStoragesService
+	 * @return \OCP\Files\External\Service\IUserStoragesService
 	 */
 	public function getUserStoragesService() {
-		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserStoragesService');
+		return $this->query('UserStoragesService');
 	}
 
 	/**

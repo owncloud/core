@@ -14,6 +14,6 @@ OC.L10N.register(
     "Update channel:" : "Oppdateringskanal:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Du kan alltid oppdatere til en nyere versjon / eksperimentell kanal. Men du kan aldri nedgradere til en mer stabil kanal.",
     "Notify members of the following groups about available updates:" : "Varsle medlemmer av følgende grupper om tilgjengelige oppdateringer:",
-    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Kun varsling om app-oppdateringer er tilgjengelig, fordi den valgte oppdateringskanalen for selve ownCloud ikke tillager varsling."
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Kun varsling om app-oppdateringer er tilgjengelig, fordi den valgte oppdateringskanalen for selve ownCloud ikke tillater varsling."
 },
 "nplurals=2; plural=(n != 1);");

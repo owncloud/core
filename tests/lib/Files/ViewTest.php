@@ -1519,19 +1519,22 @@ class ViewTest extends TestCase {
 	 * Create test movable mount points
 	 *
 	 * @param array $mountPoints array of mount point locations
+	 * @param bool $isTargetAllowed value to return for the isTargetAllowed call
 	 * @return array array of MountPoint objects
 	 */
-	private function createTestMovableMountPoints($mountPoints) {
+	private function createTestMovableMountPoints($mountPoints, $isTargetAllowed = true) {
 		$mounts = [];
 		foreach ($mountPoints as $mountPoint) {
-			$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
-				->setMethods([])
-				->getMock();
+			$storage = new Temporary();
 
-			$mounts[] = $this->getMockBuilder('\Test\TestMoveableMountPoint')
-				->setMethods(['moveMount'])
+			$testMount = $this->getMockBuilder('\Test\TestMoveableMountPoint')
+				->setMethods(['moveMount', 'isTargetAllowed'])
 				->setConstructorArgs([$storage, $mountPoint])
 				->getMock();
+			$testMount->expects($this->any())
+				->method('isTargetAllowed')
+				->will($this->returnValue($isTargetAllowed));
+			$mounts[] = $testMount;
 		}
 
 		$mountProvider = $this->createMock('\OCP\Files\Config\IMountProvider');
@@ -1594,33 +1597,26 @@ class ViewTest extends TestCase {
 	}
 
 	/**
-	 * Test that moving a mount point into a shared folder is forbidden
+	 * Test that moving a mount point that says it's not allowed will fail
 	 */
-	public function testMoveMountPointIntoSharedFolder() {
+	public function testMoveMountPointNotAllowed() {
 		$this->loginAsUser($this->user);
+
+		$userFolder = \OC::$server->getUserFolder($this->user);
 
 		list($mount1) = $this->createTestMovableMountPoints([
 			$this->user . '/files/mount1',
-		]);
+		], false);
 
 		$mount1->expects($this->never())
 			->method('moveMount');
 
 		$view = new View('/' . $this->user . '/files/');
-		$view->mkdir('shareddir');
-		$view->mkdir('shareddir/sub');
-		$view->mkdir('shareddir/sub2');
+		$view->mkdir('somedir');
 
-		$fileId = $view->getFileInfo('shareddir')->getId();
-		$userObject = \OC::$server->getUserManager()->createUser('test2', 'IHateNonMockableStaticClasses');
-		$this->assertTrue(\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, 'test2', \OCP\Constants::PERMISSION_READ));
+		$fileId = $view->getFileInfo('somedir')->getId();
 
 		$this->assertFalse($view->rename('mount1', 'shareddir'), 'Cannot overwrite shared folder');
-		$this->assertFalse($view->rename('mount1', 'shareddir/sub'), 'Cannot move mount point into shared folder');
-		$this->assertFalse($view->rename('mount1', 'shareddir/sub/sub2'), 'Cannot move mount point into shared subfolder');
-
-		$this->assertTrue(\OCP\Share::unshare('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, 'test2'));
-		$userObject->delete();
 	}
 
 	public function basicOperationProviderForLocks() {

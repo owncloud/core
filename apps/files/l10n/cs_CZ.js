@@ -34,6 +34,7 @@ OC.L10N.register(
     "Delete" : "Smazat",
     "Disconnect storage" : "Odpojit úložiště",
     "Unshare" : "Zrušit sdílení",
+    "Could not load info for file \"{file}\"" : "Nelze načíst informaci o souboru \"{file}\"",
     "Details" : "Podrobnosti",
     "Select" : "Vybrat",
     "Pending" : "Nevyřízené",

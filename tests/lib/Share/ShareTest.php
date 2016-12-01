@@ -410,46 +410,6 @@ class ShareTest extends \Test\TestCase {
 		$this->assertSame(\OCP\Share::SHARE_TYPE_USER, $share['share_type']);
 	}
 
-	public function testGetShareFromOutsideFilesFolder() {
-		\OC_User::setUserId($this->user1);
-		$view = new \OC\Files\View('/' . $this->user1 . '/');
-		$view->mkdir('files/test');
-		$view->mkdir('files/test/sub');
-
-		$view->mkdir('files_trashbin');
-		$view->mkdir('files_trashbin/files');
-
-		$fileInfo = $view->getFileInfo('files/test/sub');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_READ),
-			'Failed asserting that user 1 successfully shared "test/sub" with user 2.'
-		);
-
-		$result = \OCP\Share::getItemShared('folder', $fileId, Backend::FORMAT_SOURCE);
-		$this->assertNotEmpty($result);
-
-		$result = \OCP\Share::getItemSharedWithUser('folder', $fileId, $this->user2);
-		$this->assertNotEmpty($result);
-
-		$result = \OCP\Share::getItemsSharedWithUser('folder', $this->user2);
-		$this->assertNotEmpty($result);
-
-		// move to trash (keeps file id)
-		$view->rename('files/test', 'files_trashbin/files/test');
-
-		$result = \OCP\Share::getItemShared('folder', $fileId, Backend::FORMAT_SOURCE);
-		$this->assertEmpty($result, 'Share must not be returned for files outside of "files"');
-
-		$result = \OCP\Share::getItemSharedWithUser('folder', $fileId, $this->user2);
-		$this->assertEmpty($result, 'Share must not be returned for files outside of "files"');
-
-		$result = \OCP\Share::getItemsSharedWithUser('folder', $this->user2);
-		$this->assertEmpty($result, 'Share must not be returned for files outside of "files"');
-	}
-
 	public function testSetExpireDateInPast() {
 		\OC_User::setUserId($this->user1);
 		$this->shareUserOneTestFileWithUserTwo();
@@ -515,75 +475,6 @@ class ShareTest extends \Test\TestCase {
 		\OC::$server->getAppConfig()->deleteKey('core', 'shareapi_exclude_groups_list');
 		\OC::$server->getAppConfig()->deleteKey('core', 'shareapi_exclude_groups');
 
-	}
-
-	public function testSharingAFolderThatIsSharedWithAGroupOfTheOwner() {
-		\OC_User::setUserId($this->user1);
-		$view = new \OC\Files\View('/' . $this->user1 . '/');
-		$view->mkdir('files/test');
-		$view->mkdir('files/test/sub1');
-		$view->mkdir('files/test/sub1/sub2');
-
-		$fileInfo = $view->getFileInfo('files/test/sub1');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_GROUP, $this->group1, \OCP\Constants::PERMISSION_READ + \OCP\Constants::PERMISSION_CREATE),
-			'Failed asserting that user 1 successfully shared "test/sub1" with group 1.'
-		);
-
-		$result = \OCP\Share::getItemShared('folder', $fileId, Backend::FORMAT_SOURCE);
-		$this->assertNotEmpty($result);
-		$this->assertEquals(\OCP\Constants::PERMISSION_READ + \OCP\Constants::PERMISSION_CREATE, $result['permissions']);
-
-		$fileInfo = $view->getFileInfo('files/test/sub1/sub2');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user4, \OCP\Constants::PERMISSION_READ),
-			'Failed asserting that user 1 successfully shared "test/sub1/sub2" with user 4.'
-		);
-
-		$result = \OCP\Share::getItemShared('folder', $fileId, Backend::FORMAT_SOURCE);
-		$this->assertNotEmpty($result);
-		$this->assertEquals(\OCP\Constants::PERMISSION_READ, $result['permissions']);
-	}
-
-	public function testSharingAFileInsideAFolderThatIsAlreadyShared() {
-		\OC_User::setUserId($this->user1);
-		$view = new \OC\Files\View('/' . $this->user1 . '/');
-		$view->mkdir('files/test');
-		$view->mkdir('files/test/sub1');
-		$view->file_put_contents('files/test/sub1/file.txt', 'abc');
-
-		$folderInfo = $view->getFileInfo('files/test/sub1');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $folderInfo);
-		$folderId = $folderInfo->getId();
-
-		$fileInfo = $view->getFileInfo('files/test/sub1/file.txt');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $folderId, \OCP\Share::SHARE_TYPE_GROUP, $this->group2, \OCP\Constants::PERMISSION_READ + \OCP\Constants::PERMISSION_UPDATE),
-			'Failed asserting that user 1 successfully shared "test/sub1" with group 2.'
-		);
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('file', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_READ),
-			'Failed asserting that user 1 successfully shared "test/sub1/file.txt" with user 2.'
-		);
-
-		$result = \OCP\Share::getItemsSharedWithUser('file', $this->user2);
-		$this->assertCount(2, $result);
-
-		foreach ($result as $share) {
-			$itemName = substr($share['path'], strrpos($share['path'], '/'));
-			$this->assertSame($itemName, $share['file_target'], 'Asserting that the file_target is the last segment of the path');
-			$this->assertSame($share['item_target'], '/' . $share['item_source'], 'Asserting that the item is the item that was shared');
-		}
 	}
 
 	protected function shareUserOneTestFileWithGroupOne() {
@@ -1543,97 +1434,29 @@ class ShareTest extends \Test\TestCase {
 		$config->deleteAppValue('core', 'shareapi_expire_after_n_days');
 	}
 
-	/**
-	 * Test case for #17560
-	 */
-	public function testAccesToSharedSubFolder() {
-		\OC_User::setUserId($this->user1);
-		$view = new \OC\Files\View('/' . $this->user1 . '/');
-		$view->mkdir('files/folder1');
-
-		$fileInfo = $view->getFileInfo('files/folder1');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_ALL),
-			'Failed asserting that user 1 successfully shared "test" with user 2.'
-		);
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user3, \OCP\Constants::PERMISSION_ALL),
-			'Failed asserting that user 1 successfully shared "test" with user 3.'
-		);
-
-		$view->mkdir('files/folder1/folder2');
-
-		$fileInfo = $view->getFileInfo('files/folder1/folder2');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user4, \OCP\Constants::PERMISSION_ALL),
-			'Failed asserting that user 1 successfully shared "test" with user 4.'
-		);
-
-		$res = \OCP\Share::getItemShared(
-			'folder',
-			$fileId,
-			\OCP\Share::FORMAT_NONE,
-			null,
-			true
-		);
-		$this->assertCount(3, $res);
-
-		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user5, \OCP\Constants::PERMISSION_ALL),
-			'Failed asserting that user 1 successfully shared "test" with user 5.'
-		);
-
-		$res = \OCP\Share::getItemShared(
-			'folder',
-			$fileId,
-			\OCP\Share::FORMAT_NONE,
-			null,
-			true
-		);
-		$this->assertCount(4, $res);
-	}
-
 	public function testShareWithSelfError() {
 		\OC_User::setUserId($this->user1);
-		$view = new \OC\Files\View('/' . $this->user1 . '/');
-		$view->mkdir('files/folder1');
-
-		$fileInfo = $view->getFileInfo('files/folder1');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
 
 		try {
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user1, \OCP\Constants::PERMISSION_ALL);
+			\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_USER, $this->user1, \OCP\Constants::PERMISSION_ALL);
 			$this->fail();
 		} catch (\Exception $e) {
-			$this->assertEquals('Sharing /folder1 failed, because you can not share with yourself', $e->getMessage());
+			$this->assertEquals('Sharing test.txt failed, because you can not share with yourself', $e->getMessage());
 		}
 	}
 
 
 	public function testShareWithOwnerError() {
 		\OC_User::setUserId($this->user1);
-		$view = new \OC\Files\View('/' . $this->user1 . '/');
-		$view->mkdir('files/folder1');
-
-		$fileInfo = $view->getFileInfo('files/folder1');
-		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
-		$fileId = $fileInfo->getId();
 
 		$this->assertTrue(
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_ALL),
+			\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_ALL),
 			'Failed asserting that user 1 successfully shared "test" with user 2.'
 		);
 
 		\OC_User::setUserId($this->user2);
 		try {
-			\OCP\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user1, \OCP\Constants::PERMISSION_ALL);
+			\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_USER, $this->user1, \OCP\Constants::PERMISSION_ALL);
 			$this->fail();
 		} catch (\Exception $e) {
 			$this->assertEquals('Sharing failed, because the user ' . $this->user1 . ' is the original sharer', $e->getMessage());

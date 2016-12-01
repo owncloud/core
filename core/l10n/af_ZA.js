@@ -1,7 +1,7 @@
 OC.L10N.register(
     "core",
     {
-    "Please select a file." : "Selekteer asseblief 'n lêer.",
+    "Please select a file." : "Kies asseblief 'n lêer.",
     "File is too big" : "Die lêer is te groot",
     "Invalid file provided" : "Ongeldige lêer voorsien",
     "No image or file provided" : "Geen prent of lêer voorsien",

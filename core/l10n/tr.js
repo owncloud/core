@@ -297,7 +297,6 @@ OC.L10N.register(
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Hesabınız için gelişmiş güvenlik etkinleştirildi. Lütfen ikinci yöntemi kullanarak kimlik doğrulaması yapın.",
     "Cancel login" : "Girişi iptal et",
     "Please authenticate using the selected factor." : "Lütfen seçilen yöntemle kimlik doğrulaması yapın.",
-    "An error occured while verifying the token" : "Jeton onaylanırken bir hata oluştu",
     "You are accessing the server from an untrusted domain." : "Sunucuya güvenilmeyen bir alan adından ulaşıyorsunuz.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Lütfen yöneticiniz ile iletişime geçin. Eğer bu örneğin bir yöneticisi iseniz, config/config.php dosyası içerisindeki \"trusted_domain\" ayarını yapılandırın. Bu yapılandırmanın bir örneği config/config.sample.php dosyasında verilmiştir.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Yapılandırmanıza bağlı olarak, bir yönetici olarak bu alan adına güvenmek için aşağıdaki düğmeyi de kullanabilirsiniz.",

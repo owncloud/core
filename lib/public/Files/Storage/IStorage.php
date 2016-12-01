@@ -34,6 +34,7 @@ use OCP\Files\Cache\IScanner;
 use OCP\Files\Cache\IUpdater;
 use OCP\Files\Cache\IWatcher;
 use OCP\Files\InvalidPathException;
+use OCP\Files\StorageNotAvailableException;
 
 /**
  * Provide a common interface to all different storage options
@@ -56,7 +57,7 @@ interface IStorage {
 	 * the returned id should be the same for every storage object that is created with the same parameters
 	 * and two storage objects with the same id should refer to two storages that display the same files.
 	 *
-	 * @return string
+	 * @return string storage id
 	 * @since 9.0.0
 	 */
 	public function getId();
@@ -66,7 +67,8 @@ interface IStorage {
 	 * implementations need to implement a recursive mkdir
 	 *
 	 * @param string $path
-	 * @return bool
+	 * @return bool true on success, false otherwise
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function mkdir($path);
@@ -75,7 +77,8 @@ interface IStorage {
 	 * see http://php.net/manual/en/function.rmdir.php
 	 *
 	 * @param string $path
-	 * @return bool
+	 * @return bool true on success, false otherwise
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function rmdir($path);
@@ -85,6 +88,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return resource|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function opendir($path);
@@ -94,6 +98,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function is_dir($path);
@@ -103,6 +108,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function is_file($path);
@@ -113,6 +119,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return array|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function stat($path);
@@ -122,6 +129,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return string|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function filetype($path);
@@ -132,6 +140,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return int|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function filesize($path);
@@ -141,6 +150,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function isCreatable($path);
@@ -150,6 +160,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function isReadable($path);
@@ -159,6 +170,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function isUpdatable($path);
@@ -168,6 +180,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function isDeletable($path);
@@ -177,6 +190,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function isSharable($path);
@@ -187,6 +201,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return int
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getPermissions($path);
@@ -196,6 +211,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function file_exists($path);
@@ -205,6 +221,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return int|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function filemtime($path);
@@ -214,6 +231,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return string|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function file_get_contents($path);
@@ -224,6 +242,7 @@ interface IStorage {
 	 * @param string $path
 	 * @param string $data
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function file_put_contents($path, $data);
@@ -232,7 +251,8 @@ interface IStorage {
 	 * see http://php.net/manual/en/function.unlink.php
 	 *
 	 * @param string $path
-	 * @return bool
+	 * @return bool true on success, false otherwise
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function unlink($path);
@@ -243,6 +263,7 @@ interface IStorage {
 	 * @param string $path1
 	 * @param string $path2
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function rename($path1, $path2);
@@ -253,6 +274,7 @@ interface IStorage {
 	 * @param string $path1
 	 * @param string $path2
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function copy($path1, $path2);
@@ -263,6 +285,7 @@ interface IStorage {
 	 * @param string $path
 	 * @param string $mode
 	 * @return resource|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function fopen($path, $mode);
@@ -273,6 +296,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return string|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getMimeType($path);
@@ -284,6 +308,7 @@ interface IStorage {
 	 * @param string $path
 	 * @param bool $raw
 	 * @return string|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function hash($type, $path, $raw = false);
@@ -293,6 +318,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return int|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function free_space($path);
@@ -303,7 +329,8 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @param int $mtime
-	 * @return bool
+	 * @return bool true on success, false otherwise
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function touch($path, $mtime = null);
@@ -314,6 +341,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return string|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getLocalFile($path);
@@ -324,6 +352,7 @@ interface IStorage {
 	 * @param string $path
 	 * @param int $time
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 *
 	 * hasUpdated for folders should return at least true if a file inside the folder is add, removed or renamed.
@@ -336,6 +365,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return string|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getETag($path);
@@ -368,6 +398,7 @@ interface IStorage {
 	 *
 	 * @param string $path
 	 * @return array|false
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getDirectDownload($path);
@@ -386,6 +417,7 @@ interface IStorage {
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath);
@@ -395,6 +427,7 @@ interface IStorage {
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath);
@@ -408,49 +441,72 @@ interface IStorage {
 	public function test();
 
 	/**
+	 * Returns the availability info
+	 *
 	 * @since 9.0.0
 	 * @return array [ available, last_checked ]
 	 */
 	public function getAvailability();
 
 	/**
+	 * Sets availability flag
+	 *
 	 * @since 9.0.0
 	 * @param bool $isAvailable
 	 */
 	public function setAvailability($isAvailable);
 
 	/**
+	 * Returns the owner name
+	 *
 	 * @param string $path path for which to retrieve the owner
+	 * @return string owner name
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getOwner($path);
 
 	/**
+	 * Returns the storage cache instance
+	 *
 	 * @return ICache
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getCache();
 
 	/**
+	 * Returns the change propagator instance
+	 *
 	 * @return IPropagator
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getPropagator();
 
 	/**
+	 * Returns the scanner instance
+	 *
 	 * @return IScanner
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getScanner();
 
 	/**
+	 * Returns the updater instance
+	 *
 	 * @return IUpdater
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getUpdater();
 
 	/**
+	 * Returns the watched instance
+	 *
 	 * @return IWatcher
+	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
 	 */
 	public function getWatcher();

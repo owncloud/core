@@ -13,7 +13,6 @@ OC.L10N.register(
     "Username" : "Erabiltzaile izena",
     "Password" : "Pasahitza",
     "Save" : "Gorde",
-    "None" : "Ezer",
     "App key" : "Aplikazio gakoa",
     "App secret" : "App sekretua",
     "Client ID" : "Bezero ID",

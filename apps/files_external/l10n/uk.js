@@ -18,7 +18,6 @@ OC.L10N.register(
     "Storage with id \"%i\" not found" : "Сховище з id \"%i\" не знайдено",
     "Invalid mount point" : "Невірна точка монтування",
     "Invalid storage backend \"%s\"" : "Невірне сховище \"%s\"",
-    "None" : "Жоден",
     "App key" : "Ключ додатку",
     "App secret" : "Секретний ключ додатку",
     "Client ID" : "Ідентифікатор клієнта",

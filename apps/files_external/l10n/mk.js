@@ -7,7 +7,6 @@ OC.L10N.register(
     "Username" : "Корисничко име",
     "Password" : "Лозинка",
     "Save" : "Сними",
-    "None" : "Ништо",
     "API key" : "API key",
     "Port" : "Порта",
     "Region" : "Регион",

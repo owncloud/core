@@ -139,6 +139,7 @@ OC.L10N.register(
     "Expiration" : "Erääntyminen",
     "Expiration date" : "Päättymispäivä",
     "Choose a password for the public link" : "Valitse salasana julkiselle linkille",
+    "Choose a password for the public link or press enter" : "Valitse salasana julkiselle linkille tai paina Enteriä",
     "Copied!" : "Kopioitu!",
     "Not supported!" : "Ei tuettu!",
     "Press ⌘-C to copy." : "Paina ⌘-C kopioidaksesi.",

@@ -18,7 +18,6 @@ OC.L10N.register(
     "Storage with id \"%i\" not found" : "Складиште са идентификацијом \"%i\" није пронађено",
     "Invalid mount point" : "Неисправна тачка монтирања",
     "Invalid storage backend \"%s\"" : "Неисправна позадина складишта „%s“",
-    "None" : "Ништа",
     "App key" : "Кључ апликације",
     "App secret" : "Тајна апликације",
     "Client ID" : "ИД клијента",

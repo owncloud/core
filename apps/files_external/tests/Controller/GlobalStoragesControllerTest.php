@@ -24,18 +24,16 @@
 namespace OCA\Files_External\Tests\Controller;
 
 use OCA\Files_External\Controller\GlobalStoragesController;
-use \OCP\AppFramework\Http;
-use \OCA\Files_External\Service\BackendService;
+use OCP\AppFramework\Http;
+use OCP\Files\External\IStoragesBackendService;
 
 class GlobalStoragesControllerTest extends StoragesControllerTest {
 	public function setUp() {
 		parent::setUp();
-		$this->service = $this->getMockBuilder('\OCA\Files_External\Service\GlobalStoragesService')
-			->disableOriginalConstructor()
-			->getMock();
+		$this->service = $this->createMock('\OCP\Files\External\Service\IGlobalStoragesService');
 
 		$this->service->method('getVisibilityType')
-			->willReturn(BackendService::VISIBILITY_ADMIN);
+			->willReturn(IStoragesBackendService::VISIBILITY_ADMIN);
 
 		$this->controller = new GlobalStoragesController(
 			'files_external',

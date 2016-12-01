@@ -44,7 +44,7 @@ use OpenCloud\Rackspace;
 use OpenCloud\ObjectStore\Resource\DataObject;
 use OpenCloud\ObjectStore\Exception;
 
-class Swift extends \OC\Files\Storage\Common {
+class Swift extends \OCP\Files\Storage\StorageAdapter {
 
 	/**
 	 * @var \OpenCloud\ObjectStore\Service

@@ -24,18 +24,18 @@
 
 namespace OCA\Files_External\Controller;
 
-use OCA\Files_External\Lib\Auth\AuthMechanism;
-use OCA\Files_External\Lib\Auth\IUserProvided;
-use OCA\Files_External\Lib\InsufficientDataForMeaningfulAnswerException;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Auth\IUserProvided;
+use OCP\Files\External\InsufficientDataForMeaningfulAnswerException;
 use OCP\ILogger;
-use \OCP\IRequest;
-use \OCP\IL10N;
-use \OCP\AppFramework\Http\DataResponse;
-use \OCP\AppFramework\Http;
-use OCA\Files_External\Service\UserGlobalStoragesService;
-use OCA\Files_External\NotFoundException;
-use OCA\Files_External\Lib\StorageConfig;
-use \OCA\Files_External\Lib\Backend\Backend;
+use OCP\IRequest;
+use OCP\IL10N;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http;
+use OCP\Files\External\Service\IUserGlobalStoragesService;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\Backend\Backend;
 use OCP\IUserSession;
 
 /**
@@ -53,14 +53,14 @@ class UserGlobalStoragesController extends StoragesController {
 	 * @param string $AppName application name
 	 * @param IRequest $request request object
 	 * @param IL10N $l10n l10n service
-	 * @param UserGlobalStoragesService $userGlobalStoragesService storage service
+	 * @param IUserGlobalStoragesService $userGlobalStoragesService storage service
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
-		UserGlobalStoragesService $userGlobalStoragesService,
+		IUserGlobalStoragesService $userGlobalStoragesService,
 		IUserSession $userSession,
 		ILogger $logger
 	) {
@@ -95,7 +95,7 @@ class UserGlobalStoragesController extends StoragesController {
 		);
 	}
 
-	protected function manipulateStorageConfig(StorageConfig $storage) {
+	protected function manipulateStorageConfig(IStorageConfig $storage) {
 		/** @var AuthMechanism */
 		$authMechanism = $storage->getAuthMechanism();
 		$authMechanism->manipulateStorageConfig($storage, $this->userSession->getUser());
@@ -186,11 +186,11 @@ class UserGlobalStoragesController extends StoragesController {
 	}
 
 	/**
-	 * Remove sensitive data from a StorageConfig before returning it to the user
+	 * Remove sensitive data from a IStorageConfig before returning it to the user
 	 *
-	 * @param StorageConfig $storage
+	 * @param IStorageConfig $storage
 	 */
-	protected function sanitizeStorage(StorageConfig $storage) {
+	protected function sanitizeStorage(IStorageConfig $storage) {
 		$storage->setBackendOptions([]);
 		$storage->setMountOptions([]);
 

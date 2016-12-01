@@ -8,7 +8,6 @@ OC.L10N.register(
     "Username" : "Nombre de usuario",
     "Password" : "Contraseña",
     "Save" : "Guardar",
-    "None" : "Ninguno",
     "API key" : "clave API",
     "Port" : "Puerto",
     "Region" : "Provincia",

@@ -15,7 +15,6 @@ use OC\Files\Node\Folder;
 use OC\Files\Node\Node;
 use OCP\Constants;
 use OCP\Files\NotFoundException;
-use Test\TestCase;
 
 /**
  * Class FolderTest
@@ -24,133 +23,13 @@ use Test\TestCase;
  *
  * @package Test\Files\Node
  */
-class FolderTest extends TestCase {
-	private $user;
+class FolderTest extends NodeTest {
+	public $viewDeleteMethod = 'rmdir';
+	public $nodeClass = '\OC\Files\Node\Folder';
+	public $nonExistingNodeClass = '\OC\Files\Node\NonExistingFolder';
 
-	protected function setUp() {
-		parent::setUp();
-		$this->user = new \OC\User\User('', new \Test\Util\User\Dummy);
-	}
-
-	protected function getMockStorage() {
-		$storage = $this->createMock('\OCP\Files\Storage');
-		$storage->expects($this->any())
-			->method('getId')
-			->will($this->returnValue('home::someuser'));
-		return $storage;
-	}
-
-	protected function getFileInfo($data) {
-		return new FileInfo('', $this->getMockStorage(), '', $data, null);
-	}
-
-	public function testDelete() {
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
-		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
-		 */
-		$view = $this->createMock('\OC\Files\View');
-		$root = $this->getMockBuilder('\OC\Files\Node\Root')
-			->setConstructorArgs([$manager, $view, $this->user])
-			->getMock();
-		$root->expects($this->any())
-			->method('getUser')
-			->will($this->returnValue($this->user));
-		$root->expects($this->exactly(2))
-			->method('emit')
-			->will($this->returnValue(true));
-
-		$view->expects($this->any())
-			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL])));
-
-		$view->expects($this->once())
-			->method('rmdir')
-			->with('/bar/foo')
-			->will($this->returnValue(true));
-
-		$node = new Folder($root, $view, '/bar/foo');
-		$node->delete();
-	}
-
-	public function testDeleteHooks() {
-		$test = $this;
-		$hooksRun = 0;
-		/**
-		 * @param \OC\Files\Node\File $node
-		 */
-		$preListener = function ($node) use (&$test, &$hooksRun) {
-			$test->assertInstanceOf('\OC\Files\Node\Folder', $node);
-			$test->assertEquals('foo', $node->getInternalPath());
-			$test->assertEquals('/bar/foo', $node->getPath());
-			$hooksRun++;
-		};
-
-		/**
-		 * @param \OC\Files\Node\File $node
-		 */
-		$postListener = function ($node) use (&$test, &$hooksRun) {
-			$test->assertInstanceOf('\OC\Files\Node\NonExistingFolder', $node);
-			$test->assertEquals('foo', $node->getInternalPath());
-			$test->assertEquals('/bar/foo', $node->getPath());
-			$test->assertEquals(1, $node->getId());
-			$hooksRun++;
-		};
-
-		/**
-		 * @var \OC\Files\Mount\Manager $manager
-		 */
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
-		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
-		 */
-		$view = $this->createMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
-		$root->listen('\OC\Files', 'preDelete', $preListener);
-		$root->listen('\OC\Files', 'postDelete', $postListener);
-
-		$view->expects($this->any())
-			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL, 'fileid' => 1])));
-
-		$view->expects($this->once())
-			->method('rmdir')
-			->with('/bar/foo')
-			->will($this->returnValue(true));
-
-		$view->expects($this->any())
-			->method('resolvePath')
-			->with('/bar/foo')
-			->will($this->returnValue([null, 'foo']));
-
-		$node = new Folder($root, $view, '/bar/foo');
-		$node->delete();
-		$this->assertEquals(2, $hooksRun);
-	}
-
-	/**
-	 * @expectedException \OCP\Files\NotPermittedException
-	 */
-	public function testDeleteNotPermitted() {
-		$manager = $this->createMock('\OC\Files\Mount\Manager');
-		/**
-		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
-		 */
-		$view = $this->createMock('\OC\Files\View');
-		$root = $this->getMockBuilder('\OC\Files\Node\Root')
-			->setConstructorArgs([$manager, $view, $this->user])
-			->getMock();
-		$root->expects($this->any())
-			->method('getUser')
-			->will($this->returnValue($this->user));
-
-		$view->expects($this->once())
-			->method('getFileInfo')
-			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_READ])));
-
-		$node = new Folder($root, $view, '/bar/foo');
-		$node->delete();
+	protected function createTestNode($root, $view, $path) {
+		return new \OC\Files\Node\Folder($root, $view, $path);
 	}
 
 	public function testGetDirectoryContent() {

@@ -36,7 +36,7 @@ use OCP\Files\StorageNotAvailableException;
 
 require_once __DIR__ . '/../../../3rdparty/Dropbox/autoload.php';
 
-class Dropbox extends \OC\Files\Storage\Common {
+class Dropbox extends \OCP\Files\Storage\StorageAdapter {
 
 	private $dropbox;
 	private $root;

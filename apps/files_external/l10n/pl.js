@@ -22,7 +22,6 @@ OC.L10N.register(
     "Invalid mount point" : "Nieprawidłowy punkt montowania",
     "Invalid storage backend \"%s\"" : "Nieprawidłowy magazyn zaplecza \"%s\"",
     "Access key" : "Klucz dostępu",
-    "None" : "Nic",
     "App key" : "Klucz aplikacji",
     "App secret" : "Hasło aplikacji",
     "Client ID" : "ID klienta",

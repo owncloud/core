@@ -174,6 +174,7 @@ OC.L10N.register(
     "Android app" : "Android programa",
     "iOS app" : "iOS programa",
     "Show First Run Wizard again" : "Rodyti pirmo karto vedlį dar kartą",
+    "Show storage location" : "Rodyti saugyklos vietą",
     "Send email to new user" : "Siųsti el. laišką naujiems naudotojams",
     "Show email address" : "Rodyti el. pašto adresą",
     "E-Mail" : "El. paštas",

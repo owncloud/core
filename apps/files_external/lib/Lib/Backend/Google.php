@@ -21,20 +21,17 @@
 
 namespace OCA\Files_External\Lib\Backend;
 
-use \OCP\IL10N;
-use \OCA\Files_External\Lib\Backend\Backend;
-use \OCA\Files_External\Lib\DefinitionParameter;
-use \OCA\Files_External\Lib\Auth\AuthMechanism;
-use \OCA\Files_External\Service\BackendService;
-use \OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
-
-use \OCA\Files_External\Lib\Auth\OAuth2\OAuth2;
+use OCP\IL10N;
+use OCP\Files\External\DefinitionParameter;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Backend\Backend;
+use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 
 class Google extends Backend {
 
 	use LegacyDependencyCheckPolyfill;
 
-	public function __construct(IL10N $l, OAuth2 $legacyAuth) {
+	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('googledrive')
 			->addIdentifierAlias('\OC\Files\Storage\Google') // legacy compat
@@ -45,7 +42,6 @@ class Google extends Backend {
 			])
 			->addAuthScheme(AuthMechanism::SCHEME_OAUTH2)
 			->addCustomJs('gdrive')
-			->setLegacyAuthMechanism($legacyAuth)
 		;
 	}
 

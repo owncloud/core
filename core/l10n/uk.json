@@ -287,7 +287,6 @@
     "Enhanced security has been enabled for your account. Please authenticate using a second factor." : "Посилена безпека увімкнена для вашого облікового запису. Будь ласка, автентифікуйтесь, використовуючи другий фактор.",
     "Cancel login" : "Скасувати вхід",
     "Please authenticate using the selected factor." : "Будь ласка, автентифікуйтесь, використовуючи обраний фактор.",
-    "An error occured while verifying the token" : "При верифікації токена виникла помилка",
     "You are accessing the server from an untrusted domain." : "Ви намагаєтеся отримати доступ до сервера з непідтвердженого домену.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Будь ласка, зверніться до адміністратора. Якщо ви є адміністратором цього серверу, ви можете налаштувати опцію \"trusted_domains\" в конфігураційному файлі config/config.php. Приклад конфігурації знаходиться в файлі config/config.sample.php.",
     "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Залежно від конфігурації Ви як адміністратор можете додати цей домен у список довірених, використовуйте кнопку нижче.",

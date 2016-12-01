@@ -18,7 +18,6 @@ OC.L10N.register(
     "Storage with id \"%i\" not found" : "Non se atopa o almacenamento co ID «%i» ",
     "Invalid mount point" : "Punto de montaxe incorrecto",
     "Invalid storage backend \"%s\"" : "Infraestrutura de almacenamento «%s» incorrecta",
-    "None" : "Ningún",
     "App key" : "Clave da API",
     "App secret" : "Secreto da aplicación",
     "Client ID" : "ID do cliente",

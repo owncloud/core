@@ -8,7 +8,6 @@ OC.L10N.register(
     "Username" : "Tên đăng nhập",
     "Password" : "Mật khẩu",
     "Save" : "Lưu",
-    "None" : "Không gì cả",
     "Port" : "Cổng",
     "Region" : "Vùng/miền",
     "WebDAV" : "WebDAV",

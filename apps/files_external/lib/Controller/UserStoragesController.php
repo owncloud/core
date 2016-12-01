@@ -26,17 +26,17 @@
 namespace OCA\Files_External\Controller;
 
 
-use OCA\Files_External\Lib\Auth\AuthMechanism;
 use OCP\ILogger;
-use \OCP\IUserSession;
-use \OCP\IRequest;
-use \OCP\IL10N;
-use \OCP\AppFramework\Http\DataResponse;
-use \OCP\AppFramework\Http;
-use OCA\Files_External\Service\UserStoragesService;
-use OCA\Files_External\NotFoundException;
-use OCA\Files_External\Lib\StorageConfig;
-use \OCA\Files_External\Lib\Backend\Backend;
+use OCP\IUserSession;
+use OCP\IRequest;
+use OCP\IL10N;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Service\IUserStoragesService;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\Lib\Backend\Backend;
 
 /**
  * User storages controller
@@ -53,7 +53,7 @@ class UserStoragesController extends StoragesController {
 	 * @param string $AppName application name
 	 * @param IRequest $request request object
 	 * @param IL10N $l10n l10n service
-	 * @param UserStoragesService $userStoragesService storage service
+	 * @param IUserStoragesService $userStoragesService storage service
 	 * @param IUserSession $userSession
 	 * @param ILogger $logger
 	 */
@@ -61,7 +61,7 @@ class UserStoragesController extends StoragesController {
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
-		UserStoragesService $userStoragesService,
+		IUserStoragesService $userStoragesService,
 		IUserSession $userSession,
 		ILogger $logger
 	) {
@@ -75,7 +75,7 @@ class UserStoragesController extends StoragesController {
 		$this->userSession = $userSession;
 	}
 
-	protected function manipulateStorageConfig(StorageConfig $storage) {
+	protected function manipulateStorageConfig(IStorageConfig $storage) {
 		/** @var AuthMechanism */
 		$authMechanism = $storage->getAuthMechanism();
 		$authMechanism->manipulateStorageConfig($storage, $this->userSession->getUser());

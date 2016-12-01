@@ -25,13 +25,13 @@ namespace OCA\Files_External\Command;
 use OC\Core\Command\Base;
 use OC\Files\Filesystem;
 use OC\User\NoUserException;
-use OCA\Files_External\Lib\Auth\AuthMechanism;
-use OCA\Files_External\Lib\Backend\Backend;
-use OCA\Files_External\Lib\DefinitionParameter;
-use OCA\Files_External\Lib\StorageConfig;
-use OCA\Files_External\Service\BackendService;
-use OCA\Files_External\Service\GlobalStoragesService;
-use OCA\Files_External\Service\UserStoragesService;
+use OCP\Files\External\Auth\AuthMechanism;
+use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\DefinitionParameter;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\IStoragesBackendService;
+use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\Files\External\Service\IUserStoragesService;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -42,12 +42,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Create extends Base {
 	/**
-	 * @var GlobalStoragesService
+	 * @var IGlobalStoragesService
 	 */
 	private $globalService;
 
 	/**
-	 * @var UserStoragesService
+	 * @var IUserStoragesService
 	 */
 	private $userService;
 
@@ -56,17 +56,17 @@ class Create extends Base {
 	 */
 	private $userManager;
 
-	/** @var BackendService */
+	/** @var IStoragesBackendService */
 	private $backendService;
 
 	/** @var IUserSession */
 	private $userSession;
 
-	function __construct(GlobalStoragesService $globalService,
-						 UserStoragesService $userService,
+	function __construct(IGlobalStoragesService $globalService,
+						 IUserStoragesService $userService,
 						 IUserManager $userManager,
 						 IUserSession $userSession,
-						 BackendService $backendService
+						 IStoragesBackendService $backendService
 	) {
 		parent::__construct();
 		$this->globalService = $globalService;
@@ -158,7 +158,7 @@ class Create extends Base {
 			$config[$key] = $value;
 		}
 
-		$mount = new StorageConfig();
+		$mount = $this->getStorageService($user)->createConfig();
 		$mount->setMountPoint($mountPoint);
 		$mount->setBackend($storageBackend);
 		$mount->setAuthMechanism($authBackend);
@@ -199,7 +199,7 @@ class Create extends Base {
 		return false;
 	}
 
-	private function showMount($user, StorageConfig $mount, InputInterface $input, OutputInterface $output) {
+	private function showMount($user, IStorageConfig $mount, InputInterface $input, OutputInterface $output) {
 		$listCommand = new ListCommand($this->globalService, $this->userService, $this->userSession, $this->userManager);
 		$listInput = new ArrayInput([], $listCommand->getDefinition());
 		$listInput->setOption('output', $input->getOption('output'));

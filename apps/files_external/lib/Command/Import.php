@@ -24,11 +24,10 @@ namespace OCA\Files_External\Command;
 
 use OC\Core\Command\Base;
 use OC\User\NoUserException;
-use OCA\Files_External\Lib\StorageConfig;
-use OCA\Files_External\Service\BackendService;
-use OCA\Files_External\Service\GlobalStoragesService;
-use OCA\Files_External\Service\ImportLegacyStoragesService;
-use OCA\Files_External\Service\UserStoragesService;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\IStoragesBackendService;
+use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\Files\External\Service\IUserStoragesService;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -36,15 +35,16 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use OCP\Files\External\Service\IStoragesService;
 
 class Import extends Base {
 	/**
-	 * @var GlobalStoragesService
+	 * @var IGlobalStoragesService
 	 */
 	private $globalService;
 
 	/**
-	 * @var UserStoragesService
+	 * @var IUserStoragesService
 	 */
 	private $userService;
 
@@ -58,25 +58,20 @@ class Import extends Base {
 	 */
 	private $userManager;
 
-	/** @var ImportLegacyStoragesService */
-	private $importLegacyStorageService;
-
-	/** @var BackendService */
+	/** @var IStoragesBackendService */
 	private $backendService;
 
-	function __construct(GlobalStoragesService $globalService,
-						 UserStoragesService $userService,
+	function __construct(IGlobalStoragesService $globalService,
+						 IUserStoragesService $userService,
 						 IUserSession $userSession,
 						 IUserManager $userManager,
-						 ImportLegacyStoragesService $importLegacyStorageService,
-						 BackendService $backendService
+						 IStoragesBackendService $backendService
 	) {
 		parent::__construct();
 		$this->globalService = $globalService;
 		$this->userService = $userService;
 		$this->userSession = $userSession;
 		$this->userManager = $userManager;
-		$this->importLegacyStorageService = $importLegacyStorageService;
 		$this->backendService = $backendService;
 	}
 
@@ -126,21 +121,19 @@ class Import extends Base {
 			return 1;
 		}
 
+		$storageService = $this->getStorageService($user);
+
 		$isLegacy = isset($data['user']) || isset($data['group']);
 		if ($isLegacy) {
-			$this->importLegacyStorageService->setData($data);
-			$mounts = $this->importLegacyStorageService->getAllStorages();
-			foreach ($mounts as $mount) {
-				if ($mount->getBackendOption('password') === false) {
-					$output->writeln('<error>Failed to decrypt password</error>');
-					return 1;
-				}
-			}
+			$output->writeln('<error>Importing legacy mount.json format not supported any more</error>');
+			return 1;
 		} else {
 			if (!isset($data[0])) { //normalize to an array of mounts
 				$data = [$data];
 			}
-			$mounts = array_map([$this, 'parseData'], $data);
+			$mounts = array_map(function($entry) use ($storageService) {
+				return $this->parseData($entry, $storageService);
+			}, $data);
 		}
 
 		if ($user) {
@@ -150,8 +143,6 @@ class Import extends Base {
 				$mount->setApplicableUsers([$user]);
 			}
 		}
-
-		$storageService = $this->getStorageService($user);
 
 		$existingMounts = $storageService->getAllStorages();
 
@@ -187,8 +178,10 @@ class Import extends Base {
 		return 0;
 	}
 
-	private function parseData(array $data) {
-		$mount = new StorageConfig($data['mount_id']);
+	private function parseData(array $data, IStoragesService $storageService) {
+		// FIXME: use service to create config
+		$mount = $storageService->createConfig();
+		$mount->setId($data['mount_id']);
 		$mount->setMountPoint($data['mount_point']);
 		$mount->setBackend($this->getBackendByClass($data['storage']));
 		$authBackend = $this->backendService->getAuthMechanism($data['authentication_type']);

@@ -28,11 +28,11 @@
 namespace OCA\Files_External\AppInfo;
 
 use \OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
+use \OCP\AppFramework\IAppContainer;
 use \OCP\IContainer;
-use \OCA\Files_External\Service\BackendService;
-use \OCA\Files_External\Lib\Config\IBackendProvider;
-use \OCA\Files_External\Lib\Config\IAuthMechanismProvider;
+use \OCP\Files\External\IStoragesBackendService;
+use \OCP\Files\External\Config\IBackendProvider;
+use \OCP\Files\External\Config\IAuthMechanismProvider;
 
 /**
  * @package OCA\Files_External\AppInfo
@@ -47,19 +47,22 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 		$container->registerService('OCP\Files\Config\IUserMountCache', function (IAppContainer $c) {
 			return $c->getServer()->query('UserMountCache');
 		});
+		$container->registerService('OCP\Files\External\IStoragesBackendService', function (IAppContainer $c) {
+			return $c->getServer()->query('StoragesBackendService');
+		});
+		$container->registerService('OCP\Files\External\Service\IGlobalStoragesService', function (IAppContainer $c) {
+			return $c->getServer()->query('OCP\Files\External\Service\IGlobalStoragesService');
+		});
+		$container->registerService('OCP\Files\External\Service\IUserGlobalStoragesService', function (IAppContainer $c) {
+			return $c->getServer()->query('OCP\Files\External\Service\IUserGlobalStoragesService');
+		});
+		$container->registerService('OCP\Files\External\Service\IUserStoragesService', function (IAppContainer $c) {
+			return $c->getServer()->query('OCP\Files\External\Service\IUserStoragesService');
+		});
 
-		$backendService = $container->query('OCA\\Files_External\\Service\\BackendService');
+		$backendService = $container->getServer()->query('StoragesBackendService');
 		$backendService->registerBackendProvider($this);
 		$backendService->registerAuthMechanismProvider($this);
-
-		// force-load auth mechanisms since some will register hooks
-		// TODO: obsolete these and use the TokenProvider to get the user's password from the session
-		$this->getAuthMechanisms();
-
-		// app developers: do NOT depend on this! it will disappear with oC 9.0!
-		\OC::$server->getEventDispatcher()->dispatch(
-			'OCA\\Files_External::loadAdditionalBackends'
-		);
 	}
 
 	/**
@@ -92,16 +95,6 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 		$container = $this->getContainer();
 
 		return [
-			// AuthMechanism::SCHEME_NULL mechanism
-			$container->query('OCA\Files_External\Lib\Auth\NullMechanism'),
-
-			// AuthMechanism::SCHEME_BUILTIN mechanism
-			$container->query('OCA\Files_External\Lib\Auth\Builtin'),
-
-			// AuthMechanism::SCHEME_PASSWORD mechanisms
-			$container->query('OCA\Files_External\Lib\Auth\Password\Password'),
-			$container->query('OCA\Files_External\Lib\Auth\Password\SessionCredentials'),
-
 			// AuthMechanism::SCHEME_OAUTH1 mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\OAuth1\OAuth1'),
 

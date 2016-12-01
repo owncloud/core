@@ -252,7 +252,6 @@ OC.L10N.register(
     "Two-step verification" : "Verifikatioun mat zwee Schrëtt",
     "Cancel login" : "Login ofbriechen",
     "Please authenticate using the selected factor." : "W.e.g. authentifizéier dech andeems de den ausgewielten Facteur benotz.",
-    "An error occured while verifying the token" : "Beim Token iwwerpréiwen ass e Feeler opgetrueden",
     "You are accessing the server from an untrusted domain." : "Du gräifs vun enger net vertrauensvoller Domän op dëse Server zou.",
     "Add \"%s\" as trusted domain" : "\"%s\" als zouverlässeg Domän derbäi setzen",
     "App update required" : "App Aktualiséierung néideg",

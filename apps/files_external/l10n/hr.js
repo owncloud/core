@@ -13,7 +13,6 @@ OC.L10N.register(
     "Username" : "Korisničko ime",
     "Password" : "Lozinka",
     "Save" : "Spremi",
-    "None" : "Ništa",
     "App key" : "Ključ za aplikacije",
     "App secret" : "Tajna aplikacije",
     "Client ID" : "ID klijenta",
