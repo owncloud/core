@@ -66,6 +66,12 @@
 			<?php print_unescaped($l->t('Transactional file locking is disabled, this might lead to issues with race conditions. Enable \'filelocking.enabled\' in config.php to avoid these problems. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
 		</li>
 		<?php
+	} else if ($_['fileLockingType'] === 'db') {
+		?>
+		<li>
+			<?php print_unescaped($l->t('Transactional file locking should be configured to use memory-based locking, not the default slow database-based locking. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
+		</li>
+		<?php
 	}
 	// is locale working ?
 	if (!$_['isLocaleWorking']) {
@@ -92,6 +98,26 @@
 			<?php p($l->t('If your installation is not installed in the root of the domain and uses system cron, there can be issues with the URL generation. To avoid these problems, please set the "overwrite.cli.url" option in your config.php file to the webroot path of your installation (Suggested: "%s")', $_['suggestedOverwriteCliUrl'])); ?>
 		</li>
 	<?php
+	}
+
+	// SQLite database performance issue
+	if ($_['databaseOverload']) {
+		?>
+		<li>
+			<?php p($l->t('SQLite is used as database. For larger installations we recommend to switch to a different database backend.')); ?><br>
+			<?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?><br>
+			<?php print_unescaped($l->t('To migrate to another database use the command line tool: \'occ db:convert-type\', or see the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a>.', link_to_docs('admin-db-conversion') )); ?>
+		</li>
+
+		<?php
+	}
+	if ($_['backgroundjobs_mode'] !== "cron") {
+		?>
+		<li>
+			<?php p($l->t('We recommend to enable system cron as any other cron method has possible performance and reliability implications.')); ?><br>
+		</li>
+
+		<?php
 	}
 	if ($_['cronErrors']) {
 		?>

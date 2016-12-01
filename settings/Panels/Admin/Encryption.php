@@ -36,19 +36,19 @@ class Encryption implements ISettings {
 		$tmpl->assign('encryptionReady', \OC::$server->getEncryptionManager()->isReady());
 		$encryptionModules = \OC::$server->getEncryptionManager()->getEncryptionModules();
 		$defaultEncryptionModuleId = \OC::$server->getEncryptionManager()->getDefaultEncryptionModuleId();
-		$encModulues = [];
+		$encModules = [];
 		foreach ($encryptionModules as $module) {
-			$encModulues[$module['id']]['displayName'] = $module['displayName'];
-			$encModulues[$module['id']]['default'] = false;
+			$encModules[$module['id']]['displayName'] = $module['displayName'];
+			$encModules[$module['id']]['default'] = false;
 			if ($module['id'] === $defaultEncryptionModuleId) {
-				$encModulues[$module['id']]['default'] = true;
+				$encModules[$module['id']]['default'] = true;
 			}
 		}
 		$backends = \OC::$server->getUserManager()->getBackends();
 		$externalBackends = (count($backends) > 1) ? true : false;
 		$tmpl->assign('externalBackendsEnabled', $externalBackends);
 
-		$tmpl->assign('encryptionModules', $encModulues);
+		$tmpl->assign('encryptionModules', $encModules);
         return $tmpl;
     }
 
