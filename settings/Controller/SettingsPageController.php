@@ -28,6 +28,8 @@ use OCP\IURLGenerator;
 use OCP\IRequest;
 use OCP\Template;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IGroupManager;
+use OCP\IUserSession;
 
 /**
  * @package OC\Settings\Controller
@@ -35,10 +37,16 @@ use OCP\AppFramework\Http\TemplateResponse;
 class SettingsPageController extends Controller {
 
 	/** @var ISettingsManager */
-	private $settingsManager;
+	protected $settingsManager;
 
 	/** @var IURLGenerator */
-	private $urlGenerator;
+	protected $urlGenerator;
+
+	/** @var IGroupManager */
+	protected $groupManager;
+
+	/** @var IUserSession  */
+	protected $userSession;
 
 	/**
 	 * @param string $appName
@@ -48,10 +56,14 @@ class SettingsPageController extends Controller {
 	public function __construct($appName,
 								IRequest $request,
 								ISettingsManager $settingsManager,
-								IURLGenerator $urlGenerator) {
+								IURLGenerator $urlGenerator,
+								IGroupManager $groupManager,
+								IUserSession $userSession) {
 		parent::__construct($appName, $request);
 		$this->settingsManager = $settingsManager;
 		$this->urlGenerator = $urlGenerator;
+		$this->groupManager = $groupManager;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -59,47 +71,37 @@ class SettingsPageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @param string $sectionID
-	 * @return \OCP\TemplateResponse
+	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
 	public function getPersonal($sectionid='general') {
-		$this->currentSectionID = $sectionid;
-		return $this->createSettingsPage('personal');
+		$admin = $this->groupManager->isAdmin($this->userSession->getUser()->getUID());
+		$personalSections = $this->settingsManager->getPersonalSections();
+		$adminSections = $admin ? $this->settingsManager->getAdminSections() : [];
+		$panels = $this->settingsManager->getPersonalPanels($sectionid);
+		$params = [];
+		$params['type'] = 'personal';
+		$params['personalNav'] = $this->getNavigation($personalSections, $sectionid, 'personal');
+		$params['adminNav'] = $admin ? $this->getNavigation($adminSections, '', 'admin') : [];
+		$params['panels'] = $this->getPanelsData($panels);
+		$response = new TemplateResponse($this->appName, 'settingsPage', $params);
+		return $response;
 	}
 
 	/**
 	 * Creates the admin settings page
 	 * @NoCSRFRequired
 	 * @param string $sectionID
-	 * @return TemplateResponse
+	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
 	public function getAdmin($sectionid='general') {
-		$this->currentSectionID = $sectionid;
-		return $this->createSettingsPage('admin');
-	}
-
-	/**
-	 * Generates a settings page given the type (personal/admin)
-	 * @param string $type
-	 * @return TemplateResponse
-	 */
-	protected function createSettingsPage($type) {
-		// Load sections and panels
-		if($type == 'personal') {
-			$sections = $this->settingsManager->getPersonalSections();
-			$panels = $this->settingsManager->getPersonalPanels($this->currentSectionID);
-		} else if($type == 'admin') {
-			$sections = $this->settingsManager->getAdminSections();
-			$panels = $this->settingsManager->getAdminPanels($this->currentSectionID);
-		} else {
-			return false;
-		}
-		// Init the template
-		// Generate the html and nav params
+		$personalSections = $this->settingsManager->getPersonalSections();
+		$adminSections = $this->settingsManager->getAdminSections();
+		$panels = $this->settingsManager->getAdminPanels($sectionid);
 		$params = [];
+		$params['type'] = 'admin';
+		$params['personalNav'] = $this->getNavigation($personalSections, '', 'personal');
+		$params['adminNav'] = $this->getNavigation($adminSections, $sectionid, 'admin');
 		$params['panels'] = $this->getPanelsData($panels);
-		$params['nav'] = $this->getNavigation($sections, $this->currentSectionID, $type);
-		$params['type'] = $type;
-		// Send the response
 		$response = new TemplateResponse($this->appName, 'settingsPage', $params);
 		return $response;
 	}
@@ -130,7 +132,7 @@ class SettingsPageController extends Controller {
 
 	/**
 	 * Iterate through the panels and retrieve the html content
-	 * @param ISettings[] $panels array of ISettingss
+	 * @param ISettings[] $panels array of ISettings
 	 * @return array containing panel html
 	 */
 	protected function getPanelsData($panels) {

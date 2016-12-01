@@ -462,11 +462,11 @@ class OC_App {
 		if (OC_User::isLoggedIn()) {
 			// personal menu
 			$settings[] = [
-				"id" => "personal",
+				"id" => "settings",
 				"order" => 1,
 				"href" => $urlGenerator->linkToRoute('settings.SettingsPage.getPersonal'),
-				"name" => $l->t("Personal"),
-				"icon" => $urlGenerator->imagePath("settings", "personal.svg")
+				"name" => $l->t("Settings"),
+				"icon" => $urlGenerator->imagePath("settings", "admin.svg")
 			];
 
 			//SubAdmins are also allowed to access user management
@@ -486,17 +486,6 @@ class OC_App {
 				];
 			}
 
-			// if the user is an admin
-			if (OC_User::isAdminUser(OC_User::getUser())) {
-				// admin settings
-				$settings[] = [
-					"id" => "admin",
-					"order" => 1000,
-					"href" => $urlGenerator->linkToRoute('settings.SettingsPage.getAdmin'),
-					"name" => $l->t("Admin"),
-					"icon" => $urlGenerator->imagePath("settings", "admin.svg")
-				];
-			}
 		}
 
 		$navigation = self::proceedNavigation($settings);
