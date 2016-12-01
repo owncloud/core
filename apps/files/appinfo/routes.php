@@ -58,6 +58,7 @@ $application->registerRoutes(
 				'url' => '/',
 				'verb' => 'GET',
 			],
+
 		]
 	]
 );
@@ -70,6 +71,8 @@ $this->create('files_ajax_getstoragestats', 'ajax/getstoragestats.php')
 	->actionInclude('files/ajax/getstoragestats.php');
 $this->create('files_ajax_list', 'ajax/list.php')
 	->actionInclude('files/ajax/list.php');
+$this->create('files_ajax_setupload', 'ajax/setupload.php')
+	->actionInclude('files/ajax/setupload.php');
 
 $this->create('download', 'download{file}')
 	->requirements(['file' => '.*'])
