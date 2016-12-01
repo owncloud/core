@@ -30,13 +30,13 @@
 OCP\User::checkLoggedIn();
 \OC::$server->getSession()->close();
 
-$files = isset($_GET['files']) ? (string)$_GET['files'] : '';
+// files can be an array with multiple "files[]=one.txt&files[]=two.txt" or a single file with "files=filename.txt"
+$files_list = isset($_GET['files']) ? $_GET['files'] : '';
 $dir = isset($_GET['dir']) ? (string)$_GET['dir'] : '';
 
-$files_list = json_decode($files);
 // in case we get only a single file
 if (!is_array($files_list)) {
-	$files_list = [$files];
+	$files_list = [(string)$files_list];
 }
 
 /**
