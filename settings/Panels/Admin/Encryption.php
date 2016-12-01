@@ -27,7 +27,7 @@ use OCP\Template;
 class Encryption implements ISettings {
 
     public function getPriority() {
-        return 0;
+        return 30;
     }
 
     public function getPanel() {

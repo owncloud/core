@@ -32,7 +32,7 @@ class Mail implements ISettings {
 	}
 
     public function getPriority() {
-        return 0;
+        return 20;
     }
 
     public function getPanel() {
