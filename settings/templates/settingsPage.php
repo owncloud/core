@@ -8,13 +8,13 @@
 /** @var $_ mixed[]|\OCP\IURLGenerator[] */
 /** @var \OC_Defaults $theme */
 
-style('settings', 'settings');
 script('settings', 'settings');
 script('settings', $_['type']);
 script('files', 'jquery.fileupload');
 vendor_script('select2/select2');
 vendor_style('select2/select2');
 script('core', 'multiselect');
+style('settings', 'settings');
 
 if($_['type'] === 'admin') {
 	script('core', ['multiselect', 'setupchecks']);

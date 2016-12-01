@@ -52,6 +52,9 @@ class SettingsPageController extends Controller {
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param ISettingsManager $settingsManager
+	 * @param IURLGenerator $urlGenerator
+	 * @param IGroupManager $groupManager
+	 * @param IUserSession $userSession
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -70,7 +73,7 @@ class SettingsPageController extends Controller {
 	 * Creates the personal settings page
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
-	 * @param string $sectionID
+	 * @param string $sectionid
 	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
 	public function getPersonal($sectionid='general') {
@@ -90,7 +93,7 @@ class SettingsPageController extends Controller {
 	/**
 	 * Creates the admin settings page
 	 * @NoCSRFRequired
-	 * @param string $sectionID
+	 * @param string $sectionid
 	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
 	public function getAdmin($sectionid='general') {
