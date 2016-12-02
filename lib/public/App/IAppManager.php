@@ -112,4 +112,13 @@ interface IAppManager {
 	 * @since 9.0.0
 	 */
 	public function getAlwaysEnabledApps();
+
+	/**
+	 * Returns the app information from "appinfo/info.xml".
+	 *
+	 * @param string $appId app id
+	 * @return array app info
+	 * @since 9.2.0
+	 */
+	public function getAppInfo($appId);
 }

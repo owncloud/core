@@ -125,8 +125,4 @@ class Profile implements ISettings {
         return 'general';
     }
 
-    public function getName() {
-        return 'Profile';
-    }
-
 }

@@ -22,10 +22,9 @@
 namespace OC\Settings;
 
 use OC\Settings\Panels\Admin\Apps;
-use OCP\IUser;
+use OCP\App\IAppManager;
 use OCP\Settings\ISettingsManager;
 use OCP\Settings\ISection;
-use OC\App\AppManager;
 use OCP\Settings\ISettings;
 use OCP\ILogger;
 use OCP\IL10N;
@@ -58,106 +57,121 @@ use OC\Settings\Panels\Admin\Tips;
  */
 class SettingsManager implements ISettingsManager {
 
-    /** @var IL10N */
-    protected $l;
+	/** @var IL10N */
+	protected $l;
 
-    /** @var AppManager */
-    protected $appManager;
+	/** @var IAppManager */
+	protected $appManager;
 
-    /** @var ILogger */
-    protected $logger;
-
-    /** @var IUser */
-    protected $user;
+	/** @var ILogger */
+	protected $logger;
 
 	/** @var IURLGenerator */
 	protected $urlGenerator;
 
-    /**
-     * Holds a cache of ISettingss with keys for type
-     */
-    protected $panels = [];
+	/** @var Defaults  */
+	protected $defaults;
 
-    /**
-     * Holds an array of sections
-     */
-    protected $sections = [];
+	/** @var IUserSession  */
+	protected $userSession;
 
-    /**
-     * @param IL10N $l
-     * @param AppManager $appManager
-     * @param IUserSession $userSession
-     * @param ILogger $logger
-     */
-    public function __construct(IL10N $l,
-								AppManager $appManager,
+	/** @var ILogger  */
+	protected $log;
+
+	/** @var IConfig  */
+	protected $config;
+
+	/** @var IGroupManager  */
+	protected $groupManager;
+
+	/**
+	 * Holds a cache of ISettings with keys for type
+	 */
+	protected $panels = [];
+
+	/**
+	 * Holds an array of sections
+	 */
+	protected $sections = [];
+
+	/**
+	 * @param IL10N $l
+	 * @param IAppManager $appManager
+	 * @param IUserSession $userSession
+	 * @param ILogger $logger
+	 * @param IGroupManager $groupManager
+	 * @param IConfig $config
+	 * @param Defaults $defaults
+	 * @param IURLGenerator $urlGenerator
+	 */
+	public function __construct(IL10N $l,
+								IAppManager $appManager,
 								IUserSession $userSession,
 								ILogger $logger,
 								IGroupManager $groupManager,
 								IConfig $config,
 								Defaults $defaults,
 								IURLGenerator $urlGenerator) {
-        $this->l = $l;
-        $this->appManager = $appManager;
-        $this->userSession = $userSession;
-        $this->user = $this->userSession->getUser();
-        $this->config = $config;
-        $this->groupManager = $groupManager;
-        $this->log = $logger;
-        $this->defaults = $defaults;
+		$this->l = $l;
+		$this->appManager = $appManager;
+		$this->userSession = $userSession;
+		$this->config = $config;
+		$this->groupManager = $groupManager;
+		$this->log = $logger;
+		$this->defaults = $defaults;
 		$this->urlGenerator = $urlGenerator;
-    }
+	}
 
-    public function getPersonalSections() {
-        // Trigger a load of all personal panels to discover sections
-        $this->loadPanels('personal');
-        return $this->sections['personal'];
-    }
+	public function getPersonalSections() {
+		// Trigger a load of all personal panels to discover sections
+		$this->loadPanels('personal');
+		return $this->sections['personal'];
+	}
 
-    public function getAdminSections() {
-        // Trigger a load of all admin panels to discover sections
-        $this->loadPanels('admin');
-        return $this->sections['admin'];
-    }
+	public function getAdminSections() {
+		// Trigger a load of all admin panels to discover sections
+		$this->loadPanels('admin');
+		return $this->sections['admin'];
+	}
 
-    /**
-     * Returns ISettingss for the personal settings in the given section
-     * @param string $sectionID
-     * @return array of ISection
-     */
-    public function getPersonalPanels($sectionID) {
-        // Trigger a load of all personal panels to discover sections
-        $this->loadPanels('personal');
-        if(isset($this->panels['personal'][$sectionID])) {
-            return $this->panels['personal'][$sectionID];
-        } else {
-            return [];
-        }
-    }
+	/**
+	 * Returns ISettings for the personal settings in the given section
+	 * @param string $sectionID
+	 * @return array of ISection
+	 */
+	public function getPersonalPanels($sectionID) {
+		// Trigger a load of all personal panels to discover sections
+		$this->loadPanels('personal');
+		if(isset($this->panels['personal'][$sectionID])) {
+			return $this->panels['personal'][$sectionID];
+		} else {
+			return [];
+		}
+	}
 
-    /**
-     * Returns ISettingss for the admin settings in the given section
-     * @param string $sectionID
-     * @return array of ISection
-     */
-    public function getAdminPanels($sectionID) {
-        // Trigger a load of all admin panels to discover sections
-        $this->loadPanels('admin');
-        if(isset($this->panels['admin'][$sectionID])) {
-            return $this->panels['admin'][$sectionID];
-        } else {
-            return [];
-        }
-    }
+	/**
+	 * Returns ISettings for the admin settings in the given section
+	 * @param string $sectionID
+	 * @return array of ISection
+	 */
+	public function getAdminPanels($sectionID) {
+		// Trigger a load of all admin panels to discover sections
+		$this->loadPanels('admin');
+		if(isset($this->panels['admin'][$sectionID])) {
+			return $this->panels['admin'][$sectionID];
+		} else {
+			return [];
+		}
+	}
 
-    /**
-     * Returns the default set of ISections used in core
-     * @param string $type the type of sections to return
-     * @return array of ISection
-     */
-    private function getBuiltInSections($type) {
-        if($type === 'admin') {
-            return [
+	/**
+	 * Returns the default set of ISections used in core
+	 * @param string $type the type of sections to return
+	 * @return array of ISection
+	 */
+	private function getBuiltInSections($type) {
+		if($type === 'admin') {
+			return [
 				new Section('general', $this->l->t('General'), 100),
 				new Section('sharing', $this->l->t('Sharing'), 99),
 				new Section('security', $this->l->t('Security'), 98),
@@ -165,22 +179,22 @@ class SettingsManager implements ISettingsManager {
 				new Section('updates', $this->l->t('Updates'), 20),
 				new Section('apps', $this->l->t('Apps'), 10),
 				new Section('additional', $this->l->t('Additional'), 5),
-            ];
-        } else if($type === 'personal') {
-            return [
-                new Section('general', $this->l->t('General'), 100),
-                new Section('security', $this->l->t('Security'), 50),
-                new Section('additional', $this->l->t('Additional'), 5),
-            ];
-        }
-    }
+			];
+		} else if($type === 'personal') {
+			return [
+				new Section('general', $this->l->t('General'), 100),
+				new Section('security', $this->l->t('Security'), 50),
+				new Section('additional', $this->l->t('Additional'), 5),
+			];
+		}
+	}
 
-    /**
-     * Returns an array of classnames for built in settings panels
-     * @return array of strings
-     */
-    private function getBuiltInPanels() {
-        return [
+	/**
+	 * Returns an array of classnames for built in settings panels
+	 * @return array of strings
+	 */
+	private function getBuiltInPanels() {
+		return [
 			'personal' => [
 				Profile::class,
 				Clients::class,
@@ -202,163 +216,165 @@ class SettingsManager implements ISettingsManager {
 				Certificates::class,
 				Apps::class
 			]
-        ];
-    }
+		];
+	}
 
-    /**
-     * Gets panel objects with dependancies instantiated from the container
-     * @param string $className
-     */
-    private function getBuiltInPanel($className) {
-        $panels = [
-            // Personal
-            Profile::class => new Profile($this->config, $this->groupManager, $this->userSession),
-            LegacyPersonal::class => new LegacyPersonal(),
-            Clients::class => new Clients($this->config, $this->defaults),
-            Version::class => new Version(),
-            AppPasswords::class => new AppPasswords(),
-            Quota::class => new Quota($this->config),
-            // Admin
-            BackgroundJobs::class => new BackgroundJobs($this->config),
-            Certificates::class => new Certificates($this->config, $this->urlGenerator),
-            Encryption::class => new Encryption(),
-            FileSharing::class => new FileSharing(),
-            Logging::class => new Logging($this->config, $this->urlGenerator),
-            Mail::class => new Mail($this->config),
-            SecurityWarning::class => new SecurityWarning($this->l, $this->config),
-            Tips::class => new Tips(),
-            Updater::class => new Updater(),
-            LegacyAdmin::class => new LegacyAdmin(),
-        ];
-        if(isset($panels[$className])) {
-            return $panels[$className];
-        } else {
-            return false;
-        }
-    }
+	/**
+	 * Gets panel objects with dependencies instantiated from the container
+	 * @param string $className
+	 * @return array|false
+	 */
+	public function getBuiltInPanel($className) {
+		$panels = [
+			// Personal
+			Profile::class => new Profile($this->config, $this->groupManager, $this->userSession),
+			LegacyPersonal::class => new LegacyPersonal(),
+			Clients::class => new Clients($this->config, $this->defaults),
+			Version::class => new Version(),
+			AppPasswords::class => new AppPasswords(),
+			Quota::class => new Quota($this->config),
+			// Admin
+			BackgroundJobs::class => new BackgroundJobs($this->config),
+			Certificates::class => new Certificates($this->config, $this->urlGenerator),
+			Encryption::class => new Encryption(),
+			FileSharing::class => new FileSharing(),
+			Logging::class => new Logging($this->config, $this->urlGenerator),
+			Mail::class => new Mail($this->config),
+			SecurityWarning::class => new SecurityWarning($this->l, $this->config),
+			Tips::class => new Tips(),
+			Updater::class => new Updater(),
+			LegacyAdmin::class => new LegacyAdmin(),
+		];
+		if(isset($panels[$className])) {
+			return $panels[$className];
+		} else {
+			return false;
+		}
+	}
 
-    /**
-     * Gets all the panels for ownCloud
-     * @param string $type the type of sections to return
-     * @return array of strings
-     */
-    protected function getPanelsList($type) {
-        $registered = isset($this->findRegisteredPanels()[$type]) ? $this->findRegisteredPanels()[$type] : [];
-        $builtIn = isset($this->getBuiltInPanels()[$type]) ? $this->getBuiltInPanels()[$type] : [];
-        return array_merge($registered, $builtIn);
-    }
+	/**
+	 * Gets all the panels for ownCloud
+	 * @param string $type the type of sections to return
+	 * @return array of strings
+	 */
+	public function getPanelsList($type) {
+		$registered = isset($this->findRegisteredPanels()[$type]) ? $this->findRegisteredPanels()[$type] : [];
+		$builtIn = isset($this->getBuiltInPanels()[$type]) ? $this->getBuiltInPanels()[$type] : [];
+		return array_merge($registered, $builtIn);
+	}
 
 
-    /**
-     * Searches through the currently enabled apps and returns the panels registered
-     * @return array of strings
-     */
-    protected function findRegisteredPanels() {
-        $panels = [];
-        foreach($this->appManager->getEnabledAppsForUser($this->user) as $app) {
-            if(isset($this->appManager->getAppInfo($app)['settings'])) {
-                foreach($this->appManager->getAppInfo($app)['settings'] as $type => $panel) {
-                    $panels[$type][] = $panel;
-                }
-            }
-        }
-        return $panels;
-    }
+	/**
+	 * Searches through the currently enabled apps and returns the panels registered
+	 * @return array of strings
+	 */
+	protected function findRegisteredPanels() {
+		$panels = [];
+		foreach($this->appManager->getEnabledAppsForUser($this->userSession->getUser()) as $app) {
+			if(isset($this->appManager->getAppInfo($app)['settings'])) {
+				foreach($this->appManager->getAppInfo($app)['settings'] as $type => $panel) {
+					$panels[$type][] = $panel;
+				}
+			}
+		}
+		return $panels;
+	}
 
-    /**
-     * Attempts to load a ISettings using the class name
-     * @param string $className
-     * @throws QueryException
-     * @return ISettings
-     */
-    protected function loadPanel($className) {
-        try {
-            if(!$panel = $this->getBuiltInPanel($className)) {
-                $panel = \OC::$server->query($className);
-            }
-            if(!$panel instanceof ISettings) {
-                $this->log->error(
-                    'Class: {class} not an instance of OCP\Settings\ISettings',
-                    ['class' => $className]);
-            } else {
-                return $panel;
-            }
-        } catch (QueryException $e) {
-            $this->log->error(
-                'Failed to load panel with class name: {class}',
-                ['class' => $e->getMessage()]);
-            throw $e;
-        }
-    }
+	/**
+	 * Attempts to load a ISettings using the class name
+	 * @param string $className
+	 * @throws QueryException
+	 * @return ISettings
+	 */
+	protected function loadPanel($className) {
+		try {
+			if(!$panel = $this->getBuiltInPanel($className)) {
+				$panel = \OC::$server->query($className);
+			}
+			if(!$panel instanceof ISettings) {
+				$this->log->error(
+					'Class: {class} not an instance of OCP\Settings\ISettings',
+					['class' => $className]);
+			} else {
+				return $panel;
+			}
+		} catch (QueryException $e) {
+			$this->log->error(
+				'Failed to load panel with class name: {class}',
+				['class' => $e->getMessage()]);
+			throw $e;
+		}
+	}
 
-    /**
-     * Find and return ISettingss for the given type
-     * @param string $type of panels to load
-     * @return array of ISettingss
-     */
-    public function loadPanels($type) {
-        // If already loaded just return
-        if(!empty($this->panels[$type])) {
-            return $this->panels[$type];
-        }
-        // Find the panels from info xml
-        $panels = $this->getPanelsList($type);
-        // Load the classes using the server container
-        if(empty($panels)) {
-            return [];
-        }
-        foreach($panels as $panelClassName) {
-            // Attempt to load the panel
-            try {
-                $panel = $this->loadPanel($panelClassName);
-                $section = $this->loadSection($type, $panel->getSectionID());
-                $this->panels[$type][$section->getID()][] = $panel;
-                $this->sections[$type][$section->getID()] = $section;
-                // Now try and initialise the ISection from the panel
-            } catch (QueryException $e) {
-                // Just skip this panel, either its section of panel could not be loaded
-            }
-        }
+	/**
+	 * Find and return ISettings for the given type
+	 * @param string $type of panels to load
+	 * @return array of ISettings
+	 */
+	public function loadPanels($type) {
+		// If already loaded just return
+		if(!empty($this->panels[$type])) {
+			return $this->panels[$type];
+		}
+		// Find the panels from info xml
+		$panels = $this->getPanelsList($type);
+		// Load the classes using the server container
+		if(empty($panels)) {
+			return [];
+		}
+		foreach($panels as $panelClassName) {
+			// Attempt to load the panel
+			try {
+				$panel = $this->loadPanel($panelClassName);
+				$section = $this->loadSection($type, $panel->getSectionID());
+				$this->panels[$type][$section->getID()][] = $panel;
+				$this->sections[$type][$section->getID()] = $section;
+				// Now try and initialise the ISection from the panel
+			} catch (QueryException $e) {
+				// Just skip this panel, either its section of panel could not be loaded
+			}
+		}
 		// Return the panel array sorted
 		foreach($this->panels[$type] as $sectionID => $section) {
 			$this->panels[$type][$sectionID] = $this->sortOrder($this->panels[$type][$sectionID]);
 		}
 		// sort section array
 		$this->sections[$type] = $this->sortOrder($this->sections[$type]);
-        return $this->panels[$type];
-    }
+		return $this->panels[$type];
+	}
 
-    /**
-     * Return the section object for the corresponding type and sectionID
-     * @param string $type
-     * @param string $sectionID
-     * @return ISection
-     */
-    protected function loadSection($type, $sectionID) {
-        // Load sections from defalt list
-        foreach($this->getBuiltInSections($type) as $section) {
-            if($section->getID() === $sectionID) {
-                return $section;
-            }
-        }
-        $this->log->error(
-            'Failed to load section with id: {id}',
-            ['id' => $sectionID]);
-        throw new QueryException('Panel could not be loaded');
-    }
+	/**
+	 * Return the section object for the corresponding type and sectionID
+	 * @param string $type
+	 * @param string $sectionID
+	 * @throws QueryException
+	 * @return ISection
+	 */
+	protected function loadSection($type, $sectionID) {
+		// Load sections from default list
+		foreach($this->getBuiltInSections($type) as $section) {
+			if($section->getID() === $sectionID) {
+				return $section;
+			}
+		}
+		$this->log->error(
+			'Failed to load section with id: {id}',
+			['id' => $sectionID]);
+		throw new QueryException('Panel could not be loaded');
+	}
 
-    /**
-     * Sort the array of ISettingss or ISections by their priority attribute
-     * @param array $objects (ISections of ISettingss)
-     * @return array
-     */
-    protected function sortOrder($objects) {
-        usort($objects, function($a, $b) {
+	/**
+	 * Sort the array of ISettings or ISections by their priority attribute
+	 * @param array $objects (ISections of ISettings)
+	 * @return array
+	 */
+	protected function sortOrder($objects) {
+		usort($objects, function($a, $b) {
 			/** @var ISection | ISettings $a */
 			/** @var ISection | ISettings $b */
-            return $a->getPriority() < $b->getPriority();
-        });
-        return $objects;
-    }
+			return $a->getPriority() < $b->getPriority();
+		});
+		return $objects;
+	}
 
 }
