@@ -24,24 +24,90 @@ namespace Test;
 use OC\Settings\SettingsManager;
 
 class SettingsManagerTest extends TestCase {
+
 	/** @var \OC\Settings\SettingsManager */
 	protected $settingsManager;
+	protected $l;
+	protected $appManager;
+	protected $userSession;
+	protected $logger;
+	protected $groupManager;
+	protected $config;
+	protected $defaults;
+	protected $urlGenerator;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->settingsManager = new SettingsManager();
+
+		$this->l = $this->getMockBuilder('\OCP\IL10N')->getMock();
+		$this->appManager = $this->getMockBuilder('\OCP\App\IAppManager')->getMock();
+		$this->userSession = $this->getMockBuilder('\OCP\IUserSession')->getMock();
+		$this->logger = $this->getMockBuilder('\OCP\ILogger')->getMock();
+		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')->getMock();
+		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
+		$this->defaults = $this->getMockBuilder('\OCP\Defaults')->getMock();
+		$this->urlGenerator = $this->getMockBuilder('\OCP\IUrlGenerator')->getMock();
+
+		$this->settingsManager = new SettingsManager(
+			$this->l,
+			$this->appManager,
+			$this->userSession,
+			$this->logger,
+			$this->groupManager,
+			$this->config,
+			$this->defaults,
+			$this->urlGenerator
+		);
 	}
 
-	public function testGetBuiltInSections() { }
+	public function testGetBuiltInPanel() {
+		$panel = $this->settingsManager->getBuiltInPanel('OC\Settings\Panels\Personal\Profile');
+		$this->assertNotEquals(false, $panel);
+		$this->assertEquals('OC\Settings\Panels\Personal\Profile', get_class($panel));
+	}
 
-  public function testFindRegisteredPanels() {}
+	public function testGetPanelsList() {
+		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$this->userSession->expects($this->once())->method('getUser')->willReturn($user);
+		$this->appManager->expects($this->once())->method('getEnabledAppsForUser')->with($user)->willReturn([]);
+		$list = $this->settingsManager->getPanelsList('personal');
+		$this->assertContains('OC\Settings\Panels\Personal\Profile', $list);
+	}
 
-  public function testLoadPanel() {}
+	public function testLoadPersonalPanels() {
+		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
+		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
+		$this->appManager->expects($this->exactly(1))->method('getAppInfo')->with('encryption')->willReturn([]);
+		$panels = $this->settingsManager->loadPanels('personal');
+		$this->assertNotEmpty($panels);
+		foreach($panels as $section => $panels) {
+			foreach($panels as $panel) {
+				$panelClasses[$section][] = get_class($panel);
+			}
+		}
+		$this->assertArrayHasKey('additional', $panelClasses);
+		$this->assertContains('OC\Settings\Panels\Personal\Legacy', $panelClasses['additional']);
+		$this->assertArrayHasKey('general', $panelClasses);
+		$this->assertContains('OC\Settings\Panels\Personal\Profile', $panelClasses['general']);
+	}
 
-  public function testLoadPanels() {}
-
-  public function testGetPanels() {}
-
-  public function testSortOrder() {}
+	public function testLoadAdminPanels() {
+		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
+		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
+		$this->appManager->expects($this->exactly(1))->method('getAppInfo')->with('encryption')->willReturn([]);
+		$panels = $this->settingsManager->loadPanels('admin');
+		$this->assertNotEmpty($panels);
+		foreach($panels as $section => $panels) {
+			foreach ($panels as $panel) {
+				$panelClasses[$section][] = get_class($panel);
+			}
+		}
+		$this->assertArrayHasKey('additional', $panelClasses);
+		$this->assertArrayHasKey('general', $panelClasses);
+		$this->assertContains('OC\Settings\Panels\Admin\Legacy', $panelClasses['additional']);
+		$this->assertContains('OC\Settings\Panels\Admin\SecurityWarning', $panelClasses['general']);
+	}
 
 }
