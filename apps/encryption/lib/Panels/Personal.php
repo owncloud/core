@@ -5,7 +5,6 @@ namespace OCA\Encryption\Panels;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-
 class Personal implements ISettings {
 
     public function getPriority() {
@@ -60,5 +59,3 @@ class Personal implements ISettings {
         return null;
     }
 }
-
-?>
