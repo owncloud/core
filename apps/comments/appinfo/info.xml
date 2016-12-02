@@ -14,4 +14,12 @@
 		<logging/>
 		<dav/>
 	</types>
+	<sabre>
+		<plugins>
+			<plugin>OCA\Comments\Dav\CommentsPlugin</plugin>
+		</plugins>
+		<collections>
+			<collection>OCA\Comments\Dav\RootCollection</collection>
+		</collections>
+	</sabre>
 </info>

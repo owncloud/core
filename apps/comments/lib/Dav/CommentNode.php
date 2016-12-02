@@ -20,7 +20,7 @@
  *
  */
 
-namespace OCA\DAV\Comments;
+namespace OCA\Comments\Dav;
 
 
 use OCP\Comments\IComment;

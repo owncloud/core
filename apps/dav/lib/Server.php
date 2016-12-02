@@ -28,7 +28,6 @@ namespace OCA\DAV;
 
 use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCA\DAV\CardDAV\ImageExportPlugin;
-use OCA\DAV\Comments\CommentsPlugin;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin;
 use OCA\DAV\Connector\Sabre\CommentPropertiesPlugin;
@@ -131,12 +130,6 @@ class Server {
 		$this->server->addPlugin(new SystemTagPlugin(
 			\OC::$server->getSystemTagManager(),
 			\OC::$server->getGroupManager(),
-			\OC::$server->getUserSession()
-		));
-
-		// comments plugin
-		$this->server->addPlugin(new CommentsPlugin(
-			\OC::$server->getCommentsManager(),
 			\OC::$server->getUserSession()
 		));
 
