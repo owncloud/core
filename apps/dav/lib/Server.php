@@ -49,6 +49,7 @@ use OCP\SabrePluginEvent;
 use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin;
 use OCA\DAV\Connector\Sabre\TagsPlugin;
+use OCA\DAV\AppInfo\PluginManager;
 
 class Server {
 
@@ -155,7 +156,7 @@ class Server {
 		}
 
 		// wait with registering these until auth is handled and the filesystem is setup
-		$this->server->on('beforeMethod', function () {
+		$this->server->on('beforeMethod', function () use ($root) {
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
@@ -213,6 +214,18 @@ class Server {
 						$userFolder
 					));
 				}
+			}
+
+			// register plugins from apps
+			$pluginManager = new PluginManager(
+				\OC::$server,
+				\OC::$server->getAppManager()
+			);
+			foreach ($pluginManager->getAppPlugins() as $appPlugin) {
+				$this->server->addPlugin($appPlugin);
+			}
+			foreach ($pluginManager->getAppCollections() as $appCollection) {
+				$root->addChild($appCollection);
 			}
 		});
 	}

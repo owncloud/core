@@ -24,6 +24,7 @@ namespace OCA\DAV\Tests\unit;
 
 use OCA\DAV\Server;
 use OCP\IRequest;
+use OCA\DAV\AppInfo\PluginManager;
 
 /**
  * Class ServerTest
@@ -36,8 +37,7 @@ class ServerTest extends \Test\TestCase {
 
 	public function test() {
 		/** @var IRequest $r */
-		$r = $this->getMockBuilder('\OCP\IRequest')
-			->disableOriginalConstructor()->getMock();
+		$r = $this->createMock(IRequest::class);
 		$s = new Server($r, '/');
 		$this->assertNotNull($s->server);
 	}

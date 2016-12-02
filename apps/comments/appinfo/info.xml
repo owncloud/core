@@ -12,5 +12,6 @@
 	</dependencies>
 	<types>
 		<logging/>
+		<dav/>
 	</types>
 </info>
