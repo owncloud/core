@@ -47,4 +47,10 @@ interface ISection {
    */
   public function getPriority();
 
+  /**
+   * @since 9.2
+   * @return string
+   */
+  public function getIconName();
+
 }

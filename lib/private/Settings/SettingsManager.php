@@ -172,19 +172,19 @@ class SettingsManager implements ISettingsManager {
 	private function getBuiltInSections($type) {
 		if($type === 'admin') {
 			return [
-				new Section('general', $this->l->t('General'), 100),
-				new Section('sharing', $this->l->t('Sharing'), 99),
-				new Section('security', $this->l->t('Security'), 98),
-				new Section('monitoring', $this->l->t('Monitoring'), 30),
-				new Section('updates', $this->l->t('Updates'), 20),
-				new Section('apps', $this->l->t('Apps'), 10),
-				new Section('additional', $this->l->t('Additional'), 5),
+				new Section('general', $this->l->t('General'), 100, 'settings'),
+				new Section('sharing', $this->l->t('Sharing'), 99, 'share'),
+				new Section('security', $this->l->t('Security'), 98, 'password'),
+				new Section('monitoring', $this->l->t('Monitoring'), 30, 'search'),
+				new Section('updates', $this->l->t('Updates'), 20, 'upload'),
+				new Section('apps', $this->l->t('Apps'), 10, 'list'),
+				new Section('additional', $this->l->t('Additional'), 5, 'more'),
 			];
 		} else if($type === 'personal') {
 			return [
-				new Section('general', $this->l->t('General'), 100),
-				new Section('security', $this->l->t('Security'), 50),
-				new Section('additional', $this->l->t('Additional'), 5),
+				new Section('general', $this->l->t('General'), 100, 'settings'),
+				new Section('security', $this->l->t('Security'), 50, 'password'),
+				new Section('additional', $this->l->t('Additional'), 5, 'more'),
 			];
 		}
 	}

@@ -30,14 +30,16 @@ class Section implements ISection {
 
     protected $id;
     protected $name;
+    protected $icon;
 
     /** @var int */
     protected $priority;
 
-    public function __construct($id, $name, $priority) {
+    public function __construct($id, $name, $priority, $icon) {
         $this->id = $id;
         $this->name = $name;
         $this->priority = $priority;
+        $this->icon = $icon;
     }
 
     public function getID() {
@@ -51,5 +53,9 @@ class Section implements ISection {
     public function getPriority() {
         return $this->priority;
     }
+
+    public function getIconName() {
+		return $this->icon;
+	}
 
 }

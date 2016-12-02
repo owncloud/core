@@ -22,14 +22,15 @@ if($_['type'] === 'admin') {
 ?>
 
 <div id="app-navigation">
-	<ul>
+	<ul class="with-icon">
 		<li class="divider"><?php p($l->t('Personal')); ?></li>
 		<?php foreach($_['personalNav'] as $item) {
-		$active = $item['active'] ? 'class="active"' : '';
+		$active = $item['active'] ? ' active ' : '';
 		print_unescaped(
 			sprintf(
-				"<li><a %shref='%s'>%s</a></li>",
+				"<li><a class=\"svg %s %s\" href='%s'>%s</a></li>",
 				$active,
+				'icon-'.\OCP\Util::sanitizeHTML($item['icon']),
 				\OCP\Util::sanitizeHTML($item['link']),
 				\OCP\Util::sanitizeHTML($item['name'])
 			)
@@ -41,11 +42,12 @@ if($_['type'] === 'admin') {
 		<?php
 
 		foreach ($_['adminNav'] as $item) {
-			$active = $item['active'] ? 'class="active"' : '';
+			$active = $item['active'] ? ' active ' : '';
 			print_unescaped(
 				sprintf(
-					"<li><a %shref='%s'>%s</a></li>",
+					"<li><a class=\"svg %s %s\" href='%s'>%s</a></li>",
 					$active,
+					'icon-'.\OCP\Util::sanitizeHTML($item['icon']),
 					\OCP\Util::sanitizeHTML($item['link']),
 					\OCP\Util::sanitizeHTML($item['name'])
 				)
