@@ -449,7 +449,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 				return vsprintf($text, $parameters);
 			}));
 
-		$t = new Base($template, $requestToken, $l10n, $theme);
+		$t = new Base($template, $requestToken, $l10n, null, $theme);
 		$buf = $t->fetchPage($vars);
 		$this->assertHtmlStringEqualsHtmlString($expectedHtml, $buf);
 	}
