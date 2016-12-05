@@ -86,6 +86,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "Selige un contrasigno pro le ligamine public",
     "Resharing is not allowed" : "Il non es permittite compartir plus que un vice",
     "Share link" : "Compartir ligamine",
+    "Link" : "Ligamine",
     "Password protect" : "Protegite per contrasigno",
     "Password" : "Contrasigno",
     "Email link to person" : "Ligamine de e-posta a persona",
