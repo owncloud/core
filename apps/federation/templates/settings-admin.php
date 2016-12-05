@@ -7,7 +7,7 @@ script('federation', 'settings-admin');
 style('federation', 'settings-admin')
 ?>
 <div id="ocFederationSettings" class="section">
-	<h2><?php p($l->t('Federation')); ?></h2>
+	<h2 class="app-name><?php p($l->t('Federation')); ?></h2>
 	<em><?php p($l->t('ownCloud Federation allows you to connect with other trusted ownClouds to exchange the user directory. For example this will be used to auto-complete external users for federated sharing.')); ?></em>
 
 	<p>
