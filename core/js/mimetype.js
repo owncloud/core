@@ -72,14 +72,11 @@ OC.MimeType = {
 			return undefined;
 		}
 
-		while (mimeType in OC.MimeTypeList.aliases) {
-			mimeType = OC.MimeTypeList.aliases[mimeType];
-		}
+		mimeType = this.getMimeTypeAliasTarget(mimeType);
+
 		if (mimeType in OC.MimeType._mimeTypeIcons) {
 			return OC.MimeType._mimeTypeIcons[mimeType];
 		}
-
-		//console.log(mimeType);
 
 		// First try to get the correct icon from the current theme
 		var path = '';
@@ -91,7 +88,7 @@ OC.MimeType = {
 		}
 
 		// If we do not yet have an icon fall back to the default
-		if (icon === null) {
+		if (icon === '') {
 			path = '/core/img/filetypes/';
 			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.files);
 		}
@@ -102,9 +99,6 @@ OC.MimeType = {
 		OC.MimeType._mimeTypeIcons[mimeType] = mimeTypeIcon;
 		return mimeTypeIcon;
 	},
-
-
-
 
 	/**
 	 * If the given mimeType is an alias, this method returns its target,
@@ -117,11 +111,6 @@ OC.MimeType = {
 		while (mimeType in OC.MimeTypeList.aliases) {
 			mimeType = OC.MimeTypeList.aliases[mimeType];
 		}
-		if (mimeType in OC.MimeType._mimeTypeIcons) {
-			return OC.MimeType._mimeTypeIcons[mimeType];
-		}
-
 		return mimeType;
 	}
-
 };
