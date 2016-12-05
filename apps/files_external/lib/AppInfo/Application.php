@@ -28,7 +28,7 @@
 namespace OCA\Files_External\AppInfo;
 
 use \OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
+use \OCP\AppFramework\IAppContainer;
 use \OCP\IContainer;
 use \OCP\Files\External\IStoragesBackendService;
 use \OCP\Files\External\Config\IBackendProvider;
@@ -63,14 +63,6 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 		$backendService = $container->getServer()->query('StoragesBackendService');
 		$backendService->registerBackendProvider($this);
 		$backendService->registerAuthMechanismProvider($this);
-	}
-
-	/**
-	 * Register settings templates
-	 */
-	public function registerSettings() {
-		\OCP\App::registerAdmin('files_external', 'settings');
-		\OCP\App::registerPersonal('files_external', 'personal');
 	}
 
 	/**

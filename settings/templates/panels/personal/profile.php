@@ -1,40 +1,15 @@
-<?php /**
- * Copyright (c) 2011, Robin Appelman <icewind1991@gmail.com>
- * This file is licensed under the Affero General Public License version 3 or later.
- * See the COPYING-README file.
- */
-
-/** @var $_ mixed[]|\OCP\IURLGenerator[] */
-/** @var \OC_Defaults $theme */
+<?php
+script('settings', 'panels/profile');
+vendor_script('strengthify/jquery.strengthify');
+vendor_style('strengthify/strengthify');
+if ($_['enableAvatars']) {
+	vendor_script('jcrop/js/jquery.Jcrop');
+	vendor_style('jcrop/css/jquery.Jcrop');
+}
 ?>
-
-<div id="app-navigation">
-	<ul>
-	<?php foreach($_['forms'] as $form) {
-		if (isset($form['anchor'])) {
-			$anchor = '#' . $form['anchor'];
-			$sectionName = $form['section-name'];
-			print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($anchor), \OCP\Util::sanitizeHTML($sectionName)));
-		}
-	}?>
-	</ul>
-</div>
-
-<div id="app-content">
-
-<div id="quota" class="section">
-	<div style="width:<?php p($_['usage_relative']);?>%"
-		<?php if($_['usage_relative'] > 80): ?> class="quota-warning" <?php endif; ?>>
-		<p id="quotatext">
-			<?php print_unescaped($l->t('You are using <strong>%s</strong> of <strong>%s</strong>',
-			[$_['usage'], $_['total_space']]));?>
-		</p>
-	</div>
-</div>
-
 <?php if ($_['enableAvatars']): ?>
 <form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">
-	<h2><?php p($l->t('Profile picture')); ?></h2>
+	<h2 class="app-name"><?php p($l->t('Profile picture')); ?></h2>
 	<div id="displayavatar">
 		<div class="avatardiv"></div>
 		<div class="warning hidden"></div>
@@ -54,9 +29,8 @@
 		<div class="inlineblock button primary" id="sendcropperbutton"><?php p($l->t('Choose as profile picture')); ?></div>
 	</div>
 </form>
-<?php endif; ?>
+<?php endif;
 
-<?php
 if($_['displayNameChangeSupported']) {
 ?>
 <form id="displaynameform" class="section">
@@ -164,97 +138,3 @@ if($_['passwordChangeSupported']) {
 	</a>
 	<?php endif; ?>
 </form>
-
-<div id="sessions" class="section">
-	<h2><?php p($l->t('Sessions'));?></h2>
-	<span class="hidden-when-empty"><?php p($l->t('These are the web, desktop and mobile clients currently logged in to your ownCloud.'));?></span>
-	<table>
-		<thead class="token-list-header">
-			<tr>
-				<th><?php p($l->t('Browser'));?></th>
-				<th><?php p($l->t('Most recent activity'));?></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody class="token-list icon-loading">
-		</tbody>
-	</table>
-</div>
-
-<div id="apppasswords" class="section">
-	<h2><?php p($l->t('App passwords'));?></h2>
-	<span class="hidden-when-empty"><?php p($l->t("You've linked these apps."));?></span>
-	<table>
-		<thead class="hidden-when-empty">
-			<tr>
-				<th><?php p($l->t('Name'));?></th>
-				<th><?php p($l->t('Most recent activity'));?></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody class="token-list icon-loading">
-		</tbody>
-	</table>
-	<p><?php p($l->t('An app password is a passcode that gives an app or device permissions to access your %s account.', [$theme->getName()]));?></p>
-	<div id="app-password-form">
-		<input id="app-password-name" type="text" placeholder="<?php p($l->t('App name')); ?>">
-		<button id="add-app-password" class="button"><?php p($l->t('Create new app password')); ?></button>
-	</div>
-	<div id="app-password-result" class="hidden">
-		<span><?php p($l->t('Use the credentials below to configure your app or device.')); ?></span>
-		<div class="app-password-row">
-			<span class="app-password-label"><?php p($l->t('Username')); ?></span>
-			<input id="new-app-login-name" type="text" readonly="readonly"/>
-		</div>
-		<div class="app-password-row">
-			<span class="app-password-label"><?php p($l->t('Password')); ?></span>
-			<input id="new-app-password" type="text" readonly="readonly"/>
-			<button id="app-password-hide" class="button"><?php p($l->t('Done')); ?></button>
-		</div>
-	</div>
-</div>
-
-<div id="clientsbox" class="section clientsbox">
-	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
-	<a href="<?php p($_['clients']['desktop']); ?>" rel="noreferrer" target="_blank">
-		<img src="<?php print_unescaped(image_path('core', 'desktopapp.svg')); ?>"
-			alt="<?php p($l->t('Desktop client'));?>" />
-	</a>
-	<a href="<?php p($_['clients']['android']); ?>" rel="noreferrer" target="_blank">
-		<img src="<?php print_unescaped(image_path('core', 'googleplay.png')); ?>"
-			alt="<?php p($l->t('Android app'));?>" />
-	</a>
-	<a href="<?php p($_['clients']['ios']); ?>" rel="noreferrer" target="_blank">
-		<img src="<?php print_unescaped(image_path('core', 'appstore.svg')); ?>"
-			alt="<?php p($l->t('iOS app'));?>" />
-	</a>
-
-	<?php if (OC_Util::getEditionString() === ''): ?>
-	<p>
-		<?php print_unescaped($l->t('If you want to support the project
-		<a href="https://owncloud.org/contribute"
-			target="_blank" rel="noreferrer">join development</a>
-		or
-		<a href="https://owncloud.org/promote"
-			target="_blank" rel="noreferrer">spread the word</a>!'));?>
-	</p>
-	<?php endif; ?>
-
-	<?php if(OC_APP::isEnabled('firstrunwizard')) {?>
-	<p><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a></p>
-	<?php }?>
-</div>
-
-<?php foreach($_['forms'] as $form) {
-	if (isset($form['form']) and isset($form['form']['page'])) {?>
-	<div id="<?php isset($form['anchor']) ? p($form['anchor']) : p('');?>"><?php print_unescaped($form['form']['page']);?></div>
-	<?php }
-};?>
-
-<div class="section">
-	<h2><?php p($l->t('Version'));?></h2>
-	<p><a href="<?php print_unescaped($theme->getBaseUrl()); ?>" target="_blank"><?php p($theme->getTitle()); ?></a> <?php p(OC_Util::getHumanVersion()) ?></p>
-	<p><?php include('settings.development.notice.php'); ?></p>
-</div>
-
-</div>

@@ -2,10 +2,10 @@
 /** @var array $_ */
 /** @var \OCP\IL10N $l */
 script('encryption', 'settings-admin');
-script('core', 'multiselect');
 style('encryption', 'settings-admin');
 ?>
 <form id="ocDefaultEncryptionModule" class="sub-section">
+	<h2><?php p($l->t('Encryption')); ?></h2>
 	<?php if(!$_["initStatus"]): ?>
 		<?php p($l->t("Encryption App is enabled but your keys are not initialized, please log-out and log-in again")); ?>
 	<?php else: ?>

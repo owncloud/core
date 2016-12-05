@@ -12,7 +12,7 @@ $(document).ready(function(){
 						url: OC.generateUrl('settings/admin/security/trustedDomains'),
 						data: { newTrustedDomain: params.trustDomain }
 					}).done(function() {
-						window.location.replace(OC.generateUrl('settings/admin'));
+						window.location.replace(OC.generateUrl('settings/admin/security'));
 					});
 				}
 			});

@@ -41,6 +41,8 @@ $application->registerRoutes($this, [
 		'AuthSettings' => ['url' => '/settings/personal/authtokens'],
 	],
 	'routes' => [
+		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal', 'verb' => 'GET'],
+		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
 		['name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/mailsettings', 'verb' => 'POST'],
 		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
 		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
@@ -55,9 +57,9 @@ $application->registerRoutes($this, [
 		['name' => 'Users#stats', 'url' => '/settings/users/stats', 'verb' => 'GET'],
 		['name' => 'LogSettings#setLogLevel', 'url' => '/settings/admin/log/level', 'verb' => 'POST'],
 		['name' => 'LogSettings#download', 'url' => '/settings/admin/log/download', 'verb' => 'GET'],
-		['name' => 'CheckSetup#check', 'url' => '/settings/ajax/checksetup', 'verb' => 'GET'],
-		['name' => 'CheckSetup#getFailedIntegrityCheckFiles', 'url' => '/settings/integrity/failed', 'verb' => 'GET'],
-		['name' => 'CheckSetup#rescanFailedIntegrityCheck', 'url' => '/settings/integrity/rescan', 'verb' => 'GET'],
+		['name' => 'CheckSetup#check', 'url' => '/settings/admin/checksetup', 'verb' => 'GET'],
+		['name' => 'CheckSetup#getFailedIntegrityCheckFiles', 'url' => '/settings/admin/integrity/failed', 'verb' => 'GET'],
+		['name' => 'CheckSetup#rescanFailedIntegrityCheck', 'url' => '/settings/admin/integrity/rescan', 'verb' => 'GET'],
 		['name' => 'Certificate#addPersonalRootCertificate', 'url' => '/settings/personal/certificate', 'verb' => 'POST'],
 		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
 		['name' => 'Certificate#addSystemRootCertificate', 'url' => '/settings/admin/certificate', 'verb' => 'POST'],
@@ -70,12 +72,8 @@ $application->registerRoutes($this, [
 // Settings pages
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
-$this->create('settings_personal', '/settings/personal')
-	->actionInclude('settings/personal.php');
 $this->create('settings_users', '/settings/users')
 	->actionInclude('settings/users.php');
-$this->create('settings_admin', '/settings/admin')
-	->actionInclude('settings/admin.php');
 // Settings ajax actions
 // users
 $this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
@@ -88,9 +86,9 @@ $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
-	->actionInclude('settings/ajax/changegroupname.php');	
+	->actionInclude('settings/ajax/changegroupname.php');
 // personal
-$this->create('settings_personal_changepassword', '/settings/personal/changepassword')
+$this->create('settings_personal_changepassword', '/settings/personal/ajax/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
 $this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')

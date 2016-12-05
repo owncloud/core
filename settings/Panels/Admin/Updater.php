@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -20,15 +19,23 @@
  *
  */
 
-use OCA\FederatedFileSharing\AppInfo\Application;
+namespace OC\Settings\Panels\Admin;
 
-\OC_Util::checkAdminUser();
+use OCP\Settings\ISettings;
+use OCP\Template;
 
-$app = new Application('federatedfilesharing');
-$federatedShareProvider = $app->getFederatedShareProvider();
+class Updater implements ISettings {
 
-$tmpl = new OCP\Template('federatedfilesharing', 'settings-admin');
-$tmpl->assign('outgoingServer2serverShareEnabled', $federatedShareProvider->isOutgoingServer2serverShareEnabled());
-$tmpl->assign('incomingServer2serverShareEnabled', $federatedShareProvider->isIncomingServer2serverShareEnabled());
+    public function getPriority() {
+        return 0;
+    }
 
-return $tmpl->fetchPage();
+    public function getPanel() {
+        $tmpl = new Template('settings', 'panels/admin/updater');
+        return $tmpl;
+    }
+
+    public function getSectionID() {
+        return 'general';
+    }
+}

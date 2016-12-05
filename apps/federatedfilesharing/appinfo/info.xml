@@ -11,4 +11,8 @@
     <dependencies>
 		<owncloud min-version="9.2" max-version="9.2" />
     </dependencies>
+    <settings>
+        <admin>OCA\FederatedFileSharing\AdminPanel</admin>
+        <personal>OCA\FederatedFileSharing\PersonalPanel</personal>
+    </settings>
 </info>

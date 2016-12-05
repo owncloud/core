@@ -15,4 +15,7 @@
 	<background-jobs>
 		<job>OCA\UpdateNotification\Notification\BackgroundJob</job>
 	</background-jobs>
+	<settings>
+		<admin>OCA\UpdateNotification\Controller\AdminController</admin>
+	</settings>
 </info>

@@ -25,8 +25,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-\OCP\App::registerAdmin('files', 'admin');
-
 
 \OC::$server->getNavigationManager()->add(function () {
 	$urlGenerator = \OC::$server->getURLGenerator();
