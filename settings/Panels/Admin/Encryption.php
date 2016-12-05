@@ -53,7 +53,7 @@ class Encryption implements ISettings {
     }
 
     public function getSectionID() {
-        return 'general';
+        return 'encryption';
     }
 
 }

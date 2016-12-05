@@ -173,6 +173,7 @@ class SettingsManager implements ISettingsManager {
 		if($type === 'admin') {
 			return [
 				new Section('general', $this->l->t('General'), 100),
+				new Section('encryption', $this->l->t('Encryption'), 96),
 				new Section('sharing', $this->l->t('Sharing'), 99),
 				new Section('security', $this->l->t('Security'), 98),
 				new Section('monitoring', $this->l->t('Monitoring'), 30),
@@ -184,6 +185,7 @@ class SettingsManager implements ISettingsManager {
 			return [
 				new Section('general', $this->l->t('General'), 100),
 				new Section('security', $this->l->t('Security'), 50),
+				new Section('encryption', $this->l->t('Encryption'), 49),
 				new Section('additional', $this->l->t('Additional'), 5),
 			];
 		}
@@ -273,7 +275,7 @@ class SettingsManager implements ISettingsManager {
 		foreach($this->appManager->getEnabledAppsForUser($this->userSession->getUser()) as $app) {
 			if(isset($this->appManager->getAppInfo($app)['settings'])) {
 				foreach($this->appManager->getAppInfo($app)['settings'] as $type => $panel) {
-					$panels[$type][] = $panel;
+					$panels[$type][] = (string) $panel;
 				}
 			}
 		}

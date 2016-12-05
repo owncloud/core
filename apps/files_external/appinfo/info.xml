@@ -39,6 +39,6 @@
 	</commands>
 	<settings>
 		<admin>OCA\Files_External\Panels\Admin</admin>
-		<admin>OCA\Files_External\Panels\Personal</admin>
+		<personal>OCA\Files_External\Panels\Personal</personal>
 	</settings>
 </info>

@@ -48,7 +48,7 @@ class Admin implements ISettings {
 	}
 
 	public function getSectionID() {
-		return 'security';
+		return 'encryption';
 	}
 
 	public function getPanel() {
