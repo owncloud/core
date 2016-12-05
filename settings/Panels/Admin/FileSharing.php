@@ -27,7 +27,7 @@ use OCP\Template;
 class FileSharing implements ISettings {
 
 	public function getPriority() {
-		return 0;
+		return 99;
 	}
 
 	public function getPanel() {
