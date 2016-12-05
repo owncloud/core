@@ -70,8 +70,8 @@ class SettingsPageController extends Controller {
 	}
 
 	/**
-	 * Creates the personal settings page
 	 * @NoAdminRequired
+	 * @NoSubadminRequired
 	 * @NoCSRFRequired
 	 * @param string $sectionid
 	 * @return \OCP\AppFramework\Http\TemplateResponse
