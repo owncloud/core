@@ -36,12 +36,12 @@ use OCP\IDBConnection;
  * database.
  */
 class AppConfig implements IAppConfig {
-	/**
-	 * @var \OCP\IDBConnection $conn
-	 */
+	/** @var \OCP\IDBConnection $conn */
 	protected $conn;
 
 	private $cache = [];
+
+	private $configLoaded;
 
 	/**
 	 * @param IDBConnection $conn
@@ -264,7 +264,9 @@ class AppConfig implements IAppConfig {
 	 * Load all the app config values
 	 */
 	protected function loadConfigValues() {
-		if ($this->configLoaded) return;
+		if ($this->configLoaded) {
+			return;
+		}
 
 		$this->cache = [];
 
