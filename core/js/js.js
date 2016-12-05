@@ -82,6 +82,7 @@ var OC={
 	coreApps:['', 'admin','log','core/search','settings','core','3rdparty'],
 	requestToken: oc_requesttoken,
 	menuSpeed: 50,
+	currentTheme: window.theme || {},
 
 	/**
 	 * Get an absolute url to a file in an app
