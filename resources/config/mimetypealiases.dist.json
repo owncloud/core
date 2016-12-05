@@ -1,13 +1,4 @@
 {
-	"_comment" : "Array of mimetype aliases.",
-	"_comment2": "Any changes you make here will be overwritten on an update of ownCloud.",
-	"_comment3": "Put any custom mappings in a new file mimetypealiases.json in the config/ folder of ownCloud",
-
-	"_comment4": "After any change to mimetypealiases.json run:",
-	"_comment5": "./occ maintenance:mimetype:update-js",
-	"_comment6": "Otherwise your update won't propagate through the system.",
-
-
 	"application/coreldraw": "image",
 	"application/epub+zip": "text",
 	"application/font-sfnt": "image",
@@ -86,4 +77,3 @@
 	"text/x-shellscript": "text/code",
 	"web": "text/code"
 }
-
