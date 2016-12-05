@@ -79,30 +79,49 @@ OC.MimeType = {
 			return OC.MimeType._mimeTypeIcons[mimeType];
 		}
 
-		// First try to get the correct icon from the current theme
-		var gotIcon = null;
-		var path = '';
-		if (OC.theme.folder !== '' && $.isArray(OC.MimeTypeList.themes[OC.theme.folder])) {
-			path = OC.webroot + '/themes/' + OC.theme.folder + '/core/img/filetypes/';
-			var icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.themes[OC.theme.folder]);
+		//console.log(mimeType);
 
-			if (icon !== null) {
-				gotIcon = true;
-				path += icon;
-			}
+		// First try to get the correct icon from the current theme
+		var path = '';
+		var icon = '';
+
+		if (OC.currentTheme.name !== '' && $.isArray(OC.MimeTypeList.themes[OC.currentTheme.name])) {
+			path = '/' + OC.currentTheme.directory + 'core/img/filetypes/';
+			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.themes[OC.currentTheme.name]);
 		}
 
 		// If we do not yet have an icon fall back to the default
-		if (gotIcon === null) {
-			path = OC.webroot + '/core/img/filetypes/';
-			path += OC.MimeType._getFile(mimeType, OC.MimeTypeList.files);
+		if (icon === null) {
+			path = '/core/img/filetypes/';
+			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.files);
 		}
 
-		path += '.svg';
+		var mimeTypeIcon = path + icon + '.svg';
 
 		// Cache the result
-		OC.MimeType._mimeTypeIcons[mimeType] = path;
-		return path;
+		OC.MimeType._mimeTypeIcons[mimeType] = mimeTypeIcon;
+		return mimeTypeIcon;
+	},
+
+
+
+
+	/**
+	 * If the given mimeType is an alias, this method returns its target,
+	 * else it returns the given mimeType.
+	 *
+	 * @param {string} mimeType The mimeType to get the icon for
+	 * @returns {string} mimeType The mimeType to get the icon for
+	 */
+	getMimeTypeAliasTarget: function (mimeType) {
+		while (mimeType in OC.MimeTypeList.aliases) {
+			mimeType = OC.MimeTypeList.aliases[mimeType];
+		}
+		if (mimeType in OC.MimeType._mimeTypeIcons) {
+			return OC.MimeType._mimeTypeIcons[mimeType];
+		}
+
+		return mimeType;
 	}
 
 };
