@@ -387,12 +387,11 @@ class ShareController extends Controller {
 				['token' => $token]));
 		}
 
-		$files_list = null;
+		$files_list = $files;
 		if (!is_null($files)) { // download selected files
-			$files_list = json_decode($files);
 			// in case we get only a single file
-			if ($files_list === null) {
-				$files_list = [$files];
+			if (!is_array($files_list)) {
+				$files_list = [(string)$files_list];
 			}
 		}
 

@@ -152,7 +152,11 @@
 			}
 
 			if (_.isArray(filename)) {
-				filename = JSON.stringify(filename);
+				var filesPart = '';
+				_.each(filename, function(name) {
+					filesPart += '&files[]=' + encodeURIComponent(name);
+				});
+				return this.getAjaxUrl('download', {dir: dir}) + filesPart;
 			}
 
 			var params = {
