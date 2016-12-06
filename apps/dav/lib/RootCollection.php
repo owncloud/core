@@ -78,13 +78,6 @@ class RootCollection extends SimpleCollection {
 			\OC::$server->getGroupManager(),
 			\OC::$server->getRootFolder()
 		);
-		$commentsCollection = new Comments\RootCollection(
-			\OC::$server->getCommentsManager(),
-			\OC::$server->getUserManager(),
-			\OC::$server->getUserSession(),
-			\OC::$server->getEventDispatcher(),
-			\OC::$server->getLogger()
-		);
 
 		$usersCardDavBackend = new CardDavBackend($db, $userPrincipalBackend, $dispatcher);
 		$usersAddressBookRoot = new AddressBookRoot($userPrincipalBackend, $usersCardDavBackend, 'principals/users');
@@ -110,7 +103,6 @@ class RootCollection extends SimpleCollection {
 						$systemAddressBookRoot]),
 				$systemTagCollection,
 				$systemTagRelationsCollection,
-				$commentsCollection,
 				$uploadCollection,
 		];
 

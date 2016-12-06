@@ -30,7 +30,7 @@ class EntityCollectionTest extends \Test\TestCase {
 	protected $userManager;
 	/** @var \OCP\ILogger|\PHPUnit_Framework_MockObject_MockObject */
 	protected $logger;
-	/** @var \OCA\DAV\Comments\EntityCollection */
+	/** @var \OCA\Comments\Dav\EntityCollection */
 	protected $collection;
 	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
 	protected $userSession;
@@ -43,7 +43,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$this->userSession = $this->createMock('\OCP\IUserSession');
 		$this->logger = $this->createMock('\OCP\ILogger');
 
-		$this->collection = new \OCA\DAV\Comments\EntityCollection(
+		$this->collection = new \OCA\Comments\Dav\EntityCollection(
 			'19',
 			'files',
 			$this->commentsManager,
@@ -64,7 +64,7 @@ class EntityCollectionTest extends \Test\TestCase {
 			->will($this->returnValue($this->createMock('\OCP\Comments\IComment')));
 
 		$node = $this->collection->getChild('55');
-		$this->assertTrue($node instanceof \OCA\DAV\Comments\CommentNode);
+		$this->assertTrue($node instanceof \OCA\Comments\Dav\CommentNode);
 	}
 
 	/**
@@ -88,7 +88,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$result = $this->collection->getChildren();
 
 		$this->assertSame(count($result), 1);
-		$this->assertTrue($result[0] instanceof \OCA\DAV\Comments\CommentNode);
+		$this->assertTrue($result[0] instanceof \OCA\Comments\Dav\CommentNode);
 	}
 
 	public function testFindChildren() {
@@ -101,7 +101,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$result = $this->collection->findChildren(5, 15, $dt);
 
 		$this->assertSame(count($result), 1);
-		$this->assertTrue($result[0] instanceof \OCA\DAV\Comments\CommentNode);
+		$this->assertTrue($result[0] instanceof \OCA\Comments\Dav\CommentNode);
 	}
 
 	public function testChildExistsTrue() {

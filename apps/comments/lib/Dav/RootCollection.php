@@ -20,7 +20,7 @@
  *
  */
 
-namespace OCA\DAV\Comments;
+namespace OCA\Comments\Dav;
 
 use OCP\Comments\CommentsEntityEvent;
 use OCP\Comments\ICommentsManager;
@@ -87,6 +87,9 @@ class RootCollection implements ICollection {
 	protected function initCollections() {
 		if($this->entityTypeCollections !== null) {
 			return;
+		}
+		if(is_null($this->userSession)) {
+			throw new NotAuthenticated();
 		}
 		$user = $this->userSession->getUser();
 		if(is_null($user)) {

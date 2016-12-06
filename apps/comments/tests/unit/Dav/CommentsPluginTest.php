@@ -24,7 +24,7 @@
 namespace OCA\DAV\Tests\unit\Comments;
 
 use OC\Comments\Comment;
-use OCA\DAV\Comments\CommentsPlugin as CommentsPluginImplementation;
+use OCA\Comments\Dav\CommentsPlugin as CommentsPluginImplementation;
 use OCP\Comments\IComment;
 
 class CommentsPluginTest extends \Test\TestCase {
@@ -84,7 +84,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue('alice'));
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -103,7 +103,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('users', 'alice', 'files', '42')
 			->will($this->returnValue($comment));
 
-		$this->userSession->expects($this->once())
+		$this->userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 
@@ -177,7 +177,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$user->expects($this->never())
 			->method('getUID');
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->never())
@@ -188,7 +188,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$this->commentsManager->expects($this->never())
 			->method('create');
 
-		$this->userSession->expects($this->never())
+		$this->userSession->expects($this->once())
 			->method('getUser');
 
 		// technically, this is a shortcut. Inbetween EntityTypeCollection would
@@ -259,7 +259,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$user->expects($this->never())
 			->method('getUID');
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -272,7 +272,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$this->commentsManager->expects($this->never())
 			->method('create');
 
-		$this->userSession->expects($this->never())
+		$this->userSession->expects($this->once())
 			->method('getUser');
 
 		// technically, this is a shortcut. Inbetween EntityTypeCollection would
@@ -345,7 +345,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$user->expects($this->never())
 			->method('getUID');
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -358,7 +358,7 @@ class CommentsPluginTest extends \Test\TestCase {
 		$this->commentsManager->expects($this->never())
 			->method('create');
 
-		$this->userSession->expects($this->never())
+		$this->userSession->expects($this->once())
 			->method('getUser');
 
 		// technically, this is a shortcut. Inbetween EntityTypeCollection would
@@ -434,7 +434,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue('alice'));
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -449,7 +449,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('users', 'alice', 'files', '42')
 			->will($this->returnValue($comment));
 
-		$this->userSession->expects($this->once())
+		$this->userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 
@@ -526,7 +526,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue('alice'));
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -544,7 +544,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			->with('users', 'alice', 'files', '42')
 			->will($this->returnValue($comment));
 
-		$this->userSession->expects($this->once())
+		$this->userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 
@@ -645,7 +645,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			]
 		];
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
@@ -700,7 +700,7 @@ class CommentsPluginTest extends \Test\TestCase {
 			]
 		];
 
-		$node = $this->getMockBuilder('\OCA\DAV\Comments\EntityCollection')
+		$node = $this->getMockBuilder('\OCA\Comments\Dav\EntityCollection')
 			->disableOriginalConstructor()
 			->getMock();
 		$node->expects($this->once())
