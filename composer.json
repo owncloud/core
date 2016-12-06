@@ -36,7 +36,7 @@
         "symfony/process": "^3.1",
         "pimple/pimple": "3.0.2",
         "nikic/php-parser": "1.4.1",
-        "icewind/Streams": "0.4.1",
+        "icewind/Streams": "0.5.2",
         "swiftmailer/swiftmailer": "@stable",
         "guzzlehttp/guzzle": "5.3.1",
         "league/flysystem": "1.0.20",
