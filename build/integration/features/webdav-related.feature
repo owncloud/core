@@ -370,3 +370,19 @@ Feature: webdav-related
 			| 0 |
 			| 1 |
 			| 3 |
+
+	Scenario: Creating a folder
+		Given using old dav path
+		And user "user0" exists
+		And user "user0" created a folder "/test_folder"
+		When as "user0" gets properties of folder "/test_folder" with
+		  |{DAV:}resourcetype|
+		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
+
+	Scenario: Creating a folder with special chars
+		Given using old dav path
+		And user "user0" exists
+		And user "user0" created a folder "/test_folder:5"
+		When as "user0" gets properties of folder "/test_folder:5" with
+		  |{DAV:}resourcetype|
+		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
