@@ -145,7 +145,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		// fail hard if xml errors have not been cleaned up
 		$errors = libxml_get_errors();
 		libxml_clear_errors();
-		$this->assertEquals([], $errors);
+		if (!empty($errors)) {
+			self::assertEquals([], $errors, "There have been xml parsing errors");
+		}
 
 		// tearDown the traits
 		$traits = $this->getTestTraits();
