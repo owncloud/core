@@ -362,7 +362,7 @@ class SettingsManager implements ISettingsManager {
 		$this->log->error(
 			'Failed to load section with id: {id}',
 			['id' => $sectionID]);
-		throw new QueryException('Panel could not be loaded');
+		return new Section($sectionID, ucfirst($sectionID), 100);
 	}
 
 	/**
