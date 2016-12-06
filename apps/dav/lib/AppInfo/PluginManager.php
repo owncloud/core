@@ -22,6 +22,7 @@ namespace OCA\DAV\AppInfo;
 
 use OCP\App\IAppManager;
 use OC\ServerContainer;
+use OCP\AppFramework\QueryException;
 
 /**
  * Manager for DAV plugins from apps, used to register them
