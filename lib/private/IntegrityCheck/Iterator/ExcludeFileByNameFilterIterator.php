@@ -32,7 +32,7 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 	/**
 	 * Array of excluded file names. Those are not scanned by the integrity checker.
 	 * This is used to exclude files which administrators could upload by mistakes
-	 * such as .DS_Store files.
+	 * such as .DS_Store files. These file names are matched exactly.
 	 *
 	 * @var array
 	 */
@@ -40,7 +40,18 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 		'.DS_Store', // Mac OS X
 		'Thumbs.db', // Microsoft Windows
 		'.directory', // Dolphin (KDE)
-		'.webapp', // Gentoo/Funtoo & derivatives use a tool known as webapp-config to manager wep-apps.
+		'.webapp', // Gentoo/Funtoo & derivatives use a tool known as webapp-config to manage wep-apps.
+	];
+	/**
+	 * Array of excluded file names. Those are not scanned by the integrity checker.
+	 * This is used to exclude files which administrators could upload by mistakes
+	 * such as .DS_Store files. These strings are submatched, so any file names
+	 * containing these strings, are ignored.
+	 *
+	 * @var array
+	 */
+	private $excludedFilenamesSubMatch = [
+		'.webapp-owncloud-', // Gentoo/Funtoo & derivatives use a tool known as webapp-config to manage wep-apps.
 	];
 
 	/**
@@ -51,10 +62,19 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 			return true;
 		}
 
-		return !in_array(
+		if (in_array(
 			$this->current()->getFilename(),
 			$this->excludedFilenames,
 			true
-		);
+		)) {
+			return false;
+		}
+
+		foreach ($this->excludedFilenamesSubMatch as $excludedFilename)
+			if (strpos($this->current()->getFilename(),$excludedFilename) !== false) {
+				return false;
+			}
+
+		return true;
 	}
 }
