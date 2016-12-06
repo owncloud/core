@@ -10,13 +10,18 @@
             "OC\\Core\\": "core/",
             "OC\\Settings\\": "settings/",
             "OCP\\": "lib/public"
-        }
+        },
+        "exclude-from-classmap": ["/tests/"]
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\": "tests" }
     },
     "require-dev": {
         "jakub-onderka/php-parallel-lint": "^0.9.2",
         "jakub-onderka/php-console-highlighter": "^0.3.2",
         "phpunit/phpunit": "^5.5",
-        "mikey179/vfsStream": "^1.6"
+        "mikey179/vfsStream": "^1.6",
+        "friendsofphp/php-cs-fixer": "^1.12"
     },
     "require": {
         "php": ">=5.4.1",
