@@ -25,13 +25,32 @@
 
 namespace OC;
 
+use OCP\App\IAppManager;
+use OCP\INavigationManager;
+use OCP\IURLGenerator;
+use OCP\L10N\IFactory;
+
 /**
  * Manages the ownCloud navigation
  */
-class NavigationManager implements \OCP\INavigationManager {
+class NavigationManager implements INavigationManager {
 	protected $entries = [];
 	protected $closureEntries = [];
 	protected $activeEntry;
+	protected $init = false;
+	/** @var IAppManager */
+	protected $appManager;
+	/** @var IURLGenerator */
+	private $urlGenerator;
+	/** @var IFactory */
+	private $l10nFac;
+
+	function __construct(IAppManager $appManager = null, $urlGenerator = null, $l10nFac = null) {
+		$this->appManager = $appManager;
+		$this->urlGenerator = $urlGenerator;
+		$this->l10nFac = $l10nFac;
+
+	}
 
 	/**
 	 * Creates a new navigation entry
@@ -59,6 +78,7 @@ class NavigationManager implements \OCP\INavigationManager {
 	 * @return array an array of the added entries
 	 */
 	public function getAll() {
+		$this->init();
 		foreach ($this->closureEntries as $c) {
 			$this->add($c());
 		}
@@ -72,6 +92,7 @@ class NavigationManager implements \OCP\INavigationManager {
 	public function clear() {
 		$this->entries = [];
 		$this->closureEntries = [];
+		$this->init = false;
 	}
 
 	/**
@@ -91,5 +112,52 @@ class NavigationManager implements \OCP\INavigationManager {
 	 */
 	public function getActiveEntry() {
 		return $this->activeEntry;
+	}
+
+	private function init() {
+		if ($this->init) {
+			return;
+		}
+		$this->init = true;
+		if (is_null($this->appManager)) {
+			return;
+		}
+		foreach ($this->appManager->getInstalledApps() as $app) {
+			// load plugins and collections from info.xml
+			$info = $this->appManager->getAppInfo($app);
+			if (!isset($info['navigation'])) {
+				continue;
+			}
+			$nav = $info['navigation'];
+			if (!isset($nav['route'])) {
+				continue;
+			}
+			$l = $this->l10nFac->get($app);
+			$order = isset($nav['order']) ? $nav['order'] : 100;
+			$route = $this->urlGenerator->linkToRoute($nav['route']);
+			$name = isset($nav['name']) ? $nav['name'] : ucfirst($app);
+			$icon = null;
+			foreach ([$nav['icon'], 'app.svg', "$app.svg"] as $i) {
+				if (is_null($i)) {
+					continue;
+				}
+				try {
+					$icon = $this->urlGenerator->imagePath($app, $i);
+					break;
+				} catch (\RuntimeException $ex) {
+				}
+			}
+			if (is_null($icon)) {
+				$icon = $this->urlGenerator->imagePath('core', 'default-app-icon');
+			}
+
+			$this->add([
+				'id' => $app,
+				'order' => $order,
+				'href' => $route,
+				'icon' => $icon,
+				'name' => $l->t($name),
+			]);
+		}
 	}
 }
