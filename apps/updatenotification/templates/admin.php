@@ -19,6 +19,11 @@
 	<?php if($isNewVersionAvailable === true): ?>
 		<strong><?php p($l->t('A new version is available: %s', [$newVersionString])); ?></strong>
 		<input type="button" id="oca_updatenotification_button" value="<?php p($l->t('Open updater')) ?>">
+		<a target="_blank" rel="noreferrer" class="icon-info svg" title="<?php p($l->t('Show changelog')); ?>" href="https://owncloud.org/changelog/#latest
+		<?php 
+			$versionParts = explode('.', explode(' ', $newVersionString)[1]); // remove the 'ownCloud' prefix
+			array_splice($versionParts, 2); // remove minor version info from parts
+			print_unescaped(implode('.', $versionParts)); ?>"></a>
 	<?php else: ?>
 		<strong><?php print_unescaped($l->t('Your version is up to date.')); ?></strong>
 		<span class="icon-info svg" title="<?php p($l->t('Checked on %s', [$lastCheckedDate])) ?>"></span>
