@@ -26,8 +26,10 @@
 namespace OC;
 
 use OCP\App\IAppManager;
+use OCP\IGroupManager;
 use OCP\INavigationManager;
 use OCP\IURLGenerator;
+use OCP\IUserSession;
 use OCP\L10N\IFactory;
 
 /**
@@ -37,6 +39,7 @@ class NavigationManager implements INavigationManager {
 	protected $entries = [];
 	protected $closureEntries = [];
 	protected $activeEntry;
+	/** @var bool */
 	protected $init = false;
 	/** @var IAppManager */
 	protected $appManager;
@@ -44,12 +47,21 @@ class NavigationManager implements INavigationManager {
 	private $urlGenerator;
 	/** @var IFactory */
 	private $l10nFac;
+	/** @var IUserSession */
+	private $userSession;
+	/** @var IGroupManager */
+	private $groupManager;
 
-	function __construct(IAppManager $appManager = null, $urlGenerator = null, $l10nFac = null) {
+	function __construct(IAppManager $appManager = null,
+						 IURLGenerator $urlGenerator = null,
+						 IFactory $l10nFac = null,
+						 IUserSession $userSession = null,
+						 IGroupManager$groupManager = null) {
 		$this->appManager = $appManager;
 		$this->urlGenerator = $urlGenerator;
 		$this->l10nFac = $l10nFac;
-
+		$this->userSession = $userSession;
+		$this->groupManager = $groupManager;
 	}
 
 	/**
@@ -132,15 +144,16 @@ class NavigationManager implements INavigationManager {
 			if (!isset($nav['route'])) {
 				continue;
 			}
+			$role = isset($nav['@attributes']['role']) ? $nav['@attributes']['role'] : 'all';
+			if ($role === 'admin' && !$this->isAdmin()) {
+				continue;
+			}
 			$l = $this->l10nFac->get($app);
 			$order = isset($nav['order']) ? $nav['order'] : 100;
 			$route = $this->urlGenerator->linkToRoute($nav['route']);
 			$name = isset($nav['name']) ? $nav['name'] : ucfirst($app);
-			$icon = null;
-			foreach ([$nav['icon'], 'app.svg', "$app.svg"] as $i) {
-				if (is_null($i)) {
-					continue;
-				}
+			$icon = isset($nav['icon']) ? $nav['icon'] : 'app.svg';
+			foreach ([$icon, "$app.svg"] as $i) {
 				try {
 					$icon = $this->urlGenerator->imagePath($app, $i);
 					break;
@@ -160,4 +173,13 @@ class NavigationManager implements INavigationManager {
 			]);
 		}
 	}
+
+	private function isAdmin() {
+		$user = $this->userSession->getUser();
+		if ($user !== null) {
+			return $this->groupManager->isAdmin($user->getUID());
+		}
+		return false;
+	}
+
 }

@@ -292,7 +292,9 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('NavigationManager', function (Server $c) {
 			return new \OC\NavigationManager($c->getAppManager(),
 				$c->getURLGenerator(),
-				$c->getL10NFactory());
+				$c->getL10NFactory(),
+				$c->getUserSession(),
+				$c->getGroupManager());
 		});
 		$this->registerService('AllConfig', function (Server $c) {
 			return new \OC\AllConfig(

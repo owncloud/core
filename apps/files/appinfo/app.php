@@ -27,18 +27,8 @@
  */
 \OCP\App::registerAdmin('files', 'admin');
 
-
-\OC::$server->getNavigationManager()->add(function () {
-	$urlGenerator = \OC::$server->getURLGenerator();
-	$l = \OC::$server->getL10N('files');
-	return [
-		'id' => 'files_index',
-		'order' => 0,
-		'href' => $urlGenerator->linkToRoute('files.view.index'),
-		'icon' => $urlGenerator->imagePath('core', 'places/files.svg'),
-		'name' => $l->t('Files'),
-	];
-});
+// required for translation purpose
+// t('Files')
 
 \OC::$server->getSearch()->registerProvider('OC\Search\Provider\File', ['apps' => ['files']]);
 
