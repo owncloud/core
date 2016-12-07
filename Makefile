@@ -110,11 +110,7 @@ clean-composer-deps:
 #
 $(nodejs_deps): build/package.json
 	$(NPM) install --prefix $(NODE_PREFIX)
-
-# in some cases installing bower alone could be enough
-$(BOWER):
-	$(NPM) install --prefix $(NODE_PREFIX) bower
-	touch $(BOWER)
+	touch $(nodejs_deps)
 
 .PHONY: install-nodejs-deps
 install-nodejs-deps: $(nodejs_deps)
@@ -125,7 +121,7 @@ clean-nodejs-deps:
 
 #
 # ownCloud core JS dependencies
-$(core_vendor): $(BOWER) bower.json
+$(core_vendor): $(nodejs_deps) bower.json
 	$(BOWER) install
 
 .PHONY: install-js-deps
