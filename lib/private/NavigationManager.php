@@ -6,7 +6,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2016, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -158,6 +158,7 @@ class NavigationManager implements INavigationManager {
 					$icon = $this->urlGenerator->imagePath($app, $i);
 					break;
 				} catch (\RuntimeException $ex) {
+					// no icon? - ignore it then
 				}
 			}
 			if (is_null($icon)) {
