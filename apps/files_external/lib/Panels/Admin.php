@@ -13,7 +13,7 @@ class Admin implements ISettings {
     }
 
     public function getSectionID() {
-        return 'general';
+        return 'storage';
     }
 
     public function getPanel() {

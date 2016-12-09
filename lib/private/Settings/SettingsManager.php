@@ -173,19 +173,21 @@ class SettingsManager implements ISettingsManager {
 		if($type === 'admin') {
 			return [
 				new Section('general', $this->l->t('General'), 100),
-				new Section('encryption', $this->l->t('Encryption'), 96),
-				new Section('sharing', $this->l->t('Sharing'), 99),
-				new Section('security', $this->l->t('Security'), 98),
-				new Section('monitoring', $this->l->t('Monitoring'), 30),
+				new Section('storage', $this->l->t('Storage'), 95),
+				new Section('security', $this->l->t('Security'), 90),
+				new Section('encryption', $this->l->t('Encryption'), 85),
+				new Section('sharing', $this->l->t('Sharing'), 80),
+				new Section('monitoring', $this->l->t('Monitoring'), 75),
+				new Section('apps', $this->l->t('Apps'), 70),
 				new Section('updates', $this->l->t('Updates'), 20),
-				new Section('apps', $this->l->t('Apps'), 10),
 				new Section('additional', $this->l->t('Additional'), 5),
 			];
 		} else if($type === 'personal') {
 			return [
 				new Section('general', $this->l->t('General'), 100),
-				new Section('security', $this->l->t('Security'), 50),
-				new Section('encryption', $this->l->t('Encryption'), 49),
+				new Section('storage', $this->l->t('Storage'), 50),
+				new Section('security', $this->l->t('Security'), 30),
+				new Section('encryption', $this->l->t('Encryption'), 20),
 				new Section('additional', $this->l->t('Additional'), 5),
 			];
 		}
