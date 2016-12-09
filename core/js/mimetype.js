@@ -78,17 +78,16 @@ OC.MimeType = {
 			return OC.MimeType._mimeTypeIcons[mimeType];
 		}
 
-		// First try to get the correct icon from the current theme
-		var path = '';
-		var icon = '';
+		var path, icon = null;
 
-		if (OC.currentTheme.name !== '' && $.isArray(OC.MimeTypeList.themes[OC.currentTheme.name])) {
+		// First try to get the correct icon from the current theme
+		if (OC.currentTheme.name !== '' && $.isArray(OC.MimeTypeList.themes[OC.currentTheme.name].icons)) {
 			path = '/' + OC.currentTheme.directory + 'core/img/filetypes/';
-			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.themes[OC.currentTheme.name]);
+			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.themes[OC.currentTheme.name].icons);
 		}
 
 		// If we do not yet have an icon fall back to the default
-		if (icon === '') {
+		if (icon === null) {
 			path = '/core/img/filetypes/';
 			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.files);
 		}
