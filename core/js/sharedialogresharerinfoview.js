@@ -78,7 +78,7 @@
 					'core',
 					'Shared with you and the group {group} by {owner}',
 					{
-						group: this.model.getReshareWith(),
+						group: this.model.getReshareWithDisplayName(),
 						owner: ownerDisplayName
 					}
 				);
