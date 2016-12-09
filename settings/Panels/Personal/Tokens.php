@@ -24,23 +24,19 @@ namespace OC\Settings\Panels\Personal;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
-class AppPasswords implements ISettings {
+class Tokens implements ISettings {
 
     public function getPriority() {
         return 0;
     }
 
     public function getPanel() {
-        $tmpl = new Template('settings', 'panels/personal/apppasswords');
+        $tmpl = new Template('settings', 'panels/personal/tokens');
         return $tmpl;
     }
 
     public function getSectionID() {
         return 'security';
-    }
-
-    public function getName() {
-        return 'App Passwords';
     }
 
 }

@@ -4,6 +4,21 @@ script('settings', 'panels/authtoken');
 script('settings', 'panels/authtoken_collection');
 script('settings', 'panels/authtoken_view');
 ?>
+<div id="sessions" class="section">
+	<h2><?php p($l->t('Sessions'));?></h2>
+	<span class="hidden-when-empty"><?php p($l->t('These are the web, desktop and mobile clients currently logged in to your ownCloud.'));?></span>
+	<table>
+		<thead class="token-list-header">
+		<tr>
+			<th><?php p($l->t('Browser'));?></th>
+			<th><?php p($l->t('Most recent activity'));?></th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody class="token-list icon-loading">
+		</tbody>
+	</table>
+</div>
 <div id="apppasswords" class="section">
 	<h2 class="app-name"><?php p($l->t('App passwords'));?></h2>
 	<span class="hidden-when-empty"><?php p($l->t("You've linked these apps."));?></span>

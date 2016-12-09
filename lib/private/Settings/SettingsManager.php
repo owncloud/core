@@ -40,7 +40,7 @@ use OC\Settings\Panels\Personal\Legacy as LegacyPersonal;
 use OC\Settings\Panels\Admin\Legacy as LegacyAdmin;
 use OC\Settings\Panels\Personal\Clients;
 use OC\Settings\Panels\Personal\Version;
-use OC\Settings\Panels\Personal\AppPasswords;
+use OC\Settings\Panels\Personal\Tokens;
 use OC\Settings\Panels\Personal\Quota;
 use OC\Settings\Panels\Admin\BackgroundJobs;
 use OC\Settings\Panels\Admin\Certificates;
@@ -202,7 +202,7 @@ class SettingsManager implements ISettingsManager {
 				Clients::class,
 				LegacyPersonal::class,
 				Version::class,
-				AppPasswords::class,
+				Tokens::class,
 				Quota::class,
 			],
 			'admin' => [
@@ -233,7 +233,7 @@ class SettingsManager implements ISettingsManager {
 			LegacyPersonal::class => new LegacyPersonal(),
 			Clients::class => new Clients($this->config, $this->defaults),
 			Version::class => new Version(),
-			AppPasswords::class => new AppPasswords(),
+			Tokens::class => new Tokens(),
 			Quota::class => new Quota($this->config),
 			// Admin
 			BackgroundJobs::class => new BackgroundJobs($this->config),
