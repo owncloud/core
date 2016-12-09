@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "저장소가 잘못됨",
     "Unknown error" : "알 수 없는 오류",
-    "Files" : "파일",
     "All files" : "모든 파일",
     "Home" : "가정",
     "Close" : "닫기",
@@ -22,6 +21,7 @@ OC.L10N.register(
     "Delete" : "삭제",
     "Disconnect storage" : "저장소 연결 해제",
     "Unshare" : "공유 해제",
+    "Files" : "파일",
     "Details" : "자세한 정보",
     "Select" : "선택",
     "Pending" : "대기 중",

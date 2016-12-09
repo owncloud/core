@@ -2,11 +2,11 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Unbekannter Fehler",
-    "Files" : "Dateien",
     "Download" : "Herunterladen",
     "Rename" : "Umbenennen",
     "Delete" : "Löschen",
     "Unshare" : "Teilung zurücknehmen",
+    "Files" : "Dateien",
     "Details" : "Details",
     "Name" : "Name",
     "New folder" : "Neuer Ordner",

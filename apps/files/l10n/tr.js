@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Depolama geçersiz",
     "Unknown error" : "Bilinmeyen hata",
-    "Files" : "Dosyalar",
     "All files" : "Tüm dosyalar",
     "File could not be found" : "Dosya bulunamadı",
     "Home" : "Ev",
@@ -31,6 +30,7 @@ OC.L10N.register(
     "Delete" : "Sil",
     "Disconnect storage" : "Depolama bağlantısını kes",
     "Unshare" : "Paylaşmayı Kaldır",
+    "Files" : "Dosyalar",
     "Details" : "Ayrıntılar",
     "Select" : "Seç",
     "Pending" : "Bekliyor",

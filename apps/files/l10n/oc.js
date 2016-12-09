@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Supòrt d'emmagazinatge pas valable",
     "Unknown error" : "Error Desconeguda ",
-    "Files" : "Fichièrs",
     "All files" : "Totes los fichièrs",
     "Home" : "Mos fichièrs",
     "Close" : "Tampar",
@@ -21,6 +20,7 @@ OC.L10N.register(
     "Delete" : "Suprimir",
     "Disconnect storage" : "Desconnectar aqueste supòrt d'emmagazinatge",
     "Unshare" : "Partejar pas",
+    "Files" : "Fichièrs",
     "Details" : "Detalhs",
     "Select" : "Seleccionar",
     "Pending" : "En espèra",

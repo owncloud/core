@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Files" : "கோப்புகள்",
     "Home" : "அகம்",
     "Close" : "மூடுக",
     "Favorites" : "விருப்பங்கள்",
@@ -13,6 +12,7 @@ OC.L10N.register(
     "Rename" : "பெயர்மாற்றம்",
     "Delete" : "நீக்குக",
     "Unshare" : "பகிரப்படாதது",
+    "Files" : "கோப்புகள்",
     "Details" : "விவரங்கள்",
     "Select" : "தெரிக",
     "Pending" : "நிலுவையிலுள்ள",

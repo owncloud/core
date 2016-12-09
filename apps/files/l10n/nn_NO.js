@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Ukjend feil",
-    "Files" : "Filer",
     "All files" : "Alle filer",
     "Home" : "Heime",
     "Close" : "Lukk",
@@ -16,6 +15,7 @@ OC.L10N.register(
     "Rename" : "Endra namn",
     "Delete" : "Slett",
     "Unshare" : "Udel",
+    "Files" : "Filer",
     "Details" : "Detaljar",
     "Pending" : "Under vegs",
     "Name" : "Namn",

@@ -1,13 +1,13 @@
 OC.L10N.register(
     "files",
     {
-    "Files" : "Fail-fail",
     "Home" : "Rumah",
     "Close" : "Tutup",
     "Upload cancelled." : "Muatnaik dibatalkan.",
     "Download" : "Muat turun",
     "Rename" : "Namakan",
     "Delete" : "Padam",
+    "Files" : "Fail-fail",
     "Pending" : "Dalam proses",
     "Name" : "Nama",
     "Size" : "Saiz",

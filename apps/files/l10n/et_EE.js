@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Vigane andmehoidla",
     "Unknown error" : "Tundmatu viga",
-    "Files" : "Failid",
     "All files" : "Kõik failid",
     "Home" : "Kodu",
     "Close" : "Sulge",
@@ -25,6 +24,7 @@ OC.L10N.register(
     "Delete" : "Kustuta",
     "Disconnect storage" : "Ühenda andmehoidla lahti.",
     "Unshare" : "Lõpeta jagamine",
+    "Files" : "Failid",
     "Details" : "Üksikasjad",
     "Select" : "Vali",
     "Pending" : "Ootel",

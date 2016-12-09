@@ -1,8 +1,8 @@
 OC.L10N.register(
     "files",
     {
-    "Files" : "फाइलें ",
     "Close" : "बंद करें ",
+    "Files" : "फाइलें ",
     "Details" : "विवरण ",
     "New folder" : "नया फ़ोल्डर",
     "Upload" : "अपलोड ",

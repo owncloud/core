@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "Неисправно складиште",
     "Unknown error" : "Непозната грешка",
-    "Files" : "Фајлови",
     "All files" : "Сви фајлови",
     "Home" : "Почетна",
     "Close" : "Затвори",
@@ -18,6 +17,7 @@
     "Delete" : "Обриши",
     "Disconnect storage" : "Искључи складиште",
     "Unshare" : "Не дели",
+    "Files" : "Фајлови",
     "Details" : "Подаци",
     "Select" : "Изабери",
     "Pending" : "На чекању",

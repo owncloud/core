@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "A tároló érvénytelen",
     "Unknown error" : "Ismeretlen hiba",
-    "Files" : "Fájlkezelő",
     "All files" : "Az összes állomány",
     "Home" : "Otthoni",
     "Close" : "Bezárás",
@@ -19,6 +18,7 @@
     "Delete" : "Törlés",
     "Disconnect storage" : "Tároló leválasztása",
     "Unshare" : "A megosztás visszavonása",
+    "Files" : "Fájlkezelő",
     "Details" : "Részletek",
     "Select" : "Kiválaszt",
     "Pending" : "Folyamatban",

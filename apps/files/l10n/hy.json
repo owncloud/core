@@ -1,6 +1,5 @@
 { "translations": {
     "Unknown error" : "Անհայտ սխալ",
-    "Files" : "Ֆայլեր",
     "All files" : "Բոլոր ֆայլերը",
     "File could not be found" : "Ֆայլը չգտնվեց",
     "Home" : "Գլխավոր էջ",
@@ -15,6 +14,7 @@
     "Rename" : "Վերանվանել",
     "Delete" : "Ջնջել",
     "Unshare" : "Չկիսվել",
+    "Files" : "Ֆայլեր",
     "Details" : "Մանրամասներ",
     "Select" : "Նշել",
     "Invalid path" : "Անվավեր ուղի",

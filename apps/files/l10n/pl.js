@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Pamięć nieprawidłowa",
     "Unknown error" : "Nieznany błąd",
-    "Files" : "Pliki",
     "All files" : "Wszystkie pliki",
     "File could not be found" : "Nie można odnaleźć pliku",
     "Home" : "Dom",
@@ -31,6 +30,7 @@ OC.L10N.register(
     "Delete" : "Usuń",
     "Disconnect storage" : "Odłącz magazyn",
     "Unshare" : "Zatrzymaj współdzielenie",
+    "Files" : "Pliki",
     "Details" : "Szczegóły",
     "Select" : "Wybierz",
     "Pending" : "Oczekujące",

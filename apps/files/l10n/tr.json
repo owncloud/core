@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "Depolama geçersiz",
     "Unknown error" : "Bilinmeyen hata",
-    "Files" : "Dosyalar",
     "All files" : "Tüm dosyalar",
     "File could not be found" : "Dosya bulunamadı",
     "Home" : "Ev",
@@ -29,6 +28,7 @@
     "Delete" : "Sil",
     "Disconnect storage" : "Depolama bağlantısını kes",
     "Unshare" : "Paylaşmayı Kaldır",
+    "Files" : "Dosyalar",
     "Details" : "Ayrıntılar",
     "Select" : "Seç",
     "Pending" : "Bekliyor",

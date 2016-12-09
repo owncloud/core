@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "មិន​ស្គាល់​កំហុស",
-    "Files" : "ឯកសារ",
     "Close" : "បិទ",
     "Upload cancelled." : "បាន​បោះបង់​ការ​ផ្ទុក​ឡើង។",
     "Uploading..." : "កំពុងដាក់បញ្ចូល...",
@@ -10,6 +9,7 @@ OC.L10N.register(
     "Rename" : "ប្ដូរ​ឈ្មោះ",
     "Delete" : "លុប",
     "Unshare" : "លែង​ចែក​រំលែក",
+    "Files" : "ឯកសារ",
     "Details" : "ព័ត៌មាន​លម្អិត",
     "Pending" : "កំពុង​រង់ចាំ",
     "Invalid path" : "ទីតាំង​មិន​ត្រឹម​ត្រូវ",

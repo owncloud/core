@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "Vigane andmehoidla",
     "Unknown error" : "Tundmatu viga",
-    "Files" : "Failid",
     "All files" : "Kõik failid",
     "Home" : "Kodu",
     "Close" : "Sulge",
@@ -23,6 +22,7 @@
     "Delete" : "Kustuta",
     "Disconnect storage" : "Ühenda andmehoidla lahti.",
     "Unshare" : "Lõpeta jagamine",
+    "Files" : "Failid",
     "Details" : "Üksikasjad",
     "Select" : "Vali",
     "Pending" : "Ootel",

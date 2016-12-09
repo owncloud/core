@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Lưu trữ không hợp lệ",
     "Unknown error" : "Lỗi chưa biết",
-    "Files" : "Tập tin",
     "All files" : "Tất cả tệp tin",
     "Home" : "Nhà",
     "Close" : "Đóng",
@@ -20,6 +19,7 @@ OC.L10N.register(
     "Delete" : "Xóa",
     "Disconnect storage" : "Bộ lưu trữ đã ngắt kết nối",
     "Unshare" : "Bỏ chia sẻ",
+    "Files" : "Tập tin",
     "Details" : "Chi tiết",
     "Select" : "Chọn",
     "Pending" : "Đang chờ",

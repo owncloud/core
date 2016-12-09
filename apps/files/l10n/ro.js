@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Spațiu de stocare invalid",
     "Unknown error" : "Eroare necunoscută",
-    "Files" : "Fișiere",
     "All files" : "Toate fișierele.",
     "Home" : "Acasă",
     "Close" : "Închide",
@@ -27,6 +26,7 @@ OC.L10N.register(
     "Delete" : "Șterge",
     "Disconnect storage" : "Deconectează stocarea",
     "Unshare" : "Nu mai partaja",
+    "Files" : "Fișiere",
     "Details" : "Detalii",
     "Select" : "Alege",
     "Pending" : "În așteptare",

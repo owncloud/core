@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Emmagatzemament no vàlid",
     "Unknown error" : "Error desconegut",
-    "Files" : "Fitxers",
     "All files" : "Tots els fitxers",
     "Home" : "Inici",
     "Close" : "Tanca",
@@ -20,6 +19,7 @@ OC.L10N.register(
     "Delete" : "Esborra",
     "Disconnect storage" : "Desonnecta l'emmagatzematge",
     "Unshare" : "Deixa de compartir",
+    "Files" : "Fitxers",
     "Details" : "Detalls",
     "Select" : "Selecciona",
     "Pending" : "Pendent",

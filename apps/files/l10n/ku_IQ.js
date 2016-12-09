@@ -1,10 +1,10 @@
 OC.L10N.register(
     "files",
     {
-    "Files" : "په‌ڕگەکان",
     "Close" : "دابخه",
     "Favorites" : "دڵخوازەکان",
     "Download" : "داگرتن",
+    "Files" : "په‌ڕگەکان",
     "Select" : "دیاریکردنی",
     "Name" : "ناو",
     "Folder" : "بوخچه",

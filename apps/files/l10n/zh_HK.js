@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "不明錯誤",
-    "Files" : "文件",
     "All files" : "所有文件",
     "Home" : "主頁",
     "Close" : "關閉",
@@ -10,6 +9,7 @@ OC.L10N.register(
     "Rename" : "重新命名",
     "Delete" : "刪除",
     "Unshare" : "取消分享",
+    "Files" : "文件",
     "Name" : "名稱",
     "Size" : "大小",
     "{dirs} and {files}" : "{dirs} 和 {files}",

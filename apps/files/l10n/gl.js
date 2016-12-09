@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Almacenamento incorrecto",
     "Unknown error" : "Produciuse un erro descoñecido",
-    "Files" : "Ficheiros",
     "All files" : "Todos os ficheiros",
     "Home" : "Inicio",
     "Close" : "Pechar",
@@ -19,6 +18,7 @@ OC.L10N.register(
     "Delete" : "Eliminar",
     "Disconnect storage" : "Desconectar o almacenamento",
     "Unshare" : "Deixar de compartir",
+    "Files" : "Ficheiros",
     "Details" : "Detalles",
     "Select" : "Seleccionar",
     "Pending" : "Pendentes",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Files" : "Ffeiliau",
     "Home" : "Cartref",
     "Close" : "Cau",
     "Upload cancelled." : "Diddymwyd llwytho i fyny.",
@@ -12,6 +11,7 @@ OC.L10N.register(
     "Rename" : "Ailenwi",
     "Delete" : "Dileu",
     "Unshare" : "Dad-rannu",
+    "Files" : "Ffeiliau",
     "Details" : "Manylion",
     "Pending" : "I ddod",
     "Name" : "Enw",

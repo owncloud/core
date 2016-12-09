@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "সংরক্ষণাগার বৈধ নয়",
     "Unknown error" : "অজানা জটিলতা",
-    "Files" : "ফাইল",
     "All files" : "সব ফাইল",
     "Home" : "নিবাস",
     "Close" : "বন্ধ",
@@ -16,6 +15,7 @@ OC.L10N.register(
     "Rename" : "পূনঃনামকরণ",
     "Delete" : "মুছে",
     "Unshare" : "ভাগাভাগি বাতিল ",
+    "Files" : "ফাইল",
     "Details" : "বিস্তারিত",
     "Pending" : "মুলতুবি",
     "Invalid path" : "পথটি সঠিক নয়",

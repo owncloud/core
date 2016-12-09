@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "وحدة تخزين غير صالحه ",
     "Unknown error" : "خطأ غير معروف. ",
-    "Files" : "الملفات",
     "All files" : "كل الملفات",
     "Home" : "البيت",
     "Close" : "إغلاق",
@@ -20,6 +19,7 @@ OC.L10N.register(
     "Rename" : "إعادة التسمية",
     "Delete" : "حذف ",
     "Unshare" : "إلغاء المشاركة",
+    "Files" : "الملفات",
     "Details" : "تفاصيل",
     "Select" : "اختار",
     "Pending" : "قيد الانتظار",

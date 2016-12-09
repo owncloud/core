@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Անհայտ սխալ",
-    "Files" : "Ֆայլեր",
     "All files" : "Բոլոր ֆայլերը",
     "File could not be found" : "Ֆայլը չգտնվեց",
     "Home" : "Գլխավոր էջ",
@@ -17,6 +16,7 @@ OC.L10N.register(
     "Rename" : "Վերանվանել",
     "Delete" : "Ջնջել",
     "Unshare" : "Չկիսվել",
+    "Files" : "Ֆայլեր",
     "Details" : "Մանրամասներ",
     "Select" : "Նշել",
     "Invalid path" : "Անվավեր ուղի",

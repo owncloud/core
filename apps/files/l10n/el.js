@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Μη έγκυρος αποθηκευτικός χώρος",
     "Unknown error" : "Άγνωστο σφάλμα",
-    "Files" : "Αρχεία",
     "All files" : "Όλα τα αρχεία",
     "File could not be found" : "Το αρχείο δεν μπορεί να βρεθεί",
     "Home" : "Σπίτι",
@@ -25,6 +24,7 @@ OC.L10N.register(
     "Delete" : "Διαγραφή",
     "Disconnect storage" : "Αποσυνδεδεμένος αποθηκευτικός χώρος",
     "Unshare" : "Διακοπή διαμοιρασμού",
+    "Files" : "Αρχεία",
     "Details" : "Λεπτομέρειες",
     "Select" : "Επιλογή",
     "Pending" : "Εκκρεμεί",

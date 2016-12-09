@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "უცნობი შეცდომა",
-    "Files" : "ფაილები",
     "Home" : "სახლი",
     "Close" : "დახურვა",
     "Favorites" : "ფავორიტები",
@@ -14,6 +13,7 @@ OC.L10N.register(
     "Rename" : "გადარქმევა",
     "Delete" : "წაშლა",
     "Unshare" : "გაუზიარებადი",
+    "Files" : "ფაილები",
     "Details" : "დეტალური ინფორმაცია",
     "Pending" : "მოცდის რეჟიმში",
     "Name" : "სახელი",

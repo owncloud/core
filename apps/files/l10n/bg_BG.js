@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Невалидно дисково устройство.",
     "Unknown error" : "Непозната грешка.",
-    "Files" : "Файлове",
     "All files" : "Всички файлове",
     "Home" : "Домашен",
     "Close" : "Затвори",
@@ -20,6 +19,7 @@ OC.L10N.register(
     "Delete" : "Изтрий",
     "Disconnect storage" : "Извади дисковото устройство.",
     "Unshare" : "Премахване на споделяне",
+    "Files" : "Файлове",
     "Details" : "Подробности",
     "Select" : "Избери",
     "Pending" : "Чакащо",

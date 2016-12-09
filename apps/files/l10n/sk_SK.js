@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Úložisko nie je platné",
     "Unknown error" : "Neznáma chyba",
-    "Files" : "Súbory",
     "All files" : "Všetky súbory",
     "File could not be found" : "Súbor nenájdený",
     "Home" : "Domov",
@@ -28,6 +27,7 @@ OC.L10N.register(
     "Delete" : "Zmazať",
     "Disconnect storage" : "Odpojiť úložisko",
     "Unshare" : "Zrušiť zdieľanie",
+    "Files" : "Súbory",
     "Details" : "Podrobnosti",
     "Select" : "Vybrať",
     "Pending" : "Čaká",

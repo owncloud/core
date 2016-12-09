@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Неправильне сховище",
     "Unknown error" : "Невідома помилка",
-    "Files" : "Файли",
     "All files" : "Усі файли",
     "File could not be found" : "Файл не знайдено",
     "Home" : "Домашня адреса",
@@ -21,6 +20,7 @@ OC.L10N.register(
     "Delete" : "Видалити",
     "Disconnect storage" : "Від’єднати сховище",
     "Unshare" : "Закрити спільний доступ",
+    "Files" : "Файли",
     "Details" : "Деталі",
     "Select" : "Оберіть",
     "Pending" : "Очікування",

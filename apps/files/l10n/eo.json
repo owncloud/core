@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "Memoro ne validas",
     "Unknown error" : "Nekonata eraro",
-    "Files" : "Dosieroj",
     "All files" : "Ĉiuj dosieroj",
     "Home" : "Hejmo",
     "Close" : "Fermi",
@@ -18,6 +17,7 @@
     "Delete" : "Forigi",
     "Disconnect storage" : "Malkonekti memoron",
     "Unshare" : "Malkunhavigi",
+    "Files" : "Dosieroj",
     "Details" : "Detaloj",
     "Select" : "Elekti",
     "Pending" : "Traktotaj",

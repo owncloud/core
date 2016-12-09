@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Files" : "ගොනු",
     "Home" : "නිවස",
     "Close" : "වසන්න",
     "Upload cancelled." : "උඩුගත කිරීම අත් හරින්න ලදී",
@@ -11,6 +10,7 @@ OC.L10N.register(
     "Rename" : "නැවත නම් කරන්න",
     "Delete" : "මකා දමන්න",
     "Unshare" : "නොබෙදු",
+    "Files" : "ගොනු",
     "Select" : "තෝරන්න",
     "Name" : "නම",
     "Size" : "ප්‍රමාණය",

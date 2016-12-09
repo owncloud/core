@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Almacenamiento invalido",
     "Unknown error" : "Error desconocido",
-    "Files" : "Archivos",
     "All files" : "Todos los archivos",
     "File could not be found" : "No se pudo encontrar el archivo",
     "Home" : "Particular",
@@ -33,6 +32,7 @@ OC.L10N.register(
     "Delete" : "Eliminar",
     "Disconnect storage" : "Desconectar almacenamiento",
     "Unshare" : "Dejar de compartir",
+    "Files" : "Archivos",
     "Details" : "Detalles",
     "Select" : "Seleccionar",
     "Pending" : "Pendiente",

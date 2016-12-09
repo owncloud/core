@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Almacenamientu inválidu",
     "Unknown error" : "Fallu desconocíu",
-    "Files" : "Ficheros",
     "All files" : "Tolos ficheros",
     "File could not be found" : "Nun s'atopó el ficheru",
     "Home" : "Casa",
@@ -31,6 +30,7 @@ OC.L10N.register(
     "Delete" : "Desaniciar",
     "Disconnect storage" : "Desconeutar almacenamientu",
     "Unshare" : "Dexar de compartir",
+    "Files" : "Ficheros",
     "Details" : "Detalles",
     "Select" : "Esbillar",
     "Pending" : "Pendiente",
