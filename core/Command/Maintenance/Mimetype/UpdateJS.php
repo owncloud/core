@@ -110,10 +110,7 @@ class UpdateJS extends Command {
 
 		foreach ($apps as $app) {
 			if(\OC_App::isType($app, 'theme')) {
-				$themes[$app] = [
-					'directory' => \OC_App::getAppWebPath($app),
-					'icons' => $this->getFileTypeIcons(\OC_App::getAppPath($app))
-				];
+				$themes[$app] = $this->getFileTypeIcons(\OC_App::getAppPath($app));
 			}
 		}
 
@@ -132,11 +129,9 @@ class UpdateJS extends Command {
 			if ($legacyThemeDirectory->isFile() || $legacyThemeDirectory->isDot()) {
 				continue;
 			}
-
-			$themes[$legacyThemeDirectory->getFilename()] = [
-				'directory' => '/themes/' . $legacyThemeDirectory->getFilename(),
-				'icons' => $this->getFileTypeIcons($legacyThemeDirectory->getPathname())
-			];
+			$themes[$legacyThemeDirectory->getFilename()] = $this->getFileTypeIcons(
+				$legacyThemeDirectory->getPathname()
+			);
 		}
 
 		return $themes;
