@@ -23,6 +23,7 @@
 
 namespace OC\Core\Command\Maintenance\Mimetype;
 
+use OC\Files\Type\Detection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,7 +36,7 @@ class UpdateJS extends Command {
 	protected $mimetypeDetector;
 
 	public function __construct(
-		IMimeTypeDetector $mimetypeDetector
+		Detection $mimetypeDetector
 	) {
 		parent::__construct();
 		$this->mimetypeDetector = $mimetypeDetector;
@@ -47,66 +48,132 @@ class UpdateJS extends Command {
 			->setDescription('Update mimetypelist.js');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		// Fetch all the aliases
-		$aliases = $this->mimetypeDetector->getAllAliases();
-
-		// Remove comments
-		$keys = array_filter(array_keys($aliases), function($k) {
-			return $k[0] === '_';
-		});
-		foreach($keys as $key) {
-			unset($aliases[$key]);
-		}
-
-		// Fetch all files
-		$dir = new \DirectoryIterator(\OC::$SERVERROOT.'/core/img/filetypes');
+	/**
+	 * @return array
+	 */
+	private function getFiles() {
+		$dir = new \DirectoryIterator(\OC::$SERVERROOT . '/core/img/filetypes');
 
 		$files = [];
 		foreach($dir as $fileInfo) {
 			if ($fileInfo->isFile()) {
-				$file = preg_replace('/.[^.]*$/', '', $fileInfo->getFilename());
-				$files[] = $file;
+				$files[] = preg_replace('/.[^.]*$/', '', $fileInfo->getFilename());
 			}
 		}
 
-		//Remove duplicates
 		$files = array_values(array_unique($files));
 		sort($files);
+		return $files;
+	}
 
-		// Fetch all themes!
-		$themes = [];
-		$dirs = new \DirectoryIterator(\OC::$SERVERROOT.'/themes/');
-		foreach($dirs as $dir) {
-			//Valid theme dir
-			if ($dir->isFile() || $dir->isDot()) {
-				continue;
-			}
+	/**
+	 * @param $themeDirectory
+	 * @return array
+	 */
+	private function getFileTypeIcons($themeDirectory) {
+		$fileTypeIcons = [];
+		$fileTypeIconDirectory = $themeDirectory . '/core/img/filetypes';
 
-			$theme = $dir->getFilename();
-			$themeDir = $dir->getPath() . '/' . $theme . '/core/img/filetypes/';
-			// Check if this theme has its own filetype icons
-			if (!file_exists($themeDir)) {
-				continue;
-			}
-
-			$themes[$theme] = [];
-			// Fetch all the theme icons!
-			$themeIt = new \DirectoryIterator($themeDir);
-			foreach ($themeIt as $fileInfo) {
-				if ($fileInfo->isFile()) {
-					$file = preg_replace('/.[^.]*$/', '', $fileInfo->getFilename());
-					$themes[$theme][] = $file;
+		if (is_dir($fileTypeIconDirectory)) {
+			$fileTypeIconFiles = new \DirectoryIterator($fileTypeIconDirectory);
+			foreach ($fileTypeIconFiles as $fileTypeIconFile) {
+				if ($fileTypeIconFile->isFile()) {
+					$fileTypeIconName = preg_replace('/.[^.]*$/', '', $fileTypeIconFile->getFilename());
+					$fileTypeIcons[] = $fileTypeIconName;
 				}
 			}
-
-			//Remove Duplicates
-			$themes[$theme] = array_values(array_unique($themes[$theme]));
-			sort($themes[$theme]);
 		}
 
-		//Generate the JS
-		$js = '/**
+		$fileTypeIcons = array_values(array_unique($fileTypeIcons));
+		sort($fileTypeIcons);
+
+		return $fileTypeIcons;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getThemes() {
+		return array_merge(
+			$this->getAppThemes(),
+			$this->getLegacyThemes()
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getAppThemes() {
+		$themes = [];
+
+		$apps = \OC_App::getEnabledApps();
+
+		foreach ($apps as $app) {
+			if(\OC_App::isType($app, 'theme')) {
+				$themes[$app] = [
+					'directory' => \OC_App::getAppWebPath($app),
+					'icons' => $this->getFileTypeIcons(\OC_App::getAppPath($app))
+				];
+			}
+		}
+
+		return $themes;
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getLegacyThemes() {
+		$themes = [];
+
+		$legacyThemeDirectories = new \DirectoryIterator(\OC::$SERVERROOT . '/themes/');
+
+		foreach($legacyThemeDirectories as $legacyThemeDirectory) {
+			if ($legacyThemeDirectory->isFile() || $legacyThemeDirectory->isDot()) {
+				continue;
+			}
+
+			$themes[$legacyThemeDirectory->getFilename()] = [
+				'directory' => '/themes/' . $legacyThemeDirectory->getFilename(),
+				'icons' => $this->getFileTypeIcons($legacyThemeDirectory->getPathname())
+			];
+		}
+
+		return $themes;
+	}
+
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @return int
+	 */
+	protected function execute(InputInterface $input, OutputInterface $output) {
+		file_put_contents(
+			\OC::$SERVERROOT.'/core/js/mimetypelist.js',
+			$this->generateMimeTypeListContent(
+				$this->mimetypeDetector->getAllAliases(),
+				$this->getFiles(),
+				$this->getThemes()
+			)
+		);
+
+		$output->writeln('<info>mimetypelist.js is updated</info>');
+		return 0;
+	}
+
+	/**
+	 * @param array $aliases
+	 * @param array $files
+	 * @param array $themes
+	 * @return string
+	 */
+	private function generateMimeTypeListContent($aliases, $files, $themes) {
+		$aliasesJson = json_encode($aliases, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+		$filesJson = json_encode($files, JSON_PRETTY_PRINT);
+		$themesJson = json_encode($themes, JSON_PRETTY_PRINT);
+
+		$content = <<< MTLC
+/**
 * This file is automatically generated
 * DO NOT EDIT MANUALLY!
 *
@@ -115,15 +182,12 @@ class UpdateJS extends Command {
 * To regenerate this file run ./occ maintenance:mimetype:update-js
 */
 OC.MimeTypeList={
-	aliases: ' . json_encode($aliases, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . ',
-	files: ' . json_encode($files, JSON_PRETTY_PRINT) . ',
-	themes: ' . json_encode($themes, JSON_PRETTY_PRINT) . '
+	aliases: $aliasesJson,
+	files: $filesJson,
+	themes: $themesJson
 };
-';
+MTLC;
 
-		//Output the JS
-		file_put_contents(\OC::$SERVERROOT.'/core/js/mimetypelist.js', $js);
-
-		$output->writeln('<info>mimetypelist.js is updated');
+		return $content;
 	}
 }
