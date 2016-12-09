@@ -92,7 +92,7 @@ OC.MimeType = {
 			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.files);
 		}
 
-		var mimeTypeIcon = path + icon + '.svg';
+		var mimeTypeIcon = OC.getRootPath() + path + icon + '.svg';
 
 		// Cache the result
 		OC.MimeType._mimeTypeIcons[mimeType] = mimeTypeIcon;
