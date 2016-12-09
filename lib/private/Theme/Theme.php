@@ -33,6 +33,13 @@ class Theme {
 	}
 
 	/**
+	 * @param $name
+	 */
+	public function setName($name) {
+		$this->name = $name;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getDirectory() {
