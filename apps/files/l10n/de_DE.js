@@ -17,7 +17,7 @@ OC.L10N.register(
     "Not enough free space" : "nicht genug freier Speicher vorhanden",
     "Uploading..." : "Hochladen…",
     "..." : "...",
-    "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{hours}:{minutes}:{seconds} Stunde{plural_s} übrig",
+    "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{hours}:{minutes}:{seconds} Stunde{plural_n} übrig",
     "{hours}:{minutes}h" : "{hours}:{minutes}h",
     "{minutes}:{seconds} minute{plural_s} left" : "{minutes}:{seconds} Minute{plural_s} übrig",
     "{minutes}:{seconds}m" : "{minutes}:{seconds}m",
