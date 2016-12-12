@@ -45,16 +45,6 @@ class Memcached extends Cache implements IMemcache {
 		parent::__construct($prefix);
 		if (is_null(self::$cache)) {
 			self::$cache = new \Memcached();
-			$servers = \OC::$server->getSystemConfig()->getValue('memcached_servers');
-			if (!$servers) {
-				$server = \OC::$server->getSystemConfig()->getValue('memcached_server');
-				if ($server) {
-					$servers = [$server];
-				} else {
-					$servers = [['localhost', 11211]];
-				}
-			}
-			self::$cache->addServers($servers);
 
 			$defaultOptions = [
 				\Memcached::OPT_CONNECT_TIMEOUT => 50,
@@ -84,6 +74,17 @@ class Memcached extends Cache implements IMemcache {
 			} else {
 				throw new HintException("Expected 'memcached_options' config to be an array, got $options");
 			}
+
+			$servers = \OC::$server->getSystemConfig()->getValue('memcached_servers');
+			if (!$servers) {
+				$server = \OC::$server->getSystemConfig()->getValue('memcached_server');
+				if ($server) {
+					$servers = [$server];
+				} else {
+					$servers = [['localhost', 11211]];
+				}
+			}
+			self::$cache->addServers($servers);
 		}
 	}
 
