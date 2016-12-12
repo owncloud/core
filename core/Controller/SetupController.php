@@ -71,7 +71,11 @@ class SetupController {
 				$this->finishSetup();
 			}
 		} else {
-			$options = array_merge($opts, $post);
+			$dataDir = htmlspecialchars_decode($opts['directory']);
+			$e = $this->setupHelper->everyTimeChecks($dataDir);
+			$errors = array('errors' => $e);
+
+			$options = array_merge($opts, $post, $errors);
 			$this->display($options);
 		}
 	}
