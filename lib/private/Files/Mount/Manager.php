@@ -75,18 +75,21 @@ class Manager implements IMountManager {
 		}
 
 		\OC_Hook::emit('OC_Filesystem', 'get_mountpoint', ['path' => $path]);
-		$foundMountPoint = '';
-		$mountPoints = array_keys($this->mounts);
-		foreach ($mountPoints as $mountpoint) {
-			if (strpos($path, $mountpoint) === 0 and strlen($mountpoint) > strlen($foundMountPoint)) {
-				$foundMountPoint = $mountpoint;
-			}
+		$pathSections = explode('/', $path);
+		$pathToSearch = $path;
+
+		while ($pathToSearch !== '/' && !isset($this->mounts[$pathToSearch])) {
+			array_pop($pathSections);
+			$pathToSearch = implode('/', $pathSections) . '/';
 		}
-		if (isset($this->mounts[$foundMountPoint])) {
-			return $this->mounts[$foundMountPoint];
-		} else {
+
+		// second condition only happens if root mount is missing...
+		if (empty($pathToSearch) || !isset($this->mounts[$pathToSearch])) {
+			// not found
 			return null;
 		}
+
+		return $this->mounts[$pathToSearch];
 	}
 
 	/**
