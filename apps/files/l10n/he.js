@@ -33,6 +33,7 @@ OC.L10N.register(
     "Delete" : "מחיקה",
     "Disconnect storage" : "ניתוק אחסון",
     "Unshare" : "הסר שיתוף",
+    "Could not load info for file \"{file}\"" : "לא ניתן היה לטעון מידע \"{file}\"",
     "Files" : "קבצים",
     "Details" : "פרטים",
     "Select" : "בחר",
