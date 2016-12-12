@@ -127,7 +127,7 @@ class DAV extends Common {
 		}
 	}
 
-	private function init() {
+	protected function init() {
 		if ($this->ready) {
 			return;
 		}

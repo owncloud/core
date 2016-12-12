@@ -54,6 +54,8 @@ class Storage extends DAV implements ISharedStorage {
 	private $certificateManager;
 	/** @var bool */
 	private $updateChecked = false;
+	/** @var bool */
+	private $rootAdjusted = false;
 
 	/**
 	 * @var \OCA\Files_Sharing\External\Manager
@@ -63,11 +65,6 @@ class Storage extends DAV implements ISharedStorage {
 	public function __construct($options) {
 		$this->memcacheFactory = \OC::$server->getMemCacheFactory();
 		$this->httpClient = \OC::$server->getHTTPClientService();
-		$discoveryManager = new DiscoveryManager(
-			$this->memcacheFactory,
-			\OC::$server->getHTTPClientService()
-		);
-
 		$this->manager = $options['manager'];
 		$this->certificateManager = $options['certificateManager'];
 		$this->remote = $options['remote'];
@@ -80,7 +77,6 @@ class Storage extends DAV implements ISharedStorage {
 			$root = '';
 		}
 		$secure = $protocol === 'https';
-		$root = rtrim($root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		$this->mountPoint = $options['mountpoint'];
 		$this->token = $options['token'];
 		parent::__construct(array(
@@ -90,6 +86,18 @@ class Storage extends DAV implements ISharedStorage {
 			'user' => $options['token'],
 			'password' => (string)$options['password']
 		));
+	}
+
+	protected function init() {
+		if (!$this->rootAdjusted) {
+			$this->rootAdjusted = true;
+			$discoveryManager = new DiscoveryManager(
+				$this->memcacheFactory,
+				\OC::$server->getHTTPClientService()
+			);
+			$this->root = rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
+		}
+		parent::init();
 	}
 
 	public function getWatcher($path = '', $storage = null) {
