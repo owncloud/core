@@ -70,6 +70,10 @@ class Storage implements IStorage {
 	 * @inheritdoc
 	 */
 	public function getUserKey($uid, $keyId, $encryptionModuleId) {
+		$currentUser = \OC_User::getUser();
+		if (!is_null($uid) && $uid !== '' && $uid !== $currentUser) {
+			\OC\Files\Filesystem::initMountPoints($uid);
+		}
 		$path = $this->constructUserKeyPath($encryptionModuleId, $keyId, $uid);
 		return $this->getKey($path);
 	}
