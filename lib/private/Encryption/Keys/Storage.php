@@ -170,8 +170,8 @@ class Storage implements IStorage {
 		if ($uid === null) {
 			$path = $this->root_dir . '/' . $this->encryption_base_dir . '/' . $encryptionModuleId . '/' . $keyId;
 		} else {
-			$path = $this->root_dir . '/' . $uid . $this->encryption_base_dir . '/'
-				. $encryptionModuleId . '/' . $uid . '.' . $keyId;
+			$home = $this->util->getUserHomeFolder($uid);
+			$path = $this->root_dir . $home . $this->encryption_base_dir . '/' . $encryptionModuleId . '/' . $uid . '.' . $keyId;
 		}
 
 		return \OC\Files\Filesystem::normalizePath($path);
