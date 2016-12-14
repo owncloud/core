@@ -28,11 +28,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use OCP\Files\IMimeTypeDetector;
-
 class UpdateJS extends Command {
 
-	/** @var IMimeTypeDetector */
+	/** @var Detection */
 	protected $mimetypeDetector;
 
 	public function __construct(
