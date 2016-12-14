@@ -141,14 +141,21 @@ class UpdateJS extends Command {
 	 * @return int
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		file_put_contents(
-			\OC::$SERVERROOT.'/core/js/mimetypelist.js',
+		$fileName = \OC::$SERVERROOT.'/core/js/mimetypelist.js';
+
+		$success = file_put_contents(
+			$fileName,
 			$this->generateMimeTypeListContent(
 				$this->mimetypeDetector->getAllAliases(),
 				$this->getFiles(),
 				$this->getThemes()
 			)
 		);
+
+		if ($success === false) {
+			$output->writeln("<error>could not write mimetypelist to $fileName.</error>");
+			return 1;
+		}
 
 		$output->writeln('<info>mimetypelist.js is updated</info>');
 		return 0;
