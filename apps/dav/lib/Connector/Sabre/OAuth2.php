@@ -24,6 +24,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OCA\OAuth2\Db\AccessToken;
 use OCA\OAuth2\Db\AccessTokenMapper;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Db\DoesNotExistException;
@@ -55,16 +56,18 @@ class OAuth2 extends AbstractBearer {
 	 * @return null|string
 	 */
 	protected function determineUsername($token) {
-		if (empty($token)) {
+		if (!is_string($token)) {
 			return null;
 		}
 
 		$app = new App('oauth2');
 		$container = $app->getContainer();
-		$accessTokenMapper = new AccessTokenMapper($container->query('ServerContainer')->getDb());
+		/** @var AccessTokenMapper $accessTokenMapper */
+		$accessTokenMapper = $container->query('OCA\OAuth2\Db\AccessTokenMapper');
 
 		try {
-			$accessToken = $accessTokenMapper->find($token);
+			/** @var AccessToken $accessToken */
+			$accessToken = $accessTokenMapper->findByToken($token);
 			$username = $accessToken->getUserId();
 
 			\OC_Util::setupFS($username);
