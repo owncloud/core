@@ -304,8 +304,11 @@ class SettingsManager implements ISettingsManager {
 			}
 		} catch (QueryException $e) {
 			$this->log->error(
-				'Failed to load panel with class name: {class}',
-				['class' => $e->getMessage()]);
+				'Failed to load panel: {class} with error: {error}',
+				[
+					'class' => $className,
+					'error' => $e->getMessage()
+				]);
 			throw $e;
 		}
 	}
