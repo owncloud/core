@@ -136,4 +136,12 @@ interface IGroupManager {
 	 * @since 8.0.0
 	 */
 	public function isInGroup($userId, $group);
+
+	/**
+	 * returns how many groups per backend exist (if supported by backend)
+	 *
+	 * @return array an array of backend class as key and count number as value
+	 * @since 10.0.0
+	 */
+	public function countGroups();
 }

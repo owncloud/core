@@ -29,6 +29,7 @@ abstract class Backend implements \OCP\GroupInterface {
 	 * error code for functions not provided by the group backend
 	 */
 	const NOT_IMPLEMENTED = -501;
+	const COUNT_GROUPS	  = 268435456;	// 1 << 28
 
 	protected $possibleActions = [
 		self::CREATE_GROUP => 'createGroup',
@@ -37,6 +38,7 @@ abstract class Backend implements \OCP\GroupInterface {
 		self::REMOVE_FROM_GOUP => 'removeFromGroup',
 		self::COUNT_USERS => 'countUsersInGroup',
 		self::GROUP_DETAILS => 'getGroupDetails',
+		self::COUNT_GROUPS => 'countGroups',
 	];
 
 	/**

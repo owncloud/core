@@ -25,6 +25,7 @@
 namespace OC\Core\Command\User;
 
 use OCP\IUserManager;
+use OCP\IGroupManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,11 +35,16 @@ class Report extends Command {
 	/** @var IUserManager */
 	protected $userManager;
 
+	/** @var IGroupManager */
+	protected $groupManager;
+
 	/**
 	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
 	 */
-	public function __construct(IUserManager $userManager) {
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager) {
 		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
 		parent::__construct();
 	}
 
@@ -66,6 +72,21 @@ class Report extends Command {
 			$rows[] = ['No backend enabled that supports user counting', ''];
 		}
 
+		$groupCountArray = $this->countGroups();
+		if(!empty($groupCountArray)) {
+			$total = 0;
+			$rows = [];
+			foreach($groupCountArray as $classname => $groups) {
+				$total += $groups;
+				$rows[] = [$classname, $groups];
+			}
+
+			$rows[] = [' '];
+			$rows[] = ['total groups', $total];
+		} else {
+			$rows[] = ['No backend enabled that supports group counting', ''];
+		}
+
 		$userDirectoryCount = $this->countUserDirectories();
 		$rows[] = [' '];
 		$rows[] = ['user directories', $userDirectoryCount];
@@ -76,6 +97,10 @@ class Report extends Command {
 
 	private function countUsers() {
 		return $this->userManager->countUsers();
+	}
+
+	private function countGroups() {
+		return $this->groupManager->countGroups();
 	}
 
 	private function countUserDirectories() {
