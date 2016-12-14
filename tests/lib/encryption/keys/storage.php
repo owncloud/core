@@ -24,17 +24,29 @@
 namespace Test\Encryption\Keys;
 
 use OC\Encryption\Keys\Storage;
+use OC\Encryption\Util;
+use OC\Files\View;
 use Test\TestCase;
+use Test\Traits\UserTrait;
 
+/**
+ * Class StorageTest
+ *
+ * @group DB
+ *
+ * @package Test\Encryption\Keys
+ */
 class StorageTest extends TestCase {
+
+	use UserTrait;
 
 	/** @var Storage */
 	protected $storage;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit_Framework_MockObject_MockObject | Util */
 	protected $util;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit_Framework_MockObject_MockObject | View */
 	protected $view;
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -54,6 +66,9 @@ class StorageTest extends TestCase {
 		$this->config = $this->getMockBuilder('OCP\IConfig')
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->createUser('user1', '123456');
+		$this->createUser('user2', '123456');
 
 		$this->storage = new Storage($this->view, $this->util);
 	}
