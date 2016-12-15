@@ -8,7 +8,7 @@ cache:
     - $HOME/.cache/bower
     - $HOME/.composer/cache
     - $HOME/.npm
-    - build/node_modules
+    - /tmp/phantomjs
 
 env:
   global:
