@@ -24,6 +24,7 @@
 namespace OCA\Files_Sharing\Tests;
 
 use OCA\Files_Sharing\ExpireSharesJob;
+use OCP\Share\IManager;
 
 /**
  * Class ExpireSharesJobTest
@@ -45,6 +46,11 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	private $connection;
 
 	/**
+	 * @var IManager
+	 */
+	private $shareManager;
+
+	/**
 	 * @var string
 	 */
 	private $user1;
@@ -57,6 +63,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 	protected function setup() {
 		parent::setUp();
 
+		$this->shareManager = \OC::$server->getShareManager();
 		$this->connection = \OC::$server->getDatabaseConnection();
 		// clear occasional leftover shares from other tests
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share`');
@@ -70,7 +77,7 @@ class ExpireSharesJobTest extends \Test\TestCase {
 
 		\OC::registerShareHooks();
 
-		$this->job = new ExpireSharesJob();
+		$this->job = new ExpireSharesJob($this->connection, $this->shareManager);
 	}
 
 	protected function tearDown() {
@@ -135,13 +142,12 @@ class ExpireSharesJobTest extends \Test\TestCase {
 		$userFolder = \OC::$server->getUserFolder($this->user1);
 		$sharedFolder = $userFolder->newFolder('test');
 
-		$shareManager = \OC::$server->getShareManager();
-		$share = $shareManager->newShare();
+		$share = $this->shareManager->newShare();
 		$share->setSharedBy($this->user1);
 		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 		$share->setNode($sharedFolder);
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ);
-		$shareManager->createShare($share);
+		$this->shareManager->createShare($share);
 
 		$shares = $this->getShares();
 		$this->assertCount(1, $shares);
@@ -190,14 +196,13 @@ class ExpireSharesJobTest extends \Test\TestCase {
 		$userFolder = \OC::$server->getUserFolder($this->user1);
 		$sharedFolder = $userFolder->newFolder('test');
 
-		$shareManager = \OC::$server->getShareManager();
-		$share = $shareManager->newShare();
+		$share = $this->shareManager->newShare();
 		$share->setSharedBy($this->user1);
 		$share->setSharedWith($this->user2);
 		$share->setShareType(\OCP\Share::SHARE_TYPE_USER);
 		$share->setNode($sharedFolder);
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ);
-		$shareManager->createShare($share);
+		$this->shareManager->createShare($share);
 
 		$shares = $this->getShares();
 		$this->assertCount(1, $shares);
