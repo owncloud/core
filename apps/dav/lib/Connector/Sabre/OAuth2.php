@@ -24,6 +24,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use Sabre\DAV\Auth\Backend\AbstractBearer;
 use OCA\OAuth2\Db\AccessToken;
 use OCA\OAuth2\Db\AccessTokenMapper;
 use OCP\AppFramework\App;
@@ -33,6 +34,13 @@ use OCP\AppFramework\Db\DoesNotExistException;
  * OAuth 2.0 authentication backend class.
  */
 class OAuth2 extends AbstractBearer {
+
+	/**
+	 * This is the prefix that will be used to generate principal urls.
+	 *
+	 * @var string
+	 */
+	protected $principalPrefix;
 
 	/**
 	 * OAuth2 constructor.
@@ -47,34 +55,33 @@ class OAuth2 extends AbstractBearer {
 	}
 
 	/**
-	 * Determines the username behind a token
+	 * Validates a Bearer token
 	 *
-	 * This method should return null or the username depending on if login
-	 * succeeded.
+	 * This method should return the full principal url, or false if the
+	 * token was incorrect.
 	 *
-	 * @param string $token
-	 * @return null|string
+	 * @param string $bearerToken
+	 * @return string|false
 	 */
-	protected function determineUsername($token) {
-		if (!is_string($token)) {
-			return null;
+	protected function validateBearerToken($bearerToken) {
+		if (!is_string($bearerToken)) {
+			return false;
 		}
 
 		$app = new App('oauth2');
-		$container = $app->getContainer();
 		/** @var AccessTokenMapper $accessTokenMapper */
-		$accessTokenMapper = $container->query('OCA\OAuth2\Db\AccessTokenMapper');
+		$accessTokenMapper = $app->getContainer()->query('OCA\OAuth2\Db\AccessTokenMapper');
 
 		try {
 			/** @var AccessToken $accessToken */
-			$accessToken = $accessTokenMapper->findByToken($token);
-			$username = $accessToken->getUserId();
+			$accessToken = $accessTokenMapper->findByToken($bearerToken);
+			$userId = $accessToken->getUserId();
 
-			\OC_Util::setupFS($username);
+			\OC_Util::setupFS($userId);
 
-			return $username;
+			return $this->principalPrefix . $userId;
 		} catch (DoesNotExistException $exception) {
-			return null;
+			return false;
 		}
 	}
 
