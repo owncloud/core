@@ -147,7 +147,7 @@ class CleanupRemoteStorages extends Command {
 				// but not the ones starting with a '/', they are for normal shares
 				$queryBuilder->createNamedParameter('shared::/%', IQueryBuilder::PARAM_STR),
 				IQueryBuilder::PARAM_STR)
-			);
+			)->orderBy('numeric_id');
 		$query = $queryBuilder->execute();
 
 		$remoteStorages = [];
