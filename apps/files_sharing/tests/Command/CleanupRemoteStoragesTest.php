@@ -48,9 +48,9 @@ class CleanupRemoteStoragesTest extends TestCase {
 		['id' => 'shared::7b4a322b22f9d0047c38d77d471ce3cf', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e1', 'remote' => 'https://hostname.tld/owncloud1', 'user' => 'user1'],
 		['id' => 'shared::efe3b456112c3780da6155d3a9b9141c', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e2', 'remote' => 'https://hostname.tld/owncloud2', 'user' => 'user2'],
 		['notExistingId' => 'shared::33323d9f4ca416a9e3525b435354bc6f', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e3', 'remote' => 'https://hostname.tld/owncloud3', 'user' => 'user3'],
-		['id' => 'shared::7fe41a07d3f517a923f4b2b599e72cbb'],
+		['id' => 'shared::7fe41a07d3f517a923f4b2b599e72cbb', 'files_count' => 2],
 		['id' => 'shared::de4aeb2f378d222b6d2c5fd8f4e42f8e', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e5', 'remote' => 'https://hostname.tld/owncloud5', 'user' => 'user5'],
-		['id' => 'shared::af712293ab5eb9e6a1745a13818b99fe'],
+		['id' => 'shared::af712293ab5eb9e6a1745a13818b99fe', 'files_count' => 3],
 		['notExistingId' => 'shared::c34568c143cdac7d2f06e0800b5280f9', 'share_token' => 'f2c69dad1dc0649f26976fd210fc62e7', 'remote' => 'https://hostname.tld/owncloud7', 'user' => 'user7'],
 	];
 
@@ -73,10 +73,17 @@ class CleanupRemoteStoragesTest extends TestCase {
 			->setValue('mountpoint', '?')->setParameter(5, 'irrelevant')
 			->setValue('mountpoint_hash', '?')->setParameter(6, 'irrelevant');
 
-		foreach ($this->storages as $storage) {
+		$filesQuery = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$filesQuery->insert('filecache')
+			->setValue('storage', '?')
+			->setValue('path', '?')
+			->setValue('path_hash', '?');
+
+		foreach ($this->storages as &$storage) {
 			if (isset($storage['id'])) {
 				$storageQuery->setParameter(0, $storage['id']);
 				$storageQuery->execute();
+				$storage['numeric_id'] = $this->connection->lastInsertId('*PREFIX*storages');
 			}
 
 			if (isset($storage['share_token'])) {
@@ -85,6 +92,15 @@ class CleanupRemoteStoragesTest extends TestCase {
 					->setParameter(1, $storage['remote'])
 					->setParameter(4, $storage['user']);
 				$shareExternalQuery->execute();
+			}
+
+			if (isset($storage['files_count'])) {
+				for ($i = 0; $i < $storage['files_count']; $i++) {
+					$filesQuery->setParameter(0, $storage['numeric_id']);
+					$filesQuery->setParameter(1, 'file' . $i);
+					$filesQuery->setParameter(2, md5('file' . $i));
+					$filesQuery->execute();
+				}
 			}
 		}
 
@@ -115,6 +131,28 @@ class CleanupRemoteStoragesTest extends TestCase {
 		}
 
 		return parent::tearDown();
+	}
+
+	private function doesStorageExist($numericId) {
+		$qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$qb->select('*')
+			->from('storages')
+			->where($qb->expr()->eq('numeric_id', $qb->createNamedParameter($numericId)));
+		$result = $qb->execute()->fetchAll();
+		if (!empty($result)) {
+			return true;
+		}
+
+		$qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$qb->select('*')
+			->from('filecache')
+			->where($qb->expr()->eq('storage', $qb->createNamedParameter($numericId)));
+		$result = $qb->execute()->fetchAll();
+		if (!empty($result)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -161,6 +199,8 @@ class CleanupRemoteStoragesTest extends TestCase {
 			->expects($this->at($at++))
 			->method('writeln')
 			->with($this->stringStartsWith("{$this->storages[6]['notExistingId']} for share"));
+
+		// delete storage 3
 		$output
 			->expects($this->at($at++))
 			->method('write')
@@ -172,13 +212,34 @@ class CleanupRemoteStoragesTest extends TestCase {
 		$output
 			->expects($this->at($at++))
 			->method('write')
+			->with($this->stringStartsWith("deleting files for storage {$this->storages[3]['numeric_id']}"));
+		$output
+			->expects($this->at($at++))
+			->method('writeln')
+			->with('deleted 2');
+
+		// delete storage 5
+		$output
+			->expects($this->at($at++))
+			->method('write')
 			->with($this->stringStartsWith("deleting {$this->storages[5]['id']}"));
 		$output
 			->expects($this->at($at++))
 			->method('writeln')
 			->with('deleted 1');
+		$output
+			->expects($this->at($at++))
+			->method('write')
+			->with($this->stringStartsWith("deleting files for storage {$this->storages[5]['numeric_id']}"));
+		$output
+			->expects($this->at($at++))
+			->method('writeln')
+			->with('deleted 3');
 
 		$this->command->execute($input, $output);
+
+		$this->assertFalse($this->doesStorageExist($this->storages[3]['numeric_id']));
+		$this->assertFalse($this->doesStorageExist($this->storages[5]['numeric_id']));
 
 	}
 }
