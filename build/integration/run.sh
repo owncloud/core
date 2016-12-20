@@ -50,7 +50,7 @@ export TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
 #Enable external storage app
 $OCC app:enable files_external
 
-mkdir -p work/local_storage
+mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
 OUTPUT_CREATE_STORAGE=`$OCC files_external:create local_storage local null::null -c datadir=./build/integration/work/local_storage` 
 
 ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
