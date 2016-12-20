@@ -53,6 +53,9 @@ class Storage implements IStorage {
 	/** @var array */
 	private $keyCache = [];
 
+	/** @var string */
+	private $currentUser = null;
+
 	/**
 	 * @param View $view
 	 * @param Util $util
@@ -64,16 +67,17 @@ class Storage implements IStorage {
 		$this->encryption_base_dir = '/files_encryption';
 		$this->keys_base_dir = $this->encryption_base_dir .'/keys';
 		$this->root_dir = $this->util->getKeyStorageRoot();
+
+		$session = \OC::$server->getUserSession();
+		if (!is_null($session) && !is_null($session->getUser())) {
+			$this->currentUser = $session->getUser()->getUID();
+		}
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function getUserKey($uid, $keyId, $encryptionModuleId) {
-		$currentUser = \OC_User::getUser();
-		if (!is_null($uid) && $uid !== '' && $uid !== $currentUser) {
-			\OC\Files\Filesystem::initMountPoints($uid);
-		}
 		$path = $this->constructUserKeyPath($encryptionModuleId, $keyId, $uid);
 		return $this->getKey($path);
 	}
@@ -174,6 +178,7 @@ class Storage implements IStorage {
 		if ($uid === null) {
 			$path = $this->root_dir . '/' . $this->encryption_base_dir . '/' . $encryptionModuleId . '/' . $keyId;
 		} else {
+			$this->setupUserMounts($uid);
 			$path = $this->root_dir . '/' . $uid . $this->encryption_base_dir . '/'
 				. $encryptionModuleId . '/' . $uid . '.' . $keyId;
 		}
@@ -239,6 +244,7 @@ class Storage implements IStorage {
 		if ($this->util->isSystemWideMountPoint($filename, $owner)) {
 			$keyPath = $this->root_dir . '/' . $this->keys_base_dir . $filename . '/';
 		} else {
+			$this->setupUserMounts($owner);
 			$keyPath = $this->root_dir . '/' . $owner . $this->keys_base_dir . $filename . '/';
 		}
 
@@ -302,6 +308,7 @@ class Storage implements IStorage {
 		if ($systemWideMountPoint) {
 			$systemPath = $this->root_dir . '/' . $this->keys_base_dir . $relativePath . '/';
 		} else {
+			$this->setupUserMounts($owner);
 			$systemPath = $this->root_dir . '/' . $owner . $this->keys_base_dir . $relativePath . '/';
 		}
 
@@ -324,6 +331,21 @@ class Storage implements IStorage {
 					$this->view->mkdir($dir);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Setup the mounts of the given user if different than
+	 * the current user.
+	 *
+	 * This is needed because in many cases the keys are stored
+	 * within the user's home storage.
+	 *
+	 * @param string $uid user id
+	 */
+	protected function setupUserMounts($uid) {
+		if (!is_null($uid) && $uid !== '' && $uid !== $this->currentUser) {
+			\OC\Files\Filesystem::initMountPoints($uid);
 		}
 	}
 
