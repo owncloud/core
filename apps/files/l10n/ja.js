@@ -21,7 +21,7 @@ OC.L10N.register(
     "{hours}:{minutes}h" : "{hours}:{minutes} 時間",
     "{minutes}:{seconds} minute{plural_s} left" : "残り{minutes}:{seconds} 分",
     "{minutes}:{seconds}m" : "{minutes}:{seconds} 分",
-    "{seconds} second{plural_s} left" : "残り{minutes}:{seconds} 秒",
+    "{seconds} second{plural_s} left" : "残り{seconds} 秒",
     "{seconds}s" : "{seconds} 秒",
     "Any moment now..." : "もうすぐ…",
     "Soon..." : "もうすぐ…",
