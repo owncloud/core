@@ -23,6 +23,8 @@
     "Invalid private key for Encryption App. Please update your private key password in your personal settings to recover access to your encrypted files." : "Vòstra clau privada pel chiframent es pas valida ! Metètz a jorn lo senhal de vòstra clau privada dins vòstres paramètres personals per recuperar l'accès a vòstres fichièrs chifrats.",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "L'aplicacion de chiframent es activada mas vòstras claus son pas inicializadas. Desconnectatz-vos e puèi reconnectatz-vos.",
     "Encryption App is enabled and ready" : "L'aplicacion de chiframent es activada e prèsta",
+    "Bad Signature" : "Marrida signatura",
+    "Missing Signature" : "Signatura mancanta",
     "one-time password for server-side-encryption" : "Senhal d'usatge unic pel chiframent costat servidor",
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Impossible de deschifrar aqueste fichièr : s'agís probablament d'un fichièr partejat. Demandatz al proprietari del fichièr de lo partejar tornamai amb vos.",
     "Can not read this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Impossible de legir aqueste fichièr, s'agís probablament d'un fichièr partejat. Demandatz al proprietari del fichièr de lo repartejar amb vos.  ",
