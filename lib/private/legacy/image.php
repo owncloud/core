@@ -708,78 +708,88 @@ class OC_Image implements \OCP\IImage {
 		$vide = chr(0);
 		$y = $meta['height'] - 1;
 		$error = 'imagecreatefrombmp: ' . $fileName . ' has not enough data!';
-		// loop through the image data beginning with the lower left corner
-		while ($y >= 0) {
-			$x = 0;
-			while ($x < $meta['width']) {
-				switch ($meta['bits']) {
-					case 32:
-					case 24:
-						if (!($part = substr($data, $p, 3))) {
-							$this->logger->warning($error, ['app' => 'core']);
-							return $im;
-						}
-						$color = unpack('V', $part . $vide);
-						break;
-					case 16:
-						if (!($part = substr($data, $p, 2))) {
+		try {
+			// loop through the image data beginning with the lower left corner
+			while ($y >= 0) {
+				$x = 0;
+				while ($x < $meta['width']) {
+					switch ($meta['bits']) {
+						case 32:
+						case 24:
+							if (!($part = substr($data, $p, 3))) {
+								throw new \LengthException();
+							}
+							$color = unpack('V', $part . $vide);
+							break;
+						case 16:
+							if (!($part = substr($data, $p, 2))) {
+								throw new \LengthException();
+							}
+							$color = unpack('v', $part);
+							$color[1] = (($color[1] & 0xf800) >> 8) * 65536 + (($color[1] & 0x07e0) >> 3) * 256 + (($color[1] & 0x001f) << 3);
+							break;
+						case 8:
+							if (!($part = substr($data, $p, 1))) {
+								throw new \LengthException();
+							}
+							$color = unpack('n', $vide . $part);
+							$color[1] = $palette[$color[1] + 1];
+							break;
+						case 4:
+							if (!($part = substr($data, floor($p), 1))) {
+								throw new \LengthException();
+							}
+							$color = unpack('n', $vide . $part);
+							$color[1] = ($p * 2) % 2 == 0 ? $color[1] >> 4 : $color[1] & 0x0F;
+							$color[1] = $palette[$color[1] + 1];
+							break;
+						case 1:
+							if (!($part = substr($data, floor($p), 1))) {
+								throw new \LengthException();
+							}
+							$color = unpack('n', $vide . $part);
+							switch (($p * 8) % 8) {
+								case 0:
+									$color[1] = $color[1] >> 7;
+									break;
+								case 1:
+									$color[1] = ($color[1] & 0x40) >> 6;
+									break;
+								case 2:
+									$color[1] = ($color[1] & 0x20) >> 5;
+									break;
+								case 3:
+									$color[1] = ($color[1] & 0x10) >> 4;
+									break;
+								case 4:
+									$color[1] = ($color[1] & 0x8) >> 3;
+									break;
+								case 5:
+									$color[1] = ($color[1] & 0x4) >> 2;
+									break;
+								case 6:
+									$color[1] = ($color[1] & 0x2) >> 1;
+									break;
+								case 7:
+									$color[1] = ($color[1] & 0x1);
+									break;
+							}
+							$color[1] = $palette[$color[1] + 1];
+							break;
+						default:
 							fclose($fh);
-							$this->logger->warning($error, ['app' => 'core']);
-							return $im;
-						}
-						$color = unpack('v', $part);
-						$color[1] = (($color[1] & 0xf800) >> 8) * 65536 + (($color[1] & 0x07e0) >> 3) * 256 + (($color[1] & 0x001f) << 3);
-						break;
-					case 8:
-						$color = unpack('n', $vide . substr($data, $p, 1));
-						$color[1] = $palette[$color[1] + 1];
-						break;
-					case 4:
-						$color = unpack('n', $vide . substr($data, floor($p), 1));
-						$color[1] = ($p * 2) % 2 == 0 ? $color[1] >> 4 : $color[1] & 0x0F;
-						$color[1] = $palette[$color[1] + 1];
-						break;
-					case 1:
-						$color = unpack('n', $vide . substr($data, floor($p), 1));
-						switch (($p * 8) % 8) {
-							case 0:
-								$color[1] = $color[1] >> 7;
-								break;
-							case 1:
-								$color[1] = ($color[1] & 0x40) >> 6;
-								break;
-							case 2:
-								$color[1] = ($color[1] & 0x20) >> 5;
-								break;
-							case 3:
-								$color[1] = ($color[1] & 0x10) >> 4;
-								break;
-							case 4:
-								$color[1] = ($color[1] & 0x8) >> 3;
-								break;
-							case 5:
-								$color[1] = ($color[1] & 0x4) >> 2;
-								break;
-							case 6:
-								$color[1] = ($color[1] & 0x2) >> 1;
-								break;
-							case 7:
-								$color[1] = ($color[1] & 0x1);
-								break;
-						}
-						$color[1] = $palette[$color[1] + 1];
-						break;
-					default:
-						fclose($fh);
-						$this->logger->warning('imagecreatefrombmp: ' . $fileName . ' has ' . $meta['bits'] . ' bits and this is not supported!', ['app' => 'core']);
-						return false;
+							$this->logger->warning('imagecreatefrombmp: ' . $fileName . ' has ' . $meta['bits'] . ' bits and this is not supported!', ['app' => 'core']);
+							return false;
+					}
+					imagesetpixel($im, $x, $y, $color[1]);
+					$x++;
+					$p += $meta['bytes'];
 				}
-				imagesetpixel($im, $x, $y, $color[1]);
-				$x++;
-				$p += $meta['bytes'];
+				$y--;
+				$p += $meta['decal'];
 			}
-			$y--;
-			$p += $meta['decal'];
+		} catch (\LengthException $e){
+			$this->logger->warning($error, ['app' => 'core']);
 		}
 		fclose($fh);
 		return $im;
