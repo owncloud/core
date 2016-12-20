@@ -33,7 +33,6 @@ OC.L10N.register(
     "Could not get result from server." : "Sunucudan sonuç alınamadı.",
     "Uploading..." : "Yükleniyor...",
     "..." : "...",
-    "Soon..." : "Yakında...",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Dosya yükleme işlemi sürüyor. Şu anda sayfadan ayrılmak yükleme işlemini iptal edecek.",
     "Actions" : "Eylemler",
     "Download" : "İndir",
