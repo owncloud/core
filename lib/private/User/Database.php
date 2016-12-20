@@ -280,7 +280,12 @@ class Database extends Backend implements IUserBackend {
 	 */
 	public function getHome($uid) {
 		if ($this->userExists($uid)) {
-			return \OC::$server->getConfig()->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data") . '/' . $uid;
+			return \OC::$server->getConfig()->getUserValue(
+				$uid,
+				'core',
+				'home',
+				\OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . '/' . $uid
+			);
 		}
 
 		return false;
