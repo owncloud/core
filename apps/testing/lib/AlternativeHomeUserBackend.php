@@ -44,7 +44,10 @@ class AlternativeHomeUserBackend extends \OC\User\Database {
 	 */
 	public function getHome($uid) {
 		if ($this->userExists($uid)) {
-			$uid = md5($uid);
+			// workaround to avoid killing the admin
+			if ($uid !== 'admin') {
+				$uid = md5($uid);
+			}
 			return \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . '/' . $uid;
 		}
 
