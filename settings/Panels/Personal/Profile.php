@@ -27,6 +27,8 @@ use OCP\IUser;
 use OCP\IGroupManager;
 use OCP\IUserSession;
 use OCP\IConfig;
+use OC\Settings\Panels\Helper;
+use OCP\L10N\IFactory;
 
 class Profile implements ISettings {
 
@@ -39,12 +41,22 @@ class Profile implements ISettings {
     /* @var IUser */
     protected $user;
 
+    /** @var Helper */
+    protected $helper;
+
+    /** @var IFactory */
+    protected $lfactory;
+
     public function __construct(IConfig $config,
                                 IGroupManager $groupManager,
-                                IUserSession $userSession) {
+                                IUserSession $userSession,
+                                Helper $helper,
+                                IFactory $lfactory) {
         $this->config = $config;
         $this->groupManager = $groupManager;
         $this->user = $userSession->getUser();
+        $this->helper = $helper;
+        $this->lfactory = $lfactory;
     }
 
     public function getPriority() {
@@ -54,18 +66,18 @@ class Profile implements ISettings {
     public function getPanel() {
         $tmpl = new Template('settings', 'panels/personal/profile');
         // Assign some data
-        $lang = \OC::$server->getL10NFactory()->findLanguage();
+        $lang = $this->lfactory->findLanguage();
         $userLang = $this->config->getUserValue( $this->user, 'core', 'lang', $lang);
-        $languageCodes = \OC::$server->getL10NFactory()->findAvailableLanguages();
+        $languageCodes = $this->lfactory->findAvailableLanguages();
         // array of common languages
         $commonLangCodes = [
         	'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
         ];
-        $languageNames=include 'languageCodes.php';
+        $languageNames=$this->helper->getLanguageCodes();
         $languages= [];
         $commonLanguages = [];
         foreach($languageCodes as $lang) {
-        	$l = \OC::$server->getL10N('settings', $lang);
+        	$l = $this->lfactory->get('settings', $lang);
         	// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
         	$potentialName = (string) $l->t('__language_name__');
         	if($l->getLanguageCode() === $lang && substr($potentialName, 0, 1) !== '_') {//first check if the language name is in the translation file

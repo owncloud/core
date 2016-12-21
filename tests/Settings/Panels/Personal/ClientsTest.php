@@ -1,0 +1,104 @@
+<?php
+/**
+ * @author Tom Needham
+ * @copyright 2016 Tom Needham tom@owncloud.com
+ *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later.
+ * See the COPYING-README file.
+ */
+
+namespace Tests\Settings\Panels\Personal;
+
+use OC\Settings\Panels\Personal\Clients;
+
+/**
+ * @package Tests\Settings\Panels\Personal
+ */
+class ClientsTest extends \Test\TestCase {
+
+	/** @var \OC\Settings\Panels\Personal\Clients */
+	private $panel;
+
+	/** @var \OC\Settings\Panels\Helper */
+	private $helper;
+
+    /** @var \OCP\Defaults */
+    private $defaults;
+
+	public function setUp() {
+		parent::setUp();
+		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
+        $this->defaults = $this->getMockBuilder('\OCP\Defaults')->getMock();
+		$this->panel = new Clients($this->config, $this->defaults);
+	}
+
+	public function testGetSection() {
+		$this->assertEquals('general', $this->panel->getSectionID());
+	}
+
+	public function testGetPriority() {
+		$this->assertTrue(is_integer($this->panel->getPriority()));
+		$this->assertTrue($this->panel->getPriority() < 100);
+        $this->assertTrue($this->panel->getPriority() > -100);
+	}
+
+	public function testGetPanelDefaultClients() {
+        $this->defaults->expects('getSyncClientUrl')->once()->willReturn('/default_desktop');
+        $this->defaults->expects('getAndroidClientUrl')->once()->willReturn('/default_andoird');
+        $this->defaults->expects('getiOSClientUrl')->once()->willReturn('/default_ios');
+        // Handle default sync clients case
+		$this->config->expects('getSystemValue')->exactly(3)->with([
+            [
+                'customclient_desktop',
+                '/default_desktop'
+            ],
+            [
+                'customclient_android',
+                '/default_android'
+            ],
+            [
+                'customclient_ios',
+                '/default_ios'
+            ]
+            ])->willReturn([
+                '/default_desktop',
+                '/default_android',
+                '/default_ios'
+            ]);
+		$templateHtml = $this->panel->getPanel()->render();
+		$this->assertContains('/default_desktop', $templateHtml);
+        $this->assertContains('/default_ios', $templateHtml);
+        $this->assertContains('/default_android', $templateHtml);
+	}
+
+	public function testGetPanelCustomClients() {
+		$this->defaults->expects('getSyncClientUrl')->once()->willReturn('/default_desktop');
+        $this->defaults->expects('getAndroidClientUrl')->once()->willReturn('/default_andoird');
+        $this->defaults->expects('getiOSClientUrl')->once()->willReturn('/default_ios');
+        // Handle custom sync clients case
+		$this->config->expects('getSystemValue')->exactly(3)->with([
+            [
+                'customclient_desktop',
+                '/default_desktop'
+            ],
+            [
+                'customclient_android',
+                '/default_android'
+            ],
+            [
+                'customclient_ios',
+                '/default_ios'
+            ]
+            ])->willReturn([
+                '/custom_desktop',
+                '/custom_android',
+                '/custom_ios'
+            ]);
+		$templateHtml = $this->panel->getPanel()->render();
+		$this->assertContains('/custom_desktop', $templateHtml);
+        $this->assertContains('/custom_ios', $templateHtml);
+        $this->assertContains('/custom_android', $templateHtml);
+	}
+
+}

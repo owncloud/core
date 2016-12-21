@@ -55,8 +55,4 @@ class Clients implements ISettings {
         return 'general';
     }
 
-    public function getName() {
-        return 'Clients';
-    }
-
 }

@@ -22,6 +22,7 @@
 namespace OC\Settings;
 
 use OC\Settings\Panels\Admin\Apps;
+use OC\Settings\Panels\Helper;
 use OCP\App\IAppManager;
 use OCP\Settings\ISettingsManager;
 use OCP\Settings\ISection;
@@ -84,6 +85,9 @@ class SettingsManager implements ISettingsManager {
 	/** @var IGroupManager  */
 	protected $groupManager;
 
+	/** @var Helper */
+	protected $helperWrapper;
+
 	/**
 	 * Holds a cache of ISettings with keys for type
 	 */
@@ -103,6 +107,7 @@ class SettingsManager implements ISettingsManager {
 	 * @param IConfig $config
 	 * @param Defaults $defaults
 	 * @param IURLGenerator $urlGenerator
+	 * @param Helper $helperWrapper
 	 */
 	public function __construct(IL10N $l,
 								IAppManager $appManager,
@@ -111,7 +116,8 @@ class SettingsManager implements ISettingsManager {
 								IGroupManager $groupManager,
 								IConfig $config,
 								Defaults $defaults,
-								IURLGenerator $urlGenerator) {
+								IURLGenerator $urlGenerator,
+								Helper $helperWrapper) {
 		$this->l = $l;
 		$this->appManager = $appManager;
 		$this->userSession = $userSession;
@@ -120,6 +126,7 @@ class SettingsManager implements ISettingsManager {
 		$this->log = $logger;
 		$this->defaults = $defaults;
 		$this->urlGenerator = $urlGenerator;
+		$this->helperWrapper = $helperWrapper;
 	}
 
 	public function getPersonalSections() {
@@ -236,7 +243,7 @@ class SettingsManager implements ISettingsManager {
 			Clients::class => new Clients($this->config, $this->defaults),
 			Version::class => new Version(),
 			Tokens::class => new Tokens(),
-			Quota::class => new Quota($this->config),
+			Quota::class => new Quota($this->helperWrapper),
 			// Admin
 			BackgroundJobs::class => new BackgroundJobs($this->config),
 			Certificates::class => new Certificates($this->config, $this->urlGenerator),

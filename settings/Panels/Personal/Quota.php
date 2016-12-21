@@ -21,14 +21,17 @@
 
 namespace OC\Settings\Panels\Personal;
 
+use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
-use OCP\IConfig;
 
 class Quota implements ISettings {
 
-	public function __construct(IConfig $config) {
-		$this->config = $config;
+	/** @var Helper  */
+	protected $helper;
+
+	public function __construct(Helper $helper) {
+		$this->helper = $helper;
 	}
 
     public function getPriority() {
@@ -37,11 +40,11 @@ class Quota implements ISettings {
 
     public function getPanel() {
 		$tmpl = new Template('settings', 'panels/personal/quota');
-		$storageInfo = \OC_Helper::getStorageInfo('/');
-		$tmpl->assign('usage', \OC_Helper::humanFileSize($storageInfo['used']));
+		$storageInfo = $this->helper->getStorageInfo('/');;
+		$tmpl->assign('usage', $this->helper->humanFileSize($storageInfo['used']));
 		$tmpl->assign('usage_relative', $storageInfo['relative']);
 		$tmpl->assign('quota', $storageInfo['quota']);
-		$tmpl->assign('total_human', \OC_Helper::humanFileSize($storageInfo['total']));
+		$tmpl->assign('total_human', $this->helper->humanFileSize($storageInfo['total']));
         return $tmpl;
     }
 

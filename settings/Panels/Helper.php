@@ -19,32 +19,28 @@
  *
  */
 
-namespace OC\Settings\Panels\Personal;
+namespace OC\Settings\Panels;
 
-use OCP\Settings\ISettings;
-use OCP\Template;
-use OC\Settings\Panels\Helper;
+class Helper  {
 
-class Legacy implements ISettings {
+	public function getStorageInfo($path) {
+		return \OC_Helper::getStorageInfo($path);
+	}
 
-    private $helper;
+	public function humanFileSize($bytes) {
+		return \OC_Helper::humanFileSize($bytes);
+	}
 
-    public function __construct(Helper $helper) {
-        $this->helper = $helper;
-    }
+	public function getPersonalForms() {
+		return \OC_App::getForms('personal');
+	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getAdminForms() {
+		return \OC_App::getForms('admin');
+	}
 
-    public function getPanel() {
-        $tmpl = new Template('settings', 'panels/legacy');
-        $tmpl->assign('forms', $this->helper->getPersonalForms());
-        return $tmpl;
-    }
-
-    public function getSectionID() {
-        return 'additional';
-    }
+	public function getLanguageCodes() {
+		include 'Personal/languageCodes.php';
+	}
 
 }
