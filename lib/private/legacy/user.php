@@ -126,7 +126,14 @@ class OC_User {
 	public static function setupBackends() {
 		OC_App::loadApps(['prelogin']);
 		$backends = \OC::$server->getSystemConfig()->getValue('user_backends', []);
+		if (isset($backends['default']) && !$backends['default']) {
+			// clear default backends
+			self::clearBackends();
+		}
 		foreach ($backends as $i => $config) {
+			if (!is_array($config)) {
+				continue;
+			}
 			$class = $config['class'];
 			$arguments = $config['arguments'];
 			if (class_exists($class)) {
