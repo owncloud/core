@@ -75,7 +75,7 @@ class OC_Util {
 		//first set up the local "root" storage
 		\OC\Files\Filesystem::initMountManager();
 		if (!self::$rootMounted) {
-			\OC\Files\Filesystem::mount('\OC\Files\Storage\Local', ['datadir' => $configDataDirectory], '/');
+			\OC\Files\Filesystem::mount('\OC\Files\Storage\Root', ['datadir' => $configDataDirectory], '/');
 			self::$rootMounted = true;
 		}
 	}
