@@ -31,8 +31,6 @@
     "Could not get result from server." : "Fikk ikke resultat fra serveren.",
     "Uploading..." : "Laster opp...",
     "..." : "...",
-    "Any moment now..." : "Veldig snatt...",
-    "Soon..." : "Snart...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} av {totalSize} ({bitrate})",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Filopplasting pågår. Forlater du siden nå avbrytes opplastingen.",
     "Actions" : "Handlinger",
