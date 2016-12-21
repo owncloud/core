@@ -697,6 +697,9 @@ class UsersTest extends OriginalTest {
 		$targetUser->expects($this->once())
 			->method('getEMailAddress')
 			->willReturn('demo@owncloud.org');
+		$targetUser->expects($this->once())
+			->method('getHome')
+			->willReturn('/var/ocdata/UserToGet');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -732,7 +735,8 @@ class UsersTest extends OriginalTest {
 				'quota' => ['DummyValue'],
 				'email' => 'demo@owncloud.org',
 				'displayname' => 'Demo User',
-				'two_factor_auth_enabled' => 'false'
+				'home' => '/var/ocdata/UserToGet',
+				'two_factor_auth_enabled' => 'false',
 			]
 		);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'UserToGet']));
@@ -746,9 +750,12 @@ class UsersTest extends OriginalTest {
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock('OCP\IUser');
 		$targetUser
-				->expects($this->once())
-				->method('getEMailAddress')
-				->willReturn('demo@owncloud.org');
+			->expects($this->once())
+			->method('getEMailAddress')
+			->willReturn('demo@owncloud.org');
+		$targetUser->expects($this->once())
+			->method('getHome')
+			->willReturn('/var/ocdata/UserToGet');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -795,6 +802,7 @@ class UsersTest extends OriginalTest {
 				'enabled' => 'true',
 				'quota' => ['DummyValue'],
 				'email' => 'demo@owncloud.org',
+				'home' => '/var/ocdata/UserToGet',
 				'displayname' => 'Demo User',
 				'two_factor_auth_enabled' => 'false'
 			]
@@ -847,6 +855,9 @@ class UsersTest extends OriginalTest {
 			->method('getUID')
 			->will($this->returnValue('subadmin'));
 		$targetUser = $this->createMock('OCP\IUser');
+		$targetUser->expects($this->once())
+			->method('getHome')
+			->willReturn('/var/ocdata/UserToGet');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -891,7 +902,8 @@ class UsersTest extends OriginalTest {
 			'quota' => ['DummyValue'],
 			'email' => 'subadmin@owncloud.org',
 			'displayname' => 'Subadmin User',
-			'two_factor_auth_enabled' => 'false'
+			'home' => '/var/ocdata/UserToGet',
+			'two_factor_auth_enabled' => 'false',
 		]);
 		$this->assertEquals($expected, $this->api->getUser(['userid' => 'subadmin']));
 	}
