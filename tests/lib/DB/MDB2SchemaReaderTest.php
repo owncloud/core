@@ -58,7 +58,7 @@ class MDB2SchemaReaderTest extends \Test\TestCase {
 		$this->assertNull($table->getColumn('clobfield')->getLength());
 		$this->assertFalse($table->getColumn('clobfield')->getAutoincrement());
 		$this->assertNull($table->getColumn('clobfield')->getDefault());
-		$this->assertTrue($table->getColumn('clobfield')->getNotnull());
+		$this->assertFalse($table->getColumn('clobfield')->getNotnull());
 		$this->assertInstanceOf('Doctrine\DBAL\Types\TextType', $table->getColumn('clobfield')->getType());
 
 		$this->assertNull($table->getColumn('booleanfield')->getLength());
