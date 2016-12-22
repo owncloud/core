@@ -280,7 +280,7 @@ trait BasicStructure {
 	}
 
 	public function createFileSpecificSize($name, $size){
-		$file = fopen("data/" . "$name", 'w');
+		$file = fopen("work/" . "$name", 'w');
 		fseek($file, $size - 1 ,SEEK_CUR);
 		fwrite($file,'a'); // write a dummy char at SIZE position
 		fclose($file);
