@@ -75,7 +75,7 @@ clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results cl
 # Basic required tools
 #
 $(COMPOSER_BIN):
-	cd build && curl -sS https://getcomposer.org/installer | php
+	cd build && ./getcomposer.sh
 
 #
 # ownCloud core PHP dependencies
