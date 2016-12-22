@@ -43,4 +43,32 @@ class Helper  {
 		include 'Personal/languageCodes.php';
 	}
 
+	public function isPublicLinkPasswordRequired() {
+		return \OCP\Util::isPublicLinkPasswordRequired();
+	}
+
+	public function shareWithGroupMembersOnly() {
+		return \OC\Share\Share::shareWithGroupMembersOnly();
+	}
+
+	public function findBinaryPath($path) {
+		return (bool) \OC_Helper::findBinaryPath($path);
+	}
+
+	public function isReadOnlyConfigEnabled() {
+		return \OC_Helper::isReadOnlyConfigEnabled();
+	}
+
+	public function isAnnotationsWorking() {
+		return \OC_Util::isAnnotationsWorking();
+	}
+
+	public function fileInfoLoaded() {
+		return \OC_Util::fileInfoLoaded();
+	}
+
+	public function isSetLocaleWorking() {
+		return \OC_Util::isSetLocaleWorking();
+	}
+
 }

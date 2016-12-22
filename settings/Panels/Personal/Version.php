@@ -39,8 +39,4 @@ class Version implements ISettings {
         return 'general';
     }
 
-    public function getName() {
-        return 'Version';
-    }
-
 }

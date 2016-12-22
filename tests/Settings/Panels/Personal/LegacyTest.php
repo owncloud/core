@@ -8,7 +8,7 @@
  * See the COPYING-README file.
  */
 
-namespace Tests\Settings\Panels\Legacy;
+namespace Tests\Settings\Panels\Personal;
 
 use OC\Settings\Panels\Personal\Legacy;
 
@@ -19,6 +19,9 @@ class LegacyTest extends \Test\TestCase {
 
 	/** @var \OC\Settings\Panels\Personal\Legacy */
 	private $panel;
+
+	/** @var \OC\Settings\Panels\Helper */
+	private $helper;
 
 	public function setUp() {
 		parent::setUp();
@@ -37,15 +40,15 @@ class LegacyTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-        $this->helper->expects('getPersonalForms')->once()->willReturn([
-            [
-                'page' => 'form 1'
-            ],
-            [
-                'page' => 'form 2'
-            ]
-        ]);
-		$templateHtml = $this->panel->getPanel()->render();
+        $this->helper->expects($this->once())->method('getPersonalForms')->willReturn([
+			[
+				'page' => 'form 1'
+			],
+			[
+				'page' => 'form 2'
+			]
+		]);
+		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('form 1', $templateHtml);
         $this->assertContains('form 2', $templateHtml);
 	}

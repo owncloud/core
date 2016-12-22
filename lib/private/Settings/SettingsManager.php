@@ -21,9 +21,13 @@
 
 namespace OC\Settings;
 
+use OC\Security\CertificateManager;
 use OC\Settings\Panels\Admin\Apps;
 use OC\Settings\Panels\Helper;
 use OCP\App\IAppManager;
+use OCP\IDBConnection;
+use OCP\L10N\IFactory;
+use OCP\Lock\ILockingProvider;
 use OCP\Settings\ISettingsManager;
 use OCP\Settings\ISection;
 use OCP\Settings\ISettings;
@@ -86,7 +90,19 @@ class SettingsManager implements ISettingsManager {
 	protected $groupManager;
 
 	/** @var Helper */
-	protected $helperWrapper;
+	protected $helper;
+
+	/** @var IFactory  */
+	protected $lfactory;
+
+	/** @var IDBConnection  */
+	protected $dbconnection;
+
+	/** @var ILockingProvider  */
+	protected $lockingProvider;
+
+	/** @var CertificateManager  */
+	protected $certificateManager;
 
 	/**
 	 * Holds a cache of ISettings with keys for type
@@ -107,7 +123,11 @@ class SettingsManager implements ISettingsManager {
 	 * @param IConfig $config
 	 * @param Defaults $defaults
 	 * @param IURLGenerator $urlGenerator
-	 * @param Helper $helperWrapper
+	 * @param Helper $helper
+	 * @param ILockingProvider $lockingProvider
+	 * @param IDBConnection $dbconnection
+	 * @param CertificateManager $certificateManager
+	 * @param IFactory $lfactory
 	 */
 	public function __construct(IL10N $l,
 								IAppManager $appManager,
@@ -117,7 +137,11 @@ class SettingsManager implements ISettingsManager {
 								IConfig $config,
 								Defaults $defaults,
 								IURLGenerator $urlGenerator,
-								Helper $helperWrapper) {
+								Helper $helper,
+								ILockingProvider $lockingProvider,
+								IDBConnection $dbconnection,
+								CertificateManager $certificateManager,
+								IFactory $lfactory) {
 		$this->l = $l;
 		$this->appManager = $appManager;
 		$this->userSession = $userSession;
@@ -126,7 +150,11 @@ class SettingsManager implements ISettingsManager {
 		$this->log = $logger;
 		$this->defaults = $defaults;
 		$this->urlGenerator = $urlGenerator;
-		$this->helperWrapper = $helperWrapper;
+		$this->helper = $helper;
+		$this->lockingProvider = $lockingProvider;
+		$this->dbconnection = $dbconnection;
+		$this->certificateManager = $certificateManager;
+		$this->lfactory = $lfactory;
 	}
 
 	public function getPersonalSections() {
@@ -216,7 +244,6 @@ class SettingsManager implements ISettingsManager {
 			],
 			'admin' => [
 				LegacyAdmin::class,
-				Updater::class,
 				BackgroundJobs::class,
 				Logging::class,
 				Tips::class,
@@ -238,22 +265,34 @@ class SettingsManager implements ISettingsManager {
 	public function getBuiltInPanel($className) {
 		$panels = [
 			// Personal
-			Profile::class => new Profile($this->config, $this->groupManager, $this->userSession),
-			LegacyPersonal::class => new LegacyPersonal(),
+			Profile::class => new Profile(
+				$this->config,
+				$this->groupManager,
+				$this->userSession,
+				$this->helper,
+				$this->lfactory),
+			LegacyPersonal::class => new LegacyPersonal($this->helper),
 			Clients::class => new Clients($this->config, $this->defaults),
 			Version::class => new Version(),
 			Tokens::class => new Tokens(),
-			Quota::class => new Quota($this->helperWrapper),
+			Quota::class => new Quota($this->helper),
 			// Admin
 			BackgroundJobs::class => new BackgroundJobs($this->config),
-			Certificates::class => new Certificates($this->config, $this->urlGenerator),
+			Certificates::class => new Certificates(
+				$this->config,
+				$this->urlGenerator,
+				$this->certificateManager),
 			Encryption::class => new Encryption(),
-			FileSharing::class => new FileSharing(),
+			FileSharing::class => new FileSharing($this->config, $this->helper),
 			Logging::class => new Logging($this->config, $this->urlGenerator),
-			Mail::class => new Mail($this->config),
-			SecurityWarning::class => new SecurityWarning($this->l, $this->config),
+			Mail::class => new Mail($this->config, $this->helper),
+			SecurityWarning::class => new SecurityWarning(
+				$this->l,
+				$this->config,
+				$this->dbconnection,
+				$this->helper,
+				$this->lockingProvider),
 			Tips::class => new Tips(),
-			Updater::class => new Updater(),
 			LegacyAdmin::class => new LegacyAdmin(),
 		];
 		if(isset($panels[$className])) {

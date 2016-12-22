@@ -20,8 +20,8 @@ class ClientsTest extends \Test\TestCase {
 	/** @var \OC\Settings\Panels\Personal\Clients */
 	private $panel;
 
-	/** @var \OC\Settings\Panels\Helper */
-	private $helper;
+	/** @var \OCP\Config */
+	private $config;
 
     /** @var \OCP\Defaults */
     private $defaults;
@@ -43,62 +43,29 @@ class ClientsTest extends \Test\TestCase {
         $this->assertTrue($this->panel->getPriority() > -100);
 	}
 
-	public function testGetPanelDefaultClients() {
-        $this->defaults->expects('getSyncClientUrl')->once()->willReturn('/default_desktop');
-        $this->defaults->expects('getAndroidClientUrl')->once()->willReturn('/default_andoird');
-        $this->defaults->expects('getiOSClientUrl')->once()->willReturn('/default_ios');
-        // Handle default sync clients case
-		$this->config->expects('getSystemValue')->exactly(3)->with([
-            [
-                'customclient_desktop',
-                '/default_desktop'
-            ],
-            [
-                'customclient_android',
-                '/default_android'
-            ],
-            [
-                'customclient_ios',
-                '/default_ios'
-            ]
-            ])->willReturn([
-                '/default_desktop',
-                '/default_android',
-                '/default_ios'
-            ]);
-		$templateHtml = $this->panel->getPanel()->render();
-		$this->assertContains('/default_desktop', $templateHtml);
-        $this->assertContains('/default_ios', $templateHtml);
-        $this->assertContains('/default_android', $templateHtml);
-	}
-
-	public function testGetPanelCustomClients() {
-		$this->defaults->expects('getSyncClientUrl')->once()->willReturn('/default_desktop');
-        $this->defaults->expects('getAndroidClientUrl')->once()->willReturn('/default_andoird');
-        $this->defaults->expects('getiOSClientUrl')->once()->willReturn('/default_ios');
-        // Handle custom sync clients case
-		$this->config->expects('getSystemValue')->exactly(3)->with([
-            [
-                'customclient_desktop',
-                '/default_desktop'
-            ],
-            [
-                'customclient_android',
-                '/default_android'
-            ],
-            [
-                'customclient_ios',
-                '/default_ios'
-            ]
-            ])->willReturn([
-                '/custom_desktop',
-                '/custom_android',
-                '/custom_ios'
-            ]);
-		$templateHtml = $this->panel->getPanel()->render();
+	public function testGetPanel() {
+		$map = [
+			[
+				'customclient_desktop',
+				null,
+				'/custom_desktop'
+			],
+			[
+				'customclient_android',
+				null,
+				'/custom_android'
+			],
+			[
+				'customclient_ios',
+				null,
+				'/custom_ios'
+			]
+		];
+		$this->config->expects($this->exactly(3))->method('getSystemValue')->will($this->returnValueMap($map));
+		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('/custom_desktop', $templateHtml);
-        $this->assertContains('/custom_ios', $templateHtml);
-        $this->assertContains('/custom_android', $templateHtml);
+		$this->assertContains('/custom_ios', $templateHtml);
+		$this->assertContains('custom_android', $templateHtml);
 	}
 
 }

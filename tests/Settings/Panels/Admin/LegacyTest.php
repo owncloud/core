@@ -20,6 +20,8 @@ class LegacyTest extends \Test\TestCase {
 	/** @var \OC\Settings\Panels\Admin\Legacy */
 	private $panel;
 
+	private $helper;
+
 	public function setUp() {
 		parent::setUp();
         $this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
@@ -37,7 +39,7 @@ class LegacyTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-        $this->helper->expects('getAdminForms')->once()->willReturn([
+        $this->helper->expects($this->once())->method('getAdminForms')->willReturn([
             [
                 'page' => 'form 1'
             ],
@@ -45,7 +47,7 @@ class LegacyTest extends \Test\TestCase {
                 'page' => 'form 2'
             ]
         ]);
-		$templateHtml = $this->panel->getPanel()->render();
+		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('form 1', $templateHtml);
         $this->assertContains('form 2', $templateHtml);
 	}

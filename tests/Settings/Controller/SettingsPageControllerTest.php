@@ -35,6 +35,8 @@ class SettingsPageControllerTest extends TestCase {
 	protected $pageController;
 	protected $config;
 	protected $user;
+	protected $helper;
+	protected $lfactory;
 
 	protected function setUp() {
 		parent::setUp();
@@ -46,6 +48,8 @@ class SettingsPageControllerTest extends TestCase {
 		$this->userSession = $this->getMockBuilder('\OCP\IUserSession')->getMock();
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
 		$this->user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
+		$this->lfactory = $this->getMockBuilder('\OCP\IL10N\IFactory')->getMock();
 
 		$this->pageController = new SettingsPageController('settings',
 			$this->request,
@@ -78,7 +82,13 @@ class SettingsPageControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getPersonalPanels')
 			->with('general')
-			->willReturn(new Profile($this->config, $this->groupManager, $this->userSession));
+			->willReturn(
+				new Profile(
+					$this->config,
+					$this->groupManager,
+					$this->userSession,
+					$this->helper,
+					$this->lfactory));
 		$response = $this->pageController->getPersonal('general');
 		$this->assertArrayHasKey('personalNav', $response->getParams());
 		$this->assertArrayHasKey('adminNav', $response->getParams());
@@ -113,7 +123,13 @@ class SettingsPageControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getPersonalPanels')
 			->with('general')
-			->willReturn(new Profile($this->config, $this->groupManager, $this->userSession));
+			->willReturn(
+				new Profile(
+					$this->config,
+					$this->groupManager,
+					$this->userSession,
+					$this->helper,
+					$this->lfactory));
 		$response = $this->pageController->getPersonal('general');
 		$this->assertArrayHasKey('personalNav', $response->getParams());
 		$this->assertArrayHasKey('adminNav', $response->getParams());

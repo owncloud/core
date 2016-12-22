@@ -21,8 +21,11 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\Settings\Panels\Helper;
 use OCP\IConfig;
+use OCP\IDBConnection;
 use OCP\IL10N;
+use OCP\Lock\ILockingProvider;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
@@ -34,9 +37,26 @@ class SecurityWarning implements ISettings {
 	/** @var IConfig  */
 	protected $config;
 
-	public function __construct(IL10N $l, IConfig $config) {
+	/** @var IDBConnection  */
+	protected $dbconnection;
+
+	/** @var Helper  */
+	protected $helper;
+
+	/** @var ILockingProvider  */
+	protected $lockingProvider;
+
+	public function __construct(
+		IL10N $l,
+		IConfig $config,
+		IDBConnection $dbconnection,
+		Helper $helper,
+		ILockingProvider $lockingProvider) {
 		$this->l = $l;
 		$this->config = $config;
+		$this->dbconnection = $dbconnection;
+		$this->helper = $helper;
+		$this->lockingProvider = $lockingProvider;
 	}
 
     public function getPriority() {
@@ -48,15 +68,13 @@ class SecurityWarning implements ISettings {
 		// warn if php is not setup properly to get system variables with getenv
 		$path = getenv('PATH');
 		$template->assign('getenvServerNotWorking', empty($path));
-		$template->assign('readOnlyConfigEnabled', \OC_Helper::isReadOnlyConfigEnabled());
-		$template->assign('isAnnotationsWorking', \OC_Util::isAnnotationsWorking());
-		/** @var \Doctrine\DBAL\Connection $connection */
-		$connection = \OC::$server->getDatabaseConnection();
+		$template->assign('readOnlyConfigEnabled', $this->helper->isReadOnlyConfigEnabled());
+		$template->assign('isAnnotationsWorking', $this->helper->isAnnotationsWorking());
 		try {
-			if ($connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
+			if ($this->dbconnection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
 				$template->assign('invalidTransactionIsolationLevel', false);
 			} else {
-				$template->assign('invalidTransactionIsolationLevel', $connection->getTransactionIsolation() !== \Doctrine\DBAL\Connection::TRANSACTION_READ_COMMITTED);
+				$template->assign('invalidTransactionIsolationLevel', $this->dbconnection->getTransactionIsolation() !== \Doctrine\DBAL\Connection::TRANSACTION_READ_COMMITTED);
 			}
 		} catch (\Doctrine\DBAL\DBALException $e) {
 			// ignore
@@ -75,18 +93,17 @@ class SecurityWarning implements ISettings {
 			}
 		}
 		$template->assign('OutdatedCacheWarning', $outdatedCaches);
-		$template->assign('has_fileinfo', \OC_Util::fileInfoLoaded());
-		$databaseOverload = (strpos(\OCP\Config::getSystemValue('dbtype'), 'sqlite') !== false);
+		$template->assign('has_fileinfo', $this->helper->fileInfoLoaded());
+		$databaseOverload = (strpos($this->config->getSystemValue('dbtype'), 'sqlite') !== false);
 		$template->assign('databaseOverload', $databaseOverload);
-		$lockingProvider = \OC::$server->getLockingProvider();
-		if ($lockingProvider instanceof NoopLockingProvider) {
+		if ($this->lockingProvider instanceof NoopLockingProvider) {
 			$template->assign('fileLockingType', 'none');
-		} else if ($lockingProvider instanceof \OC\Lock\DBLockingProvider) {
+		} else if ($this->lockingProvider instanceof \OC\Lock\DBLockingProvider) {
 			$template->assign('fileLockingType', 'db');
 		} else {
 			$template->assign('fileLockingType', 'cache');
 		}
-		$template->assign('isLocaleWorking', \OC_Util::isSetLocaleWorking());
+		$template->assign('isLocaleWorking', $this->helper->isSetLocaleWorking());
 
 		// If the current web root is non-empty but the web root from the config is,
 		// and system cron is used, the URL generator fails to build valid URLs.

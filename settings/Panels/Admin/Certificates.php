@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OCP\ICertificateManager;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
@@ -31,9 +32,16 @@ class Certificates implements ISettings {
 	/** @var IConfig */
 	protected $config;
 
-	public function __construct(IConfig $config, IURLGenerator $urlGenerator) {
+	/** @var  ICertificateManager */
+	protected $certificateManager;
+
+	/** @var IURLGenerator  */
+	protected $urlGenerator;
+
+	public function __construct(IConfig $config, IURLGenerator $urlGenerator, ICertificateManager $certificateManager) {
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
+		$this->certificateManager = $certificateManager;
 	}
 
     public function getPriority() {
@@ -42,11 +50,10 @@ class Certificates implements ISettings {
 
     public function getPanel() {
 		if ($this->config->getSystemValue('enable_certificate_management', false)) {
-			$certificateManager = \OC::$server->getCertificateManager(null);
 			$tmpl = new Template('settings', 'panels/admin/certificates');
 			$tmpl->assign('type', 'admin');
 			$tmpl->assign('uploadRoute', 'settings.Certificate.addSystemRootCertificate');
-			$tmpl->assign('certs', $certificateManager->listCertificates());
+			$tmpl->assign('certs', $this->certificateManager->listCertificates());
 			$tmpl->assign('urlGenerator', $this->urlGenerator);
 	        return $tmpl;
 		} else {

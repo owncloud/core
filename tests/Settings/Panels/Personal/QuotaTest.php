@@ -20,7 +20,7 @@ class QuotaTest extends \Test\TestCase {
 	/** @var \OC\Settings\Panels\Personal\Quota */
 	private $panel;
 
-	/** @var   */
+	/** @var \OC\Settings\Panels\Helper */
 	private $helper;
 
 	public function setUp() {
@@ -39,14 +39,14 @@ class QuotaTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-		$this->helper->expects('getStorageInfo')->once()->willReturn([
+		$this->helper->expects($this->once())->method('getStorageInfo')->will($this->returnValue([
 			'used' => 100,
 			'total' => 2000,
 			'relative' => 0.12,
 			'quota' => 1000
-		]);
-		$this->helper->expects('humanFileSize')->exactly(2)->willReturn();
-		$templateHtml = $this->panel->getPanel()->render();
+		]));
+		$this->helper->expects($this->exactly(2))->method('humanFileSize')->will($this->returnValue('2mb'));
+		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<div id="quota"', $templateHtml);
 		$this->assertContains('You are using', $templateHtml);
 	}

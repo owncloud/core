@@ -8,31 +8,25 @@
  * See the COPYING-README file.
  */
 
-namespace Tests\Settings\Panels\Admin;
+namespace Tests\Settings\Panels\Personal;
 
-use OC\Settings\Panels\Admin\Logging;
+use OC\Settings\Panels\Personal\Tokens;
 
 /**
- * @package Tests\Settings\Panels\Admin
+ * @package Tests\Settings\Panels\Personal
  */
-class LoggingTest extends \Test\TestCase {
+class TokensTest extends \Test\TestCase {
 
-	/** @var \OC\Settings\Panels\Admin\Logging */
+	/** @var \OC\Settings\Panels\Personal\Tokens */
 	private $panel;
-
-	private $config;
-
-	private $urlGenerator;
 
 	public function setUp() {
 		parent::setUp();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-		$this->panel = new Logging($this->config, $this->urlGenerator);
+		$this->panel = new Tokens;
 	}
 
 	public function testGetSection() {
-		$this->assertEquals('general', $this->panel->getSectionID());
+		$this->assertEquals('security', $this->panel->getSectionID());
 	}
 
 	public function testGetPriority() {
@@ -43,7 +37,7 @@ class LoggingTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('org', $templateHtml);
+		$this->assertContains('id="sessions"', $templateHtml);
 	}
 
 }

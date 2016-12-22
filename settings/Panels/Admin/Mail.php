@@ -21,14 +21,22 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
 
 class Mail implements ISettings {
 
-	public function __construct(IConfig $config) {
+	/** @var IConfig  */
+	protected $config;
+
+	/** @var Helper  */
+	protected $helper;
+
+	public function __construct(IConfig $config, Helper $helper) {
 		$this->config = $config;
+		$this->helper = $helper;
 	}
 
     public function getPriority() {
@@ -38,7 +46,7 @@ class Mail implements ISettings {
     public function getPanel() {
 		$template = new Template('settings', 'panels/admin/mail');
 		// Should we display sendmail as an option?
-		$template->assign('sendmail_is_available', (bool) \OC_Helper::findBinaryPath('sendmail'));
+		$template->assign('sendmail_is_available', $this->helper->findBinaryPath('sendmail'));
 		$template->assign('loglevel', $this->config->getSystemValue("loglevel", 2));
 		$template->assign('mail_domain', $this->config->getSystemValue("mail_domain", ''));
 		$template->assign('mail_from_address', $this->config->getSystemValue("mail_from_address", ''));

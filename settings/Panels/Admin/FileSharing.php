@@ -21,34 +21,50 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\Settings\Panels\Helper;
+use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
 class FileSharing implements ISettings {
+
+	/** @var IConfig */
+	protected $config;
+
+	/** @var Helper  */
+	protected $helper;
+
+	public function __construct(IConfig $config, Helper $helper) {
+		$this->config = $config;
+		$this->helper = $helper;
+	}
 
 	public function getPriority() {
 		return 99;
 	}
 
 	public function getPanel() {
-		$config = \OC::$server->getConfig();
 		$template = new Template('settings', 'panels/admin/filesharing');
-		$template->assign('allowResharing', $config->getAppValue('core', 'shareapi_allow_resharing', 'yes'));
-		$template->assign('shareAPIEnabled', $config->getAppValue('core', 'shareapi_enabled', 'yes'));
-		$template->assign('allowLinks', $config->getAppValue('core', 'shareapi_allow_links', 'yes'));
-		$template->assign('allowPublicUpload', $config->getAppValue('core', 'shareapi_allow_public_upload', 'yes'));
-		$template->assign('enableLinkPasswordByDefault', $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no'));
-		$template->assign('enforceLinkPassword', \OCP\Util::isPublicLinkPasswordRequired());
-		$template->assign('shareDefaultExpireDateSet', $config->getAppValue('core', 'shareapi_default_expire_date', 'no'));
-		$template->assign('allowPublicMailNotification', $config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));
-		$template->assign('allowSocialShare', $config->getAppValue('core', 'shareapi_allow_social_share', 'yes'));
-		$template->assign('allowGroupSharing', $config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes'));
-		$template->assign('onlyShareWithGroupMembers', \OC\Share\Share::shareWithGroupMembersOnly());
-		$template->assign('allowMailNotification', $config->getAppValue('core', 'shareapi_allow_mail_notification', 'no'));
-		$template->assign('allowShareDialogUserEnumeration', $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
+		$template->assign('allowResharing', $this->config->getAppValue('core', 'shareapi_allow_resharing', 'yes'));
+		$template->assign('shareAPIEnabled', $this->config->getAppValue('core', 'shareapi_enabled', 'yes'));
+		$template->assign('allowLinks', $this->config->getAppValue('core', 'shareapi_allow_links', 'yes'));
+		$template->assign('allowPublicUpload', $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes'));
+		$template->assign('enableLinkPasswordByDefault', $this->config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no'));
+		$template->assign('enforceLinkPassword', $this->helper->isPublicLinkPasswordRequired());
+		$template->assign('shareDefaultExpireDateSet', $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no'));
+		$template->assign('allowPublicMailNotification', $this->config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));
+		$template->assign('allowSocialShare', $this->config->getAppValue('core', 'shareapi_allow_social_share', 'yes'));
+		$template->assign('allowGroupSharing', $this->config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes'));
+		$template->assign('onlyShareWithGroupMembers', $this->helper->shareWithGroupMembersOnly());
+		$template->assign('allowMailNotification', $this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'no'));
+		$template->assign('allowShareDialogUserEnumeration', $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
+		$excludeGroups = $this->config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes' ? true : false;
 		$template->assign('shareExcludeGroups', $excludeGroups);
-		$template->assign('shareExpireAfterNDays', $config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
-		$template->assign('shareEnforceExpireDate', $config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
+		$excludedGroupsList = $this->config->getAppValue('core', 'shareapi_exclude_groups_list', '');
+		$excludedGroupsList = json_decode($excludedGroupsList);
+		$template->assign('shareExcludedGroupsList', !is_null($excludedGroupsList) ? implode('|', $excludedGroupsList) : '');
+		$template->assign('shareExpireAfterNDays', $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
+		$template->assign('shareEnforceExpireDate', $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
 		return $template;
 	}
 

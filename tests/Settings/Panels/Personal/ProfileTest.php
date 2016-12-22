@@ -8,7 +8,7 @@
  * See the COPYING-README file.
  */
 
-namespace Tests\Settings\Panels\Profile;
+namespace Tests\Settings\Panels\Personal;
 
 use OC\Settings\Panels\Personal\Profile;
 
@@ -20,7 +20,7 @@ class ProfileTest extends \Test\TestCase {
 	/** @var \OC\Settings\Panels\Personal\Profile */
 	private $panel;
 
-    private $config;
+	private $config;
 
     private $helper;
 
@@ -32,17 +32,17 @@ class ProfileTest extends \Test\TestCase {
 
 	public function setUp() {
 		parent::setUp();
-        $this->config = $this->getMockBuilder()->getMock();
-        $this->helper = $this->getMockBuilder()->getMock();
-        $this->groupManager = $this->getMockBuilder()->getMock();
-        $this->lfactory = $this->getMockBuilder()->getMock();
-        $this->userSession = $this->getMockBuilder()->getMock();
+        $this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
+        $this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
+        $this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')->getMock();
+        $this->lfactory = $this->getMockBuilder('\OCP\IL10N\IFactory')->getMock();
+        $this->userSession = $this->getMockBuilder('\OCP\IUserSession')->getMock();
 		$this->panel = new Profile(
             $this->config,
             $this->groupManager,
             $this->userSession,
             $this->helper,
-            $this->userSession);
+            $this->lfactory);
 	}
 
 	public function testGetSection() {
@@ -55,13 +55,11 @@ class ProfileTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-        $this->lfactory->expects('getLanguage')->willReturn('en');
-        $this->config->expects('getUserValue')->with()->willReturn('');
-        $this->lfactory->expects('findAvailableLanguages')->willReturn([]);
-        $this->lfactory->expects('get')->with('settings', )->willReturn('en');
-
-
-		$templateHtml = $this->panel->getPanel()->render();
+        $this->lfactory->expects($this->once())->method('getLanguage')->will($this->returnValue('en'));
+        $this->config->expects($this->once())->method('getUserValue')->will($this->returnValue(''));
+        $this->lfactory->expects($this->once())->method('findAvailableLanguages')->will($this->returnValue([]));
+        $this->lfactory->expects($this->once())->method('get')->with('settings')->will($this->returnValue('en'));
+		$templateHtml = $this->panel->getPanel()->fetchPage();
         $this->assertContains('form 2', $templateHtml);
 	}
 
