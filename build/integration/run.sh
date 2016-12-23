@@ -8,6 +8,15 @@ OCC=${OC_PATH}occ
 SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2
 
+function enableMD5HomeStorage {
+	$OCC app:enable testing
+	OUTPUT_ENABLING_ALT_USER_BACKEND=`$OCC config:app:set testing enable_alt_user_backend --value yes` 
+}
+
+function cleanupMD5HomeStorage {
+	$OCC app:disable testing
+}
+
 # avoid port collision on jenkins - use $EXECUTOR_NUMBER
 if [ -z "$EXECUTOR_NUMBER" ]; then
     EXECUTOR_NUMBER=0
@@ -37,6 +46,10 @@ ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
 
 $OCC files_external:option $ID_STORAGE enable_sharing true
 
+if test "$MD5_HOME_STORAGE" = "1"; then
+	enableMD5HomeStorage
+fi
+
 vendor/bin/behat --strict -f junit -f pretty $SCENARIO_TO_RUN
 RESULT=$?
 
@@ -47,6 +60,10 @@ $OCC files_external:delete -y $ID_STORAGE
 
 #Disable external storage app
 $OCC app:disable files_external
+
+if test "$MD5_HOME_STORAGE" = "1"; then
+	cleanupMD5HomeStorage
+fi
 
 if [ -z $HIDE_OC_LOGS ]; then
 	tail "${OC_PATH}/data/owncloud.log"
