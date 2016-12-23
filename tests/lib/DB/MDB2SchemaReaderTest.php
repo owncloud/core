@@ -43,7 +43,7 @@ class MDB2SchemaReaderTest extends \Test\TestCase {
 
 		$this->assertEquals(4, $table->getColumn('integerfield')->getLength());
 		$this->assertFalse($table->getColumn('integerfield')->getAutoincrement());
-		$this->assertNull($table->getColumn('integerfield')->getDefault());
+		$this->assertEquals(0, $table->getColumn('integerfield')->getDefault());
 		$this->assertTrue($table->getColumn('integerfield')->getNotnull());
 		$this->assertInstanceOf('Doctrine\DBAL\Types\IntegerType', $table->getColumn('integerfield')->getType());
 
