@@ -119,6 +119,18 @@ timestampedNode('SLAVE') {
 				./run.sh
 			   '''
 			}
+
+            executeAndReport('build/integration/output/*.xml') {
+                sh '''phpenv local 7.0
+                rm -rf config/config.php
+                ./occ maintenance:install --admin-pass=admin
+                rm -rf build/integration/output
+                rm -rf build/integration/vendor
+                rm -rf build/integration/composer.lock
+                cd build/integration
+                OC_TEST_ALT_HOME=1 ./run.sh
+               '''
+            }
      }
 }
 
