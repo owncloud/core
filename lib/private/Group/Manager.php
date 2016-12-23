@@ -245,7 +245,12 @@ class Manager extends PublicEmitter implements IGroupManager {
 			$groupIds = $backend->getUserGroups($uid);
 			if (is_array($groupIds)) {
 				foreach ($groupIds as $groupId) {
-					$groups[$groupId] = $this->get($groupId);
+					$aGroup = $this->get($groupId);
+					if (!is_null($aGroup)) {
+						$groups[$groupId] = $aGroup;
+					} else {
+						\OC::$server->getLogger()->debug('Warning: user "' . $uid . '" belongs to deleted group: "' . $groupId . '"', array('app' => 'core'));
+					}
 				}
 			}
 		}
