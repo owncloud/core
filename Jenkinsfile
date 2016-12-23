@@ -14,83 +14,95 @@ timestampedNode('SLAVE') {
             sh '''make test-js'''
         }
 
-    stage 'PHPUnit on 7.1'
+    stage 'PHPUnit 7.1/sqlite'
         executeAndReport('tests/autotest-results-sqlite.xml') {
-	        sh '''
-        	export NOCOVERAGE=1
-        	unset USEDOCKER
-        	phpenv local 7.1
-		make test-php TEST_DATABASE=sqlite
-        	'''
-	}
+            sh '''
+            export NOCOVERAGE=1
+            unset USEDOCKER
+            phpenv local 7.1
+            make test-php TEST_DATABASE=sqlite
+            '''
+        }
 
-    stage 'PHPUnit'
+    stage 'PHPUnit 7.0/sqlite'
         executeAndReport('tests/autotest-results-sqlite.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-		make test-php TEST_DATABASE=sqlite
+            make test-php TEST_DATABASE=sqlite
             '''
         }
+
+    stage 'PHPUnit 7.0/mysql'
         executeAndReport('tests/autotest-results-mysql.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-			make test-php TEST_DATABASE=mysql
+            make test-php TEST_DATABASE=mysql
             '''
         }
+
+    stage 'PHPUnit 5.6/pgsql'
         executeAndReport('tests/autotest-results-pgsql.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 5.6
-			make test-php TEST_DATABASE=pgsql
+            make test-php TEST_DATABASE=pgsql
             '''
         }
+
+    stage 'PHPUnit 5.6/oci'
         executeAndReport('tests/autotest-results-oci.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 5.6
-			make test-php TEST_DATABASE=oci
+            make test-php TEST_DATABASE=oci
             '''
         }
 
-    stage 'Files External Testing'
+    stage 'Files External Testing: webdav'
         executeAndReport('tests/autotest-external-results-sqlite-webdav-ownCloud.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
+            make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
             '''
         }
+
+    stage 'Files External Testing: SMB/SAMBA'
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=smb-silvershell
+            make test-external TEST_EXTERNAL_ENV=smb-silvershell
             '''
         }
+
+    stage 'Files External Testing: swift/ceph'
         executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=swift-ceph
+            make test-external TEST_EXTERNAL_ENV=swift-ceph
             '''
         }
+
+    stage 'Files External Testing: SMB/WINDOWS'
         executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=smb-windows
+            make test-external TEST_EXTERNAL_ENV=smb-windows
             '''
         }
 
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
-    stage 'Primary Objectstore Test - Swift'
+    stage 'Primary Objectstore Test: swift'
         executeAndReport('tests/autotest-results-mysql.xml') {
             sh '''phpenv local 7.0
 
@@ -99,8 +111,8 @@ timestampedNode('SLAVE') {
             export PRIMARY_STORAGE_CONFIG="swift"
             unset USEDOCKER
 
-			make clean-test-results
-			make test-php TEST_DATABASE=mysql
+            make clean-test-results
+            make test-php TEST_DATABASE=mysql
             '''
         }
 
@@ -109,8 +121,8 @@ timestampedNode('SLAVE') {
             sh '''phpenv local 7.0
             rm -rf config/config.php
             ./occ maintenance:install --admin-pass=admin
-			make clean-test-integration
-			make test-integration
+            make clean-test-integration
+            make test-integration
            '''
         }
 }
