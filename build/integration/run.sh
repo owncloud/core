@@ -8,12 +8,12 @@ OCC=${OC_PATH}occ
 SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2
 
-function enableMD5HomeStorage {
+function env_alt_home_enable {
 	$OCC app:enable testing
-	OUTPUT_ENABLING_ALT_USER_BACKEND=`$OCC config:app:set testing enable_alt_user_backend --value yes` 
+	$OCC config:app:set testing enable_alt_user_backend --value yes
 }
 
-function cleanupMD5HomeStorage {
+function env_alt_home_clear {
 	$OCC app:disable testing
 }
 
@@ -46,8 +46,8 @@ ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
 
 $OCC files_external:option $ID_STORAGE enable_sharing true
 
-if test "$MD5_HOME_STORAGE" = "1"; then
-	enableMD5HomeStorage
+if test "$OC_TEST_ALT_HOME" = "1"; then
+	env_althome_enable
 fi
 
 vendor/bin/behat --strict -f junit -f pretty $SCENARIO_TO_RUN
@@ -61,8 +61,8 @@ $OCC files_external:delete -y $ID_STORAGE
 #Disable external storage app
 $OCC app:disable files_external
 
-if test "$MD5_HOME_STORAGE" = "1"; then
-	cleanupMD5HomeStorage
+if test "$OC_TEST_ALT_HOME" = "1"; then
+	env_althome_clear
 fi
 
 if [ -z $HIDE_OC_LOGS ]; then
