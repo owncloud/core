@@ -54,7 +54,7 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'Files External Testing: webdav'
+    stage 'Files External: webdav'
         executeAndReport('tests/autotest-external-results-sqlite-webdav-ownCloud.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
@@ -63,7 +63,7 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'Files External Testing: SMB/SAMBA'
+    stage 'Files External: SMB/SAMBA'
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
@@ -72,7 +72,7 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'Files External Testing: swift/ceph'
+    stage 'Files External: swift/ceph'
         executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
@@ -81,7 +81,7 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'Files External Testing: SMB/WINDOWS'
+    stage 'Files External: SMB/WINDOWS'
         executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
@@ -92,7 +92,7 @@ timestampedNode('SLAVE') {
 
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
-    stage 'Primary Objectstore Test: swift'
+    stage 'Primary Objectstore: swift'
         executeAndReport('tests/autotest-results-mysql.xml') {
             sh '''phpenv local 7.0
 
@@ -106,18 +106,27 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'Integration Testing'
-        executeAndReport('build/integration/output/*.xml') {
-            sh '''phpenv local 7.0
-            rm -rf config/config.php
-            ./occ maintenance:install --admin-pass=admin
-            rm -rf build/integration/output
-            rm -rf build/integration/vendor
-            rm -rf build/integration/composer.lock
-            cd build/integration
-            ./run.sh
-           '''
-        }
+    if (isOnReleaseBranch()) {
+		stage 'Integration Testing'
+			executeAndReport('build/integration/output/*.xml') {
+				sh '''phpenv local 7.0
+				rm -rf config/config.php
+				./occ maintenance:install --admin-pass=admin
+				rm -rf build/integration/output
+				rm -rf build/integration/vendor
+				rm -rf build/integration/composer.lock
+				cd build/integration
+				./run.sh
+			   '''
+			}
+     }
+}
+
+def isOnReleaseBranch ()  {
+    if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'stable9.1' || env.BRANCH_NAME == 'stable9' || env.BRANCH_NAME == 'stable8.2') {
+        return true;
+    }
+    return false
 }
 
 void executeAndReport(String testResultLocation, def body) {
@@ -136,7 +145,7 @@ void executeAndReport(String testResultLocation, def body) {
 
     if (failed) {
 
-        if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'stable9.1' || env.BRANCH_NAME == 'stable9' || env.BRANCH_NAME == 'stable8.2') {
+        if (isOnReleaseBranch()) {
             mail body: "project build error is here: ${env.BUILD_URL}" ,
                 subject: "Build on release branch failed: ${env.BRANCH_NAME}",
                 to: 'jenkins@owncloud.com'
