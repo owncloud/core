@@ -78,6 +78,7 @@ use OC\Security\CredentialsManager;
 use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
+use OC\Settings\Panels\Helper;
 use OC\Settings\SettingsManager;
 use OC\Tagging\TagMapper;
 use OC\URLGenerator;
@@ -122,7 +123,13 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getGroupManager(),
 				$c->getConfig(),
 				new \OCP\Defaults(),
-				$c->getURLGenerator()
+				$c->getURLGenerator(),
+				new Helper(),
+				$c->getLockingProvider(),
+				$c->getDatabaseConnection(),
+				$c->getCertificateManager(),
+				$c->getL10NFactory()
+
 			);
 		});
 

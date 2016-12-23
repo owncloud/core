@@ -2,6 +2,7 @@
 
 namespace OCA\Encryption\Panels;
 
+use OCP\IL10N;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCA\Encryption\Crypto\Crypt;
@@ -31,16 +32,21 @@ class Admin implements ISettings {
 	/** @var ISession  */
 	protected $session;
 
+	/** @var IL10N  */
+	protected $l;
+
 	public function __construct(IConfig $config,
 								ILogger $logger,
 								IUserSession $userSession,
 								IUserManager $userManager,
-								ISession $session) {
+								ISession $session,
+								IL10N $l) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->userSession = $userSession;
 		$this->userManager = $userManager;
 		$this->session = $session;
+		$this->l = $l;
 	}
 
 	public function getPriority() {
@@ -57,7 +63,7 @@ class Admin implements ISettings {
 			$this->logger,
 			$this->userSession,
 			$this->config,
-			\OC::$server->getL10N('encryption'));
+			$this->l);
 		$util = new Util(
 			new View(),
 			$crypt,
