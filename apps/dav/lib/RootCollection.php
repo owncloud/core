@@ -89,6 +89,9 @@ class RootCollection extends SimpleCollection {
 		$uploadCollection = new Upload\RootCollection($userPrincipalBackend, 'principals/users');
 		$uploadCollection->disableListing = $disableListing;
 
+		$avatarCollection = new Avatars\RootCollection($userPrincipalBackend, 'principals/users');
+		$avatarCollection->disableListing = $disableListing;
+
 		$children = [
 				new SimpleCollection('principals', [
 						$userPrincipals,
@@ -103,6 +106,7 @@ class RootCollection extends SimpleCollection {
 				$systemTagCollection,
 				$systemTagRelationsCollection,
 				$uploadCollection,
+				$avatarCollection
 		];
 
 		parent::__construct('root', $children);
