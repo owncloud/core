@@ -284,7 +284,7 @@ class SettingsManager implements ISettingsManager {
 				$this->certificateManager),
 			Encryption::class => new Encryption(),
 			FileSharing::class => new FileSharing($this->config, $this->helper),
-			Logging::class => new Logging($this->config, $this->urlGenerator),
+			Logging::class => new Logging($this->config, $this->urlGenerator, $this->helper),
 			Mail::class => new Mail($this->config, $this->helper),
 			SecurityWarning::class => new SecurityWarning(
 				$this->l,
@@ -293,7 +293,7 @@ class SettingsManager implements ISettingsManager {
 				$this->helper,
 				$this->lockingProvider),
 			Tips::class => new Tips(),
-			LegacyAdmin::class => new LegacyAdmin(),
+			LegacyAdmin::class => new LegacyAdmin($this->helper),
 		];
 		if(isset($panels[$className])) {
 			return $panels[$className];

@@ -45,7 +45,6 @@ class QuotaTest extends \Test\TestCase {
 			'relative' => 0.12,
 			'quota' => 1000
 		]));
-		$this->helper->expects($this->exactly(2))->method('humanFileSize')->will($this->returnValue('2mb'));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<div id="quota"', $templateHtml);
 		$this->assertContains('You are using', $templateHtml);

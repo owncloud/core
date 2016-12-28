@@ -21,10 +21,18 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Legacy implements ISettings {
+
+	/** @var Helper  */
+	protected $helper;
+
+	public function __construct(Helper $helper) {
+		$this->helper = $helper;
+	}
 
     public function getPriority() {
         return 0;
@@ -32,8 +40,7 @@ class Legacy implements ISettings {
 
     public function getPanel() {
         $tmpl = new Template('settings', 'panels/legacy');
-        $forms = \OC_App::getForms('admin');
-        $tmpl->assign('forms', $forms);
+        $tmpl->assign('forms', $this->helper->getAdminForms());
         return $tmpl;
     }
 

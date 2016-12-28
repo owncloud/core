@@ -24,11 +24,14 @@ class LoggingTest extends \Test\TestCase {
 
 	private $urlGenerator;
 
+	private $helper;
+
 	public function setUp() {
 		parent::setUp();
 		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')->getMock();
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-		$this->panel = new Logging($this->config, $this->urlGenerator);
+		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
+		$this->panel = new Logging($this->config, $this->urlGenerator, $this->helper);
 	}
 
 	public function testGetSection() {
@@ -41,9 +44,26 @@ class LoggingTest extends \Test\TestCase {
 		$this->assertTrue($this->panel->getPriority() < 100);
 	}
 
-	public function testGetPanel() {
+	public function testGetPanelWithNoLogFile() {
+		$this->helper
+			->expects($this->once())
+			->method('getLogFilePath')
+			->willReturn('/var/log/file/doesnt/exist.log');
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('org', $templateHtml);
+		$this->assertNotContains('<div class="section">', $templateHtml);
+	}
+
+	public function testGetPanelWithLogFile() {
+		$this->helper
+			->expects($this->once())
+			->method('getLogFilePath')
+			->willReturn(__FILE__);
+		$this->config->expects($this->exactly(2))->method('getSystemValue')->will($this->returnValueMap([
+			['loglevel', 2, 2],
+			['log_type', 'owncloud', 'owncloud'],
+		]));
+		$templateHtml = $this->panel->getPanel()->fetchPage();
+		$this->assertContains('<div class="section">', $templateHtml);
 	}
 
 }

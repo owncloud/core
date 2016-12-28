@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\AppInfo;
-
 
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCP\AppFramework\App;

@@ -8,7 +8,7 @@
  * See the COPYING-README file.
  */
 
-namespace Tests\Settings\Panels\Legacy;
+namespace Tests\Settings\Panels\Admin;
 
 use OC\Settings\Panels\Admin\Legacy;
 

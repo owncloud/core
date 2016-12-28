@@ -19,7 +19,6 @@ class AdminPanel implements ISettings {
     public function getPanel() {
         $app = new Application('federatedfilesharing');
         $federatedShareProvider = $app->getFederatedShareProvider();
-
         $tmpl = new Template('federatedfilesharing', 'settings-admin');
         $tmpl->assign('outgoingServer2serverShareEnabled', $federatedShareProvider->isOutgoingServer2serverShareEnabled());
         $tmpl->assign('incomingServer2serverShareEnabled', $federatedShareProvider->isIncomingServer2serverShareEnabled());

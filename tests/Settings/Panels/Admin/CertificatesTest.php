@@ -45,9 +45,14 @@ class CertificatesTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
+		$this->config
+			->expects($this->once())
+			->method('getSystemValue')
+			->with('enable_certificate_management')
+			->willReturn(true);
 		$mockCert = $this->getMockBuilder('\OCP\ICertificate')->getMock();
 		$mockCert->expects($this->once())->method('isExpired')->willReturn(false);
-		$mockCert->expects($this->once())->method('getCommonName')->willReturn('commonanme');
+		$mockCert->expects($this->once())->method('getCommonName')->willReturn('commonname');
 		$mockCert->expects($this->exactly(2))->method('getExpireDate')->willReturn(time()+60*60*24*10);
 		$mockCert->expects($this->once())->method('getIssuerOrganization')->willReturn('issueOrg');
 		$mockCert->expects($this->once())->method('getIssuerName')->willReturn('issuer');
@@ -59,6 +64,16 @@ class CertificatesTest extends \Test\TestCase {
 		$this->assertContains('issuer', $templateHtml);
 		$this->assertContains('commonname', $templateHtml);
 		$this->assertContains('org', $templateHtml);
+	}
+
+	public function testGetPanelNotEnabled() {
+		$this->config
+			->expects($this->once())
+			->method('getSystemValue')
+			->with('enable_certificate_management')
+			->willReturn(false);
+		$template = $this->panel->getPanel();
+		$this->assertNull($template);
 	}
 
 }

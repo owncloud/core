@@ -2,16 +2,22 @@
 
 namespace OCA\Files\Panels;
 
+use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IURLGenerator;
 
 class Admin implements ISettings {
 
+	/** @var IURLGenerator  */
 	protected $urlGenerator;
 
-	public function __construct(IURLGenerator $urlGenerator) {
+	/** @var Helper  */
+	protected $helper;
+
+	public function __construct(IURLGenerator $urlGenerator, Helper $helper) {
 		$this->urlGenerator = $urlGenerator;
+		$this->helper = $helper;
 	}
 
 	public function getSectionID() {

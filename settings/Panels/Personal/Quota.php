@@ -41,10 +41,10 @@ class Quota implements ISettings {
     public function getPanel() {
 		$tmpl = new Template('settings', 'panels/personal/quota');
 		$storageInfo = $this->helper->getStorageInfo('/');;
-		$tmpl->assign('usage', $this->helper->humanFileSize($storageInfo['used']));
+		$tmpl->assign('usage', \OC_Helper::humanFileSize($storageInfo['used']));
 		$tmpl->assign('usage_relative', $storageInfo['relative']);
 		$tmpl->assign('quota', $storageInfo['quota']);
-		$tmpl->assign('total_human', $this->helper->humanFileSize($storageInfo['total']));
+		$tmpl->assign('total_human', \OC_Helper::humanFileSize($storageInfo['total']));
         return $tmpl;
     }
 

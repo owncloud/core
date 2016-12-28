@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IConfig;
@@ -28,11 +29,19 @@ use OCP\IURLGenerator;
 
 class Logging implements ISettings {
 
-	protected $config, $urlGenerator;
+	/** @var IConfig  */
+	protected $config;
 
-	public function __construct(IConfig $config, IURLGenerator $urlGenerator) {
+	/** @var IURLGenerator  */
+	protected $urlGenerator;
+
+	/** @var Helper  */
+	protected $helper;
+
+	public function __construct(IConfig $config, IURLGenerator $urlGenerator, Helper $helper) {
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
+		$this->helper = $helper;
 	}
 
 	public function getPriority() {
@@ -41,7 +50,7 @@ class Logging implements ISettings {
 
 	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/admin/logging');
-		$logFilePath = \OC\Log\Owncloud::getLogFilePath();
+		$logFilePath = $this->helper->getLogFilePath();
 		$doesLogFileExist = file_exists($logFilePath);
 		$logFileSize = 0;
 		if($doesLogFileExist) {

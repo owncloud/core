@@ -27,10 +27,6 @@ class Helper  {
 		return \OC_Helper::getStorageInfo($path);
 	}
 
-	public function humanFileSize($bytes) {
-		return \OC_Helper::humanFileSize($bytes);
-	}
-
 	public function getPersonalForms() {
 		return \OC_App::getForms('personal');
 	}
@@ -69,6 +65,14 @@ class Helper  {
 
 	public function isSetLocaleWorking() {
 		return \OC_Util::isSetLocaleWorking();
+	}
+
+	public function getLogFilePath() {
+		return \OC\Log\Owncloud::getLogFilePath();
+	}
+
+	public function getMountDepMessage($backends) {
+		return \OC_Mount_Config::dependencyMessage($backends);
 	}
 
 }
