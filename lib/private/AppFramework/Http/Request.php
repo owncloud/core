@@ -594,7 +594,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	public function getRequestUri() {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
-			$uri = $this->getScriptName() . substr($uri, strlen($this->server['SCRIPT_NAME']));
+			// FIXME for reasons of consistency, please check whether "$this->server['SCRIPT_NAME']" should be replaced by "$this->getScriptName()" or vice versa
+			$pathWithOutPrefix = substr($uri, strlen($this->config->getSystemValue('overwritewebroot') . $this->server['SCRIPT_NAME'])
+			$uri = $this->getScriptName() . $pathWithOutPrefix);
 		}
 		return $uri;
 	}
@@ -605,6 +607,12 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string Path info
 	 */
 	public function getRawPathInfo() {
+		// honor PATH_INFO variable in case it is set!
+		$pathInfo = isset($this->server['PATH_INFO']) ? $this->server['PATH_INFO'] : '';
+		if($pathInfo !== '') {
+			return $pathInfo;
+		}
+
 		$requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 		// remove too many leading slashes - can be caused by reverse proxy configuration
 		if (strpos($requestUri, '/') === 0) {
