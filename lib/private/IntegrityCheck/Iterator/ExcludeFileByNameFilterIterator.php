@@ -58,11 +58,14 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 	 * @return bool
 	 */
 	public function accept() {
-		if($this->isDir()) {
+		/** @var \SplFileInfo $current */
+		$current = $this->current();
+
+		if ($current->isDir()) {
 			return true;
 		}
 
-		$currentFileName = $this->current()->getFilename();
+		$currentFileName = $current->getFilename();
 		if (in_array($currentFileName, $this->excludedFilenames, true)){
 			return false;
 		}
