@@ -9,6 +9,7 @@ OC.L10N.register(
     "Updater" : "Posodabljalnik",
     "A new version is available: %s" : "Na voljo je nova različica: %s",
     "Open updater" : "Odpri posodabljalnik",
+    "Show changelog" : "Pokaži dnevnik sprememb",
     "Your version is up to date." : "Nameščena je najnovejša različica.",
     "Checked on %s" : "Zadnjič preverjeno %s",
     "Update channel:" : "Posodobi kanal:",

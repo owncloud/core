@@ -42,6 +42,8 @@ OC.L10N.register(
     "Finished code integrity check" : "Завърши проверката за интегритета на кода",
     "%s (3rdparty)" : "%s (приложение на 3то лице)",
     "%s (incompatible)" : "%s (несъвместимост)",
+    "Following apps have been disabled: %s" : "Следните приложения са изкючени: %s",
+    "Already up to date" : "Най-нова версия",
     "Sunday" : "Неделя",
     "Monday" : "Понеделник",
     "Tuesday" : "Вторник",
