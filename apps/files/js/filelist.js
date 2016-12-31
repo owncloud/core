@@ -2120,6 +2120,62 @@
 		},
 
 		/**
+		 * Create an file with contents inside the current directory.
+		 *
+		 * @param {string} name name of the file, {string} data contents of the file
+		 *
+		 * @return {Promise} promise that will be resolved after the
+		 * file was created
+		 *
+		 * @since 8.2
+		 */
+		createFileContents: function(name, data, options) {
+			var self = this;
+			var deferred = $.Deferred();
+			var promise = deferred.promise();
+
+			if ((typeof data === 'string' || data instanceof String) && options != undefined) {
+				OCA.Files.Files.isFileNameValid(name);
+
+				if (this.lastAction) {
+					this.lastAction();
+				}
+
+				name = this.getUniqueName(name);
+				var targetPath = this.getCurrentDirectory() + '/' + name;
+
+				self.filesClient.putFileContents(
+					targetPath,
+					data,
+					options
+				)
+					.done(function() {
+						// TODO: error handling / conflicts
+						self.addAndFetchFileInfo(targetPath, '', {scrollTo: true}).then(function(status, data) {
+							deferred.resolve(status, data);
+						}, function() {
+							OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+						});
+					})
+					.fail(function(status) {
+						if (status === 412) {
+							OC.Notification.showTemporary(
+								t('files', 'Could not create file "{file}" because it already exists', {file: name})
+							);
+						} else {
+							OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+						}
+						deferred.reject(status);
+					});
+			} else {
+				OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+				deferred.reject(412);
+			}
+
+			return promise;
+		},
+
+		/**
 		 * Create an empty file inside the current directory.
 		 *
 		 * @param {string} name name of the file
@@ -2130,47 +2186,13 @@
 		 * @since 8.2
 		 */
 		createFile: function(name) {
-			var self = this;
-			var deferred = $.Deferred();
-			var promise = deferred.promise();
-
-			OCA.Files.Files.isFileNameValid(name);
-
-			if (this.lastAction) {
-				this.lastAction();
-			}
-
-			name = this.getUniqueName(name);
-			var targetPath = this.getCurrentDirectory() + '/' + name;
-
-			self.filesClient.putFileContents(
-					targetPath,
-					'',
-					{
-						contentType: 'text/plain',
-						overwrite: true
-					}
-				)
-				.done(function() {
-					// TODO: error handling / conflicts
-					self.addAndFetchFileInfo(targetPath, '', {scrollTo: true}).then(function(status, data) {
-						deferred.resolve(status, data);
-					}, function() {
-						OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
-					});
-				})
-				.fail(function(status) {
-					if (status === 412) {
-						OC.Notification.showTemporary(
-							t('files', 'Could not create file "{file}" because it already exists', {file: name})
-						);
-					} else {
-						OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
-					}
-					deferred.reject(status);
-				});
-
-			return promise;
+			return this.createFileContents(name,
+				'',
+				{
+					contentType: 'text/plain',
+					overwrite: true
+				}
+			);
 		},
 
 		/**
