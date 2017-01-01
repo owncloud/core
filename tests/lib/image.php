@@ -332,6 +332,7 @@ class Test_Image extends \Test\TestCase {
 
 		$img->save($tempFile, $mimeType);
 		$actualMimeType = \OC_Image::getMimeTypeForFile($tempFile);
+		unlink($tempFile);
 		$this->assertEquals($mimeType, $actualMimeType);
 	}
 }
