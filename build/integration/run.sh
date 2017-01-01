@@ -4,6 +4,7 @@ composer install
 
 OC_PATH=../../
 OCC=${OC_PATH}occ
+BEHAT=vendor/bin/behat
 
 SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2
@@ -30,14 +31,31 @@ export TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
 #Enable external storage app
 $OCC app:enable files_external
 
-mkdir -p work/local_storage
+mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
 OUTPUT_CREATE_STORAGE=`$OCC files_external:create local_storage local null::null -c datadir=./build/integration/work/local_storage` 
 
 ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
 
 $OCC files_external:option $ID_STORAGE enable_sharing true
 
-vendor/bin/behat --strict -f junit -f pretty $SCENARIO_TO_RUN
+# Enable encryption if requested
+if test "$ENCRYPTION_ENABLED" = "1"; then
+	$OCC app:enable encryption
+	$OCC encryption:enable
+	BEHAT_FILTER_TAGS="~@no_encryption"
+fi
+
+if test "$BEHAT_FILTER_TAGS"; then
+	BEHAT_PARAMS='{ 
+		"gherkin": {
+			"filters": {
+				"tags": "'"$BEHAT_FILTER_TAGS"'"
+			}
+		}
+	}'
+fi
+
+BEHAT_PARAMS="$BEHAT_PARAMS" $BEHAT --strict -f junit -f pretty $SCENARIO_TO_RUN
 RESULT=$?
 
 kill $PHPPID

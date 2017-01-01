@@ -113,6 +113,14 @@ timestampedNode('SLAVE') {
 			make test-integration
            '''
         }
+        executeAndReport('build/integration/output/*.xml') {
+            sh '''phpenv local 7.0
+            rm -rf config/config.php
+            ./occ maintenance:install --admin-pass=admin
+			make clean-test-integration
+			make test-integration ENCRYPTION_ENABLED=1
+           '''
+        }
 }
 
 void executeAndReport(String testResultLocation, def body) {
