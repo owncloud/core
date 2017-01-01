@@ -14,83 +14,95 @@ timestampedNode('SLAVE') {
             sh '''make test-js'''
         }
 
-    stage 'PHPUnit on 7.1'
+    stage 'PHPUnit 7.1/sqlite'
         executeAndReport('tests/autotest-results-sqlite.xml') {
-	        sh '''
-        	export NOCOVERAGE=1
-        	unset USEDOCKER
-        	phpenv local 7.1
-		make test-php TEST_DATABASE=sqlite
-        	'''
-	}
+            sh '''
+            export NOCOVERAGE=1
+            unset USEDOCKER
+            phpenv local 7.1
+            make test-php TEST_DATABASE=sqlite
+            '''
+        }
 
-    stage 'PHPUnit'
+    stage 'PHPUnit 7.0/sqlite'
         executeAndReport('tests/autotest-results-sqlite.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-		make test-php TEST_DATABASE=sqlite
+            make test-php TEST_DATABASE=sqlite
             '''
         }
+
+    stage 'PHPUnit 7.0/mysql'
         executeAndReport('tests/autotest-results-mysql.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 7.0
-			make test-php TEST_DATABASE=mysql
+            make test-php TEST_DATABASE=mysql
             '''
         }
+
+    stage 'PHPUnit 5.6/pgsql'
         executeAndReport('tests/autotest-results-pgsql.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 5.6
-			make test-php TEST_DATABASE=pgsql
+            make test-php TEST_DATABASE=pgsql
             '''
         }
+
+    stage 'PHPUnit 5.6/oci'
         executeAndReport('tests/autotest-results-oci.xml') {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
             phpenv local 5.6
-			make test-php TEST_DATABASE=oci
+            make test-php TEST_DATABASE=oci
             '''
         }
 
-    stage 'Files External Testing'
+    stage 'Files External: webdav'
         executeAndReport('tests/autotest-external-results-sqlite-webdav-ownCloud.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
+            make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
             '''
         }
+
+    stage 'Files External: SMB/SAMBA'
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=smb-silvershell
+            make test-external TEST_EXTERNAL_ENV=smb-silvershell
             '''
         }
+
+    stage 'Files External: swift/ceph'
         executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=swift-ceph
+            make test-external TEST_EXTERNAL_ENV=swift-ceph
             '''
         }
+
+    stage 'Files External: SMB/WINDOWS'
         executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
-			make test-external TEST_EXTERNAL_ENV=smb-windows
+            make test-external TEST_EXTERNAL_ENV=smb-windows
             '''
         }
 
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
-    stage 'Primary Objectstore Test - Swift'
+    stage 'Primary Objectstore: swift'
         executeAndReport('tests/autotest-results-mysql.xml') {
             sh '''phpenv local 7.0
 
@@ -99,20 +111,29 @@ timestampedNode('SLAVE') {
             export PRIMARY_STORAGE_CONFIG="swift"
             unset USEDOCKER
 
-			make clean-test-results
-			make test-php TEST_DATABASE=mysql
+            make clean-test-results
+            make test-php TEST_DATABASE=mysql
             '''
         }
 
-    stage 'Integration Testing'
-        executeAndReport('build/integration/output/*.xml') {
-            sh '''phpenv local 7.0
-            rm -rf config/config.php
-            ./occ maintenance:install --admin-pass=admin
-			make clean-test-integration
-			make test-integration
-           '''
-        }
+    if (isOnReleaseBranch()) {
+        stage 'Integration Testing'
+            executeAndReport('build/integration/output/*.xml') {
+                sh '''phpenv local 7.0
+                rm -rf config/config.php
+                ./occ maintenance:install --admin-pass=admin
+                make clean-test-integration
+                make test-integration
+               '''
+            }
+     }
+}
+
+def isOnReleaseBranch ()  {
+    if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'stable9.1' || env.BRANCH_NAME == 'stable9' || env.BRANCH_NAME == 'stable8.2') {
+        return true;
+    }
+    return false
 }
 
 void executeAndReport(String testResultLocation, def body) {
@@ -131,7 +152,7 @@ void executeAndReport(String testResultLocation, def body) {
 
     if (failed) {
 
-        if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'stable9.1' || env.BRANCH_NAME == 'stable9' || env.BRANCH_NAME == 'stable8.2') {
+        if (isOnReleaseBranch()) {
             mail body: "project build error is here: ${env.BUILD_URL}" ,
                 subject: "Build on release branch failed: ${env.BRANCH_NAME}",
                 to: 'jenkins@owncloud.com'
