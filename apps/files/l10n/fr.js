@@ -25,6 +25,7 @@ OC.L10N.register(
     "Delete" : "Supprimer",
     "Disconnect storage" : "Déconnecter ce support de stockage",
     "Unshare" : "Ne plus partager",
+    "Could not load info for file \"{file}\"" : "Impossible de charger les informations pour le fichier \"{file}\"",
     "Files" : "Fichiers",
     "Details" : "Détails",
     "Select" : "Sélectionner",
