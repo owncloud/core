@@ -55,10 +55,15 @@ class SystemConfig {
 		'objectstore' => [
 			'arguments' => [
 				'password' => true,
+				'options' => [
+					'credentials' =>[
+						'key' => true,
+						'secret' => true,
+					],
+				],
 			],
 		],
 	];
-
 	/** @var Config */
 	private $config;
 
