@@ -698,21 +698,12 @@
 				<length>4</length>
 			</field>
 
-			<!-- Foreign Key users::uid -->
 			<field>
-				<name>userid</name>
-				<type>text</type>
-				<default></default>
+				<name>fileid</name>
+				<type>integer</type>
+				<default>0</default>
 				<notnull>true</notnull>
-				<length>64</length>
-			</field>
-
-			<field>
-				<name>propertypath</name>
-				<type>text</type>
-				<default></default>
-				<notnull>true</notnull>
-				<length>255</length>
+				<length>4</length>
 			</field>
 
 			<field>
@@ -731,9 +722,9 @@
 			</field>
 
 			<index>
-				<name>property_index</name>
+				<name>fileid_index</name>
 				<field>
-					<name>userid</name>
+					<name>fileid</name>
 					<sorting>ascending</sorting>
 				</field>
 			</index>
