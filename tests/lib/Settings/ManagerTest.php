@@ -35,6 +35,11 @@ class SettingsManagerTest extends TestCase {
 	protected $config;
 	protected $defaults;
 	protected $urlGenerator;
+	protected $helper;
+	protected $lockingProvider;
+	protected $dbconnection;
+	protected $certificateManager;
+	protected $factory;
 
 	protected function setUp() {
 		parent::setUp();
@@ -47,6 +52,12 @@ class SettingsManagerTest extends TestCase {
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
 		$this->defaults = $this->getMockBuilder('\OCP\Defaults')->getMock();
 		$this->urlGenerator = $this->getMockBuilder('\OCP\IUrlGenerator')->getMock();
+		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
+		$this->lockingProvider = $this->getMockBuilder('\OCP\Lock\ILockingProvider')->getMock();
+		$this->dbconnection = $this->getMockBuilder('\OCP\IDBConnection')->getMock();
+		$this->certificateManager = $this->getMockBuilder('\OC\Security\CertificateManager')
+			->disableOriginalConstructor()->getMock();
+		$this->factory = $this->getMockBuilder('\OCP\L10N\IFactory')->getMock();
 
 		$this->settingsManager = new SettingsManager(
 			$this->l,
@@ -56,7 +67,12 @@ class SettingsManagerTest extends TestCase {
 			$this->groupManager,
 			$this->config,
 			$this->defaults,
-			$this->urlGenerator
+			$this->urlGenerator,
+			$this->helper,
+			$this->lockingProvider,
+			$this->dbconnection,
+			$this->certificateManager,
+			$this->factory
 		);
 	}
 
