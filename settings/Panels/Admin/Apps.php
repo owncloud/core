@@ -21,17 +21,31 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Apps implements ISettings {
 
-    public function getPriority() {
+	/** @var IConfig */
+	protected $config;
+
+	/**
+	 * Apps constructor.
+	 *
+	 * @param IConfig $config
+	 */
+	public function __construct(IConfig $config) {
+		$this->config = $config;
+	}
+
+	public function getPriority() {
         return 0;
     }
 
     public function getPanel() {
         $tmpl = new Template('settings', 'panels/admin/apps');
+        $tmpl->assign('appstoreEnabled', $this->config->getSystemValue('appstoreenabled', true));
         return $tmpl;
     }
 

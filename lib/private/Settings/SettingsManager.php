@@ -294,6 +294,7 @@ class SettingsManager implements ISettingsManager {
 				$this->lockingProvider),
 			Tips::class => new Tips(),
 			LegacyAdmin::class => new LegacyAdmin($this->helper),
+			Apps::class => new Apps($this->config)
 		];
 		if(isset($panels[$className])) {
 			return $panels[$className];
