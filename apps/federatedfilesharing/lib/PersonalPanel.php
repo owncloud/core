@@ -3,11 +3,11 @@
 namespace OCA\FederatedFileSharing;
 
 use OCP\IL10N;
+use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
 use OCP\Settings\ISettings;
 use OCP\Template;
-use OCA\FederatedFileSharing\AppInfo\Application;
 
 class PersonalPanel implements ISettings {
 
@@ -20,10 +20,23 @@ class PersonalPanel implements ISettings {
 	/** @var IURLGenerator  */
 	protected $urlGenerator;
 
-	public function __construct(IL10N $l, IUserSession $userSession, IURLGenerator $urlGenerator) {
+	/** @var FederatedShareProvider */
+	protected $shareProvider;
+
+	/** @var IRequest  */
+	protected $request;
+
+	public function __construct(
+		IL10N $l,
+		IUserSession $userSession,
+		IURLGenerator $urlGenerator,
+		FederatedShareProvider $shareProvider,
+		IRequest $request) {
 		$this->l = $l;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
+		$this->shareProvider = $shareProvider;
+		$this->request = $request;
 	}
 
     public function getPriority() {
@@ -35,10 +48,8 @@ class PersonalPanel implements ISettings {
     }
 
     public function getPanel() {
-		$app = new Application('federatedfilesharing');
-		$federatedShareProvider = $app->getFederatedShareProvider();
 		$isIE8 = false;
-		preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
+		preg_match('/MSIE (.*?);/', $this->request->getHeader('User-Agent'), $matches);
 		if (count($matches) > 0 && $matches[1] <= 9) {
 			$isIE8 = true;
 		}
@@ -46,7 +57,7 @@ class PersonalPanel implements ISettings {
 		$url = 'https://owncloud.org/federation#' . $cloudID;
 		$ownCloudLogoPath = $this->urlGenerator->imagePath('core', 'logo-icon.svg');
 		$tmpl = new Template('federatedfilesharing', 'settings-personal');
-		$tmpl->assign('outgoingServer2serverShareEnabled', $federatedShareProvider->isOutgoingServer2serverShareEnabled());
+		$tmpl->assign('outgoingServer2serverShareEnabled', $this->shareProvider->isOutgoingServer2serverShareEnabled());
 		$tmpl->assign('message_with_URL', $this->l->t('Share with me through my #ownCloud Federated Cloud ID, see %s', [$url]));
 		$tmpl->assign('message_without_URL', $this->l->t('Share with me through my #ownCloud Federated Cloud ID', [$cloudID]));
 		$tmpl->assign('owncloud_logo_path', $ownCloudLogoPath);

@@ -20,9 +20,14 @@ class AdminPanelTest extends \Test\TestCase {
 	/** @var AdminPanel */
 	private $panel;
 
+	private $shareProvider;
+
 	public function setUp() {
 		parent::setUp();
-		$this->panel = new AdminPanel();
+		$this->shareProvider = $this->getMockBuilder('\OCA\FederatedFileSharing\FederatedShareProvider')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->panel = new AdminPanel($this->shareProvider);
 	}
 
 	public function testGetSection() {
@@ -34,8 +39,9 @@ class AdminPanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
+		$this->shareProvider->expects($this->once())->method('isOutgoingServer2serverShareEnabled')->willReturn(true);
+		$this->shareProvider->expects($this->once())->method('isIncomingServer2serverShareEnabled')->willReturn(true);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		// TODO
 	}
 
 }

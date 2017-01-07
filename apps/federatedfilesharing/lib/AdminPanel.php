@@ -4,11 +4,22 @@ namespace OCA\FederatedFileSharing;
 
 use OCP\Settings\ISettings;
 use OCP\Template;
-use OCA\FederatedFileSharing\AppInfo\Application;
 
 class AdminPanel implements ISettings {
 
-    public function getPriority() {
+	/** @var FederatedShareProvider  */
+	protected $shareProvider;
+
+	/**
+	 * AdminPanel constructor.
+	 *
+	 * @param FederatedShareProvider $shareProvider
+	 */
+	public function __construct(FederatedShareProvider $shareProvider) {
+		$this->shareProvider = $shareProvider;
+	}
+
+	public function getPriority() {
         return 95;
     }
 
@@ -17,12 +28,9 @@ class AdminPanel implements ISettings {
     }
 
     public function getPanel() {
-        $app = new Application('federatedfilesharing');
-        $federatedShareProvider = $app->getFederatedShareProvider();
         $tmpl = new Template('federatedfilesharing', 'settings-admin');
-        $tmpl->assign('outgoingServer2serverShareEnabled', $federatedShareProvider->isOutgoingServer2serverShareEnabled());
-        $tmpl->assign('incomingServer2serverShareEnabled', $federatedShareProvider->isIncomingServer2serverShareEnabled());
-
+        $tmpl->assign('outgoingServer2serverShareEnabled', $this->shareProvider->isOutgoingServer2serverShareEnabled());
+        $tmpl->assign('incomingServer2serverShareEnabled', $this->shareProvider->isIncomingServer2serverShareEnabled());
         return $tmpl;
     }
 
