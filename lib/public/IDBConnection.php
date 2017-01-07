@@ -267,4 +267,13 @@ interface IDBConnection {
 	 * @since 10.0
 	 */
 	public function migrateToSchema(Schema $toSchema);
+
+	/**
+	 * Gets the currently active transaction isolation level.
+	 *
+	 * @return integer The current transaction isolation level.
+	 * @since 10.0
+	 */
+	public function getTransactionIsolation();
+
 }
