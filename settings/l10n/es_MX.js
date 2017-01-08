@@ -147,6 +147,7 @@ OC.L10N.register(
     "Name" : "Nombre",
     "Username" : "Nombre de usuario",
     "Get the apps to sync your files" : "Obtener las aplicaciones para sincronizar sus archivos",
+    "Desktop client" : "Cliente de escritorio",
     "Show First Run Wizard again" : "Mostrar nuevamente el Asistente de ejecución inicial",
     "E-Mail" : "Correo electrónico",
     "Create" : "Crear",

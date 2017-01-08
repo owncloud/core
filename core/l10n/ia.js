@@ -28,7 +28,7 @@ OC.L10N.register(
     "Thu." : "Jov.",
     "Fri." : "Ven.",
     "Sat." : "Sab.",
-    "January" : "januario",
+    "January" : "Januario",
     "February" : "Februario",
     "March" : "Martio",
     "April" : "April",

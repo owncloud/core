@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
+    "Please provide a valid app key and secret." : "Por favor escriba una llave y secreto válidos para la aplicación.",
     "Step 1 failed. Exception: %s" : "Paso 1 falló. Excepción: %s",
     "Step 2 failed. Exception: %s" : "Paso 2 falló. Excepción: %s",
     "External storage" : "Almacenamiento externo",
