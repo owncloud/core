@@ -92,7 +92,7 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 			$container->query('OCA\Files_External\Lib\Backend\SMB_OC'),
     ];
 
-      $this->denyLocalMounts = \OC::$server->getConfig()->getSystemValue('files_external_deny_local', 'false');
+      $this->denyLocalMounts = \OC::$server->getConfig()->getSystemValue('files_external_deny_local', false);
 
       if ($this->denyLocalMounts !== true) {
         $backends[] = $container->query('OCA\Files_External\Lib\Backend\Local');
