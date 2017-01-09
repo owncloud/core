@@ -38,6 +38,7 @@ $serverFactory = new \OCA\DAV\Connector\Sabre\ServerFactory(
 	\OC::$server->getRequest()
 );
 
+// Backends
 if (strpos(\OC::$server->getRequest()->getHeader('Authorization'), 'Bearer') !== false) {
 	// OAuth 2.0
 	$authBackend = new \OCA\DAV\Connector\Sabre\OAuth2();
@@ -52,7 +53,6 @@ if (strpos(\OC::$server->getRequest()->getHeader('Authorization'), 'Bearer') !==
 	);
 }
 
-// Backends
 $requestUri = \OC::$server->getRequest()->getRequestUri();
 
 $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function() {
