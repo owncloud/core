@@ -25,13 +25,14 @@ use \OC\IntegrityCheck\Iterator\ExcludeFileByNameFilterIterator;
 use Test\TestCase;
 
 class ExcludeFileByNameFilterIteratorTest extends TestCase {
-	/** @var ExcludeFileByNameFilterIterator */
+	/** @var \PHPUnit_Framework_MockObject_MockBuilder */
 	protected $filter;
 
 	public function setUp() {
 		parent::setUp();
 		$this->filter = $this->getMockBuilder(ExcludeFileByNameFilterIterator::class)
 			->disableOriginalConstructor()
+			->setMethods(['current'])
 			->getMock()
 		;
 
@@ -54,13 +55,17 @@ class ExcludeFileByNameFilterIteratorTest extends TestCase {
 	 * @param bool $expectedResult
 	 */
 	public function testAcceptForFiles($fileName, $expectedResult){
-		$iteratorMock = $this->createMock(\DirectoryIterator::class);
+		$iteratorMock = $this->getMockBuilder(\RecursiveDirectoryIterator::class)
+			->disableOriginalConstructor()
+			->setMethods(['getFilename', 'isDir'])
+			->getMock()
+		;
 		$iteratorMock->method('getFilename')
 			->will($this->returnValue($fileName))
 		;
-
-		$this->filter->method('isDir')
+		$iteratorMock->method('isDir')
 			->will($this->returnValue(false));
+
 		$this->filter->method('current')
 			->will($this->returnValue($iteratorMock))
 		;
@@ -75,18 +80,22 @@ class ExcludeFileByNameFilterIteratorTest extends TestCase {
 	 * @param bool $fakeExpectedResult
 	 */
 	public function testAcceptForDirs($fileName, $fakeExpectedResult){
-		$iteratorMock = $this->createMock(\DirectoryIterator::class);
+		$iteratorMock = $this->getMockBuilder(\RecursiveDirectoryIterator::class)
+			->disableOriginalConstructor()
+			->setMethods(['getFilename', 'isDir'])
+			->getMock()
+		;
 		$iteratorMock->method('getFilename')
 			->will($this->returnValue($fileName))
 		;
-
-		$this->filter->method('isDir')
+		$iteratorMock->method('isDir')
 			->will($this->returnValue(true));
+
 		$this->filter->method('current')
 			->will($this->returnValue($iteratorMock))
 		;
 
 		$actualResult = $this->filter->accept();
-		$this->assertFalse($actualResult);
+		$this->assertTrue($actualResult);
 	}
 }
