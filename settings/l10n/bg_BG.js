@@ -10,6 +10,7 @@ OC.L10N.register(
     "Unable to change password" : "Неуспешна смяна на паролата.",
     "Enabled" : "Включено",
     "Not enabled" : "Изключено",
+    "Federated Cloud Sharing" : "Федеративно споделяне през облака",
     "Group already exists." : "Групата вече съществува.",
     "Unable to add group." : "Неуспешно добавяне на група.",
     "Unable to delete group." : "Неуспешно изтриване на група",
