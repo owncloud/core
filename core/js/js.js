@@ -82,6 +82,7 @@ var OC={
 	coreApps:['', 'admin','log','core/search','settings','core','3rdparty'],
 	requestToken: oc_requesttoken,
 	menuSpeed: 50,
+	menuHoverTimeout: 250,
 
 	/**
 	 * Get an absolute url to a file in an app
@@ -634,7 +635,7 @@ var OC={
 	registerMenu: function($toggle, $menuEl) {
 		var self = this;
 		$menuEl.addClass('menu');
-		$toggle.on('click.menu', function(event) {
+		var toggleHandler = function(event) {
 			// prevent the link event (append anchor to URL)
 			event.preventDefault();
 
@@ -647,9 +648,25 @@ var OC={
 				// close it
 				self.hideMenus();
 			}
+
 			$menuEl.slideToggle(OC.menuSpeed);
 			OC._currentMenu = $menuEl;
-			OC._currentMenuToggle = $toggle;
+		};
+		var debouncedToggleHandler = _.debounce(toggleHandler, 400, true);
+		$toggle.on('click.menu', debouncedToggleHandler);
+		$toggle.on('hover.menu', function(event) {
+			// has it been opened already?
+			if ($menuEl.is(OC._currentMenu)) {
+				// don't close on hover
+				return;
+			}
+			setTimeout(function() {
+				if ($toggle.is(':hover')) {
+					// The element is still hovered -> open
+					// the menu
+					debouncedToggleHandler(event);
+				}
+			}, OC.menuHoverTimeout);
 		});
 	},
 
@@ -682,7 +699,6 @@ var OC={
 			});
 		}
 		OC._currentMenu = null;
-		OC._currentMenuToggle = null;
 	},
 
 	/**
@@ -698,7 +714,6 @@ var OC={
 		}
 		this.hideMenus();
 		OC._currentMenu = $menuEl;
-		OC._currentMenuToggle = $toggle;
 		$menuEl.trigger(new $.Event('beforeShow'));
 		$menuEl.show();
 		$menuEl.trigger(new $.Event('afterShow'));
