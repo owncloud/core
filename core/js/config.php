@@ -186,7 +186,13 @@ $array = [
 			'logoClaim' => $defaults->getLogoClaim(),
 			'shortFooter' => $defaults->getShortFooter(),
 			'longFooter' => $defaults->getLongFooter(),
-			'folder' => OC_Util::getTheme(),
+			'folder' => OC_Util::getTheme()->getName()
+		]
+	),
+	'theme' => json_encode(
+		[
+			'name' => OC_Util::getTheme()->getName(),
+			'directory' => OC_Util::getTheme()->getDirectory()
 		]
 	)
 ];
