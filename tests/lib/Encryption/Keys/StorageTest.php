@@ -67,6 +67,8 @@ class StorageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->createUser('user1', '123456');
+		$this->createUser('user2', '123456');
 		$this->storage = new Storage($this->view, $this->util);
 	}
 
@@ -244,7 +246,6 @@ class StorageTest extends TestCase {
 			->with($this->equalTo('/user1/files_encryption/encModule/user1.publicKey'))
 			->willReturn(true);
 
-		$this->createUser('user1', '123456');
 		$this->assertSame('key',
 			$this->storage->getUserKey('user1', 'publicKey', 'encModule')
 		);
