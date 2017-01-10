@@ -126,7 +126,16 @@ timestampedNode('SLAVE') {
                 make test-integration
                '''
             }
-     }
+
+            executeAndReport('build/integration/output/*.xml') {
+                sh '''phpenv local 7.0
+                rm -rf config/config.php
+                ./occ maintenance:install --admin-pass=admin
+                make clean-test-integration
+                make test-integration OC_TEST_ALT_HOME=1
+               '''
+            }
+    }
 }
 
 def isOnReleaseBranch ()  {
