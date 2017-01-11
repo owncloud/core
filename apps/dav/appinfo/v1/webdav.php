@@ -39,7 +39,7 @@ $serverFactory = new \OCA\DAV\Connector\Sabre\ServerFactory(
 );
 
 // Backends
-if (strpos(\OC::$server->getRequest()->getHeader('Authorization'), 'Bearer') !== false) {
+if (strpos(explode(' ', \OC::$server->getRequest()->getHeader('Authorization'))[0], 'Bearer') !== false) {
 	// OAuth 2.0
 	$authBackend = new \OCA\DAV\Connector\Sabre\OAuth2();
 } else {
