@@ -486,6 +486,9 @@ trait Provisioning {
 			$apps = $appList->getRows();
 			$appsSimplified = $this->simplifyArray($apps);
 			$respondedArray = $this->getArrayOfAppsResponded($this->response);
+			if(($key = array_search('testing', $respondedArray)) !== false) {
+				array_splice($respondedArray, $key, 1);
+			}
 			PHPUnit_Framework_Assert::assertEquals($appsSimplified, $respondedArray, "", 0.0, 10, true);
 		}
 
