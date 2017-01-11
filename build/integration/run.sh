@@ -48,7 +48,7 @@ ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
 $OCC files_external:option $ID_STORAGE enable_sharing true
 
 if test "$OC_TEST_ALT_HOME" = "1"; then
-	env_althome_enable
+	env_alt_home_enable
 fi
 
 vendor/bin/behat --strict -f junit -f pretty $SCENARIO_TO_RUN
@@ -63,7 +63,7 @@ $OCC files_external:delete -y $ID_STORAGE
 $OCC app:disable files_external
 
 if test "$OC_TEST_ALT_HOME" = "1"; then
-	env_althome_clear
+	env_alt_home_clear
 fi
 
 if [ -z $HIDE_OC_LOGS ]; then
