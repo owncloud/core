@@ -203,7 +203,7 @@ class Local extends \OC\Files\Storage\Common {
 	}
 
 	public function file_get_contents($path) {
-		return file_get_contents($this->getSourcePath($path))
+		return file_get_contents($this->getSourcePath($path));
 	}
 
 	public function file_put_contents($path, $data) {
