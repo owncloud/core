@@ -212,7 +212,12 @@ class Manager extends PublicEmitter implements IGroupManager {
 		foreach ($this->backends as $backend) {
 			$groupIds = $backend->getGroups($search, $limit, $offset);
 			foreach ($groupIds as $groupId) {
-				$groups[$groupId] = $this->get($groupId);
+				$aGroup = $this->get($groupId);
+				if (!is_null($aGroup)) {
+					$groups[$groupId] = $aGroup;
+				} else {
+					\OC::$server->getLogger()->debug('Group "' . $groupId . '" was returned by search but not found through direct access', array('app' => 'core'));
+				}
 			}
 			if (!is_null($limit) and $limit <= 0) {
 				return array_values($groups);
@@ -249,7 +254,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 					if (!is_null($aGroup)) {
 						$groups[$groupId] = $aGroup;
 					} else {
-						\OC::$server->getLogger()->debug('Warning: user "' . $uid . '" belongs to deleted group: "' . $groupId . '"', array('app' => 'core'));
+						\OC::$server->getLogger()->debug('User "' . $uid . '" belongs to deleted group: "' . $groupId . '"', array('app' => 'core'));
 					}
 				}
 			}
