@@ -272,12 +272,13 @@ Feature: sharing
     And user "user2" exists
     And user "user3" exists
     And file "textfile0.txt" of user "user0" is shared with user "user1"
-    And file "textfile0 (2).txt" of user "user1" is shared with user "user2"
-    And file "textfile0 (2).txt" of user "user2" is shared with user "user3"
+    And User "user1" moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
+    And file "textfile0_shared.txt" of user "user1" is shared with user "user2"
+    And file "textfile0_shared.txt" of user "user2" is shared with user "user3"
     And As an "user1"
-    When User "user1" deletes file "/textfile0 (2).txt"
+    When User "user1" deletes file "/textfile0_shared.txt"
     And As an "user3"
-    And Downloading file "/textfile0 (2).txt" with range "bytes=1-7"
+    And Downloading file "/textfile0_shared.txt" with range "bytes=1-7"
     Then Downloaded content should be "wnCloud"
 
   Scenario: getting share info of a share
