@@ -404,7 +404,7 @@ class Manager implements IManager {
 		if ($this->shareWithGroupMembersOnly()) {
 			$sharedBy = $this->userManager->get($share->getSharedBy());
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if (!is_null($sharedWith) && !$sharedWith->inGroup($sharedBy)) {
+			if (is_null($sharedWith) || !$sharedWith->inGroup($sharedBy)) {
 				throw new \Exception('Only sharing within your own groups is allowed');
 			}
 		}

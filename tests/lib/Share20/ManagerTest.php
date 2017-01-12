@@ -1123,6 +1123,39 @@ class ManagerTest extends \Test\TestCase {
 		$this->invokePrivate($this->manager, 'userCreateChecks', [$share]);
 	}
 
+ 	public function testUserCreateChecksIdenticalPathSharedViaDeletedGroup() {
+		$share  = $this->manager->newShare();
+
+		$sharedWith = $this->getMock('\OCP\IUser');
+		$sharedWith->method('getUID')->willReturn('sharedWith');
+
+		$this->userManager->method('get')->with('sharedWith')->willReturn($sharedWith);
+
+		$path = $this->getMock('\OCP\Files\Node');
+
+		$share->setSharedWith('sharedWith')
+			->setNode($path)
+			->setShareOwner('shareOwner')
+			->setProviderId('foo')
+			->setId('bar');
+
+		$share2 = $this->manager->newShare();
+		$share2->setShareType(\OCP\Share::SHARE_TYPE_GROUP)
+			->setShareOwner('shareOwner2')
+			->setProviderId('foo')
+			->setId('baz')
+			->setSharedWith('group');
+
+		$this->groupManager->method('get')->with('group')->willReturn(null);
+
+		$this->defaultProvider
+			->method('getSharesByPath')
+			->with($path)
+			->willReturn([$share2]);
+
+		$this->invokePrivate($this->manager, 'userCreateChecks', [$share]);
+	}
+
 	public function testUserCreateChecksIdenticalPathNotSharedWithUser() {
 		$share = $this->manager->newShare();
 		$sharedWith = $this->getMock('\OCP\IUser');
@@ -1188,6 +1221,29 @@ class ManagerTest extends \Test\TestCase {
 		$group->method('inGroup')->with($user)->willReturn(false);
 
 		$this->groupManager->method('get')->with('group')->willReturn($group);
+		$this->userManager->method('get')->with('user')->willReturn($user);
+
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_only_share_with_group_members', 'no', 'yes'],
+				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
+			]));
+
+		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
+	}
+
+	/**
+	 * @expectedException Exception
+	 * @expectedExceptionMessage Only sharing within your own groups is allowed
+	 */
+	public function testGroupCreateChecksShareWithGroupMembersOnlyNullGroup() {
+		$share = $this->manager->newShare();
+
+		$user = $this->getMock('\OCP\IUser');
+		$share->setSharedBy('user')->setSharedWith('group');
+
+		$this->groupManager->method('get')->with('group')->willReturn(null);
 		$this->userManager->method('get')->with('user')->willReturn($user);
 
 		$this->config
@@ -2488,6 +2544,23 @@ class ManagerTest extends \Test\TestCase {
 		$sharedWith->method('inGroup')->with($recipient)->willReturn(false);
 
 		$this->groupManager->method('get')->with('shareWith')->willReturn($sharedWith);
+		$this->userManager->method('get')->with('recipient')->willReturn($recipient);
+
+		$this->manager->moveShare($share, 'recipient');
+	}
+
+	/**
+	 * @expectedException \InvalidArgumentException
+	 * @expectedExceptionMessage Group "shareWith" does not exist
+	 */
+	public function testMoveShareGroupNull() {
+		$share = $this->manager->newShare();
+		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
+		$share->setSharedWith('shareWith');
+
+		$recipient = $this->getMock('\OCP\IUser');
+
+		$this->groupManager->method('get')->with('shareWith')->willReturn(null);
 		$this->userManager->method('get')->with('recipient')->willReturn($recipient);
 
 		$this->manager->moveShare($share, 'recipient');
