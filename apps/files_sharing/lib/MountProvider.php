@@ -168,7 +168,19 @@ class MountProvider implements IMountProvider {
 				if ($share->getTarget() !== $superShare->getTarget()) {
 					// adjust target, for database consistency
 					$share->setTarget($superShare->getTarget());
-					$this->shareManager->moveShare($share, $user->getUID());
+					try {
+						$this->shareManager->moveShare($share, $user->getUID());
+					} catch (\InvalidArgumentException $e) {
+						// ignore as it is not important and we don't want to
+						// block FS setup
+
+						// the subsequent code anyway only uses the target of the
+						// super share
+
+						// such issue can usually happen when dealing with
+						// null groups which usually appear with group backend
+						// caching inconsistencies
+					}
 				}
 			}
 
