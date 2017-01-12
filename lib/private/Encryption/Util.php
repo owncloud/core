@@ -393,4 +393,18 @@ class Util {
 		return $this->config->getAppValue('core', 'encryption_key_storage_root', '');
 	}
 
+	/**
+	 * Returns the user home folder relative to the dataDir
+	 * @param string $uid
+	 * @return string
+	 */
+	public function getUserHomeFolder($uid) {
+		$user = $this->userManager->get($uid);
+		$home = $user->getHome();
+		$dataDir = $this->config->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data");
+		$home = substr($home, strlen($dataDir));
+
+		return $home;
+	}
+
 }
