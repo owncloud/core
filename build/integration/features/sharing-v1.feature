@@ -285,7 +285,8 @@ Feature: sharing
   Scenario: getting share info of a share
     Given user "user0" exists
     And user "user1" exists
-    And file "textfile0.txt" of user "user0" is shared with user "user1"
+    And User "user0" moved file "/textfile0.txt" to "/file_to_share.txt"
+    And file "file_to_share.txt" of user "user0" is shared with user "user1"
     And As an "user0"
     When Getting info of last share
     Then the OCS status code should be "100"
@@ -297,8 +298,8 @@ Feature: sharing
       | share_type | 0 |
       | share_with | user1 |
       | file_source | A_NUMBER |
-      | file_target | /textfile0.txt |
-      | path | /textfile0.txt |
+      | file_target | /file_to_share.txt |
+      | path | /file_to_share.txt |
       | permissions | 19 |
       | stime | A_NUMBER |
       | storage | A_NUMBER |
