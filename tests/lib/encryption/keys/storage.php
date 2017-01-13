@@ -61,6 +61,8 @@ class StorageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->util->method('getKeyStorageRoot')->willReturn('');
+
 		$this->view = $this->getMockBuilder('OC\Files\View')
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,6 +80,10 @@ class StorageTest extends TestCase {
 		$this->createUser('user2', '123456');
 
 		$this->storage = new Storage($this->view, $this->util, $userSession);
+	}
+
+	public function tearDown() {
+		\OC\Files\Filesystem::tearDown();
 	}
 
 	public function testSetFileKey() {
@@ -276,6 +282,33 @@ class StorageTest extends TestCase {
 		);
 
 		$this->assertTrue($this->isUserHomeMounted('user2'));
+	}
+
+	public function testGetUserKeyWhenKeyStorageIsOutsideHome() {
+		$this->view->expects($this->once())
+			->method('file_get_contents')
+			->with($this->equalTo('/enckeys/user2/files_encryption/encModule/user2.publicKey'))
+			->willReturn('key');
+		$this->view->expects($this->once())
+			->method('file_exists')
+			->with($this->equalTo('/enckeys/user2/files_encryption/encModule/user2.publicKey'))
+			->willReturn(true);
+
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn('user1');
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->method('getUser')->willReturn($user);
+		$util = $this->createMock(\OC\Encryption\Util::class);
+		$util->method('getKeyStorageRoot')->willReturn('enckeys');
+		$storage = new Storage($this->view, $util, $userSession);
+
+		$this->assertFalse($this->isUserHomeMounted('user2'));
+
+		$this->assertSame('key',
+			$storage->getUserKey('user2', 'publicKey', 'encModule')
+		);
+
+		$this->assertFalse($this->isUserHomeMounted('user2'), 'mounting was not necessary');
 	}
 
 	/**
