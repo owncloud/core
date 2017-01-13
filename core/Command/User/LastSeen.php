@@ -43,6 +43,7 @@ class LastSeen extends Base  {
 
 	/**
 	 * @param IUserManager $userManager
+	 * @param IDBConnection $connection
 	 */
 	public function __construct(IUserManager $userManager, IDBConnection $connection) {
 		$this->userManager = $userManager;
@@ -61,10 +62,11 @@ class LastSeen extends Base  {
 				'the username'
 			)
 			->addOption(
-				'least-recent',
+				'order',
 				null,
-				InputOption::VALUE_NONE,
-				'show least recently logged in users'
+				InputOption::VALUE_REQUIRED,
+				"order 'asc' or 'desc'",
+				'desc'
 			)
 			->addOption(
 				'limit',
@@ -112,9 +114,8 @@ class LastSeen extends Base  {
 			);
 		}
 
-		if (!empty($limit)) {
-			$queryBuilder->setMaxResults($limit);
-		}
+		$queryBuilder->setMaxResults((int)$limit);
+
 		$query = $queryBuilder->execute();
 		$result = [];
 
@@ -146,12 +147,15 @@ class LastSeen extends Base  {
 		return $result;
 	}
 
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
-		if ($input->getOption('least-recent')) {
-			$order = 'ASC';
-		} else {
-			$order = 'DESC';
+		$order = strtoupper($input->getOption('least-recent'));
+		if ($order !== 'ASC' && $order !== 'DESC') {
+			$output->writeln("<error>order must be 'asc' or 'desc', '$order' given</error>");
 		}
 		$before = $input->getOption('before');
 		if ($before) {
@@ -163,26 +167,23 @@ class LastSeen extends Base  {
 		$users = $this->getLastLogins($uid, $order, $beforeTimestamp, $input->getOption('limit'));
 		$outputFormat = $input->getOption('output');
 		if (empty($users)) {
-			if ($uid) {
-				$user = $this->userManager->get($uid);
-				if ($user) {
-					if ($outputFormat === self::OUTPUT_FORMAT_PLAIN ) {
-						$output->writeln('User '.$uid.' has never logged in, yet.');
-						return;
-					} else {
-						$users = [
-							[
-								'userid' => $uid,
-								'displayname' => $user->getDisplayName(),
-								'email' => $user->getEMailAddress(),
-								'lastLogin' => null
-							]
-						];
-					}
-				} else if ($outputFormat === self::OUTPUT_FORMAT_PLAIN ) {
-					$output->writeln('<error>User $uid does not exist</error>');
+			if ($user = $this->userManager->get($uid)) {
+				if ($outputFormat === self::OUTPUT_FORMAT_PLAIN ) {
+					$output->writeln('User '.$uid.' has never logged in, yet.');
 					return;
+				} else {
+					$users = [
+						[
+							'userid' => $uid,
+							'displayname' => $user->getDisplayName(),
+							'email' => $user->getEMailAddress(),
+							'lastLogin' => null
+						]
+					];
 				}
+			} else if ($outputFormat === self::OUTPUT_FORMAT_PLAIN ) {
+				$output->writeln('<error>User $uid does not exist</error>');
+				return;
 			}
 		}
 		foreach ($users as $key => $data) {
@@ -209,7 +210,6 @@ class LastSeen extends Base  {
 					default:
 						$output->writeln(
 							$data['userid'] .'`s last login: ' . $date->format('d.m.Y H:i') );
-						break;
 				}
 		}
 		switch ($outputFormat) {
