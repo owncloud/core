@@ -146,7 +146,7 @@ class LastSeenTest extends TestCase {
 	}
 
 
-	public function validUserLastSeenPlain() {
+	public function validPlainProvider() {
 		return [
 			['user', 'never logged in'],
 			['user1', '21.09.2016 10:25'],
@@ -155,14 +155,14 @@ class LastSeenTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider validUserLastSeenPlain
+	 * @dataProvider validPlainProvider
 	 *
 	 * @param string $userId
 	 * @param string $displayName
 	 * @param string $email
 	 * @param string $expectedString
 	 */
-	public function testValidUserPlain($userId, $expectedString) {
+	public function testPlainOutputContainsExistingUsers($userId, $expectedString) {
 
 		$this->expectConsoleInput($userId, null, null, 10, LastSeen::OUTPUT_FORMAT_PLAIN);
 
@@ -178,7 +178,7 @@ class LastSeenTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function testInvalidUser() {
+	public function testPlainOutputReflectsNotExistingUser() {
 
 		$this->expectConsoleInput('user3', null, null, 10, LastSeen::OUTPUT_FORMAT_PLAIN);
 
@@ -195,7 +195,7 @@ class LastSeenTest extends TestCase {
 	}
 
 
-	public function validUserLastSeenJSON() {
+	public function validJSONSingleUserProvider() {
 		return [
 			['user', 'User Name', 'user@e.mail',
 				'[{"displayname":"User Name","email":"user@e.mail","lastLogin":null,"userid":"user"}]'],
@@ -207,14 +207,14 @@ class LastSeenTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider validUserLastSeenJSON
+	 * @dataProvider validJSONSingleUserProvider
 	 *
 	 * @param string $userId
 	 * @param string $displayName
 	 * @param string $email
 	 * @param string $expectedString
 	 */
-	public function testValidUserJSON($userId, $displayName, $email, $expectedString) {
+	public function testJSONOutputContainsExistingUser($userId, $displayName, $email, $expectedString) {
 
 		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->any())
@@ -243,7 +243,7 @@ class LastSeenTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function validUsersJSON() {
+	public function validJSONMultipleUsersProvider() {
 		return [
 			[null,
 				'[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"},{"displayname":"User2 Name","email":"user2@e.mail","lastLogin":"2016-09-05T09:29:58Z","userid":"user2"}]'],
@@ -253,12 +253,12 @@ class LastSeenTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider validUsersJSON
+	 * @dataProvider validJSONMultipleUsersProvider
 	 *
 	 * @param string $leastRecent
 	 * @param string $expectedString
 	 */
-	public function testValidUsersJSON($leastRecent, $expectedString) {
+	public function testJSONOutputContainsMultipleExistingUsers($leastRecent, $expectedString) {
 
 		$this->expectConsoleInput(null, $leastRecent, null, 10, LastSeen::OUTPUT_FORMAT_JSON);
 
@@ -293,7 +293,7 @@ class LastSeenTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function invalidUsersJSON() {
+	public function invalidJSONUsersProvider() {
 		return [
 			[null,
 				'[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"},{"displayname":null,"email":null,"lastLogin":"2016-09-05T09:29:58Z","userid":"user2"}]'],
@@ -303,12 +303,12 @@ class LastSeenTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider invalidUsersJSON
+	 * @dataProvider invalidJSONUsersProvider
 	 *
 	 * @param string $leastRecent
 	 * @param string $expectedString
 	 */
-	public function testInvalidUsersJSON($leastRecent, $expectedString) {
+	public function testJSONOutputReflectsInvalidUsers($leastRecent, $expectedString) {
 
 		$user1 = $this->createMock('OCP\IUser');
 		$user1->expects($this->any())
@@ -353,7 +353,7 @@ class LastSeenTest extends TestCase {
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
 
-	public function beforeUsersJSON() {
+	public function beforeJSONUsersProvider() {
 		return [
 			['2 days ago', ['user1', 'user2'],
 				'[{"displayname":"User1 Name","email":"user1@e.mail","lastLogin":"2016-09-21T10:25:20Z","userid":"user1"},{"displayname":"User2 Name","email":"user2@e.mail","lastLogin":"2016-09-05T09:29:58Z","userid":"user2"}]'],
@@ -367,13 +367,13 @@ class LastSeenTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider beforeUsersJSON
+	 * @dataProvider beforeJSONUsersProvider
 	 *
 	 * @param string $leastRecent
 	 * @param string[] $users userid => user the usermanager should know
 	 * @param string $expectedString
 	 */
-	public function testBeforeUsersJSON($before, $users, $expectedString) {
+	public function testJSONOutputOnlyContainsUsersBeforeGivenDate($before, $users, $expectedString) {
 
 		$this->expectConsoleInput(null, null, $before, 10, LastSeen::OUTPUT_FORMAT_JSON);
 
