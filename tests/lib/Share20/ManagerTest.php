@@ -1153,7 +1153,7 @@ class ManagerTest extends \Test\TestCase {
 			->with($path)
 			->willReturn([$share2]);
 
-		$this->invokePrivate($this->manager, 'userCreateChecks', [$share]);
+		$this->assertNull($this->invokePrivate($this->manager, 'userCreateChecks', [$share]));
 	}
 
 	public function testUserCreateChecksIdenticalPathNotSharedWithUser() {
@@ -1253,7 +1253,7 @@ class ManagerTest extends \Test\TestCase {
 				['core', 'shareapi_allow_group_sharing', 'yes', 'yes'],
 			]));
 
-		$this->invokePrivate($this->manager, 'groupCreateChecks', [$share]);
+		$this->assertNull($this->invokePrivate($this->manager, 'groupCreateChecks', [$share]));
 	}
 
 	public function testGroupCreateChecksShareWithGroupMembersOnlyInGroup() {

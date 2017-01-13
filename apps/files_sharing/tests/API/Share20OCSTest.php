@@ -533,7 +533,7 @@ class Share20OCSTest extends \Test\TestCase {
 		// null group
 		$share = $this->getMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
-		$share->method('getSharedWith')->willReturn('group2');
+		$share->method('getSharedWith')->willReturn('groupnull');
 		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		$share = $this->getMock('OCP\Share\IShare');
