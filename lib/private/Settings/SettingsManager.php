@@ -215,7 +215,7 @@ class SettingsManager implements ISettingsManager {
 				new Section('monitoring', $this->l->t('Monitoring'), 75),
 				new Section('apps', $this->l->t('Apps'), 70),
 				new Section('updates', $this->l->t('Updates'), 20),
-				new Section('additional', $this->l->t('Additional'), 5),
+				new Section('additional', $this->l->t('Additional'), -10),
 			];
 		} else if($type === 'personal') {
 			return [
@@ -414,7 +414,7 @@ class SettingsManager implements ISettingsManager {
 		$this->log->error(
 			'Failed to load section with id: {id}',
 			['id' => $sectionID]);
-		return new Section($sectionID, ucfirst($sectionID), 100);
+		return new Section($sectionID, ucfirst($sectionID), -9);
 	}
 
 	/**
