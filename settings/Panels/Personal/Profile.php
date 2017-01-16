@@ -38,8 +38,8 @@ class Profile implements ISettings {
     /* @var IGroupManager */
     protected $groupManager;
 
-    /* @var IUser */
-    protected $user;
+    /* @var IUserSession */
+    protected $userSession;
 
     /** @var Helper */
     protected $helper;
