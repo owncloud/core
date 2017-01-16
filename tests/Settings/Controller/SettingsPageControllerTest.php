@@ -24,6 +24,7 @@ namespace Test;
 use OC\Settings\Controller\SettingsPageController;
 use OC\Settings\Panels\Personal\Profile;
 use OC\Settings\Section;
+use OCP\L10N\IFactory;
 
 class SettingsPageControllerTest extends TestCase {
 
@@ -36,6 +37,7 @@ class SettingsPageControllerTest extends TestCase {
 	protected $config;
 	protected $user;
 	protected $helper;
+	/** @var IFactory */
 	protected $lfactory;
 
 	protected function setUp() {
@@ -49,7 +51,7 @@ class SettingsPageControllerTest extends TestCase {
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
 		$this->user = $this->getMockBuilder('\OCP\IUser')->getMock();
 		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
-		$this->lfactory = $this->getMockBuilder('\OCP\IL10N\IFactory')->getMock();
+		$this->lfactory = $this->createMock(IFactory::class);
 
 		$this->pageController = new SettingsPageController('settings',
 			$this->request,
