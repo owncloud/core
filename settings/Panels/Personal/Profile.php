@@ -54,7 +54,7 @@ class Profile implements ISettings {
                                 IFactory $lfactory) {
         $this->config = $config;
         $this->groupManager = $groupManager;
-        $this->user = $userSession->getUser();
+        $this->userSession = $userSession;
         $this->helper = $helper;
         $this->lfactory = $lfactory;
     }
@@ -67,7 +67,7 @@ class Profile implements ISettings {
         $tmpl = new Template('settings', 'panels/personal/profile');
         // Assign some data
         $lang = $this->lfactory->findLanguage();
-        $userLang = $this->config->getUserValue( $this->user, 'core', 'lang', $lang);
+        $userLang = $this->config->getUserValue( $this->userSession->getUser(), 'core', 'lang', $lang);
         $languageCodes = $this->lfactory->findAvailableLanguages();
         // array of common languages
         $commonLangCodes = [
@@ -118,16 +118,17 @@ class Profile implements ISettings {
         	// Otherwise compare the names
         	return strcmp($a['name'], $b['name']);
         });
-        $tmpl->assign('email', $this->user->getEmailAddress());
+
+        $tmpl->assign('email', $this->userSession->getUser()->getEMailAddress());
         $tmpl->assign('languages', $languages);
         $tmpl->assign('commonlanguages', $commonLanguages);
         $tmpl->assign('activelanguage', $userLang);
-        $tmpl->assign('displayName', $this->user->getDisplayName());
+        $tmpl->assign('displayName', $this->userSession->getUser()->getDisplayName());
         $tmpl->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
-        $tmpl->assign('avatarChangeSupported', $this->user->canChangeAvatar());
-        $tmpl->assign('displayNameChangeSupported', $this->user->canChangeDisplayName());
-        $tmpl->assign('passwordChangeSupported', $this->user->canChangePassword());
-        $groups = $this->groupManager->getUserGroupIds($this->user);
+        $tmpl->assign('avatarChangeSupported', $this->userSession->getUser()->canChangeAvatar());
+        $tmpl->assign('displayNameChangeSupported', $this->userSession->getUser()->canChangeDisplayName());
+        $tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
+        $groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
         sort($groups);
         $tmpl->assign('groups', $groups);
         return $tmpl;
