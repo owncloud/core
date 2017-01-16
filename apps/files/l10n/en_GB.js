@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Storage is temporarily not available",
     "Storage invalid" : "Storage invalid",
     "Unknown error" : "Unknown error",
     "All files" : "All files",
@@ -12,6 +13,8 @@ OC.L10N.register(
     "Upload cancelled." : "Upload cancelled.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Unable to upload {filename} as it is a directory or has 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Not enough free space, you are uploading {size1} but only {size2} is left",
+    "Target folder \"{dir}\" does not exist any more" : "Target folder \"{dir}\" does not exist any more",
+    "Not enough free space" : "Not enough free space",
     "Uploading..." : "Uploading...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} of {totalSize} ({bitrate})",
@@ -22,6 +25,7 @@ OC.L10N.register(
     "Delete" : "Delete",
     "Disconnect storage" : "Disconnect storage",
     "Unshare" : "Unshare",
+    "Could not load info for file \"{file}\"" : "Could not load info for file \"{file}\"",
     "Files" : "Files",
     "Details" : "Details",
     "Select" : "Select",
