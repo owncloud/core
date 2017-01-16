@@ -345,6 +345,11 @@ class Storage implements IStorage {
 	 * @param string $uid user id
 	 */
 	protected function setupUserMounts($uid) {
+		if ($this->root_dir !== '') {
+			// this means that the keys are stored outside of the user's homes,
+			// so we don't need to mount anything
+			return;
+		}
 		if (!is_null($uid) && $uid !== '' && $uid !== $this->currentUser) {
 			\OC\Files\Filesystem::initMountPoints($uid);
 		}
