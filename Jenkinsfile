@@ -54,7 +54,7 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'PHPUnit 5.6/oci'
+    stage 'PHPUnit 7.0/oci'
         executeAndReport('tests/autotest-results-oci.xml') {
             sh '''
             export NOCOVERAGE=1
