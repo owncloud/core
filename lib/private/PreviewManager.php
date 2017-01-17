@@ -348,7 +348,7 @@ class PreviewManager implements IPreview {
 				\OC\Preview\Movie::$atomicParsleyBinary = $atomicParsleyBinary;
 				$registerProvider = true;
 			}
-			if(true === $registerProvider) {
+			if (true === $registerProvider) {
 				$this->registerCoreProvider('\OC\Preview\Movie', '/video\/.*/');
 			}
 		}

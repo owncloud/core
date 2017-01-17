@@ -85,13 +85,13 @@ class Movie extends Provider {
 	 * @return bool|string
 	 */
 	private function extractMp4CoverArtwork($absPath) {
-		if(isset($this->noArtworkIndex[$absPath]))
+		if (isset($this->noArtworkIndex[$absPath])) {
 			return false;
+		}
 
-
-		if(self::$atomicParsleyBinary) {
+		if (self::$atomicParsleyBinary) {
 			$suffix = substr($absPath, -4);
-			if('.mp4' === $suffix || '.MP4' === $suffix) {
+			if ('.mp4' === strtolower($suffix)) {
 				$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 				$tmpBase = $tmpFolder.'/Cover';
 				$cmd = self::$atomicParsleyBinary . ' ' .
@@ -103,9 +103,9 @@ class Movie extends Provider {
 
 				if ($returnCode === 0) {
 					$endings = array('.jpg', '.png');
-					foreach($endings as $ending) {
+					foreach ($endings as $ending) {
 						$extractedFile = $tmpBase.'_artwork_1'.$ending;
-						if(is_file($extractedFile) &&
+						if (is_file($extractedFile) &&
 							filesize($extractedFile) > 0) {
 							return $extractedFile;
 						}
@@ -157,14 +157,13 @@ class Movie extends Provider {
 	private function generateThumbNail($maxX, $maxY, $absPath, $second) {
 
 		$extractedCover = $this->extractMp4CoverArtwork($absPath);
-		if(false !== $extractedCover) {
+		if (false !== $extractedCover) {
 			$tmpPath = $extractedCover;
-		}
-		else {
+		} else {
 			$tmpPath = $this->generateFromMovie($absPath, $second);
 		}
 
-		if(is_string($tmpPath) and is_file($tmpPath)) {
+		if (is_string($tmpPath) && is_file($tmpPath)) {
 			$image = new \OC_Image();
 			$image->loadFromFile($tmpPath);
 			unlink($tmpPath);
