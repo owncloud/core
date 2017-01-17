@@ -20,6 +20,19 @@ class BmpToResourceTest extends TestCase {
 		$this->assertEquals(16, $header['imagesize']);
 	}
 
+	public function test4bitBitmap(){
+		$instance = new BmpToResource(__DIR__ . '/../../data/image/4bit2x2.bmp');
+
+		$instance->toResource();
+		$header = $instance->getHeader();
+		$this->assertEquals(78, $header['filesize']);
+		$this->assertEquals(70, $header['offset']);
+		$this->assertEquals(2, $header['width']);
+		$this->assertEquals(2, $header['height']);
+		$this->assertEquals(4, $header['bits']);
+		$this->assertEquals(8, $header['imagesize']);
+	}
+
 	public function testReadBitmapHeader(){
 		$headerHex = '42 4D 9A 00 00 00 00 00 00 00 7A 00 00 00';
 		$headerBin = hex2bin(str_replace(' ', '', $headerHex));
