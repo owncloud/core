@@ -126,6 +126,7 @@ OC.L10N.register(
     "Execute one task with each page loaded" : "Изпълни по едно задание с всяка заредена страница.",
     "cron.php is registered at a webcron service to call cron.php every 15 minutes over http." : "cron.php е регистриран към webcron да се свързва с cron.php всеки 15 минути по http.",
     "Use system's cron service to call the cron.php file every 15 minutes." : "Изполвай системната cron service, за връзка с cron.php файла всеки 15 минути.",
+    "Enable encryption" : "Активиране на криптиране",
     "This is used for sending out notifications." : "Това се използва за изпращане на уведомления.",
     "Send mode" : "Режим на изпращане",
     "Encryption" : "Криптиране",
