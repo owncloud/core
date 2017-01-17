@@ -141,7 +141,7 @@ class BmpToResource {
 
 		// fixup imagesize - it can be zero
 		if ($dibHeader['imagesize'] < 1) {
-			$dibHeader['imagesize'] = $this->fixImageSize($header);
+			$dibHeader['imagesize'] = $this->fixImageSize($dibHeader);
 		}
 
 		if ($dibHeader['imagesize'] < 1) {
@@ -258,7 +258,7 @@ class BmpToResource {
 		} elseif (in_array($this->header['bits'], [8, 4, 1])){
 			$colors = array_map(
 				function ($i){
-					return $this->palette[ $i ];
+					return $this->palette[ bindec($i) ];
 				},
 				$this->splitByteIntoArray($raw, $this->header['bits'])
 			);
@@ -293,6 +293,7 @@ class BmpToResource {
 	}
 
 	/**
+	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	protected function getFilename(){

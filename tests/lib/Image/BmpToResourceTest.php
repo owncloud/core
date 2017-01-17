@@ -6,7 +6,6 @@ use OC\Image\BmpToResource;
 use Test\TestCase;
 
 class BmpToResourceTest extends TestCase {
-	const CLASS_NAME = 'OC\Image\BmpToResource';
 
 	public function test24bitBitmap(){
 		$instance = new BmpToResource(__DIR__ . '/../../data/image/24bit2x2.bmp');
@@ -123,7 +122,7 @@ class BmpToResourceTest extends TestCase {
 	}
 
 	protected function getReadFileStub($values){
-		$instanceMock = $this->getMockBuilder(self::CLASS_NAME)
+		$instanceMock = $this->getMockBuilder(BmpToResource::class)
 			->disableOriginalConstructor()
 			->setMethods(['readFile', 'getFilename'])
 			->getMock()
