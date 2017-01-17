@@ -220,7 +220,11 @@
 
 						var suggestions = users.concat(groups).concat(remotes);
 
+
 						if (suggestions.length > 0) {
+							suggestions.sort(function (a, b) {
+								return OC.Util.naturalSortCompare(a.label, b.label);
+							});
 							$('.shareWithField').removeClass('error')
 								.tooltip('hide')
 								.autocomplete("option", "autoFocus", true);
