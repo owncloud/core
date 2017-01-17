@@ -10,7 +10,7 @@
  */
 
 /**
- * This exception is thrown when an error occured during the request_token process.
+ * This exception is thrown when an error occurred during the request_token process.
  */
 class Dropbox_Exception_RequestToken extends Dropbox_Exception {
 
