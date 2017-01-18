@@ -1,10 +1,12 @@
 <?php /** @var $l \OCP\IL10N */ ?>
 <?php
 vendor_script('jsTimezoneDetect/jstz');
+//vendor_script('browser-update/browser-update');
 script('core', [
 	'visitortimezone',
 	'lostpassword',
-	'login'
+	'login',
+	'browser-update'
 ]);
 ?>
 
@@ -91,4 +93,4 @@ script('core', [
 		</ul>
 	</fieldset>
 </form>
-<?php }
+<?php } ?>
