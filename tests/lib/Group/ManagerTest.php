@@ -336,7 +336,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('getGroups')
 			->with('1')
@@ -349,7 +349,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
+		$userManager = $this->createMock('\OC\User\Manager');
 
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
@@ -416,7 +416,7 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
 		 */
-		$backend = $this->getMock('\OC\Group\Database');
+		$backend = $this->createMock('\OC\Group\Database');
 		$backend->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
@@ -429,12 +429,16 @@ class ManagerTest extends \Test\TestCase {
 		/**
 		 * @var \OC\User\Manager $userManager
 		 */
-		$userManager = $this->getMock('\OC\User\Manager');
-		$userBackend = $this->getMock('\OC_User_Backend');
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
 		$manager = new \OC\Group\Manager($userManager);
 		$manager->addBackend($backend);
 
-		$groups = $manager->getUserGroups(new User('user1', $userBackend));
+		/** @var \OC\User\User $user */
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn('user1');
+
+		$groups = $manager->getUserGroups($user);
 		$this->assertEmpty($groups);
 	}
 
