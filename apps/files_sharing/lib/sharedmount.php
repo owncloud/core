@@ -59,6 +59,12 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @param \OCP\Files\Storage\IStorageFactory $loader
 	 */
 	public function __construct($storage, array $mountpoints, $arguments = null, $loader = null) {
+		if (!isset($arguments['user'])) {
+			throw new \InvalidArgumentException('Missing "user" key in arguments');
+		}
+		if (!isset($arguments['share'])) {
+			throw new \InvalidArgumentException('Missing "share" key in arguments');
+		}
 		$this->user = $arguments['user'];
 		$this->recipientView = new View('/' . $this->user . '/files');
 		$this->share = $arguments['share'];
