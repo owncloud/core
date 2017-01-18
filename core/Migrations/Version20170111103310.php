@@ -16,7 +16,6 @@ class Version20170111103310 extends AbstractMigration {
 		$prefix = $this->connection->getPrefix();
 		if (!$schema->hasTable("${prefix}external_mounts")) {
 			$table = $schema->createTable("${prefix}external_mounts");
-			$table->addOption('collate', 'utf8_bin');
 			$table->addColumn('mount_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -49,7 +48,6 @@ class Version20170111103310 extends AbstractMigration {
 
 		if (!$schema->hasTable("${prefix}external_applicable")) {
 			$table = $schema->createTable("${prefix}external_applicable");
-			$table->addOption('collate', 'utf8_bin');
 			$table->addColumn('applicable_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -77,7 +75,6 @@ class Version20170111103310 extends AbstractMigration {
 
 		if (!$schema->hasTable("${prefix}external_config")) {
 			$table = $schema->createTable("${prefix}external_config");
-			$table->addOption('collate', 'utf8_bin');
 			$table->addColumn('config_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -103,7 +100,6 @@ class Version20170111103310 extends AbstractMigration {
 
 		if (!$schema->hasTable("${prefix}external_options")) {
 			$table = $schema->createTable("${prefix}external_options");
-			$table->addOption('collate', 'utf8_bin');
 			$table->addColumn('option_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,

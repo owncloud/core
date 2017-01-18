@@ -32,6 +32,7 @@ class MigrationService {
 	 * @param string $appName
 	 * @param IDBConnection $connection
 	 * @return Configuration
+	 * @throws \Exception
 	 */
 	public function buildConfiguration($appName, $connection) {
 		if ($appName === 'core') {
