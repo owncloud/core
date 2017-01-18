@@ -58,6 +58,7 @@ use OCP\Files\Storage\ILockingStorage;
 use OCP\IUser;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
+use OCA\Files_Sharing\SharedMount;
 
 /**
  * Class to provide access to ownCloud filesystem via a "view", and methods for
@@ -1648,10 +1649,11 @@ class View {
 	 * Note that the resulting path is not guarantied to be unique for the id, multiple paths can point to the same file
 	 *
 	 * @param int $id
+	 * @param bool $includeShares whether to recurse into shared mounts
 	 * @throws NotFoundException
 	 * @return string
 	 */
-	public function getPath($id) {
+	public function getPath($id, $includeShares = true) {
 		$id = (int)$id;
 		$manager = Filesystem::getMountManager();
 		$mounts = $manager->findIn($this->fakeRoot);
@@ -1663,6 +1665,11 @@ class View {
 			/**
 			 * @var \OC\Files\Mount\MountPoint $mount
 			 */
+			if (!$includeShares && $mount instanceof SharedMount) {
+				// prevent potential infinite loop when instantiating shared storages
+				// recursively
+				continue;
+			}
 			if ($mount->getStorage()) {
 				$cache = $mount->getStorage()->getCache();
 				$internalPath = $cache->getPathById($id);

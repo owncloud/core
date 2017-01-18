@@ -49,6 +49,9 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 */
 	private $user;
 
+	/** @var array */
+	private $share;
+
 	/**
 	 * @param string $storage
 	 * @param SharedMount[] $mountpoints
@@ -56,11 +59,18 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @param \OCP\Files\Storage\IStorageFactory $loader
 	 */
 	public function __construct($storage, array $mountpoints, $arguments = null, $loader = null) {
+		if (!isset($arguments['user'])) {
+			throw new \InvalidArgumentException('Missing "user" key in arguments');
+		}
+		if (!isset($arguments['share'])) {
+			throw new \InvalidArgumentException('Missing "share" key in arguments');
+		}
 		$this->user = $arguments['user'];
 		$this->recipientView = new View('/' . $this->user . '/files');
-		$newMountPoint = $this->verifyMountPoint($arguments['share'], $mountpoints);
+		$this->share = $arguments['share'];
+		$newMountPoint = $this->verifyMountPoint($this->share, $mountpoints);
 		$absMountPoint = '/' . $this->user . '/files' . $newMountPoint;
-		$arguments['ownerView'] = new View('/' . $arguments['share']['uid_owner'] . '/files');
+		$arguments['ownerView'] = new View('/' . $this->share['uid_owner'] . '/files');
 		parent::__construct($storage, $absMountPoint, $arguments, $loader);
 	}
 
@@ -238,8 +248,24 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @return array
 	 */
 	public function getShare() {
-		/** @var $storage \OC\Files\Storage\Shared */
-		$storage = $this->getStorage();
-		return $storage->getShare();
+		return $this->share;
+	}
+
+	/**
+	 * Get the file id of the root of the storage
+	 *
+	 * @return int
+	 */
+	public function getStorageRootId() {
+		return $this->share['file_source'];
+	}
+
+	public function getStorageNumericId() {
+		$query = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$query->select('storage')
+			->from('filecache')
+			->where($query->expr()->eq('fileid', $query->createNamedParameter($this->getStorageRootId())));
+
+		return $query->execute()->fetchColumn();
 	}
 }
