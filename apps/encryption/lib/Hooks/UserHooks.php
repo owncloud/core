@@ -137,9 +137,9 @@ class UserHooks implements IHook {
 				'postCreateUser');
 
 			OCUtil::connectHook('OC_User',
-				'pre_deleteUser',
+				'post_deleteUser',
 				$this,
-				'preDeleteUser');
+				'postDeleteUser');
 		}
 	}
 
@@ -194,7 +194,7 @@ class UserHooks implements IHook {
 	 * @param array $params : uid, password
 	 * @note This method should never be called for users using client side encryption
 	 */
-	public function preDeleteUser($params) {
+	public function postDeleteUser($params) {
 
 		if (App::isEnabled('encryption')) {
 			$this->keyManager->deletePublicKey($params['uid']);
