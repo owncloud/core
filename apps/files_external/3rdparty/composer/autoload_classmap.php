@@ -51,6 +51,7 @@ return array(
     'Icewind\\Streams\\IteratorDirectory' => $vendorDir . '/icewind/streams/src/IteratorDirectory.php',
     'Icewind\\Streams\\NullWrapper' => $vendorDir . '/icewind/streams/src/NullWrapper.php',
     'Icewind\\Streams\\Path' => $vendorDir . '/icewind/streams/src/Path.php',
+    'Icewind\\Streams\\PathWrapper' => $vendorDir . '/icewind/streams/src/PathWrapper.php',
     'Icewind\\Streams\\RetryWrapper' => $vendorDir . '/icewind/streams/src/RetryWrapper.php',
     'Icewind\\Streams\\SeekableWrapper' => $vendorDir . '/icewind/streams/src/SeekableWrapper.php',
     'Icewind\\Streams\\Url' => $vendorDir . '/icewind/streams/src/Url.php',
