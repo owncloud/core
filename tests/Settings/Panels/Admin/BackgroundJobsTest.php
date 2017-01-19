@@ -14,6 +14,7 @@ use OC\Settings\Panels\Admin\BackgroundJobs;
 
 /**
  * @package Tests\Settings\Panels\Admin
+ * @group DB
  */
 class BackgroundJobsTest extends \Test\TestCase {
 
