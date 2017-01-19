@@ -4,7 +4,8 @@ vendor_script('jsTimezoneDetect/jstz');
 script('core', [
 	'visitortimezone',
 	'lostpassword',
-	'login'
+	'login',
+	'browser-update'
 ]);
 ?>
 
