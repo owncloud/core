@@ -227,6 +227,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "Oppdateringa er fullført. Sender deg vidare til ownCloud no.",
     "Searching other places" : "Søkjer andre plassar",
     "No search results in other folders" : "Ingen resultat i andre mapper",
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} søke resultat i anna katalog","{count} search results in other folders"],
     "Personal" : "Personleg",
     "Users" : "Brukarar",
     "Apps" : "Program",

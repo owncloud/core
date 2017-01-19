@@ -1,0 +1,25 @@
+{ "translations": {
+    "Federated sharing" : "Klarert deling",
+    "Invalid Federated Cloud ID" : "Ugyldig id for klarert skydeling (Federated Cloud ID)",
+    "Sharing %s failed, because this item is already shared with %s" : "Deling %s feila fordi det allereie er delt med %s",
+    "Not allowed to create a federated share with the same user" : "Ikkje lov til å lage klarert deling med same brukar",
+    "File is already shared with %s" : "Fil allereie delt med %s",
+    "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Deling %s feila, kunne ikkje finne %s, det kan være at tenar ikkje er tilgjengeleg no.",
+    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Du mottok \"/%3$s\" som ekstern deling frå %1$s (på vegne av %2$s)",
+    "You received \"/%3$s\" as a remote share from %1$s" : "Du mottok \"/%3$s\" som ekstern deling frå %1$s ",
+    "Accept" : "Godtake",
+    "Decline" : "Avslå",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Del med meg igjennom #ownCloud Federated Cloud ID, sjå %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Del med meg igjennom #ownCloud Federated Cloud ID",
+    "Federated Cloud Sharing" : "Klarert sky deling",
+    "Open documentation" : "Opne dokumentasjon.",
+    "Allow users on this server to send shares to other servers" : "Tillet brukarar på denne tenaren å sende deling til andre tenarar",
+    "Allow users on this server to receive shares from other servers" : "Tillet brukarar på denne tenaren å akseptera deling frå andre tenarar",
+    "Federated Cloud" : "Klarert sky",
+    "Your Federated Cloud ID:" : "Din id for klarert deling (Federated Cloud ID):",
+    "Share it:" : "Del det:",
+    "Add to your website" : "Legg til din nettside",
+    "Share with me via ownCloud" : "Del med meg via ownCloud",
+    "HTML Code:" : "HTML kode:"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
