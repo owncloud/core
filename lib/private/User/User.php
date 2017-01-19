@@ -337,6 +337,9 @@ class User implements IUser {
 		$this->enabled = $enabled;
 		$enabled = ($enabled) ? 'true' : 'false';
 		$this->config->setUserValue($this->uid, 'core', 'enabled', $enabled);
+		if ($this->emitter) {
+			$this->emitter->emit('\OC\User', 'postSetEnabled', [$this, $enabled]);
+		}
 	}
 
 	/**

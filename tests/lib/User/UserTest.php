@@ -502,6 +502,35 @@ class UserTest extends TestCase {
 		$this->assertEquals(2, $hooksCalled);
 	}
 
+	public function testSetEnabledHook(){
+		$hooksCalled = 0;
+		$test = $this;
+
+		/**
+		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 */
+		$backend = $this->createMock(Dummy::class);
+
+		/**
+		 * @param User $user
+		 * @param bool $enabled
+		 */
+		$hook = function ($user, $enabled) use ($test, &$hooksCalled) {
+			$hooksCalled++;
+			$expectedState = ($user->isEnabled()) ? 'true' : 'false';
+			$test->assertEquals($expectedState, $enabled);
+			$test->assertEquals('foo', $user->getUID());
+		};
+
+		$emitter = new PublicEmitter();
+		$emitter->listen('\OC\User', 'postSetEnabled', $hook);
+
+		$user = new User('foo', $backend, $emitter);
+		$user->setEnabled(true);
+		$user->setEnabled(false);
+		$this->assertEquals(2, $hooksCalled);
+	}
+
 	public function testGetCloudId() {
 		/**
 		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
