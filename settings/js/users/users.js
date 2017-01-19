@@ -524,7 +524,10 @@ var UserList = {
 		if (quota === 'other') {
 			return;
 		}
-		if (isNaN(parseInt(quota, 10)) || parseInt(quota, 10) < 0) {
+		if (
+			['default', 'none'].indexOf(quota) === -1
+			&& (isNaN(parseInt(quota, 10)) || parseInt(quota, 10) < 0)
+		) {
 			// the select component has added the bogus value, delete it again
 			$select.find('option[selected]').remove();
 			OC.Notification.showTemporary(t('core', 'Invalid quota value "{val}"', {val: quota}));
