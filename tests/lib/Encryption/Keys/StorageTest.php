@@ -28,8 +28,6 @@ use OC\Encryption\Util;
 use OC\Files\View;
 use Test\TestCase;
 use Test\Traits\UserTrait;
-use OCP\IUser;
-use OCP\IUserSession;
 
 /**
  * Class StorageTest
@@ -293,11 +291,13 @@ class StorageTest extends TestCase {
 			->with($this->equalTo('/enckeys/user2/files_encryption/encModule/user2.publicKey'))
 			->willReturn(true);
 
-		$user = $this->createMock(IUser::class);
+		$user = $this->getMock('\OCP\IUser');
 		$user->method('getUID')->willReturn('user1');
-		$userSession = $this->createMock(IUserSession::class);
+		$userSession = $this->getMock('\OCP\IUserSession');
 		$userSession->method('getUser')->willReturn($user);
-		$util = $this->createMock(\OC\Encryption\Util::class);
+		$util = $this->getMockBuilder('\OC\Encryption\Util')
+			->disableOriginalConstructor()
+			->getMock();
 		$util->method('getKeyStorageRoot')->willReturn('enckeys');
 		$storage = new Storage($this->view, $util, $userSession);
 
