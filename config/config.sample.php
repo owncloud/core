@@ -1299,6 +1299,13 @@ $CONFIG = array(
 'data-fingerprint' => '',
 
 /**
+ * Set this property to true if you want to disable the files_external local mount Option.
+ * Default: false
+ * 
+ */
+'files_external_deny_local' => false,
+
+/**
  * This entry is just here to show a warning in case somebody copied the sample
  * configuration. DO NOT ADD THIS SWITCH TO YOUR CONFIGURATION!
  *
