@@ -179,9 +179,17 @@ class OC_User {
 			if (self::getUser() !== $uid) {
 				self::setUserId($uid);
 				self::setDisplayName($uid);
-				self::getUserSession()->setLoginName($uid);
+				$userSession = self::getUserSession();
+				$userSession->setLoginName($uid);
 				$request = OC::$server->getRequest();
-				self::getUserSession()->createSessionToken($request, $uid, $uid);
+				/** @var \OC\Authentication\Token\DefaultTokenProvider $provider */
+				$provider = OC::$server->query('OC\Authentication\Token\DefaultTokenProvider');
+				try {
+					$token = $provider->getToken($userSession->getSession()->getId());
+					$provider->updateTokenActivity($token);
+				} catch (\OC\Authentication\Exceptions\InvalidTokenException $e) {
+					$userSession->createSessionToken($request, $uid, $uid);
+				}
 				// setup the filesystem
 				OC_Util::setupFS($uid);
 				// first call the post_login hooks, the login-process needs to be
