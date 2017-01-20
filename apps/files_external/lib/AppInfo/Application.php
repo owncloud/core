@@ -90,12 +90,12 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 			$container->query('OCA\Files_External\Lib\Backend\SFTP_Key'),
 			$container->query('OCA\Files_External\Lib\Backend\SMB'),
 			$container->query('OCA\Files_External\Lib\Backend\SMB_OC'),
-    ];
+		];
 
-    $this->allowLocalMounts = \OC::$server->getConfig()->getSystemValue('files_external_allow_local', true);
-      if ($this->allowLocalMounts === true) {
-        $backends[] = $container->query('OCA\Files_External\Lib\Backend\Local');
-      };
+		$this->allowLocalMounts = \OC::$server->getConfig()->getSystemValue('files_external_allow_local', true);
+		if ($this->allowLocalMounts === true) {
+			$backends[] = $container->query('OCA\Files_External\Lib\Backend\Local');
+		};
 
 		return $backends;
 	}
