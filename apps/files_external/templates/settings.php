@@ -1,7 +1,6 @@
 <?php
 	use \OCP\Files\External\Backend\Backend;
 	use \OCP\Files\External\Auth\AuthMechanism;
-	use \OCP\Files\External\DefinitionParameter;
 	use \OCP\Files\External\IStoragesBackendService;
 
 	$l->t("Enable encryption");
@@ -30,59 +29,6 @@
 		}
 	}
 
-	function writeParameterInput($parameter, $options, $classes = []) {
-		$value = '';
-		if (isset($options[$parameter->getName()])) {
-			$value = $options[$parameter->getName()];
-		}
-		$placeholder = $parameter->getText();
-		$is_optional = $parameter->isFlagSet(DefinitionParameter::FLAG_OPTIONAL);
-
-		switch ($parameter->getType()) {
-		case DefinitionParameter::VALUE_PASSWORD: ?>
-			<?php if ($is_optional) { $classes[] = 'optional'; } ?>
-			<input type="password"
-				<?php if (!empty($classes)): ?> class="<?php p(implode(' ', $classes)); ?>"<?php endif; ?>
-				data-parameter="<?php p($parameter->getName()); ?>"
-				value="<?php p($value); ?>"
-				placeholder="<?php p($placeholder); ?>"
-			/>
-			<?php
-			break;
-		case DefinitionParameter::VALUE_BOOLEAN: ?>
-			<?php $checkboxId = uniqid("checkbox_"); ?>
-			<div>
-			<label>
-			<input type="checkbox"
-				id="<?php p($checkboxId); ?>"
-				<?php if (!empty($classes)): ?> class="checkbox <?php p(implode(' ', $classes)); ?>"<?php endif; ?>
-				data-parameter="<?php p($parameter->getName()); ?>"
-				<?php if ($value === true): ?> checked="checked"<?php endif; ?>
-			/>
-			<?php p($placeholder); ?>
-			</label>
-			</div>
-			<?php
-			break;
-		case DefinitionParameter::VALUE_HIDDEN: ?>
-			<input type="hidden"
-				<?php if (!empty($classes)): ?> class="<?php p(implode(' ', $classes)); ?>"<?php endif; ?>
-				data-parameter="<?php p($parameter->getName()); ?>"
-				value="<?php p($value); ?>"
-			/>
-			<?php
-			break;
-		default: ?>
-			<?php if ($is_optional) { $classes[] = 'optional'; } ?>
-			<input type="text"
-				<?php if (!empty($classes)): ?> class="<?php p(implode(' ', $classes)); ?>"<?php endif; ?>
-				data-parameter="<?php p($parameter->getName()); ?>"
-				value="<?php p($value); ?>"
-				placeholder="<?php p($placeholder); ?>"
-			/>
-			<?php
-		}
-	}
 ?>
 <form id="files_external" class="section" data-encryption-enabled="<?php echo $_['encryptionEnabled']?'true': 'false'; ?>">
 	<h2 class="app-name"><?php p($l->t('External Storage')); ?></h2>

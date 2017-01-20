@@ -11,6 +11,9 @@
 namespace OCA\Files_External\Tests\Panels;
 
 use OCA\Files_External\Panels\Admin;
+use OCP\Files\External\IStoragesBackendService;
+use OCP\Files\External\Service\IGlobalStoragesService;
+
 /**
  * @package OCA\Files_External\Tests
  */
@@ -29,13 +32,13 @@ class AdminTest extends \Test\TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->backendService = $this->getMockBuilder('\OCP\Files\External\IStoragesBackendService')->getMock();
-		$this->storagesService = $this->getMockBuilder('\OCP\Files\External\Service\IGlobalStoragesService')->getMock();
+		$this->backendService = $this->createMock(IStoragesBackendService::class);
+		$this->storagesService = $this->createMock(IGlobalStoragesService::class);
 		$this->encManager = $this->getMockBuilder('\OC\Encryption\Manager')->disableOriginalConstructor()->getMock();
 		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
 		$this->panel = new Admin(
-			$this->backendService,
 			$this->storagesService,
+			$this->backendService,
 			$this->encManager,
 			$this->helper);
 	}
@@ -51,8 +54,11 @@ class AdminTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
+		$this->backendService->expects($this->once())->method('getAuthMechanisms')->willReturn([]);
+		$this->backendService->expects($this->once())->method('getBackends')->willReturn([]);
+		$this->backendService->expects($this->once())->method('getAvailableBackends')->willReturn([]);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
-		$this->assertContains('<div class="section">', $templateHtml);
+		$this->assertContains('<h2 class="app-name">External Storage</h2>', $templateHtml);
 	}
 
 }
