@@ -77,6 +77,7 @@ OC.L10N.register(
     "Username" : "Brukarnamn",
     "Get the apps to sync your files" : "Få app-ar som kan synkronisera filene dine",
     "Show First Run Wizard again" : "Vis Oppstartvegvisaren igjen",
+    "E-Mail" : "E-post",
     "Create" : "Lag",
     "Admin Recovery Password" : "Gjenopprettingspassord for administrator",
     "Enter the recovery password in order to recover the users files during password change" : "Skriv inn gjenopprettingspassordet brukt for å gjenoppretta brukarfilene ved passordendring",
