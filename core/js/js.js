@@ -1444,6 +1444,10 @@ function initCore() {
 	if (msie > 0 || trident > 0) {
 		// (IE 10 or older) || IE 11
 		$('html').addClass('ie');
+		if(trident > 0) {
+			var rv = userAgent.indexOf('rv:');
+			$('html').addClass('ie' + parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10));
+		}
 	} else if (edge > 0) {
 		// for edge
 		$('html').addClass('edge');
@@ -1868,6 +1872,15 @@ OC.Util = {
 	 */
 	isIE: function() {
 		return $('html').hasClass('ie');
+	},
+
+	/**
+	 * Returns whether this is IE11
+	 *
+	 * @return {bool} true if this is IE11, false otherwise
+	 */
+	isIE11: function() {
+		return $('html').hasClass('ie11');
 	},
 
 	/**

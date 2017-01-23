@@ -336,6 +336,21 @@ OC.Upload = {
 						data.errorThrown = errorMessage;
 					}
 
+					// detect browser and version to handle IE11 upload file size limit
+					if (OC.Util.isIE11()) {
+						var maxUploadFileSize = 4187593113;
+						// check filesize (> 4 GB is not supported in IE11); limit is set to 3.9GB
+						if (file.size > maxUploadFileSize) {
+							data.textStatus = 'sizeexceedbrowserlimit';
+							data.errorThrown = t('files',
+								'Total file size {size1} exceeds your browser upload limit. Please use the {ownCloud} desktop client to upload files bigger than {size2}.', {
+								'size1': humanFileSize(file.size),
+								'ownCloud' : OC.theme.name || 'ownCloud',
+								'size2': humanFileSize(maxUploadFileSize)
+							});
+						}
+					}
+
 					// in case folder drag and drop is not supported file will point to a directory
 					// http://stackoverflow.com/a/20448357
 					if ( ! file.type && file.size%4096 === 0 && file.size <= 102400) {
@@ -583,7 +598,7 @@ OC.Upload = {
 							+ '</span><span class="mobile">'
 							+ t('files', '...')
 							+ '</span></em>');
-                    $('#uploadprogressbar').tipsy({gravity:'n', fade:true, live:true});
+					$('#uploadprogressbar').tipsy({gravity:'n', fade:true, live:true});
 					OC.Upload._showProgressBar();
 				});
 				fileupload.on('fileuploadprogress', function(e, data) {
