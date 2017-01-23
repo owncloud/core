@@ -156,6 +156,8 @@ timestampedNode('SLAVE') {
 }
 
 def isOnReleaseBranch ()  {
+	// TEMP: for testing on PR
+	return true
     if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'stable9.1' || env.BRANCH_NAME == 'stable9' || env.BRANCH_NAME == 'stable8.2') {
         return true;
     }
