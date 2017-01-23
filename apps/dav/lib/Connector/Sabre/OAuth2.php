@@ -75,6 +75,11 @@ class OAuth2 extends AbstractBearer {
 		try {
 			/** @var AccessToken $accessToken */
 			$accessToken = $accessTokenMapper->findByToken($bearerToken);
+
+			if ($accessToken->hasExpired()) {
+				return false;
+			}
+
 			$userId = $accessToken->getUserId();
 
 			\OC_Util::setupFS($userId);
