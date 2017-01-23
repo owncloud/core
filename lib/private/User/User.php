@@ -39,6 +39,7 @@ use OCP\IUser;
 use OCP\IConfig;
 use OCP\UserInterface;
 use \OCP\IUserBackend;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class User implements IUser {
 	/** @var string $uid */
@@ -337,9 +338,9 @@ class User implements IUser {
 		$this->enabled = $enabled;
 		$enabled = ($enabled) ? 'true' : 'false';
 		$this->config->setUserValue($this->uid, 'core', 'enabled', $enabled);
-		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'postSetEnabled', [$this, $enabled]);
-		}
+
+		$eventDispatcher = \OC::$server->getEventDispatcher();
+		$eventDispatcher->dispatch(self::class . '::postSetEnabled',  new GenericEvent($this));
 	}
 
 	/**

@@ -14,6 +14,7 @@ use OC\User\Backend;
 use OC\User\Database;
 use OC\User\User;
 use OCP\IConfig;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 use Test\Util\User\Dummy;
 
@@ -512,20 +513,17 @@ class UserTest extends TestCase {
 		$backend = $this->createMock(Dummy::class);
 
 		/**
-		 * @param User $user
-		 * @param bool $enabled
+		 * @param GenericEvent $event
 		 */
-		$hook = function ($user, $enabled) use ($test, &$hooksCalled) {
+		$hook = function ($event) use ($test, &$hooksCalled) {
 			$hooksCalled++;
-			$expectedState = ($user->isEnabled()) ? 'true' : 'false';
-			$test->assertEquals($expectedState, $enabled);
-			$test->assertEquals('foo', $user->getUID());
+			$test->assertEquals('foo', $event->getSubject()->getUID());
 		};
 
-		$emitter = new PublicEmitter();
-		$emitter->listen('\OC\User', 'postSetEnabled', $hook);
+		$eventDispatcher = \OC::$server->getEventDispatcher();
+		$eventDispatcher->addListener(User::class . '::postSetEnabled', $hook);
 
-		$user = new User('foo', $backend, $emitter);
+		$user = new User('foo', $backend, new PublicEmitter());
 		$user->setEnabled(true);
 		$user->setEnabled(false);
 		$this->assertEquals(2, $hooksCalled);
