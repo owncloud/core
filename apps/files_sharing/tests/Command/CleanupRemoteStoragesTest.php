@@ -179,66 +179,13 @@ class CleanupRemoteStoragesTest extends TestCase {
 			->expects($this->at($at++))
 			->method('writeln')
 			->with('5 remote share(s) exist');
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with($this->stringStartsWith("{$this->storages[0]['id']} belongs to remote share"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with($this->stringStartsWith("{$this->storages[1]['id']} belongs to remote share"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with($this->stringStartsWith("{$this->storages[4]['id']} belongs to remote share"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with($this->stringStartsWith("{$this->storages[2]['notExistingId']} for share"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with($this->stringStartsWith("{$this->storages[6]['notExistingId']} for share"));
-
-		// delete storage 3
-		$output
-			->expects($this->at($at++))
-			->method('write')
-			->with($this->stringStartsWith("deleting {$this->storages[3]['id']}"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with('deleted 1');
-		$output
-			->expects($this->at($at++))
-			->method('write')
-			->with($this->stringStartsWith("deleting files for storage {$this->storages[3]['numeric_id']}"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with('deleted 2');
-
-		// delete storage 5
-		$output
-			->expects($this->at($at++))
-			->method('write')
-			->with($this->stringStartsWith("deleting {$this->storages[5]['id']}"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with('deleted 1');
-		$output
-			->expects($this->at($at++))
-			->method('write')
-			->with($this->stringStartsWith("deleting files for storage {$this->storages[5]['numeric_id']}"));
-		$output
-			->expects($this->at($at++))
-			->method('writeln')
-			->with('deleted 3');
 
 		$this->command->execute($input, $output);
 
+		$this->assertTrue($this->doesStorageExist($this->storages[0]['numeric_id']));
+		$this->assertTrue($this->doesStorageExist($this->storages[1]['numeric_id']));
 		$this->assertFalse($this->doesStorageExist($this->storages[3]['numeric_id']));
+		$this->assertTrue($this->doesStorageExist($this->storages[4]['numeric_id']));
 		$this->assertFalse($this->doesStorageExist($this->storages[5]['numeric_id']));
 
 	}
