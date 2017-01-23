@@ -1002,4 +1002,87 @@ class FileTest extends TestCase {
 
 		$file->get();
 	}
+
+	public function testPutCreatesPartFile() {
+		$stream = $this->getStream('ABCDEFG');
+		$storage = $this->getMockBuilder(Local::class)
+			->setMethods(['fopen', 'moveFromStorage', 'file_exists'])
+			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
+			->getMock();
+
+		$storage->expects($this->atLeastOnce())
+			->method('fopen')
+			->with($this->matchesRegularExpression('/^([0-9a-f]{40})(.ocTransferId)([0-9]+)(.part)$/i'))
+			->willReturn($stream);
+
+		$storage->method('moveFromStorage')
+			->willReturn(true);
+
+		$storage->method('file_exists')
+			->willReturn(true);
+
+
+		$path = '/' . $this->user . '/files';
+		$info = new FileInfo($path, $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_ALL
+		], null);
+
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['fopen', 'resolvePath'])
+			->getMock();
+
+
+		$view->expects($this->atLeastOnce())
+			->method('resolvePath')
+			->will($this->returnCallback(
+				function ($path) use ($storage) {
+					return [$storage, $path];
+				}
+			));
+
+		$file = new File($view, $info);
+		$file->put($stream);
+	}
+
+	public function testPutWithChunkCreatesPartFile() {
+		$stream = $this->getStream('ABCDEFG');
+
+		$storage = $this->getMockBuilder(Local::class)
+			->setMethods(['fopen', 'moveFromStorage', 'file_exists'])
+			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
+			->getMock();
+
+		$storage->expects($this->atLeastOnce())
+			->method('fopen')
+			->with($this->matchesRegularExpression('/^(\/[0-9a-f]{40})(.ocTransferId)([0-9]+)(.part)$/i'))
+			->willReturn($this->getStream('FOO1231'));
+
+		$path = 'foo.dat-chunking-13242432-0-0';
+
+		$info = new FileInfo($path, $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_ALL
+		], null);
+		$info['checksum'] = 'abcdefg123';
+		$info['etag'] = 'deadbeef1337';
+
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['fopen', 'resolvePath', 'getFileInfo'])
+			->getMock();
+
+		$view->method('getFileInfo')
+			->willReturn($info);
+
+		$view->expects($this->atLeastOnce())
+			->method('resolvePath')
+			->will($this->returnCallback(
+				function ($path) use ($storage) {
+					return [$storage, $path];
+				}
+			));
+
+
+		$_SERVER['HTTP_OC_CHUNKED'] = true;
+		$file = new File($view, $info);
+		$file->put($stream);
+	}
 }

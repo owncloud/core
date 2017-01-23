@@ -427,11 +427,10 @@ class File extends Node implements IFile {
 				list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
 
 				if ($needsPartFile) {
-					// we first assembly the target file as a part file
-					$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
+					// we first assemble the target file as a part file
+					$partFile = $this->getPartFileBasePath($path . '/' . sha1($info['name'])) . '.ocTransferId' . $info['transferid'] . '.part';
 					/** @var \OC\Files\Storage\Storage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
-
 
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
