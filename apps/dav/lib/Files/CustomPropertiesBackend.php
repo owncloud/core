@@ -21,6 +21,8 @@
 
 namespace OCA\DAV\Files;
 
+use Doctrine\DBAL\Connection;
+use OCA\DAV\Connector\Sabre\Node;
 use OCP\IDBConnection;
 use OCP\IUser;
 use Sabre\DAV\PropertyStorage\Backend\BackendInterface;
@@ -58,7 +60,7 @@ class CustomPropertiesBackend implements BackendInterface {
 	private $connection;
 
 	/**
-	 * @var IUser
+	 * @var string
 	 */
 	private $user;
 
@@ -104,7 +106,8 @@ class CustomPropertiesBackend implements BackendInterface {
 			return;
 		}
 
-		$props = $this->getProperties($path, $requestedProps);
+		$fileId = $this->getFileIdByPath($path);
+		$props = $this->getProperties($fileId, $requestedProps);
 		foreach ($props as $propName => $propValue) {
 			$propFind->set($propName, $propValue);
 		}
@@ -120,7 +123,8 @@ class CustomPropertiesBackend implements BackendInterface {
 	 */
 	public function propPatch($path, PropPatch $propPatch) {
 		$propPatch->handleRemaining(function($changedProps) use ($path) {
-			return $this->updateProperties($path, $changedProps);
+			$fileId = $this->getFileIdByPath($path);
+			return $this->updateProperties($fileId, $changedProps);
 		});
 	}
 
@@ -130,13 +134,14 @@ class CustomPropertiesBackend implements BackendInterface {
 	 * @param string $path path of node for which to delete properties
 	 */
 	public function delete($path) {
+		$fileId = $this->getFileIdByPath($path);
 		$statement = $this->connection->prepare(
-			'DELETE FROM `*PREFIX*properties` WHERE `userid` = ? AND `propertypath` = ?'
+			'DELETE FROM `*PREFIX*properties` WHERE `file_id` = ?'
 		);
-		$statement->execute([$this->user, $path]);
+		$statement->execute([$fileId]);
 		$statement->closeCursor();
 
-		unset($this->cache[$path]);
+		unset($this->cache[$fileId]);
 	}
 
 	/**
@@ -148,17 +153,12 @@ class CustomPropertiesBackend implements BackendInterface {
 	 * @return void
 	 */
 	public function move($source, $destination) {
-		$statement = $this->connection->prepare(
-			'UPDATE `*PREFIX*properties` SET `propertypath` = ?' .
-			' WHERE `userid` = ? AND `propertypath` = ?'
-		);
-		$statement->execute([$destination, $this->user, $source]);
-		$statement->closeCursor();
+		// Do nothing
 	}
 
 	/**
 	 * Returns a list of properties for this nodes.;
-	 * @param string $path
+	 * @param int $fileId
 	 * @param array $requestedProperties requested properties or empty array for "all"
 	 * @return array
 	 * @note The properties list is a list of propertynames the client
@@ -166,22 +166,22 @@ class CustomPropertiesBackend implements BackendInterface {
 	 * http://www.example.org/namespace#author If the array is empty, all
 	 * properties should be returned
 	 */
-	private function getProperties($path, array $requestedProperties) {
-		if (isset($this->cache[$path])) {
-			return $this->cache[$path];
+	private function getProperties($fileId, array $requestedProperties) {
+		if (isset($this->cache[$fileId])) {
+			return $this->cache[$fileId];
 		}
 
 		// TODO: chunking if more than 1000 properties
-		$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `userid` = ? AND `propertypath` = ?';
+		$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `file_id` = ?';
 
-		$whereValues = [$this->user, $path];
-		$whereTypes = [null, null];
+		$whereValues = [$fileId];
+		$whereTypes = [null];
 
 		if (!empty($requestedProperties)) {
 			// request only a subset
 			$sql .= ' AND `propertyname` in (?)';
 			$whereValues[] = $requestedProperties;
-			$whereTypes[] = \Doctrine\DBAL\Connection::PARAM_STR_ARRAY;
+			$whereTypes[] = Connection::PARAM_STR_ARRAY;
 		}
 
 		$result = $this->connection->executeQuery(
@@ -197,31 +197,31 @@ class CustomPropertiesBackend implements BackendInterface {
 
 		$result->closeCursor();
 
-		$this->cache[$path] = $props;
+		$this->cache[$fileId] = $props;
 		return $props;
 	}
 
 	/**
 	 * Update properties
 	 *
-	 * @param string $path node for which to update properties
+	 * @param int $fileId node for which to update properties
 	 * @param array $properties array of properties to update
 	 *
 	 * @return bool
 	 */
-	private function updateProperties($path, $properties) {
+	private function updateProperties($fileId, $properties) {
 
 		$deleteStatement = 'DELETE FROM `*PREFIX*properties`' .
-			' WHERE `userid` = ? AND `propertypath` = ? AND `propertyname` = ?';
+			' WHERE `file_id` = ? AND `propertyname` = ?';
 
 		$insertStatement = 'INSERT INTO `*PREFIX*properties`' .
-			' (`userid`,`propertypath`,`propertyname`,`propertyvalue`) VALUES(?,?,?,?)';
+			' (`file_id`,`propertyname`,`propertyvalue`) VALUES(?,?,?)';
 
 		$updateStatement = 'UPDATE `*PREFIX*properties` SET `propertyvalue` = ?' .
-			' WHERE `userid` = ? AND `propertypath` = ? AND `propertyname` = ?';
+			' WHERE `file_id` = ? AND `propertyname` = ?';
 
 		// TODO: use "insert or update" strategy ?
-		$existing = $this->getProperties($path, []);
+		$existing = $this->getProperties($fileId, []);
 		$this->connection->beginTransaction();
 		foreach ($properties as $propertyName => $propertyValue) {
 			// If it was null, we need to delete the property
@@ -229,8 +229,7 @@ class CustomPropertiesBackend implements BackendInterface {
 				if (array_key_exists($propertyName, $existing)) {
 					$this->connection->executeUpdate($deleteStatement,
 						[
-							$this->user,
-							$path,
+							$fileId,
 							$propertyName
 						]
 					);
@@ -239,8 +238,7 @@ class CustomPropertiesBackend implements BackendInterface {
 				if (!array_key_exists($propertyName, $existing)) {
 					$this->connection->executeUpdate($insertStatement,
 						[
-							$this->user,
-							$path,
+							$fileId,
 							$propertyName,
 							$propertyValue
 						]
@@ -249,8 +247,7 @@ class CustomPropertiesBackend implements BackendInterface {
 					$this->connection->executeUpdate($updateStatement,
 						[
 							$propertyValue,
-							$this->user,
-							$path,
+							$fileId,
 							$propertyName
 						]
 					);
@@ -259,9 +256,26 @@ class CustomPropertiesBackend implements BackendInterface {
 		}
 
 		$this->connection->commit();
-		unset($this->cache[$path]);
+		unset($this->cache[$fileId]);
 
 		return true;
+	}
+
+	/**
+	 * @param string $filePath
+	 * @return int
+	 */
+	private function getFileIdByPath($filePath){
+		if (!$this->tree->nodeExists($filePath)) {
+			return;
+		}
+		$node = $this->tree->getNodeForPath($filePath);
+		if ($node instanceof Node) {
+			$fileId = $node->getFileId();
+			if (!is_null($fileId)) {
+				return $fileId;
+			}
+		}
 	}
 
 }
