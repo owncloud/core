@@ -4,6 +4,7 @@ Feature: external-storage
     Given using old dav path
 
   @local_storage
+  @no_encryption
   Scenario: Share by link a file inside a local external storage
     Given user "user0" exists
     And user "user1" exists
