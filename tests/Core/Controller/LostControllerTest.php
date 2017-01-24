@@ -242,7 +242,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmailUnsucessful() {
-		$existingUser = 'ExistingUser';
+		$existingUser = 'ExistingUser1';
 		$nonExistingUser = 'NonExistingUser';
 		$this->userManager
 			->expects($this->any())
@@ -257,9 +257,9 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$expectedResponse = [
 			'status' => 'success'
 		];
-		$this->logger->expects($this->once())
+		$this->logger->expects($this->any())
 			->method('error')
-			->with('Couldn\'t send reset email because User does not exist.');
+			->with('Could not send reset email because User does not exist. User: {user}');
 		$this->assertSame($expectedResponse, $response);
 
 		// With no mail address
@@ -267,8 +267,11 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->any())
 			->method('getUserValue')
 			->with($existingUser, 'settings', 'email')
-			->will($this->returnValue(null));
+			->will($this->returnValue(''));
 		$response = $this->lostController->email($existingUser);
+		$this->logger->expects($this->any())
+			->method('error')
+			->with('Could not send reset email because there is no email address for this username. User: {user}');
 		$expectedResponse = [
 			'status' => 'success'
 		];

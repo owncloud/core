@@ -273,10 +273,10 @@ class LostController extends Controller {
 					));
 				}
 			} else {
-				$this->logger->error('Could not send reset email because there is no email address for this username.', ['app' => 'core']);
+				$this->logger->error('Could not send reset email because there is no email address for this username. User: {user}', ['app' => 'core', 'user' => $user]);
 			}
 		} else {
-			$this->logger->error('Couldn\'t send reset email because User does not exist.', ['app' => 'core']);
+			$this->logger->error('Could not send reset email because User does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
 		}
 	}
 
