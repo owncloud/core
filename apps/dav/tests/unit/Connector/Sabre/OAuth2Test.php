@@ -24,13 +24,13 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
+use OC\Core\Application;
 use OCA\DAV\Connector\Sabre\OAuth2;
 use OCA\OAuth2\Db\AccessToken;
 use OCA\OAuth2\Db\AccessTokenMapper;
 use OCA\OAuth2\Db\Client;
 use OCA\OAuth2\Db\ClientMapper;
 use Test\TestCase;
-use OCA\OAuth2\AppInfo\Application;
 
 /**
  * Class OAuth2Test
