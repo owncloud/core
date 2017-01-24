@@ -26,6 +26,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUser;
@@ -63,6 +64,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 	private $timeFactory;
 	/** @var IRequest */
 	private $request;
+	/** @var ILogger */
+	private $logger;
 
 	protected function setUp() {
 
@@ -98,6 +101,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->request = $this->getMockBuilder('OCP\IRequest')
 			->disableOriginalConstructor()->getMock();
+		$this->logger = $this->getMockBuilder('OCP\ILogger')
+			->disableOriginalConstructor()->getMock();
 		$this->lostController = new LostController(
 			'Core',
 			$this->request,
@@ -110,7 +115,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			'lostpassword-noreply@localhost',
 			true,
 			$this->mailer,
-			$this->timeFactory
+			$this->timeFactory,
+			$this->logger
 		);
 	}
 
@@ -250,7 +256,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$response = $this->lostController->email($nonExistingUser);
 		$expectedResponse = [
 			'status' => 'error',
-			'msg' => 'Couldn\'t send reset email. Please make sure your username is correct.'
+			'msg' => 'Couldn\'t send reset email because User does not exist.'
 		];
 		$this->assertSame($expectedResponse, $response);
 
