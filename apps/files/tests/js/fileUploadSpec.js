@@ -118,6 +118,43 @@ describe('OC.Upload tests', function() {
 				'Not enough free space, you are uploading 5 KB but only 1000 B is left'
 			);
 		});
+		it('does not add file if too big for IE11', function() {
+			var ieStub = sinon.stub(OC.Util, 'isIE11').returns(true);
+			var oldTheme = OC.theme.name;
+			OC.theme.name = 'SomeThing';
+
+			$('#free_space').val(1000000000000);
+			$('#upload_limit').val(1000000000000);
+
+			var result;
+			testFile.size = 4187593113 + 1;
+			result = addFile(testFile);
+
+			expect(result).toEqual(false);
+			expect(failStub.calledOnce).toEqual(true);
+			expect(failStub.getCall(0).args[1].textStatus).toEqual('sizeexceedbrowserlimit');
+			expect(failStub.getCall(0).args[1].errorThrown).toEqual(
+				'Total file size 3.9 GB exceeds your browser upload limit. Please use the SomeThing desktop client to upload files bigger than 3.9 GB.'
+			);
+
+			OC.theme.name = oldTheme;
+			ieStub.restore();
+		});
+		it('adds big files when not dealing with IE11', function() {
+			var ieStub = sinon.stub(OC.Util, 'isIE11').returns(false);
+
+			$('#free_space').val(1000000000000);
+			$('#upload_limit').val(1000000000000);
+
+			var result;
+			testFile.size = 4187593113 + 1;
+			result = addFile(testFile);
+
+			expect(result).toEqual(true);
+			expect(failStub.notCalled).toEqual(true);
+
+			ieStub.restore();
+		});
 	});
 	describe('Upload conflicts', function() {
 		var oldFileList;
