@@ -37,6 +37,7 @@
 		}
 
 		url += options.host + this._root;
+		this._host = options.host;
 		this._defaultHeaders = options.defaultHeaders || {
 				'X-Requested-With': 'XMLHttpRequest',
 				'requesttoken': OC.requestToken
@@ -705,8 +706,57 @@
 		 */
 		addFileInfoParser: function(parserFunction) {
 			this._fileInfoParsers.push(parserFunction);
-		}
+		},
 
+		/**
+		 * Returns the dav.Client instance used internally
+		 *
+		 * @since 9.2
+		 * @return {dav.Client}
+		 */
+		getClient: function() {
+			return this._client;
+		},
+
+		/**
+		 * Returns the user name
+		 *
+		 * @since 9.2
+		 * @return {String} userName
+		 */
+		getUserName: function() {
+			return this._client.userName;
+		},
+
+		/**
+		 * Returns the password 
+		 *
+		 * @since 9.2
+		 * @return {String} password
+		 */
+		getPassword: function() {
+			return this._client.password;
+		},
+
+		/**
+		 * Returns the base URL
+		 *
+		 * @since 9.2
+		 * @return {String} base URL
+		 */
+		getBaseUrl: function() {
+			return this._client.baseUrl;
+		},
+
+		/**
+		 * Returns the host
+		 *
+		 * @since 9.2
+		 * @return {String} base URL
+		 */
+		getHost: function() {
+			return this._host;
+		}
 	};
 
 	/**
@@ -743,7 +793,6 @@
 
 		var client = new OC.Files.Client({
 			host: OC.getHost(),
-			port: OC.getPort(),
 			root: OC.linkToRemoteBase('webdav'),
 			useHTTPS: OC.getProtocol() === 'https'
 		});

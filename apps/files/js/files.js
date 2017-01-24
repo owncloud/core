@@ -59,7 +59,6 @@
 				return;
 			}
 			if (response.data !== undefined && response.data.uploadMaxFilesize !== undefined) {
-				$('#max_upload').val(response.data.uploadMaxFilesize);
 				$('#free_space').val(response.data.freeSpace);
 				$('#upload.button').attr('data-original-title', response.data.maxHumanFilesize);
 				$('#usedSpacePercent').val(response.data.usedSpacePercent);
@@ -71,7 +70,6 @@
 				return;
 			}
 			if (response[0].uploadMaxFilesize !== undefined) {
-				$('#max_upload').val(response[0].uploadMaxFilesize);
 				$('#upload.button').attr('data-original-title', response[0].maxHumanFilesize);
 				$('#usedSpacePercent').val(response[0].usedSpacePercent);
 				Files.displayStorageWarnings();
@@ -225,17 +223,6 @@
 
 			// TODO: move file list related code (upload) to OCA.Files.FileList
 			$('#file_action_panel').attr('activeAction', false);
-
-			// Triggers invisible file input
-			$('#upload a').on('click', function() {
-				$(this).parent().children('#file_upload_start').trigger('click');
-				return false;
-			});
-
-			// Trigger cancelling of file upload
-			$('#uploadprogresswrapper .stop').on('click', function() {
-				OC.Upload.cancelUploads();
-			});
 
 			// drag&drop support using jquery.fileupload
 			// TODO use OC.dialogs

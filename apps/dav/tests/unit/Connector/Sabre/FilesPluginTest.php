@@ -108,7 +108,7 @@ class FilesPluginTest extends TestCase {
 	 * @param string $class
 	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
-	private function createTestNode($class) {
+	private function createTestNode($class, $path = '/dummypath') {
 		$node = $this->getMockBuilder($class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,7 +119,7 @@ class FilesPluginTest extends TestCase {
 
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
-			->with('/dummypath')
+			->with($path)
 			->will($this->returnValue($node));
 
 		$node->expects($this->any())
