@@ -111,7 +111,8 @@ class File extends Node implements IFile {
 
 		if ($needsPartFile) {
 			// mark file as partial while uploading (ignored by the scanner)
-			$partFilePath = sha1($this->getPartFileBasePath($this->path)) . '.ocTransferId' . rand() . '.part';
+			$fullPath = $this->getPartFileBasePath($this->path);
+			$partFilePath = dirname($fullPath) . '/' . sha1(basename($fullPath)) . '.ocTransferId' . rand() . '.part';
 		} else {
 			// upload file directly as the final path
 			$partFilePath = $this->path;

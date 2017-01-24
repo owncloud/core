@@ -1012,7 +1012,7 @@ class FileTest extends TestCase {
 
 		$storage->expects($this->atLeastOnce())
 			->method('fopen')
-			->with($this->matchesRegularExpression('/^([0-9a-f]{40})(.ocTransferId)([0-9]+)(.part)$/i'))
+			->with($this->matchesRegularExpression('/a1f13b3bc20a296e08c212be9c56c706c10abc4f.ocTransferId([0-9]+).part$/i'))
 			->willReturn($stream);
 
 		$storage->method('moveFromStorage')
@@ -1054,7 +1054,7 @@ class FileTest extends TestCase {
 
 		$storage->expects($this->atLeastOnce())
 			->method('fopen')
-			->with($this->matchesRegularExpression('/^(\/[0-9a-f]{40})(.ocTransferId)([0-9]+)(.part)$/i'))
+			->with($this->matchesRegularExpression('/^\/1cf7c9c735f7fd721ebe33ea1e7d259397f24007.ocTransferId([0-9]+).part$/i'))
 			->willReturn($this->getStream('FOO1231'));
 
 		$path = 'foo.dat-chunking-13242432-0-0';
