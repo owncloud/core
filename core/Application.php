@@ -72,7 +72,8 @@ class Application extends App {
 				$c->query('DefaultEmailAddress'),
 				$c->query('IsEncryptionEnabled'),
 				$c->query('Mailer'),
-				$c->query('TimeFactory')
+				$c->query('TimeFactory'),
+				$c->query('Logger')
 			);
 		});
 		$container->registerService('UserController', function(SimpleContainer $c) {
