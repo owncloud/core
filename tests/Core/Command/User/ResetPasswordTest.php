@@ -4,6 +4,10 @@ namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\ResetPassword;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class ResetPasswordTest extends TestCase
 {
@@ -64,35 +68,49 @@ class ResetPasswordTest extends TestCase
 		$resetPasswordCommand->run($inputInterfaceMock, $outputInterfaceMock);
 	}
 
-	public function PasswordFromEnvGivenButOC_PASSIsEmpty(){
+	public function testPrintsErrorIfNoPasswordWasGiven() {
+		$userMock = $this->getMockBuilder('OCP\IUser')->getMock();
+		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')->getMock();
+		$userManagerMock->method('get')->with('test123')->willReturn($userMock);
 
-		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')
-			->getMock();
+		$command = new ResetPassword($userManagerMock);
+		$commandTester = $this->getCommandTester($command);
 
-		$userManagerMock
-			->method('get')
-			->willReturn(null);
+		$commandTester->setInputs(["\n", "\n"]);
 
-		$resetPasswordCommand = new ResetPassword($userManagerMock);
+		$commandTester->execute(
+			['user' => 'test123'],
+			['password-from-env' => false]
+		);
 
-		$inputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
-			->getMock();
-		$inputInterfaceMock
-			->method('getOption')
-			->with ('password-from-env')
-			->willReturn('OC_PASS');
-
-		$outputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')
-			->getMock();
-
-		$outputInterfaceMock
-			->expects($this->once())
-			->method ('writeln')
-			->with('<error>--password-from-env given, but OC_PASS is empty!</error>');
-
-		$resetPasswordCommand->run($inputInterfaceMock, $outputInterfaceMock);
+		$this->assertContains('You did not enter a Password!', $commandTester->getDisplay());
 	}
-	public function EncryptionResetCausesLossOfData() {
 
+	public function testPrintsErrorIfPasswordConfirmationDidNotMatch() {
+		$userMock = $this->getMockBuilder('OCP\IUser')->getMock();
+		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')->getMock();
+		$userManagerMock->method('get')->with('test123')->willReturn($userMock);
+
+		$command = new ResetPassword($userManagerMock);
+		$commandTester = $this->getCommandTester($command);
+
+		$commandTester->setInputs(["password", "passwordconfirmation"]);
+
+		$commandTester->execute(
+			['user' => 'test123'],
+			['password-from-env' => false]
+		);
+
+		$this->assertContains('Passwords did not match!', $commandTester->getDisplay());
+	}
+
+	/**
+	 * @param Command $command
+	 * @return CommandTester
+	 */
+	private function getCommandTester(Command $command) {
+		$commandTester = new CommandTester($command);
+		$command->setHelperSet(new HelperSet(array(new QuestionHelper())));
+		return $commandTester;
 	}
 }
