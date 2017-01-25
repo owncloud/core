@@ -27,6 +27,10 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use OCP\Share\IShare;
+use OC\Files\View;
+use OCP\Files\NotFoundException;
+
 /**
  * Class SharedStorageTest
  *
@@ -529,5 +533,38 @@ class SharedStorageTest extends TestCase {
 
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
+	}
+
+	public function testInitWithNonExistingUser() {
+		$share = $this->getMock('\OCP\Share\IShare');
+		$share->method('getShareOwner')->willReturn('unexist');
+		$ownerView = $this->getMock('\OC\Files\View');
+		$storage = new \OC\Files\Storage\Shared([
+			'ownerView' => $ownerView,
+			'superShare' => $share,
+			'groupedShares' => [$share],
+			'user' => 'user1',
+		]);
+
+		// trigger init
+		$this->assertInstanceOf('\OC\Files\Cache\FailedCache', $storage->getCache());
+		$this->assertInstanceOf('\OC\Files\Storage\FailedStorage', $storage->getSourceStorage());
+	}
+
+	public function testInitWithNotFoundSource() {
+		$share = $this->getMock('\OCP\Share\IShare');
+		$share->method('getShareOwner')->willReturn(self::TEST_FILES_SHARING_API_USER1);
+		$ownerView = $this->getMock('\OC\Files\View');
+		$ownerView->method('getPath')->will($this->throwException(new NotFoundException()));
+		$storage = new \OC\Files\Storage\Shared([
+			'ownerView' => $ownerView,
+			'superShare' => $share,
+			'groupedShares' => [$share],
+			'user' => 'user1',
+		]);
+
+		// trigger init
+		$this->assertInstanceOf('\OC\Files\Cache\FailedCache', $storage->getCache());
+		$this->assertInstanceOf('\OC\Files\Storage\FailedStorage', $storage->getSourceStorage());
 	}
 }

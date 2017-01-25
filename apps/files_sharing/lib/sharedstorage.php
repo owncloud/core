@@ -39,6 +39,7 @@ use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OC\Files\Storage\FailedStorage;
 use OCP\Files\NotFoundException;
+use OC\User\NoUserException;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -102,12 +103,16 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
 			// adjust jail
 			$this->rootPath = $sourceInternalPath;
-
-		} catch (\Exception $e) {
+		} catch (NotFoundException $e) {
+			// original file not accessible or deleted, set FailedStorage
 			$this->sourceStorage = new FailedStorage(['exception' => $e]);
-			if (!$e instanceof NotFoundException) {
-				$this->logger->logException($e);
-			}
+		} catch (NoUserException $e) {
+			// sharer user deleted, set FailedStorage
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
+		} catch (\Exception $e) {
+			// something unexpected happened, log exception and set failed storage
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
+			$this->logger->logException($e);
 		}
 		$this->storage = $this->sourceStorage;
 	}
