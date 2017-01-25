@@ -170,7 +170,32 @@ class UserMountCache implements IUserMountCache {
 
 	private function dbRowToMountInfo(array $row) {
 		$user = $this->userManager->get($row['user_id']);
+		if ($user === null) {
+			// user does not exist any more, delete all mounts of that user directly
+			$builder = $this->connection->getQueryBuilder();
+			$query = $builder->delete('mounts')
+				->where($builder->expr()->eq('user_id', $builder->createNamedParameter($row['user_id'])));
+			$query->execute();
+			return null;
+		}
 		return new CachedMountInfo($user, (int)$row['storage_id'], (int)$row['root_id'], $row['mount_point']);
+	}
+
+	/**
+	 * Convert DB rows to CachedMountInfo
+	 *
+	 * @param array $rows DB rows
+	 * @return CachedMountInfo[]
+	 */
+	private function convertRows($rows) {
+		$mountInfos = [];
+		foreach ($rows as $row) {
+			$mountInfo = $this->dbRowToMountInfo($row);
+			if (!is_null($mountInfo)) {
+				$mountInfos[] = $mountInfo;
+			}
+		}
+		return $mountInfos;
 	}
 
 	/**
@@ -186,7 +211,7 @@ class UserMountCache implements IUserMountCache {
 
 			$rows = $query->execute()->fetchAll();
 
-			$this->mountsForUsers[$user->getUID()] = array_map([$this, 'dbRowToMountInfo'], $rows);
+			$this->mountsForUsers[$user->getUID()] = $this->convertRows($rows);
 		}
 		return $this->mountsForUsers[$user->getUID()];
 	}
@@ -203,7 +228,7 @@ class UserMountCache implements IUserMountCache {
 
 		$rows = $query->execute()->fetchAll();
 
-		return array_map([$this, 'dbRowToMountInfo'], $rows);
+		return $this->convertRows($rows);
 	}
 
 	/**
@@ -218,7 +243,7 @@ class UserMountCache implements IUserMountCache {
 
 		$rows = $query->execute()->fetchAll();
 
-		return array_map([$this, 'dbRowToMountInfo'], $rows);
+		return $this->convertRows($rows);
 	}
 
 	/**
