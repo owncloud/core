@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Кадр не является квадратом",
     "Couldn't reset password because the token is invalid" : "Не удалось сбросить пароль из-за неверного токена",
     "Couldn't reset password because the token is expired" : "Не удалось сбросить пароль, так как срок действия токена истек.",
-    "Couldn't send reset email. Please make sure your username is correct." : "Не удалось отправить письмо для сброса пароля. Убедитесь, что имя пользователя указано верно.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Не удалось отправить письмо сброса так как у данного пользователя не задан адрес электронной почты. Пожалуйста, обратитесь к администратору.",
     "%s password reset" : "Сброс пароля %s",
     "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",
     "Couldn't send mail to following users: %s " : "Невозможно отправить письмо следующим пользователям: %s",

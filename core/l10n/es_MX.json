@@ -12,8 +12,6 @@
     "Crop is not square" : "Recorte no es cuadrado",
     "Couldn't reset password because the token is invalid" : "No se pudo restablecer la contraseña por que el token es inválido",
     "Couldn't reset password because the token is expired" : "No se pudo restablecer la contraseña por que el token ha expirado",
-    "Couldn't send reset email. Please make sure your username is correct." : "No se pudo enviar correo de restauración de contraseña. Por favor asegúrate que el nombre de usuario es correcto.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "No se pudo mandar correo de restauración de contraseña porque no hay un correo electrónico registrado para este nombre de usuario. Por favor contacta a tu administrador.",
     "%s password reset" : "%s restablecer contraseña",
     "Couldn't send reset email. Please contact your administrator." : "No se pudo enviar correo de restauración de contraseña. Por favor contacta a tu administrador.",
     "Couldn't send mail to following users: %s " : "No se pudo enviar el mensaje a los siguientes usuarios: %s",

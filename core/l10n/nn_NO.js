@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Beskjeringa er ikkje kvadratisk",
     "Couldn't reset password because the token is invalid" : "Kunne ikkje nullstilla passordet sidan tokenet er ugyldig",
     "Couldn't reset password because the token is expired" : "Kunne ikkje nullstilla passordet sidan tokenet er utløpt",
-    "Couldn't send reset email. Please make sure your username is correct." : "Klarte ikkje senda e-post. Ver venleg og sjekk at brukarnamnet er korrekt.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Kunne ikkje senda e-post for nullstilling, det er ingen e-post adresse for denne brukaren. Kontakt administratoren.",
     "%s password reset" : "%s passordnullstilling",
     "Couldn't send reset email. Please contact your administrator." : "Kunne ikkje senda e-post for nullstilling, kontakt administratoren.",
     "Couldn't send mail to following users: %s " : "Kunne ikkje sende e-post til følgande brukarar: %s ",

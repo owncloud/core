@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Bijsnijding is niet vierkant",
     "Couldn't reset password because the token is invalid" : "Kon het wachtwoord niet herstellen, omdat het token ongeldig is",
     "Couldn't reset password because the token is expired" : "Kon het wachtwoord niet herstellen, omdat het token verlopen is",
-    "Couldn't send reset email. Please make sure your username is correct." : "Kon e-mail niet versturen. Verifieer of uw gebruikersnaam correct is.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Kon geen herstel e-mail versturen, omdat er geen e-mailadres bekend is bij deze gebruikersnaam. Neem contact op met uw beheerder.",
     "%s password reset" : "%s wachtwoord reset",
     "Couldn't send reset email. Please contact your administrator." : "Kon herstel e-mail niet versturen. Neem contact op met uw beheerder.",
     "Couldn't send mail to following users: %s " : "Kon geen e-mail sturen aan de volgende gebruikers: %s",

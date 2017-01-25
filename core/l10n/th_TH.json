@@ -12,8 +12,6 @@
     "Crop is not square" : "การครอบตัดไม่เป็นสี่เหลี่ยม",
     "Couldn't reset password because the token is invalid" : "ไม่สามารถตั้งรหัสผ่านใหม่เพราะโทเค็นไม่ถูกต้อง",
     "Couldn't reset password because the token is expired" : "ไม่สามารถตั้งค่ารหัสผ่านเพราะโทเค็นหมดอายุ",
-    "Couldn't send reset email. Please make sure your username is correct." : "ไม่สามารถส่งข้อมูลการตั้งค่าไปยังอีเมลของคุณ กรุณาตรวจสอบชื่อผู้ใช้ของคุณให้ถูกต้อง",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "ไม่สามารถส่งการตั้งค่าไปยังอีเมลเพราะไม่มีที่อยู่อีเมลสำหรับผู้ใช้นี้ กรุณาติดต่อผู้ดูแลระบบ",
     "%s password reset" : "%s ตั้งรหัสผ่านใหม่",
     "Couldn't send reset email. Please contact your administrator." : "ไม่สามารถส่งข้อมูลการตั้งค่าไปยังอีเมลของคุณ กรุณาติดต่อผู้ดูแลระบบ",
     "Couldn't send mail to following users: %s " : "ไม่สามารถส่งอีเมลไปยังผู้ใช้: %s",

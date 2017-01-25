@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "El retayu nun ye cuadráu",
     "Couldn't reset password because the token is invalid" : "Nun pudo reaniciase la contraseña porque'l token ye inválidu",
     "Couldn't reset password because the token is expired" : "Nun pudo reaniciase la contraseña porque'l token ye inválidu",
-    "Couldn't send reset email. Please make sure your username is correct." : "Nun pudo unviase'l corréu. Por favor, asegurate que'l to nome d'usuariu seya correutu",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Nun pudo unviase'l corréu porque nun hai direición de corréu pa esti nome d'usuariu. Por favor, contauta col alministrador.",
     "%s password reset" : "%s restablecer contraseña",
     "Couldn't send reset email. Please contact your administrator." : "Nun pudo unviase'l corréu de reaniciu. Por favor, contauta col alministrador.",
     "Couldn't send mail to following users: %s " : "Nun pudo unviase'l corréu a los usuarios siguientes: %s",

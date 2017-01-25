@@ -12,7 +12,6 @@
     "Crop is not square" : "Lo requadratge es pas carrat",
     "Couldn't reset password because the token is invalid" : "Impossible de reïnicializar lo senhal perque lo geton es pas valable.",
     "Couldn't reset password because the token is expired" : "Impossible de reïnicializar lo senhal perque lo geton a expirat.",
-    "Couldn't send reset email. Please make sure your username is correct." : "Impossible de mandar lo corrièl de reïnicializacion. Verificatz que vòstre nom d'utilizaire es corrècte.",
     "%s password reset" : "Reïnicializacion de vòstre senhal %s",
     "Couldn't send reset email. Please contact your administrator." : "Impossible de mandar lo corrièl de reïnicializacion. Contactatz vòstre administrator.",
     "Couldn't send mail to following users: %s " : "Impossible de mandar un corrièl als utilizaires seguents : %s",

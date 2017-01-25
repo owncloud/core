@@ -9,7 +9,6 @@
     "No valid crop data provided" : "Os datos cortados fornecidos non son válidos",
     "Crop is not square" : "O corte non é cadrado",
     "Couldn't reset password because the token is invalid" : "No, foi posíbel restabelecer o contrasinal, a marca non é correcta",
-    "Couldn't send reset email. Please make sure your username is correct." : "Non foi posíbel enviar o correo do restabelecemento. Asegúrese de que o nome de usuario é o correcto.",
     "%s password reset" : "Restabelecer o contrasinal %s",
     "Couldn't send reset email. Please contact your administrator." : "Non foi posíbel enviar o correo do restabelecemento. Póñase en contacto co administrador.",
     "Couldn't send mail to following users: %s " : "Non é posíbel enviar correo aos usuarios seguintes: %s",

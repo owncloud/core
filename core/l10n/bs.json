@@ -4,7 +4,6 @@
     "Invalid image" : "Nevažeća datoteka",
     "No temporary profile picture available, try again" : "Trenutna slika profila nije dostupna, pokušajte ponovo",
     "Couldn't reset password because the token is invalid" : "Nemoguće resetiranje lozinke jer znak nije validan.",
-    "Couldn't send reset email. Please make sure your username is correct." : "Slanje emaila resetovanja nije moguće. Osigurajte se da vam je ispravno korisničko ime.",
     "%s password reset" : "%s lozinka resetovana",
     "Couldn't send reset email. Please contact your administrator." : "Slanje emaila resetovanja nije moguće. Molim kontaktirajte administratora.",
     "Couldn't send mail to following users: %s " : "Nemoguće slanje emaila slijedećim korisnicima: %s",

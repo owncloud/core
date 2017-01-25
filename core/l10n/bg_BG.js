@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Орязването не в квадратна форма",
     "Couldn't reset password because the token is invalid" : "Промяната на паролата е невъзможно, защото връзката за удостоверение не е валидна",
     "Couldn't reset password because the token is expired" : "Неуспешно възстановяване на паролата, защото ключа е изтекъл",
-    "Couldn't send reset email. Please make sure your username is correct." : "Неуспешно изпращане на имейл за възстановяване на паролата. Моля, уверете се, че потребителското име е правилно.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Неуспешно изпращане на имейл за възстановяване на паролата, защото липсва имейл, свързан с това потребителско име. Моля, свържете се с администратора.",
     "%s password reset" : "Паролата на %s е променена.",
     "Couldn't send reset email. Please contact your administrator." : "Изпращането на електронна поща е неуспешно. Моля, свържете се с вашия администратор.",
     "Couldn't send mail to following users: %s " : "Неуспешно изпращане на имейл до следните потребители: %s.",

@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Recorte não é quadrado",
     "Couldn't reset password because the token is invalid" : "Não foi possível redefinir a senha porque o token é inválido",
     "Couldn't reset password because the token is expired" : "Não foi possível redefinir a senha porque o token expirou",
-    "Couldn't send reset email. Please make sure your username is correct." : "Não foi possível enviar e-mail de redefinição. Verifique se o seu nome de usuário está correto.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Não foi possível enviar email de redefinição porque não há nenhum endereço de e-mail para este nome de usuário. Entre em contato com o administrador.",
     "%s password reset" : "%s redefinir senha",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar e-mail de redefinição. Por favor, contate o administrador.",
     "Couldn't send mail to following users: %s " : "Não foi possível enviar e-mail para os seguintes usuários: %s",

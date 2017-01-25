@@ -14,7 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Η περικοπή δεν εχει τετραγωνικό σχήμα",
     "Couldn't reset password because the token is invalid" : "Αδυναμία επαναφοράς κωδικού πρόσβασης καθώς το τεκμήριο είναι άκυρο",
     "Couldn't reset password because the token is expired" : "Αδυναμία επαναφοράς κωδικού πρόσβασης επειδή το token έχει λήξει",
-    "Couldn't send reset email. Please make sure your username is correct." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλώ ελέγξτε ότι το όνομα χρήστη σας είναι ορθό.",
     "%s password reset" : "%s επαναφορά κωδικού πρόσβασης",
     "Couldn't send reset email. Please contact your administrator." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλώ επικοινωνήστε με το διαχειριστή σας.",
     "Couldn't send mail to following users: %s " : "Αδυναμία αποστολής μηνύματος στους ακόλουθους χρήστες: %s",
