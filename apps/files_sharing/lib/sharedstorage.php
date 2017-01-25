@@ -37,6 +37,9 @@ use OCP\Constants;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
+use OC\Files\Storage\FailedStorage;
+use OCP\Files\NotFoundException;
+use OC\User\NoUserException;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -90,7 +93,15 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 			$sourcePath = $this->ownerView->getPath($this->share['file_source'], false);
 			list($this->sourceStorage, $sourceInternalPath) = $this->ownerView->resolvePath($sourcePath);
 			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
+		} catch (NotFoundException $e) {
+			// original file not accessible or deleted, set FailedStorage
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
+		} catch (NoUserException $e) {
+			// sharer user deleted, set FailedStorage
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
 		} catch (\Exception $e) {
+			// something unexpected happened, log exception and set failed storage
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
 			$this->logger->logException($e);
 		}
 	}
@@ -579,7 +590,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	public function getCache($path = '', $storage = null) {
 		$this->init();
-		if (is_null($this->sourceStorage)) {
+		if (is_null($this->sourceStorage) || $this->sourceStorage instanceof FailedStorage) {
 			return new FailedCache(false);
 		}
 		if (!$storage) {
