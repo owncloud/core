@@ -213,7 +213,7 @@ class LostController extends Controller {
 					ISecureRandom::CHAR_DIGITS .
 					ISecureRandom::CHAR_LOWER .
 					ISecureRandom::CHAR_UPPER);
-				$this->config->setUserValue($user, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
+				$this->config->setUserValue($user, 'owncloud', 'lostpassword', $token);
 
 				$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $user, 'token' => $token]);
 
