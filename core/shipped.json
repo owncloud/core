@@ -4,6 +4,7 @@
     "admin_audit",
     "encryption",
 	"comments",
+    "configreport",
     "dav",
     "enterprise_key",
     "external",
