@@ -276,6 +276,7 @@ Feature: provisioning
 		And the HTTP status code should be "200"
 		And group "España" does not exist
 
+	@no_encryption
 	Scenario: get enabled apps
 		Given As an "admin"
 		When sending "GET" to "/cloud/apps?filter=enabled"

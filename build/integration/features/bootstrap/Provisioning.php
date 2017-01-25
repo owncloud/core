@@ -486,6 +486,9 @@ trait Provisioning {
 			$apps = $appList->getRows();
 			$appsSimplified = $this->simplifyArray($apps);
 			$respondedArray = $this->getArrayOfAppsResponded($this->response);
+			if(($key = array_search('testing', $respondedArray)) !== false) {
+				array_splice($respondedArray, $key, 1);
+			}
 			PHPUnit_Framework_Assert::assertEquals($appsSimplified, $respondedArray, "", 0.0, 10, true);
 		}
 
@@ -635,6 +638,19 @@ trait Provisioning {
 	public function userHasUnlimitedQuota($user)
 	{
 		$this->userHasAQuotaOf($user, 'none');
+	}
+
+	/**
+	 * Returns home path of the given user
+	 * @param string $user
+	 */
+	public function getUserHome($user) {
+		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = $this->adminUser;
+		$this->response = $client->get($fullUrl, $options);
+		return $this->response->xml()->data[0]->home;
 	}
 
 	/**
