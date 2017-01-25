@@ -63,7 +63,8 @@ class Application extends App {
 				$c->query('SecureRandom'),
 				$c->query('DefaultEmailAddress'),
 				$c->query('IsEncryptionEnabled'),
-				$c->query('Mailer')
+				$c->query('Mailer'),
+				$c->query('Logger')
 			);
 		});
 		$container->registerService('UserController', function(SimpleContainer $c) {
