@@ -32,7 +32,6 @@ use OC\Hooks\BasicEmitter;
 use OC\Hooks\Emitter;
 use OC\Repair\AssetCache;
 use OC\Repair\AvatarPermissions;
-use OC\Repair\BrokenUpdaterRepair;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\CopyRewriteBaseToConfig;
@@ -126,7 +125,6 @@ class Repair extends BasicEmitter {
 			),
 			new SharePropagation(\OC::$server->getConfig()),
 			new AvatarPermissions(\OC::$server->getDatabaseConnection()),
-			new BrokenUpdaterRepair(),
 		];
 	}
 
