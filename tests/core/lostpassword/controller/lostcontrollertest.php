@@ -62,6 +62,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->container['TimeFactory'] = $this->getMockBuilder('\OCP\AppFramework\Utility\ITimeFactory')
 			->disableOriginalConstructor()->getMock();
+		$this->container['Logger'] = $this->getMockBuilder('\OCP\ILogger')
+			->disableOriginalConstructor()->getMock();
 		$this->container['IsEncryptionEnabled'] = true;
 		$this->lostController = $this->container['LostController'];
 	}
@@ -100,9 +102,11 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		// With a non existing user
 		$response = $this->lostController->email($nonExistingUser);
 		$expectedResponse = [
-			'status' => 'error',
-			'msg' => 'Couldn\'t send reset email. Please make sure your username is correct.'
+			'status' => 'success'
 		];
+		$this->container['Logger']->expects($this->any())
+			->method('error')
+			->with('Could not send reset email because User does not exist. User: {user}');
 		$this->assertSame($expectedResponse, $response);
 
 		// With no mail address
@@ -113,9 +117,11 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(null));
 		$response = $this->lostController->email($existingUser);
 		$expectedResponse = [
-			'status' => 'error',
-			'msg' => 'Couldn\'t send reset email. Please make sure your username is correct.'
+			'status' => 'success'
 		];
+		$this->container['Logger']->expects($this->any())
+			->method('error')
+			->with('Could not send reset email because there is no email address for this username. User: {user}');
 		$this->assertSame($expectedResponse, $response);
 	}
 
@@ -141,7 +147,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->with('ExistingUser', 'settings', 'email')
 			->will($this->returnValue('test@example.com'));
 		$this->container['SecureRandom']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getMediumStrengthGenerator')
 			->will($this->returnValue($randomToken));
 		$this->container['Config']
@@ -203,7 +209,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->with('ExistingUser', 'settings', 'email')
 			->will($this->returnValue('test@example.com'));
 		$this->container['SecureRandom']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getMediumStrengthGenerator')
 			->will($this->returnValue($randomToken));
 		$this->container['Config']
