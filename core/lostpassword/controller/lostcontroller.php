@@ -209,7 +209,7 @@ class LostController extends Controller {
 			$email = $this->config->getUserValue($user, 'settings', 'email');
 
 			if (!empty($email)) {
-				$token = $this->secureRandom->generate(21,
+				$token = $this->secureRandom->getMediumStrengthGenerator()->generate(21,
 					ISecureRandom::CHAR_DIGITS .
 					ISecureRandom::CHAR_LOWER .
 					ISecureRandom::CHAR_UPPER);
