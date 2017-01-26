@@ -126,9 +126,8 @@ class Installer {
 
 		//install the database
 		if (isset($appData['use-migrations']) && $appData['use-migrations'] === 'true') {
-			$ms = new \OC\DB\MigrationService();
-			$mc = $ms->buildConfiguration($appId, \OC::$server->getDatabaseConnection());
-			$ms->migrate($mc);
+			$ms = new \OC\DB\MigrationService($appId, \OC::$server->getDatabaseConnection());
+			$ms->migrate();
 		} else {
 			if(is_file($basedir.'/appinfo/database.xml')) {
 				if (\OC::$server->getAppConfig()->getValue($info['id'], 'installed_version') === null) {
@@ -572,9 +571,8 @@ class Installer {
 		//install the database
 		$appPath = OC_App::getAppPath($app);
 		if (isset($info['use-migrations']) && $info['use-migrations'] === 'true') {
-			$ms = new \OC\DB\MigrationService();
-			$mc = $ms->buildConfiguration($app, \OC::$server->getDatabaseConnection());
-			$ms->migrate($mc);
+			$ms = new \OC\DB\MigrationService($app, \OC::$server->getDatabaseConnection());
+			$ms->migrate();
 		} else {
 			if(is_file($appPath.'/appinfo/database.xml')) {
 				OC_DB::createDbFromStructure($appPath . '/appinfo/database.xml');

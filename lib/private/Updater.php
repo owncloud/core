@@ -273,10 +273,8 @@ class Updater extends BasicEmitter {
 
 		// execute core migrations
 		if (is_dir(\OC::$SERVERROOT."/core/Migrations")) {
-			$ms = new \OC\DB\MigrationService();
-			$mc = $ms->buildConfiguration('core', \OC::$server->getDatabaseConnection());
-
-			$ms->migrate($mc, true);
+			$ms = new \OC\DB\MigrationService('core', \OC::$server->getDatabaseConnection());
+			$ms->migrate();
 		}
 
 		$this->emit('\OC\Updater', 'dbUpgrade');

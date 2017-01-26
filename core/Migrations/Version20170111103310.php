@@ -123,12 +123,4 @@ class Version20170111103310 extends AbstractMigration {
 			$table->addUniqueIndex(['mount_id', 'key'], 'option_mount_key');
 		}
 	}
-
-	/**
-	 * @param Schema $schema
-	 */
-	public function down(Schema $schema) {
-		// this down() migration is auto-generated, please modify it to your needs
-
-	}
 }

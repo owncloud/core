@@ -305,7 +305,6 @@ class Db implements IDb {
 	 * Create the schema of the connected database
 	 *
 	 * @return Schema
-	 * @since 10.0.0
 	 */
 	public function createSchema() {
 		return $this->connection->createSchema();
