@@ -21,43 +21,88 @@
 
 namespace OC\Core\Command\Db\Migrations;
 
-
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand as DBALStatusCommand;
+use OC\DB\MigrationConfiguration;
 use OC\DB\MigrationService;
 use OCP\IConfig;
+use OCP\IDBConnection;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StatusCommand extends DBALStatusCommand {
+class StatusCommand extends Command {
 
-	/** @var Connection */
+	/** @var IDBConnection */
 	private $ocConnection;
 
 	/**
 	 * @param \OCP\IConfig $config
 	 */
-	public function __construct(IConfig $config, Connection $connection) {
+	public function __construct(IConfig $config, IDBConnection $connection) {
 		$this->config = $config;
 		$this->ocConnection = $connection;
-
 		parent::__construct();
 	}
 
 	protected function configure() {
-		parent::configure();
-
-		$this->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on');
+		$this
+			->setName('migrations:status')
+			->setDescription('View the status of a set of migrations.')
+			->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on');
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$appName = $input->getArgument('app');
-		$ms = new MigrationService();
-		$mc = $ms->buildConfiguration($appName, $this->ocConnection);
-		$this->setMigrationConfiguration($mc);
+		$ms = new MigrationService($appName, $this->ocConnection);
 
-		parent::execute($input, $output);
+		$infos = $this->getMigrationsInfos($ms);
+		foreach ($infos as $key => $value) {
+			$output->writeln("    <comment>>></comment> $key: " . str_repeat(' ', 50 - strlen($key)) . $value);
+		}
 	}
+
+	public function getMigrationsInfos(MigrationService $ms) {
+
+		$executedMigrations = $ms->getMigratedVersions();
+		$availableMigrations = $ms->getAvailableVersions();
+		$executedUnavailableMigrations = array_diff($executedMigrations, array_keys($availableMigrations));
+
+		$numExecutedUnavailableMigrations = count($executedUnavailableMigrations);
+		$numNewMigrations = count(array_diff(array_keys($availableMigrations), $executedMigrations));
+
+		$infos = [
+			'App'								=> $ms->getApp(),
+			'Version Table Name'				=> $ms->getMigrationsTableName(),
+			'Migrations Namespace'				=> $ms->getMigrationsNamespace(),
+			'Migrations Directory'				=> $ms->getMigrationsDirectory(),
+			'Previous Version'					=> $this->getFormattedVersionAlias($ms, 'prev'),
+			'Current Version'					=> $this->getFormattedVersionAlias($ms, 'current'),
+			'Next Version'						=> $this->getFormattedVersionAlias($ms, 'next'),
+			'Latest Version'					=> $this->getFormattedVersionAlias($ms, 'latest'),
+			'Executed Migrations'				=> count($executedMigrations),
+			'Executed Unavailable Migrations'	=> $numExecutedUnavailableMigrations,
+			'Available Migrations'				=> count($availableMigrations),
+			'New Migrations'					=> $numNewMigrations,
+		];
+
+		return $infos;
+	}
+
+	private function getFormattedVersionAlias(MigrationService $migrationService, $alias) {
+		$migration = $migrationService->getMigration($alias);
+		//No version found
+		if ($migration === null) {
+			if ($alias === 'next') {
+				return 'Already at latest migration step';
+			}
+
+			if ($alias === 'prev') {
+				return 'Already at first migration step';
+			}
+		}
+
+		return $migration;
+	}
+
 
 }

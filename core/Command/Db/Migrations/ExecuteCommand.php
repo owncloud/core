@@ -22,23 +22,20 @@
 namespace OC\Core\Command\Db\Migrations;
 
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand as DBALExecuteCommand;
 use OC\DB\MigrationService;
 use OCP\IConfig;
+use OCP\IDBConnection;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ExecuteCommand extends DBALExecuteCommand {
+class ExecuteCommand extends Command {
 
-	/** @var Connection */
+	/** @var IDBConnection */
 	private $ocConnection;
 
-	/**
-	 * @param \OCP\IConfig $config
-	 */
-	public function __construct(IConfig $config, Connection $connection) {
+	public function __construct(IConfig $config, IDBConnection $connection) {
 		$this->config = $config;
 		$this->ocConnection = $connection;
 
@@ -46,18 +43,21 @@ class ExecuteCommand extends DBALExecuteCommand {
 	}
 
 	protected function configure() {
-		$this->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on');
+		$this
+			->setName('migrations:execute')
+			->setDescription('Execute a single migration version manually.')
+			->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on')
+			->addArgument('version', InputArgument::REQUIRED, 'The version to execute.', null);
 
 		parent::configure();
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$appName = $input->getArgument('app');
-		$ms = new MigrationService();
-		$mc = $ms->buildConfiguration($appName, $this->ocConnection);
-		$this->setMigrationConfiguration($mc);
+		$ms = new MigrationService($appName, $this->ocConnection);
+		$version = $input->getArgument('version');
 
-		parent::execute($input, $output);
+		$ms->executeStep($version);
 	}
 
 }
