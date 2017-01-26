@@ -2,18 +2,16 @@
 
 namespace OC\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use OCP\Migration\ISchemaMigration;
 
 /**
  * Initial DB creation for external storages
  */
-class Version20170111103310 extends AbstractMigration {
-	/**
-	 * @param Schema $schema
-	 */
-	public function up(Schema $schema) {
-		$prefix = $this->connection->getPrefix();
+class Version20170111103310 implements ISchemaMigration {
+
+	public function changeSchema(Schema $schema, array $options) {
+		$prefix = $options['tablePrefix'];
 		if (!$schema->hasTable("${prefix}external_mounts")) {
 			$table = $schema->createTable("${prefix}external_mounts");
 			$table->addColumn('mount_id', 'bigint', [
