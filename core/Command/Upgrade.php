@@ -35,6 +35,7 @@ use OCP\IConfig;
 use OCP\ILogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -86,6 +87,13 @@ class Upgrade extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
 		$skip3rdPartyAppsDisable = false;
+
+		$preUpgradeCommand = $this->getApplication()->find('upgrade:checkapps');
+
+		$exitCode = $preUpgradeCommand->run(new ArrayInput([]), $output);
+		if ($exitCode !==0 ){
+			return 1;
+		}
 
 		if ($input->getOption('no-app-disable')) {
 			$skip3rdPartyAppsDisable = true;
