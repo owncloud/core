@@ -83,9 +83,6 @@ class ConnectionFactory {
 			];
 		}
 
-		// set default table creation options
-		$result['defaultTableOptions'] = ['collate' => 'utf8_bin'];
-
 		return $result;
 	}
 
@@ -186,6 +183,12 @@ class ConnectionFactory {
 		if ($driverOptions) {
 			$connectionParams['driverOptions'] = $driverOptions;
 		}
+
+		// set default table creation options
+		$connectionParams['defaultTableOptions'] = [
+			'collate' => 'utf8_bin',
+			'tablePrefix' => $connectionParams['tablePrefix']
+		];
 
 		return $connectionParams;
 	}
