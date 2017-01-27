@@ -14,6 +14,7 @@ use OC\User\Backend;
 use OC\User\Database;
 use OC\User\User;
 use OCP\IConfig;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 use Test\Util\User\Dummy;
@@ -504,29 +505,31 @@ class UserTest extends TestCase {
 	}
 
 	public function testSetEnabledHook(){
-		$hooksCalled = 0;
-		$test = $this;
-
 		/**
 		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
 		 */
 		$backend = $this->createMock(Dummy::class);
+		$eventDispatcherMock = $this->createMock(EventDispatcher::class);
 
-		/**
-		 * @param GenericEvent $event
-		 */
-		$hook = function ($event) use ($test, &$hooksCalled) {
-			$hooksCalled++;
-			$test->assertEquals('foo', $event->getSubject()->getUID());
-		};
+		$expectations = [true, false];
+		$eventDispatcherMock->expects($this->exactly(2))
+			->method('dispatch')
+			->with(
+				$this->callback(
+					function($eventName){
+						if ($eventName === User::class . '::postSetEnabled' ){
+							return true;
+						}
+						return false;
+					}
+				),
+				$this->anything()
+			)
+		;
 
-		$eventDispatcher = \OC::$server->getEventDispatcher();
-		$eventDispatcher->addListener(User::class . '::postSetEnabled', $hook);
-
-		$user = new User('foo', $backend, new PublicEmitter());
-		$user->setEnabled(true);
+		$user = new User('foo', $backend, null, null, null, $eventDispatcherMock);
 		$user->setEnabled(false);
-		$this->assertEquals(2, $hooksCalled);
+		$user->setEnabled(true);
 	}
 
 	public function testGetCloudId() {
