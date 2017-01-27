@@ -447,6 +447,80 @@ class StorageTest extends \Test\TestCase {
 	}
 
 	/**
+	 * Test that the owner receives a backup of the file that was moved
+	 * out of the shared folder
+	 */
+	public function testOwnerBackupWhenMovingFileOutOfShare() {
+		\OCA\Files_Versions\Hooks::connectHooks();
+
+		$this->userView->mkdir('share');
+		$this->userView->mkdir('share/sub');
+		// trigger a version (multiple would not work because of the expire logic)
+		$this->userView->file_put_contents('share/test.txt', 'v1');
+		$this->userView->file_put_contents('share/test.txt', 'v2');
+
+		$this->userView->file_put_contents('share/sub/testsub.txt', 'v1');
+		$this->userView->file_put_contents('share/sub/testsub.txt', 'v2');
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/');
+		$this->assertEquals(2, count($results));
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/sub');
+		$this->assertEquals(1, count($results));
+
+		$recipientUser = $this->getUniqueId('recipient_');
+		$user2 = \OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
+
+		$node = \OC::$server->getUserFolder($this->user)->get('share');
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedBy($this->user)
+			->setSharedWith($recipientUser)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
+
+		$this->loginAsUser($recipientUser);
+
+		// delete as recipient
+		$recipientHome = \OC::$server->getUserFolder($recipientUser);
+
+		// rename received share folder to catch potential issues if using the wrong name in the code
+		$recipientHome->get('share')->move($recipientHome->getPath() . '/share_renamed');
+		$recipientHome->get('share_renamed/test.txt')->move($recipientHome->getPath() . '/test.txt');
+		$recipientHome->get('share_renamed/sub')->move($recipientHome->getPath() . '/sub');
+
+		$this->assertTrue($recipientHome->nodeExists('test.txt'));
+		$this->assertTrue($recipientHome->nodeExists('sub'));
+
+		// check if file and versions are in trashbin for owner
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
+		$this->assertEquals(2, count($results), 'Files in owner\'s trashbin');
+		// grab subdir name
+		$subDirName = $results[0]->getName();
+		$name = $results[1]->getName();
+		$this->assertEquals('test.txt.d', substr($name, 0, strlen('test.txt.d')));
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
+		$this->assertEquals(2, count($results), 'Versions in owner\'s trashbin');
+		// note: entry 0 is the "sub" entry for versions
+		$name = $results[1]->getName();
+		$this->assertEquals('test.txt.v', substr($name, 0, strlen('test.txt.v')));
+
+		// check if sub-file and versions are in trashbin for owner
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/' . $subDirName);
+		$this->assertEquals(1, count($results), 'Subfile in owner\'s trashbin');
+		$this->assertEquals('testsub.txt', $results[0]->getName());
+
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions/' . $subDirName);
+		$this->assertEquals(1, count($results), 'Versions in owner\'s trashbin');
+		$name = $results[0]->getName();
+		$this->assertEquals('testsub.txt.v', substr($name, 0, strlen('testsub.txt.v')));
+
+		$this->logout();
+		$user2->delete();
+	}
+
+	/**
 	 * Delete should fail if the source file can't be deleted.
 	 */
 	public function testSingleStorageDeleteFileFail() {
