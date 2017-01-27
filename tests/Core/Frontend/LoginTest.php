@@ -23,7 +23,7 @@
 use Test\SeleniumTestCase;
 
 
-class Test extends SeleniumTestCase {
+class LoginTest extends SeleniumTestCase {
 
 
 
