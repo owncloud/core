@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2015, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ class Licenses {
 /**
 @AUTHORS@
  *
- * @copyright Copyright (c) @YEAR@, ownCloud GmbH.
+ * @copyright Copyright (c) @YEAR@, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
