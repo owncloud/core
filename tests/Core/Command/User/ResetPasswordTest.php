@@ -15,8 +15,7 @@ class ResetPasswordTest extends TestCase
 {
 
 	public function testCommandGetsCorrectUserFromUserManager() {
-		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')
-			->getMock();
+		$userManagerMock = $this->createMock('OCP\IUserManager');
 
 		$userManagerMock
 			->expects($this->once())
@@ -25,8 +24,7 @@ class ResetPasswordTest extends TestCase
 
 		$resetPasswordCommand = new ResetPassword($userManagerMock);
 
-		$inputInterfaceMock = $this->getMockBuilder(InputInterface::class)
-			->getMock();
+		$inputInterfaceMock = $this->createMock(InputInterface::class);
 
 		$inputInterfaceMock
 			->expects($this->once())
@@ -34,16 +32,14 @@ class ResetPasswordTest extends TestCase
 			->with('user')
 			->willReturn('test123');
 
-		$outputInterfaceMock = $this->getMockBuilder(OutputInterface::class)
-			->getMock();
+		$outputInterfaceMock = $this->createMock(OutputInterface::class);
 
 		$resetPasswordCommand->run($inputInterfaceMock, $outputInterfaceMock);
 
 	}
 
 	public function testErrorMessageIsPrintedIfUserDoesNotExists() {
-		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')
-			->getMock();
+		$userManagerMock = $this->createMock('OCP\IUserManager');
 
 		$userManagerMock
 			->method('get')
@@ -51,15 +47,13 @@ class ResetPasswordTest extends TestCase
 
 		$resetPasswordCommand = new ResetPassword($userManagerMock);
 
-		$inputInterfaceMock = $this->getMockBuilder(InputInterface::class)
-			->getMock();
+		$inputInterfaceMock = $this->createMock(InputInterface::class);
 
 		$inputInterfaceMock
 			->method('getArgument')
 			->willReturn('test123');
 
-		$outputInterfaceMock = $this->getMockBuilder(OutputInterface::class)
-			->getMock();
+		$outputInterfaceMock = $this->createMock(OutputInterface::class);
 
 		$outputInterfaceMock
 			->expects($this->once())
@@ -71,8 +65,8 @@ class ResetPasswordTest extends TestCase
 	}
 
 	public function testPrintsErrorIfNoPasswordWasGiven() {
-		$userMock = $this->getMockBuilder('OCP\IUser')->getMock();
-		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')->getMock();
+		$userMock = $this->createMock('OCP\IUser');
+		$userManagerMock = $this->createMock('OCP\IUserManager');
 		$userManagerMock->method('get')->with('test123')->willReturn($userMock);
 
 		$command = new ResetPassword($userManagerMock);
@@ -89,8 +83,8 @@ class ResetPasswordTest extends TestCase
 	}
 
 	public function testPrintsErrorIfPasswordConfirmationDidNotMatch() {
-		$userMock = $this->getMockBuilder('OCP\IUser')->getMock();
-		$userManagerMock = $this->getMockBuilder('OCP\IUserManager')->getMock();
+		$userMock = $this->createMock('OCP\IUser');
+		$userManagerMock = $this->createMock('OCP\IUserManager');
 		$userManagerMock->method('get')->with('test123')->willReturn($userMock);
 
 		$command = new ResetPassword($userManagerMock);
