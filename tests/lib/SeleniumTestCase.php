@@ -78,7 +78,7 @@ abstract class SeleniumTestCase extends TestCase {
 	protected  function waitTillElementIsStale($element, $timeout = 30) {
 		for ($i=0; $i<=$timeout; $i++) {
 			try {
-				$element->findElements(WebDriverBy::id("does-not-matter"));
+				$element->findElements(\WebDriverBy::id("does-not-matter"));
 			} catch (StaleElementReferenceException $e) {
 				return true;
 			}
