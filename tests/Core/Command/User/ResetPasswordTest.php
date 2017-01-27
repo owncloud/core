@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class ResetPasswordTest extends TestCase
@@ -23,7 +25,7 @@ class ResetPasswordTest extends TestCase
 
 		$resetPasswordCommand = new ResetPassword($userManagerMock);
 
-		$inputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
+		$inputInterfaceMock = $this->getMockBuilder(InputInterface::class)
 			->getMock();
 
 		$inputInterfaceMock
@@ -32,7 +34,7 @@ class ResetPasswordTest extends TestCase
 			->with('user')
 			->willReturn('test123');
 
-		$outputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')
+		$outputInterfaceMock = $this->getMockBuilder(OutputInterface::class)
 			->getMock();
 
 		$resetPasswordCommand->run($inputInterfaceMock, $outputInterfaceMock);
@@ -49,14 +51,14 @@ class ResetPasswordTest extends TestCase
 
 		$resetPasswordCommand = new ResetPassword($userManagerMock);
 
-		$inputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
+		$inputInterfaceMock = $this->getMockBuilder(InputInterface::class)
 			->getMock();
 
 		$inputInterfaceMock
 			->method('getArgument')
 			->willReturn('test123');
 
-		$outputInterfaceMock = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')
+		$outputInterfaceMock = $this->getMockBuilder(OutputInterface::class)
 			->getMock();
 
 		$outputInterfaceMock
