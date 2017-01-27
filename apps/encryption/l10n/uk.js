@@ -12,7 +12,7 @@ OC.L10N.register(
     "Please provide the old recovery password" : "Будь ласка, введіть старий пароль відновлення",
     "Please provide a new recovery password" : "Будь ласка, введіть новий пароль відновлення",
     "Please repeat the new recovery password" : "Будь ласка, введіть новий пароль відновлення ще раз",
-    "Password successfully changed." : "Пароль змінено.",
+    "Password successfully changed." : "Пароль успішно змінено.",
     "Could not change the password. Maybe the old password was not correct." : "Не вдалося змінити пароль. Можливо ви неправильно ввели старий пароль.",
     "Recovery Key disabled" : "Ключ відновлення відключений",
     "Recovery Key enabled" : "Відновлення ключа увімкнено",

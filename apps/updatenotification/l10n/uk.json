@@ -7,10 +7,12 @@
     "Updater" : "Оновлення",
     "A new version is available: %s" : "Доступна нова версія: %s",
     "Open updater" : "Відкрити меню оновлення",
+    "Show changelog" : "Показати перелік змін",
     "Your version is up to date." : "Ви використовуєте останню версію ownCloud.",
-    "Checked on %s" : "Остання провірка відбулася %s",
+    "Checked on %s" : "Остання перевірка відбулася %s",
     "Update channel:" : "Канал оновлення:",
-    "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Ви завжди зможите оновити ownCloud до новішої версії або перейти на тестову версію. Але ви не зможите встановити старішу версію або перейти на стабільний канал.",
-    "Notify members of the following groups about available updates:" : "Сповіщяти учасників даної групи про доступні оновлення."
+    "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Ви завжди зможете оновити ownCloud до новішої версії або перейти на тестову версію. Але ви не зможете встановити старішу версію або перейти на стабільний канал.",
+    "Notify members of the following groups about available updates:" : "Сповіщати учасників даної групи про доступні оновлення.",
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Доступні тільки повідомлення для оновлення додатків, оскільки обраний канал поновлення не дозволяє повідомлень для самого OwnCloud."
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
 }
