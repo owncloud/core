@@ -35,7 +35,7 @@ OC.L10N.register(
     "%1$s declined remote share %2$s" : "%1$s віддалена шара скасована %2$s",
     "%1$s unshared %2$s from you" : "%1$s не розшарений %2$s для вас",
     "Public shared folder %1$s was downloaded" : "Опублікований каталог %1$s був завантажений",
-    "Public shared file %1$s was downloaded" : "Опублікований файл %1$s був завантажений",
+    "Public shared file %1$s was downloaded" : "Загальнодоступний файл %1$s був завантажений",
     "You shared %1$s with %2$s" : "Ви поділилися %1$s з %2$s",
     "You shared %1$s with group %2$s" : "Ви поділилися %1$s з групою %2$s",
     "You shared %1$s via link" : "Ви поділилися %1$s використовуючи лінк",

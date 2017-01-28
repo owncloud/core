@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Невірний пароль",
+    "The new password can not be the same as the previous one" : "Новий пароль не може бути таким самим, як і попередній",
     "No user supplied" : "Користувача не вказано",
     "Authentication error" : "Помилка автентифікації",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Будь ласка введіть пароль відновлення адміністратора, інакше всі дані будуть втрачені",
@@ -132,6 +133,7 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Дозволити програмам використовувати API спільного доступу",
     "Allow users to share via link" : "Дозволити користувачам ділитися через посилання",
     "Allow public uploads" : "Дозволити публічне завантаження",
+    "Always ask for a password" : "Завжди запитувати пароль",
     "Enforce password protection" : "Захист паролем обов'язковий",
     "Set default expiration date" : "Встановити термін дії за замовчуванням",
     "Allow users to send mail notification for shared files" : "Дозволити користувачам сповіщати листами про спільний доступ до файлів",
@@ -184,6 +186,7 @@ OC.L10N.register(
     "Documentation:" : "Документація:",
     "User documentation" : "Користувацька документація",
     "Admin documentation" : "Документація адміністратора",
+    "Report a bug" : "Повідомити про помилку",
     "Show description …" : "Показати деталі ...",
     "Hide description …" : "Сховати деталі ...",
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Ця програма не може бути встановлено, так як наступні залежності не будуть виконані:",

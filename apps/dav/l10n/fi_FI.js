@@ -1,7 +1,7 @@
 OC.L10N.register(
     "dav",
     {
-    "Contact birthdays" : "Synttärit",
+    "Contact birthdays" : "Syntymäpäivät",
     "Personal" : "Henkilökohtainen",
     "Contacts" : "Yhteystiedot",
     "Technical details" : "Tekniset tiedot",
