@@ -364,6 +364,9 @@ class OC_API {
 		try {
 			$loginSuccess = $userSession->tryTokenLogin($request);
 			if (!$loginSuccess) {
+				$loginSuccess = $userSession->tryOAuth2Login($request);
+			}
+			if (!$loginSuccess) {
 				$loginSuccess = $userSession->tryBasicAuthLogin($request);
 			}
 		} catch (\OC\User\LoginException $e) {

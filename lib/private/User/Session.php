@@ -40,6 +40,10 @@ use OC\Hooks\Emitter;
 use OC_User;
 use OC_Util;
 use OCA\DAV\Connector\Sabre\Auth;
+use OCA\OAuth2\Db\AccessToken;
+use OCA\OAuth2\Db\AccessTokenMapper;
+use OCP\AppFramework\App;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -516,6 +520,59 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
+	 * Log an user in with a given OAuth 2.0 access token
+	 *
+	 * @param string $bearerToken
+	 * @return boolean
+	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 */
+	private function loginWithOAuth2($bearerToken) {
+		$app = new App('oauth2');
+		/** @var AccessTokenMapper $accessTokenMapper */
+		$accessTokenMapper = $app->getContainer()->query('OCA\OAuth2\Db\AccessTokenMapper');
+
+		try {
+			/** @var AccessToken $accessToken */
+			$accessToken = $accessTokenMapper->findByToken($bearerToken);
+
+			if ($accessToken->hasExpired()) {
+				return false;
+			}
+		} catch (DoesNotExistException $exception) {
+			return false;
+		}
+
+		$userId = $accessToken->getUserId();
+
+		// TODO: Where to get the password for the preLogin hook?
+		$this->manager->emit('\OC\User', 'preLogin', [$userId, '']);
+
+		$user = $this->manager->get($userId);
+		if (is_null($user)) {
+			return false;
+		}
+		if (!$user->isEnabled()) {
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
+
+		$this->setUser($user);
+		$this->setLoginName($user->getDisplayName());
+
+		// TODO: Where to get the password for the postLogin hook?
+		$this->manager->emit('\OC\User', 'postLogin', [$userId, '']);
+
+		if ($this->isLoggedIn()) {
+			$this->prepareUserLogin();
+		} else {
+			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+			throw new LoginException($message);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Create a new session token for the given user credentials
 	 *
 	 * @param IRequest $request
@@ -671,6 +728,24 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Tries to login the user with an OAuth 2.0 access token
+	 *
+	 * @param IRequest $request
+	 * @return boolean
+	 */
+	public function tryOAuth2Login(IRequest $request) {
+		$authHeader = $request->getHeader('Authorization');
+
+		if (strpos($authHeader, 'Bearer ') === false) {
+			return false;
+		} else {
+			$bearerToken = substr($authHeader, 7);
+		}
+
+		return $this->loginWithOAuth2($bearerToken);
 	}
 
 	/**
