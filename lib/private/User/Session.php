@@ -10,6 +10,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Felix Rupp <kontakt@felixrupp.com>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -725,6 +726,7 @@ class Session implements IUserSession, Emitter {
 		$this->setLoginName(null);
 		$this->unsetMagicInCookie();
 		$this->session->clear();
+		$this->manager->emit('\OC\User', 'postLogout');
 	}
 
 	/**
