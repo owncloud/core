@@ -4,6 +4,7 @@ OC.L10N.register(
     "Could not revert: %s" : "Не вдалося відновити: %s",
     "Versions" : "Версії",
     "Failed to revert {file} to revision {timestamp}." : "Не вдалося повернути {file} до ревізії {timestamp}.",
+    "_%n byte_::_%n bytes_" : ["%n байт","%n байт","%n байт"],
     "Restore" : "Відновити",
     "No other versions available" : "Інші версії недоступні",
     "More versions..." : "Більше версій ..."

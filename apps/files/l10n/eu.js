@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Biltegi bliogabea",
     "Unknown error" : "Errore ezezaguna",
-    "Files" : "Fitxategiak",
     "All files" : "Fitxategi guztiak",
     "Home" : "Etxekoa",
     "Close" : "Itxi",
@@ -20,6 +19,7 @@ OC.L10N.register(
     "Delete" : "Ezabatu",
     "Disconnect storage" : "Deskonektatu biltegia",
     "Unshare" : "Ez elkarbanatu",
+    "Files" : "Fitxategiak",
     "Details" : "Xehetasunak",
     "Select" : "hautatu",
     "Pending" : "Zain",

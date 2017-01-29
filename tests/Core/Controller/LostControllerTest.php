@@ -26,6 +26,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUser;
@@ -63,6 +64,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 	private $timeFactory;
 	/** @var IRequest */
 	private $request;
+	/** @var ILogger */
+	private $logger;
 
 	protected function setUp() {
 
@@ -98,6 +101,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->request = $this->getMockBuilder('OCP\IRequest')
 			->disableOriginalConstructor()->getMock();
+		$this->logger = $this->getMockBuilder('OCP\ILogger')
+			->disableOriginalConstructor()->getMock();
 		$this->lostController = new LostController(
 			'Core',
 			$this->request,
@@ -110,7 +115,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			'lostpassword-noreply@localhost',
 			true,
 			$this->mailer,
-			$this->timeFactory
+			$this->timeFactory,
+			$this->logger
 		);
 	}
 
@@ -236,7 +242,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmailUnsucessful() {
-		$existingUser = 'ExistingUser';
+		$existingUser = 'ExistingUser1';
 		$nonExistingUser = 'NonExistingUser';
 		$this->userManager
 			->expects($this->any())
@@ -249,9 +255,11 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		// With a non existing user
 		$response = $this->lostController->email($nonExistingUser);
 		$expectedResponse = [
-			'status' => 'error',
-			'msg' => 'Couldn\'t send reset email. Please make sure your username is correct.'
+			'status' => 'success'
 		];
+		$this->logger->expects($this->any())
+			->method('error')
+			->with('Could not send reset email because User does not exist. User: {user}');
 		$this->assertSame($expectedResponse, $response);
 
 		// With no mail address
@@ -259,11 +267,13 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->any())
 			->method('getUserValue')
 			->with($existingUser, 'settings', 'email')
-			->will($this->returnValue(null));
+			->will($this->returnValue(''));
 		$response = $this->lostController->email($existingUser);
+		$this->logger->expects($this->any())
+			->method('error')
+			->with('Could not send reset email because there is no email address for this username. User: {user}');
 		$expectedResponse = [
-			'status' => 'error',
-			'msg' => 'Couldn\'t send reset email. Please make sure your username is correct.'
+			'status' => 'success'
 		];
 		$this->assertSame($expectedResponse, $response);
 	}

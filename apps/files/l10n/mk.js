@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Сториџот не е валиден",
     "Unknown error" : "Непозната грешка",
-    "Files" : "Датотеки",
     "All files" : "Сите датотеки",
     "Home" : "Дома",
     "Close" : "Затвори",
@@ -16,6 +15,7 @@ OC.L10N.register(
     "Rename" : "Преименувај",
     "Delete" : "Избриши",
     "Unshare" : "Не споделувај",
+    "Files" : "Датотеки",
     "Details" : "Детали:",
     "Select" : "Избери",
     "Pending" : "Чека",

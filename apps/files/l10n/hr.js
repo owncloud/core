@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Pohrana neispravna",
     "Unknown error" : "Nepoznata pogreška",
-    "Files" : "Datoteke",
     "All files" : "Sve datoteke",
     "Home" : "Kuća",
     "Close" : "Zatvorite",
@@ -18,6 +17,7 @@ OC.L10N.register(
     "Delete" : "Izbrišite",
     "Disconnect storage" : "Isključite pohranu",
     "Unshare" : "Prestanite dijeliti",
+    "Files" : "Datoteke",
     "Details" : "Detalji",
     "Select" : "Selektiraj",
     "Pending" : "Na čekanju",

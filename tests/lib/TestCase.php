@@ -145,7 +145,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		// fail hard if xml errors have not been cleaned up
 		$errors = libxml_get_errors();
 		libxml_clear_errors();
-		$this->assertEquals([], $errors);
+		if (!empty($errors)) {
+			self::assertEquals([], $errors, "There have been xml parsing errors");
+		}
 
 		// tearDown the traits
 		$traits = $this->getTestTraits();
@@ -449,7 +451,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 				return vsprintf($text, $parameters);
 			}));
 
-		$t = new Base($template, $requestToken, $l10n, $theme);
+		$t = new Base($template, $requestToken, $l10n, null, $theme);
 		$buf = $t->fetchPage($vars);
 		$this->assertHtmlStringEqualsHtmlString($expectedHtml, $buf);
 	}

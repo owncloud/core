@@ -9,6 +9,7 @@ OC.L10N.register(
     "Updater" : "Përditësues",
     "A new version is available: %s" : "Ka gati një version të ri: %s",
     "Open updater" : "Hapni përditësuesin",
+    "Show changelog" : "Shfaq regjistër ndryshimesh",
     "Your version is up to date." : "Versioni juaj është i përditësuar.",
     "Checked on %s" : "Kontrolluar më %s",
     "Update channel:" : "Kanal përditësimesh:",

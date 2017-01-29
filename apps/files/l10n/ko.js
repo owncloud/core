@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "저장소가 잘못됨",
     "Unknown error" : "알 수 없는 오류",
-    "Files" : "파일",
     "All files" : "모든 파일",
     "Home" : "가정",
     "Close" : "닫기",
@@ -14,7 +13,6 @@ OC.L10N.register(
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "빈 공간이 부족합니다. 업로드할 파일 크기는 {size1}이지만 현재 {size2}만큼 비었습니다",
     "Uploading..." : "업로드 중...",
     "..." : "...",
-    "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{hours}:{minutes}:{seconds} 시간 {plural_s} 남음",
     "File upload is in progress. Leaving the page now will cancel the upload." : "파일 업로드가 진행 중입니다. 이 페이지를 벗어나면 업로드가 취소됩니다.",
     "Actions" : "작업",
     "Download" : "다운로드",
@@ -22,6 +20,7 @@ OC.L10N.register(
     "Delete" : "삭제",
     "Disconnect storage" : "저장소 연결 해제",
     "Unshare" : "공유 해제",
+    "Files" : "파일",
     "Details" : "자세한 정보",
     "Select" : "선택",
     "Pending" : "대기 중",

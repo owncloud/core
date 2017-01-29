@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Levágás nem négyzet alakú",
     "Couldn't reset password because the token is invalid" : "Nem lehet a jelszót törölni, mert a token érvénytelen.",
     "Couldn't reset password because the token is expired" : "Nem lehet a jelszót törölni, mert a token lejárt.",
-    "Couldn't send reset email. Please make sure your username is correct." : "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával. ",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Nem tudtunk visszaállítási e-mailt küldeni, mert ehhez a felhasználóhoz nem tartozik e-mail cím. Kérjük, vegye fel a kapcsolatot a rendszergazdával!",
     "%s password reset" : "%s jelszó visszaállítás",
     "Couldn't send reset email. Please contact your administrator." : "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával.",
     "Couldn't send mail to following users: %s " : "Nem sikerült e-mailt küldeni a következő felhasználóknak: %s",

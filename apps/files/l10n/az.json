@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "İnformasiya daşıyıcısı yalnışdır",
     "Unknown error" : "Bəlli olmayan səhv baş verdi",
-    "Files" : "Fayllar",
     "All files" : "Bütün fayllar",
     "Home" : "Ev",
     "Close" : "Bağla",
@@ -17,6 +16,7 @@
     "Delete" : "Sil",
     "Disconnect storage" : "Daşıyıcını ayır",
     "Unshare" : "Paylaşımı durdur",
+    "Files" : "Fayllar",
     "Details" : "Detallar",
     "Select" : "Seç",
     "Pending" : "Gözləmə",

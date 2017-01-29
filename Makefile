@@ -75,7 +75,7 @@ clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results cl
 # Basic required tools
 #
 $(COMPOSER_BIN):
-	cd build && curl -sS https://getcomposer.org/installer | php
+	cd build && ./getcomposer.sh
 
 #
 # ownCloud core PHP dependencies
@@ -110,11 +110,7 @@ clean-composer-deps:
 #
 $(nodejs_deps): build/package.json
 	$(NPM) install --prefix $(NODE_PREFIX)
-
-# in some cases installing bower alone could be enough
-$(BOWER):
-	$(NPM) install --prefix $(NODE_PREFIX) bower
-	touch $(BOWER)
+	touch $(nodejs_deps)
 
 .PHONY: install-nodejs-deps
 install-nodejs-deps: $(nodejs_deps)
@@ -125,7 +121,7 @@ clean-nodejs-deps:
 
 #
 # ownCloud core JS dependencies
-$(core_vendor): $(BOWER) bower.json
+$(core_vendor): $(nodejs_deps) bower.json
 	$(BOWER) install
 
 .PHONY: install-js-deps
@@ -156,7 +152,7 @@ test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
 
 .PHONY: test-integration
 test-integration: $(composer_dev_deps)
-	$(MAKE) -C build/integration
+	$(MAKE) -C build/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED)
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)

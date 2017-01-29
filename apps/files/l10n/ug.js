@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "يوچۇن خاتالىق",
-    "Files" : "ھۆججەتلەر",
     "Home" : "ئۆي",
     "Close" : "ياپ",
     "Favorites" : "يىغقۇچ",
@@ -14,6 +13,7 @@ OC.L10N.register(
     "Rename" : "ئات ئۆزگەرت",
     "Delete" : "ئۆچۈر",
     "Unshare" : "ھەمبەھىرلىمە",
+    "Files" : "ھۆججەتلەر",
     "Pending" : "كۈتۈۋاتىدۇ",
     "Name" : "ئاتى",
     "Size" : "چوڭلۇقى",

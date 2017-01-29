@@ -3,6 +3,7 @@
 use GuzzleHttp\Client as GClient;
 use GuzzleHttp\Message\ResponseInterface;
 use Sabre\DAV\Client as SClient;
+use Sabre\DAV\Xml\Property\ResourceType;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -296,6 +297,14 @@ trait WebDav {
 		}
 
 		$value = $keys[$key];
+		if ($value instanceof ResourceType) {
+			$value = $value->getValue();
+			if (empty($value)) {
+				$value = '';
+			} else {
+				$value = $value[0];
+			}
+		}
 		if ($value != $expectedValue) {
 			throw new \Exception("Property \"$key\" found with value \"$value\", expected \"$expectedValue\"");
 		}
@@ -455,10 +464,11 @@ trait WebDav {
 	public function userAddsAFileTo($user, $bytes, $destination){
 		$filename = "filespecificSize.txt";
 		$this->createFileSpecificSize($filename, $bytes);
-		PHPUnit_Framework_Assert::assertEquals(1, file_exists("data/$filename"));
-		$this->userUploadsAFileTo($user, "data/$filename", $destination);
-		$this->removeFile("data/", $filename);
-		PHPUnit_Framework_Assert::assertEquals(1, file_exists("../../data/$user/files$destination"));
+		PHPUnit_Framework_Assert::assertEquals(1, file_exists("work/$filename"));
+		$this->userUploadsAFileTo($user, "work/$filename", $destination);
+		$this->removeFile("work/", $filename);
+		$expectedElements = new \Behat\Gherkin\Node\TableNode([["$destination"]]);
+		$this->checkElementList($user, $expectedElements);
 	}
 
 	/**

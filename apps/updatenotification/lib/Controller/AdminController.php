@@ -103,13 +103,27 @@ class AdminController extends Controller {
 		$updateState = $this->updateChecker->getUpdateState();
 
 		$notifyGroups = json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true);
+		
+		$isNewVersionAvailable = ($updateState === []) ? false : true;
+		$newVersionString = ($updateState === []) ? '' : $updateState['updateVersion'];
+		
+		$changeLogUrl = null;
+		if( $isNewVersionAvailable === true ){
+			$varsionParts = explode(' ', $newVersionString);
+			if( count($varsionParts) >= 2){
+				$versionParts = explode('.', $varsionParts[1]); // remove the 'ownCloud' prefix
+				array_splice($versionParts, 2); // remove minor version info from parts
+				$changeLogUrl = 'https://owncloud.org/changelog/#latest' . implode('.', $versionParts);
+			}
+		}
 
 		$params = [
-			'isNewVersionAvailable' => ($updateState === []) ? false : true,
+			'isNewVersionAvailable' => $isNewVersionAvailable,
 			'lastChecked' => $lastUpdateCheck,
 			'currentChannel' => $currentChannel,
 			'channels' => $channels,
-			'newVersionString' => ($updateState === []) ? '' : $updateState['updateVersion'],
+			'newVersionString' => $newVersionString,
+			'changeLogUrl' => $changeLogUrl,
 
 			'notify_groups' => implode('|', $notifyGroups),
 		];

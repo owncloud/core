@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Неисправно складиште",
     "Unknown error" : "Непозната грешка",
-    "Files" : "Фајлови",
     "All files" : "Сви фајлови",
     "Home" : "Почетна",
     "Close" : "Затвори",
@@ -20,6 +19,7 @@ OC.L10N.register(
     "Delete" : "Обриши",
     "Disconnect storage" : "Искључи складиште",
     "Unshare" : "Не дели",
+    "Files" : "Фајлови",
     "Details" : "Подаци",
     "Select" : "Изабери",
     "Pending" : "На чекању",

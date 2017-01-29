@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "A tároló érvénytelen",
     "Unknown error" : "Ismeretlen hiba",
-    "Files" : "Fájlkezelő",
     "All files" : "Az összes állomány",
     "Home" : "Otthoni",
     "Close" : "Bezárás",
@@ -21,6 +20,7 @@ OC.L10N.register(
     "Delete" : "Törlés",
     "Disconnect storage" : "Tároló leválasztása",
     "Unshare" : "A megosztás visszavonása",
+    "Files" : "Fájlkezelő",
     "Details" : "Részletek",
     "Select" : "Kiválaszt",
     "Pending" : "Folyamatban",

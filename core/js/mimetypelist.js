@@ -4,7 +4,7 @@
 *
 * You can update the list of MimeType Aliases in config/mimetypealiases.json
 * The list of files is fetched from core/img/filetypes
-* To regenerate this file run ./occ maintenance:mimetypesjs
+* To regenerate this file run ./occ maintenance:mimetype:update-js
 */
 OC.MimeTypeList={
 	aliases: {
@@ -56,6 +56,7 @@ OC.MimeTypeList={
     "application/vnd.visio": "x-office/document",
     "application/vnd.wordperfect": "x-office/document",
     "application/x-7z-compressed": "package/x-generic",
+    "application/x-bzip2": "package/x-generic",
     "application/x-cbr": "text",
     "application/x-compressed": "package/x-generic",
     "application/x-dcraw": "image",
@@ -107,5 +108,7 @@ OC.MimeTypeList={
     "x-office-presentation",
     "x-office-spreadsheet"
 ],
-	themes: []
+	themes: {
+    "example": []
+}
 };

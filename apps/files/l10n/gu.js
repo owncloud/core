@@ -1,8 +1,8 @@
 OC.L10N.register(
     "files",
     {
-    "Files" : "ફાઇલો",
     "Close" : "બંધ ",
-    "Delete" : "કાઢો"
+    "Delete" : "કાઢો",
+    "Files" : "ફાઇલો"
 },
 "nplurals=2; plural=(n != 1);");

@@ -43,7 +43,7 @@ use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 use Icewind\Streams\IteratorDirectory;
 
-class AmazonS3 extends \OC\Files\Storage\Common {
+class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 
 	/**
 	 * @var \Aws\S3\S3Client

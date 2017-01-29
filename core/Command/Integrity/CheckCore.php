@@ -57,7 +57,11 @@ class CheckCore extends Base {
 	 * {@inheritdoc }
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$result = $this->checker->verifyCoreSignature();
+		$this->checker->runInstanceVerification();
+		$result = $this->checker->getResults();
 		$this->writeArrayInOutputFormat($input, $output, $result);
+		if (count($result)>0){
+			return 1;
+		}
 	}
 }

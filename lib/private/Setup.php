@@ -329,6 +329,8 @@ class Setup {
 		try {
 			$dbSetup->initialize($options);
 			$dbSetup->setupDatabase($username);
+			// apply necessary migrations
+			$dbSetup->runMigrations();
 		} catch (\OC\DatabaseSetupException $e) {
 			$error[] = [
 				'error' => $e->getMessage(),

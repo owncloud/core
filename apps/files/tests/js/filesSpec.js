@@ -84,7 +84,7 @@ describe('OCA.Files.Files tests', function() {
 		});
 		it('returns the ajax download URL when multiple files specified', function() {
 			var url = Files.getDownloadUrl(['test file.txt', 'abc.txt'], '/subdir');
-			expect(url).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=%5B%22test%20file.txt%22%2C%22abc.txt%22%5D');
+			expect(url).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files[]=test%20file.txt&files[]=abc.txt');
 		});
 	});
 	describe('handleDownload', function() {

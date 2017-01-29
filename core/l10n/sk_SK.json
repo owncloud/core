@@ -12,8 +12,6 @@
     "Crop is not square" : "Orezanie nie je štvorcové",
     "Couldn't reset password because the token is invalid" : "Nemožno zmeniť heslo pre neplatnosť tokenu.",
     "Couldn't reset password because the token is expired" : "Nepodarilo sa obnoviť heslo, pretože platnosť tokenu uplynula.",
-    "Couldn't send reset email. Please make sure your username is correct." : "Nemožno poslať email pre obnovu. Uistite sa, či vkladáte správne používateľské meno.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Nepodrilo sa poslať email na obnovenie hesla, pretože tento používateľ nemá uvedenú žiadnu emailovú adresu. Prosím, obráťte sa na správcu.",
     "%s password reset" : "reset hesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
     "Couldn't send mail to following users: %s " : "Nebolo možné odoslať email týmto používateľom: %s ",

@@ -11,7 +11,6 @@
     "Crop is not square" : "Pangkas ini tidak persegi",
     "Couldn't reset password because the token is invalid" : "Tidak dapat menyetel ulang sandi karena token tidak sah",
     "Couldn't reset password because the token is expired" : "Tidak dapat menyetel ulang sandi karena token telah kadaluarsa",
-    "Couldn't send reset email. Please make sure your username is correct." : "Tidak dapat menyetel ulang email. Mohon pastikan nama pengguna Anda benar.",
     "%s password reset" : "%s sandi disetel ulang",
     "Couldn't send reset email. Please contact your administrator." : "Tidak dapat mengirim email setel ulang. Silakan hubungi administrator Anda.",
     "Couldn't send mail to following users: %s " : "Tidak dapat mengirim Email ke pengguna berikut: %s",

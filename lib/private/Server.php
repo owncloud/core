@@ -156,7 +156,11 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getConfig()
 			);
 
-			return new Encryption\Keys\Storage($view, $util);
+			return new Encryption\Keys\Storage(
+				$view,
+				$util,
+				$c->getUserSession()
+			);
 		});
 		$this->registerService('TagMapper', function (Server $c) {
 			return new TagMapper($c->getDatabaseConnection());
@@ -289,8 +293,12 @@ class Server extends ServerContainer implements IServerContainer {
 			return new \OC\Authentication\TwoFactorAuth\Manager($c->getAppManager(), $c->getSession(), $c->getConfig());
 		});
 
-		$this->registerService('NavigationManager', function ($c) {
-			return new \OC\NavigationManager();
+		$this->registerService('NavigationManager', function (Server $c) {
+			return new \OC\NavigationManager($c->getAppManager(),
+				$c->getURLGenerator(),
+				$c->getL10NFactory(),
+				$c->getUserSession(),
+				$c->getGroupManager());
 		});
 		$this->registerService('AllConfig', function (Server $c) {
 			return new \OC\AllConfig(

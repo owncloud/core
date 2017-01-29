@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "Nepareiza krātuve",
     "Unknown error" : "Nezināma kļūda",
-    "Files" : "Datnes",
     "All files" : "Visas datnes",
     "Home" : "Mājas",
     "Close" : "Aizvērt",
@@ -19,6 +18,7 @@ OC.L10N.register(
     "Delete" : "Dzēst",
     "Disconnect storage" : "Atvienot krātuvi",
     "Unshare" : "Pārtraukt dalīšanos",
+    "Files" : "Datnes",
     "Details" : "Detaļas",
     "Select" : "Norādīt",
     "Pending" : "Gaida savu kārtu",

@@ -82,6 +82,7 @@ var OC={
 	coreApps:['', 'admin','log','core/search','settings','core','3rdparty'],
 	requestToken: oc_requesttoken,
 	menuSpeed: 50,
+	currentTheme: window.theme || {},
 
 	/**
 	 * Get an absolute url to a file in an app
@@ -1724,6 +1725,52 @@ function relative_modified_date(timestamp) {
 OC.Util = {
 	// TODO: remove original functions from global namespace
 	humanFileSize: humanFileSize,
+
+	/**
+	 * Returns a file size in bytes from a humanly readable string
+	 * Makes 2kB to 2048.
+	 * Inspired by computerFileSize in helper.php
+	 * @param  {string} string file size in human readable format
+	 * @return {number} or null if string could not be parsed
+	 *
+	 *
+	 */
+	computerFileSize: function (string) {
+		if (typeof string != 'string') {
+			return null;
+		}
+
+		var s = string.toLowerCase();
+		var bytes = parseFloat(s)
+
+		if (!isNaN(bytes) && isFinite(s)) {
+			return bytes;
+		}
+
+		var bytesArray = {
+			'b' : 1,
+			'k' : 1024,
+			'kb': 1024,
+			'mb': 1024 * 1024,
+			'm' : 1024 * 1024,
+			'gb': 1024 * 1024 * 1024,
+			'g' : 1024 * 1024 * 1024,
+			'tb': 1024 * 1024 * 1024 * 1024,
+			't' : 1024 * 1024 * 1024 * 1024,
+			'pb': 1024 * 1024 * 1024 * 1024 * 1024,
+			'p' : 1024 * 1024 * 1024 * 1024 * 1024
+		};
+
+		var matches = s.match(/([kmgtp]?b?)$/i);
+		if (matches[1]) {
+			bytes = bytes * bytesArray[matches[1]];
+		} else {
+			return null;
+		}
+
+		bytes = Math.round(bytes);
+		return bytes;
+	},
 
 	/**
 	 * @param timestamp

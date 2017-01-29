@@ -22,5 +22,5 @@ clean-test-results:
 clean: clean-test-results clean-composer-deps
 
 test: install-composer-deps
-	./run.sh
+	OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED) ./run.sh
 

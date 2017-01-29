@@ -95,15 +95,18 @@ abstract class ResourceLocator {
 	}
 
 	/**
-	 * append the $file resource if exist at $root
+	 * append the $file resource once if exist at $root
 	 *
 	 * @param string $root path to check
 	 * @param string $file the filename
 	 * @param string|null $webRoot base for path, default map $root to $webRoot
 	 * @return bool True if the resource was found, false otherwise
 	 */
-	protected function appendIfExist($root, $file, $webRoot = null) {
-		if (is_file($root.'/'.$file)) {
+	protected function appendOnceIfExist($root, $file, $webRoot = null) {
+
+		$path = $this->buildPath([$root, $file]);
+		
+		if (!isset( $this->resources[$path] ) && is_file($path)) {
 			$this->append($root, $file, $webRoot, false);
 			return true;
 		}
@@ -123,11 +126,23 @@ abstract class ResourceLocator {
 		if (!$webRoot) {
 			$webRoot = $this->mapping[$root];
 		}
-		$this->resources[] = [$root, $webRoot, $file];
+		
+		$path = $this->buildPath([$root, $file]);
+		$this->resources[$path] = [$root, $webRoot, $file];
 
-		if ($throw && !is_file($root . '/' . $file)) {
+		if ($throw && !is_file($path) ) {
 			throw new ResourceNotFoundException($file, $webRoot);
 		}
+	}
+	
+	/**
+	 * build a path by given parts concatenated with a '/' (DIRECTORY_SEPARATOR)
+	 *
+	 * @param string[] $parts path parts to concatenate
+	 * @return string $parts concatenated
+	 */
+	private function buildPath($parts){
+		return join(DIRECTORY_SEPARATOR, $parts);
 	}
 
 	/**

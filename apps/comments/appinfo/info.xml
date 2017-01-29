@@ -8,9 +8,18 @@
 	<default_enable/>
 	<version>0.3.0</version>
 	<dependencies>
-		<owncloud min-version="9.2" max-version="9.2" />
+		<owncloud min-version="10.0" max-version="10.0" />
 	</dependencies>
 	<types>
 		<logging/>
+		<dav/>
 	</types>
+	<sabre>
+		<plugins>
+			<plugin>OCA\Comments\Dav\CommentsPlugin</plugin>
+		</plugins>
+		<collections>
+			<collection>OCA\Comments\Dav\RootCollection</collection>
+		</collections>
+	</sabre>
 </info>

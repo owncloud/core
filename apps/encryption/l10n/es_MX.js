@@ -1,6 +1,9 @@
 OC.L10N.register(
     "encryption",
     {
+    "Missing recovery key password" : "Falta contraseña para llave de recuperación",
+    "Please repeat the recovery key password" : "Por favor repite la contraseña de la llave de recuperación",
+    "Repeated recovery key password does not match the provided recovery key password" : "La contraseña repetida para la llave de recuperación no es igual la contraseña especificada para la llave de recuperación",
     "Recovery key successfully enabled" : "Se ha habilitado la recuperación de archivos",
     "Could not enable recovery key. Please check your recovery key password!" : "No se pudo habilitar la clave de recuperación. Por favor compruebe su contraseña.",
     "Recovery key successfully disabled" : "Clave de recuperación deshabilitada",

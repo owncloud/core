@@ -83,6 +83,7 @@ class ThemeService {
 			$this->theme->setDirectory(
 				ltrim(\OC_App::getAppWebPath($appName), '/') . '/'
 			);
+			$this->theme->setName($appName);
 		}
 	}
 }

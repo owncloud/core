@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Et ass en onbekannte Fehler opgetrueden",
-    "Files" : "Dateien",
     "All files" : "All d'Fichieren",
     "Home" : "Doheem",
     "Close" : "Zoumaachen",
@@ -15,6 +14,7 @@ OC.L10N.register(
     "Rename" : "Ëmbenennen",
     "Delete" : "Läschen",
     "Unshare" : "Net méi deelen",
+    "Files" : "Dateien",
     "Details" : "Detailer",
     "Select" : "Auswielen",
     "This operation is forbidden" : "Dës Operatioun ass verbueden.",

@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Error Incognite",
-    "Files" : "Files",
     "Home" : "Domo",
     "Close" : "Clauder",
     "Uploading..." : "Incargante...",
@@ -10,6 +9,7 @@ OC.L10N.register(
     "Download" : "Discargar",
     "Delete" : "Deler",
     "Unshare" : "Leva compartir",
+    "Files" : "Files",
     "Name" : "Nomine",
     "Size" : "Dimension",
     "Modified" : "Modificate",

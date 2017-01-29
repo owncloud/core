@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "Сториџот не е валиден",
     "Unknown error" : "Непозната грешка",
-    "Files" : "Датотеки",
     "All files" : "Сите датотеки",
     "Home" : "Дома",
     "Close" : "Затвори",
@@ -14,6 +13,7 @@
     "Rename" : "Преименувај",
     "Delete" : "Избриши",
     "Unshare" : "Не споделувај",
+    "Files" : "Датотеки",
     "Details" : "Детали:",
     "Select" : "Избери",
     "Pending" : "Чека",

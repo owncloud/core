@@ -121,6 +121,12 @@ class Scanner extends PublicEmitter {
 			if (is_null($storage)) {
 				continue;
 			}
+
+			// don't bother scanning failed storages (shortcut for same result)
+			if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
+				continue;
+			}
+
 			// don't scan the root storage
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Local') && $mount->getMountPoint() === '/') {
 				continue;
@@ -164,6 +170,12 @@ class Scanner extends PublicEmitter {
 			if (is_null($storage)) {
 				continue;
 			}
+
+			// don't bother scanning failed storages (shortcut for same result)
+			if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
+				continue;
+			}
+
 			// if the home storage isn't writable then the scanner is run as the wrong user
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
 				(!$storage->isCreatable('') or !$storage->isCreatable('files'))

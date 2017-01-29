@@ -1,7 +1,6 @@
 { "translations": {
     "Storage invalid" : "Emmagatzemament no vàlid",
     "Unknown error" : "Error desconegut",
-    "Files" : "Fitxers",
     "All files" : "Tots els fitxers",
     "Home" : "Inici",
     "Close" : "Tanca",
@@ -18,6 +17,7 @@
     "Delete" : "Esborra",
     "Disconnect storage" : "Desonnecta l'emmagatzematge",
     "Unshare" : "Deixa de compartir",
+    "Files" : "Fitxers",
     "Details" : "Detalls",
     "Select" : "Selecciona",
     "Pending" : "Pendent",

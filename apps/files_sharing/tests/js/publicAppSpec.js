@@ -119,7 +119,7 @@ describe('OCA.Sharing.PublicApp tests', function() {
 			});
 			it('returns correct download URL for multiple files', function() {
 				expect(fileList.getDownloadUrl(['a b c.txt', 'd e f.txt']))
-					.toEqual(OC.webroot + '/index.php/s/sh4tok/download?path=%2Fsubdir&files=%5B%22a%20b%20c.txt%22%2C%22d%20e%20f.txt%22%5D');
+					.toEqual(OC.webroot + '/index.php/s/sh4tok/download?path=%2Fsubdir&files[]=a%20b%20c.txt&files[]=d%20e%20f.txt');
 			});
 			it('returns the correct ajax URL', function() {
 				expect(fileList.getAjaxUrl('test', {a:1, b:'x y'}))

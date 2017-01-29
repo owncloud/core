@@ -14,8 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Beskärning är inte kvadratisk",
     "Couldn't reset password because the token is invalid" : "Kunde inte återställa lösenordet på grund av felaktig token",
     "Couldn't reset password because the token is expired" : "Lösenord kunde inte återställas eftersom \"token\" har utgått",
-    "Couldn't send reset email. Please make sure your username is correct." : "Kunde inte skicka återställningsmail. Vänligen kontrollera att ditt användarnamn är korrekt.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Kunde inte skicka återställningsmail eftersom det saknas epost-adress för denna användaren. Kontakta din administratör",
     "%s password reset" : "%s återställ lösenord",
     "Couldn't send reset email. Please contact your administrator." : "Kunde inte skicka återställningsmail. Vänligen kontakta din administratör.",
     "Couldn't send mail to following users: %s " : "Gick inte att skicka e-post till följande användare: %s",

@@ -7,7 +7,6 @@ OC.L10N.register(
     "No temporary profile picture available, try again" : "Slike privremenih profila nisu dostupne, pokušajte ponovno",
     "No crop data provided" : "Nema podataka o obrezivanju",
     "Couldn't reset password because the token is invalid" : "Resetiranje lozinke nije moguće jer je token neispravan.",
-    "Couldn't send reset email. Please make sure your username is correct." : "Resetiranu e-poštu nije moguće poslati.Molimo provjerite ispravnost svoga korisničkog imena.",
     "%s password reset" : "%s lozinka resetirana",
     "Couldn't send reset email. Please contact your administrator." : "Nije mogće poslati resetiranu poštu. MOlimo kontaktirajte svog administratora.",
     "Couldn't send mail to following users: %s " : "Nije moguće slanje pošte sljedećim korisnicima: %s",

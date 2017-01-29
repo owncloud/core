@@ -11,8 +11,6 @@ OC.L10N.register(
     "No temporary profile picture available, try again" : "Et ass keen temporäert Profilbild verfügbar, versich et nach emol.",
     "Couldn't reset password because the token is invalid" : "D'Passwuert konnt net zeréck gesat ginn well den Token ongülteg ass",
     "Couldn't reset password because the token is expired" : "D'Passwuert konnt net zeréck gesat ginn well den Token ofgelaf ass",
-    "Couldn't send reset email. Please make sure your username is correct." : "D'Email konnt net zeréck gesat ginn. Iwwerpréif w.e.g. op däi Passwuert richteg ass.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "D'Email fir zeréck ze setzen konnt net geschéckt ginn well et keng gülteg Emailadresse fir dëse Benotzernumm gëtt. W.e.g. kontaktéier däin Administrateur.",
     "%s password reset" : "%s Passwuert ass nei gesat",
     "Couldn't send reset email. Please contact your administrator." : "D'Email fir zeréck ze setzen konnt net geschéckt ginn. W.e.g. kontaktéier däin Administrateur.",
     "Couldn't send mail to following users: %s " : "D'Email fir de folgende Benotzer konnt net geschéckt ginn: %s",

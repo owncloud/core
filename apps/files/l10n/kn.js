@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Storage invalid" : "ಸಂಗ್ರಹ ಅಮಾನ್ಯವಾಗಿದೆ",
     "Unknown error" : "ಗೊತ್ತಿಲ್ಲದ ದೋಷ",
-    "Files" : "﻿ಕಡತಗಳು",
     "All files" : "﻿ಎಲ್ಲಾ ಕಡತಗಳು",
     "Home" : "﻿ಮುಖಪುಟ",
     "Close" : "ಮುಚ್ಚು",
@@ -14,6 +13,7 @@ OC.L10N.register(
     "Delete" : "﻿ಅಳಿಸಿ",
     "Disconnect storage" : "ಸಂಗ್ರಹ ಸಾಧನವನ್ನು ತೆಗೆದುಹಾಕಿ",
     "Unshare" : "ಹಂಚಿಕೆಯನ್ನು ಹಿಂತೆಗೆ",
+    "Files" : "﻿ಕಡತಗಳು",
     "Select" : "ಆಯ್ಕೆ ಮಾಡಿ",
     "Pending" : "﻿ಬಾಕಿ ಇದೆ",
     "Unable to determine date" : "﻿ಮುಕ್ತಾಯ ದಿನಾಂಕ ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",

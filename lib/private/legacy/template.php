@@ -37,6 +37,7 @@
  */
 
 use OC\TemplateLayout;
+use OC\Theme\Theme;
 
 require_once __DIR__.'/template/functions.php';
 
@@ -45,18 +46,24 @@ require_once __DIR__.'/template/functions.php';
  */
 class OC_Template extends \OC\Template\Base {
 
-	/** @var string */
-	private $renderAs; // Create a full page?
+	/**
+	 * @var string
+	 */
+	private $renderAs;
 
-	/** @var string */
-	private $path; // The path to the template
+	/**
+	 * @var array
+	 */
+	private $headers = [];
 
-	/** @var array */
-	private $headers = []; //custom headers
+	/**
+	 * @var string
+	 */
+	protected $app;
 
-	/** @var string */
-	protected $app; // app id
-
+	/**
+	 * @var bool
+	 */
 	protected static $initTemplateEngineFirstRun = true;
 
 	/**
@@ -71,27 +78,24 @@ class OC_Template extends \OC\Template\Base {
 	 * @param bool $registerCall = true
 	 */
 	public function __construct( $app, $name, $renderAs = "", $registerCall = true ) {
-		// Read the selected theme from the config file
 		self::initTemplateEngine($renderAs);
-
 		$requestToken = (OC::$server->getSession() && $registerCall) ? \OCP\Util::callRegister() : '';
 
 		$parts = explode('/', $app); // fix translation when app is something like core/lostpassword
 		$l10n = \OC::$server->getL10N($parts[0]);
-		$themeDefaults = new OC_Defaults();
 
-		list($path, $template) = $this->findTemplate(OC_Util::getTheme(), $app, $name);
+		$theme = OC_Util::getTheme();
+		$template = $this->findTemplate($theme, $app, $name);
 
-		// Set the private data
 		$this->renderAs = $renderAs;
-		$this->path = $path;
 		$this->app = $app;
 
-		parent::__construct($template, $requestToken, $l10n, $themeDefaults);
+		parent::__construct($template, $requestToken, $l10n, $theme, new OC_Defaults());
 	}
 
 	/**
 	 * @param string $renderAs
+	 * @throws Exception
 	 */
 	public static function initTemplateEngine($renderAs) {
 		if (self::$initTemplateEngineFirstRun){
@@ -179,9 +183,9 @@ class OC_Template extends \OC\Template\Base {
 	 *
 	 * Will select the template file for the selected theme.
 	 * Checking all the possible locations.
-	 * @param \OC\Theme\Theme $theme
+	 * @param Theme $theme
 	 * @param string $app
-	 * @return string[]
+	 * @return string
 	 */
 	protected function findTemplate($theme, $app, $name) {
 		// Check if it is a app template or not.
@@ -190,10 +194,11 @@ class OC_Template extends \OC\Template\Base {
 		} else {
 			$dirs = $this->getCoreTemplateDirs($theme, OC::$SERVERROOT);
 		}
+
 		$locator = new \OC\Template\TemplateFileLocator( $dirs );
 		$template = $locator->find($name);
-		$path = $locator->getPath();
-		return [$path, $template];
+
+		return $template;
 	}
 
 	/**
@@ -257,8 +262,9 @@ class OC_Template extends \OC\Template\Base {
 	 * Includes another template. use <?php echo $this->inc('template'); ?> to
 	 * do this.
 	 */
-	public function inc( $file, $additionalParams = null ) {
-		return $this->load($this->path.$file.'.php', $additionalParams);
+	public function inc($file, $additionalParams = null) {
+		$template = $this->findTemplate($this->theme, $this->app, $file);
+		return $this->load($template, $additionalParams);
 	}
 
 	/**
@@ -337,6 +343,8 @@ class OC_Template extends \OC\Template\Base {
 	/**
 	 * print error page using Exception details
 	 * @param Exception | Throwable $exception
+	 * @param bool $fetchPage
+	 * @return bool|string
 	 */
 	public static function printExceptionErrorPage($exception, $fetchPage = false) {
 		try {
@@ -432,5 +440,4 @@ class OC_Template extends \OC\Template\Base {
 		}
 		return $useAssetPipeline;
 	}
-
 }

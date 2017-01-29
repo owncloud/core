@@ -9,6 +9,7 @@ OC.L10N.register(
     "Updater" : "מעדכן",
     "A new version is available: %s" : "קיימת גרסה מעודכנת: %s",
     "Open updater" : "פתיחת מעדכן",
+    "Show changelog" : "הצגת לוג שינויים",
     "Your version is up to date." : "הגרסה שבידך מעודכנת.",
     "Checked on %s" : "נבדק לאחרונה ב- %s",
     "Update channel:" : "עדכון ערוץ:",

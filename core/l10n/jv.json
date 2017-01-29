@@ -12,8 +12,6 @@
     "Crop is not square" : "Potongan ora kotak",
     "Couldn't reset password because the token is invalid" : "Ora iso reset sandi amargo token salah",
     "Couldn't reset password because the token is expired" : "Ora iso reset sandi amargo token kadaluarso",
-    "Couldn't send reset email. Please make sure your username is correct." : "Ora iso ngirim reset email. Coba pastekne jeneng usermu bener.",
-    "Could not send reset email because there is no email address for this username. Please contact your administrator." : "Ora iso ngirim reset email mergane ora ono alamat email kanggo jeneng user iki. Tulung celuk administratormu.",
     "%s password reset" : "%s sandi direset",
     "Couldn't send reset email. Please contact your administrator." : "Ora iso ngirim reset email. Tulung celuk administratormu.",
     "Couldn't send mail to following users: %s " : "Ora iso ngirim email kanggo pengguna: %s",

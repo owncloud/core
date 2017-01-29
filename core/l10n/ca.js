@@ -12,7 +12,6 @@ OC.L10N.register(
     "Crop is not square" : "El retall no és quadrat",
     "Couldn't reset password because the token is invalid" : "No es pot restablir la contrasenya perquè el testimoni no és vàlid",
     "Couldn't reset password because the token is expired" : "No es pot restablir la contrasenya perquè el testimoni ha vençut",
-    "Couldn't send reset email. Please make sure your username is correct." : "No s'ha pogut enviar el correu de restabliment. Assegureu-vos que el vostre nom d'usuari és correcte.",
     "%s password reset" : "restableix la contrasenya %s",
     "Couldn't send reset email. Please contact your administrator." : "No s'ha pogut restablir el correu. Contacteu amb l'administrador.",
     "Couldn't send mail to following users: %s " : "No s'ha pogut enviar correu als usuaris següents: %s",

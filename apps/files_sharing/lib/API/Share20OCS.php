@@ -144,8 +144,9 @@ class Share20OCS {
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $sharedWith !== null ? $sharedWith->getDisplayName() : $share->getSharedWith();
 		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			$group = $this->groupManager->get($share->getSharedWith());
 			$result['share_with'] = $share->getSharedWith();
-			$result['share_with_displayname'] = $share->getSharedWith();
+			$result['share_with_displayname'] = $group !== null ? $group->getDisplayName() : $share->getSharedWith();
 		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 
 			$result['share_with'] = $share->getPassword();
@@ -733,7 +734,7 @@ class Share20OCS {
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if ($sharedWith->inGroup($this->currentUser)) {
+			if (!is_null($sharedWith) && $sharedWith->inGroup($this->currentUser)) {
 				return true;
 			}
 		}

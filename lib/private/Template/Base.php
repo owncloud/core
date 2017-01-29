@@ -30,27 +30,45 @@ namespace OC\Template;
 use OC\Theme\Theme;
 
 class Base {
-	private $template; // The template
-	private $vars; // Vars
+	/**
+	 * @var string
+	 */
+	private $template;
 
-	/** @var \OCP\IL10N */
+	/**
+	 * @var array
+	 */
+	private $vars;
+
+	/**
+	 * @var \OCP\IL10N
+	 */
 	private $l10n;
 
-	/** @var \OC_Defaults */
-	private $theme;
+	/**
+	 * @var Theme
+	 */
+	protected $theme;
+
+	/**
+	 * @var \OC_Defaults
+	 */
+	private $themeDefaults;
 
 	/**
 	 * @param string $template
 	 * @param string $requestToken
 	 * @param \OCP\IL10N $l10n
-	 * @param \OC_Defaults $theme
+	 * @param Theme $theme
+	 * @param \OC_Defaults $themeDefaults
 	 */
-	public function __construct($template, $requestToken, $l10n, $theme ) {
+	public function __construct($template, $requestToken, $l10n, $theme, $themeDefaults) {
 		$this->vars = [];
 		$this->vars['requesttoken'] = $requestToken;
 		$this->l10n = $l10n;
 		$this->template = $template;
 		$this->theme = $theme;
+		$this->themeDefaults = $themeDefaults;
 	}
 
 	/**
@@ -156,20 +174,20 @@ class Base {
 	 * @param string $file
 	 * @param array|null $additionalParams
 	 * @return string content
+	 * @throws \Exception
 	 *
 	 * Includes the template file, fetches its output
 	 */
 	protected function load($file, $additionalParams = null) {
-		// Register the variables
+		// This variables will be used inside templates, they are not unused!
 		$_ = $this->vars;
 		$l = $this->l10n;
-		$theme = $this->theme;
+		$theme = $this->themeDefaults;
 
 		if( !is_null($additionalParams)) {
 			$_ = array_merge( $additionalParams, $this->vars );
 		}
 
-		// Include
 		ob_start();
 		try {
 			include $file;
@@ -180,8 +198,6 @@ class Base {
 		}
 		@ob_end_clean();
 
-		// Return data
 		return $data;
 	}
-
 }
