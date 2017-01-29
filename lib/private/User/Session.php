@@ -545,7 +545,7 @@ class Session implements IUserSession, Emitter {
 		$userId = $accessToken->getUserId();
 
 		// TODO: Where to get the password for the preLogin hook?
-		$this->manager->emit('\OC\User', 'preLogin', [$userId, '']);
+		//$this->manager->emit('\OC\User', 'preLogin', [$userId, '']);
 
 		$user = $this->manager->get($userId);
 		if (is_null($user)) {
@@ -560,7 +560,7 @@ class Session implements IUserSession, Emitter {
 		$this->setLoginName($user->getDisplayName());
 
 		// TODO: Where to get the password for the postLogin hook?
-		$this->manager->emit('\OC\User', 'postLogin', [$userId, '']);
+		//$this->manager->emit('\OC\User', 'postLogin', [$userId, '']);
 
 		if ($this->isLoggedIn()) {
 			$this->prepareUserLogin();
