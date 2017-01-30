@@ -84,6 +84,8 @@ class OAuth2Test extends TestCase {
 	}
 
 	protected function tearDown() {
+		parent::tearDown();
+
 		$this->clientMapper->deleteAll();
 		$this->accessTokenMapper->deleteAll();
 		return parent::tearDown();
