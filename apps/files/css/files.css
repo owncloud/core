@@ -681,6 +681,19 @@ html.ie8 .column-mtime .selectedActions {
 	opacity: 1 !important;
 }
 
+#fileList .shared-with-recipient {
+	counter-increment: shared-with-recipient;
+}
+
+#fileList .shared-with-recipient:not(:last-child):after {
+	content: ", ";
+}
+
+#fileList .shared-with:after {
+	content: " =" counter(shared-with-recipient);
+}
+
+
 
 #selectedActionsList a.download.disabled,
 #fileList tr a.action.action-download.disabled {

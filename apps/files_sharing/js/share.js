@@ -211,7 +211,7 @@
 			var recipients = _.pluck(shareModel.get('shares'), 'share_with_displayname');
 			// note: we only update the data attribute because updateIcon()
 			if (recipients.length) {
-				$tr.attr('data-share-recipients', OCA.Sharing.Util.formatRecipients(recipients));
+				$tr.attr('data-share-recipients', recipients.join(', '));
 			}
 			else {
 				$tr.removeAttr('data-share-recipients');

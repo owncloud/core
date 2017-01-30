@@ -346,13 +346,7 @@
 					}
 
 					if (recipient) {
-						// limit counterparts for output
-						if (data.recipientsCount < 4) {
-							// only store the first ones, they will be the only ones
-							// displayed
-							data.recipients[recipient] = true;
-						}
-						data.recipientsCount++;
+						data.recipients[recipient] = true;
 					}
 
 					data.shareTypes[file.share.type] = true;
@@ -368,11 +362,7 @@
 					// array of sorted names
 					data.mountType = 'shared';
 					data.recipients = _.keys(data.recipients);
-					data.recipientsDisplayName = OCA.Sharing.Util.formatRecipients(
-						data.recipients,
-						data.recipientsCount
-					);
-					delete data.recipientsCount;
+					data.recipientsDisplayName = data.recipients.join(', ');
 					if (self._sharedWithUser) {
 						// only for outgoing shres
 						delete data.shareTypes;
