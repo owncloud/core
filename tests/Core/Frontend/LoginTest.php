@@ -22,10 +22,7 @@
 
 use Test\SeleniumTestCase;
 
-
 class LoginTest extends SeleniumTestCase {
-
-
 
 	public function testNormalLogin() {
 
