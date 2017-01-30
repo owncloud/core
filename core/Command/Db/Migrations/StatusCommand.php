@@ -21,7 +21,6 @@
 
 namespace OC\Core\Command\Db\Migrations;
 
-use OC\DB\MigrationConfiguration;
 use OC\DB\MigrationService;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -88,6 +87,9 @@ class StatusCommand extends Command {
 		return $infos;
 	}
 
+	/**
+	 * @param string $alias
+	 */
 	private function getFormattedVersionAlias(MigrationService $migrationService, $alias) {
 		$migration = $migrationService->getMigration($alias);
 		//No version found

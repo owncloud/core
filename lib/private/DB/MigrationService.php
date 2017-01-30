@@ -192,6 +192,9 @@ class MigrationService {
 		return $migrations;
 	}
 
+	/**
+	 * @param string $to
+	 */
 	private function getMigrationsToExecute($to) {
 		$knownMigrations = $this->getMigratedVersions();
 		$availableMigrations = $this->getAvailableVersions();
@@ -209,6 +212,9 @@ class MigrationService {
 		return $toBeExecuted;
 	}
 
+	/**
+	 * @param string[] $knownMigrations
+	 */
 	private function shallBeExecuted($m, $knownMigrations) {
 		if (in_array($m, $knownMigrations)) {
 			return false;
@@ -217,6 +223,9 @@ class MigrationService {
 		return true;
 	}
 
+	/**
+	 * @param string $version
+	 */
 	private function markAsExecuted($version) {
 		$this->connection->insertIfNotExist('*PREFIX*migrations', [
 			'app' => $this->appName,
@@ -293,7 +302,7 @@ class MigrationService {
 	}
 
 	/**
-	 * @return mixed|string
+	 * @return string
 	 */
 	private function getCurrentVersion() {
 		$m = $this->getMigratedVersions();
@@ -303,6 +312,9 @@ class MigrationService {
 		return @end(array_values($m));
 	}
 
+	/**
+	 * @return string
+	 */
 	private function getClass($version) {
 		$this->ensureMigrationsAreLoaded();
 
@@ -335,6 +347,9 @@ class MigrationService {
 		}
 	}
 
+	/**
+	 * @param string $version
+	 */
 	protected function createInstance($version) {
 		$class = $this->getClass($version);
 		try {
@@ -354,7 +369,6 @@ class MigrationService {
 	 * Executes one explicit version
 	 *
 	 * @param string $version
-	 * @param string|null $class
 	 */
 	public function executeStep($version) {
 

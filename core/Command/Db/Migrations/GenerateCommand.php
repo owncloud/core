@@ -22,7 +22,6 @@
 namespace OC\Core\Command\Db\Migrations;
 
 
-use OC\DB\MigrationConfiguration;
 use OC\DB\MigrationService;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -125,6 +124,9 @@ class Version<version> implements ISqlMigration {
 
 	}
 
+	/**
+	 * @param string $version
+	 */
 	private function generateMigration(MigrationService $ms, $version, $kind) {
 		$placeHolders = [
 			'<namespace>',

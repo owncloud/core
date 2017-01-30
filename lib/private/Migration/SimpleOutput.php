@@ -69,7 +69,6 @@ class SimpleOutput implements IOutput {
 	}
 
 	/**
-	 * @param int $max
 	 * @since 9.1.0
 	 */
 	public function finishProgress() {

@@ -164,7 +164,7 @@ class OC_App {
 
 	/**
 	 * Enables the app as a theme if it has the type "theme"
-	 * @param $app
+	 * @param string $app
 	 */
 	private static function enableThemeIfApplicable($app) {
 		if (self::isType($app, 'theme')) {
@@ -1370,8 +1370,8 @@ class OC_App {
 	}
 
 	/**
-	 * @param $config
-	 * @param $l
+	 * @param OCP\IConfig $config
+	 * @param OCP\IL10N $l
 	 * @param $info
 	 * @throws Exception
 	 */
