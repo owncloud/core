@@ -88,7 +88,6 @@ class OAuth2Test extends TestCase {
 
 		$this->clientMapper->deleteAll();
 		$this->accessTokenMapper->deleteAll();
-		return parent::tearDown();
 	}
 
 	public function testValidateBearerToken() {
