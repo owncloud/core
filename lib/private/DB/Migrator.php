@@ -28,6 +28,7 @@
 namespace OC\DB;
 
 use \Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use \Doctrine\DBAL\Schema\Index;
 use \Doctrine\DBAL\Schema\Table;
 use \Doctrine\DBAL\Schema\Schema;
@@ -182,12 +183,9 @@ class Migrator {
 		$indexes = $table->getIndexes();
 		$newIndexes = [];
 		foreach ($indexes as $index) {
-			if ($index->isPrimary()) {
-				// do not rename primary key
-				$indexName = $index->getName();
-			} else {
-				// avoid conflicts in index names
-				$indexName = $this->config->getSystemValue('dbtableprefix', 'oc_') . $this->random->generate(13, ISecureRandom::CHAR_LOWER);
+			$indexName = $index->getName();
+			if ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform && strpos($indexName, $table->getName()) === 0) {
+				$indexName = $newName . substr($indexName, strlen($table->getName()));
 			}
 			$newIndexes[] = new Index($indexName, $index->getColumns(), $index->isUnique(), $index->isPrimary());
 		}
@@ -216,8 +214,8 @@ class Migrator {
 		}
 
 		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->
-		setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()
+			->setFilterSchemaAssetsExpression($filterExpression);
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
 		// remove tables we don't know about
@@ -231,6 +229,22 @@ class Migrator {
 		foreach ($sourceSchema->getSequences() as $table) {
 			if (!$targetSchema->hasSequence($table->getName())) {
 				$sourceSchema->dropSequence($table->getName());
+			}
+		}
+
+		// Set the autoincrement for integer columns of the primary key
+		// This is required, because we manually set the primary key for
+		// autoincrement columns in \OC\DB\OCSqlitePlatform()
+		if ($this->connection->getDatabasePlatform() instanceof \OC\DB\OCSqlitePlatform) {
+			foreach ($targetSchema->getTables() as $table) {
+				if ($table->hasPrimaryKey()) {
+					foreach ($table->getPrimaryKeyColumns() as $column) {
+						$column = $table->getColumn($column);
+						if ($column->getType() instanceof \Doctrine\DBAL\Types\IntegerType) {
+							$column->setAutoincrement(true);
+						}
+					}
+				}
 			}
 		}
 
@@ -267,7 +281,41 @@ class Migrator {
 		$quotedSource = $this->connection->quoteIdentifier($sourceName);
 		$quotedTarget = $this->connection->quoteIdentifier($targetName);
 
-		$this->connection->exec('CREATE TABLE ' . $quotedTarget . ' (LIKE ' . $quotedSource . ')');
+		if ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+			$this->connection->exec('CREATE TABLE ' . $quotedTarget . ' (LIKE ' . $quotedSource . ' INCLUDING DEFAULTS INCLUDING CONSTRAINTS INCLUDING INDEXES)');
+
+			// On copy the indexes are prepended a `_idx` suffix, this looks like a change,
+			// so we need to revert it here.
+			$result = $this->connection->executeQuery("SELECT ic.relname as index_name
+					FROM pg_class bc, pg_class ic, pg_index i
+					WHERE (bc.oid = i.indrelid)
+						AND (ic.oid = i.indexrelid)
+						AND (bc.relname = '" . $sourceName . "')
+						AND (i.indisprimary != 't')");
+			$originalIndexes = [];
+			while ($row = $result->fetch()) {
+				$originalIndexes[substr($row['index_name'], strlen($sourceName))] = true;
+			}
+			$result->closeCursor();
+
+			$result = $this->connection->executeQuery("SELECT ic.oid as index_id, ic.relname as index_name
+					FROM pg_class bc, pg_class ic, pg_index i
+					WHERE (bc.oid = i.indrelid)
+						AND (ic.oid = i.indexrelid)
+						AND (bc.relname = '" . $targetName . "')
+						AND (ic.relname LIKE '%_idx')
+						AND (i.indisprimary != 't')");
+			while ($row = $result->fetch()) {
+				$indexName = substr($row['index_name'], strlen($targetName));
+				if (!isset($originalIndexes[$indexName]) && isset($originalIndexes[substr($indexName, 0, -4)])) {
+					// index does not exist, but without trailing `_idx` it does, so the copy table messed up
+					$this->connection->exec('ALTER INDEX ' . $row['index_name'] . ' RENAME TO ' . substr($row['index_name'], 0, -4));
+				}
+			}
+			$result->closeCursor();
+		} else {
+			$this->connection->exec('CREATE TABLE ' . $quotedTarget . ' (LIKE ' . $quotedSource . ')');
+		}
 		$this->connection->exec('INSERT INTO ' . $quotedTarget . ' SELECT * FROM ' . $quotedSource);
 	}
 
