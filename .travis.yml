@@ -14,7 +14,6 @@ env:
   global:
     - TEST_DAV=$(tests/travis/changed_app.sh dav)
     - TC=litmus-v2
-    - TEST_SELENIUM=1
     - SRV_HOST_NAME=owncloud
     - SRV_HOST_PORT=8888
   matrix:
@@ -39,6 +38,7 @@ addons:
 
 before_install:
   - make
+  - if [ ! -z "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ]; then export TEST_SELENIUM=1 ; else export TEST_SELENIUM=0 ; fi
   - sh -c "if [ '$TEST_DAV' = '1' ] || [ '$TEST_SELENIUM' = '1' ]; then bash tests/travis/before_install.sh $DB; fi"
 
 install:
