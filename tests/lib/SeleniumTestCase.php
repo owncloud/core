@@ -46,6 +46,16 @@ abstract class SeleniumTestCase extends TestCase {
 		}
 	
 	}
+	
+	public static function setUpBeforeClass() {
+		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
+		if (!file_exists($dataDir . "/admin")) {
+			mkdir($dataDir . "/admin");
+			mkdir($dataDir . "/admin/files");
+			copy(\OC::$SERVERROOT . '/core/skeleton/welcome.txt', $dataDir. "/admin/files/welcome.txt");
+		}
+	}
+	
 	protected function tearDown() {
 		parent::tearDown();
 		$this->webDriver->quit ();
