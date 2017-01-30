@@ -95,4 +95,25 @@ abstract class SeleniumTestCase extends TestCase {
 			sleep(1);
 		}
 	}
+	
+
+	/**
+	 * logins into the admin account of OwnCloud
+	 */
+	protected function adminLogin()
+	{
+		$this->webDriver->get($this->rootURL);
+		$login = $this->webDriver->findElement(\WebDriverBy::id("user"));
+		$login->click();
+		$login->sendKeys("admin");
+	
+		$login = $this->webDriver->findElement(\WebDriverBy::id("password"));
+		$login->click();
+		$login->sendKeys("admin");
+	
+		$login = $this->webDriver->findElement(\WebDriverBy::id("submit"));
+		$login->click();
+		sleep(5);
+	}
+
 }
