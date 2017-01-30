@@ -91,6 +91,18 @@ class FeedBackHandler {
 
 if (OC::checkUpgrade(false)) {
 
+	$preUpdate = new \OC\Updater\PreUpdate(\OC::$server->getAppManager());
+	$missingApps = $preUpdate->getMissingApps();
+	if (count($missingApps) !== 0){
+		$eventSource->send('notice', (string)$l->t('Code is missing for the following apps:'));
+		foreach ($missingApps as $appId){
+			$eventSource->send('notice', $appId);
+		}
+		$eventSource->send('failure', (string)$l->t('Please use occ app:disable command if you don\'t need these apps or restore the code.'));
+		$eventSource->close();
+		exit();
+	}
+
 	$config = \OC::$server->getSystemConfig();
 	if ($config->getValue('upgrade.disable-web', false)) {
 		$eventSource->send('failure', (string)$l->t('Please use the command line updater because automatic updating is disabled in the config.php.'));

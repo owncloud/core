@@ -2,7 +2,7 @@
 /**
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -50,8 +50,7 @@ class CheckApps extends Base {
 		parent::configure();
 		$this
 			->setName('upgrade:checkapps')
-			->setDescription('Check if there are apps with missing code.')
-		;
+			->setDescription('Check if there are enabled apps with missing code.');
 	}
 
 	/**
@@ -63,8 +62,14 @@ class CheckApps extends Base {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$missingApps = $this->preUpdate->getMissingApps();
-		if (count($missingApps) !==0 ){
-			$this->writeArrayInOutputFormat($input, $output, $missingApps);
+		if (count($missingApps) !== 0){
+			if ($input->getOption('output') === self::OUTPUT_FORMAT_PLAIN){
+				$output->writeln('Code is missing for the following apps:');
+				$this->writeArrayInOutputFormat($input, $output, $missingApps);
+				$output->writeln('Please use occ app:disable command if you don\'t need these apps or restore the code.');
+			} else {
+				$this->writeArrayInOutputFormat($input, $output, [ 'missing' => $missingApps ]);
+			}
 			return 1;
 		}
 		return 0;

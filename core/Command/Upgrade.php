@@ -91,7 +91,7 @@ class Upgrade extends Command {
 		$preUpgradeCommand = $this->getApplication()->find('upgrade:checkapps');
 
 		$exitCode = $preUpgradeCommand->run(new ArrayInput([]), $output);
-		if ($exitCode !==0 ){
+		if ($exitCode !== 0){
 			return 1;
 		}
 
