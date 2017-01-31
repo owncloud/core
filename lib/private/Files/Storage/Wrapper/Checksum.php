@@ -20,19 +20,17 @@
  */
 namespace OC\Files\Storage\Wrapper;
 
+use OC\Files\Stream\Checksum as ChecksumStream;
 
 class Checksum extends Wrapper {
 
-	const FILTER_NAME = 'sha1_checksum';
-
-	private $fileHashes = [];
+	private $checksummedPaths = [];
 
 	/**
 	 * @param array $parameters
 	 */
 	public function __construct($parameters) {
 		parent::__construct($parameters);
-		stream_filter_register(self::FILTER_NAME, '\OC\Files\Stream\Filter\Sha1');
 	}
 
 	/**
@@ -42,19 +40,13 @@ class Checksum extends Wrapper {
 	 */
 	public function fopen($path, $mode) {
 		$stream = $this->getWrapperStorage()->fopen($path, $mode);
-
 		if (!self::requiresChecksum($path, $mode)) {
 			return $stream;
 		}
 
-		stream_filter_append(
-			$stream,
-			self::FILTER_NAME,
-			STREAM_FILTER_WRITE,
-			['path' => $path, 'callback' => [$this, 'addFileHash']]
-		);
+		$this->checksummedPaths[] = $path;
 
-		return $stream;
+		return \OC\Files\Stream\Checksum::wrap($stream, $path);
 	}
 
 	/**
@@ -64,19 +56,18 @@ class Checksum extends Wrapper {
 	 * @return bool
 	 */
 	private static function requiresChecksum($path, $mode) {
-		return substr($path, 0, 6) == 'files/' && $mode != 'r';
+		return substr($path, 0, 6) === 'files/' && $mode !== 'r';
 	}
 
 	public function rename($path1, $path2) {
-		if (array_key_exists($path1, $this->fileHashes)) {
-			$checksum = $this->fileHashes[$path1];
-			// Update checksum in oc_filecache here?
-		}
-
 		return $this->getWrapperStorage()->rename($path1, $path2);
 	}
 
-	public function addFileHash($path, $hash) {
-		$this->fileHashes[$path] = $hash;
+	public function getMetaData($path) {
+		$parentMetaData = parent::getMetaData($path);
+		$checksums = ChecksumStream::getChecksums();
+		$parentMetaData['checksum'] = $checksums[$path];
+
+		return $parentMetaData;
 	}
 }
