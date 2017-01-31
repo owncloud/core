@@ -20,6 +20,8 @@
 *
 */
 use Test\SeleniumTestCase;
+use Facebook\WebDriver\WebDriverBy as WebDriverBy;
+
 class UserTest extends SeleniumTestCase
 {
 	private $userToTest = "admin";

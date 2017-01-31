@@ -23,6 +23,8 @@
 namespace Test;
 
 use Test\TestCase;
+use Facebook\WebDriver\Remote\RemoteWebDriver as RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy as WebDriverBy;
 
 abstract class SeleniumTestCase extends TestCase {
 	protected $webDriver;
@@ -30,19 +32,19 @@ abstract class SeleniumTestCase extends TestCase {
 	
 	protected function setUp() {
 		parent::setUp();
-	
+		
 		$sauceUserName =  getenv("SAUCE_USERNAME");
 		$sauceAccessKey =  getenv("SAUCE_ACCESS_KEY");
 		$capabilities = array (
-				\WebDriverCapabilityType::BROWSER_NAME => 'chrome',
+				\Facebook\WebDriver\Remote\WebDriverCapabilityType::BROWSER_NAME => 'chrome',
 				'tunnel-identifier' => getenv('TRAVIS_JOB_NUMBER')
 		);
 		$this->rootURL="http://". getenv('SRV_HOST_NAME') .":" . getenv('SRV_HOST_PORT'). "/" . getenv('SRV_HOST_URL');
 
 		if ($sauceAccessKey != "") {
-			$this->webDriver = \RemoteWebDriver::create ( 'http://'.$sauceUserName.':'.$sauceAccessKey.'@localhost:4445/wd/hub', $capabilities );
+			$this->webDriver = RemoteWebDriver::create ( 'http://'.$sauceUserName.':'.$sauceAccessKey.'@localhost:4445/wd/hub', $capabilities );
 		} else {
-			$this->webDriver = \RemoteWebDriver::create ( 'http://localhost:4444/wd/hub', $capabilities );
+			$this->webDriver = RemoteWebDriver::create ( 'http://localhost:4444/wd/hub', $capabilities );
 		}
 	
 	}
@@ -88,7 +90,7 @@ abstract class SeleniumTestCase extends TestCase {
 	protected  function waitTillElementIsStale($element, $timeout = 30) {
 		for ($i=0; $i<=$timeout; $i++) {
 			try {
-				$element->findElements(\WebDriverBy::id("does-not-matter"));
+				$element->findElements(WebDriverBy::id("does-not-matter"));
 			} catch (StaleElementReferenceException $e) {
 				return true;
 			}
@@ -103,15 +105,15 @@ abstract class SeleniumTestCase extends TestCase {
 	protected function adminLogin()
 	{
 		$this->webDriver->get($this->rootURL);
-		$login = $this->webDriver->findElement(\WebDriverBy::id("user"));
+		$login = $this->webDriver->findElement(WebDriverBy::id("user"));
 		$login->click();
 		$login->sendKeys("admin");
 	
-		$login = $this->webDriver->findElement(\WebDriverBy::id("password"));
+		$login = $this->webDriver->findElement(WebDriverBy::id("password"));
 		$login->click();
 		$login->sendKeys("admin");
 	
-		$login = $this->webDriver->findElement(\WebDriverBy::id("submit"));
+		$login = $this->webDriver->findElement(WebDriverBy::id("submit"));
 		$login->click();
 		sleep(5);
 	}

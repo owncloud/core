@@ -21,6 +21,7 @@
 */
 
 use Test\SeleniumTestCase;
+use Facebook\WebDriver\WebDriverBy as WebDriverBy;
 
 class LoginTest extends SeleniumTestCase {
 
