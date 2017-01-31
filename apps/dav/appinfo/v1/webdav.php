@@ -42,7 +42,7 @@ $serverFactory = new \OCA\DAV\Connector\Sabre\ServerFactory(
 // Backends
 if (strpos(explode(' ', \OC::$server->getRequest()->getHeader('Authorization'))[0], 'Bearer') !== false) {
 	// OAuth 2.0
-	$authBackend = new \OCA\DAV\Connector\Sabre\OAuth2();
+	$authBackend = new \OCA\OAuth2\Sabre\OAuth2();
 } else {
 	// Basic Auth
 	$authBackend = new \OCA\DAV\Connector\Sabre\Auth(

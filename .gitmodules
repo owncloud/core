@@ -1,3 +1,0 @@
-[submodule "apps/oauth2"]
-	path = apps/oauth2
-	url = https://github.com/pssl16/owncloud-app_oauth2
