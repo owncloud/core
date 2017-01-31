@@ -131,7 +131,7 @@ class File extends Node implements IFile {
 			}
 			list($count, $result) = \OC_Helper::streamCopy($data, $target);
 			fclose($target);
-
+			$foo = $partStorage->getMetaData($internalPartPath);
 			if ($result === false) {
 				$expected = -1;
 				if (isset($_SERVER['CONTENT_LENGTH'])) {
