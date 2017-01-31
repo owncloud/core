@@ -273,7 +273,7 @@ describe('OCA.Sharing.Util tests', function() {
 
 			expect($tr.attr('data-share-recipients')).toEqual('User One, User Two, Group One, Group Two');
 
-			expect($action.find('>span').text().trim()).toEqual('Shared with Group One Group Two User One User Two');
+			expect($action.find('>span').text().trim()).toEqual('Shared with User One User Two Group One Group Two');
 			expect($action.find('.icon').hasClass('icon-share')).toEqual(true);
 			expect($action.find('.icon').hasClass('icon-public')).toEqual(false);
 		});
