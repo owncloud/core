@@ -7,6 +7,7 @@ if ($configDir) {
 }
 
 require_once __DIR__ . '/../lib/base.php';
+require_once __DIR__ . '/vendor/facebook/webdriver/lib/__init__.php';
 
 // especially with code coverage it will require some more time
 set_time_limit(0);
