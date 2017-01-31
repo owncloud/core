@@ -32,6 +32,7 @@
 
 namespace OC\User;
 
+use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
 use OCP\IUser;
 use OCP\IUserBackend;
@@ -59,9 +60,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	private $backends = [];
 
 	/**
-	 * @var \OC\User\User[] $cachedUsers
+	 * @var CappedMemoryCache $cachedUsers
 	 */
-	private $cachedUsers = [];
+	private $cachedUsers;
 
 	/**
 	 * @var \OCP\IConfig $config
@@ -73,10 +74,10 @@ class Manager extends PublicEmitter implements IUserManager {
 	 */
 	public function __construct(IConfig $config = null) {
 		$this->config = $config;
-		$cachedUsers = &$this->cachedUsers;
-		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
-			/** @var \OC\User\User $user */
-			unset($cachedUsers[$user->getUID()]);
+		$this->cachedUsers = new CappedMemoryCache();
+		$this->listen('\OC\User', 'postDelete', function ($user) {
+			/** @var IUser $user */
+			$this->clearUserCache($user->getUID());
 		});
 	}
 
@@ -94,6 +95,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \OCP\UserInterface $backend
 	 */
 	public function registerBackend($backend) {
+		$this->clearUserCache();
 		$this->backends[] = $backend;
 	}
 
@@ -103,7 +105,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \OCP\UserInterface $backend
 	 */
 	public function removeBackend($backend) {
-		$this->cachedUsers = [];
+		$this->clearUserCache();
 		if (($i = array_search($backend, $this->backends)) !== false) {
 			unset($this->backends[$i]);
 		}
@@ -113,7 +115,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * remove all user backends
 	 */
 	public function clearBackends() {
-		$this->cachedUsers = [];
+		$this->clearUserCache();
 		$this->backends = [];
 	}
 
@@ -121,17 +123,18 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * get a user by user id
 	 *
 	 * @param string $uid
-	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
+	 * @return IUser|null Either the user or null if the specified user does not exist
 	 */
 	public function get($uid) {
-		if (isset($this->cachedUsers[$uid])) { //check the cache first to prevent having to loop over the backends
-			return $this->cachedUsers[$uid];
+		if ($this->isCached($uid)) { //check the cache first to prevent having to loop over the backends
+			return $this->getCached($uid);
 		}
 		foreach ($this->backends as $backend) {
 			if ($backend->userExists($uid)) {
 				return $this->getUserObject($uid, $backend);
 			}
 		}
+		$this->cacheUserNotExisting($uid);
 		return null;
 	}
 
@@ -141,11 +144,12 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $uid
 	 * @param \OCP\UserInterface $backend
 	 * @param bool $cacheUser If false the newly created user object will not be cached
-	 * @return \OC\User\User
+	 * @return IUser
 	 */
 	protected function getUserObject($uid, $backend, $cacheUser = true) {
-		if (isset($this->cachedUsers[$uid])) {
-			return $this->cachedUsers[$uid];
+		if ($this->isCached($uid)) {
+			// TODO check backend matches?
+			return $this->getCached($uid);
 		}
 
 		if (method_exists($backend, 'loginName2UserName')) {
@@ -153,14 +157,14 @@ class Manager extends PublicEmitter implements IUserManager {
 			if ($loginName !== false) {
 				$uid = $loginName;
 			}
-			if (isset($this->cachedUsers[$uid])) {
-				return $this->cachedUsers[$uid];
+			if ($this->isCached($uid)) {
+				return $this->getCached($uid);
 			}
 		}
 
 		$user = new User($uid, $backend, $this, $this->config);
 		if ($cacheUser) {
-			$this->cachedUsers[$uid] = $user;
+			$this->cacheUser($uid, $user);
 		}
 		return $user;
 	}
@@ -262,7 +266,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $uid
 	 * @param string $password
 	 * @throws \Exception
-	 * @return bool|\OC\User\User the created user or false
+	 * @return bool|IUser the created user or false
 	 */
 	public function createUser($uid, $password) {
 		$l = \OC::$server->getL10N('lib');
@@ -289,6 +293,9 @@ class Manager extends PublicEmitter implements IUserManager {
 		if ($this->userExists($uid)) {
 			throw new \Exception($l->t('The username is already being used'));
 		}
+
+		// clear cache for new user object
+		$this->clearUserCache($uid);
 
 		$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
 		foreach ($this->backends as $backend) {
@@ -466,5 +473,56 @@ class Manager extends PublicEmitter implements IUserManager {
 		return array_map(function($uid) {
 			return $this->get($uid);
 		}, $userIds);
+	}
+
+	/**
+	 * Check if a user object has been cached or is false
+	 * @param $uid
+	 * @return bool
+	 */
+	private function isCached($uid) {
+		return isset($this->cachedUsers[$uid]);
+	}
+
+	/**
+	 * get cached user object, converts false to null
+	 * @param $uid
+	 * @return IUser|null
+	 */
+	private function getCached($uid) {
+		$user = $this->cachedUsers[$uid];
+		if ($user === false) { // user was cached as not existing
+			return null;
+		}
+		return $user;
+	}
+
+	/**
+	 * cache a user object
+	 * @param $uid
+	 * @param IUser $user
+	 */
+	private function cacheUser($uid, IUser $user) {
+		$this->cachedUsers[$uid] = $user;
+	}
+
+	/**
+	 * mark a uid as not existing by caching it as false
+	 * @param $uid
+	 */
+	private function cacheUserNotExisting($uid) {
+		$this->cachedUsers[$uid] = false;
+	}
+
+	/**
+	 * clear the user cache or only remove a single user from cache
+	 * @param string $uid optional
+	 */
+	private function clearUserCache($uid = null) {
+		if ($uid) {
+			$this->cachedUsers->remove($uid);
+		} else {
+			$this->cachedUsers->clear();
+		}
 	}
 }
