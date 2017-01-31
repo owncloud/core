@@ -26,7 +26,6 @@
 !/apps/systemtags
 !/apps/testing
 !/apps/updatenotification
-!/apps/oauth2
 /apps/files_external/3rdparty/irodsphp/PHPUnitTest
 /apps/files_external/3rdparty/irodsphp/web
 /apps/files_external/3rdparty/irodsphp/prods/test
