@@ -11,27 +11,22 @@ use OCP\Template;
 
 class PersonalPanel implements ISettings {
 
-	/** @var IL10N  */
+	/** @var IL10N */
 	protected $l;
-
-	/** @var IUserSession  */
+	/** @var IUserSession */
 	protected $userSession;
-
-	/** @var IURLGenerator  */
+	/** @var IURLGenerator */
 	protected $urlGenerator;
-
 	/** @var FederatedShareProvider */
 	protected $shareProvider;
-
-	/** @var IRequest  */
+	/** @var IRequest */
 	protected $request;
 
-	public function __construct(
-		IL10N $l,
-		IUserSession $userSession,
-		IURLGenerator $urlGenerator,
-		FederatedShareProvider $shareProvider,
-		IRequest $request) {
+	public function __construct(IL10N $l,
+								IUserSession $userSession,
+								IURLGenerator $urlGenerator,
+								FederatedShareProvider $shareProvider,
+								IRequest $request) {
 		$this->l = $l;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
@@ -39,15 +34,15 @@ class PersonalPanel implements ISettings {
 		$this->request = $request;
 	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getSectionID() {
-        return 'general';
-    }
+	public function getSectionID() {
+		return 'general';
+	}
 
-    public function getPanel() {
+	public function getPanel() {
 		$isIE8 = false;
 		preg_match('/MSIE (.*?);/', $this->request->getHeader('User-Agent'), $matches);
 		if (count($matches) > 0 && $matches[1] <= 9) {
@@ -66,6 +61,6 @@ class PersonalPanel implements ISettings {
 		$tmpl->assign('showShareIT', !$isIE8);
 		$tmpl->assign('urlGenerator', $this->urlGenerator);
 		return $tmpl;
-    }
+	}
 
 }

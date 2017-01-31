@@ -11,23 +11,25 @@
 namespace Tests\Settings\Panels\Admin;
 
 use OC\Settings\Panels\Admin\Mail;
+use OC\Settings\Panels\Helper;
+use OCP\IConfig;
 
 /**
  * @package Tests\Settings\Panels\Admin
  */
 class MailTest extends \Test\TestCase {
 
-	/** @var \OC\Settings\Panels\Admin\Mail */
+	/** @var Mail */
 	private $panel;
-
+	/** @var IConfig */
 	private $config;
-
+	/** @var Helper */
 	private $helper;
 
 	public function setUp() {
 		parent::setUp();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
+		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
+		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 		$this->panel = new Mail($this->config, $this->helper);
 	}
 

@@ -24,38 +24,38 @@ namespace OCP\Settings;
 /*
  * Interface for the class that manages loading and returning ISection and
  * ISettings objects, primarily for the settings UI.
- * @since 9.2
+ * @since 10.0
  */
 interface ISettingsManager {
 
     /**
      * Retrieves sections for a personal
-     * @since 9.2
+     * @since 10.0
      * @return array of OCP\Settings\ISection (sorted by priority)
      */
     public function getPersonalSections();
 
     /**
      * Retrieves sections for a admin
-     * @since 9.2
+     * @since 10.0
      * @return array of OCP\Settings\ISection (sorted by priority)
      */
     public function getAdminSections();
 
     /**
-     * Retrives all personal panels for a given section
-     * @since 9.2
-     * @param string $sectionID
-     * @return array of ISettingss (sorted by priority)
+     * Retrieves all personal panels for a given section
+     * @since 10.0
+     * @param string $sectionId
+     * @return array of ISettings (sorted by priority)
      */
-    public function getPersonalPanels($sectionID);
+    public function getPersonalPanels($sectionId);
 
     /**
-     * Retrives all admin panels for a given section
-     * @since 9.2
-     * @param string $sectionID
-     * @return array of ISettingss (sorted by priority)
+     * Retrieves all admin panels for a given section
+     * @since 10.0
+     * @param string $sectionId
+     * @return array of ISettings (sorted by priority)
      */
-    public function getAdminPanels($sectionID);
+    public function getAdminPanels($sectionId);
 
 }

@@ -22,9 +22,17 @@
 namespace Test;
 
 use OC\Settings\Controller\SettingsPageController;
+use OC\Settings\Panels\Helper;
 use OC\Settings\Panels\Personal\Profile;
 use OC\Settings\Section;
+use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IRequest;
+use OCP\IURLGenerator;
+use OCP\IUser;
+use OCP\IUserSession;
 use OCP\L10N\IFactory;
+use OCP\Settings\ISettingsManager;
 
 class SettingsPageControllerTest extends TestCase {
 
@@ -43,14 +51,14 @@ class SettingsPageControllerTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->request = $this->getMockBuilder('\OCP\IRequest')->getMock();
-		$this->settingsManager = $this->getMockBuilder('\OCP\Settings\ISettingsManager')->getMock();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IUrlGenerator')->getMock();
-		$this->groupManager = $this->getMockBuilder('\OCP\IGroupManager')->getMock();
-		$this->userSession = $this->getMockBuilder('\OCP\IUserSession')->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-		$this->user = $this->getMockBuilder('\OCP\IUser')->getMock();
-		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
+		$this->request = $this->getMockBuilder(IRequest::class)->getMock();
+		$this->settingsManager = $this->getMockBuilder(ISettingsManager::class)->getMock();
+		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)->getMock();
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)->getMock();
+		$this->userSession = $this->getMockBuilder(IUserSession::class)->getMock();
+		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
+		$this->user = $this->getMockBuilder(IUser::class)->getMock();
+		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 		$this->lfactory = $this->createMock(IFactory::class);
 
 		$this->pageController = new SettingsPageController('settings',

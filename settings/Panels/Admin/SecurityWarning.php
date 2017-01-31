@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\Lock\NoopLockingProvider;
 use OC\Settings\Panels\Helper;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -31,27 +32,22 @@ use OCP\Template;
 
 class SecurityWarning implements ISettings {
 
-	/** @var  IL10N */
+	/** @var IL10N */
 	protected $l;
-
-	/** @var IConfig  */
+	/** @var IConfig */
 	protected $config;
-
-	/** @var IDBConnection  */
+	/** @var IDBConnection */
 	protected $dbconnection;
-
-	/** @var Helper  */
+	/** @var Helper */
 	protected $helper;
-
-	/** @var ILockingProvider  */
+	/** @var ILockingProvider */
 	protected $lockingProvider;
 
-	public function __construct(
-		IL10N $l,
-		IConfig $config,
-		IDBConnection $dbconnection,
-		Helper $helper,
-		ILockingProvider $lockingProvider) {
+	public function __construct(IL10N $l,
+								IConfig $config,
+								IDBConnection $dbconnection,
+								Helper $helper,
+								ILockingProvider $lockingProvider) {
 		$this->l = $l;
 		$this->config = $config;
 		$this->dbconnection = $dbconnection;
@@ -59,11 +55,11 @@ class SecurityWarning implements ISettings {
 		$this->lockingProvider = $lockingProvider;
 	}
 
-    public function getPriority() {
-        return 1000;
-    }
+	public function getPriority() {
+		return 1000;
+	}
 
-    public function getPanel() {
+	public function getPanel() {
 		$template = new Template('settings', 'panels/admin/securitywarning');
 		// warn if php is not setup properly to get system variables with getenv
 		$path = getenv('PATH');
@@ -82,8 +78,8 @@ class SecurityWarning implements ISettings {
 		}
 		// warn if outdated version of a memcache module is used
 		$caches = [
-			'apcu'	=> ['name' => $this->l->t('APCu'), 'version' => '4.0.6'],
-			'redis'	=> ['name' => $this->l->t('Redis'), 'version' => '2.2.5'],
+		'apcu'	=> ['name' => $this->l->t('APCu'), 'version' => '4.0.6'],
+		'redis'	=> ['name' => $this->l->t('Redis'), 'version' => '2.2.5'],
 		];
 		$outdatedCaches = [];
 		foreach ($caches as $php_module => $data) {
@@ -108,18 +104,18 @@ class SecurityWarning implements ISettings {
 		// If the current web root is non-empty but the web root from the config is,
 		// and system cron is used, the URL generator fails to build valid URLs.
 		$shouldSuggestOverwriteCliUrl = $this->config->getAppValue('core', 'backgroundjobs_mode', 'ajax') === 'cron' &&
-			\OC::$WEBROOT && \OC::$WEBROOT !== '/' &&
-			!$this->config->getSystemValue('overwrite.cli.url', '');
+		\OC::$WEBROOT && \OC::$WEBROOT !== '/' &&
+		!$this->config->getSystemValue('overwrite.cli.url', '');
 		$suggestedOverwriteCliUrl = ($shouldSuggestOverwriteCliUrl) ? \OC::$WEBROOT : '';
 		$template->assign('suggestedOverwriteCliUrl', $suggestedOverwriteCliUrl);
 		$template->assign('backgroundjobs_mode', $this->config->getAppValue('core', 'backgroundjobs_mode', 'ajax'));
 		$template->assign('cronErrors', $this->config->getAppValue('core', 'cronErrors'));
 		$template->assign('checkForWorkingWellKnownSetup', $this->config->getSystemValue('check_for_working_wellknown_setup', true));
+		return $template;
+	}
 
-        return $template;
-    }
+	public function getSectionID() {
+		return 'general';
+	}
 
-    public function getSectionID() {
-        return 'general';
-    }
 }

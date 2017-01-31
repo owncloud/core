@@ -24,13 +24,12 @@ namespace OC\Settings;
 use OCP\Settings\ISection;
 
 /*
- * @since 9.2
+ * @since 10.0
  */
 class Section implements ISection {
 
     protected $id;
     protected $name;
-
     /** @var int */
     protected $priority;
 

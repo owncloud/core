@@ -30,20 +30,20 @@ class Mail implements ISettings {
 
 	/** @var IConfig  */
 	protected $config;
-
 	/** @var Helper  */
 	protected $helper;
 
-	public function __construct(IConfig $config, Helper $helper) {
+	public function __construct(IConfig $config,
+								Helper $helper) {
 		$this->config = $config;
 		$this->helper = $helper;
 	}
 
-    public function getPriority() {
-        return 20;
-    }
+	public function getPriority() {
+		return 20;
+	}
 
-    public function getPanel() {
+	public function getPanel() {
 		$template = new Template('settings', 'panels/admin/mail');
 		// Should we display sendmail as an option?
 		$template->assign('sendmail_is_available', $this->helper->findBinaryPath('sendmail'));
@@ -58,11 +58,11 @@ class Mail implements ISettings {
 		$template->assign('mail_smtpauth', $this->config->getSystemValue("mail_smtpauth", false));
 		$template->assign('mail_smtpname', $this->config->getSystemValue("mail_smtpname", ''));
 		$template->assign('mail_smtppassword', $this->config->getSystemValue("mail_smtppassword", ''));
-        return $template;
-    }
+		return $template;
+	}
 
-    public function getSectionID() {
-        return 'general';
-    }
+	public function getSectionID() {
+		return 'general';
+	}
 
 }

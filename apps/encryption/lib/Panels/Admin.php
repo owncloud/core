@@ -17,22 +17,17 @@ use OCP\IUserSession;
 
 class Admin implements ISettings {
 
-	/** @var IConfig  */
+	/** @var IConfig */
 	protected $config;
-
-	/** @var ILogger  */
+	/** @var ILogger */
 	protected $logger;
-
-	/** @var IUserSession  */
+	/** @var IUserSession */
 	protected $userSession;
-
-	/** @var IUserManager  */
+	/** @var IUserManager */
 	protected $userManager;
-
-	/** @var ISession  */
+	/** @var ISession */
 	protected $session;
-
-	/** @var IL10N  */
+	/** @var IL10N */
 	protected $l;
 
 	public function __construct(IConfig $config,

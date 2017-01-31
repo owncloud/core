@@ -34,17 +34,17 @@ class Legacy implements ISettings {
 		$this->helper = $helper;
 	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getPanel() {
-        $tmpl = new Template('settings', 'panels/legacy');
-        $tmpl->assign('forms', $this->helper->getAdminForms());
-        return $tmpl;
-    }
+	public function getPanel() {
+		$tmpl = new Template('settings', 'panels/legacy');
+		$tmpl->assign('forms', $this->helper->getAdminForms());
+		return $tmpl;
+	}
 
-    public function getSectionID() {
-        return 'additional';
-    }
+	public function getSectionID() {
+		return 'additional';
+	}
 }

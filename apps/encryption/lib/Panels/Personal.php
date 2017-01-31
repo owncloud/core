@@ -14,24 +14,18 @@ use OCP\Template;
 
 class Personal implements ISettings {
 
-	/** @var  ILogger */
+	/** @var ILogger */
 	protected $logger;
-
-	/** @var  IUserSession */
+	/** @var IUserSession */
 	protected $userSession;
-
-	/** @var  IConfig */
+	/** @var IConfig */
 	protected $config;
-
-	/** @var  IL10N */
+	/** @var IL10N */
 	protected $l;
-
-	/** @var IUserManager  */
+	/** @varIUserManager */
 	protected $userManager;
-
 	/** @var ISession  */
 	protected $session;
-
 	/** @var IStorage */
 	protected $encKeyStorage;
 
@@ -52,42 +46,32 @@ class Personal implements ISettings {
 		$this->encKeyStorage = $encKeyStorage;
 	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getSectionID() {
-        return 'encryption';
-    }
+	public function getSectionID() {
+		return 'encryption';
+	}
 
-    public function getPanel() {
+	public function getPanel() {
 		$session = new \OCA\Encryption\Session($this->session);
 		$template = new Template('encryption', 'settings-personal');
 		$crypt = new \OCA\Encryption\Crypto\Crypt(
-				$this->logger,
-				$this->userSession,
-				$this->config,
-				$this->l);
+			$this->logger,
+			$this->userSession,
+			$this->config,
+			$this->l);
 
 		$util = new \OCA\Encryption\Util(
-					new \OC\Files\View(),
-					$crypt,
-					$this->logger,
-					$this->userSession,
-					$this->config,
-					$this->userManager);
-
-		$keyManager = new \OCA\Encryption\KeyManager(
-				$this->encKeyStorage,
-				$crypt,
-				$this->config,
-				$this->userSession,
-				$session,
-				$this->logger,
-				$util);
+			new \OC\Files\View(),
+			$crypt,
+			$this->logger,
+			$this->userSession,
+			$this->config,
+			$this->userManager);
 
 		$user = $this->userSession->getUser()->getUID();
-		$view = new \OC\Files\View('/');
 		$privateKeySet = $session->isPrivateKeySet();
 
 		// did we tried to initialize the keys for this session?
@@ -101,6 +85,6 @@ class Personal implements ISettings {
 			$template->assign('initialized', $initialized);
 			return $template;
 		}
-        return null;
-    }
+		return null;
+	}
 }

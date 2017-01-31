@@ -58,49 +58,36 @@ use OC\Settings\Panels\Admin\Updater;
 use OC\Settings\Panels\Admin\Tips;
 
 /*
- * @since 9.2
+ * @since 10.0
  */
 class SettingsManager implements ISettingsManager {
 
 	/** @var IL10N */
 	protected $l;
-
 	/** @var IAppManager */
 	protected $appManager;
-
 	/** @var ILogger */
 	protected $logger;
-
 	/** @var IURLGenerator */
 	protected $urlGenerator;
-
 	/** @var Defaults  */
 	protected $defaults;
-
 	/** @var IUserSession  */
 	protected $userSession;
-
 	/** @var ILogger  */
 	protected $log;
-
 	/** @var IConfig  */
 	protected $config;
-
 	/** @var IGroupManager  */
 	protected $groupManager;
-
 	/** @var Helper */
 	protected $helper;
-
 	/** @var IFactory  */
 	protected $lfactory;
-
 	/** @var IDBConnection  */
 	protected $dbconnection;
-
 	/** @var ILockingProvider  */
 	protected $lockingProvider;
-
 	/** @var CertificateManager  */
 	protected $certificateManager;
 

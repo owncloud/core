@@ -10,19 +10,16 @@ use \OCP\Files\External\IStoragesBackendService;
 
 class Personal implements ISettings {
 
-	/** @var IStoragesBackendService  */
+	/** @var IStoragesBackendService */
 	protected $backendService;
-
-	/** @var IUserStoragesService  */
+	/** @var IUserStoragesService */
 	protected $userStorages;
-
-	/** @var Manager  */
+	/** @var Manager */
 	protected $encManager;
 
-	public function __construct(
-		IStoragesBackendService $backendService,
-		IUserStoragesService $userStorages,
-		Manager $encManager) {
+	public function __construct(IStoragesBackendService $backendService,
+								IUserStoragesService $userStorages,
+								Manager $encManager) {
 		$this->backendService = $backendService;
 		$this->userStorages = $userStorages;
 		$this->encManager = $encManager;

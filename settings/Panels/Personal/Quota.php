@@ -34,22 +34,22 @@ class Quota implements ISettings {
 		$this->helper = $helper;
 	}
 
-    public function getPriority() {
-        return 105;
-    }
+	public function getPriority() {
+		return 105;
+	}
 
-    public function getPanel() {
+	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/personal/quota');
 		$storageInfo = $this->helper->getStorageInfo('/');;
 		$tmpl->assign('usage', \OC_Helper::humanFileSize($storageInfo['used']));
 		$tmpl->assign('usage_relative', $storageInfo['relative']);
 		$tmpl->assign('quota', $storageInfo['quota']);
 		$tmpl->assign('total_human', \OC_Helper::humanFileSize($storageInfo['total']));
-        return $tmpl;
-    }
+		return $tmpl;
+	}
 
-    public function getSectionID() {
-        return 'general';
-    }
+	public function getSectionID() {
+		return 'general';
+	}
 
 }

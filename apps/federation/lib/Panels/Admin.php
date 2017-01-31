@@ -15,39 +15,31 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Admin implements ISettings {
 
-	/** @var IDBConnection  */
+	/** @var IDBConnection */
 	protected $connection;
-
-	/** @var IL10N  */
+	/** @var IL10N */
 	protected $l;
-
-	/** @var IClientService  */
+	/** @var IClientService */
 	protected $clientService;
-
-	/** @var ILogger  */
+	/** @var ILogger */
 	protected $logger;
-
-	/** @var IJobList  */
+	/** @var IJobList */
 	protected $jobList;
-
-	/** @var ISecureRandom  */
+	/** @var ISecureRandom */
 	protected $secureRandom;
-
-	/** @var IConfig  */
+	/** @var IConfig */
 	protected $config;
-
-	/** @var   */
+	/** @var EventDispatcherInterface */
 	protected $eventDispatcher;
 
-	public function __construct(
-		IDBConnection $connection,
-		IL10N $l,
-		IClientService $clientService,
-		ILogger $logger,
-		IJobList $jobList,
-		ISecureRandom $secureRandom,
-		IConfig $config,
-		EventDispatcherInterface $eventDispatcher) {
+	public function __construct(IDBConnection $connection,
+								IL10N $l,
+								IClientService $clientService,
+								ILogger $logger,
+								IJobList $jobList,
+								ISecureRandom $secureRandom,
+								IConfig $config,
+								EventDispatcherInterface $eventDispatcher) {
 		$this->connection = $connection;
 		$this->l = $l;
 		$this->clientService = $clientService;

@@ -17,7 +17,7 @@ use OC\Settings\Panels\Personal\Version;
  */
 class VersionTest extends \Test\TestCase {
 
-	/** @var \OC\Settings\Panels\Personal\Version */
+	/** @var Version */
 	private $panel;
 
 	public function setUp() {

@@ -11,6 +11,7 @@
 namespace Tests\Settings\Panels\Admin;
 
 use OC\Settings\Panels\Admin\BackgroundJobs;
+use OCP\IConfig;
 
 /**
  * @package Tests\Settings\Panels\Admin
@@ -18,14 +19,14 @@ use OC\Settings\Panels\Admin\BackgroundJobs;
  */
 class BackgroundJobsTest extends \Test\TestCase {
 
-	/** @var \OC\Settings\Panels\Admin\BackgroundJobs */
+	/** @var BackgroundJobs */
 	private $panel;
-
+	/** @var IConfig */
 	private $config;
 
 	public function setUp() {
 		parent::setUp();
-		$this->config =$this->getMockBuilder('\OCP\IConfig')->getMock();
+		$this->config =$this->getMockBuilder(IConfig::class)->getMock();
 		$this->panel = new BackgroundJobs($this->config);
 	}
 

@@ -10,7 +10,13 @@
 
 namespace OCA\FederatedFileSharing\Tests;
 
+use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\PersonalPanel;
+use OCP\IL10N;
+use OCP\IRequest;
+use OCP\IURLGenerator;
+use OCP\IUser;
+use OCP\IUserSession;
 
 /**
  * @package OCA\FederatedFileSharing\Tests
@@ -19,24 +25,24 @@ class PersonalPanelTest extends \Test\TestCase {
 
 	/** @var PersonalPanel */
 	private $panel;
-
+	/** @var IL10N */
 	private $l;
-
+	/** @var IURLGenerator */
 	private $urlGenerator;
-
+	/** @var IUserSession */
 	private $userSession;
-
+	/** @var FederatedShareProvider */
 	private $shareProvider;
-
+	/** @var IRequest */
 	private $request;
 
 	public function setUp() {
 		parent::setUp();
-		$this->l = $this->getMockBuilder('\OCP\IL10N')->getMock();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')->getMock();
-		$this->userSession = $this->getMockBuilder('\OCP\IUserSession')->getMock();
-		$this->request = $this->getMockBuilder('\OCP\IRequest')->getMock();
-		$this->shareProvider = $this->getMockBuilder('\OCA\FederatedFileSharing\FederatedShareProvider')
+		$this->l = $this->getMockBuilder(IL10N::class)->getMock();
+		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)->getMock();
+		$this->userSession = $this->getMockBuilder(IUserSession::class)->getMock();
+		$this->request = $this->getMockBuilder(IRequest::class)->getMock();
+		$this->shareProvider = $this->getMockBuilder(FederatedShareProvider::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->panel = new PersonalPanel($this->l,
@@ -56,7 +62,7 @@ class PersonalPanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-		$mockUser = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$mockUser = $this->getMockBuilder(IUser::class)->getMock();
 		$agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12';
 		$this->request->expects($this->once())->method('getHeader')->with('User-Agent')->willReturn($agent);
 		$this->userSession->expects($this->once())->method('getUser')->willReturn($mockUser);

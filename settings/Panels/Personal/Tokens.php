@@ -26,17 +26,17 @@ use OCP\Template;
 
 class Tokens implements ISettings {
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getPanel() {
-        $tmpl = new Template('settings', 'panels/personal/tokens');
-        return $tmpl;
-    }
+	public function getPanel() {
+		$tmpl = new Template('settings', 'panels/personal/tokens');
+		return $tmpl;
+	}
 
-    public function getSectionID() {
-        return 'security';
-    }
+	public function getSectionID() {
+		return 'security';
+	}
 
 }

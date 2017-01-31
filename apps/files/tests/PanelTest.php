@@ -10,23 +10,26 @@
 
 namespace OCA\Files\Tests;
 
+use OC\Settings\Panels\Helper;
 use OCA\Files\Panels\Admin;
+use OCP\IURLGenerator;
+
 /**
  * @package OCA\Files\Tests
  */
 class PanelTest extends \Test\TestCase {
 
-	/** @var \OCA\Files\Panels\Admin */
+	/** @var Admin */
 	private $panel;
-
+	/** @var IURLGenerator */
 	private $urlGenerator;
-
+	/** @var Helper */
 	private $helper;
 
 	public function setUp() {
 		parent::setUp();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')->getMock();
-		$this->helper = $this->getMockBuilder('\OC\Settings\Panels\Helper')->getMock();
+		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)->getMock();
+		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 		$this->panel = new Admin(
 			$this->urlGenerator,
 			$this->helper);

@@ -26,22 +26,25 @@ use OCP\Template;
 
 class Legacy implements ISettings {
 
-    public function __construct($type) {
-        $this->type = $type;
-    }
+	protected $type;
 
-    public function getPriority() {
-        return 0;
-    }
+	public function __construct($type) {
+		$this->type = $type;
+	}
 
-    public function getPanel() {
-        $tmpl = new Template('settings', 'panels/legacy');
-        $forms = \OC_App::getForms($this->type);
-        $tmpl->assign('forms', $forms);
-        return $tmpl;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getSectionID() {
-        return 'additional';
-    }
+	public function getPanel() {
+		$tmpl = new Template('settings', 'panels/legacy');
+		$forms = \OC_App::getForms($this->type);
+		$tmpl->assign('forms', $forms);
+		return $tmpl;
+	}
+
+	public function getSectionID() {
+		return 'additional';
+	}
+
 }

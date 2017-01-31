@@ -26,17 +26,17 @@ use OCP\Template;
 
 class Version implements ISettings {
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getPanel() {
-        $tmpl = new Template('settings', 'panels/personal/version');
-        return $tmpl;
-    }
+	public function getPanel() {
+		$tmpl = new Template('settings', 'panels/personal/version');
+		return $tmpl;
+	}
 
-    public function getSectionID() {
-        return 'general';
-    }
+	public function getSectionID() {
+		return 'general';
+	}
 
 }

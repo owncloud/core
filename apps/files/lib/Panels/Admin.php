@@ -9,13 +9,13 @@ use OCP\IURLGenerator;
 
 class Admin implements ISettings {
 
-	/** @var IURLGenerator  */
+	/** @var IURLGenerator */
 	protected $urlGenerator;
-
-	/** @var Helper  */
+	/** @var Helper */
 	protected $helper;
 
-	public function __construct(IURLGenerator $urlGenerator, Helper $helper) {
+	public function __construct(IURLGenerator $urlGenerator,
+								Helper $helper) {
 		$this->urlGenerator = $urlGenerator;
 		$this->helper = $helper;
 	}

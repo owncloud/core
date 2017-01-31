@@ -28,31 +28,34 @@ use OCP\Defaults;
 
 class Clients implements ISettings {
 
-    /** @var OCP\IConfig */
-    protected $config;
+	/** @var IConfig */
+	protected $config;
+	/** @var Defaults  */
+	protected $defaults;
 
-    public function __construct(IConfig $config, Defaults $defaults) {
-        $this->config = $config;
-        $this->defaults = $defaults;
-    }
+	public function __construct(IConfig $config,
+								Defaults $defaults) {
+		$this->config = $config;
+		$this->defaults = $defaults;
+	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getPanel() {
-        $tmpl = new Template('settings', 'panels/personal/clients');
-        $clients = [
-            'desktop' => $this->config->getSystemValue('customclient_desktop', $this->defaults->getSyncClientUrl()),
-            'android' => $this->config->getSystemValue('customclient_android', $this->defaults->getAndroidClientUrl()),
-            'ios'     => $this->config->getSystemValue('customclient_ios', $this->defaults->getiOSClientUrl())
-        ];
-        $tmpl->assign('clients', $clients);
-        return $tmpl;
-    }
+	public function getPanel() {
+		$tmpl = new Template('settings', 'panels/personal/clients');
+		$clients = [
+			'desktop' => $this->config->getSystemValue('customclient_desktop', $this->defaults->getSyncClientUrl()),
+			'android' => $this->config->getSystemValue('customclient_android', $this->defaults->getAndroidClientUrl()),
+			'ios'     => $this->config->getSystemValue('customclient_ios', $this->defaults->getiOSClientUrl())
+		];
+		$tmpl->assign('clients', $clients);
+		return $tmpl;
+	}
 
-    public function getSectionID() {
-        return 'general';
-    }
+	public function getSectionID() {
+		return 'general';
+	}
 
 }

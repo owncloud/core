@@ -11,25 +11,25 @@
 namespace Tests\Settings\Panels\Personal;
 
 use OC\Settings\Panels\Personal\Clients;
+use OCP\Defaults;
+use OCP\IConfig;
 
 /**
  * @package Tests\Settings\Panels\Personal
  */
 class ClientsTest extends \Test\TestCase {
 
-	/** @var \OC\Settings\Panels\Personal\Clients */
+	/** @var Clients */
 	private $panel;
-
-	/** @var \OCP\Config */
+	/** @var IConfig */
 	private $config;
-
-    /** @var \OCP\Defaults */
+    /** @var Defaults */
     private $defaults;
 
 	public function setUp() {
 		parent::setUp();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-        $this->defaults = $this->getMockBuilder('\OCP\Defaults')->getMock();
+		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
+        $this->defaults = $this->getMockBuilder(Defaults::class)->getMock();
 		$this->panel = new Clients($this->config, $this->defaults);
 	}
 

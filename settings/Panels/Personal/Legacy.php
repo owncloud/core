@@ -27,24 +27,25 @@ use OC\Settings\Panels\Helper;
 
 class Legacy implements ISettings {
 
-    private $helper;
+	/** @var Helper  */
+	private $helper;
 
-    public function __construct(Helper $helper) {
-        $this->helper = $helper;
-    }
+	public function __construct(Helper $helper) {
+		$this->helper = $helper;
+	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getPanel() {
-        $tmpl = new Template('settings', 'panels/legacy');
-        $tmpl->assign('forms', $this->helper->getPersonalForms());
-        return $tmpl;
-    }
+	public function getPanel() {
+		$tmpl = new Template('settings', 'panels/legacy');
+		$tmpl->assign('forms', $this->helper->getPersonalForms());
+		return $tmpl;
+	}
 
-    public function getSectionID() {
-        return 'additional';
-    }
+	public function getSectionID() {
+		return 'additional';
+	}
 
 }

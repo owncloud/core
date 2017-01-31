@@ -10,41 +10,52 @@
 
 namespace OCA\Federation\Tests;
 
+use Doctrine\DBAL\Driver\Statement;
 use OCA\Federation\Panels\Admin;
+use OCP\BackgroundJob\IJobList;
+use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Http\Client\IClientService;
+use OCP\IConfig;
+use OCP\IDBConnection;
+use OCP\IL10N;
+use OCP\ILogger;
+use OCP\Security\ISecureRandom;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * @package OCA\Federation\Tests
  */
 class PanelTest extends \Test\TestCase {
 
-	/** @var \OCA\Federation\Panels\Admin */
+	/** @var Admin */
 	private $panel;
-
+	/** @var IDBConnection */
 	private $connection;
-
+	/** @var IL10N */
 	private $l;
-
+	/** @var ILogger */
 	private $logger;
-
+	/** @var IJobList */
 	private $jobList;
-
+	/** @var IClientService */
 	private $clientService;
-
+	/** @var ISecureRandom */
 	private $secureRandom;
-
+	/** @var IConfig */
 	private $config;
-
+	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
 	public function setUp() {
 		parent::setUp();
-		$this->connection = $this->getMockBuilder('\OCP\IDBConnection')->getMock();
-		$this->l = $this->getMockBuilder('\OCP\IL10N')->getMock();
-		$this->clientService = $this->getMockBuilder('\OCP\Http\Client\IClientService')->getMock();
-		$this->logger = $this->getMockBuilder('\OCP\ILogger')->getMock();
-		$this->jobList = $this->getMockBuilder('\OCP\BackgroundJob\IJobList')->getMock();
-		$this->secureRandom = $this->getMockBuilder('\OCP\Security\ISecureRandom')->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
-		$this->eventDispatcher = $this->getMockBuilder('\Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+		$this->connection = $this->getMockBuilder(IDBConnection::class)->getMock();
+		$this->l = $this->getMockBuilder(IL10N::class)->getMock();
+		$this->clientService = $this->getMockBuilder(IClientService::class)->getMock();
+		$this->logger = $this->getMockBuilder(ILogger::class)->getMock();
+		$this->jobList = $this->getMockBuilder(IJobList::class)->getMock();
+		$this->secureRandom = $this->getMockBuilder(ISecureRandom::class)->getMock();
+		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
+		$this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
 
 		$this->panel = new Admin(
 			$this->connection,
@@ -69,10 +80,10 @@ class PanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-		$queryBuilder = $this->getMockBuilder('\OCP\DB\QueryBuilder\IQueryBuilder')->getMock();
+		$queryBuilder = $this->getMockBuilder(IQueryBuilder::class)->getMock();
 		$queryBuilder->expects($this->once())->method('select')->willReturn($queryBuilder);
 		$queryBuilder->expects($this->once())->method('from')->willReturn($queryBuilder);
-		$statement = $this->getMockBuilder('\Doctrine\DBAL\Driver\Statement')->getMock();
+		$statement = $this->getMockBuilder(Statement::class)->getMock();
 		$queryBuilder->expects($this->once())->method('execute')->willReturn($statement);
 		$statement->expects($this->once())->method('fetchAll')->willReturn([]);
 		$this->connection->expects($this->once())->method('getQueryBuilder')->willReturn($queryBuilder);

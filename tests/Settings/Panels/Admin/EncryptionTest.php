@@ -17,7 +17,7 @@ use OC\Settings\Panels\Admin\Encryption;
  */
 class EncryptionTest extends \Test\TestCase {
 
-	/** @var \OC\Settings\Panels\Admin\Encryption */
+	/** @var Encryption */
 	private $panel;
 
 	public function setUp() {

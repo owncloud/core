@@ -10,33 +10,30 @@ use OCP\Template;
 
 class Admin implements ISettings {
 
-	/** @var IGlobalStoragesService  */
+	/** @var IGlobalStoragesService */
 	protected $globalStoragesService;
-
-	/** @var IStoragesBackendService  */
+	/** @var IStoragesBackendService */
 	protected $backendService;
-
-	/** @var Manager  */
+	/** @var Manager */
 	protected $encManager;
 
-	public function __construct(
-		IGlobalStoragesService $globalStoragesService,
-		IStoragesBackendService $backendService,
-		Manager $encManager) {
+	public function __construct(IGlobalStoragesService $globalStoragesService,
+								IStoragesBackendService $backendService,
+								Manager $encManager) {
 		$this->globalStoragesService = $globalStoragesService;
 		$this->backendService = $backendService;
 		$this->encManager = $encManager;
 	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getSectionID() {
-        return 'storage';
-    }
+	public function getSectionID() {
+		return 'storage';
+	}
 
-    public function getPanel() {
+	public function getPanel() {
 		// we must use the same container
 		$tmpl = new Template('files_external', 'settings');
 		$tmpl->assign('encryptionEnabled', $this->encManager->isEnabled());
@@ -47,6 +44,6 @@ class Admin implements ISettings {
 		$tmpl->assign('dependencies', \OC_Mount_Config::dependencyMessage($this->backendService->getBackends()));
 		$tmpl->assign('allowUserMounting', $this->backendService->isUserMountingAllowed());
 		return $tmpl;
-    }
+	}
 
 }
