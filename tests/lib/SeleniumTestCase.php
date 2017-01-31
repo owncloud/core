@@ -98,7 +98,7 @@ abstract class SeleniumTestCase extends TestCase {
 	
 
 	/**
-	 * logins into the admin account of OwnCloud
+	 * logs in to the admin account of OwnCloud
 	 */
 	protected function adminLogin()
 	{
