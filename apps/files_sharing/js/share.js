@@ -235,31 +235,6 @@
 				return true;
 			}
 			return false;
-		},
-
-		/**
-		 * Formats a recipients array to be displayed.
-		 * The first four recipients will be shown and the
-		 * other ones will be shown as "+x" where "x" is the number of
-		 * remaining recipients.
-		 *
-		 * @param {Array.<String>} recipients recipients array
-		 * @param {int} count optional total recipients count (in case the array was shortened)
-		 * @return {String} formatted recipients display text
-		 */
-		formatRecipients: function(recipients, count) {
-			var maxRecipients = 4;
-			var text;
-			if (!_.isNumber(count)) {
-				count = recipients.length;
-			}
-			// TODO: use natural sort
-			recipients = _.first(recipients, maxRecipients).sort();
-			text = recipients.join(', ');
-			if (count > maxRecipients) {
-				text += ', +' + (count - maxRecipients);
-			}
-			return text;
 		}
 	};
 })();

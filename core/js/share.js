@@ -299,7 +299,7 @@ OC.Share = _.extend(OC.Share || {}, {
 				action.html('<span class="shared-by"> ' + message + '</span>').prepend(icon);
 			}
 			else if (recipients) {
-				message = t('core', 'Shared with {recipients}', {recipients: this._formatShareList(recipients.split(", ")).join('')}, 0, {escape: false});
+				message = t('core', 'Shared with {recipients}', {recipients: this._formatShareList(recipients.split(", ")).join(' ')}, 0, {escape: false});
 				action.html('<span class="shared-with"> ' + message + '<i class="shared-with-hidden-count" aria-hidden="true"></i></span>').prepend(icon);
 			}
 			else {
