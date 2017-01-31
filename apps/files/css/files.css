@@ -696,28 +696,12 @@ html.ie8 .column-mtime .selectedActions {
 
 @media only screen and (min-width: 1500px) {
 
-	#fileList .shared-with-recipient:nth-child(n+5) {
-		width: 0;
-		opacity: 0;
-		counter-increment: shared-with-recipient;
-	}
-
-	#fileList .shared-with-recipient:nth-child(4):after {
-		display: none;
-	}
-
-	#fileList .shared-with-recipient:nth-child(4) ~ .shared-with-hidden-count:after {
-		content: "+" counter(shared-with-recipient);
-		margin-left: 5px;
-	}
-
-}
-
-@media only screen and (min-width: 1366px) and (max-width: 1499px){
-
 	#fileList .shared-with-recipient:nth-child(n+4) {
 		width: 0;
+		height: 0;
 		opacity: 0;
+		display: block;
+		float: left;
 		counter-increment: shared-with-recipient;
 	}
 
@@ -727,7 +711,29 @@ html.ie8 .column-mtime .selectedActions {
 
 	#fileList .shared-with-recipient:nth-child(3) ~ .shared-with-hidden-count:after {
 		content: "+" counter(shared-with-recipient);
-		margin-left: 5px;
+		margin-left: 3px;
+	}
+
+}
+
+@media only screen and (min-width: 1366px) and (max-width: 1499px){
+
+	#fileList .shared-with-recipient:nth-child(n+3) {
+		width: 0;
+		height: 0;
+		opacity: 0;
+		display: block;
+		float: left;
+		counter-increment: shared-with-recipient;
+	}
+
+	#fileList .shared-with-recipient:nth-child23):after {
+		display: none;
+	}
+
+	#fileList .shared-with-recipient:nth-child23) ~ .shared-with-hidden-count:after {
+		content: "+" counter(shared-with-recipient);
+		margin-left: 3px;
 	}
 }
 
@@ -735,7 +741,10 @@ html.ie8 .column-mtime .selectedActions {
 
 	#fileList .shared-with-recipient:nth-child(n+2) {
 		width: 0;
+		height: 0;
 		opacity: 0;
+		display: block;
+		float: left;
 		counter-increment: shared-with-recipient;
 	}
 
@@ -745,7 +754,7 @@ html.ie8 .column-mtime .selectedActions {
 
 	#fileList .shared-with-recipient:nth-child(2) ~ .shared-with-hidden-count:after {
 		content: "+" counter(shared-with-recipient);
-		margin-left: 5px;
+		margin-left: 3px;
 	}
 }
 
