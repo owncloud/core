@@ -78,7 +78,9 @@ class Database extends Backend implements IUserBackend {
 	 * itself, not in its subclasses.
 	 */
 	public function createUser($uid, $password) {
+		unset($this->cache[$uid]); // make sure we are reading from the db
 		if (!$this->userExists($uid)) {
+			unset($this->cache[$uid]); // invalidate non existing user in cache
 			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
 			$result = $query->execute([$uid, \OC::$server->getHasher()->hash($password)]);
 
@@ -206,6 +208,7 @@ class Database extends Backend implements IUserBackend {
 				if(!empty($newHash)) {
 					$this->setPassword($uid, $password);
 				}
+				unset($this->cache[$uid]); // invalidate cache
 				return $row['uid'];
 			}
 
@@ -220,7 +223,7 @@ class Database extends Backend implements IUserBackend {
 	 * @return boolean
 	 */
 	private function loadUser($uid) {
-		if (empty($this->cache[$uid])) {
+		if (!isset($this->cache[$uid]) && $this->cache[$uid] !== false) {
 			$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 			$result = $query->execute([$uid]);
 
@@ -229,9 +232,11 @@ class Database extends Backend implements IUserBackend {
 				return false;
 			}
 
-			while ($row = $result->fetchRow()) {
+			if ($row = $result->fetchRow()) {
 				$this->cache[$uid]['uid'] = $row['uid'];
 				$this->cache[$uid]['displayname'] = $row['displayname'];
+			} else {
+			    $this->cache[$uid] = false;
 			}
 		}
 
