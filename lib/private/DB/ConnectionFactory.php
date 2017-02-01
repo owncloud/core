@@ -82,6 +82,10 @@ class ConnectionFactory {
 				\PDO::MYSQL_ATTR_FOUND_ROWS => true,
 			];
 		}
+
+		// set default table creation options
+		$result['defaultTableOptions'] = ['collate' => 'utf8_bin'];
+
 		return $result;
 	}
 
