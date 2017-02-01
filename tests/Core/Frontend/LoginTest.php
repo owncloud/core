@@ -24,27 +24,29 @@ use Test\SeleniumTestCase;
 use Facebook\WebDriver\WebDriverBy as WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition as WebDriverExpectedCondition;
 
-class LoginTest extends SeleniumTestCase {
-
-	public function testNormalLogin() {
-
+class LoginTest extends SeleniumTestCase
+{
+	public function testNormalLogin()
+	{
 		$this->webDriver->get($this->rootURL);
-		$login = $this->webDriver->findElement ( WebDriverBy::id("user"));
+		$login = $this->webDriver->findElement(WebDriverBy::id("user"));
 		$login->click();
 		$login->sendKeys("admin");
 
-		$login = $this->webDriver->findElement ( WebDriverBy::id("password"));
+		$login = $this->webDriver->findElement(WebDriverBy::id("password"));
 		$login->click();
 		$login->sendKeys("admin");
 
-		$login = $this->webDriver->findElement ( WebDriverBy::id("submit"));
+		$login = $this->webDriver->findElement(WebDriverBy::id("submit"));
 		$login->click();
 		
 		$this->webDriver->wait()->until(
 			WebDriverExpectedCondition::urlContains("apps/files")
 		);
 		
-		$fileElement = $this->webDriver->findElement(WebDriverBy::xpath("//span[@class='innernametext']"));
+		$fileElement = $this->webDriver->findElement(
+			WebDriverBy::xpath("//span[@class='innernametext']")
+		);
 		$this->assertEquals($fileElement->getText(), "welcome");
 	}
 }

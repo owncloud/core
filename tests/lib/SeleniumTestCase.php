@@ -28,11 +28,13 @@ use Facebook\WebDriver\WebDriverBy as WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition as WebDriverExpectedCondition;
 
 
-abstract class SeleniumTestCase extends TestCase {
+abstract class SeleniumTestCase extends TestCase
+{
 	protected $webDriver;
 	protected $rootURL;
 	
-	protected function setUp() {
+	protected function setUp()
+	{
 		parent::setUp();
 		
 		$sauceUserName =  getenv("SAUCE_USERNAME");
@@ -41,28 +43,41 @@ abstract class SeleniumTestCase extends TestCase {
 				\Facebook\WebDriver\Remote\WebDriverCapabilityType::BROWSER_NAME => 'chrome',
 				'tunnel-identifier' => getenv('TRAVIS_JOB_NUMBER')
 		);
-		$this->rootURL="http://". getenv('SRV_HOST_NAME') .":" . getenv('SRV_HOST_PORT'). "/" . getenv('SRV_HOST_URL');
+		$this->rootURL="http://". getenv('SRV_HOST_NAME') .":" .
+						getenv('SRV_HOST_PORT'). "/" . getenv('SRV_HOST_URL');
 
 		if ($sauceAccessKey != "") {
-			$this->webDriver = RemoteWebDriver::create ( 'http://'.$sauceUserName.':'.$sauceAccessKey.'@localhost:4445/wd/hub', $capabilities );
+			$this->webDriver = RemoteWebDriver::create(
+				'http://'.$sauceUserName.':'.$sauceAccessKey.
+				'@localhost:4445/wd/hub', $capabilities
+			);
 		} else {
-			$this->webDriver = RemoteWebDriver::create ( 'http://localhost:4444/wd/hub', $capabilities );
+			$this->webDriver = RemoteWebDriver::create(
+				'http://localhost:4444/wd/hub', $capabilities
+			);
 		}
 	
 	}
 	
-	public static function setUpBeforeClass() {
-		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
+	public static function setUpBeforeClass()
+	{
+		$dataDir = \OC::$server->getConfig()->getSystemValue(
+			'datadirectory', \OC::$SERVERROOT . '/data-autotest'
+		);
 		if (!file_exists($dataDir . "/admin")) {
 			mkdir($dataDir . "/admin");
 			mkdir($dataDir . "/admin/files");
-			copy(\OC::$SERVERROOT . '/core/skeleton/welcome.txt', $dataDir. "/admin/files/welcome.txt");
+			copy(
+				\OC::$SERVERROOT . '/core/skeleton/welcome.txt',
+				$dataDir. "/admin/files/welcome.txt"
+			);
 		}
 	}
 	
-	protected function tearDown() {
+	protected function tearDown()
+	{
 		parent::tearDown();
-		$this->webDriver->quit ();
+		$this->webDriver->quit();
 	}
 	
 	/**
@@ -70,17 +85,18 @@ abstract class SeleniumTestCase extends TestCase {
 	 * @param WebDriverElement $element to wait for
 	 * @param INT $timeout max. time to wait
 	 */
-	protected function waitTillElementIsDisplayed($element, $timeout = 30) {
-		for($counter = 0; $counter <= $timeout; $counter ++) {
+	protected function waitTillElementIsDisplayed($element, $timeout = 30)
+	{
+		for ($counter = 0; $counter <= $timeout; $counter ++) {
 			try {
-				if ($element->isDisplayed () === false) {
+				if ($element->isDisplayed() === false) {
 					break;
 				}
 			} catch ( Exception $e ) {
 				break;
 			}
 	
-			sleep (1);
+			sleep(1);
 		}
 	}
 	
@@ -89,7 +105,8 @@ abstract class SeleniumTestCase extends TestCase {
 	 * @param WebDriverElement $element to wait for
 	 * @param INT $timeout max. time to wait
 	 */
-	protected  function waitTillElementIsStale($element, $timeout = 30) {
+	protected  function waitTillElementIsStale($element, $timeout = 30)
+	{
 		for ($i=0; $i<=$timeout; $i++) {
 			try {
 				$element->findElements(WebDriverBy::id("does-not-matter"));

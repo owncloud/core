@@ -38,8 +38,8 @@ class UserTest extends SeleniumTestCase
 		$this->webDriver->findElement(WebDriverBy::id("expandDisplayName"))
 		->click();
 		$this->webDriver->findElement(
-				WebDriverBy::xpath(".//div[@id='expanddiv']/ul/li[2]/a")
-				)->click();
+			WebDriverBy::xpath(".//div[@id='expanddiv']/ul/li[2]/a")
+		)->click();
 		
 		$this->webDriver->wait()->until(
 			WebDriverExpectedCondition::invisibilityOfElementLocated(
@@ -48,12 +48,12 @@ class UserTest extends SeleniumTestCase
 				)
 			)
 		);
-
-						$userTable = $this->webDriver->findElement(
-								WebDriverBy::xpath(".//table[@id='userlist']")
-								);
-
-						return $userTable;
+		
+		$userTable = $this->webDriver->findElement(
+			WebDriverBy::xpath(".//table[@id='userlist']")
+		);
+		
+		return $userTable;
 
 	}
 
@@ -86,44 +86,40 @@ class UserTest extends SeleniumTestCase
 		$tr=$this->findUserInTable($usersTable, $this->userToTest);
 
 		$select=$tr->findElement(
-				WebDriverBy::xpath(".//select[@class='quota-user']")
-				);
+			WebDriverBy::xpath(".//select[@class='quota-user']")
+		);
 		$option=$select->findElement(
-				WebDriverBy::xpath(".//option[@value='1 GB']")
-				);
+			WebDriverBy::xpath(".//option[@value='1 GB']")
+		);
 		$option->click();
 
 		$usersTable=$this->navigateToUsersPage();
 		$tr=$this->findUserInTable($usersTable, $this->userToTest);
 		$select=$tr->findElement(
-				WebDriverBy::xpath(".//select[@class='quota-user']")
-				);
+			WebDriverBy::xpath(".//select[@class='quota-user']")
+		);
 		$this->assertEquals(
-				"1 GB", $select->findElement(
-						WebDriverBy::xpath(".//option[@selected='selected']")
-						)
-				->getAttribute("value")
-				);
+			"1 GB", $select->findElement(
+				WebDriverBy::xpath(".//option[@selected='selected']")
+			)->getAttribute("value")
+		);
 
 		$option=$select->findElement(
-				WebDriverBy::xpath(".//option[@value='none']")
-				);
+			WebDriverBy::xpath(".//option[@value='none']")
+		);
 		$option->click();
 
 		$usersTable=$this->navigateToUsersPage();
 		$tr=$this->findUserInTable($usersTable, $this->userToTest);
 
 		$select=$tr->findElement(
-				WebDriverBy::xpath(".//select[@class='quota-user']")
-				);
+			WebDriverBy::xpath(".//select[@class='quota-user']")
+		);
 
 		$this->assertEquals(
-				"none", $select->findElement(
-						WebDriverBy::xpath(".//option[@selected='selected']")
-						)
-				->getAttribute("value")
-				);
-
-
+			"none", $select->findElement(
+				WebDriverBy::xpath(".//option[@selected='selected']")
+			)->getAttribute("value")
+		);
 	}
 }
