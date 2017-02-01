@@ -82,6 +82,7 @@ class ConnectionFactory {
 				\PDO::MYSQL_ATTR_FOUND_ROWS => true,
 			];
 		}
+
 		return $result;
 	}
 
@@ -182,6 +183,12 @@ class ConnectionFactory {
 		if ($driverOptions) {
 			$connectionParams['driverOptions'] = $driverOptions;
 		}
+
+		// set default table creation options
+		$connectionParams['defaultTableOptions'] = [
+			'collate' => 'utf8_bin',
+			'tablePrefix' => $connectionParams['tablePrefix']
+		];
 
 		return $connectionParams;
 	}

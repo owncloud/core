@@ -164,7 +164,7 @@ class OC_App {
 
 	/**
 	 * Enables the app as a theme if it has the type "theme"
-	 * @param $app
+	 * @param string $app
 	 */
 	private static function enableThemeIfApplicable($app) {
 		if (self::isType($app, 'theme')) {
@@ -1224,9 +1224,8 @@ class OC_App {
 		$appData = self::getAppInfo($appId);
 		self::executeRepairSteps($appId, $appData['repair-steps']['pre-migration']);
 		if (isset($appData['use-migrations']) && $appData['use-migrations'] === 'true') {
-			$ms = new \OC\DB\MigrationService();
-			$mc = $ms->buildConfiguration($appId, \OC::$server->getDatabaseConnection());
-			$ms->migrate($mc, true);
+			$ms = new \OC\DB\MigrationService($appId, \OC::$server->getDatabaseConnection());
+			$ms->migrate();
 		} else {
 			if (file_exists($appPath . '/appinfo/database.xml')) {
 				OC_DB::updateDbFromStructure($appPath . '/appinfo/database.xml');
@@ -1371,8 +1370,8 @@ class OC_App {
 	}
 
 	/**
-	 * @param $config
-	 * @param $l
+	 * @param OCP\IConfig $config
+	 * @param OCP\IL10N $l
 	 * @param $info
 	 * @throws Exception
 	 */

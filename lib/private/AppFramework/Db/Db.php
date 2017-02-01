@@ -26,6 +26,7 @@
 
 namespace OC\AppFramework\Db;
 
+use Doctrine\DBAL\Schema\Schema;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDb;
 use OCP\IDBConnection;
@@ -298,5 +299,23 @@ class Db implements IDb {
 	 */
 	public function escapeLikeParameter($param) {
 		return $this->connection->escapeLikeParameter($param);
+	}
+
+	/**
+	 * Create the schema of the connected database
+	 *
+	 * @return Schema
+	 */
+	public function createSchema() {
+		return $this->connection->createSchema();
+	}
+
+	/**
+	 * Migrate the database to the given schema
+	 *
+	 * @param Schema $toSchema
+	 */
+	public function migrateToSchema(Schema $toSchema) {
+		return $this->connection->migrateToSchema($toSchema);
 	}
 }

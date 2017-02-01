@@ -33,10 +33,12 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
+use Doctrine\DBAL\Schema\Schema;
 use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\PreConditionNotMetException;
+use OCP\Util;
 
 class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	/**
@@ -162,7 +164,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		$statement = $this->adapter->fixupStatement($statement);
 
 		if(\OC::$server->getSystemConfig()->getValue( 'log_query', false)) {
-			\OCP\Util::writeLog('core', 'DB prepare : '.$statement, \OCP\Util::DEBUG);
+			Util::writeLog('core', 'DB prepare : '.$statement, Util::DEBUG);
 		}
 		return parent::prepare($statement);
 	}
@@ -402,4 +404,27 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	public function escapeLikeParameter($param) {
 		return addcslashes($param, '\\_%');
 	}
+
+	/**
+	 * Create the schema of the connected database
+	 *
+	 * @return Schema
+	 */
+	public function createSchema() {
+		$schemaManager = new MDB2SchemaManager($this);
+		$migrator = $schemaManager->getMigrator();
+		return $migrator->createSchema();
+	}
+
+	/**
+	 * Migrate the database to the given schema
+	 *
+	 * @param Schema $toSchema
+	 */
+	public function migrateToSchema(Schema $toSchema) {
+		$schemaManager = new MDB2SchemaManager($this);
+		$migrator = $schemaManager->getMigrator();
+		$migrator->migrate($toSchema);
+	}
+
 }
