@@ -276,4 +276,11 @@ interface IDBConnection {
 	 */
 	public function getTransactionIsolation();
 
+	/**
+	 * Are 4-byte characters allowed or only 3-byte
+	 *
+	 * @return bool
+	 * @since 10.0
+	 */
+	public function allows4ByteCharacters();
 }
