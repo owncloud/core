@@ -25,6 +25,8 @@ namespace Test;
 use Test\TestCase;
 use Facebook\WebDriver\Remote\RemoteWebDriver as RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy as WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition as WebDriverExpectedCondition;
+
 
 abstract class SeleniumTestCase extends TestCase {
 	protected $webDriver;
@@ -115,7 +117,9 @@ abstract class SeleniumTestCase extends TestCase {
 	
 		$login = $this->webDriver->findElement(WebDriverBy::id("submit"));
 		$login->click();
-		sleep(5);
+		$this->webDriver->wait()->until(
+			WebDriverExpectedCondition::urlContains("apps/files")
+		);
 	}
 
 }

@@ -22,6 +22,7 @@
 
 use Test\SeleniumTestCase;
 use Facebook\WebDriver\WebDriverBy as WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition as WebDriverExpectedCondition;
 
 class LoginTest extends SeleniumTestCase {
 
@@ -38,7 +39,11 @@ class LoginTest extends SeleniumTestCase {
 
 		$login = $this->webDriver->findElement ( WebDriverBy::id("submit"));
 		$login->click();
-		sleep(5);
+		
+		$this->webDriver->wait()->until(
+			WebDriverExpectedCondition::urlContains("apps/files")
+		);
+		
 		$fileElement = $this->webDriver->findElement(WebDriverBy::xpath("//span[@class='innernametext']"));
 		$this->assertEquals($fileElement->getText(), "welcome");
 	}

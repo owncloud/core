@@ -21,6 +21,7 @@
 */
 use Test\SeleniumTestCase;
 use Facebook\WebDriver\WebDriverBy as WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition as WebDriverExpectedCondition;
 
 class UserTest extends SeleniumTestCase
 {
@@ -39,16 +40,14 @@ class UserTest extends SeleniumTestCase
 		$this->webDriver->findElement(
 				WebDriverBy::xpath(".//div[@id='expanddiv']/ul/li[2]/a")
 				)->click();
-
-				while (
-						$this->webDriver->findElement(
-								WebDriverBy::xpath(
-										".//*[@id='app-content']/div[@class='loading']"
-										)
-								)->isDisplayed()
-						) {
-							sleep(1);
-						}
+		
+		$this->webDriver->wait()->until(
+			WebDriverExpectedCondition::invisibilityOfElementLocated(
+				WebDriverBy::xpath(
+					".//*[@id='app-content']/div[@class='loading']"
+				)
+			)
+		);
 
 						$userTable = $this->webDriver->findElement(
 								WebDriverBy::xpath(".//table[@id='userlist']")
