@@ -318,4 +318,13 @@ class Db implements IDb {
 	public function migrateToSchema(Schema $toSchema) {
 		return $this->connection->migrateToSchema($toSchema);
 	}
+
+	/**
+	 * Are 4-byte characters allowed or only 3-byte
+	 *
+	 * @return bool
+	 */
+	public function allows4ByteCharacters() {
+		return $this->connection->allows4ByteCharacters();
+	}
 }

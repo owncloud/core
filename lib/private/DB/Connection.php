@@ -33,6 +33,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -427,4 +428,19 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		$migrator->migrate($toSchema);
 	}
 
+	/**
+	 * Are 4-byte characters allowed or only 3-byte
+	 *
+	 * @return bool
+	 * @since 10.0
+	 */
+	public function allows4ByteCharacters() {
+		if (!$this->getDatabasePlatform() instanceof MySqlPlatform) {
+			return true;
+		}
+		if ($this->getParams()['charset'] === 'utf8mb4') {
+			return true;
+		}
+		return false;
+	}
 }
