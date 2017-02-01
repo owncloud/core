@@ -246,4 +246,11 @@ class Db implements IDb {
 	public function getTransactionIsolation() {
 		return $this->connection->getTransactionIsolation();
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function allows4ByteCharacters() {
+		return $this->connection->allows4ByteCharacters();
+	}
 }

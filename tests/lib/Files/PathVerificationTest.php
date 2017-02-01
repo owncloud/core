@@ -9,6 +9,7 @@ namespace Test\Files;
 
 use OC\Files\Storage\Local;
 use OC\Files\View;
+use OCP\Files\InvalidPathException;
 
 /**
  * Class PathVerificationTest
@@ -79,10 +80,12 @@ class PathVerificationTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider providesAstralPlane
-	 * @expectedException \OCP\Files\InvalidPathException
-	 * @expectedExceptionMessage 4-byte characters are not supported in file names
 	 */
 	public function testPathVerificationAstralPlane($fileName) {
+		if (!\OC::$server->getDatabaseConnection()->allows4ByteCharacters()) {
+			$this->expectException(InvalidPathException::class);
+			$this->expectExceptionMessage('4-byte characters are not supported in file names');
+		}
 		$this->view->verifyPath('', $fileName);
 	}
 

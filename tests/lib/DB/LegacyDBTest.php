@@ -400,7 +400,13 @@ class LegacyDBTest extends \Test\TestCase {
 	/**
 	 * @dataProvider insertAndSelectDataProvider
 	 */
-	public function testInsertAndSelectData($expected, $skipOnMysql) {
+	public function testInsertAndSelectData($expected, $requires4ByteSupport) {
+
+		$connection = \OC::$server->getDatabaseConnection();
+		if($requires4ByteSupport && !$connection->allows4ByteCharacters()) {
+			$this->markTestSkipped('Test requires 4-byte support which is not present');
+		}
+
 		$table = "*PREFIX*{$this->text_table}";
 
 		$query = OC_DB::prepare("INSERT INTO `$table` (`textfield`) VALUES (?)");
@@ -408,10 +414,6 @@ class LegacyDBTest extends \Test\TestCase {
 		$this->assertEquals(1, $result);
 
 		$actual = OC_DB::prepare("SELECT `textfield` FROM `$table`")->execute()->fetchOne();
-		$config = \OC::$server->getConfig();
-		if($skipOnMysql && $config->getSystemValue('dbtype', 'sqlite') === 'mysql' && $config->getSystemValue('mysql.utf8mb4', false) === false) {
-			return;
-		}
 		$this->assertSame($expected, $actual);
 	}
 
