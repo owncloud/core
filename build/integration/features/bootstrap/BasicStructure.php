@@ -8,6 +8,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 trait BasicStructure {
 
 	use Auth;
+	use Trashbin;
 
 	/** @var string */
 	private $currentUser = '';
@@ -301,16 +302,6 @@ trait BasicStructure {
 	public function modifyTextOfFile($user, $filename, $text) {
 		self::removeFile($this->getUserHome($user) . "/files", "$filename");
 		file_put_contents($this->getUserHome($user) . "/files" . "$filename", "$text");
-	}
-
-	/**
-	 * @When User :user empties trashbin
-	 * @param string $user
-	 */
-	public function emptyTrashbin($user) {
-		$body = new \Behat\Gherkin\Node\TableNode([['allfiles', 'true'], ['dir', '%2F']]);
-		$this->sendingToWithDirectUrl('POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body);
-		$this->theHTTPStatusCodeShouldBe('200');
 	}
 
 	public function createFileSpecificSize($name, $size){
