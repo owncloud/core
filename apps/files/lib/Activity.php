@@ -38,6 +38,9 @@ class Activity implements IExtension {
 	const TYPE_SHARE_CREATED = 'file_created';
 	const TYPE_SHARE_CHANGED = 'file_changed';
 	const TYPE_SHARE_DELETED = 'file_deleted';
+	const TYPE_SHARE_RENAMED = 'file_renamed';
+	const TYPE_SHARE_MOVEDIN = 'file_movedin';
+	const TYPE_SHARE_MOVEDOUT = 'file_movedout';
 	const TYPE_SHARE_RESTORED = 'file_restored';
 	const TYPE_FAVORITES = 'files_favorites';
 
@@ -109,6 +112,9 @@ class Activity implements IExtension {
 				'methods' => [self::METHOD_STREAM],
 			],
 			self::TYPE_SHARE_DELETED => (string) $l->t('A file or folder has been <strong>deleted</strong>'),
+			self::TYPE_SHARE_RENAMED => (string) $l->t('A file or folder has been <strong>renamed</strong>'),
+			self::TYPE_SHARE_MOVEDIN => (string) $l->t('A file or folder has been <strong>moved into</strong> a shared folder'),
+			self::TYPE_SHARE_MOVEDOUT => (string) $l->t('A file or folder has been <strong>moved out</strong> of a shared folder'),
 			self::TYPE_SHARE_RESTORED => (string) $l->t('A file or folder has been <strong>restored</strong>'),
 		];
 	}
@@ -126,6 +132,9 @@ class Activity implements IExtension {
 			$settings[] = self::TYPE_SHARE_CREATED;
 			$settings[] = self::TYPE_SHARE_CHANGED;
 			$settings[] = self::TYPE_SHARE_DELETED;
+			$settings[] = self::TYPE_SHARE_RENAMED;
+			$settings[] = self::TYPE_SHARE_MOVEDIN;
+			$settings[] = self::TYPE_SHARE_MOVEDOUT;
 			$settings[] = self::TYPE_SHARE_RESTORED;
 			return $settings;
 		}
@@ -184,6 +193,10 @@ class Activity implements IExtension {
 				return (string) $l->t('You deleted %1$s', $params);
 			case 'deleted_by':
 				return (string) $l->t('%2$s deleted %1$s', $params);
+			case 'renamed_self':
+				return (string) $l->t('You moved %1$s to %2$s', $params);
+			case 'renamed_by':
+				return (string) $l->t('%3$s moved %1$s to %2$s', $params);
 			case 'restored_self':
 				return (string) $l->t('You restored %1$s', $params);
 			case 'restored_by':
@@ -206,6 +219,8 @@ class Activity implements IExtension {
 				return (string) $l->t('Changed by %2$s', $params);
 			case 'deleted_by':
 				return (string) $l->t('Deleted by %2$s', $params);
+			case 'renamed_by':
+				return (string) $l->t('Moved by %2$s', $params);
 			case 'restored_by':
 				return (string) $l->t('Restored by %2$s', $params);
 
@@ -241,6 +256,13 @@ class Activity implements IExtension {
 						0 => 'file',
 						1 => 'username',
 					];
+				case 'renamed_self':
+				case 'renamed_by':
+					return [
+						0 => 'file',
+						1 => 'file',
+						2 => 'username',
+					];
 			}
 		}
 
@@ -256,6 +278,10 @@ class Activity implements IExtension {
 	 */
 	public function getTypeIcon($type) {
 		switch ($type) {
+			case self::TYPE_SHARE_MOVEDIN:
+			case self::TYPE_SHARE_MOVEDOUT:
+			case self::TYPE_SHARE_RENAMED:
+				return 'icon-rename';
 			case self::TYPE_SHARE_CHANGED:
 				return 'icon-change';
 			case self::TYPE_SHARE_CREATED:
@@ -342,6 +368,9 @@ class Activity implements IExtension {
 			return array_intersect([
 				self::TYPE_SHARE_CREATED,
 				self::TYPE_SHARE_CHANGED,
+				self::TYPE_SHARE_RENAMED,
+				self::TYPE_SHARE_MOVEDIN,
+				self::TYPE_SHARE_MOVEDOUT,
 				self::TYPE_SHARE_DELETED,
 				self::TYPE_SHARE_RESTORED,
 			], $types);
