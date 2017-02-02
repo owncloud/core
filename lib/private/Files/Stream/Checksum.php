@@ -57,12 +57,14 @@ class Checksum extends Wrapper {
 		);
 	}
 
+
 	/**
 	 * @param string $path
 	 * @param array $options
+	 * @return bool
 	 */
 	public function dir_opendir($path, $options) {
-		#return parent::dir_opendir($path, $options);
+		return true;
 	}
 
 	/**
