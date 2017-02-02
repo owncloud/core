@@ -39,6 +39,8 @@ use OCP\IUser;
 use OCP\IConfig;
 use OCP\UserInterface;
 use \OCP\IUserBackend;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class User implements IUser {
 	/** @var string $uid */
@@ -71,17 +73,24 @@ class User implements IUser {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
+	/** @var  EventDispatcher */
+	private $eventDispatcher;
+
 	/**
 	 * @param string $uid
 	 * @param UserInterface $backend
 	 * @param \OC\Hooks\Emitter $emitter
 	 * @param IConfig|null $config
 	 * @param IURLGenerator $urlGenerator
+	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct($uid, $backend, $emitter = null, IConfig $config = null, $urlGenerator = null) {
+	public function __construct($uid, $backend, $emitter = null, IConfig $config = null,
+								$urlGenerator = null, EventDispatcher $eventDispatcher = null
+	) {
 		$this->uid = $uid;
 		$this->backend = $backend;
 		$this->emitter = $emitter;
+		$this->eventDispatcher = $eventDispatcher;
 		if(is_null($config)) {
 			$config = \OC::$server->getConfig();
 		}
@@ -337,6 +346,10 @@ class User implements IUser {
 		$this->enabled = $enabled;
 		$enabled = ($enabled) ? 'true' : 'false';
 		$this->config->setUserValue($this->uid, 'core', 'enabled', $enabled);
+
+		if ($this->eventDispatcher){
+			$this->eventDispatcher->dispatch(self::class . '::postSetEnabled',  new GenericEvent($this));
+		}
 	}
 
 	/**

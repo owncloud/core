@@ -14,6 +14,8 @@ use OC\User\Backend;
 use OC\User\Database;
 use OC\User\User;
 use OCP\IConfig;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 use Test\Util\User\Dummy;
 
@@ -500,6 +502,34 @@ class UserTest extends TestCase {
 		$user = new User('foo', $backend, $emitter);
 		$this->assertTrue($user->delete());
 		$this->assertEquals(2, $hooksCalled);
+	}
+
+	public function testSetEnabledHook(){
+		/**
+		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 */
+		$backend = $this->createMock(Dummy::class);
+		$eventDispatcherMock = $this->createMock(EventDispatcher::class);
+
+		$expectations = [true, false];
+		$eventDispatcherMock->expects($this->exactly(2))
+			->method('dispatch')
+			->with(
+				$this->callback(
+					function($eventName){
+						if ($eventName === User::class . '::postSetEnabled' ){
+							return true;
+						}
+						return false;
+					}
+				),
+				$this->anything()
+			)
+		;
+
+		$user = new User('foo', $backend, null, null, null, $eventDispatcherMock);
+		$user->setEnabled(false);
+		$user->setEnabled(true);
 	}
 
 	public function testGetCloudId() {
