@@ -28,6 +28,7 @@ namespace OC\Setup;
 
 use OC\DB\Connection;
 use OC\DB\ConnectionFactory;
+use OC\DB\MySqlTools;
 use OCP\IDBConnection;
 
 class MySQL extends AbstractDatabase {
@@ -38,9 +39,12 @@ class MySQL extends AbstractDatabase {
 		$connection = $this->connect();
 
 		// detect mb4
-		if (is_null($this->config->getSystemValue('mysql.utf8mb4', null)) && $this->supports4ByteCharset($connection)) {
-			$this->config->setSystemValue('mysql.utf8mb4', true);
-			$connection = $this->connect();
+		if (is_null($this->config->getSystemValue('mysql.utf8mb4', null))) {
+			$tools = new MySqlTools();
+			if ($tools->supports4ByteCharset($connection)) {
+				$this->config->setSystemValue('mysql.utf8mb4', true);
+				$connection = $this->connect();
+			}
 		}
 
 		$this->createSpecificUser($username, $connection);
@@ -190,24 +194,5 @@ class MySQL extends AbstractDatabase {
 			'dbuser' => $this->dbUser,
 			'dbpassword' => $this->dbPassword,
 		]);
-	}
-
-	/**
-	 * @param Connection $connection
-	 * @return bool
-	 */
-	private function supports4ByteCharset(Connection $connection) {
-		foreach (['innodb_file_format' => 'Barracuda', 'innodb_large_prefix' => 'ON', 'innodb_file_per_table' => 'ON'] as $var => $val) {
-			$result = $connection->executeQuery("SHOW VARIABLES LIKE '$var'");
-			$rows = $result->fetch();
-			$result->closeCursor();
-			if ($rows === false) {
-				return false;
-			}
-			if (strcasecmp($rows['Value'], $val) === 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 }
