@@ -24,25 +24,23 @@
 namespace OC\Repair;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class Collation implements IRepairStep {
-	/**
-	 * @var \OCP\IConfig
-	 */
+
+	/** @var \OCP\IConfig */
 	protected $config;
 
-	/**
-	 * @var \OC\DB\Connection
-	 */
+	/** @var IDBConnection */
 	protected $connection;
 
 	/**
 	 * @param \OCP\IConfig $config
-	 * @param \OC\DB\Connection $connection
+	 * @param IDBConnection $connection
 	 */
-	public function __construct($config, $connection) {
+	public function __construct($config, IDBConnection $connection) {
 		$this->connection = $connection;
 		$this->config = $config;
 	}
@@ -71,13 +69,13 @@ class Collation implements IRepairStep {
 	}
 
 	/**
-	 * @param \Doctrine\DBAL\Connection $connection
+	 * @param IDBConnection $connection
 	 * @return string[]
 	 */
-	protected function getAllNonUTF8BinTables($connection) {
+	protected function getAllNonUTF8BinTables(IDBConnection $connection) {
 		$dbName = $this->config->getSystemValue("dbname");
 		$characterSet = $this->config->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
-		$rows = $connection->fetchAll(
+		$statement = $connection->executeQuery(
 			"SELECT DISTINCT(TABLE_NAME) AS `table`" .
 			"	FROM INFORMATION_SCHEMA . COLUMNS" .
 			"	WHERE TABLE_SCHEMA = ?" .
@@ -85,6 +83,7 @@ class Collation implements IRepairStep {
 			"	AND TABLE_NAME LIKE \"*PREFIX*%\"",
 			[$dbName]
 		);
+		$rows = $statement->fetchAll();
 		$result = [];
 		foreach ($rows as $row) {
 			$result[] = $row['table'];
