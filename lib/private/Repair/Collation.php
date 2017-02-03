@@ -83,6 +83,8 @@ class Collation implements IRepairStep {
 	protected function getAllNonUTF8BinTables(IDBConnection $connection) {
 		$dbName = $this->config->getSystemValue("dbname");
 		$characterSet = $this->config->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
+
+		// fetch tables by columns
 		$statement = $connection->executeQuery(
 			"SELECT DISTINCT(TABLE_NAME) AS `table`" .
 			"	FROM INFORMATION_SCHEMA . COLUMNS" .
@@ -94,9 +96,24 @@ class Collation implements IRepairStep {
 		$rows = $statement->fetchAll();
 		$result = [];
 		foreach ($rows as $row) {
-			$result[] = $row['table'];
+			$result[$row['table']] = true;
 		}
-		return $result;
+
+		// fetch tables by collation
+		$statement = $connection->executeQuery(
+			"SELECT DISTINCT(TABLE_NAME) AS `table`" .
+			"	FROM INFORMATION_SCHEMA . TABLES" .
+			"	WHERE TABLE_SCHEMA = ?" .
+			"	AND TABLE_COLLATION <> '" . $characterSet . "_bin'" .
+			"	AND TABLE_NAME LIKE \"*PREFIX*%\"",
+			[$dbName]
+		);
+		$rows = $statement->fetchAll();
+		foreach ($rows as $row) {
+			$result[$row['table']] = true;
+		}
+
+		return array_keys($result);
 	}
 }
 
