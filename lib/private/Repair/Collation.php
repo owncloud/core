@@ -54,7 +54,7 @@ class Collation implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		if (!$this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
-			$output->info('Not a mysql database -> nothing to no');
+			$output->info('Not a mysql database -> nothing to do');
 			return;
 		}
 
@@ -63,8 +63,16 @@ class Collation implements IRepairStep {
 		$tables = $this->getAllNonUTF8BinTables($this->connection);
 		foreach ($tables as $table) {
 			$output->info("Change collation for $table ...");
+			if ($characterSet === 'utf8mb4') {
+				// need to set row compression first
+				$query = $this->connection->prepare('ALTER TABLE `' . $table . '` ROW_FORMAT=COMPRESSED;');
+				$query->execute();
+			}
 			$query = $this->connection->prepare('ALTER TABLE `' . $table . '` CONVERT TO CHARACTER SET ' . $characterSet . ' COLLATE ' . $characterSet . '_bin;');
 			$query->execute();
+		}
+		if (empty($tables)) {
+			$output->info('All tables already have the correct collation -> nothing to do');
 		}
 	}
 
