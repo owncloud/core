@@ -889,13 +889,14 @@ class Access extends LDAPUtility implements IUserTools {
 	 * @param bool $pagedSearchOK whether a paged search has been executed
 	 * @param bool $skipHandling required for paged search when cookies to
 	 * prior results need to be gained
-	 * @return bool cookie validity, true if we have more pages, false otherwise.
+	 * @return array|false array with the search result as first value and pagedSearchOK as
+	 * second | false if not successful
 	 */
 	private function processPagedSearchStatus($sr, $filter, $base, $iFoundItems, $limit, $offset, $pagedSearchOK, $skipHandling) {
-		$cookie = null;
 		if($pagedSearchOK) {
 			$cr = $this->connection->getConnectionResource();
 			foreach($sr as $key => $res) {
+				$cookie = null;
 				if($this->ldap->controlPagedResultResponse($cr, $res, $cookie)) {
 					$this->setPagedResultCookie($base[$key], $filter, $limit, $offset, $cookie);
 				}
@@ -916,12 +917,6 @@ class Access extends LDAPUtility implements IUserTools {
 				\OCP\Util::writeLog('user_ldap', 'Paged search was not available', \OCP\Util::INFO);
 			}
 		}
-		/* ++ Fixing RHDS searches with pages with zero results ++
-		 * Return cookie status. If we don't have more pages, with RHDS
-		 * cookie is null, with openldap cookie is an empty string and
-		 * to 386ds '0' is a valid cookie. Even if $iFoundItems == 0
-		 */
-		return !empty($cookie) || $cookie === '0';
 	}
 
 	/**
@@ -950,6 +945,7 @@ class Access extends LDAPUtility implements IUserTools {
 		$this->connection->getConnectionResource();
 
 		do {
+			$continue = false;
 			$search = $this->executeSearch($filter, $base, $attr,
 										   $limitPerPage, $offset);
 			if($search === false) {
@@ -957,20 +953,12 @@ class Access extends LDAPUtility implements IUserTools {
 			}
 			list($sr, $pagedSearchOK) = $search;
 
-			/* ++ Fixing RHDS searches with pages with zero results ++
-			 * countEntriesInSearchResults() method signature changed
-			 * by removing $limit and &$hasHitLimit parameters
-			 */
-			$count = $this->countEntriesInSearchResults($sr);
+			$count = $this->countEntriesInSearchResults($sr, $limitPerPage, $continue);
 			$counter += $count;
 
-			$hasMorePages = $this->processPagedSearchStatus($sr, $filter, $base, $count, $limitPerPage,
+			$this->processPagedSearchStatus($sr, $filter, $base, $count, $limitPerPage,
 										$offset, $pagedSearchOK, $skipHandling);
 			$offset += $limitPerPage;
-			/* ++ Fixing RHDS searches with pages with zero results ++
-			 * Continue now depends on $hasMorePages value
-			 */
-			$continue = $pagedSearchOK && $hasMorePages;
 		} while($continue && (is_null($limit) || $limit <= 0 || $limit > $counter));
 
 		return $counter;
@@ -978,15 +966,20 @@ class Access extends LDAPUtility implements IUserTools {
 
 	/**
 	 * @param array $searchResults
+	 * @param int $limit
+	 * @param bool $hasHitLimit
 	 * @return int
 	 */
-	private function countEntriesInSearchResults($searchResults) {
+	private function countEntriesInSearchResults($searchResults, $limit, &$hasHitLimit) {
 		$cr = $this->connection->getConnectionResource();
 		$counter = 0;
 
 		foreach($searchResults as $res) {
 			$count = intval($this->ldap->countEntries($cr, $res));
 			$counter += $count;
+			if($count > 0 && $count === $limit) {
+				$hasHitLimit = true;
+			}
 		}
 
 		return $counter;
@@ -1007,45 +1000,47 @@ class Access extends LDAPUtility implements IUserTools {
 			//otherwise search will fail
 			$limit = null;
 		}
+		$search = $this->executeSearch($filter, $base, $attr, $limit, $offset);
+		if($search === false) {
+			return array();
+		}
+		list($sr, $pagedSearchOK) = $search;
+		$cr = $this->connection->getConnectionResource();
 
-		/* ++ Fixing RHDS searches with pages with zero results ++
-		 * As we can have pages with zero results and/or pages with less
-		 * than $limit results but with a still valid server 'cookie',
-		 * loops through until we get $continue equals true and
-		 * $findings['count'] < $limit
-		 */
-		$findings = array();
-		$savedoffset = $offset;
-		do {
-			$continue = false;
-			$search = $this->executeSearch($filter, $base, $attr, $limit, $offset);
-			if($search === false) {
-				return array();
-			}
-			list($sr, $pagedSearchOK) = $search;
-			$cr = $this->connection->getConnectionResource();
+		if($skipHandling) {
+			//i.e. result do not need to be fetched, we just need the cookie
+			//thus pass 1 or any other value as $iFoundItems because it is not
+			//used
+			$this->processPagedSearchStatus($sr, $filter, $base, 1, $limit,
+											$offset, $pagedSearchOK,
+											$skipHandling);
+			return array();
+		}
 
-			if($skipHandling) {
-				//i.e. result do not need to be fetched, we just need the cookie
-				//thus pass 1 or any other value as $iFoundItems because it is not
-				//used
-				$this->processPagedSearchStatus($sr, $filter, $base, 1, $limit,
-								$offset, $pagedSearchOK,
-								$skipHandling);
-				return array();
-			}
-
+<<<<<<< ours
 			foreach($sr as $res) {
 				$findings = array_merge($findings, $this->ldap->getEntries($cr	, $res ));
 			}
 
 			$continue = $this->processPagedSearchStatus($sr, $filter, $base, $findings['count'],
 								$limit, $offset, $pagedSearchOK,
+=======
+		// Do the server-side sorting
+		foreach(array_reverse($attr) as $sortAttr){
+			foreach($sr as $searchResource) {
+				$this->ldap->sort($cr, $searchResource, $sortAttr);
+			}
+		}
+
+		$findings = array();
+		foreach($sr as $res) {
+			$findings = array_merge($findings, $this->ldap->getEntries($cr	, $res ));
+		}
+
+		$this->processPagedSearchStatus($sr, $filter, $base, $findings['count'],
+										$limit, $offset, $pagedSearchOK,
+>>>>>>> theirs
 										$skipHandling);
-			$offset += $limit;
-		} while ($continue && $pagedSearchOK && $findings['count'] < $limit);
-		// reseting offset
-		$offset = $savedoffset;
 
 		// if we're here, probably no connection resource is returned.
 		// to make ownCloud behave nicely, we simply give back an empty array.
@@ -1744,13 +1739,7 @@ class Access extends LDAPUtility implements IUserTools {
 				}
 
 			}
-		/* ++ Fixing RHDS searches with pages with zero results ++
-		 * We coudn't get paged searches working with our RHDS for login ($limit = 0),
-		 * due to pages with zero results.
-		 * So we added "&& !empty($this->lastCookie)" to this test to ignore pagination
-		 * if we don't have a previous paged search.
-		 */
-		} else if($this->connection->hasPagedResultSupport && $limit === 0 && !empty($this->lastCookie)) {
+		} else if($this->connection->hasPagedResultSupport && $limit === 0) {
 			// a search without limit was requested. However, if we do use
 			// Paged Search once, we always must do it. This requires us to
 			// initialize it with the configured page size.
