@@ -89,7 +89,7 @@ class OCSResponse extends Response {
 
 	/**
 	 * @return int
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getStatusCode() {
 		return $this->statuscode;
@@ -97,7 +97,7 @@ class OCSResponse extends Response {
 
 	/**
 	 * @param int $statuscode
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function setStatusCode($statuscode) {
 		$this->statuscode = $statuscode;

@@ -55,7 +55,7 @@ use OCP\Files\External\IStorageConfig;
  *  - StorageModifierTrait
  *      Object can affect storage mounting
  *
- * @since 9.2.0
+ * @since 10.0
  */
 abstract class Backend implements \JsonSerializable {
 
@@ -77,7 +77,7 @@ abstract class Backend implements \JsonSerializable {
 
 	/**
 	 * @return string
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getStorageClass() {
 		return $this->storageClass;
@@ -86,7 +86,7 @@ abstract class Backend implements \JsonSerializable {
 	/**
 	 * @param string $class
 	 * @return self
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function setStorageClass($class) {
 		$this->storageClass = $class;
@@ -95,7 +95,7 @@ abstract class Backend implements \JsonSerializable {
 
 	/**
 	 * @return array
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getAuthSchemes() {
 		if (empty($this->authSchemes)) {
@@ -107,7 +107,7 @@ abstract class Backend implements \JsonSerializable {
 	/**
 	 * @param string $scheme
 	 * @return self
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function addAuthScheme($scheme) {
 		$this->authSchemes[$scheme] = true;
@@ -118,7 +118,7 @@ abstract class Backend implements \JsonSerializable {
 	 * Serialize into JSON for client-side JS
 	 *
 	 * @return array
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function jsonSerialize() {
 		$data = $this->jsonSerializeDefinition();
@@ -136,7 +136,7 @@ abstract class Backend implements \JsonSerializable {
 	 *
 	 * @param IStorageConfig $storage
 	 * @return bool
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function validateStorage(IStorageConfig $storage) {
 		return $this->validateStorageDefinition($storage);

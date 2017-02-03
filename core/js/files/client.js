@@ -727,7 +727,7 @@
 		/**
 		 * Returns the dav.Client instance used internally
 		 *
-		 * @since 9.2
+		 * @since 10.0
 		 * @return {dav.Client}
 		 */
 		getClient: function() {
@@ -737,7 +737,7 @@
 		/**
 		 * Returns the user name
 		 *
-		 * @since 9.2
+		 * @since 10.0
 		 * @return {String} userName
 		 */
 		getUserName: function() {
@@ -747,7 +747,7 @@
 		/**
 		 * Returns the password
 		 *
-		 * @since 9.2
+		 * @since 10.0
 		 * @return {String} password
 		 */
 		getPassword: function() {
@@ -757,7 +757,7 @@
 		/**
 		 * Returns the base URL
 		 *
-		 * @since 9.2
+		 * @since 10.0
 		 * @return {String} base URL
 		 */
 		getBaseUrl: function() {

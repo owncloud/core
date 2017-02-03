@@ -27,7 +27,7 @@ use \OCP\Files\StorageNotAvailableException;
 /**
  * Authentication mechanism or backend has insufficient data
  *
- * @since 9.2.0
+ * @since 10.0
  */
 class InsufficientDataForMeaningfulAnswerException extends StorageNotAvailableException {
 	/**

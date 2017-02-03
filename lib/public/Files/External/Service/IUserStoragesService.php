@@ -29,7 +29,7 @@ namespace OCP\Files\External\Service;
  * Service class to manage user external storages
  * (aka personal storages)
  *
- * @since 9.2
+ * @since 10.0
  */
 interface IUserStoragesService extends IStoragesService {
 

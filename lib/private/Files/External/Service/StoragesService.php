@@ -230,7 +230,7 @@ abstract class StoragesService implements IStoragesService {
 	 * Creates a new storage configuration
 	 *
 	 * @return IStorageConfig
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function createConfig() {
 		return new StorageConfig();
