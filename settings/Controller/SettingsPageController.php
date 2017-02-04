@@ -70,17 +70,17 @@ class SettingsPageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
 	 * @NoCSRFRequired
-	 * @param string $sectionId
+	 * @param string $sectionid
 	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
-	public function getPersonal($sectionId='general') {
+	public function getPersonal($sectionid='general') {
 		$admin = $this->groupManager->isAdmin($this->userSession->getUser()->getUID());
 		$personalSections = $this->settingsManager->getPersonalSections();
 		$adminSections = $admin ? $this->settingsManager->getAdminSections() : [];
-		$panels = $this->settingsManager->getPersonalPanels($sectionId);
+		$panels = $this->settingsManager->getPersonalPanels($sectionid);
 		$params = [];
 		$params['type'] = 'personal';
-		$params['personalNav'] = $this->getNavigation($personalSections, $sectionId, 'personal');
+		$params['personalNav'] = $this->getNavigation($personalSections, $sectionid, 'personal');
 		$params['adminNav'] = $admin ? $this->getNavigation($adminSections, '', 'admin') : [];
 		$params['panels'] = $this->getPanelsData($panels);
 		$response = new TemplateResponse($this->appName, 'settingsPage', $params);
@@ -90,17 +90,17 @@ class SettingsPageController extends Controller {
 	/**
 	 * Creates the admin settings page
 	 * @NoCSRFRequired
-	 * @param string $sectionId
+	 * @param string $sectionid
 	 * @return \OCP\AppFramework\Http\TemplateResponse
 	 */
-	public function getAdmin($sectionId='general') {
+	public function getAdmin($sectionid='general') {
 		$personalSections = $this->settingsManager->getPersonalSections();
 		$adminSections = $this->settingsManager->getAdminSections();
-		$panels = $this->settingsManager->getAdminPanels($sectionId);
+		$panels = $this->settingsManager->getAdminPanels($sectionid);
 		$params = [];
 		$params['type'] = 'admin';
 		$params['personalNav'] = $this->getNavigation($personalSections, '', 'personal');
-		$params['adminNav'] = $this->getNavigation($adminSections, $sectionId, 'admin');
+		$params['adminNav'] = $this->getNavigation($adminSections, $sectionid, 'admin');
 		$params['panels'] = $this->getPanelsData($panels);
 		$response = new TemplateResponse($this->appName, 'settingsPage', $params);
 		return $response;

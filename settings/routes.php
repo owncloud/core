@@ -41,8 +41,6 @@ $application->registerRoutes($this, [
 		'AuthSettings' => ['url' => '/settings/personal/authtokens'],
 	],
 	'routes' => [
-		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal', 'verb' => 'GET'],
-		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
 		['name' => 'MailSettings#setMailSettings', 'url' => '/settings/admin/mailsettings', 'verb' => 'POST'],
 		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
 		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
@@ -64,6 +62,8 @@ $application->registerRoutes($this, [
 		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
 		['name' => 'Certificate#addSystemRootCertificate', 'url' => '/settings/admin/certificate', 'verb' => 'POST'],
 		['name' => 'Certificate#removeSystemRootCertificate', 'url' => '/settings/admin/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal', 'verb' => 'GET'],
+		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
 	]
 ]);
 
@@ -88,7 +88,7 @@ $this->create('settings_users_changepassword', '/settings/users/changepassword')
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
 	->actionInclude('settings/ajax/changegroupname.php');
 // personal
-$this->create('settings_personal_changepassword', '/settings/personal/ajax/changepassword')
+$this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
 $this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')
