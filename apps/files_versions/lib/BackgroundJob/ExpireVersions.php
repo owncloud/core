@@ -22,8 +22,8 @@
 
 namespace OCA\Files_Versions\BackgroundJob;
 
+use OCP\IConfig;
 use OCP\IUser;
-use OCP\IUserManager;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Storage;
 use OCA\Files_Versions\Expiration;
@@ -36,28 +36,33 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 	 * @var Expiration
 	 */
 	private $expiration;
-	
-	/**
-	 * @var IUserManager
-	 */
-	private $userManager;
 
-	public function __construct(IUserManager $userManager = null, Expiration $expiration = null) {
+	/**
+	 * @var IConfig
+	 */
+	private $config;
+
+	/**
+	 * @param IConfig|null $userManager
+	 * @param Expiration|null $expiration
+	 */
+	public function __construct(IConfig $config = null,
+								Expiration $expiration = null) {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
 
-		if (is_null($expiration) || is_null($userManager)) {
+		if (is_null($expiration) || is_null($config)) {
 			$this->fixDIForJobs();
 		} else {
+			$this->config = $config;
 			$this->expiration = $expiration;
-			$this->userManager = $userManager;
 		}
 	}
 
 	protected function fixDIForJobs() {
 		$application = new Application();
+		$this->config = \OC::$server->getConfig();
 		$this->expiration = $application->getContainer()->query('Expiration');
-		$this->userManager = \OC::$server->getUserManager();
 	}
 
 	protected function run($argument) {
@@ -66,13 +71,14 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$this->userManager->callForSeenUsers(function(IUser $user) {
-			$uid = $user->getUID();
+		$this->config->callForUsersHavingUserValue('login', 'lastLogin', function($uid) {
 			if (!$this->setupFS($uid)) {
 				return;
 			}
 			Storage::expireOlderThanMaxForUser($uid);
 		});
+
+		\OC_Util::tearDownFS();
 	}
 
 	/**

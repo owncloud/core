@@ -147,7 +147,7 @@ class Repair implements IOutput{
 				\OC::$server->getL10N('core'),
 				\OC::$server->getLogger()
 			),
-			new RemoveRootShares(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager(), \OC::$server->getLazyRootFolder()),
+			new RemoveRootShares(\OC::$server->getDatabaseConnection(), \OC::$server->getConfig(), \OC::$server->getLazyRootFolder()),
 			new RepairUnmergedShares(
 				\OC::$server->getConfig(),
 				\OC::$server->getDatabaseConnection(),
