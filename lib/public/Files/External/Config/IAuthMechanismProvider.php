@@ -27,7 +27,7 @@ use OCP\Files\External\Auth\AuthMechanism;
 /**
  * Provider of external storage auth mechanisms
  *
- * @since 9.2.0
+ * @since 10.0
  */
 interface IAuthMechanismProvider {
 

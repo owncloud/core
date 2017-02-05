@@ -25,7 +25,7 @@ namespace OCP\Files\External;
 /**
  * Storage is not found
  *
- * @since 9.2
+ * @since 10.0
  */
 class NotFoundException extends \Exception {
 }

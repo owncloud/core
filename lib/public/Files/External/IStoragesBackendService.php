@@ -32,7 +32,7 @@ use \OCP\Files\External\Config\IAuthMechanismProvider;
 /**
  * Service to manage external storage backend definitions
  *
- * @since 9.2.0
+ * @since 10.0
  */
 interface IStoragesBackendService {
 

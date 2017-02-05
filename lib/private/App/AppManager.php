@@ -375,7 +375,7 @@ class AppManager implements IAppManager {
 	/**
 	 * @param string $package
 	 * @return mixed
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function installApp($package) {
 		return Installer::installApp([
@@ -387,7 +387,7 @@ class AppManager implements IAppManager {
 	/**
 	 * @param string $package
 	 * @return mixed
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function updateApp($package) {
 		return Installer::updateApp([
@@ -400,7 +400,7 @@ class AppManager implements IAppManager {
 	 * Returns the list of all apps, enabled and disabled
 	 *
 	 * @return string[]
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getAllApps() {
 		return $this->appConfig->getApps();

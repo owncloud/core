@@ -40,7 +40,7 @@ interface IGroup {
 	 * Returns the group display name
 	 *
 	 * @return string
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	public function getDisplayName();
 

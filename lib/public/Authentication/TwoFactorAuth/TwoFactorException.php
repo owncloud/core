@@ -32,6 +32,6 @@ namespace OCP\Authentication\TwoFactorAuth;
 
 /**
  * Two Factor Authentication failed
- * @since 9.2.0
+ * @since 10.0
  */
 class TwoFactorException extends \Exception {}

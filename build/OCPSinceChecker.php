@@ -29,6 +29,8 @@ require_once __DIR__ . '/../lib/composer/autoload.php';
  */
 class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
 
+	const INVALID_VERSIONS = ['9.2'];
+
 	/** @var string */
 	protected $namespace = '';
 	/** @var string */
@@ -71,6 +73,12 @@ class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
 				$this->errors[] = '@since or @deprecated tag is needed in PHPDoc for ' . $type . ' ' . $this->namespace . '\\' . $this->className;
 				return;
 			}
+
+			if($this->deprecatedClass === false && ($ver = $this->checkInvalidVersions($text)) !== null) {
+				$type = $node instanceof \PhpParser\Node\Stmt\Interface_ ? 'interface' : 'class';
+				$this->errors[] = 'Specified version ' . $ver . ' does not exist for ' . $type . ' ' . $this->namespace . '\\' . $this->className;
+				return;
+			}
 		}
 
 		if($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
@@ -88,7 +96,27 @@ class SinceTagCheckVisitor extends \PhpParser\NodeVisitorAbstract {
 				$this->errors[] = '@since or @deprecated tag is needed in PHPDoc for ' . $this->namespace . '\\' . $this->className . '::' . $node->name;
 				return;
 			}
+
+			if(($ver = $this->checkInvalidVersions($text)) !== null) {
+				$this->errors[] = 'Specified version ' . $ver . ' does not exist for ' . $this->namespace . '\\' . $this->className;
+				return;
+			}
 		}
+	}
+
+	/**
+	 * Checks tags for invalid versions
+	 */
+	private function checkInvalidVersions($text) {
+		foreach (self::INVALID_VERSIONS as $ver) {
+			if (preg_match('/' . preg_quote('@since') . '\s*' . preg_quote($ver) . '/', $text) === 1) {
+				return $ver;
+			}
+			if (preg_match('/' . preg_quote('@deprecated') . '\s*' . preg_quote($ver) . '/', $text) === 1) {
+				return $ver;
+			}
+		}
+		return null;
 	}
 
 	public function getErrors() {

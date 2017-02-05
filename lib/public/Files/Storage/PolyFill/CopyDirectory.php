@@ -22,7 +22,7 @@
 namespace OCP\Files\Storage\PolyFill;
 
 /**
- * @since 9.2
+ * @since 10.0
  */
 trait CopyDirectory {
 	use \OC\Files\Storage\PolyFill\CopyDirectory;

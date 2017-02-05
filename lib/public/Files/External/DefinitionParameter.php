@@ -25,7 +25,7 @@ namespace OCP\Files\External;
 /**
  * Parameter for an external storage definition
  *
- * @since 9.2.0
+ * @since 10.0
  */
 class DefinitionParameter implements \JsonSerializable {
 
@@ -55,7 +55,7 @@ class DefinitionParameter implements \JsonSerializable {
 	/**
 	 * @param string $name
 	 * @param string $text
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function __construct($name, $text) {
 		$this->name = $name;
@@ -64,7 +64,7 @@ class DefinitionParameter implements \JsonSerializable {
 
 	/**
 	 * @return string
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getName() {
 		return $this->name;
@@ -72,7 +72,7 @@ class DefinitionParameter implements \JsonSerializable {
 
 	/**
 	 * @return string
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getText() {
 		return $this->text;
@@ -82,7 +82,7 @@ class DefinitionParameter implements \JsonSerializable {
 	 * Get value type
 	 *
 	 * @return int
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getType() {
 		return $this->type;
@@ -93,7 +93,7 @@ class DefinitionParameter implements \JsonSerializable {
 	 *
 	 * @param int $type
 	 * @return self
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function setType($type) {
 		$this->type = $type;
@@ -102,7 +102,7 @@ class DefinitionParameter implements \JsonSerializable {
 
 	/**
 	 * @return string
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getTypeName() {
 		switch ($this->type) {
@@ -119,7 +119,7 @@ class DefinitionParameter implements \JsonSerializable {
 
 	/**
 	 * @return int
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getFlags() {
 		return $this->flags;
@@ -128,7 +128,7 @@ class DefinitionParameter implements \JsonSerializable {
 	/**
 	 * @param int $flags
 	 * @return self
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function setFlags($flags) {
 		$this->flags = $flags;
@@ -138,7 +138,7 @@ class DefinitionParameter implements \JsonSerializable {
 	/**
 	 * @param int $flag
 	 * @return self
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function setFlag($flag) {
 		$this->flags |= $flag;
@@ -148,7 +148,7 @@ class DefinitionParameter implements \JsonSerializable {
 	/**
 	 * @param int $flag
 	 * @return bool
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function isFlagSet($flag) {
 		return (bool)($this->flags & $flag);
@@ -158,7 +158,7 @@ class DefinitionParameter implements \JsonSerializable {
 	 * Serialize into JSON for client-side JS
 	 *
 	 * @return string
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function jsonSerialize() {
 		return [
@@ -172,7 +172,7 @@ class DefinitionParameter implements \JsonSerializable {
 	 * Returns whether the parameter is optional
 	 *
 	 * @return bool true if optional, false otherwise
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function isOptional() {
 		return $this->isFlagSet(self::FLAG_OPTIONAL) || $this->isFlagSet(self::FLAG_USER_PROVIDED);
@@ -184,7 +184,7 @@ class DefinitionParameter implements \JsonSerializable {
 	 *
 	 * @param mixed $value Value to check
 	 * @return bool success
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function validateValue(&$value) {
 		switch ($this->getType()) {

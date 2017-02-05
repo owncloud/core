@@ -28,7 +28,7 @@ use OCP\Files\External\IStorageConfig;
  * Service class to read global storages applicable to the user
  * Read-only access available, attempting to write will throw DomainException
  *
- * @since 9.2
+ * @since 10.0
  */
 interface IUserGlobalStoragesService extends IGlobalStoragesService {
 	/**
@@ -37,7 +37,7 @@ interface IUserGlobalStoragesService extends IGlobalStoragesService {
 	 *
 	 * @return IStorageConfig[]
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getUniqueStorages();
 }
