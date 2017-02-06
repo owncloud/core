@@ -117,11 +117,21 @@ class OC {
 	 * the app path list is empty or contains an invalid path
 	 */
 	public static function initPaths() {
+		// fixup: strip current dir from include path
+		$includePath = get_include_path();
+		$includePathArray = explode(PATH_SEPARATOR, $includePath);
+		$dotIndex = array_search('.', $includePathArray, true);
+		if ($dotIndex !== false){
+			unset($includePathArray[$dotIndex]);
+			$includePath = implode(PATH_SEPARATOR, $includePathArray);
+		}
+		
 		// ensure we can find OC_Config
 		set_include_path(
 			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
-			get_include_path()
+			$includePath
 		);
+		
 
 		if(defined('PHPUNIT_CONFIG_DIR')) {
 			self::$configDir = OC::$SERVERROOT . '/' . PHPUNIT_CONFIG_DIR . '/';
