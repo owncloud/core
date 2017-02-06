@@ -27,15 +27,16 @@ use Icewind\Streams\Wrapper;
 
 class Checksum extends Wrapper {
 
+	private static $algo = 'sha1';
+
 	/** @var  resource */
 	private $hashCtx;
-
 
 	/** @var array Key is path, value is the checksum */
 	private static $checksums = [];
 
 	public function __construct() {
-		$this->hashCtx = hash_init('sha1');
+		$this->hashCtx = hash_init(self::$algo);
 	}
 
 
@@ -106,13 +107,16 @@ class Checksum extends Wrapper {
 	 * @return bool
 	 */
 	public function stream_close() {
-        self::$checksums[$this->getPathFromContext()] = hash_final($this->hashCtx);
+        self::$checksums[$this->getPathFromContext()] = sprintf(
+        	'%s:%s', strtoupper(self::$algo), hash_final($this->hashCtx)
+		);
 
 		return parent::stream_close();
 	}
 
 	/**
 	 * @return mixed
+	 * @return string
 	 */
 	private function getPathFromContext() {
 		$ctx = stream_context_get_options($this->context);
@@ -121,10 +125,37 @@ class Checksum extends Wrapper {
 	}
 
 	/**
+	 * @param $path
+	 * @return string
+	 */
+	public static function getChecksum($path) {
+		if (!isset(self::$checksums[$path])) {
+			return null;
+		}
+
+		return self::$checksums[$path];
+	}
+
+	/**
 	 * @return array
 	 */
 	public static function getChecksums() {
-
 		return self::$checksums;
 	}
+
+	/**
+	 * @return string
+	 */
+	public static function getAlgo() {
+		return self::$algo;
+	}
+
+	/**
+	 * @param string $algo
+	 */
+	public static function setAlgo($algo) {
+		self::$algo = $algo;
+	}
+
+
 }
