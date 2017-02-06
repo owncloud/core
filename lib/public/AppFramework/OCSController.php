@@ -122,7 +122,7 @@ abstract class OCSController extends ApiController {
 		if (substr($script, -11) === '/ocs/v2.php') {
 			$statusCode = \OC_API::mapStatusCodes($resp->getStatusCode());
 			if (!is_null($statusCode)) {
-				$resp->setStatus($statusCode);
+				$resp->setStatusCode($statusCode);
 			}
 		}
 
