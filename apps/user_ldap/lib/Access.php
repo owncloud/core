@@ -1017,21 +1017,6 @@ class Access extends LDAPUtility implements IUserTools {
 			return array();
 		}
 
-<<<<<<< ours
-			foreach($sr as $res) {
-				$findings = array_merge($findings, $this->ldap->getEntries($cr	, $res ));
-			}
-
-			$continue = $this->processPagedSearchStatus($sr, $filter, $base, $findings['count'],
-								$limit, $offset, $pagedSearchOK,
-=======
-		// Do the server-side sorting
-		foreach(array_reverse($attr) as $sortAttr){
-			foreach($sr as $searchResource) {
-				$this->ldap->sort($cr, $searchResource, $sortAttr);
-			}
-		}
-
 		$findings = array();
 		foreach($sr as $res) {
 			$findings = array_merge($findings, $this->ldap->getEntries($cr	, $res ));
@@ -1039,7 +1024,6 @@ class Access extends LDAPUtility implements IUserTools {
 
 		$this->processPagedSearchStatus($sr, $filter, $base, $findings['count'],
 										$limit, $offset, $pagedSearchOK,
->>>>>>> theirs
 										$skipHandling);
 
 		// if we're here, probably no connection resource is returned.
