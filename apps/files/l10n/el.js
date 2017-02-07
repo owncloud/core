@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Ο αποθηκευτικός χώρος είναι προσωρινά μή διαθέσιμος",
     "Storage invalid" : "Μη έγκυρος αποθηκευτικός χώρος",
     "Unknown error" : "Άγνωστο σφάλμα",
     "All files" : "Όλα τα αρχεία",
@@ -12,6 +13,7 @@ OC.L10N.register(
     "Upload cancelled." : "Η αποστολή ακυρώθηκε.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Αδυναμία φόρτωσης {filename} καθώς είναι κατάλογος αρχείων ή έχει 0 bytes",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Δεν υπάρχει αρκετός ελεύθερος χώρος, μεταφορτώνετε μέγεθος {size1} αλλά υπάρχει χώρος μόνο {size2}",
+    "Target folder \"{dir}\" does not exist any more" : " Φάκελος προορισμού \"{dir}\" δεν υπάρχει πια",
     "Not enough free space" : "Δεν υπάρχει αρκετός ελεύθερος χώρος",
     "Uploading..." : "Μεταφόρτωση...",
     "..." : "...",
