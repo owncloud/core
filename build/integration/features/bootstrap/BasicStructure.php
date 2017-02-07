@@ -265,8 +265,8 @@ trait BasicStructure {
 	 * @param string $text
 	 */
 	public function modifyTextOfFile($user, $filename, $text) {
-		self::removeFile("../../data/$user/files", "$filename");
-		file_put_contents("../../data/$user/files" . "$filename", "$text");
+		self::removeFile($this->getUserHome($user) . "/files", "$filename");
+		file_put_contents($this->getUserHome($user) . "/files" . "$filename", "$text");
 	}
 
 	/**
@@ -280,7 +280,7 @@ trait BasicStructure {
 	}
 
 	public function createFileSpecificSize($name, $size){
-		$file = fopen("data/" . "$name", 'w');
+		$file = fopen("work/" . "$name", 'w');
 		fseek($file, $size - 1 ,SEEK_CUR);
 		fwrite($file,'a'); // write a dummy char at SIZE position
 		fclose($file);

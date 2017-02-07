@@ -219,12 +219,13 @@ Feature: sharing
   Scenario: getting all shares of a user using that user
     Given user "user0" exists
     And user "user1" exists
-    And file "textfile0.txt" of user "user0" is shared with user "user1"
+    And User "user0" moved file "/textfile0.txt" to "/file_to_share.txt"
+    And file "file_to_share.txt" of user "user0" is shared with user "user1"
     And As an "user0"
     When sending "GET" to "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And File "textfile0 (2).txt" should be included in the response
+    And File "file_to_share.txt" should be included in the response
 
   Scenario: getting all shares of a user using another user
     Given user "user0" exists
@@ -272,18 +273,20 @@ Feature: sharing
     And user "user2" exists
     And user "user3" exists
     And file "textfile0.txt" of user "user0" is shared with user "user1"
-    And file "textfile0 (2).txt" of user "user1" is shared with user "user2"
-    And file "textfile0 (2).txt" of user "user2" is shared with user "user3"
+    And User "user1" moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
+    And file "textfile0_shared.txt" of user "user1" is shared with user "user2"
+    And file "textfile0_shared.txt" of user "user2" is shared with user "user3"
     And As an "user1"
-    When User "user1" deletes file "/textfile0 (2).txt"
+    When User "user1" deletes file "/textfile0_shared.txt"
     And As an "user3"
-    And Downloading file "/textfile0 (2).txt" with range "bytes=1-7"
+    And Downloading file "/textfile0_shared.txt" with range "bytes=1-7"
     Then Downloaded content should be "wnCloud"
 
   Scenario: getting share info of a share
     Given user "user0" exists
     And user "user1" exists
-    And file "textfile0.txt" of user "user0" is shared with user "user1"
+    And User "user0" moved file "/textfile0.txt" to "/file_to_share.txt"
+    And file "file_to_share.txt" of user "user0" is shared with user "user1"
     And As an "user0"
     When Getting info of last share
     Then the OCS status code should be "100"
@@ -295,8 +298,8 @@ Feature: sharing
       | share_type | 0 |
       | share_with | user1 |
       | file_source | A_NUMBER |
-      | file_target | /textfile0 (2).txt |
-      | path | /textfile0.txt |
+      | file_target | /file_to_share.txt |
+      | path | /file_to_share.txt |
       | permissions | 19 |
       | stime | A_NUMBER |
       | storage | A_NUMBER |

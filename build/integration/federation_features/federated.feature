@@ -130,9 +130,10 @@ Feature: federated
 		And User "user1" from server "REMOTE" accepts last pending share
 		And Using server "REMOTE"
 		And As an "user1"
-		And User "user1" modifies text of "/textfile0.txt" with text "BLABLABLA"
-		When User "user1" uploads file "../../data/user1/files/textfile0.txt" to "/textfile0 (2).txt"
-		And Downloading file "/textfile0 (2).txt" with range "bytes=0-8"
+		When User "user1" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt"
+		And Using server "LOCAL"
+		And As an "user0"
+		And Downloading file "/textfile0.txt" with range "bytes=0-8"
 		Then Downloaded content should be "BLABLABLA"
 
 	Scenario: Overwrite a federated shared folder as recipient
@@ -145,9 +146,10 @@ Feature: federated
 		And User "user1" from server "REMOTE" accepts last pending share
 		And Using server "REMOTE"
 		And As an "user1"
-		And User "user1" modifies text of "/textfile0.txt" with text "BLABLABLA"
-		When User "user1" uploads file "../../data/user1/files/textfile0.txt" to "/PARENT (2)/textfile0.txt"
-		And Downloading file "/PARENT (2)/textfile0.txt" with range "bytes=0-8"
+		When User "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt"
+		And Using server "LOCAL"
+		And As an "user0"
+		And Downloading file "/PARENT/textfile0.txt" with range "bytes=0-8"
 		Then Downloaded content should be "BLABLABLA"
 
 	Scenario: Overwrite a federated shared file as recipient using old chunking
