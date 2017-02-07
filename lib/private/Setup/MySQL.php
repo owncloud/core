@@ -26,7 +26,9 @@
  */
 namespace OC\Setup;
 
+use OC\DB\Connection;
 use OC\DB\ConnectionFactory;
+use OC\DB\MySqlTools;
 use OCP\IDBConnection;
 
 class MySQL extends AbstractDatabase {
@@ -35,6 +37,15 @@ class MySQL extends AbstractDatabase {
 	public function setupDatabase($username) {
 		//check if the database user has admin right
 		$connection = $this->connect();
+
+		// detect mb4
+		if (is_null($this->config->getSystemValue('mysql.utf8mb4', null))) {
+			$tools = new MySqlTools();
+			if ($tools->supports4ByteCharset($connection)) {
+				$this->config->setSystemValue('mysql.utf8mb4', true);
+				$connection = $this->connect();
+			}
+		}
 
 		$this->createSpecificUser($username, $connection);
 
@@ -57,8 +68,9 @@ class MySQL extends AbstractDatabase {
 		try{
 			$name = $this->dbName;
 			$user = $this->dbUser;
-			//we can't use OC_BD functions here because we need to connect as the administrative user.
-			$query = "CREATE DATABASE IF NOT EXISTS `$name` CHARACTER SET utf8 COLLATE utf8_bin;";
+			//we can't use OC_DB functions here because we need to connect as the administrative user.
+			$characterSet = $this->config->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
+			$query = "CREATE DATABASE IF NOT EXISTS `$name` CHARACTER SET $characterSet COLLATE ${characterSet}_bin;";
 			$connection->executeUpdate($query);
 		} catch (\Exception $ex) {
 			$this->logger->error('Database creation failed: {error}', [
@@ -120,7 +132,8 @@ class MySQL extends AbstractDatabase {
 			$connectionParams['host'] = $host;
 		}
 
-		$cf = new ConnectionFactory();
+		$systemConfig = \OC::$server->getSystemConfig();
+		$cf = new ConnectionFactory($systemConfig);
 		return $cf->getConnection('mysql', $connectionParams);
 	}
 

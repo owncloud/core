@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Joas Schilling <coding@schilljs.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -20,23 +19,31 @@
  *
  */
 
-namespace OC\DB\QueryBuilder\ExpressionBuilder;
+namespace OC\DB;
 
+use OCP\IDBConnection;
 
-use OC\DB\QueryBuilder\QueryFunction;
-use OCP\DB\QueryBuilder\IQueryBuilder;
-
-class MySqlExpressionBuilder extends ExpressionBuilder {
+/**
+* Various MySQL specific helper functions.
+*/
+class MySqlTools {
 
 	/**
-	 * @inheritdoc
+	 * @param Connection $connection
+	 * @return bool
 	 */
-	public function iLike($x, $y, $type = null) {
-		$x = $this->helper->quoteColumnName($x);
-		$y = $this->helper->quoteColumnName($y);
-
-		$characterSet = \OC::$server->getConfig()->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
-		return $this->expressionBuilder->comparison($x, " COLLATE {$characterSet}_general_ci LIKE", $y);
+	public function supports4ByteCharset(IDBConnection $connection) {
+		foreach (['innodb_file_format' => 'Barracuda', 'innodb_large_prefix' => 'ON', 'innodb_file_per_table' => 'ON'] as $var => $val) {
+			$result = $connection->executeQuery("SHOW VARIABLES LIKE '$var'");
+			$rows = $result->fetch();
+			$result->closeCursor();
+			if ($rows === false) {
+				return false;
+			}
+			if (strcasecmp($rows['Value'], $val) !== 0) {
+				return false;
+			}
+		}
+		return true;
 	}
-
 }

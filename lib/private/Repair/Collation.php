@@ -24,25 +24,23 @@
 namespace OC\Repair;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class Collation implements IRepairStep {
-	/**
-	 * @var \OCP\IConfig
-	 */
+
+	/** @var \OCP\IConfig */
 	protected $config;
 
-	/**
-	 * @var \OC\DB\Connection
-	 */
+	/** @var IDBConnection */
 	protected $connection;
 
 	/**
 	 * @param \OCP\IConfig $config
-	 * @param \OC\DB\Connection $connection
+	 * @param IDBConnection $connection
 	 */
-	public function __construct($config, $connection) {
+	public function __construct($config, IDBConnection $connection) {
 		$this->connection = $connection;
 		$this->config = $config;
 	}
@@ -60,28 +58,32 @@ class Collation implements IRepairStep {
 			return;
 		}
 
+		$characterSet = $this->config->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
+
 		$tables = $this->getAllNonUTF8BinTables($this->connection);
 		foreach ($tables as $table) {
 			$output->info("Change collation for $table ...");
-			$query = $this->connection->prepare('ALTER TABLE `' . $table . '` CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;');
+			$query = $this->connection->prepare('ALTER TABLE `' . $table . '` CONVERT TO CHARACTER SET ' . $characterSet . ' COLLATE ' . $characterSet . '_bin;');
 			$query->execute();
 		}
 	}
 
 	/**
-	 * @param \Doctrine\DBAL\Connection $connection
+	 * @param IDBConnection $connection
 	 * @return string[]
 	 */
-	protected function getAllNonUTF8BinTables($connection) {
+	protected function getAllNonUTF8BinTables(IDBConnection $connection) {
 		$dbName = $this->config->getSystemValue("dbname");
-		$rows = $connection->fetchAll(
+		$characterSet = $this->config->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
+		$statement = $connection->executeQuery(
 			"SELECT DISTINCT(TABLE_NAME) AS `table`" .
 			"	FROM INFORMATION_SCHEMA . COLUMNS" .
 			"	WHERE TABLE_SCHEMA = ?" .
-			"	AND (COLLATION_NAME <> 'utf8_bin' OR CHARACTER_SET_NAME <> 'utf8')" .
+			"	AND (COLLATION_NAME <> '" . $characterSet . "_bin' OR CHARACTER_SET_NAME <> '" . $characterSet . "')" .
 			"	AND TABLE_NAME LIKE \"*PREFIX*%\"",
 			[$dbName]
 		);
+		$rows = $statement->fetchAll();
 		$result = [];
 		foreach ($rows as $row) {
 			$result[] = $row['table'];
