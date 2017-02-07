@@ -63,14 +63,7 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 		$backendService = $container->getServer()->query('StoragesBackendService');
 		$backendService->registerBackendProvider($this);
 		$backendService->registerAuthMechanismProvider($this);
-	}
 
-	/**
-	 * Register settings templates
-	 */
-	public function registerSettings() {
-		\OCP\App::registerAdmin('files_external', 'settings');
-		\OCP\App::registerPersonal('files_external', 'personal');
 	}
 
 	/**

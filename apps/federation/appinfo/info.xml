@@ -22,4 +22,7 @@
 	<commands>
 		<command>OCA\Federation\Command\SyncFederationAddressBooks</command>
 	</commands>
+	<settings>
+		<admin>OCA\Federation\Panels\Admin</admin>
+	</settings>
 </info>

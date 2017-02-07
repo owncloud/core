@@ -2,10 +2,9 @@
 	/** @var array $_ */
 	/** @var \OCP\IL10N $l */
 script('encryption', 'settings-personal');
-script('core', 'multiselect');
 ?>
 <form id="ocDefaultEncryptionModule" class="section">
-	<h2><?php p($l->t('ownCloud basic encryption module')); ?></h2>
+	<h2 class="app-name"><?php p($l->t('ownCloud basic encryption module')); ?></h2>
 
 	<?php if ($_["initialized"] === \OCA\Encryption\Session::NOT_INITIALIZED ): ?>
 

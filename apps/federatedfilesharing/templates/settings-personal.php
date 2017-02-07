@@ -11,7 +11,7 @@ if ($_['showShareIT']) {
 
 <?php if ($_['outgoingServer2serverShareEnabled']): ?>
 	<div id="fileSharingSettings" class="section">
-		<h2><?php p($l->t('Federated Cloud')); ?></h2>
+		<h2 class="app-name"><?php p($l->t('Federated Cloud')); ?></h2>
 
 		<p>
 			<?php p($l->t('Your Federated Cloud ID:')); ?>
@@ -65,7 +65,7 @@ if ($_['showShareIT']) {
 			<?php p($l->t('HTML Code:')); ?>
 			<xmp><a target="_blank" rel="noreferrer" href="<?php p($_['reference']); ?>"
 	style="padding:10px;background-color:#1d2d44;color:#fff;border-radius:3px;padding-left:4px;">
-	<img src="<?php  p(\OC::$server->getURLGenerator()->getAbsoluteURL($_['owncloud_logo_path'])); ?>"
+	<img src="<?php  p($_['urlGenerator']->getAbsoluteURL($_['owncloud_logo_path'])); ?>"
 		style="width:50px;position:relative;top:8px;">
 	<?php p($l->t('Share with me via ownCloud')); ?>
 

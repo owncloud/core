@@ -144,5 +144,4 @@ interface IAppManager {
 	 */
 	public function getAllApps();
 
-
 }

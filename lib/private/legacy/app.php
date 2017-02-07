@@ -462,11 +462,11 @@ class OC_App {
 		if (OC_User::isLoggedIn()) {
 			// personal menu
 			$settings[] = [
-				"id" => "personal",
+				"id" => "settings",
 				"order" => 1,
-				"href" => $urlGenerator->linkToRoute('settings_personal'),
-				"name" => $l->t("Personal"),
-				"icon" => $urlGenerator->imagePath("settings", "personal.svg")
+				"href" => $urlGenerator->linkToRoute('settings.SettingsPage.getPersonal'),
+				"name" => $l->t("Settings"),
+				"icon" => $urlGenerator->imagePath("settings", "admin.svg")
 			];
 
 			//SubAdmins are also allowed to access user management
@@ -486,17 +486,6 @@ class OC_App {
 				];
 			}
 
-			// if the user is an admin
-			if (OC_User::isAdminUser(OC_User::getUser())) {
-				// admin settings
-				$settings[] = [
-					"id" => "admin",
-					"order" => 1000,
-					"href" => $urlGenerator->linkToRoute('settings_admin'),
-					"name" => $l->t("Admin"),
-					"icon" => $urlGenerator->imagePath("settings", "admin.svg")
-				];
-			}
 		}
 
 		$navigation = self::proceedNavigation($settings);
@@ -769,6 +758,7 @@ class OC_App {
 	 *
 	 * @param string $app
 	 * @param string $page
+	 * @deprecated Register settings panels in info.xml
 	 */
 	public static function registerAdmin($app, $page) {
 		self::$adminForms[] = [
@@ -781,6 +771,7 @@ class OC_App {
 	 * register a personal form to be shown
 	 * @param string $app
 	 * @param string $page
+	 * @deprecated Register settings panels in info.xml
 	 */
 	public static function registerPersonal($app, $page) {
 		self::$personalForms[] = [
