@@ -113,19 +113,28 @@ class OC {
 	public static $server = null;
 
 	/**
+	 * Remove current directory from include path
+	 * @param string $oldIncludePath
+	 * @return string
+	 */
+	public static function fixupIncludePath($oldIncludePath){
+		$newIncludePath = $oldIncludePath;
+		$includePathArray = explode(PATH_SEPARATOR, $oldIncludePath);
+		$dotIndex = array_search('.', $includePathArray, true);
+		if ($dotIndex !== false){
+			unset($includePathArray[$dotIndex]);
+			$newIncludePath = implode(PATH_SEPARATOR, $includePathArray);
+		}
+		return $newIncludePath;
+	}
+	
+	/**
 	 * @throws \RuntimeException when the 3rdparty directory is missing or
 	 * the app path list is empty or contains an invalid path
 	 */
 	public static function initPaths() {
 		// fixup: strip current dir from include path
-		$includePath = get_include_path();
-		$includePathArray = explode(PATH_SEPARATOR, $includePath);
-		$dotIndex = array_search('.', $includePathArray, true);
-		if ($dotIndex !== false){
-			unset($includePathArray[$dotIndex]);
-			$includePath = implode(PATH_SEPARATOR, $includePathArray);
-		}
-		
+		$includePath = self::fixupIncludePath(get_include_path());
 		// ensure we can find OC_Config
 		set_include_path(
 			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
