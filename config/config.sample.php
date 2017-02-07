@@ -203,6 +203,16 @@ $CONFIG = array(
 'token_auth_enforced' => false,
 
 /**
+ * Disable ownCloud's built-in CSRF protection mechanism.
+ * In some specific setups CSRF protection is handled in the environment by e.g.
+ * running F5 ASM. In this case the built-in mechanism is not needed and can be disabled.
+ * Generally speaking this config switch should be kept unchanged.
+ *
+ * WARNING: leave this as is as long as you have no understanding of this!
+ */
+'csrf.disabled' => false,
+
+/**
  * The directory where the skeleton files are located. These files will be
  * copied to the data directory of new users. Leave empty to not copy any
  * skeleton files.
