@@ -110,7 +110,7 @@ timestampedNode('SLAVE') {
 		stage 'Integration Testing'
 			executeAndReport('build/integration/output/*.xml') {
 				sh '''phpenv local 7.0
-				rm -rf config/config.php
+				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
 				rm -rf build/integration/{output,vendor,composer.lock}
 				cd build/integration && ./run.sh
@@ -118,7 +118,7 @@ timestampedNode('SLAVE') {
 			}
 			executeAndReport('build/integration/output/*.xml') {
 				sh '''phpenv local 7.0
-				rm -rf config/config.php
+				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
 				rm -rf build/integration/{output,vendor,composer.lock}
 				cd build/integration && OC_TEST_ALT_HOME=1 ./run.sh
@@ -126,7 +126,7 @@ timestampedNode('SLAVE') {
 			}
 			executeAndReport('build/integration/output/*.xml') {
 				sh '''phpenv local 7.0
-				rm -rf config/config.php
+				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
 				rm -rf build/integration/{output,vendor,composer.lock}
 				cd build/integration && OC_TEST_ENCRYPTION_ENABLED=1 ./run.sh
@@ -134,7 +134,7 @@ timestampedNode('SLAVE') {
 			}
 			executeAndReport('build/integration/output/*.xml') {
 				sh '''phpenv local 7.0
-				rm -rf config/config.php
+				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
 				rm -rf build/integration/{output,vendor,composer.lock}
 				cd build/integration && OC_TEST_ENCRYPTION_ENABLED=1 OC_TEST_ALT_HOME=1 ./run.sh
@@ -143,7 +143,7 @@ timestampedNode('SLAVE') {
 
             executeAndReport('build/integration/output/*.xml') {
                 sh '''phpenv local 7.0
-                rm -rf config/config.php
+                rm -rf config/config.php data/*
                 ./occ maintenance:install --admin-pass=admin
                 rm -rf build/integration/output
                 rm -rf build/integration/vendor
