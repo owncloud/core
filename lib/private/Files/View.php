@@ -686,7 +686,11 @@ class View {
 		if ($mount and $mount->getInternalPath($absolutePath) === '') {
 			return $this->removeMount($mount, $absolutePath);
 		}
-		$result = $this->basicOperation('unlink', $path, ['delete']);
+		if ($this->is_dir($path)) {
+			$result = $this->basicOperation('rmdir', $path, array('delete'));
+		} else {
+			$result = $this->basicOperation('unlink', $path, array('delete'));
+		}
 		if (!$result && !$this->file_exists($path)) { //clear ghost files from the cache on delete
 			$storage = $mount->getStorage();
 			$internalPath = $mount->getInternalPath($absolutePath);
