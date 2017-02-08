@@ -337,7 +337,7 @@
 			if (!this._loadingOnce) {
 				this._loadingOnce = true;
 				// the first time, focus on the share field after the spinner disappeared
-				if (!bowser.msie && !bowser.msedge) {
+				if (!bowser.msie) {
 					_.defer(function () {
 						self.$('.shareWithField').focus();
 					});
