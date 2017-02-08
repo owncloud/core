@@ -32,6 +32,7 @@ OC.L10N.register(
     "Can not read this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Tiedostoa ei voi lukea, se on luultavasti jaettu tiedosto. Pyydä tiedoston omistajaa jakamaan tiedosto uudelleen kanssasi.",
     "The share will expire on %s." : "Jakaminen päättyy %s.",
     "Cheers!" : "Kiitos!",
+    "Encryption" : "Salaus",
     "Encrypt the home storage" : "Salaa oma kotitila",
     "Enable recovery key" : "Ota palautusavain käyttöön",
     "Disable recovery key" : "Poista palautusavain käytöstä",

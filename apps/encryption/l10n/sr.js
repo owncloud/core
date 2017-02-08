@@ -29,6 +29,7 @@ OC.L10N.register(
     "Can not read this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Не могу да читам фајл. Вероватно је дељен. Питајте власника да га поново подели са вама.",
     "The share will expire on %s." : "Дељење истиче %s.",
     "Cheers!" : "Здраво!",
+    "Encryption" : "Шифровање",
     "Enable recovery key" : "Омогући кључ за опоравак",
     "Disable recovery key" : "Онемогући кључ за опоравак",
     "The recovery key is an extra encryption key that is used to encrypt files. It allows recovery of a user's files if the user forgets his or her password." : "Кључ за опоравак је додатни шифрарски кључ који се користи за шифровање фајлова. Он омогућава опоравак корисничких фајлова ако корисник заборави своју лозинку.",

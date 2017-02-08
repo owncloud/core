@@ -34,6 +34,7 @@ OC.L10N.register(
     "The share will expire on %s." : "השיתוף יפוג תוקף ב- %s.",
     "Cheers!" : "לחיים!",
     "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>" : "שלום,<br><br>המנהל אפשר את ההצפנה בצד השרת. הקבצים שלך הוצפנו על בסיס הסיסמא <strong>%s</strong>.<br><br>יש להתחבר לממשק האינטרנט, ולגשת אל \"מודול הצפנה בסיסי של ownCloud\" בהגדרות הבסיסיות ולעדכן את סיסמת ההצפנה שלך על ידי הכנסת הסיסמא אל שדה \"סיסמת ההתחברות הישנה\" ואת סיסמת ההתחברות הנוכחית.<br><br>",
+    "Encryption" : "הצפנה",
     "Encrypt the home storage" : "הצפנת אחסון הבית",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "הפעלת אפשרות זו מצפינה את כל הקבצים המאוחסנים באחסון המרכזי, אחרת רק הקבצים המאוחסנים בהתקנים חיצוניים יוצפנו",
     "Enable recovery key" : "מאפשר מפתח שחזור",

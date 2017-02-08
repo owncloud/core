@@ -28,6 +28,7 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Не можу розшифрувати цей файл, можливо він опублікований. Будь ласка, попросіть власника опублікувати його заново.",
     "The share will expire on %s." : "Спільний доступ закінчиться %s.",
     "Cheers!" : "Будьмо!",
+    "Encryption" : "Шифрування",
     "Enable recovery key" : "Увімкнути ключ відновлення",
     "Disable recovery key" : "Вимкнути ключ відновлення",
     "Recovery key password" : "Пароль ключа відновлення",

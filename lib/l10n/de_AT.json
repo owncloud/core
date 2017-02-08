@@ -6,8 +6,6 @@
     "Password" : "Passwort",
     "Apps" : "Apps",
     "Help" : "Hilfe",
-    "Personal" : "Persönlich",
-    "Users" : "Benutzer",
-    "Admin" : "Administration"
+    "Users" : "Benutzer"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

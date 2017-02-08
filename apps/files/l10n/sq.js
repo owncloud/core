@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Depozitë e pavlefshme",
     "Unknown error" : "Gabim i panjohur",
     "All files" : "Krejt kartelat",
+    "Saved" : "U ruajt",
     "File could not be found" : "Kartela s’u gjet dot",
     "Home" : "Kreu",
     "Close" : "Mbylle",

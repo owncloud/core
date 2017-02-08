@@ -6,6 +6,7 @@ OC.L10N.register(
     "No ownCloud server found" : "Δεν βρέθηκε διακομιστής ownCloud",
     "Could not add server" : "Αδυναμία προσθήκης διακομιστή",
     "Federation" : "Δημοκρατία",
+    "Add server automatically once a federated share was created successfully" : "Προσθέστε αυτόματα τον εξυπηρετητή αμέσως μετά από μια επιτυχημένη διαμοίραση αρχείων",
     "Trusted ownCloud Servers" : "Έμπιστοι διακομιστές ownCloud",
     "+ Add ownCloud server" : "+ Προσθήκη διακομιστή ownCloud",
     "ownCloud Server" : "Διακομιστής ownCloud",

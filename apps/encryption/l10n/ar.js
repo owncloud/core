@@ -11,6 +11,7 @@ OC.L10N.register(
     "Invalid private key for Encryption App. Please update your private key password in your personal settings to recover access to your encrypted files." : "المفتاح الخاص بتشفير التطبيقات غير صالح. يرجى تحديث كلمة السر الخاصة بالمفتاح الخاص من الإعدادت الشخصية حتى تتمكن من الوصول للملفات المشفرة.",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "تم تمكين تشفير البرامج لكن لم يتم تهيئة المفاتيح لذا يرجى تسجيل الخروج ثم تسجيل الدخول مرة آخرى.",
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "لا يمكن فك التشفير من هذا الملف, من الممكن ان يكون هذا الملف مُشارك. يرجى سؤال صاحب الملف لإعادة مشاركتة معك.",
+    "Encryption" : "التشفير",
     "Recovery key password" : "استعادة كلمة مرور المفتاح",
     "Change recovery key password:" : "تعديل كلمة المرور استعادة المفتاح:",
     "Change Password" : "عدل كلمة السر",

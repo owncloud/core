@@ -2,6 +2,7 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "មិន​ស្គាល់​កំហុស",
+    "Saved" : "បាន​រក្សាទុក",
     "Close" : "បិទ",
     "Upload cancelled." : "បាន​បោះបង់​ការ​ផ្ទុក​ឡើង។",
     "Uploading..." : "កំពុងដាក់បញ្ចូល...",

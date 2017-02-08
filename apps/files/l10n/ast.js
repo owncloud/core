@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Almacenamientu inválidu",
     "Unknown error" : "Fallu desconocíu",
     "All files" : "Tolos ficheros",
+    "Saved" : "Guardáu",
     "File could not be found" : "Nun s'atopó el ficheru",
     "Home" : "Casa",
     "Close" : "Zarrar",

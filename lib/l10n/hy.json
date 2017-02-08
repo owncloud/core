@@ -8,8 +8,6 @@
     "File name contains at least one invalid character" : "Ֆայլի անունը առնվազն մի անվավեր նիշ է պարունակում",
     "Apps" : "Ափփեր",
     "Help" : "Օգնություն",
-    "Personal" : "Անձնական",
-    "Users" : "Օգտատերեր",
-    "Admin" : "Ադմին"
+    "Users" : "Օգտատերեր"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

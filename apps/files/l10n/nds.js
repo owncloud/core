@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Saved" : "Gespeichert",
     "Close" : "Schließen",
     "Download" : "Download",
     "Delete" : "Löschen",

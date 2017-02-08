@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Neplatné úložiště",
     "Unknown error" : "Neznámá chyba",
     "All files" : "Všechny soubory",
+    "Saved" : "Uloženo",
     "File could not be found" : "Soubor nelze nalézt",
     "Home" : "Domů",
     "Close" : "Zavřít",

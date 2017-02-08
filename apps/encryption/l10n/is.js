@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "The share will expire on %s." : "Gildistími deilingar rennur út %s.",
     "Cheers!" : "Skál!",
+    "Encryption" : "Dulritun",
     "Enabled" : "Virkt",
     "Disabled" : "Óvirkt"
 },

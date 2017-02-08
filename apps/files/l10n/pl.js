@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Pamięć nieprawidłowa",
     "Unknown error" : "Nieznany błąd",
     "All files" : "Wszystkie pliki",
+    "Saved" : "Zapisano",
     "File could not be found" : "Nie można odnaleźć pliku",
     "Home" : "Dom",
     "Close" : "Zamknij",

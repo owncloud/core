@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Penyimpanan tidak sah",
     "Unknown error" : "Kesalahan tidak diketahui",
     "All files" : "Semua berkas",
+    "Saved" : "Disimpan",
     "Home" : "Rumah",
     "Close" : "Tutup",
     "Favorites" : "Favorit",

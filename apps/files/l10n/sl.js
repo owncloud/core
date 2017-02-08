@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Določen prostor ni veljaven",
     "Unknown error" : "Neznana napaka",
     "All files" : "Vse datoteke",
+    "Saved" : "Shranjeno",
     "File could not be found" : "Datoteke ni mogoče najti",
     "Home" : "Domači naslov",
     "Close" : "Zapri",

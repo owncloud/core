@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Úložisko nie je platné",
     "Unknown error" : "Neznáma chyba",
     "All files" : "Všetky súbory",
+    "Saved" : "Uložené",
     "File could not be found" : "Súbor nenájdený",
     "Home" : "Domov",
     "Close" : "Zavrieť",

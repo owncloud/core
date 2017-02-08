@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Lagerplads er ugyldig",
     "Unknown error" : "Ukendt fejl",
     "All files" : "Alle filer",
+    "Saved" : "Gemt",
     "File could not be found" : "Fil kunne ikke findes",
     "Home" : "Hjemme",
     "Close" : "Luk",

@@ -18,6 +18,7 @@ OC.L10N.register(
     "Error generating key pair" : "Σφάλμα κατά τη δημιουργία ζεύγους κλειδιών",
     "All users. Type to select user or group." : "Όλοι οι χρήστες. Πληκτρολογήστε για να επιλέξετε χρήστη ή ομάδα.",
     "(group)" : "(ομάδα)",
+    "Admin defined" : "Ορισμός διαχειριστή",
     "Saved" : "Αποθηκεύτηκαν",
     "Empty response from the server" : "Κενή απάντηση από το διακομιστη",
     "Couldn't access. Please logout and login to activate this mount point" : "Αδυναμία πρόσβασης. Παρακαλώ εξέλθετε και εισέλθετε για να ενεργοποιήσετε το σημείο προσάρτησης",

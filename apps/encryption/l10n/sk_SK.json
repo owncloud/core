@@ -32,6 +32,7 @@
     "The share will expire on %s." : "Zdieľanie vyprší %s.",
     "Cheers!" : "Pekný deň!",
     "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>" : "Dobrý deň,<br><br>správca zapol šifrovanie na strane servera. Vaše súbory boli zašifrované heslom <strong>%s</strong>.<br><br>Prosím, prihláste sa do webového rozhrania, prejdite do časti „Modul základného šifrovania ownCloud“ vo vašich osobných nastaveniach a aktualizujte šifrovacie heslo zadaním tohto hesla do poľa „Staré prihlasovacie heslo“ a zadaním vášho aktuálneho prihlasovacieho hesla.<br><br>",
+    "Encryption" : "Šifrovanie",
     "Encrypt the home storage" : "Šifrovať domáce úložisko",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "Zapnutím tejto voľby zašifrujete všetky súbory v hlavnom úložisku, v opačnom prípade zašifrujete iba súbory na externom úložisku.",
     "Enable recovery key" : "Povoliť obnovovací kľúč",

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Сториџот не е валиден",
     "Unknown error" : "Непозната грешка",
     "All files" : "Сите датотеки",
+    "Saved" : "Снимено",
     "Home" : "Дома",
     "Close" : "Затвори",
     "Favorites" : "Омилени",

@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Authentication error" : "Ralat pengesahan",
     "Email saved" : "Emel disimpan",
-    "Log" : "Log",
+    "__language_name__" : "_nama_bahasa_",
     "Language changed" : "Bahasa diubah",
     "Invalid request" : "Permintaan tidak sah",
     "Disable" : "Nyahaktif",
@@ -11,7 +11,7 @@ OC.L10N.register(
     "Delete" : "Padam",
     "Groups" : "Kumpulan",
     "never" : "jangan",
-    "__language_name__" : "_nama_bahasa_",
+    "Log" : "Log",
     "Login" : "Log masuk",
     "Server address" : "Alamat pelayan",
     "Profile picture" : "Gambar profil",

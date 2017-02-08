@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Saved" : "সংরক্ষিত",
     "Close" : "বন্ধ",
     "Uploading..." : "আপলোডইং ...",
     "Download" : "ডাউনলোড করুন",

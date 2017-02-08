@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Unknown error" : "Անհայտ սխալ",
     "All files" : "Բոլոր ֆայլերը",
+    "Saved" : "Պահված",
     "File could not be found" : "Ֆայլը չգտնվեց",
     "Home" : "Գլխավոր էջ",
     "Close" : "Փակել",

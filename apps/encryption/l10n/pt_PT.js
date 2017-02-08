@@ -34,6 +34,7 @@ OC.L10N.register(
     "The share will expire on %s." : "Esta partilha irá expirar em %s.",
     "Cheers!" : "Parabéns!",
     "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>" : "Olá,<br><br>o administrador ativou a encriptação do lado do servidor. Os teus ficheiros foram encriptados usando a palavra-passe <strong>%s</strong>.<br><br>Por favor, faz login via browser, vai à secção 'Módulo de encriptação básica ownCloud' nas tuas definições pessoais e atualiza a tua palavra-passe de encriptação ao introduzir esta palavra-passe no campo 'palavra-passe antiga' e também a tua palavra-passe atual.<br><br>",
+    "Encryption" : "Encriptação",
     "Encrypt the home storage" : "Encriptar o armazenamento do início",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "Ativando esta opção todos os ficheiros armazenados no armazenamento principal serão encriptados, senão serão encriptados todos os ficheiros no armazenamento externo",
     "Enable recovery key" : "Ativar a chave de recuperação",

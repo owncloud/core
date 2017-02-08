@@ -29,6 +29,7 @@ OC.L10N.register(
     "Missing Signature" : "Semnătură lipsă",
     "The share will expire on %s." : "Partajarea va expira în data de %s.",
     "Cheers!" : "Noroc!",
+    "Encryption" : "Încriptare",
     "Enable recovery key" : "Activează cheia de recuperare",
     "Disable recovery key" : "Dezactivează cheia de recuperare",
     "Recovery key password" : "Parola cheii de recuperare",
