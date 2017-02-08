@@ -193,7 +193,7 @@
 					password: ''
 				});
 			} else {
-				if (!bowser.msie) {
+				if (!bowser.msie && !bowser.msedge) {
 					this.$el.find('.linkPassText').focus();
 				}
 			}
