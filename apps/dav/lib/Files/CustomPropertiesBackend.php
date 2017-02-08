@@ -136,7 +136,7 @@ class CustomPropertiesBackend implements BackendInterface {
 	public function delete($path) {
 		$fileId = $this->getFileIdByPath($path);
 		$statement = $this->connection->prepare(
-			'DELETE FROM `*PREFIX*properties` WHERE `file_id` = ?'
+			'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?'
 		);
 		$statement->execute([$fileId]);
 		$statement->closeCursor();
@@ -172,7 +172,7 @@ class CustomPropertiesBackend implements BackendInterface {
 		}
 
 		// TODO: chunking if more than 1000 properties
-		$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `file_id` = ?';
+		$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';
 
 		$whereValues = [$fileId];
 		$whereTypes = [null];
@@ -212,13 +212,13 @@ class CustomPropertiesBackend implements BackendInterface {
 	private function updateProperties($fileId, $properties) {
 
 		$deleteStatement = 'DELETE FROM `*PREFIX*properties`' .
-			' WHERE `file_id` = ? AND `propertyname` = ?';
+			' WHERE `fileid` = ? AND `propertyname` = ?';
 
 		$insertStatement = 'INSERT INTO `*PREFIX*properties`' .
-			' (`file_id`,`propertyname`,`propertyvalue`) VALUES(?,?,?)';
+			' (`fileid`,`propertyname`,`propertyvalue`) VALUES(?,?,?)';
 
 		$updateStatement = 'UPDATE `*PREFIX*properties` SET `propertyvalue` = ?' .
-			' WHERE `file_id` = ? AND `propertyname` = ?';
+			' WHERE `fileid` = ? AND `propertyname` = ?';
 
 		// TODO: use "insert or update" strategy ?
 		$existing = $this->getProperties($fileId, []);

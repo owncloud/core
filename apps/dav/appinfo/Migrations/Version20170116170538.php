@@ -24,20 +24,24 @@ namespace OCA\DAV\Migrations;
 use OCP\Migration\ISchemaMigration;
 use Doctrine\DBAL\Schema\Schema;
 
+/*
+ * Create initial properties table
+ * Add fileid field to this table if needed
+ */
 class Version20170116170538 implements ISchemaMigration {
 
 	/**
 	 * @param Schema $schema
 	 * @param string $prefix
 	 */
-	private function createPropertiesTable(Schema $schema, $prefix){
+	private function createPropertiesTable(Schema $schema, $prefix) {
 		$table = $schema->createTable("${prefix}properties");
 		$table->addColumn('id', 'bigint', [
 			'autoincrement' => true,
 			'notnull' => true,
 			'length' => 20,
 		]);
-		$table->addColumn('file_id', 'bigint', [
+		$table->addColumn('fileid', 'bigint', [
 			'notnull' => true,
 			'length' => 20,
 		]);
@@ -51,7 +55,7 @@ class Version20170116170538 implements ISchemaMigration {
 			'length' => 255,
 		]);
 		$table->setPrimaryKey(['id']);
-		$table->addIndex(['file_id'], 'fileid_index');
+		$table->addIndex(['fileid'], 'fileid_index');
 	}
 
 	/**
@@ -61,21 +65,19 @@ class Version20170116170538 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		if (!$schema->hasTable("${prefix}properties")){
+		if (!$schema->hasTable("${prefix}properties")) {
 			// install
 			$this->createPropertiesTable($schema, $prefix);
 		} else {
 			// update
 			$table = $schema->getTable("${prefix}properties");
-			if (!$table->getColumn('file_id')){
-				$table->addColumn('file_id', 'bigint', [
+			if (!$table->getColumn('fileid')) {
+				$table->addColumn('fileid', 'bigint', [
+					'default' => 0,
 					'notnull' => true,
 					'length' => 20,
 				]);
-				$table->addIndex(['file_id'], 'fileid_index');
-			}
-			if ($table->hasIndex('property_index')){
-				$table->dropIndex('property_index');
+				$table->addIndex(['fileid'], 'fileid_index');
 			}
 		}
 	}
