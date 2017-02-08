@@ -33,6 +33,7 @@ use OCP\IUser;
 use OCP\Files\IRootFolder;
 use OCP\Lock\LockedException;
 use OCP\Share;
+use Test\TestCase;
 
 /**
  * Class Share20OCSTest
@@ -40,7 +41,7 @@ use OCP\Share;
  * @package OCA\Files_Sharing\Tests\API
  * @group DB
  */
-class Share20OCSTest extends \Test\TestCase {
+class Share20OCSTest extends TestCase {
 
 	/** @var \OC\Share20\Manager | \PHPUnit_Framework_MockObject_MockObject */
 	private $shareManager;
@@ -533,7 +534,7 @@ class Share20OCSTest extends \Test\TestCase {
 		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
 
 		// null group
-		$share = $this->getMock('OCP\Share\IShare');
+		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('groupnull');
 		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
