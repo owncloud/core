@@ -106,18 +106,6 @@ class Application extends App {
 				$c->query('Logger')
 			);
 		});
-		$container->registerService('AppSettingsController', function(IContainer $c) {
-			return new AppSettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('L10N'),
-				$c->query('Config'),
-				$c->query('ICacheFactory'),
-				$c->query('INavigationManager'),
-				$c->query('IAppManager'),
-				$c->query('OcsClient')
-			);
-		});
 		$container->registerService('AuthSettingsController', function(IContainer $c) {
 			return new AuthSettingsController(
 				$c->query('AppName'),

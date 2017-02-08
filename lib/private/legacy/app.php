@@ -49,7 +49,6 @@ use OC\App\DependencyAnalyzer;
 use OC\App\InfoParser;
 use OC\App\Platform;
 use OC\Installer;
-use OC\OCSClient;
 use OC\Repair;
 
 /**
@@ -341,15 +340,16 @@ class OC_App {
 	 */
 	public static function enable($app, $groups = null) {
 		self::$enabledAppsCache = []; // flush
-		if (!Installer::isInstalled($app)) {
-			$app = self::installApp($app);
-		} else {
-			// check for required dependencies
-			$config = \OC::$server->getConfig();
-			$l = \OC::$server->getL10N('core');
-			$info = self::getAppInfo($app);
 
-			self::checkAppDependencies($config, $l, $info);
+		// check for required dependencies
+		$config = \OC::$server->getConfig();
+		$l = \OC::$server->getL10N('core');
+		$info = self::getAppInfo($app);
+
+		self::checkAppDependencies($config, $l, $info);
+
+		if (!Installer::isInstalled($app)) {
+			Installer::installShippedApp($app);
 		}
 
 		$appManager = \OC::$server->getAppManager();
@@ -366,27 +366,6 @@ class OC_App {
 		} else {
 			$appManager->enableApp($app);
 		}
-	}
-
-	/**
-	 * @param string $app
-	 * @return int
-	 */
-	private static function downloadApp($app) {
-		$ocsClient = new OCSClient(
-			\OC::$server->getHTTPClientService(),
-			\OC::$server->getConfig(),
-			\OC::$server->getLogger()
-		);
-		$appData = $ocsClient->getApplication($app, \OCP\Util::getVersion());
-		$download = $ocsClient->getApplicationDownload($app, \OCP\Util::getVersion());
-		if(isset($download['downloadlink']) and $download['downloadlink']!='') {
-			// Replace spaces in download link without encoding entire URL
-			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
-			$info = ['source' => 'http', 'href' => $download['downloadlink'], 'appdata' => $appData];
-			$app = Installer::installApp($info);
-		}
-		return $app;
 	}
 
 	/**
@@ -831,12 +810,9 @@ class OC_App {
 	 * @param bool $onlyLocal
 	 * @param bool $includeUpdateInfo Should we check whether there is an update
 	 *                                in the app store?
-	 * @param OCSClient $ocsClient
 	 * @return array
 	 */
-	public static function listAllApps($onlyLocal = false,
-									   $includeUpdateInfo = true,
-									   OCSClient $ocsClient) {
+	public static function listAllApps() {
 		$installedApps = OC_App::getAllApps();
 
 		//TODO which apps do we want to blacklist and how do we integrate
@@ -883,8 +859,6 @@ class OC_App {
 					$info['removable'] = true;
 				}
 
-				$info['update'] = ($includeUpdateInfo) ? Installer::isUpdateAvailable($app) : null;
-
 				$appPath = self::getAppPath($app);
 				if($appPath !== false) {
 					$appIcon = $appPath . '/img/' . $app . '.svg';
@@ -916,29 +890,8 @@ class OC_App {
 				$appList[] = $info;
 			}
 		}
-		if ($onlyLocal) {
-			$remoteApps = [];
-		} else {
-			$remoteApps = OC_App::getAppstoreApps('approved', null, $ocsClient);
-		}
-		if ($remoteApps) {
-			// Remove duplicates
-			foreach ($appList as $app) {
-				foreach ($remoteApps AS $key => $remote) {
-					if ($app['name'] === $remote['name'] ||
-						(isset($app['ocsid']) &&
-							$app['ocsid'] === $remote['id'])
-					) {
-						unset($remoteApps[$key]);
-					}
-				}
-			}
-			$combinedApps = array_merge($appList, $remoteApps);
-		} else {
-			$combinedApps = $appList;
-		}
 
-		return $combinedApps;
+		return $appList;
 	}
 
 	/**
@@ -954,70 +907,6 @@ class OC_App {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Get a list of all apps on the appstore
-	 * @param string $filter
-	 * @param string|null $category
-	 * @param OCSClient $ocsClient
-	 * @return array|bool  multi-dimensional array of apps.
-	 *                     Keys: id, name, type, typename, personid, license, detailpage, preview, changed, description
-	 */
-	public static function getAppstoreApps($filter = 'approved',
-										   $category = null,
-										   OCSClient $ocsClient) {
-		$categories = [$category];
-
-		if (is_null($category)) {
-			$categoryNames = $ocsClient->getCategories(\OCP\Util::getVersion());
-			if (is_array($categoryNames)) {
-				// Check that categories of apps were retrieved correctly
-				if (!$categories = array_keys($categoryNames)) {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-
-		$page = 0;
-		$remoteApps = $ocsClient->getApplications($categories, $page, $filter, \OCP\Util::getVersion());
-		$apps = [];
-		$i = 0;
-		$l = \OC::$server->getL10N('core');
-		foreach ($remoteApps as $app) {
-			$potentialCleanId = self::getInternalAppIdByOcs($app['id']);
-			// enhance app info (for example the description)
-			$apps[$i] = OC_App::parseAppInfo($app);
-			$apps[$i]['author'] = $app['personid'];
-			$apps[$i]['ocs_id'] = $app['id'];
-			$apps[$i]['internal'] = 0;
-			$apps[$i]['active'] = ($potentialCleanId !== false) ? self::isEnabled($potentialCleanId) : false;
-			$apps[$i]['update'] = false;
-			$apps[$i]['groups'] = false;
-			$apps[$i]['score'] = $app['score'];
-			$apps[$i]['removable'] = false;
-			if ($app['label'] == 'recommended') {
-				$apps[$i]['internallabel'] = (string)$l->t('Recommended');
-				$apps[$i]['internalclass'] = 'recommendedapp';
-			}
-
-			// Apps from the appstore are always assumed to be compatible with the
-			// the current release as the initial filtering is done on the appstore
-			$apps[$i]['dependencies']['owncloud']['@attributes']['min-version'] = implode('.', \OCP\Util::getVersion());
-			$apps[$i]['dependencies']['owncloud']['@attributes']['max-version'] = implode('.', \OCP\Util::getVersion());
-
-			$i++;
-		}
-
-
-
-		if (empty($apps)) {
-			return false;
-		} else {
-			return $apps;
-		}
 	}
 
 	public static function shouldUpgrade($app) {
@@ -1118,87 +1007,6 @@ class OC_App {
 			$versions = $appConfig->getValues(false, 'installed_version');
 		}
 		return $versions;
-	}
-
-	/**
-	 * @param string $app
-	 * @return bool
-	 * @throws Exception if app is not compatible with this version of ownCloud
-	 * @throws Exception if no app-name was specified
-	 */
-	public static function installApp($app) {
-		$appName = $app; // $app will be overwritten, preserve name for error logging
-		$l = \OC::$server->getL10N('core');
-		$config = \OC::$server->getConfig();
-		$ocsClient = new OCSClient(
-			\OC::$server->getHTTPClientService(),
-			$config,
-			\OC::$server->getLogger()
-		);
-		$appData = $ocsClient->getApplication($app, \OCP\Util::getVersion());
-
-		// check if app is a shipped app or not. OCS apps have an integer as id, shipped apps use a string
-		if (!is_numeric($app)) {
-			$shippedVersion = self::getAppVersion($app);
-			if ($appData && version_compare($shippedVersion, $appData['version'], '<')) {
-				$app = self::downloadApp($app);
-			} else {
-				$app = Installer::installShippedApp($app);
-			}
-		} else {
-			// Maybe the app is already installed - compare the version in this
-			// case and use the local already installed one.
-			// FIXME: This is a horrible hack. I feel sad. The god of code cleanness may forgive me.
-			$internalAppId = self::getInternalAppIdByOcs($app);
-			if($internalAppId !== false) {
-				if($appData && version_compare(\OC_App::getAppVersion($internalAppId), $appData['version'], '<')) {
-					$app = self::downloadApp($app);
-				} else {
-					self::enable($internalAppId);
-					$app = $internalAppId;
-				}
-			} else {
-				$app = self::downloadApp($app);
-			}
-		}
-
-		if ($app !== false) {
-			// check if the app is compatible with this version of ownCloud
-			$info = self::getAppInfo($app);
-			if(!is_array($info)) {
-				throw new \Exception(
-					$l->t('App "%s" cannot be installed because appinfo file cannot be read.',
-						[$info['name']]
-					)
-				);
-			}
-
-			$version = \OCP\Util::getVersion();
-			if (!self::isAppCompatible($version, $info)) {
-				throw new \Exception(
-					$l->t('App "%s" cannot be installed because it is not compatible with this version of ownCloud.',
-						[$info['name']]
-					)
-				);
-			}
-
-			// check for required dependencies
-			self::checkAppDependencies($config, $l, $info);
-
-			$config->setAppValue($app, 'enabled', 'yes');
-			if (isset($appData['id'])) {
-				$config->setAppValue($app, 'ocsid', $appData['id']);
-			}
-			\OC_Hook::emit('OC_App', 'post_enable', ['app' => $app]);
-		} else {
-			if(empty($appName) ) {
-				throw new \Exception($l->t("No app name specified"));
-			} else {
-				throw new \Exception($l->t("App '%s' could not be installed!", $appName));
-			}
-		}
-
-		return $app;
 	}
 
 	/**
@@ -1363,7 +1171,7 @@ class OC_App {
 	/**
 	 * @param OCP\IConfig $config
 	 * @param OCP\IL10N $l
-	 * @param $info
+	 * @param array $info
 	 * @throws Exception
 	 */
 	protected static function checkAppDependencies($config, $l, $info) {

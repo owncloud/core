@@ -239,36 +239,6 @@ class Installer {
 	}
 
 	/**
-	 * update an app by it's id
-	 *
-	 * @param integer $ocsId
-	 * @return bool
-	 * @throws \Exception
-	 */
-	public static function updateAppByOCSId($ocsId) {
-		$ocsClient = new OCSClient(
-			\OC::$server->getHTTPClientService(),
-			\OC::$server->getConfig(),
-			\OC::$server->getLogger()
-		);
-		$appData = $ocsClient->getApplication($ocsId, \OCP\Util::getVersion());
-		$download = $ocsClient->getApplicationDownload($ocsId, \OCP\Util::getVersion());
-
-		if (isset($download['downloadlink']) && trim($download['downloadlink']) !== '') {
-			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
-			$info = [
-				'source' => 'http',
-				'href' => $download['downloadlink'],
-				'appdata' => $appData
-			];
-		} else {
-			throw new \Exception('Could not fetch app info!');
-		}
-
-		return self::updateApp($info);
-	}
-
-	/**
 	 * @param array $data
 	 * @return array
 	 * @throws \Exception
@@ -415,52 +385,6 @@ class Installer {
 		}
 
 		return $info;
-	}
-
-	/**
-	 * Check if an update for the app is available
-	 * @param string $app
-	 * @return string|false false or the version number of the update
-	 *
-	 * The function will check if an update for a version is available
-	 */
-	public static function isUpdateAvailable( $app ) {
-		static $isInstanceReadyForUpdates = null;
-
-		if ($isInstanceReadyForUpdates === null) {
-			$installPath = OC_App::getInstallPath();
-			if ($installPath === false || $installPath === null) {
-				$isInstanceReadyForUpdates = false;
-			} else {
-				$isInstanceReadyForUpdates = true;
-			}
-		}
-
-		if ($isInstanceReadyForUpdates === false) {
-			return false;
-		}
-
-		$ocsid=\OC::$server->getAppConfig()->getValue( $app, 'ocsid', '');
-
-		if($ocsid<>'') {
-			$ocsClient = new OCSClient(
-				\OC::$server->getHTTPClientService(),
-				\OC::$server->getConfig(),
-				\OC::$server->getLogger()
-			);
-			$ocsdata = $ocsClient->getApplication($ocsid, \OCP\Util::getVersion());
-			$ocsversion= (string) $ocsdata['version'];
-			$currentversion=OC_App::getAppVersion($app);
-			if (version_compare($ocsversion, $currentversion, '>')) {
-				return($ocsversion);
-			}else{
-				return false;
-			}
-
-		}else{
-			return false;
-		}
-
 	}
 
 	/**

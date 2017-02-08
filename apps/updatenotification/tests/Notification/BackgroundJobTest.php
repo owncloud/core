@@ -88,15 +88,10 @@ class BackgroundJobTest extends TestCase {
 	}
 
 	public function testRun() {
-		$job = $this->getJob([
-			'checkCoreUpdate',
-			'checkAppUpdates',
-		]);
+		$job = $this->getJob(['checkCoreUpdate']);
 
 		$job->expects($this->once())
 			->method('checkCoreUpdate');
-		$job->expects($this->once())
-			->method('checkAppUpdates');
 
 		$this->invokePrivate($job, 'run', [null]);
 	}
@@ -172,54 +167,6 @@ class BackgroundJobTest extends TestCase {
 		}
 
 		$this->invokePrivate($job, 'checkCoreUpdate');
-	}
-
-	public function dataCheckAppUpdates() {
-		return [
-			[
-				['app1', 'app2'],
-				[
-					['app1', false],
-					['app2', '1.9.2'],
-				],
-				[
-					['app2', '1.9.2', 'apps-url#app-app2'],
-				],
-			],
-		];
-	}
-
-	/**
-	 * @dataProvider dataCheckAppUpdates
-	 *
-	 * @param string[] $apps
-	 * @param array $isUpdateAvailable
-	 * @param array $notifications
-	 */
-	public function testCheckAppUpdates(array $apps, array $isUpdateAvailable, array $notifications) {
-		$job = $this->getJob([
-			'isUpdateAvailable',
-			'createNotifications',
-		]);
-
-		$this->appManager->expects($this->once())
-			->method('getInstalledApps')
-			->willReturn($apps);
-
-		$job->expects($this->exactly(sizeof($apps)))
-			->method('isUpdateAvailable')
-			->willReturnMap($isUpdateAvailable);
-
-		$this->urlGenerator->expects($this->exactly(sizeof($notifications)))
-			->method('linkToRouteAbsolute')
-			->with('settings.AppSettings.viewApps')
-			->willReturn('apps-url');
-
-		$mockedMethod = $job->expects($this->exactly(sizeof($notifications)))
-			->method('createNotifications');
-		call_user_func_array([$mockedMethod, 'withConsecutive'], $notifications);
-
-		$this->invokePrivate($job, 'checkAppUpdates');
 	}
 
 	public function dataCreateNotifications() {

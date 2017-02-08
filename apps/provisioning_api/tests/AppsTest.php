@@ -27,7 +27,6 @@
 namespace OCA\Provisioning_API\Tests;
 
 
-use OC\OCSClient;
 use OCA\Provisioning_API\Apps;
 use OCP\API;
 use OCP\App\IAppManager;
@@ -47,8 +46,6 @@ class AppsTest extends TestCase {
 	private $api;
 	/** @var IUserSession */
 	private $userSession;
-	/** @var OCSClient|\PHPUnit_Framework_MockObject_MockObject */
-	private $ocsClient;
 
 	protected function setUp() {
 		parent::setUp();
@@ -56,11 +53,7 @@ class AppsTest extends TestCase {
 		$this->appManager = \OC::$server->getAppManager();
 		$this->groupManager = \OC::$server->getGroupManager();
 		$this->userSession = \OC::$server->getUserSession();
-		$this->ocsClient = $this->getMockBuilder('OC\OCSClient')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->api = new Apps($this->appManager, $this->ocsClient);
+		$this->api = new Apps($this->appManager);
 	}
 
 	public function testGetAppInfo() {
@@ -77,10 +70,6 @@ class AppsTest extends TestCase {
 	}
 
 	public function testGetApps() {
-		$this->ocsClient
-				->expects($this->any())
-				->method($this->anything())
-				->will($this->returnValue(null));
 		$user = $this->generateUsers();
 		$this->groupManager->get('admin')->addUser($user);
 		$this->userSession->setUser($user);
@@ -89,7 +78,7 @@ class AppsTest extends TestCase {
 
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
-		$this->assertEquals(count(\OC_App::listAllApps(false, true, $this->ocsClient)), count($data['apps']));
+		$this->assertEquals(count(\OC_App::listAllApps(false, true)), count($data['apps']));
 	}
 
 	public function testGetAppsEnabled() {
@@ -101,15 +90,11 @@ class AppsTest extends TestCase {
 	}
 
 	public function testGetAppsDisabled() {
-		$this->ocsClient
-				->expects($this->any())
-				->method($this->anything())
-				->will($this->returnValue(null));
 		$_GET['filter'] = 'disabled';
 		$result = $this->api->getApps(['filter' => 'disabled']);
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
-		$apps = \OC_App::listAllApps(false, true, $this->ocsClient);
+		$apps = \OC_App::listAllApps(false, true);
 		$list =  [];
 		foreach($apps as $app) {
 			$list[] = $app['id'];
