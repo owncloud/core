@@ -169,7 +169,7 @@ Feature: sharees_provisioningapiv2
     When getting sharees for
       | search | shareegroup |
       | itemType | file |
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     Then "exact users" sharees returned is empty
     Then "users" sharees returned is empty
