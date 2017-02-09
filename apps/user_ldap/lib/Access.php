@@ -1016,7 +1016,12 @@ class Access extends LDAPUtility implements IUserTools {
 											$skipHandling);
 			return array();
 		}
-
+		// Do the server-side sorting
+		foreach(array_reverse($attr) as $sortAttr){
+			foreach($sr as $searchResource) {
+				$this->ldap->sort($cr, $searchResource, $sortAttr);
+			}
+		}
 		$findings = array();
 		foreach($sr as $res) {
 			$findings = array_merge($findings, $this->ldap->getEntries($cr	, $res ));
