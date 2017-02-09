@@ -210,6 +210,16 @@ class LDAP implements ILDAPWrapper {
 	}
 
 	/**
+	 * @param LDAP $link
+	 * @param LDAP $result
+	 * @param string $sortFilter
+	 * @return mixed
+	 */
+	public function sort($link, $result, $sortFilter) {
+		return $this->invokeLDAPMethod('sort', $link, $result, $sortFilter);
+	}
+
+	/**
 	 * @param resource $link
 	 * @return bool|mixed
 	 */
