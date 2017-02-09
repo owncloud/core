@@ -22,6 +22,9 @@ OC.L10N.register(
     "Change password" : "Passwort ändern",
     "Name" : "Name",
     "Username" : "Benutzername",
+    "Personal" : "Persönlich",
+    "Admin" : "Administration",
+    "Error" : "Fehler",
     "Other" : "Anderes"
 },
 "nplurals=2; plural=(n != 1);");

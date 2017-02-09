@@ -1,4 +1,5 @@
 { "translations": {
-    "Username" : "ইউজারনেম"
+    "Username" : "ইউজারনেম",
+    "Settings" : "সেটিংস"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

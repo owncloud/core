@@ -6,6 +6,7 @@ OC.L10N.register(
     "Unknown error" : "Neznana napaka",
     "All files" : "Vse datoteke",
     "Saved" : "Shranjeno",
+    "There was an error saving" : "Med shranjevanjem je prišlo do napake",
     "File could not be found" : "Datoteke ni mogoče najti",
     "Home" : "Domači naslov",
     "Close" : "Zapri",

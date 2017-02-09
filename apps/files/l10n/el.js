@@ -6,6 +6,7 @@ OC.L10N.register(
     "Unknown error" : "Άγνωστο σφάλμα",
     "All files" : "Όλα τα αρχεία",
     "Saved" : "Αποθηκεύτηκαν",
+    "There was an error saving" : "Υπήρξε σφάλμα κατά την αποθήκευση",
     "File could not be found" : "Το αρχείο δεν μπορεί να βρεθεί",
     "Home" : "Σπίτι",
     "Close" : "Κλείσιμο",

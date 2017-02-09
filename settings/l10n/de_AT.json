@@ -20,6 +20,9 @@
     "Change password" : "Passwort ändern",
     "Name" : "Name",
     "Username" : "Benutzername",
+    "Personal" : "Persönlich",
+    "Admin" : "Administration",
+    "Error" : "Fehler",
     "Other" : "Anderes"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

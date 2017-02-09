@@ -3,6 +3,9 @@ OC.L10N.register(
     {
     "Cancel" : "Cancelar",
     "Password" : "Clave",
-    "Username" : "Usuario"
+    "Username" : "Usuario",
+    "Personal" : "Personal",
+    "Admin" : "Administración",
+    "Error" : "Error"
 },
 "nplurals=2; plural=(n != 1);");

@@ -5,6 +5,8 @@ OC.L10N.register(
     "Storage invalid" : "Speicher ungültig",
     "Unknown error" : "Unbekannter Fehler",
     "All files" : "Alle Dateien",
+    "Saved" : "Gespeichert",
+    "There was an error saving" : "Ein Fehler ist beim Speichern aufgetreten",
     "File could not be found" : "Datei konnte nicht gefunden werden",
     "Home" : "Home",
     "Close" : "Schließen",

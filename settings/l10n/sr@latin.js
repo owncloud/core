@@ -30,6 +30,9 @@ OC.L10N.register(
     "Language" : "Jezik",
     "Name" : "naziv",
     "Username" : "Korisničko ime",
+    "Personal" : "Lično",
+    "Admin" : "Adninistracija",
+    "Error" : "Greška",
     "Create" : "Napravi",
     "Group" : "Grupa",
     "Other" : "Drugo"

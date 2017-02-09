@@ -15,6 +15,8 @@ OC.L10N.register(
     "Cancel" : "Abbrechen",
     "Password" : "Passwort",
     "Name" : "Name",
-    "Username" : "Benutzername"
+    "Username" : "Benutzername",
+    "Personal" : "Persönlich",
+    "Error" : "Fehler"
 },
 "nplurals=2; plural=(n != 1);");

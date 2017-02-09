@@ -4,8 +4,10 @@
     "seconds ago" : "Sekunden zuvor",
     "Username" : "Benutzername",
     "Password" : "Passwort",
+    "General" : "Allgemein",
     "Apps" : "Apps",
     "Help" : "Hilfe",
+    "Settings" : "Einstellungen",
     "Users" : "Benutzer"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

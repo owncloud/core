@@ -18,6 +18,7 @@ OC.L10N.register(
     "Cancel" : "ਰੱਦ ਕਰੋ",
     "Password" : "ਪਾਸਵਰ",
     "Change password" : "ਪਾਸਵਰਡ ਬਦਲੋ",
-    "Username" : "ਯੂਜ਼ਰ-ਨਾਂ"
+    "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
+    "Error" : "ਗਲਤੀ"
 },
 "nplurals=2; plural=(n != 1);");

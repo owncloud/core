@@ -11,9 +11,14 @@
     "None" : "空",
     "Username" : "用戶名稱",
     "Password" : "密碼",
+    "General" : "一般",
+    "Security" : "安全",
+    "Encryption" : "加密",
+    "Sharing" : "分享",
     "Apps" : "軟件",
+    "Updates" : "更新",
     "Help" : "幫助",
-    "Users" : "用戶",
-    "Recommended" : "建議"
+    "Settings" : "設定",
+    "Users" : "用戶"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
