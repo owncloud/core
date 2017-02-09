@@ -44,6 +44,10 @@ class CsrfTokenManager {
 		$this->sessionStorage = $storageInterface;
 	}
 
+	public function setSessionStorage(SessionStorage $sessionStorage) {
+		$this->sessionStorage = $sessionStorage;
+	}
+
 	/**
 	 * Returns the current CSRF token, if none set it will create a new one.
 	 *
