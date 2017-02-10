@@ -156,7 +156,7 @@ Feature: webdav-related
 		When user "user0" has a quota of "10 MB"
 		Then as "user0" gets properties of folder "/" with
 		  |{DAV:}quota-available-bytes|
-		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
+		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota of shared folder with quota when no quota is set for recipient
 		Given using old dav path
@@ -174,7 +174,7 @@ Feature: webdav-related
 		  | shareWith | user0 |
 		Then as "user0" gets properties of folder "/testquota" with
 		  |{DAV:}quota-available-bytes|
-		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
+		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Uploading a file as recipient using webdav having quota
 		Given using old dav path
@@ -202,7 +202,7 @@ Feature: webdav-related
 		And user "user0" adds a file of 93 bytes to "/prueba.txt"
 		When as "user0" gets properties of folder "/" with
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "600"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "529"
 
 	Scenario: Retrieving folder quota when quota is set and a file was recieved
 		Given using old dav path
@@ -214,7 +214,7 @@ Feature: webdav-related
 		And file "user0.txt" of user "user0" is shared with user "user1"
 		When as "user1" gets properties of folder "/" with
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "693"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
 
 	Scenario: download a public shared file with range
 		Given user "user0" exists
