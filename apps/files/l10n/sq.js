@@ -6,6 +6,7 @@ OC.L10N.register(
     "Unknown error" : "Gabim i panjohur",
     "All files" : "Krejt kartelat",
     "Saved" : "U ruajt",
+    "There was an error saving" : "Pati një gabim ruajtjeje",
     "File could not be found" : "Kartela s’u gjet dot",
     "Home" : "Kreu",
     "Close" : "Mbylle",
