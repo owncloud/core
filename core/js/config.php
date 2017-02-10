@@ -10,12 +10,16 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Owen Winkler <a_github@midnightcircus.com>
+ * @author Philipp Schaffrath <github@philipp.schaffrath.email>
+ * @author phisch <git@philippschaffrath.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Timo Benk <benk@b1-systems.de>
  * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

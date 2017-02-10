@@ -2,10 +2,12 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Michael Jobst <mjobst+github@tecratech.de>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Philipp Schaffrath <github@philippschaffrath.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

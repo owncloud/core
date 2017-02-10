@@ -3,11 +3,14 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Philipp Schaffrath <github@philippschaffrath.de>
+ * @author RealRancor <fisch.666@gmx.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Sergio Bertolín <sbertolin@solidgear.es>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
