@@ -1,4 +1,5 @@
 <?php
+script('settings', 'panels/mail');
 $mail_smtpauthtype = [
 	''	=> $l->t('None'),
 	'LOGIN'	=> $l->t('Login'),
