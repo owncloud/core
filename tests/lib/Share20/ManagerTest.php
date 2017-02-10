@@ -21,6 +21,7 @@
 namespace Test\Share20;
 
 use OCP\Files\IRootFolder;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IProviderFactory;
@@ -1126,12 +1127,12 @@ class ManagerTest extends \Test\TestCase {
  	public function testUserCreateChecksIdenticalPathSharedViaDeletedGroup() {
 		$share  = $this->manager->newShare();
 
-		$sharedWith = $this->getMock('\OCP\IUser');
+		$sharedWith = $this->createMock(IUser::class);
 		$sharedWith->method('getUID')->willReturn('sharedWith');
 
 		$this->userManager->method('get')->with('sharedWith')->willReturn($sharedWith);
 
-		$path = $this->getMock('\OCP\Files\Node');
+		$path = $this->createMock(\OCP\Files\Node::class);
 
 		$share->setSharedWith('sharedWith')
 			->setNode($path)
@@ -1240,7 +1241,7 @@ class ManagerTest extends \Test\TestCase {
 	public function testGroupCreateChecksShareWithGroupMembersOnlyNullGroup() {
 		$share = $this->manager->newShare();
 
-		$user = $this->getMock('\OCP\IUser');
+		$user = $this->createMock('\OCP\IUser');
 		$share->setSharedBy('user')->setSharedWith('group');
 
 		$this->groupManager->method('get')->with('group')->willReturn(null);
@@ -2613,7 +2614,7 @@ class ManagerTest extends \Test\TestCase {
 		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->setSharedWith('shareWith');
 
-		$recipient = $this->getMock('\OCP\IUser');
+		$recipient = $this->createMock(IUser::class);
 
 		$this->groupManager->method('get')->with('shareWith')->willReturn(null);
 		$this->userManager->method('get')->with('recipient')->willReturn($recipient);
