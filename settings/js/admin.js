@@ -30,9 +30,7 @@ $(document).ready(function(){
 
 
 	$('#loglevel').change(function(){
-		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()},function(){
-			OC.Log.reload();
-		} );
+		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()});
 	});
 
 	$('#backgroundjobs span.crondate').tipsy({gravity: 's', live: true});
