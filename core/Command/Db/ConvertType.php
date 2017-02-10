@@ -6,9 +6,8 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author tbelau666 <thomas.belau@gmx.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author unclejamal3000 <andreas.pramhaas@posteo.de>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
