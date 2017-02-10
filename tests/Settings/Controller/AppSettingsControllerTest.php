@@ -22,17 +22,11 @@
 namespace Tests\Settings\Controller;
 
 use OC\Settings\Controller\AppSettingsController;
-use OCP\AppFramework\Http\ContentSecurityPolicy;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http\TemplateResponse;
 use Test\TestCase;
 use OCP\IRequest;
 use OCP\IL10N;
 use OCP\IConfig;
-use OCP\ICache;
-use OCP\INavigationManager;
 use OCP\App\IAppManager;
-use OC\OCSClient;
 
 /**
  * Class AppSettingsControllerTest
@@ -48,26 +42,22 @@ class AppSettingsControllerTest extends TestCase {
 	private $l10n;
 	/** @var IConfig */
 	private $config;
-	/** @var ICache */
-	private $cache;
-	/** @var INavigationManager */
-	private $navigationManager;
 	/** @var IAppManager */
 	private $appManager;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->request = $this->getMockBuilder('\OCP\IRequest')
+		$this->request = $this->getMockBuilder(IRequest::class)
 			->disableOriginalConstructor()->getMock();
-		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+		$this->l10n = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->l10n->expects($this->any())
 			->method('t')
 			->will($this->returnArgument(0));
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->appManager = $this->getMockBuilder('\OCP\App\IAppManager')
+		$this->appManager = $this->getMockBuilder(IAppManager::class)
 			->disableOriginalConstructor()->getMock();
 
 		$this->appSettingsController = new AppSettingsController(
