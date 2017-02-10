@@ -76,7 +76,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		OC.Settings.Apps.State.currentCategory = categoryId;
 
 		this._loading = true;
-		this._loadCategoryCall = $.ajax(OC.generateUrl('settings/apps/list?category={categoryId}&includeUpdateInfo=0', {
+		this._loadCategoryCall = $.ajax(OC.generateUrl('settings/apps/list?category={categoryId}', {
 			categoryId: categoryId
 		}), {
 			type:'GET',

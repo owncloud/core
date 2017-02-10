@@ -45,6 +45,7 @@ $application->registerRoutes($this, [
 		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
 		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
 		['name' => 'Encryption#startMigration', 'url' => '/settings/admin/startmigration', 'verb' => 'POST'],
+		['name' => 'AppSettings#listApps', 'url' => '/settings/apps/list', 'verb' => 'GET'],
 		['name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/security/trustedDomains', 'verb' => 'POST'],
 		['name' => 'Users#setDisplayName', 'url' => '/settings/users/{username}/displayName', 'verb' => 'POST'],
 		['name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'],
@@ -94,6 +95,8 @@ $this->create('settings_ajax_enableapp', '/settings/ajax/enableapp.php')
 	->actionInclude('settings/ajax/enableapp.php');
 $this->create('settings_ajax_disableapp', '/settings/ajax/disableapp.php')
 	->actionInclude('settings/ajax/disableapp.php');
+$this->create('settings_ajax_updateapp', '/settings/ajax/updateapp.php')
+	->actionInclude('settings/ajax/updateapp.php');
 $this->create('settings_ajax_uninstallapp', '/settings/ajax/uninstallapp.php')
 	->actionInclude('settings/ajax/uninstallapp.php');
 $this->create('settings_ajax_navigationdetect', '/settings/ajax/navigationdetect.php')
