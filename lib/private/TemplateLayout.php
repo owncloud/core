@@ -98,14 +98,8 @@ class TemplateLayout extends \OC_Template {
 				}
 			}
 			$userDisplayName = \OC_User::getDisplayName();
-			$appsMgmtActive = strpos(\OC::$server->getRequest()->getRequestUri(), \OC::$server->getURLGenerator()->linkToRoute('settings.AppSettings.viewApps')) === 0;
-			if ($appsMgmtActive) {
-				$l = \OC::$server->getL10N('lib');
-				$this->assign('application', $l->t('Apps'));
-			}
 			$this->assign('user_displayname', $userDisplayName);
 			$this->assign('user_uid', \OC_User::getUser());
-			$this->assign('appsmanagement_active', $appsMgmtActive);
 			$this->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
 
 			if (\OC_User::getUser() === false) {
