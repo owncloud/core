@@ -16,9 +16,6 @@ vendor_style('select2/select2');
 script('core', 'multiselect');
 style('settings', 'settings');
 
-if($_['type'] === 'admin') {
-	script('core', ['multiselect', 'setupchecks']);
-}
 ?>
 
 <div id="app-navigation">
