@@ -4,6 +4,8 @@
  * @var \OCP\IL10N $l
  * @var OC_Defaults $theme
  */
+script('core', 'setupchecks');
+script('settings', 'panels/setupchecks');
 ?>
 <div id="security-warning" class="section">
 	<h2 class="app-name"><?php p($l->t('Security & setup warnings'));?></h2>
