@@ -33,19 +33,6 @@ $(document).ready(function(){
 		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()});
 	});
 
-	$('#backgroundjobs span.crondate').tipsy({gravity: 's', live: true});
-
-	$('#backgroundjobs input').change(function(){
-		if($(this).is(':checked')){
-			var mode = $(this).val();
-			if (mode === 'ajax' || mode === 'webcron' || mode === 'cron') {
-				OC.AppConfig.setValue('core', 'backgroundjobs_mode', mode);
-				// clear cron errors on background job mode change
-				OC.AppConfig.deleteKey('core', 'cronErrors');
-			}
-		}
-	});
-
 	$('#shareAPIEnabled').change(function() {
 		$('#shareAPI p:not(#enable)').toggleClass('hidden', !this.checked);
 	});

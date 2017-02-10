@@ -1,3 +1,10 @@
+<?php
+script('settings', 'panels/backgroundjobs');
+/**
+ * @var array $_
+ * @var \OCP\IL10N $l
+ */
+?>
 <div class="section" id="backgroundjobs">
 	<h2 class="app-name has-documentation"><?php p($l->t('Cron'));?></h2>
 	<?php if ($_['cron_log']): ?>
@@ -25,29 +32,28 @@
 	<a target="_blank" rel="noreferrer" class="icon-info"
 		title="<?php p($l->t('Open documentation'));?>"
 		href="<?php p(link_to_docs('admin-background-jobs')); ?>"></a>
-
 	<p>
-				<input type="radio" name="mode" value="ajax"
-					   id="backgroundjobs_ajax" <?php if ($_['backgroundjobs_mode'] === "ajax") {
-					print_unescaped('checked="checked"');
-				} ?>>
-				<label for="backgroundjobs_ajax">AJAX</label><br/>
-				<em><?php p($l->t("Execute one task with each page loaded")); ?></em>
+		<input type="radio" name="mode" value="ajax"
+			   id="backgroundjobs_ajax" <?php if ($_['backgroundjobs_mode'] === "ajax") {
+			print_unescaped('checked="checked"');
+		} ?>>
+		<label for="backgroundjobs_ajax">AJAX</label><br/>
+		<em><?php p($l->t("Execute one task with each page loaded")); ?></em>
 	</p>
 	<p>
-				<input type="radio" name="mode" value="webcron"
-					   id="backgroundjobs_webcron" <?php if ($_['backgroundjobs_mode'] === "webcron") {
-					print_unescaped('checked="checked"');
-				} ?>>
-				<label for="backgroundjobs_webcron">Webcron</label><br/>
-				<em><?php p($l->t("cron.php is registered at a webcron service to call cron.php every 15 minutes over http.")); ?></em>
+		<input type="radio" name="mode" value="webcron"
+			   id="backgroundjobs_webcron" <?php if ($_['backgroundjobs_mode'] === "webcron") {
+			print_unescaped('checked="checked"');
+		} ?>>
+		<label for="backgroundjobs_webcron">Webcron</label><br/>
+		<em><?php p($l->t("cron.php is registered at a webcron service to call cron.php every 15 minutes over http.")); ?></em>
 	</p>
 	<p>
-				<input type="radio" name="mode" value="cron"
-					   id="backgroundjobs_cron" <?php if ($_['backgroundjobs_mode'] === "cron") {
-					print_unescaped('checked="checked"');
-				} ?>>
-				<label for="backgroundjobs_cron">Cron</label><br/>
-				<em><?php p($l->t("Use system's cron service to call the cron.php file every 15 minutes.")); ?></em>
+		<input type="radio" name="mode" value="cron"
+			   id="backgroundjobs_cron" <?php if ($_['backgroundjobs_mode'] === "cron") {
+			print_unescaped('checked="checked"');
+		} ?>>
+		<label for="backgroundjobs_cron">Cron</label><br/>
+		<em><?php p($l->t("Use system's cron service to call the cron.php file every 15 minutes.")); ?></em>
 	</p>
 </div>
