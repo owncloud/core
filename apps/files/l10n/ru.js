@@ -6,6 +6,7 @@ OC.L10N.register(
     "Unknown error" : "Неизвестная ошибка",
     "All files" : "Все файлы",
     "Saved" : "Сохранено",
+    "There was an error saving" : "Была ошибка при сохранении",
     "File could not be found" : "Файл не может быть найден",
     "Home" : "Главная",
     "Close" : "Закрыть",
