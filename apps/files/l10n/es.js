@@ -6,6 +6,7 @@ OC.L10N.register(
     "Unknown error" : "Error desconocido",
     "All files" : "Todos los archivos",
     "Saved" : "Guardado",
+    "There was an error saving" : "Hubo un error salvando",
     "File could not be found" : "El archivo no se ha encontrado",
     "Home" : "Particular",
     "Close" : "Cerrar",
