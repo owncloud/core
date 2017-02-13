@@ -1,11 +1,11 @@
 <?php
 namespace OCA\dav\Migrations;
 
-use OC\Files\Filesystem;
-use OC\Files\FileInfo;
 use \OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Files\Node;
 use OCP\IDBConnection;
 use OCP\IUser;
+use OCP\IUserManager;
 use OCP\Migration\ISqlMigration;
 
 
@@ -15,11 +15,12 @@ use OCP\Migration\ISqlMigration;
  * Drop all entries that can't be resolved
  */
 class Version20170202213905 implements ISqlMigration {
-	/** @var \OCP\IUserSession */
-	private $userSession;
 
-	/** @var string */
-	private $currentFilesystemUser;
+	private $userManager;
+
+	public function __construct(IUserManager $userManager) {
+		$this->userManager = $userManager;
+	}
 
 	/**
 	 * @param IDBConnection $connection
@@ -38,8 +39,7 @@ class Version20170202213905 implements ISqlMigration {
 			return;
 		}
 
-
-		$qb->select('*')
+		$qb->select('userid', 'propertypath')
 			->from('properties', 'props')
 			->groupBy('userid')
 			->addGroupBy('propertypath')
@@ -54,8 +54,6 @@ class Version20170202213905 implements ISqlMigration {
 				// do nothing
 			}
 		}
-
-		$this->userSession = \OC::$server->getUserSession();
 
 		// drop entries with empty fileid
 		$qb->delete('properties')
@@ -74,15 +72,14 @@ class Version20170202213905 implements ISqlMigration {
 	 */
 	private function repairEntry(IQueryBuilder $qb, $entry) {
 		$userId = $entry['userid'];
-		$user = \OC::$server->getUserManager()->get($userId);
+		$user = $this->userManager->get($userId);
 		if (!($user instanceof IUser)) {
 			return;
 		}
 
-		$this->initFilesystemForUser($user);
-		$fileInfo = Filesystem::getFileInfo($entry['propertypath']);
-		if ($fileInfo instanceof FileInfo) {
-			$fileId = $fileInfo->getId();
+		$node = \OC::$server->getUserFolder($userId)->get($entry['propertypath']);
+		if ($node instanceof Node) {
+			$fileId = $node->getId();
 			$qb->update('properties')
 				->set('fileid', $fileId)
 				->where(
@@ -92,21 +89,6 @@ class Version20170202213905 implements ISqlMigration {
 					$qb->expr()->eq('propertypath', $entry['propertypath'])
 				);
 			$qb->execute();
-		}
-	}
-
-	/**
-	 * @param IUser $user
-	 */
-	private function initFilesystemForUser(IUser $user) {
-		if ($this->currentFilesystemUser !== $user->getUID()) {
-			if ($this->currentFilesystemUser !== '') {
-				Filesystem::tearDown();
-			}
-			Filesystem::init($user->getUID(), '/' . $user->getUID() . '/files');
-			$this->userSession->setUser($user);
-			$this->currentFilesystemUser = $user->getUID();
-			Filesystem::initMountPoints($user->getUID());
 		}
 	}
 }
