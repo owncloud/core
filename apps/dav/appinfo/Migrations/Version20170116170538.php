@@ -2,7 +2,7 @@
 /**
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2016, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,13 +36,14 @@ class Version20170116170538 implements ISchemaMigration {
 	 */
 	private function createPropertiesTable(Schema $schema, $prefix) {
 		$table = $schema->createTable("${prefix}properties");
-		$table->addColumn('id', 'bigint', [
+		$table->addColumn('id', 'integer', [
 			'autoincrement' => true,
 			'notnull' => true,
-			'length' => 20,
+			'length' => 4,
 		]);
-		$table->addColumn('fileid', 'bigint', [
+		$table->addColumn('fileid', 'integer', [
 			'notnull' => true,
+			'unsigned' => true,
 			'length' => 20,
 		]);
 		$table->addColumn('propertyname', 'string', [
@@ -69,14 +70,17 @@ class Version20170116170538 implements ISchemaMigration {
 			// install
 			$this->createPropertiesTable($schema, $prefix);
 		} else {
-			// update
+			// We allow fileid column to be nullable on update
+			// otherwise migration will fail for some DB engines
 			$table = $schema->getTable("${prefix}properties");
-			if (!$table->getColumn('fileid')) {
-				$table->addColumn('fileid', 'bigint', [
-					'default' => 0,
-					'notnull' => true,
+			if (!$table->hasColumn('fileid')) {
+				$table->addColumn('fileid', 'integer', [
+					'notnull' => false,
+					'unsigned' => true,
 					'length' => 20,
 				]);
+			}
+			if (!$table->hasIndex('fileid_index')){
 				$table->addIndex(['fileid'], 'fileid_index');
 			}
 		}

@@ -1,5 +1,25 @@
 <?php
-namespace OCA\dav\Migrations;
+/**
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ *
+ * @copyright Copyright (c) 2016, ownCloud GmbH
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
+
+namespace OCA\DAV\Migrations;
 
 use \OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Node;
@@ -16,7 +36,11 @@ use OCP\Migration\ISqlMigration;
  */
 class Version20170202213905 implements ISqlMigration {
 
+	/** @var IUserManager */
 	private $userManager;
+
+	/** @var string[]  */
+	private $statements = [];
 
 	public function __construct(IUserManager $userManager) {
 		$this->userManager = $userManager;
@@ -24,7 +48,7 @@ class Version20170202213905 implements ISqlMigration {
 
 	/**
 	 * @param IDBConnection $connection
-	 * @return null
+	 * @return array
 	 */
 	public function sql(IDBConnection $connection) {
 		$qb = $connection->getQueryBuilder();
@@ -36,59 +60,78 @@ class Version20170202213905 implements ISqlMigration {
 
 		// There is nothing to do if table is empty or has no userid field
 		if (!$row || !isset($row['userid'])) {
-			return;
+			return $this->statements;
 		}
 
-		$qb->select('userid', 'propertypath')
+		$qb->resetQueryParts()
+			->setMaxResults(null)
+			->select('userid', 'propertypath')
 			->from('properties', 'props')
 			->groupBy('userid')
 			->addGroupBy('propertypath')
 			->orderBy('userid')
 			->addOrderBy('propertypath');
-		$selectResult = $qb->execute();
 
+		$selectResult = $qb->execute();
 		while ($row = $selectResult->fetch()) {
 			try {
-				$this->repairEntry($qb, $row);
+				$sql = $this->getRepairEntrySql($qb, $row);
+				if (!is_null($sql)) {
+					$this->statements[] = $sql;
+				}
 			} catch (\Exception $e) {
-				// do nothing
 			}
 		}
 
+		//Mounted FS can have side effects on further migrations
+		\OC_Util::tearDownFS();
+
 		// drop entries with empty fileid
-		$qb->delete('properties')
+		$dropQuery = $qb->resetQueryParts()
+			->delete('properties')
 			->where(
 				$qb->expr()->eq('fileid', $qb->expr()->literal('0'))
 			)
 			->orWhere(
 				$qb->expr()->isNull('fileid')
 			);
-		$rowsDeleted = $qb->execute();
+		$this->statements[] = $dropQuery->getSQL();
+		
+		return $this->statements;
 	}
 
 	/**
 	 * @param IQueryBuilder $qb
 	 * @param $entry
+	 * @return string|null
 	 */
-	private function repairEntry(IQueryBuilder $qb, $entry) {
+	private function getRepairEntrySql(IQueryBuilder $qb, $entry) {
 		$userId = $entry['userid'];
 		$user = $this->userManager->get($userId);
 		if (!($user instanceof IUser)) {
-			return;
+			return null;
 		}
 
 		$node = \OC::$server->getUserFolder($userId)->get($entry['propertypath']);
-		if ($node instanceof Node) {
+		if ($node instanceof Node && $node->getId()) {
 			$fileId = $node->getId();
-			$qb->update('properties')
-				->set('fileid', $fileId)
+			$updateQuery = $qb->resetQueryParts()
+				->update('properties')
+				->set(
+					'fileid', 
+					$qb->expr()->literal($fileId)
+				)
 				->where(
 					$qb->expr()->eq('userid', $userId)
 				)
 				->andWhere(
-					$qb->expr()->eq('propertypath', $entry['propertypath'])
+					$qb->expr()->eq(
+						'propertypath', 
+						$qb->expr()->literal($entry['propertypath'])
+					)
 				);
-			$qb->execute();
+			return $updateQuery->getSQL();
 		}
+		return null;
 	}
 }

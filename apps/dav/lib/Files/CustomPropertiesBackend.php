@@ -271,10 +271,7 @@ class CustomPropertiesBackend implements BackendInterface {
 		}
 		$node = $this->tree->getNodeForPath($filePath);
 		if ($node instanceof Node) {
-			$fileId = $node->getFileId();
-			if (!is_null($fileId)) {
-				return $fileId;
-			}
+			return $node->getId();
 		}
 	}
 

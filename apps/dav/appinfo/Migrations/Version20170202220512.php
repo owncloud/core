@@ -2,7 +2,7 @@
 /**
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2016, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,7 +27,9 @@ use Doctrine\DBAL\Schema\Schema;
 /*
  * Drop property_index index if exists
  * Drop userid and propertypath columns
+ * Add NOT NULL constraint to fileid column
  */
+
 class Version20170202220512 implements ISchemaMigration {
 
 	/**
@@ -41,11 +43,16 @@ class Version20170202220512 implements ISchemaMigration {
 		if ($table->hasIndex('property_index')) {
 			$table->dropIndex('property_index');
 		}
-		if ($table->getColumn('userid')) {
+		if ($table->hasColumn('userid')) {
 			$table->dropColumn('userid');
 		}
-		if ($table->getColumn('propertypath')) {
+		if ($table->hasColumn('propertypath')) {
 			$table->dropColumn('propertypath');
 		}
+		$table->changeColumn('fileid', [
+			'notnull' => false,
+			'unsigned' => true,
+			'length' => 20,
+		]);
 	}
 }
