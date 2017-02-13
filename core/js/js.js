@@ -216,7 +216,7 @@ var OC = {
 
     /**
      * Check if a user file is allowed to be handled.
-     * @param {string} file to cheack
+     * @param {string} file to check
      */
 	fileIsIgnored: function(file) {
 		var ignore = false;
