@@ -14,6 +14,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Felix Heidecke <felix@heidecke.me>
  *
  * @copyright Copyright (c) 2016, ownCloud GmbH.
  * @license AGPL-3.0
@@ -193,6 +194,12 @@ $array = [
 		[
 			'name' => OC_Util::getTheme()->getName(),
 			'directory' => OC_Util::getTheme()->getDirectory()
+		]
+	),
+	'ignore_files' => json_encode(
+		[
+			'\.(part)$',
+			'\.(filepart)$'
 		]
 	)
 ];
