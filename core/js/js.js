@@ -214,6 +214,22 @@ var OC = {
 		return link;
 	},
 
+    /**
+     * Check if a user file is allowed to be handled.
+     * @param {string} file to cheack
+     */
+	fileIsIgnored: function(file) {
+		var ignore = false;
+		// ugly for loop needed to break;
+		for(i = 0; i < ignore_files.length; i++) {
+            if (file.match(ignore_files[i])) {
+            	ignore = true;
+            	break;
+            }
+        }
+		return ignore;
+	},
+
 	/**
 	 * Redirect to the target URL, can also be used for downloads.
 	 * @param {string} targetURL URL to redirect to

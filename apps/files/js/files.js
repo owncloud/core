@@ -100,8 +100,11 @@
 			{
 				throw t('files', '"{name}" is an invalid file name.', {name: name});
 			} else if (trimmedName.length === 0) {
-				throw t('files', 'File name cannot be empty.');
+                throw t('files', 'File name cannot be empty.');
+			} else if (OC.fileIsIgnored(trimmedName)) {
+				throw t('files', '"{name}" is not an allow filetype', {name: name});
 			}
+
 			return true;
 		},
 		displayStorageWarnings: function() {
