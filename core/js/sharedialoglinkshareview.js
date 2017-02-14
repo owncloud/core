@@ -133,9 +133,9 @@
 			clipboard.on('error', function (e) {
 				$input = $(e.trigger);
 				var actionMsg = '';
-				if (/iPhone|iPad/i.test(navigator.userAgent)) {
+				if (bowser.ios) {
 					actionMsg = t('core', 'Not supported!');
-				} else if (/Mac/i.test(navigator.userAgent)) {
+				} else if (bowser.mac) {
 					actionMsg = t('core', 'Press ⌘-C to copy.');
 				} else {
 					actionMsg = t('core', 'Press Ctrl-C to copy.');

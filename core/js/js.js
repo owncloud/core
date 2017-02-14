@@ -1835,10 +1835,11 @@ OC.Util = {
 	/**
 	 * Returns whether this is IE
 	 *
+     * @deprecated Use bowser.mise instead (since 9.1)
 	 * @return {bool} true if this is IE, false otherwise
 	 */
 	isIE: function() {
-		return $('html').hasClass('ie');
+		return bowser.msie;
 	},
 
 	/**
