@@ -115,6 +115,8 @@ try {
 				$jobList->unlockJob($job);
 				break;
 			}
+			//storing job start time
+			$jobStartTime = time();
 
 			$logger->debug('Run ' . get_class($job) . ' job with ID ' . $job->getId(), ['app' => 'cron']);
 			$job->execute($jobList, $logger);
@@ -125,6 +127,10 @@ try {
 			$jobList->setLastJob($job);
 			$executedJobs[$job->getId()] = true;
 			unset($job);
+
+			//storing job end time
+			$jobEndTime = time();
+			$jobList->setExecutionTime($job, $jobEndTime - $jobStartTime);
 
 			if (time() > $endTime) {
 				break;
