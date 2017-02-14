@@ -19,6 +19,7 @@ interface IAuthModule {
 	 * @param IRequest $request The request.
 	 *
 	 * @return null|IUser The user if the request is authenticated, null otherwise.
+	 * @since 10.0.0
 	 */
 	public function auth(IRequest $request);
 
