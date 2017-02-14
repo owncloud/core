@@ -155,7 +155,9 @@ OCA.External.StatusManager = {
 				},
 				error: function (jqxhr, state, error) {
 					self.mountPointList = [];
-					OC.Notification.showTemporary(t('files_external', 'Couldn\'t get the list of external mount points: {type}', {type: error}));
+					OC.Notification.show('Couldn\'t get the list of external mount points: {type}', 
+						{type: error, timeout: 7, type: 'error'}
+					);
 				},
 				complete: function () {
 					self.isGetMountPointListRunning = false;
@@ -263,7 +265,9 @@ OCA.External.StatusManager = {
 			// check if we have a list first
 			if (list === undefined && !self.emptyWarningShown) {
 				self.emptyWarningShown = true;
-				OC.Notification.showTemporary(t('files_external', 'Couldn\'t get the list of Windows network drive mount points: empty response from the server'));
+				OC.Notification.show('Couldn\'t get the list of Windows network drive mount points: empty response from the server', 
+					{timeout: 7, type: 'error'}
+				);
 				return;
 			}
 			if (list && list.length > 0) {
@@ -293,7 +297,9 @@ OCA.External.StatusManager = {
 							}
 						});
 						if (showNotification) {
-							OC.Notification.showTemporary(t('files_external', 'Some of the configured external mount points are not connected. Please click on the red row(s) for more information'));
+							OC.Notification.show('Some of the configured external mount points are not connected. Please click on the red row(s) for more information', 
+								{timeout: 7, type: 'error'}
+							);
 						}
 					}
 				});
@@ -412,14 +418,14 @@ OCA.External.StatusManager = {
 					}
 				},
 				success: function (data) {
-					OC.Notification.showTemporary(t('files_external', 'Credentials saved'));
+					OC.Notification.show('Credentials saved', {timeout: 7, type: 'error'});
 					dialog.ocdialog('close');
 					/* Trigger status check again */
 					OCA.External.StatusManager.recheckConnectivityForMount([OC.basename(data.mountPoint)], true);
 				},
 				error: function () {
 					$('.oc-dialog-close').show();
-					OC.Notification.showTemporary(t('files_external', 'Credentials saving failed'));
+					OC.Notification.show('Credentials saving failed', {timeout: 7, type: 'error'});
 				}
 			});
 			return false;
