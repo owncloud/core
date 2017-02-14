@@ -2,7 +2,7 @@
 /**
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -61,19 +61,24 @@ class Version20170116150538 implements ISchemaMigration {
 				'autoincrement' => true,
 				'unsigned' => true,
 				'notnull' => true,
+				'default' => 0,
 				'length' => 11,
 			]);
 			$table->addColumn('principaluri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('displayname', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('description', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('synctoken', 'integer', [
 				'unsigned' => true,
@@ -102,18 +107,23 @@ class Version20170116150538 implements ISchemaMigration {
 				'notnull' => true,
 				'default' => 0,
 			]);
-			$table->addColumn('carddata', 'blob', []);
+			$table->addColumn('carddata', 'blob', [
+				'notnull' => false,
+			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
-			$table->addColumn('lastmodified', 'integer', [
+			$table->addColumn('lastmodified', 'bigint', [
 				'length' => 11,
 				'unsigned' => true,
+				'notnull' => false,
 			]);
 			$table->addColumn('etag', 'string', [
 				'length' => 32,
+				'notnull' => false,
 			]);
-			$table->addColumn('size', 'integer', [
+			$table->addColumn('size', 'bigint', [
 				'length' => 11,
 				'notnull' => true,
 				'unsigned' => true,
@@ -137,6 +147,7 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('synctoken', 'integer', [
 				'notnull' => true,
@@ -146,7 +157,7 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('addressbookid', 'integer', [
 				'notnull' => true,
 			]);
-			$table->addColumn('operation', 'integer', [
+			$table->addColumn('operation', 'smallint', [
 				'notnull' => true,
 				'length' => 1,
 			]);
@@ -171,9 +182,12 @@ class Version20170116150538 implements ISchemaMigration {
 				'unsigned' => true,
 				'length' => 11,
 			]);
-			$table->addColumn('calendardata', 'blob', []);
+			$table->addColumn('calendardata', 'blob', [
+				'notnull' => false,
+			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('calendarid', 'integer', [
 				'notnull' => true,
@@ -182,32 +196,39 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('lastmodified', 'integer', [
 				'length' => 11,
 				'unsigned' =>true,
+				'notnull' => false,
 			]);
 			$table->addColumn('etag', 'string', [
 				'length' => 32,
+				'notnull' => false,
 			]);
-			$table->addColumn('size', 'integer', [
+			$table->addColumn('size', 'bigint', [
 				'length' => 11,
 				'notnull' => true,
 				'unsigned' =>true,
 			]);
 			$table->addColumn('componenttype', 'string', [
 				'length' => 8,
+				'notnull' => false,
 			]);
-			$table->addColumn('firstoccurence', 'integer', [
+			$table->addColumn('firstoccurence', 'bigint', [
 				'unsigned' =>true,
 				'length' => 11,
+				'notnull' => false,
 			]);
-			$table->addColumn('lastoccurence', 'integer', [
+			$table->addColumn('lastoccurence', 'bigint', [
 				'unsigned' =>true,
 				'length' => 11,
+				'notnull' => false,
 			]);
 			$table->addColumn('uid', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			// possible types: 0 - public, 1 - private, 2 - confidential
 			$table->addColumn('classification', 'integer', [
-				'default' => 0
+				'default' => 0,
+				'notnull' => false
 			]);
 			$table->setPrimaryKey(['id']);
 			$table->addUniqueIndex(
@@ -232,12 +253,15 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('principaluri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('displayname', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('synctoken', 'integer', [
 				'notnull' => true,
@@ -246,6 +270,7 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('description', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('calendarorder', 'integer', [
 				'notnull' => true,
@@ -253,13 +278,16 @@ class Version20170116150538 implements ISchemaMigration {
 				'unsigned' =>true,
 			]);
 			$table->addColumn('calendarcolor', 'string', [
+				'notnull' => false,
 			]);
 			$table->addColumn('timezone', 'text', [
+				'notnull' => false,
 			]);
 			$table->addColumn('components', 'string', [
 				'length' => 20,
+				'notnull' => false,
 			]);
-			$table->addColumn('transparent', 'integer', [
+			$table->addColumn('transparent', 'smallint', [
 				'notnull' => true,
 				'default' => 0,
 				'length' => 1
@@ -287,6 +315,7 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('synctoken', 'integer', [
 				'notnull' => true,
@@ -296,7 +325,7 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('calendarid', 'integer', [
 				'notnull' => true,
 			]);
-			$table->addColumn('operation', 'integer', [
+			$table->addColumn('operation', 'smallint', [
 				'notnull' => true,
 				'length' => 1,
 			]);
@@ -323,18 +352,23 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('principaluri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('source', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('displayname', 'string', [
 				'length' => 100,
+				'notnull' => false,
 			]);
 			$table->addColumn('refreshrate', 'string', [
 				'length' => 10,
+				'notnull' => false,
 			]);
 			$table->addColumn('calendarorder', 'integer', [
 				'default' => 0,
@@ -342,15 +376,19 @@ class Version20170116150538 implements ISchemaMigration {
 				'unsigned' =>true,
 			]);
 			$table->addColumn('calendarcolor', 'string', [
+				'notnull' => false,
 			]);
-			$table->addColumn('striptodos', 'integer', [
+			$table->addColumn('striptodos', 'smallint', [
 				'length' => 1,
+				'notnull' => false,
 			]);
-			$table->addColumn('stripalarms', 'integer', [
+			$table->addColumn('stripalarms', 'smallint', [
 				'length' => 1,
+				'notnull' => false,
 			]);
-			$table->addColumn('stripattachments', 'integer', [
+			$table->addColumn('stripattachments', 'smallint', [
 				'length' => 1,
+				'notnull' => false,
 			]);
 			$table->addColumn('lastmodified', 'integer', [
 				'unsigned' => true,
@@ -378,18 +416,24 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('principaluri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
-			$table->addColumn('calendardata', 'blob', []);
+			$table->addColumn('calendardata', 'blob', [
+				'notnull' => false,
+			]);
 			$table->addColumn('uri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('lastmodified', 'integer', [
+				'notnull' => false,
 				'unsigned' => true,
 			]);
 			$table->addColumn('etag', 'string', [
 				'length' => 32,
+				'notnull' => false,
 			]);
-			$table->addColumn('size', 'integer', [
+			$table->addColumn('size', 'bigint', [
 				'length' => 11,
 				'notnull' => true,
 				'unsigned' => true,
@@ -408,23 +452,21 @@ class Version20170116150538 implements ISchemaMigration {
 				'notnull' => true,
 				'length' => 11,
 			]);
-			$table->addColumn('addressbookid', 'integer', [
+			$table->addColumn('addressbookid', 'bigint', [
 				'notnull' => true,
-				'default' => '',
+				'default' => 0,
 			]);
-			$table->addColumn('cardid', 'integer', [
-				'default' => '',
+			$table->addColumn('cardid', 'bigint', [
+				'default' => 0,
 				'unsigned' =>true,
 				'notnull' => true,
 				'length' => 11,
 			]);
 			$table->addColumn('name', 'string', [
-				'default' => '',
 				'notnull' => false,
 				'length' => 64,
 			]);
 			$table->addColumn('value', 'string', [
-				'default' => '',
 				'notnull' => false,
 				'length' => 255,
 			]);
@@ -461,11 +503,14 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('principaluri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->addColumn('type', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
-			$table->addColumn('access', 'integer', [
+			$table->addColumn('access', 'smallint', [
+				'notnull' => false,
 				'length' => 1,
 			]);
 			$table->addColumn('resourceid', 'integer', [
@@ -474,6 +519,7 @@ class Version20170116150538 implements ISchemaMigration {
 			]);
 			$table->addColumn('publicuri', 'string', [
 				'length' => 255,
+				'notnull' => false,
 			]);
 			$table->setPrimaryKey(['id']);
 			$table->addUniqueIndex(
