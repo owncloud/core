@@ -28,6 +28,14 @@ function env_encryption_disable {
 	$OCC app:disable encryption
 }
 
+function env_objectstore_enable {
+       $OCC app:enable objectstore
+}
+
+function env_objectstore_disable {
+       $OCC app:disable objectstore
+}
+
 # avoid port collision on jenkins - use $EXECUTOR_NUMBER
 if [ -z "$EXECUTOR_NUMBER" ]; then
     EXECUTOR_NUMBER=0
@@ -70,6 +78,10 @@ if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
 	BEHAT_FILTER_TAGS="~@no_encryption"
 fi
 
+if test "$OC_TEST_OBJECTSTORE_ENABLED" = "1"; then
+        env_objectstore_enable
+fi
+
 if test "$BEHAT_FILTER_TAGS"; then
 	BEHAT_PARAMS='{ 
 		"gherkin": {
@@ -98,6 +110,10 @@ fi
 # Disable encryption if requested
 if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
 	env_encryption_disable
+fi
+
+if test "$OC_TEST_OBJECTSTORE_ENABLED" = "1"; then
+        env_objectstore_disable
 fi
 
 if [ -z $HIDE_OC_LOGS ]; then
