@@ -340,7 +340,7 @@
 				error: function() {
 					$loading.addClass('hidden');
 					$comment.removeClass('disabled');
-					OC.Notification.show('Error occurred while retrieving comment with id {id}', {id: commentId, timeout: 7, type: 'error'});
+					OC.Notification.showTemporary(t('comments', 'Error occurred while retrieving comment with id {id}', {id: commentId}));
 				}
 			});
 
