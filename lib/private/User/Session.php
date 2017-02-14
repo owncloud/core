@@ -30,6 +30,7 @@
 
 namespace OC\User;
 
+use Exception;
 use OC;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
@@ -37,14 +38,14 @@ use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
 use OC\Hooks\Emitter;
+use OC_App;
 use OC_User;
 use OC_Util;
 use OCA\DAV\Connector\Sabre\Auth;
-use OCA\OAuth2\Db\AccessToken;
-use OCA\OAuth2\Db\AccessTokenMapper;
-use OCP\AppFramework\App;
-use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\App\IAppManager;
+use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\Authentication\IAuthModule;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
@@ -520,59 +521,6 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * Log an user in with a given OAuth 2.0 access token
-	 *
-	 * @param string $bearerToken
-	 * @return boolean
-	 * @throws LoginException if an app canceld the login process or the user is not enabled
-	 */
-	private function loginWithOAuth2($bearerToken) {
-		$app = new App('oauth2');
-		/** @var AccessTokenMapper $accessTokenMapper */
-		$accessTokenMapper = $app->getContainer()->query('OCA\OAuth2\Db\AccessTokenMapper');
-
-		try {
-			/** @var AccessToken $accessToken */
-			$accessToken = $accessTokenMapper->findByToken($bearerToken);
-
-			if ($accessToken->hasExpired()) {
-				return false;
-			}
-		} catch (DoesNotExistException $exception) {
-			return false;
-		}
-
-		$userId = $accessToken->getUserId();
-
-		// TODO: Where to get the password for the preLogin hook?
-		//$this->manager->emit('\OC\User', 'preLogin', [$userId, '']);
-
-		$user = $this->manager->get($userId);
-		if (is_null($user)) {
-			return false;
-		}
-		if (!$user->isEnabled()) {
-			$message = \OC::$server->getL10N('lib')->t('User disabled');
-			throw new LoginException($message);
-		}
-
-		$this->setUser($user);
-		$this->setLoginName($user->getDisplayName());
-
-		// TODO: Where to get the password for the postLogin hook?
-		//$this->manager->emit('\OC\User', 'postLogin', [$userId, '']);
-
-		if ($this->isLoggedIn()) {
-			$this->prepareUserLogin();
-		} else {
-			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-			throw new LoginException($message);
-		}
-
-		return true;
-	}
-
-	/**
 	 * Create a new session token for the given user credentials
 	 *
 	 * @param IRequest $request
@@ -731,21 +679,77 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * Tries to login the user with an OAuth 2.0 access token
+	 * Tries to login with an AuthModule provided by an app
 	 *
-	 * @param IRequest $request
-	 * @return boolean
+	 * @param IRequest $request The request
+	 * @return bool True if request can be authenticated, false otherwise
+	 * @throws Exception If the auth module could not be loaded
 	 */
-	public function tryOAuth2Login(IRequest $request) {
-		$authHeader = $request->getHeader('Authorization');
+	public function tryAuthModuleLogin(IRequest $request) {
+		/** @var IAppManager $appManager */
+		$appManager = OC::$server->query('AppManager');
+		$allApps = $appManager->getInstalledApps();
 
-		if (strpos($authHeader, 'Bearer ') === false) {
-			return false;
-		} else {
-			$bearerToken = substr($authHeader, 7);
+		foreach ($allApps as $appId) {
+			$info = $appManager->getAppInfo($appId);
+
+			if (isset($info['auth-modules'])) {
+				$authModules = $info['auth-modules'];
+
+				foreach ($authModules as $class) {
+					try {
+						if (!OC_App::isAppLoaded($appId)) {
+							OC_App::loadApp($appId);
+						}
+
+						/** @var IAuthModule $authModule */
+						$authModule = OC::$server->query($class);
+
+						return $this->loginUser($authModule->auth($request));
+					} catch (QueryException $exc) {
+						throw new Exception("Could not load the auth module $class");
+					}
+				}
+			}
 		}
 
-		return $this->loginWithOAuth2($bearerToken);
+		return false;
+	}
+
+	/**
+	 * Log an user in
+	 *
+	 * @param IUser $user The user
+	 * @return boolean True if the user can be authenticated, false otherwise
+	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 */
+	private function loginUser($user) {
+		if (is_null($user)) {
+			return false;
+		}
+
+		// TODO: Where to get the password for the preLogin hook?
+		//$this->manager->emit('\OC\User', 'preLogin', [$userId, '']);
+
+		if (!$user->isEnabled()) {
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
+
+		$this->setUser($user);
+		$this->setLoginName($user->getDisplayName());
+
+		// TODO: Where to get the password for the postLogin hook?
+		//$this->manager->emit('\OC\User', 'postLogin', [$userId, '']);
+
+		if ($this->isLoggedIn()) {
+			$this->prepareUserLogin(false);
+		} else {
+			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+			throw new LoginException($message);
+		}
+
+		return true;
 	}
 
 	/**
