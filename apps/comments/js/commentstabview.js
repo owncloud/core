@@ -340,7 +340,7 @@
 				error: function() {
 					$loading.addClass('hidden');
 					$comment.removeClass('disabled');
-					OC.Notification.showTemporary(t('comments', 'Error occurred while retrieving comment with id {id}', {id: commentId}));
+					OC.Notification.show('Error occurred while retrieving comment with id {id}', {id: commentId, timeout: 7, type: 'error'});
 				}
 			});
 
@@ -393,7 +393,7 @@
 						$loading.addClass('hidden');
 						$textArea.prop('disabled', false);
 
-						OC.Notification.showTemporary(t('comments', 'Error occurred while updating comment with id {id}', {id: commentId}));
+						OC.Notification.show('Error occurred while updating comment with id {id}', {id: commentId, timeout: 7, type: 'error'});
 					}
 				});
 			} else {
@@ -418,7 +418,7 @@
 						$loading.addClass('hidden');
 						$textArea.prop('disabled', false);
 
-						OC.Notification.showTemporary(t('comments', 'Error occurred while posting comment'));
+						OC.Notification.show('Error occurred while posting comment', {timeout: 7, type: 'error'});
 					}
 				});
 			}
