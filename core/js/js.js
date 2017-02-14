@@ -1980,6 +1980,50 @@ OC.Util = {
 			}
 		}
 		return false;
+	},
+
+	setupClipboard: function(element, options) {
+		options = options || {};
+		options.notificationMode = options.notificationMode || 'tooltip';
+		options.successMessage = options.successMessage ||  t('core', 'Copied!');
+		var clipboard = new Clipboard(element);
+		clipboard.on('success', function(e) {
+			if (options.notificationMode === 'tooltip') {
+				$input = $(e.trigger);
+				$input.tooltip({placement: 'bottom', trigger: 'manual', title: options.successMessage});
+				$input.tooltip('show');
+				_.delay(function() {
+					$input.tooltip('hide');
+				}, 3000);
+			} else {
+				OC.Notification.showTemporary(options.successMessage);
+			}
+		});
+		clipboard.on('error', function (e) {
+			$input = $(e.trigger);
+			var actionMsg = '';
+			if (/iPhone|iPad/i.test(navigator.userAgent)) {
+				actionMsg = t('core', 'Not supported!');
+			} else if (/Mac/i.test(navigator.userAgent)) {
+				actionMsg = t('core', 'Press ⌘-C to copy.');
+			} else {
+				actionMsg = t('core', 'Press Ctrl-C to copy.');
+			}
+
+			if (options.notificationMode === 'tooltip') {
+				$input.tooltip({
+					placement: 'bottom',
+					trigger: 'manual',
+					title: actionMsg
+				});
+				$input.tooltip('show');
+				_.delay(function () {
+					$input.tooltip('hide');
+				}, 3000);
+			} else {
+				OC.Notification.showTemporary(options.successMessage);
+			}
+		});
 	}
 };
 
@@ -2281,4 +2325,4 @@ jQuery.fn.tipsy = function(argument) {
 		jQuery.fn.tooltip.call(this, argument);
 	}
 	return this;
-}
+};

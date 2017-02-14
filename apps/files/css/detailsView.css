@@ -19,6 +19,15 @@
     background-size: 16px 16px;
 }
 
+#app-sidebar .mainFileInfoView .hidden {
+	display: none;
+}
+
+#app-sidebar .mainFileInfoView .icon-external {
+	opacity: .5;
+	padding-left: 8px;
+}
+
 #app-sidebar .mainFileInfoView .permalink {
 	margin-left: 10px;
 	opacity: .5;

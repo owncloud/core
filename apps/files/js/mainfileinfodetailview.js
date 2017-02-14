@@ -18,6 +18,7 @@
 				'<span class="icon icon-public"></span>' +
 				'<span class="hidden-visually">{{permalinkTitle}}</span>' +
 			'</a>' +
+			'<a class="{{#unless showWebDavCopyButton}}hidden{{/unless}} webDavUrlCopyButton icon icon-external" title="{{webDavUrlTitle}}" data-clipboard-text="{{webDavUrl}}"></a>' +
 		'</div>' +
 		'	<div class="file-details ellipsis">' +
 		'		<a href="#" class="action action-favorite favorite permanent">' +
@@ -80,6 +81,11 @@
 			if (!this._fileActions) {
 				throw 'Missing required parameter "fileActions"';
 			}
+
+			OC.Util.setupClipboard('.webDavUrlCopyButton', {
+				notificationMode: 'notification',
+				successMessage: t('files', 'WebDAV link copied!')
+			});
 		},
 
 		_onClickPermalink: function() {
@@ -114,6 +120,17 @@
 		_makePermalink: function(fileId) {
 			var baseUrl = OC.getProtocol() + '://' + OC.getHost();
 			return baseUrl + OC.generateUrl('/f/{fileId}', {fileId: fileId});
+		},
+
+		_makeWebDavUrl: function (fullPath) {
+			var pathSections = fullPath.split('/');
+			var encodedPath = '';
+			_.each(pathSections, function(section) {
+				if (section !== '') {
+					encodedPath += '/' + encodeURIComponent(section);
+				}
+			});
+			return OC.linkToRemote('webdav') + encodedPath;
 		},
 
 		setFileInfo: function(fileInfo) {
@@ -162,7 +179,10 @@
 					starAltText: isFavorite ? t('files', 'Favorited') : t('files', 'Favorite'),
 					starClass: isFavorite ? 'icon-starred' : 'icon-star',
 					permalink: this._makePermalink(this.model.get('id')),
-					permalinkTitle: t('files', 'Local link')
+					permalinkTitle: t('files', 'Local link'),
+					showWebDavCopyButton: this.model.isDirectory(),
+					webDavUrl: this._makeWebDavUrl(this.model.getFullPath()),
+					webDavUrlTitle: t('files', 'Direct WebDAV link')
 				}));
 
 				// TODO: we really need OC.Previews
