@@ -6,7 +6,10 @@ use OCP\IRequest;
 use OCP\IUser;
 
 /**
- * Public interface of ownCloud for apps to use.
+ * Interface IAuthModule
+ *
+ * @package OCP\Authentication
+ * @since 10.0.0
  */
 interface IAuthModule {
 
