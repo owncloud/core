@@ -207,13 +207,14 @@ class HookManagerTest extends TestCase {
 		$card = $this->getMockBuilder(CardDavBackend::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$card->expects($this->once())->method('getAddressBooksForUser')->willReturn([
+		$card->expects($this->once())->method('getUsersOwnAddressBooks')->willReturn([
 			['id' => 'personal']
 		]);
-		$card->expects($this->once())->method('deleteAddressBook');
+		$card->expects($this->once())->method('deleteAddressBook')->with('personal');
 
 		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
 		$hm->preDeleteUser(['uid' => 'newUser']);
 		$hm->postDeleteUser(['uid' => 'newUser']);
 	}
+
 }
