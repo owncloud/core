@@ -220,9 +220,10 @@ class Database extends Backend implements IUserBackend {
 	/**
 	 * Load an user in the cache
 	 * @param string $uid the username
-	 * @return boolean
+	 * @return boolean true if user was found, false otherwise
 	 */
 	private function loadUser($uid) {
+		// if not in cache (false is a valid value)
 		if (!isset($this->cache[$uid]) && $this->cache[$uid] !== false) {
 			$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 			$result = $query->execute([$uid]);
@@ -237,6 +238,7 @@ class Database extends Backend implements IUserBackend {
 				$this->cache[$uid]['displayname'] = $row['displayname'];
 			} else {
 			    $this->cache[$uid] = false;
+				return false;
 			}
 		}
 
