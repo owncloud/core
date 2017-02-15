@@ -131,7 +131,7 @@
 						{
 							file: versionModel.getFullPath(),
 							timestamp: OC.Util.formatDate(versionModel.get('timestamp') * 1000),
-							timeout: 7, type: 'error'
+							type: 'error'
 						}
 					);
 				}

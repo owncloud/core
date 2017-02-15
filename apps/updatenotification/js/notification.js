@@ -23,7 +23,7 @@ $(document).ready(function(){
 	OC.Notification.show(element, 
 		{
 			isHTML: true,
-			timeout: 7, type: 'error'
+			type: 'error'
 		}
 	);
 });
