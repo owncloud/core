@@ -591,6 +591,27 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user uploads new chunk file :num with :data to id :id with checksum :checksum
+	 */
+	public function userUploadsNewChunkFileOfWithToIdWithChecksum($user, $num, $data, $id, $checksum)
+	{
+		try {
+			$data = \GuzzleHttp\Stream\Stream::factory($data);
+			$destination = '/uploads/' . $user . '/' . $id . '/' . $num;
+			$this->makeDavRequest(
+				$user,
+				'PUT',
+				$destination,
+				['OC-Checksum' => $checksum],
+				$data,
+				"uploads"
+			);
+		} catch (\GuzzleHttp\Exception\BadResponseException $ex) {
+			$this->response = $ex->getResponse();
+		}
+	}
+
+	/**
 	 * @Given user :user moves new chunk file with id :id to :dest
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest)

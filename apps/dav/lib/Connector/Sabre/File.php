@@ -223,10 +223,14 @@ class File extends Node implements IFile {
 			
 			$this->refreshInfo();
 
-			$this->fileView->putFileInfo(
-				$this->path,
-				['checksum' => $partStorage->getMetaData($internalPartPath)['checksum']]
-			);
+			$meta = $partStorage->getMetaData($internalPartPath);
+
+			if (isset($meta['checksum'])) {
+				$this->fileView->putFileInfo(
+					$this->path,
+					['checksum' => $meta['checksum']]
+				);
+			}
 
 			$this->refreshInfo();
 
@@ -533,7 +537,7 @@ class File extends Node implements IFile {
 		$expectedChecksum = trim($request->server['HTTP_OC_CHECKSUM']);
 		$computedChecksums = $meta['checksum'];
 
-		return strpos($computedChecksums, $expectedChecksum) !== false;
+		return strpos($computedChecksums, $expectedChecksum) == true;
 
 	}
 
@@ -615,11 +619,11 @@ class File extends Node implements IFile {
 		}
 
 		$checksums = explode(' ', $allChecksums);
-		$algo = strtoupper($algo);
+		$algoPrefix = strtoupper($algo) . ':';
 
 		foreach ($checksums as $checksum) {
-			// starts with $algo
-			if (substr($checksum, 0, strlen($algo)) === $algo) {
+			// starts with $algoPrefix
+			if (substr($checksum, 0, strlen($algoPrefix)) === $algoPrefix) {
 				return $checksum;
 			}
 		}
