@@ -60,8 +60,13 @@ class StorageTest extends \Test\TestCase {
 		\OC_Hook::clear();
 		\OCA\Files_Trashbin\Trashbin::registerHooks();
 
+		// the encryption wrapper does some twisted stuff with moveFromStorage...
+		// we need to register it here so that the tested behavior is closer to reality
+		\OC::$server->getEncryptionManager()->setupStorage();
+
 		$this->user = $this->getUniqueId('user');
 		\OC::$server->getUserManager()->createUser($this->user, $this->user);
+
 
 		// this will setup the FS
 		$this->loginAsUser($this->user);
@@ -82,6 +87,7 @@ class StorageTest extends \Test\TestCase {
 		$user = \OC::$server->getUserManager()->get($this->user);
 		if ($user !== null) { $user->delete(); }
 		\OC_Hook::clear();
+		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_encryption');
 		parent::tearDown();
 	}
 
