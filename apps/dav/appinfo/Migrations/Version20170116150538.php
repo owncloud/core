@@ -61,7 +61,6 @@ class Version20170116150538 implements ISchemaMigration {
 				'autoincrement' => true,
 				'unsigned' => true,
 				'notnull' => true,
-				'default' => 0,
 				'length' => 11,
 			]);
 			$table->addColumn('principaluri', 'string', [
@@ -101,7 +100,6 @@ class Version20170116150538 implements ISchemaMigration {
 				'unsigned' => true,
 				'notnull' => true,
 				'length' => 11,
-				'default' => 0
 			]);
 			$table->addColumn('addressbookid', 'integer', [
 				'notnull' => true,
@@ -139,7 +137,6 @@ class Version20170116150538 implements ISchemaMigration {
 		if (!$schema->hasTable("{$this->prefix}addressbookchanges")) {
 			$table = $schema->createTable("{$this->prefix}addressbookchanges");
 			$table->addColumn('id', 'integer', [
-				'default' => 0,
 				'autoincrement' => true,
 				'notnull' => true,
 				'unsigned' => true,
@@ -176,7 +173,6 @@ class Version20170116150538 implements ISchemaMigration {
 		if (!$schema->hasTable("{$this->prefix}calendarobjects")) {
 			$table = $schema->createTable("{$this->prefix}calendarobjects");
 			$table->addColumn('id', 'integer', [
-				'default' => 0,
 				'notnull' => true,
 				'autoincrement' => true,
 				'unsigned' => true,
@@ -248,7 +244,6 @@ class Version20170116150538 implements ISchemaMigration {
 				'autoincrement' => true,
 				'unsigned' =>true,
 				'notnull' => true,
-				'default' => 0,
 				'length' => 11,
 			]);
 			$table->addColumn('principaluri', 'string', [
@@ -309,7 +304,6 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'unsigned' =>true,
-				'default' => 0,
 				'notnull' => true,
 				'length' => 11,
 			]);
@@ -346,7 +340,6 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'unsigned' =>true,
-				'default' => 0,
 				'notnull' => true,
 				'length' => 11,
 			]);
@@ -410,7 +403,6 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'unsigned' =>true,
-				'default' => 0,
 				'notnull' => true,
 				'length' => 11,
 			]);
@@ -448,7 +440,6 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'unsigned' =>true,
-				'default' => 0,
 				'notnull' => true,
 				'length' => 11,
 			]);
@@ -497,7 +488,6 @@ class Version20170116150538 implements ISchemaMigration {
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'unsigned' =>true,
-				'default' => 0,
 				'notnull' => true,
 				'length' => 11,
 			]);
