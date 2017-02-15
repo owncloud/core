@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<info>
+	<id>example-theme</id>
+	<name>Example OwnCloud Theme</name>
+	<description>This App provides the example OwnCloud theme.</description>
+	<licence>AGPL</licence>
+	<author>Philipp Schaffrath</author>
+	<version>0.0.1</version>
+	<types>
+		<theme/>
+	</types>
+	<dependencies>
+		<owncloud min-version="9.2" max-version="10" />
+	</dependencies>
+	<namespace>Theme</namespace>
+</info>
