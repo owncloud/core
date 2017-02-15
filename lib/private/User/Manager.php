@@ -33,8 +33,9 @@
 namespace OC\User;
 
 use OC\Hooks\PublicEmitter;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\IDBConnection;
 use OCP\IUser;
-use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\IConfig;
 
@@ -68,11 +69,16 @@ class Manager extends PublicEmitter implements IUserManager {
 	 */
 	private $config;
 
+	/** @var AccountMapper */
+	private $accountMapper;
+
 	/**
 	 * @param \OCP\IConfig $config
+	 * @param IDBConnection $connection
 	 */
-	public function __construct(IConfig $config = null) {
+	public function __construct(IConfig $config, IDBConnection $connection) {
 		$this->config = $config;
+		$this->accountMapper = new AccountMapper($connection);
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
 			/** @var \OC\User\User $user */
@@ -85,7 +91,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OCP\UserInterface[]
 	 */
 	public function getBackends() {
-		return $this->backends;
+		return array_values($this->backends);
 	}
 
 	/**
@@ -94,7 +100,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \OCP\UserInterface $backend
 	 */
 	public function registerBackend($backend) {
-		$this->backends[] = $backend;
+		$this->backends[get_class($backend)] = $backend;
 	}
 
 	/**
@@ -104,9 +110,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 */
 	public function removeBackend($backend) {
 		$this->cachedUsers = [];
-		if (($i = array_search($backend, $this->backends)) !== false) {
-			unset($this->backends[$i]);
-		}
+		unset($this->backends[get_class($backend)]);
 	}
 
 	/**
@@ -127,40 +131,39 @@ class Manager extends PublicEmitter implements IUserManager {
 		if (isset($this->cachedUsers[$uid])) { //check the cache first to prevent having to loop over the backends
 			return $this->cachedUsers[$uid];
 		}
-		foreach ($this->backends as $backend) {
-			if ($backend->userExists($uid)) {
-				return $this->getUserObject($uid, $backend);
-			}
+		try {
+			$account = $this->accountMapper->getByUid($uid);
+			return $this->getUserObject($account);
+		} catch (DoesNotExistException $ex) {
+			return null;
 		}
-		return null;
 	}
 
 	/**
 	 * get or construct the user object
 	 *
-	 * @param string $uid
-	 * @param \OCP\UserInterface $backend
+	 * @param Account $account
 	 * @param bool $cacheUser If false the newly created user object will not be cached
 	 * @return \OC\User\User
 	 */
-	protected function getUserObject($uid, $backend, $cacheUser = true) {
-		if (isset($this->cachedUsers[$uid])) {
-			return $this->cachedUsers[$uid];
+	protected function getUserObject(Account $account, $cacheUser = true) {
+		if (isset($this->cachedUsers[$account->getUserId()])) {
+			return $this->cachedUsers[$account->getUserId()];
 		}
 
-		if (method_exists($backend, 'loginName2UserName')) {
-			$loginName = $backend->loginName2UserName($uid);
-			if ($loginName !== false) {
-				$uid = $loginName;
-			}
-			if (isset($this->cachedUsers[$uid])) {
-				return $this->cachedUsers[$uid];
-			}
-		}
+//		if (method_exists($backend, 'loginName2UserName')) {
+//			$loginName = $backend->loginName2UserName($uid);
+//			if ($loginName !== false) {
+//				$uid = $loginName;
+//			}
+//			if (isset($this->cachedUsers[$uid])) {
+//				return $this->cachedUsers[$uid];
+//			}
+//		}
 
-		$user = new User($uid, $backend, $this, $this->config, null, \OC::$server->getEventDispatcher() );
+		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher() );
 		if ($cacheUser) {
-			$this->cachedUsers[$uid] = $user;
+			$this->cachedUsers[$account->getUserId()] = $user;
 		}
 		return $user;
 	}
@@ -186,12 +189,22 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function checkPassword($loginName, $password) {
 		$loginName = str_replace("\0", '', $loginName);
 		$password = str_replace("\0", '', $password);
-		
+
+		if (empty($this->backends)) {
+			$this->registerBackend(new Database());
+		}
+
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
 				$uid = $backend->checkPassword($loginName, $password);
 				if ($uid !== false) {
-					return $this->getUserObject($uid, $backend);
+					try {
+						$account = $this->accountMapper->getByUid($uid);
+					} catch(DoesNotExistException $ex) {
+						// TODO: get initial fill from the backend???
+						$account = $this->newAccount($uid, $backend);
+					}
+					return $this->getUserObject($account);
 				}
 			}
 		}
@@ -209,24 +222,10 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function search($pattern, $limit = null, $offset = null) {
-		$users = [];
-		foreach ($this->backends as $backend) {
-			$backendUsers = $backend->getUsers($pattern, $limit, $offset);
-			if (is_array($backendUsers)) {
-				foreach ($backendUsers as $uid) {
-					$users[$uid] = $this->getUserObject($uid, $backend);
-				}
-			}
-		}
-
-		uasort($users, function ($a, $b) {
-			/**
-			 * @var \OC\User\User $a
-			 * @var \OC\User\User $b
-			 */
-			return strcmp($a->getUID(), $b->getUID());
-		});
-		return $users;
+		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
+		return array_map(function(Account $account) {
+			return $this->getUserObject($account);
+		}, $accounts);
 	}
 
 	/**
@@ -238,24 +237,10 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
-		$users = [];
-		foreach ($this->backends as $backend) {
-			$backendUsers = $backend->getDisplayNames($pattern, $limit, $offset);
-			if (is_array($backendUsers)) {
-				foreach ($backendUsers as $uid => $displayName) {
-					$users[] = $this->getUserObject($uid, $backend);
-				}
-			}
-		}
-
-		usort($users, function ($a, $b) {
-			/**
-			 * @var \OC\User\User $a
-			 * @var \OC\User\User $b
-			 */
-			return strcmp($a->getDisplayName(), $b->getDisplayName());
-		});
-		return $users;
+		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
+		return array_map(function(Account $account) {
+			return $this->getUserObject($account);
+		}, $accounts);
 	}
 
 	/**
@@ -291,15 +276,13 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 
 		$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
-		foreach ($this->backends as $backend) {
-			if ($backend->implementsActions(Backend::CREATE_USER)) {
-				$backend->createUser($uid, $password);
-				$user = $this->getUserObject($uid, $backend);
-				$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
-				return $user;
-			}
-		}
-		return false;
+		// TODO: explicit member?
+		$backend = new Database();
+		$backend->createUser($uid, $password);
+		$account = $this->newAccount($uid, $backend);
+		$user = $this->getUserObject($account);
+		$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
+		return $user;
 	}
 
 	/**
@@ -311,28 +294,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *                if $hasLoggedIn is true only an int is returned
 	 */
 	public function countUsers($hasLoggedIn = false) {
-		if ($hasLoggedIn) {
-			return $this->countSeenUsers();
-		}
-		$userCountStatistics = [];
-		foreach ($this->backends as $backend) {
-			if ($backend->implementsActions(Backend::COUNT_USERS)) {
-				$backendUsers = $backend->countUsers();
-				if($backendUsers !== false) {
-					if($backend instanceof IUserBackend) {
-						$name = $backend->getBackendName();
-					} else {
-						$name = get_class($backend);
-					}
-					if(isset($userCountStatistics[$name])) {
-						$userCountStatistics[$name] += $backendUsers;
-					} else {
-						$userCountStatistics[$name] = $backendUsers;
-					}
-				}
-			}
-		}
-		return $userCountStatistics;
+		return $this->accountMapper->getUserCountPerBackend($hasLoggedIn);
 	}
 
 	/**
@@ -346,28 +308,10 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.0.0
 	 */
 	public function callForAllUsers(\Closure $callback, $search = '', $onlySeen = false) {
-		if ($onlySeen) {
-			$this->callForSeenUsers($callback);
-		} else {
-			foreach ($this->getBackends() as $backend) {
-				$limit = 500;
-				$offset = 0;
-				do {
-					$users = $backend->getUsers($search, $limit, $offset);
-					foreach ($users as $uid) {
-						if (!$backend->userExists($uid)) {
-							continue;
-						}
-						$user = $this->getUserObject($uid, $backend, false);
-						$return = $callback($user);
-						if ($return === false) {
-							break;
-						}
-					}
-					$offset += $limit;
-				} while (count($users) >= $limit);
-			}
-		}
+		$this->accountMapper->callForAllUsers(function (Account $account) use ($callback) {
+			$user = $this->getUserObject($account);
+			return $callback($user);
+		}, $search, $onlySeen);
 	}
 
 	/**
@@ -377,20 +321,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 10.0
 	 */
 	public function countSeenUsers() {
-		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
-		$queryBuilder->select($queryBuilder->createFunction('COUNT(*)'))
-			->from('preferences')
-			->where($queryBuilder->expr()->eq(
-				'appid', $queryBuilder->createNamedParameter('login'))
-			)
-			->andWhere($queryBuilder->expr()->eq(
-				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
-			)
-			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
-			);
-
-		$query = $queryBuilder->execute();
-		return (int)$query->fetchColumn();
+		return $this->accountMapper->getUserCount(true);
 	}
 
 	/**
@@ -399,72 +330,39 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 10.0
 	 */
 	public function callForSeenUsers (\Closure $callback) {
-		$limit = 1000;
-		$offset = 0;
-		do {
-			$userIds = $this->getSeenUserIds($limit, $offset);
-			$offset += $limit;
-			foreach ($userIds as $userId) {
-				foreach ($this->backends as $backend) {
-					if ($backend->userExists($userId)) {
-						$user = $this->getUserObject($userId, $backend, false);
-						$return = $callback($user);
-						if ($return === false) {
-							return;
-						}
-					}
-				}
-			}
-		} while (count($userIds) >= $limit);
+		$this->callForAllUsers($callback, '', true);
 	}
 
-	/**
-	 * Getting all userIds that have a listLogin value requires checking the
-	 * value in php because on oracle you cannot use a clob in a where clause,
-	 * preventing us from doing a not null or length(value) > 0 check.
-	 * 
-	 * @param int $limit
-	 * @param int $offset
-	 * @return string[] with user ids
-	 */
-	private function getSeenUserIds($limit = null, $offset = null) {
-		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
-		$queryBuilder->select(['userid'])
-			->from('preferences')
-			->where($queryBuilder->expr()->eq(
-				'appid', $queryBuilder->createNamedParameter('login'))
-			)
-			->andWhere($queryBuilder->expr()->eq(
-				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
-			)
-			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
-			);
-
-		if ($limit !== null) {
-			$queryBuilder->setMaxResults($limit);
-		}
-		if ($offset !== null) {
-			$queryBuilder->setFirstResult($offset);
-		}
-		$query = $queryBuilder->execute();
-		$result = [];
-
-		while ($row = $query->fetch()) {
-			$result[] = $row['userid'];
-		}
-
-		return $result;
-	}
 	/**
 	 * @param string $email
 	 * @return IUser[]
 	 * @since 9.1.0
 	 */
 	public function getByEmail($email) {
-		$userIds = $this->config->getUsersForUserValue('settings', 'email', $email);
+		$accounts = $this->accountMapper->getByEmail($email);
+		return array_map(function(Account $account) {
+			return $this->getUserObject($account);
+		}, $accounts);
+	}
 
-		return array_map(function($uid) {
-			return $this->get($uid);
-		}, $userIds);
+	/**
+	 * @param $uid
+	 * @param $backend
+	 * @return Account|\OCP\AppFramework\Db\Entity
+	 */
+	private function newAccount($uid, $backend) {
+		$account = new Account();
+		$account->setUserId($uid);
+		$account->setBackend(get_class($backend));
+		$account->setState(Account::STATE_ENABLED);
+		$b = $account->getBackendInstance();
+		if ($b->implementsActions(Backend::GET_DISPLAYNAME)) {
+			$account->setDisplayName($b->getDisplayName($uid));
+		}
+		if ($b->implementsActions(Backend::GET_HOME)) {
+			$account->setHome($b->getHome($uid));
+		}
+		$account = $this->accountMapper->insert($account);
+		return $account;
 	}
 }

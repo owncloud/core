@@ -38,32 +38,18 @@ use OCP\IImage;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IConfig;
-use OCP\UserInterface;
-use \OCP\IUserBackend;
+use OCP\IUserBackend;
+use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class User implements IUser {
-	/** @var string $uid */
-	private $uid;
 
-	/** @var string $displayName */
-	private $displayName;
-
-	/** @var UserInterface $backend */
-	private $backend;
-
-	/** @var bool $enabled */
-	private $enabled;
+	/** @var Account */
+	private $account;
 
 	/** @var Emitter|Manager $emitter */
 	private $emitter;
-
-	/** @var string $home */
-	private $home;
-
-	/** @var int $lastLogin */
-	private $lastLogin;
 
 	/** @var \OCP\IConfig $config */
 	private $config;
@@ -77,19 +63,24 @@ class User implements IUser {
 	/** @var  EventDispatcher */
 	private $eventDispatcher;
 
+	/** @var AccountMapper */
+	private $mapper;
+
 	/**
-	 * @param string $uid
-	 * @param UserInterface $backend
-	 * @param \OC\Hooks\Emitter $emitter
+	 * User constructor.
+	 *
+	 * @param Account $account
+	 * @param AccountMapper $mapper
+	 * @param null $emitter
 	 * @param IConfig|null $config
-	 * @param IURLGenerator $urlGenerator
-	 * @param EventDispatcher $eventDispatcher
+	 * @param null $urlGenerator
+	 * @param EventDispatcher|null $eventDispatcher
 	 */
-	public function __construct($uid, $backend, $emitter = null, IConfig $config = null,
+	public function __construct(Account $account, AccountMapper $mapper, $emitter = null, IConfig $config = null,
 								$urlGenerator = null, EventDispatcher $eventDispatcher = null
 	) {
-		$this->uid = $uid;
-		$this->backend = $backend;
+		$this->account = $account;
+		$this->mapper = $mapper;
 		$this->emitter = $emitter;
 		$this->eventDispatcher = $eventDispatcher;
 		if(is_null($config)) {
@@ -97,9 +88,6 @@ class User implements IUser {
 		}
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
-		$enabled = $this->config->getUserValue($uid, 'core', 'enabled', 'true');
-		$this->enabled = ($enabled === 'true');
-		$this->lastLogin = $this->config->getUserValue($uid, 'login', 'lastLogin', 0);
 		if (is_null($this->urlGenerator)) {
 			$this->urlGenerator = \OC::$server->getURLGenerator();
 		}
@@ -111,7 +99,7 @@ class User implements IUser {
 	 * @return string
 	 */
 	public function getUID() {
-		return $this->uid;
+		return $this->account->getUserId();
 	}
 
 	/**
@@ -120,23 +108,11 @@ class User implements IUser {
 	 * @return string
 	 */
 	public function getDisplayName() {
-		if (!isset($this->displayName)) {
-			$displayName = '';
-			if ($this->backend and $this->backend->implementsActions(Backend::GET_DISPLAYNAME)) {
-				// get display name and strip whitespace from the beginning and end of it
-				$backendDisplayName = $this->backend->getDisplayName($this->uid);
-				if (is_string($backendDisplayName)) {
-					$displayName = trim($backendDisplayName);
-				}
-			}
-
-			if (!empty($displayName)) {
-				$this->displayName = $displayName;
-			} else {
-				$this->displayName = $this->uid;
-			}
+		$displayName = $this->account->getDisplayName();
+		if (empty($displayName)) {
+			$displayName = $this->getUID();
 		}
-		return $this->displayName;
+		return $displayName;
 	}
 
 	/**
@@ -147,16 +123,14 @@ class User implements IUser {
 	 */
 	public function setDisplayName($displayName) {
 		$displayName = trim($displayName);
-		if ($this->backend->implementsActions(Backend::SET_DISPLAYNAME) && !empty($displayName)) {
-			$result = $this->backend->setDisplayName($this->uid, $displayName);
-			if ($result) {
-				$this->displayName = $displayName;
-				$this->triggerChange('displayName', $displayName);
-			}
-			return $result !== false;
-		} else {
+		if ($displayName === $this->account->getDisplayName()) {
 			return false;
 		}
+		$this->account->setDisplayName($displayName);
+		$this->mapper->update($this->account);
+		$this->triggerChange('displayName', $displayName);
+
+		return true;
 	}
 
 	/**
@@ -167,12 +141,12 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function setEMailAddress($mailAddress) {
-		if(is_null($mailAddress) || $mailAddress === '') {
-			$this->config->deleteUserValue($this->uid, 'settings', 'email');
-		} else {
-			$this->config->setUserValue($this->uid, 'settings', 'email', $mailAddress);
+		$mailAddress = trim($mailAddress);
+		if ($mailAddress === $this->account->getEmail()) {
+			return;
 		}
-		$this->config->deleteUserValue($this->getUID(), 'owncloud', 'lostpassword');
+		$this->account->setEmail($mailAddress);
+		$this->mapper->update($this->account);
 		$this->triggerChange('eMailAddress', $mailAddress);
 	}
 
@@ -183,18 +157,16 @@ class User implements IUser {
 	 * @return int
 	 */
 	public function getLastLogin() {
-		return $this->lastLogin;
+		return $this->account->getLastLogin();
 	}
 
 	/**
 	 * updates the timestamp of the most recent login of this user
 	 */
 	public function updateLastLoginTimestamp() {
-		$firstTimeLogin = ($this->lastLogin === 0);
-		$this->lastLogin = time();
-		$this->config->setUserValue(
-			$this->uid, 'login', 'lastLogin', $this->lastLogin);
-
+		$firstTimeLogin = ($this->getLastLogin() === 0);
+		$this->account->setLastLogin(time());
+		$this->mapper->update($this->account);
 		return $firstTimeLogin;
 	}
 
@@ -209,36 +181,38 @@ class User implements IUser {
 		}
 		// get the home now because it won't return it after user deletion
 		$homePath = $this->getHome();
-		$result = $this->backend->deleteUser($this->uid);
-		if ($result) {
-
-			// FIXME: Feels like an hack - suggestions?
-
-			// We have to delete the user from all groups
-			foreach (\OC::$server->getGroupManager()->getUserGroups($this) as $group) {
-				$group->removeUser($this);
-			}
-			// Delete the user's keys in preferences
-			\OC::$server->getConfig()->deleteAllUserValues($this->uid);
-
-			// Delete user files in /data/
-			if ($homePath !== false) {
-				// FIXME: this operates directly on FS, should use View instead...
-				// also this is not testable/mockable...
-				\OC_Helper::rmdirr($homePath);
-			}
-
-			// Delete the users entry in the storage table
-			Storage::remove('home::' . $this->uid);
-
-			\OC::$server->getCommentsManager()->deleteReferencesOfActor('users', $this->uid);
-			\OC::$server->getCommentsManager()->deleteReadMarksFromUser($this);
+		$this->mapper->delete($this->account);
+		$bi = $this->account->getBackendInstance();
+		if (!is_null($bi)) {
+			$bi->deleteUser($this->account->getUserId());
 		}
+
+		// FIXME: Feels like an hack - suggestions?
+
+		// We have to delete the user from all groups
+		foreach (\OC::$server->getGroupManager()->getUserGroups($this) as $group) {
+			$group->removeUser($this);
+		}
+		// Delete the user's keys in preferences
+		\OC::$server->getConfig()->deleteAllUserValues($this->getUID());
+
+		// Delete user files in /data/
+		if ($homePath !== false) {
+			// FIXME: this operates directly on FS, should use View instead...
+			// also this is not testable/mockable...
+			\OC_Helper::rmdirr($homePath);
+		}
+
+		// Delete the users entry in the storage table
+		Storage::remove('home::' . $this->getUID());
+
+		\OC::$server->getCommentsManager()->deleteReferencesOfActor('users', $this->getUID());
+		\OC::$server->getCommentsManager()->deleteReadMarksFromUser($this);
 
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'postDelete', [$this]);
 		}
-		return !($result === false);
+		return true;
 	}
 
 	/**
@@ -252,8 +226,9 @@ class User implements IUser {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
 		}
-		if ($this->backend->implementsActions(Backend::SET_PASSWORD)) {
-			$result = $this->backend->setPassword($this->uid, $password);
+		$backend = $this->account->getBackendInstance();
+		if ($backend instanceof IChangePasswordBackend || $backend->implementsActions(Backend::SET_PASSWORD)) {
+			$result = $backend->setPassword($this->getUID(), $password);
 			if ($result) {
 				if ($this->emitter) {
 					$this->emitter->emit('\OC\User', 'postSetPassword', [$this, $password, $recoveryPassword]);
@@ -272,16 +247,15 @@ class User implements IUser {
 	 * @return string
 	 */
 	public function getHome() {
-		if (!$this->home) {
-			if ($this->backend->implementsActions(Backend::GET_HOME) and $home = $this->backend->getHome($this->uid)) {
-				$this->home = $home;
-			} elseif ($this->config) {
-				$this->home = $this->config->getSystemValue('datadirectory') . '/' . $this->uid;
+		$home = $this->account->getHome();
+		if (!$home) {
+			if ($this->config) {
+				$home = $this->config->getSystemValue('datadirectory') . '/' . $this->getUID();
 			} else {
-				$this->home = \OC::$SERVERROOT . '/data/' . $this->uid;
+				$home = \OC::$SERVERROOT . '/data/' . $this->getUID();
 			}
 		}
-		return $this->home;
+		return $home;
 	}
 
 	/**
@@ -290,10 +264,11 @@ class User implements IUser {
 	 * @return string
 	 */
 	public function getBackendClassName() {
-		if($this->backend instanceof IUserBackend) {
-			return $this->backend->getBackendName();
+		$b = $this->account->getBackendInstance();
+		if($b instanceof IUserBackend) {
+			return $b->getBackendName();
 		}
-		return get_class($this->backend);
+		return $this->account->getBackend();
 	}
 
 	/**
@@ -302,9 +277,6 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function canChangeAvatar() {
-		if ($this->backend->implementsActions(Backend::PROVIDE_AVATAR)) {
-			return $this->backend->canChangeAvatar($this->uid);
-		}
 		return true;
 	}
 
@@ -314,7 +286,7 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function canChangePassword() {
-		return $this->backend->implementsActions(Backend::SET_PASSWORD);
+		return true;
 	}
 
 	/**
@@ -326,7 +298,7 @@ class User implements IUser {
 		if ($this->config->getSystemValue('allow_user_to_change_display_name') === false) {
 			return false;
 		}
-		return $this->backend->implementsActions(Backend::SET_DISPLAYNAME);
+		return true;
 	}
 
 	/**
@@ -335,7 +307,7 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function isEnabled() {
-		return $this->enabled;
+		return (int)$this->account->getState() === Account::STATE_ENABLED;
 	}
 
 	/**
@@ -344,9 +316,12 @@ class User implements IUser {
 	 * @param bool $enabled
 	 */
 	public function setEnabled($enabled) {
-		$this->enabled = $enabled;
-		$enabled = ($enabled) ? 'true' : 'false';
-		$this->config->setUserValue($this->uid, 'core', 'enabled', $enabled);
+		if ($enabled === true) {
+			$this->account->setState(Account::STATE_ENABLED);
+		} else {
+			$this->account->setState(Account::STATE_DISABLED);
+		}
+		$this->mapper->update($this->account);
 
 		if ($this->eventDispatcher){
 			$this->eventDispatcher->dispatch(self::class . '::postSetEnabled',  new GenericEvent($this));
@@ -360,7 +335,7 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function getEMailAddress() {
-		return $this->config->getUserValue($this->uid, 'settings', 'email', null);
+		return $this->account->getEmail();
 	}
 
 	/**
@@ -370,8 +345,8 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function getQuota() {
-		$quota = $this->config->getUserValue($this->uid, 'files', 'quota', 'default');
-		if($quota === 'default') {
+		$quota = $this->account->getQuota();
+		if(is_null($quota)) {
 			$quota = $this->config->getAppValue('files', 'default_quota', 'none');
 		}
 		return $quota;
@@ -389,7 +364,8 @@ class User implements IUser {
 			$quota = OC_Helper::computerFileSize($quota);
 			$quota = OC_Helper::humanFileSize($quota);
 		}
-		$this->config->setUserValue($this->uid, 'files', 'quota', $quota);
+		$this->account->setQuota($quota);
+		$this->mapper->update($this->account);
 		$this->triggerChange('quota', $quota);
 	}
 
@@ -406,7 +382,7 @@ class User implements IUser {
 			$this->avatarManager = \OC::$server->getAvatarManager();
 		}
 
-		$avatar = $this->avatarManager->getAvatar($this->uid);
+		$avatar = $this->avatarManager->getAvatar($this->getUID());
 		$image = $avatar->get($size);
 		if ($image) {
 			return $image;
