@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <info>
 	<id>example-theme</id>
-	<name>Example OwnCloud Theme</name>
-	<description>This App provides the example OwnCloud theme.</description>
+	<name>Example ownCloud Theme</name>
+	<description>This App provides the example ownCloud theme.</description>
 	<licence>AGPL</licence>
 	<author>Philipp Schaffrath</author>
 	<version>0.0.1</version>
