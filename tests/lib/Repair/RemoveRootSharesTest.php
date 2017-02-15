@@ -75,7 +75,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 
 	public function testRootSharesExist() {
 		//Add test user
-		$user = $this->userManager->createUser('test', 'test');
+		$user = $this->createUser('test', 'test');
 		$userFolder = $this->rootFolder->getUserFolder('test');
 		$fileId = $userFolder->getId();
 
@@ -103,7 +103,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 
 	public function testRootSharesDontExist() {
 		//Add test user
-		$user = $this->userManager->createUser('test', 'test');
+		$user = $this->createUser('test', 'test');
 		$userFolder = $this->rootFolder->getUserFolder('test');
 		$fileId = $userFolder->getId();
 		$user->updateLastLoginTimestamp();
@@ -132,7 +132,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 
 	public function testRun() {
 		//Add test user
-		$user1 = $this->userManager->createUser('test1', 'test1');
+		$user1 = $this->createUser('test1', 'test1');
 		$userFolder = $this->rootFolder->getUserFolder('test1');
 		$fileId = $userFolder->getId();
 		$user1->updateLastLoginTimestamp();
@@ -154,7 +154,7 @@ class RemoveRootSharesTest extends \Test\TestCase {
 		$qb->execute();
 
 		//Add test user
-		$user2 = $this->userManager->createUser('test2', 'test2');
+		$user2 = $this->createUser('test2', 'test2');
 		$userFolder = $this->rootFolder->getUserFolder('test2');
 		$folder = $userFolder->newFolder('foo');
 		$fileId = $folder->getId();

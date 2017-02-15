@@ -83,9 +83,8 @@ use OC\Session\CryptoWrapper;
 use OC\Settings\Panels\Helper;
 use OC\Settings\SettingsManager;
 use OC\Tagging\TagMapper;
-use OC\URLGenerator;
 use OC\Theme\ThemeService;
-use OCP\IDateTimeFormatter;
+use OC\User\AccountMapper;
 use OCP\IL10N;
 use OCP\IServerContainer;
 use OCP\Security\IContentSecurityPolicyManager;
@@ -221,7 +220,8 @@ class Server extends ServerContainer implements IServerContainer {
 		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
-			return new \OC\User\Manager($config);
+			$accountMapper = new AccountMapper($c->getDatabaseConnection());
+			return new \OC\User\Manager($config, $accountMapper);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupManager = new \OC\Group\Manager($this->getUserManager());

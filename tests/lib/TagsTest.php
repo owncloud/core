@@ -21,13 +21,19 @@
 */
 
 namespace Test;
+use OC\Tagging\TagMapper;
+use OC\TagManager;
+use OCP\IUserSession;
+use Test\Traits\UserTrait;
 
 /**
  * Class TagsTest
  *
  * @group DB
  */
-class TagsTest extends \Test\TestCase {
+class TagsTest extends TestCase {
+
+	use UserTrait;
 
 	protected $objectType;
 	/** @var \OCP\IUser */
@@ -35,7 +41,7 @@ class TagsTest extends \Test\TestCase {
 	/** @var \OCP\IUserSession */
 	protected $userSession;
 	protected $backupGlobals = FALSE;
-	/** @var \OC\Tagging\TagMapper */
+	/** @var TagMapper */
 	protected $tagMapper;
 	/** @var \OCP\ITagManager */
 	protected $tagMgr;
@@ -43,12 +49,9 @@ class TagsTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		\OC_User::clearBackends();
-		\OC_User::useBackend('dummy');
 		$userId = $this->getUniqueID('user_');
-		\OC::$server->getUserManager()->createUser($userId, 'pass');
+		$this->user = $this->createUser($userId, 'pass');
 		\OC_User::setUserId($userId);
-		$this->user = new \OC\User\User($userId, null);
 		$this->userSession = $this->createMock('\OCP\IUserSession');
 		$this->userSession
 			->expects($this->any())
@@ -56,8 +59,8 @@ class TagsTest extends \Test\TestCase {
 			->will($this->returnValue($this->user));
 
 		$this->objectType = $this->getUniqueID('type_');
-		$this->tagMapper = new \OC\Tagging\TagMapper(\OC::$server->getDatabaseConnection());
-		$this->tagMgr = new \OC\TagManager($this->tagMapper, $this->userSession);
+		$this->tagMapper = new TagMapper(\OC::$server->getDatabaseConnection());
+		$this->tagMgr = new TagManager($this->tagMapper, $this->userSession);
 
 	}
 
@@ -75,7 +78,7 @@ class TagsTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue(null));
-		$this->tagMgr = new \OC\TagManager($this->tagMapper, $this->userSession);
+		$this->tagMgr = new TagManager($this->tagMapper, $this->userSession);
 		$this->assertNull($this->tagMgr->load($this->objectType));
 	}
 
@@ -292,15 +295,16 @@ class TagsTest extends \Test\TestCase {
 		$tagger->tagAs(1, $testTag);
 
 		$otherUserId = $this->getUniqueID('user2_');
-		\OC::$server->getUserManager()->createUser($otherUserId, 'pass');
+		$otherUser = \OC::$server->getUserManager()->createUser($otherUserId, 'pass');
 		\OC_User::setUserId($otherUserId);
-		$otherUserSession = $this->createMock('\OCP\IUserSession');
+		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $otherUserSession */
+		$otherUserSession = $this->createMock(IUserSession::class);
 		$otherUserSession
 			->expects($this->any())
 			->method('getUser')
-			->will($this->returnValue(new \OC\User\User($otherUserId, null)));
+			->will($this->returnValue($otherUser));
 
-		$otherTagMgr = new \OC\TagManager($this->tagMapper, $otherUserSession);
+		$otherTagMgr = new TagManager($this->tagMapper, $otherUserSession);
 		$otherTagger = $otherTagMgr->load('test');
 		$this->assertFalse($otherTagger->hasTag($testTag));
 

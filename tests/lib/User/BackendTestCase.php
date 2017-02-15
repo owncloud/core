@@ -43,8 +43,8 @@ abstract class BackendTestCase extends \Test\TestCase {
 	 * test cases can override this in order to clean up created user
 	 * @return string
 	 */
-	public function getUser() {
-		return $this->getUniqueID('test_');
+	public function getUser($prefix = 'test_') {
+		return $this->getUniqueID($prefix);
 	}
 
 	public function testAddRemove() {
@@ -100,18 +100,19 @@ abstract class BackendTestCase extends \Test\TestCase {
 	}
 
 	public function testSearch() {
-		$name1 = 'foobarbaz';
-		$name2 = 'bazbarfoo';
-		$name3 = 'notme';
+		$prefix = str_replace('\\', '#', get_class($this->backend));
+		$name1 = $this->getUser('foo' . $prefix . 'baz');
+		$name2 = $this->getUser('baz' . $prefix . 'foo');
+		$name3 = $this->getUser('notme');
 
 		$this->backend->createUser($name1, 'pass1');
 		$this->backend->createUser($name2, 'pass2');
 		$this->backend->createUser($name3, 'pass3');
 
-		$result = $this->backend->getUsers('bar');
-		$this->assertSame(2, count($result));
+		$result = $this->backend->getUsers($prefix);
+		$this->assertSame(2, count($result), json_encode($result));
 
-		$result = $this->backend->getDisplayNames('bar');
+		$result = $this->backend->getDisplayNames($prefix);
 		$this->assertSame(2, count($result));
 	}
 }

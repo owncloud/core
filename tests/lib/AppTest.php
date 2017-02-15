@@ -9,6 +9,7 @@
 
 namespace Test;
 use OCP\IAppConfig;
+use Test\Traits\UserTrait;
 
 /**
  * Class AppTest
@@ -16,6 +17,7 @@ use OCP\IAppConfig;
  * @group DB
  */
 class AppTest extends \Test\TestCase {
+	use UserTrait;
 
 	const TEST_USER1 = 'user1';
 	const TEST_USER2 = 'user2';
@@ -392,11 +394,10 @@ class AppTest extends \Test\TestCase {
 	 * @dataProvider appConfigValuesProvider
 	 */
 	public function testEnabledApps($user, $expectedApps, $forceAll) {
-		$userManager = \OC::$server->getUserManager();
 		$groupManager = \OC::$server->getGroupManager();
-		$user1 = $userManager->createUser(self::TEST_USER1, self::TEST_USER1);
-		$user2 = $userManager->createUser(self::TEST_USER2, self::TEST_USER2);
-		$user3 = $userManager->createUser(self::TEST_USER3, self::TEST_USER3);
+		$user1 = $this->createUser(self::TEST_USER1, self::TEST_USER1);
+		$user2 = $this->createUser(self::TEST_USER2, self::TEST_USER2);
+		$user3 = $this->createUser(self::TEST_USER3, self::TEST_USER3);
 
 		$group1 = $groupManager->createGroup(self::TEST_GROUP1);
 		$group1->addUser($user1);

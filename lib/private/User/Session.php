@@ -201,7 +201,6 @@ class Session implements IUserSession, Emitter {
 			if (is_null($this->activeUser)) {
 				return null;
 			}
-			$this->validateSession();
 		}
 		return $this->activeUser;
 	}
@@ -212,7 +211,11 @@ class Session implements IUserSession, Emitter {
 	 * - For token-authenticated clients, the token validity is checked
 	 * - For browsers, the session token validity is checked
 	 */
-	protected function validateSession() {
+	public function validateSession() {
+		if (!$this->getUser()) {
+			return;
+		}
+
 		$token = null;
 		$appPassword = $this->session->get('app_password');
 
@@ -382,7 +385,7 @@ class Session implements IUserSession, Emitter {
 		}
 	}
 
-	protected function prepareUserLogin($firstTimeLogin) {
+	protected function prepareUserLogin($firstTimeLogin = false) {
 		// TODO: mock/inject/use non-static
 		// Refresh the token
 		\OC::$server->getCsrfTokenManager()->refreshToken();

@@ -322,7 +322,7 @@ class CacheTest extends TestCase {
 		$userId = $this->getUniqueId('user');
 		\OC::$server->getUserManager()->createUser($userId, $userId);
 		$this->loginAsUser($userId);
-		$user = new \OC\User\User($userId, null);
+//		$user = new \OC\User\User($userId, null);
 
 		$file1 = 'folder';
 		$file2 = 'folder/foobar';

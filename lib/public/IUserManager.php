@@ -155,7 +155,6 @@ interface IUserManager {
 
 	/**
 	 * @param \Closure $callback
-	 * @param string $search
 	 * @since 10.0
 	 */
 	public function callForSeenUsers (\Closure $callback);
