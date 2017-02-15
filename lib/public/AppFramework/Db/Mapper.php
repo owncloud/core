@@ -26,6 +26,7 @@
 
 namespace OCP\AppFramework\Db;
 
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IDb;
 
@@ -227,7 +228,7 @@ abstract class Mapper {
 	 * @return \PDOStatement the database query result
 	 * @since 7.0.0
 	 */
-	protected function execute($sql, array $params=[], $limit=null, $offset=null){
+	protected function execute($sql, array $params=[], $limit=null, $offset=null) {
 		if ($this->db instanceof IDb) {
 			$query = $this->db->prepareQuery($sql, $limit, $offset);
 		} else {
@@ -276,8 +277,13 @@ abstract class Mapper {
 	 * @return array the result as row
 	 * @since 7.0.0
 	 */
-	protected function findOneQuery($sql, array $params=[], $limit=null, $offset=null){
-		$stmt = $this->execute($sql, $params, $limit, $offset);
+	protected function findOneQuery($sql, array $params=[], $limit=null, $offset=null) {
+
+		if ($sql instanceof IQueryBuilder) {
+			$stmt = $sql->execute();
+		} else {
+			$stmt = $this->execute($sql, $params, $limit, $offset);
+		}
 		$row = $stmt->fetch();
 
 		if($row === false || $row === null){
