@@ -49,7 +49,15 @@ abstract class Job implements IJob {
 	public function execute($jobList, ILogger $logger = null) {
 		$jobList->setLastRun($this);
 		try {
+			//storing job start time
+			$jobStartTime = time();
+
 			$this->run($this->argument);
+
+			//storing job end time
+			$jobEndTime = time();
+
+			$jobList->setExecutionTime($this, $jobEndTime - $jobStartTime);
 		} catch (\Exception $e) {
 			if ($logger) {
 				$logger->logException($e, [
