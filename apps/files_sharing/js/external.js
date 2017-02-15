@@ -108,7 +108,7 @@
 							name: share.name,
 							password: password}, function(result) {
 							if (result.status === 'error') {
-								OC.Notification.show(result.data.message, {timeout: 7, type: 'error'});
+								OC.Notification.show(result.data.message, {type: 'error'});
 							} else {
 								fileList.reload();
 							}

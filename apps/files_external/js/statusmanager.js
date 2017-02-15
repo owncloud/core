@@ -156,7 +156,7 @@ OCA.External.StatusManager = {
 				error: function (jqxhr, state, error) {
 					self.mountPointList = [];
 					OC.Notification.show('Couldn\'t get the list of external mount points: {type}', 
-						{type: error, timeout: 7, type: 'error'}
+						{type: error, type: 'error'}
 					);
 				},
 				complete: function () {
@@ -266,7 +266,7 @@ OCA.External.StatusManager = {
 			if (list === undefined && !self.emptyWarningShown) {
 				self.emptyWarningShown = true;
 				OC.Notification.show('Couldn\'t get the list of Windows network drive mount points: empty response from the server', 
-					{timeout: 7, type: 'error'}
+					{type: 'error'}
 				);
 				return;
 			}
@@ -298,7 +298,7 @@ OCA.External.StatusManager = {
 						});
 						if (showNotification) {
 							OC.Notification.show('Some of the configured external mount points are not connected. Please click on the red row(s) for more information', 
-								{timeout: 7, type: 'error'}
+								{type: 'error'}
 							);
 						}
 					}
@@ -418,14 +418,14 @@ OCA.External.StatusManager = {
 					}
 				},
 				success: function (data) {
-					OC.Notification.show('Credentials saved', {timeout: 7, type: 'error'});
+					OC.Notification.show('Credentials saved', {type: 'error'});
 					dialog.ocdialog('close');
 					/* Trigger status check again */
 					OCA.External.StatusManager.recheckConnectivityForMount([OC.basename(data.mountPoint)], true);
 				},
 				error: function () {
 					$('.oc-dialog-close').show();
-					OC.Notification.show('Credentials saving failed', {timeout: 7, type: 'error'});
+					OC.Notification.show('Credentials saving failed', {type: 'error'});
 				}
 			});
 			return false;

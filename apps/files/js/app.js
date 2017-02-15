@@ -54,7 +54,7 @@
 			var showHidden = $('#showHiddenFiles').val() === "1";
 			this.$showHiddenFiles.prop('checked', showHidden);
 			if ($('#fileNotFound').val() === "1") {
-				OC.Notification.show('File could not be found', {timeout: 7, type: 'error'});
+				OC.Notification.show('File could not be found', {type: 'error'});
 			}
 
 			this._filesConfig = new OC.Backbone.Model({

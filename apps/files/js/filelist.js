@@ -1455,7 +1455,7 @@
 		_setCurrentDir: function(targetDir, changeUrl, fileId) {
 			targetDir = targetDir.replace(/\\/g, '/');
 			if (!this._isValidPath(targetDir)) {
-				OC.Notification.show('Invalid path', {timeout: 7, type: 'error'});
+				OC.Notification.show('Invalid path', {type: 'error'});
 				targetDir = '/';
 				changeUrl = true;
 			}
@@ -1569,7 +1569,7 @@
 				if (e instanceof DOMException) {
 					console.error(e);
 					this.changeDirectory('/');
-					OC.Notification.show('Invalid path', {timeout: 7, type: 'error'});
+					OC.Notification.show('Invalid path', {meout: 7, type: 'error'});
 					return;
 				}
 				throw e;
@@ -1593,7 +1593,7 @@
 			if (status === 403 || status === 400) {
 				// Go home
 				this.changeDirectory('/');
-				OC.Notification.show('This operation is forbidden', {timeout: 7, type: 'error'});
+				OC.Notification.show('This operation is forbidden', {type: 'error'});
 				return false;
 			}
 
@@ -1602,7 +1602,7 @@
 				// Go home
 				this.changeDirectory('/');
 				OC.Notification.show('This directory is unavailable, please check the logs or contact the administrator', 
-					{timeout: 7, type: 'error'}
+					{type: 'error'}
 				);
 				return false;
 			}
@@ -1613,7 +1613,7 @@
 					this.changeDirectory('/');
 					// TODO: read error message from exception
 					OC.Notification.show('Storage is temporarily not available', 
-						{timeout: 7, type: 'error'}
+						{type: 'error'}
 					);
 				}
 				return false;
@@ -1931,11 +1931,11 @@
 						if (status === 412) {
 							// TODO: some day here we should invoke the conflict dialog
 							OC.Notification.show('Could not move "{file}", target exists', 
-								{file: fileName, timeout: 7, type: 'error'}
+								{file: fileName, type: 'error'}
 							);
 						} else {
 							OC.Notification.show('Could not move "{file}"', 
-								{file: fileName, timeout: 7, type: 'error'}
+								{file: fileName, type: 'error'}
 							);
 						}
 					})
@@ -2051,7 +2051,7 @@
 								if (status === 404) {
 									// source not found, so remove it from the list
 									OC.Notification.show('Could not rename "{fileName}", it does not exist any more', 
-										{fileName: oldName, timeout: 7, type: 'error'}
+										{fileName: oldName, type: 'error'}
 									);
 
 									self.remove(newName, {updateSummary: true});
@@ -2063,14 +2063,14 @@
 										{
 											targetName: newName,
 											dir: self.getCurrentDirectory(),
-											timeout: 7, 
+											
 											type: 'error'
 										}
 									);
 								} else {
 									// restore the item to its previous state
 									OC.Notification.show('Could not rename "{fileName}"', 
-										{fileName: oldName, timeout: 7, type: 'error'}
+										{fileName: oldName, type: 'error'}
 									);
 								}
 								updateInList(oldFileInfo);
@@ -2153,18 +2153,18 @@
 						deferred.resolve(status, data);
 					}, function() {
 						OC.Notification.show('Could not create file "{file}"', 
-							{file: name, timeout: 7, type: 'error'}
+							{file: name, type: 'error'}
 						);
 					});
 				})
 				.fail(function(status) {
 					if (status === 412) {
 						OC.Notification.show('Could not create file "{file}" because it already exists', 
-							{file: name, timeout: 7, type: 'error'}
+							{file: name, type: 'error'}
 						);
 					} else {
 						OC.Notification.show('Could not create file "{file}"', 
-							{file: name, timeout: 7, type: 'error'}
+							{file: name, type: 'error'}
 						);
 					}
 					deferred.reject(status);
@@ -2203,7 +2203,7 @@
 						deferred.resolve(status, data);
 					}, function() {
 						OC.Notification.show('Could not create folder "{dir}"', 
-							{dir: name, timeout: 7, type: 'error'}
+							{dir: name, type: 'error'}
 						);
 					});
 				})
@@ -2214,20 +2214,20 @@
 						self.addAndFetchFileInfo(targetPath, '', {scrollTo:true})
 							.done(function(status, data) {
 								OC.Notification.show('Could not create folder "{dir}" because it already exists', 
-									{dir: name, timeout: 7, type: 'error'}
+									{dir: name, type: 'error'}
 								);
 								// still consider a failure
 								deferred.reject(createStatus, data);
 							})
 							.fail(function() {
 								OC.Notification.show('Could not create folder "{dir}"', 
-									{dir: name, timeout: 7, type: 'error'}
+									{dir: name, type: 'error'}
 								);
 								deferred.reject(status);
 							});
 					} else {
 						OC.Notification.show('Could not create folder "{dir}"', 
-							{dir: name, timeout: 7, type: 'error'}
+							{dir: name, type: 'error'}
 						);
 						deferred.reject(createStatus);
 					}
@@ -2284,7 +2284,7 @@
 				})
 				.fail(function(status) {
 					OC.Notification.show('Could not create file "{file}"', 
-						{file: name, timeout: 7, type: 'error'}
+						{file: name, type: 'error'}
 					);
 					deferred.reject(status);
 				});
@@ -2395,7 +2395,7 @@
 						} else {
 							// only reset the spinner for that one file
 							OC.Notification.show('Error deleting file "{fileName}".', 
-								{fileName: file, timeout: 7, type: 'error'}
+								{fileName: file, type: 'error'}
 							);
 							var deleteAction = self.findFileEl(file).find('.action.delete');
 							deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
@@ -2655,7 +2655,7 @@
 		 */
 		_showPermissionDeniedNotification: function() {
 			var message = t('core', 'You don’t have permission to upload or create files here');
-			OC.Notification.show(message, {timeout: 7, type: 'error'});
+			OC.Notification.show(message, {type: 'error'});
 		},
 
 		/**

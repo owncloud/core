@@ -115,7 +115,7 @@
 			if (usedSpacePercent > 98) {
 				if (owner !== oc_current_user) {
 					OC.Notification.show('Storage of {owner} is full, files can not be updated or synced anymore!', 
-						{owner: ownerDisplayName, timeout: 7, type: 'error'}
+						{owner: ownerDisplayName, type: 'error'}
 					);
 					return;
 				}
@@ -129,7 +129,7 @@
 							usedSpacePercent: usedSpacePercent,  
 							owner: ownerDisplayName, 
 							owner: ownerDisplayName, 
-							timeout: 7, type: 'error'
+							type: 'error'
 						}
 					);
 					return;
