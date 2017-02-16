@@ -80,9 +80,12 @@ class Database extends Backend implements IUserBackend {
 	public function createUser($uid, $password) {
 		unset($this->cache[$uid]); // make sure we are reading from the db
 		if (!$this->userExists($uid)) {
-			unset($this->cache[$uid]); // invalidate non existing user in cache
 			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
 			$result = $query->execute([$uid, \OC::$server->getHasher()->hash($password)]);
+
+			if ($result) {
+				unset($this->cache[$uid]); // invalidate non existing user in cache
+			}
 
 			return $result ? true : false;
 		}
