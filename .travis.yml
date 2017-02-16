@@ -21,6 +21,7 @@ branches:
   only:
     - master
     - /^stable\d+(\.\d+)?$/
+    - /^.*selenium.*$/
 
 addons:
   apt:
