@@ -30,6 +30,7 @@
 namespace OC\Group;
 
 use OCP\IGroup;
+use OCP\IUser;
 
 class Group implements IGroup {
 	/**
@@ -117,7 +118,7 @@ class Group implements IGroup {
 	/**
 	 * check if a user is in the group
 	 *
-	 * @param \OC\User\User $user
+	 * @param IUser $user
 	 * @return bool
 	 */
 	public function inGroup($user) {
