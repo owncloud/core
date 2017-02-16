@@ -3,6 +3,7 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -27,6 +28,7 @@ namespace OCA\Federation\BackgroundJob;
 use GuzzleHttp\Exception\ClientException;
 use OC\BackgroundJob\JobList;
 use OC\BackgroundJob\Job;
+use OCA\Federation\Cluster;
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
 use OCP\AppFramework\Http;
@@ -68,6 +70,9 @@ class GetSharedSecret extends Job{
 
 	private $endPoint = '/ocs/v2.php/apps/federation/api/v1/shared-secret?format=json';
 
+	/** @var Cluster */
+	private $cluster;
+
 	/**
 	 * RequestSharedSecret constructor.
 	 *
@@ -104,6 +109,7 @@ class GetSharedSecret extends Job{
 				\OC::$server->getEventDispatcher()
 			);
 		}
+		$this->cluster = new Cluster(); // FIXME DI
 	}
 
 	/**
@@ -136,8 +142,11 @@ class GetSharedSecret extends Job{
 
 	protected function run($argument) {
 		$target = $argument['url'];
-		$source = $this->urlGenerator->getAbsoluteURL('/');
-		$source = rtrim($source, '/');
+		$source = $this->cluster->getSourceFor($target);
+		\OC::$server->getLogger()->debug(
+			"GETing shared secret for $source to $target",
+			['app' => 'federation']
+		);
 		$token = $argument['token'];
 
 		$result = null;
@@ -184,6 +193,10 @@ class GetSharedSecret extends Job{
 			$body = $result->getBody();
 			$result = json_decode($body, true);
 			if (isset($result['ocs']['data']['sharedSecret'])) {
+				$this->logger->debug(
+					"adding shared secret for '$target'",
+					['app' => 'federation']
+				);
 				$this->trustedServers->addSharedSecret(
 						$target,
 						$result['ocs']['data']['sharedSecret']
