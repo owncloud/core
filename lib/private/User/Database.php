@@ -207,8 +207,8 @@ class Database extends Backend implements IUserBackend {
 			if(\OC::$server->getHasher()->verify($password, $storedHash, $newHash)) {
 				if(!empty($newHash)) {
 					$this->setPassword($uid, $password);
+					unset($this->cache[$uid]); // invalidate cache
 				}
-				unset($this->cache[$uid]); // invalidate cache
 				return $row['uid'];
 			}
 
@@ -233,13 +233,15 @@ class Database extends Backend implements IUserBackend {
 				return false;
 			}
 
+			// "uid" is primary key, so there can only be a single result
 			if ($row = $result->fetchRow()) {
 				$this->cache[$uid]['uid'] = $row['uid'];
 				$this->cache[$uid]['displayname'] = $row['displayname'];
 			} else {
-			    $this->cache[$uid] = false;
+				$this->cache[$uid] = false;
 				return false;
 			}
+			$result->closeCursor();
 		}
 
 		return true;
