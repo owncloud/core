@@ -1123,3 +1123,13 @@ Feature: sharing
     And as "user1" the folder "/sub" exists in trash
     And as "user1" the file "/sub/shared_file.txt" exists in trash
 
+  Scenario: moving a file into a share as recipient
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And user "user0" created a folder "/shared"
+    And folder "/shared" of user "user0" is shared with user "user1"
+    When User "user1" moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    Then as "user1" the file "/shared/shared_file.txt" exists
+    And as "user0" the file "/shared/shared_file.txt" exists
+
