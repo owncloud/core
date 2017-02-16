@@ -18,7 +18,7 @@ class Version20170213215145 implements ISchemaMigration {
 			$table->addColumn('execution_duration', 'integer', [
 				'notnull' => true,
 				'length' => 5,
-				'default' => 0,
+				'default' => -1,
 			]);
 		}
 	}
