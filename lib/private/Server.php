@@ -80,6 +80,7 @@ use OC\Security\CredentialsManager;
 use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
+use OC\Session\Memory;
 use OC\Settings\Panels\Helper;
 use OC\Settings\SettingsManager;
 use OC\Tagging\TagMapper;
@@ -87,6 +88,7 @@ use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OCP\IL10N;
 use OCP\IServerContainer;
+use OCP\ISession;
 use OCP\Security\IContentSecurityPolicyManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -115,7 +117,7 @@ class Server extends ServerContainer implements IServerContainer {
 		parent::__construct();
 		$this->webRoot = $webRoot;
 
-		$this->registerService('SettingsManager', function($c) {
+		$this->registerService('SettingsManager', function(Server $c) {
 			return new SettingsManager(
 				$c->getL10N('core'),
 				$c->getAppManager(),
@@ -444,6 +446,11 @@ class Server extends ServerContainer implements IServerContainer {
 		});
 		$this->registerService('DatabaseConnection', function (Server $c) {
 			$systemConfig = $c->getSystemConfig();
+			$keys = $systemConfig->getKeys();
+			if (!isset($keys['dbname']) && !isset($keys['dbhost']) && isset($keys['dbtableprefix'])) {
+				throw new \OC\DatabaseException('No database configured');
+			}
+
 			$factory = new \OC\DB\ConnectionFactory($systemConfig);
 			$type = $systemConfig->getValue('dbtype', 'sqlite');
 			if (!$factory->isValidType($type)) {
@@ -954,21 +961,32 @@ class Server extends ServerContainer implements IServerContainer {
 	 * @return \OC\User\Session
 	 */
 	public function getUserSession() {
+		if($this->getConfig()->getSystemValue('installed', false) === false) {
+			return null;
+		}
 		return $this->query('UserSession');
 	}
 
 	/**
-	 * @return \OCP\ISession
+	 * @return ISession
 	 */
 	public function getSession() {
-		return $this->query('UserSession')->getSession();
+		$userSession = $this->getUserSession();
+		if (is_null($userSession)) {
+			return new Memory('');
+		}
+		return $userSession->getSession();
 	}
 
 	/**
-	 * @param \OCP\ISession $session
+	 * @param ISession $session
 	 */
-	public function setSession(\OCP\ISession $session) {
-		return $this->query('UserSession')->setSession($session);
+	public function setSession(ISession $session) {
+		$userSession = $this->getUserSession();
+		if (is_null($userSession)) {
+			return;
+		}
+		$userSession->setSession($session);
 	}
 
 	/**

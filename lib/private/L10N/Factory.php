@@ -76,7 +76,7 @@ class Factory implements IFactory {
 	 */
 	public function __construct(IConfig $config,
 								IRequest $request,
-								IUserSession $userSession,
+								IUserSession $userSession = null,
 								$serverRoot) {
 		$this->config = $config;
 		$this->request = $request;
@@ -128,7 +128,7 @@ class Factory implements IFactory {
 		 *
 		 * @link https://github.com/owncloud/core/issues/21955
 		 */
-		if($this->config->getSystemValue('installed', false)) {
+		if(!is_null($this->userSession) && $this->config->getSystemValue('installed', false)) {
 			$userId = !is_null($this->userSession->getUser()) ? $this->userSession->getUser()->getUID() :  null;
 			if(!is_null($userId)) {
 				$userLang = $this->config->getUserValue($userId, 'core', 'lang', null);
