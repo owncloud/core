@@ -28,16 +28,19 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use OC\Files\View;
+use OCP\Constants;
+use Test\Traits\UserTrait;
+
 /**
  * Class CacheTest
  *
  * @group DB
  */
 class CacheTest extends TestCase {
+	use UserTrait;
 
-	/**
-	 * @var \OC\Files\View
-	 */
+	/** @var View */
 	public $user2View;
 
 	/** @var \OC\Files\Cache\Cache */
@@ -60,12 +63,17 @@ class CacheTest extends TestCase {
 
 		$this->shareManager = \OC::$server->getShareManager();
 
+		$this->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
+		$this->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
+
 		\OC_User::setDisplayName(self::TEST_FILES_SHARING_API_USER1, 'User One');
 		\OC_User::setDisplayName(self::TEST_FILES_SHARING_API_USER2, 'User Two');
 
-		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
-		$this->user2View = new \OC\Files\View('/'. self::TEST_FILES_SHARING_API_USER2 . '/files');
+		$this->user2View = new View('/'. self::TEST_FILES_SHARING_API_USER2 . '/files');
+
+		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
 		// prepare user1's dir structure
 		$this->view->mkdir('container');
@@ -94,7 +102,7 @@ class CacheTest extends TestCase {
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
 			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
 			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
-			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+			->setPermissions(Constants::PERMISSION_ALL);
 		$this->shareManager->createShare($share);
 
 		$node = $rootFolder->get('container/shared single file.txt');
@@ -103,14 +111,14 @@ class CacheTest extends TestCase {
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
 			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
 			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
-			->setPermissions(\OCP\Constants::PERMISSION_ALL & ~(\OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_DELETE));
+			->setPermissions(Constants::PERMISSION_ALL & ~(Constants::PERMISSION_CREATE | Constants::PERMISSION_DELETE));
 		$this->shareManager->createShare($share);
 
 		// login as user2
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
 		// retrieve the shared storage
-		$secondView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2);
+		$secondView = new View('/' . self::TEST_FILES_SHARING_API_USER2);
 		list($this->sharedStorage,) = $secondView->resolvePath('files/shareddir');
 		$this->sharedCache = $this->sharedStorage->getCache();
 	}
@@ -393,12 +401,12 @@ class CacheTest extends TestCase {
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
 			->setSharedWith(self::TEST_FILES_SHARING_API_USER3)
 			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
-			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+			->setPermissions(Constants::PERMISSION_ALL);
 		$share = $this->shareManager->createShare($share);
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER3);
 
-		$thirdView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER3 . '/files');
+		$thirdView = new View('/' . self::TEST_FILES_SHARING_API_USER3 . '/files');
 		$results = $thirdView->getDirectoryContent('/subdir');
 
 		$this->verifyFiles(
@@ -477,7 +485,7 @@ class CacheTest extends TestCase {
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
 			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
 			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
-			->setPermissions(\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE);
+			->setPermissions(Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE | Constants::PERMISSION_SHARE);
 		$this->shareManager->createShare($share);
 
 		\OC_Util::tearDownFS();
@@ -508,7 +516,7 @@ class CacheTest extends TestCase {
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
 			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
 			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
-			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+			->setPermissions(Constants::PERMISSION_ALL);
 		$this->shareManager->createShare($share);
 		\OC_Util::tearDownFS();
 

@@ -33,7 +33,6 @@ use OC\OCS\Result;
 use \OC_Helper;
 use OCP\API;
 use OCP\Files\NotFoundException;
-use OCP\IConfig;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\ILogger;
@@ -46,8 +45,6 @@ class Users {
 
 	/** @var IUserManager */
 	private $userManager;
-	/** @var IConfig */
-	private $config;
 	/** @var IGroupManager|\OC\Group\Manager */ // FIXME Requires a method that is not on the interface
 	private $groupManager;
 	/** @var IUserSession */
@@ -59,19 +56,16 @@ class Users {
 
 	/**
 	 * @param IUserManager $userManager
-	 * @param IConfig $config
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
 	 * @param ILogger $logger
 	 */
 	public function __construct(IUserManager $userManager,
-								IConfig $config,
 								IGroupManager $groupManager,
 								IUserSession $userSession,
 								ILogger $logger,
 								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager ) {
 		$this->userManager = $userManager;
-		$this->config = $config;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->logger = $logger;
@@ -203,7 +197,7 @@ class Users {
 		// Admin? Or SubAdmin?
 		if($this->groupManager->isAdmin($currentLoggedInUser->getUID())
 			|| $this->groupManager->getSubAdmin()->isUserAccessible($currentLoggedInUser, $targetUserObject)) {
-			$data['enabled'] = $this->config->getUserValue($userId, 'core', 'enabled', 'true');
+			$data['enabled'] = $targetUserObject->isEnabled() ? 'true' : 'false';
 		} else {
 			// Check they are looking up themselves
 			if($currentLoggedInUser->getUID() !== $userId) {

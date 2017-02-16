@@ -10,7 +10,8 @@
 namespace Test\App;
 
 use OC\Group\Group;
-use OC\User\User;
+use OCP\IUser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 
 /**
@@ -61,25 +62,25 @@ class ManagerTest extends TestCase {
 		return $config;
 	}
 
-	/** @var \OCP\IUserSession */
+	/** @var \OCP\IUserSession | \PHPUnit_Framework_MockObject_MockObject */
 	protected $userSession;
 
-	/** @var \OCP\IGroupManager */
+	/** @var \OCP\IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
 	protected $groupManager;
 
 	/** @var \OCP\IAppConfig */
 	protected $appConfig;
 
-	/** @var \OCP\ICache */
+	/** @var \OCP\ICache | \PHPUnit_Framework_MockObject_MockObject */
 	protected $cache;
 
-	/** @var \OCP\ICacheFactory */
+	/** @var \OCP\ICacheFactory | \PHPUnit_Framework_MockObject_MockObject */
 	protected $cacheFactory;
 
 	/** @var \OCP\App\IAppManager */
 	protected $manager;
 
-	/** @var  \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+	/** @var  EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
 	protected $eventDispatcher;
 
 	protected function setUp() {
@@ -243,18 +244,18 @@ class ManagerTest extends TestCase {
 
 	public function testIsEnabledForUserEnabled() {
 		$this->appConfig->setValue('test', 'enabled', 'yes');
-		$user = new User('user1', null);
+		$user = $this->createMock(IUser::class);
 		$this->assertTrue($this->manager->isEnabledForUser('test', $user));
 	}
 
 	public function testIsEnabledForUserDisabled() {
 		$this->appConfig->setValue('test', 'enabled', 'no');
-		$user = new User('user1', null);
+		$user = $this->createMock(IUser::class);
 		$this->assertFalse($this->manager->isEnabledForUser('test', $user));
 	}
 
 	public function testIsEnabledForUserEnabledForGroup() {
-		$user = new User('user1', null);
+		$user = $this->createMock(IUser::class);
 		$this->groupManager->expects($this->once())
 			->method('getUserGroupIds')
 			->with($user)
@@ -265,7 +266,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testIsEnabledForUserDisabledForGroup() {
-		$user = new User('user1', null);
+		$user = $this->createMock(IUser::class);
 		$this->groupManager->expects($this->once())
 			->method('getUserGroupIds')
 			->with($user)
@@ -281,7 +282,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testIsEnabledForUserLoggedIn() {
-		$user = new User('user1', null);
+		$user = $this->createMock(IUser::class);
 
 		$this->userSession->expects($this->once())
 			->method('getUser')
@@ -310,7 +311,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testGetAppsForUser() {
-		$user = new User('user1', null);
+		$user = $this->createMock(IUser::class);
 		$this->groupManager->expects($this->any())
 			->method('getUserGroupIds')
 			->with($user)

@@ -157,7 +157,7 @@ class User implements IUser {
 	 * @return int
 	 */
 	public function getLastLogin() {
-		return $this->account->getLastLogin();
+		return (int)$this->account->getLastLogin();
 	}
 
 	/**
@@ -226,8 +226,9 @@ class User implements IUser {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
 		}
-		$backend = $this->account->getBackendInstance();
-		if ($backend instanceof IChangePasswordBackend || $backend->implementsActions(Backend::SET_PASSWORD)) {
+		if ($this->canChangePassword()) {
+			/** @var IChangePasswordBackend $backend */
+			$backend = $this->account->getBackendInstance();
 			$result = $backend->setPassword($this->getUID(), $password);
 			if ($result) {
 				if ($this->emitter) {
@@ -286,7 +287,11 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function canChangePassword() {
-		return true;
+		$backend = $this->account->getBackendInstance();
+		if (is_null($backend)) {
+			return false;
+		}
+		return $backend instanceof IChangePasswordBackend || $backend->implementsActions(Backend::SET_PASSWORD);
 	}
 
 	/**

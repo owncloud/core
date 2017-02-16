@@ -9,7 +9,9 @@
 namespace Test\Files;
 
 use OC\Files\Filesystem;
+use OC\Files\Utils\Scanner;
 use OCP\Share;
+use Test\Traits\UserTrait;
 
 /**
  * Class EtagTest
@@ -19,14 +21,12 @@ use OCP\Share;
  * @package Test\Files
  */
 class EtagTest extends \Test\TestCase {
+
+	use UserTrait;
+
 	private $datadir;
 
 	private $tmpDir;
-
-	/**
-	 * @var \Test\Util\User\Dummy $userBackend
-	 */
-	private $userBackend;
 
 	protected function setUp() {
 		parent::setUp();
@@ -41,9 +41,6 @@ class EtagTest extends \Test\TestCase {
 		$this->datadir = $config->getSystemValue('datadirectory');
 		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		$config->setSystemValue('datadirectory', $this->tmpDir);
-
-		$this->userBackend = new \Test\Util\User\Dummy();
-		\OC_User::useBackend($this->userBackend);
 	}
 
 	protected function tearDown() {
@@ -55,7 +52,7 @@ class EtagTest extends \Test\TestCase {
 
 	public function testNewUser() {
 		$user1 = $this->getUniqueID('user_');
-		$this->userBackend->createUser($user1, '');
+		$this->createUser($user1, $user1);
 
 		$this->loginAsUser($user1);
 		Filesystem::mkdir('/folder');
@@ -67,7 +64,7 @@ class EtagTest extends \Test\TestCase {
 		$files = ['/foo.txt', '/folder/bar.txt', '/folder/subfolder', '/folder/subfolder/qwerty.txt'];
 		$originalEtags = $this->getEtags($files);
 
-		$scanner = new \OC\Files\Utils\Scanner($user1, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
+		$scanner = new Scanner($user1, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
 		$scanner->backgroundScan('/');
 
 		$newEtags = $this->getEtags($files);
@@ -79,6 +76,7 @@ class EtagTest extends \Test\TestCase {
 
 	/**
 	 * @param string[] $files
+	 * @return array
 	 */
 	private function getEtags($files) {
 		$etags = [];

@@ -76,9 +76,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \OCP\IConfig $config
 	 * @param IDBConnection $connection
 	 */
-	public function __construct(IConfig $config, IDBConnection $connection) {
+	public function __construct(IConfig $config, AccountMapper $accountMapper) {
 		$this->config = $config;
-		$this->accountMapper = new AccountMapper($connection);
+		$this->accountMapper = $accountMapper;
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
 			/** @var \OC\User\User $user */
@@ -133,6 +133,9 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		try {
 			$account = $this->accountMapper->getByUid($uid);
+			if (is_null($account)) {
+				return null;
+			}
 			return $this->getUserObject($account);
 		} catch (DoesNotExistException $ex) {
 			return null;
@@ -201,7 +204,6 @@ class Manager extends PublicEmitter implements IUserManager {
 					try {
 						$account = $this->accountMapper->getByUid($uid);
 					} catch(DoesNotExistException $ex) {
-						// TODO: get initial fill from the backend???
 						$account = $this->newAccount($uid, $backend);
 					}
 					return $this->getUserObject($account);
@@ -223,9 +225,13 @@ class Manager extends PublicEmitter implements IUserManager {
 	 */
 	public function search($pattern, $limit = null, $offset = null) {
 		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
-		return array_map(function(Account $account) {
-			return $this->getUserObject($account);
-		}, $accounts);
+		$users = [];
+		foreach ($accounts as $account) {
+			$user = $this->getUserObject($account);
+			$users[$user->getUID()] = $user;
+		}
+
+		return $users;
 	}
 
 	/**
@@ -294,6 +300,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *                if $hasLoggedIn is true only an int is returned
 	 */
 	public function countUsers($hasLoggedIn = false) {
+		if ($hasLoggedIn) {
+			return $this->accountMapper->getUserCount($hasLoggedIn);
+		}
 		return $this->accountMapper->getUserCountPerBackend($hasLoggedIn);
 	}
 
@@ -355,6 +364,7 @@ class Manager extends PublicEmitter implements IUserManager {
 		$account->setUserId($uid);
 		$account->setBackend(get_class($backend));
 		$account->setState(Account::STATE_ENABLED);
+		$account->setLastLogin(0);
 		$b = $account->getBackendInstance();
 		if ($b->implementsActions(Backend::GET_DISPLAYNAME)) {
 			$account->setDisplayName($b->getDisplayName($uid));
