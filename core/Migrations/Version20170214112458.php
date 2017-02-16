@@ -36,15 +36,16 @@ class Version20170214112458 implements ISchemaMigration {
 			'length' => 32,
 		]);
 		$table->addColumn('last_login', Type::INTEGER, [
-			'notnull' => false,
+			'notnull' => true,
 			'length' => 32,
+			'default' => 0,
 		]);
 		$table->addColumn('backend', Type::STRING, [
-			'notnull' => false,
+			'notnull' => true,
 			'length' => 64,
 		]);
 		$table->addColumn('home', Type::STRING, [
-			'notnull' => false,
+			'notnull' => true,
 			'length' => 1024,
 		]);
 		$table->addColumn('state', Type::SMALLINT, [

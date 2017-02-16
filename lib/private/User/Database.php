@@ -173,6 +173,7 @@ class Database extends Backend implements IUserBackend {
 		$parameters = [];
 		$searchLike = '';
 		if ($search !== '') {
+			$search = \OC::$server->getDatabaseConnection()->escapeLikeParameter($search);
 			$parameters[] = '%' . $search . '%';
 			$parameters[] = '%' . $search . '%';
 			$searchLike = ' WHERE LOWER(`displayname`) LIKE LOWER(?) OR '
@@ -262,6 +263,7 @@ class Database extends Backend implements IUserBackend {
 		$parameters = [];
 		$searchLike = '';
 		if ($search !== '') {
+			$search = \OC::$server->getDatabaseConnection()->escapeLikeParameter($search);
 			$parameters[] = '%' . $search . '%';
 			$searchLike = ' WHERE LOWER(`uid`) LIKE LOWER(?)';
 		}

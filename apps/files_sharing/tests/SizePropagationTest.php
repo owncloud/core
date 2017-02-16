@@ -39,8 +39,8 @@ class SizePropagationTest extends TestCase {
 	use UserTrait;
 	use MountProviderTrait;
 
-	protected function setupUser($name, $password = '') {
-		$this->createUser($name, $password);
+	protected function setupUser($name) {
+		$this->createUser($name);
 		$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->registerMount($name, '\OC\Files\Storage\Local', '/' . $name, ['datadir' => $tmpFolder]);
 		$this->loginAsUser($name);

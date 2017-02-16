@@ -13,6 +13,7 @@ use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Temporary;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IUser;
+use Test\Traits\UserTrait;
 
 class TestScanner extends \OC\Files\Utils\Scanner {
 	/**
@@ -40,22 +41,16 @@ class TestScanner extends \OC\Files\Utils\Scanner {
  * @package Test\Files\Utils
  */
 class ScannerTest extends \Test\TestCase {
-	/**
-	 * @var \Test\Util\User\Dummy
-	 */
-	private $userBackend;
+	use UserTrait;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->userBackend = new \Test\Util\User\Dummy();
-		\OC::$server->getUserManager()->registerBackend($this->userBackend);
 		$this->loginAsUser();
 	}
 
 	protected function tearDown() {
 		$this->logout();
-		\OC::$server->getUserManager()->removeBackend($this->userBackend);
 		parent::tearDown();
 	}
 
@@ -105,7 +100,7 @@ class ScannerTest extends \Test\TestCase {
 
 	public function testScanSubMount() {
 		$uid = $this->getUniqueID();
-		$this->userBackend->createUser($uid, 'test');
+		$this->createUser($uid);
 
 		$mountProvider = $this->createMock('\OCP\Files\Config\IMountProvider');
 
