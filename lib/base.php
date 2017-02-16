@@ -329,7 +329,7 @@ class OC {
 	/**
 	 * Checks if the version requires an update and shows
 	 * @param bool $showTemplate Whether an update screen should get shown
-	 * @return bool|void
+	 * @return bool
 	 */
 	public static function checkUpgrade($showTemplate = true) {
 		if (\OCP\Util::needUpgrade()) {
@@ -391,6 +391,7 @@ class OC {
 		\OCP\Util::addScript('update');
 		\OCP\Util::addStyle('update');
 
+		/** @var \OC\App\AppManager $appManager */
 		$appManager = \OC::$server->getAppManager();
 
 		$tmpl = new OC_Template('', 'update.admin', 'guest');
@@ -627,12 +628,12 @@ class OC {
 		$systemConfig = \OC::$server->getSystemConfig();
 
 		// User and Groups
-		if (!$systemConfig->getValue("installed", false)) {
+		if ($systemConfig->getValue("installed", false)) {
+			OC_User::useBackend(new \OC\User\Database());
+			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
+		} else {
 			self::$server->getSession()->set('user_id', '');
 		}
-
-		OC_User::useBackend(new \OC\User\Database());
-		\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
 
 		// Subscribe to the hook
 		\OCP\Util::connectHook(
@@ -657,8 +658,10 @@ class OC {
 		}
 		self::registerShareHooks();
 		self::registerLogRotate();
-		self::registerEncryptionWrapper();
-		self::registerEncryptionHooks();
+		if ($systemConfig->getValue("installed", false)) {
+			self::registerEncryptionWrapper();
+			self::registerEncryptionHooks();
+		}
 
 		//make sure temporary files are cleaned up
 		$tmpManager = \OC::$server->getTempManager();
