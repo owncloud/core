@@ -43,6 +43,7 @@ namespace OC\Share;
 
 use OC\Files\Filesystem;
 use OCA\FederatedFileSharing\DiscoveryManager;
+use OCA\Federation\Cluster;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IUserSession;
 use OCP\IDBConnection;
@@ -2655,7 +2656,8 @@ class Share extends Constants {
 	 * @return array
 	 */
 	private static function tryHttpPostToShareEndpoint($remoteDomain, $urlSuffix, array $fields) {
-		$protocol = 'https://';
+		$cluster = new Cluster(); // FIXME DI
+		$protocol = $cluster->getScheme($remoteDomain).'://';
 		$result = [
 			'success' => false,
 			'result' => '',

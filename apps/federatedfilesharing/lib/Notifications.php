@@ -3,8 +3,12 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
+<<<<<<< HEAD
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+=======
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+>>>>>>> af9f938... introducing federated cluster
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -26,6 +30,7 @@
 
 namespace OCA\FederatedFileSharing;
 
+use OCA\Federation\Cluster;
 use OCP\AppFramework\Http;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClientService;
@@ -45,6 +50,9 @@ class Notifications {
 	/** @var IJobList  */
 	private $jobList;
 
+	/** @var Cluster */
+	private $cluster;
+
 	/**
 	 * @param AddressHandler $addressHandler
 	 * @param IClientService $httpClientService
@@ -61,6 +69,7 @@ class Notifications {
 		$this->httpClientService = $httpClientService;
 		$this->discoveryManager = $discoveryManager;
 		$this->jobList = $jobList;
+		$this->cluster = new Cluster(); // FIXME DI
 	}
 
 	/**
@@ -84,7 +93,7 @@ class Notifications {
 
 		if ($user && $remote) {
 			$url = $remote;
-			$local = $this->addressHandler->generateRemoteURL();
+			$local = $this->cluster->getSourceFor($remote);
 
 			$fields = [
 				'shareWith' => $user,
@@ -279,7 +288,7 @@ class Notifications {
 	 */
 	protected function tryHttpPostToShareEndpoint($remoteDomain, $urlSuffix, array $fields) {
 		$client = $this->httpClientService->newClient();
-		$protocol = 'https://';
+		$protocol = $this->cluster->getScheme($remoteDomain).'://';
 		$result = [
 			'success' => false,
 			'result' => '',

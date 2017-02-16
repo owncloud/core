@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<info>
+	<id>federatedcluster</id>
+	<name>Federated Cluster</name>
+	<namespace>FederatedCluster</namespace>
+	<description>Allows direct login to other cluster nodes</description>
+	<licence>AGPL</licence>
+	<author>Jörn Dreyer</author>
+	<version>0.0.1</version>
+	<dependencies>
+		<owncloud min-version="9.1" max-version="10.0" />
+	</dependencies>
+	<types>
+		<authentication/>
+	</types>
+</info>

@@ -4,6 +4,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -25,6 +26,7 @@
 namespace OCA\FederatedFileSharing;
 
 use OC\Share20\Share;
+use OCA\Federation\Cluster;
 use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -77,6 +79,9 @@ class FederatedShareProvider implements IShareProvider {
 	/** @var IUserManager */
 	private $userManager;
 
+	/** @var Cluster  */
+	private $cluster;
+
 	/**
 	 * DefaultShareProvider constructor.
 	 *
@@ -110,6 +115,7 @@ class FederatedShareProvider implements IShareProvider {
 		$this->rootFolder = $rootFolder;
 		$this->config = $config;
 		$this->userManager = $userManager;
+		$this->cluster = $cluster = new Cluster(); // FIXME DI
 	}
 
 	/**
@@ -221,16 +227,25 @@ class FederatedShareProvider implements IShareProvider {
 
 		try {
 			$sharedByFederatedId = $share->getSharedBy();
+			$shareWith = $share->getSharedWith();
+			$clusterId = $this->cluster->getClusterUserId($shareWith);
+			if ($clusterId) {
+				$shareWith = $clusterId;
+				$remote = $this->cluster->getNodeHost();
+			} else {
+				$remote = $this->addressHandler->generateRemoteURL();
+			}
 			if ($this->userManager->userExists($sharedByFederatedId)) {
-				$sharedByFederatedId = $sharedByFederatedId . '@' . $this->addressHandler->generateRemoteURL();
+				// TODO can we omit the remote part in the custer?
+				$sharedByFederatedId = $sharedByFederatedId . '@' . $remote;
 			}
 			$send = $this->notifications->sendRemoteShare(
 				$token,
-				$share->getSharedWith(),
+				$shareWith,
 				$share->getNode()->getName(),
 				$shareId,
 				$share->getShareOwner(),
-				$share->getShareOwner() . '@' . $this->addressHandler->generateRemoteURL(),
+				$share->getShareOwner() . '@' . $remote,
 				$share->getSharedBy(),
 				$sharedByFederatedId
 			);
