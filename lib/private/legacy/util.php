@@ -66,6 +66,7 @@ class OC_Util {
 	public static $headers = [];
 	private static $rootMounted = false;
 	private static $fsSetup = false;
+	private static $version;
 
 	protected static function getAppManager() {
 		return \OC::$server->getAppManager();
@@ -372,7 +373,7 @@ class OC_Util {
 	 */
 	public static function getVersion() {
 		OC_Util::loadVersion();
-		return \OC::$server->getSession()->get('OC_Version');
+		return self::$version['OC_Version'];
 	}
 
 	/**
@@ -382,7 +383,7 @@ class OC_Util {
 	 */
 	public static function getVersionString() {
 		OC_Util::loadVersion();
-		return \OC::$server->getSession()->get('OC_VersionString');
+		return self::$version['OC_VersionString'];
 	}
 
 	/**
@@ -406,7 +407,7 @@ class OC_Util {
 	 */
 	public static function getChannel() {
 		OC_Util::loadVersion();
-		return \OC::$server->getSession()->get('OC_Channel');
+		return self::$version['OC_Channel'];
 	}
 
 	/**
@@ -415,41 +416,30 @@ class OC_Util {
 	 */
 	public static function getBuild() {
 		OC_Util::loadVersion();
-		return \OC::$server->getSession()->get('OC_Build');
+		return self::$version['OC_Build'];
 	}
 
 	/**
 	 * @description load the version.php into the session as cache
 	 */
 	private static function loadVersion() {
-		$timestamp = filemtime(OC::$SERVERROOT . '/version.php');
-		if (!\OC::$server->getSession()->exists('OC_Version') or OC::$server->getSession()->get('OC_Version_Timestamp') != $timestamp) {
-			require OC::$SERVERROOT . '/version.php';
-			$session = \OC::$server->getSession();
-			/** @var $timestamp int */
-			$session->set('OC_Version_Timestamp', $timestamp);
-			/** @var $OC_Version string */
-			$session->set('OC_Version', $OC_Version);
-			/** @var $OC_VersionString string */
-			$session->set('OC_VersionString', $OC_VersionString);
-			/** @var $OC_Build string */
-			$session->set('OC_Build', $OC_Build);
-			
-			// Allow overriding update channel
-			
-			if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
-				$channel = \OC::$server->getAppConfig()->getValue('core', 'OC_Channel');
-			} else {
-				/** @var $OC_Channel string */
-				$channel = $OC_Channel;
-			}
-			
-			if (!is_null($channel)) {
-				$session->set('OC_Channel', $channel);
-			} else {
-				/** @var $OC_Channel string */
-				$session->set('OC_Channel', $OC_Channel);
-			}
+		require __DIR__ . '/../../../version.php';
+		/** @var $OC_Version string */
+		/** @var $OC_VersionString string */
+		/** @var $OC_Build string */
+		/** @var $OC_Channel string */
+		self::$version = [
+			'OC_Version' => $OC_Version,
+			'OC_VersionString' => $OC_VersionString,
+			'OC_Build' => $OC_Build,
+			'OC_Channel' => $OC_Channel,
+		];
+
+		// Allow overriding update channel
+
+		if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
+			$channel = \OC::$server->getConfig()->getAppValue('core', 'OC_Channel', $OC_Channel);
+			self::$version['OC_Channel'] = $channel;
 		}
 	}
 
