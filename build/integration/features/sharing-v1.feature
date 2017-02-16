@@ -977,3 +977,13 @@ Feature: sharing
     And the HTTP status code should be "200"
     And last share_id is not included in the answer
 
+  Scenario: moving a file into a share as recipient
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And user "user0" created a folder "/shared"
+    And folder "/shared" of user "user0" is shared with user "user1"
+    When User "user1" moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    Then as "user1" the file "/shared/shared_file.txt" exists
+    And as "user0" the file "/shared/shared_file.txt" exists
+
