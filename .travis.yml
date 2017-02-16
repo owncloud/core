@@ -14,6 +14,8 @@ env:
   global:
     - TEST_DAV=$(tests/travis/changed_app.sh dav)
     - TC=litmus-v2
+    - SRV_HOST_NAME=owncloud
+    - SRV_HOST_PORT=8888
   matrix:
     - DB=sqlite
 
@@ -27,15 +29,23 @@ addons:
   apt:
     packages:
     - realpath
+  hosts:
+    - owncloud
+  sauce_connect:
+    username: "individual-it"
+  jwt:
+    secure: "WaPqAVjcC6B4T5NWA1nffrywsnR9UZ5u3c2DrNLDR12cXJti0SbxGcE2Er8EGS1iCMxqMnpZfchbCelYmew5FOyeErqMTtni3lZ1gAu4KM35V5gUaRau8uEvTZk7AVHfDRSYlB/TJJV8sl8I33i3UvzUgsz4Il41X8qribycQOWoUCsiABIy/Fm05MhWugKjzBJ3Au/ZnNkYEjLW5z1cPymiuvNsUGvm9ushu2WwEc31hsS9lvpOcNVgdPJy2OaxNIZip8yH0c9gteo6rE7oElc81773K4QFf/0H0pD7Q4lUhqdHTn/aNyqWu8QaiS2BtygFKR15vxqbkloPQovM7S/Xr+PV7wQxItLE/E0QD8FkvIjoIVC4L448Mw+zBntpdGtmV4/UJJLl+VRFlLf5l2Do5fum1SeLI0kYaaN9rTXsFp/rmC7vT6dk3CiAm9owD69uWTVUecTqx2gRgNRdEXvL7t/6AZ8kspmWYdL9ekBSQ83rXlo7p8ZZm/Iu4k10JPCKxGfxVHFLVlPB6Z43+yBAtNjLkPdDP3+2FxU4LvvDKKXn2eESwkG2Mq5dEm4HAethygPJ48QmTYGPgg4b6PlcxWHoiC7qGZYWYj0Pmxt3kE6iZ4wxHG4cCU5p0/2MyGXzynjLz1qC6CZtXZbuyXDfrjvwcPXvvuANg0IX3hw="
 
 before_install:
   - make
-  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash tests/travis/before_install.sh $DB; fi"
+  - sh -c "if [ '$TEST_DAV' = '1' ] || [ '$TC' = 'selenium' ]; then bash tests/travis/before_install.sh $DB; fi"
 
 install:
-  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash tests/travis/install.sh $DB; fi"
+  - sh -c "if [ '$TEST_DAV' = '1' ] || [ '$TC' = 'selenium' ]; then bash tests/travis/install.sh $DB; fi"
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/install.sh; fi"
 
+before_script:
+  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_php_dev_server.sh; fi"
 
 script:
   - sh -c "if [ '$TC' = 'syntax' ]; then make test-php-lint ; fi"
@@ -43,6 +53,7 @@ script:
   - sh -c "if [ '$TEST_DAV' = '1' ]; then echo \"Testing DAV\"; fi"
 
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/script.sh; fi"
+  - sh -c "if [ '$TC' = 'selenium' ] && [ ! -z "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ]; then bash tests/travis/start_behat_tests.sh; fi"
 
 matrix:
   include:
@@ -52,6 +63,8 @@ matrix:
       env: DB=sqlite;TC=carddav
     - php: 5.6
       env: DB=sqlite;TC=caldav
+    - php: 5.6
+      env: DB=pgsql;TC=selenium
     - php: 5.6
       env: DB=sqlite;TC=syntax;TEST_DAV=0
     - php: 7.0
