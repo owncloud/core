@@ -237,7 +237,7 @@
 				if(response.responseJSON && response.responseJSON.message) {
 					message = ': ' + response.responseJSON.message;
 				}
-				OC.Notification.show('An error occurred while trying to update the tags' + message, {type: 'error'});
+				OC.Notification.show(t('files', 'An error occurred while trying to update the tags' + message), {type: 'error'});
 				toggleStar($actionEl, isFavorite);
 			});
 		}

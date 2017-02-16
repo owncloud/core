@@ -393,7 +393,7 @@
 						$loading.addClass('hidden');
 						$textArea.prop('disabled', false);
 
-						OC.Notification.show('Error occurred while updating comment with id {id}', {id: commentId, type: 'error'});
+						OC.Notification.show(t('comments', 'Error occurred while updating comment with id {id}', {id: commentId}), {type: 'error'});
 					}
 				});
 			} else {
@@ -418,7 +418,7 @@
 						$loading.addClass('hidden');
 						$textArea.prop('disabled', false);
 
-						OC.Notification.show('Error occurred while posting comment', {type: 'error'});
+						OC.Notification.show(t('comments', 'Error occurred while posting comment'), {type: 'error'});
 					}
 				});
 			}
