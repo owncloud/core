@@ -35,6 +35,7 @@ namespace OCA\Files_Versions\Tests;
 require_once __DIR__ . '/../appinfo/app.php';
 
 use OC\Files\Storage\Temporary;
+use Test\TestCase;
 
 /**
  * Class Test_Files_versions
@@ -42,7 +43,7 @@ use OC\Files\Storage\Temporary;
  *
  * @group DB
  */
-class VersioningTest extends \Test\TestCase {
+class VersioningTest extends TestCase {
 
 	const TEST_VERSIONS_USER = 'test-versions-user';
 	const TEST_VERSIONS_USER2 = 'test-versions-user2';
@@ -887,9 +888,7 @@ class VersioningTest extends \Test\TestCase {
 	public static function loginHelper($user, $create = false) {
 
 		if ($create) {
-			$backend  = new \Test\Util\User\Dummy();
-			$backend->createUser($user, $user);
-			\OC::$server->getUserManager()->registerBackend($backend);
+			\OC::$server->getUserManager()->createUser($user, $user);
 		}
 
 		$storage = new \ReflectionClass('\OCA\Files_Sharing\SharedStorage');

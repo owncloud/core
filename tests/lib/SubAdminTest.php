@@ -20,7 +20,7 @@
  */
 namespace Test;
 
-class SubAdminTest extends \Test\TestCase {
+class SubAdminTest extends TestCase {
 
 	/** @var \OCP\IUserManager */
 	private $userManager;
@@ -47,7 +47,7 @@ class SubAdminTest extends \Test\TestCase {
 
 		// Create 3 users and 3 groups
 		for ($i = 0; $i < 3; $i++) {
-			$this->users[] = $this->userManager->createUser('user'.$i, 'user');
+			$this->users[] = $this->userManager->createUser($this->getUniqueID('user'), 'user');
 			$this->groups[] = $this->groupManager->createGroup('group'.$i);
 		}
 

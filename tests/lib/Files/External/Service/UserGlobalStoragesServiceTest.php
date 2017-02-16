@@ -64,7 +64,7 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 
 		$this->globalStoragesService = $this->service;
 
-		$this->user = new \OC\User\User(self::USER_ID, null);
+		$this->user = $this->createUser(self::USER_ID, self::USER_ID);
 		/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession

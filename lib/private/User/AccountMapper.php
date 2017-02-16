@@ -23,6 +23,7 @@
 namespace OC\User;
 
 
+use OC\DB\QueryBuilder\Literal;
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
@@ -82,7 +83,7 @@ class AccountMapper extends Mapper {
 			->groupBy('backend');
 
 		if ($hasLoggedIn) {
-			$qb->where($qb->expr()->isNotNull('last_login'));
+			$qb->where($qb->expr()->gt('last_login', new Literal(0)));
 		}
 
 		$result = $qb->execute();
@@ -103,7 +104,7 @@ class AccountMapper extends Mapper {
 			->from($this->getTableName());
 
 		if ($hasLoggedIn) {
-			$qb->where($qb->expr()->isNotNull('last_login'));
+			$qb->where($qb->expr()->gt('last_login', new Literal(0)));
 		}
 
 		$result = $qb->execute();
@@ -123,7 +124,7 @@ class AccountMapper extends Mapper {
 				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
 		}
 		if ($onlySeen) {
-			$qb->where($qb->expr()->isNotNull('last_login'));
+			$qb->where($qb->expr()->gt('last_login', new Literal(0)));
 		}
 		$stmt = $qb->execute();
 		while ($row = $stmt->fetch()) {

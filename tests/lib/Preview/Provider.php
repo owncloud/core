@@ -21,7 +21,10 @@
 
 namespace Test\Preview;
 
+use Test\Traits\UserTrait;
+
 abstract class Provider extends \Test\TestCase {
+	use UserTrait;
 
 	/** @var string */
 	protected $imgPath;
@@ -49,11 +52,9 @@ abstract class Provider extends \Test\TestCase {
 
 		$userManager = \OC::$server->getUserManager();
 		$userManager->clearBackends();
-		$backend = new \Test\Util\User\Dummy();
-		$userManager->registerBackend($backend);
 
 		$userId = $this->getUniqueID();
-		$backend->createUser($userId, $userId);
+		$this->createUser($userId, $userId);
 		$this->loginAsUser($userId);
 
 		$this->storage = new \OC\Files\Storage\Temporary([]);

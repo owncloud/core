@@ -9,6 +9,7 @@
 namespace Test;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
+use OCP\IUser;
 
 /**
  * Test the storage functions of OC_Helper
@@ -22,12 +23,14 @@ class HelperStorageTest extends TestCase {
 	private $storageMock;
 	/** @var \OC\Files\Storage\Storage */
 	private $storage;
+	/** @var IUser */
+	private $userObj;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->user = $this->getUniqueID('user_');
-		\OC::$server->getUserManager()->createUser($this->user, $this->user);
+		$this->userObj = \OC::$server->getUserManager()->createUser($this->user, $this->user);
 
 		$this->storage = Filesystem::getStorage('/');
 		Filesystem::tearDown();
@@ -127,7 +130,7 @@ class HelperStorageTest extends TestCase {
 		$oldConfig = $config->getSystemValue('quota_include_external_storage', false);
 		$config->setSystemValue('quota_include_external_storage', 'true');
 
-		$config->setUserValue($this->user, 'files', 'quota', '25');
+		$this->userObj->setQuota('25');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
 		$this->assertEquals(3, $storageInfo['free']);

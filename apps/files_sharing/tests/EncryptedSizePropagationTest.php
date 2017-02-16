@@ -31,11 +31,11 @@ use Test\Traits\EncryptionTrait;
 class EncryptedSizePropagationTest extends SizePropagationTest {
 	use EncryptionTrait;
 
-	protected function setupUser($name, $password = '') {
-		$this->createUser($name, $password);
+	protected function setupUser($name) {
+		$this->createUser($name);
 		$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->registerMount($name, '\OC\Files\Storage\Local', '/' . $name, ['datadir' => $tmpFolder]);
-		$this->setupForUser($name, $password);
+		$this->setupForUser($name, $name);
 		$this->loginWithEncryption($name);
 		return new View('/' . $name . '/files');
 	}

@@ -35,7 +35,6 @@ use OCP\API;
 // Users
 $users = new Users(
 	\OC::$server->getUserManager(),
-	\OC::$server->getConfig(),
 	\OC::$server->getGroupManager(),
 	\OC::$server->getUserSession(),
 	\OC::$server->getLogger(),
