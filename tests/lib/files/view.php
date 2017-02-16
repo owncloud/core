@@ -481,6 +481,29 @@ class View extends \Test\TestCase {
 		$this->assertFalse($rootView->file_exists('substorage/bar.txt'));
 	}
 
+	public function rmdirOrUnlinkDataProvider() {
+		return [['rmdir'], ['unlink']];
+	}
+
+	/**
+	 * @dataProvider rmdirOrUnlinkDataProvider
+	 */
+	public function testRmdir($method) {
+		$storage1 = $this->getTestStorage();
+		\OC\Files\Filesystem::mount($storage1, [], '/');
+
+		$rootView = new \OC\Files\View('');
+		$rootView->mkdir('sub');
+		$rootView->mkdir('sub/deep');
+		$rootView->file_put_contents('/sub/deep/foo.txt', 'asd');
+
+		$this->assertTrue($rootView->file_exists('sub/deep/foo.txt'));
+
+		$this->assertTrue($rootView->$method('sub'));
+
+		$this->assertFalse($rootView->file_exists('sub'));
+	}
+
 	/**
 	 * @medium
 	 */

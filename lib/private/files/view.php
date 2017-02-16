@@ -602,7 +602,11 @@ class View {
 		if ($mount and $mount->getInternalPath($absolutePath) === '') {
 			return $this->removeMount($mount, $absolutePath);
 		}
-		return $this->basicOperation('unlink', $path, array('delete'));
+		if ($this->is_dir($path)) {
+			return $this->basicOperation('rmdir', $path, array('delete'));
+		} else {
+			return $this->basicOperation('unlink', $path, array('delete'));
+		}
 	}
 
 	/**
