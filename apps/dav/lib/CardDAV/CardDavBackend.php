@@ -100,8 +100,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @param string $principalUri
 	 * @return array
 	 */
-	function getAddressBooksForUser($principalUri) {
-		$principalUriOriginal = $principalUri;
+	function getUsersOwnAddressBooks($principalUri) {
 		$principalUri = $this->convertPrincipal($principalUri, true);
 		$query = $this->db->getQueryBuilder();
 		$query->select(['id', 'uri', 'displayname', 'principaluri', 'description', 'synctoken'])
@@ -111,21 +110,43 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$addressBooks = [];
 
 		$result = $query->execute();
-		while($row = $result->fetch()) {
+		while ($row = $result->fetch()) {
 			$addressBooks[$row['id']] = [
-				'id'  => $row['id'],
+				'id' => $row['id'],
 				'uri' => $row['uri'],
 				'principaluri' => $this->convertPrincipal($row['principaluri'], false),
 				'{DAV:}displayname' => $row['displayname'],
 				'{' . Plugin::NS_CARDDAV . '}addressbook-description' => $row['description'],
 				'{http://calendarserver.org/ns/}getctag' => $row['synctoken'],
-				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
+				'{http://sabredav.org/ns}sync-token' => $row['synctoken'] ? $row['synctoken'] : '0',
 			];
 		}
 		$result->closeCursor();
+		return array_values($addressBooks);
+	}
+
+	/**
+	 * Returns the list of address books for a specific user, including shared by other users.
+	 *
+	 * Every addressbook should have the following properties:
+	 *   id - an arbitrary unique id
+	 *   uri - the 'basename' part of the url
+	 *   principaluri - Same as the passed parameter
+	 *
+	 * Any additional clark-notation property may be passed besides this. Some
+	 * common ones are :
+	 *   {DAV:}displayname
+	 *   {urn:ietf:params:xml:ns:carddav}addressbook-description
+	 *   {http://calendarserver.org/ns/}getctag
+	 *
+	 * @param string $principalUri
+	 * @return array
+	 */
+	function getAddressBooksForUser($principalUri) {
+		$addressBooks = $this->getUsersOwnAddressBooks($principalUri);
 
 		// query for shared calendars
-		$principals = $this->principalBackend->getGroupMembership($principalUriOriginal, true);
+		$principals = $this->principalBackend->getGroupMembership($principalUri, true);
 		$principals[]= $principalUri;
 
 		$query = $this->db->getQueryBuilder();
