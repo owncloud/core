@@ -52,9 +52,6 @@ abstract class Job implements IJob {
 			//storing job start time
 			$jobStartTime = time();
 
-			echo 'some' . PHP_EOL;
-			gettype($this->argument);
-
 			\OCP\Util::writeLog('cron', 'Started background job of class : ' . get_class($this) . ' with arguments : ' . print_r($this->argument, true), \OCP\Util::DEBUG);
 
 			$this->run($this->argument);
