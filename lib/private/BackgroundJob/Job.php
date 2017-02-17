@@ -52,7 +52,10 @@ abstract class Job implements IJob {
 			//storing job start time
 			$jobStartTime = time();
 
-			\OCP\Util::writeLog('cron', 'Started background job of class : ' . get_class($this) . print_r($this->argument, true), \OCP\Util::DEBUG);
+			echo 'some' . PHP_EOL;
+			gettype($this->argument);
+
+			\OCP\Util::writeLog('cron', 'Started background job of class : ' . get_class($this) . ' with arguments : ' . print_r($this->argument, true), \OCP\Util::DEBUG);
 
 			$this->run($this->argument);
 
@@ -60,7 +63,8 @@ abstract class Job implements IJob {
 			$jobEndTime = time();
 			$timeTaken = $jobEndTime - $jobStartTime;
 
-			\OCP\Util::writeLog('cron', "Finished background job, the job took : $timeTaken seconds" . PHP_EOL . "job is an instance of class : " . get_class($this) . print_r($this->argument, true), \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('cron', "Finished background job, the job took : $timeTaken seconds, " . 
+				"this job is an instance of class : " . get_class($this) . ' with arguments : ' . print_r($this->argument, true), \OCP\Util::DEBUG);
 
 			$jobList->setExecutionTime($this, $timeTaken);
 		} catch (\Exception $e) {
