@@ -30,6 +30,7 @@ use Test\TestCase;
 use OC\Share20\DefaultShareProvider;
 use OCP\IUserManager;
 use OCP\IGroupManager;
+use OCP\IConfig;
 
 /**
  * Tests for repairing invalid shares
@@ -64,19 +65,67 @@ class RepairUnmergedSharesTest extends TestCase {
 		$config->expects($this->any())
 			->method('getSystemValue')
 			->with('version')
-			->will($this->returnValue('9.0.3.0'));
+			->will($this->returnValue('9.1.0.0'));
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->deleteAllShares();
 
-		$this->userManager = $this->createMock('\OCP\IUserManager');
-		$this->groupManager = $this->createMock('\OCP\IGroupManager');
+		$this->userManager = $this->createMock(IUserManager::class);
+		$this->groupManager = $this->createMock(IGroupManager::class);
 
 		// used to generate incremental stimes
 		$this->lastShareTime = time();
 
 		/** @var \OCP\IConfig $config */
 		$this->repair = new RepairUnmergedShares($config, $this->connection, $this->userManager, $this->groupManager);
+	}
+
+	public function versionsProvider() {
+		return [
+			['9.1.0', true],
+			['9.1.0.15', true],
+			['9.1.0.16', false],
+			['9.1.3', false],
+			['9.2.0', false],
+			['10.0.0', false],
+		];
+	}
+
+	/**
+	 * @dataProvider versionsProvider
+	 */
+	public function testDisabledVersions($version, $ran) {
+		$config = $this->createMock(IConfig::class);
+		$config->expects($this->any())
+			->method('getSystemValue')
+			->with('version')
+			->will($this->returnValue($version));
+
+		$this->connection = \OC::$server->getDatabaseConnection();
+
+		$this->userManager = $this->createMock(IUserManager::class);
+
+		$this->groupManager = $this->createMock(IGroupManager::class);
+
+		/** @var \OCP\IConfig $config */
+		$this->repair = new RepairUnmergedShares($config, $this->connection, $this->userManager, $this->groupManager);
+
+		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+			->disableOriginalConstructor()
+			->getMock();
+
+		if ($ran) {
+			$this->userManager->expects($this->once())
+				->method('countUsers')
+				->will($this->returnValue([0]));
+			$this->userManager->expects($this->once())
+				->method('callForAllUsers');
+		} else {
+			$this->userManager->expects($this->never())
+				->method('countUsers');
+		}
+
+		$this->repair->run($outputMock);
 	}
 
 	protected function tearDown() {
