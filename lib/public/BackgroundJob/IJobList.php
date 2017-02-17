@@ -118,4 +118,13 @@ interface IJobList {
 	 * @since 7.0.0
 	 */
 	public function setLastRun($job);
+
+	/**
+	 * set the lastRun of $job to now
+	 *
+	 * @param \OCP\BackgroundJob\IJob $job
+	 * @param int $timeTaken	 
+	 * @since 10.0.0
+	 */
+	public function setExecutionTime($job, $timeTaken);
 }
