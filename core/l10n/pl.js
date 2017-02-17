@@ -104,7 +104,7 @@ OC.L10N.register(
     "Ok" : "OK",
     "Error loading message template: {error}" : "Błąd podczas ładowania szablonu wiadomości: {error}",
     "read-only" : "tylko odczyt",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} konfliktów plików","{count} konfliktów plików","{count} konfliktów plików"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} konfliktów plików","{count} konfliktów plików","{count} konfliktów plików","{count} konfliktów plików"],
     "One file conflict" : "Konflikt pliku",
     "New Files" : "Nowe pliki",
     "Already existing files" : "Już istniejące pliki",
@@ -196,7 +196,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "Cześć {name}, dzisiejsza pogoda jest {weather}",
     "Hello {name}" : "Witaj {name}",
     "new" : "nowy",
-    "_download %n file_::_download %n files_" : ["pobrano %n plik","pobrano %n plików","pobrano %n plików"],
+    "_download %n file_::_download %n files_" : ["pobrano %n plik","pobrano %n plików","pobrano %n plików","pobrano %n plików"],
     "Updating to {version}" : "Uaktualnianie do {version}",
     "An error occurred." : "Wystąpił błąd",
     "Please reload the page." : "Proszę przeładować stronę",
@@ -294,4 +294,4 @@ OC.L10N.register(
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Aby uzyskać pomoc, zajrzyj do <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentacji</a>.",
     "This page will refresh itself when the %s instance is available again." : "Strona odświeży się gdy instancja %s będzie ponownie dostępna."
 },
-"nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

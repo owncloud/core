@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Depolama geçersiz",
     "Unknown error" : "Bilinmeyen hata",
     "All files" : "Tüm dosyalar",
+    "Saved" : "Kaydedildi",
     "File could not be found" : "Dosya bulunamadı",
     "Home" : "Ev",
     "Close" : "Kapat",

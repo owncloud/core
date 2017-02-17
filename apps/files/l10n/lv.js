@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Nepareiza krātuve",
     "Unknown error" : "Nezināma kļūda",
     "All files" : "Visas datnes",
+    "Saved" : "Saglabāts",
     "Home" : "Mājas",
     "Close" : "Aizvērt",
     "Favorites" : "Iecienītie",

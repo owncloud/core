@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Unknown error" : "Et ass en onbekannte Fehler opgetrueden",
     "All files" : "All d'Fichieren",
+    "Saved" : "Gespäichert",
     "Home" : "Doheem",
     "Close" : "Zoumaachen",
     "Favorites" : "Favoriten",

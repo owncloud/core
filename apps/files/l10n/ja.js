@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "ストレージが無効です",
     "Unknown error" : "不明なエラー",
     "All files" : "すべてのファイル",
+    "Saved" : "保存されました",
     "File could not be found" : "ファイルは見つかりませんでした。",
     "Home" : "ホーム",
     "Close" : "閉じる",
