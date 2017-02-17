@@ -1569,7 +1569,7 @@
 				if (e instanceof DOMException) {
 					console.error(e);
 					this.changeDirectory('/');
-					OC.Notification.show(t('files', 'Invalid path'), {meout: 7, type: 'error'});
+					OC.Notification.show(t('files', 'Invalid path'), {timeout: 7, type: 'error'});
 					return;
 				}
 				throw e;
