@@ -1016,15 +1016,62 @@ class Access extends LDAPUtility implements IUserTools {
 											$skipHandling);
 			return array();
 		}
-		// Do the server-side sorting
-		foreach(array_reverse($attr) as $sortAttr){
-			foreach($sr as $searchResource) {
-				$this->ldap->sort($cr, $searchResource, $sortAttr);
-			}
-		}
+
 		$findings = array();
 		foreach($sr as $res) {
 			$findings = array_merge($findings, $this->ldap->getEntries($cr	, $res ));
+		}
+
+		if ($findingsCount['count'] !== 0) {
+			// sort only if there are results. Otherwise skip all this extra processing
+
+			// remove the "count" key from the list to prevent possible issues sorting, it will be added later
+			$findingsCount = $findings['count'];
+			unset($findings['count']);
+
+			if ($attr === null) {
+				$sortBy = 'dn';  // this will always be returned in the result
+			} else {
+				if (is_array($attr)) {
+					// pick the first element
+					$sortBy = $attr[0];
+				} else {
+					$sortBy = $attr;
+				}
+			}
+
+			usort($findings, function($a, $b) use ($sortBy) {
+				// ignore warnings about missing keys, we'll check later if needed
+				if (is_string(@$a[$sortBy]) && is_string(@$b[$sortBy])) {
+					// dn will return a string, the rest of attributes will return an array
+					return strcmp($a[$sortBy], $b[$sortBy]);
+				}
+
+				if (is_array(@$a[$sortBy]) && is_array(@$b[$sortBy])) {
+					// compare only by the first element. This is enough for most attributes. For multivalued
+					// attributes we can't really sort arrays so we'll also check the first element and sort
+					// accordingly
+					return strcmp($a[$sortBy][0], $b[$sortBy][0]);
+				}
+
+				// sanity check values
+				if (!isset($a[$sortBy]) && !isset($b[$sortBy])) {
+					return 0;
+				}
+
+				if (isset($a[$sortBy]) && !isset($b[$sortBy])) {
+					return -1;
+				}
+
+				if (!isset($a[$sortBy]) && isset($b[$sortBy])) {
+					return 1;
+				}
+				// the rest of scenarios are ignored as we can't compare accordingly. return 0 just in case
+				return 0;
+			});
+
+			// restore the count at the end the array. The position shouldn't matter
+			$findings['count'] = $findingsCount;
 		}
 
 		$this->processPagedSearchStatus($sr, $filter, $base, $findings['count'],
