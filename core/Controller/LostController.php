@@ -239,76 +239,62 @@ class LostController extends Controller {
 	/**
 	 * @param string $user
 	 * @throws \Exception
+	 * @return boolean
 	 */
 	protected function sendEmail($user) {
 		if ($this->userManager->userExists($user)) {
-
 			$userObject = $this->userManager->get($user);
 			$email = $userObject->getEMailAddress();
 
-			if (!empty($email)) {
-				$token = $this->secureRandom->generate(21,
-					ISecureRandom::CHAR_DIGITS .
-					ISecureRandom::CHAR_LOWER .
-					ISecureRandom::CHAR_UPPER);
-				$this->config->setUserValue($user, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
-
-				$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $user, 'token' => $token]);
-
-				$tmpl = new \OC_Template('core', 'lostpassword/email');
-				$tmpl->assign('link', $link);
-				$msg = $tmpl->fetchPage();
-
-				try {
-					$message = $this->mailer->createMessage();
-					$message->setTo([$email => $user]);
-					$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
-					$message->setPlainBody($msg);
-					$message->setFrom([$this->from => $this->defaults->getName()]);
-					$this->mailer->send($message);
-				} catch (\Exception $e) {
-					throw new \Exception($this->l10n->t(
-						'Couldn\'t send reset email. Please contact your administrator.'
-					));
-				}
-			} else {
+			if (empty($email)) {
 				$this->logger->error('Could not send reset email because there is no email address for this username. User: {user}', ['app' => 'core', 'user' => $user]);
+				return false;
 			}
 		} else {
+			$this->logger->error('User with input as username does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
 			$users = $this->userManager->getByEmail($user);
-			if (count($users) === 1) {
-				$email = $user;
-				$userId = $users[0]->getUID();
-				$token = $this->secureRandom->generate(21,
-					ISecureRandom::CHAR_DIGITS .
-					ISecureRandom::CHAR_LOWER .
-					ISecureRandom::CHAR_UPPER);
-				$this->config->setUserValue($userId, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
 
-				$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $userId, 'token' => $token]);
-
-				$tmpl = new \OC_Template('core', 'lostpassword/email');
-				$tmpl->assign('link', $link);
-				$msg = $tmpl->fetchPage();
-
-				try {
-					$message = $this->mailer->createMessage();
-					$message->setTo([$email => $userId]);
-					$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
-					$message->setPlainBody($msg);
-					$message->setFrom([$this->from => $this->defaults->getName()]);
-					$this->mailer->send($message);
-				} catch (\Exception $e) {
-					throw new \Exception($this->l10n->t(
-						'Couldn\'t send reset email. Please contact your administrator.'
-					));
-				}
-			} elseif (count($users) === 0) {
-				$this->logger->error('Could not send reset email because User does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
-			} else {
-				$this->logger->error('Could not send reset email because the email id is not unique. User: {user}', ['app' => 'core', 'user' => $user]);
+			switch (count($users)) {
+				case 0:
+					$this->logger->error('Could not send reset email because User with input as email also does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
+					return false;
+				case 1:
+					$this->logger->info('User with input as email address found. User: {user}', ['app' => 'core', 'user' => $user]);
+					$email = $user;
+					$user = $users[0]->getUID();
+					break;
+				default:
+					$this->logger->error('Could not send reset email because the email id is not unique. User: {user}', ['app' => 'core', 'user' => $user]);
+					return false;
 			}
 		}
+
+		$token = $this->secureRandom->generate(21,
+			ISecureRandom::CHAR_DIGITS .
+			ISecureRandom::CHAR_LOWER .
+			ISecureRandom::CHAR_UPPER);
+		$this->config->setUserValue($user, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
+
+		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $user, 'token' => $token]);
+
+		$tmpl = new \OC_Template('core', 'lostpassword/email');
+		$tmpl->assign('link', $link);
+		$msg = $tmpl->fetchPage();
+
+		try {
+			$message = $this->mailer->createMessage();
+			$message->setTo([$email => $user]);
+			$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
+			$message->setPlainBody($msg);
+			$message->setFrom([$this->from => $this->defaults->getName()]);
+			$this->mailer->send($message);
+		} catch (\Exception $e) {
+			throw new \Exception($this->l10n->t(
+				'Couldn\'t send reset email. Please contact your administrator.'
+			));
+		}
+
+		return true;
 	}
 
 }
