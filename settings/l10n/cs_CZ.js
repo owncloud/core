@@ -130,6 +130,8 @@ OC.L10N.register(
     "This app cannot be installed because the following dependencies are not fulfilled:" : "Tuto aplikaci nelze nainstalovat, protože nejsou splněny následující závislosti:",
     "Enable only for specific groups" : "Povolit pouze pro vybrané skupiny",
     "Uninstall App" : "Odinstalovat aplikaci",
+    "Show enabled apps" : "Zobrazit povolené aplikace",
+    "Show disabled apps" : "Zobrazit zakázané aplikace",
     "Cron" : "Cron",
     "Last cron job execution: %s." : "Poslední cron proběhl: %s.",
     "Last cron job execution: %s. Something seems wrong." : "Poslední cron proběhl: %s. Vypadá to, že něco není v pořádku.",
