@@ -62,6 +62,7 @@
     "Security" : "セキュリティ",
     "Encryption" : "暗号化",
     "Sharing" : "共有",
+    "Monitoring" : "モニタリング",
     "Apps" : "アプリ",
     "Updates" : "アップデート",
     "%s enter the database username and name." : "%s データベース名とデータベースのユーザー名を入力してください。",
