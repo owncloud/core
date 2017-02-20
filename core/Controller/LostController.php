@@ -251,12 +251,11 @@ class LostController extends Controller {
 				return false;
 			}
 		} else {
-			$this->logger->error('User with input as username does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
 			$users = $this->userManager->getByEmail($user);
 
 			switch (count($users)) {
 				case 0:
-					$this->logger->error('Could not send reset email because User with input as email also does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
+					$this->logger->error('Could not send reset email because User does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
 					return false;
 				case 1:
 					$this->logger->info('User with input as email address found. User: {user}', ['app' => 'core', 'user' => $user]);
