@@ -5,6 +5,8 @@
  * See the COPYING-README file.
  */
 
+/* global UserList */
+
 var $userGroupList,
 	$sortGroupBy;
 
@@ -134,6 +136,7 @@ GroupList = {
 			function (result) {
 				if (result.groupname) {
 					var addedGroup = result.groupname;
+					// FIXME: array format
 					UserList.availableGroups = $.unique($.merge(UserList.availableGroups, [addedGroup]));
 					GroupList.addGroup(result.groupname);
 				}

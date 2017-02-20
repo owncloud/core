@@ -188,7 +188,7 @@ class UsersController extends Controller {
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
-			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user) : $userGroups,
+			'groups' => (empty($userGroups)) ? $this->getUserGroups($user) : $userGroups,
 			'subadmin' => $subAdminGroups,
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
@@ -198,6 +198,22 @@ class UsersController extends Controller {
 			'isRestoreDisabled' => !$restorePossible,
 			'isAvatarAvailable' => $avatarAvailable,
 		];
+	}
+
+	/**
+	 * Returns the groups of the given user
+	 *
+	 * @param IUser $user
+	 * @return array array of group info
+	 */
+	private function getUserGroups(IUser $user) {
+		$groups = $this->groupManager->getUserGroups($user);
+		return array_map(function($group) {
+			return [
+				'id' => $group->getGID(),
+				'name' => $group->getDisplayName(),
+			];
+		}, array_values($groups));
 	}
 
 	/**
