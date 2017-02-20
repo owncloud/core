@@ -240,6 +240,15 @@ class ViewControllerTest extends TestCase {
 				'icon' => '',
 			],
 			[
+				'id' => 'extstoragemounts',
+				'appname' => 'files_external',
+				'script' => 'list.php',
+				'order' => 30,
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_external'), 'External storage', []),
+				'active' => false,
+				'icon' => '',
+			],
+			[
 				'id' => 'trashbin',
 				'appname' => 'files_trashbin',
 				'script' => 'list.php',
@@ -247,7 +256,7 @@ class ViewControllerTest extends TestCase {
 				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_trashbin'), 'Deleted files', []),
 				'active' => false,
 				'icon' => '',
-				],
+			],
 		]);
 
 		$expected = new Http\TemplateResponse(
@@ -290,6 +299,10 @@ class ViewControllerTest extends TestCase {
 					],
 					[
 						'id' => 'systemtagsfilter',
+						'content' => null,
+					],
+					[
+						'id' => 'extstoragemounts',
 						'content' => null,
 					],
 					[
