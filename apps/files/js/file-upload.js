@@ -932,7 +932,7 @@ OC.Uploader.prototype = _.extend({
 						self.cancelUploads();
 					} else {
 						// HTTP connection problem or other error
-						OC.Notification.show(t('files', data.errorThrown), {type: 'error'});
+						OC.Notification.show(data.errorThrown, {type: 'error'});
 					}
 
 					if (upload) {
