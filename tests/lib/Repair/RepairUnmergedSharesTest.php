@@ -79,6 +79,59 @@ class RepairUnmergedSharesTest extends TestCase {
 		$this->repair = new RepairUnmergedShares($config, $this->connection, $this->userManager, $this->groupManager);
 	}
 
+	public function versionsProvider() {
+		return [
+			['9.0.0', true],
+			['9.0.1', true],
+			['9.0.3', true],
+			['9.0.3.2', true],
+			['9.0.4', false],
+			['9.1.0', true],
+			['9.1.0.15', true],
+			['9.1.0.16', false],
+			['9.1.3', false],
+		];
+	}
+
+	/**
+	 * @dataProvider versionsProvider
+	 */
+	public function testDisabledVersions($version, $ran) {
+		$config = $this->getMockBuilder('OCP\IConfig')
+			->disableOriginalConstructor()
+			->getMock();
+		$config->expects($this->any())
+			->method('getSystemValue')
+			->with('version')
+			->will($this->returnValue($version));
+
+		$this->connection = \OC::$server->getDatabaseConnection();
+
+		$this->userManager = $this->getMock('\OCP\IUserManager');
+
+		$this->groupManager = $this->getMock('\OCP\IGroupManager');
+
+		/** @var \OCP\IConfig $config */
+		$this->repair = new RepairUnmergedShares($config, $this->connection, $this->userManager, $this->groupManager);
+
+		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')
+			->disableOriginalConstructor()
+			->getMock();
+
+		if ($ran) {
+			$this->userManager->expects($this->once())
+				->method('countUsers')
+				->will($this->returnValue([0]));
+			$this->userManager->expects($this->once())
+				->method('callForAllUsers');
+		} else {
+			$this->userManager->expects($this->never())
+				->method('countUsers');
+		}
+
+		$this->repair->run($outputMock);
+	}
+
 	protected function tearDown() {
 		$this->deleteAllShares();
 

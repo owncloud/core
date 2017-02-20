@@ -353,9 +353,14 @@ class RepairUnmergedShares implements IRepairStep {
 
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
-		if (version_compare($ocVersionFromBeforeUpdate, '9.1.0.16', '<')) {
-			// this situation was only possible between 9.0.0 and 9.0.3 included
-
+		// this situation was only possible between 9.0.0 and 9.0.3 included, and 9.1.0
+		if ((
+			version_compare($ocVersionFromBeforeUpdate, '9.0.0', '>=')
+			&& version_compare($ocVersionFromBeforeUpdate, '9.0.4', '<')
+			) || (
+			version_compare($ocVersionFromBeforeUpdate, '9.1.0', '>=')
+			&& version_compare($ocVersionFromBeforeUpdate, '9.1.0.16', '<'))
+		) {
 			$function = function(IUser $user) use ($output) {
 				$this->fixUnmergedShares($output, $user);
 				$output->advance();
