@@ -2656,7 +2656,7 @@
 		 */
 		_showPermissionDeniedNotification: function() {
 			var message = t('core', 'You don’t have permission to upload or create files here');
-			OC.Notification.show(t('files', message), {type: 'error'});
+			OC.Notification.show(message, {type: 'error'});
 		},
 
 		/**
