@@ -46,6 +46,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\IAvatarManager;
+use OCP\GroupInterface;
 
 /**
  * @package OC\Settings\Controller
@@ -188,7 +189,7 @@ class UsersController extends Controller {
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
-			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user) : $userGroups,
+			'groups' => (empty($userGroups)) ? $this->getFilteredUserGroups($user) : $userGroups,
 			'subadmin' => $subAdminGroups,
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
@@ -198,6 +199,27 @@ class UsersController extends Controller {
 			'isRestoreDisabled' => !$restorePossible,
 			'isAvatarAvailable' => $avatarAvailable,
 		];
+	}
+
+	/**
+	 * Returns a filtered list of user groups only containing the manageable groups.
+	 *
+	 * @param IUser $user
+	 * @return string[] filtered array of group ids
+	 */
+	private function getFilteredUserGroups(IUser $user) {
+		$groups = array_values($this->groupManager->getUserGroups($user));
+		$groups = array_filter($groups, function($group) {
+			foreach ($group->getBackends() as $backend) {
+				if (!$backend->implementsActions(GroupInterface::ADD_TO_GROUP | GroupInterface::REMOVE_FROM_GROUP)) {
+					return false;
+				}
+			}
+			return true;
+		});
+		return array_map(function($group) {
+			return $group->getGID();
+		}, $groups);
 	}
 
 	/**

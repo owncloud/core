@@ -27,6 +27,7 @@
 namespace OC\Group;
 
 use OCP\IUserSession;
+use OCP\GroupInterface;
 
 class MetaData {
 	const SORT_NONE = 0;
@@ -89,6 +90,15 @@ class MetaData {
 
 		foreach($this->getGroups($groupSearch) as $group) {
 			$groupMetaData = $this->generateGroupMetaData($group, $userSearch);
+			$skip = false;
+			foreach ($group->getBackends() as $backend) {
+				if (!$backend->implementsActions(GroupInterface::ADD_TO_GROUP | GroupInterface::REMOVE_FROM_GROUP)) {
+					$skip = true;
+				}
+			}
+			if ($skip) {
+				continue;
+			}
 			if (strtolower($group->getGID()) !== 'admin') {
 				$this->addEntry(
 					$groups,

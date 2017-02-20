@@ -297,4 +297,8 @@ class Group implements IGroup {
 		}
 		return $users;
 	}
+
+	public function getBackends() {
+		return $this->backends;
+	}
 }

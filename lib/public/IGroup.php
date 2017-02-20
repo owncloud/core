@@ -115,4 +115,11 @@ interface IGroup {
 	 * @since 8.0.0
 	 */
 	public function delete();
+
+	/**
+	 * Returns the backends associated with the group
+	 *
+	 * @since 10.0.0
+	 */
+	public function getBackends();
 }
