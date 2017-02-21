@@ -241,7 +241,8 @@ class OC_Util {
 					}
 
 					return $storage;
-			});
+				}
+			);
 		}
 
 		OC_Hook::emit('OC_Filesystem', 'preSetup', ['user' => $user]);
