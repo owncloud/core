@@ -92,9 +92,9 @@ class UsersContext extends RawMinkContext implements Context
 	}
 	
 	/**
-	 * @Given I am loged in as :username using the password :password
+	 * @Given I am logged in as :username using the password :password
 	 */
-	public function iAmLogedInAsUsingThePassword($username, $password)
+	public function iAmLoggedInAsUsingThePassword($username, $password)
 	{
 		$this->loginPage->open();
 		$this->loginPage->loginAs($username, $password);
