@@ -648,6 +648,16 @@ li > a.icon-upload {
 	background-image: url(../../core/img/actions/upload.svg);
 }
 
+li > a.icon-user {
+	background-image: url(../../core/img/actions/user.svg);
+}
+
+#app-navigation li.divider {
+	background: none;
+}
+
+
+
 li > a.icon-settings {
 	background-image: url(../../core/img/actions/settings.svg);
 }
