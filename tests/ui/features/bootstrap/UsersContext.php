@@ -44,7 +44,7 @@ class UsersContext extends RawMinkContext implements Context
 	}
 	
 	/** @BeforeScenario @AdminLogin*/
-	public function tearUpScenario() 
+	public function setUpScenario() 
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
