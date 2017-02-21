@@ -206,7 +206,7 @@ class DefaultTokenProvider implements IProvider {
 	 */
 	public function invalidateOldTokens() {
 		$olderThan = $this->time->getTime() - (int) $this->config->getSystemValue('session_lifetime', 60 * 60 * 24);
-		$this->logger->info('Invalidating tokens older than ' . date('c', $olderThan));
+		$this->logger->info('Invalidating tokens older than ' . date('c', $olderThan), ['app' => 'cron']);
 		$this->mapper->invalidateOld($olderThan);
 	}
 
