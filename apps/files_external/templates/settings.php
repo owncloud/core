@@ -32,6 +32,17 @@
 ?>
 <form id="files_external" class="section" data-encryption-enabled="<?php echo $_['encryptionEnabled']?'true': 'false'; ?>">
 	<h2 class="app-name"><?php p($l->t('External Storage')); ?></h2>
+
+	<p>
+		<input type="checkbox" name="enableExternalStorage" id="enableExternalStorageCheckbox" class="checkbox"
+			   value="1" <?php if ($_['enableExternalStorage']) print_unescaped('checked="checked"'); ?> />
+		<label for="enableExternalStorageCheckbox">
+			<?php p($l->t('Enable external storage'));?>
+		</label>
+	</p>
+
+	<div id="files_external_settings" class=" <?php if (!$_['enableExternalStorage']) print('hidden'); ?>">
+
 	<?php if (isset($_['dependencies']) and ($_['dependencies']<>'')) print_unescaped(''.$_['dependencies'].''); ?>
 	<table id="externalStorage" class="grid" data-admin='<?php print_unescaped(json_encode($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN)); ?>'>
 		<thead>
@@ -129,4 +140,5 @@
 			<?php endforeach; ?>
 		</p>
 	<?php endif; ?>
+	</div>
 </form>
