@@ -66,7 +66,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	/**
 	 * @var \Icewind\SMB\FileInfo[]
 	 */
-	protected $statCache;
+		protected $statCache;
 
 	public function __construct($params) {
 		$loggedParams = $params;
@@ -76,17 +76,25 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		}
 		$this->log('enter: '.__FUNCTION__.'('.json_encode($loggedParams).')');
 
-		if (isset($params['host']) && isset($params['user']) && isset($params['password']) && isset($params['share'])) {
+		if (isset($params['url']) && isset($params['user']) && isset($params['password'])) {
+			// Parse UNC URL
+			preg_match("/^[\/\\\]{2,}([^\/\\\]+)[\/\\\]+([^\/\\\]+)(.*)/", $params['url'], $matches);
+			$host  = $matches[1];
+			$share = $matches[2];
+			$root  = trim($matches[3], '\\/');
+			// free some space
+			unset($params['url']);
+
 			if (Server::NativeAvailable()) {
 				$this->log('using native libsmbclient');
-				$this->server = new NativeServer($params['host'], $params['user'], $params['password']);
+				$this->server = new NativeServer($host, $params['user'], $params['password']);
 			} else {
 				$this->log('falling back to smbclient');
-				$this->server = new Server($params['host'], $params['user'], $params['password']);
+				$this->server = new Server($host, $params['user'], $params['password']);
 			}
-			$this->share = $this->server->getShare(trim($params['share'], '/'));
+			$this->share = $this->server->getShare(trim($share, '/'));
 
-			$this->root = isset($params['root']) ? $params['root'] : '/';
+			$this->root = isset($root) ? $root : '/';
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}
