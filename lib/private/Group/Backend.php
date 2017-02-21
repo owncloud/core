@@ -95,6 +95,10 @@ abstract class Backend implements \OCP\GroupInterface {
 		return [];
 	}
 
+	public function getUserGroupsForSharing($uid) {
+		return $this->getUserGroups($uid);
+	}
+
 	/**
 	 * get a list of all groups
 	 * @param string $search
@@ -107,6 +111,10 @@ abstract class Backend implements \OCP\GroupInterface {
 
 	public function getGroups($search = '', $limit = -1, $offset = 0) {
 		return [];
+	}
+
+	public function getGroupsForSharing($search = '', $limit = -1, $offset = 0) {
+		return $this->getGroups($search, $limit, $offset);
 	}
 
 	/**

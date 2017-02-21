@@ -98,6 +98,18 @@ interface GroupInterface {
 	public function getGroups($search = '', $limit = -1, $offset = 0);
 
 	/**
+	 * Returns a list of groups available for sharing.
+	 *
+	 * @param string $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @return array an array of group names
+	 *
+	 * @since 10.0.0
+	 */
+	public function getGroupsForSharing($search = '', $limit = -1, $offset = 0);
+
+	/**
 	 * check if a group exists
 	 * @param string $gid
 	 * @return bool

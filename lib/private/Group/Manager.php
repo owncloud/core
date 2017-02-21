@@ -238,6 +238,36 @@ class Manager extends PublicEmitter implements IGroupManager {
 	}
 
 	/**
+	 * @param string $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @return \OC\Group\Group[]
+	 */
+	public function searchForSharing($search, $limit = null, $offset = null) {
+		$groups = [];
+		foreach ($this->backends as $backend) {
+			if (is_callable([$backend, 'getGroupsForSharing'])) {
+				$groupIds = $backend->getGroupsForSharing($search, $limit, $offset);
+			} else {
+				$groupIds = $backend->getGroups($search, $limit, $offset);
+			}
+			foreach ($groupIds as $groupId) {
+				$aGroup = $this->get($groupId);
+				if (!is_null($aGroup)) {
+					$groups[$groupId] = $aGroup;
+				} else {
+					\OC::$server->getLogger()->debug('Group "' . $groupId . '" was returned by search but not found through direct access', array('app' => 'core'));
+				}
+			}
+			if (!is_null($limit) and $limit <= 0) {
+				return array_values($groups);
+			}
+		}
+		return array_values($groups);
+	}
+
+
+	/**
 	 * @param \OC\User\User|null $user
 	 * @return \OC\Group\Group[]
 	 */
@@ -246,6 +276,34 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return [];
 		}
 		return $this->getUserIdGroups($user->getUID());
+	}
+
+	/**
+	 * @param \OC\User\User|null $user
+	 * @return \OC\Group\Group[]
+	 */
+	public function getUserGroupsForSharing($user) {
+		if (is_null($user)) {
+			return [];
+		}
+
+		$uid = $user->getUID();
+
+		$groups = [];
+		foreach ($this->backends as $backend) {
+			$groupIds = $backend->getUserGroupsForSharing($uid);
+			if (is_array($groupIds)) {
+				foreach ($groupIds as $groupId) {
+					$aGroup = $this->get($groupId);
+					if (!is_null($aGroup)) {
+						$groups[$groupId] = $aGroup;
+					} else {
+						\OC::$server->getLogger()->debug('User "' . $uid . '" belongs to deleted group: "' . $groupId . '"', array('app' => 'core'));
+					}
+				}
+			}
+		}
+		return $groups;
 	}
 
 	/**
