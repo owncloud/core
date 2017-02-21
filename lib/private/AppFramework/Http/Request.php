@@ -455,7 +455,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			return false;
 		}
 
-		// csrf protection is handled outside of ownCloud
+		// Is CSRF protection handled outside of ownCloud?
 		if ($this->config->getSystemValue('csrf.disabled', false)) {
 			return true;
 		}

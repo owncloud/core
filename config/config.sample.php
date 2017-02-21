@@ -204,11 +204,12 @@ $CONFIG = array(
 
 /**
  * Disable ownCloud's built-in CSRF protection mechanism.
- * In some specific setups CSRF protection is handled in the environment by e.g.
- * running F5 ASM. In this case the built-in mechanism is not needed and can be disabled.
- * Generally speaking this config switch should be kept unchanged.
  *
- * WARNING: leave this as is as long as you have no understanding of this!
+ * In some specific setups CSRF protection is handled in the environment, e.g.,
+ * running F5 ASM. In these cases the built-in mechanism is not needed and can be disabled.
+ * Generally speaking, however, this config switch should be left unchanged.
+ *
+ * WARNING: leave this as is if you're not sure what it does
  */
 'csrf.disabled' => false,
 
@@ -1338,7 +1339,7 @@ $CONFIG = array(
 /**
  * Set this property to false if you want to disable the files_external local mount Option.
  * Default: true
- * 
+ *
  */
 'files_external_allow_local' => true,
 
