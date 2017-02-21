@@ -42,6 +42,7 @@
   ],
   "alwaysEnabled": [
     "files",
+    "files_external",
     "dav",
     "federatedfilesharing"
   ]

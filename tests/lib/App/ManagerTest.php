@@ -286,7 +286,14 @@ class ManagerTest extends TestCase {
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
-		$this->assertEquals(['dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getInstalledApps());
+		$this->assertEquals([
+			'dav',
+			'federatedfilesharing',
+			'files',
+		   	'files_external',
+		   	'test1',
+			'test3'
+		], $this->manager->getInstalledApps());
 	}
 
 	public function testGetAppsForUser() {
@@ -300,7 +307,14 @@ class ManagerTest extends TestCase {
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
 		$this->appConfig->setValue('test4', 'enabled', '["asd"]');
-		$this->assertEquals(['dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
+		$this->assertEquals([
+			'dav',
+		   	'federatedfilesharing',
+		   	'files',
+			'files_external',
+		   	'test1',
+			'test3'
+		], $this->manager->getEnabledAppsForUser($user));
 	}
 
 	public function testGetAppsNeedingUpgrade() {
@@ -312,6 +326,7 @@ class ManagerTest extends TestCase {
 		$appInfos = [
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
+		   	'files_external' => ['id' => 'files_external'],
 			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
 			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '9.0.0'],
 			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
@@ -353,6 +368,7 @@ class ManagerTest extends TestCase {
 		$appInfos = [
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
+		   	'files_external' => ['id' => 'files_external'],
 			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
 			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '8.0.0'],
 			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
