@@ -1,4 +1,4 @@
-<?php if (OC_Util::getEditionString() === ''): ?>
+<?php if (OC_Util::getEditionString() === OC_Util::$editonString[1]): ?>
 	<p>
 		<?php print_unescaped(str_replace(
 			[

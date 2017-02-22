@@ -60,6 +60,30 @@ class Storage extends Wrapper {
 		// in cross-storage cases, a rename is a copy + unlink,
 		// that last unlink must not go to trash
 		self::$disableTrash = true;
+
+		$path1 = $params[Filesystem::signal_param_oldpath];
+		$path2 = $params[Filesystem::signal_param_newpath];
+
+		$view = Filesystem::getView();
+		$absolutePath1 = Filesystem::normalizePath($view->getAbsolutePath($path1));
+
+		$mount1 = $view->getMount($path1);
+		$mount2 = $view->getMount($path2);
+		$sourceStorage = $mount1->getStorage();
+		$targetStorage = $mount2->getStorage();
+		$sourceInternalPath = $mount1->getInternalPath($absolutePath1);
+		// check whether this is a cross-storage move from a *local* shared storage
+		if ($sourceInternalPath !== '' && $sourceStorage !== $targetStorage && $sourceStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+			$ownerPath = $sourceStorage->getSourcePath($sourceInternalPath);
+			$owner = $sourceStorage->getOwner($sourceInternalPath);
+			if ($owner !== null && $owner !== '' && $ownerPath !== null && substr($ownerPath, 0, 6) === 'files/') {
+				// ownerPath is in the format "files/path/to/file.txt", strip "files"
+				$ownerPath = substr($ownerPath, 6);
+
+				// make a backup copy for the owner
+				\OCA\Files_Trashbin\Trashbin::copyBackupForOwner($ownerPath, $owner, time());
+			}
+		}
 	}
 
 	/**

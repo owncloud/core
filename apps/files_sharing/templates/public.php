@@ -62,7 +62,7 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 		<div class="header-appname-container">
 			<h1 class="header-appname">
 				<?php
-					if(OC_Util::getEditionString() === '') {
+					if(OC_Util::getEditionString() === OC_Util::$editonString[1]) {
 						p($theme->getName());
 					} else {
 						print_unescaped($theme->getHTMLName());
