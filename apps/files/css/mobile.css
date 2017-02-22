@@ -5,14 +5,6 @@
 	min-width: initial !important;
 }
 
-/* hide size and date columns */
-table th#headerSize,
-table td.filesize,
-table th#headerDate,
-table td.date {
-	display: none;
-}
-
 /* remove padding to let border bottom fill the whole width*/
 table td {
 	padding: 0;
