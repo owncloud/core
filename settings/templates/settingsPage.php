@@ -19,36 +19,39 @@ style('settings', 'settings');
 ?>
 
 <div id="app-navigation">
-	<ul>
+	<ul class="with-icon">
 		<li class="divider"><?php p($l->t('Personal')); ?></li>
 		<?php foreach($_['personalNav'] as $item) {
-		$active = $item['active'] ? 'class="active"' : '';
-		print_unescaped(
-			sprintf(
-				"<li><a %shref='%s'>%s</a></li>",
-				$active,
-				\OCP\Util::sanitizeHTML($item['link']),
-				\OCP\Util::sanitizeHTML($item['name'])
-			)
-		);
-	}
-	if(!empty($_['adminNav'])) { ?>
-
-		<li class="divider"><?php p($l->t('Admin')); ?></li>
-		<?php
-
-		foreach ($_['adminNav'] as $item) {
-			$active = $item['active'] ? 'class="active"' : '';
+			$active = $item['active'] ? ' active ' : '';
 			print_unescaped(
 				sprintf(
-					"<li><a %shref='%s'>%s</a></li>",
+					"<li><a class=\"svg %s %s\" href='%s'>%s</a></li>",
 					$active,
+					'icon-'.\OCP\Util::sanitizeHTML($item['icon']),
 					\OCP\Util::sanitizeHTML($item['link']),
 					\OCP\Util::sanitizeHTML($item['name'])
 				)
 			);
 		}
-	}?>
+		if(!empty($_['adminNav'])) { ?>
+
+			<li class="divider"><?php p($l->t('Admin')); ?></li>
+			<?php
+
+			foreach ($_['adminNav'] as $item) {
+				$active = $item['active'] ? ' active ' : '';
+				print_unescaped(
+					sprintf(
+						"<li><a class=\"svg %s %s\" href='%s'>%s</a></li>",
+						$active,
+						'icon-'.\OCP\Util::sanitizeHTML($item['icon']),
+						\OCP\Util::sanitizeHTML($item['link']),
+						\OCP\Util::sanitizeHTML($item['name'])
+					)
+				);
+			}
+		}
+		?>
 	</ul>
 </div>
 <div id="app-content">

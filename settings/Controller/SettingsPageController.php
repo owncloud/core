@@ -125,6 +125,7 @@ class SettingsPageController extends Controller {
 				),
 				'name' => ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
+				'icon' => $section->getIconName()
 			];
 		}
 		return $nav;

@@ -87,7 +87,7 @@ class SettingsPageControllerTest extends TestCase {
 		$this->settingsManager
 			->expects($this->once())
 			->method('getPersonalSections')
-			->willReturn([new Section('testSectionID', 'testSectionID', 1)]);
+			->willReturn([new Section('testSectionID', 'testSectionID', 1, 'list')]);
 		$this->settingsManager
 			->expects($this->once())
 			->method('getPersonalPanels')
@@ -124,11 +124,11 @@ class SettingsPageControllerTest extends TestCase {
 		$this->settingsManager
 			->expects($this->once())
 			->method('getPersonalSections')
-			->willReturn([new Section('testSectionID', 'testSectionID', 1)]);
+			->willReturn([new Section('testSectionID', 'testSectionID', 1, 'list')]);
 		$this->settingsManager
 			->expects($this->once())
 			->method('getAdminSections')
-			->willReturn([new Section('testAdminSectionID', 'testAdminSectionID', 1)]);
+			->willReturn([new Section('testAdminSectionID', 'testAdminSectionID', 1, 'list')]);
 		$this->settingsManager
 			->expects($this->once())
 			->method('getPersonalPanels')
@@ -145,6 +145,9 @@ class SettingsPageControllerTest extends TestCase {
 		$this->assertArrayHasKey('adminNav', $response->getParams());
 		$this->assertNotEmpty($response->getParams()['adminNav']);
 		$this->assertArrayHasKey('panels', $response->getParams());
+		$this->assertArrayHasKey('icon', $response->getParams()['personalNav'][0]);
+		$this->assertArrayHasKey('link', $response->getParams()['personalNav'][0]);
+		$this->assertArrayHasKey('id', $response->getParams()['personalNav'][0]);
 		$this->assertContains('testSectionID', $response->getParams()['personalNav'][0]['id']);
 		$this->assertContains('testAdminSectionID', $response->getParams()['adminNav'][0]['id']);
 	}
