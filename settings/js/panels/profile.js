@@ -96,7 +96,9 @@ function showAvatarCropper () {
 			aspectRatio: 1,
 			boxHeight: 500,
 			boxWidth: 500,
-			setSelect: [0, 0, 300, 300]
+			setSelect: [0, 0, 100000, 100000]  /* set to a very large value since 
+			this will automatically take the minimum with width and height of
+			parent image and aspect ratio is already one, ensuring a square cropper */
 		});
 	});
 }
