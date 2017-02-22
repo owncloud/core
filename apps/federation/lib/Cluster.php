@@ -82,7 +82,7 @@ class Cluster {
 	 */
 	public function getUserNode($userId) {
 		// find correct host
-		$nodes = \OC::$server->getConfig()->getSystemValue('cluster.nodes');
+		$nodes = \OC::$server->getConfig()->getSystemValue('cluster.nodes', []);
 		foreach ($nodes as $name => $config) {
 			preg_match($config['users'], $userId, $matches);
 			if (!empty($matches)) {
@@ -102,7 +102,7 @@ class Cluster {
 	 */
 	public function isClusterMember($host) {
 		$host = $this->addressHandler->removeProtocolFromUrl($host);
-		$nodes = \OC::$server->getConfig()->getSystemValue('cluster.nodes');
+		$nodes = \OC::$server->getConfig()->getSystemValue('cluster.nodes', []);
 		foreach ($nodes as $name => $config) {
 			$node = parse_url($config['url'], PHP_URL_HOST);
 			if ($node === $host) {
@@ -141,17 +141,13 @@ class Cluster {
 		return parse_url($url, PHP_URL_HOST);
 	}
 
-	public function getExternalUrl() {
-		return \OC::$server->getConfig()->getSystemValue('overwrite.cli.url');
-	}
-
 	public function getClusterNodes() {
-		return \OC::$server->getConfig()->getSystemValue('cluster.nodes');
+		return \OC::$server->getConfig()->getSystemValue('cluster.nodes', []);
 	}
 
 	public function getScheme($host, $default = 'https') {
 		$host = $this->addressHandler->removeProtocolFromUrl($host);
-		$nodes = \OC::$server->getConfig()->getSystemValue('cluster.nodes');
+		$nodes = $this->getClusterNodes();
 		foreach ($nodes as $name => $config) {
 			$parse = parse_url($config['url']);
 			if ($host === $parse['host']) {

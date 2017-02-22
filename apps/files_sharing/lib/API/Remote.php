@@ -182,6 +182,10 @@ class Remote {
 		);
 
 		$shareInfo = $externalManager->getShare($params['id']);
+		//FIXME the remote needs to be set on the server side, otherwise we have to touch
+		// the client code, even if we use '' as a remote, the web ui appends an @
+		// We should always translate the Federated Cloud id to a federated cluster id?
+
 
 		if ($shareInfo === false) {
 			return new \OC_OCS_Result(null, 404, 'share does not exist');

@@ -3,12 +3,9 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
-<<<<<<< HEAD
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
-=======
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
->>>>>>> af9f938... introducing federated cluster
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0

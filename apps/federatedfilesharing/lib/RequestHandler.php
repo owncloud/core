@@ -26,6 +26,7 @@
 
 namespace OCA\FederatedFileSharing;
 
+use OCA\Federation\Cluster;
 use OCA\Files_Sharing\Activity;
 use OCP\AppFramework\Http;
 use OCP\Constants;
@@ -68,6 +69,9 @@ class RequestHandler {
 	/** @var string */
 	private $shareTable = 'share';
 
+	/** @var Cluster */
+	private $cluster;
+
 	/**
 	 * Server2Server constructor.
 	 *
@@ -94,6 +98,7 @@ class RequestHandler {
 		$this->notifications = $notifications;
 		$this->addressHandler = $addressHandler;
 		$this->userManager = $userManager;
+		$this->cluster = new Cluster();
 	}
 
 	/**
@@ -170,7 +175,8 @@ class RequestHandler {
 					Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_RECEIVED, [$ownerFederatedId, trim($name, '/')], '', [],
 					'', '', $shareWith, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_LOW);
 
-				$urlGenerator = \OC::$server->getURLGenerator();
+				$url = $this->cluster->getClusterUrl();
+				$url .= '/ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/' . $shareId;
 
 				$notificationManager = \OC::$server->getNotificationManager();
 				$notification = $notificationManager->createNotification();
@@ -181,13 +187,11 @@ class RequestHandler {
 					->setSubject('remote_share', [$ownerFederatedId, $sharedByFederatedId, trim($name, '/')]);
 
 				$declineAction = $notification->createAction();
-				$declineAction->setLabel('decline')
-					->setLink($urlGenerator->getAbsoluteURL($urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/' . $shareId)), 'DELETE');
+				$declineAction->setLabel('decline')->setLink($url, 'DELETE');
 				$notification->addAction($declineAction);
 
 				$acceptAction = $notification->createAction();
-				$acceptAction->setLabel('accept')
-					->setLink($urlGenerator->getAbsoluteURL($urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/' . $shareId)), 'POST');
+				$acceptAction->setLabel('accept')->setLink($url, 'POST');
 				$notification->addAction($acceptAction);
 
 				$notificationManager->notify($notification);
