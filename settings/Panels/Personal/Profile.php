@@ -60,9 +60,10 @@ class Profile implements ISettings {
 
 	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/personal/profile');
+
 		// Assign some data
 		$lang = $this->lfactory->findLanguage();
-		$userLang = $this->config->getUserValue( $this->userSession->getUser(), 'core', 'lang', $lang);
+		$userLang = $this->config->getUserValue( $this->userSession->getUser()->getUID(), 'core', 'lang', $lang);
 		$languageCodes = $this->lfactory->findAvailableLanguages();
 		// array of common languages
 		$commonLangCodes = [
