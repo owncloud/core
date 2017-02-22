@@ -196,10 +196,9 @@ $array = [
 			'directory' => OC_Util::getTheme()->getDirectory()
 		]
 	),
-	'ignore_files' => json_encode(
+	'blacklist_files' => json_encode(
 		[
-			'\.(part)$',
-			'\.(filepart)$'
+			'regex' => \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX
 		]
 	)
 ];
