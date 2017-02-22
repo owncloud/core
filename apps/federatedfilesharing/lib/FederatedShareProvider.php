@@ -228,7 +228,8 @@ class FederatedShareProvider implements IShareProvider {
 		$clusterId = $this->cluster->getClusterUserId($shareWith);
 		if ($clusterId) {
 			$shareWith = $clusterId;
-			$remote = $this->cluster->getNodeHost();
+			// remote is only used for notification, use cluster host
+			$remote = $this->cluster->getClusterHost();
 		} else {
 			$remote = $this->addressHandler->generateRemoteURL();
 		}
