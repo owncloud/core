@@ -237,7 +237,7 @@
 				if(response.responseJSON && response.responseJSON.message) {
 					message = ': ' + response.responseJSON.message;
 				}
-				OC.Notification.showTemporary(t('files', 'An error occurred while trying to update the tags') + message);
+				OC.Notification.show('An error occurred while trying to update the tags' + message, {timeout: 7, type: 'error'});
 				toggleStar($actionEl, isFavorite);
 			});
 		}
