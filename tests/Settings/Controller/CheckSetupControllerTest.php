@@ -534,7 +534,7 @@ class CheckSetupControllerTest extends TestCase {
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingEnabled() {
 		// Appstore is disabled by default in EE
 		$appStoreDefault = false;
-		if (\OC_Util::getEditionString() === '') {
+		if (\OC_Util::getEditionString() === \OC_Util::EDITION_COMMUNITY) {
 			$appStoreDefault = true;
 		}
 
@@ -569,7 +569,7 @@ class CheckSetupControllerTest extends TestCase {
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingDisabled() {
 		// Appstore is disabled by default in EE
 		$appStoreDefault = false;
-		if (\OC_Util::getEditionString() === '') {
+		if (\OC_Util::getEditionString() === \OC_Util::EDITION_COMMUNITY) {
 			$appStoreDefault = true;
 		}
 
