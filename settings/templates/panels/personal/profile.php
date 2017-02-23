@@ -12,8 +12,6 @@ if ($_['enableAvatars']) {
 <?php
 
 try {
-	require_once getcwd() . '/lib/base.php';
-
 	$systemConfig = \OC::$server->getSystemConfig();
 
 	$installed = (bool) $systemConfig->getValue('installed', false);
