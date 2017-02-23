@@ -2,7 +2,7 @@
 /**
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ namespace OCP\Files\Storage;
  * Public storage adapter to be extended to connect to
  * flysystem adapters
  *
- * @since 9.2
+ * @since 10.0
  */
 abstract class FlysystemStorageAdapter extends \OC\Files\Storage\Flysystem {
 
@@ -35,7 +35,7 @@ abstract class FlysystemStorageAdapter extends \OC\Files\Storage\Flysystem {
 	 * and two storage objects with the same id should refer to two storages that display the same files.
 	 *
 	 * @return string storage id
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function getId();
 }

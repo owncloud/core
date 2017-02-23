@@ -9,8 +9,9 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,6 +32,7 @@ namespace OC\Settings;
 
 use OC\Files\View;
 use OC\Server;
+use OC\Settings\Controller\SettingsPageController;
 use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\AuthSettingsController;
 use OC\Settings\Controller\CertificateController;
@@ -51,7 +53,6 @@ use OCP\Util;
  */
 class Application extends App {
 
-
 	/**
 	 * @param array $urlParams
 	 */
@@ -60,9 +61,27 @@ class Application extends App {
 
 		$container = $this->getContainer();
 
+		$container->registerService('Profile', function(IContainer $c) {
+		   return new \OC\Settings\Panels\Personal\Profile(
+			   $c->query('Config'),
+			   $c->query('GroupManager'),
+			   $c->query('ServerContainer')->getURLGenerator()
+		   );
+	   });
+
 		/**
 		 * Controllers
 		 */
+		 $container->registerService('SettingsPageController', function(IContainer $c) {
+ 			return new SettingsPageController(
+ 				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('SettingsManager'),
+				$c->query('ServerContainer')->getURLGenerator(),
+				$c->query('GroupManager'),
+				$c->query('UserSession')
+ 			);
+ 		});
 		$container->registerService('MailSettingsController', function(IContainer $c) {
 			return new MailSettingsController(
 				$c->query('AppName'),
@@ -93,10 +112,7 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('L10N'),
 				$c->query('Config'),
-				$c->query('ICacheFactory'),
-				$c->query('INavigationManager'),
-				$c->query('IAppManager'),
-				$c->query('OcsClient')
+				$c->query('IAppManager')
 			);
 		});
 		$container->registerService('AuthSettingsController', function(IContainer $c) {
@@ -267,5 +283,8 @@ class Application extends App {
 			$server = $c->query('ServerContainer');
 			return $server->getIntegrityCodeChecker();
 		});
+		$container->registerService('SettingsManager', function(IContainer $c) {
+			return $c->query('ServerContainer')->getSettingsManager();
+	 	});
 	}
 }

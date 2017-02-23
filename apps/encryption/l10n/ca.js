@@ -15,6 +15,7 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "No es pot desencriptar aquest fitxer, probablement és un fitxer compartit. Demaneu al propietari del fitxer que el comparteixi de nou amb vós.",
     "The share will expire on %s." : "La compartició venç el %s.",
     "Cheers!" : "Salut!",
+    "Encryption" : "Xifrat",
     "Recovery key password" : "Clau de recuperació de la contrasenya",
     "Change recovery key password:" : "Canvia la clau de recuperació de contrasenya:",
     "Change Password" : "Canvia la contrasenya",

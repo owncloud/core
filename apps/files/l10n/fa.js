@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "فضای ذخیره‌سازی نامعتبر",
     "Unknown error" : "خطای نامشخص",
     "All files" : "تمامی فایل‌ها",
+    "Saved" : "ذخیره شد",
     "Home" : "خانه",
     "Close" : "بستن",
     "Favorites" : "موارد محبوب",

@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,43 +21,94 @@
 
 namespace OC\Core\Command\Db\Migrations;
 
-
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand as DBALStatusCommand;
 use OC\DB\MigrationService;
-use OCP\IConfig;
+use OCP\IDBConnection;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StatusCommand extends DBALStatusCommand {
+class StatusCommand extends Command {
 
-	/** @var Connection */
-	private $ocConnection;
+	/** @var IDBConnection */
+	private $connection;
 
 	/**
-	 * @param \OCP\IConfig $config
+	 * @param IDBConnection $connection
 	 */
-	public function __construct(IConfig $config, Connection $connection) {
-		$this->config = $config;
-		$this->ocConnection = $connection;
-
+	public function __construct(IDBConnection $connection) {
+		$this->connection = $connection;
 		parent::__construct();
 	}
 
 	protected function configure() {
-		parent::configure();
-
-		$this->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on');
+		$this
+			->setName('migrations:status')
+			->setDescription('View the status of a set of migrations.')
+			->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on');
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$appName = $input->getArgument('app');
-		$ms = new MigrationService();
-		$mc = $ms->buildConfiguration($appName, $this->ocConnection);
-		$this->setMigrationConfiguration($mc);
+		$ms = new MigrationService($appName, $this->connection);
 
-		parent::execute($input, $output);
+		$infos = $this->getMigrationsInfos($ms);
+		foreach ($infos as $key => $value) {
+			$output->writeln("    <comment>>></comment> $key: " . str_repeat(' ', 50 - strlen($key)) . $value);
+		}
 	}
+
+	/**
+	 * @param MigrationService $ms
+	 * @return array associative array of human readable info name as key and the actual information as value
+	 */
+	public function getMigrationsInfos(MigrationService $ms) {
+
+		$executedMigrations = $ms->getMigratedVersions();
+		$availableMigrations = $ms->getAvailableVersions();
+		$executedUnavailableMigrations = array_diff($executedMigrations, array_keys($availableMigrations));
+
+		$numExecutedUnavailableMigrations = count($executedUnavailableMigrations);
+		$numNewMigrations = count(array_diff(array_keys($availableMigrations), $executedMigrations));
+
+		$infos = [
+			'App'								=> $ms->getApp(),
+			'Version Table Name'				=> $ms->getMigrationsTableName(),
+			'Migrations Namespace'				=> $ms->getMigrationsNamespace(),
+			'Migrations Directory'				=> $ms->getMigrationsDirectory(),
+			'Previous Version'					=> $this->getFormattedVersionAlias($ms, 'prev'),
+			'Current Version'					=> $this->getFormattedVersionAlias($ms, 'current'),
+			'Next Version'						=> $this->getFormattedVersionAlias($ms, 'next'),
+			'Latest Version'					=> $this->getFormattedVersionAlias($ms, 'latest'),
+			'Executed Migrations'				=> count($executedMigrations),
+			'Executed Unavailable Migrations'	=> $numExecutedUnavailableMigrations,
+			'Available Migrations'				=> count($availableMigrations),
+			'New Migrations'					=> $numNewMigrations,
+		];
+
+		return $infos;
+	}
+
+	/**
+	 * @param MigrationService $migrationService
+	 * @param string $alias
+	 * @return mixed|null|string
+	 */
+	private function getFormattedVersionAlias(MigrationService $migrationService, $alias) {
+		$migration = $migrationService->getMigration($alias);
+		//No version found
+		if ($migration === null) {
+			if ($alias === 'next') {
+				return 'Already at latest migration step';
+			}
+
+			if ($alias === 'prev') {
+				return 'Already at first migration step';
+			}
+		}
+
+		return $migration;
+	}
+
 
 }

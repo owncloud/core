@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Almacenamiento invalido",
     "Unknown error" : "Error desconocido",
     "All files" : "Todos los archivos",
+    "Saved" : "Guardado",
     "File could not be found" : "No se pudo encontrar el archivo",
     "Home" : "Particular",
     "Close" : "Cerrar",

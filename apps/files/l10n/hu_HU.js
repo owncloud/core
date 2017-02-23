@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "A tároló érvénytelen",
     "Unknown error" : "Ismeretlen hiba",
     "All files" : "Az összes állomány",
+    "Saved" : "Elmentve!",
     "Home" : "Otthoni",
     "Close" : "Bezárás",
     "Favorites" : "Kedvencek",

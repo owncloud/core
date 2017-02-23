@@ -2,7 +2,7 @@
 /**
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ namespace OCP\Files\External\Service;
 /**
  * Service class to manage global external storages
  *
- * @since 9.2
+ * @since 10.0
  */
 interface IGlobalStoragesService extends IStoragesService {
 	/**
@@ -32,7 +32,7 @@ interface IGlobalStoragesService extends IStoragesService {
 	 *
 	 * @return array map of storage id to storage config
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getStorageForAllUsers();
 }

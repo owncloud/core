@@ -21,6 +21,7 @@ OC.L10N.register(
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Proqram şifrələnməsi işə salınıb ancaq, sizin açarlar inisializasiya edilməyib. Xahiş edilir çıxıb yenidən daxil olasınız",
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Bu faylı deşifrə etmək olmur və ola bilər ki, bu paylaşımda olan fayldır. Xahiş olunur faylın sahibinə həmin faylı sizinlə yenidən paylaşım etməsini bildirəsiniz. ",
     "Cheers!" : "Şərəfə!",
+    "Encryption" : "Şifrələnmə",
     "Recovery key password" : "Açar şifrənin bərpa edilməsi",
     "Change recovery key password:" : "Bərpa açarın şifrəsini dəyişdir:",
     "Change Password" : "Şifrəni dəyişdir",

@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "存储空间无效",
     "Unknown error" : "未知错误",
     "All files" : "全部文件",
+    "Saved" : "已保存",
     "File could not be found" : "文件未找到",
     "Home" : "家庭",
     "Close" : "关闭",

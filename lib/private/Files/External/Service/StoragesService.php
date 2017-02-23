@@ -1,14 +1,13 @@
 <?php
 /**
  * @author Jesús Macias <jmacias@solidgear.es>
- * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Stefan Weil <sw@weilnetz.de>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -230,7 +229,7 @@ abstract class StoragesService implements IStoragesService {
 	 * Creates a new storage configuration
 	 *
 	 * @return IStorageConfig
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function createConfig() {
 		return new StorageConfig();

@@ -32,6 +32,7 @@
     "es6-promise": "https://github.com/jakearchibald/es6-promise.git#2.3.0",
     "base64": "0.3.0",
     "clipboard": "1.5.12",
-    "browser-update": "^2.0.1"
+    "browser-update": "^2.0.1",
+    "bowser": "browser#^1.6.0"
   }
 }

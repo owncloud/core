@@ -20,6 +20,7 @@
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Ezin izan da fitxategi hau deszifratu, ziurrenik elkarbanatutako fitxategi bat da. Mesdez, eskatu fitxategiaren jabeari fitxategia zurekin berriz elkarbana dezan.",
     "The share will expire on %s." : "Elkarbanaketa %s-n iraungiko da.",
     "Cheers!" : "Ongi izan!",
+    "Encryption" : "Enkriptazioa",
     "Recovery key password" : "Berreskuratze gako pasahitza",
     "Change recovery key password:" : "Aldatu berreskuratze gako pasahitza:",
     "Change Password" : "Aldatu Pasahitza",

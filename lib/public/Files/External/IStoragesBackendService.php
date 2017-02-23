@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,7 +31,7 @@ use \OCP\Files\External\Config\IAuthMechanismProvider;
 /**
  * Service to manage external storage backend definitions
  *
- * @since 9.2.0
+ * @since 10.0
  */
 interface IStoragesBackendService {
 

@@ -4,7 +4,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -49,7 +49,21 @@ abstract class Job implements IJob {
 	public function execute($jobList, ILogger $logger = null) {
 		$jobList->setLastRun($this);
 		try {
+			//storing job start time
+			$jobStartTime = time();
+
+			\OCP\Util::writeLog('cron', 'Started background job of class : ' . get_class($this) . ' with arguments : ' . print_r($this->argument, true), \OCP\Util::DEBUG);
+
 			$this->run($this->argument);
+
+			//storing job end time
+			$jobEndTime = time();
+			$timeTaken = $jobEndTime - $jobStartTime;
+
+			\OCP\Util::writeLog('cron', "Finished background job, the job took : $timeTaken seconds, " . 
+				"this job is an instance of class : " . get_class($this) . ' with arguments : ' . print_r($this->argument, true), \OCP\Util::DEBUG);
+
+			$jobList->setExecutionTime($this, $timeTaken);
 		} catch (\Exception $e) {
 			if ($logger) {
 				$logger->logException($e, [

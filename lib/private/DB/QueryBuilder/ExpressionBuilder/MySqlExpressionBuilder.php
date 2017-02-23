@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Joas Schilling <coding@schilljs.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,7 +33,9 @@ class MySqlExpressionBuilder extends ExpressionBuilder {
 	public function iLike($x, $y, $type = null) {
 		$x = $this->helper->quoteColumnName($x);
 		$y = $this->helper->quoteColumnName($y);
-		return $this->expressionBuilder->comparison($x, ' COLLATE utf8_general_ci LIKE', $y);
+
+		$characterSet = \OC::$server->getConfig()->getSystemValue('mysql.utf8mb4', false) ? 'utf8mb4' : 'utf8';
+		return $this->expressionBuilder->comparison($x, " COLLATE {$characterSet}_general_ci LIKE", $y);
 	}
 
 }

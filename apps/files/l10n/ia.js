@@ -2,6 +2,7 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Error Incognite",
+    "Saved" : "Salveguardate",
     "Home" : "Domo",
     "Close" : "Clauder",
     "Uploading..." : "Incargante...",

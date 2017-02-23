@@ -12,7 +12,7 @@ $(document).ready(function(){
 						url: OC.generateUrl('settings/admin/security/trustedDomains'),
 						data: { newTrustedDomain: params.trustDomain }
 					}).done(function() {
-						window.location.replace(OC.generateUrl('settings/admin'));
+						window.location.replace(OC.generateUrl('settings/admin/security'));
 					});
 				}
 			});
@@ -30,22 +30,7 @@ $(document).ready(function(){
 
 
 	$('#loglevel').change(function(){
-		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()},function(){
-			OC.Log.reload();
-		} );
-	});
-
-	$('#backgroundjobs span.crondate').tipsy({gravity: 's', live: true});
-
-	$('#backgroundjobs input').change(function(){
-		if($(this).is(':checked')){
-			var mode = $(this).val();
-			if (mode === 'ajax' || mode === 'webcron' || mode === 'cron') {
-				OC.AppConfig.setValue('core', 'backgroundjobs_mode', mode);
-				// clear cron errors on background job mode change
-				OC.AppConfig.deleteKey('core', 'cronErrors');
-			}
-		}
+		$.post(OC.generateUrl('/settings/admin/log/level'), {level: $(this).val()});
 	});
 
 	$('#shareAPIEnabled').change(function() {
@@ -111,55 +96,6 @@ $(document).ready(function(){
 		$('#setDefaultExpireDate').toggleClass('hidden', !(this.checked && $('#shareapiDefaultExpireDate')[0].checked));
 	});
 
-	$('#mail_smtpauth').change(function() {
-		if (!this.checked) {
-			$('#mail_credentials').addClass('hidden');
-		} else {
-			$('#mail_credentials').removeClass('hidden');
-		}
-	});
-
-	$('#mail_smtpmode').change(function() {
-		if ($(this).val() !== 'smtp') {
-			$('#setting_smtpauth').addClass('hidden');
-			$('#setting_smtphost').addClass('hidden');
-			$('#mail_smtpsecure_label').addClass('hidden');
-			$('#mail_smtpsecure').addClass('hidden');
-			$('#mail_credentials').addClass('hidden');
-		} else {
-			$('#setting_smtpauth').removeClass('hidden');
-			$('#setting_smtphost').removeClass('hidden');
-			$('#mail_smtpsecure_label').removeClass('hidden');
-			$('#mail_smtpsecure').removeClass('hidden');
-			if ($('#mail_smtpauth').is(':checked')) {
-				$('#mail_credentials').removeClass('hidden');
-			}
-		}
-	});
-
-	$('#mail_general_settings_form').change(function(){
-		OC.msg.startSaving('#mail_settings_msg');
-		var post = $( "#mail_general_settings_form" ).serialize();
-		$.post(OC.generateUrl('/settings/admin/mailsettings'), post, function(data){
-			OC.msg.finishedSaving('#mail_settings_msg', data);
-		});
-	});
-
-	$('#mail_credentials_settings_submit').click(function(){
-		OC.msg.startSaving('#mail_settings_msg');
-		var post = $( "#mail_credentials_settings" ).serialize();
-		$.post(OC.generateUrl('/settings/admin/mailsettings/credentials'), post, function(data){
-			OC.msg.finishedSaving('#mail_settings_msg', data);
-		});
-	});
-
-	$('#sendtestemail').click(function(event){
-		event.preventDefault();
-		OC.msg.startAction('#sendtestmail_msg', t('settings', 'Sending...'));
-		$.post(OC.generateUrl('/settings/admin/mailtest'), '', function(data){
-			OC.msg.finishedAction('#sendtestmail_msg', data);
-		});
-	});
 
 	$('#allowGroupSharing').change(function() {
 		$('#allowGroupSharing').toggleClass('hidden', !this.checked);
@@ -169,58 +105,5 @@ $(document).ready(function(){
 		$("#selectExcludedGroups").toggleClass('hidden', !this.checked);
 	});
 
-	// run setup checks then gather error messages
-	$.when(
-		OC.SetupChecks.checkWebDAV(),
-		OC.SetupChecks.checkWellKnownUrl('/.well-known/caldav/', oc_defaults.docPlaceholderUrl, $('#postsetupchecks').data('check-wellknown') === 'true'),
-		OC.SetupChecks.checkWellKnownUrl('/.well-known/carddav/', oc_defaults.docPlaceholderUrl, $('#postsetupchecks').data('check-wellknown') === 'true'),
-		OC.SetupChecks.checkSetup(),
-		OC.SetupChecks.checkGeneric(),
-		OC.SetupChecks.checkDataProtected()
-	).then(function(check1, check2, check3, check4, check5, check6) {
-		var messages = [].concat(check1, check2, check3, check4, check5, check6);
-		var $el = $('#postsetupchecks');
-		$el.find('.loading').addClass('hidden');
 
-		var hasMessages = false;
-		var $errorsEl = $el.find('.errors');
-		var $warningsEl = $el.find('.warnings');
-		var $infoEl = $el.find('.info');
-
-		for (var i = 0; i < messages.length; i++ ) {
-			switch(messages[i].type) {
-				case OC.SetupChecks.MESSAGE_TYPE_INFO:
-					$infoEl.append('<li>' + messages[i].msg + '</li>');
-					break;
-				case OC.SetupChecks.MESSAGE_TYPE_WARNING:
-					$warningsEl.append('<li>' + messages[i].msg + '</li>');
-					break;
-				case OC.SetupChecks.MESSAGE_TYPE_ERROR:
-				default:
-					$errorsEl.append('<li>' + messages[i].msg + '</li>');
-			}
-		}
-
-		if ($errorsEl.find('li').length > 0) {
-			$errorsEl.removeClass('hidden');
-			hasMessages = true;
-		}
-		if ($warningsEl.find('li').length > 0) {
-			$warningsEl.removeClass('hidden');
-			hasMessages = true;
-		}
-		if ($infoEl.find('li').length > 0) {
-			$infoEl.removeClass('hidden');
-			hasMessages = true;
-		}
-
-		if (hasMessages) {
-			$el.find('.hint').removeClass('hidden');
-		} else {
-			var securityWarning = $('#security-warning');
-			if (securityWarning.children('ul').children().length === 0) {
-				$('#security-warning-state').find('span').removeClass('hidden');
-			}
-		}
-	});
 });

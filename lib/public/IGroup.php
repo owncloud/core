@@ -2,9 +2,9 @@
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Vincent Petry <PVince81@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ interface IGroup {
 	 * Returns the group display name
 	 *
 	 * @return string
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	public function getDisplayName();
 

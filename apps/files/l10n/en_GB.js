@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Storage invalid",
     "Unknown error" : "Unknown error",
     "All files" : "All files",
+    "Saved" : "Saved",
     "File could not be found" : "File could not be found",
     "Home" : "Home",
     "Close" : "Close",

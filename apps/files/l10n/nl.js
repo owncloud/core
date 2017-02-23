@@ -5,6 +5,8 @@ OC.L10N.register(
     "Storage invalid" : "Opslag ongeldig",
     "Unknown error" : "Onbekende fout",
     "All files" : "Alle bestanden",
+    "Saved" : "Bewaard",
+    "There was an error saving" : "Er trad een fout op bij opslaan",
     "File could not be found" : "Bestand kon niet worden gevonden",
     "Home" : "Thuis",
     "Close" : "Sluiten",

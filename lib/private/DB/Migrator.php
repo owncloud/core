@@ -8,7 +8,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -42,14 +42,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Migrator {
 
-	/**
-	 * @var \Doctrine\DBAL\Connection $connection
-	 */
+	/** @var \Doctrine\DBAL\Connection $connection */
 	protected $connection;
 
-	/**
-	 * @var ISecureRandom
-	 */
+	/** @var ISecureRandom */
 	private $random;
 
 	/** @var IConfig */
@@ -196,6 +192,12 @@ class Migrator {
 		return new Table($newName, $table->getColumns(), $newIndexes, [], 0, $table->getOptions());
 	}
 
+	public function createSchema() {
+		$filterExpression = $this->getFilterExpression();
+		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+		return $this->connection->getSchemaManager()->createSchema();
+	}
+
 	/**
 	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
@@ -216,8 +218,7 @@ class Migrator {
 		}
 
 		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->
-		setFilterSchemaAssetsExpression($filterExpression);
+		$this->connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
 		$sourceSchema = $connection->getSchemaManager()->createSchema();
 
 		// remove tables we don't know about

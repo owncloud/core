@@ -83,6 +83,22 @@
 	opacity: 1;
 }
 
+#app-navigation li.divider {
+	display: block;
+	width: 100%;
+	line-height: 44px;
+	min-height: 44px;
+	padding: 0 12px;
+	overflow: hidden;
+	box-sizing: border-box;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #000;
+	background-color: rgba(240,240,240,.9);
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
+}
+
 #app-navigation .collapse {
 	display: none; /* hide collapse button initially */
 }

@@ -122,22 +122,6 @@
 						</a>
 					</li>
 				<?php endforeach; ?>
-				<?php
-					/* show "More apps" link to app administration directly in app navigation, as last entry */
-					if(OC_User::isAdminUser(OC_User::getUser())):
-				?>
-					<li id="apps-management">
-						<a href="<?php print_unescaped(\OC::$server->getURLGenerator()->linkToRoute('settings.AppSettings.viewApps')); ?>" tabindex="4"
-							<?php if( $_['appsmanagement_active'] ): ?> class="active"<?php endif; ?>>
-							<img class="app-icon" alt="" src="<?php print_unescaped(image_path('settings', 'apps.svg')); ?>">
-							<div class="icon-loading-dark" style="display:none;"></div>
-							<span>
-								<?php p($l->t('Apps')); ?>
-							</span>
-						</a>
-					</li>
-				<?php endif; ?>
-
 				</ul>
 			</div>
 		</div></nav>

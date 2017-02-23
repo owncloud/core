@@ -4,14 +4,15 @@
     "None" : "﻿ಯಾವುದೂ ಇಲ್ಲ",
     "Username" : "﻿ಬಳಕೆಯ ಹೆಸರು",
     "Password" : "ಗುಪ್ತಪದ",
+    "Security" : "﻿ಭದ್ರತೆ",
+    "Encryption" : "ರಹಸ್ಯ ಸಂಕೇತೀಕರಿಸು",
+    "Sharing" : "﻿ಹಂಚಿಕೆ",
     "Apps" : "ಕಾರ್ಯಕ್ರಮಗಳು",
     "A valid username must be provided" : "﻿ಮಾನ್ಯ ಬಳಕೆದಾರ ಹೆಸರು ಒದಗಿಸಬೇಕಾಗುತ್ತದೆ",
     "A valid password must be provided" : "ಸರಿಯಾದ ಬಳಕೆದಾರ ಗುಪ್ತಪದ ಒದಗಿಸಬೇಕಾಗಿದೆ",
     "Help" : "﻿ಸಹಾಯ",
-    "Personal" : "﻿ವೈಯಕ್ತಿಕ",
+    "Settings" : "ಆಯ್ಕೆಗಳು",
     "Users" : "﻿ಬಳಕೆದಾರರು",
-    "Admin" : "﻿ನಿರ್ವಹಕ",
-    "Recommended" : "ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ",
     "Authentication error" : "ದೃಢೀಕರಣ ದೋಷ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

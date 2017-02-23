@@ -6,7 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,9 +24,12 @@
  */
 
 namespace OC\DB;
+use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
 use Doctrine\DBAL\Event\Listeners\SQLSessionInit;
-use Doctrine\DBAL\Event\Listeners\MysqlSessionInit;
+use OC\SystemConfig;
 
 /**
 * Takes care of creating and configuring Doctrine connections.
@@ -62,6 +65,20 @@ class ConnectionFactory {
 			'wrapperClass' => 'OC\DB\Connection',
 		],
 	];
+	/** @var SystemConfig */
+	private $config;
+
+	/**
+	 * ConnectionFactory constructor.
+	 *
+	 * @param SystemConfig $systemConfig
+	 */
+	public function __construct(SystemConfig $systemConfig) {
+		$this->config = $systemConfig;
+		if($this->config->getValue('mysql.utf8mb4', false)) {
+			$this->defaultConnectionParams['mysql']['charset'] = 'utf8mb4';
+		}
+	}
 
 	/**
 	* @brief Get default connection parameters for a given DBMS.
@@ -82,6 +99,7 @@ class ConnectionFactory {
 				\PDO::MYSQL_ATTR_FOUND_ROWS => true,
 			];
 		}
+
 		return $result;
 	}
 
@@ -93,12 +111,9 @@ class ConnectionFactory {
 	*/
 	public function getConnection($type, $additionalConnectionParams) {
 		$normalizedType = $this->normalizeType($type);
-		$eventManager = new \Doctrine\Common\EventManager();
+		$eventManager = new EventManager();
 		switch ($normalizedType) {
 			case 'mysql':
-				// Send "SET NAMES utf8". Only required on PHP 5.3 below 5.3.6.
-				// See http://stackoverflow.com/questions/4361459/php-pdo-charset-set-names#4361485
-				$eventManager->addEventSubscriber(new MysqlSessionInit);
 				$eventManager->addEventSubscriber(
 					new SQLSessionInit("SET SESSION AUTOCOMMIT=1"));
 				break;
@@ -115,9 +130,10 @@ class ConnectionFactory {
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
 				break;
 		}
-		$connection = \Doctrine\DBAL\DriverManager::getConnection(
+		/** @var Connection $connection */
+		$connection = DriverManager::getConnection(
 			array_merge($this->getDefaultConnectionParams($type), $additionalConnectionParams),
-			new \Doctrine\DBAL\Configuration(),
+			new Configuration(),
 			$eventManager
 		);
 		return $connection;
@@ -133,9 +149,11 @@ class ConnectionFactory {
 	}
 
 	/**
-	* @brief Checks whether the specified DBMS type is valid.
-	* @return bool
-	*/
+	 * Checks whether the specified DBMS type is valid.
+	 *
+	 * @param string $type
+	 * @return bool
+	 */
 	public function isValidType($type) {
 		$normalizedType = $this->normalizeType($type);
 		return isset($this->defaultConnectionParams[$normalizedType]);
@@ -144,23 +162,22 @@ class ConnectionFactory {
 	/**
 	 * Create the connection parameters for the config
 	 *
-	 * @param \OC\SystemConfig $config
 	 * @return array
 	 */
-	public function createConnectionParams($config) {
-		$type = $config->getValue('dbtype', 'sqlite');
+	public function createConnectionParams() {
+		$type = $this->config->getValue('dbtype', 'sqlite');
 
 		$connectionParams = [
-			'user' => $config->getValue('dbuser', ''),
-			'password' => $config->getValue('dbpassword', ''),
+			'user' => $this->config->getValue('dbuser', ''),
+			'password' => $this->config->getValue('dbpassword', ''),
 		];
-		$name = $config->getValue('dbname', 'owncloud');
+		$name = $this->config->getValue('dbname', 'owncloud');
 
 		if ($this->normalizeType($type) === 'sqlite3') {
-			$dataDir = $config->getValue("datadirectory", \OC::$SERVERROOT . '/data');
+			$dataDir = $this->config->getValue("datadirectory", \OC::$SERVERROOT . '/data');
 			$connectionParams['path'] = $dataDir . '/' . $name . '.db';
 		} else {
-			$host = $config->getValue('dbhost', '');
+			$host = $this->config->getValue('dbhost', '');
 			if (strpos($host, ':')) {
 				// Host variable may carry a port or socket.
 				list($host, $portOrSocket) = explode(':', $host, 2);
@@ -174,13 +191,28 @@ class ConnectionFactory {
 			$connectionParams['dbname'] = $name;
 		}
 
-		$connectionParams['tablePrefix'] = $config->getValue('dbtableprefix', 'oc_');
-		$connectionParams['sqlite.journal_mode'] = $config->getValue('sqlite.journal_mode', 'WAL');
+		$connectionParams['tablePrefix'] = $this->config->getValue('dbtableprefix', 'oc_');
+		$connectionParams['sqlite.journal_mode'] = $this->config->getValue('sqlite.journal_mode', 'WAL');
 
 		//additional driver options, eg. for mysql ssl
-		$driverOptions = $config->getValue('dbdriveroptions', null);
+		$driverOptions = $this->config->getValue('dbdriveroptions', null);
 		if ($driverOptions) {
 			$connectionParams['driverOptions'] = $driverOptions;
+		}
+
+		// set default table creation options
+		$connectionParams['defaultTableOptions'] = [
+			'collate' => 'utf8_bin',
+			'tablePrefix' => $connectionParams['tablePrefix']
+		];
+
+		if($this->config->getValue('mysql.utf8mb4', false)) {
+			$connectionParams['defaultTableOptions'] = [
+				'collate' => 'utf8mb4_bin',
+				'charset' => 'utf8mb4',
+				'row_format' => 'compressed',
+				'tablePrefix' => $connectionParams['tablePrefix']
+			];
 		}
 
 		return $connectionParams;

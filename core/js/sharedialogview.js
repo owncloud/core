@@ -220,7 +220,11 @@
 
 						var suggestions = users.concat(groups).concat(remotes);
 
+
 						if (suggestions.length > 0) {
+							suggestions.sort(function (a, b) {
+								return OC.Util.naturalSortCompare(a.label, b.label);
+							});
 							$('.shareWithField').removeClass('error')
 								.tooltip('hide')
 								.autocomplete("option", "autoFocus", true);
@@ -333,9 +337,11 @@
 			if (!this._loadingOnce) {
 				this._loadingOnce = true;
 				// the first time, focus on the share field after the spinner disappeared
-				_.defer(function() {
-					self.$('.shareWithField').focus();
-				});
+				if (!bowser.msie) {
+					_.defer(function () {
+						self.$('.shareWithField').focus();
+					});
+				}
 			}
 		},
 

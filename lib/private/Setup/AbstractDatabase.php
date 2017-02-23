@@ -5,7 +5,7 @@
  * @author Manish Bisht <manish.bisht490@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -103,8 +103,7 @@ abstract class AbstractDatabase {
 		if (!is_dir(\OC::$SERVERROOT."/core/Migrations")) {
 			return;
 		}
-		$ms = new MigrationService();
-		$mc = $ms->buildConfiguration('core', \OC::$server->getDatabaseConnection());
-		$ms->migrate($mc, true);
+		$ms = new MigrationService('core', \OC::$server->getDatabaseConnection());
+		$ms->migrate();
 	}
 }

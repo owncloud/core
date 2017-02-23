@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Virheellinen tallennustila",
     "Unknown error" : "Tuntematon virhe",
     "All files" : "Kaikki tiedostot",
+    "Saved" : "Tallennettu",
     "File could not be found" : "TIedostoa ei löytynyt",
     "Home" : "Koti",
     "Close" : "Sulje",

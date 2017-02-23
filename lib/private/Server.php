@@ -11,15 +11,18 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Philipp Schaffrath <github@philippschaffrath.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@users.noreply.github.com>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -77,6 +80,8 @@ use OC\Security\CredentialsManager;
 use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
+use OC\Settings\Panels\Helper;
+use OC\Settings\SettingsManager;
 use OC\Tagging\TagMapper;
 use OC\URLGenerator;
 use OC\Theme\ThemeService;
@@ -110,6 +115,25 @@ class Server extends ServerContainer implements IServerContainer {
 	public function __construct($webRoot, \OC\Config $config) {
 		parent::__construct();
 		$this->webRoot = $webRoot;
+
+		$this->registerService('SettingsManager', function($c) {
+			return new SettingsManager(
+				$c->getL10N('core'),
+				$c->getAppManager(),
+				$c->getUserSession(),
+				$c->getLogger(),
+				$c->getGroupManager(),
+				$c->getConfig(),
+				new \OCP\Defaults(),
+				$c->getURLGenerator(),
+				new Helper(),
+				$c->getLockingProvider(),
+				$c->getDatabaseConnection(),
+				$c->getCertificateManager(),
+				$c->getL10NFactory()
+
+			);
+		});
 
 		$this->registerService('ContactsManager', function ($c) {
 			return new ContactsManager();
@@ -247,7 +271,7 @@ class Server extends ServerContainer implements IServerContainer {
 			} else {
 				$defaultTokenProvider = null;
 			}
-			
+
 			$userSession = new \OC\User\Session($manager, $session, $timeFactory, $defaultTokenProvider, $c->getConfig());
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
@@ -419,13 +443,13 @@ class Server extends ServerContainer implements IServerContainer {
 			return new CredentialsManager($c->getCrypto(), $c->getDatabaseConnection());
 		});
 		$this->registerService('DatabaseConnection', function (Server $c) {
-			$factory = new \OC\DB\ConnectionFactory();
 			$systemConfig = $c->getSystemConfig();
+			$factory = new \OC\DB\ConnectionFactory($systemConfig);
 			$type = $systemConfig->getValue('dbtype', 'sqlite');
 			if (!$factory->isValidType($type)) {
 				throw new \OC\DatabaseException('Invalid database type');
 			}
-			$connectionParams = $factory->createConnectionParams($systemConfig);
+			$connectionParams = $factory->createConnectionParams();
 			$connection = $factory->getConnection($type, $connectionParams);
 			$connection->getConfiguration()->setSQLLogger($c->getQueryLogger());
 			return $connection;
@@ -587,13 +611,6 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getConfig(),
 				$c->getLogger(),
 				new \OC_Defaults()
-			);
-		});
-		$this->registerService('OcsClient', function (Server $c) {
-			return new OCSClient(
-				$this->getHTTPClientService(),
-				$this->getConfig(),
-				$this->getLogger()
 			);
 		});
 		$this->registerService('LockingProvider', function (Server $c) {
@@ -1089,6 +1106,16 @@ class Server extends ServerContainer implements IServerContainer {
 	}
 
 	/**
+	 * Returns a logger instance
+	 *
+	 * @return \OCP\Settings\ISettingsManager
+	 */
+	public function getSettingsManager() {
+		return $this->query('SettingsManager');
+	}
+
+
+	/**
 	 * Returns a router for generating and matching urls
 	 *
 	 * @return \OCP\Route\IRouter
@@ -1254,13 +1281,6 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getWebRoot() {
 		return $this->webRoot;
-	}
-
-	/**
-	 * @return \OC\OCSClient
-	 */
-	public function getOcsClient() {
-		return $this->query('OcsClient');
 	}
 
 	/**

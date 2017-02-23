@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "無效的儲存空間",
     "Unknown error" : "未知的錯誤",
     "All files" : "所有檔案",
+    "Saved" : "已儲存",
     "Home" : "家目錄",
     "Close" : " 關閉",
     "Favorites" : "最愛",

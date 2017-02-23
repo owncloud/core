@@ -10,6 +10,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Philipp Schaffrath <github@philippschaffrath.de>
  * @author Remco Brenninkmeijer <requist1@starmail.nl>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -17,7 +18,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -98,14 +99,8 @@ class TemplateLayout extends \OC_Template {
 				}
 			}
 			$userDisplayName = \OC_User::getDisplayName();
-			$appsMgmtActive = strpos(\OC::$server->getRequest()->getRequestUri(), \OC::$server->getURLGenerator()->linkToRoute('settings.AppSettings.viewApps')) === 0;
-			if ($appsMgmtActive) {
-				$l = \OC::$server->getL10N('lib');
-				$this->assign('application', $l->t('Apps'));
-			}
 			$this->assign('user_displayname', $userDisplayName);
 			$this->assign('user_uid', \OC_User::getUser());
-			$this->assign('appsmanagement_active', $appsMgmtActive);
 			$this->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
 
 			if (\OC_User::getUser() === false) {
@@ -126,6 +121,9 @@ class TemplateLayout extends \OC_Template {
 		}
 		// Send the language to our layouts
 		$lang = \OC::$server->getL10NFactory()->findLanguage();
+		if ($lang === 'sr@latin') {
+			$lang = 'sr';
+		}
 		$this->assign('language', $lang);
 
 		if(\OC::$server->getSystemConfig()->getValue('installed', false)) {

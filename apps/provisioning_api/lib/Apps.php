@@ -4,9 +4,10 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,23 +26,18 @@
 
 namespace OCA\Provisioning_API;
 
-use OC\OCSClient;
 use \OC_OCS_Result;
 use \OC_App;
 
 class Apps {
 	/** @var \OCP\App\IAppManager */
 	private $appManager;
-	/** @var OCSClient */
-	private $ocsClient;
 
 	/**
 	 * @param \OCP\App\IAppManager $appManager
 	 */
-	public function __construct(\OCP\App\IAppManager $appManager,
-								OCSClient $ocsClient) {
+	public function __construct(\OCP\App\IAppManager $appManager) {
 		$this->appManager = $appManager;
-		$this->ocsClient = $ocsClient;
 	}
 
 	/**
@@ -49,7 +45,7 @@ class Apps {
 	 * @return OC_OCS_Result
 	 */
 	public function getApps($parameters) {
-		$apps = OC_App::listAllApps(false, true, $this->ocsClient);
+		$apps = OC_App::listAllApps(false, true);
 		$list = [];
 		foreach($apps as $app) {
 			$list[] = $app['id'];

@@ -2,9 +2,11 @@
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@users.noreply.github.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -89,7 +91,7 @@ class OCSResponse extends Response {
 
 	/**
 	 * @return int
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getStatusCode() {
 		return $this->statuscode;
@@ -97,7 +99,7 @@ class OCSResponse extends Response {
 
 	/**
 	 * @param int $statuscode
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function setStatusCode($statuscode) {
 		$this->statuscode = $statuscode;

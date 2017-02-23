@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "وحدة تخزين غير صالحه ",
     "Unknown error" : "خطأ غير معروف. ",
     "All files" : "كل الملفات",
+    "Saved" : "تم الحفظ",
     "Home" : "البيت",
     "Close" : "إغلاق",
     "Favorites" : "المفضلة ",

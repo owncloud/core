@@ -10,6 +10,8 @@ OC.L10N.register(
     "New password" : "కొత్త సంకేతపదం",
     "Language" : "భాష",
     "Name" : "పేరు",
-    "Username" : "వాడుకరి పేరు"
+    "Username" : "వాడుకరి పేరు",
+    "Personal" : "వ్యక్తిగతం",
+    "Error" : "పొరపాటు"
 },
 "nplurals=2; plural=(n != 1);");

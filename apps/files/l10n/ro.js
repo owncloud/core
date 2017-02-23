@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Spațiu de stocare invalid",
     "Unknown error" : "Eroare necunoscută",
     "All files" : "Toate fișierele.",
+    "Saved" : "Salvat",
     "Home" : "Acasă",
     "Close" : "Închide",
     "Favorites" : "Favorite",

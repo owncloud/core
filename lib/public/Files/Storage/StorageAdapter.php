@@ -2,7 +2,7 @@
 /**
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ use OCP\Files\StorageNotAvailableException;
 /**
  * Storage adapter implementing most of the common methods from IStorage.
  *
- * @since 9.2
+ * @since 10.0
  */
 abstract class StorageAdapter extends \OC\Files\Storage\Common {
 
@@ -36,7 +36,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * and two storage objects with the same id should refer to two storages that display the same files.
 	 *
 	 * @return string storage id
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function getId();
 
@@ -47,7 +47,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 * @return bool true on success, false otherwise
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function mkdir($path);
 
@@ -57,7 +57,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 * @return bool true on success, false otherwise
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function rmdir($path);
 
@@ -67,7 +67,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 * @return resource|false
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function opendir($path);
 
@@ -78,7 +78,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 * @return array|false
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function stat($path);
 
@@ -88,7 +88,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 * @return string|false
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function filetype($path);
 
@@ -98,7 +98,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 * @return bool
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function file_exists($path);
 
@@ -108,7 +108,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 * @return bool true on success, false otherwise
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function unlink($path);
 
@@ -119,7 +119,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param string $mode
 	 * @return resource|false
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function fopen($path, $mode);
 
@@ -131,7 +131,7 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @param int $mtime
 	 * @return bool true on success, false otherwise
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	abstract public function touch($path, $mtime = NULL);
 }

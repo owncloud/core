@@ -1,8 +1,9 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Jesús Macias <jmacias@solidgear.es>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Juan Pablo Villafañez <jvillafanez@solidgear.es>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
@@ -11,7 +12,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -202,12 +203,16 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			foreach ($children as $fileInfo) {
 				// check if the file is readable before adding it to the list
 				// can't use "isReadable" function here, use smb internals instead
-				if ($fileInfo->isHidden()) {
-					$this->log("{$fileInfo->getName()} isn't readable, skipping", Util::DEBUG);
-				} else {
-					$result[] = $fileInfo;
-					//remember entry so we can answer file_exists and filetype without a full stat
-					$this->statCache[$path . '/' . $fileInfo->getName()] = $fileInfo;
+				try {
+					if ($fileInfo->isHidden()) {
+						$this->log("{$fileInfo->getName()} isn't readable, skipping", Util::DEBUG);
+					} else {
+						$result[] = $fileInfo;
+						//remember entry so we can answer file_exists and filetype without a full stat
+						$this->statCache[$path . '/' . $fileInfo->getName()] = $fileInfo;
+					}
+				} catch (NotFoundException $e) {
+					$this->swallow(__FUNCTION__, $e);
 				}
 			}
 		} catch (ConnectException $e) {

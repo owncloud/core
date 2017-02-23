@@ -5,6 +5,9 @@ OC.L10N.register(
     "Cancel" : "Kanseleer",
     "Password" : "Wagwoord",
     "New password" : "Nuwe wagwoord",
-    "Username" : "Gebruikersnaam"
+    "Username" : "Gebruikersnaam",
+    "Personal" : "Persoonlik",
+    "Admin" : "Admin",
+    "Error" : "Fout"
 },
 "nplurals=2; plural=(n != 1);");

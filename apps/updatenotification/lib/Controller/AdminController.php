@@ -2,8 +2,10 @@
 /**
  * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Michael Jobst <mjobst+github@tecratech.de>
+ * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,8 +35,9 @@ use OCP\IDateTimeFormatter;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
+use OCP\Settings\ISettings;
 
-class AdminController extends Controller {
+class AdminController extends Controller implements ISettings {
 	/** @var IJobList */
 	private $jobList;
 	/** @var ISecureRandom */
@@ -78,6 +81,18 @@ class AdminController extends Controller {
 		$this->l10n = $l10n;
 		$this->updateChecker = $updateChecker;
 		$this->dateTimeFormatter = $dateTimeFormatter;
+	}
+
+	public function getPriority() {
+		return 0;
+	}
+
+	public function getSectionID() {
+		return 'general';
+	}
+
+	public function getPanel() {
+		return $this->displayPanel();
 	}
 
 	/**

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Memoro ne validas",
     "Unknown error" : "Nekonata eraro",
     "All files" : "Ĉiuj dosieroj",
+    "Saved" : "Konservita",
     "Home" : "Hejmo",
     "Close" : "Fermi",
     "Favorites" : "Favoratoj",

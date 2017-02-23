@@ -2,8 +2,9 @@
 /**
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,7 +28,7 @@ use \OCP\Files\StorageNotAvailableException;
 /**
  * Authentication mechanism or backend has insufficient data
  *
- * @since 9.2.0
+ * @since 10.0
  */
 class InsufficientDataForMeaningfulAnswerException extends StorageNotAvailableException {
 	/**

@@ -2,7 +2,7 @@
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\AppInfo;
-
 
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCP\AppFramework\App;
@@ -30,14 +28,6 @@ class Application extends App {
 
 	/** @var FederatedShareProvider */
 	protected $federatedShareProvider;
-
-	/**
-	 * register personal and admin settings page
-	 */
-	public function registerSettings() {
-		\OCP\App::registerAdmin('federatedfilesharing', 'settings-admin');
-		\OCP\App::registerPersonal('federatedfilesharing', 'settings-personal');
-	}
 
 	/**
 	 * get instance of federated share provider

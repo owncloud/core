@@ -4,8 +4,9 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -116,14 +117,14 @@ interface IAppManager {
 	/**
 	 * @param string $package
 	 * @return mixed
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function installApp($package);
 
 	/**
 	 * @param string $package
 	 * @return mixed
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function updateApp($package);
 
@@ -132,7 +133,7 @@ interface IAppManager {
 	 *
 	 * @param string $appId app id
 	 * @return array app info
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getAppInfo($appId);
 
@@ -140,9 +141,8 @@ interface IAppManager {
 	 * Returns the list of all apps, enabled and disabled
 	 *
 	 * @return string[]
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getAllApps();
-
 
 }

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Pohrana neispravna",
     "Unknown error" : "Nepoznata pogreška",
     "All files" : "Sve datoteke",
+    "Saved" : "Spremljeno",
     "Home" : "Kuća",
     "Close" : "Zatvorite",
     "Favorites" : "Favoriti",

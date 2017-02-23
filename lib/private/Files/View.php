@@ -26,7 +26,7 @@
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -686,7 +686,11 @@ class View {
 		if ($mount and $mount->getInternalPath($absolutePath) === '') {
 			return $this->removeMount($mount, $absolutePath);
 		}
-		$result = $this->basicOperation('unlink', $path, ['delete']);
+		if ($this->is_dir($path)) {
+			$result = $this->basicOperation('rmdir', $path, array('delete'));
+		} else {
+			$result = $this->basicOperation('unlink', $path, array('delete'));
+		}
 		if (!$result && !$this->file_exists($path)) { //clear ghost files from the cache on delete
 			$storage = $mount->getStorage();
 			$internalPath = $mount->getInternalPath($absolutePath);
@@ -1793,13 +1797,15 @@ class View {
 			throw new InvalidPathException($l10n->t('Dot files are not allowed'));
 		}
 
-		// verify database - e.g. mysql only 3-byte chars
-		if (preg_match('%(?:
+		if (!\OC::$server->getDatabaseConnection()->allows4ByteCharacters()) {
+			// verify database - e.g. mysql only 3-byte chars
+			if (preg_match('%(?:
       \xF0[\x90-\xBF][\x80-\xBF]{2}      # planes 1-3
     | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
     | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
 )%xs', $fileName)) {
-			throw new InvalidPathException($l10n->t('4-byte characters are not supported in file names'));
+				throw new InvalidPathException($l10n->t('4-byte characters are not supported in file names'));
+			}
 		}
 
 		try {
@@ -2068,7 +2074,7 @@ class View {
 		$parts = explode('/', trim($path, '/'), 3);
 		// "$user", "files", "path/to/dir"
 		if (!isset($parts[1]) || $parts[1] !== 'files') {
-			throw new \InvalidArgumentException('$absolutePath must be relative to "files"');
+			throw new \InvalidArgumentException('"' . $absolutePath . '" must be relative to "files"');
 		}
 		if (isset($parts[2])) {
 			return $parts[2];

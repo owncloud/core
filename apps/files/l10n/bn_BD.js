@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "সংরক্ষণাগার বৈধ নয়",
     "Unknown error" : "অজানা জটিলতা",
     "All files" : "সব ফাইল",
+    "Saved" : "সংরক্ষণ করা হলো",
     "Home" : "নিবাস",
     "Close" : "বন্ধ",
     "Favorites" : "প্রিয়জন",

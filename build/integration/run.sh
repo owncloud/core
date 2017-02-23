@@ -47,6 +47,9 @@ echo $PHPPID_FED
 export TEST_SERVER_URL="http://localhost:$PORT/ocs/"
 export TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
 
+#Set up personalized skeleton
+$OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
+
 #Enable external storage app
 $OCC app:enable files_external
 
@@ -87,6 +90,9 @@ $OCC files_external:delete -y $ID_STORAGE
 
 #Disable external storage app
 $OCC app:disable files_external
+
+# Clear storage folder
+rm -Rf work/local_storage/*
 
 if test "$OC_TEST_ALT_HOME" = "1"; then
 	env_alt_home_clear

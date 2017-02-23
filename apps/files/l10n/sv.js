@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Lagring ogiltig",
     "Unknown error" : "Okänt fel",
     "All files" : "Alla filer",
+    "Saved" : "Sparad",
     "File could not be found" : "Fil kunde inte hittas",
     "Home" : "Hem",
     "Close" : "Stäng",

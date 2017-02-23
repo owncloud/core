@@ -2,10 +2,13 @@
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@users.noreply.github.com>
+ * @author Sergio Bertolín <sbertolin@solidgear.es>
  * @author Stefan Weil <sw@weilnetz.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -122,7 +125,10 @@ abstract class OCSController extends ApiController {
 		if (substr($script, -11) === '/ocs/v2.php') {
 			$statusCode = \OC_API::mapStatusCodes($resp->getStatusCode());
 			if (!is_null($statusCode)) {
+				// HTTP code
 				$resp->setStatus($statusCode);
+				// OCS code
+				$resp->setStatusCode($statusCode);
 			}
 		}
 

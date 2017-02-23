@@ -5,6 +5,8 @@ OC.L10N.register(
     "Storage invalid" : "אחסון לא חוקי",
     "Unknown error" : "שגיאה בלתי ידועה",
     "All files" : "כל הקבצים",
+    "Saved" : "נשמר",
+    "There was an error saving" : "אירעה שגיאה בשמירה",
     "File could not be found" : "הקובץ לא ניתן לאיתור",
     "Home" : "בית",
     "Close" : "סגירה",

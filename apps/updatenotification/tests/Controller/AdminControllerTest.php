@@ -2,8 +2,11 @@
 /**
  * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Michael Jobst <mjobst+github@tecratech.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -198,4 +201,13 @@ class AdminControllerTest extends TestCase {
 		$expected = new DataResponse('MyGeneratedToken');
 		$this->assertEquals($expected, $this->adminController->createCredentials());
 	}
+
+	public function testGetPriority() {
+		$this->assertTrue(is_integer($this->adminController->getPriority()));
+	}
+
+	public function testGetSectionID() {
+		$this->assertEquals('general', $this->adminController->getSectionID());
+	}
+
 }

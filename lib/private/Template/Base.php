@@ -6,9 +6,12 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Philipp Schaffrath <github@philippschaffrath.de>
+ * @author phisch <git@philippschaffrath.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -115,7 +118,7 @@ class Base {
 	 *
 	 * If the key existed before, it will be overwritten
 	 */
-	public function assign( $key, $value) {
+	public function assign($key, $value) {
 		$this->vars[$key] = $value;
 		return true;
 	}
@@ -130,8 +133,8 @@ class Base {
 	 * exists, the value will be appended. It can be accessed via
 	 * $_[$key][$position] in the template.
 	 */
-	public function append( $key, $value ) {
-		if( array_key_exists( $key, $this->vars )) {
+	public function append($key, $value) {
+		if( array_key_exists($key, $this->vars)) {
 			$this->vars[$key][] = $value;
 		}
 		else{

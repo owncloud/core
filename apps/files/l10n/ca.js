@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Emmagatzemament no vàlid",
     "Unknown error" : "Error desconegut",
     "All files" : "Tots els fitxers",
+    "Saved" : "Desat",
     "Home" : "Inici",
     "Close" : "Tanca",
     "Favorites" : "Preferits",

@@ -1,10 +1,10 @@
 <?php
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
- * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@users.noreply.github.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,13 +48,6 @@ class Application extends \OCP\AppFramework\App {
 		parent::__construct('federation', $urlParams);
 		$this->registerService();
 		$this->registerMiddleware();
-	}
-
-	/**
-	 * register setting scripts
-	 */
-	public function registerSettings() {
-		App::registerAdmin('federation', 'settings/settings-admin');
 	}
 
 	private function registerService() {

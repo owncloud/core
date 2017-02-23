@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "İnformasiya daşıyıcısı yalnışdır",
     "Unknown error" : "Bəlli olmayan səhv baş verdi",
     "All files" : "Bütün fayllar",
+    "Saved" : "Saxlanıldı",
     "Home" : "Ev",
     "Close" : "Bağla",
     "Favorites" : "Sevimlilər",

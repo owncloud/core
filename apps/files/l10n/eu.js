@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Biltegi bliogabea",
     "Unknown error" : "Errore ezezaguna",
     "All files" : "Fitxategi guztiak",
+    "Saved" : "Gordeta",
     "Home" : "Etxekoa",
     "Close" : "Itxi",
     "Favorites" : "Gogokoak",

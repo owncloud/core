@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Saugykla neteisinga",
     "Unknown error" : "Neatpažinta klaida",
     "All files" : "Visi failai",
+    "Saved" : "Išsaugoti",
     "File could not be found" : "Nepavyko rasti failo",
     "Home" : "Namų",
     "Close" : "Užverti",

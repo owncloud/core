@@ -5,6 +5,8 @@ OC.L10N.register(
     "Storage invalid" : "การจัดเก็บข้อมูลไม่ถูกต้อง",
     "Unknown error" : "ข้อผิดพลาดที่ไม่ทราบสาเหตุ",
     "All files" : "ไฟล์ทั้งหมด",
+    "Saved" : "บันทึกแล้ว",
+    "There was an error saving" : "มีการบันทึกข้อผิดพลาด",
     "File could not be found" : "ไม่พบไฟล์ในระบบ",
     "Home" : "บ้าน",
     "Close" : "ปิด",

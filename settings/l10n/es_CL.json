@@ -1,6 +1,9 @@
 { "translations": {
     "Cancel" : "Cancelar",
     "Password" : "Clave",
-    "Username" : "Usuario"
+    "Username" : "Usuario",
+    "Personal" : "Personal",
+    "Admin" : "Administración",
+    "Error" : "Error"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

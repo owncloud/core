@@ -2,7 +2,7 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,42 +22,42 @@
 namespace OC\Core\Command\Db\Migrations;
 
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand as DBALMigrateCommand;
 use OC\DB\MigrationService;
-use OCP\IConfig;
+use OCP\IDBConnection;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateCommand extends DBALMigrateCommand {
+class MigrateCommand extends Command {
 
-	/** @var Connection */
-	private $ocConnection;
+	/** @var IDBConnection */
+	private $connection;
 
 	/**
-	 * @param \OCP\IConfig $config
+	 * @param IDBConnection $connection
 	 */
-	public function __construct(IConfig $config, Connection $connection) {
-		$this->config = $config;
-		$this->ocConnection = $connection;
-
+	public function __construct(IDBConnection $connection) {
+		$this->connection = $connection;
 		parent::__construct();
 	}
 
 	protected function configure() {
-		$this->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on');
+		$this
+			->setName('migrations:migrate')
+			->setDescription('Execute a migration to a specified version or the latest available version.')
+			->addArgument('app', InputArgument::REQUIRED, 'Name of the app this migration command shall work on')
+			->addArgument('version', InputArgument::OPTIONAL, 'The version number (YYYYMMDDHHMMSS) or alias (first, prev, next, latest) to migrate to.', 'latest');
 
 		parent::configure();
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$appName = $input->getArgument('app');
-		$ms = new MigrationService();
-		$mc = $ms->buildConfiguration($appName, $this->ocConnection);
-		$this->setMigrationConfiguration($mc);
+		$ms = new MigrationService($appName, $this->connection);
+		$version = $input->getArgument('version');
 
-		parent::execute($input, $output);
+		$ms->migrate($version);
 	}
 
 }

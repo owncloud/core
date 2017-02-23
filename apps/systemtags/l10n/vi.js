@@ -1,7 +1,7 @@
 OC.L10N.register(
     "systemtags",
     {
-    "Tags" : "Tags",
+    "Tags" : "Thẻ",
     "No entries found in this folder" : "Chưa có mục nào trong thư mục",
     "Name" : "Tên",
     "Size" : "Kích cỡ",

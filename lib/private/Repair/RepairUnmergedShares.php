@@ -1,8 +1,9 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -337,9 +338,11 @@ class RepairUnmergedShares implements IRepairStep {
 
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
-		if (version_compare($ocVersionFromBeforeUpdate, '9.2.0.1', '<')) {
-			// this situation was only possible between 9.0.0 and 9.0.3 included
-
+		// this situation was only possible between 9.0.0 and 9.0.3 included, and 9.1.0
+		if (
+			version_compare($ocVersionFromBeforeUpdate, '9.1.0', '>=')
+			&& version_compare($ocVersionFromBeforeUpdate, '9.1.0.16', '<')
+			) {
 			$function = function(IUser $user) use ($output) {
 				$this->fixUnmergedShares($output, $user);
 				$output->advance();

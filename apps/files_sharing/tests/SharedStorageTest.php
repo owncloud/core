@@ -2,13 +2,14 @@
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Markus Goetz <markus@woboq.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,6 +27,11 @@
  */
 
 namespace OCA\Files_Sharing\Tests;
+
+use OCA\Files_Sharing\SharedStorage;
+use OCP\Share\IShare;
+use OC\Files\View;
+use OCP\Files\NotFoundException;
 
 /**
  * Class SharedStorageTest
@@ -561,5 +567,38 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($cache->inCache('/vincent'));
 		$this->assertTrue($cache->inCache('/vincent/' . $fn));
 		$this->assertEquals(16, $cache->get('/vincent/' . $fn)['size']);
+	}
+
+	public function testInitWithNonExistingUser() {
+		$share = $this->createMock(IShare::class);
+		$share->method('getShareOwner')->willReturn('unexist');
+		$ownerView = $this->createMock(View::class);
+		$storage = new SharedStorage([
+			'ownerView' => $ownerView,
+			'superShare' => $share,
+			'groupedShares' => [$share],
+			'user' => 'user1',
+		]);
+
+		// trigger init
+		$this->assertInstanceOf(\OC\Files\Cache\FailedCache::class, $storage->getCache());
+		$this->assertInstanceOf(\OC\Files\Storage\FailedStorage::class, $storage->getSourceStorage());
+	}
+
+	public function testInitWithNotFoundSource() {
+		$share = $this->createMock(IShare::class);
+		$share->method('getShareOwner')->willReturn(self::TEST_FILES_SHARING_API_USER1);
+		$ownerView = $this->createMock(View::class);
+		$ownerView->method('getPath')->will($this->throwException(new NotFoundException()));
+		$storage = new SharedStorage([
+			'ownerView' => $ownerView,
+			'superShare' => $share,
+			'groupedShares' => [$share],
+			'user' => 'user1',
+		]);
+
+		// trigger init
+		$this->assertInstanceOf(\OC\Files\Cache\FailedCache::class, $storage->getCache());
+		$this->assertInstanceOf(\OC\Files\Storage\FailedStorage::class, $storage->getSourceStorage());
 	}
 }

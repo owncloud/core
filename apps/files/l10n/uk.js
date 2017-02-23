@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Неправильне сховище",
     "Unknown error" : "Невідома помилка",
     "All files" : "Усі файли",
+    "Saved" : "Збережено",
     "File could not be found" : "Файл не знайдено",
     "Home" : "Домашня адреса",
     "Close" : "Закрити",

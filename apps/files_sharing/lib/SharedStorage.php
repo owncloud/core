@@ -9,9 +9,11 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author scambra <sergio@entrecables.com>
+ * @author Sergio Bertolín <sbertolin@solidgear.es>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,6 +40,7 @@ use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OC\Files\Storage\FailedStorage;
 use OCP\Files\NotFoundException;
+use OC\User\NoUserException;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -102,12 +105,16 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
 			// adjust jail
 			$this->rootPath = $sourceInternalPath;
-
-		} catch (\Exception $e) {
+		} catch (NotFoundException $e) {
+			// original file not accessible or deleted, set FailedStorage
 			$this->sourceStorage = new FailedStorage(['exception' => $e]);
-			if (!$e instanceof NotFoundException) {
-				$this->logger->logException($e);
-			}
+		} catch (NoUserException $e) {
+			// sharer user deleted, set FailedStorage
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
+		} catch (\Exception $e) {
+			// something unexpected happened, log exception and set failed storage
+			$this->sourceStorage = new FailedStorage(['exception' => $e]);
+			$this->logger->logException($e);
 		}
 		$this->storage = $this->sourceStorage;
 	}

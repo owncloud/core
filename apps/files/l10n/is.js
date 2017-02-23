@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Ógild geymsla",
     "Unknown error" : "Óþekkt villa",
     "All files" : "Allar skrár",
+    "Saved" : "Vistað",
     "File could not be found" : "Þessi skrá fannst ekki",
     "Home" : "Heim",
     "Close" : "Loka",

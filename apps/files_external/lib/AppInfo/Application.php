@@ -1,14 +1,16 @@
 <?php
 /**
+ * @author Christian Rost <rost@b1-systems.de>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Ross Nicoll <jrn@jrn.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -63,14 +65,7 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 		$backendService = $container->getServer()->query('StoragesBackendService');
 		$backendService->registerBackendProvider($this);
 		$backendService->registerAuthMechanismProvider($this);
-	}
 
-	/**
-	 * Register settings templates
-	 */
-	public function registerSettings() {
-		\OCP\App::registerAdmin('files_external', 'settings');
-		\OCP\App::registerPersonal('files_external', 'personal');
 	}
 
 	/**

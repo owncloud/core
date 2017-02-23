@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Невалидно дисково устройство.",
     "Unknown error" : "Непозната грешка.",
     "All files" : "Всички файлове",
+    "Saved" : "Запазено",
     "File could not be found" : "Файлът не може да бъде открит",
     "Home" : "Домашен",
     "Close" : "Затвори",

@@ -15,7 +15,7 @@
  * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -362,28 +362,23 @@ class OC_API {
 		$userSession = \OC::$server->getUserSession();
 		$request = \OC::$server->getRequest();
 		try {
-			$loginSuccess = $userSession->tryTokenLogin($request);
-			if (!$loginSuccess) {
-				$loginSuccess = $userSession->tryAuthModuleLogin($request);
+			if (OC_User::handleApacheAuth()) {
+				self::$logoutRequired = false;
+			} else if ($userSession->tryTokenLogin($request)
+				|| $userSession->tryAuthModuleLogin($request)
+				|| $userSession->tryBasicAuthLogin($request)) {
+				self::$logoutRequired = true;
+			} else {
+				return false;
 			}
-			if (!$loginSuccess) {
-				$loginSuccess = $userSession->tryBasicAuthLogin($request);
-			}
-		} catch (\OC\User\LoginException $e) {
-			return false;
-		}
-	
-		if ($loginSuccess === true) {
-			self::$logoutRequired = true;
-
 			// initialize the user's filesystem
 			\OC_Util::setupFS(\OC_User::getUser());
 			self::$isLoggedIn = true;
 
 			return \OC_User::getUser();
+		} catch (\OC\User\LoginException $e) {
+			return false;
 		}
-
-		return false;
 	}
 
 	/**

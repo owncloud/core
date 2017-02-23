@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "ಸಂಗ್ರಹ ಅಮಾನ್ಯವಾಗಿದೆ",
     "Unknown error" : "ಗೊತ್ತಿಲ್ಲದ ದೋಷ",
     "All files" : "﻿ಎಲ್ಲಾ ಕಡತಗಳು",
+    "Saved" : "﻿ಉಳಿಸಿದ",
     "Home" : "﻿ಮುಖಪುಟ",
     "Close" : "ಮುಚ್ಚು",
     "Favorites" : "ಅಚ್ಚುಮೆಚ್ಚಿನ",

@@ -7,6 +7,7 @@ OC.L10N.register(
     "Bad Signature" : "Лош потпис",
     "Missing Signature" : "Недостасува потписот",
     "Cheers!" : "Поздрав!",
+    "Encryption" : "Енкрипција",
     "Change Password" : "Смени лозинка",
     "Old log-in password" : "Старата лозинка за најавување",
     "Current log-in password" : "Тековната лозинка за најавување",

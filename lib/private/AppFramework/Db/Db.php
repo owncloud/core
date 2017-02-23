@@ -6,8 +6,9 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,10 +27,10 @@
 
 namespace OC\AppFramework\Db;
 
+use Doctrine\DBAL\Schema\Schema;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDb;
 use OCP\IDBConnection;
-use OCP\PreConditionNotMetException;
 
 /**
  * @deprecated use IDBConnection directly, will be removed in ownCloud 10
@@ -49,22 +50,14 @@ class Db implements IDb {
 	}
 
 	/**
-	 * Gets the ExpressionBuilder for the connection.
-	 *
-	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
+	 * @inheritdoc
 	 */
 	public function getQueryBuilder() {
 		return $this->connection->getQueryBuilder();
 	}
 
 	/**
-	 * Used to abstract the ownCloud database access away
-	 *
-	 * @param string $sql the sql query with ? placeholder for params
-	 * @param int $limit the maximum number of rows
-	 * @param int $offset from which row we want to start
-	 * @deprecated use prepare instead, will be removed in ownCloud 10
-	 * @return \OC_DB_StatementWrapper prepared SQL query
+	 * @inheritdoc
 	 */
 	public function prepareQuery($sql, $limit = null, $offset = null) {
 		$isManipulation = \OC_DB::isManipulation($sql);
@@ -74,91 +67,49 @@ class Db implements IDb {
 
 
 	/**
-	 * Used to get the id of the just inserted element
-	 *
-	 * @deprecated use lastInsertId instead, will be removed in ownCloud 10
-	 * @param string $tableName the name of the table where we inserted the item
-	 * @return int the id of the inserted element
+	 * @inheritdoc
 	 */
 	public function getInsertId($tableName) {
 		return $this->connection->lastInsertId($tableName);
 	}
 
 	/**
-	 * Used to abstract the ownCloud database access away
-	 * @param string $sql the sql query with ? placeholder for params
-	 * @param int $limit the maximum number of rows
-	 * @param int $offset from which row we want to start
-	 * @return \Doctrine\DBAL\Driver\Statement The prepared statement.
+	 * @inheritdoc
 	 */
 	public function prepare($sql, $limit=null, $offset=null) {
 		return $this->connection->prepare($sql, $limit, $offset);
 	}
 
 	/**
-	 * Executes an, optionally parameterized, SQL query.
-	 *
-	 * If the query is parameterized, a prepared statement is used.
-	 * If an SQLLogger is configured, the execution is logged.
-	 *
-	 * @param string $query The SQL query to execute.
-	 * @param string[] $params The parameters to bind to the query, if any.
-	 * @param array $types The types the previous parameters are in.
-	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
+	 * @inheritdoc
 	 */
 	public function executeQuery($query, array $params = [], $types = []) {
 		return $this->connection->executeQuery($query, $params, $types);
 	}
 
 	/**
-	 * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters
-	 * and returns the number of affected rows.
-	 *
-	 * This method supports PDO binding types as well as DBAL mapping types.
-	 *
-	 * @param string $query The SQL query.
-	 * @param array $params The query parameters.
-	 * @param array $types The parameter types.
-	 * @return integer The number of affected rows.
+	 * @inheritdoc
 	 */
 	public function executeUpdate($query, array $params = [], array $types = []) {
 		return $this->connection->executeUpdate($query, $params, $types);
 	}
 
 	/**
-	 * Used to get the id of the just inserted element
-	 * @param string $table the name of the table where we inserted the item
-	 * @return int the id of the inserted element
+	 * @inheritdoc
 	 */
 	public function lastInsertId($table = null) {
 		return $this->connection->lastInsertId($table);
 	}
 
 	/**
-	 * Insert a row if the matching row does not exists.
-	 *
-	 * @param string $table The table name (will replace *PREFIX* with the actual prefix)
-	 * @param array $input data that should be inserted into the table  (column name => value)
-	 * @param array|null $compare List of values that should be checked for "if not exists"
-	 *				If this is null or an empty array, all keys of $input will be compared
-	 *				Please note: text fields (clob) must not be used in the compare array
-	 * @return int number of inserted rows
-	 * @throws \Doctrine\DBAL\DBALException
+	 * @inheritdoc
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		return $this->connection->insertIfNotExist($table, $input, $compare);
 	}
 
 	/**
-	 * Insert or update a row value
-	 *
-	 * @param string $table
-	 * @param array $keys (column name => value)
-	 * @param array $values (column name => value)
-	 * @param array $updatePreconditionValues ensure values match preconditions (column name => value)
-	 * @return int number of new rows
-	 * @throws \Doctrine\DBAL\DBALException
-	 * @throws PreConditionNotMetException
+	 * @inheritdoc
 	 */
 	public function setValues($table, array $keys, array $values, array $updatePreconditionValues = []) {
 		return $this->connection->setValues($table, $keys, $values, $updatePreconditionValues);
@@ -179,124 +130,128 @@ class Db implements IDb {
 	}
 
 	/**
-	 * Start a transaction
+	 * @inheritdoc
 	 */
 	public function beginTransaction() {
 		$this->connection->beginTransaction();
 	}
 
 	/**
-	 * Check if a transaction is active
-	 *
-	 * @return bool
+	 * @inheritdoc
 	 */
 	public function inTransaction() {
 		return $this->connection->inTransaction();
 	}
 
 	/**
-	 * Commit the database changes done during a transaction that is in progress
+	 * @inheritdoc
 	 */
 	public function commit() {
 		$this->connection->commit();
 	}
 
 	/**
-	 * Rollback the database changes done during a transaction that is in progress
+	 * @inheritdoc
 	 */
 	public function rollBack() {
 		$this->connection->rollBack();
 	}
 
 	/**
-	 * Gets the error code and message as a string for logging
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getError() {
 		return $this->connection->getError();
 	}
 
 	/**
-	 * Fetch the SQLSTATE associated with the last database operation.
-	 *
-	 * @return integer The last error code.
+	 * @inheritdoc
 	 */
 	public function errorCode() {
 		return $this->connection->errorCode();
 	}
 
 	/**
-	 * Fetch extended error information associated with the last database operation.
-	 *
-	 * @return array The last error information.
+	 * @inheritdoc
 	 */
 	public function errorInfo() {
 		return $this->connection->errorInfo();
 	}
 
 	/**
-	 * Establishes the connection with the database.
-	 *
-	 * @return bool
+	 * @inheritdoc
 	 */
 	public function connect() {
 		return $this->connection->connect();
 	}
 
 	/**
-	 * Close the database connection
+	 * @inheritdoc
 	 */
 	public function close() {
 		$this->connection->close();
 	}
 
 	/**
-	 * Quotes a given input parameter.
-	 *
-	 * @param mixed $input Parameter to be quoted.
-	 * @param int $type Type of the parameter.
-	 * @return string The quoted parameter.
+	 * @inheritdoc
 	 */
 	public function quote($input, $type = IQueryBuilder::PARAM_STR) {
 		return $this->connection->quote($input, $type);
 	}
 
 	/**
-	 * Gets the DatabasePlatform instance that provides all the metadata about
-	 * the platform this driver connects to.
-	 *
-	 * @return \Doctrine\DBAL\Platforms\AbstractPlatform The database platform.
+	 * @inheritdoc
 	 */
 	public function getDatabasePlatform() {
 		return $this->connection->getDatabasePlatform();
 	}
 
 	/**
-	 * Drop a table from the database if it exists
-	 *
-	 * @param string $table table name without the prefix
+	 * @inheritdoc
 	 */
 	public function dropTable($table) {
 		$this->connection->dropTable($table);
 	}
 
 	/**
-	 * Check if a table exists
-	 *
-	 * @param string $table table name without the prefix
-	 * @return bool
+	 * @inheritdoc
 	 */
 	public function tableExists($table) {
 		return $this->connection->tableExists($table);
 	}
 
 	/**
-	 * Espace a parameter to be used in a LIKE query
-	 *
-	 * @param string $param
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function escapeLikeParameter($param) {
 		return $this->connection->escapeLikeParameter($param);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function createSchema() {
+		return $this->connection->createSchema();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function migrateToSchema(Schema $toSchema) {
+		return $this->connection->migrateToSchema($toSchema);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getTransactionIsolation() {
+		return $this->connection->getTransactionIsolation();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function allows4ByteCharacters() {
+		return $this->connection->allows4ByteCharacters();
 	}
 }

@@ -4,7 +4,6 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Christoph Wurst <christoph@owncloud.com>
- * @author Frank Karlitschek <frank@karlitschek.de>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -12,9 +11,10 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -45,10 +45,7 @@ $application->registerRoutes($this, [
 		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
 		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
 		['name' => 'Encryption#startMigration', 'url' => '/settings/admin/startmigration', 'verb' => 'POST'],
-		['name' => 'AppSettings#listCategories', 'url' => '/settings/apps/categories', 'verb' => 'GET'],
-		['name' => 'AppSettings#viewApps', 'url' => '/settings/apps', 'verb' => 'GET'],
 		['name' => 'AppSettings#listApps', 'url' => '/settings/apps/list', 'verb' => 'GET'],
-		['name' => 'AppSettings#changeExperimentalConfigState', 'url' => '/settings/apps/experimental', 'verb' => 'POST'],
 		['name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/security/trustedDomains', 'verb' => 'POST'],
 		['name' => 'Users#setDisplayName', 'url' => '/settings/users/{username}/displayName', 'verb' => 'POST'],
 		['name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'],
@@ -62,6 +59,8 @@ $application->registerRoutes($this, [
 		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
 		['name' => 'Certificate#addSystemRootCertificate', 'url' => '/settings/admin/certificate', 'verb' => 'POST'],
 		['name' => 'Certificate#removeSystemRootCertificate', 'url' => '/settings/admin/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal', 'verb' => 'GET'],
+		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
 	]
 ]);
 
@@ -70,12 +69,8 @@ $application->registerRoutes($this, [
 // Settings pages
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
-$this->create('settings_personal', '/settings/personal')
-	->actionInclude('settings/personal.php');
 $this->create('settings_users', '/settings/users')
 	->actionInclude('settings/users.php');
-$this->create('settings_admin', '/settings/admin')
-	->actionInclude('settings/admin.php');
 // Settings ajax actions
 // users
 $this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
@@ -88,7 +83,7 @@ $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
-	->actionInclude('settings/ajax/changegroupname.php');	
+	->actionInclude('settings/ajax/changegroupname.php');
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()

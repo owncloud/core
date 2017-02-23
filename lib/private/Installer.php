@@ -16,11 +16,10 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
- * @author root <root@oc.(none)>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -126,9 +125,8 @@ class Installer {
 
 		//install the database
 		if (isset($appData['use-migrations']) && $appData['use-migrations'] === 'true') {
-			$ms = new \OC\DB\MigrationService();
-			$mc = $ms->buildConfiguration($appId, \OC::$server->getDatabaseConnection());
-			$ms->migrate($mc);
+			$ms = new \OC\DB\MigrationService($appId, \OC::$server->getDatabaseConnection());
+			$ms->migrate();
 		} else {
 			if(is_file($basedir.'/appinfo/database.xml')) {
 				if (\OC::$server->getAppConfig()->getValue($info['id'], 'installed_version') === null) {
@@ -237,36 +235,6 @@ class Installer {
 		OC_Helper::rmdirr($extractDir);
 
 		return OC_App::updateApp($info['id']);
-	}
-
-	/**
-	 * update an app by it's id
-	 *
-	 * @param integer $ocsId
-	 * @return bool
-	 * @throws \Exception
-	 */
-	public static function updateAppByOCSId($ocsId) {
-		$ocsClient = new OCSClient(
-			\OC::$server->getHTTPClientService(),
-			\OC::$server->getConfig(),
-			\OC::$server->getLogger()
-		);
-		$appData = $ocsClient->getApplication($ocsId, \OCP\Util::getVersion());
-		$download = $ocsClient->getApplicationDownload($ocsId, \OCP\Util::getVersion());
-
-		if (isset($download['downloadlink']) && trim($download['downloadlink']) !== '') {
-			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
-			$info = [
-				'source' => 'http',
-				'href' => $download['downloadlink'],
-				'appdata' => $appData
-			];
-		} else {
-			throw new \Exception('Could not fetch app info!');
-		}
-
-		return self::updateApp($info);
 	}
 
 	/**
@@ -419,52 +387,6 @@ class Installer {
 	}
 
 	/**
-	 * Check if an update for the app is available
-	 * @param string $app
-	 * @return string|false false or the version number of the update
-	 *
-	 * The function will check if an update for a version is available
-	 */
-	public static function isUpdateAvailable( $app ) {
-		static $isInstanceReadyForUpdates = null;
-
-		if ($isInstanceReadyForUpdates === null) {
-			$installPath = OC_App::getInstallPath();
-			if ($installPath === false || $installPath === null) {
-				$isInstanceReadyForUpdates = false;
-			} else {
-				$isInstanceReadyForUpdates = true;
-			}
-		}
-
-		if ($isInstanceReadyForUpdates === false) {
-			return false;
-		}
-
-		$ocsid=\OC::$server->getAppConfig()->getValue( $app, 'ocsid', '');
-
-		if($ocsid<>'') {
-			$ocsClient = new OCSClient(
-				\OC::$server->getHTTPClientService(),
-				\OC::$server->getConfig(),
-				\OC::$server->getLogger()
-			);
-			$ocsdata = $ocsClient->getApplication($ocsid, \OCP\Util::getVersion());
-			$ocsversion= (string) $ocsdata['version'];
-			$currentversion=OC_App::getAppVersion($app);
-			if (version_compare($ocsversion, $currentversion, '>')) {
-				return($ocsversion);
-			}else{
-				return false;
-			}
-
-		}else{
-			return false;
-		}
-
-	}
-
-	/**
 	 * Check if app is already downloaded
 	 * @param string $name name of the application to remove
 	 * @return boolean
@@ -572,9 +494,8 @@ class Installer {
 		//install the database
 		$appPath = OC_App::getAppPath($app);
 		if (isset($info['use-migrations']) && $info['use-migrations'] === 'true') {
-			$ms = new \OC\DB\MigrationService();
-			$mc = $ms->buildConfiguration($app, \OC::$server->getDatabaseConnection());
-			$ms->migrate($mc);
+			$ms = new \OC\DB\MigrationService($app, \OC::$server->getDatabaseConnection());
+			$ms->migrate();
 		} else {
 			if(is_file($appPath.'/appinfo/database.xml')) {
 				OC_DB::createDbFromStructure($appPath . '/appinfo/database.xml');

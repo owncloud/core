@@ -2,7 +2,7 @@
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -206,7 +206,7 @@ class DefaultTokenProvider implements IProvider {
 	 */
 	public function invalidateOldTokens() {
 		$olderThan = $this->time->getTime() - (int) $this->config->getSystemValue('session_lifetime', 60 * 60 * 24);
-		$this->logger->info('Invalidating tokens older than ' . date('c', $olderThan));
+		$this->logger->info('Invalidating tokens older than ' . date('c', $olderThan), ['app' => 'cron']);
 		$this->mapper->invalidateOld($olderThan);
 	}
 

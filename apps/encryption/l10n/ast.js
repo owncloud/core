@@ -34,6 +34,7 @@ OC.L10N.register(
     "The share will expire on %s." : "La compartición va caducar el %s.",
     "Cheers!" : "¡Salú!",
     "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>" : "Hola,<br><br>L'alministrador habilitó'l cifráu del llau de sirvidor. Los sos ficheros van ser cifraos usando como contraseña<strong>%s</strong>.<br><br>Por favor, identifíquese na interfaz web, vaya a la estaya 'Modulo básicu de cifráu ownCloud' de les sos opciones personales y anove la so contraseña tecleando esta contraseña nel campu 'contraseña antigua' ya introduciendo la nueva nel so correspondiente campu.<br><br>",
+    "Encryption" : "Cifráu",
     "Encrypt the home storage" : "Encriptar l'almacenamientu personal",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "Al habilitar esta opción encriptaránse tolos ficheros almacenaos na memoria principal, d'tra miente van ser cifraos namás los ficheros d'almacenamientu esternu",
     "Enable recovery key" : "Habilitar clave de recuperación",

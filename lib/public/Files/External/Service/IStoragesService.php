@@ -2,7 +2,7 @@
 /**
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ use OCP\Files\External\NotFoundException;
 /**
  * Service interface to manage external storages
  *
- * @since 9.2
+ * @since 10.0
  */
 interface IStoragesService {
 	/**
@@ -38,7 +38,7 @@ interface IStoragesService {
 	 * @return IStorageConfig
 	 * @throws NotFoundException if the storage with the given id was not found
 	 *
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	public function getStorage($id);
 
@@ -47,7 +47,7 @@ interface IStoragesService {
 	 *
 	 * @return IStorageConfig[] array of storage configs
 	 *
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	public function getAllStorages();
 
@@ -56,7 +56,7 @@ interface IStoragesService {
 	 *
 	 * @return IStorageConfig[]
 	 *
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	public function getStorages();
 
@@ -65,7 +65,7 @@ interface IStoragesService {
 	 *
 	 * @return string IStoragesBackendService::VISIBILITY_* constants
 	 *
-	 * @since 9.2
+	 * @since 10.0
 	 */
 	public function getVisibilityType();
 
@@ -74,7 +74,7 @@ interface IStoragesService {
 	 *
 	 * @return IStorageConfig
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function createConfig();
 
@@ -85,7 +85,7 @@ interface IStoragesService {
 	 *
 	 * @return IStorageConfig storage config, with added id
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function addStorage(IStorageConfig $newStorage);
 
@@ -103,7 +103,7 @@ interface IStoragesService {
 	 *
 	 * @return IStorageConfig
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function createStorage(
 		$mountPoint,
@@ -124,7 +124,7 @@ interface IStoragesService {
 	 * @return IStorageConfig storage config
 	 * @throws NotFoundException if the given storage does not exist in the config
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function updateStorage(IStorageConfig $updatedStorage);
 
@@ -135,7 +135,7 @@ interface IStoragesService {
 	 *
 	 * @throws NotFoundException if no storage was found with the given id
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function removeStorage($id);
 

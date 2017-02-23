@@ -1544,9 +1544,9 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals(1, $stmt);
 		$id = $qb->getLastInsertId();
 
-		$user1 = $this->getMock('\OCP\IUser');
+		$user1 = $this->createMock(IUser::class);
 		$user1->method('getUID')->willReturn('user1');
-		$user2 = $this->getMock('\OCP\IUser');
+		$user2 = $this->createMock(IUser::class);
 		$user2->method('getUID')->willReturn('user2');
 		$this->userManager->method('get')->will($this->returnValueMap([
 			['user1', $user1],
@@ -1555,7 +1555,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$this->groupManager->method('get')->with('group')->willReturn(null);
 
-		$file = $this->getMock('\OCP\Files\File');
+		$file = $this->createMock(\OCP\Files\File::class);
 		$file->method('getId')->willReturn(1);
 
 		$this->rootFolder->method('getUserFolder')->with('user1')->will($this->returnSelf());

@@ -5,6 +5,7 @@ OC.L10N.register(
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Aplikacija šifriranja je uključena, ali vaši ključevi nisu inicializirani, molim odjavite se i ponovno prijavite",
     "The share will expire on %s." : "Podijeljeni resurs će isteći na %s.",
     "Cheers!" : "Cheers!",
+    "Encryption" : "Šifriranje",
     "Enabled" : "Aktivirano",
     "Disabled" : "Onemogućeno"
 },

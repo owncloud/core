@@ -11,7 +11,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -273,10 +273,8 @@ class Updater extends BasicEmitter {
 
 		// execute core migrations
 		if (is_dir(\OC::$SERVERROOT."/core/Migrations")) {
-			$ms = new \OC\DB\MigrationService();
-			$mc = $ms->buildConfiguration('core', \OC::$server->getDatabaseConnection());
-
-			$ms->migrate($mc, true);
+			$ms = new \OC\DB\MigrationService('core', \OC::$server->getDatabaseConnection());
+			$ms->migrate();
 		}
 
 		$this->emit('\OC\Updater', 'dbUpgrade');
@@ -388,18 +386,23 @@ class Updater extends BasicEmitter {
 	 * @throws \Exception
 	 */
 	private function upgradeAppStoreApps(array $disabledApps) {
-		foreach($disabledApps as $app) {
-			try {
-				if (Installer::isUpdateAvailable($app)) {
-					$ocsId = \OC::$server->getConfig()->getAppValue($app, 'ocsid', '');
 
-					$this->emit('\OC\Updater', 'upgradeAppStoreApp', [$app]);
-					Installer::updateAppByOCSId($ocsId);
-				}
-			} catch (\Exception $ex) {
-				$this->log->logException($ex, ['app' => 'core']);
-			}
-		}
+		//
+		// TODO: integrate market app in here
+		//
+
+//		foreach($disabledApps as $app) {
+//			try {
+//				if (Installer::isUpdateAvailable($app)) {
+//					$ocsId = \OC::$server->getConfig()->getAppValue($app, 'ocsid', '');
+//
+//					$this->emit('\OC\Updater', 'upgradeAppStoreApp', [$app]);
+//					Installer::updateAppByOCSId($ocsId);
+//				}
+//			} catch (\Exception $ex) {
+//				$this->log->logException($ex, ['app' => 'core']);
+//			}
+//		}
 	}
 
 	/**

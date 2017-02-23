@@ -4,7 +4,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -37,7 +37,6 @@ if(\OC::$server->getConfig()->getSystemValue('updatechecker', true) === true) {
 				\OCP\Util::addScript('updatenotification', 'notification');
 				OC_Hook::connect('\OCP\Config', 'js', $updateChecker, 'getJavaScript');
 			}
-			\OC_App::registerAdmin('updatenotification', 'admin');
 		}
 	}
 

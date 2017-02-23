@@ -6,7 +6,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -263,7 +263,7 @@ class CardDavBackendTest extends TestCase {
 
 		// create a new address book
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
-		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
+		$books = $this->backend->getUsersOwnAddressBooks(self::UNIT_TEST_USER);
 		$this->assertEquals(1, count($books));
 
 		$bookId = $books[0]['id'];

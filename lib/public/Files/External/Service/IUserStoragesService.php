@@ -1,12 +1,8 @@
 <?php
 /**
- * @author Joas Schilling <coding@schilljs.com>
- * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <robin@mccorkell.me.uk>
- * @author Stefan Weil <sw@weilnetz.de>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,7 +25,7 @@ namespace OCP\Files\External\Service;
  * Service class to manage user external storages
  * (aka personal storages)
  *
- * @since 9.2
+ * @since 10.0
  */
 interface IUserStoragesService extends IStoragesService {
 

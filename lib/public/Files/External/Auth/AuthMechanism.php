@@ -4,7 +4,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -49,7 +49,7 @@ use OCP\Files\External\IStorageConfig;
  *  - StorageModifierTrait
  *      Object can affect storage mounting
  *
- * @since 9.2.0
+ * @since 10.0
  */
 abstract class AuthMechanism implements \JsonSerializable {
 
@@ -75,7 +75,7 @@ abstract class AuthMechanism implements \JsonSerializable {
 	 * See self::SCHEME_* constants
 	 *
 	 * @return string
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getScheme() {
 		return $this->scheme;
@@ -84,7 +84,7 @@ abstract class AuthMechanism implements \JsonSerializable {
 	/**
 	 * @param string $scheme
 	 * @return self
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function setScheme($scheme) {
 		$this->scheme = $scheme;
@@ -95,7 +95,7 @@ abstract class AuthMechanism implements \JsonSerializable {
 	 * Serialize into JSON for client-side JS
 	 *
 	 * @return array
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function jsonSerialize() {
 		$data = $this->jsonSerializeDefinition();
@@ -112,7 +112,7 @@ abstract class AuthMechanism implements \JsonSerializable {
 	 *
 	 * @param IStorageConfig $storage
 	 * @return bool
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function validateStorage(IStorageConfig $storage) {
 		// does the backend actually support this scheme

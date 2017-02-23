@@ -1,8 +1,9 @@
 <?php
 /**
- * @author El-ad Blech <elie@theinfamousblix.com>
+ * @author elie195 <elie195@gmail.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,14 +23,14 @@
 namespace OCP\Authentication\TwoFactorAuth;
 
 /**
- * @since 9.2.0
+ * @since 10.0
  */
 interface IProvider2 extends IProvider {
 
 	 /**
 	 * Get the Content Security Policy for the template (required for showing external content, otherwise optional)
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 *
 	 * @return \OCP\AppFramework\Http\ContentSecurityPolicy
 	 */

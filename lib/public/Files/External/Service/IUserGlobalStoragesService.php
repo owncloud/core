@@ -2,8 +2,9 @@
 /**
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,7 +29,7 @@ use OCP\Files\External\IStorageConfig;
  * Service class to read global storages applicable to the user
  * Read-only access available, attempting to write will throw DomainException
  *
- * @since 9.2
+ * @since 10.0
  */
 interface IUserGlobalStoragesService extends IGlobalStoragesService {
 	/**
@@ -37,7 +38,7 @@ interface IUserGlobalStoragesService extends IGlobalStoragesService {
 	 *
 	 * @return IStorageConfig[]
 	 *
-	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function getUniqueStorages();
 }

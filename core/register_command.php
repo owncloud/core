@@ -5,6 +5,7 @@
  * @author Christian Kampka <christian@kampka.net>
  * @author Christoph Wurst <christoph@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -14,7 +15,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -81,11 +82,12 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Config\System\SetConfig(\OC::$server->getSystemConfig()));
 
 	$application->add(new OC\Core\Command\Db\GenerateChangeScript());
-	$application->add(new OC\Core\Command\Db\ConvertType(\OC::$server->getConfig(), new \OC\DB\ConnectionFactory()));
-	$application->add(new OC\Core\Command\Db\Migrations\StatusCommand(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
-	$application->add(new OC\Core\Command\Db\Migrations\MigrateCommand(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
-	$application->add(new OC\Core\Command\Db\Migrations\GenerateCommand(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
-	$application->add(new OC\Core\Command\Db\Migrations\ExecuteCommand(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
+	$application->add(new OC\Core\Command\Db\ConvertType(\OC::$server->getConfig(), new \OC\DB\ConnectionFactory(\OC::$server->getSystemConfig())));
+	$application->add(new OC\Core\Command\Db\ConvertMysqlToMB4(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection(), \OC::$server->getURLGenerator()));
+	$application->add(new OC\Core\Command\Db\Migrations\StatusCommand(\OC::$server->getDatabaseConnection()));
+	$application->add(new OC\Core\Command\Db\Migrations\MigrateCommand(\OC::$server->getDatabaseConnection()));
+	$application->add(new OC\Core\Command\Db\Migrations\GenerateCommand(\OC::$server->getDatabaseConnection()));
+	$application->add(new OC\Core\Command\Db\Migrations\ExecuteCommand(\OC::$server->getDatabaseConnection()));
 
 	$application->add(new OC\Core\Command\Encryption\Disable(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Encryption\Enable(\OC::$server->getConfig(), \OC::$server->getEncryptionManager()));

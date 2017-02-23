@@ -4,6 +4,7 @@ OC.L10N.register(
     "Storage invalid" : "Vigane andmehoidla",
     "Unknown error" : "Tundmatu viga",
     "All files" : "Kõik failid",
+    "Saved" : "Salvestatud",
     "Home" : "Kodu",
     "Close" : "Sulge",
     "Favorites" : "Lemmikud",

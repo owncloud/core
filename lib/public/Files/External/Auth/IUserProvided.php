@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,14 +27,14 @@ use OCP\IUser;
 /**
  * For auth mechanisms where the user needs to provide credentials
  *
- * @since 9.2.0
+ * @since 10.0
  */
 interface IUserProvided {
 	/**
 	 * @param IUser $user the user for which to save the user provided options
 	 * @param int $mountId the mount id to save the options for
 	 * @param array $options the user provided options
- 	 * @since 9.2.0
+	 * @since 10.0
 	 */
 	public function saveBackendOptions(IUser $user, $mountId, array $options);
 }

@@ -1,8 +1,6 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Joas Schilling <coding@schilljs.com>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Oliver Gasser <oliver.gasser@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -11,7 +9,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,27 +29,16 @@
 namespace OC\DB;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\SchemaConfig;
+use Doctrine\DBAL\Schema\Schema;
 use OCP\IConfig;
 
 class MDB2SchemaReader {
-	/**
-	 * @var string $DBNAME
-	 */
-	protected $DBNAME;
 
-	/**
-	 * @var string $DBTABLEPREFIX
-	 */
+	/** @var string $DBTABLEPREFIX */
 	protected $DBTABLEPREFIX;
 
-	/**
-	 * @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-	 */
+	/** @var \Doctrine\DBAL\Platforms\AbstractPlatform $platform */
 	protected $platform;
-
-	/** @var \Doctrine\DBAL\Schema\SchemaConfig $schemaConfig */
-	protected $schemaConfig;
 
 	/**
 	 * @param \OCP\IConfig $config
@@ -59,25 +46,15 @@ class MDB2SchemaReader {
 	 */
 	public function __construct(IConfig $config, AbstractPlatform $platform) {
 		$this->platform = $platform;
-		$this->DBNAME = $config->getSystemValue('dbname', 'owncloud');
 		$this->DBTABLEPREFIX = $config->getSystemValue('dbtableprefix', 'oc_');
-
-		// Oracle does not support longer index names then 30 characters.
-		// We use this limit for all DBs to make sure it does not cause a
-		// problem.
-		$this->schemaConfig = new SchemaConfig();
-		$this->schemaConfig->setMaxIdentifierLength(30);
 	}
 
 	/**
 	 * @param string $file
-	 * @return \Doctrine\DBAL\Schema\Schema
-	 * @throws \DomainException
+	 * @param Schema $schema
+	 * @return Schema
 	 */
-	public function loadSchemaFromFile($file, $schema = null) {
-		if (is_null($schema)) {
-			$schema = new \Doctrine\DBAL\Schema\Schema();
-		}
+	public function loadSchemaFromFile($file, Schema $schema) {
 		$loadEntities = libxml_disable_entity_loader(false);
 		$xml = simplexml_load_file($file);
 		libxml_disable_entity_loader($loadEntities);
@@ -119,8 +96,6 @@ class MDB2SchemaReader {
 					$name = str_replace('*dbprefix*', $this->DBTABLEPREFIX, $name);
 					$name = $this->platform->quoteIdentifier($name);
 					$table = $schema->createTable($name);
-					$table->addOption('collate', 'utf8_bin');
-					$table->setSchemaConfig($this->schemaConfig);
 					break;
 				case 'create':
 				case 'overwrite':
@@ -273,6 +248,7 @@ class MDB2SchemaReader {
 			) {
 				$options['primary'] = true;
 			}
+
 			$table->addColumn($name, $type, $options);
 			if (!empty($options['primary']) && $options['primary']) {
 				$table->setPrimaryKey([$name]);
