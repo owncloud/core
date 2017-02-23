@@ -148,13 +148,14 @@ $array = [
 	"firstDay" => json_encode($l->l('firstday', null)) ,
 	"oc_config" => json_encode(
 		[
-			'session_lifetime'	=> min(\OCP\Config::getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
-			'session_keepalive'	=> \OCP\Config::getSystemValue('session_keepalive', true),
-			'version'			=> implode('.', \OCP\Util::getVersion()),
-			'versionstring'		=> OC_Util::getVersionString(),
-			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
-			'lost_password_link'=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
-			'modRewriteWorking'	=> (getenv('front_controller_active') === 'true'),
+			'session_lifetime'	    => min(\OCP\Config::getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
+			'session_keepalive'	    => \OCP\Config::getSystemValue('session_keepalive', true),
+			'version'			    => implode('.', \OCP\Util::getVersion()),
+			'versionstring'		    => OC_Util::getVersionString(),
+			'enable_avatars'	    => \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
+			'lost_password_link'    => \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
+			'modRewriteWorking'	    => (getenv('front_controller_active') === 'true'),
+			'blacklist_files_regex' => \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX
 		]
 	),
 	"oc_appconfig" => json_encode(
@@ -194,11 +195,6 @@ $array = [
 		[
 			'name' => OC_Util::getTheme()->getName(),
 			'directory' => OC_Util::getTheme()->getDirectory()
-		]
-	),
-	'blacklist_files' => json_encode(
-		[
-			'regex' => \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX
 		]
 	)
 ];

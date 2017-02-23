@@ -219,7 +219,7 @@ var OC={
      * @param {string} file to check
      */
 	fileIsBlacklisted: function(file) {
-		return !!(file.match(blacklist_files.regex));
+		return !!(file.match(oc_config.blacklist_files_regex));
 	},
 
 	/**
