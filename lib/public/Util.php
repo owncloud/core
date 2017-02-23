@@ -703,4 +703,29 @@ class Util {
 		}		
 		return self::$needUpgradeCache;
 	}
+
+	/**
+	 * Collects all status infos.
+	 *
+	 * @return array
+	 * 
+	 */
+	public static function getStatusInfo() {
+		$systemConfig = \OC::$server->getSystemConfig();
+
+		$installed = (bool) $systemConfig->getValue('installed', false);
+		$maintenance = (bool) $systemConfig->getValue('maintenance', false);
+		# see core/lib/private/legacy/defaults.php and core/themes/example/defaults.php
+		# for description and defaults
+		$defaults = new \OCP\Defaults();
+		$values = [
+			'installed'=> $installed ? 'true' : 'false',
+			'maintenance' => $maintenance ? 'true' : 'false',
+			'needsDbUpgrade' => self::needUpgrade() ? 'true' : 'false',
+			'version' => implode('.', self::getVersion()),
+			'versionstring' => \OC_Util::getVersionString(),
+			'edition' => \OC_Util::getEditionString(),
+			'productname' => $defaults->getName()];
+		return $values;
+	}
 }
