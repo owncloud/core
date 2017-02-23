@@ -22,7 +22,6 @@
 namespace Test;
 
 use OC\Settings\Controller\SettingsPageController;
-use OC\Settings\Panels\Helper;
 use OC\Settings\Panels\Personal\Profile;
 use OC\Settings\Section;
 use OCP\IConfig;
@@ -44,7 +43,6 @@ class SettingsPageControllerTest extends TestCase {
 	protected $pageController;
 	protected $config;
 	protected $user;
-	protected $helper;
 	/** @var IFactory */
 	protected $lfactory;
 
@@ -58,7 +56,6 @@ class SettingsPageControllerTest extends TestCase {
 		$this->userSession = $this->getMockBuilder(IUserSession::class)->getMock();
 		$this->config = $this->getMockBuilder(IConfig::class)->getMock();
 		$this->user = $this->getMockBuilder(IUser::class)->getMock();
-		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
 		$this->lfactory = $this->createMock(IFactory::class);
 
 		$this->pageController = new SettingsPageController('settings',
@@ -97,7 +94,6 @@ class SettingsPageControllerTest extends TestCase {
 					$this->config,
 					$this->groupManager,
 					$this->userSession,
-					$this->helper,
 					$this->lfactory));
 		$response = $this->pageController->getPersonal('general');
 		$this->assertArrayHasKey('personalNav', $response->getParams());
@@ -138,7 +134,6 @@ class SettingsPageControllerTest extends TestCase {
 					$this->config,
 					$this->groupManager,
 					$this->userSession,
-					$this->helper,
 					$this->lfactory));
 		$response = $this->pageController->getPersonal('general');
 		$this->assertArrayHasKey('personalNav', $response->getParams());
