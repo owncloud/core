@@ -30,6 +30,9 @@ namespace OCA\Files_Trashbin\Tests;
 
 use OC\Files\Storage\Temporary;
 use OC\Files\Filesystem;
+use OC\Files\View;
+use Test\TestCase;
+use Test\Traits\UserTrait;
 
 /**
  * Class Storage
@@ -38,19 +41,22 @@ use OC\Files\Filesystem;
  *
  * @package OCA\Files_Trashbin\Tests
  */
-class StorageTest extends \Test\TestCase {
+class StorageTest extends TestCase {
+
+	use UserTrait;
+
 	/**
 	 * @var string
 	 */
 	private $user;
 
 	/**
-	 * @var \OC\Files\View
+	 * @var View
 	 */
 	private $rootView;
 
 	/**
-	 * @var \OC\Files\View
+	 * @var View
 	 */
 	private $userView;
 
@@ -65,7 +71,7 @@ class StorageTest extends \Test\TestCase {
 		\OC::$server->getEncryptionManager()->setupStorage();
 
 		$this->user = $this->getUniqueId('user');
-		\OC::$server->getUserManager()->createUser($this->user, $this->user);
+		$this->createUser($this->user, $this->user);
 
 
 		// this will setup the FS
@@ -73,8 +79,8 @@ class StorageTest extends \Test\TestCase {
 
 		\OCA\Files_Trashbin\Storage::setupStorage();
 
-		$this->rootView = new \OC\Files\View('/');
-		$this->userView = new \OC\Files\View('/' . $this->user . '/files/');
+		$this->rootView = new View('/');
+		$this->userView = new View('/' . $this->user . '/files/');
 		$this->userView->file_put_contents('test.txt', 'foo');
 
 		$this->userView->mkdir('folder');
@@ -84,8 +90,6 @@ class StorageTest extends \Test\TestCase {
 	protected function tearDown() {
 		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
 		$this->logout();
-		$user = \OC::$server->getUserManager()->get($this->user);
-		if ($user !== null) { $user->delete(); }
 		\OC_Hook::clear();
 		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_encryption');
 		parent::tearDown();
@@ -281,7 +285,7 @@ class StorageTest extends \Test\TestCase {
 		$this->loginAsUser($recipientUser);
 
 		// delete as recipient
-		$recipientView = new \OC\Files\View('/' . $recipientUser . '/files');
+		$recipientView = new View('/' . $recipientUser . '/files');
 		$recipientView->unlink('share/test.txt');
 
 		// rescan trash storage for both users
@@ -334,7 +338,7 @@ class StorageTest extends \Test\TestCase {
 		$this->loginAsUser($recipientUser);
 
 		// delete as recipient
-		$recipientView = new \OC\Files\View('/' . $recipientUser . '/files');
+		$recipientView = new View('/' . $recipientUser . '/files');
 		$recipientView->rmdir('share/folder');
 
 		// rescan trash storage

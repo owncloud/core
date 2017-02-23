@@ -22,6 +22,8 @@
 
 namespace Test\Cache;
 
+use Test\Traits\UserTrait;
+
 /**
  * Class FileCacheTest
  *
@@ -30,6 +32,8 @@ namespace Test\Cache;
  * @package Test\Cache
  */
 class FileCacheTest extends TestCache {
+	use UserTrait;
+
 	/**
 	 * @var string
 	 * */
@@ -68,11 +72,7 @@ class FileCacheTest extends TestCache {
 		$config->setSystemValue('cachedirectory', $datadir);
 
 		//login
-		if (\OC::$server->getUserManager()->userExists('test')) {
-			$user = \OC::$server->getUserManager()->get('test');
-			$user->delete();
-		}
-		\OC::$server->getUserManager()->createUser('test', 'test');
+		$this->createUser('test', 'test');
 
 		$this->user = \OC_User::getUser();
 		\OC_User::setUserId('test');

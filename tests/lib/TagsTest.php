@@ -295,7 +295,7 @@ class TagsTest extends TestCase {
 		$tagger->tagAs(1, $testTag);
 
 		$otherUserId = $this->getUniqueID('user2_');
-		$otherUser = \OC::$server->getUserManager()->createUser($otherUserId, 'pass');
+		$otherUser = $this->createUser($otherUserId, 'pass');
 		\OC_User::setUserId($otherUserId);
 		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $otherUserSession */
 		$otherUserSession = $this->createMock(IUserSession::class);

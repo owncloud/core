@@ -147,6 +147,7 @@ abstract class StoragesServiceTest extends TestCase {
 		if ($this->dbConfig) {
 			$this->dbConfig->clean();
 		}
+		parent::tearDown();
 	}
 
 	protected function getBackendMock($class = '\OCA\Files_External\Lib\Backend\SMB', $storageClass = '\OCA\Files_External\Lib\Storage\SMB') {

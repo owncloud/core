@@ -42,8 +42,6 @@ class HelperStorageTest extends TestCase {
 	}
 
 	protected function tearDown() {
-		$this->user = null;
-
 		if ($this->storageMock) {
 			$this->storageMock->getCache()->clear();
 			$this->storageMock = null;
@@ -74,7 +72,7 @@ class HelperStorageTest extends TestCase {
 
 		$this->storageMock->expects($this->once())
 			->method('free_space')
-			->will($this->returnValue(12));
+			->will($this->returnValue($freeSpace));
 		return $this->storageMock;
 	}
 
