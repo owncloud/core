@@ -102,10 +102,6 @@ window.oc_appconfig = {
 };
 window.oc_defaults = {};
 
-window.blacklist_files = {
-	regex: '\.(part|filepart)$'
-};
-
 /* jshint camelcase: true */
 
 // mock for Snap.js plugin
