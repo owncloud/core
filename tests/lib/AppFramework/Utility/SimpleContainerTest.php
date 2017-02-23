@@ -58,13 +58,12 @@ class ClassInterfaceConstructor {
 
 class SimpleContainerTest extends \Test\TestCase {
 
-
+	/** @var SimpleContainer */
     private $container;
 
     public function setUp() {
         $this->container = new SimpleContainer();
     }
-
 
     public function testRegister() {
         $this->container->registerParameter('test', 'abc');

@@ -4,6 +4,7 @@ namespace Test\Comments;
 
 use OCP\Comments\ICommentsManager;
 use Test\TestCase;
+use Test\Traits\UserTrait;
 
 /**
  * Class ManagerTest
@@ -11,6 +12,8 @@ use Test\TestCase;
  * @group DB
  */
 class ManagerTest extends TestCase {
+
+	use UserTrait;
 
 	public function setUp() {
 		parent::setUp();
@@ -491,7 +494,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testDeleteReferencesOfActorWithUserManagement() {
-		$user = \OC::$server->getUserManager()->createUser('xenia', '123456');
+		$user = $this->createUser('xenia', '123456');
 		$this->assertTrue($user instanceof \OCP\IUser);
 
 		$manager = \OC::$server->getCommentsManager();

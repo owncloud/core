@@ -83,6 +83,7 @@ class TagServiceTest extends \Test\TestCase {
 
 	protected function tearDown() {
 		\OC_User::setUserId('');
+		parent::tearDown();
 	}
 
 	public function testUpdateFileTags() {
