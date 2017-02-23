@@ -311,4 +311,12 @@ class JobList implements IJobList {
 			->where($query->expr()->eq('id', $query->createNamedParameter($job->getId(), IQueryBuilder::PARAM_INT)));
 		$query->execute();
 	}
+
+	public function setExecutionTime($job, $timeTaken) {
+		$query = $this->connection->getQueryBuilder();
+		$query->update('jobs')
+			->set('execution_duration', $query->createNamedParameter($timeTaken, IQueryBuilder::PARAM_INT))
+			->where($query->expr()->eq('id', $query->createNamedParameter($job->getId(), IQueryBuilder::PARAM_INT)));
+		$query->execute();
+	}
 }
