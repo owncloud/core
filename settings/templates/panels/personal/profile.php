@@ -33,9 +33,7 @@ try {
 		print_r($values);
 	} else {
 		echo "<table width=\"30%\" id=\"general\" >";
-		//header('Access-Control-Allow-Origin: *');
-		//header('Content-Type: application/json');
-		//echo json_encode($values);
+
 		foreach ($values as $key => $val) {
 			echo "<tr>";
 			echo "<td>" . $key . "</td>";
@@ -54,7 +52,6 @@ try {
 			echo "</td>";
 		}
 		echo "</table>";
-		//print_r($values);
 	}
 
 } catch (Exception $ex) {
