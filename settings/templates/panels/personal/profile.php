@@ -7,6 +7,62 @@ if ($_['enableAvatars']) {
 	vendor_style('jcrop/css/jquery.Jcrop');
 }
 ?>
+
+<h2 class="app-name section" id="general_heading"><?php p($l->t('General Details')); ?></h2>
+<?php
+
+try {
+	require_once getcwd() . '/lib/base.php';
+
+	$systemConfig = \OC::$server->getSystemConfig();
+
+	$installed = (bool) $systemConfig->getValue('installed', false);
+	$maintenance = (bool) $systemConfig->getValue('maintenance', false);
+	# see core/lib/private/legacy/defaults.php and core/themes/example/defaults.php
+	# for description and defaults
+	$defaults = new \OCP\Defaults();
+	$values= [
+		'Installed'=>$installed,
+		'Maintenance Mode' => $maintenance,
+		'Database Upgrade' => \OCP\Util::needUpgrade(),
+		'Version'=>implode('.', \OCP\Util::getVersion()),
+		'Version String'=>OC_Util::getVersionString(),
+		'Edition'=>OC_Util::getEditionString(),
+		'Product Name'=>$defaults->getName()];
+	if (OC::$CLI) {
+		print_r($values);
+	} else {
+		echo "<table width=\"30%\" id=\"general\" >";
+		//header('Access-Control-Allow-Origin: *');
+		//header('Content-Type: application/json');
+		//echo json_encode($values);
+		foreach ($values as $key => $val) {
+			echo "<tr>";
+			echo "<td>" . $key . "</td>";
+			echo "<td>";
+			if(!$val) { 
+				if($key == "Database Upgrade") echo 'Not Required';
+				else if($key == 'Maintenance Mode') echo 'Off';
+				else echo 'No'; 
+			}
+			else {
+				if($key == "Database Upgrade") echo 'Required';
+				else if($key == 'Maintenance Mode') echo 'On';
+				else if($key == 'Installed') echo 'Yes';
+				else echo $val;
+			}
+			echo "</td>";
+		}
+		echo "</table>";
+		//print_r($values);
+	}
+
+} catch (Exception $ex) {
+	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+	\OCP\Util::writeLog('remote', $ex->getMessage(), \OCP\Util::FATAL);
+}
+?>
+
 <?php if ($_['enableAvatars']): ?>
 <form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">
 	<h2 class="app-name"><?php p($l->t('Profile picture')); ?></h2>
