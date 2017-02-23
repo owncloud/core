@@ -34,6 +34,7 @@ use OC\Repair\AvatarPermissions;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DropOldJobs;
+use OC\Repair\JobHash;
 use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\RemoveOldShares;
@@ -154,6 +155,7 @@ class Repair implements IOutput{
 				\OC::$server->getUserManager(),
 				\OC::$server->getGroupManager()
 			),
+			new JobHash(\OC::$server->getDatabaseConnection()),
 		];
 	}
 

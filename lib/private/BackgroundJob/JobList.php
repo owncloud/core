@@ -72,6 +72,8 @@ class JobList implements IJobList {
 				throw new \InvalidArgumentException('Background job arguments can\'t exceed 4000 characters (json encoded)');
 			}
 
+			$hash = $this->getHash($class, $argument);
+
 			$query = $this->connection->getQueryBuilder();
 			$query->insert('jobs')
 				->values([
@@ -79,6 +81,7 @@ class JobList implements IJobList {
 					'argument' => $query->createNamedParameter($argument),
 					'last_run' => $query->createNamedParameter(0, IQueryBuilder::PARAM_INT),
 					'last_checked' => $query->createNamedParameter($this->timeFactory->getTime(), IQueryBuilder::PARAM_INT),
+					'hash' => $query->createNamedParameter($hash),
 				]);
 			$query->execute();
 		}
@@ -95,13 +98,13 @@ class JobList implements IJobList {
 			$class = $job;
 		}
 
+		$argument = json_encode($argument);
+
+		$hash = $this->getHash($class, $argument);
+
 		$query = $this->connection->getQueryBuilder();
 		$query->delete('jobs')
-			->where($query->expr()->eq('class', $query->createNamedParameter($class)));
-		if (!is_null($argument)) {
-			$argument = json_encode($argument);
-			$query->andWhere($query->expr()->eq('argument', $query->createNamedParameter($argument)));
-		}
+			->where($query->expr()->eq('hash', $query->createNamedParameter($hash)));
 		$query->execute();
 	}
 
@@ -130,11 +133,12 @@ class JobList implements IJobList {
 		}
 		$argument = json_encode($argument);
 
+		$hash = $this->getHash($class, $argument);
+
 		$query = $this->connection->getQueryBuilder();
 		$query->select('id')
 			->from('jobs')
-			->where($query->expr()->eq('class', $query->createNamedParameter($class)))
-			->andWhere($query->expr()->eq('argument', $query->createNamedParameter($argument)))
+			->where($query->expr()->eq('hash', $query->createNamedParameter($hash)))
 			->setMaxResults(1);
 
 		$result = $query->execute();
@@ -310,5 +314,14 @@ class JobList implements IJobList {
 			->set('last_run', $query->createNamedParameter(time(), IQueryBuilder::PARAM_INT))
 			->where($query->expr()->eq('id', $query->createNamedParameter($job->getId(), IQueryBuilder::PARAM_INT)));
 		$query->execute();
+	}
+
+	/**
+	 * @param string $class
+	 * @param string $arguments
+	 * @return string
+	 */
+	private function getHash($class, $arguments) {
+		return sha1($class . $arguments);
 	}
 }
