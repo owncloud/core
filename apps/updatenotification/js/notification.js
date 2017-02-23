@@ -20,11 +20,10 @@ $(document).ready(function(){
 		text = t('core', '{version} is available. Get more information on how to update.', {version: version}),
 		element = $('<a>').attr('href', docLink).attr('target','_blank').text(text);
 
-	OC.Notification.showTemporary(
-		element,
+	OC.Notification.show(element, 
 		{
-			isHTML: true
+			isHTML: true,
+			type: 'error'
 		}
 	);
 });
-

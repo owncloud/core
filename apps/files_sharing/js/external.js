@@ -108,7 +108,7 @@
 							name: share.name,
 							password: password}, function(result) {
 							if (result.status === 'error') {
-								OC.Notification.showTemporary(result.data.message);
+								OC.Notification.show(t('files_sharing', result.data.message), {type: 'error'});
 							} else {
 								fileList.reload();
 							}
@@ -166,4 +166,3 @@
 })();
 
 OC.Plugins.register('OCA.Files.App', OCA.Sharing.ExternalShareDialogPlugin);
-
