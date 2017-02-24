@@ -137,6 +137,7 @@ class Notifications {
 			'remoteId' => $shareId
 		);
 
+		// FIXME url
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
 		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $id . '/reshare', $fields);
 		$status = json_decode($result['result'], true);
@@ -234,7 +235,10 @@ class Notifications {
 		}
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
-		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
+		// FIXME url we may neet to iterate over all cluster nodes because we have no owner here?
+		// if remote is the cluster get the owner from the db, then ask that instance?
+
+				$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
 		$status = json_decode($result['result'], true);
 
 		if ($result['success'] &&

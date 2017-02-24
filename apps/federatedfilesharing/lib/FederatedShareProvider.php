@@ -234,7 +234,9 @@ class FederatedShareProvider implements IShareProvider {
 			$remote = $this->addressHandler->generateRemoteURL();
 		}
 		if ($this->userManager->userExists($sharedByFederatedId)) {
-			// TODO can we omit the remote part in the custer?
+			// TODO can we omit the remote part in the custer? no web has different ways of building the id:
+			// list shared with me uses the share with uid and the remote und builds the id in the web ui
+			// -> needs to be done as a platform effort
 			$sharedByFederatedId = $sharedByFederatedId . '@' . $remote;
 		}
 		$send = $this->notifications->sendRemoteShare(
