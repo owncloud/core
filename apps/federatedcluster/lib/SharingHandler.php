@@ -37,15 +37,45 @@ class SharingHandler {
 		$this->cluster = new Cluster();
 	}
 
-	public function alterShardShare ($preHookData) {
+	public function assureUniqueToken ($params) {
 		/** @var \OCP\Share\IShare $share */
-		$share = $preHookData['\OCP\Share\IShare'];
-		\OC::$server->getLogger()->debug('alterShardShare shareWith:'.$share->getSharedWith(), ['app'=>'clusterlogin']);
+		$share = $params['\OCP\Share\IShare'];
+		$token = $share->getToken();
+
+		\OC::$server->getLogger()->debug(__METHOD__." $token", ['app'=>'clusterlogin']);
+
+		foreach ($this->cluster->getClusterNodes() as $name => $config) {
+			$client = \OC::$server->getHTTPClientService()->newClient();
+			$url = $config['url'].'/index.php/s/'.$token;
+			\OC::$server->getLogger()->debug("checking $url", ['app'=>'clusterlogin']);
+			try {
+				$response = $client->head($url, [
+					'headers' => [ 'User-Agent' => self::USER_AGENT ]
+				]);
+				\OC::$server->getLogger()->debug("status code {$response->getStatusCode()}", ['app'=>'clusterlogin']);
+				if ($response->getStatusCode() === Http::STATUS_OK
+					|| $response->getStatusCode() === Http::STATUS_FORBIDDEN) {
+					// generate new token
+					$share->setToken(
+						\OC::$server->getSecureRandom()->generate(
+							\OC\Share\Constants::TOKEN_LENGTH,
+							\OCP\Security\ISecureRandom::CHAR_LOWER.
+							\OCP\Security\ISecureRandom::CHAR_UPPER.
+							\OCP\Security\ISecureRandom::CHAR_DIGITS
+						));
+					$this->assureUniqueToken($params);
+					return; // finally it is unique
+				}
+			} catch (\Exception $ex) {
+				// try the next one
+			}
+		}
+		// token is unique
 	}
 
 	//redirects to another instance in case it knows the token
 	public function getShareByToken ($params) {
-		\OC::$server->getLogger()->debug("getShareByToken {$params['token']}", ['app'=>'clusterlogin']);
+		\OC::$server->getLogger()->debug(__METHOD__." {$params['token']}", ['app'=>'clusterlogin']);
 		$agent = \OC::$server->getRequest()->getHeader('User-Agent');
 		if ($agent === self::USER_AGENT) {
 			// ignore request

@@ -23,7 +23,7 @@ $userBackend  = new OCA\FederatedCluster\Backend();
 OC_User::useBackend($userBackend);
 
 $handler = new OCA\FederatedCluster\SharingHandler();
-\OCP\Util::connectHook('OCP\Share', 'pre_shared', $handler, 'alterShardShare');
+\OCP\Util::connectHook('OCP\Share', 'pre_shared', $handler, 'assureUniqueToken');
 
 \OCP\Util::connectHook('OCP\Share', 'shareByTokenNotFound', $handler, 'getShareByToken');
 
