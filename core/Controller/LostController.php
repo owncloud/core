@@ -259,7 +259,7 @@ class LostController extends Controller {
 					return false;
 				case 1:
 					$this->logger->info('User with input as email address found. User: {user}', ['app' => 'core', 'user' => $user]);
-					$email = $user;
+					$email = $users[0]->getEMailAddress();
 					$user = $users[0]->getUID();
 					break;
 				default:
