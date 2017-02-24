@@ -451,7 +451,12 @@ class ManagerTest extends \Test\TestCase {
 	public function testCountUsersOnlySeen() {
 		$manager = \OC::$server->getUserManager();
 		// count other users in the db before adding our own
-		$countBefore = $manager->countUsers(true);
+		if (!is_callable($manager, 'countSeenUsers')) {
+			$this->markTestSkipped('countSeenUsers call isn\'t available in the user manager');
+			return;
+		}
+
+		$countBefore = $manager->countSeenUsers();
 
 		//Add test users
 		$user1 = $manager->createUser('testseencount1', 'testseencount1');
@@ -465,7 +470,7 @@ class ManagerTest extends \Test\TestCase {
 		$user4 = $manager->createUser('testseencount4', 'testseencount4');
 		$user4->updateLastLoginTimestamp();
 
-		$this->assertEquals($countBefore + 3, $manager->countUsers(true));
+		$this->assertEquals($countBefore + 3, $manager->countSeenUsers());
 
 		//cleanup
 		$user1->delete();
@@ -476,12 +481,16 @@ class ManagerTest extends \Test\TestCase {
 
 	public function testCallForSeenUsers() {
 		$manager = \OC::$server->getUserManager();
+		if (!is_callable($manager, 'callForSeenUsers')) {
+			$this->markTestSkipped('callForSeenUsers call isn\'t available in the user manager');
+			return;
+		}
 		// count other users in the db before adding our own
 		$count = 0;
 		$function = function (IUser $user) use (&$count) {
 			$count++;
 		};
-		$manager->callForAllUsers($function, '', true);
+		$manager->callForSeenUsers($function);
 		$countBefore = $count;
 
 		//Add test users
@@ -497,7 +506,7 @@ class ManagerTest extends \Test\TestCase {
 		$user4->updateLastLoginTimestamp();
 
 		$count = 0;
-		$manager->callForAllUsers($function, '', true);
+		$manager->callForSeenUsers($function);
 
 		$this->assertEquals($countBefore + 3, $count);
 
