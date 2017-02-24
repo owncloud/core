@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-composer install
+#composer install
 
 OC_PATH=../../
 OCC=${OC_PATH}occ
-BEHAT=vendor/bin/behat
+BEHAT=${OC_PATH}lib/composer/behat/behat/bin/behat
 
 SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2

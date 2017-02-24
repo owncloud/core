@@ -5,7 +5,7 @@ use GuzzleHttp\Message\ResponseInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 
 trait WebDav {
