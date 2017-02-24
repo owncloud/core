@@ -127,7 +127,7 @@ timestampedNode('SLAVE') {
         }
 
 	stage 'Integration Testing'
-		executeAndReport('build/integration/output/*.xml') {
+		executeAndReport('tests/integration/output/*.xml') {
 			sh '''phpenv local 7.0
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
@@ -138,7 +138,7 @@ timestampedNode('SLAVE') {
 
 		if (isOnReleaseBranch()) {
 
-			executeAndReport('build/integration/output/*.xml') {
+			executeAndReport('tests/integration/output/*.xml') {
 				sh '''phpenv local 7.0
 				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
@@ -146,7 +146,7 @@ timestampedNode('SLAVE') {
 				make test-integration OC_TEST_ALT_HOME=1
 			   '''
 			}
-			executeAndReport('build/integration/output/*.xml') {
+			executeAndReport('tests/integration/output/*.xml') {
 				sh '''phpenv local 7.0
 				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
@@ -154,7 +154,7 @@ timestampedNode('SLAVE') {
 				make test-integration OC_TEST_ENCRYPTION_ENABLED=1
 			   '''
 			}
-			executeAndReport('build/integration/output/*.xml') {
+			executeAndReport('tests/integration/output/*.xml') {
 				sh '''phpenv local 7.0
 				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
