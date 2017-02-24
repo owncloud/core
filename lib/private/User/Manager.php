@@ -313,10 +313,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * returns how many users per backend exist (if supported by backend)
 	 *
-	 * @param boolean $hasLoggedIn when true only users that have a lastLogin
-	 *                entry in the preferences table will be affected
-	 * @return array|int an array of backend class as key and count number as value
-	 *                if $hasLoggedIn is true only an int is returned
+	 * @return array an array of backend class as key and count number as value
 	 */
 	public function countUsers() {
 		$userCountStatistics = array();
@@ -346,32 +343,26 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *
 	 * @param \Closure $callback
 	 * @param string $search
-	 * @param boolean $onlySeen when true only users that have a lastLogin entry
-	 *                in the preferences table will be affected
 	 * @since 9.0.0
 	 */
-	public function callForAllUsers(\Closure $callback, $search = '', $onlySeen = false) {
-		if ($onlySeen) {
-			$this->callForSeenUsers($callback);
-		} else {
-			foreach ($this->getBackends() as $backend) {
-				$limit = 500;
-				$offset = 0;
-				do {
-					$users = $backend->getUsers($search, $limit, $offset);
-					foreach ($users as $uid) {
-						if (!$backend->userExists($uid)) {
-							continue;
-						}
-						$user = $this->getUserObject($uid, $backend, false);
-						$return = $callback($user);
-						if ($return === false) {
-							break;
-						}
+	public function callForAllUsers(\Closure $callback, $search = '') {
+		foreach ($this->getBackends() as $backend) {
+			$limit = 500;
+			$offset = 0;
+			do {
+				$users = $backend->getUsers($search, $limit, $offset);
+				foreach ($users as $uid) {
+					if (!$backend->userExists($uid)) {
+						continue;
 					}
-					$offset += $limit;
-				} while (count($users) >= $limit);
-			}
+					$user = $this->getUserObject($uid, $backend, false);
+					$return = $callback($user);
+					if ($return === false) {
+						break;
+					}
+				}
+				$offset += $limit;
+			} while (count($users) >= $limit);
 		}
 	}
 
