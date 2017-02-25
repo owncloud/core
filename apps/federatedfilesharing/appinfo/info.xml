@@ -3,8 +3,10 @@
     <id>federatedfilesharing</id>
     <name>Federated File Sharing</name>
     <description>Provide federated file sharing across ownCloud servers</description>
-    <licence>AGPL</licence>
-    <author>Bjoern Schiessle, Roeland Jago Douma</author>
+    <license-info>
+    <license>AGPL</license>
+    <licensee>Bjoern Schiessle, Roeland Jago Douma</licensee>
+    </license-info>
     <version>0.3.0</version>
     <namespace>FederatedFileSharing</namespace>
     <category>other</category>
@@ -15,4 +17,5 @@
         <admin>OCA\FederatedFileSharing\AdminPanel</admin>
         <personal>OCA\FederatedFileSharing\PersonalPanel</personal>
     </settings>
+    <copyright>ownCloud, Inc</copyright>
 </info>

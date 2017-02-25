@@ -7,8 +7,10 @@ This application enables users to restore files that were deleted from the syste
 To prevent a user from running out of disk space, the ownCloud Deleted files app will not utilize more than 50% of the currently available free quota for deleted files. If the deleted files exceed this limit, ownCloud deletes the oldest files until it gets below this limit. More information is available in the Deleted Files documentation.
 
 	</description>
-	<licence>AGPL</licence>
-	<author>Bjoern Schiessle</author>
+	<license-info>
+	<license>AGPL</license>
+	<licensee>Bjoern Schiessle</licensee>
+    </license-info>
 	<default_enable/>
 	<version>0.9.0</version>
 	<types>
@@ -30,4 +32,5 @@ To prevent a user from running out of disk space, the ownCloud Deleted files app
 		<command>OCA\Files_Trashbin\Command\CleanUp</command>
 		<command>OCA\Files_Trashbin\Command\ExpireTrash</command>
 	</commands>
+	<copyright>ownCloud, Inc</copyright>
 </info>
