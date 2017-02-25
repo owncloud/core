@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Unknown error" : "不明錯誤",
     "All files" : "所有文件",
+    "Saved" : "已儲存",
     "Home" : "主頁",
     "Close" : "關閉",
     "Download" : "下載",

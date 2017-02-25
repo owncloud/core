@@ -65,6 +65,7 @@ OC.L10N.register(
     "max. possible: " : "tối đa cho phép:",
     "Save" : "Lưu",
     "Settings" : "Cài đặt",
+    "Show hidden files" : "Hiện tập các tin ẩn",
     "WebDAV" : "WebDAV",
     "No entries found in this folder" : "Chưa có mục nào trong thư mục",
     "Select all" : "Chọn tất cả",

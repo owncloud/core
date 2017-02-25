@@ -12,7 +12,7 @@ OC.L10N.register(
     "Personal" : "個人",
     "System" : "システム",
     "Grant access" : "アクセスを許可",
-    "Error configuring OAuth1" : "OAuth1 設定エラー",
+    "Error configuring OAuth1" : "OAuth1設定エラー",
     "Error configuring OAuth2" : "OAuth2 設定エラー",
     "Generate keys" : "キーを生成",
     "Error generating key pair" : "キーペアの生成エラー",

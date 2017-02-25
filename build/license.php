@@ -128,6 +128,7 @@ With help from many libraries and frameworks including:
 
 	/**
 	 * @param string $source
+	 * @return bool
 	 */
 	private function isMITLicensed($source) {
 		$lines = explode(PHP_EOL, $source);
@@ -252,7 +253,6 @@ if (isset($argv[1])) {
 		__DIR__ . '/../apps/systemtags',
 		__DIR__ . '/../apps/testing',
 		__DIR__ . '/../apps/updatenotification',
-		__DIR__ . '/../apps/user_ldap',
 		__DIR__ . '/../core',
 		__DIR__ . '/../lib',
 		__DIR__ . '/../ocs',

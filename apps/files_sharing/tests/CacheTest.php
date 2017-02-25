@@ -6,11 +6,10 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
- * @author Stefan Weil <sw@weilnetz.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -523,5 +522,29 @@ class CacheTest extends TestCase {
 		$sharedCache = $sharedStorage->getCache();
 		$this->assertEquals('', $sharedCache->getPathById($folderInfo->getId()));
 		$this->assertEquals('bar/test.txt', $sharedCache->getPathById($fileInfo->getId()));
+	}
+
+	public function testNumericStorageId() {
+		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		\OC\Files\Filesystem::mkdir('foo');
+
+		$rootFolder = \OC::$server->getUserFolder(self::TEST_FILES_SHARING_API_USER1);
+		$node = $rootFolder->get('foo');
+		$share = $this->shareManager->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedWith(self::TEST_FILES_SHARING_API_USER2)
+			->setSharedBy(self::TEST_FILES_SHARING_API_USER1)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		$this->shareManager->createShare($share);
+		\OC_Util::tearDownFS();
+
+		list($sourceStorage) = \OC\Files\Filesystem::resolvePath('/' . self::TEST_FILES_SHARING_API_USER1 . '/files/foo');
+
+		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
+		$this->assertTrue(\OC\Files\Filesystem::file_exists('/foo'));
+		list($sharedStorage) = \OC\Files\Filesystem::resolvePath('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/foo');
+
+		$this->assertEquals($sourceStorage->getCache()->getNumericStorageId(), $sharedStorage->getCache()->getNumericStorageId());
 	}
 }

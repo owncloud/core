@@ -19,6 +19,7 @@ OC.L10N.register(
     "Not enough free space" : "Δεν υπάρχει αρκετός ελεύθερος χώρος",
     "Uploading..." : "Μεταφόρτωση...",
     "..." : "...",
+    "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} από {totalSize} ({bitrate})",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Η αποστολή του αρχείου βρίσκεται σε εξέλιξη. Το κλείσιμο της σελίδας θα ακυρώσει την αποστολή.",
     "Actions" : "Ενέργειες",
     "Download" : "Λήψη",

@@ -5,6 +5,7 @@ OC.L10N.register(
     "Storage invalid" : "Supòrt d'emmagazinatge pas valable",
     "Unknown error" : "Error Desconeguda ",
     "All files" : "Totes los fichièrs",
+    "Saved" : "Enregistrat",
     "File could not be found" : "Aqueste fichièr es pas estat trobat.",
     "Home" : "Mos fichièrs",
     "Close" : "Tampar",

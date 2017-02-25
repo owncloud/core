@@ -4,7 +4,7 @@
  * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
  */
 
 namespace OCA\Files_External\Lib\Storage;
+use Sabre\DAV\Client;
 
 /**
  * ownCloud backend for external storage based on DAV backend.
@@ -68,6 +69,7 @@ class OwnCloud extends \OC\Files\Storage\DAV{
 
 		$params['host'] = $host;
 		$params['root'] = $contextPath . self::OC_URL_SUFFIX . $root;
+		$params['authType'] = Client::AUTH_BASIC;
 
 		parent::__construct($params);
 	}

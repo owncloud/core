@@ -1,8 +1,10 @@
 <?php
 /**
+ * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,32 +25,38 @@ namespace OC\Settings;
 
 use OCP\Settings\ISection;
 
-/*
+/**
  * @since 10.0
  */
 class Section implements ISection {
 
-    protected $id;
-    protected $name;
-    /** @var int */
-    protected $priority;
+	protected $id;
+	protected $name;
+	/** @var int */
+	protected $priority;
+	protected $icon;
 
-    public function __construct($id, $name, $priority) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->priority = $priority;
-    }
+	public function __construct($id, $name, $priority, $icon='settings') {
+		$this->id = $id;
+		$this->name = $name;
+		$this->priority = $priority;
+		$this->icon = $icon;
+	}
 
-    public function getID() {
-        return $this->id;
-    }
+	public function getID() {
+		return $this->id;
+	}
 
-    public function getName() {
-        return $this->name;
-    }
+	public function getName() {
+		return $this->name;
+	}
 
-    public function getPriority() {
-        return $this->priority;
-    }
+	public function getPriority() {
+		return $this->priority;
+	}
+
+	public function getIconName() {
+		return $this->icon;
+	}
 
 }

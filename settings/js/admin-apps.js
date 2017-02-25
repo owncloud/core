@@ -536,6 +536,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			var categoryId = $(this).data('category');
 			OC.Settings.Apps.loadCategory(categoryId);
 			OC.Util.History.pushState({
+				sectionid: 'apps',
 				category: categoryId
 			});
 			$('#searchbox').val('');

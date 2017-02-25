@@ -1,8 +1,11 @@
 <?php
 /**
  * @author Tom Needham <tom@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,20 +41,16 @@ class Profile implements ISettings {
 	protected $groupManager;
 	/* @var IUserSession */
 	protected $userSession;
-	/** @var Helper */
-	protected $helper;
 	/** @var IFactory */
 	protected $lfactory;
 
 	public function __construct(IConfig $config,
 								IGroupManager $groupManager,
 								IUserSession $userSession,
-								Helper $helper,
 								IFactory $lfactory) {
 		$this->config = $config;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
-		$this->helper = $helper;
 		$this->lfactory = $lfactory;
 	}
 
@@ -61,15 +60,16 @@ class Profile implements ISettings {
 
 	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/personal/profile');
+
 		// Assign some data
 		$lang = $this->lfactory->findLanguage();
-		$userLang = $this->config->getUserValue( $this->userSession->getUser(), 'core', 'lang', $lang);
+		$userLang = $this->config->getUserValue( $this->userSession->getUser()->getUID(), 'core', 'lang', $lang);
 		$languageCodes = $this->lfactory->findAvailableLanguages();
 		// array of common languages
 		$commonLangCodes = [
 			'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
 		];
-		$languageNames = $this->helper->getLanguageCodes();
+		$languageNames = $this->getLanguageCodes();
 		$languages= [];
 		$commonLanguages = [];
 		foreach($languageCodes as $lang) {
@@ -128,6 +128,45 @@ class Profile implements ISettings {
 		sort($groups);
 		$tmpl->assign('groups', $groups);
 		return $tmpl;
+	}
+
+	protected function getLanguageCodes() {
+		return [
+			'el' => 'Ελληνικά',
+			'en' => 'English',
+			'fa' => 'فارسى',
+			'fi_FI' => 'Suomi',
+			'hi' => 'हिन्दी',
+			'id' => 'Bahasa Indonesia',
+			'lb' => 'Lëtzebuergesch',
+			'ms_MY' => 'Bahasa Melayu',
+			'nb_NO' => 'Norwegian Bokmål',
+			'pt_BR' => 'Português brasileiro',
+			'pt_PT' => 'Português',
+			'ro' => 'română',
+			'sr@latin' => 'Srpski',
+			'sv' => 'Svenska',
+			'hu_HU' => 'Magyar',
+			'hr' => 'Hrvatski',
+			'ar' => 'العربية',
+			'lv' => 'Latviešu',
+			'mk' => 'македонски',
+			'uk' => 'Українська',
+			'vi' => 'Tiếng Việt',
+			'zh_TW' => '正體中文（臺灣）',
+			'af_ZA' => 'Afrikaans',
+			'bn_BD' => 'Bengali',
+			'ta_LK' => 'தமிழ்',
+			'zh_HK' => '繁體中文（香港）',
+			'is' => 'Icelandic',
+			'ka_GE' => 'Georgian for Georgia',
+			'ku_IQ' => 'Kurdish Iraq',
+			'si_LK' => 'Sinhala',
+			'be' => 'Belarusian',
+			'ka' => 'Kartuli (Georgian)',
+			'my_MM' => 'Burmese - MYANMAR ',
+			'ur_PK' => 'Urdu (Pakistan)'
+		];
 	}
 
 	public function getSectionID() {

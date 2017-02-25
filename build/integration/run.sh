@@ -91,6 +91,9 @@ $OCC files_external:delete -y $ID_STORAGE
 #Disable external storage app
 $OCC app:disable files_external
 
+# Clear storage folder
+rm -Rf work/local_storage/*
+
 if test "$OC_TEST_ALT_HOME" = "1"; then
 	env_alt_home_clear
 fi

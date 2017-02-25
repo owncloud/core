@@ -615,3 +615,49 @@ doesnotexist:-o-prefocus, .strengthify-wrapper {
 #warning {
 	color: red;
 }
+
+
+/**
+ * Icons for settings sections
+ */
+li > a.icon-search {
+	background-image: url(../../core/img/actions/search.svg);
+}
+
+li > a.icon-share {
+	background-image: url(../../core/img/actions/share.svg);
+}
+
+li > a.icon-folder {
+	background-image: url(../../core/img/filetypes/folder.svg);
+}
+
+li > a.icon-list {
+	background-image: url(../../core/img/actions/menu.svg);
+}
+
+li > a.icon-password {
+	background-image: url(../../core/img/actions/password.svg);
+}
+
+li > a.icon-more {
+	background-image: url(../../core/img/actions/more.svg);
+}
+
+li > a.icon-upload {
+	background-image: url(../../core/img/actions/upload.svg);
+}
+
+li > a.icon-user {
+	background-image: url(../../core/img/actions/user.svg);
+}
+
+#app-navigation li.divider {
+	background: none;
+}
+
+
+
+li > a.icon-settings {
+	background-image: url(../../core/img/actions/settings.svg);
+}

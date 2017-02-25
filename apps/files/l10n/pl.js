@@ -48,12 +48,11 @@ OC.L10N.register(
     "Name" : "Nazwa",
     "Size" : "Rozmiar",
     "Modified" : "Modyfikacja",
-    "_%n folder_::_%n folders_" : ["%n katalog","%n katalogi","%n katalogów"],
-    "_%n file_::_%n files_" : ["%n plik","%n pliki","%n plików"],
+    "_%n folder_::_%n folders_" : ["%n katalog","%n katalogi","%n katalogów","%n katalogów"],
+    "_%n file_::_%n files_" : ["%n plik","%n pliki","%n plików","%n plików"],
     "{dirs} and {files}" : "{dirs} i {files}",
-    "_including %n hidden_::_including %n hidden_" : ["łącznie z %n ukrytym","łącznie z %n ukrytymi","łącznie z %n ukrytymi"],
     "You don’t have permission to upload or create files here" : "Nie masz uprawnień do wczytywania lub tworzenia plików w tym miejscu",
-    "_Uploading %n file_::_Uploading %n files_" : ["Wysyłanie %n pliku","Wysyłanie %n plików","Wysyłanie %n plików"],
+    "_Uploading %n file_::_Uploading %n files_" : ["Wysyłanie %n pliku","Wysyłanie %n plików","Wysyłanie %n plików","Wysyłanie %n plików"],
     "New" : "Nowy",
     "\"{name}\" is an invalid file name." : "\"{name}\" jest nieprawidłową nazwą pliku.",
     "File name cannot be empty." : "Nazwa pliku nie może być pusta.",
@@ -62,7 +61,7 @@ OC.L10N.register(
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Miejsce dla {owner} jest na wyczerpaniu ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "Twój magazyn jest prawie pełny ({usedSpacePercent}%)",
     "Path" : "Ścieżka",
-    "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtów"],
+    "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtów","%n bajtów"],
     "Favorited" : "Ulubione",
     "Favorite" : "Ulubione",
     "Local link" : "Lokalny odnośnik",
@@ -110,4 +109,4 @@ OC.L10N.register(
     "Text file" : "Plik tekstowy",
     "New text file.txt" : "Nowy plik tekstowy.txt"
 },
-"nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

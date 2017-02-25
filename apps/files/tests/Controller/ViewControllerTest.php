@@ -3,9 +3,10 @@
  * @author Christoph Wurst <christoph@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud GmbH.
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -239,6 +240,15 @@ class ViewControllerTest extends TestCase {
 				'icon' => '',
 			],
 			[
+				'id' => 'extstoragemounts',
+				'appname' => 'files_external',
+				'script' => 'list.php',
+				'order' => 30,
+				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_external'), 'External storage', []),
+				'active' => false,
+				'icon' => '',
+			],
+			[
 				'id' => 'trashbin',
 				'appname' => 'files_trashbin',
 				'script' => 'list.php',
@@ -246,7 +256,7 @@ class ViewControllerTest extends TestCase {
 				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_trashbin'), 'Deleted files', []),
 				'active' => false,
 				'icon' => '',
-				],
+			],
 		]);
 
 		$expected = new Http\TemplateResponse(
@@ -289,6 +299,10 @@ class ViewControllerTest extends TestCase {
 					],
 					[
 						'id' => 'systemtagsfilter',
+						'content' => null,
+					],
+					[
+						'id' => 'extstoragemounts',
 						'content' => null,
 					],
 					[
