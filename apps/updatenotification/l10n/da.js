@@ -9,6 +9,7 @@ OC.L10N.register(
     "Updater" : "Updater",
     "A new version is available: %s" : "Der er en ny version tligængelig: %s",
     "Open updater" : "Åbn for opdatering",
+    "Show changelog" : "Vis changelog",
     "Your version is up to date." : "Du har seneste version.",
     "Checked on %s" : "Tjekket per %s",
     "Update channel:" : "Opdatér kanal:",
