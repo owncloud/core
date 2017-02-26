@@ -12,7 +12,7 @@
 		<img src="<?php print_unescaped(image_path('core', 'appstore.svg')); ?>"
 		alt="<?php p($l->t('iOS app'));?>" />
 	</a>
-	<?php if (OC_Util::getEditionString() === ''): ?>
+	<?php if (OC_Util::getEditionString() === OC_Util::$editonString[1]): ?>
 		<p>
 			<?php print_unescaped($l->t('If you want to support the project
 			<a href="https://owncloud.org/contribute"

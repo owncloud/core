@@ -64,6 +64,7 @@ class OC_Util {
 	public static $scripts = [];
 	public static $styles = [];
 	public static $headers = [];
+	public static $editonString = ["Enterprise", "Community"];
 	private static $rootMounted = false;
 	private static $fsSetup = false;
 	private static $version;
@@ -394,9 +395,11 @@ class OC_Util {
 	 */
 	public static function getEditionString() {
 		if (OC_App::isEnabled('enterprise_key')) {
-			return "Enterprise";
+			// Enterprise
+			return OC_Util::$editonString[0];
 		} else {
-			return "";
+			// Community
+			return OC_Util::$editonString[1];
 		}
 
 	}
