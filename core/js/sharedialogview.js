@@ -129,7 +129,7 @@
 				'onShareWithFieldChanged'
 			);
 
-			OC.Plugins.attach('OCA.Share.extend', this);
+			OC.Plugins.attach('OCA.Share.ShareDialogView', this);
 		},
 
 		onShareWithFieldChanged: function() {
