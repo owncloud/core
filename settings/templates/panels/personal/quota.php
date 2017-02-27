@@ -9,8 +9,8 @@
 	<div style="width:<?php p($_['usage_relative']);?>%"
 		<?php if($_['usage_relative'] > 80): ?> class="quota-warning" <?php endif; ?>>
 		<p id="quotatext">
-			<?php if ($totalSpace == "Unlimited"): ?>
-                                <?php print_unescaped($l->t('You are using <strong>%s</strong> of <strong>%s</strong>',
+                	<?php if ($totalSpace == $l->t('Unlimited')): ?>                
+				<?php print_unescaped($l->t('You are using <strong>%s</strong> of <strong>%s</strong>',
                                 [$_['usage'], $totalSpace]));?>
                         <?php else: ?>
                                 <?php print_unescaped($l->t('You are using <strong>%s</strong> of <strong>%s</strong> (<strong>%s</strong> %%)',
