@@ -1768,7 +1768,7 @@ OC.Util = {
 
 		var matches = s.match(/^[\s+]?([0-9]*)(\.([0-9]+))?( +)?([kmgtp]?b?)$/i);
 		if (matches !== null) {
-			var bytes = parseFloat(s);
+			bytes = parseFloat(s);
 			if (!isFinite(bytes)) {
 				return null;
 			}
