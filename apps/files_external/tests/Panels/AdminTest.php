@@ -22,10 +22,10 @@
 namespace OCA\Files_External\Tests\Panels;
 
 use OC\Encryption\Manager;
-use OC\Settings\Panels\Helper;
 use OCA\Files_External\Panels\Admin;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\IConfig;
 
 /**
  * @package OCA\Files_External\Tests
@@ -40,20 +40,21 @@ class AdminTest extends \Test\TestCase {
 	private $storagesService;
 	/** @var Manager */
 	private $encManager;
-	/** @var Helper  */
-	private $helper;
+	/** @var IConfig */
+	private $config;
 
 	public function setUp() {
 		parent::setUp();
 		$this->backendService = $this->createMock(IStoragesBackendService::class);
 		$this->storagesService = $this->createMock(IGlobalStoragesService::class);
-		$this->encManager = $this->getMockBuilder(Manager::class)->disableOriginalConstructor()->getMock();
-		$this->helper = $this->getMockBuilder(Helper::class)->getMock();
+		$this->config = $this->createMock(IConfig::class);
+		$this->encManager = $this->createMock(Manager::class);
 		$this->panel = new Admin(
 			$this->storagesService,
 			$this->backendService,
-			$this->encManager,
-			$this->helper);
+			$this->config,
+			$this->encManager
+		);
 	}
 
 	public function testGetSection() {

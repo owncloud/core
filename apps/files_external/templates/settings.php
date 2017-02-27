@@ -33,6 +33,7 @@
 <form id="files_external" class="section" data-encryption-enabled="<?php echo $_['encryptionEnabled']?'true': 'false'; ?>">
 	<h2 class="app-name"><?php p($l->t('External Storage')); ?></h2>
 
+	<?php if ($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN): ?>
 	<p>
 		<input type="checkbox" name="enableExternalStorage" id="enableExternalStorageCheckbox" class="checkbox"
 			   value="1" <?php if ($_['enableExternalStorage']) print_unescaped('checked="checked"'); ?> />
@@ -40,6 +41,10 @@
 			<?php p($l->t('Enable external storage'));?>
 		</label>
 	</p>
+	<?php endif; ?>
+	<?php if (!$_['enableExternalStorage']): ?>
+	<p><?php p($l->t('External storage has been disabled by the administrator')); ?></p>
+	<?php endif; ?>
 
 	<div id="files_external_settings" class=" <?php if (!$_['enableExternalStorage']) print('hidden'); ?>">
 

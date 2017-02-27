@@ -25,6 +25,7 @@ use OCP\Files\External\Service\IUserStoragesService;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use \OCP\Files\External\IStoragesBackendService;
+use OCP\IConfig;
 
 class Personal implements ISettings {
 
@@ -34,12 +35,16 @@ class Personal implements ISettings {
 	protected $userStorages;
 	/** @var Manager */
 	protected $encManager;
+	/** @var IConfig */
+	protected $config;
 
 	public function __construct(IStoragesBackendService $backendService,
 								IUserStoragesService $userStorages,
+								IConfig $config,
 								Manager $encManager) {
 		$this->backendService = $backendService;
 		$this->userStorages = $userStorages;
+		$this->config = $config;
 		$this->encManager = $encManager;
 	}
 
@@ -53,13 +58,16 @@ class Personal implements ISettings {
 
     public function getPanel() {
 		$tmpl = new Template('files_external', 'settings');
+		$enabled = ($this->config->getAppValue('core', 'enable_external_storage', 'no') === 'yes'
+			&& $this->backendService->isUserMountingAllowed());
+		$tmpl->assign('enableExternalStorage', $enabled);
 		$tmpl->assign('encryptionEnabled', $this->encManager->isEnabled());
 		$tmpl->assign('visibilityType', IStoragesBackendService::VISIBILITY_PERSONAL);
 		$tmpl->assign('storages', $this->userStorages->getStorages());
 		$tmpl->assign('dependencies', \OC_Mount_Config::dependencyMessage($this->backendService->getBackends()));
 		$tmpl->assign('backends', $this->backendService->getAvailableBackends());
 		$tmpl->assign('authMechanisms', $this->backendService->getAuthMechanisms());
-		$tmpl->assign('allowUserMounting', $this->backendService->isUserMountingAllowed());
+		$tmpl->assign('allowUserMounting', $enabled);
 		return $tmpl;
     }
 
