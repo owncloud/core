@@ -57,7 +57,7 @@ export TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
 $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 
 #Enable external storage app
-$OCC app:enable files_external
+$OCC config:app:set core enable_external_storage --value=yes
 
 mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
 OUTPUT_CREATE_STORAGE=`$OCC files_external:create local_storage local null::null -c datadir=$SCRIPT_PATH/work/local_storage` 
@@ -95,7 +95,7 @@ kill $PHPPID_FED
 $OCC files_external:delete -y $ID_STORAGE
 
 #Disable external storage app
-$OCC app:disable files_external
+$OCC config:app:set core enable_external_storage --value=no
 
 # Clear storage folder
 rm -Rf work/local_storage/*
