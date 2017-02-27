@@ -128,6 +128,8 @@
 				'_onSelectRecipient',
 				'onShareWithFieldChanged'
 			);
+
+			OC.Plugins.attach('OCA.Share.extend', this);
 		},
 
 		onShareWithFieldChanged: function() {
@@ -255,8 +257,6 @@
 				OC.Notification.show(t('core', 'An error occurred. Please try again'));
 				window.setTimeout(OC.Notification.hide, 5000);
 			});
-
-			OC.Plugins.attach('OCA.Share.foo', this);
 		},
 
 		autocompleteRenderItem: function(ul, item) {
