@@ -56,6 +56,7 @@ use OC\Settings\Panels\Admin\Logging;
 use OC\Settings\Panels\Admin\SecurityWarning;
 use OC\Settings\Panels\Admin\Updater;
 use OC\Settings\Panels\Admin\Tips;
+use OC\Settings\Panels\Admin\Status;
 
 /*
  * @since 10.0
@@ -239,7 +240,8 @@ class SettingsManager implements ISettingsManager {
 				FileSharing::class,
 				Encryption::class,
 				Certificates::class,
-				Apps::class
+				Apps::class,
+				Status::class
 			]
 		];
 	}
