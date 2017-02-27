@@ -153,6 +153,17 @@ class AppConfig implements IAppConfig {
 	 * not exist the default value will be returned
 	 */
 	public function getValue($app, $key, $default = null) {
+		if ($app == 'files_sharing') {
+			$query = 'SELECT `configvalue` FROM `*PREFIX*appconfig`'
+				. ' WHERE `appid` = ? AND `configkey` = ?';
+			$result = $this->conn->executeQuery($query, [$app, $key]);
+			
+			if ($row = $result->fetch()) {
+				return $row['configvalue'];
+			} else {
+				return $default;
+			}
+		}
 		$values = $this->getAppValues($app);
 		if (isset($values[$key])) {
 			return $values[$key];
