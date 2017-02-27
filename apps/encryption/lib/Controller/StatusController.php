@@ -78,7 +78,7 @@ class StatusController extends Controller {
 			case Session::NOT_INITIALIZED:
 				$status = 'interactionNeeded';
 				$message = (string)$this->l->t(
-					'Encryption App is enabled but your keys are not initialized, please log-out and log-in again'
+					'Encryption App is enabled, but your keys are not initialized. Please log-out and log-in again.'
 				);
 				break;
 			case Session::INIT_SUCCESSFUL:
