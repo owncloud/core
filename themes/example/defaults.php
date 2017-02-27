@@ -139,7 +139,7 @@ class OC_Theme {
 	}
 
 	public function buildDocLinkToKey($key) {
-		return $this->getDocBaseUrl() . '/server/9.2/go.php?to=' . $key;
+		return $this->getDocBaseUrl() . '/server/10.0/go.php?to=' . $key;
 	}
 
 
