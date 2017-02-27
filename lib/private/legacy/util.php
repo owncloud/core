@@ -178,6 +178,8 @@ class OC_Util {
 			return $storage;
 		});
 
+
+
 		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
@@ -209,12 +211,16 @@ class OC_Util {
 		});
 
 
+
+		OC_Hook::emit('OC_Filesystem', 'preSetup', ['user' => $user]);
+		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(true);
+
 		// Make users storage readonly if he is in a read only group
 
-		$readOnlyGroups = explode(
-			',', \OC::$server->getConfig()->getAppValue(
+		$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
 			'core',
-			'read_only_groups'
+			'read_only_groups',
+			[]
 		));
 
 		$userGroups = array_keys(
@@ -228,14 +234,14 @@ class OC_Util {
 
 		if (!empty($readOnlyGroupMemberships)) {
 			\OC\Files\Filesystem::addStorageWrapper(
-				'readonly',
+				'oc_readonly',
 				function ($mountPoint, $storage) use ($user) {
-					if ($mountPoint === '/' || $mountPoint === "/$user/") {
+					if ($mountPoint === '/' || $mountPoint === "/$user/" || substr($mountPoint, 0, strlen("/$user/")) === "/$user/") {
 						return new \OC\Files\Storage\Wrapper\DirMask(
 							[
 								'storage' => $storage,
 								'mask' => \OCP\Constants::PERMISSION_READ,
-								'path' => 'files'
+								'path' => str_replace("/$user/", '', $mountPoint)
 							]
 						);
 					}
@@ -245,8 +251,6 @@ class OC_Util {
 			);
 		}
 
-		OC_Hook::emit('OC_Filesystem', 'preSetup', ['user' => $user]);
-		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(true);
 
 		//check if we are using an object storage
 		$objectStore = \OC::$server->getSystemConfig()->getValue('objectstore', null);
