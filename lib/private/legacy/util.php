@@ -396,7 +396,7 @@ class OC_Util {
 		if (OC_App::isEnabled('enterprise_key')) {
 			return "Enterprise";
 		} else {
-			return "";
+			return "Non-Enterprise";
 		}
 
 	}

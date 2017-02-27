@@ -7,6 +7,13 @@ input#openid, input#webdav { width:20em; }
 
 /* PERSONAL */
 
+#general {
+	margin-left: 50px;
+	width: 50%;
+	font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
+    color: #444;
+    margin-bottom: 20px;
+}
 #avatar {
 	display: inline-block;
 	float: left;
