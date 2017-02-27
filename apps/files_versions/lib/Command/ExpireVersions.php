@@ -88,16 +88,16 @@ class ExpireVersions extends Command {
 		} else {
 			$p = new ProgressBar($output);
 			$p->start();
+
+			$expireCallback = function(IUser $user) use ($p) {
+				$p->advance();
+				$this->expireVersionsForUser($user);
+			};
+
 			if (is_callable(array($this->userManager, 'callForSeenUsers'))) {
-				$this->userManager->callForSeenUsers(function(IUser $user) use ($p) {
-					$p->advance();
-					$this->expireVersionsForUser($user);
-				});
+				$this->userManager->callForSeenUsers($expireCallback);
 			} else {
-				$this->userManager->callForAllUsers(function(IUser $user) use ($p) {
-					$p->advance();
-					$this->expireVersionsForUser($user);
-				});
+				$this->userManager->callForAllUsers($expireCallback);
 			}
 			$p->finish();
 			$output->writeln('');

@@ -66,22 +66,18 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
+		$expireCallback = function(IUser $user) {
+			$uid = $user->getUID();
+			if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
+				return;
+			}
+			Storage::expireOlderThanMaxForUser($uid);
+		};
+
 		if (is_callable(array($this->userManager, 'callForSeenUsers'))) {
-			$this->userManager->callForSeenUsers(function(IUser $user) {
-				$uid = $user->getUID();
-				if (!$this->setupFS($uid)) {
-					return;
-				}
-				Storage::expireOlderThanMaxForUser($uid);
-			});
+			$this->userManager->callForSeenUsers($expireCallback);
 		} else {
-			$this->userManager->callForAllUsers(function(IUser $user) {
-				$uid = $user->getUID();
-				if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
-					return;
-				}
-				Storage::expireOlderThanMaxForUser($uid);
-			});
+			$this->userManager->callForAllUsers($expireCallback);
 		}
 	}
 
