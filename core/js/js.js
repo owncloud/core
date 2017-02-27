@@ -1734,6 +1734,12 @@ function relative_modified_date(timestamp) {
 OC.Util = {
 	// TODO: remove original functions from global namespace
 	humanFileSize: humanFileSize,
+	
+	/**
+	* regular expression to parse size in bytes from a humanly readable string
+	* see computerFileSize(string)
+	*/
+	_computerFileSizeRegexp: /^[\s+]?([0-9]*)(\.([0-9]+))?( +)?([kmgtp]?b?)$/i,
 
 	/**
 	 * Returns a file size in bytes from a humanly readable string
@@ -1766,7 +1772,7 @@ OC.Util = {
 			'p': 1024 * 1024 * 1024 * 1024 * 1024
 		};
 
-		var matches = s.match(/^[\s+]?([0-9]*)(\.([0-9]+))?( +)?([kmgtp]?b?)$/i);
+		var matches = s.match(this._computerFileSizeRegexp);
 		if (matches !== null) {
 			bytes = parseFloat(s);
 			if (!isFinite(bytes)) {
