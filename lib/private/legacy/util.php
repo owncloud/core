@@ -389,9 +389,9 @@ class OC_Util {
 	}
 
 	/**
-	 * @description get the current installed edition of ownCloud. There is the community
-	 * edition that just returns an empty string and the enterprise edition
-	 * that returns "Enterprise".
+	 * @description get the current installed edition of ownCloud. 
+	 * There is the community edition that returns "Community" and 
+	 * the enterprise edition that returns "Enterprise".
 	 * @return string
 	 */
 	public static function getEditionString() {
