@@ -226,14 +226,6 @@ OCA.Sharing.PublicApp = {
 				this.$el.find('#emptycontent .uploadmessage').text(
 					t('files_sharing', 'You can upload into this folder')
 				);
-
-				$('#download').click(function(event) {
-					event.preventDefault();
-					if(!list.isEmpty) {
-						OC.redirect(FileList.getDownloadUrl());
-					}
-				});
-				$('#download').toggleClass('disabled', list.isEmpty);
 				OCA.Files.FileList.prototype.updateEmptyContent.apply(this, arguments);
 			};
 
@@ -245,6 +237,13 @@ OCA.Sharing.PublicApp = {
 				data.headers.Authorization = 'Basic ' + btoa(token + ':');
 			});
 
+				$('#download').click(function(event) {
+					event.preventDefault();
+					if(!list.isEmpty) {
+						OC.redirect(FileList.getDownloadUrl());
+					}
+				});
+			
 			// do not allow sharing from the public page
 			delete this.fileList.fileActions.actions.all.Share;
 
