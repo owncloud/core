@@ -18,6 +18,7 @@
  * @author Timo Benk <benk@b1-systems.de>
  * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Felix Heidecke <felix@heidecke.me>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -153,11 +154,12 @@ $array = [
 		[
 			'session_lifetime'	=> min(\OCP\Config::getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
 			'session_keepalive'	=> \OCP\Config::getSystemValue('session_keepalive', true),
-			'version'			=> implode('.', \OCP\Util::getVersion()),
+			'version'		=> implode('.', \OCP\Util::getVersion()),
 			'versionstring'		=> OC_Util::getVersionString(),
 			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
-			'lost_password_link'=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
+			'lost_password_link'	=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
 			'modRewriteWorking'	=> (getenv('front_controller_active') === 'true'),
+			'blacklist_files_regex'	=> \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX
 		]
 	),
 	"oc_appconfig" => json_encode(

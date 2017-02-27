@@ -214,6 +214,14 @@ var OC = {
 		return link;
 	},
 
+    /**
+     * Check if a user file is allowed to be handled.
+     * @param {string} file to check
+     */
+	fileIsBlacklisted: function(file) {
+		return !!(file.match(oc_config.blacklist_files_regex));
+	},
+
 	/**
 	 * Redirect to the target URL, can also be used for downloads.
 	 * @param {string} targetURL URL to redirect to

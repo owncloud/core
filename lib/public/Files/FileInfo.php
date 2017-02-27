@@ -58,6 +58,12 @@ interface FileInfo {
 	const SPACE_UNLIMITED = -3;
 
 	/**
+	 * @const \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX Return regular expression to test filenames against (blacklisting)
+	 * @since 9.1.0
+	 */
+	const BLACKLIST_FILES_REGEX = '\.(part|filepart)$';
+
+	/**
 	 * Get the Etag of the file or folder
 	 *
 	 * @return string
