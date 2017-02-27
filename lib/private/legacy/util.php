@@ -67,6 +67,8 @@ class OC_Util {
 	private static $rootMounted = false;
 	private static $fsSetup = false;
 	private static $version;
+	const EDITION_COMMUNITY = 'Community';
+	const EDITION_ENTERPRISE = 'Enterprise';
 
 	protected static function getAppManager() {
 		return \OC::$server->getAppManager();
@@ -394,10 +396,9 @@ class OC_Util {
 	 */
 	public static function getEditionString() {
 		if (OC_App::isEnabled('enterprise_key')) {
-			return "Enterprise";
-		} else {
-			return "";
-		}
+ 			return OC_Util::EDITION_ENTERPRISE;
+ 		} else {
+			return OC_Util::EDITION_COMMUNITY;		}
 
 	}
 
