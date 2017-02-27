@@ -29,9 +29,19 @@ function env_encryption_enable {
 	$OCC encryption:enable
 }
 
+function env_encryption_enable_master_key {
+	env_encryption_enable
+	$OCC encryption:enable-master-key --yes
+}
+
 function env_encryption_disable {
 	$OCC encryption:disable
 	$OCC app:disable encryption
+}
+
+function env_encryption_disable_master_key {
+	env_encryption_disable
+	$OCC config:app:delete encryption useMasterKey
 }
 
 # avoid port collision on jenkins - use $EXECUTOR_NUMBER
@@ -74,6 +84,9 @@ fi
 if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
 	env_encryption_enable
 	BEHAT_FILTER_TAGS="~@no_encryption"
+elif test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
+	env_encryption_enable_master_key
+	BEHAT_FILTER_TAGS="~@no_encryption"
 fi
 
 if test "$BEHAT_FILTER_TAGS"; then
@@ -107,6 +120,10 @@ fi
 # Disable encryption if requested
 if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
 	env_encryption_disable
+fi
+
+if test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
+	env_encryption_disable_master_key
 fi
 
 if [ -z $HIDE_OC_LOGS ]; then

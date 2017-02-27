@@ -190,7 +190,10 @@ test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
 
 .PHONY: test-integration
 test-integration: $(composer_dev_deps)
-	$(MAKE) -C tests/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED)
+	$(MAKE) -C tests/integration \
+		OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) \
+		OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED) \
+		OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED=$(OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED)
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)
