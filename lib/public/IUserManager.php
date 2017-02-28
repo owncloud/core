@@ -6,6 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Noveen Sachdeva <noveen.sachdeva@research.iiit.ac.in>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -166,4 +167,11 @@ interface IUserManager {
 	 * @since 9.1.0
 	 */
 	public function getByEmail($email);
+	
+	/**
+	 * @param string[] $userIds
+	 * @return string[] displayname of respective uid
+	 * @since 10.0.0
+	 */
+	public function getUsersByIds($userIds);
 }
