@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<info>
+	<id>configreport</id>
+	<name>Admin Config Report</name>
+	<description>Generate a Config Report</description>
+	<licence>AGPL</licence>
+	<author>owncloud.org</author>
+	<version>0.1.1</version>
+	<namespace>ConfigReport</namespace>
+	<default_enable/>
+	<types>
+		<filesystem/>
+	</types>
+	<dependencies>
+		<owncloud min-version="9.0" max-version="9.2" />
+	</dependencies>
+	<shipped>true</shipped>
+	<default_enable/>
+</info>
