@@ -38,7 +38,6 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class CacheTest extends TestCase {
-	use UserTrait;
 
 	/** @var View */
 	public $user2View;
@@ -63,11 +62,10 @@ class CacheTest extends TestCase {
 
 		$this->shareManager = \OC::$server->getShareManager();
 
-		$this->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
-		$this->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
-
-		\OC_User::setDisplayName(self::TEST_FILES_SHARING_API_USER1, 'User One');
-		\OC_User::setDisplayName(self::TEST_FILES_SHARING_API_USER2, 'User Two');
+		$this->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1)
+			->setDisplayName('User One');
+		$this->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2)
+			->setDisplayName('User Two');
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 

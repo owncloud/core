@@ -50,6 +50,7 @@ class ApiTest extends TestCase {
 	/** @var string */
 	private $subsubfolder;
 
+
 	protected function setUp() {
 		parent::setUp();
 

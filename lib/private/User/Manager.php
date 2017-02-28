@@ -87,6 +87,14 @@ class Manager extends PublicEmitter implements IUserManager {
 		});
 	}
 
+	public function reset(AccountMapper $mapper, $backends) {
+		$return = [$this->accountMapper, $this->backends];
+		$this->accountMapper = $mapper;
+		$this->backends = $backends;
+
+		return $return;
+	}
+
 	/**
 	 * Get the active backends
 	 * @return \OCP\UserInterface[]

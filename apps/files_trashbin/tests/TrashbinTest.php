@@ -101,6 +101,10 @@ class TrashbinTest extends TestCase {
 		if ($user !== null) {
 			$user->delete();
 		}
+		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER2);
+		if ($user !== null) {
+			$user->delete();
+		}
 
 		\OC::$server->getConfig()->setSystemValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
 
@@ -252,7 +256,7 @@ class TrashbinTest extends TestCase {
 		\OC\Files\Filesystem::unlink('file3.txt');
 
 		//make sure that files are in the trash bin
-		$filesInTrash = OCA\Files_Trashbin\Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'name');
+		$filesInTrash = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'name');
 		$this->assertSame(3, count($filesInTrash));
 
 		// every second file will get a date in the past so that it will get expired
@@ -271,7 +275,7 @@ class TrashbinTest extends TestCase {
 		$this->assertSame('file2.txt', $remainingFile['name']);
 
 		// check that file1.txt and file3.txt was really deleted
-		$newTrashContent = OCA\Files_Trashbin\Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
+		$newTrashContent = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
 		$this->assertSame(1, count($newTrashContent));
 		$element = reset($newTrashContent);
 		$this->assertSame('file2.txt', $element['name']);

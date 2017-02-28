@@ -84,6 +84,7 @@ class StorageTest extends TestCase {
 
 	public function tearDown() {
 		\OC\Files\Filesystem::tearDown();
+		parent::tearDown();
 	}
 
 	public function testSetFileKey() {

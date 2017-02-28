@@ -225,12 +225,12 @@ class ManagerTest extends TestCase {
 		}
 
 		// count other users in the db before adding our own
-		$count = 0;
-		$function = function (IUser $user) use (&$count) {
-			$count++;
+		$users = [];
+		$function = function (IUser $user) use (&$users) {
+			$users[] = $user->getUID();
 		};
 		$this->manager->callForAllUsers($function, '', true);
-		$countBefore = $count;
+		$usersBefore = $users;
 
 		//Add test users
 		$user1 = $this->manager->createUser('testseen1', 'testseen1');
@@ -244,10 +244,9 @@ class ManagerTest extends TestCase {
 		$user4 = $this->manager->createUser('testseen4', 'testseen4');
 		$user4->updateLastLoginTimestamp();
 
-		$count = 0;
+		$users = [];
 		$this->manager->callForAllUsers($function, '', true);
-
-		$this->assertEquals($countBefore + 3, $count);
+		$this->assertEquals(count($usersBefore) + 3, count($users), join(', ', $usersBefore) . " !== " . join(', ', $users));
 
 		//cleanup
 		$user1->delete();

@@ -45,14 +45,6 @@ class CertificateManagerTest extends \Test\TestCase {
 		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $config);
 	}
 
-	protected function tearDown() {
-		$user = \OC::$server->getUserManager()->get($this->username);
-		if ($user !== null) {
-			$user->delete();
-		}
-		parent::tearDown();
-	}
-
 	protected function assertEqualsArrays($expected, $actual) {
 		sort($expected);
 		sort($actual);

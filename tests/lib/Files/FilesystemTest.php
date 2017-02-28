@@ -505,6 +505,7 @@ class FilesystemTest extends TestCase {
 		$this->assertEquals('/', Filesystem::getMountPoint('/foo/bar'));
 		$mount = new MountPoint(new Temporary([]), '/foo/bar');
 		$mountProvider = new DummyMountProvider([self::TEST_FILESYSTEM_USER2 => [$mount]]);
+		$um = \OC::$server->getUserManager();
 		\OC::$server->getMountProviderCollection()->registerProvider($mountProvider);
 		$this->assertEquals('/foo/bar/', Filesystem::getMountPoint('/foo/bar'));
 	}
