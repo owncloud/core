@@ -427,4 +427,15 @@ class LegacyDBTest extends \Test\TestCase {
 			['💩', true], # :hankey: on github
 		];
 	}
+
+	public function testSelectIntegerType(){
+		$table = "*PREFIX*{$this->table4}";
+
+		$query = OC_DB::prepare("INSERT INTO `$table` (`decimaltest`) VALUES ('18.63')");
+		$result = $query->execute();
+		$this->assertEquals(1, $result);
+
+		$actual = OC_DB::prepare("SELECT `id` FROM `$table`")->execute()->fetchOne();
+		$this->assertTrue(is_string($actual));
+	}
 }
