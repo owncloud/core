@@ -495,8 +495,6 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 		}
 
-		print_r($displayNames);
-
 		return $displayNames;
 	}
 }
