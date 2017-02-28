@@ -5,7 +5,7 @@
 	<description>This App provides the example ownCloud theme.</description>
 	<licence>AGPL</licence>
 	<author>Philipp Schaffrath</author>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<types>
 		<theme/>
 	</types>
