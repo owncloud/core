@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "Clave incorrecta",
     "No user supplied" : "No se ha indicado el usuario",
     "Authentication error" : "Error al autenticar",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Por favor provea de una contraseña de recuperación administrativa, sino se perderá todos los datos del usuario",
     "Wrong admin recovery password. Please check the password and try again." : "Contraseña de recuperación administrativa incorrecta. Por favor, chequee la clave e intente de nuevo",
     "Unable to change password" : "Imposible cambiar la contraseña",
     "Saved" : "Guardado",

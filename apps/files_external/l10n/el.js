@@ -24,7 +24,6 @@ OC.L10N.register(
     "Couldn't access. Please logout and login to activate this mount point" : "Αδυναμία πρόσβασης. Παρακαλώ εξέλθετε και εισέλθετε για να ενεργοποιήσετε το σημείο προσάρτησης",
     "There was an error with message: " : "Υπήρξε σφάλμα στο μήνυμα:",
     "External mount error" : "Σφάλμα εξωτερικής προσάρτησης",
-    "external-storage" : "εξωτερική αποθήκευση",
     "Username" : "Όνομα χρήστη",
     "Password" : "Κωδικός πρόσβασης",
     "Credentials saved" : "Τα διαπιστευτήρια αποθηκεύτηκαν",

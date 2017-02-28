@@ -25,7 +25,6 @@
     "Couldn't get the list of external mount points: {type}" : "Impossible de recuperar la lista dels punts de montatge extèrnes : {type}",
     "There was an error with message: " : "I a agut una error amb lo messatge :",
     "External mount error" : "Error de punt de montatge extèrne",
-    "external-storage" : "external-storage",
     "Couldn't get the list of Windows network drive mount points: empty response from the server" : "Impossible d'obténer la lista dels punts de montatge dels disques rets Windows : Responsa voida del servidor",
     "Some of the configured external mount points are not connected. Please click on the red row(s) for more information" : "Certans punts de montatge extèrnes configurats son pas connectats. Clicatz sus la(s) linha(s) roja(s) per mai d'informacions",
     "Please enter the credentials for the {mount} mount" : "Entratz los identificants pel montatge {mount}",

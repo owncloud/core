@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "Nesprávne heslo",
     "No user supplied" : "Nebol uvedený používateľ",
     "Authentication error" : "Chyba autentifikácie",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Zadajte administrátorské heslo pre obnovu, inak budú všetky dáta stratené",
     "Wrong admin recovery password. Please check the password and try again." : "Chybné administrátorské heslo pre obnovu. Skontrolujte správnosť hesla a skúste to znovu.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Backend nepodporuje zmenu hesla, ale šifrovací kľúč používateľa bol úspešne zmenený.",
     "Unable to change password" : "Zmena hesla sa nepodarila",

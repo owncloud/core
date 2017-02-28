@@ -25,7 +25,6 @@
     "Couldn't get the list of external mount points: {type}" : "Harici bağlama noktalarının listesi alınamadı: {type}",
     "There was an error with message: " : "Şu mesajla bir hata oluştu:",
     "External mount error" : "Harici bağlama hatası",
-    "external-storage" : "harici-depolama",
     "Couldn't get the list of Windows network drive mount points: empty response from the server" : "Windows ağ sürücüsü bağlama nokta listesi alınamadı: sunucudan boş yanıt",
     "Some of the configured external mount points are not connected. Please click on the red row(s) for more information" : "Yapılandırılmış harici bağlama noktalarından bazıları bağlı değil. Lütfen daha fazla bilgi için kırmızı satırlara tıklayın",
     "Please enter the credentials for the {mount} mount" : "{mount} bağlaması için kimlik bilgilerini girin",

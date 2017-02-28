@@ -18,7 +18,6 @@ OC.L10N.register(
     "Couldn't get the list of external mount points: {type}" : "Kunde inte hämta listan för externa monteringspunkter: {type}",
     "There was an error with message: " : "Det fanns ett fel med meddelande:",
     "External mount error" : "Fel vid extern montering",
-    "external-storage" : "extern-lagring",
     "Username" : "Användarnamn",
     "Password" : "Lösenord",
     "Credentials saved" : "Sparade referenser",

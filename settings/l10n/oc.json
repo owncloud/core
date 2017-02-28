@@ -2,7 +2,6 @@
     "Wrong password" : "Senhal incorrècte",
     "No user supplied" : "Cap d'utilizaire pas provesit",
     "Authentication error" : "Error d'autentificacion",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Provesissètz un senhal administrator de recuperacion de donadas, siquenon totas las donadas de l'utilizaire seràn perdudas",
     "Wrong admin recovery password. Please check the password and try again." : "Senhal administrator de recuperacion de donadas pas valable. Verificatz lo senhal e ensajar tornamai.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "L'infrastructura de rèire plan supòrta pas la modification de senhal, mas la clau de chiframent de l'utilizaire es estada mesa a jorn amb succès.",
     "Unable to change password" : "Impossible de modificar lo senhal",

@@ -24,7 +24,6 @@ OC.L10N.register(
     "Couldn't get the list of external mount points: {type}" : "No se pudo obtener la lista de puntos de montaje externos: {type}",
     "There was an error with message: " : "Hubo un error con mensaje:",
     "External mount error" : "Error en montaje externo",
-    "external-storage" : "almacenamiento-externo",
     "Couldn't get the list of Windows network drive mount points: empty response from the server" : "No se pudo obtener la lista de puntos de montaje de unidades de red de Windows: respuesta vacía del servidor",
     "Some of the configured external mount points are not connected. Please click on the red row(s) for more information" : "Algunos de los puntos configurados de montaje externos no están conectados. Por favor haga clic en la(s) fila(s) roja(s) para más información",
     "Please enter the credentials for the {mount} mount" : "Por favor ingrese las credenciales para el montaje {mount}",
