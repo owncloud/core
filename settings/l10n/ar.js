@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "كلمة مرور خاطئة",
     "No user supplied" : "لم يتم توفير مستخدم ",
     "Authentication error" : "لم يتم التأكد من الشخصية بنجاح",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "يرجى توفير كلمة مرور المسؤول المستردة, وإلا سيتم فقد جميع بيانات المستخدم ",
     "Wrong admin recovery password. Please check the password and try again." : "خطا في كلمة مرور المسؤول المستردة, يرجى التاكد من كلمة المرور والمحاولة مرة اخرى.",
     "Unable to change password" : "لا يمكن تغيير كلمة المرور",
     "Saved" : "حفظ",

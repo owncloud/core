@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "Vale parool",
     "No user supplied" : "Kasutajat ei sisestatud",
     "Authentication error" : "Autentimise viga",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Palun sisesta administraatori taasteparool, muidu kaotad kõik kasutajate andmed",
     "Wrong admin recovery password. Please check the password and try again." : "Vale administraatori taasteparool. Palun kontrolli parooli ning proovi uuesti.",
     "Unable to change password" : "Ei suuda parooli muuta",
     "Migration Completed" : "Kolimine on lõpetatud",

@@ -19,7 +19,6 @@ OC.L10N.register(
     "Couldn't get the list of external mount points: {type}" : "Välise ühenduspunkti hankimine ebaõnnestus: {type}",
     "There was an error with message: " : "Sõnumiga tekkis tõrge:",
     "External mount error" : "Välise seostamise tõrge",
-    "external-storage" : "väline-salvestuskoht",
     "Username" : "Kasutajanimi",
     "Password" : "Parool",
     "Credentials required" : "Kasutajatunnused on nõutud",

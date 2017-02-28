@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "Pasahitz okerra",
     "No user supplied" : "Ez da erabiltzailerik zehaztu",
     "Authentication error" : "Autentifikazio errorea",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Mesedez eman berreskuratzeko administrazio  pasahitza, bestela erabiltzaile datu guztiak galduko dira",
     "Wrong admin recovery password. Please check the password and try again." : "Administratzailearen berreskuratze pasahitza ez egokia. Mesedez egiaztatu pasahitza eta saiatu berriz.",
     "Unable to change password" : "Ezin izan da pasahitza aldatu",
     "Federated Cloud Sharing" : "Federatutako Hodei Partekatzea",

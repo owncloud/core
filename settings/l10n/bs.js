@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "Pogrešna lozinka",
     "No user supplied" : "Nijedan korisnik nije dostavljen",
     "Authentication error" : "Grešna autentifikacije",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Molim navedite admin lozinku za povratak, u protivnom će svi korisnički podaci biti izgubljeni",
     "Wrong admin recovery password. Please check the password and try again." : "Pogrešna admin lozinka za povratak. Molim provjerite lozinku i pokušajte ponovno.",
     "Unable to change password" : "Promjena lozinke nije moguća",
     "Group already exists." : "Grupa već postoji.",

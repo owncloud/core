@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "Feil passord",
     "No user supplied" : "Ingen brukar gjeve",
     "Authentication error" : "Autentiseringsfeil",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Ver venleg og gje eit admingjenopprettingspassord, elles vil all brukardata gå tapt.",
     "Wrong admin recovery password. Please check the password and try again." : "Feil admingjenopprettingspassord. Ver venleg og sjekk passordet og prøv igjen.",
     "Unable to change password" : "Klarte ikkje å endra passordet",
     "Federated Cloud Sharing" : "Klarert sky deling",

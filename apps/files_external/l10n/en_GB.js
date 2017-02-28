@@ -27,7 +27,6 @@ OC.L10N.register(
     "Couldn't get the list of external mount points: {type}" : "Couldn't get the list of external mount points: {type}",
     "There was an error with message: " : "There was an error with message: ",
     "External mount error" : "External mount error",
-    "external-storage" : "external-storage",
     "Couldn't get the list of Windows network drive mount points: empty response from the server" : "Couldn't get the list of Windows network drive mount points: empty response from the server",
     "Some of the configured external mount points are not connected. Please click on the red row(s) for more information" : "Some of the configured external mount points are not connected. Please click on the red row(s) for more information",
     "Please enter the credentials for the {mount} mount" : "Please enter the credentials for the {mount} mount",

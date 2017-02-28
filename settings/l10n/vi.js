@@ -59,7 +59,6 @@ OC.L10N.register(
     "Language" : "Ngôn ngữ",
     "Help translate" : "Hỗ trợ dịch thuật",
     "Unlimited" : "Không giới hạn",
-    "You are using <strong>%s</strong> of <strong>%s</strong>" : "Bạn đã sử dụng <strong>%s</strong> trong <strong>%s</strong>",
     "Sessions" : "Phiên làm việc",
     "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Danh sách các thiết bị điện thoại, web và máy tính hiện tại đã đăng nhập vào ownCould của bạn.",
     "Browser" : "Trình duyệt",

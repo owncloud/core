@@ -27,7 +27,6 @@ OC.L10N.register(
     "Couldn't get the list of external mount points: {type}" : "Неуспешно приемане на списък от външни точки на прекачване: {type}",
     "There was an error with message: " : "Възникна греша със съобщение:",
     "External mount error" : "Грешка при прикачване на външен диск",
-    "external-storage" : "външен диск",
     "Couldn't get the list of Windows network drive mount points: empty response from the server" : "Неуспешно намиране на списъка с мрежови Windows дискове: празен отговор от сървъра",
     "Some of the configured external mount points are not connected. Please click on the red row(s) for more information" : "Някои от конфигурираните външни дискове не са свързани. Моля, натиснете на редът(овете) в червено за допълнителна информация.",
     "Please enter the credentials for the {mount} mount" : "Моля, въведете потребителско име и парола за свързване с {mount}",

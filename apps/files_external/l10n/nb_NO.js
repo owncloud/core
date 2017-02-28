@@ -27,7 +27,6 @@ OC.L10N.register(
     "Couldn't get the list of external mount points: {type}" : "Klarte ikke å hente listen over eksterne oppkoblingspunkter: {type}",
     "There was an error with message: " : "Det oppstod en feil med melding: ",
     "External mount error" : "Ekstern oppkoblingsfeil",
-    "external-storage" : "eksternlagring",
     "Couldn't get the list of Windows network drive mount points: empty response from the server" : "Klarte ikke å hente listen over oppkoblingspunkter for Windows nettverk-disker: tomt svar fra serveren",
     "Some of the configured external mount points are not connected. Please click on the red row(s) for more information" : "Noen av de konfigurerte eksterne oppkoblingspunktene er ikke tilkoblet. Klikk på de røde raden(e) for mer informasjon.",
     "Please enter the credentials for the {mount} mount" : "Legg inn påloggingsdetaljer for {mount}",
