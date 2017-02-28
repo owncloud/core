@@ -41,6 +41,26 @@ jQuery.fn.keyUpDelayedOrEnter = function (callback, allowEmptyValue) {
 	});
 };
 
+jQuery.fn.Enter = function (callback, allowEmptyValue) {
+	var cb = callback;
+	var that = this;
+
+	this.keypress(function (event) {
+		if (event.keyCode === 13 && (allowEmptyValue || that.val !== '')) {
+			event.preventDefault();
+			cb();
+		}
+	});
+
+	this.bind('paste', null, function (e) {
+		if(!e.keyCode){
+			if (allowEmptyValue || that.val() !== '') {
+				cb();
+			}
+		}
+	});
+};
+
 $(document).ready(function () {
 	// 'redirect' to anchor sections
 	// anchors are lost on redirects (e.g. while solving the 2fa challenge) otherwise

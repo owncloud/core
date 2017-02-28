@@ -35,6 +35,7 @@ use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
@@ -46,6 +47,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\IAvatarManager;
+use OCP\Security\ISecureRandom;
 
 /**
  * @package OC\Settings\Controller
@@ -79,6 +81,10 @@ class UsersController extends Controller {
 	private $isRestoreEnabled = false;
 	/** @var IAvatarManager */
 	private $avatarManager;
+	/** @var ISecureRandom */
+	protected $secureRandom;
+	/** @var ITimeFactory */
+	protected $timeFactory;
 
 	/**
 	 * @param string $appName
@@ -102,11 +108,13 @@ class UsersController extends Controller {
 								IGroupManager $groupManager,
 								IUserSession $userSession,
 								IConfig $config,
+								ISecureRandom $secureRandom,
 								$isAdmin,
 								IL10N $l10n,
 								ILogger $log,
 								\OC_Defaults $defaults,
 								IMailer $mailer,
+								ITimeFactory $timeFactory,
 								$fromMailAddress,
 								IURLGenerator $urlGenerator,
 								IAppManager $appManager,
@@ -118,9 +126,11 @@ class UsersController extends Controller {
 		$this->config = $config;
 		$this->isAdmin = $isAdmin;
 		$this->l10n = $l10n;
+		$this->secureRandom = $secureRandom;
 		$this->log = $log;
 		$this->defaults = $defaults;
 		$this->mailer = $mailer;
+		$this->timeFactory = $timeFactory;
 		$this->fromMailAddress = $fromMailAddress;
 		$this->urlGenerator = $urlGenerator;
 		$this->avatarManager = $avatarManager;
@@ -210,6 +220,27 @@ class UsersController extends Controller {
 			$users[$uid] = $this->userManager->get($uid);
 		}
 		return $users;
+	}
+
+	private function checkEmailChangeToken($token, $userId) {
+		$user = $this->userManager->get($userId);
+
+		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changemail', null));
+		if(count($splittedToken) !== 2) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+		}
+
+		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12) ||
+			$user->getLastLogin() > $splittedToken[0]) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is expired'));
+		}
+
+		if (!hash_equals($splittedToken[1], $token)) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+		}
 	}
 
 	/**
@@ -501,6 +532,7 @@ class UsersController extends Controller {
 	public function setMailAddress($id, $mailAddress) {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
+		$currentEmail = $user->getEMailAddress();
 
 		if($userId !== $id
 			&& !$this->isAdmin
@@ -554,20 +586,44 @@ class UsersController extends Controller {
 			);
 		}
 
-		// delete user value if email address is empty
-		$user->setEMailAddress($mailAddress);
+		if ($currentEmail == '') {
+			$user->setEMailAddress($mailAddress);
+			return new DataResponse(
+				[
+					'status' => 'success',
+					'data' => [
+						'username' => $id,
+						'mailAddress' => $mailAddress,
+						'message' => (string)$this->l10n->t('Email saved')
+					]
+				],
+				Http::STATUS_OK
+			);
+		}
 
-		return new DataResponse(
-			[
-				'status' => 'success',
-				'data' => [
-					'username' => $id,
-					'mailAddress' => $mailAddress,
-					'message' => (string)$this->l10n->t('Email saved')
-				]
-			],
-			Http::STATUS_OK
-		);
+		try {
+			$this->sendEmail($userId, $mailAddress);
+			return new DataResponse(
+				[
+					'status' => 'success',
+					'data' => [
+						'message' => (string)$this->l10n->t('Email Sent.')
+					]
+				],
+				Http::STATUS_OK
+			);
+		} catch (\Exception $e){
+			return new DataResponse(
+				[
+					'status' => 'success',
+					'data' => [
+						'message' => (string)$e->getMessage()
+					]
+				],
+				Http::STATUS_OK
+			);
+		}
+
 	}
 
 	/**
@@ -660,5 +716,67 @@ class UsersController extends Controller {
 				],
 			]);
 		}
+	}
+
+	/**
+	 * @param string $user
+     * @throws \Exception
+    */
+    public function sendEmail($user, $mailAddress) {
+    	$token = $this->secureRandom->generate(21,
+				ISecureRandom::CHAR_DIGITS .
+				ISecureRandom::CHAR_LOWER .
+				ISecureRandom::CHAR_UPPER);
+		$this->config->setUserValue($user, 'owncloud', 'changemail', $this->timeFactory->getTime() . ':' . $token);
+
+		$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changemail', ['userId' => $user, 'token' => $token, 'mailAddress' => $mailAddress]);
+
+		$tmpl = new \OC_Template('settings', 'changemail/email');
+		$tmpl->assign('link', $link);
+		$msg = $tmpl->fetchPage();
+
+		$userObject = $this->userManager->get($user);
+		$email = $userObject->getEMailAddress();
+
+		try {
+			$message = $this->mailer->createMessage();
+			$message->setTo([$email => $user]);
+			$message->setSubject($this->l10n->t('%s email address change', [$this->defaults->getName()]));
+			$message->setPlainBody($msg);
+			$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
+			$this->mailer->send($message);
+		} catch (\Exception $e) {
+			throw new \Exception($this->l10n->t(
+					'Couldn\'t send email address change email. Please contact your administrator.'
+			));
+		}
+    }
+
+    public function setEmailAddress($userId, $mailAddress) {
+		$user = $this->userManager->get($userId);
+
+		$user->setEMailAddress($mailAddress);
+
+	}
+
+	public function changemail($token, $userId, $mailAddress) {
+		try {
+			$this->checkEmailChangeToken($token, $userId);
+		} catch (\Exception $e) {
+			return new TemplateResponse(
+				'settings', 'error', [
+				"errors" => [["error" => $e->getMessage()]]
+			],
+				'guest'
+			);
+		}
+
+		$this->setEmailAddress($userId, $mailAddress);
+
+		return new TemplateResponse(
+			'settings',
+			'changemail/response',
+			'guest'
+		);
 	}
 }

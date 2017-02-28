@@ -32,6 +32,7 @@ namespace OC\Settings;
 
 use OC\Files\View;
 use OC\Server;
+use OC\AppFramework\Utility\TimeFactory;
 use OC\Settings\Controller\SettingsPageController;
 use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\AuthSettingsController;
@@ -161,11 +162,13 @@ class Application extends App {
 				$c->query('GroupManager'),
 				$c->query('UserSession'),
 				$c->query('Config'),
+				$c->query('SecureRandom'),
 				$c->query('IsAdmin'),
 				$c->query('L10N'),
 				$c->query('Logger'),
 				$c->query('Defaults'),
 				$c->query('Mailer'),
+				$c->query('TimeFactory'),
 				$c->query('DefaultMailAddress'),
 				$c->query('URLGenerator'),
 				$c->query('OCP\\App\\IAppManager'),
@@ -282,6 +285,12 @@ class Application extends App {
 			/** @var Server $server */
 			$server = $c->query('ServerContainer');
 			return $server->getIntegrityCodeChecker();
+		});
+		$container->registerService('TimeFactory', function(IContainer $c) {
+			return new TimeFactory();
+		});
+		$container->registerService('SecureRandom', function(IContainer $c) {
+			return $c->query('ServerContainer')->getSecureRandom();
 		});
 		$container->registerService('SettingsManager', function(IContainer $c) {
 			return $c->query('ServerContainer')->getSettingsManager();

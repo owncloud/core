@@ -64,6 +64,7 @@ if($_['displayNameChangeSupported']) {
 	<input type="email" name="email" id="email" value="<?php p($_['email']); ?>"
 		placeholder="<?php p($l->t('Your email address'));?>"
 		autocomplete="on" autocapitalize="off" autocorrect="off" />
+	<input id="emailbutton" type="button" value="<?php if(isset($_['email'][0])) { echo $l->t('Change email'); } else { echo $l->t('Set email'); }?>" />
 	<span class="msg"></span><br />
 	<em><?php p($l->t('For password recovery and notifications'));?></em>
 </form>

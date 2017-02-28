@@ -194,7 +194,10 @@ $(document).ready(function () {
 	});
 
 	$('#displayName').keyUpDelayedOrEnter(changeDisplayName);
-	$('#email').keyUpDelayedOrEnter(changeEmailAddress, true);
+	$('#email').Enter(changeEmailAddress, true);
+	$('#emailbutton').click(function () {
+		changeEmailAddress();
+	});
 
 	$("#languageinput").change(function () {
 		// Serialize the data
