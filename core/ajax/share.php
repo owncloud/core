@@ -231,7 +231,6 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 
 						foreach($emails as $email) {
 							$result[] = [
-								'id' => $contact['id'],
 								'email' => $email,
 								'displayname' => $contact['FN'],
 							];
