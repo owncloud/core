@@ -221,7 +221,7 @@ class OC_Util {
 			'core',
 			'read_only_groups',
 			[]
-		));
+		), true);
 
 		$userGroups = array_keys(
 			\OC::$server->getGroupManager()->getUserIdGroups($user)
