@@ -224,6 +224,42 @@ class OC_Util {
 		OC_Hook::emit('OC_Filesystem', 'preSetup', ['user' => $user]);
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(true);
 
+		// Make users storage readonly if he is in a read only group
+
+		$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
+			'core',
+			'read_only_groups',
+			[]
+		), true);
+
+		$userGroups = array_keys(
+			\OC::$server->getGroupManager()->getUserIdGroups($user)
+		);
+
+		$readOnlyGroupMemberships = array_intersect(
+			$readOnlyGroups,
+			$userGroups
+		);
+
+		if (!empty($readOnlyGroupMemberships)) {
+			\OC\Files\Filesystem::addStorageWrapper(
+				'oc_readonly',
+				function ($mountPoint, $storage) use ($user) {
+					if ($mountPoint === '/' || $mountPoint === "/$user/" || substr($mountPoint, 0, strlen("/$user/")) === "/$user/") {
+						return new \OC\Files\Storage\Wrapper\DirMask(
+							[
+								'storage' => $storage,
+								'mask' => \OCP\Constants::PERMISSION_READ,
+								'path' => str_replace("/$user/", '', $mountPoint)
+							]
+						);
+					}
+
+					return $storage;
+				}
+			);
+		}
+
 		//check if we are using an object storage
 		$objectStore = \OC::$server->getSystemConfig()->getValue('objectstore', null);
 		if (isset($objectStore)) {
