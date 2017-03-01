@@ -1194,6 +1194,131 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertCount(0, $share);
 	}
 
+	public function testGetAllSharesByNodes() {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->values([
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+				'share_with' => $qb->expr()->literal('sharedWith'),
+				'uid_owner' => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
+				'item_type'   => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal(42),
+				'file_target' => $qb->expr()->literal('myTarget'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$this->assertEquals(1, $qb->execute());
+		$id = $qb->getLastInsertId();
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->values([
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+				'share_with' => $qb->expr()->literal('sharedWith'),
+				'uid_owner' => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
+				'item_type'   => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal(43),
+				'file_target' => $qb->expr()->literal('userTarget'),
+				'permissions' => $qb->expr()->literal(0),
+				'parent' => $qb->expr()->literal($id),
+			]);
+		$this->assertEquals(1, $qb->execute());
+
+		for($i = 0; $i < 200; $i++) {
+			$receiver = strval($i)."sharedWith";
+			$qb->insert('share')
+				->values([
+					'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+					'share_with' => $qb->expr()->literal($receiver),
+					'uid_owner' => $qb->expr()->literal('shareOwner'),
+					'uid_initiator' => $qb->expr()->literal('sharedBy'),
+					'item_type'   => $qb->expr()->literal('file'),
+					'file_source' => $qb->expr()->literal(42),
+					'file_target' => $qb->expr()->literal('myTarget'),
+					'permissions' => $qb->expr()->literal(13),
+				]);
+			$this->assertEquals(1, $qb->execute());
+		}
+
+		$file = $this->createMock(File::class);
+		$file->method('getId')->willReturn(42);
+		$this->rootFolder->method('getUserFolder')->with('shareOwner')->will($this->returnSelf());
+		$this->rootFolder->method('getById')->with(42)->willReturn([$file]);
+
+		$share = $this->provider->getAllSharesBy('sharedBy', [Share::SHARE_TYPE_USER], [$file->getId()], false);
+		$this->assertCount(201, $share);
+
+		/** @var Share\IShare $share */
+		$share = $share[0];
+		$this->assertEquals($id, $share->getId());
+		$this->assertEquals('sharedWith', $share->getSharedWith());
+		$this->assertEquals('shareOwner', $share->getShareOwner());
+		$this->assertEquals('sharedBy', $share->getSharedBy());
+		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
+		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals('myTarget', $share->getTarget());
+	}
+
+	public function testGetAllSharesReshare() {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->values([
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+				'share_with' => $qb->expr()->literal('sharedWith'),
+				'uid_owner' => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('shareOwner'),
+				'item_type' => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal(42),
+				'file_target' => $qb->expr()->literal('myTarget'),
+				'permissions' => $qb->expr()->literal(13),
+			]);
+		$this->assertEquals(1, $qb->execute());
+		$id1 = $qb->getLastInsertId();
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+			->values([
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
+				'share_with' => $qb->expr()->literal('sharedWith'),
+				'uid_owner' => $qb->expr()->literal('shareOwner'),
+				'uid_initiator' => $qb->expr()->literal('sharedBy'),
+				'item_type' => $qb->expr()->literal('file'),
+				'file_source' => $qb->expr()->literal(42),
+				'file_target' => $qb->expr()->literal('userTarget'),
+				'permissions' => $qb->expr()->literal(0),
+			]);
+		$this->assertEquals(1, $qb->execute());
+		$id2 = $qb->getLastInsertId();
+
+		$file = $this->createMock(File::class);
+		$file->method('getId')->willReturn(42);
+		$this->rootFolder->method('getUserFolder')->with('shareOwner')->will($this->returnSelf());
+		$this->rootFolder->method('getById')->with(42)->willReturn([$file]);
+
+		$shares = $this->provider->getAllSharesBy('shareOwner', [Share::SHARE_TYPE_USER], [$file->getId()], true);
+		$this->assertCount(2, $shares);
+
+		/** @var Share\IShare $share */
+		$share = $shares[0];
+		$this->assertEquals($id1, $share->getId());
+		$this->assertSame('sharedWith', $share->getSharedWith());
+		$this->assertSame('shareOwner', $share->getShareOwner());
+		$this->assertSame('shareOwner', $share->getSharedBy());
+		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
+		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals('myTarget', $share->getTarget());
+
+		$share = $shares[1];
+		$this->assertEquals($id2, $share->getId());
+		$this->assertSame('sharedWith', $share->getSharedWith());
+		$this->assertSame('shareOwner', $share->getShareOwner());
+		$this->assertSame('sharedBy', $share->getSharedBy());
+		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
+		$this->assertEquals(0, $share->getPermissions());
+		$this->assertEquals('userTarget', $share->getTarget());
+	}
+
 	public function testGetSharesBy() {
 		$qb = $this->dbConn->getQueryBuilder();
 		$qb->insert('share')
