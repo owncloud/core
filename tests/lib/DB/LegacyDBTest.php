@@ -435,7 +435,13 @@ class LegacyDBTest extends \Test\TestCase {
 		$result = $query->execute();
 		$this->assertEquals(1, $result);
 
+
 		$actual = OC_DB::prepare("SELECT `id` FROM `$table`")->execute()->fetchOne();
-		$this->assertTrue(is_string($actual));
+
+		ob_start();
+		var_dump($actual);
+		$message = ob_get_clean();
+
+		$this->assertTrue(is_string($actual), $message);
 	}
 }
