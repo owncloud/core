@@ -550,6 +550,7 @@
 		_onUrlChanged: function(e) {
 			if (e && _.isString(e.dir)) {
 				var currentDir = this.getCurrentDirectory();
+				// if this._currentDirectory is NULL when fileList is first initialised
 				if(this._currentDirectory && currentDir === e.dir) {
 					return;
 				}
