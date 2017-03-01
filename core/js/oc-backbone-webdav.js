@@ -179,10 +179,10 @@
 		});
 	}
 
-	function callPropPatch(client, options, model, headers, changed) {
+	function callPropPatch(client, options, model, headers) {
 		return client.propPatch(
 			options.url,
-			convertModelAttributesToDavProperties(changed || model.changed, options.davProperties),
+			convertModelAttributesToDavProperties(model.changed, options.davProperties),
 			headers
 		).then(function(result) {
 			if (isSuccessStatus(result.status)) {
@@ -199,21 +199,24 @@
 	}
 
 	function callMkCol(client, options, model, headers) {
-		// call MKCOL without data, followed by PROPPATCH
-		return client.request(
-			options.type,
+		var props = convertModelAttributesToDavProperties(model.attributes, options.davProperties);
+		if (!props['{DAV:}resourcetype']) {
+			props['{DAV:}resourcetype'] = '<d:collection/>';
+		}
+		return client.mkcol(
 			options.url,
-			headers,
-			null
+			props,
+			headers
 		).then(function(result) {
-			if (!isSuccessStatus(result.status)) {
-				if (_.isFunction(options.error)) {
-					options.error(result);
+			if (isSuccessStatus(result.status)) {
+				if (_.isFunction(options.success)) {
+					// pass the object's own values because the server
+					// does not return the updated model
+					options.success(model.toJSON());
 				}
-				return;
+			} else if (_.isFunction(options.error)) {
+				options.error(result);
 			}
-
-			callPropPatch(client, options, model, headers, model.attributes);
 		});
 	}
 
@@ -233,7 +236,7 @@
 			}
 
 			if (_.isFunction(options.success)) {
-				if (options.type === 'PUT' || options.type === 'POST' || options.type === 'MKCOL') {
+				if (options.type === 'PUT' || options.type === 'POST') {
 					// pass the object's own values because the server
 					// does not return anything
 					var responseJson = result.body || model.toJSON();

@@ -650,6 +650,8 @@ describe('Backbone Webdav extension', function() {
 		});
 
 		it('creates the Webdav collection with MKCOL', function() {
+			var mkcolStub = sinon.stub(dav.Client.prototype, 'mkcol');
+			mkcolStub.returns(deferredRequest.promise());
 			var model = new NodeModel({
 				id: 'davcol'
 			});
@@ -658,15 +660,17 @@ describe('Backbone Webdav extension', function() {
 				lastName: 'World',
 			});
 
-			expect(davClientRequestStub.calledOnce).toEqual(true);
-			expect(davClientRequestStub.getCall(0).args[0])
-				.toEqual('MKCOL');
-			expect(davClientRequestStub.getCall(0).args[1])
+			expect(mkcolStub.calledOnce).toEqual(true);
+			expect(mkcolStub.getCall(0).args[0])
 				.toEqual('http://example.com/owncloud/remote.php/dav/davcol');
-			expect(davClientRequestStub.getCall(0).args[2]['X-Requested-With'])
+			expect(mkcolStub.getCall(0).args[1])
+				.toEqual({
+					'{http://owncloud.org/ns}first-name': 'Hello',
+					'{http://owncloud.org/ns}last-name': 'World',
+					'{DAV:}resourcetype': '<d:collection/>'
+				});
+			expect(mkcolStub.getCall(0).args[2]['X-Requested-With'])
 				.toEqual('XMLHttpRequest');
-			expect(davClientRequestStub.getCall(0).args[3])
-				.toEqual(null);
 
 			deferredRequest.resolve({
 				status: 201,
@@ -678,6 +682,8 @@ describe('Backbone Webdav extension', function() {
 
 			expect(model.id).toEqual('davcol');
 			expect(model.isNew()).toEqual(false);
+
+			mkcolStub.restore();
 		});
 		it('updates Webdav collection properties with PROPPATCH', function() {
 			var model = new NodeModel({
