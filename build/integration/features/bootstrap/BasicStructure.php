@@ -311,6 +311,30 @@ trait BasicStructure {
 		fclose($file);
 	}
 
+	public function createFileWithText($name, $text){
+		$file = fopen("work/" . "$name", 'w');
+		fwrite($file, $text);
+		fclose($file);
+	}
+
+	/**
+	 * @Given file :filename of size :size is created in local storage
+	 * @param string $filename
+	 * @param string $size
+	 */
+	public function fileIsCreatedInLocalStorageWithSize($filename, $size) {
+		$this->createFileSpecificSize("local_storage/$filename", $size);
+	}
+
+	/**
+	 * @Given file :filename with text :text is created in local storage
+	 * @param string $filename
+	 * @param string $text
+	 */
+	public function fileIsCreatedInLocalStorageWithText($filename, $text) {
+		$this->createFileWithText("local_storage/$filename", $text);
+	}
+
 	/**
 	 * @BeforeScenario @local_storage
 	 */
