@@ -526,7 +526,7 @@ var UserList = {
 		}
 		if (
 			['default', 'none'].indexOf(quota) === -1
-			&& (isNaN(parseInt(quota, 10)) || parseInt(quota, 10) < 0)
+			&& (!OC.Util.computerFileSize(quota))
 		) {
 			// the select component has added the bogus value, delete it again
 			$select.find('option[selected]').remove();
