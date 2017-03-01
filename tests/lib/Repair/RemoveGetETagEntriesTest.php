@@ -78,6 +78,9 @@ class RemoveGetETagEntriesTest extends TestCase {
 		$entries = $stmt->fetchAll(\PDO::FETCH_NUM);
 
 		$this->assertCount(1, $entries, 'Asserts that only one entry is returned after the repair step - the other one has to be removed');
+		//cast int to string to prevent failure on postgre
+		//see https://github.com/owncloud/core/pull/27280#issuecomment-283170051
+		$entries[0][0] = (string) $entries[0][0];
 		$this->assertSame($data[1], $entries[0], 'Asserts that the returned entry is the correct one from the test data set');
 
 		// remove test data
