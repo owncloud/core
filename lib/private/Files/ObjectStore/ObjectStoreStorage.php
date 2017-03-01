@@ -305,9 +305,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	public function rename($source, $target) {
 		$source = $this->normalizePath($source);
 		$target = $this->normalizePath($target);
-		$sourceEntry = $this->getCache()->get($source);
-		$this->getCache()->copyFromCache($this->getCache(), $sourceEntry, $target);
-		$this->remove($source);
+		$this->remove($target);
+		$this->getCache()->move($source, $target);
 		$this->touch(dirname($target));
 		return true;
 	}
