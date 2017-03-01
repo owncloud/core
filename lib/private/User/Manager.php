@@ -346,7 +346,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.0.0
 	 */
 	public function callForAllUsers(\Closure $callback, $search = '') {
-		foreach($this->getBackends() as $backend) {
+		foreach ($this->getBackends() as $backend) {
 			$limit = 500;
 			$offset = 0;
 			do {
@@ -366,6 +366,91 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 	}
 
+	/**
+	 * returns how many users have logged in once
+	 *
+	 * @return int
+	 * @since 9.1.0
+	 */
+	public function countSeenUsers() {
+		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$queryBuilder->select($queryBuilder->createFunction('COUNT(*)'))
+			->from('preferences')
+			->where($queryBuilder->expr()->eq(
+				'appid', $queryBuilder->createNamedParameter('login'))
+			)
+			->andWhere($queryBuilder->expr()->eq(
+				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
+			)
+			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
+			);
+
+		$query = $queryBuilder->execute();
+		return (int)$query->fetchColumn();
+	}
+
+	/**
+	 * @param \Closure $callback
+	 * @param string $search
+	 * @since 9.1.0
+	 */
+	public function callForSeenUsers (\Closure $callback) {
+		$limit = 1000;
+		$offset = 0;
+		do {
+			$userIds = $this->getSeenUserIds($limit, $offset);
+			$offset += $limit;
+			foreach ($userIds as $userId) {
+				foreach ($this->backends as $backend) {
+					if ($backend->userExists($userId)) {
+						$user = $this->getUserObject($userId, $backend, false);
+						$return = $callback($user);
+						if ($return === false) {
+							return;
+						}
+					}
+				}
+			}
+		} while (count($userIds) >= $limit);
+	}
+
+	/**
+	 * Getting all userIds that have a listLogin value requires checking the
+	 * value in php because on oracle you cannot use a clob in a where clause,
+	 * preventing us from doing a not null or length(value) > 0 check.
+	 *
+	 * @param int $limit
+	 * @param int $offset
+	 * @return string[] with user ids
+	 */
+	private function getSeenUserIds($limit = null, $offset = null) {
+		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$queryBuilder->select(['userid'])
+			->from('preferences')
+			->where($queryBuilder->expr()->eq(
+				'appid', $queryBuilder->createNamedParameter('login'))
+			)
+			->andWhere($queryBuilder->expr()->eq(
+				'configkey', $queryBuilder->createNamedParameter('lastLogin'))
+			)
+			->andWhere($queryBuilder->expr()->isNotNull('configvalue')
+			);
+
+		if ($limit !== null) {
+			$queryBuilder->setMaxResults($limit);
+		}
+		if ($offset !== null) {
+			$queryBuilder->setFirstResult($offset);
+		}
+		$query = $queryBuilder->execute();
+		$result = [];
+
+		while ($row = $query->fetch()) {
+			$result[] = $row['userid'];
+		}
+
+		return $result;
+	}
 	/**
 	 * @param string $email
 	 * @return IUser[]
