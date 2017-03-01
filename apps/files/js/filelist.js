@@ -1416,6 +1416,9 @@
 			if (!force && currentDir === targetDir) {
 				return;
 			}
+			if(this._currentDirectory && currentDir === targetDir) {
+				return;
+			}
 			this._setCurrentDir(targetDir, changeUrl, fileId);
 			// discard finished uploads list, we'll get it through a regular reload
 			this._uploads = {};
