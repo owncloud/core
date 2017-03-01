@@ -2991,4 +2991,42 @@ describe('OCA.Files.FileList tests', function() {
 			testMountType(123, 'external-root', 'external', 'external');
 		});
 	});
+	describe('file list should not refresh if url does not change', function() {
+		var fileListStub;
+
+		beforeEach(function() {
+			fileListStub = sinon.stub(OCA.Files.FileList.prototype, 'changeDirectory');
+		});
+		afterEach(function() {
+			fileListStub.restore();
+		})
+		it('File list must not be refreshed', function() {
+			$('#app-content-files').trigger(new $.Event('urlChanged', {dir: '/subdir'}));
+			expect(fileListStub.notCalled).toEqual(true);
+		});
+	});
+	describe('after file list creation file list should refresh', function() {
+		var fileListStub;
+
+		beforeEach(function() {
+			if (fileList) {
+				fileList.destroy();
+			}
+			fileList = new OCA.Files.FileList($('#app-content-files'), {
+				filesClient: filesClient,
+				config: filesConfig,
+				enableUpload: true
+			});
+
+			fileListStub = sinon.stub(OCA.Files.FileList.prototype, 'changeDirectory');
+		});
+		afterEach(function() {
+			fileListStub.restore();
+		})
+		it('File list must be refreshed', function() {
+			console.log(fileList.getCurrentDirectory());
+			$('#app-content-files').trigger(new $.Event('urlChanged', {dir: '/'}));
+			expect(fileListStub.notCalled).toEqual(false);
+		});
+	});
 });
