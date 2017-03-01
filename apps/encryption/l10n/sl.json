@@ -21,6 +21,7 @@
     "Private key password successfully updated." : "Zasebni ključ za geslo je uspešno posodobljen.",
     "You need to migrate your encryption keys from the old encryption (ownCloud <= 8.0) to the new one. Please run 'occ encryption:migrate' or contact your administrator" : "Preseliti je treba šifrirne ključe iz starega sistema (ownCloud <= 8.0) na novega. Zaženite ukaz 'occ encryption:migrate' ali pa stopite v stik s skrbnikom sistema.",
     "Invalid private key for Encryption App. Please update your private key password in your personal settings to recover access to your encrypted files." : "Ni ustreznega osebnega ključa za program za šifriranje. Posodobite osebni ključ za dostop do šifriranih datotek med nastavitvami.",
+    "Encryption App is enabled, but your keys are not initialized. Please log-out and log-in again." : "Program za šifriranje je omogočen, vendar pa ključi niso omogočeni. Odjavite se in nato ponovno prijavite.",
     "Encryption App is enabled and ready" : "Program za šifriranje ne omogočen in pripravljen za delo",
     "Bad Signature" : "Neustrezen podpis",
     "Missing Signature" : "Manjkajoč podpis",
