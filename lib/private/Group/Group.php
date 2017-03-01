@@ -297,4 +297,16 @@ class Group implements IGroup {
 		}
 		return $users;
 	}
+
+	/**
+	 * Returns the backend for this group
+	 *
+	 * @return \OC\Group\Backend
+	 * @since 10.0.0
+	 */
+	public function getBackend() {
+		// multiple backends can exist for the same group name,
+		// but in practice there is only a single one, so return that one
+		return $this->backends[0];
+	}
 }

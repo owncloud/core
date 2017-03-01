@@ -185,7 +185,7 @@ class MetaData {
 	 */
 	protected function getGroups($search = '') {
 		if($this->isAdmin) {
-			return $this->groupManager->search($search);
+			return $this->groupManager->search($search, null, null, 'management');
 		} else {
 			$userObject = $this->userSession->getUser();
 			if($userObject !== null) {

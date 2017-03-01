@@ -1000,8 +1000,8 @@ class ManagerTest extends \Test\TestCase {
 			->method('getUserGroupIds')
 			->will(
 				$this->returnValueMap([
-					[$sharedBy, ['group1']],
-					[$sharedWith, ['group2']],
+					[$sharedBy, null, ['group1']],
+					[$sharedWith, null, ['group2']],
 				])
 			);
 
@@ -1033,8 +1033,8 @@ class ManagerTest extends \Test\TestCase {
 			->method('getUserGroupIds')
 			->will(
 				$this->returnValueMap([
-					[$sharedBy, ['group1', 'group3']],
-					[$sharedWith, ['group2', 'group3']],
+					[$sharedBy, null, ['group1', 'group3']],
+					[$sharedWith, null, ['group2', 'group3']],
 				])
 			);
 

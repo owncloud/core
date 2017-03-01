@@ -71,7 +71,7 @@ class Groups{
 			$offset = (int)$offset;
 		}
 
-		$groups = $this->groupManager->search($search, $limit, $offset);
+		$groups = $this->groupManager->search($search, $limit, $offset, 'management');
 		$groups = array_map(function($group) {
 			/** @var IGroup $group */
 			return $group->getGID();
