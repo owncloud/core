@@ -549,6 +549,10 @@
 		 */
 		_onUrlChanged: function(e) {
 			if (e && _.isString(e.dir)) {
+				var currentDir = this.getCurrentDirectory();
+				if(this._currentDirectory && currentDir === e.dir) {
+					return;
+				}
 				this.changeDirectory(e.dir, false, true);
 			}
 		},
@@ -1414,9 +1418,6 @@
 			var currentDir = this.getCurrentDirectory();
 			targetDir = targetDir || '/';
 			if (!force && currentDir === targetDir) {
-				return;
-			}
-			if(this._currentDirectory && currentDir === targetDir) {
 				return;
 			}
 			this._setCurrentDir(targetDir, changeUrl, fileId);
