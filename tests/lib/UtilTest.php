@@ -24,6 +24,9 @@ class UtilTest extends \Test\TestCase {
 		$this->assertTrue(is_string($version));
 	}
 
+	/**
+	* code identical used in firstrunwizard: tests/lib/utiltest.php
+	*/
 	public function testGetEditionString() {
 		$edition = \OC_Util::getEditionString();
 		$this->assertTrue(is_string($edition));
