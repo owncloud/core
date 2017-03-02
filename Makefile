@@ -206,7 +206,7 @@ clean-test-integration:
 .PHONY: clean-test-results
 clean-test-results:
 	rm -Rf tests/autotest-*results*.xml
-	$(MAKE) -C tests/integration clean-test-results
+	$(MAKE) -C tests/integration clean
 
 .PHONY: clean-test
 clean-test: clean-test-integration clean-test-results
