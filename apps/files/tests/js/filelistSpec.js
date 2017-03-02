@@ -2999,7 +2999,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		afterEach(function() {
 			fileListStub.restore();
-		})
+		});
 		it('File list must not be refreshed', function() {
 			$('#app-content-files').trigger(new $.Event('urlChanged', {dir: '/subdir'}));
 			expect(fileListStub.notCalled).toEqual(true);
