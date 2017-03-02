@@ -198,6 +198,7 @@ class SettingsManager implements ISettingsManager {
 				new Section('general', $this->l->t('General'), 100),
 				new Section('storage', $this->l->t('Storage'), 95, 'folder'),
 				new Section('security', $this->l->t('Security'), 90, 'password'),
+				new Section('authentication', $this->l->t('Authentication'), 87, 'user'),
 				new Section('encryption', $this->l->t('Encryption'), 85, 'password'),
 				new Section('sharing', $this->l->t('Sharing'), 80, 'share'),
 				new Section('monitoring', $this->l->t('Monitoring'), 75, 'search'),
