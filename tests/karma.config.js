@@ -154,9 +154,6 @@ module.exports = function(config) {
 		testCore = true;
 	}
 
-	// extra test libs
-	files.push(corePath + 'tests/lib/sinon-1.15.4.js');
-
 	// core mocks
 	files.push(corePath + 'tests/specHelper.js');
 
@@ -228,7 +225,7 @@ module.exports = function(config) {
 		basePath: '..',
 
 		// frameworks to use
-		frameworks: ['jasmine'],
+		frameworks: ['jasmine', 'jasmine-sinon'],
 
 		// list of files / patterns to load in the browser
 		files: files,
