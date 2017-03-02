@@ -23,6 +23,7 @@ OC.L10N.register(
     "Private key password successfully updated." : "Fjalëkalimi për kyçin privat u përditësua me sukses.",
     "You need to migrate your encryption keys from the old encryption (ownCloud <= 8.0) to the new one. Please run 'occ encryption:migrate' or contact your administrator" : "Lypset të kaloni kyçet tuaj të fshehtëzimeve nga versioni i vjetër i fshehtëzimeve (ownCloud <= 8.0) te i riu. Ju lutemi, ekzekutoni run 'occ encryption:migrate' ose lidhuni me përgjegjësin tuaj",
     "Invalid private key for Encryption App. Please update your private key password in your personal settings to recover access to your encrypted files." : "Kyç privat i pavlefshëm për aplikacionin e fshehtëzimeve. Ju lutemi, përditësoni fjalëkalimin tuaj të kyçit privat te rregullimet tuaja personale që të rimerrni hyrje te kartelat tuaja të fshehtëzuara.",
+    "Encryption App is enabled, but your keys are not initialized. Please log-out and log-in again." : "Aplikacioni i Fshehtëzimit është i aktivizuar, por kyçet tuaja nuk janë gatitur. Ju lutemi, dilni dhe bëni hyrjen sërish.",
     "Encryption App is enabled and ready" : "Aplikacioni i Fshehtëzimeve u aktivizua dhe është gati",
     "Bad Signature" : "Nënshkrim i Keq",
     "Missing Signature" : "Mungon Nënshkrimi",
