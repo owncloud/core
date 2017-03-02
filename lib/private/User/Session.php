@@ -707,7 +707,7 @@ class Session implements IUserSession, Emitter {
 						/** @var IAuthModule $authModule */
 						$authModule = OC::$server->query($class);
 
-						return $this->loginUser($authModule->auth($request));
+						return $this->loginUser($authModule->auth($request), $authModule->getUserPassword($request));
 					} catch (QueryException $exc) {
 						throw new Exception("Could not load the auth module $class");
 					}
@@ -722,16 +722,16 @@ class Session implements IUserSession, Emitter {
 	 * Log an user in
 	 *
 	 * @param IUser $user The user
+	 * @param String $password The user's password
 	 * @return boolean True if the user can be authenticated, false otherwise
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
 	 */
-	private function loginUser($user) {
+	private function loginUser($user, $password) {
 		if (is_null($user)) {
 			return false;
 		}
 
-		// TODO: Where to get the password for the preLogin hook?
-		//$this->manager->emit('\OC\User', 'preLogin', [$userId, '']);
+		$this->manager->emit('\OC\User', 'preLogin', [$user, $password]);
 
 		if (!$user->isEnabled()) {
 			$message = \OC::$server->getL10N('lib')->t('User disabled');
@@ -741,8 +741,7 @@ class Session implements IUserSession, Emitter {
 		$this->setUser($user);
 		$this->setLoginName($user->getDisplayName());
 
-		// TODO: Where to get the password for the postLogin hook?
-		//$this->manager->emit('\OC\User', 'postLogin', [$userId, '']);
+		$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
 		if ($this->isLoggedIn()) {
 			$this->prepareUserLogin(false);

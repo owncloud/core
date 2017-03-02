@@ -23,4 +23,14 @@ interface IAuthModule {
 	 */
 	public function auth(IRequest $request);
 
+	/**
+	 * Returns the user's password.
+	 *
+	 * @param IRequest $request The request.
+	 *
+	 * @return String The user's password.
+	 * @since 10.0.0
+	 */
+	public function getUserPassword(IRequest $request);
+
 }
