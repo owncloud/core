@@ -344,6 +344,19 @@ class KeyManagerTest extends TestCase {
 		$this->assertTrue($this->instance->getEncryptedFileKey('/'));
 	}
 
+	public function dataTestGetFileKey() {
+		return [
+			['user1', false, 'privateKey', true],
+			['user1', false, false, ''],
+			['user1', true, 'privateKey', true],
+			['user1', true, false, ''],
+			[null, false, 'privateKey', true],
+			[null, false, false, ''],
+			[null, true, 'privateKey', true],
+			[null, true, false, '']
+		];
+	}
+
 	/**
 	 * @dataProvider dataTestGetFileKey
 	 *
@@ -358,6 +371,10 @@ class KeyManagerTest extends TestCase {
 
 		if ($isMasterKeyEnabled) {
 			$expectedUid = 'masterKeyId';
+			$this->configMock->expects($this->any())->method('getSystemValue')->with('secret')
+				->willReturn('password');
+		} else if (!$uid) {
+			$expectedUid = 'systemKeyId';
 		} else {
 			$expectedUid = $uid;
 		}
@@ -374,6 +391,9 @@ class KeyManagerTest extends TestCase {
 			->with($path, $expectedUid . '.shareKey', 'OC_DEFAULT_MODULE')
 			->willReturn(true);
 
+		$this->utilMock->expects($this->any())->method('isMasterKeyEnabled')
+			->willReturn($isMasterKeyEnabled);
+
 		if (is_null($uid)) {
 			$this->keyStorageMock->expects($this->once())
 				->method('getSystemUserKey')
@@ -384,8 +404,6 @@ class KeyManagerTest extends TestCase {
 		} else {
 			$this->keyStorageMock->expects($this->never())
 				->method('getSystemUserKey');
-			$this->utilMock->expects($this->once())->method('isMasterKeyEnabled')
-				->willReturn($isMasterKeyEnabled);
 			$this->sessionMock->expects($this->once())->method('getPrivateKey')->willReturn($privateKey);
 		}
 
@@ -402,23 +420,6 @@ class KeyManagerTest extends TestCase {
 			$this->instance->getFileKey($path, $uid)
 		);
 
-	}
-
-	public function dataTestGetFileKey() {
-		return [
-			['user1', false, 'privateKey', true],
-			['user1', false, false, ''],
-			['user1', true, 'privateKey', true],
-			['user1', true, false, ''],
-			['', false, 'privateKey', true],
-			['', false, false, ''],
-			['', true, 'privateKey', true],
-			['', true, false, ''],
-			[null, false, 'privateKey', true],
-			[null, false, false, ''],
-			[null, true, 'privateKey', true],
-			[null, true, false, '']
-		];
 	}
 
 	public function testDeletePrivateKey() {
