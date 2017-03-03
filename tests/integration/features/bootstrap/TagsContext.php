@@ -572,7 +572,9 @@ class TagsContext implements \Behat\Behat\Context\Context {
 </d:propfind>',
 			]
 		);
+
 		$response = $this->client->send($request)->getBody()->getContents();
+
 		preg_match_all('/\<oc:display-name\>(.*)\<\/oc:display-name\>/', $response, $realTags);
 
 		foreach($expectedTags as $key => $row) {
@@ -628,7 +630,8 @@ class TagsContext implements \Behat\Behat\Context\Context {
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
-		preg_match_all('/\<oc:display-name\>(.*)\<\/oc:display-name\>/', $this->response, $realTags);
+		preg_match_all('/\<oc:display-name\>(.*?)\<\/oc:display-name\>/', $this->response, $realTags);
+
 		$realTags = array_filter($realTags);
 		$expectedTags = array_filter($expectedTags);
 
