@@ -91,7 +91,7 @@ abstract class ResourceLocator {
 					$this->doFindTheme($resource);
 				} catch (ResourceNotFoundException $e) {
 					$resourceApp = substr($resource, 0, strpos($resource, '/'));
-					$this->logger->error('Could not find resource file "' . $e->getResourcePath() . '"', ['app' => $resourceApp]);
+					$this->logger->error('Could not find resource file in theme "' . $e->getResourcePath() . '"', ['app' => $resourceApp]);
 				}
 			}
 		}
