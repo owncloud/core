@@ -139,14 +139,14 @@ class URLGenerator implements IURLGenerator {
 	 * Returns the path to the image.
 	 */
 	public function imagePath($app, $image) {
+		// Read the selected theme from the config file
+		$theme = \OC_Util::getTheme();
+
 		$cache = $this->cacheFactory->create('imagePath');
-		$cacheKey = $app.'-'.$image;
+		$cacheKey = $theme.'-'.$app.'-'.$image;
 		if($key = $cache->get($cacheKey)) {
 			return $key;
 		}
-
-		// Read the selected theme from the config file
-		$theme = \OC_Util::getTheme();
 
 		//if a theme has a png but not an svg always use the png
 		$basename = substr(basename($image),0,-4);
