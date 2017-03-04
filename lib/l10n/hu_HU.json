@@ -18,6 +18,7 @@
     "ownCloud %s or lower is required." : "ownCoud %s vagy ennél régebbi szükséges.",
     "Unknown filetype" : "Ismeretlen file tipús",
     "Invalid image" : "Hibás kép",
+    "Avatar image is not square" : "Az avatar kép nem négyzet alakú",
     "today" : "ma",
     "yesterday" : "tegnap",
     "_%n day ago_::_%n days ago_" : ["%n napja","%n napja"],
