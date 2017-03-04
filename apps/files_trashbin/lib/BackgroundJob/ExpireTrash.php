@@ -76,14 +76,20 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$this->userManager->callForAllUsers(function(IUser $user) {
+		$expireCallback = function(IUser $user) {
 			$uid = $user->getUID();
 			if ($user->getLastLogin() === 0 || !$this->setupFS($uid)) {
 				return;
 			}
 			$dirContent = Helper::getTrashFiles('/', $uid, 'mtime');
 			Trashbin::deleteExpiredFiles($dirContent, $uid);
-		});
+		};
+
+		if (is_callable(array($this->userManager, 'callForSeenUsers'))) {
+			$this->userManager->callForSeenUsers($expireCallback);
+		} else {
+			$this->userManager->callForAllUsers($expireCallback);
+		}
 		
 		\OC_Util::tearDownFS();
 	}
