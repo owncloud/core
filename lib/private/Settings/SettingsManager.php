@@ -128,7 +128,7 @@ class SettingsManager implements ISettingsManager {
 								Helper $helper,
 								ILockingProvider $lockingProvider,
 								IDBConnection $dbconnection,
-								CertificateManager $certificateManager,
+								$certificateManager,
 								IFactory $lfactory) {
 		$this->l = $l;
 		$this->appManager = $appManager;
