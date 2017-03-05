@@ -6,6 +6,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Noveen Sachdeva <noveen.sachdeva@research.iiit.ac.in>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -37,6 +38,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application {
@@ -58,6 +60,7 @@ class Application {
 		$this->application = new SymfonyApplication($defaults->getName(), \OC_Util::getVersionString());
 		$this->dispatcher = $dispatcher;
 		$this->request = $request;
+		$this->eventDispatcher = new EventDispatcher();
 	}
 
 	/**
@@ -117,8 +120,12 @@ class Application {
 				$output->writeln("ownCloud is not installed - only a limited number of commands are available");
 			}
 		} catch (NeedsUpdateException $ex) {
-			$output->writeln("ownCloud or one of the apps require upgrade - only a limited number of commands are available");
-			$output->writeln("You may use your browser or the occ upgrade command to do the upgrade");
+			$this->eventDispatcher->addListener('upgradeException', function () use ($output) {
+			    $output->writeln(PHP_EOL . "<error>ownCloud or one of the apps require upgrade - only a limited number of commands are available</error>");
+			}, 2);
+			$this->eventDispatcher->addListener('upgradeException', function () use ($output) {
+			    $output->writeln("<error>You may use your browser or the occ upgrade command to do the upgrade</error>");
+			}, 1);
 		};
 		$input = new ArgvInput();
 		if ($input->getFirstArgument() !== 'check') {
@@ -155,7 +162,11 @@ class Application {
 			ConsoleEvent::EVENT_RUN,
 			$args
 		));
-		return $this->application->run($input, $output);
+
+		$this->application->setAutoExit(false);
+		$exit_code = $this->application->run($input, $output);
+		$this->eventDispatcher->dispatch('upgradeException');
+		return $exit_code;
 	}
 
 	private function loadCommandsFromInfoXml($commands) {
