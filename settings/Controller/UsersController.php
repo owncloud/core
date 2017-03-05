@@ -8,6 +8,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Ujjwal Bhardwaj <ujjwalb1996@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -222,6 +223,11 @@ class UsersController extends Controller {
 		return $users;
 	}
 
+	/**
+	 * @param string $token
+	 * @param string $userId
+	 * @throws \Exception
+	 */
 	private function checkEmailChangeToken($token, $userId) {
 		$user = $this->userManager->get($userId);
 
@@ -234,7 +240,7 @@ class UsersController extends Controller {
 		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12) ||
 			$user->getLastLogin() > $splittedToken[0]) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
-			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is expired'));
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
 		if (!hash_equals($splittedToken[1], $token)) {
@@ -607,7 +613,7 @@ class UsersController extends Controller {
 				[
 					'status' => 'success',
 					'data' => [
-						'message' => (string)$this->l10n->t('Email Sent.')
+						'message' => (string)$this->l10n->t('An email has been sent to the old address for confirmation.')
 					]
 				],
 				Http::STATUS_OK
@@ -720,16 +726,21 @@ class UsersController extends Controller {
 
 	/**
 	 * @param string $user
-     * @throws \Exception
-    */
+	 * @param string $mailAddress
+	 * @throws \Exception
+	 */
     public function sendEmail($user, $mailAddress) {
     	$token = $this->secureRandom->generate(21,
-				ISecureRandom::CHAR_DIGITS .
-				ISecureRandom::CHAR_LOWER .
-				ISecureRandom::CHAR_UPPER);
+			ISecureRandom::CHAR_DIGITS .
+			ISecureRandom::CHAR_LOWER .
+			ISecureRandom::CHAR_UPPER);
 		$this->config->setUserValue($user, 'owncloud', 'changemail', $this->timeFactory->getTime() . ':' . $token);
 
-		$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changemail', ['userId' => $user, 'token' => $token, 'mailAddress' => $mailAddress]);
+		if ($mailAddress == '') {
+			$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.removemail', ['userId' => $user, 'token' => $token]);
+		} else {
+			$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changemail', ['userId' => $user, 'token' => $token, 'mailAddress' => $mailAddress]);
+		}
 
 		$tmpl = new \OC_Template('settings', 'changemail/email');
 		$tmpl->assign('link', $link);
@@ -752,6 +763,10 @@ class UsersController extends Controller {
 		}
     }
 
+	/**
+	 * @param string $userId
+	 * @param string $mailAddress
+	 */
     public function setEmailAddress($userId, $mailAddress) {
 		$user = $this->userManager->get($userId);
 
@@ -759,7 +774,15 @@ class UsersController extends Controller {
 
 	}
 
-	public function changemail($token, $userId, $mailAddress) {
+	/**
+	 * @NoCSRFRequired
+	 *
+	 * @param $token
+	 * @param $userId
+	 * @param $mailAddress
+	 * @return TemplateResponse
+	 */
+	public function changemail($token, $userId, $mailAddress="") {
 		try {
 			$this->checkEmailChangeToken($token, $userId);
 		} catch (\Exception $e) {
@@ -775,7 +798,37 @@ class UsersController extends Controller {
 
 		return new TemplateResponse(
 			'settings',
-			'changemail/response',
+			'changemail/change',
+			[],
+			'guest'
+		);
+	}
+
+	/**
+	 * @NoCSRFRequired
+	 *
+	 * @param $token
+	 * @param $userId
+	 * @return TemplateResponse
+	 */
+	public function removemail($token, $userId) {
+		try {
+			$this->checkEmailChangeToken($token, $userId);
+		} catch (\Exception $e) {
+			return new TemplateResponse(
+				'settings', 'error', [
+				"errors" => [["error" => $e->getMessage()]]
+			],
+				'guest'
+			);
+		}
+
+		$this->setEmailAddress($userId, '');
+
+		return new TemplateResponse(
+			'settings',
+			'changemail/remove',
+			[],
 			'guest'
 		);
 	}

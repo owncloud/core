@@ -62,6 +62,7 @@ $application->registerRoutes($this, [
 		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal', 'verb' => 'GET'],
 		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
 		['name' => 'Users#changemail', 'url' => '/settings/mailaddress/change/{token}/{userId}/{mailAddress}', 'verb' => 'GET'],
+		['name' => 'Users#removemail', 'url' => '/settings/mailaddress/remove/{token}/{userId}', 'verb' => 'GET'],
 	]
 ]);
 

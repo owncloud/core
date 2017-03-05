@@ -41,6 +41,13 @@ jQuery.fn.keyUpDelayedOrEnter = function (callback, allowEmptyValue) {
 	});
 };
 
+/**
+ * The callback will be fired as soon as enter is pressed by the user
+ *
+ * @param callback
+ * @param allowEmptyValue if this is set to true the callback is also called when the value is empty
+ */
+
 jQuery.fn.Enter = function (callback, allowEmptyValue) {
 	var cb = callback;
 	var that = this;

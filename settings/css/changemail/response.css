@@ -1,15 +1,14 @@
-#reset-password p {
-	position: relative;
-}
-
-.text-center {
+#body-response {
+	margin-top: 40px;
 	text-align: center;
 }
 
-#submit {
-	width: 100%;
-}
-
-#password {
-	width: 100% !important;
+#body-response p {
+	display: block;
+	padding: 10px;
+	background-color: rgba(0,0,0,.3);
+	color: #fff;
+	border-radius: 3px;
+	cursor: default;
+	margin-top: 40px;
 }
