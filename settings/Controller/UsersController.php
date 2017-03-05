@@ -94,14 +94,17 @@ class UsersController extends Controller {
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
 	 * @param IConfig $config
-	 * @param bool $isAdmin
+	 * @param ISecureRandom $secureRandom
+	 * @param $isAdmin
 	 * @param IL10N $l10n
 	 * @param ILogger $log
 	 * @param \OC_Defaults $defaults
 	 * @param IMailer $mailer
-	 * @param string $fromMailAddress
+	 * @param ITimeFactory $timeFactory
+	 * @param $fromMailAddress
 	 * @param IURLGenerator $urlGenerator
 	 * @param IAppManager $appManager
+	 * @param IAvatarManager $avatarManager
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -591,29 +594,26 @@ class UsersController extends Controller {
 				Http::STATUS_FORBIDDEN
 			);
 		}
-
+		$action = 'change';
+		$message = 'An email has been sent to the old address for confirmation';
 		if ($currentEmail == '') {
-			$user->setEMailAddress($mailAddress);
+			$action = 'add';
+			$message = 'An email has been sent to this address for confirmation';
+		}
+
+		if ($mailAddress == '') {
+			$action = 'remove';
+		}
+
+		try {
+			$this->sendEmail($userId, $mailAddress, $action);
 			return new DataResponse(
 				[
 					'status' => 'success',
 					'data' => [
 						'username' => $id,
 						'mailAddress' => $mailAddress,
-						'message' => (string)$this->l10n->t('Email saved')
-					]
-				],
-				Http::STATUS_OK
-			);
-		}
-
-		try {
-			$this->sendEmail($userId, $mailAddress);
-			return new DataResponse(
-				[
-					'status' => 'success',
-					'data' => [
-						'message' => (string)$this->l10n->t('An email has been sent to the old address for confirmation.')
+						'message' => (string)$this->l10n->t($message)
 					]
 				],
 				Http::STATUS_OK
@@ -621,12 +621,11 @@ class UsersController extends Controller {
 		} catch (\Exception $e){
 			return new DataResponse(
 				[
-					'status' => 'success',
+					'status' => 'error',
 					'data' => [
 						'message' => (string)$e->getMessage()
 					]
-				],
-				Http::STATUS_OK
+				]
 			);
 		}
 
@@ -727,27 +726,31 @@ class UsersController extends Controller {
 	/**
 	 * @param string $user
 	 * @param string $mailAddress
+	 * @param string $action
 	 * @throws \Exception
 	 */
-    public function sendEmail($user, $mailAddress) {
+    public function sendEmail($user, $mailAddress, $action='change') {
     	$token = $this->secureRandom->generate(21,
 			ISecureRandom::CHAR_DIGITS .
 			ISecureRandom::CHAR_LOWER .
 			ISecureRandom::CHAR_UPPER);
 		$this->config->setUserValue($user, 'owncloud', 'changemail', $this->timeFactory->getTime() . ':' . $token);
 
-		if ($mailAddress == '') {
-			$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.removemail', ['userId' => $user, 'token' => $token]);
-		} else {
+		$userObject = $this->userManager->get($user);
+		$email = $userObject->getEMailAddress();
+
+		if ($action == 'change' || $action == 'add') {
 			$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changemail', ['userId' => $user, 'token' => $token, 'mailAddress' => $mailAddress]);
+		}
+		if ($action == 'remove') {
+			$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.removemail', ['userId' => $user, 'token' => $token]);
+		} elseif ($action == 'add') {
+			$email = $mailAddress;
 		}
 
 		$tmpl = new \OC_Template('settings', 'changemail/email');
 		$tmpl->assign('link', $link);
 		$msg = $tmpl->fetchPage();
-
-		$userObject = $this->userManager->get($user);
-		$email = $userObject->getEMailAddress();
 
 		try {
 			$message = $this->mailer->createMessage();
@@ -771,7 +774,7 @@ class UsersController extends Controller {
 		$user = $this->userManager->get($userId);
 
 		$user->setEMailAddress($mailAddress);
-
+		$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
 	}
 
 	/**
@@ -782,7 +785,7 @@ class UsersController extends Controller {
 	 * @param $mailAddress
 	 * @return TemplateResponse
 	 */
-	public function changemail($token, $userId, $mailAddress="") {
+	public function changemail($token, $userId, $mailAddress) {
 		try {
 			$this->checkEmailChangeToken($token, $userId);
 		} catch (\Exception $e) {
