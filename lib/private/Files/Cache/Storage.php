@@ -70,6 +70,7 @@ class Storage {
 		} else {
 			$connection = \OC::$server->getDatabaseConnection();
 			$available = $isAvailable ? 1 : 0;
+			self::unsetCache($this->storageId);
 			if ($connection->insertIfNotExist('*PREFIX*storages', ['id' => $this->storageId, 'available' => $available])) {
 				$this->numericId = $connection->lastInsertId('*PREFIX*storages');
 			} else {
@@ -130,6 +131,19 @@ class Storage {
 		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
 		$result = \OC_DB::executeAudited($sql, array($storageId));
 		return $result->fetchRow();
+	}
+
+	private static function unsetCache($storageId) {
+		// delete from local cache
+		if(self::$localCache === null) {
+			self::$localCache->remove($storageId);
+		}
+		// delete from distributed cache
+		if (self::$distributedCache === null) {
+			self::$distributedCache =
+				\OC::$server->getMemCacheFactory()->create('getStorageById');
+		}
+		self::$distributedCache->remove($storageId);
 	}
 
 	/**
@@ -232,15 +246,7 @@ class Storage {
 		\OC_DB::executeAudited($sql, array($storageId));
 
 		// delete from local cache
-		if(self::$localCache === null) {
-			self::$localCache->remove($storageId);
-		}
-		// delete from distributed cache
-		if (self::$distributedCache === null) {
-			self::$distributedCache =
-				\OC::$server->getMemCacheFactory()->create('getStorageById');
-		}
-		self::$distributedCache->remove($storageId);
+		self::unsetCache($storageId);
 		// delete from db
 		if (!is_null($numericId)) {
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
