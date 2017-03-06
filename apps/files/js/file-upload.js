@@ -34,6 +34,9 @@
 OC.FileUpload = function(uploader, data) {
 	this.uploader = uploader;
 	this.data = data;
+	if (!data) {
+		throw 'Missing "data" argument in OC.FileUpload constructor';
+	}
 	var path = '';
 	if (this.uploader.fileList) {
 		path = OC.joinPaths(this.uploader.fileList.getCurrentDirectory(), this.getFile().name);
