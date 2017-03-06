@@ -92,7 +92,7 @@ class Application {
 		try {
 			require_once __DIR__ . '/../../../core/register_command.php';
 			if ($this->config->getSystemValue('installed', false)) {
-				if (!\OCP\Util::needUpgrade()) {
+				if (\OCP\Util::needUpgrade()) {
 					throw new NeedsUpdateException();
 				} elseif ($this->config->getSystemValue('maintenance', false)) {
 					$output->writeln("ownCloud is in maintenance mode - no app have been loaded");
