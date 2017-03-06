@@ -14,6 +14,8 @@ env:
   global:
     - TEST_DAV=$(tests/travis/changed_app.sh dav)
     - TC=litmus-v2
+    - SRV_HOST_NAME=owncloud
+    - SRV_HOST_PORT=8888
   matrix:
     - DB=sqlite
 
@@ -26,15 +28,20 @@ addons:
   apt:
     packages:
     - realpath
+  hosts:
+    - owncloud
+  sauce_connect:
 
 before_install:
   - make
-  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash tests/travis/before_install.sh $DB; fi"
+  - sh -c "if [ '$TEST_DAV' = '1' ] || [ '$TC' = 'selenium' ]; then bash tests/travis/before_install.sh $DB; fi"
 
 install:
-  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash tests/travis/install.sh $DB; fi"
+  - sh -c "if [ '$TEST_DAV' = '1' ] || [ '$TC' = 'selenium' ]; then bash tests/travis/install.sh $DB; fi"
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/install.sh; fi"
 
+before_script:
+  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_php_dev_server.sh; fi"
 
 script:
   - sh -c "if [ '$TC' = 'syntax' ]; then make test-php-lint ; fi"
@@ -42,6 +49,7 @@ script:
   - sh -c "if [ '$TEST_DAV' = '1' ]; then echo \"Testing DAV\"; fi"
 
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/script.sh; fi"
+  - sh -c "if [ '$TC' = 'selenium' ] && [ ! -z "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ]; then bash tests/travis/start_behat_tests.sh; fi"
 
 matrix:
   include:
@@ -51,6 +59,8 @@ matrix:
       env: DB=sqlite;TC=carddav
     - php: 5.6
       env: DB=sqlite;TC=caldav
+    - php: 5.6
+      env: DB=pgsql;TC=selenium
     - php: 5.6
       env: DB=sqlite;TC=syntax;TEST_DAV=0
     - php: 7.0
