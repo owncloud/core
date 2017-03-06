@@ -26,6 +26,8 @@
  */
 
 namespace OC\Files\Cache;
+use OC\Cache\CappedMemoryCache;
+use OCP\ICache;
 
 /**
  * Handle the mapping between the string and numeric storage ids
@@ -41,6 +43,14 @@ namespace OC\Files\Cache;
 class Storage {
 	private $storageId;
 	private $numericId;
+
+	/** @var CappedMemoryCache */
+	protected static $localCache = null;
+
+	/** @var ICache  */
+	protected static $distributedCache = null;
+
+	protected static $distributedCacheTTL = 300; // 5 Min
 
 	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
@@ -73,10 +83,50 @@ class Storage {
 	}
 
 	/**
+	 * query the local cache, a distributed cache and the db for a storageid
 	 * @param string $storageId
 	 * @return array|null
 	 */
 	public static function getStorageById($storageId) {
+		if (self::$localCache === null) {
+			self::$localCache = new CappedMemoryCache();
+		}
+		$result = self::$localCache->get($storageId);
+		if (empty($result)) {
+			$result = self::getStorageByIdFromCache($storageId);
+			self::$localCache->set($storageId, $result);
+		}
+		return $result;
+	}
+
+	/**
+	 * query the distributed cache for a storageid
+	 * @param string $storageId
+	 * @return array|null
+	 */
+	private static function getStorageByIdFromCache($storageId) {
+		if (self::$distributedCache === null) {
+			self::$distributedCache =
+				\OC::$server->getMemCacheFactory()->create('getStorageById');
+		}
+		$result = self::$distributedCache->get($storageId);
+		if (empty($result)) {
+			$result = self::getStorageByIdFromDb($storageId);
+			self::$distributedCache->set(
+				$storageId,
+				$result,
+				self::$distributedCacheTTL
+			);
+		}
+		return $result;
+	}
+
+	/**
+	 * query the db for a storageid
+	 * @param string $storageId
+	 * @return array|null
+	 */
+	private static function getStorageByIdFromDb($storageId) {
 		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
 		$result = \OC_DB::executeAudited($sql, array($storageId));
 		return $result->fetchRow();
@@ -181,6 +231,17 @@ class Storage {
 		$sql = 'DELETE FROM `*PREFIX*storages` WHERE `id` = ?';
 		\OC_DB::executeAudited($sql, array($storageId));
 
+		// delete from local cache
+		if(self::$localCache) {
+			self::$localCache->remove($storageId);
+		}
+		// delete from distributed cache
+		if (self::$distributedCache === null) {
+			self::$distributedCache =
+				\OC::$server->getMemCacheFactory()->create('getStorageById');
+		}
+		self::$distributedCache->remove($storageId);
+		// delete from db
 		if (!is_null($numericId)) {
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
 			\OC_DB::executeAudited($sql, array($numericId));
