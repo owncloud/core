@@ -45,6 +45,11 @@ cat > ./tests/autoconfig-sqlite.php <<DELIM
 <?php
 \$AUTOCONFIG = array (
   'installed' => false,
+  'trusted_domains' => 
+    array (
+      0 => 'localhost',
+      1 => '$SRV_HOST_NAME',
+    ),
   'dbtype' => 'sqlite',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
@@ -57,6 +62,11 @@ cat > ./tests/autoconfig-mysql.php <<DELIM
 <?php
 \$AUTOCONFIG = array (
   'installed' => false,
+  'trusted_domains' => 
+    array (
+      0 => 'localhost',
+      1 => '$SRV_HOST_NAME',
+    ),
   'dbtype' => 'mysql',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
@@ -73,6 +83,11 @@ cat > ./tests/autoconfig-pgsql.php <<DELIM
 <?php
 \$AUTOCONFIG = array (
   'installed' => false,
+  'trusted_domains' => 
+    array (
+      0 => 'localhost',
+      1 => '$SRV_HOST_NAME',
+    ),
   'dbtype' => 'pgsql',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
@@ -89,6 +104,11 @@ cat > ./tests/autoconfig-oracle.php <<DELIM
 <?php
 \$AUTOCONFIG = array (
   'installed' => false,
+  'trusted_domains' => 
+    array (
+      0 => 'localhost',
+      1 => '$SRV_HOST_NAME',
+    ),
   'dbtype' => 'oci',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',

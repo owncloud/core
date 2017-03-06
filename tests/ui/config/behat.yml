@@ -1,0 +1,18 @@
+default:
+  autoload:
+    '': %paths.base%/../features/bootstrap
+  extensions:
+    Behat\MinkExtension:
+      browser_name: 'chrome'
+    SensioLabs\Behat\PageObjectExtension: ~
+    
+  suites:
+    default:
+      paths:
+        - %paths.base%/../features
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+
+
