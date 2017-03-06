@@ -135,7 +135,7 @@ class Storage {
 
 	private static function unsetCache($storageId) {
 		// delete from local cache
-		if(self::$localCache === null) {
+		if(self::$localCache !== null) {
 			self::$localCache->remove($storageId);
 		}
 		// delete from distributed cache
@@ -219,6 +219,8 @@ class Storage {
 	 * @param bool $isAvailable
 	 */
 	public function setAvailability($isAvailable) {
+		// delete from local cache
+		self::unsetCache($this->storageId);
 		$sql = 'UPDATE `*PREFIX*storages` SET `available` = ?, `last_checked` = ? WHERE `id` = ?';
 		$available = $isAvailable ? 1 : 0;
 		\OC_DB::executeAudited($sql, [$available, time(), $this->storageId]);
