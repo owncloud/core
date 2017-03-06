@@ -93,8 +93,8 @@ class Application {
 				if (\OCP\Util::needUpgrade()) {
 					throw new NeedsUpdateException();
 				} elseif ($this->config->getSystemValue('maintenance', false)) {
-					$errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
-			        $errOutput->writeln('<comment>ownCloud is in maintenance mode - no app have been loaded</comment>' . PHP_EOL);
+					$errOutput = $output->getErrorOutput();
+				        $errOutput->writeln('<comment>ownCloud is in maintenance mode - no app have been loaded</comment>' . PHP_EOL);
 				} else {
 					OC_App::loadApps();
 					foreach (\OC::$server->getAppManager()->getInstalledApps() as $app) {
