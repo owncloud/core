@@ -92,7 +92,7 @@ class Application {
 		try {
 			require_once __DIR__ . '/../../../core/register_command.php';
 			if ($this->config->getSystemValue('installed', false)) {
-				if (\OCP\Util::needUpgrade()) {
+				if (!\OCP\Util::needUpgrade()) {
 					throw new NeedsUpdateException();
 				} elseif ($this->config->getSystemValue('maintenance', false)) {
 					$output->writeln("ownCloud is in maintenance mode - no app have been loaded");
@@ -120,11 +120,11 @@ class Application {
 				$output->writeln("ownCloud is not installed - only a limited number of commands are available");
 			}
 		} catch (NeedsUpdateException $ex) {
-			$this->eventDispatcher->addListener('upgradeException', function () {
-			    echo "\n\033[01;31mownCloud or one of the apps require upgrade - only a limited number of commands are available \033[0m\n";
+			$this->eventDispatcher->addListener('upgradeException', function () use ($output) {
+			    $output->writeln(PHP_EOL . "<error>ownCloud or one of the apps require upgrade - only a limited number of commands are available</error>");
 			}, 2);
-			$this->eventDispatcher->addListener('upgradeException', function () {
-			    echo "\033[01;31mYou may use your browser or the occ upgrade command to do the upgrade \033[0m\n";
+			$this->eventDispatcher->addListener('upgradeException', function () use ($output) {
+			    $output->writeln("<error>You may use your browser or the occ upgrade command to do the upgrade</error>");
 			}, 1);
 		};
 		$input = new ArgvInput();
@@ -164,9 +164,9 @@ class Application {
 		));
 
 		$this->application->setAutoExit(false);
-		$this->application->run($input, $output);
+		$exit_code = $this->application->run($input, $output);
 		$this->eventDispatcher->dispatch('upgradeException');
-
+		return $exit_code;
 	}
 
 	private function loadCommandsFromInfoXml($commands) {
