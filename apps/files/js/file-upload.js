@@ -157,13 +157,13 @@ OC.FileUpload.prototype = {
 	 * @return {bool}
 	 */
 	isPending: function() {
-		if (!this.data) {
+		if (!this.data || !this.data.state) {
 			// this should not be possible!
 			var stack = new Error().stack;
 			console.error(stack);
 			return false;
 		}
-		return this.data && this.data.state() === 'pending';
+		return this.data.state() === 'pending';
 	},
 
 	deleteUpload: function() {
