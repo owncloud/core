@@ -2,8 +2,24 @@ Feature: webdav-related
 	Background:
 		Given using api version "1"
 
+	Scenario: Unauthenticated call old dav path
+		Given using old dav path
+		When connecting to dav endpoint
+		Then the HTTP status code should be "401"
+		And there are no duplicate headers
+		And The following headers should be set
+			|WWW-Authenticate|Basic realm="ownCloud"|
+
+	Scenario: Unauthenticated call new dav path
+		Given using new dav path
+		When connecting to dav endpoint
+		Then the HTTP status code should be "401"
+		And there are no duplicate headers
+		And The following headers should be set
+			|WWW-Authenticate|Basic realm="ownCloud"|
+
 	Scenario: Moving a file
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And As an "user0"
@@ -12,7 +28,7 @@ Feature: webdav-related
 		And Downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving and overwriting a file old way
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And As an "user0"
@@ -21,7 +37,7 @@ Feature: webdav-related
 		And Downloaded content when downloading file "/textfile0.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving a file to a folder with no permissions
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -39,7 +55,7 @@ Feature: webdav-related
  		Then the HTTP status code should be "404"
 
 	Scenario: Moving a file to overwrite a file in a folder with no permissions
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -57,7 +73,7 @@ Feature: webdav-related
 		And Downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying a file
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And As an "user0"
@@ -66,7 +82,7 @@ Feature: webdav-related
 		And Downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying and overwriting a file
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And As an "user0"
@@ -75,7 +91,7 @@ Feature: webdav-related
 		And Downloaded content when downloading file "/textfile1.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying a file to a folder with no permissions
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -93,7 +109,7 @@ Feature: webdav-related
 		And the HTTP status code should be "404"
 
 	Scenario: Copying a file to overwrite a file into a folder with no permissions
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -111,13 +127,13 @@ Feature: webdav-related
 		And Downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: download a file with range
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		When Downloading file "/welcome.txt" with range "bytes=51-77"
 		Then Downloaded content should be "example file for developers"
 
 	Scenario: Upload forbidden if quota is 0
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And user "user0" has a quota of "0"
@@ -125,7 +141,7 @@ Feature: webdav-related
 		Then the HTTP status code should be "507"
 
 	Scenario: Retrieving folder quota when no quota is set
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		When user "user0" has unlimited quota
@@ -134,7 +150,7 @@ Feature: webdav-related
 		And the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
 
 	Scenario: Retrieving folder quota when quota is set
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		When user "user0" has a quota of "10 MB"
@@ -143,7 +159,7 @@ Feature: webdav-related
 		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
 
 	Scenario: Retrieving folder quota of shared folder with quota when no quota is set for recipient
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -159,6 +175,46 @@ Feature: webdav-related
 		Then as "user0" gets properties of folder "/testquota" with
 		  |{DAV:}quota-available-bytes|
 		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
+
+	Scenario: Uploading a file as recipient using webdav having quota
+		Given using old dav path
+		And As an "admin"
+		And user "user0" exists
+		And user "user1" exists
+		And user "user0" has a quota of "10 MB"
+		And user "user1" has a quota of "10 MB"
+		And As an "user1"
+		And user "user1" created a folder "/testquota"
+		And as "user1" creating a share with
+		  | path | testquota |
+		  | shareType | 0 |
+		  | permissions | 31 |
+		  | shareWith | user0 |
+		And As an "user0"
+		When User "user0" uploads file "data/textfile.txt" to "/testquota/asdf.txt"
+		Then the HTTP status code should be "201"
+
+	Scenario: Retrieving folder quota when quota is set and a file was uploaded
+		Given using old dav path
+		And As an "admin"
+		And user "user0" exists
+		And user "user0" has a quota of "1 KB"
+		And user "user0" adds a file of 93 bytes to "/prueba.txt"
+		When as "user0" gets properties of folder "/" with
+		  |{DAV:}quota-available-bytes|
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "600"
+
+	Scenario: Retrieving folder quota when quota is set and a file was recieved
+		Given using old dav path
+		And As an "admin"
+		And user "user0" exists
+		And user "user1" exists
+		And user "user1" has a quota of "1 KB"
+		And user "user0" adds a file of 93 bytes to "/user0.txt"
+		And file "user0.txt" of user "user0" is shared with user "user1"
+		When as "user1" gets properties of folder "/" with
+		  |{DAV:}quota-available-bytes|
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "693"
 
 	Scenario: download a public shared file with range
 		Given user "user0" exists
@@ -179,7 +235,7 @@ Feature: webdav-related
 		Then Downloaded content should be "wnCloud"
 
 	Scenario: Downloading a file on the old endpoint should serve security headers
-		Given using dav path "remote.php/webdav"
+		Given using old dav path
 		And As an "admin"
 		When Downloading file "/welcome.txt"
 		Then The following headers should be set
@@ -316,7 +372,7 @@ Feature: webdav-related
 			| 3 |
 
 	Scenario: Upload chunked file asc with new chunking
-		Given using dav path "remote.php/dav"
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" creates a new chunking upload with id "chunking-42"
 		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
@@ -324,11 +380,11 @@ Feature: webdav-related
 		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When As an "user0"
-		And Downloading file "/files/user0/myChunkedFile.txt"
+		And Downloading file "/myChunkedFile.txt"
 		Then Downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file desc with new chunking
-		Given using dav path "remote.php/dav"
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" creates a new chunking upload with id "chunking-42"
 		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
@@ -336,11 +392,11 @@ Feature: webdav-related
 		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When As an "user0"
-		And Downloading file "/files/user0/myChunkedFile.txt"
+		And Downloading file "/myChunkedFile.txt"
 		Then Downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file random with new chunking
-		Given using dav path "remote.php/dav"
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" creates a new chunking upload with id "chunking-42"
 		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
@@ -348,7 +404,7 @@ Feature: webdav-related
 		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When As an "user0"
-		And Downloading file "/files/user0/myChunkedFile.txt"
+		And Downloading file "/myChunkedFile.txt"
 		Then Downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: A disabled user cannot use webdav
@@ -357,4 +413,20 @@ Feature: webdav-related
 		And assure user "userToBeDisabled" is disabled
 		When Downloading file "/welcome.txt" as "userToBeDisabled"
 		Then the HTTP status code should be "503"
+
+	Scenario: Creating a folder
+		Given using old dav path
+		And user "user0" exists
+		And user "user0" created a folder "/test_folder"
+		When as "user0" gets properties of folder "/test_folder" with
+		  |{DAV:}resourcetype|
+		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
+
+	Scenario: Creating a folder with special chars
+		Given using old dav path
+		And user "user0" exists
+		And user "user0" created a folder "/test_folder:5"
+		When as "user0" gets properties of folder "/test_folder:5" with
+		  |{DAV:}resourcetype|
+		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 

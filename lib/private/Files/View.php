@@ -61,6 +61,7 @@ use OCP\Files\Storage\ILockingStorage;
 use OCP\IUser;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
+use OCA\Files_Sharing\SharedMount;
 
 /**
  * Class to provide access to ownCloud filesystem via a "view", and methods for
@@ -686,7 +687,11 @@ class View {
 		if ($mount and $mount->getInternalPath($absolutePath) === '') {
 			return $this->removeMount($mount, $absolutePath);
 		}
-		$result = $this->basicOperation('unlink', $path, array('delete'));
+		if ($this->is_dir($path)) {
+			$result = $this->basicOperation('rmdir', $path, array('delete'));
+		} else {
+			$result = $this->basicOperation('unlink', $path, array('delete'));
+		}
 		if (!$result && !$this->file_exists($path)) { //clear ghost files from the cache on delete
 			$storage = $mount->getStorage();
 			$internalPath = $mount->getInternalPath($absolutePath);
@@ -1143,6 +1148,8 @@ class View {
 				$unlockLater = false;
 				if ($this->lockingEnabled && $operation === 'fopen' && is_resource($result)) {
 					$unlockLater = true;
+					// make sure our unlocking callback will still be called if connection is aborted
+					ignore_user_abort(true);
 					$result = CallbackWrapper::wrap($result, null, null, function () use ($hooks, $path) {
 						if (in_array('write', $hooks)) {
 							$this->unlockFile($path, ILockingProvider::LOCK_EXCLUSIVE);
@@ -1669,10 +1676,11 @@ class View {
 	 * Note that the resulting path is not guarantied to be unique for the id, multiple paths can point to the same file
 	 *
 	 * @param int $id
+	 * @param bool $includeShares whether to recurse into shared mounts
 	 * @throws NotFoundException
 	 * @return string
 	 */
-	public function getPath($id) {
+	public function getPath($id, $includeShares = true) {
 		$id = (int)$id;
 		$manager = Filesystem::getMountManager();
 		$mounts = $manager->findIn($this->fakeRoot);
@@ -1684,6 +1692,11 @@ class View {
 			/**
 			 * @var \OC\Files\Mount\MountPoint $mount
 			 */
+			if (!$includeShares && $mount instanceof SharedMount) {
+				// prevent potential infinite loop when instantiating shared storages
+				// recursively
+				continue;
+			}
 			if ($mount->getStorage()) {
 				$cache = $mount->getStorage()->getCache();
 				$internalPath = $cache->getPathById($id);

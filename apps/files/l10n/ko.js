@@ -32,7 +32,6 @@ OC.L10N.register(
     "Could not get result from server." : "서버에서 결과를 가져올 수 없습니다.",
     "Uploading..." : "업로드 중...",
     "..." : "...",
-    "{hours}:{minutes}:{seconds} hour{plural_s} left" : "{hours}:{minutes}:{seconds} 시간 {plural_s} 남음",
     "File upload is in progress. Leaving the page now will cancel the upload." : "파일 업로드가 진행 중입니다. 이 페이지를 벗어나면 업로드가 취소됩니다.",
     "Actions" : "작업",
     "Download" : "다운로드",

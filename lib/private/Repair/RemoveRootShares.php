@@ -95,10 +95,14 @@ class RemoveRootShares implements IRepairStep {
 			$output->advance();
 		};
 
-		$userCount = $this->countUsers();
-		$output->startProgress($userCount);
-
-		$this->userManager->callForAllUsers($function);
+		if (is_callable(array($this->userManager, 'countSeenUsers')) &&
+				is_callable(array($this->userManager, 'callForSeenUsers'))) {
+			$output->startProgress($this->userManager->countSeenUsers());
+			$this->userManager->callForSeenUsers($function);
+		} else {
+			$output->startProgress($this->countUsers);
+			$this->userManager->callForAllUsers($function);
+		}
 
 		$output->finishProgress();
 	}

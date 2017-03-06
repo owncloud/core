@@ -27,9 +27,12 @@
 
 namespace OCA\Files\Command;
 
+use Doctrine\DBAL\Connection;
 use OC\Core\Command\Base;
+use OC\Core\Command\InterruptedException;
 use OC\ForbiddenException;
 use OCP\Files\StorageNotAvailableException;
+use OCP\IDBConnection;
 use OCP\IUserManager;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -105,7 +108,8 @@ class Scan extends Base {
 	}
 
 	protected function scanFiles($user, $path, $verbose, OutputInterface $output, $backgroundScan = false) {
-		$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
+		$connection = $this->reconnectToDatabase($output);
+		$scanner = new \OC\Files\Utils\Scanner($user, $connection, \OC::$server->getLogger());
 		# check on each file/folder if there was a user interrupt (ctrl-c) and throw an exception
 		# printout and count
 		if ($verbose) {
@@ -113,14 +117,14 @@ class Scan extends Base {
 				$output->writeln("\tFile   <info>$path</info>");
 				$this->filesCounter += 1;
 				if ($this->hasBeenInterrupted()) {
-					throw new \Exception('ctrl-c');
+					throw new InterruptedException();
 				}
 			});
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
 				$output->writeln("\tFolder <info>$path</info>");
 				$this->foldersCounter += 1;
 				if ($this->hasBeenInterrupted()) {
-					throw new \Exception('ctrl-c');
+					throw new InterruptedException();
 				}
 			});
 			$scanner->listen('\OC\Files\Utils\Scanner', 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
@@ -131,13 +135,13 @@ class Scan extends Base {
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () use ($output) {
 				$this->filesCounter += 1;
 				if ($this->hasBeenInterrupted()) {
-					throw new \Exception('ctrl-c');
+					throw new InterruptedException();
 				}
 			});
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function () use ($output) {
 				$this->foldersCounter += 1;
 				if ($this->hasBeenInterrupted()) {
-					throw new \Exception('ctrl-c');
+					throw new InterruptedException();
 				}
 			});
 		}
@@ -157,11 +161,12 @@ class Scan extends Base {
 		} catch (ForbiddenException $e) {
 			$output->writeln("<error>Home storage for user $user not writable</error>");
 			$output->writeln("Make sure you're running the scan command only as the user the web server runs as");
-		} catch (\Exception $e) {
-			if ($e->getMessage() !== 'ctrl-c') {
-				$output->writeln('<error>Exception while scanning: ' . $e->getMessage() . "\n" . $e->getTraceAsString() . '</error>');
-			}
+		} catch (InterruptedException $e) {
+			# exit the function if ctrl-c has been pressed 
+			$output->writeln('Interrupted by user');
 			return;
+		} catch (\Exception $e) {
+			$output->writeln('<error>Exception during scan: ' . $e->getMessage() . "\n" . $e->getTraceAsString() . '</error>');
 		}
 	}
 
@@ -315,6 +320,28 @@ class Scan extends Base {
 
 		# if you want to have microseconds add this:   . '.' . $tens;
 		return date('H:i:s', $secs);
+	}
+
+	/**
+	 * @return \OCP\IDBConnection
+	 */
+	protected function reconnectToDatabase(OutputInterface $output) {
+		/** @var Connection | IDBConnection $connection*/
+		$connection = \OC::$server->getDatabaseConnection();
+		try {
+			$connection->close();
+		} catch (\Exception $ex) {
+			$output->writeln("<info>Error while disconnecting from database: {$ex->getMessage()}</info>");
+		}
+		while (!$connection->isConnected()) {
+			try {
+				$connection->connect();
+			} catch (\Exception $ex) {
+				$output->writeln("<info>Error while re-connecting to database: {$ex->getMessage()}</info>");
+				sleep(60);
+			}
+		}
+		return $connection;
 	}
 
 }

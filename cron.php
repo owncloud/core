@@ -118,9 +118,9 @@ try {
 				break;
 			}
 
-			$logger->debug('Run job with ID ' . $job->getId(), ['app' => 'cron']);
 			$job->execute($jobList, $logger);
-			$logger->debug('Finished job with ID ' . $job->getId(), ['app' => 'cron']);
+			// clean up after unclean jobs
+			\OC_Util::tearDownFS();
 
 			$jobList->setLastJob($job);
 			$executedJobs[$job->getId()] = true;

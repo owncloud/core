@@ -289,6 +289,8 @@ class AppSettingsController extends Controller {
 			$groups = array();
 			if (is_string($app['groups'])) {
 				$groups = json_decode($app['groups']);
+			} elseif (is_array($app['groups'])) {
+				$groups = $app['groups'];
 			}
 			$app['groups'] = $groups;
 			$app['canUnInstall'] = !$app['active'] && $app['removable'];

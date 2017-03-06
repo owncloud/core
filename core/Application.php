@@ -71,7 +71,8 @@ class Application extends App {
 				$c->query('DefaultEmailAddress'),
 				$c->query('IsEncryptionEnabled'),
 				$c->query('Mailer'),
-				$c->query('TimeFactory')
+				$c->query('TimeFactory'),
+				$c->query('Logger')
 			);
 		});
 		$container->registerService('UserController', function(SimpleContainer $c) {
@@ -124,18 +125,6 @@ class Application extends App {
 				$c->query('ServerContainer')->query('OC\Authentication\Token\IProvider'),
 				$c->query('TwoFactorAuthManager'),
 				$c->query('SecureRandom')
-			);
-		});
-		$container->registerService('OccController', function(SimpleContainer $c) {
-			return new OccController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('Config'),
-				new \OC\Console\Application(
-					$c->query('Config'),
-					$c->query('ServerContainer')->getEventDispatcher(),
-					$c->query('Request')
-				)
 			);
 		});
 

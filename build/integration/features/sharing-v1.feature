@@ -1,7 +1,7 @@
 Feature: sharing
   Background:
     Given using api version "1"
-    Given using dav path "remote.php/webdav"
+    Given using old dav path
 
   Scenario: Creating a new share with user
     Given user "user0" exists
@@ -23,6 +23,36 @@ Feature: sharing
       | path | welcome.txt |
       | shareWith | sharing-group |
       | shareType | 1 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+
+  Scenario: Creating a new share with user who already received a share through their group
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "sharing-group" exists
+    And user "user1" belongs to group "sharing-group"
+    And file "welcome.txt" of user "user0" is shared with group "sharing-group"
+    And As an "user0"
+    Then sending "POST" to "/apps/files_sharing/api/v1/shares" with
+      | path | welcome.txt |
+      | shareWith | user1 |
+      | shareType | 0 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+
+  Scenario: Creating a new share with user who already received a share through their group
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "sharing-group" exists
+    And user "user1" belongs to group "sharing-group"
+    And file "welcome.txt" of user "user0" is shared with group "sharing-group"
+    And As an "user0"
+    Then sending "POST" to "/apps/files_sharing/api/v1/shares" with
+      | path | welcome.txt |
+      | shareWith | user1 |
+      | shareType | 0 |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
 
@@ -204,12 +234,13 @@ Feature: sharing
   Scenario: getting all shares of a user using that user
     Given user "user0" exists
     And user "user1" exists
-    And file "textfile0.txt" of user "user0" is shared with user "user1"
+    And User "user0" moved file "/textfile0.txt" to "/file_to_share.txt"
+    And file "file_to_share.txt" of user "user0" is shared with user "user1"
     And As an "user0"
     When sending "GET" to "/apps/files_sharing/api/v1/shares"
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And File "textfile0.txt" should be included in the response
+    And File "file_to_share.txt" should be included in the response
 
   Scenario: getting all shares of a user using another user
     Given user "user0" exists
@@ -257,18 +288,20 @@ Feature: sharing
     And user "user2" exists
     And user "user3" exists
     And file "textfile0.txt" of user "user0" is shared with user "user1"
-    And file "textfile0 (2).txt" of user "user1" is shared with user "user2"
-    And file "textfile0 (2).txt" of user "user2" is shared with user "user3"
+    And User "user1" moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
+    And file "textfile0_shared.txt" of user "user1" is shared with user "user2"
+    And file "textfile0_shared.txt" of user "user2" is shared with user "user3"
     And As an "user1"
-    When User "user1" deletes file "/textfile0 (2).txt"
+    When User "user1" deletes file "/textfile0_shared.txt"
     And As an "user3"
-    And Downloading file "/textfile0 (2).txt" with range "bytes=1-7"
+    And Downloading file "/textfile0_shared.txt" with range "bytes=1-7"
     Then Downloaded content should be "wnCloud"
 
   Scenario: getting share info of a share
     Given user "user0" exists
     And user "user1" exists
-    And file "textfile0.txt" of user "user0" is shared with user "user1"
+    And User "user0" moved file "/textfile0.txt" to "/file_to_share.txt"
+    And file "file_to_share.txt" of user "user0" is shared with user "user1"
     And As an "user0"
     When Getting info of last share
     Then the OCS status code should be "100"
@@ -280,8 +313,8 @@ Feature: sharing
       | share_type | 0 |
       | share_with | user1 |
       | file_source | A_NUMBER |
-      | file_target | /textfile0.txt |
-      | path | /textfile0.txt |
+      | file_target | /file_to_share.txt |
+      | path | /file_to_share.txt |
       | permissions | 19 |
       | stime | A_NUMBER |
       | storage | A_NUMBER |
@@ -518,7 +551,7 @@ Feature: sharing
       | /myFOLDER/myTMP/ |
 
   Scenario: Check quota of owners parent directory of a shared file
-    Given using dav path "remote.php/webdav"
+    Given using old dav path
     And As an "admin"
     And user "user0" exists
     And user "user1" exists
@@ -592,7 +625,7 @@ Feature: sharing
     Given user "user0" exists
     And user "user1" exists
     And User "user0" uploads file with content "foo" to "/tmp.txt"
-    And file "tmp.txt" of user "user0" is shared with user "user1"
+    And file "/tmp.txt" of user "user0" is shared with user "user1"
     When as "user1" gets properties of folder "/tmp.txt" with
       |{http://open-collaboration-services.org/ns}share-permissions |
     Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "19"
@@ -709,3 +742,370 @@ Feature: sharing
       | shareType | 0 |
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
+
+  Scenario: Merging shares for recipient when shared from outside with group and member
+    Given using old dav path
+    And As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group1" exists
+    And user "user1" belongs to group "group1"
+    And user "user0" created a folder "/merge-test-outside"
+    When folder "/merge-test-outside" of user "user0" is shared with group "group1"
+    And folder "/merge-test-outside" of user "user0" is shared with user "user1"
+    Then as "user1" the folder "/merge-test-outside" exists
+    And as "user1" the folder "/merge-test-outside (2)" does not exist
+
+  Scenario: Merging shares for recipient when shared from outside with group and member with different permissions
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group1" exists
+    And user "user1" belongs to group "group1"
+    And user "user0" created a folder "/merge-test-outside-perms"
+    When folder "/merge-test-outside-perms" of user "user0" is shared with group "group1" with permissions 1
+    And folder "/merge-test-outside-perms" of user "user0" is shared with user "user1" with permissions 31
+    Then as "user1" gets properties of folder "/merge-test-outside-perms" with
+        |{http://owncloud.org/ns}permissions|
+    And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    And as "user1" the folder "/merge-test-outside-perms (2)" does not exist
+
+  Scenario: Merging shares for recipient when shared from outside with two groups
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group1" exists
+    And group "group2" exists
+    And user "user1" belongs to group "group1"
+    And user "user1" belongs to group "group2"
+    And user "user0" created a folder "/merge-test-outside-twogroups"
+    When folder "/merge-test-outside-twogroups" of user "user0" is shared with group "group1"
+    And folder "/merge-test-outside-twogroups" of user "user0" is shared with group "group2"
+    Then as "user1" the folder "/merge-test-outside-twogroups" exists
+    And as "user1" the folder "/merge-test-outside-twogroups (2)" does not exist
+
+  Scenario: Merging shares for recipient when shared from outside with two groups with different permissions
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group1" exists
+    And group "group2" exists
+    And user "user1" belongs to group "group1"
+    And user "user1" belongs to group "group2"
+    And user "user0" created a folder "/merge-test-outside-twogroups-perms"
+    When folder "/merge-test-outside-twogroups-perms" of user "user0" is shared with group "group1" with permissions 1
+    And folder "/merge-test-outside-twogroups-perms" of user "user0" is shared with group "group2" with permissions 31
+    Then as "user1" gets properties of folder "/merge-test-outside-twogroups-perms" with
+        |{http://owncloud.org/ns}permissions|
+    And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    And as "user1" the folder "/merge-test-outside-twogroups-perms (2)" does not exist
+
+  Scenario: Merging shares for recipient when shared from outside with two groups and member
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group1" exists
+    And group "group2" exists
+    And user "user1" belongs to group "group1"
+    And user "user1" belongs to group "group2"
+    And user "user0" created a folder "/merge-test-outside-twogroups-member-perms"
+    When folder "/merge-test-outside-twogroups-member-perms" of user "user0" is shared with group "group1" with permissions 1
+    And folder "/merge-test-outside-twogroups-member-perms" of user "user0" is shared with group "group2" with permissions 31
+    And folder "/merge-test-outside-twogroups-member-perms" of user "user0" is shared with user "user1" with permissions 1
+    Then as "user1" gets properties of folder "/merge-test-outside-twogroups-member-perms" with
+        |{http://owncloud.org/ns}permissions|
+    And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    And as "user1" the folder "/merge-test-outside-twogroups-member-perms (2)" does not exist
+
+  Scenario: Merging shares for recipient when shared from inside with group
+    Given As an "admin"
+    And user "user0" exists
+    And group "group1" exists
+    And user "user0" belongs to group "group1"
+    And user "user0" created a folder "/merge-test-inside-group"
+    When folder "/merge-test-inside-group" of user "user0" is shared with group "group1"
+    Then as "user0" the folder "/merge-test-inside-group" exists
+    And as "user0" the folder "/merge-test-inside-group (2)" does not exist
+
+  Scenario: Merging shares for recipient when shared from inside with two groups
+    Given As an "admin"
+    And user "user0" exists
+    And group "group1" exists
+    And group "group2" exists
+    And user "user0" belongs to group "group1"
+    And user "user0" belongs to group "group2"
+    And user "user0" created a folder "/merge-test-inside-twogroups"
+    When folder "/merge-test-inside-twogroups" of user "user0" is shared with group "group1"
+    And folder "/merge-test-inside-twogroups" of user "user0" is shared with group "group2"
+    Then as "user0" the folder "/merge-test-inside-twogroups" exists
+    And as "user0" the folder "/merge-test-inside-twogroups (2)" does not exist
+    And as "user0" the folder "/merge-test-inside-twogroups (3)" does not exist
+
+  Scenario: Merging shares for recipient when shared from inside with group with less permissions
+    Given As an "admin"
+    And user "user0" exists
+    And group "group1" exists
+    And group "group2" exists
+    And user "user0" belongs to group "group1"
+    And user "user0" belongs to group "group2"
+    And user "user0" created a folder "/merge-test-inside-twogroups-perms"
+    When folder "/merge-test-inside-twogroups-perms" of user "user0" is shared with group "group1"
+    And folder "/merge-test-inside-twogroups-perms" of user "user0" is shared with group "group2"
+    Then as "user0" gets properties of folder "/merge-test-inside-twogroups-perms" with
+        |{http://owncloud.org/ns}permissions|
+    And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK"
+    And as "user0" the folder "/merge-test-inside-twogroups-perms (2)" does not exist
+    And as "user0" the folder "/merge-test-inside-twogroups-perms (3)" does not exist
+
+  Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group1" exists
+    And user "user1" belongs to group "group1"
+    And user "user0" created a folder "/merge-test-outside-groups-renamebeforesecondshare"
+    When folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with group "group1"
+    And User "user1" moved folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed"
+    And folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with user "user1"
+    Then as "user1" gets properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" with
+        |{http://owncloud.org/ns}permissions|
+    And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" does not exist
+
+  Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group1" exists
+    And user "user1" belongs to group "group1"
+    And user "user0" created a folder "/merge-test-outside-groups-renamebeforesecondshare"
+    When folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with user "user1"
+    And User "user1" moved folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed"
+    And folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with group "group1"
+    Then as "user1" gets properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" with
+        |{http://owncloud.org/ns}permissions|
+    And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+    And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" does not exist
+  
+  Scenario: Empting trashbin
+    Given As an "admin"
+    And user "user0" exists
+    And User "user0" deletes file "/textfile0.txt"
+    When User "user0" empties trashbin
+    Then the HTTP status code should be "200"
+
+  Scenario: orphaned shares
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And user "user0" created a folder "/common"
+    And user "user0" created a folder "/common/sub"
+    And file "/common/sub" of user "user0" is shared with user "user1"
+    And User "user0" deletes folder "/common"
+    When User "user0" empties trashbin
+    Then as "user1" the folder "/sub" does not exist
+
+  Scenario: sharing again an own file while belonging to a group
+    Given As an "admin"
+    Given user "user0" exists
+    And group "sharing-group" exists
+    And user "user0" belongs to group "sharing-group"
+    And file "welcome.txt" of user "user0" is shared with group "sharing-group"
+    And Deleting last share
+    When sending "POST" to "/apps/files_sharing/api/v1/shares" with
+      | path | welcome.txt |
+      | shareWith | sharing-group |
+      | shareType | 1 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+
+  Scenario: sharing subfolder when parent already shared
+    Given As an "admin"
+    Given user "user0" exists
+    Given user "user1" exists
+    And group "sharing-group" exists
+    And user "user0" created a folder "/test"
+    And user "user0" created a folder "/test/sub"
+    And file "/test" of user "user0" is shared with group "sharing-group"
+    And As an "user0"
+    When sending "POST" to "/apps/files_sharing/api/v1/shares" with
+      | path | /test/sub |
+      | shareWith | user1 |
+      | shareType | 0 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+	And as "user1" the folder "/sub" exists
+
+  Scenario: sharing subfolder when parent already shared with group of sharer
+    Given As an "admin"
+    Given user "user0" exists
+    Given user "user1" exists
+    And group "sharing-group" exists
+    And user "user0" belongs to group "sharing-group"
+    And user "user0" created a folder "/test"
+    And user "user0" created a folder "/test/sub"
+    And file "/test" of user "user0" is shared with group "sharing-group"
+    And As an "user0"
+    When sending "POST" to "/apps/files_sharing/api/v1/shares" with
+      | path | /test/sub |
+      | shareWith | user1 |
+      | shareType | 0 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+	And as "user1" the folder "/sub" exists
+
+  Scenario: sharing subfolder of already shared folder, GET result is correct
+    Given As an "admin"
+    Given user "user0" exists
+    Given user "user1" exists
+    Given user "user2" exists
+    Given user "user3" exists
+    Given user "user4" exists
+    And user "user0" created a folder "/folder1"
+    And file "/folder1" of user "user0" is shared with user "user1"
+    And file "/folder1" of user "user0" is shared with user "user2"
+	And user "user0" created a folder "/folder1/folder2"
+    And file "/folder1/folder2" of user "user0" is shared with user "user3"
+    And file "/folder1/folder2" of user "user0" is shared with user "user4"
+    And As an "user0"
+    When sending "GET" to "/apps/files_sharing/api/v1/shares"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+	And the response contains 4 entries
+	And File "/folder1" should be included as path in the response
+	And File "/folder1/folder2" should be included as path in the response
+	And sending "GET" to "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
+	And the response contains 2 entries
+	And File "/folder1" should not be included as path in the response
+	And File "/folder1/folder2" should be included as path in the response
+
+  Scenario: unshare from self
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "sharing-group" exists
+    And user "user0" belongs to group "sharing-group"
+    And user "user1" belongs to group "sharing-group"
+    And file "/PARENT/parent.txt" of user "user0" is shared with group "sharing-group"
+    And user "user0" stores etag of element "/PARENT"
+    And user "user1" stores etag of element "/"
+    And As an "user1"
+    When Deleting last share
+    Then etag of element "/" of user "user1" has changed
+    And etag of element "/PARENT" of user "user0" has not changed
+
+  Scenario: Increasing permissions is allowed for owner
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "new-group" exists
+    And user "user0" belongs to group "new-group"
+    And user "user1" belongs to group "new-group"
+    And Assure user "user0" is subadmin of group "new-group"
+    And As an "user0"
+    And folder "/FOLDER" of user "user0" is shared with group "new-group"
+    And Updating last share with
+      | permissions | 0 |
+    When Updating last share with
+      | permissions | 31 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+
+  Scenario: Adding public upload to a read only shared folder as recipient is not allowed
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 17
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | publicUpload | false |
+    When Updating last share with
+      | publicUpload | true |
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+
+  Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 31
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | publicUpload | false |
+    When Updating last share with
+      | publicUpload | true |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+
+  Scenario: Adding public upload to a read only shared folder as recipient is not allowed
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 17
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | permissions | 1 |
+    When Updating last share with
+      | permissions | 15 |
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+
+  Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 31
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | permissions | 1 |
+    When Updating last share with
+      | permissions | 15 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+
+    Scenario: resharing using a public link with read only permissions is not allowed
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 1
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | publicUpload | false |
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+
+  Scenario: resharing using a public link with read and write permissions only is not allowed
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And As an "user0"
+    And user "user0" created a folder "/test"
+    And folder "/test" of user "user0" is shared with user "user1" with permissions 15
+    And As an "user1"
+    And creating a share with
+      | path | /test |
+      | shareType | 3 |
+      | publicUpload | false |
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "200"
+

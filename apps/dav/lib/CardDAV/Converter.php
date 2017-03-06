@@ -91,6 +91,7 @@ class Converter {
 		}
 
 		if($this->propertyNeedsUpdate($vCard, 'PHOTO', $image)) {
+			unset($vCard->PHOTO);
 			$vCard->add('PHOTO', $image->data(), ['ENCODING' => 'b', 'TYPE' => $image->mimeType()]);
 			$updated = true;
 		}
@@ -161,7 +162,7 @@ class Converter {
 	 */
 	private function getAvatarImage(IUser $user) {
 		try {
-			$image = $user->getAvatarImage(-1);
+			$image = $user->getAvatarImage(96);
 			return $image;
 		} catch (\Exception $ex) {
 			return null;

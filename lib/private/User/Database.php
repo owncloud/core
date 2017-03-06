@@ -76,9 +76,14 @@ class Database extends \OC\User\Backend implements \OCP\IUserBackend {
 	 * itself, not in its subclasses.
 	 */
 	public function createUser($uid, $password) {
+		unset($this->cache[$uid]); // make sure we are reading from the db
 		if (!$this->userExists($uid)) {
 			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
 			$result = $query->execute(array($uid, \OC::$server->getHasher()->hash($password)));
+
+			if ($result) {
+				unset($this->cache[$uid]); // invalidate non existing user in cache
+			}
 
 			return $result ? true : false;
 		}
@@ -203,6 +208,7 @@ class Database extends \OC\User\Backend implements \OCP\IUserBackend {
 			if(\OC::$server->getHasher()->verify($password, $storedHash, $newHash)) {
 				if(!empty($newHash)) {
 					$this->setPassword($uid, $password);
+					unset($this->cache[$uid]); // invalidate cache
 				}
 				return $row['uid'];
 			}
@@ -215,10 +221,11 @@ class Database extends \OC\User\Backend implements \OCP\IUserBackend {
 	/**
 	 * Load an user in the cache
 	 * @param string $uid the username
-	 * @return boolean
+	 * @return boolean true if user was found, false otherwise
 	 */
 	private function loadUser($uid) {
-		if (empty($this->cache[$uid])) {
+		// if not in cache (false is a valid value)
+		if (!isset($this->cache[$uid]) && $this->cache[$uid] !== false) {
 			$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 			$result = $query->execute(array($uid));
 
@@ -227,10 +234,15 @@ class Database extends \OC\User\Backend implements \OCP\IUserBackend {
 				return false;
 			}
 
-			while ($row = $result->fetchRow()) {
+			// "uid" is primary key, so there can only be a single result
+			if ($row = $result->fetchRow()) {
 				$this->cache[$uid]['uid'] = $row['uid'];
 				$this->cache[$uid]['displayname'] = $row['displayname'];
+			} else {
+				$this->cache[$uid] = false;
+				return false;
 			}
+			$result->closeCursor();
 		}
 
 		return true;

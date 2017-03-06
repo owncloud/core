@@ -336,6 +336,21 @@ OC.Upload = {
 						data.errorThrown = errorMessage;
 					}
 
+					// detect browser and version to handle IE11 upload file size limit
+					if (OC.Util.isIE11()) {
+						var maxUploadFileSize = 4187593113;
+						// check filesize (> 4 GB is not supported in IE11); limit is set to 3.9GB
+						if (file.size > maxUploadFileSize) {
+							data.textStatus = 'sizeexceedbrowserlimit';
+							data.errorThrown = t('files',
+								'Total file size {size1} exceeds your browser upload limit. Please use the {ownCloud} desktop client to upload files bigger than {size2}.', {
+								'size1': humanFileSize(file.size),
+								'ownCloud' : OC.theme.name || 'ownCloud',
+								'size2': humanFileSize(maxUploadFileSize)
+							});
+						}
+					}
+
 					// in case folder drag and drop is not supported file will point to a directory
 					// http://stackoverflow.com/a/20448357
 					if ( ! file.type && file.size%4096 === 0 && file.size <= 102400) {
@@ -345,10 +360,6 @@ OC.Upload = {
 							reader.readAsBinaryString(file);
 						} catch (NS_ERROR_FILE_ACCESS_DENIED) {
 							//file is a directory
-							dirUploadFailure = true;
-						}
-						if (file.size === 0) {
-							// file is empty or a directory
 							dirUploadFailure = true;
 						}
 
@@ -587,7 +598,7 @@ OC.Upload = {
 							+ '</span><span class="mobile">'
 							+ t('files', '...')
 							+ '</span></em>');
-                    $('#uploadprogressbar').tipsy({gravity:'n', fade:true, live:true});
+					$('#uploadprogressbar').tipsy({gravity:'n', fade:true, live:true});
 					OC.Upload._showProgressBar();
 				});
 				fileupload.on('fileuploadprogress', function(e, data) {
@@ -610,43 +621,9 @@ OC.Upload = {
 						bufferIndex = (bufferIndex + 1) % bufferSize;
 					}
 					var smoothRemainingSeconds = (bufferTotal / bufferSize); //seconds
-					var date = new Date(smoothRemainingSeconds * 1000);
-					var timeStringDesktop = "";
-					var timeStringMobile = ""; 
-					if(date.getUTCHours() > 0){
-						timeStringDesktop = t('files', '{hours}:{minutes}:{seconds} hour{plural_s} left' , { 
-							hours:date.getUTCHours(),
-							minutes: ('0' + date.getUTCMinutes()).slice(-2),
-							seconds: ('0' + date.getUTCSeconds()).slice(-2),
-							plural_s: ( smoothRemainingSeconds === 3600  ? "": "s") // 1 hour = 1*60m*60s = 3600s
-						});						
-						timeStringMobile = t('files', '{hours}:{minutes}h' , {
-							hours:date.getUTCHours(),
-							minutes: ('0' + date.getUTCMinutes()).slice(-2),
-							seconds: ('0' + date.getUTCSeconds()).slice(-2)
-						});
-					} else if(date.getUTCMinutes() > 0){
-						timeStringDesktop = t('files', '{minutes}:{seconds} minute{plural_s} left' , {
-							minutes: date.getUTCMinutes(),
-							seconds: ('0' + date.getUTCSeconds()).slice(-2),
-							plural_s: (smoothRemainingSeconds === 60 ? "": "s") // 1 minute = 1*60s = 60s
-						}); 
-						timeStringMobile = t('files', '{minutes}:{seconds}m' , {
-							minutes: date.getUTCMinutes(),
-							seconds: ('0' + date.getUTCSeconds()).slice(-2)
-						});
-					} else if(date.getUTCSeconds() > 0){ 
-						timeStringDesktop = t('files', '{seconds} second{plural_s} left' , {
-							seconds: date.getUTCSeconds(),
-							plural_s: (smoothRemainingSeconds === 1 ? "": "s") // 1 second = 1s = 1s
-						});
-						timeStringMobile = t('files', '{seconds}s' , {seconds: date.getUTCSeconds()});
-					} else {
-						timeStringDesktop = t('files', 'Any moment now...');
-						timeStringMobile = t('files', 'Soon...');
-					}
-					$('#uploadprogressbar .label .mobile').text(timeStringMobile);
-					$('#uploadprogressbar .label .desktop').text(timeStringDesktop);
+					var h = moment.duration(smoothRemainingSeconds, "seconds").humanize();
+					$('#uploadprogressbar .label .mobile').text(h);
+					$('#uploadprogressbar .label .desktop').text(h);
 					$('#uploadprogressbar').attr('original-title',
 						t('files', '{loadedSize} of {totalSize} ({bitrate})' , {
 							loadedSize: humanFileSize(data.loaded),

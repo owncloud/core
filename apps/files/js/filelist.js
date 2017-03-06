@@ -194,6 +194,7 @@
 		 * @param options.folderDropOptions folder drop options, disabled by default
 		 * @param options.scrollTo name of file to scroll to after the first load
 		 * @param {OC.Files.Client} [options.filesClient] files API client
+		 * @param {OC.Backbone.Model} [options.filesConfig] files app configuration
 		 * @private
 		 */
 		initialize: function($el, options) {
@@ -207,11 +208,9 @@
 				this._filesConfig = options.config;
 			} else if (!_.isUndefined(OCA.Files) && !_.isUndefined(OCA.Files.App)) {
 				this._filesConfig = OCA.Files.App.getFilesConfig();
-			}
-
-			if (!_.isUndefined(this._filesConfig)) {
-				this._filesConfig.on('change:showhidden', function() {
-					self.setFiles(self.files);
+			} else {
+				this._filesConfig = new OC.Backbone.Model({
+					'showhidden': false
 				});
 			}
 
@@ -236,6 +235,22 @@
 			this.$table = $el.find('table:first');
 			this.$fileList = $el.find('#fileList');
 
+			if (!_.isUndefined(this._filesConfig)) {
+				this._filesConfig.on('change:showhidden', function() {
+					var showHidden = this.get('showhidden');
+					self.$el.toggleClass('hide-hidden-files', !showHidden);
+					self.updateSelectionSummary();
+
+					if (!showHidden) {
+						// hiding files could make the page too small, need to try rendering next page
+						self._onScroll();
+					}
+				});
+
+				this.$el.toggleClass('hide-hidden-files', !this._filesConfig.get('showhidden'));
+			}
+
+
 			if (_.isUndefined(options.detailsViewEnabled) || options.detailsViewEnabled) {
 				this._detailsView = new OCA.Files.DetailsView();
 				this._detailsView.$el.insertBefore(this.$el);
@@ -250,7 +265,7 @@
 
 			this.files = [];
 			this._selectedFiles = {};
-			this._selectionSummary = new OCA.Files.FileSummary();
+			this._selectionSummary = new OCA.Files.FileSummary(undefined, {config: this._filesConfig});
 			// dummy root dir info
 			this.dirInfo = new OC.Files.FileInfo({});
 
@@ -513,7 +528,7 @@
 		 * Event handler for when the URL changed
 		 */
 		_onUrlChanged: function(e) {
-			if (e && e.dir) {
+			if (e && _.isString(e.dir)) {
 				this.changeDirectory(e.dir, false, true);
 			}
 		},
@@ -875,17 +890,14 @@
 		 * @return array of DOM elements of the newly added files
 		 */
 		_nextPage: function(animate) {
-			// Save full files list while rendering
-			var allFiles = this.files;
-			this.files = this._filterHiddenFiles(this.files);
-
 			var index = this.$fileList.children().length,
 				count = this.pageSize(),
 				hidden,
 				tr,
 				fileData,
 				newTrs = [],
-				isAllSelected = this.isAllSelected();
+				isAllSelected = this.isAllSelected(),
+				showHidden = this._filesConfig.get('showhidden');
 
 			if (index >= this.files.length) {
 				return false;
@@ -909,7 +921,10 @@
 				}
 				newTrs.push(tr);
 				index++;
-				count--;
+				// only count visible rows
+				if (showHidden || !tr.hasClass('hidden-file')) {
+					count--;
+				}
 			}
 
 			// trigger event for newly added rows
@@ -925,9 +940,6 @@
 					}
 				}, 0);
 			}
-
-			// Restore full files list after rendering
-			this.files = allFiles;
 
 			return newTrs;
 		},
@@ -967,8 +979,6 @@
 			this.$el.find('.select-all').prop('checked', false);
 
 			// Save full files list while rendering
-			var allFiles = this.files;
-			this.files = this._filterHiddenFiles(this.files);
 
 			this.isEmpty = this.files.length === 0;
 			this._nextPage();
@@ -982,9 +992,6 @@
 			this.updateSelectionSummary();
 			$(window).scrollTop(0);
 
-			// Restore full files list after rendering
-			this.files = allFiles;
-
 			this.$fileList.trigger(jQuery.Event('updated'));
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
@@ -992,18 +999,14 @@
 		},
 
 		/**
-		 * Filter hidden files of the given filesArray (dot-files)
+		 * Returns whether the given file info must be hidden
 		 *
-		 * @param filesArray files to be filtered
-		 * @returns {array}
+		 * @param {OC.Files.FileInfo} fileInfo file info
+		 * 
+		 * @return {boolean} true if the file is a hidden file, false otherwise
 		 */
-		_filterHiddenFiles: function(files) {
-			if (_.isUndefined(this._filesConfig) || this._filesConfig.get('showhidden')) {
-				return files;
-			}
-			return _.filter(files, function(file) {
-				return file.name.indexOf('.') !== 0;
-			});
+		_isHiddenFile: function(file) {
+			return file.name && file.name.charAt(0) === '.';
 		},
 
 		/**
@@ -1327,6 +1330,10 @@
 				tr.addClass('hidden');
 			}
 
+			if (this._isHiddenFile(fileData)) {
+				tr.addClass('hidden-file');
+			}
+
 			// display actions
 			this.fileActions.display(filenameTd, !options.silent, this);
 
@@ -1399,8 +1406,15 @@
 
 		_isValidPath: function(path) {
 			var sections = path.split('/');
-			for (var i = 0; i < sections.length; i++) {
+			var i;
+			for (i = 0; i < sections.length; i++) {
 				if (sections[i] === '..') {
+					return false;
+				}
+			}
+			var specialChars = [decodeURIComponent('%00'), decodeURIComponent('%0A')];
+			for (i = 0; i < specialChars.length; i++) {
+				if (path.indexOf(specialChars[i]) !== -1) {
 					return false;
 				}
 			}
@@ -1416,6 +1430,7 @@
 		_setCurrentDir: function(targetDir, changeUrl, fileId) {
 			targetDir = targetDir.replace(/\\/g, '/');
 			if (!this._isValidPath(targetDir)) {
+				OC.Notification.showTemporary(t('files', 'Invalid path'));
 				targetDir = '/';
 				changeUrl = true;
 			}
@@ -1429,6 +1444,9 @@
 				this.setPageTitle();
 			}
 
+			if (targetDir.length > 0 && targetDir[0] !== '/') {
+				targetDir = '/' + targetDir;
+			}
 			this._currentDirectory = targetDir;
 
 			// legacy stuff
@@ -1515,12 +1533,22 @@
 			this._currentFileModel = null;
 			this.$el.find('.select-all').prop('checked', false);
 			this.showMask();
-			this._reloadCall = this.filesClient.getFolderContents(
-				this.getCurrentDirectory(), {
-					includeParent: true,
-					properties: this._getWebdavProperties()
+			try {
+				this._reloadCall = this.filesClient.getFolderContents(
+					this.getCurrentDirectory(), {
+						includeParent: true,
+						properties: this._getWebdavProperties()
+					}
+				);
+			} catch (e) {
+				if (e instanceof DOMException) {
+					console.error(e);
+					this.changeDirectory('/');
+					OC.Notification.showTemporary(t('files', 'Invalid path'));
+					return;
 				}
-			);
+				throw e;
+			}
 			if (this._detailsView) {
 				// close sidebar
 				this._updateDetailsView(null);
@@ -1537,7 +1565,7 @@
 			}
 
 			// Firewall Blocked request?
-			if (status === 403) {
+			if (status === 403 || status === 400) {
 				// Go home
 				this.changeDirectory('/');
 				OC.Notification.showTemporary(t('files', 'This operation is forbidden'));
@@ -1663,44 +1691,49 @@
 				urlSpec = {};
 			ready(iconURL); // set mimeicon URL
 
-			urlSpec.file = OCA.Files.Files.fixPath(path);
-			if (options.x) {
-				urlSpec.x = options.x;
-			}
-			if (options.y) {
-				urlSpec.y = options.y;
-			}
-			if (options.a) {
-				urlSpec.a = options.a;
-			}
-			if (options.mode) {
-				urlSpec.mode = options.mode;
-			}
-
-			if (etag){
-				// use etag as cache buster
-				urlSpec.c = etag;
-			}
-
-			previewURL = self.generatePreviewUrl(urlSpec);
-			previewURL = previewURL.replace('(', '%28');
-			previewURL = previewURL.replace(')', '%29');
-
-			// preload image to prevent delay
-			// this will make the browser cache the image
 			var img = new Image();
-			img.onload = function(){
-				// if loading the preview image failed (no preview for the mimetype) then img.width will < 5
-				if (img.width > 5) {
-					ready(previewURL, img);
-				} else if (options.error) {
-					options.error();
+
+			if (oc_appconfig.core.previewsEnabled) {
+				urlSpec.file = OCA.Files.Files.fixPath(path);
+				if (options.x) {
+					urlSpec.x = options.x;
 				}
-			};
-			if (options.error) {
-				img.onerror = options.error;
+				if (options.y) {
+					urlSpec.y = options.y;
+				}
+				if (options.a) {
+					urlSpec.a = options.a;
+				}
+				if (options.mode) {
+					urlSpec.mode = options.mode;
+				}
+
+				if (etag) {
+					// use etag as cache buster
+					urlSpec.c = etag;
+				}
+
+				previewURL = self.generatePreviewUrl(urlSpec);
+				previewURL = previewURL.replace('(', '%28');
+				previewURL = previewURL.replace(')', '%29');
+
+				// preload image to prevent delay
+				// this will make the browser cache the image
+				img.onload = function () {
+					// if loading the preview image failed (no preview for the mimetype) then img.width will < 5
+					if (img.width > 5) {
+						ready(previewURL, img);
+					} else if (options.error) {
+						options.error();
+					}
+				};
+				if (options.error) {
+					img.onerror = options.error;
+				}
+				img.src = previewURL;
+			} else {
+				ready(iconURL, img);
 			}
-			img.src = previewURL;
 		},
 
 		/**
@@ -2297,7 +2330,7 @@
 			var $tr = $('<tr class="summary"></tr>');
 			this.$el.find('tfoot').append($tr);
 
-			return new OCA.Files.FileSummary($tr);
+			return new OCA.Files.FileSummary($tr, {config: this._filesConfig});
 		},
 		updateEmptyContent: function() {
 			var permissions = this.getDirectoryPermissions();
@@ -2444,6 +2477,7 @@
 			var summary = this._selectionSummary.summary;
 			var selection;
 
+			var showHidden = !!this._filesConfig.get('showhidden');
 			if (summary.totalFiles === 0 && summary.totalDirs === 0) {
 				this.$el.find('#headerName a.name>span:first').text(t('files','Name'));
 				this.$el.find('#headerSize a>span:first').text(t('files','Size'));
@@ -2468,6 +2502,11 @@
 					selection = directoryInfo;
 				} else {
 					selection = fileInfo;
+				}
+
+				if (!showHidden && summary.totalHidden > 0) {
+					var hiddenInfo = n('files', 'including %n hidden', 'including %n hidden', summary.totalHidden);
+					selection += ' (' + hiddenInfo + ')';
 				}
 
 				this.$el.find('#headerName a.name>span:first').text(selection);

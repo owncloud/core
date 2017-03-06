@@ -97,6 +97,11 @@ class OC_Util {
 		}
 
 		// instantiate object store implementation
+		$name = $config['class'];
+		if (strpos($name, 'OCA\\') === 0 && substr_count($name, '\\') >= 2) {
+			$segments = explode('\\', $name);
+			OC_App::loadApp(strtolower($segments[1]));
+		}
 		$config['arguments']['objectstore'] = new $config['class']($config['arguments']);
 		// mount with plain / root object store implementation
 		$config['class'] = '\OC\Files\ObjectStore\ObjectStoreStorage';
@@ -164,6 +169,7 @@ class OC_Util {
 
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
+			/** @var \OCP\Files\Storage $storage */
 			if (!$storage->instanceOfStorage('\OC\Files\Storage\Shared') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
 			}
@@ -171,7 +177,7 @@ class OC_Util {
 		});
 
 		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
-			if ($mount->getOption('encoding_compatibility', true) && !$storage->instanceOfStorage('\OC\Files\Storage\Shared') && !$storage->isLocal()) {
+			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OC\Files\Storage\Shared') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
 			}
 			return $storage;
@@ -289,16 +295,19 @@ class OC_Util {
 	/**
 	 * Get the quota of a user
 	 *
-	 * @param string $user
+	 * @param string $userId
 	 * @return int Quota bytes
 	 */
-	public static function getUserQuota($user) {
-		$userQuota = \OC::$server->getUserManager()->get($user)->getQuota();
+	public static function getUserQuota($userId) {
+		$user = \OC::$server->getUserManager()->get($userId);
+		if (is_null($user)) {
+			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
+		}
+		$userQuota = $user->getQuota();
 		if($userQuota === 'none') {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
-		}else{
-			return OC_Helper::computerFileSize($userQuota);
 		}
+		return OC_Helper::computerFileSize($userQuota);
 	}
 
 	/**

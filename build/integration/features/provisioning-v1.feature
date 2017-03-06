@@ -276,6 +276,7 @@ Feature: provisioning
 		And the HTTP status code should be "200"
 		And group "España" does not exist
 
+	@no_encryption
 	Scenario: get enabled apps
 		Given As an "admin"
 		When sending "GET" to "/cloud/apps?filter=enabled"
@@ -293,6 +294,7 @@ Feature: provisioning
 			| provisioning_api |
 			| systemtags |
 			| updatenotification |
+			| files_external |
 
 	Scenario: get app info
 		Given As an "admin"
@@ -302,19 +304,19 @@ Feature: provisioning
 
 	Scenario: enable an app
 		Given As an "admin"
-		And app "files_external" is disabled
-		When sending "POST" to "/cloud/apps/files_external"
+		And app "user_ldap" is disabled
+		When sending "POST" to "/cloud/apps/user_ldap"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And app "files_external" is enabled
+		And app "user_ldap" is enabled
 
 	Scenario: disable an app
 		Given As an "admin"
-		And app "files_external" is enabled
-		When sending "DELETE" to "/cloud/apps/files_external"
+		And app "user_ldap" is enabled
+		When sending "DELETE" to "/cloud/apps/user_ldap"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And app "files_external" is disabled
+		And app "user_ldap" is disabled
 
 	Scenario: disable an user
 		Given As an "admin"
@@ -493,11 +495,71 @@ Feature: provisioning
 		And As an "admin"
 		And user "subadmin" is disabled
 
+	Scenario: a subadmin can add users to groups the subadmin is responsible for
+		Given As an "admin"
+		And user "subadmin" exists
+		And user "brand-new-user" exists
+		And group "new-group" exists
+		And Assure user "subadmin" is subadmin of group "new-group"
+		And As an "subadmin"
+		When sending "POST" to "/cloud/users/brand-new-user/groups" with
+			| groupid | new-group |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And As an "admin"
+		And check that user "brand-new-user" belongs to group "new-group"
+
+	Scenario: a subadmin cannot add users to groups the subadmin is not responsible for
+		Given As an "admin"
+		And user "other-subadmin" exists
+		And user "brand-new-user" exists
+		And group "new-group" exists
+		And group "other-group" exists
+		And Assure user "other-subadmin" is subadmin of group "other-group"
+		And As an "other-subadmin"
+		When sending "POST" to "/cloud/users/brand-new-user/groups" with
+			| groupid | new-group |
+		Then the OCS status code should be "104"
+		And the HTTP status code should be "200"
+		And As an "admin"
+		And check that user "brand-new-user" does not belong to group "new-group"
+
+	Scenario: a subadmin can remove users to groups the subadmin is responsible for
+		Given As an "admin"
+		And user "subadmin" exists
+		And user "brand-new-user" exists
+		And group "new-group" exists
+		And user "brand-new-user" belongs to group "new-group"
+		And Assure user "subadmin" is subadmin of group "new-group"
+		And As an "subadmin"
+		When sending "DELETE" to "/cloud/users/brand-new-user/groups" with
+			| groupid | new-group |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And As an "admin"
+		And check that user "brand-new-user" does not belong to group "new-group"
+
+	Scenario: a subadmin cannot remove users to groups the subadmin is not responsible for
+		Given As an "admin"
+		And user "other-subadmin" exists
+		And user "brand-new-user" exists
+		And group "new-group" exists
+		And group "other-group" exists
+		And user "brand-new-user" belongs to group "new-group"
+		And Assure user "other-subadmin" is subadmin of group "other-group"
+		And As an "other-subadmin"
+		When sending "DELETE" to "/cloud/users/brand-new-user/groups" with
+			| groupid | new-group |
+		Then the OCS status code should be "104"
+		And the HTTP status code should be "200"
+		And As an "admin"
+		And check that user "brand-new-user" belongs to group "new-group"
+
 	Scenario: Making a web request with an enabled user
 	    Given As an "admin"
 		And user "user0" exists
 		And As an "user0"
-		When sending "GET" to "/index.php/apps/files"
+		When sending "GET" with exact url to "/index.php/apps/files"
 		Then the HTTP status code should be "200"
 
 	Scenario: Making a web request with a disabled user
@@ -505,7 +567,6 @@ Feature: provisioning
 		And user "user0" exists
 		And assure user "user0" is disabled
 		And As an "user0"
-		When sending "GET" to "/index.php/apps/files"
-		Then the OCS status code should be "999"
-    	And the HTTP status code should be "200"
+		When sending "GET" with exact url to "/index.php/apps/files"
+		And the HTTP status code should be "403"
 

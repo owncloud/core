@@ -145,6 +145,36 @@ trait BasicStructure {
 		}
 	}
 
+	/**
+	 * @When /^sending "([^"]*)" with exact url to "([^"]*)"$/
+	 * @param string $verb
+	 * @param string $url
+	 */
+	public function sendingToDirectUrl($verb, $url) {
+		$this->sendingToWithDirectUrl($verb, $url, null);
+	}
+
+	public function sendingToWithDirectUrl($verb, $url, $body) {
+		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
+		$client = new Client();
+		$options = [];
+		if ($this->currentUser === 'admin') {
+			$options['auth'] = $this->adminUser;
+		} else {
+			$options['auth'] = [$this->currentUser, $this->regularUser];
+		}
+		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+			$fd = $body->getRowsHash();
+			$options['body'] = $fd;
+		}
+
+		try {
+			$this->response = $client->send($client->createRequest($verb, $fullUrl, $options));
+		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+			$this->response = $ex->getResponse();
+		}
+	}
+
 	public function isExpectedUrl($possibleUrl, $finalPart){
 		$baseUrlChopped = substr($this->baseUrl, 0, -4);
 		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
@@ -267,8 +297,25 @@ trait BasicStructure {
 	 * @param string $text
 	 */
 	public function modifyTextOfFile($user, $filename, $text) {
-		self::removeFile("../../data/$user/files", "$filename");
-		file_put_contents("../../data/$user/files" . "$filename", "$text");
+		self::removeFile($this->getUserHome($user) . "/files", "$filename");
+		file_put_contents($this->getUserHome($user) . "/files" . "$filename", "$text");
+	}
+
+	/**
+	 * @When User :user empties trashbin
+	 * @param string $user
+	 */
+	public function emptyTrashbin($user) {
+		$body = new \Behat\Gherkin\Node\TableNode([['allfiles', 'true'], ['dir', '%2F']]);
+		$this->sendingToWithDirectUrl('POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body);
+		$this->theHTTPStatusCodeShouldBe('200');
+	}
+
+	public function createFileSpecificSize($name, $size){
+		$file = fopen("work/" . "$name", 'w');
+		fseek($file, $size - 1 ,SEEK_CUR);
+		fwrite($file,'a'); // write a dummy char at SIZE position
+		fclose($file);
 	}
 
 	/**
@@ -308,6 +355,30 @@ trait BasicStructure {
 		self::removeFile("../../core/skeleton/PARENT/", "parent.txt");
 		if (is_dir("../../core/skeleton/PARENT")) {
 			rmdir("../../core/skeleton/PARENT");
+		}
+	}
+
+	/**
+	 * @BeforeScenario @local_storage
+	 */
+	public static function removeFilesFromLocalStorageBefore(){
+		$dir = "./work/local_storage/";
+		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
+		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
+		foreach ( $ri as $file ) {
+			$file->isDir() ?  rmdir($file) : unlink($file);
+		}
+	}
+
+	/**
+	 * @AfterScenario @local_storage
+	 */
+	public static function removeFilesFromLocalStorageAfter(){
+		$dir = "./work/local_storage/";
+		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
+		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
+		foreach ( $ri as $file ) {
+			$file->isDir() ?  rmdir($file) : unlink($file);
 		}
 	}
 }

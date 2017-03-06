@@ -634,6 +634,7 @@ class Share20OCS {
 
 			if ($newPermissions !== null) {
 				$share->setPermissions($newPermissions);
+				$permissions = $newPermissions;
 			}
 
 			if ($expireDate === '') {
@@ -665,7 +666,7 @@ class Share20OCS {
 			}
 		}
 
-		if ($permissions !== null) {
+		if ($permissions !== null && $share->getShareOwner() !== $this->currentUser->getUID()) {
 			/* Check if this is an incomming share */
 			$incomingShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $share->getNode(), -1, 0);
 			$incomingShares = array_merge($incomingShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
@@ -721,7 +722,7 @@ class Share20OCS {
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if ($sharedWith->inGroup($this->currentUser)) {
+			if (!is_null($sharedWith) && $sharedWith->inGroup($this->currentUser)) {
 				return true;
 			}
 		}

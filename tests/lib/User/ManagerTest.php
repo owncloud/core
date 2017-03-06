@@ -8,6 +8,7 @@
  */
 
 namespace Test\User;
+use OCP\IUser;
 
 /**
  * Class ManagerTest
@@ -445,6 +446,75 @@ class ManagerTest extends \Test\TestCase {
 		$users = array_shift($result);
 		//users from backends shall be summed up
 		$this->assertEquals(7 + 16, $users);
+	}
+
+	public function testCountUsersOnlySeen() {
+		$manager = \OC::$server->getUserManager();
+		// count other users in the db before adding our own
+		if (!is_callable($manager, 'countSeenUsers')) {
+			$this->markTestSkipped('countSeenUsers call isn\'t available in the user manager');
+			return;
+		}
+
+		$countBefore = $manager->countSeenUsers();
+
+		//Add test users
+		$user1 = $manager->createUser('testseencount1', 'testseencount1');
+		$user1->updateLastLoginTimestamp();
+
+		$user2 = $manager->createUser('testseencount2', 'testseencount2');
+		$user2->updateLastLoginTimestamp();
+
+		$user3 = $manager->createUser('testseencount3', 'testseencount3');
+
+		$user4 = $manager->createUser('testseencount4', 'testseencount4');
+		$user4->updateLastLoginTimestamp();
+
+		$this->assertEquals($countBefore + 3, $manager->countSeenUsers());
+
+		//cleanup
+		$user1->delete();
+		$user2->delete();
+		$user3->delete();
+		$user4->delete();
+	}
+
+	public function testCallForSeenUsers() {
+		$manager = \OC::$server->getUserManager();
+		if (!is_callable($manager, 'callForSeenUsers')) {
+			$this->markTestSkipped('callForSeenUsers call isn\'t available in the user manager');
+			return;
+		}
+		// count other users in the db before adding our own
+		$count = 0;
+		$function = function (IUser $user) use (&$count) {
+			$count++;
+		};
+		$manager->callForSeenUsers($function);
+		$countBefore = $count;
+
+		//Add test users
+		$user1 = $manager->createUser('testseen1', 'testseen1');
+		$user1->updateLastLoginTimestamp();
+
+		$user2 = $manager->createUser('testseen2', 'testseen2');
+		$user2->updateLastLoginTimestamp();
+
+		$user3 = $manager->createUser('testseen3', 'testseen3');
+
+		$user4 = $manager->createUser('testseen4', 'testseen4');
+		$user4->updateLastLoginTimestamp();
+
+		$count = 0;
+		$manager->callForSeenUsers($function);
+
+		$this->assertEquals($countBefore + 3, $count);
+
+		//cleanup
+		$user1->delete();
+		$user2->delete();
+		$user3->delete();
+		$user4->delete();
 	}
 
 	public function testDeleteUser() {

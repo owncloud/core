@@ -24,17 +24,29 @@
 namespace Test\Encryption\Keys;
 
 use OC\Encryption\Keys\Storage;
+use OC\Encryption\Util;
+use OC\Files\View;
 use Test\TestCase;
+use Test\Traits\UserTrait;
 
+/**
+ * Class StorageTest
+ *
+ * @group DB
+ *
+ * @package Test\Encryption\Keys
+ */
 class StorageTest extends TestCase {
+
+	use UserTrait;
 
 	/** @var Storage */
 	protected $storage;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit_Framework_MockObject_MockObject | Util */
 	protected $util;
 
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	/** @var \PHPUnit_Framework_MockObject_MockObject | View */
 	protected $view;
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -47,6 +59,8 @@ class StorageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->util->method('getKeyStorageRoot')->willReturn('');
+
 		$this->view = $this->getMockBuilder('OC\Files\View')
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,7 +69,18 @@ class StorageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->storage = new Storage($this->view, $this->util);
+		$user = $this->getMock('\OCP\IUser');
+		$user->method('getUID')->willReturn('user1');
+		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession->method('getUser')->willReturn($user);
+
+		$this->createUser('user1', '123456');
+		$this->createUser('user2', '123456');
+		$this->storage = new Storage($this->view, $this->util, $userSession);
+	}
+
+	public function tearDown() {
+		\OC\Files\Filesystem::tearDown();
 	}
 
 	public function testSetFileKey() {
@@ -235,6 +260,71 @@ class StorageTest extends TestCase {
 		$this->assertSame('key',
 			$this->storage->getUserKey('user1', 'publicKey', 'encModule')
 		);
+	}
+
+	public function testGetUserKeyShared() {
+		$this->view->expects($this->once())
+			->method('file_get_contents')
+			->with($this->equalTo('/user2/files_encryption/encModule/user2.publicKey'))
+			->willReturn('key');
+		$this->view->expects($this->once())
+			->method('file_exists')
+			->with($this->equalTo('/user2/files_encryption/encModule/user2.publicKey'))
+			->willReturn(true);
+
+		$this->assertFalse($this->isUserHomeMounted('user2'));
+
+		$this->assertSame('key',
+			$this->storage->getUserKey('user2', 'publicKey', 'encModule')
+		);
+
+		$this->assertTrue($this->isUserHomeMounted('user2'));
+	}
+
+	public function testGetUserKeyWhenKeyStorageIsOutsideHome() {
+		$this->view->expects($this->once())
+			->method('file_get_contents')
+			->with($this->equalTo('/enckeys/user2/files_encryption/encModule/user2.publicKey'))
+			->willReturn('key');
+		$this->view->expects($this->once())
+			->method('file_exists')
+			->with($this->equalTo('/enckeys/user2/files_encryption/encModule/user2.publicKey'))
+			->willReturn(true);
+
+		$user = $this->getMock('\OCP\IUser');
+		$user->method('getUID')->willReturn('user1');
+		$userSession = $this->getMock('\OCP\IUserSession');
+		$userSession->method('getUser')->willReturn($user);
+		$util = $this->getMockBuilder('\OC\Encryption\Util')
+			->disableOriginalConstructor()
+			->getMock();
+		$util->method('getKeyStorageRoot')->willReturn('enckeys');
+		$storage = new Storage($this->view, $util, $userSession);
+
+		$this->assertFalse($this->isUserHomeMounted('user2'));
+
+		$this->assertSame('key',
+			$storage->getUserKey('user2', 'publicKey', 'encModule')
+		);
+
+		$this->assertFalse($this->isUserHomeMounted('user2'), 'mounting was not necessary');
+	}
+
+	/**
+	 * Returns whether the home of the given user was mounted
+	 *
+	 * @param string $userId
+	 * @return boolean true if mounted, false otherwise
+	 */
+	private function isUserHomeMounted($userId) {
+		// verify that user2's FS got mounted when retrieving the key
+		$mountManager = \OC::$server->getMountManager();
+		$mounts = $mountManager->getAll();
+		$mounts = array_filter($mounts, function($mount) use ($userId) {
+			return ($mount->getMountPoint() === "/$userId/");
+		});
+
+		return !empty($mounts);
 	}
 
 	public function testDeleteUserKey() {

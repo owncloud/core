@@ -21,14 +21,14 @@
 			</a>
 		</li>
 		<li>
-			<a href="https://forum.owncloud.org" target="_blank" rel="noreferrer">
+			<a href="https://central.owncloud.org" target="_blank" rel="noreferrer">
 				<?php p($l->t('Forum')); ?> ↗
 			</a>
 		</li>
 
 	<?php if($_['admin']) { ?>
 		<li>
-			<a href="https://github.com/owncloud/core/blob/master/CONTRIBUTING.md"
+			<a href="https://github.com/owncloud/core/blob/master/.github/CONTRIBUTING.md"
 				target="_blank" rel="noreferrer">
 				<?php p($l->t('Issue tracker')); ?> ↗
 			</a>

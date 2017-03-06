@@ -117,14 +117,25 @@ class Scanner extends PublicEmitter {
 	public function backgroundScan($dir) {
 		$mounts = $this->getMounts($dir);
 		foreach ($mounts as $mount) {
-			if (is_null($mount->getStorage())) {
-				continue;
-			}
-			// don't scan the root storage
-			if ($mount->getStorage()->instanceOfStorage('\OC\Files\Storage\Local') && $mount->getMountPoint() === '/') {
-				continue;
-			}
 			$storage = $mount->getStorage();
+			if (is_null($storage)) {
+				continue;
+			}
+
+			// don't bother scanning failed storages (shortcut for same result)
+			if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
+				continue;
+			}
+
+			// don't scan the root storage
+			if ($storage->instanceOfStorage('\OC\Files\Storage\Local') && $mount->getMountPoint() === '/') {
+				continue;
+			}
+
+			// don't scan received local shares, these can be scanned when scanning the owner's storage
+			if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
+				continue;
+			}
 			$scanner = $storage->getScanner();
 			$this->attachListener($mount);
 
@@ -138,9 +149,10 @@ class Scanner extends PublicEmitter {
 				$this->triggerPropagator($storage, $path);
 			});
 
-			$storage->getPropagator()->beginBatch();
+			$propagator = $storage->getPropagator();
+			$propagator->beginBatch();
 			$scanner->backgroundScan();
-			$storage->getPropagator()->commitBatch();
+			$propagator->commitBatch();
 		}
 	}
 
@@ -154,10 +166,16 @@ class Scanner extends PublicEmitter {
 		}
 		$mounts = $this->getMounts($dir);
 		foreach ($mounts as $mount) {
-			if (is_null($mount->getStorage())) {
+			$storage = $mount->getStorage();
+			if (is_null($storage)) {
 				continue;
 			}
-			$storage = $mount->getStorage();
+
+			// don't bother scanning failed storages (shortcut for same result)
+			if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
+				continue;
+			}
+
 			// if the home storage isn't writable then the scanner is run as the wrong user
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
 				(!$storage->isCreatable('') or !$storage->isCreatable('files'))
@@ -168,6 +186,11 @@ class Scanner extends PublicEmitter {
 					break;
 				}
 
+			}
+
+			// don't scan received local shares, these can be scanned when scanning the owner's storage
+			if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
+				continue;
 			}
 			$relativePath = $mount->getInternalPath($dir);
 			$scanner = $storage->getScanner();
@@ -189,14 +212,15 @@ class Scanner extends PublicEmitter {
 				$this->db->beginTransaction();
 			}
 			try {
-				$storage->getPropagator()->beginBatch();
+				$propagator = $storage->getPropagator();
+				$propagator->beginBatch();
 				$scanner->scan($relativePath, \OC\Files\Cache\Scanner::SCAN_RECURSIVE, \OC\Files\Cache\Scanner::REUSE_ETAG | \OC\Files\Cache\Scanner::REUSE_SIZE);
 				$cache = $storage->getCache();
 				if ($cache instanceof Cache) {
 					// only re-calculate for the root folder we scanned, anything below that is taken care of by the scanner
 					$cache->correctFolderSize($relativePath);
 				}
-				$storage->getPropagator()->commitBatch();
+				$propagator->commitBatch();
 			} catch (StorageNotAvailableException $e) {
 				$this->logger->error('Storage ' . $storage->getId() . ' not available');
 				$this->logger->logException($e);

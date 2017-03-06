@@ -266,7 +266,7 @@ class OC {
 			if (OC::$CLI) {
 				throw new Exception('Not installed');
 			} else {
-				$url = 'http://' . $_SERVER['SERVER_NAME'] . OC::$WEBROOT . '/index.php';
+				$url = OC::$WEBROOT . '/index.php';
 				header('Location: ' . $url);
 			}
 			exit();
@@ -890,6 +890,12 @@ class OC {
 				OC_Util::setupFS();
 				OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
 				return;
+			} catch (\OC\NeedsUpdateException $e) {
+				if ($isOccControllerRequested && $needUpgrade){
+					OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
+					return;
+				}
+				throw $e;
 			} catch (Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
 				//header('HTTP/1.0 404 Not Found');
 			} catch (Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
