@@ -85,14 +85,14 @@ class Storage {
 	/**
 	 * query the local cache, a distributed cache and the db for a storageid
 	 * @param string $storageId
-	 * @return array|null
+	 * @return array|false
 	 */
 	public static function getStorageById($storageId) {
 		if (self::$localCache === null) {
 			self::$localCache = new CappedMemoryCache();
 		}
 		$result = self::$localCache->get($storageId);
-		if (empty($result)) {
+		if ($result === null) {
 			$result = self::getStorageByIdFromCache($storageId);
 			self::$localCache->set($storageId, $result);
 		}
@@ -102,7 +102,7 @@ class Storage {
 	/**
 	 * query the distributed cache for a storageid
 	 * @param string $storageId
-	 * @return array|null
+	 * @return array|false
 	 */
 	private static function getStorageByIdFromCache($storageId) {
 		if (self::$distributedCache === null) {
@@ -110,7 +110,7 @@ class Storage {
 				\OC::$server->getMemCacheFactory()->create('getStorageById');
 		}
 		$result = self::$distributedCache->get($storageId);
-		if (empty($result)) {
+		if ($result === null) {
 			$result = self::getStorageByIdFromDb($storageId);
 			self::$distributedCache->set(
 				$storageId,
@@ -124,7 +124,7 @@ class Storage {
 	/**
 	 * query the db for a storageid
 	 * @param string $storageId
-	 * @return array|null
+	 * @return array|false
 	 */
 	private static function getStorageByIdFromDb($storageId) {
 		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
@@ -232,7 +232,7 @@ class Storage {
 		\OC_DB::executeAudited($sql, [$storageId]);
 
 		// delete from local cache
-		if(self::$localCache) {
+		if(self::$localCache === null) {
 			self::$localCache->remove($storageId);
 		}
 		// delete from distributed cache
