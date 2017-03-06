@@ -190,7 +190,7 @@ test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
 
 .PHONY: test-integration
 test-integration: $(composer_dev_deps)
-	$(MAKE) -C build/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED)
+	$(MAKE) -C tests/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED)
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)
@@ -201,12 +201,12 @@ test: test-php-lint test-php test-js test-integration
 
 .PHONY: clean-test-integration
 clean-test-integration:
-	$(MAKE) -C build/integration clean
+	$(MAKE) -C tests/integration clean
 
 .PHONY: clean-test-results
 clean-test-results:
 	rm -Rf tests/autotest-*results*.xml
-	$(MAKE) -C build/integration clean-test-results
+	$(MAKE) -C tests/integration clean
 
 .PHONY: clean-test
 clean-test: clean-test-integration clean-test-results

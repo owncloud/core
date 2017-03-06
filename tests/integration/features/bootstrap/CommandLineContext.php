@@ -19,7 +19,7 @@
  *
  */
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 

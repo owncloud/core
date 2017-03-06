@@ -19,12 +19,12 @@
  *
  */
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
 
-class CalDavContext implements \Behat\Behat\Context\Context {
+class CardDavContext implements \Behat\Behat\Context\Context {
 	/** @var string  */
 	private $baseUrl;
 	/** @var Client */
@@ -53,9 +53,10 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$this->responseXml = '';
 	}
 
+
 	/** @AfterScenario */
 	public function afterScenario() {
-		$davUrl = $this->baseUrl. '/remote.php/dav/calendars/admin/MyCalendar';
+		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		try {
 			$this->client->delete(
 				$davUrl,
@@ -69,13 +70,16 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		} catch (\GuzzleHttp\Exception\ClientException $e) {}
 	}
 
+
 	/**
-	 * @When :user requests calendar :calendar
+	 * @When :user requests addressbook :addressBook with statuscode :statusCode
 	 * @param string $user
-	 * @param string $calendar
+	 * @param string $addressBook
+	 * @param int $statusCode
+	 * @throws \Exception
 	 */
-	public function requestsCalendar($user, $calendar)  {
-		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$calendar;
+	public function requestsAddressbookWithStatuscode($user, $addressBook, $statusCode) {
+		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$addressBook;
 
 		$password = ($user === 'admin') ? 'admin' : '123456';
 		try {
@@ -85,32 +89,25 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 					'auth' => [
 						$user,
 						$password,
-					]
+					],
 				]
 			);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
-	}
 
-	/**
-	 * @Then The CalDAV HTTP status code should be :code
-	 * @param int $code
-	 * @throws \Exception
-	 */
-	public function theCaldavHttpStatusCodeShouldBe($code) {
-		if((int)$code !== $this->response->getStatusCode()) {
+		if((int)$statusCode !== $this->response->getStatusCode()) {
 			throw new \Exception(
 				sprintf(
 					'Expected %s got %s',
-					(int)$code,
+					(int)$statusCode,
 					$this->response->getStatusCode()
 				)
 			);
 		}
 
 		$body = $this->response->getBody()->getContents();
-		if($body && substr($body, 0, 1) === '<') {
+		if(substr($body, 0, 1) === '<') {
 			$reader = new Sabre\Xml\Reader();
 			$reader->xml($body);
 			$this->responseXml = $reader->parse();
@@ -118,11 +115,59 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Then The exception is :message
+	 * @Given :user creates an addressbook named :addressBook with statuscode :statusCode
+	 * @param string $user
+	 * @param string $addressBook
+	 * @param int $statusCode
+	 * @throws \Exception
+	 */
+	public function createsAnAddressbookNamedWithStatuscode($user, $addressBook, $statusCode) {
+		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$user.'/'.$addressBook;
+		$password = ($user === 'admin') ? 'admin' : '123456';
+
+		$request = $this->client->createRequest(
+			'MKCOL',
+			$davUrl,
+			[
+				'body' => '<d:mkcol xmlns:card="urn:ietf:params:xml:ns:carddav"
+              xmlns:d="DAV:">
+    <d:set>
+      <d:prop>
+        <d:resourcetype>
+            <d:collection />,<card:addressbook />
+          </d:resourcetype>,<d:displayname>'.$addressBook.'</d:displayname>
+      </d:prop>
+    </d:set>
+  </d:mkcol>',
+				'auth' => [
+					$user,
+					$password,
+				],
+				'headers' => [
+					'Content-Type' => 'application/xml;charset=UTF-8',
+				],
+			]
+		);
+
+		$this->response = $this->client->send($request);
+
+		if($this->response->getStatusCode() !== (int)$statusCode) {
+			throw new \Exception(
+				sprintf(
+					'Expected %s got %s',
+					(int)$statusCode,
+					$this->response->getStatusCode()
+				)
+			);
+		}
+	}
+
+	/**
+	 * @When The CardDAV exception is :message
 	 * @param string $message
 	 * @throws \Exception
 	 */
-	public function theExceptionIs($message) {
+	public function theCarddavExceptionIs($message) {
 		$result = $this->responseXml['value'][0]['value'];
 
 		if($message !== $result) {
@@ -137,11 +182,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Then The error message is :message
+	 * @When The CardDAV error message is :arg1
 	 * @param string $message
 	 * @throws \Exception
 	 */
-	public function theErrorMessageIs($message) {
+	public function theCarddavErrorMessageIs($message) {
 		$result = $this->responseXml['value'][1]['value'];
 
 		if($message !== $result) {
@@ -153,30 +198,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 				)
 			);
 		}
-	}
-
-	/**
-	 * @Given :user creates a calendar named :name
-	 * @param string $user
-	 * @param string $name
-	 */
-	public function createsACalendarNamed($user, $name) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$user.'/'.$name;
-		$password = ($user === 'admin') ? 'admin' : '123456';
-
-		$request = $this->client->createRequest(
-			'MKCALENDAR',
-			$davUrl,
-			[
-				'body' => '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>test</d:displayname><o:calendar-enabled>1</o:calendar-enabled><a:calendar-color>#21213D</a:calendar-color><c:supported-calendar-component-set><c:comp name="VEVENT"/></c:supported-calendar-component-set></d:prop></d:set></c:mkcalendar>',
-				'auth' => [
-					$user,
-					$password,
-				],
-			]
-		);
-
-		$this->response = $this->client->send($request);
 	}
 
 }

@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
-composer install
+#composer install
 
-OC_PATH=../../
+# from http://stackoverflow.com/a/630387
+SCRIPT_PATH="`dirname \"$0\"`"              # relative
+SCRIPT_PATH="`( cd \"$SCRIPT_PATH\" && pwd )`"  # absolutized and normalized
+
+echo 'Script path: '$SCRIPT_PATH
+
+OC_PATH=$SCRIPT_PATH/../../
 OCC=${OC_PATH}occ
-BEHAT=vendor/bin/behat
+BEHAT=${OC_PATH}lib/composer/behat/behat/bin/behat
 
 SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2
@@ -34,7 +40,7 @@ if [ -z "$EXECUTOR_NUMBER" ]; then
 fi
 PORT=$((8080 + $EXECUTOR_NUMBER))
 echo $PORT
-php -S localhost:$PORT -t ../.. &
+php -S localhost:$PORT -t "$OC_PATH" &
 PHPPID=$!
 echo $PHPPID
 
@@ -54,7 +60,7 @@ $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 $OCC app:enable files_external
 
 mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
-OUTPUT_CREATE_STORAGE=`$OCC files_external:create local_storage local null::null -c datadir=./build/integration/work/local_storage` 
+OUTPUT_CREATE_STORAGE=`$OCC files_external:create local_storage local null::null -c datadir=$SCRIPT_PATH/work/local_storage` 
 
 ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
 

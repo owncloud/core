@@ -19,7 +19,7 @@
  *
  */
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 class CommentsContext implements \Behat\Behat\Context\Context {
 	/** @var string */
