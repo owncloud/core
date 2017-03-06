@@ -36,11 +36,15 @@ $appContainer = \OC_Mount_Config::$app->getContainer();
 
 $l = \OC::$server->getL10N('files_external');
 
-\OCA\Files\App::getNavigationManager()->add([
-	"id" => 'extstoragemounts',
-	"appname" => 'files_external',
-	"script" => 'list.php',
-	"order" => 30,
-	"name" => $l->t('External storage')
-]);
+$config = \OC::$server->getConfig();
+if ($config->getAppValue('core', 'enable_external_storage', 'no') === 'yes') {
+	\OCA\Files\App::getNavigationManager()->add([
+
+		"id" => 'extstoragemounts',
+		"appname" => 'files_external',
+		"script" => 'list.php',
+		"order" => 30,
+		"name" => $l->t('External storage')
+	]);
+}
 

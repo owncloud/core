@@ -1347,6 +1347,34 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#files_external input[name=enableExternalStorage]').on('change', function(event) {
+		var $target = $(event.target);
+		var checked = $target.is(':checked');
+
+		var saveSetting = function(checked) {
+			var value = checked ? 'yes' : 'no';
+			OC.AppConfig.setValue('core', 'enable_external_storage', value);
+			$('#files_external_settings').toggleClass('hidden', !checked);
+		};
+
+		if (checked === false) {
+			OC.dialogs.confirm(
+				t('files_external', 'Disabling external storage will unmount all storages for all users, are you sure ?'),
+				t('files_external', 'Disable external storage'),
+				function(confirmation) {
+					if (confirmation) {
+						saveSetting(false);
+					} else {
+						$target.prop('checked', true);
+					}
+				},
+				true
+			);
+		} else {
+			saveSetting(true);
+		}
+	});
+
 	// global instance
 	OCA.External.Settings.mountConfig = mountConfigListView;
 
