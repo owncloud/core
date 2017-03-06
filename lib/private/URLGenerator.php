@@ -48,6 +48,8 @@ class URLGenerator implements IURLGenerator {
 	private $cacheFactory;
 	/** @var IRouter */
 	private $router;
+	/** @var Theme */
+	private $theme;
 
 	/**
 	 * @param IConfig $config
@@ -60,6 +62,7 @@ class URLGenerator implements IURLGenerator {
 		$this->config = $config;
 		$this->cacheFactory = $cacheFactory;
 		$this->router = $router;
+		$this->theme = \OC_Util::getTheme();
 	}
 
 	/**
@@ -152,48 +155,7 @@ class URLGenerator implements IURLGenerator {
 			return $key;
 		}
 
-		/** @var Theme $theme */
-		$theme = \OC_Util::getTheme();
-		$themeName = $theme->getName();
-
-		//if a theme has a png but not an svg always use the png
-		$basename = substr(basename($image),0,-4);
-
-		$appPath = \OC_App::getAppPath($app);
-
-		// Check if the app is in the app folder
-		$path = '';
-		if (file_exists(\OC::$SERVERROOT . "/themes/$themeName/apps/$app/img/$image")) {
-			$path = \OC::$WEBROOT . "/themes/$themeName/apps/$app/img/$image";
-		} elseif (!file_exists(\OC::$SERVERROOT . "/themes/$themeName/apps/$app/img/$basename.svg")
-			&& file_exists(\OC::$SERVERROOT . "/themes/$themeName/apps/$app/img/$basename.png")) {
-			$path =  \OC::$WEBROOT . "/themes/$themeName/apps/$app/img/$basename.png";
-		} elseif (!empty($app) and file_exists(\OC::$SERVERROOT . "/themes/$themeName/$app/img/$image")) {
-			$path =  \OC::$WEBROOT . "/themes/$themeName/$app/img/$image";
-		} elseif (!empty($app) and (!file_exists(\OC::$SERVERROOT . "/themes/$themeName/$app/img/$basename.svg")
-			&& file_exists(\OC::$SERVERROOT . "/themes/$themeName/$app/img/$basename.png"))) {
-			$path =  \OC::$WEBROOT . "/themes/$themeName/$app/img/$basename.png";
-		} elseif (file_exists(\OC::$SERVERROOT . "/themes/$themeName/core/img/$image")) {
-			$path =  \OC::$WEBROOT . "/themes/$themeName/core/img/$image";
-		} elseif (!file_exists(\OC::$SERVERROOT . "/themes/$themeName/core/img/$basename.svg")
-			&& file_exists(\OC::$SERVERROOT . "/themes/$themeName/core/img/$basename.png")) {
-			$path =  \OC::$WEBROOT . "/themes/$themeName/core/img/$basename.png";
-		} elseif ($appPath && file_exists($appPath . "/img/$image")) {
-			$path =  \OC_App::getAppWebPath($app) . "/img/$image";
-		} elseif ($appPath && !file_exists($appPath . "/img/$basename.svg")
-			&& file_exists($appPath . "/img/$basename.png")) {
-			$path =  \OC_App::getAppWebPath($app) . "/img/$basename.png";
-		} elseif (!empty($app) and file_exists(\OC::$SERVERROOT . "/$app/img/$image")) {
-			$path =  \OC::$WEBROOT . "/$app/img/$image";
-		} elseif (!empty($app) and (!file_exists(\OC::$SERVERROOT . "/$app/img/$basename.svg")
-				&& file_exists(\OC::$SERVERROOT . "/$app/img/$basename.png"))) {
-			$path =  \OC::$WEBROOT . "/$app/img/$basename.png";
-		} elseif (file_exists(\OC::$SERVERROOT . "/core/img/$image")) {
-			$path =  \OC::$WEBROOT . "/core/img/$image";
-		} elseif (!file_exists(\OC::$SERVERROOT . "/core/img/$basename.svg")
-			&& file_exists(\OC::$SERVERROOT . "/core/img/$basename.png")) {
-			$path =  \OC::$WEBROOT . "/themes/$themeName/core/img/$basename.png";
-		}
+		$path = $this->getImagePath($app, $image);
 
 		if($path !== '') {
 			$cache->set($cacheKey, $path);
@@ -203,6 +165,55 @@ class URLGenerator implements IURLGenerator {
 		}
 	}
 
+	/**
+	 * @param string $app
+	 * @param string $imageName
+	 * @return string
+	 */
+	private function getImagePath($app, $imageName) {
+		$appWebPath = \OC_App::getAppWebPath($app);
+		$appPath = substr($appWebPath, strlen(\OC::$WEBROOT));
+
+		$directories = ["/core", ""];
+
+		if ($app) {
+			array_unshift($directories, "$appPath", "/$app");
+		}
+
+		foreach($directories as $directory) {
+			$directory = $directory . "/img/";
+			$themeDirectory = $this->theme->getDirectory();
+
+			$file = $directory . $imageName;
+
+			if (!empty($themeDirectory)) {
+				if ($imagePath = $this->getImagePathOrFallback('/' . substr($this->theme->getDirectory(), 0, -1) . $file)) {
+					return $imagePath;
+				}
+			}
+
+			if ($imagePath = $this->getImagePathOrFallback($file)) {
+				return $imagePath;
+			}
+		}
+	}
+
+	/**
+	 * @param string $file
+	 * @return string
+	 */
+	private function getImagePathOrFallback($file) {
+
+		if (file_exists(\OC::$SERVERROOT . $file)) {
+			return \OC::$WEBROOT . $file;
+		}
+
+		$fallback = substr($file, 0, -3) . 'png';
+
+		if (file_exists(\OC::$SERVERROOT . $fallback)) {
+			return \OC::$WEBROOT . $fallback;
+		}
+	}
 
 	/**
 	 * Makes an URL absolute
