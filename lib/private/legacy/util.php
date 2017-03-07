@@ -241,16 +241,17 @@ class OC_Util {
 			$userGroups
 		);
 
+
 		if (!empty($readOnlyGroupMemberships)) {
 			\OC\Files\Filesystem::addStorageWrapper(
 				'oc_readonly',
 				function ($mountPoint, $storage) use ($user) {
-					if ($mountPoint === '/' || $mountPoint === "/$user/" || substr($mountPoint, 0, strlen("/$user/")) === "/$user/") {
-						return new \OC\Files\Storage\Wrapper\DirMask(
+					if ($mountPoint === '/' || $mountPoint === "/$user/") {
+						return new \OC\Files\Storage\Wrapper\ReadOnlyJail(
 							[
 								'storage' => $storage,
 								'mask' => \OCP\Constants::PERMISSION_READ,
-								'path' => str_replace("/$user/", '', $mountPoint)
+								'path' => 'files'
 							]
 						);
 					}
