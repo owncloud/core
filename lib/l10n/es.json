@@ -60,6 +60,7 @@
     "General" : "General",
     "Storage" : "Almacenamiento",
     "Security" : "Seguridad",
+    "Authentication" : "Autentificación",
     "Encryption" : "Cifrado",
     "Sharing" : "Compartiendo",
     "Monitoring" : "Monitorizando",

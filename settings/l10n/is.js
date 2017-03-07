@@ -111,6 +111,7 @@ OC.L10N.register(
     "%s-licensed" : "%s-notkunarleyfi",
     "Documentation:" : "Hjálparskjöl:",
     "Admin documentation" : "Hjálparskjöl kerfisstjóra",
+    "Report a bug" : "Tilkynna um villu",
     "Show description …" : "Birta lýsingu …",
     "Hide description …" : "Fela lýsingu …",
     "This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later." : "Þetta vorrit er ekki með tiltekna neina lágmarksútgáfu ownCloud. Þetta mun gefa villu í ownCloud 11 og nýrri.",

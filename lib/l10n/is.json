@@ -24,6 +24,7 @@
     "General" : "Almennt",
     "Storage" : "gagnapláss",
     "Security" : "Öryggi",
+    "Authentication" : "Auðkenning",
     "Encryption" : "Dulritun",
     "Sharing" : "Deiling",
     "Apps" : "Forrit",
@@ -56,6 +57,7 @@
     "Setting locale to %s failed" : "Mistókst að setja upp staðfærsluna %s",
     "Please ask your server administrator to install the module." : "Biddu kerfisstjórann þinn um að setja eininguna upp.",
     "PHP module %s not installed." : "PHP-einingin %s er ekki uppsett.",
-    "PHP setting \"%s\" is not set to \"%s\"." : "PHP-stillingin \"%s\" er ekki sett á \"%s\"."
+    "PHP setting \"%s\" is not set to \"%s\"." : "PHP-stillingin \"%s\" er ekki sett á \"%s\".",
+    "Storage is temporarily not available" : "Gagnageymsla ekki tiltæk í augnablikinu"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }
