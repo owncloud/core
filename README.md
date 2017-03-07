@@ -5,6 +5,7 @@
 [![codecov.io](https://codecov.io/github/owncloud/core/coverage.svg?branch=master)](https://codecov.io/github/owncloud/core?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/54f4a2384f3108959a000a16/badge.svg?style=flat)](https://www.versioneye.com/user/projects/54f4a2384f3108959a000a16)
 [![Dependency Status](https://www.versioneye.com/user/projects/54d1f76f3ca0840b190000c0/badge.svg?style=flat)](https://www.versioneye.com/user/projects/54d1f76f3ca0840b190000c0)
+[![Build Status](https://saucelabs.com/buildstatus/DeepDiver1975)](https://saucelabs.com/beta/builds/358889d1dc0a45ff927e3d6b844cabf0)
 
 **[ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.**
