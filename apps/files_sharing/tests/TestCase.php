@@ -31,7 +31,6 @@
 
 namespace OCA\Files_Sharing\Tests;
 
-use OC\Cache\CappedMemoryCache;
 use OC\Files\Cache\Storage;
 use OC\Files\Filesystem;
 use OCA\Files_Sharing\AppInfo\Application;
