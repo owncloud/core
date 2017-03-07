@@ -30,8 +30,10 @@
 
 namespace OCA\Files_Sharing\Tests;
 
+use OC\Files\Cache\Storage;
 use OC\Files\Filesystem;
 use OCA\Files_Sharing\AppInfo\Application;
+use OCP\ICache;
 
 /**
  * Class TestCase
@@ -184,6 +186,24 @@ abstract class TestCase extends \Test\TestCase {
 		$isInitialized->setAccessible(true);
 		$isInitialized->setValue($storage, false);
 		$isInitialized->setAccessible(false);
+
+		$storage = new \ReflectionClass(Storage::class);
+		$property = $storage->getProperty('localCache');
+		$property->setAccessible(true);
+		/** @var ICache $localCache */
+		$localCache = $property->getValue();
+		if ($localCache instanceof ICache) {
+			$localCache->clear();
+		}
+		$property->setAccessible(false);
+		$property = $storage->getProperty('distributedCache');
+		$property->setAccessible(true);
+		/** @var ICache $localCache */
+		$distributedCache = $property->getValue();
+		if ($distributedCache instanceof ICache) {
+			$distributedCache->clear();
+		}
+		$property->setAccessible(false);
 	}
 
 	/**
