@@ -27,8 +27,6 @@
  *
  */
 
-$l = \OC::$server->getL10N('files_sharing');
-
 \OCA\Files_Sharing\Helper::registerHooks();
 
 \OCP\Share::registerBackend('file', 'OCA\Files_Sharing\ShareBackend\File');
@@ -63,38 +61,41 @@ $eventDispatcher->addListener(
 $config = \OC::$server->getConfig();
 if ($config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
 
-	\OCA\Files\App::getNavigationManager()->add(
-		[
-			"id" => 'sharingin',
-			"appname" => 'files_sharing',
-			"script" => 'list.php',
-			"order" => 10,
-			"name" => $l->t('Shared with you')
-		]
-	);
+	\OCA\Files\App::getNavigationManager()->add(function () {
+		$l = \OC::$server->getL10N('files_sharing');
+		return [
+			'id' => 'sharingin',
+			'appname' => 'files_sharing',
+			'script' => 'list.php',
+			'order' => 10,
+			'name' => $l->t('Shared with you'),
+		];
+	});
 
 	if (\OCP\Util::isSharingDisabledForUser() === false) {
 
-		\OCA\Files\App::getNavigationManager()->add(
-			[
-				"id" => 'sharingout',
-				"appname" => 'files_sharing',
-				"script" => 'list.php',
-				"order" => 15,
-				"name" => $l->t('Shared with others')
-			]
-		);
+		\OCA\Files\App::getNavigationManager()->add(function () {
+			$l = \OC::$server->getL10N('files_sharing');
+			return [
+				'id' => 'sharingout',
+				'appname' => 'files_sharing',
+				'script' => 'list.php',
+				'order' => 15,
+				'name' => $l->t('Shared with others'),
+			];
+		});
 		// Check if sharing by link is enabled
 		if ($config->getAppValue('core', 'shareapi_allow_links', 'yes') === 'yes') {
-			\OCA\Files\App::getNavigationManager()->add(
-				[
-					"id" => 'sharinglinks',
-					"appname" => 'files_sharing',
-					"script" => 'list.php',
-					"order" => 20,
-					"name" => $l->t('Shared by link')
-				]
-			);
+			\OCA\Files\App::getNavigationManager()->add(function () {
+				$l = \OC::$server->getL10N('files_sharing');
+				return [
+					'id' => 'sharinglinks',
+					'appname' => 'files_sharing',
+					'script' => 'list.php',
+					'order' => 20,
+					'name' => $l->t('Shared by link'),
+				];
+			});
 		}
 	}
 }
