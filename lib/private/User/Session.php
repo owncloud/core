@@ -707,7 +707,11 @@ class Session implements IUserSession, Emitter {
 						/** @var IAuthModule $authModule */
 						$authModule = OC::$server->query($class);
 
-						return $this->loginUser($authModule->auth($request), $authModule->getUserPassword($request));
+						if ($authModule instanceof IAuthModule) {
+							return $this->loginUser($authModule->auth($request), $authModule->getUserPassword($request));
+						} else {
+							throw new Exception("Could not load the auth module $class");
+						}
 					} catch (QueryException $exc) {
 						throw new Exception("Could not load the auth module $class");
 					}
