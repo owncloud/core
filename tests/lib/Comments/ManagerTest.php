@@ -12,14 +12,24 @@ use Test\TestCase;
  */
 class ManagerTest extends TestCase {
 
+	private $dbConn;
+
 	public function setUp() {
 		parent::setUp();
 
-		$sql = \OC::$server->getDatabaseConnection()->getDatabasePlatform()->getTruncateTableSQL('`*PREFIX*comments`');
-		\OC::$server->getDatabaseConnection()->prepare($sql)->execute();
+		$this->dbConn = \OC::$server->getDatabaseConnection();
+		$sql = $this->dbConn->getDatabasePlatform()->getTruncateTableSQL('`*PREFIX*comments`');
+		$this->dbConn->prepare($sql)->execute();
+		$sql = $this->dbConn->getDatabasePlatform()->getTruncateTableSQL('`*PREFIX*comments_read_markers`');
+		$this->dbConn->prepare($sql)->execute();
 	}
 
-	protected function addDatabaseEntry($parentId, $topmostParentId, $creationDT = null, $latestChildDT = null) {
+	public function tearDown() {
+		$this->dbConn->getQueryBuilder()->delete('comments')->execute();
+		$this->dbConn->getQueryBuilder()->delete('comments_read_markers')->execute();
+	}
+
+	protected function addDatabaseEntry($parentId, $topmostParentId, $creationDT = null, $latestChildDT = null, $actor_id = 'alice', $object_id = 'file64') {
 		if(is_null($creationDT)) {
 			$creationDT = new \DateTime();
 		}
@@ -27,7 +37,7 @@ class ManagerTest extends TestCase {
 			$latestChildDT = new \DateTime('yesterday');
 		}
 
-		$qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$qb = $this->dbConn->getQueryBuilder();
 		$qb
 			->insert('comments')
 			->values([
@@ -35,13 +45,13 @@ class ManagerTest extends TestCase {
 					'topmost_parent_id' 		=> $qb->createNamedParameter($topmostParentId),
 					'children_count' 			=> $qb->createNamedParameter(2),
 					'actor_type' 				=> $qb->createNamedParameter('users'),
-					'actor_id' 					=> $qb->createNamedParameter('alice'),
+					'actor_id' 					=> $qb->createNamedParameter($actor_id),
 					'message' 					=> $qb->createNamedParameter('nice one'),
 					'verb' 						=> $qb->createNamedParameter('comment'),
 					'creation_timestamp' 		=> $qb->createNamedParameter($creationDT, 'datetime'),
 					'latest_child_timestamp'	=> $qb->createNamedParameter($latestChildDT, 'datetime'),
 					'object_type' 				=> $qb->createNamedParameter('files'),
-					'object_id' 				=> $qb->createNamedParameter('file64'),
+					'object_id' 				=> $qb->createNamedParameter($object_id),
 			])
 			->execute();
 
@@ -291,6 +301,65 @@ class ManagerTest extends TestCase {
 
 		$amount = $manager->getNumberOfCommentsForObject('files', 'file64');
 		$this->assertSame($amount, 4);
+	}
+
+	public function testGetNumberOfUnreadCommentsForNodes() {
+		$manager = $this->getManager();
+		$user1 = $this->createMock(\OCP\IUser::class);
+		$user1->expects($this->any())
+			->method('getUID')
+			->willReturn('piotr');
+		$user2 = $this->createMock(\OCP\IUser::class);
+		$user2->expects($this->any())
+			->method('getUID')
+			->willReturn('karolina');
+		$user3 = $this->createMock(\OCP\IUser::class);
+		$user3->expects($this->any())
+			->method('getUID')
+			->willReturn('artur');
+
+		// Add comments and karolina never read any comment from piotr
+		$commentsTimeStamp = new \DateTime('2017-03-01 15:00:00 EDT');
+		for ($i = 0; $i< 200; $i++) {
+			$this->addDatabaseEntry(0, 0, $commentsTimeStamp, $commentsTimeStamp, 'piotr', '36');
+		}
+		$this->addDatabaseEntry(0, 0, $commentsTimeStamp, $commentsTimeStamp, 'piotr', '40');
+		$this->addDatabaseEntry(0, 0, $commentsTimeStamp, $commentsTimeStamp, 'piotr', '40');
+		$this->addDatabaseEntry(0, 0, $commentsTimeStamp, $commentsTimeStamp, 'piotr', '20');
+		$this->addDatabaseEntry(0, 0, $commentsTimeStamp, $commentsTimeStamp, 'artur', '21');
+		$this->addDatabaseEntry(0, 0, $commentsTimeStamp, $commentsTimeStamp, 'artur', '15');
+		$manager->setReadMark('files', '36', $commentsTimeStamp, $user1);
+		$manager->setReadMark('files', '40', $commentsTimeStamp, $user1);
+		$manager->setReadMark('files', '20', $commentsTimeStamp, $user1);
+		$manager->setReadMark('files', '21', $commentsTimeStamp, $user3);
+		$manager->setReadMark('files', '15', $commentsTimeStamp, $user3);
+
+		$expectedHashMap = array();
+		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40','20','105'], $user1);
+		$this->assertSame($amount, $expectedHashMap);
+
+		$expectedHashMap = array();
+		$expectedHashMap['36'] = 200;
+		$expectedHashMap['40'] = 2;
+		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40', '80','25'], $user2);
+		$this->assertSame($amount, $expectedHashMap);
+
+		// Karolina now read the comments from piotr day later
+		$commentsTimeStamp1 = new \DateTime('2017-03-02 15:00:00 EDT');
+		$manager->setReadMark('files', '36', $commentsTimeStamp1, $user2);
+		$manager->setReadMark('files', '40', $commentsTimeStamp1, $user2);
+		$expectedHashMap = array();
+		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40','80','25'], $user2);
+		$this->assertSame($amount, $expectedHashMap);
+
+		// Karolina added another comment to piotr after that, so piotr will have one unread comment
+		$commentsTimeStamp2 = new \DateTime('2017-03-02 15:00:01 EDT');
+		$this->addDatabaseEntry(0, 0, $commentsTimeStamp2, $commentsTimeStamp2, 'karolina', '36');
+		$manager->setReadMark('files', '36', $commentsTimeStamp2, $user2);
+		$expectedHashMap = array();
+		$expectedHashMap['36'] = 1;
+		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40','20','105'], $user1);
+		$this->assertSame($amount, $expectedHashMap);
 	}
 
 	public function invalidCreateArgsProvider() {
