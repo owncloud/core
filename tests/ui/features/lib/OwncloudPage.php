@@ -44,6 +44,10 @@ class OwncloudPage extends Page
 
 	}
 	
+	public function getNotificationText() {
+		return $this->findById("notification")->getText();
+	}
+	
 	/**
 	 * Determine if a Mink NodeElement contains a specific
 	 * css rule attribute value.

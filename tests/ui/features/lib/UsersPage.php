@@ -32,9 +32,18 @@ class UsersPage extends OwncloudPage
 	 */
 	protected $path = '/index.php/settings/users';
 	
+	protected $userTrXpath = ".//table[@id='userlist']/tbody/tr";
+	
+	protected $quotaSelectXpath = ".//select[@class='quota-user']";
+	
+	protected $quotaOptionXpath = "//option[contains(text(), '%s')]";
+	
+	protected $manualQuotaInputXpath = "//input[contains(@data-original-title,".
+										"'Please enter storage quota')]";
+	
 	public function findUserInTable($username)
 	{
-		$userTrs = $this->findAll('xpath', ".//table[@id='userlist']/tbody/tr");
+		$userTrs = $this->findAll('xpath', $this->userTrXpath);
 		
 		foreach ( $userTrs as $userTr ) {
 			$user = $userTr->find("css", ".name");
@@ -48,20 +57,31 @@ class UsersPage extends OwncloudPage
 	public function getQuotaOfUser($username)
 	{
 		$userTr = $this->findUserInTable($username);
-		$selectField = $userTr->find(
-			'xpath',
-			".//select[@class='quota-user']//option[@selected='selected']"
+		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
+		
+		$selectField = $selectField->find(
+			'xpath', "//option[@selected='selected']"
 		);
+		
 		return $selectField->getText();
 	}
 	
 	public function setQuotaOfUserTo($username, $quota)
 	{
 		$userTr = $this->findUserInTable($username);
-		$selectField = $userTr->find(
-			'xpath',
-			".//select[@class='quota-user']//option[contains(text(), '".$quota."')]"
+		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
+		
+		$selectOption = $selectField->find(
+			'xpath', sprintf($this->quotaOptionXpath, $quota)
 		);
-		$selectField->click();
+		if ($selectOption === null) {
+			$selectOption = $selectField->find(
+				'xpath', sprintf($this->quotaOptionXpath, "Other")
+			);
+			$selectOption->click();
+			$this->find('xpath', $this->manualQuotaInputXpath)->setValue($quota);
+		} else {
+			$selectOption->click();
+		}
 	}
 }
