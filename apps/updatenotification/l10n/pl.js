@@ -9,6 +9,7 @@ OC.L10N.register(
     "Updater" : "Aktualizator",
     "A new version is available: %s" : "Dostępna jest nowa wersja: %s",
     "Open updater" : "Otwórz aktualizator",
+    "Show changelog" : "Pokaż historię zmian",
     "Your version is up to date." : "Posiadasz aktualną wersję.",
     "Checked on %s" : "Sprawdzone na %s",
     "Update channel:" : "Kanał aktualizacji:",

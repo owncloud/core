@@ -12,6 +12,7 @@
     "Checked on %s" : "Athugað þann %s",
     "Update channel:" : "Uppfærslurás:",
     "You can always update to a newer version / experimental channel. But you can never downgrade to a more stable channel." : "Þú getur alltaf uppfært í nýrri útgáfu eða tilraunaútgáfurás. En þú getur aldrei niðurfært í stöðugri rás.",
-    "Notify members of the following groups about available updates:" : "Tilkynna meðlimum eftirfarandi hópa um tiltækar uppfærslur:"
+    "Notify members of the following groups about available updates:" : "Tilkynna meðlimum eftirfarandi hópa um tiltækar uppfærslur:",
+    "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Eingöngu eru eru tiltækar tilkynningar fyrir uppfærslur forrita, vegna þess að valin uppfærslurás fyrir sjálft ownCloud leyfir ekki tilkynningar."
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }
