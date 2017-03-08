@@ -77,6 +77,32 @@ class Cluster {
 	}
 
 	/**
+	 * @param string $userId
+	 * @return string
+	 */
+	public function hideClusterInUserId($userId) {
+		if (empty(\OC::$server->getConfig()->getSystemValue('cluster.nodes', []))) {
+			return $userId;
+		}
+		try {
+			list ($user, $remote) = $this->addressHandler->splitUserRemote($userId);
+		} catch (HintException $ex) {
+			return $userId;
+		}
+		$remote = $this->addressHandler->removeProtocolFromUrl($remote);
+
+		// check if id has cluster remote
+		if ($this->isClusterMember($remote)) {
+			$cluster = $this->getClusterHost();
+			\OC::$server->getLogger()->debug("$userId mapped to $user@$cluster", ['app' => 'cluster']);
+			return "$user@$cluster";
+		}
+
+		\OC::$server->getLogger()->warning("$userId is not a cluster member", ['app' => 'cluster']);
+		return $userId;
+	}
+
+	/**
 	 * @param $userId
 	 * @return array with node name and node url
 	 */
