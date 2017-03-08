@@ -42,6 +42,61 @@ OCP\JSON::callCheck();
 
 $defaults = new \OCP\Defaults();
 
+/**
+ * @return mixed
+ */
+function getGroups($search = '', $limit = null, $offset = null) {
+	$groups = \OC::$server->getGroupManager()->search($search, $limit, $offset);
+	$groupIds = [];
+	foreach ($groups as $group) {
+		$groupIds[] = $group->getGID();
+	}
+	return $groupIds;
+}
+
+/**
+ * @param $gids
+ * @param $limit
+ * @param $offset
+ * @return mixed
+ */
+function displayNamesInGroups($gids, $search = '', $limit = -1, $offset = 0) {
+	$displayNames = [];
+	foreach ($gids as $gid) {
+		// TODO Need to apply limits to groups as total
+		$diff = array_diff(
+			\OC::$server->getGroupManager()->displayNamesInGroup($gid, $search, $limit, $offset),
+			$displayNames
+		);
+		if ($diff) {
+			// A fix for LDAP users. array_merge loses keys...
+			$displayNames = $diff + $displayNames;
+		}
+	}
+	return $displayNames;
+}
+
+/**
+ * @param $gid
+ * @param string $search
+ * @param int $limit
+ * @param int $offset
+ * @return array
+ */
+function usersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
+	$group = \OC::$server->getGroupManager()->get($gid);
+	if ($group) {
+		$users = $group->searchUsers($search, $limit, $offset);
+		$userIds = [];
+		foreach ($users as $user) {
+			$userIds[] = $user->getUID();
+		}
+		return $userIds;
+	} else {
+		return [];
+	}
+}
+
 if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSource'])) {
 	switch ($_POST['action']) {
 		case 'informRecipients':
@@ -56,7 +111,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			if($shareType === \OCP\Share::SHARE_TYPE_USER) {
 				$recipientList[] = $userManager->get($recipient);
 			} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
-				$recipientList = \OC_Group::usersInGroup($recipient);
+				$recipientList = usersInGroup($recipient);
 				$group = \OC::$server->getGroupManager()->get($recipient);
 				$recipientList = $group->searchUsers('');
 			}
@@ -244,9 +299,12 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			if (isset($_GET['search'])) {
 				$shareWithinGroupOnly = OC\Share\Share::shareWithGroupMembersOnly();
 				$shareWith = [];
-				$groups = OC_Group::getGroups((string)$_GET['search']);
+				$groups = getGroups((string)$_GET['search']);
 				if ($shareWithinGroupOnly) {
-					$usergroups = OC_Group::getUserGroups(OC_User::getUser());
+					$usergroups = \OC::$server->getGroupManager()->getUserIdGroups(OC_User::getUser());
+					$usergroups = array_values(array_map(function(\OCP\IGroup $g) {
+						return $g->getGID();
+					}, $usergroups));
 					$groups = array_intersect($groups, $usergroups);
 				}
 
@@ -273,7 +331,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				while ($count < $request_limit && count($users) == $limit) {
 					$limit = $request_limit - $count;
 					if ($shareWithinGroupOnly) {
-						$users = OC_Group::displayNamesInGroups($usergroups, (string)$_GET['search'], $limit, $offset);
+						$users = displayNamesInGroups($usergroups, (string)$_GET['search'], $limit, $offset);
 					} else {
 						$users = OC_User::getDisplayNames((string)$_GET['search'], $limit, $offset);
 					}
