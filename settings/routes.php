@@ -74,8 +74,6 @@ $this->create('settings_users', '/settings/users')
 	->actionInclude('settings/users.php');
 // Settings ajax actions
 // users
-$this->create('settings_ajax_setenabled', '/settings/ajax/setenabled.php')
-        ->actionInclude('settings/ajax/setenabled.php');
 $this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
 	->actionInclude('settings/ajax/setquota.php');
 $this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups.php')

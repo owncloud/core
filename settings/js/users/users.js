@@ -590,15 +590,18 @@ var UserList = {
          * @param {Function} ready callback after save
          */
         _updateEnabled: function(uid, enabled, ready) {
-                $.post(
-                        OC.filePath('settings', 'ajax', 'setenabled.php'),
-                        {username: uid, enabled: enabled},
-                        function (result) {
-                                if (ready) {
-                                        ready(result.data.enabled);
-                                }
-                        }
-                );
+		$.post(
+			OC.generateUrl('/settings/users/{id}/enabled', {id: uid}),
+			{username: uid, enabled: enabled},
+			function (result) {
+                               	if(result.status == 'success') {
+					var msg = 'User have been ' + (result.data.enabled === 'true' ? 'enabled'  : 'disabled') + '!'; 
+					OC.Notification.showTemporary(t('admin', msg));
+				} else {
+					OC.Notification.showTemporary(t('admin', result.data.message));
+				}
+			}
+		);
         },
 
 

@@ -670,51 +670,60 @@ class UsersController extends Controller {
 	 * @return DataResponse
 	 */
 	public function setEnabled($id, $enabled) {
-		$userId = $this->userSession->getUser()->getUID();
-		$user = $this->userManager->get($id);
-		if($userId === $id) {
-			return new DataResponse(
-				[
-					'status' => 'error',
-					'data' => [
-						'message' => (string)$this->l10n->t('Unable to disable user.')
-					]
-				],
-				Http::STATUS_FORBIDDEN
-			);
+                $userId = $this->userSession->getUser()->getUID();
+                $user = $this->userManager->get($id);
+
+                if($userId === $id
+                        && !$this->isAdmin
+                        && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
+                        return new DataResponse(
+                                array(
+                                        'status' => 'error',
+                                        'data' => array(
+                                                'message' => (string)$this->l10n->t('Forbidden')
+                                        )
+                                ),
+                                Http::STATUS_FORBIDDEN
+                        );
+                }
+
+
+                if(!$user){
+                        return new DataResponse(
+                                array(
+                                        'status' => 'error',
+                                        'data' => array(
+                                                'message' => (string)$this->l10n->t('Invalid user')
+                                        )
+                                ),
+                                Http::STATUS_UNPROCESSABLE_ENTITY
+                        );
+                }
+
+		if($enabled !== 'true' && $enabled !== 'false')
+		{
+                        return new DataResponse(
+                                array(
+                                        'status' => 'error',
+                                        'data' => array(
+                                                'message' => (string)$this->l10n->t('Unable to enable/disable user.')
+                                        )
+                                ),
+                                Http::STATUS_FORBIDDEN
+                        );
 		}
-		if(!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
-			return new DataResponse(
-				[
-					'status' => 'error',
-					'data' => [
-						'message' => (string)$this->l10n->t('Authentication error')
-					]
-				],
-				Http::STATUS_FORBIDDEN
-			);
-		}
-		if($user) {
-			if($user->setEnabled($enabled)) {
-				return new DataResponse(
-					[
-						'status' => 'success',
-						'data' => [
-							'username' => $id
-						]
-					],
-					Http::STATUS_NO_CONTENT
-				);
-			}
-		}
+
+		$user->setEnabled($enabled === 'true' ? true : false);
+
 		return new DataResponse(
 			[
-				'status' => 'error',
+				'status' => 'success',
 				'data' => [
-					'message' => (string)$this->l10n->t('Unable to disable user.')
+					'username' => $id,
+					'enabled' => $enabled
 				]
 			],
-			Http::STATUS_FORBIDDEN
+			Http::STATUS_OK
 		);
 	}
 }
