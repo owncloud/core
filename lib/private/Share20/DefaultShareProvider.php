@@ -125,6 +125,9 @@ class DefaultShareProvider implements IShareProvider {
 			if (method_exists($share, 'getParent')) {
 				$qb->setValue('parent', $qb->createNamedParameter($share->getParent()));
 			}
+
+			// Set user-defined name
+			$qb->setValue('share_name', $qb->createNamedParameter($share->getName()));
 		} else {
 			throw new \Exception('invalid share type!');
 		}
@@ -246,6 +249,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('token', $qb->createNamedParameter($share->getToken()))
 				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
+				->set('share_name', $qb->createNamedParameter($share->getName()))
 				->execute();
 		}
 
@@ -848,6 +852,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		$share->setNodeId((int)$data['file_source']);
 		$share->setNodeType($data['item_type']);
+		$share->setName($data['share_name']);
 
 		if ($data['expiration'] !== null) {
 			$expiration = \DateTime::createFromFormat('Y-m-d H:i:s', $data['expiration']);

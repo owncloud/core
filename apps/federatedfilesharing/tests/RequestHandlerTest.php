@@ -355,7 +355,8 @@ class RequestHandlerTest extends TestCase {
 			'parent' => null,
 			'accepted' => '0',
 			'expiration' => null,
-			'mail_send' => '0'
+			'mail_send' => '0',
+			'share_name' => null,
 		];
 
 		$searchToken = $correctToken ? 'token' : 'wrongToken';

@@ -217,7 +217,7 @@ class Share20OCSTest extends TestCase {
 
 	public function createShare($id, $shareType, $sharedWith, $sharedBy, $shareOwner, $path, $permissions,
 								$shareTime, $expiration, $parent, $target, $mail_send, $token=null,
-								$password=null) {
+								$password=null, $name=null) {
 		$share = $this->createMock('\OCP\Share\IShare');
 		$share->method('getId')->willReturn($id);
 		$share->method('getShareType')->willReturn($shareType);
@@ -234,6 +234,7 @@ class Share20OCSTest extends TestCase {
 		$share->method('getMailSend')->willReturn($mail_send);
 		$share->method('getToken')->willReturn($token);
 		$share->method('getPassword')->willReturn($password);
+		$share->method('getName')->willReturn($name);
 
 		if ($shareType === Share::SHARE_TYPE_USER  ||
 			$shareType === Share::SHARE_TYPE_GROUP ||
@@ -375,7 +376,8 @@ class Share20OCSTest extends TestCase {
 			'target',
 			0,
 			'token',
-			'password'
+			'password',
+			'some_name'
 		);
 		$expected = [
 			'id' => 101,
@@ -402,6 +404,7 @@ class Share20OCSTest extends TestCase {
 			'uid_file_owner' => 'ownerId',
 			'displayname_file_owner' => 'ownerDisplay',
 			'mimetype' => 'myFolderMimeType',
+			'name' => 'some_name',
 		];
 		$data[] = [$share, $expected];
 
@@ -2178,6 +2181,7 @@ class Share20OCSTest extends TestCase {
 			->setPassword('mypassword')
 			->setExpirationDate(new \DateTime('2001-01-02T00:00:00'))
 			->setToken('myToken')
+			->setName('some_name')
 			->setId(42);
 
 		$result[] = [
@@ -2206,6 +2210,7 @@ class Share20OCSTest extends TestCase {
 				'mail_send' => 0,
 				'url' => 'myLink',
 				'mimetype' => 'myMimeType',
+				'name' => 'some_name',
 			], $share, [], false
 		];
 

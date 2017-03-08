@@ -97,7 +97,7 @@ class DefaultShareProviderTest extends TestCase {
 	 */
 	private function addShareToDB($shareType, $sharedWith, $sharedBy, $shareOwner,
 			$itemType, $fileSource, $fileTarget, $permissions, $token, $expiration,
-			$parent = null) {
+			$parent = null, $name = null) {
 		$qb = $this->dbConn->getQueryBuilder();
 		$qb->insert('share');
 
@@ -112,6 +112,7 @@ class DefaultShareProviderTest extends TestCase {
 		if ($token) $qb->setValue('token', $qb->expr()->literal($token));
 		if ($expiration) $qb->setValue('expiration', $qb->createNamedParameter($expiration, IQueryBuilder::PARAM_DATE));
 		if ($parent) $qb->setValue('parent', $qb->expr()->literal($parent));
+		if ($name) $qb->setValue('share_name', $qb->expr()->literal($name));
 
 		$this->assertEquals(1, $qb->execute());
 		return$qb->getLastInsertId();
@@ -347,6 +348,7 @@ class DefaultShareProviderTest extends TestCase {
 				'file_target' => $qb->expr()->literal('myTarget'),
 				'permissions' => $qb->expr()->literal(13),
 				'token' => $qb->expr()->literal('token'),
+				'share_name' => $qb->expr()->literal('some_name'),
 				'expiration' => $qb->expr()->literal('2000-01-02 00:00:00'),
 			]);
 		$this->assertEquals(1, $qb->execute());
@@ -375,6 +377,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals('token', $share->getToken());
 		$this->assertEquals(\DateTime::createFromFormat('Y-m-d H:i:s', '2000-01-02 00:00:00'), $share->getExpirationDate());
 		$this->assertEquals('myTarget', $share->getTarget());
+		$this->assertEquals('some_name', $share->getName());
 	}
 
 	public function testDeleteSingleShare() {
@@ -727,6 +730,7 @@ class DefaultShareProviderTest extends TestCase {
 		$share->setPermissions(1);
 		$share->setPassword('password');
 		$share->setToken('token');
+		$share->setName('some_name');
 		$expireDate = new \DateTime();
 		$share->setExpirationDate($expireDate);
 		$share->setTarget('/target');
@@ -744,7 +748,12 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame($path, $share2->getNode());
 		$this->assertSame('password', $share2->getPassword());
 		$this->assertSame('token', $share2->getToken());
+		$this->assertSame('some_name', $share2->getName());
 		$this->assertEquals($expireDate->format(\DateTime::ISO8601), $share2->getExpirationDate()->format(\DateTime::ISO8601));
+
+		$share->setName(null);
+		$share2 = $this->provider->create($share);
+		$this->assertNull($share2->getName());
 	}
 
 	public function testGetShareByToken() {
@@ -761,6 +770,7 @@ class DefaultShareProviderTest extends TestCase {
 				'file_target'   => $qb->expr()->literal('myTarget'),
 				'permissions'   => $qb->expr()->literal(13),
 				'token'         => $qb->expr()->literal('secrettoken'),
+				'share_name'          => $qb->expr()->literal('some_name'),
 			]);
 		$qb->execute();
 		$id = $qb->getLastInsertId();
@@ -777,6 +787,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('secrettoken', $share->getToken());
 		$this->assertSame('password', $share->getPassword());
 		$this->assertSame(null, $share->getSharedWith());
+		$this->assertSame('some_name', $share->getName());
 	}
 
 	/**
@@ -1867,7 +1878,7 @@ class DefaultShareProviderTest extends TestCase {
 
 	public function testUpdateLink() {
 		$id = $this->addShareToDB(Share::SHARE_TYPE_LINK, null, 'user1', 'user2',
-			'file', 42, 'target', 31, null, null);
+			'file', 42, 'target', 31, 'tehtoken', null, null, 'some_name');
 
 		$users = [];
 		for($i = 0; $i < 6; $i++) {
@@ -1904,6 +1915,8 @@ class DefaultShareProviderTest extends TestCase {
 		$share->setShareOwner('user5');
 		$share->setNode($file2);
 		$share->setPermissions(1);
+		$share->setToken('anothertoken');
+		$share->setName('another_name');
 
 		$share2 = $this->provider->update($share);
 
@@ -1912,6 +1925,13 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('user4', $share2->getSharedBy());
 		$this->assertSame('user5', $share2->getShareOwner());
 		$this->assertSame(1, $share2->getPermissions());
+		$this->assertSame('anothertoken', $share2->getToken());
+		$this->assertSame('another_name', $share2->getName());
+
+		$share->setName(null);
+
+		$share2 = $this->provider->update($share);
+		$this->assertNull($share2->getName());
 	}
 
 	public function testUpdateLinkRemovePassword() {
