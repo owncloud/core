@@ -38,6 +38,7 @@ use OCP\IDBConnection;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
+use OCP\UserInterface;
 
 /**
  * Class Manager
@@ -355,8 +356,8 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
-	 * @param $uid
-	 * @param $backend
+	 * @param string $uid
+	 * @param UserInterface $backend
 	 * @return Account|\OCP\AppFramework\Db\Entity
 	 */
 	private function newAccount($uid, $backend) {
@@ -365,12 +366,11 @@ class Manager extends PublicEmitter implements IUserManager {
 		$account->setBackend(get_class($backend));
 		$account->setState(Account::STATE_ENABLED);
 		$account->setLastLogin(0);
-		$b = $account->getBackendInstance();
-		if ($b->implementsActions(Backend::GET_DISPLAYNAME)) {
-			$account->setDisplayName($b->getDisplayName($uid));
+		if ($backend->implementsActions(Backend::GET_DISPLAYNAME)) {
+			$account->setDisplayName($backend->getDisplayName($uid));
 		}
-		if ($b->implementsActions(Backend::GET_HOME)) {
-			$account->setHome($b->getHome($uid));
+		if ($backend->implementsActions(Backend::GET_HOME)) {
+			$account->setHome($backend->getHome($uid));
 		}
 		$account = $this->accountMapper->insert($account);
 		return $account;

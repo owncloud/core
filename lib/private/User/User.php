@@ -157,7 +157,7 @@ class User implements IUser {
 	 * @return int
 	 */
 	public function getLastLogin() {
-		return (int)$this->account->getLastLogin();
+		return $this->account->getLastLogin();
 	}
 
 	/**
@@ -312,7 +312,7 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function isEnabled() {
-		return (int)$this->account->getState() === Account::STATE_ENABLED;
+		return $this->account->getState() === Account::STATE_ENABLED;
 	}
 
 	/**
