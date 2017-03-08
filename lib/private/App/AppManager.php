@@ -30,6 +30,7 @@
 
 namespace OC\App;
 
+use OC_App;
 use OC\Installer;
 use OCP\App\IAppManager;
 use OCP\App\ManagerEvent;
@@ -212,7 +213,7 @@ class AppManager implements IAppManager {
 	 * @param string $appId
 	 */
 	public function enableApp($appId) {
-		if(!Installer::isInstalled($appId)) {
+		if(OC_App::getAppPath($appId) === false) {
 			throw new \Exception("$appId can't be enabled since it is not installed.");
 		}
 		$this->installedAppsCache[$appId] = 'yes';
