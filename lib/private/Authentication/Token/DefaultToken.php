@@ -111,6 +111,7 @@ class DefaultToken extends Entity implements IToken {
 			'name' => $this->name,
 			'lastActivity' => $this->lastActivity,
 			'type' => $this->type,
+			'canDelete' => true,
 		];
 	}
 
