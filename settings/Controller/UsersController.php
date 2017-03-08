@@ -190,6 +190,7 @@ class UsersController extends Controller {
 			'displayname' => $user->getDisplayName(),
 			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user) : $userGroups,
 			'subadmin' => $subAdminGroups,
+			'isEnabled' => $user->isEnabled(),
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin() * 1000,
@@ -660,5 +661,60 @@ class UsersController extends Controller {
 				],
 			]);
 		}
+	}
+
+	/**
+	 * @NoAdminRequired
+	 *
+	 * @param string $id
+	 * @return DataResponse
+	 */
+	public function setEnabled($id, $enabled) {
+		$userId = $this->userSession->getUser()->getUID();
+		$user = $this->userManager->get($id);
+		if($userId === $id) {
+			return new DataResponse(
+				[
+					'status' => 'error',
+					'data' => [
+						'message' => (string)$this->l10n->t('Unable to disable user.')
+					]
+				],
+				Http::STATUS_FORBIDDEN
+			);
+		}
+		if(!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
+			return new DataResponse(
+				[
+					'status' => 'error',
+					'data' => [
+						'message' => (string)$this->l10n->t('Authentication error')
+					]
+				],
+				Http::STATUS_FORBIDDEN
+			);
+		}
+		if($user) {
+			if($user->setEnabled($enabled)) {
+				return new DataResponse(
+					[
+						'status' => 'success',
+						'data' => [
+							'username' => $id
+						]
+					],
+					Http::STATUS_NO_CONTENT
+				);
+			}
+		}
+		return new DataResponse(
+			[
+				'status' => 'error',
+				'data' => [
+					'message' => (string)$this->l10n->t('Unable to disable user.')
+				]
+			],
+			Http::STATUS_FORBIDDEN
+		);
 	}
 }

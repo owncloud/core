@@ -49,6 +49,7 @@ $application->registerRoutes($this, [
 		['name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/security/trustedDomains', 'verb' => 'POST'],
 		['name' => 'Users#setDisplayName', 'url' => '/settings/users/{username}/displayName', 'verb' => 'POST'],
 		['name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'],
+		['name' => 'Users#setEnabled', 'url' => '/settings/users/{id}/enabled', 'verb' => 'POST'],
 		['name' => 'Users#stats', 'url' => '/settings/users/stats', 'verb' => 'GET'],
 		['name' => 'LogSettings#setLogLevel', 'url' => '/settings/admin/log/level', 'verb' => 'POST'],
 		['name' => 'LogSettings#download', 'url' => '/settings/admin/log/download', 'verb' => 'GET'],
@@ -73,6 +74,8 @@ $this->create('settings_users', '/settings/users')
 	->actionInclude('settings/users.php');
 // Settings ajax actions
 // users
+$this->create('settings_ajax_setenabled', '/settings/ajax/setenabled.php')
+        ->actionInclude('settings/ajax/setenabled.php');
 $this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
 	->actionInclude('settings/ajax/setquota.php');
 $this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups.php')

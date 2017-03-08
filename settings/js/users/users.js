@@ -27,6 +27,7 @@ var UserList = {
 
 		// initially the list might already contain user entries (not fully ajaxified yet)
 		// initialize these entries
+		this.$el.find('#isEnabled').on('change', this.onEnabledChange);
 		this.$el.find('.quota-user').singleSelect().on('change', this.onQuotaSelect);
 	},
 
@@ -39,6 +40,7 @@ var UserList = {
 	 * 				'displayname': 		'Users display name',
 	 * 				'groups': 			['group1', 'group2'],
 	 * 				'subadmin': 		['group4', 'group5'],
+	 *				'enabled'			'true'
 	 *				'quota': 			'10 GB',
 	 *				'storageLocation':	'/srv/www/owncloud/data/username',
 	 *				'lastLogin':		'1418632333'
@@ -94,6 +96,13 @@ var UserList = {
 		var $tdSubadmins = $tr.find('td.subadmins');
 		this._updateGroupListLabel($tdSubadmins, user.subadmin);
 		$tdSubadmins.find('.action').tooltip({placement: 'top'});
+
+		/**
+                 * enabled
+		 */
+		var $tdEnabled = $tr.find('#isEnabled');
+		$tdEnabled.attr("checked", user.isEnabled);
+		$tdEnabled.on('change', UserList.onEnabledChange);
 
 		/**
 		 * remove action
@@ -557,6 +566,41 @@ var UserList = {
 			}
 		);
 	},
+
+	/**
+         * Event handler for when a enabled value has been changed.
+         * This will save the value.
+         */
+        onEnabledChange: function() {
+                var $select = $(this);
+                var uid = UserList.getUID($select);
+                var enabled = $select.attr('checked') ? 'true' : 'false';
+                UserList._updateEnabled(uid, enabled, function(returnedEnabled){
+                        if (enabled !== returnedEnabled) {
+				$select.find('#isEnabled').attr("checked", user.isEnabled);
+                        }
+                });
+        },
+
+
+        /**
+         * Saves the enabled value for the given user
+         * @param {String} [uid] optional user id, sets default quota if empty
+         * @param {String} enabled value
+         * @param {Function} ready callback after save
+         */
+        _updateEnabled: function(uid, enabled, ready) {
+                $.post(
+                        OC.filePath('settings', 'ajax', 'setenabled.php'),
+                        {username: uid, enabled: enabled},
+                        function (result) {
+                                if (ready) {
+                                        ready(result.data.enabled);
+                                }
+                        }
+                );
+        },
+
 
 	/**
 	 * Creates a temporary jquery.multiselect selector on the given group field
