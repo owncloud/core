@@ -150,7 +150,7 @@ class URLGenerator implements IURLGenerator {
 	 */
 	public function imagePath($app, $image) {
 		$cache = $this->cacheFactory->create('imagePath');
-		$cacheKey = $app.'-'.$image;
+		$cacheKey = $this->theme->getName().'-'.$app.'-'.$image;
 		if($key = $cache->get($cacheKey)) {
 			return $key;
 		}
