@@ -1521,7 +1521,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
 	}
 
-	private function mockUser($userId = 'foo', $displayName = 'M. Foo', $isEnabled = $true,
+	private function mockUser($userId = 'foo', $displayName = 'M. Foo', $isEnabled = true,
 							  $lastLogin = 500, $home = '/home/foo', $backend = 'OC_User_Database') {
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
