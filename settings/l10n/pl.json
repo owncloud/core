@@ -175,6 +175,7 @@
     "System locale can not be set to a one which supports UTF-8." : "Ustawienia regionalne systemu nie można ustawić na jeden, który obsługuje UTF-8.",
     "This means that there might be problems with certain characters in file names." : "Oznacza to, że mogą być problemy z niektórymi znakami w nazwach plików.",
     "We strongly suggest installing the required packages on your system to support one of the following locales: %s." : "Zalecamy instalację na Twoim systemie komponentów wymaganych do obsługi języków: %s",
+    "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Zwłaszcza w przypadku używania programu klienta do synchronizacji plików użycie bazy SQLite  jest niezalecane.",
     "Tips & tricks" : "Porady i wskazówki",
     "Get the apps to sync your files" : "Pobierz aplikacje żeby synchronizować swoje pliki",
     "Desktop client" : "Klient na komputer",
