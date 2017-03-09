@@ -81,7 +81,7 @@ class Storage {
 				$storageData['numeric_id'] = $this->numericId;
 				$storageData['last_checked'] = null;
 
-				// local cache has been initialized
+				// local cache has been initialized by self::getStorageById
 				self::$localCache->set($this->storageId, $storageData);
 
 				// distributed cache may need initializing
