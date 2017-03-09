@@ -64,6 +64,7 @@ trait WebDav {
 		} else {
 			$options['auth'] = [$user, $this->regularUser];
 		}
+
 		$request = $client->createRequest($method, $fullUrl, $options);
 		if (!is_null($headers)){
 			foreach ($headers as $key => $value) {
@@ -197,6 +198,19 @@ trait WebDav {
 	public function downloadingFile($fileName) {
 		try {
 			$this->response = $this->makeDavRequest($this->currentUser, 'GET', $fileName, []);
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
+	 * @When user :user downloads the file :fileName
+	 * @param string $user
+	 * @param string $fileName
+	 */
+	public function userDownloadsTheFile($user, $fileName) {
+		try {
+			$this->response = $this->makeDavRequest($user, 'GET', $fileName, []);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
