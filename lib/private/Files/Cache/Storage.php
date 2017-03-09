@@ -48,9 +48,9 @@ class Storage {
 	protected static $localCache = null;
 
 	/** @var ICache  */
-	protected static $distributedCache = null;
+	private static $distributedCache = null;
 
-	protected static $distributedCacheTTL = 300; // 5 Min
+	private static $distributedCacheTTL = 300; // 5 Min
 
 	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
@@ -73,7 +73,7 @@ class Storage {
 			$connection = \OC::$server->getDatabaseConnection();
 			$available = $isAvailable ? 1 : 0;
 			$storageData = ['id' => $this->storageId, 'available' => $available];
-			
+
 			if ($connection->insertIfNotExist('*PREFIX*storages', $storageData)) {
 				$this->numericId = (int)$connection->lastInsertId('*PREFIX*storages');
 
@@ -85,14 +85,8 @@ class Storage {
 				self::$localCache->set($this->storageId, $storageData);
 
 				// distributed cache may need initializing
-				if (self::$distributedCache === null) {
-					self::$distributedCache =
-						\OC::$server->getMemCacheFactory()->create('getStorageById');
-				}
-				self::$distributedCache->set(
-					$this->storageId,
-					$storageData,
-					self::$distributedCacheTTL
+				self::getDistributedCache()->set(
+					$this->storageId, $storageData, self::$distributedCacheTTL
 				);
 
 			} else {
@@ -123,22 +117,27 @@ class Storage {
 	}
 
 	/**
+	 * @return ICache
+	 */
+	private static function getDistributedCache() {
+		if (self::$distributedCache === null) {
+			self::$distributedCache =
+				\OC::$server->getMemCacheFactory()->create('getStorageById');
+		}
+		return self::$distributedCache;
+	}
+
+	/**
 	 * query the distributed cache for a storageid
 	 * @param string $storageId
 	 * @return array|false
 	 */
 	private static function getStorageByIdFromCache($storageId) {
-		if (self::$distributedCache === null) {
-			self::$distributedCache =
-				\OC::$server->getMemCacheFactory()->create('getStorageById');
-		}
-		$result = self::$distributedCache->get($storageId);
+		$result = self::getDistributedCache()->get($storageId);
 		if ($result === null) {
 			$result = self::getStorageByIdFromDb($storageId);
-			self::$distributedCache->set(
-				$storageId,
-				$result,
-				self::$distributedCacheTTL
+			self::getDistributedCache()->set(
+				$storageId,	$result, self::$distributedCacheTTL
 			);
 		}
 		return $result;
@@ -161,11 +160,7 @@ class Storage {
 			self::$localCache->remove($storageId);
 		}
 		// delete from distributed cache
-		if (self::$distributedCache === null) {
-			self::$distributedCache =
-				\OC::$server->getMemCacheFactory()->create('getStorageById');
-		}
-		self::$distributedCache->remove($storageId);
+		self::getDistributedCache()->remove($storageId);
 	}
 
 	/**
