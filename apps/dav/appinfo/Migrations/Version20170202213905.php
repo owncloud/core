@@ -96,7 +96,7 @@ class Version20170202213905 implements ISqlMigration {
 				$qb->expr()->isNull('fileid')
 			);
 		$this->statements[] = $dropQuery->getSQL();
-		
+
 		return $this->statements;
 	}
 
@@ -118,15 +118,15 @@ class Version20170202213905 implements ISqlMigration {
 			$updateQuery = $qb->resetQueryParts()
 				->update('properties')
 				->set(
-					'fileid', 
+					'fileid',
 					$qb->expr()->literal($fileId)
 				)
 				->where(
-					$qb->expr()->eq('userid', $userId)
+					$qb->expr()->eq('userid', $qb->expr()->literal($userId))
 				)
 				->andWhere(
 					$qb->expr()->eq(
-						'propertypath', 
+						'propertypath',
 						$qb->expr()->literal($entry['propertypath'])
 					)
 				);
