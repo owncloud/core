@@ -6,6 +6,8 @@
  * See the COPYING-README file.
  */
 
+/* global GroupList */
+
 var $userList;
 var $userListBody;
 
@@ -50,7 +52,7 @@ var UserList = {
 	 * @returns table row created for this user
 	 */
 	add: function (user, sort) {
-		if (this.currentGid && this.currentGid !== '_everyone' && _.indexOf(user.groups, this.currentGid) < 0) {
+		if (this.currentGid && this.currentGid !== '_everyone' && !_.findWhere(user.groups, {id: this.currentGid})) {
 			return;
 		}
 
@@ -438,6 +440,7 @@ var UserList = {
 						if (response.status === 'success') {
 							GroupList.update();
 							var groupName = response.data.groupname;
+							// FIXME: array format
 							if (UserList.availableGroups.indexOf(groupName) === -1 &&
 								response.data.action === 'add'
 							) {
@@ -583,12 +586,12 @@ var UserList = {
 				// can't become subadmin of "admin" group
 				return;
 			}
-			$groupsSelect.append($('<option value="' + escapeHTML(group) + '">' + escapeHTML(group) + '</option>'));
+			$groupsSelect.append($('<option value="' + escapeHTML(group.id) + '">' + escapeHTML(group.name) + '</option>'));
 		}
 
 		$.each(this.availableGroups, function (i, group) {
 			// some new groups might be selected but not in the available groups list yet
-			var extraIndex = extraGroups.indexOf(group);
+			var extraIndex = extraGroups.indexOf(group.id);
 			if (extraIndex >= 0) {
 				// remove extra group as it was found
 				extraGroups.splice(extraIndex, 1);
@@ -624,8 +627,8 @@ var UserList = {
 	_updateGroupListLabel: function($td, groups) {
 		var placeholder = $td.find('.groupsListContainer').attr('data-placeholder');
 		var $groupsEl = $td.find('.groupsList');
-		$groupsEl.text(groups.join(', ') || placeholder || t('settings', 'no group'));
-		$td.data('groups', groups);
+		$groupsEl.text(_.pluck(groups, 'name').join(', ') || placeholder || t('settings', 'no group'));
+		$td.data('groups', _.pluck(groups, 'id'));
 	}
 };
 
@@ -859,11 +862,12 @@ $(document).ready(function () {
 					if (result.groups) {
 						for (var i in result.groups) {
 							var gid = result.groups[i];
+							// FIXME: array format
 							if(UserList.availableGroups.indexOf(gid) === -1) {
 								UserList.availableGroups.push(gid);
 							}
-							$li = GroupList.getGroupLI(gid);
-							userCount = GroupList.getUserCount($li);
+							var $li = GroupList.getGroupLI(gid);
+							var userCount = GroupList.getUserCount($li);
 							GroupList.setUserCount($li, userCount + 1);
 						}
 					}
