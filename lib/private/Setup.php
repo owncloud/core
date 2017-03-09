@@ -362,7 +362,7 @@ class Setup {
 			$config->setAppValue('core', 'lastupdatedat', microtime(true));
 
 			\OC_User::useBackend(new \OC\User\Database());
-			\OC_Group::useBackend(new \OC\Group\Database());
+			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
 
 			$group =\OC::$server->getGroupManager()->createGroup('admin');
 			$group->addUser($user);
