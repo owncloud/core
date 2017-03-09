@@ -375,4 +375,11 @@ class Manager extends PublicEmitter implements IUserManager {
 		$account = $this->accountMapper->insert($account);
 		return $account;
 	}
+
+	public function getBackend($backendClass) {
+		if (isset($this->backends[$backendClass])) {
+			return $this->backends[$backendClass];
+		}
+		return null;
+	}
 }

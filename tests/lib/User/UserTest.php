@@ -192,6 +192,7 @@ class UserTest extends TestCase {
 	}
 
 	public function testGetBackendClassName() {
+		\OC::$server->getUserManager()->registerBackend(new Database());
 		$this->account->setBackend(Database::class);
 		$this->assertEquals('Database', $this->user->getBackendClassName());
 	}

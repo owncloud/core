@@ -121,6 +121,13 @@ class OC_App {
 		}
 		ob_end_clean();
 
+		// once all authentication apps are loaded we can validate the session
+		if (is_null($types) || in_array('authentication', $types)) {
+			if (\OC::$server->getUserSession()) {
+				\OC::$server->getUserSession()->validateSession();
+			}
+		}
+
 		return true;
 	}
 
