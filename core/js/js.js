@@ -214,6 +214,14 @@ var OC = {
 		return link;
 	},
 
+    /**
+     * Check if a user file is allowed to be handled.
+     * @param {string} file to check
+     */
+	fileIsBlacklisted: function(file) {
+		return !!(file.match(oc_config.blacklist_files_regex));
+	},
+
 	/**
 	 * Redirect to the target URL, can also be used for downloads.
 	 * @param {string} targetURL URL to redirect to
@@ -1473,7 +1481,7 @@ function initCore() {
 		var url = OC.generateUrl('/heartbeat');
 		var heartBeatTimeout = null;
 		var heartBeat = function () {
-			clearTimeout(heartBeatTimeout);
+			clearInterval(heartBeatTimeout);
 			heartBeatTimeout = setInterval(function () {
 				$.post(url);
 			}, interval * 1000);
@@ -1734,6 +1742,12 @@ function relative_modified_date(timestamp) {
 OC.Util = {
 	// TODO: remove original functions from global namespace
 	humanFileSize: humanFileSize,
+	
+	/**
+	* regular expression to parse size in bytes from a humanly readable string
+	* see computerFileSize(string)
+	*/
+	_computerFileSizeRegexp: /^[\s+]?([0-9]*)(\.([0-9]+))?( +)?([kmgtp]?b?)$/i,
 
 	/**
 	 * Returns a file size in bytes from a humanly readable string
@@ -1745,17 +1759,13 @@ OC.Util = {
 	 *
 	 */
 	computerFileSize: function (string) {
-		if (typeof string != 'string') {
+		if (typeof string !== 'string') {
 			return null;
 		}
 
-		var s = string.toLowerCase();
-		var bytes = parseFloat(s)
-
-		if (!isNaN(bytes) && isFinite(s)) {
-			return bytes;
-		}
-
+		var s = string.toLowerCase().trim();
+		var bytes = null;
+		
 		var bytesArray = {
 			'b': 1,
 			'k': 1024,
@@ -1770,11 +1780,17 @@ OC.Util = {
 			'p': 1024 * 1024 * 1024 * 1024 * 1024
 		};
 
-		var matches = s.match(/([kmgtp]?b?)$/i);
-		if (matches[1]) {
-			bytes = bytes * bytesArray[matches[1]];
+		var matches = s.match(this._computerFileSizeRegexp);
+		if (matches !== null) {
+			bytes = parseFloat(s);
+			if (!isFinite(bytes)) {
+				return null;
+			}
 		} else {
 			return null;
+		}
+		if (matches[5]) {
+			bytes = bytes * bytesArray[matches[5]];
 		}
 
 		bytes = Math.round(bytes);

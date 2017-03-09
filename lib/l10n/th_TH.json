@@ -60,6 +60,7 @@
     "General" : "ทั่วไป",
     "Storage" : "พื้นที่จัดเก็บข้อมูล",
     "Security" : "ความปลอดภัย",
+    "Authentication" : "รับรองความถูกต้อง",
     "Encryption" : "การเข้ารหัส",
     "Sharing" : "แชร์ข้อมูล",
     "Monitoring" : "กำลังตรวจสอบ",

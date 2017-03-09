@@ -4,7 +4,6 @@ OC.L10N.register(
     "Wrong password" : "Contrasenya incorrecta",
     "No user supplied" : "No heu proporcionat cap usuari",
     "Authentication error" : "Error d'autenticació",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Sisplau, proporcioneu una contrasenya de recuperació d'administrador, altrament totes les dades d'usuari es perdran",
     "Wrong admin recovery password. Please check the password and try again." : "La contrasenya de recuperació d'administrador és incorrecta. Comproveu-la i torneu-ho a intentar.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "El backend no admet canvis de contrasenya, però la clau de xifrat de l'usuari ha estat actualitzada satisfactòriament.",
     "Unable to change password" : "No es pot canviar la contrasenya",

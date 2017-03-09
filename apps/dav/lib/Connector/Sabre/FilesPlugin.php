@@ -271,6 +271,10 @@ class FilesPlugin extends ServerPlugin {
 		$httpRequest = $this->server->httpRequest;
 
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Node) {
+			if (!$node->getFileInfo()->isReadable()) {
+				// avoid detecting files through this means
+				throw new NotFound();
+			}
 
 			$propFind->handle(self::FILEID_PROPERTYNAME, function() use ($node) {
 				return $node->getFileId();

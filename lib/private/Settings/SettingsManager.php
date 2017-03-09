@@ -56,6 +56,7 @@ use OC\Settings\Panels\Admin\Logging;
 use OC\Settings\Panels\Admin\SecurityWarning;
 use OC\Settings\Panels\Admin\Updater;
 use OC\Settings\Panels\Admin\Tips;
+use OC\Settings\Panels\Admin\Status;
 
 /*
  * @since 10.0
@@ -127,7 +128,7 @@ class SettingsManager implements ISettingsManager {
 								Helper $helper,
 								ILockingProvider $lockingProvider,
 								IDBConnection $dbconnection,
-								CertificateManager $certificateManager,
+								$certificateManager,
 								IFactory $lfactory) {
 		$this->l = $l;
 		$this->appManager = $appManager;
@@ -197,6 +198,7 @@ class SettingsManager implements ISettingsManager {
 				new Section('general', $this->l->t('General'), 100),
 				new Section('storage', $this->l->t('Storage'), 95, 'folder'),
 				new Section('security', $this->l->t('Security'), 90, 'password'),
+				new Section('authentication', $this->l->t('Authentication'), 87, 'user'),
 				new Section('encryption', $this->l->t('Encryption'), 85, 'password'),
 				new Section('sharing', $this->l->t('Sharing'), 80, 'share'),
 				new Section('monitoring', $this->l->t('Monitoring'), 75, 'search'),
@@ -239,7 +241,8 @@ class SettingsManager implements ISettingsManager {
 				FileSharing::class,
 				Encryption::class,
 				Certificates::class,
-				Apps::class
+				Apps::class,
+				Status::class
 			]
 		];
 	}
@@ -256,7 +259,6 @@ class SettingsManager implements ISettingsManager {
 				$this->config,
 				$this->groupManager,
 				$this->userSession,
-				$this->helper,
 				$this->lfactory),
 			LegacyPersonal::class => new LegacyPersonal($this->helper),
 			Clients::class => new Clients($this->config, $this->defaults),

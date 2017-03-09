@@ -57,6 +57,7 @@
     "General" : "Yleiset",
     "Storage" : "Tallennustila",
     "Security" : "Tietoturva",
+    "Authentication" : "Tunnistautuminen",
     "Encryption" : "Salaus",
     "Sharing" : "Jakaminen",
     "Apps" : "Sovellukset",

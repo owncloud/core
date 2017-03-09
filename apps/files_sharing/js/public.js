@@ -166,7 +166,7 @@ OCA.Sharing.PublicApp = {
 						filesPart += '&files[]=' + encodeURIComponent(name);
 					});
 				} else {
-					filesPart = '&files=' + encodeURIComponent(filename);
+					filesPart = '&files=' + encodeURIComponent(filename || '');
 				}
 				return base + filesPart;
 			};

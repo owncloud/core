@@ -59,6 +59,7 @@ OC.L10N.register(
     "New" : "ใหม่",
     "\"{name}\" is an invalid file name." : "\"{name}\" เป็นชื่อไฟล์ที่ไม่ถูกต้อง",
     "File name cannot be empty." : "ชื่อไฟล์ไม่สามารถเว้นว่างได้",
+    "\"{name}\" is not an allow filetype" : "ชนิดของไฟล์ \"{name}\" ไม่ได้รับอนุญาต",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "พื้นที่จัดเก็บข้อมูลของ {owner} เต็มแล้ว  ไฟล์ไม่สามารถอัพเดทหรือประสานข้อมูลได้อีก!",
     "Your storage is full, files can not be updated or synced anymore!" : "พื้นที่จัดเก็บข้อมูลของคุณเต็มแล้ว ไม่สามารถอัพเดทหรือประสานข้อมูลได้อีก!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "พื้นที่จัดเก็บข้อมูลของ {owner} ใกล้เต็มแล้ว\nใช้พื้นที่ไปแล้ว: ({usedSpacePercent}%)",

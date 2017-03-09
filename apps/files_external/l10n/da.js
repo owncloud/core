@@ -27,7 +27,6 @@ OC.L10N.register(
     "Couldn't get the list of external mount points: {type}" : "Kunne ikke få en liste over eksterne monteringspunkter: {type}",
     "There was an error with message: " : "Der opstod en fejl med beskeden: ",
     "External mount error" : "Ekstern monteringsfejl",
-    "external-storage" : "ekstern lager",
     "Couldn't get the list of Windows network drive mount points: empty response from the server" : "Kunne ikke hente listen over Windows netværksdrev monteringspunkter: indholdsløst svar fra serveren",
     "Some of the configured external mount points are not connected. Please click on the red row(s) for more information" : "Nogle af de konfigurerede eksterne monteringspunkter er ikke tilsluttet. Klik på de(n) røde række(r) for flere oplysninger",
     "Please enter the credentials for the {mount} mount" : "Indtast venligst legitimationsoplysningerne for {mount} monteringspunktet",

@@ -110,7 +110,8 @@ class TransferOwnership extends Command {
 			return 2;
 		}
 
-		$date = date('c');
+		// use a date format compatible across client OS
+		$date = date('Ymd_his');
 		$this->finalTarget = "$this->destinationUser/files/transferred from $this->sourceUser on $date";
 
 		// setup filesystem

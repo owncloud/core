@@ -2,7 +2,6 @@
     "Wrong password" : "Yalnış şifrə",
     "No user supplied" : "Heç bir istifadəçiyə mənimsədilmir",
     "Authentication error" : "Təyinat metodikası",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Xahış olunur inzibatçı geriyə qayıdış şifrəsini təqdim edəsiniz, əks halda bütün istfadəçi datası itəcək.",
     "Wrong admin recovery password. Please check the password and try again." : "İnzibatçı geriyə qayıdış şifrəsi yalnışdır. Xahiş olunur şifrəni yoxlayıb yenidən təkrar edəsiniz.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Arxa sonluq şifrənin dəyişdirilməsini dəstəkləmir ancaq, istifadəçi şifrələmə açarı uğurla yeniləndi.",
     "Unable to change password" : "Şifrəni dəyişmək olmur",

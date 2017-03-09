@@ -66,10 +66,44 @@ dist_dir=build/dist
 # Catch-all rules
 #
 .PHONY: all
-all: $(composer_dev_deps) $(core_vendor) $(nodejs_deps)
+all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps)
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test-results clean-dist
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist
+
+.PHONY: help-hint
+help-hint:
+	@echo "Building core"
+	@echo
+	@echo "Note: You can type 'make help' for more targets"
+	@echo
+
+.PHONY: help
+help:
+	@echo "Please use 'make <target>' where <target> is one of the following:"
+	@echo
+	@echo -e "Dependencies:\n"
+	@echo -e "make clean\t\t\tclean everything"
+	@echo -e "make install-composer-deps\tinstall composer dependencies"
+	@echo -e "make update-composer\t\tupdate composer.lock"
+	@echo -e "make install-js-deps\t\tinstall Javascript dependencies"
+	@echo
+	@echo -e "Note that running 'make' without arguments already installs all required dependencies"
+	@echo
+	@echo -e "Testing:\n"
+	@echo -e "make test\t\t\trun all tests"
+	@echo -e "make test-php\t\t\trun all PHP tests"
+	@echo -e "make test-js\t\t\trun Javascript tests"
+	@echo -e "make test-js-debug\t\trun Javascript tests in debug mode (continuous)"
+	@echo -e "make test-integration\t\trun integration tests"
+	@echo -e "make clean-test\t\t\tclean test results"
+	@echo
+	@echo It is also possible to run individual PHP test files with the following command:
+	@echo -e "make test-php TEST_DATABASE=mysql TEST_PHP_SUITE=path/to/testfile.php"
+	@echo
+	@echo -e "Tools:\n"
+	@echo -e "make update-php-license-header\tUpdate license headers"
+	
 
 #
 # Basic required tools
@@ -150,9 +184,13 @@ test-external: $(composer_dev_deps)
 test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
+.PHONY: test-js-debug
+test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
+	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
+
 .PHONY: test-integration
 test-integration: $(composer_dev_deps)
-	$(MAKE) -C build/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED)
+	$(MAKE) -C tests/integration OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED)
 
 .PHONY: test-php-lint
 test-php-lint: $(composer_dev_deps)
@@ -163,12 +201,15 @@ test: test-php-lint test-php test-js test-integration
 
 .PHONY: clean-test-integration
 clean-test-integration:
-	$(MAKE) -C build/integration clean
+	$(MAKE) -C tests/integration clean
 
 .PHONY: clean-test-results
 clean-test-results:
 	rm -Rf tests/autotest-*results*.xml
-	$(MAKE) -C build/integration clean-test-results
+	$(MAKE) -C tests/integration clean
+
+.PHONY: clean-test
+clean-test: clean-test-integration clean-test-results
 
 #
 # Documentation

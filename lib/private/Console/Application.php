@@ -37,6 +37,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application {
@@ -92,7 +93,8 @@ class Application {
 				if (\OCP\Util::needUpgrade()) {
 					throw new NeedsUpdateException();
 				} elseif ($this->config->getSystemValue('maintenance', false)) {
-					$output->writeln("ownCloud is in maintenance mode - no app have been loaded");
+					$errOutput = $output->getErrorOutput();
+				        $errOutput->writeln('<comment>ownCloud is in maintenance mode - no app have been loaded</comment>' . PHP_EOL);
 				} else {
 					OC_App::loadApps();
 					foreach (\OC::$server->getAppManager()->getInstalledApps() as $app) {

@@ -35,10 +35,6 @@ class Helper  {
 		return \OC_App::getForms('admin');
 	}
 
-	public function getLanguageCodes() {
-		include 'Personal/languageCodes.php';
-	}
-
 	public function isPublicLinkPasswordRequired() {
 		return \OCP\Util::isPublicLinkPasswordRequired();
 	}

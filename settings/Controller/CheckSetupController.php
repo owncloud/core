@@ -149,7 +149,7 @@ class CheckSetupController extends Controller {
 	private function isUsedTlsLibOutdated() {
 		// Appstore is disabled by default in EE
 		$appStoreDefault = false;
-		if (\OC_Util::getEditionString() === '') {
+		if (\OC_Util::getEditionString() === \OC_Util::EDITION_COMMUNITY) {
 			$appStoreDefault = true;
 		}
 

@@ -1005,4 +1005,23 @@ class FileTest extends TestCase {
 
 		$file->get();
 	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\NotFound
+	 */
+	public function testGetThrowsIfNoPermission() {
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['fopen'])
+			->getMock();
+		$view->expects($this->never())
+			->method('fopen');
+
+		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_CREATE // no read perm
+		], null);
+
+		$file = new File($view, $info);
+
+		$file->get();
+	}
 }

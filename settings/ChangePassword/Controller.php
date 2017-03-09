@@ -134,7 +134,7 @@ class Controller {
 
 			if ($recoveryEnabledForUser && $recoveryPassword === '') {
 				\OC_JSON::error(['data' => [
-					'message' => $l->t('Please provide an admin recovery password, otherwise all user data will be lost')
+					'message' => $l->t('Please provide an admin recovery password; otherwise, all user data will be lost.')
 				]]);
 			} elseif ($recoveryEnabledForUser && ! $validRecoveryPassword) {
 				\OC_JSON::error(['data' => [

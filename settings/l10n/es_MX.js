@@ -5,7 +5,6 @@ OC.L10N.register(
     "The new password can not be the same as the previous one" : "La nueva contraseña no puede ser la misma que la contraseña anterior",
     "No user supplied" : "No se especificó un usuario",
     "Authentication error" : "Error de autenticación",
-    "Please provide an admin recovery password, otherwise all user data will be lost" : "Por favor facilite una contraseña de recuperación de administrador, sino podrían perderse todos los datos de usuario",
     "Wrong admin recovery password. Please check the password and try again." : "Contraseña de recuperación de administrador incorrecta. Por favor compruebe la contraseña e inténtelo de nuevo.",
     "Unable to change password" : "No se ha podido cambiar la contraseña",
     "Migration Completed" : "Migración Completada",
