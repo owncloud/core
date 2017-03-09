@@ -517,7 +517,12 @@ class FileTest extends \Test\TestCase {
 			$thrown = true;
 		}
 
-		$this->assertTrue($thrown);
+		// objectstore does not use partfiles -> no move after upload -> no exception
+		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+			$this->assertFalse($thrown);
+		} else {
+			$this->assertTrue($thrown);
+		}
 		$this->assertEmpty($this->listPartFiles(), 'No stray part files');
 	}
 
