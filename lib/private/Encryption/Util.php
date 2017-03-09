@@ -33,6 +33,7 @@ use OC\Files\View;
 use OCP\Encryption\IEncryptionModule;
 use OCP\Files\Storage;
 use OCP\IConfig;
+use OCP\IUser;
 
 class Util {
 
@@ -276,7 +277,13 @@ class Util {
 		} else {
 			$result = array_merge($result, $users);
 			foreach ($groups as $group) {
-				$result = array_merge($result, \OC_Group::usersInGroup($group));
+				$g = \OC::$server->getGroupManager()->get($group);
+				if (!is_null($g)) {
+					$users = array_values(array_map(function(IUser $u){
+						return $u->getUID();
+					}, $g->getUsers()));
+					$result = array_merge($result, $users);
+				}
 			}
 		}
 

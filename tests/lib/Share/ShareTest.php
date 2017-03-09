@@ -56,28 +56,28 @@ class ShareTest extends \Test\TestCase {
 		$this->user5 = $this->getUniqueID('user5_');
 		$this->user6 = $this->getUniqueID('user6_');
 		$this->groupAndUser = $this->getUniqueID('groupAndUser_');
-		\OC::$server->getUserManager()->createUser($this->user1, 'pass');
-		\OC::$server->getUserManager()->createUser($this->user2, 'pass');
-		\OC::$server->getUserManager()->createUser($this->user3, 'pass');
-		\OC::$server->getUserManager()->createUser($this->user4, 'pass');
-		\OC::$server->getUserManager()->createUser($this->user5, 'pass');
-		\OC::$server->getUserManager()->createUser($this->user6, 'pass'); // no group
-		\OC::$server->getUserManager()->createUser($this->groupAndUser, 'pass');
+		$u1 = \OC::$server->getUserManager()->createUser($this->user1, 'pass');
+		$u2 = \OC::$server->getUserManager()->createUser($this->user2, 'pass');
+		$u3 = \OC::$server->getUserManager()->createUser($this->user3, 'pass');
+		$u4 = \OC::$server->getUserManager()->createUser($this->user4, 'pass');
+		$u5 = \OC::$server->getUserManager()->createUser($this->user5, 'pass');
+		$u6 = \OC::$server->getUserManager()->createUser($this->user6, 'pass'); // no group
+		$uug = \OC::$server->getUserManager()->createUser($this->groupAndUser, 'pass');
 		\OC_User::setUserId($this->user1);
-		\OC_Group::clearBackends();
-		\OC_Group::useBackend(new \Test\Util\Group\Dummy());
+		\OC::$server->getGroupManager()->clearBackends();
+		\OC::$server->getGroupManager()->addBackend(new \Test\Util\Group\Dummy());
 		$this->group1 = $this->getUniqueID('group1_');
 		$this->group2 = $this->getUniqueID('group2_');
-		\OC_Group::createGroup($this->group1);
-		\OC_Group::createGroup($this->group2);
-		\OC_Group::createGroup($this->groupAndUser);
-		\OC_Group::addToGroup($this->user1, $this->group1);
-		\OC_Group::addToGroup($this->user2, $this->group1);
-		\OC_Group::addToGroup($this->user3, $this->group1);
-		\OC_Group::addToGroup($this->user2, $this->group2);
-		\OC_Group::addToGroup($this->user4, $this->group2);
-		\OC_Group::addToGroup($this->user2, $this->groupAndUser);
-		\OC_Group::addToGroup($this->user3, $this->groupAndUser);
+		$g1 = \OC::$server->getGroupManager()->createGroup($this->group1);
+		$g2 = \OC::$server->getGroupManager()->createGroup($this->group2);
+		$gAU = \OC::$server->getGroupManager()->createGroup($this->groupAndUser);
+		$g1->addUser($u1);
+		$g1->addUser($u2);
+		$g1->addUser($u3);
+		$g2->addUser($u2);
+		$g2->addUser($u4);
+		$gAU->addUser($u2);
+		$gAU->addUser($u3);
 		\OCP\Share::registerBackend('test', 'Test\Share\Backend');
 		\OC_Hook::clear('OCP\\Share');
 		\OC::registerShareHooks();
@@ -111,9 +111,12 @@ class ShareTest extends \Test\TestCase {
 		$user = \OC::$server->getUserManager()->get($this->groupAndUser);
 		if ($user !== null) { $user->delete(); }
 
-		\OC_Group::deleteGroup($this->group1);
-		\OC_Group::deleteGroup($this->group2);
-		\OC_Group::deleteGroup($this->groupAndUser);
+		$g = \OC::$server->getGroupManager()->get($this->group1);
+		if ($g !== null) { $g->delete(); }
+		$g = \OC::$server->getGroupManager()->get($this->group2);
+		if ($g !== null) { $g->delete(); }
+		$g = \OC::$server->getGroupManager()->get($this->groupAndUser);
+		if ($g !== null) { $g->delete(); }
 
 		$this->logout();
 		parent::tearDown();
