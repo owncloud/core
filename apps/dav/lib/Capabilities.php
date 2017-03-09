@@ -31,6 +31,10 @@ class Capabilities implements ICapability {
 			'dav' => [
 				'chunking' => '1.0',
 			]
+			,
+			'checksums' => [
+				'supportedTypes' => ['SHA1']
+			]
 		];
 	}
 }
