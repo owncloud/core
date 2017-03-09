@@ -365,6 +365,7 @@ class OC_API {
 			if (OC_User::handleApacheAuth()) {
 				self::$logoutRequired = false;
 			} else if ($userSession->tryTokenLogin($request)
+				|| $userSession->tryAuthModuleLogin($request)
 				|| $userSession->tryBasicAuthLogin($request)) {
 				self::$logoutRequired = true;
 			} else {

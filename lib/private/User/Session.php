@@ -31,6 +31,7 @@
 
 namespace OC\User;
 
+use Exception;
 use OC;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
@@ -38,10 +39,14 @@ use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
 use OC\Hooks\Emitter;
+use OC_App;
 use OC_User;
 use OC_Util;
 use OCA\DAV\Connector\Sabre\Auth;
+use OCP\App\IAppManager;
+use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\Authentication\IAuthModule;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
@@ -672,6 +677,83 @@ class Session implements IUserSession, Emitter {
 		if(!$this->validateToken($token)) {
 			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * Tries to login with an AuthModule provided by an app
+	 *
+	 * @param IRequest $request The request
+	 * @return bool True if request can be authenticated, false otherwise
+	 * @throws Exception If the auth module could not be loaded
+	 */
+	public function tryAuthModuleLogin(IRequest $request) {
+		/** @var IAppManager $appManager */
+		$appManager = OC::$server->query('AppManager');
+		$allApps = $appManager->getInstalledApps();
+
+		foreach ($allApps as $appId) {
+			$info = $appManager->getAppInfo($appId);
+
+			if (isset($info['auth-modules'])) {
+				$authModules = $info['auth-modules'];
+
+				foreach ($authModules as $class) {
+					try {
+						if (!OC_App::isAppLoaded($appId)) {
+							OC_App::loadApp($appId);
+						}
+
+						/** @var IAuthModule $authModule */
+						$authModule = OC::$server->query($class);
+
+						if ($authModule instanceof IAuthModule) {
+							return $this->loginUser($authModule->auth($request), $authModule->getUserPassword($request));
+						} else {
+							throw new Exception("Could not load the auth module $class");
+						}
+					} catch (QueryException $exc) {
+						throw new Exception("Could not load the auth module $class");
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Log an user in
+	 *
+	 * @param IUser $user The user
+	 * @param String $password The user's password
+	 * @return boolean True if the user can be authenticated, false otherwise
+	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 */
+	private function loginUser($user, $password) {
+		if (is_null($user)) {
+			return false;
+		}
+
+		$this->manager->emit('\OC\User', 'preLogin', [$user, $password]);
+
+		if (!$user->isEnabled()) {
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
+
+		$this->setUser($user);
+		$this->setLoginName($user->getDisplayName());
+
+		$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+
+		if ($this->isLoggedIn()) {
+			$this->prepareUserLogin(false);
+		} else {
+			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+			throw new LoginException($message);
+		}
+
 		return true;
 	}
 
