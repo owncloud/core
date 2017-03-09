@@ -68,11 +68,33 @@ class Storage {
 		if ($row = self::getStorageById($this->storageId)) {
 			$this->numericId = (int)$row['numeric_id'];
 		} else {
+			self::unsetCache($this->storageId);
+
 			$connection = \OC::$server->getDatabaseConnection();
 			$available = $isAvailable ? 1 : 0;
-			self::unsetCache($this->storageId);
-			if ($connection->insertIfNotExist('*PREFIX*storages', ['id' => $this->storageId, 'available' => $available])) {
+			$storageData = ['id' => $this->storageId, 'available' => $available];
+			
+			if ($connection->insertIfNotExist('*PREFIX*storages', $storageData)) {
 				$this->numericId = (int)$connection->lastInsertId('*PREFIX*storages');
+
+				// add missing fields before caching
+				$storageData['numeric_id'] = $this->numericId;
+				$storageData['last_checked'] = null;
+
+				// local cache has been initialized
+				self::$localCache->set($this->storageId, $storageData);
+
+				// distributed cache may need initializing
+				if (self::$distributedCache === null) {
+					self::$distributedCache =
+						\OC::$server->getMemCacheFactory()->create('getStorageById');
+				}
+				self::$distributedCache->set(
+					$this->storageId,
+					$storageData,
+					self::$distributedCacheTTL
+				);
+
 			} else {
 				if ($row = self::getStorageById($this->storageId)) {
 					$this->numericId = (int)$row['numeric_id'];
