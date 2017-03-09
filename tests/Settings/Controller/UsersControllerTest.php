@@ -307,6 +307,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('foo@bar.com'));
 		$foo
 			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(true));
+		$foo
+			->expects($this->once())
 			->method('getQuota')
 			->will($this->returnValue('1024'));
 		$foo
@@ -333,6 +337,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getEMailAddress')
 			->will($this->returnValue('admin@bar.com'));
+		$admin
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(true));
 		$admin
 			->expects($this->once())
 			->method('getQuota')
@@ -363,6 +371,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getEMailAddress')
 			->will($this->returnValue('bar@dummy.com'));
+		$bar
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(false));
 		$bar
 			->expects($this->once())
 			->method('getQuota')
@@ -447,6 +459,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'B. Ar',
 					'groups' => ['SubGroup1'],
 					'subadmin' => [],
+					'isEnabled' => true,
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
 					'lastLogin' => 3999000,
@@ -460,6 +473,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'M. Foo',
 					'groups' => ['SubGroup2', 'SubGroup1'],
 					'subadmin' => [],
+					'isEnabled' => true,
 					'quota' => 1024,
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500000,
@@ -473,6 +487,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'S. Admin',
 					'groups' => ['SubGroup2'],
 					'subadmin' => [],
+					'isEnabled' => false,
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12000,
@@ -511,6 +526,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('foo@bar.com'));
 		$foo
 			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(true));
+		$foo
+			->expects($this->once())
 			->method('getQuota')
 			->will($this->returnValue('1024'));
 		$foo
@@ -537,6 +556,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getEMailAddress')
 			->will($this->returnValue('admin@bar.com'));
+		$admin
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(true));
 		$admin
 			->expects($this->once())
 			->method('getQuota')
@@ -567,6 +590,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getEMailAddress')
 			->will($this->returnValue('bar@dummy.com'));
+		$bar
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(false));
 		$bar
 			->expects($this->once())
 			->method('getQuota')
@@ -610,6 +637,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'M. Foo',
 					'groups' => ['Users', 'Support'],
 					'subadmin' => [],
+					'isEnabled' => true,
 					'quota' => 1024,
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500000,
@@ -623,6 +651,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'S. Admin',
 					'groups' => ['admins', 'Support'],
 					'subadmin' => [],
+					'isEnabled' => true,
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12000,
@@ -636,6 +665,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'B. Ar',
 					'groups' => ['External Users'],
 					'subadmin' => [],
+					'isEnabled' => false,
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
 					'lastLogin' => 3999000,
@@ -667,6 +697,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getEMailAddress')
 			->will($this->returnValue(null));
+		$user
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(true));
 		$user
 			->expects($this->once())
 			->method('getQuota')
@@ -712,6 +746,7 @@ class UsersControllerTest extends \Test\TestCase {
 					'displayname' => 'M. Foo',
 					'groups' => null,
 					'subadmin' => [],
+					'isEnabled' => true,
 					'quota' => 'none',
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500000,
@@ -786,6 +821,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'backend' => 'bar',
 				'lastLogin' => null,
 				'displayname' => null,
+				'isEnabled' => true,
 				'quota' => null,
 				'subadmin' => [],
 				'email' => null,
@@ -875,6 +911,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'backend' => 'bar',
 				'lastLogin' => 0,
 				'displayname' => null,
+				'isEnabled' => true,
 				'quota' => null,
 				'subadmin' => [],
 				'email' => null,
@@ -958,6 +995,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'backend' => 'bar',
 				'lastLogin' => null,
 				'displayname' => null,
+				'isEnabled' => true,
 				'quota' => null,
 				'subadmin' => [],
 				'email' => null,
@@ -1054,6 +1092,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'backend' => 'bar',
 				'lastLogin' => 0,
 				'displayname' => null,
+				'isEnabled' => true,
 				'quota' => null,
 				'subadmin' => [],
 				'email' => null,
