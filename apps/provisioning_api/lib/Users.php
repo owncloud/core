@@ -416,7 +416,7 @@ class Users {
 		if($targetUser->getUID() === $loggedInUser->getUID() || $this->groupManager->isAdmin($loggedInUser->getUID())) {
 			// Self lookup or admin lookup
 			return new Result([
-				'groups' => $this->groupManager->getUserGroupIds($targetUser)
+				'groups' => $this->groupManager->getUserGroupIds($targetUser, 'management')
 			]);
 		} else {
 			$subAdminManager = $this->groupManager->getSubAdmin();

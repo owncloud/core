@@ -654,7 +654,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 			$user = $this->userManager->get($userId);
-			$allGroups = $this->groupManager->getUserGroups($user);
+			$allGroups = $this->groupManager->getUserGroups($user, 'sharing');
 
 			/** @var Share[] $shares2 */
 			$shares2 = [];

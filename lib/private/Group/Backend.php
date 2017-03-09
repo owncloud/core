@@ -129,4 +129,8 @@ abstract class Backend implements \OCP\GroupInterface {
 	public function usersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
 		return [];
 	}
+
+	public function isVisibleForScope($scope) {
+		return true;
+	}
 }

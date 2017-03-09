@@ -89,24 +89,27 @@ interface IGroupManager {
 	 * @param string $search
 	 * @param int $limit
 	 * @param int $offset
+	 * @param string $scope
 	 * @return \OCP\IGroup[]
 	 * @since 8.0.0
 	 */
-	public function search($search, $limit = null, $offset = null);
+	public function search($search, $limit = null, $offset = null, $scope = null);
 
 	/**
 	 * @param \OCP\IUser|null $user
+	 * @param string $scope
 	 * @return \OCP\IGroup[]
 	 * @since 8.0.0
 	 */
-	public function getUserGroups($user);
+	public function getUserGroups($user, $scope = null);
 
 	/**
 	 * @param \OCP\IUser $user
+	 * @param string $scope
 	 * @return array with group names
 	 * @since 8.0.0
 	 */
-	public function getUserGroupIds($user);
+	public function getUserGroupIds($user, $scope = null);
 
 	/**
 	 * get a list of all display names in a group

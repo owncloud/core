@@ -37,7 +37,7 @@ class ManagerTest extends \Test\TestCase {
 		return $mockUser;
 	}
 
-	private function getTestBackend($implementedActions = null) {
+	private function getTestBackend($implementedActions = null, $visibleForScopes = null) {
 		if (is_null($implementedActions)) {
 			$implementedActions =
 				GroupInterface::ADD_TO_GROUP |
@@ -61,6 +61,7 @@ class ManagerTest extends \Test\TestCase {
 				'createGroup',
 				'addToGroup',
 				'removeFromGroup',
+				'isVisibleForScope',
 			])
 			->getMock();
 		$backend->expects($this->any())
@@ -68,6 +69,15 @@ class ManagerTest extends \Test\TestCase {
 			->will($this->returnCallback(function($actions) use ($implementedActions) {
 				return (bool)($actions & $implementedActions);
 			}));
+		if (is_null($visibleForScopes)) {
+			$backend->expects($this->any())
+				->method('isVisibleForScope')
+				->willReturn(true);
+		} else {
+			$backend->expects($this->any())
+				->method('isVisibleForScope')
+				->will($this->returnValueMap($visibleForScopes));
+		}
 		return $backend;
 	}
 
@@ -345,6 +355,9 @@ class ManagerTest extends \Test\TestCase {
 			->method('groupExists')
 			->with('group1')
 			->will($this->returnValue(false));
+		$backend->expects($this->once())
+			->method('isVisibleForScope')
+			->will($this->returnValue(true));
 
 		/**
 		 * @var \OC\User\Manager $userManager
@@ -356,6 +369,57 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $manager->search('1');
 		$this->assertEmpty($groups);
+	}
+
+	public function testSearchBackendsForScope() {
+		/**
+		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend1
+		 */
+		$backend1 = $this->getTestBackend();
+		$backend1->expects($this->any())
+			->method('getGroups')
+			->with('1')
+			->will($this->returnValue(['group1']));
+		$backend1->expects($this->any())
+			->method('groupExists')
+			->will($this->returnValue(true));
+
+		/**
+		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend2
+		 */
+		$backend2 = $this->getTestBackend(null, [
+			[null, false],
+			['sharing', true],
+		]);
+		$backend2->expects($this->any())
+			->method('getGroups')
+			->with('1')
+			->will($this->returnValue(['group12', 'group1']));
+		$backend2->expects($this->any())
+			->method('groupExists')
+			->will($this->returnValue(true));
+
+		/**
+		 * @var \OC\User\Manager $userManager
+		 */
+		$userManager = $this->createMock('\OC\User\Manager');
+		$manager = new \OC\Group\Manager($userManager);
+		$manager->addBackend($backend1);
+		$manager->addBackend($backend2);
+
+		// search without scope
+		$groups = $manager->search('1', null, null, null);
+		$this->assertEquals(1, count($groups));
+		$group1 = reset($groups);
+		$this->assertEquals('group1', $group1->getGID());
+
+		// search with scope
+		$groups = $manager->search('1', null, null, 'sharing');
+		$this->assertEquals(2, count($groups));
+		$group1 = reset($groups);
+		$group12 = next($groups);
+		$this->assertEquals('group1', $group1->getGID());
+		$this->assertEquals('group12', $group12->getGID());
 	}
 
 	public function testGetUserGroups() {
@@ -440,6 +504,40 @@ class ManagerTest extends \Test\TestCase {
 
 		$groups = $manager->getUserGroups($user);
 		$this->assertEmpty($groups);
+	}
+
+	public function testGetUserGroupsWithScope() {
+		/**
+		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
+		 */
+		$backend = $this->getTestBackend(null, [
+			[null, false],
+			['sharing', true],
+		]);
+		$backend->expects($this->any())
+			->method('getUserGroups')
+			->with('user1')
+			->will($this->returnValue(['group1']));
+		$backend->expects($this->any())
+			->method('groupExists')
+			->with('group1')
+			->will($this->returnValue(true));
+
+		/**
+		 * @var \OC\User\Manager $userManager
+		 */
+		$userManager = $this->createMock('\OC\User\Manager');
+		$userBackend = $this->createMock('\OC_User_Backend');
+		$manager = new \OC\Group\Manager($userManager);
+		$manager->addBackend($backend);
+
+		$groups = $manager->getUserGroups($this->getTestUser('user1'));
+		$this->assertEmpty($groups);
+
+		$groups = $manager->getUserGroups($this->getTestUser('user1'), 'sharing');
+		$this->assertCount(1, $groups);
+		$group1 = reset($groups);
+		$this->assertEquals('group1', $group1->getGID());
 	}
 
 	public function testInGroup() {
