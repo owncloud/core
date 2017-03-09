@@ -845,6 +845,7 @@ class OC {
 		$isOccControllerRequested = preg_match('|/index\.php$|', $request->getScriptName()) === 1
 			&& strpos($request->getPathInfo(), '/occ/') === 0;
 
+		$needUpgrade = false;
 		$requestPath = $request->getRawPathInfo();
 		if (substr($requestPath, -3) !== '.js') { // we need these files during the upgrade
 			self::checkMaintenanceMode($request);

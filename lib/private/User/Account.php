@@ -83,6 +83,7 @@ class Account extends Entity {
 		if (empty($backendClass)) {
 			return null;
 		}
-		return \OC::$server->query($backendClass);
+		// actually stupid
+		return \OC::$server->getUserManager()->getBackend($backendClass);
 	}
 }
