@@ -369,4 +369,32 @@ class Manager extends PublicEmitter implements IGroupManager {
 
 		return $this->subAdmin;
 	}
+
+	/**
+	 * returns how many groups per backend exist (if supported by backend)
+	 *
+	 * @return array|int an array of backend class as key and count number as value
+	 *                if $hasLoggedIn is true only an int is returned
+	 */
+	public function countGroups() {
+		$groupCountStatistics = [];
+		foreach ($this->backends as $backend) {
+			if ($backend->implementsActions(Backend::COUNT_GROUPS)) {
+				$backendGroups = $backend->countGroups();
+				if($backendGroups !== false) {
+					if($backend instanceof IGroupBackend) {
+						$name = $backend->getBackendName();
+					} else {
+						$name = get_class($backend);
+					}
+					if(isset($groupCountStatistics[$name])) {
+						$groupCountStatistics[$name] += $backendGroups;
+					} else {
+						$groupCountStatistics[$name] = $backendGroups;
+					}
+				}
+			}
+		}
+		return $groupCountStatistics;
+	}
 }
