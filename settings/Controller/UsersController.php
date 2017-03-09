@@ -234,20 +234,24 @@ class UsersController extends Controller {
 	private function checkEmailChangeToken($token, $userId) {
 		$user = $this->userManager->get($userId);
 
-		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changemail', null));
+		if ($user === null) {
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the user does not exist'));
+		}
+
+		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
 		if(count($splittedToken) !== 2) {
-			$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
+			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
 		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12) ||
 			$user->getLastLogin() > $splittedToken[0]) {
-			$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
+			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
 		if (!hash_equals($splittedToken[1], $token)) {
-			$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
+			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 	}
@@ -541,7 +545,6 @@ class UsersController extends Controller {
 	public function setMailAddress($id, $mailAddress) {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
-		$currentEmail = $user->getEMailAddress();
 
 		if($userId !== $id
 			&& !$this->isAdmin
@@ -594,26 +597,29 @@ class UsersController extends Controller {
 				Http::STATUS_FORBIDDEN
 			);
 		}
-		$action = 'change';
-		$message = 'An email has been sent to the old address for confirmation';
-		if ($currentEmail == '') {
-			$action = 'add';
-			$message = 'An email has been sent to this address for confirmation';
-		}
 
-		if ($mailAddress == '') {
-			$action = 'remove';
+		if ($mailAddress === '') {
+			$this->setEmailAddress($userId, $mailAddress);
+			return new DataResponse(
+				[
+					'status' => 'success',
+					'data' => [
+						'message' => (string)$this->l10n->t('Email has been changed successfully.')
+					]
+				],
+				Http::STATUS_OK
+			);
 		}
 
 		try {
-			$this->sendEmail($userId, $mailAddress, $action);
+			$this->sendEmail($userId, $mailAddress);
 			return new DataResponse(
 				[
 					'status' => 'success',
 					'data' => [
 						'username' => $id,
 						'mailAddress' => $mailAddress,
-						'message' => (string)$this->l10n->t($message)
+						'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation')
 					]
 				],
 				Http::STATUS_OK
@@ -724,29 +730,18 @@ class UsersController extends Controller {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $mailAddress
-	 * @param string $action
-	 * @throws \Exception
-	 */
-    public function sendEmail($user, $mailAddress, $action='change') {
+ 	 * @param string $userId
+ 	 * @param string $mailAddress
+ 	 * @throws \Exception
+ 	 */
+	public function sendEmail($userId, $mailAddress) {
     	$token = $this->secureRandom->generate(21,
 			ISecureRandom::CHAR_DIGITS .
 			ISecureRandom::CHAR_LOWER .
 			ISecureRandom::CHAR_UPPER);
-		$this->config->setUserValue($user, 'owncloud', 'changemail', $this->timeFactory->getTime() . ':' . $token);
+		$this->config->setUserValue($userId, 'owncloud', 'changeMail', $this->timeFactory->getTime() . ':' . $token);
 
-		$userObject = $this->userManager->get($user);
-		$email = $userObject->getEMailAddress();
-
-		if ($action == 'change' || $action == 'add') {
-			$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changemail', ['userId' => $user, 'token' => $token, 'mailAddress' => $mailAddress]);
-		}
-		if ($action == 'remove') {
-			$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.removemail', ['userId' => $user, 'token' => $token]);
-		} elseif ($action == 'add') {
-			$email = $mailAddress;
-		}
+		$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changeMail', ['userId' => $userId, 'token' => $token, 'mailAddress' => $mailAddress]);
 
 		$tmpl = new \OC_Template('settings', 'changemail/email');
 		$tmpl->assign('link', $link);
@@ -754,27 +749,29 @@ class UsersController extends Controller {
 
 		try {
 			$message = $this->mailer->createMessage();
-			$message->setTo([$email => $user]);
-			$message->setSubject($this->l10n->t('%s email address change', [$this->defaults->getName()]));
+			$message->setTo([$mailAddress => $userId]);
+			$message->setSubject($this->l10n->t('%s email address confirm', [$this->defaults->getName()]));
 			$message->setPlainBody($msg);
 			$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
 			$this->mailer->send($message);
 		} catch (\Exception $e) {
 			throw new \Exception($this->l10n->t(
-					'Couldn\'t send email address change email. Please contact your administrator.'
+				'Couldn\'t send email address change confirmation mail. Please contact your administrator.'
 			));
 		}
     }
 
 	/**
 	 * @param string $userId
-	 * @param string $mailAddress
-	 */
-    public function setEmailAddress($userId, $mailAddress) {
+ 	 * @param string $mailAddress
+ 	 */
+	public function setEmailAddress($userId, $mailAddress) {
 		$user = $this->userManager->get($userId);
 
 		$user->setEMailAddress($mailAddress);
-		$this->config->deleteUserValue($userId, 'owncloud', 'changemail');
+		if ($this->config->getUserValue($userId, 'owncloud', 'changeMail') !== '') {
+			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
+		}
 	}
 
 	/**
@@ -785,7 +782,7 @@ class UsersController extends Controller {
 	 * @param $mailAddress
 	 * @return TemplateResponse
 	 */
-	public function changemail($token, $userId, $mailAddress) {
+	public function changeMail($token, $userId, $mailAddress) {
 		try {
 			$this->checkEmailChangeToken($token, $userId);
 		} catch (\Exception $e) {
@@ -802,35 +799,6 @@ class UsersController extends Controller {
 		return new TemplateResponse(
 			'settings',
 			'changemail/change',
-			[],
-			'guest'
-		);
-	}
-
-	/**
-	 * @NoCSRFRequired
-	 *
-	 * @param $token
-	 * @param $userId
-	 * @return TemplateResponse
-	 */
-	public function removemail($token, $userId) {
-		try {
-			$this->checkEmailChangeToken($token, $userId);
-		} catch (\Exception $e) {
-			return new TemplateResponse(
-				'settings', 'error', [
-				"errors" => [["error" => $e->getMessage()]]
-			],
-				'guest'
-			);
-		}
-
-		$this->setEmailAddress($userId, '');
-
-		return new TemplateResponse(
-			'settings',
-			'changemail/remove',
 			[],
 			'guest'
 		);

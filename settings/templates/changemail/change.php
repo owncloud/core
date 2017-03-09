@@ -22,5 +22,5 @@ style('settings', 'changemail/response');
 ?>
 
 <div id="body-response">
-	<p>Email changed successfully.</p>
+	<?php p($l->t('Email changed successfully')); ?>
 </div>

@@ -61,8 +61,7 @@ $application->registerRoutes($this, [
 		['name' => 'Certificate#removeSystemRootCertificate', 'url' => '/settings/admin/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
 		['name' => 'SettingsPage#getPersonal', 'url' => '/settings/personal', 'verb' => 'GET'],
 		['name' => 'SettingsPage#getAdmin', 'url' => '/settings/admin', 'verb' => 'GET'],
-		['name' => 'Users#changemail', 'url' => '/settings/mailaddress/change/{token}/{userId}/{mailAddress}', 'verb' => 'GET'],
-		['name' => 'Users#removemail', 'url' => '/settings/mailaddress/remove/{token}/{userId}', 'verb' => 'GET'],
+		['name' => 'Users#changeMail', 'url' => '/settings/mailaddress/change/{token}/{userId}/{mailAddress}', 'verb' => 'GET'],
 	]
 ]);
 
