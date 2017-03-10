@@ -30,7 +30,6 @@ addons:
     - realpath
   hosts:
     - owncloud
-  sauce_connect:
 
 before_install:
   - make
@@ -61,6 +60,8 @@ matrix:
       env: DB=sqlite;TC=caldav
     - php: 5.6
       env: DB=pgsql;TC=selenium;TEST_DAV=0
+      addons:
+        sauce_connect:
     - php: 5.6
       env: DB=sqlite;TC=syntax;TEST_DAV=0
     - php: 7.0
