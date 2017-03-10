@@ -100,7 +100,7 @@ var UserList = {
 		/**
                  * enabled
 		 */
-		var $tdEnabled = $tr.find('#isEnabled');
+		var $tdEnabled = $tr.find('.isEnabled');
 		$tdEnabled.attr("checked", user.isEnabled);
 		$tdEnabled.on('change', UserList.onEnabledChange);
 
@@ -574,12 +574,14 @@ var UserList = {
         onEnabledChange: function() {
                 var $select = $(this);
                 var uid = UserList.getUID($select);
-                var enabled = $select.attr('checked') ? 'true' : 'false';
-                UserList._updateEnabled(uid, enabled, function(returnedEnabled){
-                        if (enabled !== returnedEnabled) {
-				$select.find('#isEnabled').attr("checked", user.isEnabled);
-                        }
-                });
+                var enabled = $select.prop('checked') ? 'true' : 'false';
+
+                UserList._updateEnabled(uid, enabled,
+                        function(returnedEnabled){
+                                if (enabled !== returnedEnabled) {
+                                          $select.prop('checked', user.isEnabled);
+                                }
+                        });
         },
 
 
@@ -590,18 +592,22 @@ var UserList = {
          * @param {Function} ready callback after save
          */
         _updateEnabled: function(uid, enabled, ready) {
-		$.post(
-			OC.generateUrl('/settings/users/{id}/enabled', {id: uid}),
-			{username: uid, enabled: enabled},
-			function (result) {
+               $.post(
+                        OC.generateUrl('/settings/users/{id}/enabled', {id: uid}),
+                        {username: uid, enabled: enabled},
+                        function (result) {
                                	if(result.status == 'success') {
-					var msg = 'User have been ' + (result.data.enabled === 'true' ? 'enabled'  : 'disabled') + '!'; 
-					OC.Notification.showTemporary(t('admin', msg));
+                                        OC.Notification.showTemporary(t('admin', 'User {uid} has been {state}!',
+                                                                        {uid: uid,
+                                                                        state: result.data.enabled === 'true' ?
+                                                                        t('admin', 'enabled') :
+                                                                        t('admin', 'disabled')}
+                                                                     ));
 				} else {
-					OC.Notification.showTemporary(t('admin', result.data.message));
+                                        OC.Notification.showTemporary(t('admin', result.data.message));
 				}
-			}
-		);
+                        }
+               );
         },
 
 

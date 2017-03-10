@@ -48,7 +48,7 @@
 			</td>
 		<?php endif;?>
 			<td class="enabled">
-				<input type="checkbox" id="isEnabled" checked="checked">
+				<input type="checkbox" class="isEnabled" checked="checked">
 			</td>
 			<td class="quota">
 				<select class="quota-user" data-inputtitle="<?php p($l->t('Please enter storage quota (ex: "512 MB" or "12 GB")')) ?>">

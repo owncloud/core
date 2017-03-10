@@ -673,9 +673,9 @@ class UsersController extends Controller {
                 $userId = $this->userSession->getUser()->getUID();
                 $user = $this->userManager->get($id);
 
-                if($userId === $id
-                        && !$this->isAdmin
-                        && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
+                if($userId === $id ||
+                        (!$this->isAdmin &&
+                        !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user))) {
                         return new DataResponse(
                                 array(
                                         'status' => 'error',
@@ -700,7 +700,9 @@ class UsersController extends Controller {
                         );
                 }
 
-		if($enabled !== 'true' && $enabled !== 'false')
+
+		$value = filter_var($enabled, FILTER_VALIDATE_BOOLEAN);
+		if(!isset($value) || is_null($value))
 		{
                         return new DataResponse(
                                 array(
@@ -713,7 +715,7 @@ class UsersController extends Controller {
                         );
 		}
 
-		$user->setEnabled($enabled === 'true' ? true : false);
+		$user->setEnabled($value);
 
 		return new DataResponse(
 			[
