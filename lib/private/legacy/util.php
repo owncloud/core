@@ -229,7 +229,7 @@ class OC_Util {
 		$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
 			'core',
 			'read_only_groups',
-			[]
+			'["guests"]'
 		), true);
 
 		$userGroups = array_keys(
