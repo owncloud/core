@@ -8,7 +8,6 @@
 namespace Test\Files;
 
 use OC\Cache\CappedMemoryCache;
-use OC\Files\Cache\Storage;
 use OC\Files\Cache\Watcher;
 use OC\Files\Storage\Common;
 use OC\Files\Mount\MountPoint;
@@ -126,7 +125,7 @@ class ViewTest extends \Test\TestCase {
 	 * reset storage cache
 	 */
 	protected function resetStorage() {
-		$storage = new \ReflectionClass(Storage::class);
+		$storage = new \ReflectionClass('OC\Files\Cache\Storage');
 		$property = $storage->getProperty('localCache');
 		$property->setAccessible(true);
 		/** @var ICache $localCache */
