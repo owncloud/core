@@ -14,7 +14,7 @@
 			echo 	'<p><a href="' .
 				link_to('', 'index.php/settings/admin?sectionid=storage' ) .
 				'">' .
-				$l->t('You can add external storages in storage settings') .
+				$l->t('You can add external storages in the storage settings') .
 				'</a></p>';
 		}
 
@@ -22,7 +22,7 @@
 			echo 	'<p><a href="' .
 				link_to('', 'index.php/settings/personal?sectionid=storage' ) .
 				'">' .
-				$l->t('You can add external storages in storage settings') .
+				$l->t('You can add external storages in the storage settings') .
 				'</a></p>';
 		}
 	?>
