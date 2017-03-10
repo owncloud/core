@@ -33,8 +33,6 @@ OC.L10N.register(
     "Language changed" : "Sprooch huet geännert",
     "Invalid request" : "Ongülteg Requête",
     "Admins can't remove themself from the admin group" : "Admins kennen sech selwer net aus enger Admin Group läschen.",
-    "Unable to add user to group %s" : "Onmeiglech User an Grupp ze sätzen %s",
-    "Unable to remove user from group %s" : "Onméiglech fir de Benotzer vum Grupp %s ewech ze huelen",
     "Couldn't remove app." : "D'App konnt net ewechgeholl ginn.",
     "Official" : "Offiziell",
     "Approved" : "Accordéiert",

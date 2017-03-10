@@ -36,8 +36,6 @@
     "Language changed" : "Kalba pakeista",
     "Invalid request" : "Klaidinga užklausa",
     "Admins can't remove themself from the admin group" : "Administratoriai negali pašalinti savęs iš administratorių grupės",
-    "Unable to add user to group %s" : "Nepavyko pridėti vartotojo prie grupės %s",
-    "Unable to remove user from group %s" : "Nepavyko ištrinti vartotojo iš grupės %s",
     "Couldn't remove app." : "Nepavyko pašalinti programėlės.",
     "Official" : "Oficiali",
     "Approved" : "Patvirtinta",

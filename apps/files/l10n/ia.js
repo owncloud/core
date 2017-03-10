@@ -11,6 +11,7 @@ OC.L10N.register(
     "Delete" : "Deler",
     "Unshare" : "Leva compartir",
     "Files" : "Files",
+    "Details" : "Detalios",
     "Name" : "Nomine",
     "Size" : "Dimension",
     "Modified" : "Modificate",

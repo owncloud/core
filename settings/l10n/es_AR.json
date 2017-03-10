@@ -16,8 +16,6 @@
     "Language changed" : "Idioma cambiado",
     "Invalid request" : "Pedido inválido",
     "Admins can't remove themself from the admin group" : "Los administradores no se pueden quitar a si mismos del grupo administrador. ",
-    "Unable to add user to group %s" : "No fue posible agregar el usuario al grupo %s",
-    "Unable to remove user from group %s" : "No es posible borrar al usuario del grupo %s",
     "All" : "Todos",
     "Enabled" : "Habilitado",
     "Please wait...." : "Por favor, esperá....",

@@ -23,6 +23,7 @@ OC.L10N.register(
     "Private key password successfully updated." : "Heslo soukromého klíče úspěšně aktualizováno.",
     "You need to migrate your encryption keys from the old encryption (ownCloud <= 8.0) to the new one. Please run 'occ encryption:migrate' or contact your administrator" : "Musíte přenést své šifrovací klíče ze staré verze šifrování (ownCloud <= 8.0) na novou. Spusťte příkaz 'occ encryption:migrate' nebo kontaktujte svého administrátora.",
     "Invalid private key for Encryption App. Please update your private key password in your personal settings to recover access to your encrypted files." : "Chybný soukromý klíč pro šifrovací aplikaci. Aktualizujte prosím heslo svého soukromého klíče ve vašem osobním nastavení, abyste znovu získali přístup k vašim zašifrovaným souborům.",
+    "Encryption App is enabled, but your keys are not initialized. Please log-out and log-in again." : "Šifrování aplikace bylo povoleno, ale Váš klíč není inicializován. Prosím odhlaště se a znovu se přihlašte.",
     "Encryption App is enabled and ready" : "Aplikace šifrování je již povolena",
     "Bad Signature" : "Špatný podpis",
     "Missing Signature" : "Chybějící podpis",

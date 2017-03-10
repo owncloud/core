@@ -13,8 +13,6 @@ OC.L10N.register(
     "Language changed" : "Språk endra",
     "Invalid request" : "Ugyldig førespurnad",
     "Admins can't remove themself from the admin group" : "Administratorar kan ikkje fjerna seg sjølve frå admin-gruppa",
-    "Unable to add user to group %s" : "Klarte ikkje leggja til brukaren til gruppa %s",
-    "Unable to remove user from group %s" : "Klarte ikkje fjerna brukaren frå gruppa %s",
     "All" : "Alle",
     "Please wait...." : "Ver venleg og vent …",
     "Error while disabling app" : "Klarte ikkje å skru av programmet",

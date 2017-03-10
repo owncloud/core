@@ -27,8 +27,6 @@ OC.L10N.register(
     "Language changed" : "Jezik je promijenjen",
     "Invalid request" : "Neispravan zahtjev",
     "Admins can't remove themself from the admin group" : "Administratori ne mogu sami sebe ukloniti iz admin grupe",
-    "Unable to add user to group %s" : "Dodavanje korisnika grupi %s nije moguće",
-    "Unable to remove user from group %s" : "Uklanjanje korisnika iz grupe %s nije moguće",
     "Couldn't remove app." : "Nije moguće ukloniti aplikaciju.",
     "All" : "Sve",
     "Enabled" : "Aktivirano",

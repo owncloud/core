@@ -27,8 +27,6 @@
     "Language changed" : "Idioma cambiado",
     "Invalid request" : "Petición no válida",
     "Admins can't remove themself from the admin group" : "Los administradores no se pueden eliminar a ellos mismos del grupo de administrador",
-    "Unable to add user to group %s" : "No se pudo añadir el usuario al grupo %s",
-    "Unable to remove user from group %s" : "No se pudo eliminar al usuario del grupo %s",
     "Couldn't remove app." : "No se pudo quitar la aplicación.",
     "Official" : "Oficial",
     "Approved" : "Aprobados",
