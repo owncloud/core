@@ -535,11 +535,7 @@ class Cache implements ICache {
 	 * remove all entries for files that are stored on the storage from the cache
 	 */
 	public function clear() {
-		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
-		$this->connection->executeQuery($sql, array($this->getNumericStorageId()));
-
-		$sql = 'DELETE FROM `*PREFIX*storages` WHERE `id` = ?';
-		$this->connection->executeQuery($sql, array($this->storageId));
+		Storage::remove($this->storageId);
 	}
 
 	/**
