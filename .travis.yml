@@ -60,7 +60,7 @@ matrix:
     - php: 5.6
       env: DB=sqlite;TC=caldav
     - php: 5.6
-      env: DB=pgsql;TC=selenium
+      env: DB=pgsql;TC=selenium;TEST_DAV=0
     - php: 5.6
       env: DB=sqlite;TC=syntax;TEST_DAV=0
     - php: 7.0
