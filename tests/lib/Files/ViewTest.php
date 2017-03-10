@@ -1723,6 +1723,8 @@ class ViewTest extends TestCase {
 				ILockingProvider::LOCK_SHARED,
 				ILockingProvider::LOCK_SHARED,
 				null,
+				// shared lock stays until fclose
+				ILockingProvider::LOCK_SHARED,
 			],
 			[
 				'opendir',
@@ -1797,9 +1799,12 @@ class ViewTest extends TestCase {
 		$storage->expects($this->once())
 			->method($operation)
 			->will($this->returnCallback(
-				function () use ($view, $lockedPath, &$lockTypeDuring) {
+				function () use ($view, $lockedPath, &$lockTypeDuring, $operation) {
 					$lockTypeDuring = $this->getFileLockType($view, $lockedPath);
 
+					if ($operation === 'fopen') {
+						return fopen('data://text/plain,test', 'r');
+					}
 					return true;
 				}
 			));
@@ -1809,7 +1814,7 @@ class ViewTest extends TestCase {
 		$this->connectMockHooks($hookType, $view, $lockedPath, $lockTypePre, $lockTypePost);
 
 		// do operation
-		call_user_func_array([$view, $operation], $operationArgs);
+		$result = call_user_func_array([$view, $operation], $operationArgs);
 
 		if ($hookType !== null) {
 			$this->assertEquals($expectedLockBefore, $lockTypePre, 'File locked properly during pre-hook');
@@ -1820,6 +1825,13 @@ class ViewTest extends TestCase {
 		}
 
 		$this->assertEquals($expectedStrayLock, $this->getFileLockType($view, $lockedPath));
+
+		if (is_resource($result)) {
+			fclose($result);
+
+			// lock is cleared after fclose
+			$this->assertNull($this->getFileLockType($view, $lockedPath));
+		}
 	}
 
 	/**
@@ -2514,5 +2526,24 @@ class ViewTest extends TestCase {
 		$this->assertFalse($cache->inCache('foo/foo.txt'));
 		$this->assertNotEquals($rootInfo->getEtag(), $newInfo->getEtag());
 		$this->assertEquals(0, $newInfo->getSize());
+	}
+
+	public function testFopenFail() {
+		// since stream wrappers influence the streams,
+		// this test makes sure that all stream wrappers properly return a failure
+		// to the caller instead of wrapping the boolean
+		/** @var Temporary | \PHPUnit_Framework_MockObject_MockObject $storage */
+		$storage = $this->getMockBuilder(Temporary::class)
+			->setMethods(['fopen'])
+			->getMock();
+
+		$storage->expects($this->once())
+			->method('fopen')
+			->willReturn(false);
+
+		Filesystem::mount($storage, [], '/');
+		$view = new View('/files');
+		$result = $view->fopen('unexist.txt', 'r');
+		$this->assertFalse($result);
 	}
 }
