@@ -23,8 +23,8 @@
  */
 namespace OCA\Files_External\Tests\Service;
 
-use \OC\Files\Filesystem;
-
+use OC\Files\Cache\Storage;
+use OC\Files\Filesystem;
 use OCA\Files_External\NotFoundException;
 use OCA\Files_External\Lib\StorageConfig;
 use OCA\Files_External\Service\BackendService;
@@ -322,6 +322,7 @@ abstract class StoragesServiceTest extends \Test\TestCase {
 			->from('storages')
 			->where($qb->expr()->eq('numeric_id', $qb->expr()->literal($numericId)));
 		$this->assertCount($expectedCountAfterDeletion, $storageCheckQuery->execute()->fetchAll());
+		Storage::remove($rustyStorageId);
 	}
 
 	/**
