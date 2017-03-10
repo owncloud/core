@@ -8,11 +8,13 @@
 namespace Test\Files;
 
 use OC\Cache\CappedMemoryCache;
+use OC\Files\Cache\Storage;
 use OC\Files\Cache\Watcher;
 use OC\Files\Storage\Common;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Temporary;
 use OCP\Files\FileInfo;
+use OCP\ICache;
 use OCP\Lock\ILockingProvider;
 
 class TemporaryNoTouch extends \OC\Files\Storage\Temporary {
@@ -103,6 +105,7 @@ class ViewTest extends \Test\TestCase {
 			$ids = $cache->getAll();
 			$cache->clear();
 		}
+		$this->resetStorage();
 
 		if ($this->tempStorage && !\OC_Util::runningOnWindows()) {
 			system('rm -rf ' . escapeshellarg($this->tempStorage->getDataDir()));
@@ -117,6 +120,29 @@ class ViewTest extends \Test\TestCase {
 		\Test\TestCase::invokePrivate($mountProviderCollection, 'providers', [[]]);
 
 		parent::tearDown();
+	}
+
+	/**
+	 * reset storage cache
+	 */
+	protected function resetStorage() {
+		$storage = new \ReflectionClass(Storage::class);
+		$property = $storage->getProperty('localCache');
+		$property->setAccessible(true);
+		/** @var ICache $localCache */
+		$localCache = $property->getValue();
+		if ($localCache instanceof ICache) {
+			$localCache->clear();
+		}
+		$property->setAccessible(false);
+		$property = $storage->getProperty('distributedCache');
+		$property->setAccessible(true);
+		/** @var ICache $localCache */
+		$distributedCache = $property->getValue();
+		if ($distributedCache instanceof ICache) {
+			$distributedCache->clear();
+		}
+		$property->setAccessible(false);
 	}
 
 	/**
