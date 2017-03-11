@@ -42,10 +42,11 @@
 		</label>
 	</p>
 	<?php endif; ?>
-	<p
-	<?php if ($_['enableExternalStorage']): ?>
-		style="display: none;"
-	<?php endif; ?>
+	<p class="
+		<?php if ($_['enableExternalStorage']): ?> 
+			hidden 
+		<?php endif; ?>
+		files_external_message"
 	>
 		<?php p($l->t('External storage has been disabled by the administrator')); ?>
 	</p>

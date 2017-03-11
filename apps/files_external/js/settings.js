@@ -1355,6 +1355,7 @@ $(document).ready(function() {
 			var value = checked ? 'yes' : 'no';
 			OC.AppConfig.setValue('core', 'enable_external_storage', value);
 			$('#files_external_settings').toggleClass('hidden', !checked);
+			$("#files_external_message").toggleClass('hidden', checked);
 		};
 
 		if (checked === false) {
