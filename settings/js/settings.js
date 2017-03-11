@@ -96,3 +96,13 @@ OC.Settings = _.extend(OC.Settings, {
 		}
 	}
 });
+
+$(document).ready(function () {
+	$("#enableExternalStorageCheckbox").change(function() {
+		if($(this).is(":checked")) {
+			$("#files_external p:nth-of-type(2)").hide();
+		} else {
+			$("#files_external p:nth-of-type(2)").show();
+		}
+	});
+});
