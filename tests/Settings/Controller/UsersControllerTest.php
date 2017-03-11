@@ -2195,10 +2195,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('Admin'));
 		$toDisableUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
-		$toDisableUser
-			->expects($this->once())
-			->method('isEnabled')
-			->will($this->returnValue(false));
 		$this->container['UserSession']
 			->method('getUser')
 			->will($this->returnValue($user));
@@ -2230,10 +2226,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('Admin'));
 		$toEnableUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
-		$toEnableUser
-			->expects($this->once())
-			->method('isEnabled')
-			->will($this->returnValue(true));
 		$this->container['UserSession']
 			->method('getUser')
 			->will($this->returnValue($user));
@@ -2270,10 +2262,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$toDisableUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
-		$toDisableUser
-			->expects($this->once())
-			->method('isEnabled')
-			->will($this->returnValue(false));
 		$this->container['UserSession']
 			->method('getUser')
 			->will($this->returnValue($user));
@@ -2321,10 +2309,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$toEnableUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
-		$toEnableUser
-			->expects($this->once())
-			->method('isEnabled')
-			->will($this->returnValue(true));
 		$this->container['UserSession']
 			->method('getUser')
 			->will($this->returnValue($user));
