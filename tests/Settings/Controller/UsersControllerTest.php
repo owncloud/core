@@ -2332,7 +2332,7 @@ class UsersControllerTest extends \Test\TestCase {
 				'status' => 'success',
 				'data' => [
 					'username' => 'UserToEnable',
-					'enabled' => 'false'
+					'enabled' => 'true'
 				]
 			],
 			Http::STATUS_OK
