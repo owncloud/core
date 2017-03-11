@@ -8,6 +8,7 @@ OC.L10N.register(
     "Uploading..." : "Incargante...",
     "..." : "...",
     "Download" : "Discargar",
+    "Rename" : "Renominar",
     "Delete" : "Deler",
     "Unshare" : "Leva compartir",
     "Files" : "Files",

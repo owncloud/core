@@ -36,7 +36,6 @@ OC.L10N.register(
     "Share" : "Dalintis",
     "Domain" : "Domenas",
     "<b>Note:</b> " : "<b>Užrašai:</b> ",
-    "You can add external storages in the personal settings" : "Jūs galite pridėti išorines saugyklas asmeniniuose nustatymuose",
     "Name" : "Pavadinimas",
     "Storage type" : "Saugyklos tipas",
     "Enable encryption" : "Įjungti šifravimą",

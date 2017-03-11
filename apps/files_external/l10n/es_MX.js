@@ -73,7 +73,6 @@ OC.L10N.register(
     "Domain" : "Dominio",
     "SMB / CIFS using OC login" : "SMB / CIFS con inicio de sesión OC",
     "Service name" : "Nombre del servicio",
-    "You can add external storages in the personal settings" : "Usted puede agregar almacenamientos externos en la configuración personal",
     "Name" : "Nombre",
     "Storage type" : "Tipo de almacenamiento",
     "Scope" : "Alcance",

@@ -56,7 +56,6 @@
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Megjegyzés:</b> A cURL támogatás, a PHP-ban nincs engedélyezve vagy telepítve. %s csatolása lehetetlen. Kérd meg a rendszergazdádat, hogy telepítse.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Megjegyzés:</b> %s nincs telepítve. %s csatolása lehetetlen. Kérd meg a rendszergazdádat, hogy telepítse.",
     "No external storage configured" : "Nincs külső tároló beállítva.",
-    "You can add external storages in the personal settings" : "Hozzáadhatsz külső tárolókat a személyes beállítások közt.",
     "Name" : "Név",
     "Storage type" : "Tároló típusa",
     "Enable encryption" : "Titkosítás engedélyezése",

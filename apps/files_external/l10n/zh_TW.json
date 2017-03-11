@@ -77,7 +77,6 @@
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>警告:</b> PHP 並未啓用 Curl 的支援，因此無法掛載 %s 。請洽您的系統管理員將其安裝並啓用。",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>警告</b>並未安裝 \"%s\"，因此無法掛載 %s。請洽您的系統管理員將其安裝並啓用。",
     "No external storage configured" : "目前尚未配置任何外部儲存",
-    "You can add external storages in the personal settings" : "在個人設定裡您可以自行加入外部儲存設定",
     "Name" : "名稱",
     "Storage type" : "儲存類型",
     "Scope" : "範圍",

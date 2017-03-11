@@ -97,7 +97,6 @@ OC.L10N.register(
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Shënim:</b> S’është aktivizuar ose instaluar mbulimi i cURL-ve në PHP. Montimi i %s s’është i mundur. Ju lutemi, kërkojini përgjegjësit të sistemit tuaj ta instalojë.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Shënim:</b> S’është instaluar \"%s\". Montimi i %s s’është i mundur. Ju lutemi, kërkojini përgjegjësit të sistemit tuaj ta instalojë.",
     "No external storage configured" : "Pa depozita të jashtme të formësuara",
-    "You can add external storages in the personal settings" : "Depozita të jashtme mund të shtoni që prej rregullimeve personale",
     "Name" : "Emër",
     "Storage type" : "Lloj depozite",
     "Scope" : "Shtrirje",

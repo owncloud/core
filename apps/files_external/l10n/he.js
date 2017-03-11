@@ -97,7 +97,6 @@ OC.L10N.register(
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>הערה:</b> תמיכת ה- cURL ב- PHP אינה מופעלת או מותקנת. חיבור של %s אינו אפשרי. יש לבקש ממנהל המערכת להתקין אותה.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>הערה:</b> \"%s\" אינו מותקן. חיבור של %s אינו אפשרי. יש לבקש ממנהל המערכת להתקין אותה.",
     "No external storage configured" : "לא מוגדר אחסון חיצוני",
-    "You can add external storages in the personal settings" : "ניתן להוסיף אחסונים חיצוניים בהגדרות האישיות",
     "Name" : "שם",
     "Storage type" : "סוג אחסון",
     "Scope" : "היקף",

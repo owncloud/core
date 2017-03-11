@@ -95,7 +95,6 @@ OC.L10N.register(
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Note:</b> PHP подръжката на cURL не е включена или инсталирана. Прикачването на %s не е възможно. Моля, поискай системния администратор да я инсталира.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Note:</b> \"%s\" не е инсталиран. Прикачването на %s не е възможно. Моля, поискай системния администратор да я инсталира.",
     "No external storage configured" : "Няма настроено външно дисково пространство",
-    "You can add external storages in the personal settings" : "Външни хранилища могат да бъдат добавени от личните настройки",
     "Name" : "Име",
     "Storage type" : "Тип дисково пространство",
     "Scope" : "Обхват",
