@@ -15,6 +15,7 @@ var UserList = {
 	offset: 0,
 	usersToLoad: 10, //So many users will be loaded when user scrolls down
 	initialUsersToLoad: 50, //initial number of users to load
+	currentUser: '',
 	currentGid: '',
 	filter: '',
 
@@ -25,9 +26,11 @@ var UserList = {
 	initialize: function($el) {
 		this.$el = $el;
 
+		UserList.currentUser = document.getElementsByTagName('head')[0].getAttribute('data-user');
+
 		// initially the list might already contain user entries (not fully ajaxified yet)
 		// initialize these entries
-		this.$el.find('#isEnabled').on('change', this.onEnabledChange);
+		this.$el.find('.isEnabled').on('change', this.onEnabledChange);
 		this.$el.find('.quota-user').singleSelect().on('change', this.onQuotaSelect);
 	},
 
@@ -101,8 +104,12 @@ var UserList = {
                  * enabled
 		 */
 		var $tdEnabled = $tr.find('.isEnabled');
-		$tdEnabled.attr("checked", user.isEnabled);
-		$tdEnabled.on('change', UserList.onEnabledChange);
+		if(user.name !== UserList.currentUser) {
+			$tdEnabled.attr("checked", user.isEnabled);
+			$tdEnabled.on('change', UserList.onEnabledChange);
+		} else {
+			$tdEnabled.remove();
+		}
 
 		/**
 		 * remove action
