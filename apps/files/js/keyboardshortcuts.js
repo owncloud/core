@@ -112,13 +112,25 @@
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("mouseOver")) {
 				var self = this;
-				OC.dialogs.confirm(t('files', 'Are you sure you want to delete ') + "\"" +  $(this).find(".innernametext").text() + $(this).find(".extension").text() + "\" ?", "", function (e) {
-					if (e === true) {
-						$(self).find(".action")[2].click();
-						$(self).find(".action-delete").click();
-						$(self).removeClass("mouseOver");
-					}
-				}, true);
+
+				$(self).find(".action-menu").click();
+				var canDelete = $(self).find(".action-delete").length;
+				$(self).find(".popovermenu").addClass("hidden");
+				if(canDelete > 0) {
+					// FIXME : add translation capabilities
+					OC.dialogs.confirm(t('files', 'Are you sure you want to delete ') + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\" ?", "", function (e) {
+						if (e === true) {
+							$(self).find(".action-menu").click();
+							$(self).find(".action-delete").click();
+							$(self).removeClass("mouseOver");
+						}
+					}, true);
+				}
+				else {
+					// FIXME : add translation capabilities
+					OC.Notification.showTemporary(t('files', 'You don\'t have permissions to delete ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
+					console.log($(self).find(".action-menu").length);
+				}
 			}
 		});
 	}
