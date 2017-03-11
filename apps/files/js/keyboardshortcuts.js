@@ -8,6 +8,7 @@
  * ctrl/cmd+n: new folder
  * ctrl/cmd+shift+n: new file
  * esc (while new file context menu is open): close menu
+ * esc (while upload happening): cancel the upload
  * up/down: select file/folder
  * enter: open file/folder
  * delete/backspace: delete file/folder
@@ -57,7 +58,7 @@
 	}
 
 	function esc() {
-		$("#controls").trigger('click');
+		$(".stop.icon-close").click();
 	}
 
 	function down() {
@@ -110,8 +111,14 @@
 	function del() {
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-				$(this).find("a.action.delete").trigger('click');
+				var self = this;
+				OC.dialogs.confirm(t('files', 'Are you sure you want to delete ') + "\"" +  $(this).find(".innernametext").text() + $(this).find(".extension").text() + "\" ?", "", function (e) {
+					if (e === true) {
+						$(self).find(".action")[2].click();
+						$(self).find(".action-delete").click();
+						$(self).removeClass("mouseOver");
+					}
+				}, true);
 			}
 		});
 	}
@@ -152,7 +159,8 @@
 				} else { //New Folder
 					newFolder();
 				}
-			} else if ($("#new").hasClass("active") && $.inArray(keyCodes.esc, keys) !== -1) { //close new window
+			} else if ($("#uploadprogressbar").css("display") == "block" && $.inArray(keyCodes.esc, keys) !== -1) { //close new window
+				console.log("esc");
 				esc();
 			} else if ($.inArray(keyCodes.downArrow, keys) !== -1) { //select file
 				down();
