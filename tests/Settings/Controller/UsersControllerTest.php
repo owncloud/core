@@ -2087,4 +2087,102 @@ class UsersControllerTest extends \Test\TestCase {
 		$response = $this->container['UsersController']->setDisplayName($user->getUID(), 'newDisplayName');
 		$this->assertEquals($expectedResponse, $response);
 	}
+	
+	public function testDisableSelfAdmin() {
+		$this->container['IsAdmin'] = true;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('myself'));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'error',
+				'data' => [
+					'message' => 'Forbidden'
+				]
+			],
+			Http::STATUS_FORBIDDEN
+		);
+		$response = $this->container['UsersController']->setEnabled('myself', false);
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testEnableSelfAdmin() {
+		$this->container['IsAdmin'] = true;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('myself'));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'error',
+				'data' => [
+					'message' => 'Forbidden'
+				]
+			],
+			Http::STATUS_FORBIDDEN
+		);
+		$response = $this->container['UsersController']->setEnabled('myself', true);
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testDisableSelfSubadmin() {
+		$this->container['IsAdmin'] = false;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('myself'));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'error',
+				'data' => [
+					'message' => 'Forbidden'
+				]
+			],
+			Http::STATUS_FORBIDDEN
+		);
+		$response = $this->container['UsersController']->setEnabled('myself', false);
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testEnableSelfSubadmin() {
+		$this->container['IsAdmin'] = false;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('myself'));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'error',
+				'data' => [
+					'message' => 'Forbidden'
+				]
+			],
+			Http::STATUS_FORBIDDEN
+		);
+
+		$response = $this->container['UsersController']->setEnabled('myself', true);
+		$this->assertEquals($expectedResponse, $response);
+	}
+
 }
