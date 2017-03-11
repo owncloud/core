@@ -942,6 +942,21 @@ $(document).ready(function () {
 		});
 	});
 
+        if ($('#CheckboxIsEnabled').is(':checked')) {
+                $("#userlist .enabled").show();
+        }
+        // Option to display/hide the "Enabled" column
+        $('#CheckboxIsEnabled').click(function() {
+                if ($('#CheckboxIsEnabled').is(':checked')) {
+                        $("#userlist .enabled").show();
+                        OC.AppConfig.setValue('core', 'umgmt_show_is_enabled', 'true');
+                } else {
+                        $("#userlist .enabled").hide();
+                        OC.AppConfig.setValue('core', 'umgmt_show_is_enabled', 'false');
+                }
+        });
+
+
 	if ($('#CheckboxStorageLocation').is(':checked')) {
 		$("#userlist .storageLocation").show();
 	}

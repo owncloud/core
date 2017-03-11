@@ -12,7 +12,7 @@
 		<?php if(is_array($_['subadmins']) || $_['subadmins']): ?>
 			<th id="headerSubAdmins" scope="col"><?php p($l->t('Group Admin for')); ?></th>
 		<?php endif;?>
-			<th id="headerIsEnabled" scope="col"><?php p($l->t('Enabled')); ?></th>
+			<th class="enabled" scope="col"><?php p($l->t('Enabled')); ?></th>
 			<th id="headerQuota" scope="col"><?php p($l->t('Quota')); ?></th>
 			<th class="storageLocation" scope="col"><?php p($l->t('Storage Location')); ?></th>
 			<th class="userBackend" scope="col"><?php p($l->t('User Backend')); ?></th>
