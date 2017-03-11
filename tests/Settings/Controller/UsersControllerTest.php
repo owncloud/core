@@ -2108,7 +2108,7 @@ class UsersControllerTest extends \Test\TestCase {
 			],
 			Http::STATUS_FORBIDDEN
 		);
-		$response = $this->container['UsersController']->setEnabled('myself', false);
+		$response = $this->container['UsersController']->setEnabled('myself', 'false');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -2132,7 +2132,7 @@ class UsersControllerTest extends \Test\TestCase {
 			],
 			Http::STATUS_FORBIDDEN
 		);
-		$response = $this->container['UsersController']->setEnabled('myself', true);
+		$response = $this->container['UsersController']->setEnabled('myself', 'true');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -2156,7 +2156,7 @@ class UsersControllerTest extends \Test\TestCase {
 			],
 			Http::STATUS_FORBIDDEN
 		);
-		$response = $this->container['UsersController']->setEnabled('myself', false);
+		$response = $this->container['UsersController']->setEnabled('myself', 'false');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -2181,8 +2181,179 @@ class UsersControllerTest extends \Test\TestCase {
 			Http::STATUS_FORBIDDEN
 		);
 
-		$response = $this->container['UsersController']->setEnabled('myself', true);
+		$response = $this->container['UsersController']->setEnabled('myself', 'true');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
+	public function testDisableAdmin() {
+		$this->container['IsAdmin'] = true;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('Admin'));
+		$toDisableUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$toDisableUser
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(false));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$this->container['UserManager']
+			->method('get')
+			->with('UserToDisable')
+			->will($this->returnValue($toDisableUser));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'success',
+				'data' => [
+					'username' => 'UserToDisable',
+					'enabled' => 'false'
+				]
+			],
+			Http::STATUS_OK
+		);
+		$response = $this->container['UsersController']->setEnabled('UserToDisable', 'false');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testEnableAdmin() {
+		$this->container['IsAdmin'] = true;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('Admin'));
+		$toEnableUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$toEnableUser
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(true));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$this->container['UserManager']
+			->method('get')
+			->with('UserToEnable')
+			->will($this->returnValue($toEnableUser));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'success',
+				'data' => [
+					'username' => 'UserToEnable',
+					'enabled' => 'true'
+				]
+			],
+			Http::STATUS_OK
+		);
+		$response = $this->container['UsersController']->setEnabled('UserToEnable', 'true');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testDisableSubAdmin() {
+		$this->container['IsAdmin'] = false;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('myself'));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$toDisableUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$toDisableUser
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(false));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$this->container['UserManager']
+			->method('get')
+			->with('UserToDisable')
+			->will($this->returnValue($toDisableUser));
+		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
+			->disableOriginalConstructor()
+			->getMock();
+		$subadmin->expects($this->once())
+			->method('isUserAccessible')
+			->with($user, $toDisableUser)
+			->will($this->returnValue(true));
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('getSubAdmin')
+			->will($this->returnValue($subadmin));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'success',
+				'data' => [
+					'username' => 'UserToDisable',
+					'enabled' => 'false'
+				]
+			],
+			Http::STATUS_OK
+		);
+		$response = $this->container['UsersController']->setEnabled('UserToDisable', 'false');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testEnableSubAdmin() {
+		$this->container['IsAdmin'] = false;
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('myself'));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$toEnableUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$toEnableUser
+			->expects($this->once())
+			->method('isEnabled')
+			->will($this->returnValue(true));
+		$this->container['UserSession']
+			->method('getUser')
+			->will($this->returnValue($user));
+		$this->container['UserManager']
+			->method('get')
+			->with('UserToEnable')
+			->will($this->returnValue($toEnableUser));
+		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
+			->disableOriginalConstructor()
+			->getMock();
+		$subadmin->expects($this->once())
+			->method('isUserAccessible')
+			->with($user, $toEnableUser)
+			->will($this->returnValue(true));
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('getSubAdmin')
+			->will($this->returnValue($subadmin));
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'success',
+				'data' => [
+					'username' => 'UserToEnable',
+					'enabled' => 'false'
+				]
+			],
+			Http::STATUS_OK
+		);
+		$response = $this->container['UsersController']->setEnabled('UserToEnable', 'true');
+		$this->assertEquals($expectedResponse, $response);
+	}
 }
