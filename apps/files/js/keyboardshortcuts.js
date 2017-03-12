@@ -1,23 +1,29 @@
 /**
  * Copyright (c) 2012 Erik Sargent <esthepiking at gmail dot com>
+ * Copyright (c) 2017 Noveen Sachdeva <noveen.sachdeva@research.iiit.ac.in>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  */
-/*****************************
+
+
+/***********************SHORTCUTS**************************
  * Keyboard shortcuts for Files app
- * ctrl/cmd+n: new folder
- * ctrl/cmd+shift+n: new file
+ * shift+d: new directory
+ * shift+n: new file
+ * shift+r: rename file/folder
  * esc (while new file context menu is open): close menu
  * esc (while upload happening): cancel the upload
  * up/down: select file/folder
  * enter: open file/folder
  * delete/backspace: delete file/folder
- *****************************/
+ *********************************************************/
 (function(Files) {
 	var keys = [];
 	var keyCodes = {
 		shift: 16,
 		n: 78,
+		d: 68,
+		r: 82,
 		cmdFirefox: 224,
 		cmdOpera: 17,
 		leftCmdWebKit: 91,
@@ -44,21 +50,22 @@
 	}
 
 	function newFile() {
-		$("#new").addClass("active");
-		$(".popup.popupTop").toggle(true);
-		$('#new li[data-type="file"]').trigger('click');
+		$(".new").click();
+		//$(".popup.popupTop").toggle(true);
+		$('[data-action="upload"]').click();
 		removeA(keys, keyCodes.n);
 	}
 
 	function newFolder() {
-		$("#new").addClass("active");
-		$(".popup.popupTop").toggle(true);
-		$('#new li[data-type="folder"]').trigger('click');
+		$(".new").click();
+		//$(".popup.popupTop").toggle(true);
+		$('[data-action="folder"]').click();
 		removeA(keys, keyCodes.n);
 	}
 
 	function esc() {
 		$(".stop.icon-close").click();
+		$(".popovermenu").addClass('hidden');
 	}
 
 	function down() {
@@ -129,7 +136,6 @@
 				else {
 					// FIXME : add translation capabilities
 					OC.Notification.showTemporary(t('files', 'You don\'t have permissions to delete ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-					console.log($(self).find(".action-menu").length);
 				}
 			}
 		});
@@ -138,8 +144,20 @@
 	function rename() {
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-				$(this).find("a[data-action='Rename']").trigger('click');
+				var self = this;
+
+				$(self).find(".action-menu").click();
+				var canRename = $(self).find(".action-rename").length;
+				$(self).find(".popovermenu").addClass("hidden");
+				if(canRename > 0) {
+					$(self).find(".action-menu").click();
+					$(self).find(".action-rename").click();
+					$(self).removeClass("mouseOver");
+				}
+				else {
+					// FIXME : add translation capabilities
+					OC.Notification.showTemporary(t('files', 'You don\'t have permissions to rename ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
+				}
 			}
 		});
 	}
@@ -164,15 +182,15 @@
 		});
 		$(document).keyup(function(event) {
 			// do your event.keyCode checks in here
-			if (
-			$.inArray(keyCodes.n, keys) !== -1 && ($.inArray(keyCodes.cmdFirefox, keys) !== -1 || $.inArray(keyCodes.cmdOpera, keys) !== -1 || $.inArray(keyCodes.leftCmdWebKit, keys) !== -1 || $.inArray(keyCodes.rightCmdWebKit, keys) !== -1 || $.inArray(keyCodes.ctrl, keys) !== -1 || event.ctrlKey)) {
-				if ($.inArray(keyCodes.shift, keys) !== -1) { //16=shift, New File
+			if ($.inArray(keyCodes.shift, keys) !== -1) {
+				if ($.inArray(keyCodes.n, keys) !== -1) { //16=shift, New File
 					newFile();
-				} else { //New Folder
+				} else if ($.inArray(keyCodes.d, keys) !== -1) { //New Directory
 					newFolder();
+				} else if($.inArray(keyCodes.r, keys) !== -1) { //rename File or Folder
+					rename();
 				}
-			} else if ($("#uploadprogressbar").css("display") == "block" && $.inArray(keyCodes.esc, keys) !== -1) { //close new window
-				console.log("esc");
+			} else if ($.inArray(keyCodes.esc, keys) !== -1) { //close new window
 				esc();
 			} else if ($.inArray(keyCodes.downArrow, keys) !== -1) { //select file
 				down();
