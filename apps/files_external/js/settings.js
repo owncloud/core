@@ -1376,6 +1376,10 @@ $(document).ready(function() {
 		}
 	});
 
+	$('body').on('click', 'a.oc-dialog-close', function () {
+		$('#files_external input[name=enableExternalStorage]').prop('checked', true);
+	});
+
 	// global instance
 	OCA.External.Settings.mountConfig = mountConfigListView;
 
