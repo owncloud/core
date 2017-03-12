@@ -6,17 +6,19 @@
  */
 
 
-/***********************SHORTCUTS**************************
+/*****************************SHORTCUTS*******************************
  * Keyboard shortcuts for Files app
  * shift+d: new directory
  * shift+n: new file
  * shift+r: rename file/folder
  * esc (while new file context menu is open): close menu
  * esc (while upload happening): cancel the upload
+ * esc (while multiple files selected): de-select all files
  * up/down: select file/folder
  * enter: open file/folder
- * delete/backspace: delete file/folder
- *********************************************************/
+ * delete/backspace: delete file/folder (multiple files also allowed)
+ * shift+up/down: select multiple files
+ ********************************************************************/
 (function(Files) {
 	var keys = [];
 	var keyCodes = {
@@ -33,7 +35,8 @@
 		downArrow: 40,
 		upArrow: 38,
 		enter: 13,
-		del: 46
+		del: 46,
+		backspace: 8
 	};
 
 	function removeA(arr) {
@@ -66,6 +69,130 @@
 	function esc() {
 		$(".stop.icon-close").click();
 		$(".popovermenu").addClass('hidden');
+
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("selected")) {
+				$(this).find(".selectCheckBox").click();
+			}
+		});
+	}
+
+	function select_down() {
+		var chosen = -100;
+		var mouse = -1;
+		var toDelete = 0;
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("mouseOver")) {
+				if ($($("#fileList tr")[index+1]).hasClass("selected")) {
+					toDelete = 1;
+				}
+			}
+		});
+
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("selected")) {
+				if (toDelete == 1) {
+					chosen = index;
+					return false;
+				}
+				else {
+					chosen = index + 1;
+				}
+			}
+			if ($(this).hasClass("mouseOver")) {
+				mouse = index + 1;
+				$(this).removeClass("mouseOver");
+			}
+		});
+
+		if (mouse == -1) {
+			$($("#fileList tr")[0]).addClass("mouseOver");
+		}
+		
+		if (mouse >= $("#fileList tr").length) {
+			$($("#fileList tr")[$("#fileList tr").length - 1]).addClass("mouseOver");
+		}
+
+		if (mouse == chosen) {
+			mouse = chosen + 1;
+		}
+
+		if (chosen === -100) {
+			$("#fileList tr").each(function(index) {
+				if (index === mouse - 1) {
+					$(this).find(".selectCheckBox").click();
+				}
+				if (mouse === index) {
+					$(this).addClass("mouseOver");
+				}
+			});
+		} else {
+			$("#fileList tr").each(function(index) {
+				if (index === chosen) {
+					$(this).find(".selectCheckBox").click();
+				}
+				if (index === mouse) {
+					$(this).addClass("mouseOver");
+				}
+			});
+		}
+	}
+
+	function select_up() {
+		var chosen = -100;
+		var mouse = -100;
+		var toDelete = 0;
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("mouseOver")) {
+				if ($($("#fileList tr")[index-1]).hasClass("selected")) {
+					toDelete = 1;
+				}
+			}
+		});
+
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("selected")) {
+				if (toDelete == 1) {
+					chosen = index;
+				}
+				else {
+					chosen = index - 1;
+					return false;
+				}
+			}
+			if ($(this).hasClass("mouseOver")) {
+				mouse = index - 1;
+				$(this).removeClass("mouseOver");
+			}
+		});
+
+		if (mouse == -100) {
+			return;
+		}
+
+		if (mouse < 0) {
+			$($("#fileList tr")[0]).addClass("mouseOver");
+		}
+
+		if (chosen === -100) {
+			$("#fileList tr").each(function(index) {
+				if (index === mouse + 1) {
+					$(this).find(".selectCheckBox").click();
+				}
+				if (index === mouse) {
+					$(this).addClass("mouseOver");
+				}
+			});
+		} else {
+			$("#fileList tr").each(function(index) {
+				if (index === chosen) {
+					$(this).find(".selectCheckBox").click();
+				}
+				if (index === mouse) {
+					$(this).addClass("mouseOver");
+				}
+			});
+		}
 	}
 
 	function down() {
@@ -74,6 +201,9 @@
 			if ($(this).hasClass("mouseOver")) {
 				select = index + 1;
 				$(this).removeClass("mouseOver");
+			}
+			if ($(this).hasClass("selected")) {
+				$(this).find(".selectCheckBox").click();
 			}
 		});
 		if (select === -1) {
@@ -94,6 +224,9 @@
 				select = index - 1;
 				$(this).removeClass("mouseOver");
 			}
+			if ($(this).hasClass("selected")) {
+				$(this).find(".selectCheckBox").click();
+			}
 		});
 		if (select === -1) {
 			$("#fileList tr:last").addClass("mouseOver");
@@ -109,36 +242,81 @@
 	function enter() {
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-				$(this).find("span.nametext").trigger('click');
+				$(this).find("span.nametext").click();
 			}
 		});
 	}
 
 	function del() {
+		var countSelected = 0;
 		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				var self = this;
-
-				$(self).find(".action-menu").click();
-				var canDelete = $(self).find(".action-delete").length;
-				$(self).find(".popovermenu").addClass("hidden");
-				if(canDelete > 0) {
-					// FIXME : add translation capabilities
-					OC.dialogs.confirm(t('files', 'Are you sure you want to delete ') + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\" ?", "", function (e) {
-						if (e === true) {
-							$(self).find(".action-menu").click();
-							$(self).find(".action-delete").click();
-							$(self).removeClass("mouseOver");
-						}
-					}, true);
-				}
-				else {
-					// FIXME : add translation capabilities
-					OC.Notification.showTemporary(t('files', 'You don\'t have permissions to delete ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-				}
+			if ($(this).hasClass("selected")) {
+				countSelected++;
 			}
 		});
+
+		// delete the row which is currently selected
+		if (countSelected == 0) {
+			$("#fileList tr").each(function(index) {
+				if ($(this).hasClass("mouseOver")) {
+					var self = this;
+
+					$(self).find(".action-menu").click();
+					var canDelete = $(self).find(".action-delete").length;
+					$(self).find(".popovermenu").addClass("hidden");
+					if(canDelete > 0) {
+						// FIXME : add translation capabilities
+						OC.dialogs.confirm(t('files', 'Are you sure you want to delete ') + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\" ?", "", function (e) {
+							if (e === true) {
+								$(self).find(".action-menu").click();
+								$(self).find(".action-delete").click();
+								$(self).removeClass("mouseOver");
+							}
+						}, true);
+					}
+					else {
+						// FIXME : add translation capabilities
+						OC.Notification.showTemporary(t('files', 'You don\'t have permissions to delete ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
+					}
+				}
+			});
+		}
+		// deletion of multiple files selected
+		else {
+			if ($("#app-content-files .selectedActions .delete-selected").not(".hidden").length > 0) {
+				// FIXME : add translation capabilities
+				OC.dialogs.confirm(t('files', 'Are you sure you want to delete the ') + "\"" +  countSelected + "\" selected files?", "", function (e) {
+					if (e === true) {
+						$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
+					}
+				}, true);
+			}
+			else {
+				var cantDelete = "";
+				var count = 0;
+				$("#fileList tr").each(function(index) {
+					var self = this;
+					if ($(this).hasClass("selected")) {
+						$(self).find(".action-menu").click();
+						var canDelete = $(self).find(".action-delete").length;
+						$(self).find(".popovermenu").addClass("hidden");
+						if (canDelete == 0) {
+							count++;
+							if (count == 1) {
+								cantDelete += ", try unchecking \"";
+							}
+							cantDelete += $(self).find(".innernametext").text() + $(self).find(".extension").text() + ", ";
+						}
+					}
+				}).promise().done(function(){
+					if (cantDelete.length > 0) {
+						cantDelete = cantDelete.slice(0,-2);
+						cantDelete += "\"";
+					}
+					OC.Notification.showTemporary(t('files', "You can't delete these files" + cantDelete));
+				});
+			}
+		}
 	}
 
 	function rename() {
@@ -182,23 +360,27 @@
 		});
 		$(document).keyup(function(event) {
 			// do your event.keyCode checks in here
-			if ($.inArray(keyCodes.shift, keys) !== -1) {
-				if ($.inArray(keyCodes.n, keys) !== -1) { //16=shift, New File
+			if ($.inArray(keyCodes.shift, keys) !== -1) { // shift key
+				if ($.inArray(keyCodes.n, keys) !== -1) { // New File
 					newFile();
-				} else if ($.inArray(keyCodes.d, keys) !== -1) { //New Directory
+				} else if ($.inArray(keyCodes.d, keys) !== -1) { // New Directory
 					newFolder();
-				} else if($.inArray(keyCodes.r, keys) !== -1) { //rename File or Folder
+				} else if($.inArray(keyCodes.r, keys) !== -1) { // rename File or Folder
 					rename();
+				} else if($.inArray(keyCodes.downArrow, keys) !== -1) { // shift + down
+					select_down();
+				} else if($.inArray(keyCodes.upArrow, keys) !== -1) { // shift + up
+					select_up();
 				}
-			} else if ($.inArray(keyCodes.esc, keys) !== -1) { //close new window
+			} else if ($.inArray(keyCodes.esc, keys) !== -1) { // close new window
 				esc();
-			} else if ($.inArray(keyCodes.downArrow, keys) !== -1) { //select file
+			} else if ($.inArray(keyCodes.downArrow, keys) !== -1) { // select file
 				down();
-			} else if ($.inArray(keyCodes.upArrow, keys) !== -1) { //select file
+			} else if ($.inArray(keyCodes.upArrow, keys) !== -1) { // select file
 				up();
 			} else if (!$("#new").hasClass("active") && $.inArray(keyCodes.enter, keys) !== -1) { //open file
 				enter();
-			} else if (!$("#new").hasClass("active") && $.inArray(keyCodes.del, keys) !== -1) { //delete file
+			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.del, keys) !== -1 || $.inArray(keyCodes.backspace, keys) !== -1)) { //delete file
 				del();
 			}
 			removeA(keys, event.keyCode);
