@@ -11,6 +11,7 @@
  * shift+d: new directory
  * shift+n: new file
  * shift+r: rename file/folder
+ * shift+f: favorite file/folder (multiple allowed)
  * esc (while new file context menu is open): close menu
  * esc (while upload happening): cancel the upload
  * esc (while multiple files selected): de-select all files
@@ -26,6 +27,7 @@
 		n: 78,
 		d: 68,
 		r: 82,
+		f: 70,
 		cmdFirefox: 224,
 		cmdOpera: 17,
 		leftCmdWebKit: 91,
@@ -75,6 +77,45 @@
 				$(this).find(".selectCheckBox").click();
 			}
 		});
+	}
+
+	function favorite() {
+		var countSelected = 0;
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("selected")) {
+				countSelected++;
+			}
+		});
+
+		// single file favorite
+		if (countSelected == 0) {
+			$("#fileList tr").each(function(index) {
+				var self = this;
+				if ($(this).hasClass("mouseOver")) {
+					if ($(this).find(".action-favorite").length > 0) {
+						$(this).find(".action-favorite").click();
+						return false;
+					}
+					else {
+						OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
+					}
+				}
+			});
+		}
+		// multiple selected files favorite
+		else {
+			$("#fileList tr").each(function(index) {
+				var self = this;
+				if ($(this).hasClass("selected")) {
+					if ($(this).find(".action-favorite").length > 0) {
+						$(this).find(".action-favorite").click();
+					}
+					else {
+						OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
+					}
+				}
+			});
+		}
 	}
 
 	function select_down() {
@@ -371,6 +412,8 @@
 					select_down();
 				} else if($.inArray(keyCodes.upArrow, keys) !== -1) { // shift + up
 					select_up();
+				} else if($.inArray(keyCodes.f, keys) !== -1) { // shift + f
+					favorite();
 				}
 			} else if ($.inArray(keyCodes.esc, keys) !== -1) { // close new window
 				esc();
