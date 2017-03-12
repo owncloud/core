@@ -97,6 +97,7 @@ OC.L10N.register(
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Let op:</b> Curl ondersteuning in PHP is niet geactiveerd of geïnstalleerd. Mounten van %s is niet mogelijk. Vraag uw systeembeheerder dit te installeren.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Let op:</b> \"%s\" is niet geïnstalleerd. Mounten van %s is niet mogelijk. Vraag uw beheerder om dit te installeren.",
     "No external storage configured" : "Geen externe opslag geconfigureerd",
+    "You can add external storages in the storage settings" : "U kunt externe opslag toevoegen in opslaginstellingen",
     "Name" : "Naam",
     "Storage type" : "Opslagtype",
     "Scope" : "Scope",

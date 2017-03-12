@@ -304,7 +304,7 @@ OC.L10N.register(
     "Everyone" : "Kushdo",
     "Admins" : "Administratorë",
     "Default Quota" : "Kuota Parazgjedhje",
-    "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")" : "Ju lutemi, jepni kuotë depozitimi (psh: \"512 MB\" ose \"12 GB\")",
+    "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")" : "Ju lutemi, jepni kuotë depozite (psh: \"512 MB\" ose \"12 GB\")",
     "Other" : "Tjetër",
     "Full Name" : "Emri i Plotë",
     "Group Admin for" : "Admin Grupi për",

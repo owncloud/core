@@ -97,6 +97,7 @@ OC.L10N.register(
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Athugið:</b> Stuðningur við cURL í PHP er ekki virkjaður eða ekki uppsettur. Tenging %s er ekki möguleg. Biddu kerfisstjórann þinn um að setja þetta upp.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Athugið:</b> \"%s\" ekki uppsett. Tenging %s er ekki möguleg. Biddu kerfisstjórann þinn um að setja þetta upp.",
     "No external storage configured" : "Engin ytri-gagnageymsla stillt",
+    "You can add external storages in the storage settings" : "Þú getur bætt við ytri gagnageymslum í geymslustillingunum þínum",
     "Name" : "Nafn",
     "Storage type" : "Tegund gagnageymslu",
     "Scope" : "Umfang",
