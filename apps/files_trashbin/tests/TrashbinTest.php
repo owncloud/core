@@ -40,6 +40,7 @@ use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use Test\TestCase;
+use Test\Traits\UserTrait;
 
 /**
  * Class Test_Encryption
@@ -47,6 +48,8 @@ use Test\TestCase;
  * @group DB
  */
 class TrashbinTest extends TestCase {
+
+	use UserTrait;
 
 	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
 	const TEST_TRASHBIN_USER2 = "test-trashbin-user2";
@@ -88,20 +91,10 @@ class TrashbinTest extends TestCase {
 
 		// register hooks
 		Trashbin::registerHooks();
-
-		// create test user
-		self::loginHelper(self::TEST_TRASHBIN_USER2, true);
-		self::loginHelper(self::TEST_TRASHBIN_USER1, true);
 	}
 
 
 	public static function tearDownAfterClass() {
-		// cleanup test user
-		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER1);
-		if ($user !== null) {
-			$user->delete();
-		}
-
 		\OC::$server->getConfig()->setSystemValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
 
 		\OC_Hook::clear();
@@ -118,6 +111,8 @@ class TrashbinTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$this->createUser(self::TEST_TRASHBIN_USER1);
+		$this->createUser(self::TEST_TRASHBIN_USER2);
 		\OC::$server->getAppManager()->enableApp('files_trashbin');
 		$config = \OC::$server->getConfig();
 		$mockConfig = $this->createMock('\OCP\IConfig');
@@ -674,17 +669,8 @@ class TrashbinTest extends TestCase {
 
 	/**
 	 * @param string $user
-	 * @param bool $create
 	 */
-	public static function loginHelper($user, $create = false) {
-		if ($create) {
-			try {
-				\OC::$server->getUserManager()->createUser($user, $user);
-			} catch (\Exception $e) { // catch username is already being used from previous aborted runs
-
-			}
-		}
-
+	public static function loginHelper($user) {
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		Filesystem::tearDown();
