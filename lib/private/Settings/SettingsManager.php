@@ -204,6 +204,7 @@ class SettingsManager implements ISettingsManager {
 				new Section('monitoring', $this->l->t('Monitoring'), 75, 'search'),
 				new Section('apps', $this->l->t('Apps'), 70, 'list'),
 				new Section('updates', $this->l->t('Updates'), 20, 'update'),
+				new Section('help', $this->l->t('Help & Tips'), -5, 'info'),
 				new Section('additional', $this->l->t('Additional'), -10, 'more'),
 			];
 		} else if($type === 'personal') {
