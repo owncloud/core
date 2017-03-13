@@ -48,7 +48,7 @@ jQuery.fn.keyUpDelayedOrEnter = function (callback, allowEmptyValue) {
  * @param allowEmptyValue if this is set to true the callback is also called when the value is empty
  */
 
-jQuery.fn.Enter = function (callback, allowEmptyValue) {
+jQuery.fn.enter = function (callback, allowEmptyValue) {
 	var cb = callback;
 	var that = this;
 

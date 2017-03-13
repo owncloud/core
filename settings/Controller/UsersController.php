@@ -776,6 +776,8 @@ class UsersController extends Controller {
 
 	/**
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @NoSubadminRequired
 	 *
 	 * @param $token
 	 * @param $userId
@@ -783,6 +785,18 @@ class UsersController extends Controller {
 	 * @return TemplateResponse
 	 */
 	public function changeMail($token, $userId, $mailAddress) {
+		$user = $this->userManager->get($userId);
+		$sessionUser = $this->userSession->getUser();
+
+		if ($user !== $sessionUser) {
+			return new TemplateResponse(
+				'settings', 'error', [
+				"errors" => [["error" => "Invalid access"]]
+			],
+				'guest'
+			);
+		}
+
 		try {
 			$this->checkEmailChangeToken($token, $userId);
 		} catch (\Exception $e) {

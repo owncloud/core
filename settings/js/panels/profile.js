@@ -194,7 +194,7 @@ $(document).ready(function () {
 	});
 
 	$('#displayName').keyUpDelayedOrEnter(changeDisplayName);
-	$('#email').Enter(changeEmailAddress, true);
+	$('#email').enter(changeEmailAddress, true);
 	$('#emailbutton').click(function () {
 		changeEmailAddress();
 	});
