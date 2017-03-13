@@ -352,6 +352,40 @@
 			}
 
 			OC.Plugins.attach('OCA.Files.FileList', this);
+
+			// adjust controls bar width
+			var adjustMultiselectWidth = function() {
+				$filesAppContent = $('#app-content-files');
+				if($filesAppContent.find('table.multiselect').length) {
+					// FIXME - refactor this - this is mostly a copy of the general app content logic in js.js
+					var multiselectWidth;
+					// if there is a scrollbar …
+					if($('#app-content').get(0).scrollHeight > $('#app-content').height()) {
+						if($(window).width() > 768) {
+							multiselectWidth = $('#content').width() - $('#app-navigation').width() - getScrollBarWidth();
+							if (!$('#app-sidebar').hasClass('hidden') && !$('#app-sidebar').hasClass('disappear')) {
+								multiselectWidth -= $('#app-sidebar').width();
+							}
+						} else {
+							multiselectWidth = $('#content').width() - getScrollBarWidth();
+						}
+					} else { // if there is none
+						if($(window).width() > 768) {
+							multiselectWidth = $('#content').width() - $('#app-navigation').width();
+							if (!$('#app-sidebar').hasClass('hidden') && !$('#app-sidebar').hasClass('disappear')) {
+								multiselectWidth -= $('#app-sidebar').width();
+							}
+						} else {
+							multiselectWidth = $('#content').width();
+						}
+					}
+					$filesAppContent.find('table.multiselect > thead')
+						.css('width', multiselectWidth)
+						.css('min-width', multiselectWidth);
+				}
+			};
+
+			$(window).resize(_.debounce(adjustMultiselectWidth, 250));
 		},
 
 		/**
