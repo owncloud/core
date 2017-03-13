@@ -105,6 +105,13 @@
 					value="" required
 					autocomplete="off" tabindex="5">
 			</form>
+
+			<noscript>
+				<div style="margin-left: 200px; margin-top: 10px; color: rgb(18, 141, 146); font-size: 15px">
+					The technology JavaScript is disabled, some features can work incorrectly.
+				</div>
+			</noscript>
+
 		</div></header>
 
 		<nav role="navigation"><div id="navigation">
