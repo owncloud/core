@@ -49,4 +49,21 @@ class Test_User_Database extends Test_User_Backend {
 		}
 		parent::tearDown();
 	}
+
+	public function testCreateUserInvalidatesCache() {
+		$user1 = $this->getUniqueID('test_');
+		$this->assertFalse($this->backend->userExists($user1));
+		$this->backend->createUser($user1, 'pw');
+		$this->assertTrue($this->backend->userExists($user1));
+	}
+
+	public function testDeleteUserInvalidatesCache() {
+		$user1 = $this->getUniqueID('test_');
+		$this->backend->createUser($user1, 'pw');
+		$this->assertTrue($this->backend->userExists($user1));
+		$this->backend->deleteUser($user1);
+		$this->assertFalse($this->backend->userExists($user1));
+		$this->backend->createUser($user1, 'pw2');
+		$this->assertTrue($this->backend->userExists($user1));
+	}
 }
