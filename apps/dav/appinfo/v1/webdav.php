@@ -53,5 +53,9 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	return \OC\Files\Filesystem::getView();
 });
 
+// allow setup of additional auth backends
+$event = new \OCP\SabrePluginEvent($server);
+\OC::$server->getEventDispatcher()->dispatch('OCA\DAV\Connector\Sabre::authInit', $event);
+
 // And off we go!
 $server->exec();
