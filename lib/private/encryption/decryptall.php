@@ -203,27 +203,40 @@ class DecryptAll {
 		$directories[] =  '/' . $uid . '/files';
 
 		while($root = array_pop($directories)) {
-			$content = $this->rootView->getDirectoryContent($root);
-			foreach ($content as $file) {
-				$path = $root . '/' . $file['name'];
-				if ($this->rootView->is_dir($path)) {
-					$directories[] = $path;
-					continue;
-				} else {
-					try {
-						$progress->setMessage("decrypt files for user $userCount: $path");
-						$progress->advance();
-						if ($this->decryptFile($path) === false) {
-							$progress->setMessage("decrypt files for user $userCount: $path (already decrypted)");
+			try {
+				$content = $this->rootView->getDirectoryContent($root);
+				foreach ($content as $file) {
+					$path = $root . '/' . $file['name'];
+					if ($this->rootView->is_dir($path)) {
+						$directories[] = $path;
+						continue;
+					} else {
+						try {
+							if ($this->decryptFile($path) === false) {
+								$progress->setMessage("decrypt files for user $userCount: path=$path (already decrypted)");
+								$progress->advance();
+							} else {
+								$progress->setMessage("decrypt files for user $userCount: path=$path (success)");
+								$progress->advance();
+							}
+						} catch (\Exception $e) {
+							$progress->setMessage("decrypt files for user $userCount: path=$path (Exception: {$e->getMessage()}):\n{$e->getTraceAsString()}");
 							$progress->advance();
-						}
-					} catch (\Exception $e) {
-						if (isset($this->failed[$uid])) {
-							$this->failed[$uid][] = $path;
-						} else {
-							$this->failed[$uid] = [$path];
+							if (isset($this->failed[$uid])) {
+								$this->failed[$uid][] = $path;
+							} else {
+								$this->failed[$uid] = [$path];
+							}
 						}
 					}
+				}
+			} catch (\Exception $e) {
+				$progress->setMessage("decrypt files for user $userCount: root=$root (Exception: {$e->getMessage()}):\n{$e->getTraceAsString()}");
+				$progress->advance();
+				if (isset($this->failed[$uid])) {
+					$this->failed[$uid][] = $root;
+				} else {
+					$this->failed[$uid] = [$root];
 				}
 			}
 		}
