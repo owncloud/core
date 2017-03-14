@@ -112,73 +112,40 @@ class UserTest extends TestCase {
 		$this->assertFalse($this->user->canChangePassword());
 	}
 
-	public function testChangeAvatarSupportedYes() {
-		$this->markTestSkipped('Avatar supported needs to be implemented');
-		/**
-		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
-		 */
-		$backend = $this->createMock('Test\User\AvatarUserDummy');
-		$backend->expects($this->once())
-			->method('canChangeAvatar')
-			->with($this->equalTo('foo'))
-			->will($this->returnValue(true));
+	public function providesChangeAvatarSupported() {
+		return [
+			[true, true, true],
+			[false, true, false],
+			[true, false, null]
+		];
+	}
+
+	/**
+	 * @dataProvider providesChangeAvatarSupported
+	 */
+	public function testChangeAvatarSupported($expected, $implements, $canChange) {
+		$backend = $this->getMockBuilder(Database::class)
+			->setMethods(['canChangeAvatar', 'implementsActions'])
+			->getMock();
+		$backend->expects($this->any())->method('canChangeAvatar')->willReturn($canChange);
+
+		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		$account = $this->createMock(Account::class);
+		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
+		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
 
 		$backend->expects($this->any())
 			->method('implementsActions')
-			->will($this->returnCallback(function ($actions) {
+			->will($this->returnCallback(function ($actions) use ($implements) {
 				if ($actions === Backend::PROVIDE_AVATAR) {
-					return true;
+					return $implements;
 				} else {
 					return false;
 				}
 			}));
 
-		$user = new User('foo', $backend);
-		$this->assertTrue($user->canChangeAvatar());
-	}
-
-	public function testChangeAvatarSupportedNo() {
-		$this->markTestSkipped('Avatar supported needs to be implemented');
-		/**
-		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
-		 */
-		$backend = $this->createMock('Test\User\AvatarUserDummy');
-		$backend->expects($this->once())
-			->method('canChangeAvatar')
-			->with($this->equalTo('foo'))
-			->will($this->returnValue(false));
-
-		$backend->expects($this->any())
-			->method('implementsActions')
-			->will($this->returnCallback(function ($actions) {
-				if ($actions === Backend::PROVIDE_AVATAR) {
-					return true;
-				} else {
-					return false;
-				}
-			}));
-
-		$user = new User('foo', $backend);
-		$this->assertFalse($user->canChangeAvatar());
-	}
-
-	public function testChangeAvatarNotSupported() {
-		$this->markTestSkipped('Avatar supported needs to be implemented');
-		/**
-		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
-		 */
-		$backend = $this->createMock('Test\User\AvatarUserDummy');
-		$backend->expects($this->never())
-			->method('canChangeAvatar');
-
-		$backend->expects($this->any())
-			->method('implementsActions')
-			->will($this->returnCallback(function ($actions) {
-					return false;
-			}));
-
-		$user = new User('foo', $backend);
-		$this->assertTrue($user->canChangeAvatar());
+		$user = new User($account, $this->accountMapper, null, $this->config);
+		$this->assertEquals($expected, $user->canChangeAvatar());
 	}
 
 	public function testDelete() {
@@ -209,23 +176,47 @@ class UserTest extends TestCase {
 		$this->assertEquals('arbitrary/path/foo', $this->user->getHome());
 	}
 
-	public function testCanChangeDisplayName() {
-		$this->markTestSkipped('canChangeDisplayName() is not yet implemented');
-		$this->assertTrue($this->user->canChangeDisplayName());
+	public function providesChangeDisplayName() {
+		return [
+			[true, true],
+			[false, false]
+		];
 	}
+	/**
+	 * @dataProvider providesChangeDisplayName
+	 */
+	public function testCanChangeDisplayName($expected, $implements) {
+		$backend = $this->getMockBuilder(Database::class)
+			->setMethods(['implementsActions'])
+			->getMock();
 
-	public function testCanChangeDisplayNameNotSupported() {
-		$this->markTestSkipped('canChangeDisplayName() is not yet implemented');
-		$this->assertFalse($this->user->canChangeDisplayName());
-	}
+		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		$account = $this->getMockBuilder(Account::class)
+			->setMethods(['getBackendInstance', 'getDisplayName', 'setDisplayName'])
+			->getMock();
+		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
+		$account->expects($this->any())->method('getDisplayName')->willReturn('foo');
+		$account->expects($this->any())->method('setDisplayName')->willReturn($implements);
 
-	public function testSetDisplayNameSupported() {
-		$this->accountMapper->expects($this->once())
-			->method('update')
-			->with($this->account);
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnCallback(function ($actions) use ($implements) {
+				if ($actions === Backend::SET_DISPLAYNAME) {
+					return $implements;
+				} else {
+					return false;
+				}
+			}));
 
-		$this->assertTrue($this->user->setDisplayName('Foo'));
-		$this->assertEquals('Foo', $this->user->getDisplayName());
+		$user = new User($account, $this->accountMapper, null, $this->config);
+		$this->assertEquals($expected, $user->canChangeDisplayName());
+
+		if ($expected) {
+			$this->accountMapper->expects($this->once())
+				->method('update');
+		}
+
+		$this->assertEquals($expected, $user->setDisplayName('Foo'));
 	}
 
 	/**
@@ -238,22 +229,22 @@ class UserTest extends TestCase {
 	}
 
 	public function testSetDisplayNameNotSupported() {
-		$this->markTestSkipped('canChangeDisplayName() is not yet implemented');
-		/**
-		 * @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend
-		 */
-		$backend = $this->createMock('\OC\User\Database');
+		$backend = $this->getMockBuilder(Database::class)
+			->setMethods(['implementsActions'])
+			->getMock();
+
+		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		$account = $this->createMock(Account::class);
+		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
+		$account->expects($this->any())->method('__call')->with('getDisplayName')->willReturn('foo');
 
 		$backend->expects($this->any())
 			->method('implementsActions')
 			->will($this->returnCallback(function ($actions) {
-					return false;
+				return false;
 			}));
 
-		$backend->expects($this->never())
-			->method('setDisplayName');
-
-		$user = new User('foo', $backend);
+		$user = new User($account, $this->accountMapper, null, $this->config);
 		$this->assertFalse($user->setDisplayName('Foo'));
 		$this->assertEquals('foo',$user->getDisplayName());
 	}
