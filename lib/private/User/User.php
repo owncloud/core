@@ -122,6 +122,9 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function setDisplayName($displayName) {
+		if (!$this->canChangeDisplayName()) {
+			return false;
+		}
 		$displayName = trim($displayName);
 		if ($displayName === $this->account->getDisplayName()) {
 			return false;
@@ -278,7 +281,14 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function canChangeAvatar() {
-		return true;
+		$backend = $this->account->getBackendInstance();
+		if (is_null($backend)) {
+			return false;
+		}
+		if ($backend->implementsActions(Backend::PROVIDE_AVATAR)) {
+				return $backend->canChangeAvatar($this->getUID());
+		}
+ 		return true;
 	}
 
 	/**
@@ -303,7 +313,11 @@ class User implements IUser {
 		if ($this->config->getSystemValue('allow_user_to_change_display_name') === false) {
 			return false;
 		}
-		return true;
+		$backend = $this->account->getBackendInstance();
+		if (is_null($backend)) {
+			return false;
+		}
+		return $backend->implementsActions(Backend::SET_DISPLAYNAME);
 	}
 
 	/**
