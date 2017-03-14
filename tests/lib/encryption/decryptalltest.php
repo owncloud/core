@@ -289,12 +289,12 @@ class DecryptAllTest extends TestCase {
 
 		$instance->expects($this->any())->method('getTimestamp')->willReturn(42);
 
-		$this->view->expects($this->once())
+		$this->view->expects($this->exactly(2))
 			->method('copy')
-			->with($path, $path . '.decrypted.42');
-		$this->view->expects($this->once())
-			->method('rename')
-			->with($path . '.decrypted.42', $path);
+			->withConsecutive(
+				[$path, $path . '.decrypted.42'],
+				[$path . '.decrypted.42', $path]
+			);
 
 		$this->assertTrue(
 			$this->invokePrivate($instance, 'decryptFile', [$path])
@@ -332,9 +332,9 @@ class DecryptAllTest extends TestCase {
 			->method('unlink')
 			->with($path . '.decrypted.42');
 
-		$this->assertFalse(
-			$this->invokePrivate($instance, 'decryptFile', [$path])
-		);
+		$this->setExpectedException(DecryptionFailedException::class);
+
+		$this->invokePrivate($instance, 'decryptFile', [$path]);
 	}
 
 }
