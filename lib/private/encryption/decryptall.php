@@ -254,8 +254,9 @@ class DecryptAll {
 		$target = $path . '.decrypted.' . $this->getTimestamp();
 
 		try {
-			$this->rootView->copy($source, $target);
-			$this->rootView->rename($target, $source);
+			$this->rootView->copy($source, $target); // decrypt
+			$this->rootView->copy($target, $source); // overwrite original with decrypted content (rename would change the fileid)
+			$this->rootView->unlink($target); // remove temporary .decrypted. file
 		} catch (DecryptionFailedException $e) {
 			if ($this->rootView->file_exists($target)) {
 				$this->rootView->unlink($target);
