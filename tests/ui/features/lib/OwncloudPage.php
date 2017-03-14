@@ -27,6 +27,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class OwncloudPage extends Page
 {
+	protected $userNameDispayId = "expandDisplayName";
 	public function waitTillPageIsloaded($timeout)
 	{
 		
@@ -48,6 +49,13 @@ class OwncloudPage extends Page
 		return $this->findById("notification")->getText();
 	}
 	
+	/**
+	 * finds the own username displayed in the top right corner
+	 * @return string
+	 */
+	public function getMyUsername() {
+		return $this->findById($this->userNameDispayId)->getText();
+	}
 	/**
 	 * Determine if a Mink NodeElement contains a specific
 	 * css rule attribute value.

@@ -43,20 +43,13 @@ class UsersContext extends RawMinkContext implements Context
 		$this->usersPage = $usersPage;
 	}
 	
-	/** @BeforeScenario @AdminLogin*/
-	public function setUpScenario() 
-	{
-		$this->loginPage->open();
-		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
-		$this->usersPage->open();
-		$this->usersPage->waitTillPageIsloaded(10);
-	}
-	
 	/**
 	 * @Given quota of user :username is set to :quota
 	 */
 	public function quotaOfUserIsSetTo($username, $quota)
 	{
+		$this->usersPage->open();
+		$this->usersPage->waitTillPageIsloaded(10);
 		$this->usersPage->setQuotaOfUserTo($username, $quota);
 	}
 	
@@ -65,6 +58,8 @@ class UsersContext extends RawMinkContext implements Context
 	 */
 	public function quotaOfUserIsChangedTo($username, $quota)
 	{
+		$this->usersPage->open();
+		$this->usersPage->waitTillPageIsloaded(10);
 		$this->usersPage->setQuotaOfUserTo($username, $quota);
 	}
 	

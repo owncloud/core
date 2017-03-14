@@ -23,6 +23,7 @@
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\OwncloudPage;
+use Page\LoginPage;
 
 require_once 'bootstrap.php';
 
@@ -32,11 +33,21 @@ require_once 'bootstrap.php';
 class FeatureContext extends RawMinkContext implements Context
 {
 	private $owncloudPage;
+	private $loginPage;
 	
-	public function __construct(OwncloudPage $owncloudPage)
+	public function __construct(OwncloudPage $owncloudPage, LoginPage $loginPage)
 	{
 		$this->owncloudPage = $owncloudPage;
+		$this->loginPage = $loginPage;
 	}
+	
+	/** @BeforeScenario @AdminLogin*/
+	public function setUpScenario()
+	{
+		$this->loginPage->open();
+		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
+	}
+	
 	/**
 	 * @Then a notification should be displayed with the text :notificationText
 	 */
