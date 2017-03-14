@@ -25,7 +25,6 @@
 		'{{/if}}' +
 		'<div class="shareeListView subView"></div>' +
 		'<div class="linkShareView subView"></div>' +
-		'<div class="expirationView subView"></div>' +
 		'<div class="mailView subView"></div>' +
 		'<div class="socialView subView"></div>' +
 		'<div class="loading hidden" style="height: 50px"></div>';
@@ -62,9 +61,6 @@
 
 		/** @type {object} **/
 		linkShareView: undefined,
-
-		/** @type {object} **/
-		expirationView: undefined,
 
 		/** @type {object} **/
 		shareeListView: undefined,
@@ -110,7 +106,6 @@
 			var subViews = {
 				resharerInfoView: 'ShareDialogResharerInfoView',
 				linkShareView: 'ShareDialogLinkShareView',
-				expirationView: 'ShareDialogExpirationView',
 				shareeListView: 'ShareDialogShareeListView',
 				mailView: 'ShareDialogMailView',
 				socialView: 'ShareDialogLinkSocialView'
@@ -376,9 +371,6 @@
 
 			this.linkShareView.$el = this.$el.find('.linkShareView');
 			this.linkShareView.render();
-
-			this.expirationView.$el = this.$el.find('.expirationView');
-			this.expirationView.render();
 
 			this.shareeListView.$el = this.$el.find('.shareeListView');
 			this.shareeListView.render();

@@ -8,45 +8,34 @@
  *
  */
 
-(function() {
+(function () {
 	if (!OC.Share) {
 		OC.Share = {};
 	}
 
-	var PASSWORD_PLACEHOLDER = '**********';
-	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
-	var PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL = t('core', 'Choose a password for the public link or press enter');
-
 	var TEMPLATE =
 			'{{#if shareAllowed}}' +
 			'<span class="icon-loading-small hidden"></span>' +
-			'<input type="checkbox" name="linkCheckbox" id="linkCheckbox-{{cid}}" class="checkbox linkCheckbox" value="1" {{#if isLinkShare}}checked="checked"{{/if}} />' +
-			'<label for="linkCheckbox-{{cid}}">{{linkShareLabel}}</label>' +
-			'<br />' +
-			'<div class="oneline">' +
-			'<label for="linkText-{{cid}}" class="hidden-visually">{{urlLabel}}</label>' +
-			'<input id="linkText-{{cid}}" class="linkText {{#unless isLinkShare}}hidden{{/unless}}" type="text" readonly="readonly" value="{{shareLinkURL}}" />' +
-			'<a class="{{#unless isLinkShare}}hidden-visually{{/unless}} clipboardButton icon icon-clippy" data-clipboard-target="#linkText-{{cid}}"></a>' +
+			'<div class="oneline {{#unless isLinkShare}}hidden{{/unless}}">' +
+			'	<label for="linkText-{{cid}}">{{urlLabel}}</label>' +
+				'<input id="linkText-{{cid}}" class="linkText" type="text" readonly="readonly" value="{{shareLinkURL}}" />' +
+				'<a class="{{#unless isLinkShare}}hidden-visually{{/unless}} clipboardButton icon icon-clippy" data-clipboard-target="#linkText-{{cid}}"></a>' +
 			'</div>' +
-			'    {{#if publicUpload}}' +
-			'<div id="allowPublicUploadWrapper">' +
-			'    <span class="icon-loading-small hidden"></span>' +
-			'    <input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
-			'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
-			'</div>' +
-			'    {{/if}}' +			
-			'    {{#if showPasswordCheckBox}}' +
-			'<input type="checkbox" name="showPassword" id="showPassword-{{cid}}" class="checkbox showPasswordCheckbox" {{#if isPasswordSet}}checked="checked"{{/if}} value="1" />' +
-			'<label for="showPassword-{{cid}}">{{enablePasswordLabel}}</label>' +
-			'    {{/if}}' +
-			'<div id="linkPass" class="linkPass {{#unless isPasswordSet}}hidden{{/unless}}">' +
-			'    <label for="linkPassText-{{cid}}" class="hidden-visually">{{passwordLabel}}</label>' +
-			'    {{#if showPasswordCheckBox}}' +
+			'<div id="linkPass" class="linkPass">' +
+			'    <label for="linkPassText-{{cid}}">{{passwordLabel}}</label>' +
 			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}" />' +
-			'    {{else}}' +
-			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholderInitial}}" />' +
-			'    {{/if}}' +
 			'    <span class="icon-loading-small hidden"></span>' +
+			'</div>' +
+			'<div class="expirationDateContainer">' +
+			'    <label for="expirationDate-{{cid}}" value="{{expirationDate}}">{{expirationLabel}}</label>' +
+			'    <input id="expirationDate-{{cid}}" class="expirationDate datepicker" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
+			'</div>' +
+			'{{#if isExpirationEnforced}}' +
+			'<em id="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
+			'{{/if}}' +
+			'<div class="clear-both">' +
+			'	<button class="addLink">{{addLinkText}}</button>' +
+			'	<button class="removeLink">{{removeLinkText}}</button>' +
 			'</div>' +
 			'{{else}}' +
 			// FIXME: this doesn't belong in this view
@@ -78,34 +67,30 @@
 		showLink: true,
 
 		events: {
-			'focusout input.linkPassText': 'onPasswordEntered',
-			'keyup input.linkPassText': 'onPasswordKeyUp',
-			'click .linkCheckbox': 'onLinkCheckBoxChange',
-			'click .linkText': 'onLinkTextClick',
-			'change .publicUploadCheckbox': 'onAllowPublicUploadChange',
-			'click .showPasswordCheckbox': 'onShowPasswordClick'
+			'click .addLink': 'onAddButtonClick',
+			'click .removeLink': 'onRemoveButtonClick'
 		},
 
-		initialize: function(options) {
+		initialize: function (options) {
 			var view = this;
 
-			this.model.on('change:permissions', function() {
+			this.model.on('change:permissions', function () {
 				view.render();
 			});
 
-			this.model.on('change:itemType', function() {
+			this.model.on('change:itemType', function () {
 				view.render();
 			});
 
-			this.model.on('change:allowPublicUploadStatus', function() {
+			this.model.on('change:allowPublicUploadStatus', function () {
 				view.render();
 			});
 
-			this.model.on('change:linkShare', function() {
+			this.model.on('change:linkShare', function () {
 				view.render();
 			});
 
-			if(!_.isUndefined(options.configModel)) {
+			if (!_.isUndefined(options.configModel)) {
 				this.configModel = options.configModel;
 			} else {
 				throw 'missing OC.Share.ShareConfigModel';
@@ -113,20 +98,20 @@
 
 			_.bindAll(
 				this,
-				'onLinkCheckBoxChange',
-				'onPasswordEntered',
-				'onPasswordKeyUp',
-				'onLinkTextClick',
-				'onShowPasswordClick',
-				'onAllowPublicUploadChange'
+				'onAddButtonClick',
+				'onRemoveButtonClick'
 			);
 
 			var clipboard = new Clipboard('.clipboardButton');
-			clipboard.on('success', function(e) {
+			clipboard.on('success', function (e) {
 				$input = $(e.trigger);
-				$input.tooltip({placement: 'bottom', trigger: 'manual', title: t('core', 'Copied!')});
+				$input.tooltip({
+					placement: 'bottom',
+					trigger: 'manual',
+					title: t('core', 'Copied!')
+				});
 				$input.tooltip('show');
-				_.delay(function() {
+				_.delay(function () {
 					$input.tooltip('hide');
 				}, 3000);
 			});
@@ -151,125 +136,96 @@
 					$input.tooltip('hide');
 				}, 3000);
 			});
-
 		},
 
-		onLinkCheckBoxChange: function() {
-			var $checkBox = this.$el.find('.linkCheckbox');
-			var $loading = $checkBox.siblings('.icon-loading-small');
-			if(!$loading.hasClass('hidden')) {
-				return false;
-			}
+		onRemoveButtonClick: function () {
 
-			if($checkBox.is(':checked')) {
-				if(this.configModel.get('enforcePasswordForPublicLink') === false && this.configModel.get('enableLinkPasswordByDefault') === false) {
-					$loading.removeClass('hidden');
-					// this will create it
-					this.model.saveLinkShare();
-				} else {
-					this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
-					this.$el.find('.linkPassText').focus();
-				}
-			} else {
-				if (this.model.get('linkShare').isLinkShare) {
-					$loading.removeClass('hidden');
-					this.model.removeLinkShare();
-				} else {
-					this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
-				}
-			}
+			this.model.removeLinkShare();
 		},
 
-		onLinkTextClick: function() {
-			var $el = this.$el.find('.linkText');
-			$el.focus();
-			$el.select();
-		},
+		onAddButtonClick: function () {
 
-		onShowPasswordClick: function() {
-			this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
-			if(!this.$el.find('.showPasswordCheckbox').is(':checked')) {
-				this.model.saveLinkShare({
-					password: ''
-				});
-			} else {
-				if (!bowser.msie) {
-					this.$el.find('.linkPassText').focus();
-				}
-			}
-		},
+			var $el = this.$el;
 
-		onPasswordKeyUp: function(event) {
-			if(event.keyCode == 13) {
-				this.onPasswordEntered();
-			}
-		},
+			// find input elements
+			// ($ = jQuery object)
+			// ***
 
-		onPasswordEntered: function() {
-			var $loading = this.$el.find('.linkPass .icon-loading-small');
-			if (!$loading.hasClass('hidden')) {
-				// still in process
-				return;
-			}
-			var $input = this.$el.find('.linkPassText');
-			$input.removeClass('error');
-			var password = $input.val();
+			var $password = $el.find('.linkPassText'),
+				$expirationDate = $el.find('.expirationDate'),
+				$permission = $el.find('.publicUploadCheckbox'),
+				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
 
-			if (this.$el.find('.linkPassText').attr('placeholder') === PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL) {
 
-				// in IE9 the password might be the placeholder due to bugs in the placeholders polyfill
-				if(password === PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL) {
-					password = '';
-				}
-			} else {
+				// loading animation element
+				// ***
 
-				// in IE9 the password might be the placeholder due to bugs in the placeholders polyfill
-				if(password === '' || password === PASSWORD_PLACEHOLDER || password === PASSWORD_PLACEHOLDER_MESSAGE) {
-					return;
-				}
-			}
+				$loading = $el.find('.linkPass .icon-loading-small'),
+
+
+				// get values from input elements
+				// ***
+
+				password = $password.val(),
+				permission = ($permission.is(':checked')) ? OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_READ | OC.PERMISSION_DELETE : OC.PERMISSION_READ,
+				expirationDate = $expirationDate.val();
+
+
+			// remove errors (if present)
+			// ***
+
+			$inputs.removeClass('error');
+
+
+			// show loading animation
+			// ***
 
 			$loading
 				.removeClass('hidden')
 				.addClass('inlineblock');
 
+
+			// save it
+			// ***
+
 			this.model.saveLinkShare({
-				password: password
+				password: password,
+				expireDate: expirationDate,
+				permission: permission
 			}, {
-				error: function(model, msg) {
+				error: function (model, msg) {
 					// destroy old tooltips
-					$input.tooltip('destroy');
+					$inputs.tooltip('destroy');
 					$loading.removeClass('inlineblock').addClass('hidden');
-					$input.addClass('error');
-					$input.attr('title', msg);
-					$input.tooltip({placement: 'bottom', trigger: 'manual'});
-					$input.tooltip('show');
+					$inputs.addClass('error');
+					$inputs.attr('title', msg);
+					$inputs.tooltip({placement: 'bottom', trigger: 'manual'});
+					$inputs.tooltip('show');
 				}
 			});
 		},
 
-		onAllowPublicUploadChange: function() {
-			var $checkbox = this.$('.publicUploadCheckbox');
-			$checkbox.siblings('.icon-loading-small').removeClass('hidden').addClass('inlineblock');
+		render: function () {
+			var linkShareTemplate    = this.template();
+			var resharingAllowed     = this.model.sharePermissionPossible();
 
-			var permissions = OC.PERMISSION_READ;
-			if($checkbox.is(':checked')) {
-				permissions = OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_READ | OC.PERMISSION_DELETE;
+			var publicUpload         = this.model.isFolder() && this.model.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
+			var publicUploadChecked  = (this.model.isPublicUploadAllowed()) ? 'checked="checked"' : null;
+
+			var expiration;
+			var defaultExpireDays    = this.configModel.get('defaultExpireDate');
+			var isExpirationEnforced = this.configModel.get('isDefaultExpireDateEnforced');
+			var isExpirationSet      = !!this.model.get('linkShare').expiration || isExpirationEnforced;
+
+			if((this.model.isFolder() || this.model.isFile()) && isExpirationEnforced) {
+				defaultExpireMessage = t('core', 'The public link will expire no later than {days} days after it is created', {'days': defaultExpireDays });
 			}
 
-			this.model.saveLinkShare({
-				permissions: permissions
-			});
-		},
+			if (isExpirationSet) {
+				expiration = moment(this.model.get('linkShare').expiration, 'YYYY-MM-DD').format('DD-MM-YYYY');
+			}
 
-		render: function() {
-			var linkShareTemplate = this.template();
-			var resharingAllowed = this.model.sharePermissionPossible();
-
-			if(!resharingAllowed
-				|| !this.showLink
-				|| !this.configModel.isShareWithLinkAllowed())
-			{
+			if (!resharingAllowed || !this.showLink || !this.configModel.isShareWithLinkAllowed()) {
 				var templateData = {shareAllowed: false};
 				if (!resharingAllowed) {
 					// add message
@@ -279,23 +235,19 @@
 				return this;
 			}
 
-			var publicUpload =
-				this.model.isFolder()
-				&& this.model.createPermissionPossible()
-				&& this.configModel.isPublicUploadEnabled();
-
-			var publicUploadChecked = '';
-			if(this.model.isPublicUploadAllowed()) {
-				publicUploadChecked = 'checked="checked"';
-			}
-
 			var isLinkShare = this.model.get('linkShare').isLinkShare;
 			var isPasswordSet = !!this.model.get('linkShare').password;
 			var showPasswordCheckBox = isLinkShare
 				&& (   !this.configModel.get('enforcePasswordForPublicLink')
-					|| !this.model.get('linkShare').password);
-			var passwordPlaceholderInitial = this.configModel.get('enforcePasswordForPublicLink')
-				? PASSWORD_PLACEHOLDER_MESSAGE : PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL;
+				|| !this.model.get('linkShare').password);
+
+			var pickerMinDate = new Date();
+			pickerMinDate.setDate(pickerMinDate.getDate()+1);
+
+			$.datepicker.setDefaults({
+				minDate: pickerMinDate,
+				maxDate: null
+			});
 
 			this.$el.html(linkShareTemplate({
 				cid: this.cid,
@@ -305,10 +257,13 @@
 				linkShareLabel: t('core', 'Share link'),
 				urlLabel: t('core', 'Link'),
 				enablePasswordLabel: t('core', 'Password protect'),
+				addLinkText: t('core', 'Add'),
+				removeLinkText: t('core', 'Remove'),
 				passwordLabel: t('core', 'Password'),
-				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER : PASSWORD_PLACEHOLDER_MESSAGE,
-				passwordPlaceholderInitial: passwordPlaceholderInitial,
+				expirationValue: expiration,
+				passwordPlaceholder: (isPasswordSet) ? '*****' : null,
 				isPasswordSet: isPasswordSet,
+				expirationLabel : t('core', 'Set expiration date'),
 				showPasswordCheckBox: showPasswordCheckBox,
 				publicUpload: publicUpload && isLinkShare,
 				publicUploadChecked: publicUploadChecked,
@@ -317,6 +272,8 @@
 				mailPrivatePlaceholder: t('core', 'Email link to person'),
 				mailButtonText: t('core', 'Send')
 			}));
+
+			this.$el.find('.datepicker').datepicker({dateFormat : 'dd-mm-yy'});
 
 			this.delegateEvents();
 
