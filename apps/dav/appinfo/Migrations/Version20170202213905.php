@@ -115,23 +115,34 @@ class Version20170202213905 implements ISqlMigration {
 		$node = \OC::$server->getUserFolder($userId)->get($entry['propertypath']);
 		if ($node instanceof Node && $node->getId()) {
 			$fileId = $node->getId();
-			$updateQuery = $qb->resetQueryParts()
-				->update('properties')
-				->set(
-					'fileid',
-					$qb->expr()->literal($fileId)
-				)
-				->where(
-					$qb->expr()->eq('userid', $qb->expr()->literal($userId))
-				)
-				->andWhere(
-					$qb->expr()->eq(
-						'propertypath',
-						$qb->expr()->literal($entry['propertypath'])
-					)
-				);
+			$updateQuery = $this->getRepairQuery($qb, $fileId, $userId, $entry['propertypath']);
 			return $updateQuery->getSQL();
 		}
 		return null;
+	}
+
+	/**
+	 * @param IQueryBuilder $qb
+	 * @param int $fileId
+	 * @param string $userId
+	 * @param string $propertyPath
+	 * @return IQueryBuilder
+	 */
+	private function getRepairQuery(IQueryBuilder $qb, $fileId, $userId, $propertyPath){
+		return $qb->resetQueryParts()
+			->update('properties')
+			->set(
+				'fileid',
+				$qb->expr()->literal($fileId)
+			)
+			->where(
+				$qb->expr()->eq('userid', $qb->expr()->literal($userId))
+			)
+			->andWhere(
+				$qb->expr()->eq(
+					'propertypath',
+					$qb->expr()->literal($propertyPath)
+				)
+			);
 	}
 }
