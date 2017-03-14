@@ -278,7 +278,49 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame($expectedResponse, $response);
 	}
 
+	public function testSpamEmail() {
+		$user = 'ExistingUser';
+		$this->userManager
+			->expects($this->once())
+			->method('userExists')
+			->with($user)
+			->will($this->returnValue(true));
+		$this->userManager
+			->expects($this->once())
+			->method('get')
+			->with($user)
+			->will($this->returnValue($this->existingUser));
+		$this->config
+			->expects($this->once())
+			->method('getUserValue')
+			->with('ExistingUser', 'owncloud', 'lostpassword')
+			->will($this->returnValue('12000:AVerySecretToken'));
+		$this->timeFactory
+			->expects($this->any())
+			->method('getTime')
+			->willReturnOnConsecutiveCalls(12001, 12348);
+
+		$this->logger
+			->expects($this->any())
+			->method('alert')
+			->with('The email is not sent because a password reset email was sent recently.');
+		$expectedResponse = [
+			'status' => 'success'
+		];
+		$response = $this->lostController->email($user);
+		$this->assertSame($expectedResponse, $response);
+	}
+
 	public function testEmailSuccessful() {
+		$this->config
+			->expects($this->once())
+			->method('getUserValue')
+			->with('ExistingUser', 'owncloud', 'lostpassword')
+			->will($this->returnValue('12000:AVerySecretToken'));
+		$this->timeFactory
+			->expects($this->any())
+			->method('getTime')
+			->willReturnOnConsecutiveCalls(12301, 12348);
 		$this->secureRandom
 			->expects($this->once())
 			->method('generate')
@@ -294,10 +336,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 				->method('get')
 				->with('ExistingUser')
 				->willReturn($this->existingUser);
-		$this->timeFactory
-			->expects($this->once())
-			->method('getTime')
-			->will($this->returnValue(12348));
+
 		$this->config
 			->expects($this->once())
 			->method('setUserValue')
