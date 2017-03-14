@@ -260,7 +260,7 @@ class DecryptAll {
 			if ($this->rootView->file_exists($target)) {
 				$this->rootView->unlink($target);
 			}
-			return false;
+			throw $e;
 		}
 
 		return true;
