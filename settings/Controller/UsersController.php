@@ -35,6 +35,7 @@ use OC\User\User;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
@@ -782,39 +783,27 @@ class UsersController extends Controller {
 	 * @param $token
 	 * @param $userId
 	 * @param $mailAddress
-	 * @return TemplateResponse
+	 * @return RedirectResponse
+	 * @throws \Exception
 	 */
 	public function changeMail($token, $userId, $mailAddress) {
 		$user = $this->userManager->get($userId);
 		$sessionUser = $this->userSession->getUser();
 
 		if ($user !== $sessionUser) {
-			return new TemplateResponse(
-				'settings', 'error', [
-				"errors" => [["error" => "Invalid access"]]
-			],
-				'guest'
-			);
+			$this->log->error("The logged in user is different than expected.", ['app' => 'settings']);
+			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
 
 		try {
 			$this->checkEmailChangeToken($token, $userId);
 		} catch (\Exception $e) {
-			return new TemplateResponse(
-				'settings', 'error', [
-				"errors" => [["error" => $e->getMessage()]]
-			],
-				'guest'
-			);
+			$this->log->error("Cannot change email because, " . $e->getMessage(), ['app' => 'settings']);
+			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
 
 		$this->setEmailAddress($userId, $mailAddress);
 
-		return new TemplateResponse(
-			'settings',
-			'changemail/change',
-			[],
-			'guest'
-		);
+		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success']));
 	}
 }
