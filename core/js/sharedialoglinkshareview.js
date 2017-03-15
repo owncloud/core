@@ -13,12 +13,12 @@
 		OC.Share = {};
 	}
 
+	var PASSWORD_PLACEHOLDER = '**********';
+	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
+	var PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL = t('core', 'Choose a password for the public link or press enter');
 	var TEMPLATE =
 			'<span class="icon-loading-small hidden"></span>' +
-			'<div class="oneline>' +
-			'	<label for="linkText-{{cid}}">{{urlLabel}}</label>' +
-				'<input id="linkText-{{cid}}" class="linkText" type="text" readonly="readonly" value="{{shareLinkURL}}" />' +
-			'</div>' +
+			'<div class="fileName">{{fileName}}</div>' +
 			'<div id="linkPass" class="linkPass">' +
 			'    <label for="linkPassText-{{cid}}">{{passwordLabel}}</label>' +
 			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}" />' +
@@ -30,11 +30,7 @@
 			'</div>' +
 			'{{#if isExpirationEnforced}}' +
 			'<em id="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
-			'{{/if}}' +
-			'<div class="clear-both">' +
-			'	<button class="save">{{saveText}}</button>' +
-			'	<button class="cancel">{{cancelText}}</button>' +
-			'</div>'
+			'{{/if}}'
 		;
 
 	/**
@@ -61,6 +57,11 @@
 		showLink: true,
 
 		initialize: function (options) {
+			if (!_.isUndefined(options.itemModel)) {
+				this.itemModel = options.itemModel;
+			} else {
+				throw 'missing OC.Share.ShareItemModel';
+			}
 			if (!_.isUndefined(options.configModel)) {
 				this.configModel = options.configModel;
 			} else {
@@ -68,8 +69,7 @@
 			}
 		},
 
-		onAddButtonClick: function () {
-
+		_save: function () {
 			var $el = this.$el;
 
 			// find input elements
@@ -110,13 +110,24 @@
 				.addClass('inlineblock');
 
 
-			// save it
-			// ***
-			this.model.save({
+			var attributes = {
 				password: password,
 				expireDate: expirationDate,
 				permission: permission
-			}, {
+			};
+
+			if (this.model.isNew()) {
+				// the API is inconsistent
+				attributes.path = this.itemModel.getFileInfo().getFullPath();
+			}
+
+			var self = this;
+			// save it
+			// ***
+			this.model.save(attributes, {
+				success: function() {
+					self.trigger('saved', self.model);
+				},
 				error: function (model, msg) {
 					// destroy old tooltips
 					$inputs.tooltip('destroy');
@@ -130,27 +141,25 @@
 		},
 
 		render: function () {
-			var publicUpload         = this.model.isFolder() && this.model.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
-			var publicUploadChecked  = (this.model.isPublicUploadAllowed()) ? 'checked="checked"' : null;
+			// TODO: in the future to read directly from the FileInfoModel
+			var publicUpload         = this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
+			var publicUploadChecked  = (this.itemModel.isPublicUploadAllowed()) ? 'checked="checked"' : null;
 
 			var expiration;
 			var defaultExpireDays    = this.configModel.get('defaultExpireDate');
 			var isExpirationEnforced = this.configModel.get('isDefaultExpireDateEnforced');
-			var isExpirationSet      = !!this.model.get('expiration') || isExpirationEnforced;
+			var isExpirationSet      = !!this.model.get('expireDate') || isExpirationEnforced;
 			var defaultExpireMessage;
 
-			if((this.model.isFolder() || this.model.isFile()) && isExpirationEnforced) {
+			if((this.itemModel.isFolder() || this.itemModel.isFile()) && isExpirationEnforced) {
 				defaultExpireMessage = t('core', 'The public link will expire no later than {days} days after it is created', {'days': defaultExpireDays });
 			}
 
 			if (isExpirationSet) {
-				expiration = moment(this.model.get('expiration'), 'YYYY-MM-DD').format('DD-MM-YYYY');
+				expiration = moment(this.model.get('expireDate'), 'YYYY-MM-DD').format('DD-MM-YYYY');
 			}
 
 			var isPasswordSet = !!this.model.get('password');
-			var showPasswordCheckBox = 
-				(   !this.configModel.get('enforcePasswordForPublicLink')
-				|| !this.model.get('password'));
 
 			var pickerMinDate = new Date();
 			pickerMinDate.setDate(pickerMinDate.getDate()+1);
@@ -160,24 +169,23 @@
 				maxDate: null
 			});
 
+			var passwordPlaceholderInitial = this.configModel.get('enforcePasswordForPublicLink')
+				? PASSWORD_PLACEHOLDER_MESSAGE : PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL;
+
 			this.$el.html(this.template({
 				cid: this.cid,
 				shareAllowed: true,
-				shareLinkURL: this.model.get('linkShare').link,
-				linkShareLabel: t('core', 'Share link'),
-				urlLabel: t('core', 'Link'),
-				enablePasswordLabel: t('core', 'Password protect'),
-				addLinkText: t('core', 'Add'),
-				removeLinkText: t('core', 'Remove'),
-				passwordLabel: t('core', 'Password'),
 				expirationValue: expiration,
+				fileName: this.itemModel.getFileInfo().getFullPath(),
 				passwordPlaceholder: (isPasswordSet) ? '*****' : null,
+				passwordLabel: t('core', 'Password'),
+				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER : PASSWORD_PLACEHOLDER_MESSAGE,
+				passwordPlaceholderInitial: passwordPlaceholderInitial,
 				isPasswordSet: isPasswordSet,
 				expirationLabel : t('core', 'Set expiration date'),
-				showPasswordCheckBox: showPasswordCheckBox,
 				publicUpload: publicUpload,
 				publicUploadChecked: publicUploadChecked,
-				publicUploadLabel: t('core', 'Allow editing'),
+				publicUploadLabel: t('core', 'Allow uploads'),
 				mailPublicNotificationEnabled: this.configModel.isMailPublicNotificationEnabled(),
 				mailPrivatePlaceholder: t('core', 'Email link to person'),
 				mailButtonText: t('core', 'Send')
@@ -199,6 +207,36 @@
 				this._template = Handlebars.compile(TEMPLATE);
 			}
 			return this._template(data);
+		},
+
+		/**
+		 * Display this view inside a popup window
+		 */
+		show: function() {
+			var self = this;
+			var title = t('files_sharing', 'Edit link share');
+			if (this.model.isNew()) {
+				title = t('files_sharing', 'Create link share');
+			}
+
+			// hack the dialogs
+			OC.dialogs.message(
+				'',
+				title,
+				'custom',
+				OC.dialogs.OK_BUTTON,
+				function () {
+					// note: this will also close the window,
+					// need a way to prevent closing in case of error
+					self._save();
+				},
+				true
+			).then(function adjustDialog() {
+				var $dialog = $('.oc-dialog:visible');
+
+				self.render();
+				$dialog.find('.oc-dialog-content').html(self.$el);
+			});
 		}
 
 	});

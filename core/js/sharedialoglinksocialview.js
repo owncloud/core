@@ -14,7 +14,6 @@
 	}
 	
 	var TEMPLATE = 
-			'{{#if shareAllowed}}' +
 			'    {{#if socialShareEnabled}}' +
 			'<button class="icon icon-social-twitter pop-up hasTooltip"' +
 			'	title="{{shareToolTipTwitter}}"' +
@@ -31,8 +30,7 @@
 			'<button class="icon icon-mail-grey pop-up hasTooltip"' +
 			'	title="{{shareToolTipMail}}"' +
 			'	data-url="mailto:?subject=&body={{reference}}"></button>' +
-			'    {{/if}}' +
-			'{{/if}}'
+			'    {{/if}}'
 		;
 	
 	/**
@@ -54,9 +52,6 @@
 
 		/** @type {Function} **/
 		_template: undefined,
-
-		/** @type {boolean} **/
-		showLink: true,
 
 		events: {
 			"click .pop-up": 'onPopUpClick'
@@ -90,28 +85,10 @@
 		},
 
 		render: function() {
-			var linkShareTemplate = this.template();
-			var resharingAllowed = this.model.sharePermissionPossible();
-
-			if(!resharingAllowed
-				|| !this.showLink
-				|| !this.configModel.isShareWithLinkAllowed())
-			{
-				var templateData = {shareAllowed: false};
-				if (!resharingAllowed) {
-					// add message
-					templateData.noSharingPlaceholder = t('core', 'Resharing is not allowed');
-				}
-				this.$el.html(linkShareTemplate(templateData));
-				return this;
-			}
-		
 			var link = this.model.toJSON();
 
-			this.$el.html(linkShareTemplate({
+			this.$el.html(this.template({
 				cid: this.cid,
-				shareAllowed: true,
-				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				reference: link,
 				shareToolTipTwitter: t('core', 'Share to Twitter. Opens in a new window.'),
 				shareToolTipFacebook: t('core', 'Share to Facebook. Opens in a new window.'),
@@ -131,11 +108,11 @@
 		 * @returns {Function} from Handlebars
 		 * @private
 		 */
-		template: function () {
+		template: function(data) {
 			if (!this._template) {
 				this._template = Handlebars.compile(TEMPLATE);
 			}
-			return this._template;
+			return this._template(data);
 		}
 
 	});

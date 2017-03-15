@@ -113,6 +113,15 @@
 			return this._linkSharesCollection;
 		},
 
+		/**
+		 * Returns the file info for the file/folder on which this share information relate to
+		 *
+		 * @return {OC.Files.FileInfoModel} file info model
+		 */
+		getFileInfo: function() {
+			return this.fileInfoModel;
+		},
+
 		addShare: function(attributes, options) {
 			var shareType = attributes.shareType;
 			options = options || {};
@@ -724,30 +733,7 @@
 							return share;
 						}
 
-						var link = window.location.protocol + '//' + window.location.host;
-						if (!share.token) {
-							// pre-token link
-							var fullPath = this.fileInfoModel.get('path') + '/' +
-								this.fileInfoModel.get('name');
-							var location = '/' + OC.currentUser + '/files' + fullPath;
-							var type = this.fileInfoModel.isDirectory() ? 'folder' : 'file';
-							link += OC.linkTo('', 'public.php') + '?service=files&' +
-								type + '=' + encodeURIComponent(location);
-						} else {
-							link += OC.generateUrl('/s/') + share.token;
-						}
-						linkShares.push({
-							isLinkShare: true,
-							id: share.id,
-							token: share.token,
-							password: share.share_with,
-							link: link,
-							permissions: share.permissions,
-							// currently expiration is only effective for link shares.
-							expiration: share.expiration,
-							stime: share.stime
-						});
-
+						linkShares.push(share);
 						return share;
 					}
 				},
@@ -755,7 +741,7 @@
 			);
 
 			// populate link shares collection with found link shares
-			this._linkSharesCollection.set(linkShares);
+			this._linkSharesCollection.set(linkShares, {parse: true});
 
 			// use the old crappy way for other shares for now
 			return {

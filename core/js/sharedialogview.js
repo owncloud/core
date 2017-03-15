@@ -114,7 +114,9 @@
 
 			this.linkShareView = new OC.Share.ShareDialogLinkListView({
 				collection: this.model.getLinkSharesCollection(),
-				configModel: this.configModel
+				configModel: this.configModel,
+				// pass in the legacy stuff...
+				itemModel: this.model
 			});
 
 			_.bindAll(this,

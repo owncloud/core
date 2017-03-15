@@ -20,9 +20,14 @@
 			'<li class="link-entry oneline" data-id="{{id}}">' +
 			'	<label for="linkText-{{cid}}">{{urlLabel}}</label>' +
 				'<input id="linkText-{{cid}}" class="linkText" type="text" readonly="readonly" value="{{link}}" />' +
-// TODO: add social button here:
 				'<a class="{{#unless isLinkShare}}hidden-visually{{/unless}} clipboardButton icon icon-clippy" data-clipboard-target="#linkText-{{cid}}"></a>' +
-				'<button class="removeLink">{{removeLinkText}}</button>' +
+// TODO: replace with pencil and trash icons
+				'<br/><button class="editLink">{{../editLinkText}}</button>' +
+				'<button class="removeLink">{{../removeLinkText}}</button>' +
+				'{{#if ../socialShareEnabled}}' +
+				'<button class="shareLink">{{../shareText}}</button>' +
+				'<div class="socialShareContainer hidden"></div>' +
+				'{{/if}}' +
 			'</li>' +
 			'{{/each}}' +
 			'</ul>' +
@@ -48,6 +53,8 @@
 		/** @type {string} **/
 		id: 'shareDialogLinkList',
 
+		className: 'shareDialogLinkList',
+
 		/** @type {OC.Share.ShareConfigModel} **/
 		configModel: undefined,
 
@@ -56,7 +63,9 @@
 
 		events: {
 			'click .addLink': 'onAddButtonClick',
+			'click .editLink': 'onEditButtonClick',
 			'click .removeLink': 'onRemoveButtonClick',
+			'click .shareLink': 'onShareButtonClick',
 			'click .socialShare': 'onClickSocialShare'
 		},
 
@@ -68,13 +77,136 @@
 				view.render();
 			});
 
+			if (!_.isUndefined(options.itemModel)) {
+				this.itemModel = options.itemModel;
+				this.fileInfoModel = this.itemModel.getFileInfo();
+			} else {
+				throw 'missing OC.Share.ShareItemModel';
+			}
+
 			if (!_.isUndefined(options.configModel)) {
 				this.configModel = options.configModel;
 			} else {
 				throw 'missing OC.Share.ShareConfigModel';
 			}
 
-			var clipboard = new Clipboard('.clipboardButton');
+		},
+
+		onRemoveButtonClick: function (ev) {
+			var $target = $(ev.target);
+			var linkId = $target.closest('.link-entry').attr('data-id');
+
+			var linkModel = this.collection.get(linkId);
+			if (!linkModel) {
+				return;
+			}
+
+			// delete the model from the server
+			linkModel.destroy();
+		},
+
+		onAddButtonClick: function () {
+			var newShare = new OC.Share.ShareModel({
+				password: '',
+				passwordChanged: false,
+				permissions: OC.PERMISSION_READ,
+				expireDate: this.configModel.getDefaultExpirationDateString(),
+				shareType: OC.Share.SHARE_TYPE_LINK,
+				itemType: this.itemModel.get('itemType'),
+				itemSource: this.itemModel.get('itemSource')
+			});
+			this._showPopupForShare(newShare);
+		},
+
+		onEditButtonClick: function (ev) {
+			var $target = $(ev.target);
+			var linkId = $target.closest('.link-entry').attr('data-id');
+
+			var linkModel = this.collection.get(linkId);
+			if (!linkModel) {
+				return;
+			}
+
+			this._showPopupForShare(linkModel);
+		},
+
+		onShareButtonClick: function (ev) {
+			var $target = $(ev.target);
+			var $li = $target.closest('.link-entry');
+			var $container = $li.find('.socialShareContainer');
+
+			if ($container.is(':empty')) {
+				if (this.configModel.isSocialShareEnabled()) {
+					var socialView = new OC.Share.ShareDialogLinkSocialView({
+						model: this.itemModel,
+						configModel: this.configModel
+					});
+					socialView.render();
+					$container.append(socialView.$el);
+					$container.removeClass('hidden');
+				}
+			} else {
+				$container.toggleClass('hidden', !$container.hasClass('hidden'));
+			}
+		},
+
+		_showPopupForShare: function(model) {
+			var self = this;
+			var popupView = new OC.Share.ShareDialogLinkShareView({
+				model: model,
+				configModel: this.configModel,
+				// pass in legacy stuff...
+				itemModel: this.itemModel
+			});
+
+			popupView.once('saved', function() {
+				// add/update in collection on success
+				self.collection.add(model);
+			});
+			popupView.show();
+		},
+
+		onClickSocialShare: function() {
+			// TODO: create ShareDialogLinkSocial view and append under the clicked row
+		},
+
+		_formatItem: function(model) {
+			return _.extend(model.toJSON(), {
+				link: this._makeLink(model)
+			});
+		},
+
+		_makeLink: function(model) {
+			var link = window.location.protocol + '//' + window.location.host;
+			if (!model.get('token')) {
+				// pre-token link
+				var fullPath = this.fileInfoModel.get('path') + '/' +
+					this.fileInfoModel.get('name');
+				var location = '/' + OC.currentUser + '/files' + fullPath;
+				var type = this.fileInfoModel.isDirectory() ? 'folder' : 'file';
+				link += OC.linkTo('', 'public.php') + '?service=files&' +
+					type + '=' + encodeURIComponent(location);
+			} else {
+				link += OC.generateUrl('/s/') + model.get('token');
+			}
+			return link;
+		},
+
+		render: function () {
+			this.$el.html(this.template({
+				cid: this.cid,
+				urlLabel: t('core', 'Link'),
+				addLinkText: t('core', 'Create public link'),
+				editLinkText: t('core', 'Edit'),
+				removeLinkText: t('core', 'Remove'),
+				shareText: t('core', 'Social share'),
+				socialShareEnabled: this.configModel.isSocialShareEnabled(),
+				noShares: !this.collection.length,
+				noSharesMessage: t('core', 'There are currently no link shares, you can create one'),
+				shares: this.collection.map(_.bind(this._formatItem, this))
+			}));
+
+			var clipboard = new Clipboard('#' + this.id + ' .clipboardButton');
 			clipboard.on('success', function (e) {
 				var $input = $(e.trigger);
 				$input.tooltip({
@@ -108,96 +240,6 @@
 					$input.tooltip('hide');
 				}, 3000);
 			});
-		},
-
-		onRemoveButtonClick: function (ev) {
-			var $target = $(ev.target);
-			var linkId = $target.closest('.link-entry').attr('data-id');
-
-			var linkModel = this.collection.get(linkId);
-			if (!linkModel) {
-				return;
-			}
-
-			// delete the model from the server
-			linkModel.destroy();
-		},
-
-		onAddButtonClick: function () {
-			var newShare = new OC.Share.ShareModel({
-				password: '',
-				passwordChanged: false,
-				permissions: OC.PERMISSION_READ,
-				expireDate: this.configModel.getDefaultExpirationDateString(),
-				shareType: OC.Share.SHARE_TYPE_LINK
-			});
-			this._showPopupForShare(newShare);
-		},
-
-		onEditButtonClick: function () {
-			var $target = $(ev.target);
-			var linkId = $target.closest('.link-entry').attr('data-id');
-
-			var linkModel = this.collection.get(linkId);
-			if (!linkModel) {
-				return;
-			}
-
-			this._showPopupForShare(linkModel);
-		},
-
-		_showPopupForShare: function(model) {
-			var self = this;
-			var popupView = new OC.Share.ShareDialogLinkShareView({
-				model: model,
-				configModel: this.configModel
-			});
-
-			var title = t('files_sharing', 'Edit link share');
-			if (model.isNew()) {
-				title = t('files_sharing', 'Create link share');
-			}
-
-			// hack the dialogs
-			OC.dialogs.message(
-				'',
-				title,
-				'custom',
-				OC.dialogs.OK_BUTTON,
-				function (result) {
-					if (result === true) {
-						// TODO: error handling
-						model.save();
-						self.collection.add(model);
-					}
-				},
-				true
-			).then(function adjustDialog() {
-				var $dialog = $('.oc-dialog:visible');
-
-				popupView.render();
-				$dialog.find('.oc-dialog-content').replaceWith(popupView.$el);
-			});
-		},
-
-		onClickSocialShare: function() {
-			// TODO: create ShareDialogLinkSocial view and append under the clicked row
-		},
-
-		_formatItem: function(model) {
-			return model.toJSON();
-		},
-
-		render: function () {
-			this.$el.html(this.template({
-				cid: this.cid,
-				urlLabel: t('core', 'Link'),
-				addLinkText: t('core', 'Create link share'),
-				removeLinkText: t('core', 'Remove'),
-				noShares: !this.collection.length,
-				noSharesMessage: t('core', 'There are currently no link shares, you can create one'),
-				shares: this.collection.map(_.bind(this._formatItem, this))
-			}));
 
 			this.delegateEvents();
 

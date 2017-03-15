@@ -20,7 +20,6 @@
 			// this is about to change in future. Therefore this is not included
 			// in the LinkShareView to ease reusing it in future. Then,
 			// modifications (getting rid of IDs) are still necessary.
-			'{{#if isLinkShare}}' +
 			'<input type="checkbox" name="expirationCheckbox" class="expirationCheckbox checkbox" id="expirationCheckbox-{{cid}}" value="1" ' +
 				'{{#if isExpirationSet}}checked="checked"{{/if}} {{#if disableCheckbox}}disabled="disabled"{{/if}} />' +
 			'<label for="expirationCheckbox-{{cid}}">{{setExpirationLabel}}</label>' +
@@ -31,8 +30,7 @@
 			'    {{#if isExpirationEnforced}}' +
 				// originally the expire message was shown when a default date was set, however it never had text
 			'<em id="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
-			'    {{/if}}' +
-			'{{/if}}'
+			'    {{/if}}'
 		;
 
 	/**
@@ -66,6 +64,11 @@
 		},
 
 		initialize: function(options) {
+			if(!_.isUndefined(options.itemModel)) {
+				this.itemModel = options.itemModel;
+			} else {
+				throw 'missing OC.Share.ShareItemModel';
+			}
 			if(!_.isUndefined(options.configModel)) {
 				this.configModel = options.configModel;
 			} else {
@@ -85,10 +88,7 @@
 			this.$el.find('.expirationDateContainer').toggleClass('hidden', !state);
 			if (!state) {
 				// discard expiration date
-				this.model.get('linkShare').expiration = '';
-				this.model.saveLinkShare({
-					expireDate: ''
-				});
+				this.model.unset('expireDate');
 			}
 		},
 
@@ -97,22 +97,8 @@
 			$target.tooltip('hide');
 			$target.removeClass('error');
 
-			expiration = moment($target.val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
-			this.model.get('linkShare').expiration = expiration;
-			this.model.saveLinkShare({
-				expiration: expiration
-			}, {
-				error: function(model, message) {
-					if (!message) {
-						$target.attr('title', t('core', 'Error setting expiration date'));
-					} else {
-						$target.attr('title', message);
-					}
-					$target.tooltip({gravity: 'n'});
-					$target.tooltip('show');
-					$target.addClass('error');
-				}
-			});
+			var expiration = moment($target.val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
+			this.model.set('expireDate', expiration);
 		},
 
 		render: function() {
@@ -120,7 +106,7 @@
 			var defaultExpireDays = this.configModel.get('defaultExpireDate');
 			var isExpirationEnforced = this.configModel.get('isDefaultExpireDateEnforced');
 
-			if(    (this.model.isFolder() || this.model.isFile())
+			if(    (this.itemModel.isFolder() || this.itemModel.isFile())
 				&& isExpirationEnforced) {
 				defaultExpireMessage = t(
 					'core',
@@ -129,11 +115,11 @@
 				);
 			}
 
-			var isExpirationSet = !!this.model.get('linkShare').expiration || isExpirationEnforced;
+			var isExpirationSet = !!this.model.get('expireDate') || isExpirationEnforced;
 
 			var expiration;
 			if (isExpirationSet) {
-				expiration = moment(this.model.get('linkShare').expiration, 'YYYY-MM-DD').format('DD-MM-YYYY');
+				expiration = moment(this.model.get('expireDate'), 'YYYY-MM-DD').format('DD-MM-YYYY');
 			}
 
 			this.$el.html(this.template({
@@ -142,7 +128,6 @@
 				expirationLabel: t('core', 'Expiration'),
 				expirationDatePlaceholder: t('core', 'Expiration date'),
 				defaultExpireMessage: defaultExpireMessage,
-				isLinkShare: this.model.get('linkShare').isLinkShare,
 				isExpirationSet: isExpirationSet,
 				isExpirationEnforced: isExpirationEnforced,
 				disableCheckbox: isExpirationEnforced && isExpirationSet,
