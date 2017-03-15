@@ -16,16 +16,23 @@
 	var TEMPLATE_BASE =
 		'<div class="resharerInfoView subView"></div>' +
 		'{{#if isSharingAllowed}}' +
-		'<label for="shareWith-{{cid}}" class="hidden-visually">{{shareLabel}}</label>' +
-		'<div class="oneline">' +
-		'    <input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{sharePlaceholder}}" />' +
-		'    <span class="shareWithLoading icon-loading-small hidden"></span>'+
+		'<ul class="subtabs tabHeaders">' +
+		'    <li class="tabHeader selected subtab-localshare">{{localSharesLabel}}</li>' +
+		'    <li class="tabHeader subtab-publicshare">{{publicSharesLabel}}</li>' +
+		'</ul>' +
+		'<div class="tabsContainer">' +
+		'    <div class="localShareView tab">' +
+		'        <label for="shareWith-{{cid}}" class="hidden-visually">{{shareLabel}}</label>' +
+		'        <div class="oneline">' +
+		'            <input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{sharePlaceholder}}" />' +
+		'            <span class="shareWithLoading icon-loading-small hidden"></span>'+
 		'{{{remoteShareInfo}}}' +
-		'</div>' +
+		'        </div>' +
 		'{{/if}}' +
-		'<div class="shareeListView subView"></div>' +
-		'<div class="linkShareView subView"></div>' +
-		'<div class="mailView subView"></div>' +
+		'        <div class="shareeListView subView"></div>' +
+		'    </div>' +
+		'    <div class="linkShareView subView tab hidden"></div>' +
+		'</div>' +
 		'<div class="loading hidden" style="height: 50px"></div>';
 
 	var TEMPLATE_REMOTE_SHARE_INFO =
@@ -64,11 +71,9 @@
 		/** @type {object} **/
 		shareeListView: undefined,
 
-		/** @type {object} **/
-		mailView: undefined,
-
 		events: {
-			'input .shareWithField': 'onShareWithFieldChanged'
+			'input .shareWithField': 'onShareWithFieldChanged',
+			'click .tabHeader': '_onClickTabHeader'
 		},
 
 		initialize: function(options) {
@@ -101,8 +106,7 @@
 
 			var subViews = {
 				resharerInfoView: 'ShareDialogResharerInfoView',
-				shareeListView: 'ShareDialogShareeListView',
-				mailView: 'ShareDialogMailView'
+				shareeListView: 'ShareDialogShareeListView'
 			};
 
 			for(var name in subViews) {
@@ -126,6 +130,16 @@
 			);
 
 			OC.Plugins.attach('OCA.Share.ShareDialogView', this);
+		},
+
+		_onClickTabHeader: function(ev) {
+			var $target = $(ev.target);
+			this.$('.subtabs .tabHeader.selected').removeClass('selected');
+
+			$target.addClass('selected');
+
+			this.$('.localShareView').toggleClass('hidden', !$target.hasClass('subtab-localshare'));
+			this.$('.linkShareView').toggleClass('hidden', !$target.hasClass('subtab-publicshare'));
 		},
 
 		onShareWithFieldChanged: function() {
@@ -351,7 +365,9 @@
 				shareLabel: t('core', 'Share'),
 				sharePlaceholder: this._renderSharePlaceholderPart(),
 				remoteShareInfo: this._renderRemoteShareInfoPart(),
-				isSharingAllowed: this.model.sharePermissionPossible()
+				isSharingAllowed: this.model.sharePermissionPossible(),
+				localSharesLabel: t('core', 'User / Group Share'),
+				publicSharesLabel: t('core', 'Public Link'),
 			}));
 
 			var $shareField = this.$el.find('.shareWithField');
@@ -387,9 +403,6 @@
 
 			this.shareeListView.$el = this.$el.find('.shareeListView');
 			this.shareeListView.render();
-
-			this.mailView.$el = this.$el.find('.mailView');
-			this.mailView.render();
 
 			this.$el.find('.hasTooltip').tooltip();
 
