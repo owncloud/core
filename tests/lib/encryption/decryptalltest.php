@@ -332,7 +332,7 @@ class DecryptAllTest extends TestCase {
 			->method('unlink')
 			->with($path . '.decrypted.42');
 
-		$this->setExpectedException(DecryptionFailedException::class);
+		$this->setExpectedException('OC\Encryption\Exceptions\DecryptionFailedException');
 
 		$this->invokePrivate($instance, 'decryptFile', [$path]);
 	}
