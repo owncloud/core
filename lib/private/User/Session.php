@@ -522,6 +522,9 @@ class Session implements IUserSession, Emitter {
 			throw new LoginException($message);
 		}
 
+		// set the app password
+		$this->session->set('app_password', $token);
+
 		return true;
 	}
 
