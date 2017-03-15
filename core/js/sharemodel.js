@@ -60,8 +60,19 @@
 			return (this.get('permissions') & OC.PERMISSION_CREATE) > 0;
 		},
 
+		/**
+		 * Returns the absolute link share
+		 *
+		 * @return {String} link
+		 */
 		getLink: function() {
-			return OC.generateUrl('/s/') + this.get('token');
+			var url = this.get('url');
+			if (url) {
+				return url;
+			}
+			
+			url = window.location.protocol + '//' + window.location.host;
+			return url + OC.generateUrl('/s/') + this.get('token');
 		}
 	});
 

@@ -19,7 +19,8 @@
 			'{{#each shares}}' +
 			'<li class="link-entry oneline" data-id="{{id}}">' +
 			'	<label for="linkText-{{cid}}">{{urlLabel}}</label>' +
-				'<input id="linkText-{{cid}}" class="linkText" type="text" readonly="readonly" value="{{link}}" />' +
+				'<span class="name has-tooltip" title="{{link}}">{{linkTitle}}</span>' +
+				'<input id="linkText-{{cid}}" class="linkText hidden" type="text" readonly="readonly" value="{{link}}" />' +
 				'<a class="clipboardButton icon icon-clippy" data-clipboard-target="#linkText-{{cid}}"></a>' +
 // TODO: replace with pencil and trash icons
 				'<br/><button class="editLink">{{../editLinkText}}</button>' +
@@ -178,14 +179,16 @@
 
 		_formatItem: function(model) {
 			return _.extend(model.toJSON(), {
+				linkTitle: model.get('name') || model.get('token'),
 				link: this._makeLink(model)
 			});
 		},
 
 		_makeLink: function(model) {
-			var link = window.location.protocol + '//' + window.location.host;
+			var link = '';
 			if (!model.get('token')) {
 				// pre-token link
+				link = window.location.protocol + '//' + window.location.host;
 				var fullPath = this.fileInfoModel.get('path') + '/' +
 					this.fileInfoModel.get('name');
 				var location = '/' + OC.currentUser + '/files' + fullPath;
@@ -193,7 +196,7 @@
 				link += OC.linkTo('', 'public.php') + '?service=files&' +
 					type + '=' + encodeURIComponent(location);
 			} else {
-				link += model.getLink();
+				link = model.getLink();
 			}
 			return link;
 		},
@@ -211,6 +214,8 @@
 				noSharesMessage: t('core', 'There are currently no link shares, you can create one'),
 				shares: this.collection.map(_.bind(this._formatItem, this))
 			}));
+
+			this.$el.find('.has-tooltip').tooltip();
 
 			var clipboard = new Clipboard('#' + this.id + ' .clipboardButton');
 			clipboard.on('success', function (e) {

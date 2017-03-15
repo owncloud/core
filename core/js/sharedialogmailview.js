@@ -14,14 +14,9 @@
 	}
 	
 	var TEMPLATE = 
-			'{{#if shareAllowed}}' +
-			'    {{#if mailPublicNotificationEnabled}}' +
 			'<form id="emailPrivateLink" class="emailPrivateLinkForm oneline">' +
 			'    <input id="email" class="emailField" value="{{email}}" placeholder="{{mailPrivatePlaceholder}}" type="text" />' +
-			'    <a id="emailButton" class="icon icon-mail-grey" />' +
-			'</form>' +
-			'    {{/if}}' +
-			'{{/if}}'
+			'</form>'
 		;
 	
 	/**
@@ -54,25 +49,54 @@
 		initialize: function(options) {
 			var view = this;
 
-			this.model.on('change:linkShare', function() {
-				view.render();
-			});
+			if(!_.isUndefined(options.itemModel)) {
+				this.itemModel = options.itemModel;
+			} else {
+				throw 'missing OC.Share.ShareItemModel';
+			}
 
 			if(!_.isUndefined(options.configModel)) {
 				this.configModel = options.configModel;
 			} else {
 				throw 'missing OC.Share.ShareConfigModel';
 			}
-
-			_.bindAll(
-				this,
-				'_onEmailPrivateLink'
-			);
 		},
 
-		_onEmailPrivateLink: function(event) {
-			event.preventDefault();
+		/**
+		 * Send the link share information by email
+		 *
+		 * @param {string} recipientEmail recipient email address
+		 */
+		_sendEmailPrivateLink: function(recipientEmail) {
+			var deferred = $.Deferred();
+			var itemType = this.itemModel.get('itemType');
+			var itemSource = this.itemModel.get('itemSource');
 
+			$.post(
+				OC.generateUrl('core/ajax/share.php'), {
+					action: 'email',
+					toaddress: recipientEmail,
+					link: this.model.getLink(),
+					itemType: itemType,
+					itemSource: itemSource,
+					file: this.itemModel.getFileInfo().get('name'),
+					expiration: this.model.get('expireDate') || ''
+				},
+				function(result) {
+					if (!result || result.status !== 'success') {
+						// FIXME: a model should not show dialogs
+						OC.dialogs.alert(result.data.message, t('core', 'Error while sending notification'));
+						deferred.reject();
+					} else {
+						deferred.resolve();
+					}
+			});
+
+			return deferred.promise();
+		},
+
+
+		sendEmails: function() {
 			var $emailField = this.$el.find('.emailField');
 			var $emailButton = this.$el.find('.emailButton');
 			var email = $emailField.val();
@@ -80,7 +104,7 @@
 				$emailField.prop('disabled', true);
 				$emailButton.prop('disabled', true);
 				$emailField.val(t('core', 'Sending ...'));
-				this.model.sendEmailPrivateLink(email).done(function() {
+				return this._sendEmailPrivateLink(email).done(function() {
 					$emailField.css('font-weight', 'bold').val(t('core','Email sent'));
 					setTimeout(function() {
 						$emailField.val('');
@@ -95,40 +119,20 @@
 					$emailButton.prop('disabled', false);
 				});
 			}
-			return false;
+			return $.Deferred().resolve();
 		},
 
 		render: function() {
-			var linkShareTemplate = this.template();
-			var resharingAllowed = this.model.sharePermissionPossible();
 			var email = this.$el.find('.emailField').val();
-
-			if(!resharingAllowed
-				|| !this.showLink
-				|| !this.configModel.isShareWithLinkAllowed())
-			{
-				var templateData = {shareAllowed: false};
-				if (!resharingAllowed) {
-					// add message
-					templateData.noSharingPlaceholder = t('core', 'Resharing is not allowed');
-				}
-				this.$el.html(linkShareTemplate(templateData));
-				return this;
-			}
-			
-			var isLinkShare = this.model.get('linkShare').isLinkShare;
-
-			this.$el.html(linkShareTemplate({
-				cid: this.cid,
-				shareAllowed: true,
-				mailPublicNotificationEnabled: isLinkShare && this.configModel.isMailPublicNotificationEnabled(),
+	
+			this.$el.html(this.template({
 				mailPrivatePlaceholder: t('core', 'Email link to person'),
 				mailButtonText: t('core', 'Send link via email'),
 				email: email
 			}));
 
 			var $emailField = this.$el.find('.emailField');
-			if (isLinkShare && $emailField.length !== 0) {
+			if ($emailField.length !== 0) {
 				$emailField.autocomplete({
 					minLength: 1,
 					source: function (search, response) {
@@ -162,11 +166,11 @@
 		 * @returns {Function} from Handlebars
 		 * @private
 		 */
-		template: function () {
+		template: function(data) {
 			if (!this._template) {
 				this._template = Handlebars.compile(TEMPLATE);
 			}
-			return this._template;
+			return this._template(data);
 		}
 
 	});

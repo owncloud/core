@@ -38,6 +38,9 @@
 			'</div>' +
 			'{{#if isExpirationEnforced}}' +
 			'<em id="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
+			'{{/if}}' +
+			'{{#if isMailEnabled}}' +
+			'<div class="mailView"></div>' +
 			'{{/if}}'
 		;
 
@@ -131,11 +134,25 @@
 			}
 
 			var self = this;
+
+			var done = function() {
+				self.trigger('saved', self.model);
+			};
+
 			// save it
 			// ***
 			this.model.save(attributes, {
 				success: function() {
-					self.trigger('saved', self.model);
+					if (self.mailView) {
+						// also send out email first
+						self.mailView.sendEmails().then(done).
+							fail(function() {
+								// re-show the popup
+								self.show();
+							});
+					} else {
+						done();
+					}
 				},
 				error: function (model, msg) {
 					// destroy old tooltips
@@ -181,6 +198,9 @@
 			var passwordPlaceholderInitial = this.configModel.get('enforcePasswordForPublicLink')
 				? PASSWORD_PLACEHOLDER_MESSAGE : PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL;
 
+			// only show email field for new shares and if enabled globally
+			var showEmailField = this.model.isNew() && this.configModel.isMailPublicNotificationEnabled();
+
 			this.$el.html(this.template({
 				cid: this.cid,
 				expirationValue: expiration,
@@ -196,12 +216,22 @@
 				publicUploadPossible: publicUploadPossible,
 				publicUploadChecked: publicUploadChecked,
 				publicUploadLabel: t('core', 'Allow uploads'),
-				mailPublicNotificationEnabled: this.configModel.isMailPublicNotificationEnabled(),
-				mailPrivatePlaceholder: t('core', 'Email link to person'),
-				mailButtonText: t('core', 'Send')
+				isMailEnabled: showEmailField
 			}));
 
-			this.$el.find('.datepicker').datepicker({dateFormat : 'dd-mm-yy'});
+			this.$('.datepicker').datepicker({dateFormat : 'dd-mm-yy'});
+
+			if (showEmailField) {
+				this.mailView = new OC.Share.ShareDialogMailView({
+					itemModel: this.itemModel,
+					configModel: this.configModel,
+					model: this.model
+				});
+				this.mailView.render();
+				this.$('.mailView').append(this.mailView.$el);
+			} else {
+				this.mailView = null;
+			}
 
 			this.delegateEvents();
 

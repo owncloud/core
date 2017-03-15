@@ -422,40 +422,6 @@
 		},
 
 		/**
-		 * Send the link share information by email
-		 *
-		 * @param {string} recipientEmail recipient email address
-		 */
-		sendEmailPrivateLink: function(recipientEmail) {
-			var deferred = $.Deferred();
-			var itemType = this.get('itemType');
-			var itemSource = this.get('itemSource');
-			var linkShare = this.get('linkShare');
-
-			$.post(
-				OC.generateUrl('core/ajax/share.php'), {
-					action: 'email',
-					toaddress: recipientEmail,
-					link: linkShare.link,
-					itemType: itemType,
-					itemSource: itemSource,
-					file: this.fileInfoModel.get('name'),
-					expiration: linkShare.expiration || ''
-				},
-				function(result) {
-					if (!result || result.status !== 'success') {
-						// FIXME: a model should not show dialogs
-						OC.dialogs.alert(result.data.message, t('core', 'Error while sending notification'));
-						deferred.reject();
-					} else {
-						deferred.resolve();
-					}
-			});
-
-			return deferred.promise();
-		},
-
-		/**
 		 * @returns {boolean}
 		 */
 		sharePermissionPossible: function() {
