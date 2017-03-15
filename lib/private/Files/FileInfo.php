@@ -133,10 +133,12 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	}
 
 	/**
-	 * @return int
+	 * Get FileInfo ID or null in case of part file
+	 *
+	 * @return int/null
 	 */
 	public function getId() {
-		return $this->data['fileid'];
+		return isset($this->data['fileid']) ? intval($this->data['fileid']) : null;
 	}
 
 	/**
@@ -176,14 +178,14 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return int
 	 */
 	public function getSize() {
-		return isset($this->data['size']) ? $this->data['size'] : 0;
+		return isset($this->data['size']) ? intval($this->data['size']) : 0;
 	}
 
 	/**
 	 * @return int
 	 */
 	public function getMTime() {
-		return $this->data['mtime'];
+		return intval($this->data['mtime']);
 	}
 
 	/**
@@ -199,7 +201,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return int
 	 */
 	public function getEncryptedVersion() {
-		return isset($this->data['encryptedVersion']) ? (int) $this->data['encryptedVersion'] : 1;
+		return isset($this->data['encryptedVersion']) ? intval($this->data['encryptedVersion']) : 1;
 	}
 
 	/**
@@ -210,7 +212,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 		if (\OCP\Util::isSharingDisabledForUser() || ($this->isShared() && !\OC\Share\Share::isResharingAllowed())) {
 			$perms = $perms & ~\OCP\Constants::PERMISSION_SHARE;
 		}
-		return $perms;
+		return intval($perms);
 	}
 
 	/**
