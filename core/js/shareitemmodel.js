@@ -82,6 +82,8 @@
 		 */
 		_linkShareId: null,
 
+		_linkSharesCollection: null,
+
 		initialize: function(attributes, options) {
 			if(!_.isUndefined(options.configModel)) {
 				this.configModel = options.configModel;
@@ -90,6 +92,8 @@
 				/** @type {OC.Files.FileInfo} **/
 				this.fileInfoModel = options.fileInfoModel;
 			}
+
+			this._linkSharesCollection = new OC.Share.SharesCollection();
 
 			_.bindAll(this, 'addShare');
 		},
@@ -101,49 +105,12 @@
 		},
 
 		/**
-		 * Saves the current link share information.
+		 * Returns the collection of link shares
 		 *
-		 * This will trigger an ajax call and refetch the model afterwards.
-		 *
-		 * TODO: this should be a separate model
+		 * @return {OC.Share.SharesCollection} shares collection
 		 */
-		saveLinkShare: function(attributes, options) {
-			options = options || {};
-			attributes = _.extend({}, attributes);
-
-			var shareId = null;
-			var call;
-
-			// oh yeah...
-			if (attributes.expiration) {
-				attributes.expireDate = attributes.expiration;
-				delete attributes.expiration;
-			}
-
-			if (this.get('linkShare') && this.get('linkShare').isLinkShare) {
-				shareId = this.get('linkShare').id;
-
-				// note: update can only update a single value at a time
-				call = this.updateShare(shareId, attributes, options);
-			} else {
-				attributes = _.defaults(attributes, {
-					password: '',
-					passwordChanged: false,
-					permissions: OC.PERMISSION_READ,
-					expireDate: this.configModel.getDefaultExpirationDateString(),
-					shareType: OC.Share.SHARE_TYPE_LINK
-				});
-
-				call = this.addShare(attributes, options);
-			}
-
-			return call;
-		},
-
-		removeLinkShare: function() {
-			if (this.get('linkShare')) {
-				return this.removeShare(this.get('linkShare').id);
-			}
+		getLinkSharesCollection: function() {
+			return this._linkSharesCollection;
 		},
 
 		addShare: function(attributes, options) {
@@ -736,7 +703,7 @@
 
 			this._legacyFillCurrentShares(shares);
 
-			var linkShare = { isLinkShare: false };
+			var linkShares = [];
 			// filter out the share by link
 			shares = _.reject(shares,
 				/**
@@ -769,7 +736,7 @@
 						} else {
 							link += OC.generateUrl('/s/') + share.token;
 						}
-						linkShare = {
+						linkShares.push({
 							isLinkShare: true,
 							id: share.id,
 							token: share.token,
@@ -779,7 +746,7 @@
 							// currently expiration is only effective for link shares.
 							expiration: share.expiration,
 							stime: share.stime
-						};
+						});
 
 						return share;
 					}
@@ -787,10 +754,13 @@
 				this
 			);
 
+			// populate link shares collection with found link shares
+			this._linkSharesCollection.set(linkShares);
+
+			// use the old crappy way for other shares for now
 			return {
 				reshare: data.reshare,
 				shares: shares,
-				linkShare: linkShare,
 				permissions: permissions,
 				allowPublicUploadStatus: allowPublicUploadStatus
 			};

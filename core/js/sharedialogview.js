@@ -26,7 +26,6 @@
 		'<div class="shareeListView subView"></div>' +
 		'<div class="linkShareView subView"></div>' +
 		'<div class="mailView subView"></div>' +
-		'<div class="socialView subView"></div>' +
 		'<div class="loading hidden" style="height: 50px"></div>';
 
 	var TEMPLATE_REMOTE_SHARE_INFO =
@@ -68,9 +67,6 @@
 		/** @type {object} **/
 		mailView: undefined,
 
-		/** @type {object} **/
-		socialView: undefined,
-
 		events: {
 			'input .shareWithField': 'onShareWithFieldChanged'
 		},
@@ -105,10 +101,8 @@
 
 			var subViews = {
 				resharerInfoView: 'ShareDialogResharerInfoView',
-				linkShareView: 'ShareDialogLinkShareView',
 				shareeListView: 'ShareDialogShareeListView',
-				mailView: 'ShareDialogMailView',
-				socialView: 'ShareDialogLinkSocialView'
+				mailView: 'ShareDialogMailView'
 			};
 
 			for(var name in subViews) {
@@ -117,6 +111,11 @@
 					? new OC.Share[className](subViewOptions)
 					: options[name];
 			}
+
+			this.linkShareView = new OC.Share.ShareDialogLinkListView({
+				collection: this.model.getLinkSharesCollection(),
+				configModel: this.configModel
+			});
 
 			_.bindAll(this,
 				'autocompleteHandler',
@@ -369,17 +368,26 @@
 			this.resharerInfoView.$el = this.$el.find('.resharerInfoView');
 			this.resharerInfoView.render();
 
-			this.linkShareView.$el = this.$el.find('.linkShareView');
-			this.linkShareView.render();
+			var resharingAllowed = this.model.sharePermissionPossible();
+			if (resharingAllowed && this.configModel.isShareWithLinkAllowed()) {
+				this.linkShareView.render();
+				this.$el.find('.linkShareView').append(this.linkShareView.$el);
+			} else {
+				// TODO: render message?
+				/*
+				var templateData = {shareAllowed: false};
+				if (!resharingAllowed) {
+					// add message
+					templateData.noSharingPlaceholder = t('core', 'Resharing is not allowed');
+				}
+				*/
+			}
 
 			this.shareeListView.$el = this.$el.find('.shareeListView');
 			this.shareeListView.render();
 
 			this.mailView.$el = this.$el.find('.mailView');
 			this.mailView.render();
-
-			this.socialView.$el = this.$el.find('.socialView');
-			this.socialView.render();
 
 			this.$el.find('.hasTooltip').tooltip();
 

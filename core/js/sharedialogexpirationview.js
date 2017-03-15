@@ -76,14 +76,6 @@
 			this.configModel.on('change:isDefaultExpireDateEnforced', function() {
 				view.render();
 			});
-
-			this.model.on('change:itemType', function() {
-				view.render();
-			});
-
-			this.model.on('change:linkShare', function() {
-				view.render();
-			});
 		},
 
 		_onToggleExpiration: function(event) {

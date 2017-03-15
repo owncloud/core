@@ -37,7 +37,7 @@
 	
 	/**
 	 * @class OCA.Share.ShareDialogLinkSocialView
-	 * @member {OC.Share.ShareItemModel} model
+	 * @member {OC.Share.ShareModel} model
 	 * @member {jQuery} $el
 	 * @memberof OCA.Sharing
 	 * @classdesc
@@ -105,14 +105,13 @@
 				this.$el.html(linkShareTemplate(templateData));
 				return this;
 			}
-			
-			var isLinkShare = this.model.get('linkShare').isLinkShare;
-			var link = this.model.get('linkShare').link;
+		
+			var link = this.model.toJSON();
 
 			this.$el.html(linkShareTemplate({
 				cid: this.cid,
 				shareAllowed: true,
-				socialShareEnabled: isLinkShare && this.configModel.isSocialShareEnabled(),
+				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				reference: link,
 				shareToolTipTwitter: t('core', 'Share to Twitter. Opens in a new window.'),
 				shareToolTipFacebook: t('core', 'Share to Facebook. Opens in a new window.'),
