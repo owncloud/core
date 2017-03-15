@@ -39,9 +39,6 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		/** @type {boolean} **/
-		showLink: true,
-
 		events: {
 			'click #emailButton': '_onEmailPrivateLink'
 		},

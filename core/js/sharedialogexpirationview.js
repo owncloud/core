@@ -53,9 +53,6 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		/** @type {boolean} **/
-		showLink: true,
-
 		className: 'hidden',
 
 		events: {

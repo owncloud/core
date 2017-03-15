@@ -415,7 +415,6 @@ OC.Share = _.extend(OC.Share || {}, {
 				'data-item-source': itemSource
 			}
 		});
-		dialogView.setShowLink(link);
 		var $dialog = dialogView.render().$el;
 		$dialog.appendTo(appendTo);
 		$dialog.slideDown(OC.menuSpeed, function() {

@@ -21,6 +21,7 @@
 		'    <li class="tabHeader subtab-publicshare">{{publicSharesLabel}}</li>' +
 		'</ul>' +
 		'<div class="tabsContainer">' +
+		// TODO: this really should be a separate view class
 		'    <div class="localShareView tab">' +
 		'        <label for="shareWith-{{cid}}" class="hidden-visually">{{shareLabel}}</label>' +
 		'        <div class="oneline">' +
@@ -28,11 +29,13 @@
 		'            <span class="shareWithLoading icon-loading-small hidden"></span>'+
 		'{{{remoteShareInfo}}}' +
 		'        </div>' +
-		'{{/if}}' +
 		'        <div class="shareeListView subView"></div>' +
 		'    </div>' +
 		'    <div class="linkShareView subView tab hidden"></div>' +
 		'</div>' +
+		'{{else}}' +
+		'<div class="noSharingPlaceholder">{{noSharingPlaceholder}}</div>' +
+		'{{/if}}' +
 		'<div class="loading hidden" style="height: 50px"></div>';
 
 	var TEMPLATE_REMOTE_SHARE_INFO =
@@ -52,9 +55,6 @@
 	var ShareDialogView = OC.Backbone.View.extend({
 		/** @type {Object} **/
 		_templates: {},
-
-		/** @type {boolean} **/
-		_showLink: true,
 
 		/** @type {string} **/
 		tagName: 'div',
@@ -116,12 +116,7 @@
 					: options[name];
 			}
 
-			this.linkShareView = new OC.Share.ShareDialogLinkListView({
-				collection: this.model.getLinkSharesCollection(),
-				configModel: this.configModel,
-				// pass in the legacy stuff...
-				itemModel: this.model
-			});
+			this.linkShareView = null;
 
 			_.bindAll(this,
 				'autocompleteHandler',
@@ -139,7 +134,22 @@
 			$target.addClass('selected');
 
 			this.$('.localShareView').toggleClass('hidden', !$target.hasClass('subtab-localshare'));
-			this.$('.linkShareView').toggleClass('hidden', !$target.hasClass('subtab-publicshare'));
+
+			var $linkShareView = this.$('.linkShareView');
+			if ($linkShareView.length) {
+				$linkShareView.toggleClass('hidden', !$target.hasClass('subtab-publicshare'));
+
+				if (!this.linkShareView) {
+					this.linkShareView = new OC.Share.ShareDialogLinkListView({
+						collection: this.model.getLinkSharesCollection(),
+						configModel: this.configModel,
+						// pass in the legacy stuff...
+						itemModel: this.model
+					});
+					this.linkShareView.render();
+					$linkShareView.append(this.linkShareView.$el);
+				}
+			}
 		},
 
 		onShareWithFieldChanged: function() {
@@ -332,8 +342,7 @@
 
 		_toggleLoading: function(state) {
 			this._loading = state;
-			this.$el.find('.subView').toggleClass('hidden', state);
-			this.$el.find('.loading').toggleClass('hidden', !state);
+			this.$el.find('.localShareView, .loading, .noSharingPlaceholder').toggleClass('hidden', state);
 		},
 
 		_onRequest: function() {
@@ -368,6 +377,7 @@
 				isSharingAllowed: this.model.sharePermissionPossible(),
 				localSharesLabel: t('core', 'User / Group Share'),
 				publicSharesLabel: t('core', 'Public Link'),
+				noSharingPlaceholder: t('core', 'Resharing is not allowed')
 			}));
 
 			var $shareField = this.$el.find('.shareWithField');
@@ -387,18 +397,8 @@
 			this.resharerInfoView.render();
 
 			var resharingAllowed = this.model.sharePermissionPossible();
-			if (resharingAllowed && this.configModel.isShareWithLinkAllowed()) {
-				this.linkShareView.render();
-				this.$el.find('.linkShareView').append(this.linkShareView.$el);
-			} else {
-				// TODO: render message?
-				/*
-				var templateData = {shareAllowed: false};
-				if (!resharingAllowed) {
-					// add message
-					templateData.noSharingPlaceholder = t('core', 'Resharing is not allowed');
-				}
-				*/
+			if (!resharingAllowed || !this.configModel.isShareWithLinkAllowed()) {
+				this.$('.tabHeaders, .linkShareView').remove();
 			}
 
 			this.shareeListView.$el = this.$el.find('.shareeListView');
@@ -407,17 +407,6 @@
 			this.$el.find('.hasTooltip').tooltip();
 
 			return this;
-		},
-
-		/**
-		 * sets whether share by link should be displayed or not. Default is
-		 * true.
-		 *
-		 * @param {bool} showLink
-		 */
-		setShowLink: function(showLink) {
-			this._showLink = (typeof showLink === 'boolean') ? showLink : true;
-			this.linkShareView.showLink = this._showLink;
 		},
 
 		_renderRemoteShareInfoPart: function() {

@@ -64,9 +64,6 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		/** @type {boolean} **/
-		showLink: true,
-
 		initialize: function (options) {
 			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
