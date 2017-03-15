@@ -19,6 +19,7 @@
 	var TEMPLATE =
 			'<span class="icon-loading-small hidden"></span>' +
 			'<div class="fileName">{{fileName}}</div>' +
+			'<input type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" />' +
 			'{{#if publicUploadPossible}}' +
 			'<div id="allowPublicUploadWrapper-{{cid}}">' +
 			'    <span class="icon-loading-small hidden"></span>' +
@@ -120,7 +121,8 @@
 			var attributes = {
 				password: password,
 				expireDate: expirationDate,
-				permissions: permission
+				permissions: permission,
+				name: this.$('[name=linkName]').val()
 			};
 
 			if (this.model.isNew()) {
@@ -187,6 +189,8 @@
 				passwordLabel: t('core', 'Password'),
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER : PASSWORD_PLACEHOLDER_MESSAGE,
 				passwordPlaceholderInitial: passwordPlaceholderInitial,
+				namePlaceholder: t('core', 'Name'),
+				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
 				expirationLabel : t('core', 'Set expiration date'),
 				publicUploadPossible: publicUploadPossible,
