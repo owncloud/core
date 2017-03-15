@@ -19,7 +19,14 @@
 	var TEMPLATE =
 			'<span class="icon-loading-small hidden"></span>' +
 			'<div class="fileName">{{fileName}}</div>' +
-			'<div id="linkPass" class="linkPass">' +
+			'{{#if publicUploadPossible}}' +
+			'<div id="allowPublicUploadWrapper-{{cid}}">' +
+			'    <span class="icon-loading-small hidden"></span>' +
+			'    <input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
+			'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
+			'</div>' +
+			'{{/if}}' +
+			'<div id="linkPass-{{cid}}" class="linkPass">' +
 			'    <label for="linkPassText-{{cid}}">{{passwordLabel}}</label>' +
 			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}" />' +
 			'    <span class="icon-loading-small hidden"></span>' +
@@ -113,7 +120,7 @@
 			var attributes = {
 				password: password,
 				expireDate: expirationDate,
-				permission: permission
+				permissions: permission
 			};
 
 			if (this.model.isNew()) {
@@ -142,8 +149,8 @@
 
 		render: function () {
 			// TODO: in the future to read directly from the FileInfoModel
-			var publicUpload         = this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
-			var publicUploadChecked  = (this.itemModel.isPublicUploadAllowed()) ? 'checked="checked"' : null;
+			var publicUploadPossible = this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
+			var publicUploadChecked  = (this.model.canCreate()) ? 'checked="checked"' : null;
 
 			var expiration;
 			var defaultExpireDays    = this.configModel.get('defaultExpireDate');
@@ -174,7 +181,6 @@
 
 			this.$el.html(this.template({
 				cid: this.cid,
-				shareAllowed: true,
 				expirationValue: expiration,
 				fileName: this.itemModel.getFileInfo().getFullPath(),
 				passwordPlaceholder: (isPasswordSet) ? '*****' : null,
@@ -183,7 +189,7 @@
 				passwordPlaceholderInitial: passwordPlaceholderInitial,
 				isPasswordSet: isPasswordSet,
 				expirationLabel : t('core', 'Set expiration date'),
-				publicUpload: publicUpload,
+				publicUploadPossible: publicUploadPossible,
 				publicUploadChecked: publicUploadChecked,
 				publicUploadLabel: t('core', 'Allow uploads'),
 				mailPublicNotificationEnabled: this.configModel.isMailPublicNotificationEnabled(),

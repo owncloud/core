@@ -14,7 +14,6 @@
 	}
 	
 	var TEMPLATE = 
-			'    {{#if socialShareEnabled}}' +
 			'<button class="icon icon-social-twitter pop-up hasTooltip"' +
 			'	title="{{shareToolTipTwitter}}"' +
 			'	data-url="https://twitter.com/intent/tweet?url={{reference}}"></button>' +
@@ -29,8 +28,7 @@
 			'	data-url="https://plus.google.com/share?url={{reference}}"></button>' +
 			'<button class="icon icon-mail-grey pop-up hasTooltip"' +
 			'	title="{{shareToolTipMail}}"' +
-			'	data-url="mailto:?subject=&body={{reference}}"></button>' +
-			'    {{/if}}'
+			'	data-url="mailto:?subject=&body={{reference}}"></button>'
 		;
 	
 	/**
@@ -60,10 +58,6 @@
 		initialize: function(options) {
 			var view = this;
 
-			this.model.on('change:linkShare', function() {
-				view.render();
-			});
-
 			if(!_.isUndefined(options.configModel)) {
 				this.configModel = options.configModel;
 			} else {
@@ -85,11 +79,9 @@
 		},
 
 		render: function() {
-			var link = this.model.toJSON();
-
 			this.$el.html(this.template({
 				cid: this.cid,
-				reference: link,
+				reference: this.model.getLink(),
 				shareToolTipTwitter: t('core', 'Share to Twitter. Opens in a new window.'),
 				shareToolTipFacebook: t('core', 'Share to Facebook. Opens in a new window.'),
 				shareToolTipDiaspora: t('core', 'Share to Diaspora. Opens in a new window.'),

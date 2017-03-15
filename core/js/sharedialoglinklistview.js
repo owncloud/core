@@ -20,7 +20,7 @@
 			'<li class="link-entry oneline" data-id="{{id}}">' +
 			'	<label for="linkText-{{cid}}">{{urlLabel}}</label>' +
 				'<input id="linkText-{{cid}}" class="linkText" type="text" readonly="readonly" value="{{link}}" />' +
-				'<a class="{{#unless isLinkShare}}hidden-visually{{/unless}} clipboardButton icon icon-clippy" data-clipboard-target="#linkText-{{cid}}"></a>' +
+				'<a class="clipboardButton icon icon-clippy" data-clipboard-target="#linkText-{{cid}}"></a>' +
 // TODO: replace with pencil and trash icons
 				'<br/><button class="editLink">{{../editLinkText}}</button>' +
 				'<button class="removeLink">{{../removeLinkText}}</button>' +
@@ -133,12 +133,18 @@
 		onShareButtonClick: function (ev) {
 			var $target = $(ev.target);
 			var $li = $target.closest('.link-entry');
+			var linkId = $li.attr('data-id');
 			var $container = $li.find('.socialShareContainer');
+
+			var linkModel = this.collection.get(linkId);
+			if (!linkModel) {
+				return;
+			}
 
 			if ($container.is(':empty')) {
 				if (this.configModel.isSocialShareEnabled()) {
 					var socialView = new OC.Share.ShareDialogLinkSocialView({
-						model: this.itemModel,
+						model: linkModel,
 						configModel: this.configModel
 					});
 					socialView.render();
@@ -187,7 +193,7 @@
 				link += OC.linkTo('', 'public.php') + '?service=files&' +
 					type + '=' + encodeURIComponent(location);
 			} else {
-				link += OC.generateUrl('/s/') + model.get('token');
+				link += model.getLink();
 			}
 			return link;
 		},

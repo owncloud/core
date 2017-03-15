@@ -54,6 +54,14 @@
 				delete data.expiration;
 			}
 			return data;
+		},
+
+		canCreate: function() {
+			return (this.get('permissions') & OC.PERMISSION_CREATE) > 0;
+		},
+
+		getLink: function() {
+			return OC.generateUrl('/s/') + this.get('token');
 		}
 	});
 

@@ -244,13 +244,6 @@
 		/**
 		 * @returns {boolean}
 		 */
-		isPublicUploadAllowed: function() {
-			return this.get('allowPublicUploadStatus');
-		},
-
-		/**
-		 * @returns {boolean}
-		 */
 		isFolder: function() {
 			return this.get('itemType') === 'folder';
 		},
@@ -285,11 +278,7 @@
 		 * @return {bool} true if a link share exists, false otherwise
 		 */
 		hasLinkShare: function() {
-			var linkShare = this.get('linkShare');
-			if (linkShare && linkShare.isLinkShare) {
-				return true;
-			}
-			return false;
+			return this._linkSharesCollection.length > 0;
 		},
 
 		/**
