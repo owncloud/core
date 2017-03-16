@@ -92,7 +92,7 @@ describe('OC.Share.ShareDialogView', function() {
 			linkShare: {isLinkShare: false}
 		});
 
-		autocompleteStub = sinon.stub($.fn, 'autocomplete', function() {
+		autocompleteStub = sinon.stub($.fn, 'autocomplete').callsFake(function() {
 			// dummy container with the expected attributes
 			if (!$(this).length) {
 				// simulate the real autocomplete that returns
