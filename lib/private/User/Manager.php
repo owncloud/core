@@ -283,13 +283,19 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 
 		$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
-		// TODO: explicit member?
-		$backend = new Database();
-		$backend->createUser($uid, $password);
-		$account = $this->newAccount($uid, $backend);
-		$user = $this->getUserObject($account);
-		$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
-		return $user;
+		if (empty($this->backends)) {
+			$this->registerBackend(new Database());
+		}
+		foreach ($this->backends as $backend) {
+			if ($backend->implementsActions(Backend::CREATE_USER)) {
+				$backend->createUser($uid, $password);
+				$account = $this->newAccount($uid, $backend);
+				$user = $this->getUserObject($account);
+				$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
+				return $user;
+			}
+		}
+		return false;
 	}
 
 	/**
