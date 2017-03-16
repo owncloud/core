@@ -114,6 +114,16 @@ Feature: transfer-ownership
 		When transfering ownership from "user0" to "user1"
 		Then the command was successful
 
+	@no_encryption
+	Scenario: transfering ownership of a folder
+		Given user "user0" exists
+		And user "user1" exists
+		And User "user0" created a folder "/test"
+		When transfering ownership path from path "test" "user0" to "user1"
+		And the command was successful
+		And As an "user1"
+		And using received transfer folder of "user1" as dav path
+
 	Scenario: transfering ownership fails with invalid source user
 		Given user "user0" exists
 		When transfering ownership from "invalid_user" to "user0"
