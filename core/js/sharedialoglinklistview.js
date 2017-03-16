@@ -56,8 +56,14 @@
 
 		className: 'shareDialogLinkList',
 
+		/** @type {OCA.Files.FileInfoModel} **/
+		fileInfoModel: undefined,
+
 		/** @type {OC.Share.ShareConfigModel} **/
 		configModel: undefined,
+
+		/** @type {OC.Share.ShareItemModel} **/
+		itemModel: undefined,
 
 		/** @type {Function} **/
 		_template: undefined,

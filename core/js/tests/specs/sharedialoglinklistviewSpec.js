@@ -19,7 +19,6 @@
 *
 */
 
-/* global oc_appconfig */
 describe('OC.Share.ShareDialogLinkListView', function() {
 
 	var itemModel;
@@ -75,8 +74,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 
 		view = new OC.Share.ShareDialogLinkListView({
 			collection: collection,
-			itemModel: itemModel,
-			configModel: configModel
+			itemModel: itemModel
 		});
 		view.render();
 

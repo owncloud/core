@@ -13,9 +13,8 @@
 		OC.Share = {};
 	}
 
-	var PASSWORD_PLACEHOLDER = '**********';
+	var PASSWORD_PLACEHOLDER_STARS = '**********';
 	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
-	var PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL = t('core', 'Choose a password for the public link or press enter');
 	var TEMPLATE =
 			'<span class="icon-loading-small hidden"></span>' +
 			'<div class="fileName">{{fileName}}</div>' +
@@ -58,8 +57,13 @@
 		/** @type {string} **/
 		id: 'shareDialogLinkShare',
 
+		className: 'shareDialogLinkShare',
+
 		/** @type {OC.Share.ShareConfigModel} **/
 		configModel: undefined,
+
+		/** @type {OC.Share.ShareItemModel} **/
+		itemModel: undefined,
 
 		/** @type {Function} **/
 		_template: undefined,
@@ -67,13 +71,9 @@
 		initialize: function (options) {
 			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
+				this.configModel = this.itemModel.configModel;
 			} else {
 				throw 'missing OC.Share.ShareItemModel';
-			}
-			if (!_.isUndefined(options.configModel)) {
-				this.configModel = options.configModel;
-			} else {
-				throw 'missing OC.Share.ShareConfigModel';
 			}
 		},
 
@@ -123,6 +123,8 @@
 				permissions: permission,
 				name: this.$('[name=linkName]').val()
 			};
+
+			// TODO: validate with if(this.configModel.get('enforcePasswordForPublicLink') === false && this.configModel.get('enableLinkPasswordByDefault') === false) {
 
 			if (this.model.isNew()) {
 				// the API is inconsistent
@@ -191,9 +193,6 @@
 				maxDate: null
 			});
 
-			var passwordPlaceholderInitial = this.configModel.get('enforcePasswordForPublicLink')
-				? PASSWORD_PLACEHOLDER_MESSAGE : PASSWORD_PLACEHOLDER_MESSAGE_OPTIONAL;
-
 			// only show email field for new shares and if enabled globally
 			var showEmailField = this.model.isNew() && this.configModel.isMailPublicNotificationEnabled();
 
@@ -201,10 +200,8 @@
 				cid: this.cid,
 				expirationValue: expiration,
 				fileName: this.itemModel.getFileInfo().getFullPath(),
-				passwordPlaceholder: (isPasswordSet) ? '*****' : null,
 				passwordLabel: t('core', 'Password'),
-				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER : PASSWORD_PLACEHOLDER_MESSAGE,
-				passwordPlaceholderInitial: passwordPlaceholderInitial,
+				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
