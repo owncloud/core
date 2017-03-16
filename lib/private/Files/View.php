@@ -1365,8 +1365,11 @@ class View {
 								continue;
 							}
 							$subCache = $subStorage->getCache('');
-							$rootEntry = $subCache->get('');
-							$info->addSubEntry($rootEntry, $mount->getMountPoint());
+							if ($subCache instanceof \OCA\Files_Sharing\IShareCache) {
+								$rootEntry = $subCache->getMetadata();
+								$info->addSubEntry($rootEntry, $mount->getMountPoint());
+							}
+
 						}
 					}
 				}
@@ -1430,9 +1433,13 @@ class View {
 				$mountPoint = $mount->getMountPoint();
 				$subStorage = $mount->getStorage();
 				if ($subStorage) {
-					$subCache = $subStorage->getCache('');
 
-					$rootEntry = $subCache->get('');
+					$subCache = $subStorage->getCache('');
+					$rootEntry = false;
+					if ($subCache instanceof \OCA\Files_Sharing\IShareCache) {
+						$rootEntry = $subCache->getMetadata();
+					}
+
 					if (!$rootEntry) {
 						$subScanner = $subStorage->getScanner('');
 						try {

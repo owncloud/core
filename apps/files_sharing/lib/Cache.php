@@ -36,7 +36,7 @@ use OCP\Files\Storage\IStorage;
  *
  * don't use this class directly if you need to get metadata, use \OC\Files\Filesystem::getFileInfo instead
  */
-class Cache extends CacheJail {
+class Cache extends CacheJail implements \OCA\Files_Sharing\IShareCache {
 	/**
 	 * @var \OCA\Files_Sharing\SharedStorage
 	 */
@@ -73,6 +73,15 @@ class Cache extends CacheJail {
 		);
 	}
 
+	/**
+	 * Obtain metadata for this share mount
+	 * 
+	 * @return array
+	 */
+	public function getMetadata() {
+		return $this->formatCacheEntry($this->sourceRootInfo);
+	}
+	
 	protected function formatCacheEntry($entry) {
 		$path = isset($entry['path']) ? $entry['path'] : '';
 		$entry = parent::formatCacheEntry($entry);
