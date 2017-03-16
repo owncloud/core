@@ -257,41 +257,45 @@ var OCdialogs = {
 			}
 			$('body').append($dlg);
 			var buttonlist = [];
-			switch (buttons) {
-			case OCdialogs.YES_NO_BUTTONS:
-				buttonlist = [{
-					text: t('core', 'No'),
-					click: function(){
-						if (callback !== undefined) {
-							callback(false);
+			if (_.isArray(buttons)) {
+				buttonlist = buttons;
+			} else {
+				switch (buttons) {
+				case OCdialogs.YES_NO_BUTTONS:
+					buttonlist = [{
+						text: t('core', 'No'),
+						click: function(){
+							if (callback !== undefined) {
+								callback(false);
+							}
+							$(dialogId).ocdialog('close');
 						}
-						$(dialogId).ocdialog('close');
-					}
-				},
-				{
-					text: t('core', 'Yes'),
-					click: function(){
-						if (callback !== undefined) {
-							callback(true);
-						}
-						$(dialogId).ocdialog('close');
 					},
-					defaultButton: true
-				}];
-				break;
-			case OCdialogs.OK_BUTTON:
-				var functionToCall = function() {
-					$(dialogId).ocdialog('close');
-					if(callback !== undefined) {
-						callback();
-					}
-				};
-				buttonlist[0] = {
-					text: t('core', 'Ok'),
-					click: functionToCall,
-					defaultButton: true
-				};
-				break;
+					{
+						text: t('core', 'Yes'),
+						click: function(){
+							if (callback !== undefined) {
+								callback(true);
+							}
+							$(dialogId).ocdialog('close');
+						},
+						defaultButton: true
+					}];
+					break;
+				case OCdialogs.OK_BUTTON:
+					var functionToCall = function() {
+						$(dialogId).ocdialog('close');
+						if(callback !== undefined) {
+							callback();
+						}
+					};
+					buttonlist[0] = {
+						text: t('core', 'Ok'),
+						click: functionToCall,
+						defaultButton: true
+					};
+					break;
+				}
 			}
 
 			$(dialogId).ocdialog({

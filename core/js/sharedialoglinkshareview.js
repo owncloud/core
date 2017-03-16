@@ -16,24 +16,23 @@
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
 	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
 	var TEMPLATE =
-			'<span class="icon-loading-small hidden"></span>' +
 			'<div class="fileName">{{fileName}}</div>' +
 			'<input type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" />' +
 			'{{#if publicUploadPossible}}' +
 			'<div id="allowPublicUploadWrapper-{{cid}}">' +
-			'    <span class="icon-loading-small hidden"></span>' +
 			'    <input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
 			'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
 			'</div>' +
 			'{{/if}}' +
 			'<div id="linkPass-{{cid}}" class="linkPass">' +
-			'    <label for="linkPassText-{{cid}}">{{passwordLabel}}</label>' +
+			'    <label for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
 			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}" />' +
-			'    <span class="icon-loading-small hidden"></span>' +
+			'    <span class="error-message hidden"></span>' +
 			'</div>' +
 			'<div class="expirationDateContainer">' +
 			'    <label for="expirationDate-{{cid}}" value="{{expirationDate}}">{{expirationLabel}}</label>' +
 			'    <input id="expirationDate-{{cid}}" class="expirationDate datepicker" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
+			'    <span class="error-message hidden"></span>' +
 			'</div>' +
 			'{{#if isExpirationEnforced}}' +
 			'<em id="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
@@ -78,23 +77,13 @@
 		},
 
 		_save: function () {
+			var deferred = $.Deferred();
 			var $el = this.$el;
-
-			// find input elements
-			// ($ = jQuery object)
-			// ***
 
 			var $password = $el.find('.linkPassText'),
 				$expirationDate = $el.find('.expirationDate'),
 				$permission = $el.find('.publicUploadCheckbox'),
 				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
-
-
-				// loading animation element
-				// ***
-
-				$loading = $el.find('.linkPass .icon-loading-small'),
-
 
 				// get values from input elements
 				// ***
@@ -103,19 +92,13 @@
 				permission = ($permission.is(':checked')) ? OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_READ | OC.PERMISSION_DELETE : OC.PERMISSION_READ,
 				expirationDate = $expirationDate.val();
 
+			$el.find('.error-message').addClass('hidden');
+
 
 			// remove errors (if present)
 			// ***
 
 			$inputs.removeClass('error');
-
-
-			// show loading animation
-			// ***
-
-			$loading
-				.removeClass('hidden')
-				.addClass('inlineblock');
 
 			var attributes = {
 				password: password,
@@ -124,7 +107,12 @@
 				name: this.$('[name=linkName]').val()
 			};
 
-			// TODO: validate with if(this.configModel.get('enforcePasswordForPublicLink') === false && this.configModel.get('enableLinkPasswordByDefault') === false) {
+			if (this.configModel.get('enforcePasswordForPublicLink') && !password.trim()) {
+				$password.addClass('error');
+				// TODO: display message that password is required
+				$password.next('.error-message').removeClass('hidden').text(t('files_sharing', 'Password required'));
+				return deferred.reject();
+			}
 
 			if (this.model.isNew()) {
 				// the API is inconsistent
@@ -134,6 +122,7 @@
 			var self = this;
 
 			var done = function() {
+				deferred.resolve(self.model);
 				self.trigger('saved', self.model);
 			};
 
@@ -160,8 +149,11 @@
 					$inputs.attr('title', msg);
 					$inputs.tooltip({placement: 'bottom', trigger: 'manual'});
 					$inputs.tooltip('show');
+					deferred.reject(self.model);
 				}
 			});
+
+			return deferred.promise();
 		},
 
 		render: function () {
@@ -202,6 +194,7 @@
 				fileName: this.itemModel.getFileInfo().getFullPath(),
 				passwordLabel: t('core', 'Password'),
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
+				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink'),
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
@@ -231,6 +224,17 @@
 			return this;
 		},
 
+		_onClickSave: function() {
+			var self = this;
+			this._save().then(function() {
+				self.$dialog.ocdialog('close');
+			});
+		},
+
+		_onClickCancel: function() {
+			this.$dialog.ocdialog('close');
+		},
+
 		/**
 		 * @returns {Function} from Handlebars
 		 * @private
@@ -257,18 +261,22 @@
 				'',
 				title,
 				'custom',
-				OC.dialogs.OK_BUTTON,
-				function () {
-					// note: this will also close the window,
-					// need a way to prevent closing in case of error
-					self._save();
+				[{
+					text: t('core', 'Save'),
+					click: _.bind(this._onClickSave, this),
+					defaultButton: true
 				},
+				{
+					text: t('core', 'Cancel'),
+					click: _.bind(this._onClickCancel, this)
+				}],
+				null,
 				true
 			).then(function adjustDialog() {
-				var $dialog = $('.oc-dialog:visible');
-
+				var $dialogShell = $('.oc-dialog:visible');
 				self.render();
-				$dialog.find('.oc-dialog-content').html(self.$el);
+				self.$dialog = $dialogShell.find('.oc-dialog-content');
+				self.$dialog.html(self.$el);
 			});
 		}
 

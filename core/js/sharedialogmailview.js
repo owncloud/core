@@ -71,7 +71,6 @@
 					expiration: this.model.get('expireDate') || ''
 				},
 				function(result) {
-					console.error(result);
 					if (!result || result.status !== 'success') {
 						OC.dialogs.alert(result.data.message, t('core', 'Error while sending notification'));
 						deferred.reject();
