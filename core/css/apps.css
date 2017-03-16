@@ -639,6 +639,30 @@ em {
 .tabHeaders .tabHeader:hover a {
 	color: #000;
 }
+
+/* So called subtabs */
+
+.subTabHeaders {
+	display: flex;
+}
+
+.subTabHeaders > .subTabHeader {
+	color: #888;
+	background-color: #F8F8F8;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.subTabHeaders > .subTabHeader:not(:last-child) {
+	margin-right: 5px;
+}
+
+.subTabHeaders > .subTabHeader.selected {
+	border-bottom: 1px solid #333;
+	font-weight: 600;
+	color: #000;
+}
+
 .tabsContainer {
 	clear: left;
 }

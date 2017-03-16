@@ -16,13 +16,13 @@
 	var TEMPLATE_BASE =
 		'<div class="resharerInfoView subView"></div>' +
 		'{{#if isSharingAllowed}}' +
-		'<ul class="subtabs tabHeaders">' +
-		'    <li class="tabHeader selected subtab-localshare">{{localSharesLabel}}</li>' +
-		'    <li class="tabHeader subtab-publicshare">{{publicSharesLabel}}</li>' +
+		'<ul class="subTabHeaders">' +
+		'    <li class="subTabHeader selected subtab-localshare">{{localSharesLabel}}</li>' +
+		'    <li class="subTabHeader subtab-publicshare">{{publicSharesLabel}}</li>' +
 		'</ul>' +
 		'<div class="tabsContainer">' +
 		// TODO: this really should be a separate view class
-		'    <div class="localShareView tab">' +
+		'    <div class="localShareView tab" style="padding-left:0;padding-right:0;">' +
 		'        <label for="shareWith-{{cid}}" class="hidden-visually">{{shareLabel}}</label>' +
 		'        <div class="oneline">' +
 		'            <input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{sharePlaceholder}}" />' +
@@ -31,7 +31,7 @@
 		'        </div>' +
 		'        <div class="shareeListView subView"></div>' +
 		'    </div>' +
-		'    <div class="linkShareView subView tab hidden"></div>' +
+		'    <div class="linkShareView subView tab hidden" style="padding-left:0;padding-right:0;"></div>' +
 		'</div>' +
 		'{{else}}' +
 		'<div class="noSharingPlaceholder">{{noSharingPlaceholder}}</div>' +
@@ -73,7 +73,7 @@
 
 		events: {
 			'input .shareWithField': 'onShareWithFieldChanged',
-			'click .tabHeader': '_onClickTabHeader'
+			'click .subTabHeader': '_onClickTabHeader'
 		},
 
 		initialize: function(options) {
@@ -129,7 +129,7 @@
 
 		_onClickTabHeader: function(ev) {
 			var $target = $(ev.target);
-			this.$('.subtabs .tabHeader.selected').removeClass('selected');
+			this.$('.subTabHeaders .subTabHeader.selected').removeClass('selected');
 
 			$target.addClass('selected');
 

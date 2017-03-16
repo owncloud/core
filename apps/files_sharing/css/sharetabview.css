@@ -10,11 +10,6 @@
 	top: 2px;
 }
 
-.shareTabView .shareWithRemoteInfo,
-.shareTabView .clipboardButton {
-	padding-left: 10px;
-}
-
 .shareTabView label {
 	white-space: nowrap;
 }
@@ -94,3 +89,55 @@
 	display: inline-block;
 	background-size: 16px 16px;
 }
+
+.subTabHeaders .tabHeaders {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.link-entry {
+	display: flex;
+	align-items: center;
+	min-height: 50px;
+}
+
+.link-shares {
+	margin-bottom: 20px;
+}
+
+	.link-entry:not(:last-child) {
+		border-bottom: 1px solid #eee;
+	}
+		.link-entry:before {
+			content: "";
+			height: 32px;
+			width: 32px;
+			background-color: rgb(180, 180, 180);
+			background-image: url('/core/img/actions/public-white.svg');
+			background-position: 8px 8px;
+			border-radius: 50%;
+			margin-right: 10px;
+		}
+
+		.link-entry--title {
+			flex-grow: 1;
+			font-weight: bold;
+		}
+
+		.link-entry--icon-button {
+			margin-left: 5px;
+			opacity: .333;
+			-webkit-transition: opacity .25s;
+			-moz-transition: opacity .25s;
+			-ms-transition: opacity .25s;
+			-o-transition: opacity .25s;
+			transition: opacity .25s;
+		}
+
+		.link-entry--icon-button:hover {
+			opacity: 1;
+		}
+
+			.link-entry--icon-button span {
+				cursor: pointer;
+			}

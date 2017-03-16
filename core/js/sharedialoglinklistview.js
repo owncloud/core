@@ -14,31 +14,41 @@
 	}
 
 	var TEMPLATE =
-			'<span class="icon-loading-small hidden"></span>' +
-			'<ul class="link-shares">' +
-			'{{#each shares}}' +
-			'<li class="link-entry oneline" data-id="{{id}}">' +
-			'	<label for="linkText-{{cid}}">{{urlLabel}}</label>' +
-				'<span class="name has-tooltip" title="{{link}}">{{linkTitle}}</span>' +
-				'<input id="linkText-{{cid}}" class="linkText hidden" type="text" readonly="readonly" value="{{link}}" />' +
-				'<a class="clipboardButton icon icon-clippy" data-clipboard-target="#linkText-{{cid}}"></a>' +
-// TODO: replace with pencil and trash icons
-				'<br/><button class="editLink">{{../editLinkText}}</button>' +
-				'<button class="removeLink">{{../removeLinkText}}</button>' +
-				'{{#if ../socialShareEnabled}}' +
-				'<button class="shareLink">{{../shareText}}</button>' +
-				'<div class="socialShareContainer hidden"></div>' +
-				'{{/if}}' +
-			'</li>' +
-			'{{/each}}' +
-			'</ul>' +
-			'{{#if noShares}}' +
-			'<div class="empty-message">{{noSharesMessage}}</div>' +
+		'<span class="icon-loading-small hidden"></span>' +
+		'<ul class="link-shares">' +
+		'{{#each shares}}' +
+		'<li class="link-entry" data-id="{{id}}">' +
+			'<span class="link-entry--title has-tooltip" title="{{link}}">{{linkTitle}}</span>' +
+			'<input id="linkText-{{cid}}" class="linkText hidden" type="text" readonly="readonly" value="{{link}}" />' +
+			'<div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{cid}}">' +
+			'	<span class="icon icon-clippy-dark"></span>' +
+			'	<span class="hidden">{{../copyToClipboardText}}</span>' +
+			'</div>' +
+			'<div class="link-entry--icon-button editLink">' +
+			'	<span class="icon icon-settings-dark"></span>' +
+			'	<span class="hidden">{{../editLinkText}}</span>' +
+			'</div>' +
+			'<div class="link-entry--icon-button removeLink">' +
+			'	<span class="icon icon-delete"></span>' +
+			'	<span class="hidden">{{../removeLinkText}}</span>' +
+			'</div>' +
+			'{{#if ../socialShareEnabled}}' +
+			'<div class="link-entry--icon-button shareLink">' +
+			'	<span class="icon icon-share"></span>' +
+			'	<span class="hidden">{{../shareText}}</span>' +
+			'</div>' +
+			'<div class="socialShareContainer hidden"></div>' +
 			'{{/if}}' +
-			'<div class="clear-both">' +
-			'	<button class="addLink">{{addLinkText}}</button>' +
-			'</div>'
-		;
+		'</li>' +
+		'{{/each}}' +
+		'</ul>' +
+		'{{#if noShares}}' +
+		'<div class="empty-message">{{noSharesMessage}}</div>' +
+		'{{noSharesMessage}}' +
+		'{{/if}}' +
+		'<div class="clear-both">' +
+		'	<button class="addLink">{{addLinkText}}</button>' +
+		'</div>';
 
 	/**
 	 * @class OCA.Share.ShareDialogLinkListView
@@ -202,6 +212,7 @@
 				addLinkText: t('core', 'Create public link'),
 				editLinkText: t('core', 'Edit'),
 				removeLinkText: t('core', 'Remove'),
+				copyToClipboardText: t('core', 'Copy to clipboard'),
 				shareText: t('core', 'Social share'),
 				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				noShares: !this.collection.length,
