@@ -44,7 +44,6 @@
 		'</ul>' +
 		'{{#if noShares}}' +
 		'<div class="empty-message">{{noSharesMessage}}</div>' +
-		'{{noSharesMessage}}' +
 		'{{/if}}' +
 		'<div class="clear-both">' +
 		'	<button class="addLink">{{addLinkText}}</button>' +

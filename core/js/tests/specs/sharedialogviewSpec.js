@@ -808,35 +808,35 @@ describe('OC.Share.ShareDialogView', function() {
 			dialog.render();
 		});
 		it('renders tabs', function() {
-			expect(dialog.$('.tabHeaders>.tabHeader').length).toEqual(2);
+			expect(dialog.$('.subTabHeaders>.subTabHeader').length).toEqual(2);
 			expect(dialog.$('.tabsContainer>.tab').length).toEqual(2);
 		});
 		it('does not render tab headers is sharing is not allowed', function() {
 			// remove share permission
 			shareModel.set('permissions', OC.PERMISSION_READ);
 
-			expect(dialog.$('.tabHeaders').length).toEqual(0);
+			expect(dialog.$('.subTabHeaders').length).toEqual(0);
 			expect(dialog.$('.tabsContainer').length).toEqual(0);
 		});
 		it('initially selects first tab', function() {
-			expect(dialog.$('.tabHeaders>.tabHeader:eq(0)').hasClass('selected')).toEqual(true);
-			expect(dialog.$('.tabHeaders>.tabHeader:eq(1)').hasClass('selected')).toEqual(false);
+			expect(dialog.$('.subTabHeaders>.subTabHeader:eq(0)').hasClass('selected')).toEqual(true);
+			expect(dialog.$('.subTabHeaders>.subTabHeader:eq(1)').hasClass('selected')).toEqual(false);
 			expect(dialog.$('.tabsContainer>.tab:eq(0)').hasClass('hidden')).toEqual(false);
 			expect(dialog.$('.tabsContainer>.tab:eq(1)').hasClass('hidden')).toEqual(true);
 		});
 		it('switches tab when clicking on it', function() {
 
-			dialog.$('.tabHeaders>.tabHeader:eq(1)').click();
+			dialog.$('.subTabHeaders>.subTabHeader:eq(1)').click();
 
-			expect(dialog.$('.tabHeaders>.tabHeader:eq(0)').hasClass('selected')).toEqual(false);
-			expect(dialog.$('.tabHeaders>.tabHeader:eq(1)').hasClass('selected')).toEqual(true);
+			expect(dialog.$('.subTabHeaders>.subTabHeader:eq(0)').hasClass('selected')).toEqual(false);
+			expect(dialog.$('.subTabHeaders>.subTabHeader:eq(1)').hasClass('selected')).toEqual(true);
 			expect(dialog.$('.tabsContainer>.tab:eq(0)').hasClass('hidden')).toEqual(true);
 			expect(dialog.$('.tabsContainer>.tab:eq(1)').hasClass('hidden')).toEqual(false);
 		});
 		it('creates link share view only after selecting tab', function() {
 			expect(dialog.$('.linkShareView').is(':empty')).toEqual(true);
 			
-			dialog.$('.tabHeaders>.tabHeader:eq(1)').click();
+			dialog.$('.subTabHeaders>.subTabHeader:eq(1)').click();
 
 			expect(dialog.$('.linkShareView').is(':empty')).toEqual(false);
 		});

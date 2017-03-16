@@ -90,15 +90,15 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 			var $li = view.$('.link-entry');
 			expect($li.length).toEqual(2);
 			expect($li.eq(0).attr('data-id')).toEqual('1');
-			expect($li.eq(0).find('.name').attr('title'))
+			expect($li.eq(0).find('.link-entry--title').attr('title'))
 				.toEqual(OC.webroot + OC.generateUrl('/s/') + 'tehtokenz');
-			expect($li.eq(0).find('.name').text()).toEqual('first link');
+			expect($li.eq(0).find('.link-entry--title').text()).toEqual('first link');
 			expect($li.eq(0).find('.clipboardButton').length).toEqual(1);
 			expect($li.eq(1).attr('data-id')).toEqual('2');
-			expect($li.eq(1).find('.name').attr('title'))
+			expect($li.eq(1).find('.link-entry--title').attr('title'))
 				.toEqual(OC.webroot + OC.generateUrl('/s/') + 'tehohtertokenz');
 			// renders token instead of name
-			expect($li.eq(1).find('.name').text()).toEqual('tehohtertokenz');
+			expect($li.eq(1).find('.link-entry--title').text()).toEqual('tehohtertokenz');
 			expect($li.eq(1).find('.clipboardButton').length).toEqual(1);
 
 			// TODO: add other DOM elements when ready
@@ -167,7 +167,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 
 			expect(collection.length).toEqual(2);
 			expect(view.$('.link-entry').length).toEqual(2);
-			expect(view.$('.link-entry:eq(0) .name').text()).toEqual('changed name');
+			expect(view.$('.link-entry:eq(0) .link-entry--title').text()).toEqual('changed name');
 		});
 	});
 	describe('share link', function() {

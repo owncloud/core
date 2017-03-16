@@ -33,9 +33,6 @@
 		/** @type {string} **/
 		id: 'shareDialogMailView',
 
-		/** @type {OC.Share.ShareConfigModel} **/
-		configModel: undefined,
-
 		/** @type {Function} **/
 		_template: undefined,
 
@@ -50,12 +47,6 @@
 				this.itemModel = options.itemModel;
 			} else {
 				throw 'missing OC.Share.ShareItemModel';
-			}
-
-			if(!_.isUndefined(options.configModel)) {
-				this.configModel = options.configModel;
-			} else {
-				throw 'missing OC.Share.ShareConfigModel';
 			}
 		},
 
@@ -80,13 +71,15 @@
 					expiration: this.model.get('expireDate') || ''
 				},
 				function(result) {
+					console.error(result);
 					if (!result || result.status !== 'success') {
-						// FIXME: a model should not show dialogs
 						OC.dialogs.alert(result.data.message, t('core', 'Error while sending notification'));
 						deferred.reject();
 					} else {
 						deferred.resolve();
 					}
+			}).fail(function() {
+				deferred.reject();
 			});
 
 			return deferred.promise();

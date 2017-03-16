@@ -140,14 +140,14 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 
 			model.set({
 				password: 'set',
-				expiration: '2017-10-12 00:00:00',
+				expireDate: '2017-10-12',
 				permissions: OC.PERMISSION_ALL
 			});
 			view.render();
 
 			expect(view.$('.publicUploadCheckbox').prop('checked')).toEqual(true);
 			expect(view.$('.linkPassText').val()).toEqual('');
-			expect(view.$('.expirationDate').val()).toEqual('2017-10-12 00:00:00');
+			expect(view.$('.expirationDate').val()).toEqual('12-10-2017');
 		});
 		describe('email field', function() {
 			var isMailEnabledStub;
@@ -205,7 +205,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				expect(view.$('.linkPassText').attr('placeholder')).toEqual('Choose a password for the public link');
 			});
 			it('renders empty field with star placeholder if password set', function() {
-				itemModel.set({
+				model.set({
 					password: 'set'
 				});
 				view.render();
