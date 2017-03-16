@@ -734,9 +734,19 @@ class UsersController extends Controller {
  	 * @param string $userId
  	 * @param string $mailAddress
  	 * @throws \Exception
+	 * @return boolean
  	 */
 	public function sendEmail($userId, $mailAddress) {
-    	$token = $this->secureRandom->generate(21,
+		$token = $this->config->getUserValue($userId, 'owncloud', 'changeMail');
+		if ($token !== '') {
+			$splittedToken = explode(':', $token);
+			if ((count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
+				$this->log->alert('The email is not sent because an email change confirmation mail was sent recently.');
+				return false;
+			}
+		}
+
+		$token = $this->secureRandom->generate(21,
 			ISecureRandom::CHAR_DIGITS .
 			ISecureRandom::CHAR_LOWER .
 			ISecureRandom::CHAR_UPPER);
@@ -760,18 +770,19 @@ class UsersController extends Controller {
 				'Couldn\'t send email address change confirmation mail. Please contact your administrator.'
 			));
 		}
+		return true;
     }
 
 	/**
-	 * @param string $userId
+	 * @param string $id
  	 * @param string $mailAddress
  	 */
-	public function setEmailAddress($userId, $mailAddress) {
-		$user = $this->userManager->get($userId);
+	public function setEmailAddress($id, $mailAddress) {
+		$user = $this->userManager->get($id);
 
 		$user->setEMailAddress($mailAddress);
-		if ($this->config->getUserValue($userId, 'owncloud', 'changeMail') !== '') {
-			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
+		if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
+			$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
 		}
 	}
 
@@ -802,8 +813,26 @@ class UsersController extends Controller {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
 
+		$oldEmailAddress = $user->getEMailAddress();
+
 		$this->setEmailAddress($userId, $mailAddress);
 
+		$tmpl = new \OC_Template('settings', 'changemail/notify');
+		$tmpl->assign('mailAddress', $mailAddress);
+		$msg = $tmpl->fetchPage();
+
+		try {
+			$message = $this->mailer->createMessage();
+			$message->setTo([$oldEmailAddress => $userId]);
+			$message->setSubject($this->l10n->t('%s email address changed successfully', [$this->defaults->getName()]));
+			$message->setPlainBody($msg);
+			$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
+			$this->mailer->send($message);
+		} catch (\Exception $e) {
+			throw new \Exception($this->l10n->t(
+				'Couldn\'t send email address change notification mail. Please contact your administrator.'
+			));
+		}
 		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success']));
 	}
 }

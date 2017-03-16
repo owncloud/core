@@ -763,7 +763,7 @@ $(document).ready(function () {
 					$input.attr('disabled', 'disabled');
 					$.ajax({
 						type: 'PUT',
-						url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
+						url: OC.generateUrl('/settings/admin/{id}/mailAddress', {id: uid}),
 						data: {
 							mailAddress: $(this).val()
 						}
