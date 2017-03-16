@@ -117,7 +117,6 @@
 				.removeClass('hidden')
 				.addClass('inlineblock');
 
-
 			var attributes = {
 				password: password,
 				expireDate: expirationDate,

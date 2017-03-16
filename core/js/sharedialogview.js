@@ -142,7 +142,6 @@
 				if (!this.linkShareView) {
 					this.linkShareView = new OC.Share.ShareDialogLinkListView({
 						collection: this.model.getLinkSharesCollection(),
-						configModel: this.configModel,
 						// pass in the legacy stuff...
 						itemModel: this.model
 					});

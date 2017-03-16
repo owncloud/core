@@ -33,7 +33,7 @@
 			'{{/each}}' +
 			'</ul>' +
 			'{{#if noShares}}' +
-			'{{noSharesMessage}}' +
+			'<div class="empty-message">{{noSharesMessage}}</div>' +
 			'{{/if}}' +
 			'<div class="clear-both">' +
 			'	<button class="addLink">{{addLinkText}}</button>' +
@@ -66,8 +66,7 @@
 			'click .addLink': 'onAddButtonClick',
 			'click .editLink': 'onEditButtonClick',
 			'click .removeLink': 'onRemoveButtonClick',
-			'click .shareLink': 'onShareButtonClick',
-			'click .socialShare': 'onClickSocialShare'
+			'click .shareLink': 'onShareButtonClick'
 		},
 
 		initialize: function (options) {
@@ -81,16 +80,10 @@
 			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
 				this.fileInfoModel = this.itemModel.getFileInfo();
+				this.configModel = this.itemModel.configModel;
 			} else {
 				throw 'missing OC.Share.ShareItemModel';
 			}
-
-			if (!_.isUndefined(options.configModel)) {
-				this.configModel = options.configModel;
-			} else {
-				throw 'missing OC.Share.ShareConfigModel';
-			}
-
 		},
 
 		onRemoveButtonClick: function (ev) {
@@ -109,7 +102,6 @@
 		onAddButtonClick: function () {
 			var newShare = new OC.Share.ShareModel({
 				password: '',
-				passwordChanged: false,
 				permissions: OC.PERMISSION_READ,
 				expireDate: this.configModel.getDefaultExpirationDateString(),
 				shareType: OC.Share.SHARE_TYPE_LINK,
@@ -171,10 +163,6 @@
 				self.collection.add(model);
 			});
 			popupView.show();
-		},
-
-		onClickSocialShare: function() {
-			// TODO: create ShareDialogLinkSocial view and append under the clicked row
 		},
 
 		_formatItem: function(model) {

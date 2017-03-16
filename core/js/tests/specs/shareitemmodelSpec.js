@@ -160,7 +160,27 @@ describe('OC.Share.ShareItemModel', function() {
 					stime: 1403884258,
 					storage: 1,
 					token: 'tehtoken',
-					uid_owner: 'root'
+					uid_owner: 'root',
+					name: 'first link share'
+				}, {
+					displayname_owner: 'root',
+					expiration: '2017-10-12 00:00:00',
+					file_source: 123,
+					file_target: '/folder',
+					id: 21,
+					item_source: '123',
+					item_type: 'folder',
+					mail_send: '0',
+					parent: null,
+					path: '/folder',
+					permissions: OC.PERMISSION_READ,
+					share_type: OC.Share.SHARE_TYPE_LINK,
+					share_with: 'somepassword',
+					stime: 1403884259,
+					storage: 1,
+					token: 'tehtoken2',
+					uid_owner: 'root',
+					name: 'second link share'
 				}
 			]));
 
@@ -176,10 +196,20 @@ describe('OC.Share.ShareItemModel', function() {
 			expect(shares[0].share_with).toEqual('user1');
 			expect(shares[0].share_with_displayname).toEqual('User One');
 
-			var linkShare = model.get('linkShare');
-			expect(linkShare.isLinkShare).toEqual(true);
+			expect(model.hasLinkShare()).toEqual(true);
 
-			// TODO: check more attributes
+			var linkShares = model.getLinkSharesCollection();
+			expect(linkShares.length).toEqual(2);
+
+			expect(linkShares.at(0).get('name')).toEqual('first link share');
+			expect(linkShares.at(0).get('token')).toEqual('tehtoken');
+			expect(linkShares.at(0).get('password')).toEqual(null);
+			expect(linkShares.at(0).get('expireDate')).toEqual(null);
+
+			expect(linkShares.at(1).get('name')).toEqual('second link share');
+			expect(linkShares.at(1).get('token')).toEqual('tehtoken2');
+			expect(linkShares.at(1).get('password')).toEqual('somepassword');
+			expect(linkShares.at(1).get('expireDate')).toEqual('2017-10-12 00:00:00');
 		});
 		it('groups reshare info into a single item', function() {
 			/* jshint camelcase: false */
@@ -258,8 +288,9 @@ describe('OC.Share.ShareItemModel', function() {
 			// remaining share appears in this list
 			expect(shares.length).toEqual(1);
 
-			var linkShare = model.get('linkShare');
-			expect(linkShare.isLinkShare).toEqual(false);
+			var linkShare = model.getLinkSharesCollection();
+			expect(linkShare.length).toEqual(0);
+			expect(model.hasLinkShare()).toEqual(false);
 		});
 		it('parses correct link share when a nested link share exists along with parent one', function() {
 			/* jshint camelcase: false */
@@ -309,9 +340,9 @@ describe('OC.Share.ShareItemModel', function() {
 			// the parent share remains in the list
 			expect(shares.length).toEqual(1);
 
-			var linkShare = model.get('linkShare');
-			expect(linkShare.isLinkShare).toEqual(true);
-			expect(linkShare.token).toEqual('tehtoken');
+			var linkShares = model.getLinkSharesCollection();
+			expect(linkShares.length).toEqual(1);
+			expect(linkShares.at(0).get('token')).toEqual('tehtoken');
 
 			// TODO: check child too
 		});
@@ -469,107 +500,6 @@ describe('OC.Share.ShareItemModel', function() {
 		});
 	});
 
-	describe('sendEmailPrivateLink', function() {
-		it('succeeds', function() {
-			/* jshint camelcase: false */
-			fetchReshareDeferred.resolve(makeOcsResponse([]));
-			fetchSharesDeferred.resolve(makeOcsResponse([{
-				displayname_owner: 'root',
-				expiration: null,
-				file_source: 123,
-				file_target: '/folder',
-				id: 20,
-				item_source: '123',
-				item_type: 'folder',
-				mail_send: '0',
-				parent: null,
-				path: '/folder',
-				permissions: OC.PERMISSION_READ,
-				share_type: OC.Share.SHARE_TYPE_LINK,
-				share_with: null,
-				stime: 1403884258,
-				storage: 1,
-				token: 'tehtoken',
-				uid_owner: 'root'
-			}]));
-			OC.currentUser = 'root';
-			model.fetch();
-
-			var res = model.sendEmailPrivateLink('foo@bar.com');
-
-			expect(res.state()).toEqual('pending');
-			expect(fakeServer.requests.length).toEqual(1);
-			expect(fakeServer.requests[0].url).toEqual(OC.generateUrl('core/ajax/share.php'));
-			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual(
-				{
-					action: 'email',
-					toaddress: 'foo@bar.com',
-					link: model.get('linkShare').link,
-					itemType: 'file',
-					itemSource: '123',
-					file: 'shared_file_name.txt',
-					expiration: ''
-				}
-			)
-
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({status: 'success'})
-			);
-			expect(res.state()).toEqual('resolved');
-		});
-
-		it('fails', function() {
-			/* jshint camelcase: false */
-			fetchReshareDeferred.resolve(makeOcsResponse([]));
-			fetchSharesDeferred.resolve(makeOcsResponse([{
-				displayname_owner: 'root',
-				expiration: null,
-				file_source: 123,
-				file_target: '/folder',
-				id: 20,
-				item_source: '123',
-				item_type: 'folder',
-				mail_send: '0',
-				parent: null,
-				path: '/folder',
-				permissions: OC.PERMISSION_READ,
-				share_type: OC.Share.SHARE_TYPE_LINK,
-				share_with: null,
-				stime: 1403884258,
-				storage: 1,
-				token: 'tehtoken',
-				uid_owner: 'root'
-			}]));
-			OC.currentUser = 'root';
-			model.fetch();
-
-			var res = model.sendEmailPrivateLink('foo@bar.com');
-
-			expect(res.state()).toEqual('pending');
-			expect(fakeServer.requests.length).toEqual(1);
-			expect(fakeServer.requests[0].url).toEqual(OC.generateUrl('core/ajax/share.php'));
-			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual(
-				{
-					action: 'email',
-					toaddress: 'foo@bar.com',
-					link: model.get('linkShare').link,
-					itemType: 'file',
-					itemSource: '123',
-					file: 'shared_file_name.txt',
-					expiration: ''
-				}
-			)
-
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({data: {message: 'fail'}, status: 'error'})
-			);
-			expect(res.state()).toEqual('rejected');
-		});
-	});
 	describe('share permissions', function() {
 		beforeEach(function() {
 			oc_appconfig.core.resharingAllowed = true;
@@ -632,124 +562,6 @@ describe('OC.Share.ShareItemModel', function() {
 		});
 	});
 
-	describe('saveLinkShare', function() {
-		var addShareStub;
-		var updateShareStub;
-
-		beforeEach(function() {
-			addShareStub = sinon.stub(model, 'addShare');
-			updateShareStub = sinon.stub(model, 'updateShare');
-		});
-		afterEach(function() { 
-			addShareStub.restore();
-			updateShareStub.restore();
-		});
-
-		it('creates a new share if no link share exists', function() {
-			model.set({
-				linkShare: {
-					isLinkShare: false
-				}
-			});
-
-			model.saveLinkShare();
-
-			expect(addShareStub.calledOnce).toEqual(true);
-			expect(addShareStub.firstCall.args[0]).toEqual({
-				password: '',
-				passwordChanged: false,
-				permissions: OC.PERMISSION_READ,
-				expireDate: '',
-				shareType: OC.Share.SHARE_TYPE_LINK
-			});
-			expect(updateShareStub.notCalled).toEqual(true);
-		});
-		it('creates a new share with default expiration date', function() {
-			var clock = sinon.useFakeTimers(Date.UTC(2015, 6, 17, 1, 2, 0, 3));
-			configModel.set({
-				isDefaultExpireDateEnabled: true,
-				defaultExpireDate: 7
-			});
-			model.set({
-				linkShare: {
-					isLinkShare: false
-				}
-			});
-
-			model.saveLinkShare();
-
-			expect(addShareStub.calledOnce).toEqual(true);
-			expect(addShareStub.firstCall.args[0]).toEqual({
-				password: '',
-				passwordChanged: false,
-				permissions: OC.PERMISSION_READ,
-			expireDate: '2015-07-24 00:00:00',
-			shareType: OC.Share.SHARE_TYPE_LINK
-			});
-			expect(updateShareStub.notCalled).toEqual(true);
-			clock.restore();
-		});
-		it('updates link share if it exists', function() {
-			model.set({
-				linkShare: {
-					isLinkShare: true,
-					id: 123
-				}
-			});
-
-			model.saveLinkShare({
-				password: 'test'
-			});
-
-			expect(addShareStub.notCalled).toEqual(true);
-			expect(updateShareStub.calledOnce).toEqual(true);
-			expect(updateShareStub.firstCall.args[0]).toEqual(123);
-			expect(updateShareStub.firstCall.args[1]).toEqual({
-				password: 'test'
-			});
-		});
-		it('forwards error message on add', function() {
-			var errorStub = sinon.stub();
-			model.set({
-				linkShare: {
-					isLinkShare: false
-				}
-			}, {
-			});
-
-			model.saveLinkShare({
-				password: 'test'
-			}, {
-				error: errorStub
-			});
-
-			addShareStub.yieldTo('error', 'Some error message');
-
-			expect(errorStub.calledOnce).toEqual(true);
-			expect(errorStub.lastCall.args[0]).toEqual('Some error message');
-		});
-		it('forwards error message on update', function() {
-			var errorStub = sinon.stub();
-			model.set({
-				linkShare: {
-					isLinkShare: true,
-					id: '123'
-				}
-			}, {
-			});
-
-			model.saveLinkShare({
-				password: 'test'
-			}, {
-				error: errorStub
-			});
-
-			updateShareStub.yieldTo('error', 'Some error message');
-
-			expect(errorStub.calledOnce).toEqual(true);
-			expect(errorStub.lastCall.args[0]).toEqual('Some error message');
-		});
-	});
 	describe('creating shares', function() {
 		it('sends POST method to endpoint with passed values', function() {
 			model.addShare({

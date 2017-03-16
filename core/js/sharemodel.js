@@ -32,6 +32,7 @@
 		},
 
 		parse: function(data) {
+			/* jshint camelcase: false */
 			if (data.ocs && data.ocs.data) {
 				// parse out of the ocs response
 				data = data.ocs.data;
@@ -53,6 +54,9 @@
 				data.expireDate = data.expiration;
 				delete data.expiration;
 			}
+			if (_.isUndefined(data.expireDate)) {
+				data.expireDate = null;
+			}
 			return data;
 		},
 
@@ -70,9 +74,8 @@
 			if (url) {
 				return url;
 			}
-			
-			url = window.location.protocol + '//' + window.location.host;
-			return url + OC.generateUrl('/s/') + this.get('token');
+
+			return OC.webroot + OC.generateUrl('/s/') + this.get('token');
 		}
 	});
 
