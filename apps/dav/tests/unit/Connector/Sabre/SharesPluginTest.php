@@ -69,12 +69,9 @@ class SharesPluginTest extends \Test\TestCase {
 			->method('getUser')
 			->will($this->returnValue($user));
 
-		$this->userFolder = $this->createMock('\OCP\Files\Folder');
-
 		$this->plugin = new \OCA\DAV\Connector\Sabre\SharesPlugin(
 			$this->tree,
 			$userSession,
-			$this->userFolder,
 			$this->shareManager
 		);
 		$this->plugin->initialize($this->server);
@@ -90,20 +87,6 @@ class SharesPluginTest extends \Test\TestCase {
 		$sabreNode->expects($this->any())
 			->method('getId')
 			->will($this->returnValue(123));
-		$sabreNode->expects($this->once())
-			->method('getPath')
-			->will($this->returnValue('/subdir'));
-
-		// node API nodes
-		$node = $this->createMock('\OCP\Files\Folder');
-		$node->expects($this->any())
-			->method('getId')
-			->will($this->returnValue(123));
-
-		$this->userFolder->expects($this->once())
-			->method('get')
-			->with('/subdir')
-			->will($this->returnValue($node));
 
 		$requestedShareTypes = [
 			\OCP\Share::SHARE_TYPE_USER,
@@ -179,33 +162,12 @@ class SharesPluginTest extends \Test\TestCase {
 			->method('getId')
 			->will($this->returnValue(123));
 		// never, because we use getDirectoryListing from the Node API instead
-		$sabreNode->expects($this->never())
-			->method('getChildren');
+		$sabreNode->expects($this->once())
+			->method('getChildren')
+		->will($this->returnValue([$sabreNode1,$sabreNode2]));
 		$sabreNode->expects($this->any())
 			->method('getPath')
 			->will($this->returnValue('/subdir'));
-
-		// node API nodes
-		$node = $this->createMock('\OCP\Files\Folder');
-		$node->expects($this->any())
-			->method('getId')
-			->will($this->returnValue(123));
-		$node1 = $this->createMock('\OCP\Files\File');
-		$node1->expects($this->any())
-			->method('getId')
-			->will($this->returnValue(111));
-		$node2 = $this->createMock('\OCP\Files\File');
-		$node2->expects($this->any())
-			->method('getId')
-			->will($this->returnValue(222));
-		$node->expects($this->once())
-			->method('getDirectoryListing')
-			->will($this->returnValue([$node1, $node2]));
-
-		$this->userFolder->expects($this->once())
-			->method('get')
-			->with('/subdir')
-			->will($this->returnValue($node));
 
 		$requestedShareTypes = [
 			\OCP\Share::SHARE_TYPE_USER,
