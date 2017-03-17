@@ -105,14 +105,24 @@
 			$inputs.removeClass('error');
 			$errorMessageGlobal.addClass('hidden');
 
+			// explicit attributes to be saved
 			var attributes = {
-				password: password,
 				expireDate: expirationDate,
 				permissions: permission,
-				name: this.$('[name=linkName]').val()
+				name: this.$('[name=linkName]').val(),
+				shareType: this.model.get('shareType')
 			};
 
-			if (this.configModel.get('enforcePasswordForPublicLink') && !password.trim()) {
+			// TODO: need a way to clear password (check if "encryptedPassword" was set)
+			if (password) {
+				// only set password explicitly if changed, else leave previous value
+				attributes.password = password;
+			}
+
+			if (this.configModel.get('enforcePasswordForPublicLink')
+				&& !password.trim()
+				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
+			) {
 				$password.addClass('error');
 				$password.next('.error-message').removeClass('hidden').text(t('files_sharing', 'Password required'));
 				return deferred.reject();
@@ -136,6 +146,9 @@
 			// save it
 			// ***
 			this.model.save(attributes, {
+				// explicit attributes for patch-like PUT to avoid
+				// passing all attributes
+				attrs: attributes,
 				success: function() {
 					if (self.mailView) {
 						// also send out email first
@@ -179,7 +192,7 @@
 				expiration = moment(this.model.get('expireDate'), 'YYYY-MM-DD').format('DD-MM-YYYY');
 			}
 
-			var isPasswordSet = !!this.model.get('password');
+			var isPasswordSet = !!this.model.get('encryptedPassword');
 
 			var pickerMinDate = new Date();
 			pickerMinDate.setDate(pickerMinDate.getDate()+1);

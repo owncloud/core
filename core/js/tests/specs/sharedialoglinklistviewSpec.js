@@ -126,16 +126,19 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 			popup = showPopupStub.getCall(0).thisValue;
 		});
 		it('sets default values and shows popup', function() {
+			var defaultDateStub = sinon.stub(configModel, 'getDefaultExpirationDateString'); 
+			defaultDateStub.returns('2017-03-03');
 			expect(popup.model.toJSON()).toEqual({
 				password: '',
 				permissions: OC.PERMISSION_READ,
-				expireDate: '',
+				expireDate: '2017-03-03',
 				shareType: OC.Share.SHARE_TYPE_LINK,
 				itemType: 'folder',
 				itemSource: 123
 			});
 			expect(popup.configModel).toEqual(configModel);
 			expect(popup.itemModel).toEqual(itemModel);
+			defaultDateStub.restore();
 		});
 		it('adds model to collection and rerender after saving', function() {
 			popup.model.set('id', 300);
