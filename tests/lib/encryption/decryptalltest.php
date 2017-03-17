@@ -26,6 +26,7 @@ namespace Test\Encryption;
 use OC\Encryption\DecryptAll;
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Manager;
+use OC\Files\FileInfo;
 use OC\Files\View;
 use OCP\IUserManager;
 use Test\TestCase;
