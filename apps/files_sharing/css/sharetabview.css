@@ -95,6 +95,10 @@
 	margin-right: 0px;
 }
 
+
+/* LINK SHARES */
+/* ----------- */
+
 .link-entry {
 	display: flex;
 	align-items: center;
@@ -141,3 +145,71 @@
 			.link-entry--icon-button span {
 				cursor: pointer;
 			}
+
+/* USER & GROUP SHARES */
+/* ------------------- */
+
+.user-shares {
+	margin: 20px -15px;
+}
+
+	.user-share{
+		transition: all .5s ease;
+		padding: 0 15px;
+	}
+
+	.user-share:hover {
+		background-color: #eee;
+	}
+
+	.user-share:not(:last-child) {
+		border-bottom: 1px solid #eee;
+	}
+
+	.user-share--title {
+		flex-grow: 1;
+		font-weight: bold;
+	}
+
+	.user-share--main {
+		display: flex;
+		align-items: center;
+		min-height: 50px;
+	}
+
+	.user-share--checkbox:not(:first-child) {
+		margin-left: 5px;
+	}
+
+	.user-share--dropdown {
+		overflow: hidden;
+		height: 0;
+		transition: height .25s ease-in-out;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.user-share:hover .user-share--dropdown {
+		height: 30px;
+	}
+
+	.user-share--permission-preview li {
+		display: inline;
+		font-size: 12px;
+	}
+
+	.user-share--permission-preview li:first-child:before {
+		content: '(';
+	}
+
+	.user-share--permission-preview li:not(:last-child):after {
+		content: ',';
+	}
+
+	.user-share--permission-preview li:last-child:after {
+		content: ')';
+	}
+
+	.user-share--permission-list li {
+		display: inline;
+	}

@@ -374,8 +374,8 @@
 				sharePlaceholder: this._renderSharePlaceholderPart(),
 				remoteShareInfo: this._renderRemoteShareInfoPart(),
 				isSharingAllowed: this.model.sharePermissionPossible(),
-				localSharesLabel: t('core', 'User / Group Share'),
-				publicSharesLabel: t('core', 'Public Link'),
+				localSharesLabel: t('core', 'User and Groups'),
+				publicSharesLabel: t('core', 'Public Links'),
 				noSharingPlaceholder: t('core', 'Resharing is not allowed')
 			}));
 
