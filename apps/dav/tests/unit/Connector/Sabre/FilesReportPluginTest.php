@@ -33,6 +33,8 @@ use OCP\IGroupManager;
 use OCP\SystemTag\ISystemTagManager;
 use OCP\ITags;
 use OCP\Files\FileInfo;
+use OCP\IRequest;
+use OCP\IConfig;
 
 class FilesReportPluginTest extends \Test\TestCase {
 	/** @var \Sabre\DAV\Server|\PHPUnit_Framework_MockObject_MockObject */
@@ -71,13 +73,11 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->view = $this->getMockBuilder('\OC\Files\View')
-			->disableOriginalConstructor()
-			->getMock();
+		$this->view = new View();
 
 		$this->server = $this->getMockBuilder('\Sabre\DAV\Server')
 			->setConstructorArgs([$this->tree])
-			->setMethods(['getRequestUri', 'getBaseUri'])
+			->setMethods(['getRequestUri', 'getBaseUri', 'generateMultiStatus'])
 			->getMock();
 
 		$this->server->expects($this->any())
@@ -109,6 +109,15 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
+
+		// add FilesPlugin to test more properties
+		$this->server->addPlugin(
+			new \OCA\DAV\Connector\Sabre\FilesPlugin(
+				$this->tree,
+				$this->createMock(IConfig::class),
+				$this->createMock(IRequest::class)
+			)
+		);
 
 		$this->plugin = new FilesReportPluginImplementation(
 			$this->tree,
@@ -158,7 +167,12 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$path = 'test';
 
 		$parameters = new FilterRequest();
-		$parameters->properties = ['{DAV:}getcontentlength', '{http://owncloud.org/ns}size'];
+		$parameters->properties = [
+			'{DAV:}getcontentlength',
+			'{http://owncloud.org/ns}size',
+			'{http://owncloud.org/ns}fileid',
+			'{DAV:}resourcetype',
+		];
 		$parameters->filters = [
 			'systemtag' => [123, 456],
 			'favorite' => null
@@ -177,14 +191,8 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->with('456', 'files')
 			->will($this->returnValue(['111', '222', '333']));
 
-		$reportTargetNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$response = $this->getMockBuilder('Sabre\HTTP\ResponseInterface')
-			->disableOriginalConstructor()
-			->getMock();
-
+		$reportTargetNode = $this->createMock(\OCA\DAV\Connector\Sabre\Directory::class);
+		$response = $this->createMock(\Sabre\HTTP\ResponseInterface::class);
 		$response->expects($this->once())
 			->method('setHeader')
 			->with('Content-Type', 'application/xml; charset=utf-8');
@@ -201,12 +209,16 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->with('/' . $path)
 			->will($this->returnValue($reportTargetNode));
 
-		$filesNode1 = $this->getMockBuilder('\OCP\Files\Folder')
-			->disableOriginalConstructor()
-			->getMock();
-		$filesNode2 = $this->getMockBuilder('\OCP\Files\File')
-			->disableOriginalConstructor()
-			->getMock();
+		$filesNode1 = $this->createMock(\OCP\Files\Folder::class);
+		$filesNode1->method('getId')->willReturn(111);
+		$filesNode1->method('getPath')->willReturn('/node1');
+		$filesNode1->method('isReadable')->willReturn(true);
+		$filesNode1->method('getSize')->willReturn(2048);
+		$filesNode2 = $this->createMock(\OCP\Files\File::class);
+		$filesNode2->method('getId')->willReturn(222);
+		$filesNode2->method('getPath')->willReturn('/sub/node2');
+		$filesNode2->method('getSize')->willReturn(1024);
+		$filesNode2->method('isReadable')->willReturn(true);
 
 		$this->userFolder->expects($this->at(0))
 			->method('getById')
@@ -223,7 +235,110 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->server->httpResponse = $response;
 		$this->plugin->initialize($this->server);
 
+		$responses = null;
+		$this->server->expects($this->once())
+			->method('generateMultiStatus')
+			->will($this->returnCallback(function($responsesArg) use (&$responses) {
+				$responses = $responsesArg;
+			})
+		);
+
 		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
+
+		$this->assertCount(2, $responses);
+
+		$this->assertTrue(isset($responses[0][200]));
+		$this->assertTrue(isset($responses[1][200]));
+
+		$this->assertEquals('/test/node1', $responses[0]['href']);
+		$this->assertEquals('/test/sub/node2', $responses[1]['href']);
+
+		$props1 = $responses[0];
+		$this->assertEquals('111', $props1[200]['{http://owncloud.org/ns}fileid']);
+		$this->assertNull($props1[404]['{DAV:}getcontentlength']);
+		$this->assertInstanceOf('\Sabre\DAV\Xml\Property\ResourceType', $props1[200]['{DAV:}resourcetype']);
+		$resourceType1 = $props1[200]['{DAV:}resourcetype']->getValue();
+		$this->assertEquals('{DAV:}collection', $resourceType1[0]);
+
+		$props2 = $responses[1];
+		$this->assertEquals('1024', $props2[200]['{DAV:}getcontentlength']);
+		$this->assertEquals('222', $props2[200]['{http://owncloud.org/ns}fileid']);
+		$this->assertInstanceOf('\Sabre\DAV\Xml\Property\ResourceType', $props2[200]['{DAV:}resourcetype']);
+		$this->assertCount(0, $props2[200]['{DAV:}resourcetype']->getValue());
+	}
+
+	public function testOnReportPaginationFiltered() {
+		$path = 'test';
+
+		$parameters = new FilterRequest();
+		$parameters->properties = [
+			'{DAV:}getcontentlength',
+		];
+		$parameters->filters = [
+			'systemtag' => [],
+			'favorite' => true
+		];
+		$parameters->search = [
+			'offset' => 2,
+			'limit' => 3,
+		];
+
+		$filesNodes = [];
+		for ($i = 0; $i < 20; $i++) {
+			$filesNode = $this->createMock(\OCP\Files\File::class);
+			$filesNode->method('getId')->willReturn(1000 + $i);
+			$filesNode->method('getPath')->willReturn('/nodes/node' . $i);
+			$filesNode->method('isReadable')->willReturn(true);
+			$filesNodes[$filesNode->getId()] = $filesNode;
+		}
+
+		// return all above nodes as favorites
+		$this->privateTags->expects($this->once())
+			->method('getFavorites')
+			->will($this->returnValue(array_keys($filesNodes)));
+
+		$reportTargetNode = $this->createMock(\OCA\DAV\Connector\Sabre\Directory::class);
+
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->with('/' . $path)
+			->will($this->returnValue($reportTargetNode));
+
+		// getById must only be called for the required nodes
+		$this->userFolder->expects($this->at(0))
+			->method('getById')
+			->with(1002)
+			->willReturn([$filesNodes[1002]]);
+		$this->userFolder->expects($this->at(1))
+			->method('getById')
+			->with(1003)
+			->willReturn([$filesNodes[1003]]);
+		$this->userFolder->expects($this->at(2))
+			->method('getById')
+			->with(1004)
+			->willReturn([$filesNodes[1004]]);
+
+		$this->server->expects($this->any())
+			->method('getRequestUri')
+			->will($this->returnValue($path));
+
+		$this->plugin->initialize($this->server);
+
+		$responses = null;
+		$this->server->expects($this->once())
+			->method('generateMultiStatus')
+			->will($this->returnCallback(function($responsesArg) use (&$responses) {
+				$responses = $responsesArg;
+			})
+		);
+
+		$this->assertFalse($this->plugin->onReport(FilesReportPluginImplementation::REPORT_NAME, $parameters, '/' . $path));
+
+		$this->assertCount(3, $responses);
+
+		$this->assertEquals('/test/nodes/node2', $responses[0]['href']);
+		$this->assertEquals('/test/nodes/node3', $responses[1]['href']);
+		$this->assertEquals('/test/nodes/node4', $responses[2]['href']);
 	}
 
 	public function testFindNodesByFileIdsRoot() {
@@ -316,71 +431,6 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->assertEquals('first node', $result[0]->getName());
 		$this->assertInstanceOf('\OCA\DAV\Connector\Sabre\File', $result[1]);
 		$this->assertEquals('second node', $result[1]->getName());
-	}
-
-	public function testPrepareResponses() {
-		$requestedProps = ['{DAV:}getcontentlength', '{http://owncloud.org/ns}fileid', '{DAV:}resourcetype'];
-
-		$fileInfo = $this->createMock(FileInfo::class);
-		$fileInfo->method('isReadable')->willReturn(true);
-
-		$node1 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
-			->disableOriginalConstructor()
-			->getMock();
-		$node2 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$node1->expects($this->once())
-			->method('getInternalFileId')
-			->will($this->returnValue('111'));
-		$node1->expects($this->any())
-			->method('getPath')
-			->will($this->returnValue('/node1'));
-		$node1->method('getFileInfo')->willReturn($fileInfo);
-		$node2->expects($this->once())
-			->method('getInternalFileId')
-			->will($this->returnValue('222'));
-		$node2->expects($this->once())
-			->method('getSize')
-			->will($this->returnValue(1024));
-		$node2->expects($this->any())
-			->method('getPath')
-			->will($this->returnValue('/sub/node2'));
-		$node2->method('getFileInfo')->willReturn($fileInfo);
-
-		$config = $this->createMock('\OCP\IConfig');
-
-		$this->server->addPlugin(
-			new \OCA\DAV\Connector\Sabre\FilesPlugin(
-				$this->tree,
-				$config,
-				$this->createMock('\OCP\IRequest')
-			)
-		);
-		$this->plugin->initialize($this->server);
-		$responses = $this->plugin->prepareResponses('/files/username', $requestedProps, [$node1, $node2]);
-
-		$this->assertCount(2, $responses);
-
-		$this->assertEquals(200, $responses[0]->getHttpStatus());
-		$this->assertEquals(200, $responses[1]->getHttpStatus());
-
-		$this->assertEquals('http://example.com/owncloud/remote.php/dav/files/username/node1', $responses[0]->getHref());
-		$this->assertEquals('http://example.com/owncloud/remote.php/dav/files/username/sub/node2', $responses[1]->getHref());
-
-		$props1 = $responses[0]->getResponseProperties();
-		$this->assertEquals('111', $props1[200]['{http://owncloud.org/ns}fileid']);
-		$this->assertNull($props1[404]['{DAV:}getcontentlength']);
-		$this->assertInstanceOf('\Sabre\DAV\Xml\Property\ResourceType', $props1[200]['{DAV:}resourcetype']);
-		$resourceType1 = $props1[200]['{DAV:}resourcetype']->getValue();
-		$this->assertEquals('{DAV:}collection', $resourceType1[0]);
-
-		$props2 = $responses[1]->getResponseProperties();
-		$this->assertEquals('1024', $props2[200]['{DAV:}getcontentlength']);
-		$this->assertEquals('222', $props2[200]['{http://owncloud.org/ns}fileid']);
-		$this->assertInstanceOf('\Sabre\DAV\Xml\Property\ResourceType', $props2[200]['{DAV:}resourcetype']);
-		$this->assertCount(0, $props2[200]['{DAV:}resourcetype']->getValue());
 	}
 
 	public function testProcessFilterRulesSingle() {
