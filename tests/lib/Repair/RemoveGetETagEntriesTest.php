@@ -43,22 +43,20 @@ class RemoveGetETagEntriesTest extends TestCase {
 	}
 
 	public function testRun() {
-
-		$userName = 'removePropertiesUser';
 		$data = [
-			[$userName, '/abc.def.txt', '{DAV:}getetag', 'abcdef'],
-			[$userName, '/abc.def.txt', '{DAV:}anotherRandomProperty', 'ghi'],
+			['100500', '{DAV:}getetag', 'abcdef'],
+			['100500',  '{DAV:}anotherRandomProperty', 'ghi'],
 		];
 
 		// insert test data
-		$sqlToInsertProperties = 'INSERT INTO `*PREFIX*properties` (`userid`, `propertypath`, `propertyname`, `propertyvalue`) VALUES (?, ?, ? ,?)';
+		$sqlToInsertProperties = 'INSERT INTO `*PREFIX*properties` (`fileid`, `propertyname`, `propertyvalue`) VALUES (?, ? ,?)';
 		foreach ($data as $entry) {
 			$this->connection->executeUpdate($sqlToInsertProperties, $entry);
 		}
 
 		// check if test data is written to DB
-		$sqlToFetchProperties = 'SELECT `userid`, `propertypath`, `propertyname`, `propertyvalue` FROM `*PREFIX*properties` WHERE `userid` = ?';
-		$stmt = $this->connection->executeQuery($sqlToFetchProperties, [$userName]);
+		$sqlToFetchProperties = 'SELECT `fileid`, `propertyname`, `propertyvalue` FROM `*PREFIX*properties` WHERE `fileid` = ?';
+		$stmt = $this->connection->executeQuery($sqlToFetchProperties, ['100500']);
 		$entries = $stmt->fetchAll(\PDO::FETCH_NUM);
 
 		$this->assertCount(2, $entries, 'Asserts that two entries are returned as we have inserted two');
@@ -76,15 +74,17 @@ class RemoveGetETagEntriesTest extends TestCase {
 		$repair->run($outputMock);
 
 		// check if test data is correctly modified in DB
-		$stmt = $this->connection->executeQuery($sqlToFetchProperties, [$userName]);
+		$stmt = $this->connection->executeQuery($sqlToFetchProperties, ['100500']);
 		$entries = $stmt->fetchAll(\PDO::FETCH_NUM);
 
 		$this->assertCount(1, $entries, 'Asserts that only one entry is returned after the repair step - the other one has to be removed');
+		//cast int to string to prevent failure on postgre
+		//see https://github.com/owncloud/core/pull/27280#issuecomment-283170051
+		$entries[0][0] = (string) $entries[0][0];
 		$this->assertSame($data[1], $entries[0], 'Asserts that the returned entry is the correct one from the test data set');
 
 		// remove test data
-		$sqlToRemoveProperties = 'DELETE FROM `*PREFIX*properties` WHERE `userid` = ?';
-		$this->connection->executeUpdate($sqlToRemoveProperties, [$userName]);
+		$sqlToRemoveProperties = 'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?';
+		$this->connection->executeUpdate($sqlToRemoveProperties, ['100500']);
 	}
-
 }

@@ -1126,8 +1126,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$qB->insert('properties')
 			->values([
-				'userid' => $qB->expr()->literal('testFirstResult'),
-				'propertypath' => $qB->expr()->literal('testing'),
+				'fileid' => $qB->expr()->literal(100500),
 				'propertyname' => $qB->expr()->literal('testing'),
 				'propertyvalue' => $qB->expr()->literal('testing'),
 			])
@@ -1140,7 +1139,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		$this->assertEquals($this->connection->lastInsertId('*PREFIX*properties'), $actual);
 
 		$qB->delete('properties')
-			->where($qB->expr()->eq('userid', $qB->expr()->literal('testFirstResult')))
+			->where($qB->expr()->eq('fileid', $qB->expr()->literal('100500')))
 			->execute();
 
 		try {
