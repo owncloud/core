@@ -2013,14 +2013,18 @@ OC.Util = {
 	/**
 	 * Checks if an element is completely visible and scrolls the screen if not
 	 * @param {jQuery} jQuery element that has to be displayed 
-	 * @param {jQuery} scroll container default = $('#app-content')
+	 * @param {jQuery} scroll container if null scrollContainer will be set to $('#app-content')
 	 */
-	scrollIntoView: function (toViewEl, scrollContainer = $('#app-content')) {
+	scrollIntoView: function (toViewEl, scrollContainer = null) {
 		
 		var toViewElTopLocation = toViewEl.offset().top;
 		var toViewElHeight = toViewEl.outerHeight();
 		var toViewElBottomLocation = toViewElTopLocation + toViewElHeight + 50;
 		var windowHeight = $(window).height();
+		
+		if (scrollContainer === null) {
+			scrollContainer = $('#app-content');
+		}
 
 		if (toViewElBottomLocation > windowHeight) {
 			var currentPosition = scrollContainer[0].scrollTop;
@@ -2030,7 +2034,7 @@ OC.Util = {
 				scrollTop: currentPosition + scrollDistance
 			}, 700);
 		}
-	},
+	}
 };
 
 /**
