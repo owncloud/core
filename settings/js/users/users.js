@@ -26,7 +26,7 @@ var UserList = {
 	initialize: function($el) {
 		this.$el = $el;
 
-		UserList.currentUser = document.getElementsByTagName('head')[0].getAttribute('data-user');
+		UserList.currentUser = OC.getCurrentUser().uid;
 
 		// initially the list might already contain user entries (not fully ajaxified yet)
 		// initialize these entries
