@@ -118,16 +118,16 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 	});
 
 	describe('create link', function() {
-		var popup;
-
-		beforeEach(function() {
+		function showPopup() {
 			view.$('.addLink').click();
 			expect(showPopupStub.calledOnce).toEqual(true);
-			popup = showPopupStub.getCall(0).thisValue;
-		});
+			return showPopupStub.getCall(0).thisValue;
+		}
+
 		it('sets default values and shows popup', function() {
 			var defaultDateStub = sinon.stub(configModel, 'getDefaultExpirationDateString'); 
 			defaultDateStub.returns('2017-03-03');
+			var popup = showPopup();
 			expect(popup.model.toJSON()).toEqual({
 				password: '',
 				permissions: OC.PERMISSION_READ,
@@ -141,6 +141,8 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 			defaultDateStub.restore();
 		});
 		it('adds model to collection and rerender after saving', function() {
+			var popup = showPopup();
+
 			popup.model.set('id', 300);
 			popup.trigger('saved', popup.model);
 

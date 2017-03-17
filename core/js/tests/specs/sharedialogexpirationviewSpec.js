@@ -53,12 +53,12 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 			id: 1,
 			name: 'first link',
 			token: 'tehtokenz',
-			share_type: OC.Share.SHARE_TYPE_LINK,
-			item_type: 'folder',
+			shareType: OC.Share.SHARE_TYPE_LINK,
+			itemType: 'folder',
 			stime: 1489657516,
 			permissions: OC.PERMISSION_READ,
 			share_with: null,
-			expiration: null,
+			expireDate: null,
 		});
 
 		view = new OC.Share.ShareDialogExpirationView({
@@ -100,10 +100,10 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 			it('shows error message on validate if expiration date is empty', function() {
 				configModel.set('isDefaultExpireDateEnforced', true);
 				view.render();
-				expect(view.validate()).toEqual(false);
 				view.$('.expirationDate').val('');
+				expect(view.validate()).toEqual(false);
 				expect(view.$('.error-message').hasClass('hidden')).toEqual(false);
-				expect(view.$('.error-message').text()).contain('required');
+				expect(view.$('.error-message').text()).toContain('required');
 			});
 			it('does not show error message on validate when not enforced', function() {
 				configModel.set('isDefaultExpireDateEnforced', false);
@@ -134,7 +134,7 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 					defaultExpireDate: 7
 				});
 
-				model.set('expiration', null);
+				model.set('expireDate', null);
 			});
 			afterEach(function() {
 				clock.restore();
@@ -158,7 +158,7 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 				expect(view.$el.find('.datepicker').val()).toEqual('');
 			});
 			it('checks expiration date checkbox and populates field when expiration date was set', function() {
-				model.set('expiration', '2014-02-01 00:00:00');
+				model.set('expireDate', '2014-02-01 00:00:00');
 				view.render();
 				expect(view.$el.find('.datepicker').val()).toEqual('01-02-2014');
 			});
@@ -166,7 +166,7 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 				configModel.set('isDefaultExpireDateEnabled', true);
 				view.render();
 				// here fetch would be called and the server returns the expiration date
-				model.set('expiration', '2014-1-27 00:00:00');
+				model.set('expireDate', '2014-1-27 00:00:00');
 				view.render();
 
 				// enabled by default
@@ -179,30 +179,8 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 				});
 				view.render();
 				// here fetch would be called and the server returns the expiration date
-				model.set('expiration', '2014-1-27 00:00:00');
+				model.set('expireDate', '2014-1-27 00:00:00');
 				view.render();
-
-				expect(view.$el.find('.datepicker').val()).toEqual('27-01-2014');
-			});
-			it('enforces default date when enforced date setting is enabled and password is enforced', function() {
-				configModel.set({
-					enforcePasswordForPublicLink: true,
-					isDefaultExpireDateEnabled: true,
-					isDefaultExpireDateEnforced: true
-				});
-				view.render();
-				// here fetch would be called and the server returns the expiration date
-				model.set('expiration', '2014-1-27 00:00:00');
-				view.render();
-
-				//Enter password
-				view.$el.find('.linkPassText').val('foo');
-				view.$el.find('.linkPassText').trigger(new $.Event('keyup', {keyCode: 13}));
-				fakeServer.requests[0].respond(
-					200,
-					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
-				);
 
 				expect(view.$el.find('.datepicker').val()).toEqual('27-01-2014');
 			});
@@ -216,14 +194,15 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 					isDefaultExpireDateEnabled: true,
 					isDefaultExpireDateEnforced: true
 				});
+				model.set('stime', new Date(2014, 0, 20, 11, 0, 25).getTime() / 1000);
 				view.render();
-				expect(setDefaultsStub.getCall(0).args[0].minDate).toEqual(expectedMinDate);
-				expect(setDefaultsStub.getCall(0).args[0].maxDate).toEqual(new Date(2014, 0, 27, 0, 0, 0, 0));
+				expect(setDefaultsStub.lastCall.args[0].minDate).toEqual(expectedMinDate);
+				expect(setDefaultsStub.lastCall.args[0].maxDate).toEqual(new Date(2014, 0, 27, 0, 0, 0, 0));
 			});
 			it('limits the date range to X days after share time when enforced, even when redisplayed the next days', function() {
 				// item exists, was created two days ago
 				model.set({
-					expiration: '2014-1-27',
+					expireDate: '2014-1-27',
 					// share time has time component but must be stripped later
 					stime: new Date(2014, 0, 20, 11, 0, 25).getTime() / 1000
 				});

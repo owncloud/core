@@ -203,12 +203,14 @@ describe('OC.Share.ShareItemModel', function() {
 
 			expect(linkShares.at(0).get('name')).toEqual('first link share');
 			expect(linkShares.at(0).get('token')).toEqual('tehtoken');
-			expect(linkShares.at(0).get('password')).toEqual(null);
+			expect(linkShares.at(0).get('password')).not.toBeDefined();
+			expect(linkShares.at(0).get('encryptedPassword')).toEqual(null);
 			expect(linkShares.at(0).get('expireDate')).toEqual(null);
 
 			expect(linkShares.at(1).get('name')).toEqual('second link share');
 			expect(linkShares.at(1).get('token')).toEqual('tehtoken2');
-			expect(linkShares.at(1).get('password')).toEqual('somepassword');
+			expect(linkShares.at(1).get('password')).not.toBeDefined();
+			expect(linkShares.at(1).get('encryptedPassword')).toEqual('somepassword');
 			expect(linkShares.at(1).get('expireDate')).toEqual('2017-10-12 00:00:00');
 		});
 		it('groups reshare info into a single item', function() {

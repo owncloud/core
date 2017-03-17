@@ -53,12 +53,10 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			id: 1,
 			name: 'first link',
 			token: 'tehtokenz',
-			share_type: OC.Share.SHARE_TYPE_LINK,
-			item_type: 'folder',
+			shareType: OC.Share.SHARE_TYPE_LINK,
+			itemType: 'folder',
 			stime: 1489657516,
 			permissions: OC.PERMISSION_READ,
-			share_with: null,
-			expiration: null,
 		});
 
 		view = new OC.Share.ShareDialogLinkShareView({
@@ -105,19 +103,6 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			model.unset('id');
 			view.show();
 			expect(popupStub.getCall(0).args[1]).toContain('Create');
-		});
-		it('calls save when user clicks ok', function() {
-			var saveStub = sinon.stub(model, 'save');
-			view.show();
-
-			var callbackFunc = popupStub.getCall(0).args[4];
-			expect(_.isFunction(callbackFunc)).toEqual(true);
-
-			callbackFunc();
-
-			expect(saveStub.calledOnce).toEqual(true);
-
-			saveStub.restore();
 		});
 	});
 
@@ -206,23 +191,21 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			});
 			it('renders empty field with star placeholder if password set', function() {
 				model.set({
-					password: 'set'
+					encryptedPassword: 'set'
 				});
 				view.render();
 				expect(view.$('.linkPassText').val()).toEqual('');
 				expect(view.$('.linkPassText').attr('placeholder')).toEqual('**********');
 			});
 			it('renders required indicator when password is enforced', function() {
-				var enforceStub = sinon.stub(configModel, 'enforcePasswordForPublicLink').returns(true);
+				configModel.set('enforcePasswordForPublicLink', true);
 				view.render();
 				expect(view.$('.linkPass .required-indicator').length).toEqual(1);
-				enforceStub.restore();
 			});
 			it('does not render required indicator when password not enforced', function() {
-				var enforceStub = sinon.stub(configModel, 'enforcePasswordForPublicLink').returns(false);
+				configModel.set('enforcePasswordForPublicLink', false);
 				view.render();
 				expect(view.$('.linkPass .required-indicator').length).toEqual(0);
-				enforceStub.restore();
 			});
 		});
 	});
@@ -254,7 +237,21 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				name: 'first link',
 				expireDate: '',
 				password: 'newpassword',
-				permissions: OC.PERMISSION_READ
+				permissions: OC.PERMISSION_READ,
+				shareType: OC.Share.SHARE_TYPE_LINK
+			});
+		});
+		it('does not send the password if unchanged', function() {
+			model.unset('password');
+			model.set('encryptedPassword', 'something');
+			view.$('.linkPassText').val('');
+			view._save();
+			expect(saveStub.calledOnce).toEqual(true);
+			expect(saveStub.getCall(0).args[0]).toEqual({
+				name: 'first link',
+				expireDate: '',
+				permissions: OC.PERMISSION_READ,
+				shareType: OC.Share.SHARE_TYPE_LINK
 			});
 		});
 		it('sends emails after saving a new share', function() {
@@ -308,7 +305,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			view.render();
 			view._save();
 			expect(handler.notCalled).toEqual(true);
-			saveStub.yieldTo('error', model, null, {
+			saveStub.yieldTo('error', model, {
 				responseJSON: {
 					ocs: {
 						meta: {
@@ -322,14 +319,13 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			expect(view.$('.error-message-global').text()).toEqual('Some error');
 		});
 		it('displays inline error when password enforced but missing', function() {
-			var enforceStub = sinon.stub(configModel, 'enforcePasswordForPublicLink').returns(true);
+			configModel.set('enforcePasswordForPublicLink', true);
 			var handler = sinon.stub();
 			view.on('saved', handler);
 			view._save();
 			expect(handler.notCalled).toEqual(true);
 
 			expect(view.$('.linkPassText').next('.error-message').hasClass('hidden')).toEqual(false);
-			enforceStub.restore();
 		});
 	});
 });
