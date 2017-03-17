@@ -2008,7 +2008,29 @@ OC.Util = {
 			}
 		}
 		return false;
-	}
+	},
+	
+	/**
+	 * Checks if an element is completely visible and scrolls the screen if not
+	 * @param {jQuery} jQuery element that has to be displayed 
+	 * @param {jQuery} scroll container default = $('#app-content')
+	 */
+	scrollIntoView: function (toViewEl, scrollContainer = $('#app-content')) {
+		
+		var toViewElTopLocation = toViewEl.offset().top;
+		var toViewElHeight = toViewEl.outerHeight();
+		var toViewElBottomLocation = toViewElTopLocation + toViewElHeight + 50;
+		var windowHeight = $(window).height();
+
+		if (toViewElBottomLocation > windowHeight) {
+			var currentPosition = scrollContainer[0].scrollTop;
+			var scrollDistance = toViewElBottomLocation - windowHeight;
+			scrollContainer.stop();
+			scrollContainer.animate({
+				scrollTop: currentPosition + scrollDistance
+			}, 700);
+		}
+	},
 };
 
 /**
