@@ -224,30 +224,13 @@ class OC_Util {
 		OC_Hook::emit('OC_Filesystem', 'preSetup', ['user' => $user]);
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(true);
 
-		// Make users storage readonly if he is in a read only group
+		// Make users storage readonly if he is a guest
 
-		$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
-			'core',
-			'read_only_groups',
-			'["guests"]'
-		), true);
-
-
-		if ($readOnlyGroups === null) {
-			$readOnlyGroups = ['guests'];
-		}
-
-		$userGroups = array_keys(
-			\OC::$server->getGroupManager()->getUserIdGroups($user)
+		$isGuest = \OC::$server->getConfig()->getUserValue(
+			$user, 'owncloud', 'isGuest', false
 		);
 
-		$readOnlyGroupMemberships = array_intersect(
-			$readOnlyGroups,
-			$userGroups
-		);
-
-
-		if (!empty($readOnlyGroupMemberships)) {
+		if ($isGuest === '1') {
 			\OC\Files\Filesystem::addStorageWrapper(
 				'oc_readonly',
 				function ($mountPoint, $storage) use ($user) {
