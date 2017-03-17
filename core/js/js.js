@@ -2015,7 +2015,7 @@ OC.Util = {
 	 * @param {jQuery} jQuery element that has to be displayed 
 	 * @param {jQuery} scroll container if null scrollContainer will be set to $('#app-content')
 	 */
-	scrollIntoView: function (toViewEl, scrollContainer = null) {
+	scrollIntoView: function (toViewEl, scrollContainer) {
 		
 		var toViewElTopLocation = toViewEl.offset().top;
 		var toViewElHeight = toViewEl.outerHeight();
