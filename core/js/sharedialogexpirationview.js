@@ -16,21 +16,15 @@
 	}
 
 	var TEMPLATE =
-			// currently expiration is only effective for link share.
-			// this is about to change in future. Therefore this is not included
-			// in the LinkShareView to ease reusing it in future. Then,
-			// modifications (getting rid of IDs) are still necessary.
-			'<input type="checkbox" name="expirationCheckbox" class="expirationCheckbox checkbox" id="expirationCheckbox-{{cid}}" value="1" ' +
-				'{{#if isExpirationSet}}checked="checked"{{/if}} {{#if disableCheckbox}}disabled="disabled"{{/if}} />' +
-			'<label for="expirationCheckbox-{{cid}}">{{setExpirationLabel}}</label>' +
-			'<div class="expirationDateContainer {{#unless isExpirationSet}}hidden{{/unless}}">' +
-			'    <label for="expirationDate" class="hidden-visually" value="{{expirationDate}}">{{expirationLabel}}</label>' +
-			'    <input id="expirationDate" class="datepicker" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
-			'</div>' +
-			'    {{#if isExpirationEnforced}}' +
+			'<label for="expirationDate-{{cid}}" value="{{expirationDate}}">{{expirationLabel}}' +
+			'{{#if isExpirationEnforced}}<span class="required-indicator">*</span>{{/if}}' +
+			'</label>' +
+			'<input id="expirationDate-{{cid}}" class="datepicker expirationDate" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
+			'<span class="error-message hidden"></span>' +
+			'{{#if isExpirationEnforced}}' +
 				// originally the expire message was shown when a default date was set, however it never had text
-			'<em id="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
-			'    {{/if}}'
+			'<em id="defaultExpireMessage" class="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
+			'{{/if}}'
 		;
 
 	/**
@@ -45,7 +39,7 @@
 	 */
 	var ShareDialogExpirationView = OC.Backbone.View.extend({
 		/** @type {string} **/
-		id: 'shareDialogLinkShare',
+		id: 'shareDialogExpirationView',
 
 		/** @type {OC.Share.ShareConfigModel} **/
 		configModel: undefined,
@@ -53,7 +47,7 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		className: 'hidden',
+		className: 'shareDialogExpirationView',
 
 		events: {
 			'change .expirationCheckbox': '_onToggleExpiration',
@@ -63,13 +57,9 @@
 		initialize: function(options) {
 			if(!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
+				this.configModel = this.itemModel.configModel;
 			} else {
 				throw 'missing OC.Share.ShareItemModel';
-			}
-			if(!_.isUndefined(options.configModel)) {
-				this.configModel = options.configModel;
-			} else {
-				throw 'missing OC.Share.ShareConfigModel';
 			}
 
 			var view = this;
@@ -140,7 +130,7 @@
 			if(isExpirationSet) {
 				if(isExpirationEnforced) {
 					// TODO: hack: backend returns string instead of integer
-					var shareTime = this.model.get('linkShare').stime;
+					var shareTime = this.model.get('stime');
 					if (_.isNumber(shareTime)) {
 						shareTime = new Date(shareTime * 1000);
 					}
@@ -156,11 +146,28 @@
 				maxDate: maxDate
 			});
 
-			this.$el.find('.datepicker').datepicker({dateFormat : 'dd-mm-yy'});
+			this.$('.datepicker').datepicker({dateFormat : 'dd-mm-yy'});
+
+			this.$field = this.$('.expirationDate');
 
 			this.delegateEvents();
 
 			return this;
+		},
+
+		getValue: function() {
+			return this.$field.val().trim();
+		},
+
+		validate: function() {
+			this.$field.removeClass('error');
+			this.$field.next('.error-message').addClass('hidden');
+			if (this.configModel.get('isDefaultExpireDateEnforced') && !this.getValue()) {
+				this.$field.addClass('error');
+				this.$field.next('.error-message').removeClass('hidden').text(t('files_sharing', 'Expiration date is required'));
+				return false;
+			}
+			return true;
 		},
 
 		/**

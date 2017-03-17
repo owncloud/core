@@ -30,14 +30,7 @@
 			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}" />' +
 			'    <span class="error-message hidden"></span>' +
 			'</div>' +
-			'<div class="expirationDateContainer">' +
-			'    <label for="expirationDate-{{cid}}" value="{{expirationDate}}">{{expirationLabel}}</label>' +
-			'    <input id="expirationDate-{{cid}}" class="expirationDate datepicker" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
-			'    <span class="error-message hidden"></span>' +
-			'</div>' +
-			'{{#if isExpirationEnforced}}' +
-			'<em id="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
-			'{{/if}}' +
+			'<div class="expirationDateContainer"></div>' +
 			'{{#if isMailEnabled}}' +
 			'<div class="mailView"></div>' +
 			'{{/if}}'
@@ -75,6 +68,11 @@
 			} else {
 				throw 'missing OC.Share.ShareItemModel';
 			}
+
+			this.expirationView = new OC.Share.ShareDialogExpirationView({
+				model: this.model,
+				itemModel: this.itemModel
+			});
 		},
 
 		_save: function () {
@@ -82,7 +80,6 @@
 			var $el = this.$el;
 
 			var $password = $el.find('.linkPassText'),
-				$expirationDate = $el.find('.expirationDate'),
 				$permission = $el.find('.publicUploadCheckbox'),
 				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
 				$errorMessageGlobal = $el.find('.error-message-global'),
@@ -93,7 +90,7 @@
 
 				password = $password.val(),
 				permission = ($permission.is(':checked')) ? OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_READ | OC.PERMISSION_DELETE : OC.PERMISSION_READ,
-				expirationDate = $expirationDate.val();
+				expirationDate = this.expirationView.getValue();
 
 
 			$el.find('.error-message').addClass('hidden');
@@ -119,13 +116,20 @@
 				attributes.password = password;
 			}
 
+			var validates = true;
+			validates &= this.expirationView.validate();
+
 			if (this.configModel.get('enforcePasswordForPublicLink')
 				&& !password.trim()
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');
 				$password.next('.error-message').removeClass('hidden').text(t('files_sharing', 'Password required'));
-				return deferred.reject();
+				validates = false;
+			}
+
+			if (!validates) {
+				deferred.reject(this.model);
 			}
 
 			if (this.model.isNew()) {
@@ -178,36 +182,13 @@
 			var publicUploadPossible = this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
 			var publicUploadChecked  = (this.model.canCreate()) ? 'checked="checked"' : null;
 
-			var expiration;
-			var defaultExpireDays    = this.configModel.get('defaultExpireDate');
-			var isExpirationEnforced = this.configModel.get('isDefaultExpireDateEnforced');
-			var isExpirationSet      = !!this.model.get('expireDate') || isExpirationEnforced;
-			var defaultExpireMessage;
-
-			if((this.itemModel.isFolder() || this.itemModel.isFile()) && isExpirationEnforced) {
-				defaultExpireMessage = t('core', 'The public link will expire no later than {days} days after it is created', {'days': defaultExpireDays });
-			}
-
-			if (isExpirationSet) {
-				expiration = moment(this.model.get('expireDate'), 'YYYY-MM-DD').format('DD-MM-YYYY');
-			}
-
 			var isPasswordSet = !!this.model.get('encryptedPassword');
-
-			var pickerMinDate = new Date();
-			pickerMinDate.setDate(pickerMinDate.getDate()+1);
-
-			$.datepicker.setDefaults({
-				minDate: pickerMinDate,
-				maxDate: null
-			});
 
 			// only show email field for new shares and if enabled globally
 			var showEmailField = this.model.isNew() && this.configModel.isMailPublicNotificationEnabled();
 
 			this.$el.html(this.template({
 				cid: this.cid,
-				expirationValue: expiration,
 				fileName: this.itemModel.getFileInfo().getFullPath(),
 				passwordLabel: t('core', 'Password'),
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
@@ -215,7 +196,6 @@
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
-				expirationLabel : t('core', 'Set expiration date'),
 				publicUploadPossible: publicUploadPossible,
 				publicUploadChecked: publicUploadChecked,
 				publicUploadLabel: t('core', 'Allow uploads'),
@@ -235,6 +215,9 @@
 			} else {
 				this.mailView = null;
 			}
+
+			this.expirationView.render();
+			this.$('.expirationDateContainer').append(this.expirationView.$el);
 
 			this.delegateEvents();
 

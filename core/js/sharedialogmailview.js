@@ -15,7 +15,8 @@
 	
 	var TEMPLATE = 
 			'<form id="emailPrivateLink" class="emailPrivateLinkForm oneline">' +
-			'    <input id="email" class="emailField" value="{{email}}" placeholder="{{mailPrivatePlaceholder}}" type="text" />' +
+			'    <label for="emailPrivateLinkField-{{cid}}">{{mailLabel}}</label>' +
+			'    <input id="emailPrivateLinkField-{{cid}}" class="emailField" value="{{email}}" placeholder="{{mailPrivatePlaceholder}}" type="text" />' +
 			'</form>'
 		;
 	
@@ -36,13 +37,7 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		events: {
-			'click #emailButton': '_onEmailPrivateLink'
-		},
-
 		initialize: function(options) {
-			var view = this;
-
 			if(!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
 			} else {
@@ -115,8 +110,9 @@
 			var email = this.$el.find('.emailField').val();
 	
 			this.$el.html(this.template({
+				cid: this.cid,
 				mailPrivatePlaceholder: t('core', 'Email link to person'),
-				mailButtonText: t('core', 'Send link via email'),
+				mailLabel: t('core', 'Send link via email'),
 				email: email
 			}));
 

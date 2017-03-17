@@ -225,12 +225,6 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				enforceStub.restore();
 			});
 		});
-		it('test enforced expiration presence logic', function() {
-			expect('TODO').toEqual(true);
-		});
-		it('test enforced expiration range logic', function() {
-			expect('TODO').toEqual(true);
-		});
 	});
 
 	describe('saving', function() {
@@ -336,9 +330,6 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 
 			expect(view.$('.linkPassText').next('.error-message').hasClass('hidden')).toEqual(false);
 			enforceStub.restore();
-		});
-		it('implements tests for validation of enforcements', function() {
-			expect('TODO').toEqual(true);
 		});
 	});
 });
