@@ -212,8 +212,17 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				expect(view.$('.linkPassText').val()).toEqual('');
 				expect(view.$('.linkPassText').attr('placeholder')).toEqual('**********');
 			});
-			it('test password enforcement logic', function() {
-				expect('TODO').toEqual(true);
+			it('renders required indicator when password is enforced', function() {
+				var enforceStub = sinon.stub(configModel, 'enforcePasswordForPublicLink').returns(true);
+				view.render();
+				expect(view.$('.linkPass .required-indicator').length).toEqual(1);
+				enforceStub.restore();
+			});
+			it('does not render required indicator when password not enforced', function() {
+				var enforceStub = sinon.stub(configModel, 'enforcePasswordForPublicLink').returns(false);
+				view.render();
+				expect(view.$('.linkPass .required-indicator').length).toEqual(0);
+				enforceStub.restore();
 			});
 		});
 		it('test enforced expiration presence logic', function() {
@@ -298,6 +307,35 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			sendMailDeferred.resolve();
 			expect(handler.calledOnce).toEqual(true);
 			expect(handler.calledWith(model)).toEqual(true);
+		});
+		it('displays global error message when saving failed', function() {
+			var handler = sinon.stub();
+			view.on('saved', handler);
+			view.render();
+			view._save();
+			expect(handler.notCalled).toEqual(true);
+			saveStub.yieldTo('error', model, null, {
+				responseJSON: {
+					ocs: {
+						meta: {
+							message: 'Some error'
+						}
+					}
+				}
+			});
+			expect(handler.notCalled).toEqual(true);
+			expect(view.$('.error-message-global').hasClass('hidden')).toEqual(false);
+			expect(view.$('.error-message-global').text()).toEqual('Some error');
+		});
+		it('displays inline error when password enforced but missing', function() {
+			var enforceStub = sinon.stub(configModel, 'enforcePasswordForPublicLink').returns(true);
+			var handler = sinon.stub();
+			view.on('saved', handler);
+			view._save();
+			expect(handler.notCalled).toEqual(true);
+
+			expect(view.$('.linkPassText').next('.error-message').hasClass('hidden')).toEqual(false);
+			enforceStub.restore();
 		});
 		it('implements tests for validation of enforcements', function() {
 			expect('TODO').toEqual(true);

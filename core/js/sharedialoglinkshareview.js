@@ -16,6 +16,7 @@
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
 	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
 	var TEMPLATE =
+			'<div class="error-message-global hidden"></div>' +
 			'<div class="fileName">{{fileName}}</div>' +
 			'<input type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" />' +
 			'{{#if publicUploadPossible}}' +
@@ -84,6 +85,8 @@
 				$expirationDate = $el.find('.expirationDate'),
 				$permission = $el.find('.publicUploadCheckbox'),
 				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
+				$errorMessageGlobal = $el.find('.error-message-global'),
+				$loading = $el.find('.loading'),
 
 				// get values from input elements
 				// ***
@@ -92,6 +95,7 @@
 				permission = ($permission.is(':checked')) ? OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_READ | OC.PERMISSION_DELETE : OC.PERMISSION_READ,
 				expirationDate = $expirationDate.val();
 
+
 			$el.find('.error-message').addClass('hidden');
 
 
@@ -99,6 +103,7 @@
 			// ***
 
 			$inputs.removeClass('error');
+			$errorMessageGlobal.addClass('hidden');
 
 			var attributes = {
 				password: password,
@@ -109,7 +114,6 @@
 
 			if (this.configModel.get('enforcePasswordForPublicLink') && !password.trim()) {
 				$password.addClass('error');
-				// TODO: display message that password is required
 				$password.next('.error-message').removeClass('hidden').text(t('files_sharing', 'Password required'));
 				return deferred.reject();
 			}
@@ -122,9 +126,12 @@
 			var self = this;
 
 			var done = function() {
+				$loading.addClass('hidden');
 				deferred.resolve(self.model);
 				self.trigger('saved', self.model);
 			};
+
+			$loading.removeClass('hidden');
 
 			// save it
 			// ***
@@ -141,14 +148,11 @@
 						done();
 					}
 				},
-				error: function (model, msg) {
+				error: function (model, xhr) {
+					var msg = xhr.responseJSON.ocs.meta.message;
 					// destroy old tooltips
-					$inputs.tooltip('destroy');
-					$loading.removeClass('inlineblock').addClass('hidden');
-					$inputs.addClass('error');
-					$inputs.attr('title', msg);
-					$inputs.tooltip({placement: 'bottom', trigger: 'manual'});
-					$inputs.tooltip('show');
+					$loading.addClass('hidden');
+					$errorMessageGlobal.removeClass('hidden').text(msg);
 					deferred.reject(self.model);
 				}
 			});
