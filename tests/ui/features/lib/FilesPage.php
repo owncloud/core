@@ -32,8 +32,28 @@ class FilesPage extends OwnCloudPage
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/';
+	
+	protected $emptyContentXpath = ".//*[@id='emptycontent']";
 	public function findFileInList($filename)
 	{
 		return $this->findLink($filename);
+	}
+	
+	//there is no reliable loading indicator on the files page, so waiting for
+	//the table or the Emplty Folder message to be shown
+	public function waitTillPageIsloaded($timeout)
+	{
+		for ($counter = 0; $counter <= $timeout; $counter ++) {
+			
+			$fileList = $this->findById("fileList");
+			
+			if ($fileList !== null && 
+				($fileList->has("xpath", "//a") || ! $this->find("xpath", 
+				$this->emptyContentXpath)->hasClass("hidden"))) {
+				break;
+			}
+			
+			sleep(1);
+		}
 	}
 }
