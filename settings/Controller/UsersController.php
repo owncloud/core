@@ -809,7 +809,7 @@ class UsersController extends Controller {
 		try {
 			$this->checkEmailChangeToken($token, $userId);
 		} catch (\Exception $e) {
-			$this->log->error("Cannot change email because, " . $e->getMessage(), ['app' => 'settings']);
+			$this->log->error($e->getMessage(), ['app' => 'settings']);
 			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
 

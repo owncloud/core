@@ -13,6 +13,7 @@ namespace Tests\Settings\Controller;
 use \OC\Settings\Application;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 
 /**
  * @group DB
@@ -1793,6 +1794,15 @@ class UsersControllerTest extends \Test\TestCase {
 				->willReturn(true);
 		}
 
+		$this->container['Config']
+			->expects($this->any())
+			->method('getUserValue')
+			->with('foo', 'owncloud', 'changeMail')
+			->will($this->returnValue('12000:AVerySecretToken'));
+		$this->container['TimeFactory']
+			->expects($this->any())
+			->method('getTime')
+			->willReturnOnConsecutiveCalls(12301, 12348);
 		$this->container['UserManager']
 			->expects($this->atLeastOnce())
 			->method('get')
@@ -1803,14 +1813,10 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('generate')
 			->with('21')
 			->will($this->returnValue('ThisIsMaybeANotSoSecretToken!'));
-		$this->container['TimeFactory']
-			->expects($this->any())
-			->method('getTime')
-			->will($this->returnValue(12348));
 		$this->container['Config']
 			->expects($this->any())
 			->method('setUserValue')
-			->with('foo', 'owncloud', 'changemail', '12348:ThisIsMaybeANotSoSecretToken!');
+			->with('foo', 'owncloud', 'changeMail', '12348:ThisIsMaybeANotSoSecretToken!');
 		$this->container['URLGenerator']
 			->expects($this->any())
 			->method('linkToRouteAbsolute')
@@ -1825,11 +1831,11 @@ class UsersControllerTest extends \Test\TestCase {
 		$message
 			->expects($this->any())
 			->method('setSubject')
-			->with(' password reset');
+			->with(' email address confirm');
 		$message
 			->expects($this->any())
 			->method('setPlainBody')
-			->with('Use the following link to reset your password: https://ownCloud.com/index.php/mailaddress/');
+			->with('Use the following link to confirm your changes to the email address: https://ownCloud.com/index.php/mailaddress/');
 		$message
 			->expects($this->any())
 			->method('setFrom')
@@ -2085,4 +2091,67 @@ class UsersControllerTest extends \Test\TestCase {
 		$response = $this->container['UsersController']->setDisplayName($user->getUID(), 'newDisplayName');
 		$this->assertEquals($expectedResponse, $response);
 	}
+
+	public function testDifferentLoggedUserAndRequestUser() {
+		$token = 'AVerySecretToken';
+		$userId = 'ExistingUser';
+		$mailAddress = 'sample@email.com';
+		$userObject = $this->getMockBuilder('OCP\IUser')
+			->disableOriginalConstructor()->getMock();
+		$diffUserObject = $this->getMockBuilder('OCP\IUser')
+			->disableOriginalConstructor()->getMock();
+
+		$this->container['UserManager']
+			->expects($this->once())
+			->method('get')
+			->with($userId)
+			->will($this->returnValue($userObject));
+		$this->container['UserSession']
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($diffUserObject));
+		$this->container['Logger']
+			->expects($this->once())
+			->method('error')
+			->with('The logged in user is different than expected.');
+
+		$expectedResponse = new RedirectResponse(
+			$this->container['URLGenerator']->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error'])
+		);
+
+		$response = $this->container['UsersController']->changeMail($token, $userId, $mailAddress);
+		$this->assertEquals($expectedResponse, $response);
+
+	}
+
+	public function testInvalidEmailChangeToken() {
+		$token = 'AVerySecretToken';
+		$userId = 'ExistingUser';
+		$mailAddress = 'sample@email.com';
+		$userObject = $this->getMockBuilder('OCP\IUser')
+			->disableOriginalConstructor()->getMock();
+
+		$this->container['UserManager']
+			->expects($this->atLeastOnce())
+			->method('get')
+			->with($userId)
+			->will($this->returnValue($userObject));
+		$this->container['UserSession']
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($userObject));
+		$this->container['Logger']
+			->expects($this->once())
+			->method('error')
+			->with('Couldn\'t change the email address because the token is invalid');
+
+
+		$expectedResponse = new RedirectResponse(
+			$this->container['URLGenerator']->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error'])
+		);
+
+		$response = $this->container['UsersController']->changeMail($token, $userId, $mailAddress);
+		$this->assertEquals($expectedResponse, $response);
+	}
+
 }
