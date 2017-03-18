@@ -75,20 +75,27 @@ class DefaultTokenProvider implements IProvider {
 	 * @return IToken
 	 */
 	public function generateToken($token, $uid, $loginName, $password, $name, $type = IToken::TEMPORARY_TOKEN) {
-		$dbToken = new DefaultToken();
-		$dbToken->setUid($uid);
-		$dbToken->setLoginName($loginName);
-		if (!is_null($password)) {
-			$dbToken->setPassword($this->encryptPassword($password, $token));
+		try {
+			$tempToken = $this->mapper->getTokenByName($name, $uid);
 		}
-		$dbToken->setName($name);
-		$dbToken->setToken($this->hashToken($token));
-		$dbToken->setType($type);
-		$dbToken->setLastActivity($this->time->getTime());
+		catch(InvalidTokenException $ex) {
+			throw new InvalidTokenException();
+		}
+		catch( DoesNotExistException $ex ) {
+			$dbToken = new DefaultToken();
+			$dbToken->setUid($uid);
+			$dbToken->setLoginName($loginName);
+			if (!is_null($password)) {
+				$dbToken->setPassword($this->encryptPassword($password, $token));
+			}
+			$dbToken->setName($name);
+			$dbToken->setToken($this->hashToken($token));
+			$dbToken->setType($type);
+			$dbToken->setLastActivity($this->time->getTime());
 
-		$this->mapper->insert($dbToken);
-
-		return $dbToken;
+			$this->mapper->insert($dbToken);
+			return $dbToken;
+		}
 	}
 
 	/**
