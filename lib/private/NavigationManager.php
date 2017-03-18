@@ -153,23 +153,25 @@ class NavigationManager implements INavigationManager {
 			$route = $this->urlGenerator->linkToRoute($nav['route']);
 			$name = isset($nav['name']) ? $nav['name'] : ucfirst($app);
 			$icon = isset($nav['icon']) ? $nav['icon'] : 'app.svg';
+			$iconPath = null;
 			foreach ([$icon, "$app.svg"] as $i) {
 				try {
-					$icon = $this->urlGenerator->imagePath($app, $i);
+					$iconPath = $this->urlGenerator->imagePath($app, $i);
 					break;
 				} catch (\RuntimeException $ex) {
 					// no icon? - ignore it then
 				}
 			}
-			if (is_null($icon)) {
-				$icon = $this->urlGenerator->imagePath('core', 'default-app-icon');
+
+			if (is_null($iconPath)) {
+				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon');
 			}
 
 			$this->add([
 				'id' => $app,
 				'order' => $order,
 				'href' => $route,
-				'icon' => $icon,
+				'icon' => $iconPath,
 				'name' => $l->t($name),
 			]);
 		}
