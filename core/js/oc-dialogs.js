@@ -242,7 +242,7 @@ var OCdialogs = {
 	 * Displays raw dialog
 	 * You better use a wrapper instead ...
 	*/
-	message:function(content, title, dialogType, buttons, callback, modal) {
+	message:function(content, title, dialogType, buttons, callback, modal, cssClass) {
 		return $.when(this._getMessageTemplate()).then(function($tmpl) {
 			var dialogName = 'oc-dialog-' + OCdialogs.dialogsCounter + '-content';
 			var dialogId = '#' + dialogName;
@@ -252,9 +252,11 @@ var OCdialogs = {
 				message: content,
 				type: dialogType
 			});
+
 			if (modal === undefined) {
 				modal = false;
 			}
+
 			$('body').append($dlg);
 			var buttonlist = [];
 			if (_.isArray(buttons)) {
@@ -303,6 +305,11 @@ var OCdialogs = {
 				modal: modal,
 				buttons: buttonlist
 			});
+
+			if (cssClass != undefined) {
+				$(dialogId).addClass(cssClass);
+			}
+
 			OCdialogs.dialogsCounter++;
 		})
 		.fail(function(status, error) {
