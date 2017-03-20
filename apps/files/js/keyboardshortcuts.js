@@ -56,14 +56,12 @@
 
 	function newFile() {
 		$(".new").click();
-		//$(".popup.popupTop").toggle(true);
 		$('[data-action="upload"]').click();
 		removeA(keys, keyCodes.n);
 	}
 
 	function newFolder() {
 		$(".new").click();
-		//$(".popup.popupTop").toggle(true);
 		$('[data-action="folder"]').click();
 		removeA(keys, keyCodes.n);
 	}
@@ -138,6 +136,11 @@
 				if ($($("#fileList tr")[index+1]).hasClass("selected")) {
 					toDelete = 1; // means unselect
 				}
+				if (! $("#fileList tr:last").hasClass("selected") ) {
+					if ($($("#fileList tr")[index]).hasClass("selected")) {
+						toDelete = 1; // means unselect
+					}
+				}
 			}
 		});
 
@@ -197,6 +200,11 @@
 				if ($($("#fileList tr")[index-1]).hasClass("selected")) {
 					toDelete = 1;
 				}
+				if (! $("#fileList tr:first").hasClass("selected")) {
+					if ($($("#fileList tr")[index]).hasClass("selected")) {
+						toDelete = 1;
+					}
+				}
 			}
 		});
 
@@ -215,6 +223,10 @@
 				$(this).removeClass("mouseOver");
 			}
 		});
+
+		if ($("#fileList tr:first").hasClass("selected") && toDelete == 0) {
+			return;
+		}
 
 		if (chosen == $("#fileList tr").length - 1) {
 			mouse++;
