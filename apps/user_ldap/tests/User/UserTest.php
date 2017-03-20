@@ -252,7 +252,7 @@ class UserTest extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(array('default')));
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('default');
@@ -292,7 +292,7 @@ class UserTest extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(array('none')));
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('none');
@@ -429,7 +429,7 @@ class UserTest extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(false));
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('default');
@@ -471,7 +471,7 @@ class UserTest extends \Test\TestCase {
 		$connection->expects($this->exactly(2))
 			->method('__get');
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('default');
@@ -561,7 +561,7 @@ class UserTest extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(array('42 GBwos')));
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('23 GB');
@@ -609,7 +609,7 @@ class UserTest extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(false));
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('default');
@@ -657,7 +657,7 @@ class UserTest extends \Test\TestCase {
 				$this->equalTo('myquota'))
 			->will($this->returnValue(array('23 flush')));
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('default');
@@ -702,7 +702,7 @@ class UserTest extends \Test\TestCase {
 		$access->expects($this->never())
 			->method('readAttribute');
 
-		$user = $this->createMock('\OCP\IUser');
+		$user = $this->getMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('setQuota')
 			->with('default');
