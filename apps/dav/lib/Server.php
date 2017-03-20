@@ -188,7 +188,6 @@ class Server {
 				$this->server->addPlugin(new SharesPlugin(
 					$this->server->tree,
 					$userSession,
-					$userFolder,
 					\OC::$server->getShareManager()
 				));
 				$this->server->addPlugin(new CommentPropertiesPlugin(
