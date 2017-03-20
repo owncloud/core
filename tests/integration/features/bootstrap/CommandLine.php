@@ -29,19 +29,18 @@ trait CommandLine {
 	/** @var string stderr of last command */
 	private $lastStdErr;
 
-	/** @var string */
-	protected $ocPath = '../..';
-
 	/**
 	 * Invokes an OCC command
 	 *
 	 * @param string OCC command, the part behind "occ". For example: "files:transfer-ownership"
 	 * @return int exit code
 	 */
-	public function runOcc($args = []) {
-		$args = array_map(function($arg) {
-			return escapeshellarg($arg);
-		}, $args);
+	public function runOcc($args = [], $escaping = true) {
+		if ($escaping === true){
+			$args = array_map(function($arg) {
+				return escapeshellarg($arg);
+			}, $args);
+		}
 		$args[] = '--no-ansi';
 		$args = implode(' ', $args);
 
