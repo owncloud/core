@@ -2844,6 +2844,50 @@
 		},
 
 		/**
+		 * Scroll to the file which is highlighted (has class mouseOver)
+		 * to be called after the scrolling is finished
+		 */
+		focusSelected: function() {
+			// Animation
+			var _this = this;
+			var $scrollContainer = this.$container;
+			if ($scrollContainer[0] === window) {
+				// need to use "body" to animate scrolling
+				// when the scroll container is the window
+				$scrollContainer = $('body');
+			}
+
+			if ($(".mouseOver").position().top >= this.$container.height() / 2) {
+				$scrollContainer.animate({
+					// Scrolling to the top of the highleghted element
+					scrollTop: $(".mouseOver").position().top - this.$container.height() / 2
+				}, 100);
+			}
+
+			if ($(".mouseOver").position().top <= 100) {
+				$scrollContainer.animate({
+					// Scrolling to the top of the screen
+					scrollTop: 0
+				}, 100);
+			}
+		},
+
+		/**
+		 * Favorite All files in the fileList
+		 */
+		favoriteAll: function() {
+			for (var i = 0; i < this.files.length; i++) {
+				var model = this.getModelForFile(this.files[i].name);
+				if(!model) {
+					// item not loaded due to pagination
+					this._nextPage(false);
+					model = this.getModelForFile(this.files[i].name);
+				}
+				this.fileActions.triggerAction('Favorite', model, this);
+			}
+		},
+
+		/**
 		 * Scroll to the last file of the given list
 		 * Highlight the list of files
 		 * @param files array of filenames,

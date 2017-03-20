@@ -80,42 +80,53 @@
 	}
 
 	function favorite() {
-		var countSelected = 0;
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("selected")) {
-				countSelected++;
-			}
-		});
+		if ($("#select_all_files").is(":checked")) {
+			// selected all files
+			OCA.Files.App.fileList.favoriteAll();
+		}
 
-		// single file favorite
-		if (countSelected == 0) {
-			$("#fileList tr").each(function(index) {
-				var self = this;
-				if ($(this).hasClass("mouseOver")) {
-					if ($(this).find(".action-favorite").length > 0) {
-						$(this).find(".action-favorite").click();
-						return false;
-					}
-					else {
-						OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-					}
-				}
-			});
-		}
-		// multiple selected files favorite
 		else {
+			var countSelected = 0;
 			$("#fileList tr").each(function(index) {
-				var self = this;
 				if ($(this).hasClass("selected")) {
-					if ($(this).find(".action-favorite").length > 0) {
-						$(this).find(".action-favorite").click();
-					}
-					else {
-						OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-					}
+					countSelected++;
 				}
 			});
+
+			// single file favorite
+			if (countSelected == 0) {
+				$("#fileList tr").each(function(index) {
+					var self = this;
+					if ($(this).hasClass("mouseOver")) {
+						if ($(this).find(".action-favorite").length > 0) {
+							$(this).find(".action-favorite").click();
+							return false;
+						}
+						else {
+							OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
+						}
+					}
+				});
+			}
+			// multiple selected files favorite
+			else {
+				$("#fileList tr").each(function(index) {
+					var self = this;
+					if ($(this).hasClass("selected")) {
+						if ($(this).find(".action-favorite").length > 0) {
+							$(this).find(".action-favorite").click();
+						}
+						else {
+							OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
+						}
+					}
+				});
+			}
 		}
+	}
+
+	function update_view() {
+		OCA.Files.App.fileList.focusSelected();
 	}
 
 	function select_down() {
@@ -125,7 +136,7 @@
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("mouseOver")) {
 				if ($($("#fileList tr")[index+1]).hasClass("selected")) {
-					toDelete = 1;
+					toDelete = 1; // means unselect
 				}
 			}
 		});
@@ -133,6 +144,7 @@
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("selected")) {
 				if (toDelete == 1) {
+					// found the first instance with "selected", break now
 					chosen = index;
 					return false;
 				}
@@ -154,10 +166,6 @@
 			$($("#fileList tr")[$("#fileList tr").length - 1]).addClass("mouseOver");
 		}
 
-		if (mouse == chosen) {
-			mouse = chosen + 1;
-		}
-
 		if (chosen === -100) {
 			$("#fileList tr").each(function(index) {
 				if (index === mouse - 1) {
@@ -177,6 +185,7 @@
 				}
 			});
 		}
+		update_view();
 	}
 
 	function select_up() {
@@ -207,7 +216,12 @@
 			}
 		});
 
+		if (chosen == $("#fileList tr").length - 1) {
+			mouse++;
+		}
+
 		if (mouse == -100) {
+			$($("#fileList tr")[$("#fileList tr").length - 1]).addClass("mouseOver");
 			return;
 		}
 
@@ -234,6 +248,7 @@
 				}
 			});
 		}
+		update_view();
 	}
 
 	function down() {
@@ -256,6 +271,7 @@
 				}
 			});
 		}
+		update_view();
 	}
 
 	function up() {
@@ -278,6 +294,7 @@
 				}
 			});
 		}
+		update_view();
 	}
 
 	function enter() {
