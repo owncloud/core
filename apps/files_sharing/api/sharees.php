@@ -319,8 +319,12 @@ class Sharees {
 		}
 
 		if (!$foundRemoteById && substr_count($search, '@') >= 1 && $this->offset === 0
-			// only add remote user if not found already an exact match (ex: local account like email address)
-			&& empty($this->result['exact']['users'])
+			// if an exact local user is found, only keep the remote entry if
+			// its domain does not matches the trusted domains
+			// (if it does, it is a user whose local login domain matches the ownCloud
+			// instance domain) 
+			&& (empty($this->result['exact']['users'])
+				|| !$this->isInstanceDomain($search))
 		) {
 			$this->result['exact']['remotes'][] = [
 				'label' => $search,
@@ -535,5 +539,28 @@ class Sharees {
 	 */
 	protected function isV2() {
 		return $this->request->getScriptName() === '/ocs/v2.php';
+	}
+
+	/**
+	 * Checks whether the given target's domain part matches one of the server's
+	 * trusted domain entries
+	 *
+	 * @param string $target target
+	 * @return true if one match was found, false otherwise
+	 */
+	protected function isInstanceDomain($target) {
+		if (strpos($target, '/') !== false) {
+			// not a proper email-like format with domain name
+			return false;
+		}
+		$parts = explode('@', $target);
+		if (count($parts) === 1) {
+			// no "@" sign
+			return false;
+		}
+		$domainName = $parts[count($parts) - 1];
+		$trustedDomains = $this->config->getSystemValue('trusted_domains', []);
+
+		return in_array($domainName, $trustedDomains, true);
 	}
 }
