@@ -123,6 +123,7 @@ interface IShareProvider {
 	 * @param string|null $recipientId
 	 * @return \OCP\Share\IShare
 	 * @throws ShareNotFound
+	 * @throws ProviderException
 	 * @since 9.0.0
 	 */
 	public function getShareById($id, $recipientId = null);
