@@ -99,7 +99,7 @@
 				return url;
 			}
 
-			return OC.webroot + OC.generateUrl('/s/') + this.get('token');
+			return OC.generateUrl('/s/') + this.get('token');
 		}
 	});
 

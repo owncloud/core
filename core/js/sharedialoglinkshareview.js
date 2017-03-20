@@ -77,6 +77,8 @@
 				model: this.model,
 				itemModel: this.itemModel
 			});
+
+			OC.Plugins.attach('OCA.Share.ShareDialogLinkShareView', this);
 		},
 
 		_save: function () {
@@ -292,6 +294,7 @@
 				self.render();
 				self.$dialog = $dialogShell.find('.oc-dialog-content');
 				self.$dialog.html(self.$el);
+				self.$el.find('input:first').focus();
 			});
 		}
 
