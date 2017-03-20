@@ -185,6 +185,8 @@
 
 						var i, j;
 
+						var demo = result;
+
 						//Filter out the current user
 						usersLength = users.length;
 						for (i = 0 ; i < usersLength; i++) {

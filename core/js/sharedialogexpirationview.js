@@ -16,15 +16,15 @@
 	}
 
 	var TEMPLATE =
-			'<label for="expirationDate-{{cid}}" value="{{expirationDate}}">{{expirationLabel}}' +
-			'{{#if isExpirationEnforced}}<span class="required-indicator">*</span>{{/if}}' +
-			'</label>' +
-			'<input id="expirationDate-{{cid}}" class="datepicker expirationDate" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
+		'<div id="linkPass-{{cid}}" class="public-link-modal--item">' +
+			'<label class="public-link-modal--label" for="expirationDate-{{cid}}" value="{{expirationDate}}">{{expirationLabel}} {{#if isExpirationEnforced}}<span class="required-indicator">*</span>{{/if}}</label>' +
+			'<input class="public-link-modal--input datepicker expirationDate" id="linkPassText-{{cid}}" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
 			'<span class="error-message hidden"></span>' +
 			'{{#if isExpirationEnforced}}' +
-				// originally the expire message was shown when a default date was set, however it never had text
+			// originally the expire message was shown when a default date was set, however it never had text
 			'<em id="defaultExpireMessage" class="defaultExpireMessage">{{defaultExpireMessage}}</em>' +
-			'{{/if}}'
+			'{{/if}}' +
+		'</div>'
 		;
 
 	/**

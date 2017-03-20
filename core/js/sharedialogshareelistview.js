@@ -18,15 +18,21 @@
 		'{{#each sharees}}' +
 			'<li class="user-share" data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
 				'<div class="user-share--main">'+
-					'{{#if avatarEnabled}}' +
-					'<div class="user-share--avatar avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
-					'{{/if}}' +
-					'<span class="user-share--title has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
+					'<div class="user-share--user">' +
+						'{{#if avatarEnabled}}' +
+						'<div class="user-share--avatar avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
+						'{{/if}}' +
+						'<span class="user-share--title has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
+					'</div>' +
 					'<ul class="user-share--permission-preview">' +
-					'	{{#if hasSharePermission}} <li>{{canShareLabel}}</li> {{/if}}' +
-					'	{{#if hasCreatePermission}} <li>{{createPermissionLabel}}</li> {{/if}}' +
+					'	{{#if hasSharePermission}} <li>share</li> {{/if}}' +
+					'	{{#if hasCreatePermission}} <li>create</li> {{/if}}' +
 					'	{{#if hasUpdatePermission}} <li>update</li> {{/if}}' +
+					'	{{#if hasDeletePermission}} <li>delete</li> {{/if}}' +
 					'</ul>' +
+					'<span class="icon icon-settings-dark">' +
+					'	<span class="hidden-visually">{{unshareLabel}}</span>' +
+					'</span>' +
 				'</div>' +
 				'<div class="user-share--dropdown">'+
 					'<ul class="user-share--permission-list">' +
@@ -105,8 +111,8 @@
 		events: {
 			'click .user-share--delete': 'onUnshare',
 			'click .permissions': 'onPermissionChange',
-			'click .showCruds': 'onCrudsToggle',
-			'click .mailNotification': 'onSendMailNotification'
+			'click .mailNotification': 'onSendMailNotification',
+			'click .user-share--main': 'onActiveToggle'
 		},
 
 		initialize: function(options) {
@@ -291,9 +297,9 @@
 			this.model.updateShare(shareId, {permissions: permissions});
 		},
 
-		onCrudsToggle: function(event) {
+		onActiveToggle: function(event) {
 			var $target = $(event.target);
-			$target.closest('li').find('.cruds').toggleClass('hidden');
+			$target.closest('li').toggleClass('-active');
 			return false;
 		},
 

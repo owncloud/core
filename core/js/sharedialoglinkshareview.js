@@ -16,25 +16,29 @@
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
 	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
 	var TEMPLATE =
-			'<div class="error-message-global hidden"></div>' +
-			'<div class="fileName">{{fileName}}</div>' +
-			'<input type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" />' +
+		'<div class="error-message-global hidden"></div>' +
+		'<div class="public-link-modal">'+
+			'<div class="public-link-modal--item">' +
+				'<label class="public-link-modal--label">Link Name</label>' +
+				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" />' +
+			'</div>' +
 			'{{#if publicUploadPossible}}' +
-			'<div id="allowPublicUploadWrapper-{{cid}}">' +
-			'    <input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
-			'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
+			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
+				'<input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
+				'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
 			'</div>' +
 			'{{/if}}' +
-			'<div id="linkPass-{{cid}}" class="linkPass">' +
-			'    <label for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
-			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}" />' +
-			'    <span class="error-message hidden"></span>' +
+			'<div id="linkPass-{{cid}}" class="public-link-modal--item">' +
+				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
+				'<input class="public-link-modal--input" id="linkPassText-{{cid}}" type="text" placeholder="{{passwordPlaceholder}}" />' +
+				'<span class="error-message hidden"></span>' +
 			'</div>' +
 			'<div class="expirationDateContainer"></div>' +
 			'{{#if isMailEnabled}}' +
 			'<div class="mailView"></div>' +
-			'{{/if}}'
-		;
+			'{{/if}}' +
+		'</div>'
+	;
 
 	/**
 	 * @class OCA.Share.ShareDialogLinkShareView
@@ -177,6 +181,10 @@
 			return deferred.promise();
 		},
 
+		_remove: function () {
+			this.model.destroy();
+		},
+
 		render: function () {
 			// TODO: in the future to read directly from the FileInfoModel
 			var publicUploadPossible = this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
@@ -189,7 +197,7 @@
 
 			this.$el.html(this.template({
 				cid: this.cid,
-				fileName: this.itemModel.getFileInfo().getFullPath(),
+				fileNameLabel : t('core', 'Filename'),
 				passwordLabel: t('core', 'Password'),
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
 				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink'),
@@ -235,6 +243,11 @@
 			this.$dialog.ocdialog('close');
 		},
 
+		_onClickRemove: function() {
+			this._remove();
+			this.$dialog.ocdialog('close');
+		},
+
 		/**
 		 * @returns {Function} from Handlebars
 		 * @private
@@ -251,9 +264,9 @@
 		 */
 		show: function() {
 			var self = this;
-			var title = t('files_sharing', 'Edit link share');
+			var title = t('files_sharing', 'Edit link share: {name}', {name : this.itemModel.getFileInfo().getFullPath() });
 			if (this.model.isNew()) {
-				title = t('files_sharing', 'Create link share');
+				title = t('files_sharing', 'Create link share: {name}', {name : this.itemModel.getFileInfo().getFullPath() });
 			}
 
 			// hack the dialogs
@@ -261,17 +274,19 @@
 				'',
 				title,
 				'custom',
-				[{
-					text: t('core', 'Save'),
-					click: _.bind(this._onClickSave, this),
-					defaultButton: true
-				},
-				{
-					text: t('core', 'Cancel'),
-					click: _.bind(this._onClickCancel, this)
-				}],
+				[
+					{
+						text: t('core', 'Save'),
+						click: _.bind(this._onClickSave, this),
+						defaultButton: true
+					}, {
+						text: t('core', 'Cancel'),
+						click: _.bind(this._onClickCancel, this)
+					}
+				],
 				null,
-				true
+				true,
+				'public-link-modal'
 			).then(function adjustDialog() {
 				var $dialogShell = $('.oc-dialog:visible');
 				self.render();

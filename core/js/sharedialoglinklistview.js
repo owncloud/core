@@ -20,10 +20,10 @@
 		'<li class="link-entry" data-id="{{id}}">' +
 			'<span class="link-entry--title has-tooltip" title="{{link}}">{{linkTitle}}</span>' +
 			'<input id="linkText-{{cid}}" class="linkText hidden" type="text" readonly="readonly" value="{{link}}" />' +
-			'<div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{cid}}">' +
+			'<!--div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{cid}}">' +
 			'	<span class="icon icon-clippy-dark"></span>' +
 			'	<span class="hidden">{{../copyToClipboardText}}</span>' +
-			'</div>' +
+			'</div-->' +
 			'<div class="link-entry--icon-button editLink">' +
 			'	<span class="icon icon-settings-dark"></span>' +
 			'	<span class="hidden">{{../editLinkText}}</span>' +
