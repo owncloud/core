@@ -14,78 +14,56 @@
 	}
 
 	var TEMPLATE =
-		'<ul class="shareWithList user-shares">' +
-		'{{#each sharees}}' +
-			'<li class="user-share" data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
-				'<div class="user-share--main">'+
-					'<div class="user-share--user">' +
-						'{{#if avatarEnabled}}' +
-						'<div class="user-share--avatar avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
-						'{{/if}}' +
-						'<span class="user-share--title has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
-					'</div>' +
-					'<ul class="user-share--permission-preview">' +
-					'	{{#if hasSharePermission}} <li>share</li> {{/if}}' +
-					'	{{#if hasCreatePermission}} <li>create</li> {{/if}}' +
-					'	{{#if hasUpdatePermission}} <li>update</li> {{/if}}' +
-					'	{{#if hasDeletePermission}} <li>delete</li> {{/if}}' +
-					'</ul>' +
-					'<span class="icon icon-settings-dark">' +
-					'	<span class="hidden-visually">{{unshareLabel}}</span>' +
-					'</span>' +
-				'</div>' +
-				'<div class="user-share--dropdown">'+
-					'<ul class="user-share--permission-list">' +
-					'{{#if mailNotificationEnabled}} {{#unless isRemoteShare}}' +
-					'<li>' +
-						'<span class="user-share--checkbox">' +
-						'<input id="mail-{{cid}}-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
-						'<label for="mail-{{cid}}-{{shareWith}}">{{notifyByMailLabel}}</label>' +
-						'</span>' +
-					'</li>' +
-					'{{/unless}} {{/if}}' +
-					'{{#if isResharingAllowed}} {{#if sharePermissionPossible}}' +
-					'<li>' +
-						'<span class="user-share--checkbox">' +
-						'<input id="canShare-{{cid}}-{{shareWith}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
-						'<label for="canShare-{{cid}}-{{shareWith}}">{{canShareLabel}}</label>' +
-						'</span>' +
-					'</li>' +
-					'{{/if}} {{/if}}' +
-					'{{#if createPermissionPossible}}' +
-					'<li>' +
-						'<span class="user-share--checkbox">' +
-						'<input id="canCreate-{{cid}}-{{shareWith}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
-						'<label for="canCreate-{{cid}}-{{shareWith}}">{{createPermissionPossible}}</label>' +
-						'</span>' +
-					'</li>' +
-					'{{/if}}' +
-					'{{#if updatePermissionPossible}}' +
-					'<li>' +
-						'<span class="user-share--checkbox">' +
-						'<input id="canUpdate-{{cid}}-{{shareWith}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
-						'<label for="canUpdate-{{cid}}-{{shareWith}}">{{updatePermissionLabel}}</label>' +
-						'</span>' +
-					'</li>' +
-					'{{/if}}' +
-					'{{#if deletePermissionPossible}}' +
-					'<li>' +
-						'<span class="user-share--checkbox">' +
-						'<input id="canDelete-{{cid}}-{{shareWith}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
-						'<label for="canDelete-{{cid}}-{{shareWith}}">{{deletePermissionLabel}}</label>' +
-						'</span>' +
-					'</li>' +
-					'{{/if}}' +
-					'</ul>' +
-					'<a href="#" class="user-share--delete">' +
-					'	<span class="icon-loading-small hidden"></span>' +
-					'	<span class="icon icon-delete"></span>' +
-					'	<span class="hidden-visually">{{unshareLabel}}</span>' +
-					'</a>' +
-				'</div>' +
+			'<ul id="shareWithList" class="shareWithList">' +
+			'{{#each sharees}}' +
+			'<li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
+			'<a href="#" class="unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
+			'{{#if avatarEnabled}}' +
+			'<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
+			'{{/if}}' +
+			'<span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
+			'{{#if mailNotificationEnabled}}  {{#unless isRemoteShare}}' +
+			'<span class="shareOption">' +
+			'<input id="mail-{{cid}}-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
+			'<label for="mail-{{cid}}-{{shareWith}}">{{notifyByMailLabel}}</label>' +
+			'</span>' +
+			'{{/unless}} {{/if}}' +
+			'{{#if isResharingAllowed}} {{#if sharePermissionPossible}}' +
+			'<span class="shareOption">' +
+			'<input id="canShare-{{cid}}-{{shareWith}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
+			'<label for="canShare-{{cid}}-{{shareWith}}">{{canShareLabel}}</label>' +
+			'</span>' +
+			'{{/if}} {{/if}}' +
+			'{{#if editPermissionPossible}}' +
+			'<span class="shareOption">' +
+			'<input id="canEdit-{{cid}}-{{shareWith}}" type="checkbox" name="edit" class="permissions checkbox" {{#if hasEditPermission}}checked="checked"{{/if}} />' +
+			'<label for="canEdit-{{cid}}-{{shareWith}}">{{canEditLabel}}</label>' +
+			'<a href="#" class="showCruds"><img alt="{{crudsLabel}}" src="{{triangleSImage}}"/></a>' +
+			'</span>' +
+			'{{/if}}' +
+			'<div class="cruds hidden">' +
+			'{{#if createPermissionPossible}}' +
+			'<span class="shareOption">' +
+			'<input id="canCreate-{{cid}}-{{shareWith}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
+			'<label for="canCreate-{{cid}}-{{shareWith}}">{{createPermissionLabel}}</label>' +
+			'</span>' +
+			'{{/if}}' +
+			'{{#if updatePermissionPossible}}' +
+			'<span class="shareOption">' +
+			'<input id="canUpdate-{{cid}}-{{shareWith}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
+			'<label for="canUpdate-{{cid}}-{{shareWith}}">{{updatePermissionLabel}}</label>' +
+			'</span>' +
+			'{{/if}}' +
+			'{{#if deletePermissionPossible}}' +
+			'<span class="shareOption">' +
+			'<input id="canDelete-{{cid}}-{{shareWith}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
+			'<label for="canDelete-{{cid}}-{{shareWith}}">{{deletePermissionLabel}}</label>' +
+			'</span>' +
+			'{{/if}}' +
+			'</div>' +
 			'</li>' +
-		'{{/each}}' +
-		'</ul>'
+			'{{/each}}' +
+			'</ul>'
 		;
 
 	/**
@@ -109,10 +87,10 @@
 		_template: undefined,
 
 		events: {
-			'click .user-share--delete': 'onUnshare',
+			'click .unshare': 'onUnshare',
 			'click .permissions': 'onPermissionChange',
-			'click .mailNotification': 'onSendMailNotification',
-			'click .user-share--main': 'onActiveToggle'
+			'click .showCruds': 'onCrudsToggle',
+			'click .mailNotification': 'onSendMailNotification'
 		},
 
 		initialize: function(options) {
@@ -168,10 +146,10 @@
 				mailNotificationEnabled: this.configModel.isMailNotificationEnabled(),
 				notifyByMailLabel: t('core', 'notify by email'),
 				unshareLabel: t('core', 'Unshare'),
-				canShareLabel: t('core', 'share'),
-				canEditLabel: t('core', 'edit'),
-				createPermissionLabel: t('core', 'read'),
-				updatePermissionLabel: t('core', 'write'),
+				canShareLabel: t('core', 'can share'),
+				canEditLabel: t('core', 'can edit'),
+				createPermissionLabel: t('core', 'create'),
+				updatePermissionLabel: t('core', 'change'),
 				deletePermissionLabel: t('core', 'delete'),
 				crudsLabel: t('core', 'access control'),
 				triangleSImage: OC.imagePath('core', 'actions/triangle-s'),
@@ -297,9 +275,9 @@
 			this.model.updateShare(shareId, {permissions: permissions});
 		},
 
-		onActiveToggle: function(event) {
+		onCrudsToggle: function(event) {
 			var $target = $(event.target);
-			$target.closest('li').toggleClass('-active');
+			$target.closest('li').find('.cruds').toggleClass('hidden');
 			return false;
 		},
 
