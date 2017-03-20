@@ -725,6 +725,14 @@ class FederatedShareProvider implements IShareProvider {
 		return $shares;
 	}
 
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getAllSharedWith($userId, $node) {
+		return $this->getSharedWith($userId, self::SHARE_TYPE_REMOTE, $node, -1, 0);
+	}
+
 	/**
 	 * @inheritdoc
 	 */
