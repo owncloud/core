@@ -53,7 +53,7 @@ class LoginContext extends RawMinkContext implements Context
 	public function iLoginWithUsernameAndPassword($username, $password)
 	{
 		$this->filesPage = $this->loginPage->loginAs($username, $password);
-		$this->loginPage->waitTillPageIsloaded(10);
+		$this->filesPage->waitTillPageIsloaded(10);
 	}
 	
 	/**
