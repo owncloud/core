@@ -778,7 +778,8 @@
 				<name>file_source</name>
 				<type>integer</type>
 				<notnull>false</notnull>
-				<length>4</length>
+				<unsigned>true</unsigned>
+				<length>10</length>
 			</field>
 
 			<field>
