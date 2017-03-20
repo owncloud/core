@@ -118,8 +118,9 @@
 				t('core', 'Delete {link}', { link: linkTitle }),
 				t('core', 'Remove link'),
 				function(cb) {
-					if (cb)
+					if (cb) {
 						linkModel.destroy();
+					}
 				},
 				true
 			);
