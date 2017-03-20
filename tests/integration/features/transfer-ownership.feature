@@ -1,5 +1,6 @@
 Feature: transfer-ownership
 
+	# TODO: change to @no_default_encryption once all this works with master key
 	@no_encryption
 	Scenario: transfering ownership of a file
 		Given user "user0" exists
@@ -114,12 +115,14 @@ Feature: transfer-ownership
 		When transfering ownership from "user0" to "user1"
 		Then the command was successful
 
+	@no_encryption
 	Scenario: transfering ownership fails with invalid source user
 		Given user "user0" exists
 		When transfering ownership from "invalid_user" to "user0"
 		Then the command error output contains the text "Unknown source user"
 		And the command failed with exit code 1
 
+	@no_encryption
 	Scenario: transfering ownership fails with invalid target user
 		Given user "user0" exists
 		When transfering ownership from "user0" to "invalid_user"
@@ -221,6 +224,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		Then as "user1" the folder "/local_storage" does not exist
 
+	@no_encryption
 	Scenario: transfering ownership fails with invalid source user
 		Given user "user0" exists
 		And User "user0" created a folder "/sub"
@@ -228,6 +232,7 @@ Feature: transfer-ownership
 		Then the command error output contains the text "Unknown source user"
 		And the command failed with exit code 1
 
+	@no_encryption
 	Scenario: transfering ownership fails with invalid target user
 		Given user "user0" exists
 		And User "user0" created a folder "/sub"
@@ -235,6 +240,7 @@ Feature: transfer-ownership
 		Then the command error output contains the text "Unknown target user"
 		And the command failed with exit code 1
 
+	@no_encryption
 	Scenario: transfering ownership fails with invalid path
 		Given user "user0" exists
 		And user "user1" exists
