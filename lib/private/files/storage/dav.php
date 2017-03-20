@@ -133,9 +133,13 @@ class DAV extends Common {
 			'password' => $this->password,
 		);
 
+		$proxy = \OC::$server->getConfig()->getSystemValue('proxy', '');
+		if($proxy !== '') {
+			$settings['proxy'] = $proxy;
+		}
+
 		$this->client = new Client($settings);
 		$this->client->setThrowExceptions(true);
-
 		if ($this->secure === true && $this->certPath) {
 			$this->client->addTrustedCertificates($this->certPath);
 		}
