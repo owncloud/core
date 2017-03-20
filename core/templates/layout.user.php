@@ -57,7 +57,7 @@
 						}
 					?>
 				</h1>
-				<div class="icon-caret"></div>
+				<img alt="" class="caret" src="<?php print_unescaped(image_path('', 'actions/caret.svg')); ?>">
 			</a>
 
 			<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
