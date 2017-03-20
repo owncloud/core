@@ -18,26 +18,27 @@
 		'<ul class="link-shares">' +
 		'{{#each shares}}' +
 		'<li class="link-entry" data-id="{{id}}">' +
-			'<span class="link-entry--icon icon-public-white"></span>' +
-			'<span class="link-entry--title has-tooltip" title="{{link}}">{{linkTitle}}</span>' +
-			'<input id="linkText-{{cid}}" class="linkText hidden" type="text" readonly="readonly" value="{{link}}" />' +
-			'<!--div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{cid}}">' +
+			'<span class="link-entry--title">{{linkTitle}}</span>' +
+			'<div class="minify"><input id="linkText-{{cid}}" class="linkText" type="text" readonly="readonly" value="{{link}}" /></div>' +
+			'<div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{cid}}">' +
 			'	<span class="icon icon-clippy-dark"></span>' +
 			'	<span class="hidden">{{../copyToClipboardText}}</span>' +
-			'</div-->' +
+			'</div>' +
 			'<div class="link-entry--icon-button editLink">' +
 			'	<span class="icon icon-settings-dark"></span>' +
 			'	<span class="hidden">{{../editLinkText}}</span>' +
-			'</div>' +
-			'<div class="link-entry--icon-button removeLink">' +
-			'	<span class="icon icon-delete"></span>' +
-			'	<span class="hidden">{{../removeLinkText}}</span>' +
 			'</div>' +
 			'{{#if ../socialShareEnabled}}' +
 			'<div class="link-entry--icon-button shareLink">' +
 			'	<span class="icon icon-share"></span>' +
 			'	<span class="hidden">{{../shareText}}</span>' +
 			'</div>' +
+			'{{/if}}' +
+			'<div class="link-entry--icon-button removeLink">' +
+			'	<span class="icon icon-delete"></span>' +
+			'	<span class="hidden">{{../removeLinkText}}</span>' +
+			'</div>' +
+			'{{#if ../socialShareEnabled}}' +
 			'<div class="socialShareContainer hidden"></div>' +
 			'{{/if}}' +
 		'</li>' +
@@ -88,7 +89,7 @@
 		initialize: function (options) {
 			var view = this;
 
-			// if any item in the list changes, rerender the whole thing
+			// if any item in the list changes, render the whole thing
 			this.collection.on('change update delete', function() {
 				view.render();
 			});
@@ -107,12 +108,22 @@
 			var linkId = $target.closest('.link-entry').attr('data-id');
 
 			var linkModel = this.collection.get(linkId);
+			var linkTitle = (linkModel.attributes.name) ? linkModel.attributes.name : linkModel.attributes.token;
+
 			if (!linkModel) {
 				return;
 			}
 
-			// delete the model from the server
-			linkModel.destroy();
+			OCdialogs.confirm(
+				t('core', 'Delete {link}', { link: linkTitle }),
+				t('core', 'Remove link'),
+				function(cb) {
+					if (cb)
+						linkModel.destroy();
+				},
+				true
+			);
+
 		},
 
 		onAddButtonClick: function () {
@@ -212,7 +223,7 @@
 				addLinkText: t('core', 'Create public link'),
 				editLinkText: t('core', 'Edit'),
 				removeLinkText: t('core', 'Remove'),
-				copyToClipboardText: t('core', 'Copy to clipboard'),
+				copyToClipboardText: t('core', 'Click to copy to clipboard'),
 				shareText: t('core', 'Social share'),
 				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				noShares: !this.collection.length,
