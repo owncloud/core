@@ -202,17 +202,16 @@
 
 		_makeLink: function(model) {
 			var link = '';
+			var preTokenLink = window.location.protocol + '//' + window.location.host;
 			if (!model.get('token')) {
-				// pre-token link
-				link = window.location.protocol + '//' + window.location.host;
 				var fullPath = this.fileInfoModel.get('path') + '/' +
 					this.fileInfoModel.get('name');
 				var location = '/' + OC.currentUser + '/files' + fullPath;
 				var type = this.fileInfoModel.isDirectory() ? 'folder' : 'file';
-				link += OC.linkTo('', 'public.php') + '?service=files&' +
+				link = preTokenLink + OC.linkTo('', 'public.php') + '?service=files&' +
 					type + '=' + encodeURIComponent(location);
 			} else {
-				link = model.getLink();
+				link = preTokenLink + model.getLink();
 			}
 			return link;
 		},
