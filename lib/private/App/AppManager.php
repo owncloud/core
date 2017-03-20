@@ -409,4 +409,15 @@ class AppManager implements IAppManager {
 	public function getAllApps() {
 		return $this->appConfig->getApps();
 	}
+
+	/**
+	 * Returns the app installation folder
+	 *
+	 * @param string $appId
+	 * @return string | false
+	 * @since 10.0
+	 */
+	public function getAppPath($appId) {
+		return OC_App::getAppPath($appId);
+	}
 }

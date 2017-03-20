@@ -34,9 +34,12 @@ use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
 use OC\AppFramework\Middleware\Security\SecurityMiddleware;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\Security\CSP\ContentSecurityPolicy;
+use OC\Security\CSRF\CsrfTokenManager;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\INavigationManager;
 
 
 class SecurityMiddlewareTest extends \Test\TestCase {
@@ -48,9 +51,14 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 	private $request;
 	private $reader;
 	private $logger;
+	/** @var INavigationManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $navigationManager;
 	private $urlGenerator;
 	private $contentSecurityPolicyManager;
+	/** @var IAppManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $appManager;
+	/** @var CsrfTokenManager */
+	private $tokenManager;
 
 	protected function setUp() {
 		parent::setUp();
@@ -79,6 +87,11 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 				'OC\Security\CSP\ContentSecurityPolicyManager')
 				->disableOriginalConstructor()
 				->getMock();
+		$this->appManager = $this->createMock(IAppManager::class);
+		$this->appManager->expects($this->any())->method('getAppPath')->willReturn('');
+		$this->appManager->expects($this->any())->method('isEnabledForUser')->willReturn(true);
+		$this->tokenManager = $this->createMock(CsrfTokenManager::class);
+
 		$this->middleware = $this->getMiddleware(true, true);
 		$this->secException = new SecurityException('hey', false);
 		$this->secAjaxException = new SecurityException('hey', true);
@@ -99,7 +112,9 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 			'files',
 			$isLoggedIn,
 			$isAdminUser,
-			$this->contentSecurityPolicyManager
+			$this->contentSecurityPolicyManager,
+			$this->appManager,
+			$this->tokenManager
 		);
 	}
 

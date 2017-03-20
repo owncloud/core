@@ -1464,5 +1464,4 @@ class Server extends ServerContainer implements IServerContainer {
 	public function getShareManager() {
 		return $this->query('ShareManager');
 	}
-
 }

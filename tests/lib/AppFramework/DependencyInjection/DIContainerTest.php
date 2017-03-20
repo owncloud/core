@@ -27,21 +27,23 @@
 namespace Test\AppFramework\DependencyInjection;
 
 
+use OC\AppFramework\DependencyInjection\DIContainer;
 use \OC\AppFramework\Http\Request;
+use OC\Authentication\TwoFactorAuth\Manager;
+use OCP\App\IAppManager;
+use OCP\INavigationManager;
+use Test\TestCase;
 
-class DIContainerTest extends \Test\TestCase {
+class DIContainerTest extends TestCase {
 
+	/** @var DIContainer | \PHPUnit_Framework_MockObject_MockObject */
 	private $container;
-	private $api;
 
 	protected function setUp(){
 		parent::setUp();
 		$this->container = $this->getMockBuilder('OC\AppFramework\DependencyInjection\DIContainer')
 			->setMethods(['isAdminUser'])
 			->setConstructorArgs(['name'])
-			->getMock();
-		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')
-			->setConstructorArgs(['hi'])
 			->getMock();
 	}
 
@@ -81,6 +83,14 @@ class DIContainerTest extends \Test\TestCase {
 			$this->createMock('\OCP\Security\ISecureRandom'),
 			$this->createMock('\OCP\IConfig')
 		);
+
+		$nav = $this->createMock(INavigationManager::class);
+		$this->overwriteService('NavigationManager', $nav);
+		$app = $this->createMock(IAppManager::class);
+		$this->overwriteService('AppManager', $app);
+		$two = $this->createMock(Manager::class);
+		$this->overwriteService(Manager::class, $two);
+
 		$security = $this->container['SecurityMiddleware'];
 		$dispatcher = $this->container['MiddlewareDispatcher'];
 
