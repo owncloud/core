@@ -230,7 +230,11 @@ class Log implements ILogger {
 	 */
 	public function log($level, $message, array $context = []) {
 		$minLevel = min($this->config->getValue('loglevel', Util::WARN), Util::FATAL);
-		$logCondition = $this->config->getValue('log.condition', []);
+		$logConditions = $this->config->getValue('log.conditions', []);
+		if (empty($logConditions)) {
+			$logConditions[] = $this->config->getValue('log.condition', []);
+		}
+		$logConditionFile = null;
 
 		array_walk($context, [$this->normalizer, 'format']);
 
@@ -241,10 +245,17 @@ class Log implements ILogger {
 			 * check log condition based on the context of each log message
 			 * once this is met -> change the required log level to debug
 			 */
-			if(!empty($logCondition)
-				&& isset($logCondition['apps'])
-				&& in_array($app, $logCondition['apps'], true)) {
-				$minLevel = Util::DEBUG;
+			if(!empty($logConditions)) {
+				foreach ($logConditions as $logCondition) {
+					if(!empty($logCondition['apps'])
+					   && in_array($app, $logCondition['apps'], true)) {
+						$minLevel = Util::DEBUG;
+						if (!empty($logCondition['logfile'])) {
+							$logConditionFile = $logCondition['logfile'];
+							break;
+						}
+					}
+				}
 			}
 
 		} else {
@@ -266,25 +277,29 @@ class Log implements ILogger {
 		if($this->logConditionSatisfied === null) {
 			// default to false to just process this once per request
 			$this->logConditionSatisfied = false;
-			if(!empty($logCondition)) {
+			if(!empty($logConditions)) {
+				foreach ($logConditions as $logCondition) {
 
-				// check for secret token in the request
-				if(isset($logCondition['shared_secret'])) {
-					$request = \OC::$server->getRequest();
+					// check for secret token in the request
+					if (!empty($logCondition['shared_secret'])) {
+						$request = \OC::$server->getRequest();
 
-					// if token is found in the request change set the log condition to satisfied
-					if($request && hash_equals($logCondition['shared_secret'], $request->getParam('log_secret'))) {
-						$this->logConditionSatisfied = true;
+						// if token is found in the request change set the log condition to satisfied
+						if ($request && hash_equals($logCondition['shared_secret'], $request->getParam('log_secret'))) {
+							$this->logConditionSatisfied = true;
+							break;
+						}
 					}
-				}
 
-				// check for user
-				if(isset($logCondition['users'])) {
-					$user = \OC::$server->getUserSession()->getUser();
+					// check for user
+					if (!empty($logCondition['users'])) {
+						$user = \OC::$server->getUserSession()->getUser();
 
-					// if the user matches set the log condition to satisfied
-					if($user !== null && in_array($user->getUID(), $logCondition['users'], true)) {
-						$this->logConditionSatisfied = true;
+						// if the user matches set the log condition to satisfied
+						if ($user !== null && in_array($user->getUID(), $logCondition['users'], true)) {
+							$this->logConditionSatisfied = true;
+							break;
+						}
 					}
 				}
 			}
@@ -297,7 +312,7 @@ class Log implements ILogger {
 
 		if ($level >= $minLevel) {
 			$logger = $this->logger;
-			call_user_func([$logger, 'write'], $app, $message, $level);
+			call_user_func([$logger, 'write'], $app, $message, $level, $logConditionFile);
 		}
 	}
 
