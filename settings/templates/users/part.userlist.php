@@ -12,6 +12,7 @@
 		<?php if(is_array($_['subadmins']) || $_['subadmins']): ?>
 			<th id="headerSubAdmins" scope="col"><?php p($l->t('Group Admin for')); ?></th>
 		<?php endif;?>
+			<th class="enabled" scope="col"><?php p($l->t('Enabled')); ?></th>
 			<th id="headerQuota" scope="col"><?php p($l->t('Quota')); ?></th>
 			<th class="storageLocation" scope="col"><?php p($l->t('Storage Location')); ?></th>
 			<th class="userBackend" scope="col"><?php p($l->t('User Backend')); ?></th>
@@ -46,6 +47,9 @@
 				><span class="title groupsList"></span><span class="icon-triangle-s"></span></div>
 			</td>
 		<?php endif;?>
+			<td class="enabled">
+				<input type="checkbox" class="isEnabled" checked="checked">
+			</td>
 			<td class="quota">
 				<select class="quota-user" data-inputtitle="<?php p($l->t('Please enter storage quota (ex: "512 MB" or "12 GB")')) ?>">
 					<option	value='default'>
