@@ -126,7 +126,7 @@
 			validates &= this.expirationView.validate();
 
 			if (this.configModel.get('enforcePasswordForPublicLink')
-				&& !password.trim()
+				&& !password
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');

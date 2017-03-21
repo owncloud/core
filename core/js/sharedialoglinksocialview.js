@@ -28,7 +28,7 @@
 			'	data-url="https://plus.google.com/share?url={{reference}}"></button>' +
 			'<button class="icon icon-mail-grey pop-up hasTooltip"' +
 			'	title="{{shareToolTipMail}}"' +
-			'	data-url="mailto:?subject=&body={{reference}}"></button>'
+			'	data-url="mailto:?body={{reference}}"></button>'
 		;
 	
 	/**
