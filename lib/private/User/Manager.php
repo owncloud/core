@@ -34,7 +34,6 @@ namespace OC\User;
 
 use OC\Hooks\PublicEmitter;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\IDBConnection;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
@@ -55,19 +54,13 @@ use OCP\UserInterface;
  * @package OC\User
  */
 class Manager extends PublicEmitter implements IUserManager {
-	/**
-	 * @var \OCP\UserInterface[] $backends
-	 */
+	/** @var \OCP\UserInterface[] $backends */
 	private $backends = [];
 
-	/**
-	 * @var \OC\User\User[] $cachedUsers
-	 */
+	/** @var \OC\User\User[] $cachedUsers */
 	private $cachedUsers = [];
 
-	/**
-	 * @var \OCP\IConfig $config
-	 */
+	/** @var \OCP\IConfig $config */
 	private $config;
 
 	/** @var AccountMapper */
@@ -75,7 +68,7 @@ class Manager extends PublicEmitter implements IUserManager {
 
 	/**
 	 * @param \OCP\IConfig $config
-	 * @param IDBConnection $connection
+	 * @param AccountMapper $accountMapper
 	 */
 	public function __construct(IConfig $config, AccountMapper $accountMapper) {
 		$this->config = $config;
@@ -87,6 +80,13 @@ class Manager extends PublicEmitter implements IUserManager {
 		});
 	}
 
+	/**
+	 * only used for unit testing
+	 *
+	 * @param AccountMapper $mapper
+	 * @param array $backends
+	 * @return array
+	 */
 	public function reset(AccountMapper $mapper, $backends) {
 		$return = [$this->accountMapper, $this->backends];
 		$this->accountMapper = $mapper;
@@ -372,9 +372,14 @@ class Manager extends PublicEmitter implements IUserManager {
 		if ($backend->implementsActions(Backend::GET_DISPLAYNAME)) {
 			$account->setDisplayName($backend->getDisplayName($uid));
 		}
+		$home = false;
 		if ($backend->implementsActions(Backend::GET_HOME)) {
-			$account->setHome($backend->getHome($uid));
+			$home = $backend->getHome($uid);
 		}
+		if (!$home) {
+			$home = $this->config->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data") . '/' . $uid;
+		}
+		$account->setHome($home);
 		$account = $this->accountMapper->insert($account);
 		return $account;
 	}
