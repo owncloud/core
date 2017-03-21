@@ -245,8 +245,7 @@ class UsersController extends Controller {
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
-		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12) ||
-			$user->getLastLogin() > $splittedToken[0]) {
+		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
@@ -817,21 +816,23 @@ class UsersController extends Controller {
 
 		$this->setEmailAddress($userId, $mailAddress);
 
-		$tmpl = new \OC_Template('settings', 'changemail/notify');
-		$tmpl->assign('mailAddress', $mailAddress);
-		$msg = $tmpl->fetchPage();
+		if ($oldEmailAddress !== null) {
+			$tmpl = new \OC_Template('settings', 'changemail/notify');
+			$tmpl->assign('mailAddress', $mailAddress);
+			$msg = $tmpl->fetchPage();
 
-		try {
-			$message = $this->mailer->createMessage();
-			$message->setTo([$oldEmailAddress => $userId]);
-			$message->setSubject($this->l10n->t('%s email address changed successfully', [$this->defaults->getName()]));
-			$message->setPlainBody($msg);
-			$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
-			$this->mailer->send($message);
-		} catch (\Exception $e) {
-			throw new \Exception($this->l10n->t(
-				'Couldn\'t send email address change notification mail. Please contact your administrator.'
-			));
+			try {
+				$message = $this->mailer->createMessage();
+				$message->setTo([$oldEmailAddress => $userId]);
+				$message->setSubject($this->l10n->t('%s email address changed successfully', [$this->defaults->getName()]));
+				$message->setPlainBody($msg);
+				$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
+				$this->mailer->send($message);
+			} catch (\Exception $e) {
+				throw new \Exception($this->l10n->t(
+					'Couldn\'t send email address change notification mail. Please contact your administrator.'
+				));
+			}
 		}
 		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success']));
 	}
