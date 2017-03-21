@@ -361,6 +361,15 @@ span.version {
 	position: relative;
 	height: 100%;
 	min-height: 100px;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+#apps-list .section {
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 300px;
+	/*height: 200px;*/
 }
 .section {
 	position: relative;
