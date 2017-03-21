@@ -20,7 +20,7 @@
 		'<div class="public-link-modal">'+
 			'<div class="public-link-modal--item">' +
 				'<label class="public-link-modal--label">Link Name</label>' +
-				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" />' +
+				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
 			'</div>' +
 			'{{#if publicUploadPossible}}' +
 			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
