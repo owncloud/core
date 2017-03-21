@@ -62,7 +62,7 @@ class ManagerTest extends TestCase {
 		parent::setUp();
 
 		$this->uid = $this->getUniqueID('user');
-		$this->createUser($this->uid, '');
+		$this->createUser($this->uid);
 		$this->user = \OC::$server->getUserManager()->get($this->uid);
 		$this->mountManager = new \OC\Files\Mount\Manager();
 		$this->httpHelper = $httpHelper = $this->getMockBuilder('\OC\HTTPHelper')->disableOriginalConstructor()->getMock();

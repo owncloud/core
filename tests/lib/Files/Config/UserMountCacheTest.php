@@ -9,14 +9,17 @@
 namespace Test\Files\Config;
 
 use OC\DB\QueryBuilder\Literal;
+use OC\Files\Config\UserMountCache;
 use OC\Files\Mount\MountPoint;
 use OC\Log;
+use OC\User\Account;
+use OC\User\AccountMapper;
 use OC\User\Manager;
 use OCP\Files\Config\ICachedMountInfo;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IUserManager;
 use Test\TestCase;
-use Test\Util\User\Dummy;
 
 /**
  * @group DB
@@ -33,7 +36,7 @@ class UserMountCacheTest extends TestCase {
 	private $userManager;
 
 	/**
-	 * @var \OC\Files\Config\UserMountCache
+	 * @var UserMountCache
 	 */
 	private $cache;
 
@@ -42,13 +45,32 @@ class UserMountCacheTest extends TestCase {
 	public function setUp() {
 		$this->fileIds = [];
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$this->userManager = new Manager(null);
-		$userBackend = new Dummy();
-		$userBackend->createUser('u1', '');
-		$userBackend->createUser('u2', '');
-		$userBackend->createUser('u3', '');
-		$this->userManager->registerBackend($userBackend);
-		$this->cache = new \OC\Files\Config\UserMountCache($this->connection, $this->userManager, $this->createMock('\OC\Log'));
+		/** @var IConfig $config */
+		$config = $this->createMock(IConfig::class);
+		/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject $accountMapper */
+		$accountMapper = $this->createMock(AccountMapper::class);
+		$a1 = new Account();
+		$a1->setId(1);
+		$a1->setUserId('u1');
+		$a2 = new Account();
+		$a2->setId(2);
+		$a2->setUserId('u2');
+		$a3 = new Account();
+		$a3->setId(3);
+		$a3->setUserId('u3');
+
+		$accountMapper->expects($this->any())->method('getByUid')->willReturnMap([
+			['u1', $a1],
+			['u2', $a2],
+			['u3', $a3],
+		]);
+		$this->userManager = new Manager($config, $accountMapper);
+		/** @var Log $log */
+		$log = $this->createMock(Log::class);
+		$this->cache = new UserMountCache($this->connection, $this->userManager, $log);
+
+		// hookup listener
+		$this->userManager->listen('\OC\User', 'postDelete', [$this->cache, 'removeUserMounts']);
 	}
 
 	public function tearDown() {

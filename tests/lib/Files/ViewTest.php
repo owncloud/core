@@ -80,13 +80,14 @@ class ViewTest extends TestCase {
 		parent::setUp();
 		\OC_Hook::clear();
 
-		\OC_User::clearBackends();
-		\OC_User::useBackend(new \Test\Util\User\Dummy());
-
 		//login
 		$userManager = \OC::$server->getUserManager();
 		$groupManager = \OC::$server->getGroupManager();
 		$this->user = 'test';
+		if ($userManager->userExists('test')) {
+			$this->userObject = $userManager->get('test');
+			$this->userObject->delete();
+		}
 		$this->userObject = $userManager->createUser('test', 'test');
 
 		$this->groupObject = $groupManager->createGroup('group1');
