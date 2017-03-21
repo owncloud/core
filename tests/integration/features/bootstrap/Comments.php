@@ -72,60 +72,41 @@ trait Comments {
 	 * @param string $path
 	 * @return int
 	 */
-	private function getFileIdForPath($path) {
-		$url = $this->baseUrl.'/remote.php/webdav/'.$path;
-		$context = stream_context_create([
-			'http' => [
-				'method' => 'PROPFIND',
-				'header' => "Authorization: Basic dXNlcjA6MTIzNDU2\r\nContent-Type: application/x-www-form-urlencoded",
-				'content' => '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:fileid />
-  </d:prop>
-</d:propfind>'
-			]
-		]);
-
-		$response = file_get_contents($url, false, $context);
-		preg_match_all('/\<oc:fileid\>(.*)\<\/oc:fileid\>/', $response, $matches);
-		return (int)$matches[1][0];
+	private function getFileIdForPath($user, $path) {
+		$propertiesTable = new \Behat\Gherkin\Node\TableNode([["{http://owncloud.org/ns}fileid"]]);
+		$this->asGetsPropertiesOfFolderWith($user, 'file', $path, $propertiesTable);
+		return (int) $this->response['{http://owncloud.org/ns}fileid'];
 	}
 
 	/**
-	 * @When :user posts a comment with content :content on the file named :fileName it should return :statusCode
+	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
-	 * @param string $fileName
-	 * @param int $statusCode
+	 * @param string $type
+	 * @param string $path
 	 * @throws \Exception
 	 */
-	public function postsACommentWithContentOnTheFileNamedItShouldReturn($user, $content, $fileName, $statusCode)  {
-		$fileId = $this->getFileIdForPath($fileName);
-		$this->fileId = (int)$fileId;
-		$url = $this->baseUrl.'/remote.php/dav/comments/files/'.$fileId.'/';
-
-		$client = new \GuzzleHttp\Client();
+	public function postsAComment($user, $content, $type, $path) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$this->fileId = $fileId;
+		$commentsPath = '/comments/files/' . $fileId . '/';
 		try {
-			$res = $client->post(
-				$url,
-				[
-					'body' => '{"actorId":"user0","actorDisplayName":"user0","actorType":"users","verb":"comment","message":"' . $content . '","creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT","objectType":"files"}',
-					'auth' => [
-						$user,
-						'123456',
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$res = $e->getResponse();
-		}
-
-		if($res->getStatusCode() !== (int)$statusCode) {
-			throw new \Exception("Response status code was not $statusCode (".$res->getStatusCode().")");
+			$this->response = $this->makeDavRequest($user,
+								  "POST",
+								  $commentsPath,
+								  ['Content-Type' => 'application/json',
+								   ],
+								    null,
+								   "uploads",
+								   '{"actorId":"user0",
+								    "actorDisplayName":"user0",
+								    "actorType":"users",
+								    "verb":"comment",
+								    "message":"' . $content . '",
+								    "creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT",
+								    "objectType":"files"}');
+		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+			$this->response = $ex->getResponse();
 		}
 	}
 

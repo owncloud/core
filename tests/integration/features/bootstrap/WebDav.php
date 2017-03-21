@@ -51,14 +51,24 @@ trait WebDav {
 		}
 	}
 
-	public function makeDavRequest($user, $method, $path, $headers, $body = null, $type = "files"){
+	public function makeDavRequest($user,
+								   $method,
+								   $path,
+								   $headers,
+								   $body = null,
+								   $type = "files",
+								   $requestBody = null){
 		if ( $type === "files" ){
 			$fullUrl = substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . "$path";
 		} else if ( $type === "uploads" ){
 			$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . "$path";
 		} 
 		$client = new GClient();
+
 		$options = [];
+		if (!is_null($requestBody)){
+			$options['body'] = $requestBody;
+		}
 		if ($user === 'admin') {
 			$options['auth'] = $this->adminUser;
 		} else {
