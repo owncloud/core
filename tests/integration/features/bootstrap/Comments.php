@@ -25,48 +25,10 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 trait Comments {
 	use Sharing;
-	// /** @var string */
-	// private $baseUrl;
-	// /** @var array */
-	// private $response;
-	/** @var int */
+
 	private $commentId;
 	/** @var int */
 	private $fileId;
-
-	// /**
-	//  * @param string $baseUrl
-	//  */
-	// public function __construct($baseUrl) {
-	// 	$this->baseUrl = $baseUrl;
-
-	// 	// in case of ci deployment we take the server url from the environment
-	// 	$testServerUrl = getenv('TEST_SERVER_URL');
-	// 	if ($testServerUrl !== false) {
-	// 		$this->baseUrl = substr($testServerUrl, 0, -5);
-	// 	}
-	// }
-
-	// /** @AfterScenario */
-	// public function teardownScenario() {
-	// 	$client = new \GuzzleHttp\Client();
-	// 	try {
-	// 		$client->delete(
-	// 			$this->baseUrl.'/remote.php/webdav/myFileToComment.txt',
-	// 			[
-	// 				'auth' => [
-	// 					'user0',
-	// 					'123456',
-	// 				],
-	// 				'headers' => [
-	// 					'Content-Type' => 'application/json',
-	// 				],
-	// 			]
-	// 		);
-	// 	} catch (\GuzzleHttp\Exception\ClientException $e) {
-	// 		$e->getResponse();
-	// 	}
-	// }
 
 	/**
 	 * @param string $path
@@ -110,40 +72,22 @@ trait Comments {
 		}
 	}
 
-
 	/**
-	 * @Then As :user load all the comments of the file named :fileName it should return :statusCode
+	 * @Then /^As user "([^"]*)" gets all the comments of (file|folder) "([^"]*)"$/
 	 * @param string $user
-	 * @param string $fileName
+	 * @param string $path
 	 * @param int $statusCode
 	 * @throws \Exception
 	 */
-	public function asLoadloadAllTheCommentsOfTheFileNamedItShouldReturn($user, $fileName, $statusCode) {
-		$fileId = $this->getFileIdForPath($fileName);
-		$url = $this->baseUrl.'/remote.php/dav/comments/files/'.$fileId.'/';
+	public function getComments($user, $path, $statusCode) {
+		$fileId = $this->getFileIdForPath($path);
+		$commentsPath = 'comments/files/'.$fileId.'/';
 
 		try {
-			$client = new \GuzzleHttp\Client();
-			$res = $client->createRequest(
-				'REPORT',
-				$url,
-				[
-					'body' => '<?xml version="1.0" encoding="utf-8" ?>
-<oc:filter-comments xmlns:oc="http://owncloud.org/ns">
-    <oc:limit>200</oc:limit>
-    <oc:offset>0</oc:offset>
-</oc:filter-comments>
-',
-					'auth' => [
-						$user,
-						'123456',
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-			$res = $client->send($res);
+			$properties = '<oc:limit>200</oc:limit>
+						   <oc:offset>0</oc:offset>';
+			$commentList = $this->reportElementComments($user, $commentsPath, $properties);
+
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$res = $e->getResponse();
 		}
@@ -152,29 +96,44 @@ trait Comments {
 			throw new \Exception("Response status code was not $statusCode (".$res->getStatusCode().")");
 		}
 
-		if($res->getStatusCode() === 207) {
-			$service = new Sabre\Xml\Service();
-			$this->response = $service->parse($res->getBody()->getContents());
-			$this->commentId = (int)$this->response[0]['value'][2]['value'][0]['value'][0]['value'];
-		}
+
 	}
 
-	// /**
-	//  * @Given As :user sending :verb to :url with
-	//  * @param string $user
-	//  * @param string $verb
-	//  * @param string $url
-	//  * @param \Behat\Gherkin\Node\TableNode $body
-	//  * @throws \Exception
-	//  */
-	// public function asUserSendingToWith($user, $verb, $url, \Behat\Gherkin\Node\TableNode $body) {
-	// 	$client = new \GuzzleHttp\Client();
-	// 	$options = [];
-	// 	$options['auth'] = [$user, '123456'];
-	// 	$fd = $body->getRowsHash();
-	// 	$options['body'] = $fd;
-	// 	$client->send($client->createRequest($verb, $this->baseUrl.'/ocs/v1.php/'.$url, $options));
-	// }
+	/**
+	 * @Then /^user "([^"]*)" should have the following comments on (file|folder) "([^"]*)"$/
+	 * @param string $user
+	 * @param string $type
+	 * @param string $path
+	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
+	 */
+	public function checkComments($user, $type, $path, $expectedElements){
+		$fileId = $this->getFileIdForPath($user, $path);
+		$commentsPath = '/comments/files/' . $fileId . '/';
+
+		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
+
+		try{
+			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
+			print_r($elementList);
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+			return 1;
+		}
+
+		if ($expectedElements instanceof \Behat\Gherkin\Node\TableNode) {
+			$elementRows = $expectedElements->getRows();
+			foreach($elementRows as $expectedElement) {
+				$commentFound = false;
+				foreach ($elementList as $id => $answer) {
+					if  (($answer[200]['{http://owncloud.org/ns}actorDisplayName'] === $expectedElement[0]) and
+						($answer[200]['{http://owncloud.org/ns}message'] === $expectedElement[1])){
+						$commentFound = true;
+					}
+				}
+				PHPUnit_Framework_Assert::assertTrue($commentFound, "Comment not found");
+			}
+		}
+	}
 
 	/**
 	 * @Then As :user delete the created comment it should return :statusCode
@@ -269,6 +228,5 @@ trait Comments {
 			throw new \Exception("Response status code was not $statusCode (".$res->getStatusCode().")");
 		}
 	}
-
 
 }

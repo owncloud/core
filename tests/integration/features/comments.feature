@@ -24,7 +24,13 @@ Feature: comments
     And User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
     And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
     And user "user1" comments with content "A comment from another user" on file "/myFileToComment.txt"
+    And user "user1" comments with content "BLABLABLAB" on file "/myFileToComment.txt"
     And the HTTP status code should be "201"
+    Then user "user1" should have the following comments on file "/myFileToComment.txt"
+            | user1 | A comment from another user |
+            | user1 | BLABLABLAB |
+
+
     #Then As "user1" load all the comments of the file named "/myFileToComment.txt" it should return "207"
     # And the response should contain a property "oc:parentId" with value "0"
     # And the response should contain a property "oc:childrenCount" with value "0"
