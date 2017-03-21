@@ -128,8 +128,24 @@
 
 		},
 
+		_generateName: function() {
+			var index = 1;
+			var baseName = t('core', '{fileName} link', {
+				fileName: this.fileInfoModel.get('name')
+			});
+			var name = baseName;
+
+			while (this.collection.findWhere({name: name})) {
+				index++;
+				name = baseName + ' (' + index + ')';
+			}
+
+			return name;
+		},
+
 		onAddButtonClick: function () {
 			var newShare = new OC.Share.ShareModel({
+				name: this._generateName(),
 				password: '',
 				permissions: OC.PERMISSION_READ,
 				expireDate: this.configModel.getDefaultExpirationDateString(),
