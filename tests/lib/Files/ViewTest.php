@@ -115,8 +115,12 @@ class ViewTest extends TestCase {
 
 		$this->logout();
 
-		$this->userObject->delete();
-		$this->groupObject->delete();
+		if ($this->userObject !== null) {
+			$this->userObject->delete();
+		}
+		if ($this->groupObject !== null) {
+			$this->groupObject->delete();
+		}
 
 		$mountProviderCollection = \OC::$server->getMountProviderCollection();
 		TestCase::invokePrivate($mountProviderCollection, 'providers', [[]]);
