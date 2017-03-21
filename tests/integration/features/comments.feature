@@ -1,4 +1,5 @@
 Feature: comments
+
   Scenario: Creating a comment on a file belonging to myself
     Given user "user0" exists
     Given As an "user0"
@@ -16,12 +17,9 @@ Feature: comments
 
   Scenario: Creating a comment on a shared file belonging to another user
     Given user "user0" exists
-    Given user "user1" exists
-    Given User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToComment.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
+    And user "user1" exists
+    And User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
     When "user1" posts a comment with content "A comment from another user" on the file named "/myFileToComment.txt" it should return "201"
     Then As "user1" load all the comments of the file named "/myFileToComment.txt" it should return "207"
     And the response should contain a property "oc:parentId" with value "0"

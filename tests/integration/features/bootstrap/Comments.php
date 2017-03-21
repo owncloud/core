@@ -21,49 +21,52 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
-class CommentsContext implements \Behat\Behat\Context\Context {
-	/** @var string */
-	private $baseUrl;
-	/** @var array */
-	private $response;
+//class CommentsContext implements \Behat\Behat\Context\Context {
+
+trait Comments {
+	use Sharing;
+	// /** @var string */
+	// private $baseUrl;
+	// /** @var array */
+	// private $response;
 	/** @var int */
 	private $commentId;
 	/** @var int */
 	private $fileId;
 
-	/**
-	 * @param string $baseUrl
-	 */
-	public function __construct($baseUrl) {
-		$this->baseUrl = $baseUrl;
+	// /**
+	//  * @param string $baseUrl
+	//  */
+	// public function __construct($baseUrl) {
+	// 	$this->baseUrl = $baseUrl;
 
-		// in case of ci deployment we take the server url from the environment
-		$testServerUrl = getenv('TEST_SERVER_URL');
-		if ($testServerUrl !== false) {
-			$this->baseUrl = substr($testServerUrl, 0, -5);
-		}
-	}
+	// 	// in case of ci deployment we take the server url from the environment
+	// 	$testServerUrl = getenv('TEST_SERVER_URL');
+	// 	if ($testServerUrl !== false) {
+	// 		$this->baseUrl = substr($testServerUrl, 0, -5);
+	// 	}
+	// }
 
-	/** @AfterScenario */
-	public function teardownScenario() {
-		$client = new \GuzzleHttp\Client();
-		try {
-			$client->delete(
-				$this->baseUrl.'/remote.php/webdav/myFileToComment.txt',
-				[
-					'auth' => [
-						'user0',
-						'123456',
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$e->getResponse();
-		}
-	}
+	// /** @AfterScenario */
+	// public function teardownScenario() {
+	// 	$client = new \GuzzleHttp\Client();
+	// 	try {
+	// 		$client->delete(
+	// 			$this->baseUrl.'/remote.php/webdav/myFileToComment.txt',
+	// 			[
+	// 				'auth' => [
+	// 					'user0',
+	// 					'123456',
+	// 				],
+	// 				'headers' => [
+	// 					'Content-Type' => 'application/json',
+	// 				],
+	// 			]
+	// 		);
+	// 	} catch (\GuzzleHttp\Exception\ClientException $e) {
+	// 		$e->getResponse();
+	// 	}
+	// }
 
 	/**
 	 * @param string $path
@@ -175,22 +178,22 @@ class CommentsContext implements \Behat\Behat\Context\Context {
 		}
 	}
 
-	/**
-	 * @Given As :user sending :verb to :url with
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 * @param \Behat\Gherkin\Node\TableNode $body
-	 * @throws \Exception
-	 */
-	public function asUserSendingToWith($user, $verb, $url, \Behat\Gherkin\Node\TableNode $body) {
-		$client = new \GuzzleHttp\Client();
-		$options = [];
-		$options['auth'] = [$user, '123456'];
-		$fd = $body->getRowsHash();
-		$options['body'] = $fd;
-		$client->send($client->createRequest($verb, $this->baseUrl.'/ocs/v1.php/'.$url, $options));
-	}
+	// /**
+	//  * @Given As :user sending :verb to :url with
+	//  * @param string $user
+	//  * @param string $verb
+	//  * @param string $url
+	//  * @param \Behat\Gherkin\Node\TableNode $body
+	//  * @throws \Exception
+	//  */
+	// public function asUserSendingToWith($user, $verb, $url, \Behat\Gherkin\Node\TableNode $body) {
+	// 	$client = new \GuzzleHttp\Client();
+	// 	$options = [];
+	// 	$options['auth'] = [$user, '123456'];
+	// 	$fd = $body->getRowsHash();
+	// 	$options['body'] = $fd;
+	// 	$client->send($client->createRequest($verb, $this->baseUrl.'/ocs/v1.php/'.$url, $options));
+	// }
 
 	/**
 	 * @Then As :user delete the created comment it should return :statusCode
