@@ -203,8 +203,8 @@
 
 		_makeLink: function(model) {
 			var link = '';
-			var preTokenLink = window.location.protocol + '//' + window.location.host;
 			if (!model.get('token')) {
+				var preTokenLink = OC.getProtocol() + '://' + OC.getHost();
 				var fullPath = this.fileInfoModel.get('path') + '/' +
 					this.fileInfoModel.get('name');
 				var location = '/' + OC.currentUser + '/files' + fullPath;
@@ -212,7 +212,7 @@
 				link = preTokenLink + OC.linkTo('', 'public.php') + '?service=files&' +
 					type + '=' + encodeURIComponent(location);
 			} else {
-				link = preTokenLink + model.getLink();
+				link = model.getLink();
 			}
 			return link;
 		},

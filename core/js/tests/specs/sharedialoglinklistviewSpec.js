@@ -87,21 +87,30 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 
 	describe('rendering', function() {
 		it('renders the list of shares', function() {
+			var protocolStub = sinon.stub(OC, 'getProtocol').returns('https');
+			var hostStub = sinon.stub(OC, 'getHost').returns('example.org');
+			var webrootStub = sinon.stub(OC, 'getRootPath').returns('/owncloud');
+
+			view.render();
 			var $li = view.$('.link-entry');
 			expect($li.length).toEqual(2);
 			expect($li.eq(0).attr('data-id')).toEqual('1');
-			expect($li.eq(0).find('.link-entry--title').attr('title'))
-				.toEqual(OC.webroot + OC.generateUrl('/s/') + 'tehtokenz');
+			expect($li.eq(0).find('.link-entry--icon').hasClass('icon-public-white')).toEqual(true);
+			expect($li.eq(0).find('.linkText').val())
+				.toEqual('https://example.org/owncloud/index.php/s/tehtokenz');
 			expect($li.eq(0).find('.link-entry--title').text()).toEqual('first link');
 			expect($li.eq(0).find('.clipboardButton').length).toEqual(1);
 			expect($li.eq(1).attr('data-id')).toEqual('2');
-			expect($li.eq(1).find('.link-entry--title').attr('title'))
-				.toEqual(OC.webroot + OC.generateUrl('/s/') + 'tehohtertokenz');
+			expect($li.eq(1).find('.link-entry--icon').hasClass('icon-public-white')).toEqual(true);
+			expect($li.eq(1).find('.linkText').val())
+				.toEqual('https://example.org/owncloud/index.php/s/tehohtertokenz');
 			// renders token instead of name
 			expect($li.eq(1).find('.link-entry--title').text()).toEqual('tehohtertokenz');
 			expect($li.eq(1).find('.clipboardButton').length).toEqual(1);
 
-			// TODO: add other DOM elements when ready
+			webrootStub.restore();
+			hostStub.restore();
+			protocolStub.restore();
 		});
 		it('renders the create button', function() {
 			expect(view.$('.addLink').length).toEqual(1);

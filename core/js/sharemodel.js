@@ -67,6 +67,7 @@
 
 			// remove unrelated/unneeded attributes,
 			delete data.expiration;
+			delete data.url;
 
 			// these can be read from the parent object or fileinfo
 			delete data.displayname_file_owner;
@@ -77,7 +78,6 @@
 			delete data.storage_id;
 			delete data.uid_file_owner;
 			delete data.uid_owner;
-			delete data.url;
 			delete data.mimetype;
 			delete data.parent;
 
@@ -94,12 +94,8 @@
 		 * @return {String} link
 		 */
 		getLink: function() {
-			var url = this.get('url');
-			if (url) {
-				return url;
-			}
-
-			return OC.generateUrl('/s/') + this.get('token');
+			var base = OC.getProtocol() + '://' + OC.getHost();
+			return base + OC.generateUrl('/s/') + this.get('token');
 		}
 	});
 
