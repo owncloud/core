@@ -30,7 +30,7 @@
 			'{{/if}}' +
 			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
 				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
-				'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="text" placeholder="{{passwordPlaceholder}}" />' +
+				'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
 				'<span class="error-message hidden"></span>' +
 			'</div>' +
 			'<div class="expirationDateContainer"></div>' +
