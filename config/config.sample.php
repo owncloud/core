@@ -203,6 +203,17 @@ $CONFIG = array(
 'token_auth_enforced' => false,
 
 /**
+ * Disable ownCloud's built-in CSRF protection mechanism.
+ *
+ * In some specific setups CSRF protection is handled in the environment, e.g.,
+ * running F5 ASM. In these cases the built-in mechanism is not needed and can be disabled.
+ * Generally speaking, however, this config switch should be left unchanged.
+ *
+ * WARNING: leave this as is if you're not sure what it does
+ */
+'csrf.disabled' => false,
+
+/**
  * The directory where the skeleton files are located. These files will be
  * copied to the data directory of new users. Leave empty to not copy any
  * skeleton files.
@@ -920,19 +931,43 @@ $CONFIG = array(
 'memcache.distributed' => '\OC\Memcache\Memcached',
 
 /**
- * Connection details for redis to use for memory caching.
+ * Connection details for redis to use for memory caching in a single server configuration.
  *
  * For enhanced security it is recommended to configure Redis
  * to require a password. See http://redis.io/topics/security
  * for more information.
  */
-'redis' => array(
+'redis' => [
 	'host' => 'localhost', // can also be a unix domain socket: '/tmp/redis.sock'
 	'port' => 6379,
 	'timeout' => 0.0,
 	'password' => '', // Optional, if not defined no password will be used.
 	'dbindex' => 0, // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
-),
+],
+
+/**
+ * Connection details for a Redis Cluster
+ *
+ * Only for use with Redis Clustering, for Sentinel-based setups use the single
+ * server configuration above, and perform HA on the hostname.
+ *
+ * Redis Cluster support requires the php module phpredis in version 3.0.0 or higher.
+ *
+ * Available failover modes:
+ *  - \RedisCluster::FAILOVER_NONE - only send commands to master nodes (default)
+ *  - \RedisCluster::FAILOVER_ERROR - failover to slaves for read commands if master is unavailable
+ *  - \RedisCluster::FAILOVER_DISTRIBUTE - randomly distribute read commands across master and slaves
+ */
+'redis.cluster' => [
+	'seeds' => [ // provide some/all of the cluster servers to bootstrap discovery, port required
+		'localhost:7000',
+		'localhost:7001'
+	],
+	'timeout' => 0.0,
+	'read_timeout' => 0.0,
+	'failover_mode' => \RedisCluster::FAILOVER_DISTRIBUTE
+],
+
 
 /**
  * Server details for one or more memcached servers to use for memory caching.
@@ -1328,7 +1363,7 @@ $CONFIG = array(
 /**
  * Set this property to false if you want to disable the files_external local mount Option.
  * Default: true
- * 
+ *
  */
 'files_external_allow_local' => true,
 

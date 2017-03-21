@@ -34,6 +34,9 @@
 OC.FileUpload = function(uploader, data) {
 	this.uploader = uploader;
 	this.data = data;
+	if (!data) {
+		throw 'Missing "data" argument in OC.FileUpload constructor';
+	}
 	var path = '';
 	if (this.uploader.fileList) {
 		path = OC.joinPaths(this.uploader.fileList.getCurrentDirectory(), this.getFile().name);
@@ -154,6 +157,12 @@ OC.FileUpload.prototype = {
 	 * @return {bool}
 	 */
 	isPending: function() {
+		if (!this.data || !this.data.state) {
+			// this should not be possible!
+			var stack = new Error().stack;
+			console.error(stack);
+			return false;
+		}
 		return this.data.state() === 'pending';
 	},
 

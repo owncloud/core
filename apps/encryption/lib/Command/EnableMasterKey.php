@@ -30,6 +30,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Input\InputOption;
 
 class EnableMasterKey extends Command {
 
@@ -61,19 +62,26 @@ class EnableMasterKey extends Command {
 		$this
 			->setName('encryption:enable-master-key')
 			->setDescription('Enable the master key. Only available for fresh installations with no existing encrypted data! There is also no way to disable it again.');
+		$this->addOption(
+			'yes',
+			'y',
+			InputOption::VALUE_NONE,
+			'Answer yes to all questions'
+		);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
 		$isAlreadyEnabled = $this->util->isMasterKeyEnabled();
 
-		if($isAlreadyEnabled) {
+		$yes = $input->getOption('yes');
+		if ($isAlreadyEnabled) {
 			$output->writeln('Master key already enabled');
 		} else {
 			$question = new ConfirmationQuestion(
 				'Warning: Only available for fresh installations with no existing encrypted data! '
 			. 'There is also no way to disable it again. Do you want to continue? (y/n) ', false);
-			if ($this->questionHelper->ask($input, $output, $question)) {
+			if ($yes || $this->questionHelper->ask($input, $output, $question)) {
 				$this->config->setAppValue('encryption', 'useMasterKey', '1');
 				$output->writeln('Master key successfully enabled.');
 			} else {

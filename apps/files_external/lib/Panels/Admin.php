@@ -25,6 +25,7 @@ use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\Settings\ISettings;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Template;
+use OCP\IConfig;
 
 class Admin implements ISettings {
 
@@ -32,14 +33,18 @@ class Admin implements ISettings {
 	protected $globalStoragesService;
 	/** @var IStoragesBackendService */
 	protected $backendService;
+	/** @var IConfig */
+	protected $config;
 	/** @var Manager */
 	protected $encManager;
 
 	public function __construct(IGlobalStoragesService $globalStoragesService,
 								IStoragesBackendService $backendService,
+								IConfig $config,
 								Manager $encManager) {
 		$this->globalStoragesService = $globalStoragesService;
 		$this->backendService = $backendService;
+		$this->config = $config;
 		$this->encManager = $encManager;
 	}
 
@@ -54,6 +59,7 @@ class Admin implements ISettings {
 	public function getPanel() {
 		// we must use the same container
 		$tmpl = new Template('files_external', 'settings');
+		$tmpl->assign('enableExternalStorage', $this->config->getAppValue('core', 'enable_external_storage', 'no') === 'yes');
 		$tmpl->assign('encryptionEnabled', $this->encManager->isEnabled());
 		$tmpl->assign('visibilityType', IStoragesBackendService::VISIBILITY_ADMIN);
 		$tmpl->assign('storages', $this->globalStoragesService->getStorages());

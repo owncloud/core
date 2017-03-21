@@ -24,8 +24,6 @@
     "Language changed" : "﻿ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ",
     "Invalid request" : "﻿ಅಮಾನ್ಯ ಕೋರಿಕೆ",
     "Admins can't remove themself from the admin group" : "﻿ನಿರ್ವಾಹಕರು ನಿರ್ವಹಣೆ ಗುಂಪಿನಿಂದ ತಮ್ಮನ್ನೇ ತಾವು ತೆಗೆದುಹಾಕಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಿಲ್ಲ",
-    "Unable to add user to group %s" : "%s ಗುಂಪಿಗೆ ಹೂಸ ಬಳಕೆದಾರನನ್ನು ಸೇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",
-    "Unable to remove user from group %s" : "%s ಗುಂಪು ಬಳಕೆದಾರ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ",
     "Couldn't remove app." : "ಅಳಿಸುವಾಗ ಏನೊ ಲೋಪವಾಗಿದೆ",
     "All" : "﻿ಎಲ್ಲಾ",
     "Enabled" : "ಸಕ್ರಿಯಗೊಳಿಸಿದೆ",

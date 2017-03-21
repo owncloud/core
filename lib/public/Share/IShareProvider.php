@@ -105,6 +105,18 @@ interface IShareProvider {
 	public function getSharesBy($userId, $shareType, $node, $reshares, $limit, $offset);
 
 	/**
+	 * Get all shares by the given user for specified shareTypes array
+	 *
+	 * @param string $userId
+	 * @param int[] $shareTypes
+	 * @param Node[] $nodeIDs
+	 * @param bool $reshares - Also get the shares where $user is the owner instead of just the shares where $user is the initiator
+	 * @return \OCP\Share\IShare[]
+	 * @since 10.0.0
+	 */
+	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares);
+	
+	/**
 	 * Get share by id
 	 *
 	 * @param int $id

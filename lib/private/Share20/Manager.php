@@ -876,6 +876,54 @@ class Manager implements IManager {
 		$provider->move($share, $recipientId);
 	}
 
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getAllSharesBy($userId, $shareTypes, $nodeIDs, $reshares = false) {
+		// This function requires at least 1 node (parent folder)
+		if (empty($nodeIDs)) {
+			throw new \InvalidArgumentException('Array of nodeIDs empty');
+		}
+		// This will ensure that if there are multiple share providers for the same share type, we will execute it in batches
+		$shares = array();
+		$providerIdMap = array();
+		foreach ($shareTypes as $shareType) {
+			// Get provider and its ID, at this point provider is cached at IProviderFactory instance
+			$provider = $this->factory->getProviderForType($shareType);
+			$providerId = $provider->identifier();
+
+			// Create a key -> multi value map
+			if (!isset($providerIdMap[$providerId])) {
+				$providerIdMap[$providerId] = array();
+			}
+			array_push($providerIdMap[$providerId], $shareType);
+		}
+
+		$today = new \DateTime();
+		foreach ($providerIdMap as $providerId => $shareTypeArray) {
+			// Get provider from cache
+			$provider = $this->factory->getProvider($providerId);
+
+			$queriedShares = $provider->getAllSharesBy($userId, $shareTypeArray, $nodeIDs, $reshares);
+			foreach ($queriedShares as $queriedShare){
+				if ($queriedShare->getShareType() === \OCP\Share::SHARE_TYPE_LINK && $queriedShare->getExpirationDate() !== null &&
+					$queriedShare->getExpirationDate() <= $today
+				) {
+					try {
+						$this->deleteShare($queriedShare);
+					} catch (NotFoundException $e) {
+						//Ignore since this basically means the share is deleted
+					}
+					continue;
+				}
+				array_push($shares, $queriedShare);
+			}
+		}
+
+		return $shares;
+	}
+
 	/**
 	 * @inheritdoc
 	 */

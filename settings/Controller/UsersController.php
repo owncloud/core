@@ -203,8 +203,9 @@ class UsersController extends Controller {
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
-			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user) : $userGroups,
+			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user, 'management') : $userGroups,
 			'subadmin' => $subAdminGroups,
+			'isEnabled' => $user->isEnabled(),
 			'quota' => $user->getQuota(),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin() * 1000,
@@ -835,5 +836,71 @@ class UsersController extends Controller {
 			}
 		}
 		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success']));
+  }
+  
+  /*
+	 * @NoAdminRequired
+	 *
+	 * @param string $id
+	 * @return DataResponse
+	 */
+	public function setEnabled($id, $enabled) {
+                $userId = $this->userSession->getUser()->getUID();
+                $user = $this->userManager->get($id);
+
+                if($userId === $id ||
+                        (!$this->isAdmin &&
+                        !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user))) {
+                        return new DataResponse(
+                                array(
+                                        'status' => 'error',
+                                        'data' => array(
+                                                'message' => (string)$this->l10n->t('Forbidden')
+                                        )
+                                ),
+                                Http::STATUS_FORBIDDEN
+                        );
+                }
+
+
+                if(!$user){
+                        return new DataResponse(
+                                array(
+                                        'status' => 'error',
+                                        'data' => array(
+                                                'message' => (string)$this->l10n->t('Invalid user')
+                                        )
+                                ),
+                                Http::STATUS_UNPROCESSABLE_ENTITY
+                        );
+                }
+
+
+		$value = filter_var($enabled, FILTER_VALIDATE_BOOLEAN);
+		if(!isset($value) || is_null($value))
+		{
+                        return new DataResponse(
+                                array(
+                                        'status' => 'error',
+                                        'data' => array(
+                                                'message' => (string)$this->l10n->t('Unable to enable/disable user.')
+                                        )
+                                ),
+                                Http::STATUS_FORBIDDEN
+                        );
+		}
+
+		$user->setEnabled($value);
+
+		return new DataResponse(
+			[
+				'status' => 'success',
+				'data' => [
+					'username' => $id,
+					'enabled' => $enabled
+				]
+			],
+			Http::STATUS_OK
+		);
 	}
 }

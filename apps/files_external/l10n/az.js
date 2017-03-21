@@ -46,7 +46,6 @@ OC.L10N.register(
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Qeyd:</b> PHP-də cURL dəstəyi aktiv deyil və ya yüklənməyib. %s -in birləşdirilməsi mümkün deyil. Xahiş edilir onun yüklənilməsi barəsində inzibatşınıza məlumat verəsiniz.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Qeyd:</b> \"%s\" yüklənməyib. %s -in birləşdirilməsi mümkün deyil. Xahiş edilir onun yüklənilməsi barəsində inzibatşınıza məlumat verəsiniz.",
     "No external storage configured" : "Kənar depo konfiq edilməyib",
-    "You can add external storages in the personal settings" : "Siz şəxsi quraşdırmalarınızda kənar depo əlavə edə bilərsiniz",
     "Name" : "Ad",
     "Storage type" : "Depo tipi",
     "Scope" : "Həcm",

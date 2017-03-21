@@ -17,7 +17,6 @@ OC.L10N.register(
     "Saved" : "Salvat",
     "Empty response from the server" : "Răspuns nul de la server",
     "There was an error with message: " : "A apărut o eroare cu mesajul:",
-    "external-storage" : "Stocare externă",
     "Username" : "Nume utilizator",
     "Password" : "Parolă",
     "Credentials saved" : "Detalii de autentificare salvate",

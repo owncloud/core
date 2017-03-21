@@ -6,8 +6,6 @@
     "Language changed" : "ენა შეცვლილია",
     "Invalid request" : "არასწორი მოთხოვნა",
     "Admins can't remove themself from the admin group" : "ადმინისტრატორებს არ შეუძლიათ საკუთარი თავის წაშლა ადმინ ჯგუფიდან",
-    "Unable to add user to group %s" : "მომხმარებლის დამატება ვერ მოხეხდა ჯგუფში %s",
-    "Unable to remove user from group %s" : "მომხმარებლის წაშლა ვერ მოხეხდა ჯგუფიდან %s",
     "All" : "ყველა",
     "Please wait...." : "დაიცადეთ....",
     "Disable" : "გამორთვა",

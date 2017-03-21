@@ -39,7 +39,7 @@ OC_Util::checkSubAdminUser();
 \OC::$server->getNavigationManager()->setActiveEntry('core_users');
 
 $userManager = \OC::$server->getUserManager();
-$groupManager = \OC_Group::getManager();
+$groupManager = \OC::$server->getGroupManager();
 
 // Set the sort option: SORT_USERCOUNT or SORT_GROUPNAME
 $sortGroupsBy = \OC\Group\MetaData::SORT_USERCOUNT;
@@ -82,7 +82,7 @@ if($isAdmin) {
 	}
 	$subAdmins = $result;
 }else{
-	/* Retrieve group IDs from $groups array, so we can pass that information into OC_Group::displayNamesInGroups() */
+	/* Retrieve group IDs from $groups array, so we can pass that information into \OC::$server->getGroupManager()->displayNamesInGroups() */
 	$gids = [];
 	foreach($groups as $group) {
 		if (isset($group['id'])) {
@@ -119,6 +119,7 @@ $tmpl->assign('defaultQuotaIsUserDefined', $defaultQuotaIsUserDefined);
 $tmpl->assign('recoveryAdminEnabled', $recoveryAdminEnabled);
 $tmpl->assign('enableAvatars', \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true);
 
+$tmpl->assign('show_is_enabled', $config->getAppValue('core', 'umgmt_show_is_enabled', 'false'));
 $tmpl->assign('show_storage_location', $config->getAppValue('core', 'umgmt_show_storage_location', 'false'));
 $tmpl->assign('show_last_login', $config->getAppValue('core', 'umgmt_show_last_login', 'false'));
 $tmpl->assign('show_email', $config->getAppValue('core', 'umgmt_show_email', 'false'));

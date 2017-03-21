@@ -2,6 +2,7 @@
     "Could not revert: %s" : "Nie można było przywrócić: %s",
     "Versions" : "Wersje",
     "Failed to revert {file} to revision {timestamp}." : "Nie udało się przywrócić {file} do wersji z {timestamp}.",
+    "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtów","%n bajtów"],
     "Restore" : "Przywróć",
     "No other versions available" : "Nie są dostępne żadne inne wersje",
     "More versions..." : "Więcej wersji..."

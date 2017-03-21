@@ -148,6 +148,7 @@ OC.L10N.register(
     "Cheers!" : "¡Saludos!",
     "Technical details" : "Detalles técnnicos",
     "Remote Address: %s" : "Dirección Remota: %s",
+    "Request ID: %s" : "ID de Solicitud: %s",
     "Type: %s" : "Tipo: %s",
     "Code: %s" : "Código: %s",
     "Message: %s" : "Mensaje: %s",

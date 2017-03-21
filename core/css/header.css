@@ -97,16 +97,16 @@
 
 /* hover effect for app switcher label */
 .header-appname-container .header-appname,
-.menutoggle .icon-caret {
+.menutoggle .caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
 	opacity: .75;
 }
 .menutoggle:hover .header-appname,
-.menutoggle:hover .icon-caret,
+.menutoggle:hover .caret,
 .menutoggle:focus .header-appname,
-.menutoggle:focus .icon-caret,
+.menutoggle:focus .caret,
 .menutoggle.active .header-appname,
-.menutoggle.active .icon-caret {
+.menutoggle.active .caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	opacity: 1;
 }
@@ -124,17 +124,14 @@
 	vertical-align: middle;
 }
 /* show caret indicator next to logo to make clear it is tappable */
-#header .icon-caret {
-	display: inline-block;
-	width: 12px;
-	height: 12px;
-	margin: 0;
-	margin-top: -21px;
-	padding: 0;
+#header .caret {
+	width: 10px;
+	height: 10px;
+	margin: -21px 0 0 3px;
 	vertical-align: middle;
 }
 /* do not show menu toggle on public share links as there is no menu */
-#body-public #header .icon-caret {
+#body-public #header .caret {
 	display: none;
 }
 

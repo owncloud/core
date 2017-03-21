@@ -115,4 +115,12 @@ interface IGroup {
 	 * @since 8.0.0
 	 */
 	public function delete();
+
+	/**
+	 * Returns the backend for this group
+	 *
+	 * @return \OC\Group\Backend
+	 * @since 10.0.0
+	 */
+	public function getBackend();
 }

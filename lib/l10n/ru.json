@@ -60,6 +60,7 @@
     "General" : "Основные",
     "Storage" : "Хранилище",
     "Security" : "Безопасность",
+    "Authentication" : "Авторизация",
     "Encryption" : "Шифрование",
     "Sharing" : "Общий доступ",
     "Monitoring" : "Наблюдение",

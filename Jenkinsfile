@@ -127,39 +127,30 @@ timestampedNode('SLAVE') {
         }
 
 	stage 'Integration Testing'
-		executeAndReport('build/integration/output/*.xml') {
+		executeAndReport('tests/integration/output/*.xml') {
 			sh '''phpenv local 7.0
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
 			make clean-test-integration
-			make test-integration
+			make test-integration OC_TEST_ALT_HOME=1
 		   '''
 		}
 
 		if (isOnReleaseBranch()) {
-
-			executeAndReport('build/integration/output/*.xml') {
-				sh '''phpenv local 7.0
-				rm -rf config/config.php data/*
-				./occ maintenance:install --admin-pass=admin
-				make clean-test-integration
-				make test-integration OC_TEST_ALT_HOME=1
-			   '''
-			}
-			executeAndReport('build/integration/output/*.xml') {
-				sh '''phpenv local 7.0
-				rm -rf config/config.php data/*
-				./occ maintenance:install --admin-pass=admin
-				make clean-test-integration
-				make test-integration OC_TEST_ENCRYPTION_ENABLED=1
-			   '''
-			}
-			executeAndReport('build/integration/output/*.xml') {
+			executeAndReport('tests/integration/output/*.xml') {
 				sh '''phpenv local 7.0
 				rm -rf config/config.php data/*
 				./occ maintenance:install --admin-pass=admin
 				make clean-test-integration
 				make test-integration OC_TEST_ALT_HOME=1 OC_TEST_ENCRYPTION_ENABLED=1
+			   '''
+			}
+			executeAndReport('build/integration/output/*.xml') {
+				sh '''phpenv local 7.0
+				rm -rf config/config.php data/*
+				./occ maintenance:install --admin-pass=admin
+				make clean-test-integration
+				make test-integration OC_TEST_ALT_HOME=1 OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED=1
 			   '''
 			}
 		}

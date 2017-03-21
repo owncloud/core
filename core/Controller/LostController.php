@@ -6,6 +6,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Peter Prochaska <info@peter-prochaska.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Ujjwal Bhardwaj <ujjwalb1996@gmail.com>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -265,6 +266,15 @@ class LostController extends Controller {
 				default:
 					$this->logger->error('Could not send reset email because the email id is not unique. User: {user}', ['app' => 'core', 'user' => $user]);
 					return false;
+			}
+		}
+
+		$token = $this->config->getUserValue($user, 'owncloud', 'lostpassword');
+		if ($token !== '') {
+			$splittedToken = explode(':', $token);
+			if ((count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
+				$this->logger->alert('The email is not sent because a password reset email was sent recently.');
+				return false;
 			}
 		}
 

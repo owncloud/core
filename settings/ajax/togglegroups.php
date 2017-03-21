@@ -27,7 +27,6 @@
 OC_JSON::checkSubAdminUser();
 OCP\JSON::callCheck();
 
-$success = true;
 $username = (string)$_POST['username'];
 $group = (string)$_POST['group'];
 
@@ -55,30 +54,30 @@ if(!OC_User::isAdminUser(OC_User::getUser())
 	exit();
 }
 
-if(!OC_Group::groupExists($group)) {
-	OC_Group::createGroup($group);
+if (is_null($targetUserObject)) {
+	OC_JSON::error(['data' => ['message' => $l->t('Unknown user')]]);
+	exit();
+}
+
+if(!\OC::$server->getGroupManager()->groupExists($group)) {
+	$targetGroupObject = \OC::$server->getGroupManager()->createGroup($group);
 }
 
 $l = \OC::$server->getL10N('settings');
 
-$error = $l->t("Unable to add user to group %s", $group);
 $action = "add";
 
 // Toggle group
-if( OC_Group::inGroup( $username, $group )) {
+if( \OC::$server->getGroupManager()->inGroup( $username, $group )) {
 	$action = "remove";
-	$error = $l->t("Unable to remove user from group %s", $group);
-	$success = OC_Group::removeFromGroup( $username, $group );
-	$usersInGroup=OC_Group::usersInGroup($group);
-}
-else{
-	$success = OC_Group::addToGroup( $username, $group );
+	$targetGroupObject->removeUser($targetUserObject);
+	$usersInGroup = $targetGroupObject->getUsers();
+	$usersInGroup = array_values(array_map(function(\OCP\IUser $g) {
+		return $g->getUID();
+	}, $usersInGroup));
+} else {
+	$targetGroupObject->addUser($targetUserObject);
 }
 
 // Return Success story
-if( $success ) {
-	OC_JSON::success(["data" => ["username" => $username, "action" => $action, "groupname" => $group]]);
-}
-else{
-	OC_JSON::error(["data" => ["message" => $error]]);
-}
+OC_JSON::success(["data" => ["username" => $username, "action" => $action, "groupname" => $group]]);

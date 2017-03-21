@@ -215,8 +215,8 @@ class User implements IUser {
 			// FIXME: Feels like an hack - suggestions?
 
 			// We have to delete the user from all groups
-			foreach (\OC::$server->getGroupManager()->getUserGroupIds($this) as $groupId) {
-				\OC_Group::removeFromGroup($this->uid, $groupId);
+			foreach (\OC::$server->getGroupManager()->getUserGroups($this) as $group) {
+				$group->removeUser($this);
 			}
 			// Delete the user's keys in preferences
 			\OC::$server->getConfig()->deleteAllUserValues($this->uid);

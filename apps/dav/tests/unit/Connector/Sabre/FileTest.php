@@ -532,7 +532,12 @@ class FileTest extends TestCase {
 			$thrown = true;
 		}
 
-		$this->assertTrue($thrown);
+		// objectstore does not use partfiles -> no move after upload -> no exception
+		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+			$this->assertFalse($thrown);
+		} else {
+			$this->assertTrue($thrown);
+		}
 		$this->assertEmpty($this->listPartFiles(), 'No stray part files');
 	}
 
@@ -999,6 +1004,25 @@ class FileTest extends TestCase {
 
 		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
 			'permissions' => Constants::PERMISSION_ALL
+		], null);
+
+		$file = new File($view, $info);
+
+		$file->get();
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\NotFound
+	 */
+	public function testGetThrowsIfNoPermission() {
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['fopen'])
+			->getMock();
+		$view->expects($this->never())
+			->method('fopen');
+
+		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_CREATE // no read perm
 		], null);
 
 		$file = new File($view, $info);

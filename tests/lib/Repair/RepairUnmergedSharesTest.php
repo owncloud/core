@@ -552,9 +552,9 @@ class RepairUnmergedSharesTest extends TestCase {
 			->method('getUserGroupIds')
 			->will($this->returnValueMap([
 				// owner
-				[$user1, ['samegroup1', 'samegroup2']],
+				[$user1, null, ['samegroup1', 'samegroup2']],
 				// recipient
-				[$user2, ['recipientgroup1', 'recipientgroup2']],
+				[$user2, null, ['recipientgroup1', 'recipientgroup2']],
 			]));
 
 		$this->userManager->expects($this->once())

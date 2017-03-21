@@ -73,7 +73,6 @@
     "<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Poznámka:</b> cURL podpora v PHP nie je zapnutá alebo nainštalovaná. Pripojenie %s nie je možné. Požiadajte správcu systému, aby ju nainštaloval.",
     "<b>Note:</b> \"%s\" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it." : "<b>Poznámka:</b> \"%s\" nie je nainštalovaná. Pripojenie %s nie je možné. Požiadajte správcu systému, aby ju nainštaloval.",
     "No external storage configured" : "Žiadne externé úložisko nie je nakonfigurované",
-    "You can add external storages in the personal settings" : "Externé úložisko je možné pridať v osobných nastaveniach",
     "Name" : "Názov",
     "Storage type" : "Typ úložiska",
     "Scope" : "Rozsah",

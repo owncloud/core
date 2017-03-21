@@ -220,7 +220,7 @@ class ShareesController extends OCSController  {
 	protected function getGroups($search) {
 		$this->result['groups'] = $this->result['exact']['groups'] = [];
 
-		$groups = $this->groupManager->search($search, $this->limit, $this->offset);
+		$groups = $this->groupManager->search($search, $this->limit, $this->offset, 'sharing');
 		$groupIds = array_map(function (IGroup $group) { return $group->getGID(); }, $groups);
 
 		if (!$this->shareeEnumeration || sizeof($groups) < $this->limit) {
@@ -230,7 +230,7 @@ class ShareesController extends OCSController  {
 		$userGroups =  [];
 		if (!empty($groups) && $this->shareWithGroupOnly) {
 			// Intersect all the groups that match with the groups this user is a member of
-			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser());
+			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser(), 'sharing');
 			$userGroups = array_map(function (IGroup $group) { return $group->getGID(); }, $userGroups);
 			$groupIds = array_intersect($groupIds, $userGroups);
 		}

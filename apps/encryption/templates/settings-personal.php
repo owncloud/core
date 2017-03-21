@@ -8,7 +8,7 @@ script('encryption', 'settings-personal');
 
 	<?php if ($_["initialized"] === \OCA\Encryption\Session::NOT_INITIALIZED ): ?>
 
-	<?php p($l->t("Encryption App is enabled but your keys are not initialized, please log-out and log-in again")); ?>
+	<?php p($l->t("Encryption App is enabled, but your keys are not initialized. Please log-out and log-in again.")); ?>
 
 	<?php elseif ( $_["initialized"] === \OCA\Encryption\Session::INIT_EXECUTED ): ?>
 		<p>
