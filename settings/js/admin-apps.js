@@ -15,8 +15,6 @@ Handlebars.registerHelper('level', function() {
 			return new Handlebars.SafeString('<span class="official icon-checkmark">' + t('settings', 'Official') + '</span>');
 		} else if(this.level === 100) {
 			return new Handlebars.SafeString('<span class="approved">' + t('settings', 'Approved') + '</span>');
-		} else {
-			return new Handlebars.SafeString('<span class="experimental">' + t('settings', 'Experimental') + '</span>');
 		}
 	}
 });
