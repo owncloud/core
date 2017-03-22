@@ -86,12 +86,9 @@ trait Comments {
 	public function checkComments($user, $type, $path, $expectedElements){
 		$fileId = $this->getFileIdForPath($user, $path);
 		$commentsPath = '/comments/files/' . $fileId . '/';
-
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
-
 		try{
 			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
-			print_r($elementList);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 			return 1;
@@ -105,6 +102,7 @@ trait Comments {
 					if  (($answer[200]['{http://owncloud.org/ns}actorDisplayName'] === $expectedElement[0]) and
 						($answer[200]['{http://owncloud.org/ns}message'] === $expectedElement[1])){
 						$commentFound = true;
+						break;
 					}
 				}
 				PHPUnit_Framework_Assert::assertTrue($commentFound, "Comment not found");
@@ -131,8 +129,8 @@ trait Comments {
 		}
 	}
 
-	public function deleteComment($user, $id){
-		$commentsPath = '/comments/files/' . $this->lastFileId . '/' . $this->lastCommentId;
+	public function deleteComment($user, $fileId, $commentId){
+		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
 			$this->response = $this->makeDavRequest($user,
 													"DELETE",
@@ -152,7 +150,7 @@ trait Comments {
 	 * @throws \Exception
 	 */
 	public function userDeletesLastComment($user) {
-		$this->deleteComment($user, $this->lastCommentId);
+		$this->deleteComment($user, $this->lastFileId, $this->lastCommentId);
 	}
 
 	/**
@@ -187,34 +185,38 @@ trait Comments {
 		}
 	}
 
+	public function editAComment($user, $content, $fileId, $commentId) {
+		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
+		try {
+			$this->response = $this->makeDavRequest($user,
+								  "PROPPATCH",
+								  $commentsPath,
+								  [],
+								  null,
+								  "uploads",
+								  '<?xml version="1.0"?>
+									<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+										<d:set>
+											<d:prop>
+												<oc:message>'. $content .'</oc:message>
+											</d:prop>
+										</d:set>
+									</d:propertyupdate>');
+		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+			$this->response = $ex->getResponse();
+		}
+	}
+
 	/**
-	 * @Then As :user edit the last created comment and set text to :text it should return :statusCode
+	 * @When /^user "([^"]*)" edits last comment with content "([^"]*)"$/
 	 * @param string $user
-	 * @param string $text
-	 * @param int $statusCode
+	 * @param string $content
+	 * @param string $type
+	 * @param string $path
 	 * @throws \Exception
 	 */
-	public function asEditTheLastCreatedCommentAndSetTextToItShouldReturn($user, $text, $statusCode) {
-		$client = new \GuzzleHttp\Client();
-		$options = [];
-		$options['auth'] = [$user, '123456'];
-		$options['body'] = '<?xml version="1.0"?>
-<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:set>
-   <d:prop>
-      <oc:message>'.$text.'</oc:message>
-    </d:prop>
-  </d:set>
-</d:propertyupdate>';
-		try {
-			$res = $client->send($client->createRequest('PROPPATCH', $this->baseUrl.'/remote.php/dav/comments/files/' . $this->fileId . '/' . $this->commentId, $options));
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$res = $e->getResponse();
-		}
-
-		if($res->getStatusCode() !== (int)$statusCode) {
-			throw new \Exception("Response status code was not $statusCode (".$res->getStatusCode().")");
-		}
+	public function userEditsLastCreatedComment($user, $content) {
+		$this->editAComment($user, $content, $this->lastFileId, $this->lastCommentId);
 	}
 
 }
