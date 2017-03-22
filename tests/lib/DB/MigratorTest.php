@@ -97,9 +97,6 @@ class MigratorTest extends \Test\TestCase {
 		return ($this->connection->getDatabasePlatform() instanceof OraclePlatform);
 	}
 
-	/**
-	 * @expectedException Doctrine\DBAL\Exception\UniqueConstraintViolationException
-	 */
 	public function testDuplicateKeyUpgrade() {
 		if ($this->isSQLite()) {
 			$this->markTestSkipped('sqlite does not throw errors when creating a new key on existing data');
@@ -115,8 +112,16 @@ class MigratorTest extends \Test\TestCase {
 		$this->connection->insert($this->tableName, ['id' => 2, 'name' => 'bar']);
 		$this->connection->insert($this->tableName, ['id' => 2, 'name' => 'qwerty']);
 
-		$migrator->migrate($endSchema);
-		$this->fail('migrate should have failed');
+		$caught = false;
+		try {
+			$migrator->migrate($endSchema);
+			$this->fail('migrate should have failed');
+		} catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+			$caught = true;
+			// makes PostgreSQL happier after an exception (and we don't have rollback yet on the public API...)
+			$this->connection->commit();
+		}
+		$this->assertTrue($caught);
 	}
 
 	public function testUpgrade() {
