@@ -426,8 +426,12 @@
 	}
 
 	function go_parent_folder() {
-		// simulate a back button of the browser
-		history.back();
+		var len = $(".breadcrumb .crumb").length
+
+		if (len >= 2) {
+			var dir = $($(".breadcrumb .crumb")[len-2]).data('dir');
+			OCA.Files.App.fileList.changeDirectory(dir);
+		}
 	}
 
 	function rename() {
