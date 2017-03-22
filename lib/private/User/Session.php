@@ -401,7 +401,7 @@ class Session implements IUserSession, Emitter {
 				\OC_Util::copySkeleton($user, $userFolder);
 			} catch (NotPermittedException $ex) {
 				// possible if files directory is in an readonly jail
-				\OC::$server->getLogger()->info(
+				\OC::$server->getLogger()->warning(
 					'Skeleton not created due to missing write permission'
 				);
 			}

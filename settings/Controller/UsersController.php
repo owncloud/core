@@ -29,7 +29,6 @@
 
 namespace OC\Settings\Controller;
 
-use DeepCopy\Filter\Doctrine\DoctrineCollectionFilter;
 use OC\AppFramework\Http;
 use OC\User\User;
 use OCP\App\IAppManager;
@@ -221,12 +220,11 @@ class UsersController extends Controller {
 	 * @param string $gid GID to filter for
 	 * @param string $pattern Pattern to search for in the username
 	 * @param string $backend Backend to filter for (class-name)
-	 * @param string $excludeGroups
-	 * @return DataResponse TODO: Tidy up and write unit tests - code is mainly static method calls
+	 * @return DataResponse
 	 *
 	 * TODO: Tidy up and write unit tests - code is mainly static method calls
 	 */
-	public function index($offset = 0, $limit = 10, $gid = '', $pattern = '', $backend = '', $excludeGroups = '') {
+	public function index($offset = 0, $limit = 10, $gid = '', $pattern = '', $backend = '') {
 		// FIXME: The JS sends the group '_everyone' instead of no GID for the "all users" group.
 		if($gid === '_everyone') {
 			$gid = '';
@@ -246,32 +244,11 @@ class UsersController extends Controller {
 
 		$users = [];
 		if ($this->isAdmin) {
-			if ($gid !== '') {
-				$batch = $this->getUsersForUID(
-					$this->groupManager->displayNamesInGroup(
-						$gid,
-						$pattern,
-						$limit,
-						$offset
-					)
-				);
+
+			if($gid !== '') {
+				$batch = $this->getUsersForUID($this->groupManager->displayNamesInGroup($gid, $pattern, $limit, $offset));
 			} else {
 				$batch = $this->userManager->search($pattern, $limit, $offset);
-				if (!empty($excludeGroups) && !empty($batch)) {
-					$excludeGroups = explode(';', $excludeGroups);
-					$excludedUsers = [];
-					foreach ($excludeGroups as $excludedGroup) {
-						$excludedUsers = array_merge(
-							$excludedUsers,
-							$this->getUsersForUID(
-								$this->groupManager->displayNamesInGroup($excludedGroup)
-							)
-						);
-					}
-
-					$batch = array_diff_assoc($batch, $excludedUsers);
-					$excludedUsers = null;
-				}
 			}
 
 			foreach ($batch as $user) {
@@ -279,9 +256,7 @@ class UsersController extends Controller {
 			}
 
 		} else {
-			$subAdminOfGroups = $this->groupManager
-				->getSubAdmin()
-				->getSubAdminsGroups($this->userSession->getUser());
+			$subAdminOfGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
 			// New class returns IGroup[] so convert back
 			$gids = [];
 			foreach ($subAdminOfGroups as $group) {
@@ -298,24 +273,14 @@ class UsersController extends Controller {
 			$batch = [];
 			if($gid === '') {
 				foreach($subAdminOfGroups as $group) {
-					$groupUsers = $this->groupManager->displayNamesInGroup(
-						$group,
-						$pattern,
-						$limit,
-						$offset
-					);
+					$groupUsers = $this->groupManager->displayNamesInGroup($group, $pattern, $limit, $offset);
 
 					foreach($groupUsers as $uid => $displayName) {
 						$batch[$uid] = $displayName;
 					}
 				}
 			} else {
-				$batch = $this->groupManager->displayNamesInGroup(
-					$gid,
-					$pattern,
-					$limit,
-					$offset
-				);
+				$batch = $this->groupManager->displayNamesInGroup($gid, $pattern, $limit, $offset);
 			}
 			$batch = $this->getUsersForUID($batch);
 

@@ -226,29 +226,35 @@ class OC_Util {
 
 		// Make users storage readonly if he is a guest or in a read_only group
 
-		$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
-			'core',
-			'read_only_groups',
-			'[]'
-		), true);
-
-
-
-		$userGroups = array_keys(
-			\OC::$server->getGroupManager()->getUserIdGroups($user)
-		);
-
-		$readOnlyGroupMemberships = array_intersect(
-			$readOnlyGroups,
-			$userGroups
-		);
-
 		$isGuest = \OC::$server->getConfig()->getUserValue(
 			$user,
 			'owncloud',
 			'isGuest',
 			false
 		);
+
+		if (!$isGuest) {
+			$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
+				'core',
+				'read_only_groups',
+				'[]'
+			), true);
+
+			if (!is_array($readOnlyGroups)) {
+				$readOnlyGroups = [];
+			}
+
+
+			$userGroups = array_keys(
+				\OC::$server->getGroupManager()->getUserIdGroups($user)
+			);
+
+			$readOnlyGroupMemberships = array_intersect(
+				$readOnlyGroups,
+				$userGroups
+			);
+		}
+
 
 		if ($isGuest === '1' || !empty($readOnlyGroupMemberships)) {
 			\OC\Files\Filesystem::addStorageWrapper(

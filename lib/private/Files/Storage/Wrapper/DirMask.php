@@ -21,8 +21,13 @@
 
 namespace OC\Files\Storage\Wrapper;
 
-use OC\Files\Storage\Wrapper\PermissionsMask;
 
+/**
+ * While PermissionMask can mask a whole storage this  can
+ * mask a certain directory inside a storage
+ *
+ * @package OC\Files\Storage\Wrapper
+ */
 class DirMask extends PermissionsMask {
 
 	/**
@@ -167,24 +172,6 @@ class DirMask extends PermissionsMask {
 			return parent::fopen($path, $mode);
 		} else {
 			return $this->storage->fopen($path, $mode);
-		}
-	}
-
-	/**
-	 * get a cache instance for the storage
-	 *
-	 * @param string $path
-	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the cache
-	 * @return \OC\Files\Cache\Cache
-	 */
-	public function getCache($path = '', $storage = null) {
-		if (!$storage) {
-			$storage = $this;
-		}
-		if ($this->checkPath($path)) {
-			return parent::getCache($path, $storage);
-		} else {
-			return $this->storage->getCache($path, $storage);
 		}
 	}
 }
