@@ -46,16 +46,22 @@ class MigratorTest extends \Test\TestCase {
 
 		$this->config = \OC::$server->getConfig();
 		$this->connection = \OC::$server->getDatabaseConnection();
-		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
-			$this->markTestSkipped('DB migration tests are not supported on OCI');
-		}
 		$this->manager = new \OC\DB\MDB2SchemaManager($this->connection);
 		$this->tableName = strtolower($this->getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_') . 'test_'));
 	}
 
 	protected function tearDown() {
-		$this->connection->exec('DROP TABLE ' . $this->tableName);
+		$this->connection->exec('DROP TABLE ' . $this->connection->quoteIdentifier($this->tableName));
 		parent::tearDown();
+	}
+
+	private function getIndexName($tableName, $indexName) {
+		$indexName = $tableName . '_' . $indexName;
+		if ($this->isOracle()) {
+			// Oracle doesn't like long names...
+			return 'i' . substr(md5($indexName), 0, 29);
+		}
+		return $indexName;
 	}
 
 	/**
@@ -66,13 +72,13 @@ class MigratorTest extends \Test\TestCase {
 		$table = $startSchema->createTable($this->tableName);
 		$table->addColumn('id', 'integer');
 		$table->addColumn('name', 'string');
-		$table->addIndex(['id'], $this->tableName . '_id');
+		$table->addIndex(['id'], $this->getIndexName($this->tableName, 'id'));
 
 		$endSchema = new Schema([], [], $this->getSchemaConfig());
 		$table = $endSchema->createTable($this->tableName);
 		$table->addColumn('id', 'integer');
 		$table->addColumn('name', 'string');
-		$table->addUniqueIndex(['id'], $this->tableName . '_id');
+		$table->addUniqueIndex(['id'], $this->getIndexName($this->tableName, 'id'));
 
 		return [$startSchema, $endSchema];
 	}
@@ -87,12 +93,19 @@ class MigratorTest extends \Test\TestCase {
 		return $this->connection->getDriver() instanceof \Doctrine\DBAL\Driver\PDOSqlite\Driver;
 	}
 
+	private function isOracle() {
+		return ($this->connection->getDatabasePlatform() instanceof OraclePlatform);
+	}
+
 	/**
-	 * @expectedException \OC\DB\MigrationException
+	 * @expectedException Doctrine\DBAL\Exception\UniqueConstraintViolationException
 	 */
 	public function testDuplicateKeyUpgrade() {
 		if ($this->isSQLite()) {
 			$this->markTestSkipped('sqlite does not throw errors when creating a new key on existing data');
+		}
+		if ($this->isOracle()) {
+			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
 		}
 		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
@@ -107,6 +120,9 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testUpgrade() {
+		if ($this->isOracle()) {
+			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
+		}
 		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
@@ -120,6 +136,9 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testUpgradeDifferentPrefix() {
+		if ($this->isOracle()) {
+			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
+		}
 		$oldTablePrefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
 
 		$this->config->setSystemValue('dbtableprefix', 'ownc_');
@@ -140,6 +159,9 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testInsertAfterUpgrade() {
+		if ($this->isOracle()) {
+			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
+		}
 		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
@@ -157,6 +179,9 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testAddingPrimaryKeyWithAutoIncrement() {
+		if ($this->isOracle()) {
+			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
+		}
 		$startSchema = new Schema([], [], $this->getSchemaConfig());
 		$table = $startSchema->createTable($this->tableName);
 		$table->addColumn('id', 'integer');
@@ -172,6 +197,34 @@ class MigratorTest extends \Test\TestCase {
 		$migrator->migrate($startSchema);
 
 		$migrator->migrate($endSchema);
+
+		$this->assertTrue(true);
+	}
+
+	public function testAddingColumn() {
+		$schema = new Schema([], [], $this->getSchemaConfig());
+		$table = $schema->createTable($this->tableName);
+		$table->addColumn('id', 'integer');
+		$table->addColumn('name', 'string');
+
+		$migrator = $this->manager->getMigrator();
+		$migrator->migrate($schema);
+
+		$table->addColumn('newcolumn', 'string', [
+			'notnull' => false
+		]);
+
+		$migrator->migrate($schema);
+
+		$schemaManager = $this->connection->getSchemaManager();
+		$actualSchema = $schemaManager->createSchema();
+
+		// Oracle might change casing if double quotes were missing, so verify
+		// that the column names still match
+		$table = $actualSchema->getTable($this->tableName);
+		$this->assertEquals('id', $table->getColumn('id')->getName());
+		$this->assertEquals('name', $table->getColumn('name')->getName());
+		$this->assertEquals('newcolumn', $table->getColumn('newcolumn')->getName());
 
 		$this->assertTrue(true);
 	}
