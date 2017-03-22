@@ -169,7 +169,8 @@ class Application extends App {
 				$c->query('DefaultMailAddress'),
 				$c->query('URLGenerator'),
 				$c->query('OCP\\App\\IAppManager'),
-				$c->query('OCP\\IAvatarManager')
+				$c->query('OCP\\IAvatarManager'),
+				$c->query('OCP\\Security\\ISecureRandom')
 			);
 		});
 		$container->registerService('LogSettingsController', function(IContainer $c) {
@@ -203,7 +204,7 @@ class Application extends App {
 			);
 		});
 		// Execute middlewares
-		$container->registerMiddleware('SubadminMiddleware');
+		$container->registerMiddleWare('SubadminMiddleware');
 
 		/**
 		 * Core class wrappers
