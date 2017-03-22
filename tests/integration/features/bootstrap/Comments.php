@@ -2,7 +2,7 @@
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2017, ownCloud, Gmbh.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,9 +26,10 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Comments {
 	use Sharing;
 
-	private $commentId;
 	/** @var int */
-	private $fileId;
+	private $lastCommentId;
+	/** @var int */
+	private $lastFileId;
 
 	/**
 	 * @param string $path
@@ -50,7 +51,7 @@ trait Comments {
 	 */
 	public function postsAComment($user, $content, $type, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
-		$this->fileId = $fileId;
+		$this->lastFileId = $fileId;
 		$commentsPath = '/comments/files/' . $fileId . '/';
 		try {
 			$this->response = $this->makeDavRequest($user,
@@ -67,36 +68,12 @@ trait Comments {
 								    "message":"' . $content . '",
 								    "creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT",
 								    "objectType":"files"}');
+			$responseHeaders =  $this->response->getHeaders();
+			$commentUrl = $responseHeaders['Content-Location'][0];
+			$this->lastCommentId = substr($commentUrl, strrpos($commentUrl,'/')+1);
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}
-	}
-
-	/**
-	 * @Then /^As user "([^"]*)" gets all the comments of (file|folder) "([^"]*)"$/
-	 * @param string $user
-	 * @param string $path
-	 * @param int $statusCode
-	 * @throws \Exception
-	 */
-	public function getComments($user, $path, $statusCode) {
-		$fileId = $this->getFileIdForPath($path);
-		$commentsPath = 'comments/files/'.$fileId.'/';
-
-		try {
-			$properties = '<oc:limit>200</oc:limit>
-						   <oc:offset>0</oc:offset>';
-			$commentList = $this->reportElementComments($user, $commentsPath, $properties);
-
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$res = $e->getResponse();
-		}
-
-		if($res->getStatusCode() !== (int)$statusCode) {
-			throw new \Exception("Response status code was not $statusCode (".$res->getStatusCode().")");
-		}
-
-
 	}
 
 	/**
@@ -136,35 +113,46 @@ trait Comments {
 	}
 
 	/**
-	 * @Then As :user delete the created comment it should return :statusCode
+	 * @Then /^user "([^"]*)" should have (\d+) comments on (file|folder) "([^"]*)"$/
 	 * @param string $user
-	 * @param int $statusCode
+	 * @param string $numberOfComments
+	 * @param string $type
+	 * @param string $path
+	 */
+	public function checkNumberOfComments($user, $numberOfComments, $type, $path) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$commentsPath = '/comments/files/' . $fileId . '/';
+		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
+		try{
+			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
+			PHPUnit_Framework_Assert::assertEquals($numberOfComments, count($elementList));
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		}
+	}
+
+	public function deleteComment($user, $id){
+		$commentsPath = '/comments/files/' . $this->lastFileId . '/' . $this->lastCommentId;
+		try {
+			$this->response = $this->makeDavRequest($user,
+													"DELETE",
+													$commentsPath,
+													[],
+													null,
+													"uploads",
+													null);
+		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+			$this->response = $ex->getResponse();
+		}
+	}
+
+	/**
+	 * @Then user :user deletes the last created comment
+	 * @param string $user
 	 * @throws \Exception
 	 */
-	public function asDeleteTheCreatedCommentItShouldReturn($user, $statusCode) {
-		$url = $this->baseUrl.'/remote.php/dav/comments/files/'.$this->fileId.'/'.$this->commentId;
-
-		$client = new \GuzzleHttp\Client();
-		try {
-			$res = $client->delete(
-				$url,
-				[
-					'auth' => [
-						$user,
-						'123456',
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$res = $e->getResponse();
-		}
-
-		if($res->getStatusCode() !== (int)$statusCode) {
-			throw new \Exception("Response status code was not $statusCode (".$res->getStatusCode().")");
-		}
+	public function userDeletesLastComment($user) {
+		$this->deleteComment($user, $this->lastCommentId);
 	}
 
 	/**

@@ -1,75 +1,62 @@
-Feature: comments
+Feature: Comments
   Background:
     Given using new dav path
 
   Scenario: Creating a comment on a file belonging to myself
     Given user "user0" exists
-    Given As an "user0"
-    Given User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
-    When user "user0" posts a comment with content "My first comment" on file "/myFileToComment.txt"
-
-    Then As "user0" load all the comments of the file named "/myFileToComment.txt" it should return "207"
-    And the response should contain a property "oc:parentId" with value "0"
-    And the response should contain a property "oc:childrenCount" with value "0"
-    And the response should contain a property "oc:verb" with value "comment"
-    And the response should contain a property "oc:actorType" with value "users"
-    And the response should contain a property "oc:objectType" with value "files"
-    And the response should contain a property "oc:message" with value "My first comment"
-    And the response should contain a property "oc:actorDisplayName" with value "user0"
-    And the response should contain only "1" comments
+    And As an "user0"
+    And User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    When user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
+    Then user "user0" should have the following comments on file "/myFileToComment.txt"
+            | user0 | My first comment |
 
   Scenario: Creating a comment on a shared file belonging to another user
     Given user "user0" exists
     And user "user1" exists
     And User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
     And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
-    And user "user1" comments with content "A comment from another user" on file "/myFileToComment.txt"
-    And user "user1" comments with content "BLABLABLAB" on file "/myFileToComment.txt"
+    And user "user1" comments with content "A comment from sharee" on file "/myFileToComment.txt"
+    And user "user0" comments with content "A comment from sharer" on file "/myFileToComment.txt"
     And the HTTP status code should be "201"
     Then user "user1" should have the following comments on file "/myFileToComment.txt"
-            | user1 | A comment from another user |
-            | user1 | BLABLABLAB |
-
-
-    #Then As "user1" load all the comments of the file named "/myFileToComment.txt" it should return "207"
-    # And the response should contain a property "oc:parentId" with value "0"
-    # And the response should contain a property "oc:childrenCount" with value "0"
-    # And the response should contain a property "oc:verb" with value "comment"
-    # And the response should contain a property "oc:actorType" with value "users"
-    # And the response should contain a property "oc:objectType" with value "files"
-    # And the response should contain a property "oc:message" with value "A comment from another user"
-    # And the response should contain a property "oc:actorDisplayName" with value "user1"
-    # And the response should contain only "1" comments
-
-  Scenario: Creating a comment on a non-shared file belonging to another user
-    Given user "user0" exists
-    Given user "user1" exists
-    Given User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
-    Then "user1" posts a comment with content "My first comment" on the file named "/myFileToComment.txt" it should return "404"
-
-  Scenario: Reading comments on a non-shared file belonging to another user
-    Given user "user0" exists
-    Given user "user1" exists
-    Given User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
-    Then As "user1" load all the comments of the file named "/myFileToComment.txt" it should return "404"
+            | user1 | A comment from sharee |
+            | user0 | A comment from sharer |
 
   Scenario: Deleting my own comments on a file belonging to myself
     Given user "user0" exists
-    Given As an "user0"
-    Given User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
-    Given "user0" posts a comment with content "My first comment" on the file named "/myFileToComment.txt" it should return "201"
-    When As "user0" load all the comments of the file named "/myFileToComment.txt" it should return "207"
-    Then the response should contain a property "oc:parentId" with value "0"
-    Then the response should contain a property "oc:childrenCount" with value "0"
-    And the response should contain a property "oc:verb" with value "comment"
-    And the response should contain a property "oc:actorType" with value "users"
-    And the response should contain a property "oc:objectType" with value "files"
-    And the response should contain a property "oc:message" with value "My first comment"
-    And the response should contain a property "oc:actorDisplayName" with value "user0"
-    And the response should contain only "1" comments
-    And As "user0" delete the created comment it should return "204"
-    And As "user0" load all the comments of the file named "/myFileToComment.txt" it should return "207"
-    And the response should contain only "0" comments
+    And As an "user0"
+    And User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
+    When user "user0" deletes the last created comment
+    Then the HTTP status code should be "204"
+    And user "user0" should have 0 comments on file "/myFileToComment.txt"
+
+  Scenario: Deleting a comment on a file belonging to myself having several comments
+    Given user "user0" exists
+    And As an "user0"
+    And User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
+    And user "user0" comments with content "My second comment" on file "/myFileToComment.txt"
+    And user "user0" comments with content "My third comment" on file "/myFileToComment.txt"
+    And user "user0" comments with content "My fourth comment" on file "/myFileToComment.txt"
+    When user "user0" deletes the last created comment
+    Then the HTTP status code should be "204"
+    And user "user0" should have 3 comments on file "/myFileToComment.txt"
+
+
+
+    # When As "user0" load all the comments of the file named "/myFileToComment.txt" it should return "207"
+    # Then the response should contain a property "oc:parentId" with value "0"
+    # Then the response should contain a property "oc:childrenCount" with value "0"
+    # And the response should contain a property "oc:verb" with value "comment"
+    # And the response should contain a property "oc:actorType" with value "users"
+    # And the response should contain a property "oc:objectType" with value "files"
+    # And the response should contain a property "oc:message" with value "My first comment"
+    # And the response should contain a property "oc:actorDisplayName" with value "user0"
+    # And the response should contain only "1" comments
+    # And As "user0" delete the created comment it should return "204"
+    # And As "user0" load all the comments of the file named "/myFileToComment.txt" it should return "207"
+    # And the response should contain only "0" comments
 
   Scenario: Deleting my own comments on a file shared by somebody else
     Given user "user0" exists
