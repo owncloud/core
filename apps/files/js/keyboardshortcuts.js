@@ -19,7 +19,8 @@
  * up/down: select file/folder
  * enter: open file/folder
  * spacebar: toggle side-bar
- * delete/backspace: delete file/folder (multiple files also allowed)
+ * delete: delete file/folder (multiple files also allowed)
+ * backspace: goto previous broser history state
  * shift+up/down: select multiple files
  ********************************************************************/
 (function(Files) {
@@ -424,6 +425,11 @@
 		}
 	}
 
+	function go_parent_folder() {
+		// simulate a back button of the browser
+		history.back();
+	}
+
 	function rename() {
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("mouseOver")) {
@@ -487,10 +493,12 @@
 				up();
 			} else if (!$("#new").hasClass("active") && $.inArray(keyCodes.enter, keys) !== -1) { // open file
 				enter();
-			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.del, keys) !== -1 || $.inArray(keyCodes.backspace, keys) !== -1)) { //delete file
+			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.del, keys) !== -1)) { //delete file
 				del();
 			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.space, keys) !== -1)) { // open side-bar
 				toggle_sidebar();
+			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.backspace, keys) !== -1)) { // goto parent folder
+				go_parent_folder();
 			}
 			removeA(keys, event.keyCode);
 		});
