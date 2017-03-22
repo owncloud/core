@@ -327,6 +327,15 @@ trait WebDav {
 				$value = $value[0];
 			}
 		}
+
+		if ($expectedValue === "a_comment_url"){
+			if (preg_match("#^/remote.php/dav/comments/files/([0-9]+)$#", $value)) {
+				return 0;
+			} else {
+				throw new \Exception("Property \"$key\" found with value \"$value\", expected \"$expectedValue\"");
+			}
+		}
+
 		if ($value != $expectedValue) {
 			throw new \Exception("Property \"$key\" found with value \"$value\", expected \"$expectedValue\"");
 		}

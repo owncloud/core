@@ -89,3 +89,18 @@ Feature: Comments
     Then the HTTP status code should be "403"
     And user "user0" should have the following comments on file "/myFileToComment.txt"
             | user1 | Sharee comment |
+
+  Scenario: Getting info of comments using files endpoint
+    Given user "user0" exists
+    And As an "user0"
+    And User "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
+    And user "user0" should have the following comments on file "/myFileToComment.txt"
+            | user0 | My first comment |
+    When as "user0" gets properties of folder "/myFileToComment.txt" with
+          | {http://owncloud.org/ns}comments-href |
+          | {http://owncloud.org/ns}comments-count |
+          | {http://owncloud.org/ns}comments-unread |
+    #Then the single response should contain a property "{http://owncloud.org/ns}comments-count" with value "1"
+    And the single response should contain a property "{http://owncloud.org/ns}comments-unread" with value "0"
+    And the single response should contain a property "{http://owncloud.org/ns}comments-href" with value "a_comment_url"
