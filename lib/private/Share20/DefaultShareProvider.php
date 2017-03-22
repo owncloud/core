@@ -94,9 +94,11 @@ class DefaultShareProvider implements IShareProvider {
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
 	 * @throws ShareNotFound
+	 * @throws InvalidArgumentException if the share validation failed
 	 * @throws \Exception
 	 */
 	public function create(\OCP\Share\IShare $share) {
+		$this->validate($share);
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$qb->insert('share');
@@ -188,8 +190,10 @@ class DefaultShareProvider implements IShareProvider {
 	 *
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
+	 * @throws InvalidArgumentException if the share validation failed
 	 */
 	public function update(\OCP\Share\IShare $share) {
+		$this->validate($share);
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			/*
 			 * We allow updating the recipient on user shares.
@@ -1042,5 +1046,20 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->execute();
 			}
 		}
+	}
+
+	/**
+	 * Check whether the share object fits the expectations of this provider
+	 *
+	 * @param IShare $share share
+	 *
+	 * @throws InvalidArgumentException if the share validation failed
+	 */
+	private function validate($share) {
+		if (!is_null($share->getName()) && strlen($share->getName()) > 64) {
+			throw new \InvalidArgumentException('Share name cannot be more than 64 characters');
+		}
+
+		// TODO: add more early validation for fields instead of relying on the DB
 	}
 }
