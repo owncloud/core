@@ -183,7 +183,8 @@
 		onLinkTextClick: function() {
 			var $el = this.$el.find('.linkText');
 			$el.focus();
-			$el.select();
+			// select() isn't supported in iOS
+			$el.get(0).setSelectionRange(0, 9999);
 		},
 
 		onShowPasswordClick: function() {
