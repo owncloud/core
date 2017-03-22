@@ -64,12 +64,18 @@ jQuery.fn.enter = function (callback, allowEmptyValue) {
 $(document).ready(function () {
 	// 'redirect' to anchor sections
 	// anchors are lost on redirects (e.g. while solving the 2fa challenge) otherwise
-	// example: /settings/person?section=devices will result in /settings/person?#devices
+	// example: /settings/personal?section=devices will result in /settings/personal?#devices
 	if (!window.location.hash) {
 		var query = OC.parseQueryString(location.search);
 		if (query && query.section) {
 			OC.Util.History.replaceState({});
 			window.location.hash = query.section;
 		}
+	} else {
+		if(window.location.hash === '#apppasswords' && window.location.pathname === '/settings/personal') {
+			// Handle old apppasswords links from desktop apps
+			window.location = OC.generateUrl('/settings/personal?sectionid=security#apppasswords');
+		}
 	}
+
 });
