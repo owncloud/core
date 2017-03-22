@@ -2,6 +2,7 @@
 /**
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -42,6 +43,11 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	/** @var IUserSession */
 	private $userSession;
 
+	/**
+	 * @var int[]
+	 */
+	private $numberOfCommentsForNodes;
+
 	public function __construct(ICommentsManager $commentsManager, IUserSession $userSession) {
 		$this->commentsManager = $commentsManager;
 		$this->userSession = $userSession;
@@ -77,6 +83,47 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	) {
 		if (!($node instanceof File) && !($node instanceof Directory)) {
 			return;
+		}
+
+		// Prefetch required data if we know that it is parent node
+		if ($node instanceof \OCA\DAV\Connector\Sabre\Directory
+			&& $propFind->getDepth() !== 0
+			&& !is_null($propFind->getStatus(self::PROPERTY_NAME_UNREAD))) {
+			// Get ID of parent folder
+			$folderNodeID = $node->getId();
+			$nodeIdsArray = [$folderNodeID];
+			$this->numberOfCommentsForNodes[$folderNodeID] = 0;
+
+			// Get IDs for all children of the parent folder
+			$children = $node->getChildren();
+			foreach ($children as $childNode) {
+				if (!($childNode instanceof \OCA\DAV\Connector\Sabre\Directory) &&
+					!($childNode instanceof \OCA\DAV\Connector\Sabre\File)) {
+					return;
+				}
+				// Put node ID into an array
+				$nodeId = $childNode->getId();
+				array_push($nodeIdsArray, $nodeId);
+				$this->numberOfCommentsForNodes[$nodeId] = 0;
+			}
+
+			// Get user session
+			$user = $this->userSession->getUser();
+			if(!is_null($user)){
+				// Fetch all unread comments with their nodeIDs
+				$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
+					'files',
+					$nodeIdsArray,
+					$user);
+
+				if (!is_null($numberOfCommentsForNodes)){
+					// Map them to cached hash table
+					foreach($numberOfCommentsForNodes as $nodeID => $numberOfCommentsForNode) {
+						$this->numberOfCommentsForNodes[$nodeID] = $numberOfCommentsForNode;
+					}
+				}
+			}
+
 		}
 
 		$propFind->handle(self::PROPERTY_NAME_COUNT, function() use ($node) {
@@ -118,14 +165,25 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	 * @return Int|null
 	 */
 	public function getUnreadCount(Node $node) {
+		// Get user session
 		$user = $this->userSession->getUser();
-		if(is_null($user)) {
-			return null;
+		$numberOfCommentsForNode = null;
+
+		// Check if it is cached
+		if (isset($this->numberOfCommentsForNodes[$node->getId()])) {
+			$numberOfCommentsForNode = $this->numberOfCommentsForNodes[$node->getId()];
+		} else if(!is_null($user)) {
+			// Fetch all unread comments for this specific NodeID
+			$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
+				'files',
+				[$node->getId()],
+				$user);
+
+			if (isset($numberOfCommentsForNodes[$node->getId()])) {
+				$numberOfCommentsForNode = $numberOfCommentsForNodes[$node->getId()];
+			}
 		}
-
-		$lastRead = $this->commentsManager->getReadMark('files', strval($node->getId()), $user);
-
-		return $this->commentsManager->getNumberOfCommentsForObject('files', strval($node->getId()), $lastRead);
+		
+		return $numberOfCommentsForNode;
 	}
-
 }

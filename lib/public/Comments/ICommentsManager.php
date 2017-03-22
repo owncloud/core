@@ -21,7 +21,7 @@
  *
  */
 namespace OCP\Comments;
-
+use \OCP\IUser;
 /**
  * Interface ICommentsManager
  *
@@ -113,6 +113,27 @@ interface ICommentsManager {
 			$offset = 0,
 			\DateTime $notOlderThan = null
 	);
+
+	/**
+	 * Returns number of unread messages for specified nodeIDs, if there are any unread comments
+	 * 
+	 * Example query:
+	 * SELECT object_id, COUNT(object_id) FROM oc_comments C
+	 * 	WHERE object_id IN('79', '80', '34', '36', '38', '33')
+	 * 	AND object_id NOT IN(
+	 * 		SELECT object_id FROM oc_comments_read_markers CRM
+	 * 			WHERE C.object_id = CRM.object_id
+	 * 			AND user_id = 'receiver2'
+	 * 			AND marker_datetime > C.creation_timestamp)
+	 * GROUP BY object_id;
+	 *
+	 * @param string $objectType string the object type: Example 'files'
+	 * @param int[] $objectIds NodeIDs that may be returned: Example { 44, 36, 50, 60 }[4]
+	 * @param IUser $user
+	 * @return int[] $unreadCountsForNodes hash table: Example { 44 => 2, 36 => 1 }[2]
+	 * @since 10.0.0
+	 */
+	public function getNumberOfUnreadCommentsForNodes($objectType, $objectIds, IUser $user);
 
 	/**
 	 * @param $objectType string the object type, e.g. 'files'

@@ -32,6 +32,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	protected $commentsManager;
 	protected $userSession;
 	protected $server;
+	protected $userFolder;
 
 	public function setUp() {
 		parent::setUp();
@@ -39,13 +40,167 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 		$this->commentsManager = $this->createMock('\OCP\Comments\ICommentsManager');
 		$this->userSession = $this->createMock('\OCP\IUserSession');
 
+		$this->userFolder = $this->createMock('\OCP\Files\Folder');
+
 		$this->server = $this->getMockBuilder('\Sabre\DAV\Server')
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->plugin = new CommentPropertiesPluginImplementation($this->commentsManager, $this->userSession);
+		$this->plugin = new CommentPropertiesPluginImplementation($this->commentsManager, $this->userSession, $this->userFolder);
 		$this->plugin->initialize($this->server);
 	}
+
+	public function testHandleGetPropertiesUser() {
+		$sabreNode1 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$sabreNode1->expects($this->any())
+			->method('getId')
+			->will($this->returnValue(111));
+		$sabreNode1->expects($this->never())
+			->method('getPath');
+		$sabreNode2 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$sabreNode2->expects($this->any())
+			->method('getId')
+			->will($this->returnValue(222));
+		$sabreNode2->expects($this->never())
+			->method('getPath');
+
+		$sabreNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+			->disableOriginalConstructor()
+			->getMock();
+		$sabreNode->expects($this->any())
+			->method('getId')
+			->will($this->returnValue(123));
+		$sabreNode->expects($this->once())
+			->method('getChildren')
+		->will($this->returnValue([$sabreNode1, $sabreNode2]));
+		$sabreNode->expects($this->any())
+			->method('getPath')
+			->will($this->returnValue('/subdir'));
+
+		// simulate sabre recursive PROPFIND traversal
+		$propFindRoot = new \Sabre\DAV\PropFind(
+			'/subdir',
+			[CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD],
+			1
+		);
+
+		$propFind1 = new \Sabre\DAV\PropFind(
+			'/subdir/test.txt',
+			[CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD],
+			0
+		);
+		$propFind2 = new \Sabre\DAV\PropFind(
+			'/subdir/test2.txt',
+			[CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD],
+			0
+		);
+
+		// Add some comments there
+		$numberOfCommentsForNodes[$sabreNode1->getId()] = 1;
+		$numberOfCommentsForNodes[$sabreNode2->getId()] = 4;
+		$this->commentsManager->expects($this->once())
+			->method('getNumberOfUnreadCommentsForNodes')
+			->willReturn($numberOfCommentsForNodes);
+
+		// Now test with user
+		$this->userSession->expects($this->any())
+			->method('getUser')
+			->willReturn($this->createMock('\OCP\IUser'));
+
+		$this->plugin->handleGetProperties(
+			$propFindRoot,
+			$sabreNode
+		);
+		$this->plugin->handleGetProperties(
+			$propFind1,
+			$sabreNode1
+		);
+		$this->plugin->handleGetProperties(
+			$propFind2,
+			$sabreNode2
+		);
+
+		$result = $propFindRoot->getResultForMultiStatus();
+		$result1 = $propFind1->getResultForMultiStatus();
+		$result2 = $propFind2->getResultForMultiStatus();
+		$this->assertEmpty($result[404]);
+		$this->assertEmpty($result1[404]);
+		$this->assertEmpty($result2[404]);
+		$this->assertEquals(0, $result[200][CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD]);
+		$this->assertEquals(1, $result1[200][CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD]);
+		$this->assertEquals(4, $result2[200][CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD]);
+	}
+
+	public function testHandleGetPropertiesUserLoggedOut() {
+		$sabreNode1 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$sabreNode1->expects($this->any())
+			->method('getId')
+			->will($this->returnValue(111));
+		$sabreNode1->expects($this->never())
+			->method('getPath');
+		$sabreNode2 = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$sabreNode2->expects($this->any())
+			->method('getId')
+			->will($this->returnValue(222));
+		$sabreNode2->expects($this->never())
+			->method('getPath');
+
+		$sabreNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
+			->disableOriginalConstructor()
+			->getMock();
+		$sabreNode->expects($this->any())
+			->method('getId')
+			->will($this->returnValue(123));
+		$sabreNode->expects($this->once())
+			->method('getChildren')
+			->will($this->returnValue([$sabreNode1, $sabreNode2]));
+		$sabreNode->expects($this->any())
+			->method('getPath')
+			->will($this->returnValue('/subdir'));
+		// simulate sabre recursive PROPFIND traversal
+		$propFindRoot = new \Sabre\DAV\PropFind(
+			'/subdir',
+			[CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD],
+			1
+		);
+
+		$propFind1 = new \Sabre\DAV\PropFind(
+			'/subdir/test.txt',
+			[CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD],
+			0
+		);
+		$propFind2 = new \Sabre\DAV\PropFind(
+			'/subdir/test2.txt',
+			[CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD],
+			0
+		);
+
+		$this->plugin->handleGetProperties(
+			$propFindRoot,
+			$sabreNode
+		);
+		$this->plugin->handleGetProperties(
+			$propFind1,
+			$sabreNode1
+		);
+		$this->plugin->handleGetProperties(
+			$propFind2,
+			$sabreNode2
+		);
+
+		$result = $propFindRoot->getResultForMultiStatus();
+		$this->assertEmpty($result[404]);
+		$this->assertEquals(0, $result[200][CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD]);
+	}
+
 
 	public function nodeProvider() {
 		$mocks = [];
@@ -67,7 +222,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 	 * @param $node
 	 * @param $expectedSuccessful
 	 */
-	public function testHandleGetProperties($node, $expectedSuccessful) {
+	public function testHandleGetPropertiesCorrectNode($node, $expectedSuccessful) {
 		$propFind = $this->getMockBuilder('\Sabre\DAV\PropFind')
 			->disableOriginalConstructor()
 			->getMock();
@@ -136,9 +291,10 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 			->method('getUser')
 			->will($this->returnValue($user));
 
+		$numberOfCommentsForNodes[$node->getId()] = 42;
 		$this->commentsManager->expects($this->any())
-			->method('getNumberOfCommentsForObject')
-			->will($this->returnValue(42));
+			->method('getNumberOfUnreadCommentsForNodes')
+			->willReturn($numberOfCommentsForNodes);
 
 		$unread = $this->plugin->getUnreadCount($node);
 		if(is_null($user)) {
