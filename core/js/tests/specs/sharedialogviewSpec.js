@@ -207,19 +207,22 @@ describe('OC.Share.ShareDialogView', function() {
 			$('#allowShareWithLink').val('yes');
 
 			dialog.model.set('linkShare', {
-				isLinkShare: true
+				isLinkShare: true,
+				link: 'https://server.com/s/token'
 			});
 			dialog.render();
 
-			var focusStub = sinon.stub($.fn, 'focus');
-			var selectStub = sinon.stub($.fn, 'select');
-			dialog.$el.find('.linkText').click();
+			var linkText = dialog.$el.find('.linkText')[0];
+			var focusStub = sinon.stub(linkText, 'focus');
+			var setSelectionRangeStub = sinon.stub(linkText, 'setSelectionRange');
+			linkText.click();
 
 			expect(focusStub.calledOnce).toEqual(true);
-			expect(selectStub.calledOnce).toEqual(true);
+			expect(setSelectionRangeStub.calledOnce).toEqual(true);
+			expect(setSelectionRangeStub.args[0]).toEqual([0, 26]);
 
 			focusStub.restore();
-			selectStub.restore();
+			setSelectionRangeStub.restore();
 		});
 		describe('password', function() {
 			var slideToggleStub;
