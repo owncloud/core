@@ -104,3 +104,22 @@ Feature: Comments
     #Then the single response should contain a property "{http://owncloud.org/ns}comments-count" with value "1"
     And the single response should contain a property "{http://owncloud.org/ns}comments-unread" with value "0"
     And the single response should contain a property "{http://owncloud.org/ns}comments-href" with value "a_comment_url"
+
+  Scenario: Creating a comment on a folder belonging to myself
+    Given user "user0" exists
+    And As an "user0"
+    When user "user0" comments with content "My first comment" on folder "/FOLDER"
+    Then user "user0" should have the following comments on folder "/FOLDER"
+            | user0 | My first comment |
+
+  Scenario: Creating a comment on a shared folder belonging to another user
+    Given user "user0" exists
+    And user "user1" exists
+    And user "user0" created a folder "/FOLDER_TO_SHARE"
+    And folder "/FOLDER_TO_SHARE" of user "user0" is shared with user "user1"
+    And user "user1" comments with content "A comment from sharee" on folder "/FOLDER_TO_SHARE"
+    And user "user0" comments with content "A comment from sharer" on folder "/FOLDER_TO_SHARE"
+    And the HTTP status code should be "201"
+    Then user "user1" should have the following comments on file "/FOLDER_TO_SHARE"
+            | user1 | A comment from sharee |
+            | user0 | A comment from sharer |
