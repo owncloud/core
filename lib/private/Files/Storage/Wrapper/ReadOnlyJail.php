@@ -25,6 +25,10 @@ use OCP\Constants;
 
 class ReadOnlyJail extends DirMask {
 
+	/**
+	 * @param $path
+	 * @return bool
+	 */
 	protected function checkPath($path) {
 		if ($path === 'files') {
 			return true;
@@ -33,14 +37,30 @@ class ReadOnlyJail extends DirMask {
 		return parent::checkPath($path);
 	}
 
-	public function mkdir($path) {
 
+	/**
+	 * @param string $path
+	 * @return bool
+	 */
+	public function isDeletable($path) {
+		if (pathinfo($path, PATHINFO_EXTENSION) === 'part') {
+			return true;
+		}
+
+		return $this->getWrapperStorage()->isDeletable($path);
+	}
+
+	/**
+	 * @param string $path
+	 * @return bool
+	 */
+	public function mkdir($path) {
+		// Lift restrictions if files dir is created (at first login)
 		if ($path === 'files') {
 			$this->mask = Constants::PERMISSION_CREATE;
 		};
 
 		$result = parent::mkdir($path);
-
 		$this->mask = Constants::PERMISSION_READ;
 
 		return $result;
