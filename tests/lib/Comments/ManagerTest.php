@@ -32,6 +32,7 @@ class ManagerTest extends TestCase {
 	public function tearDown() {
 		$this->dbConn->getQueryBuilder()->delete('comments')->execute();
 		$this->dbConn->getQueryBuilder()->delete('comments_read_markers')->execute();
+		parent::tearDown();
 	}
 
 	protected function addDatabaseEntry($parentId, $topmostParentId, $creationDT = null, $latestChildDT = null, $actor_id = 'alice', $object_id = 'file64') {
