@@ -8,6 +8,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Ujjwal Bhardwaj <ujjwalb1996@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -34,7 +35,9 @@ use OC\User\User;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
@@ -46,6 +49,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
 use OCP\IAvatarManager;
+use OCP\Security\ISecureRandom;
 
 /**
  * @package OC\Settings\Controller
@@ -79,6 +83,10 @@ class UsersController extends Controller {
 	private $isRestoreEnabled = false;
 	/** @var IAvatarManager */
 	private $avatarManager;
+	/** @var ISecureRandom */
+	protected $secureRandom;
+	/** @var ITimeFactory */
+	protected $timeFactory;
 
 	/**
 	 * @param string $appName
@@ -87,14 +95,17 @@ class UsersController extends Controller {
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
 	 * @param IConfig $config
-	 * @param bool $isAdmin
+	 * @param ISecureRandom $secureRandom
+	 * @param $isAdmin
 	 * @param IL10N $l10n
 	 * @param ILogger $log
 	 * @param \OC_Defaults $defaults
 	 * @param IMailer $mailer
-	 * @param string $fromMailAddress
+	 * @param ITimeFactory $timeFactory
+	 * @param $fromMailAddress
 	 * @param IURLGenerator $urlGenerator
 	 * @param IAppManager $appManager
+	 * @param IAvatarManager $avatarManager
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -102,11 +113,13 @@ class UsersController extends Controller {
 								IGroupManager $groupManager,
 								IUserSession $userSession,
 								IConfig $config,
+								ISecureRandom $secureRandom,
 								$isAdmin,
 								IL10N $l10n,
 								ILogger $log,
 								\OC_Defaults $defaults,
 								IMailer $mailer,
+								ITimeFactory $timeFactory,
 								$fromMailAddress,
 								IURLGenerator $urlGenerator,
 								IAppManager $appManager,
@@ -118,9 +131,11 @@ class UsersController extends Controller {
 		$this->config = $config;
 		$this->isAdmin = $isAdmin;
 		$this->l10n = $l10n;
+		$this->secureRandom = $secureRandom;
 		$this->log = $log;
 		$this->defaults = $defaults;
 		$this->mailer = $mailer;
+		$this->timeFactory = $timeFactory;
 		$this->fromMailAddress = $fromMailAddress;
 		$this->urlGenerator = $urlGenerator;
 		$this->avatarManager = $avatarManager;
@@ -211,6 +226,35 @@ class UsersController extends Controller {
 			$users[$uid] = $this->userManager->get($uid);
 		}
 		return $users;
+	}
+
+	/**
+	 * @param string $token
+	 * @param string $userId
+	 * @throws \Exception
+	 */
+	private function checkEmailChangeToken($token, $userId) {
+		$user = $this->userManager->get($userId);
+
+		if ($user === null) {
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the user does not exist'));
+		}
+
+		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
+		if(count($splittedToken) !== 2) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+		}
+
+		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12)) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+		}
+
+		if (!hash_equals($splittedToken[1], $token)) {
+			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
+			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
+		}
 	}
 
 	/**
@@ -555,20 +599,43 @@ class UsersController extends Controller {
 			);
 		}
 
-		// delete user value if email address is empty
-		$user->setEMailAddress($mailAddress);
+		if ($mailAddress === '') {
+			$this->setEmailAddress($userId, $mailAddress);
+			return new DataResponse(
+				[
+					'status' => 'success',
+					'data' => [
+						'message' => (string)$this->l10n->t('Email has been changed successfully.')
+					]
+				],
+				Http::STATUS_OK
+			);
+		}
 
-		return new DataResponse(
-			[
-				'status' => 'success',
-				'data' => [
-					'username' => $id,
-					'mailAddress' => $mailAddress,
-					'message' => (string)$this->l10n->t('Email saved')
+		try {
+			$this->sendEmail($userId, $mailAddress);
+			return new DataResponse(
+				[
+					'status' => 'success',
+					'data' => [
+						'username' => $id,
+						'mailAddress' => $mailAddress,
+						'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation')
+					]
+				],
+				Http::STATUS_OK
+			);
+		} catch (\Exception $e){
+			return new DataResponse(
+				[
+					'status' => 'error',
+					'data' => [
+						'message' => (string)$e->getMessage()
+					]
 				]
-			],
-			Http::STATUS_OK
-		);
+			);
+		}
+
 	}
 
 	/**
@@ -664,6 +731,114 @@ class UsersController extends Controller {
 	}
 
 	/**
+ 	 * @param string $userId
+ 	 * @param string $mailAddress
+ 	 * @throws \Exception
+	 * @return boolean
+ 	 */
+	public function sendEmail($userId, $mailAddress) {
+		$token = $this->config->getUserValue($userId, 'owncloud', 'changeMail');
+		if ($token !== '') {
+			$splittedToken = explode(':', $token);
+			if ((count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
+				$this->log->alert('The email is not sent because an email change confirmation mail was sent recently.');
+				return false;
+			}
+		}
+
+		$token = $this->secureRandom->generate(21,
+			ISecureRandom::CHAR_DIGITS .
+			ISecureRandom::CHAR_LOWER .
+			ISecureRandom::CHAR_UPPER);
+		$this->config->setUserValue($userId, 'owncloud', 'changeMail', $this->timeFactory->getTime() . ':' . $token);
+
+		$link = $this->urlGenerator->linkToRouteAbsolute('settings.Users.changeMail', ['userId' => $userId, 'token' => $token, 'mailAddress' => $mailAddress]);
+
+		$tmpl = new \OC_Template('settings', 'changemail/email');
+		$tmpl->assign('link', $link);
+		$msg = $tmpl->fetchPage();
+
+		try {
+			$message = $this->mailer->createMessage();
+			$message->setTo([$mailAddress => $userId]);
+			$message->setSubject($this->l10n->t('%s email address confirm', [$this->defaults->getName()]));
+			$message->setPlainBody($msg);
+			$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
+			$this->mailer->send($message);
+		} catch (\Exception $e) {
+			throw new \Exception($this->l10n->t(
+				'Couldn\'t send email address change confirmation mail. Please contact your administrator.'
+			));
+		}
+		return true;
+    }
+
+	/**
+	 * @param string $id
+ 	 * @param string $mailAddress
+ 	 */
+	public function setEmailAddress($id, $mailAddress) {
+		$user = $this->userManager->get($id);
+
+		$user->setEMailAddress($mailAddress);
+		if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
+			$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
+		}
+	}
+
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @NoSubadminRequired
+	 *
+	 * @param $token
+	 * @param $userId
+	 * @param $mailAddress
+	 * @return RedirectResponse
+	 * @throws \Exception
+	 */
+	public function changeMail($token, $userId, $mailAddress) {
+		$user = $this->userManager->get($userId);
+		$sessionUser = $this->userSession->getUser();
+
+		if ($user !== $sessionUser) {
+			$this->log->error("The logged in user is different than expected.", ['app' => 'settings']);
+			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
+		}
+
+		try {
+			$this->checkEmailChangeToken($token, $userId);
+		} catch (\Exception $e) {
+			$this->log->error($e->getMessage(), ['app' => 'settings']);
+			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
+		}
+
+		$oldEmailAddress = $user->getEMailAddress();
+
+		$this->setEmailAddress($userId, $mailAddress);
+
+		if ($oldEmailAddress !== null) {
+			$tmpl = new \OC_Template('settings', 'changemail/notify');
+			$tmpl->assign('mailAddress', $mailAddress);
+			$msg = $tmpl->fetchPage();
+
+			try {
+				$message = $this->mailer->createMessage();
+				$message->setTo([$oldEmailAddress => $userId]);
+				$message->setSubject($this->l10n->t('%s email address changed successfully', [$this->defaults->getName()]));
+				$message->setPlainBody($msg);
+				$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
+				$this->mailer->send($message);
+			} catch (\Exception $e) {
+				throw new \Exception($this->l10n->t(
+					'Couldn\'t send email address change notification mail. Please contact your administrator.'
+				));
+			}
+		}
+		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success']));
+  }
+  
+  /*
 	 * @NoAdminRequired
 	 *
 	 * @param string $id

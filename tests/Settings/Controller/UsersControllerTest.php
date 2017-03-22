@@ -13,6 +13,7 @@ namespace Tests\Settings\Controller;
 use \OC\Settings\Application;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 
 /**
  * @group DB
@@ -54,6 +55,14 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['URLGenerator'] = $this->getMockBuilder('\OCP\IURLGenerator')
 			->disableOriginalConstructor()->getMock();
 		$this->container['OCP\\App\\IAppManager'] = $this->getMockBuilder('OCP\\App\\IAppManager')
+			->disableOriginalConstructor()->getMock();
+		$this->container['SecureRandom'] = $this->getMockBuilder('\OCP\Security\ISecureRandom')
+			->disableOriginalConstructor()->getMock();
+		$this->container['TimeFactory'] = $this->getMockBuilder('\OCP\AppFramework\Utility\ITimeFactory')
+			->disableOriginalConstructor()->getMock();
+		$this->existingUser = $this->getMockBuilder('OCP\IUser')
+			->disableOriginalConstructor()->getMock();
+		$this->container['Mailer'] = $this->getMockBuilder('\OCP\Mail\IMailer')
 			->disableOriginalConstructor()->getMock();
 
 
@@ -1800,7 +1809,8 @@ class UsersControllerTest extends \Test\TestCase {
 	 * @param string $mailAddress
 	 * @param bool $isValid
 	 * @param bool $expectsUpdate
-	 * @param bool $expectsDelete
+	 * @param bool $canChangeDisplayName
+	 * @param bool $responseCode
 	 */
 	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $canChangeDisplayName, $responseCode) {
 		$this->container['IsAdmin'] = true;
@@ -1813,10 +1823,14 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('foo'));
 		$user
 			->expects($this->any())
+			->method('getEMailAddress')
+			->will($this->returnValue('foo@local'));
+		$user
+			->expects($this->any())
 			->method('canChangeDisplayName')
 			->will($this->returnValue($canChangeDisplayName));
 		$user
-			->expects($expectsUpdate ? $this->once() : $this->never())
+			->expects($this->any())
 			->method('setEMailAddress')
 			->with(
 				$this->equalTo($mailAddress)
@@ -1836,16 +1850,64 @@ class UsersControllerTest extends \Test\TestCase {
 			$user->expects($this->atLeastOnce())
 				->method('canChangeDisplayName')
 				->willReturn(true);
-
-			$this->container['UserManager']
-				->expects($this->atLeastOnce())
-				->method('get')
-				->with('foo')
-				->will($this->returnValue($user));
 		}
 
-		$response = $this->container['UsersController']->setMailAddress($user->getUID(), $mailAddress);
+		$this->container['Config']
+			->expects($this->any())
+			->method('getUserValue')
+			->with('foo', 'owncloud', 'changeMail')
+			->will($this->returnValue('12000:AVerySecretToken'));
+		$this->container['TimeFactory']
+			->expects($this->any())
+			->method('getTime')
+			->willReturnOnConsecutiveCalls(12301, 12348);
+		$this->container['UserManager']
+			->expects($this->atLeastOnce())
+			->method('get')
+			->with('foo')
+			->will($this->returnValue($user));
+		$this->container['SecureRandom']
+			->expects($this->any())
+			->method('generate')
+			->with('21')
+			->will($this->returnValue('ThisIsMaybeANotSoSecretToken!'));
+		$this->container['Config']
+			->expects($this->any())
+			->method('setUserValue')
+			->with('foo', 'owncloud', 'changeMail', '12348:ThisIsMaybeANotSoSecretToken!');
+		$this->container['URLGenerator']
+			->expects($this->any())
+			->method('linkToRouteAbsolute')
+			->will($this->returnValue('https://ownCloud.com/index.php/mailaddress/'));
 
+		$message = $this->getMockBuilder('\OC\Mail\Message')
+			->disableOriginalConstructor()->getMock();
+		$message
+			->expects($this->any())
+			->method('setTo')
+			->with(['foo@local' => 'foo']);
+		$message
+			->expects($this->any())
+			->method('setSubject')
+			->with(' email address confirm');
+		$message
+			->expects($this->any())
+			->method('setPlainBody')
+			->with('Use the following link to confirm your changes to the email address: https://ownCloud.com/index.php/mailaddress/');
+		$message
+			->expects($this->any())
+			->method('setFrom')
+			->with(['changemail-noreply@localhost' => null]);
+		$this->container['Mailer']
+			->expects($this->any())
+			->method('createMessage')
+			->will($this->returnValue($message));
+		$this->container['Mailer']
+			->expects($this->any())
+			->method('send')
+			->with($message);
+
+		$response = $this->container['UsersController']->setMailAddress($user->getUID(), $mailAddress);
 		$this->assertSame($responseCode, $response->getStatus());
 	}
 
@@ -2031,8 +2093,8 @@ class UsersControllerTest extends \Test\TestCase {
 						'message' => 'Authentication error',
 					],
 				]
-				);
-			}
+			);
+		}
 
 		$response = $this->container['UsersController']->setDisplayName($editUser->getUID(), 'newDisplayName');
 		$this->assertEquals($expectedResponse, $response);
@@ -2085,6 +2147,67 @@ class UsersControllerTest extends \Test\TestCase {
 			]
 		);
 		$response = $this->container['UsersController']->setDisplayName($user->getUID(), 'newDisplayName');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testDifferentLoggedUserAndRequestUser() {
+		$token = 'AVerySecretToken';
+		$userId = 'ExistingUser';
+		$mailAddress = 'sample@email.com';
+		$userObject = $this->getMockBuilder('OCP\IUser')
+			->disableOriginalConstructor()->getMock();
+		$diffUserObject = $this->getMockBuilder('OCP\IUser')
+			->disableOriginalConstructor()->getMock();
+
+		$this->container['UserManager']
+			->expects($this->once())
+			->method('get')
+			->with($userId)
+			->will($this->returnValue($userObject));
+		$this->container['UserSession']
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($diffUserObject));
+		$this->container['Logger']
+			->expects($this->once())
+			->method('error')
+			->with('The logged in user is different than expected.');
+
+		$expectedResponse = new RedirectResponse(
+			$this->container['URLGenerator']->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error'])
+		);
+
+		$response = $this->container['UsersController']->changeMail($token, $userId, $mailAddress);
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testInvalidEmailChangeToken() {
+		$token = 'AVerySecretToken';
+		$userId = 'ExistingUser';
+		$mailAddress = 'sample@email.com';
+		$userObject = $this->getMockBuilder('OCP\IUser')
+			->disableOriginalConstructor()->getMock();
+
+		$this->container['UserManager']
+			->expects($this->atLeastOnce())
+			->method('get')
+			->with($userId)
+			->will($this->returnValue($userObject));
+		$this->container['UserSession']
+			->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($userObject));
+		$this->container['Logger']
+			->expects($this->once())
+			->method('error')
+			->with('Couldn\'t change the email address because the token is invalid');
+
+
+		$expectedResponse = new RedirectResponse(
+			$this->container['URLGenerator']->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error'])
+		);
+
+		$response = $this->container['UsersController']->changeMail($token, $userId, $mailAddress);
 		$this->assertEquals($expectedResponse, $response);
 	}
 	
