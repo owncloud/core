@@ -96,6 +96,8 @@
     "deleted {userName}" : "{userName} supprimé",
     "add group" : "ajouter un groupe",
     "Invalid quota value \"{val}\"" : "Valeur de quota invalide \"{val}\"",
+    "enabled" : "activé",
+    "disabled" : "désactivé",
     "no group" : "Aucun groupe",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "La modification du mot de passe entrainera la perte des données car la restauration de données n'est pas disponible pour cet utilisateur",
     "Password successfully changed" : "Mot de passe changé avec succès",

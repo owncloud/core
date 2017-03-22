@@ -73,6 +73,8 @@ OC.L10N.register(
     "never" : "mitte kunagi",
     "deleted {userName}" : "kustutatud {userName}",
     "add group" : "lisa grupp",
+    "enabled" : "sisse lülitatud",
+    "disabled" : "välja lülitatud",
     "no group" : "grupp puudub",
     "A valid username must be provided" : "Sisesta nõuetele vastav kasutajatunnus",
     "A valid password must be provided" : "Sisesta nõuetele vastav parool",

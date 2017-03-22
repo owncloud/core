@@ -71,6 +71,8 @@ OC.L10N.register(
     "never" : "هرگز",
     "deleted {userName}" : "کاربر {userName} حذف شد",
     "add group" : "افزودن گروه",
+    "enabled" : "فعال شده",
+    "disabled" : "غیر فعال شده",
     "no group" : "هیچ گروهی",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "با توجه به عدم دستیابی به بازگردانی اطلاعات برای کاربر، تغییر رمز عبور باعث از بین رفتن اطلاعات خواهد شد",
     "A valid username must be provided" : "نام کاربری صحیح باید وارد شود",

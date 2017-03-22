@@ -94,6 +94,8 @@ OC.L10N.register(
     "deleted {userName}" : "poistettu {userName}",
     "add group" : "lisää ryhmä",
     "Invalid quota value \"{val}\"" : "Virheellinen kiintiöarvo \"{val}\"",
+    "enabled" : "Käytössä",
+    "disabled" : "Poissa käytöstä",
     "no group" : "ei ryhmää",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Salasanan muuttaminen johtaa tietojen häviämiseen, koska tietojen palautusta ei ole käytettävissä tämän käyttäjän kohdalla",
     "Password successfully changed" : "Salasana muutettu onnistuneesti",

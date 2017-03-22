@@ -76,6 +76,8 @@
     "never" : "mai",
     "deleted {userName}" : "eliminat {userName}",
     "add group" : "afegeix grup",
+    "enabled" : "habilitat",
+    "disabled" : "inhabilitat",
     "no group" : "sense grup",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Canviar la contrasenya provocarà pèrdua de dades, perquè la recuperació de dades no està disponible per a aquest usuari",
     "A valid username must be provided" : "Heu de facilitar un nom d'usuari vàlid",

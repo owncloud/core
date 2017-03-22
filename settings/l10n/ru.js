@@ -99,6 +99,8 @@ OC.L10N.register(
     "deleted {userName}" : "удалён {userName}",
     "add group" : "добавить группу",
     "Invalid quota value \"{val}\"" : "Неверное значение квоты \"{val}\"",
+    "enabled" : "включен",
+    "disabled" : "выключен",
     "no group" : "без группы",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Изменение пароля приведёт к потере данных, так как восстановление данных не доступно для этого пользователя",
     "Password successfully changed" : "Пароль изменён успешно",

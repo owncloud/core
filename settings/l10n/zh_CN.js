@@ -98,6 +98,8 @@ OC.L10N.register(
     "deleted {userName}" : "已删除 {userName}",
     "add group" : "增加组",
     "Invalid quota value \"{val}\"" : "无效值 \"{val}\"",
+    "enabled" : "已启用",
+    "disabled" : "已禁用",
     "no group" : "没有组",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "更改密码会导致数据丢失，因为数据恢复不适用于此用户",
     "Password successfully changed" : "密码修改成功",

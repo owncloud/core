@@ -98,6 +98,8 @@ OC.L10N.register(
     "deleted {userName}" : "desaniciáu {userName}",
     "add group" : "amestar Grupu",
     "Invalid quota value \"{val}\"" : "Valor \"{val}\" de cuota inválidu ",
+    "enabled" : "activáu",
+    "disabled" : "desactiváu",
     "no group" : "Ensín grupu",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Anovar la contraseña va dar llugar a la perda de datos, porque la recuperación de datos nun ta disponible pa esti usuariu",
     "Password successfully changed" : "Camudóse la contraseña",

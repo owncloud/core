@@ -90,6 +90,8 @@ OC.L10N.register(
     "never" : "nigdy",
     "deleted {userName}" : "usunięto {userName}",
     "add group" : "dodaj grupę",
+    "enabled" : "Włączone",
+    "disabled" : "Wyłączone",
     "no group" : "brak grupy",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Zmiana hasła spowoduje utratę danych, ponieważ odzyskiwanie danych nie jest włączone dla tego użytkownika",
     "Password successfully changed" : "Zmiana hasła powiodła się.",

@@ -81,6 +81,8 @@ OC.L10N.register(
     "never" : "никада",
     "deleted {userName}" : "обрисан {userName}",
     "add group" : "додај групу",
+    "enabled" : "укључено",
+    "disabled" : "искључено",
     "no group" : "нема групе",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Измена лозинке ће резултирати губитком података јер опорављање података није доступно за овог корисника",
     "A valid username must be provided" : "Морате унети исправно корисничко име",

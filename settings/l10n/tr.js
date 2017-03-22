@@ -98,6 +98,8 @@ OC.L10N.register(
     "deleted {userName}" : "{userName} silindi",
     "add group" : "grup ekle",
     "Invalid quota value \"{val}\"" : "Geçersiz kalan alan değeri \"{val}\"",
+    "enabled" : "etkin",
+    "disabled" : "devre dışı",
     "no group" : "grup yok",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Parolayı değiştirmek, bu kullanıcı için veri kurtarması kullanılamadığından veri kaybına sebep olacak",
     "Password successfully changed" : "Şifre başarıyla değiştirildi.",

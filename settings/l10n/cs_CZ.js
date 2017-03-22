@@ -98,6 +98,8 @@ OC.L10N.register(
     "deleted {userName}" : "smazán {userName}",
     "add group" : "přidat skupinu",
     "Invalid quota value \"{val}\"" : "Neplatná hodnota kvóty \"{val}\"",
+    "enabled" : "povoleno",
+    "disabled" : "zakázáno",
     "no group" : "není ve skupině",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Změna hesla bude mít za následek ztrátu dat, protože jejich obnova není pro tohoto uživatele dostupná.",
     "Password successfully changed" : "Heslo bylo úspěšně změněno",

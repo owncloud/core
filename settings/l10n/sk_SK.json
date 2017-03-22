@@ -75,6 +75,8 @@
     "never" : "nikdy",
     "deleted {userName}" : "vymazané {userName}",
     "add group" : "pridať skupinu",
+    "enabled" : "zapnuté",
+    "disabled" : "vypnuté",
     "no group" : "nie je v skupine",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Zmena hesla bude mať za následok stratu dát, pretože obnova dát nie je k dispozícii pre tohto používateľa",
     "A valid username must be provided" : "Musíte zadať platné používateľské meno",

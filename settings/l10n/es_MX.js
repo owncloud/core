@@ -63,6 +63,8 @@ OC.L10N.register(
     "undo" : "deshacer",
     "never" : "nunca",
     "add group" : "añadir Grupo",
+    "enabled" : "activado",
+    "disabled" : "desactivado",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Cambiar la contraseña resultará en la pérdida de datos, porque la recuperación de datos no está disponible para este usuario",
     "A valid username must be provided" : "Se debe proporcionar un nombre de usuario válido",
     "A valid password must be provided" : "Se debe proporcionar una contraseña válida",

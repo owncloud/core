@@ -75,6 +75,8 @@ OC.L10N.register(
     "never" : "никогаш",
     "deleted {userName}" : "избришан {userName}",
     "add group" : "додади група",
+    "enabled" : "овозможен",
+    "disabled" : "оневозможен",
     "no group" : "нема група",
     "A valid username must be provided" : "Мора да се обезбеди валидно корисничко име ",
     "Error creating user: {message}" : "Грешка при креирање на корисник: {message}",

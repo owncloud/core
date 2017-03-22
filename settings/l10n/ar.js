@@ -41,6 +41,8 @@ OC.L10N.register(
     "undo" : "تراجع",
     "never" : "بتاتا",
     "add group" : "اضافة مجموعة",
+    "enabled" : "متاح",
+    "disabled" : "غير متاح",
     "A valid username must be provided" : "يجب ادخال اسم مستخدم صحيح",
     "A valid password must be provided" : "يجب ادخال كلمة مرور صحيحة",
     "Forum" : "منتدى",

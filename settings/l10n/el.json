@@ -86,6 +86,8 @@
     "never" : "ποτέ",
     "deleted {userName}" : "διαγραφή {userName}",
     "add group" : "προσθήκη ομάδας",
+    "enabled" : "ενεργοποιημένο",
+    "disabled" : "απενεργοποιημένο",
     "no group" : "καμια ομάδα",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Η αλλαγή του κωδικού πρόσβασης θα έχει ως αποτέλεσμα το χάσιμο δεδομένων, επειδή η ανάκτηση δεδομένων δεν είναι διαθέσιμη γι' αυτόν τον χρήστη",
     "A valid username must be provided" : "Πρέπει να δοθεί έγκυρο όνομα χρήστη",

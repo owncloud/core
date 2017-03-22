@@ -99,6 +99,8 @@ OC.L10N.register(
     "deleted {userName}" : "eyddi {userName}",
     "add group" : "bæta við hópi",
     "Invalid quota value \"{val}\"" : "Óleyfilegt gildi kvóta \"{val}\"",
+    "enabled" : "virkt",
+    "disabled" : "óvirkt",
     "no group" : "enginn hópur",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Breyting á þessu lykilorði mun valda gagnatapi, þar sem gagnaendurheimt er ekki tiltæk fyrir þennan notanda",
     "Password successfully changed" : "Lykilorðinu hefur verið breytt",

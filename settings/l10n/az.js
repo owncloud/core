@@ -68,6 +68,8 @@ OC.L10N.register(
     "never" : "heç vaxt",
     "deleted {userName}" : "{userName} silindi",
     "add group" : "qrupu əlavə et",
+    "enabled" : "işə salınıb",
+    "disabled" : "söndürülüb",
     "no group" : "qrup yoxdur",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Şifrənin dəyişdirilməsi data itkisinə gətirəcək ona görə ki, datanın bərpası bu istifadəçi üçün movcud deyil.",
     "A valid username must be provided" : "Düzgün istifadəçi adı daxil edilməlidir",

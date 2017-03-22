@@ -81,6 +81,8 @@ OC.L10N.register(
     "never" : "niekada",
     "deleted {userName}" : "{userName} ištrintas",
     "add group" : "pridėti grupę",
+    "enabled" : "įjungtas",
+    "disabled" : "išjungtas",
     "no group" : "grupės nėra",
     "Password successfully changed" : "Slaptažodis sėkmingai pakeistas",
     "A valid username must be provided" : "Vartotojo vardas turi būti tinkamas",

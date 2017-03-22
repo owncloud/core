@@ -97,6 +97,8 @@
     "deleted {userName}" : "ลบผู้ใช้ {userName} เรียบร้อยแล้ว",
     "add group" : "เพิ่มกลุ่ม",
     "Invalid quota value \"{val}\"" : "ค่าอัญประกาศไม่ถูกต้อง \"{val}\"",
+    "enabled" : "เปิดใช้งาน",
+    "disabled" : "ปิดใช้งาน",
     "no group" : "ไม่มีกลุ่ม",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "การเปลี่ยนรหัสผ่านจะส่งผลให้เกิดการสูญเสียข้อมูลเพราะการกู้คืนข้อมูลจะไม่สามารถใช้ได้สำหรับผู้ใช้นี้",
     "Password successfully changed" : "เปลี่ยนรหัสผ่านเรียบร้อยแล้ว",

@@ -40,6 +40,8 @@ OC.L10N.register(
     "undo" : "deshacer",
     "never" : "nunca",
     "add group" : "agregar grupo",
+    "enabled" : "activado",
+    "disabled" : "desactivado",
     "A valid username must be provided" : "Debe ingresar un nombre de usuario válido",
     "A valid password must be provided" : "Debe ingresar una contraseña válida",
     "Cheers!" : "¡Saludos!",

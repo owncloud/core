@@ -97,6 +97,8 @@
     "deleted {userName}" : "izbrisano {userName}",
     "add group" : "dodaj skupino",
     "Invalid quota value \"{val}\"" : "Neveljavna vrednost količinske omejitve \"{val}\"",
+    "enabled" : "omogočeno",
+    "disabled" : "onemogočeno",
     "no group" : "ni skupine",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Sprememba gesla bo povzročila izgubo podatkov, ker obnova podatkov za tega uporabnika ni na voljo.",
     "Password successfully changed" : "Geslo je uspešno spremenjeno.",

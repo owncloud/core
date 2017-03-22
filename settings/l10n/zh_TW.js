@@ -93,6 +93,8 @@ OC.L10N.register(
     "never" : "永不",
     "deleted {userName}" : "刪除 {userName}",
     "add group" : "新增群組",
+    "enabled" : "啟動的",
+    "disabled" : "無效的",
     "no group" : "沒有群組",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "更改密碼會造成資料遺失，因為資料復原的功能無法在這個使用者使用",
     "A valid username must be provided" : "必須提供一個有效的用戶名",

@@ -85,6 +85,8 @@ OC.L10N.register(
     "never" : "ніколи",
     "deleted {userName}" : "видалено {userName}",
     "add group" : "додати групу",
+    "enabled" : "увімкнено",
+    "disabled" : "вимкнено",
     "no group" : "без групи",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Зміна пароля призведе до втрати даних, тому що відновлення даних не доступно для цього користувача",
     "A valid username must be provided" : "Потрібно задати вірне ім'я користувача",

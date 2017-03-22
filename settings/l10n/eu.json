@@ -62,6 +62,8 @@
     "never" : "inoiz",
     "deleted {userName}" : "{userName} ezabatuta",
     "add group" : "gehitu taldea",
+    "enabled" : "gaituta",
+    "disabled" : "desgaituta",
     "no group" : "talderik ez",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Pasahitza aldatzeak datuen galera eragingo du, erabiltzaile honetarako datuen berreskuratzea eskuragarri ez dagoelako",
     "A valid username must be provided" : "Baliozko erabiltzaile izena eman behar da",

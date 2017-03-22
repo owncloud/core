@@ -98,6 +98,8 @@ OC.L10N.register(
     "deleted {userName}" : "slettet {userName}",
     "add group" : "legg til gruppe",
     "Invalid quota value \"{val}\"" : "Ugyldig kvoteverdi \"{val}\"",
+    "enabled" : "aktivert",
+    "disabled" : "deaktivert",
     "no group" : "ingen gruppe",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Forandring av passordet vil føre til tap av data, fordi datagjennoppretting er utilgjengelig for denne brukeren",
     "Password successfully changed" : "Passordet ble endret",

@@ -98,6 +98,8 @@ OC.L10N.register(
     "deleted {userName}" : "{userName} を削除しました",
     "add group" : "グループを追加",
     "Invalid quota value \"{val}\"" : "クオータ \"{val}\" は不正な値です。",
+    "enabled" : "有効",
+    "disabled" : "無効",
     "no group" : "未グループ",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "このユーザーのデータ復旧が無効になっていますので、パスワードを変更するとユーザーはデータに二度とアクセスできません。",
     "Password successfully changed" : "パスワードは正常に変更されました",

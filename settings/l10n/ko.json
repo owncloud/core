@@ -88,6 +88,8 @@
     "never" : "없음",
     "deleted {userName}" : "{userName} 삭제됨",
     "add group" : "그룹 추가",
+    "enabled" : "활성화됨",
+    "disabled" : "비활성화됨",
     "no group" : "그룹 없음",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "이 사용자에 대해 데이터 복구를 사용할 수 없기 때문에, 암호를 변경하면 데이터를 잃게 됩니다.",
     "A valid username must be provided" : "올바른 사용자 이름을 입력해야 함",

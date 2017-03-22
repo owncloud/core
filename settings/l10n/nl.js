@@ -99,6 +99,8 @@ OC.L10N.register(
     "deleted {userName}" : "verwijderd {userName}",
     "add group" : "Nieuwe groep",
     "Invalid quota value \"{val}\"" : "Ongeldige quota waarde \"{val}\"",
+    "enabled" : "ingeschakeld",
+    "disabled" : "uitgeschakeld",
     "no group" : "geen groep",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Wijzigen van het wachtwoord leidt tot gegevensverlies, omdat gegevensherstel voor deze gebruiker niet beschikbaar is",
     "Password successfully changed" : "Wachtwoord succesvol gewijzigd",

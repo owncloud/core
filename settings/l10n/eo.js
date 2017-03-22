@@ -44,6 +44,8 @@ OC.L10N.register(
     "never" : "neniam",
     "deleted {userName}" : "{userName} foriĝis",
     "add group" : "aldoni grupon",
+    "enabled" : "kapabligita",
+    "disabled" : "malkapabligita",
     "A valid username must be provided" : "Valida uzantonomo devas proviziĝi",
     "A valid password must be provided" : "Valida pasvorto devas proviziĝi",
     "User documentation" : "Uzodokumentaro",

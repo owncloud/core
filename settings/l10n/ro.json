@@ -76,6 +76,8 @@
     "never" : "niciodată",
     "deleted {userName}" : "{userName} șters",
     "add group" : "adăugaţi grupul",
+    "enabled" : "activat",
+    "disabled" : "dezactivat",
     "no group" : "niciun grup",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Schimbarea parolei va rezulta în pierderea datelor deoarece recuperarea acestora nu este disponibilă pentru acest utilizator",
     "A valid username must be provided" : "Trebuie să furnizaţi un nume de utilizator valid",

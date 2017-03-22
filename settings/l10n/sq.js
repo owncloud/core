@@ -99,6 +99,8 @@ OC.L10N.register(
     "deleted {userName}" : "u fshi {userName}",
     "add group" : "shto grup",
     "Invalid quota value \"{val}\"" : "Vlerë kuotash e pavlefshme \"{val}\"",
+    "enabled" : "e aktivizuar",
+    "disabled" : "e çaktivizuar",
     "no group" : "pa grup",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Ndryshimi i fjalëkalimit do të sjellë humbje të dhënash, ngaqë rikthimi i të dhënave s’është i përdorshëm për këtë përdorues",
     "Password successfully changed" : "Fjalëkalimi u ndryshua me sukses",

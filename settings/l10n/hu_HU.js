@@ -92,6 +92,8 @@ OC.L10N.register(
     "never" : "soha",
     "deleted {userName}" : "törölve: {userName}",
     "add group" : "csoport hozzáadása",
+    "enabled" : "Bekapcsolva",
+    "disabled" : "Kikapcsolva",
     "no group" : "nincs csoport",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "A jelszó megváltoztatása adatvesztéssel jár, mert lehetséges az adatok visszaállítása ennek a felhasználónak",
     "A valid username must be provided" : "Érvényes felhasználónevet kell megadnia",

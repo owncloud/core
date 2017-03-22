@@ -20,6 +20,8 @@ OC.L10N.register(
     "undo" : "დაბრუნება",
     "never" : "არასდროს",
     "add group" : "ჯგუფის დამატება",
+    "enabled" : "ჩართულია",
+    "disabled" : "გათიშულია",
     "A valid username must be provided" : "უნდა მიუთითოთ არსებული მომხმარებლის სახელი",
     "A valid password must be provided" : "უნდა მიუთითოთ არსებული პაროლი",
     "Forum" : "ფორუმი",

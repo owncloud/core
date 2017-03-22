@@ -96,6 +96,8 @@
     "deleted {userName}" : "raderade {userName}",
     "add group" : "lägg till grupp",
     "Invalid quota value \"{val}\"" : "Felaktigt gränsvärde \"{val}\"",
+    "enabled" : "aktiverad",
+    "disabled" : "inaktiverad",
     "no group" : "ingen grupp",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "Ändring utav lösenord kommer resultera i förlorad data, eftersom dataåterställning ej är tillgängligt för denna användare.",
     "Password successfully changed" : "Ändringen av lösenordet lyckades",

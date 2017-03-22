@@ -19,6 +19,8 @@ OC.L10N.register(
     "undo" : "يېنىۋال",
     "never" : "ھەرگىز",
     "add group" : "گۇرۇپپا قوش",
+    "enabled" : "قوزغىتىلغان",
+    "disabled" : "چەكلەنگەن",
     "A valid username must be provided" : "چوقۇم ئىناۋەتلىك ئىشلەتكۈچى ئىسمىدىن بىرنى تەمىنلەش كېرەك",
     "A valid password must be provided" : "چوقۇم ئىناۋەتلىك ئىم تەمىنلەش كېرەك",
     "Forum" : "مۇنبەر",
