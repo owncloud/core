@@ -503,6 +503,18 @@ class UsersController extends Controller {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
 
+		if(!$user){
+			return new DataResponse(
+				[
+					'status' => 'error',
+					'data' => [
+						'message' => (string)$this->l10n->t('Invalid user')
+					]
+				],
+				Http::STATUS_UNPROCESSABLE_ENTITY
+			);
+		}
+		
 		if($userId !== $id
 			&& !$this->isAdmin
 			&& !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
@@ -517,6 +529,20 @@ class UsersController extends Controller {
 			);
 		}
 
+		// this is the only permission a backend provides and is also used
+		// for the permission of setting a email address
+		if($userId === $id && !$user->canChangeDisplayName()){
+			return new DataResponse(
+				[
+					'status' => 'error',
+					'data' => [
+						'message' => (string)$this->l10n->t('Unable to change mail address')
+					]
+				],
+				Http::STATUS_FORBIDDEN
+			);
+		}
+		
 		if($mailAddress !== '' && !$this->mailer->validateMailAddress($mailAddress)) {
 			return new DataResponse(
 				[
@@ -526,32 +552,6 @@ class UsersController extends Controller {
 					]
 				],
 				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
-		}
-
-		if(!$user){
-			return new DataResponse(
-				[
-					'status' => 'error',
-					'data' => [
-						'message' => (string)$this->l10n->t('Invalid user')
-					]
-				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
-		}
-
-		// this is the only permission a backend provides and is also used
-		// for the permission of setting a email address
-		if(!$user->canChangeDisplayName()){
-			return new DataResponse(
-				[
-					'status' => 'error',
-					'data' => [
-						'message' => (string)$this->l10n->t('Unable to change mail address')
-					]
-				],
-				Http::STATUS_FORBIDDEN
 			);
 		}
 
@@ -629,7 +629,7 @@ class UsersController extends Controller {
 		$user = $this->userManager->get($username);
 
 		if ($user === null ||
-			!$user->canChangeDisplayName() ||
+			($currentUser === $user && !$user->canChangeDisplayName()) ||
 			(
 				!$this->groupManager->isAdmin($currentUser->getUID()) &&
 				!$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user) &&
