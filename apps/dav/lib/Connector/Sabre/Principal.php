@@ -222,8 +222,8 @@ class Principal implements BackendInterface {
 		$email = $user->getEMailAddress();
 		if (!empty($email)) {
 			$principal['{http://sabredav.org/ns}email-address'] = $email;
-			return $principal;
 		}
+
 		return $principal;
 	}
 
