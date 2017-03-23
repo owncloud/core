@@ -124,7 +124,7 @@
 				'onShareWithFieldChanged'
 			);
 
-			OC.Plugins.attach('OCA.Share.ShareDialogView', this);
+			OC.Plugins.attach('OC.Share.ShareDialogView', this);
 		},
 
 		_onClickTabHeader: function(ev) {

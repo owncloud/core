@@ -224,6 +224,57 @@ class OC_Util {
 		OC_Hook::emit('OC_Filesystem', 'preSetup', ['user' => $user]);
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(true);
 
+		// Make users storage readonly if he is a guest or in a read_only group
+
+		$isGuest = \OC::$server->getConfig()->getUserValue(
+			$user,
+			'owncloud',
+			'isGuest',
+			false
+		);
+
+		if (!$isGuest) {
+			$readOnlyGroups = json_decode(\OC::$server->getConfig()->getAppValue(
+				'core',
+				'read_only_groups',
+				'[]'
+			), true);
+
+			if (!is_array($readOnlyGroups)) {
+				$readOnlyGroups = [];
+			}
+
+
+			$userGroups = array_keys(
+				\OC::$server->getGroupManager()->getUserIdGroups($user)
+			);
+
+			$readOnlyGroupMemberships = array_intersect(
+				$readOnlyGroups,
+				$userGroups
+			);
+		}
+
+
+		if ($isGuest === '1' || !empty($readOnlyGroupMemberships)) {
+			\OC\Files\Filesystem::addStorageWrapper(
+				'oc_readonly',
+				function ($mountPoint, $storage) use ($user) {
+					if ($mountPoint === '/' || $mountPoint === "/$user/") {
+						return new \OC\Files\Storage\Wrapper\ReadOnlyJail(
+							[
+								'storage' => $storage,
+								'mask' => \OCP\Constants::PERMISSION_READ,
+								'path' => 'files'
+							]
+						);
+					}
+
+					return $storage;
+				}
+			);
+		}
+
 		//check if we are using an object storage
 		$objectStore = \OC::$server->getSystemConfig()->getValue('objectstore', null);
 		if (isset($objectStore)) {

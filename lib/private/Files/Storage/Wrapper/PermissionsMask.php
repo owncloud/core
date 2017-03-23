@@ -40,7 +40,7 @@ class PermissionsMask extends Wrapper {
 	/**
 	 * @var int the permissions bits we want to keep
 	 */
-	private $mask;
+	protected $mask;
 
 	/**
 	 * @param array $arguments ['storage' => $storage, 'mask' => $mask]
