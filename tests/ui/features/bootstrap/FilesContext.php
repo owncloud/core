@@ -75,7 +75,7 @@ class FilesContext extends RawMinkContext implements Context
 				$this->filesPage->findActionMenuByNo($itemsCount)
 			);
 		}
-		$this->filesPage->open();
+		$this->getSession()->reload();
 		$this->filesPage->waitTillPageIsloaded(10);
 	}
 
