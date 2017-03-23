@@ -608,7 +608,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->urlGenerator
 			->expects($this->once())
 			->method('linkToRoute')
-			->with('settings_admin')
+			->with('settings.SettingsPage.getAdmin')
 			->will($this->returnValue('/admin'));
 
 		$expected = new RedirectResponse('/admin');
