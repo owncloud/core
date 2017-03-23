@@ -360,7 +360,7 @@ span.version {
 #apps-list {
 	position: relative;
 	height: 100%;
-	min-height: 100px;
+	min-height: 90vh;
 }
 .section {
 	position: relative;
