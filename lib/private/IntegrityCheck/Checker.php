@@ -324,12 +324,13 @@ class Checker {
 	 * @param string $signaturePath
 	 * @param string $basePath
 	 * @param string $certificateCN
+	 * @param boolean $force
 	 * @return array
 	 * @throws InvalidSignatureException
 	 * @throws \Exception
 	 */
-	private function verify($signaturePath, $basePath, $certificateCN) {
-		if(!$this->isCodeCheckEnforced()) {
+	private function verify($signaturePath, $basePath, $certificateCN, $force = false) {
+		if(!$force && !$this->isCodeCheckEnforced()) {
 			return [];
 		}
 
@@ -509,9 +510,10 @@ class Checker {
 	 *
 	 * @param string $appId
 	 * @param string $path Optional path. If none is given it will be guessed.
+	 * @param boolean $force force check even if disabled
 	 * @return array
 	 */
-	public function verifyAppSignature($appId, $path = '') {
+	public function verifyAppSignature($appId, $path = '', $force = false) {
 		try {
 			if($path === '') {
 				$path = $this->appLocator->getAppPath($appId);
@@ -519,7 +521,8 @@ class Checker {
 			$result = $this->verify(
 					$path . '/appinfo/signature.json',
 					$path,
-					$appId
+					$appId,
+					$force
 			);
 		} catch (\Exception $e) {
 			$result = [
