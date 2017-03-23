@@ -24,6 +24,8 @@
 namespace Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
+
 
 class FilesPage extends OwnCloudPage
 {
@@ -86,7 +88,6 @@ class FilesPage extends OwnCloudPage
 	public function waitTillPageIsloaded($timeout)
 	{
 		for ($counter = 0; $counter <= $timeout; $counter ++) {
-
 			 
 			$fileList = $this->findById("fileList");
 			 
@@ -95,8 +96,34 @@ class FilesPage extends OwnCloudPage
 					$this->emptyContentXpath)->hasClass("hidden"))) {
 						break;
 					}
-			
+					 
 			sleep(1);
 		}
+	}
+	
+	/**
+	 * same as the original open() function but with a more slack
+	 * URL verification as oC adds some extra parameters to the URL e.g.
+	 * "files/?dir=/&fileid=2"
+	 * {@inheritDoc}
+	 * @see \SensioLabs\Behat\PageObjectExtension\PageObject\Page::open()
+	 */
+	public function open(array $urlParameters = array())
+	{
+		$url = $this->getUrl($urlParameters);
+		
+		$this->getDriver()->visit($url);
+		
+		$this->verifyResponse();
+		if (strpos($this->getDriver()->getCurrentUrl(), 
+			$this->getUrl($urlParameters)) === false) {
+			throw new UnexpectedPageException(
+				sprintf('Expected to be on "%s" but found "%s" instead', 
+					$this->getUrl($urlParameters), 
+					$this->getDriver()->getCurrentUrl()));
+		}
+		$this->verifyPage();
+		
+		return $this;
 	}
 }
