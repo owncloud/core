@@ -609,7 +609,14 @@ class DefaultShareProvider implements IShareProvider {
 
 		// If the recipient is set for a group share resolve to that user
 		if ($recipientId !== null && $share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
-			$share = $this->resolveGroupShare($share, $recipientId);
+			$resolvedShares = $this->resolveGroupShares([$share], $recipientId);
+			if (count($resolvedShares) === 1){
+				// If we pass to resolveGroupShares() an with one element,
+				// we expect to receive exactly one element, otherwise it is error
+				$share = $resolvedShares[0];
+			} else {
+				throw new ProviderException("ResolveGroupShares() returned wrong result");
+			}
 		}
 
 		return $share;
@@ -773,17 +780,14 @@ class DefaultShareProvider implements IShareProvider {
 				$cursor->closeCursor();
 			}
 
-			/*
- 			 * Resolve all group shares to user specific shares
- 			 * TODO: Optmize this!
- 			 */
-			foreach($shares2 as $share) {
-				$shares[] = $this->resolveGroupShare($share, $userId);
+			//Resolve all group shares to user specific shares
+			if (!empty($shares2)) {
+				$resolvedGroupShares = $this->resolveGroupShares($shares2, $userId);
+				$shares = array_merge($shares, $resolvedGroupShares);
 			}
 		} else {
 			throw new BackendError('Invalid backend');
 		}
-
 
 		return $shares;
 	}
@@ -869,37 +873,100 @@ class DefaultShareProvider implements IShareProvider {
 	}
 
 	/**
-	 * Resolve a group share to a user specific share
-	 * Thus if the user moved their group share make sure this is properly reflected here.
+	 * Will return two maps:
+	 * - $chunkedShareIds responsible to split shareIds into chunks containing 100 elements
+	 * 	 e.g. $chunkedShareIds { { "4", "52", "54",... }[100], { .. }[2] }[2]
 	 *
-	 * @param \OCP\Share\IShare $share
-	 * @param string $userId
-	 * @return Share Returns the updated share if one was found else return the original share.
+	 * - $shareIdToShareMap responsible to split shareIds into chunks containing 100 elements
+	 * 	 e.g. $shareIdToShareMap { "4" => IShare, "52" => IShare, "54" => IShare, ... }[102]
+	 *
+	 * @param \OCP\Share\IShare[] $shares
+	 * @return array $chunkedSharesToMaps e.g { $chunkedShareIds, $shareIdToShareMap }[2]
 	 */
-	private function resolveGroupShare(\OCP\Share\IShare $share, $userId) {
-		$qb = $this->dbConn->getQueryBuilder();
+	private function chunkSharesToMaps($shares) {
+		$chunkedShareIds = [];
+		$shareIdToShareMap = [];
+		$chunkId = 0;
+		$shareNo = 0;
+		foreach($shares as $share) {
+			// Map unique shareIds to IShare
+			$shareId = $share->getId();
+			$shareIdToShareMap[$shareId] = $share;
 
-		$stmt = $qb->select('*')
-			->from('share')
-			->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
-			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
-			->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($userId)))
-			->andWhere($qb->expr()->orX(
-				$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
-				$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
-			))
-			->setMaxResults(1)
-			->execute();
-
-		$data = $stmt->fetch();
-		$stmt->closeCursor();
-
-		if ($data !== false) {
-			$share->setPermissions((int)$data['permissions']);
-			$share->setTarget($data['file_target']);
+			// Chunk shareId array
+			if ($shareNo >= 100) {
+				// If we have over 100 shares in the array, start next chunk
+				$shareNo = 0;
+				$chunkId++;
+			} else {
+				// Increase number of shares in current array
+				$shareNo++;
+			}
+			$chunkedShareIds[$chunkId][] = $shareId;
 		}
 
-		return $share;
+		$chunkedSharesToMaps = array($chunkedShareIds, $shareIdToShareMap);
+		return $chunkedSharesToMaps;
+	}
+
+	/**
+	 * Resolve a group shares to a user specific share.
+	 * Thus if the user moved their group share make sure this is properly reflected here,
+	 * If $shares array contains exactly 2 elements, where
+	 * only 1 will be changed(resolved), it returns exactly 2 elements, containing the resolved one.
+	 *
+	 * @param \OCP\Share\IShare[] $shares e.g. { IShare, IShare }[2]
+	 * @param string $userId
+	 * @return \OCP\Share\IShare[] $resolvedShares
+	 * @throws ProviderException
+	 */
+	private function resolveGroupShares($shares, $userId) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		list($chunkedShareIds, $shareIdToShareMap) = $this->chunkSharesToMaps($shares);
+		foreach($chunkedShareIds as $shareIdsChunk) {
+			$qb->select('*')
+				->from('share')
+				->where($qb->expr()->in('parent', $qb->createNamedParameter(
+					$shareIdsChunk,
+					IQueryBuilder::PARAM_STR_ARRAY
+				)))
+				->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
+				->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($userId)))
+				->andWhere($qb->expr()->orX(
+					$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
+					$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
+				));
+
+			$stmt = $qb->execute();
+
+			// Resolve $shareIdToShareMap array containing group shares
+			$shareParents = [];
+			while($data = $stmt->fetch()) {
+				// Get share parent
+				$shareParent = $data['parent'];
+
+				// Ensure uniquenes of parents
+				if (!isset($shareParents[$shareParent])) {
+					$shareParents[] = $shareParent;
+				} else {
+					throw new ProviderException('Parent of share should be unique');
+				}
+
+				// Resolve only shares contained in the map.
+				// This will ensure that we return the same amount of shares in the input as in the output
+				// If $shareParent is contained in $shareIdToShareMap, it means that needs resolving
+				if (isset($shareIdToShareMap[$shareParent])) {
+					$share = $shareIdToShareMap[$shareParent];
+					$share->setPermissions(intval($data['permissions']));
+					$share->setTarget($data['file_target']);
+				}
+			}
+			$stmt->closeCursor();
+		}
+		
+		$resolvedShares = array_values($shareIdToShareMap);
+		return $resolvedShares;
 	}
 
 	/**

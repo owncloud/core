@@ -1136,6 +1136,50 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals(Share::SHARE_TYPE_GROUP, $share->getShareType());
 	}
 
+	public function testChunkedGetSharedWithGroupWithNode() {
+		$storageStringId = 'home::shareOwner';
+		$fileName1 = 'files/test.txt';
+		$storageId = $this->createTestStorageEntry($storageStringId);
+		$fileId = $this->createTestFileEntry($fileName1, $storageId);
+
+		$user0 = $this->createMock(IUser::class);
+		$user0->method('getUID')->willReturn('user0');
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+
+		$this->userManager->method('get')->willReturnMap([
+			['user0', $user0],
+			['user1', $user1],
+		]);
+
+		for($i = 0; $i < 105; $i++) {
+			$group = $this->createMock(IGroup::class);
+			$groupId = "group$i";
+			$group->method('getGID')->willReturn($groupId);
+			$this->groupManager->method('get')->with($groupId)->willReturn($group);
+			$groupArray[] = $group;
+			$ids[] = $this->addShareToDB(Share::SHARE_TYPE_GROUP, $groupId, 'user1', 'user1',
+				'file', $fileId, 'myTarget', 31, null, null, null);
+		}
+		$this->groupManager->method('getUserGroups')->with($user0)->willReturn($groupArray);
+
+		$node = $this->createMock(File::class);
+		$node->method('getId')->willReturn($fileId);
+		$this->rootFolder->method('getUserFolder')->with('user1')->will($this->returnSelf());
+		$this->rootFolder->method('getById')->with($fileId)->willReturn([$node]);
+
+		$share = $this->provider->getSharedWith('user0', Share::SHARE_TYPE_GROUP, $node, -1, 0);
+		$this->assertCount(105, $share);
+
+		$share = $share[0];
+		$this->assertEquals($ids[0], $share->getId());
+		$this->assertSame('group0', $share->getSharedWith());
+		$this->assertSame('user1', $share->getShareOwner());
+		$this->assertSame('user1', $share->getSharedBy());
+		$this->assertSame($node, $share->getNode());
+		$this->assertEquals(Share::SHARE_TYPE_GROUP, $share->getShareType());
+	}
+
 	public function shareTypesProvider() {
 		return [
 			[Share::SHARE_TYPE_USER, false],
