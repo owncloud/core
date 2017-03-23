@@ -242,7 +242,7 @@ var OCdialogs = {
 	 * Displays raw dialog
 	 * You better use a wrapper instead ...
 	*/
-	message:function(content, title, dialogType, buttons, callback, modal) {
+	message:function(content, title, dialogType, buttons, callback, modal, cssClass) {
 		return $.when(this._getMessageTemplate()).then(function($tmpl) {
 			var dialogName = 'oc-dialog-' + OCdialogs.dialogsCounter + '-content';
 			var dialogId = '#' + dialogName;
@@ -252,46 +252,52 @@ var OCdialogs = {
 				message: content,
 				type: dialogType
 			});
+
 			if (modal === undefined) {
 				modal = false;
 			}
+
 			$('body').append($dlg);
 			var buttonlist = [];
-			switch (buttons) {
-			case OCdialogs.YES_NO_BUTTONS:
-				buttonlist = [{
-					text: t('core', 'No'),
-					click: function(){
-						if (callback !== undefined) {
-							callback(false);
+			if (_.isArray(buttons)) {
+				buttonlist = buttons;
+			} else {
+				switch (buttons) {
+				case OCdialogs.YES_NO_BUTTONS:
+					buttonlist = [{
+						text: t('core', 'No'),
+						click: function(){
+							if (callback !== undefined) {
+								callback(false);
+							}
+							$(dialogId).ocdialog('close');
 						}
-						$(dialogId).ocdialog('close');
-					}
-				},
-				{
-					text: t('core', 'Yes'),
-					click: function(){
-						if (callback !== undefined) {
-							callback(true);
-						}
-						$(dialogId).ocdialog('close');
 					},
-					defaultButton: true
-				}];
-				break;
-			case OCdialogs.OK_BUTTON:
-				var functionToCall = function() {
-					$(dialogId).ocdialog('close');
-					if(callback !== undefined) {
-						callback();
-					}
-				};
-				buttonlist[0] = {
-					text: t('core', 'Ok'),
-					click: functionToCall,
-					defaultButton: true
-				};
-				break;
+					{
+						text: t('core', 'Yes'),
+						click: function(){
+							if (callback !== undefined) {
+								callback(true);
+							}
+							$(dialogId).ocdialog('close');
+						},
+						defaultButton: true
+					}];
+					break;
+				case OCdialogs.OK_BUTTON:
+					var functionToCall = function() {
+						$(dialogId).ocdialog('close');
+						if(callback !== undefined) {
+							callback();
+						}
+					};
+					buttonlist[0] = {
+						text: t('core', 'Ok'),
+						click: functionToCall,
+						defaultButton: true
+					};
+					break;
+				}
 			}
 
 			$(dialogId).ocdialog({
@@ -299,6 +305,11 @@ var OCdialogs = {
 				modal: modal,
 				buttons: buttonlist
 			});
+
+			if (cssClass != undefined) {
+				$(dialogId).addClass(cssClass);
+			}
+
 			OCdialogs.dialogsCounter++;
 		})
 		.fail(function(status, error) {

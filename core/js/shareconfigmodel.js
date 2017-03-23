@@ -22,7 +22,6 @@
 		defaults: {
 			publicUploadEnabled: false,
 			enforcePasswordForPublicLink: oc_appconfig.core.enforcePasswordForPublicLink,
-			enableLinkPasswordByDefault: oc_appconfig.core.enableLinkPasswordByDefault,
 			isDefaultExpireDateEnforced: oc_appconfig.core.defaultExpireDateEnforced === true,
 			isDefaultExpireDateEnabled: oc_appconfig.core.defaultExpireDateEnabled === true,
 			isRemoteShareAllowed: oc_appconfig.core.remoteShareAllowed,

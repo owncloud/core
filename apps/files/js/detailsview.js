@@ -190,11 +190,11 @@
 
 			this._currentTabId = tabId;
 
-			var $tabsContainer = this.$el.find('.tabsContainer');
+			var $tabsContainer = this.$el.find('>.tabsContainer');
 			var $tabEl = $tabsContainer.find('#' + tabId);
 
 			// hide other tabs
-			$tabsContainer.find('.tab').addClass('hidden');
+			$tabsContainer.find('>.tab').addClass('hidden');
 
 			// tab already rendered ?
 			if (!$tabEl.length) {
@@ -209,7 +209,7 @@
 			$tabEl.removeClass('hidden');
 
 			// update tab headers
-			var $tabHeaders = this.$el.find('.tabHeaders li');
+			var $tabHeaders = this.$el.find('>.tabHeaders li');
 			$tabHeaders.removeClass('selected');
 			$tabHeaders.filterAttr('data-tabid', tabView.id).addClass('selected');
 		},
@@ -250,7 +250,7 @@
 			var self = this;
 			var deselect = false;
 			var countVisible = 0;
-			var $tabHeaders = this.$el.find('.tabHeaders li');
+			var $tabHeaders = this.$el.find('>.tabHeaders li');
 			_.each(this._tabViews, function(tabView) {
 				var isVisible = tabView.canDisplay(self.model);
 				if (isVisible) {
@@ -263,11 +263,11 @@
 			});
 
 			// hide the whole container if there is only one tab
-			this.$el.find('.tabHeaders').toggleClass('hidden', countVisible <= 1);
+			this.$el.find('>.tabHeaders').toggleClass('hidden', countVisible <= 1);
 
 			if (deselect) {
 				// select the first visible tab instead
-				var visibleTabId = this.$el.find('.tabHeader:not(.hidden):first').attr('data-tabid');
+				var visibleTabId = this.$el.find('>.tabHeaders .tabHeader:not(.hidden):first').attr('data-tabid');
 				this.selectTab(visibleTabId);
 			}
 

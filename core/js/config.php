@@ -70,7 +70,6 @@ $outgoingServer2serverShareEnabled = $config->getAppValue('files_sharing', 'outg
 $countOfDataLocation = 0;
 
 $value = $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no');
-$enableLinkPasswordByDefault = ($value === 'yes') ? true : false;
 
 $dataLocation = str_replace(OC::$SERVERROOT .'/', '', $config->getSystemValue('datadirectory', ''), $countOfDataLocation);
 if($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())){
@@ -169,7 +168,6 @@ $array = [
 				'defaultExpireDate' => $defaultExpireDate,
 				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
 				'enforcePasswordForPublicLink' => \OCP\Util::isPublicLinkPasswordRequired(),
-				'enableLinkPasswordByDefault' => $enableLinkPasswordByDefault,
 				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
 				'resharingAllowed' => \OCP\Share::isResharingAllowed(),
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,

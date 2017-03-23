@@ -146,6 +146,10 @@ a.unshare {
 	box-shadow: 0 0 6px #f8b9b7;
 }
 
+.shareTabView .localShareView, .shareTabView .linkShareView {
+	clear: left;
+}
+
 #link #showPassword img {
 	padding-left:5px;
 	width:12px;
