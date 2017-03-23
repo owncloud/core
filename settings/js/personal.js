@@ -74,7 +74,7 @@ $(document).ready(function () {
 	} else {
 		if(window.location.hash === '#apppasswords' && window.location.pathname === '/settings/personal') {
 			// Handle old apppasswords links from desktop apps
-			window.location = OC.generateUrl('/settings/personal?sectionid=security#apppasswords');
+			OC.redirect(OC.generateUrl('/settings/personal?sectionid=security#apppasswords'));
 		}
 	}
 
