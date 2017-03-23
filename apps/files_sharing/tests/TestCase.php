@@ -36,6 +36,7 @@ use OC\Files\Filesystem;
 use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Sharing\SharedStorage;
 use OCP\ICache;
+use Test\Traits\UserTrait;
 
 /**
  * Class TestCase
@@ -45,6 +46,8 @@ use OCP\ICache;
  * Base class for sharing tests.
  */
 abstract class TestCase extends \Test\TestCase {
+
+	use UserTrait;
 
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
 	const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
@@ -74,20 +77,21 @@ abstract class TestCase extends \Test\TestCase {
 		$application->registerMountProviders();
 		
 		// reset backend
-		\OC_User::clearBackends();
 		\OC::$server->getGroupManager()->clearBackends();
 
 		// clear share hooks
 		\OC_Hook::clear('OCP\\Share');
 		\OC::registerShareHooks();
+	}
+
+	protected function setUp() {
+		parent::setUp();
 
 		// create users
-		$backend = new \Test\Util\User\Dummy();
-		\OC_User::useBackend($backend);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER3);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER4, self::TEST_FILES_SHARING_API_USER4);
+		$this->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
+		$this->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
+		$this->createUser(self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER3);
+		$this->createUser(self::TEST_FILES_SHARING_API_USER4, self::TEST_FILES_SHARING_API_USER4);
 
 		// create group
 		$groupBackend = new \Test\Util\Group\Dummy();
@@ -104,10 +108,6 @@ abstract class TestCase extends \Test\TestCase {
 		$groupBackend->addToGroup(self::TEST_FILES_SHARING_API_USER4, 'group3');
 		$groupBackend->addToGroup(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_GROUP1);
 		\OC::$server->getGroupManager()->addBackend($groupBackend);
-	}
-
-	protected function setUp() {
-		parent::setUp();
 
 		//login as user1
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
@@ -127,14 +127,6 @@ abstract class TestCase extends \Test\TestCase {
 	}
 
 	public static function tearDownAfterClass() {
-		// cleanup users
-		$user = \OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER1);
-		if ($user !== null) { $user->delete(); }
-		$user = \OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER2);
-		if ($user !== null) { $user->delete(); }
-		$user = \OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER3);
-		if ($user !== null) { $user->delete(); }
-
 		// delete group
 		$group = \OC::$server->getGroupManager()->get(self::TEST_FILES_SHARING_API_GROUP1);
 		if ($group !== null) { $group->delete(); }
@@ -144,8 +136,6 @@ abstract class TestCase extends \Test\TestCase {
 		Filesystem::tearDown();
 
 		// reset backend
-		\OC_User::clearBackends();
-		\OC_User::useBackend('database');
 		\OC::$server->getGroupManager()->clearBackends();
 		\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
 

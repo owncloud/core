@@ -9,19 +9,22 @@
 namespace Test\Files\Node;
 
 use OC\Files\FileInfo;
-use OCP\Files\NotPermittedException;
 use OC\Files\Mount\Manager;
-use OC\User\NoUserException;
+use OCP\IUser;
+use Test\TestCase;
+use Test\Traits\UserTrait;
 
 /**
  * @group DB
  */
-class RootTest extends \Test\TestCase {
+class RootTest extends TestCase {
+	use UserTrait;
+
 	private $user;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->user = new \OC\User\User('', new \Test\Util\User\Dummy);
+		$this->user = $this->createMock(IUser::class);
 	}
 
 	protected function getFileInfo($data) {
@@ -103,6 +106,9 @@ class RootTest extends \Test\TestCase {
 		$root->get('/bar/foo');
 	}
 
+	/**
+	 * @expectedException \OC\User\NoUserException
+	 */
 	public function testGetUserFolder() {
 		$this->logout();
 		$manager = new Manager();
@@ -113,28 +119,8 @@ class RootTest extends \Test\TestCase {
 
 		$user1 = $this->getUniqueID('user1_');
 		$user2 = $this->getUniqueID('user2_');
-
-		\OC_User::clearBackends();
-		// needed for loginName2UserName mapping
-		$userBackend = $this->createMock(\OC\User\Database::class);
-		\OC::$server->getUserManager()->registerBackend($userBackend);
-
-		$userBackend->expects($this->any())
-			->method('userExists')
-			->will($this->returnValueMap([
-				[$user1, true],
-				[$user2, true],
-				[strtoupper($user1), true],
-				[strtoupper($user2), true],
-			]));
-		$userBackend->expects($this->any())
-			->method('loginName2UserName')
-			->will($this->returnValueMap([
-				[strtoupper($user1), $user1],
-				[$user1, $user1],
-				[strtoupper($user2), $user2],
-				[$user2, $user2],
-			]));
+		$this->createUser($user1);
+		$this->createUser($user2);
 
 		$this->loginAsUser($user1);
 		$root = new \OC\Files\Node\Root($manager, $view, null);
@@ -149,12 +135,6 @@ class RootTest extends \Test\TestCase {
 		$folder = $root->getUserFolder(strtoupper($user2));
 		$this->assertEquals('/' . $user2 . '/files', $folder->getPath());
 
-		$thrown = false;
-		try {
-			$folder = $root->getUserFolder($this->getUniqueID('unexist'));
-		} catch (NoUserException $e) {
-			$thrown = true;
-		}
-		$this->assertTrue($thrown);
+		$root->getUserFolder($this->getUniqueID('unexist'));
 	}
 }

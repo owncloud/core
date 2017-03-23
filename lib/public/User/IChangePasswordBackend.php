@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Joas Schilling <coding@schilljs.com>
- * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -20,23 +19,26 @@
  *
  */
 
-namespace OCA\Files_Sharing\Tests;
 
-use OC\Files\View;
-use Test\Traits\EncryptionTrait;
+// use OCP namespace for all classes that are considered public.
+// This means that they should be used by apps instead of the internal ownCloud classes
+namespace OCP\User;
 
 /**
- * @group DB
+ * Interface IChangePasswordBackend
+ *
+ * @package OCP\User
+ * @since 10.0
  */
-class EncryptedSizePropagationTest extends SizePropagationTest {
-	use EncryptionTrait;
+interface IChangePasswordBackend {
 
-	protected function setupUser($name) {
-		$this->createUser($name);
-		$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
-		$this->registerMount($name, '\OC\Files\Storage\Local', '/' . $name, ['datadir' => $tmpFolder]);
-		$this->setupForUser($name, $name);
-		$this->loginWithEncryption($name);
-		return new View('/' . $name . '/files');
-	}
+	/**
+	 * Set password
+	 * @param string $uid The username
+	 * @param string $password The new password
+	 * @return bool
+	 * @since 10.0
+	 */
+	public function setPassword($uid, $password);
 }
+

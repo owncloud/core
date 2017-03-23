@@ -24,6 +24,8 @@
 namespace OCA\Files\Tests\Service;
 
 use OCA\Files\Service\TagService;
+use OCP\IUserSession;
+use Test\Traits\UserTrait;
 
 /**
  * Class TagServiceTest
@@ -33,6 +35,8 @@ use OCA\Files\Service\TagService;
  * @package OCA\Files
  */
 class TagServiceTest extends \Test\TestCase {
+
+	use UserTrait;
 
 	/**
 	 * @var string
@@ -57,14 +61,10 @@ class TagServiceTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 		$this->user = $this->getUniqueID('user');
-		\OC::$server->getUserManager()->createUser($this->user, 'test');
+		$user = $this->createUser($this->user, 'test');
 		\OC_User::setUserId($this->user);
 		\OC_Util::setupFS($this->user);
-		/** @var \OCP\IUser */
-		$user = new \OC\User\User($this->user, null);
-		/**
-		 * @var \OCP\IUserSession
-		 */
+		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->createMock('\OCP\IUserSession');
 		$userSession->expects($this->any())
 			->method('getUser')
@@ -83,8 +83,6 @@ class TagServiceTest extends \Test\TestCase {
 
 	protected function tearDown() {
 		\OC_User::setUserId('');
-		$user = \OC::$server->getUserManager()->get($this->user);
-		if ($user !== null) { $user->delete(); }
 	}
 
 	public function testUpdateFileTags() {
