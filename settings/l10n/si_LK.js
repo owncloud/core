@@ -2,7 +2,6 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "සත්‍යාපන දෝෂයක්",
-    "Email saved" : "වි-තැපෑල සුරකින ලදී",
     "Language changed" : "භාෂාව ාවනස් කිරීම",
     "Invalid request" : "අවලංගු අයැදුමක්",
     "All" : "සියල්ල",

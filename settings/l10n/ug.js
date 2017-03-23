@@ -2,7 +2,6 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
-    "Email saved" : "تورخەت ساقلاندى",
     "__language_name__" : "ئۇيغۇرچە",
     "Language changed" : "تىل ئۆزگەردى",
     "Invalid request" : "ئىناۋەتسىز ئىلتىماس",

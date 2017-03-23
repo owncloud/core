@@ -29,7 +29,6 @@ OC.L10N.register(
     "Forbidden" : "Tiltott",
     "Invalid user" : "Érvénytelen felhasználó",
     "Unable to change mail address" : "Nem lehet megváltoztatni az e-mail címet",
-    "Email saved" : "E-mail elmentve!",
     "Your full name has been changed." : "Az Ön teljes nevét módosítottuk.",
     "Unable to change full name" : "Nem sikerült megváltoztatni a teljes nevét",
     "APCu" : "APCu",

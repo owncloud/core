@@ -25,7 +25,6 @@ OC.L10N.register(
     "Forbidden" : "Qadağan",
     "Invalid user" : "İstifadəçi adı yalnışdır",
     "Unable to change mail address" : "Mail ünvanını dəyişmək olmur",
-    "Email saved" : "Məktub yadda saxlanıldı",
     "Your full name has been changed." : "Sizin tam adınız dəyişdirildi.",
     "Unable to change full name" : "Tam adı dəyişmək olmur",
     "__language_name__" : "__AZ_Azerbaijan__",

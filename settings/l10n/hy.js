@@ -11,7 +11,6 @@ OC.L10N.register(
     "Forbidden" : "Արգելված",
     "Invalid user" : "Անվավեր օգտատեր",
     "Unable to change mail address" : "Չկարողացա փոխել էլ. հասցեն",
-    "Email saved" : "Էլ. հասցեն պահվեց",
     "Unable to change full name" : "Չկարողացա փոխել լրիվ անունը",
     "Language changed" : "Լեզուն փոխվեց",
     "Invalid request" : "Անվավեր հայց",

@@ -22,7 +22,6 @@ OC.L10N.register(
     "Forbidden" : "Debekatuta",
     "Invalid user" : "Baliogabeko erabiiltzailea",
     "Unable to change mail address" : "Ezin izan da posta helbidea aldatu",
-    "Email saved" : "Eposta gorde da",
     "Your full name has been changed." : "Zure izena aldatu egin da.",
     "Unable to change full name" : "Ezin izan da izena aldatu",
     "__language_name__" : "Euskara",

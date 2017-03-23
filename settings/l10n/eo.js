@@ -9,7 +9,6 @@ OC.L10N.register(
     "Group already exists." : "Grupo jam ekzistas",
     "Saved" : "Konservita",
     "Email sent" : "La retpoŝtaĵo sendiĝis",
-    "Email saved" : "La retpoŝtadreso konserviĝis",
     "Your full name has been changed." : "Via plena nomo ŝanĝitas.",
     "Unable to change full name" : "Ne eblis ŝanĝi la plenan nomon",
     "__language_name__" : "Esperanto",

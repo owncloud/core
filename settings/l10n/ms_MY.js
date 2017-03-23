@@ -2,7 +2,6 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "Ralat pengesahan",
-    "Email saved" : "Emel disimpan",
     "__language_name__" : "_nama_bahasa_",
     "Language changed" : "Bahasa diubah",
     "Invalid request" : "Permintaan tidak sah",

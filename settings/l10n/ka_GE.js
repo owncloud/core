@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Authentication error" : "ავთენტიფიკაციის შეცდომა",
     "Email sent" : "იმეილი გაიგზავნა",
-    "Email saved" : "იმეილი შენახულია",
     "__language_name__" : "__language_name__",
     "Language changed" : "ენა შეცვლილია",
     "Invalid request" : "არასწორი მოთხოვნა",

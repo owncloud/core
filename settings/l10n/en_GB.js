@@ -30,7 +30,6 @@ OC.L10N.register(
     "Forbidden" : "Forbidden",
     "Invalid user" : "Invalid user",
     "Unable to change mail address" : "Unable to change mail address",
-    "Email saved" : "Email saved",
     "Your full name has been changed." : "Your full name has been changed.",
     "Unable to change full name" : "Unable to change full name",
     "APCu" : "APCu",

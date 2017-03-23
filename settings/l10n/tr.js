@@ -30,7 +30,6 @@ OC.L10N.register(
     "Forbidden" : "Yasaklı",
     "Invalid user" : "Geçersiz kullanıcı",
     "Unable to change mail address" : "Posta adresini değiştirme başarısız",
-    "Email saved" : "E-posta kaydedildi",
     "Your full name has been changed." : "Tam adınız değiştirildi.",
     "Unable to change full name" : "Tam adınız değiştirilirken hata",
     "APCu" : "APCu",

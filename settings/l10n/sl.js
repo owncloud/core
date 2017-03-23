@@ -31,7 +31,6 @@ OC.L10N.register(
     "Forbidden" : "Dostop je prepovedan",
     "Invalid user" : "Neveljavni podatki uporabnika",
     "Unable to change mail address" : "Ni mogoče spremeniti naslova elektronske pošte.",
-    "Email saved" : "Elektronski naslov je shranjen",
     "Your full name has been changed." : "Vaše polno ime je spremenjeno.",
     "Unable to change full name" : "Ni mogoče spremeniti polnega imena",
     "APCu" : "APCu",

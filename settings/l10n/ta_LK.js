@@ -2,7 +2,6 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "அத்தாட்சிப்படுத்தலில் வழு",
-    "Email saved" : "மின்னஞ்சல் சேமிக்கப்பட்டது",
     "__language_name__" : "_மொழி_பெயர்_",
     "Language changed" : "மொழி மாற்றப்பட்டது",
     "Invalid request" : "செல்லுபடியற்ற வேண்டுகோள்",

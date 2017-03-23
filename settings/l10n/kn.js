@@ -19,7 +19,6 @@ OC.L10N.register(
     "Forbidden" : "ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
     "Invalid user" : "﻿ಅಮಾನ್ಯ ಬಳಕೆದಾರ",
     "Unable to change mail address" : "﻿ಇ-ಅಂಚೆ ವಿಳಾಸ ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",
-    "Email saved" : "ಇ-ಅಂಚೆಯನ್ನು ﻿ಉಳಿಸಿದೆ",
     "Your full name has been changed." : "﻿ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ.",
     "Unable to change full name" : "﻿ಪೂರ್ಣ ಹೆಸರನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ",
     "__language_name__" : "ಕನ್ನಡ",

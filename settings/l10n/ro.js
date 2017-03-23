@@ -25,7 +25,6 @@ OC.L10N.register(
     "Forbidden" : "Interzis",
     "Invalid user" : "Utilizator invalid",
     "Unable to change mail address" : "Nu s-a putut schimba adresa email",
-    "Email saved" : "E-mail salvat",
     "Your full name has been changed." : "Numele tău complet a fost schimbat.",
     "Unable to change full name" : "Nu s-a putut schimba numele complet",
     "Redis" : "Redis",

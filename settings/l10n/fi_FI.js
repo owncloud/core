@@ -29,7 +29,6 @@ OC.L10N.register(
     "Forbidden" : "Estetty",
     "Invalid user" : "Virheellinen käyttäjä",
     "Unable to change mail address" : "Sähköpostiosoitteen vaihtaminen ei onnistunut",
-    "Email saved" : "Sähköposti tallennettu",
     "Your full name has been changed." : "Koko nimesi on muutettu.",
     "Unable to change full name" : "Koko nimen muuttaminen epäonnistui",
     "APCu" : "APCu",

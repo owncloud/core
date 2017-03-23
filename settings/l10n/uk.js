@@ -30,7 +30,6 @@ OC.L10N.register(
     "Forbidden" : "Заборонено",
     "Invalid user" : "Неправильний користувач",
     "Unable to change mail address" : "Неможливо поміняти email адресу",
-    "Email saved" : "Адресу збережено",
     "Your full name has been changed." : "Ваше повне ім'я було змінено",
     "Unable to change full name" : "Неможливо змінити повне ім'я",
     "Redis" : "Redis",

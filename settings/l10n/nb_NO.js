@@ -30,7 +30,6 @@ OC.L10N.register(
     "Forbidden" : "Forbudt",
     "Invalid user" : "Ugyldig bruker",
     "Unable to change mail address" : "Kan ikke endre epost-adresse",
-    "Email saved" : "Epost lagret",
     "Your full name has been changed." : "Ditt fulle navn er blitt endret.",
     "Unable to change full name" : "Klarte ikke å endre fullt navn",
     "APCu" : "APCu",

@@ -20,7 +20,6 @@ OC.L10N.register(
     "Forbidden" : "ممنوعه",
     "Invalid user" : "کاربر نامعتبر",
     "Unable to change mail address" : "تغییر آدرس ایمیل امکان‌پذیر نیست",
-    "Email saved" : "ایمیل ذخیره شد",
     "Your full name has been changed." : "نام کامل شما تغییر یافت",
     "Unable to change full name" : "امکان تغییر نام کامل وجود ندارد",
     "APCu" : "APCu",

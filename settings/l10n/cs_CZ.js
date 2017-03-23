@@ -30,7 +30,6 @@ OC.L10N.register(
     "Forbidden" : "Zakázáno",
     "Invalid user" : "Neplatný uživatel",
     "Unable to change mail address" : "Nelze změnit emailovou adresu",
-    "Email saved" : "Email uložen",
     "Your full name has been changed." : "Vaše celé jméno bylo změněno.",
     "Unable to change full name" : "Nelze změnit celé jméno",
     "APCu" : "APCu",

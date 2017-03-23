@@ -31,7 +31,6 @@ OC.L10N.register(
     "Forbidden" : "Запрещено",
     "Invalid user" : "Неверный пользователь",
     "Unable to change mail address" : "Невозможно изменить адрес электронной почты",
-    "Email saved" : "Адрес сохранен",
     "Your full name has been changed." : "Ваше полное имя было изменено.",
     "Unable to change full name" : "Невозможно изменить полное имя",
     "APCu" : "APCu",

@@ -31,7 +31,6 @@ OC.L10N.register(
     "Forbidden" : "Bannað",
     "Invalid user" : "Ógildur notandi",
     "Unable to change mail address" : "Get ekki breytt tölvupóstfangi",
-    "Email saved" : "Tölvupóstfang vistað",
     "Your full name has been changed." : "Fullu nafni þínu hefur verið breytt.",
     "Unable to change full name" : "Get ekki breytt fullu nafni",
     "APCu" : "APCu",

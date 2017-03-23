@@ -29,7 +29,6 @@ OC.L10N.register(
     "Forbidden" : "Interdich",
     "Invalid user" : "Utilizaire invalid",
     "Unable to change mail address" : "Impossible de modificar l'adreça de corrièl",
-    "Email saved" : "Email salvat",
     "Your full name has been changed." : "Vòstre nom complet es estat modificat.",
     "Unable to change full name" : "Impossible de cambiar lo nom complet",
     "APCu" : "APCu",

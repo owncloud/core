@@ -7,7 +7,6 @@ OC.L10N.register(
     "Saved" : "সংরক্ষণ করা হলো",
     "test email settings" : "ইমেইল নিয়ামকসমূহ পরীক্ষা করুন",
     "Email sent" : "ই-মেইল পাঠানো হয়েছে",
-    "Email saved" : "ই-মেইল সংরক্ষন করা হয়েছে",
     "Your full name has been changed." : "আপনার পূর্ণ নাম পরিবর্তন করা হয়েছে।",
     "__language_name__" : "__language_name__",
     "Language changed" : "ভাষা পরিবর্তন করা হয়েছে",

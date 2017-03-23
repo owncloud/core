@@ -29,7 +29,6 @@ OC.L10N.register(
     "Forbidden" : "存取被拒",
     "Invalid user" : "無效的使用者",
     "Unable to change mail address" : "無法更改 email 地址",
-    "Email saved" : "Email 已儲存",
     "Your full name has been changed." : "您的全名已變更",
     "Unable to change full name" : "無法變更全名",
     "APCu" : "APCu",

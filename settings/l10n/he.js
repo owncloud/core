@@ -31,7 +31,6 @@ OC.L10N.register(
     "Forbidden" : "חסום",
     "Invalid user" : "שם משתמש לא חוקי",
     "Unable to change mail address" : "לא ניתן לשנות כתובת דואר אלקטרוני",
-    "Email saved" : "הדואר האלקטרוני נשמר",
     "Your full name has been changed." : "השם המלא שלך הוחלף",
     "Unable to change full name" : "לא ניתן לשנות שם מלא",
     "APCu" : "APCu",

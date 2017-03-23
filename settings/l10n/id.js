@@ -29,7 +29,6 @@ OC.L10N.register(
     "Forbidden" : "Terlarang",
     "Invalid user" : "Pengguna salah",
     "Unable to change mail address" : "Tidak dapat mengubah alamat email",
-    "Email saved" : "Email disimpan",
     "Your full name has been changed." : "Nama lengkap Anda telah diubah",
     "Unable to change full name" : "Tidak dapat mengubah nama lengkap",
     "APCu" : "APCu",

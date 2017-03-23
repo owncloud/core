@@ -7,7 +7,6 @@ OC.L10N.register(
     "test email settings" : "សាក​ល្បង​ការ​កំណត់​អ៊ីមែល",
     "Email sent" : "បាន​ផ្ញើ​អ៊ីមែល",
     "You need to set your user email before being able to send test emails." : "អ្នក​ត្រូវ​តែ​កំណត់​អ៊ីមែល​របស់​អ្នក​មុន​នឹង​អាច​ផ្ញើ​អ៊ីមែល​សាកល្បង​បាន។",
-    "Email saved" : "បាន​រក្សា​ទុក​អ៊ីមែល",
     "__language_name__" : "__language_name__",
     "Language changed" : "បាន​ប្ដូរ​ភាសា",
     "Invalid request" : "សំណើ​មិន​ត្រឹម​ត្រូវ",

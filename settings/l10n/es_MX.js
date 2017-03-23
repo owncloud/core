@@ -22,7 +22,6 @@ OC.L10N.register(
     "Forbidden" : "Prohibido",
     "Invalid user" : "Usuario inválido",
     "Unable to change mail address" : "No se pudo cambiar la dirección de correo electrónico",
-    "Email saved" : "Correo electrónico guardado",
     "Your full name has been changed." : "Se ha cambiado su nombre completo.",
     "Unable to change full name" : "No se puede cambiar el nombre completo",
     "__language_name__" : "Español (México)",

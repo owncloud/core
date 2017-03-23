@@ -29,7 +29,6 @@ OC.L10N.register(
     "Forbidden" : "Draudžiama",
     "Invalid user" : "Neteisingas naudotojas",
     "Unable to change mail address" : "Nepavyko pakeisti el. pašto adreso",
-    "Email saved" : "El. paštas išsaugotas",
     "Your full name has been changed." : "Pilnas vardas pakeistas.",
     "Unable to change full name" : "Nepavyko pakeisti pilno vardo",
     "APCu" : "APCu",

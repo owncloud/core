@@ -22,7 +22,6 @@ OC.L10N.register(
     "Forbidden" : "Keelatud",
     "Invalid user" : "Vigane kasutaja",
     "Unable to change mail address" : "E-posti aadressi muutmine ebaõnnestus",
-    "Email saved" : "Kiri on salvestatud",
     "Your full name has been changed." : "Sinu täispikk nimi on muudetud.",
     "Unable to change full name" : "Täispika nime muutmine ebaõnnestus",
     "APCu" : "APCu",

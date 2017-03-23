@@ -10,7 +10,6 @@ OC.L10N.register(
     "test email settings" : "Postavke za testiranje e-pošte",
     "Email sent" : "E-pošta je poslana",
     "You need to set your user email before being able to send test emails." : "Prije nego li ste u mogućnosti slati testnu e-poštu trebate postaviti svoj korisnički email.",
-    "Email saved" : "E-pošta spremljena",
     "Your full name has been changed." : "Vaše puno ime je promijenjeno.",
     "Unable to change full name" : "Puno ime nije moguće promijeniti.",
     "__language_name__" : "__jezik_naziv___",
