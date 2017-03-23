@@ -80,6 +80,7 @@ abstract class TestCase extends \Test\TestCase {
 		// clear share hooks
 		\OC_Hook::clear('OCP\\Share');
 		\OC::registerShareHooks();
+		\OCA\Files_Sharing\Helper::registerHooks();
 
 		// create users
 		$backend = new \Test\Util\User\Dummy();
