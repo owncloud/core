@@ -30,6 +30,35 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
 class OracleMigrator extends NoCheckMigrator {
+
+	/**
+	 * Quote a column's name but changing the name requires recreating
+	 * the column instance and copying over all properties.
+	 *
+	 * @param Column $column old column
+	 * @param string $newName new name
+	 * @return Column new column instance with new name
+	 */
+	protected function quoteColumn($column) {
+		$newColumn = new Column(
+			$this->connection->quoteIdentifier($column->getName()),
+			$column->getType()
+		);
+		$newColumn->setAutoincrement($column->getAutoincrement());
+		$newColumn->setColumnDefinition($column->getColumnDefinition());
+		$newColumn->setComment($column->getComment());
+		$newColumn->setDefault($column->getDefault());
+		$newColumn->setFixed($column->getFixed());
+		$newColumn->setLength($column->getLength());
+		$newColumn->setNotnull($column->getNotnull());
+		$newColumn->setPrecision($column->getPrecision());
+		$newColumn->setScale($column->getScale());
+		$newColumn->setUnsigned($column->getUnsigned());
+		$newColumn->setPlatformOptions($column->getPlatformOptions());
+		$newColumn->setCustomSchemaOptions($column->getPlatformOptions());
+		return $newColumn;
+	}
+
 	/**
 	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
@@ -43,23 +72,7 @@ class OracleMigrator extends NoCheckMigrator {
 			return new Table(
 				$this->connection->quoteIdentifier($table->getName()),
 				array_map(function(Column $column) {
-					$newColumn = new Column(
-						$this->connection->quoteIdentifier($column->getName()),
-						$column->getType()
-					);
-					$newColumn->setAutoincrement($column->getAutoincrement());
-					$newColumn->setColumnDefinition($column->getColumnDefinition());
-					$newColumn->setComment($column->getComment());
-					$newColumn->setDefault($column->getDefault());
-					$newColumn->setFixed($column->getFixed());
-					$newColumn->setLength($column->getLength());
-					$newColumn->setNotnull($column->getNotnull());
-					$newColumn->setPrecision($column->getPrecision());
-					$newColumn->setScale($column->getScale());
-					$newColumn->setUnsigned($column->getUnsigned());
-					$newColumn->setPlatformOptions($column->getPlatformOptions());
-					$newColumn->setCustomSchemaOptions($column->getPlatformOptions());
-					return $newColumn;
+					return $this->quoteColumn($column); 
 				}, $table->getColumns()),
 				array_map(function(Index $index) {
 					return new Index(
@@ -100,6 +113,9 @@ class OracleMigrator extends NoCheckMigrator {
 			$tableDiff->changedColumns = array_filter($tableDiff->changedColumns, function (ColumnDiff $column) {
 				return count($column->changedProperties) > 0;
 			});
+			$tableDiff->addedColumns = array_map(function(Column $column) {
+				return $this->quoteColumn($column);
+			}, $tableDiff->addedColumns);
 		}
 
 		return $schemaDiff;
