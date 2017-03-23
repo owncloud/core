@@ -42,7 +42,9 @@
 		upArrow: 38,
 		enter: 13,
 		del: 46,
-		backspace: 8
+		backspace: 8,
+		end: 35,
+		home: 36
 	};
 
 	function removeA(arr) {
@@ -59,13 +61,13 @@
 	}
 
 	function newFile() {
-		$(".new").click();
+		$("#app-content .viewcontainer:not(.hidden) .new").click();
 		$('[data-action="upload"]').click();
 		removeA(keys, keyCodes.n);
 	}
 
 	function newFolder() {
-		$(".new").click();
+		$("#app-content .viewcontainer:not(.hidden) .new").click();
 		$('[data-action="folder"]').click();
 		removeA(keys, keyCodes.n);
 	}
@@ -86,7 +88,8 @@
 	function favorite() {
 		if ($("#select_all_files").is(":checked")) {
 			// selected all files
-			OCA.Files.App.fileList.favoriteAll();
+			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+			fileList.favoriteAll();
 		}
 
 		else {
@@ -130,7 +133,8 @@
 	}
 
 	function update_view() {
-		OCA.Files.App.fileList.focusSelected();
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		fileList.focusSelected();
 	}
 
 	function select_down() {
@@ -206,7 +210,7 @@
 				if ($($("#fileList tr")[index-1]).hasClass("selected")) {
 					toDelete = 1;
 				}
-				if (! $("#fileList tr:first").hasClass("selected")) {
+				if (! $("#fileList tr").first().hasClass("selected")) {
 					if ($($("#fileList tr")[index]).hasClass("selected")) {
 						toDelete = 1;
 					}
@@ -230,7 +234,7 @@
 			}
 		});
 
-		if ($("#fileList tr:first").hasClass("selected") && toDelete == 0) {
+		if ($("#fileList tr").first().hasClass("selected") && toDelete == 0) {
 			return;
 		}
 
@@ -280,8 +284,13 @@
 				$(this).find(".selectCheckBox").click();
 			}
 		});
+		if (select == $("#fileList tr").length) {
+			// means wrap now
+			select = 0;
+		}
+
 		if (select === -1) {
-			$("#fileList tr:first").addClass("mouseOver");
+			$("#fileList tr").first().addClass("mouseOver");
 		} else {
 			$("#fileList tr").each(function(index) {
 				if (index === select) {
@@ -303,6 +312,11 @@
 				$(this).find(".selectCheckBox").click();
 			}
 		});
+		if (select == -1) {
+			select++; // FIXME : this prevents wrapping, think of an idea (next line)
+			// as to should we display all pages while wrapping or something else?
+		}
+
 		if (select === -1) {
 			$("#fileList tr:last").addClass("mouseOver");
 		} else {
@@ -315,6 +329,34 @@
 		update_view();
 	}
 
+	function go_last_tr() {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		fileList.showLastElement();
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("mouseOver")) {
+				$(this).removeClass("mouseOver");
+			}
+			if ($(this).hasClass("selected")) {
+				$(this).find(".selectCheckBox").click();
+			}
+		});
+		$("#fileList tr:last").addClass("mouseOver");
+		update_view();
+	}
+
+	function go_top_tr() {
+		$("#fileList tr").each(function(index) {
+			if ($(this).hasClass("mouseOver")) {
+				$(this).removeClass("mouseOver");
+			}
+			if ($(this).hasClass("selected")) {
+				$(this).find(".selectCheckBox").click();
+			}
+		});
+		$("#fileList tr").first().addClass("mouseOver");
+		update_view();
+	}
+
 	function enter() {
 		$("#fileList tr").each(function(index) {
 			if ($(this).hasClass("mouseOver")) {
@@ -324,7 +366,7 @@
 	}
 
 	function toggle_sidebar() {
-		if ( !$("#app-sidebar:first").hasClass("disappear") ) {
+		if ( !$("#app-sidebar").first().hasClass("disappear") ) {
 			// side-bar opened, close it
 			$(".icon-close").click();
 		}
@@ -347,7 +389,8 @@
 			else {
 				OC.dialogs.confirm(t('files', 'Are you sure you want to delete everything?') , "", function (e) {
 					if (e === true) {
-						OCA.Files.App.fileList.deleteAll();
+						var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+						fileList.deleteAll();
 					}
 				}, true);
 			}
@@ -430,7 +473,8 @@
 
 		if (len >= 2) {
 			var dir = $($(".breadcrumb .crumb")[len-2]).data('dir');
-			OCA.Files.App.fileList.changeDirectory(dir);
+			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+			fileList.changeDirectory(dir);
 		}
 	}
 
@@ -503,6 +547,10 @@
 				toggle_sidebar();
 			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.backspace, keys) !== -1)) { // goto parent folder
 				go_parent_folder();
+			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.end, keys) !== -1)) { // goto last tr of last page
+				go_last_tr();
+			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.home, keys) !== -1)) { // goto last tr of last page
+				go_top_tr();
 			}
 			removeA(keys, event.keyCode);
 		});

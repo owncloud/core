@@ -234,6 +234,8 @@
 			}
 
 			this.$el = $el;
+			this.$el.data('fileList', this); // store the fileList instance
+
 			if (options.id) {
 				this.id = options.id;
 			}
@@ -2857,14 +2859,15 @@
 				$scrollContainer = $('body');
 			}
 
-			if ($(".mouseOver").position().top >= this.$container.height() / 2) {
+			//if ($(".mouseOver").position().top >= this.$container.height() / 2) {
+			if (this.$el.find('.mouseOver').position().top >= this.$container.height() / 2) {
 				$scrollContainer.animate({
 					// Scrolling to the top of the highleghted element
-					scrollTop: $(".mouseOver").position().top - this.$container.height() / 2
+					scrollTop: this.$el.find('.mouseOver').position().top - this.$container.height() / 2
 				}, 100);
 			}
 
-			if ($(".mouseOver").position().top <= 100) {
+			if (this.$el.find('.mouseOver').position().top <= 100) {
 				$scrollContainer.animate({
 					// Scrolling to the top of the screen
 					scrollTop: 0
@@ -2899,6 +2902,19 @@
 					model = this.getModelForFile(this.files[i].name);
 				}
 				this.fileActions.triggerAction('Delete', model, this);
+			}
+		},
+
+		/**
+		 * Selects the last tr of the last page
+		 */
+		showLastElement: function() {
+			for (var i = 0; i < this.files.length; i++) {
+				var model = this.getModelForFile(this.files[i].name);
+				if(!model) {
+					// item not loaded due to pagination
+					this._nextPage(false);
+				}
 			}
 		},
 
