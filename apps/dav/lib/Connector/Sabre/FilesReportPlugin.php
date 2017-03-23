@@ -24,6 +24,7 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\Files\View;
+use OCA\DAV\Files\Xml\FilterRequest;
 use Sabre\DAV\Exception\PreconditionFailed;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\ServerPlugin;
@@ -139,6 +140,8 @@ class FilesReportPlugin extends ServerPlugin {
 
 		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
 
+		$server->xml->elementMap[self::REPORT_NAME] = FilterRequest::class;
+
 		$this->server = $server;
 		$this->server->on('report', [$this, 'onReport']);
 	}
@@ -159,7 +162,7 @@ class FilesReportPlugin extends ServerPlugin {
 	 * REPORT operations to look for files
 	 *
 	 * @param string $reportName
-	 * @param $report
+	 * @param mixed $report
 	 * @param string $uri
 	 * @return bool
 	 * @throws BadRequest
@@ -167,56 +170,59 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @internal param $ [] $report
 	 */
 	public function onReport($reportName, $report, $uri) {
+
 		$reportTargetNode = $this->server->tree->getNodeForPath($uri);
 		if (!$reportTargetNode instanceof Directory || $reportName !== self::REPORT_NAME) {
 			return;
 		}
 
-		$ns = '{' . $this::NS_OWNCLOUD . '}';
-		$requestedProps = [];
-		$filterRules = [];
+		$requestedProps = $report->properties;
+		$filterRules = $report->filters;
 
-		// parse report properties and gather filter info
-		foreach ($report as $reportProps) {
-			$name = $reportProps['name'];
-			if ($name === $ns . 'filter-rules') {
-				$filterRules = $reportProps['value'];
-			} else if ($name === '{DAV:}prop') {
-				// propfind properties
-				foreach ($reportProps['value'] as $propVal) {
-					$requestedProps[] = $propVal['name'];
-				}
+		// "systemtag" is always an array of tags, favorite a string/int/null
+		if (empty($filterRules['systemtag']) && is_null($filterRules['favorite'])) {
+			// FIXME: search currently not possible because results are missing properties!
+			throw new BadRequest('No filter criteria specified');
+		} else {
+			if (isset($report->search['pattern'])) {
+				// TODO: implement this at some point...
+				throw new BadRequest('Search pattern cannot be combined with filter');
 			}
-		}
 
-		if (empty($filterRules)) {
-			// an empty filter would return all existing files which would be slow
-			throw new BadRequest('Missing filter-rule block in request');
-		}
+			// gather all file ids matching filter
+			try {
+				$resultFileIds = $this->processFilterRules($filterRules);
+			} catch (TagNotFoundException $e) {
+				throw new PreconditionFailed('Cannot filter by non-existing tag', 0, $e);
+			}
 
-		// gather all file ids matching filter
-		try {
-			$resultFileIds = $this->processFilterRules($filterRules);
-		} catch (TagNotFoundException $e) {
-			throw new PreconditionFailed('Cannot filter by non-existing tag', 0, $e);
-		}
+			// pre-slice the results if needed for pagination to not waste
+			// time resolving nodes that will not be returned anyway
+			$resultFileIds = $this->slice($resultFileIds, $report);
 
-		// find sabre nodes by file id, restricted to the root node path
-		$results = $this->findNodesByFileIds($reportTargetNode, $resultFileIds);
+			// find sabre nodes by file id, restricted to the root node path
+			$results = $this->findNodesByFileIds($reportTargetNode, $resultFileIds);
+		}
 
 		$filesUri = $this->getFilesBaseUri($uri, $reportTargetNode->getPath());
-		$responses = $this->prepareResponses($filesUri, $requestedProps, $results);
+		$results = $this->prepareResponses($filesUri, $requestedProps, $results);
 
-		$xml = $this->server->xml->write(
-			'{DAV:}multistatus',
-			new MultiStatus($responses)
-		);
+		$xml = $this->server->generateMultiStatus($results);
 
 		$this->server->httpResponse->setStatus(207);
 		$this->server->httpResponse->setHeader('Content-Type', 'application/xml; charset=utf-8');
 		$this->server->httpResponse->setBody($xml);
 
 		return false;
+	}
+
+	private function slice($results, $report) {
+		if (!is_null($report->search)) {
+			$length = $report->search['limit'];
+			$offset = $report->search['offset'];
+			$results = array_slice($results, $offset, $length);
+		}
+		return $results;
 	}
 
 	/**
@@ -252,18 +258,9 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @throws TagNotFoundException whenever a tag was not found
 	 */
 	protected function processFilterRules($filterRules) {
-		$ns = '{' . $this::NS_OWNCLOUD . '}';
 		$resultFileIds = null;
-		$systemTagIds = [];
-		$favoriteFilter = null;
-		foreach ($filterRules as $filterRule) {
-			if ($filterRule['name'] === $ns . 'systemtag') {
-				$systemTagIds[] = $filterRule['value'];
-			}
-			if ($filterRule['name'] === $ns . 'favorite') {
-				$favoriteFilter = true;
-			}
-		}
+		$systemTagIds = $filterRules['systemtag'];
+		$favoriteFilter = $filterRules['favorite'];
 
 		if ($favoriteFilter !== null) {
 			$resultFileIds = $this->fileTagger->load('files')->getFavorites();
@@ -337,7 +334,7 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @return Response[]
 	 */
 	public function prepareResponses($filesUri, $requestedProps, $nodes) {
-		$responses = [];
+		$results = [];
 		foreach ($nodes as $node) {
 			$propFind = new PropFind($filesUri . $node->getPath(), $requestedProps);
 
@@ -346,18 +343,9 @@ class FilesReportPlugin extends ServerPlugin {
 			$result = $propFind->getResultForMultiStatus();
 			$result['href'] = $propFind->getPath();
 
-			$resourceType = $this->server->getResourceTypeForNode($node);
-			if (in_array('{DAV:}collection', $resourceType) || in_array('{DAV:}principal', $resourceType)) {
-				$result['href'] .= '/';
-			}
-
-			$responses[] = new Response(
-				rtrim($this->server->getBaseUri(), '/') . $filesUri . $node->getPath(),
-				$result,
-				200
-			);
+			$results[] = $result;
 		}
-		return $responses;
+		return $results;
 	}
 
 	/**
@@ -378,15 +366,23 @@ class FilesReportPlugin extends ServerPlugin {
 			$entry = $folder->getById($fileId);
 			if ($entry) {
 				$entry = current($entry);
-				if ($entry instanceof \OCP\Files\File) {
-					$results[] = new File($this->fileView, $entry);
-				} else if ($entry instanceof \OCP\Files\Folder) {
-					$results[] = new Directory($this->fileView, $entry);
+				$node = $this->makeSabreNode($entry);
+				if ($node) {
+					$results[] = $node;
 				}
 			}
 		}
 
 		return $results;
+	}
+
+	private function makeSabreNode(\OCP\Files\Node $filesNode) {
+		if ($filesNode instanceof \OCP\Files\File) {
+			return new File($this->fileView, $filesNode);
+		} else if ($filesNode instanceof \OCP\Files\Folder) {
+			return new Directory($this->fileView, $filesNode);
+		}
+		throw new \Exception('Unrecognized Files API node returned, aborting');
 	}
 
 	/**

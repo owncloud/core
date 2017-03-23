@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Authentication error" : "ავთენტიფიკაციის შეცდომა",
     "Email sent" : "იმეილი გაიგზავნა",
-    "Email saved" : "იმეილი შენახულია",
     "__language_name__" : "__language_name__",
     "Language changed" : "ენა შეცვლილია",
     "Invalid request" : "არასწორი მოთხოვნა",
@@ -20,6 +19,8 @@ OC.L10N.register(
     "undo" : "დაბრუნება",
     "never" : "არასდროს",
     "add group" : "ჯგუფის დამატება",
+    "enabled" : "ჩართულია",
+    "disabled" : "გათიშულია",
     "A valid username must be provided" : "უნდა მიუთითოთ არსებული მომხმარებლის სახელი",
     "A valid password must be provided" : "უნდა მიუთითოთ არსებული პაროლი",
     "Forum" : "ფორუმი",

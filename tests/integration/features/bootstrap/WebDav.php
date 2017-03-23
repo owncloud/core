@@ -64,6 +64,7 @@ trait WebDav {
 		} else {
 			$options['auth'] = [$user, $this->regularUser];
 		}
+
 		$request = $client->createRequest($method, $fullUrl, $options);
 		if (!is_null($headers)){
 			foreach ($headers as $key => $value) {
@@ -140,7 +141,6 @@ trait WebDav {
 	public function downloadPublicFileWithRange($range){
 		$token = $this->lastShareData->data->token;
 		$fullUrl = substr($this->baseUrl, 0, -4) . "public.php/webdav";
-		$headers['Range'] = $range;
 
 		$client = new GClient();
 		$options = [];
@@ -159,7 +159,6 @@ trait WebDav {
 	public function downloadPublicFileInsideAFolderWithRange($path, $range){
 		$token = $this->lastShareData->data->token;
 		$fullUrl = substr($this->baseUrl, 0, -4) . "public.php/webdav" . "$path";
-		$headers['Range'] = $range;
 
 		$client = new GClient();
 		$options = [];
@@ -197,6 +196,19 @@ trait WebDav {
 	public function downloadingFile($fileName) {
 		try {
 			$this->response = $this->makeDavRequest($this->currentUser, 'GET', $fileName, []);
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
+	 * @When user :user downloads the file :fileName
+	 * @param string $user
+	 * @param string $fileName
+	 */
+	public function userDownloadsTheFile($user, $fileName) {
+		try {
+			$this->response = $this->makeDavRequest($user, 'GET', $fileName, []);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
@@ -380,18 +392,33 @@ trait WebDav {
 	 * @param string $properties properties which needs to be included in the report
 	 * @param string $filterRules filter-rules to choose what needs to appear in the report
 	 */
-	public function reportFolder($user, $path, $properties, $filterRules){
+	public function reportFolder($user, $path, $properties, $filterRules, $offset = null, $limit = null){
 		$client = $this->getSabreClient($user);
 
 		$body = '<?xml version="1.0" encoding="utf-8" ?>
-							 <oc:filter-files xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
-								 <a:prop>
-									' . $properties . '
-								 </a:prop>
-								 <oc:filter-rules>
-									' . $filterRules . '
-								 </oc:filter-rules>
-							 </oc:filter-files>';
+					<oc:filter-files xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
+						<a:prop>
+							' . $properties . '
+						</a:prop>
+						<oc:filter-rules>
+							' . $filterRules . '
+						</oc:filter-rules>';
+		if (is_int($offset) || is_int($limit)) {
+			$body .=	'
+						<oc:search>';
+			if (is_int($offset)) {
+				$body .= "
+							<oc:offset>${offset}</oc:offset>";
+			}
+			if (is_int($limit)) {
+				$body .= "
+							<oc:limit>${limit}</oc:limit>";
+			}
+			$body .=	'
+						</oc:search>';
+		}
+		$body .= '
+					</oc:filter-files>';
 
 		$response = $client->request('REPORT', $this->makeSabrePath($user, $path), $body);
 		$parsedResponse = $client->parseMultistatus($response['body']);
@@ -415,6 +442,7 @@ trait WebDav {
 		} else {
 			$settings['password'] = $this->regularUser;
 		}
+		$settings['authType'] = SClient::AUTH_BASIC;
 
 		return new SClient($settings);
 	}
@@ -563,7 +591,7 @@ trait WebDav {
 	 * @param string $data
 	 * @param string $destination
 	 */
-	public function userUploadsChunkFileOfWithToWithChecksum($user, $num, $total, $data, $destination)
+	public function userUploadsChunkedFile($user, $num, $total, $data, $destination)
 	{
 		$num -= 1;
 		$data = \GuzzleHttp\Stream\Stream::factory($data);
@@ -672,6 +700,8 @@ trait WebDav {
 		} else {
 			$settings['password'] = $this->regularUser;
 		}
+		$settings['authType'] = SClient::AUTH_BASIC;
+
 		$client = new SClient($settings);
 		if (!$properties) {
 			$properties = [
@@ -742,6 +772,18 @@ trait WebDav {
 	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
 	 */
 	public function checkFavoritedElements($user, $folder, $expectedElements){
+		$this->checkFavoritedElementsPaginated($user, $folder, $expectedElements, null, null);
+	}
+
+    /**
+	 * @Then /^user "([^"]*)" in folder "([^"]*)" should have favorited the following elements from offset ([\d*]) and limit ([\d*])$/
+	 * @param string $user
+	 * @param string $folder
+	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
+	 * @param int $offset
+	 * @param int $limit
+	 */
+	public function checkFavoritedElementsPaginated($user, $folder, $expectedElements, $offset, $limit){
 		$elementList = $this->reportFolder($user,
 											$folder,
 											'<oc:favorite/>',
@@ -757,5 +799,24 @@ trait WebDav {
 			}
 		}
 	}
+
+	/**
+	 * @When /^User "([^"]*)" deletes everything from folder "([^"]*)"$/
+	 * @param string $user
+	 * @param string $folder
+	 */
+	public function userDeletesEverythingInFolder($user, $folder)  {
+		$elementList = $this->listFolder($user, $folder, 1);
+		$elementListKeys = array_keys($elementList);
+		array_shift($elementListKeys);
+		$davPrefix =  "/" . $this->getDavFilesPath($user);
+		foreach($elementListKeys as $element) {
+			if (substr($element, 0, strlen($davPrefix)) == $davPrefix) {
+				$element = substr($element, strlen($davPrefix));
+			}
+			$this->userDeletesFile($user, "element", $element);
+		}
+	}
+
 
 }

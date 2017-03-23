@@ -118,7 +118,6 @@
 }
 #filestable tbody tr:hover,
 #filestable tbody tr:focus,
-#filestable tbody .name:focus,
 #filestable tbody tr:active,
 #filestable tbody tr.highlighted,
 #filestable tbody tr.highlighted .name:focus,

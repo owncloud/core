@@ -4,7 +4,6 @@ OC.L10N.register(
     "Authentication error" : "Lỗi xác thực",
     "Saved" : "Đã lưu",
     "Email sent" : "Email đã được gửi",
-    "Email saved" : "Lưu email",
     "Your full name has been changed." : "Họ và tên đã được thay đổi.",
     "Unable to change full name" : "Họ và tên không thể đổi ",
     "__language_name__" : "__Ngôn ngữ___",

@@ -149,6 +149,16 @@ function avatarResponseHandler (data) {
 
 
 $(document).ready(function () {
+	var query = OC.parseQueryString(location.search);
+	if (query && query.changestatus) {
+		if (query.changestatus === 'error') {
+			OC.Notification.showTemporary(t('settings', 'Failed to change the email address.'));
+		} else if (query.changestatus === 'success') {
+			OC.Notification.showTemporary(t('settings', 'Email changed successfully.'));
+		}
+		OC.Util.History.replaceState({});
+	}
+
 	if($('#pass2').length) {
 		$('#pass2').showPassword().keyup();
 	}
@@ -194,7 +204,10 @@ $(document).ready(function () {
 	});
 
 	$('#displayName').keyUpDelayedOrEnter(changeDisplayName);
-	$('#email').keyUpDelayedOrEnter(changeEmailAddress, true);
+	$('#email').enter(changeEmailAddress, true);
+	$('#emailbutton').click(function () {
+		changeEmailAddress();
+	});
 
 	$("#languageinput").change(function () {
 		// Serialize the data

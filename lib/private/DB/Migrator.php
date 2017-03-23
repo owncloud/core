@@ -98,34 +98,6 @@ class Migrator {
 	}
 
 	/**
-	 * @param Schema $targetSchema
-	 * @throws \OC\DB\MigrationException
-	 */
-	public function checkMigrate(Schema $targetSchema) {
-		$this->noEmit = true;
-		/**@var \Doctrine\DBAL\Schema\Table[] $tables */
-		$tables = $targetSchema->getTables();
-		$filterExpression = $this->getFilterExpression();
-		$this->connection->getConfiguration()->
-			setFilterSchemaAssetsExpression($filterExpression);
-		$existingTables = $this->connection->getSchemaManager()->listTableNames();
-
-		$step = 0;
-		foreach ($tables as $table) {
-			if (strpos($table->getName(), '.')) {
-				list(, $tableName) = explode('.', $table->getName());
-			} else {
-				$tableName = $table->getName();
-			}
-			$this->emitCheckStep($tableName, $step++, count($tables));
-			// don't need to check for new tables
-			if (array_search($tableName, $existingTables) !== false) {
-				$this->checkTableMigrate($table);
-			}
-		}
-	}
-
-	/**
 	 * Create a unique name for the temporary table
 	 *
 	 * @param string $name
@@ -133,37 +105,6 @@ class Migrator {
 	 */
 	protected function generateTemporaryTableName($name) {
 		return $this->config->getSystemValue('dbtableprefix', 'oc_') . $name . '_' . $this->random->generate(13, ISecureRandom::CHAR_LOWER . ISecureRandom::CHAR_DIGITS);
-	}
-
-	/**
-	 * Check the migration of a table on a copy so we can detect errors before messing with the real table
-	 *
-	 * @param \Doctrine\DBAL\Schema\Table $table
-	 * @throws \OC\DB\MigrationException
-	 */
-	protected function checkTableMigrate(Table $table) {
-		$name = $table->getName();
-		$tmpName = $this->generateTemporaryTableName($name);
-
-		$this->copyTable($name, $tmpName);
-
-		//create the migration schema for the temporary table
-		$tmpTable = $this->renameTableSchema($table, $tmpName);
-		$schemaConfig = new SchemaConfig();
-		$schemaConfig->setName($this->connection->getDatabase());
-		$schema = new Schema([$tmpTable], [], $schemaConfig);
-
-		try {
-			$this->applySchema($schema);
-			$this->dropTable($tmpName);
-		} catch (DBALException $e) {
-			// pgsql needs to commit it's failed transaction before doing anything else
-			if ($this->connection->isTransactionActive()) {
-				$this->connection->commit();
-			}
-			$this->dropTable($tmpName);
-			throw new MigrationException($table->getName(), $e->getMessage());
-		}
 	}
 
 	/**

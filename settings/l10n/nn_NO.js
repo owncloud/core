@@ -8,7 +8,6 @@ OC.L10N.register(
     "Unable to change password" : "Klarte ikkje å endra passordet",
     "Federated Cloud Sharing" : "Klarert sky deling",
     "Email sent" : "E-post sendt",
-    "Email saved" : "E-postadresse lagra",
     "__language_name__" : "Nynorsk",
     "Language changed" : "Språk endra",
     "Invalid request" : "Ugyldig førespurnad",

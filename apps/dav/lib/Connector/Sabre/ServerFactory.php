@@ -110,9 +110,9 @@ class ServerFactory {
 		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
 		// we do not provide locking we emulate it using a fake locking plugin.
 		if($this->request->isUserAgent([
-				'/WebDAVFS/',
-				'/Microsoft Office OneNote 2013/',
-				'/Microsoft-WebDAV-MiniRedir/',
+			'/WebDAVFS/',
+			'/Microsoft Office OneNote 2013/',
+			'/Microsoft-WebDAV-MiniRedir/',
 		])) {
 			$server->addPlugin(new \OCA\DAV\Connector\Sabre\FakeLockerPlugin());
 		}
@@ -124,18 +124,26 @@ class ServerFactory {
 		// wait with registering these until auth is handled and the filesystem is setup
 		$server->on('beforeMethod', function () use ($server, $objectTree, $viewCallBack) {
 			// ensure the skeleton is copied
+			// Try to obtain User Folder
 			$userFolder = \OC::$server->getUserFolder();
-			
+
 			/** @var \OC\Files\View $view */
 			$view = $viewCallBack($server);
-			$rootInfo = $view->getFileInfo('');
+			if (!is_null($userFolder)) {
+				// User folder exists and user is active and not anonymous
+				$rootInfo = $userFolder->getFileInfo();
+			} else {
+				// User is anonymous or inactive, we need to get root info
+				$rootInfo = $view->getFileInfo('');
+			}
 
-			// Create ownCloud Dir
+			// Create ownCloud Root
 			if ($rootInfo->getType() === 'dir') {
 				$root = new \OCA\DAV\Connector\Sabre\Directory($view, $rootInfo, $objectTree);
 			} else {
 				$root = new \OCA\DAV\Connector\Sabre\File($view, $rootInfo);
 			}
+
 			$objectTree->init($root, $view, $this->mountManager);
 
 			$server->addPlugin(
@@ -154,7 +162,6 @@ class ServerFactory {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\SharesPlugin(
 					$objectTree,
 					$this->userSession,
-					$userFolder,
 					\OC::$server->getShareManager()
 				));
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\CommentPropertiesPlugin(\OC::$server->getCommentsManager(), $this->userSession));

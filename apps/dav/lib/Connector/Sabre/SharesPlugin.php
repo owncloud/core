@@ -74,12 +74,10 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 	public function __construct(
 		\Sabre\DAV\Tree $tree,
 		IUserSession $userSession,
-		\OCP\Files\Folder $userFolder,
 		\OCP\Share\IManager $shareManager
 	) {
 		$this->tree = $tree;
 		$this->shareManager = $shareManager;
-		$this->userFolder = $userFolder;
 		$this->userId = $userSession->getUser()->getUID();
 		$this->cachedShareTypes = [];
 	}
@@ -168,11 +166,10 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			&& $propFind->getDepth() !== 0
 			&& !is_null($propFind->getStatus(self::SHARETYPES_PROPERTYNAME))
 		) {
-			$folderNode = $this->userFolder->get($sabreNode->getPath());
-			$children = $folderNode->getDirectoryListing();
+			$children = $sabreNode->getChildren();
 
 			// Get ID of parent folder
-			$folderNodeID = intval($folderNode->getId());
+			$folderNodeID = $sabreNode->getId();
 			$nodeIdsArray = [$folderNodeID];
 
 			// Initialize share types array for this node in case there would be no shares for this node
@@ -181,13 +178,13 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 			// Get IDs for all children of the parent folder
 			foreach ($children as $childNode) {
 				// Ensure that they are of File or Folder type
-				if (!($childNode instanceof \OCP\Files\File) &&
-					!($childNode instanceof \OCP\Files\Folder)) {
+				if (!($childNode instanceof \OCA\DAV\Connector\Sabre\Directory) &&
+					!($childNode instanceof \OCA\DAV\Connector\Sabre\File)) {
 					return;
 				}
 
 				// Put node ID into an array and initialize cache for it
-				$nodeId = intval($childNode->getId());
+				$nodeId = $childNode->getId();
 				array_push($nodeIdsArray, $nodeId);
 				
 				// Initialize share types array for this node in case there would be no shares for this node
@@ -207,7 +204,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 				$shareTypesHash = $this->cachedShareTypes[$sabreNode->getId()];
 			} else {
 				// Share types for this node not in cache, obtain if any
-				$nodeId = $this->userFolder->get($sabreNode->getPath())->getId();
+				$nodeId = $sabreNode->getId();
 				$returnedShares = $this->getSharesForNodeIds([$nodeId]);
 
 				// Initialize share types for this node and obtain share types hash if any

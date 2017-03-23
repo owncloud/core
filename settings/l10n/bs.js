@@ -20,7 +20,6 @@ OC.L10N.register(
     "Forbidden" : "Zabranjeno",
     "Invalid user" : "Nevažeči korisnik",
     "Unable to change mail address" : "Nemoguće je izmjeniti adresu e-pošte",
-    "Email saved" : "E-pošta je spremljena",
     "Your full name has been changed." : "Vaše puno ime je promijenjeno.",
     "Unable to change full name" : "Puno ime nije moguće promijeniti",
     "__language_name__" : "__naziv_jezika___",

@@ -30,9 +30,4 @@ use Doctrine\DBAL\Schema\Schema;
  * @package OC\DB
  */
 class NoCheckMigrator extends Migrator {
-	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $targetSchema
-	 * @throws \OC\DB\MigrationException
-	 */
-	public function checkMigrate(Schema $targetSchema) {}
 }

@@ -57,6 +57,9 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 	 * @var \OCP\IUser
 	 */
 	private $user;
+	
+	/** @var int */
+	private $maxId;
 
 	public function setUp() {
 		parent::setUp();
@@ -77,17 +80,27 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 			\OC::$server->getDatabaseConnection(),
 			$this->user
 		);
+		
+		
+		$connection = \OC::$server->getDatabaseConnection();
+		$qb = $connection->getQueryBuilder();
+		$maxFunction = $qb->createFunction(
+				"MAX(`id`)"
+			);
+		$this->maxId = (int) $qb->select($maxFunction)
+			->from('properties')
+			->execute()->fetchColumn();
 	}
 
 	public function tearDown() {
 		$connection = \OC::$server->getDatabaseConnection();
 		$deleteStatement = $connection->prepare(
 			'DELETE FROM `*PREFIX*properties`' .
-			' WHERE `userid` = ?'
+			' WHERE `id` > ?'
 		);
 		$deleteStatement->execute(
 			[
-				$this->user->getUID(),
+				$this->maxId,
 			]
 		);
 		$deleteStatement->closeCursor();

@@ -38,4 +38,6 @@ class FakeManager implements \OCP\Comments\ICommentsManager {
 	public function deleteReadMarksFromUser(\OCP\IUser $user) {}
 
 	public function deleteReadMarksOnObject($objectType, $objectId) {}
+
+	public function getNumberOfUnreadCommentsForNodes($objectType, $objectIds, \OCP\IUser $user) {}
 }

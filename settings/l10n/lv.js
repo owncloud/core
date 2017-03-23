@@ -22,7 +22,6 @@ OC.L10N.register(
     "Forbidden" : "Pieeja liegta",
     "Invalid user" : "Nepareizs lietotājs",
     "Unable to change mail address" : "Nevar nomainīt e-pasta adresi",
-    "Email saved" : "E-pasts tika saglabāts",
     "Your full name has been changed." : "Jūsu pilnais vārds tika mainīts.",
     "Unable to change full name" : "Nav iespējams nomainīt jūsu pilno vārdu",
     "__language_name__" : "__valodas_nosaukums__",

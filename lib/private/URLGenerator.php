@@ -157,7 +157,7 @@ class URLGenerator implements IURLGenerator {
 
 		$path = $this->getImagePath($app, $image);
 
-		if($path !== '') {
+		if($path !== '' && !is_null($path)) {
 			$cache->set($cacheKey, $path);
 			return $path;
 		} else {

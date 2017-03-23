@@ -26,7 +26,7 @@ class TipsTest extends \Test\TestCase {
 	}
 
 	public function testGetSection() {
-		$this->assertEquals('general', $this->panel->getSectionID());
+		$this->assertEquals('help', $this->panel->getSectionID());
 	}
 
 	public function testGetPriority() {

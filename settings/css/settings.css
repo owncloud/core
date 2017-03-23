@@ -224,6 +224,7 @@ span.usersLastLoginTooltip { white-space: nowrap; }
 	position: relative;
 }
 #userlist .mailAddress,
+#userlist .enabled,
 #userlist .storageLocation,
 #userlist .userBackend,
 #userlist .lastLogin {

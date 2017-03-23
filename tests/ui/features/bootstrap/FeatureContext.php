@@ -46,6 +46,7 @@ class FeatureContext extends RawMinkContext implements Context
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
+		$this->filesPage->waitTillPageIsloaded(10);
 	}
 	
 	/**

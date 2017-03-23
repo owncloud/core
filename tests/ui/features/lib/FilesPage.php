@@ -86,6 +86,7 @@ class FilesPage extends OwnCloudPage
 	public function waitTillPageIsloaded($timeout)
 	{
 		for ($counter = 0; $counter <= $timeout; $counter ++) {
+
 			 
 			$fileList = $this->findById("fileList");
 			 
@@ -94,7 +95,7 @@ class FilesPage extends OwnCloudPage
 					$this->emptyContentXpath)->hasClass("hidden"))) {
 						break;
 					}
-					 
+			
 			sleep(1);
 		}
 	}
