@@ -63,13 +63,11 @@
 	function newFile() {
 		$("#app-content .viewcontainer:not(.hidden) .new").click();
 		$('[data-action="upload"]').click();
-		removeA(keys, keyCodes.n);
 	}
 
 	function newFolder() {
 		$("#app-content .viewcontainer:not(.hidden) .new").click();
 		$('[data-action="folder"]').click();
-		removeA(keys, keyCodes.n);
 	}
 
 	function esc() {
@@ -93,42 +91,9 @@
 		}
 
 		else {
-			var countSelected = 0;
-			$("#fileList tr").each(function(index) {
-				if ($(this).hasClass("selected")) {
-					countSelected++;
-				}
-			});
-
-			// single file favorite
-			if (countSelected == 0) {
-				$("#fileList tr").each(function(index) {
-					var self = this;
-					if ($(this).hasClass("mouseOver")) {
-						if ($(this).find(".action-favorite").length > 0) {
-							$(this).find(".action-favorite").click();
-							return false;
-						}
-						else {
-							OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-						}
-					}
-				});
-			}
-			// multiple selected files favorite
-			else {
-				$("#fileList tr").each(function(index) {
-					var self = this;
-					if ($(this).hasClass("selected")) {
-						if ($(this).find(".action-favorite").length > 0) {
-							$(this).find(".action-favorite").click();
-						}
-						else {
-							OC.Notification.showTemporary(t('files', 'You don\'t have permissions to favorite ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-						}
-					}
-				});
-			}
+			// selected one/multiple files(not all files)
+			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+			fileList.favoriteSelected();		
 		}
 	}
 
@@ -383,88 +348,14 @@
 	function del() {
 		if ($("#select_all_files").is(":checked")) {
 			// selected all files
-			if ($("#app-content-files .selectedActions .delete-selected").not(".hidden").length == 0) {
-				OC.Notification.showTemporary(t('files', 'You don\'t have permissions to delete all the files, try unchecking some.'));
-			}
-			else {
-				OC.dialogs.confirm(t('files', 'Are you sure you want to delete everything?') , "", function (e) {
-					if (e === true) {
-						var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-						fileList.deleteAll();
-					}
-				}, true);
+			if ($("#app-content-files .selectedActions .delete-selected").not(".hidden").length > 0) {
+				$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
 			}
 		}
 		else {
-			var countSelected = 0;
-			$("#fileList tr").each(function(index) {
-				if ($(this).hasClass("selected")) {
-					countSelected++;
-				}
-			});
-
-			// delete the row which is currently selected
-			if (countSelected == 0) {
-				$("#fileList tr").each(function(index) {
-					if ($(this).hasClass("mouseOver")) {
-						var self = this;
-
-						$(self).find(".action-menu").click();
-						var canDelete = $(self).find(".action-delete").length;
-						$(self).find(".popovermenu").addClass("hidden");
-						if(canDelete > 0) {
-							// FIXME : add translation capabilities
-							OC.dialogs.confirm(t('files', 'Are you sure you want to delete ') + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\" ?", "", function (e) {
-								if (e === true) {
-									$(self).find(".action-menu").click();
-									$(self).find(".action-delete").click();
-									$(self).removeClass("mouseOver");
-								}
-							}, true);
-						}
-						else {
-							// FIXME : add translation capabilities
-							OC.Notification.showTemporary(t('files', 'You don\'t have permissions to delete ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-						}
-					}
-				});
-			}
-			// deletion of multiple files selected
-			else {
-				if ($("#app-content-files .selectedActions .delete-selected").not(".hidden").length > 0) {
-					// FIXME : add translation capabilities
-					OC.dialogs.confirm(t('files', 'Are you sure you want to delete the ') + "\"" +  countSelected + "\" selected files?", "", function (e) {
-						if (e === true) {
-							$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
-						}
-					}, true);
-				}
-				else {
-					var cantDelete = "";
-					var count = 0;
-					$("#fileList tr").each(function(index) {
-						var self = this;
-						if ($(this).hasClass("selected")) {
-							$(self).find(".action-menu").click();
-							var canDelete = $(self).find(".action-delete").length;
-							$(self).find(".popovermenu").addClass("hidden");
-							if (canDelete == 0) {
-								count++;
-								if (count == 1) {
-									cantDelete += ", try unchecking \"";
-								}
-								cantDelete += $(self).find(".innernametext").text() + $(self).find(".extension").text() + ", ";
-							}
-						}
-					}).promise().done(function(){
-						if (cantDelete.length > 0) {
-							cantDelete = cantDelete.slice(0,-2);
-							cantDelete += "\"";
-						}
-						OC.Notification.showTemporary(t('files', "You can't delete these files" + cantDelete));
-					});
-				}
-			}
+			// selected one/multiple files(not all files)
+			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+			fileList.deleteSelected();
 		}
 	}
 
@@ -491,13 +382,10 @@
 					$(self).find(".action-rename").click();
 					$(self).removeClass("mouseOver");
 				}
-				else {
-					// FIXME : add translation capabilities
-					OC.Notification.showTemporary(t('files', 'You don\'t have permissions to rename ' + "\"" +  $(self).find(".innernametext").text() + $(self).find(".extension").text() + "\""));
-				}
 			}
 		});
 	}
+
 	Files.bindKeyboardShortcuts = function(document, $) {
 		$(document).keydown(function(event) { //check for modifier keys
             if(!$(event.target).is('body')) {

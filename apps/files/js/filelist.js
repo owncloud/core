@@ -2876,32 +2876,39 @@
 		},
 
 		/**
-		 * Favorite all files in the current fileList
+		 * Delete the selected files in the current fileList
 		 */
-		favoriteAll: function() {
-			for (var i = 0; i < this.files.length; i++) {
-				var model = this.getModelForFile(this.files[i].name);
-				if(!model) {
-					// item not loaded due to pagination
-					this._nextPage(false);
-					model = this.getModelForFile(this.files[i].name);
+		deleteSelected: function() {
+			var countSelected = 0;
+			$("#fileList tr").each(function(index) {
+				if ($(this).hasClass("selected")) {
+					countSelected++;
 				}
-				this.fileActions.triggerAction('Favorite', model, this);
-			}
-		},
+			});
 
-		/**
-		 * Delete all files in the current fileList
-		 */
-		deleteAll: function() {
-			for (var i = 0; i < this.files.length; i++) {
-				var model = this.getModelForFile(this.files[i].name);
-				if(!model) {
-					// item not loaded due to pagination
-					this._nextPage(false);
-					model = this.getModelForFile(this.files[i].name);
+			// delete the row which is currently selected
+			if (countSelected == 0) {
+				$("#fileList tr").each(function(index) {
+					if ($(this).hasClass("mouseOver")) {
+						var self = this;
+
+						$(self).find(".action-menu").click();
+						var canDelete = $(self).find(".action-delete").length;
+						$(self).find(".popovermenu").addClass("hidden");
+						if(canDelete > 0) {
+							$(self).find(".action-menu").click();
+							$(self).find(".action-delete").click();
+							$(self).removeClass("mouseOver");
+						}
+					}
+				});
+			}
+
+			// deletion of multiple files selected
+			else {
+				if ($("#app-content-files .selectedActions .delete-selected").not(".hidden").length > 0) {
+					$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
 				}
-				this.fileActions.triggerAction('Delete', model, this);
 			}
 		},
 

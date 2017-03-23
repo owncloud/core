@@ -171,6 +171,58 @@
 				return fileInfo;
 			};
 
+			/**
+			 * Favorite all files in the current fileList
+			 */
+			fileList.favoriteAll = function() {
+				for (var i = 0; i < this.files.length; i++) {
+					var model = this.getModelForFile(this.files[i].name);
+					if(!model) {
+						// item not loaded due to pagination
+						this._nextPage(false);
+						model = this.getModelForFile(this.files[i].name);
+					}
+					this.fileActions.triggerAction('Favorite', model, this);
+				}
+			};
+
+			/**
+			 * Favorite the selected files in the current fileList
+			 */
+			fileList.favoriteSelected = function() {
+				var countSelected = 0;
+				$("#fileList tr").each(function(index) {
+					if ($(this).hasClass("selected")) {
+						countSelected++;
+					}
+				});
+
+				// single file favorite
+				if (countSelected == 0) {
+					$("#fileList tr").each(function(index) {
+						var self = this;
+						if ($(this).hasClass("mouseOver")) {
+							if ($(this).find(".action-favorite").length > 0) {
+								$(this).find(".action-favorite").click();
+								return false;
+							}
+						}
+					});
+				}
+				
+				// multiple selected files favorite
+				else {
+					$("#fileList tr").each(function(index) {
+						var self = this;
+						if ($(this).hasClass("selected")) {
+							if ($(this).find(".action-favorite").length > 0) {
+								$(this).find(".action-favorite").click();
+							}
+						}
+					});
+				}
+			};
+
 			var oldGetWebdavProperties = fileList._getWebdavProperties;
 			fileList._getWebdavProperties = function() {
 				var props = oldGetWebdavProperties.apply(this, arguments);
