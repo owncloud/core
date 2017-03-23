@@ -64,6 +64,7 @@ class OC_App {
 	static private $loadedApps = [];
 	static private $altLogin = [];
 	const officialApp = 200;
+	const approvedApp = 100;
 
 	/**
 	 * clean the appId
@@ -864,6 +865,13 @@ class OC_App {
 					$info['level'] = self::officialApp;
 					$info['removable'] = false;
 				} else {
+					$result = \OC::$server->getIntegrityCodeChecker()->verifyAppSignature($app, '', true);
+					if (empty($result)) {
+						$info['internal'] = false;
+						$info['level'] = self::approvedApp;
+						$info['removable'] = false;
+					}
+
 					$info['internal'] = false;
 					$info['removable'] = true;
 				}
