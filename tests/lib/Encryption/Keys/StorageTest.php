@@ -73,6 +73,7 @@ class StorageTest extends TestCase {
 
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('user1');
+		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->createMock(IUserSession::class);
 		$userSession->method('getUser')->willReturn($user);
 
@@ -83,6 +84,7 @@ class StorageTest extends TestCase {
 
 	public function tearDown() {
 		\OC\Files\Filesystem::tearDown();
+		parent::tearDown();
 	}
 
 	public function testSetFileKey() {

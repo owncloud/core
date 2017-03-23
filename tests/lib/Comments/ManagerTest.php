@@ -3,7 +3,9 @@
 namespace Test\Comments;
 
 use OCP\Comments\ICommentsManager;
+use OCP\IDBConnection;
 use Test\TestCase;
+use Test\Traits\UserTrait;
 
 /**
  * Class ManagerTest
@@ -12,6 +14,9 @@ use Test\TestCase;
  */
 class ManagerTest extends TestCase {
 
+	use UserTrait;
+
+	/** @var IDBConnection */
 	private $dbConn;
 
 	public function setUp() {
@@ -27,6 +32,7 @@ class ManagerTest extends TestCase {
 	public function tearDown() {
 		$this->dbConn->getQueryBuilder()->delete('comments')->execute();
 		$this->dbConn->getQueryBuilder()->delete('comments_read_markers')->execute();
+		parent::tearDown();
 	}
 
 	protected function addDatabaseEntry($parentId, $topmostParentId, $creationDT = null, $latestChildDT = null, $actor_id = 'alice', $object_id = 'file64') {
@@ -560,7 +566,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testDeleteReferencesOfActorWithUserManagement() {
-		$user = \OC::$server->getUserManager()->createUser('xenia', '123456');
+		$user = $this->createUser('xenia', '123456');
 		$this->assertTrue($user instanceof \OCP\IUser);
 
 		$manager = \OC::$server->getCommentsManager();

@@ -73,6 +73,7 @@ class ManagerTest extends \Test\TestCase {
 	protected $rootFolder;
 
 	public function setUp() {
+		parent::setUp();
 		
 		$this->logger = $this->createMock('\OCP\ILogger');
 		$this->config = $this->createMock('\OCP\IConfig');
@@ -109,8 +110,6 @@ class ManagerTest extends \Test\TestCase {
 			->getMock();
 		$this->defaultProvider->method('identifier')->willReturn('default');
 		$this->factory->setProvider($this->defaultProvider);
-
-
 	}
 
 	/**

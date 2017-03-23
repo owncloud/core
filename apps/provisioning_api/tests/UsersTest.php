@@ -33,7 +33,6 @@ use OC\OCS\Result;
 use OCA\Provisioning_API\Users;
 use OCP\API;
 use OCP\IUserManager;
-use OCP\IConfig;
 use OCP\IUserSession;
 use PHPUnit_Framework_MockObject_MockObject;
 use Test\TestCase as OriginalTest;
@@ -43,8 +42,6 @@ class UsersTest extends OriginalTest {
 	
 	/** @var IUserManager | PHPUnit_Framework_MockObject_MockObject */
 	protected $userManager;
-	/** @var IConfig | PHPUnit_Framework_MockObject_MockObject */
-	protected $config;
 	/** @var \OC\Group\Manager | PHPUnit_Framework_MockObject_MockObject */
 	protected $groupManager;
 	/** @var IUserSession | PHPUnit_Framework_MockObject_MockObject */
@@ -66,7 +63,6 @@ class UsersTest extends OriginalTest {
 		parent::setUp();
 
 		$this->userManager = $this->createMock('OCP\IUserManager');
-		$this->config = $this->createMock('OCP\IConfig');
 		$this->groupManager = $this->getMockBuilder('OC\Group\Manager')
 			->disableOriginalConstructor()
 			->getMock();
@@ -82,7 +78,6 @@ class UsersTest extends OriginalTest {
 		$this->api = $this->getMockBuilder('OCA\Provisioning_API\Users')
 			->setConstructorArgs([
 				$this->userManager,
-				$this->config,
 				$this->groupManager,
 				$this->userSession,
 				$this->logger,
@@ -715,11 +710,6 @@ class UsersTest extends OriginalTest {
 			->method('isAdmin')
 			->with('admin')
 			->will($this->returnValue(true));
-		$this->config
-			->expects($this->at(0))
-			->method('getUserValue')
-			->with('UserToGet', 'core', 'enabled', 'true')
-			->will($this->returnValue('true'));
 		$this->api
 			->expects($this->once())
 			->method('fillStorageInfo')
@@ -729,6 +719,10 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('Demo User'));
+		$targetUser
+			->expects($this->once())
+			->method('isEnabled')
+			->willReturn('true');
 
 		$expected = new Result(
 			[
@@ -783,11 +777,6 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
-		$this->config
-			->expects($this->at(0))
-			->method('getUserValue')
-			->with('UserToGet', 'core', 'enabled', 'true')
-			->will($this->returnValue('true'));
 		$this->api
 			->expects($this->once())
 			->method('fillStorageInfo')
@@ -797,6 +786,10 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('Demo User'));
+		$targetUser
+			->expects($this->once())
+			->method('isEnabled')
+			->willReturn('true');
 
 		$expected = new Result(
 			[

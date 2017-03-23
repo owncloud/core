@@ -121,6 +121,16 @@ class OC_App {
 		}
 		ob_end_clean();
 
+		// once all authentication apps are loaded we can validate the session
+		if (is_null($types) || in_array('authentication', $types)) {
+			if (\OC::$server->getUserSession()) {
+				$davUser = \OC::$server->getUserSession()->getSession()->get(\OCA\DAV\Connector\Sabre\Auth::DAV_AUTHENTICATED);
+				if (is_null($davUser)) {
+					\OC::$server->getUserSession()->validateSession();
+				}
+			}
+		}
+
 		return true;
 	}
 

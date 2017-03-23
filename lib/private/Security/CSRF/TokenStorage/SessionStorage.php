@@ -35,7 +35,7 @@ class SessionStorage {
 	/**
 	 * @param ISession $session
 	 */
-	public function __construct(ISession $session) {
+	public function __construct(ISession $session = null) {
 		$this->session = $session;
 	}
 

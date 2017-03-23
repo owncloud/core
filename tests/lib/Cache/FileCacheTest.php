@@ -22,6 +22,8 @@
 
 namespace Test\Cache;
 
+use Test\Traits\UserTrait;
+
 /**
  * Class FileCacheTest
  *
@@ -30,6 +32,8 @@ namespace Test\Cache;
  * @package Test\Cache
  */
 class FileCacheTest extends TestCache {
+	use UserTrait;
+
 	/**
 	 * @var string
 	 * */
@@ -47,10 +51,6 @@ class FileCacheTest extends TestCache {
 	 * */
 	private $rootView;
 
-	function skip() {
-		//$this->skipUnless(OC_User::isLoggedIn());
-	}
-
 	protected function setUp() {
 		parent::setUp();
 
@@ -67,11 +67,8 @@ class FileCacheTest extends TestCache {
 		$this->datadir = $config->getSystemValue('cachedirectory', \OC::$SERVERROOT.'/data/cache');
 		$config->setSystemValue('cachedirectory', $datadir);
 
-		\OC_User::clearBackends();
-		\OC_User::useBackend(new \Test\Util\User\Dummy());
-
 		//login
-		\OC::$server->getUserManager()->createUser('test', 'test');
+		$this->createUser('test', 'test');
 
 		$this->user = \OC_User::getUser();
 		\OC_User::setUserId('test');

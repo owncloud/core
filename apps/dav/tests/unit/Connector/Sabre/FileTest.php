@@ -79,7 +79,9 @@ class FileTest extends TestCase {
 
 	public function tearDown() {
 		$userManager = \OC::$server->getUserManager();
-		$userManager->get($this->user)->delete();
+		if ($userManager->userExists($this->user)) {
+			$userManager->get($this->user)->delete();
+		}
 		unset($_SERVER['HTTP_OC_CHUNKED']);
 
 		parent::tearDown();

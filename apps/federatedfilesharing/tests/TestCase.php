@@ -24,6 +24,7 @@ namespace OCA\FederatedFileSharing\Tests;
 
 use OC\Files\Filesystem;
 use OCA\Files\Share;
+use Test\Traits\UserTrait;
 
 /**
  * Class Test_Files_Sharing_Base
@@ -34,6 +35,8 @@ use OCA\Files\Share;
  */
 abstract class TestCase extends \Test\TestCase {
 
+	use UserTrait;
+
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
 	const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
 
@@ -43,16 +46,13 @@ abstract class TestCase extends \Test\TestCase {
 		// reset backend
 		\OC_User::clearBackends();
 		\OC::$server->getGroupManager()->clearBackends();
-
-		// create users
-		$backend = new \Test\Util\User\Dummy();
-		\OC_User::useBackend($backend);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
 	}
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
+		$this->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
 
 		//login as user1
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
@@ -84,27 +84,15 @@ abstract class TestCase extends \Test\TestCase {
 
 	/**
 	 * @param string $user
-	 * @param bool $create
-	 * @param bool $password
 	 */
-	protected static function loginHelper($user, $create = false, $password = false) {
-
-		if ($password === false) {
-			$password = $user;
-		}
-
-		if ($create) {
-			$u = \OC::$server->getUserManager()->createUser($user, $password);
-			$g = \OC::$server->getGroupManager()->createGroup('group');
-			$g->addUser($u);
-		}
+	protected static function loginHelper($user) {
 
 		self::resetStorage();
 
 		\OC_Util::tearDownFS();
 		\OC::$server->getUserSession()->setUser(null);
 		\OC\Files\Filesystem::tearDown();
-		\OC::$server->getUserSession()->login($user, $password);
+		\OC::$server->getUserSession()->login($user, $user);
 		\OC::$server->getUserFolder($user);
 
 		\OC_Util::setupFS($user);

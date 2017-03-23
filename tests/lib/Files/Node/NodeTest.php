@@ -9,20 +9,23 @@
 namespace Test\Files\Node;
 
 use OC\Files\FileInfo;
+use OCP\Constants;
 use OCP\Files\NotFoundException;
+use OCP\IUser;
+use Test\TestCase;
 
 /**
  * Class NodeTest
  *
  * @package Test\Files\Node
  */
-abstract class NodeTest extends \Test\TestCase {
+abstract class NodeTest extends TestCase {
 	protected $viewDeleteMethod = 'unlink';
 	protected $user;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->user = new \OC\User\User('', new \Test\Util\User\Dummy);
+		$this->user = $this->createMock(IUser::class);
 	}
 
 	protected abstract function createTestNode($root, $view, $path);
@@ -56,7 +59,7 @@ abstract class NodeTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL])));
 
 		$view->expects($this->once())
 			->method($this->viewDeleteMethod)
@@ -108,7 +111,7 @@ abstract class NodeTest extends \Test\TestCase {
 		$view->expects($this->any())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1, 'mimetype' => 'text/plain'])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL, 'fileid' => 1, 'mimetype' => 'text/plain'])));
 
 		$view->expects($this->once())
 			->method($this->viewDeleteMethod)
@@ -142,7 +145,7 @@ abstract class NodeTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_READ])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_READ])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$node->delete();
@@ -375,7 +378,7 @@ abstract class NodeTest extends \Test\TestCase {
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$node->touch(100);
@@ -428,7 +431,7 @@ abstract class NodeTest extends \Test\TestCase {
 		$view->expects($this->any())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$node->touch(100);
@@ -451,7 +454,7 @@ abstract class NodeTest extends \Test\TestCase {
 		$view->expects($this->any())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_READ])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_READ])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$node->touch(100);
@@ -485,7 +488,7 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 3])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL, 'fileid' => 3])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
@@ -525,7 +528,7 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_READ, 'fileid' => 3])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_READ, 'fileid' => 3])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
@@ -601,7 +604,7 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL, 'fileid' => 1])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
@@ -649,7 +652,7 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL, 'fileid' => 1])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
@@ -722,7 +725,7 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_READ])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_READ])));
 
 		$view->expects($this->never())
 			->method('rename');
@@ -807,7 +810,7 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL, 'fileid' => 1])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
@@ -836,7 +839,7 @@ abstract class NodeTest extends \Test\TestCase {
 
 		$view->expects($this->any())
 			->method('getFileInfo')
-			->will($this->returnValue($this->getFileInfo(['permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1])));
+			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL, 'fileid' => 1])));
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$parentNode = new \OC\Files\Node\Folder($root, $view, '/bar');
