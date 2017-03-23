@@ -29,13 +29,11 @@ use OCP\AppFramework\Db\Entity;
  * @method void setLoginName(string $loginName)
  * @method void setPassword(string $password)
  * @method void setName(string $name)
- * @method string getName()
  * @method void setToken(string $token)
  * @method string getToken()
  * @method void setType(string $type)
  * @method int getType()
  * @method void setLastActivity(int $lastActivity)
- * @method int getLastActivity()
  */
 class DefaultToken extends Entity implements IToken {
 
@@ -93,7 +91,7 @@ class DefaultToken extends Entity implements IToken {
 	 * @return string
 	 */
 	public function getLoginName() {
-		return parent::getLoginName();
+		return parent::getter('loginName');
 	}
 
 	/**
@@ -102,7 +100,7 @@ class DefaultToken extends Entity implements IToken {
 	 * @return string
 	 */
 	public function getPassword() {
-		return parent::getPassword();
+		return parent::getter('password');
 	}
 
 	public function jsonSerialize() {
@@ -121,7 +119,7 @@ class DefaultToken extends Entity implements IToken {
 	 * @return int
 	 */
 	public function getLastCheck() {
-		return parent::getLastCheck();
+		return parent::getter('lastCheck');
 	}
 
 	/**
@@ -130,7 +128,15 @@ class DefaultToken extends Entity implements IToken {
 	 * @param int $time
 	 */
 	public function setLastCheck($time) {
-		return parent::setLastCheck($time);
+		return parent::setter('lastCheck', $time);
+	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	public function getLastActivity() {
+		return $this->lastActivity;
 	}
 
 }
