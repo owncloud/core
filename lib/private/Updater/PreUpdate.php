@@ -23,6 +23,13 @@ namespace OC\Updater;
 
 use OCP\App\IAppManager;
 
+/**
+ * Class PreUpdate
+ *
+ * @package OC\Updater
+ *
+ * This class is used to check the application before upgrade.
+ */
 class PreUpdate {
 	/** @var  IAppManager */
 	private $appManager;
@@ -39,7 +46,7 @@ class PreUpdate {
 		$missingApps = [];
 		foreach ($installedApps as $appId){
 			$info = $this->appManager->getAppInfo($appId);
-			if (!isset($info['id'])){
+			if (!isset($info['id']) || is_null($info['id'])){
 				$missingApps[] = $appId;
 			}
 		}

@@ -91,24 +91,30 @@ class FeedBackHandler {
 
 if (OC::checkUpgrade(false)) {
 
-	$preUpdate = new \OC\Updater\PreUpdate(\OC::$server->getAppManager());
-	$missingApps = $preUpdate->getMissingApps();
-	if (count($missingApps) !== 0){
-		$eventSource->send('notice', (string)$l->t('Code is missing for the following apps:'));
-		foreach ($missingApps as $appId){
-			$eventSource->send('notice', $appId);
-		}
-		$eventSource->send('failure', (string)$l->t('Please use occ app:disable command if you don\'t need these apps or restore the code.'));
-		$eventSource->close();
-		exit();
-	}
-
 	$config = \OC::$server->getSystemConfig();
 	if ($config->getValue('upgrade.disable-web', false)) {
 		$eventSource->send('failure', (string)$l->t('Please use the command line updater because automatic updating is disabled in the config.php.'));
 		$eventSource->close();
 		exit();
 	}
+
+	$appManager = \OC::$server->getAppManager();
+	$preUpdate = new \OC\Updater\PreUpdate($appManager);
+	$missingApps = $preUpdate->getMissingApps();
+	if (count($missingApps) !== 0){
+		$eventSource->send('notice', (string)$l->t('Disabling apps with missing code:'));
+		foreach ($missingApps as $appId){
+			try {
+				$appManager->disableApp($appId);
+				$eventSource->send('notice', (string)$l->t('Disabled app %s', [$appId]));
+			} catch (\Exception $e){
+				$eventSource->send('failure', (string)$l->t('There was an error while disabling an app %s', [$appId]));
+				$eventSource->close();
+				exit();
+			}
+		}
+	}
+
 
 	// if a user is currently logged in, their session must be ignored to
 	// avoid side effects
