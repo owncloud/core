@@ -94,9 +94,11 @@ class DefaultShareProvider implements IShareProvider {
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
 	 * @throws ShareNotFound
+	 * @throws InvalidArgumentException if the share validation failed
 	 * @throws \Exception
 	 */
 	public function create(\OCP\Share\IShare $share) {
+		$this->validate($share);
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$qb->insert('share');
@@ -125,6 +127,9 @@ class DefaultShareProvider implements IShareProvider {
 			if (method_exists($share, 'getParent')) {
 				$qb->setValue('parent', $qb->createNamedParameter($share->getParent()));
 			}
+
+			// Set user-defined name
+			$qb->setValue('share_name', $qb->createNamedParameter($share->getName()));
 		} else {
 			throw new \Exception('invalid share type!');
 		}
@@ -185,8 +190,10 @@ class DefaultShareProvider implements IShareProvider {
 	 *
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
+	 * @throws InvalidArgumentException if the share validation failed
 	 */
 	public function update(\OCP\Share\IShare $share) {
+		$this->validate($share);
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			/*
 			 * We allow updating the recipient on user shares.
@@ -246,6 +253,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('token', $qb->createNamedParameter($share->getToken()))
 				->set('expiration', $qb->createNamedParameter($share->getExpirationDate(), IQueryBuilder::PARAM_DATE))
+				->set('share_name', $qb->createNamedParameter($share->getName()))
 				->execute();
 		}
 
@@ -848,6 +856,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		$share->setNodeId((int)$data['file_source']);
 		$share->setNodeType($data['item_type']);
+		$share->setName($data['share_name']);
 
 		if ($data['expiration'] !== null) {
 			$expiration = \DateTime::createFromFormat('Y-m-d H:i:s', $data['expiration']);
@@ -1037,5 +1046,20 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->execute();
 			}
 		}
+	}
+
+	/**
+	 * Check whether the share object fits the expectations of this provider
+	 *
+	 * @param IShare $share share
+	 *
+	 * @throws InvalidArgumentException if the share validation failed
+	 */
+	private function validate($share) {
+		if (!is_null($share->getName()) && strlen($share->getName()) > 64) {
+			throw new \InvalidArgumentException('Share name cannot be more than 64 characters');
+		}
+
+		// TODO: add more early validation for fields instead of relying on the DB
 	}
 }

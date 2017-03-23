@@ -152,6 +152,7 @@ class Share20OCS {
 
 			$result['share_with'] = $share->getPassword();
 			$result['share_with_displayname'] = $share->getPassword();
+			$result['name'] = $share->getName();
 
 			$result['token'] = $share->getToken();
 			$result['url'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $share->getToken()]);
@@ -246,6 +247,8 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 404, $this->l->t('Share API is disabled'));
 		}
 
+		$name = $this->request->getParam('name', null);
+
 		// Verify path
 		$path = $this->request->getParam('path', null);
 		if ($path === null) {
@@ -329,16 +332,6 @@ class Share20OCS {
 				return new \OC\OCS\Result(null, 404, $this->l->t('Public link sharing is disabled by the administrator'));
 			}
 
-			/*
-			 * For now we only allow 1 link share.
-			 * Return the existing link share if this is a duplicate
-			 */
-			$existingShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_LINK, $path, false, 1, 0);
-			if (!empty($existingShares)) {
-				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
-				return new \OC\OCS\Result($this->formatShare($existingShares[0]));
-			}
-
 			$publicUpload = $this->request->getParam('publicUpload', null);
 			if ($publicUpload === 'true') {
 				// Check if public upload is allowed
@@ -362,6 +355,8 @@ class Share20OCS {
 			} else {
 				$share->setPermissions(\OCP\Constants::PERMISSION_READ);
 			}
+
+			$share->setName($name);
 
 			// Set password
 			$password = $this->request->getParam('password', '');
@@ -593,6 +588,7 @@ class Share20OCS {
 		$password = $this->request->getParam('password', null);
 		$publicUpload = $this->request->getParam('publicUpload', null);
 		$expireDate = $this->request->getParam('expireDate', null);
+		$name = $this->request->getParam('name', null);
 
 		/*
 		 * expirationdate, password and publicUpload only make sense for link shares
@@ -644,6 +640,8 @@ class Share20OCS {
 				// normalize to correct public upload permissions
 				$newPermissions = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
 			}
+
+			$share->setName($name);
 
 			if ($newPermissions !== null) {
 				$share->setPermissions($newPermissions);

@@ -64,6 +64,8 @@ class Share implements \OCP\Share\IShare {
 	private $shareTime;
 	/** @var bool */
 	private $mailSend;
+	/** @var string */
+	private $name;
 
 	/** @var IRootFolder */
 	private $rootFolder;
@@ -416,5 +418,20 @@ class Share implements \OCP\Share\IShare {
 	 */
 	public function getMailSend() {
 		return $this->mailSend;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setName($name) {
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getName() {
+		return $this->name;
 	}
 }
