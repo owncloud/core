@@ -8,25 +8,35 @@
 
 namespace Test\Traits;
 
+use OC\User\User;
+
 /**
  * Allow creating users in a temporary backend
  */
 trait UserTrait {
-	/**
-	 * @var \Test\Util\User\Dummy|\OCP\UserInterface
-	 */
-	protected $userBackend;
 
-	protected function createUser($name, $password) {
-		$this->userBackend->createUser($name, $password);
+	/** @var User[] */
+	private $users = [];
+
+	protected function createUser($name, $password = null) {
+		if (is_null($password)) {
+			$password = $name;
+		}
+		$userManager = \OC::$server->getUserManager();
+		if ($userManager->userExists($name)) {
+			$userManager->get($name)->delete();
+		}
+		$user = \OC::$server->getUserManager()->createUser($name, $password);
+		$this->users[] = $user;
+		return $user;
 	}
 
 	protected function setUpUserTrait() {
-		$this->userBackend = new \Test\Util\User\Dummy();
-		\OC::$server->getUserManager()->registerBackend($this->userBackend);
 	}
 
 	protected function tearDownUserTrait() {
-		\OC::$server->getUserManager()->removeBackend($this->userBackend);
+		foreach($this->users as $user) {
+			$user->delete();
+		}
 	}
 }

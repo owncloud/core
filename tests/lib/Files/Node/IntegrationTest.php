@@ -8,10 +8,12 @@
 
 namespace Test\Files\Node;
 
+use OC\Files\Filesystem;
 use OC\Files\Node\Root;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
-use OC\User\User;
+use Test\TestCase;
+use Test\Traits\UserTrait;
 
 /**
  * Class IntegrationTest
@@ -20,7 +22,9 @@ use OC\User\User;
  *
  * @package Test\Files\Node
  */
-class IntegrationTest extends \Test\TestCase {
+class IntegrationTest extends TestCase {
+	use UserTrait;
+
 	/**
 	 * @var \OC\Files\Node\Root $root
 	 */
@@ -39,11 +43,11 @@ class IntegrationTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$manager = \OC\Files\Filesystem::getMountManager();
+		$manager = Filesystem::getMountManager();
 
 		\OC_Hook::clear('OC_Filesystem');
 
-		$user = new User($this->getUniqueID('user'), new \Test\Util\User\Dummy);
+		$user = $this->createUser($this->getUniqueID('user'));
 		$this->loginAsUser($user->getUID());
 
 		$this->view = new View();
@@ -67,7 +71,7 @@ class IntegrationTest extends \Test\TestCase {
 
 	public function testBasicFile() {
 		$file = $this->root->newFile('/foo.txt');
-		$this->assertCount(2, $this->root->getDirectoryListing());
+		$this->assertCount(3, $this->root->getDirectoryListing());
 		$this->assertTrue($this->root->nodeExists('/foo.txt'));
 		$id = $file->getId();
 		$this->assertInstanceOf('\OC\Files\Node\File', $file);
@@ -102,7 +106,7 @@ class IntegrationTest extends \Test\TestCase {
 
 
 		$rootListing = $this->root->getDirectoryListing();
-		$this->assertEquals(2, count($rootListing));
+		$this->assertEquals(3, count($rootListing));
 
 		$folder->move('/asd');
 		/**

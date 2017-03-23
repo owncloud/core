@@ -24,6 +24,7 @@ namespace OCA\FederatedFileSharing\Tests;
 
 use OC\Files\Filesystem;
 use OCA\Files\Share;
+use Test\Traits\UserTrait;
 
 /**
  * Class Test_Files_Sharing_Base
@@ -34,6 +35,8 @@ use OCA\Files\Share;
  */
 abstract class TestCase extends \Test\TestCase {
 
+	use UserTrait;
+
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
 	const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
 
@@ -43,16 +46,13 @@ abstract class TestCase extends \Test\TestCase {
 		// reset backend
 		\OC_User::clearBackends();
 		\OC::$server->getGroupManager()->clearBackends();
-
-		// create users
-		$backend = new \Test\Util\User\Dummy();
-		\OC_User::useBackend($backend);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
-		$backend->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
 	}
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->createUser(self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER1);
+		$this->createUser(self::TEST_FILES_SHARING_API_USER2, self::TEST_FILES_SHARING_API_USER2);
 
 		//login as user1
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);

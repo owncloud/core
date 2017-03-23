@@ -348,6 +348,7 @@ class Setup {
 		//create the user and group
 		$user =  null;
 		try {
+			\OC::$server->getUserManager()->registerBackend(new \OC\User\Database());
 			$user = \OC::$server->getUserManager()->createUser($username, $password);
 			if (!$user) {
 				$error[] = "User <$username> could not be created.";
@@ -360,6 +361,8 @@ class Setup {
 			$config = \OC::$server->getConfig();
 			$config->setAppValue('core', 'installedat', microtime(true));
 			$config->setAppValue('core', 'lastupdatedat', microtime(true));
+
+			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
 
 			$group =\OC::$server->getGroupManager()->createGroup('admin');
 			$group->addUser($user);

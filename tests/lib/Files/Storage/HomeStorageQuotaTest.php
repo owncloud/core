@@ -55,8 +55,8 @@ class HomeStorageQuotaTest extends \Test\TestCase {
 	 */
 	function testHomeStorageWrapperWithQuota() {
 		$user1 = $this->getUniqueID();
-		\OC::$server->getUserManager()->createUser($user1, 'test');
-		\OC::$server->getConfig()->setUserValue($user1, 'files', 'quota', '1024');
+		$userObj = \OC::$server->getUserManager()->createUser($user1, 'test');
+		$userObj->setQuota('1024');
 		\OC_User::setUserId($user1);
 
 		\OC_Util::setupFS($user1);

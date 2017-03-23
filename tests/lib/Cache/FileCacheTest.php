@@ -67,10 +67,11 @@ class FileCacheTest extends TestCache {
 		$this->datadir = $config->getSystemValue('cachedirectory', \OC::$SERVERROOT.'/data/cache');
 		$config->setSystemValue('cachedirectory', $datadir);
 
-		\OC_User::clearBackends();
-		\OC_User::useBackend(new \Test\Util\User\Dummy());
-
 		//login
+		if (\OC::$server->getUserManager()->userExists('test')) {
+			$user = \OC::$server->getUserManager()->get('test');
+			$user->delete();
+		}
 		\OC::$server->getUserManager()->createUser('test', 'test');
 
 		$this->user = \OC_User::getUser();

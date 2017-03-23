@@ -3,6 +3,7 @@
 namespace Test\Files\Stream;
 
 use OC\Files\View;
+use OC\User\Manager;
 use Test\TestCase;
 
 class EncryptionTest extends TestCase {
@@ -41,9 +42,11 @@ class EncryptionTest extends TestCase {
 			->setMethods(['getAccessList'])
 			->getMock();
 		$file->expects($this->any())->method('getAccessList')->willReturn([]);
+
+		$userManager = $this->createMock(Manager::class);
 		$util = $this->getMockBuilder('\OC\Encryption\Util')
 			->setMethods(['getUidAndFilename'])
-			->setConstructorArgs([new View(), new \OC\User\Manager(), $groupManager, $config, $arrayCache])
+			->setConstructorArgs([new View(), $userManager, $groupManager, $config, $arrayCache])
 			->getMock();
 		$util->expects($this->any())
 			->method('getUidAndFilename')
