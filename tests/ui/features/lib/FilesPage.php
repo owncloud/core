@@ -90,13 +90,10 @@ class FilesPage extends OwnCloudPage
 		for ($counter = 0; $counter <= $timeout; $counter ++) {
 			 
 			$fileList = $this->findById("fileList");
-			 
-			if ($fileList !== null &&
-				($fileList->has("xpath", "//a") || ! $this->find("xpath",
-					$this->emptyContentXpath)->hasClass("hidden"))) {
-						break;
-					}
-					 
+			if ($fileList !== null && ($fileList->has("xpath", "//a") || ! $this->find("xpath",
+				$this->emptyContentXpath)->hasClass("hidden"))) {
+				break;
+			}
 			sleep(1);
 		}
 	}
