@@ -83,10 +83,10 @@ fi
 # Enable encryption if requested
 if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
 	env_encryption_enable
-	BEHAT_FILTER_TAGS="~@no_encryption ~@no_default_encryption"
+	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_default_encryption"
 elif test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
 	env_encryption_enable_master_key
-	BEHAT_FILTER_TAGS="~@no_encryption ~@no_masterkey_encryption"
+	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_masterkey_encryption"
 fi
 
 if test "$BEHAT_FILTER_TAGS"; then
