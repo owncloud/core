@@ -178,20 +178,22 @@ class Controller {
 		$mailer = \OC::$server->getMailer();
 		$lion = \OC::$server->getL10N('lib');
 
-		$tmpl = new \OC_Template('core', 'lostpassword/notify');
-		$msg = $tmpl->fetchPage();
+		if ($email !== '') {
+			$tmpl = new \OC_Template('core', 'lostpassword/notify');
+			$msg = $tmpl->fetchPage();
 
-		try {
-			$message = $mailer->createMessage();
-			$message->setTo([$email => $username]);
-			$message->setSubject($lion->t('%s password changed successfully', [$defaults->getName()]));
-			$message->setPlainBody($msg);
-			$message->setFrom([$from => $defaults->getName()]);
-			$mailer->send($message);
-		} catch (\Exception $e) {
-			throw new \Exception($lion->t(
-				'Couldn\'t send reset email. Please contact your administrator.'
-			));
+			try {
+				$message = $mailer->createMessage();
+				$message->setTo([$email => $username]);
+				$message->setSubject($lion->t('%s password changed successfully', [$defaults->getName()]));
+				$message->setPlainBody($msg);
+				$message->setFrom([$from => $defaults->getName()]);
+				$mailer->send($message);
+			} catch (\Exception $e) {
+				throw new \Exception($lion->t(
+					'Couldn\'t send reset email. Please contact your administrator.'
+				));
+			}
 		}
 	}
 }

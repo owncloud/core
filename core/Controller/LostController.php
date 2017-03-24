@@ -252,20 +252,22 @@ class LostController extends Controller {
 		$user = $this->userManager->get($userId);
 		$email = $user->getEMailAddress();
 
-		$tmpl = new \OC_Template('core', 'lostpassword/notify');
-		$msg = $tmpl->fetchPage();
+		if ($email !== '') {
+			$tmpl = new \OC_Template('core', 'lostpassword/notify');
+			$msg = $tmpl->fetchPage();
 
-		try {
-			$message = $this->mailer->createMessage();
-			$message->setTo([$email => $userId]);
-			$message->setSubject($this->l10n->t('%s password changed successfully', [$this->defaults->getName()]));
-			$message->setPlainBody($msg);
-			$message->setFrom([$this->from => $this->defaults->getName()]);
-			$this->mailer->send($message);
-		} catch (\Exception $e) {
-			throw new \Exception($this->l10n->t(
-				'Couldn\'t send reset email. Please contact your administrator.'
-			));
+			try {
+				$message = $this->mailer->createMessage();
+				$message->setTo([$email => $userId]);
+				$message->setSubject($this->l10n->t('%s password changed successfully', [$this->defaults->getName()]));
+				$message->setPlainBody($msg);
+				$message->setFrom([$this->from => $this->defaults->getName()]);
+				$this->mailer->send($message);
+			} catch (\Exception $e) {
+				throw new \Exception($this->l10n->t(
+					$e->getMessage()
+				));
+			}
 		}
 	}
 
