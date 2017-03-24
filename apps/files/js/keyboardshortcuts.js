@@ -106,138 +106,95 @@
 	}
 
 	function selectDown() {
-		var chosen = -100;
-		var mouse = -1;
-		var toDelete = 0;
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				if ($($("#fileList tr")[index+1]).hasClass("selected")) {
-					toDelete = 1; // means unselect
-				}
-				if (! $("#fileList tr:last").hasClass("selected") ) {
-					if ($($("#fileList tr")[index]).hasClass("selected")) {
-						toDelete = 1; // means unselect
-					}
-				}
-			}
-		});
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
 
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("selected")) {
-				if (toDelete == 1) {
-					// found the first instance with "selected", break now
-					chosen = index;
-					return false;
-				}
-				else {
-					chosen = index + 1;
-				}
-			}
-			if ($(this).hasClass("mouseOver")) {
-				mouse = index + 1;
-				$(this).removeClass("mouseOver");
-			}
-		});
+		removeCurrentHighlight();
 
-		if (mouse == -1) {
-			$($("#fileList tr")[0]).addClass("mouseOver");
-		}
-		
-		if (mouse >= $("#fileList tr").length) {
-			$($("#fileList tr")[$("#fileList tr").length - 1]).addClass("mouseOver");
+		var fileName = fileList.getKeyboardHighlight();
+
+		if (fileList.findFileEl(fileName).hasClass("selected") && fileList.findFileEl(fileName).is(":first-child")) {
+			fileList.findFileEl(fileName).find(".selectCheckBox").click();
+			highlightRow();
+			return;
 		}
 
-		if (chosen === -100) {
-			$("#fileList tr").each(function(index) {
-				if (index === mouse - 1) {
-					$(this).find(".selectCheckBox").click();
-				}
-				if (mouse === index) {
-					$(this).addClass("mouseOver");
-				}
-			});
-		} else {
-			$("#fileList tr").each(function(index) {
-				if (index === chosen) {
-					$(this).find(".selectCheckBox").click();
-				}
-				if (index === mouse) {
-					$(this).addClass("mouseOver");
-				}
-			});
+		if (fileName && !fileList.findFileEl(fileName).is(":last-child")) {
+			var setTo = fileList.findFileEl(fileName).next().data('file');
+			fileList.setKeyboardHighlight(setTo);
 		}
+
+		if (!fileName) {
+			var setTo = $("#fileList tr").first().data('file');
+			fileList.setKeyboardHighlight(setTo);
+			fileName = fileList.getKeyboardHighlight();
+		}
+		var prevFileName = fileName;
+		fileName = fileList.getKeyboardHighlight();
+
+		if (prevFileName !== fileName) {
+			var toDelete = 0;
+			if (fileList.findFileEl(fileName).hasClass("selected")) {
+				toDelete = 1;
+				fileList.findFileEl(fileName).find(".selectCheckBox").click();
+			}
+
+			if (toDelete == 0) {
+				fileList.findFileEl(fileName).prev().find(".selectCheckBox").click();	
+			}
+		}
+
+		else if (!fileList.findFileEl(fileName).hasClass("selected")) {
+			fileList.findFileEl(fileName).find(".selectCheckBox").click();
+		}
+
+		highlightRow();
+
 		updateView();
 	}
 
 	function selectUp() {
-		var chosen = -100;
-		var mouse = -100;
-		var toDelete = 0;
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				if ($($("#fileList tr")[index-1]).hasClass("selected")) {
-					toDelete = 1;
-				}
-				if (! $("#fileList tr").first().hasClass("selected")) {
-					if ($($("#fileList tr")[index]).hasClass("selected")) {
-						toDelete = 1;
-					}
-				}
-			}
-		});
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
 
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("selected")) {
-				if (toDelete == 1) {
-					chosen = index;
-				}
-				else {
-					chosen = index - 1;
-					return false;
-				}
-			}
-			if ($(this).hasClass("mouseOver")) {
-				mouse = index - 1;
-				$(this).removeClass("mouseOver");
-			}
-		});
+		removeCurrentHighlight();
 
-		if ($("#fileList tr").first().hasClass("selected") && toDelete == 0) {
+		var fileName = fileList.getKeyboardHighlight();
+
+		if (fileList.findFileEl(fileName).hasClass("selected") && fileList.findFileEl(fileName).is(":last-child")) {
+			fileList.findFileEl(fileName).find(".selectCheckBox").click();
+			highlightRow();
 			return;
 		}
 
-		if (chosen == $("#fileList tr").length - 1) {
-			mouse++;
+		if (fileName && !fileList.findFileEl(fileName).is(":first-child")) {
+			var setTo = fileList.findFileEl(fileName).prev().data('file');
+			fileList.setKeyboardHighlight(setTo);
 		}
 
-		if (mouse == -100) {
-			$($("#fileList tr")[$("#fileList tr").length - 1]).addClass("mouseOver");
-			return;
+		if (!fileName) {
+			var setTo = $("#fileList tr").first().data('file');
+			fileList.setKeyboardHighlight(setTo);
+			fileName = fileList.getKeyboardHighlight();
+		}
+		var prevFileName = fileName;
+		fileName = fileList.getKeyboardHighlight();
+
+		if (prevFileName !== fileName) {
+			var toDelete = 0;
+			if (fileList.findFileEl(fileName).hasClass("selected")) {
+				toDelete = 1;
+				fileList.findFileEl(fileName).find(".selectCheckBox").click();
+			}
+
+			if (toDelete == 0) {
+				fileList.findFileEl(fileName).next().find(".selectCheckBox").click();	
+			}
+		}
+		else if (!fileList.findFileEl(fileName).hasClass("selected")) {
+			fileList.findFileEl(fileName).find(".selectCheckBox").click();
 		}
 
-		if (mouse < 0) {
-			$($("#fileList tr")[0]).addClass("mouseOver");
-		}
+		highlightRow();
 
-		if (chosen === -100) {
-			$("#fileList tr").each(function(index) {
-				if (index === mouse + 1) {
-					$(this).find(".selectCheckBox").click();
-				}
-				if (index === mouse) {
-					$(this).addClass("mouseOver");
-				}
-			});
-		} else {
-			$("#fileList tr").each(function(index) {
-				if (index === chosen) {
-					$(this).find(".selectCheckBox").click();
-				}
-				if (index === mouse) {
-					$(this).addClass("mouseOver");
-				}
-			});
-		}
 		updateView();
 	}
 
