@@ -662,6 +662,10 @@ li > a.icon-user {
 	background-image: url(../../core/img/actions/user.svg);
 }
 
+li > a.icon-workflows {
+	background-image: url(../../core/img/actions/play-next.svg);
+}
+
 #app-navigation li.divider {
 	background: none;
 }
