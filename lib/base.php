@@ -357,9 +357,8 @@ class OC {
 			$tooBig = $apps->isInstalled('user_ldap') || $apps->isInstalled('user_shibboleth');
 			if (!$tooBig) {
 				// count users
-				$stats = \OC::$server->getUserManager()->countUsers();
-				$totalUsers = array_sum($stats);
-				$tooBig = ($totalUsers > 50);
+				$db = new \OC\User\Database();
+				$tooBig = ($db->countUsers() > 50);
 			}
 		}
 		if ($disableWebUpdater || $tooBig) {
@@ -583,6 +582,11 @@ class OC {
 			self::initSession();
 		}
 		\OC::$server->getEventLogger()->end('init_session');
+
+		// incognito mode for now
+		$uid = \OC::$server->getSession()->get('user_id');
+		\OC::$server->getSession()->set('user_id', null);
+
 		self::checkConfig();
 		self::checkInstalled();
 
@@ -621,6 +625,10 @@ class OC {
 				\OC::$server->getConfig()->deleteAppValue('core', 'cronErrors');
 			}
 		}
+
+		// set back user
+		\OC::$server->getSession()->set('user_id', $uid);
+
 		//try to set the session lifetime
 		$sessionLifeTime = self::getSessionLifeTime();
 		@ini_set('gc_maxlifetime', (string)$sessionLifeTime);
