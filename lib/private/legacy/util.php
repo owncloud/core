@@ -1209,45 +1209,6 @@ class OC_Util {
 	}
 
 	/**
-	 * Check if the .htaccess file is working
-	 * @param \OCP\IConfig $config
-	 * @return bool
-	 * @throws Exception
-	 * @throws \OC\HintException If the test file can't get written.
-	 */
-	public function isHtaccessWorking(\OCP\IConfig $config) {
-
-		if (\OC::$CLI || !$config->getSystemValue('check_for_working_htaccess', true)) {
-			return true;
-		}
-
-		$testContent = $this->createHtaccessTestFile($config);
-		if ($testContent === false) {
-			return false;
-		}
-
-		$fileName = '/htaccesstest.txt';
-		$testFile = $config->getSystemValue('datadirectory', OC::$SERVERROOT . '/data') . '/' . $fileName;
-
-		// accessing the file via http
-		$url = \OC::$server->getURLGenerator()->getAbsoluteURL(OC::$WEBROOT . '/data' . $fileName);
-		try {
-			$content = \OC::$server->getHTTPClientService()->newClient()->get($url)->getBody();
-		} catch (\Exception $e) {
-			$content = false;
-		}
-
-		// cleanup
-		@unlink($testFile);
-
-		/*
-		 * If the content is not equal to test content our .htaccess
-		 * is working as required
-		 */
-		return $content !== $testContent;
-	}
-
-	/**
 	 * Check if the setlocal call does not work. This can happen if the right
 	 * local packages are not available on the server.
 	 *
