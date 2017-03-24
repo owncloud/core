@@ -26,7 +26,6 @@ OC.L10N.register(
     "Cancel" : "I-cancel",
     "Error" : "Error",
     "Password" : "Password",
-    "Send" : "Ipadala",
     "Share" : "I-share",
     "Help" : "Tulong",
     "Username" : "Username"

@@ -33,6 +33,7 @@ OC.L10N.register(
     "Error" : "Error",
     "Error while sharing" : "Ocurrió un error mientras compartía",
     "Error while unsharing" : "Ocurrió un error mientras dejaba de compartir",
+    "Remove" : "Remover",
     "Password" : "Clave",
     "Share" : "Compartir",
     "Rename" : "Renombrar",

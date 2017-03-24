@@ -19,6 +19,7 @@ OC.L10N.register(
     "Couldn't send mail to following users: %s " : "Ora iso ngirim email kanggo pengguna: %s",
     "Preparing update" : "Nyiapne penganyaran",
     "[%d / %d]: %s" : "[%d / %d]: %s",
-    "Repair error: " : "Kesalahan ndandhani:"
+    "Repair error: " : "Kesalahan ndandhani:",
+    "Edit" : "Ngganti"
 },
 "nplurals=2; plural=(n != 1);");

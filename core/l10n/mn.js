@@ -9,7 +9,9 @@ OC.L10N.register(
     "Friday" : "Баасан",
     "Saturday" : "Бямба",
     "Settings" : "Тохиргоо",
+    "Remove" : "Устгах",
     "Password" : "Нууц үг",
+    "Save" : "Хадгалах",
     "Share" : "Түгээх",
     "Username" : "Хэрэглэгчийн нэр"
 },
