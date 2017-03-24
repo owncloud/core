@@ -174,7 +174,7 @@
 					} else {
 						done();
 					}
-					this.model.unset("resetPassword");
+					self.model.unset("resetPassword");
 				},
 				error: function (model, xhr) {
 					var msg = xhr.responseJSON.ocs.meta.message;
@@ -263,7 +263,6 @@
 		_onClickCancel: function() {
 			this.$dialog.ocdialog('close');
 			this.model.unset("resetPassword");
-
 		},
 		/**
 		 * @returns {Function} from Handlebars
