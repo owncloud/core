@@ -1186,6 +1186,9 @@ class OC_Util {
 		if (php_sapi_name() === 'cli-server') {
 			return false;
 		}
+		if (\OC::$CLI) {
+			return false;
+		}
 
 		// testdata
 		$fileName = '/htaccesstest.txt';
