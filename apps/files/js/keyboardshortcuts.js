@@ -22,6 +22,8 @@
  * delete: delete file/folder (multiple files also allowed)
  * backspace: goto previous broser history state
  * shift+up/down: select multiple files
+ * home: goto first row of filesTable
+ * end: goto last row of last page of fileTable
  ********************************************************************/
 (function(Files) {
 	var keys = [];
@@ -60,49 +62,50 @@
 		return arr;
 	}
 
-	function newFile() {
+	function openUploadMenu() {
+		// opens the upload menu
 		$("#app-content .viewcontainer:not(.hidden) .new").click();
-		$('[data-action="upload"]').click();
+	}
+
+	function newFile() {
+		openUploadMenu();
+		$('[data-action="upload"]').click(); // file upload
 	}
 
 	function newFolder() {
-		$("#app-content .viewcontainer:not(.hidden) .new").click();
-		$('[data-action="folder"]').click();
+		openUploadMenu();
+		$('[data-action="folder"]').click(); // new folder/directory
 	}
 
 	function esc() {
 		$(".stop.icon-close").click();
 		$(".popovermenu").addClass('hidden');
 
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("selected")) {
-				$(this).find(".selectCheckBox").click();
-			}
-		});
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		fileList.deselectAll();
 
 		$(".icon-close").click();
 	}
 
 	function favorite() {
-		if ($("#select_all_files").is(":checked")) {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		if (fileList.isAllSelected()) {
 			// selected all files
-			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
 			fileList.favoriteAll();
 		}
 
 		else {
 			// selected one/multiple files(not all files)
-			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
 			fileList.favoriteSelected();		
 		}
 	}
 
-	function update_view() {
+	function updateView() {
 		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
 		fileList.focusSelected();
 	}
 
-	function select_down() {
+	function selectDown() {
 		var chosen = -100;
 		var mouse = -1;
 		var toDelete = 0;
@@ -163,10 +166,10 @@
 				}
 			});
 		}
-		update_view();
+		updateView();
 	}
 
-	function select_up() {
+	function selectUp() {
 		var chosen = -100;
 		var mouse = -100;
 		var toDelete = 0;
@@ -235,155 +238,150 @@
 				}
 			});
 		}
-		update_view();
+		updateView();
+	}
+
+	function highlightRow() {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		
+		var fileName = fileList.getKeyboardHighlight();
+		fileList.findFileEl(fileName).addClass("mouseOver");
+	}
+
+	function removeCurrentHighlight() {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		var fileName = fileList.getKeyboardHighlight();
+		if (fileName) {
+			fileList.findFileEl(fileName).removeClass("mouseOver");
+		}
 	}
 
 	function down() {
-		var select = -1;
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				select = index + 1;
-				$(this).removeClass("mouseOver");
-			}
-			if ($(this).hasClass("selected")) {
-				$(this).find(".selectCheckBox").click();
-			}
-		});
-		if (select == $("#fileList tr").length) {
-			// means wrap now
-			select = 0;
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		fileList.deselectAll();
+
+		removeCurrentHighlight();
+
+		var fileName = fileList.getKeyboardHighlight();
+		if (fileName && !fileList.findFileEl(fileName).is(":last-child")) {
+			var setTo = fileList.findFileEl(fileName).next().data('file');
+			fileList.setKeyboardHighlight(setTo);
 		}
 
-		if (select === -1) {
-			$("#fileList tr").first().addClass("mouseOver");
-		} else {
-			$("#fileList tr").each(function(index) {
-				if (index === select) {
-					$(this).addClass("mouseOver");
-				}
-			});
+		else {
+			var setTo = $("#fileList tr").first().data('file');
+			fileList.setKeyboardHighlight(setTo);
 		}
-		update_view();
+
+		highlightRow();
+
+		updateView();
 	}
 
 	function up() {
-		var select = -1;
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				select = index - 1;
-				$(this).removeClass("mouseOver");
-			}
-			if ($(this).hasClass("selected")) {
-				$(this).find(".selectCheckBox").click();
-			}
-		});
-		if (select == -1) {
-			select++; // FIXME : this prevents wrapping, think of an idea (next line)
-			// as to should we display all pages while wrapping or something else?
-		}
-
-		if (select === -1) {
-			$("#fileList tr:last").addClass("mouseOver");
-		} else {
-			$("#fileList tr").each(function(index) {
-				if (index === select) {
-					$(this).addClass("mouseOver");
-				}
-			});
-		}
-		update_view();
-	}
-
-	function go_last_tr() {
 		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		fileList.showLastElement();
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-			}
-			if ($(this).hasClass("selected")) {
-				$(this).find(".selectCheckBox").click();
-			}
-		});
-		$("#fileList tr:last").addClass("mouseOver");
-		update_view();
+		fileList.deselectAll();
+
+		removeCurrentHighlight();
+
+		var fileName = fileList.getKeyboardHighlight();
+		if (fileName && !fileList.findFileEl(fileName).is(":first-child")) {
+			var setTo = fileList.findFileEl(fileName).prev().data('file');
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		else {
+			var setTo = $("#fileList tr").first().data('file');
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		highlightRow();
+
+		updateView();
 	}
 
-	function go_top_tr() {
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-			}
-			if ($(this).hasClass("selected")) {
-				$(this).find(".selectCheckBox").click();
-			}
-		});
-		$("#fileList tr").first().addClass("mouseOver");
-		update_view();
+	function goBottomRow() {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		fileList.loadAllPages();
+
+		removeCurrentHighlight();
+
+		var setTo = $("#fileList tr").last().data('file');
+		fileList.setKeyboardHighlight(setTo);
+
+		highlightRow();
+
+		updateView();
+	}
+
+	function goTopRow() {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		fileList.loadAllPages();
+
+		removeCurrentHighlight();
+
+		var setTo = $("#fileList tr").first().data('file');
+		fileList.setKeyboardHighlight(setTo);
+
+		highlightRow();
+
+		updateView();
 	}
 
 	function enter() {
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				$(this).find("span.nametext").click();
-			}
-		});
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		var fileName = fileList.getKeyboardHighlight();
+		if (fileName) {
+			fileList.findFileEl(fileName).find("span.nametext").click();
+		}
 	}
 
-	function toggle_sidebar() {
+	function toggleSidebar() {
 		if ( !$("#app-sidebar").first().hasClass("disappear") ) {
 			// side-bar opened, close it
 			$(".icon-close").click();
 		}
 		else {
 			// side-bar closed, open it
-			$("#fileList tr").each(function(index) {
-				if ($(this).hasClass("mouseOver")) {
-					$(this).find(".name").click();
-				}
-			});
+			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+			var fileName = fileList.getKeyboardHighlight();
+			if (fileName) {
+				fileList.findFileEl(fileName).find(".name").click();
+			}
 		}
 	}
 
 	function del() {
-		if ($("#select_all_files").is(":checked")) {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		if (fileList.isAllSelected()) {
 			// selected all files
-			if ($("#app-content-files .selectedActions .delete-selected").not(".hidden").length > 0) {
-				$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
-			}
+			$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
 		}
+
 		else {
 			// selected one/multiple files(not all files)
-			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-			fileList.deleteSelected();
+			fileList.deleteSelected();		
 		}
 	}
 
-	function go_parent_folder() {
-		var len = $(".breadcrumb .crumb").length
+	function goParentFolder() {
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		var currentDir = fileList.getCurrentDirectory();
+		var parentDir = OC.dirname(currentDir);
 
-		if (len >= 2) {
-			var dir = $($(".breadcrumb .crumb")[len-2]).data('dir');
-			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-			fileList.changeDirectory(dir);
+		if (currentDir != parentDir) {
+			fileList.changeDirectory(parentDir);
 		}
 	}
 
 	function rename() {
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				var self = this;
-
-				$(self).find(".action-menu").click();
-				var canRename = $(self).find(".action-rename").length;
-				$(self).find(".popovermenu").addClass("hidden");
-				if(canRename > 0) {
-					$(self).find(".action-menu").click();
-					$(self).find(".action-rename").click();
-					$(self).removeClass("mouseOver");
-				}
-			}
-		});
+		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		var fileName = fileList.getKeyboardHighlight();
+		if (fileName) {
+			fileList.findFileEl(fileName).find(".action-menu").click();
+			fileList.findFileEl(fileName).find(".popovermenu").addClass("hidden");
+			fileList.findFileEl(fileName).find(".action-rename").click();
+		}
 	}
 
 	Files.bindKeyboardShortcuts = function(document, $) {
@@ -415,9 +413,9 @@
 				} else if($.inArray(keyCodes.r, keys) !== -1) { // rename File or Folder
 					rename();
 				} else if($.inArray(keyCodes.downArrow, keys) !== -1) { // shift + down
-					select_down();
+					selectDown();
 				} else if($.inArray(keyCodes.upArrow, keys) !== -1) { // shift + up
-					select_up();
+					selectUp();
 				} else if($.inArray(keyCodes.f, keys) !== -1) { // shift + f
 					favorite();
 				}
@@ -432,13 +430,13 @@
 			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.del, keys) !== -1)) { //delete file
 				del();
 			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.space, keys) !== -1)) { // open side-bar
-				toggle_sidebar();
+				toggleSidebar();
 			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.backspace, keys) !== -1)) { // goto parent folder
-				go_parent_folder();
+				goParentFolder();
 			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.end, keys) !== -1)) { // goto last tr of last page
-				go_last_tr();
+				goBottomRow();
 			} else if (!$("#new").hasClass("active") && ($.inArray(keyCodes.home, keys) !== -1)) { // goto last tr of last page
-				go_top_tr();
+				goTopRow();
 			}
 			removeA(keys, event.keyCode);
 		});

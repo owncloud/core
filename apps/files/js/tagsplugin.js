@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2014 Vincent Petry <pvince81@owncloud.com>
+ * Copyright (c) 2017 Noveen Sachdeva <noveen.sachdeva@research.iiit.ac.in>
  *
  * This file is licensed under the Affero General Public License version 3
  * or later.
@@ -190,36 +191,20 @@
 			 * Favorite the selected files in the current fileList
 			 */
 			fileList.favoriteSelected = function() {
-				var countSelected = 0;
-				$("#fileList tr").each(function(index) {
-					if ($(this).hasClass("selected")) {
-						countSelected++;
-					}
-				});
+				var countSelected = this.$el.find(".selected").length;
 
 				// single file favorite
 				if (countSelected == 0) {
-					$("#fileList tr").each(function(index) {
-						var self = this;
-						if ($(this).hasClass("mouseOver")) {
-							if ($(this).find(".action-favorite").length > 0) {
-								$(this).find(".action-favorite").click();
-								return false;
-							}
-						}
-					});
+					var selectedFileName = this.getKeyboardHighlight();
+					this.findFileEl(selectedFileName).find(".action-favorite").click();
 				}
 				
 				// multiple selected files favorite
 				else {
-					$("#fileList tr").each(function(index) {
-						var self = this;
-						if ($(this).hasClass("selected")) {
-							if ($(this).find(".action-favorite").length > 0) {
-								$(this).find(".action-favorite").click();
-							}
-						}
-					});
+					var selectedFiles = this.getSelectedFiles(); // returns file objects
+					for (var i = 0; i < selectedFiles.length; i++) {
+						this.findFileEl(selectedFiles[i].name).find(".action-favorite").click();
+					}
 				}
 			};
 

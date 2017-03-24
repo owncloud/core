@@ -92,6 +92,12 @@
 		initialized: false,
 
 		/**
+		 * fileName of last highlighted row
+		 * @type string
+		 */
+		keyboardHighlight: null,
+
+		/**
 		 * Number of files per page
 		 *
 		 * @return {int} page size
@@ -2859,7 +2865,7 @@
 				$scrollContainer = $('body');
 			}
 
-			//if ($(".mouseOver").position().top >= this.$container.height() / 2) {
+			// the "mouseOver" tr is present in the lower half of the screen
 			if (this.$el.find('.mouseOver').position().top >= this.$container.height() / 2) {
 				$scrollContainer.animate({
 					// Scrolling to the top of the highleghted element
@@ -2867,7 +2873,7 @@
 				}, 100);
 			}
 
-			if (this.$el.find('.mouseOver').position().top <= 100) {
+			else {
 				$scrollContainer.animate({
 					// Scrolling to the top of the screen
 					scrollTop: 0
@@ -2879,50 +2885,60 @@
 		 * Delete the selected files in the current fileList
 		 */
 		deleteSelected: function() {
-			var countSelected = 0;
-			$("#fileList tr").each(function(index) {
-				if ($(this).hasClass("selected")) {
-					countSelected++;
-				}
-			});
+			var countSelected = this.$el.find(".selected").length;
 
-			// delete the row which is currently selected
+			// delete the row which is currently selected (has "mouseOver" attr.)
 			if (countSelected == 0) {
-				$("#fileList tr").each(function(index) {
-					if ($(this).hasClass("mouseOver")) {
-						var self = this;
-
-						$(self).find(".action-menu").click();
-						var canDelete = $(self).find(".action-delete").length;
-						$(self).find(".popovermenu").addClass("hidden");
-						if(canDelete > 0) {
-							$(self).find(".action-menu").click();
-							$(self).find(".action-delete").click();
-							$(self).removeClass("mouseOver");
-						}
-					}
-				});
+				// doing ".first()" just to make sure only one element is selected
+				var selectedFileName = this.getKeyboardHighlight();
+				this.do_delete(selectedFileName, this.getCurrentDirectory());
 			}
 
 			// deletion of multiple files selected
 			else {
-				if ($("#app-content-files .selectedActions .delete-selected").not(".hidden").length > 0) {
-					$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
+				var selectedFilesNames = []; // just the names of selected files
+				var selectedFiles = this.getSelectedFiles(); // returns file objects
+				for (var i = 0; i < selectedFiles.length; i++) {
+					selectedFilesNames.push(selectedFiles[i].name);
 				}
+				this.do_delete(selectedFilesNames, this.getCurrentDirectory());
 			}
 		},
 
 		/**
-		 * Selects the last tr of the last page
+		 * Loads all the pages of the fileList
 		 */
-		showLastElement: function() {
-			for (var i = 0; i < this.files.length; i++) {
-				var model = this.getModelForFile(this.files[i].name);
-				if(!model) {
-					// item not loaded due to pagination
-					this._nextPage(false);
-				}
+		loadAllPages: function() {
+			// _nextPage returns false when there are no more pages to load
+			while (this._nextPage(false) != false);
+		},
+
+		/**
+		 * De-selects all the currently selected files (have class "selected")
+		 */
+		deselectAll: function() {
+			this.$el.find(".selected").each(function(index) {
+				$(this).find(".selectCheckBox").click();
+			});
+		},
+
+		/**
+		 * returns currently highlighted file (has attr "")
+		 */
+		getKeyboardHighlight: function() {
+			var fileRow = this.findFileEl(this.keyboardHighlight);
+			if (!fileRow.exists()) {
+				this.setKeyboardHighlight(null);
 			}
+			return this.keyboardHighlight;
+		},
+
+		/**
+		 * @param string fileName which is highlighted currently
+		 * De-selects all the currently selected files (have class "selected")
+		 */
+		setKeyboardHighlight: function(fileName) {
+			this.keyboardHighlight = fileName;
 		},
 
 		/**
