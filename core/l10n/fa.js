@@ -170,8 +170,6 @@ OC.L10N.register(
     "Message: %s" : "پیام: %s",
     "File: %s" : "فایل : %s",
     "Line: %s" : "خط: %s",
-    "Security warning" : "اخطار امنیتی",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "فایلها و فهرست های داده های شما قابل از اینترنت قابل دسترسی هستند، چونکه فایل htacces. کار نمی کند.",
     "Create an <strong>admin account</strong>" : "لطفا یک <strong> شناسه برای مدیر</strong> بسازید",
     "Username" : "نام کاربری",
     "Storage & database" : "انبارش و پایگاه داده",

@@ -115,7 +115,6 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Xin chào,\n\nbáo cho bạn biết rằng %s đã chia sẽ %s với bạn.\nXem nó: %s\n\n",
     "The share will expire on %s." : "Chia sẻ này sẽ hết hiệu lực vào %s.",
     "Cheers!" : "Chúc mừng!",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Thư mục và file dữ liệu của bạn có thể được truy cập từ internet bởi vì file .htaccess không hoạt động",
     "Create an <strong>admin account</strong>" : "Tạo một <strong>tài khoản quản trị</strong>",
     "Username" : "Tên đăng nhập",
     "Data folder" : "Thư mục dữ liệu",

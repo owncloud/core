@@ -121,7 +121,6 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "¡Hola!\n\nsólo te quería decir que %s acaba de compartir %s contigo.\nVerlo: %s\n\n",
     "The share will expire on %s." : "El compartir expirará en %s.",
     "Cheers!" : "¡Saludos!",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Tu directorio de datos y tus archivos probablemente son accesibles a través de internet, ya que el archivo .htaccess no está funcionando.",
     "Create an <strong>admin account</strong>" : "Crear una <strong>cuenta de administrador</strong>",
     "Username" : "Nombre de usuario",
     "Data folder" : "Directorio de almacenamiento",

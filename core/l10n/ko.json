@@ -218,8 +218,6 @@
     "File: %s" : "파일: %s",
     "Line: %s" : "줄: %s",
     "Trace" : "추적",
-    "Security warning" : "보안 경고",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : ".htaccess 파일이 처리되지 않아서 데이터 디렉터리와 파일을 인터넷에서 접근할 수 없을 수도 있습니다.",
     "Create an <strong>admin account</strong>" : "<strong>관리자 계정</strong> 만들기",
     "Username" : "사용자 이름",
     "Storage & database" : "저장소 및 데이터베이스",

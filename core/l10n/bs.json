@@ -147,7 +147,6 @@
     "Message: %s" : "Poruka: %s",
     "File: %s" : "Datoteka: %s",
     "Line: %s" : "Red: %s",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Vaš direktorij podataka i datoteke vjerojatno se mogu pristupiti s interneta jer .htaccess datoteka ne radi.",
     "Create an <strong>admin account</strong>" : "Kreirajte <strong>administracioni račun</strong>",
     "Username" : "Korisničko ime",
     "Storage & database" : "Pohrana & baza podataka",

@@ -229,8 +229,6 @@
     "File: %s" : "Fichièr : %s",
     "Line: %s" : "Linha : %s",
     "Trace" : "Traça",
-    "Security warning" : "Avertiment de seguretat",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Vòstre repertòri de donadas es segurament accessible dempuèi l'internet perque lo fichièr .htaccess fonciona pas.",
     "Create an <strong>admin account</strong>" : "Crear un <strong>compte administrator</strong>",
     "Username" : "Nom d'utilizaire",
     "Storage & database" : "Emmagazinatge & banca de donadas",

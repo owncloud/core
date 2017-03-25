@@ -120,7 +120,6 @@ OC.L10N.register(
     "Admin" : "المدير",
     "Help" : "المساعدة",
     "Access forbidden" : "التوصّل محظور",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "مجلدات البيانات والملفات الخاصة قد تكون قابلة للوصول اليها عن طريق شبكة الانترنت وذلك بسبب ان ملف .htaccess  لا يعمل بشكل صحيح.",
     "Create an <strong>admin account</strong>" : "أضف </strong>مستخدم رئيسي <strong>",
     "Username" : "إسم المستخدم",
     "Data folder" : "مجلد المعلومات",

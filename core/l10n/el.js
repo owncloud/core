@@ -224,8 +224,6 @@ OC.L10N.register(
     "File: %s" : "Αρχείο: %s",
     "Line: %s" : "Γραμμή: %s",
     "Trace" : "Ανίχνευση",
-    "Security warning" : "Προειδοποίηση Ασφαλείας",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Ο κατάλογος δεδομένων και τα αρχεία σας είναι πιθανό προσβάσιμα από το internet γιατί δεν δουλεύει το αρχείο .htaccess.",
     "Create an <strong>admin account</strong>" : "Δημιουργήστε έναν <strong>λογαριασμό διαχειριστή</strong>",
     "Username" : "Όνομα χρήστη",
     "Storage & database" : "Αποθήκευση & βάση δεδομένων",

@@ -82,6 +82,8 @@ OC.L10N.register(
     "Error while creating device token" : "Napaka med ustvarjanjem žetonov naprave",
     "Error while deleting the token" : "Napaka med brisanjem žetona",
     "Sending..." : "Poteka pošiljanje ...",
+    "Failed to change the email address." : "Spreminjanje naslova elektronske pošte je spodletelo.",
+    "Email changed successfully." : "Elektronski naslov je uspešno spremenjen.",
     "An error occurred: {message}" : "Prišlo je do napake: {message}",
     "Select a profile picture" : "Izbor slike profila",
     "Very weak password" : "Zelo šibko geslo",

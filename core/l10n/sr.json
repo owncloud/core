@@ -183,8 +183,6 @@
     "File: %s" : "Фајл: %s",
     "Line: %s" : "Линија: %s",
     "Trace" : "Траг",
-    "Security warning" : "Безбедносно упозорење",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Ваш директоријум са подацима и фајлови су вероватно доступни са интернета јер .htaccess не ради.",
     "Create an <strong>admin account</strong>" : "Направи <strong>административни налог</strong>",
     "Username" : "Корисничко име",
     "Storage & database" : "Складиште и база података",

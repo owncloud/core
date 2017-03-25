@@ -166,7 +166,6 @@ OC.L10N.register(
     "Message: %s" : "Mesaĝo: %s",
     "File: %s" : "Dosiero: %s",
     "Line: %s" : "Linio: %s",
-    "Security warning" : "Sekureca averto",
     "Create an <strong>admin account</strong>" : "Krei <strong>administran konton</strong>",
     "Username" : "Uzantonomo",
     "Storage & database" : "Memoro kaj datumbazo",

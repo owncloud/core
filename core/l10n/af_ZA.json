@@ -90,7 +90,6 @@
     "Admin" : "Admin",
     "Help" : "Hulp",
     "Access forbidden" : "Toegang verbode",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Jou data gids en lêers is moontlik toeganklik vanaf die internet omdat die .htaccess lêer nie werk nie.",
     "Create an <strong>admin account</strong>" : "Skep `n <strong>admin-rekening</strong>",
     "Username" : "Gebruikersnaam",
     "Data folder" : "Data omslag",

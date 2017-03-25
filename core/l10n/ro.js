@@ -202,8 +202,6 @@ OC.L10N.register(
     "Code: %s" : "Cod: %s",
     "Message: %s" : "Mesaj: %s",
     "File: %s" : "Fișier: %s",
-    "Security warning" : "Alertă de securitate",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Directorul tău de date și fișiere sunt probabil accesibile de pe Internet, deoarece fișierul .htaccess nu funcționează.",
     "Create an <strong>admin account</strong>" : "Crează un <strong>cont de administrator</strong>",
     "Username" : "Nume utilizator",
     "Storage & database" : "Stocare și baza de date",

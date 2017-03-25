@@ -187,8 +187,6 @@ OC.L10N.register(
     "File: %s" : "Fitxer: %s",
     "Line: %s" : "Línia: %s",
     "Trace" : "Traça",
-    "Security warning" : "Advertiment de seguretat",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "La carpeta de dades i els seus fitxers probablement són accessibles des d'internet perquè el fitxer .htaccess no funciona.",
     "Create an <strong>admin account</strong>" : "Crea un <strong>compte d'administrador</strong>",
     "Username" : "Nom d'usuari",
     "Storage & database" : "Emmagatzematge i base de dades",
