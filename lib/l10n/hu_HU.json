@@ -61,6 +61,7 @@
     "Authentication" : "Azonisítás",
     "Encryption" : "Titkosítás",
     "Sharing" : "Megosztás",
+    "Search" : "Keresés",
     "Apps" : "Alkalmazások",
     "Updates" : "Frissítések",
     "%s enter the database username and name." : "%s adja meg az adatbázis felhasználó nevét és az adatbázi nevét.",

@@ -55,6 +55,7 @@
     "Authentication" : "Аутентификација",
     "Encryption" : "Шифровање",
     "Sharing" : "Дељење",
+    "Search" : "Тражи",
     "Apps" : "Апликације",
     "Updates" : "Ажурирања",
     "%s enter the database username." : "%s унеси корисничко име базе података.",

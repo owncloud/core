@@ -54,6 +54,7 @@
     "Security" : "Безпека",
     "Encryption" : "Шифрування",
     "Sharing" : "Спільний доступ",
+    "Search" : "Пошук",
     "Apps" : "Додатки",
     "Updates" : "Оновлення",
     "%s enter the database username and name." : "%s введіть назву бази даних та ім'я користувача.",

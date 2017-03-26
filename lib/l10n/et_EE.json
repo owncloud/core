@@ -50,6 +50,7 @@
     "Authentication" : "Autentimine",
     "Encryption" : "Krüpteerimine",
     "Sharing" : "Jagamine",
+    "Search" : "Otsi",
     "Apps" : "Rakendused",
     "Updates" : "Uuendused",
     "%s enter the database username." : "%s sisesta andmebaasi kasutajatunnus.",

@@ -44,6 +44,7 @@
     "Authentication" : "认证",
     "Encryption" : "加密",
     "Sharing" : "共享",
+    "Search" : "搜索",
     "Apps" : "应用",
     "Updates" : "更新",
     "%s enter the database username." : "%s 输入数据库用户名。",

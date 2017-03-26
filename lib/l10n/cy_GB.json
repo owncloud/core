@@ -9,6 +9,7 @@
     "Password" : "Cyfrinair",
     "General" : "Cyffredinol",
     "Encryption" : "Amgryptiad",
+    "Search" : "Chwilio",
     "Apps" : "Pecynnau",
     "%s enter the database username." : "%s rhowch enw defnyddiwr y gronfa ddata.",
     "%s enter the database name." : "%s rhowch enw'r gronfa ddata.",
