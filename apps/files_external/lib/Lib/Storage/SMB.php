@@ -242,7 +242,7 @@ class SMB extends Common {
 	}
 
 	/**
-	 * Rename the files
+	 * Rename the files. If the source or the target is the root, the rename won't happen.
 	 *
 	 * @param string $source the old name of the path
 	 * @param string $target the new name of the path
@@ -250,6 +250,12 @@ class SMB extends Common {
 	 */
 	public function rename($source, $target) {
 		$this->log("enter: rename('$source', '$target')", Util::DEBUG);
+
+		if ($this->isRootDir($source) || $this->isRootDir($target)) {
+			$this->log("refusing to rename $source to $target");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		try {
 			$result = $this->share->rename($this->root . $source, $this->root . $target);
 			$this->removeFromCache($this->root . $source);
@@ -570,6 +576,11 @@ class SMB extends Common {
 
 	public function isUpdatable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isRootDir($path)) {
+			$this->log('root dir is never updatable');
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
@@ -584,8 +595,32 @@ class SMB extends Common {
 		return $this->leave(__FUNCTION__, $result);
 	}
 
+	public function isCreatable($path) {
+		$this->log('enter: '.__FUNCTION__."($path)");
+		$result = false;
+		try {
+			if ($this->is_dir($path)) {
+				// if it's a dir, follow a similar approach than "isUpdatable". Files won't be createable
+				$info = $this->getFileInfo($path);
+				// following windows behaviour for read-only folders: they can be written into
+				// (https://support.microsoft.com/en-us/kb/326549 - "cause" section)
+				$result = !$info->isHidden() && !$info->isReadOnly();
+			}
+		} catch (NotFoundException $e) {
+			$this->swallow(__FUNCTION__, $e);
+		} catch (ForbiddenException $e) {
+			$this->swallow(__FUNCTION__, $e);
+		}
+		return $this->leave(__FUNCTION__, $result);
+	}
+
 	public function isDeletable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+		if ($this->isRootDir($path)) {
+			$this->log('root dir is never deletable');
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
