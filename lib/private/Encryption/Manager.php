@@ -89,7 +89,8 @@ class Manager implements IManager {
 		}
 
 		$enabled = $this->config->getAppValue('core', 'encryption_enabled', 'no');
-		return $enabled === 'yes';
+		$masterKeyEnabled = $this->config->getAppValue('encryption', 'useMasterKey', 0);
+		return ($enabled === 'yes' or (bool)$masterKeyEnabled);
 	}
 
 	/**

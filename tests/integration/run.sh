@@ -31,7 +31,12 @@ function env_encryption_enable {
 
 function env_encryption_enable_master_key {
 	env_encryption_enable
-	$OCC encryption:enable-master-key --yes
+	$OCC encryption:select-encryption-type masterkey --yes
+}
+
+function env_encryption_enable_user_keys {
+	env_encryption_enable
+	$OCC encryption:select-encryption-type user-keys --yes
 }
 
 function env_encryption_disable {
@@ -42,6 +47,11 @@ function env_encryption_disable {
 function env_encryption_disable_master_key {
 	env_encryption_disable
 	$OCC config:app:delete encryption useMasterKey
+}
+
+function env_encryption_disable_users_key {
+	env_encryption_disable
+	$OCC config:app:delete encryption userSpecificKey
 }
 
 # avoid port collision on jenkins - use $EXECUTOR_NUMBER
@@ -87,6 +97,9 @@ if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
 elif test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
 	env_encryption_enable_master_key
 	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_masterkey_encryption"
+elif test "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1"; then
+	env_encryption_enable_user_keys
+	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_userkeys_encryption"
 fi
 
 if test "$BEHAT_FILTER_TAGS"; then
@@ -124,6 +137,10 @@ fi
 
 if test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
 	env_encryption_disable_master_key
+fi
+
+if test "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1"; then
+	env_encryption_disable_users_key
 fi
 
 if [ -z $HIDE_OC_LOGS ]; then

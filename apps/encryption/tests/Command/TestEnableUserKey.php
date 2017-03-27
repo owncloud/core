@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author Joas Schilling <coding@schilljs.com>
+ * @author Sujith H <sharidasan@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -20,7 +19,6 @@
  *
  */
 
-
 namespace OCA\Encryption\Tests\Command;
 
 
@@ -28,15 +26,15 @@ use OCA\Encryption\Command\SelectEncryptionType;
 use OCA\Encryption\Util;
 use Test\TestCase;
 
-class TestEnableMasterKey extends TestCase {
+class TestEnableUserKey extends TestCase {
 
-	/** @var  EnableMasterKey */
-	protected $enableMasterKey;
+	/** @var  EnableUserKey */
+	protected $enableUserKey;
 
 	/** @var  Util | \PHPUnit_Framework_MockObject_MockObject */
 	protected $util;
 
-	/** @var \OCP\IConfig | \PHPUnit_Framework_MockObject_MockObject  */
+	/** @var \OCP\IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	protected $config;
 
 	/** @var \Symfony\Component\Console\Helper\QuestionHelper | \PHPUnit_Framework_MockObject_MockObject */
@@ -62,7 +60,7 @@ class TestEnableMasterKey extends TestCase {
 		$this->input = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')
 			->disableOriginalConstructor()->getMock();
 
-		$this->enableMasterKey = new SelectEncryptionType($this->util, $this->config, $this->questionHelper);
+		$this->enableUserKey = new SelectEncryptionType($this->util, $this->config, $this->questionHelper);
 	}
 
 	/**
@@ -73,6 +71,8 @@ class TestEnableMasterKey extends TestCase {
 	 */
 	public function testExecute($isAlreadyEnabled, $answer) {
 
+		$userSpecificVal = $isAlreadyEnabled ? 1 : '';
+
 		$this->config->expects($this->at(0))
 			->method('getAppValue')
 			->with('core', 'encryption_enabled', 'no')
@@ -81,14 +81,14 @@ class TestEnableMasterKey extends TestCase {
 		$this->config->expects($this->at(1))
 			->method('getAppValue')
 			->with('encryption','userSpecificKey', '')
-			->willReturn("");
+			->willReturn($userSpecificVal);
 
 		$this->util->expects($this->once())->method('isMasterKeyEnabled')
-			->willReturn($isAlreadyEnabled);
+			->willReturn(false);
 
 		if ($isAlreadyEnabled) {
 			$this->output->expects($this->once())->method('writeln')
-				->with('Master key already enabled');
+				->with('User keys already enabled');
 		} else {
 			if ($answer === 'y') {
 				$this->input->expects($this->once())->method('getOption')
@@ -96,7 +96,7 @@ class TestEnableMasterKey extends TestCase {
 					->willReturn(true);
 
 				$this->config->expects($this->once())->method('setAppValue')
-					->with('encryption', 'useMasterKey', '1');
+					->with('encryption', 'userSpecificKey', '1');
 			} else {
 				$this->input->expects($this->once())->method('getOption')
 					->with('yes')
@@ -110,10 +110,10 @@ class TestEnableMasterKey extends TestCase {
 
 		$this->input->expects($this->once())->method('getArgument')
 			->with('encryption-type')
-			->willReturn("masterkey");
+			->willReturn("user-keys");
 
 
-		$this->invokePrivate($this->enableMasterKey, 'execute', [$this->input, $this->output]);
+		$this->invokePrivate($this->enableUserKey, 'execute', [$this->input, $this->output]);
 	}
 
 	public function dataTestExecute() {
@@ -124,4 +124,6 @@ class TestEnableMasterKey extends TestCase {
 			[false, '']
 		];
 	}
+
 }
+

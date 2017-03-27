@@ -21,7 +21,7 @@ OC.AppConfig={
 	},
 	postCall:function(action,data,callback){
 		data.action=action;
-		$.post(OC.AppConfig.url,data,function(result){
+		return $.post(OC.AppConfig.url,data,function(result){
 			if(result.status==='success'){
 				if(callback){
 					callback(result.data);
@@ -37,7 +37,7 @@ OC.AppConfig={
 		OC.AppConfig.getCall('getValue',{app:app,key:key,defaultValue:defaultValue},callback);
 	},
 	setValue:function(app,key,value){
-		OC.AppConfig.postCall('setValue',{app:app,key:key,value:value});
+		return OC.AppConfig.postCall('setValue',{app:app,key:key,value:value});
 	},
 	getApps:function(callback){
 		OC.AppConfig.getCall('getApps',{},callback);
