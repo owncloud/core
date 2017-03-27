@@ -675,4 +675,21 @@ class TagsContext implements \Behat\Behat\Context\Context {
 			$this->response = $e->getResponse();
 		}
 	}
+
+	/**
+	 * @Given As :user sending :verb to :url with
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @throws \Exception
+	 */
+	public function asUserSendingToWith($user, $verb, $url, \Behat\Gherkin\Node\TableNode $body) {
+		$client = new \GuzzleHttp\Client();
+		$options = [];
+		$options['auth'] = [$user, '123456'];
+		$fd = $body->getRowsHash();
+		$options['body'] = $fd;
+		$client->send($client->createRequest($verb, $this->baseUrl.'/ocs/v1.php/'.$url, $options));
+	}
 }
