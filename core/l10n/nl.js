@@ -163,6 +163,8 @@ OC.L10N.register(
     "Password" : "Wachtwoord",
     "Name" : "Naam",
     "Allow uploads" : "Uploads toestaan",
+    "Edit link share: {name}" : "Bewerk link om te delen: {name}",
+    "Create link share: {name}" : "Creëren link om te delen: {name}",
     "Save" : "Opslaan",
     "Share to Twitter. Opens in a new window." : "Delen op Twitter. Opent in een nieuw venster.",
     "Share to Facebook. Opens in a new window." : "Delen op Facebook. Opent in een nieuw venster.",
