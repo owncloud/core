@@ -252,7 +252,7 @@ class SMB extends Common {
 		$this->log("enter: rename('$source', '$target')", Util::DEBUG);
 
 		if ($this->isRootDir($source) || $this->isRootDir($target)) {
-			$this->log("refusing to rename $source to $target");
+			$this->log("refusing to rename \"$source\" to \"$target\"");
 			return $this->leave(__FUNCTION__, false);
 		}
 
@@ -336,6 +336,12 @@ class SMB extends Common {
 	 */
 	public function unlink($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+
+		if ($this->isRootDir($path)) {
+			$this->log("refusing to unlink \"$path\"");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			if ($this->is_dir($path)) {
@@ -448,6 +454,12 @@ class SMB extends Common {
 
 	public function rmdir($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
+
+		if ($this->isRootDir($path)) {
+			$this->log("refusing to delete \"$path\"");
+			return $this->leave(__FUNCTION__, false);
+		}
+
 		$result = false;
 		try {
 			$this->removeFromCache($path);
@@ -576,11 +588,6 @@ class SMB extends Common {
 
 	public function isUpdatable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
-		if ($this->isRootDir($path)) {
-			$this->log('root dir is never updatable');
-			return $this->leave(__FUNCTION__, false);
-		}
-
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
@@ -595,32 +602,8 @@ class SMB extends Common {
 		return $this->leave(__FUNCTION__, $result);
 	}
 
-	public function isCreatable($path) {
-		$this->log('enter: '.__FUNCTION__."($path)");
-		$result = false;
-		try {
-			if ($this->is_dir($path)) {
-				// if it's a dir, follow a similar approach than "isUpdatable". Files won't be createable
-				$info = $this->getFileInfo($path);
-				// following windows behaviour for read-only folders: they can be written into
-				// (https://support.microsoft.com/en-us/kb/326549 - "cause" section)
-				$result = !$info->isHidden() && !$info->isReadOnly();
-			}
-		} catch (NotFoundException $e) {
-			$this->swallow(__FUNCTION__, $e);
-		} catch (ForbiddenException $e) {
-			$this->swallow(__FUNCTION__, $e);
-		}
-		return $this->leave(__FUNCTION__, $result);
-	}
-
 	public function isDeletable($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
-		if ($this->isRootDir($path)) {
-			$this->log('root dir is never deletable');
-			return $this->leave(__FUNCTION__, false);
-		}
-
 		$result = false;
 		try {
 			$info = $this->getFileInfo($path);
