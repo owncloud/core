@@ -722,10 +722,18 @@ class Util {
 			'installed'=> $installed ? 'true' : 'false',
 			'maintenance' => $maintenance ? 'true' : 'false',
 			'needsDbUpgrade' => self::needUpgrade() ? 'true' : 'false',
-			'version' => implode('.', self::getVersion()),
-			'versionstring' => \OC_Util::getVersionString(),
-			'edition' => \OC_Util::getEditionString(),
-			'productname' => $defaults->getName()];
+			'version' => '',
+			'versionstring' => '',
+			'edition' => '',
+			'productname' => ''];
+
+		if ((bool) $systemConfig->getValue('version.hide', false) === false) {
+			$values['version'] = implode('.', self::getVersion());
+			$values['versionstring'] = \OC_Util::getVersionString();
+			$values['edition'] = \OC_Util::getEditionString();
+			$values['productname'] = $defaults->getName();
+		}
+
 		return $values;
 	}
 }

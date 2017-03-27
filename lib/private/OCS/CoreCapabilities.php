@@ -24,6 +24,7 @@ namespace OC\OCS;
 
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
+use OCP\Util;
 
 /**
  * Class Capabilities
@@ -52,6 +53,7 @@ class CoreCapabilities implements ICapability {
 			'core' => [
 				'pollinterval' => $this->config->getSystemValue('pollinterval', 60),
 				'webdav-root' => $this->config->getSystemValue('webdav-root', 'remote.php/webdav'),
+				'status' => Util::getStatusInfo(),
 			]
 		];
 	}
