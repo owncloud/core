@@ -314,10 +314,9 @@
 						case 'C':
 						case 'K':
 							data.permissions |= OC.PERMISSION_CREATE;
-							break;
-						case 'N':
-						case 'V':
-							data.permissions |= OC.PERMISSION_UPDATE;
+							if (!isFile) {
+								data.permissions |= OC.PERMISSION_UPDATE;
+							}
 							break;
 						case 'W':
 							data.permissions |= OC.PERMISSION_UPDATE;
