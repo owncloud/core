@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud, Gmbh.
  * @license AGPL-3.0
@@ -198,7 +199,7 @@ trait Comments {
 									<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
 										<d:set>
 											<d:prop>
-												<oc:message>'. $content .'</oc:message>
+												<oc:message>'. htmlspecialchars($content, ENT_XML1, 'UTF-8') .'</oc:message>
 											</d:prop>
 										</d:set>
 									</d:propertyupdate>');
