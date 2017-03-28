@@ -6,6 +6,7 @@
     "Wrong admin recovery password. Please check the password and try again." : "Password amministrativa di ripristino errata. Controlla la password e prova ancora.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Il motore non supporta la modifica della password, ma la chiave di cifratura dell'utente è stata aggiornata correttamente.",
     "Unable to change password" : "Impossibile cambiare la password",
+    "Couldn't send reset email. Please contact your administrator." : "Impossibile inviare l'email di reimpostazione. Contatta il tuo amministratore.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "installazione e aggiornamento delle applicazioni tramite il negozio delle applicazioni o condivisione cloud federata",
     "Federated Cloud Sharing" : "Condivisione cloud federata",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL utilizza una versione %s datata (%s). Aggiorna il tuo sistema operativo o funzionalità come %s non funzioneranno correttamente.",

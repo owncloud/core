@@ -5,6 +5,7 @@ OC.L10N.register(
     "No user supplied" : "﻿ಯಾವುದೇ ಬಳಕೆದಾರನ ಹೆಸರನ್ನು ನೀಡಿರುವುದಿಲ್ಲ",
     "Authentication error" : "ದೃಢೀಕರಣ ದೋಷ",
     "Unable to change password" : "﻿ಗುಪ್ತಪದವನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",
+    "Couldn't send reset email. Please contact your administrator." : "﻿ರೀಸೆಟ್ ಇಮೇಲ್ ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
     "Group already exists." : "﻿ಗುಂಪು ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ.",
     "Unable to add group." : "﻿ಗುಂಪುನ್ನು ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.",
     "Unable to delete group." : "﻿ಗುಂಪುನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",

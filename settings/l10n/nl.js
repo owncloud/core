@@ -9,6 +9,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Onjuist beheerdersherstelwachtwoord. Controleer het wachtwoord en probeer het opnieuw.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "De Back-end ondersteunt geen wachtwoordwijzigingen, maar de cryptosleutel van de gebruiker is succesvol bijgewerkt.",
     "Unable to change password" : "Kan wachtwoord niet wijzigen",
+    "Couldn't send reset email. Please contact your administrator." : "Kon herstel e-mail niet versturen. Neem contact op met uw beheerder.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "installeren en bijwerken applicaties via de app store of Federated Cloud Sharing",
     "Federated Cloud Sharing" : "Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cUrl gebruikt een verouderde %s versie (%s). Werk het besturingssysteem bij of functies als %s zullen niet betrouwbaar werken.",

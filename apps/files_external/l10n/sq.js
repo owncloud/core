@@ -60,7 +60,7 @@ OC.L10N.register(
     "Client secret" : "E fshehtë klienti",
     "OpenStack" : "OpenStack",
     "Tenant name" : "Emër qiraxhiu",
-    "Identity endpoint URL" : "Identifiko pikëmbarimin URL",
+    "Identity endpoint URL" : "URL pikë fundore identiteti",
     "Rackspace" : "Rackspace",
     "API key" : "Kyç API",
     "RSA public key" : "Kyç publik RSA ",

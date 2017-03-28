@@ -9,6 +9,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "סיסמת המנהל לשחזור שגוייה. יש לבדוק את הסיסמא ולנסות שוב.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "צד אחורי לא תומך בשינוי סיסמא, אך מפתח הצפנה של המשתמש עודכנה בהצלחה.",
     "Unable to change password" : "לא ניתן לשנות את הסיסמא",
+    "Couldn't send reset email. Please contact your administrator." : "לא ניתן היה לשלוח דואר אלקטרוני לאיפוס. יש לפנות למנהל שלך.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "התקנה ועדכון היישום דרך חנות היישומים או ענן שיתוף מאוגד",
     "Federated Cloud Sharing" : "ענן שיתוף מאוגד",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL משתמש בגרסה %s ישנה (%s). יש לעדכן את מערכת ההפעלה או  שתכונות כדוגמת %s לא יעבדו באופן מהימן.",

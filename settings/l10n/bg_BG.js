@@ -7,6 +7,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Грешна администраторска парола за възстановяване. Моля, проверете паролата и опитайте отново.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Сървърът не позволява смяна на паролата, но потребителския ключ за криптиране беше успешно обновен.",
     "Unable to change password" : "Неуспешна смяна на паролата.",
+    "Couldn't send reset email. Please contact your administrator." : "Изпращането на електронна поща е неуспешно. Моля, свържете се с вашия администратор.",
     "Federated Cloud Sharing" : "Федеративно споделяне през облака",
     "Group already exists." : "Групата вече съществува.",
     "Unable to add group." : "Неуспешно добавяне на група.",

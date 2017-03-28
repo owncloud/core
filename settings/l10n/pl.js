@@ -8,6 +8,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Błędne hasło odzyskiwania. Sprawdź hasło i spróbuj ponownie.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Zaplecze nie obsługuje zmiany hasła, ale klucz szyfrowania użytkownika został pomyślnie zaktualizowany.",
     "Unable to change password" : "Nie można zmienić hasła",
+    "Couldn't send reset email. Please contact your administrator." : "Nie mogę wysłać maila resetującego. Skontaktuj się z administratorem.",
     "Federated Cloud Sharing" : "Współdzielenie przez chmurę stowarzyszoną",
     "A problem occurred, please check your log files (Error: %s)" : "Wystąpił problem, sprawdź logi (Błąd: %s)",
     "Migration Completed" : "Migracja Zakończona",

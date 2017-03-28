@@ -8,6 +8,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Chybné administrátorské heslo pro obnovu. Překontrolujte správnost hesla a zkuste to znovu.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Úložiště nepodporuje změnu hesla, ale šifrovací klíč uživatele byl úspěšně aktualizován.",
     "Unable to change password" : "Změna hesla se nezdařila",
+    "Couldn't send reset email. Please contact your administrator." : "Nepodařilo se odeslat email pro změnu hesla. Kontaktujte svého správce systému.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "Instalovat a aktualizovat aplikace pomocí obchodu nebo Sdíleného Cloudového Úložiště",
     "Federated Cloud Sharing" : "Propojené cloudové sdílení",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL používá zastaralou %s verzi (%s). Aktualizujte prosím svůj operační systém, jinak funkce jako %s nemusí spolehlivě pracovat.",

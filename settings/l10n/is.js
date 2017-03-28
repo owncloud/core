@@ -9,6 +9,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Rangt endurheimtulykilorð kerfisstjóra, athugaðu lykilorðið og reyndu aftur.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Bakendi styður ekki breytingu á lykilorði, en það tókst að uppfæra dulritunarlykil notandans.",
     "Unable to change password" : "Ekki tókst að breyta lykilorði",
+    "Couldn't send reset email. Please contact your administrator." : "Gat ekki sent endurstillingu í tölvupósti. Hafðu samband við kerfisstjóra.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "uppsetning eða uppfærsla forrita úr forritabúð eða með skýjasambandi",
     "Federated Cloud Sharing" : "Deiling með skýjasambandi",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL er að nota úrelda útgáfu af %s (%s). Uppfærðu stýrikerfið þitt, annars er hætt við að eiginleikar á borð við %s virki ekki sem skyldi.",

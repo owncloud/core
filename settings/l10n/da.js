@@ -8,6 +8,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Forkert admin gendannelseskode. Se venligst koden efter og prøv igen.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Backend'en understøtter ikke skift af kodeord, men opdateringen af brugerens krypteringsnøgle blev gennemført.",
     "Unable to change password" : "Kunne ikke ændre kodeord",
+    "Couldn't send reset email. Please contact your administrator." : "Der opstod et problem under afsending af e-mailen til nulstilling. Kontakt venligst systemadministratoren.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "installation og opdatering af apps via app-butikken eller sammensluttet Cloud deling",
     "Federated Cloud Sharing" : "Sammensluttet Cloud deling",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL bruger en forældet %s version (%s). Husk at opdatere dit styresystem ellers vil funktioner såsom %s ikke fungere pålideligt.",
