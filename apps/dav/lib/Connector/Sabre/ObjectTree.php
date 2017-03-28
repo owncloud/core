@@ -100,6 +100,22 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	}
 
 	/**
+	 * This function allows you to check if a node exists.
+	 *
+	 * @param string $path
+	 * @return bool
+	 */
+	function nodeExists($path) {
+		$path = trim($path, '/');
+		if (isset($this->cache[$path]) && $this->cache[$path] === false){
+			// Node is not existing, as it was explicitely set in the cache
+			// Next call to getNodeForPath will create cache instance and unset the cached value
+			return false;
+		}
+		return parent::nodeExists($path);
+	}
+
+	/**
 	 * Returns the INode object for the requested path
 	 *
 	 * @param string $path
@@ -122,7 +138,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 		$path = trim($path, '/');
 
-		if (isset($this->cache[$path])) {
+		if (isset($this->cache[$path]) && $this->cache[$path] !== false) {
 			return $this->cache[$path];
 		}
 
@@ -179,6 +195,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		}
 
 		if (!$info) {
+			$this->cache[$path] = false;
 			throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
 		}
 
