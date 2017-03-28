@@ -1161,3 +1161,44 @@ Feature: sharing
     And as "user0" the folder "/sub" exists in trash
     And as "user0" the file "/sub/shared_file.txt" exists in trash
 
+  Scenario: Creating three public shares of a folder
+   Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | password | publicpw |
+      | expireDate | +3 days |
+      | publicUpload | true |
+      | permissions | 15 |
+      | name | sharedlink1 |
+    And the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | password | publicpw |
+      | expireDate | +3 days |
+      | publicUpload | true |
+      | permissions | 15 |
+      | name | sharedlink2 |
+    And the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | password | publicpw |
+      | expireDate | +3 days |
+      | publicUpload | true |
+      | permissions | 15 |
+      | name | sharedlink3 |
+    And the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    When Updating last share with
+      | permissions | 1 |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user0" gets shares of folder "/FOLDER"
+      | /FOLDER | 15 | sharedlink2 |
+      | /FOLDER | 15 | sharedlink1 |
+      | /FOLDER | 1 | sharedlink3 |

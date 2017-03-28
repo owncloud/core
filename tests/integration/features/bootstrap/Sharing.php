@@ -174,7 +174,8 @@ trait Sharing {
 								$shareWith = null,
 								$publicUpload = null,
 								$password = null,
-								$permissions = null){
+								$permissions = null,
+								$linkName = null) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$client = new Client();
 		$options = [];
@@ -202,6 +203,9 @@ trait Sharing {
 		}
 		if (!is_null($permissions)){
 			$fd['permissions'] = $permissions;
+		}
+		if (!is_null($linkName)){
+			$fd['name'] = $linkName;
 		}
 
 		$options['body'] = $fd;
@@ -507,5 +511,47 @@ trait Sharing {
 			throw new \Exception('Expected the same link share to be returned');
 		}
 	}
+
+	/**
+	 * @When /^user "([^"]*)" gets shares of (file|folder) "([^"]*)"$/
+	 * @param string $user
+	 * @param string $type
+	 * @param string $path
+	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 */
+	public function getShares($user, $type, $path, $TableNode){
+		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
+		$fullUrl = $fullUrl . '?path=' . $path;
+
+		$client = new Client();
+		$options = [];
+
+		if ($user === 'admin') {
+			$options['auth'] = $this->adminUser;
+		} else {
+			$options['auth'] = [$user, $this->regularUser];
+		}
+
+		$this->response = $client->send($client->createRequest("GET", $fullUrl, $options));
+		$dataResponded = $this->response->xml()->data->element;
+
+		if ($TableNode instanceof \Behat\Gherkin\Node\TableNode) {
+			$elementRows = $TableNode->getRows();
+			foreach($elementRows as $expectedElementsArray) {
+				//0 path, 1 permissions, 2 name
+				$nameFound = false;
+				foreach ($dataResponded as $elementResponded) {
+					if ((string)$elementResponded->name[0] === $expectedElementsArray[2]) {
+						PHPUnit_Framework_Assert::assertEquals($expectedElementsArray[0], (string)$elementResponded->path[0]);
+						PHPUnit_Framework_Assert::assertEquals($expectedElementsArray[1], (string)$elementResponded->permissions[0]);
+						$nameFound = true;
+						break;
+					}
+				}
+				PHPUnit_Framework_Assert::assertTrue($nameFound, "Shared link name " . $expectedElementsArray[2] . " not found");
+			}
+		}
+	}
+
 }
 
