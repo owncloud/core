@@ -57,10 +57,14 @@ class LoginContext extends RawMinkContext implements Context
 	}
 	
 	/**
-	 * @Then a file with the name :filename should be listed
+	 * @Then I should be redirected to a page with the title :title
 	 */
-	public function aFileWithTheNameShouldBeListed($filename)
+	public function iShouldBeRedirectedToAPageWithTheTitle($title)
 	{
-		$this->filesPage->findFileInList($filename)->isVisible();
+		
+		$actualTitle = $this->filesPage->find(
+			'xpath', './/title'
+		)->getHtml();
+		PHPUnit_Framework_Assert::assertEquals($title, $actualTitle);
 	}
 }

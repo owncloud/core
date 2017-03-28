@@ -146,7 +146,7 @@
 
 			this.render();
 			this.$el.removeClass('hidden');
-
+			OC.Util.scrollIntoView(this.$el, null);
 			OC.showMenu(null, this.$el);
 		}
 	});

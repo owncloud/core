@@ -24,6 +24,7 @@
 namespace Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Behat\Mink\Session;
 
 class OwncloudPage extends Page
 {
@@ -56,6 +57,37 @@ class OwncloudPage extends Page
 	public function getMyUsername() {
 		return $this->findById($this->userNameDispayId)->getText();
 	}
+	
+	/**
+	 * Gets the Coordinates of a Mink Element
+	 * 
+	 * @param Session $session
+	 * @param NodeElement $element
+	 * @return Array
+	 */
+	public function getCoordinatesOfElement($session, $element)
+	{
+		return $session->evaluateScript(
+			'return document.evaluate( "' .
+			$element->getXpath() .
+			'",document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)' .
+			'.singleNodeValue.getBoundingClientRect();'
+		);
+	}
+	
+	/**
+	 * Gets the Window Height
+	 * 
+	 * @param Session $session
+	 * @return Array
+	 */
+	public function getWindowHeight($session)
+	{
+		return $session->evaluateScript(
+			'return $(window).height();'
+		);
+	}
+	
 	/**
 	 * Determine if a Mink NodeElement contains a specific
 	 * css rule attribute value.
