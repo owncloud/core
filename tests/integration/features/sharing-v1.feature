@@ -1241,3 +1241,60 @@ Feature: sharing
       | /textfile0.txt | 1 | sharedlink2 |
       | /textfile0.txt | 1 | sharedlink1 |
       | /textfile0.txt | 1 | sharedlink3 |
+
+  Scenario: Check that updating password doesn't remove name of links
+    Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | password | publicpw |
+      | expireDate | +3 days |
+      | publicUpload | true |
+      | permissions | 15 |
+      | name | sharedlink1 |
+    And the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | password | publicpw |
+      | expireDate | +3 days |
+      | publicUpload | true |
+      | permissions | 15 |
+      | name | sharedlink2 |
+    And the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    When Updating last share with
+      | password | newpassword |
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "user0" checks public shares of folder "/FOLDER"
+      | /FOLDER | 15 | sharedlink2 |
+      | /FOLDER | 15 | sharedlink1 |
+
+  Scenario: Deleting a file deletes also its public links
+   Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | textfile0.txt |
+      | shareType | 3 |
+      | password | publicpw |
+      | expireDate | +3 days |
+      | permissions | 1 |
+      | name | sharedlink1 |
+    And the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And creating a share with
+      | path | textfile0.txt |
+      | shareType | 3 |
+      | password | publicpw |
+      | expireDate | +3 days |
+      | permissions | 1 |
+      | name | sharedlink2 |
+    And User "user0" deletes file "/textfile0.txt"
+    And the HTTP status code should be "204"
+    When User "user0" uploads file "data/textfile.txt" to "/textfile0.txt"
+    Then the HTTP status code should be "201"
+    And user "user0" checks public shares of file "/textfile0.txt"
+      | | | |

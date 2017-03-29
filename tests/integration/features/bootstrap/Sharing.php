@@ -542,6 +542,13 @@ trait Sharing {
 
 		if ($TableNode instanceof \Behat\Gherkin\Node\TableNode) {
 			$elementRows = $TableNode->getRows();
+
+			if ($elementRows[0][0] === '') {
+				//It shouldn't have public shares
+				PHPUnit_Framework_Assert::assertEquals(count($dataResponded), 0);
+				return 0;
+			}
+
 			foreach($elementRows as $expectedElementsArray) {
 				//0 path, 1 permissions, 2 name
 				$nameFound = false;
