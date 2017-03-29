@@ -9,6 +9,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Palavra-passe de recuperação de administrador errada. Por favor, verifique a palavra-passe e tente novamente.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "A interface não suporta a alteração da palavra-passe, mas a chave de encriptação foi atualizada com sucesso.",
     "Unable to change password" : "Não é possível alterar a sua palavra-passe ",
+    "%s password changed successfully" : "Palavra-passe de %s alterada com sucesso",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar a mensagem de reposição. Por favor, contacte o seu administrador.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "A instalar e a atualizar as aplicações através da loja de aplicações ou Federated Cloud Sharing",
     "Federated Cloud Sharing" : "Federated Cloud Sharing",

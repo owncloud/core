@@ -9,6 +9,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Falsches Wiederherstellungspasswort für das Admin-Konto. Bitte überprüfen Sie das Passwort und versuchen Sie es erneut.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Das Backend unterstützt die Passwortänderung nicht, aber der Benutzerschlüssel wurde erfolgreich aktualisiert.",
     "Unable to change password" : "Passwort konnte nicht geändert werden",
+    "%s password changed successfully" : "%s Passwort erfolgreich geändert",
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktieren Sie Ihren Administrator.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "Das Installieren und Aktualisieren von Apps durch den App-Store oder durch Federated Cloud Sharing",
     "Federated Cloud Sharing" : "Federated-Cloud-Sharing",
