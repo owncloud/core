@@ -356,7 +356,10 @@ class Share20OCS {
 				$share->setPermissions(\OCP\Constants::PERMISSION_READ);
 			}
 
-			$share->setName($name);
+			// set name only if passed as parameter, empty string is allowed
+			if ($name !== null) {
+				$share->setName($name);
+			}
 
 			// Set password
 			$password = $this->request->getParam('password', '');
@@ -594,7 +597,7 @@ class Share20OCS {
 		 * expirationdate, password and publicUpload only make sense for link shares
 		 */
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
-			if ($permissions === null && $password === null && $publicUpload === null && $expireDate === null) {
+			if ($permissions === null && $password === null && $publicUpload === null && $expireDate === null && $name === null) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new \OC\OCS\Result(null, 400, 'Wrong or no update parameter given');
 			}
@@ -641,7 +644,10 @@ class Share20OCS {
 				$newPermissions = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
 			}
 
-			$share->setName($name);
+			// set name only if passed as parameter, empty string is allowed
+			if ($name !== null) {
+				$share->setName($name);
+			}
 
 			if ($newPermissions !== null) {
 				$share->setPermissions($newPermissions);
