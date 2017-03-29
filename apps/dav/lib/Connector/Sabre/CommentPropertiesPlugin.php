@@ -179,6 +179,8 @@ class CommentPropertiesPlugin extends ServerPlugin {
 				[$node->getId()],
 				$user);
 
+			// Initialize with 0 as in prefetch phase in handleGetProperties
+			$numberOfCommentsForNode = 0;
 			if (isset($numberOfCommentsForNodes[$node->getId()])) {
 				$numberOfCommentsForNode = $numberOfCommentsForNodes[$node->getId()];
 			}
