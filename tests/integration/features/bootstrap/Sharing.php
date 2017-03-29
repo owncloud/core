@@ -512,14 +512,8 @@ trait Sharing {
 		}
 	}
 
-	/**
-	 * @When /^user "([^"]*)" gets shares of (file|folder) "([^"]*)"$/
-	 * @param string $user
-	 * @param string $type
-	 * @param string $path
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
-	 */
-	public function getShares($user, $type, $path, $TableNode){
+	/* Returns shares of a file or folders as an array of elements */
+	public function getShares($user, $path) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$fullUrl = $fullUrl . '?path=' . $path;
 
@@ -533,7 +527,18 @@ trait Sharing {
 		}
 
 		$this->response = $client->send($client->createRequest("GET", $fullUrl, $options));
-		$dataResponded = $this->response->xml()->data->element;
+		return $this->response->xml()->data->element;
+	}
+
+	/**
+	 * @When /^user "([^"]*)" checks public shares of (file|folder) "([^"]*)"$/
+	 * @param string $user
+	 * @param string $type
+	 * @param string $path
+	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 */
+	public function checkPublicShares($user, $type, $path, $TableNode){
+		$dataResponded = $this->getShares($user, $path);
 
 		if ($TableNode instanceof \Behat\Gherkin\Node\TableNode) {
 			$elementRows = $TableNode->getRows();
