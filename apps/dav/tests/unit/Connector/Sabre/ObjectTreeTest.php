@@ -34,39 +34,6 @@ use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\ObjectTree;
 use Test\TestCase;
 
-class TestDoubleFileView extends \OC\Files\View {
-
-	private $updatables;
-	private $deletables;
-	private $canRename;
-
-	public function __construct($updatables, $deletables, $canRename = true) {
-		$this->updatables = $updatables;
-		$this->deletables = $deletables;
-		$this->canRename = $canRename;
-	}
-
-	public function isUpdatable($path) {
-		return $this->updatables[$path];
-	}
-
-	public function isCreatable($path) {
-		return $this->updatables[$path];
-	}
-
-	public function isDeletable($path) {
-		return $this->deletables[$path];
-	}
-
-	public function rename($path1, $path2) {
-		return $this->canRename;
-	}
-
-	public function getRelativePath($path) {
-		return $path;
-	}
-}
-
 /**
  * Class ObjectTreeTest
  *
@@ -75,82 +42,6 @@ class TestDoubleFileView extends \OC\Files\View {
  * @package OCA\DAV\Tests\Unit\Connector\Sabre
  */
 class ObjectTreeTest extends TestCase {
-
-	/**
-	 * @dataProvider moveFailedProvider
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 */
-	public function testMoveFailed($source, $destination, $updatables, $deletables) {
-		$this->moveTest($source, $destination, $updatables, $deletables);
-	}
-
-	/**
-	 * @dataProvider moveSuccessProvider
-	 */
-	public function testMoveSuccess($source, $destination, $updatables, $deletables) {
-		$this->moveTest($source, $destination, $updatables, $deletables);
-		$this->assertTrue(true);
-	}
-
-	/**
-	 * @dataProvider moveFailedInvalidCharsProvider
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\InvalidPath
-	 */
-	public function testMoveFailedInvalidChars($source, $destination, $updatables, $deletables) {
-		$this->moveTest($source, $destination, $updatables, $deletables);
-	}
-
-	function moveFailedInvalidCharsProvider() {
-		return [
-			['a/b', 'a/*', ['a' => true, 'a/b' => true, 'a/c*' => false], []],
-		];
-	}
-
-	function moveFailedProvider() {
-		return [
-			['a/b', 'a/c', ['a' => false, 'a/b' => false, 'a/c' => false], []],
-			['a/b', 'b/b', ['a' => false, 'a/b' => false, 'b' => false, 'b/b' => false], []],
-			['a/b', 'b/b', ['a' => false, 'a/b' => true, 'b' => false, 'b/b' => false], []],
-			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => false, 'b/b' => false], []],
-			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false], ['a/b' => false]],
-			['a/b', 'a/c', ['a' => false, 'a/b' => true, 'a/c' => false], []],
-		];
-	}
-
-	function moveSuccessProvider() {
-		return [
-			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false], ['a/b' => true]],
-			// older files with special chars can still be renamed to valid names
-			['a/b*', 'b/b', ['a' => true, 'a/b*' => true, 'b' => true, 'b/b' => false], ['a/b*' => true]],
-		];
-	}
-
-	/**
-	 * @param $source
-	 * @param $destination
-	 * @param $updatables
-	 */
-	private function moveTest($source, $destination, $updatables, $deletables) {
-		$view = new TestDoubleFileView($updatables, $deletables);
-
-		$info = new FileInfo('', null, null, [], null);
-
-		$rootDir = new Directory($view, $info);
-		$objectTree = $this->getMockBuilder(ObjectTree::class)
-			->setMethods(['nodeExists', 'getNodeForPath'])
-			->setConstructorArgs([$rootDir, $view])
-			->getMock();
-
-		$objectTree->expects($this->once())
-			->method('getNodeForPath')
-			->with($this->identicalTo($source))
-			->will($this->returnValue(false));
-
-		/** @var $objectTree \OCA\DAV\Connector\Sabre\ObjectTree */
-		$mountManager = Filesystem::getMountManager();
-		$objectTree->init($rootDir, $view, $mountManager);
-		$objectTree->move($source, $destination);
-	}
 
 	public function copyDataProvider() {
 		return [
@@ -408,45 +299,4 @@ class ObjectTreeTest extends TestCase {
 		$this->assertInstanceOf('\Sabre\DAV\INode', $tree->getNodeForPath($path));
 	}
 
-	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
-	 * @expectedExceptionMessage Could not copy directory nameOfSourceNode, target exists
-	 */
-	public function testFailingMove() {
-		$source = 'a/b';
-		$destination = 'b/b';
-		$updatables = ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false];
-		$deletables = ['a/b' => true];
-
-		$view = new TestDoubleFileView($updatables, $deletables);
-
-		$info = new FileInfo('', null, null, [], null);
-
-		$rootDir = new Directory($view, $info);
-		$objectTree = $this->getMockBuilder(ObjectTree::class)
-			->setMethods(['nodeExists', 'getNodeForPath'])
-			->setConstructorArgs([$rootDir, $view])
-			->getMock();
-
-		$sourceNode = $this->getMockBuilder('\Sabre\DAV\ICollection')
-			->disableOriginalConstructor()
-			->getMock();
-		$sourceNode->expects($this->once())
-			->method('getName')
-			->will($this->returnValue('nameOfSourceNode'));
-
-		$objectTree->expects($this->once())
-			->method('nodeExists')
-			->with($this->identicalTo($destination))
-			->will($this->returnValue(true));
-		$objectTree->expects($this->once())
-			->method('getNodeForPath')
-			->with($this->identicalTo($source))
-			->will($this->returnValue($sourceNode));
-
-		/** @var $objectTree \OCA\DAV\Connector\Sabre\ObjectTree */
-		$mountManager = Filesystem::getMountManager();
-		$objectTree->init($rootDir, $view, $mountManager);
-		$objectTree->move($source, $destination);
-	}
 }
