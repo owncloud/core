@@ -23,6 +23,7 @@ namespace OC\Core\Command\Db\Migrations;
 
 
 use OC\DB\MigrationService;
+use OC\Migration\ConsoleOutput;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Command\Command;
@@ -113,7 +114,7 @@ class Version<version> implements ISqlMigration {
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$appName = $input->getArgument('app');
-		$ms = new MigrationService($appName, $this->connection);
+		$ms = new MigrationService($appName, $this->connection, new ConsoleOutput($output));
 
 		$kind = $input->getArgument('kind');
 		$version = date('YmdHis');

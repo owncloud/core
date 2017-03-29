@@ -23,6 +23,7 @@ namespace OC\Core\Command\Db\Migrations;
 
 
 use OC\DB\MigrationService;
+use OC\Migration\ConsoleOutput;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -54,7 +55,7 @@ class MigrateCommand extends Command {
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$appName = $input->getArgument('app');
-		$ms = new MigrationService($appName, $this->connection);
+		$ms = new MigrationService($appName, $this->connection, new ConsoleOutput($output));
 		$version = $input->getArgument('version');
 
 		$ms->migrate($version);
