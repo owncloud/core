@@ -75,6 +75,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			if (!function_exists('curl_version') || !function_exists('curl_exec')) {
 				$this->client->setClassConfig("Google_Http_Request", "disable_gzip", true);
 			}
+			$this->client->setClassConfig('Google_Task_Runner', 'retries', 5);
 			// note: API connection is lazy
 			$this->service = new \Google_Service_Drive($this->client);
 			$token = json_decode($params['token'], true);
