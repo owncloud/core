@@ -117,7 +117,8 @@ class Application extends App {
 			return new MountProvider(
 				$server->getConfig(),
 				$server->getShareManager(),
-				$server->getLogger()
+				$server->getLogger(),
+				$server->getMountManager()
 			);
 		});
 
@@ -126,7 +127,7 @@ class Application extends App {
 			$server = $c->query('ServerContainer');
 			return new \OCA\Files_Sharing\External\MountProvider(
 				$server->getDatabaseConnection(),
-				function() use ($c) {
+				function () use ($c) {
 					return $c->query('ExternalManager');
 				}
 			);

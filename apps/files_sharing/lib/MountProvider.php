@@ -25,12 +25,16 @@
 
 namespace OCA\Files_Sharing;
 
+use OC\Files\Filesystem;
 use OCP\Files\Config\IMountProvider;
+use OCP\Files\Mount\IMountManager;
+use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\Share\IManager;
+use OC\Files\Mount\MountPoint;
 
 class MountProvider implements IMountProvider {
 	/**
@@ -49,16 +53,22 @@ class MountProvider implements IMountProvider {
 	protected $logger;
 
 	/**
+	 * @var IMountManager
+	 */
+	protected $mountManager;
+
+	/**
 	 * @param \OCP\IConfig $config
 	 * @param IManager $shareManager
 	 * @param ILogger $logger
+	 * @param IMountManager $mountManager
 	 */
-	public function __construct(IConfig $config, IManager $shareManager, ILogger $logger) {
+	public function __construct(IConfig $config, IManager $shareManager, ILogger $logger, IMountManager $mountManager) {
 		$this->config = $config;
 		$this->shareManager = $shareManager;
 		$this->logger = $logger;
+		$this->mountManager = $mountManager;
 	}
-
 
 	/**
 	 * Get all mountpoints applicable for the user and check for shares where we need to update the etags
@@ -80,6 +90,7 @@ class MountProvider implements IMountProvider {
 		$mounts = [];
 		foreach ($superShares as $share) {
 			try {
+				Filesystem::initMountPoints($share[0]->getShareOwner());
 				$mounts[] = new SharedMount(
 					'\OCA\Files_Sharing\SharedStorage',
 					$mounts,
@@ -97,6 +108,8 @@ class MountProvider implements IMountProvider {
 				$this->logger->error('Error while trying to create shared mount');
 			}
 		}
+
+		$mounts = array_merge($mounts, $this->getSubMounts($mounts));
 
 		// array_filter removes the null values from the array
 		return array_filter($mounts);
@@ -196,5 +209,44 @@ class MountProvider implements IMountProvider {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Add mounts from the sharing users
+	 *
+	 * @param IMountPoint[] $mounts existing share mounts
+	 * @return IMountPoint[] submounts
+	 */
+	private function getSubMounts($mounts) {
+		$subMounts = array_map(function (SharedMount $mountPoint) {
+			$sourcePath = $mountPoint->getShare()->getNode()->getPath();
+			$sourceMounts = $this->mountManager->findIn($sourcePath);
+			return array_map(function ($sourceMount) use ($mountPoint, $sourcePath) {
+				if ($sourceMount instanceof SharedMount) {
+					// skip shared mounts to avoid potential recursions
+					return null;
+				}
+				return $this->copyMount($sourceMount, $mountPoint->getMountPoint(), $sourcePath);
+			}, $sourceMounts);
+		}, $mounts);
+
+		$subMounts = array_reduce($subMounts, function($allSubMounts, $shareSubMounts) {
+			return array_merge($allSubMounts, $shareSubMounts);
+		}, []);
+
+		// array_filter will removes the null values later
+		return $subMounts;
+	}
+
+	/**
+	 * @param IMountPoint $sourceMount
+	 * @param string $shareTargetPath
+	 * @param string $shareSourcePath
+	 * @return IMountPoint
+	 */
+	private function copyMount(IMountPoint $sourceMount, $shareTargetPath, $shareSourcePath) {
+		$subPath = substr($sourceMount->getMountPoint(), strlen($shareSourcePath) + 1);
+		$targetMountPoint = $shareTargetPath . $subPath;
+		return new MountPoint($sourceMount->getStorage(), $targetMountPoint, $sourceMount->getStorageArguments(), $sourceMount->getStorageFactory());
 	}
 }
