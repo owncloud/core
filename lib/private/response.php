@@ -246,7 +246,7 @@ class OC_Response {
 		$policy = 'default-src \'self\'; '
 			. 'script-src \'self\' \'unsafe-eval\'; '
 			. 'style-src \'self\' \'unsafe-inline\'; '
-			. 'frame-src *; '
+			. 'frame-src * blob:; '
 			. 'img-src * data: blob:; '
 			. 'font-src \'self\' data:; '
 			. 'media-src *; ' 
