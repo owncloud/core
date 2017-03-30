@@ -51,13 +51,6 @@ return [
 		'password'=>'test',
 		'root'=>'',
 	],
-	'google'=> [
-		'run'=> false,
-		'configured' => 'true',
-		'client_id' => '',
-		'client_secret' => '',
-		'token' => '',
-	],
 	'swift' => [
 		'run' => false,
 		'user' => 'test',
