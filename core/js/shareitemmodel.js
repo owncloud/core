@@ -99,7 +99,6 @@
 		},
 
 		defaults: {
-			allowPublicUploadStatus: false,
 			permissions: 0,
 			linkShare: {}
 		},
@@ -641,16 +640,6 @@
 				permissions = permissions & data.reshare.permissions;
 			}
 
-			var allowPublicUploadStatus = false;
-			if(!_.isUndefined(data.shares)) {
-				$.each(data.shares, function (key, value) {
-					if (value.share_type === OC.Share.SHARE_TYPE_LINK) {
-						allowPublicUploadStatus = (value.permissions & OC.PERMISSION_CREATE) ? true : false;
-						return true;
-					}
-				});
-			}
-
 			/** @type {OC.Share.Types.ShareInfo[]} **/
 			var shares = _.map(data.shares, function(share) {
 				// properly parse some values because sometimes the server
@@ -702,8 +691,7 @@
 			return {
 				reshare: data.reshare,
 				shares: shares,
-				permissions: permissions,
-				allowPublicUploadStatus: allowPublicUploadStatus
+				permissions: permissions
 			};
 		},
 
