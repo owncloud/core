@@ -75,6 +75,7 @@ OC.L10N.register(
     "Resharing is not allowed" : "دوبارہ اشتراک کی اجازت نہیں",
     "Warning" : "انتباہ",
     "Delete" : "حذف کریں",
+    "Rename" : "نام بدلیں",
     "The object type is not specified." : "اس چیز کی قسم کی وضاحت نہیں",
     "Enter new" : "جدید درج کریں",
     "Add" : "شامل کریں",

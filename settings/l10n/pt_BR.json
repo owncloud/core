@@ -7,6 +7,7 @@
     "Wrong admin recovery password. Please check the password and try again." : "Senha de recuperação do administrador errada. Por favor verifique a senha e tente novamente.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Back-end não suporta alteração de senha, mas a chave de criptografia de usuários foi atualizado com sucesso....",
     "Unable to change password" : "Impossível modificar senha",
+    "%s password changed successfully" : "%s senha alterada com sucesso",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar e-mail de redefinição. Por favor, contate o administrador.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "instalando e atualizando aplicativos via app store ou Núvem Compartilhada Federada",
     "Federated Cloud Sharing" : "Compartilhamento de Nuvem Conglomerada",
