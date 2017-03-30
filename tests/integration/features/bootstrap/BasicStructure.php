@@ -10,6 +10,7 @@ trait BasicStructure {
 	use Auth;
 	use Trashbin;
 	use Checksums;
+	use Comments;
 
 	/** @var string */
 	private $currentUser = '';

@@ -159,7 +159,6 @@ OC.L10N.register(
     "File: %s" : "Fajl: %s",
     "Line: %s" : "Linija: %s",
     "Trace" : "Zapisnik: ",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Vaši podaci i direktorijumi su verovatno dostupni sa interneta jer .htaccess fajl ne funkcioniše.",
     "Create an <strong>admin account</strong>" : "Napravi <strong>administrativni nalog</strong>",
     "Username" : "Korisničko ime",
     "Storage & database" : "Skladište i baza podataka",

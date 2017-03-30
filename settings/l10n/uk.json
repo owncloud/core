@@ -6,6 +6,7 @@
     "Wrong admin recovery password. Please check the password and try again." : "Невірний пароль відновлення адміністратора.  Будь ласка, перевірте пароль та спробуйте ще раз.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Backend не підтримує зміну паролів, але користувацький ключ шифрування було успішно змінено",
     "Unable to change password" : "Неможливо змінити пароль",
+    "Couldn't send reset email. Please contact your administrator." : "Не можу надіслати email для скидання. Будь ласка, зверніться до вашого адміністратора.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "встановлення та оновлення додатків через магазин додатків або Об’єднання хмарних сховищ",
     "Federated Cloud Sharing" : "Об’єднання хмарних сховищ",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL використовує застарілу версію %s (%s). Будь ласка, поновіть вашу операційну систему або функції, такі як %s не працюватимуть надійно.",

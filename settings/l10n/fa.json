@@ -4,6 +4,7 @@
     "Authentication error" : "خطا در اعتبار سنجی",
     "Wrong admin recovery password. Please check the password and try again." : "رمز مدیریتی بازیابی غلط است. لطفاً رمز را کنترل کرده و دوباره امتحان نمایید.",
     "Unable to change password" : "نمی‌توان رمز را تغییر داد",
+    "Couldn't send reset email. Please contact your administrator." : "ارسال ایمیل مجدد با مشکل مواجه شد . لطفا با مدیر سیستم تماس بگیرید .",
     "Group already exists." : "گروه در حال حاضر موجود است",
     "Unable to add group." : "افزودن گروه امکان پذیر نیست.",
     "Unable to delete group." : "حذف گروه امکان پذیر نیست.",

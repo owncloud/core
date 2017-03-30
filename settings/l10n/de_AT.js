@@ -1,6 +1,7 @@
 OC.L10N.register(
     "settings",
     {
+    "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktiere Deinen Administrator.",
     "Email sent" : "E-Mail wurde verschickt",
     "__language_name__" : "Deutsch (Österreich)",
     "Invalid request" : "Fehlerhafte Anfrage",

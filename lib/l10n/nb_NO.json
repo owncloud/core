@@ -63,6 +63,7 @@
     "Authentication" : "Autentisering",
     "Encryption" : "Kryptering",
     "Sharing" : "Deling",
+    "Search" : "Søk",
     "Apps" : "Apper",
     "Updates" : "Oppdateringer",
     "%s enter the database username and name." : "%s legg inn brukernavn og navn for databasen.",

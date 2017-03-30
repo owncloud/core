@@ -9,6 +9,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Contraseña de recuperación de administrador incorrecta. Por favor compruebe la contraseña e inténtelo de nuevo.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "El backend no admite cambios de contraseña, pero la clave de cifrado del usuario ha sido actualizada satisfactoriamente.",
     "Unable to change password" : "No se ha podido cambiar la contraseña",
+    "Couldn't send reset email. Please contact your administrator." : "No pudo enviarse el correo para restablecer la contraseña. Por favor, contacte con su administrador.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "instalando y actualizando aplicaciones via app store o Nube compartida Federada",
     "Federated Cloud Sharing" : "Compartido en Cloud Federado",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL está usando una versión desactualizada %s (%s). Por favor, actualice su sistema operativo o funciones tales como %s no funcionará de forma fiable.",

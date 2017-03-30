@@ -602,13 +602,25 @@ $CONFIG = array(
  *                this condition is met
  *  - ``apps``:   if the log message is invoked by one of the specified apps,
  *                this condition is met
+ *  - ``logfile``: the log message invoked by the specified apps get redirected to
+ *		   this logfile, this condition is met
+ *		   Note: Not applicapable when using syslog.
  *
  * Defaults to an empty array.
  */
-'log.condition' => [
-	'shared_secret' => '57b58edb6637fe3059b3595cf9c41b9',
-	'users' => ['sample-user'],
-	'apps' => ['files'],
+'log.conditions' => [
+        [
+		'shared_secret' => '57b58edb6637fe3059b3595cf9c41b9',
+		'users' => ['user1'],
+		'apps' => ['files_texteditor'],
+		'logfile' => '/tmp/test.log'
+        ],
+        [
+		'shared_secret' => '57b58edb6637fe3059b3595cf9c41b9',
+		'users' => ['user1'],
+		'apps' => ['gallery'],
+		'logfile' => '/tmp/gallery.log'
+        ],
 ],
 
 /**

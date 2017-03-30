@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Contrasigno errate",
+    "Couldn't send reset email. Please contact your administrator." : "Non poteva inviar le message de reinitialisation. Per favor contacta tu administrator.",
     "Saved" : "Salveguardate",
     "Email sent" : "Message de e-posta inviate",
     "__language_name__" : "Interlingua",

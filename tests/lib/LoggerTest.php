@@ -59,6 +59,24 @@ class LoggerTest extends TestCase {
 		$this->assertEquals($expected, $this->getLogs());
 	}
 
+	public function testAppLogCondition() {
+		$this->config->expects($this->any())
+			->method('getValue')
+			->will(($this->returnValueMap([
+				['loglevel', Util::WARN, Util::WARN],
+				['log.conditions', [], [['apps' => ['files'], 'logfile' => '/tmp/test.log']]]
+			])));
+		$logger = $this->logger;
+
+		$logger->info('Don\'t display info messages');
+		$logger->info('Show info messages of files app', ['app' => 'files']);
+
+		$expected = [
+			'1 Show info messages of files app',
+		];
+		$this->assertEquals($expected, $this->getLogs());
+	}
+
 	private function getLogs() {
 		return self::$logs;
 	}

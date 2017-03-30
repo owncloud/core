@@ -22,6 +22,7 @@
 namespace OC\Core\Command\Db\Migrations;
 
 use OC\DB\MigrationService;
+use OC\Migration\ConsoleOutput;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -50,7 +51,7 @@ class StatusCommand extends Command {
 
 	public function execute(InputInterface $input, OutputInterface $output) {
 		$appName = $input->getArgument('app');
-		$ms = new MigrationService($appName, $this->connection);
+		$ms = new MigrationService($appName, $this->connection, new ConsoleOutput($output));
 
 		$infos = $this->getMigrationsInfos($ms);
 		foreach ($infos as $key => $value) {

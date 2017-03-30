@@ -161,8 +161,6 @@
     "Code: %s" : "Kodas: %s",
     "File: %s" : "Failas: %s",
     "Trace" : "Sekti",
-    "Security warning" : "Saugumo perspėjimas",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Jūsų failai yra tikriausiai prieinami per internetą nes .htaccess failas neveikia.",
     "Create an <strong>admin account</strong>" : "Sukurti <strong>administratoriaus paskyrą</strong>",
     "Username" : "Prisijungimo vardas",
     "Storage & database" : "Saugykla ir duomenų bazė",

@@ -479,7 +479,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->with('NewPassword')
 			->will($this->returnValue(true));
 		$this->userManager
-			->expects($this->exactly(2))
+			->expects($this->exactly(3))
 			->method('get')
 			->with('ValidTokenUser')
 			->will($this->returnValue($user));
@@ -487,6 +487,38 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->expects($this->once())
 			->method('getTime')
 			->will($this->returnValue(12348));
+		$user
+			->expects($this->once())
+			->method('getEMailAddress')
+			->will($this->returnValue('test@example.com'));
+
+		$message = $this->getMockBuilder('\OC\Mail\Message')
+			->disableOriginalConstructor()->getMock();
+		$message
+			->expects($this->at(0))
+			->method('setTo')
+			->with(['test@example.com' => 'ValidTokenUser']);
+		$message
+			->expects($this->at(1))
+			->method('setSubject')
+			->with(' password changed successfully');
+		$message
+			->expects($this->at(2))
+			->method('setPlainBody')
+			->with('Password changed successfully');
+		$message
+			->expects($this->at(3))
+			->method('setFrom')
+			->with(['lostpassword-noreply@localhost' => null]);
+		$this->mailer
+			->expects($this->at(0))
+			->method('createMessage')
+			->will($this->returnValue($message));
+		$this->mailer
+			->expects($this->at(1))
+			->method('send')
+			->with($message);
+
 
 		$response = $this->lostController->setPassword('TheOnlyAndOnlyOneTokenToResetThePassword', 'ValidTokenUser', 'NewPassword', true);
 		$expectedResponse = ['status' => 'success'];

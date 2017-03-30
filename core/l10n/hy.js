@@ -126,7 +126,6 @@ OC.L10N.register(
     "File: %s" : "Ֆայլ. %s",
     "Line: %s" : "Տող. %s",
     "Trace" : "Հետք",
-    "Security warning" : "Անվտանգության զգուշացում",
     "Username" : "Օգտանուն",
     "Data folder" : "Տվյալների պանակ",
     "Only %s is available." : "Միայն %sն է հասանելի։",

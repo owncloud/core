@@ -37,6 +37,7 @@
     "Authentication" : "Autenticación",
     "Encryption" : "Cifrado",
     "Sharing" : "Compartir",
+    "Search" : "Buscar",
     "Apps" : "Aplicaciones",
     "Updates" : "Actualizaciones",
     "%s enter the database username." : "%s ingresar el usuario de la base de datos.",

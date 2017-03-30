@@ -4,6 +4,7 @@
     "Authentication error" : "لم يتم التأكد من الشخصية بنجاح",
     "Wrong admin recovery password. Please check the password and try again." : "خطا في كلمة مرور المسؤول المستردة, يرجى التاكد من كلمة المرور والمحاولة مرة اخرى.",
     "Unable to change password" : "لا يمكن تغيير كلمة المرور",
+    "Couldn't send reset email. Please contact your administrator." : "لم يتم إرسال بريد إعادة الضبط .  فضلاً اتصل بمدير النظام.",
     "Saved" : "حفظ",
     "test email settings" : "إعدادات البريد التجريبي",
     "Email sent" : "تم ارسال البريد الالكتروني",

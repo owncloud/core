@@ -86,7 +86,6 @@ OC.L10N.register(
     "Help" : "幫助",
     "Message: %s" : "訊息: %s",
     "File: %s" : "檔案: %s",
-    "Security warning" : "安全性警告",
     "Create an <strong>admin account</strong>" : "建立管理員帳戶",
     "Username" : "用戶名稱",
     "Storage & database" : "儲存及數據庫",

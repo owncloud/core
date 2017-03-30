@@ -4,6 +4,7 @@
     "Authentication error" : "Pogrešna autentikacija",
     "Wrong admin recovery password. Please check the password and try again." : "Pogrešna admin lozinka za oporavak. Molimo provjerite lozinku i pokušajte ponovno.",
     "Unable to change password" : "Promjena lozinke nije moguća",
+    "Couldn't send reset email. Please contact your administrator." : "Nije mogće poslati resetiranu poštu. MOlimo kontaktirajte svog administratora.",
     "Saved" : "Spremljeno",
     "test email settings" : "Postavke za testiranje e-pošte",
     "Email sent" : "E-pošta je poslana",

@@ -234,7 +234,41 @@ class LostController extends Controller {
 			return $this->error($e->getMessage());
 		}
 
+		try {
+			$this->sendNotificationMail($userId);
+		} catch (\Exception $e){
+			return $this->error($e->getMessage());
+		}
+
 		return $this->success();
+	}
+
+
+	/**
+	 * @param string $userId
+	 * @throws \Exception
+	 */
+	protected function sendNotificationMail($userId) {
+		$user = $this->userManager->get($userId);
+		$email = $user->getEMailAddress();
+
+		if ($email !== '') {
+			$tmpl = new \OC_Template('core', 'lostpassword/notify');
+			$msg = $tmpl->fetchPage();
+
+			try {
+				$message = $this->mailer->createMessage();
+				$message->setTo([$email => $userId]);
+				$message->setSubject($this->l10n->t('%s password changed successfully', [$this->defaults->getName()]));
+				$message->setPlainBody($msg);
+				$message->setFrom([$this->from => $this->defaults->getName()]);
+				$this->mailer->send($message);
+			} catch (\Exception $e) {
+				throw new \Exception($this->l10n->t(
+					$e->getMessage()
+				));
+			}
+		}
 	}
 
 	/**

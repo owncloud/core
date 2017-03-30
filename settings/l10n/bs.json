@@ -4,6 +4,7 @@
     "Authentication error" : "Grešna autentifikacije",
     "Wrong admin recovery password. Please check the password and try again." : "Pogrešna admin lozinka za povratak. Molim provjerite lozinku i pokušajte ponovno.",
     "Unable to change password" : "Promjena lozinke nije moguća",
+    "Couldn't send reset email. Please contact your administrator." : "Slanje emaila resetovanja nije moguće. Molim kontaktirajte administratora.",
     "Group already exists." : "Grupa već postoji.",
     "Unable to add group." : "Nemoguće dodati grupu.",
     "Unable to delete group." : "Nemoguće izbrisati grupu.",

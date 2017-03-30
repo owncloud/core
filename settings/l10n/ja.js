@@ -8,6 +8,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "リカバリ用の管理者パスワードが間違っています。パスワードを確認して再度実行してください。",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "バックエンドはパスワードの変更をサポートしていませんが、ユーザーの暗号化キーは正常に更新されました。",
     "Unable to change password" : "パスワードを変更できません",
+    "Couldn't send reset email. Please contact your administrator." : "リセットメールを送信できませんでした。管理者に問い合わせてください。",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "アプリストアまたはクラウド連携共有からアプリをインストール/アップデート",
     "Federated Cloud Sharing" : "クラウド連携共有",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "%s バージョン (%s) の古い cURL を使っています。OSを更新するか、この機能 %s が正しく動くアプリに更新してください。",

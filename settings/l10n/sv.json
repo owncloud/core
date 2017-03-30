@@ -6,6 +6,7 @@
     "Wrong admin recovery password. Please check the password and try again." : "Felaktigt återställningslösenord för administratör. Kolla lösenordet och prova igen.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Backend stödjer ej lösenordsbyte, men användarens ändring av krypteringsnyckel lyckades.",
     "Unable to change password" : "Kunde inte ändra lösenord",
+    "Couldn't send reset email. Please contact your administrator." : "Kunde inte skicka återställningsmail. Vänligen kontakta din administratör.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "installering och uppdatering utav applikationer eller Federate Cloud delning.",
     "Federated Cloud Sharing" : "Federate Cloud delning",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL använder en föråldrad %s version (%s). Var god uppdatera ditt operativsystem annars kan funktioner som %s sluta fungera pålitligt.",

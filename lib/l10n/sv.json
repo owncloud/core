@@ -61,6 +61,7 @@
     "Authentication" : "Autentisering",
     "Encryption" : "Kryptering",
     "Sharing" : "Dela",
+    "Search" : "Sök",
     "Apps" : "Program",
     "Updates" : "Uppdateringar",
     "%s enter the database username." : "%s ange databasanvändare.",

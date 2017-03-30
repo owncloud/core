@@ -63,6 +63,7 @@
     "Authentication" : "Authentication",
     "Encryption" : "Encryption",
     "Sharing" : "Sharing",
+    "Search" : "Search",
     "Apps" : "Apps",
     "Updates" : "Updates",
     "%s enter the database username and name." : "%s enter the database username and name.",

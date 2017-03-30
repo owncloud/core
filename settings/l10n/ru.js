@@ -9,6 +9,8 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Неправильный пароль восстановления администратора. Проверьте пароль и попробуйте еще раз.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Используемый механизм не поддерживает смену паролей, но пользовательский ключ шифрования был успешно обновлён",
     "Unable to change password" : "Невозможно изменить пароль",
+    "%s password changed successfully" : "Пароль %s изменён успешно",
+    "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "установка и обновление приложений через магазин приложений или Объединение облачных хранилищ",
     "Federated Cloud Sharing" : "Объединение облачных хранилищ",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL использует устаревшую версию %s (%s). Пожалуйста, обновите Вашу операционную систему, иначе такие возможности, как %s, не будут работать надежно.",

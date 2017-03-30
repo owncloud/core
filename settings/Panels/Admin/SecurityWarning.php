@@ -60,6 +60,10 @@ class SecurityWarning implements ISettings {
 	}
 
 	public function getPanel() {
+		// create htaccess test file
+		$util = new \OC_Util();
+		$util->createHtaccessTestFile($this->config);
+
 		$template = new Template('settings', 'panels/admin/securitywarning');
 		// warn if php is not setup properly to get system variables with getenv
 		$path = getenv('PATH');

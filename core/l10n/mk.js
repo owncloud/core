@@ -171,8 +171,6 @@ OC.L10N.register(
     "Message: %s" : "Порака: %s",
     "File: %s" : "Датотека: %s",
     "Line: %s" : "Линија: %s",
-    "Security warning" : "Безбедносно предупредување",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Вашиот директориум со податоци и датотеки се веројатно достапни преку интенернт поради што .htaccess датотеката не функционира.",
     "Create an <strong>admin account</strong>" : "Направете <strong>администраторска сметка</strong>",
     "Username" : "Корисничко име",
     "Data folder" : "Фолдер со податоци",

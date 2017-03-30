@@ -18,6 +18,7 @@ OC.L10N.register(
     "Personal" : "شخصی",
     "Admin" : "ایڈمن",
     "Error" : "خرابی",
+    "Group" : "گروپ",
     "Other" : "دیگر"
 },
 "nplurals=2; plural=(n != 1);");

@@ -6,6 +6,7 @@ OC.L10N.register(
     "Authentication error" : "Autentimise viga",
     "Wrong admin recovery password. Please check the password and try again." : "Vale administraatori taasteparool. Palun kontrolli parooli ning proovi uuesti.",
     "Unable to change password" : "Ei suuda parooli muuta",
+    "Couldn't send reset email. Please contact your administrator." : "Ei suutnud lähtestada e-maili. Palun kontakteeru süsteemihalduriga.",
     "Migration Completed" : "Kolimine on lõpetatud",
     "Group already exists." : "Grupp on juba olemas.",
     "Unable to add group." : "Gruppi lisamine ebaõnnestus.",

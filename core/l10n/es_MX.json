@@ -151,7 +151,6 @@
     "Message: %s" : "Mensaje: %s",
     "File: %s" : "Archivo: %s",
     "Line: %s" : "Línea: %s",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "Su directorio de datos y sus archivos probablemente sean accesibles a través de internet ya que el archivo .htaccess no funciona.",
     "Create an <strong>admin account</strong>" : "Crear una <strong>cuenta de administrador</strong>",
     "Username" : "Nombre de usuario",
     "Data folder" : "Directorio de datos",

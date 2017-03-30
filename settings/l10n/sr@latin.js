@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "Greška pri autentifikaciji",
+    "Couldn't send reset email. Please contact your administrator." : "Nemoguće slanje e-mail-a za ponovno postavljanje lozinke. Molimo Vas kontaktirajte Vašeg administratora",
     "Saved" : "Sačuvano",
     "Email sent" : "Email poslat",
     "Language changed" : "Jezik je izmenjen",

@@ -14,6 +14,7 @@ default:
         - FeatureContext:
         - LoginContext:
         - UsersContext:
+        - FilesContext:
         - PersonalSecuritySettingsContext:
 
 

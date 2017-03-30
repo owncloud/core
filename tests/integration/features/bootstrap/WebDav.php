@@ -51,14 +51,24 @@ trait WebDav {
 		}
 	}
 
-	public function makeDavRequest($user, $method, $path, $headers, $body = null, $type = "files"){
+	public function makeDavRequest($user,
+								   $method,
+								   $path,
+								   $headers,
+								   $body = null,
+								   $type = "files",
+								   $requestBody = null){
 		if ( $type === "files" ){
 			$fullUrl = substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . "$path";
 		} else if ( $type === "uploads" ){
 			$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . "$path";
 		} 
 		$client = new GClient();
+
 		$options = [];
+		if (!is_null($requestBody)){
+			$options['body'] = $requestBody;
+		}
 		if ($user === 'admin') {
 			$options['auth'] = $this->adminUser;
 		} else {
@@ -317,6 +327,15 @@ trait WebDav {
 				$value = $value[0];
 			}
 		}
+
+		if ($expectedValue === "a_comment_url"){
+			if (preg_match("#^/remote.php/dav/comments/files/([0-9]+)$#", $value)) {
+				return 0;
+			} else {
+				throw new \Exception("Property \"$key\" found with value \"$value\", expected \"$expectedValue\"");
+			}
+		}
+
 		if ($value != $expectedValue) {
 			throw new \Exception("Property \"$key\" found with value \"$value\", expected \"$expectedValue\"");
 		}
@@ -425,8 +444,33 @@ trait WebDav {
 		return $parsedResponse;
 	}
 
+	/* Returns the elements of a report command special for comments
+	 * @param string $user
+	 * @param string $path
+	 * @param string $properties properties which needs to be included in the report
+	 * @param string $filterRules filter-rules to choose what needs to appear in the report
+	 */
+	public function reportElementComments($user, $path, $properties){
+		$client = $this->getSabreClient($user);
+
+		$body = '<?xml version="1.0" encoding="utf-8" ?>
+							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
+									' . $properties . '
+							 </oc:filter-comments>';
+
+
+		$response = $client->request('REPORT', $this->makeSabrePathNotForFiles($path), $body);
+
+		$parsedResponse = $client->parseMultistatus($response['body']);
+		return $parsedResponse;
+	}
+
 	public function makeSabrePath($user, $path) {
 		return $this->encodePath($this->getDavFilesPath($user) . $path);
+	}
+
+	public function makeSabrePathNotForFiles($path) {
+		return $this->encodePath($this->davPath . $path);
 	}
 
 	public function getSabreClient($user) {

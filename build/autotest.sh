@@ -35,6 +35,10 @@ if test -z "$PHPUNIT"; then
 	PHPUNIT=$(which phpunit)
 fi
 
+if [ -z "$SQLPLUS" ]; then
+	SQLPLUS=$(which sqlplus 2>/dev/null)
+fi
+
 set -e
 
 _XDEBUG_CONFIG=$XDEBUG_CONFIG
@@ -293,14 +297,19 @@ function execute_tests {
 
 		echo "Waiting for Oracle initialization ... "
 
-		# Try to connect to the OCI host via sqlplus to ensure that the connection is already running
+		if [ ! -z "$SQLPLUS" ]; then
+			# Try to connect to the OCI host via sqlplus to ensure that the connection is already running
       		for i in {1..48}
                 do
-                        if sqlplus "autotest/owncloud@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=$DATABASEHOST)(Port=1521))(CONNECT_DATA=(SID=XE)))" < /dev/null | grep 'Connected to'; then
+                        if "$SQLPLUS" "autotest/owncloud@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=$DATABASEHOST)(Port=1521))(CONNECT_DATA=(SID=XE)))" < /dev/null | grep 'Connected to'; then
                                 break;
                         fi
                         sleep 5
                 done
+		else
+			echo "sqlplus not found, using sleep to wait for Oracle initialization"
+			sleep 120
+		fi
 
 		DATABASEUSER=autotest
 		DATABASENAME='XE'

@@ -67,8 +67,9 @@ class Owncloud {
 	 * @param string $app
 	 * @param string $message
 	 * @param int $level
+	 * @param string conditionalLogFile
 	 */
-	public static function write($app, $message, $level) {
+	public static function write($app, $message, $level, $conditionalLogFile = null) {
 		$config = \OC::$server->getSystemConfig();
 
 		// default to ISO8601
@@ -110,8 +111,13 @@ class Owncloud {
 			'user'
 		);
 		$entry = json_encode($entry);
-		$handle = @fopen(self::$logFile, 'a');
-		@chmod(self::$logFile, 0640);
+		if (!is_null($conditionalLogFile)) {
+			$handle = @fopen($conditionalLogFile, 'a');
+			@chmod($conditionalLogFile, 0640);
+		} else {
+			$handle = @fopen(self::$logFile, 'a');
+			@chmod(self::$logFile, 0640);
+		}
 		if ($handle) {
 			fwrite($handle, $entry."\n");
 			fclose($handle);

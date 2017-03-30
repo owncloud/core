@@ -234,6 +234,33 @@ class MigratorTest extends \Test\TestCase {
 		$this->assertTrue(true);
 	}
 
+	public function testDeletingColumn() {
+		$schema = new Schema([], [], $this->getSchemaConfig());
+		$table = $schema->createTable($this->tableName);
+		$table->addColumn('id', 'integer');
+		$table->addColumn('name', 'string');
+		$table->addColumn('to_delete', 'string');
+
+		$migrator = $this->manager->getMigrator();
+		$migrator->migrate($schema);
+
+		$table->dropColumn('to_delete');
+
+		$migrator->migrate($schema);
+
+		$schemaManager = $this->connection->getSchemaManager();
+		$actualSchema = $schemaManager->createSchema();
+
+		// Oracle might change casing if double quotes were missing, so verify
+		// that the column names still match
+		$table = $actualSchema->getTable($this->tableName);
+		$this->assertEquals('id', $table->getColumn('id')->getName());
+		$this->assertEquals('name', $table->getColumn('name')->getName());
+		$this->assertFalse($table->hasColumn('to_delete'));
+
+		$this->assertTrue(true);
+	}
+
 	public function testReservedKeywords() {
 		$startSchema = new Schema([], [], $this->getSchemaConfig());
 		$table = $startSchema->createTable($this->tableName);

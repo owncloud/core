@@ -1942,6 +1942,83 @@ class Share20OCSTest extends TestCase {
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
+
+	public function testUpdateLinkShareNameAlone() {
+		$ocs = $this->mockFormatShare();
+
+		$date = new \DateTime('2000-01-01');
+
+		$folder = $this->createMock('\OCP\Files\Folder');
+
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setPermissions(\OCP\Constants::PERMISSION_READ)
+			->setSharedBy($this->currentUser->getUID())
+			->setShareType(Share::SHARE_TYPE_LINK)
+			->setName('somename')
+			->setNode($folder);
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['name', null, 'another'],
+			]));
+
+		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
+
+		$this->shareManager->expects($this->once())->method('updateShare')->with(
+			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
+				return $share->getName() === 'another';
+			})
+		)->will($this->returnArgument(0));
+
+		$this->shareManager->method('getSharedWith')->willReturn([]);
+
+		$expected = new \OC\OCS\Result(null);
+		$result = $ocs->updateShare(42);
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function testUpdateLinkShareKeepNameWhenNotSpecified() {
+		$ocs = $this->mockFormatShare();
+
+		$date = new \DateTime('2000-01-01');
+
+		$folder = $this->createMock('\OCP\Files\Folder');
+
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setPermissions(\OCP\Constants::PERMISSION_READ)
+			->setSharedBy($this->currentUser->getUID())
+			->setShareType(Share::SHARE_TYPE_LINK)
+			->setName('somename')
+			->setNode($folder);
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['password', null, 'test'],
+			]));
+
+		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
+
+		$this->shareManager->expects($this->once())->method('updateShare')->with(
+			$this->callback(function (\OCP\Share\IShare $share) use ($date) {
+				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ) &&
+				$share->getPassword() === 'test' &&
+				$share->getName() === 'somename';
+			})
+		)->will($this->returnArgument(0));
+
+		$this->shareManager->method('getSharedWith')->willReturn([]);
+
+		$expected = new \OC\OCS\Result(null);
+		$result = $ocs->updateShare(42);
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+	
 	public function dataFormatShare() {
 		$file = $this->createMock('\OCP\Files\File');
 		$folder = $this->createMock('\OCP\Files\Folder');

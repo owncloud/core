@@ -62,6 +62,7 @@
     "Authentication" : "Kimlik Doğrulama",
     "Encryption" : "Şifreleme",
     "Sharing" : "Paylaşım",
+    "Search" : "Ara",
     "Apps" : "Uygulamalar",
     "Updates" : "Güncellemeler",
     "%s enter the database username and name." : "%s veritabanı adı ve kullanıcı adını girin.",

@@ -60,6 +60,7 @@
     "Authentication" : "Оторизация",
     "Encryption" : "Криптиране",
     "Sharing" : "Споделяне",
+    "Search" : "Търсене",
     "Apps" : "Приложения",
     "Updates" : "Обновления",
     "%s enter the database username and name." : "%s въведете потребителско име и името за базата с данни.",

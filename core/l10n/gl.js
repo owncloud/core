@@ -186,8 +186,6 @@ OC.L10N.register(
     "File: %s" : "Ficheiro: %s",
     "Line: %s" : "Liña: %s",
     "Trace" : "Traza",
-    "Security warning" : "Aviso de seguridade",
-    "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." : "O seu directorio de datos e os ficheiros probabelmente sexan accesíbeis desde a Internet xa que o ficheiro .htaccess non está a traballar.",
     "Create an <strong>admin account</strong>" : "Crear unha <strong>contra de administrador</strong>",
     "Username" : "Nome de usuario",
     "Storage & database" : "Almacenamento e base de datos",

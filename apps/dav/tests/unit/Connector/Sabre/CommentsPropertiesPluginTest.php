@@ -304,4 +304,33 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 		}
 	}
 
+	/**
+	 * @dataProvider userProvider
+	 * @param $user
+	 */
+	public function testGetUnreadCountWithZeroUnread($user) {
+		$node = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\File')
+			->disableOriginalConstructor()
+			->getMock();
+		$node->expects($this->any())
+			->method('getId')
+			->will($this->returnValue('4567'));
+
+		$this->userSession->expects($this->once())
+			->method('getUser')
+			->will($this->returnValue($user));
+
+		$numberOfCommentsForNodes = [];
+		$this->commentsManager->expects($this->any())
+			->method('getNumberOfUnreadCommentsForNodes')
+			->willReturn($numberOfCommentsForNodes);
+
+		$unread = $this->plugin->getUnreadCount($node);
+		if(is_null($user)) {
+			$this->assertNull($unread);
+		} else {
+			$this->assertSame($unread, 0);
+		}
+	}
+
 }
