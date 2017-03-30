@@ -37,7 +37,7 @@ $(document).ready(function() {
 										step: 2,
 										client_id: client_id,
 										client_secret: client_secret,
-										redirect: location.protocol + '//' + location.host + location.pathname,
+										redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
 										code: params['code'],
 									}, function(result) {
 										if (result && result.status == 'success') {
@@ -75,7 +75,7 @@ $(document).ready(function() {
 					step: 1,
 					client_id: client_id,
 					client_secret: client_secret,
-					redirect: location.protocol + '//' + location.host + location.pathname,
+					redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
 				}, function(result) {
 					if (result && result.status == 'success') {
 						$(configured).val('false');
