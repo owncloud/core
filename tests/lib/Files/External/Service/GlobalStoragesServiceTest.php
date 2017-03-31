@@ -129,6 +129,14 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		];
 	}
 
+	private function assertEqualsArrays($expected, $actual) {
+		sort($expected);
+		sort($actual);
+
+		$this->assertEquals($expected, $actual);
+	}
+
+
 	/**
 	 * @dataProvider storageDataProvider
 	 */
@@ -143,9 +151,9 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$this->assertEquals($storage->getMountPoint(), $newStorage->getMountPoint());
 		$this->assertEquals($storage->getBackend(), $newStorage->getBackend());
 		$this->assertEquals($storage->getAuthMechanism(), $newStorage->getAuthMechanism());
-		$this->assertEquals($storage->getBackendOptions(), $newStorage->getBackendOptions());
-		$this->assertEquals($storage->getApplicableUsers(), $newStorage->getApplicableUsers());
-		$this->assertEquals($storage->getApplicableGroups(), $newStorage->getApplicableGroups());
+		$this->assertEqualsArrays($storage->getBackendOptions(), $newStorage->getBackendOptions());
+		$this->assertEqualsArrays($storage->getApplicableUsers(), $newStorage->getApplicableUsers());
+		$this->assertEqualsArrays($storage->getApplicableGroups(), $newStorage->getApplicableGroups());
 		$this->assertEquals($storage->getPriority(), $newStorage->getPriority());
 		$this->assertEquals(0, $newStorage->getStatus());
 
@@ -182,8 +190,8 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 
 		$this->assertEquals($updatedStorage->getMountPoint(), $newStorage->getMountPoint());
 		$this->assertEquals($updatedStorage->getBackendOptions()['password'], $newStorage->getBackendOptions()['password']);
-		$this->assertEquals($updatedStorage->getApplicableUsers(), $newStorage->getApplicableUsers());
-		$this->assertEquals($updatedStorage->getApplicableGroups(), $newStorage->getApplicableGroups());
+		$this->assertEqualsArrays($updatedStorage->getApplicableUsers(), $newStorage->getApplicableUsers());
+		$this->assertEqualsArrays($updatedStorage->getApplicableGroups(), $newStorage->getApplicableGroups());
 		$this->assertEquals($updatedStorage->getPriority(), $newStorage->getPriority());
 		$this->assertEquals(0, $newStorage->getStatus());
 	}
