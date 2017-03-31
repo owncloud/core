@@ -18,25 +18,29 @@
 	var TEMPLATE =
 		'<div class="error-message-global hidden"></div>' +
 		'<div class="public-link-modal">'+
-		'<div class="public-link-modal--item">' +
-		'<label class="public-link-modal--label">Link Name</label>' +
-		'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
-		'</div>' +
-		'{{#if publicUploadPossible}}' +
-		'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
-		'<input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
-		'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
-		'</div>' +
-		'{{/if}}' +
-		'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
-		'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
-		'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
-		'<span class="error-message hidden"></span>' +
-		'</div>' +
-		'<div class="expirationDateContainer"></div>' +
-		'{{#if isMailEnabled}}' +
-		'<div class="mailView"></div>' +
-		'{{/if}}' +
+			'<div class="public-link-modal--item">' +
+				'<label class="public-link-modal--label">Link Name</label>' +
+				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
+			'</div>' +
+			'{{#if publicUploadPossible}}' +
+			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
+				'<input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{#if publicUploadChecked}}checked="checked"{{/if}} />' +
+				'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
+			'</div>' +
+			'<div id="showListingWrapper-{{cid}}" class="public-link-modal--item">' +
+				'<input type="checkbox" value="1" name="showListing" id="sharingDialogShowListing-{{cid}}" class="checkbox showListingCheckbox" {{#if showListingChecked}}checked="checked"{{/if}} />' +
+				'<label for="sharingDialogShowListing-{{cid}}">{{showListingLabel}}</label>' +
+			'</div>' +
+			'{{/if}}' +
+			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
+				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
+				'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
+				'<span class="error-message hidden"></span>' +
+			'</div>' +
+			'<div class="expirationDateContainer"></div>' +
+			'{{#if isMailEnabled}}' +
+			'<div class="mailView"></div>' +
+			'{{/if}}' +
 		'</div>'
 	;
 
@@ -65,6 +69,10 @@
 		/** @type {Function} **/
 		_template: undefined,
 
+		events: {
+			'click .publicUploadCheckbox': '_updateCheckboxes'
+		},
+
 		initialize: function (options) {
 			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
@@ -81,26 +89,61 @@
 			OC.Plugins.attach('OCA.Share.ShareDialogLinkShareView', this);
 		},
 
+		_updateCheckboxes: function() {
+			var publicUploadAllowed = this.$('.publicUploadCheckbox').is(':checked');
+			if (!publicUploadAllowed) {
+				this.$('.showListingCheckbox').prop('checked', true);
+				this.$('.showListingCheckbox').prop('disabled', true);
+			} else {
+				this.$('.showListingCheckbox').prop('disabled', false);
+			}
+		},
+
+		/**
+		 * Returns the selected permissions as read from the checkboxes or
+		 * the absence thereof.
+		 *
+		 * @return {int} permissions
+		 */
+		_getPermissions: function() {
+			var $showListingCheckbox = this.$('.showListingCheckbox');
+			var $publicUploadCheckbox = this.$('.publicUploadCheckbox');
+			var allowListing = (!$showListingCheckbox.length || $showListingCheckbox.is(':checked'));
+			var permissions = 0;
+
+			// if the checkbox is missing, default to checked
+			if (allowListing) {
+				permissions |= OC.PERMISSION_READ;
+			}
+
+			// if the checkbox is missing it is the equivalent of unchecked
+			if ($publicUploadCheckbox.is(':checked')) {
+				if (allowListing) {
+					permissions |= OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE;
+				} else {
+					// without listing only file creation is allowed, no overwrite nor delete
+					permissions |= OC.PERMISSION_CREATE;
+				}
+			} else {
+				// ignore listing perm, allow reading
+				permissions |= OC.PERMISSION_READ;
+			}
+
+			return permissions;
+		},
+
 		_save: function () {
 			var deferred = $.Deferred();
 			var $el = this.$el;
 
 			var $password = $el.find('.linkPassText'),
-				$permission = $el.find('.publicUploadCheckbox'),
 				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
 				$errorMessageGlobal = $el.find('.error-message-global'),
 				$loading = $el.find('.loading'),
-
-				// get values from input elements
-				// ***
-
 				password = $password.val(),
-				permission = ($permission.is(':checked')) ? OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_READ | OC.PERMISSION_DELETE : OC.PERMISSION_READ,
 				expirationDate = this.expirationView.getValue();
 
-
 			$el.find('.error-message').addClass('hidden');
-
 
 			// remove errors (if present)
 			// ***
@@ -111,7 +154,7 @@
 			// explicit attributes to be saved
 			var attributes = {
 				expireDate: expirationDate,
-				permissions: permission,
+				permissions: this._getPermissions(),
 				name: this.$('[name=linkName]').val(),
 				shareType: this.model.get('shareType')
 			};
@@ -192,11 +235,12 @@
 			this.model.destroy();
 		},
 
-		render: function () {
+		_isPublicUploadPossible: function() {
 			// TODO: in the future to read directly from the FileInfoModel
-			var publicUploadPossible = this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
-			var publicUploadChecked  = (this.model.canCreate()) ? 'checked="checked"' : null;
+			return this.itemModel.isFolder() && this.itemModel.createPermissionPossible() && this.configModel.isPublicUploadEnabled();
+		},
 
+		render: function () {
 			var isPasswordSet = !!this.model.get('encryptedPassword');
 
 			// only show email field for new shares and if enabled globally
@@ -211,9 +255,11 @@
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
-				publicUploadPossible: publicUploadPossible,
-				publicUploadChecked: publicUploadChecked,
+				publicUploadPossible: this._isPublicUploadPossible(),
+				publicUploadChecked: this.model.canCreate(),
 				publicUploadLabel: t('core', 'Allow uploads'),
+				showListingChecked: this.model.canRead(),
+				showListingLabel: t('core', 'Allow viewing file listing'),
 				isMailEnabled: showEmailField
 			}));
 
@@ -233,6 +279,8 @@
 
 			this.expirationView.render();
 			this.$('.expirationDateContainer').append(this.expirationView.$el);
+
+			this._updateCheckboxes();
 
 			this.delegateEvents();
 
