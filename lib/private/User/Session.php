@@ -342,7 +342,8 @@ class Session implements IUserSession, Emitter {
 		if (!is_null($request->getCookie('cookie_test'))) {
 			return true;
 		}
-		setcookie('cookie_test', 'test', $this->timeFacory->getTime() + 3600);
+		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
+		setcookie('cookie_test', 'test', $this->timeFacory->getTime() + 3600, OC::$WEBROOT, '', $secureCookie, true);
 		return false;
 	}
 
