@@ -210,7 +210,13 @@ OC.FileUpload.prototype = {
 			folderPromise = $.Deferred().resolve().promise();
 		}
 
-		if (this.uploader.fileList) {
+		if (this.uploader.url) {
+			if (_.isFunction(this.uploader.url)) {
+				this.data.url = this.uploader.url(this.getFileName(), this.getFullPath());
+			} else {
+				this.data.url = this.uploader.url;
+			}
+		} else if (this.uploader.fileList) {
 			this.data.url = this.uploader.fileList.getUploadUrl(this.getFileName(), this.getFullPath());
 		}
 
@@ -739,6 +745,7 @@ OC.Uploader.prototype = _.extend({
 	 * @param {OCA.Files.FileList} [options.fileList] file list object
 	 * @param {OC.Files.Client} [options.filesClient] files client object
 	 * @param {Object} [options.dropZone] drop zone for drag and drop upload
+	 * @param {String|function} [options.url] optional target url or function
 	 */
 	init: function($uploadEl, options) {
 		var self = this;
@@ -746,6 +753,10 @@ OC.Uploader.prototype = _.extend({
 
 		this.fileList = options.fileList;
 		this.filesClient = options.filesClient || OC.Files.getClient();
+
+		if (options.url) {
+			this.url = options.url;
+		}
 
 		$uploadEl = $($uploadEl);
 		this.$uploadEl = $uploadEl;

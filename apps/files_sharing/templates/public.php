@@ -72,6 +72,9 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 		</div>
 
 		<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+		<?php
+			if ($_['canDownload']) {
+		?>
 		<div class="header-right">
 			<span id="details">
 				<?php
@@ -92,6 +95,7 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 				</a>
 			</span>
 		</div>
+		<?php } ?>
 </div></header>
 <div id="content-wrapper">
 	<div id="content">

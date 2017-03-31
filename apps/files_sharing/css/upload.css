@@ -1,0 +1,16 @@
+.publicUploadView .dropzone {
+	border: 1px solid red;
+	background-color: green;
+	height: 100px;
+	margin: 20px;
+}
+
+.publicUploadView .title {
+	margin-top: 14px;
+	text-align: center;
+	font-size: 23px;
+}
+
+.publicUploadView .upload {
+	margin-top: 20px;
+}
