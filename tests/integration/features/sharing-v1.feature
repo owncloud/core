@@ -1160,4 +1160,3 @@ Feature: sharing
     And as "user0" the folder "/shared/sub" does not exist
     And as "user0" the folder "/sub" exists in trash
     And as "user0" the file "/sub/shared_file.txt" exists in trash
-
