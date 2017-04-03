@@ -192,10 +192,8 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		$expectedResponse = ['data' => ['message' =>'You need to set your user email before being able to send test emails.'], 'status' => 'error'];
 		$this->assertSame($expectedResponse, $response);
 
-		// If no exception is thrown it should work
-		$this->container['Config']
-			->expects($this->any())
-			->method('getUserValue')
+		$user->expects($this->any())
+			->method('getEMailAddress')
 			->will($this->returnValue('mail@example.invalid'));
 		$response = $this->container['MailSettingsController']->sendTestMail();
 		$expectedResponse = ['data' => ['message' =>'Email sent'], 'status' => 'success'];
