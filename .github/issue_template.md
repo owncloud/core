@@ -61,7 +61,7 @@ from within your ownCloud installation folder
 or 
 
 Insert your config.php content here
-(Without the database password, passwordsalt and secret)
+(ATTENTION: WITHOUT the database password, passwordsalt and secret !!!)
 ```
 
 **Are you using external storage, if yes which one:** local/smb/sftp/...
