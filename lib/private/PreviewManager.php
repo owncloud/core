@@ -147,6 +147,22 @@ class PreviewManager implements IPreview {
 		$this->mimeTypeSupportMap[$mimeType] = false;
 		return false;
 	}
+	
+	/**
+	 * Returns all registered MimeTypes as an array
+	 *
+	 * @return string[]
+	 */
+	public function getSupportedMimes(){
+		$supportedMimes = [];
+		$this->registerCoreProviders();
+		$mimeRegexArray = array_keys($this->providers);
+		// Now trim start/stop regexp delimiters
+		foreach ($mimeRegexArray as $mimeRegex){
+			$supportedMimes[] = trim($mimeRegex, '/');
+		}
+		return $supportedMimes;
+	}
 
 	/**
 	 * Check if a preview can be generated for a file
