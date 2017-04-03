@@ -61,6 +61,7 @@ class Mode extends Command {
 		if ($input->getOption('on')) {
 			$this->config->setSystemValue('maintenance', true);
 			$output->writeln('Maintenance mode enabled');
+			$output->writeln('Please also consider to stop the web server on all ownCloud instances');
 		} elseif ($input->getOption('off')) {
 			$this->config->setSystemValue('maintenance', false);
 			$output->writeln('Maintenance mode disabled');
