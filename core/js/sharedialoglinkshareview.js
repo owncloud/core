@@ -18,25 +18,25 @@
 	var TEMPLATE =
 		'<div class="error-message-global hidden"></div>' +
 		'<div class="public-link-modal">'+
-			'<div class="public-link-modal--item">' +
-				'<label class="public-link-modal--label">Link Name</label>' +
-				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
-			'</div>' +
-			'{{#if publicUploadPossible}}' +
-			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
-				'<input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
-				'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
-			'</div>' +
-			'{{/if}}' +
-			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
-				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
-				'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
-				'<span class="error-message hidden"></span>' +
-			'</div>' +
-			'<div class="expirationDateContainer"></div>' +
-			'{{#if isMailEnabled}}' +
-			'<div class="mailView"></div>' +
-			'{{/if}}' +
+		'<div class="public-link-modal--item">' +
+		'<label class="public-link-modal--label">Link Name</label>' +
+		'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
+		'</div>' +
+		'{{#if publicUploadPossible}}' +
+		'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
+		'<input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{{publicUploadChecked}}} />' +
+		'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
+		'</div>' +
+		'{{/if}}' +
+		'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
+		'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
+		'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
+		'<span class="error-message hidden"></span>' +
+		'</div>' +
+		'<div class="expirationDateContainer"></div>' +
+		'{{#if isMailEnabled}}' +
+		'<div class="mailView"></div>' +
+		'{{/if}}' +
 		'</div>'
 	;
 
@@ -116,9 +116,13 @@
 				shareType: this.model.get('shareType')
 			};
 
-			// TODO: need a way to clear password (check if "encryptedPassword" was set)
+			// Reset password for the time being
+			if (this.model.get("resetPassword")) {
+				attributes.password = '';
+			}
+
 			if (password) {
-				// only set password explicitly if changed, else leave previous value
+				// only set password explicitly if changed
 				attributes.password = password;
 			}
 
@@ -163,13 +167,14 @@
 					if (self.mailView) {
 						// also send out email first
 						self.mailView.sendEmails().then(done).
-							fail(function() {
-								// re-show the popup
-								self.show();
-							});
+						fail(function() {
+							// re-show the popup
+							self.show();
+						});
 					} else {
 						done();
 					}
+					self.model.unset("resetPassword");
 				},
 				error: function (model, xhr) {
 					var msg = xhr.responseJSON.ocs.meta.message;
@@ -234,6 +239,20 @@
 			return this;
 		},
 
+		_onClickReset: function () {
+			var $dialog              = $('.oc-dialog:visible'),
+				$inputPassword       = $dialog.find('.linkPassText'),
+				$buttonReset         = $dialog.find('.removePassword');
+
+			this.model.set("resetPassword", true);
+
+			$inputPassword
+				.val('')
+				.attr('placeholder', PASSWORD_PLACEHOLDER_MESSAGE);
+
+			$buttonReset.remove();
+		},
+
 		_onClickSave: function() {
 			var self = this;
 			this._save().then(function() {
@@ -243,13 +262,8 @@
 
 		_onClickCancel: function() {
 			this.$dialog.ocdialog('close');
+			this.model.unset("resetPassword");
 		},
-
-		_onClickRemove: function() {
-			this._remove();
-			this.$dialog.ocdialog('close');
-		},
-
 		/**
 		 * @returns {Function} from Handlebars
 		 * @private
@@ -266,9 +280,26 @@
 		 */
 		show: function() {
 			var self = this;
-			var title = t('files_sharing', 'Edit link share: {name}', {name : this.itemModel.getFileInfo().getFullPath() });
+			var title = t('files_sharing', 'Edit link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
+			var buttons = [{
+				text: t('core', 'Save'),
+				click: _.bind(this._onClickSave, this),
+				defaultButton: true
+			}, {
+				text: t('core', 'Cancel'),
+				click: _.bind(this._onClickCancel, this)
+			}];
+
 			if (this.model.isNew()) {
-				title = t('files_sharing', 'Create link share: {name}', {name : this.itemModel.getFileInfo().getFullPath() });
+				title = t('files_sharing', 'Create link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
+			}
+			else if (this.model.get('encryptedPassword') !== undefined) {
+				buttons.push({
+					classes: 'removePassword -float-left',
+					text: t('core', 'Remove password'),
+					click: _.bind(this._onClickReset, this),
+					defaultButton: false
+				});
 			}
 
 			// hack the dialogs
@@ -276,16 +307,7 @@
 				'',
 				title,
 				'custom',
-				[
-					{
-						text: t('core', 'Save'),
-						click: _.bind(this._onClickSave, this),
-						defaultButton: true
-					}, {
-						text: t('core', 'Cancel'),
-						click: _.bind(this._onClickCancel, this)
-					}
-				],
+				buttons,
 				null,
 				true,
 				'public-link-modal'
