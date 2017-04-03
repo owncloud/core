@@ -145,7 +145,7 @@ class MailSettingsController extends Controller {
 	 * @return array
 	 */
 	public function sendTestMail() {
-		$email = $this->config->getUserValue($this->userSession->getUser()->getUID(), $this->appName, 'email', '');
+		$email = $this->userSession->getUser()->getEMailAddress();
 		if (!empty($email)) {
 			try {
 				$message = $this->mailer->createMessage();
