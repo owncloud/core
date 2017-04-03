@@ -27,6 +27,9 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 	var model;
 	var view;
 
+	var PASSWORD_PLACEHOLDER_STARS = '**********';
+	var PASSWORD_PLACEHOLDER_MESSAGE = 'Choose a password for the public link';
+
 	beforeEach(function() {
 		configModel = new OC.Share.ShareConfigModel();
 		fileInfoModel = new OCA.Files.FileInfoModel({
@@ -56,7 +59,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			shareType: OC.Share.SHARE_TYPE_LINK,
 			itemType: 'folder',
 			stime: 1489657516,
-			permissions: OC.PERMISSION_READ,
+			permissions: OC.PERMISSION_READ
 		});
 
 		view = new OC.Share.ShareDialogLinkShareView({
@@ -65,6 +68,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 		});
 		view.render();
 	});
+
 	afterEach(function() { 
 		tooltipStub.restore(); 
 		view.remove();
@@ -103,6 +107,15 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			model.unset('id');
 			view.show();
 			expect(popupStub.getCall(0).args[1]).toContain('Create');
+		});
+		it('shows remove-password-button if password is present', function() {
+			model.set({ encryptedPassword: 'set'});
+			view.show();
+			expect(JSON.stringify(popupStub.getCall(0).args[3])).toContain('Remove password');
+		});
+		it('doesn\'t show remove-password-button if password is absent', function() {
+			view.show();
+			expect(JSON.stringify(popupStub.getCall(0).args[3])).not.toContain('Remove password');
 		});
 	});
 
@@ -187,15 +200,13 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 		describe('password logic', function() {
 			it('renders empty field if no password set', function() {
 				expect(view.$('.linkPassText').val()).toEqual('');
-				expect(view.$('.linkPassText').attr('placeholder')).toEqual('Choose a password for the public link');
+				expect(view.$('.linkPassText').attr('placeholder')).toEqual(PASSWORD_PLACEHOLDER_MESSAGE);
 			});
 			it('renders empty field with star placeholder if password set', function() {
-				model.set({
-					encryptedPassword: 'set'
-				});
+				model.set('encryptedPassword', 'foo');
 				view.render();
 				expect(view.$('.linkPassText').val()).toEqual('');
-				expect(view.$('.linkPassText').attr('placeholder')).toEqual('**********');
+				expect(view.$('.linkPassText').attr('placeholder')).toEqual(PASSWORD_PLACEHOLDER_STARS);
 			});
 			it('renders required indicator when password is enforced', function() {
 				configModel.set('enforcePasswordForPublicLink', true);
@@ -222,13 +233,14 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			sendMailStub = sinon.stub(OC.Share.ShareDialogMailView.prototype, 'sendEmails').returns(sendMailDeferred);
 			isMailEnabledStub = sinon.stub(configModel, 'isMailPublicNotificationEnabled').returns(true);
 		});
-		afterEach(function() { 
+
+		afterEach(function() {
 			saveStub.restore(); 
 			sendMailStub.restore();
 			isMailEnabledStub.restore();
 			sendMailDeferred = null;
 		});
-	
+
 		it('reads values from the fields and saves', function() {
 			view.$('.linkPassText').val('newpassword');
 			view._save();

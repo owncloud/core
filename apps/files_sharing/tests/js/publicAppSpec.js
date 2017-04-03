@@ -129,6 +129,10 @@ describe('OCA.Sharing.PublicApp tests', function() {
 				expect(fileList.getDownloadUrl())
 					.toEqual(OC.getRootPath() + '/index.php/s/sh4tok/download?path=%2Fsubdir&files=');
 			});
+			it('returns correct download URL for downloading everything', function() {
+				expect(fileList.getDownloadUrl())
+					.toEqual(OC.webroot + '/index.php/s/sh4tok/download?path=%2Fsubdir&files=');
+			});
 		});
 		describe('Upload Url', function() {
 			var fileList;

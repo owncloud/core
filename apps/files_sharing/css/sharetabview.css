@@ -261,6 +261,7 @@
   display: block;
   width: calc(100% - 15px) !important;
 }
+
 .minify {
   width: 1px;
   height: 1px;
@@ -269,4 +270,7 @@
 }
 .minify input {
   font-size: 1px;
+}
+.-float-left {
+  float: left;
 }

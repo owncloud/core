@@ -113,6 +113,9 @@ $OCC config:app:set core enable_external_storage --value=no
 # Clear storage folder
 rm -Rf work/local_storage/*
 
+# Clear storage folder
+rm -Rf work/local_storage/*
+
 if test "$OC_TEST_ALT_HOME" = "1"; then
 	env_alt_home_clear
 fi
