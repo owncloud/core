@@ -1732,6 +1732,9 @@
 			var mime = options.mime;
 			var ready = options.callback;
 			var etag = options.etag;
+			var enabledPreviewProviders = oc_appconfig.core.enabledPreviewProviders || [];
+			// We join all supported mimes into a single regex
+			var allMimesPattern = new RegExp(enabledPreviewProviders.join('|'));
 
 			// get mime icon url
 			var iconURL = OC.MimeType.getIconUrl(mime);
@@ -1741,7 +1744,7 @@
 
 			var img = new Image();
 
-			if (oc_appconfig.core.previewsEnabled) {
+			if (oc_appconfig.core.previewsEnabled && allMimesPattern.test(mime)) {
 				urlSpec.file = OCA.Files.Files.fixPath(path);
 				if (options.x) {
 					urlSpec.x = options.x;

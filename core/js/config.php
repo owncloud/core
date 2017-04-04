@@ -174,6 +174,7 @@ $array = [
 				'federatedCloudShareDoc' => \OC::$server->getURLGenerator()->linkToDocs('user-sharing-federated'),
 				'allowGroupSharing' => \OC::$server->getShareManager()->allowGroupSharing(),
 				'previewsEnabled' => \OC::$server->getConfig()->getSystemValue('enable_previews', true) === true,
+				'enabledPreviewProviders' => \OC::$server->getPreviewManager()->getSupportedMimes()
 			]
 		]
 	),
