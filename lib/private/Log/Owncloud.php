@@ -101,14 +101,14 @@ class Owncloud {
 		}
 		$entry = compact(
 			'reqId',
-			'remoteAddr',
-			'app',
-			'message',
 			'level',
 			'time',
+			'remoteAddr',
+			'user',
+			'app',
 			'method',
 			'url',
-			'user'
+			'message'
 		);
 		$entry = json_encode($entry);
 		if (!is_null($conditionalLogFile)) {
