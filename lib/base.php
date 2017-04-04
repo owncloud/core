@@ -961,6 +961,9 @@ class OC {
 		if ($userSession->tryTokenLogin($request)) {
 			return true;
 		}
+		if ($userSession->tryAuthModuleLogin($request)) {
+			return true;
+		}
 		if ($userSession->tryBasicAuthLogin($request)) {
 			return true;
 		}
