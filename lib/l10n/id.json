@@ -144,6 +144,7 @@
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Mohon ubah perizinan menjadi 0770 sehingga direktori tersebut tidak dapat dilihat oleh pengguna lain.",
     "Check the value of \"datadirectory\" in your configuration" : "Periksa nilai \"datadirectory\" di konfigurasi Anda",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Mohon periksa apakah direktori data berisi sebuah berkas \".ocdata\" di direktori induknya.",
-    "Could not obtain lock type %d on \"%s\"." : "Tidak bisa memperoleh jenis kunci %d pada \"%s\"."
+    "Could not obtain lock type %d on \"%s\"." : "Tidak bisa memperoleh jenis kunci %d pada \"%s\".",
+    "Storage is temporarily not available" : "Penyimpanan sementara ini tidak tersedia"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
