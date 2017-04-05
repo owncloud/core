@@ -33,6 +33,8 @@ class CsrfTokenManager {
 	private $tokenGenerator;
 	/** @var SessionStorage */
 	private $sessionStorage;
+	/** @var string */
+	private $requestToken;
 
 	/**
 	 * @param CsrfTokenGenerator $tokenGenerator
@@ -93,5 +95,13 @@ class CsrfTokenManager {
 			$this->sessionStorage->getToken(),
 			$token->getDecryptedValue()
 		);
+	}
+
+	public function callRegister() {
+		if($this->requestToken === '') {
+			$this->requestToken = $this->getToken()->getEncryptedValue();
+		}
+		return $this->requestToken;
+
 	}
 }

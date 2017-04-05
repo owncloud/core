@@ -145,4 +145,13 @@ interface IAppManager {
 	 */
 	public function getAllApps();
 
+	/**
+	 * Returns the app installation folder
+	 *
+	 * @param string $appId
+	 * @return string | false
+	 * @since 10.0
+	 */
+	public function getAppPath($appId);
+
 }

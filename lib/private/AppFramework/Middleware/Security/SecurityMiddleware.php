@@ -34,6 +34,8 @@ use OC\AppFramework\Middleware\Security\Exceptions\NotAdminException;
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\Security\CSP\ContentSecurityPolicyManager;
+use OC\Security\CSRF\CsrfTokenManager;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -73,6 +75,10 @@ class SecurityMiddleware extends Middleware {
 	private $isAdminUser;
 	/** @var ContentSecurityPolicyManager */
 	private $contentSecurityPolicyManager;
+	/** @var IAppManager */
+	private $appManager;
+	/** @var CsrfTokenManager */
+	private $tokenManager;
 
 	/**
 	 * @param IRequest $request
@@ -93,7 +99,9 @@ class SecurityMiddleware extends Middleware {
 								$appName,
 								$isLoggedIn,
 								$isAdminUser,
-								ContentSecurityPolicyManager $contentSecurityPolicyManager) {
+								ContentSecurityPolicyManager $contentSecurityPolicyManager,
+								IAppManager $appManager,
+								CsrfTokenManager $tokenManager) {
 		$this->navigationManager = $navigationManager;
 		$this->request = $request;
 		$this->reflector = $reflector;
@@ -103,6 +111,8 @@ class SecurityMiddleware extends Middleware {
 		$this->isLoggedIn = $isLoggedIn;
 		$this->isAdminUser = $isAdminUser;
 		$this->contentSecurityPolicyManager = $contentSecurityPolicyManager;
+		$this->appManager = $appManager;
+		$this->tokenManager = $tokenManager;
 	}
 
 
@@ -135,20 +145,14 @@ class SecurityMiddleware extends Middleware {
 		}
 
 		// CSRF check - also registers the CSRF token since the session may be closed later
-		Util::callRegister();
+		$this->tokenManager->callRegister();
 		if(!$this->reflector->hasAnnotation('NoCSRFRequired')) {
 			if(!$this->request->passesCSRFCheck()) {
 				throw new CrossSiteRequestForgeryException();
 			}
 		}
 
-		/**
-		 * FIXME: Use DI once available
-		 * Checks if app is enabled (also includes a check whether user is allowed to access the resource)
-		 * The getAppPath() check is here since components such as settings also use the AppFramework and
-		 * therefore won't pass this check.
-		 */
-		if(\OC_App::getAppPath($this->appName) !== false && !\OC_App::isEnabled($this->appName)) {
+		if($this->appManager->getAppPath($this->appName) !== false && ! $this->appManager->isEnabledForUser($this->appName)) {
 			throw new AppNotEnabledException();
 		}
 

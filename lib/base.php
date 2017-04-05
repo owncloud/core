@@ -117,7 +117,7 @@ class OC {
 	/**
 	 * @var \OC\Config
 	 */
-	private static $config = null;
+	public static $config = null;
 
 	/**
 	 * @throws \RuntimeException when the 3rdparty directory is missing or

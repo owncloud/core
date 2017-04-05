@@ -56,7 +56,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			return false;
 		}
 
-		$this->services[$name] = \OC::$server->query($name);
+		$this->services[$name] = \OC::$server->raw($name);
 		\OC::$server->registerService($name, function () use ($newService) {
 			return $newService;
 		});
@@ -233,6 +233,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 
 		\OC_User::clearBackends();
 		\OC_User::useBackend('dummy');
+
+		\OC::$server = new \OC\Server(\OC::$WEBROOT, \OC::$config);
 
 		parent::tearDownAfterClass();
 	}
