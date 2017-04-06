@@ -443,16 +443,16 @@ class FilesPlugin extends ServerPlugin {
 		}
 
 		// do a move manually, skipping Sabre's default "delete" for existing nodes
-        $this->tree->move($path, $destination);
+		$this->tree->move($path, $destination);
 
 		// trigger all default events (copied from CorePlugin::move)
-        $this->server->emit('afterMove', [$path, $destination]);
-        $this->server->emit('afterUnbind', [$path]);
-        $this->server->emit('afterBind', [$destination]);
+		$this->server->emit('afterMove', [$path, $destination]);
+		$this->server->emit('afterUnbind', [$path]);
+		$this->server->emit('afterBind', [$destination]);
 
 		$response = $this->server->httpResponse;
-        $response->setHeader('Content-Length', '0');
-        $response->setStatus(204);
+		$response->setHeader('Content-Length', '0');
+		$response->setStatus(204);
 
 		return false;
 	}
