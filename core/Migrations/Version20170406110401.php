@@ -27,13 +27,13 @@ class Version20170406110401 implements ISchemaMigration {
 				'length' => 4
 			]);
 
-			$table->addColumn('uid', Type::TEXT, [
+			$table->addColumn('uid', Type::STRING, [
 				'default' => '',
 				'notnull' => true,
 				'length' => 64
 			]);
 
-			$table->addColumn('login_name', Type::TEXT, [
+			$table->addColumn('login_name', Type::STRING, [
 				'default' => '',
 				'notnull' => true,
 				'length' => 64
@@ -49,7 +49,7 @@ class Version20170406110401 implements ISchemaMigration {
 				'notnull' => true
 			]);
 
-			$table->addColumn('token', Type::TEXT, [
+			$table->addColumn('token', Type::STRING, [
 				'default' => '',
 				'notnull' => true,
 				'length' => 200
