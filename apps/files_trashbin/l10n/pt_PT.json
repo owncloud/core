@@ -1,5 +1,5 @@
 { "translations": {
-    "Couldn't delete %s permanently" : "Não foi possível eliminar %s de forma permanente",
+    "Couldn't delete %s permanently" : "Não foi possível eliminar %s para sempre",
     "Couldn't restore %s" : "Não foi possível restaurar %s",
     "Deleted files" : "Ficheiros eliminados",
     "Restore" : "Restaurar",

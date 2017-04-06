@@ -168,6 +168,7 @@ OC.L10N.register(
     "Edit link share: {name}" : "עריכת שיתוף קישור: {name}",
     "Save" : "שמירה",
     "Create link share: {name}" : "יצירת שיתוף קישור: {name}",
+    "Remove password" : "הסרת סיסמא",
     "Share to Twitter. Opens in a new window." : "שיתוף בטוויטר. פתיחה בחלון חדש.",
     "Share to Facebook. Opens in a new window." : "שיתוף בפייסבוק. פתיחה בחלון חדש.",
     "Share to Diaspora. Opens in a new window." : "שיתוף ב- Diaspora. פתיחה בחלון חדש.",

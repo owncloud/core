@@ -115,7 +115,7 @@ OC.L10N.register(
     "Configuration" : "Configuração",
     "Available for" : "Disponível para ",
     "Add storage" : "Adicionar armazenamento",
-    "Advanced settings" : "Definições avançadas",
+    "Advanced settings" : "Configurações avançadas",
     "Delete" : "Apagar",
     "Allow users to mount external storage" : "Permitir que os utilizadores montem armazenamento externo",
     "Allow users to mount the following external storage" : "Permitir que os utilizadores montem o seguinte armazenamento externo"

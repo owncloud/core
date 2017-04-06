@@ -168,6 +168,7 @@ OC.L10N.register(
     "Edit link share: {name}" : "Geteilten Link bearbeiten: {name}",
     "Save" : "Speichern",
     "Create link share: {name}" : "Geteilten Link erstellen: {name}",
+    "Remove password" : "Passwort entfernen",
     "Share to Twitter. Opens in a new window." : "Über Twitter teilen. Wird in einem neuen Fenster geöffnet.",
     "Share to Facebook. Opens in a new window." : "Über Facebook teilen. Wird in einem neuen Fenster geöffnet.",
     "Share to Diaspora. Opens in a new window." : "Über Diaspora teilen. Wird in einem neuen Fenster geöffnet.",

@@ -5,7 +5,7 @@ OC.L10N.register(
     "The new password can not be the same as the previous one" : "A nova palavra-passe não pode ser a mesma que a anterior",
     "No user supplied" : "Nenhum utilizador especificado",
     "Authentication error" : "Erro na autenticação",
-    "Please provide an admin recovery password; otherwise, all user data will be lost." : "Por favor forneça uma palavra-passe mestre de recuperação; caso contrário, todos os dados do utilizador serão perdidos.",
+    "Please provide an admin recovery password; otherwise, all user data will be lost." : "Por favor, forneça uma palavra-passe de administrador de recuperação; caso contrário, serão perdidos todos os dados do utilizador.",
     "Wrong admin recovery password. Please check the password and try again." : "Palavra-passe de recuperação de administrador errada. Por favor, verifique a palavra-passe e tente novamente.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "A interface não suporta a alteração da palavra-passe, mas a chave de encriptação foi atualizada com sucesso.",
     "Unable to change password" : "Não é possível alterar a sua palavra-passe ",

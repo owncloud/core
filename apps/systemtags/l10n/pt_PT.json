@@ -4,7 +4,7 @@
     "Select tags to filter by" : "Selecionar etiquetas para filtrar",
     "Please select tags to filter by" : "Por favor, selecione etiquetas para filtrar",
     "No files found for the selected tags" : "Não foram encontrados ficheiros para as etiquetas selecionadas",
-    "<strong>System tags</strong> for a file have been modified" : "As <strong>etiquetas do Sistema</strong> para um ficheiro foram alteradas",
+    "<strong>System tags</strong> for a file have been modified" : "Foram modificadas as <strong>etiquetas do Sistema</strong> para um ficheiro",
     "You assigned system tag %3$s" : "Atribuiu a etiqueta do sistema %3$s",
     "%1$s assigned system tag %3$s" : "%1$s atribuiu a etiqueta do sistema %3$s",
     "You unassigned system tag %3$s" : "Removeu a etiqueta do sistema %3$s",
