@@ -50,7 +50,6 @@ class Version20170406110401 implements ISchemaMigration {
 				'notnull' => true
 			]);
 
-			// todo: why length 200 ???
 			$table->addColumn('token', 'text', [
 				'default' => '',
 				'notnull' => true,
