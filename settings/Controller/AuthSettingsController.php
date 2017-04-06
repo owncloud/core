@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Controller;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\AppFramework\Http;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
@@ -130,14 +131,25 @@ class AuthSettingsController extends Controller {
 			return $this->getServiceNotAvailableResponse();
 		}
 
-		$token = $this->generateRandomDeviceToken();
-		$deviceToken = $this->tokenProvider->generateToken($token, $this->uid, $loginName, $password, $name, IToken::PERMANENT_TOKEN);
+		try {
+			$token = $this->generateRandomDeviceToken();
+			$deviceToken = $this->tokenProvider->generateToken($token, $this->uid, $loginName, $password, $name, IToken::PERMANENT_TOKEN);
 
-		return [
-			'token' => $token,
-			'loginName' => $loginName,
-			'deviceToken' => $deviceToken
-		];
+			return [
+				'token' => $token,
+				'loginName' => $loginName,
+				'deviceToken' => $deviceToken
+			];
+		} catch (UniqueConstraintViolationException $exception) {
+			return new JSONResponse(
+				[
+					'error' => [
+						'message' => 'A token with that name already exists.'
+					]
+				],
+				409
+			);
+		}
 	}
 
 	private function getServiceNotAvailableResponse() {
