@@ -21,6 +21,7 @@
  */
 namespace OC\Files\Storage\Wrapper;
 
+use OC\Files\Cache\Wrapper\ReadOnlyCachePermissionsMask;
 use OCP\Constants;
 
 class ReadOnlyJail extends DirMask {
@@ -64,6 +65,22 @@ class ReadOnlyJail extends DirMask {
 		$this->mask = Constants::PERMISSION_READ;
 
 		return $result;
+	}
+
+
+	/**
+	 * get a cache instance for the storage
+	 *
+	 * @param string $path
+	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the cache
+	 * @return \OC\Files\Cache\Cache
+	 */
+	public function getCache($path = '', $storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		$sourceCache = parent::getCache($path, $storage);
+		return new ReadOnlyCachePermissionsMask($sourceCache, $this->mask);
 	}
 
 }
