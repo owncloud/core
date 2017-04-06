@@ -260,7 +260,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	}
 
 	/**
-	 * Insert or update a row value
+	 * Insert or update a row value.
 	 *
 	 * @param string $table
 	 * @param array $keys (column name => value)
@@ -271,16 +271,13 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @throws PreConditionNotMetException
 	 */
 	public function setValues($table, array $keys, array $values, array $updatePreconditionValues = []) {
-		try {
-			$insertQb = $this->getQueryBuilder();
-			$insertQb->insert($table)
-				->values(
-					array_map(function($value) use ($insertQb) {
-						return $insertQb->createNamedParameter($value, $this->getType($value));
-					}, array_merge($keys, $values))
-				);
-			return $insertQb->execute();
-		} catch (ConstraintViolationException $e) {
+		// Try to insert whole record into the table ($toInsert) if predicate NOT EXISTS ($compare) is satisfied
+		$toInsert = array_merge($keys, $values);
+		$compare = array_keys($keys);
+		$tableName = $this->tablePrefix . $table;
+		$affected = $this->adapter->insertIfNotExist($tableName, $toInsert, $compare);
+
+		if ($affected === 0) {
 			// value already exists, try update
 			$updateQb = $this->getQueryBuilder();
 			$updateQb->update($table);
@@ -303,8 +300,9 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 				throw new PreConditionNotMetException();
 			}
 
-			return 0;
 		}
+
+		return $affected;
 	}
 
 	/**
