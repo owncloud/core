@@ -1380,13 +1380,6 @@ $CONFIG = array(
 'data-fingerprint' => '',
 
 /**
- * Set this property to false if you want to disable the files_external local mount Option.
- * Default: true
- *
- */
-'files_external_allow_local' => true,
-
-/**
  * This entry is just here to show a warning in case somebody copied the sample
  * configuration. DO NOT ADD THIS SWITCH TO YOUR CONFIGURATION!
  *
@@ -1394,5 +1387,12 @@ $CONFIG = array(
  * modify *ANY* settings in this file without reading the documentation.
  */
 'copied_sample_config' => true,
+
+/**
+ * Set this property to true if you want to enable the files_external local mount Option.
+ * Default: false
+ *
+ */
+'files_external_allow_create_new_local' => false,
 
 );

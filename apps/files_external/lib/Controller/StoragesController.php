@@ -111,26 +111,30 @@ abstract class StoragesController extends Controller {
 		$applicableGroups = null,
 		$priority = null
 	) {
-		try {
-			return $this->service->createStorage(
-				$mountPoint,
-				$backend,
-				$authMechanism,
-				$backendOptions,
-				$mountOptions,
-				$applicableUsers,
-				$applicableGroups,
-				$priority
-			);
-		} catch (\InvalidArgumentException $e) {
-			$this->logger->logException($e);
-			return new DataResponse(
-				[
-					'message' => (string)$this->l10n->t('Invalid backend or authentication mechanism class')
-				],
-				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
-		}
+		$canCreateNewLocalStorage = \OC::$server->getConfig()->getSystemValue('files_external_allow_create_new_local', false);
+
+		if ($canCreateNewLocalStorage === true) {
+			try {
+				return $this->service->createStorage(
+					$mountPoint,
+					$backend,
+					$authMechanism,
+					$backendOptions,
+					$mountOptions,
+					$applicableUsers,
+					$applicableGroups,
+					$priority
+				);
+			} catch (\InvalidArgumentException $e) {
+				$this->logger->logException($e);
+				return new DataResponse(
+					[
+						'message' => (string)$this->l10n->t('Invalid backend or authentication mechanism class')
+					],
+					Http::STATUS_UNPROCESSABLE_ENTITY
+				);
+			}
+		};
 	}
 
 	/**
