@@ -2,6 +2,7 @@
 namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Type;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -20,57 +21,55 @@ class Version20170406110401 implements ISchemaMigration {
 
 			$table = $schema->createTable($tableName);
 
-			$table->addColumn('id', 'integer', [
-				'default' => 0,
-				'notnull' => true,
-				'autoincrement' => 1,
+			$table->addColumn('id', Type::INTEGER, [
+				'autoincrement' => true,
 				'unsigned' => true,
 				'length' => 4
 			]);
 
-			$table->addColumn('uid', 'text', [
+			$table->addColumn('uid', Type::TEXT, [
 				'default' => '',
 				'notnull' => true,
 				'length' => 64
 			]);
 
-			$table->addColumn('login_name', 'text', [
+			$table->addColumn('login_name', Type::TEXT, [
 				'default' => '',
 				'notnull' => true,
 				'length' => 64
 			]);
 
-			$table->addColumn('password', 'text', [
+			$table->addColumn('password', Type::TEXT, [
 				'default' => '',
 				'notnull' => false
 			]);
 
-			$table->addColumn('name', 'text', [
+			$table->addColumn('name', Type::TEXT, [
 				'default' => '',
 				'notnull' => true
 			]);
 
-			$table->addColumn('token', 'text', [
+			$table->addColumn('token', Type::TEXT, [
 				'default' => '',
 				'notnull' => true,
 				'length' => 200
 			]);
 
-			$table->addColumn('type', 'integer', [
+			$table->addColumn('type', Type::INTEGER, [
 				'default' => 0,
 				'notnull' => true,
 				'unsigned' => true,
 				'length' => 2
 			]);
 
-			$table->addColumn('last_activity', 'integer', [
+			$table->addColumn('last_activity', Type::INTEGER, [
 				'default' => 0,
 				'notnull' => true,
 				'unsigned' => true,
 				'length' => 4
 			]);
 
-			$table->addColumn('last_check', 'integer', [
+			$table->addColumn('last_check', Type::INTEGER, [
 				'default' => 0,
 				'notnull' => true,
 				'unsigned' => true,
