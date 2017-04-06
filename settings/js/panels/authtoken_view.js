@@ -195,8 +195,12 @@
 				_this._newAppPassword.select();
 				_this._tokenName.val('');
 			});
-			$.when(creatingToken).fail(function() {
-				OC.Notification.showTemporary(t('core', 'Error while creating device token'));
+			$.when(creatingToken).fail(function(xhr) {
+				if (xhr.status === 409) {
+					OC.Notification.showTemporary(t('core', 'A token for that application already exists. Please choose another application name.'));
+				} else {
+					OC.Notification.showTemporary(t('core', 'Error while creating device token'));
+				}
 			});
 			$.when(creatingToken).always(function() {
 				_this._toggleAddingToken(false);
