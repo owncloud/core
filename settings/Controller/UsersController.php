@@ -613,18 +613,32 @@ class UsersController extends Controller {
 		}
 
 		try {
-			$this->sendEmail($userId, $mailAddress);
-			return new DataResponse(
-				[
-					'status' => 'success',
-					'data' => [
-						'username' => $id,
-						'mailAddress' => $mailAddress,
-						'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation')
-					]
-				],
-				Http::STATUS_OK
-			);
+			if ($this->sendEmail($userId, $mailAddress)) {
+				return new DataResponse(
+					[
+						'status' => 'success',
+						'data' => [
+							'username' => $id,
+							'mailAddress' => $mailAddress,
+							'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation')
+						]
+					],
+					Http::STATUS_OK
+				);
+			} else {
+				return new DataResponse(
+					[
+						'status' => 'error',
+						'data' => [
+							'username' => $id,
+							'mailAddress' => $mailAddress,
+							'message' => (string) $this->l10n->t('No email was sent because you already sent one recently. Please try again later.')
+						]
+					],
+					Http::STATUS_OK
+				);
+			}
+
 		} catch (\Exception $e){
 			return new DataResponse(
 				[
