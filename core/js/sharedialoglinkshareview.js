@@ -293,7 +293,7 @@
 			if (this.model.isNew()) {
 				title = t('files_sharing', 'Create link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
 			}
-			else if (this.model.get('encryptedPassword') !== undefined) {
+			else if (this.model.get('encryptedPassword')) {
 				buttons.push({
 					classes: 'removePassword -float-left',
 					text: t('core', 'Remove password'),
