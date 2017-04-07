@@ -162,7 +162,7 @@
 					starAltText: isFavorite ? t('files', 'Favorited') : t('files', 'Favorite'),
 					starClass: isFavorite ? 'icon-starred' : 'icon-star',
 					permalink: this._makePermalink(this.model.get('id')),
-					permalinkTitle: t('files', 'Local link')
+					permalinkTitle: t('files', 'Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares')
 				}));
 
 				// TODO: we really need OC.Previews
