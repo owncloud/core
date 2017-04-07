@@ -33,16 +33,6 @@ trait Comments {
 	private $lastFileId;
 
 	/**
-	 * @param string $path
-	 * @return int
-	 */
-	private function getFileIdForPath($user, $path) {
-		$propertiesTable = new \Behat\Gherkin\Node\TableNode([["{http://owncloud.org/ns}fileid"]]);
-		$this->asGetsPropertiesOfFolderWith($user, 'file', $path, $propertiesTable);
-		return (int) $this->response['{http://owncloud.org/ns}fileid'];
-	}
-
-	/**
 	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
