@@ -145,4 +145,11 @@ interface IAppManager {
 	 */
 	public function getAllApps();
 
+	/**
+	 * @param string $path
+	 * @return string[] app info
+	 * @since 10.0
+	 */
+	public function readAppPackage($path);
+
 }
