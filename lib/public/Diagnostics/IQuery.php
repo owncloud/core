@@ -46,4 +46,10 @@ interface IQuery {
 	 * @since 8.0.0
 	 */
 	public function getDuration();
+
+	/**
+	 * @return float
+	 * @since 10.0.0
+	 */
+	public function getStart();
 }

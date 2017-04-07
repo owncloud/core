@@ -60,4 +60,14 @@ interface IEventLogger {
 	 * @since 8.0.0
 	 */
 	public function getEvents();
+
+	/**
+	 * Activate the module for the duration of the request. Deactivated module
+	 * does not create and store \OCP\Diagnostics\IEvent objects.
+	 * Only activated module should create and store objects to be
+	 * returned with getEvents() call.
+	 *
+	 * @since 10.0.0
+	 */
+	public function activate();
 }

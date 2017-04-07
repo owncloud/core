@@ -480,18 +480,20 @@ class Server extends ServerContainer implements IServerContainer {
 			);
 		});
 		$this->registerService('EventLogger', function (Server $c) {
+			$eventLogger = new EventLogger();
 			if ($c->getSystemConfig()->getValue('debug', false)) {
-				return new EventLogger();
-			} else {
-				return new NullEventLogger();
+				// In debug mode, module is being activated by default
+				$eventLogger->activate();
 			}
+			return $eventLogger;
 		});
 		$this->registerService('QueryLogger', function (Server $c) {
+			$queryLogger = new QueryLogger();
 			if ($c->getSystemConfig()->getValue('debug', false)) {
-				return new QueryLogger();
-			} else {
-				return new NullQueryLogger();
+				// In debug mode, module is being activated by default
+				$queryLogger->activate();
 			}
+			return $queryLogger;
 		});
 		$this->registerService('TempManager', function (Server $c) {
 			return new TempManager(

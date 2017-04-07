@@ -132,6 +132,7 @@ class OC_App {
 			}
 		}
 
+		\OC_Hook::emit('OC_App', 'loadedApps');
 		return true;
 	}
 

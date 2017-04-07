@@ -50,4 +50,14 @@ interface IQueryLogger extends SQLLogger {
 	 * @since 8.0.0
 	 */
 	public function getQueries();
+
+	/**
+	 * Activate the module for the duration of the request. Deactivated module
+	 * does not create and store \OCP\Diagnostics\IQuery objects.
+	 * Only activated module should create and store objects to be 
+	 * returned with getQueries() call. 
+	 *
+	 * @since 10.0.0
+	 */
+	public function activate();
 }
