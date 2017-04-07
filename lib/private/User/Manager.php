@@ -35,8 +35,10 @@ namespace OC\User;
 use OC\Hooks\PublicEmitter;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IUser;
+use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\IConfig;
+use OCP\User\IProvidesEMailBackend;
 use OCP\UserInterface;
 
 /**
@@ -297,6 +299,19 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
+	 * @param string $uid
+	 * @param UserInterface $backend
+	 * @return IUser | null
+	 */
+	public function createUserFromBackend($uid, $password, $backend) {
+		$this->emit('\OC\User', 'preCreateUser', [$uid, '']);
+		$account = $this->newAccount($uid, $backend);
+		$user = $this->getUserObject($account);
+		$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
+		return $user;
+	}
+
+	/**
 	 * returns how many users per backend exist (if supported by backend)
 	 *
 	 * @param boolean $hasLoggedIn when true only users that have a lastLogin
@@ -372,6 +387,12 @@ class Manager extends PublicEmitter implements IUserManager {
 		if ($backend->implementsActions(Backend::GET_DISPLAYNAME)) {
 			$account->setDisplayName($backend->getDisplayName($uid));
 		}
+		if ($backend instanceof IProvidesEMailBackend) {
+			$email = $backend->getEMailAddress($uid);
+			if ($email !== null) {
+				$account->setEmail($email);
+			}
+		}
 		$home = false;
 		if ($backend->implementsActions(Backend::GET_HOME)) {
 			$home = $backend->getHome($uid);
@@ -390,4 +411,5 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		return null;
 	}
+
 }
