@@ -55,7 +55,7 @@ class Version20170406110401 implements ISchemaMigration {
 				'length' => 200
 			]);
 
-			$table->addColumn('type', Type::INTEGER, [
+			$table->addColumn('type', Type::SMALLINT, [
 				'default' => 0,
 				'notnull' => true,
 				'unsigned' => true,
@@ -99,6 +99,8 @@ class Version20170406110401 implements ISchemaMigration {
 				['uid', 'name'],
 				'uid_name_index'
 			);
+
+			$table->setPrimaryKey(['id']);
 		}
     }
 }
