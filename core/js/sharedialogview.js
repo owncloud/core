@@ -341,7 +341,8 @@
 
 		_toggleLoading: function(state) {
 			this._loading = state;
-			this.$el.find('.localShareView, .loading, .noSharingPlaceholder').toggleClass('hidden', state);
+			this.$el.find('.localShareView, .noSharingPlaceholder').toggleClass('hidden', state);
+			this.$el.find('.loading').toggleClass('hidden', !state);
 		},
 
 		_onRequest: function() {
