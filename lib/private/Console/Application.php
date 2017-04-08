@@ -39,6 +39,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application {
@@ -120,11 +121,14 @@ class Application {
 				$output->writeln("ownCloud is not installed - only a limited number of commands are available");
 			}
 		} catch (NeedsUpdateException $ex) {
+			$style = new OutputFormatterStyle('red', 'default', array('bold', 'blink'));
+			$output->getFormatter()->setStyle('fire', $style);
+
 			$this->eventDispatcher->addListener('upgradeException', function () use ($output) {
-			    $output->writeln(PHP_EOL . "<error>ownCloud or one of the apps require upgrade - only a limited number of commands are available</error>");
+			    $output->writeln(PHP_EOL . "<fire>ownCloud or one of the apps require upgrade - only a limited number of commands are available</fire>");
 			}, 2);
 			$this->eventDispatcher->addListener('upgradeException', function () use ($output) {
-			    $output->writeln("<error>You may use your browser or the occ upgrade command to do the upgrade</error>");
+			    $output->writeln("<fire>You may use your browser or the occ upgrade command to do the upgrade</fire>");
 			}, 1);
 		};
 		$input = new ArgvInput();
@@ -166,6 +170,7 @@ class Application {
 		$this->application->setAutoExit(false);
 		$exit_code = $this->application->run($input, $output);
 		$this->eventDispatcher->dispatch('upgradeException');
+		$this->application->setAutoExit(true);
 		return $exit_code;
 	}
 
