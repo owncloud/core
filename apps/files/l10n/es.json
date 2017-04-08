@@ -67,7 +67,6 @@
     "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Favorited" : "Agregado a Favoritos",
     "Favorite" : "Favorito",
-    "Local link" : "Enlace local",
     "Folder" : "Carpeta",
     "New folder" : "Nueva carpeta",
     "{newname} already exists" : "{newname} ya existe",

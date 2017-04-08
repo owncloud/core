@@ -69,7 +69,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n ไบต์"],
     "Favorited" : "รายการโปรด",
     "Favorite" : "รายการโปรด",
-    "Local link" : "ลิงค์ต้นทาง",
     "Folder" : "แฟ้มเอกสาร",
     "New folder" : "โฟลเดอร์ใหม่",
     "{newname} already exists" : "{newname} ถูกใช้ไปแล้ว",

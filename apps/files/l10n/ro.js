@@ -57,7 +57,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n octet","%n octeți","%n octeți"],
     "Favorited" : "Adăugate la favorite",
     "Favorite" : "Favorit",
-    "Local link" : "Legătură locală",
     "Folder" : "Dosar",
     "New folder" : "Un nou dosar",
     "{newname} already exists" : "{newname} există deja",

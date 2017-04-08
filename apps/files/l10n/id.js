@@ -69,7 +69,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n byte"],
     "Favorited" : "Difavoritkan",
     "Favorite" : "Favorit",
-    "Local link" : "Tautan lokal",
     "Folder" : "Folder",
     "New folder" : "Map baru",
     "{newname} already exists" : "{newname} sudah ada",

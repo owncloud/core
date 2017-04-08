@@ -67,7 +67,6 @@
     "_%n byte_::_%n bytes_" : ["%n bajt","%n bajta","%n bajti","%n bajtov"],
     "Favorited" : "Označeno kot priljubljeno",
     "Favorite" : "Priljubljene",
-    "Local link" : "Krajevna povezava",
     "Folder" : "Mapa",
     "New folder" : "Nova mapa",
     "{newname} already exists" : "{newname} že obstaja",

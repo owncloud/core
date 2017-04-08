@@ -69,7 +69,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtů"],
     "Favorited" : "Přidáno k oblíbeným",
     "Favorite" : "Oblíbené",
-    "Local link" : "Místní odkaz",
     "Folder" : "Adresář",
     "New folder" : "Nový adresář",
     "{newname} already exists" : "{newname} již existuje",

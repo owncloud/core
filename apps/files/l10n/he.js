@@ -69,7 +69,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n בייט","%n בייטים"],
     "Favorited" : "מועדף",
     "Favorite" : "מועדף",
-    "Local link" : "קישור מקומי",
     "Folder" : "תיקייה",
     "New folder" : "תיקייה חדשה",
     "{newname} already exists" : "{newname} כבר קיים",

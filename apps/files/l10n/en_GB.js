@@ -67,7 +67,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Favorited" : "Favourited",
     "Favorite" : "Favourite",
-    "Local link" : "Local link",
     "Folder" : "Folder",
     "New folder" : "New folder",
     "{newname} already exists" : "{newname} already exists",

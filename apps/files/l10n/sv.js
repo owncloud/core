@@ -66,7 +66,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n bytes","%n bytes"],
     "Favorited" : "Favoriserad",
     "Favorite" : "Favorit",
-    "Local link" : "Lokal länk",
     "Folder" : "Mapp",
     "New folder" : "Ny mapp",
     "{newname} already exists" : "{newname}  existerar redan",

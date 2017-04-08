@@ -67,7 +67,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n байт","%n байта"],
     "Favorited" : "Отбелязано в любими",
     "Favorite" : "Любими",
-    "Local link" : "Локална връзка",
     "Folder" : "Папка",
     "New folder" : "Нова папка",
     "{newname} already exists" : "{newname} вече съществува",

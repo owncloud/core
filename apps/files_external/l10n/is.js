@@ -7,7 +7,7 @@ OC.L10N.register(
     "Step 1 failed. Exception: %s" : "Skref 1 mistókst. Undantekning: %s",
     "Step 2 failed. Exception: %s" : "Skref 2 mistókst. Undantekning: %s",
     "External storage" : "Ytri gagnageymsla",
-    "Dropbox App Configuration" : "Uppsetning Dropbox forrits",
+    "Dropbox App Configuration" : "Uppsetning Dropbox-forrits",
     "Google Drive App Configuration" : "Uppsetning Google Drive forrits",
     "Personal" : "Einka",
     "System" : "Kerfi",

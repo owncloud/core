@@ -63,7 +63,6 @@ OC.L10N.register(
     "Path" : "Ruta",
     "Favorited" : "Favorito",
     "Favorite" : "Favorito",
-    "Local link" : "Enlace local",
     "Folder" : "Carpeta",
     "New folder" : "Nueva carpeta",
     "{newname} already exists" : "{newname} ya existe",

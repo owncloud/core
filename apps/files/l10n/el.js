@@ -64,7 +64,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Favorited" : "Προτιμώμενα",
     "Favorite" : "Αγαπημένο",
-    "Local link" : "Τοπικός σύνδεσμος",
     "Folder" : "Φάκελος",
     "New folder" : "Νέος φάκελος",
     "{newname} already exists" : "το {newname} υπάρχει ήδη",

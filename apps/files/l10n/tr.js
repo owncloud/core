@@ -62,7 +62,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n bayt","%n bayt"],
     "Favorited" : "Sık kullanılanlara eklendi",
     "Favorite" : "Sık kullanılan",
-    "Local link" : "Yerel bağlantı",
     "Folder" : "Klasör",
     "New folder" : "Yeni klasör",
     "{newname} already exists" : "{newname} zaten mevcut",

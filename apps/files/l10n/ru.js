@@ -69,7 +69,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n байт","%n байта","%n байтов","%n байта(ов)"],
     "Favorited" : "Избранное",
     "Favorite" : "Избранное",
-    "Local link" : "Локальная ссылка",
     "Folder" : "Каталог",
     "New folder" : "Новый каталог",
     "{newname} already exists" : "{newname} уже существует",

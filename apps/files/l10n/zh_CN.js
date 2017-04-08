@@ -66,7 +66,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n 字节"],
     "Favorited" : "已收藏",
     "Favorite" : "收藏",
-    "Local link" : "本地链接",
     "Folder" : "文件夹",
     "New folder" : "增加文件夹",
     "{newname} already exists" : "{newname} 已经存在",

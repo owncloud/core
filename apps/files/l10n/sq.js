@@ -69,7 +69,6 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n bajt","%n bajte"],
     "Favorited" : "U kalua e parapëlqyer",
     "Favorite" : "E parapëlqyer",
-    "Local link" : "Lidhje vendore",
     "Folder" : "Dosje",
     "New folder" : "Dosje e re",
     "{newname} already exists" : "Ka tashmë një {newname}",

@@ -55,7 +55,6 @@
     "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtov"],
     "Favorited" : "Pridané k obľúbeným",
     "Favorite" : "Obľúbené",
-    "Local link" : "Lokálny odkaz",
     "Folder" : "Priečinok",
     "New folder" : "Nový priečinok",
     "{newname} already exists" : "{newname} už existuje",
