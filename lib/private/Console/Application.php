@@ -39,8 +39,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class Application {
 	/** @var IConfig */
@@ -171,7 +172,8 @@ class Application {
 		$exit_code = $this->application->run($input, $output);
 		$this->eventDispatcher->dispatch('upgradeException');
 		$this->application->setAutoExit(true);
-		return $exit_code;
+
+		return is_numeric($exit_code) ? (int) $exit_code : 0;
 	}
 
 	private function loadCommandsFromInfoXml($commands) {
