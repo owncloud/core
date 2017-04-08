@@ -62,6 +62,23 @@
 		return arr;
 	}
 
+	// DOM related functions start
+	function getViewContainer() {
+		return $("#app-content .viewcontainer:not(.hidden)");
+	}
+
+	function getFileListInstance() {
+		return getViewContainer().data('fileList');
+	}
+
+	function getFileListTrs() {
+		return $("#fileList tr");
+	}
+
+	function getDeleteAllButton() {
+		return $("#app-content-files .selectedActions .delete-selected").not(".hidden");
+	}
+
 	function openUploadMenu() {
 		// opens the upload menu
 		$("#app-content .viewcontainer:not(.hidden) .new").click();
@@ -81,216 +98,10 @@
 		$(".stop.icon-close").click();
 		$(".popovermenu").addClass('hidden');
 
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		var fileList = getFileListInstance();
 		fileList.deselectAll();
 
 		$(".icon-close").click();
-	}
-
-	function favorite() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		if (fileList.isAllSelected()) {
-			// selected all files
-			fileList.favoriteAll();
-		}
-
-		else {
-			// selected one/multiple files(not all files)
-			fileList.favoriteSelected();		
-		}
-	}
-
-	function updateView() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		fileList.focusSelected();
-	}
-
-	function selectDown() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-
-		removeCurrentHighlight();
-
-		var fileName = fileList.getKeyboardHighlight();
-
-		if (fileList.findFileEl(fileName).hasClass("selected") && fileList.findFileEl(fileName).is(":first-child")) {
-			fileList.findFileEl(fileName).find(".selectCheckBox").click();
-			highlightRow();
-			return;
-		}
-
-		if (fileName && !fileList.findFileEl(fileName).is(":last-child")) {
-			var setTo = fileList.findFileEl(fileName).next().data('file');
-			fileList.setKeyboardHighlight(setTo);
-		}
-
-		if (!fileName) {
-			var setTo = $("#fileList tr").first().data('file');
-			fileList.setKeyboardHighlight(setTo);
-			fileName = fileList.getKeyboardHighlight();
-		}
-		var prevFileName = fileName;
-		fileName = fileList.getKeyboardHighlight();
-
-		if (prevFileName !== fileName) {
-			var toDelete = 0;
-			if (fileList.findFileEl(fileName).hasClass("selected")) {
-				toDelete = 1;
-				fileList.findFileEl(fileName).find(".selectCheckBox").click();
-			}
-
-			if (toDelete == 0) {
-				fileList.findFileEl(fileName).prev().find(".selectCheckBox").click();	
-			}
-		}
-
-		else if (!fileList.findFileEl(fileName).hasClass("selected")) {
-			fileList.findFileEl(fileName).find(".selectCheckBox").click();
-		}
-
-		highlightRow();
-
-		updateView();
-	}
-
-	function selectUp() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-
-		removeCurrentHighlight();
-
-		var fileName = fileList.getKeyboardHighlight();
-
-		if (fileList.findFileEl(fileName).hasClass("selected") && fileList.findFileEl(fileName).is(":last-child")) {
-			fileList.findFileEl(fileName).find(".selectCheckBox").click();
-			highlightRow();
-			return;
-		}
-
-		if (fileName && !fileList.findFileEl(fileName).is(":first-child")) {
-			var setTo = fileList.findFileEl(fileName).prev().data('file');
-			fileList.setKeyboardHighlight(setTo);
-		}
-
-		if (!fileName) {
-			var setTo = $("#fileList tr").first().data('file');
-			fileList.setKeyboardHighlight(setTo);
-			fileName = fileList.getKeyboardHighlight();
-		}
-		var prevFileName = fileName;
-		fileName = fileList.getKeyboardHighlight();
-
-		if (prevFileName !== fileName) {
-			var toDelete = 0;
-			if (fileList.findFileEl(fileName).hasClass("selected")) {
-				toDelete = 1;
-				fileList.findFileEl(fileName).find(".selectCheckBox").click();
-			}
-
-			if (toDelete == 0) {
-				fileList.findFileEl(fileName).next().find(".selectCheckBox").click();	
-			}
-		}
-		else if (!fileList.findFileEl(fileName).hasClass("selected")) {
-			fileList.findFileEl(fileName).find(".selectCheckBox").click();
-		}
-
-		highlightRow();
-
-		updateView();
-	}
-
-	function highlightRow() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		
-		var fileName = fileList.getKeyboardHighlight();
-		fileList.findFileEl(fileName).addClass("mouseOver");
-	}
-
-	function removeCurrentHighlight() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		var fileName = fileList.getKeyboardHighlight();
-		if (fileName) {
-			fileList.findFileEl(fileName).removeClass("mouseOver");
-		}
-	}
-
-	function down() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		fileList.deselectAll();
-
-		removeCurrentHighlight();
-
-		var fileName = fileList.getKeyboardHighlight();
-		if (fileName && !fileList.findFileEl(fileName).is(":last-child")) {
-			var setTo = fileList.findFileEl(fileName).next().data('file');
-			fileList.setKeyboardHighlight(setTo);
-		}
-
-		else {
-			var setTo = $("#fileList tr").first().data('file');
-			fileList.setKeyboardHighlight(setTo);
-		}
-
-		highlightRow();
-
-		updateView();
-	}
-
-	function up() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		fileList.deselectAll();
-
-		removeCurrentHighlight();
-
-		var fileName = fileList.getKeyboardHighlight();
-		if (fileName && !fileList.findFileEl(fileName).is(":first-child")) {
-			var setTo = fileList.findFileEl(fileName).prev().data('file');
-			fileList.setKeyboardHighlight(setTo);
-		}
-
-		else {
-			var setTo = $("#fileList tr").first().data('file');
-			fileList.setKeyboardHighlight(setTo);
-		}
-
-		highlightRow();
-
-		updateView();
-	}
-
-	function goBottomRow() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		fileList.loadAllPages();
-
-		removeCurrentHighlight();
-
-		var setTo = $("#fileList tr").last().data('file');
-		fileList.setKeyboardHighlight(setTo);
-
-		highlightRow();
-
-		updateView();
-	}
-
-	function goTopRow() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		fileList.loadAllPages();
-
-		removeCurrentHighlight();
-
-		var setTo = $("#fileList tr").first().data('file');
-		fileList.setKeyboardHighlight(setTo);
-
-		highlightRow();
-
-		updateView();
-	}
-
-	function enter() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		var fileName = fileList.getKeyboardHighlight();
-		if (fileName) {
-			fileList.findFileEl(fileName).find("span.nametext").click();
-		}
 	}
 
 	function toggleSidebar() {
@@ -300,44 +111,280 @@
 		}
 		else {
 			// side-bar closed, open it
-			var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-			var fileName = fileList.getKeyboardHighlight();
-			if (fileName) {
-				fileList.findFileEl(fileName).find(".name").click();
+			var fileList = getFileListInstance();
+			var fileTr = fileList.getKeyboardHighlight();
+			if (fileTr) {
+				fileTr.find(".name").click();
 			}
 		}
 	}
 
-	function del() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+	function selectTr($tr) {
+		$tr.find(".selectCheckBox").click();
+	}
+
+	function isSelected($tr) {
+		return $tr.hasClass('selected');
+	}
+
+	function highlightRow() {
+		var fileList = getFileListInstance();
+		
+		var fileTr = fileList.getKeyboardHighlight();
+
+		if (fileTr) {
+			fileTr.addClass("mouseOver");
+		}
+	}
+
+	function removeCurrentHighlight() {
+		var fileList = getFileListInstance();
+		var fileTr = fileList.getKeyboardHighlight();
+		if (fileTr) {
+			fileTr.removeClass("mouseOver");
+		}
+	}
+
+	function rename() {
+		var fileList = getFileListInstance();
+		var fileTr = fileList.getKeyboardHighlight();
+		if (fileTr) {
+			fileTr.find(".action-menu").click();
+			fileTr.find(".popovermenu").addClass("hidden");
+			fileTr.find(".action-rename").click();
+		}
+	}
+	// DOM related functions end here
+
+	function favorite() {
+		var fileList = getFileListInstance();
 		if (fileList.isAllSelected()) {
 			// selected all files
-			$("#app-content-files .selectedActions .delete-selected").not(".hidden").click();
+			fileList.favoriteAll();
+		}
+
+		else {
+			// selected one/multiple files(not all files)
+			fileList.favoriteSelected();		
+		}
+
+		highlightRow();
+		updateView();
+	}
+
+	function updateView() {
+		var fileList = getFileListInstance();
+		fileList.focusSelected();
+	}
+
+	function selectDown() {
+		var fileList = getFileListInstance();
+
+		removeCurrentHighlight();
+
+		var fileTr = fileList.getKeyboardHighlight();
+		var fileName = fileList.getFileNamefromTr(fileTr);
+
+		if (!fileTr) {
+			down();
+			fileTr = fileList.getKeyboardHighlight();
+			fileName = fileList.getFileNamefromTr(fileTr);
+		}
+
+		if (isSelected(fileTr) && fileTr.is(":first-child")) {
+			selectTr(fileTr);
+			highlightRow();
+			return;
+		}
+
+		if (fileName && !fileTr.is(":last-child")) {
+			var setTo = fileTr.next();
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		if (!fileName) {
+			var setTo = getFileListTrs().first();
+			fileList.setKeyboardHighlight(setTo);
+			fileTr = setTo;
+			fileName = fileList.getFileNamefromTr(setTo);
+		}
+		var prevFileName = fileName;
+		fileTr = fileList.getKeyboardHighlight();
+		fileName = fileList.getFileNamefromTr(fileTr);
+
+		if (prevFileName !== fileName) {
+			var toDelete = 0;
+			if (isSelected(fileTr)) {
+				toDelete = 1;
+				selectTr(fileTr);
+			}
+
+			if (toDelete == 0) {
+				selectTr(fileTr.prev());
+			}
+		}
+
+		else if (!isSelected(fileTr)) {
+			selectTr(fileTr);
+		}
+
+		highlightRow();
+
+		updateView();
+	}
+
+	function selectUp() {
+		var fileList = getFileListInstance();
+
+		removeCurrentHighlight();
+
+		var fileTr = fileList.getKeyboardHighlight();
+		var fileName = fileList.getFileNamefromTr(fileTr);
+
+		if (isSelected(fileTr) && fileTr.is(":last-child")) {
+			selectTr(fileTr);
+			highlightRow();
+			return;
+		}
+
+		if (fileName && !fileTr.is(":first-child")) {
+			var setTo = fileTr.prev();
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		if (!fileName) {
+			var setTo = getFileListTrs().first();
+			fileList.setKeyboardHighlight(setTo);
+			fileTr = setTo;
+			fileName = fileList.getFileNamefromTr(setTo);
+		}
+		var prevFileName = fileName;
+		fileTr = fileList.getKeyboardHighlight();
+		fileName = fileList.getFileNamefromTr(fileTr);
+
+		if (prevFileName !== fileName) {
+			var toDelete = 0;
+			if (isSelected(fileTr)) {
+				toDelete = 1;
+				selectTr(fileTr);
+			}
+
+			if (toDelete == 0) {
+				selectTr(fileTr.next());
+			}
+		}
+		else if (!isSelected(fileTr)) {
+			selectTr(fileTr);
+		}
+
+		highlightRow();
+
+		updateView();
+	}
+
+	function down() {
+		var fileList = getFileListInstance();
+		fileList.deselectAll();
+
+		removeCurrentHighlight();
+
+		var fileTr = fileList.getKeyboardHighlight();
+		if (fileTr && !fileTr.is(":last-child")) {
+			var setTo = fileTr.next();
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		else {
+			var setTo = getFileListTrs().first();
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		highlightRow();
+
+		updateView();
+	}
+
+	function up() {
+		var fileList = getFileListInstance();
+		fileList.deselectAll();
+
+		removeCurrentHighlight();
+
+		var fileTr = fileList.getKeyboardHighlight();
+		if (fileTr && !fileTr.is(":first-child")) {
+			var setTo = fileTr.prev();
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		else {
+			var setTo = getFileListTrs().first();
+			fileList.setKeyboardHighlight(setTo);
+		}
+
+		highlightRow();
+
+		updateView();
+	}
+
+	function goBottomRow() {
+		var fileList = getFileListInstance();
+		fileList.loadAllPages();
+
+		removeCurrentHighlight();
+
+		var setTo = getFileListTrs().last();
+		fileList.setKeyboardHighlight(setTo);
+
+		highlightRow();
+
+		updateView();
+	}
+
+	function goTopRow() {
+		var fileList = getFileListInstance();
+		fileList.loadAllPages();
+
+		removeCurrentHighlight();
+
+		var setTo = getFileListTrs().first();
+		fileList.setKeyboardHighlight(setTo);
+
+		highlightRow();
+
+		updateView();
+	}
+
+	function enter() {
+		var fileList = getFileListInstance();
+		var fileTr = fileList.getKeyboardHighlight();
+		if (fileTr) {
+			fileTr.find("span.nametext").click();
+		}
+	}
+
+	function del() {
+		var fileList = getFileListInstance();
+		if (fileList.isAllSelected()) {
+			// selected all files
+			getDeleteAllButton().click();
 		}
 
 		else {
 			// selected one/multiple files(not all files)
 			fileList.deleteSelected();		
 		}
+
+		highlightRow();
+		updateView();
 	}
 
 	function goParentFolder() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
+		var fileList = getFileListInstance();
 		var currentDir = fileList.getCurrentDirectory();
 		var parentDir = OC.dirname(currentDir);
 
 		if (currentDir != parentDir) {
 			fileList.changeDirectory(parentDir);
-		}
-	}
-
-	function rename() {
-		var fileList = $("#app-content .viewcontainer:not(.hidden)").data('fileList');
-		var fileName = fileList.getKeyboardHighlight();
-		if (fileName) {
-			fileList.findFileEl(fileName).find(".action-menu").click();
-			fileList.findFileEl(fileName).find(".popovermenu").addClass("hidden");
-			fileList.findFileEl(fileName).find(".action-rename").click();
 		}
 	}
 

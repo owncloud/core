@@ -92,8 +92,8 @@
 		initialized: false,
 
 		/**
-		 * fileName of last highlighted row
-		 * @type string
+		 * $tr of last highlighted row
+		 * @type $tr
 		 */
 		keyboardHighlight: null,
 
@@ -2852,6 +2852,19 @@
 		},
 
 		/**
+		 * Get FileName from given File $tr
+		 * return {string} fileName
+		 */
+		getFileNamefromTr: function($tr) {
+			if ($tr) {
+				return $tr.data('file');
+			}
+			else {
+				return null;
+			}
+		},
+
+		/**
 		 * Scroll to the file which is highlighted (has class mouseOver)
 		 * to be called after the scrolling is finished
 		 */
@@ -2866,7 +2879,7 @@
 			}
 
 			// the "mouseOver" tr is present in the lower half of the screen
-			if (this.$el.find('.mouseOver').position().top >= this.$container.height() / 2) {
+			if (this.getKeyboardHighlight() && this.getKeyboardHighlight().position().top >= this.$container.height() / 2) {
 				$scrollContainer.animate({
 					// Scrolling to the top of the highleghted element
 					scrollTop: this.$el.find('.mouseOver').position().top - this.$container.height() / 2
@@ -2889,9 +2902,13 @@
 
 			// delete the row which is currently selected (has "mouseOver" attr.)
 			if (countSelected == 0) {
-				// doing ".first()" just to make sure only one element is selected
-				var selectedFileName = this.getKeyboardHighlight();
+				//setting next keyboardHighlight
+				var toSet = this.getKeyboardHighlight().next();
+				var selectedFileName = this.getFileNamefromTr(this.getKeyboardHighlight());
 				this.do_delete(selectedFileName, this.getCurrentDirectory());
+				if (toSet) {
+					this.setKeyboardHighlight(toSet);
+				}
 			}
 
 			// deletion of multiple files selected
@@ -2923,22 +2940,27 @@
 		},
 
 		/**
-		 * returns currently highlighted file (has attr "")
+		 * returns currently highlighted file
+		 * return {$tr}
 		 */
 		getKeyboardHighlight: function() {
-			var fileRow = this.findFileEl(this.keyboardHighlight);
-			if (!fileRow.exists()) {
+			if (this.keyboardHighlight && !this.keyboardHighlight.exists()) {
 				this.setKeyboardHighlight(null);
+				return null;
 			}
 			return this.keyboardHighlight;
 		},
 
 		/**
-		 * @param string fileName which is highlighted currently
-		 * De-selects all the currently selected files (have class "selected")
+		 * @param {JQuery row object} file which is highlighted currently
+		 * Sets file as current keyboard highlight
 		 */
-		setKeyboardHighlight: function(fileName) {
-			this.keyboardHighlight = fileName;
+		setKeyboardHighlight: function($tr) {
+			if ($tr && !$tr.exists()) {
+				this.setKeyboardHighlight(null);
+				return null;
+			}
+			this.keyboardHighlight = $tr;
 		},
 
 		/**

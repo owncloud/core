@@ -195,8 +195,8 @@
 
 				// single file favorite
 				if (countSelected == 0) {
-					var selectedFileName = this.getKeyboardHighlight();
-					this.findFileEl(selectedFileName).find(".action-favorite").click();
+					var selectedFileTr = this.getKeyboardHighlight();
+					selectedFileTr.find(".action-favorite").click();
 				}
 				
 				// multiple selected files favorite
