@@ -8,6 +8,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Λάθος κωδικός ανάκτησης διαχειριστή. Παρακαλώ ελέγξτε τον κωδικό και δοκιμάστε ξανά.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Το σύστημα δεν υποστηρίζει αλλαγή κωδικού, αλλά το κλειδί κρυπτογράφησης του χρήστη ενημερώθηκε επιτυχώς.",
     "Unable to change password" : "Αδυναμία αλλαγής συνθηματικού",
+    "%s password changed successfully" : "ο %s άλλαξε το συνθηματικό επιτυχώς",
     "Couldn't send reset email. Please contact your administrator." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλώ επικοινωνήστε με το διαχειριστή σας.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "εγκατάσταση και ενημέρωση εφαρμογών μέσω του καταστήματος εφαρμογών ή του ",
     "Federated Cloud Sharing" : "Διαμοιρασμός σε ομόσπονδα σύννεφα ",

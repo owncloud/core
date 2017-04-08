@@ -69,6 +69,7 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n байт","%n байта","%n байтов","%n байта(ов)"],
     "Favorited" : "Избранное",
     "Favorite" : "Избранное",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Персональная ссылка: Только тот, кто имеет доступ к файлу/папке может её использовать. Используйте её, как свою постоянную ссылку или для указания другим файлов в папках общего доступа.",
     "Folder" : "Каталог",
     "New folder" : "Новый каталог",
     "{newname} already exists" : "{newname} уже существует",

@@ -17,6 +17,7 @@ OC.L10N.register(
     "Error occurred while posting comment" : "Παρουσιάστηκε σφάλμα κατά την δημοσίευση σχολείου",
     "{count} unread comments" : "{count} μη αναγνωσμένα σχόλια",
     "Comment" : "Σχόλιο",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Σχόλια</strong> για αρχεία <em>(πάντα εμφανίζονται στην ροή)</em>",
     "You commented" : "Σχολιάσατε",
     "%1$s commented" : "%1$s σχολίασε",
     "You commented on %2$s" : "Σχολιάσατε στο %2$s",

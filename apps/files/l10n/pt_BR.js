@@ -69,6 +69,7 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Favorited" : "Favorito",
     "Favorite" : "Favorito",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Link privado: Somente as pessoas que têm acesso ao arquivo/pasta podem usá-lo. Use-o como um link permanente para si mesmo ou para encaminhar outros para arquivos dentro de compartilhamentos",
     "Folder" : "Pasta",
     "New folder" : "Nova pasta",
     "{newname} already exists" : "{newname} já existe",

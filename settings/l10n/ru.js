@@ -37,6 +37,7 @@ OC.L10N.register(
     "Unable to change mail address" : "Невозможно изменить адрес электронной почты",
     "Email has been changed successfully." : "Адрес почты изменён успешно.",
     "An email has been sent to this address for confirmation" : "Для подтверждения на данный адрес почты было отправлено письмо",
+    "No email was sent because you already sent one recently. Please try again later." : "Сообщение электронной почты не выслано, так как вы недавно уже высылали одно. Пожалуйста, попробуйте ещё раз позднее.",
     "Your full name has been changed." : "Ваше полное имя было изменено.",
     "Unable to change full name" : "Невозможно изменить полное имя",
     "%s email address confirm" : "Подтверждение адреса почты для %s",

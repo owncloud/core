@@ -69,6 +69,7 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n בייט","%n בייטים"],
     "Favorited" : "מועדף",
     "Favorite" : "מועדף",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "קישור פרטי: רק אנשים שיש להם גישה לקובץ/ספריה יכולים להשתמש בו. ניתן להשתמש בו כקישור קבע לעצמך או להפנות אחרים לקבצים השייכים לשיתוף",
     "Folder" : "תיקייה",
     "New folder" : "תיקייה חדשה",
     "{newname} already exists" : "{newname} כבר קיים",
