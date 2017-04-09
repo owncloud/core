@@ -14,6 +14,7 @@ OC.L10N.register(
     "Crop is not square" : "Qethja s’është katrore",
     "Couldn't reset password because the token is invalid" : "S’u ricaktua dot fjalëkalimi, ngaqë token-i është i pavlefshëm",
     "Couldn't reset password because the token is expired" : "S’u ricaktua dot fjalëkalimi, ngaqë token-i ka skaduar",
+    "%s password changed successfully" : "Fjalëkalimi për %s u ndryshua me sukses",
     "%s password reset" : "U ricaktua fjalëkalimi për %s",
     "Couldn't send reset email. Please contact your administrator." : "S’u dërgua dot email-i i ricaktimit. Ju lutemi, lidhuni me përgjegjësin tuaj.",
     "Couldn't send mail to following users: %s " : "S’u dërgua dot e-mail përdoruesve vijues: %s ",
