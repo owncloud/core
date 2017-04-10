@@ -262,56 +262,60 @@ class Users {
 				return new Result(null, 997);
 			}
 		}
-		// Check if permitted to edit this field
-		if(!in_array($parameters['_put']['key'], $permittedFields)) {
-			return new Result(null, 997);
-		}
-		// Process the edit
-		switch($parameters['_put']['key']) {
-			case 'display':
-				$targetUser->setDisplayName($parameters['_put']['value']);
-				break;
-			case 'quota':
-				$quota = $parameters['_put']['value'];
-				if($quota !== 'none' and $quota !== 'default') {
-					if (is_numeric($quota)) {
-						$quota = floatval($quota);
+		
+		foreach($parameters['_put'] as $key => $value) {
+			// Check if permitted to edit this field
+			if(!in_array($key, $permittedFields)) {
+				return new Result(null, 997);
+			}
+		
+			// Process the edit
+			switch($key) {
+				case 'display':
+					$targetUser->setDisplayName($value);
+					break;
+				case 'quota':
+					$quota = $value;
+					if ($quota !== 'none' and $quota !== 'default') {
+						if (is_numeric($quota)) {
+							$quota = floatval($quota);
+						} else {
+							$quota = Util::computerFileSize($quota);
+						}
+						if ($quota === false) {
+							return new Result(null, 103, "Invalid quota value {$value}");
+						}
+						if($quota === 0) {
+							$quota = 'default';
+						}else if($quota === -1) {
+							$quota = 'none';
+						} else {
+							$quota = Util::humanFileSize($quota);
+						}
+					}
+					$targetUser->setQuota($quota);
+					break;
+				case 'password':
+					$targetUser->setPassword($value);
+					break;
+				case 'two_factor_auth_enabled':
+					if ($value === true) {
+						$this->twoFactorAuthManager->enableTwoFactorAuthentication($targetUser);
 					} else {
-						$quota = Util::computerFileSize($quota);
+						$this->twoFactorAuthManager->disableTwoFactorAuthentication($targetUser);
 					}
-					if ($quota === false) {
-						return new Result(null, 103, "Invalid quota value {$parameters['_put']['value']}");
-					}
-					if($quota === 0) {
-						$quota = 'default';
-					}else if($quota === -1) {
-						$quota = 'none';
+					break;
+				case 'email':
+					if(filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
+						$targetUser->setEMailAddress($value);
 					} else {
-						$quota = Util::humanFileSize($quota);
+						return new Result(null, 102);
 					}
-				}
-				$targetUser->setQuota($quota);
-				break;
-			case 'password':
-				$targetUser->setPassword($parameters['_put']['value']);
-				break;
-			case 'two_factor_auth_enabled':
-				if ($parameters['_put']['value'] === true) {
-					$this->twoFactorAuthManager->enableTwoFactorAuthentication($targetUser);
-				} else {
-					$this->twoFactorAuthManager->disableTwoFactorAuthentication($targetUser);
-				}
-				break;
-			case 'email':
-				if(filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
-					$targetUser->setEMailAddress($parameters['_put']['value']);
-				} else {
-					return new Result(null, 102);
-				}
-				break;
-			default:
-				return new Result(null, 103);
-				break;
+					break;
+				default:
+					return new Result(null, 103);
+					break;
+			}
 		}
 		return new Result(null, 100);
 	}
