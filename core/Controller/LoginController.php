@@ -148,7 +148,12 @@ class LoginController extends Controller {
 			$parameters['canResetPassword'] = false;
 		}
 
-		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
+		$altLogins = OC_App::getAlternativeLogIns();
+		$altLogins2 = $this->config->getSystemValue('login.alternatives');
+		if (is_array($altLogins2) && !empty($altLogins2)) {
+			$altLogins = array_merge($altLogins, $altLogins2);
+		}
+		$parameters['alt_login'] = $altLogins;
 		$parameters['rememberLoginAllowed'] = OC_Util::rememberLoginAllowed();
 		$parameters['rememberLoginState'] = !empty($remember_login) ? $remember_login : 0;
 
