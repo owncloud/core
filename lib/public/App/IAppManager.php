@@ -145,4 +145,14 @@ interface IAppManager {
 	 */
 	public function getAllApps();
 
+	/**
+	 * Read and validate info.xml from a local app package
+	 * Returns the app information from "appinfo/info.xml".
+	 *
+	 * @param string $path package location
+	 * @return string[] app info
+	 * @since 10.0
+	 */
+	public function readAppPackage($path);
+
 }

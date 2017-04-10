@@ -34,6 +34,7 @@ use OC_App;
 use OC\Installer;
 use OCP\App\IAppManager;
 use OCP\App\ManagerEvent;
+use OCP\Files;
 use OCP\IAppConfig;
 use OCP\ICacheFactory;
 use OCP\IGroupManager;
@@ -408,5 +409,20 @@ class AppManager implements IAppManager {
 	 */
 	public function getAllApps() {
 		return $this->appConfig->getApps();
+	}
+
+	/**
+	 * @param string $path
+	 * @return string[] app info
+	 */
+	public function readAppPackage($path) {
+		$data = [
+			'source' => 'path',
+			'path' => $path,
+		];
+		list($appCodeDir, $path) = Installer::downloadApp($data);
+		$appInfo = Installer::checkAppsIntegrity($data, $appCodeDir, $path);
+		Files::rmdirr($appCodeDir);
+		return $appInfo;
 	}
 }
