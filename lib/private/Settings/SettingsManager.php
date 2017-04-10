@@ -402,9 +402,7 @@ class SettingsManager implements ISettingsManager {
 				return $section;
 			}
 		}
-		$this->log->error(
-			'Failed to load section with id: {id}',
-			['id' => $sectionID]);
+		// Create a new template section using the id -> needs i10n support
 		return new Section($sectionID, ucfirst($sectionID), -9);
 	}
 
