@@ -306,7 +306,7 @@ class Users {
 					}
 					break;
 				case 'email':
-					if(filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
+					if(filter_var($value, FILTER_VALIDATE_EMAIL)) {
 						$targetUser->setEMailAddress($value);
 					} else {
 						return new Result(null, 102);
