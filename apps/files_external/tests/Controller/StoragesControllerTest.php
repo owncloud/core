@@ -44,10 +44,12 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 	public function setUp() {
 		\OC_Mount_Config::$skipTest = true;
+		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', true);
 	}
 
 	public function tearDown() {
 		\OC_Mount_Config::$skipTest = false;
+		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);
 	}
 
 	/**
@@ -118,6 +120,49 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$data = $response->getData();
 		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
 		$this->assertEquals($storageConfig, $data);
+	}
+
+	public function testAddStorageWithoutConfig() {
+		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);
+
+		$authMech = $this->getAuthMechMock();
+		$authMech->method('validateStorage')
+			->willReturn(true);
+		$authMech->method('isVisibleFor')
+			->willReturn(true);
+		$backend = $this->getBackendMock();
+		$backend->method('validateStorage')
+			->willReturn(true);
+		$backend->method('isVisibleFor')
+			->willReturn(true);
+
+		$storageConfig = new StorageConfig(1);
+		$storageConfig->setMountPoint('mount');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
+		$storageConfig->setBackendOptions([]);
+
+		$this->service->expects($this->never())
+			->method('createStorage')
+			->will($this->returnValue($storageConfig));
+		$this->service->expects($this->never())
+			->method('addStorage')
+			->will($this->returnValue($storageConfig));
+
+		$response = $this->controller->create(
+			'mount',
+			'\OCA\Files_External\Lib\Storage\SMB',
+			'\OCA\Files_External\Lib\Auth\NullMechanism',
+			[],
+			[],
+			[],
+			[],
+			null
+		);
+
+		$data = $response->getData();
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
+		$this->assertEquals(null, $data);
 	}
 
 	public function testUpdateStorage() {

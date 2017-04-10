@@ -87,33 +87,44 @@ class GlobalStoragesController extends StoragesController {
 		$applicableGroups,
 		$priority
 	) {
-		$newStorage = $this->createStorage(
-			$mountPoint,
-			$backend,
-			$authMechanism,
-			$backendOptions,
-			$mountOptions,
-			$applicableUsers,
-			$applicableGroups,
-			$priority
-		);
-		if ($newStorage instanceof DataResponse) {
-			return $newStorage;
+		$canCreateNewLocalStorage = \OC::$server->getConfig()->getSystemValue('files_external_allow_create_new_local', false);
+
+		if ($canCreateNewLocalStorage === true) {
+			$newStorage = $this->createStorage(
+				$mountPoint,
+				$backend,
+				$authMechanism,
+				$backendOptions,
+				$mountOptions,
+				$applicableUsers,
+				$applicableGroups,
+				$priority
+			);
+			if ($newStorage instanceof DataResponse) {
+				return $newStorage;
+			}
+
+			$response = $this->validate($newStorage);
+			if (!empty($response)) {
+				return $response;
+			}
+
+			$newStorage = $this->service->addStorage($newStorage);
+
+			$this->updateStorageStatus($newStorage);
+
+			return new DataResponse(
+				$newStorage,
+				Http::STATUS_CREATED
+			);
 		}
 
-		$response = $this->validate($newStorage);
-		if (!empty($response)) {
-			return $response;
+		else {
+			return new DataResponse(
+				null,
+				Http::STATUS_FORBIDDEN
+			);
 		}
-
-		$newStorage = $this->service->addStorage($newStorage);
-
-		$this->updateStorageStatus($newStorage);
-
-		return new DataResponse(
-			$newStorage,
-			Http::STATUS_CREATED
-		);
 	}
 
 	/**
@@ -181,7 +192,6 @@ class GlobalStoragesController extends StoragesController {
 			$storage,
 			Http::STATUS_OK
 		);
-
 	}
 
 
