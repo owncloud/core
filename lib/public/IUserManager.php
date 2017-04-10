@@ -165,4 +165,13 @@ interface IUserManager {
 	 * @since 9.1.0
 	 */
 	public function getByEmail($email);
+
+	/**
+	 * @param string $uid
+	 * @param string $password
+	 * @param UserInterface $backend
+	 * @return IUser | null
+	 * @since 10.0
+	 */
+	public function createUserFromBackend($uid, $password, $backend);
 }
