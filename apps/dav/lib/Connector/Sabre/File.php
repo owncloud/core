@@ -206,8 +206,13 @@ class File extends Node implements IFile {
 			// allow sync clients to send the mtime along in a header
 			$request = \OC::$server->getRequest();
 			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
-					header('X-OC-MTime: accepted');
+				if( is_int($request->server['HTTP_X_OC_MTIME']) ) {
+					if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
+						header('X-OC-MTime: accepted');
+					}
+				}
+				else {
+					throw new BadRequest('expected mtime to be integer');
 				}
 			}
 			
@@ -459,8 +464,13 @@ class File extends Node implements IFile {
 				// allow sync clients to send the mtime along in a header
 				$request = \OC::$server->getRequest();
 				if (isset($request->server['HTTP_X_OC_MTIME'])) {
-					if ($targetStorage->touch($targetInternalPath, $request->server['HTTP_X_OC_MTIME'])) {
-						header('X-OC-MTime: accepted');
+					if( is_int($request->server['HTTP_X_OC_MTIME']) ) {
+						if ($targetStorage->touch($targetInternalPath, $request->server['HTTP_X_OC_MTIME'])) {
+							header('X-OC-MTime: accepted');
+						}
+					}
+					else {
+						throw new BadRequest('expected mtime to be integer');
 					}
 				}
 
