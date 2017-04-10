@@ -12,6 +12,7 @@
  * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
+ * @author Noveen Sachdeva <noveen.sachdeva@research.iiit.ac.in>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -389,5 +390,34 @@ class Manager extends PublicEmitter implements IUserManager {
 			return $this->backends[$backendClass];
 		}
 		return null;
+	}
+	/**
+	 * @param string[] $userIds
+	 * @return string[] displayname of respective uid
+	 * @since 10.0.0
+	 */
+	public function getUsersByIds($userIds) {
+		$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$displayNames = [];
+
+		foreach ($userIds as $uid) {
+			$queryBuilder->select('displayname')
+				->from('users')
+				->where($queryBuilder->expr()->eq(
+					'uid', $uid)
+				);
+
+			$query = $queryBuilder->execute();
+			$name = $query->fetchColumn();
+
+			if (is_null($name)) {
+				$displayNames[$uid] = $uid;
+			}
+			else {
+				$displayNames[$uid] = $name;
+			}
+		}
+
+		return $displayNames;
 	}
 }
