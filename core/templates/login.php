@@ -87,7 +87,11 @@ script('core', [
 		<legend><?php p($l->t('Alternative Logins')) ?></legend>
 		<ul>
 			<?php foreach($_['alt_login'] as $login): ?>
-				<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
+				<?php if (isset($login['img'])) { ?>
+					<li><a href="<?php print_unescaped($login['href']); ?>" ><img src="<?php p($login['img']); ?>"/></a></li>
+				<?php } else { ?>
+					<li><a class="button" href="<?php print_unescaped($login['href']); ?>" ><?php p($login['name']); ?></a></li>
+				<?php } ?>
 			<?php endforeach; ?>
 		</ul>
 	</fieldset>
