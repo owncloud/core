@@ -212,7 +212,7 @@ class File extends Node implements IFile {
 					}
 				}
 				else {
-					throw new BadRequest('expected mtime to be integer');
+					throw new BadRequest('X-OC-MTime header must be an integer');
 				}
 			}
 			
@@ -470,7 +470,7 @@ class File extends Node implements IFile {
 						}
 					}
 					else {
-						throw new BadRequest('expected mtime to be integer');
+						throw new BadRequest('X-OC-MTime header must be an integer');
 					}
 				}
 
