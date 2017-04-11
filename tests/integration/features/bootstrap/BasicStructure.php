@@ -11,6 +11,7 @@ trait BasicStructure {
 	use Trashbin;
 	use Checksums;
 	use Comments;
+	use MailTool;
 
 	/** @var string */
 	private $currentUser = '';
@@ -33,12 +34,13 @@ trait BasicStructure {
 	/** @var string */
 	private $requestToken;
 
-	public function __construct($baseUrl, $admin, $regular_user_password) {
+	public function __construct($baseUrl, $admin, $regular_user_password, $mailhog_url) {
 
 		// Initialize your context here
 		$this->baseUrl = $baseUrl;
 		$this->adminUser = $admin;
 		$this->regularUser = $regular_user_password;
+		$this->mailhogUrl = $mailhog_url;
 		$this->localBaseUrl = $this->baseUrl;
 		$this->remoteBaseUrl = $this->baseUrl;
 		$this->currentServer = 'LOCAL';
