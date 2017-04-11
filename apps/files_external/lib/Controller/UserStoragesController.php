@@ -128,38 +128,36 @@ class UserStoragesController extends StoragesController {
 	) {
 		$canCreateNewLocalStorage = \OC::$server->getConfig()->getSystemValue('files_external_allow_create_new_local', false);
 
-		if ($canCreateNewLocalStorage === true) {
-			$newStorage = $this->createStorage(
-				$mountPoint,
-				$backend,
-				$authMechanism,
-				$backendOptions,
-				$mountOptions
-			);
-			if ($newStorage instanceOf DataResponse) {
-				return $newStorage;
-			}
-
-			$response = $this->validate($newStorage);
-			if (!empty($response)) {
-				return $response;
-			}
-
-			$newStorage = $this->service->addStorage($newStorage);
-			$this->updateStorageStatus($newStorage);
-
-			return new DataResponse(
-				$newStorage,
-				Http::STATUS_CREATED
-			);
-		}
-
-		else {
+		if ($method === 'local' && $canCreateNewLocalStorage === false) {
 			return new DataResponse(
 				null,
 				Http::STATUS_FORBIDDEN
 			);
 		}
+
+		$newStorage = $this->createStorage(
+			$mountPoint,
+			$backend,
+			$authMechanism,
+			$backendOptions,
+			$mountOptions
+		);
+		if ($newStorage instanceOf DataResponse) {
+			return $newStorage;
+		}
+
+		$response = $this->validate($newStorage);
+		if (!empty($response)) {
+			return $response;
+		}
+
+		$newStorage = $this->service->addStorage($newStorage);
+		$this->updateStorageStatus($newStorage);
+
+		return new DataResponse(
+			$newStorage,
+			Http::STATUS_CREATED
+		);
 	}
 
 	/**
