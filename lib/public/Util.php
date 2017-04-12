@@ -707,10 +707,11 @@ class Util {
 	/**
 	 * Collects all status infos.
 	 *
-	 * @return array 
+	 * @param bool $includeVersion
+	 * @return array
 	 * @since 10.0
 	 */
-	public static function getStatusInfo() {
+	public static function getStatusInfo($includeVersion = false) {
 		$systemConfig = \OC::$server->getSystemConfig();
 
 		$installed = (bool) $systemConfig->getValue('installed', false);
@@ -727,7 +728,7 @@ class Util {
 			'edition' => '',
 			'productname' => ''];
 
-		if ((bool) $systemConfig->getValue('version.hide', false) === false) {
+		if ($includeVersion || (bool) $systemConfig->getValue('version.hide', false) === false) {
 			$values['version'] = implode('.', self::getVersion());
 			$values['versionstring'] = \OC_Util::getVersionString();
 			$values['edition'] = \OC_Util::getEditionString();
