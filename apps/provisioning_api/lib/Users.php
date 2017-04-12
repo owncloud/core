@@ -263,10 +263,21 @@ class Users {
 			}
 		}
 		
-		foreach($parameters['_put'] as $key => $value) {
+        	$putParameters = array();
+
+		// Check if put-key exists of key and value -- backwards compatible
+		if (array_key_exists('key', $parameters['_put']) && array_key_exists('value', $parameters['_put'])) {
+		    $putParameters[$parameters['_put']['key']] = $parameters['_put']['value'];
+		}
+		else {
+		    $putParameters = $parameters['_put'];
+		}
+		//--
+
+		foreach($putParameters as $key => $value) {
 			// Check if permitted to edit this field
-			if(!in_array($key, $permittedFields)) {
-				return new Result(null, 997);
+			if (!in_array($key, $permittedFields)) {
+				return new Result(null, 997, "Not permitted key {$key}");
 			}
 		
 			// Process the edit
@@ -285,9 +296,9 @@ class Users {
 						if ($quota === false) {
 							return new Result(null, 103, "Invalid quota value {$value}");
 						}
-						if($quota === 0) {
+						if ($quota === 0) {
 							$quota = 'default';
-						}else if($quota === -1) {
+						} else if($quota === -1) {
 							$quota = 'none';
 						} else {
 							$quota = Util::humanFileSize($quota);
