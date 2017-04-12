@@ -80,6 +80,7 @@ OC.L10N.register(
     "%2$s removed share for %3$s" : "Ο %2$s αφαίρεσε τον διαμοιρασμό για %3$s",
     "Shared with group %2$s" : "Διαμοιράστηκε με την ομάδα %2$s",
     "Shared with group %3$s by %2$s" : "Διαμοιράστηκε με την ομάδα %3$s από %2$s",
+    "Removed share of group %2$s" : "Αφαίρεση κοινόχρηστου από την ομάδα %2$s",
     "Shared via link by %2$s" : "Διαμοιράστηκε μέσω συνδέσμου από %2$s",
     "Shared via public link" : "Διαμοιράστηκε μέσω δημόσιου συνδέσμου",
     "Removed public link" : "Αφαιρέθηκε ο δημόσιος σύνδεσμος",
