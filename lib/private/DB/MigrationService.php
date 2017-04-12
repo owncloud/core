@@ -349,8 +349,6 @@ class MigrationService {
 
 	/**
 	 * @param string $version
-	 * @return mixed
-	 * @throws \Exception
 	 */
 	protected function createInstance($version) {
 		$class = $this->getClass($version);

@@ -105,15 +105,12 @@ class SyncService {
 					}
 					$a = $this->setupAccount($a, $uid);
 					$this->mapper->update($a);
+					// clean the user's preferences
+					$this->cleanPreferences($uid);
 				} catch(DoesNotExistException $ex) {
 					$a = $this->createNewAccount($uid);
-					$this->setupAccount($a, $uid);
 					$this->mapper->insert($a);
 				}
-				// clean the user's preferences
-				$this->cleanPreferences($uid);
-
-				// call the callback
 				$callback($uid);
 			}
 			$offset += $limit;
@@ -174,7 +171,7 @@ class SyncService {
 	 */
 	private function readUserConfig($uid, $app, $key) {
 		$keys = $this->config->getUserKeys($uid, $app);
-		if (in_array($key, $keys)) {
+		if (isset($keys[$key])) {
 			$enabled = $this->config->getUserValue($uid, $app, $key);
 			return [true, $enabled];
 		}
