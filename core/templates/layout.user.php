@@ -87,7 +87,13 @@
 					</li>
 				<?php endforeach; ?>
 					<li>
-						<a id="logout" <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
+						<a id="logout" <?php
+						if(\OC::$server->getAppConfig()->getValue('impersonate', 'enabled', '') !== '') {
+							p($l->t('href="#"'));
+						} else {
+							print_unescaped(OC_User::getLogoutAttribute());
+						}
+						?>>
 							<img class="svg" alt="" src="<?php print_unescaped(image_path('', 'actions/logout.svg')); ?>">
 							<?php p($l->t('Log out'));?>
 						</a>
