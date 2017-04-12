@@ -126,6 +126,15 @@ class UserStoragesController extends StoragesController {
 		$backendOptions,
 		$mountOptions
 	) {
+		$canCreateNewLocalStorage = \OC::$server->getConfig()->getSystemValue('files_external_allow_create_new_local', false);
+
+		if ($backend === 'local' && $canCreateNewLocalStorage === false) {
+			return new DataResponse(
+				null,
+				Http::STATUS_FORBIDDEN
+			);
+		}
+
 		$newStorage = $this->createStorage(
 			$mountPoint,
 			$backend,

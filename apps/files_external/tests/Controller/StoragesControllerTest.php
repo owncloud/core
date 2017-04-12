@@ -67,6 +67,20 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	}
 
 	/**
+	 * @return \OCP\Files\External\Backend\Backend
+	 */
+	protected function getBackendMockLocal($class = '\OCA\Files_External\Lib\Backend\Local', $storageClass = '\OC\Files\Storage\Local') {
+		$backend = $this->getMockBuilder('\OCP\Files\External\Backend\Backend')
+			->disableOriginalConstructor()
+			->getMock();
+		$backend->method('getStorageClass')
+			->willReturn($storageClass);
+		$backend->method('getIdentifier')
+			->willReturn('identifier:'.$class);
+		return $backend;
+	}
+
+	/**
 	 * @return \OCP\Files\External\Auth\AuthMechanism
 	 */
 	protected function getAuthMechMock($scheme = 'null', $class = '\OCA\Files_External\Lib\Auth\NullMechanism') {
@@ -125,34 +139,26 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	public function testAddStorageWithoutConfig() {
 		\OC::$server->getSystemConfig()->setValue('files_external_allow_create_new_local', false);
 
-		$authMech = $this->getAuthMechMock();
-		$authMech->method('validateStorage')
-			->willReturn(true);
-		$authMech->method('isVisibleFor')
-			->willReturn(true);
-		$backend = $this->getBackendMock();
+		$backend = $this->getBackendMockLocal();
 		$backend->method('validateStorage')
-			->willReturn(true);
-		$backend->method('isVisibleFor')
 			->willReturn(true);
 
 		$storageConfig = new StorageConfig(1);
-		$storageConfig->setMountPoint('mount');
+		$storageConfig->setMountPoint('Local');
 		$storageConfig->setBackend($backend);
-		$storageConfig->setAuthMechanism($authMech);
 		$storageConfig->setBackendOptions([]);
 
-		$this->service->expects($this->never())
+		$this->service
 			->method('createStorage')
 			->will($this->returnValue($storageConfig));
-		$this->service->expects($this->never())
+		$this->service
 			->method('addStorage')
 			->will($this->returnValue($storageConfig));
 
 		$response = $this->controller->create(
-			'mount',
-			'\OCA\Files_External\Lib\Storage\SMB',
-			'\OCA\Files_External\Lib\Auth\NullMechanism',
+			'Local',
+			'local',
+			null,
 			[],
 			[],
 			[],
