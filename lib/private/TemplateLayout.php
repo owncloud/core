@@ -63,6 +63,8 @@ class TemplateLayout extends \OC_Template {
 		// yes - should be injected ....
 		$this->config = \OC::$server->getConfig();
 
+		\OC::$server->getEventDispatcher()->dispatch('OC\TemplateLayout::loadAdditionalScripts');
+
 		// Decide which page we show
 		if($renderAs == 'user') {
 			parent::__construct( 'core', 'layout.user' );
