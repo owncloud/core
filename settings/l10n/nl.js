@@ -37,6 +37,7 @@ OC.L10N.register(
     "Unable to change mail address" : "Kan e-mailadres niet wijzigen",
     "Email has been changed successfully." : "E-mailadres succesvol gewijzigd.",
     "An email has been sent to this address for confirmation" : "Het e-mailbericht is ter bevestiging naar dit adres gestuurd",
+    "No email was sent because you already sent one recently. Please try again later." : "Er is geen e-mailbericht verstuurd, omdat u onlangs al een mailtje verstuurde. Probeer het later opnieuw,",
     "Your full name has been changed." : "Uw volledige naam is gewijzigd.",
     "Unable to change full name" : "Kan de volledige naam niet wijzigen",
     "%s email address confirm" : "%s e-mailadres bevestigen",
