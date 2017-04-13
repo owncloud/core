@@ -496,7 +496,7 @@ class ShareController extends Controller {
 			&& preg_match('!^[a-zA-Z0-9]+$!', $downloadStartSecret) === 1) {
 
 			// FIXME: set on the response once we use an actual app framework response
-			setcookie('ocDownloadStarted', $downloadStartSecret, time() + 20, '/');
+			setcookie('ocDownloadStarted', $downloadStartSecret, time() + 20, '/', null, true, true);
 		}
 
 		$this->emitAccessShareHook($share);

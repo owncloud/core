@@ -53,7 +53,7 @@ if (!is_array($files_list)) {
 if(isset($_GET['downloadStartSecret'])
 	&& !isset($_GET['downloadStartSecret'][32])
 	&& preg_match('!^[a-zA-Z0-9]+$!', $_GET['downloadStartSecret']) === 1) {
-	setcookie('ocDownloadStarted', $_GET['downloadStartSecret'], time() + 20, '/');
+	setcookie('ocDownloadStarted', $_GET['downloadStartSecret'], time() + 20, '/', null, true, true);
 }
 
 $server_params = ['head' => \OC::$server->getRequest()->getMethod() == 'HEAD'];

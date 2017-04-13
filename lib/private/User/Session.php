@@ -345,7 +345,7 @@ class Session implements IUserSession, Emitter {
 		if (!is_null($request->getCookie('cookie_test'))) {
 			return true;
 		}
-		setcookie('cookie_test', 'test', $this->timeFacory->getTime() + 3600);
+		setcookie('cookie_test', 'test', $this->timeFacory->getTime() + 3600, null, null, true, true);
 		return false;
 	}
 

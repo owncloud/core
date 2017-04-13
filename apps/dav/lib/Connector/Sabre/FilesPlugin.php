@@ -219,7 +219,7 @@ class FilesPlugin extends ServerPlugin {
 			if (!isset($token[32])
 				&& preg_match('!^[a-zA-Z0-9]+$!', $token) === 1) {
 				// FIXME: use $response->setHeader() instead
-				setcookie('ocDownloadStarted', $token, time() + 20, '/');
+				setcookie('ocDownloadStarted', $token, time() + 20, '/', null, true, true);
 			}
 		}
 	}

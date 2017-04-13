@@ -47,7 +47,7 @@ class Internal extends Session {
 		try {
 			session_start();
 		} catch (\Exception $e) {
-			setcookie(session_name(), null, -1, \OC::$WEBROOT ? : '/');
+			setcookie(session_name(), null, -1, \OC::$WEBROOT ? : '/', null, true, true);
 		}
 		restore_error_handler();
 		if (!isset($_SESSION)) {
