@@ -82,7 +82,7 @@ OC.MimeType = {
 
 		// First try to get the correct icon from the current theme
 		if (OC.currentTheme.name !== '' && $.isArray(OC.MimeTypeList.themes[OC.currentTheme.name])) {
-			path = '/' + OC.currentTheme.directory + 'core/img/filetypes/';
+			path = '/' + OC.currentTheme.directory + '/core/img/filetypes/';
 			icon = OC.MimeType._getFile(mimeType, OC.MimeTypeList.themes[OC.currentTheme.name]);
 		}
 
