@@ -263,7 +263,9 @@ class Application extends \OCP\AppFramework\App {
 				);
 			}
 		);
-
+		$container->registerService('OCP\Encryption\Keys\IStorage', function(IAppContainer $c) {
+			return $c->getServer()->getEncryptionKeyStorage();
+		});
 	}
 
 }
