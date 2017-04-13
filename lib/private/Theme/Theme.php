@@ -34,6 +34,11 @@ class Theme {
 	private $directory;
 
 	/**
+	 * @var string
+	 */
+	private $webPath;
+
+	/**
 	 * Theme constructor.
 	 *
 	 * @param string $name
@@ -70,5 +75,19 @@ class Theme {
 	 */
 	public function setDirectory($directory) {
 		$this->directory = $directory;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWebPath(): string {
+		return $this->webPath;
+	}
+
+	/**
+	 * @param string $webPath
+	 */
+	public function setWebPath(string $webPath) {
+		$this->webPath = $webPath;
 	}
 }
