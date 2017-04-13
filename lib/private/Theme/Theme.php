@@ -87,7 +87,7 @@ class Theme {
 	/**
 	 * @param string $webPath
 	 */
-	public function setWebPath(string $webPath) {
+	public function setWebPath($webPath) {
 		$this->webPath = $webPath;
 	}
 }
