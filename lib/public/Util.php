@@ -707,10 +707,11 @@ class Util {
 	/**
 	 * Collects all status infos.
 	 *
-	 * @return array 
+	 * @param bool $includeVersion
+	 * @return array
 	 * @since 10.0
 	 */
-	public static function getStatusInfo() {
+	public static function getStatusInfo($includeVersion = false) {
 		$systemConfig = \OC::$server->getSystemConfig();
 
 		$installed = (bool) $systemConfig->getValue('installed', false);
@@ -722,10 +723,18 @@ class Util {
 			'installed'=> $installed ? 'true' : 'false',
 			'maintenance' => $maintenance ? 'true' : 'false',
 			'needsDbUpgrade' => self::needUpgrade() ? 'true' : 'false',
-			'version' => implode('.', self::getVersion()),
-			'versionstring' => \OC_Util::getVersionString(),
-			'edition' => \OC_Util::getEditionString(),
-			'productname' => $defaults->getName()];
+			'version' => '',
+			'versionstring' => '',
+			'edition' => '',
+			'productname' => ''];
+
+		if ($includeVersion || (bool) $systemConfig->getValue('version.hide', false) === false) {
+			$values['version'] = implode('.', self::getVersion());
+			$values['versionstring'] = \OC_Util::getVersionString();
+			$values['edition'] = \OC_Util::getEditionString();
+			$values['productname'] = $defaults->getName();
+		}
+
 		return $values;
 	}
 }

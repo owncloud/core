@@ -80,6 +80,12 @@ $CONFIG = array(
 'version' => '',
 
 /**
+ * While hardening an ownCloud instance hiding the version information in status.php
+ * can be a legitimate step. Please consult the documentation before enabling this.
+ */
+'version.hide' => false,
+
+/**
  * Identifies the database used with this installation. See also config option
  * ``supportedDatabases``
  *
