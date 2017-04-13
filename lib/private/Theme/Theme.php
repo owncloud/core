@@ -80,7 +80,7 @@ class Theme {
 	/**
 	 * @return string
 	 */
-	public function getWebPath(): string {
+	public function getWebPath() {
 		return $this->webPath;
 	}
 
