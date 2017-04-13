@@ -102,7 +102,8 @@ class ThemeService {
 			$this->theme->setDirectory(
 				substr(\OC_App::getAppPath($appName), strlen(\OC::$SERVERROOT) + 1)
 			);
-			$this->theme->setWebPath(\OC_App::getAppWebPath($appName));
+			$appWebPath = \OC_App::getAppWebPath($appName);
+			$this->theme->setWebPath($appWebPath ? $appWebPath : '');
 			$this->theme->setName($appName);
 		}
 	}
