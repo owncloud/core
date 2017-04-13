@@ -44,10 +44,6 @@ header("Content-type: text/javascript");
 header("Cache-Control: no-cache, must-revalidate");
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
-if (\OC::$server->getUserSession() === null || !\OC::$server->getUserSession()->isLoggedIn()) {
-	header('HTTP/1.0 401 Unauthorized');
-	return;
-}
 // Enable l10n support
 $l = \OC::$server->getL10N('core');
 
@@ -153,20 +149,15 @@ $array = [
 		]
 	),
 	"firstDay" => json_encode($l->l('firstday', null)) ,
-	"oc_config" => json_encode(
-		[
+	"oc_config" => [
 			'session_lifetime'	=> min(\OCP\Config::getSystemValue('session_lifetime', OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')), OC::$server->getIniWrapper()->getNumeric('session.gc_maxlifetime')),
 			'session_keepalive'	=> \OCP\Config::getSystemValue('session_keepalive', true),
-			'version'		=> implode('.', \OCP\Util::getVersion()),
-			'versionstring'		=> OC_Util::getVersionString(),
 			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true) === true,
 			'lost_password_link'	=> \OC::$server->getConfig()->getSystemValue('lost_password_link', null),
 			'modRewriteWorking'	=> (getenv('front_controller_active') === 'true'),
 			'blacklist_files_regex'	=> \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX
-		]
-	),
-	"oc_appconfig" => json_encode(
-		[
+		],
+	"oc_appconfig" => [
 			"core" => [
 				'defaultExpireDateEnabled' => $defaultExpireDateEnabled,
 				'defaultExpireDate' => $defaultExpireDate,
@@ -175,13 +166,11 @@ $array = [
 				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
 				'resharingAllowed' => \OCP\Share::isResharingAllowed(),
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,
-				'federatedCloudShareDoc' => \OC::$server->getURLGenerator()->linkToDocs('user-sharing-federated'),
 				'allowGroupSharing' => \OC::$server->getShareManager()->allowGroupSharing(),
 				'previewsEnabled' => \OC::$server->getConfig()->getSystemValue('enable_previews', true) === true,
 				'enabledPreviewProviders' => \OC::$server->getPreviewManager()->getSupportedMimes()
 			]
-		]
-	),
+		],
 	"oc_defaults" => json_encode(
 		[
 			'entity' => $defaults->getEntity(),
@@ -189,8 +178,6 @@ $array = [
 			'title' => $defaults->getTitle(),
 			'baseUrl' => $defaults->getBaseUrl(),
 			'syncClientUrl' => $defaults->getSyncClientUrl(),
-			'docBaseUrl' => $defaults->getDocBaseUrl(),
-			'docPlaceholderUrl' => $defaults->buildDocLinkToKey('PLACEHOLDER'),
 			'slogan' => $defaults->getSlogan(),
 			'logoClaim' => $defaults->getLogoClaim(),
 			'shortFooter' => $defaults->getShortFooter(),
@@ -205,6 +192,17 @@ $array = [
 		]
 	)
 ];
+
+if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->isLoggedIn()) {
+	$array['oc_appconfig']['federatedCloudShareDoc'] = \OC::$server->getURLGenerator()->linkToDocs('user-sharing-federated');
+	$array['oc_config']['version'] = implode('.', \OCP\Util::getVersion());
+	$array['oc_config']['versionstring'] = OC_Util::getVersionString();
+	$array['oc_defaults']['docBaseUrl'] = $defaults->getDocBaseUrl();
+	$array['oc_defaults']['docPlaceholderUrl'] = $defaults->buildDocLinkToKey('PLACEHOLDER');
+}
+$array['oc_appconfig'] = json_encode($array['oc_appconfig']);
+$array['oc_config'] = json_encode($array['oc_config']);
+$array['oc_defaults'] = json_encode($array['oc_defaults']);
 
 // Allow hooks to modify the output values
 OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
