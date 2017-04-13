@@ -8,6 +8,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Feil administrativt gjenopprettingspassord. Sjekk passordet og prøv igjen.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Serveren støtter ikke endring av passord, men oppdatering av brukerens krypteringsnøkkel var vellykket.",
     "Unable to change password" : "Kunne ikke endre passord",
+    "%s password changed successfully" : "%s passord ble endret",
     "Couldn't send reset email. Please contact your administrator." : "Klarte ikke å sende e-post for tilbakestilling. Kontakt administratoren.",
     "installing and updating apps via the app store or Federated Cloud Sharing" : "installering og oppdatering av apper via app-butikken eller ved deling i Forent sky",
     "Federated Cloud Sharing" : "Forent sky-deling",

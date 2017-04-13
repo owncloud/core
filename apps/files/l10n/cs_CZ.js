@@ -69,6 +69,7 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n bajt","%n bajty","%n bajtů"],
     "Favorited" : "Přidáno k oblíbeným",
     "Favorite" : "Oblíbené",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privátní odkaz: Mohou použít jen osoby, které mají přístup k souboru/složce. Používejte jako trvalý odkaz pro sebe nebo ostatní v rámci sdílení",
     "Folder" : "Adresář",
     "New folder" : "Nový adresář",
     "{newname} already exists" : "{newname} již existuje",

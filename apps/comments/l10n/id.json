@@ -10,9 +10,14 @@
     "More comments..." : "Komentar lainya...",
     "Save" : "Simpan",
     "Allowed characters {count} of {max}" : "Karakter yang diizinkan {count} dari {max}",
+    "Error occurred while retrieving comment with id {id}" : "Kesalahan terjadi saat mengambil komentar dengan id {id}.",
+    "Error occurred while updating comment with id {id}" : "Kesalahan terjadi saat memperbarui komentar dengan id {id}.",
+    "Error occurred while posting comment" : "Kesalahan terjadi saat mengirim komentar",
     "{count} unread comments" : "{count} komentar belum dibaca",
     "Comment" : "Komentar",
+    "You commented" : "Anda berkomentar",
     "%1$s commented" : "%1$s dikomentari",
+    "You commented on %2$s" : "Anda berkomentar pada %2$s",
     "%1$s commented on %2$s" : "%1$s dikomentari pada %2$s"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

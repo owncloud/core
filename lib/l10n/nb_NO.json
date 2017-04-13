@@ -66,6 +66,8 @@
     "Search" : "Søk",
     "Apps" : "Apper",
     "Updates" : "Oppdateringer",
+    "Help & Tips" : "Hjelp og tips",
+    "Additional" : "Ytterligere",
     "%s enter the database username and name." : "%s legg inn brukernavn og navn for databasen.",
     "%s enter the database username." : "%s legg inn brukernavn for databasen.",
     "%s enter the database name." : "%s legg inn navnet på databasen.",

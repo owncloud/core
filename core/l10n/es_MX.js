@@ -100,6 +100,7 @@ OC.L10N.register(
     "Edit" : "Editar",
     "Remove" : "Borrar",
     "Choose a password for the public link" : "Establece una contraseña para el enlace público",
+    "Filename" : "Nombre de archivo",
     "Password" : "Contraseña",
     "Name" : "Nombre",
     "Save" : "Guardar",
