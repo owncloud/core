@@ -14,6 +14,7 @@ OC.L10N.register(
     "Crop is not square" : "裁剪的不是正方形",
     "Couldn't reset password because the token is invalid" : "令牌无效，无法重置密码",
     "Couldn't reset password because the token is expired" : "无法重设密码，因为令牌已过期",
+    "%s password changed successfully" : "%s 密码修改成功",
     "%s password reset" : "重置 %s 的密码",
     "Couldn't send reset email. Please contact your administrator." : "未能成功发送重置邮件，请联系管理员。",
     "Couldn't send mail to following users: %s " : "无法发送邮件到用户: %s ",
