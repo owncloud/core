@@ -109,7 +109,7 @@ OC.L10N.register(
     "Once every direct access" : "En gang pr. direkte aksess",
     "External Storage" : "Ekstern lagring",
     "Enable external storage" : "Aktiver ekstern lagring",
-    "External storage has been disabled by the administrator" : "Ekstern lagring har blitt deaktivert av administratoren",
+    "External storage has been disabled by the administrator" : "Ekstern lagring er deaktivert av administratoren",
     "Folder name" : "Mappenavn",
     "Authentication" : "Autentisering",
     "Configuration" : "Konfigurasjon",
