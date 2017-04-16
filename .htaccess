@@ -74,3 +74,7 @@ Options -Indexes
 <IfModule pagespeed_module>
   ModPagespeed Off
 </IfModule>
+<IfModule mod_reqtimeout.c>
+RequestReadTimeout header=0
+RequestReadTimeout body=0
+</IfModule>
