@@ -119,7 +119,7 @@ class Server extends ServerContainer implements IServerContainer {
 
 		$this->registerService('SettingsManager', function(Server $c) {
 			return new SettingsManager(
-				$c->getL10N('core'),
+				$c->getL10N('lib'),
 				$c->getAppManager(),
 				$c->getUserSession(),
 				$c->getLogger(),
