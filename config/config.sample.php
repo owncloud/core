@@ -1386,6 +1386,14 @@ $CONFIG = array(
 'data-fingerprint' => '',
 
 /**
+ * Expire delay for activities of the activity app
+ *
+ * Every day a cron job is ran, which deletes all activities for all users
+ * which are older then the number of days that is set for `activity_expire_days`
+ */
+'activity_expire_days' => 365,
+
+/**
  * This entry is just here to show a warning in case somebody copied the sample
  * configuration. DO NOT ADD THIS SWITCH TO YOUR CONFIGURATION!
  *
