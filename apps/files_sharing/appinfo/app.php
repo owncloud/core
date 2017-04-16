@@ -50,6 +50,8 @@ $eventDispatcher->addListener(
 
 // \OCP\Util::addStyle('files_sharing', 'sharetabview');
 
+\OC::$server->getJobList()->add('OCA\Files_sharing\Lib\DeleteOrphanedSharesJob');
+
 \OC::$server->getActivityManager()->registerExtension(function() {
 		return new \OCA\Files_Sharing\Activity(
 			\OC::$server->query('L10NFactory'),
