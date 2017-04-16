@@ -7,6 +7,7 @@
     "Delete permanently" : "حذف بشكل دائم",
     "Error" : "خطأ",
     "This operation is forbidden" : "هذة العملية ممنوعة ",
+    "This directory is unavailable, please check the logs or contact the administrator" : "المجلد غير متاح، الرجاء التواصل مع مسؤول النظام ",
     "restored" : "تمت الاستعادة",
     "No entries found in this folder" : "لا يوجد مدخلات في هذا المجلد ",
     "Select all" : "تحديد الكل ",
