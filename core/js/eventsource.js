@@ -140,6 +140,11 @@ OC.EventSource.prototype={
 					this.listeners[type].push(callback);
 				}else{
 					this.source.addEventListener(type,function(e){
+						var parser = document.createElement('a');
+						parser.href = this.url;
+						if (e.origin !== parser.protocol + '//' + parser.hostname) {
+							return;
+						}
 						if (typeof e.data !== 'undefined') {
 							callback(JSON.parse(e.data));
 						} else {
