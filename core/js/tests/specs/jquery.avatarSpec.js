@@ -96,7 +96,7 @@ describe('jquery.avatar tests', function() {
 				})
 			);
 
-			expect($div.imageplaceholder).toHaveBeenCalledWith('foo', 'X');
+			expect($div.imageplaceholder).toHaveBeenCalledWith('foo');
 		});
 
 		it('show no placeholder', function() {
