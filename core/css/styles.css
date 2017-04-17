@@ -284,6 +284,7 @@ a.two-factor-cancel {
 	background-color: transparent;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	opacity: .3;
+	box-shadow: none !important;
 }
 #body-login #submit.login:hover,
 #body-login #submit.login:focus {
