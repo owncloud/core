@@ -281,10 +281,7 @@
 						$('#app-content').animate({
 							scrollTop: newScrollTop
 						}, {
-							duration: 100,
-							complete: function () {
-								scrollToResults();
-							}
+							duration: 100
 						});
 					}
 				}, 150);
