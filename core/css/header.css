@@ -354,11 +354,3 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 		opacity: 1;
 	}
-
-/* do not show display name when profile picture is present */
-#header .avatardiv.avatardiv-shown + #expandDisplayName {
-	display: none;
-}
-#header #expand {
-	display: block;
-}
