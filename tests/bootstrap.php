@@ -14,6 +14,13 @@ set_time_limit(0);
 \OC::$composerAutoloader->addPsr4('Test\\', OC::$SERVERROOT . '/tests/lib/', true);
 \OC::$composerAutoloader->addPsr4('Tests\\', OC::$SERVERROOT . '/tests/', true);
 
+$appDirs = array_map(function($appRoot) {
+	return $appRoot['path'];
+}, OC::$APPSROOTS);
+foreach($appDirs as $appDir) {
+	\OC::$loader->addValidRoot($appDir);
+}
+
 // load all enabled apps
 \OC_App::loadApps();
 
