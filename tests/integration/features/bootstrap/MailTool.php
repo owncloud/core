@@ -35,7 +35,7 @@ trait MailTool {
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}
-		$json = json_decode($this->response->getBody()->getContents(), true);
+		$json = json_decode($this->response->getBody()->getContents());
 		return $json;
 	}
 
