@@ -344,7 +344,9 @@ class Updater extends BasicEmitter {
 			$info = OC_App::getAppInfo($app);
 			if(!OC_App::isAppCompatible($version, $info)) {
 				OC_App::disable($app);
+				$disabledApps[]= $app;
 				$this->emit('\OC\Updater', 'incompatibleAppDisabled', [$app]);
+				continue;
 			}
 			// no need to disable any app in case this is a non-core upgrade
 			if (!$isCoreUpgrade) {
@@ -386,23 +388,17 @@ class Updater extends BasicEmitter {
 	 * @throws \Exception
 	 */
 	private function upgradeAppStoreApps(array $disabledApps) {
-
-		//
-		// TODO: integrate market app in here
-		//
-
-//		foreach($disabledApps as $app) {
-//			try {
-//				if (Installer::isUpdateAvailable($app)) {
-//					$ocsId = \OC::$server->getConfig()->getAppValue($app, 'ocsid', '');
-//
-//					$this->emit('\OC\Updater', 'upgradeAppStoreApp', [$app]);
-//					Installer::updateAppByOCSId($ocsId);
-//				}
-//			} catch (\Exception $ex) {
-//				$this->log->logException($ex, ['app' => 'core']);
-//			}
-//		}
+		$dispatcher = \OC::$server->getEventDispatcher();
+		foreach($disabledApps as $app) {
+			try {
+				$dispatcher->dispatch(
+					self::class . '::upgradeAppStoreApps',
+					new GenericEvent($app)
+				);
+			} catch (\Exception $ex) {
+				$this->log->logException($ex, ['app' => 'core']);
+			}
+		}
 	}
 
 	/**
