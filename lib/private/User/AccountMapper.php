@@ -34,8 +34,10 @@ class AccountMapper extends Mapper {
 	}
 
 	/**
-	 * @param string $email
-	 * @return Account[]
+	 * Return account matching the given email address
+	 *
+	 * @param string $email email address
+	 * @return Account|null account matching the address or null
 	 */
 	public function getByEmail($email) {
 		$qb = $this->db->getQueryBuilder();
@@ -43,7 +45,11 @@ class AccountMapper extends Mapper {
 			->from($this->getTableName())
 			->where($qb->expr()->eq('email', $qb->createNamedParameter($email)));
 
-		return $this->findEntities($qb->getSQL(), $qb->getParameters());
+		$results = $this->findEntities($qb->getSQL(), $qb->getParameters());
+		if (empty($results)) {
+			return null;
+		}
+		return $results[0];
 	}
 
 	/**

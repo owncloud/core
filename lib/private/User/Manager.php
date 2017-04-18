@@ -367,10 +367,8 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.1.0
 	 */
 	public function getByEmail($email) {
-		$accounts = $this->accountMapper->getByEmail($email);
-		return array_map(function(Account $account) {
-			return $this->getUserObject($account);
-		}, $accounts);
+		$account = $this->accountMapper->getByEmail($email);
+		return [$this->getUserObject($account)];
 	}
 
 	/**
