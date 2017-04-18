@@ -156,13 +156,6 @@ class SyncService {
 		$a->setUserId($uid);
 		$a->setState(Account::STATE_ENABLED);
 		$a->setBackend(get_class($this->backend));
-		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
-			$a->setHome($this->backend->getHome($uid));
-		}
-		if ($this->backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
-			$a->setDisplayName($this->backend->getDisplayName($uid));
-		}
-
 		return $a;
 	}
 
