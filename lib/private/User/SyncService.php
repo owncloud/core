@@ -45,6 +45,8 @@ class SyncService {
 	private $mapper;
 	/** @var IConfig */
 	private $config;
+	/** @var ILogger */
+	private $logger;
 	/** @var string */
 	private $backendClass;
 
@@ -100,7 +102,10 @@ class SyncService {
 				try {
 					$a = $this->mapper->getByUid($uid);
 					if ($a->getBackend() !== $this->backendClass) {
-						$this->logger->debug("User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass})");
+						$this->logger->warning(
+							"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
+							['app' => self::class]
+						);
 						continue;
 					}
 					$a = $this->setupAccount($a, $uid);
@@ -144,9 +149,12 @@ class SyncService {
 		}
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
 			$home = $this->backend->getHome($uid);
-			if (empty($home)) {
-				$user = \OC::$server->getUserManager()->get($uid);
-				$home = $user->getHome();
+			if (!$home) {
+				$home = $this->config->getSystemValue('datadirectory') . "/$uid";
+				$this->logger->warning(
+					"User backend {$this->backendClass} provided no home for <$uid>, using <$home>.",
+					['app' => self::class]
+				);
 			}
 			$a->setHome($home);
 		}
