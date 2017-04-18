@@ -143,7 +143,12 @@ class SyncService {
 			$a->setQuota($value);
 		}
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
-			$a->setHome($this->backend->getHome($uid));
+			$home = $this->backend->getHome($uid);
+			if (empty($home)) {
+				$user = \OC::$server->getUserManager()->get($uid);
+				$home = $user->getHome();
+			}
+			$a->setHome($home);
 		}
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
 			$a->setDisplayName($this->backend->getDisplayName($uid));
