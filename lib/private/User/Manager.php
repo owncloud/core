@@ -393,6 +393,12 @@ class Manager extends PublicEmitter implements IUserManager {
 				$account->setEmail($email);
 			}
 		}
+		if ($backend instanceof IProvidesQuotaBackend) {
+			$quota = $backend->getQuota($uid);
+			if ($quota !== null) {
+				$account->setQuota($quota);
+			}
+		}
 		$home = false;
 		if ($backend->implementsActions(Backend::GET_HOME)) {
 			$home = $backend->getHome($uid);
