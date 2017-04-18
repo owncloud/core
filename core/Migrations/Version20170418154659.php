@@ -1,9 +1,5 @@
 <?php
 /**
- * @author Frank Karlitschek <frank@karlitschek.de>
- * @author Ilja Neumann <ineumann@owncloud.com>
- * @author Joas Schilling <coding@schilljs.com>
- * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -22,21 +18,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-// We only can count up. The 4. digit is only for the internal patchlevel to trigger DB upgrades
-// between betas, final and RCs. This is _not_ the public version number. Reset minor/patchlevel
-// when updating major/minor version number.
-$OC_Version = [10, 0, 0, 7];
+namespace OC\Migrations;
 
-// The human readable string
-$OC_VersionString = '10.0.0 beta2';
+use Doctrine\DBAL\Schema\Schema;
+use OCP\Migration\ISchemaMigration;
 
-$OC_VersionCanBeUpgradedFrom = [9, 1];
+/**
+ * Remove unique constraint on account table email column
+ */
+class Version20170418154659 implements ISchemaMigration {
 
-// The ownCloud channel
-$OC_Channel = 'git';
+	public function changeSchema(Schema $schema, array $options) {
+		$prefix = $options['tablePrefix'];
+		$table = $schema->getTable("{$prefix}accounts");
 
-// The build number
-$OC_Build = '';
-
-// Vendor of this package
-$vendor = 'owncloud';
+		// in beta versions a constraint was added, remove it if it exists
+		foreach ($table->getIndexes() as $index) {
+			if ($index->spansColumns(['email'])) {
+				$table->dropIndex($index->getName());
+				break;
+			}
+		}
+	}
+}
