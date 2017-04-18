@@ -129,7 +129,7 @@ describe('MimeType tests', function() {
 			beforeEach(function() {
 				_themeFolder = OC.currentTheme.name;
 				OC.currentTheme.name = 'abc';
-				OC.currentTheme.directory = 'themes/abc/';
+				OC.currentTheme.directory = 'themes/abc';
 				//Clear mimetypeIcons caches
 				OC.MimeType._mimeTypeIcons = {};
 			});
