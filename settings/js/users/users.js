@@ -179,7 +179,6 @@ var UserList = {
 			//when the list was emptied, one row was left, necessary to keep
 			//add working and the layout unbroken. We need to remove this item
 			$tr.show();
-			$userListBody.find('tr:first').remove();
 			UserList.isEmpty = false;
 			UserList.checkUsersToLoad();
 		}
