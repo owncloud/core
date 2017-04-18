@@ -391,6 +391,7 @@ class Updater extends BasicEmitter {
 		$dispatcher = \OC::$server->getEventDispatcher();
 		foreach($disabledApps as $app) {
 			try {
+				$this->emit('\OC\Updater', 'upgradeAppStoreApp', [$app]);
 				$dispatcher->dispatch(
 					self::class . '::upgradeAppStoreApps',
 					new GenericEvent($app)
