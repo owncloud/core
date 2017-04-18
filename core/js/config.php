@@ -171,8 +171,7 @@ $array = [
 				'enabledPreviewProviders' => \OC::$server->getPreviewManager()->getSupportedMimes()
 			]
 		],
-	"oc_defaults" => json_encode(
-		[
+	"oc_defaults" => [
 			'entity' => $defaults->getEntity(),
 			'name' => $defaults->getName(),
 			'title' => $defaults->getTitle(),
@@ -183,8 +182,7 @@ $array = [
 			'shortFooter' => $defaults->getShortFooter(),
 			'longFooter' => $defaults->getLongFooter(),
 			'folder' => OC_Util::getTheme()->getName()
-		]
-	),
+	],
 	'theme' => json_encode(
 		[
 			'name' => OC_Util::getTheme()->getName(),
