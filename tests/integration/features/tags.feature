@@ -56,7 +56,7 @@ Feature: tags
     When "user0" edits the tag with name "MySuperAwesomeTagName" and sets its name to "😀"
     Then The response should have a status code "207"
     And The following tags should exist for "admin"
-      |AnotherTagName|true|true|
+      |😀|true|true|
 
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given user "user0" exists
