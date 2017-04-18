@@ -67,6 +67,7 @@
     "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Favorited" : "Agregado a Favoritos",
     "Favorite" : "Favorito",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Enlace privado: Solo las personas con acceso al archivo/carpeta pueden usarlo. Utilízalo como enlace permanente para ti o para dirigir a otros a archivos dentro de compartidos.",
     "Folder" : "Carpeta",
     "New folder" : "Nueva carpeta",
     "{newname} already exists" : "{newname} ya existe",
