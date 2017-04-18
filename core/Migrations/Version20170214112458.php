@@ -55,7 +55,6 @@ class Version20170214112458 implements ISchemaMigration {
 		]);
 
 		$table->setPrimaryKey(['id']);
-		$table->addUniqueIndex(['email']);
 		$table->addUniqueIndex(['user_id']);
     }
 }
