@@ -27,6 +27,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\UserInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * Class SyncService
@@ -97,19 +98,46 @@ class SyncService {
 
 			// update existing and insert new users
 			foreach ($users as $uid) {
+				$isNew = false;
 				try {
 					$a = $this->mapper->getByUid($uid);
 					if ($a->getBackend() !== $this->backendClass) {
 						$this->logger->debug("User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass})");
 						continue;
 					}
-					$a = $this->setupAccount($a, $uid);
-					$this->mapper->update($a);
-				} catch(DoesNotExistException $ex) {
+				} catch (DoesNotExistException $ex) {
+					$isNew = true;
 					$a = $this->createNewAccount($uid);
 					$this->setupAccount($a, $uid);
-					$this->mapper->insert($a);
 				}
+
+				do {
+					$retry = false;
+					try {
+						if ($isNew) {
+							$this->mapper->insert($a);
+						} else {
+							$this->mapper->update($a);
+						}
+					} catch (UniqueConstraintViolationException $ex) {
+						// could be due to a duplicate email
+						$email = $a->getEmail();
+						if ($email === null || $email === '') {
+							// it's a different issue, rethrow
+							throw $ex;
+						}
+						// find out if there is another account with the same email address
+						$existingAccount = $this->mapper->getByEmail($email);
+						if (!$existingAccount) {
+							// it's a different issue, rethrow
+							throw $ex;
+						}
+
+						// it's a duplicate email, so clear the field and try again
+						$a->setEmail(null);
+						$retry = true;
+					}
+				} while ($retry);
 				// clean the user's preferences
 				$this->cleanPreferences($uid);
 
