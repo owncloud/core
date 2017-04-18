@@ -69,6 +69,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	private $accountMapper;
 
 	/**
+	 * TODO inject Logger
 	 * @param \OCP\IConfig $config
 	 * @param AccountMapper $accountMapper
 	 */
@@ -374,6 +375,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
+	 * TODO inject OC\User\SyncService to deduplicate Account creation code
 	 * @param string $uid
 	 * @param UserInterface $backend
 	 * @return Account|\OCP\AppFramework\Db\Entity
@@ -404,7 +406,11 @@ class Manager extends PublicEmitter implements IUserManager {
 			$home = $backend->getHome($uid);
 		}
 		if (!$home) {
-			$home = $this->config->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data") . '/' . $uid;
+			$home = $this->config->getSystemValue('datadirectory') . "/$uid";
+			\OC::$server->getLogger()->warning(
+				"User backend ".get_class($backend)." provided no home for <$uid>, using <$home>.",
+				['app' => self::class]
+			);
 		}
 		$account->setHome($home);
 		$account = $this->accountMapper->insert($account);
