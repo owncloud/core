@@ -45,6 +45,8 @@ use OCP\ILogger;
  * @package OC\Files\Utils
  */
 class Scanner extends PublicEmitter {
+	const MAX_ENTRIES_TO_COMMIT = 10000;
+
 	/**
 	 * @var string $user
 	 */
@@ -61,6 +63,20 @@ class Scanner extends PublicEmitter {
 	protected $logger;
 
 	/**
+	 * Whether to use a DB transaction
+	 *
+	 * @var bool
+	 */
+	protected $useTransaction;
+
+	/**
+	 * Number of entries scanned to commit
+	 *
+	 * @var int
+	 */
+	protected $entriesToCommit;
+
+	/**
 	 * @param string $user
 	 * @param \OCP\IDBConnection $db
 	 * @param ILogger $logger
@@ -69,6 +85,8 @@ class Scanner extends PublicEmitter {
 		$this->logger = $logger;
 		$this->user = $user;
 		$this->db = $db;
+		// when DB locking is used, no DB transactions will be used
+		$this->useTransaction = !(\OC::$server->getLockingProvider() instanceof DBLockingProvider);
 	}
 
 	/**
@@ -197,19 +215,18 @@ class Scanner extends PublicEmitter {
 			$scanner = $storage->getScanner();
 			$scanner->setUseTransactions(false);
 			$this->attachListener($mount);
-			$isDbLocking = \OC::$server->getLockingProvider() instanceof DBLockingProvider;
 
 			$scanner->listen('\OC\Files\Cache\Scanner', 'removeFromCache', function ($path) use ($storage) {
-				$this->triggerPropagator($storage, $path);
+				$this->postProcessEntry($storage, $path);
 			});
 			$scanner->listen('\OC\Files\Cache\Scanner', 'updateCache', function ($path) use ($storage) {
-				$this->triggerPropagator($storage, $path);
+				$this->postProcessEntry($storage, $path);
 			});
 			$scanner->listen('\OC\Files\Cache\Scanner', 'addToCache', function ($path) use ($storage) {
-				$this->triggerPropagator($storage, $path);
+				$this->postProcessEntry($storage, $path);
 			});
 
-			if (!$isDbLocking) {
+			if ($this->useTransaction) {
 				$this->db->beginTransaction();
 			}
 			try {
@@ -227,7 +244,7 @@ class Scanner extends PublicEmitter {
 				$this->logger->logException($e);
 				$this->emit('\OC\Files\Utils\Scanner', 'StorageNotAvailable', [$e]);
 			}
-			if (!$isDbLocking) {
+			if ($this->useTransaction) {
 				$this->db->commit();
 			}
 		}
@@ -235,6 +252,21 @@ class Scanner extends PublicEmitter {
 
 	private function triggerPropagator(IStorage $storage, $internalPath) {
 		$storage->getPropagator()->propagateChange($internalPath, time());
+	}
+
+	private function postProcessEntry(IStorage $storage, $internalPath) {
+		$this->triggerPropagator($storage, $internalPath);
+		if ($this->useTransaction) {
+			$this->entriesToCommit++;
+			if ($this->entriesToCommit >= self::MAX_ENTRIES_TO_COMMIT) {
+				$propagator = $storage->getPropagator();
+				$this->entriesToCommit = 0;
+				$this->db->commit();
+				$propagator->commitBatch();
+				$this->db->beginTransaction();
+				$propagator->beginBatch();
+			}
+		}
 	}
 }
 
