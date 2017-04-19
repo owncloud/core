@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<info>
+    <id>user_gitlab</id>
+    <name>GitLab user backend</name>
+    <description>Authenticate Users using GitLab</description>
+    <licence>MIT</licence>
+    <author>Romain Cambier</author>
+    <version>1.0</version>
+    <requiremin>8.0</requiremin>
+    <shipped>false</shipped>
+    <namespace>user_gitlab</namespace>
+    <types>
+        <authentication/>
+    </types>
+</info>
