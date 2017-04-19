@@ -40,7 +40,7 @@ Tell us what happens instead
 ```
 Login as admin user into your ownCloud and access 
 http://example.com/index.php/settings/integrity/failed 
-paste the results here.
+paste the results into https://gist.github.com/ and puth the link here.
 ```
 
 
