@@ -244,7 +244,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
-		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
+		$accounts = $this->accountMapper->search('display_name', $pattern, $limit, $offset);
 		return array_map(function(Account $account) {
 			return $this->getUserObject($account);
 		}, $accounts);
