@@ -38,6 +38,9 @@ class AccountMapper extends Mapper {
 	 * @return Account[]
 	 */
 	public function getByEmail($email) {
+		if ($email === null || trim($email) === '') {
+			throw new \InvalidArgumentException('$email must be defined');
+		}
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())

@@ -372,6 +372,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @since 9.1.0
 	 */
 	public function getByEmail($email) {
+		if ($email === null || trim($email) === '') {
+			throw new \InvalidArgumentException('$email cannot be empty');
+		}
 		$accounts = $this->accountMapper->getByEmail($email);
 		return array_map(function(Account $account) {
 			return $this->getUserObject($account);
