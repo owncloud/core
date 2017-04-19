@@ -164,18 +164,6 @@ class UserTest extends TestCase {
 		$this->assertEquals('Database', $this->user->getBackendClassName());
 	}
 
-	public function testGetHomeNotSupported() {
-		$this->config->expects($this->any())
-			->method('getUserValue')
-			->will($this->returnValue(true));
-		$this->config->expects($this->any())
-			->method('getSystemValue')
-			->with($this->equalTo('datadirectory'))
-			->will($this->returnValue('arbitrary/path'));
-
-		$this->assertEquals('arbitrary/path/foo', $this->user->getHome());
-	}
-
 	public function providesChangeDisplayName() {
 		return [
 			[true, true],
