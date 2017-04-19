@@ -7,7 +7,9 @@
 timestampedNode('SLAVE') {
     stage 'Checkout'
         checkout scm
-        sh '''composer install'''
+        sh '''
+        phpenv local 5.6
+        composer install'''
 
     stage 'JavaScript Testing'
         executeAndReport('tests/autotest-results-js.xml') {
