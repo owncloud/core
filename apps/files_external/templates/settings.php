@@ -18,7 +18,12 @@
 		/** @var Backend $backend */
 		$scripts = $backend->getCustomJs();
 		foreach ($scripts as $script) {
-			script('files_external', $script);
+			if (is_array($script)) {
+				list($appName, $script) = $script;
+			} else {
+				$appName = 'files_external';
+			}
+			script($appName, $script);
 		}
 	}
 	foreach ($_['authMechanisms'] as $authMechanism) {
