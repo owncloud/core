@@ -85,7 +85,7 @@ abstract class ResourceLocator {
 				$this->logger->error('Could not find resource file "' . $e->getResourcePath() . '"', ['app' => $resourceApp]);
 			}
 		}
-		if (!empty($this->theme)) {
+		if (!empty($this->theme->getName())) {
 			foreach ($resources as $resource) {
 				try {
 					$this->doFindTheme($resource);
@@ -106,7 +106,7 @@ abstract class ResourceLocator {
 	 * @return bool True if the resource was found, false otherwise
 	 */
 	protected function appendOnceIfExist($root, $file, $webRoot = null) {
-
+		$file = ltrim($file, '/');
 		$path = $this->buildPath([$root, $file]);
 		
 		if (!isset( $this->resources[$path] ) && is_file($path)) {
