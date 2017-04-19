@@ -145,7 +145,10 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function setEMailAddress($mailAddress) {
-		$mailAddress = trim($mailAddress);
+		if ($mailAddress !== null) {
+			$mailAddress = trim($mailAddress);
+		}
+
 		if ($mailAddress === $this->account->getEmail()) {
 			return;
 		}
