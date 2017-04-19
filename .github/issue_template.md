@@ -40,7 +40,30 @@ Tell us what happens instead
 ```
 Login as admin user into your ownCloud and access 
 http://example.com/index.php/settings/integrity/failed 
-paste the results here.
+paste the results into https://gist.github.com/ and puth the link here.
+```
+
+
+**The content of config/config.php:**
+
+```
+Log in to the web-UI with an administrator account and click on
+'admin' -> 'Generate Config Report' -> 'Download ownCloud config report'
+This report includes the config.php settings, the list of activated apps
+and other details in a well sanitized form.
+
+or 
+
+If you have access to your command line run e.g.:
+sudo -u www-data php occ config:list system
+from within your ownCloud installation folder
+
+*ATTENTION:* Do not post your config.php file in public as is. Please use one of the above
+methods whenever possible. Both, the generated reports from the web-ui and from occ config:list
+consistently remove sensitive data. You still may want to review the report before sending.
+If done manually then it is critical for your own privacy to dilligently
+remove *all* host names, passwords, usernames, salts and other credentials before posting.
+You should assume that attackers find such information and will use them against your systems.
 ```
 
 **List of activated apps:**
@@ -48,20 +71,7 @@ paste the results here.
 ```
 If you have access to your command line run e.g.:
 sudo -u www-data php occ app:list
-from within your ownCloud installation folder
-```
-
-**The content of config/config.php:**
-
-```
-If you have access to your command line run e.g.:
-sudo -u www-data php occ config:list system
-from within your ownCloud installation folder
-
-or 
-
-Insert your config.php content here
-(ATTENTION: WITHOUT the database password, passwordsalt and secret !!!)
+from within your ownCloud installation folder.
 ```
 
 **Are you using external storage, if yes which one:** local/smb/sftp/...
