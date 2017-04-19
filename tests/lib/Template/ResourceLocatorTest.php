@@ -45,15 +45,18 @@ class ResourceLocatorTest extends \Test\TestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	public function getResourceLocator($theme, $core_map, $party_map, $appsRoots) {
+		$themeInstance = $this->createMock('OC\Theme\Theme');
+		$themeInstance->method('getName')->willReturn($theme);
+
 		return $this->getMockForAbstractClass('OC\Template\ResourceLocator',
-			[$this->logger, $theme, $core_map, $party_map, $appsRoots],
+			[$this->logger, $themeInstance, $core_map, $party_map, $appsRoots],
 			'', true, true, true, []);
 	}
 
 	public function testConstructor() {
 		$locator = $this->getResourceLocator('theme',
 			['core'=>'map'], ['3rd'=>'party'], ['foo'=>'bar']);
-		$this->assertAttributeEquals('theme', 'theme', $locator);
+		$this->assertAttributeInstanceOf('OC\Theme\Theme', 'theme', $locator);
 		$this->assertAttributeEquals('core', 'serverroot', $locator);
 		$this->assertAttributeEquals(['core'=>'map','3rd'=>'party'], 'mapping', $locator);
 		$this->assertAttributeEquals('3rd', 'thirdpartyroot', $locator);
