@@ -17,6 +17,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Peter Prochaska <info@peter-prochaska.de>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -35,15 +36,6 @@
  *
  */
 namespace OC;
-
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\FileAsset;
-use Assetic\AssetWriter;
-use Assetic\Filter\CssImportFilter;
-use Assetic\Filter\CssMinFilter;
-use Assetic\Filter\CssRewriteFilter;
-use Assetic\Filter\JSqueezeFilter;
-use Assetic\Filter\SeparatorFilter;
 
 class TemplateLayout extends \OC_Template {
 
@@ -91,7 +83,7 @@ class TemplateLayout extends \OC_Template {
 					break;
 				}
 			}
-			
+
 			foreach($settingsNavigation as $entry) {
 				if ($entry['active']) {
 					$this->assign( 'application', $entry['name'] );
@@ -136,36 +128,30 @@ class TemplateLayout extends \OC_Template {
 			self::$versionHash = md5('not installed');
 		}
 
-		$useAssetPipeline = self::isAssetPipelineEnabled();
-		if ($useAssetPipeline) {
+		// Add the js files
+		$jsFiles = self::findJavascriptFiles(\OC_Util::$scripts);
+		$this->assign('jsfiles', []);
+		if ($this->config->getSystemValue('installed', false) && $renderAs != 'error') {
 			$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
-			$this->generateAssets();
-		} else {
-			// Add the js files
-			$jsFiles = self::findJavascriptFiles(\OC_Util::$scripts);
-			$this->assign('jsfiles', []);
-			if ($this->config->getSystemValue('installed', false) && $renderAs != 'error') {
-				$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
-			}
-			foreach($jsFiles as $info) {
-				$web = $info[1];
-				$file = $info[2];
-				$this->append( 'jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
-			}
+		}
+		foreach($jsFiles as $info) {
+			$web = $info[1];
+			$file = $info[2];
+			$this->append( 'jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+		}
 
-			// Add the css files
-			$cssFiles = self::findStylesheetFiles(\OC_Util::$styles);
-			$this->assign('cssfiles', []);
-			$this->assign('printcssfiles', []);
-			foreach($cssFiles as $info) {
-				$web = $info[1];
-				$file = $info[2];
+		// Add the css files
+		$cssFiles = self::findStylesheetFiles(\OC_Util::$styles);
+		$this->assign('cssfiles', []);
+		$this->assign('printcssfiles', []);
+		foreach($cssFiles as $info) {
+			$web = $info[1];
+			$file = $info[2];
 
 			if (substr($file, -strlen('print.css')) === 'print.css') {
-					$this->append( 'printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
-				} else {
-					$this->append( 'cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
-				}
+				$this->append( 'printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+			} else {
+				$this->append( 'cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			}
 		}
 	}
@@ -198,91 +184,6 @@ class TemplateLayout extends \OC_Template {
 		return $locator->getResources();
 	}
 
-	public function generateAssets() {
-		$assetDir = \OC::$server->getConfig()->getSystemValue('assetdirectory', \OC::$SERVERROOT);
-		$jsFiles = self::findJavascriptFiles(\OC_Util::$scripts);
-		$jsHash = self::hashFileNames($jsFiles);
-
-		if (!file_exists("$assetDir/assets/$jsHash.js")) {
-			$jsFiles = array_map(function ($item) {
-				$root = $item[0];
-				$file = $item[2];
-				// no need to minifiy minified files
-				if (substr($file, -strlen('.min.js')) === '.min.js') {
-					return new FileAsset($root . '/' . $file, [
-						new SeparatorFilter(';')
-					], $root, $file);
-				}
-				return new FileAsset($root . '/' . $file, [
-					new JSqueezeFilter(),
-					new SeparatorFilter(';')
-				], $root, $file);
-			}, $jsFiles);
-			$jsCollection = new AssetCollection($jsFiles);
-			$jsCollection->setTargetPath("assets/$jsHash.js");
-
-			$writer = new AssetWriter($assetDir);
-			$writer->writeAsset($jsCollection);
-		}
-
-		$cssFiles = self::findStylesheetFiles(\OC_Util::$styles);
-
-		// differentiate between screen stylesheets and printer stylesheets
-		$screenCssFiles = array_filter($cssFiles, function($cssFile) {
-			return substr_compare($cssFile[2], 'print.css', -strlen('print.css')) !== 0;
-		});
-		$screenCssAsset = $this->generateCssAsset($screenCssFiles);
-
-		$printCssFiles = array_filter($cssFiles, function($cssFile) {
-			return substr_compare($cssFile[2], 'print.css', -strlen('print.css')) === 0;
-		});
-		$printCssAsset = $this->generateCssAsset($printCssFiles);
-
-		$this->append('jsfiles', \OC::$server->getURLGenerator()->linkTo('assets', "$jsHash.js"));
-		$this->append('cssfiles', $screenCssAsset);
-		$this->append('printcssfiles', $printCssAsset);
-	}
-
-	/**
-	 * generates a single css asset file from an array of css files if at least one of them has changed
-	 * otherwise it just returns the path to the old asset file
-	 * @param $files
-	 * @return string
-	 */
-	private function generateCssAsset($files) {
-		$assetDir = \OC::$server->getConfig()->getSystemValue('assetdirectory', \OC::$SERVERROOT);
-		$hash = self::hashFileNames($files);
-
-		if (!file_exists("$assetDir/assets/$hash.css")) {
-			$files = array_map(function ($item) {
-				$root = $item[0];
-				$file = $item[2];
-				$assetPath = $root . '/' . $file;
-				$sourceRoot =  \OC::$SERVERROOT;
-				$sourcePath = substr($assetPath, strlen(\OC::$SERVERROOT));
-				return new FileAsset(
-					$assetPath,
-					[
-						new CssRewriteFilter(),
-						new CssMinFilter(),
-						new CssImportFilter()
-					],
-					$sourceRoot,
-					$sourcePath
-				);
-			}, $files);
-
-			$cssCollection = new AssetCollection($files);
-			$cssCollection->setTargetPath("assets/$hash.css");
-
-			$writer = new AssetWriter($assetDir);
-			$writer->writeAsset($cssCollection);
-
-		}
-
-		return \OC::$server->getURLGenerator()->linkTo('assets', "$hash.css");
-	}
-
 	/**
 	 * Converts the absolute file path to a relative path from \OC::$SERVERROOT
 	 * @param string $filePath Absolute path
@@ -298,23 +199,4 @@ class TemplateLayout extends \OC_Template {
 		return $relativePath[1];
 	}
 
-	/**
-	 * @param array $files
-	 * @return string
-	 */
-
-	private static function hashFileNames($files) {
-		foreach($files as $i => $file) {
-			try {
-				$files[$i] = self::convertToRelativePath($file[0]).'/'.$file[2];
-			} catch (\Exception $e) {
-				$files[$i] = $file[0].'/'.$file[2];
-			}
-		}
-
-		sort($files);
-		// include the apps' versions hash to invalidate the cached assets
-		$files[] = self::$versionHash;
-		return hash('md5', implode('', $files));
-	}
 }
