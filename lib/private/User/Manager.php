@@ -34,8 +34,8 @@ namespace OC\User;
 
 use OC\Hooks\PublicEmitter;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\ILogger;
 use OCP\IUser;
-use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\User\IProvidesEMailBackend;
@@ -56,14 +56,17 @@ use OCP\UserInterface;
  * @package OC\User
  */
 class Manager extends PublicEmitter implements IUserManager {
-	/** @var \OCP\UserInterface[] $backends */
+	/** @var UserInterface[] $backends */
 	private $backends = [];
 
-	/** @var \OC\User\User[] $cachedUsers */
+	/** @var User[] $cachedUsers */
 	private $cachedUsers = [];
 
-	/** @var \OCP\IConfig $config */
+	/** @var IConfig $config */
 	private $config;
+
+	/** @var ILogger $logger */
+	private $logger;
 
 	/** @var AccountMapper */
 	private $accountMapper;
@@ -73,8 +76,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \OCP\IConfig $config
 	 * @param AccountMapper $accountMapper
 	 */
-	public function __construct(IConfig $config, AccountMapper $accountMapper) {
+	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper) {
 		$this->config = $config;
+		$this->logger = $logger;
 		$this->accountMapper = $accountMapper;
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
@@ -213,7 +217,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 		}
 
-		\OC::$server->getLogger()->warning('Login failed: \''. $loginName .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
+		$this->logger->warning('Login failed: \''. $loginName .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
 		return false;
 	}
 
@@ -407,7 +411,7 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		if (!$home) {
 			$home = $this->config->getSystemValue('datadirectory') . "/$uid";
-			\OC::$server->getLogger()->warning(
+			$this->logger->warning(
 				"User backend ".get_class($backend)." provided no home for <$uid>, using <$home>.",
 				['app' => self::class]
 			);
