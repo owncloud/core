@@ -111,6 +111,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			});
 		}
 
+		// we shall not allow http communication in unit testing
+		\OC::$server->registerService('HTTPHelper', function () {
+			$this->fail('Your test case is not allowed to access the http stack.');
+		});
+
+		\OC::$server->registerService('HttpClientService', function () {
+			$this->fail('Your test case is not allowed to access the http stack.');
+		});
+
 		// overwrite the command bus with one we can run ourselves
 		$this->commandBus = new QueueBus();
 		\OC::$server->registerService('AsyncCommandBus', function () {
