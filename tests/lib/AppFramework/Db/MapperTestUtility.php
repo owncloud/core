@@ -76,6 +76,8 @@ abstract class MapperTestUtility extends \Test\TestCase {
 				return \PDO::PARAM_INT;
 			case 'boolean':
 				return \PDO::PARAM_BOOL;
+			case 'NULL':
+				return \PDO::PARAM_NULL;
 			default:
 				return \PDO::PARAM_STR;
 		}

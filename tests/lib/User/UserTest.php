@@ -341,4 +341,21 @@ class UserTest extends TestCase {
 		];
 	}
 
+	public function providesSetEmailAddress() {
+		return [
+			['aa1@example.com', 'aa1@example.com'],
+			['aa2@example.com ', 'aa2@example.com'],
+			[' wöt@example.com', 'wöt@example.com'],
+			['', ''],
+			[null, null],
+		];
+	}
+
+	/**
+	 * @dataProvider providesSetEmailAddress
+	 */
+	public function testSetEmailAddress($input, $expected) {
+		$this->user->setEMailAddress($input);
+		$this->assertEquals($expected, $this->user->getEMailAddress(), true);
+	}
 }
