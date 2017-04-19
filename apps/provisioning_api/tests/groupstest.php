@@ -257,6 +257,22 @@ class GroupsTest extends TestCase {
 		$this->groupManager->get($group)->delete();
 	}
 
+	public function testAddGroupWithSpecialChar() {
+		$this->groupManager
+			->method('groupExists')
+			->with('Iñtërnâtiônàlizætiøn')
+			->willReturn(false);
+
+		$this->groupManager
+			->expects($this->once())
+			->method('createGroup')
+			->with('Iñtërnâtiônàlizætiøn');
+
+		$result = $this->api->addGroup([]);
+		$this->assertInstanceOf('OC_OCS_Result', $result);
+		$this->assertTrue($result->succeeded());
+	}
+
 	public function testDeleteGroupNonExisting() {
 		$group = $this->getUniqueId();
 
