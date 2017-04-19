@@ -334,6 +334,7 @@ abstract class Mapper {
 	 * @since 7.0.0
 	 */
 	protected function mapRowToEntity($row) {
+		unset($row['DOCTRINE_ROWNUM']); // Remove oracle workaround for limit
 		return call_user_func($this->entityClass .'::fromRow', $row);
 	}
 
