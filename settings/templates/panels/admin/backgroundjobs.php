@@ -33,7 +33,7 @@ script('settings', 'panels/backgroundjobs');
 		title="<?php p($l->t('Open documentation'));?>"
 		href="<?php p(link_to_docs('admin-background-jobs')); ?>"></a>
 	<p>
-		<input type="radio" name="mode" value="ajax"
+		<input type="radio" name="mode" class="radio" value="ajax"
 			   id="backgroundjobs_ajax" <?php if ($_['backgroundjobs_mode'] === "ajax") {
 			print_unescaped('checked="checked"');
 		} ?>>
@@ -41,7 +41,7 @@ script('settings', 'panels/backgroundjobs');
 		<em><?php p($l->t("Execute one task with each page loaded")); ?></em>
 	</p>
 	<p>
-		<input type="radio" name="mode" value="webcron"
+		<input type="radio" name="mode" class="radio" value="webcron"
 			   id="backgroundjobs_webcron" <?php if ($_['backgroundjobs_mode'] === "webcron") {
 			print_unescaped('checked="checked"');
 		} ?>>
@@ -49,7 +49,7 @@ script('settings', 'panels/backgroundjobs');
 		<em><?php p($l->t("cron.php is registered at a webcron service to call cron.php every 15 minutes over http.")); ?></em>
 	</p>
 	<p>
-		<input type="radio" name="mode" value="cron"
+		<input type="radio" name="mode" class="radio" value="cron"
 			   id="backgroundjobs_cron" <?php if ($_['backgroundjobs_mode'] === "cron") {
 			print_unescaped('checked="checked"');
 		} ?>>
