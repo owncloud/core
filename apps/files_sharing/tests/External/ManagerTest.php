@@ -233,7 +233,9 @@ class ManagerTest extends TestCase {
 		$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
 		$this->assertEquals($this->getFullPath($mountPoint), rtrim($mount->getMountPoint(), '/'));
 		$storage = $mount->getStorage();
-		$this->assertInstanceOf('\OCA\Files_Sharing\External\Storage', $storage);
+		if (!is_null($storage)) {
+			$this->assertInstanceOf('\OCA\Files_Sharing\External\Storage', $storage);
+		}
 	}
 
 	private function assertNotMount($mountPoint) {
