@@ -219,7 +219,13 @@ class FilesPlugin extends ServerPlugin {
 			if (!isset($token[32])
 				&& preg_match('!^[a-zA-Z0-9]+$!', $token) === 1) {
 				// FIXME: use $response->setHeader() instead
-				setcookie('ocDownloadStarted', $token, time() + 20, '/', null, true, true);
+				$httpRequest = $this->server->httpRequest;
+				$secureFlag = false;
+				$secure = $httpRequest->getRawServerValue('HTTPS');
+				if (isset($secure) && $secure !== 'off') {
+					$secureFlag = true;
+				}
+				setcookie('ocDownloadStarted', $token, time() + 20, '/', null, $secureFlag, true);
 			}
 		}
 	}
