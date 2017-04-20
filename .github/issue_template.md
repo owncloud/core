@@ -45,6 +45,7 @@ paste the results into https://gist.github.com/ and puth the link here.
 
 
 **The content of config/config.php:**
+make sure to remove *all* host names, passwords, usernames, salts and other credentials before posting.
 
 ```
 Log in to the web-UI with an administrator account and click on
