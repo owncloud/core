@@ -16,10 +16,12 @@
 	var TEMPLATE_BASE =
 		'<div class="resharerInfoView subView"></div>' +
 		'{{#if isSharingAllowed}}' +
+		'{{#if isLinkSharingAllowed}}' +
 		'<ul class="subTabHeaders">' +
 		'    <li class="subTabHeader selected subtab-localshare">{{localSharesLabel}}</li>' +
 		'    <li class="subTabHeader subtab-publicshare">{{publicSharesLabel}}</li>' +
 		'</ul>' +
+		'{{/if}}' +
 		'<div class="tabsContainer">' +
 		// TODO: this really should be a separate view class
 		'    <div class="localShareView tab" style="padding-left:0;padding-right:0;">' +
@@ -378,6 +380,7 @@
 				sharePlaceholder: this._renderSharePlaceholderPart(),
 				remoteShareInfo: this._renderRemoteShareInfoPart(),
 				isSharingAllowed: this.model.sharePermissionPossible(),
+				isLinkSharingAllowed: this.configModel.isShareWithLinkAllowed(),
 				localSharesLabel: t('core', 'User and Groups'),
 				publicSharesLabel: t('core', 'Public Links'),
 				noSharingPlaceholder: t('core', 'Resharing is not allowed')
