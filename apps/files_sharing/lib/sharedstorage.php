@@ -99,6 +99,7 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 		try {
 			Filesystem::initMountPoints($this->superShare->getShareOwner());
 			$sourcePath = $this->ownerView->getPath($this->superShare->getNodeId(), false);
+			$this->sourcePath = $sourcePath;
 			list($this->sourceStorage, $sourceInternalPath) = $this->ownerView->resolvePath($sourcePath);
 			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
 			// adjust jail
@@ -377,8 +378,7 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 		$targetStorage->acquireLock($targetInternalPath, $type, $provider);
 		// lock the parent folders of the owner when locking the share as recipient
 		if ($path === '') {
-			$sourcePath = $this->ownerView->getPath($this->superShare->getNodeId());
-			$this->ownerView->lockFile(dirname($sourcePath), ILockingProvider::LOCK_SHARED, true);
+			$this->ownerView->lockFile(dirname($this->sourcePath), ILockingProvider::LOCK_SHARED, true);
 		}
 	}
 
@@ -393,8 +393,7 @@ class Shared extends \OC\Files\Storage\Wrapper\Jail implements ISharedStorage {
 		$targetStorage->releaseLock($targetInternalPath, $type, $provider);
 		// unlock the parent folders of the owner when unlocking the share as recipient
 		if ($path === '') {
-			$sourcePath = $this->ownerView->getPath($this->superShare->getNodeId());
-			$this->ownerView->unlockFile(dirname($sourcePath), ILockingProvider::LOCK_SHARED, true);
+			$this->ownerView->unlockFile(dirname($this->sourcePath), ILockingProvider::LOCK_SHARED, true);
 		}
 	}
 

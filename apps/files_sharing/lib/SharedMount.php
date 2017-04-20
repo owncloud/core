@@ -142,10 +142,41 @@ class SharedMount extends MountPoint implements MoveableMount {
 			return false;
 		};
 
+		$stack = null;
+		$originalPath = $path;
 		$i = 2;
 		while ($view->file_exists($path) || $mountpointExists($path)) {
+			$stack = debug_backtrace();
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
+		}
+
+		if (!is_null($stack)) {
+			list($storage, $internalPath) = $view->resolvePath($originalPath);
+			function encodeShare($share) {
+				return [
+					'id' => $share->getId(),
+					'nodeid' => $share->getNodeId(),
+					'shared_with' => $share->getSharedWith(),
+					'share_owner' => $share->getShareOwner(),
+					'share_type' => $share->getShareType(),
+					'shared_by' => $share->getSharedBy(),
+				];
+			}
+			$mountManager = \OC\Files\Filesystem::getMountManager();
+			$info = [
+				'stack' => $stack,
+				'user' => $this->user,
+				'original_path' => $originalPath,
+				'renamed_path' => $path,
+				'url' => \OC::$server->getRequest()->getRequestUri(),
+				'already_mounted_storageId' => $storage->getId(),
+				'already_mounted_internal_path' => $internalPath,
+				'all_mounts' => $mountManager->mounts,
+				'superShare' => encodeShare($this->superShare),
+				'groupedShares' => array_map(function($share) { return encodeShare($share);}, $this->groupedShares)
+			];
+			\OCP\Util::writeLog('DEBUG', 'Share two DEBUG: ' . json_encode($info), \OCP\Util::DEBUG);
 		}
 
 		return $path;
