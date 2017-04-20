@@ -61,15 +61,27 @@ class Apps implements IRepairStep {
 		if (count($missingApps)){
 			$isMarketEnabled = $this->appManager->isEnabledForUser('market');
 			if ($isMarketEnabled){
-				$this->loadApp('market');
-				foreach ($missingApps as $app) {
-					$output->info("Repairing missing app: $app");
-					$this->eventDispatcher->dispatch(
-						IRepairStep::class . '::repairAppStoreApps',
-						new GenericEvent($app)
-					);
-					$this->appManager->enableApp($app);
-				}
+				$this->getAppsFromMarket($output, $missingApps);
+			}
+		}
+	}
+
+	/**
+	 * @param IOutput $output
+	 * @param string[] $missingApps
+	 */
+	protected function getAppsFromMarket(IOutput $output, $missingApps){
+		$this->loadApp('market');
+		foreach ($missingApps as $app) {
+			$output->info("Fetching app from market: $app");
+			try {
+				$this->eventDispatcher->dispatch(
+					IRepairStep::class . '::repairAppStoreApps',
+					new GenericEvent($app)
+				);
+				$this->appManager->enableApp($app);
+			} catch (\Exception $e){
+				$output->warning($e->getMessage());
 			}
 		}
 	}
@@ -77,7 +89,7 @@ class Apps implements IRepairStep {
 	/**
 	 * @return array
 	 */
-	private function getMissingApps(){
+	protected function getMissingApps(){
 		$installedApps = $this->appManager->getInstalledApps();
 		$missingApps = [];
 		foreach ($installedApps as $appId){
@@ -91,8 +103,7 @@ class Apps implements IRepairStep {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @param $app
-	 * @throws NeedsUpdateException
+	 * @param string $app
 	 */
 	protected function loadApp($app) {
 		OC_App::loadApp($app, false);
