@@ -520,12 +520,10 @@ trait WebDav {
 	 */
 	public function userUploadsAFileTo($user, $source, $destination)
 	{
-		print_r("antes del stream");
 		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
-		print_r("despues del stream");
 		try {
 			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
