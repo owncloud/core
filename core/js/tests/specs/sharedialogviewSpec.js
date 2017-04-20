@@ -818,6 +818,15 @@ describe('OC.Share.ShareDialogView', function() {
 			expect(dialog.$('.subTabHeaders').length).toEqual(0);
 			expect(dialog.$('.tabsContainer').length).toEqual(0);
 		});
+		it('does not render tab headers is link sharing is not allowed', function() {
+			$('#allowShareWithLink').val('no');
+
+			dialog.render();
+
+			// only hide headers
+			expect(dialog.$('.subTabHeaders').length).toEqual(0);
+			expect(dialog.$('.tabsContainer').length).toEqual(1);
+		});
 		it('initially selects first tab', function() {
 			expect(dialog.$('.subTabHeaders>.subTabHeader:eq(0)').hasClass('selected')).toEqual(true);
 			expect(dialog.$('.subTabHeaders>.subTabHeader:eq(1)').hasClass('selected')).toEqual(false);
