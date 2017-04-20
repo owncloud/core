@@ -125,9 +125,6 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testUpgrade() {
-		if ($this->isOracle()) {
-			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
-		}
 		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
@@ -141,9 +138,6 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testUpgradeDifferentPrefix() {
-		if ($this->isOracle()) {
-			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
-		}
 		$oldTablePrefix = $this->config->getSystemValue('dbtableprefix', 'oc_');
 
 		$this->config->setSystemValue('dbtableprefix', 'ownc_');
@@ -164,9 +158,6 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testInsertAfterUpgrade() {
-		if ($this->isOracle()) {
-			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
-		}
 		list($startSchema, $endSchema) = $this->getDuplicateKeySchemas();
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
@@ -184,9 +175,6 @@ class MigratorTest extends \Test\TestCase {
 	}
 
 	public function testAddingPrimaryKeyWithAutoIncrement() {
-		if ($this->isOracle()) {
-			$this->markTestSkipped('Does not work yet with Oracle, needs fixing index quoting');
-		}
 		$startSchema = new Schema([], [], $this->getSchemaConfig());
 		$table = $startSchema->createTable($this->tableName);
 		$table->addColumn('id', 'integer');
