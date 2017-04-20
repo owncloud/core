@@ -14,6 +14,7 @@ OC.L10N.register(
     "Crop is not square" : "Obrez ni pravokoten",
     "Couldn't reset password because the token is invalid" : "Ni mogoče ponastaviti gesla zaradi neustreznega žetona.",
     "Couldn't reset password because the token is expired" : "Ni mogoče ponastaviti gesla, ker je žeton potekel.",
+    "%s password changed successfully" : "Geslo %s je uspešno spremenjeno",
     "%s password reset" : "Ponastavitev gesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Ni mogoče nastaviti elektronskega naslova za ponastavitev. Stopite v stik s skrbnikom sistema.",
     "Couldn't send mail to following users: %s " : "Ni mogoče poslati sporočila za: %s",
