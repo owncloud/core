@@ -178,7 +178,7 @@ class Controller {
 		$mailer = \OC::$server->getMailer();
 		$lion = \OC::$server->getL10N('lib');
 
-		if ($email !== '') {
+		if ($email !== null && $email !== '') {
 			$tmpl = new \OC_Template('core', 'lostpassword/notify');
 			$msg = $tmpl->fetchPage();
 
