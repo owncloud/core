@@ -297,4 +297,13 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertFalse($result['federation']['outgoing']);
 	}
 
+	public function testMultipleLinkShares() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertArrayHasKey('public', $result);
+		$this->assertTrue($result['public']['multiple']);
+	}
 }
