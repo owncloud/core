@@ -21,14 +21,20 @@
 
 namespace OC\Repair;
 
+use OC\RepairException;
 use OC_App;
 use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
+use OCP\Util;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Apps implements IRepairStep {
+
+	const KEY_COMPATIBLE = 'compatible';
+	const KEY_INCOMPATIBLE = 'incompatible';
+	const KEY_MISSING = 'missing';
 
 	/** @var  IAppManager */
 	private $appManager;
@@ -55,24 +61,51 @@ class Apps implements IRepairStep {
 
 	/**
 	 * @param IOutput $output
+	 * @throws RepairException
 	 */
 	public function run(IOutput $output) {
-		$missingApps = $this->getMissingApps();
-		if (count($missingApps)){
-			$isMarketEnabled = $this->appManager->isEnabledForUser('market');
-			if ($isMarketEnabled){
-				$this->getAppsFromMarket($output, $missingApps);
-			}
+		$appsToUpgrade = $this->getAppsToUpgrade();
+		$isMarketEnabled = $this->appManager->isEnabledForUser('market');
+		$failedCompatibleApps = [];
+		$failedIncompatibleApps = [];
+		$failedMissingApps = [];
+
+		if ($isMarketEnabled) {
+			$this->loadApp('market');
+			// TODO: check connection
+			$failedCompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_COMPATIBLE]);
+			$failedIncompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_INCOMPATIBLE]);
+			$failedMissingApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_MISSING]);
+			$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
+			$hasBlockingMissingApps = count($failedMissingApps);
+			$hasBlockingIncompatibleApps = count($failedIncompatibleApps);
+		} else {
+			$hasNotUpdatedCompatibleApps = false;
+			$hasBlockingMissingApps = count($appsToUpgrade[self::KEY_MISSING]);
+			$hasBlockingIncompatibleApps = count($appsToUpgrade[self::KEY_INCOMPATIBLE]);
+		}
+
+		if ($hasBlockingIncompatibleApps || $hasBlockingMissingApps){
+			// fail
+			$output->warning('You have incompatible or missing apps enabled.');
+			$output->warning('Please upgrade these apps manually or disable them');
+			$output->warning($this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps)));
+			throw new RepairException('Upgrade is not possible');
+		} elseif ($hasNotUpdatedCompatibleApps){
+			// warn?
 		}
 	}
 
 	/**
+	 * Upgrade appList from market
+	 * Return an array of apps that were not upgraded successfully
 	 * @param IOutput $output
-	 * @param string[] $missingApps
+	 * @param string[] $appList
+	 * @return array
 	 */
-	protected function getAppsFromMarket(IOutput $output, $missingApps){
-		$this->loadApp('market');
-		foreach ($missingApps as $app) {
+	protected function getAppsFromMarket(IOutput $output, $appList){
+		$failedApps = [];
+		foreach ($appList as $app) {
 			$output->info("Fetching app from market: $app");
 			try {
 				$this->eventDispatcher->dispatch(
@@ -81,24 +114,48 @@ class Apps implements IRepairStep {
 				);
 				$this->appManager->enableApp($app);
 			} catch (\Exception $e){
+				// TODO: check the reason
+				$failedApps[] = $app;
 				$output->warning($e->getMessage());
 			}
 		}
+		return $failedApps;
 	}
 
 	/**
+	 * Get app list separated as compatible/incompatible/missing
 	 * @return array
 	 */
-	protected function getMissingApps(){
+	protected function getAppsToUpgrade(){
 		$installedApps = $this->appManager->getInstalledApps();
-		$missingApps = [];
+		$appsToUpgrade = [
+			self::KEY_COMPATIBLE => [],
+			self::KEY_INCOMPATIBLE => [],
+			self::KEY_MISSING => []
+		];
+
 		foreach ($installedApps as $appId){
 			$info = $this->appManager->getAppInfo($appId);
 			if (!isset($info['id']) || is_null($info['id'])){
-				$missingApps[] = $appId;
+				$appsToUpgrade[self::KEY_MISSING][] = $appId;
+				continue;
 			}
+			$version = Util::getVersion();
+			$key = (\OC_App::isAppCompatible($version, $info)) ? self::KEY_COMPATIBLE : self::KEY_INCOMPATIBLE;
+			$appsToUpgrade[$key][] = $appId;
 		}
-		return $missingApps;
+		return $appsToUpgrade;
+	}
+
+	protected function getOccDisableMessage($appList){
+		if (!count($appList)){
+			return '';
+		}
+		$appList = array_map(
+			function($appId){ return "occ app:disable $appId"; },
+			$appList
+		);
+		return "\n" . implode("\n", $appList);
 	}
 
 	/**
