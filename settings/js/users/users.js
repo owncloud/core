@@ -13,8 +13,9 @@ var UserDeleteHandler;
 var UserList = {
 	availableGroups: [],
 	offset: 0,
-	usersToLoad: 10, //So many users will be loaded when user scrolls down
-	initialUsersToLoad: 50, //initial number of users to load
+	usersToLoad: 200,
+	initialUsersToLoad: 200, // initial number of users to load
+	perPageUsersToLoad: 100, // users to load when user scrolls down
 	currentUser: '',
 	currentGid: '',
 	filter: '',
@@ -101,7 +102,7 @@ var UserList = {
 		$tdSubadmins.find('.action').tooltip({placement: 'top'});
 
 		/**
-                 * enabled
+		 * enabled
 		 */
 		var $tdEnabled = $tr.find('.isEnabled');
 		if(user.name !== UserList.currentUser) {
@@ -289,9 +290,8 @@ var UserList = {
 		this.scrollArea.scrollLeft(lastScrollLeft);
 	},
 	checkUsersToLoad: function() {
-		//30 shall be loaded initially, from then on always 10 upon scrolling
 		if(UserList.isEmpty === false) {
-			UserList.usersToLoad = 10;
+			UserList.usersToLoad = UserList.perPageUsersToLoad;
 		} else {
 			UserList.usersToLoad = UserList.initialUsersToLoad;
 		}
