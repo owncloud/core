@@ -69,6 +69,9 @@
 				this._dialog.model.on('change', function() {
 					self.trigger('sharesChanged', shareModel);
 				});
+				this._dialog.model.getLinkSharesCollection().on('update', function() {
+					self.trigger('sharesChanged', shareModel);
+				});
 			} else {
 				this.$el.empty();
 				// TODO: render placeholder text?
