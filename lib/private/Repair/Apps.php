@@ -23,6 +23,7 @@ namespace OC\Repair;
 
 use OC\RepairException;
 use OC_App;
+use OCP\App\AppManagerException;
 use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -72,26 +73,37 @@ class Apps implements IRepairStep {
 
 		if ($isMarketEnabled) {
 			$this->loadApp('market');
-			// TODO: check connection
-			$failedCompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_COMPATIBLE]);
-			$failedIncompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_INCOMPATIBLE]);
-			$failedMissingApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_MISSING]);
-			$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
-			$hasBlockingMissingApps = count($failedMissingApps);
-			$hasBlockingIncompatibleApps = count($failedIncompatibleApps);
-		} else {
-			$hasNotUpdatedCompatibleApps = false;
-			$hasBlockingMissingApps = count($appsToUpgrade[self::KEY_MISSING]);
-			$hasBlockingIncompatibleApps = count($appsToUpgrade[self::KEY_INCOMPATIBLE]);
+			try {
+				$failedCompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_COMPATIBLE]);
+				$failedIncompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_INCOMPATIBLE]);
+				$failedMissingApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_MISSING]);
+				$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
+			} catch (\OCP\App\AppManagerException $e) {
+				$output->warning('No connection to marketplace');
+				$isMarketEnabled = false;
+			}
 		}
 
-		if ($hasBlockingIncompatibleApps || $hasBlockingMissingApps){
+		// Do not put this in else
+		if (!$isMarketEnabled) {
+			$hasNotUpdatedCompatibleApps = false;
+			$failedMissingApps = $appsToUpgrade[self::KEY_MISSING];
+			$failedIncompatibleApps = $appsToUpgrade[self::KEY_INCOMPATIBLE];
+		}
+
+		$hasBlockingMissingApps = count($failedMissingApps);
+		$hasBlockingIncompatibleApps = count($failedIncompatibleApps);
+
+		if ($hasBlockingIncompatibleApps || $hasBlockingMissingApps) {
 			// fail
 			$output->warning('You have incompatible or missing apps enabled.');
-			$output->warning('Please upgrade these apps manually or disable them');
-			$output->warning($this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps)));
+			$output->warning(
+				'Please upgrade these apps manually or disable them'
+				.$this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps))
+			);
+
 			throw new RepairException('Upgrade is not possible');
-		} elseif ($hasNotUpdatedCompatibleApps){
+		} elseif ($hasNotUpdatedCompatibleApps) {
 			// warn?
 		}
 	}
@@ -99,11 +111,13 @@ class Apps implements IRepairStep {
 	/**
 	 * Upgrade appList from market
 	 * Return an array of apps that were not upgraded successfully
+	 *
 	 * @param IOutput $output
 	 * @param string[] $appList
 	 * @return array
+	 * @throws AppManagerException
 	 */
-	protected function getAppsFromMarket(IOutput $output, $appList){
+	protected function getAppsFromMarket(IOutput $output, $appList) {
 		$failedApps = [];
 		foreach ($appList as $app) {
 			$output->info("Fetching app from market: $app");
@@ -113,9 +127,14 @@ class Apps implements IRepairStep {
 					new GenericEvent($app)
 				);
 				$this->appManager->enableApp($app);
-			} catch (\Exception $e){
+			} catch (AppManagerException $e) {
+				// No connection to market. Abort.
+				throw $e;
+			} catch (\Exception $e) {
 				// TODO: check the reason
 				$failedApps[] = $app;
+				$output->warning(get_class($e));
+
 				$output->warning($e->getMessage());
 			}
 		}
@@ -124,9 +143,10 @@ class Apps implements IRepairStep {
 
 	/**
 	 * Get app list separated as compatible/incompatible/missing
+	 *
 	 * @return array
 	 */
-	protected function getAppsToUpgrade(){
+	protected function getAppsToUpgrade() {
 		$installedApps = $this->appManager->getInstalledApps();
 		$appsToUpgrade = [
 			self::KEY_COMPATIBLE => [],
@@ -134,9 +154,9 @@ class Apps implements IRepairStep {
 			self::KEY_MISSING => []
 		];
 
-		foreach ($installedApps as $appId){
+		foreach ($installedApps as $appId) {
 			$info = $this->appManager->getAppInfo($appId);
-			if (!isset($info['id']) || is_null($info['id'])){
+			if (!isset($info['id']) || is_null($info['id'])) {
 				$appsToUpgrade[self::KEY_MISSING][] = $appId;
 				continue;
 			}
@@ -147,12 +167,14 @@ class Apps implements IRepairStep {
 		return $appsToUpgrade;
 	}
 
-	protected function getOccDisableMessage($appList){
-		if (!count($appList)){
+	protected function getOccDisableMessage($appList) {
+		if (!count($appList)) {
 			return '';
 		}
 		$appList = array_map(
-			function($appId){ return "occ app:disable $appId"; },
+			function ($appId) {
+				return "occ app:disable $appId";
+			},
 			$appList
 		);
 		return "\n" . implode("\n", $appList);
