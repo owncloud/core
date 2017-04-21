@@ -523,7 +523,7 @@ trait WebDav {
 		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
 		try {
 			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
-		} catch (\GuzzleHttp\Exception\ServerException $e) {
+		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
