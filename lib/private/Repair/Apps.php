@@ -23,7 +23,10 @@ namespace OC\Repair;
 
 use OC\RepairException;
 use OC_App;
+use OCP\App\AppAlreadyInstalledException;
 use OCP\App\AppManagerException;
+use OCP\App\AppNotFoundException;
+use OCP\App\AppNotInstalledException;
 use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -74,11 +77,34 @@ class Apps implements IRepairStep {
 		if ($isMarketEnabled) {
 			$this->loadApp('market');
 			try {
-				$failedCompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_COMPATIBLE]);
-				$failedIncompatibleApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_INCOMPATIBLE]);
-				$failedMissingApps = $this->getAppsFromMarket($output, $appsToUpgrade[self::KEY_MISSING]);
+				$failedCompatibleApps = $this->getAppsFromMarket(
+					$output,
+					$appsToUpgrade[self::KEY_COMPATIBLE],
+					'upgradeAppStoreApp'
+				);
+				$failedIncompatibleApps = $this->getAppsFromMarket(
+					$output,
+					$appsToUpgrade[self::KEY_INCOMPATIBLE],
+					'upgradeAppStoreApp'
+				);
+				$failedMissingApps = $this->getAppsFromMarket(
+					$output,
+					$appsToUpgrade[self::KEY_MISSING],
+					'reinstallAppStoreApp'
+				);
 				$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
-			} catch (\OCP\App\AppManagerException $e) {
+
+				// TODO: find why/where these apps are disabled
+				$appsToEnable = array_diff(
+					$appsToUpgrade[self::KEY_MISSING],
+					$failedMissingApps
+				);
+
+				foreach ($appsToEnable as $app){
+					$this->appManager->enableApp($app);
+				}
+
+			} catch (AppManagerException $e) {
 				$output->warning('No connection to marketplace');
 				$isMarketEnabled = false;
 			}
@@ -98,8 +124,8 @@ class Apps implements IRepairStep {
 			// fail
 			$output->warning('You have incompatible or missing apps enabled.');
 			$output->warning(
-				'Please upgrade these apps manually or disable them'
-				.$this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps))
+				'please install app manually with tarball or disable them'
+				. $this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps))
 			);
 
 			throw new RepairException('Upgrade is not possible');
@@ -117,16 +143,21 @@ class Apps implements IRepairStep {
 	 * @return array
 	 * @throws AppManagerException
 	 */
-	protected function getAppsFromMarket(IOutput $output, $appList) {
+	protected function getAppsFromMarket(IOutput $output, $appList, $event) {
 		$failedApps = [];
 		foreach ($appList as $app) {
 			$output->info("Fetching app from market: $app");
 			try {
 				$this->eventDispatcher->dispatch(
-					IRepairStep::class . '::repairAppStoreApps',
+					sprintf('%s::%s', IRepairStep::class, $event),
 					new GenericEvent($app)
 				);
-				$this->appManager->enableApp($app);
+			} catch (AppAlreadyInstalledException $e) {
+				$failedApps[] = $app;
+			} catch (AppNotInstalledException $e) {
+				$failedApps[] = $app;
+			} catch (AppNotFoundException $e) {
+				$failedApps[] = $app;
 			} catch (AppManagerException $e) {
 				// No connection to market. Abort.
 				throw $e;
