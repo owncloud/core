@@ -166,9 +166,6 @@ class Application extends App {
 		$container->registerService('UserSession', function(SimpleContainer $c) {
 			return $c->query('ServerContainer')->getUserSession();
 		});
-		$container->registerService('Session', function(SimpleContainer $c) {
-			return $c->query('ServerContainer')->getSession();
-		});
 		$container->registerService('Cache', function(SimpleContainer $c) {
 			return $c->query('ServerContainer')->getCache();
 		});
