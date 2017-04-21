@@ -333,7 +333,7 @@ class Installer {
 		// We can't trust the parsed info.xml file as it may have been tampered
 		// with by an attacker and thus we need to use the local data to check
 		// whether the application needs to be signed.
-		$appId = OC_App::cleanAppId($data['appdata']['id']);
+		$appId = OC_App::cleanAppId(isset($data['appdata']['id']) ? $data['appdata']['id'] : '');
 		$appBelongingToId = OC_App::getInternalAppIdByOcs($appId);
 		if(is_string($appBelongingToId)) {
 			$previouslySigned = \OC::$server->getConfig()->getAppValue($appBelongingToId, 'signed', 'false');
