@@ -67,6 +67,7 @@
     "_%n byte_::_%n bytes_" : ["%n bajt","%n bajte"],
     "Favorited" : "U kalua e parapëlqyer",
     "Favorite" : "E parapëlqyer",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Lidhje private:  Mund ta përdorin vetëm personat që kanë hyrje te kartela/dosja. Përdoreni si një lidhje të përhershme për veten ose për të drejtuar të tjerë për te kartela brenda ndarjesh",
     "Folder" : "Dosje",
     "New folder" : "Dosje e re",
     "{newname} already exists" : "Ka tashmë një {newname}",
