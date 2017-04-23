@@ -833,7 +833,7 @@ class UsersController extends Controller {
 
 		$this->setEmailAddress($userId, $mailAddress);
 
-		if ($oldEmailAddress !== null) {
+		if ($oldEmailAddress !== null && $oldEmailAddress !== '') {
 			$tmpl = new \OC_Template('settings', 'changemail/notify');
 			$tmpl->assign('mailAddress', $mailAddress);
 			$msg = $tmpl->fetchPage();
