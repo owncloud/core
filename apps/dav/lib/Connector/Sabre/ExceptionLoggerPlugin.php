@@ -49,6 +49,8 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		// not available
 		'Sabre\DAV\Exception\StorageNotAvailableException' => true,
 		'OCP\Files\StorageNotAvailableException' => true,
+		// Locked files can happen
+		'OCA\DAV\Connector\Sabre\Exception\FileLocked' => true,
 	];
 
 	/** @var string */
