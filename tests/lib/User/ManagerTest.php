@@ -15,6 +15,7 @@ use OC\User\Database;
 use OC\User\Manager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IUser;
 use Test\TestCase;
 
@@ -37,8 +38,10 @@ class ManagerTest extends TestCase {
 
 		/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject $config */
 		$config = $this->createMock(IConfig::class);
+		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
-		$this->manager = new \OC\User\Manager($config, $this->accountMapper);
+		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper);
 	}
 
 	public function testGetBackends() {

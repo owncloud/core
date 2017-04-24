@@ -18,6 +18,7 @@ use OC\User\Manager;
 use OCP\Files\Config\ICachedMountInfo;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\ILogger;
 use OCP\IUserManager;
 use Test\TestCase;
 
@@ -64,9 +65,9 @@ class UserMountCacheTest extends TestCase {
 			['u2', $a2],
 			['u3', $a3],
 		]);
-		$this->userManager = new Manager($config, $accountMapper);
 		/** @var Log $log */
 		$log = $this->createMock(Log::class);
+		$this->userManager = new Manager($config, $log, $accountMapper);
 		$this->cache = new UserMountCache($this->connection, $this->userManager, $log);
 
 		// hookup listener

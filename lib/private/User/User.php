@@ -251,15 +251,7 @@ class User implements IUser {
 	 * @return string
 	 */
 	public function getHome() {
-		$home = $this->account->getHome();
-		if (!$home) {
-			if ($this->config) {
-				$home = $this->config->getSystemValue('datadirectory') . '/' . $this->getUID();
-			} else {
-				$home = \OC::$SERVERROOT . '/data/' . $this->getUID();
-			}
-		}
-		return $home;
+		return $this->account->getHome();
 	}
 
 	/**

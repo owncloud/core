@@ -45,6 +45,8 @@ class SyncService {
 	private $mapper;
 	/** @var IConfig */
 	private $config;
+	/** @var ILogger */
+	private $logger;
 	/** @var string */
 	private $backendClass;
 
@@ -100,7 +102,10 @@ class SyncService {
 				try {
 					$a = $this->mapper->getByUid($uid);
 					if ($a->getBackend() !== $this->backendClass) {
-						$this->logger->debug("User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass})");
+						$this->logger->warning(
+							"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
+							['app' => self::class]
+						);
 						continue;
 					}
 					$a = $this->setupAccount($a, $uid);
@@ -143,7 +148,15 @@ class SyncService {
 			$a->setQuota($value);
 		}
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
-			$a->setHome($this->backend->getHome($uid));
+			$home = $this->backend->getHome($uid);
+			if (!is_string($home) || substr($home, 0, 1) !== '/') {
+				$home = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . "/$uid";
+				$this->logger->warning(
+					"User backend {$this->backendClass} provided no home for <$uid>, using <$home>.",
+					['app' => self::class]
+				);
+			}
+			$a->setHome($home);
 		}
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
 			$a->setDisplayName($this->backend->getDisplayName($uid));
@@ -156,13 +169,6 @@ class SyncService {
 		$a->setUserId($uid);
 		$a->setState(Account::STATE_ENABLED);
 		$a->setBackend(get_class($this->backend));
-		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
-			$a->setHome($this->backend->getHome($uid));
-		}
-		if ($this->backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
-			$a->setDisplayName($this->backend->getDisplayName($uid));
-		}
-
 		return $a;
 	}
 

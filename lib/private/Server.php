@@ -222,8 +222,9 @@ class Server extends ServerContainer implements IServerContainer {
 		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
+			$logger = $c->getLogger();
 			$accountMapper = new AccountMapper($c->getDatabaseConnection());
-			return new \OC\User\Manager($config, $accountMapper);
+			return new \OC\User\Manager($config, $logger, $accountMapper);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupManager = new \OC\Group\Manager($this->getUserManager());
