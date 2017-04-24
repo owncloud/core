@@ -33,6 +33,7 @@ use OCP\Migration\IRepairStep;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\IConfig;
 
 class Apps implements IRepairStep {
 
@@ -46,21 +47,35 @@ class Apps implements IRepairStep {
 	/** @var  EventDispatcher */
 	private $eventDispatcher;
 
+	/** @var IConfig */
+	private $config;
+
 	/**
 	 * Apps constructor.
 	 *
 	 * @param IAppManager $appManager
 	 */
-	public function __construct(IAppManager $appManager, EventDispatcher $eventDispatcher) {
+	public function __construct(IAppManager $appManager, EventDispatcher $eventDispatcher, IConfig $config) {
 		$this->appManager = $appManager;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->config = $config;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getName() {
-		return 'Put back missing apps';
+		return 'Upgrade app code from the marketplace';
+	}
+
+	private function isCoreUpdate() {
+		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
+		$currentVersion = implode('.', \OCP\Util::getVersion());
+		$versionDiff = version_compare($currentVersion, $installedVersion);
+		if ($versionDiff > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -68,13 +83,14 @@ class Apps implements IRepairStep {
 	 * @throws RepairException
 	 */
 	public function run(IOutput $output) {
+		$isCoreUpdate = $this->isCoreUpdate();
 		$appsToUpgrade = $this->getAppsToUpgrade();
 		$isMarketEnabled = $this->appManager->isEnabledForUser('market');
 		$failedCompatibleApps = [];
 		$failedMissingApps = $appsToUpgrade[self::KEY_MISSING];
 		$failedIncompatibleApps = $appsToUpgrade[self::KEY_INCOMPATIBLE];
 
-		if ($isMarketEnabled) {
+		if ($isMarketEnabled && $isCoreUpdate) {
 			$this->loadApp('market');
 			try {
 				$failedIncompatibleApps = $this->getAppsFromMarket(
