@@ -93,17 +93,6 @@ class Apps implements IRepairStep {
 					'reinstallAppStoreApp'
 				);
 				$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
-
-				// Apps with no deleted code are restored as disabled 
-				// This is a fixup for this
-				$appsToEnable = array_diff(
-					$appsToUpgrade[self::KEY_MISSING],
-					$failedMissingApps
-				);
-				foreach ($appsToEnable as $app){
-					$this->appManager->enableApp($app);
-				}
-
 			} catch (AppManagerException $e) {
 				$output->warning('No connection to marketplace');
 				$isMarketEnabled = false;
