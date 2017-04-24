@@ -89,6 +89,7 @@ class Apps implements IRepairStep {
 		$failedCompatibleApps = [];
 		$failedMissingApps = $appsToUpgrade[self::KEY_MISSING];
 		$failedIncompatibleApps = $appsToUpgrade[self::KEY_INCOMPATIBLE];
+		$hasNotUpdatedCompatibleApps = 0;
 
 		if ($isMarketEnabled && $isCoreUpdate) {
 			$this->loadApp('market');
@@ -110,7 +111,7 @@ class Apps implements IRepairStep {
 				);
 				$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
 			} catch (AppManagerException $e) {
-				$output->warning('No connection to marketplace');
+				$output->warning('No connection to marketplace: ' . $e->getPrevious());
 				$isMarketEnabled = false;
 			}
 		}
