@@ -71,8 +71,8 @@ class Apps implements IRepairStep {
 		$appsToUpgrade = $this->getAppsToUpgrade();
 		$isMarketEnabled = $this->appManager->isEnabledForUser('market');
 		$failedCompatibleApps = [];
-		$failedIncompatibleApps = [];
-		$failedMissingApps = [];
+		$failedMissingApps = $appsToUpgrade[self::KEY_MISSING];
+		$failedIncompatibleApps = $appsToUpgrade[self::KEY_INCOMPATIBLE];
 
 		if ($isMarketEnabled) {
 			$this->loadApp('market');
@@ -110,13 +110,6 @@ class Apps implements IRepairStep {
 			}
 		}
 
-		// Do not put this in else
-		if (!$isMarketEnabled) {
-			$hasNotUpdatedCompatibleApps = false;
-			$failedMissingApps = $appsToUpgrade[self::KEY_MISSING];
-			$failedIncompatibleApps = $appsToUpgrade[self::KEY_INCOMPATIBLE];
-		}
-
 		$hasBlockingMissingApps = count($failedMissingApps);
 		$hasBlockingIncompatibleApps = count($failedIncompatibleApps);
 
@@ -130,7 +123,10 @@ class Apps implements IRepairStep {
 
 			throw new RepairException('Upgrade is not possible');
 		} elseif ($hasNotUpdatedCompatibleApps) {
-			// warn?
+			foreach ($failedCompatibleApps as $app) {
+				// TODO: Show reason
+				$output->info("App was not updated: $app");
+			}
 		}
 	}
 
