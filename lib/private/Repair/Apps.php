@@ -94,12 +94,12 @@ class Apps implements IRepairStep {
 				);
 				$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
 
-				// TODO: find why/where these apps are disabled
+				// Apps with no deleted code are restored as disabled 
+				// This is a fixup for this
 				$appsToEnable = array_diff(
 					$appsToUpgrade[self::KEY_MISSING],
 					$failedMissingApps
 				);
-
 				foreach ($appsToEnable as $app){
 					$this->appManager->enableApp($app);
 				}
