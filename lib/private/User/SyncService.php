@@ -149,7 +149,7 @@ class SyncService {
 		}
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
 			$home = $this->backend->getHome($uid);
-			if (!$home) {
+			if (!is_string($home) || substr($home, 0, 1) !== '/') {
 				$home = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . "/$uid";
 				$this->logger->warning(
 					"User backend {$this->backendClass} provided no home for <$uid>, using <$home>.",
