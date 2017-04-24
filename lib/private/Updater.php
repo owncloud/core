@@ -58,9 +58,6 @@ class Updater extends BasicEmitter {
 	/** @var Checker */
 	private $checker;
 
-	/** @var bool */
-	private $skip3rdPartyAppsDisable;
-
 	private $logLevelNames = [
 		0 => 'Debug',
 		1 => 'Info',
@@ -80,16 +77,6 @@ class Updater extends BasicEmitter {
 		$this->log = $log;
 		$this->config = $config;
 		$this->checker = $checker;
-	}
-
-	/**
-	 * Sets whether the update disables 3rd party apps.
-	 * This can be set to true to skip the disable.
-	 *
-	 * @param bool $flag false to not disable, true otherwise
-	 */
-	public function setSkip3rdPartyAppsDisable($flag) {
-		$this->skip3rdPartyAppsDisable = $flag;
 	}
 
 	/**
@@ -360,13 +347,6 @@ class Updater extends BasicEmitter {
 			if (OC_App::isType($app, ['session', 'authentication'])) {
 				continue;
 			}
-
-			// disable any other 3rd party apps if not overriden
-			if(!$this->skip3rdPartyAppsDisable) {
-				\OC_App::disable($app);
-				$disabledApps[]= $app;
-				$this->emit('\OC\Updater', 'thirdPartyAppDisabled', [$app]);
-			};
 		}
 		return $disabledApps;
 	}
