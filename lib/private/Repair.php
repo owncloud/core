@@ -29,7 +29,6 @@
 
 namespace OC;
 
-use OC\Repair\AssetCache;
 use OC\Repair\AvatarPermissions;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
@@ -127,7 +126,6 @@ class Repair implements IOutput{
 	public static function getRepairSteps() {
 		return [
 			new RepairMimeTypes(\OC::$server->getConfig()),
-			new AssetCache(),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()),
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
