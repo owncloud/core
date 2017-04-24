@@ -27,6 +27,7 @@ use OCP\App\AppAlreadyInstalledException;
 use OCP\App\AppManagerException;
 use OCP\App\AppNotFoundException;
 use OCP\App\AppNotInstalledException;
+use OCP\App\AppUpdateNotFoundException;
 use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -159,6 +160,8 @@ class Apps implements IRepairStep {
 			} catch (AppNotInstalledException $e) {
 				$failedApps[] = $app;
 			} catch (AppNotFoundException $e) {
+				$failedApps[] = $app;
+			} catch (AppUpdateNotFoundException $e) {
 				$failedApps[] = $app;
 			} catch (AppManagerException $e) {
 				// No connection to market. Abort.
