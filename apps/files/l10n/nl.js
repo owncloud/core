@@ -68,6 +68,7 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n byte","%n bytes"],
     "Favorited" : "Favoriet",
     "Favorite" : "Favoriet",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privélink: alleen personen die toegang hebben tot het bestand of de map kunnen deze gebruiken. Gebruik het als een permanente link voor uzelf of om anderen te verwijzen naar bestanden binnen shares.",
     "Folder" : "Map",
     "New folder" : "Nieuwe map",
     "{newname} already exists" : "{newname} bestaat al",
