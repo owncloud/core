@@ -16,16 +16,6 @@
 			</ul>
 		</div>
 		<?php } ?>
-		<?php if (!empty($_['incompatibleAppsList'])) { ?>
-		<div class="infogroup">
-			<span><?php p($l->t('These incompatible apps will be disabled:')) ?></span>
-			<ul class="content appList">
-				<?php foreach ($_['incompatibleAppsList'] as $appInfo) { ?>
-				<li><?php p($appInfo['name']) ?> (<?php p($appInfo['id']) ?>)</li>
-				<?php } ?>
-			</ul>
-		</div>
-		<?php } ?>
 		<?php if (!empty($_['oldTheme'])) { ?>
 		<div class="infogroup">
 			<?php p($l->t('The theme %s has been disabled.', [$_['oldTheme']])) ?>
