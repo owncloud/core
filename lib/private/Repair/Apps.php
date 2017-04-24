@@ -77,11 +77,6 @@ class Apps implements IRepairStep {
 		if ($isMarketEnabled) {
 			$this->loadApp('market');
 			try {
-				$failedCompatibleApps = $this->getAppsFromMarket(
-					$output,
-					$appsToUpgrade[self::KEY_COMPATIBLE],
-					'upgradeAppStoreApp'
-				);
 				$failedIncompatibleApps = $this->getAppsFromMarket(
 					$output,
 					$appsToUpgrade[self::KEY_INCOMPATIBLE],
@@ -91,6 +86,11 @@ class Apps implements IRepairStep {
 					$output,
 					$appsToUpgrade[self::KEY_MISSING],
 					'reinstallAppStoreApp'
+				);
+				$failedCompatibleApps = $this->getAppsFromMarket(
+					$output,
+					$appsToUpgrade[self::KEY_COMPATIBLE],
+					'upgradeAppStoreApp'
 				);
 				$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
 			} catch (AppManagerException $e) {
