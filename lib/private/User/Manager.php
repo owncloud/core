@@ -72,8 +72,8 @@ class Manager extends PublicEmitter implements IUserManager {
 	private $accountMapper;
 
 	/**
-	 * TODO inject Logger
-	 * @param \OCP\IConfig $config
+	 * @param IConfig $config
+	 * @param ILogger $logger
 	 * @param AccountMapper $accountMapper
 	 */
 	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper) {
