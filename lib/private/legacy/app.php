@@ -1051,6 +1051,7 @@ class OC_App {
 		self::executeRepairSteps($appId, $appData['repair-steps']['post-migration']);
 		self::setupLiveMigrations($appId, $appData['repair-steps']['live-migration']);
 		unset(self::$appVersion[$appId]);
+		unset(self::$appInfo[$appId]);
 		// run upgrade code
 		if (file_exists($appPath . '/appinfo/update.php')) {
 			self::loadApp($appId, false);
