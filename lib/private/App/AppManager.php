@@ -383,10 +383,13 @@ class AppManager implements IAppManager {
 	 * @since 10.0
 	 */
 	public function installApp($package) {
-		return Installer::installApp([
+		$appId = Installer::installApp([
 			'source' => 'local',
 			'path' => $package
 		]);
+		// HACK: this will run the migration and related code
+		Installer::installShippedApp($appId);
+		return $appId;
 	}
 
 	/**
