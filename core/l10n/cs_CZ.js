@@ -323,7 +323,6 @@ OC.L10N.register(
     "App update required" : "Vyžadována aktualizace aplikace",
     "%s will be updated to version %s" : "%s bude aktualizován na verzi %s",
     "These apps will be updated:" : "Následující aplikace budou aktualizovány:",
-    "These incompatible apps will be disabled:" : "Následující nekompatibilní aplikace budou zakázány:",
     "The theme %s has been disabled." : "Vzhled %s byl zakázán.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Před provedením dalšího kroku se prosím ujistěte, že databáze a konfigurační a datový adresář byly zazálohovány.  ",
     "Start update" : "Spustit aktualizaci",

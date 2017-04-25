@@ -298,7 +298,6 @@
     "App update required" : "Aktualizacja aplikacji wymagana",
     "%s will be updated to version %s" : "%s zostanie zaktualizowane do wersji %s",
     "These apps will be updated:" : "Te aplikacje zostaną zaktualizowane:",
-    "These incompatible apps will be disabled:" : "Te niekompatybilne aplikacje zostaną wyłączone:",
     "The theme %s has been disabled." : "Motyw %s został wyłączony.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Proszę się upewnić, że baza danych, folder konfiguracji oraz folder danych zostały zarchiwizowane przed przejściem dalej.",
     "Start update" : "Rozpocznij aktualizację",

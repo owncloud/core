@@ -319,7 +319,6 @@
     "App update required" : "Mise à jour de l'application nécessaire",
     "%s will be updated to version %s" : "%s sera mis à jour vers la version %s.",
     "These apps will be updated:" : "Les applications suivantes seront mises à jour:",
-    "These incompatible apps will be disabled:" : "Ces applications incompatibles ont été désactivées:",
     "The theme %s has been disabled." : "Le thème %s a été désactivé.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Veuillez vous assurer qu'une copie de sauvegarde de la base de données, du dossier de configuration (config) et du dossier de données (data) a été réalisée avant de commencer.",
     "Start update" : "Démarrer la mise à jour",

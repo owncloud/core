@@ -321,7 +321,6 @@
     "App update required" : "จำเป้นต้องอัพเดทแอพฯ",
     "%s will be updated to version %s" : "%s จะถูกอัพเดทเป็นเวอร์ชัน %s",
     "These apps will be updated:" : "แอพพลิเคชันเหล่านี้จะถูกอัพเดท:",
-    "These incompatible apps will be disabled:" : "แอพพลิเคชันเหล่านี้เข้ากันไม่ได้จะถูกปิดการใช้งาน:",
     "The theme %s has been disabled." : "ธีม %s จะถูกปิดการใช้งาน:",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "โปรดตรวจสอบฐานข้อมูล การตั้งค่าโฟลเดอร์และโฟลเดอร์ข้อมูลจะถูกสำรองไว้ก่อนดำเนินการ",
     "Start update" : "เริ่มต้นอัพเดท",

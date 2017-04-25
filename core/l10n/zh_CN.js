@@ -305,7 +305,6 @@ OC.L10N.register(
     "App update required" : "必须的应用更新",
     "%s will be updated to version %s" : "%s 将会更新至版本 %s",
     "These apps will be updated:" : "以下应用将被更新：",
-    "These incompatible apps will be disabled:" : "这些不兼容的应用程序将被禁用：",
     "The theme %s has been disabled." : "%s 主题已被禁用。",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "在继续之前，请确认数据库、配置文件夹和数据文件夹已经备份。",
     "Start update" : "开始更新",

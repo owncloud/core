@@ -323,7 +323,6 @@ OC.L10N.register(
     "App update required" : "Требуется обновление приложения",
     "%s will be updated to version %s" : "%s будет обновлен до версии %s",
     "These apps will be updated:" : "Следующие приложения будут обновлены:",
-    "These incompatible apps will be disabled:" : "Эти несовместимые приложения будут отключены:",
     "The theme %s has been disabled." : "Тема %s была отключена.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Перед продолжением убедитесь, что вы сделали резервную копию базы данных, каталога конфигурации и каталога с данными.",
     "Start update" : "Запустить обновление",

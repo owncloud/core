@@ -270,7 +270,6 @@
     "App update required" : "需要更新應用程式",
     "%s will be updated to version %s" : "%s 將會更新至版本 %s",
     "These apps will be updated:" : "將會更新這些應用程式",
-    "These incompatible apps will be disabled:" : "將會停用這些不相容的應用程式",
     "The theme %s has been disabled." : "主題 %s 已經被停用",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "在繼續之前，請備份資料庫、config 目錄及資料目錄",
     "Start update" : "開始升級",

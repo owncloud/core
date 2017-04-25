@@ -323,7 +323,6 @@ OC.L10N.register(
     "App update required" : "Απαιτείται ενημέρωση εφαρμογής",
     "%s will be updated to version %s" : "%s θα αναβαθμιστεί σε έκδοση %s",
     "These apps will be updated:" : "Αυτές οι εφαρμογές θα αναβαθμιστούν:",
-    "These incompatible apps will be disabled:" : "Αυτές οι μη συμβατές εφαρμογές θα απενεργοποιηθούν:",
     "The theme %s has been disabled." : "Το θέμα %s έχει απενεργοποιηθεί.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Παρακαλώ βεβαιωθείτε ότι έχουν ληφθεί αντίγραφα ασφαλείας της βάσης δεδομένων, του φακέλου ρυθμίσεων και του φακέλου δεδομένων πριν προχωρήσετε.",
     "Start update" : "Έναρξη ενημέρωσης",

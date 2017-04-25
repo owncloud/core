@@ -249,7 +249,6 @@ OC.L10N.register(
     "App update required" : "E necesară o actualizare a aplicației",
     "%s will be updated to version %s" : "%s va fi actualizat la versiunea %s",
     "These apps will be updated:" : "Aceste aplicații vor fi actualizate:",
-    "These incompatible apps will be disabled:" : "Aceste aplicații incompatibile vor fi dezactivate:",
     "The theme %s has been disabled." : "Tema %s a fost dezactivată.",
     "Start update" : "Începe actualizarea",
     "Detailed logs" : "Loguri detaliate",

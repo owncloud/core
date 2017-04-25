@@ -321,7 +321,6 @@
     "App update required" : "נדרש עדכון יישום",
     "%s will be updated to version %s" : "%s יעודכן לגרסה %s",
     "These apps will be updated:" : "יישומים אלו יעודכנו:",
-    "These incompatible apps will be disabled:" : "יישומים לא תואמים ינוטרלו:",
     "The theme %s has been disabled." : "ערכת הנושא %s נוטרלה.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "יש לוודא שמסד הנתונים, תיקיית config ותיקיית data גובו לפני ההמשך.",
     "Start update" : "התחלת עדכון",

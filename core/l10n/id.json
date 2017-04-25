@@ -246,7 +246,6 @@
     "App update required" : "Diperlukan perbarui aplikasi",
     "%s will be updated to version %s" : "%s akan diperbaarui ke versi %s",
     "These apps will be updated:" : "Aplikasi berikut akan diperbarui:",
-    "These incompatible apps will be disabled:" : "Aplikasi yang tidak kompatibel berikut akan dinonaktifkan:",
     "The theme %s has been disabled." : "Tema %s telah dinonaktfkan.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Pastikan bahwa basis data, folder konfig, dan folder data telah dicadangkan sebelum melanjutkan.",
     "Start update" : "Jalankan pembaruan",

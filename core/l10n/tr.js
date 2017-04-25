@@ -299,7 +299,6 @@ OC.L10N.register(
     "App update required" : "Uygulama güncellemesi gerekli",
     "%s will be updated to version %s" : "%s, %s sürümüne güncellenecek",
     "These apps will be updated:" : "Bu uygulamalar güncellenecek:",
-    "These incompatible apps will be disabled:" : "Bu uyumsuz uygulamalar devre dışı bırakılacak:",
     "The theme %s has been disabled." : "%s teması devre dışı bırakıldı.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Devam etmeden önce lütfen veritabanının, yapılandırma ve veri klasörlerinin yedeklenmiş olduğundan emin olun.",
     "Start update" : "Güncellemeyi başlat",

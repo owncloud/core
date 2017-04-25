@@ -323,7 +323,6 @@ OC.L10N.register(
     "App update required" : "App-oppdatering kreves",
     "%s will be updated to version %s" : "%s vil bli oppdatert til versjon %s",
     "These apps will be updated:" : "Disse appene vil bli oppdatert:",
-    "These incompatible apps will be disabled:" : "Disse ikke-kompatible appene vil bli deaktivert:",
     "The theme %s has been disabled." : "Drakten %s har blitt avskrudd.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Forsikre deg om at databasen, config-mappen og datamappen er blitt sikkerhetskopiert før du fortsetter.",
     "Start update" : "Start oppdatering",

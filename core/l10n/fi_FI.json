@@ -295,7 +295,6 @@
     "App update required" : "Sovelluksen päivittäminen vaaditaan",
     "%s will be updated to version %s" : "%s päivitetään versioon %s",
     "These apps will be updated:" : "Nämä sovellukset päivitetään:",
-    "These incompatible apps will be disabled:" : "Nämä yhteensopimattomat sovellukset poistetaan käytöstä:",
     "The theme %s has been disabled." : "Teema %s on poistettu käytöstä.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Varmista ennen jatkamista, että tietokanta, asetuskansio ja datakansio on varmuuskopioitu.",
     "Start update" : "Käynnistä päivitys",

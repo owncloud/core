@@ -291,7 +291,6 @@ OC.L10N.register(
     "App update required" : "Додаток потребує оновлення",
     "%s will be updated to version %s" : "%s буде оновлено до версії %s",
     "These apps will be updated:" : "Ці додатки будуть оновлені:",
-    "These incompatible apps will be disabled:" : "Ці несумісні додатки будуть вимкнені:",
     "The theme %s has been disabled." : "Тему %s було вимкнено.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Перед продовженням переконайтеся, що ви зробили резервну копію бази даних, каталогу конфігурації та каталогу з даними.",
     "Start update" : "Почати оновлення",

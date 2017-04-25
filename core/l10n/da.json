@@ -304,7 +304,6 @@
     "App update required" : "Opdatering af app påkræves",
     "%s will be updated to version %s" : "%s vil blive opdateret til version %s",
     "These apps will be updated:" : "Følgende apps vil blive opdateret:",
-    "These incompatible apps will be disabled:" : "Følgende inkompatible apps vil blive slået fra:",
     "The theme %s has been disabled." : "Temaet, %s, er blevet deaktiveret.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Sørg venligst for at sikre, at databasen, config-mappen og data-mappen er blevet sikkerhedskopieret inden vi fortsætter.",
     "Start update" : "Begynd opdatering",

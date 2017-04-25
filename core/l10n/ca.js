@@ -234,7 +234,6 @@ OC.L10N.register(
     "App update required" : "Cal que actualitzeu la aplicació",
     "%s will be updated to version %s" : "%s s'actualitzarà a la versió %s",
     "These apps will be updated:" : "Aquestes aplicacions s'actualitzaran:",
-    "These incompatible apps will be disabled:" : "Aquestes aplicacions incompatibles es desactivaran:",
     "The theme %s has been disabled." : "S'ha desactivat el tema %s",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Assegureu-vos que heu fet una còpia de seguretat de la base de dades, del fitxer de configuració i de la carpeta de dades abans de continuar.",
     "Start update" : "Inicia l'actualització",

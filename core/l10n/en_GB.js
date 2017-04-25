@@ -306,7 +306,6 @@ OC.L10N.register(
     "App update required" : "App update required",
     "%s will be updated to version %s" : "%s will be updated to version %s",
     "These apps will be updated:" : "These apps will be updated:",
-    "These incompatible apps will be disabled:" : "These incompatible apps will be disabled:",
     "The theme %s has been disabled." : "The theme %s has been disabled.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Please make sure that the database, the config folder and the data folder have been backed up before proceeding.",
     "Start update" : "Start update",

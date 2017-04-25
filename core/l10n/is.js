@@ -308,7 +308,6 @@ OC.L10N.register(
     "App update required" : "Forrit þarfnast uppfærslu ",
     "%s will be updated to version %s" : "%s verður uppfært í útgáfu %s.",
     "These apps will be updated:" : "Eftirfarandi forrit verða uppfærð:",
-    "These incompatible apps will be disabled:" : "Eftirfarandi forrit eru ósamhæfð og verið gerð óvirk: %s",
     "The theme %s has been disabled." : "Þema %s hefur verið gert óvirkt.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Gakktu úr skugga um að gagnagrunnurinn, config mappan og gagnamappan hafi verið öryggisafritaðar áður en lengra er haldið.",
     "Start update" : "Hefja uppfærslu",

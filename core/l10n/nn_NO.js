@@ -305,7 +305,6 @@ OC.L10N.register(
     "App update required" : "Forbetring av program er påkrevd",
     "%s will be updated to version %s" : "%s vil bli forbetra til versjon %s",
     "These apps will be updated:" : "Desse programma vil bli oppdatert:",
-    "These incompatible apps will be disabled:" : "Desse programma er ikkje kompatible og er deaktivert:",
     "The theme %s has been disabled." : "Tema %s er deaktivert.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Ver venleg å forsikra deg om at database, mappe med konfigurasjon og mappe med data er sikkerheitskopiert før du fortsett.",
     "Start update" : "Start forbetring",

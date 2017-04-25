@@ -282,7 +282,6 @@ OC.L10N.register(
     "App update required" : "Mesa a jorn de l'aplicacion necessària",
     "%s will be updated to version %s" : "%s serà mes a jorn cap a la version %s.",
     "These apps will be updated:" : "Las aplicacions seguentas seràn mesas a jorn :",
-    "These incompatible apps will be disabled:" : "Aquestas aplicacions incompatiblas son estadas desactivadas :",
     "The theme %s has been disabled." : "Lo tèma %s es estat desactivat.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Asseguratz-vos qu'una còpia de salvament de la banca de donadas, del dorsièr de configuracion (config) e del dorsièr de donadas (data) es estat realizada abans de començar.",
     "Start update" : "Aviar la mesa a jorn",

@@ -323,7 +323,6 @@ OC.L10N.register(
     "App update required" : "Bijwerken App vereist",
     "%s will be updated to version %s" : "%s wordt bijgewerkt naar versie %s",
     "These apps will be updated:" : "Deze apps worden bijgewerkt:",
-    "These incompatible apps will be disabled:" : "De volgende incompatibele apps worden uitgeschakeld:",
     "The theme %s has been disabled." : "Het thema %s is uitgeschakeld.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Let erop dat de database, de config map en de data map zijn gebackupped voordat u verder gaat.",
     "Start update" : "Begin de update",

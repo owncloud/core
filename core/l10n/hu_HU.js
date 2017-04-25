@@ -290,7 +290,6 @@ OC.L10N.register(
     "App update required" : "Alkalmazás frissítése szükséges",
     "%s will be updated to version %s" : "%s frissítve lesz erre a verzióra: %s",
     "These apps will be updated:" : "A következő alkalmazások lesznek frissítve:",
-    "These incompatible apps will be disabled:" : "A követlező inkompatibilis alkalmazások tiltva lesznek:",
     "The theme %s has been disabled." : "%s téma letiltásra került.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Kérjük, gondoskodjon róla, hogy elmentse az adatbázist, a konfigurációs mappa és az adatmappa tartalmát, mielőtt folytatja.",
     "Start update" : "A frissítés megkezdése",

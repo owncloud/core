@@ -321,7 +321,6 @@ OC.L10N.register(
     "App update required" : "Zahtevana je posodobitev programa",
     "%s will be updated to version %s" : "%s bo posodobljen na različico %s.",
     "These apps will be updated:" : "Posodobljeni bodo naslednji vstavki:",
-    "These incompatible apps will be disabled:" : "Ti neskladni vstavki bodo onemogočeni:",
     "The theme %s has been disabled." : "Tema %s je onemogočena za uporabo.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Pred nadaljevanjem se prepričajte se, da je ustvarjena varnostna kopija podatkovne zbirke, nastavitvenih datotek in podatkovne mape.",
     "Start update" : "Začni posodobitev",

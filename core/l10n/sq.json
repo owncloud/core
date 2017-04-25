@@ -321,7 +321,6 @@
     "App update required" : "Lypset përditësim aplikacioni",
     "%s will be updated to version %s" : "%s do të përditësohet me versionin %s",
     "These apps will be updated:" : "Do të përditësohen këto aplikacione:",
-    "These incompatible apps will be disabled:" : "Do të çaktivizohen këto aplikacione të papërputhshme:",
     "The theme %s has been disabled." : "Tema %s u çaktivizua.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Ju lutemi, para se të vazhdoni më tej, sigurohuni që baza e të dhënave, dosja e formësimeve dhe dosja e të dhënave janë kopjeruajtur.",
     "Start update" : "Fillo përditësimin",

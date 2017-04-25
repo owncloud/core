@@ -297,7 +297,6 @@
     "App update required" : "Je nutná aktualizácia aplikácie",
     "%s will be updated to version %s" : "%s bude zaktualizovaný na verziu %s.",
     "These apps will be updated:" : "Tieto aplikácie budú aktualizované:",
-    "These incompatible apps will be disabled:" : "Tieto nekompatibilné aplikácie budú vypnuté:",
     "The theme %s has been disabled." : "Téma %s bola zakázaná.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Pred vykonaním ďalšieho kroku sa presvedčte, že databáza, konfiguračný a dátový priečinok sú zazálohované.",
     "Start update" : "Spustiť aktualizáciu",

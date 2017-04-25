@@ -323,7 +323,6 @@ OC.L10N.register(
     "App update required" : "App-Update notwendig",
     "%s will be updated to version %s" : "%s wird auf Version %s aktualisiert",
     "These apps will be updated:" : "Diese Apps werden aktualisiert:",
-    "These incompatible apps will be disabled:" : "Diese inkompatiblen Apps werden deaktiviert:",
     "The theme %s has been disabled." : "Das Thema %s wurde deaktiviert.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Stellen Sie vor dem Fortsetzen bitte sicher, dass die Datenbank, der Konfigurationsordner und der Datenordner gesichert wurden.",
     "Start update" : "Aktualisierung starten",

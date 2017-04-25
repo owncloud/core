@@ -304,7 +304,6 @@ OC.L10N.register(
     "App update required" : "Appen behöver uppdateras",
     "%s will be updated to version %s" : "%s kommer att uppdateras till version %s",
     "These apps will be updated:" : "Dessa appar kommer att uppdateras:",
-    "These incompatible apps will be disabled:" : "Dessa inkompatibla appar kommer att inaktiveras",
     "The theme %s has been disabled." : "Temat  %s har blivit inaktiverat.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Vänligen säkerställ att en säkerhetskopia har gjorts av databasen, konfigurations- och datamappen innan du fortsätter.",
     "Start update" : "Starta uppdateringen",

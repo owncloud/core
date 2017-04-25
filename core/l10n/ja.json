@@ -321,7 +321,6 @@
     "App update required" : "アプリの更新が必要",
     "%s will be updated to version %s" : "%s は バーション %s にアップデートされます",
     "These apps will be updated:" : "次のアプリはアップデートされます：",
-    "These incompatible apps will be disabled:" : "次の非互換のないアプリは無効になる：",
     "The theme %s has been disabled." : "テーマ %s が無効になっています。",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "データベースを確認してください。実行前にconfigフォルダーとdataフォルダーをバックアップします。",
     "Start update" : "アップデートを開始",

@@ -303,7 +303,6 @@
     "App update required" : "Обновяване на приложението е задължително",
     "%s will be updated to version %s" : "%s ще бъде обновено до версия %s",
     "These apps will be updated:" : "Следните приложения ще бъдат обновени:",
-    "These incompatible apps will be disabled:" : "Следните несъвместими приложения ще бъдат деактивирани:",
     "The theme %s has been disabled." : "Темата %s бе изключена.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Моля, увери се, че си направил копия на базата данни, папките с настройки и данни, преди да продължиш.",
     "Start update" : "Започване на обновяването",
