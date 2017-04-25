@@ -945,6 +945,7 @@ MountConfigListView.prototype = _.extend({
 						}
 					});
 					onCompletion.resolve();
+					$("#body-settings").trigger("mountConfigLoaded");
 				}
 			});
 		}
@@ -965,6 +966,7 @@ MountConfigListView.prototype = _.extend({
 					self.recheckStorageConfig($tr);
 				});
 				onCompletion.resolve();
+				$("#body-settings").trigger("mountConfigLoaded");
 			}
 		});
 	},
