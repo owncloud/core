@@ -39,14 +39,14 @@ class Theme {
 	private $webPath;
 
 	/**
-	 * Theme constructor.
-	 *
 	 * @param string $name
 	 * @param string $directory
+	 * @param string $webPath
 	 */
-	public function __construct($name = '', $directory = '') {
+	public function __construct($name = '', $directory = '', $webPath = '') {
 		$this->name = $name;
 		$this->directory = $directory;
+		$this->webPath = $webPath;
 	}
 
 	/**
@@ -57,13 +57,6 @@ class Theme {
 	}
 
 	/**
-	 * @param $name
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getDirectory() {
@@ -71,17 +64,24 @@ class Theme {
 	}
 
 	/**
-	 * @param string $directory
-	 */
-	public function setDirectory($directory) {
-		$this->directory = $directory;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getWebPath() {
 		return $this->webPath;
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName($name) {
+		$this->name = $name;
+	}
+
+	/**
+	 * @param string $directory
+	 */
+	public function setDirectory($directory) {
+		$this->directory = $directory;
 	}
 
 	/**

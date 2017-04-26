@@ -187,7 +187,7 @@ class URLGenerator implements IURLGenerator {
 			$file = $directory . $imageName;
 
 			if (!empty($themeDirectory)) {
-				if ($imagePath = $this->getImagePathOrFallback('/' . $this->theme->getDirectory() . '/' . $file)) {
+				if ($imagePath = $this->getImagePathOrFallback('/' . $this->theme->getDirectory() . $file)) {
 					return $imagePath;
 				}
 			}

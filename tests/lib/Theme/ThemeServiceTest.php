@@ -22,7 +22,7 @@ class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 		$themeService = new ThemeService('theme-name');
 		$theme = $themeService->getTheme();
 		$this->assertEquals('theme-name', $theme->getName());
-		$this->assertEquals('themes/theme-name/', $theme->getDirectory());
+		$this->assertEquals('themes/theme-name', $theme->getDirectory());
 	}
 
 	public function testCreatesEmptyThemeIfDefaultDoesNotExist() {
@@ -49,7 +49,7 @@ class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
 		$theme = $themeService->getTheme();
 
 		$this->assertEquals('default', $theme->getName());
-		$this->assertEquals('themes/default/', $theme->getDirectory());
+		$this->assertEquals('themes/default', $theme->getDirectory());
 	}
 
 	public function testSetAppThemeSetsName() {
