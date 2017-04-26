@@ -91,3 +91,15 @@ Feature: dav-v2
 		And as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
 
+	Scenario: Setting custom DAV property and reading it after the file is renamed
+		Given using new dav path
+		And As an "admin"
+		And user "user0" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustompropwithmove.txt"
+		And "user0" sets property of file "/testcustompropwithmove.txt" with "{http://whatever.org/ns}very-custom-prop" "valueForMovetest"
+		And User "user0" moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
+		And as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
+
+
