@@ -102,4 +102,19 @@ Feature: dav-v2
 		And as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
 
-
+	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
+		Given using new dav path
+		And As an "admin"
+		And user "user0" exists
+		And user "user1" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustompropshared.txt"
+		And as "user0" creating a share with
+		  | path | testcustompropshared.txt |
+		  | shareType | 0 |
+		  | permissions | 31 |
+		  | shareWith | user1 |
+		And "user0" sets property of file "/testcustompropshared.txt" with "{http://whatever.org/ns}very-custom-prop" "valueForSharetest"
+		And As an "user1"
+		And as "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
