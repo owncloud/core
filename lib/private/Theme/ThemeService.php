@@ -39,7 +39,12 @@ class ThemeService {
 	 */
 	public function __construct($themeName = '', $defaultThemeDirectory = '') {
 		$this->setDefaultThemeDirectory($defaultThemeDirectory);
-		$this->createTheme($themeName);
+
+		if ($themeName === '' && $this->defaultThemeExists()) {
+			$themeName = 'default';
+		}
+
+		$this->theme = $this->makeTheme($themeName, false);
 	}
 
 	/**
@@ -50,29 +55,6 @@ class ThemeService {
 			$this->defaultThemeDirectory = \OC::$SERVERROOT . '/themes/default';
 		} else {
 			$this->defaultThemeDirectory = $defaultThemeDirectory;
-		}
-	}
-
-	/**
-	 * @param string $themeName
-	 */
-	private function createTheme($themeName = '') {
-		if ($themeName === '' && $this->defaultThemeExists()) {
-			$themeName = 'default';
-		}
-
-		$this->theme = new Theme($themeName, $this->getThemeDirectory($themeName));
-	}
-
-	/**
-	 * @param string $themeName
-	 * @return string
-	 */
-	private function getThemeDirectory($themeName) {
-		if ($themeName !== '') {
-			return 'themes/' . $themeName . '/';
-		} else {
-			return '';
 		}
 	}
 
@@ -95,16 +77,119 @@ class ThemeService {
 	}
 
 	/**
-	 * @param string $appName
+	 * @param string $themeName
 	 */
-	public function setAppTheme($appName = '') {
-		if ($appName !== '') {
-			$this->theme->setDirectory(
-				substr(\OC_App::getAppPath($appName), strlen(\OC::$SERVERROOT) + 1)
+	public function setAppTheme($themeName = '') {
+		$this->theme = $this->makeTheme($themeName, true, $this->getTheme());
+	}
+
+	/**
+	 * @param string $themeName
+	 * @param bool $appTheme
+	 * @param Theme $theme
+	 * @return Theme
+	 */
+	private function makeTheme($themeName, $appTheme = true, Theme $theme = null) {
+		$directory = $this->getDirectory($themeName, $appTheme);
+		$webPath = $this->getWebPath($themeName, $appTheme);
+
+		if (is_null($theme)) {
+			$theme = new Theme(
+				$themeName,
+				$directory,
+				$webPath
 			);
-			$appWebPath = \OC_App::getAppWebPath($appName);
-			$this->theme->setWebPath($appWebPath ? $appWebPath : '');
-			$this->theme->setName($appName);
+		} else {
+			$theme->setName($themeName);
+			$theme->setDirectory($directory);
+			$theme->setWebPath($webPath);
 		}
+
+		return $theme;
+	}
+
+	/**
+	 * @param string $themeName
+	 * @param bool $appTheme
+	 * @return string
+	 */
+	private function getDirectory($themeName, $appTheme = true) {
+		if ($themeName !== '') {
+			if ($appTheme) {
+				return substr(\OC_App::getAppPath($themeName), strlen(\OC::$SERVERROOT) + 1);
+			}
+			return 'themes/' . $themeName;
+		}
+
+		return '';
+	}
+
+	/**
+	 * @param $themeName
+	 * @param bool $appTheme
+	 * @return false|string
+	 */
+	private function getWebPath($themeName, $appTheme = true) {
+		if ($themeName !== '') {
+			if ($appTheme) {
+				$appWebPath = \OC_App::getAppWebPath($themeName);
+				return $appWebPath ? $appWebPath : '';
+			}
+			return '/themes/' . $themeName;
+		}
+
+		return '';
+	}
+
+	/**
+	 * @return Theme[]
+	 */
+	public function getAllThemes() {
+		return array_merge($this->getAllAppThemes(), $this->getAllLegacyThemes());
+	}
+
+	/**
+	 * @return Theme[]
+	 */
+	private function getAllAppThemes() {
+		$themes = [];
+		foreach (\OC::$server->getAppManager()->getAllApps() as $app) {
+			if (\OC_App::isType($app, 'theme')) {
+				$themes[$app] = $this->makeTheme($app);
+			}
+		}
+		return $themes;
+	}
+
+	/**
+	 * @return Theme[]
+	 */
+	private function getAllLegacyThemes() {
+		$themes = [];
+		if ($handle = opendir(\OC::$SERVERROOT . '/themes')) {
+			while (false !== ($entry = readdir($handle))) {
+				if ($entry === '.' || $entry === '..') {
+					continue;
+				}
+				if (is_dir(\OC::$SERVERROOT . '/themes/' . $entry)) {
+					$themes[$entry] = $this->makeTheme($entry, false);
+				}
+			}
+			closedir($handle);
+			return $themes;
+		}
+		return $themes;
+	}
+
+	/**
+	 * @param string $themeName
+	 * @return Theme|false
+	 */
+	public function findTheme($themeName) {
+		$allThemes = $this->getAllThemes();
+		if (array_key_exists($themeName, $allThemes)) {
+			return $allThemes[$themeName];
+		}
+		return false;
 	}
 }
