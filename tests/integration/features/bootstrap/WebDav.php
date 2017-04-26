@@ -281,7 +281,53 @@ trait WebDav {
 		}
 		$this->response = $this->listFolder($user, $path, 0, $properties);
 	}
-
+	
+	/**
+	 * @Given as :arg1 gets a custom property :arg2 of file :arg3
+	 * @param string $user
+	 * @param string $propertyName
+	 * @param string $path
+	 */
+	 public function asGetsPropertiesOfFile($user, $propertyName, $path){
+		$client = $this->getSabreClient($user);
+			$properties = [
+				$propertyName
+			];
+		$response = $client->propfind($this->makeSabrePath($user, $path), $properties);
+		$this->response = $response;
+	 }
+	
+	/**
+	 * @Given /^"([^"]*)" sets property of (file|folder|entry) "([^"]*)" with "([^"]*)" "([^"]*)"$/
+	 * @param string $user
+	 * @param string $path
+	 * @param string $propertyName
+	 * @param string $propertyValue
+	 */
+	public function asSetsPropertiesOfFolderWith($user, $elementType, $path, $propertyName, $propertyValue) {
+		$client = $this->getSabreClient($user);
+			$properties = [
+				$propertyName => $propertyValue
+			];
+		$client->proppatch($this->makeSabrePath($user, $path), $properties);
+	}
+	
+	/**
+	 * @Then /^the response should contain a custom "([^"]*)" property with "([^"]*)"$/
+	 * @param string $propertyName
+	 * @param string $propertyValue
+	 */
+	public function theResponseShouldContainACustomPropertyWithValue($propertyName, $propertyValue, $table=null)
+	{
+		$keys = $this->response;
+		if (!array_key_exists($propertyName, $keys)) {
+			throw new \Exception("Cannot find property \"$propertyName\"");
+		}
+		if ($keys[$propertyName] !== $propertyValue) {
+			throw new \Exception("\"$propertyName\" has a value \"${keys[$propertyName]}\" but \"$propertyValue\" expected");
+		}
+	}
+	
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" does not exist$/
 	 * @param string $user

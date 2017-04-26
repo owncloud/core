@@ -80,3 +80,14 @@ Feature: dav-v2
 		And As an "user0"
 		When User "user0" uploads file "data/textfile.txt" to "/testquota/asdf.txt"
 		Then the HTTP status code should be "201"
+
+	Scenario: Setting custom DAV property and reading it
+		Given using new dav path
+		And As an "admin"
+		And user "user0" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustomprop.txt"
+		And "user0" sets property of file "/testcustomprop.txt" with "{http://whatever.org/ns}very-custom-prop" "veryCustomPropValue"
+		And as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
+
