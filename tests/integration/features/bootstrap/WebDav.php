@@ -290,25 +290,26 @@ trait WebDav {
 	 */
 	 public function asGetsPropertiesOfFile($user, $propertyName, $path){
 		$client = $this->getSabreClient($user);
-			$properties = [
+		 $properties = [
 				$propertyName
-			];
+		 ];
 		$response = $client->propfind($this->makeSabrePath($user, $path), $properties);
 		$this->response = $response;
 	 }
 	
 	/**
-	 * @Given /^"([^"]*)" sets property of (file|folder|entry) "([^"]*)" with "([^"]*)" "([^"]*)"$/
+	 * @Given /^"([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
-	 * @param string $path
 	 * @param string $propertyName
+	 * @param string $elementType
+	 * @param string $path
 	 * @param string $propertyValue
 	 */
-	public function asSetsPropertiesOfFolderWith($user, $elementType, $path, $propertyName, $propertyValue) {
+	public function asSetsPropertiesOfFolderWith($user, $propertyName, $elementType, $path, $propertyValue) {
 		$client = $this->getSabreClient($user);
-			$properties = [
+		$properties = [
 				$propertyName => $propertyValue
-			];
+		];
 		$client->proppatch($this->makeSabrePath($user, $path), $properties);
 	}
 	
