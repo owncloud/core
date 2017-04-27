@@ -15,7 +15,7 @@ env:
     - TEST_DAV=$(tests/travis/changed_app.sh dav)
     - TC=litmus-v2
     - SRV_HOST_NAME=owncloud
-    - SRV_HOST_PORT=8888
+    - SRV_HOST_PORT=8889
   matrix:
     - DB=sqlite
 
@@ -28,6 +28,7 @@ addons:
   apt:
     packages:
     - realpath
+    - net-tools
   hosts:
     - owncloud
   sauce_connect:
