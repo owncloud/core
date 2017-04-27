@@ -42,7 +42,7 @@ if(!\OC\Files\Filesystem::file_exists($filename)) {
 $ftype=\OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType( $filename ));
 
 header('Content-Type:'.$ftype);
-OCP\Response::setContentDispositionHeader(basename($filename), 'attachment');
+OCP\Response::setContentDispositionHeader(basename($filename), 'inline');
 OCP\Response::disableCaching();
 OCP\Response::setContentLengthHeader(\OC\Files\Filesystem::filesize($filename));
 
