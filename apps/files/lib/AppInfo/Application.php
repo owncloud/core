@@ -81,18 +81,11 @@ class Application extends App {
 		});
 		$container->registerService('TagService', function(IContainer $c)  {
 			$homeFolder = $c->query('ServerContainer')->getUserFolder();
-			$userSession = $c->query('ServerContainer')->getUserSession();
-
-			if(!is_null($userSession) && !is_null($homeFolder))
-			{
-				return new TagService(
-					$userSession,
-					$c->query('Tagger'),
-					$homeFolder
-				);
-			} else {
-				return null;
-			}
+			return new TagService(
+				$c->query('ServerContainer')->getUserSession(),
+				$c->query('Tagger'),
+				$homeFolder
+			);
 		});
 
 		/*
