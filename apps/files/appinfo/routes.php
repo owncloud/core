@@ -55,6 +55,11 @@ $application->registerRoutes(
 				'verb' => 'POST'
 			],
 			[
+				'name' => 'Search#search',
+				'url' => '/search',
+				'verb' => 'GET',
+			],
+			[
 				'name' => 'view#index',
 				'url' => '/',
 				'verb' => 'GET',
