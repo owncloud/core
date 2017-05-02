@@ -239,7 +239,7 @@ $CONFIG = array(
 ),
 
 /**
- * If your user backend does not allow to reset the password (e.g. when it's a
+ * If your user backend does not allow resetting the password (e.g. when it's a
  * read-only user backend like LDAP), you can specify a custom link, where the
  * user is redirected to, when clicking the "reset password" link after a failed
  * login-attempt.
@@ -399,12 +399,12 @@ $CONFIG = array(
  * the correct value would most likely be "/owncloud". If ownCloud is running
  * under "https://mycloud.org/" then it would be "/".
  *
- * Note that above rule is not valid in every case, there are some rare setup
+ * Note that the above rule is not valid in every case, there are some rare setup
  * cases where this may not apply. However, to avoid any update problems this
  * configuration value is explicitly opt-in.
  *
- * After setting this value run `occ maintenance:update:htaccess` and when following
- * conditions are met ownCloud uses URLs without index.php in it:
+ * After setting this value run `occ maintenance:update:htaccess` and when the
+ * following conditions are met ownCloud uses URLs without index.php in it:
  *
  * - `mod_rewrite` is installed
  * - `mod_env` is installed
@@ -610,7 +610,7 @@ $CONFIG = array(
  *                this condition is met
  *  - ``logfile``: the log message invoked by the specified apps get redirected to
  *		   this logfile, this condition is met
- *		   Note: Not applicapable when using syslog.
+ *		   Note: Not applicable when using syslog.
  *
  * Defaults to an empty array.
  */
@@ -1063,7 +1063,7 @@ $CONFIG = array(
 'objectstore' => [
 	'class' => 'OC\\Files\\ObjectStore\\Swift',
 	'arguments' => [
-		// trystack will user your facebook id as the user name
+		// trystack will use your facebook id as the user name
 		'username' => 'facebook100000123456789',
 		// in the trystack dashboard go to user -> settings -> API Password to
 		// generate a password
@@ -1097,7 +1097,7 @@ $CONFIG = array(
 
 /**
  * Replaces the default Share Provider Factory. This can be utilized if
- * own or 3rdParty Share Providers be used that – for instance – uses the
+ * own or 3rdParty Share Providers are used that – for instance – use the
  * filesystem instead of the database to keep the share information.
  */
 'sharing.managerFactory' => '\OC\Share20\ProviderFactory',
@@ -1128,7 +1128,7 @@ $CONFIG = array(
  * and MySQL can handle 4 byte characters instead of 3 byte characters.
  *
  * If you want to convert an existing 3-byte setup into a 4-byte setup please 
- * set the parameters in MySQL as mentioned below run the migration command:
+ * set the parameters in MySQL as mentioned below and run the migration command:
  *  ./occ db:convert-mysql-charset
  * The config setting will be set automatically after a successful run.
  * 
@@ -1327,7 +1327,7 @@ $CONFIG = array(
 'filelocking.enabled' => true,
 
 /**
- * Set the time-to-live for locks in secconds.
+ * Set the time-to-live for locks in seconds.
  *
  * Any lock older than this will be automatically cleaned up.
  *
