@@ -7,8 +7,10 @@
 
 	External Storage can be configured using the GUI or at the command line. This second option provides the advanced user with more flexibility for configuring bulk external storage mounts and setting mount priorities. More information is available in the External Storage GUI documentation and the External Storage Configuration File documentation.
 	</description>
-	<licence>AGPL</licence>
-	<author>Robin Appelman, Michael Gapczynski, Vincent Petry</author>
+	<license-info>
+	<license>AGPL</license>
+	<licensee>Robin Appelman, Michael Gapczynski, Vincent Petry</licensee>
+    </license-info>
 	<documentation>
 		<admin>admin-external-storage</admin>
 	</documentation>
@@ -41,4 +43,5 @@
 		<admin>OCA\Files_External\Panels\Admin</admin>
 		<personal>OCA\Files_External\Panels\Personal</personal>
 	</settings>
+	<copyright>ownCloud, Inc</copyright>
 </info>

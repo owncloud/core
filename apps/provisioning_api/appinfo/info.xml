@@ -11,8 +11,10 @@
 		listed above. More information is available in the Provisioning API documentation, including example calls
 		and server responses.
 	</description>
-	<licence>AGPL</licence>
-	<author>Tom Needham</author>
+	<license-info>
+	<license>AGPL</license>
+	<licensee>Tom Needham</licensee>
+    </license-info>
 	<default_enable/>
 	<documentation>
 		<admin>admin-provisioning-api</admin>
@@ -25,4 +27,5 @@
 	<dependencies>
 		<owncloud min-version="10.0" max-version="10.0" />
 	</dependencies>
+	<copyright>ownCloud, Inc</copyright>
 </info>

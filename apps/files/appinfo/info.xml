@@ -3,8 +3,10 @@
 	<id>files</id>
 	<name>Files</name>
 	<description>File Management</description>
-	<licence>AGPL</licence>
-	<author>Robin Appelman, Vincent Petry</author>
+	<license-info>
+	<license>AGPL</license>
+	<licensee>Robin Appelman, Vincent Petry</licensee>
+    </license-info>
 	<default_enable/>
 	<version>1.5.1</version>
 	<types>
@@ -37,4 +39,5 @@
 	<settings>
 		<admin>OCA\Files\Panels\Admin</admin>
 	</settings>
+	<copyright>ownCloud, Inc</copyright>
 </info>

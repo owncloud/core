@@ -12,8 +12,10 @@
 		to enable server-side encryption.
 	</description>
 	<name>Default encryption module</name>
-	<licence>AGPL</licence>
-	<author>Bjoern Schiessle, Clark Tomlinson</author>
+	<license-info>
+	<license>AGPL</license>
+	<licensee>Bjoern Schiessle, Clark Tomlinson</licensee>
+    </license-info>
 	<documentation>
 		<user>user-encryption</user>
 		<admin>admin-encryption</admin>
@@ -35,4 +37,5 @@
 		<admin>OCA\Encryption\Panels\Admin</admin>
 		<personal>OCA\Encryption\Panels\Personal</personal>
 	</settings>
+	<copyright>ownCloud, Inc</copyright>
 </info>

@@ -3,8 +3,10 @@
 	<id>updatenotification</id>
 	<name>Update notification</name>
 	<description>Displays update notifications for ownCloud and provides the SSO for the updater.</description>
-	<licence>AGPL</licence>
-	<author>Lukas Reschke</author>
+	<license-info>
+	<license>AGPL</license>
+	<licensee>Lukas Reschke</licensee>
+    </license-info>
 	<version>0.2.1</version>
 	<namespace>UpdateNotification</namespace>
 	<default_enable/>
@@ -18,4 +20,5 @@
 	<settings>
 		<admin>OCA\UpdateNotification\Controller\AdminController</admin>
 	</settings>
+	<copyright>ownCloud, Inc</copyright>
 </info>

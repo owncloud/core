@@ -31,10 +31,11 @@ class InfoChecker extends BasicEmitter {
 	private $infoParser;
 
 	private $mandatoryFields = [
-		'author',
+		'license-info',
+		'licensee',
 		'description',
 		'id',
-		'licence',
+		'license',
 		'name',
 	];
 	private $optionalFields = [
@@ -51,6 +52,7 @@ class InfoChecker extends BasicEmitter {
 		'types',
 		'version',
 		'website',
+		'copyright',
 	];
 	private $deprecatedFields = [
 		'info',
