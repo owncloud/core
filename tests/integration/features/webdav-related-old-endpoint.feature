@@ -209,7 +209,8 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
 
 	Scenario: download a public shared file with range
-		Given user "user0" exists
+		Given using old dav path
+		And user "user0" exists
 		And As an "user0"
 		When creating a share with
 			| path | welcome.txt |
@@ -218,7 +219,8 @@ Feature: webdav-related-old-endpoint
 		Then Downloaded content should be "example file for developers"
 
 	Scenario: download a public shared file inside a folder with range
-		Given user "user0" exists
+		Given using old dav path
+		And user "user0" exists
 		And As an "user0"
 		When creating a share with
 			| path | PARENT |
@@ -226,34 +228,19 @@ Feature: webdav-related-old-endpoint
 		And Downloading last public shared file inside a folder "/parent.txt" with range "bytes=1-7"
 		Then Downloaded content should be "wnCloud"
 
-	Scenario: Downloading a file on the old endpoint should serve security headers
-		Given using old dav path
-		And As an "admin"
-		When Downloading file "/welcome.txt"
-		Then The following headers should be set
-			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
-			|Content-Security-Policy|default-src 'none';|
-			|X-Content-Type-Options |nosniff|
-			|X-Download-Options|noopen|
-			|X-Frame-Options|SAMEORIGIN|
-			|X-Permitted-Cross-Domain-Policies|none|
-			|X-Robots-Tag|none|
-			|X-XSS-Protection|1; mode=block|
-		And Downloaded content should start with "Welcome to your ownCloud account!"
-
-
-
 
 
 	Scenario: A file that is not shared does not have a share-types property
-		Given user "user0" exists
+		Given using old dav path
+		And user "user0" exists
 		And user "user0" created a folder "/test"
 		When as "user0" gets properties of folder "/test" with
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
 
 	Scenario: A file that is shared to a user has a share-types property
-		Given user "user0" exists
+		Given using old dav path
+		And user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/test"
 		And as "user0" creating a share with
@@ -267,7 +254,8 @@ Feature: webdav-related-old-endpoint
 			| 0 |
 
 	Scenario: A file that is shared to a group has a share-types property
-		Given user "user0" exists
+		Given using old dav path
+		And user "user0" exists
 		And group "group1" exists
 		And user "user0" created a folder "/test"
 		And as "user0" creating a share with
@@ -281,7 +269,8 @@ Feature: webdav-related-old-endpoint
 			| 1 |
 
 	Scenario: A file that is shared by link has a share-types property
-		Given user "user0" exists
+		Given using old dav path
+		And user "user0" exists
 		And user "user0" created a folder "/test"
 		And as "user0" creating a share with
 			| path | test |
@@ -293,7 +282,8 @@ Feature: webdav-related-old-endpoint
 			| 3 |
 
 	Scenario: A file that is shared by user,group and link has a share-types property
-		Given user "user0" exists
+		Given using old dav path
+		And user "user0" exists
 		And user "user1" exists
 		And group "group2" exists
 		And user "user0" created a folder "/test"
@@ -319,7 +309,8 @@ Feature: webdav-related-old-endpoint
 			| 3 |
 
 	Scenario: A disabled user cannot use webdav
-		Given user "userToBeDisabled" exists
+		Given using old dav path
+		And user "userToBeDisabled" exists
 		And As an "admin"
 		And assure user "userToBeDisabled" is disabled
 		When Downloading file "/welcome.txt" as "userToBeDisabled"
@@ -360,6 +351,13 @@ Feature: webdav-related-old-endpoint
 			| /textfile3.txt |
 			| /textfile4.txt |
 
+	Scenario: Checking file id after a move
+		Given using old dav path
+		And user "user0" exists
+		And User "user0" stores id of file "/textfile0.txt"
+		When User "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt"
+		Then User "user0" checks id of file "/FOLDER/textfile0.txt"
+
 	Scenario: Renaming a folder to a backslash encoded should return an error using old endpoint
 		Given using old dav path
 		And user "user0" exists
@@ -381,7 +379,86 @@ Feature: webdav-related-old-endpoint
 		When User "user0" moves folder "/testshare" to "/hola%5Chola"
 		Then the HTTP status code should be "400"
 
-	## Scenarios specific to old endpoint
+	Scenario: Downloading a file on the old endpoint should serve security headers
+		Given using old dav path
+		And As an "admin"
+		When Downloading file "/welcome.txt"
+		Then The following headers should be set
+			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
+			|Content-Security-Policy|default-src 'none';|
+			|X-Content-Type-Options |nosniff|
+			|X-Download-Options|noopen|
+			|X-Frame-Options|SAMEORIGIN|
+			|X-Permitted-Cross-Domain-Policies|none|
+			|X-Robots-Tag|none|
+			|X-XSS-Protection|1; mode=block|
+		And Downloaded content should start with "Welcome to your ownCloud account!"
+
+	Scenario: Doing a GET with a web login should work without CSRF token on the old backend
+		Given using old dav path
+		And Logging in using web as "admin"
+		When Sending a "GET" to "/remote.php/webdav/welcome.txt" without requesttoken
+		Then Downloaded content should start with "Welcome to your ownCloud account!"
+		And the HTTP status code should be "200"
+
+	Scenario: Doing a GET with a web login should work with CSRF token on the old backend
+		Given using old dav path
+		And Logging in using web as "admin"
+		When Sending a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken
+		Then Downloaded content should start with "Welcome to your ownCloud account!"
+		And the HTTP status code should be "200"
+
+	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the old backend
+		Given using old dav path
+		And Logging in using web as "admin"
+		When Sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" without requesttoken
+		Then the HTTP status code should be "401"
+
+	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the old backend
+		Given using old dav path
+		And Logging in using web as "admin"
+		When Sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken
+		Then the HTTP status code should be "207"
+
+	Scenario: Setting custom DAV property and reading it
+		Given using old dav path
+		And As an "admin"
+		And user "user0" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustomprop.txt"
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
+		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
+
+	Scenario: Setting custom DAV property and reading it after the file is renamed
+		Given using old dav path
+		And As an "admin"
+		And user "user0" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustompropwithmove.txt"
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
+		And User "user0" moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
+		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
+		
+	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
+		Given using old dav path
+		And As an "admin"
+		And user "user0" exists
+		And user "user1" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustompropshared.txt"
+		And as "user0" creating a share with
+		  | path | testcustompropshared.txt |
+		  | shareType | 0 |
+		  | permissions | 31 |
+		  | shareWith | user1 |
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
+		And As an "user1"
+		When as "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
+
+	### Scenarios specific to old endpoint
 
 	Scenario: Upload chunked file asc
 		Given user "user0" exists
@@ -409,29 +486,3 @@ Feature: webdav-related-old-endpoint
 		When As an "user0"
 		And Downloading file "/myChunkedFile.txt"
 		Then Downloaded content should be "AAAAABBBBBCCCCC"
-
-		Scenario: Doing a GET with a web login should work without CSRF token on the old backend
-		Given using old dav path
-		And Logging in using web as "admin"
-		When Sending a "GET" to "/remote.php/webdav/welcome.txt" without requesttoken
-		Then Downloaded content should start with "Welcome to your ownCloud account!"
-		And the HTTP status code should be "200"
-
-	Scenario: Doing a GET with a web login should work with CSRF token on the old backend
-		Given using old dav path
-		And Logging in using web as "admin"
-		When Sending a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken
-		Then Downloaded content should start with "Welcome to your ownCloud account!"
-		And the HTTP status code should be "200"
-
-	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the old backend
-		Given using old dav path
-		And Logging in using web as "admin"
-		When Sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" without requesttoken
-		Then the HTTP status code should be "401"
-
-	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the old backend
-		Given using old dav path
-		And Logging in using web as "admin"
-		When Sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken
-		Then the HTTP status code should be "207"
