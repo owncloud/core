@@ -186,6 +186,21 @@ Feature: federated
 
 
 
+	Scenario: Overwrite a federated shared folder as recipient propagates etag
+		Given Using server "REMOTE"
+		And user "user1" exists
+		And Using server "LOCAL"
+		And user "user0" exists
+		And User "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
+		And User "user1" from server "REMOTE" accepts last pending share
+		And Using server "REMOTE"
+		And user "user1" stores etag of element "/PARENT (2)"
+		And Using server "LOCAL"
+		And As an "user0"
+		When User "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt"
+		Then Using server "REMOTE"
+		And As an "user1"
+		And etag of element "/PARENT (2)" of user "user1" has changed
 
 
 
