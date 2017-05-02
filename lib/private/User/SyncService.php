@@ -76,7 +76,7 @@ class SyncService {
 	public function getNoLongerExistingUsers(\Closure $callback) {
 		// detect no longer existing users
 		$toBeDeleted = [];
-		$this->mapper->callForAllUsers(function (Account $a) use ($toBeDeleted, $callback) {
+		$this->mapper->callForAllUsers(function (Account $a) use (&$toBeDeleted, $callback) {
 			if ($a->getBackend() == $this->backendClass) {
 				if (!$this->backend->userExists($a->getUserId())) {
 					$toBeDeleted[] = $a->getUserId();
