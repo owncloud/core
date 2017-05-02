@@ -2305,6 +2305,14 @@ describe('OCA.Files.FileList tests', function() {
 		});
 	});
 	describe('Sorting files', function() {
+		var currentUserStub;
+
+		beforeEach(function() {
+			currentUserStub = sinon.stub(OC, 'getCurrentUser').returns({uid: 'user1'});
+		});
+		afterEach(function() {
+			currentUserStub.restore();
+		});
 		it('Toggles the sort indicator when clicking on a column header', function() {
 			var ASC_CLASS = fileList.SORT_INDICATOR_ASC_CLASS;
 			var DESC_CLASS = fileList.SORT_INDICATOR_DESC_CLASS;
