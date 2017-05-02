@@ -675,3 +675,7 @@ li > a.icon-workflows {
 li > a.icon-settings {
 	background-image: url(../../core/img/actions/settings.svg);
 }
+
+div.app-settings .section {
+	margin-bottom: 0px;
+}
