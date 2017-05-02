@@ -80,3 +80,41 @@ Feature: dav-v2
 		And As an "user0"
 		When User "user0" uploads file "data/textfile.txt" to "/testquota/asdf.txt"
 		Then the HTTP status code should be "201"
+
+	Scenario: Setting custom DAV property and reading it
+		Given using new dav path
+		And As an "admin"
+		And user "user0" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustomprop.txt"
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
+		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
+
+	Scenario: Setting custom DAV property and reading it after the file is renamed
+		Given using new dav path
+		And As an "admin"
+		And user "user0" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustompropwithmove.txt"
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
+		And User "user0" moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
+		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
+		
+	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
+		Given using new dav path
+		And As an "admin"
+		And user "user0" exists
+		And user "user1" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/testcustompropshared.txt"
+		And as "user0" creating a share with
+		  | path | testcustompropshared.txt |
+		  | shareType | 0 |
+		  | permissions | 31 |
+		  | shareWith | user1 |
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
+		And As an "user1"
+		When as "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
