@@ -66,6 +66,6 @@ class LegacyDAVACL extends DavAclPlugin {
 				return new Principal(Principal::UNAUTHENTICATED);
 			}
 		});
-		parent::propFind($propFind, $node);
+		return parent::propFind($propFind, $node);
 	}
 }
