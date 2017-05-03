@@ -66,6 +66,8 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 	/** @var EventDispatcherInterface */
 	private $dispatcher;
+	/** @var bool */
+	private $legacyMode;
 
 	/**
 	 * CardDavBackend constructor.
@@ -76,11 +78,13 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 */
 	public function __construct(IDBConnection $db,
 								Principal $principalBackend,
-								EventDispatcherInterface $dispatcher = null) {
+								EventDispatcherInterface $dispatcher = null,
+								$legacyMode = false) {
 		$this->db = $db;
 		$this->principalBackend = $principalBackend;
 		$this->dispatcher = $dispatcher;
 		$this->sharingBackend = new Backend($this->db, $principalBackend, 'addressbook');
+		$this->legacyMode = $legacyMode;
 	}
 
 	/**
@@ -114,7 +118,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			$addressBooks[$row['id']] = [
 				'id' => $row['id'],
 				'uri' => $row['uri'],
-				'principaluri' => $this->convertPrincipal($row['principaluri'], false),
+				'principaluri' => $this->convertPrincipal($row['principaluri']),
 				'{DAV:}displayname' => $row['displayname'],
 				'{' . Plugin::NS_CARDDAV . '}addressbook-description' => $row['description'],
 				'{http://calendarserver.org/ns/}getctag' => $row['synctoken'],
@@ -999,10 +1003,11 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		return $this->sharingBackend->applyShareAcl($addressBookId, $acl);
 	}
 
-	private function convertPrincipal($principalUri, $toV2) {
+	private function convertPrincipal($principalUri, $toV2 = null) {
 		if ($this->principalBackend->getPrincipalPrefix() === 'principals') {
 			list(, $name) = URLUtil::splitPath($principalUri);
-			if ($toV2 === true) {
+			$toV2 = $toV2 === null ? !$this->legacyMode : $toV2;
+			if ($toV2) {
 				return "principals/users/$name";
 			}
 			return "principals/$name";
