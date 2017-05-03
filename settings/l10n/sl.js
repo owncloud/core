@@ -298,6 +298,7 @@ OC.L10N.register(
     "Personal" : "Osebno",
     "Admin" : "Skrbništvo",
     "Error" : "Napaka",
+    "Show enabled/disabled option" : "Pokaži možnost omogoči/onemogoči",
     "Show storage location" : "Pokaži mesto shrambe",
     "Show last log in" : "Pokaži podatke zadnje prijave",
     "Show user backend" : "Pokaži ozadnji program",
