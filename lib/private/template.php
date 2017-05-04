@@ -314,7 +314,7 @@ class OC_Template extends \OC\Template\Base {
 	public static function printErrorPage( $error_msg, $hint = '' ) {
 		try {
 			$content = new \OC_Template( '', 'error', 'error', false );
-			$errors = array(array('error' => $error_msg, 'hint' => $hint));
+			$errors = array(array('error' => \OCP\Util::sanitizeHTML($error_msg), 'hint' => \OCP\Util::sanitizeHTML($hint)));
 			$content->assign( 'errors', $errors );
 			$content->printPage();
 		} catch (\Exception $e) {
