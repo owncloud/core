@@ -69,6 +69,7 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n バイト"],
     "Favorited" : "お気に入り済",
     "Favorite" : "お気に入り",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "プライベートリンク: ファイルやフォルダーにアクセスできる権限のあるユーザーのみ利用できます。自分用のパーマネントリンクや、共有している他のユーザーにピンポイントに指定することができます。",
     "Folder" : "フォルダー",
     "New folder" : "新しいフォルダー",
     "{newname} already exists" : "{newname} はすでに存在します",
