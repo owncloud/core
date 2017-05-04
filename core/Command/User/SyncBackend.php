@@ -26,6 +26,7 @@ use OC\User\AccountMapper;
 use OC\User\SyncService;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\UserInterface;
 use Symfony\Component\Console\Command\Command;
@@ -50,6 +51,8 @@ class SyncBackend extends Command {
 	/**
 	 * @param AccountMapper $accountMapper
 	 * @param IConfig $config
+	 * @param IUserManager $userManager
+	 * @param ILogger $logger
 	 */
 	public function __construct(AccountMapper $accountMapper,
 								IConfig $config,
@@ -72,7 +75,7 @@ class SyncBackend extends Command {
 				'The php class name - e.g. "OCA\User_LDAP\User_LDAP". Please wrap the class name into double quotes. You can use the option --list to list all known backend classes'
 			)
 			->addOption('list', 'l', InputOption::VALUE_NONE, 'list all known backend classes')
-			->addOption('missing-account-action', 'm', InputOption::VALUE_REQUIRED, 'action to do if the account isn\'t connected to a backend any longer. Options are "disable accounts" and "remove accounts". Use quotes. Note that removing the account will also remove the stored data and files for that account');
+			->addOption('missing-account-action', 'm', InputOption::VALUE_REQUIRED, 'action to do if the account isn\'t connected to a backend any longer. Options are "disable" and "remove". Use quotes. Note that removing the account will also remove the stored data and files for that account');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -94,13 +97,12 @@ class SyncBackend extends Command {
 			return 1;
 		}
 
-		$validActions = ['disable accounts', 'remove accounts'];
-		$missingAccountsAction = 'disable accounts';
+		$validActions = ['disable', 'remove'];
 
 		if ($input->getOption('missing-account-action') !== null) {
 			$missingAccountsAction = $input->getOption('missing-account-action');
 			if (!in_array($missingAccountsAction, $validActions, true)) {
-				$output->writeln("<error>Unknown action. Choose between \"disable accounts\" or \"remove accounts\"</error>");
+				$output->writeln("<error>Unknown action. Choose between \"disable\" or \"remove\"</error>");
 				return 1;
 			}
 		} else {
@@ -146,10 +148,10 @@ class SyncBackend extends Command {
 		} else {
 			$output->writeln("Following users are no longer known with the connected backend.");
 			switch ($missingAccountsAction) {
-				case 'disable accounts':
+				case 'disable':
 					$output->writeln("Proceeding to disable the accounts");
 					$this->doActionForAccountUids($toBeDeleted,
-							function($uid, $ac) use ($output) {
+							function($uid, IUser $ac) use ($output) {
 								$ac->setEnabled(false);
 								$output->writeln($uid);
 							},
@@ -157,10 +159,10 @@ class SyncBackend extends Command {
 								$output->writeln($uid . " (unknown account for the user)");
 							});
 					break;
-				case 'remove accounts':
+				case 'remove':
 					$output->writeln("Proceeding to remove the accounts");
 					$this->doActionForAccountUids($toBeDeleted,
-							function($uid, $ac) use ($output) {
+							function($uid, IUser $ac) use ($output) {
 								$ac->delete();
 								$output->writeln($uid);
 							},
@@ -171,7 +173,7 @@ class SyncBackend extends Command {
 				case 'ask later':
 					$output->writeln("listing the unknown accounts");
 					$this->doActionForAccountUids($toBeDeleted,
-							function($uid, $ac) use ($output) {
+							function($uid) use ($output) {
 								$output->writeln($uid);
 							},
 							function($uid) use ($output) {
@@ -187,20 +189,20 @@ class SyncBackend extends Command {
 					$missingAccountsAction2 = $helper->ask($input, $output, $question);
 					switch ($missingAccountsAction2) {
 						// if "nothing" is selected, just ignore and finish
-						case 'disable accounts':
+						case 'disable':
 							$output->writeln("Proceeding to disable the accounts");
 							$this->doActionForAccountUids($toBeDeleted,
-									function($uid, $ac) {
+									function($uid, IUser $ac) {
 										$ac->setEnabled(false);
 									},
 									function($uid) use ($output) {
 										$output->writeln($uid . " (unknown account for the user)");
 									});
 							break;
-						case 'remove accounts':
+						case 'remove':
 							$output->writeln("Proceeding to remove the accounts");
 							$this->doActionForAccountUids($toBeDeleted,
-									function($uid, $ac) {
+									function($uid, IUser $ac) {
 										$ac->delete();
 									},
 									function($uid) use ($output) {
