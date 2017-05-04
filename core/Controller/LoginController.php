@@ -144,6 +144,8 @@ class LoginController extends Controller {
 					$parameters['canResetPassword'] = $userObj->canChangePassword();
 				}
 			}
+		} elseif ($parameters['resetPasswordLink'] === 'disabled') {
+			$parameters['canResetPassword'] = false;
 		}
 
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
