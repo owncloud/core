@@ -14,6 +14,9 @@
 	}
 
 	var TEMPLATE =
+		'{{#if isDisplayPrivacyWarning}}' +
+		'<div class="warning privacyWarningMessage">{{privacyWarningMessage}}</div>' +
+		'{{/if}}' +
 		'<span class="icon-loading-small hidden"></span>' +
 		'<ul class="link-shares">' +
 		'{{#each shares}}' +
@@ -245,6 +248,8 @@
 				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				noShares: !this.collection.length,
 				noSharesMessage: t('core', 'There are currently no link shares, you can create one'),
+				isDisplayPrivacyWarning: this.configModel.get('shareLinksDisplayPrivacyWarning'),
+				privacyWarningMessage: t('core', 'If you share public links the recipient may forward them to anyone on the internet'),
 				shares: this.collection.map(_.bind(this._formatItem, this))
 			}));
 

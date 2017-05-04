@@ -39,6 +39,10 @@
 			   value="1" <?php if ($_['allowSocialShare'] == 'yes') print_unescaped('checked="checked"'); ?> />
 		<label for="allowSocialShare"><?php p($l->t('Allow users to share file via social media'));?></label><br/>
 
+		<input type="checkbox" name="share_links_display_privacy_warning" id="shareLinksDisplayPrivateWarning" class="checkbox"
+			   value="1" <?php if ($_['displayPrivacyWarning'] == 'yes') print_unescaped('checked="checked"'); ?> />
+		<label for="shareLinksDisplayPrivateWarning"><?php p($l->t('Display privacy warning about recipients resharing with anyone on the internet'));?></label><br/>
+
 	</p>
 	<p id="setDefaultExpireDate" class="double-indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareDefaultExpireDateSet'] === 'no' || $_['shareAPIEnabled'] === 'no') p('hidden');?>">
 		<?php p($l->t( 'Expire after ' )); ?>
