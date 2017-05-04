@@ -9,6 +9,15 @@ Feature: tags
     And The following tags should exist for "user0"
       |MySuperAwesomeTagName|true|true|
 
+  Scenario: Creating a normal tag with an emoji as regular user should work
+    Given user "user0" exists
+    When "user0" creates a "normal" tag with name "😀"
+    Then The response should have a status code "201"
+    And The following tags should exist for "admin"
+      |😀|true|true|
+    And The following tags should exist for "user0"
+      |😀|true|true|
+
   Scenario: Creating a not user-assignable tag as regular user should fail
     Given user "user0" exists
     When "user0" creates a "not user-assignable" tag with name "MySuperAwesomeTagName"
@@ -40,6 +49,14 @@ Feature: tags
     Then The response should have a status code "207"
     And The following tags should exist for "admin"
       |AnotherTagName|true|true|
+
+  Scenario: Renaming a normal tag to an emoji as regular user should work
+    Given user "user0" exists
+    Given "admin" creates a "normal" tag with name "MySuperAwesomeTagName"
+    When "user0" edits the tag with name "MySuperAwesomeTagName" and sets its name to "😀"
+    Then The response should have a status code "207"
+    And The following tags should exist for "admin"
+      |😀|true|true|
 
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given user "user0" exists
@@ -424,13 +441,3 @@ Feature: tags
     When "admin" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
     Then The response should have a status code "201"
     And the user "user0" cannot assign the "not user-assignable" tag with name "TagWithGroups"
-
-  Scenario: Assign a normal tag to a file
-    Given user "user0" exists
-    And "admin" creates a "normal" tag with name "Etiqueta"
-    And As an "user0"
-    When "user0" adds the tag "Etiqueta" to "/textfile0.txt" owned by "user0"
-    Then The response should have a status code "201"
-    And "textfile0.txt" owned by "user0" has the following tags
-      | Etiqueta |
-
