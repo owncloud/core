@@ -49,6 +49,7 @@ use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin;
 use OCA\DAV\Connector\Sabre\TagsPlugin;
 use OCA\DAV\AppInfo\PluginManager;
+use OCA\DAV\Connector\Sabre\MaintenancePlugin;
 
 class Server {
 
@@ -77,7 +78,9 @@ class Server {
 		$this->server->httpRequest->setUrl($this->request->getRequestUri());
 		$this->server->setBaseUri($this->baseUri);
 
-		$this->server->addPlugin(new BlockLegacyClientPlugin(\OC::$server->getConfig()));
+		$config = \OC::$server->getConfig();
+		$this->server->addPlugin(new MaintenancePlugin($config));
+		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$authPlugin = new Plugin();
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);
