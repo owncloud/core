@@ -110,4 +110,24 @@ class CommandLineContext implements \Behat\Behat\Context\Context {
 		$davPath = rtrim($davPath, '/') . $this->lastTransferPath;
 		$this->featureContext->usingDavPath($davPath);
 	}
+
+	/**
+	 * @When /^maintenance mode is (enabled|disabled)$/
+	 */
+	public function maintenanceModeIs($state) {
+		if ($state === 'enabled') {
+			$this->runOcc(['maintenance:mode', '--on']);
+		} else {
+			$this->runOcc(['maintenance:mode', '--off']);
+		}
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * Disables maintenance mode in case it was enabled.
+	 */
+	public function disableMaintenanceModeAfterScenario() {
+		$this->runOcc(['maintenance:mode', '--off']);
+	}
 }

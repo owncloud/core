@@ -511,3 +511,10 @@ Feature: webdav-related-new-endpoint
 		And as "user1" the folder "/folderB/ONE/TWO" exists
 		And User "user1" checks id of file "/folderB/ONE"
 
+	Scenario: Maintenance mode
+		Given using new dav path
+		And maintenance mode is enabled
+		When Connecting to dav endpoint
+ 		Then the HTTP status code should be "503"
+
+

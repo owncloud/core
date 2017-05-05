@@ -981,8 +981,10 @@ trait WebDav {
 	 */
 	public function connectingToDavEndpoint() {
 		try {
-			$this->response = $this->makeDavRequest(null, 'PROPFIND', '', []);
+			$this->response = $this->makeDavRequest('admin', 'PROPFIND', '', []);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		} catch (\GuzzleHttp\Exception\ServerException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
