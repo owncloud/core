@@ -35,6 +35,7 @@ use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
 use OCA\DAV\Connector\Sabre\FakeLockerPlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
+use OCA\DAV\Connector\Sabre\MaintenancePlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\CustomPropertiesBackend;
 use OCA\DAV\SystemTag\SystemTagPlugin;
@@ -70,7 +71,9 @@ class Server {
 		$this->server->httpRequest->setUrl($this->request->getRequestUri());
 		$this->server->setBaseUri($this->baseUri);
 
-		$this->server->addPlugin(new BlockLegacyClientPlugin(\OC::$server->getConfig()));
+		$config = \OC::$server->getConfig();
+		$this->server->addPlugin(new MaintenancePlugin($config));
+		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$authPlugin = new Plugin();
 		$this->server->addPlugin($authPlugin);
 
