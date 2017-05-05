@@ -437,7 +437,7 @@ class SettingsManager implements ISettingsManager {
 			}
 		}
 
-		$this->logger->error('Section id not found: "'.$sectionID.'". Apps should register settings sections in info.xml');
+		$this->log->error('Section id not found: "'.$sectionID.'". Apps should register settings sections in info.xml');
 		throw new QueryException();
 
 	}
