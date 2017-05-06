@@ -93,8 +93,14 @@ nbproject
 .DS_Store
 
 # WebFinger
-.well-known
 /.buildpath
+
+# Only allow .htaccess in .well-known for Let's Encrypt SSL webroot validation with Force SSL enabled
+.well-known/*
+!.well-known/acme-challenge
+.well-known/acme-challenge/*
+!.well-known/acme-challenge/.htaccess
+
 
 # Tests
 /tests/phpunit.xml
