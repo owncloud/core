@@ -60,7 +60,10 @@ class Session {
 	public function getStatus() {
 		$status = $this->session->get('encryptionInitialized');
 		if (is_null($status)) {
-			$status = self::NOT_INITIALIZED;
+			if(\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', '0') !== '0'
+			  or \OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '') !== '') {
+				$status = self::NOT_INITIALIZED;
+			}
 		}
 
 		return $status;

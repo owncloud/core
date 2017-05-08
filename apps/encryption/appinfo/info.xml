@@ -28,7 +28,7 @@
 		<owncloud min-version="10.0" max-version="10.0" />
 	</dependencies>
 	<commands>
-		<command>OCA\Encryption\Command\EnableMasterKey</command>
+		<command>OCA\Encryption\Command\SelectEncryptionType</command>
 		<command>OCA\Encryption\Command\MigrateKeys</command>
 	</commands>
 	<settings>

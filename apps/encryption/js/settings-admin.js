@@ -8,7 +8,78 @@
  */
 
 $(document).ready(function () {
-	
+
+	/*
+	 * Do the action based on the selection of encryption type
+	 * @param {string} encryptionType the type of encryption selection. (eg: masterkey or customkey)
+	 * @param {string} state the state after relogin to the server which is always static. Before relogin its undefined and post relogin "static" is the state.
+	 */
+	function encryptionTypeSelection(encryptionType, state=undefined) {
+		if (encryptionType === "masterkey") {
+			//If user selects "Master Key" from the drop down
+			$("#select-mode").removeClass("hidden");
+
+			if(state === "static") {
+				$("#select-mode, #keyTypeId").addClass("hidden");
+				$("#encryptHomeStorage, #encryptionSetRecoveryKey").addClass("hidden");
+				if($("#encryptionType").val().length === 0) {
+					$("#encryptionType").text("Encryption type: Master Key");
+				}
+			}
+		} else if (encryptionType === "customkey") {
+			//If user selects "User-specific key" from the drop down
+			$("#select-mode").removeClass("hidden");
+
+			if(state === "static") {
+				$("#keyTypeId, #select-mode").addClass("hidden");
+
+				$("#encryptHomeStorageSetting, #encryptionSetRecoveryKey").removeClass("hidden");
+
+			}
+		} else {
+			//If user selects "Please select an encryption option" from the drop down
+			$("#select-mode").addClass("hidden");
+		}
+
+	}
+
+	$("#encryptionType").css({pointerEvents: "none"});
+
+	encryptionTypeSelection($("#keyTypeId :selected").val(), "static");
+
+	if($("#masterKeyVal").attr("data-master-key") === "") {
+		if($("#userSpecificKey").attr("data-user-specific-key") !== "") {
+			encryptionTypeSelection("customkey", "static");
+		}
+	}
+
+	$("#keyTypeId").change(function (element) {
+		encryptionTypeSelection($("#keyTypeId :selected").val());
+	});
+
+	$("#select-mode").click(function () {
+		//Action to be taken when "Select this mode" button is selected.
+		var $loadSpinner = $('#encryptionKeySelection').find('div.hidden').first();
+		$loadSpinner.toggleClass('hidden',false);
+		$loadSpinner.toggleClass('loading',true);
+		if($("#keyTypeId :selected").val() === "masterkey") {
+			var masterAjaxObj = OC.AppConfig.setValue('encryption', 'useMasterKey', '1');
+			$.when(masterAjaxObj).done(function (masterKeyObj) {
+				$loadSpinner.toggleClass('hidden');
+				location.reload();
+			});
+		} else if($("#keyTypeId :selected").val() === "customkey") {
+			if($("#encryptionType").val().length === 0) {
+				$("#encryptionType").text("Encryption type: User Specific Key");
+			}
+			var userSpecificAjaxObj = OC.AppConfig.setValue("encryption", "userSpecificKey", '1');
+			$.when(userSpecificAjaxObj).done(function (userSpecificAjaxObj) {
+				$loadSpinner.toggleClass('hidden');
+				location.reload();
+			});
+		}
+	});
+
 	$('input:button[name="enableRecoveryKey"]').click(function () {
 
 		var recoveryStatus = $(this).attr('status');
