@@ -242,6 +242,25 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
+	 * find a user account by checking user_id, display name and email fields
+	 *
+	 * @param string $pattern
+	 * @param int $limit
+	 * @param int $offset
+	 * @return \OC\User\User[]
+	 */
+	public function find($pattern, $limit = null, $offset = null) {
+		$accounts = $this->accountMapper->find($pattern, $limit, $offset);
+		$users = [];
+		foreach ($accounts as $account) {
+			$user = $this->getUserObject($account);
+			$users[$user->getUID()] = $user;
+		}
+
+		return $users;
+	}
+
+	/**
 	 * search by displayName
 	 *
 	 * @param string $pattern
