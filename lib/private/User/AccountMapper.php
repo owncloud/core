@@ -76,6 +76,26 @@ class AccountMapper extends Mapper {
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
 
+	/**
+	 * @param string $pattern
+	 * @param integer $limit
+	 * @param integer $offset
+	 * @return Account[]
+	 */
+	public function find($pattern, $limit, $offset) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from($this->getTableName())
+			// TODO we can add a config option to allow search by these fields
+			->where($qb->expr()->iLike('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('additional_search_attributes', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orderBy('display_name');
+
+		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
+	}
+
 	public function getUserCountPerBackend($hasLoggedIn) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(['backend', $qb->createFunction('count(*) as `count`')])

@@ -46,6 +46,7 @@ abstract class Backend implements UserInterface {
 	const SET_DISPLAYNAME	= 1048576;		// 1 << 20
 	const PROVIDE_AVATAR	= 16777216;		// 1 << 24
 	const COUNT_USERS		= 268435456;	// 1 << 28
+	const SEARCH_STRING		= 4294967296;	// 1 << 32
 
 	protected $possibleActions = [
 		self::CREATE_USER => 'createUser',
@@ -56,6 +57,7 @@ abstract class Backend implements UserInterface {
 		self::SET_DISPLAYNAME => 'setDisplayName',
 		self::PROVIDE_AVATAR => 'canChangeAvatar',
 		self::COUNT_USERS => 'countUsers',
+		self::SEARCH_STRING => 'searchString',
 	];
 
 	/**

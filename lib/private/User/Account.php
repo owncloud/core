@@ -64,6 +64,7 @@ class Account extends Entity {
 	protected $backend;
 	protected $state;
 	protected $home;
+	protected $searchString;
 
 	public function __construct() {
 		$this->addType('state', 'integer');

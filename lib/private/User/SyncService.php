@@ -161,6 +161,10 @@ class SyncService {
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
 			$a->setDisplayName($this->backend->getDisplayName($uid));
 		}
+		// Check if backend supplys additional search strings
+		if ($this->backend->implementsActions(\OC_User_Backend::SEARCH_STRING)) {
+			$a->setSearchString($this->backend->getSearchString($uid));
+		}
 		return $a;
 	}
 
