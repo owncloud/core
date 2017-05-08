@@ -15,4 +15,9 @@ fi
 echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM"
 export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'","selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'"}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@localhost:4445/wd/hub"}}}}' 
 
-lib/composer/bin/behat -c tests/ui/config/behat.yml
+if [ "$BROWSER" == "internet explorer" ]
+then
+	lib/composer/bin/behat -c tests/ui/config/behat.yml --tags '~@skipOnIE'
+else
+	lib/composer/bin/behat -c tests/ui/config/behat.yml
+fi

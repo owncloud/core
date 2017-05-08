@@ -1,6 +1,6 @@
 Feature: files
 
-	@AdminLogin
+	@AdminLogin @skipOnIE
 	Scenario: scroll fileactionsmenu into view
 		Given I am on the files page
 		And the list of files/folders does not fit in one browser page
