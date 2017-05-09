@@ -25,10 +25,10 @@
 namespace OCA\Files\AppInfo;
 
 use OCA\Files\Controller\ApiController;
+use OCA\Files\Controller\ViewController;
 use OCP\AppFramework\App;
 use \OCA\Files\Service\TagService;
 use \OCP\IContainer;
-use OCA\Files\Controller\ViewController;
 
 class Application extends App {
 	public function __construct(array $urlParams= []) {
@@ -56,7 +56,6 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$server->getURLGenerator(),
-				$server->getNavigationManager(),
 				$c->query('L10N'),
 				$server->getConfig(),
 				$server->getEventDispatcher(),
