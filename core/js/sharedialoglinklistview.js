@@ -246,7 +246,7 @@
 				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				noShares: !this.collection.length,
 				noSharesMessage: t('core', 'There are currently no link shares, you can create one'),
-				privacyWarningMessage: t('core', 'Warning: Anyone with the link has access to the file/folder'),
+				privacyWarningMessage: t('core', 'Anyone with the link has access to the file/folder'),
 				shares: this.collection.map(_.bind(this._formatItem, this))
 			}));
 
