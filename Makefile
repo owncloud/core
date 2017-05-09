@@ -284,7 +284,7 @@ clean-dist:
 #
 # Build qa distribution
 #
-$(dist_dir)/qa/owncloud: $(composer_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
+$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
 	rm -Rf $@; mkdir -p $@/config
 	cp -R $(core_all_src) $@
 	cp -R $(core_test_dirs) $@
