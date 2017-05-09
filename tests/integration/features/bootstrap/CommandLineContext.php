@@ -123,7 +123,7 @@ class CommandLineContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @AfterScenario
+	 * @AfterScenario @maintenance_mode
 	 *
 	 * Disables maintenance mode in case it was enabled.
 	 */

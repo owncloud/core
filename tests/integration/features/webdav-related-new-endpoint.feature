@@ -516,5 +516,3 @@ Feature: webdav-related-new-endpoint
 		And maintenance mode is enabled
 		When Connecting to dav endpoint as user "admin"
  		Then the HTTP status code should be "503"
-
-
