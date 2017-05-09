@@ -26,6 +26,7 @@ OC.L10N.register(
     "Email sent" : "Elektronska pošta je poslana",
     "You need to set your user email before being able to send test emails." : "Pred preizkusnim pošiljanjem sporočil je treba nastaviti elektronski naslov uporabnika.",
     "Couldn't change the email address because the user does not exist" : "Elektronskega naslova ni mogoče spremeniti, ker uporabnik s tem naslovom ne obstaja",
+    "Couldn't change the email address because the token is invalid" : "Ni mogoče spremeniti naslova elektronske pošte, ker je žeton neveljaven.",
     "Invalid mail address" : "Neveljaven elektronski naslov",
     "A user with that name already exists." : "Uporabnik s tem imenom že obstaja.",
     "Unable to create user." : "Ni mogoče ustvariti uporabnika.",

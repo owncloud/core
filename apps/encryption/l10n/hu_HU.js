@@ -12,7 +12,6 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Az állományt nem sikerült dekódolni, valószínűleg ez egy megosztott fájl. Kérje meg az állomány tulajdonosát, hogy újra ossza meg Önnel ezt az állományt!",
     "The share will expire on %s." : "A megosztás lejár ekkor %s",
     "Cheers!" : "Üdv.",
-    "Encryption" : "Titkosítás",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Az állományok titkosítása engedélyezve van, de az Ön titkos kulcsai nincsenek beállítva. Ezért kérjük, hogy jelentkezzen ki, és lépjen be újra!",
     "Recovery key password" : "A helyreállítási kulcs jelszava",
     "Change recovery key password:" : "A helyreállítási kulcs jelszavának módosítása:",

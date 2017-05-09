@@ -28,7 +28,6 @@ OC.L10N.register(
     "Can not read this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Не могу да читам фајл. Вероватно је дељен. Питајте власника да га поново подели са вама.",
     "The share will expire on %s." : "Дељење истиче %s.",
     "Cheers!" : "Здраво!",
-    "Encryption" : "Шифровање",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Апликација шифровања је укључена али ваши кључеви нису иницијализовани. Одјавите се и поново се пријавите.",
     "Enable recovery key" : "Омогући кључ за опоравак",
     "Disable recovery key" : "Онемогући кључ за опоравак",

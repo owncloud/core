@@ -33,7 +33,6 @@ OC.L10N.register(
     "The share will expire on %s." : "The share will expire on %s.",
     "Cheers!" : "Cheers!",
     "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>" : "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>",
-    "Encryption" : "Encryption",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Encryption App is enabled but your keys are not initialised, please log-out and log-in again",
     "Encrypt the home storage" : "Encrypt the home storage",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted",

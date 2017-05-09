@@ -21,7 +21,6 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Ezin izan da fitxategi hau deszifratu, ziurrenik elkarbanatutako fitxategi bat da. Mesdez, eskatu fitxategiaren jabeari fitxategia zurekin berriz elkarbana dezan.",
     "The share will expire on %s." : "Elkarbanaketa %s-n iraungiko da.",
     "Cheers!" : "Ongi izan!",
-    "Encryption" : "Enkriptazioa",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Enkriptazio aplikazioa gaituta dago baina zure gakoak ez daude konfiguratuta, mesedez saioa bukatu eta berriro hasi",
     "Recovery key password" : "Berreskuratze gako pasahitza",
     "Change recovery key password:" : "Aldatu berreskuratze gako pasahitza:",

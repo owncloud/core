@@ -28,7 +28,6 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Failo iššifruoti nepavyko, gali būti jog jis yra pasidalintas su jumis. Paprašykite failo savininko, kad jums iš naujo pateiktų šį failą.",
     "The share will expire on %s." : "Bendrinimo laikas baigsis %s.",
     "Cheers!" : "Sveikinimai!",
-    "Encryption" : "Šifravimas",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Šifravimo programa įjungta, bet Jūsų raktai nėra pritaikyti. Prašome atsijungti ir vėl prisijungti",
     "Enable recovery key" : "Įjungti atstatymo raktą",
     "Disable recovery key" : "Išjungti atstatymo raktą",

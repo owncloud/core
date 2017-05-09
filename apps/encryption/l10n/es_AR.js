@@ -13,7 +13,6 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "No se puede descibrar este archivo, probablemente sea un archivo compartido. Por favor pídele al dueño que recomparta el archivo contigo.",
     "The share will expire on %s." : "El compartir expirará en %s.",
     "Cheers!" : "¡Saludos!",
-    "Encryption" : "Encriptación",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "La aplicación de encriptación está habilitada pero las llaves no fueron inicializadas, por favor termine y vuelva a iniciar la sesión",
     "Recovery key password" : "Contraseña de recuperación de clave",
     "Change recovery key password:" : "Cambiar contraseña para recuperar la clave:",

@@ -12,7 +12,6 @@ OC.L10N.register(
     "Private key password successfully updated." : "Cập nhật thành công mật khẩu khóa cá nhân",
     "The share will expire on %s." : "Chia sẻ này sẽ hết hiệu lực vào %s.",
     "Cheers!" : "Chúc mừng!",
-    "Encryption" : "Mã hóa",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Ứng dụng mã hóa đã được kích hoạt nhưng bạn chưa khởi tạo khóa. Vui lòng đăng xuất ra và đăng nhập lại",
     "Change Password" : "Đổi Mật khẩu",
     " If you don't remember your old password you can ask your administrator to recover your files." : "Nếu bạn không nhớ mật khẩu cũ, bạn có thể yêu cầu quản trị viên khôi phục tập tin của bạn.",

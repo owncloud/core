@@ -22,7 +22,6 @@ OC.L10N.register(
     "Encryption App is enabled and ready" : "برنامه رمزگذاری فعال و آماده است",
     "The share will expire on %s." : "اشتراک‌گذاری در %s منقضی خواهد شد.",
     "Cheers!" : "سلامتی!",
-    "Encryption" : "رمزگذاری",
     "Enable recovery key" : "فعال‌سازی کلید بازیابی",
     "Disable recovery key" : "غیرفعال‌سازی کلید بازیابی",
     "Recovery key password" : "رمزعبور کلید بازیابی",

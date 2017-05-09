@@ -9,7 +9,6 @@ OC.L10N.register(
     "Private key password successfully updated." : "La pasvorto de la malpublika ŝlosilo sukcese ĝisdatiĝis.",
     "Encryption App is enabled and ready" : "Aplikaĵo Ĉifrado kapabligitas kaj pretas",
     "The share will expire on %s." : "La kunhavo senvalidiĝos je %s.",
-    "Encryption" : "Ĉifrado",
     "Enable recovery key" : "Kapabligi restaŭroŝlosilon",
     "Disable recovery key" : "Malkapabligi restaŭroŝlosilon",
     "Recovery key password" : "Pasvorto de restaŭroŝlosilo",

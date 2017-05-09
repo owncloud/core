@@ -12,7 +12,6 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : "Ovu datoteku nije moguće dešifrirati, vjerojatno je riječ o zajedničkoj datoteci. Molimopitajte vlasnika datoteke da je ponovo podijeli s vama.",
     "The share will expire on %s." : "Podijeljeni resurs će isteći na %s.",
     "Cheers!" : "Cheers!",
-    "Encryption" : "Šifriranje",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Aplikacija šifriranja je aktivirana ali vaši ključevi nisu inicijalizirani, molimo odjavite se iponovno prijavite.",
     "Recovery key password" : "Lozinka ključa za oporavak",
     "Change recovery key password:" : "Promijenite lozinku ključa za oporavak",

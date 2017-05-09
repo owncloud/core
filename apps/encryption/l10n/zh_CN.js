@@ -21,7 +21,6 @@ OC.L10N.register(
     "Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you." : " 无法解密这个文件（或许这是一个共享文件？），请询问文件所有者重新与您分享这个文件。",
     "The share will expire on %s." : "此分享将在 %s 过期。",
     "Cheers!" : "干杯！",
-    "Encryption" : "加密",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "加密应用被启用了，但是你的加密密钥没有初始化，请重新登出登录系统一次。",
     "Recovery key password" : "恢复密钥密码",
     "Change recovery key password:" : "更改恢复密钥密码",

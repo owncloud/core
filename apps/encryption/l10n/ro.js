@@ -28,7 +28,6 @@ OC.L10N.register(
     "Missing Signature" : "Semnătură lipsă",
     "The share will expire on %s." : "Partajarea va expira în data de %s.",
     "Cheers!" : "Noroc!",
-    "Encryption" : "Încriptare",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Aplicația de criptare este activată dar cheile nu sunt inițializate, te rugăm reautentifică-te",
     "Enable recovery key" : "Activează cheia de recuperare",
     "Disable recovery key" : "Dezactivează cheia de recuperare",

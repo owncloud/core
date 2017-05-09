@@ -34,7 +34,6 @@ OC.L10N.register(
     "The share will expire on %s." : "Sdílení vyprší %s.",
     "Cheers!" : "Ať slouží!",
     "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>" : "Ahoj!<br><br>Administrátor povolil šifrování dat na serveru. Vaše soubory byly zašifrovány za použití hesla <strong>%s<strong>.<br><br>Přihlašte se do webového rozhraní, přejděte do nastavení \"základního šifrovacího modulu ownCloud\" a aktualizujte šifrovací heslo zadáním hesla výše do pole \"původní přihlašovací heslo\" a svého aktuálního přihlašovacího hesla.<br><br>",
-    "Encryption" : "Šifrování",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Aplikace pro šifrování je zapnuta, ale vaše klíče nejsou inicializované. Prosím odhlaste se a znovu přihlaste",
     "Encrypt the home storage" : "Zašifrovat domovské úložiště",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "Povolení tohoto nastavení zašifruje všechny soubory uložené v hlavním úložišti, jinak budou šifrovány pouze soubory na externích úložištích.",

@@ -17,7 +17,6 @@ OC.L10N.register(
     "one-time password for server-side-encryption" : "eins-skiptis lykilorð fyrir dulritun á þjóni",
     "The share will expire on %s." : "Gildistími deilingar rennur út %s.",
     "Cheers!" : "Skál!",
-    "Encryption" : "Dulritun",
     "Encrypt the home storage" : "Dulrita heimamöppuna",
     "Enable recovery key" : "Virkja endurheimtingarlykil",
     "Disable recovery key" : "Gera endurheimtingarlykil óvirkan",
