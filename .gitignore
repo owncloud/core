@@ -21,7 +21,6 @@
 !/apps/files_sharing
 !/apps/files_trashbin
 !/apps/files_versions
-!/apps/user_ldap
 !/apps/provisioning_api
 !/apps/systemtags
 !/apps/testing
