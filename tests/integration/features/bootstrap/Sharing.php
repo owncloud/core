@@ -150,13 +150,26 @@ trait Sharing {
 		$this->publicUploadContent($filename, $password, $body);
 	}
 
-	private function publicUploadContent($filename, $password = '', $body = 'test') {
+	/**
+	 * @When publicly uploading file ":filename" with content ":body" with autorename mode
+	 * @param string $filename target file name
+	 * @param string $body content to upload
+	 */
+	public function publiclyUploadingContentAutorename($filename, $body = 'test') {
+		$this->publicUploadContent($filename, '', $body, $autorename = true);
+	}
+
+	private function publicUploadContent($filename, $password = '', $body = 'test', $autorename = false) {
 		$url = substr($this->baseUrl, 0, -4) . "public.php/webdav/";
 		$url .= rawurlencode(ltrim($filename, '/'));
 		$token = $this->getLastShareToken();
 		$options['auth'] = [$token, $password];
 		$options['stream'] = true;
 		$options['body'] = $body;
+
+		if ($autorename) {
+			$options['headers']['OC-Autorename'] = 1;
+		}
 
 		$client = new Client();
 		$this->response = $client->send($client->createRequest('PUT', $url, $options));

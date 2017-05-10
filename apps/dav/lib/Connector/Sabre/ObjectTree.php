@@ -243,4 +243,8 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destination);
 		$this->markDirty($destinationDir);
 	}
+
+	public function getView() {
+		return $this->fileView;
+	}
 }

@@ -48,6 +48,7 @@ OC.FileUpload = function(uploader, data) {
 OC.FileUpload.CONFLICT_MODE_DETECT = 0;
 OC.FileUpload.CONFLICT_MODE_OVERWRITE = 1;
 OC.FileUpload.CONFLICT_MODE_AUTORENAME = 2;
+OC.FileUpload.CONFLICT_MODE_AUTORENAME_SERVER = 3;
 OC.FileUpload.prototype = {
 
 	/**
@@ -232,6 +233,10 @@ OC.FileUpload.prototype = {
 		if (this._conflictMode === OC.FileUpload.CONFLICT_MODE_DETECT
 			|| this._conflictMode === OC.FileUpload.CONFLICT_MODE_AUTORENAME) {
 			this.data.headers['If-None-Match'] = '*';
+		}
+		if (this._conflictMode === OC.FileUpload.CONFLICT_MODE_AUTORENAME_SERVER) {
+			// server-side autorename (not supported on all endpoints)
+			this.data.headers['OC-Autorename'] = '1';
 		}
 
 		if (file.lastModified) {
@@ -913,6 +918,10 @@ OC.Uploader.prototype = _.extend({
 								});
 							}
 						};
+
+						_.each(selection.uploads, function(upload) {
+							self.trigger('beforeadd', upload);
+						});
 
 						self.checkExistingFiles(selection, callbacks);
 

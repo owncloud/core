@@ -257,7 +257,7 @@ Feature: sharing
       | shareType | 3 |
       | permissions | 4 | 
 	And publicly uploading file "test.txt" with content "test"
-	And publicly uploading file "test.txt" with content "test2"
+	And publicly uploading file "test.txt" with content "test2" with autorename mode
 	When Downloading file "/FOLDER/test.txt"
 	Then Downloaded content should be "test"
 	And Downloading file "/FOLDER/test (2).txt"

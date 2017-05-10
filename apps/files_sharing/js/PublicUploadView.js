@@ -54,7 +54,17 @@
 				useHTTPS: OC.getProtocol() === 'https'
 			});
 
-			_.bindAll(this, '_onUploadDone', '_getUploadUrl');
+			_.bindAll(
+				this,
+				'_onUploadBeforeAdd',
+				'_onUploadDone',
+				'_getUploadUrl'
+			);
+		},
+
+		_onUploadBeforeAdd: function(upload) {
+			// add autorename header to deduplicate names on the server in case of conflict
+			upload.setConflictMode(OC.FileUpload.CONFLICT_MODE_AUTORENAME_SERVER);
 		},
 
 		_onUploadDone: function(e, upload) {
@@ -113,6 +123,7 @@
 				dropZone: this.$('.dropzone'),
 				url: this._getUploadUrl
 			});
+			this._uploader.on('beforeadd', this._onUploadBeforeAdd);
 			this._uploader.on('done', this._onUploadDone);
 
 			// FIXME: hack

@@ -84,6 +84,7 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	return new \OC\Files\View($ownerView->getAbsolutePath($path));
 });
 
+$server->addPlugin(new \OCA\DAV\Connector\Sabre\AutorenamePlugin());
 $server->addPlugin($linkCheckPlugin);
 
 // And off we go!
