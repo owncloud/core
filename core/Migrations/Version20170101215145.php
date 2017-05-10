@@ -53,16 +53,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// password CLOB DEFAULT NULL COLLATE BINARY
-			// TODO: collate binary ???
-			$authTokenTable->addColumn(
-				'password',
-				Type::TEXT,
-				[
-					'default' => null
-				]
-			);
-
 			// name CLOB DEFAULT '' NOT NULL COLLATE BINARY
 			// TODO: collate binary ???
 			$authTokenTable->addColumn(
@@ -116,6 +106,17 @@ class Version20170101215145 implements ISchemaMigration {
 					'unsigned' => true,
 					'default' => 0,
 					'notnull' => true
+				]
+			);
+
+			// password CLOB DEFAULT NULL COLLATE BINARY
+			// TODO: collate binary ???
+			$authTokenTable->addColumn(
+				'password',
+				Type::TEXT,
+				[
+					'default' => null,
+					'notnull' => false
 				]
 			);
 
