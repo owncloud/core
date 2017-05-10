@@ -257,9 +257,9 @@
 				isPasswordSet: isPasswordSet,
 				publicUploadPossible: this._isPublicUploadPossible(),
 				publicUploadChecked: this.model.canCreate(),
-				publicUploadLabel: t('core', 'Allow uploads'),
+				publicUploadLabel: t('core', 'Allow editing'),
 				showListingChecked: this.model.canRead(),
-				showListingLabel: t('core', 'Allow viewing file listing'),
+				showListingLabel: t('core', 'Show file listing'),
 				isMailEnabled: showEmailField
 			}));
 
