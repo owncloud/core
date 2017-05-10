@@ -4,8 +4,6 @@ namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
-use OC\Repair\Collation;
-use OCA\Encryption\Migration;
 use OCP\Migration\ISchemaMigration;
 
 /**
@@ -182,11 +180,6 @@ class Version20170101215145 implements ISchemaMigration {
 			$schema->dropTable("${prefix}calendarchanges");
 		}
 
-		// DROP TABLE oc_calendarobjects
-		if ($schema->hasTable("${prefix}calendarobjects")) {
-			$schema->dropTable("${prefix}calendarobjects");
-		}
-
 		// DROP TABLE oc_calendars
 		if ($schema->hasTable("${prefix}calendars")) {
 			$schema->dropTable("${prefix}calendars");
@@ -272,6 +265,36 @@ class Version20170101215145 implements ISchemaMigration {
 						'notnull' => false
 					]
 				);
+			}
+		}
+
+		if ($schema->hasTable("${prefix}calendarobjects")) {
+			$calendarObjectsTable = $schema->getTable("${prefix}calendarobjects");
+
+			if (!$calendarObjectsTable->hasColumn('classification')) {
+				$calendarObjectsTable->addColumn(
+					'classification',
+					Type::INTEGER,
+					[
+						'default' => 0,
+						'notnull' => false
+					]
+				);
+			}
+
+			if ($calendarObjectsTable->hasColumn('componenttype')) {
+				$componentType = $calendarObjectsTable->getColumn('componenttype');
+				$componentType->setOptions(['length' => 8]);
+			}
+
+			if ($calendarObjectsTable->hasColumn('firstoccurence')) {
+				$firstOccurence = $calendarObjectsTable->getColumn('firstoccurence');
+				$firstOccurence->setType(Type::getType(Type::BIGINT));
+			}
+
+			if ($calendarObjectsTable->hasColumn('lastoccurence')) {
+				$lastOccurence = $calendarObjectsTable->getColumn('lastoccurence');
+				$lastOccurence->setType(Type::getType(Type::BIGINT));
 			}
 		}
 	}
