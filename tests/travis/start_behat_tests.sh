@@ -32,8 +32,10 @@ else
 	PASSED=false
 fi
 
-SAUCELABS_SESSIONID=`cat /tmp/saucelabs_sessionid`
-curl -X PUT -s -d "{\"passed\": $PASSED}" -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCELABS_SESSIONID
+if [ ! -z "$SAUCE_USERNAME" ] && [ -e "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ] && [ -e "$SAUCE_ACCESS_KEY" ]
+then
+	SAUCELABS_SESSIONID=`cat /tmp/saucelabs_sessionid`
+	curl -X PUT -s -d "{\"passed\": $PASSED}" -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCELABS_SESSIONID
 
-printf "\n${RED}SAUCELABS RESULTS:${BLUE} https://saucelabs.com/jobs/$SAUCELABS_SESSIONID\n${NC}"
-
+	printf "\n${RED}SAUCELABS RESULTS:${BLUE} https://saucelabs.com/jobs/$SAUCELABS_SESSIONID\n${NC}"
+fi
