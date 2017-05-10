@@ -348,7 +348,7 @@ class ShareController extends Controller {
 			}
 		}
 
-		$shareTmpl['canDownload'] = ($share->getPermissions() & \OCP\Constants::PERMISSION_READ > 0);
+		$shareTmpl['canDownload'] = !!($share->getPermissions() & \OCP\Constants::PERMISSION_READ > 0);
 		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', ['token' => $token]);
 		$shareTmpl['shareUrl'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $token]);
 		$shareTmpl['maxSizeAnimateGif'] = $this->config->getSystemValue('max_filesize_animated_gifs_public_sharing', 10);
@@ -391,6 +391,10 @@ class ShareController extends Controller {
 		if ($share->getPassword() !== null && !$this->linkShareAuth($share)) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.authenticate',
 				['token' => $token]));
+		}
+
+		if (($share->getPermissions() & \OCP\Constants::PERMISSION_READ) === 0) {
+			throw new NotFoundException();
 		}
 
 		$files_list = $files;
