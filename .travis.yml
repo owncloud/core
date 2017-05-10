@@ -65,17 +65,11 @@ matrix:
     - php: 5.6
       env: DB=sqlite;TC=carddav-old-endpoint
     - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="48.0" PLATFORM=Linux TEST_DAV=0
-    - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" PLATFORM="Windows 10" TEST_DAV=0
     - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" PLATFORM="Windows 10" TEST_DAV=0
     - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="26" PLATFORM="Windows 10" TEST_DAV=0
-    - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="47.0" PLATFORM="Windows 10" TEST_DAV=0
-    - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="14.0" PLATFORM="Windows 10" TEST_DAV=0
     - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" PLATFORM="Windows 7" TEST_DAV=0
     - php: 5.6
