@@ -59,7 +59,6 @@ OC.L10N.register(
     "New" : "新規作成",
     "\"{name}\" is an invalid file name." : "\"{name}\" は無効なファイル名です。",
     "File name cannot be empty." : "ファイル名を空にすることはできません。",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" は許可されていないファイルタイプです",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "{owner} のストレージは一杯です。ファイルの更新と同期はもうできません！",
     "Your storage is full, files can not be updated or synced anymore!" : "あなたのストレージは一杯です。ファイルの更新と同期はもうできません！",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "{owner} のストレージはほぼ一杯です。({usedSpacePercent}%)",

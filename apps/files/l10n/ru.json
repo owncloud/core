@@ -57,7 +57,6 @@
     "New" : "Новый",
     "\"{name}\" is an invalid file name." : "\"{name}\" это неправильное имя файла.",
     "File name cannot be empty." : "Имя файла не может быть пустым.",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" не является допустимым типом файла",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Хранилище {owner} переполнено, файлы больше не могут быть обновлены или синхронизированы!",
     "Your storage is full, files can not be updated or synced anymore!" : "Ваше хранилище заполнено, произведите очистку перед загрузкой новых файлов.",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Хранилище {owner} практически заполнено ({usedSpacePercent}%)",

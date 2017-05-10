@@ -58,7 +58,6 @@ OC.L10N.register(
     "New" : "جديد",
     "\"{name}\" is an invalid file name." : "\"{name}\" اسم ملف غير صالح للاستخدام .",
     "File name cannot be empty." : "اسم الملف لا يجوز أن يكون فارغا",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" اسم ملف غير صالح للاستخدام",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "مساحة تخزين {owner} ممتلئة، لا يمكن تحديث الملفات او مزامنتها بعد الان !",
     "Your storage is full, files can not be updated or synced anymore!" : "مساحتك التخزينية ممتلئة, لا يمكن تحديث ملفاتك أو مزامنتها بعد الآن !",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "المساحة التخزينية لـ {owner} ممتلئة تقريبا ({usedSpacePercent}%)",

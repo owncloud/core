@@ -59,7 +59,6 @@ OC.L10N.register(
     "New" : "새로 만들기",
     "\"{name}\" is an invalid file name." : "\"{name}\"은(는) 잘못된 파일 이름입니다.",
     "File name cannot be empty." : "파일 이름이 비어 있을 수 없습니다.",
-    "\"{name}\" is not an allow filetype" : "\"{name}\"은 허용된 파일 형식이 아님",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "{owner}의 저장소가 가득 찼습니다. 파일을 더 이상 업데이트하거나 동기화할 수 없습니다!",
     "Your storage is full, files can not be updated or synced anymore!" : "저장 공간이 가득 찼습니다. 파일을 업데이트하거나 동기화할 수 없습니다!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "{owner}의 저장 공간이 거의 가득 찼습니다({usedSpacePercent}%)",

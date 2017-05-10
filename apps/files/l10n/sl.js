@@ -59,7 +59,6 @@ OC.L10N.register(
     "New" : "Novo",
     "\"{name}\" is an invalid file name." : "\"{name}\" je neveljavno ime datoteke.",
     "File name cannot be empty." : "Ime datoteke ne sme biti prazno polje.",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" ni dovoljena vrsta datoteke",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Shramba uporabnika {owner} je polna, zato datotek ni več mogoče posodabljati in usklajevati!",
     "Your storage is full, files can not be updated or synced anymore!" : "Shramba je povsem napolnjena. Datotek ni več mogoče posodabljati in usklajevati!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Shramba uporabnika {owner} je polna ({usedSpacePercent}%).",

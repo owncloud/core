@@ -57,7 +57,6 @@
     "New" : "Baru",
     "\"{name}\" is an invalid file name." : "\"{name}\" adalah nama berkas yang tidak sah.",
     "File name cannot be empty." : "Nama berkas tidak boleh kosong.",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" bukan tipe yang diizinkan",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Penyimpanan {owner} penuh, berkas tidak dapat diperbarui atau disinkronisasikan lagi!",
     "Your storage is full, files can not be updated or synced anymore!" : "Ruang penyimpanan Anda penuh, berkas tidak dapat diperbarui atau disinkronkan lagi!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Penyimpanan {owner} hampir penuh ({usedSpacePercent}%)",

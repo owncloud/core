@@ -58,7 +58,6 @@ OC.L10N.register(
     "New" : "Nieuw",
     "\"{name}\" is an invalid file name." : "\"{name}\" is een ongeldige bestandsnaam.",
     "File name cannot be empty." : "Bestandsnaam kan niet leeg zijn.",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" is geen toegestaan bestandstype",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Opslagruimte van {owner} zit vol, bestanden kunnen niet meer worden ge-upload of gesynchroniseerd!",
     "Your storage is full, files can not be updated or synced anymore!" : "Uw opslagruimte zit vol. Bestanden kunnen niet meer worden gewijzigd of gesynchroniseerd!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Opslagruimte van {owner} zit bijna vol ({usedSpacePercent}%)",

@@ -57,7 +57,6 @@
     "New" : "E re",
     "\"{name}\" is an invalid file name." : "\"{name}\" është emër i pavlefshëm kartele.",
     "File name cannot be empty." : "Emri i kartelës s’mund të jetë i zbrazët.",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" s’është lloj i lejuar kartelash",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Depozita e {owner} është plot, kartelat s’mund të përditësohen ose njëkohësohen më!",
     "Your storage is full, files can not be updated or synced anymore!" : "Depozita juaj është plot, kartelat s’mund të përditësohen ose njëkohësohen më!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Depozita e {owner} është thuasje plot ({usedSpacePercent}%)",

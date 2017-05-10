@@ -59,7 +59,6 @@ OC.L10N.register(
     "New" : "Nový",
     "\"{name}\" is an invalid file name." : "\"{name}\" je neplatným názvem souboru.",
     "File name cannot be empty." : "Název souboru nemůže být prázdný řetězec.",
-    "\"{name}\" is not an allow filetype" : "\"{name}\" není povolený typ souboru",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Úložiště uživatele {owner} je zaplněné, soubory nelze aktualizovat a synchronizovat!",
     "Your storage is full, files can not be updated or synced anymore!" : "Vaše úložiště je plné, nelze aktualizovat ani synchronizovat soubory.",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Úložiště uživatele {owner} je téměř plné ({usedSpacePercent}%)",
