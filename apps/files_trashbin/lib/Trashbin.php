@@ -415,7 +415,8 @@ class Trashbin {
 		if ($timestamp) {
 			$location = self::getLocation($user, $filename, $timestamp);
 			if ($location === false) {
-				\OCP\Util::writeLog('files_trashbin', 'trash bin database inconsistent!', \OCP\Util::ERROR);
+				\OCP\Util::writeLog('files_trashbin', 'Original location of file ' . $filename .
+					' not found in database, hence restoring into user\'s root instead', \OCP\Util::DEBUG);
 			} else {
 				// if location no longer exists, restore file in the root directory
 				if ($location !== '/' &&
