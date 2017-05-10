@@ -256,7 +256,8 @@ class Version20170101215145 implements ISchemaMigration {
 					'last_checked',
 					Type::INTEGER,
 					[
-						'default' => 0
+						'default' => 0,
+						'notnull' => false
 					]
 				);
 			}
@@ -267,7 +268,8 @@ class Version20170101215145 implements ISchemaMigration {
 					'reserved_at',
 					Type::INTEGER,
 					[
-						'default' => 0
+						'default' => 0,
+						'notnull' => false
 					]
 				);
 			}
