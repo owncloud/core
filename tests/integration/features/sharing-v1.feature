@@ -216,6 +216,53 @@ Feature: sharing
       | url | AN_URL |
       | mimetype | httpd/unix-directory |
 
+  Scenario: Uploading to a public upload-only share
+    Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | permissions | 4 | 
+	And publicly uploading file "test.txt" with content "test"
+	When Downloading file "/FOLDER/test.txt"
+	Then Downloaded content should be "test"
+
+  Scenario: Uploading to a public upload-only share with password
+    Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | password | publicpw |
+      | permissions | 4 | 
+	And publicly uploading file "test.txt" with password "publicpw" and content "test"
+	When Downloading file "/FOLDER/test.txt"
+	Then Downloaded content should be "test"
+
+  Scenario: Downloading from upload-only share is forbidden
+    Given user "user0" exists
+    And As an "user0"
+    And User "user0" moves file "/textfile0.txt" to "/FOLDER/test.txt"
+    When creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | permissions | 4 | 
+	Then Public shared file "test.txt" cannot be downloaded
+
+  Scenario: Uploading same file to a public upload-only share multiple times
+    Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | permissions | 4 | 
+	And publicly uploading file "test.txt" with content "test"
+	And publicly uploading file "test.txt" with content "test2"
+	When Downloading file "/FOLDER/test.txt"
+	Then Downloaded content should be "test"
+	And Downloading file "/FOLDER/test (2).txt"
+	And Downloaded content should be "test2"
+
   Scenario: getting all shares of a user using that user
     Given user "user0" exists
     And user "user1" exists
