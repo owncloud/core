@@ -31,7 +31,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage
 	 * @var string $path
 	 */
 	protected $path = '/index.php/settings/personal?sectionid=security';
-	
+
 	protected $createNewAppFormId = 'app-password-form';
 	protected $appPasswordNameInputId = 'app-password-name';
 	protected $createNewAppPasswordButtonId = 'add-app-password';
@@ -39,7 +39,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage
 	protected $linkedAppNameXpath = '//span[@class="token-name"]';
 	protected $disconnectButtonXpath = '//*[@data-original-title="Disconnect"]';
 	protected $createNewAppPasswordLoadingIndicatorClass = 'icon-loading-small';
-	
+
 	/**
 	 * created a new app password for the app named $appName
 	 * @param string $appName
@@ -56,9 +56,9 @@ class PersonalSecuritySettingsPage extends OwncloudPage
 		{
 			sleep(1);
 		}
-		
+
 	}
-	
+
 	/**
 	 * finds and returns the TR NodeElement of the app
 	 * throws Exception if App could not be found in list
@@ -78,7 +78,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage
 		}
 		throw new \Exception("Could not find app '$appName'");
 	}
-	
+
 	/**
 	 * Takes a TR NodeElement and looks for the disconnect button in it
 	 * returns the NodeElement of the button if found, else NULL
@@ -90,16 +90,16 @@ class PersonalSecuritySettingsPage extends OwncloudPage
 	{
 		return $tr->find("xpath", $this->disconnectButtonXpath);
 	}
-	
+
 	/**
-	 * finds the result fields of the new app password and returns an array of [login-name,password] 
+	 * finds the result fields of the new app password and returns an array of [login-name,password]
 	 * @return \Behat\Mink\Element\NodeElement[]|NULL[]
 	 */
 	public function getAppPasswordResult()
 	{
 		return array (
 				$this->findField("new-app-login-name"),
-				$this->findField("new-app-password") 
+				$this->findField("new-app-password")
 		);
 	}
 }

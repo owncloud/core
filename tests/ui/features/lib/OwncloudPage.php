@@ -31,7 +31,7 @@ class OwncloudPage extends Page
 	protected $userNameDispayId = "expandDisplayName";
 	public function waitTillPageIsloaded($timeout)
 	{
-		
+
 		for ($counter=0;$counter <= $timeout;$counter++) {
 			$lodingIndicator=$this->find("css", '.loading');
 			$visibility = $this->elementHasCSSValue(
@@ -40,16 +40,16 @@ class OwncloudPage extends Page
 			if ($visibility===FALSE) {
 				break;
 			}
-			
+
 			sleep(1);
 		}
 
 	}
-	
+
 	public function getNotificationText() {
 		return $this->findById("notification")->getText();
 	}
-	
+
 	/**
 	 * finds the own username displayed in the top right corner
 	 * @return string
@@ -57,10 +57,10 @@ class OwncloudPage extends Page
 	public function getMyUsername() {
 		return $this->findById($this->userNameDispayId)->getText();
 	}
-	
+
 	/**
 	 * Gets the Coordinates of a Mink Element
-	 * 
+	 *
 	 * @param Session $session
 	 * @param NodeElement $element
 	 * @return Array
@@ -74,10 +74,10 @@ class OwncloudPage extends Page
 			'.singleNodeValue.getBoundingClientRect();'
 		);
 	}
-	
+
 	/**
 	 * Gets the Window Height
-	 * 
+	 *
 	 * @param Session $session
 	 * @return Array
 	 */
@@ -87,13 +87,13 @@ class OwncloudPage extends Page
 			'return $(window).height();'
 		);
 	}
-	
+
 	/**
 	 * Determine if a Mink NodeElement contains a specific
 	 * css rule attribute value.
 	 *
 	 * @param NodeElement $element
-	 *   NodeElement previously selected with 
+	 *   NodeElement previously selected with
 	 *   $this->getSession()->getPage()->find().
 	 * @param string $property
 	 *   Name of the CSS property, such as "visibility".
@@ -118,7 +118,7 @@ class OwncloudPage extends Page
 				}
 			}
 		}
-	
+
 		return $exists;
 	}
 }

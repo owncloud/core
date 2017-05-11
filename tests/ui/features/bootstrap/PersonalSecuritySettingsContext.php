@@ -23,7 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 
-use Page\LoginPage;
 use Page\PersonalSecuritySettingsPage;
 
 require_once 'bootstrap.php';
@@ -33,25 +32,24 @@ require_once 'bootstrap.php';
  */
 class PersonalSecuritySettingsContext extends RawMinkContext implements Context
 {
-	private $loginPage;
 	private $personalSecuritySettingsPage;
 	private $appName;
 	private $strForAppName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	
-	public function __construct(LoginPage $loginPage, PersonalSecuritySettingsPage $personalSecuritySettingsPage)
+
+	public function __construct(PersonalSecuritySettingsPage $personalSecuritySettingsPage)
 	{
 		$this->personalSecuritySettingsPage = $personalSecuritySettingsPage;
 		$this->appName = substr(str_shuffle($this->strForAppName), 0, 8);
 	}
-	
+
 	/**
-	 * @Given I am on personal security settings page
+	 * @Given I am on the personal security settings page
 	 */
-	public function iAmOnPersonalSecuritySettingsPage()
+	public function iAmOnThePersonalSecuritySettingsPage()
 	{
 		$this->personalSecuritySettingsPage->open();
 	}
-	
+
 	/**
 	 * @When I create a new App password
 	 */
@@ -59,7 +57,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context
 	{
 		$this->personalSecuritySettingsPage->createNewAppPassword($this->appName);
 	}
-	
+
 	/**
 	 * @Then the new app should be listed in the App passwords list
 	 */
@@ -73,7 +71,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context
 			$this->personalSecuritySettingsPage->getDisconnectButton($appTr);
 		PHPUnit_Framework_Assert::assertNotEmpty($disconnectButton);
 	}
-	
+
 	/**
 	 * @Then my username and the app password should be displayed
 	 */
@@ -84,13 +82,13 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context
 			$this->personalSecuritySettingsPage->getMyUsername(),
 			$result[0]->getValue()
 		);
-		
+
 		PHPUnit_Framework_Assert::assertEquals(
 			1, preg_match(
 				'/(([A-Z]){5}-){3}([A-Z]){5}/', $result[1]->getValue()
 			)
 		);
-		
+
 	}
-	
+
 }

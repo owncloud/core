@@ -31,20 +31,20 @@ class UsersPage extends OwncloudPage
 	 * @var string $path
 	 */
 	protected $path = '/index.php/settings/users';
-	
+
 	protected $userTrXpath = ".//table[@id='userlist']/tbody/tr";
-	
+
 	protected $quotaSelectXpath = ".//select[@class='quota-user']";
-	
+
 	protected $quotaOptionXpath = "//option[contains(text(), '%s')]";
-	
+
 	protected $manualQuotaInputXpath = "//input[contains(@data-original-title,".
 										"'Please enter storage quota')]";
-	
+
 	public function findUserInTable($username)
 	{
 		$userTrs = $this->findAll('xpath', $this->userTrXpath);
-		
+
 		foreach ( $userTrs as $userTr ) {
 			$user = $userTr->find("css", ".name");
 			if ($user->getText() === $username) {
@@ -53,24 +53,24 @@ class UsersPage extends OwncloudPage
 		}
 		throw new \Exception("Could not find user '$username'");
 	}
-	
+
 	public function getQuotaOfUser($username)
 	{
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
-		
+
 		$selectField = $selectField->find(
 			'xpath', "//option[@selected='selected']"
 		);
-		
+
 		return $selectField->getText();
 	}
-	
+
 	public function setQuotaOfUserTo($username, $quota)
 	{
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
-		
+
 		$selectOption = $selectField->find(
 			'xpath', sprintf($this->quotaOptionXpath, $quota)
 		);
