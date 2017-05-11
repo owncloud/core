@@ -60,7 +60,7 @@ class User implements IUser {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	/** @var  EventDispatcher */
+	/** @var EventDispatcher */
 	private $eventDispatcher;
 
 	/** @var AccountMapper */

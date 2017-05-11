@@ -45,6 +45,7 @@ use OCP\UserInterface;
  * @method void setQuota(string $quota)
  * @method string getHome()
  * @method void setHome(string $home)
+ * @method void setSearchAttributes(string $searchAttributes)
  *
  * @package OC\User
  */
@@ -64,7 +65,7 @@ class Account extends Entity {
 	protected $backend;
 	protected $state;
 	protected $home;
-	protected $searchString;
+	protected $searchAttributes;
 
 	public function __construct() {
 		$this->addType('state', 'integer');

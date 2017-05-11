@@ -33,10 +33,23 @@ class Version20170510143952 implements ISchemaMigration {
 		$prefix = $options['tablePrefix'];
 		$table = $schema->getTable("{$prefix}accounts");
 
-		// Add additional_search_string column
-		$table->addColumn('searchString', 'string', [
+		// Add column to hold additional search attributes
+		$table->addColumn('search_attributes', 'string', [
 			'notnull' => false,
 			'length' => 64,
 		]);
+
+		// Add index for search attributes
+		$table->addIndex(['search_attributes'], 'search_attributes_index');
+
+		// Index to improve search performance of display_name column
+		$table->addIndex(['display_name'], 'display_name_index');
+
+		// Index to improve search performance of email column
+		$table->addIndex(['email'], 'email_index');
+
+		// Index to improve search performance of lower_user_id column
+		$table->addUniqueIndex(['lower_user_id'], 'lower_user_id_index');
+
     }
 }

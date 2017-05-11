@@ -18,14 +18,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-
 namespace OC\User;
-
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\User\IProvidesAdditionalSearchAttributesBackend;
 use OCP\UserInterface;
 
 /**
@@ -161,9 +159,9 @@ class SyncService {
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
 			$a->setDisplayName($this->backend->getDisplayName($uid));
 		}
-		// Check if backend supplys additional search strings
-		if ($this->backend->implementsActions(\OC_User_Backend::SEARCH_STRING)) {
-			$a->setSearchString($this->backend->getSearchString($uid));
+		// Check if backend supplies an additional search string
+		if ($this->backend instanceof IProvidesAdditionalSearchAttributesBackend) {
+			$a->setSearchAttributes($this->backend->getSearchAttributes($uid));
 		}
 		return $a;
 	}

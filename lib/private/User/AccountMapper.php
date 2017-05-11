@@ -89,11 +89,10 @@ class AccountMapper extends Mapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())
-			// TODO we can add a config option to allow search by these fields
-			->where($qb->expr()->iLike('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->where($qb->expr()->Like('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($pattern)) . '%')))
 			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
-			->orWhere($qb->expr()->iLike('additional_search_attributes', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('search_attributes', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orderBy('display_name');
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
