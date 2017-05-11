@@ -82,6 +82,7 @@ trait Sharing {
 			// expected
 			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(400, $e->getCode());
 			PHPUnit_Framework_Assert::assertLessThanOrEqual(499, $e->getCode());
+			$this->response = $e->getResponse();
 		}
 	}
 
@@ -156,7 +157,22 @@ trait Sharing {
 	 * @param string $body content to upload
 	 */
 	public function publiclyUploadingContentAutorename($filename, $body = 'test') {
-		$this->publicUploadContent($filename, '', $body, $autorename = true);
+		$this->publicUploadContent($filename, '', $body, true);
+	}
+
+	/**
+	 * @When publicly uploading a file does not work
+	 */
+	public function publiclyUploadingDoesNotWork() {
+		try {
+			$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
+			PHPUnit_Framework_Assert::fail('Publicly uploading must fail');
+		} catch (ClientException $e) {
+			// expected
+			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(400, $e->getCode());
+			PHPUnit_Framework_Assert::assertLessThanOrEqual(499, $e->getCode());
+			$this->response = $e->getResponse();
+		}
 	}
 
 	private function publicUploadContent($filename, $password = '', $body = 'test', $autorename = false) {

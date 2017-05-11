@@ -248,6 +248,7 @@ Feature: sharing
       | shareType | 3 |
       | permissions | 4 | 
 	Then Public shared file "test.txt" cannot be downloaded
+    And the HTTP status code should be "404"
 
   Scenario: Uploading same file to a public upload-only share multiple times
     Given user "user0" exists
@@ -262,6 +263,27 @@ Feature: sharing
 	Then Downloaded content should be "test"
 	And Downloading file "/FOLDER/test (2).txt"
 	And Downloaded content should be "test2"
+
+  Scenario: Uploading file to a public upload-only share that was deleted does not work
+    Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | permissions | 4 | 
+    And User "user0" deletes file "/FOLDER"
+	Then publicly uploading a file does not work
+    And the HTTP status code should be "404"
+
+  Scenario: Uploading file to a public read-only share does not work
+    Given user "user0" exists
+    And As an "user0"
+    And creating a share with
+      | path | FOLDER |
+      | shareType | 3 |
+      | permissions | 1 | 
+	Then publicly uploading a file does not work
+    And the HTTP status code should be "403"
 
   Scenario: getting all shares of a user using that user
     Given user "user0" exists

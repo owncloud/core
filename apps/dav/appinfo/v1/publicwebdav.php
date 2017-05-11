@@ -77,7 +77,11 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 
 	OC_Util::setupFS($owner);
 	$ownerView = \OC\Files\Filesystem::getView();
-	$path = $ownerView->getPath($fileId);
+	try {
+		$path = $ownerView->getPath($fileId);
+	} catch (\OCP\Files\NotFoundException $e) {
+		throw new \Sabre\DAV\Exception\NotFound();
+	}
 	$fileInfo = $ownerView->getFileInfo($path);
 	$linkCheckPlugin->setFileInfo($fileInfo);
 
