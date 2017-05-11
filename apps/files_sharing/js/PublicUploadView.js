@@ -14,16 +14,16 @@
 	}
 
 	var TEMPLATE =
-		'<div class="dropzone">' +
+		'<div>' +
 		'    <h2>{{title}}</h2>' +
-		'    <div class="upload">' +
-		'        <label class="button">' +
-		'            <input type="file" class="uploader hiddenuploadfield" name="files[]" />' +
-		'            <span>{{uploadButtonLabel}}</span>' +
-		'        </label>' +
-		'    </div>' +
-		'    <div class="completed hidden">' +
-		'        <div>{{uploadedFilesMessage}}</div>' +
+		'    <label>' +
+		'        <input type="file" class="uploader hiddenuploadfield" name="files[]" />' +
+		'        <div class="public-upload-view--dropzone">' +
+		'            <span class="icon icon-upload"></span><span>{{uploadButtonLabel}}</span>' +
+		'        </div>' +
+		'    </label>' +
+		'    <div class="public-upload-view--completed hidden">' +
+		'        <h3>{{uploadedFilesMessage}}</h3>' +
 		'        <ul></ul>' +
 		'    </div>' +
 		'</div>'
@@ -36,7 +36,7 @@
 	 * @namespace
 	 */
 	OCA.Sharing.PublicUploadView = OC.Backbone.View.extend({
-		class: 'publicUploadView',
+		className: 'public-upload-view',
 
 		/**
 		 * @type OC.Uploader
@@ -69,8 +69,8 @@
 
 		_onUploadDone: function(e, upload) {
 			var fileName = upload.getFileName();
-			this.$('.completed').removeClass('hidden');
-			this.$('.completed ul').append(this.itemTemplate({
+			this.$('.public-upload-view--completed').removeClass('hidden');
+			this.$('.public-upload-view--completed ul').append(this.itemTemplate({
 				fileName: fileName
 			}));
 		},
@@ -104,7 +104,7 @@
 		render: function () {
 			this.$el.html(this.template({
 				title: t('files_sharing', 'Anonymous upload'),
-				uploadButtonLabel: t('files_sharing', 'Upload files'),
+				uploadButtonLabel: t('files_sharing', 'Select files for upload'),
 				uploadedFilesMessage: t('files_sharing', 'Uploaded files')
 			}));
 
@@ -113,7 +113,7 @@
 
 			this._uploader = new OC.Uploader(this.$('.uploader'), {
 				filesClient: this._filesClient,
-				dropZone: this.$('.dropzone'),
+				dropZone: this.$('.public-upload-view--dropzone'),
 				url: this._getUploadUrl
 			});
 			this._uploader.on('beforeadd', this._onUploadBeforeAdd);
