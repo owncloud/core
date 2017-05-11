@@ -37,6 +37,12 @@ fi
 
 # use tmpfs for datadir - should speedup unit test execution
 DATADIR=$BASEDIR/data-autotest
+if [ '$TC' = 'selenium' ]
+then
+	SKELETON_SETTING='"skeletondirectory"=> "'$BASEDIR'/ui/skeleton",'
+else
+	SKELETON_SETTING=""
+fi
 
 echo "Using database $DATABASENAME"
 
@@ -50,11 +56,13 @@ cat > ./tests/autoconfig-sqlite.php <<DELIM
       0 => 'localhost',
       1 => '$SRV_HOST_NAME',
     ),
+  'default_language' => 'en',
   'dbtype' => 'sqlite',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
   'adminpass' => 'admin',
   'directory' => '$DATADIR',
+  $SKELETON_SETTING
 );
 DELIM
 
@@ -67,6 +75,7 @@ cat > ./tests/autoconfig-mysql.php <<DELIM
       0 => 'localhost',
       1 => '$SRV_HOST_NAME',
     ),
+  'default_language' => 'en',
   'dbtype' => 'mysql',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
@@ -76,6 +85,7 @@ cat > ./tests/autoconfig-mysql.php <<DELIM
   'dbname' => '$DATABASENAME',
   'dbhost' => 'localhost',
   'dbpass' => 'owncloud',
+  $SKELETON_SETTING
 );
 DELIM
 
@@ -88,6 +98,7 @@ cat > ./tests/autoconfig-pgsql.php <<DELIM
       0 => 'localhost',
       1 => '$SRV_HOST_NAME',
     ),
+  'default_language' => 'en',
   'dbtype' => 'pgsql',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
@@ -97,6 +108,7 @@ cat > ./tests/autoconfig-pgsql.php <<DELIM
   'dbname' => '$DATABASENAME',
   'dbhost' => 'localhost',
   'dbpass' => '',
+  $SKELETON_SETTING
 );
 DELIM
 
@@ -109,6 +121,7 @@ cat > ./tests/autoconfig-oracle.php <<DELIM
       0 => 'localhost',
       1 => '$SRV_HOST_NAME',
     ),
+  'default_language' => 'en',
   'dbtype' => 'oci',
   'dbtableprefix' => 'oc_',
   'adminlogin' => '$ADMINLOGIN',
@@ -119,6 +132,7 @@ cat > ./tests/autoconfig-oracle.php <<DELIM
   'dbhost' => 'localhost',
   'dbpass' => 'owncloud',
   'loglevel' => 0,
+  $SKELETON_SETTING
 );
 DELIM
 
