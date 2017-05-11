@@ -36,7 +36,7 @@ class Version20170510143952 implements ISchemaMigration {
 		// Add column to hold additional search attributes
 		$table->addColumn('search_attributes', 'string', [
 			'notnull' => false,
-			'length' => 64,
+			'length' => 185, // Max index length
 		]);
 
 		// Add index for search attributes
