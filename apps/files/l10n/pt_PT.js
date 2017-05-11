@@ -59,6 +59,7 @@ OC.L10N.register(
     "New" : "Novo",
     "\"{name}\" is an invalid file name." : "\"{name}\" é um nome de ficheiro inválido.",
     "File name cannot be empty." : "O nome do ficheiro não pode estar em branco.",
+    "\"{name}\" has a forbidden file type/extension." : "\"{name}\" tem um tipo de ficheiro/extensão proibido.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "O armazenamento de {owner} está cheio. Os ficheiros já não podem ser atualizados ou sincronizados!",
     "Your storage is full, files can not be updated or synced anymore!" : "O seu armazenamento está cheio, os ficheiros já não podem ser atualizados ou sincronizados.",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "O armazenamento de {owner} está quase cheio ({usedSpacePercent}%)",

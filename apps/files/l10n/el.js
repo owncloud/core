@@ -59,6 +59,7 @@ OC.L10N.register(
     "New" : "Νέο",
     "\"{name}\" is an invalid file name." : "Το \"{name}\" δεν είναι έγκυρο όνομα αρχείου.",
     "File name cannot be empty." : "Το όνομα αρχείου δεν μπορεί να είναι κενό.",
+    "\"{name}\" has a forbidden file type/extension." : "\"{Name}\" έχει απαγορευμένο τύπο/επέκταση αρχείου.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Ο αποθηκευτικός χώρος του {owner} είναι γεμάτος, τα αρχεία δεν μπορούν να ενημερωθούν ή να συγχρονιστούν!",
     "Your storage is full, files can not be updated or synced anymore!" : "Ο αποθηκευτικός σας χώρος είναι γεμάτος, τα αρχεία δεν μπορούν να ενημερωθούν ή να συγχρονιστούν!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Ο αποθηκευτικός χώρος του {owner} είναι σχεδόν γεμάτος ({usedSpacePercent}%)",
