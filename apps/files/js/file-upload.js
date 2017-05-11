@@ -953,7 +953,12 @@ OC.Uploader.prototype = _.extend({
 						self.showConflict(upload);
 					} else if (status === 404) {
 						// target folder does not exist any more
-						OC.Notification.show(t('files', 'Target folder "{dir}" does not exist any more', {dir: upload.getFullPath()} ), {type: 'error'});
+						var dir = upload.getFullPath();
+						if (dir && dir !== '/') {
+							OC.Notification.show(t('files', 'Target folder "{dir}" does not exist any more', {dir: dir}), {type: 'error'});
+						} else {
+							OC.Notification.show(t('files', 'Target folder does not exist any more'), {type: 'error'});
+						}
 						self.cancelUploads();
 					} else if (status === 507) {
 						// not enough space

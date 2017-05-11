@@ -68,13 +68,6 @@
 		},
 
 		_onUploadDone: function(e, upload) {
-			var data = upload.data;
-			var status = data.jqXHR.status;
-			if (status < 200 || status >= 300) {
-				// TODO: error handling
-				return;
-			}
-
 			var fileName = upload.getFileName();
 			this.$('.completed').removeClass('hidden');
 			this.$('.completed ul').append(this.itemTemplate({
