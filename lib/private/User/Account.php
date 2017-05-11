@@ -46,6 +46,7 @@ use OCP\UserInterface;
  * @method string getHome()
  * @method void setHome(string $home)
  * @method void setSearchAttributes(string $searchAttributes)
+ * @method string getSearchAttributes()
  *
  * @package OC\User
  */
