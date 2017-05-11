@@ -433,4 +433,20 @@ class User implements IUser {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);
 		}
 	}
+
+	/**
+	 * @return string
+	 * @since 10.0.1
+	 */
+	public function getSearchAttributes() {
+		return $this->account->getSearchAttributes();
+	}
+
+	/**
+	 * @return string
+	 * @since 10.0.1
+	 */
+	public function setSearchAttributes($searchString) {
+		$this->account->setSearchAttributes($searchString);
+	}
 }

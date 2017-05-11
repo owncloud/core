@@ -200,4 +200,21 @@ interface IUser {
 	 */
 	public function setQuota($quota);
 
+	/**
+	 * set the users' search attributes
+	 *
+	 * @param string $searchString
+	 * @return void
+	 * @since 10.0.1
+	 */
+	public function setSearchAttributes($searchString);
+
+	/**
+	 * get the users' search attributes
+	 *
+	 * @return string
+	 * @since 10.0.1
+	 */
+	public function getSearchAttributes();
+
 }
