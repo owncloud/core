@@ -8,6 +8,12 @@ default:
     default:
       paths:
         - %paths.base%/../features
+      context:
+        parameters:
+          ocPath: ./
+          regularUserPassword: 123456
+          regularUserName: regularuser
+          regularUserNames: user1,user2,user3,user4,user5
       contexts:
         - FeatureContext:
         - LoginContext:

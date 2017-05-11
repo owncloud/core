@@ -30,7 +30,7 @@ class LoginPage extends OwncloudPage
 	 * @var string $path
 	 */
 	protected $path = '/index.php/login';
-	
+
 	public function loginAs($username, $password)
 	{
 		$this->fillField("user", $username);
