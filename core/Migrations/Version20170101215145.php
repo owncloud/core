@@ -284,6 +284,7 @@ class Version20170101215145 implements ISchemaMigration {
 
 			if ($calendarObjectsTable->hasColumn('componenttype')) {
 				$componentType = $calendarObjectsTable->getColumn('componenttype');
+				// TODO: check what happens when this contained data with length > 8
 				$componentType->setOptions(['length' => 8]);
 			}
 
@@ -295,6 +296,28 @@ class Version20170101215145 implements ISchemaMigration {
 			if ($calendarObjectsTable->hasColumn('lastoccurence')) {
 				$lastOccurence = $calendarObjectsTable->getColumn('lastoccurence');
 				$lastOccurence->setType(Type::getType(Type::BIGINT));
+			}
+		}
+
+		if ($schema->hasTable("${prefix}calendars")) {
+			$calendarsTable = $schema->getTable("${prefix}calendars");
+
+			if ($calendarsTable->hasColumn('components')) {
+				$components = $calendarsTable->getColumn('components');
+				$components->setOptions(['length' => 20]);
+			}
+		}
+
+		if ($schema->hasTable("${prefix}calendarsubscriptions")) {
+			$calendarSubscriptionsTable = $schema->getTable("${prefix}calendarsubscriptions");
+
+			if ($calendarSubscriptionsTable->hasColumn('lastmodified')) {
+				$lastModified = $calendarSubscriptionsTable->getColumn('lastmodified');
+				$lastModified->setOptions(
+					[
+						'notnull' => true
+					]
+				);
 			}
 		}
 	}
