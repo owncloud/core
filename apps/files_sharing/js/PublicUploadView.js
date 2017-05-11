@@ -16,6 +16,15 @@
 	var TEMPLATE =
 		'<div>' +
 		'    <h2>{{title}}</h2>' +
+		'    <div id="uploadprogresswrapper">' +
+		'        <div id="uploadprogressbar">' +
+		'            <em class="label outer" style="display:none">' +
+		'                <span class="desktop">{{uploadProgressText}}</span>' +
+		'                <span class="mobile">...</span>' +
+		'            </em>' +
+		'        </div>' +
+		'        <input type="button" class="stop icon-close" style="display:none" value="" />' +
+		'    </div>' +
 		'    <label>' +
 		'        <input type="file" class="uploader hiddenuploadfield" name="files[]" />' +
 		'        <div class="public-upload-view--dropzone">' +
@@ -105,7 +114,8 @@
 			this.$el.html(this.template({
 				title: t('files_sharing', 'Anonymous upload'),
 				uploadButtonLabel: t('files_sharing', 'Select files for upload'),
-				uploadedFilesMessage: t('files_sharing', 'Uploaded files')
+				uploadedFilesMessage: t('files_sharing', 'Uploaded files'),
+				uploadProgressText: t('core', 'Uploading...')
 			}));
 
 			this.$el.find('.has-tooltip').tooltip();
