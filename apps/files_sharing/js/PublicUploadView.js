@@ -55,7 +55,6 @@
 		initialize: function(options) {
 			this._filesClient = new OC.Files.Client({
 				host: OC.getHost(),
-				port: OC.getPort(),
 				userName: options.shareToken,
 				// note: password not be required, the endpoint
 				// will recognize previous validation from the session
@@ -128,9 +127,6 @@
 			});
 			this._uploader.on('beforeadd', this._onUploadBeforeAdd);
 			this._uploader.on('done', this._onUploadDone);
-
-			// FIXME: hack
-			this._uploader.showConflict = _.noop;
 
 			return this;
 		},

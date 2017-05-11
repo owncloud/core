@@ -109,6 +109,16 @@ describe('OC.Upload tests', function() {
 				'Not enough free space, you are uploading 5 KB but only 1000 B is left'
 			);
 		});
+		it('triggers event before adding', function() {
+			var handler = sinon.stub();
+			uploader.on('beforeadd', handler);
+			addFiles(uploader, [testFile]);
+
+			expect(handler.calledOnce).toEqual(true);
+			var upload = handler.getCall(0).args[0];
+			expect(upload).toBeDefined();
+			expect(upload.getFileName()).toEqual('test.txt');
+		});
 	});
 	describe('Upload conflicts', function() {
 		var conflictDialogStub;
@@ -237,6 +247,20 @@ describe('OC.Upload tests', function() {
 			expect(uploadData[0].submit.calledTwice).toEqual(true);
 
 			clock.restore();
+		});
+		it('server-side autorename mode sets OC-Autorename header', function() {
+			var fileData = {name: 'conflict.txt'};
+			var uploadData = addFiles(uploader, [
+				fileData
+			]);
+
+			expect(uploadData[0].submit.notCalled).toEqual(true);
+
+			var upload = new OC.FileUpload(uploader, uploadData[0]);
+			upload.setConflictMode(OC.FileUpload.CONFLICT_MODE_AUTORENAME_SERVER);
+			upload.submit();
+
+			expect(upload.data.headers['OC-Autorename']).toEqual('1');
 		});
 	});
 });
