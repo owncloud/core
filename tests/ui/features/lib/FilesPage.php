@@ -25,7 +25,7 @@ namespace Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
-
+use Behat\Mink\Session;
 
 class FilesPage extends OwnCloudPage
 {
@@ -35,11 +35,21 @@ class FilesPage extends OwnCloudPage
 	 */
 	protected $path = '/index.php/apps/files/';
 	protected $emptyContentXpath = ".//*[@id='emptycontent']";
-
 	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
 	protected $newFolderButtonXpath = './/div[contains(@class, "newFileMenu")]//a[@data-templatename="New folder"]';
 	protected $newFolderNameInputLabel = 'New folder';
-	protected $fileActionMenuXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
+	protected $fileActionMenuBtnXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
+	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
+	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
+	protected $fileNamesXpath = "//span[@class='nametext']";
+	protected $fileRowFromNameXpath = "/../../..";
+	protected $fileActionXpath = "//a[@data-action='%s']";
+	protected $fileRenameInputXpath = "//*[@class='filename']";
+	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
+	protected $appContentId ="app-content";
+	protected $renameActionLabel = "Rename";
+	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
+	//TODO make simpler, only ID .//*[@id='fileList']
 	protected $fileListXpath = ".//div[@id='app-content-files']//tbody[@id='fileList']";
 	protected $fileDeleteXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='Delete']";
 
@@ -69,8 +79,138 @@ class FilesPage extends OwnCloudPage
 		);
 	}
 	public function findActionMenuByNo($number) {
-		$xpath = sprintf($this->fileActionMenuXpathByNo,$number);
+		$xpath = sprintf($this->fileActionMenuBtnXpathByNo,$number);
 		return $this->find("xpath", $xpath);
+	}
+
+	/**
+	 * finds the complete row of the file
+	 * 
+	 * @param string $name
+	 * @param Session $session
+	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 */
+	public function findFileRowByName($name, Session $session)
+	{
+		$lastFileNameCoordinates ["top"] = 0;
+		$appContentHeight = 0;
+		$previousFileCounter = 0;
+		
+		//loop to keep on scrolling down to load not viewed files
+		while ( $lastFileNameCoordinates ["top"] <= $appContentHeight ) {
+			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
+				"xpath", $this->fileNamesXpath
+			);
+			
+			//file counts are not increasing, the file is not there
+			if (($previousFileCounter+1) === count($fileNameSpans)) {
+				return null;
+			}
+			//check every file if the name is the one we are searching for
+			//but no need to check names that we checked already ($previousFileCounter)
+			for ($fileCounter = $previousFileCounter;
+				$fileCounter < count($fileNameSpans);
+				$fileCounter ++) {
+
+				//found the file
+				if ($fileNameSpans[$fileCounter]->getText() === $name ||
+					strip_tags($fileNameSpans[$fileCounter]->getHtml()) === $name) {
+					return $fileNameSpans[$fileCounter]->find(
+						"xpath", $this->fileRowFromNameXpath
+					);
+				}
+				$previousFileCounter = $fileCounter;
+			}
+			$lastFileNameCoordinates = $this->getCoordinatesOfElement(
+				$session, $fileNameSpans [$previousFileCounter]
+			);
+			// scroll to the bottom of the page
+			// we need to scroll because the files app does only load a part of
+			// the files in one screen
+			$this->scrollDownAppContent(count($fileNameSpans), $session);
+			
+			// get the new height of the content div
+			$appContentHeight = ( int ) $session->evaluateScript(
+				'$("#' . $this->appContentId . '")[0].scrollHeight;'
+			);
+		}
+	}
+
+	/**
+	 * scrolls down the file list, to load not yet displayed files
+	 * @param int $numberOfFilesOld how many files were listed before the scroll.
+	 * So we can guess how long to wait for the loading of new files finish
+	 * @param Session $session
+	 * @param int $timeout
+	 */
+	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout=5)
+	{
+		$session->evaluateScript(
+			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
+		);
+		
+		// there is no loading indicator here, so we are gonna wait till we have
+		// more files than before
+		for ($counter = 0; $counter <= $timeout; $counter ++) {
+			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
+				"xpath", $this->fileNamesXpath
+			);
+			if (count($fileNameSpans) > $numberOfFilesOld) {
+				break;
+			}
+			sleep(1);
+		}
+	}
+
+	/**
+	 * Takes a row of a file and finds the Action Button in it
+	 * @param \Behat\Mink\Element\NodeElement $fileRow
+	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 */
+	public function findFileActionButtonInFileRow (\Behat\Mink\Element\NodeElement $fileRow)
+	{
+		return $fileRow->find("xpath", $this->fileActionMenuBtnXpath);
+	}
+
+	/**
+	 * Takes a row of a file and finds the File Action in it
+	 * the File Action Button must be clicked first
+	 * @param \Behat\Mink\Element\NodeElement $fileRow
+	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 */
+	public function findFileActionMenuInFileRow (\Behat\Mink\Element\NodeElement $fileRow)
+	{
+		return $fileRow->find("xpath", $this->fileActionMenuXpath);
+	}
+
+	/**
+	 * finds the actual action link in the action menu
+	 * @param string $action
+	 * @param \Behat\Mink\Element\NodeElement $actionMenu
+	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 */
+	public function findButtonInActionMenu ($action, \Behat\Mink\Element\NodeElement $actionMenu)
+	{
+		return $actionMenu->find("xpath", 
+			sprintf($this->fileActionXpath, $action)
+		);
+	}
+
+	/**
+	 * renames a file
+	 * @param string $fromFileName
+	 * @param string $toFileName
+	 * @param Session $session
+	 */
+	public function renameFile($fromFileName, $toFileName, Session $session)
+	{
+		$fileRow=$this->findFileRowByName($fromFileName, $session);
+		$actionMenuBtn=$this->findFileActionButtonInFileRow($fileRow);
+		$actionMenuBtn->click();
+		$actionMenu=$this->findFileActionMenuInFileRow($fileRow);
+		$this->findButtonInActionMenu($this->renameActionLabel, $actionMenu)->click();
+		$fileRow->find("xpath", $this->fileRenameInputXpath)->setValue($toFileName);
+		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
 	}
 
 	public function findDeleteByNo($number) {
@@ -93,6 +233,18 @@ class FilesPage extends OwnCloudPage
 		}
 	}
 
+	/**
+	 * returns the tooltip that is displayed next to the filename if something is wrong
+	 * @param string $fileName
+	 * @param Session $session
+	 * @return string
+	 */
+	public function getTooltipOfFile ($fileName, Session $session)
+	{
+		$fileRow=$this->findFileRowByName($fileName, $session);
+		return $fileRow->find("xpath", $this->fileTooltipXpath)->getText();
+	}
+	
 	/**
 	 * same as the original open() function but with a more slack
 	 * URL verification as oC adds some extra parameters to the URL e.g.
