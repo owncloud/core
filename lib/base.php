@@ -842,6 +842,15 @@ class OC {
 			$setupHelper = new OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(),
 				\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 				\OC::$server->getSecureRandom());
+
+			$defaultEnabledAppTheme = \OC_App::getDefaultEnabledAppTheme();
+
+			if ($defaultEnabledAppTheme !== false) {
+				/** @var \OC\Theme\ThemeService $themeService */
+				$themeService = \OC::$server->query('ThemeService');
+				$themeService->setAppTheme($defaultEnabledAppTheme);
+			}
+
 			$controller = new OC\Core\Controller\SetupController($setupHelper);
 			$controller->run($_POST);
 			exit();

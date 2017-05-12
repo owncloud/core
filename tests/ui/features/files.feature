@@ -1,5 +1,6 @@
 Feature: files
 
+	@skipOnIE
 	Scenario: scroll fileactionsmenu into view
 		Given a regular user exists
 		And I am logged in as a regular user

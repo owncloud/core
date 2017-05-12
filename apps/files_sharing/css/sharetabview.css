@@ -97,6 +97,10 @@
   background-size: 16px 16px;
 }
 
+.shareTabView .privacyWarningMessage {
+  margin-top: 20px;
+}
+
 .subTabHeaders .tabHeaders {
   margin-left: 0px;
   margin-right: 0px;

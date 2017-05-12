@@ -32,6 +32,7 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "SFTP" : "SFTP",
     "Host" : "Mazgas",
+    "Root" : "Root",
     "SMB / CIFS" : "SMB / CIFS",
     "Share" : "Dalintis",
     "Domain" : "Domenas",

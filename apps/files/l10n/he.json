@@ -57,6 +57,7 @@
     "New" : "חדש",
     "\"{name}\" is an invalid file name." : "\"{name}\" הנו שם קובץ לא חוקי.",
     "File name cannot be empty." : "שם קובץ אינו יכול להיות ריק",
+    "\"{name}\" has a forbidden file type/extension." : "ל- \"{name}\" יש סוג/סיומת קובץ אסור..",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "האחסון של {owner} מלא, כבר לא ניתן לעדכן ולסנכרן קבצים!",
     "Your storage is full, files can not be updated or synced anymore!" : "האחסון שלך מלא, כבר לא ניתן לעדכן ולסנכרן קבצים!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "האחסון של {owner} כמעט מלא ({usedSpacePercent}%)",

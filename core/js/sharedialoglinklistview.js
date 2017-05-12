@@ -50,7 +50,8 @@
 		'{{/if}}' +
 		'<div class="clear-both">' +
 		'	<button class="addLink">{{addLinkText}}</button>' +
-		'</div>';
+		'</div>' +
+		'<div class="privacyWarningMessage">{{privacyWarningMessage}}</div>';
 
 	/**
 	 * @class OCA.Share.ShareDialogLinkListView
@@ -245,6 +246,7 @@
 				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				noShares: !this.collection.length,
 				noSharesMessage: t('core', 'There are currently no link shares, you can create one'),
+				privacyWarningMessage: t('core', 'Anyone with the link has access to the file/folder'),
 				shares: this.collection.map(_.bind(this._formatItem, this))
 			}));
 

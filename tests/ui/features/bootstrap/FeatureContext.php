@@ -21,8 +21,7 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
-use Behat\Testwork\Hook\Scope\AfterSuiteScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\OwncloudPage;
 use Page\LoginPage;
@@ -54,5 +53,19 @@ class FeatureContext extends RawMinkContext implements Context
 			$notificationText, $this->owncloudPage->getNotificationText()
 		);
 	}
-
+	
+	/** @BeforeScenario */
+	public function setUpSuite(BeforeScenarioScope $scope)
+	{
+		$jobId = $this->getSessionId($scope);
+		file_put_contents("/tmp/saucelabs_sessionid", $jobId);
+	}
+	
+	public function getSessionId(BeforeScenarioScope $scope)
+	{
+		$url = $this->getSession()->getDriver()->getWebDriverSession()->getUrl();
+		$parts = explode('/', $url);
+		$sessionId = array_pop($parts);
+		return $sessionId;
+	}
 }
