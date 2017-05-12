@@ -25,12 +25,13 @@
 namespace OCP\User;
 
 /**
- * Interface IProvidesAdditionalSearchAttributesBackend
+ * Interface IProvidesExtendedSearchBackend
  *
+ * TODO update these backend interface names to be consistent and readable
  * @package OCP\User
  * @since 10.0.1
  */
-interface IProvidesAdditionalSearchAttributesBackend {
+interface IProvidesExtendedSearchBackend {
 
 	/**
 	 * Get a users search string for core powered user search
