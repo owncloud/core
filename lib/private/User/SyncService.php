@@ -23,7 +23,7 @@ namespace OC\User;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\User\IProvidesAdditionalSearchAttributesBackend;
+use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\UserInterface;
 
 /**
@@ -160,7 +160,7 @@ class SyncService {
 			$a->setDisplayName($this->backend->getDisplayName($uid));
 		}
 		// Check if backend supplies an additional search string
-		if ($this->backend instanceof IProvidesAdditionalSearchAttributesBackend) {
+		if ($this->backend instanceof IProvidesExtendedSearchBackend) {
 			$a->setSearchAttributes($this->backend->getSearchAttributes($uid));
 		}
 		return $a;

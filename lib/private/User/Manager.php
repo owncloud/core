@@ -38,7 +38,7 @@ use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
-use OCP\User\IProvidesAdditionalSearchAttributesBackend;
+use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
@@ -258,7 +258,6 @@ class Manager extends PublicEmitter implements IUserManager {
 			$user = $this->getUserObject($account);
 			$users[$user->getUID()] = $user;
 		}
-
 		return $users;
 	}
 
@@ -435,7 +434,7 @@ class Manager extends PublicEmitter implements IUserManager {
 				$account->setQuota($quota);
 			}
 		}
-		if ($backend instanceof IProvidesAdditionalSearchAttributesBackend) {
+		if ($backend instanceof IProvidesExtendedSearchBackend) {
 			$searchString = $backend->getSearchAttributes($uid);
 			if ($searchString !== null) {
 				$account->setSearchAttributes($searchString);
