@@ -452,5 +452,6 @@ class User implements IUser {
 	 */
 	public function setSearchAttributes($searchString) {
 		$this->account->setSearchAttributes($searchString);
+		$this->mapper->update($this->account);
 	}
 }
