@@ -271,14 +271,14 @@ Feature: sharing
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 4 |
-		And User "user0" deletes file "/FOLDER"
+		When User "user0" deletes file "/FOLDER"
 		Then publicly uploading a file does not work
 		And the HTTP status code should be "404"
 
 	Scenario: Uploading file to a public read-only share does not work
 		Given user "user0" exists
 		And As an "user0"
-		And creating a share with
+		When creating a share with
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 1 |
