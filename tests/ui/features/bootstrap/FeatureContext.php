@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\TableNode;
 use Page\OwncloudPage;
 use Page\LoginPage;
 
@@ -49,7 +50,7 @@ class FeatureContext extends RawMinkContext implements Context
 	public function aNotificationShouldBeDisplayedWithTheText($notificationText)
 	{
 		PHPUnit_Framework_Assert::assertEquals(
-			$notificationText, $this->owncloudPage->getNotificationText()
+			$notificationText, $this->owncloudPage->getNotifications()[0]
 		);
 	}
 	
@@ -67,4 +68,27 @@ class FeatureContext extends RawMinkContext implements Context
 		$sessionId = array_pop($parts);
 		return $sessionId;
 
-}
+	/**
+	 * @Then notifications should be displayed with the text
+	 */
+	public function notificationsShouldBeDisplayedWithTheText(TableNode $table)
+	{
+		$notifications = $this->owncloudPage->getNotifications();
+		$tableRows=$table->getRows();
+		print_r($notifications);
+		print_r($tableRows);
+		PHPUnit_Framework_Assert::assertEquals(
+			count($tableRows),
+			count($notifications)
+		);
+		
+		$notificationCounter=0;
+		foreach ($tableRows as $row) {
+			PHPUnit_Framework_Assert::assertEquals(
+				$row[0],
+				$notifications[$notificationCounter]
+			);
+			$notificationCounter++;
+		}
+	}
+} 
