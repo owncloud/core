@@ -67,7 +67,7 @@ class FilesContext extends RawMinkContext implements Context
 			);
 		}
 		
-		while ($windowHeight > $lastItemCoordinates['top']) {
+		while (isset($lastItemCoordinates['top']) && $windowHeight > $lastItemCoordinates['top']) {
 			$this->filesPage->createFolder();
 			$itemsCount = $this->filesPage->getSizeOfFileFolderList();
 			$lastItemCoordinates = $this->filesPage->getCoordinatesOfElement(
