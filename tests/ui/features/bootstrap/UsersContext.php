@@ -62,7 +62,7 @@ class UsersContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When page is reloaded
+	 * @When I reload the page
 	 */
 	public function pageIsReloaded()
 	{
