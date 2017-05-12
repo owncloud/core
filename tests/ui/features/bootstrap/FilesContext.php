@@ -87,7 +87,7 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When I rename the file :fromFileName to one of this names
+	 * @When I rename the file :fromFileName to one of these names
 	 */
 	public function iRenameTheFileToOneOfThisNames($fromFileName, TableNode $table)
 	{
@@ -99,7 +99,7 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then The file :fileName should be listed
+	 * @Then the file :fileName should be listed
 	 */
 	public function theFileShouldBeListed($fileName)
 	{
@@ -109,7 +109,7 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then Near the file :fileName A tooltip with the text :toolTipText should be displayed
+	 * @Then near the file :fileName a tooltip with the text :toolTipText should be displayed
 	 */
 	public function nearTheFileATooltipWithTheTextShouldBeDisplayed($fileName, $toolTipText)
 	{

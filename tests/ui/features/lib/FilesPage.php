@@ -139,7 +139,7 @@ class FilesPage extends OwnCloudPage
 	/**
 	 * scrolls down the file list, to load not yet displayed files
 	 * @param int $numberOfFilesOld how many files were listed before the scroll.
-	 * So we can guess how long to wait for the loading of new files finish
+	 * So we can guess how long to wait for the loading of new files to finish
 	 * @param Session $session
 	 * @param int $timeout
 	 */
@@ -149,7 +149,7 @@ class FilesPage extends OwnCloudPage
 			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
 		);
 		
-		// there is no loading indicator here, so we are gonna wait till we have
+		// there is no loading indicator here, so we are going to wait until we have
 		// more files than before
 		for ($counter = 0; $counter <= $timeout; $counter ++) {
 			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(

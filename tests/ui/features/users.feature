@@ -4,7 +4,7 @@ Feature: users
 		Given I am logged in as admin
 		And quota of user "admin" is set to "<start_quota>"
 		When quota of user "admin" is changed to "<wished_quota>"
-		And I reload the page
+		And the page is reloaded
 		Then quota of user "admin" should be set to "<expected_quota>"
 
 		Examples:
