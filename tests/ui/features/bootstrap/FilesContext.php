@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\TableNode;
 
 use Page\FilesPage;
 
@@ -74,6 +75,47 @@ class FilesContext extends RawMinkContext implements Context
 		}
 		$this->getSession()->reload();
 		$this->filesPage->waitTillPageIsloaded(10);
+	}
+
+	/**
+	 * @Given I rename the file :fromFileName to :toFileName
+	 */
+	public function iRenameTheFileTo($fromFileName, $toFileName)
+	{
+		$this->filesPage->waitTillPageIsloaded(10);
+		$this->filesPage->renameFile($fromFileName, $toFileName, $this->getSession());
+	}
+
+	/**
+	 * @When I rename the file :fromFileName to one of this names
+	 */
+	public function iRenameTheFileToOneOfThisNames($fromFileName, TableNode $table)
+	{
+		$this->filesPage->waitTillPageIsloaded(10);
+		foreach ($table->getRows() as $row) {
+			$this->filesPage->renameFile($fromFileName, $row[0], $this->getSession());
+		}
+		
+	}
+
+	/**
+	 * @Then The file :fileName should be listed
+	 */
+	public function theFileShouldBeListed($fileName)
+	{
+		PHPUnit_Framework_Assert::assertNotNull(
+			$this->filesPage->findFileRowByName($fileName, $this->getSession())
+		);
+	}
+
+	/**
+	 * @Then Near the file :fileName A tooltip with the text :toolTipText should be displayed
+	 */
+	public function nearTheFileATooltipWithTheTextShouldBeDisplayed($fileName, $toolTipText)
+	{
+		PHPUnit_Framework_Assert::assertEquals($toolTipText, 
+			$this->filesPage->getTooltipOfFile($fileName, $this->getSession())
+		);
 	}
 
 	/**
