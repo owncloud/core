@@ -23,7 +23,9 @@ class Version20170101215145 implements ISchemaMigration {
 				'id',
 				Type::INTEGER,
 				[
-					'notnull' => true
+					'notnull' => true,
+					'autoincrement' => 1,
+					'unsigned' => true
 				]
 			);
 
