@@ -110,6 +110,7 @@ OC.L10N.register(
     "Edit" : "Redaguoti",
     "Remove" : "Pašalinti",
     "Choose a password for the public link" : "Viešos nuorodos slaptažodis",
+    "Filename" : "Failo pavadinimas",
     "Password" : "Slaptažodis",
     "Name" : "Pavadinimas",
     "Save" : "Išsaugoti",
