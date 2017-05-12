@@ -180,6 +180,12 @@ DeleteHandler.prototype.deleteEntry = function(keepNotification) {
 	var dh = this;
 	if(!keepNotification && $('#notification').data(this.notificationDataID) === true) {
 		dh.hideNotification();
+		if(oc_oldUserId.name !== null) {
+			var text = t( 'core',
+					"Logged in as " + OC.getCurrentUser().uid
+			);
+			OC.Notification.showHtml(text);
+		}
 	}
 
 	if (this._timeout) {
