@@ -23,7 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Page\OwncloudPage;
 use Page\LoginPage;
 
 require_once 'bootstrap.php';

@@ -44,12 +44,7 @@ class FilesPage extends OwnCloudPage
 	protected $fileDeleteXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='Delete']";
 
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-
-	public function findFileInList($filename)
-	{
-		return $this->findLink($filename);
-	}
-
+	
 	/**
 	 * created a folder with the given name.
 	 * If name is not given a random one is choosen

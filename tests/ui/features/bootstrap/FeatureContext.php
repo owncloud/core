@@ -21,7 +21,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\OwncloudPage;
 use Page\LoginPage;
