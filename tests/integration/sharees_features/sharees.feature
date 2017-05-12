@@ -239,3 +239,70 @@ Feature: sharees
 		And "exact remotes" sharees returned is empty
 		And "remotes" sharees returned is empty
 
+	Scenario: Enumerate only group members - only show partial results from member groups
+		Given As an "test"
+		And user "Another" exists
+		And user "Another" belongs to group "ShareeGroup"
+		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" is set to "yes"
+		When getting sharees for
+			| search | ano |
+			| itemType | file |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And "exact users" sharees returned is empty
+		And "users" sharees returned are
+			| Another | 0 | Another |
+		And "exact groups" sharees returned is empty
+		And "groups" sharees returned is empty
+		And "exact remotes" sharees returned is empty
+		And "remotes" sharees returned is empty
+
+	Scenario: Enumerate only group members - accept exact match from non-member groups
+		Given As an "test"
+		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" is set to "yes"
+		When getting sharees for
+			| search | Sharee1 |
+			| itemType | file |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And "exact users" sharees returned are
+			| Sharee1 | 0 | Sharee1 |
+		And "users" sharees returned is empty
+		And "exact groups" sharees returned is empty
+		And "groups" sharees returned is empty
+		And "exact remotes" sharees returned is empty
+		And "remotes" sharees returned is empty
+
+	Scenario: Enumerate only group members - only show partial results from member groups
+		Given As an "test"
+		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" is set to "yes"
+		When getting sharees for
+			| search | ShareeG |
+			| itemType | file |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And "exact users" sharees returned is empty
+		And "users" sharees returned is empty
+		And "exact groups" sharees returned is empty
+		And "groups" sharees returned are
+			| ShareeGroup | 1 | ShareeGroup |
+		And "exact remotes" sharees returned is empty
+		And "remotes" sharees returned is empty
+
+	Scenario: Enumerate only group members - only accept exact group match from non-memberships
+		Given As an "test"
+		And group "ShareeGroupNonMember" exists
+		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" is set to "yes"
+		When getting sharees for
+			| search | ShareeGroupNonMember |
+			| itemType | file |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And "exact users" sharees returned is empty
+		And "users" sharees returned is empty
+		And "exact groups" sharees returned are
+			| ShareeGroupNonMember | 1 | ShareeGroupNonMember |
+		And "groups" sharees returned is empty
+		And "exact remotes" sharees returned is empty
+		And "remotes" sharees returned is empty
+
