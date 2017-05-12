@@ -118,21 +118,6 @@ class SyncBackend extends Command {
 
 		$syncService = new SyncService($this->accountMapper, $backend, $this->config, $this->logger);
 
-		// insert/update known users
-		$output->writeln("Insert new and update existing users ...");
-		$p = new ProgressBar($output);
-		$max = null;
-		if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
-			$max = $backend->countUsers();
-		}
-		$p->start($max);
-		$syncService->run(function () use ($p) {
-			$p->advance();
-		});
-		$p->finish();
-		$output->writeln('');
-		$output->writeln('');
-
 		// analyse unknown users
 		$output->writeln("Analyse unknown users ...");
 		$p = new ProgressBar($output);
@@ -213,6 +198,22 @@ class SyncBackend extends Command {
 					break;
 			}
 		}
+
+		// insert/update known users
+		$output->writeln("Insert new and update existing users ...");
+		$p = new ProgressBar($output);
+		$max = null;
+		if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
+			$max = $backend->countUsers();
+		}
+		$p->start($max);
+		$syncService->run(function () use ($p) {
+			$p->advance();
+		});
+		$p->finish();
+		$output->writeln('');
+		$output->writeln('');
+
 		return 0;
 	}
 
