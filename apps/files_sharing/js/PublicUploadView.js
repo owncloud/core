@@ -112,7 +112,7 @@
 		render: function () {
 			this.$el.html(this.template({
 				title: t('files_sharing', 'Anonymous upload'),
-				uploadButtonLabel: t('files_sharing', 'Select files for upload'),
+				uploadButtonLabel: t('files_sharing', 'Click to select files or use drag & drop to upload'),
 				uploadedFilesMessage: t('files_sharing', 'Uploaded files'),
 				uploadProgressText: t('core', 'Uploading...')
 			}));
