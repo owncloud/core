@@ -244,11 +244,6 @@ class Manager implements IManager {
 			throw new GenericShareException($message_t, $message_t, 404);
 		}
 
-		// Check that read permissions are always set
-		if (($share->getPermissions() & \OCP\Constants::PERMISSION_READ) === 0) {
-			throw new \InvalidArgumentException('Shares need at least read permissions');
-		}
-
 		if ($share->getNode() instanceof \OCP\Files\File) {
 			if ($share->getPermissions() & \OCP\Constants::PERMISSION_DELETE) {
 				$message_t = $this->l->t('Files can\'t be shared with delete permissions');

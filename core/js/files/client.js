@@ -16,8 +16,7 @@
 	 * @classdesc Client to access files on the server
 	 *
 	 * @param {Object} options
-	 * @param {String} options.host host name
-	 * @param {int} [options.port] port
+	 * @param {String} options.host host name including port
 	 * @param {boolean} [options.useHTTPS] whether to use https
 	 * @param {String} [options.root] root path
 	 * @param {String} [options.userName] user name

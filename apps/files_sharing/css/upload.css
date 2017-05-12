@@ -1,0 +1,46 @@
+.public-upload-view {
+	margin-top: 20px;
+}
+
+.public-upload-view--dropzone {
+	border: 3px dashed #888888;
+	line-height: 150px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+	cursor: pointer;
+	font-size: 18px; 
+	color: #000000;
+	opacity: 0.5;
+	-webkit-transition: opacity 200ms;
+	-moz-transition: opacity 200ms;
+	-o-transition: opacity 200ms;
+	transition: opacity 200ms;
+}
+
+.public-upload-view--dropzone>span {
+	vertical-align: middle;
+}
+
+.public-upload-view--dropzone:hover,
+.public-upload-view--dropzone .dragover {
+	opacity: 1;
+}
+
+.public-upload-view--dropzone .icon {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.public-upload-view--title {
+	margin-top: 14px;
+	text-align: center;
+	font-size: 23px;
+}
+
+.public-upload-view--upload-button {
+	margin-top: 20px;
+}
+

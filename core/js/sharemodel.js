@@ -84,8 +84,24 @@
 			return data;
 		},
 
+		canRead: function() {
+			return (this.get('permissions') & OC.PERMISSION_READ) > 0;
+		},
+
+		canUpdate: function() {
+			return (this.get('permissions') & OC.PERMISSION_UPDATE) > 0;
+		},
+
+		canDelete: function() {
+			return (this.get('permissions') & OC.PERMISSION_DELETE) > 0;
+		},
+
 		canCreate: function() {
 			return (this.get('permissions') & OC.PERMISSION_CREATE) > 0;
+		},
+
+		canShare: function() {
+			return (this.get('permissions') & OC.PERMISSION_SHARE) > 0;
 		},
 
 		/**
