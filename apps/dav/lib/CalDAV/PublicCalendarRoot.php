@@ -21,7 +21,7 @@
 namespace OCA\DAV\CalDAV;
 
 use Sabre\DAV\Collection;
-use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\MethodNotAllowed;
 
 class PublicCalendarRoot extends Collection {
 
@@ -30,6 +30,14 @@ class PublicCalendarRoot extends Collection {
 
 	/** @var \OCP\IL10N */
 	protected $l10n;
+
+	/**
+	 * If this value is set to true, it effectively disables listing of users
+	 * it still allows user to find other users if they have an exact url.
+	 *
+	 * @var bool
+	 */
+	public $disableListing = false;
 
 	function __construct(CalDavBackend $caldavBackend) {
 		$this->caldavBackend = $caldavBackend;
@@ -55,6 +63,9 @@ class PublicCalendarRoot extends Collection {
 	 * @inheritdoc
 	 */
 	function getChildren() {
+		if ($this->disableListing)
+			throw new MethodNotAllowed('Listing members of this collection is disabled');
+
 		$calendars = $this->caldavBackend->getPublicCalendars();
 		$children = [];
 		foreach ($calendars as $calendar) {

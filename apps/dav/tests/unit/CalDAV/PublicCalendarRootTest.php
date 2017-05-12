@@ -22,6 +22,7 @@
 namespace OCA\DAV\Tests\unit\CalDAV;
 
 use OCA\DAV\CalDAV\Calendar;
+use OCA\DAV\Connector\Sabre\Principal;
 use OCP\IL10N;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\PublicCalendarRoot;
@@ -51,6 +52,7 @@ class PublicCalendarRootTest extends TestCase {
 	/** var IConfig */
 	protected $config;
 
+	/** @var Principal */
 	private $principal;
 
 	/** @var ISecureRandom */
@@ -60,7 +62,7 @@ class PublicCalendarRootTest extends TestCase {
 		parent::setUp();
 
 		$db = \OC::$server->getDatabaseConnection();
-		$this->principal = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Principal')
+		$this->principal = $this->getMockBuilder(Principal::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->config = \OC::$server->getConfig();
@@ -105,11 +107,22 @@ class PublicCalendarRootTest extends TestCase {
 		$this->assertEquals($calendar, $calendarResult);
 	}
 
+	/**
+	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
+	 */
 	public function testGetChildren() {
+		$this->createPublicCalendar();
+
+		$this->publicCalendarRoot->disableListing = true;
+		$this->publicCalendarRoot->getChildren();
+	}
+
+	public function testGetChildrenWhenListingIsAllowed() {
 		$this->createPublicCalendar();
 
 		$publicCalendars = $this->backend->getPublicCalendars();
 
+		$this->publicCalendarRoot->disableListing = false;
 		$calendarResults = $this->publicCalendarRoot->getChildren();
 
 		$this->assertEquals(1, count($calendarResults));
