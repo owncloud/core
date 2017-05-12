@@ -122,6 +122,9 @@ class SyncBackend extends Command {
 
 		$syncService = new SyncService($this->accountMapper, $backend, $this->config, $this->logger);
 
+		// analyse unknown users
+		$this->handleUnknownUsers($input, $output, $syncService, $missingAccountsAction, $validActions);
+
 		// insert/update known users
 		$output->writeln("Insert new and update existing users ...");
 		$p = new ProgressBar($output);
@@ -136,9 +139,6 @@ class SyncBackend extends Command {
 		$p->finish();
 		$output->writeln('');
 		$output->writeln('');
-
-		// analyse unknown users
-		$this->handleUnknownUsers($input, $output, $syncService, $missingAccountsAction, $validActions);
 
 		return 0;
 	}
