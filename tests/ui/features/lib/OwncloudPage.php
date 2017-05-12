@@ -46,6 +46,22 @@ class OwncloudPage extends Page
 
 	}
 	
+	/**
+	 * 
+	 * @param string $xpath
+	 * @param int $timeout
+	 */
+	public function waitTillElementIsNull ($xpath, $timeout=10)
+	{
+		for ($counter = 0; $counter <= $timeout; $counter ++) {
+			$element = $this->find("xpath",$xpath);
+			if ($element === null) {
+				break;
+			}
+			sleep(1);
+		}
+	}
+	
 	public function getNotifications() {
 		$notificationsText=array();
 		$notifications=$this->findById("notification");
