@@ -168,7 +168,8 @@ $array = [
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,
 				'allowGroupSharing' => \OC::$server->getShareManager()->allowGroupSharing(),
 				'previewsEnabled' => \OC::$server->getConfig()->getSystemValue('enable_previews', true) === true,
-				'enabledPreviewProviders' => \OC::$server->getPreviewManager()->getSupportedMimes()
+				'enabledPreviewProviders' => \OC::$server->getPreviewManager()->getSupportedMimes(),
+				'shareLinksDisplayPrivacyWarning' => $config->getAppValue('core', 'share_links_display_privacy_warning', 'no') === 'yes'
 			]
 		],
 	"oc_defaults" => [

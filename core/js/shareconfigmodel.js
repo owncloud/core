@@ -27,7 +27,8 @@
 			isRemoteShareAllowed: oc_appconfig.core.remoteShareAllowed,
 			defaultExpireDate: oc_appconfig.core.defaultExpireDate,
 			isResharingAllowed: oc_appconfig.core.resharingAllowed,
-			allowGroupSharing: oc_appconfig.core.allowGroupSharing
+			allowGroupSharing: oc_appconfig.core.allowGroupSharing,
+			shareLinksDisplayPrivacyWarning: oc_appconfig.core.shareLinksDisplayPrivacyWarning
 		},
 
 		/**
