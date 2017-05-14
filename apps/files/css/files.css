@@ -351,52 +351,93 @@ table td.filename .nametext .innernametext {
 	vertical-align: top;
 }
 
-@media only screen and (min-width: 1500px) {
-	table td.filename .nametext .innernametext {
-		max-width: 790px;
-	}
-	.with-app-sidebar table td.filename .nametext .innernametext {
-		max-width: 390px;
-	}
+table td.filename .fileactions span {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 5px;
 }
-@media only screen and (min-width: 1366px) and (max-width: 1500px) {
+
+@media only screen and (min-width: 1500px) {
 	table td.filename .nametext .innernametext {
 		max-width: 660px;
 	}
 	.with-app-sidebar table td.filename .nametext .innernametext {
-		max-width: 290px;
+		max-width: 300px;
+	}
+	table td.filename .fileactions a span {
+		max-width: 150px;
+	}
+	.with-app-sidebar table td.filename .fileactions a span {
+		max-width: 110px;
+	}
+}
+@media only screen and (min-width: 1366px) and (max-width: 1500px) {
+	table td.filename .nametext .innernametext {
+		max-width: 570px;
+	}
+	.with-app-sidebar table td.filename .nametext .innernametext {
+		max-width: 240px;
+	}
+	table td.filename .fileactions a span {
+		max-width: 115px;
+	}
+	.with-app-sidebar table td.filename .fileactions a span {
+		max-width: 75px;
 	}
 }
 @media only screen and (min-width: 1200px) and (max-width: 1366px) {
 	table td.filename .nametext .innernametext {
-		max-width: 500px;
+		max-width: 400px;
 	}
 	.with-app-sidebar table td.filename .nametext .innernametext {
-		max-width: 230px;
+		max-width: 180px;
+	}
+	table td.filename .fileactions a span {
+		max-width: 115px;
+	}
+	.with-app-sidebar table td.filename .fileactions a span {
+		max-width: 75px;
 	}
 }
 @media only screen and (min-width: 1100px) and (max-width: 1200px) {
 	table td.filename .nametext .innernametext {
-		max-width: 400px;
+		max-width: 300px;
 	}
 	.with-app-sidebar table td.filename .nametext .innernametext {
-		max-width: 230px;
+		max-width: 180px;
+	}
+	table td.filename .fileactions a span {
+		max-width: 115px;
+	}
+	.with-app-sidebar table td.filename .fileactions a span {
+		max-width: 75px;
 	}
 }
 @media only screen and (min-width: 1000px) and (max-width: 1100px) {
 	table td.filename .nametext .innernametext {
-		max-width: 310px;
+		max-width: 210px;
 	}
 	.with-app-sidebar table td.filename .nametext .innernametext {
-		max-width: 230px;
+		max-width: 180px;
+	}
+	table td.filename .fileactions a span {
+		max-width: 100px;
+	}
+	.with-app-sidebar table td.filename .fileactions a span {
+		max-width: 75px;
 	}
 }
 @media only screen and (min-width: 768px) and (max-width: 1000px) {
 	table td.filename .nametext .innernametext {
-		max-width: 240px;
+		max-width: 170px;
 	}
 	.with-app-sidebar table td.filename .nametext .innernametext {
-		max-width: 230px;
+		max-width: 170px;
+	}
+	table td.filename .fileactions a span {
+		max-width: 70px;
 	}
 }
 
