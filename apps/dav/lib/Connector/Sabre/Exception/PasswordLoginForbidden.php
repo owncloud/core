@@ -31,7 +31,7 @@ class PasswordLoginForbidden extends NotAuthenticated {
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	public function getHTTPCode() {
-		return 401;
+		return 403;
 	}
 
 	/**
