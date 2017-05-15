@@ -70,17 +70,6 @@ class LoginContext extends RawMinkContext implements Context
 		$this->filesPage->waitTillPageIsloaded(10);
 	}
 
-	/**
-	 * @Then I should be redirected to a page with the title :title
-	 */
-	public function iShouldBeRedirectedToAPageWithTheTitle($title)
-	{
-		$actualTitle = $this->filesPage->find(
-			'xpath', './/title'
-		)->getHtml();
-		PHPUnit_Framework_Assert::assertEquals($title, $actualTitle);
-	}
-
 	/** @BeforeScenario
 	* This will run before EVERY scenario. It will set the properties for this object.
 	*/

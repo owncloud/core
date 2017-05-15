@@ -53,7 +53,19 @@ class FeatureContext extends RawMinkContext implements Context
 			$notificationText, $this->owncloudPage->getNotificationText()
 		);
 	}
-	
+
+	/**
+	 * @Then I should be redirected to a page with the title :title
+	 */
+	public function iShouldBeRedirectedToAPageWithTheTitle($title)
+	{
+		$this->waitForOutstandingAjaxCalls();
+		$actualTitle = $this->getSession()->getPage()->find(
+			'xpath', './/title'
+			)->getHtml();
+		PHPUnit_Framework_Assert::assertEquals($title, trim($actualTitle));
+	}
+
 	/** @BeforeScenario */
 	public function setUpSuite(BeforeScenarioScope $scope)
 	{

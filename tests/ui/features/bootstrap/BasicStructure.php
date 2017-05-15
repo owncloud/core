@@ -127,4 +127,9 @@ trait BasicStructure
 	{
 		return $this->createdUserNames;
 	}
+	
+	public function waitForOutstandingAjaxCalls ($time = 5000)
+	{
+		$this->getSession()->wait($time, '(0 === jQuery.active)');
+	}
 }
