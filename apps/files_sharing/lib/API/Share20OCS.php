@@ -283,6 +283,10 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 404, 'invalid permissions');
 		}
 
+		if ($permissions === 0) {
+			return new \OC\OCS\Result(null, 400, $this->l->t('Cannot remove all permissions'));
+		}
+
 		$shareType = (int)$this->request->getParam('shareType', '-1');
 
 		// link shares can have create-only without read (anonymous upload)
@@ -730,6 +734,9 @@ class Share20OCS {
 			}
 		}
 
+		if ($share->getPermissions() === 0) {
+			return new \OC\OCS\Result(null, 400, $this->l->t('Cannot remove all permissions'));
+		}
 
 		try {
 			$share = $this->shareManager->updateShare($share);

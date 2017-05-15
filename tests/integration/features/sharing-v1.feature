@@ -1065,6 +1065,31 @@ Feature: sharing
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
+	Scenario: Cannot create share with zero permissions
+		Given user "user0" exists
+		And user "user1" exists
+		And As an "user0"
+		When sending "POST" to "/apps/files_sharing/api/v1/shares" with
+			| path | welcome.txt |
+			| shareWith | user1 |
+			| shareType | 0 |
+			| permissions | 0 |
+		Then the OCS status code should be "400"
+
+	Scenario: Cannot set permissions to zero
+		Given As an "admin"
+		And user "user0" exists
+		And user "user1" exists
+		And group "new-group" exists
+		And user "user0" belongs to group "new-group"
+		And user "user1" belongs to group "new-group"
+		And Assure user "user0" is subadmin of group "new-group"
+		And As an "user0"
+		And folder "/FOLDER" of user "user0" is shared with group "new-group"
+		And Updating last share with
+			| permissions | 0 |
+		Then the OCS status code should be "400"
+
 	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
 		Given As an "admin"
 		And user "user0" exists
