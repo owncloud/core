@@ -90,6 +90,52 @@ class SettingsManagerTest extends TestCase {
 		$this->assertContains('OC\Settings\Panels\Personal\Profile', $list);
 	}
 
+	public function testFindRegisteredPanelsAdmin() {
+		// Return a mock user
+		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
+		// Return encryption as example app with
+		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
+		$settingsInfo = [
+			'settings' =>
+				['admin' => 'OCA\Encryption\TestPanel']
+		];
+		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
+		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['admin']);
+		$this->assertCount(1, $panels);
+	}
+
+	public function testFindRegisteredPanelsPersonal() {
+		// Return a mock user
+		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
+		// Return encryption as example app with
+		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
+		$settingsInfo = [
+			'settings' =>
+				['personal' => 'OCA\Encryption\TestPanel']
+		];
+		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
+		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
+		$this->assertCount(1, $panels);
+		$this->assertEquals('OCA\Encryption\TestPanel', array_shift($panels));
+	}
+
+	public function testFindRegisteredPanelsPersonalMultiple() {
+		// Return a mock user
+		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
+		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);
+		// Return encryption as example app with
+		$this->appManager->expects($this->exactly(1))->method('getEnabledAppsForUser')->with($user)->willReturn(['encryption']);
+		$settingsInfo = [
+			'settings' =>
+				['personal' => ['OCA\Encryption\TestPanel', 'OCA\Encryption\TestPanel2']]
+		];
+		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
+		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
+		$this->assertCount(2, $panels);
+	}
+
 	public function testLoadPersonalPanels() {
 		$user = $this->getMockBuilder('\OCP\IUser')->getMock();
 		$this->userSession->expects($this->any())->method('getUser')->willReturn($user);

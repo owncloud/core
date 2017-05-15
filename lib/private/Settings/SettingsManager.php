@@ -315,10 +315,12 @@ class SettingsManager implements ISettingsManager {
 		$panels = [];
 		foreach($this->appManager->getEnabledAppsForUser($this->userSession->getUser()) as $app) {
 			if(isset($this->appManager->getAppInfo($app)['settings'])) {
-				foreach($this->appManager->getAppInfo($app)['settings'] as $t => $panel) {
+				foreach($this->appManager->getAppInfo($app)['settings'] as $t => $detected) {
 					if($t === $type)
 					{
-						$panels[] = (string) $panel;
+						// Allow app to register multiple panels of the same type
+						$detected = is_array($detected) ? $detected : [$detected];
+						$panels = array_merge($panels, $detected);
 					}
 				}
 			}
