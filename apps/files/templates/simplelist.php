@@ -1,5 +1,3 @@
-<div id='notification'></div>
-
 <div id="emptycontent" class="hidden">
 	<div class="icon-starred"></div>
 	<h2><?php p($l->t('No favorites')); ?></h2>
