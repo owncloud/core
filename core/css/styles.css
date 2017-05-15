@@ -362,6 +362,10 @@ a.two-factor-cancel {
 	font-weight: 300;
 }
 
+#alternative-logins ul {
+	text-align: center;
+}
+
 /* Nicely grouping input field sets */
 .grouptop,
 .groupmiddle,
