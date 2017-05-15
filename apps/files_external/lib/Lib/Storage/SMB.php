@@ -286,7 +286,12 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	public function stat($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
-		$result = $this->formatInfo($this->getFileInfo($path));
+		try {
+			$result = $this->formatInfo($this->getFileInfo($path));
+		} catch (NotFoundException $e) {
+			$this->swallow(__FUNCTION__, $e);
+			$result = false;
+		}
 		return $this->leave(__FUNCTION__, $result);
 	}
 
