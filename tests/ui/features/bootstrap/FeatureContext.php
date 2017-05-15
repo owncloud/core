@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope; 
 use Behat\Gherkin\Node\TableNode;
 use Page\OwncloudPage;
 use Page\LoginPage;
@@ -67,6 +68,7 @@ class FeatureContext extends RawMinkContext implements Context
 		$parts = explode('/', $url);
 		$sessionId = array_pop($parts);
 		return $sessionId;
+	}
 
 	/**
 	 * @Then notifications should be displayed with the text
