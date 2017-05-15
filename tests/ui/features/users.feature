@@ -9,7 +9,7 @@ Feature: users
 	
 		Examples:
 		|start_quota|wished_quota|expected_quota|
-		|Unlimited  |5 GB        |5 GB          |
+		|Unlimited  |5 GB        |6 GB          |
 		|Unlimited  |5 GB        |5 GB          |
 		|1 GB       |5 GB        |5 GB          |
 		|5 GB       |Unlimited   |Unlimited     |
