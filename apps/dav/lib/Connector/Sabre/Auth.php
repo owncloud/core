@@ -109,6 +109,9 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	protected function validateUserPass($username, $password) {
+		if (trim($username) === '') {
+			return false;
+		}
 		if ($this->userSession->isLoggedIn() &&
 			$this->isDavAuthenticated($this->userSession->getUser()->getUID())
 		) {
