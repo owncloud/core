@@ -25,7 +25,7 @@ else
 	lib/composer/bin/behat -c tests/ui/config/behat.yml
 fi
 
-if [ "$?" == "0" ]
+if [ $? -eq 0 ]
 then
 	PASSED=true
 else
