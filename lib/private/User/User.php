@@ -228,6 +228,10 @@ class User implements IUser {
 	public function setPassword($password, $recoveryPassword = null) {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
+			\OC::$server->getEventDispatcher()->dispatch(
+				'OCP\User::validatePassword',
+				new GenericEvent(null, ['password' => $password])
+			);
 		}
 		if ($this->canChangePassword()) {
 			/** @var IChangePasswordBackend $backend */

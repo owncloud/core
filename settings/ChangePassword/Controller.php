@@ -52,14 +52,18 @@ class Controller {
 			\OC_JSON::error(["data" => ["message" => $l->t("The new password can not be the same as the previous one")]]);
 			exit();
 	        }
-		if (!is_null($password) && \OC_User::setPassword($username, $password)) {
-			\OC::$server->getUserSession()->updateSessionTokenPassword($password);
+		try {
+			if (!is_null($password) && \OC_User::setPassword($username, $password)) {
+				\OC::$server->getUserSession()->updateSessionTokenPassword($password);
 
-			self::sendNotificationMail($username);
+				self::sendNotificationMail($username);
 
-			\OC_JSON::success();
-		} else {
-			\OC_JSON::error();
+				\OC_JSON::success();
+			} else {
+				\OC_JSON::error();
+			}
+		} catch (\Exception $e) {
+			\OC_JSON::error(['data' => ['message' => $e->getMessage()]]);
 		}
 	}
 
@@ -161,11 +165,15 @@ class Controller {
 
 			}
 		} else { // if encryption is disabled, proceed
-			if (!is_null($password) && \OC_User::setPassword($username, $password)) {
-				self::sendNotificationMail($username);
-				\OC_JSON::success(['data' => ['username' => $username]]);
-			} else {
-				\OC_JSON::error(['data' => ['message' => $l->t('Unable to change password')]]);
+			try {
+				if (!is_null($password) && \OC_User::setPassword($username, $password)) {
+					self::sendNotificationMail($username);
+					\OC_JSON::success(['data' => ['username' => $username]]);
+				} else {
+					\OC_JSON::error(['data' => ['message' => $l->t('Unable to change password')]]);
+				}
+			} catch (\Exception $e) {
+				\OC_JSON::error(['data' => ['message' => $e->getMessage()]]);
 			}
 		}
 	}

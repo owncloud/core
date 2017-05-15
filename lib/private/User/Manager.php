@@ -40,6 +40,7 @@ use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\User\IProvidesEMailBackend;
 use OCP\UserInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Manager
@@ -288,6 +289,11 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 
 		$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
+		\OC::$server->getEventDispatcher()->dispatch(
+			'OCP\User::validatePassword',
+			new GenericEvent(null, ['password' => $password])
+		);
+
 		if (empty($this->backends)) {
 			$this->registerBackend(new Database());
 		}

@@ -44,6 +44,7 @@ use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use OCP\Share\IProviderFactory;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * This class is the communication hub for all sharing related operations.
@@ -151,6 +152,11 @@ class Manager implements IManager {
 		if (!$accepted) {
 			throw new \Exception($message);
 		}
+
+		\OC::$server->getEventDispatcher()->dispatch(
+			'OCP\Share::validatePassword',
+			new GenericEvent(null, ['password' => $password])
+		);
 	}
 
 	/**
