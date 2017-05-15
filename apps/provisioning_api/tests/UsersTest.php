@@ -440,7 +440,7 @@ class UsersTest extends OriginalTest {
 			->with('adminUser')
 			->willReturn(true);
 
-		$expected = new Result(null, 101, 'Bad request');
+		$expected = new Result(null, 101, 'User backend not found.');
 		$this->assertEquals($expected, $this->api->addUser());
 	}
 
