@@ -296,7 +296,10 @@ class OC_Util {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}
 		$userQuota = $user->getQuota();
-		if($userQuota === 'none') {
+		if ($userQuota === null || $userQuota === 'default') {
+			$userQuota = \OC::$server->getConfig()->getAppValue('files', 'default_quota', 'none');
+		}
+		if ($userQuota === null || $userQuota === 'none') {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}
 		return OC_Helper::computerFileSize($userQuota);

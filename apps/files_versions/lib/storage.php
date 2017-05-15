@@ -716,7 +716,10 @@ class Storage {
 
 			$softQuota = true;
 			$quota = $user->getQuota();
-			if ( $quota === null || $quota === 'none' ) {
+			if ($quota === null || $quota === 'default') {
+				$quota = $config->getAppValue('files', 'default_quota', null);
+			}
+			if ($quota === null || $quota === 'none') {
 				$quota = Filesystem::free_space('/');
 				$softQuota = false;
 			} else {

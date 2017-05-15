@@ -597,6 +597,10 @@ class Trashbin {
 			return 0;
 		}
 		$quota = $userObject->getQuota();
+		if ($quota === null || $quota === 'default') {
+			$quota = \OC::$server->getConfig()->getAppValue('files', 'default_quota', null);
+		}
+
 		if ($quota === null || $quota === 'none') {
 			$quota = Filesystem::free_space('/');
 			$softQuota = false;
