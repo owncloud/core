@@ -39,3 +39,10 @@ then
 
 	printf "\n${RED}SAUCELABS RESULTS:${BLUE} https://saucelabs.com/jobs/$SAUCELABS_SESSIONID\n${NC}"
 fi
+
+if [ "$PASSED" = true ]
+then
+	exit 0
+else
+	exit 1
+fi
