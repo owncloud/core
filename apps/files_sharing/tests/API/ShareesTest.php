@@ -413,6 +413,55 @@ class ShareesTest extends TestCase {
 				true,
 				false,
 			],
+			// share enumeration limited to group memberships
+			[
+				// search for user in same group
+				'ano',
+				false,
+				true,
+				// memberships
+				['group1', 'group2'],
+				// args and user response for "displayNamesInGroup" call
+				[
+					['group1', 'ano', 2, 0, [
+						'another1' => 'Another One',
+					]],
+					['group2', 'ano', 2, 0, [
+					]],
+				],
+				// exact expected
+				[],
+				// fuzzy match expected
+				[
+					['label' => 'Another One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'another1']],
+				],
+				true,
+				false,
+				true,
+			],
+			[
+				// pick user directly by name
+				'another1',
+				false,
+				true,
+				// memberships
+				['group1', 'group2'],
+				// args and user response for "displayNamesInGroup" call
+				[
+					// no such user in member groups
+					['group1', 'another1', 2, 0, []],
+					['group2', 'another1', 2, 0, []],
+				],
+				// exact expected
+				[
+					['label' => 'Another One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'another1']],
+				],
+				// fuzzy match expected
+				[],
+				true,
+				$this->getUserMock('another1', 'Another One'),
+				true,
+			],
 		];
 	}
 
@@ -422,31 +471,47 @@ class ShareesTest extends TestCase {
 	 * @param string $searchTerm
 	 * @param bool $shareWithGroupOnly
 	 * @param bool $shareeEnumeration
-	 * @param array $groupResponse
-	 * @param array $userResponse
-	 * @param array $exactExpected
-	 * @param array $expected
+	 * @param array $groupResponse user's group memberships
+	 * @param array $userResponse user manager's search response
+	 * @param array $exactExpected exact expected result
+	 * @param array $expected non-exact expected result
 	 * @param bool $reachedEnd
-	 * @param mixed $singleUser
+	 * @param mixed $singleUser false for testing search or user mock when we are testing a direct match
+	 * @param mixed $shareeEnumerationGroupMembers restrict enumeration to group members
 	 */
-	public function testGetUsers($searchTerm, $shareWithGroupOnly, $shareeEnumeration, $groupResponse, $userResponse, $exactExpected, $expected, $reachedEnd, $singleUser) {
+	public function testGetUsers(
+		$searchTerm,
+		$shareWithGroupOnly,
+		$shareeEnumeration,
+		$groupResponse,
+		$userResponse,
+		$exactExpected,
+		$expected,
+		$reachedEnd,
+		$singleUser,
+		$shareeEnumerationGroupMembers = false
+	) {
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
 		$this->invokePrivate($this->sharees, 'shareWithGroupOnly', [$shareWithGroupOnly]);
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
+		$this->invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [$shareeEnumerationGroupMembers]);
 
 		$user = $this->getUserMock('admin', 'Administrator');
 		$this->session->expects($this->any())
 			->method('getUser')
 			->willReturn($user);
 
-		if (!$shareWithGroupOnly) {
+		if (!$shareWithGroupOnly && !$shareeEnumerationGroupMembers) {
 			$this->userManager->expects($this->once())
 				->method('searchDisplayName')
 				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturn($userResponse);
 		} else {
-			if ($singleUser !== false) {
+			if ($singleUser !== false && !$shareeEnumerationGroupMembers) {
+				// first call is for the current user's group memberships
+				// second call happens later for an exact match to check whether
+				// that match also is member of the same groups
 				$this->groupManager->expects($this->exactly(2))
 					->method('getUserGroupIds')
 					->withConsecutive(
@@ -773,6 +838,44 @@ class ShareesTest extends TestCase {
 				true,
 				$this->getGroupMock('test'),
 			],
+			// group enumeration restricted to group memberships
+			[
+				// partial search
+				'test', false, true,
+				// group results
+				[
+					$this->getGroupMock('test0'),
+				],
+				// user group memberships
+				[$this->getGroupMock('test0'), $this->getGroupMock('anothergroup')],
+				// exact expected
+				[],
+				// non-exact expected
+				[
+					['label' => 'test0', 'value' => ['shareType' => Share::SHARE_TYPE_GROUP, 'shareWith' => 'test0']],
+				],
+				true,
+				false,
+				true
+			],
+			[
+				// exact match
+				'test0', false, true,
+				// group results
+				[],
+				// user group memberships
+				[$this->getGroupMock('test')],
+				// exact expected
+				[
+					['label' => 'test0', 'value' => ['shareType' => Share::SHARE_TYPE_GROUP, 'shareWith' => 'test0']],
+				],
+				// non-exact expected
+				[],
+				true,
+				// exact match to test for
+				$this->getGroupMock('test0'),
+				true
+			],
 		];
 	}
 
@@ -782,18 +885,30 @@ class ShareesTest extends TestCase {
 	 * @param string $searchTerm
 	 * @param bool $shareWithGroupOnly
 	 * @param bool $shareeEnumeration
-	 * @param array $groupResponse
-	 * @param array $userGroupsResponse
+	 * @param array $groupResponse group manager search response
+	 * @param array $userGroupsResponse user's group memberships
 	 * @param array $exactExpected
 	 * @param array $expected
 	 * @param bool $reachedEnd
-	 * @param mixed $singleGroup
+	 * @param mixed $singleGroup false when testing a search or group mock when testing direct match
 	 */
-	public function testGetGroups($searchTerm, $shareWithGroupOnly, $shareeEnumeration, $groupResponse, $userGroupsResponse, $exactExpected, $expected, $reachedEnd, $singleGroup) {
+	public function testGetGroups(
+		$searchTerm,
+		$shareWithGroupOnly,
+		$shareeEnumeration,
+		$groupResponse,
+		$userGroupsResponse,
+		$exactExpected,
+		$expected,
+		$reachedEnd,
+		$singleGroup,
+		$shareeEnumerationGroupMembers = false
+	) {
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
 		$this->invokePrivate($this->sharees, 'shareWithGroupOnly', [$shareWithGroupOnly]);
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
+		$this->invokePrivate($this->sharees, 'shareeEnumerationGroupMembers', [$shareeEnumerationGroupMembers]);
 
 		$this->groupManager->expects($this->once())
 			->method('search')
@@ -807,7 +922,7 @@ class ShareesTest extends TestCase {
 				->willReturn($singleGroup);
 		}
 
-		if ($shareWithGroupOnly) {
+		if ($shareWithGroupOnly || $shareeEnumerationGroupMembers) {
 			$user = $this->getUserMock('admin', 'Administrator');
 			$this->session->expects($this->any())
 				->method('getUser')
