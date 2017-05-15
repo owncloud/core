@@ -25,7 +25,7 @@ else
 	lib/composer/bin/behat -c tests/ui/config/behat.yml
 fi
 
-if [ "$?" == "0" ]
+if [ $? -eq 0 ]
 then
 	PASSED=true
 else
@@ -38,4 +38,11 @@ then
 	curl -X PUT -s -d "{\"passed\": $PASSED}" -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCELABS_SESSIONID
 
 	printf "\n${RED}SAUCELABS RESULTS:${BLUE} https://saucelabs.com/jobs/$SAUCELABS_SESSIONID\n${NC}"
+fi
+
+if [ "$PASSED" = true ]
+then
+	exit 0
+else
+	exit 1
 fi
