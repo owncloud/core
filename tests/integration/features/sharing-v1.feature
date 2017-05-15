@@ -1059,7 +1059,7 @@ Feature: sharing
 		And As an "user0"
 		And folder "/FOLDER" of user "user0" is shared with group "new-group"
 		And Updating last share with
-			| permissions | 0 |
+			| permissions | 1 |
 		When Updating last share with
 			| permissions | 31 |
 		Then the OCS status code should be "100"
