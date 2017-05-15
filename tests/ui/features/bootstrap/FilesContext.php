@@ -78,43 +78,43 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Given I rename the file :fromFileName to :toFileName
+	 * @Given I rename the file/folder :fromName to :toName
 	 */
-	public function iRenameTheFileTo($fromFileName, $toFileName)
+	public function iRenameTheFileFolderTo($fromName, $toName)
 	{
 		$this->filesPage->waitTillPageIsloaded(10);
-		$this->filesPage->renameFile($fromFileName, $toFileName, $this->getSession());
+		$this->filesPage->renameFile($fromName, $toName, $this->getSession());
 	}
 
 	/**
-	 * @When I rename the file :fromFileName to one of these names
+	 * @When I rename the file/folder :fromName to one of these names
 	 */
-	public function iRenameTheFileToOneOfThisNames($fromFileName, TableNode $table)
+	public function iRenameTheFileToOneOfThisNames($fromName, TableNode $table)
 	{
 		$this->filesPage->waitTillPageIsloaded(10);
 		foreach ($table->getRows() as $row) {
-			$this->filesPage->renameFile($fromFileName, $row[0], $this->getSession());
+			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
 		}
 		
 	}
 
 	/**
-	 * @Then the file :fileName should be listed
+	 * @Then the file/folder :name should be listed
 	 */
-	public function theFileShouldBeListed($fileName)
+	public function theFileFolderShouldBeListed($name)
 	{
 		PHPUnit_Framework_Assert::assertNotNull(
-			$this->filesPage->findFileRowByName($fileName, $this->getSession())
+			$this->filesPage->findFileRowByName($name, $this->getSession())
 		);
 	}
 
 	/**
-	 * @Then near the file :fileName a tooltip with the text :toolTipText should be displayed
+	 * @Then near the file/folder :name a tooltip with the text :toolTipText should be displayed
 	 */
-	public function nearTheFileATooltipWithTheTextShouldBeDisplayed($fileName, $toolTipText)
+	public function nearTheFileATooltipWithTheTextShouldBeDisplayed($name, $toolTipText)
 	{
 		PHPUnit_Framework_Assert::assertEquals($toolTipText, 
-			$this->filesPage->getTooltipOfFile($fileName, $this->getSession())
+			$this->filesPage->getTooltipOfFile($name, $this->getSession())
 		);
 	}
 
