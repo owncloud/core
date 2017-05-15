@@ -49,6 +49,7 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\IDBConnection;
 use OCP\IConfig;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * This class provides the ability for apps to share their content between users.
@@ -2851,6 +2852,11 @@ class Share extends Constants {
 		if (!$accepted) {
 			throw new \Exception($message);
 		}
+
+		\OC::$server->getEventDispatcher()->dispatch(
+			'OCP\Share::validatePassword',
+			new GenericEvent(null, ['password' => $password])
+		);
 	}
 
 	/**
