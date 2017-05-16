@@ -74,6 +74,7 @@ class User implements IUser {
 	 *
 	 * @param Account $account
 	 * @param AccountMapper $mapper
+	 * @param AccountTermMapper $termMapper
 	 * @param null $emitter
 	 * @param IConfig|null $config
 	 * @param null $urlGenerator

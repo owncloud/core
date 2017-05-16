@@ -10,6 +10,7 @@
 namespace Test\User;
 use OC\User\Account;
 use OC\User\AccountMapper;
+use OC\User\AccountTermMapper;
 use OC\User\Backend;
 use OC\User\Database;
 use OC\User\Manager;
@@ -32,6 +33,8 @@ class ManagerTest extends TestCase {
 	private $manager;
 	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $accountMapper;
+	/** @var AccountTermMapper | \PHPUnit_Framework_MockObject_MockObject */
+	private $accountTermMapper;
 
 	public function setUp() {
 		parent::setUp();
@@ -41,7 +44,8 @@ class ManagerTest extends TestCase {
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
-		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper);
+		$this->accountTermMapper = $this->createMock(AccountTermMapper::class);
+		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->accountTermMapper);
 	}
 
 	public function testGetBackends() {

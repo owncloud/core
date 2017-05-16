@@ -14,6 +14,7 @@ use OC\Files\Mount\MountPoint;
 use OC\Log;
 use OC\User\Account;
 use OC\User\AccountMapper;
+use OC\User\AccountTermMapper;
 use OC\User\Manager;
 use OCP\Files\Config\ICachedMountInfo;
 use OCP\IConfig;
@@ -65,9 +66,13 @@ class UserMountCacheTest extends TestCase {
 			['u2', $a2],
 			['u3', $a3],
 		]);
+
+		/** @var AccountTermMapper | \PHPUnit_Framework_MockObject_MockObject $accountTermMapper */
+		$accountTermMapper = $this->createMock(AccountTermMapper::class);
+
 		/** @var Log $log */
 		$log = $this->createMock(Log::class);
-		$this->userManager = new Manager($config, $log, $accountMapper);
+		$this->userManager = new Manager($config, $log, $accountMapper, $accountTermMapper);
 		$this->cache = new UserMountCache($this->connection, $this->userManager, $log);
 
 		// hookup listener

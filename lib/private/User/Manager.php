@@ -74,15 +74,19 @@ class Manager extends PublicEmitter implements IUserManager {
 	/** @var AccountMapper */
 	private $accountMapper;
 
+	/** @var AccountTermMapper */
+	private $accountTermMapper;
+
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 * @param AccountMapper $accountMapper
 	 */
-	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper) {
+	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper, AccountTermMapper $accountTermMapper) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->accountMapper = $accountMapper;
+		$this->accountTermMapper = $accountTermMapper;
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
 			/** @var \OC\User\User $user */
@@ -173,7 +177,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			return $this->cachedUsers[$account->getUserId()];
 		}
 
-		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher() );
+		$user = new User($account, $this->accountMapper, $this->accountTermMapper, $this, $this->config, null, \OC::$server->getEventDispatcher() );
 		if ($cacheUser) {
 			$this->cachedUsers[$account->getUserId()] = $user;
 		}

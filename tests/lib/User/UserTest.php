@@ -12,6 +12,8 @@ namespace Test\User;
 use OC\Hooks\PublicEmitter;
 use OC\User\Account;
 use OC\User\AccountMapper;
+use OC\User\AccountTerm;
+use OC\User\AccountTermMapper;
 use OC\User\Backend;
 use OC\User\Database;
 use OC\User\User;
@@ -32,6 +34,8 @@ class UserTest extends TestCase {
 
 	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $accountMapper;
+	/** @var AccountTermMapper | \PHPUnit_Framework_MockObject_MockObject */
+	private $accountTermMapper;
 	/** @var Account */
 	private $account;
 	/** @var User */
@@ -48,6 +52,7 @@ class UserTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->accountMapper = $this->createMock(AccountMapper::class);
+		$this->accountTermMapper = $this->createMock(AccountTermMapper::class);
 		$this->config = $this->createMock(IConfig::class);
 		$this->account = new Account();
 		$this->account->setUserId('foo');
@@ -58,7 +63,7 @@ class UserTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = new User($this->account, $this->accountMapper, $this->emitter, $this->config, $this->urlGenerator, $this->eventDispatcher);
+		$this->user = new User($this->account, $this->accountMapper, $this->accountTermMapper, $this->emitter, $this->config, $this->urlGenerator, $this->eventDispatcher);
 	}
 
 	public function testDisplayName() {
@@ -85,7 +90,7 @@ class UserTest extends TestCase {
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
 		$backend->expects($this->once())->method('setPassword')->with('foo', 'bar')->willReturn(true);
 
-		$this->user = new User($account, $this->accountMapper, null, $this->config);
+		$this->user = new User($account, $this->accountMapper, $this->accountTermMapper, null, $this->config);
 		$this->assertTrue($this->user->setPassword('bar',''));
 		$this->assertTrue($this->user->canChangePassword());
 
@@ -102,7 +107,7 @@ class UserTest extends TestCase {
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
 		$backend->expects($this->once())->method('setPassword')->with('foo', 'bar')->willReturn(false);
 
-		$this->user = new User($account, $this->accountMapper, null, $this->config);
+		$this->user = new User($account, $this->accountMapper, $this->accountTermMapper, null, $this->config);
 		$this->assertFalse($this->user->setPassword('bar',''));
 		$this->assertTrue($this->user->canChangePassword());
 	}
@@ -144,7 +149,7 @@ class UserTest extends TestCase {
 				}
 			}));
 
-		$user = new User($account, $this->accountMapper, null, $this->config);
+		$user = new User($account, $this->accountMapper, $this->accountTermMapper, null, $this->config);
 		$this->assertEquals($expected, $user->canChangeAvatar());
 	}
 
@@ -196,7 +201,7 @@ class UserTest extends TestCase {
 				}
 			}));
 
-		$user = new User($account, $this->accountMapper, null, $this->config);
+		$user = new User($account, $this->accountMapper, $this->accountTermMapper, null, $this->config);
 		$this->assertEquals($expected, $user->canChangeDisplayName());
 
 		if ($expected) {
@@ -232,7 +237,7 @@ class UserTest extends TestCase {
 				return false;
 			}));
 
-		$user = new User($account, $this->accountMapper, null, $this->config);
+		$user = new User($account, $this->accountMapper, $this->accountTermMapper, null, $this->config);
 		$this->assertFalse($user->setDisplayName('Foo'));
 		$this->assertEquals('foo',$user->getDisplayName());
 	}
@@ -262,7 +267,7 @@ class UserTest extends TestCase {
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
 		$backend->expects($this->once())->method('setPassword')->with('foo', 'bar')->willReturn(true);
 
-		$this->user = new User($account, $this->accountMapper, $emitter, $this->config);
+		$this->user = new User($account, $this->accountMapper, $this->accountTermMapper, $emitter, $this->config);
 
 		$this->user->setPassword('bar','');
 		$this->assertEquals(2, $hooksCalled);
