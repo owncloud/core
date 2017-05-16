@@ -119,13 +119,15 @@ class AccountMapper extends Mapper {
 	 */
 	public function find($pattern, $limit, $offset) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('*')
-			->from($this->getTableName())
-			->join('account', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
-			->where($qb->expr()->Like('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($pattern)) . '%')))
+		$lowerPattern = strtolower($pattern);
+		$qb->select(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
+			->selectAlias('a.id', 'id')
+			->from($this->getTableName(), 'a')
+			->join('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
+			->where($qb->expr()->Like('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))
 			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
-			->orWhere($qb->expr()->iLike('t.term', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))
 			->orderBy('display_name');
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
@@ -192,53 +194,4 @@ class AccountMapper extends Mapper {
 		$stmt->closeCursor();
 	}
 
-	/**
-	 * Sets search terms for a given account id
-	 * @param $account_id
-	 * @param string[] $terms
-	 */
-	public function setTermsForAccount($account_id, array $terms) {
-		// Delete all terms for this account
-		$this->deleteTermsForAccount($account_id);
-		// Now batch insert the new terms for this account
-		$qb = $this->db->getQueryBuilder();
-		$terms = array_map(function($term) use ($account_id) {
-			return ['account_id' => $account_id, 'term' => $term];
-		}, $terms);
-		$qb
-			->insert('account_terms')
-			->values($terms)
-			->execute();
-	}
-
-	/**
-	 * Removes all search terms for a given account id
-	 * @param $account_id
-	 */
-	public function deleteTermsForAccount($account_id) {
-		$qb = $this->db->getQueryBuilder();
-		$qb
-			->delete('account_terms')
-			->where($qb->expr()->eq('account_id', $qb->createNamedParameter($account_id)))
-			->execute();
-	}
-
-	/**
-	 * Retrieves all search terms attached to an account id
-	 * @param $account_id
-	 * @return array of account search terms
-	 */
-	public function getTermsForAccount($account_id) {
-		$qb = $this->db->getQueryBuilder();
-		$results = $qb
-			->select('term')
-			->from('account_terms')
-			->where($qb->expr()->eq('account_id', $qb->createNamedParameter($account_id)))
-			->execute();
-		$terms = [];
-		while($row = $results->fetch()) {
-			$terms[] = $row['term'];
-		}
-		return $terms;
-	}
 }
