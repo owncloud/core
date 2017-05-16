@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "កំពុងដាក់បញ្ចូល...",
     "Cancel" : "បោះបង់",
     "Share" : "ចែក​រំលែក",
     "Shared by" : "បាន​ចែក​រំលែក​ដោយ",

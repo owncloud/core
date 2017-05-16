@@ -123,6 +123,7 @@ OC.L10N.register(
     "Filename" : "Nom del fitxer",
     "Password" : "Contrasenya",
     "Name" : "Nom",
+    "Allow editing" : "Permetre edició",
     "Save" : "Desar",
     "Sending ..." : "Enviant...",
     "Email sent" : "El correu electrónic s'ha enviat",

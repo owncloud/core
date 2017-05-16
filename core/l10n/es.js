@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "Nombre",
     "Password" : "Contraseña",
     "Name" : "Nombre",
-    "Allow uploads" : "Se permiten subidas públicas",
+    "Allow editing" : "Permitir edición",
     "Edit link share: {name}" : "Editar link compartido: {name}",
     "Save" : "Guardar",
     "Create link share: {name}" : "Crear link compartido: {name}",

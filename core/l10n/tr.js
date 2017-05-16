@@ -154,6 +154,7 @@ OC.L10N.register(
     "Filename" : "Dosya adı",
     "Password" : "Parola",
     "Name" : "Ad",
+    "Allow editing" : "Düzenlemeye izin ver",
     "Save" : "Kaydet",
     "Error while sending notification" : "Bildirim gönderilirken hata",
     "Sending ..." : "Gönderiliyor...",

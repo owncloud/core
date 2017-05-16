@@ -147,6 +147,7 @@ OC.L10N.register(
     "Filename" : "Ім'я файлу",
     "Password" : "Пароль",
     "Name" : "Ім’я",
+    "Allow editing" : "Дозволити редагування",
     "Save" : "Зберегти",
     "Error while sending notification" : "Помилка під час надсилання повідомлення",
     "Sending ..." : "Надсилання...",

@@ -156,6 +156,7 @@ OC.L10N.register(
     "Filename" : "Nazwa pliku",
     "Password" : "Hasło",
     "Name" : "Nazwa",
+    "Allow editing" : "Pozwól na edycję",
     "Edit link share: {name}" : "Edytuj link udostępniany: {name}",
     "Save" : "Zapisz",
     "Create link share: {name}" : "Utwórz link udostępniany: {name}",

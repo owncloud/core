@@ -102,6 +102,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "Aukeratu pasahitz bat esteka publikorako",
     "Password" : "Pasahitza",
     "Name" : "Izena",
+    "Allow editing" : "Baimendu editatzea",
     "Save" : "Gorde",
     "Sending ..." : "Bidaltzen ...",
     "Email sent" : "Eposta bidalia",

@@ -4,6 +4,7 @@ OC.L10N.register(
     "Shared with you" : "Delt med deg",
     "Shared with others" : "Delt med andre",
     "Shared by link" : "Delt med lenkje",
+    "Uploading..." : "Lastar opp …",
     "Nothing shared with you yet" : "Ingenting delt med deg enno",
     "Files and folders others share with you will show up here" : "Filer og mapper som andre deler med deg visast her",
     "Nothing shared yet" : "Ingenting delt enno",

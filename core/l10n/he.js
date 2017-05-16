@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "שם קובץ",
     "Password" : "סיסמא",
     "Name" : "שם",
-    "Allow uploads" : "הרשאת העלאות",
+    "Allow editing" : "אישור עריכה",
     "Edit link share: {name}" : "עריכת שיתוף קישור: {name}",
     "Save" : "שמירה",
     "Create link share: {name}" : "יצירת שיתוף קישור: {name}",

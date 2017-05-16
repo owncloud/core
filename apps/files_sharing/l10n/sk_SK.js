@@ -10,6 +10,7 @@ OC.L10N.register(
     "Shared with you" : "Zdieľané s vami",
     "Shared with others" : "Zdieľané s ostatnými",
     "Shared by link" : "Zdieľané pomocou odkazu",
+    "Uploading..." : "Nahrávam...",
     "Nothing shared with you yet" : "Zatiaľ s vami nikto nič nezdieľal.",
     "Files and folders others share with you will show up here" : "Tu budú zobrazené súbory a priečinky, ktoré s vami zdieľajú ostatní",
     "Nothing shared yet" : "Zatiaľ nie je nič zdieľané",

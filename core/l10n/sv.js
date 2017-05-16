@@ -154,6 +154,7 @@ OC.L10N.register(
     "Filename" : "Filnamn",
     "Password" : "Lösenord",
     "Name" : "Namn",
+    "Allow editing" : "Tillåt redigering",
     "Save" : "Spara",
     "Share to Twitter. Opens in a new window." : "Dela till Twitter. Öppnas i ett nytt fönster.",
     "Share to Facebook. Opens in a new window." : "Dela till Facebook. Öppnas i ett nytt fönster.",

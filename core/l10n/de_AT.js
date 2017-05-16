@@ -146,6 +146,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "Wählen Sie ein Passwort für den öffentlichen Link",
     "Password" : "Passwort",
     "Name" : "Name",
+    "Allow editing" : "Bearbeitung erlauben",
     "Save" : "Speichern",
     "Error while sending notification" : "Fehler beim Senden der Benachrichtigung",
     "Sending ..." : "Senden…",

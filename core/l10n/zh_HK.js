@@ -59,6 +59,7 @@ OC.L10N.register(
     "Remove" : "刪除",
     "Password" : "密碼",
     "Name" : "名稱",
+    "Allow editing" : "容許編輯",
     "Save" : "儲存",
     "Sending ..." : "發送中...",
     "Email sent" : "郵件已傳",

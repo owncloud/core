@@ -123,6 +123,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "Wiel e Passwuert fir den ëffentleche Link aus",
     "Password" : "Passwuert",
     "Name" : "Numm",
+    "Allow editing" : "Beaarbechten erlaben",
     "Save" : "Späicheren",
     "Error while sending notification" : "Feeler beim Schécke vun der Notifikatioun",
     "Sending ..." : "Gëtt geschéckt...",

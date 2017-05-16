@@ -120,6 +120,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "Одбери лозинка за јавниот линк",
     "Password" : "Лозинка",
     "Name" : "Име",
+    "Allow editing" : "Овозможи уредување",
     "Save" : "Сними",
     "Sending ..." : "Праќање...",
     "Email sent" : "Е-порака пратена",

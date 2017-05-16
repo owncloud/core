@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "උඩුගත කෙරේ...",
     "Cancel" : "එපා",
     "Share" : "බෙදා හදා ගන්න",
     "Sharing" : "හුවමාරු කිරීම",

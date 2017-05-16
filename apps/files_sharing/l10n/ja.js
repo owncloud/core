@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "他ユーザーがあなたと共有中",
     "Shared with others" : "他ユーザーと共有中",
     "Shared by link" : "URLリンクで共有中",
+    "Uploading..." : "アップロード中...",
     "Nothing shared with you yet" : "あなたと共有しているファイルはありません。",
     "Files and folders others share with you will show up here" : "他の人から共有されたファイルやフォルダーは、ここに表示されます。",
     "Nothing shared yet" : "まだ何も共有されていません",

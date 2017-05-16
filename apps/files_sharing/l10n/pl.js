@@ -10,6 +10,7 @@ OC.L10N.register(
     "Shared with you" : "Współdzielony z Tobą",
     "Shared with others" : "Współdzielony z innymi",
     "Shared by link" : "Współdzielony linkiem",
+    "Uploading..." : "Wgrywanie....",
     "Nothing shared with you yet" : "Nie masz jeszcze nic udostępnionego",
     "Files and folders others share with you will show up here" : "Pliki i foldery udostępnione Tobie przez innych wyświetlą się tutaj",
     "Nothing shared yet" : "Jeszcze nic nie udostępniono",

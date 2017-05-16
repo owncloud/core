@@ -83,6 +83,7 @@ OC.L10N.register(
     "Remove" : "Ջնջել",
     "Password" : "Գաղտնաբառ",
     "Name" : "Անուն",
+    "Allow editing" : "Թույլատրել խմբագրումը",
     "Save" : "Պահել",
     "Email sent" : "Էլ. նամակը ուղարկվեց",
     "Email link to person" : "Ուղարկել հղումը ոմնին",

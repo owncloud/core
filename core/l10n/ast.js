@@ -154,6 +154,7 @@ OC.L10N.register(
     "Filename" : "Nome de Ficheru",
     "Password" : "Contraseña",
     "Name" : "Nome",
+    "Allow editing" : "Permitir edición",
     "Save" : "Guardar",
     "Error while sending notification" : "Fallu mientres s'unviaba la notificación",
     "Sending ..." : "Unviando ...",

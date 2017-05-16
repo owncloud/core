@@ -10,6 +10,7 @@ OC.L10N.register(
     "Shared with you" : "Доступне для вас",
     "Shared with others" : "Доступне для інших",
     "Shared by link" : "Доступне за посиланням",
+    "Uploading..." : "Вивантаження...",
     "Nothing shared with you yet" : "Ніхто з вами ще не поділився файлами",
     "Files and folders others share with you will show up here" : "Розшарені для вас файли і папки з’являться тут",
     "Nothing shared yet" : "Немає нічого розшареного",

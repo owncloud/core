@@ -143,6 +143,7 @@ OC.L10N.register(
     "Filename" : "Nom del fichièr",
     "Password" : "Senhal",
     "Name" : "Nom",
+    "Allow editing" : "Permetre la modificacion",
     "Save" : "Enregistrar",
     "Share to Twitter. Opens in a new window." : "Partejar sus Twitter. Dobrís una novèla fenèstra.",
     "Share to Facebook. Opens in a new window." : "Partejar sus Facebook. Dobrís una novèla fenèstra.",

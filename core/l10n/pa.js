@@ -31,6 +31,7 @@ OC.L10N.register(
     "Error" : "ਗਲ",
     "Remove" : "ਹਟਾਓ",
     "Password" : "ਪਾਸਵਰ",
+    "Allow editing" : "ਸੰਪਾਦਨ ਦੀ ਇਜ਼ਾਜਤ",
     "create" : "ਬਣਾਓ",
     "change" : "ਬਦਲੋ",
     "delete" : "ਹਟਾਓ",

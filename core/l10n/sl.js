@@ -162,7 +162,7 @@ OC.L10N.register(
     "Filename" : "Ime datoteke",
     "Password" : "Geslo",
     "Name" : "Ime",
-    "Allow uploads" : "Dovoli pošiljanje datotek v oblak",
+    "Allow editing" : "Dovoli urejanje",
     "Edit link share: {name}" : "Uredi povezavo za souporabo: {name}",
     "Save" : "Shrani",
     "Create link share: {name}" : "Ustvari povezavo za souporabo: {name}",

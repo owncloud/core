@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Us han compartit",
     "Shared with others" : "Heu compartit",
     "Shared by link" : "Compartit amb enllaç",
+    "Uploading..." : "Pujant...",
     "Nothing shared with you yet" : "Encara no s'ha compartit res amb tu ",
     "No shared links" : "no hi ha enllaços compartits",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Voleu afegir la compartició remota {nom} des de {owner}@{remote}?",

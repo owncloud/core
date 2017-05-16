@@ -150,6 +150,7 @@ OC.L10N.register(
     "Filename" : "Fájlnév",
     "Password" : "Jelszó",
     "Name" : "Név",
+    "Allow editing" : "Szerkesztheti",
     "Save" : "Mentés",
     "Error while sending notification" : "Hiba történt az értesítő küldése közben",
     "Sending ..." : "Küldés ...",

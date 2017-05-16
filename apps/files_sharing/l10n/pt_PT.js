@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Partilhado consigo ",
     "Shared with others" : "Partilhado com outros",
     "Shared by link" : "Partilhado por hiperligação",
+    "Uploading..." : "A enviar...",
     "Nothing shared with you yet" : "Ainda não foi partilhado nada consigo",
     "Files and folders others share with you will show up here" : "Os ficheiros e pastas que os outros partilham consigo, serão mostrados aqui",
     "Nothing shared yet" : "Ainda não foi partilhado nada",

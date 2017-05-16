@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "Incargante...",
     "Cancel" : "Cancellar",
     "Share" : "Compartir",
     "A file or folder has been <strong>shared</strong>" : "Un file o un dossier ha essite <strong>compartite</strong>",

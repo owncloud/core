@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "Όνομα αρχείου",
     "Password" : "Συνθηματικό",
     "Name" : "Όνομα",
-    "Allow uploads" : "Να επιτρέπονται μεταφορτώσεις",
+    "Allow editing" : "Επιτρέπεται η επεξεργασία",
     "Edit link share: {name}" : "Επεξεργασία συνδέσμου κοινόχρηστου: {name}",
     "Save" : "Αποθήκευση",
     "Create link share: {name}" : "Δημιουργία συνδέσμου κοινόχρηστου: {name}",

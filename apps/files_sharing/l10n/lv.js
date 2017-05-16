@@ -10,6 +10,7 @@ OC.L10N.register(
     "Shared with you" : "Koplietots ar tevi",
     "Shared with others" : "Koplietots ar citiem",
     "Shared by link" : "Koplietots ar saiti",
+    "Uploading..." : "Augšupielādē...",
     "Nothing shared with you yet" : "Nekas vēl nav koplietots",
     "Files and folders others share with you will show up here" : "Faili un mapes, ko citi koplietos ar tevi, tiks rādīti šeit",
     "Nothing shared yet" : "Nekas vēl nav koplietots",

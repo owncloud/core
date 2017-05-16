@@ -132,6 +132,7 @@ OC.L10N.register(
     "Filename" : "Nama berkas",
     "Password" : "Sandi",
     "Name" : "Nama",
+    "Allow editing" : "Izinkan penyuntingan",
     "Save" : "Simpan",
     "Error while sending notification" : "Kesalahan ketika mengirim notifikasi",
     "Sending ..." : "Mengirim ...",

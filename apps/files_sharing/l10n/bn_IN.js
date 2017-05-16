@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "আপলোডইং ...",
     "Cancel" : "বাতিল করা",
     "Share" : "শেয়ার",
     "A file or folder has been <strong>shared</strong>" : "ফাইল অথবা ফোল্ডার <strong>শেয়ার করা হয়েছে</strong>",

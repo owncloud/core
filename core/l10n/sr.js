@@ -122,6 +122,7 @@ OC.L10N.register(
     "Filename" : "Назив фајла",
     "Password" : "Лозинка",
     "Name" : "Назив",
+    "Allow editing" : "уређивање",
     "Save" : "Сачувај",
     "Sending ..." : "Шаљем...",
     "Email sent" : "Порука је послата",
