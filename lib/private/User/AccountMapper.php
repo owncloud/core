@@ -36,33 +36,36 @@ class AccountMapper extends Mapper {
 
 	/**
 	 * @param Account $entity
+	 * @return Entity the saved entity with the set id
 	 */
 	public function insert(Entity $entity) {
 		if($entity->haveTermsChanged()) {
 			$this->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
 		}
 		// Then run the normal entity insert operation
-		parent::insert($entity);
+		return parent::insert($entity);
 	}
 
 	/**
 	 * @param Account $entity
+	 * @return Entity the deleted entity
 	 */
 	public function delete(Entity $entity) {
 		// First delete the search terms for this account
 		$this->deleteTermsForAccount($entity->getId());
-		parent::delete($entity);
+		return parent::delete($entity);
 	}
 
 	/**
 	 * @param Account $entity
+	 * @return Entity the saved entity with the set id
 	 */
 	public function update(Entity $entity) {
 		if($entity->haveTermsChanged()) {
 			$this->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
 		}
 		// Then run the normal entity insert operation
-		parent::update($entity);
+		return parent::update($entity);
 	}
 
 	/**
