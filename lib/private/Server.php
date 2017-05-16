@@ -86,6 +86,7 @@ use OC\Settings\SettingsManager;
 use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
+use OC\User\AccountTermMapper;
 use OCP\IL10N;
 use OCP\IServerContainer;
 use OCP\ISession;
@@ -224,7 +225,8 @@ class Server extends ServerContainer implements IServerContainer {
 			$config = $c->getConfig();
 			$logger = $c->getLogger();
 			$accountMapper = new AccountMapper($c->getDatabaseConnection());
-			return new \OC\User\Manager($config, $logger, $accountMapper);
+			$accountTermMapper = new AccountTermMapper($c->getDatabaseConnection());
+			return new \OC\User\Manager($config, $logger, $accountMapper, $accountTermMapper);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupManager = new \OC\Group\Manager($this->getUserManager());
