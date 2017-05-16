@@ -130,6 +130,13 @@ trait BasicStructure
 	
 	public function waitForOutstandingAjaxCalls ($time = 5000)
 	{
-		$this->getSession()->wait($time, '(0 === jQuery.active)');
+		for($counter=0;$counter<=($time/1000);$counter++) {
+			try {
+				$this->getSession()->wait($time, "(typeof jQuery != 'undefined' && (0 === jQuery.active))");
+				break;
+			} catch (Exception $e) {
+				sleep(1);
+			}
+		}
 	}
 }
