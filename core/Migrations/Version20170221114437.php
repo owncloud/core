@@ -3,6 +3,7 @@ namespace OC\Migrations;
 
 use OC\User\Account;
 use OC\User\AccountMapper;
+use OC\User\AccountTermMapper;
 use OC\User\Database;
 use OC\User\SyncService;
 use OCP\IConfig;
@@ -16,7 +17,7 @@ class Version20170221114437 implements ISimpleMigration {
 	 */
 	public function run(IOutput $out) {
 		$backend = new Database();
-		$accountMapper = new AccountMapper(\OC::$server->getDatabaseConnection());
+		$accountMapper = new AccountMapper(\OC::$server->getDatabaseConnection(), new AccountTermMapper(\OC::$server->getDatabaseConnection()));
 		$config = \OC::$server->getConfig();
 		$logger = \OC::$server->getLogger();
 		$syncService = new SyncService($accountMapper, $backend, $config, $logger);

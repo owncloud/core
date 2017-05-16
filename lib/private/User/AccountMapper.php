@@ -30,8 +30,12 @@ use OCP\IDBConnection;
 
 class AccountMapper extends Mapper {
 
-	public function __construct(IDBConnection $db) {
+	/* @var AccountTermMapper */
+	protected $termMapper;
+
+	public function __construct(IDBConnection $db, AccountTermMapper $termMapper) {
 		parent::__construct($db, 'accounts', Account::class);
+		$this->termMapper = $termMapper;
 	}
 
 	/**
@@ -40,7 +44,7 @@ class AccountMapper extends Mapper {
 	 */
 	public function insert(Entity $entity) {
 		if($entity->haveTermsChanged()) {
-			$this->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
+			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
 		}
 		// Then run the normal entity insert operation
 		return parent::insert($entity);
@@ -52,7 +56,7 @@ class AccountMapper extends Mapper {
 	 */
 	public function delete(Entity $entity) {
 		// First delete the search terms for this account
-		$this->deleteTermsForAccount($entity->getId());
+		$this->termMapper->deleteTermsForAccount($entity->getId());
 		return parent::delete($entity);
 	}
 
@@ -62,7 +66,7 @@ class AccountMapper extends Mapper {
 	 */
 	public function update(Entity $entity) {
 		if($entity->haveTermsChanged()) {
-			$this->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
+			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
 		}
 		// Then run the normal entity insert operation
 		return parent::update($entity);
