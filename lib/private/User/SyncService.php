@@ -161,7 +161,7 @@ class SyncService {
 		}
 		// Check if backend supplies an additional search string
 		if ($this->backend instanceof IProvidesExtendedSearchBackend) {
-			$a->setSearchAttributes($this->backend->getSearchAttributes($uid));
+			$a->setSearchTerms($this->backend->getSearchTerms($uid));
 		}
 		return $a;
 	}

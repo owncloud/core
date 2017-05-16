@@ -22,9 +22,7 @@
 
 namespace OC\User;
 
-
 use OCP\AppFramework\Db\Entity;
-use OCP\AppFramework\QueryException;
 use OCP\UserInterface;
 
 /**
@@ -45,8 +43,7 @@ use OCP\UserInterface;
  * @method void setQuota(string $quota)
  * @method string getHome()
  * @method void setHome(string $home)
- * @method void setSearchAttributes(string $searchAttributes)
- * @method string getSearchAttributes()
+ * @method string[] getSearchTerms()
  *
  * @package OC\User
  */
@@ -66,7 +63,9 @@ class Account extends Entity {
 	protected $backend;
 	protected $state;
 	protected $home;
-	protected $searchAttributes;
+
+	protected $terms = [];
+	private $_termsChanged = false;
 
 	public function __construct() {
 		$this->addType('state', 'integer');
@@ -89,4 +88,25 @@ class Account extends Entity {
 		// actually stupid
 		return \OC::$server->getUserManager()->getBackend($backendClass);
 	}
+
+	public function getUpdatedFields() {
+		$fields = parent::getUpdatedFields();
+		unset($fields['terms']);
+		return $fields;
+	}
+
+	public function haveTermsAltered() {
+		return $this->_termsChanged;
+	}
+
+	/**
+	 * @param string[] $terms
+	 */
+	public function setSearchTerms(array $terms) {
+		if(array_diff($terms, $this->terms)) {
+			$this->terms = $terms;
+			$this->_termsChanged = true;
+		}
+	}
+
 }

@@ -439,19 +439,18 @@ class User implements IUser {
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 * @since 10.0.1
 	 */
-	public function getSearchAttributes() {
-		return $this->account->getSearchAttributes();
+	public function getSearchTerms() {
+		return $this->account->getSearchTerms();
 	}
 
 	/**
-	 * @return string
+	 * @param array $terms
 	 * @since 10.0.1
 	 */
-	public function setSearchAttributes($searchString) {
-		$this->account->setSearchAttributes($searchString);
-		$this->mapper->update($this->account);
+	public function setSearchTerms(array $terms) {
+		$this->account->setSearchTerms($terms);
 	}
 }

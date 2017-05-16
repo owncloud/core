@@ -201,20 +201,20 @@ interface IUser {
 	public function setQuota($quota);
 
 	/**
-	 * set the users' search attributes
+	 * set the users' search terms
 	 *
-	 * @param string $searchString
+	 * @param array $terms
 	 * @return void
 	 * @since 10.0.1
 	 */
-	public function setSearchAttributes($searchString);
+	public function setSearchTerms(array $terms);
 
 	/**
-	 * get the users' search attributes
+	 * get the users' search terms
 	 *
-	 * @return string
+	 * @return array
 	 * @since 10.0.1
 	 */
-	public function getSearchAttributes();
+	public function getSearchTerms();
 
 }

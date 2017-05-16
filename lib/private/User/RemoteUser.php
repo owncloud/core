@@ -200,14 +200,14 @@ class RemoteUser implements IUser {
 	/**
 	 * @inheritdoc
 	 */
-	public function getSearchAttributes() {
-		return '';
+	public function getSearchTerms() {
+		return [];
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function setSearchAttributes($searchString) {
+	public function setSearchTerms(array $terms) {
 	}
 
 }

@@ -34,12 +34,12 @@ namespace OCP\User;
 interface IProvidesExtendedSearchBackend {
 
 	/**
-	 * Get a users search string for core powered user search
+	 * Get search terms for a users account for core powered user search
 	 *
 	 * @param string $uid The username
-	 * @return string
+	 * @return array
 	 * @since 10.0.1
 	 */
-	public function getSearchAttributes($uid);
+	public function getSearchTerms($uid);
 }
 

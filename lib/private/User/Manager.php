@@ -435,9 +435,9 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 		}
 		if ($backend instanceof IProvidesExtendedSearchBackend) {
-			$searchString = $backend->getSearchAttributes($uid);
-			if ($searchString !== null) {
-				$account->setSearchAttributes($searchString);
+			$terms = $backend->getSearchTerms($uid);
+			if (!empty($terms)) {
+				$account->setSearchTerms($terms);
 			}
 		}
 		$home = false;
