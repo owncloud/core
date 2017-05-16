@@ -37,7 +37,7 @@ interface IProvidesExtendedSearchBackend {
 	 * Get search terms for a users account for core powered user search
 	 *
 	 * @param string $uid The username
-	 * @return array
+	 * @return string[]
 	 * @since 10.0.1
 	 */
 	public function getSearchTerms($uid);

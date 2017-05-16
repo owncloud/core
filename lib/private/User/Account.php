@@ -95,7 +95,7 @@ class Account extends Entity {
 		return $fields;
 	}
 
-	public function haveTermsAltered() {
+	public function haveTermsChanged() {
 		return $this->_termsChanged;
 	}
 

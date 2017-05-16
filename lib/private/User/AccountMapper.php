@@ -34,6 +34,9 @@ class AccountMapper extends Mapper {
 		parent::__construct($db, 'accounts', Account::class);
 	}
 
+	/**
+	 * @param Account $entity
+	 */
 	public function insert(Entity $entity) {
 		if($entity->haveTermsChanged()) {
 			$this->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
@@ -41,13 +44,19 @@ class AccountMapper extends Mapper {
 		// Then run the normal entity insert operation
 		parent::insert($entity);
 	}
-	
+
+	/**
+	 * @param Account $entity
+	 */
 	public function delete(Entity $entity) {
 		// First delete the search terms for this account
 		$this->deleteTermsForAccount($entity->getId());
 		parent::delete($entity);
 	}
 
+	/**
+	 * @param Account $entity
+	 */
 	public function update(Entity $entity) {
 		if($entity->haveTermsChanged()) {
 			$this->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
@@ -112,11 +121,11 @@ class AccountMapper extends Mapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())
-			->join('account', 'account_terms', 'term', $qb->expr()->eq('a.id', 'term.account_id'))
+			->join('account', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
 			->where($qb->expr()->Like('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($pattern)) . '%')))
 			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
-			->orWhere($qb->expr()->iLike('term.term', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('t.term', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orderBy('display_name');
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
