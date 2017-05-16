@@ -596,12 +596,8 @@ class Trashbin {
 		if(is_null($userObject)) {
 			return 0;
 		}
-		$quota = $userObject->getQuota();
-		if ($quota === null || $quota === 'default') {
-			$quota = \OC::$server->getConfig()->getAppValue('files', 'default_quota', null);
-		}
-
-		if ($quota === null || $quota === 'none') {
+		$quota = \OC_Util::getUserQuota($userObject);
+		if ($quota === \OCP\Files\FileInfo::SPACE_UNLIMITED) {
 			$quota = Filesystem::free_space('/');
 			$softQuota = false;
 			// inf or unknown free space

@@ -287,11 +287,15 @@ class OC_Util {
 	/**
 	 * Get the quota of a user
 	 *
-	 * @param string $userId
+	 * @param string|IUser $userId
 	 * @return int Quota bytes
 	 */
 	public static function getUserQuota($userId) {
-		$user = \OC::$server->getUserManager()->get($userId);
+		if ($userId instanceof IUser) {
+			$user = $userId;
+		} else {
+			$user = \OC::$server->getUserManager()->get($userId);
+		}
 		if (is_null($user)) {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}
