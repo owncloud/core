@@ -40,13 +40,15 @@ class AccountTermMapper extends Mapper {
 		$this->deleteTermsForAccount($account_id);
 		// Now batch insert the new terms for this account
 		$qb = $this->db->getQueryBuilder();
-		$terms = array_map(function($term) use ($account_id) {
-			return ['account_id' => $account_id, 'term' => strtolower($term)];
-		}, $terms);
-		$qb
-			->insert($this->getTableName())
-			->values($terms)
-			->execute();
+		$qb->insert($this->getTableName())
+			->setValue('account_id', $qb->createParameter('account_id'))
+			->setValue('term', $qb->createParameter('term'))
+			->setParameter('account_id', $account_id);
+
+		foreach ($terms as $term) {
+			$qb->setParameter('term', strtolower($term));
+			$qb->execute();
+		}
 	}
 
 	/**
