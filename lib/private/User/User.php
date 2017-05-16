@@ -362,7 +362,7 @@ class User implements IUser {
 	public function getQuota() {
 		$quota = $this->account->getQuota();
 		if(is_null($quota)) {
-			$quota = $this->config->getAppValue('files', 'default_quota', 'default');
+			return 'default';
 		}
 		return $quota;
 	}
