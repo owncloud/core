@@ -52,6 +52,5 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context
 	public function iChangeTheLanguageTo($language)
 	{
 		$this->personalGeneralSettingsPage->changeLanguage($language);
-		sleep(1);
 	}
 }
