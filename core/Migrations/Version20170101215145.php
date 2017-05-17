@@ -248,32 +248,5 @@ class Version20170101215145 implements ISchemaMigration {
 				);
 			}
 		}
-
-		$this->setIntegerDropDefault($schema, "${prefix}addressbooks", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}cards", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}addressbookchanges", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}calendarobjects", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}calendars", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}calendarchanges", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}calendarsubscriptions", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}schedulingobjects", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}cards_properties", 'id');
-		$this->setIntegerDropDefault($schema, "${prefix}dav_shares", 'id');
-	}
-
-	/**
-	 * @param Schema $schema
-	 * @param string $table
-	 * @param string $column
-	 */
-	private function setIntegerDropDefault(Schema $schema, $table, $column) {
-		if ($schema->hasTable($table)) {
-			$table = $schema->getTable($table);
-			if ($table->hasColumn($column)) {
-				$column = $table->getColumn($column);
-				$column->setType(Type::getType(Type::INTEGER));
-				$column->setDefault(null);
-			}
-		}
 	}
 }
