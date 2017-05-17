@@ -103,6 +103,7 @@ OC.L10N.register(
     "Filename" : "Nombre de archivo",
     "Password" : "Contraseña",
     "Name" : "Nombre",
+    "Allow editing" : "Permitir edición",
     "Save" : "Guardar",
     "Sending ..." : "Enviando...",
     "Email sent" : "Correo electrónico enviado",

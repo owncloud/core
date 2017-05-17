@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Sizinle paylaşılmış",
     "Shared with others" : "Diğerleri ile paylaşılmış",
     "Shared by link" : "Bağlantı ile paylaşılmış",
+    "Uploading..." : "Yükleniyor...",
     "Nothing shared with you yet" : "Sizinle henüz hiçbir şey paylaşılmamış",
     "Files and folders others share with you will show up here" : "Sizinle paylaşılan dosya ve klasörler burada gösterilecek",
     "Nothing shared yet" : "Henüz hiçbir şey paylaşılmamış",

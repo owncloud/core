@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "Yn llwytho i fyny...",
     "Cancel" : "Diddymu",
     "Share" : "Rhannu",
     "Shared by" : "Rhannwyd gan",

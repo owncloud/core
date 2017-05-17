@@ -128,6 +128,7 @@ OC.L10N.register(
     "Filename" : "Nume fișier",
     "Password" : "Parolă",
     "Name" : "Nume",
+    "Allow editing" : "Permite editarea",
     "Save" : "Salvează",
     "Error while sending notification" : "Eroare la trimiterea notificării",
     "Sending ..." : "Se expediază...",

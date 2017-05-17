@@ -46,7 +46,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "Tiedostoa \"{file}\" ei voitu luoda, koska se on jo olemassa",
     "Could not create folder \"{dir}\" because it already exists" : "Kansiota \"{dir}\" ei voitu luoda, koska se on jo olemassa",
     "Error deleting file \"{fileName}\"." : "Virhe poistaessa tiedostoa \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "Mikään tässä kansiossa ei vastaa suodatusta '{filter}'",
     "Name" : "Nimi",
     "Size" : "Koko",
     "Modified" : "Muokattu",

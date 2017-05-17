@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Partajat cu tine",
     "Shared with others" : "Partajat cu alții",
     "Shared by link" : "Partajat prin link",
+    "Uploading..." : "Încărcare",
     "Nothing shared with you yet" : "Nimic nu e partajat cu tine încă",
     "Files and folders others share with you will show up here" : "Fișierele și directoarele partajate cu tine vor apărea aici",
     "Nothing shared yet" : "Nimic partajat încă",

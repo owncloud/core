@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "ファイル名",
     "Password" : "パスワード",
     "Name" : "名前",
-    "Allow uploads" : "アップロードを許可",
+    "Allow editing" : "編集を許可",
     "Edit link share: {name}" : "共有を編集: {name}",
     "Save" : "保存",
     "Create link share: {name}" : "共有を開始: {name}",

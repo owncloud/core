@@ -34,7 +34,6 @@
     "Could not rename \"{fileName}\"" : "Nemožno premenovať súbor \"{fileName}\"",
     "Could not create file \"{file}\"" : "Nemožno vytvoriť súbor \"{file}\"",
     "Could not create file \"{file}\" because it already exists" : "Nemožno vytvoriť súbor \"{file}\", lebo už existuje",
-    "No entries in this folder match '{filter}'" : "V tomto priečinku nič nezodpovedá '{filter}'",
     "Name" : "Názov",
     "Size" : "Veľkosť",
     "Modified" : "Upravené",

@@ -76,6 +76,9 @@ class ShareesController extends OCSController  {
 	/** @var bool */
 	protected $shareeEnumeration = true;
 
+	/** @var bool */
+	protected $shareeEnumerationGroupMembers = false;
+
 	/** @var int */
 	protected $offset = 0;
 
@@ -137,7 +140,7 @@ class ShareesController extends OCSController  {
 		$this->result['users'] = $this->result['exact']['users'] = $users = [];
 
 		$userGroups = [];
-		if ($this->shareWithGroupOnly) {
+		if ($this->shareWithGroupOnly || $this->shareeEnumerationGroupMembers) {
 			// Search in all the groups this user is part of
 			$userGroups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
 			foreach ($userGroups as $userGroup) {
@@ -228,7 +231,7 @@ class ShareesController extends OCSController  {
 		}
 
 		$userGroups =  [];
-		if (!empty($groups) && $this->shareWithGroupOnly) {
+		if (!empty($groups) && ($this->shareWithGroupOnly || $this->shareeEnumerationGroupMembers)) {
 			// Intersect all the groups that match with the groups this user is a member of
 			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser(), 'sharing');
 			$userGroups = array_map(function (IGroup $group) { return $group->getGID(); }, $userGroups);
@@ -469,6 +472,11 @@ class ShareesController extends OCSController  {
 
 		$this->shareWithGroupOnly = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'no') === 'yes';
 		$this->shareeEnumeration = $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';
+		if ($this->shareeEnumeration) {
+			$this->shareeEnumerationGroupMembers = $this->config->getAppValue('core', 'shareapi_share_dialog_user_enumeration_group_members', 'no') === 'yes';
+		} else {
+			$this->shareeEnumerationGroupMembers = false;
+		}
 		$this->limit = (int) $perPage;
 		$this->offset = $perPage * ($page - 1);
 

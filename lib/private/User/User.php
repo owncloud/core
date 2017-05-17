@@ -228,6 +228,10 @@ class User implements IUser {
 	public function setPassword($password, $recoveryPassword = null) {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
+			\OC::$server->getEventDispatcher()->dispatch(
+				'OCP\User::validatePassword',
+				new GenericEvent(null, ['password' => $password])
+			);
 		}
 		if ($this->canChangePassword()) {
 			/** @var IChangePasswordBackend $backend */
@@ -358,7 +362,7 @@ class User implements IUser {
 	public function getQuota() {
 		$quota = $this->account->getQuota();
 		if(is_null($quota)) {
-			$quota = $this->config->getAppValue('files', 'default_quota', 'none');
+			return 'default';
 		}
 		return $quota;
 	}

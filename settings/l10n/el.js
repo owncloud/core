@@ -196,6 +196,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Εξαίρεση ομάδων από τον διαμοιρασμό",
     "These groups will still be able to receive shares, but not to initiate them." : "Αυτές οι ομάδες θα συνεχίσουν να λαμβάνουν διαμοιρασμούς, αλλά δεν θα είναι δυνατό να τους δημιουργήσουν.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Να επιτρέπεται η χρήση αυτόματης συμπλήρωσης στο διάλογο διαμοιρασμού. Αν αυτό είναι απενεργοποιημένο θα πρέπει να εισαχθεί το πλήρες όνομα χρήστη.",
+    "Restrict enumeration to group members" : "Περιορίστε την απαρίθμηση στα μέλη της ομάδας",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Όλα (καίρια ζητήματα, σφάλματα, προειδοποιήσεις, πληροφορίες, αποσφαλμάτωση)",
     "Info, warnings, errors and fatal issues" : "Πληροφορίες, προειδοποιήσεις, σφάλματα και καίρια ζητήματα",
     "Warnings, errors and fatal issues" : "Προειδοποιήσεις, σφάλματα και καίρια ζητήματα",

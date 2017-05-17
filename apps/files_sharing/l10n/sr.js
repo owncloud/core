@@ -10,6 +10,7 @@ OC.L10N.register(
     "Shared with you" : "Дељено са вама",
     "Shared with others" : "Дељено са осталима",
     "Shared by link" : "Дељено путем везе",
+    "Uploading..." : "Отпремам…",
     "Nothing shared with you yet" : "Још увек се ништа са вама не дели",
     "Files and folders others share with you will show up here" : "Фајлови и фасцикле које други деле са вама појавиће се овде",
     "Nothing shared yet" : "Још се ништа не дели",

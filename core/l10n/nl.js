@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "Bestandsnaam",
     "Password" : "Wachtwoord",
     "Name" : "Naam",
-    "Allow uploads" : "Uploads toestaan",
+    "Allow editing" : "Toestaan bewerken",
     "Edit link share: {name}" : "Bewerk link om te delen: {name}",
     "Save" : "Opslaan",
     "Create link share: {name}" : "Creëren link om te delen: {name}",

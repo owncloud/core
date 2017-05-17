@@ -146,6 +146,7 @@ OC.L10N.register(
     "Filename" : "Tiedostonimi",
     "Password" : "Salasana",
     "Name" : "Nimi",
+    "Allow editing" : "Salli muokkaus",
     "Save" : "Tallenna",
     "Share to Twitter. Opens in a new window." : "Jaa Twitteriin. Avautuu uuteen ikkunaan.",
     "Share to Facebook. Opens in a new window." : "Jaa Facebookiin. Avautuu uuteen ikkunaan.",

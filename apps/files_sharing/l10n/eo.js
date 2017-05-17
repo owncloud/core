@@ -9,6 +9,7 @@ OC.L10N.register(
     "Shared with you" : "Kunhavata kun vi",
     "Shared with others" : "Kunhavata kun aliaj",
     "Shared by link" : "Kunhavata per ligilo",
+    "Uploading..." : "Alŝutante...",
     "Nothing shared with you yet" : "Nenio kunhavatas kun vi ankoraŭ",
     "Files and folders others share with you will show up here" : "Dosieroj kaj dosierujoj, kiujn aliuloj kunhavigas, aperos ĉi tie",
     "Nothing shared yet" : "Nenio kunhavatas ankoraŭ",

@@ -154,6 +154,7 @@ OC.L10N.register(
     "Filename" : "Názov súboru",
     "Password" : "Heslo",
     "Name" : "Názov",
+    "Allow editing" : "Povoliť úpravy",
     "Save" : "Uložiť",
     "Error while sending notification" : "Chyba pri posielaní oznámenia",
     "Sending ..." : "Odosielam ...",

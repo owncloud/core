@@ -72,7 +72,7 @@ class SyncBackend extends Command {
 			->addArgument(
 				'backend-class',
 				InputArgument::OPTIONAL,
-				'The php class name - e.g. "OCA\User_LDAP\User_LDAP". Please wrap the class name into double quotes. You can use the option --list to list all known backend classes'
+				'The php class name - e.g. "OCA\User_LDAP\User_Proxy". Please wrap the class name into double quotes. You can use the option --list to list all known backend classes'
 			)
 			->addOption('list', 'l', InputOption::VALUE_NONE, 'list all known backend classes')
 			->addOption('missing-account-action', 'm', InputOption::VALUE_REQUIRED, 'action to do if the account isn\'t connected to a backend any longer. Options are "disable" and "remove". Use quotes. Note that removing the account will also remove the stored data and files for that account');

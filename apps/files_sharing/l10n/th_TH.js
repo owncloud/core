@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "แชร์กับคุณ",
     "Shared with others" : "แชร์กับผู้อื่น",
     "Shared by link" : "แชร์โดยลิงค์",
+    "Uploading..." : "กำลังอัพโหลด...",
     "Nothing shared with you yet" : "ยังไม่มีการแชร์ใดๆ กับคุณเลย",
     "Files and folders others share with you will show up here" : "ไฟล์และโฟลเดอร์อื่นๆ ที่ผู้อื่นแชร์กับคุณจะปรากฏขึ้นที่นี่",
     "Nothing shared yet" : "ยังไม่มีการแชร์ใดๆ",

@@ -41,7 +41,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "\"{file}\" dosyası zaten mevcut olduğundan oluşturulamadı",
     "Could not create folder \"{dir}\" because it already exists" : "\"{dir}\" klasörü zaten mevcut olduğundan oluşturulamadı",
     "Error deleting file \"{fileName}\"." : "\"{fileName}\" dosyası silinirken hata.",
-    "No entries in this folder match '{filter}'" : "Bu klasörde hiçbir girdi '{filter}' ile eşleşmiyor",
     "Name" : "İsim",
     "Size" : "Boyut",
     "Modified" : "Değiştirilme",

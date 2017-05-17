@@ -325,6 +325,7 @@ class ShareControllerTest extends \Test\TestCase {
 		$share->setPassword('password')
 			->setShareOwner('ownerUID')
 			->setNode($file)
+			->setPermissions(\OCP\Constants::PERMISSION_READ)
 			->setTarget('/file1.txt');
 
 		$this->session->method('exists')->with('public_link_authenticated')->willReturn(true);
@@ -373,7 +374,8 @@ class ShareControllerTest extends \Test\TestCase {
 			'previewMaxX' => 1024,
 			'previewMaxY' => 1024,
 			'shareUrl' => null,
-			'previewImage' => null
+			'previewImage' => null,
+			'canDownload' => true,
 		];
 
 		$csp = new \OCP\AppFramework\Http\ContentSecurityPolicy();
@@ -454,4 +456,19 @@ class ShareControllerTest extends \Test\TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
+	/**
+	 * @expectedException \OCP\Files\NotFoundException
+	 */
+	public function testDownloadShareNoReadPermission() {
+		$share = $this->createMock('\OCP\Share\IShare');
+		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_CREATE);
+
+		$this->shareManager
+			->expects($this->once())
+			->method('getShareByToken')
+			->with('validtoken')
+			->willReturn($share);
+
+		$this->shareController->downloadShare('validtoken');
+	}
 }

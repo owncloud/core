@@ -194,6 +194,7 @@
     "Exclude groups from sharing" : "Gruppen von Freigaben ausschließen",
     "These groups will still be able to receive shares, but not to initiate them." : "Diese Gruppen können weiterhin Freigaben empfangen, aber selbst keine mehr initiieren.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Die Auto-Vervollständigung von Benutzernamen im Teilen-Dialog erlauben. Wenn dies deaktiviert ist, muss der vollständige Benutzername eingegeben werden.",
+    "Restrict enumeration to group members" : "Aufzählung auf Gruppenmitglieder beschränken",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Alles (fatale Probleme, Fehler, Warnungen, Infos, Debug-Meldungen)",
     "Info, warnings, errors and fatal issues" : "Infos, Warnungen, Fehler und fatale Probleme",
     "Warnings, errors and fatal issues" : "Warnungen, Fehler und fatale Probleme",

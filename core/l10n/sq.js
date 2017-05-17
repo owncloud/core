@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "Emër kartele",
     "Password" : "Fjalëkalim",
     "Name" : "Emër",
-    "Allow uploads" : "Lejo ngarkime",
+    "Allow editing" : "Lejo përpunim",
     "Edit link share: {name}" : "Përpunoni ndarje lidhjesh: {name}",
     "Save" : "Ruaje",
     "Create link share: {name}" : "Krijoni ndarje lidhjesh: {name}",

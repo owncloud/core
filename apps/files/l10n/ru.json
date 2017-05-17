@@ -44,7 +44,6 @@
     "Could not create file \"{file}\" because it already exists" : "Невозможно создать файл \"{file}\" потому что уже имеется",
     "Could not create folder \"{dir}\" because it already exists" : "Невозможно создать папку \"{dir}\" потому что уже имеется",
     "Error deleting file \"{fileName}\"." : "Ошибка удаления файла \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "В данном каталоге нет элементов соответствующих '{filter}'",
     "Name" : "Имя",
     "Size" : "Размер",
     "Modified" : "Изменён",

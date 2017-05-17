@@ -46,7 +46,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "Ni mogoče ustvariti datoteke \"{file}\", ker že obstaja",
     "Could not create folder \"{dir}\" because it already exists" : "Ni mogoče ustvariti mape \"{dir}\", ker že obstaja",
     "Error deleting file \"{fileName}\"." : "Napaka brisanja datoteke \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "Ni zadetkov, ki bi bili skladni z nizom '{filter}'",
     "Name" : "Ime",
     "Size" : "Velikost",
     "Modified" : "Spremenjeno",

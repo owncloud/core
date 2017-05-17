@@ -137,6 +137,7 @@ OC.L10N.register(
     "Filename" : "檔案名稱",
     "Password" : "密碼",
     "Name" : "名稱",
+    "Allow editing" : "允許編輯",
     "Save" : "儲存",
     "Error while sending notification" : "發送通知錯誤",
     "Sending ..." : "正在傳送…",

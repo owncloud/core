@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "Filnavn",
     "Password" : "Passord",
     "Name" : "Navn",
-    "Allow uploads" : "Tillat opplasting",
+    "Allow editing" : "Tillat redigering",
     "Edit link share: {name}" : "Rediger lenke-deling: {name}",
     "Save" : "Lagre",
     "Create link share: {name}" : "Opprett lenke-deling: {name}",

@@ -98,6 +98,7 @@ OC.L10N.register(
     "Filename" : "Dosiernomo",
     "Password" : "Pasvorto",
     "Name" : "Nomo",
+    "Allow editing" : "Permesi redakton",
     "Save" : "Konservi",
     "Error while sending notification" : "Eraris sendo de sciigo",
     "Sending ..." : "Sendante...",

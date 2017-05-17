@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "Lueden erop...",
     "Nothing shared yet" : "Nach näischt gedeelt",
     "No shared links" : "Keng gedeelte Linken",
     "Cancel" : "Ofbriechen",

@@ -46,7 +46,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "Kunne ikke oprette filen \"{file}\", fordi den allerede findes",
     "Could not create folder \"{dir}\" because it already exists" : "Kunne ikke oprette mappen \"{dir}\", fordi den allerede findes",
     "Error deleting file \"{fileName}\"." : "Fejl under sletning af filen \"{fileName}\"",
-    "No entries in this folder match '{filter}'" : "Der er ingen poster i denne mappe, der matcher '{filter}'",
     "Name" : "Navn",
     "Size" : "Størrelse",
     "Modified" : "Ændret",

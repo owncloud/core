@@ -88,6 +88,7 @@ OC.L10N.register(
     "Filename" : "اسم الملف",
     "Password" : "كلمة المرور",
     "Name" : "الاسم",
+    "Allow editing" : "السماح بالتعديلات",
     "Save" : "حفظ",
     "Sending ..." : "جاري الارسال ...",
     "Email sent" : "تم ارسال البريد الالكتروني",

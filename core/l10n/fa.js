@@ -110,6 +110,7 @@ OC.L10N.register(
     "Filename" : "نام فایل",
     "Password" : "گذرواژه",
     "Name" : "نام",
+    "Allow editing" : "اجازه‌ی ویرایش",
     "Save" : "ذخیره",
     "Error while sending notification" : "خطا در حین ارسال نوتیفیکیشن",
     "Sending ..." : "درحال ارسال ...",

@@ -20,8 +20,8 @@
 		'<li class="link-entry" data-id="{{id}}">' +
 			'<span class="link-entry--icon icon-public-white"></span>' +
 			'<span class="link-entry--title">{{linkTitle}}</span>' +
-			'<div class="minify"><input id="linkText-{{cid}}" class="linkText" type="text" readonly="readonly" value="{{link}}" /></div>' +
-			'<div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{cid}}">' +
+			'<div class="minify"><input id="linkText-{{../cid}}-{{id}}" class="linkText" type="text" readonly="readonly" value="{{link}}" /></div>' +
+			'<div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{../cid}}-{{id}}">' +
 			'	<span class="icon icon-clippy-dark"></span>' +
 			'	<span class="hidden">{{../copyToClipboardText}}</span>' +
 			'</div>' +

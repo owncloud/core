@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Velem osztották meg",
     "Shared with others" : "Én osztottam meg másokkal",
     "Shared by link" : "Linkkel osztottam meg",
+    "Uploading..." : "Feltöltés...",
     "Nothing shared with you yet" : "Nincs még semmi megosztva Önnel",
     "Files and folders others share with you will show up here" : "Mások által megosztott fájlok itt jelennek meg",
     "Nothing shared yet" : "Nincs semmi megosztva",

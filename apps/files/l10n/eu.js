@@ -27,7 +27,6 @@ OC.L10N.register(
     "Unable to determine date" : "Ezin izan da data zehaztu",
     "Invalid path" : "Baliogabeko bidea",
     "Could not move \"{file}\"" : "Ezin da mugitu \"{file}\"",
-    "No entries in this folder match '{filter}'" : "Karpeta honetan ez dago sarrerarik '{filter}' iragazkiarekin bat egiten dutenak",
     "Name" : "Izena",
     "Size" : "Tamaina",
     "Modified" : "Aldatuta",

@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "تحميل",
     "Cancel" : "إلغاء",
     "Share" : "شارك",
     "Shared by" : "تم مشاركتها بواسطة",

@@ -218,7 +218,9 @@ class OC_Template extends \OC\Template\Base {
 
 	/**
 	 * Process the template
-	 * @return boolean|string
+	 *
+	 * @param array|null $additionalParams
+	 * @return bool|string This function process the template. If $this->renderAs is set, it
 	 *
 	 * This function process the template. If $this->renderAs is set, it
 	 * will produce a full page.
@@ -325,7 +327,7 @@ class OC_Template extends \OC\Template\Base {
 
 		try {
 			$content = new \OC_Template( '', 'error', 'error', false );
-			$errors = [['error' => $error_msg, 'hint' => $hint]];
+			$errors = [['error' => \OCP\Util::sanitizeHTML($error_msg), 'hint' => \OCP\Util::sanitizeHTML($hint)]];
 			$content->assign( 'errors', $errors );
 			$content->printPage();
 		} catch (\Exception $e) {

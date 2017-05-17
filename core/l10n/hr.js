@@ -101,6 +101,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "Odaberite lozinku za javnu vezu",
     "Password" : "Lozinka",
     "Name" : "Naziv",
+    "Allow editing" : "Omogući uređivanje",
     "Save" : "Spremi",
     "Sending ..." : "Slanje...",
     "Email sent" : "E-pošta poslana",

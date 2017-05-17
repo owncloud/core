@@ -152,6 +152,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "Selige un contrasigno pro le ligamine public",
     "Password" : "Contrasigno",
     "Name" : "Nomine",
+    "Allow editing" : "Permitter modification",
     "Save" : "Salveguardar",
     "Share to Twitter. Opens in a new window." : "Compartir a Twitter. Se aperi in un nove fenestra.",
     "Share to Facebook. Opens in a new window." : "Compartir a Facebook. Se aperi in un nove fenestra.",

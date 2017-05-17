@@ -164,7 +164,7 @@ OC.L10N.register(
     "Filename" : "Jméno souboru",
     "Password" : "Heslo",
     "Name" : "Název",
-    "Allow uploads" : "Povolit nahrávání",
+    "Allow editing" : "Povolit úpravy",
     "Edit link share: {name}" : "Editace sdíleného odkazu: {name}",
     "Save" : "Uložit",
     "Create link share: {name}" : "Vytvoření sdíleného odkazu: {name}",

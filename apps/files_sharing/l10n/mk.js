@@ -9,6 +9,7 @@ OC.L10N.register(
     "Shared with you" : "Споделено со тебе",
     "Shared with others" : "Сподели со останатите",
     "Shared by link" : "Споделено со врска",
+    "Uploading..." : "Подигнувам...",
     "Nothing shared with you yet" : "Сеуште ништо не е споделено со вас",
     "Nothing shared yet" : "Уште ништо не е споделено",
     "No shared links" : "Нема споделени врски/линкови",

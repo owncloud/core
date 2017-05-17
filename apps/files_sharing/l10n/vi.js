@@ -7,6 +7,7 @@ OC.L10N.register(
     "Shared with you" : "Chia sẻ với bạn",
     "Shared with others" : "Chia sẻ với người khác",
     "Shared by link" : "Chia sẻ theo liên kết",
+    "Uploading..." : "tải lên...",
     "Nothing shared with you yet" : "Bạn chưa được chia sẻ gì cả",
     "Nothing shared yet" : "Chưa có gì được chia sẻ",
     "Files and folders you share will show up here" : "Tập tin và thư mục bạn chia sẻ sẽ được hiển thị tại đây.",

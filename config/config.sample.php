@@ -209,6 +209,15 @@ $CONFIG = array(
 'token_auth_enforced' => false,
 
 /**
+ * Allows to specify additional login buttons on the logon screen for e.g. SSO integration
+ *  'login.alternatives' => [
+ *    ['href' => 'https://www.testshib.org/Shibboleth.sso/ProtectNetwork?target=https%3A%2F%2Fmy.owncloud.tld%2Flogin%2Fsso-saml%2F', 'name' => 'ProtectNetwork', 'img' => '/img/PN_sign-in.gif'],
+ *    ['href' => 'https://www.testshib.org/Shibboleth.sso/OpenIdP.org?target=https%3A%2F%2Fmy.owncloud.tld%2Flogin%2Fsso-saml%2F', 'name' => 'OpenIdP.org', 'img' => '/img/openidp.png'],
+ *  ]
+ */
+'login.alternatives' => [],
+
+/**
  * Disable ownCloud's built-in CSRF protection mechanism.
  *
  * In some specific setups CSRF protection is handled in the environment, e.g.,

@@ -167,7 +167,11 @@ class Users {
 			return new Result(null, 100);
 		} catch (\Exception $e) {
 			$this->logger->error('Failed addUser attempt with exception: '.$e->getMessage(), ['app' => 'ocs_api']);
-			return new Result(null, 101, 'Bad request');
+			$message = $e->getMessage();
+			if (empty($message)) {
+				$message = 'Bad request';
+			}
+			return new Result(null, 101, $e->getMessage());
 		}
 	}
 
@@ -293,7 +297,11 @@ class Users {
 				$targetUser->setQuota($quota);
 				break;
 			case 'password':
-				$targetUser->setPassword($parameters['_put']['value']);
+				try {
+					$targetUser->setPassword($parameters['_put']['value']);
+				} catch (\Exception $e) {
+					return new Result(null, 403, $e->getMessage());
+				}
 				break;
 			case 'two_factor_auth_enabled':
 				if ($parameters['_put']['value'] === true) {

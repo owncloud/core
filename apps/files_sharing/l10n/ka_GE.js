@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "მიმდინარეობს ატვირთვა...",
     "Cancel" : "უარყოფა",
     "Share" : "გაზიარება",
     "Shared by" : "აზიარებს",

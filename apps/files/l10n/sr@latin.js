@@ -24,7 +24,6 @@ OC.L10N.register(
     "Pending" : "Na čekanju",
     "Unable to determine date" : "Ne mogu da odredim datum",
     "Invalid path" : "Neispravna putanja",
-    "No entries in this folder match '{filter}'" : "U ovoj fascikli ništa se ne poklapa sa '{filter}'",
     "Name" : "Naziv",
     "Size" : "Veličina",
     "Modified" : "Izmenjen",

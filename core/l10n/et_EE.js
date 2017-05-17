@@ -125,6 +125,7 @@ OC.L10N.register(
     "Filename" : "Failinimi",
     "Password" : "Parool",
     "Name" : "Nimi",
+    "Allow editing" : "Luba muutmine",
     "Save" : "Salvesta",
     "Error while sending notification" : "Tõrge teavituse saatmisel",
     "Sending ..." : "Saatmine ...",

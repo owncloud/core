@@ -76,6 +76,7 @@ OC.L10N.register(
     "Choose a password for the public link" : "ಸಾರ್ವಜನಿಕ ಸಂಪರ್ಕ ಕೊಂಡಿಗೆ ಗುಪ್ತಪದ ಆಯ್ಕೆಮಾಡಿ",
     "Password" : "ಗುಪ್ತಪದ",
     "Name" : "﻿ಹೆಸರು",
+    "Allow editing" : "﻿ಸಂಪಾದನೆಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡಿ",
     "Save" : "﻿ಉಳಿಸಿ",
     "Sending ..." : "﻿ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ ...",
     "Email sent" : "ಇ-ಅಂಚೆ ಕಳುಹಿಸಲಾಗಿದೆ",

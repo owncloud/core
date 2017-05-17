@@ -44,6 +44,7 @@ use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use OCP\Share\IProviderFactory;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * This class is the communication hub for all sharing related operations.
@@ -151,6 +152,11 @@ class Manager implements IManager {
 		if (!$accepted) {
 			throw new \Exception($message);
 		}
+
+		\OC::$server->getEventDispatcher()->dispatch(
+			'OCP\Share::validatePassword',
+			new GenericEvent(null, ['password' => $password])
+		);
 	}
 
 	/**
@@ -242,11 +248,6 @@ class Manager implements IManager {
 		if ($share->getPermissions() & ~$permissions) {
 			$message_t = $this->l->t('Cannot increase permissions of %s', [$share->getNode()->getPath()]);
 			throw new GenericShareException($message_t, $message_t, 404);
-		}
-
-		// Check that read permissions are always set
-		if (($share->getPermissions() & \OCP\Constants::PERMISSION_READ) === 0) {
-			throw new \InvalidArgumentException('Shares need at least read permissions');
 		}
 
 		if ($share->getNode() instanceof \OCP\Files\File) {

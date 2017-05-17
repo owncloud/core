@@ -41,7 +41,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "Nun pudo crease'l ficheru \"{file}\" porque yá esiste",
     "Could not create folder \"{dir}\" because it already exists" : "Nun pudo crease la carpeta \"{dir}\" porque yá esiste",
     "Error deleting file \"{fileName}\"." : "Fallu borrando'l ficheru \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "Nun concasa nenguna entrada nesta carpeta '{filter}'",
     "Name" : "Nome",
     "Size" : "Tamañu",
     "Modified" : "Modificáu",

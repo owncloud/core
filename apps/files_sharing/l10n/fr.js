@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Partagés avec vous",
     "Shared with others" : "Partagés avec d'autres",
     "Shared by link" : "Partagés par lien",
+    "Uploading..." : "Téléversement en cours…",
     "Nothing shared with you yet" : "Aucun fichier n'est partagé avec vous pour l'instant",
     "Files and folders others share with you will show up here" : "Les fichiers et dossiers partagés avec vous apparaîtront ici",
     "Nothing shared yet" : "Rien n'est partagé pour l'instant",

@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "Поделились с вами",
     "Shared with others" : "Доступные для других",
     "Shared by link" : "Доступные по ссылке",
+    "Uploading..." : "Загрузка...",
     "Nothing shared with you yet" : "С вами пока ничем не поделились",
     "Files and folders others share with you will show up here" : "Здесь появятся файлы и каталоги, которыми с вами поделятся",
     "Nothing shared yet" : "Пока ничего не опубликовано",

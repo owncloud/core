@@ -28,7 +28,6 @@ OC.L10N.register(
     "Invalid path" : "Ruta incorrecta",
     "This operation is forbidden" : "Esta operación está prohibida",
     "This directory is unavailable, please check the logs or contact the administrator" : "Este directorio non está dispoñíbel, comprobe os rexistros ou póñase en contacto co administrador",
-    "No entries in this folder match '{filter}'" : "Non hai entradas neste cartafol coincidentes con «{filter}»",
     "Name" : "Nome",
     "Size" : "Tamaño",
     "Modified" : "Modificado",

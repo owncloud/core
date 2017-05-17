@@ -154,6 +154,7 @@ OC.L10N.register(
     "Filename" : "Filnavn",
     "Password" : "Adgangskode",
     "Name" : "Navn",
+    "Allow editing" : "Tillad redigering",
     "Save" : "Gem",
     "Share to Twitter. Opens in a new window." : "Del med Twitter. Åbner i et nyt vindue.",
     "Share to Facebook. Opens in a new window." : "Del med Facebook. Åbner i et nyt vindue.",

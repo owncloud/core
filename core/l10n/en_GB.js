@@ -154,6 +154,7 @@ OC.L10N.register(
     "Filename" : "Filename",
     "Password" : "Password",
     "Name" : "Name",
+    "Allow editing" : "Allow editing",
     "Save" : "Save",
     "Share to Twitter. Opens in a new window." : "Share to Twitter. Opens in a new window.",
     "Share to Facebook. Opens in a new window." : "Share to Facebook. Opens in a new window.",
