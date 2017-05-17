@@ -355,7 +355,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @param string $search
 	 * @param int $limit
 	 * @param int $offset
-	 * @return array of user objects
+	 * @return \OC\User\User[]
 	 */
 	public function findUsersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
 		$group = $this->get($gid);

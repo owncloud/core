@@ -40,7 +40,7 @@ class AccountMapper extends Mapper {
 	}
 
 	/**
-	 * Pass through call to term mapper to avoid needing to inject term mapper
+	 * Delegate to term mapper to avoid needing to inject term mapper
 	 * @param $account_id
 	 * @param array $terms
 	 */
@@ -49,7 +49,7 @@ class AccountMapper extends Mapper {
 	}
 
 	/**
-	 * Pass through call to term mapper to avoid needing to inject term mapper
+	 * Delegate to term mapper to avoid needing to inject term mapper
 	 * @param $account_id
 	 * @return AccountTerm[] $terms
 	 */
