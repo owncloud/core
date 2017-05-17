@@ -599,7 +599,8 @@ class UsersController extends Controller {
 			);
 		}
 
-		if ($mailAddress === '') {
+		// admins can set email without verification
+		if ($mailAddress === '' || $this->isAdmin) {
 			$this->setEmailAddress($userId, $mailAddress);
 			return new DataResponse(
 				[
