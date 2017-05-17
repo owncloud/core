@@ -221,12 +221,13 @@ class Server extends ServerContainer implements IServerContainer {
 				return $c->getRootFolder();
 			});
 		});
+		$this->registerService('AccountMapper', function(Server $c) {
+			return new AccountMapper($c->getDatabaseConnection(), new AccountTermMapper($c->getDatabaseConnection()));
+		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
 			$logger = $c->getLogger();
-			$accountTermMapper = new AccountTermMapper($c->getDatabaseConnection());
-			$accountMapper = new AccountMapper($c->getDatabaseConnection(), $accountTermMapper);
-			return new \OC\User\Manager($config, $logger, $accountMapper);
+			return new \OC\User\Manager($config, $logger, $c->getAccountMapper());
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupManager = new \OC\Group\Manager($this->getUserManager());
@@ -953,6 +954,13 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getUserManager() {
 		return $this->query('UserManager');
+	}
+
+	/**
+	 * @return \OC\User\AccountMapper
+	 */
+	public function getAccountMapper() {
+		return $this->query('AccountMapper');
 	}
 
 	/**
