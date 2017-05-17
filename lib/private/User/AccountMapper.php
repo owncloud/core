@@ -61,11 +61,14 @@ class AccountMapper extends Mapper {
 	 * @return Entity the saved entity with the set id
 	 */
 	public function insert(Entity $entity) {
-		if($entity->haveTermsChanged()) {
+		// run the normal entity insert operation to get an id
+		$entity = parent::insert($entity);
+
+		/** @var Account $entity */
+		if ($entity->haveTermsChanged()) {
 			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
 		}
-		// Then run the normal entity insert operation
-		return parent::insert($entity);
+		return $entity;
 	}
 
 	/**
@@ -80,10 +83,10 @@ class AccountMapper extends Mapper {
 
 	/**
 	 * @param Account $entity
-	 * @return Entity the saved entity with the set id
+	 * @return Entity the updated entity
 	 */
 	public function update(Entity $entity) {
-		if($entity->haveTermsChanged()) {
+		if ($entity->haveTermsChanged()) {
 			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
 		}
 		// Then run the normal entity insert operation
