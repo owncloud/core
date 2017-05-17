@@ -55,8 +55,7 @@ class AccountTermMapper extends Mapper {
 	 */
 	public function deleteTermsForAccount($account_id) {
 		$qb = $this->db->getQueryBuilder();
-		$qb
-			->delete($this->getTableName())
+		$qb->delete($this->getTableName())
 			->where($qb->expr()->eq('account_id', $qb->createNamedParameter($account_id)))
 			->execute();
 	}
