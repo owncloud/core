@@ -165,7 +165,8 @@ class ShareesController extends OCSController  {
 		$foundUserById = false;
 		$lowerSearch = strtolower($search);
 		foreach ($users as $uid => $user) {
-			if (strtolower($uid) === $lowerSearch || strtolower($user->getDisplayName()) === $lowerSearch || strtolower($user->getEmailAddress())) {
+			/* @var $user IUser */
+			if (strtolower($uid) === $lowerSearch || strtolower($user->getDisplayName()) === $lowerSearch || strtolower($user->getEMailAddress()) === $lowerSearch) {
 				if (strtolower($uid) === $lowerSearch) {
 					$foundUserById = true;
 				}
