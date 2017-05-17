@@ -43,7 +43,6 @@ use OCP\UserInterface;
  * @method void setQuota(string $quota)
  * @method string getHome()
  * @method void setHome(string $home)
- * @method string[] getSearchTerms()
  *
  * @package OC\User
  */
@@ -64,7 +63,7 @@ class Account extends Entity {
 	protected $state;
 	protected $home;
 
-	protected $terms = [];
+	private $terms = [];
 	private $_termsChanged = false;
 
 	public function __construct() {
@@ -107,6 +106,13 @@ class Account extends Entity {
 			$this->terms = $terms;
 			$this->_termsChanged = true;
 		}
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getSearchTerms() {
+		return $this->terms;
 	}
 
 }
