@@ -191,6 +191,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 		}
 
 		$obj['acl'] = $this->getChildACL();
+		$obj['is-shared'] = $this->isShared();
 
 		return new CalendarObject($this->caldavBackend, $this->calendarInfo, $obj);
 
@@ -279,6 +280,15 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 	}
 
 	private function isShared() {
+		$currentPrincipal = $this->caldavBackend->getCurrentUserPrincipal();
+		if ($currentPrincipal === null) {
+			return true;
+		}
+
+		if ($currentPrincipal !== $this->calendarInfo['principaluri']) {
+			return true;
+		}
+
 		return isset($this->calendarInfo['{http://owncloud.org/ns}owner-principal']);
 	}
 

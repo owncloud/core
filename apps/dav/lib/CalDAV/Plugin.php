@@ -21,9 +21,17 @@
 
 namespace OCA\DAV\CalDAV;
 
+use Sabre\DAV;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
 use Sabre\HTTP\URLUtil;
 
 class Plugin extends \Sabre\CalDAV\Plugin {
+
+	function initialize(DAV\Server $server) {
+		parent::initialize($server);
+		$server->on('beforeMethod', [$this, 'beforeMethod'], 10);
+	}
 
 	/**
 	 * @inheritdoc
@@ -38,4 +46,13 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 		return;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	function beforeMethod(RequestInterface $request, ResponseInterface $response) {
+		/** @var \Sabre\DAV\Auth\Plugin $auth */
+		$auth = $this->server->getPlugin('auth');
+		$currentPrincipal = $auth->getCurrentPrincipal();
+		return;
+	}
 }

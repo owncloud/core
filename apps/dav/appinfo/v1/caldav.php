@@ -85,5 +85,12 @@ $server->addPlugin(new \OCA\DAV\CalDAV\Schedule\Plugin());
 $server->addPlugin(new OCA\DAV\CalDAV\Schedule\IMipPlugin( \OC::$server->getMailer(), \OC::$server->getLogger()));
 $server->addPlugin(new ExceptionLoggerPlugin('caldav', \OC::$server->getLogger()));
 
+$server->on('beforeMethod', function() use ($calDavBackend) {
+	/** @var \Sabre\DAV\Auth\Plugin $auth */
+	$auth = $this->server->getPlugin('auth');
+	$currentPrincipal = $auth->getCurrentPrincipal();
+	$calDavBackend->setCurrentUserPrincipal($currentPrincipal);
+}, 15);
+
 // And off we go!
 $server->exec();

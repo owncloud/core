@@ -35,6 +35,8 @@ use Sabre\DAV\SimpleCollection;
 
 class RootCollection extends SimpleCollection {
 
+	private $caldavBackend;
+
 	public function __construct() {
 		$config = \OC::$server->getConfig();
 		$random = \OC::$server->getSecureRandom();
@@ -59,10 +61,10 @@ class RootCollection extends SimpleCollection {
 		$systemPrincipals->disableListing = $disableListing;
 		$filesCollection = new Files\RootCollection($userPrincipalBackend, 'principals/users');
 		$filesCollection->disableListing = $disableListing;
-		$caldavBackend = new CalDavBackend($db, $userPrincipalBackend, $config, $random);
-		$calendarRoot = new CalendarRoot($userPrincipalBackend, $caldavBackend, 'principals/users');
+		$this->caldavBackend = new CalDavBackend($db, $userPrincipalBackend, $config, $random);
+		$calendarRoot = new CalendarRoot($userPrincipalBackend, $this->caldavBackend, 'principals/users');
 		$calendarRoot->disableListing = $disableListing;
-		$publicCalendarRoot = new PublicCalendarRoot($caldavBackend);
+		$publicCalendarRoot = new PublicCalendarRoot($this->caldavBackend);
 		$publicCalendarRoot->disableListing = $disableListing;
 
 		$systemTagCollection = new SystemTag\SystemTagsByIdCollection(
@@ -110,6 +112,10 @@ class RootCollection extends SimpleCollection {
 		];
 
 		parent::__construct('root', $children);
+	}
+
+	public function setCurrentUserPrincipal($currentPrincipal) {
+		$this->caldavBackend->setCurrentUserPrincipal($currentPrincipal);
 	}
 
 }

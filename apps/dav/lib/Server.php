@@ -223,6 +223,14 @@ class Server {
 				$root->addChild($appCollection);
 			}
 		});
+
+		// set current principal in caldavbackend
+		$this->server->on('beforeMethod', function() use ($root) {
+			/** @var \Sabre\DAV\Auth\Plugin $auth */
+			$auth = $this->server->getPlugin('auth');
+			$currentPrincipal = $auth->getCurrentPrincipal();
+			$root->setCurrentUserPrincipal($currentPrincipal);
+		}, 15);
 	}
 
 	public function exec() {

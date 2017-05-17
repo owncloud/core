@@ -119,6 +119,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	private $random;
 	/** @var bool */
 	private $legacyMode;
+	private $currentUserPrincipal;
 
 	/**
 	 * CalDavBackend constructor.
@@ -1675,5 +1676,12 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			return "principals/$name";
 		}
 		return $principalUri;
+	}
+
+	public function getCurrentUserPrincipal() {
+		return $this->currentUserPrincipal;
+	}
+	public function setCurrentUserPrincipal($currentUserPrincipal) {
+		$this->currentUserPrincipal = $currentUserPrincipal;
 	}
 }
