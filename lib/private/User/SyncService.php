@@ -110,8 +110,9 @@ class SyncService {
 					$this->mapper->update($a);
 				} catch(DoesNotExistException $ex) {
 					$a = $this->createNewAccount($uid);
-					$this->setupAccount($a, $uid);
 					$this->mapper->insert($a);
+					$this->setupAccount($a, $uid); // TODO should be called before insert to reduce queries
+					$this->mapper->update($a);
 				}
 				// clean the user's preferences
 				$this->cleanPreferences($uid);
@@ -161,7 +162,7 @@ class SyncService {
 		}
 		// Check if backend supplies an additional search string
 		if ($this->backend instanceof IProvidesExtendedSearchBackend) {
-			$a->setSearchTerms($this->backend->getSearchTerms($uid));
+			$this->mapper->setTermsForAccount($a->getId(), $this->backend->getSearchTerms($uid));
 		}
 		return $a;
 	}

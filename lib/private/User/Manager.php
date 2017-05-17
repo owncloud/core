@@ -215,6 +215,7 @@ class Manager extends PublicEmitter implements IUserManager {
 					} catch(DoesNotExistException $ex) {
 						$account = $this->newAccount($uid, $backend);
 					}
+					// TODO always sync account with backend here to update displayname, email, search terms, home etc
 					return $this->getUserObject($account);
 				}
 			}
@@ -434,12 +435,6 @@ class Manager extends PublicEmitter implements IUserManager {
 				$account->setQuota($quota);
 			}
 		}
-		if ($backend instanceof IProvidesExtendedSearchBackend) {
-			$terms = $backend->getSearchTerms($uid);
-			if (!empty($terms)) {
-				$account->setSearchTerms($terms);
-			}
-		}
 		$home = false;
 		if ($backend->implementsActions(Backend::GET_HOME)) {
 			$home = $backend->getHome($uid);
@@ -453,6 +448,12 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		$account->setHome($home);
 		$account = $this->accountMapper->insert($account);
+		if ($backend instanceof IProvidesExtendedSearchBackend) {
+			$terms = $backend->getSearchTerms($uid);
+			if (!empty($terms)) {
+				$this->accountMapper->setTermsForAccount($account->getId(), $terms);
+			}
+		}
 		return $account;
 	}
 
