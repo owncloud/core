@@ -39,16 +39,6 @@ class AccountMapper extends Mapper {
 	}
 
 	/**
-	 * @param Account $entity
-	 * @return Entity the deleted entity
-	 */
-	public function delete(Entity $entity) {
-		// First delete the search terms for this account
-		$this->termMapper->deleteTermsForAccount($entity->getId());
-		return parent::delete($entity);
-	}
-
-	/**
 	 * Pass through call to term mapper to avoid needing to inject term mapper
 	 * @param $account_id
 	 * @param array $terms
@@ -64,6 +54,40 @@ class AccountMapper extends Mapper {
 	 */
 	public function findByAccountId($account_id) {
 		return $this->termMapper->findByAccountId($account_id);
+	}
+
+	/**
+	 * @param Account $entity
+	 * @return Entity the saved entity with the set id
+	 */
+	public function insert(Entity $entity) {
+		if($entity->haveTermsChanged()) {
+			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
+		}
+		// Then run the normal entity insert operation
+		return parent::insert($entity);
+	}
+
+	/**
+	 * @param Account $entity
+	 * @return Entity the deleted entity
+	 */
+	public function delete(Entity $entity) {
+		// First delete the search terms for this account
+		$this->termMapper->deleteTermsForAccount($entity->getId());
+		return parent::delete($entity);
+	}
+
+	/**
+	 * @param Account $entity
+	 * @return Entity the saved entity with the set id
+	 */
+	public function update(Entity $entity) {
+		if($entity->haveTermsChanged()) {
+			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
+		}
+		// Then run the normal entity insert operation
+		return parent::update($entity);
 	}
 
 	/**

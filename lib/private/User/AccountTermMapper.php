@@ -30,7 +30,6 @@ class AccountTermMapper extends Mapper {
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'account_terms', AccountTerm::class);
 	}
-
 	/**
 	 * Sets search terms for a given account id, will always be lowercased
 	 * @param $account_id

@@ -43,6 +43,7 @@ use OCP\UserInterface;
  * @method void setQuota(string $quota)
  * @method string getHome()
  * @method void setHome(string $home)
+ * @method string[] getSearchTerms()
  *
  * @package OC\User
  */
@@ -62,6 +63,9 @@ class Account extends Entity {
 	protected $backend;
 	protected $state;
 	protected $home;
+
+	protected $terms = [];
+	private $_termsChanged = false;
 
 	public function __construct() {
 		$this->addType('state', 'integer');
@@ -83,6 +87,26 @@ class Account extends Entity {
 		}
 		// actually stupid
 		return \OC::$server->getUserManager()->getBackend($backendClass);
+	}
+
+	public function getUpdatedFields() {
+		$fields = parent::getUpdatedFields();
+		unset($fields['terms']);
+		return $fields;
+	}
+
+	public function haveTermsChanged() {
+		return $this->_termsChanged;
+	}
+
+	/**
+	 * @param string[] $terms
+	 */
+	public function setSearchTerms(array $terms) {
+		if(array_diff($terms, $this->terms)) {
+			$this->terms = $terms;
+			$this->_termsChanged = true;
+		}
 	}
 
 }
