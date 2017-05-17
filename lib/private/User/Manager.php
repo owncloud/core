@@ -8,6 +8,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -215,6 +216,7 @@ class Manager extends PublicEmitter implements IUserManager {
 					} catch(DoesNotExistException $ex) {
 						$account = $this->newAccount($uid, $backend);
 					}
+					// TODO always sync account with backend here to update displayname, email, search terms, home etc. user_ldap currently updates user metadata on login, core should take care of updating accounts on a successful login
 					return $this->getUserObject($account);
 				}
 			}

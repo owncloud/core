@@ -1,6 +1,8 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -18,7 +20,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 
 namespace OC\User;
 

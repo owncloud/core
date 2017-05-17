@@ -3,8 +3,8 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
- * @author Roeland Jago Douma <rullzer@users.noreply.github.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH

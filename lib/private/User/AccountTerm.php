@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -25,7 +26,7 @@ namespace OC\User;
 use OCP\AppFramework\Db\Entity;
 
 /**
- * Class Account
+ * Class AccountTerm
  *
  * @method int getAccountId()
  * @method void setAccountId(int $accountId)

@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -30,6 +31,7 @@ class AccountTermMapper extends Mapper {
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'account_terms', AccountTerm::class);
 	}
+
 	/**
 	 * Sets search terms for a given account id, will always be lowercased
 	 * @param $account_id
