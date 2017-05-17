@@ -34,7 +34,6 @@ OC.L10N.register(
     "Could not rename \"{fileName}\"" : "\"{fileName}\" ümbernimetamine ebaõnnestus",
     "Could not create file \"{file}\"" : "Faili \"{file}\" loomine ebaõnnestus",
     "Error deleting file \"{fileName}\"." : "Tõrge faili \"{fileName}\" kustutamisel.",
-    "No entries in this folder match '{filter}'" : "Ükski sissekanne ei kattu filtriga '{filter}'",
     "Name" : "Nimi",
     "Size" : "Suurus",
     "Modified" : "Muudetud",

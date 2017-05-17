@@ -39,7 +39,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "無法建立檔案 \"{file}\"，因為此檔案已存在",
     "Could not create folder \"{dir}\" because it already exists" : "無法建立資料夾 \"{dir}\"，因為此資料夾已存在",
     "Error deleting file \"{fileName}\"." : "刪除 \"{fileName}\" 出錯",
-    "No entries in this folder match '{filter}'" : "在此資料夾中沒有項目與 '{filter}' 相符",
     "Name" : "名稱",
     "Size" : "大小",
     "Modified" : "修改時間",

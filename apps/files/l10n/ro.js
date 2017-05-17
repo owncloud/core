@@ -39,7 +39,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "Nu s-a putut crea fișierul \"{file}\" deoarece există deja unul cu același nume",
     "Could not create folder \"{dir}\" because it already exists" : "Nu s-a putut crea directorul \"{dir}\" deoarece există deja unul cu același nume",
     "Error deleting file \"{fileName}\"." : "Eroare la ștergerea fișierului \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "Niciun element din acest director nu se potrivește cu '{filter}'",
     "Name" : "Nume",
     "Size" : "Mărime",
     "Modified" : "Modificat",

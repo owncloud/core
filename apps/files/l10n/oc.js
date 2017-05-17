@@ -45,7 +45,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "Impossible de crear lo fichièr \"{file}\" perque existís ja",
     "Could not create folder \"{dir}\" because it already exists" : "Impossible de crear lo dorsièr \"{dir}\" perque existís ja",
     "Error deleting file \"{fileName}\"." : "Error pendent la supression del fichièr \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "Cap d'entrada d'aqueste dorsièr correspond pas a '{filter}'",
     "Name" : "Nom",
     "Size" : "Talha",
     "Modified" : "Modificat",

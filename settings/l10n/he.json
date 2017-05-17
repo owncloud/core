@@ -194,6 +194,7 @@
     "Exclude groups from sharing" : "מניעת קבוצות משיתוף",
     "These groups will still be able to receive shares, but not to initiate them." : "קבוצות אלו עדיין יוכלו לקבל שיתופים, אך לא לשתף בעצמם.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "אפשר השלמה אוטומטית של שמות משתמש בתפריט שיתוף. אם תכונה זו מנוטרלת יש להכניס שם משתמש מלא.",
+    "Restrict enumeration to group members" : "הגבלת מספר הנרשמים לחברי קבוצה",
     "Everything (fatal issues, errors, warnings, info, debug)" : "הכול (נושאים חמורים, שגיאות, אזהרות, מידע, ניפוי שגיאות)",
     "Info, warnings, errors and fatal issues" : "מידע, אזהרות, שגיאות ונושאים חמורים",
     "Warnings, errors and fatal issues" : "אזהרות, שגיאות ונושאים חמורים",

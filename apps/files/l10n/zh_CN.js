@@ -46,7 +46,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "不能创建文件 \"{file}\" ，因为它已经存在",
     "Could not create folder \"{dir}\" because it already exists" : "不能创建文件夹 \"{dir}\" ，因为它已经存在",
     "Error deleting file \"{fileName}\"." : "删除文件 \"{fileName}\" 时出错。",
-    "No entries in this folder match '{filter}'" : "此文件夹中无项目匹配“{filter}”",
     "Name" : "名称",
     "Size" : "大小",
     "Modified" : "修改日期",

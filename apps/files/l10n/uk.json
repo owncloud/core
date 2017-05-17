@@ -32,7 +32,6 @@
     "This directory is unavailable, please check the logs or contact the administrator" : "Директорія недоступна, будь ласка, перевірте файл журналу або зверніться до адміністратора  ",
     "Could not move \"{file}\", target exists" : "Не вдалося перемістити \"{file}\", такий файл вже існує",
     "Could not move \"{file}\"" : "Не вдалося перемістити \"{file}\"",
-    "No entries in this folder match '{filter}'" : "Нічого не знайдено в цій теці  '{filter}'",
     "Name" : "Ім'я",
     "Size" : "Розмір",
     "Modified" : "Змінено",

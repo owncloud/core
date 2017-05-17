@@ -44,7 +44,6 @@
     "Could not create file \"{file}\" because it already exists" : "ファイル \"{file}\"はすでに存在するため作成できませんでした",
     "Could not create folder \"{dir}\" because it already exists" : "フォルダー \"{dir}\" はすでに存在するため作成できませんでした",
     "Error deleting file \"{fileName}\"." : "ファイル\"{fileName}\"の削除エラー。",
-    "No entries in this folder match '{filter}'" : "このフォルダー内で '{filter}' にマッチするものはありません",
     "Name" : "名前",
     "Size" : "サイズ",
     "Modified" : "更新日時",

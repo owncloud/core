@@ -44,7 +44,6 @@
     "Could not create file \"{file}\" because it already exists" : "Tidak dapat membuat berkas \"{file}\" karena sudah ada",
     "Could not create folder \"{dir}\" because it already exists" : "Tidak dapat membuat folder \"{dir}\" karena sudah ada",
     "Error deleting file \"{fileName}\"." : "Kesalahan saat menghapus berkas \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "Tidak ada entri di folder ini yang cocok dengan '{filter}'",
     "Name" : "Nama",
     "Size" : "Ukuran",
     "Modified" : "Dimodifikasi",

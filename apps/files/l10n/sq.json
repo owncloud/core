@@ -44,7 +44,6 @@
     "Could not create file \"{file}\" because it already exists" : "S’u krijua dot kartela \"{file}\" ngaqë ka një të tillë",
     "Could not create folder \"{dir}\" because it already exists" : "S’u krijua dot dosja \"{dir}\" ngaqë ka një të tillë",
     "Error deleting file \"{fileName}\"." : "Gabim në fshirjen e kartelës \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "Në këtë dosje s’ka zëra me përputhje me '{filter}'",
     "Name" : "Emër",
     "Size" : "Madhësi",
     "Modified" : "Ndryshuar më",

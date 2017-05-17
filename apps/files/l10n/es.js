@@ -46,7 +46,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "No se pudo crear el archivo «{file}» porque ya existe",
     "Could not create folder \"{dir}\" because it already exists" : "No se pudo crear la carpeta «{dir}» porque ya existe",
     "Error deleting file \"{fileName}\"." : "Error al eliminar el archivo «{fileName}».",
-    "No entries in this folder match '{filter}'" : "No hay resultados que coincidan con «{filter}»",
     "Name" : "Nombre",
     "Size" : "Tamaño",
     "Modified" : "Modificado",

@@ -46,7 +46,6 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "Nelze vytvořit soubor \"{file}\", protože již existuje",
     "Could not create folder \"{dir}\" because it already exists" : "Nelze vytvořit adresář \"{dir}\", protože již existuje",
     "Error deleting file \"{fileName}\"." : "Chyba mazání souboru \"{fileName}\".",
-    "No entries in this folder match '{filter}'" : "V tomto adresáři nic nesouhlasí s '{filter}'",
     "Name" : "Název",
     "Size" : "Velikost",
     "Modified" : "Upraveno",

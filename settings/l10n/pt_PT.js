@@ -196,6 +196,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Excluir grupos das partilhas",
     "These groups will still be able to receive shares, but not to initiate them." : "Estes grupos poderão receber partilhas, mas não poderão iniciá-las.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Permitir o auto-completar de nome de utilizador no diálogo da partilha. Se isto for desativado, será necessário preencher o nome de utilizador completo.",
+    "Restrict enumeration to group members" : "Restringir enumeração a membros do grupo",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Tudo (problemas fatais, erros, avisos, informação, depuração)",
     "Info, warnings, errors and fatal issues" : "Informação, avisos, erros e problemas fatais",
     "Warnings, errors and fatal issues" : "Avisos, erros e problemas fatais",
