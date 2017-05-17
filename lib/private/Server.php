@@ -226,7 +226,7 @@ class Server extends ServerContainer implements IServerContainer {
 			$logger = $c->getLogger();
 			$accountTermMapper = new AccountTermMapper($c->getDatabaseConnection());
 			$accountMapper = new AccountMapper($c->getDatabaseConnection(), $accountTermMapper);
-			return new \OC\User\Manager($config, $logger, $accountMapper, $accountTermMapper);
+			return new \OC\User\Manager($config, $logger, $accountMapper);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupManager = new \OC\Group\Manager($this->getUserManager());

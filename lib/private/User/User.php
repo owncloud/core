@@ -66,26 +66,21 @@ class User implements IUser {
 	/** @var AccountMapper */
 	private $mapper;
 
-	/** @var AccountTermMapper */
-	private $termMapper;
-
 	/**
 	 * User constructor.
 	 *
 	 * @param Account $account
 	 * @param AccountMapper $mapper
-	 * @param AccountTermMapper $termMapper
 	 * @param null $emitter
 	 * @param IConfig|null $config
 	 * @param null $urlGenerator
 	 * @param EventDispatcher|null $eventDispatcher
 	 */
-	public function __construct(Account $account, AccountMapper $mapper, AccountTermMapper $termMapper, $emitter = null, IConfig $config = null,
+	public function __construct(Account $account, AccountMapper $mapper, $emitter = null, IConfig $config = null,
 								$urlGenerator = null, EventDispatcher $eventDispatcher = null
 	) {
 		$this->account = $account;
 		$this->mapper = $mapper;
-		$this->termMapper = $termMapper;
 		$this->emitter = $emitter;
 		$this->eventDispatcher = $eventDispatcher;
 		if(is_null($config)) {
@@ -449,7 +444,7 @@ class User implements IUser {
 	 */
 	public function getSearchTerms() {
 		$terms = [];
-		foreach ($this->termMapper->findByAccountId($this->account->getId()) as $term) {
+		foreach ($this->mapper->findByAccountId($this->account->getId()) as $term) {
 			$terms[] = $term->getTerm();
 		}
 		return $terms;
@@ -460,6 +455,6 @@ class User implements IUser {
 	 * @since 10.0.1
 	 */
 	public function setSearchTerms(array $terms) {
-		$this->termMapper->setTermsForAccount($this->account->getId(), $terms);
+		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
 	}
 }

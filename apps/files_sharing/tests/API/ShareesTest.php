@@ -424,7 +424,7 @@ class ShareesTest extends TestCase {
 				// args and user response for "displayNamesInGroup" call
 				[
 					['group1', 'ano', 2, 0, [
-						'another1' => 'Another One',
+						'another1' => $this->getUserMock('another1', 'Another One'),
 					]],
 					['group2', 'ano', 2, 0, [
 					]],

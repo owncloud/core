@@ -39,6 +39,24 @@ class AccountMapper extends Mapper {
 	}
 
 	/**
+	 * Pass through call to term mapper to avoid needing to inject term mapper
+	 * @param $account_id
+	 * @param array $terms
+	 */
+	public function setTermsForAccount($account_id, array $terms) {
+		$this->termMapper->setTermsForAccount($account_id, $terms);
+	}
+
+	/**
+	 * Pass through call to term mapper to avoid needing to inject term mapper
+	 * @param $account_id
+	 * @return AccountTerm[] $terms
+	 */
+	public function findByAccountId($account_id) {
+		return $this->termMapper->findByAccountId($account_id);
+	}
+
+	/**
 	 * @param Account $entity
 	 * @return Entity the saved entity with the set id
 	 */

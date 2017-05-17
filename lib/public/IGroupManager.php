@@ -130,7 +130,7 @@ interface IGroupManager {
 	 * @param string $search
 	 * @param int $limit
 	 * @param int $offset
-	 * @return array an array of display names (value) and user ids (key)
+	 * @return array an array of display names (value) and user objects
 	 * @since 10.0.1
 	 */
 	public function findUsersInGroup($gid, $search = '', $limit = -1, $offset = 0);
