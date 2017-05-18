@@ -378,17 +378,20 @@ class AppManager implements IAppManager {
 	}
 
 	/**
-	 * @param string $package
-	 * @return mixed
+	 * @param string $package package path
+	 * @param bool whether to skip migrations, which would only install the code
+	 * @return string|false app id or false in case of error
 	 * @since 10.0
 	 */
-	public function installApp($package) {
+	public function installApp($package, $skipMigrations = false) {
 		$appId = Installer::installApp([
 			'source' => 'local',
 			'path' => $package
 		]);
-		// HACK: this will run the migration and related code
-		Installer::installShippedApp($appId);
+		if (!$skipMigrations && $appId !== false) {
+			// HACK: this will run the migration and related code
+			Installer::installShippedApp($appId);
+		}
 		return $appId;
 	}
 
