@@ -33,8 +33,4 @@
 		<route>files.view.index</route>
 		<order>0</order>
 	</navigation>
-
-	<settings>
-		<admin>OCA\Files\Panels\Admin</admin>
-	</settings>
 </info>
