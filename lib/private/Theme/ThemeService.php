@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Philipp Schaffrath <github@philippschaffrath.de>
  * @author Philipp Schaffrath <github@philipp.schaffrath.email>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -17,11 +16,12 @@
  *
  * You should have received a copy of the GNU Affero General Public License, version 3,
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
- *
  */
 namespace OC\Theme;
 
-class ThemeService {
+use OCP\Theme\IThemeService;
+
+class ThemeService implements IThemeService {
 
 	/**
 	 * @var Theme
