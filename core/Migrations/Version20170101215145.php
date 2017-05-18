@@ -14,11 +14,9 @@ class Version20170101215145 implements ISchemaMigration {
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
-		// CREATE TABLE oc_authtoken
 		if (!$schema->hasTable("${prefix}authtoken")) {
 			$authTokenTable = $schema->createTable("${prefix}authtoken");
 
-			// id INTEGER NOT NULL
 			$authTokenTable->addColumn(
 				'id',
 				Type::INTEGER,
@@ -29,8 +27,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// uid VARCHAR(64) DEFAULT '' NOT NULL COLLATE BINARY
-			// TODO: collate binary ???
 			$authTokenTable->addColumn(
 				'uid',
 				Type::STRING,
@@ -41,8 +37,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// login_name VARCHAR(64) DEFAULT '' NOT NULL COLLATE BINARY
-			// TODO: collate binary ???
 			$authTokenTable->addColumn(
 				'login_name',
 				Type::STRING,
@@ -53,8 +47,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// name CLOB DEFAULT '' NOT NULL COLLATE BINARY
-			// TODO: collate binary ???
 			$authTokenTable->addColumn(
 				'name',
 				Type::TEXT,
@@ -64,8 +56,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// token VARCHAR(200) DEFAULT '' NOT NULL COLLATE BINARY
-			// TODO: collate binary ???
 			$authTokenTable->addColumn(
 				'token',
 				Type::STRING,
@@ -76,7 +66,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// type SMALLINT UNSIGNED DEFAULT 0 NOT NULL
 			$authTokenTable->addColumn(
 				'type',
 				Type::SMALLINT,
@@ -87,7 +76,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// last_activity INTEGER UNSIGNED DEFAULT 0 NOT NULL
 			$authTokenTable->addColumn(
 				'last_activity',
 				Type::INTEGER,
@@ -98,7 +86,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// last_check INTEGER UNSIGNED DEFAULT 0 NOT NULL
 			$authTokenTable->addColumn(
 				'last_check',
 				Type::INTEGER,
@@ -109,8 +96,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// password CLOB DEFAULT NULL COLLATE BINARY
-			// TODO: collate binary ???
 			$authTokenTable->addColumn(
 				'password',
 				Type::TEXT,
@@ -120,27 +105,16 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// PRIMARY KEY(id)
 			$authTokenTable->setPrimaryKey(['id']);
 
-			// CREATE INDEX authtoken_last_activity_index ON oc_authtoken (last_activity)
 			$authTokenTable->addIndex(['last_activity'], 'authtoken_last_activity_index');
 
-			// CREATE UNIQUE INDEX authtoken_token_index ON oc_authtoken (token)
 			$authTokenTable->addUniqueIndex(['token'], 'authtoken_token_index');
 		}
 
-
-		// CREATE TABLE oc_migrations (app VARCHAR(255) NOT NULL COLLATE BINARY, version VARCHAR(255) NOT NULL COLLATE BINARY, PRIMARY KEY(app, version))
-		// TODO: does this need to be created by us, or is it automatically created by our migration services?
-
-
 		if (!$schema->hasTable("${prefix}systemtag_group")) {
-			// CREATE TABLE oc_systemtag_group
 			$systemTagGroupTable = $schema->createTable("${prefix}systemtag_group");
 
-			// gid VARCHAR(255) NOT NULL COLLATE BINARY
-			// TODO: collate binary ???
 			$systemTagGroupTable->addColumn(
 				'gid',
 				Type::STRING,
@@ -150,7 +124,6 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// systemtagid INTEGER UNSIGNED DEFAULT 0 NOT NULL
 			$systemTagGroupTable->addColumn(
 				'systemtagid',
 				Type::INTEGER,
@@ -161,17 +134,12 @@ class Version20170101215145 implements ISchemaMigration {
 				]
 			);
 
-			// PRIMARY KEY(gid, systemtagid)
 			$systemTagGroupTable->setPrimaryKey(['gid', 'systemtagid']);
 		}
 
-		// ALTER TABLE oc_jobs ADD COLUMN last_checked INTEGER DEFAULT 0
-		// ALTER TABLE oc_jobs ADD COLUMN reserved_at INTEGER DEFAULT 0
 		if ($schema->hasTable("${prefix}jobs")) {
-			// ALTER TABLE oc_jobs
 			$jobsTable = $schema->getTable("${prefix}jobs");
 
-			// ADD COLUMN last_checked INTEGER DEFAULT 0
 			if (!$jobsTable->hasColumn('last_checked')) {
 				$jobsTable->addColumn(
 					'last_checked',
@@ -183,7 +151,6 @@ class Version20170101215145 implements ISchemaMigration {
 				);
 			}
 
-			// ADD COLUMN reserved_at INTEGER DEFAULT 0
 			if (!$jobsTable->hasColumn('reserved_at')) {
 				$jobsTable->addColumn(
 					'reserved_at',
