@@ -567,8 +567,8 @@ class CheckerTest extends TestCase {
 	public function testWriteCoreSignatureWithValidModifiedHtaccessAndUserIni() {
 		$expectedSignatureFileData = '{
     "hashes": {
-        ".htaccess": "ef34c5f35fffb6e8e3008c2118617b53243cfc5ac2513edba9ebd383169862bc16e4f889316ad65788d6b172fe14713af90908c19838c4ba13b4146e12c7ac62",
-        ".user.ini": "0a557e3cdca4c2e3675deed761d79d109011dcdebbd9c7f6429f1d3476938ec95729543d7384651d1d0c48e26c5024cc5f517445920915a704ea748bdb903c5f",
+        ".htaccess": "e7140c092ecf6ed3401f922efc81b635cb253d90f56cad5ad9765511edf6b2d8c663fcb5648617d561ecd2cf7ae8503d7d2ce3b88f46844d5771909aa0dba188",
+        ".user.ini": "8362e2f91924dde144162fe6b6757d88b8e6cd7266fd0e90e32aee37e662b7854384a211ac44e8703fa093833df6d5cceef5426eb141dc2638ff88d245cea3c0",
         "subfolder\/.htaccess": "2c57b1e25050e11dc3ae975832f378c452159f7b69f818e47eeeafadd6ba568517461dcb4d843b90b906cd7c89d161bc1b89dff8e3ae0eb6f5088508c47befd1"
     },
     "signature": "d6pqYc0pj5hihZK4Pi\/rM9XguY1xK9LEch+jUcxZWwhzOPL4qVHx5LN4FAhEOnr5ZjuhK\/umVEUjieamF4z8tP\/4nnnu2LmRuPMmj6+1tBEwbsKoeg7NiYfYL5h+VSdBePpIZDmjk0tjEpsMtCPhUPAY5vOSSDJ3Xef4KQIpeL6RKIctDcVdO26QWPLFpCo9NK3j91KHuXTcjbAsATDo+oXQzi0CaomBqL6Ft1SU\/Bdes6usgeVWd6mGygZ6zUCLqB4hSi6335xIkkUO1c3NekWksiqTWqdmVIpsTEsIpapx+nE0UFBGc7ZF2rnamg5813g67M5V\/UwhBRcHobMFWfbp73QDUsHcuLCOhamgYh7hbVIlDP7LS2V3kIRLgMLBVwLnvb8LAbaGUsdYGtbfmrhcMK\/jkpGCv0pqUCc4I+1QuVexNEQrdqafwYRnQUsmdFSFaCASYVvgxPrY5jA+y1HwNX5HEc5mMzVORNPhZXUcxWBRUQxUESY5j473DInMQUhq7SLVNAaglxDR1a9M5tQO8engvIJ5eTImLITm0qdefmEvFrxQ0BrrGmPNFYUysrHeNGDhMkGX+JIONj+T4Ht3Z7dr7cfufYDHRaummsTGgRx6206zRSqavsBWL\/Cbzrfu1HhiRagncVcoL40EommJt8lobaKHs3GZ8k861Wo=",
@@ -679,8 +679,8 @@ class CheckerTest extends TestCase {
 			->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent'));
 		$signatureDataFile = '{
     "hashes": {
-        ".htaccess": "ef34c5f35fffb6e8e3008c2118617b53243cfc5ac2513edba9ebd383169862bc16e4f889316ad65788d6b172fe14713af90908c19838c4ba13b4146e12c7ac62",
-        ".user.ini": "0a557e3cdca4c2e3675deed761d79d109011dcdebbd9c7f6429f1d3476938ec95729543d7384651d1d0c48e26c5024cc5f517445920915a704ea748bdb903c5f",
+        ".htaccess": "e7140c092ecf6ed3401f922efc81b635cb253d90f56cad5ad9765511edf6b2d8c663fcb5648617d561ecd2cf7ae8503d7d2ce3b88f46844d5771909aa0dba188",
+        ".user.ini": "8362e2f91924dde144162fe6b6757d88b8e6cd7266fd0e90e32aee37e662b7854384a211ac44e8703fa093833df6d5cceef5426eb141dc2638ff88d245cea3c0",
         "subfolder\/.htaccess": "2c57b1e25050e11dc3ae975832f378c452159f7b69f818e47eeeafadd6ba568517461dcb4d843b90b906cd7c89d161bc1b89dff8e3ae0eb6f5088508c47befd1"
     },
     "signature": "d6pqYc0pj5hihZK4Pi\/rM9XguY1xK9LEch+jUcxZWwhzOPL4qVHx5LN4FAhEOnr5ZjuhK\/umVEUjieamF4z8tP\/4nnnu2LmRuPMmj6+1tBEwbsKoeg7NiYfYL5h+VSdBePpIZDmjk0tjEpsMtCPhUPAY5vOSSDJ3Xef4KQIpeL6RKIctDcVdO26QWPLFpCo9NK3j91KHuXTcjbAsATDo+oXQzi0CaomBqL6Ft1SU\/Bdes6usgeVWd6mGygZ6zUCLqB4hSi6335xIkkUO1c3NekWksiqTWqdmVIpsTEsIpapx+nE0UFBGc7ZF2rnamg5813g67M5V\/UwhBRcHobMFWfbp73QDUsHcuLCOhamgYh7hbVIlDP7LS2V3kIRLgMLBVwLnvb8LAbaGUsdYGtbfmrhcMK\/jkpGCv0pqUCc4I+1QuVexNEQrdqafwYRnQUsmdFSFaCASYVvgxPrY5jA+y1HwNX5HEc5mMzVORNPhZXUcxWBRUQxUESY5j473DInMQUhq7SLVNAaglxDR1a9M5tQO8engvIJ5eTImLITm0qdefmEvFrxQ0BrrGmPNFYUysrHeNGDhMkGX+JIONj+T4Ht3Z7dr7cfufYDHRaummsTGgRx6206zRSqavsBWL\/Cbzrfu1HhiRagncVcoL40EommJt8lobaKHs3GZ8k861Wo=",
