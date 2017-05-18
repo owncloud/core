@@ -21,6 +21,7 @@
 */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 
 use Page\LoginPage;
@@ -34,19 +35,21 @@ class LoginContext extends RawMinkContext implements Context
 {
 	private $loginPage;
 	private $filesPage;
+	private $featureContext;
+
 	public function __construct(LoginPage $loginPage)
 	{
 		$this->loginPage = $loginPage;
 	}
-	
+
 	/**
-	 * @Given I am on login page
+	 * @Given I am on the login page
 	 */
-	public function iAmOnLoginPage()
+	public function iAmOnTheLoginPage()
 	{
 		$this->loginPage->open();
 	}
-	
+
 	/**
 	 * @When I login with username :username and password :password
 	 */
@@ -55,16 +58,26 @@ class LoginContext extends RawMinkContext implements Context
 		$this->filesPage = $this->loginPage->loginAs($username, $password);
 		$this->filesPage->waitTillPageIsloaded(10);
 	}
-	
+
 	/**
-	 * @Then I should be redirected to a page with the title :title
+	 * @When I login as a regular user with a correct password
 	 */
-	public function iShouldBeRedirectedToAPageWithTheTitle($title)
+	public function iLoginAsARegularUserWithACorrectPassword()
 	{
-		
-		$actualTitle = $this->filesPage->find(
-			'xpath', './/title'
-		)->getHtml();
-		PHPUnit_Framework_Assert::assertEquals($title, $actualTitle);
+		$this->filesPage = $this->loginPage->loginAs(
+			$this->featureContext->getRegularUserName(),
+			$this->featureContext->getRegularUserPassword());
+		$this->filesPage->waitTillPageIsloaded(10);
+	}
+
+	/** @BeforeScenario
+	* This will run before EVERY scenario. It will set the properties for this object.
+	*/
+	public function before(BeforeScenarioScope $scope)
+	{
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

@@ -23,7 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 
-use Page\LoginPage;
 use Page\FilesPage;
 
 require_once 'bootstrap.php';
@@ -33,15 +32,13 @@ require_once 'bootstrap.php';
  */
 class FilesContext extends RawMinkContext implements Context
 {
-	private $loginPage;
 	private $filesPage;
-	
-	public function __construct(LoginPage $loginPage, FilesPage $filesPage)
+
+	public function __construct(FilesPage $filesPage)
 	{
-		$this->loginPage = $loginPage;
 		$this->filesPage = $filesPage;
 	}
-	
+
 	/**
 	 * @Given I am on the files page
 	 */
@@ -49,7 +46,7 @@ class FilesContext extends RawMinkContext implements Context
 	{
 		$this->filesPage->open();
 	}
-	
+
 	/**
 	 * @Given the list of files\/folders does not fit in one browser page
 	 */
@@ -66,7 +63,7 @@ class FilesContext extends RawMinkContext implements Context
 				$this->filesPage->findActionMenuByNo($itemsCount)
 			);
 		}
-		
+
 		while ($windowHeight > $lastItemCoordinates['top']) {
 			$this->filesPage->createFolder();
 			$itemsCount = $this->filesPage->getSizeOfFileFolderList();
@@ -80,18 +77,18 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then The filesactionmenu should be completely visible after clicking on it
+	 * @Then the filesactionmenu should be completely visible after clicking on it
 	 */
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt()
 	{
 		for ($i = 1; $i < $this->filesPage->getSizeOfFileFolderList(); $i ++) {
 			$actionMenu = $this->filesPage->findActionMenuByNo($i);
 			$actionMenu->click();
-			
+
 			$windowHeight = $this->filesPage->getWindowHeight(
 				$this->getSession()
 			);
-			
+
 			$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
 				$this->getSession(), $this->filesPage->findDeleteByNo($i)
 			);
