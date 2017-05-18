@@ -222,7 +222,7 @@ class Server extends ServerContainer implements IServerContainer {
 			});
 		});
 		$this->registerService('AccountMapper', function(Server $c) {
-			return new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), new AccountTermMapper($c->getDatabaseConnection()));
+			return new AccountMapper($c->getDatabaseConnection(), new AccountTermMapper($c->getDatabaseConnection()));
 		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();

@@ -6,7 +6,6 @@ use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OC\User\Database;
 use OC\User\SyncService;
-use OCP\IConfig;
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
 
@@ -20,7 +19,7 @@ class Version20170221114437 implements ISimpleMigration {
 		$config = \OC::$server->getConfig();
 		$logger = \OC::$server->getLogger();
 		$connection = \OC::$server->getDatabaseConnection();
-		$accountMapper = new AccountMapper($config, $connection, new AccountTermMapper($connection));
+		$accountMapper = new AccountMapper($connection, new AccountTermMapper($connection));
 		$syncService = new SyncService($accountMapper, $backend, $config, $logger);
 
 		// insert/update known users
