@@ -79,6 +79,25 @@ class AccountMapper extends Mapper {
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
 
+	/**
+	 * @param string $pattern
+	 * @param integer $limit
+	 * @param integer $offset
+	 * @return Account[]
+	 */
+	public function find($pattern, $limit, $offset) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from($this->getTableName())
+			->where($qb->expr()->Like('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter(strtolower($pattern)) . '%')))
+			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('search_attributes', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+			->orderBy('display_name');
+
+		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
+	}
+
 	public function getUserCountPerBackend($hasLoggedIn) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(['backend', $qb->createFunction('count(*) as `count`')])

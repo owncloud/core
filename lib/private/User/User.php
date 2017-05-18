@@ -60,7 +60,7 @@ class User implements IUser {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	/** @var  EventDispatcher */
+	/** @var EventDispatcher */
 	private $eventDispatcher;
 
 	/** @var AccountMapper */
@@ -436,5 +436,22 @@ class User implements IUser {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);
 		}
+	}
+
+	/**
+	 * @return string
+	 * @since 10.0.1
+	 */
+	public function getSearchAttributes() {
+		return $this->account->getSearchAttributes();
+	}
+
+	/**
+	 * @return string
+	 * @since 10.0.1
+	 */
+	public function setSearchAttributes($searchString) {
+		$this->account->setSearchAttributes($searchString);
+		$this->mapper->update($this->account);
 	}
 }

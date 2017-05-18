@@ -38,7 +38,9 @@ use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
+use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesEMailBackend;
+use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -242,6 +244,24 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
+	 * find a user account by checking user_id, display name and email fields
+	 *
+	 * @param string $pattern
+	 * @param int $limit
+	 * @param int $offset
+	 * @return \OC\User\User[]
+	 */
+	public function find($pattern, $limit = null, $offset = null) {
+		$accounts = $this->accountMapper->find($pattern, $limit, $offset);
+		$users = [];
+		foreach ($accounts as $account) {
+			$user = $this->getUserObject($account);
+			$users[$user->getUID()] = $user;
+		}
+		return $users;
+	}
+
+	/**
 	 * search by displayName
 	 *
 	 * @param string $pattern
@@ -412,6 +432,12 @@ class Manager extends PublicEmitter implements IUserManager {
 			$quota = $backend->getQuota($uid);
 			if ($quota !== null) {
 				$account->setQuota($quota);
+			}
+		}
+		if ($backend instanceof IProvidesExtendedSearchBackend) {
+			$searchString = $backend->getSearchAttributes($uid);
+			if ($searchString !== null) {
+				$account->setSearchAttributes($searchString);
 			}
 		}
 		$home = false;
