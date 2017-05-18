@@ -153,7 +153,7 @@ class AccountMapper extends Mapper {
 			->selectAlias('a.id', 'id')
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
-			->where($qb->expr()->Like('user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))
+			->where($qb->expr()->Like('lower_user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))
 			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))

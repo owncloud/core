@@ -58,5 +58,18 @@ class Version20170516100103 implements ISchemaMigration {
 			$table->addIndex(['term'], 'term_index');
 
 		}
+
+		if ($schema->hasTable("${prefix}accounts")) {
+			$table = $schema->getTable("${prefix}accounts");
+			if (!$table->hasIndex('lower_user_id_index')) {
+				$table->addUniqueIndex(['lower_user_id'], 'lower_user_id_index');
+			}
+			if (!$table->hasIndex('display_name_index')) {
+				$table->addIndex(['display_name'], 'display_name_index');
+			}
+			if (!$table->hasIndex('email_index')) {
+				$table->addIndex(['email'], 'email_index');
+			}
+		}
     }
 }
