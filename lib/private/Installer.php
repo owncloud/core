@@ -111,7 +111,7 @@ class Installer {
 			throw new \Exception($l->t("App directory already exists"));
 		}
 
-		if(!empty($data['pretent'])) {
+		if(!empty($data['pretend'])) {
 			return false;
 		}
 		OC_App::clearAppCache($info['id']);
