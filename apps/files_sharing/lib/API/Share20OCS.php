@@ -343,7 +343,7 @@ class Share20OCS {
 			// legacy way, expecting that this won't be used together with "create-only" shares
 			$publicUpload = $this->request->getParam('publicUpload', null);
 			// a few permission checks
-			if ($publicUpload === 'true' || ($permissions & \OCP\Constants::PERMISSION_CREATE) > 0) {
+			if ($publicUpload === 'true' || $permissions === \OCP\Constants::PERMISSION_CREATE) {
 				// Check if public upload is allowed
 				if (!$this->shareManager->shareApiLinkAllowPublicUpload()) {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
