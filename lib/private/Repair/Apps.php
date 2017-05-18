@@ -69,6 +69,10 @@ class Apps implements IRepairStep {
 		return 'Upgrade app code from the marketplace';
 	}
 
+	/**
+	 * Are we updating from an older version?
+	 * @return bool
+	 */
 	private function isCoreUpdate() {
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
 		$currentVersion = implode('.', \OCP\Util::getVersion());
@@ -86,35 +90,54 @@ class Apps implements IRepairStep {
 	public function run(IOutput $output) {
 		$isCoreUpdate = $this->isCoreUpdate();
 		$appsToUpgrade = $this->getAppsToUpgrade();
-		$isMarketEnabled = $this->appManager->isEnabledForUser('market');
 		$failedCompatibleApps = [];
 		$failedMissingApps = $appsToUpgrade[self::KEY_MISSING];
 		$failedIncompatibleApps = $appsToUpgrade[self::KEY_INCOMPATIBLE];
 		$hasNotUpdatedCompatibleApps = 0;
 
-		if ($isMarketEnabled && $isCoreUpdate) {
-			$this->loadApp('market');
-			try {
+		if($isCoreUpdate) {
+			// Then we need to enable the market app to support app updates / downloads during upgrade
+			$output->info('Enabling market app to assist with update');
+			$this->appManager->enableApp('market');
+		}
+
+		// Use market to fix missing / old apps
+		$this->loadApp('market');
+		$output->info('Using market to update existing apps');
+		try {
+			// Try to update incompatible apps
+			if($appsToUpgrade[self::KEY_INCOMPATIBLE]) {
+				$output->info('Attempting to update the following existing but incompatible app from market: '.implode(', ', $appsToUpgrade[self::KEY_INCOMPATIBLE]));
 				$failedIncompatibleApps = $this->getAppsFromMarket(
 					$output,
 					$appsToUpgrade[self::KEY_INCOMPATIBLE],
 					'upgradeAppStoreApp'
 				);
+			}
+
+			// Try to download missing apps
+			if($appsToUpgrade[self::KEY_MISSING]) {
+				$output->info('Attempting to update the following missing apps from market: '.implode(', ', $appsToUpgrade[self::KEY_MISSING]));
 				$failedMissingApps = $this->getAppsFromMarket(
 					$output,
 					$appsToUpgrade[self::KEY_MISSING],
 					'reinstallAppStoreApp'
 				);
+			}
+
+			// Try to update compatible apps
+			if($appsToUpgrade[self::KEY_COMPATIBLE]) {
+				$output->info('Attempting to update the following existing compatible apps from market: '.implode(', ', $appsToUpgrade[self::KEY_MISSING]));
 				$failedCompatibleApps = $this->getAppsFromMarket(
 					$output,
 					$appsToUpgrade[self::KEY_COMPATIBLE],
 					'upgradeAppStoreApp'
 				);
-				$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
-			} catch (AppManagerException $e) {
-				$output->warning('No connection to marketplace: ' . $e->getPrevious());
-				$isMarketEnabled = false;
 			}
+
+			$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
+		} catch (AppManagerException $e) {
+			$output->warning('No connection to marketplace: ' . $e->getPrevious());
 		}
 
 		$hasBlockingMissingApps = count($failedMissingApps);
@@ -122,9 +145,9 @@ class Apps implements IRepairStep {
 
 		if ($hasBlockingIncompatibleApps || $hasBlockingMissingApps) {
 			// fail
-			$output->warning('You have incompatible or missing apps enabled.');
+			$output->warning('You have incompatible or missing apps enabled that could not be found or updated via the marketplace.');
 			$output->warning(
-				'please install app manually with tarball or disable them'
+				'please install app manually with tarball or disable them with:'
 				. $this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps))
 			);
 
