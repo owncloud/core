@@ -22,8 +22,8 @@
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\TableNode;
 
-use Page\LoginPage;
 use Page\FilesPage;
 
 require_once 'bootstrap.php';
@@ -33,15 +33,13 @@ require_once 'bootstrap.php';
  */
 class FilesContext extends RawMinkContext implements Context
 {
-	private $loginPage;
 	private $filesPage;
-	
-	public function __construct(LoginPage $loginPage, FilesPage $filesPage)
+
+	public function __construct(FilesPage $filesPage)
 	{
-		$this->loginPage = $loginPage;
 		$this->filesPage = $filesPage;
 	}
-	
+
 	/**
 	 * @Given I am on the files page
 	 */
@@ -49,7 +47,7 @@ class FilesContext extends RawMinkContext implements Context
 	{
 		$this->filesPage->open();
 	}
-	
+
 	/**
 	 * @Given the list of files\/folders does not fit in one browser page
 	 */
@@ -66,7 +64,7 @@ class FilesContext extends RawMinkContext implements Context
 				$this->filesPage->findActionMenuByNo($itemsCount)
 			);
 		}
-		
+
 		while ($windowHeight > $lastItemCoordinates['top']) {
 			$this->filesPage->createFolder();
 			$itemsCount = $this->filesPage->getSizeOfFileFolderList();
@@ -80,18 +78,59 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then The filesactionmenu should be completely visible after clicking on it
+	 * @Given I rename the file/folder :fromName to :toName
+	 */
+	public function iRenameTheFileFolderTo($fromName, $toName)
+	{
+		$this->filesPage->waitTillPageIsloaded(10);
+		$this->filesPage->renameFile($fromName, $toName, $this->getSession());
+	}
+
+	/**
+	 * @When I rename the file/folder :fromName to one of these names
+	 */
+	public function iRenameTheFileToOneOfThisNames($fromName, TableNode $table)
+	{
+		$this->filesPage->waitTillPageIsloaded(10);
+		foreach ($table->getRows() as $row) {
+			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
+		}
+		
+	}
+
+	/**
+	 * @Then the file/folder :name should be listed
+	 */
+	public function theFileFolderShouldBeListed($name)
+	{
+		PHPUnit_Framework_Assert::assertNotNull(
+			$this->filesPage->findFileRowByName($name, $this->getSession())
+		);
+	}
+
+	/**
+	 * @Then near the file/folder :name a tooltip with the text :toolTipText should be displayed
+	 */
+	public function nearTheFileATooltipWithTheTextShouldBeDisplayed($name, $toolTipText)
+	{
+		PHPUnit_Framework_Assert::assertEquals($toolTipText, 
+			$this->filesPage->getTooltipOfFile($name, $this->getSession())
+		);
+	}
+
+	/**
+	 * @Then the filesactionmenu should be completely visible after clicking on it
 	 */
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt()
 	{
 		for ($i = 1; $i < $this->filesPage->getSizeOfFileFolderList(); $i ++) {
 			$actionMenu = $this->filesPage->findActionMenuByNo($i);
 			$actionMenu->click();
-			
+
 			$windowHeight = $this->filesPage->getWindowHeight(
 				$this->getSession()
 			);
-			
+
 			$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
 				$this->getSession(), $this->filesPage->findDeleteByNo($i)
 			);

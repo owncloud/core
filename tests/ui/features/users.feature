@@ -1,12 +1,12 @@
 Feature: users
 
-	@AdminLogin
 	Scenario Outline: change quota to a valid value
-		Given quota of user "admin" is set to "<start_quota>"
+		Given I am logged in as admin
+		And quota of user "admin" is set to "<start_quota>"
 		When quota of user "admin" is changed to "<wished_quota>"
-		And page is reloaded
+		And the page is reloaded
 		Then quota of user "admin" should be set to "<expected_quota>"
-	
+
 		Examples:
 		|start_quota|wished_quota|expected_quota|
 		|Unlimited  |5 GB        |5 GB          |
@@ -19,12 +19,12 @@ Feature: users
 		|Unlimited  |55kB        |55 KB         |
 		|Unlimited  |45Kb        |45 KB         |
 
-	@AdminLogin
 	Scenario Outline: change quota to an invalid value
+		Given I am logged in as admin
 		When quota of user "admin" is changed to "<wished_quota>"
 		Then a notification should be displayed with the text 'Invalid quota value "<wished_quota>"'
 		Then quota of user "admin" should be set to "Default"
-	
+
 		Examples:
 		|wished_quota|
 		|stupidtext  |

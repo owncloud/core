@@ -24,7 +24,6 @@ use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 
-use Page\LoginPage;
 use Page\UsersPage;
 
 require_once 'bootstrap.php';
@@ -34,15 +33,14 @@ require_once 'bootstrap.php';
  */
 class UsersContext extends RawMinkContext implements Context
 {
-	private $loginPage;
-	private $filesPage;
+
 	private $usersPage;
-	public function __construct(LoginPage $loginPage, UsersPage $usersPage)
+
+	public function __construct(UsersPage $usersPage)
 	{
-		$this->loginPage = $loginPage;
 		$this->usersPage = $usersPage;
 	}
-	
+
 	/**
 	 * @Given quota of user :username is set to :quota
 	 */
@@ -52,7 +50,7 @@ class UsersContext extends RawMinkContext implements Context
 		$this->usersPage->waitTillPageIsloaded(10);
 		$this->usersPage->setQuotaOfUserTo($username, $quota);
 	}
-	
+
 	/**
 	 * @When quota of user :username is changed to :quota
 	 */
@@ -62,16 +60,16 @@ class UsersContext extends RawMinkContext implements Context
 		$this->usersPage->waitTillPageIsloaded(10);
 		$this->usersPage->setQuotaOfUserTo($username, $quota);
 	}
-	
+
 	/**
-	 * @When page is reloaded
+	 * @When the page is reloaded
 	 */
 	public function pageIsReloaded()
 	{
 		$this->getSession()->reload();
 		$this->usersPage->waitTillPageIsloaded(10);
 	}
-	
+
 	/**
 	 * @Then quota of user :username should be set to :quota
 	 */
@@ -84,14 +82,5 @@ class UsersContext extends RawMinkContext implements Context
 				$quota . '"', $this->getSession()
 			);
 		}
-	}
-	
-	/**
-	 * @Given I am logged in as :username using the password :password
-	 */
-	public function iAmLoggedInAsUsingThePassword($username, $password)
-	{
-		$this->loginPage->open();
-		$this->loginPage->loginAs($username, $password);
 	}
 }
