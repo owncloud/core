@@ -199,4 +199,22 @@ interface IUser {
 	 * @since 9.0.0
 	 */
 	public function setQuota($quota);
+
+	/**
+	 * set the users' search terms
+	 *
+	 * @param array $terms
+	 * @return void
+	 * @since 10.0.1
+	 */
+	public function setSearchTerms(array $terms);
+
+	/**
+	 * get the users' search terms
+	 *
+	 * @return array
+	 * @since 10.0.1
+	 */
+	public function getSearchTerms();
+
 }

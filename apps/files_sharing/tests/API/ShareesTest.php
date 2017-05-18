@@ -3,8 +3,8 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
- * @author Roeland Jago Douma <rullzer@users.noreply.github.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -304,7 +304,7 @@ class ShareesTest extends TestCase {
 				true,
 				['abc', 'xyz'],
 				[
-					['abc', 'test', 2, 0, ['test1' => 'Test One']],
+					['abc', 'test', 2, 0, ['test1' => $this->getUserMock('test1', 'Test One')]],
 					['xyz', 'test', 2, 0, []],
 				],
 				[],
@@ -320,7 +320,7 @@ class ShareesTest extends TestCase {
 				false,
 				['abc', 'xyz'],
 				[
-					['abc', 'test', 2, 0, ['test1' => 'Test One']],
+					['abc', 'test', 2, 0, ['test1' => $this->getUserMock('test1', 'Test One')]],
 					['xyz', 'test', 2, 0, []],
 				],
 				[],
@@ -335,12 +335,12 @@ class ShareesTest extends TestCase {
 				['abc', 'xyz'],
 				[
 					['abc', 'test', 2, 0, [
-						'test1' => 'Test One',
-						'test2' => 'Test Two',
+						'test1' => $this->getUserMock('test1', 'Test One'),
+						'test2' => $this->getUserMock('test2', 'Test Two'),
 					]],
 					['xyz', 'test', 2, 0, [
-						'test1' => 'Test One',
-						'test2' => 'Test Two',
+						'test1' => $this->getUserMock('test1', 'Test One'),
+						'test2' => $this->getUserMock('test2', 'Test Two'),
 					]],
 				],
 				[],
@@ -358,12 +358,12 @@ class ShareesTest extends TestCase {
 				['abc', 'xyz'],
 				[
 					['abc', 'test', 2, 0, [
-						'test1' => 'Test One',
-						'test2' => 'Test Two',
+						'test1' => $this->getUserMock('test1', 'Test One'),
+						'test2' => $this->getUserMock('test2', 'Test Two'),
 					]],
 					['xyz', 'test', 2, 0, [
-						'test1' => 'Test One',
-						'test2' => 'Test Two',
+						'test1' => $this->getUserMock('test1', 'Test One'),
+						'test2' => $this->getUserMock('test2', 'Test Two'),
 					]],
 				],
 				[],
@@ -378,10 +378,10 @@ class ShareesTest extends TestCase {
 				['abc', 'xyz'],
 				[
 					['abc', 'test', 2, 0, [
-						'test' => 'Test One',
+						'test' => $this->getUserMock('test1', 'Test One'),
 					]],
 					['xyz', 'test', 2, 0, [
-						'test2' => 'Test Two',
+						'test2' => $this->getUserMock('test2', 'Test Two'),
 					]],
 				],
 				[
@@ -400,10 +400,10 @@ class ShareesTest extends TestCase {
 				['abc', 'xyz'],
 				[
 					['abc', 'test', 2, 0, [
-						'test' => 'Test One',
+						'test' => $this->getUserMock('test1', 'Test One'),
 					]],
 					['xyz', 'test', 2, 0, [
-						'test2' => 'Test Two',
+						'test2' => $this->getUserMock('test2', 'Test Two'),
 					]],
 				],
 				[
@@ -424,7 +424,7 @@ class ShareesTest extends TestCase {
 				// args and user response for "displayNamesInGroup" call
 				[
 					['group1', 'ano', 2, 0, [
-						'another1' => 'Another One',
+						'another1' => $this->getUserMock('another1', 'Another One'),
 					]],
 					['group2', 'ano', 2, 0, [
 					]],
@@ -504,7 +504,7 @@ class ShareesTest extends TestCase {
 
 		if (!$shareWithGroupOnly && !$shareeEnumerationGroupMembers) {
 			$this->userManager->expects($this->once())
-				->method('searchDisplayName')
+				->method('find')
 				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturn($userResponse);
 		} else {
@@ -527,7 +527,7 @@ class ShareesTest extends TestCase {
 			}
 
 			$this->groupManager->expects($this->exactly(sizeof($groupResponse)))
-				->method('displayNamesInGroup')
+				->method('findUsersInGroup')
 				->with($this->anything(), $searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturnMap($userResponse);
 		}

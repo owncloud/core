@@ -8,6 +8,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -60,7 +61,7 @@ class User implements IUser {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	/** @var  EventDispatcher */
+	/** @var EventDispatcher */
 	private $eventDispatcher;
 
 	/** @var AccountMapper */
@@ -436,5 +437,25 @@ class User implements IUser {
 		if ($this->emitter) {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);
 		}
+	}
+
+	/**
+	 * @return string[]
+	 * @since 10.0.1
+	 */
+	public function getSearchTerms() {
+		$terms = [];
+		foreach ($this->mapper->findByAccountId($this->account->getId()) as $term) {
+			$terms[] = $term->getTerm();
+		}
+		return $terms;
+	}
+
+	/**
+	 * @param string[] $terms
+	 * @since 10.0.1
+	 */
+	public function setSearchTerms(array $terms) {
+		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
 	}
 }

@@ -197,4 +197,17 @@ class RemoteUser implements IUser {
 	public function setQuota($quota) {
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	public function getSearchTerms() {
+		return [];
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setSearchTerms(array $terms) {
+	}
+
 }

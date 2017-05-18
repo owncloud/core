@@ -8,6 +8,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Chan <plus.vincchan@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -38,7 +39,9 @@ use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
+use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesEMailBackend;
+use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -213,6 +216,7 @@ class Manager extends PublicEmitter implements IUserManager {
 					} catch(DoesNotExistException $ex) {
 						$account = $this->newAccount($uid, $backend);
 					}
+					// TODO always sync account with backend here to update displayname, email, search terms, home etc. user_ldap currently updates user metadata on login, core should take care of updating accounts on a successful login
 					return $this->getUserObject($account);
 				}
 			}
@@ -238,6 +242,24 @@ class Manager extends PublicEmitter implements IUserManager {
 			$users[$user->getUID()] = $user;
 		}
 
+		return $users;
+	}
+
+	/**
+	 * find a user account by checking user_id, display name and email fields
+	 *
+	 * @param string $pattern
+	 * @param int $limit
+	 * @param int $offset
+	 * @return \OC\User\User[]
+	 */
+	public function find($pattern, $limit = null, $offset = null) {
+		$accounts = $this->accountMapper->find($pattern, $limit, $offset);
+		$users = [];
+		foreach ($accounts as $account) {
+			$user = $this->getUserObject($account);
+			$users[$user->getUID()] = $user;
+		}
 		return $users;
 	}
 
@@ -412,6 +434,12 @@ class Manager extends PublicEmitter implements IUserManager {
 			$quota = $backend->getQuota($uid);
 			if ($quota !== null) {
 				$account->setQuota($quota);
+			}
+		}
+		if ($backend instanceof IProvidesExtendedSearchBackend) {
+			$terms = $backend->getSearchTerms($uid);
+			if (!empty($terms)) {
+				$account->setSearchTerms($terms);
 			}
 		}
 		$home = false;

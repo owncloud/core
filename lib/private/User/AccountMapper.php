@@ -1,6 +1,8 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -19,18 +21,78 @@
  *
  */
 
-
 namespace OC\User;
 
 
 use OC\DB\QueryBuilder\Literal;
+use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
+use OCP\IConfig;
 use OCP\IDBConnection;
 
 class AccountMapper extends Mapper {
 
-	public function __construct(IDBConnection $db) {
+	/* @var AccountTermMapper */
+	protected $termMapper;
+
+	public function __construct(IDBConnection $db, AccountTermMapper $termMapper) {
 		parent::__construct($db, 'accounts', Account::class);
+		$this->termMapper = $termMapper;
+	}
+
+	/**
+	 * Delegate to term mapper to avoid needing to inject term mapper
+	 * @param $account_id
+	 * @param array $terms
+	 */
+	public function setTermsForAccount($account_id, array $terms) {
+		$this->termMapper->setTermsForAccount($account_id, $terms);
+	}
+
+	/**
+	 * Delegate to term mapper to avoid needing to inject term mapper
+	 * @param $account_id
+	 * @return AccountTerm[] $terms
+	 */
+	public function findByAccountId($account_id) {
+		return $this->termMapper->findByAccountId($account_id);
+	}
+
+	/**
+	 * @param Account $entity
+	 * @return Entity the saved entity with the set id
+	 */
+	public function insert(Entity $entity) {
+		// run the normal entity insert operation to get an id
+		$entity = parent::insert($entity);
+
+		/** @var Account $entity */
+		if ($entity->haveTermsChanged()) {
+			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
+		}
+		return $entity;
+	}
+
+	/**
+	 * @param Account $entity
+	 * @return Entity the deleted entity
+	 */
+	public function delete(Entity $entity) {
+		// First delete the search terms for this account
+		$this->termMapper->deleteTermsForAccount($entity->getId());
+		return parent::delete($entity);
+	}
+
+	/**
+	 * @param Account $entity
+	 * @return Entity the updated entity
+	 */
+	public function update(Entity $entity) {
+		if ($entity->haveTermsChanged()) {
+			$this->termMapper->setTermsForAccount($entity->getId(), $entity->getSearchTerms());
+		}
+		// Then run the normal entity insert operation
+		return parent::update($entity);
 	}
 
 	/**
@@ -73,8 +135,32 @@ class AccountMapper extends Mapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())
+			// TODO check performance on large installs because like with starting % cannot use indexes
 			->where($qb->expr()->iLike($fieldName, $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orderBy($fieldName);
+
+		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
+	}
+
+	/**
+	 * @param string $pattern
+	 * @param integer $limit
+	 * @param integer $offset
+	 * @return Account[]
+	 */
+	public function find($pattern, $limit, $offset) {
+		$lowerPattern = strtolower($pattern);
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
+			->selectAlias('a.id', 'id')
+			->from($this->getTableName(), 'a')
+			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
+			->orderBy('display_name')
+			->where($qb->expr()->like('lower_user_id', $qb->createNamedParameter($this->db->escapeLikeParameter($lowerPattern) . '%')))
+			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter($this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter($this->db->escapeLikeParameter($pattern) . '%')))
+			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter($this->db->escapeLikeParameter($lowerPattern) . '%')));
+
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
@@ -124,6 +210,7 @@ class AccountMapper extends Mapper {
 
 		if ($search) {
 			$qb->where($qb->expr()->iLike('user_id',
+				// TODO check performance on large installs because like with starting % cannot use indexes
 				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
 		}
 		if ($onlySeen) {

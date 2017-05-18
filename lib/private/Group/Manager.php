@@ -350,6 +350,58 @@ class Manager extends PublicEmitter implements IGroupManager {
 	}
 
 	/**
+	 * Finds users in a group
+	 * @param string $gid
+	 * @param string $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @return \OC\User\User[]
+	 */
+	public function findUsersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
+		$group = $this->get($gid);
+		if(is_null($group)) {
+			return [];
+		}
+
+		$search = trim($search);
+		$groupUsers = [];
+
+		if(!empty($search)) {
+			// only user backends have the capability to do a complex search for users
+			$searchOffset = 0;
+			$searchLimit = $limit * 100;
+			if($limit === -1) {
+				$searchLimit = 500;
+			}
+
+			do {
+				$filteredUsers = $this->userManager->find($search, $searchLimit, $searchOffset);
+				foreach($filteredUsers as $filteredUser) {
+					if($group->inGroup($filteredUser)) {
+						$groupUsers[]= $filteredUser;
+					}
+				}
+				$searchOffset += $searchLimit;
+			} while(count($groupUsers) < $searchLimit+$offset && count($filteredUsers) >= $searchLimit);
+
+			if($limit === -1) {
+				$groupUsers = array_slice($groupUsers, $offset);
+			} else {
+				$groupUsers = array_slice($groupUsers, $offset, $limit);
+			}
+		} else {
+			$groupUsers = $group->searchUsers('', $limit, $offset);
+		}
+
+		$matchingUsers = [];
+		foreach($groupUsers as $groupUser) {
+			$matchingUsers[$groupUser->getUID()] = $groupUser;
+		}
+
+		return $matchingUsers;
+	}
+
+	/**
 	 * get a list of all display names in a group
 	 * @param string $gid
 	 * @param string $search

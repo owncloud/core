@@ -10,6 +10,7 @@
 namespace Test\User;
 use OC\User\Account;
 use OC\User\AccountMapper;
+use OC\User\AccountTermMapper;
 use OC\User\Backend;
 use OC\User\Database;
 use OC\User\Manager;
@@ -32,6 +33,8 @@ class ManagerTest extends TestCase {
 	private $manager;
 	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $accountMapper;
+	/** @var AccountTermMapper | \PHPUnit_Framework_MockObject_MockObject */
+	private $accountTermMapper;
 
 	public function setUp() {
 		parent::setUp();
@@ -41,7 +44,8 @@ class ManagerTest extends TestCase {
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
-		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper);
+		$this->accountTermMapper = $this->createMock(AccountTermMapper::class);
+		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->accountTermMapper);
 	}
 
 	public function testGetBackends() {
@@ -128,6 +132,61 @@ class ManagerTest extends TestCase {
 	public function testGetOneBackendNotExists() {
 		$this->assertEquals(null, $this->manager->get('foo'));
 	}
+
+	public function testFind() {
+		$a0 = new Account();
+		$a0->setUserId('afoo');
+		$a1 = new Account();
+		$a1->setUserId('foo');
+		$this->accountMapper->expects($this->once())->method('find')
+			->with('fo')->willReturn([$a0, $a1]);
+		$result = $this->manager->find('fo');
+		$this->assertEquals(2, count($result));
+		$this->assertEquals('afoo', array_shift($result)->getUID());
+		$this->assertEquals('foo', array_shift($result)->getUID());
+	}
+
+	public function testFindWithLimit() {
+		$a0 = new Account();
+		$a0->setUserId('afoo');
+		$a1 = new Account();
+		$a1->setUserId('foo');
+		$this->accountMapper->expects($this->once())->method('find')
+			->with('fo', 1)->willReturn([$a0]);
+		$result = $this->manager->find('fo', 1);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals('afoo', array_shift($result)->getUID());
+	}
+
+	public function testFindWithDisplayName() {
+		$a0 = new Account();
+		$a0->setUserId('afoo');
+		$a0->setDisplayName('display1');
+		$a1 = new Account();
+		$a1->setUserId('foo');
+		$a0->setDisplayName('display2');
+		$this->accountMapper->expects($this->once())->method('find')
+			->with('display2')->willReturn([$a1]);
+		$result = $this->manager->find('display2');
+		$this->assertEquals(1, count($result));
+		$this->assertEquals('foo', array_shift($result)->getUID());
+	}
+
+	public function testFindWithEmail() {
+		$a0 = new Account();
+		$a0->setUserId('afoo');
+		$a0->setEmail('test@test.com');
+		$a1 = new Account();
+		$a1->setUserId('foo');
+		$a0->setEmail('test2@test.com');
+		$this->accountMapper->expects($this->once())->method('find')
+			->with('@test.com')->willReturn([$a0, $a1]);
+		$result = $this->manager->find('@test.com');
+		$this->assertEquals(2, count($result));
+		$this->assertEquals('afoo', array_shift($result)->getUID());
+		$this->assertEquals('foo', array_shift($result)->getUID());
+	}
+
 
 	public function testSearch() {
 		$a0 = new Account();

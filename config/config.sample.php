@@ -257,6 +257,13 @@ $CONFIG = array(
 'lost_password_link' => 'https://example.org/link/to/password/reset',
 
 /**
+ * Allow medial search on account properties like display name, user id, email,
+ * and other search terms. Allows finding 'Alice' when searching for 'lic'.
+ * May slow down user search.
+ */
+'accounts.enable_medial_search' => false,
+
+/**
  * Mail Parameters
  *
  * These configure the email settings for ownCloud notifications and password
