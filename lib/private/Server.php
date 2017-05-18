@@ -808,6 +808,7 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('ThemeService', function ($c) {
 			return new ThemeService($this->getSystemConfig()->getValue('theme'));
 		});
+		$this->registerAlias('IThemeService', 'ThemeService');
 		$this->registerAlias('OCP\IUserSession', 'UserSession');
 		$this->registerAlias('OCP\Security\ICrypto', 'Crypto');
 	}
