@@ -112,6 +112,9 @@ class Owncloud {
 		);
 		$entry = json_encode($entry);
 		if (!is_null($conditionalLogFile)) {
+			if ($conditionalLogFile[0] !== '/') {
+				$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;
+			}
 			$handle = @fopen($conditionalLogFile, 'a');
 			@chmod($conditionalLogFile, 0640);
 		} else {
