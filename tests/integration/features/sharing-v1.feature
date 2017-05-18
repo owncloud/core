@@ -1158,6 +1158,37 @@ Feature: sharing
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
+	Scenario: Creating link share with no specified permissions defaults to read permissions
+		Given As an "admin"
+		And user "user0" exists
+		And user "user0" created a folder "/afolder"
+		And As an "user0"
+		And creating a share with
+			| path | /afolder |
+			| shareType | 3 |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And Share fields of last share match with
+			| id | A_NUMBER |
+			| share_type | 3 |
+			| permissions | 1 |
+
+	Scenario: Creating link share with no specified permissions defaults to read permissions when public upload disabled globally
+		Given As an "admin"
+		And parameter "shareapi_allow_public_upload" of app "core" is set to "no"
+		And user "user0" exists
+		And user "user0" created a folder "/afolder"
+		And As an "user0"
+		And creating a share with
+			| path | /afolder |
+			| shareType | 3 |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And Share fields of last share match with
+			| id | A_NUMBER |
+			| share_type | 3 |
+			| permissions | 1 |
+
 	Scenario: resharing using a public link with read only permissions is not allowed
 		Given As an "admin"
 		And user "user0" exists
@@ -1254,3 +1285,4 @@ Feature: sharing
 		And as "user0" the folder "/shared/sub" does not exist
 		And as "user0" the folder "/sub" exists in trash
 		And as "user0" the file "/sub/shared_file.txt" exists in trash
+

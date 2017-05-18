@@ -10,6 +10,7 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 trait Sharing {
 	use Provisioning;
+	use AppConfiguration;
 
 	/** @var int */
 	private $sharingApiVersion = 1;
@@ -672,5 +673,8 @@ trait Sharing {
 		return $this->lastShareData->data->token;
 	}
 
+	protected function resetAppConfigs() {
+		$this->modifyServerConfig('core', 'shareapi_allow_public_upload', 'yes');
+	}
 }
 
