@@ -17,9 +17,10 @@ class Version20170221114437 implements ISimpleMigration {
 	 */
 	public function run(IOutput $out) {
 		$backend = new Database();
-		$accountMapper = new AccountMapper(\OC::$server->getDatabaseConnection(), new AccountTermMapper(\OC::$server->getDatabaseConnection()));
 		$config = \OC::$server->getConfig();
 		$logger = \OC::$server->getLogger();
+		$connection = \OC::$server->getDatabaseConnection();
+		$accountMapper = new AccountMapper($config, $connection, new AccountTermMapper($connection));
 		$syncService = new SyncService($accountMapper, $backend, $config, $logger);
 
 		// insert/update known users

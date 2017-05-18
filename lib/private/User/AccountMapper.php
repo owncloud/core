@@ -27,15 +27,20 @@ namespace OC\User;
 use OC\DB\QueryBuilder\Literal;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
+use OCP\IConfig;
 use OCP\IDBConnection;
 
 class AccountMapper extends Mapper {
 
+	/* @var IConfig */
+	protected $config;
+
 	/* @var AccountTermMapper */
 	protected $termMapper;
 
-	public function __construct(IDBConnection $db, AccountTermMapper $termMapper) {
+	public function __construct(IConfig $config, IDBConnection $db, AccountTermMapper $termMapper) {
 		parent::__construct($db, 'accounts', Account::class);
+		$this->config = $config;
 		$this->termMapper = $termMapper;
 	}
 
@@ -134,6 +139,7 @@ class AccountMapper extends Mapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())
+			// TODO use medial search config option here as well
 			->where($qb->expr()->iLike($fieldName, $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
 			->orderBy($fieldName);
 
@@ -148,16 +154,25 @@ class AccountMapper extends Mapper {
 	 */
 	public function find($pattern, $limit, $offset) {
 		$qb = $this->db->getQueryBuilder();
-		$lowerPattern = strtolower($pattern);
 		$qb->select(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
 			->selectAlias('a.id', 'id')
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
-			->where($qb->expr()->Like('lower_user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))
-			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
-			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
-			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))
 			->orderBy('display_name');
+
+		$lowerPattern = strtolower($pattern);
+		$allowMedialSearches = $this->config->getSystemValue('accounts.enable_medial_search', false);
+		if ($allowMedialSearches) {
+			$qb->where($qb->expr()->like('lower_user_id', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')))
+				->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+				->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($pattern) . '%')))
+				->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter('%' . $this->db->escapeLikeParameter($lowerPattern) . '%')));
+		} else {
+			$qb->where($qb->expr()->like('lower_user_id', $qb->createNamedParameter($this->db->escapeLikeParameter($lowerPattern) . '%')))
+				->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter($this->db->escapeLikeParameter($pattern) . '%')))
+				->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter($this->db->escapeLikeParameter($pattern) . '%')))
+				->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter($this->db->escapeLikeParameter($lowerPattern) . '%')));
+		}
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
@@ -205,7 +220,7 @@ class AccountMapper extends Mapper {
 		$qb->select(['*'])
 			->from($this->getTableName());
 
-		if ($search) {
+		if ($search) { // TODO use medial search config option here as well
 			$qb->where($qb->expr()->iLike('user_id',
 				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
 		}
