@@ -179,12 +179,16 @@ class Apps implements IRepairStep {
 					new GenericEvent($app)
 				);
 			} catch (AppAlreadyInstalledException $e) {
+				$output->info($e->getMessage());
 				$failedApps[] = $app;
 			} catch (AppNotInstalledException $e) {
+				$output->info($e->getMessage());
 				$failedApps[] = $app;
 			} catch (AppNotFoundException $e) {
+				$output->info($e->getMessage());
 				$failedApps[] = $app;
 			} catch (AppUpdateNotFoundException $e) {
+				$output->info($e->getMessage());
 				$failedApps[] = $app;
 			} catch (AppManagerException $e) {
 				// No connection to market. Abort.
