@@ -39,6 +39,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\User\IProvidesEMailBackend;
+use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

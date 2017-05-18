@@ -389,7 +389,12 @@ class Session implements IUserSession, Emitter {
 		}
 	}
 
-	protected function prepareUserLogin($firstTimeLogin = false) {
+	/**
+	 * Unintentional public
+	 *
+	 * @param bool $firstTimeLogin
+	 */
+	public function prepareUserLogin($firstTimeLogin = false) {
 		// TODO: mock/inject/use non-static
 		// Refresh the token
 		\OC::$server->getCsrfTokenManager()->refreshToken();

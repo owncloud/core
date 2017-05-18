@@ -199,8 +199,15 @@ class OC_User {
 				// For example encryption needs to initialize the users keys first
 				// before we can create the user folder with the skeleton files
 				OC_Hook::emit("OC_User", "post_login", ["uid" => $uid, 'password' => '']);
-				//trigger creation of user home and /files folder
-				\OC::$server->getUserFolder($uid);
+				$user = $userSession->getUser();
+				$firstTimeLogin = $user->updateLastLoginTimestamp();
+				if ($userSession->isLoggedIn()) {
+					$userSession->prepareUserLogin($firstTimeLogin);
+				} else {
+					// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+					throw new \OC\User\LoginException($message);
+				}
 			}
 			return true;
 		}
