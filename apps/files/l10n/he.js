@@ -47,6 +47,7 @@ OC.L10N.register(
     "Could not create file \"{file}\" because it already exists" : "לא ניתן ליצור את הקובץ \"{file}\" כיוון שהוא כבר קיים",
     "Could not create folder \"{dir}\" because it already exists" : "לא ניתן ליצור את התיקייה \"{dir}\" כיוון שהיא כבר קיימת",
     "Error deleting file \"{fileName}\"." : "שגיאה בזמן מחיקת קובץ \"{fileName}\".",
+    "No entries in this folder match {filter}" : "אין כניסות לתיקייה נבחרת זו {filter}",
     "Name" : "שם",
     "Size" : "גודל",
     "Modified" : "זמן שינוי",

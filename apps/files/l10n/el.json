@@ -45,6 +45,7 @@
     "Could not create file \"{file}\" because it already exists" : "Αδυναμία δημιουργίας αρχείου \"{file}\" επειδή υπάρχει ήδη",
     "Could not create folder \"{dir}\" because it already exists" : "Αδυναμία δημιουργίας φακέλου \"{dir}\" διότι υπάρχει ήδη",
     "Error deleting file \"{fileName}\"." : "Αδυναμία διαγραφής του \"{fileName}\".",
+    "No entries in this folder match {filter}" : "Δεν ταιριάζουν καταχωρήσεις σε αυτόν το φάκελο '{filter}'",
     "Name" : "Όνομα",
     "Size" : "Μέγεθος",
     "Modified" : "Τροποποιήθηκε",

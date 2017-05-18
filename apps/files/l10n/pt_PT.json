@@ -45,6 +45,7 @@
     "Could not create file \"{file}\" because it already exists" : "Não foi possível criar o ficheiro \"{file}\", porque este já existe",
     "Could not create folder \"{dir}\" because it already exists" : "Não foi possível criar a pasta \"{dir}\", porque esta já existe",
     "Error deleting file \"{fileName}\"." : "Erro ao eliminar o ficheiro \"{fileName}\".",
+    "No entries in this folder match {filter}" : "Nenhuma entrada nesta pasta corresponde a {filter}",
     "Name" : "Nome",
     "Size" : "Tamanho",
     "Modified" : "Modificado",
