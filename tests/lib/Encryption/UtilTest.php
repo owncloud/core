@@ -134,6 +134,7 @@ class UtilTest extends TestCase {
 			['/keyStorage/user1/files/foo.txt', 'keyStorage', true],
 			['/keyStorage/files_encryption', '/keyStorage', true],
 			['keyStorage/user1/files_encryption', '/keyStorage/', true],
+			['/files_external/rootcerts.crt', '', true],
 
 		];
 	}
