@@ -129,15 +129,22 @@ class Updater extends BasicEmitter {
 	}
 
 	/**
-	 * Return version from which this version is allowed to upgrade from
+	 * Return versions from which this version is allowed to upgrade from
 	 *
-	 * @return string allowed previous version
+	 * @return string[] allowed previous versions
 	 */
-	private function getAllowedPreviousVersion() {
+	private function getAllowedPreviousVersions() {
 		// this should really be a JSON file
 		require \OC::$SERVERROOT . '/version.php';
+
+		$allowedPreviousVersions = [];
+
 		/** @var array $OC_VersionCanBeUpgradedFrom */
-		return implode('.', $OC_VersionCanBeUpgradedFrom);
+		foreach ($OC_VersionCanBeUpgradedFrom as $version) {
+			$allowedPreviousVersions[] = implode('.', $version);
+		}
+
+		return $allowedPreviousVersions;
 	}
 
 	/**
@@ -156,15 +163,17 @@ class Updater extends BasicEmitter {
 	 * Whether an upgrade to a specified version is possible
 	 * @param string $oldVersion
 	 * @param string $newVersion
-	 * @param string $allowedPreviousVersion
+	 * @param string[] $allowedPreviousVersions
 	 * @return bool
 	 */
-	public function isUpgradePossible($oldVersion, $newVersion, $allowedPreviousVersion) {
-		$allowedUpgrade =  (version_compare($allowedPreviousVersion, $oldVersion, '<=')
-			&& (version_compare($oldVersion, $newVersion, '<=') || $this->config->getSystemValue('debug', false)));
-
-		if ($allowedUpgrade) {
-			return $allowedUpgrade;
+	public function isUpgradePossible($oldVersion, $newVersion, $allowedPreviousVersions) {
+		// TODO: write tests for this, since i just wrapped it to get started with migrations and this might fail in some cases
+		foreach ($allowedPreviousVersions as $allowedPreviousVersion) {
+			$allowedUpgrade =  (version_compare($allowedPreviousVersion, $oldVersion, '<=')
+				&& (version_compare($oldVersion, $newVersion, '<=') || $this->config->getSystemValue('debug', false)));
+			if ($allowedUpgrade) {
+				return $allowedUpgrade;
+			}
 		}
 
 		// Upgrade not allowed, someone switching vendor?
@@ -189,8 +198,8 @@ class Updater extends BasicEmitter {
 	 */
 	private function doUpgrade($currentVersion, $installedVersion) {
 		// Stop update if the update is over several major versions
-		$allowedPreviousVersion = $this->getAllowedPreviousVersion();
-		if (!self::isUpgradePossible($installedVersion, $currentVersion, $allowedPreviousVersion)) {
+		$allowedPreviousVersions = $this->getAllowedPreviousVersions();
+		if (!self::isUpgradePossible($installedVersion, $currentVersion, $allowedPreviousVersions)) {
 			throw new \Exception('Updates between multiple major versions and downgrades are unsupported.');
 		}
 

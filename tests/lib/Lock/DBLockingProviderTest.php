@@ -57,6 +57,8 @@ class DBLockingProviderTest extends LockingProvider {
 				return $this->currentTime;
 			}));
 		parent::setUp();
+		# we shall operate on a clean table
+		$this->connection->executeQuery('DELETE FROM `*PREFIX*file_locks`');
 	}
 
 	/**
@@ -83,16 +85,23 @@ class DBLockingProviderTest extends LockingProvider {
 
 		$this->currentTime = 150 + 3600;
 
-		$this->assertEquals(3, $this->getLockEntryCount());
+		$this->assertLocks(['foo', 'asd', 'bar']);
 
 		$this->instance->cleanExpiredLocks();
 
-		$this->assertEquals(2, $this->getLockEntryCount());
+		$this->assertLocks(['asd', 'bar']);
 	}
 
-	private function getLockEntryCount() {
-		$query = $this->connection->prepare('SELECT count(*) FROM `*PREFIX*file_locks`');
+	private function getLockEntries() {
+		$query = $this->connection->prepare('SELECT * FROM `*PREFIX*file_locks`');
 		$query->execute();
-		return $query->fetchColumn();
+		$rows = $query->fetchAll();
+		$query->closeCursor();
+		return $rows;
+	}
+
+	protected function assertLocks(array $expected) {
+		$locks = $this->getLockEntries();
+		$this->assertEquals(count($expected), count($locks), json_encode($locks));
 	}
 }

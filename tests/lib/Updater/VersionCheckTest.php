@@ -53,7 +53,7 @@ class VersionCheckTest extends TestCase {
 	 * @return string
 	 */
 	private function buildUpdateUrl($baseUrl) {
-		return $baseUrl . '?version='.implode('x', Util::getVersion()).'xinstalledatxlastupdatedatx'.\OC_Util::getChannel().'x'.\OC_Util::getEditionString().'x';
+		return $baseUrl . '?version='.implode('x', Util::getVersion()).'xinstalledatxlastupdatedatx'.\OC_Util::getChannel().'x'.\OC_Util::getEditionString().'x'.\OC_Util::getBuild();
 	}
 
 	public function testCheckInCache() {
