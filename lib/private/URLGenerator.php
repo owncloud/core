@@ -30,7 +30,7 @@
  */
 
 namespace OC;
-use OC\Theme\Theme;
+use OCP\Theme\ITheme;
 use OC_Defaults;
 use OCP\ICacheFactory;
 use OCP\IConfig;
@@ -48,7 +48,7 @@ class URLGenerator implements IURLGenerator {
 	private $cacheFactory;
 	/** @var IRouter */
 	private $router;
-	/** @var Theme */
+	/** @var ITheme */
 	private $theme;
 
 	/**
