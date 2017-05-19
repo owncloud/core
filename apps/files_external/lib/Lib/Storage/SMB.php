@@ -415,11 +415,6 @@ class SMB extends Common {
 				case 'c':
 				case 'c+':
 					//emulate these
-					if (strrpos($path, '.') !== false) {
-						$ext = substr($path, strrpos($path, '.'));
-					} else {
-						$ext = '';
-					}
 					if ($this->file_exists($path)) {
 						if (!$this->isUpdatable($path)) {
 							break;
@@ -429,7 +424,7 @@ class SMB extends Common {
 						if (!$this->isCreatable(dirname($path))) {
 							break;
 						}
-						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
+						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
 					}
 					$source = fopen($tmpFile, $mode);
 					$share = $this->share;
