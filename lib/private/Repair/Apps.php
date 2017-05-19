@@ -112,6 +112,10 @@ class Apps implements IRepairStep {
 		if($isCoreUpdate && $requiresMarketEnable) {
 			// Then we need to enable the market app to support app updates / downloads during upgrade
 			$output->info('Enabling market app to assist with update');
+			// delete old value that might influence old APIs
+			if ($this->config->getSystemValue('appstoreenabled', null) !== null) {
+				$this->config->deleteSystemValue('appstoreenabled');
+			}
 			$this->appManager->enableApp('market');
 		}
 
