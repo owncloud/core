@@ -97,23 +97,19 @@ class FilesPage extends OwnCloudPage
 		$lastFileNameCoordinates ["top"] = 0;
 		$appContentHeight = 0;
 		$previousFileCounter = 0;
-		
+		$fileNameSpans = array();
+
+		$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
+			"xpath", $this->fileNamesXpath
+		);
 		//loop to keep on scrolling down to load not viewed files
-		while ( $lastFileNameCoordinates ["top"] <= $appContentHeight ) {
-			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
-				"xpath", $this->fileNamesXpath
-			);
-			
-			//file counts are not increasing, the file is not there
-			if (($previousFileCounter+1) === count($fileNameSpans)) {
-				return null;
-			}
+		//when the file count is not increasing, the file is not there
+		while ($previousFileCounter < count($fileNameSpans)) {
 			//check every file if the name is the one we are searching for
 			//but no need to check names that we checked already ($previousFileCounter)
 			for ($fileCounter = $previousFileCounter;
 				$fileCounter < count($fileNameSpans);
 				$fileCounter ++) {
-
 				//found the file
 				if ($fileNameSpans[$fileCounter]->getText() === $name ||
 					strip_tags($fileNameSpans[$fileCounter]->getHtml()) === $name) {
@@ -123,17 +119,14 @@ class FilesPage extends OwnCloudPage
 				}
 				$previousFileCounter = $fileCounter;
 			}
-			$lastFileNameCoordinates = $this->getCoordinatesOfElement(
-				$session, $fileNameSpans [$previousFileCounter]
-			);
+
 			// scroll to the bottom of the page
 			// we need to scroll because the files app does only load a part of
 			// the files in one screen
 			$this->scrollDownAppContent(count($fileNameSpans), $session);
 			
-			// get the new height of the content div
-			$appContentHeight = ( int ) $session->evaluateScript(
-				'$("#' . $this->appContentId . '")[0].scrollHeight;'
+			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
+				"xpath", $this->fileNamesXpath
 			);
 		}
 	}
