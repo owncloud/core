@@ -45,6 +45,7 @@
     "Could not create file \"{file}\" because it already exists" : "Gat ekki búið til skrána \"{file}\" vegna þess að hún er þegar til",
     "Could not create folder \"{dir}\" because it already exists" : "Gat ekki búið til möppuna \"{dir}\" vegna þess að hún er þegar til",
     "Error deleting file \"{fileName}\"." : "Villa við að eyða skránni \"{fileName}\".",
+    "No entries in this folder match {filter}" : "Engar færslur í þessari möppu samsvara {filter}",
     "Name" : "Heiti",
     "Size" : "Stærð",
     "Modified" : "Breytt",

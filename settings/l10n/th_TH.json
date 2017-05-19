@@ -194,6 +194,7 @@
     "Exclude groups from sharing" : "ไม่รวมกลุ่มที่กำลังแชร์",
     "These groups will still be able to receive shares, but not to initiate them." : "กลุ่มนี้จะยังคงสามารถได้รับการแชร์ แต่พวกเขาจะไม่รู้จักมัน",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "อนุญาตให้เติมชื่อผู้ใช้ในกล่องข้อความที่แชร์โดยอัตโนมัติ  ถ้าหากปิดใช้งานเราจะต้องกรอกชื่อผู้ใช้เอง",
+    "Restrict enumeration to group members" : "จำกัดจำนวนสมาชิกในกลุ่ม",
     "Everything (fatal issues, errors, warnings, info, debug)" : "ทุกอย่าง (ปัญหาร้ายแรง ข้อผิดพลาด คำเตือน ข้อมูล การแก้ปัญหา)",
     "Info, warnings, errors and fatal issues" : "ข้อมูล คำเตือน ข้อผิดพลาดและปัญหาร้ายแรง",
     "Warnings, errors and fatal issues" : "คำเตือนข้อผิดพลาดและปัญหาที่ร้ายแรง",

@@ -11,6 +11,7 @@ OC.L10N.register(
     "Shared with you" : "V souporabi z vami",
     "Shared with others" : "V souporabi  z drugimi",
     "Shared by link" : "V souporabi prek povezave",
+    "Anonymous upload" : "Brezimno pošiljanje v oblak",
     "Uploading..." : "Poteka pošiljanje ...",
     "Nothing shared with you yet" : "Datotek drugih uporabnikov še ni v souporabi",
     "Files and folders others share with you will show up here" : "Datoteke in mape, katerih souporabo z vami omogočijo drugi, bodo zbrane na tem mestu.",
