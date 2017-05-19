@@ -690,11 +690,6 @@ $CONFIG = array(
  */
 
 /**
- * When enabled, admins may install apps from the ownCloud app store.
- */
-'appstoreenabled' => true,
-
-/**
  * The URL of the appstore to use.
  */
 'appstoreurl' => 'https://api.owncloud.com/v1',

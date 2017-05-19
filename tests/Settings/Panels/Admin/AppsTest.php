@@ -38,7 +38,6 @@ class AppsTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-		$this->config->expects($this->once())->method('getSystemValue')->with('appstoreenabled', true)->willReturn(true);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<div id="apps-list" class="icon-loading"></div>', $templateHtml);
 	}
