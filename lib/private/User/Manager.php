@@ -151,6 +151,9 @@ class Manager extends PublicEmitter implements IUserManager {
 		if (isset($this->cachedUsers[$uid])) { //check the cache first to prevent having to loop over the backends
 			return $this->cachedUsers[$uid];
 		}
+		if (is_null($uid)){
+			return null;
+		}
 		try {
 			$account = $this->accountMapper->getByUid($uid);
 			if (is_null($account)) {
