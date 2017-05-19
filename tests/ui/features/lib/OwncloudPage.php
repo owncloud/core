@@ -50,6 +50,15 @@ class OwncloudPage extends Page
 		return $this->findById("notification")->getText();
 	}
 
+	public function getNotifications() {
+		$notificationsText=array();
+		$notifications=$this->findById("notification");
+		foreach ($notifications->findAll("xpath", "div") as $notification) {
+			array_push($notificationsText, $notification->getText());
+		}
+		return $notificationsText;
+	}
+
 	/**
 	 * finds the own username displayed in the top right corner
 	 * @return string
