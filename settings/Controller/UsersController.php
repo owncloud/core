@@ -263,7 +263,7 @@ class UsersController extends Controller {
 	 * @param int $offset
 	 * @param int $limit
 	 * @param string $gid GID to filter for
-	 * @param string $pattern Pattern to find in the account table (usenid, displayname, email, additional search terms)
+	 * @param string $pattern Pattern to find in the account table (userid, displayname, email, additional search terms)
 	 * @param string $backend Backend to filter for (class-name)
 	 * @return DataResponse
 	 *
