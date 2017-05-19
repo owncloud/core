@@ -49,6 +49,7 @@ TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
 TEST_PHP_SUITE=
 
+RELEASE_EDITION=community
 RELEASE_CHANNEL=git
 
 # internal aliases
@@ -63,6 +64,34 @@ core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 dist_dir=build/dist
+
+define replace_version
+	# Set build
+	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
+	sed -i \
+		-e 's/$$OC_Channel.*$$/$$OC_Channel = '"'"$(RELEASE_CHANNEL)"'"';/g' \
+		-e 's/$$OC_Build.*$$/$$OC_Build = '"'"$(_BUILD)"'"';/g' \
+		$(1)
+	echo -e '\n$$OC_Edition = '"'"$(RELEASE_EDITION)"'"';' >> $(1)
+endef
+
+define clean_unwanted
+	find $(1) -name .gitkeep -delete
+	find $(1) -name .gitignore -delete
+	find $(1) -name no-php -delete
+	rm -Rf $(1)/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
+	find $(1)/{core/,l10n/} -iname \*.sh -delete
+	find $(1)/{apps/,lib/composer/,core/vendor/} \( \
+		-name test -o \
+		-name examples -o \
+		-name demo -o \
+		-name demos -o \
+		-name doc -o \
+		-name travis -o \
+		-iname \*.sh \
+		\) -print | xargs rm -Rf
+	find $(1)/{apps/,lib/composer/} -iname \*.exe -delete
+endef
 
 #
 # Catch-all rules
@@ -237,33 +266,20 @@ $(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
 	cp -R $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
-	rm -Rf $(dist_dir)/owncloud/apps/testing
-	find $@ -name .gitkeep -delete
-	find $@ -name .gitignore -delete
-	find $@ -name no-php -delete
+	# Remove all tests
+	rm -Rf $@/apps/testing
 	rm -Rf $@/core/js/tests
 	rm -Rf $@/settings/tests
-	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
-	find $@/{core/,l10n/} -iname \*.sh -delete
+	# Clear unwanted files
+	$(call clean_unwanted,$@)
 	find $@/{apps/,lib/composer/,core/vendor/} \( \
 		-name bin -o \
-		-name test -o \
 		-name tests -o \
-		-name examples -o \
-		-name demo -o \
-		-name demos -o \
-		-name doc -o \
-		-name travis -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
 	find $@/{apps/,lib/composer/} -iname \*.exe -delete
-	# Set build
-	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
-	# Replace channel in version.php
-	sed -i \
-		-e 's/$$OC_Channel.*$$/$$OC_Channel = '"'"$(RELEASE_CHANNEL)"'"';/g' \
-		-e 's/$$OC_Build.*$$/$$OC_Build = '"'"$(_BUILD)"'"';/g' \
-		$(dist_dir)/owncloud/version.php
+	# Update version.php
+	$(call replace_version,$@/version.php)
 
 $(dist_dir)/owncloud-core.tar.bz2: $(dist_dir)/owncloud
 	cd $(dist_dir) && tar cjf owncloud-core.tar.bz2 owncloud --format=gnu
@@ -289,28 +305,10 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(c
 	cp -R $(core_all_src) $@
 	cp -R $(core_test_dirs) $@
 	cp -R config/config.sample.php $@/config
-	find $@ -name .gitkeep -delete
-	find $@ -name .gitignore -delete
-	find $@ -name no-php -delete
-	rm -Rf $@/core/vendor/*/{.bower.json,bower.json,package.json,testem.json}
-	find $@/{core/,l10n/} -iname \*.sh -delete
-	find $@/{apps/,lib/composer/,core/vendor/} \( \
-		-name test -o \
-		-name examples -o \
-		-name demo -o \
-		-name demos -o \
-		-name doc -o \
-		-name travis -o \
-		-iname \*.sh \
-		\) -print | xargs rm -Rf
-	find $@/{apps/,lib/composer/} -iname \*.exe -delete
-	# Set build
-	$(eval _BUILD="$(shell date -u --iso-8601=seconds) $(shell git rev-parse HEAD)")
-	# Replace channel in version.php
-	sed -i \
-		-e 's/$$OC_Channel.*$$/$$OC_Channel = '"'"$(RELEASE_CHANNEL)"'"';/g' \
-		-e 's/$$OC_Build.*$$/$$OC_Build = '"'"$(_BUILD)"'"';/g' \
-		$(dist_dir)/qa/owncloud/version.php
+	# Clear unwanted files
+	$(call clean_unwanted,$@)
+	# Update version.php
+	$(call replace_version,$@/version.php)
 
 $(dist_dir)/owncloud-qa-core.tar.bz2: $(dist_dir)/qa/owncloud
 	cd $(dist_dir)/qa && tar cjf owncloud-qa-core.tar.bz2 owncloud --format=gnu
