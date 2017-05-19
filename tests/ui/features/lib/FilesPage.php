@@ -99,6 +99,18 @@ class FilesPage extends OwnCloudPage
 	}
 
 	/**
+	 * returns the tooltip that is displayed next to the filename if something is wrong
+	 * @param string $fileName
+	 * @param Session $session
+	 * @return string
+	 */
+	public function getTooltipOfFile ($fileName, Session $session)
+	{
+		$fileRow=$this->findFileRowByName($fileName, $session);
+		return $fileRow->find("xpath", $this->fileTooltipXpath)->getText();
+	}
+	
+	/**
 	 * same as the original open() function but with a more slack
 	 * URL verification as oC adds some extra parameters to the URL e.g.
 	 * "files/?dir=/&fileid=2"
