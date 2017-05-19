@@ -97,16 +97,16 @@
 
 /* hover effect for app switcher label */
 .header-appname-container .header-appname,
-.menutoggle .caret {
+.menutoggle .icon-caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
 	opacity: .75;
 }
 .menutoggle:hover .header-appname,
-.menutoggle:hover .caret,
+.menutoggle:hover .icon-caret,
 .menutoggle:focus .header-appname,
-.menutoggle:focus .caret,
+.menutoggle:focus .icon-caret,
 .menutoggle.active .header-appname,
-.menutoggle.active .caret {
+.menutoggle.active .icon-caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	opacity: 1;
 }
@@ -123,19 +123,23 @@
 	padding: 7px 0 7px 5px;
 	vertical-align: middle;
 }
-/* show caret indicator next to logo to make clear it is tappable */
-#header .caret {
-	width: 10px;
-	height: 10px;
-	margin: -21px 0 0 3px;
+
+#header .icon-caret {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	padding: 0;
 	vertical-align: middle;
 }
-/* do not show menu toggle on public share links as there is no menu */
-#body-public #header .caret {
-	display: none;
+
+#header .header-appname-container .icon-caret {
+	margin: -21px 0 0;
 }
 
-
+/* do not show menu toggle on public share links as there is no menu */
+#body-public #header .icon-caret {
+	display: none;
+}
 
 /* NAVIGATION --------------------------------------------------------------- */
 
