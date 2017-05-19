@@ -46,7 +46,7 @@ class FilesPage extends OwnCloudPage
 	protected $fileNamesXpath = "//span[@class='nametext']";
 	protected $fileRowFromNameXpath = "/../../..";
 	protected $fileActionXpath = "//a[@data-action='%s']";
-	protected $fileRenameInputXpath = "//*[@class='filename']";
+	protected $fileRenameInputXpath = "//input[contains(@class,'filename')]";
 	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
 	protected $appContentId ="app-content";
 	protected $renameActionLabel = "Rename";
