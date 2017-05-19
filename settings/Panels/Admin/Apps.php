@@ -45,7 +45,6 @@ class Apps implements ISettings {
 
 	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/admin/apps');
-		$tmpl->assign('appstoreEnabled', $this->config->getSystemValue('appstoreenabled', true));
 		return $tmpl;
 	}
 

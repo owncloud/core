@@ -1,6 +1,5 @@
 <?php
 $CONFIG = [
-	'appstoreenabled' => false,
 	'apps_paths' => [
 		[
 			'path'		=> OC::$SERVERROOT . '/apps',

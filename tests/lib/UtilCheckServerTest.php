@@ -23,7 +23,6 @@ class UtilCheckServerTest extends \Test\TestCase {
 	 */
 	protected function getConfig($systemOptions) {
 		$systemOptions['datadirectory'] = $this->datadir;
-		$systemOptions['appstoreenabled'] = false; //it's likely that there is no app folder we can write in
 		$config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()
 			->getMock();

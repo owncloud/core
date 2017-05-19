@@ -406,20 +406,7 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getCurlVersion')
 			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.1c']));
-		$this->assertSame('cURL is using an outdated OpenSSL version (OpenSSL/1.0.1c). Please update your operating system or features such as installing and updating apps via the app store or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
-	}
-
-	public function testIsUsedTlsLibOutdatedWithOlderOpenSslAndWithoutAppstore() {
-		$this->config
-			->expects($this->at(0))
-			->method('getSystemValue')
-			->with('has_internet_connection', true)
-			->will($this->returnValue(true));
-		$this->checkSetupController
-			->expects($this->once())
-			->method('getCurlVersion')
-			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.1c']));
-		$this->assertSame('cURL is using an outdated OpenSSL version (OpenSSL/1.0.1c). Please update your operating system or features such as Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
+		$this->assertSame('cURL is using an outdated OpenSSL version (OpenSSL/1.0.1c). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithOlderOpenSsl1() {
@@ -430,7 +417,7 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getCurlVersion')
 			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.2a']));
-		$this->assertSame('cURL is using an outdated OpenSSL version (OpenSSL/1.0.2a). Please update your operating system or features such as installing and updating apps via the app store or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
+		$this->assertSame('cURL is using an outdated OpenSSL version (OpenSSL/1.0.2a). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithMatchingOpenSslVersion() {
@@ -485,7 +472,7 @@ class CheckSetupControllerTest extends TestCase {
 			->method('newClient')
 			->will($this->returnValue($client));
 
-		$this->assertSame('cURL is using an outdated NSS version (NSS/1.0.2b). Please update your operating system or features such as installing and updating apps via the app store or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
+		$this->assertSame('cURL is using an outdated NSS version (NSS/1.0.2b). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 
@@ -532,11 +519,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingEnabled() {
-		// Appstore is disabled by default in EE
-		$appStoreDefault = false;
-		if (\OC_Util::getEditionString() === \OC_Util::EDITION_COMMUNITY) {
-			$appStoreDefault = true;
-		}
 
 		$this->config
 			->expects($this->at(0))
@@ -545,16 +527,11 @@ class CheckSetupControllerTest extends TestCase {
 			->will($this->returnValue(true));
 		$this->config
 			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('appstoreenabled', $appStoreDefault)
-			->will($this->returnValue(false));
-		$this->config
-			->expects($this->at(2))
 			->method('getAppValue')
 			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')
 			->will($this->returnValue('no'));
 		$this->config
-			->expects($this->at(3))
+			->expects($this->at(2))
 			->method('getAppValue')
 			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
 			->will($this->returnValue('yes'));
@@ -567,11 +544,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingDisabled() {
-		// Appstore is disabled by default in EE
-		$appStoreDefault = false;
-		if (\OC_Util::getEditionString() === \OC_Util::EDITION_COMMUNITY) {
-			$appStoreDefault = true;
-		}
 
 		$this->config
 			->expects($this->at(0))
@@ -580,16 +552,11 @@ class CheckSetupControllerTest extends TestCase {
 			->will($this->returnValue(true));
 		$this->config
 			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('appstoreenabled', $appStoreDefault)
-			->will($this->returnValue(false));
-		$this->config
-			->expects($this->at(2))
 			->method('getAppValue')
 			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')
 			->will($this->returnValue('no'));
 		$this->config
-			->expects($this->at(3))
+			->expects($this->at(2))
 			->method('getAppValue')
 			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
 			->will($this->returnValue('no'));
