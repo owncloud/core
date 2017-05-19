@@ -316,6 +316,9 @@ class AppManager implements IAppManager {
 	 */
 	public function getAppInfo($appId) {
 		$appInfo = \OC_App::getAppInfo($appId);
+		if ($appInfo === null) {
+			return null;
+		}
 		if (!isset($appInfo['version'])) {
 			// read version from separate file
 			$appInfo['version'] = \OC_App::getAppVersion($appId);
@@ -379,7 +382,7 @@ class AppManager implements IAppManager {
 
 	/**
 	 * @param string $package package path
-	 * @param bool whether to skip migrations, which would only install the code
+	 * @param bool $skipMigrations whether to skip migrations, which would only install the code
 	 * @return string|false app id or false in case of error
 	 * @since 10.0
 	 */
