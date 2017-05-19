@@ -716,7 +716,7 @@ class Storage {
 
 			$softQuota = true;
 			$quota = $user->getQuota();
-			if ( $quota === null || $quota === 'none' ) {
+			if ($quota === \OCP\Files\FileInfo::SPACE_UNLIMITED) {
 				$quota = Filesystem::free_space('/');
 				$softQuota = false;
 			} else {
