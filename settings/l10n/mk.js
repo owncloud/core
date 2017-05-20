@@ -163,6 +163,7 @@ OC.L10N.register(
     "Personal" : "Лично",
     "Admin" : "Админ",
     "Error" : "Грешка",
+    "E-Mail" : "E-Mail",
     "Create" : "Создај",
     "Admin Recovery Password" : "Обновување на Admin лозинката",
     "Add Group" : "Додади група",
