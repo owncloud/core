@@ -196,6 +196,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Excluye grupos de compartir",
     "These groups will still be able to receive shares, but not to initiate them." : "Estos grupos aún podrán recibir contenidos compartidos, pero no podrán, pero no podrán iniciarlos.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Permitir autocompletación del nombre de usuario en diálogos de compartición. Si está deshabilitado, se requiere introducir el nombre de usuario.",
+    "Restrict enumeration to group members" : "Restringir enumeración a miembros del grupo",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Todo (Información, Avisos, Errores, debug y problemas fatales)",
     "Info, warnings, errors and fatal issues" : "Información, Avisos, Errores y problemas fatales",
     "Warnings, errors and fatal issues" : "Advertencias, errores y problemas fatales",
