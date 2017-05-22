@@ -21,7 +21,6 @@ Feature: renameFolders
 		|from_name           |to_name               |
 		|"strängé नेपाली folder"|"strängé नेपाली folder-2"|
 		|"'single'quotes"    |"single-quotes"       |
-		|'"double"quotes'    |'double-quotes'       |
 
 	Scenario: Rename a folder using forbidden characters
 		When I rename the folder "simple-folder" to one of these names

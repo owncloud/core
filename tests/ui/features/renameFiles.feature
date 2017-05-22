@@ -22,7 +22,6 @@ Feature: renameFiles
 		|from_name                            |to_name                              |
 		|"strängé filename (duplicate #2).txt"|"strängé filename (duplicate #3).txt"|
 		|"'single'quotes.txt"                 |"single-quotes.txt"                  |
-		|'"double"quotes.txt'                 |'double-quotes.txt'                  |
 
 	Scenario: Rename a file using special characters check its existence after page reload
 		When I rename the file "lorem.txt" to "लोरेम।तयक्स्त $%&"
