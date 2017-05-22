@@ -56,10 +56,11 @@ class Jail extends Wrapper {
 			throw new \InvalidArgumentException('Jail rootPath is null');
 		}
 		if ($path === '') {
-			return $this->rootPath;
+			$fullPath = $this->rootPath;
 		} else {
-			return $this->rootPath . '/' . $path;
+			$fullPath = $this->rootPath . '/' . $path;
 		}
+		return $this->getWrapperStorage()->getSourcePath($fullPath);
 	}
 
 	public function getId() {
