@@ -96,6 +96,7 @@ OC.L10N.register(
     "Set expiration date" : "Establecer fecha de caducidad",
     "Expiration" : "Caducidad",
     "Expiration date" : "Fecha de caducidad",
+    "Remove link" : "Eliminar enlace",
     "Link" : "Enlace",
     "Edit" : "Editar",
     "Remove" : "Borrar",
