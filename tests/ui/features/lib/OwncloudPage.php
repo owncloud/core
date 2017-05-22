@@ -41,13 +41,38 @@ class OwncloudPage extends Page
 				break;
 			}
 
-			sleep(1);
+			usleep(100000);
 		}
 
 	}
 
+	/**
+	 *
+	 * @param string $xpath
+	 * @param int $timeout
+	 */
+	public function waitTillElementIsNull ($xpath, $timeout=10)
+	{
+		for ($counter = 0; $counter <= $timeout; $counter ++) {
+			$element = $this->find("xpath",$xpath);
+			if ($element === null) {
+				break;
+			}
+			usleep(100000);
+		}
+	}
+
 	public function getNotificationText() {
 		return $this->findById("notification")->getText();
+	}
+
+	public function getNotifications() {
+		$notificationsText=array();
+		$notifications=$this->findById("notification");
+		foreach ($notifications->findAll("xpath", "div") as $notification) {
+			array_push($notificationsText, $notification->getText());
+		}
+		return $notificationsText;
 	}
 
 	/**
