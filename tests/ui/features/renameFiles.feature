@@ -22,12 +22,17 @@ Feature: renameFiles
 		|from_name                            |to_name                              |
 		|"strängé filename (duplicate #2).txt"|"strängé filename (duplicate #3).txt"|
 		|"'single'quotes.txt"                 |"single-quotes.txt"                  |
-		|'"double"quotes.txt'                 |'double-quotes.txt'                  |
 
 	Scenario: Rename a file using special characters and check its existence after page reload
 		When I rename the file "lorem.txt" to "लोरेम।तयक्स्त $%&"
 		And the page is reloaded
 		Then the file "लोरेम।तयक्स्त $%&" should be listed
+		When I rename the file "लोरेम।तयक्स्त $%&" to '"double"quotes.txt'
+		And the page is reloaded
+		Then the file '"double"quotes.txt' should be listed
+		When I rename the file '"double"quotes.txt' to "no-double-quotes.txt"
+		And the page is reloaded
+		Then the file "no-double-quotes.txt" should be listed
 
 	Scenario: Rename a file using forbidden characters
 		When I rename the file "data.zip" to one of these names

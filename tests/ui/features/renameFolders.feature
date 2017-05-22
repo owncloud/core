@@ -12,7 +12,7 @@ Feature: renameFolders
 		|to_folder_name|
 		|'सिमप्ले फोल्देर'    |
 		|'"quotes1"'   |
-		|"'quotes2'"   |		
+		|"'quotes2'"   |
 
 	Scenario Outline: Rename a folder that has special characters in its name
 		When I rename the folder <from_name> to <to_name>
@@ -21,7 +21,17 @@ Feature: renameFolders
 		|from_name           |to_name               |
 		|"strängé नेपाली folder"|"strängé नेपाली folder-2"|
 		|"'single'quotes"    |"single-quotes"       |
-		|'"double"quotes'    |'double-quotes'       |
+
+	Scenario: Rename a folder using special characters and check its existence after page reload
+		When I rename the folder "simple-folder" to "लोरेम।तयक्स्त $%&"
+		And the page is reloaded
+		Then the folder "लोरेम।तयक्स्त $%&" should be listed
+		When I rename the folder "लोरेम।तयक्स्त $%&" to '"double"quotes'
+		And the page is reloaded
+		Then the folder '"double"quotes' should be listed
+		When I rename the folder '"double"quotes' to "no-double-quotes"
+		And the page is reloaded
+		Then the folder "no-double-quotes" should be listed
 
 	Scenario: Rename a folder using forbidden characters
 		When I rename the folder "simple-folder" to one of these names
