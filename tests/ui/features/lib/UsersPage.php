@@ -58,9 +58,8 @@ class UsersPage extends OwncloudPage
 	{
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
-
 		$selectField = $selectField->find(
-			'xpath', "//option[@selected='selected']"
+			'xpath', "//option[@value='".$selectField->getValue()."']"
 		);
 
 		return $selectField->getText();
