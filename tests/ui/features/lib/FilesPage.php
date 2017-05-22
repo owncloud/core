@@ -153,7 +153,7 @@ class FilesPage extends OwnCloudPage
 			if (count($fileNameSpans) > $numberOfFilesOld) {
 				break;
 			}
-			sleep(1);
+			usleep(100000);
 		}
 	}
 
@@ -225,7 +225,7 @@ class FilesPage extends OwnCloudPage
 				$this->emptyContentXpath)->hasClass("hidden"))) {
 				break;
 			}
-			sleep(1);
+			usleep(100000);
 		}
 	}
 

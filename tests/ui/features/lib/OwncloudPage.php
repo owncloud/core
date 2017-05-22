@@ -41,7 +41,7 @@ class OwncloudPage extends Page
 				break;
 			}
 
-			sleep(1);
+			usleep(100000);
 		}
 
 	}
@@ -58,7 +58,7 @@ class OwncloudPage extends Page
 			if ($element === null) {
 				break;
 			}
-			sleep(1);
+			usleep(100000);
 		}
 	}
 

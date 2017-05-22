@@ -128,14 +128,15 @@ trait BasicStructure
 		return $this->createdUserNames;
 	}
 	
-	public function waitForOutstandingAjaxCalls ($time = 5000)
+	public function waitForOutstandingAjaxCalls ($time_msec = 5000)
 	{
-		for($counter=0;$counter<=($time/1000);$counter++) {
+		for($counter=0;$counter<=($time_msec);$counter+=100) {
 			try {
 				$this->getSession()->wait($time, "(typeof jQuery != 'undefined' && (0 === jQuery.active))");
 				break;
 			} catch (Exception $e) {
-				sleep(1);
+				// Sleep 100msec = 100000 nanosec
+				usleep(100000);
 			}
 		}
 	}
