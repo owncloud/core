@@ -24,9 +24,16 @@ Feature: renameFiles
 		|"'single'quotes.txt"                 |"single-quotes.txt"                  |
 
 	Scenario: Rename a file using special characters check its existence after page reload
-		When I rename the file "lorem.txt" to "लोरेम।तयक्स्त $%&"
+		When I rename the file <from_name> to <to_name>
+		|from_name            |to_name                |
+		|"lorem.txt"          |"लोरेम।तयक्स्त $%&" |
+		|"लोरेम।तयक्स्त $%&" |'"double"quotes.txt'   |
+		|'"double"quotes.txt' |"no-double-quotes.txt" |
 		And the page is reloaded
-		Then the file "लोरेम।तयक्स्त $%&" should be listed
+		Then the file <to_name> should be listed
+		|"लोरेम।तयक्स्त $%&" |
+		|'"double"quotes.txt' |
+		|"no-double-quotes.txt" |
 
 	Scenario: Rename a file using forbidden characters
 		When I rename the file "data.zip" to one of these names
