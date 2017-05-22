@@ -135,58 +135,16 @@ class ManagerTest extends TestCase {
 
 	public function testFind() {
 		$a0 = new Account();
-		$a0->setUserId('afoo');
+		$a0->setUserId('foo');
 		$a1 = new Account();
-		$a1->setUserId('foo');
+		$a1->setUserId('foob');
 		$this->accountMapper->expects($this->once())->method('find')
 			->with('fo')->willReturn([$a0, $a1]);
 		$result = $this->manager->find('fo');
 		$this->assertEquals(2, count($result));
-		$this->assertEquals('afoo', array_shift($result)->getUID());
 		$this->assertEquals('foo', array_shift($result)->getUID());
+		$this->assertEquals('foob', array_shift($result)->getUID());
 	}
-
-	public function testFindWithLimit() {
-		$a0 = new Account();
-		$a0->setUserId('afoo');
-		$a1 = new Account();
-		$a1->setUserId('foo');
-		$this->accountMapper->expects($this->once())->method('find')
-			->with('fo', 1)->willReturn([$a0]);
-		$result = $this->manager->find('fo', 1);
-		$this->assertEquals(1, count($result));
-		$this->assertEquals('afoo', array_shift($result)->getUID());
-	}
-
-	public function testFindWithDisplayName() {
-		$a0 = new Account();
-		$a0->setUserId('afoo');
-		$a0->setDisplayName('display1');
-		$a1 = new Account();
-		$a1->setUserId('foo');
-		$a0->setDisplayName('display2');
-		$this->accountMapper->expects($this->once())->method('find')
-			->with('display2')->willReturn([$a1]);
-		$result = $this->manager->find('display2');
-		$this->assertEquals(1, count($result));
-		$this->assertEquals('foo', array_shift($result)->getUID());
-	}
-
-	public function testFindWithEmail() {
-		$a0 = new Account();
-		$a0->setUserId('afoo');
-		$a0->setEmail('test@test.com');
-		$a1 = new Account();
-		$a1->setUserId('foo');
-		$a0->setEmail('test2@test.com');
-		$this->accountMapper->expects($this->once())->method('find')
-			->with('@test.com')->willReturn([$a0, $a1]);
-		$result = $this->manager->find('@test.com');
-		$this->assertEquals(2, count($result));
-		$this->assertEquals('afoo', array_shift($result)->getUID());
-		$this->assertEquals('foo', array_shift($result)->getUID());
-	}
-
 
 	public function testSearch() {
 		$a0 = new Account();

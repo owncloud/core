@@ -148,11 +148,11 @@ class AccountMapper extends Mapper {
 	 * @param integer $offset
 	 * @return Account[]
 	 */
-	public function find($pattern, $limit, $offset) {
+	public function find($pattern, $limit = null, $offset = null) {
 		$lowerPattern = strtolower($pattern);
 		$qb = $this->db->getQueryBuilder();
-		$qb->select(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
-			->selectAlias('a.id', 'id')
+		$qb->selectAlias('DISTINCT a.id', 'id')
+			->addSelect(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
 			->orderBy('display_name')
@@ -160,7 +160,6 @@ class AccountMapper extends Mapper {
 			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter($this->db->escapeLikeParameter($pattern) . '%')))
 			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter($this->db->escapeLikeParameter($pattern) . '%')))
 			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter($this->db->escapeLikeParameter($lowerPattern) . '%')));
-
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
