@@ -49,6 +49,7 @@ use OC\App\InfoParser;
 use OC\App\Platform;
 use OC\Installer;
 use OC\Repair;
+use OC\HintException;
 
 /**
  * This class manages the apps. It allows them to register and integrate in the
@@ -214,8 +215,10 @@ class OC_App {
 			\OC::$server->getLogger()->logException($ex);
 			$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
 			if (!in_array($app, $blacklist)) {
+				\OC::$server->getLogger()->warning('Could not load app "' . $app . '", it will be disabled', array('app' => 'core'));
 				self::disable($app);
 			}
+			throw $ex;
 		}
 	}
 
