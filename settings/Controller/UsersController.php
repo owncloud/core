@@ -263,7 +263,7 @@ class UsersController extends Controller {
 	 * @param int $offset
 	 * @param int $limit
 	 * @param string $gid GID to filter for
-	 * @param string $pattern Pattern to search for in the username
+	 * @param string $pattern Pattern to find in the account table (userid, displayname, email, additional search terms)
 	 * @param string $backend Backend to filter for (class-name)
 	 * @return DataResponse
 	 *
@@ -293,7 +293,7 @@ class UsersController extends Controller {
 			if($gid !== '') {
 				$batch = $this->getUsersForUID($this->groupManager->displayNamesInGroup($gid, $pattern, $limit, $offset));
 			} else {
-				$batch = $this->userManager->search($pattern, $limit, $offset);
+				$batch = $this->userManager->find($pattern, $limit, $offset);
 			}
 
 			foreach ($batch as $user) {
