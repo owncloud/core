@@ -23,16 +23,15 @@ Feature: renameFolders
 		|"'single'quotes"    |"single-quotes"       |
 
 	Scenario: Rename a folder using special characters and check its existence after page reload
-		When I rename the file <from_name> to <to_name>
-		|from_name            |to_name                |
-		|"simple-folder"          |"लोरेम।तयक्स्त $%&" |
-		|"लोरेम।तयक्स्त $%&" |'"double"quotes'   |
-		|'"double"quotes' |"no-double-quotes" |
+		When I rename the folder "simple-folder" to "लोरेम।तयक्स्त $%&"
 		And the page is reloaded
-		Then the file <to_name> should be listed
-		|"लोरेम।तयक्स्त $%&" |
-		|'"double"quotes' |
-		|"no-double-quotes" |
+		Then the folder "लोरेम।तयक्स्त $%&" should be listed
+		When I rename the folder "लोरेम।तयक्स्त $%&" to '"double"quotes'
+		And the page is reloaded
+		Then the folder '"double"quotes' should be listed
+		When I rename the folder '"double"quotes' to "no-double-quotes"
+		And the page is reloaded
+		Then the folder "no-double-quotes" should be listed
 
 	Scenario: Rename a folder using forbidden characters
 		When I rename the folder "simple-folder" to one of these names
