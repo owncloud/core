@@ -44,6 +44,7 @@ use OC\App\CodeChecker\PrivateCheck;
 use OC_App;
 use OC_DB;
 use OC_Helper;
+use OCP\App\AppAlreadyInstalledException;
 
 /**
  * This class provides the functionality needed to install, update and remove plugins/apps
@@ -221,6 +222,9 @@ class Installer {
 
 		if($currentDir !== false && is_writable($currentDir)) {
 			$basedir = $currentDir;
+		}
+		if(is_dir("$basedir/.git")) {
+			throw new AppAlreadyInstalledException("App <{$info['id']}> is a git clone - it will not be updated.");
 		}
 		if(is_dir($basedir)) {
 			OC_Helper::rmdirr($basedir);
