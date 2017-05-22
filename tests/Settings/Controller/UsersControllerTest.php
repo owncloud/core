@@ -620,7 +620,7 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$this->container['UserManager']
 			->expects($this->once())
-			->method('search')
+			->method('find')
 			->with('pattern', 10, 0)
 			->will($this->returnValue([$foo, $admin, $bar]));
 		$this->container['GroupManager']
@@ -733,7 +733,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('clearBackends');
 		$this->container['UserManager']
 			->expects($this->once())
-			->method('search')
+			->method('find')
 			->with('')
 			->will($this->returnValue([$user]));
 
@@ -779,7 +779,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue([new \OC\User\Database()]));
 		$this->container['UserManager']
 			->expects($this->once())
-			->method('search')
+			->method('find')
 			->with('')
 			->will($this->returnValue([]));
 
