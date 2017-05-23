@@ -391,10 +391,6 @@ class AppManager implements IAppManager {
 			'source' => 'local',
 			'path' => $package
 		]);
-		if (!$skipMigrations && $appId !== false) {
-			// HACK: this will run the migration and related code
-			Installer::installShippedApp($appId);
-		}
 		return $appId;
 	}
 
