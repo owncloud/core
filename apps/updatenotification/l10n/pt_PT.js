@@ -5,7 +5,7 @@ OC.L10N.register(
     "{version} is available. Get more information on how to update." : "{version} está disponível. Obtenha mais informação sobre como atualizar.",
     "Updated channel" : "Canal atualizado",
     "ownCloud core" : "ownCloud Core",
-    "Update for %1$s to version %2$s is available." : "Está disponível uma atualização para %1$s para a versão %2$s.",
+    "Update for %1$s to version %2$s is available." : "Está disponível uma atualização para %1$s, para a versão %2$s.",
     "Updater" : "Atualizador",
     "A new version is available: %s" : "Está disponível uma nova versão: %s",
     "Open updater" : "Abrir atualizador",

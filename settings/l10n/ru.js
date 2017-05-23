@@ -196,6 +196,7 @@ OC.L10N.register(
     "Exclude groups from sharing" : "Исключить группы из общего доступа",
     "These groups will still be able to receive shares, but not to initiate them." : "Эти группы смогут получать общие ресурсы, но не могут их создавать.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Включить автоматическое завершение имен пользователей в окне общего доступа. Если отключено, то необходимо вводить полное имя вручную.",
+    "Restrict enumeration to group members" : "Ограничить перечисление членами группы",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Все (критические проблемы, ошибки, предупреждения, информационные, отладочные)",
     "Info, warnings, errors and fatal issues" : "Информационные, предупреждения, ошибки и критические проблемы",
     "Warnings, errors and fatal issues" : "Предупреждения, ошибки и критические проблемы",

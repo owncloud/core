@@ -20,6 +20,8 @@ OC.L10N.register(
     "Saved" : "Zapisano",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "Wyłączenie zewnętrznych zasobów danych odłączy wszystkie zewnętrzne zasoby aktualnych użytkowników. Czy na pewno chcesz kontynuować?",
     "Disable external storage" : "Wyłącz zewnętrzne zasoby",
+    "Empty response from the server" : "Otrzymano pustą odpowiedź z serwera",
+    "External mount error" : "Błąd zewnętrznego montowania",
     "Username" : "Nazwa użytkownika",
     "Password" : "Hasło",
     "Credentials required" : "Wymagane poświadczenia",
