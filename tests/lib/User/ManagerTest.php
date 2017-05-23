@@ -274,4 +274,10 @@ class ManagerTest extends TestCase {
 		$user3->delete();
 		$user4->delete();
 	}
+	
+	public function testNullUidMakesNoQueryToAccountsTable() {
+		// migration from versions below 10.0. accounts table hasn't been created yet.
+		$this->accountMapper->expects($this->never())->method('getByUid');
+		$this->assertNull($this->manager->get(null));
+	}
 }
