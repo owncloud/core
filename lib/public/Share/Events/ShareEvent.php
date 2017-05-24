@@ -24,6 +24,12 @@ namespace OCP\Share\Events;
 
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class ShareEvent
+ *
+ * @package OCP\Share\Events
+ * @since 10.0.2
+ */
 class ShareEvent extends Event {
 
 	// TODO when the sharing code uses a Share entity use that instead of an array
@@ -36,6 +42,7 @@ class ShareEvent extends Event {
 
 	/**
 	 * @return array
+	 * @since 10.0.2
 	 */
 	public function getShare() {
 		return $this->share;
@@ -43,6 +50,7 @@ class ShareEvent extends Event {
 
 	/**
 	 * @return string url
+	 * @since 10.0.2
 	 */
 	public function getRemote() {
 		return $this->share['remote'];
@@ -50,6 +58,7 @@ class ShareEvent extends Event {
 
 	/**
 	 * @return int
+	 * @since 10.0.2
 	 */
 	public function getRemoteId() {
 		return (int)$this->share['remote_id'];
@@ -57,6 +66,7 @@ class ShareEvent extends Event {
 
 	/**
 	 * @return string
+	 * @since 10.0.2
 	 */
 	public function getShareToken() {
 		return $this->share['share_token'];

@@ -21,5 +21,10 @@
 
 namespace OCP\Share\Events;
 
-
+/**
+ * Class AcceptShare
+ *
+ * @package OCP\Share\Events
+ * @since 10.0.2
+ */
 class AcceptShare extends ShareEvent {}
