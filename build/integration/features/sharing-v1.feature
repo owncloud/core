@@ -1109,3 +1109,21 @@ Feature: sharing
     Then the OCS status code should be "404"
     And the HTTP status code should be "200"
 
+  Scenario: User's own shares reshared to him doesn't appear when getting shared with me shares
+    Given As an "admin"
+    And user "user0" exists
+    And user "user1" exists
+    And group "group0" exists
+    And user "user0" belongs to group "group0"
+    And user "user0" created a folder "/shared"
+    And As an "user0"
+    And User "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And folder "/shared" of user "user0" is shared with user "user1"
+    And As an "user1"
+    And folder "/shared" of user "user1" is shared with group "group0"
+    And As an "user0"
+    When sending "GET" to "/apps/files_sharing/api/v1/shares?shared_with_me=true"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And last share_id is not included in the answer
+
