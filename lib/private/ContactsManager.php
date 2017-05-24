@@ -41,7 +41,7 @@ namespace OC {
 		 * @param int $offset
 		 * @return array an array of contacts which are arrays of key-value-pairs
 		 */
-		public function search($pattern, $searchProperties = [], $options = [], $limit = null, $offset = null) {
+		public function search($pattern, $searchProperties = [], $options = [], $limit = 100, $offset = 0) {
 			$this->loadAddressBooks();
 			$result = [];
 			foreach($this->addressBooks as $addressBook) {
