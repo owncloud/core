@@ -102,10 +102,10 @@ class AddressBookImplTest extends TestCase {
 			->getMock();
 
 		$pattern = 'pattern';
-		$searchProperties = 'properties';
+		$searchProperties = ['properties'];
 
 		$this->backend->expects($this->once())->method('search')
-			->with($this->addressBookInfo['id'], $pattern, $searchProperties)
+			->with($this->addressBookInfo['id'], $pattern, $searchProperties, 10, 0)
 			->willReturn(
 				[
 					['uri' => 'foo.vcf', 'carddata' => 'cardData1'],
@@ -121,7 +121,7 @@ class AddressBookImplTest extends TestCase {
 				['bar.vcf', $this->vCard]
 			)->willReturn('vCard');
 
-		$result = $addressBookImpl->search($pattern, $searchProperties, []);
+		$result = $addressBookImpl->search($pattern, $searchProperties, [], 10, 0);
 		$this->assertTrue((is_array($result)));
 		$this->assertSame(2, count($result));
 	}
