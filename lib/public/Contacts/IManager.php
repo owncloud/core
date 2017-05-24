@@ -92,10 +92,12 @@ namespace OCP\Contacts {
 		 * @param string $pattern which should match within the $searchProperties
 		 * @param array $searchProperties defines the properties within the query pattern should match
 		 * @param array $options - for future use. One should always have options!
+		 * @param int $limit
+		 * @param int $offset
 		 * @return array an array of contacts which are arrays of key-value-pairs
 		 * @since 6.0.0
 		 */
-		function search($pattern, $searchProperties = [], $options = []);
+		function search($pattern, $searchProperties = [], $options = [], $limit = null, $offset = null);
 
 		/**
 		 * This function can be used to delete the contact identified by the given id
