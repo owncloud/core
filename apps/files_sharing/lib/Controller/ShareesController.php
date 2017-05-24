@@ -292,9 +292,12 @@ class ShareesController extends OCSController  {
 	protected function getRemote($search) {
 		$this->result['remotes'] = [];
 
+		// Fetch remote search properties from app config
+		$searchProperties = explode(',', $this->config->getAppValue('dav', 'remote_search_properties', 'CLOUD,FN'));
+
 		// Search in contacts
 		//@todo Pagination missing
-		$addressBookContacts = $this->contactsManager->search($search, ['CLOUD', 'FN']);
+		$addressBookContacts = $this->contactsManager->search($search, $searchProperties);
 		$foundRemoteById = false;
 		foreach ($addressBookContacts as $contact) {
 			if (isset($contact['isLocalSystemBook'])) {
