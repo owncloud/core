@@ -21,4 +21,10 @@
 
 namespace OCP\Share\Events;
 
+/**
+ * Class DeclineShare
+ *
+ * @package OCP\Share\Events
+ * @since 10.0.2
+ */
 class DeclineShare extends ShareEvent {}
