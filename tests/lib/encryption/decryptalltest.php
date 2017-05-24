@@ -26,6 +26,7 @@ namespace Test\Encryption;
 use OC\Encryption\DecryptAll;
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Manager;
+use OC\Files\FileInfo;
 use OC\Files\View;
 use OCP\IUserManager;
 use Test\TestCase;
@@ -220,6 +221,10 @@ class DecryptAllTest extends TestCase {
 	}
 
 	public function testDecryptUsersFiles() {
+		$storage = $this->getMockBuilder('OC\Files\Storage\Shared')
+			->disableOriginalConstructor()
+			->getMock();
+
 		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject  $instance */
 		$instance = $this->getMockBuilder('OC\Encryption\DecryptAll')
 			->setConstructorArgs(
@@ -235,15 +240,15 @@ class DecryptAllTest extends TestCase {
 		$this->view->expects($this->at(0))->method('getDirectoryContent')
 			->with('/user1/files')->willReturn(
 				[
-					['name' => 'foo', 'type'=>'dir'],
-					['name' => 'bar', 'type'=>'file'],
+					new FileInfo('path', $storage, 'intPath', ['name' => 'foo', 'type'=>'dir'], null),
+					new FileInfo('path', $storage, 'intPath', ['name' => 'bar', 'type'=>'file', 'encrypted'=>true], null)
 				]
 			);
 
 		$this->view->expects($this->at(3))->method('getDirectoryContent')
 			->with('/user1/files/foo')->willReturn(
 				[
-					['name' => 'subfile', 'type'=>'file']
+					new FileInfo('path', $storage, 'intPath', ['name' => 'subfile', 'type'=>'file', 'encrypted'=>true], null)
 				]
 			);
 
@@ -289,12 +294,12 @@ class DecryptAllTest extends TestCase {
 
 		$instance->expects($this->any())->method('getTimestamp')->willReturn(42);
 
-		$this->view->expects($this->once())
+		$this->view->expects($this->exactly(2))
 			->method('copy')
-			->with($path, $path . '.decrypted.42');
-		$this->view->expects($this->once())
-			->method('rename')
-			->with($path . '.decrypted.42', $path);
+			->withConsecutive(
+				[$path, $path . '.decrypted.42'],
+				[$path . '.decrypted.42', $path]
+			);
 
 		$this->assertTrue(
 			$this->invokePrivate($instance, 'decryptFile', [$path])
@@ -332,9 +337,9 @@ class DecryptAllTest extends TestCase {
 			->method('unlink')
 			->with($path . '.decrypted.42');
 
-		$this->assertFalse(
-			$this->invokePrivate($instance, 'decryptFile', [$path])
-		);
+		$this->setExpectedException('OC\Encryption\Exceptions\DecryptionFailedException');
+
+		$this->invokePrivate($instance, 'decryptFile', [$path]);
 	}
 
 }
