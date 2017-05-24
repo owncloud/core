@@ -466,7 +466,7 @@ class CardDavBackendTest extends TestCase {
 	 * @param array $properties
 	 * @param array $expected
 	 */
-	public function testSearch($pattern, $properties, $expected) {
+	public function testSearch($pattern, $properties, $expected, $limit, $offset) {
 		/** @var VCard $vCards */
 		$vCards = [];
 		$vCards[0] = new VCard();
@@ -529,7 +529,7 @@ class CardDavBackendTest extends TestCase {
 			);
 		$query->execute();
 
-		$result = $this->backend->search(0, $pattern, $properties);
+		$result = $this->backend->search(0, $pattern, $properties, $limit, $offset);
 
 		// check result
 		$this->assertSame(count($expected), count($result));
@@ -548,11 +548,13 @@ class CardDavBackendTest extends TestCase {
 
 	public function dataTestSearch() {
 		return [
-				['John', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]],
-				['M. Doe', ['FN'], [['uri1', 'John M. Doe']]],
-				['Do', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]],
-				'check if duplicates are handled correctly' => ['John', ['FN', 'CLOUD'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]],
-				'case insensitive' => ['john', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']]]
+				['John', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				['M. Doe', ['FN'], [['uri1', 'John M. Doe']], 100, 0],
+				['Do', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				'check if duplicates are handled correctly' => ['John', ['FN', 'CLOUD'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				'case insensitive' => ['john', ['FN'], [['uri0', 'John Doe'], ['uri1', 'John M. Doe']], 100, 0],
+				'search limit' => ['John', ['FN'], [['uri0', 'John Doe']], 1, 0],
+				'search offset' => ['John', ['FN'], [['uri1', 'John M. Doe']], 1, 1],
 		];
 	}
 
