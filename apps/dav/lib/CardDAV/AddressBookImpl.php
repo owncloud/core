@@ -86,11 +86,13 @@ class AddressBookImpl implements IAddressBook {
 	 * @param string $pattern which should match within the $searchProperties
 	 * @param array $searchProperties defines the properties within the query pattern should match
 	 * @param array $options - for future use. One should always have options!
+	 * @param int $limit
+	 * @param int $offset
 	 * @return array an array of contacts which are arrays of key-value-pairs
 	 * @since 5.0.0
 	 */
-	public function search($pattern, $searchProperties, $options) {
-		$results = $this->backend->search($this->getKey(), $pattern, $searchProperties);
+	public function search($pattern, $searchProperties, $options, $limit, $offset) {
+		$results = $this->backend->search($this->getKey(), $pattern, $searchProperties, $limit, $offset);
 
 		$vCards = [];
 		foreach ($results as $result) {
