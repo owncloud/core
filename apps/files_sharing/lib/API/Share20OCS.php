@@ -30,7 +30,7 @@ use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Files\IRootFolder;
 use OCP\Lock\LockedException;
-use OCP\Share;
+use OCP\Share\IShare;
 use OCP\Share\IManager;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\Exceptions\GenericShareException;
@@ -424,6 +424,10 @@ class Share20OCS {
 		$groupShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0);
 
 		$shares = array_merge($userShares, $groupShares);
+
+		$shares = array_filter($shares, function(IShare $share) {
+			return $share->getShareOwner() !== $this->currentUser->getUID();
+ 		});
 
 		$formatted = [];
 		foreach ($shares as $share) {
