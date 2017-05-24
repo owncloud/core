@@ -1291,7 +1291,7 @@ Feature: sharing
 		And user "user0" exists
 		And user "user1" exists
 		And group "group0" exists
-		And user "user1" belongs to group "group0"
+		And user "user0" belongs to group "group0"
 		And user "user0" created a folder "/shared"
 		And As an "user0"
 		And User "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
