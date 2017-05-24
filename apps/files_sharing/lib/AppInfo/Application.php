@@ -2,6 +2,7 @@
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
@@ -26,7 +27,6 @@
 
 namespace OCA\Files_Sharing\AppInfo;
 
-use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\MountProvider;
 use OCP\AppFramework\App;
 use OC\AppFramework\Utility\SimpleContainer;
@@ -34,7 +34,6 @@ use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use \OCP\IContainer;
-use OCA\Files_Sharing\Capabilities;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
@@ -47,7 +46,6 @@ class Application extends App {
 		 * Controllers
 		 */
 		$container->registerService('ShareController', function (SimpleContainer $c) use ($server) {
-			$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
 			return new ShareController(
 				$c->query('AppName'),
 				$c->query('Request'),
@@ -59,8 +57,7 @@ class Application extends App {
 				$server->getShareManager(),
 				$server->getSession(),
 				$server->getPreviewManager(),
-				$server->getRootFolder(),
-				$federatedSharingApp->getFederatedShareProvider()
+				$server->getRootFolder()
 			);
 		});
 		$container->registerService('ExternalSharesController', function (SimpleContainer $c) {
@@ -81,17 +78,12 @@ class Application extends App {
 		$container->registerService('ExternalManager', function (SimpleContainer $c) use ($server) {
 			$user = $server->getUserSession()->getUser();
 			$uid = $user ? $user->getUID() : null;
-			$discoveryManager = new DiscoveryManager(
-				\OC::$server->getMemCacheFactory(),
-				\OC::$server->getHTTPClientService()
-			);
 			return new \OCA\Files_Sharing\External\Manager(
 				$server->getDatabaseConnection(),
 				\OC\Files\Filesystem::getMountManager(),
 				\OC\Files\Filesystem::getLoader(),
-				$server->getHTTPHelper(),
 				$server->getNotificationManager(),
-				$discoveryManager,
+				$server->getEventDispatcher(),
 				$uid
 			);
 		});
