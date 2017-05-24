@@ -277,7 +277,7 @@ class Sharees {
 		$searchProperties = explode(',', $this->config->getAppValue('dav', 'remote_search_properties', 'CLOUD,FN'));
 
 		// Search in contacts
-		$addressBookContacts = $this->contactsManager->search($search, $searchProperties, $this->limit, $this->offset);
+		$addressBookContacts = $this->contactsManager->search($search, $searchProperties, [], $this->limit, $this->offset);
 		$foundRemoteById = false;
 		foreach ($addressBookContacts as $contact) {
 			if (isset($contact['isLocalSystemBook'])) {
