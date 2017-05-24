@@ -126,7 +126,7 @@ class Installer {
 		OC_Helper::rmdirr($extractDir);
 
 		//install the database
-		if (isset($appData['use-migrations']) && $appData['use-migrations'] === 'true') {
+		if (isset($info['use-migrations']) && $info['use-migrations'] === 'true') {
 			$ms = new \OC\DB\MigrationService($appId, \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		} else {
