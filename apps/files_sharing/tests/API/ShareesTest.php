@@ -1259,6 +1259,11 @@ class ShareesTest extends TestCase {
 			$this->invokePrivate($this->sharees, 'result', [$result]);
 		}
 
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->with('dav', 'remote_search_properties')
+			->willReturn('CLOUD,FN');
+
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->contactsManager->expects($this->any())
 			->method('search')
