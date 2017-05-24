@@ -4,6 +4,7 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Piotr Filiciak <piotr@filiciak.pl>
@@ -34,7 +35,6 @@ namespace OCA\Files_Sharing\Controllers;
 use OC;
 use OC_Files;
 use OC_Util;
-use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCP;
 use OCP\Template;
 use OCP\Share;
@@ -49,8 +49,6 @@ use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\ISession;
 use OCP\IPreview;
-use OCA\Files_Sharing\Helper;
-use OCP\Util;
 use OCA\Files_Sharing\Activity;
 use \OCP\Files\NotFoundException;
 use OCP\Files\IRootFolder;
@@ -81,8 +79,6 @@ class ShareController extends Controller {
 	protected $previewManager;
 	/** @var IRootFolder */
 	protected $rootFolder;
-	/** @var FederatedShareProvider */
-	protected $federatedShareProvider;
 
 	/**
 	 * @param string $appName
@@ -96,7 +92,6 @@ class ShareController extends Controller {
 	 * @param ISession $session
 	 * @param IPreview $previewManager
 	 * @param IRootFolder $rootFolder
-	 * @param FederatedShareProvider $federatedShareProvider
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -108,8 +103,7 @@ class ShareController extends Controller {
 								\OCP\Share\IManager $shareManager,
 								ISession $session,
 								IPreview $previewManager,
-								IRootFolder $rootFolder,
-								FederatedShareProvider $federatedShareProvider) {
+								IRootFolder $rootFolder) {
 		parent::__construct($appName, $request);
 
 		$this->config = $config;
@@ -121,7 +115,6 @@ class ShareController extends Controller {
 		$this->session = $session;
 		$this->previewManager = $previewManager;
 		$this->rootFolder = $rootFolder;
-		$this->federatedShareProvider = $federatedShareProvider;
 	}
 
 	/**
@@ -307,7 +300,6 @@ class ShareController extends Controller {
 		$shareTmpl['previewSupported'] = $this->previewManager->isMimeSupported($share->getNode()->getMimetype());
 		$shareTmpl['dirToken'] = $token;
 		$shareTmpl['sharingToken'] = $token;
-		$shareTmpl['server2serversharing'] = $this->federatedShareProvider->isOutgoingServer2serverShareEnabled();
 		$shareTmpl['protected'] = $share->getPassword() !== null ? 'true' : 'false';
 		$shareTmpl['dir'] = '';
 		$shareTmpl['nonHumanFileSize'] = $share->getNode()->getSize();
