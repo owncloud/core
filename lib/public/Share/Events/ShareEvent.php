@@ -36,6 +36,12 @@ class ShareEvent extends Event {
 	/** @var array */
 	private $share;
 
+	/**
+	 * ShareEvent constructor.
+	 *
+	 * @param array $share
+	 * @since 10.0.2
+	 */
 	public function __construct($share) {
 		$this->share = $share;
 	}
