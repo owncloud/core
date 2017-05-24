@@ -261,10 +261,10 @@ OCA.Sharing.PublicApp = {
 
 			var remote = $(this).find('input[type="text"]').val();
 			var token = $('#sharingToken').val();
-			var owner = $('#save').data('owner');
-			var ownerDisplayName = $('#save').data('owner-display-name');
-			var name = $('#save').data('name');
-			var isProtected = $('#save').data('protected') ? 1 : 0;
+			var owner = $('#header').data('owner');
+			var ownerDisplayName = $('#header').data('owner-display-name');
+			var name = $('#header').data('name');
+			var isProtected = $('#header').data('protected') ? 1 : 0;
 			OCA.Sharing.PublicApp._saveToOwnCloud(remote, token, owner, ownerDisplayName, name, isProtected);
 		});
 
@@ -335,7 +335,7 @@ OCA.Sharing.PublicApp = {
 		
 		if(remote.substr(-1) !== '/') {
 			remote += '/'
-		};
+		}
 
 		var url = remote + 'index.php/apps/files#' + 'remote=' + encodeURIComponent(location) // our location is the remote for the other server
 			+ "&token=" + encodeURIComponent(token) + "&owner=" + encodeURIComponent(owner) +"&ownerDisplayName=" + encodeURIComponent(ownerDisplayName) + "&name=" + encodeURIComponent(name) + "&protected=" + isProtected;
