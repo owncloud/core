@@ -30,9 +30,11 @@
 namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
-use OCA\FederatedFileSharing\DiscoveryManager;
 use OCP\Files;
 use OCP\Notification\IManager;
+use OCP\Share\Events\AcceptShare;
+use OCP\Share\Events\DeclineShare;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Manager {
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
@@ -58,40 +60,35 @@ class Manager {
 	private $storageLoader;
 
 	/**
-	 * @var \OC\HTTPHelper
-	 */
-	private $httpHelper;
-
-	/**
 	 * @var IManager
 	 */
 	private $notificationManager;
-	/** @var DiscoveryManager */
-	private $discoveryManager;
+
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
 
 	/**
 	 * @param \OCP\IDBConnection $connection
 	 * @param \OC\Files\Mount\Manager $mountManager
 	 * @param \OCP\Files\Storage\IStorageFactory $storageLoader
-	 * @param \OC\HTTPHelper $httpHelper
 	 * @param IManager $notificationManager
-	 * @param DiscoveryManager $discoveryManager
+	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param string $uid
 	 */
 	public function __construct(\OCP\IDBConnection $connection,
 								\OC\Files\Mount\Manager $mountManager,
 								\OCP\Files\Storage\IStorageFactory $storageLoader,
-								\OC\HTTPHelper $httpHelper,
 								IManager $notificationManager,
-								DiscoveryManager $discoveryManager,
+								EventDispatcherInterface $eventDispatcher,
 								$uid) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
-		$this->httpHelper = $httpHelper;
 		$this->uid = $uid;
 		$this->notificationManager = $notificationManager;
-		$this->discoveryManager = $discoveryManager;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -203,7 +200,10 @@ class Manager {
 					`mountpoint_hash` = ?
 				WHERE `id` = ? AND `user` = ?');
 			$acceptShare->execute([1, $mountPoint, $hash, $id, $this->uid]);
-			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'accept');
+
+			$this->eventDispatcher->dispatch(
+				AcceptShare::class,	new AcceptShare($share)
+			);
 
 			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
 
@@ -228,7 +228,11 @@ class Manager {
 			$removeShare = $this->connection->prepare('
 				DELETE FROM `*PREFIX*share_external` WHERE `id` = ? AND `user` = ?');
 			$removeShare->execute([$id, $this->uid]);
-			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
+
+			$this->eventDispatcher->dispatch(
+				DeclineShare::class,
+				new DeclineShare($share)
+			);
 
 			$this->processNotification($id);
 			return true;
@@ -246,26 +250,6 @@ class Manager {
 			->setUser($this->uid)
 			->setObject('remote_share', (int) $remoteShare);
 		$this->notificationManager->markProcessed($filter);
-	}
-
-	/**
-	 * inform remote server whether server-to-server share was accepted/declined
-	 *
-	 * @param string $remote
-	 * @param string $token
-	 * @param int $remoteId Share id on the remote host
-	 * @param string $feedback
-	 * @return boolean
-	 */
-	private function sendFeedbackToRemote($remote, $token, $remoteId, $feedback) {
-
-		$url = rtrim($remote, '/') . $this->discoveryManager->getShareEndpoint($remote) . '/' . $remoteId . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
-		$fields = ['token' => $token];
-
-		$result = $this->httpHelper->post($url, $fields);
-		$status = json_decode($result['result'], true);
-
-		return ($result['success'] && ($status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200));
 	}
 
 	/**
@@ -342,7 +326,10 @@ class Manager {
 
 		if ($result) {
 			$share = $getShare->fetch();
-			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
+			$this->eventDispatcher->dispatch(
+				DeclineShare::class,
+				new DeclineShare($share)
+			);
 		}
 		$getShare->closeCursor();
 
@@ -399,7 +386,10 @@ class Manager {
 		if ($result) {
 			$shares = $getShare->fetchAll();
 			foreach($shares as $share) {
-				$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
+				$this->eventDispatcher->dispatch(
+					DeclineShare::class,
+					new DeclineShare($share)
+				);
 			}
 		}
 
