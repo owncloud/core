@@ -38,9 +38,6 @@ use OCA\User_LDAP\User\User;
 use OCP\IConfig;
 
 class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserInterface {
-	/** @var string[] $homesToKill */
-	protected $homesToKill = array();
-
 	/** @var \OCP\IConfig */
 	protected $ocConfig;
 
@@ -296,10 +293,6 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 		\OC::$server->getLogger()->info('Cleaning up after user ' . $uid,
 			array('app' => 'user_ldap'));
 
-		//Get Home Directory out of user preferences so we can return it later,
-		//necessary for removing directories as done by OC_User.
-		$home = $this->ocConfig->getUserValue($uid, 'user_ldap', 'homePath', '');
-		$this->homesToKill[$uid] = $home;
 		$this->access->getUserMapper()->unmap($uid);
 
 		return true;
@@ -314,11 +307,6 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	 * @throws \Exception
 	 */
 	public function getHome($uid) {
-		if(isset($this->homesToKill[$uid]) && !empty($this->homesToKill[$uid])) {
-			//a deleted user who needs some clean up
-			return $this->homesToKill[$uid];
-		}
-
 		// user Exists check required as it is not done in user proxy!
 		if(!$this->userExists($uid)) {
 			return false;
@@ -331,14 +319,8 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 		}
 
 		$user = $this->access->userManager->get($uid);
-		if(is_null($user) || ($user instanceof OfflineUser && !$this->userExistsOnLDAP($user->getOCName()))) {
+		if(is_null($user)) {
 			throw new NoUserException($uid . ' is not a valid user anymore');
-		}
-		if($user instanceof OfflineUser) {
-			// apparently this user survived the userExistsOnLDAP check,
-			// we request the user instance again in order to retrieve a User
-			// instance instead
-			$user = $this->access->userManager->get($uid);
 		}
 		$path = $user->getHomePath();
 		$this->access->cacheUserHome($uid, $path);
