@@ -29,13 +29,13 @@ use Behat\Mink\Session;
 class OwncloudPage extends Page
 {
 	protected $userNameDispayId = "expandDisplayName";
-	public function waitTillPageIsloaded($timeout)
+	public function waitTillPageIsLoaded($timeout)
 	{
 
 		for ($counter=0;$counter <= $timeout;$counter++) {
-			$lodingIndicator=$this->find("css", '.loading');
+			$loadingIndicator=$this->find("css", '.loading');
 			$visibility = $this->elementHasCSSValue(
-				$lodingIndicator, 'visibility', 'visible'
+				$loadingIndicator, 'visibility', 'visible'
 			);
 			if ($visibility===FALSE) {
 				break;

@@ -46,7 +46,7 @@ trait BasicStructure
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
-		$this->filesPage->waitTillPageIsloaded(10);
+		$this->filesPage->waitTillPageIsLoaded(10);
 	}
 
 	/**
@@ -56,7 +56,7 @@ trait BasicStructure
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs($this->regularUserName, $this->regularUserPassword);
-		$this->filesPage->waitTillPageIsloaded(10);
+		$this->filesPage->waitTillPageIsLoaded(10);
 	}
 
 	/**
