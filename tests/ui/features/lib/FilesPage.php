@@ -214,9 +214,9 @@ class FilesPage extends OwnCloudPage
 		return $this->find("xpath", $xpath);
 	}
 
-	//there is no reliable loading indicator on the files page, so waiting for
-	//the table or the Emplty Folder message to be shown
-	public function waitTillPageIsloaded($timeout)
+	//there is no reliable loading indicator on the files page, so wait for
+	//the table or the Empty Folder message to be shown
+	public function waitTillPageIsLoaded($timeout)
 	{
 		for ($counter = 0; $counter <= $timeout; $counter ++) {
 
