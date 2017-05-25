@@ -26,6 +26,7 @@ use OCA\DAV\CalDAV\BirthdayService;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\DAV\GroupPrincipalBackend;
+use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Reader;
 use Test\TestCase;
@@ -199,7 +200,8 @@ class BirthdayServiceTest extends TestCase {
 			->with('principal001', 'contact_birthdays', [
 				'{DAV:}displayname' => 'Contact birthdays',
 				'{http://apple.com/ns/ical/}calendar-color' => '#FFFFCA',
-				'components'   => 'VEVENT',
+				'{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT']),
+				'{http://apple.com/ns/ical/}calendar-order' => 100
 			]);
 		$this->service->ensureCalendarExists('principal001');
 	}
