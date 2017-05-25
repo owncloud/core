@@ -47,7 +47,7 @@ class UsersContext extends RawMinkContext implements Context
 	public function quotaOfUserIsSetTo($username, $quota)
 	{
 		$this->usersPage->open();
-		$this->usersPage->waitTillPageIsLoaded(10);
+		$this->usersPage->waitTillPageIsLoaded();
 		$this->usersPage->setQuotaOfUserTo($username, $quota);
 	}
 
@@ -57,7 +57,7 @@ class UsersContext extends RawMinkContext implements Context
 	public function quotaOfUserIsChangedTo($username, $quota)
 	{
 		$this->usersPage->open();
-		$this->usersPage->waitTillPageIsLoaded(10);
+		$this->usersPage->waitTillPageIsLoaded();
 		$this->usersPage->setQuotaOfUserTo($username, $quota);
 	}
 
@@ -67,7 +67,7 @@ class UsersContext extends RawMinkContext implements Context
 	public function pageIsReloaded()
 	{
 		$this->getSession()->reload();
-		$this->usersPage->waitTillPageIsLoaded(10);
+		$this->usersPage->waitTillPageIsLoaded();
 	}
 
 	/**

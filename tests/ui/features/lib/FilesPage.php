@@ -136,9 +136,9 @@ class FilesPage extends OwnCloudPage
 	 * @param int $numberOfFilesOld how many files were listed before the scroll.
 	 * So we can guess how long to wait for the loading of new files to finish
 	 * @param Session $session
-	 * @param int $timeout
+	 * @param int $timeout_msec
 	 */
-	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout=5)
+	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout_msec=5000)
 	{
 		$session->evaluateScript(
 			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
@@ -146,14 +146,14 @@ class FilesPage extends OwnCloudPage
 		
 		// there is no loading indicator here, so we are going to wait until we have
 		// more files than before
-		for ($counter = 0; $counter <= $timeout; $counter ++) {
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
 			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
 				"xpath", $this->fileNamesXpath
 			);
 			if (count($fileNameSpans) > $numberOfFilesOld) {
 				break;
 			}
-			sleep(1);
+			usleep(STANDARDSLEEPTIMEMICROSEC);
 		}
 	}
 
@@ -216,16 +216,16 @@ class FilesPage extends OwnCloudPage
 
 	//there is no reliable loading indicator on the files page, so wait for
 	//the table or the Empty Folder message to be shown
-	public function waitTillPageIsLoaded($timeout)
+	public function waitTillPageIsLoaded($timeout_msec=10000)
 	{
-		for ($counter = 0; $counter <= $timeout; $counter ++) {
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
 
 			$fileList = $this->findById("fileList");
 			if ($fileList !== null && ($fileList->has("xpath", "//a") || ! $this->find("xpath",
 				$this->emptyContentXpath)->hasClass("hidden"))) {
 				break;
 			}
-			sleep(1);
+			usleep(STANDARDSLEEPTIMEMICROSEC);
 		}
 	}
 

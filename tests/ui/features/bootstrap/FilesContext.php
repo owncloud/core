@@ -73,7 +73,7 @@ class FilesContext extends RawMinkContext implements Context
 			);
 		}
 		$this->getSession()->reload();
-		$this->filesPage->waitTillPageIsLoaded(10);
+		$this->filesPage->waitTillPageIsLoaded();
 	}
 
 	/**
@@ -81,7 +81,7 @@ class FilesContext extends RawMinkContext implements Context
 	 */
 	public function iRenameTheFileFolderTo($fromName, $toName)
 	{
-		$this->filesPage->waitTillPageIsLoaded(10);
+		$this->filesPage->waitTillPageIsLoaded();
 		$this->filesPage->renameFile($fromName, $toName, $this->getSession());
 	}
 
@@ -90,7 +90,7 @@ class FilesContext extends RawMinkContext implements Context
 	 */
 	public function iRenameTheFileToOneOfThisNames($fromName, TableNode $table)
 	{
-		$this->filesPage->waitTillPageIsLoaded(10);
+		$this->filesPage->waitTillPageIsLoaded();
 		foreach ($table->getRows() as $row) {
 			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
 		}
