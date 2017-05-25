@@ -46,7 +46,7 @@ trait BasicStructure
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
-		$this->filesPage->waitTillPageIsLoaded(10);
+		$this->filesPage->waitTillPageIsLoaded();
 	}
 
 	/**
@@ -56,7 +56,7 @@ trait BasicStructure
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs($this->regularUserName, $this->regularUserPassword);
-		$this->filesPage->waitTillPageIsLoaded(10);
+		$this->filesPage->waitTillPageIsLoaded();
 	}
 
 	/**
@@ -128,14 +128,14 @@ trait BasicStructure
 		return $this->createdUserNames;
 	}
 	
-	public function waitForOutstandingAjaxCalls ($time = 5000)
+	public function waitForOutstandingAjaxCalls ($timeout_msec = 5000)
 	{
-		for($counter=0;$counter<=($time/1000);$counter++) {
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
 			try {
 				$this->getSession()->wait($time, "(typeof jQuery != 'undefined' && (0 === jQuery.active))");
 				break;
 			} catch (Exception $e) {
-				sleep(1);
+				usleep(STANDARDSLEEPTIMEMICROSEC);
 			}
 		}
 	}

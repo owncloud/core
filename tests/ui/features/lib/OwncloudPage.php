@@ -29,10 +29,10 @@ use Behat\Mink\Session;
 class OwncloudPage extends Page
 {
 	protected $userNameDispayId = "expandDisplayName";
-	public function waitTillPageIsLoaded($timeout)
+	public function waitTillPageIsLoaded($timeout_msec=10000)
 	{
 
-		for ($counter=0;$counter <= $timeout;$counter++) {
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
 			$loadingIndicator=$this->find("css", '.loading');
 			$visibility = $this->elementHasCSSValue(
 				$loadingIndicator, 'visibility', 'visible'
@@ -41,7 +41,7 @@ class OwncloudPage extends Page
 				break;
 			}
 
-			sleep(1);
+			usleep(STANDARDSLEEPTIMEMICROSEC);
 		}
 
 	}
@@ -49,16 +49,16 @@ class OwncloudPage extends Page
 	/**
 	 *
 	 * @param string $xpath
-	 * @param int $timeout
+	 * @param int $timeout_msec
 	 */
-	public function waitTillElementIsNull ($xpath, $timeout=10)
+	public function waitTillElementIsNull ($xpath, $timeout_msec=10000)
 	{
-		for ($counter = 0; $counter <= $timeout; $counter ++) {
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
 			$element = $this->find("xpath",$xpath);
 			if ($element === null) {
 				break;
 			}
-			sleep(1);
+			usleep(STANDARDSLEEPTIMEMICROSEC);
 		}
 	}
 
