@@ -214,7 +214,7 @@ class SettingsManager implements ISettingsManager {
 				new Section('storage', $this->l->t('Storage'), 50, 'folder'),
 				new Section('security', $this->l->t('Security'), 30, 'password'),
 				new Section('encryption', $this->l->t('Encryption'), 20),
-				new Section('additional', $this->l->t('Additional'), 5, 'more'),
+				new Section('additional', $this->l->t('Additional'), -10, 'more'),
 			];
 		}
 	}
