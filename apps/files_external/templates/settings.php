@@ -47,9 +47,14 @@
 		</label>
 	</p>
 	<?php endif; ?>
-	<?php if (!$_['enableExternalStorage']): ?>
-	<p><?php p($l->t('External storage has been disabled by the administrator')); ?></p>
-	<?php endif; ?>
+	<p
+		<?php if ($_['enableExternalStorage']): ?>
+			class="hidden"
+		<?php endif; ?>
+		id="files_external_message"
+	>
+		<?php p($l->t('External storage has been disabled by the administrator')); ?>
+	</p>
 
 	<div id="files_external_settings" class=" <?php if (!$_['enableExternalStorage']) print('hidden'); ?>">
 

@@ -1357,6 +1357,7 @@ $(document).ready(function() {
 			var value = checked ? 'yes' : 'no';
 			OC.AppConfig.setValue('core', 'enable_external_storage', value);
 			$('#files_external_settings').toggleClass('hidden', !checked);
+			$("#files_external_message").toggleClass('hidden', checked);
 		};
 
 		if (checked === false) {
@@ -1375,6 +1376,10 @@ $(document).ready(function() {
 		} else {
 			saveSetting(true);
 		}
+	});
+
+	$('body').on('click', 'a.oc-dialog-close', function () {
+		$('#files_external input[name=enableExternalStorage]').prop('checked', true);
 	});
 
 	// global instance
