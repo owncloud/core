@@ -376,6 +376,7 @@ span.version {
 	padding: 20px;
 }
 .section h2.app-name {
+	font-size: 18px;
 	margin-bottom: 8px;
 }
 
@@ -385,6 +386,12 @@ span.version {
 
 .section ul {
 	margin-left: 20px;
+}
+
+.app-author {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .app-image {
