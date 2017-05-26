@@ -177,7 +177,7 @@
 }
 /* position of dropdown arrow */
 #navigation:after {
-	left: 47%;
+	margin-left: -20px;
 }
 #expanddiv:after {
 	right: 15px;
