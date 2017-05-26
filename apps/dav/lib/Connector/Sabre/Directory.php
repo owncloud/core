@@ -147,12 +147,10 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			$this->fileView->verifyPath($this->path, $name);
 
 			$path = $this->fileView->getAbsolutePath($this->path) . '/' . $name;
-			// in case the file already exists/overwriting
-			$info = $this->fileView->getFileInfo($this->path . '/' . $name);
-			if (!$info) {
-				// use a dummy FileInfo which is acceptable here since it will be refreshed after the put is complete
-				$info = new \OC\Files\FileInfo($path, null, null, [], null);
-			}
+
+			// use a dummy FileInfo which is acceptable here since it will be refreshed after the put is complete
+			$info = new \OC\Files\FileInfo($path, null, null, [], null);
+
 			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
 			$node->acquireLock(ILockingProvider::LOCK_SHARED);
 			return $node->put($data);
