@@ -5,7 +5,7 @@
 	<description>ownCloud WebDAV endpoint</description>
 	<licence>AGPL</licence>
 	<author>owncloud.org</author>
-	<version>0.2.9</version>
+	<version>0.3.0</version>
 	<default_enable/>
 	<use-migrations>true</use-migrations>
 	<types>
@@ -21,11 +21,6 @@
 	<background-jobs>
 		<job>OCA\DAV\CardDAV\SyncJob</job>
 	</background-jobs>
-	<repair-steps>
-		<post-migration>
-			<step>OCA\DAV\Migration\FixBirthdayCalendarComponent</step>
-		</post-migration>
-	</repair-steps>
 	<commands>
 		<command>OCA\DAV\Command\CreateAddressBook</command>
 		<command>OCA\DAV\Command\CreateCalendar</command>
