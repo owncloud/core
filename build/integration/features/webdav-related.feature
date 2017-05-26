@@ -430,3 +430,31 @@ Feature: webdav-related
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
+	Scenario: Checking file id after a move between received shares
+		Given using old dav path
+		And user "user0" exists
+		And user "user1" exists
+		And user "user0" created a folder "/folderA"
+		And user "user0" created a folder "/folderB"
+		And folder "/folderA" of user "user0" is shared with user "user1"
+		And folder "/folderB" of user "user0" is shared with user "user1"
+		And user "user1" created a folder "/folderA/ONE"
+		And user "user1" created a folder "/folderA/ONE/TWO"
+		And User "user1" stores id of file "/folderA/ONE"
+		And User "user1" moves folder "/folderA/ONE" to "/folderB"
+		When user "user1" created a folder "/folderB/ONE/TWO/THREE"
+		And using old dav path
+		Then user "user1" should see following elements
+			| /FOLDER/ |
+			| /PARENT/ |
+			| /PARENT/parent.txt |
+			| /textfile0.txt |
+			| /textfile1.txt |
+			| /textfile2.txt |
+			| /textfile3.txt |
+			| /textfile4.txt |
+			| /folderA |
+			| /folderB |
+			| /folderB/ONE |
+			| /folderB/ONE/TWO |
+			| /folderB/ONE/TWO/THREE |
