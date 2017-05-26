@@ -378,6 +378,8 @@ abstract class Node implements \Sabre\DAV\INode {
 
 	/**
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 *
+	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($type) {
 		$this->fileView->changeLock($this->path, $type);
