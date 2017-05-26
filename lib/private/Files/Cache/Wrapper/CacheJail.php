@@ -311,4 +311,8 @@ class CacheJail extends CacheWrapper {
 		}
 		return $this->cache->moveFromCache($sourceCache, $sourcePath, $this->getSourcePath($targetPath));
 	}
+
+	protected function getMoveInfo($path) {
+		return [$this->getNumericStorageId(), $this->getSourcePath($path)];
+	}
 }
