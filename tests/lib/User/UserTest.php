@@ -315,4 +315,30 @@ class UserTest extends TestCase {
 				->willReturn('http://localhost:8888/owncloud');
 		$this->assertEquals("foo@localhost:8888/owncloud", $this->user->getCloudId());
 	}
+
+	/**
+	 * @dataProvider setTermsData
+	 * @param array $terms
+	 * @param array $expected
+	 */
+	public function testSettingAccountTerms(array $terms, array $expected) {
+		$account = $this->getMockBuilder(Account::class)->getMock();
+		$account->expects($this->once())->method('__call')->with('getId')->willReturn('foo');
+
+		$this->accountMapper->expects($this->once())
+			->method('setTermsForAccount')
+			->with('foo', $expected);
+
+		// Call the method
+		$user = new User($account, $this->accountMapper, null, $this->config);
+		$user->setSearchTerms($terms);
+	}
+
+	public function setTermsData() {
+		return [
+			'normal terms' => [['term1'], ['term1']],
+			'too long terms' => [['term1', str_repeat(".", 300)], ['term1']]
+		];
+	}
+
 }
