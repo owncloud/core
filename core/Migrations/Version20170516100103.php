@@ -50,7 +50,7 @@ class Version20170516100103 implements ISchemaMigration {
 
 			$table->addColumn('term', Type::STRING, [
 				'notnull' => true,
-				'length' => 256
+				'length' => 255
 			]);
 
 			$table->setPrimaryKey(['id']);
