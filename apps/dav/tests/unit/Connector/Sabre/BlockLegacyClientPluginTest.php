@@ -77,8 +77,8 @@ class BlockLegacyClientPluginTest extends TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->with('minimum.supported.desktop.version', '2.0.0')
-			->will($this->returnValue('1.7.0'));
+			->with('minimum.supported.desktop.version', '2.2.4')
+			->will($this->returnValue('2.2.4'));
 
 		$this->blockLegacyClientVersionPlugin->beforeHandler($request);
 	}
@@ -88,11 +88,11 @@ class BlockLegacyClientPluginTest extends TestCase {
 	 */
 	public function newAndAlternateDesktopClientProvider() {
 		return [
-			['Mozilla/5.0 (1.7.0) mirall/1.7.0'],
-			['mirall/1.8.3'],
-			['mirall/1.7.2'],
-			['mirall/1.7.0'],
-			['Mozilla/5.0 (Bogus Text) mirall/1.9.3'],
+			['Mozilla/5.0 (2.2.4) mirall/2.2.4'],
+			['mirall/2.8.3'],
+			['mirall/2.7.2'],
+			['mirall/2.7.0'],
+			['Mozilla/5.0 (Bogus Text) mirall/3.0.1'],
 		];
 	}
 
@@ -112,8 +112,8 @@ class BlockLegacyClientPluginTest extends TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->with('minimum.supported.desktop.version', '2.0.0')
-			->will($this->returnValue('1.7.0'));
+			->with('minimum.supported.desktop.version', '2.2.4')
+			->will($this->returnValue('2.2.4'));
 
 		$this->blockLegacyClientVersionPlugin->beforeHandler($request);
 	}
