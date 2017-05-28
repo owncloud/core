@@ -161,7 +161,7 @@ class Apps implements IRepairStep {
 			}
 		} else {
 			// No market available, output error and continue attempt
-			$output->warning('Market app is unavailable for updating of apps. Enable with: occ:app:enable market');
+			$output->warning('Market app is unavailable for updating of apps. Enable with: occ app:enable market');
 		}
 
 		$hasBlockingMissingApps = count($failedMissingApps);
