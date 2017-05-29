@@ -48,9 +48,9 @@ OC_Util::addScript('settings', 'authtoken_collection');
 OC_Util::addScript('settings', 'authtoken_view');
 OC_Util::addScript( 'settings', 'personal' );
 OC_Util::addScript('settings', 'certificates');
-OC_Util::addStyle( 'settings', 'settings' );
 \OC_Util::addVendorScript('strengthify/jquery.strengthify');
 \OC_Util::addVendorStyle('strengthify/strengthify');
+OC_Util::addStyle( 'settings', 'settings' );
 \OC_Util::addScript('files', 'jquery.fileupload');
 if ($config->getSystemValue('enable_avatars', true) === true) {
 	\OC_Util::addVendorScript('jcrop/js/jquery.Jcrop');
