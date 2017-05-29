@@ -34,6 +34,7 @@ use OC\Repair\AvatarPermissions;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DropOldJobs;
+use OC\Repair\EncryptionCompatibility;
 use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\RemoveRootShares;
@@ -175,6 +176,7 @@ class Repair implements IOutput{
 	public static function getBeforeUpgradeRepairSteps() {
 		$connection = \OC::$server->getDatabaseConnection();
 		$steps = [
+			new EncryptionCompatibility(),
 			new InnoDB(),
 			new Collation(\OC::$server->getConfig(), $connection),
 			new SqliteAutoincrement($connection),
