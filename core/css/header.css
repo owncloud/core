@@ -49,8 +49,8 @@
 #owncloud {
 	position: absolute;
 	top: 0;
-	left: -webkit-calc(50% - 75px); // @TODO: Remove if FF 14 support is dropped
-	left:    -moz-calc(50% - 75px); // @TODO: Remove if FF 14 support is dropped
+	left: -webkit-calc(50% - 75px); /* @TODO: Remove if FF 14 support is dropped */
+	left:    -moz-calc(50% - 75px); /* @TODO: Remove if FF 14 support is dropped */
 	left:         calc(50% - 75px);
 	padding: 5px;
 	padding-bottom: 0;
