@@ -49,7 +49,9 @@
 #owncloud {
 	position: absolute;
 	top: 0;
-	left: calc(50% - 75px);
+	left: -webkit-calc(50% - 75px); // @TODO: Remove if FF 14 support is dropped
+	left:    -moz-calc(50% - 75px); // @TODO: Remove if FF 14 support is dropped
+	left:         calc(50% - 75px);
 	padding: 5px;
 	padding-bottom: 0;
 	height: 45px; /* header height */
@@ -105,6 +107,9 @@
 }
 
 #header .header-appname-container {
+	display: -webkit-box;  // @TODO: Remove if Chrome 18 support is dropped
+	display: -webkit-flex; // @TODO: Remove if Chrome 18 support is dropped
+	display: -moz-box;     // @TODO: Remove if FF 14 support is dropped
 	display: flex;
 	position: absolute;
 	left: 15px;
