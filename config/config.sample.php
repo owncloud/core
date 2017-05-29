@@ -259,9 +259,10 @@ $CONFIG = array(
 /**
  * Allow medial search on account properties like display name, user id, email,
  * and other search terms. Allows finding 'Alice' when searching for 'lic'.
- * May slow down user search.
+ * May slow down user search. Disable this if you encounter slow username search
+ * in the sharing dialog.
  */
-'accounts.enable_medial_search' => false,
+'accounts.enable_medial_search' => true,
 
 /**
  * Mail Parameters
