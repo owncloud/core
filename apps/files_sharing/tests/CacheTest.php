@@ -30,6 +30,8 @@ namespace OCA\Files_Sharing\Tests;
 
 use OC\Files\View;
 use OCP\Constants;
+use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\FileInfo;
 use Test\Traits\UserTrait;
 
 /**
@@ -70,6 +72,7 @@ class CacheTest extends TestCase {
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 
 		$this->user2View = new View('/'. self::TEST_FILES_SHARING_API_USER2 . '/files');
+		$this->user2View->deleteAll('');
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
@@ -330,15 +333,8 @@ class CacheTest extends TestCase {
 		$results = $this->user2View->getDirectoryContent('/');
 
 		// we should get the shared items "shareddir" and "shared single file.txt"
-		// additional root will always contain the example file "welcome.txt",
-		//  so this will be part of the result
 		$this->verifyFiles(
 			[
-				[
-					'name' => 'welcome.txt',
-					'path' => 'files/welcome.txt',
-					'mimetype' => 'text/plain',
-				],
 				[
 					'name' => 'shareddir',
 					'path' => 'files/shareddir',
@@ -446,7 +442,11 @@ class CacheTest extends TestCase {
 	 * @param array $results array of files
 	 */
 	private function verifyFiles($examples, $results) {
-		$this->assertEquals(count($examples), count($results));
+		$this->assertEquals(count($examples), count($results),
+			'Files found: ' . implode(', ', array_map(function( $f) {
+				/** @var FileInfo | ICacheEntry $f */
+				return $f->getPath();
+			}, $results)));
 
 		foreach ($examples as $example) {
 			foreach ($results as $key => $result) {
