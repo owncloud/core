@@ -25,7 +25,10 @@ class Version20170526104128 implements ISchemaMigration {
 
 		/** @var IDBConnection $db */
 		$db = \OC::$server->getDatabaseConnection();
-		$db->executeQuery("DELETE FROM {$prefix}account_terms WHERE CHAR_LENGTH(term) >= 256;");
+		$qb = $db->getQueryBuilder();
+		$qb->delete('account_terms')
+			->where($qb->expr()->gte($qb->expr()->length('term'), new Literal(256)));
+		$qb->execute();
 
 		// Now update the column length
 		$table->getColumn('term')->setLength(255);

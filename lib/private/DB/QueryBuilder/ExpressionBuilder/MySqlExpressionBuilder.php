@@ -38,4 +38,13 @@ class MySqlExpressionBuilder extends ExpressionBuilder {
 		return $this->expressionBuilder->comparison($x, " COLLATE {$characterSet}_general_ci LIKE", $y);
 	}
 
+	/**
+	 * Use CHAR_LENGTH on MySQL to return number of characters not bytes.
+	 * @inheritdoc
+	 */
+	public function length($column) {
+		$column = $this->helper->quoteColumnName($column);
+		return new QueryFunction("CHAR_LENGTH({$column})");
+	}
+
 }
