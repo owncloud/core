@@ -324,4 +324,11 @@ interface IExpressionBuilder {
 	 * @since 9.0.0
 	 */
 	public function castColumn($column, $type);
+
+	/**
+	 * @param $column
+	 * @return string
+	 * @since 10.0.3
+	 */
+	public function length($column);
 }
