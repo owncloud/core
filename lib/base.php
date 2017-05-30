@@ -960,8 +960,10 @@ class OC {
 					\OC::$server->getConfig()->deleteUserValue(OC_User::getUser(), 'login_token', $_COOKIE['oc_token']);
 				}
 				OC_User::logout();
-				// redirect to webroot and add slash if webroot is empty
-				header("Location: " . \OC::$server->getURLGenerator()->getAbsoluteURL('/'));
+				// Use system config or redirect to webroot and add slash if webroot is empty
+				$redirect_url = $systemConfig->getValue('logout_url',
+					\OC::$server->getURLGenerator()->getAbsoluteURL('/'));
+				header("Location: " . $redirect_url);
 			} else {
 				// Redirect to default application
 				OC_Util::redirectToDefaultPage();
