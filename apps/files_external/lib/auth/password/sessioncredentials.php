@@ -56,7 +56,7 @@ class SessionCredentials extends AuthMechanism {
 			])
 		;
 
-		\OCP\Util::connectHook('OC_User', 'post_login', $this, 'authenticate');
+		\OCP\Util::connectHook('OC_User', 'pre_login', $this, 'authenticate');
 	}
 
 	/**
@@ -75,7 +75,11 @@ class SessionCredentials extends AuthMechanism {
 		}
 
 		$credentials = json_decode($this->crypto->decrypt($encrypted), true);
-		$storage->setBackendOption('user', $this->session->get('loginname'));
+		$uid = $this->session->get('loginname');
+		if ($uid === null) {
+			$uid = $credentials['uid'];
+		}
+		$storage->setBackendOption('user', $uid);
 		$storage->setBackendOption('password', $credentials['password']);
 	}
 
