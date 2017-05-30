@@ -20,11 +20,8 @@
 *
 */
 
-use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Page\OwncloudPage;
-use Page\LoginPage;
 
 require_once 'bootstrap.php';
 
@@ -46,7 +43,7 @@ trait BasicStructure
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
-		$this->filesPage->waitTillPageIsLoaded();
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -56,7 +53,7 @@ trait BasicStructure
 	{
 		$this->loginPage->open();
 		$this->filesPage = $this->loginPage->loginAs($this->regularUserName, $this->regularUserPassword);
-		$this->filesPage->waitTillPageIsLoaded();
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -126,17 +123,5 @@ trait BasicStructure
 	public function getCreatedUserNames ()
 	{
 		return $this->createdUserNames;
-	}
-	
-	public function waitForOutstandingAjaxCalls ($timeout_msec = 5000)
-	{
-		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
-			try {
-				$this->getSession()->wait($time, "(typeof jQuery != 'undefined' && (0 === jQuery.active))");
-				break;
-			} catch (Exception $e) {
-				usleep(STANDARDSLEEPTIMEMICROSEC);
-			}
-		}
 	}
 }
