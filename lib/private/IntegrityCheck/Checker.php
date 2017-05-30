@@ -343,14 +343,13 @@ class Checker {
 		}
 
 		// Check if the certificate has been revoked
-		$crlFileContent = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/intermediate.crl.pem');
+		$fileLocation = $this->environmentHelper->getDataDir() . '/intermediate.crl.pem';
+		if (!$this->fileAccessHelper->file_exists($fileLocation)) {
+			$fileLocation = $this->environmentHelper->getServerRoot() . '/resources/codesigning/intermediate.crl.pem';
+		}
+		$crlFileContent = $this->fileAccessHelper->file_get_contents($fileLocation);
 		if ($crlFileContent && strlen($crlFileContent) > 0) {
-			$crl = new \phpseclib\File\X509();
-			$crl->loadCA($rootCertificatePublicKey);
-			$crl->loadCRL($crlFileContent);
-			if(!$crl->validateSignature()) {
-				throw new InvalidSignatureException('Certificate Revocation List is not valid.');
-			}
+			$crl = $this->validateCrl($crlFileContent);
 			// Get the certificate's serial number.
 			$csn = $loadedCertificate['tbsCertificate']['serialNumber']->toString();
 
@@ -652,5 +651,21 @@ class Checker {
 				$this->verifyAppSignature($appId);
 			}
 		}
+	}
+
+	/**
+	 * @param string $crlFileContent
+	 * @return X509
+	 * @throws InvalidSignatureException
+	 */
+	public function validateCrl($crlFileContent) {
+		$rootCertificatePublicKey = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/root.crt');
+		$crl = new \phpseclib\File\X509();
+		$crl->loadCA($rootCertificatePublicKey);
+		$crl->loadCRL($crlFileContent);
+		if (!$crl->validateSignature()) {
+			throw new InvalidSignatureException('Certificate Revocation List is not valid.');
+		}
+		return $crl;
 	}
 }

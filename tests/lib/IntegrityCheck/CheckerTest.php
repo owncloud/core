@@ -1218,11 +1218,25 @@ class CheckerTest extends TestCase {
 			->will($this->returnValue(file_get_contents(__DIR__ .'/../../../resources/codesigning/root.crt')));
 		$this->fileAccessHelper
 			->expects($this->at(2))
+			->method('file_exists')
+			->with(
+				'/intermediate.crl.pem'
+			)
+			->willReturn(false);
+		$this->fileAccessHelper
+			->expects($this->at(3))
 			->method('file_get_contents')
 			->with(
 				'/resources/codesigning/intermediate.crl.pem'
 			)
 			->will($this->returnValue(file_get_contents(__DIR__ .'/../../../resources/codesigning/intermediate.crl.pem')));
+		$this->fileAccessHelper
+			->expects($this->at(4))
+			->method('file_get_contents')
+			->with(
+				'/resources/codesigning/root.crt'
+			)
+			->will($this->returnValue(file_get_contents(__DIR__ .'/../../../resources/codesigning/root.crt')));
 		$expected = [
 			'EXCEPTION' => [
 				'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',

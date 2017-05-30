@@ -45,4 +45,8 @@ class EnvironmentHelper {
 	public function getChannel() {
 		return \OC_Util::getChannel();
 	}
+
+	public function getDataDir() {
+		return \OC::$server->getConfig()->getSystemValue('datadirectory');
+	}
 }
