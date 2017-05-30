@@ -36,6 +36,9 @@ class FileAccessHelper {
 	 * @return string|false
 	 */
 	public function file_get_contents($filename) {
+		if (!$this->file_exists($filename)) {
+			return false;
+		}
 		return file_get_contents($filename);
 	}
 
