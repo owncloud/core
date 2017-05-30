@@ -160,4 +160,13 @@ class OCIExpressionBuilder extends ExpressionBuilder {
 		$y = $this->helper->quoteColumnName($y);
 		return new QueryFunction('REGEXP_LIKE('.$x.', \'^\' || REPLACE('.$y.', \'%\', \'.*\') || \'$\', \'i\')');
 	}
+
+	/**
+	 * Use LENGTHC on Oracle to return multi-byte safe number of characters not bytes.
+	 * @inheritdoc
+	 */
+	public function length($column) {
+		$column = $this->helper->quoteColumnName($column);
+		return new QueryFunction("LENGTHC({$column})");
+	}
 }
