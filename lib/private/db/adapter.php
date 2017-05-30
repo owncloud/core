@@ -88,7 +88,7 @@ class Adapter {
 			}
 		}
 		$query = substr($query, 0, strlen($query) - 5);
-		$query .= ' HAVING COUNT(*) = 0';
+		$query .= ' HAVING COUNT(*) = 0 FOR UPDATE';
 
 		return $this->conn->executeUpdate($query, $inserts);
 	}
