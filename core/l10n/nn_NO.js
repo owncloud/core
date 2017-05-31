@@ -151,6 +151,7 @@ OC.L10N.register(
     "Press ⌘-C to copy." : "Trykk ⌘-C for å kopiere.",
     "Press Ctrl-C to copy." : "Trykk Ctrl-C for å kopiere.",
     "Choose a password for the public link" : "Vel eit passord for den offentlege lenkja",
+    "Filename" : "Filnavn",
     "Password" : "Passord",
     "Name" : "Namn",
     "Allow editing" : "Tillat endring",

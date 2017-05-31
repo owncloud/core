@@ -72,6 +72,7 @@ OC.L10N.register(
     "Never" : "Nigdy",
     "Once every direct access" : "Jeden raz przy każdym dostępie",
     "External Storage" : "Zewnętrzna zasoby dyskowe",
+    "External storage has been disabled by the administrator" : "Zewnętrzne zasoby dyskowe zostały wyłączone przez administratora",
     "Folder name" : "Nazwa folderu",
     "Configuration" : "Konfiguracja",
     "Available for" : "Dostępne przez",

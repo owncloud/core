@@ -194,6 +194,7 @@
     "Exclude groups from sharing" : "Sluit groepen uit van delen",
     "These groups will still be able to receive shares, but not to initiate them." : "Deze groepen kunnen gedeelde mappen bestanden ontvangen, maar kunnen ze niet starten.",
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Sta auto-aanvullen van gebruikersnaam toe in de Delen-dialoog. Als dit is uitgeschakeld, moet de gebruikersnaam volledig worden ingevuld.",
+    "Restrict enumeration to group members" : "Beperk enumeratie tot groepsleden",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Alles (fatale problemen, fouten, waarschuwingen, info, debug)",
     "Info, warnings, errors and fatal issues" : "Info, waarschuwingen, fouten en fatale problemen",
     "Warnings, errors and fatal issues" : "Waarschuwingen, fouten en fatale problemen",
