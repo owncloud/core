@@ -21,3 +21,4 @@ default:
         - FilesContext:
         - PersonalSecuritySettingsContext:
         - PersonalGeneralSettingsContext:
+        - SharingContext:
