@@ -241,7 +241,7 @@ OC.FileUpload.prototype = {
 
 		if (file.lastModified) {
 			// preserve timestamp
-			this.data.headers['X-OC-Mtime'] = file.lastModified / 1000;
+			this.data.headers['X-OC-Mtime'] = Math.floor(file.lastModified / 1000);
 		}
 
 		var userName = this.uploader.filesClient.getUserName();
