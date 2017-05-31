@@ -20,7 +20,7 @@ class Version20170519115025 implements ISchemaMigration {
                 }
             }
 
-            $table->addUniqueIndex(['uid', 'type','category'], 'vcategory_uid_type_category_index');
+            $table->addUniqueIndex(['uid', 'type','category'], 'vcategory_uid_type_cat_idx');
         }
     }
 }

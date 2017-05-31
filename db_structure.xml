@@ -967,7 +967,7 @@
 			</index>
 
 			<index>
-				<name>vcategory_uid_type_category_index</name>
+				<name>vcategory_uid_type_cat_idx</name>
 				<unique>true</unique>
 				<field>
 					<name>uid</name>
