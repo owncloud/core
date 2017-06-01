@@ -236,6 +236,13 @@ OCA.Sharing.PublicApp = {
 				data.headers.Authorization = 'Basic ' + btoa(token + ':');
 			});
 
+				$('#download').click(function(event) {
+					event.preventDefault();
+					if(!list.isEmpty) {
+						OC.redirect(FileList.getDownloadUrl());
+					}
+				});
+			
 			// do not allow sharing from the public page
 			delete this.fileList.fileActions.actions.all.Share;
 
@@ -245,10 +252,6 @@ OCA.Sharing.PublicApp = {
 			this.fileList.$el.on('changeDirectory', _.bind(this._onDirectoryChanged, this));
 			OC.Util.History.addOnPopStateHandler(_.bind(this._onUrlChanged, this));
 
-			$('#download').click(function (e) {
-				e.preventDefault();
-				OC.redirect(FileList.getDownloadUrl());
-			});
 		}
 
 		$(document).on('click', '#directLink', function () {

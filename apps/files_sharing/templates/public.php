@@ -89,7 +89,7 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 					</form>
 				</span>
 				<?php } ?>
-				<a href="<?php p($_['downloadURL']); ?>" id="download" class="button">
+				<a href="<?php p($_['downloadURL']); ?>" id="download" class="button disabled">	
 					<img class="svg" alt="" src="<?php print_unescaped(image_path("core", "actions/download.svg")); ?>"/>
 					<span id="download-text"><?php p($l->t('Download'))?></span>
 				</a>
