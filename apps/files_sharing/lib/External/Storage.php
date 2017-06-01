@@ -140,21 +140,6 @@ class Storage extends DAV implements ISharedStorage {
 	}
 
 	/**
-	 * @param string $path
-	 * @param \OC\Files\Storage\Storage $storage
-	 * @return \OCA\Files_Sharing\External\Scanner
-	 */
-	public function getScanner($path = '', $storage = null) {
-		if (!$storage) {
-			$storage = $this;
-		}
-		if (!isset($this->scanner)) {
-			$this->scanner = new Scanner($storage);
-		}
-		return $this->scanner;
-	}
-
-	/**
 	 * check if a file or folder has been updated since $time
 	 *
 	 * @param string $path
