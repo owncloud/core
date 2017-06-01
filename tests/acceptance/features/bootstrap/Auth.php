@@ -21,6 +21,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Psr7\Request;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -88,24 +89,29 @@ trait Auth {
 		$url, $method, $authHeader = null, $useCookies = false
 	) {
 		$fullUrl = $this->getBaseUrl() . $url;
+		$options = [];
 		try {
+			$headers = [
+				'OCS_APIREQUEST' => 'true',
+				'requesttoken' => $this->requestToken
+			];
+			if ($authHeader) {
+				$headers['Authorization'] = $authHeader;
+			}
 			if ($useCookies) {
-				$request = $this->client->createRequest(
-					$method, $fullUrl, [
+				$options = [
 					'cookies' => $this->cookieJar,
-					]
-				);
-			} else {
-				$request = $this->client->createRequest($method, $fullUrl);
+				];
 			}
 			if ($authHeader) {
-				$request->setHeader('Authorization', $authHeader);
+				$headers['Authorization'] = $authHeader;
 			}
-			$request->setHeader('OCS-APIREQUEST', 'true');
+			$headers['OCS-APIREQUEST'] = 'true';
 			if (isset($this->requestToken)) {
-				$request->setHeader('requesttoken', $this->requestToken);
+				$headers['requesttoken'] = $this->requestToken;
 			}
-			$this->response = $this->client->send($request);
+			$request = new Request($method, $fullUrl, $headers);
+			$this->response = $this->client->send($request, $options);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -121,17 +127,18 @@ trait Auth {
 	public function userGeneratesNewAppPasswordNamed($name) {
 		$options = [];
 		$options['cookies'] = $this->cookieJar;
-		$options['body'] = ['name' => $name];
-		$request = $this->client->createRequest(
+		$options['form_params'] = ['name' => $name];
+		$headers = [];
+		$headers['Content-Type'] = 'application/x-www-form-urlencoded';
+		$headers['OCS-APIREQUEST'] = 'true';
+		$headers['requesttoken'] = $this->requestToken;
+		$headers['X-Requested-With'] = 'XMLHttpRequest';
+		$request = new Request(
 			'POST',
 			$this->getBaseUrl() . '/index.php/settings/personal/authtokens',
-			$options
+			$headers
 		);
-		$request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-		$request->setHeader('OCS-APIREQUEST', 'true');
-		$request->setHeader('requesttoken', $this->requestToken);
-		$request->setHeader('X-Requested-With', 'XMLHttpRequest');
-		$this->response = $this->client->send($request);
+		$this->response = $this->client->send($request, $options);
 		$this->appToken
 			= \json_decode($this->response->getBody()->getContents())->token;
 	}
@@ -266,7 +273,7 @@ trait Auth {
 		$client = new Client();
 		$response = $client->post(
 			$loginUrl, [
-				'body' => [
+				'form_params' => [
 					'user' => $user,
 					'password' => $this->getPasswordForUser($user),
 					'requesttoken' => $this->requestToken,

@@ -94,12 +94,7 @@ class FederationContext implements Context {
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
-		/**
-		 *
-		 * @var ResponseInterface $response
-		 */
-		$response = $this->featureContext->getResponse();
-		$share_id = $response->xml()->data[0]->element[0]->id;
+		$share_id = $this->featureContext->getResponseXml()->data[0]->element[0]->id;
 		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
 			'POST',
 			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
