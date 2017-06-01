@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use GuzzleHttp\Client;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -17,7 +18,7 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	 * @param \Behat\Gherkin\Node\TableNode|null $formData
 	 */
 	public function checkCapabilitiesResponse(\Behat\Gherkin\Node\TableNode $formData) {
-		$capabilitiesXML = $this->response->xml()->data->capabilities;
+		$capabilitiesXML = $this->getResponseXml()->data->capabilities;
 
 		foreach ($formData->getHash() as $row) {
 			$path_to_element = explode('@@@', $row['path_to_element']);
