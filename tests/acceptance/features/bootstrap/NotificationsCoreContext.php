@@ -22,7 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 
 require_once 'bootstrap.php';

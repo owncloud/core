@@ -24,7 +24,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\HttpRequestHelper;

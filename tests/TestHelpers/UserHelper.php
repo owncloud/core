@@ -22,8 +22,8 @@
 namespace TestHelpers;
 
 use GuzzleHttp\BatchResults;
-use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper to administrate users (and groups) through the provisioning API

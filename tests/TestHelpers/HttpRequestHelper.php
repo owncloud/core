@@ -25,7 +25,8 @@ namespace TestHelpers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
 use Sabre\Xml\LibXMLException;
 use Sabre\Xml\Reader;
@@ -160,7 +161,15 @@ class HttpRequestHelper {
 			$options['auth'] = [$user, $password];
 		}
 		if ($body !== null) {
-			$options['body'] = $body;
+			if (\is_array($body)) {
+				// the array of 'form_params' get converted into a body by the
+				// client, which uses http_build_query to do it.
+				$options['form_params'] = $body;
+			} else {
+				// just use the ordinary body provided as-is.
+				// e.g. the caller might have already built a JSON-encoded string
+				$options['body'] = $body;
+			}
 		}
 		if ($config !== null) {
 			$options['config'] = $config;
@@ -320,7 +329,9 @@ class HttpRequestHelper {
 	 * @return SimpleXMLElement
 	 */
 	public static function getResponseXml($response) {
-		return $response->xml();
+		// rewind just to make sure we can re-parse it in case it was parsed already...
+		$response->getBody()->rewind();
+		return new SimpleXMLElement($response->getBody()->getContents());
 	}
 
 	/**

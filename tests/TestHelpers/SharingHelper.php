@@ -21,7 +21,7 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * manage Shares via OCS API

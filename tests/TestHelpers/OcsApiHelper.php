@@ -21,8 +21,8 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper to make requests to the OCS API

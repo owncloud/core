@@ -21,8 +21,8 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\ResponseInterface;
 use Exception;
+use Psr\Http\Message\ResponseInterface;
 use SimpleXMLElement;
 
 /**

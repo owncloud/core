@@ -22,8 +22,8 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\HttpRequestHelper;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * CardDav functions

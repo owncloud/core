@@ -21,8 +21,7 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Stream\Stream;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper for Uploads
@@ -64,7 +63,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 
 		//simple upload with no chunking
 		if ($chunkingVersion === null) {
-			$data = Stream::factory(\fopen($source, 'r'));
+			$data = \file_get_contents($source);
 			return WebDavHelper::makeDavRequest(
 				$baseUrl,
 				$user,
@@ -104,7 +103,6 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 
 		//upload chunks
 		foreach ($chunks as $index => $chunk) {
-			$data = Stream::factory($chunk);
 			if ($chunkingVersion === 1) {
 				$filename = $destination . "-" . $chunkingId . "-" .
 					\count($chunks) . '-' . ( string ) $index;
@@ -120,7 +118,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				"PUT",
 				$filename,
 				$headers,
-				$data,
+				$chunk,
 				null,
 				$davPathVersionToUse,
 				$davRequestType

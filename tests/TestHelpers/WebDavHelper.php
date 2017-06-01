@@ -22,10 +22,9 @@
 namespace TestHelpers;
 
 use Exception;
-use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Stream\Stream;
-use GuzzleHttp\Stream\StreamInterface;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use SimpleXMLElement;
 
 /**
@@ -52,21 +51,26 @@ class WebDavHelper {
 		$password,
 		$path
 	) {
-		$body = Stream::factory(
-			'<?xml version="1.0"?>
+		$body
+			= '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
     <oc:fileid />
   </d:prop>
-</d:propfind>'
-		);
+</d:propfind>';
 		$response = self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPFIND", $path, null, $body
 		);
-		\preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
+		\preg_match(
+			'/\<oc:fileid\>(\d+)\<\/oc:fileid\>/',
+			$response->getBody()->getContents(),
+			$matches
+		);
+
 		if (!isset($matches[1])) {
 			throw new Exception("could not find fileId of $path");
 		}
+
 		return $matches[1];
 	}
 
@@ -248,7 +252,7 @@ class WebDavHelper {
 	 * @param string $method PUT, GET, DELETE, etc.
 	 * @param string $path
 	 * @param array $headers
-	 * @param StreamInterface $body
+	 * @param string|null|resource|StreamInterface $body
 	 * @param string $requestBody
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type of request
@@ -302,11 +306,9 @@ class WebDavHelper {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
 				if ($key === "Destination") {
-					$value = \str_replace(
+					$headers[$key] = \str_replace(
 						$urlSpecialChar[0], $urlSpecialChar[1], $value
 					);
-					$headers[$key] = $value;
-					break;
 				}
 			}
 		}
