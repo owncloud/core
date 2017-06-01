@@ -25,7 +25,8 @@ namespace TestHelpers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper for HTTP requests
@@ -63,7 +64,15 @@ class HttpRequestHelper {
 			$options['auth'] = [$user, $password];
 		}
 		if ($body !== null) {
-			$options['body'] = $body;
+			if (\is_array($body)) {
+				// the array of 'form_params' get converted into a body by the
+				// client, which uses http_build_query to do it.
+				$options['form_params'] = $body;
+			} else {
+				// just use the oridnary body provided as-is.
+				// e.g. the caller might have already built a JSON-encided string
+				$options['body'] = $body;
+			}
 		}
 		if ($config !== null) {
 			$options['config'] = $config;
@@ -73,20 +82,19 @@ class HttpRequestHelper {
 		}
 		$options['stream'] = $stream;
 		$options['verify'] = false;
-		
-		$request = $client->createRequest($method, $url, $options);
-		if ($headers !== null) {
-			foreach ($headers as $key => $value) {
-				if ($request->hasHeader($key) === true) {
-					$request->setHeader($key, $value);
-				} else {
-					$request->addHeader($key, $value);
-				}
-			}
+
+		if ($headers === null) {
+			$headers = [];
 		}
 
+		$request = new Request(
+			$method,
+			$url,
+			$headers
+		);
+
 		try {
-			$response = $client->send($request);
+			$response = $client->send($request, $options);
 		} catch (BadResponseException $ex) {
 			$response = $ex->getResponse();
 			

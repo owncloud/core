@@ -200,7 +200,7 @@ class Client implements IClient {
 	 */
 	public function post($uri, array $options = []) {
 		$this->setDefaultOptions();
-		if (isset($options['body']) && is_array($options['body'])) {
+		if (isset($options['body']) && \is_array($options['body'])) {
 			$options['form_params'] = $options['body'];
 			unset($options['body']);
 		}
