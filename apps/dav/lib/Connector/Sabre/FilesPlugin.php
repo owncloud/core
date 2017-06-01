@@ -235,8 +235,10 @@ class FilesPlugin extends ServerPlugin {
 		$node = $this->tree->getNodeForPath($request->getPath());
 		if (!($node instanceof IFile)) return;
 
+		$queryParams = $request->getQueryParameters();
+
 		// adds a 'Content-Disposition: attachment' header
-		if ($this->downloadAttachment) {
+		if ($this->downloadAttachment || isset($queryParams['downloadStartSecret'])) {
 			$filename = $node->getName();
 			if ($this->request->isUserAgent(
 				[
