@@ -30,13 +30,11 @@ namespace OCA\Files_Sharing\External;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use OC\Files\Storage\DAV;
-use OC\ForbiddenException;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\ISharedStorage;
-use OCP\AppFramework\Http;
-use OCP\Files\NotFoundException;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
+use Sabre\DAV\Client;
 
 class Storage extends DAV implements ISharedStorage {
 	/** @var string */
@@ -89,7 +87,9 @@ class Storage extends DAV implements ISharedStorage {
 			'host' => $host,
 			'root' => $root,
 			'user' => $options['token'],
-			'password' => (string)$options['password']
+			'password' => (string)$options['password'],
+			// Federated sharing always uses BASIC auth
+			'authType' => Client::AUTH_BASIC
 		]);
 	}
 
@@ -192,29 +192,25 @@ class Storage extends DAV implements ISharedStorage {
 	public function checkStorageAvailability() {
 		// see if we can find out why the share is unavailable
 		try {
-			$this->getShareInfo();
-		} catch (NotFoundException $e) {
-			// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
-			if ($this->testRemote()) {
-				// valid ownCloud instance means that the public share no longer exists
-				// since this is permanent (re-sharing the file will create a new token)
-				// we remove the invalid storage
-				$this->manager->removeShare($this->mountPoint);
-				$this->manager->getMountManager()->removeMount($this->mountPoint);
-				throw new StorageInvalidException();
-			} else {
-				// ownCloud instance is gone, likely to be a temporary server configuration error
-				throw new StorageNotAvailableException();
+			if ( ! $this->propfind('') ) {
+				// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
+				if ($this->testRemote()) {
+					// valid ownCloud instance means that the public share no longer exists
+					// since this is permanent (re-sharing the file will create a new token)
+					// we remove the invalid storage
+					$this->manager->removeShare($this->mountPoint);
+					$this->manager->getMountManager()->removeMount($this->mountPoint);
+					throw new StorageInvalidException();
+				} else {
+					// ownCloud instance is gone, likely to be a temporary server configuration error
+					throw new StorageNotAvailableException();
+				}
 			}
-		} catch (ForbiddenException $e) {
+		} catch (StorageInvalidException $e) {
 			// auth error, remove share for now (provide a dialog in the future)
 			$this->manager->removeShare($this->mountPoint);
 			$this->manager->getMountManager()->removeMount($this->mountPoint);
-			throw new StorageInvalidException();
-		} catch (\GuzzleHttp\Exception\ConnectException $e) {
-			throw new StorageNotAvailableException();
-		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			throw new StorageNotAvailableException();
+			throw $e;
 		} catch (\Exception $e) {
 			throw $e;
 		}
@@ -269,61 +265,6 @@ class Storage extends DAV implements ISharedStorage {
 
 		$cache->set($url, $returnValue);
 		return $returnValue;
-	}
-
-	/**
-	 * Whether the remote is an ownCloud, used since some sharing features are not
-	 * standardized. Let's use this to detect whether to use it.
-	 *
-	 * @return bool
-	 */
-	public function remoteIsOwnCloud() {
-		if(defined('PHPUNIT_RUN') || !$this->testRemoteUrl($this->getRemote() . '/status.php')) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * @return mixed
-	 * @throws ForbiddenException
-	 * @throws NotFoundException
-	 * @throws \Exception
-	 */
-	public function getShareInfo() {
-		$remote = $this->getRemote();
-		$token = $this->getToken();
-		$password = $this->getPassword();
-
-		// If remote is not an ownCloud do not try to get any share info
-		if(!$this->remoteIsOwnCloud()) {
-			return ['status' => 'unsupported'];
-		}
-
-		$url = rtrim($remote, '/') . '/index.php/apps/files_sharing/shareinfo?t=' . $token;
-
-		// TODO: DI
-		$client = \OC::$server->getHTTPClientService()->newClient();
-		try {
-			$response = $client->post($url, [
-				'body' => ['password' => $password],
-				'timeout' => 10,
-				'connect_timeout' => 10,
-			]);
-		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			if ($e->getCode() === Http::STATUS_UNAUTHORIZED || $e->getCode() === Http::STATUS_FORBIDDEN) {
-				throw new ForbiddenException();
-			}
-			if ($e->getCode() === Http::STATUS_NOT_FOUND) {
-				throw new NotFoundException();
-			}
-			// throw this to be on the safe side: the share will still be visible
-			// in the UI in case the failure is intermittent, and the user will
-			// be able to decide whether to remove it if it's really gone
-			throw new StorageNotAvailableException();
-		}
-
-		return json_decode($response->getBody(), true);
 	}
 
 	public function getOwner($path) {
