@@ -18,7 +18,7 @@ Feature: Sharee - autocompletion
 		Then a tooltip with the text "No users or groups found for doesnotexist" should be shown near the share-with-field
 		And the autocomplete list should not be displayed
 		
-	Scenario: autocompletion of a pattern that matches regular existing users but also a user whith whom the item is already shared (folder)
+	Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
 		And the folder "simple-folder" is shared with the user "user1"
 		And the share dialog for the folder "simple-folder" is open
 		And I type "user" in the share-with-field

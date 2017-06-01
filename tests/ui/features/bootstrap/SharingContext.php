@@ -49,7 +49,7 @@ class SharingContext extends RawMinkContext implements Context
 	public function theFileFolderIsSharedWithTheUser($folder, $user)
 	{
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
-		$this->sharingDialog= $this->filesPage->openSharingDialog(
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$folder, $this->getSession()
 		);
 		$this->sharingDialog->shareWithUser($user, $this->getSession());
@@ -61,7 +61,7 @@ class SharingContext extends RawMinkContext implements Context
 	public function theShareDialogForTheFileFolderIsOpen($name)
 	{
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
-		$this->sharingDialog= $this->filesPage->openSharingDialog(
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$name, $this->getSession()
 		);
 	}
