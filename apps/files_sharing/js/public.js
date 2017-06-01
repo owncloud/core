@@ -222,9 +222,18 @@ OCA.Sharing.PublicApp = {
 			};
 
 			this.fileList.updateEmptyContent = function() {
+				var list = this;
 				this.$el.find('#emptycontent .uploadmessage').text(
 					t('files_sharing', 'You can upload into this folder')
 				);
+
+				$('#download').click(function(event) {
+					event.preventDefault();
+					if(!list.isEmpty) {
+						OC.redirect(FileList.getDownloadUrl());
+					}
+				});
+				$('#download').toggleClass('disabled', list.isEmpty);
 				OCA.Files.FileList.prototype.updateEmptyContent.apply(this, arguments);
 			};
 
@@ -244,11 +253,6 @@ OCA.Sharing.PublicApp = {
 			// URL history handling
 			this.fileList.$el.on('changeDirectory', _.bind(this._onDirectoryChanged, this));
 			OC.Util.History.addOnPopStateHandler(_.bind(this._onUrlChanged, this));
-
-			$('#download').click(function (e) {
-				e.preventDefault();
-				OC.redirect(FileList.getDownloadUrl());
-			});
 		}
 
 		$(document).on('click', '#directLink', function () {
