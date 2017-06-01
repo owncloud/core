@@ -8,8 +8,8 @@
 
 namespace Test\Http\Client;
 
-use GuzzleHttp\Message\Response as GuzzleResponse;
 use OC\Http\Client\Response;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class ResponseTest
@@ -17,21 +17,27 @@ use OC\Http\Client\Response;
 class ResponseTest extends \Test\TestCase {
 	/** @var Response */
 	private $response;
-	/** @var GuzzleResponse */
+	/** @var ResponseInterface */
 	private $guzzleResponse;
 
 	public function setUp() {
 		parent::setUp();
-		$this->guzzleResponse = new GuzzleResponse(1337);
+		$this->guzzleResponse = $this->createMock(ResponseInterface::class);
 		$this->response = new Response($this->guzzleResponse);
 	}
 
 	public function testGetStatusCode() {
+		$this->guzzleResponse->expects($this->once())
+			->method('getStatusCode')
+			->willReturn(1337);
 		$this->assertEquals(1337, $this->response->getStatusCode());
 	}
 
 	public function testGetHeader() {
-		$this->guzzleResponse->setHeader('bar', 'foo');
+		$this->guzzleResponse->expects($this->once())
+			->method('getHeader')
+			->with('bar')
+			->willReturn('foo');
 		$this->assertEquals('foo', $this->response->getHeader('bar'));
 	}
 }
