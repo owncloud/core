@@ -37,7 +37,7 @@ class SharingDialog extends OwnCloudPage
 	protected $shareWithFieldXpath = ".//*[contains(@class,'shareWithField')]";
 	protected $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
 	protected $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
-	protected $autocompleItemsTextXpath = "//*[@class='autocomplete-item-text']";
+	protected $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
 	protected $suffixToIdentifyGroups = " (group)";
 
 	/**
@@ -93,7 +93,7 @@ class SharingDialog extends OwnCloudPage
 		$usersArray = array();
 		$userElements = $this->getAutocompleteNodeElement()->findAll(
 			"xpath", 
-			$this->autocompleItemsTextXpath
+			$this->autocompleteItemsTextXpath
 		);
 		foreach ( $userElements as $user ) {
 			array_push($usersArray,$user->getText());
@@ -123,7 +123,7 @@ class SharingDialog extends OwnCloudPage
 			}
 		$autocompleteNodeElement = $this->fillShareWithField($name, $session);
 		$userElements = $autocompleteNodeElement->findAll(
-			"xpath", $this->autocompleItemsTextXpath
+			"xpath", $this->autocompleteItemsTextXpath
 		);
 		
 		$userFound = false;
@@ -152,7 +152,9 @@ class SharingDialog extends OwnCloudPage
 	 * @param bool $deletePermission not implemented yet
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function shareWithGroup($name, Session $session)
+	public function shareWithGroup($name, Session $session,$canShare = true, $canEdit = true,
+		$createPermission = true, $changePermission = true,
+		$deletePermission = true)
 	{
 		return $this->shareWithUser($name . $this->suffixToIdentifyGroups);
 	}

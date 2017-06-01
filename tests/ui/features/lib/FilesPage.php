@@ -151,7 +151,7 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function openSharingDialog ($name, Session $session)
 	{
-		$fileRow=$this->findFileRowByName($name, $session);
+		$fileRow = $this->findFileRowByName($name, $session);
 		$fileRow->find("xpath", $this->shareBtnXpath)->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
 		return $this->getPage("SharingDialog");
