@@ -22,6 +22,7 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * manage Shares via OCS API
@@ -127,6 +128,6 @@ class SharingHelper {
 		
 		$options['body'] = $fd;
 		
-		return $client->send($client->createRequest("POST", $fullUrl, $options));
+		return $client->send(new Request("POST", $fullUrl), $options);
 	}
 }

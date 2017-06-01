@@ -27,6 +27,7 @@ use InvalidArgumentException;
 use Sabre\DAV\Client as SClient;
 use GuzzleHttp\Stream\StreamInterface;
 use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * Helper to make WebDav Requests
@@ -117,21 +118,12 @@ class WebDavHelper {
 				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
 		
-		$request = $client->createRequest($method, $fullUrl, $options);
-		if (!is_null($headers)) {
-			foreach ($headers as $key => $value) {
-				if ($request->hasHeader($key) === true) {
-					$request->setHeader($key, $value);
-				} else {
-					$request->addHeader($key, $value);
-				}
-			}
+		if (is_null($headers)) {
+			$headers = [];
 		}
-		if (!is_null($body)) {
-			$request->setBody($body);
-		}
-		
-		return $client->send($request);
+		$request = new Request($method, $fullUrl, $headers, $body);
+	
+		return $client->send($request, $options);
 	}
 
 	/**

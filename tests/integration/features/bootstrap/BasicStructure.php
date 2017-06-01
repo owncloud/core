@@ -1,7 +1,8 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -121,7 +122,22 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getOCSResponse($response) {
-		return $response->xml()->meta[0]->statuscode;
+		return $this->getResponseXml($response)->meta[0]->statuscode;
+	}
+
+	/**
+	 * Parses the response as XML
+	 *
+	 * @param ResponseInterface $response
+	 * @return SimpleXMLElement
+	 */
+	public function getResponseXml($response = null) {
+		if ($response === null) {
+			$response = $this->response;
+		}
+		// rewind just to make sure we can re-parse it in case it was parsed already...
+		$response->getBody()->rewind();
+		return new SimpleXMLElement($response->getBody()->getContents());
 	}
 
 	/**
@@ -153,11 +169,11 @@ trait BasicStructure {
 		}
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
-			$options['body'] = $fd;
+			$options['form_params'] = $fd;
 		}
 
 		try {
-			$this->response = $client->send($client->createRequest($verb, $fullUrl, $options));
+			$this->response = $client->send(new Request($verb, $fullUrl), $options);
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -188,15 +204,16 @@ trait BasicStructure {
 
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
-			$options['body'] = $fd;
+			$options['form_params'] = $fd;
 		}
 
 		try {
-			$request = $client->createRequest($verb, $fullUrl, $options);
+			$headers = [];
 			if (isset($this->requestToken)) {
-				$request->addHeader('requesttoken', $this->requestToken);
+				$headers['requesttoken'] = $this->requestToken;
 			}
-			$this->response = $client->send($request);
+			$request = new Request($verb, $fullUrl, $headers);
+			$this->response = $client->send($request, $options);
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -253,7 +270,7 @@ trait BasicStructure {
 		$response = $client->post(
 			$loginUrl,
 			[
-				'body' => [
+				'form_params' => [
 					'user' => $user,
 					'password' => $password,
 					'requesttoken' => $this->requestToken,
@@ -273,16 +290,16 @@ trait BasicStructure {
 		$baseUrl = substr($this->baseUrl, 0, -5);
 
 		$client = new Client();
-		$request = $client->createRequest(
+		$request = new Request(
 			$method,
 			$baseUrl . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
+			['requesttoken' => $this->requestToken]
 		);
-		$request->addHeader('requesttoken', $this->requestToken);
+		$options = [
+				'cookies' => $this->cookieJar,
+		];
 		try {
-			$this->response = $client->send($request);
+			$this->response = $client->send($request, $options);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
@@ -297,15 +314,12 @@ trait BasicStructure {
 		$baseUrl = substr($this->baseUrl, 0, -5);
 
 		$client = new Client();
-		$request = $client->createRequest(
-			$method,
-			$baseUrl . $url,
-			[
-				'cookies' => $this->cookieJar,
-			]
-		);
+		$request = new Request($method, $baseUrl . $url);
+		$options = [
+			'cookies' => $this->cookieJar,
+		];
 		try {
-			$this->response = $client->send($request);
+			$this->response = $client->send($request, $options);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
@@ -411,7 +425,7 @@ trait BasicStructure {
 		$client = new Client();
 		$options = [];
 		$options['auth'] = ['admin','admin'];
-		$client->send($client->createRequest('post', $fullUrl, $options));
+		$client->send(new Request('POST', $fullUrl), $options);
 	}
 }
 
