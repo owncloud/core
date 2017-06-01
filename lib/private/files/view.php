@@ -374,11 +374,30 @@ class View {
 		$handle = $this->fopen($path, 'rb');
 		if ($handle) {
 			$chunkSize = 8192; // 8 kB chunks
+			$writtenSize = 0;
 			while (!feof($handle)) {
-				echo fread($handle, $chunkSize);
+				$buf = fread($handle, $chunkSize);
+				echo $buf;
+				// fast check for length, strlen is expensive so only do it on the last chunk
+				$bytesWritten = $chunkSize;
+				if (!isset($buf[$chunkSize - 1])) {
+					$bytesWritten = strlen($buf);
+				}
+				$writtenSize += $bytesWritten;
 				flush();
 			}
 			$size = $this->filesize($path);
+			if ($size !== $writtenSize) {
+				// ouch, database value is wrong
+				\OC::$server->getLogger()->warning(
+					'File size of "{path}" did not match cached value, it was automatically adjusted',
+					[
+						'path' => $path
+					]
+				);
+				$this->fixCachedFileSize($path, $writtenSize);
+				// still return old cached size, for backward-compatibility
+			}
 			return $size;
 		}
 		return false;
@@ -1977,5 +1996,18 @@ class View {
 			return $parts[2];
 		}
 		return '';
+	}
+
+	/**
+	 * Adjust the given file's file size in the cache to the given value
+	 *
+	 * @param string $path path of file to adjust
+	 * @param int $newSize new size
+	 */
+	public function fixCachedFileSize($path, $newSize) {
+		list($storage, $internalPath) = $this->resolvePath($path);
+		$cache = $storage->getCache();
+		$entry = $cache->get($internalPath);
+		$cache->update($entry['fileid'], ['size' => $newSize]);
 	}
 }
