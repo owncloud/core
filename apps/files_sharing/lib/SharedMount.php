@@ -135,7 +135,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		// Helper function to find existing mount points
 		$mountpointExists = function($path) use ($mountpoints) {
 			foreach ($mountpoints as $mountpoint) {
-				if ($mountpoint->getShare()->getTarget() === $path) {
+				if ($mountpoint->getShare()->getTarget() === $path && $mountpoint->getShare()->getId() !== $this->superShare->getId()) {
 					return true;
 				}
 			}
