@@ -1108,6 +1108,8 @@ class OC_Util {
 		} else {
 			// Specify encoding for PHP<5.4
 			$value = htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+			// Encode any non-ASCII chars to produce valid X(HT)ML.
+			$value = preg_replace_callback('/[^\x20-\x7E]/', function($char) { return ord($char) < 32 ? "" : "&#".str_pad(ord($char), 3, '0', STR_PAD_LEFT).";"; }, (string)$value);
 		}
 		return $value;
 	}
