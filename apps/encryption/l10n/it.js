@@ -35,6 +35,7 @@ OC.L10N.register(
     "Cheers!" : "Saluti!",
     "Hey there,<br><br>the admin enabled server-side-encryption. Your files were encrypted using the password <strong>%s</strong>.<br><br>Please login to the web interface, go to the section \"ownCloud basic encryption module\" of your personal settings and update your encryption password by entering this password into the \"old log-in password\" field and your current login-password.<br><br>" : "Ciao,<br><br>l'amministratore ha abilitato la cifratura lato server. I tuoi file sono stati cifrati utilizzando la password <strong>%s</strong>.<br><br>Accedi all'interfaccia web, vai alla sezione \"modulo di cifratura base di ownCloud\" dalle nelle tue impostazioni personali e aggiorna la tua password di cifratura digitando la password nel campo \"vecchia password di accesso\" e la tua nuova password.",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "L'applicazione di cifratura è abilitata, ma le chiavi non sono state inizializzate, disconnettiti ed effettua nuovamente l'accesso",
+    "Master Key" : "Chiave principale",
     "Encrypt the home storage" : "Cifra l'archiviazione principale",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "L'abilitazione di questa opzione cifra tutti i file memorizzati sull'archiviazione principale, altrimenti saranno cifrati solo i file sull'archiviazione esterna.",
     "Enable recovery key" : "Abilita chiave di ripristino",
