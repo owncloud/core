@@ -229,7 +229,15 @@ class File extends Node implements IFile {
 
 			// allow sync clients to send the mtime along in a header
 			if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $this->request->server['HTTP_X_OC_MTIME'])) { 
+				$mtime = (float) $this->request->server['HTTP_X_OC_MTIME'];
+				if ($mtime >= PHP_INT_MAX) {
+					$mtime = PHP_INT_MAX;
+				} elseif ($mtime <= (PHP_INT_MAX*-1)) {
+					$mtime = (PHP_INT_MAX*-1);
+				} else {
+					$mtime = (int) $this->request->server['HTTP_X_OC_MTIME'];
+				}
+				if ($this->fileView->touch($this->path, $mtime)) {
 					header('X-OC-MTime: accepted');
 				}
 			}
