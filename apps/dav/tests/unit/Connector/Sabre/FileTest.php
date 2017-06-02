@@ -396,6 +396,7 @@ class FileTest extends TestCase {
 	/**
 	 * Test putting a file with string Mtime
 	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider legalMtimeProvider
 	 */
 	public function testPutSingleFileLegalMtime($requestMtime, $resultMtime) {
@@ -407,6 +408,26 @@ class FileTest extends TestCase {
 		
 		$file = 'foo.txt';
 		$this->doPut($file, null, $request);
+		$this->assertEquals($resultMtime, $this->getFileInfos($file)['mtime']);
+	}
+
+	/**
+	 * Test putting a file with string Mtime using chunking
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 * @dataProvider legalMtimeProvider
+	 */
+	public function testChunkedPutLegalMtime($requestMtime, $resultMtime) {
+		$request = new \OC\AppFramework\Http\Request([
+				'server' => [
+						'HTTP_X_OC_MTIME' => $requestMtime,
+				]
+		], null, $this->config, null);
+		
+		$_SERVER['HTTP_OC_CHUNKED'] = true;
+		$file = 'foo.txt';
+		$this->doPut($file.'-chunking-12345-2-0', null, $request);
+		$this->doPut($file.'-chunking-12345-2-1', null, $request);
 		$this->assertEquals($resultMtime, $this->getFileInfos($file)['mtime']);
 	}
 
