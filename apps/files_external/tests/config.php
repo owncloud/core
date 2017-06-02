@@ -90,15 +90,6 @@ return [
 		//'test'=>'true',
 		//'timeout'=>20
 	],
-	'dropbox' => [
-		'run'=>false,
-		'root'=>'owncloud',
-		'configured' => 'true',
-		'app_key' => '',
-		'app_secret' => '',
-		'token' => '',
-		'token_secret' => ''
-	],
 	'sftp' => [
 		'run'=>false,
 		'host'=>'localhost',
