@@ -59,6 +59,24 @@ use Sabre\DAV\Exception\NotFound;
 
 class File extends Node implements IFile {
 
+	protected $request;
+	
+	/**
+	 * Sets up the node, expects a full path name
+	 *
+	 * @param \OC\Files\View $view
+	 * @param \OCP\Files\FileInfo $info
+	 * @param IManager $shareManager
+	 */
+	public function __construct($view, $info, IManager $shareManager = null, \OC\AppFramework\Http\Request $request = null) {
+		if (isset($request)) {
+			$this->request = $request;
+		} else {
+			$this->request = \OC::$server->getRequest();
+		}
+		parent::__construct($view, $info, $shareManager);
+	}
+	
 	/**
 	 * Updates the data
 	 *
@@ -210,9 +228,8 @@ class File extends Node implements IFile {
 			}
 
 			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest();
-			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
+			if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
+				if ($this->fileView->touch($this->path, $this->request->server['HTTP_X_OC_MTIME'])) { 
 					header('X-OC-MTime: accepted');
 				}
 			}
@@ -473,9 +490,8 @@ class File extends Node implements IFile {
 				}
 
 				// allow sync clients to send the mtime along in a header
-				$request = \OC::$server->getRequest();
-				if (isset($request->server['HTTP_X_OC_MTIME'])) {
-					if ($targetStorage->touch($targetInternalPath, $request->server['HTTP_X_OC_MTIME'])) {
+				if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
+					if ($targetStorage->touch($targetInternalPath, $this->request->server['HTTP_X_OC_MTIME'])) {
 						header('X-OC-MTime: accepted');
 					}
 				}

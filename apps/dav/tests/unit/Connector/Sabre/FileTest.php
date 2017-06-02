@@ -299,7 +299,7 @@ class FileTest extends TestCase {
 	 *
 	 * @return null|string of the PUT operaiton which is usually the etag
 	 */
-	private function doPut($path, $viewRoot = null) {
+	private function doPut($path, $viewRoot = null, \OC\AppFramework\Http\Request $request = null) {
 		$view = Filesystem::getView();
 		if (!is_null($viewRoot)) {
 			$view = new View($viewRoot);
@@ -315,7 +315,7 @@ class FileTest extends TestCase {
 			null
 		);
 
-		$file = new File($view, $info);
+		$file = new File($view, $info, null, $request);
 
 		// beforeMethod locks
 		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
