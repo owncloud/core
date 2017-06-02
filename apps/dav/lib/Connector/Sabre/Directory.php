@@ -269,7 +269,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 				// the caller believe that the collection itself does not exist
 				throw new Forbidden('No read permissions');
 			}
-			$folderContent = $this->fileView->getDirectoryContent($this->path);
+			$folderContent = $this->fileView->getDirectoryContent($this->path, '', true);
 		} catch (LockedException $e) {
 			throw new Locked();
 		}

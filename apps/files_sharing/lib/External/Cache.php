@@ -23,7 +23,7 @@
 
 namespace OCA\Files_Sharing\External;
 
-class Cache extends \OC\Files\Cache\Cache {
+class Cache extends \OC\Files\Cache\Cache implements \OCA\Files_Sharing\IShareCache{
 	private $remote;
 	private $remoteUser;
 	private $storage;
@@ -41,6 +41,16 @@ class Cache extends \OC\Files\Cache\Cache {
 		parent::__construct($storage);
 	}
 
+
+	/**
+	 * Obtain metadata for this share mount
+	 *
+	 * @return array
+	 */
+	public function getMetadata() {
+		return $this->get('');
+	}
+	
 	public function get($file) {
 		$result = parent::get($file);
 		if (!$result) {

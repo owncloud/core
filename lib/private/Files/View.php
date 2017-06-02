@@ -1325,7 +1325,7 @@ class View {
 	 * defaults to true
 	 * @return \OC\Files\FileInfo|false False if file does not exist
 	 */
-	public function getFileInfo($path, $includeMountPoints = true) {
+	public function getFileInfo($path, $includeMountPoints = true, $parentReadOnly = false) {
 		$this->assertPathLength($path);
 		if (!Filesystem::isValidPath($path)) {
 			return false;
@@ -1366,7 +1366,11 @@ class View {
 								continue;
 							}
 							$subCache = $subStorage->getCache('');
-							$rootEntry = $subCache->get('');
+							if ($parentReadOnly && $subCache instanceof \OCA\Files_Sharing\IShareCache) {
+								$rootEntry = $subCache->getMetadata();
+							} else {
+								$rootEntry = $subCache->get('');
+							}
 							$info->addSubEntry($rootEntry, $mount->getMountPoint());
 						}
 					}
@@ -1386,7 +1390,7 @@ class View {
 	 * @param string $mimetype_filter limit returned content to this mimetype or mimepart
 	 * @return FileInfo[]
 	 */
-	public function getDirectoryContent($directory, $mimetype_filter = '') {
+	public function getDirectoryContent($directory, $mimetype_filter = '', $parentReadOnly = false) {
 		$this->assertPathLength($directory);
 		if (!Filesystem::isValidPath($directory)) {
 			return [];
@@ -1431,9 +1435,18 @@ class View {
 				$mountPoint = $mount->getMountPoint();
 				$subStorage = $mount->getStorage();
 				if ($subStorage) {
-					$subCache = $subStorage->getCache('');
 
-					$rootEntry = $subCache->get('');
+					$subCache = $subStorage->getCache('');
+					if ($subCache instanceof \OCA\Files_Sharing\IShareCache) {
+						if ($parentReadOnly) {
+							$rootEntry = $subCache->getMetadata();
+						}  else {
+							$rootEntry = $subCache->get('');
+						}
+					} else {
+						$rootEntry = $subCache->get('');
+					}
+
 					if (!$rootEntry) {
 						$subScanner = $subStorage->getScanner('');
 						try {
