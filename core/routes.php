@@ -34,6 +34,11 @@ use OC\Core\Application;
 $application = new Application();
 $application->registerRoutes($this, [
 	'routes' => [
+		['name' => 'auth#start', 'url' => '/auth/start', 'verb' => 'POST'],
+		['name' => 'auth#askPermissions', 'url' => '/auth/authorize', 'verb' => 'GET'],
+		['name' => 'auth#grantPermissions', 'url' => '/auth/authorize', 'verb' => 'POST'],
+		['name' => 'auth#success', 'url' => '/auth/success', 'verb' => 'GET'],
+		['name' => 'auth#status', 'url' => '/auth/status', 'verb' => 'POST'],
 		['name' => 'lost#email', 'url' => '/lostpassword/email', 'verb' => 'POST'],
 		['name' => 'lost#resetform', 'url' => '/lostpassword/reset/form/{token}/{userId}', 'verb' => 'GET'],
 		['name' => 'lost#setPassword', 'url' => '/lostpassword/set/{token}/{userId}', 'verb' => 'POST'],
