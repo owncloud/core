@@ -534,7 +534,7 @@
 			var containerWidth = this.$el.width();
 			var actionsWidth = 0;
 			$.each(this.$el.find('#controls .actions'), function(index, action) {
-				actionsWidth += $(action).outerWidth();
+				actionsWidth += $(action).outerWidth() - 10;
 			});
 
 			// subtract app navigation toggle when visible
