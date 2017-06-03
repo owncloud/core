@@ -6,7 +6,7 @@ OC.L10N.register(
     "Select tags to filter by" : "Izbor oznak za filtriranje",
     "Please select tags to filter by" : "Izbor oznak za filtriranje",
     "No files found for the selected tags" : "Na izbrane oznake ni najdenih datotek",
-    "<strong>System tags</strong> for a file have been modified" : "Spremenjene so bile <strong>sistemske oznake</strong> datoteke.",
+    "<strong>System tags</strong> for a file have been modified" : "Spremenjene so bile <strong>sistemske oznake</strong> datoteke",
     "You assigned system tag %3$s" : "Dodelili ste sistemsko oznako %3$s",
     "%1$s assigned system tag %3$s" : "Uporabnik %1$s je dodelil sistemsko oznako %3$s",
     "You unassigned system tag %3$s" : "Odstranili ste sistemsko oznako %3$s",
