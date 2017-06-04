@@ -124,3 +124,6 @@ Vagrantfile
 /config/config-autotest-backup.php
 /config/autoconfig.php
 clover.xml
+
+# Ignore changes to .htacces made by ownCloud on runtime
+.htaccess
