@@ -56,7 +56,7 @@ class Version20170116170538 implements ISchemaMigration {
 			'length' => 255,
 		]);
 		$table->setPrimaryKey(['id']);
-		$table->addIndex(['fileid'], 'fileid_index');
+		$table->addIndex(['`fileid`'], 'fileid_index');
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Version20170116170538 implements ISchemaMigration {
 				]);
 			}
 			if (!$table->hasIndex('fileid_index')){
-				$table->addIndex(['fileid'], 'fileid_index');
+				$table->addIndex(['`fileid`'], 'fileid_index');
 			}
 		}
 	}
