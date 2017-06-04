@@ -33,6 +33,8 @@ class ManagerTest extends \Test\TestCase {
 		$rootMount = new \OC\Files\Mount\MountPoint(new Temporary([]), '/');
 		$this->manager->addMount($rootMount);
 		$this->assertEquals($rootMount, $this->manager->find('/'));
+		$this->assertEquals($rootMount, $this->manager->find(''));
+		$this->assertEquals($rootMount, $this->manager->find('//'));
 		$this->assertEquals($rootMount, $this->manager->find('/foo/bar'));
 
 		$storage = new Temporary([]);
@@ -40,6 +42,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->manager->addMount($mount1);
 		$this->assertEquals($rootMount, $this->manager->find('/'));
 		$this->assertEquals($mount1, $this->manager->find('/foo/bar'));
+		$this->assertEquals($mount1, $this->manager->find('/foo/bar/'));
 
 		$this->assertEquals(1, count($this->manager->findIn('/')));
 		$mount2 = new \OC\Files\Mount\MountPoint(new Temporary([]), '/bar');
