@@ -21,9 +21,12 @@
 
 namespace OC\Files\Cache;
 
+use OC\Files\Storage\Home;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Cache\IPropagator;
 use OCP\IDBConnection;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Propagate etags and mtimes within the storage
@@ -86,6 +89,10 @@ class Propagator implements IPropagator {
 
 		$builder->execute();
 
+		if (isset($parents[1]) && $parents[1] === 'files') {
+			$this->triggerETagChangeEvent();
+		}
+
 		if ($sizeDifference !== 0) {
 			// we need to do size separably so we can ignore entries with uncalculated size
 			$builder = $this->connection->getQueryBuilder();
@@ -94,9 +101,9 @@ class Propagator implements IPropagator {
 				->where($builder->expr()->eq('storage', $builder->createNamedParameter($storageId, IQueryBuilder::PARAM_INT)))
 				->andWhere($builder->expr()->in('path_hash', $hashParams))
 				->andWhere($builder->expr()->gt('size', $builder->expr()->literal(-1, IQueryBuilder::PARAM_INT)));
-		}
 
-		$builder->execute();
+			$builder->execute();
+		}
 	}
 
 	protected function getParents($path) {
@@ -178,9 +185,23 @@ class Propagator implements IPropagator {
 			}
 		}
 
+		if (isset($this->batch[''])) {
+			$this->triggerETagChangeEvent();
+		}
+
 		$this->batch = [];
 
 		$this->connection->commit();
+	}
+
+	protected function triggerETagChangeEvent() {
+		if ($this->storage->instanceOfStorage(Home::class)) {
+			$owner = $this->storage->getOwner('');
+			$root = \OC::$server->getUserFolder($owner);
+			$e = $root->getEtag();
+			\OC::$server->getEventDispatcher()->dispatch(self::class . '::rootETagChanged',
+				new GenericEvent('', ['etag' => $e, 'user' => $owner]));
+		}
 	}
 
 
