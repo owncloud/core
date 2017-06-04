@@ -22,6 +22,7 @@
 namespace OC\Authentication\Token;
 
 use OCP\AppFramework\Db\DoesNotExistException;
+use OC\Authentication\Exceptions\InvalidTokenException;
 use OCP\AppFramework\Db\Mapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
@@ -82,6 +83,34 @@ class DefaultTokenMapper extends Mapper {
 			throw new DoesNotExistException('token does not exist');
 		}
 		return DefaultToken::fromRow($data);
+	}
+
+	/**		
+	 * Get the tokens of a user of particular name		
+	 *		
+	 * @param string $name		
+	 * @param string $uid		
+	 * throws DoesNotExistException		
+	 * throws InvalidTokenException		
+	 */		
+	public function getTokenByName($name, $uid) {		
+		/* @var $qb IQueryBuilder */		
+		$qb = $this->db->getQueryBuilder();		
+		$result = $qb->select('id', 'uid', 'login_name', 'password', 'name', 'type', 'token', 'last_activity', 'last_check')		
+			->from('authtoken')		
+			->where($qb->expr()->eq('name', $qb->createParameter('name')))		
+			->andWhere($qb->expr()->eq('uid', $qb->createParameter('uid')))		
+			->setParameter('name', $name)		
+			->setParameter('uid', $uid)		
+			->execute();		
+		$data = $result->fetch();		
+		$result->closeCursor();		
+		if ($data) {		
+			throw new InvalidTokenException();		
+		}		
+		else {		
+			throw new DoesNotExistException('token does not exist');		
+		}		
 	}
 
 	/**
