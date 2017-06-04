@@ -269,7 +269,9 @@ GroupList = {
 			GroupList.hide, GroupList.remove);
 
 		//configure undo
-		OC.Notification.hide();
+		if(oc_oldUserId.name === null) {
+			OC.Notification.hide();
+		}
 		var msg = escapeHTML(t('settings', 'deleted {groupName}', {groupName: '%oid'})) + '<span class="undo">' +
 			escapeHTML(t('settings', 'undo')) + '</span>';
 		GroupDeleteHandler.setNotification(OC.Notification, 'deletegroup', msg,
