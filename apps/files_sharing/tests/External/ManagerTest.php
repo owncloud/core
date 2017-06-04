@@ -50,6 +50,9 @@ class ManagerTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $httpHelper;
 
+	/** @var \OCP\IDBConnection */
+	private $connection;
+
 	private $uid;
 
 	/**
@@ -83,6 +86,7 @@ class ManagerTest extends TestCase {
 		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), function() {
 			return $this->manager;
 		});
+		$this->connection = \OC::$server->getDatabaseConnection();
 	}
 
 	private function setupMounts() {
@@ -200,8 +204,60 @@ class ManagerTest extends TestCase {
 			->method('post')
 			->with($this->stringStartsWith('http://localhost/ocs/v1.php/cloud/shares/' . $acceptedShares[0]['remote_id'] . '/decline'), $this->anything());
 
+		$mountPath = $this->uid . '/files/' . $shareData1['name'];
+
+		$mountPointObj = $this->mountManager->find($mountPath);
+		// scan to create some filecache entries
+		$storageCache = $mountPointObj->getStorage()->getCache();
+		$storageCache->put('hello.txt', ['size' => 5, 'mtime' => time(), 'mimetype' => 'text/plain']);
+		$storageId = $storageCache->getNumericStorageId();
+		$this->assertHasStorageEntries($storageId);
+
 		$this->manager->removeUserShares($this->uid);
 		$this->assertEmpty(self::invokePrivate($this->manager, 'getShares', [null]), 'Asserting all shares for the user have been deleted');
+		$this->assertHasNoStorageEntries($storageId);
+
+		$this->mountManager->clear();
+		self::invokePrivate($this->manager, 'setupMounts');
+		$this->assertNotMount($shareData1['name']);
+		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
+		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
+	}
+
+	public function testRemoveShare() {
+		$shareData1 = [
+			'remote' => 'http://localhost',
+			'token' => 'token1',
+			'password' => '',
+			'name' => '/SharedFolder',
+			'owner' => 'foobar',
+			'accepted' => false,
+			'user' => $this->uid,
+		];
+
+		// Add a share for "user"
+		$this->assertSame(null, call_user_func_array([$this->manager, 'addShare'], $shareData1));
+		$this->setupMounts();
+
+		// Accept the first share
+		$openShares = $this->manager->getOpenShares();
+		$this->manager->acceptShare($openShares[0]['id']);
+
+		$this->setupMounts();
+		$mountPath = $this->uid . '/files' . $shareData1['name'];
+
+		$mountPointObj = $this->mountManager->find($mountPath);
+		// scan to create some filecache entries
+		$storageCache = $mountPointObj->getStorage()->getCache();
+		$storageCache->put('hello.txt', ['size' => 5, 'mtime' => time(), 'mimetype' => 'text/plain']);
+		$storageId = $storageCache->getNumericStorageId();
+
+		$this->assertHasStorageEntries($storageId);
+
+		$this->manager->removeShare($mountPath);
+		$this->assertEmpty(self::invokePrivate($this->manager, 'getShares', [null]), 'Asserting all shares for the user have been deleted');
+
+		$this->assertHasNoStorageEntries($storageId);
 
 		$this->mountManager->clear();
 		self::invokePrivate($this->manager, 'setupMounts');
@@ -245,6 +301,40 @@ class ManagerTest extends TestCase {
 		} else {
 			$this->assertNull($mount);
 		}
+	}
+
+	private function assertHasStorageEntries($storageNumericId) {
+		$qb = $this->connection->getQueryBuilder();
+		$results = $qb->select('*')
+			->from('storages')
+			->where($qb->expr()->eq('numeric_id', $qb->expr()->literal($storageNumericId)))
+			->execute();
+
+		$this->assertNotFalse($results->fetch(), "Storage $storageNumericId has entries");
+
+		$results = $qb->select('*')
+			->from('filecache')
+			->where($qb->expr()->eq('storage', $qb->expr()->literal($storageNumericId)))
+			->execute();
+
+		$this->assertNotFalse($results->fetch(), "Storage $storageNumericId has filecache entries");
+	}
+
+	private function assertHasNoStorageEntries($storageNumericId) {
+		$qb = $this->connection->getQueryBuilder();
+		$results = $qb->select('*')
+			->from('storages')
+			->where($qb->expr()->eq('numeric_id', $qb->expr()->literal($storageNumericId)))
+			->execute();
+
+		$this->assertFalse($results->fetch(), "Storage $storageNumericId has no entries");
+
+		$results = $qb->select('*')
+			->from('filecache')
+			->where($qb->expr()->eq('storage', $qb->expr()->literal($storageNumericId)))
+			->execute();
+
+		$this->assertFalse($results->fetch(), "Storage $storageNumericId has no filecache entries");
 	}
 
 	private function getFullPath($path) {

@@ -31,6 +31,8 @@ use OCA\FederatedFileSharing\DiscoveryManager;
 class Hooks {
 
 	public static function deleteUser($params) {
+		$uid = $params['uid'];
+		\OC\Files\Filesystem::initMountPoints($uid);
 		$discoveryManager = new DiscoveryManager(
 			\OC::$server->getMemCacheFactory(),
 			\OC::$server->getHTTPClientService()
@@ -42,9 +44,9 @@ class Hooks {
 			\OC::$server->getHTTPHelper(),
 			\OC::$server->getNotificationManager(),
 			$discoveryManager,
-			$params['uid']);
+			$uid);
 
-		$manager->removeUserShares($params['uid']);
+		$manager->removeUserShares($uid);
 	}
 
 	public static function unshareChildren($params) {

@@ -326,12 +326,25 @@ class Manager {
 		return $result;
 	}
 
-	public function removeShare($mountPoint) {
-
+	private function getStorageCache($mountPoint) {
 		$mountPointObj = $this->mountManager->find($mountPoint);
-		$id = $mountPointObj->getStorage()->getCache()->getId('');
+		if (is_null($mountPointObj)) {
+			// possibly a temporary mount point that was never mounted before
+			return null;
+		}
+		if (trim($mountPointObj->getMountPoint(), '/') !== trim($mountPoint, '/')) {
+			// wrong one, possibly root entry...
+			return null;
+		}
+		return $mountPointObj->getStorage()->getCache();
+	}
+
+	public function removeShare($mountPoint) {
+		$storageCache = $this->getStorageCache($mountPoint);
 
 		$mountPoint = $this->stripPath($mountPoint);
+		// leading slash is expected
+		$mountPoint = '/' . ltrim($mountPoint, '/');
 		$hash = md5($mountPoint);
 
 		$getShare = $this->connection->prepare('
@@ -353,8 +366,16 @@ class Manager {
 		');
 		$result = (bool)$query->execute([$hash, $this->uid]);
 
-		if($result) {
-			$this->removeReShares($id);
+		if ($storageCache !== null) {
+			if($result) {
+				$id = $storageCache->getId('');
+				$this->removeReShares($id);
+			}
+
+			// note: method not on the interface...
+			if (method_exists($storageCache, 'clear')) {
+				$storageCache->clear();
+			}
 		}
 
 		return $result;
@@ -390,24 +411,31 @@ class Manager {
 	 * @return bool
 	 */
 	public function removeUserShares($uid) {
-		$getShare = $this->connection->prepare('
-			SELECT `remote`, `share_token`, `remote_id`
-			FROM  `*PREFIX*share_external`
-			WHERE `user` = ?');
-		$result = $getShare->execute([$uid]);
+		$getShare = $this->connection->getQueryBuilder();
+		$getShare->select(['remote', 'share_token', 'remote_id', 'mountpoint'])
+			->from('share_external')
+			->where($getShare->expr()->eq('user', $getShare->createNamedParameter($uid)));
+		$result = $getShare->execute();
 
 		if ($result) {
-			$shares = $getShare->fetchAll();
+			$shares = $result->fetchAll();
+			$result->closeCursor();
 			foreach($shares as $share) {
+				$storageCache = $this->getStorageCache($uid . '/files/' . ltrim($share['mountpoint'], '/'));
+				if (!is_null($storageCache)) {
+					// note: method not on the interface...
+					if (method_exists($storageCache, 'clear')) {
+						$storageCache->clear();
+					}
+				}
 				$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
 			}
 		}
 
-		$query = $this->connection->prepare('
-			DELETE FROM `*PREFIX*share_external`
-			WHERE `user` = ?
-		');
-		return (bool)$query->execute([$uid]);
+		$query = $this->connection->getQueryBuilder();
+		$query->delete('share_external')
+			->where($query->expr()->eq('user', $query->createNamedParameter($uid)));
+		return (bool)$query->execute();
 	}
 
 	/**
