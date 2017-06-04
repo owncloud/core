@@ -109,6 +109,13 @@ timestampedNode('SLAVE') {
             make test-external TEST_EXTERNAL_ENV=smb-windows
             '''
         }
+        executeAndReport('tests/autotest-external-results-sqlite-sftp-atmoz.xml') {
+            sh '''phpenv local 7.0
+            export NOCOVERAGE=1
+            unset USEDOCKER
+			make test-external TEST_EXTERNAL_ENV=sftp-atmoz
+            '''
+        }
 
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
