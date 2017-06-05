@@ -67,7 +67,7 @@ class PersonalPanel implements ISettings {
 			$isIE8 = true;
 		}
 		$cloudID = $this->userSession->getUser()->getCloudId();
-		$url = 'https://owncloud.org/federation#' . $cloudID;
+		$url = 'https://owncloud.org/federation ' . $cloudID;
 		$ownCloudLogoPath = $this->urlGenerator->imagePath('core', 'logo-icon.svg');
 		$tmpl = new Template('federatedfilesharing', 'settings-personal');
 		$tmpl->assign('outgoingServer2serverShareEnabled', $this->shareProvider->isOutgoingServer2serverShareEnabled());
