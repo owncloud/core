@@ -456,10 +456,10 @@ class User implements IUser {
 	 * @since 10.0.1
 	 */
 	public function setSearchTerms(array $terms) {
-		// Check length of terms
-		$terms = array_filter($terms, function($term) {
-			return strlen($term) <= 255;
-		});
+		// Check length of terms, cut if too long
+		$terms = array_map(function($term) {
+			return substr($term, 0, 191);
+		}, $terms);
 		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
 	}
 }
