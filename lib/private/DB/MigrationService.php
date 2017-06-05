@@ -114,8 +114,10 @@ class MigrationService {
 		$tableName = $this->connection->getDatabasePlatform()->quoteIdentifier($tableName);
 
 		$columns = [
-			'app' => new Column($this->connection->getDatabasePlatform()->quoteIdentifier('app'), Type::getType('string'), ['length' => 255]),
-			'version' => new Column($this->connection->getDatabasePlatform()->quoteIdentifier('version'), Type::getType('string'), ['length' => 255]),
+			// Length = max indexable char length - length of other columns = 191 - 14
+			'app' => new Column($this->connection->getDatabasePlatform()->quoteIdentifier('app'), Type::getType('string'), ['length' => 177]),
+			// Datetime string. Eg: 20172605104128
+			'version' => new Column($this->connection->getDatabasePlatform()->quoteIdentifier('version'), Type::getType('string'), ['length' => 14]),
 		];
 		$table = new Table($tableName, $columns);
 		$table->setPrimaryKey([
