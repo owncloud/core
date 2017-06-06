@@ -106,7 +106,7 @@ class View {
 			throw new \Exception();
 		}
 
-		$this->fakeRoot = $root;
+		$this->fakeRoot = Filesystem::normalizePath($root);
 		$this->lockingProvider = \OC::$server->getLockingProvider();
 		$this->lockingEnabled = !($this->lockingProvider instanceof \OC\Lock\NoopLockingProvider);
 		$this->userManager = \OC::$server->getUserManager();
