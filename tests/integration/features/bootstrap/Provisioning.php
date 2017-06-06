@@ -652,6 +652,22 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^user attributes match with$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 */
+	public function checkUserAttributes($body){
+		$data = $this->response->xml()->data[0];
+		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+			$fd = $body->getRowsHash();
+			foreach($fd as $field => $value) {
+				if ($data->$field != $value){
+					PHPUnit_Framework_Assert::fail("$field" . " has value " . "$data->$field");
+				}
+			}
+		}
+	}
+
+	/**
 	 * @BeforeScenario
 	 * @AfterScenario
 	 */
