@@ -4,6 +4,7 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Message\ResponseInterface;
 
+
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 trait AppConfiguration {
@@ -66,42 +67,9 @@ trait AppConfiguration {
 	abstract protected function resetAppConfigs();
 
 	/**
-	 * @BeforeScenario
-	 *
-	 * Enable the testing app before the first scenario of the feature and
-	 * reset the configs before each scenario
-	 * @param BeforeScenarioScope $event
+	 * @BeforeScenario @AfterScenario
 	 */
-	public function prepareParameters(BeforeScenarioScope $event){
-		$user = $this->currentUser;
-		$this->currentUser = 'admin';
-
-		$scenarios = $event->getFeature()->getScenarios();
-		if ($event->getScenario() === reset($scenarios)) {
-			$this->setStatusTestingApp(true);
-		}
-
+	public function prepareParametersForScenario() {
 		$this->resetAppConfigs();
-
-		$this->currentUser = $user;
-	}
-
-	/**
-	 * @AfterScenario
-	 *
-	 * Reset the values after the last scenario of the feature and disable the testing app
-	 * @param AfterScenarioScope $event
-	 */
-	public function undoChangingParameters(AfterScenarioScope $event) {
-		$scenarios = $event->getFeature()->getScenarios();
-		if ($event->getScenario() === end($scenarios)) {
-			$user = $this->currentUser;
-			$this->currentUser = 'admin';
-
-			$this->resetAppConfigs();
-
-			$this->setStatusTestingApp(false);
-			$this->currentUser = $user;
-		}
 	}
 }

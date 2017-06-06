@@ -47,13 +47,13 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		}
 	}
 
-	/** @BeforeScenario */
+	/** @BeforeScenario @caldav */
 	public function setUpScenario() {
 		$this->client = new Client();
 		$this->responseXml = '';
 	}
 
-	/** @AfterScenario */
+	/** @AfterScenario @caldav */
 	public function afterScenario() {
 		$davUrl = $this->baseUrl. '/remote.php/dav/calendars/admin/MyCalendar';
 		try {
