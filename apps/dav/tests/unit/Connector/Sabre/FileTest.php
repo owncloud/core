@@ -341,7 +341,8 @@ class FileTest extends TestCase {
 	}
 
 	public function legalMtimeProvider() {
-		return [ 
+		$primaryStorageConfig = getenv("PRIMARY_STORAGE_CONFIG");
+		$testValues = [
 				"string" => [ 
 						'HTTP_X_OC_MTIME' => "string",
 						'expected result' => 0
@@ -374,14 +375,6 @@ class FileTest extends TestCase {
 						'HTTP_X_OC_MTIME' => "2345asdf",
 						'expected result' => 2345
 				],
-				"negative int" => [
-						'HTTP_X_OC_MTIME' => -34,
-						'expected result' => -34
-				],
-				"negative float" => [
-						'HTTP_X_OC_MTIME' => -34.43,
-						'expected result' => -34
-				],
 				"string castable hex int" => [
 						'HTTP_X_OC_MTIME' => "0x45adf",
 						'expected result' => 0
@@ -390,7 +383,32 @@ class FileTest extends TestCase {
 						'HTTP_X_OC_MTIME' => "0x123g",
 						'expected result' => 0
 				]
-		];
+			];
+		
+		if ($primaryStorageConfig === "swift") {
+			$testValuesNegativeMtime = [
+				"negative int" => [
+						'HTTP_X_OC_MTIME' => -34,
+						'expected result' => 0
+				],
+				"negative float" => [
+						'HTTP_X_OC_MTIME' => -34.43,
+						'expected result' => 0
+				],
+			];
+		} else {
+			$testValuesNegativeMtime = [
+					"negative int" => [
+							'HTTP_X_OC_MTIME' => -34,
+							'expected result' => -34
+					],
+					"negative float" => [
+							'HTTP_X_OC_MTIME' => -34.43,
+							'expected result' => -34
+					],
+			];
+		}
+		return array_merge($testValues, $testValuesNegativeMtime);
 	}
 
 	/**
