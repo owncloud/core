@@ -836,9 +836,20 @@ class DefaultShareProvider implements IShareProvider {
 	 */
 	private function createShare($data) {
 		$share = new Share($this->rootFolder, $this->userManager);
+
+		$permissions = (int)$data['permissions'];
+		// mask file share permissions in case of invalid entries in the database
+		if ($data['item_type'] === 'file') {
+			$permissions = $permissions & (
+				\OCP\Constants::PERMISSION_READ |
+				\OCP\Constants::PERMISSION_UPDATE |
+				\OCP\Constants::PERMISSION_SHARE
+			);
+		}
+
 		$share->setId((int)$data['id'])
 			->setShareType((int)$data['share_type'])
-			->setPermissions((int)$data['permissions'])
+			->setPermissions($permissions)
 			->setTarget($data['file_target'])
 			->setMailSend((bool)$data['mail_send']);
 
