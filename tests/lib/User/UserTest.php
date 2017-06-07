@@ -337,7 +337,7 @@ class UserTest extends TestCase {
 	public function setTermsData() {
 		return [
 			'normal terms' => [['term1'], ['term1']],
-			'too long terms' => [['term1', str_repeat(".", 192)], ['term1']]
+			'too long terms' => [['term1', str_repeat(".", 192)], ['term1', str_repeat(".", 191)]]
 		];
 	}
 
