@@ -67,9 +67,12 @@ trait AppConfiguration {
 	abstract protected function resetAppConfigs();
 
 	/**
-	 * @BeforeScenario @AfterScenario
+	 * @BeforeScenario
 	 */
-	public function prepareParametersForScenario() {
+	public function prepareParametersBeforeScenario() {
+		$user = $this->currentUser;
+		$this->currentUser = 'admin';
 		$this->resetAppConfigs();
+		$this->currentUser = $user;
 	}
 }
