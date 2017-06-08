@@ -917,7 +917,18 @@ class Manager implements IManager {
 				$shares = $provider->getSharesBy($userId, $shareType, $path, $reshares, $limit, $offset);
 
 				// No more shares means we are done
-				if (empty($shares)) {
+				// The array_udiff provides another way of exiting the loop in
+				// case the $offset/$limit cause Oracle to return the same
+				// results over and over again
+				if (empty($shares) || !array_udiff($shares, $shares2, function(Share $a, Share $b) {
+						if ($a->getId() < $b->getId()) {
+							return -1;
+						} elseif ($a->getId() > $b->getId()) {
+							return 1;
+						} else {
+							return 0;
+						}
+					})) {
 					break;
 				}
 			}
