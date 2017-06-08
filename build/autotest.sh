@@ -383,12 +383,14 @@ fi
 #
 # NOTES on pgsql:
 #  - su - postgres
-#  - createuser -P oc_autotest (enter password and enable superuser)
+#  - createuser -P oc_autotest (enter password "owncloud")
+#  - psql -c 'ALTER USER oc_autotest CREATEDB;' (to give the user the priveleged to create databases)
 #  - to enable dropdb I decided to add following line to pg_hba.conf (this is not the safest way but I don't care for the testing machine):
 # local	all	all	trust
 #
 #  - for parallel executor support with EXECUTOR_NUMBER=0:
-#  - createuser -P oc_autotest0 (enter password and enable superuser)
+#  - createuser -P oc_autotest0 (enter password "owncloud")
+#  - psql -c 'ALTER USER oc_autotest0 CREATEDB;' (to give the user the priveleged to create databases)
 #
 # NOTES on oci:
 #  - it's a pure nightmare to install Oracle on a Linux-System
