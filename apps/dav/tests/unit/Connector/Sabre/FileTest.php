@@ -414,7 +414,6 @@ class FileTest extends TestCase {
 						'HTTP_X_OC_MTIME' => $requestMtime,
 				]
 		], null, $this->config, null);
-		
 		$file = 'foo.txt';
 		$this->doPut($file, null, $request);
 		$this->assertEquals($resultMtime, $this->getFileInfos($file)['mtime']);
