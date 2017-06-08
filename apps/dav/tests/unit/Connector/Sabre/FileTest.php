@@ -393,11 +393,11 @@ class FileTest extends TestCase {
 			],
 			"negative int" => [
 					'HTTP_X_OC_MTIME' => -34,
-					'expected result' => (supportsNegativeMtime() ? -34 : 0)
+					'expected result' => ($this->supportsNegativeMtime() ? -34 : 0)
 			],
 			"negative float" => [
 					'HTTP_X_OC_MTIME' => -34.43,
-					'expected result' => (supportsNegativeMtime() ? -34 : 0)
+					'expected result' => ($this->supportsNegativeMtime() ? -34 : 0)
 			],
 		];
 	}
