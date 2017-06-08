@@ -1561,11 +1561,10 @@ function initCore() {
 
 	// move triangle of apps dropdown to align with app name triangle
 	// 2 is the additional offset between the triangles
-	if ($('#navigation').length) {
+	if ($('#navigation').length && $('.header-appname + .icon-caret').length) {
 		$('#header #owncloud + .menutoggle').one('click', function () {
-			var caret = $('.header-appname + .caret');
-			var caretPosition = caret.offset().left - caret.width() / 2;
-
+			var caret = $('.header-appname + .icon-caret');
+			var caretPosition = caret.offset().left + caret.width() / 2;
 			// only position the menu arrow if the caret is in its reach
 			if (caretPosition <= 255) {
 				$('head').append('<style>#navigation:after { left: ' + caretPosition + 'px; }</style>');
