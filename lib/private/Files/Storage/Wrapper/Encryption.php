@@ -246,7 +246,7 @@ class Encryption extends Wrapper {
 			return $this->storage->unlink($path);
 		}
 
-		$encryptionModule = $this->getEncryptionModule($path);
+		$encryptionModule = ($this->encryptionManager->isEnabled()) ? $this->getEncryptionModule($path) : "";
 		if ($encryptionModule) {
 			$this->keyStorage->deleteAllFileKeys($this->getFullPath($path));
 		}
@@ -358,11 +358,12 @@ class Encryption extends Wrapper {
 	 *
 	 * @param string $path
 	 * @param string $mode
+	 * @param string|null $sourceFileOfRename
 	 * @return resource|bool
 	 * @throws GenericEncryptionException
 	 * @throws ModuleDoesNotExistsException
 	 */
-	public function fopen($path, $mode) {
+	public function fopen($path, $mode, $sourceFileOfRename = null) {
 
 		// check if the file is stored in the array cache, this means that we
 		// copy a file over to the versions folder, in this case we don't want to
@@ -378,7 +379,7 @@ class Encryption extends Wrapper {
 		$header = $this->getHeader($path);
 		$signed = (isset($header['signed']) && $header['signed'] === 'true') ? true : false;
 		$fullPath = $this->getFullPath($path);
-		$encryptionModuleId = $this->util->getEncryptionModuleId($header);
+		$encryptionModuleId = ($encryptionEnabled) ? $this->util->getEncryptionModuleId($header): "";
 
 		if ($this->util->isExcluded($fullPath) === false) {
 
@@ -457,7 +458,7 @@ class Encryption extends Wrapper {
 				}
 				$handle = \OC\Files\Stream\Encryption::wrap($source, $path, $fullPath, $header,
 					$this->uid, $encryptionModule, $this->storage, $this, $this->util, $this->fileHelper, $mode,
-					$size, $unencryptedSize, $headerSize, $signed);
+					$size, $unencryptedSize, $headerSize, $signed, $sourceFileOfRename);
 				return $handle;
 			}
 
@@ -569,7 +570,7 @@ class Encryption extends Wrapper {
 		fclose($stream);
 
 		// we have to decrypt the last chunk to get it actual size
-		$encryptionModule->begin($this->getFullPath($path), $this->uid, 'r', $header, []);
+		$encryptionModule->begin($this->getFullPath($path), $this->uid, 'r', $header, [], null);
 		$decryptedLastChunk = $encryptionModule->decrypt($lastChunkContentEncrypted, $lastChunkNr . 'end');
 		$decryptedLastChunk .= $encryptionModule->end($this->getFullPath($path), $lastChunkNr . 'end');
 
@@ -672,6 +673,12 @@ class Encryption extends Wrapper {
 		// in case of a rename we need to manipulate the source cache because
 		// this information will be kept for the new target
 		if ($isRename) {
+			/*
+			 * Rename is a process of creating a new file. Here we try to use the
+			 * incremented version of source file, for the destination file.
+			 */
+			$encryptedVersion = $sourceStorage->getCache()->get($sourceInternalPath)['encryptedVersion'];
+			$cacheInformation['encryptedVersion'] = $encryptedVersion + 1;
 			$sourceStorage->getCache()->put($sourceInternalPath, $cacheInformation);
 		} else {
 			$this->getCache()->put($targetInternalPath, $cacheInformation);
@@ -690,7 +697,6 @@ class Encryption extends Wrapper {
 	 * @throws \Exception
 	 */
 	private function copyBetweenStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename) {
-
 		// for versions we have nothing to do, because versions should always use the
 		// key from the original file. Just create a 1:1 copy and done
 		if ($this->isVersion($targetInternalPath) ||
@@ -740,7 +746,12 @@ class Encryption extends Wrapper {
 		} else {
 			try {
 				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
-				$target = $this->fopen($targetInternalPath, 'w');
+				if ($isRename) {
+					$absSourcePath = Filesystem::normalizePath($sourceStorage->getOwner($sourceInternalPath). '/' . $sourceInternalPath);
+					$target = $this->fopen($targetInternalPath, 'w', $absSourcePath);
+				} else {
+					$target = $this->fopen($targetInternalPath, 'w');
+				}
 				list(, $result) = \OC_Helper::streamCopy($source, $target);
 				fclose($source);
 				fclose($target);

@@ -944,6 +944,9 @@ class Filesystem {
 	 * @return string
 	 */
 	public static function getPath($id) {
+		if (self::$defaultInstance === null) {
+			throw new NotFoundException("defaultInstance is null");
+		}
 		return self::$defaultInstance->getPath($id);
 	}
 
