@@ -340,77 +340,67 @@ class FileTest extends TestCase {
 		$this->assertNotEmpty($this->doPut('/foo.txt'));
 	}
 
-	public function legalMtimeProvider() {
-		$primaryStorageConfig = getenv("PRIMARY_STORAGE_CONFIG");
-		$testValues = [
-				"string" => [ 
-						'HTTP_X_OC_MTIME' => "string",
-						'expected result' => 0
-				],
-				"castable string (int)" => [
-						'HTTP_X_OC_MTIME' => "34",
-						'expected result' => 34
-				],
-				"castable string (float)" => [ 
-						'HTTP_X_OC_MTIME' => "34.56",
-						'expected result' => 34
-				],
-				"float" => [
-						'HTTP_X_OC_MTIME' => 34.56,
-						'expected result' => 34
-				],
-				"zero" => [
-						'HTTP_X_OC_MTIME' => 0,
-						'expected result' => 0
-				],
-				"zero string" => [
-						'HTTP_X_OC_MTIME' => "0",
-						'expected result' => 0
-				],
-				"negative zero string" => [
-						'HTTP_X_OC_MTIME' => "-0",
-						'expected result' => 0
-				],
-				"string starting with number following by char" => [
-						'HTTP_X_OC_MTIME' => "2345asdf",
-						'expected result' => 2345
-				],
-				"string castable hex int" => [
-						'HTTP_X_OC_MTIME' => "0x45adf",
-						'expected result' => 0
-				],
-				"string that looks like invalid hex int" => [
-						'HTTP_X_OC_MTIME' => "0x123g",
-						'expected result' => 0
-				]
-			];
-		
-		if ($primaryStorageConfig === "swift") {
-			$testValuesNegativeMtime = [
-				"negative int" => [
-						'HTTP_X_OC_MTIME' => -34,
-						'expected result' => 0
-				],
-				"negative float" => [
-						'HTTP_X_OC_MTIME' => -34.43,
-						'expected result' => 0
-				],
-			];
-		} else {
-			$testValuesNegativeMtime = [
-					"negative int" => [
-							'HTTP_X_OC_MTIME' => -34,
-							'expected result' => -34
-					],
-					"negative float" => [
-							'HTTP_X_OC_MTIME' => -34.43,
-							'expected result' => -34
-					],
-			];
-		}
-		return array_merge($testValues, $testValuesNegativeMtime);
+	/**
+	 * Determine if the underlying storage supports a negative mtime value
+	 *
+	 * @return boolean true if negative mtime is supported
+	 */
+	private function supportsNegativeMtime() {
+		return (getenv("PRIMARY_STORAGE_CONFIG") !== "swift");
 	}
 
+	public function legalMtimeProvider() {
+		return [
+			"string" => [ 
+					'HTTP_X_OC_MTIME' => "string",
+					'expected result' => 0
+			],
+			"castable string (int)" => [
+					'HTTP_X_OC_MTIME' => "34",
+					'expected result' => 34
+			],
+			"castable string (float)" => [ 
+					'HTTP_X_OC_MTIME' => "34.56",
+					'expected result' => 34
+			],
+			"float" => [
+					'HTTP_X_OC_MTIME' => 34.56,
+					'expected result' => 34
+			],
+			"zero" => [
+					'HTTP_X_OC_MTIME' => 0,
+					'expected result' => 0
+			],
+			"zero string" => [
+					'HTTP_X_OC_MTIME' => "0",
+					'expected result' => 0
+			],
+			"negative zero string" => [
+					'HTTP_X_OC_MTIME' => "-0",
+					'expected result' => 0
+			],
+			"string starting with number following by char" => [
+					'HTTP_X_OC_MTIME' => "2345asdf",
+					'expected result' => 2345
+			],
+			"string castable hex int" => [
+					'HTTP_X_OC_MTIME' => "0x45adf",
+					'expected result' => 0
+			],
+			"string that looks like invalid hex int" => [
+					'HTTP_X_OC_MTIME' => "0x123g",
+					'expected result' => 0
+			],
+			"negative int" => [
+					'HTTP_X_OC_MTIME' => -34,
+					'expected result' => (supportsNegativeMtime() ? -34 : 0)
+			],
+			"negative float" => [
+					'HTTP_X_OC_MTIME' => -34.43,
+					'expected result' => (supportsNegativeMtime() ? -34 : 0)
+			],
+		];
+	}
 
 	/**
 	 * Test putting a file with string Mtime
