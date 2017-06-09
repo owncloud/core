@@ -35,6 +35,7 @@ OC.L10N.register(
     "Could not delete share" : "Paylaşım silinemedi",
     "Please specify a file or folder path" : "Lütfen bir dosya veya klasör yolu belirtin",
     "Wrong path, file/folder doesn't exist" : "Hatalı yol, dosya/klasör mevcut değil",
+    "Cannot remove all permissions" : "İzinlerin tümü kaldırılamaz",
     "Please specify a valid user" : "Lütfen geçerli bir kullanıcı belirtin",
     "Group sharing is disabled by the administrator" : "Grup paylaşımı yönetici yarafından devre dışı bırakıldı.",
     "Please specify a valid group" : "Lütfen geçerli bir grup belirtin",

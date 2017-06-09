@@ -146,6 +146,7 @@ OC.L10N.register(
     "Link" : "Bağlantı",
     "Edit" : "Düzenle",
     "Remove" : "Kaldır",
+    "Anyone with the link has access to the file/folder" : "Dosya/klasör linkine sahip Herkes erişebilir ",
     "Copied!" : "Kopyalandı!",
     "Not supported!" : "Desteklenmiyor!",
     "Press ⌘-C to copy." : "Kopyalamak için ⌘-C kullanın.",
