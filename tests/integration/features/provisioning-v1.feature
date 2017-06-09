@@ -570,3 +570,23 @@ Feature: provisioning
 		When sending "GET" with exact url to "/index.php/apps/files"
 		And the HTTP status code should be "403"
 
+	Scenario: Edit a user email twice
+		Given As an "admin"
+		And user "brand-new-user" exists
+		And sending "PUT" to "/cloud/users/brand-new-user" with
+			| key | email |
+			| value | brand-new-user@gmail.com |
+		And the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And sending "PUT" to "/cloud/users/brand-new-user" with
+			| key | email |
+			| value | brand-new-user@example.com |
+		And the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		When sending "GET" to "/cloud/users/brand-new-user"
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And user attributes match with
+			| email | brand-new-user@example.com |
+
+
