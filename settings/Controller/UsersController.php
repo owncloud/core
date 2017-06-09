@@ -431,10 +431,16 @@ class UsersController extends Controller {
 			if($email !== '') {
 				$user->setEMailAddress($email);
 
+				$token = $this->secureRandom->generate(21,
+						ISecureRandom::CHAR_DIGITS .
+						ISecureRandom::CHAR_LOWER .
+						ISecureRandom::CHAR_UPPER);
+				$this->config->setUserValue($username, 'owncloud', 'lostpassword', $this->timeFactory->getTime() . ':' . $token);
+
 				// data for the mail template
 				$mailData = [
 					'username' => $username,
-					'url' => $this->urlGenerator->getAbsoluteURL('/')
+					'url' => $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', ['userId' => $username, 'token' => $token])
 				];
 
 				$mail = new TemplateResponse('settings', 'email.new_user', $mailData, 'blank');

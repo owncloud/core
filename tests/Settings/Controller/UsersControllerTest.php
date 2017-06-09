@@ -1478,6 +1478,28 @@ class UsersControllerTest extends \Test\TestCase {
 	 */
 	public function testCreateSuccessfulWithValidEmailAdmin() {
 		$this->container['IsAdmin'] = true;
+
+		$this->container['SecureRandom']
+			->expects($this->once())
+			->method('generate')
+			->with('21')
+			->will($this->returnValue('ThisIsMaybeANotSoSecretToken!'));
+
+		$this->container['Config']
+			->expects($this->once())
+			->method('setUserValue')
+			->with('foo', 'owncloud', 'lostpassword', '12348:ThisIsMaybeANotSoSecretToken!');
+
+		$this->container['TimeFactory']
+			->expects($this->once())
+			->method('getTime')
+			->will($this->returnValue(12348));
+
+		$this->container['URLGenerator']
+			->expects($this->once())
+			->method('linkToRouteAbsolute')
+			->will($this->returnValue('https://ownCloud.com/index.php/lostpassword/'));
+
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
 		$message
@@ -1493,7 +1515,7 @@ class UsersControllerTest extends \Test\TestCase {
 			'email.new_user',
 			[
 				'username' => 'foo',
-				'url' => '',
+				'url' => 'https://ownCloud.com/index.php/lostpassword/',
 			],
 			'blank'
 		);
@@ -1506,7 +1528,7 @@ class UsersControllerTest extends \Test\TestCase {
 			'email.new_user_plain_text',
 			[
 				'username' => 'foo',
-				'url' => '',
+				'url' => 'https://ownCloud.com/index.php/lostpassword/',
 			],
 			'blank'
 		);
