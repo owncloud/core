@@ -100,6 +100,27 @@ trait Trashbin {
 	}
 
 	/**
+	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" exists in trash$/
+	 * @param string $user
+	 * @param string $entryText
+	 * @param string $path
+	 */
+	public function elementIsInTrashCheckingOriginalPath($user, $entryText, $originalPath) {
+		$listing = $this->listTrashbinFolder($user, null);
+		$originalPath = trim($originalPath, '/');
+
+		$found = false;
+		foreach ($listing as $entry) {
+			if ($entry['extraData'] === $originalPath) {
+				$found = true;
+				break;
+			}
+		}
+
+		PHPUnit_Framework_Assert::assertTrue($found, "File previously located at $originalPath wasn't found in the trashbin");
+	}
+
+	/**
 	 * Finds the first trashed entry matching the given name
 	 *
 	 * @param string $name
