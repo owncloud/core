@@ -73,6 +73,12 @@ class Add extends Command {
 				'User name used in the web UI (can contain any characters)'
 			)
 			->addOption(
+				'email',
+				null,
+				InputOption::VALUE_OPTIONAL,
+				'Email address for the user'
+			)
+			->addOption(
 				'group',
 				'g',
 				InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
@@ -127,6 +133,11 @@ class Add extends Command {
 		if ($input->getOption('display-name')) {
 			$user->setDisplayName($input->getOption('display-name'));
 			$output->writeln('Display name set to "' . $user->getDisplayName() . '"');
+		}
+
+		if ($input->getOption('email')) {
+			$user->setEMailAddress($input->getOption('email'));
+			$output->writeln('Email address set to  "' . $user->getEMailAddress() . '"');
 		}
 
 		$groups = $input->getOption('group');
