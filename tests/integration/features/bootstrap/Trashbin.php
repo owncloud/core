@@ -53,9 +53,10 @@ trait Trashbin {
 		$this->sendingToWithDirectUrl('GET', '/index.php/apps/files_trashbin/ajax/list.php' . $params, null);
 		$this->theHTTPStatusCodeShouldBe('200');
 
-		$response = json_decode($this->response->getBody(), true);
 
-		return $response['data']['files'];
+		$decoded_response = json_decode($this->response->getBody(), true);
+
+		return $decoded_response['data']['files'];
 	}
 
 	/**
@@ -99,6 +100,24 @@ trait Trashbin {
 		PHPUnit_Framework_Assert::assertTrue($found);
 	}
 
+	/*Function to check if an element is in trashbin*/
+	private function isInTrash($user, $entryText, $originalPath) {
+		$listing = $this->listTrashbinFolder($user, null);
+		$originalPath = trim($originalPath, '/');
+
+		$found = false;
+		foreach ($listing as $entry) {
+			if ( substr($entry['extraData'], 0, 2) === "./" ){
+				$entry['extraData'] = substr($entry['extraData'], 2);
+			}
+			if ($entry['extraData'] === $originalPath) {
+				$found = true;
+				break;
+			}
+		}
+		return $found;
+	}
+
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" exists in trash$/
 	 * @param string $user
@@ -106,18 +125,19 @@ trait Trashbin {
 	 * @param string $path
 	 */
 	public function elementIsInTrashCheckingOriginalPath($user, $entryText, $originalPath) {
-		$listing = $this->listTrashbinFolder($user, null);
-		$originalPath = trim($originalPath, '/');
+		PHPUnit_Framework_Assert::assertTrue($this->isInTrash($user, $entryText, $originalPath), 
+											"File previously located at $originalPath wasn't found in the trashbin");
+	}
 
-		$found = false;
-		foreach ($listing as $entry) {
-			if ($entry['extraData'] === $originalPath) {
-				$found = true;
-				break;
-			}
-		}
-
-		PHPUnit_Framework_Assert::assertTrue($found, "File previously located at $originalPath wasn't found in the trashbin");
+	/**
+	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" does not exist in trash$/
+	 * @param string $user
+	 * @param string $entryText
+	 * @param string $path
+	 */
+	public function elementIsNotInTrashCheckingOriginalPath($user, $entryText, $originalPath) {
+		PHPUnit_Framework_Assert::assertFalse($this->isInTrash($user, $entryText, $originalPath), 
+											"File previously located at $originalPath was found in the trashbin");
 	}
 
 	/**
