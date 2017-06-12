@@ -6,3 +6,7 @@ $classLoader = new \Composer\Autoload\ClassLoader();
 $classLoader->addPsr4("Page\\", __DIR__. "/../lib", true);
 
 $classLoader->register();
+
+// Sleep for 10 milliseconds
+const STANDARDSLEEPTIMEMILLISEC = 10;
+const STANDARDSLEEPTIMEMICROSEC = STANDARDSLEEPTIMEMILLISEC * 1000;

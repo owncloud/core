@@ -25,43 +25,68 @@ namespace Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Session;
+use Behat\Mink\Element\NodeElement;
+use WebDriver\Exception as WebDriverException;
 
 class OwncloudPage extends Page
 {
 	protected $userNameDispayId = "expandDisplayName";
-	public function waitTillPageIsloaded($timeout)
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec=10000)
 	{
-
-		for ($counter=0;$counter <= $timeout;$counter++) {
-			$lodingIndicator=$this->find("css", '.loading');
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+			$loadingIndicator=$this->find("css", '.loading');
 			$visibility = $this->elementHasCSSValue(
-				$lodingIndicator, 'visibility', 'visible'
+				$loadingIndicator, 'visibility', 'visible'
 			);
 			if ($visibility===FALSE) {
 				break;
 			}
-
-			sleep(1);
+			usleep(STANDARDSLEEPTIMEMICROSEC);
 		}
-
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 
 	/**
 	 *
 	 * @param string $xpath
-	 * @param int $timeout
+	 * @param int $timeout_msec
 	 */
-	public function waitTillElementIsNull ($xpath, $timeout=10)
+	public function waitTillElementIsNull ($xpath, $timeout_msec=10000)
 	{
-		for ($counter = 0; $counter <= $timeout; $counter ++) {
-			$element = $this->find("xpath",$xpath);
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+			try {
+				$element = $this->find("xpath",$xpath);
+			} catch (WebDriverException $e) {
+				break;
+			}
 			if ($element === null) {
 				break;
 			}
-			sleep(1);
+			usleep(STANDARDSLEEPTIMEMICROSEC);
 		}
 	}
 
+	/**
+	 *
+	 * @param string $xpath
+	 * @param int $timeout_msec
+	 */
+	public function waitTillElementIsNotNull ($xpath, $timeout_msec=10000)
+	{
+		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+			try {
+				$element = $this->find("xpath",$xpath);
+				if ($element === null || !$element->isValid()) {
+					usleep(STANDARDSLEEPTIMEMICROSEC);
+				} else {
+					break;
+				}
+			} catch (WebDriverException $e) {
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+			}
+		}
+	}
+	
 	public function getNotificationText() {
 		return $this->findById("notification")->getText();
 	}
@@ -111,6 +136,32 @@ class OwncloudPage extends Page
 		return $session->evaluateScript(
 			'return $(window).height();'
 		);
+	}
+
+	/**
+	 * waits till all ajax calls are finished (jQuery.active === 0)
+	 * @param Session $session
+	 * @param number $timeout_msec
+	 * @throws \Exception
+	 */
+	public function waitForOutstandingAjaxCalls (Session $session, $timeout_msec=5000)
+	{
+		for ($counter = 0;$counter <= $timeout_msec;$counter += STANDARDSLEEPTIMEMILLISEC) {
+			try {
+				$waitingResult = $session->wait(
+					STANDARDSLEEPTIMEMILLISEC,
+					"(typeof jQuery != 'undefined' && (0 === jQuery.active))"
+					);
+				if ($waitingResult === true) {
+					break;
+				}
+			} catch (\Exception $e) {
+				//show Exception message, but do not throw it
+				echo $e->getMessage(). "\n";
+			} finally {
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+			}
+		}
 	}
 
 	/**
