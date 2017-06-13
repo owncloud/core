@@ -22,6 +22,7 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 class UsersPage extends OwncloudPage
@@ -65,7 +66,7 @@ class UsersPage extends OwncloudPage
 		return $selectField->getText();
 	}
 
-	public function setQuotaOfUserTo($username, $quota)
+	public function setQuotaOfUserTo($username, $quota, Session $session)
 	{
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
@@ -82,5 +83,6 @@ class UsersPage extends OwncloudPage
 		} else {
 			$selectOption->click();
 		}
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 }
