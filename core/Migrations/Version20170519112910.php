@@ -44,26 +44,34 @@ class Version20170519112910 implements ISqlMigration {
             $duplicates[$allIds[0]] = array_merge(array_slice($allIds, 1));
         }
 
-        // fix ids in vcategory_to_object table before removing them in vcategory
+
         foreach ($duplicates as $key => $val) {
-            $qb = $connection->getQueryBuilder();
-            $qb->update('vcategory_to_object')
-            ->set('categoryid', $qb->createNamedParameter($key))
-            ->where($qb->expr()->in(
-                'categoryid',
-                $qb->createNamedParameter($val, $connection::PARAM_INT_ARRAY)
-            ));
-            $qb->execute();
+            // fix ids in vcategory_to_object table before removing them in vcategory
+            $chunks = array_chunk($val, 900);
+            foreach ($chunks as $current) {
+                $qb = $connection->getQueryBuilder();
+                $qb->update('vcategory_to_object')
+                ->set('categoryid', $qb->createNamedParameter($key))
+                ->where($qb->expr()->in(
+                    'categoryid',
+                    $qb->createNamedParameter($current, $connection::PARAM_INT_ARRAY)
+                ));
+                $qb->execute();
+            }
         }
 
         // now we can remove the duplicate ids
         $duplicates = call_user_func_array('array_merge', $duplicates);
-        $qb = $connection->getQueryBuilder();
-        $qb->delete('vcategory')
-        ->where($qb->expr()->in(
-            'id',
-            $qb->createNamedParameter($duplicates, $connection::PARAM_INT_ARRAY)
-        ));
-        $qb->execute();
+        $duplicates = array_chunk($duplicates, 900);
+
+        foreach ($duplicates as $chunk) {
+            $qb = $connection->getQueryBuilder();
+            $qb->delete('vcategory')
+            ->where($qb->expr()->in(
+                'id',
+                $qb->createNamedParameter($chunk, $connection::PARAM_INT_ARRAY)
+            ));
+            $qb->execute();
+        }
     }
 }
