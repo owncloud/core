@@ -134,7 +134,7 @@ trait Trashbin {
 				$entry['extraData'] = substr($entry['extraData'], 2);
 			}
 			if ($entry['extraData'] === $originalPath) {
-				$this->sendUndeleteRequest($user, $entry['name'] . '.d' . substr($entry['etag'], 0, -3));
+				$this->sendUndeleteRequest($user, $entry['name'] . '.d' . floor((integer)$entry['mtime']/1000));
 				break;
 			}
 		}
