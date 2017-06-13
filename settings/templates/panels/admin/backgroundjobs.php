@@ -7,7 +7,7 @@ script('settings', 'panels/backgroundjobs');
 ?>
 <div class="section" id="backgroundjobs">
 	<h2 class="app-name has-documentation"><?php p($l->t('Cron'));?></h2>
-	<?php if ($_['cron_log']): ?>
+	<?php if ($_['log.cron']): ?>
 	<p class="cronlog inlineblock">
 		<?php if ($_['lastcron'] !== false):
 			$relative_time = relative_modified_date($_['lastcron']);

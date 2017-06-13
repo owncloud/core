@@ -408,7 +408,7 @@ class Server extends ServerContainer implements IServerContainer {
 			);
 		});
 		$this->registerService('Logger', function (Server $c) {
-			$logClass = $c->query('AllConfig')->getSystemValue('log_type', 'owncloud');
+			$logClass = $c->query('AllConfig')->getSystemValue('log.type', 'owncloud');
 			$logger = 'OC\\Log\\' . ucfirst($logClass);
 			call_user_func([$logger, 'init']);
 

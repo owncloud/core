@@ -592,27 +592,27 @@ $CONFIG = array(
  * Setting this parameter to ``errorlog`` will use the PHP error_log function
  * for logging.
  */
-'log_type' => 'owncloud',
+'log.type' => 'owncloud',
 
 /**
  * Log file path for the ownCloud logging type.
  * Defaults to ``[datadirectory]/owncloud.log``
  */
-'logfile' => '/var/log/owncloud.log',
+'log.file' => '/var/log/owncloud.log',
 
 /**
- * Loglevel to start logging at. Valid values are: 0 = Debug, 1 = Info, 2 =
+ * Log level to start logging at. Valid values are: 0 = Debug, 1 = Info, 2 =
  * Warning, 3 = Error, and 4 = Fatal. The default value is Warning.
  */
-'loglevel' => 2,
+'log.level' => 2,
 
 /**
  * If you maintain different instances and aggregate the logs, you may want
- * to distinguish between them. ``syslog_tag`` can be set per instance
- * with a unique id. Only available if ``log_type`` is set to ``syslog``.
+ * to distinguish between them. ``log.syslog.tag`` can be set per instance
+ * with a unique id. Only available if ``log.type`` is set to ``syslog``.
  * The default value is ``ownCloud``.
  */
-'syslog_tag' => 'ownCloud',
+'log.syslog.tag' => 'ownCloud',
 
 /**
  * Log condition for log level increase based on conditions. Once one of these
@@ -650,24 +650,24 @@ $CONFIG = array(
 /**
  * This uses PHP.date formatting; see http://php.net/manual/en/function.date.php
  */
-'logdateformat' => 'F d, Y H:i:s',
+'log.dateformat' => 'F d, Y H:i:s',
 
 /**
  * The default timezone for logfiles is UTC. You may change this; see
  * http://php.net/manual/en/timezones.php
  */
-'logtimezone' => 'Europe/Berlin',
+'log.timezone' => 'Europe/Berlin',
 
 /**
  * Append all database queries and parameters to the log file. Use this only for
  * debugging, as your logfile will become huge.
  */
-'log_query' => false,
+'log.query' => false, // FIXME unused?
 
 /**
  * Log successful cron runs.
  */
-'cron_log' => true,
+'log.cron' => true,
 
 /**
  * Enables log rotation and limits the total size of logfiles. The default is 0,
@@ -676,7 +676,7 @@ $CONFIG = array(
  * old logfile reaches your limit. If a rotated log file is already present, it
  * will be overwritten.
  */
-'log_rotate_size' => false,
+'log.rotate.size' => false,
 
 
 /**

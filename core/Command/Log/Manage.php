@@ -76,7 +76,7 @@ class Manage extends Command {
 
 		if ($backend = $input->getOption('backend')) {
 			$this->validateBackend($backend);
-			$toBeSet['log_type'] = $backend;
+			$toBeSet['log.type'] = $backend;
 		}
 
 		$level = $input->getOption('level');
@@ -88,12 +88,12 @@ class Manage extends Command {
 			} else {
 				$levelNum = $this->convertLevelString($level);
 			}
-			$toBeSet['loglevel'] = $levelNum;
+			$toBeSet['log.level'] = $levelNum;
 		}
 
 		if ($timezone = $input->getOption('timezone')) {
 			$this->validateTimezone($timezone);
-			$toBeSet['logtimezone'] = $timezone;
+			$toBeSet['log.timezone'] = $timezone;
 		}
 
 		// set config
@@ -102,14 +102,14 @@ class Manage extends Command {
 		}
 
 		// display configuration
-		$backend = $this->config->getSystemValue('log_type', self::DEFAULT_BACKEND);
+		$backend = $this->config->getSystemValue('log.type', self::DEFAULT_BACKEND);
 		$output->writeln('Enabled logging backend: '.$backend);
 
-		$levelNum = $this->config->getSystemValue('loglevel', self::DEFAULT_LOG_LEVEL);
+		$levelNum = $this->config->getSystemValue('log.level', self::DEFAULT_LOG_LEVEL);
 		$level = $this->convertLevelNumber($levelNum);
 		$output->writeln('Log level: '.$level.' ('.$levelNum.')');
 
-		$timezone = $this->config->getSystemValue('logtimezone', self::DEFAULT_TIMEZONE);
+		$timezone = $this->config->getSystemValue('log.timezone', self::DEFAULT_TIMEZONE);
 		$output->writeln('Log timezone: '.$timezone);
 	}
 

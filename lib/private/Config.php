@@ -91,6 +91,7 @@ class Config {
 			return $envValue;
 		}
 
+		$key = $this->updateConfigKey($key);
 		if (isset($this->cache[$key])) {
 			return $this->cache[$key];
 		}
@@ -107,6 +108,7 @@ class Config {
 	public function setValues(array $configs) {
 		$needsUpdate = false;
 		foreach ($configs as $key => $value) {
+			$key = $this->updateConfigKey($key);
 			if ($value !== null) {
 				$needsUpdate |= $this->set($key, $value);
 			} else {
@@ -127,6 +129,7 @@ class Config {
 	 * @param mixed $value value
 	 */
 	public function setValue($key, $value) {
+		$key = $this->updateConfigKey($key);
 		if ($this->set($key, $value)) {
 			// Write changes
 			$this->writeData();
@@ -155,6 +158,7 @@ class Config {
 	 * @param string $key
 	 */
 	public function deleteKey($key) {
+		$key = $this->updateConfigKey($key);
 		if ($this->delete($key)) {
 			// Write changes
 			$this->writeData();
@@ -213,6 +217,7 @@ class Config {
 			unset($CONFIG);
 			include $file;
 			if(isset($CONFIG) && is_array($CONFIG)) {
+				$CONFIG = $this->updateConfigKeys($CONFIG);
 				$this->cache = array_merge($this->cache, $CONFIG);
 			}
 
@@ -220,6 +225,54 @@ class Config {
 			flock($filePointer, LOCK_UN);
 			fclose($filePointer);
 		}
+	}
+
+	private function updateConfigKeys(array $config) {
+		if (isset($config['log_type'])) {
+			$config['log.type'] = $config['log_type'];
+		}
+		if (isset($config['logfile'])) {
+			$config['log.file'] = $config['logfile'];
+		}
+		if (isset($config['loglevel'])) {
+			$config['log.level'] = $config['loglevel'];
+		}
+		if (isset($config['syslog_tag'])) {
+			$config['log.syslog.tag'] = $config['syslog_tag'];
+		}
+		if (isset($config['logdateformat'])) {
+			$config['log.dateformat'] = $config['logdateformat'];
+		}
+		if (isset($config['logtimezone'])) {
+			$config['log.timezone'] = $config['logtimezone'];
+		}
+		if (isset($config['log_query'])) {
+			$config['log.query'] = $config['log_query'];
+		}
+		if (isset($config['cron_log'])) {
+			$config['log.cron'] = $config['cron_log'];
+		}
+		if (isset($config['log_rotate_size'])) {
+			$config['log.rotate.size'] = $config['log_rotate_size'];
+		}
+
+		return $config;
+	}
+
+	private function updateConfigKey($key) {
+		switch ($key) {
+			case 'log_type':		return 'log.type';
+			case 'logfile':			return 'log.file';
+			case 'loglevel':		return 'log.level';
+			case 'syslog_tag':		return 'log.syslog.tag';
+			case 'logdateformat':	return 'log.dateformat';
+			case 'logtimezone':		return 'log.timezone';
+			case 'log_query':		return 'log.query';
+			case 'cron_log':		return 'log.cron';
+			case 'log_rotate_size':	return 'log.rotate.size';
+		}
+
+		return $key;
 	}
 
 	/**

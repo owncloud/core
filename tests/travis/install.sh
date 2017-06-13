@@ -118,7 +118,7 @@ cat > ./tests/autoconfig-oracle.php <<DELIM
   'dbname' => 'XE',
   'dbhost' => 'localhost',
   'dbpass' => 'owncloud',
-  'loglevel' => 0,
+  'log.level' => 0,
 );
 DELIM
 

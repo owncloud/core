@@ -44,8 +44,8 @@ class Owncloud {
 	 */
 	public static function init() {
 		$systemConfig = \OC::$server->getSystemConfig();
-		$defaultLogFile = $systemConfig->getValue("datadirectory", \OC::$SERVERROOT.'/data').'/owncloud.log';
-		self::$logFile = $systemConfig->getValue("logfile", $defaultLogFile);
+		$defaultLogFile = $systemConfig->getValue('datadirectory', \OC::$SERVERROOT.'/data').'/owncloud.log';
+		self::$logFile = $systemConfig->getValue('log.file', $defaultLogFile);
 
 		/**
 		 * Fall back to default log file if specified logfile does not exist
@@ -73,8 +73,8 @@ class Owncloud {
 		$config = \OC::$server->getSystemConfig();
 
 		// default to ISO8601
-		$format = $config->getValue('logdateformat', 'c');
-		$logTimeZone = $config->getValue( "logtimezone", 'UTC' );
+		$format = $config->getValue('log.dateformat', 'c');
+		$logTimeZone = $config->getValue( 'log.timezone', 'UTC' );
 		try {
 			$timezone = new \DateTimeZone($logTimeZone);
 		} catch (\Exception $e) {

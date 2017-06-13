@@ -88,9 +88,9 @@ class Updater extends BasicEmitter {
 	public function upgrade() {
 		$this->emitRepairEvents();
 
-		$logLevel = $this->config->getSystemValue('loglevel', Util::WARN);
+		$logLevel = $this->config->getSystemValue('log.level', Util::WARN);
 		$this->emit('\OC\Updater', 'setDebugLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
-		$this->config->setSystemValue('loglevel', Util::DEBUG);
+		$this->config->setSystemValue('log.level', Util::DEBUG);
 
 		$wasMaintenanceModeEnabled = $this->config->getSystemValue('maintenance', false);
 
@@ -122,7 +122,7 @@ class Updater extends BasicEmitter {
 		}
 
 		$this->emit('\OC\Updater', 'resetLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
-		$this->config->setSystemValue('loglevel', $logLevel);
+		$this->config->setSystemValue('log.level', $logLevel);
 		$this->config->setSystemValue('installed', true);
 
 		return $success;

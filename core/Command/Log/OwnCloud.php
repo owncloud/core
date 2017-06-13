@@ -68,17 +68,17 @@ class OwnCloud extends Command {
 		$toBeSet = [];
 
 		if ($input->getOption('enable')) {
-			$toBeSet['log_type'] = 'owncloud';
+			$toBeSet['log.type'] = 'owncloud';
 		}
 
 		if ($file = $input->getOption('file')) {
-			$toBeSet['logfile'] = $file;
+			$toBeSet['log.file'] = $file;
 		}
 
 		if (($rotateSize = $input->getOption('rotate-size')) !== null) {
 			$rotateSize = \OCP\Util::computerFileSize($rotateSize);
 			$this->validateRotateSize($rotateSize);
-			$toBeSet['log_rotate_size'] = $rotateSize;
+			$toBeSet['log.rotate.size'] = $rotateSize;
 		}
 
 		// set config
@@ -87,7 +87,7 @@ class OwnCloud extends Command {
 		}
 
 		// display config
-		if ($this->config->getSystemValue('log_type', 'owncloud') === 'owncloud') {
+		if ($this->config->getSystemValue('log.type', 'owncloud') === 'owncloud') {
 			$enabledText = 'enabled';
 		} else {
 			$enabledText = 'disabled';
@@ -96,9 +96,9 @@ class OwnCloud extends Command {
 
 		$dataDir = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data');
 		$defaultLogFile = rtrim($dataDir, '/').'/owncloud.log';
-		$output->writeln('Log file: '.$this->config->getSystemValue('logfile', $defaultLogFile));
+		$output->writeln('Log file: '.$this->config->getSystemValue('log.file', $defaultLogFile));
 
-		$rotateSize = $this->config->getSystemValue('log_rotate_size', 0);
+		$rotateSize = $this->config->getSystemValue('log.rotate.size', 0);
 		if ($rotateSize) {
 			$rotateString = \OCP\Util::humanFileSize($rotateSize);
 		} else {

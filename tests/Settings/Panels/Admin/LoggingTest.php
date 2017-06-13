@@ -62,8 +62,8 @@ class LoggingTest extends \Test\TestCase {
 			->method('getLogFilePath')
 			->willReturn(__FILE__);
 		$this->config->expects($this->exactly(2))->method('getSystemValue')->will($this->returnValueMap([
-			['loglevel', 2, 2],
-			['log_type', 'owncloud', 'owncloud'],
+			['log.level', 2, 2],
+			['log.type', 'owncloud', 'owncloud'],
 		]));
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<div class="section">', $templateHtml);

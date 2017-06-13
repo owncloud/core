@@ -76,7 +76,7 @@ class LogSettingsController extends Controller {
 			], Http::STATUS_BAD_REQUEST);
 		}
 
-		$this->config->setSystemValue('loglevel', $level);
+		$this->config->setSystemValue('log.level', $level);
 		return new JSONResponse([
 			'level' => $level,
 		]);

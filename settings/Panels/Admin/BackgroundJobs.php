@@ -39,7 +39,7 @@ class BackgroundJobs implements ISettings {
 
 	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/admin/backgroundjobs');
-		$tmpl->assign('cron_log', $this->config->getSystemValue('cron_log', true));
+		$tmpl->assign('log.cron', $this->config->getSystemValue('log.cron', true));
 		$tmpl->assign('lastcron', $this->config->getAppValue('core', 'lastcron', false));
 		$tmpl->assign('backgroundjobs_mode', $this->config->getAppValue('core', 'backgroundjobs_mode', 'ajax'));
 		return $tmpl;

@@ -107,7 +107,7 @@ class Log implements ILogger {
 
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if($logger === null) {
-			$this->logger = 'OC\\Log\\'.ucfirst($this->config->getValue('log_type', 'owncloud'));
+			$this->logger = 'OC\\Log\\'.ucfirst($this->config->getValue('log.type', 'owncloud'));
 			call_user_func([$this->logger, 'init']);
 		} else {
 			$this->logger = $logger;
@@ -229,7 +229,7 @@ class Log implements ILogger {
 	 * @return void
 	 */
 	public function log($level, $message, array $context = []) {
-		$minLevel = min($this->config->getValue('loglevel', Util::WARN), Util::FATAL);
+		$minLevel = min($this->config->getValue('log.level', Util::WARN), Util::FATAL);
 		$logConditions = $this->config->getValue('log.conditions', []);
 		if (empty($logConditions)) {
 			$logConditions[] = $this->config->getValue('log.condition', []);

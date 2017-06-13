@@ -41,7 +41,7 @@ class LogSettingsControllerTest extends \Test\TestCase {
 			$this->container['Config']
 				->expects($this->once())
 				->method('setSystemValue')
-				->with('loglevel', $level);
+				->with('log.level', $level);
 		}
 
 		$response = $this->logSettingsController->setLogLevel($level)->getData();

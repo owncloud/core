@@ -56,11 +56,11 @@ class Logging implements ISettings {
 		if($doesLogFileExist) {
 			$logFileSize = filesize($logFilePath);
 		}
-		$tmpl->assign('loglevel', $this->config->getSystemValue("loglevel", 2));
+		$tmpl->assign('log.level', $this->config->getSystemValue('log.level', 2));
 		$tmpl->assign('doesLogFileExist', $doesLogFileExist);
 		$tmpl->assign('urlGenerator', $this->urlGenerator);
 		$tmpl->assign('logFileSize', $logFileSize);
-		$tmpl->assign('showLog', $this->config->getSystemValue('log_type', 'owncloud') === 'owncloud');
+		$tmpl->assign('showLog', $this->config->getSystemValue('log.type', 'owncloud') === 'owncloud');
 		return $tmpl;
 	}
 

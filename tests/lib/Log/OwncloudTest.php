@@ -33,21 +33,21 @@ class OwncloudTest extends TestCase
 	protected function setUp() {
 		parent::setUp();
 		$config = \OC::$server->getConfig();
-		$this->restore_logfile = $config->getSystemValue("logfile");
-		$this->restore_logdateformat = $config->getSystemValue('logdateformat');
+		$this->restore_logfile = $config->getSystemValue("log.file");
+		$this->restore_logdateformat = $config->getSystemValue('log.dateformat');
 		
-		$config->setSystemValue("logfile", $config->getSystemValue('datadirectory') . "/logtest");
+		$config->setSystemValue("log.file", $config->getSystemValue('datadirectory') . "/logtest");
 		Owncloud::init();
 	}
 	protected function tearDown() {
 		$config = \OC::$server->getConfig();
 		if (isset($this->restore_logfile)) {
-			$config->getSystemValue("logfile", $this->restore_logfile);
+			$config->getSystemValue("log.file", $this->restore_logfile);
 		} else {
-			$config->deleteSystemValue("logfile");
+			$config->deleteSystemValue("log.file");
 		}		
 		if (isset($this->restore_logdateformat)) {
-			$config->getSystemValue("logdateformat", $this->restore_logdateformat);
+			$config->getSystemValue("log.dateformat", $this->restore_logdateformat);
 		} else {
 			$config->deleteSystemValue("restore_logdateformat");
 		}		
@@ -58,14 +58,14 @@ class OwncloudTest extends TestCase
 	public function testMicrosecondsLogTimestamp() {
 		$config = \OC::$server->getConfig();
 		# delete old logfile
-		unlink($config->getSystemValue('logfile'));
+		unlink($config->getSystemValue('log.file'));
 
 		# set format & write log line
-		$config->setSystemValue('logdateformat', 'u');
+		$config->setSystemValue('log.dateformat', 'u');
 		Owncloud::write('test', 'message', \OCP\Util::ERROR);
 		
 		# read log line
-		$handle = @fopen($config->getSystemValue('logfile'), 'r');
+		$handle = @fopen($config->getSystemValue('log.file'), 'r');
 		$line = fread($handle, 1000);
 		fclose($handle);
 		

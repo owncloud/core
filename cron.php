@@ -149,7 +149,7 @@ try {
 	}
 
 	// Log the successful cron execution
-	if (\OC::$server->getConfig()->getSystemValue('cron_log', true)) {
+	if (\OC::$server->getConfig()->getSystemValue('log.cron', true)) {
 		\OC::$server->getConfig()->setAppValue('core', 'lastcron', time());
 	}
 	exit();

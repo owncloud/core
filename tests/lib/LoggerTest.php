@@ -43,7 +43,7 @@ class LoggerTest extends TestCase {
 		$this->config->expects($this->any())
 			->method('getValue')
 			->will(($this->returnValueMap([
-				['loglevel', Util::WARN, Util::WARN],
+				['log.level', Util::WARN, Util::WARN],
 				['log.condition', [], ['apps' => ['files']]]
 			])));
 		$logger = $this->logger;
@@ -63,8 +63,8 @@ class LoggerTest extends TestCase {
 		$this->config->expects($this->any())
 			->method('getValue')
 			->will(($this->returnValueMap([
-				['loglevel', Util::WARN, Util::WARN],
-				['log.conditions', [], [['apps' => ['files'], 'logfile' => '/tmp/test.log']]]
+				['log.level', Util::WARN, Util::WARN],
+				['log.conditions', [], [['apps' => ['files'], 'log.file' => '/tmp/test.log']]]
 			])));
 		$logger = $this->logger;
 

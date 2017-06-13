@@ -55,7 +55,7 @@ class OwnCloudTest extends TestCase {
 			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
-			->with('log_type', 'owncloud');
+			->with('log.type', 'owncloud');
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -67,7 +67,7 @@ class OwnCloudTest extends TestCase {
 			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
-			->with('logfile', '/foo/bar/file.log');
+			->with('log.file', '/foo/bar/file.log');
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -91,7 +91,7 @@ class OwnCloudTest extends TestCase {
 			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
-			->with('log_rotate_size', $configValue);
+			->with('log.rotate.size', $configValue);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -99,10 +99,10 @@ class OwnCloudTest extends TestCase {
 	public function testGetConfiguration() {
 		$this->config->method('getSystemValue')
 			->will($this->returnValueMap([
-				['log_type', 'owncloud', 'log_type_value'],
+				['log.type', 'owncloud', 'log_type_value'],
 				['datadirectory', \OC::$SERVERROOT.'/data', '/data/directory/'],
-				['logfile', '/data/directory/owncloud.log', '/var/log/owncloud.log'],
-				['log_rotate_size', 0, 5 * 1024 * 1024],
+				['log.file', '/data/directory/owncloud.log', '/var/log/owncloud.log'],
+				['log.rotate.size', 0, 5 * 1024 * 1024],
 			]));
 
 		$this->consoleOutput->expects($this->at(0))

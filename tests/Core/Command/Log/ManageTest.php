@@ -55,7 +55,7 @@ class ManageTest extends TestCase {
 			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
-			->with('log_type', 'syslog');
+			->with('log.type', 'syslog');
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -67,7 +67,7 @@ class ManageTest extends TestCase {
 			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
-			->with('loglevel', 0);
+			->with('log.level', 0);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -79,7 +79,7 @@ class ManageTest extends TestCase {
 			]));
 		$this->config->expects($this->once())
 			->method('setSystemValue')
-			->with('logtimezone', 'UTC');
+			->with('log.timezone', 'UTC');
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -154,15 +154,15 @@ class ManageTest extends TestCase {
 	public function testGetConfiguration() {
 		$this->config->expects($this->at(0))
 			->method('getSystemValue')
-			->with('log_type', 'owncloud')
+			->with('log.type', 'owncloud')
 			->willReturn('log_type_value');
 		$this->config->expects($this->at(1))
 			->method('getSystemValue')
-			->with('loglevel', 2)
+			->with('log.level', 2)
 			->willReturn(0);
 		$this->config->expects($this->at(2))
 			->method('getSystemValue')
-			->with('logtimezone', 'UTC')
+			->with('log.timezone', 'UTC')
 			->willReturn('logtimezone_value');
 
 		$this->consoleOutput->expects($this->at(0))

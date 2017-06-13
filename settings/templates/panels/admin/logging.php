@@ -18,7 +18,7 @@ $levelLabels = [
 			<p><?php p($l->t('What to log'));?> <select name='loglevel' id='loglevel'>
 			<?php for ($i = 0; $i < 5; $i++):
 				$selected = '';
-				if ($i == $_['loglevel']):
+				if ($i == $_['log.level']):
 					$selected = 'selected="selected"';
 				endif; ?>
 					<option value='<?php p($i)?>' <?php p($selected) ?>><?php p($levelLabels[$i])?></option>

@@ -47,7 +47,7 @@ class Mail implements ISettings {
 		$template = new Template('settings', 'panels/admin/mail');
 		// Should we display sendmail as an option?
 		$template->assign('sendmail_is_available', $this->helper->findBinaryPath('sendmail'));
-		$template->assign('loglevel', $this->config->getSystemValue("loglevel", 2));
+		$template->assign('log.level', $this->config->getSystemValue('log.level', 2));
 		$template->assign('mail_domain', $this->config->getSystemValue("mail_domain", ''));
 		$template->assign('mail_from_address', $this->config->getSystemValue("mail_from_address", ''));
 		$template->assign('mail_smtpmode', $this->config->getSystemValue("mail_smtpmode", ''));

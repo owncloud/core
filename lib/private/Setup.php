@@ -367,7 +367,7 @@ class Setup {
 
 			//try to write logtimezone
 			if (date_default_timezone_get()) {
-				$config->setSystemValue('logtimezone', date_default_timezone_get());
+				$config->setSystemValue('log.timezone', date_default_timezone_get());
 			}
 
 			self::installBackgroundJobs();
