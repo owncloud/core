@@ -96,7 +96,7 @@ class Log implements ILogger {
 	 * @param SystemConfig $config the system config object
 	 * @param null $normalizer
 	 */
-	public function __construct($logger=null, SystemConfig $config=null, $normalizer = null) {
+	public function __construct($logger = null, SystemConfig $config = null, $normalizer = null) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if($config === null) {
 			$config = \OC::$server->getSystemConfig();
