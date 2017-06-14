@@ -120,7 +120,7 @@ trait Trashbin {
 
 	private function sendUndeleteRequest($user, $elementTrashID) {
 		$this->asAn($user);
-		$body = new \Behat\Gherkin\Node\TableNode([['files', "[\"$elementTrashID\"]"], ['dir', '%2F']]);
+		$body = new \Behat\Gherkin\Node\TableNode([['files',  "[\"$elementTrashID\"]"], ['dir', '/']]);
 		$this->sendingToWithDirectUrl('POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body);
 		$this->theHTTPStatusCodeShouldBe('200');
 	}
