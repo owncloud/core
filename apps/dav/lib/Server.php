@@ -75,7 +75,10 @@ class Server {
 		);
 
 		// Set URL explicitly due to reverse-proxy situations
-		$this->server->httpRequest->setUrl($this->request->getRequestUri());
+		$uri = $this->request->getRequestUri();
+		$components = parse_url($uri);
+		$url = $components['path'].'?'.$components['query'].'#'.$components['fragment'];
+		$this->server->httpRequest->setUrl($url);
 		$this->server->setBaseUri($this->baseUri);
 
 		$config = \OC::$server->getConfig();
