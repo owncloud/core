@@ -1,4 +1,4 @@
-Feature: trashbin
+Feature: trashbin-new-endpoint
 	Background:
 		Given using api version "1"
 		And using new dav path
@@ -48,7 +48,7 @@ Feature: trashbin
 		When User "user1" deletes folder "/shared"
 		Then as "user1" the folder with original path "/shared" does not exist in trash
 
-	Scenario: deleting a file in a recieved folder doesn't moves it to trashbin
+	Scenario: deleting a file in a received folder it is moved to the trashbin
 		Given As an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -56,7 +56,7 @@ Feature: trashbin
 		And User "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
 		When User "user1" deletes file "/shared/shared_file.txt"
-		Then as "user1" the folder with original path "/shared/shared_file.txt" does not exist in trash
+		Then as "user1" the file with original path "/shared/shared_file.txt" exists in trash
 
 	Scenario: Trashbin can be emptied
 		Given As an "admin"
@@ -74,6 +74,7 @@ Feature: trashbin
 		And user "user0" exists
 		And User "user0" deletes file "/textfile0.txt"
 		And as "user0" the file "/textfile0.txt" exists in trash
+		And Logging in using web as "user0"
 		When as "user0" the folder with original path "/textfile0.txt" is restored
 		Then as "user0" the folder with original path "/textfile0.txt" does not exist in trash
 		Then user "user0" should see following elements
