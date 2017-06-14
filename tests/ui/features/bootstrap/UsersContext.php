@@ -48,7 +48,7 @@ class UsersContext extends RawMinkContext implements Context
 	{
 		$this->usersPage->open();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
-		$this->usersPage->setQuotaOfUserTo($username, $quota);
+		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
 
 	/**
@@ -58,7 +58,7 @@ class UsersContext extends RawMinkContext implements Context
 	{
 		$this->usersPage->open();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
-		$this->usersPage->setQuotaOfUserTo($username, $quota);
+		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
 
 	/**
