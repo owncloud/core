@@ -1,4 +1,4 @@
-Feature: trashbin
+Feature: trashbin-old-endpoint
 	Background:
 		Given using api version "1"
 		And using old dav path
@@ -48,7 +48,7 @@ Feature: trashbin
 		When User "user1" deletes folder "/shared"
 		Then as "user1" the folder with original path "/shared" does not exist in trash
 
-	Scenario: deleting a file in a recieved folder it is moved to the trashbin
+	Scenario: deleting a file in a received folder it is moved to the trashbin
 		Given As an "admin"
 		And user "user0" exists
 		And user "user1" exists
