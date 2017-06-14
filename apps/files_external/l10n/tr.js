@@ -105,6 +105,7 @@ OC.L10N.register(
     "Never" : "Asla",
     "Once every direct access" : "Her doğrudan erişimde bir kez",
     "External Storage" : "Harici Depolama",
+    "Enable external storage" : "Harici depolamayı etkinleştir",
     "Folder name" : "Klasör ismi",
     "Authentication" : "Kimlik Doğrulama",
     "Configuration" : "Yapılandırma",

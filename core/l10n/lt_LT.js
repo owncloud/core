@@ -107,6 +107,7 @@ OC.L10N.register(
     "Set expiration date" : "Nustatykite galiojimo laiką",
     "Expiration" : "Galiojimo laikas",
     "Expiration date" : "Galiojimo laikas",
+    "Remove link" : "Pašalinti nuorodą",
     "Link" : "Nuoroda",
     "Edit" : "Redaguoti",
     "Remove" : "Pašalinti",
