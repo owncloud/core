@@ -25,76 +25,9 @@ use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
 
-class TagsContext implements \Behat\Behat\Context\Context {
-	/** @var string  */
-	private $baseUrl;
-	/** @var Client */
-	private $client;
-	/** @var ResponseInterface */
-	private $response;
+trait Tags {
 
-	/**
-	 * @param string $baseUrl
-	 */
-	public function __construct($baseUrl) {
-		$this->baseUrl = $baseUrl;
 
-		// in case of ci deployment we take the server url from the environment
-		$testServerUrl = getenv('TEST_SERVER_URL');
-		if ($testServerUrl !== false) {
-			$this->baseUrl = substr($testServerUrl, 0, -5);
-		}
-	}
-
-	/** @BeforeScenario */
-	public function setUpScenario() {
-		$this->client = new Client();
-	}
-
-	/** @AfterScenario */
-	public function tearDownScenario() {
-		$user = 'admin';
-		$tags = $this->requestTagsForUser($user);
-		foreach($tags as $tagId => $tag) {
-			$this->response = $this->client->delete(
-				$this->baseUrl . '/remote.php/dav/systemtags/'.$tagId,
-				[
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-		}
-		try {
-			$this->client->delete(
-				$this->baseUrl . '/remote.php/webdav/myFileToTag.txt',
-				[
-					'auth' => [
-						'user0',
-						'123456',
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {}
-	}
-
-	/**
-	 * @param string $userName
-	 * @return string
-	 */
-	private function getPasswordForUser($userName) {
-		if($userName === 'admin') {
-			return 'admin';
-		}
-		return '123456';
-	}
 
 	/**
 	 * @param string $user
@@ -102,22 +35,7 @@ class TagsContext implements \Behat\Behat\Context\Context {
 	 * @param string $name
 	 * @param string $groups
 	 */
-	private function createTag($user, $type, $name, $groups = null) {
-		$userVisible = true;
-		$userAssignable = true;
-		switch ($type) {
-			case 'normal':
-				break;
-			case 'not user-assignable':
-				$userAssignable = false;
-				break;
-			case 'not user-visible':
-				$userVisible = false;
-				break;
-			default:
-				throw new \Exception('Unsupported type');
-		}
-
+	private function createTag($user, $userVisible, $userAssignable, $name, $groups = null) {
 		$body = [
 			'name' => $name,
 			'userVisible' => $userVisible,
@@ -154,8 +72,24 @@ class TagsContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function createsATagWithName($user, $type, $name) {
-		$this->createTag($user, $type, $name);
+		$userVisible = true;
+		$userAssignable = true;
+		switch ($type) {
+			case 'normal':
+				break;
+			case 'not user-assignable':
+				$userAssignable = false;
+				break;
+			case 'not user-visible':
+				$userVisible = false;
+				break;
+			default:
+				throw new \Exception('Unsupported type');
+		}
+		$this->createTag($user, $userVisible, $userAssignable, $name);
 	}
+
+
 
 	/**
 	 * @When :user creates a :type tag with name :name and groups :groups
@@ -166,7 +100,21 @@ class TagsContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function createsATagWithNameAndGroups($user, $type, $name, $groups) {
-		$this->createTag($user, $type, $name, $groups);
+		$userVisible = true;
+		$userAssignable = true;
+		switch ($type) {
+			case 'normal':
+				break;
+			case 'not user-assignable':
+				$userAssignable = false;
+				break;
+			case 'not user-visible':
+				$userVisible = false;
+				break;
+			default:
+				throw new \Exception('Unsupported type');
+		}
+		$this->createTag($user, $userVisible, $userAssignable, $name, $groups);
 	}
 
 	/**
@@ -488,31 +436,6 @@ class TagsContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @param string $path
-	 * @param string $user
-	 * @return int
-	 */
-	private function getFileIdForPath($path, $user) {
-		$url = $this->baseUrl.'/remote.php/webdav/'.$path;
-		$credentials = base64_encode($user .':'.$this->getPasswordForUser($user));
-		$context = stream_context_create([
-			'http' => [
-				'method' => 'PROPFIND',
-				'header' => "Authorization: Basic $credentials\r\nContent-Type: application/x-www-form-urlencoded",
-				'content' => '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:fileid />
-  </d:prop>
-</d:propfind>'
-			]
-		]);
-		$response = file_get_contents($url, false, $context);
-		preg_match_all('/\<oc:fileid\>(.*)\<\/oc:fileid\>/', $response, $matches);
-		return (int)$matches[1][0];
-	}
-
-	/**
 	 * @When /^"([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)"$/
 	 * @param string $taggingUser
 	 * @param string $tagName
@@ -520,7 +443,7 @@ class TagsContext implements \Behat\Behat\Context\Context {
 	 * @param string $sharingUser
 	 */
 	public function addsTheTagToSharedBy($taggingUser, $tagName, $fileName, $sharedOrOwnedBy, $sharingUser) {
-		$fileId = $this->getFileIdForPath($fileName, $sharingUser);
+		$fileId = $this->getFileIdForPath($sharingUser, $fileName);
 		$tagId = $this->findTagIdByName($tagName);
 
 		try {
@@ -555,7 +478,7 @@ class TagsContext implements \Behat\Behat\Context\Context {
 		// Get the real tags
 		$request = $this->client->createRequest(
 			'PROPFIND',
-			$this->baseUrl.'/remote.php/dav/systemtags-relations/files/'.$this->getFileIdForPath($fileName, $sharingUser),
+			$this->baseUrl.'/remote.php/dav/systemtags-relations/files/'.$this->getFileIdForPath($sharingUser, $fileName),
 			[
 				'auth' => [
 					$sharingUser,
@@ -609,7 +532,7 @@ class TagsContext implements \Behat\Behat\Context\Context {
 		try {
 			$request = $this->client->createRequest(
 				'PROPFIND',
-				$this->baseUrl . '/remote.php/dav/systemtags-relations/files/' . $this->getFileIdForPath($fileName, $sharingUser),
+				$this->baseUrl . '/remote.php/dav/systemtags-relations/files/' . $this->getFileIdForPath($sharingUser, $fileName),
 				[
 					'auth' => [
 						$user,
@@ -659,7 +582,7 @@ class TagsContext implements \Behat\Behat\Context\Context {
 	 */
 	public function removesTheTagFromSharedBy($user, $tagName, $fileName, $shareUser) {
 		$tagId = $this->findTagIdByName($tagName);
-		$fileId = $this->getFileIdForPath($fileName, $shareUser);
+		$fileId = $this->getFileIdForPath($shareUser, $fileName);
 
 		try {
 			$this->response = $this->client->delete(
