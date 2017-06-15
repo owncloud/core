@@ -12,6 +12,9 @@ NC='\033[0m' # No Color
 # Look for command line options for:
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
+# --tags - specify tags for scenarios to run (or not)
+BEHAT_TAGS_OPTION_FOUND=false
+
 while [[ $# -gt 1 ]]
 do
 	key="$1"
@@ -22,6 +25,11 @@ do
 			;;
 		--feature)
 			BEHAT_FEATURE="$2"
+			shift
+			;;
+		--tags)
+			BEHAT_TAGS="$2"
+			BEHAT_TAGS_OPTION_FOUND=true
 			shift
 			;;
 		*)
@@ -61,9 +69,29 @@ export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": 
 
 if [ "$BROWSER" == "internet explorer" ]
 then
-	lib/composer/bin/behat -c $BEHAT_YML --tags '~@skipOnIE' $BEHAT_FEATURE -v
+	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
+	then
+		if [ -z "$BEHAT_TAGS" ]
+		then
+			lib/composer/bin/behat -c $BEHAT_YML --tags '~@skipOnIE' $BEHAT_FEATURE -v
+		else
+			lib/composer/bin/behat -c $BEHAT_YML --tags "$BEHAT_TAGS&&~@skipOnIE" $BEHAT_FEATURE -v
+		fi
+	else
+		lib/composer/bin/behat -c $BEHAT_YML --tags '~@skip&&~@skipOnIE' $BEHAT_FEATURE -v
+	fi
 else
-	lib/composer/bin/behat -c $BEHAT_YML $BEHAT_FEATURE -v
+	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
+	then
+		if [ -z "$BEHAT_TAGS" ]
+		then
+			lib/composer/bin/behat -c $BEHAT_YML $BEHAT_FEATURE -v
+		else
+			lib/composer/bin/behat -c $BEHAT_YML --tags "$BEHAT_TAGS" $BEHAT_FEATURE -v
+		fi
+	else
+		lib/composer/bin/behat -c $BEHAT_YML --tags '~@skip' $BEHAT_FEATURE -v
+	fi
 fi
 
 if [ $? -eq 0 ]
