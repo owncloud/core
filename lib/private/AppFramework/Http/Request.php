@@ -481,6 +481,17 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string
 	 */
 	public function getId() {
+		// allow clients to provide a request id
+		if(isset($this->server['HTTP_X_REQUEST_ID'])) {
+			$reqId = $this->server['HTTP_X_REQUEST_ID'];
+			if (strlen($reqId) > 19
+				&& strlen($reqId) < 200
+				&& preg_match('%^[a-zA-Z0-9-+/_=]+%', $reqId)) {
+				return $this->server['HTTP_X_REQUEST_ID'];
+			} else {
+				throw new \InvalidArgumentException('X-Request-ID must be 20-200 bytes of chars, numbers and -+/_=');
+			}
+		}
 		if(isset($this->server['UNIQUE_ID'])) {
 			return $this->server['UNIQUE_ID'];
 		}
