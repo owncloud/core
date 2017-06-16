@@ -281,6 +281,10 @@ class FilesPage extends OwnCloudPage
 			throw new ElementNotFoundException("could not find input field");
 		}
 		$inputField->setValue($toFileName);
+		if ($inputField->getValue() !== $toFileName) {
+			$inputField->keyUp(27); //send escape
+			throw new \Exception("value of input field is not what we expect");
+		}
 		$inputField->blur();
 		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
 	}
