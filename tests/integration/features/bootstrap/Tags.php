@@ -27,7 +27,8 @@ use GuzzleHttp\Message\ResponseInterface;
 
 trait Tags {
 
-
+	/** @var array */
+	private $createdTags = array();
 
 	/**
 	 * @param string $user
@@ -36,6 +37,7 @@ trait Tags {
 	 * @param string $groups
 	 */
 	private function createTag($user, $userVisible, $userAssignable, $name, $groups = null) {
+		$tagsPath = '/systemtags/';
 		$body = [
 			'name' => $name,
 			'userVisible' => $userVisible,
@@ -44,34 +46,24 @@ trait Tags {
 		if ($groups !== null) {
 			$body['groups'] = $groups;
 		}
-
 		try {
-			$this->response = $this->client->post(
-				$this->baseUrl . '/remote.php/dav/systemtags/',
-				[
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-					'body' => json_encode($body)
-				]
-			);
+			$this->response = $this->makeDavRequest($user,
+								  "POST",
+								  $tagsPath,
+								  ['Content-Type' => 'application/json',],
+								  null,
+								  "uploads",
+								  json_encode($body));
+			$responseHeaders =  $this->response->getHeaders();
+			$tagUrl = $responseHeaders['Content-Location'][0];
+			$lastTagId = substr($tagUrl, strrpos($tagUrl,'/')+1);
+			array_push($this->createdTags, $lastTagId);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
 
-	/**
-	 * @When :user creates a :type tag with name :name
-	 * @param string $user
-	 * @param string $type
-	 * @param string $name
-	 * @throws \Exception
-	 */
-	public function createsATagWithName($user, $type, $name) {
+	private function validateTypeOfTag($type) {
 		$userVisible = true;
 		$userAssignable = true;
 		switch ($type) {
@@ -86,7 +78,18 @@ trait Tags {
 			default:
 				throw new \Exception('Unsupported type');
 		}
-		$this->createTag($user, $userVisible, $userAssignable, $name);
+		return array($userVisible, $userAssignable);
+	}
+
+	/**
+	 * @When :user creates a :type tag with name :name
+	 * @param string $user
+	 * @param string $type
+	 * @param string $name
+	 * @throws \Exception
+	 */
+	public function createsATagWithName($user, $type, $name) {
+		$this->createTag($user, $this->validateTypeOfTag($type)[0], $this->validateTypeOfTag($type)[1], $name);
 	}
 
 
@@ -100,21 +103,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function createsATagWithNameAndGroups($user, $type, $name, $groups) {
-		$userVisible = true;
-		$userAssignable = true;
-		switch ($type) {
-			case 'normal':
-				break;
-			case 'not user-assignable':
-				$userAssignable = false;
-				break;
-			case 'not user-visible':
-				$userVisible = false;
-				break;
-			default:
-				throw new \Exception('Unsupported type');
-		}
-		$this->createTag($user, $userVisible, $userAssignable, $name, $groups);
+		$this->createTag($user, $this->validateTypeOfTag($type)[0], $this->validateTypeOfTag($type)[1], $name, $groups);
 	}
 
 	/**
@@ -614,5 +603,32 @@ trait Tags {
 		$fd = $body->getRowsHash();
 		$options['body'] = $fd;
 		$client->send($client->createRequest($verb, $this->baseUrl.'/ocs/v1.php/'.$url, $options));
+	}
+
+
+	public function deleteTag($user, $tagID) {
+		$tagsPath = '/systemtags/' . $tagID;
+		try {
+			$this->response = $this->makeDavRequest($user,
+													"DELETE",
+													$tagsPath,
+													[],
+													null,
+													"uploads",
+													null);
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
+	 * @BeforeScenario
+	 * @AfterScenario
+	 */
+	public function cleanupTags()
+	{
+		foreach($this->createdTags as $tagID) {
+			$this->deleteTag('admin', $tagID);
+		}
 	}
 }
