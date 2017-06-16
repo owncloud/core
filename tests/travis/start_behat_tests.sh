@@ -50,6 +50,33 @@ then
 	BEHAT_YML="tests/ui/config/behat.yml"
 fi
 
+BEHAT_TAG_OPTION="--tags"
+
+if [ "$BROWSER" == "internet explorer" ]
+then
+	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
+	then
+		if [ -z "$BEHAT_TAGS" ]
+		then
+			BEHAT_TAGS='~@skipOnIE'
+		else
+			BEHAT_TAGS="$BEHAT_TAGS&&~@skipOnIE"
+		fi
+	else
+		BEHAT_TAGS='~@skip&&~@skipOnIE'
+	fi
+else
+	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
+	then
+		if [ -z "$BEHAT_TAGS" ]
+		then
+			BEHAT_TAG_OPTION=""
+		fi
+	else
+		BEHAT_TAGS='~@skip'
+	fi
+fi
+
 if [ "$SRV_HOST_PORT" == "80" ] || [ -z "$SRV_HOST_PORT" ]
 then
 	BASE_URL="http://$SRV_HOST_NAME/$SRV_HOST_URL"
@@ -67,32 +94,7 @@ EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM"
 export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'","selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@localhost:4445/wd/hub"}}}}' 
 
-if [ "$BROWSER" == "internet explorer" ]
-then
-	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
-	then
-		if [ -z "$BEHAT_TAGS" ]
-		then
-			lib/composer/bin/behat -c $BEHAT_YML --tags '~@skipOnIE' $BEHAT_FEATURE -v
-		else
-			lib/composer/bin/behat -c $BEHAT_YML --tags "$BEHAT_TAGS&&~@skipOnIE" $BEHAT_FEATURE -v
-		fi
-	else
-		lib/composer/bin/behat -c $BEHAT_YML --tags '~@skip&&~@skipOnIE' $BEHAT_FEATURE -v
-	fi
-else
-	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
-	then
-		if [ -z "$BEHAT_TAGS" ]
-		then
-			lib/composer/bin/behat -c $BEHAT_YML $BEHAT_FEATURE -v
-		else
-			lib/composer/bin/behat -c $BEHAT_YML --tags "$BEHAT_TAGS" $BEHAT_FEATURE -v
-		fi
-	else
-		lib/composer/bin/behat -c $BEHAT_YML --tags '~@skip' $BEHAT_FEATURE -v
-	fi
-fi
+lib/composer/bin/behat -c $BEHAT_YML $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v
 
 if [ $? -eq 0 ]
 then
