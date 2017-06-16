@@ -1,4 +1,6 @@
 Feature: tags
+  Background:
+    Given using new dav path
 
   Scenario: Creating a normal tag as regular user should work
     Given user "user0" exists
