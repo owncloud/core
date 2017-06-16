@@ -1233,6 +1233,34 @@ class ShareesTest extends TestCase {
 					]
 				]
 			],
+			// #16 check email property is matched for remote users
+			[
+				'user@example.com',
+				[
+					[
+						'FN' => 'User3 @ Localhost',
+					],
+					[
+						'FN' => 'User2 @ Localhost',
+						'CLOUD' => [
+						],
+					],
+					[
+						'FN' => 'User @ Localhost',
+						'CLOUD' => [
+							'username@localhost',
+						],
+						'EMAIL' => 'user@example.com'
+					],
+				],
+				true,
+				[
+					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost', 'server' => 'localhost']],
+					['label' => 'user@example.com', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'user@example.com']]
+				],
+				[],
+				true,
+			],
 		];
 	}
 
@@ -1267,12 +1295,12 @@ class ShareesTest extends TestCase {
 		$this->config->expects($this->once())
 			->method('getAppValue')
 			->with('dav', 'remote_search_properties')
-			->willReturn('CLOUD,FN');
+			->willReturn('EMAIL,CLOUD,FN');
 
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->contactsManager->expects($this->any())
 			->method('search')
-			->with($searchTerm, ['CLOUD', 'FN'], [], 2, 0)
+			->with($searchTerm, ['EMAIL', 'CLOUD', 'FN'], [], 2, 0)
 			->willReturn($contacts);
 
 		$this->invokePrivate($this->sharees, 'getRemote', [$searchTerm]);
