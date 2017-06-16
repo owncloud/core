@@ -31,9 +31,11 @@ use WebDriver\Exception as WebDriverException;
 class OwncloudPage extends Page
 {
 	protected $userNameDispayId = "expandDisplayName";
-	public function waitTillPageIsLoaded(Session $session, $timeout_msec=10000)
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
 	{
-		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
 			$loadingIndicator=$this->find("css", '.loading');
 			$visibility = $this->elementHasCSSValue(
 				$loadingIndicator, 'visibility', 'visible'
@@ -42,6 +44,7 @@ class OwncloudPage extends Page
 				break;
 			}
 			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
 		}
 		$this->waitForOutstandingAjaxCalls($session);
 	}
@@ -51,9 +54,11 @@ class OwncloudPage extends Page
 	 * @param string $xpath
 	 * @param int $timeout_msec
 	 */
-	public function waitTillElementIsNull ($xpath, $timeout_msec=10000)
+	public function waitTillElementIsNull ($xpath, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
 	{
-		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
 			try {
 				$element = $this->find("xpath",$xpath);
 			} catch (WebDriverException $e) {
@@ -63,6 +68,7 @@ class OwncloudPage extends Page
 				break;
 			}
 			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
 		}
 	}
 
@@ -71,9 +77,11 @@ class OwncloudPage extends Page
 	 * @param string $xpath
 	 * @param int $timeout_msec
 	 */
-	public function waitTillElementIsNotNull ($xpath, $timeout_msec=10000)
+	public function waitTillElementIsNotNull ($xpath, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
 	{
-		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
 			try {
 				$element = $this->find("xpath",$xpath);
 				if ($element === null || !$element->isValid()) {
@@ -83,6 +91,7 @@ class OwncloudPage extends Page
 				}
 			} catch (WebDriverException $e) {
 				usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = microtime(true);
 			}
 		}
 	}
@@ -144,7 +153,7 @@ class OwncloudPage extends Page
 	 * @param number $timeout_msec
 	 * @throws \Exception
 	 */
-	public function waitForOutstandingAjaxCalls (Session $session, $timeout_msec=5000)
+	public function waitForOutstandingAjaxCalls (Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {
@@ -203,7 +212,7 @@ class OwncloudPage extends Page
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 */
-	public function waitForAjaxCallsToStartAndFinish (Session $session, $timeout_msec=5000)
+	public function waitForAjaxCallsToStartAndFinish (Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$start = microtime(true);
 		$this->waitForAjaxCallsToStart($session);

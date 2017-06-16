@@ -61,7 +61,7 @@ class SharingDialog extends OwnCloudPage
 	 * @return \Behat\Mink\Element\NodeElement AutocompleteElement
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function fillShareWithField ($input, Session $session, $timeout_msec = 10000)
+	public function fillShareWithField ($input, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$shareWithField = $this->_findShareWithField();
 		$shareWithField->setValue($input);
