@@ -164,7 +164,7 @@ class FilesPage extends OwnCloudPage
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 */
-	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout_msec=5000)
+	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$session->evaluateScript(
 			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
@@ -172,7 +172,9 @@ class FilesPage extends OwnCloudPage
 
 		// there is no loading indicator here, so we are going to wait until we have
 		// more files than before
-		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
 			$this->waitForOutstandingAjaxCalls($session);
 			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
 				"xpath", $this->fileNamesXpath
@@ -181,6 +183,7 @@ class FilesPage extends OwnCloudPage
 				break;
 			}
 			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
 		}
 	}
 
@@ -292,15 +295,18 @@ class FilesPage extends OwnCloudPage
 
 	//there is no reliable loading indicator on the files page, so wait for
 	//the table or the Empty Folder message to be shown
-	public function waitTillPageIsLoaded(Session $session, $timeout_msec=10000)
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
 	{
-		for ($counter = 0; $counter <= $timeout_msec; $counter += STANDARDSLEEPTIMEMILLISEC) {
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
 			$fileList = $this->findById("fileList");
 			if ($fileList !== null && ($fileList->has("xpath", "//a") || ! $this->find("xpath",
 				$this->emptyContentXpath)->hasClass("hidden"))) {
 				break;
 			}
 			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
 		}
 		$this->waitForOutstandingAjaxCalls($session);
 	}
