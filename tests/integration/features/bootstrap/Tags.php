@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Sergio Bertolin <sbertlin@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -81,6 +82,17 @@ trait Tags {
 		return array($userVisible, $userAssignable);
 	}
 
+	private function assertTypeOfTag($tagData, $type) {
+		$userAttributes = $this->validateTypeOfTag($type);
+		$tagDisplayName = $tagData['{http://owncloud.org/ns}display-name'];
+		PHPUnit_Framework_Assert::assertEquals($tagData['{http://owncloud.org/ns}user-visible'],
+							($userAttributes[0]) ? 'true' : 'false',
+							"tag $tagDisplayName user-visible is not $userAttributes[0]");
+		PHPUnit_Framework_Assert::assertEquals($tagData['{http://owncloud.org/ns}user-assignable'],
+							($userAttributes[1]) ? 'true' : 'false',
+							"tag $tagDisplayName user-assignable is not $userAttributes[1]");
+	}
+
 	/**
 	 * @When :user creates a :type tag with name :name
 	 * @param string $user
@@ -92,8 +104,6 @@ trait Tags {
 		$this->createTag($user, $this->validateTypeOfTag($type)[0], $this->validateTypeOfTag($type)[1], $name);
 	}
 
-
-
 	/**
 	 * @When :user creates a :type tag with name :name and groups :groups
 	 * @param string $user
@@ -104,17 +114,6 @@ trait Tags {
 	 */
 	public function createsATagWithNameAndGroups($user, $type, $name, $groups) {
 		$this->createTag($user, $this->validateTypeOfTag($type)[0], $this->validateTypeOfTag($type)[1], $name, $groups);
-	}
-
-	/**
-	 * @Then The response should have a status code :statusCode
-	 * @param int $statusCode
-	 * @throws \Exception
-	 */
-	public function theResponseShouldHaveAStatusCode($statusCode) {
-		if((int)$statusCode !== $this->response->getStatusCode()) {
-			throw new \Exception("Expected $statusCode, got ".$this->response->getStatusCode());
-		}
 	}
 
 	public function requestTagsForUser($user, $withGroups = false) {
@@ -136,8 +135,8 @@ trait Tags {
 		return $response;
 	}
 
-	public function requestTagByDisplayName($user, $tagDisplayName) {
-		$tagList = $this->requestTagsForUser($user);
+	public function requestTagByDisplayName($user, $tagDisplayName, $withGroups = false) {
+		$tagList = $this->requestTagsForUser($user, $withGroups);
 		foreach ($tagList as $path => $tagData) {
 			if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName) {
 				return $tagData;
@@ -166,6 +165,17 @@ trait Tags {
 	}
 
 	/**
+	 * @Then tag :tagDisplayName should not exist for :user
+	 * @param string $user
+	 * @param TableNode $table
+	 * @throws \Exception
+	 */
+	public function tagShouldNotExistForUser($tagDisplayName, $user){
+		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
+		PHPUnit_Framework_Assert::assertNull($tagData, "tag $tagDisplayName is in propfind answer");
+	}
+
+	/**
 	 * @Then the user :user :can assign The :type tag with name :tagName
 	 */
 	public function theUserCanAssignTheTag($user, $can, $type, $tagName) {
@@ -191,14 +201,11 @@ trait Tags {
 	 * @Then The :type tag with name :tagName has the groups :groups
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
-		$foundTag = $this->findTag($type, $tagName, 'admin', true);
-		if ($foundTag === null) {
-			throw new \Exception('No matching tag found');
-		}
-
-		if ($foundTag['groups'] !== $groups) {
-			throw new \Exception('Tag has groups "' . $foundTag['group'] . '" instead of the expected "' . $groups . '"');
-		}
+		$tagData = $this->requestTagByDisplayName('admin', $tagName, true);
+		PHPUnit_Framework_Assert::assertNotNull($tagData, "Tag $tagName wasn't found for admin user");
+		$this->assertTypeOfTag($tagData, $type);
+		PHPUnit_Framework_Assert::assertEquals($tagData['{http://owncloud.org/ns}groups'], $groups,
+			'Tag has groups "' . $tagData['{http://owncloud.org/ns}groups'] . '" instead of the expected "' . $groups . '"' );
 	}
 
 	/**
@@ -211,45 +218,6 @@ trait Tags {
 		if((int)$count !== count($this->requestTagsForUser($user))) {
 			throw new \Exception("Expected $count tags, got ".count($this->requestTagsForUser($user)));
 		}
-	}
-
-	/**
-	 * Find tag by type and name
-	 *
-	 * @param string $type tag type
-	 * @param string $tagName tag name
-	 * @param string $user retrieved from which user
-	 * @param bool $withGroups whether to also query the tag's groups
-	 *
-	 * @return array tag values or null if not found
-	 */
-	private function findTag($type, $tagName, $user = 'admin', $withGroups = false) {
-		$tags = $this->requestTagsForUser($user, $withGroups);
-		$userAssignable = 'true';
-		$userVisible = 'true';
-		switch ($type) {
-			case 'normal':
-				break;
-			case 'not user-assignable':
-				$userAssignable = 'false';
-				break;
-			case 'not user-visible':
-				$userVisible = 'false';
-				break;
-			default:
-				throw new \Exception('Unsupported type');
-		}
-
-		$foundTag = null;
-		foreach ($tags as $tag) {
-			if ($tag['display-name'] === $tagName
-				&& $tag['user-visible'] === $userVisible
-				&& $tag['user-assignable'] === $userAssignable) {
-					$foundTag = $tag;
-					break;
-			}
-		}
-		return $foundTag;
 	}
 
 	/**
