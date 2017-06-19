@@ -286,13 +286,42 @@ trait Tags {
 	 */
 	public function userDeletesTag($user, $name){
 		$tagID = $this->findTagIdByName($name);
+		$this->deleteTag($user, $tagID);
+		unset($this->createdTags[$tagID]);
+	}
+
+	private function tag($taggingUser, $tagName, $fileName, $fileOwner) {
+		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
+		$tagID = $this->findTagIdByName($tagName);
+		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		try {
-			$appPath = '/systemtags/';
-			$this->response = $this->makeDavRequest($user, "DELETE", $appPath . $tagID, null, null, "uploads");
-		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
+			$this->response = $this->makeDavRequest($taggingUser,"PUT", $path, null, null, "uploads");
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
-		unset($this->createdTags[$tagID]);
+	}
+
+	private function requestTagsForFile($user, $filename) {
+		$fileID = $this->getFileIdForPath($user, $fileName);
+		$tagID = $this->findTagIdByName($tagName);
+
+		$client = $this->getSabreClient($user);
+		$properties = [
+						'{http://owncloud.org/ns}id',
+						'{http://owncloud.org/ns}display-name',
+						'{http://owncloud.org/ns}user-visible',
+						'{http://owncloud.org/ns}user-assignable',
+						'{http://owncloud.org/ns}can-assign'
+					  ];
+		// if ($withGroups) {
+		// 	array_push($properties, '{http://owncloud.org/ns}groups');
+		// }
+
+		$appPath = '/systemtags-relations/files/';
+		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . $appPath . $fileID;
+		$response = $client->propfind($fullUrl, $properties, 1);
+		$this->response = $response;
+		return $response;
 	}
 
 	/**
@@ -303,22 +332,7 @@ trait Tags {
 	 * @param string $sharingUser
 	 */
 	public function addsTheTagToSharedBy($taggingUser, $tagName, $fileName, $sharedOrOwnedBy, $sharingUser) {
-		$fileId = $this->getFileIdForPath($sharingUser, $fileName);
-		$tagId = $this->findTagIdByName($tagName);
-
-		try {
-			$this->response = $this->client->put(
-				$this->baseUrl.'/remote.php/dav/systemtags-relations/files/'.$fileId.'/'.$tagId,
-				[
-					'auth' => [
-						$taggingUser,
-						$this->getPasswordForUser($taggingUser),
-					]
-				]
-			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->tag($taggingUser, $tagName, $fileName, $sharingUser);
 	}
 
 	/**
@@ -477,16 +491,10 @@ trait Tags {
 	}
 
 
-	public function deleteTag($user, $tagID) {
+	private function deleteTag($user, $tagID) {
 		$tagsPath = '/systemtags/' . $tagID;
 		try {
-			$this->response = $this->makeDavRequest($user,
-													"DELETE",
-													$tagsPath,
-													[],
-													null,
-													"uploads",
-													null);
+			$this->response = $this->makeDavRequest($user,"DELETE",$tagsPath,[],null,"uploads",null);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}
