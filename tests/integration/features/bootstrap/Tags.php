@@ -117,72 +117,32 @@ trait Tags {
 		}
 	}
 
-	/**
-	 * Returns all tags for a given user
-	 *
-	 * @param string $user
-	 * @return array
-	 */
-	private function requestTagsForUser($user, $withGroups = false) {
-		try {
-			$body = '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:id />
-    <oc:display-name />
-    <oc:user-visible />
-	<oc:user-assignable />
-	<oc:can-assign />
-';
-
-			if ($withGroups) {
-				$body .= '<oc:groups />';
-			}
-
-			$body .= '
-  </d:prop>
-</d:propfind>';
-			$request = $this->client->createRequest(
-				'PROPFIND',
-				$this->baseUrl . '/remote.php/dav/systemtags/',
-				[
-					'body' => $body,
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-			$this->response = $this->client->send($request);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$this->response = $e->getResponse();
+	public function requestTagsForUser($user, $withGroups = false) {
+		$client = $this->getSabreClient($user);
+		$properties = [
+						'{http://owncloud.org/ns}id',
+						'{http://owncloud.org/ns}display-name',
+						'{http://owncloud.org/ns}user-visible',
+						'{http://owncloud.org/ns}user-assignable',
+						'{http://owncloud.org/ns}can-assign'
+					  ];
+		if ($withGroups) {
+			array_push($properties, '{http://owncloud.org/ns}groups');
 		}
+		$appPath = '/systemtags/';
+		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . $appPath;
+		$response = $client->propfind($fullUrl, $properties, 1);
+		$this->response = $response;
+		return $response;
+	}
 
-		$tags = [];
-		$service = new Sabre\Xml\Service();
-		$parsed = $service->parse($this->response->getBody()->getContents());
-		foreach($parsed as $entry) {
-			$singleEntry = $entry['value'][1]['value'][0]['value'];
-			if(empty($singleEntry[0]['value'])) {
-				continue;
-			}
-
-			// FIXME: use actual property names instead of guessing index position
-			$tags[$singleEntry[0]['value']] = [
-				'display-name' => $singleEntry[1]['value'],
-				'user-visible' => $singleEntry[2]['value'],
-				'user-assignable' => $singleEntry[3]['value'],
-				'can-assign' => $singleEntry[4]['value'],
-			];
-			if (isset($singleEntry[5])) {
-				$tags[$singleEntry[0]['value']]['groups'] = $singleEntry[5]['value'];
+	public function requestTagByDisplayName($user, $tagDisplayName) {
+		$tagList = $this->requestTagsForUser($user);
+		foreach ($tagList as $path => $tagData) {
+			if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName) {
+				return $tagData;
 			}
 		}
-
-		return $tags;
 	}
 
 	/**
@@ -191,32 +151,17 @@ trait Tags {
 	 * @param TableNode $table
 	 * @throws \Exception
 	 */
-	public function theFollowingTagsShouldExistFor($user, TableNode $table) {
-		$tags = $this->requestTagsForUser($user);
-
-		if(count($table->getRows()) !== count($tags)) {
-			throw new \Exception(
-				sprintf(
-					"Expected %s tags, got %s.",
-					count($table->getRows()),
-					count($tags)
-				)
-			);
-		}
-
+	public function theFollowingTagsShouldExistFor($user, TableNode $table){
 		foreach($table->getRowsHash() as $rowDisplayName => $row) {
-			foreach($tags as $key => $tag) {
-				if(
-					$tag['display-name'] === $rowDisplayName &&
-					$tag['user-visible'] === $row[0] &&
-					$tag['user-assignable'] === $row[1]
-				) {
-					unset($tags[$key]);
-				}
+			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
+			if (is_null($tagData)) {
+				PHPUnit_Framework_Assert::fail("tag $rowDisplayName is not in propfind answer");
+			} else {
+				PHPUnit_Framework_Assert::assertTrue($tagData['{http://owncloud.org/ns}user-visible'] === $row[0],
+											   "tag $rowDisplayName user-visible is not $row[0]");
+				PHPUnit_Framework_Assert::assertTrue($tagData['{http://owncloud.org/ns}user-assignable'] === $row[1],
+											   "tag $rowDisplayName user-assignable is not $row[1]");
 			}
-		}
-		if(count($tags) !== 0) {
-			throw new \Exception('Not expected response');
 		}
 	}
 
