@@ -225,116 +225,74 @@ trait Tags {
 	 * @return int
 	 */
 	private function findTagIdByName($name) {
-		$tags = $this->requestTagsForUser('admin');
-		$tagId = 0;
-		foreach($tags as $id => $tag) {
-			if($tag['display-name'] === $name) {
-				$tagId = $id;
-				break;
-			}
-		}
-		return (int)$tagId;
+		$tagData = $this->requestTagByDisplayName('admin', $name);
+		return (int)$tagData['{http://owncloud.org/ns}id'];
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldNmae and sets its name to :newName
+	 * @param string $user
+	 * @param string $tagDisplayName
+	 * @param string $properties optional
+	 */
+	private function sendProppatchToSystemtags($user, $tagDisplayName, $properties = null){
+		$client = $this->getSabreClient($user);
+		$client->setThrowExceptions(true);
+		$appPath = '/systemtags/';
+		$tagID = $this->findTagIdByName($tagDisplayName);
+		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
+		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . $appPath . $tagID;
+		try {
+			$response = $client->proppatch($fullUrl, $properties, 1);
+			$this->response = $response;
+			return $response;
+		} catch (\Sabre\HTTP\ClientHttpException $e) {
+			$this->response = null;
+			return null;
+		}
+	}
+
+	/**
+	 * @When :user edits the tag with name :oldName and sets its name to :newName
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $newName
 	 * @throws \Exception
 	 */
-	public function editsTheTagWithNameAndSetsItsNameTo($user, $oldName, $newName) {
-		$tagId = $this->findTagIdByName($oldName);
-		if($tagId === 0) {
-			throw new \Exception('Could not find tag to rename');
-		}
-
-		try {
-			$request = $this->client->createRequest(
-				'PROPPATCH',
-				$this->baseUrl . '/remote.php/dav/systemtags/' . $tagId,
-				[
-					'body' => '<?xml version="1.0"?>
-<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:set>
-   <d:prop>
-      <oc:display-name>' . $newName . '</oc:display-name>
-    </d:prop>
-  </d:set>
-</d:propertyupdate>',
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-				]
-			);
-			$this->response = $this->client->send($request);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$this->response = $e->getResponse();
-		}
+	public function editTagName($user, $oldName, $newName) {
+		$properties = [
+						'{http://owncloud.org/ns}display-name' => $newName
+					  ];
+		$this->sendProppatchToSystemtags($user, $oldName, $properties);
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldNmae and sets its groups to :groups
+	 * @When :user edits the tag with name :oldName and sets its groups to :groups
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $groups
 	 * @throws \Exception
 	 */
-	public function editsTheTagWithNameAndSetsItsGroupsTo($user, $oldName, $groups) {
-		$tagId = $this->findTagIdByName($oldName);
-		if($tagId === 0) {
-			throw new \Exception('Could not find tag to rename');
-		}
-
-		try {
-			$request = $this->client->createRequest(
-				'PROPPATCH',
-				$this->baseUrl . '/remote.php/dav/systemtags/' . $tagId,
-				[
-					'body' => '<?xml version="1.0"?>
-<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:set>
-   <d:prop>
-      <oc:groups>' . $groups . '</oc:groups>
-    </d:prop>
-  </d:set>
-</d:propertyupdate>',
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-				]
-			);
-			$this->response = $this->client->send($request);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$this->response = $e->getResponse();
-		}
+	public function editTagGroups($user, $oldName, $groups) {
+		$properties = [
+						'{http://owncloud.org/ns}groups' => $groups
+					  ];
+		$this->sendProppatchToSystemtags($user, $oldName, $properties);
 	}
 
 	/**
-	 * @When :user deletes the tag with name :name
+	 * @Given :user deletes the tag with name :name
 	 * @param string $user
-	 * @param string $name
+	 * @param string $groupName
 	 */
-	public function deletesTheTagWithName($user, $name)  {
-		$tagId = $this->findTagIdByName($name);
+	public function userDeletesTag($user, $name){
+		$tagID = $this->findTagIdByName($name);
 		try {
-			$this->response = $this->client->delete(
-				$this->baseUrl . '/remote.php/dav/systemtags/' . $tagId,
-				[
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-					'headers' => [
-						'Content-Type' => 'application/json',
-					],
-				]
-			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$appPath = '/systemtags/';
+			$this->response = $this->makeDavRequest($user, "DELETE", $appPath . $tagID, null, null, "uploads");
+		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
+		unset($this->createdTags[$tagID]);
 	}
 
 	/**
