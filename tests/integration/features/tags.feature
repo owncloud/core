@@ -40,61 +40,54 @@ Feature: tags
     Then the HTTP status code should be "400"
     And tag "JustARegularTagName" should not exist for "user0"
 
-  Scenario: Renaming a normal tag as regular user should work
+  Scenario Outline: Renaming a normal tag as regular user should work
     Given user "user0" exists
-    Given "admin" creates a "normal" tag with name "JustARegularTagName"
-    When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName"
-    Then the HTTP status code should be "207"
+    And "admin" creates a "normal" tag with name "<tag_name>"
+    When "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName"
     And The following tags should exist for "admin"
       |AnotherTagName|true|true|
 
-  Scenario: Renaming a normal tag to an emoji as regular user should work
-    Given user "user0" exists
-    Given "admin" creates a "normal" tag with name "JustARegularTagName"
-    When "user0" edits the tag with name "JustARegularTagName" and sets its name to "😀"
-    Then the HTTP status code should be "207"
-    And The following tags should exist for "admin"
-      |😀|true|true|
+  Examples:
+    |tag_name|
+    |JustARegularTagName|
+    |😀|
 
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given user "user0" exists
-    Given "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
+    And "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName"
-    Then the HTTP status code should be "403"
     And The following tags should exist for "admin"
       |JustARegularTagName|true|false|
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given user "user0" exists
-    Given "admin" creates a "not user-visible" tag with name "JustARegularTagName"
+    And "admin" creates a "not user-visible" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName"
-    Then the HTTP status code should be "404"
     And The following tags should exist for "admin"
       |JustARegularTagName|false|true|
 
   Scenario: Editing tag groups as admin should work
     Given user "user0" exists
-    Given "admin" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
+    And "admin" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
     When "admin" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3"
-    Then the HTTP status code should be "207"
     And The "not user-assignable" tag with name "TagWithGroups" has the groups "group1|group3"
 
   Scenario: Editing tag groups as regular user should fail
     Given user "user0" exists
-    Given "admin" creates a "not user-assignable" tag with name "TagWithGroups"
+    And "admin" creates a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
     When "user0" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3"
-    Then the HTTP status code should be "403"
+    And The "not user-assignable" tag with name "TagWithGroups" has the groups "group1|group2"
 
   Scenario: Deleting a normal tag as regular user should work
     Given user "user0" exists
-    Given "admin" creates a "normal" tag with name "JustARegularTagName"
+    And "admin" creates a "normal" tag with name "JustARegularTagName"
     When "user0" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "204"
-    And "0" tags should exist for "admin"
+    And tag "JustARegularTagName" should not exist for "admin"
 
   Scenario: Deleting a not user-assignable tag as regular user should fail
     Given user "user0" exists
-    Given "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
+    And "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
     When "user0" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "403"
     And The following tags should exist for "admin"
@@ -102,7 +95,7 @@ Feature: tags
 
   Scenario: Deleting a not user-visible tag as regular user should fail
     Given user "user0" exists
-    Given "admin" creates a "not user-visible" tag with name "JustARegularTagName"
+    And "admin" creates a "not user-visible" tag with name "JustARegularTagName"
     When "user0" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "404"
     And The following tags should exist for "admin"
@@ -112,13 +105,13 @@ Feature: tags
     Given "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
     When "admin" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "204"
-    And "0" tags should exist for "admin"
+    And tag "JustARegularTagName" should not exist for "admin"
 
   Scenario: Deleting a not user-visible tag as admin should work
     Given "admin" creates a "not user-visible" tag with name "JustARegularTagName"
     When "admin" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "204"
-    And "0" tags should exist for "admin"
+    And tag "JustARegularTagName" should not exist for "admin"
 
   Scenario: Assigning a normal tag to a file shared by someone else as regular user should work
     Given user "user0" exists
