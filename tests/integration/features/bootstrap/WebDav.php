@@ -4,6 +4,7 @@ use GuzzleHttp\Client as GClient;
 use GuzzleHttp\Message\ResponseInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
+use GuzzleHttp\Exception\ServerException;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -17,6 +18,8 @@ trait WebDav {
 	private $usingOldDavPath = true;
 	/** @var ResponseInterface */
 	private $response;
+	/** @var ResponseInterface[] */
+	private $uploadResponses;
 	/** @var map with user as key and another map as value, which has path as key and etag as value */
 	private $storedETAG = NULL;
 	/** @var integer */
@@ -565,14 +568,164 @@ trait WebDav {
 	 * @param string $source
 	 * @param string $destination
 	 */
-	public function userUploadsAFileTo($user, $source, $destination)
-	{
+	public function userUploadsAFileTo($user, $source, $destination) {
 		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
 		try {
 			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
 		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
+	 * @When User :user uploads file :source to :destination with chunks
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 * @param string $chunkingVersion null for autodetect, "old" with old style, "new" for new style
+	 */
+	public function userUploadsAFileToWithChunks($user, $source, $destination, $chunkingVersion = null) {
+		$size = filesize($source);
+		$contents = file_get_contents($source);
+
+		// use two chunks for the sake of testing
+		$chunks = [];
+		$chunks[] = substr($contents, 0, $size / 2);
+		$chunks[] = substr($contents, $size / 2);
+
+		$this->uploadChunks($user, $chunks, $destination, $chunkingVersion);
+	}
+
+	public function uploadChunks($user, $chunks, $destination, $chunkingVersion = null) {
+		if ($chunkingVersion === null) {
+			if ($this->usingOldDavPath) {
+				$chunkingVersion = 'old';
+			} else {
+				$chunkingVersion = 'new';
+			}
+		}
+		if ($chunkingVersion === 'old') {
+			foreach ($chunks as $index => $chunk) {
+				$this->userUploadsChunkedFile($user, $index + 1, count($chunks), $chunk, $destination);
+			}
+		} else {
+			$id = 'chunking-43';
+			$this->userCreatesANewChunkingUploadWithId($user, $id);
+			foreach ($chunks as $index => $chunk) {
+				$this->userUploadsNewChunkFileOfWithToId($user, $index + 1, $chunk, $id);
+			}
+			$this->userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $destination);
+		}
+	}
+
+	/**
+	 * Uploading with old/new dav and chunked/non-chunked.
+	 *
+	 * @When User :user uploads file :source to :destination with all mechanisms
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 */
+	public function userUploadsAFileToWithAllMechanisms($user, $source, $destination) {
+		$this->uploadResponses = $this->uploadWithAllMechanisms($user, $source, $destination, false); 
+	}
+
+	/**
+	 * Overwriting with old/new dav and chunked/non-chunked.
+	 *
+	 * @When User :user overwrites file :source to :destination with all mechanisms
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 */
+	public function userOverwritesAFileToWithAllMechanisms($user, $source, $destination) {
+		$this->uploadResponses = $this->uploadWithAllMechanisms($user, $source, $destination, true); 
+	}
+
+	/**
+	 * Upload the same file multiple times with different mechanisms.
+	 *
+	 * @param string $user user who uploads
+	 * @param string $source source file path
+	 * @param string $destination destination path on the server
+	 * @param bool $overwriteMode when false creates separate files to test uploading brand new files,
+	 * when true it just overwrites the same file over and over again with the same name
+	 */
+	public function uploadWithAllMechanisms($user, $source, $destination, $overwriteMode = false) {
+		$responses = [];
+		foreach (['old', 'new'] as $dav) {
+			if ($dav === 'old') {
+				$this->usingOldDavPath();
+			} else {
+				$this->usingNewDavPath();
+			}
+
+			$suffix = '';
+
+			// regular upload
+			try {
+				if (!$overwriteMode) {
+					$suffix = '-' . $dav . 'dav-regular';
+				}
+				$this->userUploadsAFileTo($user, $source, $destination . $suffix);
+				$responses[] = $this->response;
+			} catch (ServerException $e) {
+				$responses[] = $e->getResponse();
+			}
+
+			// old chunking upload
+			if ($dav === 'old') {
+				if (!$overwriteMode) {
+					$suffix = '-' . $dav . 'dav-oldchunking';
+				}
+				try {
+					$this->userUploadsAFileToWithChunks($user, $source, $destination . $suffix, 'old');
+					$responses[] = $this->response;
+				} catch (ServerException $e) {
+					$responses[] = $e->getResponse();
+				}
+			}
+			if ($dav === 'new') {
+				// old chunking style applied to new endpoint 🙈
+				if (!$overwriteMode) {
+					$suffix = '-' . $dav . 'dav-oldchunking';
+				}
+				try {
+					// FIXME: prepending new dav path because the chunking utility functions are messed up
+					$this->userUploadsAFileToWithChunks($user, $source, '/files/' . $user . '/' . ltrim($destination, '/') . $suffix, 'old');
+					$responses[] = $this->response;
+				} catch (ServerException $e) {
+					$responses[] = $e->getResponse();
+				}
+
+				// new chunking style applied to new endpoint
+				if (!$overwriteMode) {
+					$suffix = '-' . $dav . 'dav-newchunking';
+				}
+				try {
+					$this->userUploadsAFileToWithChunks($user, $source, $destination . $suffix, 'new');
+					$responses[] = $this->response;
+				} catch (ServerException $e) {
+					$responses[] = $e->getResponse();
+				}
+			}
+		}
+
+		return $responses;
+	}
+
+	/**
+	 * @Then /^the HTTP status code of all upload responses should be "([^"]*)"$/
+	 * @param int $statusCode
+	 */
+	public function theHTTPStatusCodeOfAllUploadResponsesShouldBe($statusCode) {
+		foreach ($this->uploadResponses as $response) {
+			PHPUnit_Framework_Assert::assertEquals(
+				$statusCode,
+				$response->getStatusCode(),
+				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+			);
 		}
 	}
 
@@ -677,6 +830,8 @@ trait WebDav {
 	}
 
 	/**
+	 * Old style chunking upload
+	 *
 	 * @Given user :user uploads chunk file :num of :total with :data to :destination
 	 * @param string $user
 	 * @param int $num
@@ -739,7 +894,7 @@ trait WebDav {
 	{
 		$source = '/uploads/' . $user . '/' . $id . '/.file';
 		$destination = substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . $dest;
-		$this->makeDavRequest($user, 'MOVE', $source, [
+		$this->response = $this->makeDavRequest($user, 'MOVE', $source, [
 			'Destination' => $destination
 		], null, "uploads");
 	}
