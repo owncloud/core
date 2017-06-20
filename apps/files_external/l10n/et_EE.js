@@ -53,7 +53,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Mujahl olev alamkaust",
     "Secure https://" : "Turvaline https://",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google Drive",
     "Local" : "Kohalik",
     "Location" : "Asukoht",

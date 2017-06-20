@@ -1,9 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Fetching request tokens failed. Verify that your app key and secret are correct." : "請求失敗，請驗證您的應用程式金鑰及密碼是否正確",
-    "Fetching access tokens failed. Verify that your app key and secret are correct." : "存取失敗，請驗證您的應用程式金鑰及密碼是否正確",
-    "Please provide a valid app key and secret." : "請提供有效的應用程式金鑰及密碼",
     "Step 1 failed. Exception: %s" : "步驟 1 失敗，出現異常: %s",
     "Step 2 failed. Exception: %s" : "步驟 2 失敗，出現異常: %s",
     "External storage" : "外部儲存",
@@ -11,6 +8,7 @@ OC.L10N.register(
     "System" : "系統",
     "Grant access" : "允許存取",
     "Error configuring OAuth1" : "設定 OAuth1 時發生錯誤",
+    "Please provide a valid app key and secret." : "請提供有效的應用程式金鑰及密碼",
     "Error configuring OAuth2" : "設定 OAuth2 時發生錯誤",
     "Generate keys" : "產生金鑰",
     "Error generating key pair" : "產生金鑰對錯誤",
@@ -59,7 +57,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "遠端子資料夾",
     "Secure https://" : "安全 https://",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google 雲端硬碟",
     "Local" : "本地",
     "Location" : "地點",

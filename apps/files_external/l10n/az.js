@@ -34,7 +34,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Uzaq altqovluğu",
     "Secure https://" : "Təhlükəsiz https://",
-    "Dropbox" : "Dropbox",
     "Local" : "Yerli",
     "Location" : "Yerləşdiyiniz ünvan",
     "Host" : "Şəbəkədə ünvan",

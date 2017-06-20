@@ -46,7 +46,6 @@ OC.L10N.register(
     "WebDAV" : "WebDAV",
     "URL" : "URL",
     "Secure https://" : "https:// sigur",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google Drive",
     "Local" : "Local",
     "Location" : "Locație",

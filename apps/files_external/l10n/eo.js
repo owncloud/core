@@ -34,7 +34,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Fora subdosierujo",
     "Secure https://" : "Sekura https://",
-    "Dropbox" : "Dropbox",
     "Local" : "Loka",
     "Location" : "Loko",
     "ownCloud" : "ownCloud",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Please provide a valid app key and secret." : "لطفا یک کلید و رمز معتبر برای برنامه فرآهم کنید.",
     "Step 1 failed. Exception: %s" : "گام 1 ناموفق بود. خطا: %s",
     "Step 2 failed. Exception: %s" : "گام 2ناموفق بود. خطا: %s",
     "External storage" : "حافظه خارجی",
@@ -9,6 +8,7 @@ OC.L10N.register(
     "System" : "سیستم",
     "Grant access" : " مجوز اعطا دسترسی",
     "Error configuring OAuth1" : "خطا پیکربندی OAuth1",
+    "Please provide a valid app key and secret." : "لطفا یک کلید و رمز معتبر برای برنامه فرآهم کنید.",
     "Error configuring OAuth2" : "خطا پیکربندی OAuth2",
     "Generate keys" : "تولید کلید",
     "(group)" : "(گروه)",
@@ -31,7 +31,6 @@ OC.L10N.register(
     "Enable SSL" : "فعال‌سازی SSL",
     "WebDAV" : "WebDAV",
     "URL" : "آدرس",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google Drive",
     "Local" : "محلی",
     "Location" : "محل",

@@ -1,9 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Fetching request tokens failed. Verify that your app key and secret are correct." : "Sťahovanie tokenov požiadavky zlyhalo. Overte prosím, či je aplikačný kľúč a heslo (secret) zadané správne.",
-    "Fetching access tokens failed. Verify that your app key and secret are correct." : "Sťahovanie prístupových tokenov zlyhalo. Overte prosím, či je aplikačný kľúč a heslo (secret) zadané správne.",
-    "Please provide a valid app key and secret." : "Zadajte prosím platný aplikačný kľúč a heslo (secret).",
     "Step 1 failed. Exception: %s" : "Krok 1 zlyhal. Výnimka: %s",
     "Step 2 failed. Exception: %s" : "Krok 2 zlyhal. Výnimka: %s",
     "External storage" : "Externé úložisko",
@@ -11,6 +8,7 @@ OC.L10N.register(
     "System" : "Systém",
     "Grant access" : "Povoliť prístup",
     "Error configuring OAuth1" : "Chyba konfigurovania OAuth1",
+    "Please provide a valid app key and secret." : "Zadajte prosím platný aplikačný kľúč a heslo (secret).",
     "Error configuring OAuth2" : "Chyba konfigurovania OAuth2",
     "Generate keys" : "Vytvoriť kľúče",
     "Error generating key pair" : "Chyba pri vytváraní dvojice kľúčov",
@@ -55,7 +53,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Vzdialený podpriečinok",
     "Secure https://" : "Zabezpečené https://",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google Drive",
     "Local" : "Lokálny",
     "Location" : "Umiestnenie",

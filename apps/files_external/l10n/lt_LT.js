@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Fetching request tokens failed. Verify that your app key and secret are correct." : "Nepavyko atsiųsti užklausos žymės. Patikrinkite savo programos raktą ir paslaptį.",
     "Step 1 failed. Exception: %s" : "1 žingsnio klaida: %s",
     "Step 2 failed. Exception: %s" : "2 žingsnio klaida: %s",
     "External storage" : "Išorinė saugykla",
@@ -26,7 +25,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Ištrinti katalogą",
     "Secure https://" : "Saugus https://",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google Drive",
     "Location" : "Vieta",
     "ownCloud" : "ownCloud",

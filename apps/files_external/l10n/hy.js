@@ -9,7 +9,6 @@ OC.L10N.register(
     "Port" : "Պորտ",
     "WebDAV" : "WebDAV",
     "URL" : "URL",
-    "Dropbox" : "Dropbox",
     "Location" : "Տեղակայություն",
     "Host" : "Հոստ",
     "Share" : "Կիսվել",

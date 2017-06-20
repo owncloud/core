@@ -35,7 +35,6 @@ OC.L10N.register(
     "URL" : "УРЛ",
     "Remote subfolder" : "Удаљена потфасцикла",
     "Secure https://" : "Сигурни https://",
-    "Dropbox" : "Dropbox",
     "Local" : "локална",
     "Location" : "Локација",
     "ownCloud" : "оунКлауд",

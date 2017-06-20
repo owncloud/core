@@ -29,7 +29,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Urruneko azpikarpeta",
     "Secure https://" : "https:// segurua",
-    "Dropbox" : "Dropbox",
     "Local" : "Bertakoa",
     "Location" : "Kokapena",
     "ownCloud" : "ownCloud",

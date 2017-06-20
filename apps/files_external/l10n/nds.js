@@ -1,9 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Fetching request tokens failed. Verify that your app key and secret are correct." : "Holen des Requesttokens fehlgeschlagen. Bitte überprüfe Schlüssel und Secret deiner App.",
-    "Fetching access tokens failed. Verify that your app key and secret are correct." : "Holen des Zugrifftokens fehlgeschlagen. Bitte überprüfe Schlüssel und Secret deiner App.",
-    "Please provide a valid app key and secret." : "Bitte verwende für deine App einen gültigen Schüssel und ein gültiges Secret.",
     "Step 1 failed. Exception: %s" : "Schritt 1 fehlgeschlagen. Exception: %s",
     "Step 2 failed. Exception: %s" : "Schritt 2 fehlgeschlagen. Exception: %s",
     "External storage" : "Externer Speicher",
@@ -11,6 +8,7 @@ OC.L10N.register(
     "System" : "System",
     "Grant access" : "Erlaube Zugriff",
     "Error configuring OAuth1" : "Fehler bei der Konfiguration von OAuth1",
+    "Please provide a valid app key and secret." : "Bitte verwende für deine App einen gültigen Schüssel und ein gültiges Secret.",
     "Error configuring OAuth2" : "Fehler bei der Konfiguration von OAuth2",
     "Generate keys" : "Generiere Schlüssel",
     "Error generating key pair" : "Fehler beim Generieren des Schlüsselpaars",
@@ -50,7 +48,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Entfernter Unterordner",
     "Secure https://" : "Sicheres https://",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google Drive",
     "Local" : "Lokal",
     "Location" : "Ort",

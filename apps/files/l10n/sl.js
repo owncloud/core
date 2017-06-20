@@ -16,6 +16,7 @@ OC.L10N.register(
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Ni mogoče poslati datoteke {filename}, saj je to ali mapa ali pa je velikost datoteke 0 bajtov.",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Na voljo ni dovolj prostora. Velikost poslane datoteke je {size1}, na voljo pa je je {size2}.",
     "Target folder \"{dir}\" does not exist any more" : "Ciljna mapa \"{dir}\" ne obstaja več",
+    "Target folder does not exist any more" : "Ciljna mapa ne obstaja več",
     "Not enough free space" : "Na voljo ni dovolj prostora",
     "Uploading..." : "Poteka pošiljanje ...",
     "..." : "...",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Fetching request tokens failed. Verify that your app key and secret are correct." : "Fel vid hämtning av åtkomst-token. Verifiera att din app-nyckel och hemlighet stämmer.",
     "Step 1 failed. Exception: %s" : "Steg 1 flaerade. Undantag: %s",
     "Step 2 failed. Exception: %s" : "Steg 2 falerade. Undantag: %s",
     "External storage" : "Extern lagring",
@@ -51,7 +50,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Fjärrmapp",
     "Secure https://" : "Säker https://",
-    "Dropbox" : "Dropbox",
     "Google Drive" : "Google Drive",
     "Local" : "Lokal",
     "Location" : "Plats",
