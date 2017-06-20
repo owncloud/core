@@ -298,8 +298,12 @@ trait Tags {
 		}
 	}
 
-	private function requestTagsForFile($user, $fileName) {
-		$fileID = $this->getFileIdForPath($user, $fileName);
+	private function requestTagsForFile($user, $fileName, $sharingUser = null) {
+		if (!is_null($sharingUser)){
+			$fileID = $this->getFileIdForPath($sharingUser, $fileName);
+		} else {
+			$fileID = $this->getFileIdForPath($user, $fileName);
+		}
 		$client = $this->getSabreClient($user);
 		$properties = [
 						'{http://owncloud.org/ns}id',
@@ -346,10 +350,11 @@ trait Tags {
 				if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $rowDisplayName) {
 					$found = true;
 					$this->assertTypeOfTag($tagData, $rowType);
+					break;
 				}
-				if ($found === false) {
+			}
+			if ($found === false) {
 					PHPUnit_Framework_Assert::fail("tag $rowDisplayName is not in propfind answer");
-				}
 			}
 		}
 	}
@@ -363,54 +368,17 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function sharedByHasTheFollowingTagsFor($fileName, $sharingUser, $user, TableNode $table) {
-		$loadedExpectedTags = $table->getTable();
-		$expectedTags = [];
-		foreach($loadedExpectedTags as $expected) {
-			$expectedTags[] = $expected[0];
-		}
+		$this->sharedByHasTheFollowingTags($fileName, 'shared', $user, $table);
+	}
 
-		// Get the real tags
+	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
+		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
+		$tagID = $this->findTagIdByName($tagName);
+		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		try {
-			$request = $this->client->createRequest(
-				'PROPFIND',
-				$this->baseUrl . '/remote.php/dav/systemtags-relations/files/' . $this->getFileIdForPath($sharingUser, $fileName),
-				[
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-					'body' => '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:id />
-    <oc:display-name />
-    <oc:user-visible />
-    <oc:user-assignable />
-  </d:prop>
-</d:propfind>',
-				]
-			);
-			$this->response = $this->client->send($request)->getBody()->getContents();
+			$this->response = $this->makeDavRequest($untaggingUser,"DELETE", $path, null, null, "uploads");
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
-		}
-		preg_match_all('/\<oc:display-name\>(.*?)\<\/oc:display-name\>/', $this->response, $realTags);
-
-		$realTags = array_filter($realTags);
-		$expectedTags = array_filter($expectedTags);
-
-		foreach($expectedTags as $key => $row) {
-			foreach($realTags as $tag) {
-				foreach($tag as $index => $foo) {
-					if($tag[$index] === $row) {
-						unset($expectedTags[$key]);
-					}
-				}
-			}
-		}
-
-		if(count($expectedTags) !== 0) {
-			throw new \Exception('Not all tags found.');
 		}
 	}
 
@@ -422,22 +390,7 @@ trait Tags {
 	 * @param string $shareUser
 	 */
 	public function removesTheTagFromSharedBy($user, $tagName, $fileName, $shareUser) {
-		$tagId = $this->findTagIdByName($tagName);
-		$fileId = $this->getFileIdForPath($shareUser, $fileName);
-
-		try {
-			$this->response = $this->client->delete(
-				$this->baseUrl.'/remote.php/dav/systemtags-relations/files/'.$fileId.'/'.$tagId,
-				[
-					'auth' => [
-						$user,
-						$this->getPasswordForUser($user),
-					],
-				]
-			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$this->response = $e->getResponse();
-		}
+		$this->untag($user, $tagName, $fileName, $shareUser);
 	}
 
 	/**
