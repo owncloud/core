@@ -22,6 +22,7 @@
 
 namespace OCA\Files_Sharing\Tests\Command;
 
+use OC\Files\Cache\Cache;
 use OCA\Files_Sharing\Command\CleanupRemoteStorages;
 use Test\TestCase;
 
@@ -100,6 +101,9 @@ class CleanupRemoteStoragesTest extends TestCase {
 					$filesQuery->setParameter(1, 'file' . $i);
 					$filesQuery->setParameter(2, \md5('file' . $i));
 					$filesQuery->execute();
+				}
+				if (Cache::$metaDataCache !== null) {
+					Cache::$metaDataCache->clear();
 				}
 			}
 		}

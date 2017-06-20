@@ -22,6 +22,7 @@
 
 namespace OCA\Files_Sharing\Command;
 
+use OC\Files\Cache\Cache;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Command\Command;
@@ -129,6 +130,9 @@ class CleanupRemoteStorages extends Command {
 			);
 		$output->write("deleting files for storage $numericId ... ");
 		$count = $queryBuilder->execute();
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 		$output->writeln("deleted $count");
 	}
 

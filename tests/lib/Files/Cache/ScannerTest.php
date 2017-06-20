@@ -8,6 +8,7 @@
 
 namespace Test\Files\Cache;
 
+use OC\Files\Cache\Cache;
 use OC\Files\Cache\CacheEntry;
 use OC\Files\Storage\Storage;
 use OCA\Files_Sharing\ISharedStorage;
@@ -286,6 +287,9 @@ class ScannerTest extends \Test\TestCase {
 		// delete the folder without removing the childs
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		\OC_DB::executeAudited($sql, [$oldFolderId]);
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 
 		$cachedData = $this->cache->get('folder/bar.txt');
 		$this->assertEquals($oldFolderId, $cachedData['parent']);
@@ -310,6 +314,9 @@ class ScannerTest extends \Test\TestCase {
 		// delete the folder without removing the childs
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		\OC_DB::executeAudited($sql, [$oldFolderId]);
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 
 		$cachedData = $this->cache->get('folder/bar.txt');
 		$this->assertEquals($oldFolderId, $cachedData['parent']);

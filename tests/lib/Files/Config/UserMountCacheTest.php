@@ -9,6 +9,7 @@
 namespace Test\Files\Config;
 
 use OC\DB\QueryBuilder\Literal;
+use OC\Files\Cache\Cache;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Mount\MountPoint;
 use OC\Log;
@@ -100,6 +101,9 @@ class UserMountCacheTest extends TestCase {
 			$builder->delete('filecache')
 				->where($builder->expr()->eq('fileid', new Literal($fileId)))
 				->execute();
+		}
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
 		}
 	}
 
@@ -330,6 +334,9 @@ class UserMountCacheTest extends TestCase {
 			'etag' => '',
 			'permissions' => 31
 		], ['storage', 'path_hash']);
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 		$id = (int)$this->connection->lastInsertId('*PREFIX*filecache');
 		$this->fileIds[] = $id;
 		return $id;

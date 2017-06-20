@@ -25,6 +25,7 @@ namespace Test;
 use DOMDocument;
 use DOMNode;
 use OC\Command\QueueBus;
+use OC\Files\Cache\Cache;
 use OC\Files\Filesystem;
 use OC\Template\Base;
 use OC_Defaults;
@@ -292,6 +293,9 @@ abstract class TestCase extends BaseTestCase {
 	static protected function tearDownAfterClassCleanFileCache(IQueryBuilder $queryBuilder) {
 		$queryBuilder->delete('filecache')
 			->execute();
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 	}
 
 	/**

@@ -23,6 +23,7 @@
 
 namespace OC\Repair;
 
+use OC\Files\Cache\Cache;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -50,6 +51,9 @@ class FillETags implements IRepairStep {
 			->orWhere($qb->expr()->isNull('etag'));
 
 		$result = $qb->execute();
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 		$output->info("ETags have been fixed for $result files/folders.");
 	}
 }

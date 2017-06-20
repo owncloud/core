@@ -22,6 +22,7 @@ namespace Test\Share20;
 
 use OC\Authentication\Token\DefaultTokenMapper;
 use OC\Share20\DefaultShareProvider;
+use OC\Files\Cache\Cache;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\File;
 use OCP\Files\Folder;
@@ -79,6 +80,9 @@ class DefaultShareProviderTest extends TestCase {
 	public function tearDown() {
 		$this->dbConn->getQueryBuilder()->delete('share')->execute();
 		$this->dbConn->getQueryBuilder()->delete('filecache')->execute();
+		if (isset(Cache::$metaDataCache)) {
+			Cache::$metaDataCache->clear();
+		}
 		$this->dbConn->getQueryBuilder()->delete('storages')->execute();
 	}
 
@@ -815,6 +819,9 @@ class DefaultShareProviderTest extends TestCase {
 				'name' => $qb->expr()->literal(\basename($path)),
 			]);
 		$this->assertEquals(1, $qb->execute());
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 		return $qb->getLastInsertId();
 	}
 

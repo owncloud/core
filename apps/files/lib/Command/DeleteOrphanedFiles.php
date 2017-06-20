@@ -22,6 +22,7 @@
 
 namespace OCA\Files\Command;
 
+use OC\Files\Cache\Cache;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -74,6 +75,9 @@ class DeleteOrphanedFiles extends Command {
 					->execute();
 			}
 			$result->closeCursor();
+		}
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
 		}
 
 		$output->writeln("$deletedEntries orphaned file cache entries deleted");

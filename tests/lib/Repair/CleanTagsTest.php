@@ -7,6 +7,7 @@
  */
 
 namespace Test\Repair;
+use OC\Files\Cache\Cache;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Migration\IOutput;
 
@@ -66,6 +67,9 @@ class CleanTagsTest extends \Test\TestCase {
 
 		$qb->delete('filecache')
 			->execute();
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 	}
 
 	public function testRun() {
@@ -186,6 +190,9 @@ class CleanTagsTest extends \Test\TestCase {
 				'path_hash'		=> $qb->createNamedParameter(\md5($fileName)),
 			])
 			->execute();
+		if (Cache::$metaDataCache !== null) {
+			Cache::$metaDataCache->clear();
+		}
 
 		$this->createdFile = (int) $this->getLastInsertID('filecache', 'fileid');
 		return $this->createdFile;

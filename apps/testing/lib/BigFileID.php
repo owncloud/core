@@ -21,6 +21,7 @@
 
 namespace OCA\Testing;
 
+use OC\Files\Cache\Cache;
 use OCP\IDBConnection;
 
 /**
@@ -53,6 +54,9 @@ class BigFileID {
 												'', '4', '3', '163', '1499256550', '1499256550',
 												'0', '0', '595cd6e63f375', '27', 'NULL')";
 			$this->connection->executeQuery($query);
+			if (Cache::$metaDataCache !== null) {
+				Cache::$metaDataCache->clear();
+			}
 		}
 		return new \OC_OCS_Result();
 	}

@@ -51,6 +51,9 @@ $ocVersion = \explode('.', \OC::$server->getSystemConfig()->getValue('version'))
  */
 function owncloud_reset_encrypted_flag(\OCP\IDBConnection $conn) {
 	$conn->executeUpdate('UPDATE `*PREFIX*filecache` SET `encrypted` = 0 WHERE `encrypted` = 1');
+	if (isset(\OC\Files\Cache\Cache::$metaDataCache)) {
+		\OC\Files\Cache\Cache::$metaDataCache->clear();
+	}
 }
 
 // Current version of ownCloud before the update is 8.1.0 or 8.2.0.(0-2)

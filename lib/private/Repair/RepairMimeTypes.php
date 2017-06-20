@@ -29,6 +29,7 @@
 
 namespace OC\Repair;
 
+use OC\Files\Cache\Cache;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
@@ -127,6 +128,9 @@ class RepairMimeTypes implements IRepairStep {
 				// delete wrong mimetype
 				\OC_DB::executeAudited(self::deleteStmt(), [$wrongId]);
 
+				if (Cache::$metaDataCache !== null) {
+					Cache::$metaDataCache->clear();
+				}
 			}
 		}
 	}
@@ -134,6 +138,9 @@ class RepairMimeTypes implements IRepairStep {
 	private function updateMimetypes($updatedMimetypes) {
 		if (empty($this->folderMimeTypeId)) {
 			$result = \OC_DB::executeAudited(self::getIdStmt(), ['httpd/unix-directory']);
+			if (Cache::$metaDataCache !== null) {
+				Cache::$metaDataCache->clear();
+			}
 			$this->folderMimeTypeId = (int)$result->fetchOne();
 		}
 
@@ -152,6 +159,9 @@ class RepairMimeTypes implements IRepairStep {
 
 			// change mimetype for files with x extension
 			\OC_DB::executeAudited(self::updateByNameStmt(), [$mimetypeId, $this->folderMimeTypeId, $mimetypeId, '%.' . $extension]);
+			if (Cache::$metaDataCache !== null) {
+				Cache::$metaDataCache->clear();
+			}
 		}
 	}
 
