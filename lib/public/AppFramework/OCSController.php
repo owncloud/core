@@ -32,6 +32,7 @@
 
 namespace OCP\AppFramework;
 
+use OC\OCS\Result;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\OCSResponse;
 use OCP\AppFramework\Http\Response;
@@ -81,6 +82,11 @@ abstract class OCSController extends ApiController {
 	 * @since 8.1.0
 	 */
 	private function buildOCSResponse($format, $data) {
+		if ($data instanceof Result) {
+			$headers = $data->getHeaders();
+			$data = $data->getMeta();
+			$data['headers'] = $headers;
+		}
 		if ($data instanceof DataResponse) {
 			$data = $data->getData();
 		}
@@ -97,11 +103,18 @@ abstract class OCSController extends ApiController {
 			$params[$key] = $value;
 		}
 
-		return new OCSResponse(
+		$resp = new OCSResponse(
 			$format, $params['statuscode'],
 			$params['message'], $params['data'],
 			$params['itemscount'], $params['itemsperpage']
 		);
+		if (isset($data['headers'])) {
+			foreach ($data['headers'] as $key => $value) {
+				$resp->addHeader($key, $value);
+			}
+		}
+
+		return $resp;
 	}
 
 	/**
