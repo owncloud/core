@@ -428,6 +428,10 @@ class ViewControllerTest extends TestCase {
 			->with('files_trashbin')
 			->will($this->returnValue(true));
 
+		$this->rootFolder->expects($this->once())
+			->method('nodeExists')
+			->will($this->returnValue(true));
+
 		$parentNode = $this->createMock('\OCP\Files\Folder');
 		$parentNode->expects($this->once())
 			->method('getPath')
@@ -440,7 +444,8 @@ class ViewControllerTest extends TestCase {
 			->method('get')
 			->with('testuser1/files/')
 			->will($this->returnValue($baseFolderFiles));
-		$this->rootFolder->expects($this->at(1))
+		//The index is pointing to 2, because nodeExists internally calls get method.
+		$this->rootFolder->expects($this->at(2))
 			->method('get')
 			->with('testuser1/files_trashbin/files/')
 			->will($this->returnValue($baseFolderTrash));

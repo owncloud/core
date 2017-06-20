@@ -137,6 +137,23 @@ class LoginControllerTest extends TestCase {
 		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('', '', ''));
 	}
 
+	public function testResponseForNotLoggedinUser() {
+		$params = [
+			'messages' => Array (),
+			'loginName' => '',
+			'user_autofocus' => true,
+			'redirect_url' => '%2Findex.php%2Ff%2F17',
+			'canResetPassword' => true,
+			'resetPasswordLink' => null,
+			'alt_login' => Array (),
+			'rememberLoginAllowed' => false,
+			'rememberLoginState' => 0
+		];
+
+		$expectedResponse = new TemplateResponse('core', 'login', $params, 'guest');
+		$this->assertEquals($expectedResponse, $this->loginController->showLoginForm('', '%2Findex.php%2Ff%2F17', ''));
+	}
+
 	public function testShowLoginFormWithErrorsInSession() {
 		$this->userSession
 			->expects($this->once())

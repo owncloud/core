@@ -281,9 +281,12 @@ class ViewController extends Controller {
 		$params = [];
 
 		if (empty($files) && $this->appManager->isEnabledForUser('files_trashbin')) {
-			$baseFolder = $this->rootFolder->get($uid . '/files_trashbin/files/');
-			$files = $baseFolder->getById($fileId);
-			$params['view'] = 'trashbin';
+			// Access files_trashbin if it exists
+			if ( $this->rootFolder->nodeExists($uid . '/files_trashbin/files/')) {
+				$baseFolder = $this->rootFolder->get($uid . '/files_trashbin/files/');
+				$files = $baseFolder->getById($fileId);
+				$params['view'] = 'trashbin';
+			}
 		}
 
 		if (!empty($files)) {
@@ -299,6 +302,12 @@ class ViewController extends Controller {
 			}
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index', $params));
 		}
+
+		if ( $this->userSession->isLoggedIn() and empty($files)) {
+			$param["error"] = $this->l10n->t("You don't have permissions to access this file/folder - Please contact the owner to share it with you.");
+			return new TemplateResponse("core", 'error', ["errors" => [$param]], 'guest');
+		}
+
 		throw new \OCP\Files\NotFoundException();
 	}
 }
