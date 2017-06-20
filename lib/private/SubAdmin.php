@@ -32,8 +32,9 @@ use OCP\IUserManager;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IDBConnection;
+use OCP\ISubAdminManager;
 
-class SubAdmin extends PublicEmitter {
+class SubAdmin extends PublicEmitter implements ISubAdminManager {
 
 	/** @var IUserManager */
 	private $userManager;
