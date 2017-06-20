@@ -7,9 +7,9 @@ Feature: tags
     When "user0" creates a "normal" tag with name "<tag_name>"
     Then the HTTP status code should be "201"
     And The following tags should exist for "admin"
-      |<tag_name>|true|true|
+      |<tag_name>|normal|
     And The following tags should exist for "user0"
-      |<tag_name>|true|true|
+      |<tag_name>|normal|
 
   Examples:
     |tag_name|
@@ -45,7 +45,7 @@ Feature: tags
     And "admin" creates a "normal" tag with name "<tag_name>"
     When "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName"
     And The following tags should exist for "admin"
-      |AnotherTagName|true|true|
+      |AnotherTagName|normal|
 
   Examples:
     |tag_name|
@@ -57,14 +57,14 @@ Feature: tags
     And "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName"
     And The following tags should exist for "admin"
-      |JustARegularTagName|true|false|
+      |JustARegularTagName|not user-assignable|
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given user "user0" exists
     And "admin" creates a "not user-visible" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName"
     And The following tags should exist for "admin"
-      |JustARegularTagName|false|true|
+      |JustARegularTagName|not user-visible|
 
   Scenario: Editing tag groups as admin should work
     Given user "user0" exists
@@ -91,7 +91,7 @@ Feature: tags
     When "user0" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "403"
     And The following tags should exist for "admin"
-      |JustARegularTagName|true|false|
+      |JustARegularTagName|not user-assignable|
 
   Scenario: Deleting a not user-visible tag as regular user should fail
     Given user "user0" exists
@@ -99,7 +99,7 @@ Feature: tags
     When "user0" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "404"
     And The following tags should exist for "admin"
-      |JustARegularTagName|false|true|
+      |JustARegularTagName|not user-visible|
 
   Scenario: Deleting a not user-assignable tag as admin should work
     Given "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
@@ -115,17 +115,14 @@ Feature: tags
 
   Scenario: Assigning a normal tag to a file shared by someone else as regular user should work
     Given user "user0" exists
-    Given user "user1" exists
-    Given "admin" creates a "normal" tag with name "JustARegularTagName"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
+    And user "user1" exists
+    And "admin" creates a "normal" tag with name "JustARegularTagName"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "user1"
     When "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "201"
     And "/myFileToTag.txt" shared by "user0" has the following tags
-      |JustARegularTagName|
+      |JustARegularTagName|normal|
 
   Scenario: Assigning a normal tag to a file belonging to someone else as regular user should fail
     Given user "user0" exists
@@ -133,60 +130,50 @@ Feature: tags
     Given "admin" creates a "normal" tag with name "MyFirstTag"
     Given "admin" creates a "normal" tag with name "MySecondTag"
     Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    When "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    When "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    When "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
+    When "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" owned by "user0"
     Then the HTTP status code should be "404"
-    And "/myFileToTag.txt" shared by "user0" has the following tags
-      |MyFirstTag|
+    And "/myFileToTag.txt" owned by "user0" has the following tags
+      |MyFirstTag|normal|
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user should fail
     Given user "user0" exists
-    Given user "user1" exists
-    Given "admin" creates a "normal" tag with name "MyFirstTag"
-    Given "admin" creates a "not user-assignable" tag with name "MySecondTag"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
-    When "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
+    And user "user1" exists
+    And "admin" creates a "normal" tag with name "MyFirstTag"
+    And "admin" creates a "not user-assignable" tag with name "MySecondTag"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "user1"
+    And "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
     When "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "403"
     And "/myFileToTag.txt" shared by "user0" has the following tags
-      |MyFirstTag|
+      |MyFirstTag|normal|
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user belongs to tag's groups should work
     Given user "user0" exists
-    Given user "user1" exists
-    Given group "group1" exists
-    Given user "user1" belongs to group "group1"
-    Given "admin" creates a "not user-assignable" tag with name "JustARegularTagName" and groups "group1"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
+    And user "user1" exists
+    And group "group1" exists
+    And user "user1" belongs to group "group1"
+    And "admin" creates a "not user-assignable" tag with name "JustARegularTagName" and groups "group1"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "user1"
     When "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "201"
     And "/myFileToTag.txt" shared by "user0" has the following tags
-      |JustARegularTagName|
-
+      |JustARegularTagName|not user-assignable|
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as regular user should fail
     Given user "user0" exists
-    Given user "user1" exists
-    Given "admin" creates a "normal" tag with name "MyFirstTag"
-    Given "admin" creates a "not user-visible" tag with name "MySecondTag"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
-    When "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
+    And user "user1" exists
+    And "admin" creates a "normal" tag with name "MyFirstTag"
+    And "admin" creates a "not user-visible" tag with name "MySecondTag"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "user1"
+    And "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
     When "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "412"
     And "/myFileToTag.txt" shared by "user0" has the following tags
-      |MyFirstTag|
+      |MyFirstTag|normal|
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as admin user should work
     Given user "user0" exists
