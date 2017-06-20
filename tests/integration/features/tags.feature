@@ -177,95 +177,86 @@ Feature: tags
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as admin user should work
     Given user "user0" exists
-    Given "admin" creates a "normal" tag with name "MyFirstTag"
-    Given "admin" creates a "not user-visible" tag with name "MySecondTag"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | admin |
-      | shareType | 0 |
-    When "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    When "admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" exists
+    And user "another_admin" belongs to group "admin"
+    And "another_admin" creates a "normal" tag with name "MyFirstTag"
+    And "another_admin" creates a "not user-visible" tag with name "MySecondTag"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "another_admin"
+    And "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
+    When "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "201"
-    And "/myFileToTag.txt" shared by "user0" has the following tags for "admin"
-      |MyFirstTag|
-      |MySecondTag|
+    And "/myFileToTag.txt" shared by "user0" has the following tags for "another_admin"
+      |MyFirstTag|normal|
+      |MySecondTag|not user-visible|
     And "/myFileToTag.txt" shared by "user0" has the following tags for "user0"
-      |MyFirstTag|
+      |MyFirstTag|normal|
 
-  Scenario: Assigning a not user-assignable tag to a file shared by someone else as admin user should worj
+  Scenario: Assigning a not user-assignable tag to a file shared by someone else as admin user should work
     Given user "user0" exists
-    Given "admin" creates a "normal" tag with name "MyFirstTag"
-    Given "admin" creates a "not user-assignable" tag with name "MySecondTag"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | admin |
-      | shareType | 0 |
-    When "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    When "admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "another_admin" exists
+    And user "another_admin" belongs to group "admin"
+    And "another_admin" creates a "normal" tag with name "MyFirstTag"
+    And "another_admin" creates a "not user-assignable" tag with name "MySecondTag"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "another_admin"
+    And "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
+    When "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "201"
-    And "/myFileToTag.txt" shared by "user0" has the following tags for "admin"
-      |MyFirstTag|
-      |MySecondTag|
+    And "/myFileToTag.txt" shared by "user0" has the following tags for "another_admin"
+      |MyFirstTag|normal|
+      |MySecondTag|not user-assignable|
     And "/myFileToTag.txt" shared by "user0" has the following tags for "user0"
-      |MyFirstTag|
-      |MySecondTag|
+      |MyFirstTag|normal|
+      |MySecondTag|not user-assignable|
 
   Scenario: Unassigning a normal tag from a file shared by someone else as regular user should work
     Given user "user0" exists
-    Given user "user1" exists
-    Given "admin" creates a "normal" tag with name "MyFirstTag"
-    Given "admin" creates a "normal" tag with name "MySecondTag"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
-    Given "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    Given "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "user1" exists
+    And "admin" creates a "normal" tag with name "MyFirstTag"
+    And "admin" creates a "normal" tag with name "MySecondTag"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "user1"
+    And "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0"
+    And "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" owned by "user0"
     When "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "204"
     And "/myFileToTag.txt" shared by "user0" has the following tags for "user0"
-      |MySecondTag|
+      |MySecondTag|normal|
 
   Scenario: Unassigning a normal tag from a file unshared by someone else as regular user should fail
     Given user "user0" exists
-    Given user "user1" exists
-    Given "admin" creates a "normal" tag with name "MyFirstTag"
-    Given "admin" creates a "normal" tag with name "MySecondTag"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    Given "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "user1" exists
+    And "admin" creates a "normal" tag with name "MyFirstTag"
+    And "admin" creates a "normal" tag with name "MySecondTag"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
+    And "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     When "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "404"
     And "/myFileToTag.txt" shared by "user0" has the following tags for "user0"
-      |MyFirstTag|
-      |MySecondTag|
+      |MyFirstTag|normal|
+      |MySecondTag|normal|
 
   Scenario: Unassigning a not user-visible tag from a file shared by someone else as regular user should fail
     Given user "user0" exists
-    Given user "user1" exists
-    Given "admin" creates a "not user-visible" tag with name "MyFirstTag"
-    Given "admin" creates a "normal" tag with name "MySecondTag"
-    Given user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | user1 |
-      | shareType | 0 |
-    Given As "user0" sending "POST" to "/apps/files_sharing/api/v1/shares" with
-      | path | myFileToTag.txt |
-      | shareWith | admin |
-      | shareType | 0 |
-    Given "admin" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
-    Given "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
+    And user "user1" exists
+    And user "another_admin" exists
+    And user "another_admin" belongs to group "admin"
+    And "another_admin" creates a "not user-visible" tag with name "MyFirstTag"
+    And "another_admin" creates a "normal" tag with name "MySecondTag"
+    And user "user0" uploads file "data/textfile.txt" to "/myFileToTag.txt"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "user1"
+    And file "/myFileToTag.txt" of user "user0" is shared with user "another_admin"
+    And "another_admin" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
+    And "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     When "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "404"
     And "/myFileToTag.txt" shared by "user0" has the following tags for "user0"
-      |MySecondTag|
-    And "/myFileToTag.txt" shared by "user0" has the following tags for "admin"
-      |MyFirstTag|
-      |MySecondTag|
+      |MySecondTag|normal|
+    And "/myFileToTag.txt" shared by "user0" has the following tags for "another_admin"
+      |MyFirstTag|not user-visible|
+      |MySecondTag|normal|
 
   Scenario: Unassigning a not user-visible tag from a file shared by someone else as admin should work
     Given user "user0" exists
