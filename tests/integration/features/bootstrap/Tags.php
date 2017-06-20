@@ -85,12 +85,12 @@ trait Tags {
 	private function assertTypeOfTag($tagData, $type) {
 		$userAttributes = $this->validateTypeOfTag($type);
 		$tagDisplayName = $tagData['{http://owncloud.org/ns}display-name'];
-		PHPUnit_Framework_Assert::assertEquals($tagData['{http://owncloud.org/ns}user-visible'],
-							($userAttributes[0]) ? 'true' : 'false',
-							"tag $tagDisplayName user-visible is not $userAttributes[0]");
-		PHPUnit_Framework_Assert::assertEquals($tagData['{http://owncloud.org/ns}user-assignable'],
-							($userAttributes[1]) ? 'true' : 'false',
-							"tag $tagDisplayName user-assignable is not $userAttributes[1]");
+		$userVisible = ($userAttributes[0]) ? 'true' : 'false';
+		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
+		if (($tagData['{http://owncloud.org/ns}user-visible'] !== $userVisible) ||
+			($tagData['{http://owncloud.org/ns}user-assignable'] !== $userAssignable)){
+				PHPUnit_Framework_Assert::fail("tag $tagDisplayName is not of type $type");
+		}
 	}
 
 	/**
@@ -151,15 +151,12 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function theFollowingTagsShouldExistFor($user, TableNode $table){
-		foreach($table->getRowsHash() as $rowDisplayName => $row) {
+		foreach($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
 			if (is_null($tagData)) {
 				PHPUnit_Framework_Assert::fail("tag $rowDisplayName is not in propfind answer");
 			} else {
-				PHPUnit_Framework_Assert::assertTrue($tagData['{http://owncloud.org/ns}user-visible'] === $row[0],
-											   "tag $rowDisplayName user-visible is not $row[0]");
-				PHPUnit_Framework_Assert::assertTrue($tagData['{http://owncloud.org/ns}user-assignable'] === $row[1],
-											   "tag $rowDisplayName user-assignable is not $row[1]");
+				$this->assertTypeOfTag($tagData, $rowType);
 			}
 		}
 	}
@@ -301,10 +298,8 @@ trait Tags {
 		}
 	}
 
-	private function requestTagsForFile($user, $filename) {
+	private function requestTagsForFile($user, $fileName) {
 		$fileID = $this->getFileIdForPath($user, $fileName);
-		$tagID = $this->findTagIdByName($tagName);
-
 		$client = $this->getSabreClient($user);
 		$properties = [
 						'{http://owncloud.org/ns}id',
@@ -342,48 +337,20 @@ trait Tags {
 	 * @param TableNode $table
 	 * @throws \Exception
 	 */
-	public function sharedByHasTheFollowingTags($fileName, $sharedOrOwnedBy, $sharingUser, TableNode $table)  {
-		$loadedExpectedTags = $table->getTable();
-		$expectedTags = [];
-		foreach($loadedExpectedTags as $expected) {
-			$expectedTags[] = $expected[0];
-		}
-
-		// Get the real tags
-		$request = $this->client->createRequest(
-			'PROPFIND',
-			$this->baseUrl.'/remote.php/dav/systemtags-relations/files/'.$this->getFileIdForPath($sharingUser, $fileName),
-			[
-				'auth' => [
-					$sharingUser,
-					$this->getPasswordForUser($sharingUser),
-				],
-				'body' => '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:id />
-    <oc:display-name />
-    <oc:user-visible />
-    <oc:user-assignable />
-  </d:prop>
-</d:propfind>',
-			]
-		);
-
-		$response = $this->client->send($request)->getBody()->getContents();
-
-		preg_match_all('/\<oc:display-name\>(.*)\<\/oc:display-name\>/', $response, $realTags);
-
-		foreach($expectedTags as $key => $row) {
-			foreach($realTags as $tag) {
-				if($tag[0] === $row) {
-					unset($expectedTags[$key]);
+	public function sharedByHasTheFollowingTags($fileName, $sharedOrOwnedBy, $sharingUser, TableNode $table) {
+		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
+		array_shift($tagList);
+		foreach($table->getRowsHash() as $rowDisplayName => $rowType) {
+			$found = false;
+			foreach ($tagList as $path => $tagData) {
+				if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $rowDisplayName) {
+					$found = true;
+					$this->assertTypeOfTag($tagData, $rowType);
+				}
+				if ($found === false) {
+					PHPUnit_Framework_Assert::fail("tag $rowDisplayName is not in propfind answer");
 				}
 			}
-		}
-
-		if(count($expectedTags) !== 0) {
-			throw new \Exception('Not all tags found.');
 		}
 	}
 
