@@ -25,6 +25,7 @@
 namespace Test\AppFramework\Controller;
 
 use OC\AppFramework\Http\Request;
+use OC\OCS\Result;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
 
@@ -124,8 +125,11 @@ class OCSControllerTest extends \Test\TestCase {
 		$this->assertEquals($expected, $out);
 	}
 
-
-	public function testJSON() {
+	/**
+	 * @dataProvider providesData
+	 * @param $params
+	 */
+	public function testJSON($params) {
 		$controller = new ChildOCSController('app', new Request(
 			[],
 			$this->getMock('\OCP\Security\ISecureRandom'),
@@ -133,16 +137,23 @@ class OCSControllerTest extends \Test\TestCase {
 		));
 		$expected = '{"ocs":{"meta":{"status":"failure","statuscode":400,"message":"OK",' .
 		            '"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';
-		$params = [
-			'data' => [
-				'test' => 'hi'
-			],
-			'statuscode' => 400
-		];
 
 		$out = $controller->buildResponse($params, 'json')->render();
 		$this->assertEquals($expected, $out);
 	}
 
+	public function providesData() {
+		return [
+			'array' => [[
+				'data' => [
+					'test' => 'hi'
+				],
+				'statuscode' => 400]
+			],
+			'ocs-resuls' => [new Result([
+				'test' => 'hi'
+			], 400, 'OK')]
+		];
+	}
 
 }
