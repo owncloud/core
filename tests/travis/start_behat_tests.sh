@@ -9,6 +9,39 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Look for command line options for:
+# -c or --config - specify a behat.yml to use
+# --feature - specify a single feature to run
+while [[ $# -gt 1 ]]
+do
+	key="$1"
+	case $key in
+		-c|--config)
+			BEHAT_YML="$2"
+			shift
+			;;
+		--feature)
+			BEHAT_FEATURE="$2"
+			shift
+			;;
+		*)
+			# ignore unknown options
+			;;
+	esac
+	shift
+done
+
+# An odd parameter by itself at the end is a feature to run
+if [ -n "$1" ]
+then
+	BEHAT_FEATURE="$1"
+fi
+
+if [ -z "$BEHAT_YML" ]
+then
+	BEHAT_YML="tests/ui/config/behat.yml"
+fi
+
 if [ "$SRV_HOST_PORT" == "80" ] || [ -z "$SRV_HOST_PORT" ]
 then
 	BASE_URL="http://$SRV_HOST_NAME/$SRV_HOST_URL"
@@ -28,9 +61,9 @@ export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": 
 
 if [ "$BROWSER" == "internet explorer" ]
 then
-	lib/composer/bin/behat -c tests/ui/config/behat.yml --tags '~@skipOnIE' -v
+	lib/composer/bin/behat -c $BEHAT_YML --tags '~@skipOnIE' $BEHAT_FEATURE -v
 else
-	lib/composer/bin/behat -c tests/ui/config/behat.yml -v
+	lib/composer/bin/behat -c $BEHAT_YML $BEHAT_FEATURE -v
 fi
 
 if [ $? -eq 0 ]
