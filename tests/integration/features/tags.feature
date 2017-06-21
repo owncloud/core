@@ -375,7 +375,6 @@ Feature: tags
       |MyFirstTag|normal|
     And "/myFileToTag.txt" shared by "user0" has the following tags for "user1"
       ||
-    And the HTTP status code should be "404"
 
   Scenario: User can assign tags when in the tag's groups
     Given user "user0" exists

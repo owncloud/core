@@ -299,7 +299,7 @@ trait WebDav {
 		$response = $client->propfind($this->makeSabrePath($user, $path), $properties);
 		$this->response = $response;
 	 }
-	
+
 	/**
 	 * @Given /^"([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
@@ -452,8 +452,11 @@ trait WebDav {
 			];
 		}
 
-		$response = $client->propfind($this->makeSabrePath($user, $path), $properties, $folderDepth);
-
+		try{
+			$response = $client->propfind($this->makeSabrePath($user, $path), $properties, $folderDepth);
+		} catch (Sabre\HTTP\ClientHttpException $e) {
+			$response = $e->getResponse();
+		}
 		return $response;
 	}
 
@@ -1074,7 +1077,11 @@ trait WebDav {
 	private function getFileIdForPath($user, $path) {
 		$propertiesTable = new \Behat\Gherkin\Node\TableNode([["{http://owncloud.org/ns}fileid"]]);
 		$this->asGetsPropertiesOfFolderWith($user, 'file', $path, $propertiesTable);
-		return (int) $this->response['{http://owncloud.org/ns}fileid'];
+		if (is_array($this->response)) {
+			return (int) $this->response['{http://owncloud.org/ns}fileid'];
+		} else {
+			return null;
+		}
 	}
 
 	/**
