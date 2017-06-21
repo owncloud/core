@@ -173,14 +173,11 @@ trait Tags {
 	}
 
 	/**
-	 * @Then the user :user :can assign The :type tag with name :tagName
+	 * @Then the user :user :can assign The :type tag with name :tagDisplayName
 	 */
-	public function theUserCanAssignTheTag($user, $can, $type, $tagName) {
-		$foundTag = $this->findTag($type, $tagName, $user);
-		if ($foundTag === null) {
-			throw new \Exception('No matching tag found');
-		}
-
+	public function theUserCanAssignTheTag($user, $can, $type, $tagDisplayName) {
+		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
+		$this->assertTypeOfTag($tagData, $type);
 		if ($can === 'can') {
 			$expected = 'true';
 		} else if ($can === 'cannot') {
@@ -188,8 +185,7 @@ trait Tags {
 		} else {
 			throw new \Exception('Invalid condition, must be "can" or "cannot"');
 		}
-
-		if ($foundTag['can-assign'] !== $expected) {
+		if ($tagData['{http://owncloud.org/ns}can-assign'] !== $expected) {
 			throw new \Exception('Tag cannot be assigned by user');
 		}
 	}
@@ -312,13 +308,13 @@ trait Tags {
 						'{http://owncloud.org/ns}user-assignable',
 						'{http://owncloud.org/ns}can-assign'
 					  ];
-		// if ($withGroups) {
-		// 	array_push($properties, '{http://owncloud.org/ns}groups');
-		// }
-
 		$appPath = '/systemtags-relations/files/';
 		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . $appPath . $fileID;
-		$response = $client->propfind($fullUrl, $properties, 1);
+		try{
+			$response = $client->propfind($fullUrl, $properties, 1);
+		}catch (Sabre\HTTP\ClientHttpException $e) {
+			$response = $e->getResponse();
+		}
 		$this->response = $response;
 		return $response;
 	}
@@ -343,6 +339,10 @@ trait Tags {
 	 */
 	public function sharedByHasTheFollowingTags($fileName, $sharedOrOwnedBy, $sharingUser, TableNode $table) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
+		//Check if we are looking for no tags
+		if ((!is_array($tagList)) && ($table->getRowAsString(0) === '|  |')){
+			return true;
+		}
 		array_shift($tagList);
 		foreach($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$found = false;
@@ -392,24 +392,6 @@ trait Tags {
 	public function removesTheTagFromSharedBy($user, $tagName, $fileName, $shareUser) {
 		$this->untag($user, $tagName, $fileName, $shareUser);
 	}
-
-	/**
-	 * @Given As :user sending :verb to :url with
-	 * @param string $user
-	 * @param string $verb
-	 * @param string $url
-	 * @param \Behat\Gherkin\Node\TableNode $body
-	 * @throws \Exception
-	 */
-	public function asUserSendingToWith($user, $verb, $url, \Behat\Gherkin\Node\TableNode $body) {
-		$client = new \GuzzleHttp\Client();
-		$options = [];
-		$options['auth'] = [$user, '123456'];
-		$fd = $body->getRowsHash();
-		$options['body'] = $fd;
-		$client->send($client->createRequest($verb, $this->baseUrl.'/ocs/v1.php/'.$url, $options));
-	}
-
 
 	private function deleteTag($user, $tagID) {
 		$tagsPath = '/systemtags/' . $tagID;
