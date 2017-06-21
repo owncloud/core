@@ -55,15 +55,17 @@ class Inactive extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$days = $input->getArgument('days');
-		if($days < 1) {
-			throw new InvalidArgumentException('Days must be above zero');
+		if(!is_int($days) || $days < 1) {
+			throw new InvalidArgumentException('Days must be integer and above zero');
 		}
 
+		$now = time();
+
 		$inactive = [];
-		$this->userManager->callForSeenUsers(function(IUser $user) use (&$inactive, $days) {
+		$this->userManager->callForSeenUsers(function(IUser $user) use (&$inactive, $days, $now) {
 			$lastLogin = $user->getLastLogin();
 			// Difference between now and last login, into days, and rounded down
-			$daysSinceLastLogin = floor((time() - $lastLogin) / (60*60*24));
+			$daysSinceLastLogin = floor(($now - $lastLogin) / (60*60*24));
 			if($daysSinceLastLogin >= $days) {
 				$inactive[] = [
 					'uid' => $user->getUID(),
