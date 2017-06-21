@@ -96,12 +96,6 @@ class Mailer implements IMailer {
 
 		$mailer = $this->getInstance();
 
-		// Enable logger if debug mode is enabled
-		if($debugMode) {
-			$mailLogger = new \Swift_Plugins_Loggers_ArrayLogger();
-			$mailer->registerPlugin(new \Swift_Plugins_LoggerPlugin($mailLogger));
-		}
-
 		$mailer->send($message->getSwiftMessage(), $failedRecipients);
 
 		// Debugging logging
@@ -154,18 +148,31 @@ class Mailer implements IMailer {
 
 		switch ($this->config->getSystemValue('mail_smtpmode', 'php')) {
 			case 'smtp':
-				$this->instance = $this->getSMTPInstance();
+				$instance = $this->getSMTPInstance();
 				break;
 			case 'sendmail':
 				// FIXME: Move into the return statement but requires proper testing
 				//       for SMTP and mail as well. Thus not really doable for a
 				//       minor release.
-				$this->instance = \Swift_Mailer::newInstance($this->getSendMailInstance());
+				$instance = \Swift_Mailer::newInstance($this->getSendMailInstance());
 				break;
 			default:
-				$this->instance = $this->getMailInstance();
+				$instance = $this->getMailInstance();
 				break;
 		}
+
+		// Register plugins
+
+		// Enable logger if debug mode is enabled
+		if($this->config->getSystemValue('mail_smtpdebug', false)) {
+			$mailLogger = new \Swift_Plugins_Loggers_ArrayLogger();
+			$instance->registerPlugin(new \Swift_Plugins_LoggerPlugin($mailLogger));
+		}
+
+		// Enable antiflood on smtp connection (defaults to 100 mails before reconnect)
+		$instance->registerPlugin(new \Swift_Plugins_AntiFloodPlugin());
+
+		$this->instance = $instance;
 
 		return $this->instance;
 	}
