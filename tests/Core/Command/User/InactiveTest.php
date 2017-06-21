@@ -73,12 +73,41 @@ class InactiveTest extends TestCase {
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
+	
+	protected function dummyUser($lastLogin) {
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->once())
+			->method('getLastLogin')
+			->willReturn($lastLogin);
+		
+		return $user;
+	}
 
-	public function testWithValidDays() {
+	public function validDays() {
+		return [
+			'no users' => [[], 10, 0],
+			'1 recent user, excluded' => [[$this->dummyUser(time()-2*24*60*60)], 10, 0],
+			'1 recent user, included' => [[$this->dummyUser(time()-2*24*60*60)], 1, 1],
+			'2 users 1 includd' => [
+				[
+					$this->dummyUser(time()-5*24*60*60),
+					$this->dummyUser(time()-10*24*60*60)
+				], 7, 1],
+		];
+	}
+
+	/**
+	 * @dataProvider validDays
+	 *
+	 * @param $users
+	 * @param $days
+	 * @param $expectedCount
+	 */
+	public function testWithValidDays($users, $days, $expectedCount) {
 		$this->consoleInput->expects($this->once())
 			->method('getArgument')
 			->with('days')
-			->willReturn(1);
+			->willReturn($days);
 
 		// Work with json output
 		$this->consoleInput->expects($this->once())
@@ -87,11 +116,18 @@ class InactiveTest extends TestCase {
 			->willReturn(Base::OUTPUT_FORMAT_JSON);
 
 		$this->userManager->expects($this->once())
-			->method('callForSeenUsers');
+			->method('callForSeenUsers')
+			->willReturnCallback(function($callback) use ($users, $expectedCount) {
+				foreach($users as $user) {
+					$callback($user);
+				}
+			});
 
 		$this->consoleOutput->expects($this->once())
 			->method('writeLn')
-			->with($this->stringContains('['));
+			->with($this->callback(function($output) use ($expectedCount) {
+				return self::isJson($output) && count(json_decode($output)) === $expectedCount;
+			}));
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
