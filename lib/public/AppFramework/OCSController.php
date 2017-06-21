@@ -84,8 +84,10 @@ abstract class OCSController extends ApiController {
 	private function buildOCSResponse($format, $data) {
 		if ($data instanceof Result) {
 			$headers = $data->getHeaders();
+			$d = $data->getData();
 			$data = $data->getMeta();
 			$data['headers'] = $headers;
+			$data['data'] = $d;
 		}
 		if ($data instanceof DataResponse) {
 			$data = $data->getData();
