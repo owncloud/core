@@ -1080,6 +1080,11 @@ class ShareesTest extends TestCase {
 	 * @param array $previousExact
 	 */
 	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $previousExact = []) {
+
+		// Set the limit and offset for remote user searching
+		$this->invokePrivate($this->sharees, 'limit', [2]);
+		$this->invokePrivate($this->sharees, 'offset', [0]);
+
 		$this->config->expects($this->any())
 			->method('getSystemValue')
 			->with('trusted_domains')
@@ -1091,10 +1096,15 @@ class ShareesTest extends TestCase {
 			$this->invokePrivate($this->sharees, 'result', [$result]);
 		}
 
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->with('dav', 'remote_search_properties')
+			->willReturn('CLOUD,FN');
+
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->contactsManager->expects($this->any())
 			->method('search')
-			->with($searchTerm, ['CLOUD', 'FN'])
+			->with($searchTerm, ['CLOUD', 'FN'], [], 2, 0)
 			->willReturn($contacts);
 
 		$this->invokePrivate($this->sharees, 'getRemote', [$searchTerm]);
