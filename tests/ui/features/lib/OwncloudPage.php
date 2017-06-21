@@ -251,7 +251,7 @@ class OwncloudPage extends Page
 	 * sends an END key and then BACKSPACEs to delete the current value
 	 * then sends the new value
 	 * checks the set value and sends the Escape key + throws an exception 
-	 * if  the value is not set corectly
+	 * if the value is not set correctly
 	 * 
 	 * @param NodeElement $inputField
 	 * @param string $value
