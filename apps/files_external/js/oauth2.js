@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 					if (params['code'] !== undefined) {
 						$('.configuration').trigger('oauth_step2', [{
-							storage_id: $tr.attr('class'),
+							backend_id: $tr.attr('class'),
 							client_id: client_id,
 							client_secret: client_secret,
 							redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
@@ -50,7 +50,7 @@ $(document).ready(function() {
 		
 		if (client_id != '' && client_secret != '') {
 			$('.configuration').trigger('oauth_step1', [{
-				storage_id: tr.attr('class'),
+				backend_id: tr.attr('class'),
 				client_id: client_id,
 				client_secret: client_secret,
 				redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
