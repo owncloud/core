@@ -39,9 +39,8 @@ $(document).ready(function() {
 			return false;	// means the trigger is not for this storage adapter
 		}
 
-		OCA.External.Settings.OAuth2.getAuthUrl(backendUrl, data, function (authUrl) {
-			// (Optional) do some extra task - then control shifts back to getAuthUrl
-		})
+		// Redirects the User on success else displays an alert (with error message sent by backend)
+		OCA.External.Settings.OAuth2.getAuthUrl(backendUrl, data);
 	});
 
 	$('.configuration').on('oauth_step2', function (event, data) {
@@ -49,8 +48,14 @@ $(document).ready(function() {
 			return false;		// means the trigger is not for this OAuth2 grant
 		}
 
-		OCA.External.Settings.OAuth2.verifyCode(backendUrl, data, function (storageConfig) {
-			// do any additional task once storage is verified
+		OCA.External.Settings.OAuth2.verifyCode(backendUrl, data)
+		.done(function (storageConfig) {
+			console.log('Oauth 2 successful');
+		})
+		.fail(function (message) {
+			OC.dialogs.alert(message,
+				t('files_external', 'Error verifying OAuth2 Code for ' + backendId)
+			);
 		})
 	});
 

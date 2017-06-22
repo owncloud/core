@@ -1415,10 +1415,9 @@ OCA.External.Settings.OAuth2 = OCA.External.Settings.OAuth2 || {};
  * of the storage and REDIRECTS the client to Authentication page
  * 
  * @param  {String}   backendUrl The backend URL to which request will be sent
- * @param  {Object}   data       Keys -> (client_id, client_secret, redirect, tr)
- * @param  {Function} callback   Callback function to be called once authUrl is fetched
+ * @param  {Object}   data       Keys -> (backend_id, client_id, client_secret, redirect, tr)
  */
-OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data, callback) {
+OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data) {
 	var $tr = data['tr'];
 	var configured = $tr.find('[data-parameter="configured"]');
 	var token = $tr.find('.configuration [data-parameter="token"]');
@@ -1434,14 +1433,17 @@ OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data, callback) 
 				$(token).val('false');
 
 				OCA.External.Settings.mountConfig.saveStorageConfig($tr, function(status) {
-					if (callback && typeof callback === "function") {
-						callback(result.data.url);	// any extra task required by js
+					if (!result.data.url) {
+						OC.dialogs.alert('Auth URL not set',
+							t('files_external', 'No URL provided by backend ' + data['backend_id'])
+						);
+					} else {
+						window.location = result.data.url;
 					}
-					window.location = result.data.url;
 				});
 			} else {
 				OC.dialogs.alert(result.data.message,
-					t('files_external', 'Error getting OAuth2 URL for ' + data['storage_id'])
+					t('files_external', 'Error getting OAuth2 URL for ' + data['backend_id'])
 				);
 			}
 		}
@@ -1454,16 +1456,17 @@ OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data, callback) 
  * it sets the data-* params to configured and disables the authorize buttons
  * 
  * @param  {String}   backendUrl The backend URL to which request will be sent
- * @param  {Object}   data       Keys -> (client_id, client_secret, redirect, tr, code)
- * @param  {Function} callback   Callback function to be called once storage config is saved
+ * @param  {Object}   data       Keys -> (backend_id, client_id, client_secret, redirect, tr, code)
+ * @return {Promise} jQuery Deferred Promise object
  */
-OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data, callback) {
+OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data) {
 	var $tr = data['tr'];
 	var configured = $tr.find('[data-parameter="configured"]');
 	var token = $tr.find('.configuration [data-parameter="token"]');
 	var statusSpan = $tr.find('.status span');
 	statusSpan.removeClass().addClass('waiting');
 
+	var deferredObject = $.Deferred();
 	$.post(backendUrl, {
 			step: 2,
 			client_id: data['client_id'],
@@ -1476,22 +1479,19 @@ OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data, callback) 
 				$(configured).val('true');	
 				
 				OCA.External.Settings.mountConfig.saveStorageConfig($tr, function(status) {
-					if (callback && typeof callback === "function") {
-						callback(status);	// any extra task required by js
-					}
 					if (status) {
 						$tr.find('.configuration input.auth-param')
 							.attr('disabled', 'disabled')
 							.addClass('disabled-success')
 					}
+					deferredObject.resolve(status);
 				});
 			} else {
-				OC.dialogs.alert(result.data.message,
-					t('files_external', 'Error verifying OAuth2 Code for ' + data['storage_id'])
-				);
+				deferredObject.reject(result.data.message); 
 			}
 		}
 	);
+	return deferredObject.promise();
 }
 
 })();
