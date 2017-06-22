@@ -52,6 +52,52 @@ class SetupHelper
 	}
 
 	/**
+	 * creates a group
+	 * @param string $ocPath
+	 * @param string $groupName
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 */
+	public static function createGroup($ocPath, $groupName)
+	{
+		return self::runOcc(['group:add', $groupName], $ocPath);
+	}
+
+	/**
+	 * adds an existing user to a group, creating the group if it does not exist
+	 * @param string $ocPath
+	 * @param string $groupName
+	 * @param string $userName
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 */
+	public static function addUserToGroup($ocPath, $groupName, $userName)
+	{
+		return self::runOcc(['group:add', '--user '.$userName, $groupName], $ocPath);
+	}
+
+	/**
+	 * removes a user from a group
+	 * @param string $ocPath
+	 * @param string $groupName
+	 * @param string $userName
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 */
+	public static function removeUserFromGroup($ocPath, $groupName, $userName)
+	{
+		return self::runOcc(['group:removeuser', '--user '.$userName, $groupName], $ocPath);
+	}
+
+	/**
+	 * deletes a group
+	 * @param string $ocPath
+	 * @param string $groupName
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 */
+	public static function deleteGroup($ocPath, $groupName)
+	{
+		return self::runOcc(['group:delete', $groupName], $ocPath);
+	}
+
+	/**
 	 * invokes an OCC command
 	 *
 	 * @param array $args anything behind "occ". For example: "files:transfer-ownership"
