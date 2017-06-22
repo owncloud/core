@@ -812,6 +812,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->where($query->expr()->in('c.id', $query->createFunction($query2->getSQL())));
 
 		$query->setFirstResult($offset)->setMaxResults($limit);
+		$query->orderBy('c.uri');
 
 		$result = $query->execute();
 		$cards = $result->fetchAll();
