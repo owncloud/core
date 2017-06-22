@@ -1,4 +1,3 @@
-@trashbin
 Feature: trashbin-new-endpoint
 	Background:
 		Given using api version "1"
@@ -49,6 +48,7 @@ Feature: trashbin-new-endpoint
 		When User "user1" deletes folder "/shared"
 		Then as "user1" the folder with original path "/shared" does not exist in trash
 
+	@skip
 	Scenario: deleting a file in a received folder it is moved to the trashbin
 		Given As an "admin"
 		And user "user0" exists
@@ -88,6 +88,7 @@ Feature: trashbin-new-endpoint
 			| /textfile3.txt |
 			| /textfile4.txt |
 
+	@skip
 	Scenario: trashbin can store two files with same name but different origins
 		Given As an "admin"
 		And user "user0" exists
