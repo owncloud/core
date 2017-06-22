@@ -1,3 +1,4 @@
+@trashbin
 Feature: trashbin-new-endpoint
 	Background:
 		Given using api version "1"
@@ -105,6 +106,7 @@ Feature: trashbin-new-endpoint
 	@no_encryption
 	Scenario: Deleting a folder into external storage moves it to the trashbin
 		Given As an "admin"
+		And invoking occ with "files:scan --all"
 		And user "user0" exists
 		And user "user0" created a folder "/local_storage/tmp"
 		And User "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
@@ -115,6 +117,7 @@ Feature: trashbin-new-endpoint
 	@no_encryption
 	Scenario: Deleting a file into external storage moves it to the trashbin and can be restored
 		Given As an "admin"
+		And invoking occ with "files:scan --all"
 		And user "user0" exists
 		And user "user0" created a folder "/local_storage/tmp"
 		And User "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
