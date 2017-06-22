@@ -18,6 +18,16 @@ Handlebars.registerHelper('level', function() {
 		}
 	}
 });
+Handlebars.registerHelper('md', function(text){
+	var converter =  new showdown.Converter({
+		strikethrough: true,
+		tables : true,
+		tasklists : true
+	});
+	return new Handlebars.SafeString(
+		converter.makeHtml(text)
+	);
+});
 
 OC.Settings = OC.Settings || {};
 OC.Settings.Apps = OC.Settings.Apps || {
