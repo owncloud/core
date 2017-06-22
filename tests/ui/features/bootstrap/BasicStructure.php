@@ -34,6 +34,9 @@ trait BasicStructure
 	private $regularUserName;
 	private $regularUserNames = array();
 	private $createdUserNames = array();
+	private $regularGroupName;
+	private $regularGroupNames = array();
+	private $createdGroupNames = array();
 	private $ocPath;
 
 	/**
@@ -84,23 +87,78 @@ trait BasicStructure
 		}
 	}
 
+	/**
+	 * @Given a regular group exists
+	 */
+	public function aRegularGroupExists()
+	{
+		$group = $this->regularGroupName;
+		$result=SetupHelper::createGroup($this->ocPath, $group);
+		if ($result["code"] != 0) {
+			throw new Exception("could not create group. " . $result["stdOut"] . " " . $result["stdErr"]);
+		}
+		array_push($this->createdGroupNames, $group);
+	}
+
+	/**
+	 * @Given regular groups exist
+	 */
+	public function regularGroupsExist()
+	{
+		foreach ($this->regularGroupNames as $group) {
+			$group = trim($group);
+			$result=SetupHelper::createGroup($this->ocPath, $group);
+			if ($result["code"] != 0) {
+				throw new Exception("could not create group. " . $result["stdOut"] . " " . $result["stdErr"]);
+			}
+			array_push($this->createdGroupNames, $group);
+		}
+	}
+
+	/**
+	 * @Given a regular user is in a regular group
+	 */
+	public function aRegularUserIsInARegularGroup()
+	{
+		$group = $this->regularGroupName;
+		$user = $this->regularUserName;
+		if (!in_array($user, $this->createdUserNames)) {
+			$this->aRegularUserExists();
+		}
+
+		$result=SetupHelper::addUserToGroup($this->ocPath, $group, $user);
+		if ($result["code"] != 0) {
+			throw new Exception("could not add user to group. " . $result["stdOut"] . " " . $result["stdErr"]);
+		}
+		array_push($this->createdGroupNames, $group);
+	}
+
 	/** @BeforeScenario */
-	public function setUpScenarioGetRegularUsersList(BeforeScenarioScope $scope)
+	public function setUpScenarioGetRegularUsersAndGroups(BeforeScenarioScope $scope)
 	{
 		$suiteParameters = $scope->getEnvironment()->getSuite()->getSettings() ['context'] ['parameters'];
 		$this->regularUserNames = explode(",", $suiteParameters['regularUserNames']);
 		$this->regularUserName = $suiteParameters['regularUserName'];
 		$this->regularUserPassword = $suiteParameters['regularUserPassword'];
+		$this->regularGroupNames = explode(",", $suiteParameters['regularGroupNames']);
+		$this->regularGroupName = $suiteParameters['regularGroupName'];
 		$this->ocPath = rtrim($suiteParameters['ocPath'], '/') . '/';
 	}
 
 	/** @AfterScenario */
-	public function tearDownScenarioDeleteCreatedUsers(AfterScenarioScope $scope)
+	public function tearDownScenarioDeleteCreatedUsersAndGroups(AfterScenarioScope $scope)
 	{
 		foreach ($this->createdUserNames as $user) {
 			$result=SetupHelper::deleteUser($this->ocPath, $user);
 			if ($result["code"] != 0) {
 				throw new Exception("could not delete user. " . $result["stdOut"] . " " . $result["stdErr"]);
+			}
+		}
+
+		foreach ($this->createdGroupNames as $group) {
+			$result=SetupHelper::deleteGroup($this->ocPath, $group);
+			if ($result["code"] != 0) {
+				throw new Exception("could not delete group. " . $result["stdOut"] . " " . $result["stdErr"]);
 			}
 		}
 	}
@@ -123,5 +181,20 @@ trait BasicStructure
 	public function getCreatedUserNames ()
 	{
 		return $this->createdUserNames;
+	}
+
+	public function getRegularGroupName ()
+	{
+		return $this->regularGroupName;
+	}
+
+	public function getRegularGroupNames ()
+	{
+		return $this->regularGroupNames;
+	}
+
+	public function getCreatedGroupNames ()
+	{
+		return $this->createdGroupNames;
 	}
 }
