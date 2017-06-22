@@ -84,21 +84,80 @@ class SharingDialog extends OwnCloudPage
 	}
 
 	/**
-	 * gets the users listed in the autocomplete list as array
+	 * returns the group names as they could appear in an autocomplete list
+	 * @param string|array $groupNames
+	 * @return array
+	 */
+	public function groupStringsToMatchAutoComplete($groupNames)
+	{
+		if (is_array($groupNames)) {
+			$autocompleteStrings = array();
+			foreach ($groupNames as $groupName) {
+				$autocompleteStrings[] = $groupName . $this->suffixToIdentifyGroups;
+			}
+		} else {
+			$autocompleteStrings = $groupNames . $this->suffixToIdentifyGroups;
+		}
+		return $autocompleteStrings;
+	}
+
+	/**
+	 * gets the items (users, groups) listed in the autocomplete list as an array
 	 * @return array
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function getAutocompleteUsersList()
+	public function getAutocompleteItemsList()
 	{
-		$usersArray = array();
-		$userElements = $this->getAutocompleteNodeElement()->findAll(
+		$itemsArray = array();
+		$itemElements = $this->getAutocompleteNodeElement()->findAll(
 			"xpath", 
 			$this->autocompleteItemsTextXpath
 		);
-		foreach ( $userElements as $user ) {
-			array_push($usersArray,$user->getText());
+		foreach ( $itemElements as $item ) {
+			array_push($itemsArray,$item->getText());
 		}
-		return $usersArray;
+		return $itemsArray;
+	}
+
+	/**
+	 * 
+	 * @param string $nameToType what to type in the share with field
+	 * @param string $nameToMatch what exact item to select
+	 * @param Session $session
+	 * @param bool $canShare not implemented yet
+	 * @param bool $canEdit not implemented yet
+	 * @param bool $createPermission not implemented yet
+	 * @param bool $changePermission not implemented yet
+	 * @param bool $deletePermission not implemented yet
+	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 */
+	private function shareWithUserOrGroup($nameToType, $nameToMatch, Session $session, $canShare = true, $canEdit = true, 
+		$createPermission = true, $changePermission = true,
+		$deletePermission = true)
+	{
+		if ($canShare !== true || $canEdit !== true ||
+			$createPermission !== true || $changePermission !== true ||
+			$deletePermission !== true) {
+				throw new \Exception("this function is not implemented");
+			}
+		$autocompleteNodeElement = $this->fillShareWithField($nameToType, $session);
+		$userElements = $autocompleteNodeElement->findAll(
+			"xpath", $this->autocompleteItemsTextXpath
+		);
+		
+		$userFound = false;
+		foreach ( $userElements as $user ) {
+			if ($user->getText() === $nameToMatch) {
+				$user->click();
+				$this->waitForAjaxCallsToStartAndFinish($session);
+				$userFound = true;
+				break;
+			}
+		}
+		
+		if ($userFound !== true) {
+			throw new ElementNotFoundException("could not share with '$name'");
+		}
 	}
 
 	/**
@@ -116,29 +175,8 @@ class SharingDialog extends OwnCloudPage
 		$createPermission = true, $changePermission = true,
 		$deletePermission = true)
 	{
-		if ($canShare !== true || $canEdit !== true ||
-			$createPermission !== true || $changePermission !== true ||
-			$deletePermission !== true) {
-				throw new \Exception("this function is not implemented");
-			}
-		$autocompleteNodeElement = $this->fillShareWithField($name, $session);
-		$userElements = $autocompleteNodeElement->findAll(
-			"xpath", $this->autocompleteItemsTextXpath
-		);
-		
-		$userFound = false;
-		foreach ( $userElements as $user ) {
-			if ($user->getText() === $name) {
-				$user->click();
-				$this->waitForAjaxCallsToStartAndFinish($session);
-				$userFound = true;
-				break;
-			}
-		}
-		
-		if ($userFound !== true) {
-			throw new ElementNotFoundException("could not share with '$name'");
-		}
+		return $this->shareWithUserOrGroup($name, $name, $session,
+			$canShare, $canEdit, $createPermission, $changePermission, $deletePermission);
 	}
 
 	/**
@@ -152,11 +190,12 @@ class SharingDialog extends OwnCloudPage
 	 * @param bool $deletePermission not implemented yet
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function shareWithGroup($name, Session $session,$canShare = true, $canEdit = true,
+	public function shareWithGroup($name, Session $session, $canShare = true, $canEdit = true,
 		$createPermission = true, $changePermission = true,
 		$deletePermission = true)
 	{
-		return $this->shareWithUser($name . $this->suffixToIdentifyGroups);
+		return $this->shareWithUserOrGroup($name, $name . $this->suffixToIdentifyGroups, $session,
+			$canShare, $canEdit, $createPermission, $changePermission, $deletePermission);
 	}
 
 	/**
