@@ -372,6 +372,78 @@ class RequestTest extends \Test\TestCase {
 		$this->assertSame('GeneratedUniqueIdByModUnique', $request->getId());
 	}
 
+	public function providesGetIdWithValidXRequestID() {
+		return [
+			['6241e4ae-ca5d-49e6-948c-6c9e20624361'],
+			['6241e4ae+ca5d+49e6+948c+6c9e20624361'],
+			['6241e4ae/ca5d/49e6/948c/6c9e20624361'],
+			['6241e4ae_ca5d_49e6_948c_6c9e20624361'],
+			['6241e4ae=ca5d=49e6=948c=6c9e20624361'],
+			['6241e4ae.ca5d.49e6.948c.6c9e20624361'],
+			['6241e4ae:ca5d:49e6:948c:6c9e20624361'],
+			['12-34-56-78-9A-BC_1985-04-12T23:20:50.52Z'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesGetIdWithValidXRequestID
+	 */
+	public function testGetIdWithValidXRequestID($xRequestID) {
+		$vars = [
+			'server' => [
+				'HTTP_X_REQUEST_ID' => $xRequestID
+			],
+		];
+
+		$request = new Request(
+			$vars,
+			$this->secureRandom,
+			$this->config,
+			$this->csrfTokenManager,
+			$this->stream
+		);
+
+		$this->assertSame($xRequestID, $request->getId());
+	}
+	public function providesGetIdWithInvalidXRequestID() {
+		return [
+			['too-short'],
+			[
+				'too-long--too-long--too-long--too-long--too-long--'.
+				'too-long--too-long--too-long--too-long--too-long--'.
+				'too-long--too-long--too-long--too-long--too-long--'.
+				'too-long--too-long--too-long--too-long--too-long--x'
+			],
+			['6241e4ae ca5d 49e6 948c 6c9e20624361'],
+			['6241e4ae#ca5d#49e6#948c#6c9e20624361'],
+			['6241e4ae%ca5d%49e6%948c%6c9e20624361'],
+			['6241e4ae"ca5d"49e6"948c"6c9e20624361'],
+			['6241e4ae\'ca5d\'49e6\'948c\'6c9e20624361'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesGetIdWithInvalidXRequestID
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testGetIdWithInvalidXRequestID($xRequestID) {
+		$vars = [
+			'server' => [
+				'HTTP_X_REQUEST_ID' => $xRequestID
+			],
+		];
+
+		$request = new Request(
+			$vars,
+			$this->secureRandom,
+			$this->config,
+			$this->csrfTokenManager,
+			$this->stream
+		);
+
+		$request->getId();
+	}
+
 	public function testGetIdWithoutModUnique() {
 		$this->secureRandom->expects($this->once())
 			->method('generate')
