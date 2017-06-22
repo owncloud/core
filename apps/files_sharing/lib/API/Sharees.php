@@ -4,6 +4,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -272,57 +273,102 @@ class Sharees {
 	 */
 	protected function getRemote($search) {
 		$this->result['remotes'] = [];
-
+		// Fetch remote search properties from app config
+		$searchProperties = explode(',', $this->config->getAppValue('dav', 'remote_search_properties', 'CLOUD,FN'));
 		// Search in contacts
-		//@todo Pagination missing
-		$addressBookContacts = $this->contactsManager->search($search, ['CLOUD', 'FN']);
+		$addressBookContacts = $this->contactsManager->search($search, $searchProperties, [], $this->limit, $this->offset);
 		$foundRemoteById = false;
 		foreach ($addressBookContacts as $contact) {
+
 			if (isset($contact['isLocalSystemBook'])) {
+				// We only want remote users
 				continue;
 			}
-			if (isset($contact['CLOUD'])) {
-				$cloudIds = $contact['CLOUD'];
-				if (!is_array($cloudIds)) {
-					$cloudIds = [$cloudIds];
+			if (!isset($contact['CLOUD'])) {
+				// we need a cloud id to setup a remote share
+				continue;
+			}
+
+			// we can have multiple cloud domains, always convert to an array
+			$cloudIds = $contact['CLOUD'];
+			if (!is_array($cloudIds)) {
+				$cloudIds = [$cloudIds];
+			}
+
+			$lowerSearch = strtolower($search);
+			foreach ($cloudIds as $cloudId) {
+				list(, $serverUrl) = $this->splitUserRemote($cloudId);
+
+
+				if (strtolower($cloudId) === $lowerSearch) {
+					$foundRemoteById = true;
+					// Save this as an exact match and continue with next CLOUD
+					$this->result['exact']['remotes'][] = [
+						'label' => $contact['FN'],
+						'value' => [
+							'shareType' => Share::SHARE_TYPE_REMOTE,
+							'shareWith' => $cloudId,
+							'server' => $serverUrl,
+						],
+					];
+					continue;
 				}
-				foreach ($cloudIds as $cloudId) {
-					list(, $serverUrl) = $this->splitUserRemote($cloudId);
-					if (strtolower($contact['FN']) === strtolower($search) || strtolower($cloudId) === strtolower($search)) {
-						if (strtolower($cloudId) === strtolower($search)) {
-							$foundRemoteById = true;
+
+				// CLOUD matching is done above
+				unset($searchProperties['CLOUD']);
+				foreach($searchProperties as $property) {
+					// do we even have this property for this contact/
+					if(!isset($contact[$property])) {
+						// Skip this property since our contact doesnt have it
+						continue;
+					}
+					// check if we have a match
+					$values = $contact[$property];
+					if(!is_array($values)) {
+						$values = [$values];
+					}
+					foreach($values as $value) {
+						// check if we have an exact match
+						if(strtolower($value) === $lowerSearch) {
+							$this->result['exact']['remotes'][] = [
+								'label' => $contact['FN'],
+								'value' => [
+									'shareType' => Share::SHARE_TYPE_REMOTE,
+									'shareWith' => $cloudId,
+									'server' => $serverUrl,
+								],
+							];
+
+							// Now skip to next CLOUD
+							continue 3;
 						}
-						$this->result['exact']['remotes'][] = [
-							'label' => $contact['FN'],
-							'value' => [
-								'shareType' => Share::SHARE_TYPE_REMOTE,
-								'shareWith' => $cloudId,
-								'server' => $serverUrl,
-							],
-						];
-					} else {
-						$this->result['remotes'][] = [
-							'label' => $contact['FN'],
-							'value' => [
-								'shareType' => Share::SHARE_TYPE_REMOTE,
-								'shareWith' => $cloudId,
-								'server' => $serverUrl,
-							],
-						];
 					}
 				}
+
+				// If we get here, we didnt find an exact match, so add to other matches
+				$this->result['remotes'][] = [
+					'label' => $contact['FN'],
+					'value' => [
+						'shareType' => Share::SHARE_TYPE_REMOTE,
+						'shareWith' => $cloudId,
+						'server' => $serverUrl,
+					],
+				];
+
 			}
 		}
 
+		// remove the exact user results if we dont allow autocomplete
 		if (!$this->shareeEnumeration) {
 			$this->result['remotes'] = [];
 		}
+
 
 		if (!$foundRemoteById && substr_count($search, '@') >= 1 && $this->offset === 0
 			// if an exact local user is found, only keep the remote entry if
 			// its domain does not matches the trusted domains
 			// (if it does, it is a user whose local login domain matches the ownCloud
-			// instance domain) 
+			// instance domain)
 			&& (empty($this->result['exact']['users'])
 				|| !$this->isInstanceDomain($search))
 		) {
