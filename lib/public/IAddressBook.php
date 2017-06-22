@@ -60,7 +60,7 @@ namespace OCP {
 		 * @return array an array of contacts which are arrays of key-value-pairs
 		 * @since 5.0.0
 		 */
-		public function search($pattern, $searchProperties, $options, $limit, $offset);
+		public function search($pattern, $searchProperties, $options, $limit = null, $offset = null);
 		//	// dummy results
 		//	return array(
 		//		array('id' => 0, 'FN' => 'Thomas Müller', 'EMAIL' => 'a@b.c', 'GEO' => '37.386013;-122.082932'),
