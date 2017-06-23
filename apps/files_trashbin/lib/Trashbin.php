@@ -183,6 +183,11 @@ class Trashbin {
 		$target = $user . '/files_trashbin/files/' . $targetFilename . '.d' . $timestamp;
 		$source = $owner . '/files_trashbin/files/' . $sourceFilename . '.d' . $timestamp;
 		self::copy_recursive($source, $target, $view);
+
+		if ($view->file_exists($target)) {
+			self::insertTrashEntry($user, $targetFilename, $targetLocation, $timestamp);
+			self::scheduleExpire($user);
+		}
 	}
 
 	/**
