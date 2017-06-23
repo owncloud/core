@@ -180,7 +180,7 @@ class Server {
 				);
 				if (!is_null($view)) {
 					$this->server->addPlugin(
-						new QuotaPlugin($view, true));
+						new QuotaPlugin($view));
 				}
 				$this->server->addPlugin(
 					new TagsPlugin(
