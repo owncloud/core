@@ -139,6 +139,25 @@ export IPV6_URL
 
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v
 
+if [ "$BEHAT_TAGS_OPTION_FOUND" != true ]
+then
+	# The behat run above specified to skip scenarios tagged @skip
+	# Report them in a dry-run so they can be seen
+	# Big red error output is displayed if there are no matching scenarios - send it to null
+	DRY_RUN_FILE=$(mktemp)
+	lib/composer/bin/behat --dry-run --colors -c $BEHAT_YML --tags '@skip' $BEHAT_FEATURE 1>$DRY_RUN_FILE 2>/dev/null
+	if grep -q -m 1 'No scenarios' "$DRY_RUN_FILE"
+	then
+		# If there are no skip scenarios, then no need to report that
+		:
+	else
+		echo ""
+		echo "The following tests were skipped because they are tagged @skip:"
+		cat "$DRY_RUN_FILE"
+	fi
+	rm -f "$DRY_RUN_FILE"
+fi
+
 if [ $? -eq 0 ]
 then
 	PASSED=true
