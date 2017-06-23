@@ -22,7 +22,13 @@
  *
  */
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
+
 use Test\TestCase;
+use OCA\DAV\Connector\Sabre\File;
+use OCA\DAV\Connector\Sabre\Directory;
+use Sabre\DAV\Tree;
+use OCA\DAV\Connector\Sabre\QuotaPlugin;
+use OCA\DAV\Upload\FutureFile;
 
 /**
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@tmit.eu>
@@ -228,4 +234,108 @@ class QuotaPluginTest extends TestCase {
 		return $view;
 	}
 
+	public function pathDataProvider() {
+		$node = $this->createMock(File::class);
+		$node->method('getPath')->willReturn('/test/sub/test.txt');
+
+		$parentNode = $this->createMock(Directory::class);
+		$parentNode->method('getPath')->willReturn('/test/sub');
+
+		return [
+			['beforeWriteContent', ['/files/user0/test/sub/test.txt', $node, null, false], '/test/sub/test.txt'],
+			['beforeCreateFile', ['/files/user0/test/sub/test.txt', null, $parentNode, false], '/test/sub/test.txt'],
+		];
+	}
+
+	/**
+	 * @dataProvider pathDataProvider
+	 */
+	public function testPath($event, $eventArgs, $expectedPath) {
+		$plugin = $this->getMockBuilder(QuotaPlugin::class)
+			->setConstructorArgs([null])
+			->setMethods(['getFileChunking', 'checkQuota'])
+			->getMock();
+
+		$server = new \Sabre\DAV\Server();
+		$plugin->initialize($server);
+
+		$plugin->expects($this->once())
+			->method('checkQuota')
+			->with($expectedPath);
+
+		$server->emit($event, $eventArgs);
+
+	}
+
+	public function testPathBeforeModeTargetExists() {
+		$plugin = $this->getMockBuilder(QuotaPlugin::class)
+			->setConstructorArgs([null])
+			->setMethods(['getFileChunking', 'checkQuota'])
+			->getMock();
+
+		$server = new \Sabre\DAV\Server();
+		$server->tree = $this->createMock(Tree::class);
+
+		$source = '/uploads/chunking-1/.file';
+		$destination = '/files/user0/test/sub/test.txt';
+
+		$sourceNode = $this->createMock(FutureFile::class);
+		$sourceNode->method('getSize')->willReturn(12345);
+
+		$destinationNode = $this->createMock(File::class);
+		$destinationNode->method('getPath')->willReturn('/test/sub/test.txt');
+
+		$server->tree->method('nodeExists')
+			->with($destination)
+			->willReturn(true);
+		$server->tree->method('getNodeForPath')
+			->will($this->returnValueMap([
+				[$source, $sourceNode],
+				[$destination, $destinationNode],
+			]));
+
+		$plugin->initialize($server);
+		$plugin->expects($this->once())
+			->method('checkQuota')
+			->with('/test/sub/test.txt', 12345);
+
+		$server->emit('beforeMove', [$source, $destination]);
+
+	}
+
+	public function testPathBeforeModeTargetDoesNotExists() {
+		$plugin = $this->getMockBuilder(QuotaPlugin::class)
+			->setConstructorArgs([null])
+			->setMethods(['getFileChunking', 'checkQuota'])
+			->getMock();
+
+		$server = new \Sabre\DAV\Server();
+		$server->tree = $this->createMock(Tree::class);
+
+		$source = '/uploads/chunking-1/.file';
+		$destination = '/files/user0/test/sub/test.txt';
+
+		$sourceNode = $this->createMock(FutureFile::class);
+		$sourceNode->method('getSize')->willReturn(12345);
+
+		$parentDestinationNode = $this->createMock(Directory::class);
+		$parentDestinationNode->method('getPath')->willReturn('/test/sub');
+
+		$server->tree->method('nodeExists')
+			->with($destination)
+			->willReturn(false);
+		$server->tree->method('getNodeForPath')
+			->will($this->returnValueMap([
+				[$source, $sourceNode],
+				['/files/user0/test/sub', $parentDestinationNode],
+			]));
+
+		$plugin->initialize($server);
+		$plugin->expects($this->once())
+			->method('checkQuota')
+			->with('/test/sub', 12345);
+
+		$server->emit('beforeMove', [$source, $destination]);
+
+	}
 }

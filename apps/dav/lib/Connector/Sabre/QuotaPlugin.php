@@ -30,6 +30,7 @@ use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\HTTP\URLUtil;
 use OCA\DAV\Upload\FutureFile;
 use Sabre\DAV\INode;
+use OCA\DAV\Connector\Sabre\Node;
 
 /**
  * This plugin check user quota and deny creating files when they exceeds the quota.
@@ -52,14 +53,11 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	private $server;
 
-	private $newDavEndpoint;
-
 	/**
 	 * @param \OC\Files\View $view
 	 */
-	public function __construct($view, $newDavEndpoint = false) {
+	public function __construct($view) {
 		$this->view = $view;
-		$this->newDavEndpoint = $newDavEndpoint;
 	}
 
 	/**
@@ -79,9 +77,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 		$server->on('beforeWriteContent', [$this, 'handleBeforeWriteContent'], 10);
 		$server->on('beforeCreateFile', [$this, 'handleBeforeCreateFile'], 10);
-		if ($this->newDavEndpoint) {
-			$server->on('beforeMove', [$this, 'handleBeforeMove'], 10);
-		}
+		$server->on('beforeMove', [$this, 'handleBeforeMove'], 10);
 	}
 
 	/**
@@ -97,7 +93,16 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 			return;
 		}
 
-		return $this->checkQuota($destination, $sourceNode->getSize());
+		// get target node for proper path conversion
+		if ($this->server->tree->nodeExists($destination)) {
+			$destinationNode = $this->server->tree->getNodeForPath($destination);
+			$path = $destinationNode->getPath();
+		} else {
+			$parentNode = $this->server->tree->getNodeForPath(dirname($destination));
+			$path = $parentNode->getPath();
+		}
+
+		return $this->checkQuota($path, $sourceNode->getSize());
 	}
 
 	/**
@@ -109,7 +114,10 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @param bool $modified modified
 	 */
 	public function handleBeforeWriteContent($uri, $node, $data, $modified) {
-		return $this->checkQuota($uri);
+		if (!$node instanceof Node) {
+			return;
+		}
+		return $this->checkQuota($node->getPath());
 	}
 
 	/**
@@ -121,41 +129,28 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @param bool $modified modified
 	 */
 	public function handleBeforeCreateFile($uri, $data, $parent, $modified) {
-		return $this->checkQuota($uri);
+		if (!$parent instanceof Node) {
+			return;
+		}
+		return $this->checkQuota($parent->getPath() . '/' . basename($uri));
 	}
 
 	/**
 	 * This method is called before any HTTP method and validates there is enough free space to store the file
 	 *
-	 * @param string $uri
+	 * @param string $path path of the user's home
 	 * @param int $length size to check whether it fits
 	 * @throws InsufficientStorage
 	 * @return bool
 	 */
-	public function checkQuota($uri, $length = null) {
+	public function checkQuota($path, $length = null) {
 		if ($length === null) {
 			$length = $this->getLength();
 		}
 		if ($length) {
-			// TODO: should really use the getNodeForPath() and the node instead...
-			if (substr($uri, 0, 1) !== '/') {
-				$uri = '/' . $uri;
-			}
-			if ($this->newDavEndpoint) {
-				// need to remove the prefix "/files/$user"
-				// note: duplicate slashes have been taken care of by Sabre already
-				$uri = explode('/', trim($uri, '/'));
-				if (count($uri) < 2 || $uri[0] !== 'files') {
-					// not the "files" endpoint
-					return;
-				}
-				array_shift($uri);
-				array_shift($uri);
-				$uri = '/' . implode('/', $uri);
-			}
-			list($parentUri, $newName) = URLUtil::splitPath($uri);
-			if(is_null($parentUri)) {
-				$parentUri = '';
+			list($parentPath, $newName) = URLUtil::splitPath($path);
+			if(is_null($parentPath)) {
+				$parentPath = '';
 			}
 			$req = $this->server->httpRequest;
 			if ($req->getHeader('OC-Chunked')) {
@@ -165,9 +160,9 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				// there is still enough space for the remaining chunks
 				$length -= $chunkHandler->getCurrentSize();
 				// use target file name for free space check in case of shared files
-				$uri = rtrim($parentUri, '/') . '/' . $info['name'];
+				$path = rtrim($parentPath, '/') . '/' . $info['name'];
 			}
-			$freeSpace = $this->getFreeSpace($uri);
+			$freeSpace = $this->getFreeSpace($path);
 			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $length > $freeSpace) {
 				if (isset($chunkHandler)) {
 					$chunkHandler->cleanup();
