@@ -213,6 +213,17 @@ abstract class Node implements \Sabre\DAV\INode {
 	}
 
 	/**
+	 * Returns the node's full id
+	 *
+	 * The full id is the numerical id padded with zeroes concatenated with
+	 * the instance id.
+	 *
+	 * Warning: Users of the full id may depend on its particular format, be
+	 * careful about changes.
+	 *
+	 * The contract is that taking the substring up until the first character
+	 * and converting to an integer yields the numerical id.
+	 *
 	 * @return string|null
 	 */
 	public function getFileId() {

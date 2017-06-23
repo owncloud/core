@@ -1138,6 +1138,9 @@ class OC_Util {
 	/**
 	 * get an id unique for this instance
 	 *
+	 * The instance id must begin with a letter. It's typically used as the
+	 * session name and appears in a file or directory's 'id' property.
+	 *
 	 * @return string
 	 */
 	public static function getInstanceId() {

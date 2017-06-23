@@ -148,4 +148,41 @@ class NodeTest extends \Test\TestCase {
 		$this->invokePrivate($node, 'shareManager', [$shareManager]);
 		$this->assertEquals($expected, $node->getSharePermissions($user));
 	}
+
+	public function fileIdProvider() {
+		return [
+			['oc1234', 789, '00000789oc1234'],
+			['a1231ast', 12345678, '12345678a1231ast'],
+			['oc', 1, '00000001oc'],
+		];
+	}
+
+	/**
+	 * Checks the construction of the full id from the numeric and instance ids.
+	 *
+	 * @dataProvider fileIdProvider
+	 */
+	public function testFileId($instanceid, $numericid, $fullid) {
+		$info = $this->getMockBuilder('\OC\Files\FileInfo')
+			->disableOriginalConstructor()
+			->setMethods(['getId'])
+			->getMock();
+		$info->expects($this->any())
+			->method('getId')
+			->will($this->returnValue($numericid));
+		$view = $this->createMock('\OC\Files\View');
+
+		\OC::$server->getSystemConfig()->setValue('instanceid', $instanceid);
+
+		$node = new  \OCA\DAV\Connector\Sabre\File($view, $info);
+		$this->assertEquals($numericid, $node->getId());
+		$this->assertEquals($numericid, $node->getInternalFileId());
+		$this->assertEquals($fullid, $node->getFileId());
+
+		// Check the contract that the full id must satisfy. This is technically
+		// redundant and verifies only that our test cases are sane.
+		preg_match('/^(\d*)(.*)$/', $node->getFileId(), $matches);
+		$this->assertEquals($numericid, (int)$matches[1]);
+		$this->assertEquals($instanceid, $matches[2]);
+	}
 }
