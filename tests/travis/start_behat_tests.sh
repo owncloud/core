@@ -96,6 +96,14 @@ export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": 
 
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v
 
+if [ "$BEHAT_TAGS_OPTION_FOUND" != true ]
+then
+	# The behat run above specified to skip scenarios tagged @skip
+	# so report them in a dry-run so they can be seen
+	echo "The following tests were skipped because they are tagged @skip:"
+	lib/composer/bin/behat --dry-run -c $BEHAT_YML --tags '@skip' $BEHAT_FEATURE -v
+fi
+
 if [ $? -eq 0 ]
 then
 	PASSED=true
