@@ -96,6 +96,13 @@ export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": 
 
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v
 
+if [ $? -eq 0 ]
+then
+	PASSED=true
+else
+	PASSED=false
+fi
+
 if [ "$BEHAT_TAGS_OPTION_FOUND" != true ]
 then
 	# The behat run above specified to skip scenarios tagged @skip
@@ -113,13 +120,6 @@ then
 		cat "$DRY_RUN_FILE"
 	fi
 	rm -f "$DRY_RUN_FILE"
-fi
-
-if [ $? -eq 0 ]
-then
-	PASSED=true
-else
-	PASSED=false
 fi
 
 if [ ! -z "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ] && [ -e /tmp/saucelabs_sessionid ]
