@@ -45,8 +45,9 @@ Feature: trashbin-new-endpoint
 		And user "user0" created a folder "/shared"
 		And User "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
-		When User "user1" deletes folder "/shared"
-		Then as "user1" the folder with original path "/shared" does not exist in trash
+		And User "user1" moved folder "/shared" to "/renamed_shared"
+		When User "user1" deletes folder "/renamed_shared"
+		Then as "user1" the folder with original path "/renamed_shared" does not exist in trash
 
 	@skip
 	Scenario: deleting a file in a received folder it is moved to the trashbin
@@ -56,8 +57,9 @@ Feature: trashbin-new-endpoint
 		And user "user0" created a folder "/shared"
 		And User "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
-		When User "user1" deletes file "/shared/shared_file.txt"
-		Then as "user1" the file with original path "/shared/shared_file.txt" exists in trash
+		And User "user1" moved file "/shared" to "/renamed_shared"
+		When User "user1" deletes file "/renamed_shared/shared_file.txt"
+		Then as "user1" the file with original path "/renamed_shared/shared_file.txt" exists in trash
 
 	Scenario: Trashbin can be emptied
 		Given As an "admin"
