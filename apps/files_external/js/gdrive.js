@@ -49,9 +49,6 @@ $(document).ready(function() {
 		}
 
 		OCA.External.Settings.OAuth2.verifyCode(backendUrl, data)
-		.done(function (storageConfig) {
-			console.log('Oauth 2 successful');
-		})
 		.fail(function (message) {
 			OC.dialogs.alert(message,
 				t('files_external', 'Error verifying OAuth2 Code for ' + backendId)
