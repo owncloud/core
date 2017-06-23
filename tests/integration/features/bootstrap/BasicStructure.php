@@ -12,6 +12,7 @@ trait BasicStructure {
 	use Checksums;
 	use Comments;
 	use MailTool;
+	use Tags;
 
 	/** @var string */
 	private $currentUser = '';
