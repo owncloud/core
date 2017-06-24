@@ -182,17 +182,11 @@ class LoginController extends Controller {
 	public function tryLogin($user, $password, $redirect_url) {
 		$originalUser = $user;
 		// TODO: Add all the insane error handling
-		/* @var $loginResult IUser */
-		$loginResult = $this->userManager->checkPassword($user, $password);
-		if ($loginResult === false) {
-			$users = $this->userManager->getByEmail($user);
-			// we only allow login by email if unique
-			if (count($users) === 1) {
-				$user = $users[0]->getUID();
-				$loginResult = $this->userManager->checkPassword($user, $password);
-			}
+		$emailUsers = $this->userManager->getByEmail($user);
+		if (count($emailUsers) === 1) {
+			$user = $emailUsers[0]->getUID();
 		}
-		if ($loginResult === false) {
+		if ($this->userSession->login($user, $password) !== true) {
 			$this->session->set('loginMessages', [
 				['invalidpassword'], []
 			]);
@@ -200,9 +194,10 @@ class LoginController extends Controller {
 			$args = !is_null($user) ? ['user' => $originalUser] : [];
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.login.showLoginForm', $args));
 		}
+		/* @var $loginResult IUser */
+		$loginResult = $this->userManager->get($user);
 		// TODO: remove password checks from above and let the user session handle failures
 		// requires https://github.com/owncloud/core/pull/24616
-		$this->userSession->login($user, $password);
 		$this->userSession->createSessionToken($this->request, $loginResult->getUID(), $user, $password);
 
 		// User has successfully logged in, now remove the password reset link, when it is available
