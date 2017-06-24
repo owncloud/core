@@ -1,5 +1,6 @@
 Feature: users
 
+	@skip @this-takes-a-long-time-to-run-and-we-cannot-be-bothered
 	Scenario Outline: change quota to a valid value
 		Given I am logged in as admin
 		And quota of user "admin" is set to "<start_quota>"
