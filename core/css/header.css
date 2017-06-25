@@ -107,7 +107,6 @@
 }
 
 #header .header-appname-container {
-	display: -webkit-box;  // @TODO: Remove if Chrome 18 support is dropped
 	display: -webkit-flex; // @TODO: Remove if Chrome 18 support is dropped
 	display: -moz-box;     // @TODO: Remove if FF 14 support is dropped
 	display: flex;
@@ -196,7 +195,7 @@
 	z-index: 2000;
 }
 /* arrow look */
-#navigation:after, #expanddiv:after {
+#expanddiv:after {
 	bottom: 100%;
 	border: solid transparent;
 	content: " ";
