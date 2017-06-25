@@ -101,7 +101,7 @@
 	margin: 0;
 	padding: 0;
 	padding-left: 66px;
-	font-size: 16px;
+	font-size: 1.04rem;
 	font-weight: 300;
 	line-height: inherit;
 }
@@ -132,7 +132,7 @@
 /* show appname next to logo */
 .header-appname {
 	color: #fff;
-	font-size: 16px;
+	font-size: 1.04rem;
 	font-weight: 300;
 	margin: 0;
 	padding: 0;
