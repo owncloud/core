@@ -107,9 +107,9 @@ class SimpleContainer extends Container implements IContainer {
 	 */
 	public function query($name) {
 		$name = $this->sanitizeName($name);
-		if ($this->offsetExists($name)) {
+		try {
 			return $this->offsetGet($name);
-		} else {
+		} catch (\InvalidArgumentException $ex) {
 			$object = $this->resolve($name);
 			$this->registerService($name, function () use ($object) {
 				return $object;
