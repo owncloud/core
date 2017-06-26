@@ -27,6 +27,8 @@ use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class SyncService
@@ -91,38 +93,72 @@ class SyncService {
 	/**
 	 * @param \Closure $callback is called for every user to progress display
 	 */
-	public function run(\Closure $callback) {
+	public function run(ProgressBar $progressBar, OutputInterface $output) {
 		$limit = 500;
 		$offset = 0;
 		do {
 			$users = $this->backend->getUsers('', $limit, $offset);
 
 			// update existing and insert new users
-			foreach ($users as $uid) {
-				try {
-					$a = $this->mapper->getByUid($uid);
-					if ($a->getBackend() !== $this->backendClass) {
-						$this->logger->warning(
-							"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
-							['app' => self::class]
-						);
-						continue;
-					}
-					$a = $this->setupAccount($a, $uid);
-					$this->mapper->update($a);
-				} catch(DoesNotExistException $ex) {
-					$a = $this->createNewAccount($uid);
-					$this->setupAccount($a, $uid);
-					$this->mapper->insert($a);
-				}
-				// clean the user's preferences
-				$this->cleanPreferences($uid);
+			$this->syncUsers($users, $progressBar, $output);
 
-				// call the callback
-				$callback($uid);
-			}
 			$offset += $limit;
 		} while(count($users) >= $limit);
+	}
+
+	/**
+	 * @param string[] $users array of user ids to sync
+	 */
+	public function syncUsers(array $users, ProgressBar $progressBar = null, OutputInterface $output = null) {
+		foreach ($users as $uid) {
+			if ($output) {
+				$start = microtime(true);
+				$output->write("Syncing $uid: ", false, OutputInterface::VERBOSITY_VERBOSE);
+			}
+			try {
+				$a = $this->mapper->getByUid($uid);
+				if ($a->getBackend() !== $this->backendClass) {
+					$message = "already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.";
+					if ($output) {
+						$output->writeln($message, OutputInterface::VERBOSITY_VERBOSE);
+					}
+					$this->logger->warning("User <$uid> $message", ['app' => self::class]);
+					continue;
+				}
+				$a = $this->setupAccount($a, $uid);
+				$this->mapper->update($a);
+				$action = 'updated';  // for logging
+			} catch (DoesNotExistException $ex) {
+				$a = $this->createNewAccount($uid);
+				$this->setupAccount($a, $uid);
+				$this->mapper->insert($a);
+				$action = 'created'; // for logging
+			}
+			// clean the user's preferences
+			$this->cleanPreferences($uid);
+
+			// log if possible
+			if ($progressBar && $output) {
+				$delta = microtime(true)-$start;
+				if ($output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
+					$progressBar->advance();
+				} else if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
+					$output->writeln("$action ($delta)");
+				} else if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+					$a = $this->mapper->getByUid($a->getUserId());
+					$output->writeln("$action ".json_encode([
+							'id' => $a->getId(),
+							'backend' => $a->getBackend(),
+							'userId' => $a->getUserId(),
+							'displayName' => $a->getDisplayName(),
+							'email' => $a->getEmail(),
+							'home' => $a->getHome(),
+							'lastLogin' => $a->getLastLogin(),
+							'quota' => $a->getQuota(),
+						]). " ($delta)");
+				}
+			}
+		}
 	}
 
 	/**

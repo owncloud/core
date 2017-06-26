@@ -22,6 +22,7 @@
 namespace OC\Core\Command\User;
 
 
+use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\SyncService;
 use OCP\IConfig;
@@ -75,6 +76,7 @@ class SyncBackend extends Command {
 				'The php class name - e.g. "OCA\User_LDAP\User_Proxy". Please wrap the class name into double quotes. You can use the option --list to list all known backend classes'
 			)
 			->addOption('list', 'l', InputOption::VALUE_NONE, 'list all known backend classes')
+			->addOption('userid', 'u', InputOption::VALUE_REQUIRED, 'sync only the user with the given id')
 			->addOption('missing-account-action', 'm', InputOption::VALUE_REQUIRED, 'action to do if the account isn\'t connected to a backend any longer. Options are "disable" and "remove". Use quotes. Note that removing the account will also remove the stored data and files for that account');
 	}
 
@@ -103,8 +105,8 @@ class SyncBackend extends Command {
 
 		$validActions = ['disable', 'remove'];
 
-		if ($input->getOption('missing-account-action') !== null) {
-			$missingAccountsAction = $input->getOption('missing-account-action');
+		$missingAccountsAction = $input->getOption('missing-account-action');
+		if ($missingAccountsAction !== null) {
 			if (!in_array($missingAccountsAction, $validActions, true)) {
 				$output->writeln("<error>Unknown action. Choose between \"disable\" or \"remove\"</error>");
 				return 1;
@@ -122,21 +124,25 @@ class SyncBackend extends Command {
 
 		$syncService = new SyncService($this->accountMapper, $backend, $this->config, $this->logger);
 
-		// analyse unknown users
-		$this->handleUnknownUsers($input, $output, $syncService, $missingAccountsAction, $validActions);
-
-		// insert/update known users
-		$output->writeln("Insert new and update existing users ...");
 		$p = new ProgressBar($output);
-		$max = null;
-		if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
-			$max = $backend->countUsers();
+
+		$output->writeln("Insert new and update existing users ...");
+		$uid = $input->getOption('userid');
+		if ($uid === null) {
+			// analyse unknown users
+			$this->handleUnknownUsers($input, $output, $syncService, $missingAccountsAction, $validActions);
+
+			// insert/update known users
+			$max = null;
+			if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
+				$max = $backend->countUsers();
+			}
+			$p->start($max);
+			$syncService->run($p, $output);
+			$p->finish();
+		} else {
+			$syncService->syncUsers([$uid], $p, $output);
 		}
-		$p->start($max);
-		$syncService->run(function () use ($p) {
-			$p->advance();
-		});
-		$p->finish();
 		$output->writeln('');
 		$output->writeln('');
 
