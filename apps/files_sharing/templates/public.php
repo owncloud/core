@@ -52,7 +52,8 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 <input type="hidden" name="maxSizeAnimateGif" value="<?php p($_['maxSizeAnimateGif']); ?>" id="maxSizeAnimateGif">
 
 
-<header><div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
+<header>
+	<div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
 		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
 		   title="" id="owncloud">
 			<div class="logo-icon svg">
@@ -96,7 +97,8 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 			</span>
 		</div>
 		<?php } ?>
-</div></header>
+	</div>
+</header>
 <div id="content-wrapper">
 	<div id="content">
 		<div id="preview">
