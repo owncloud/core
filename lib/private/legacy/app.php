@@ -63,6 +63,7 @@ class OC_App {
 	static private $appInfo = [];
 	static private $appTypes = [];
 	static private $loadedApps = [];
+	static private $loadedTypes = [];
 	static private $altLogin = [];
 	const officialApp = 200;
 	const approvedApp = 100;
@@ -100,6 +101,9 @@ class OC_App {
 	 * if $types is set, only apps of those types will be loaded
 	 */
 	public static function loadApps($types = null) {
+		if (is_array($types) && !array_diff($types, self::$loadedTypes)) {
+			return true;
+		}
 		if (\OC::$server->getSystemConfig()->getValue('maintenance', false)) {
 			return false;
 		}
@@ -108,6 +112,9 @@ class OC_App {
 
 		// Add each apps' folder as allowed class path
 		foreach($apps as $app) {
+			if (self::isAppLoaded($app)) {
+				continue;
+			}
 			$path = self::getAppPath($app);
 			if($path !== false) {
 				self::registerAutoloading($app, $path);
@@ -131,6 +138,9 @@ class OC_App {
 					\OC::$server->getUserSession()->validateSession();
 				}
 			}
+		}
+		if (is_array($types)) {
+			self::$loadedTypes = array_merge(self::$loadedTypes, $types);
 		}
 
 		\OC_Hook::emit('OC_App', 'loadedApps');
