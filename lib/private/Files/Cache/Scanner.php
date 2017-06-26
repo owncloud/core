@@ -194,8 +194,22 @@ class Scanner extends BasicEmitter implements IScanner {
 							$data['etag'] = $etag;
 						}
 					}
+
+					// check if path / parent is inconsistent
+					if ($file !== $cacheData['path']) {
+						// fix path
+						\OCP\Util::writeLog(
+							'core',
+							'Repairing inconsistent file cache entry found for file id ' . $fileId . ', ' .
+							'path was "' . $cacheData['path'] . ' instead of "' . $file . '"',
+							\OCP\Util::WARN
+						);
+						$data['path'] = $file;
+					}
+
 					// Only update metadata that has changed
 					$newData = array_diff_assoc($data, $cacheData->getData());
+
 				} else {
 					$newData = $data;
 					$fileId = -1;
