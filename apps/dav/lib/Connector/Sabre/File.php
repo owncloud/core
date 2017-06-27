@@ -56,9 +56,28 @@ use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Exception\NotFound;
+use OC\AppFramework\Http\Request;
 
 class File extends Node implements IFile {
 
+	protected $request;
+	
+	/**
+	 * Sets up the node, expects a full path name
+	 *
+	 * @param \OC\Files\View $view
+	 * @param \OCP\Files\FileInfo $info
+	 * @param \OCP\Share\IManager $shareManager
+	 */
+	public function __construct($view, $info, $shareManager = null, Request $request = null) {
+		if (isset($request)) {
+			$this->request = $request;
+		} else {
+			$this->request = \OC::$server->getRequest();
+		}
+		parent::__construct($view, $info, $shareManager);
+	}
+	
 	/**
 	 * Updates the data
 	 *
@@ -210,9 +229,11 @@ class File extends Node implements IFile {
 			}
 
 			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest();
-			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
+			if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
+				$mtime = $this->sanitizeMtime(
+					$this->request->server ['HTTP_X_OC_MTIME']
+				);
+				if ($this->fileView->touch($this->path, $mtime)) {
 					header('X-OC-MTime: accepted');
 				}
 			}
@@ -473,9 +494,11 @@ class File extends Node implements IFile {
 				}
 
 				// allow sync clients to send the mtime along in a header
-				$request = \OC::$server->getRequest();
-				if (isset($request->server['HTTP_X_OC_MTIME'])) {
-					if ($targetStorage->touch($targetInternalPath, $request->server['HTTP_X_OC_MTIME'])) {
+				if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
+					$mtime = $this->sanitizeMtime(
+						$this->request->server ['HTTP_X_OC_MTIME']
+					);
+					if ($targetStorage->touch($targetInternalPath, $mtime)) {
 						header('X-OC-MTime: accepted');
 					}
 				}
@@ -604,6 +627,17 @@ class File extends Node implements IFile {
 		throw new \Sabre\DAV\Exception($e->getMessage(), 0, $e);
 	}
 
+	private function sanitizeMtime ($mtimeFromRequest) {
+		$mtime = (float) $mtimeFromRequest;
+		if ($mtime >= PHP_INT_MAX) {
+			$mtime = PHP_INT_MAX;
+		} elseif ($mtime <= (PHP_INT_MAX*-1)) {
+			$mtime = (PHP_INT_MAX*-1);
+		} else {
+			$mtime = (int) $mtimeFromRequest;
+		}
+		return $mtime;
+	}
 
 	/**
 	 * Set $algo to get a specific checksum, leave null to get all checksums
