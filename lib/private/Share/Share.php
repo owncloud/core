@@ -2864,7 +2864,7 @@ class Share extends Constants {
 	 * @return Group[]
 	 */
 	private static function getGroupsForUser($user) {
-		$groups = \OC::$server->getGroupManager()->getUserIdGroups($user);
+		$groups = \OC::$server->getGroupManager()->getUserIdGroups($user, 'sharing');
 		return array_values(array_map(function(Group $g) {
 			return $g->getGID();
 		}, $groups));
