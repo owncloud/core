@@ -429,16 +429,17 @@ class Installer {
 	public static function removeApp($appId) {
 
 		if(Installer::isDownloaded( $appId )) {
-			$appDir=OC_App::getInstallPath() . '/' . $appId;
+			$appDir = OC_App::getAppPath($appId);
+			if ($appDir === false) {
+				return false;
+			}
 			OC_Helper::rmdirr($appDir);
 
 			return true;
-		}else{
-			\OCP\Util::writeLog('core', 'can\'t remove app '.$appId.'. It is not installed.', \OCP\Util::ERROR);
-
-			return false;
 		}
+		\OCP\Util::writeLog('core', 'can\'t remove app '.$appId.'. It is not installed.', \OCP\Util::ERROR);
 
+		return false;
 	}
 
 	/**
