@@ -109,7 +109,7 @@ class Storage {
 			self::$localCache = new CappedMemoryCache();
 		}
 		$result = self::$localCache->get($storageId);
-		if ($result === null) {
+		if ($result === null || empty($result) || !isset($result['numeric_id'])) {
 			$result = self::getStorageByIdFromCache($storageId);
 			self::$localCache->set($storageId, $result);
 		}
@@ -134,7 +134,7 @@ class Storage {
 	 */
 	private static function getStorageByIdFromCache($storageId) {
 		$result = self::getDistributedCache()->get($storageId);
-		if ($result === null) {
+		if ($result === null || empty($result) || !isset($result['numeric_id'])) {
 			$result = self::getStorageByIdFromDb($storageId);
 			self::getDistributedCache()->set(
 				$storageId,	$result, self::$distributedCacheTTL
