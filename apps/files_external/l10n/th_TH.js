@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "อนุญาตให้เข้าถึงได้",
     "Error configuring OAuth1" : "ข้อผิดพลาดในการกำหนดค่า OAuth1",
     "Please provide a valid app key and secret." : "โปรดระบุคีย์และรหัสลับของแอพฯ ให้ถูกต้อง",
-    "Error configuring OAuth2" : "ข้อผิดพลาดในการกำหนดค่า OAuth2",
     "Generate keys" : "สร้างคีย์",
     "Error generating key pair" : "ข้อผิดพลาดในการสร้างคีย์แบบเป็นคู่",
     "All users. Type to select user or group." : "ผู้ใช้ทุกคน พิมพ์เพื่อเลือกผู้ใช้หรือกลุ่ม",

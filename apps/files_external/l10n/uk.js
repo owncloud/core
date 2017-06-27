@@ -9,7 +9,6 @@ OC.L10N.register(
     "System" : "Система",
     "Grant access" : "Дозволити доступ",
     "Error configuring OAuth1" : "Помилка при налаштуванні OAuth1",
-    "Error configuring OAuth2" : "Помилка при налаштуванні OAuth2",
     "Generate keys" : "Створити ключі",
     "Error generating key pair" : "Помилка створення ключової пари",
     "All users. Type to select user or group." : "Всі користувачі. Введіть ім'я користувача або групи.",

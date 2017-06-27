@@ -8,7 +8,6 @@ OC.L10N.register(
     "System" : "Süsteem",
     "Grant access" : "Anna ligipääs",
     "Error configuring OAuth1" : "OAuth1 seadistamise tõrge",
-    "Error configuring OAuth2" : "OAuth2 seadistamise tõrge",
     "Generate keys" : "Loo võtmed",
     "Error generating key pair" : "Viga võtmepaari loomisel",
     "All users. Type to select user or group." : "Kõik kasutajad. Kirjuta, et valida kasutaja või grupp.",

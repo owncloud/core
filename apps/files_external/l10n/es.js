@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Conceder acceso",
     "Error configuring OAuth1" : "Error al configurar OAuth1",
     "Please provide a valid app key and secret." : "Por favor facilite una clave de app y una clave secreta válidas.",
-    "Error configuring OAuth2" : "Error al configurar OAuth2",
     "Generate keys" : "Generar claves",
     "Error generating key pair" : "Error al generar el par de claves",
     "All users. Type to select user or group." : "Todos los usuarios. Teclee para seleccionar un usuario o grupo.",

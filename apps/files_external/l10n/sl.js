@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Odobri dostop",
     "Error configuring OAuth1" : "Napaka nastavljanja OAuth1",
     "Please provide a valid app key and secret." : "Vpisati je treba veljaven ključ programa in kodo.",
-    "Error configuring OAuth2" : "Napaka nastavljanja OAuth2",
     "Generate keys" : "Ustvari ključe",
     "Error generating key pair" : "Prišlo je do napake med ustvarjanjem para ključev",
     "All users. Type to select user or group." : "Vsi uporabniki. Skupino ali uporabnika je mogoče tudi izbrati.",

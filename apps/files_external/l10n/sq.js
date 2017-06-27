@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Akordoji hyrje",
     "Error configuring OAuth1" : "Gabim gjatë formësimit të OAuth1",
     "Please provide a valid app key and secret." : "Ju lutemi jepni një kyç dhe një të fshehtë aplikacioni të vlefshme.",
-    "Error configuring OAuth2" : "Gabim gjatë formësimit të OAuth2",
     "Generate keys" : "Prodho kyçe",
     "Error generating key pair" : "Gabim gjatë prodhimit të çiftit të kyçeve",
     "All users. Type to select user or group." : "Krejt përdoruesit. Shtypni që të përzgjidhet përdorues ose grup.",

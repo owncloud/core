@@ -9,7 +9,6 @@ OC.L10N.register(
     "Grant access" : " مجوز اعطا دسترسی",
     "Error configuring OAuth1" : "خطا پیکربندی OAuth1",
     "Please provide a valid app key and secret." : "لطفا یک کلید و رمز معتبر برای برنامه فرآهم کنید.",
-    "Error configuring OAuth2" : "خطا پیکربندی OAuth2",
     "Generate keys" : "تولید کلید",
     "(group)" : "(گروه)",
     "Saved" : "ذخیره شد",

@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Sta toegang toe",
     "Error configuring OAuth1" : "Fout bij configureren OAuth1",
     "Please provide a valid app key and secret." : "Geef een geldige app sleutel en geheime sleutel op.",
-    "Error configuring OAuth2" : "Fout bij configureren OAuth2",
     "Generate keys" : "Genereer sleutels",
     "Error generating key pair" : "Fout bij genereren sleutelpaar",
     "All users. Type to select user or group." : "Alle gebruikers. Tikken om een gebruiker of groep te selecteren.",

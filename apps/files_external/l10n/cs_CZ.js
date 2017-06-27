@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Povolit přístup",
     "Error configuring OAuth1" : "Chyba nastavení OAuth1",
     "Please provide a valid app key and secret." : "Zadejte prosím platný klíč a tajné heslo aplikace.",
-    "Error configuring OAuth2" : "Chyba nastavení OAuth2",
     "Generate keys" : "Vytvořit klíče",
     "Error generating key pair" : "Chyba při vytváření páru klíčů",
     "All users. Type to select user or group." : "Všichni uživatelé. Začněte psát pro výběr uživatelů a skupin.",

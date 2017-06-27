@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Разреши достъп",
     "Error configuring OAuth1" : "Грешка при настройка на OAuth1",
     "Please provide a valid app key and secret." : "Моля, дайте валидни ключ за приложението и тайна.",
-    "Error configuring OAuth2" : "Грешка при настройка на OAuth2",
     "Generate keys" : "Генериране на криптографски ключове",
     "Error generating key pair" : "Грешка при генериране на криптографски ключове",
     "All users. Type to select user or group." : "Всички потребители. Пиши, за да избереш потребител или група.",

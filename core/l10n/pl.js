@@ -162,6 +162,7 @@ OC.L10N.register(
     "Password" : "Hasło",
     "Name" : "Nazwa",
     "Allow editing" : "Pozwól na edycję",
+    "Show file listing" : "Pokaż listę plików",
     "Edit link share: {name}" : "Edytuj link udostępniany: {name}",
     "Save" : "Zapisz",
     "Create link share: {name}" : "Utwórz link udostępniany: {name}",

@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Autorizar l'accès",
     "Error configuring OAuth1" : "Error al moment de la configuracion d'OAuth1",
     "Please provide a valid app key and secret." : "Provesissètz una clau d'aplicacion e un senhal valids.",
-    "Error configuring OAuth2" : "Error al moment de la configuracion d'OAuth2",
     "Generate keys" : "Generar de claus",
     "Error generating key pair" : "Error al moment de la generacion de las claus",
     "All users. Type to select user or group." : "Totes los utilizaires. Clicatz aicí per restrénher.",

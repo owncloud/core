@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Gi tilgang",
     "Error configuring OAuth1" : "Feil ved konfigurering av OAuth1",
     "Please provide a valid app key and secret." : "Vær vennlig å oppgi gyldig appnøkkel og hemmelighet.",
-    "Error configuring OAuth2" : "Feil ved konfigurering av OAuth2",
     "Generate keys" : "Generer nøkler",
     "Error generating key pair" : "Feil ved nøkkelgenerering",
     "All users. Type to select user or group." : "Alle brukere. Tast for å velge bruker eller gruppe.",

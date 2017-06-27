@@ -9,7 +9,6 @@ OC.L10N.register(
     "System" : "Järjestelmä",
     "Grant access" : "Salli pääsy",
     "Error configuring OAuth1" : "Virhe OAuth1:n asetuksia tehdessä",
-    "Error configuring OAuth2" : "Virhe OAuth2:n asetuksia tehdessä",
     "Generate keys" : "Luo avaimet",
     "Error generating key pair" : "Virhe luotaessa avainparia",
     "All users. Type to select user or group." : "Kaikki käyttäjät. Kirjoita valitaksesi käyttäjän tai ryhmän.",

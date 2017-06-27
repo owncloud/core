@@ -9,7 +9,6 @@ OC.L10N.register(
     "Grant access" : "Berikan hak akses",
     "Error configuring OAuth1" : "Kesalahan mengkonfigurasi OAuth1",
     "Please provide a valid app key and secret." : "Silakan berikan kunci dan kerahasiaan aplikasi yang benar.",
-    "Error configuring OAuth2" : "Kesalahan mengkonfigurasi OAuth2",
     "Generate keys" : "Hasilkan kunci",
     "Error generating key pair" : "Kesalahan saat menghasilkan pasangan kunci",
     "All users. Type to select user or group." : "Semua pengguna. Ketik untuk memilih pengguna atau grup.",

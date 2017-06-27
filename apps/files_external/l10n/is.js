@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Veita aðgengi",
     "Error configuring OAuth1" : "Villa við uppsetningu OAuth1",
     "Please provide a valid app key and secret." : "Settu inn gildan forritslykil og leynilykil (secret).",
-    "Error configuring OAuth2" : "Villa við uppsetningu OAuth2",
     "Generate keys" : "Útbúa lykla",
     "Error generating key pair" : "Villa við að útbúa nýtt lyklapar",
     "All users. Type to select user or group." : "Allir notendur. Skrifaðu til að velja notanda eða hóp.",

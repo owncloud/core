@@ -8,7 +8,6 @@
     "Grant access" : "הענקת גישה",
     "Error configuring OAuth1" : "שגיאה בתצורת OAuth1",
     "Please provide a valid app key and secret." : "יש לספק מפתח יישום וסוד תקניים.",
-    "Error configuring OAuth2" : "שגיאה בתצורת OAuth2",
     "Generate keys" : "יצירת מפתחות",
     "Error generating key pair" : "שגיאה ביצירת זוג מפתחות",
     "All users. Type to select user or group." : "כל המשתמשים. יש להקיש לבחירת משתמש או קבוצה.",

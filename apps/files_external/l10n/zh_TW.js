@@ -9,7 +9,6 @@ OC.L10N.register(
     "Grant access" : "允許存取",
     "Error configuring OAuth1" : "設定 OAuth1 時發生錯誤",
     "Please provide a valid app key and secret." : "請提供有效的應用程式金鑰及密碼",
-    "Error configuring OAuth2" : "設定 OAuth2 時發生錯誤",
     "Generate keys" : "產生金鑰",
     "Error generating key pair" : "產生金鑰對錯誤",
     "All users. Type to select user or group." : "所有人都可以使用，或者選擇特定使用者、群組",

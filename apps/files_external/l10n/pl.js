@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "Udziel dostępu",
     "Error configuring OAuth1" : "Błąd konfiguracji OAuth1",
     "Please provide a valid app key and secret." : "Proszę podać prawidłowy klucz aplikacji i klucz sekretny.",
-    "Error configuring OAuth2" : "Błąd konfiguracji OAuth2",
     "Generate keys" : "Wygeneruj klucze",
     "Error generating key pair" : "Błąd podczas generowania pary kluczy",
     "All users. Type to select user or group." : "Wszyscy użytkownicy. Zacznij pisać, aby wybrać użytkownika lub grupę.",

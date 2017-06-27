@@ -8,7 +8,6 @@
     "Grant access" : "Concedi l'accesso",
     "Error configuring OAuth1" : "Errore di configurazione OAuth1",
     "Please provide a valid app key and secret." : "Fornisci chiave e segreto dell'applicazione validi.",
-    "Error configuring OAuth2" : "Errore di configurazione OAuth2",
     "Generate keys" : "Genera la chiavi",
     "Error generating key pair" : "Errore durante la generazione della coppia di chiavi",
     "All users. Type to select user or group." : "Tutti gli utenti. Digita per selezionare utente o gruppo.",

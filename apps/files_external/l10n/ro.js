@@ -8,7 +8,6 @@ OC.L10N.register(
     "System" : "Sistem",
     "Grant access" : "Permite accesul",
     "Error configuring OAuth1" : "Eroare la configurarea OAuth1",
-    "Error configuring OAuth2" : "Eroare la configurarea OAuth2",
     "Generate keys" : "Generează chei",
     "Error generating key pair" : "Eroarea la generarea cheilor",
     "All users. Type to select user or group." : "Toți utilizatorii. Începe să scrii pentru a selecta un utilizator sau un grup.",

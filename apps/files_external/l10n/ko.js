@@ -10,7 +10,6 @@ OC.L10N.register(
     "Grant access" : "접근 권한 부여",
     "Error configuring OAuth1" : "OAuth1 설정 오류",
     "Please provide a valid app key and secret." : "올바른 앱 키와 비밀 값을 입력하십시오.",
-    "Error configuring OAuth2" : "OAuth2 설정 오류",
     "Generate keys" : "키 생성",
     "Error generating key pair" : "키 쌍을 생성하는 중 오류 발생",
     "All users. Type to select user or group." : "모든 사용자입니다. 사용자나 그룹을 선택하려면 입력하십시오.",

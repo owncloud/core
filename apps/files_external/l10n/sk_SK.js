@@ -9,7 +9,6 @@ OC.L10N.register(
     "Grant access" : "Povoliť prístup",
     "Error configuring OAuth1" : "Chyba konfigurovania OAuth1",
     "Please provide a valid app key and secret." : "Zadajte prosím platný aplikačný kľúč a heslo (secret).",
-    "Error configuring OAuth2" : "Chyba konfigurovania OAuth2",
     "Generate keys" : "Vytvoriť kľúče",
     "Error generating key pair" : "Chyba pri vytváraní dvojice kľúčov",
     "All users. Type to select user or group." : "Všetci používatelia. Začnite písať pre výber používateľa alebo skupinu.",

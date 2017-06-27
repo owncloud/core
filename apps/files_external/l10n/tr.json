@@ -8,7 +8,6 @@
     "Grant access" : "Erişimi sağla",
     "Error configuring OAuth1" : "OAuth1 yapılandırma hatası",
     "Please provide a valid app key and secret." : "Lütfen geçerli bir uygulama anahtarı ve gizli bilgisini girin.",
-    "Error configuring OAuth2" : "OAuth2 yapılandırma hatası",
     "Generate keys" : "Anahtarlar üret",
     "Error generating key pair" : "Anahtar çifti üretirken hata",
     "All users. Type to select user or group." : "Tüm kullanıcılar. Kullanıcı veya grup seçmek için yazın.",
