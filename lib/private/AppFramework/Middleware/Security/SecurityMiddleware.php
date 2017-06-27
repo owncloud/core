@@ -121,26 +121,11 @@ class SecurityMiddleware extends Middleware {
 		$this->navigationManager->setActiveEntry($this->appName);
 
 		// security checks
-		$isPublicPage = $this->reflector->hasAnnotation('PublicPage');
-		if(!$isPublicPage) {
-			if(!$this->isLoggedIn) {
-				throw new NotLoggedInException();
-			}
-
-			if(!$this->reflector->hasAnnotation('NoAdminRequired')) {
-				if(!$this->isAdminUser) {
-					throw new NotAdminException();
-				}
-			}
-		}
+		$this->checkUserPermissions();
 
 		// CSRF check - also registers the CSRF token since the session may be closed later
 		Util::callRegister();
-		if(!$this->reflector->hasAnnotation('NoCSRFRequired')) {
-			if(!$this->request->passesCSRFCheck()) {
-				throw new CrossSiteRequestForgeryException();
-			}
-		}
+		$this->checkCSRFtoken();
 
 		/**
 		 * FIXME: Use DI once available
@@ -153,7 +138,7 @@ class SecurityMiddleware extends Middleware {
 		}
 
 	}
-
+	
 	/**
 	 * Performs the default CSP modifications that may be injected by other
 	 * applications
@@ -185,33 +170,74 @@ class SecurityMiddleware extends Middleware {
 	 * @return Response a Response object or null in case that the exception could not be handled
 	 */
 	public function afterException($controller, $methodName, \Exception $exception) {
-		if($exception instanceof SecurityException) {
+		if(!$exception instanceof SecurityException) {
+			throw $exception;
+		}
+		
+		$this->logger->debug($exception->getMessage());
+		
+		if (stripos($this->request->getHeader('Accept'),'html') === false) {
+			return new JSONResponse(
+				['message' => $exception->getMessage()],
+				$exception->getCode()
+			);
+		}
+		
+		if($exception instanceof NotLoggedInException) {
+			$url = $this->urlGenerator->linkToRoute(
+				'core.login.showLoginForm',
+				[
+					'redirect_url' => urlencode($this->request->server['REQUEST_URI']),
+				]
+			);
+			return new RedirectResponse($url);
+		}
+		
 
-			if (stripos($this->request->getHeader('Accept'),'html') === false) {
-				$response = new JSONResponse(
-					['message' => $exception->getMessage()],
-					$exception->getCode()
-				);
-			} else {
-				if($exception instanceof NotLoggedInException) {
-					$url = $this->urlGenerator->linkToRoute(
-						'core.login.showLoginForm',
-						[
-							'redirect_url' => urlencode($this->request->server['REQUEST_URI']),
-						]
-					);
-					$response = new RedirectResponse($url);
-				} else {
-					$response = new TemplateResponse('core', '403', ['file' => $exception->getMessage()], 'guest');
-					$response->setStatus($exception->getCode());
-				}
-			}
-
-			$this->logger->debug($exception->getMessage());
-			return $response;
+		$response = new TemplateResponse('core', '403', ['file' => $exception->getMessage()], 'guest');
+		$response->setStatus($exception->getCode());
+		return $response;
+	}
+	
+	/**
+	* Check if user has permission to access controller method
+	* 
+	* @throws NotLoggedInException when user has to be logged in and isnt
+	* @throws NotAdminException when user has to be logged in and isnt
+	*/
+	private function checkUserPermissions()
+	{
+		if($this->reflector->hasAnnotation('PublicPage'))
+		{
+			return;
+		}
+		
+		if(!$this->isLoggedIn) {
+			throw new NotLoggedInException();
 		}
 
-		throw $exception;
+		if($this->reflector->hasAnnotation('NoAdminRequired')) {
+			return;
+		}
+		
+		if(!$this->isAdminUser) {
+			throw new NotAdminException();
+		}
 	}
-
+	
+	/**
+	* Check for CSRF token
+	* 
+	* @throws CrossSiteRequestForgeryException when request fails csrfcheck but is needed
+	*/
+	private function checkCSRFToken()
+	{
+		if($this->reflector->hasAnnotation('NoCSRFRequired')) {
+			return;
+		}
+		
+		if(!$this->request->passesCSRFCheck()) {
+			throw new CrossSiteRequestForgeryException();
+		}
+	}
 }
