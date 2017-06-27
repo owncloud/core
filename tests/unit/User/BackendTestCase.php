@@ -29,7 +29,7 @@ namespace Test\User;
  * user operations (add, remove, etc.). Test methods in this class will then be
  * run on each separate subclass and backend therein.
  *
- * For an example see /tests/lib/user/dummy.php
+ * For an example see /tests/unit/User/DummyTestCase.php
  */
 
 abstract class BackendTestCase extends \Test\TestCase {
