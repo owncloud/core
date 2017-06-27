@@ -116,10 +116,11 @@ interface IAppManager {
 
 	/**
 	 * @param string $package
+	 * @param bool $skipMigrations whether to skip migrations, which would only install the code
 	 * @return mixed
 	 * @since 10.0
 	 */
-	public function installApp($package);
+	public function installApp($package, $skipMigrations = false);
 
 	/**
 	 * @param string $package
