@@ -115,7 +115,7 @@ class Autoloader {
 		} elseif ($class === 'Test\\TestCase') {
 			// This File is considered public API, so we make sure that the class
 			// can still be loaded, although the PSR-4 paths have not been loaded.
-			$paths[] = \OC::$SERVERROOT . '/tests/lib/TestCase.php';
+			$paths[] = \OC::$SERVERROOT . '/tests/unit/TestCase.php';
 		}
 		return $paths;
 	}

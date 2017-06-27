@@ -28,7 +28,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	/**
-	* code identical used in firstrunwizard: tests/lib/utiltest.php
+	* code identical used in firstrunwizard: tests/unit/utiltest.php
 	*/
 	public function testGetEditionString() {
 		$edition = \OC_Util::getEditionString();
