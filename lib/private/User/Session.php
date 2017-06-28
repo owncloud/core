@@ -9,6 +9,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -70,6 +71,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * - postCreateUser(\OC\User\User $user)
  * - preLogin(string $user, string $password)
  * - postLogin(\OC\User\User $user, string $password)
+ * - failedLogin(string $user)
  * - preRememberedLogin(string $uid)
  * - postRememberedLogin(\OC\User\User $user)
  * - logout()
@@ -464,7 +466,7 @@ class Session implements IUserSession, Emitter {
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
 		$user = $this->manager->checkPassword($uid, $password);
 		if ($user === false) {
-			// Password check failed
+			$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
 			return false;
 		}
 
