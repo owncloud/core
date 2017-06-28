@@ -102,18 +102,43 @@ class FakeLockerPlugin extends ServerPlugin {
 	 */
 	public function validateTokens(RequestInterface $request, &$conditions) {
 		foreach($conditions as &$fileCondition) {
-			if(isset($fileCondition['tokens'])) {
-				foreach($fileCondition['tokens'] as &$token) {
-					if(isset($token['token'])) {
-						if(substr($token['token'], 0, 16) === 'opaquelocktoken:') {
-							$token['validToken'] = true;
-						}
-					}
-				}
-			}
+			$this->check($fileCondition);
 		}
 	}
-
+	
+	/**
+	* Check file condition for existing tokens and validate them
+	*
+	* @param array $fileConditions
+	*/
+	private function check(&$fileCondition)
+	{
+		if(!isset($fileCondition['tokens']))
+		{
+			return;
+		}
+		
+		foreach($fileCondition['tokens'] as &$token) {
+			$this->validateToken($token);			
+		}
+	}
+	
+	/**
+	* Validate opaquelocktoken
+	*
+	* @param array $token
+	*/
+	private function validateToken(&$token)
+	{
+		if(!isset($token['token'])) {
+			return;		
+		}
+		
+		if(substr($token['token'], 0, 16) === 'opaquelocktoken:') {
+			$token['validToken'] = true;
+		}
+	}
+	
 	/**
 	 * Fakes a successful LOCK
 	 *
