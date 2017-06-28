@@ -39,6 +39,7 @@ use OC\Repair\DropOldJobs;
 use OC\Repair\EncryptionCompatibility;
 use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
+use OC\Repair\RepairMismatchFileCachePath;
 use OC\Repair\SharePropagation;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
@@ -109,6 +110,7 @@ class Repair extends BasicEmitter {
 	public static function getRepairSteps() {
 		return [
 			new RepairMimeTypes(\OC::$server->getConfig()),
+			new RepairMismatchFileCachePath(\OC::$server->getDatabaseConnection(), \OC::$server->getMimeTypeLoader()),
 			new AssetCache(),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection()),
