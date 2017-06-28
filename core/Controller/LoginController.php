@@ -3,6 +3,7 @@
  * @author Christoph Wurst <christoph@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -182,11 +183,16 @@ class LoginController extends Controller {
 	public function tryLogin($user, $password, $redirect_url) {
 		$originalUser = $user;
 		// TODO: Add all the insane error handling
-		$emailUsers = $this->userManager->getByEmail($user);
-		if (count($emailUsers) === 1) {
-			$user = $emailUsers[0]->getUID();
+		$loginResult = $this->userSession->login($user, $password);
+		if ($loginResult !== true) {
+			$users = $this->userManager->getByEmail($user);
+			// we only allow login by email if unique
+			if (count($users) === 1) {
+				$user = $users[0]->getUID();
+				$loginResult = $this->userSession->login($user, $password);
+			}
 		}
-		if ($this->userSession->login($user, $password) !== true) {
+		if ($loginResult !== true) {
 			$this->session->set('loginMessages', [
 				['invalidpassword'], []
 			]);
