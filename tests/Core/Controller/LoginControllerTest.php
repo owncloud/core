@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -444,9 +445,12 @@ class LoginControllerTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('john'));
 
-		$this->userSession->expects($this->once())
+		$this->userSession->expects($this->exactly(2))
 			->method('login')
-			->with('john', 'just wrong')
+			->withConsecutive(
+				['john@doe.com', 'just wrong'],
+				['john', 'just wrong']
+			)
 			->willReturn(false);
 		
 		$this->userManager->expects($this->once())
