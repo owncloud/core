@@ -201,16 +201,18 @@ class Encryption extends Wrapper {
 	 */
 	public function file_get_contents($path) {
 
-		$encryptionModule = $this->getEncryptionModule($path);
+		if ($this->encryptionManager->isEnabled() !== false) {
+			$encryptionModule = $this->getEncryptionModule($path);
 
-		if ($encryptionModule) {
-			$handle = $this->fopen($path, "r");
-			if (!$handle) {
-				return false;
+			if ($encryptionModule) {
+				$handle = $this->fopen($path, "r");
+				if (!$handle) {
+					return false;
+				}
+				$data = stream_get_contents($handle);
+				fclose($handle);
+				return $data;
 			}
-			$data = stream_get_contents($handle);
-			fclose($handle);
-			return $data;
 		}
 		return $this->storage->file_get_contents($path);
 	}
@@ -335,9 +337,10 @@ class Encryption extends Wrapper {
 	 *
 	 * @param string $path1
 	 * @param string $path2
+	 * @param bool $getDecryptedFile
 	 * @return bool
 	 */
-	public function copy($path1, $path2) {
+	public function copy($path1, $path2, $getDecryptedFile = false) {
 
 		$source = $this->getFullPath($path1);
 
@@ -348,7 +351,7 @@ class Encryption extends Wrapper {
 		// need to stream copy file by file in case we copy between a encrypted
 		// and a unencrypted storage
 		$this->unlink($path2);
-		$result = $this->copyFromStorage($this, $path1, $path2);
+		$result = $this->copyFromStorage($this, $path1, $path2, false, false, $getDecryptedFile);
 
 		return $result;
 	}
@@ -359,11 +362,12 @@ class Encryption extends Wrapper {
 	 * @param string $path
 	 * @param string $mode
 	 * @param string|null $sourceFileOfRename
+	 * @param bool $getDecryptedFile whether to keep decrypted file or not
 	 * @return resource|bool
 	 * @throws GenericEncryptionException
 	 * @throws ModuleDoesNotExistsException
 	 */
-	public function fopen($path, $mode, $sourceFileOfRename = null) {
+	public function fopen($path, $mode, $sourceFileOfRename = null, $getDecryptedFile = false) {
 
 		// check if the file is stored in the array cache, this means that we
 		// copy a file over to the versions folder, in this case we don't want to
@@ -451,6 +455,15 @@ class Encryption extends Wrapper {
 			}
 
 			if ($shouldEncrypt === true && $encryptionModule !== null) {
+				/*
+				 * The check of $getDecryptedFile, required to get the file in the decrypted state.
+				 * It will help us get the normal file handler. And hence we can re-encrypt
+				 * the file when necessary, later. The true/false of $getDecryptedFile decides whether
+				 * to keep the file decrypted or not.
+				 */
+				if ($getDecryptedFile === true) {
+					return $this->storage->fopen($path, $mode);
+				}
 				$headerSize = $this->getHeaderSize($path);
 				$source = $this->storage->fopen($path, $mode);
 				if (!is_resource($source)) {
@@ -629,9 +642,10 @@ class Encryption extends Wrapper {
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @param bool $isRename
+	 * @param bool $getDecryptedFile
 	 * @return bool
 	 */
-	public function copyFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false, $isRename = false) {
+	public function copyFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false, $isRename = false, $getDecryptedFile = false) {
 
 		// TODO clean this up once the underlying moveFromStorage in OC\Files\Storage\Wrapper\Common is fixed:
 		// - call $this->storage->copyFromStorage() instead of $this->copyBetweenStorage
@@ -639,7 +653,7 @@ class Encryption extends Wrapper {
 		// - copy the copyKeys() call from  $this->copyBetweenStorage to this method
 		// - remove $this->copyBetweenStorage
 
-		return $this->copyBetweenStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename);
+		return $this->copyBetweenStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename, $getDecryptedFile);
 	}
 
 	/**
@@ -693,10 +707,11 @@ class Encryption extends Wrapper {
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @param bool $isRename
+	 * @param bool $getDecryptedFile
 	 * @return bool
 	 * @throws \Exception
 	 */
-	private function copyBetweenStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename) {
+	private function copyBetweenStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename, $getDecryptedFile = false) {
 		// for versions we have nothing to do, because versions should always use the
 		// key from the original file. Just create a 1:1 copy and done
 		if ($this->isVersion($targetInternalPath) ||
@@ -750,7 +765,11 @@ class Encryption extends Wrapper {
 					$absSourcePath = Filesystem::normalizePath($sourceStorage->getOwner($sourceInternalPath). '/' . $sourceInternalPath);
 					$target = $this->fopen($targetInternalPath, 'w', $absSourcePath);
 				} else {
-					$target = $this->fopen($targetInternalPath, 'w');
+					if ($getDecryptedFile === true) {
+						$target = $this->fopen($targetInternalPath, 'w', null, $getDecryptedFile);
+					} else {
+						$target = $this->fopen($targetInternalPath, 'w');
+					}
 				}
 				list(, $result) = \OC_Helper::streamCopy($source, $target);
 				fclose($source);
