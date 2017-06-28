@@ -47,9 +47,9 @@ unset XDEBUG_CONFIG
 function print_syntax {
 	echo -e "Syntax: ./autotest.sh [dbconfigname] [testfile]\n" >&2
 	echo -e "\t\"dbconfigname\" can be one of: $DBCONFIGS" >&2
-	echo -e "\t\"testfile\" is the name of a test file, for example lib/template.php" >&2
-	echo -e "\nExample: ./autotest.sh sqlite lib/template.php" >&2
-	echo "will run the test suite from \"tests/lib/template.php\"" >&2
+	echo -e "\t\"testfile\" is the name of a test file, for example unit/template.php" >&2
+	echo -e "\nExample: ./autotest.sh sqlite unit/template.php" >&2
+	echo "will run the test suite from \"tests/unit/template.php\"" >&2
 	echo -e "\nIf no arguments are specified, all tests will be run with all database configs" >&2
 }
 
