@@ -7,10 +7,10 @@
  */
 
 function loadDirectory($path) {
-	if (strpos($path, 'integration')) {
+	if (stripos(basename($path), 'integration') !== false) {
 		return;
 	}
-	if (strpos($path, 'Integration')) {
+	if (strcasecmp(basename($path), 'ui') === 0) {
 		return;
 	}
 	if ($dh = opendir($path)) {
