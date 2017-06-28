@@ -8,7 +8,7 @@
 		 timeoutForLargeTests="900"
 >
 	<testsuite name='ownCloud'>
-		<directory suffix='.php'>lib/</directory>
+		<directory suffix='.php'>unit/</directory>
 		<directory suffix='.php'>Settings/</directory>
 		<directory suffix='.php'>Core/</directory>
 		<directory suffix='.php'>ocs-provider/</directory>
