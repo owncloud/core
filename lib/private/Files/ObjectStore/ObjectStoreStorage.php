@@ -27,11 +27,14 @@ namespace OC\Files\ObjectStore;
 
 use Icewind\Streams\IteratorDirectory;
 use OC\Files\Cache\CacheEntry;
+use OC\Files\Storage\Common;
+use OCP\Constants;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
+use OCP\Util;
 
-class ObjectStoreStorage extends \OC\Files\Storage\Common {
+class ObjectStoreStorage extends Common {
 
 	/**
 	 * @var array
@@ -52,6 +55,12 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 	private $objectPrefix = 'urn:oid:';
 
+	/**
+	 * ObjectStoreStorage constructor.
+	 *
+	 * @param $params
+	 * @throws \Exception
+	 */
 	public function __construct($params) {
 		if (isset($params['objectstore']) && $params['objectstore'] instanceof IObjectStore) {
 			$this->objectStore = $params['objectstore'];
@@ -85,34 +94,34 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			'size' => 0,
 			'mtime' => $mTime,
 			'storage_mtime' => $mTime,
-			'permissions' => \OCP\Constants::PERMISSION_ALL,
+			'permissions' => Constants::PERMISSION_ALL,
 		];
 		if ($path === '') {
 			//create root on the fly
 			$data['etag'] = $this->getETag('');
 			$this->getCache()->put('', $data);
 			return true;
-		} else {
-			// if parent does not exist, create it
-			$parent = $this->normalizePath(\dirname($path));
-			$parentType = $this->filetype($parent);
-			if ($parentType === false) {
-				if (!$this->mkdir($parent)) {
-					// something went wrong
-					return false;
-				}
-			} elseif ($parentType === 'file') {
-				// parent is a file
+		}
+
+		// if parent does not exist, create it
+		$parent = $this->normalizePath(\dirname($path));
+		$parentType = $this->filetype($parent);
+		if ($parentType === false) {
+			if (!$this->mkdir($parent)) {
+				// something went wrong
 				return false;
 			}
-			// finally create the new dir
-			$mTime = \time(); // update mtime
-			$data['mtime'] = $mTime;
-			$data['storage_mtime'] = $mTime;
-			$data['etag'] = $this->getETag($path);
-			$this->getCache()->put($path, $data);
-			return true;
+		} elseif ($parentType === 'file') {
+			// parent is a file
+			return false;
 		}
+		// finally create the new dir
+		$mTime = \time(); // update mtime
+		$data['mtime'] = $mTime;
+		$data['storage_mtime'] = $mTime;
+		$data['etag'] = $this->getETag($path);
+		$this->getCache()->put($path, $data);
+		return true;
 	}
 
 	/**
@@ -191,7 +200,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				$this->objectStore->deleteObject($this->getURN($stat['fileid']));
 			} catch (\Exception $ex) {
 				if ($ex->getCode() !== 404) {
-					\OCP\Util::writeLog('objectstore', 'Could not delete object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+					Util::writeLog('objectstore', 'Could not delete object: ' . $ex->getMessage(), Util::ERROR);
 					return false;
 				} else {
 					//removing from cache is ok as it does not exist in the objectstore anyway
@@ -208,9 +217,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$cacheEntry = $this->getCache()->get($path);
 		if ($cacheEntry instanceof CacheEntry) {
 			return $cacheEntry->getData();
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -240,7 +249,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 			return IteratorDirectory::wrap($files);
 		} catch (\Exception $e) {
-			\OCP\Util::writeLog('objectstore', $e->getMessage(), \OCP\Util::ERROR);
+			Util::writeLog('objectstore', $e->getMessage(), Util::ERROR);
 			return false;
 		}
 	}
@@ -253,9 +262,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				return 'dir';
 			}
 			return 'file';
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	public function fopen($path, $mode) {
@@ -269,7 +278,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 					try {
 						return $this->objectStore->readObject($this->getURN($stat['fileid']));
 					} catch (\Exception $ex) {
-						\OCP\Util::writeLog('objectstore', 'Could not get object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+						Util::writeLog('objectstore', 'Could not get object: ' . $ex->getMessage(), Util::ERROR);
 						return false;
 					}
 				} else {
@@ -373,7 +382,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				'size' => 0,
 				'mtime' => $mtime,
 				'storage_mtime' => $mtime,
-				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
+				'permissions' => Constants::PERMISSION_ALL - Constants::PERMISSION_CREATE,
 			];
 			$fileId = $this->getCache()->put($path, $stat);
 			try {
@@ -381,13 +390,17 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				$this->objectStore->writeObject($this->getURN($fileId), \fopen('php://memory', 'r'));
 			} catch (\Exception $ex) {
 				$this->getCache()->remove($path);
-				\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+				Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), Util::ERROR);
 				return false;
 			}
 		}
 		return true;
 	}
 
+	/**
+	 * @param $tmpFile
+	 * @throws \Exception
+	 */
 	public function writeBack($tmpFile) {
 		if (!isset(self::$tmpFiles[$tmpFile])) {
 			return;
@@ -398,7 +411,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if (empty($stat)) {
 			// create new file
 			$stat = [
-				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
+				'permissions' => Constants::PERMISSION_ALL - Constants::PERMISSION_CREATE,
 			];
 		}
 		// update stat with new data
@@ -415,7 +428,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
 		} catch (\Exception $ex) {
 			$this->getCache()->remove($path);
-			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+			Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), Util::ERROR);
 			throw $ex; // make this bubble up
 		}
 	}
@@ -446,6 +459,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::saveVersion($internalPath);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getVersions($internalPath) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -457,6 +473,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::getVersions($internalPath);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getVersion($internalPath, $versionId) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -468,6 +487,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::getVersion($internalPath, $versionId);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getContentOfVersion($internalPath, $versionId) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -479,6 +501,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return parent::getContentOfVersion($internalPath, $versionId);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function restoreVersion($internalPath, $versionId) {
 		if ($this->objectStore instanceof IVersionedObjectStorage) {
 			$stat = $this->stat($internalPath);
@@ -488,5 +513,15 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return $this->objectStore->restoreVersion($this->getURN($stat['fileid']), $versionId);
 		}
 		return parent::restoreVersion($internalPath, $versionId);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getDirectDownload($path) {
+		$path = $this->normalizePath($path);
+		$stat = $this->stat($path);
+
+		return $this->objectStore->getDirectDownload($this->getURN($stat['fileid']));
 	}
 }

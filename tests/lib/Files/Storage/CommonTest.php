@@ -45,4 +45,9 @@ class CommonTest extends Storage {
 		\OC_Helper::rmdirr($this->tmpDir);
 		parent::tearDown();
 	}
+
+	public function testDirectDownload() {
+		$this->instance->file_put_contents('/foo.txt', 'forem ipsum');
+		$this->assertEquals([], $this->instance->getDirectDownload('/foo.txt'));
+	}
 }

@@ -153,6 +153,7 @@ class FilesPlugin extends ServerPlugin {
 		$this->server->on('afterBind', [$this, 'sendFileIdHeader']);
 		$this->server->on('afterWriteContent', [$this, 'sendFileIdHeader']);
 		$this->server->on('afterMethod:GET', [$this,'httpGet']);
+		$this->server->on('method:GET', [$this,'redirect']);
 		$this->server->on('afterMethod:GET', [$this, 'handleDownloadToken']);
 		$this->server->on('afterResponse', function ($request, ResponseInterface $response) {
 			$body = $response->getBody();
@@ -186,7 +187,7 @@ class FilesPlugin extends ServerPlugin {
 			}
 
 			if (!$sourceNodeFileInfo->isDeletable()) {
-				throw new Forbidden($source . " cannot be deleted");
+				throw new Forbidden("$source cannot be deleted");
 			}
 		}
 	}
@@ -217,6 +218,26 @@ class FilesPlugin extends ServerPlugin {
 		}
 	}
 
+	/**
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return bool|void
+	 * @throws NotFound
+	 */
+	public function redirect(RequestInterface $request, ResponseInterface $response) {
+		// Only handle valid files
+		$node = $this->tree->getNodeForPath($request->getPath());
+		if (!($node instanceof File)) {
+			return;
+		}
+
+		$directDownloadUrl = $node->getDirectDownload();
+		if (isset($directDownloadUrl['url'])) {
+			$response->setHeader('Location', $directDownloadUrl['url']);
+			$response->setStatus(302);
+			return false;
+		}
+	}
 	/**
 	 * Add headers to file download
 	 *
@@ -318,8 +339,7 @@ class FilesPlugin extends ServerPlugin {
 			});
 			$propFind->handle(self::OWNER_DISPLAY_NAME_PROPERTYNAME, function () use ($node) {
 				$owner = $node->getOwner();
-				$displayName = $owner->getDisplayName();
-				return $displayName;
+				return $owner->getDisplayName();
 			});
 			$propFind->handle(self::SIZE_PROPERTYNAME, function () use ($node) {
 				return $node->getSize();
@@ -332,7 +352,7 @@ class FilesPlugin extends ServerPlugin {
 		}
 
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Node) {
-			$propFind->handle(self::DATA_FINGERPRINT_PROPERTYNAME, function () use ($node) {
+			$propFind->handle(self::DATA_FINGERPRINT_PROPERTYNAME, function () {
 				return $this->config->getSystemValue('data-fingerprint', '');
 			});
 		}
@@ -395,7 +415,7 @@ class FilesPlugin extends ServerPlugin {
 			if (empty($etag)) {
 				return false;
 			}
-			if ($node->setEtag($etag) !== -1) {
+			if ($node->setETag($etag) !== -1) {
 				return true;
 			}
 			return false;

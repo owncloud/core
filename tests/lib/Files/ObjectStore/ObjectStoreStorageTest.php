@@ -38,8 +38,8 @@ abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
 		$mTime = $this->instance->filemtime('/lorem.txt');
 
 		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
-		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
-		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
+		$this->assertGreaterThanOrEqual($ctimeStart - 5, $mTime);
+		$this->assertLessThanOrEqual($ctimeEnd + 1, $mTime);
 		$this->assertEquals(\filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
@@ -59,6 +59,8 @@ abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
 
 	/**
 	 * @dataProvider copyAndMoveProvider
+	 * @param $source
+	 * @param $target
 	 */
 	public function testMove($source, $target) {
 		$this->initSourceAndTarget($source);

@@ -34,8 +34,11 @@ use OCP\Lock\ILockingProvider;
  * @package OCA\DAV\Tests\unit\Connector\Sabre\RequestTest
  */
 class DownloadTest extends RequestTest {
+	/**
+	 * @throws \Exception
+	 */
 	public function testDownload() {
-		$user = $this->getUniqueID();
+		$user = static::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$view->file_put_contents('foo.txt', 'bar');
@@ -47,9 +50,10 @@ class DownloadTest extends RequestTest {
 
 	/**
 	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\FileLocked
+	 * @throws \Exception
 	 */
 	public function testDownloadWriteLocked() {
-		$user = $this->getUniqueID();
+		$user = static::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$view->file_put_contents('foo.txt', 'bar');
@@ -59,8 +63,11 @@ class DownloadTest extends RequestTest {
 		$this->request($view, $user, 'pass', 'GET', '/foo.txt', 'asd');
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function testDownloadReadLocked() {
-		$user = $this->getUniqueID();
+		$user = static::getUniqueID();
 		$view = $this->setupUser($user, 'pass');
 
 		$view->file_put_contents('foo.txt', 'bar');

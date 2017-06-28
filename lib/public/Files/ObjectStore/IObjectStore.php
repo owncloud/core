@@ -58,4 +58,11 @@ interface IObjectStore {
 	 * @since 7.0.0
 	 */
 	public function deleteObject($urn);
+
+	/**
+	 * @param string $path
+	 * @return string mixed
+	 * @since 10.1.0
+	 */
+	public function getDirectDownload($urn);
 }
