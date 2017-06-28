@@ -49,6 +49,7 @@ use OC\Repair\SearchLuceneTables;
 use OC\Repair\UpdateOutdatedOcsIds;
 use OC\Repair\RepairInvalidShares;
 use OC\Repair\RepairUnmergedShares;
+use OC\Repair\RepairMismatchFileCachePath;
 
 class Repair extends BasicEmitter {
 	/**
@@ -108,6 +109,7 @@ class Repair extends BasicEmitter {
 	 */
 	public static function getRepairSteps() {
 		return [
+			new RepairMismatchFileCachePath(\OC::$server->getDatabaseConnection()),
 			new RepairMimeTypes(\OC::$server->getConfig()),
 			new AssetCache(),
 			new FillETags(\OC::$server->getDatabaseConnection()),
