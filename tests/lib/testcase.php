@@ -207,6 +207,13 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		}
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 		if (self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()) {
+
+			$connection = \OC::$server->getDatabaseConnection();
+			if ($connection->inTransaction()) {
+				throw new \Exception('Stray transaction in test class ' . get_called_class());
+			}
+ 			$queryBuilder = $connection->getQueryBuilder();
+
 			$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
 
 			self::tearDownAfterClassCleanShares($queryBuilder);
