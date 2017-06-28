@@ -49,7 +49,6 @@ Feature: trashbin-new-endpoint
 		When User "user1" deletes folder "/renamed_shared"
 		Then as "user1" the folder with original path "/renamed_shared" does not exist in trash
 
-	@skip
 	Scenario: deleting a file in a received folder it is moved to the trashbin
 		Given As an "admin"
 		And user "user0" exists
@@ -61,7 +60,6 @@ Feature: trashbin-new-endpoint
 		When User "user1" deletes file "/renamed_shared/shared_file.txt"
 		Then as "user1" the file with original path "/renamed_shared/shared_file.txt" exists in trash
 
-	@skip
 	Scenario: deleting a file in a received folder when restored it comes back to the original path
 		Given As an "admin"
 		And user "user0" exists
