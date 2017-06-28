@@ -430,3 +430,22 @@ Feature: webdav-related
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
+	Scenario: Checking file id after a move between received shares
+		Given using old dav path
+		And user "user0" exists
+		And user "user1" exists
+		And user "user0" created a folder "/folderA"
+		And user "user0" created a folder "/folderB"
+		And folder "/folderA" of user "user0" is shared with user "user1"
+		And folder "/folderB" of user "user0" is shared with user "user1"
+		And user "user1" created a folder "/folderA/ONE"
+		And User "user1" stores id of file "/folderA/ONE"
+		And user "user1" created a folder "/folderA/ONE/TWO"
+		When User "user1" moves folder "/folderA/ONE" to "/folderB/ONE"
+		Then as "user1" the folder "/folderA" exists
+		And as "user1" the folder "/folderA/ONE" does not exist
+		# yes, a weird bug used to make this one fail
+		And as "user1" the folder "/folderA/ONE/TWO" does not exist
+		And as "user1" the folder "/folderB/ONE" exists
+		And as "user1" the folder "/folderB/ONE/TWO" exists
+		And User "user1" checks id of file "/folderB/ONE"
