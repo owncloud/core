@@ -61,8 +61,13 @@ class SMB extends Storage {
 	}
 
 	public function directoryProvider() {
-		// doesn't support leading/trailing spaces
-		return array(array('folder'));
+		return [
+			['folder'],
+			// doesn't support leading/trailing spaces
+			['folder with space'],
+			['spéciäl földer'],
+			['test single\'quote'],
+		];
 	}
 
 	public function testRenameWithSpaces() {

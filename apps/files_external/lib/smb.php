@@ -77,8 +77,10 @@ class SMB extends Common {
 
 		if (isset($params['host']) && isset($params['user']) && isset($params['password']) && isset($params['share'])) {
 			if (Server::NativeAvailable()) {
+				$this->log('using native libsmbclient');
 				$this->server = new NativeServer($params['host'], $params['user'], $params['password']);
 			} else {
+				$this->log('falling back to smbclient');
 				$this->server = new Server($params['host'], $params['user'], $params['password']);
 			}
 			$this->share = $this->server->getShare(trim($params['share'], '/'));
@@ -408,11 +410,6 @@ class SMB extends Common {
 				case 'c':
 				case 'c+':
 					//emulate these
-					if (strrpos($path, '.') !== false) {
-						$ext = substr($path, strrpos($path, '.'));
-					} else {
-						$ext = '';
-					}
 					if ($this->file_exists($path)) {
 						if (!$this->isUpdatable($path)) {
 							break;
@@ -422,7 +419,7 @@ class SMB extends Common {
 						if (!$this->isCreatable(dirname($path))) {
 							break;
 						}
-						$tmpFile = \OCP\Files::tmpFile($ext);
+						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
 					}
 					$source = fopen($tmpFile, $mode);
 					$share = $this->share;

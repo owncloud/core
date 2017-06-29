@@ -144,6 +144,17 @@ abstract class Storage extends \Test\TestCase {
 		$this->assertEquals('', $this->instance->file_get_contents('/lorem.txt'), 'file not emptied');
 	}
 
+	public function testWriteWithDotInPath() {
+		// filename does not contain a dot / extension, but parent dirs do ...
+		$path = '/something/that/is/not.supposed/to happen/lorem';
+		$lorem = 'lorem ipsum dolor sit ...';
+
+		$this->instance->mkdir(dirname($path));
+		$this->instance->file_put_contents($path, $lorem);
+
+		$this->assertEquals( $this->instance->file_get_contents($path), $lorem, 'data returned from file_get_contents is not equal to the source data');
+	}
+
 	/**
 	 * test various known mimetypes
 	 */
