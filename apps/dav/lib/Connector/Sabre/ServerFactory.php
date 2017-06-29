@@ -101,6 +101,7 @@ class ServerFactory {
 
 		// Load plugins
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\MaintenancePlugin($this->config));
+		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ValidateRequestPlugin('webdav'));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin($this->config));
 		$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend));
 		// FIXME: The following line is a workaround for legacy components relying on being able to send a GET to /
