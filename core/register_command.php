@@ -145,9 +145,10 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
 	$application->add(new OC\Core\Command\User\SyncBackend(\OC::$server->getAccountMapper(), \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
 
-	$application->add(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager(), \OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\Group\Delete(\OC::$server->getGroupManager()));
-	$application->add(new OC\Core\Command\Group\RemoveUser(\OC::$server->getGroupManager(), \OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\Group\AddMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\Group\RemoveMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager()));
 
 	$application->add(new OC\Core\Command\Security\ListCertificates(\OC::$server->getCertificateManager(null), \OC::$server->getL10N('core')));
 	$application->add(new OC\Core\Command\Security\ImportCertificate(\OC::$server->getCertificateManager(null)));
