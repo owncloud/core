@@ -38,11 +38,13 @@ class OwncloudPage extends Page
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$loadingIndicator=$this->find("css", '.loading');
-			$visibility = $this->elementHasCSSValue(
-				$loadingIndicator, 'visibility', 'visible'
-			);
-			if ($visibility===FALSE) {
-				break;
+			if (!is_null($loadingIndicator)) {
+				$visibility = $this->elementHasCSSValue(
+					$loadingIndicator, 'visibility', 'visible'
+				);
+				if ($visibility===FALSE) {
+					break;
+				}
 			}
 			usleep(STANDARDSLEEPTIMEMICROSEC);
 			$currentTime = microtime(true);
@@ -116,6 +118,14 @@ class OwncloudPage extends Page
 	 */
 	public function getMyUsername() {
 		return $this->findById($this->userNameDispayId)->getText();
+	}
+
+	/**
+	 * return the path to the relevant page
+	 * @return string
+	 */
+	public function getPagePath() {
+		return $this->getPath();
 	}
 
 	/**

@@ -48,6 +48,15 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context
 	}
 	
 	/**
+	 * @Given I go to the personal general settings page
+	 */
+	public function iGoToThePersonalGeneralSettingsPage()
+	{
+		$this->visitPath($this->personalGeneralSettingsPage->getPagePath());
+		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls($this->getSession());
+	}
+	
+	/**
 	 * @When I change the language to :language
 	 */
 	public function iChangeTheLanguageTo($language)
