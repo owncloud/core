@@ -29,7 +29,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Add extends Command {
+class AddMember extends Command {
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 
