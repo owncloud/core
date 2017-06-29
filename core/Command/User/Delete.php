@@ -57,7 +57,7 @@ class Delete extends Command {
 		$user = $this->userManager->get($input->getArgument('uid'));
 		if (is_null($user)) {
 			$output->writeln('<error>User does not exist</error>');
-			return;
+			return 1;
 		}
 
 		if ($user->delete()) {
@@ -66,5 +66,6 @@ class Delete extends Command {
 		}
 
 		$output->writeln('<error>The specified user could not be deleted. Please check the logs.</error>');
+		return 1;
 	}
 }

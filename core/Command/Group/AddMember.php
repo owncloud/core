@@ -29,7 +29,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class RemoveUser extends Command {
+class Add extends Command {
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 
@@ -44,18 +44,18 @@ class RemoveUser extends Command {
 
 	protected function configure() {
 		$this
-			->setName('group:removeuser')
-			->setDescription('remove user(s) from a group')
+			->setName('group:addmember')
+			->setDescription('add members to a group')
 			->addArgument(
 				'group',
 				InputArgument::REQUIRED,
 				'Name of the group'
 			)
 			->addOption(
-				'user',
-				'u',
+				'member',
+				'm',
 				InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-				'user that should be removed from the group'
+				'member that should be added to the group'
 			);
 	}
 
@@ -67,25 +67,32 @@ class RemoveUser extends Command {
 			return 1;
 		}
 
-		$users = $input->getOption('user');
+		$members = $input->getOption('member');
 
-		if (!count($users)) {
-			$output->writeln('<error>No users specified</error>');
+		if (!count($members)) {
+			$output->writeln('<error>No members specified</error>');
 			return 1;
 		}
 
-		foreach ($users as $userName) {
+		$memberExistsError = false;
+
+		foreach ($members as $userName) {
 			$user = $this->userManager->get($userName);
 			if ($user) {
 				if ($group->inGroup($user)) {
-					$group->removeUser($user);
-					$output->writeln('User "' . $user->getUID() . '" removed from group "' . $group->getGID() . '"');
+					$output->writeln('<info>User "' . $user->getUID() . '" is already a member of group "' . $group->getGID() . '"</info>');
 				} else {
-					$output->writeln('<error>User "' . $userName . '" could not be found in group "' . $group->getGID() . '"</error>');
+					$group->addUser($user);
+					$output->writeln('<info>User "' . $user->getUID() . '" added to group "' . $group->getGID() . '"</info>');
 				}
 			} else {
-				$output->writeln('<error>User "' . $userName . '" could not be found - not removed from group "' . $group->getGID() . '"</error>');
+				$output->writeln('<error>User "' . $userName . '" could not be found - not added to group "' . $group->getGID() . '"</error>');
+				$memberExistsError = true;
 			}
+		}
+		
+		if ($memberExistsError) {
+			return 1;
 		}
 	}
 }
