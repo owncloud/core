@@ -88,6 +88,7 @@ use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OCP\IL10N;
+use OCP\ILogger;
 use OCP\IServerContainer;
 use OCP\ISession;
 use OCP\Security\IContentSecurityPolicyManager;
@@ -109,6 +110,12 @@ use OC\Files\External\Service\DBConfigService;
 class Server extends ServerContainer implements IServerContainer {
 	/** @var string */
 	private $webRoot;
+
+	/**
+	 * cache the logger to prevent querying it over and over again
+	 * @var ILogger;
+	 */
+	private $logger;
 
 	/**
 	 * @param string $webRoot
@@ -1135,7 +1142,10 @@ class Server extends ServerContainer implements IServerContainer {
 	 * @return \OCP\ILogger
 	 */
 	public function getLogger() {
-		return $this->query('Logger');
+		if ($this->logger === null) {
+			$this->logger = $this->query('Logger');
+		}
+		return $this->logger;
 	}
 
 	/**
