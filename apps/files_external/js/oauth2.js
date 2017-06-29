@@ -20,42 +20,22 @@ $(document).ready(function() {
 					displayGranted($tr);
 				} else {
 					var client_id = $tr.find('.configuration [data-parameter="client_id"]').val();
-					var client_secret = $tr.find('.configuration [data-parameter="client_secret"]')
-						.val();
-					if (client_id != '' && client_secret != '') {
-						var params = {};
-						window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
-							params[key] = value;
-						});
-						if (params['code'] !== undefined) {
-							var token = $tr.find('.configuration [data-parameter="token"]');
-							var statusSpan = $tr.find('.status span');
-							statusSpan.removeClass();
-							statusSpan.addClass('waiting');
-							$.post(OC.filePath('files_external', 'ajax', 'oauth2.php'),
-									{
-										step: 2,
-										client_id: client_id,
-										client_secret: client_secret,
-										redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
-										code: params['code'],
-									}, function(result) {
-										if (result && result.status == 'success') {
-											$(token).val(result.data.token);
-											$(configured).val('true');
-											OCA.External.Settings.mountConfig.saveStorageConfig($tr, function(status) {
-												if (status) {
-													displayGranted($tr);
-												}
-											});
-										} else {
-											OC.dialogs.alert(result.data.message,
-													t('files_external', 'Error configuring OAuth2')
-													);
-										}
-									}
-							);
-						}
+					var client_secret = $tr.find('.configuration [data-parameter="client_secret"]').val();
+
+					var params = {};
+					window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+						params[key] = value;
+					});
+
+					if (params['code'] !== undefined) {
+						$('.configuration').trigger('oauth_step2', [{
+							backend_id: $tr.attr('class'),
+							client_id: client_id,
+							client_secret: client_secret,
+							redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
+							tr: $tr,
+							code: params['code'] || '',
+						}]);
 					}
 				}
 			});
@@ -65,31 +45,17 @@ $(document).ready(function() {
 	$('#externalStorage').on('click', '[name="oauth2_grant"]', function(event) {
 		event.preventDefault();
 		var tr = $(this).parent().parent();
-		var configured = $(this).parent().find('[data-parameter="configured"]');
 		var client_id = $(this).parent().find('[data-parameter="client_id"]').val();
 		var client_secret = $(this).parent().find('[data-parameter="client_secret"]').val();
+		
 		if (client_id != '' && client_secret != '') {
-			var token = $(this).parent().find('[data-parameter="token"]');
-			$.post(OC.filePath('files_external', 'ajax', 'oauth2.php'),
-				{
-					step: 1,
-					client_id: client_id,
-					client_secret: client_secret,
-					redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
-				}, function(result) {
-					if (result && result.status == 'success') {
-						$(configured).val('false');
-						$(token).val('false');
-						OCA.External.Settings.mountConfig.saveStorageConfig(tr, function(status) {
-							window.location = result.data.url;
-						});
-					} else {
-						OC.dialogs.alert(result.data.message,
-							t('files_external', 'Error configuring OAuth2')
-						);
-					}
-				}
-			);
+			$('.configuration').trigger('oauth_step1', [{
+				backend_id: tr.attr('class'),
+				client_id: client_id,
+				client_secret: client_secret,
+				redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
+				tr: tr
+			}])
 		}
 	});
 
