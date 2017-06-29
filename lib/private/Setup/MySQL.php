@@ -60,7 +60,7 @@ class MySQL extends AbstractDatabase {
 			//we can't use OC_BD functions here because we need to connect as the administrative user.
 			$query = "CREATE DATABASE IF NOT EXISTS `$name` CHARACTER SET utf8 COLLATE utf8_bin;";
 			$connection->executeUpdate($query);
-			} catch (\Exception $ex) {
+		} catch (\Exception $ex) {
 			$this->logger->error('Database creation failed: {error}', [
 				'app' => 'mysql.setup',
 				'error' => $ex->getMessage()
