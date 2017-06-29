@@ -62,7 +62,7 @@ class FeatureContext extends RawMinkContext implements Context
 	{
 		$notifications = $this->owncloudPage->getNotifications();
 		$tableRows=$table->getRows();
-		PHPUnit_Framework_Assert::assertEquals(
+		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
 			count($tableRows),
 			count($notifications)
 			);

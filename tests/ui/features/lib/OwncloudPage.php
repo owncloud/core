@@ -27,6 +27,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use WebDriver\Exception as WebDriverException;
+use WebDriver\Key;
 
 class OwncloudPage extends Page
 {
@@ -196,5 +197,28 @@ class OwncloudPage extends Page
 		}
 
 		return $exists;
+	}
+	
+	/**
+	 * sends an END key and then BACKSPACEs to delete the current value
+	 * then sends the new value
+	 * checks the set value and sends the Escape key + throws an exception 
+	 * if the value is not set correctly
+	 * 
+	 * @param NodeElement $inputField
+	 * @param string $value
+	 * @throws \Exception
+	 */
+	protected function cleanInputAndSetValue(NodeElement $inputField, $value) {
+		$resultValue = $inputField->getValue();
+		$existingValueLength = strlen($resultValue);
+		$deleteSequence = Key::END . str_repeat(Key::BACKSPACE, $existingValueLength);
+		$inputField->setValue($deleteSequence);
+		$inputField->setValue($value);
+		$resultValue = $inputField->getValue();
+		if ($resultValue !== $value) {
+			$inputField->keyUp(27); //send escape
+			throw new \Exception("value of input field is not what we expect");
+		}
 	}
 }
