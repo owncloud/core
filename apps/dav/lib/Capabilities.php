@@ -1,6 +1,7 @@
 <?php
-/**
+/**\
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Piotr Mrowczynski <Piotr.Mrowczynski@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -30,6 +31,7 @@ class Capabilities implements ICapability {
 		return [
 			'dav' => [
 				'chunking' => '1.0',
+				'bundlerequest' => '1.0',
 			]
 		];
 	}

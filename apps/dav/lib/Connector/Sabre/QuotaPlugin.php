@@ -72,8 +72,10 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 		$this->server = $server;
 
-		$server->on('beforeWriteContent', [$this, 'checkQuota'], 10);
-		$server->on('beforeCreateFile', [$this, 'checkQuota'], 10);
+		$server->on('beforeWriteContent', array($this, 'checkQuota'), 10);
+		$server->on('beforeCreateFile', array($this, 'checkQuota'), 10);
+		$server->on('beforeWriteBundle', array($this, 'checkQuota'), 10);
+		
 	}
 
 	/**
