@@ -55,7 +55,7 @@ class Delete extends Command {
 		$group = $this->groupManager->get($groupName);
 		if (is_null($group)) {
 			$output->writeln('<error>Group does not exist</error>');
-			return;
+			return 1;
 		}
 
 		if ($group->delete()) {
@@ -64,5 +64,6 @@ class Delete extends Command {
 		}
 
 		$output->writeln('<error>The specified group could not be deleted. Please check the logs.</error>');
+		return 1;
 	}
 }
