@@ -155,6 +155,7 @@ OC.L10N.register(
     "Click to copy to clipboard" : "クリックしてクリップボードにコピー",
     "Social share" : "共有",
     "There are currently no link shares, you can create one" : "共有可能なリンクを作成できます",
+    "Anyone with the link has access to the file/folder" : "リンクを知っている人はファイル/フォルダにアクセスできます",
     "Copied!" : "コピーしました",
     "Not supported!" : "サポートされていません",
     "Press ⌘-C to copy." : "⌘-Cを押してコピーします。",
