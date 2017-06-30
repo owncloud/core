@@ -135,12 +135,7 @@ class Cache implements ICache {
 		}
 
 		//merge partial data
-		if (!$data and is_string($file)) {
-			if (isset($this->partial[$file])) {
-				$data = $this->partial[$file];
-			}
-			return $data;
-		} else {
+		if($data) {
 			//fix types
 			$data['fileid'] = (int)$data['fileid'];
 			$data['parent'] = (int)$data['parent'];
@@ -157,6 +152,13 @@ class Cache implements ICache {
 			}
 			$data['permissions'] = (int)$data['permissions'];
 			return new CacheEntry($data);
+		} else if (!$data and is_string($file)) {
+			if (isset($this->partial[$file])) {
+				$data = $this->partial[$file];
+			}
+			return $data;
+		} else {
+			return false;
 		}
 	}
 
