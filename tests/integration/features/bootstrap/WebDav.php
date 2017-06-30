@@ -60,11 +60,13 @@ trait WebDav {
 								   $body = null,
 								   $type = "files",
 								   $requestBody = null){
+		echo "\nbaseUrl: " . $this->baseUrl. "\n";
 		if ( $type === "files" ){
 			$fullUrl = substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . "$path";
 		} else if ( $type === "uploads" ){
 			$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . "$path";
 		} 
+		echo "\nfullUrl: " . $fullUrl. "\n";
 		$client = new GClient();
 
 		$options = [];
