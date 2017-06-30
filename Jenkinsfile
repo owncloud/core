@@ -21,7 +21,8 @@ timestampedNode('SLAVE') {
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
 			make clean-test-integration
-			make test-integration OC_TEST_ALT_HOME=1
+			cd tests/integration/
+			./run.sh ./features/checksums.feature
 		   '''
 		}
 

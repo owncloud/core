@@ -87,8 +87,15 @@ trait WebDav {
 		if (!is_null($body)) {
 			$request->setBody($body);
 		}
-
-		return $client->send($request);
+		$response =  $client->send($request);
+		echo "request:\n-------------------------------------------------------\n";
+		var_dump($request);
+		
+		echo "response body contents:\n-------------------------------------------------------\n";
+		echo $response->getBody()->getContents() . "\n";
+		echo "\n-------------------------------------------------------\n";
+		
+		return $response;
 	}
 
 	/**
