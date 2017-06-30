@@ -147,7 +147,13 @@ class OwncloudPage extends Page
 	 */
 	public function waitForOutstandingAjaxCalls (Session $session, $timeout_msec=5000)
 	{
-		for ($counter = 0;$counter <= $timeout_msec;$counter += STANDARDSLEEPTIMEMILLISEC) {
+		$timeout_msec = (int) $timeout_msec;
+		if ($timeout_msec <= 0) {
+			throw new \InvalidArgumentException("negative or zero timeout");
+		}
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
 			try {
 				$waitingResult = $session->wait(
 					STANDARDSLEEPTIMEMILLISEC,
@@ -161,8 +167,50 @@ class OwncloudPage extends Page
 				echo $e->getMessage(). "\n";
 			} finally {
 				usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = microtime(true);
 			}
 		}
+		if ($currentTime > $end) {
+			$message = "INFORMATION: timed out waiting for outstanding ajax calls";
+			echo $message;
+			error_log($message);
+		}
+	}
+
+	/**
+	 * waits till at least one Ajax call is active
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 */
+	public function waitForAjaxCallsToStart (Session $session, $timeout_msec=1000)
+	{
+		$timeout_msec = (int) $timeout_msec;
+		if ($timeout_msec <= 0) {
+			throw new \InvalidArgumentException("negative or zero timeout");
+		}
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
+			if ((int) $session->evaluateScript("jQuery.active") > 0) {
+				break;
+			}
+			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
+		}
+	}
+
+	/**
+	 * waits till at least one Ajax call is active and then waits till all outstanding ajax calls finish
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 */
+	public function waitForAjaxCallsToStartAndFinish (Session $session, $timeout_msec=5000)
+	{
+		$start = microtime(true);
+		$this->waitForAjaxCallsToStart($session);
+		$end = microtime(true);
+		$timeout_msec = $timeout_msec - (($end-$start)*1000);
+		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 
 	/**

@@ -53,6 +53,8 @@ class FilesPage extends OwnCloudPage
 	//TODO make simpler, only ID .//*[@id='fileList']
 	protected $fileListXpath = ".//div[@id='app-content-files']//tbody[@id='fileList']";
 	protected $fileDeleteXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='Delete']";
+	protected $shareBtnXpath = "//a[@data-action='Share']";
+	protected $loadingIndicatorXpath = ".//*[@class='loading']";
 
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
@@ -138,6 +140,21 @@ class FilesPage extends OwnCloudPage
 			);
 		}
 		throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
+	}
+
+	/**
+	 * opens the sharing dialog for a given file/folder name
+	 * returns the SharingDialog Object
+	 * @param string $name
+	 * @param Session $session
+	 * @return SharingDialog
+	 */
+	public function openSharingDialog ($name, Session $session)
+	{
+		$fileRow = $this->findFileRowByName($name, $session);
+		$fileRow->find("xpath", $this->shareBtnXpath)->click();
+		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
+		return $this->getPage("SharingDialog");
 	}
 
 	/**
