@@ -93,15 +93,13 @@ trait BasicStructure {
 		$previousServer = $this->currentServer;
 		if ($server === 'LOCAL'){
 			$this->baseUrl = $this->localBaseUrl;
-			$this->baseUrlWithoutOCSAppendix = substr($this->baseUrl, 0, -4);
 			$this->currentServer = 'LOCAL';
-			return $previousServer;
 		} else {
 			$this->baseUrl = $this->remoteBaseUrl;
-			$this->baseUrlWithoutOCSAppendix = substr($this->baseUrl, 0, -4);
 			$this->currentServer = 'REMOTE';
-			return $previousServer;
 		}
+		$this->baseUrlWithoutOCSAppendix = substr($this->baseUrl, 0, -4);
+		return $previousServer;
 	}
 
 	/**
