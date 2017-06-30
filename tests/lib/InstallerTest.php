@@ -67,7 +67,7 @@ class InstallerTest extends TestCase {
 			'path' => $oldTmp,
 			'source' => 'path',
 			'appdata' => [
-				'id' => 'Bar',
+				'id' => 'testapp',
 				'level' => 100,
 			]
 		];
@@ -83,7 +83,7 @@ class InstallerTest extends TestCase {
 			'path' => $newTmp,
 			'source' => 'path',
 			'appdata' => [
-				'id' => 'Bar',
+				'id' => 'testapp',
 				'level' => 100,
 			]
 		];
@@ -93,7 +93,10 @@ class InstallerTest extends TestCase {
 
 		Installer::updateApp($newData);
 		$newVersionNumber = \OC_App::getAppVersion(self::$appid);
-
+		system('ls -l ' . __DIR__ . '/../../');
+		system('ls -l ' . __DIR__ . '/../../apps');
+		system('ls -l ' . __DIR__ . '/../../apps2');
+		
 		$this->assertNotEquals($oldVersionNumber, $newVersionNumber);
 	}
 }
