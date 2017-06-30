@@ -603,10 +603,13 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function checkTokenCredentials(IToken $dbToken, $token) {
 		// Check whether login credentials are still valid and the user was not disabled
-		// This check is performed each 5 minutes
+		// This check is performed each 5 minutes per default
+		// However, we try to read last_check_timeout from the appconfig table so the
+		// administrator could change this 5 minutes timeout
 		$lastCheck = $dbToken->getLastCheck() ? : 0;
 		$now = $this->timeFacory->getTime();
-		if ($lastCheck > ($now - 60 * 5)) {
+		$last_check_timeout = intval($this->config->getAppValue('last_check_timeout', 5));
+		if ($lastCheck > ($now - 60 * $last_check_timeout)) {
 			// Checked performed recently, nothing to do now
 			return true;
 		}
