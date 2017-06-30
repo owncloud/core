@@ -93,9 +93,8 @@ class InstallerTest extends TestCase {
 
 		Installer::updateApp($newData);
 		$newVersionNumber = \OC_App::getAppVersion(self::$appid);
-		system('ls -l ' . __DIR__ . '/../../');
-		system('ls -l ' . __DIR__ . '/../../apps');
-		system('ls -l ' . __DIR__ . '/../../apps2');
+		system('rm -rf ' . __DIR__ . '/../../apps2');
+		var_dump(\OC::$server->getConfig()->getSystemValue('apps_paths', null));
 		
 		$this->assertNotEquals($oldVersionNumber, $newVersionNumber);
 	}
