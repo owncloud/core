@@ -608,7 +608,7 @@ class Session implements IUserSession, Emitter {
 		// administrator could change this 5 minutes timeout
 		$lastCheck = $dbToken->getLastCheck() ? : 0;
 		$now = $this->timeFactory->getTime();
-		$last_check_timeout = intval($this->config->getAppValue('last_check_timeout', 5));
+		$last_check_timeout = intval($this->config->getAppValue('core', 'last_check_timeout', 5));
 		if ($lastCheck > ($now - 60 * $last_check_timeout)) {
 			// Checked performed recently, nothing to do now
 			return true;
