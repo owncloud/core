@@ -17,7 +17,7 @@ timestampedNode('SLAVE') {
 
 	stage 'Integration Testing'
 		executeAndReport('tests/integration/output/*.xml') {
-			sh '''phpenv local 7.0
+			sh '''phpenv local 7.1
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
 			make clean-test-integration
