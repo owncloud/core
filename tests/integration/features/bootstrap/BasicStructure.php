@@ -23,12 +23,6 @@ trait BasicStructure {
 	/** @var string */
 	private $baseUrl = '';
 
-	/**
-	 * base URL without the /ocs part
-	 * @var string
-	 */
-	private $baseUrlWithoutOCSAppendix = '';
-
 	/** @var int */
 	private $apiVersion = 1;
 
@@ -65,7 +59,10 @@ trait BasicStructure {
 		if ($testRemoteServerUrl !== false) {
 			$this->remoteBaseUrl = $testRemoteServerUrl;
 		}
-		$this->baseUrlWithoutOCSAppendix = substr($this->baseUrl, 0, -4);
+	}
+
+	private function baseUrlWithoutOCSAppendix() {
+		return substr($this->baseUrl, 0, -4);
 	}
 
 	/**
@@ -98,7 +95,6 @@ trait BasicStructure {
 			$this->baseUrl = $this->remoteBaseUrl;
 			$this->currentServer = 'REMOTE';
 		}
-		$this->baseUrlWithoutOCSAppendix = substr($this->baseUrl, 0, -4);
 		return $previousServer;
 	}
 
@@ -191,7 +187,7 @@ trait BasicStructure {
 	}
 
 	public function isExpectedUrl($possibleUrl, $finalPart){
-		$baseUrlChopped = substr($this->baseUrl, 0, -4);
+		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
 		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
 		return (substr($possibleUrl,0,$endCharacter) == "$baseUrlChopped" . "$finalPart");
 	}
