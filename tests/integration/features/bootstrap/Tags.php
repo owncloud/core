@@ -40,7 +40,7 @@ trait Tags {
 	private function createTag($user, $userVisible, $userAssignable, $name, $groups = null) {
 		try {
 			$createdTag = TagsHelper::createTag(
-				$this->baseUrlWithoutOCSAppendix,
+				$this->baseUrlWithoutOCSAppendix(),
 				$user,
 				$this->getPasswordForUser($user),
 				$name, $userVisible, $userAssignable, $groups,
@@ -90,7 +90,7 @@ trait Tags {
 
 	public function requestTagsForUser($user, $withGroups = false) {
 		$this->response = TagsHelper:: requestTagsForUser(
-			$this->baseUrlWithoutOCSAppendix,
+			$this->baseUrlWithoutOCSAppendix(),
 			$user,
 			$this->getPasswordForUser($user),
 			$withGroups
@@ -196,7 +196,7 @@ trait Tags {
 		$appPath = '/systemtags/';
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
-		$fullUrl = $this->baseUrlWithoutOCSAppendix . $this->davPath . $appPath . $tagID;
+		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->davPath . $appPath . $tagID;
 		try {
 			$response = $client->proppatch($fullUrl, $properties, 1);
 			$this->response = $response;
@@ -244,7 +244,7 @@ trait Tags {
 		$tagID = $this->findTagIdByName($name);
 		try {
 			$this->response = TagsHelper::deleteTag(
-				$this->baseUrlWithoutOCSAppendix,
+				$this->baseUrlWithoutOCSAppendix(),
 				$user,
 				$this->getPasswordForUser($user), $tagID,
 				$this->getDavPathVersion()
@@ -259,7 +259,7 @@ trait Tags {
 	private function tag($taggingUser, $tagName, $fileName, $fileOwner) {
 		try {
 			$this->response = TagsHelper::tag(
-				$this->baseUrlWithoutOCSAppendix,
+				$this->baseUrlWithoutOCSAppendix(),
 				$taggingUser, 
 				$this->getPasswordForUser($taggingUser),
 				$tagName, $fileName, $fileOwner, $this->getDavPathVersion()
@@ -284,7 +284,7 @@ trait Tags {
 						'{http://owncloud.org/ns}can-assign'
 					  ];
 		$appPath = '/systemtags-relations/files/';
-		$fullUrl = $this->baseUrlWithoutOCSAppendix . $this->davPath . $appPath . $fileID;
+		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->davPath . $appPath . $fileID;
 		try{
 			$response = $client->propfind($fullUrl, $properties, 1);
 		}catch (Sabre\HTTP\ClientHttpException $e) {
@@ -377,7 +377,7 @@ trait Tags {
 		foreach($this->createdTags as $tagID) {
 			try {
 				$this->response = TagsHelper::deleteTag(
-					$this->baseUrlWithoutOCSAppendix,
+					$this->baseUrlWithoutOCSAppendix(),
 					"admin", $this->getPasswordForUser("admin"), $tagID, 2);
 			} catch (ClientException  $e) {
 				$this->response = $e->getResponse();
