@@ -568,11 +568,15 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		$scheme = ($this->params['use_ssl'] === false) ? 'http' : 'https';
 		$base_url = $scheme . '://' . $this->params['hostname'] . ':' . $this->params['port'] . '/';
 
+		$isLondon = !(strpos($this->params['region'], 'eu-west-2') === false);
+		$signature = $isLondon ? 'v4' : null;
+
 		$this->connection = S3Client::factory([
 			'key' => $this->params['key'],
 			'secret' => $this->params['secret'],
 			'base_url' => $base_url,
 			'region' => $this->params['region'],
+			'signature' => $signature,
 			S3Client::COMMAND_PARAMS => [
 				'PathStyle' => $this->params['use_path_style'],
 			],
