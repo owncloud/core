@@ -10,18 +10,6 @@ trait Checksums {
 	use Webdav;
 
 	/**
-	 * @param string $userName
-	 * @return string
-	 */
-	private function getPasswordForUser($userName) {
-		if ($userName === 'admin') {
-			return $this->adminUser;
-		} else {
-			return $this->regularUser;
-		}
-	}
-
-	/**
 	 * @When user :user uploads file :source to :destination with checksum :checksum
 	 * @param string $user
 	 * @param string $source

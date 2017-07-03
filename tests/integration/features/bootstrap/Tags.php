@@ -23,8 +23,8 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Exception\ClientException;
+use TestHelpers\TagsHelper;
 
 trait Tags {
 
@@ -38,52 +38,24 @@ trait Tags {
 	 * @param string $groups
 	 */
 	private function createTag($user, $userVisible, $userAssignable, $name, $groups = null) {
-		$tagsPath = '/systemtags/';
-		$body = [
-			'name' => $name,
-			'userVisible' => $userVisible,
-			'userAssignable' => $userAssignable,
-		];
-		if ($groups !== null) {
-			$body['groups'] = $groups;
-		}
 		try {
-			$this->response = $this->makeDavRequest($user,
-								  "POST",
-								  $tagsPath,
-								  ['Content-Type' => 'application/json',],
-								  null,
-								  "uploads",
-								  json_encode($body));
-			$responseHeaders =  $this->response->getHeaders();
-			$tagUrl = $responseHeaders['Content-Location'][0];
-			$lastTagId = substr($tagUrl, strrpos($tagUrl,'/')+1);
+			$createdTag = TagsHelper::createTag(
+				$this->baseUrlWithoutOCSAppendix,
+				$user,
+				$this->getPasswordForUser($user),
+				$name, $userVisible, $userAssignable, $groups,
+				$this->getDavPathVersion()
+			);
+			$lastTagId = $createdTag['lastTagId'];
+			$this->response = $createdTag['HTTPResponse'];
 			array_push($this->createdTags, $lastTagId);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (ClientException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
 
-	private function validateTypeOfTag($type) {
-		$userVisible = true;
-		$userAssignable = true;
-		switch ($type) {
-			case 'normal':
-				break;
-			case 'not user-assignable':
-				$userAssignable = false;
-				break;
-			case 'not user-visible':
-				$userVisible = false;
-				break;
-			default:
-				throw new \Exception('Unsupported type');
-		}
-		return array($userVisible, $userAssignable);
-	}
-
 	private function assertTypeOfTag($tagData, $type) {
-		$userAttributes = $this->validateTypeOfTag($type);
+		$userAttributes = TagsHelper::validateTypeOfTag($type);
 		$tagDisplayName = $tagData['{http://owncloud.org/ns}display-name'];
 		$userVisible = ($userAttributes[0]) ? 'true' : 'false';
 		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
@@ -101,7 +73,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function createsATagWithName($user, $type, $name) {
-		$this->createTag($user, $this->validateTypeOfTag($type)[0], $this->validateTypeOfTag($type)[1], $name);
+		$this->createTag($user, TagsHelper::validateTypeOfTag($type)[0], TagsHelper::validateTypeOfTag($type)[1], $name);
 	}
 
 	/**
@@ -113,26 +85,17 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function createsATagWithNameAndGroups($user, $type, $name, $groups) {
-		$this->createTag($user, $this->validateTypeOfTag($type)[0], $this->validateTypeOfTag($type)[1], $name, $groups);
+		$this->createTag($user, TagsHelper::validateTypeOfTag($type)[0], TagsHelper::validateTypeOfTag($type)[1], $name, $groups);
 	}
 
 	public function requestTagsForUser($user, $withGroups = false) {
-		$client = $this->getSabreClient($user);
-		$properties = [
-						'{http://owncloud.org/ns}id',
-						'{http://owncloud.org/ns}display-name',
-						'{http://owncloud.org/ns}user-visible',
-						'{http://owncloud.org/ns}user-assignable',
-						'{http://owncloud.org/ns}can-assign'
-					  ];
-		if ($withGroups) {
-			array_push($properties, '{http://owncloud.org/ns}groups');
-		}
-		$appPath = '/systemtags/';
-		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . $appPath;
-		$response = $client->propfind($fullUrl, $properties, 1);
-		$this->response = $response;
-		return $response;
+		$this->response = TagsHelper:: requestTagsForUser(
+			$this->baseUrlWithoutOCSAppendix,
+			$user,
+			$this->getPasswordForUser($user),
+			$withGroups
+		);
+		return $this->response;
 	}
 
 	public function requestTagByDisplayName($user, $tagDisplayName, $withGroups = false) {
@@ -233,7 +196,7 @@ trait Tags {
 		$appPath = '/systemtags/';
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
-		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . $appPath . $tagID;
+		$fullUrl = $this->baseUrlWithoutOCSAppendix . $this->davPath . $appPath . $tagID;
 		try {
 			$response = $client->proppatch($fullUrl, $properties, 1);
 			$this->response = $response;
@@ -279,17 +242,29 @@ trait Tags {
 	 */
 	public function userDeletesTag($user, $name){
 		$tagID = $this->findTagIdByName($name);
-		$this->deleteTag($user, $tagID);
+		try {
+			$this->response = TagsHelper::deleteTag(
+				$this->baseUrlWithoutOCSAppendix,
+				$user,
+				$this->getPasswordForUser($user), $tagID,
+				$this->getDavPathVersion()
+			);
+		} catch (ClientException $e) {
+			$this->response = $e->getResponse();
+		}
+		
 		unset($this->createdTags[$tagID]);
 	}
 
 	private function tag($taggingUser, $tagName, $fileName, $fileOwner) {
-		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
-		$tagID = $this->findTagIdByName($tagName);
-		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		try {
-			$this->response = $this->makeDavRequest($taggingUser,"PUT", $path, null, null, "uploads");
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = TagsHelper::tag(
+				$this->baseUrlWithoutOCSAppendix,
+				$taggingUser, 
+				$this->getPasswordForUser($taggingUser),
+				$tagName, $fileName, $fileOwner, $this->getDavPathVersion()
+				);
+		} catch ( ClientException $e ) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -309,7 +284,7 @@ trait Tags {
 						'{http://owncloud.org/ns}can-assign'
 					  ];
 		$appPath = '/systemtags-relations/files/';
-		$fullUrl = substr($this->baseUrl, 0, -4) . $this->davPath . $appPath . $fileID;
+		$fullUrl = $this->baseUrlWithoutOCSAppendix . $this->davPath . $appPath . $fileID;
 		try{
 			$response = $client->propfind($fullUrl, $properties, 1);
 		}catch (Sabre\HTTP\ClientHttpException $e) {
@@ -393,15 +368,6 @@ trait Tags {
 		$this->untag($user, $tagName, $fileName, $shareUser);
 	}
 
-	private function deleteTag($user, $tagID) {
-		$tagsPath = '/systemtags/' . $tagID;
-		try {
-			$this->response = $this->makeDavRequest($user,"DELETE",$tagsPath,[],null,"uploads",null);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
-			$this->response = $e->getResponse();
-		}
-	}
-
 	/**
 	 * @BeforeScenario
 	 * @AfterScenario
@@ -409,7 +375,13 @@ trait Tags {
 	public function cleanupTags()
 	{
 		foreach($this->createdTags as $tagID) {
-			$this->deleteTag('admin', $tagID);
+			try {
+				$this->response = TagsHelper::deleteTag(
+					$this->baseUrlWithoutOCSAppendix,
+					"admin", $this->getPasswordForUser("admin"), $tagID, 2);
+			} catch (ClientException  $e) {
+				$this->response = $e->getResponse();
+			}
 		}
 	}
 }
