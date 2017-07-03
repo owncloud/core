@@ -37,21 +37,21 @@
 	<div id="notification-container">
 		<div id="notification"></div>
 	</div>
-	<header role="banner"><div id="header">
-			<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
-				id="owncloud" tabindex="1">
-				<div class="logo-icon">
-					<h1 class="hidden-visually">
-						<?php p($theme->getName()); ?>
-					</h1>
-				</div>
+	<header role="banner">
+		<div id="header">
+			<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" id="owncloud" tabindex="1">
+				<h1 class="logo-icon">
+					<span class="own">own</span><span class="cloud">Cloud</span>
+				</h1>
 			</a>
 
 			<a href="#" class="header-appname-container menutoggle" tabindex="2">
+				<button class="burger">
+					<?php echo $l->t('Menu'); ?>
+				</button>
 				<h1 class="header-appname">
 					<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
 				</h1>
-				<div class="icon-caret"></div>
 			</a>
 
 			<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
@@ -68,8 +68,6 @@
 					</div>
 					<?php endif; ?>
 					<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
-
-					<div class="icon-caret"></div>
 				</div>
 				<div id="expanddiv">
 				<ul>

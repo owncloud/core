@@ -52,24 +52,22 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 <input type="hidden" name="maxSizeAnimateGif" value="<?php p($_['maxSizeAnimateGif']); ?>" id="maxSizeAnimateGif">
 
 
-<header><div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
-		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
-		   title="" id="owncloud">
-			<div class="logo-icon svg">
-			</div>
+<header>
+	<div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
+		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" title="" id="owncloud">
+			<h1 class="logo-icon">
+				<span class="own">own</span><span class="cloud">Cloud</span>
+			</h1>
 		</a>
 
-		<div class="header-appname-container">
+		<a href="#" class="header-appname-container menutoggle" tabindex="2">
+			<button class="burger">
+				<?php echo $l->t('Menu'); ?>
+			</button>
 			<h1 class="header-appname">
-				<?php
-					if(OC_Util::getEditionString() === OC_Util::EDITION_COMMUNITY) {
-						p($theme->getName());
-					} else {
-						print_unescaped($theme->getHTMLName());
-					}
-				?>
+				<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
 			</h1>
-		</div>
+		</a>
 
 		<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
 		<?php
@@ -96,7 +94,8 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 			</span>
 		</div>
 		<?php } ?>
-</div></header>
+	</div>
+</header>
 <div id="content-wrapper">
 	<div id="content">
 		<div id="preview">
