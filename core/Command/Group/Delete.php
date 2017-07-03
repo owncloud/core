@@ -1,9 +1,6 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
- * @author Jens-Christian Fischer <jens-christian.fischer@switch.ch>
- * @author Joas Schilling <coding@schilljs.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Phil Davis <phil@jankaritech.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -22,50 +19,51 @@
  *
  */
 
-namespace OC\Core\Command\User;
+namespace OC\Core\Command\Group;
 
-use OCP\IUserManager;
+use OCP\IGroupManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 class Delete extends Command {
-	/** @var IUserManager */
-	protected $userManager;
+	/** @var IGroupManager */
+	protected $groupManager;
 
 	/**
-	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
 	 */
-	public function __construct(IUserManager $userManager) {
-		$this->userManager = $userManager;
+	public function __construct(IGroupManager $groupManager) {
+		$this->groupManager = $groupManager;
 		parent::__construct();
 	}
 
 	protected function configure() {
 		$this
-			->setName('user:delete')
-			->setDescription('deletes the specified user')
+			->setName('group:delete')
+			->setDescription('deletes the specified group')
 			->addArgument(
-				'uid',
+				'group',
 				InputArgument::REQUIRED,
-				'the username'
+				'the group name'
 			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$user = $this->userManager->get($input->getArgument('uid'));
-		if (is_null($user)) {
-			$output->writeln('<error>User does not exist</error>');
+		$groupName = $input->getArgument('group');
+		$group = $this->groupManager->get($groupName);
+		if (is_null($group)) {
+			$output->writeln('<error>Group does not exist</error>');
 			return 1;
 		}
 
-		if ($user->delete()) {
-			$output->writeln('<info>The specified user was deleted</info>');
+		if ($group->delete()) {
+			$output->writeln('<info>The specified group was deleted</info>');
 			return;
 		}
 
-		$output->writeln('<error>The specified user could not be deleted. Please check the logs.</error>');
+		$output->writeln('<error>The specified group could not be deleted. Please check the logs.</error>');
 		return 1;
 	}
 }

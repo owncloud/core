@@ -37,6 +37,8 @@ class SharingContext extends RawMinkContext implements Context
 	private $sharingDialog;
 	private $regularUserName;
 	private $regularUserNames;
+	private $regularGroupName;
+	private $regularGroupNames;
 
 	public function __construct(FilesPage $filesPage)
 	{
@@ -53,6 +55,18 @@ class SharingContext extends RawMinkContext implements Context
 			$folder, $this->getSession()
 		);
 		$this->sharingDialog->shareWithUser($user, $this->getSession());
+	}
+
+	/**
+	 * @Given the file/folder :folder is shared with the group :group
+	 */
+	public function theFileFolderIsSharedWithTheGroup($folder, $group)
+	{
+		$this->filesPage->waitTillPageIsloaded($this->getSession());
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$folder, $this->getSession()
+		);
+		$this->sharingDialog->shareWithGroup($group, $this->getSession());
 	}
 
 	/**
@@ -75,31 +89,39 @@ class SharingContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then all users that contain the string :requiredString in their username should be listed in the autocomplete list
+	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list
 	 */
-	public function allUsersThatContainTheStringInTheirUsernameShouldBeListedInTheAutocompleteList($requiredString)
+	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteList($requiredString)
 	{
-		$this->allUsersThatContainTheStringInTheirUsernameShouldBeListedInTheAutocompleteListExcept($requiredString, '');
+		$this->allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept($requiredString, '', '');
 	}
 
 	/**
-	 * @Then all users that contain the string :requiredString in their username should be listed in the autocomplete list except :notToBeListed
+	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list except :userOrGroup :notToBeListed
 	 */
-	public function allUsersThatContainTheStringInTheirUsernameShouldBeListedInTheAutocompleteListExcept($requiredString, $notToBeListed)
+	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept($requiredString, $userOrGroup, $notToBeListed)
 	{
-		$autocompleteUsers = $this->sharingDialog->getAutocompleteUsersList();
-		foreach ( $this->regularUserNames as $regularUser ) {
-			if (strpos($regularUser, $requiredString) !== false
-				&& $regularUser !== $notToBeListed) {
+		if ($userOrGroup === 'group') {
+			$notToBeListed = $this->sharingDialog->groupStringsToMatchAutoComplete($notToBeListed);
+		}
+		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
+		foreach (
+			array_merge(
+				$this->regularUserNames,
+				$this->sharingDialog->groupStringsToMatchAutoComplete($this->regularGroupNames)
+			) as $regularUserOrGroup ) {
+
+			if (strpos($regularUserOrGroup, $requiredString) !== false
+				&& $regularUserOrGroup !== $notToBeListed) {
 				PHPUnit_Framework_Assert::assertContains(
-					$regularUser,
-					$autocompleteUsers,
-					"'" . $regularUser . "' not in autocomplete list");
+					$regularUserOrGroup,
+					$autocompleteItems,
+					"'" . $regularUserOrGroup . "' not in autocomplete list");
 			}
 		}
 		PHPUnit_Framework_Assert::assertNotContains(
 			$notToBeListed,
-			$this->sharingDialog->getAutocompleteUsersList()
+			$this->sharingDialog->getAutocompleteItemsList()
 		);
 	}
 
@@ -110,7 +132,7 @@ class SharingContext extends RawMinkContext implements Context
 	{
 		PHPUnit_Framework_Assert::assertNotContains(
 			$this->regularUserName,
-			$this->sharingDialog->getAutocompleteUsersList()
+			$this->sharingDialog->getAutocompleteItemsList()
 		);
 	}
 
@@ -131,7 +153,7 @@ class SharingContext extends RawMinkContext implements Context
 	public function theAutocompleteListShouldNotBeDisplayed()
 	{
 		PHPUnit_Framework_Assert::assertEmpty(
-			$this->sharingDialog->getAutocompleteUsersList()
+			$this->sharingDialog->getAutocompleteItemsList()
 		);
 	}
 
@@ -148,5 +170,7 @@ class SharingContext extends RawMinkContext implements Context
 		$featureContext = $environment->getContext('FeatureContext');
 		$this->regularUserNames = $featureContext->getRegularUserNames();
 		$this->regularUserName = $featureContext->getRegularUserName();
+		$this->regularGroupNames = $featureContext->getRegularGroupNames();
+		$this->regularGroupName = $featureContext->getRegularGroupName();
 	}
 }
