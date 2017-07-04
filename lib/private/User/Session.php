@@ -88,7 +88,7 @@ class Session implements IUserSession, Emitter {
 	private $session;
 
 	/** @var ITimeFactory */
-	private $timeFacory;
+	private $timeFactory;
 
 	/** @var IProvider */
 	private $tokenProvider;
@@ -102,14 +102,14 @@ class Session implements IUserSession, Emitter {
 	/**
 	 * @param IUserManager $manager
 	 * @param ISession $session
-	 * @param ITimeFactory $timeFacory
+	 * @param ITimeFactory $timeFactory
 	 * @param IProvider $tokenProvider
 	 * @param IConfig $config
 	 */
-	public function __construct(IUserManager $manager, ISession $session, ITimeFactory $timeFacory, $tokenProvider, IConfig $config) {
+	public function __construct(IUserManager $manager, ISession $session, ITimeFactory $timeFactory, $tokenProvider, IConfig $config) {
 		$this->manager = $manager;
 		$this->session = $session;
-		$this->timeFacory = $timeFacory;
+		$this->timeFactory = $timeFactory;
 		$this->tokenProvider = $tokenProvider;
 		$this->config = $config;
 	}
@@ -347,7 +347,7 @@ class Session implements IUserSession, Emitter {
 		if (!is_null($request->getCookie('cookie_test'))) {
 			return true;
 		}
-		setcookie('cookie_test', 'test', $this->timeFacory->getTime() + 3600);
+		setcookie('cookie_test', 'test', $this->timeFactory->getTime() + 3600);
 		return false;
 	}
 
@@ -605,10 +605,13 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function checkTokenCredentials(IToken $dbToken, $token) {
 		// Check whether login credentials are still valid and the user was not disabled
-		// This check is performed each 5 minutes
+		// This check is performed each 5 minutes per default
+		// However, we try to read last_check_timeout from the appconfig table so the
+		// administrator could change this 5 minutes timeout
 		$lastCheck = $dbToken->getLastCheck() ? : 0;
-		$now = $this->timeFacory->getTime();
-		if ($lastCheck > ($now - 60 * 5)) {
+		$now = $this->timeFactory->getTime();
+		$last_check_timeout = intval($this->config->getAppValue('core', 'last_check_timeout', 5));
+		if ($lastCheck > ($now - 60 * $last_check_timeout)) {
 			// Checked performed recently, nothing to do now
 			return true;
 		}
