@@ -293,6 +293,21 @@ class Local extends \OC\Files\Storage\Common {
 		if ($space === false || is_null($space)) {
 			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 		}
+		$mounts = shell_exec("mount | grep $sourcePath");
+		$mounts = preg_split('/\n/', $mounts);
+		array_pop($mounts);
+		if (count($mounts) > 0) {
+			foreach ($mounts as &$value) {
+				$dir = preg_split('/ /', $value)[0];
+				do {
+					$size = @disk_free_space($dir);
+					$dir = preg_split('/\//', $dir);
+					array_pop($dir);
+					$dir = join('/', $dir);
+				} while(count($dir) > 0 and $size == null);
+				$space += $size;
+			}
+		}
 		return $space;
 	}
 
