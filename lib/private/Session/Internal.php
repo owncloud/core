@@ -47,7 +47,10 @@ class Internal extends Session {
 		try {
 			session_start();
 		} catch (\Exception $e) {
-			setcookie(session_name(), null, -1, \OC::$WEBROOT ? : '/');
+			if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+				$secureFlag = true;
+			}
+			setcookie(session_name(), null, -1, \OC::$WEBROOT ? : '/', null, $secureFlag, true);
 		}
 		restore_error_handler();
 		if (!isset($_SESSION)) {

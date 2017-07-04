@@ -347,7 +347,11 @@ class Session implements IUserSession, Emitter {
 		if (!is_null($request->getCookie('cookie_test'))) {
 			return true;
 		}
-		setcookie('cookie_test', 'test', $this->timeFacory->getTime() + 3600);
+		$secureFlag = false;
+		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+			$secureFlag = true;
+		}
+		setcookie('cookie_test', 'test', $this->timeFacory->getTime() + 3600, null, null, $secureFlag, true);
 		return false;
 	}
 
