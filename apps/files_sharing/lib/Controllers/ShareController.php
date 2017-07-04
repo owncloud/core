@@ -183,6 +183,7 @@ class ShareController extends Controller {
 		if ($password !== null) {
 			if ($this->shareManager->checkPassword($share, $password)) {
 				$this->session->set('public_link_authenticated', (string)$share->getId());
+				$this->session->set('public_link_password', $password);
 			} else {
 				$this->emitAccessShareHook($share, 403, 'Wrong password');
 				return false;
@@ -190,7 +191,9 @@ class ShareController extends Controller {
 		} else {
 			// not authenticated ?
 			if ( ! $this->session->exists('public_link_authenticated')
-				|| $this->session->get('public_link_authenticated') !== (string)$share->getId()) {
+				|| $this->session->get('public_link_authenticated') !== (string)$share->getId()
+				|| ! $this->session->exists('public_link_password')
+				|| ! $this->shareManager->checkPassword($share, $this->session->get('public_link_password'))) {
 				return false;
 			}
 		}

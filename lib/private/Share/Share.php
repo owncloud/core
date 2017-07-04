@@ -2513,8 +2513,12 @@ class Share extends Constants {
 			return true;
 		}
 
-		if ( \OC::$server->getSession()->exists('public_link_authenticated')
-			&& \OC::$server->getSession()->get('public_link_authenticated') === (string)$linkItem['id'] ) {
+		$session = \OC::$server->getSession();
+		$shareManager = \OC::$server->getShareManager();
+		if ( $session->exists('public_link_authenticated')
+			&& $session->get('public_link_authenticated') === (string)$linkItem['id']
+			&& $session->getSession()->exists('public_link_password')
+			&& $shareManager->checkPassword($shareManager->getShareById('ocinternal:' . $linkItem['id']), $session->get('public_link_password')) ) {
 			return true;
 		}
 

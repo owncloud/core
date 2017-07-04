@@ -174,8 +174,15 @@ class ShareControllerTest extends \Test\TestCase {
 			->with('token')
 			->willReturn($share);
 
-		$this->session->method('exists')->with('public_link_authenticated')->willReturn(true);
-		$this->session->method('get')->with('public_link_authenticated')->willReturn('1');
+		$this->session->method('exists')->willReturnMap([
+			['public_link_authenticated', true],
+			['public_link_password', true],
+		]);
+		$this->session->method('get')->willReturnMap([
+			['public_link_authenticated', '1'],
+			['public_link_password', 'password'],
+		]);
+		$this->shareManager->method('checkPassword')->with($share, 'password')->willReturn(true);
 
 		$this->urlGenerator->expects($this->once())
 			->method('linkToRoute')
@@ -184,6 +191,31 @@ class ShareControllerTest extends \Test\TestCase {
 
 		$response = $this->shareController->showAuthenticate('token');
 		$expectedResponse =  new RedirectResponse('redirect');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	public function testShowAuthenticatePasswordChanged() {
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setId(1);
+
+		$this->shareManager
+			->expects($this->once())
+			->method('getShareByToken')
+			->with('token')
+			->willReturn($share);
+
+		$this->session->method('exists')->willReturnMap([
+			['public_link_authenticated', true],
+			['public_link_password', true],
+		]);
+		$this->session->method('get')->willReturnMap([
+			['public_link_authenticated', '1'],
+			['public_link_password', 'oldpassword'],
+		]);
+		$this->shareManager->method('checkPassword')->with($share, 'oldpassword')->willReturn(false);
+
+		$response = $this->shareController->showAuthenticate('token');
+		$expectedResponse =  new TemplateResponse($this->appName, 'authenticate', [], 'guest');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -216,9 +248,13 @@ class ShareControllerTest extends \Test\TestCase {
 			->willReturn(true);
 
 		$this->session
-			->expects($this->once())
+			->expects($this->at(0))
 			->method('set')
 			->with('public_link_authenticated', '42');
+		$this->session
+			->expects($this->at(1))
+			->method('set')
+			->with('public_link_password', 'validpassword');
 
 		$this->urlGenerator->expects($this->once())
 			->method('linkToRoute')
@@ -328,8 +364,15 @@ class ShareControllerTest extends \Test\TestCase {
 			->setPermissions(\OCP\Constants::PERMISSION_READ)
 			->setTarget('/file1.txt');
 
-		$this->session->method('exists')->with('public_link_authenticated')->willReturn(true);
-		$this->session->method('get')->with('public_link_authenticated')->willReturn('42');
+		$this->session->method('exists')->willReturnMap([
+			['public_link_authenticated', true],
+			['public_link_password', true],
+		]);
+		$this->session->method('get')->willReturnMap([
+			['public_link_authenticated', '42'],
+			['public_link_password', 'password'],
+		]);
+		$this->shareManager->method('checkPassword')->with($share, 'password')->willReturn(true);
 
 		$this->previewManager->method('isMimeSupported')->with('text/plain')->willReturn(true);
 
@@ -408,8 +451,15 @@ class ShareControllerTest extends \Test\TestCase {
 			->setNode($file)
 			->setTarget('/file1.txt');
 
-		$this->session->method('exists')->with('public_link_authenticated')->willReturn(true);
-		$this->session->method('get')->with('public_link_authenticated')->willReturn('42');
+		$this->session->method('exists')->willReturnMap([
+			['public_link_authenticated', true],
+			['public_link_password', true],
+		]);
+		$this->session->method('get')->willReturnMap([
+			['public_link_authenticated', '42'],
+			['public_link_password', 'password'],
+		]);
+		$this->shareManager->method('checkPassword')->with($share, 'password')->willReturn(true);
 
 		$this->previewManager->method('isMimeSupported')->with('text/plain')->willReturn(true);
 
