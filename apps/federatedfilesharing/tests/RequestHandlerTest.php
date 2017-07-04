@@ -249,9 +249,8 @@ class RequestHandlerTest extends TestCase {
 			\OC::$server->getDatabaseConnection(),
 			Filesystem::getMountManager(),
 			Filesystem::getLoader(),
-			\OC::$server->getHTTPHelper(),
 			\OC::$server->getNotificationManager(),
-			$discoveryManager,
+			\OC::$server->getEventDispatcher(),
 			$toDelete
 		);
 
