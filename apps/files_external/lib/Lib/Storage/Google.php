@@ -389,11 +389,11 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	public function rename($path1, $path2) {
 		$file = $this->getDriveFile($path1);
 		if ($file) {
-			$newFile = $this->getDriveFile($path2);
+			$oldfile = $this->getDriveFile($path2);
 			if (dirname($path1) === dirname($path2)) {
-				if ($newFile) {
+				if ($oldfile) {
 					// rename to the name of the target file, could be an office file without extension
-					$file->setTitle($newFile->getTitle());
+					$file->setTitle($oldfile->getTitle());
 				} else {
 					$file->setTitle(basename(($path2)));
 				}
@@ -408,12 +408,13 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					return false;
 				}
 			}
+
 			// We need to get the object for the existing file with the same
 			// name (if there is one) before we do the patch. If oldfile
 			// exists and is a directory we have to delete it before we
 			// do the rename too.
 			$oldfile = $this->getDriveFile($path2);
-			if ($oldfile && $this->is_dir($path2)) {
+			if ($oldfile && $oldfile->getMimeType() === self::FOLDER) {
 				$this->rmdir($path2);
 				$oldfile = false;
 			}
@@ -421,11 +422,10 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			if ($result) {
 				$this->setDriveFile($path1, false);
 				$this->setDriveFile($path2, $result);
-				if ($oldfile && $newFile) {
-					// only delete if they have a different id (same id can happen for part files)
-					if ($newFile->getId() !== $oldfile->getId()) {
-						$this->service->files->delete($oldfile->getId());
-					}
+
+				// delete old file to avoid duplicates
+				if ($oldfile) {
+					$this->service->files->delete($oldfile->getId());
 				}
 			}
 			return (bool)$result;
