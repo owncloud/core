@@ -20,6 +20,7 @@ default:
         - CommandLineContext:
             baseUrl: http://localhost:8080
             ocPath: ../../
+        - AppManagementContext:
     federation:
       paths:
         - %paths.base%/../federation_features
