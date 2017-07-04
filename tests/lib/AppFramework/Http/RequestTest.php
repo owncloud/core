@@ -13,7 +13,6 @@ namespace Test\AppFramework\Http;
 use OC\AppFramework\Http\Request;
 use OC\Security\CSRF\CsrfToken;
 use OC\Security\CSRF\CsrfTokenManager;
-use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 use OCP\IConfig;
 
@@ -1381,7 +1380,7 @@ class RequestTest extends \Test\TestCase {
 			->with('overwritecondaddr')
 			->will($this->returnValue($overwriteCondAddr));
 
-		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
+		/** @var Request | \PHPUnit_Framework_MockObject_MockObject $request */
 		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')
 			->setMethods(['getScriptName'])
 			->setConstructorArgs([
