@@ -16,7 +16,6 @@ SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2
 
 function env_alt_home_enable {
-	$OCC app:enable testing
 	$OCC config:app:set testing enable_alt_user_backend --value yes
 }
 
@@ -79,6 +78,8 @@ $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 #Enable external storage app
 $OCC config:app:set core enable_external_storage --value=yes
 
+$OCC app:enable testing
+
 mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
 OUTPUT_CREATE_STORAGE=`$OCC files_external:create local_storage local null::null -c datadir=$SCRIPT_PATH/work/local_storage` 
 
@@ -122,6 +123,9 @@ $OCC files_external:delete -y $ID_STORAGE
 
 #Disable external storage app
 $OCC config:app:set core enable_external_storage --value=no
+
+$OCC app:disable testing
+
 
 # Clear storage folder
 rm -Rf work/local_storage/*

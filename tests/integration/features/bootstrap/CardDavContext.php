@@ -47,14 +47,14 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		}
 	}
 
-	/** @BeforeScenario */
+	/** @BeforeScenario @carddav*/
 	public function setUpScenario() {
 		$this->client = new Client();
 		$this->responseXml = '';
 	}
 
 
-	/** @AfterScenario */
+	/** @AfterScenario @carddav*/
 	public function afterScenario() {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		try {
