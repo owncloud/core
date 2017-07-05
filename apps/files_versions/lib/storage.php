@@ -715,8 +715,8 @@ class Storage {
 			$versionsFileview = new View('/'.$uid.'/files_versions');
 
 			$softQuota = true;
-			$quota = $user->getQuota();
-			if ( $quota === null || $quota === 'none' ) {
+			$quota = \OC_Util::getUserQuota($user);
+			if ($quota === \OCP\Files\FileInfo::SPACE_UNLIMITED) {
 				$quota = Filesystem::free_space('/');
 				$softQuota = false;
 			} else {
