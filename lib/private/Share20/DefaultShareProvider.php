@@ -839,7 +839,6 @@ class DefaultShareProvider implements IShareProvider {
 	 * - $chunkedShareIds responsible to split shareIds into chunks containing 100 elements
 	 * 	 e.g. $chunkedShareIds { { "4", "52", "54",... }[100], { .. }[2] }[2]
 	 *
-<<<<<<< HEAD
 	 * - $shareIdToShareMap responsible to split shareIds into chunks containing 100 elements
 	 * 	 e.g. $shareIdToShareMap { "4" => IShare, "52" => IShare, "54" => IShare, ... }[102]
 	 *
