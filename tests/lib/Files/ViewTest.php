@@ -2466,24 +2466,49 @@ class ViewTest extends TestCase {
 		$this->assertEquals($expected, $files);
 	}
 
+	private function calculateChecksums($data) {
+		// Get hashing algorithms and calculate checksum for given data
+		$checksumString = '';
+		$checksums['sha1'] = hash('sha1', $data);
+		$checksums['md5'] = hash('md5', $data);
+		$checksums['adler32'] = hash('adler32', $data);
+		foreach ($checksums as $algo => $checksum) {
+			$checksumString .= sprintf('%s:%s ', strtoupper($algo), $checksum);
+		}
+		return rtrim($checksumString);
+	}
+
 	public function testFilePutContentsClearsChecksum() {
 		$storage = new Temporary([]);
 		$scanner = $storage->getScanner();
-		$storage->file_put_contents('foo.txt', 'bar');
-		Filesystem::mount($storage, [], '/test/');
+		$storage->mkdir('files');
+		$storage->file_put_contents('files/foo.txt', 'bar');
+		Filesystem::mount($storage, [], '/files');
 		$scanner->scan('');
 
-		$view = new View('/test/foo.txt');
-		$view->putFileInfo('.', ['checksum' => '42']);
+		// Obtain view on the file and check content + checksum
+		// If we insert file using $storage->file_put_contents checksum is not being calculated (null)
+		$view = new View('/files');
+		$this->assertEquals('bar', $view->file_get_contents('files/foo.txt'));
+		$data = $view->getFileInfo('files/foo.txt');
+		$this->assertNull($data->getChecksum());
 
-		$this->assertEquals('bar', $view->file_get_contents(''));
+		// Force some checksum in the file and verify
+		$view->putFileInfo('files/foo.txt', ['checksum' => '42']);
+		$data = $view->getFileInfo('files/foo.txt');
+		$checksum = $data->getChecksum();
+		$this->assertEquals('42', $checksum);
+
+		// Now use Wrapper/Checksum to calculate checksum for us (normal PUT case)
 		$fh = tmpfile();
 		fwrite($fh, 'fooo');
 		rewind($fh);
-		$view->file_put_contents('', $fh);
-		$this->assertEquals('fooo', $view->file_get_contents(''));
-		$data = $view->getFileInfo('.');
-		$this->assertEquals('', $data->getChecksum());
+		$view->file_put_contents('files/foo.txt', $fh);
+		$this->assertEquals('fooo', $view->file_get_contents('files/foo.txt'));
+		$data = $view->getFileInfo('files/foo.txt');
+		$checksum = $data->getChecksum();
+		$expectedChecksum = $this->calculateChecksums('fooo');
+		$this->assertEquals($expectedChecksum, $checksum);
 	}
 
 	public function testDeleteGhostFile() {
