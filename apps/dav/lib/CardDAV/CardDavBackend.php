@@ -502,7 +502,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->execute();
 
 		// Cache the ID so that it can be used for the updateProperties method
-		$this->idCache->set($addressBookId.$cardUri, $this->db->lastInsertId('cards'));
+		$this->idCache->set($addressBookId.$cardUri, $query->getLastInsertId());
 
 		$this->addChange($addressBookId, $cardUri, 1);
 		$this->updateProperties($addressBookId, $cardUri, $cardData);
