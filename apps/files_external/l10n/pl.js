@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Krok 1 błędny. Błąd: %s",
-    "Step 2 failed. Exception: %s" : "Krok 2 błędny. Błąd: %s",
     "External storage" : "Zewnętrzne zasoby dyskowe",
-    "Google Drive App Configuration" : "Konfiguracja aplikacji Google Drive",
     "Personal" : "Osobiste",
     "System" : "System",
     "Grant access" : "Udziel dostępu",

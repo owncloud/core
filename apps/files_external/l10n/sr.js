@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Корак 1 није успео. Изузетак: %s",
-    "Step 2 failed. Exception: %s" : "Корак 2 није успео. Изузетак: %s",
     "External storage" : "Спољашње складиште",
     "Personal" : "Лично",
     "System" : "Систем",

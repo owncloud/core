@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Pasul 1 a eșuat. Excepție: %s",
-    "Step 2 failed. Exception: %s" : "Pasul 2 a eșuat. Excepție: %s",
     "External storage" : "Stocare externă",
     "Personal" : "Personal",
     "System" : "Sistem",
@@ -45,7 +43,6 @@ OC.L10N.register(
     "WebDAV" : "WebDAV",
     "URL" : "URL",
     "Secure https://" : "https:// sigur",
-    "Google Drive" : "Google Drive",
     "Local" : "Local",
     "Location" : "Locație",
     "ownCloud" : "ownCloud",

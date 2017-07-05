@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Langkah 1 gagal. Kecuali: %s",
-    "Step 2 failed. Exception: %s" : "Langkah 2 gagal. Kecuali: %s",
     "External storage" : "Penyimpanan eksternal",
     "Personal" : "Pribadi",
     "System" : "Sistem",
@@ -52,7 +50,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Subfolder remote",
     "Secure https://" : "Secure https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Lokal",
     "Location" : "lokasi",
     "ownCloud" : "ownCloud",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "প্রথম ধাপ ব্যার্থ। ব্যতিক্রম: %s",
     "External storage" : "বাহ্যিক সংরক্ষণাগার",
     "Personal" : "ব্যক্তিগত",
     "Grant access" : "অধিগমনের  অনুমতি প্রদান কর",

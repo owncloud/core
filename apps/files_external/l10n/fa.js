@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "گام 1 ناموفق بود. خطا: %s",
-    "Step 2 failed. Exception: %s" : "گام 2ناموفق بود. خطا: %s",
     "External storage" : "حافظه خارجی",
     "Personal" : "شخصی",
     "System" : "سیستم",
@@ -30,7 +28,6 @@ OC.L10N.register(
     "Enable SSL" : "فعال‌سازی SSL",
     "WebDAV" : "WebDAV",
     "URL" : "آدرس",
-    "Google Drive" : "Google Drive",
     "Local" : "محلی",
     "Location" : "محل",
     "ownCloud" : "ownCloud",

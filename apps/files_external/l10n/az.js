@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "1-ci addım səhv oldu. İstisna: %s",
-    "Step 2 failed. Exception: %s" : "2-ci addım. İstisna: %s",
     "External storage" : "Kənar informasıya daşıyıcısı",
     "Personal" : "Şəxsi",
     "System" : "Sistem",

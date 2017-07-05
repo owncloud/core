@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Vaihe 1 epäonnistui. Poikkeus: %s",
-    "Step 2 failed. Exception: %s" : "Vaihe 2 epäonnistui. Poikkeus: %s",
     "External storage" : "Ulkoinen tallennustila",
-    "Google Drive App Configuration" : "Google Drive -sovelluksen määritys",
     "Personal" : "Henkilökohtainen",
     "System" : "Järjestelmä",
     "Grant access" : "Salli pääsy",
@@ -52,7 +49,6 @@ OC.L10N.register(
     "URL" : "Verkko-osoite",
     "Remote subfolder" : "Etäalikansio",
     "Secure https://" : "Salattu https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Paikallinen",
     "Location" : "Sijainti",
     "ownCloud" : "ownCloud",

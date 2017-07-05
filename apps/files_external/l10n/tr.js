@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Adım 1 başarısız. Özel durum: %s",
-    "Step 2 failed. Exception: %s" : "Adım 2 başarısız. Özel durum: %s",
     "External storage" : "Harici depolama",
-    "Google Drive App Configuration" : "Google Drive Uygulama Yapılandırması",
     "Personal" : "Kişisel",
     "System" : "Sistem",
     "Grant access" : "Erişimi sağla",
@@ -70,7 +67,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Uzak alt klasör",
     "Secure https://" : "Güvenli https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Yerel",
     "Location" : "Konum",
     "ownCloud" : "ownCloud",

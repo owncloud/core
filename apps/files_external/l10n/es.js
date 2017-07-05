@@ -1,11 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "El paso 1 falló. Excepción: %s",
-    "Step 2 failed. Exception: %s" : "El paso 2 falló. Excepción: %s",
     "External storage" : "Almacenamiento externo",
-    "Google Drive App Configuration" : "Configuración de la app de Google Drive",
-    "Error verifying OAuth2 Code for " : "Error verificando el código OAuth2 para",
     "Personal" : "Personal",
     "System" : "Sistema",
     "Grant access" : "Conceder acceso",
@@ -75,7 +71,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Subcarpeta remota",
     "Secure https://" : "—Seguro— https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Local",
     "Location" : "Ubicación",
     "ownCloud" : "ownCloud",

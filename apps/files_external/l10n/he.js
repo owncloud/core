@@ -1,11 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "שלב 1 נכשל. חריג: %s",
-    "Step 2 failed. Exception: %s" : "שלב 2 נכשל. חריג: %s",
     "External storage" : "אחסון חיצוני",
-    "Google Drive App Configuration" : "הגדרות יישום גוגל דרייב",
-    "Error verifying OAuth2 Code for " : "שגיאה באימות קוד OAuth2 עבור ",
     "Personal" : "אישי",
     "System" : "מערכת",
     "Grant access" : "הענקת גישה",
@@ -75,7 +71,6 @@ OC.L10N.register(
     "URL" : "נתיב אינטרנט",
     "Remote subfolder" : "תיקיית משנה רחוקה",
     "Secure https://" : "פרוטוקול מאובטח https://",
-    "Google Drive" : "גוגל דרייב",
     "Local" : "מקומי",
     "Location" : "מיקום",
     "ownCloud" : "ownCloud",

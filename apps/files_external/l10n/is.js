@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Skref 1 mistókst. Undantekning: %s",
-    "Step 2 failed. Exception: %s" : "Skref 2 mistókst. Undantekning: %s",
     "External storage" : "Ytri gagnageymsla",
-    "Google Drive App Configuration" : "Uppsetning Google Drive forrits",
     "Personal" : "Einka",
     "System" : "Kerfi",
     "Grant access" : "Veita aðgengi",
@@ -72,7 +69,6 @@ OC.L10N.register(
     "URL" : "Slóð (URL)",
     "Remote subfolder" : "Fjartengd undirmappa",
     "Secure https://" : "Öruggt https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Staðvært",
     "Location" : "Staðsetning",
     "ownCloud" : "ownCloud",

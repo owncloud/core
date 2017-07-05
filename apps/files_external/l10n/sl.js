@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "1. korak je spodletel. Izjemna napaka: %s",
-    "Step 2 failed. Exception: %s" : "2. korak je spodletel. Izjemna napaka: %s",
     "External storage" : "Zunanja shramba",
-    "Google Drive App Configuration" : "Nastavitve programa Google Drive",
     "Personal" : "Osebno",
     "System" : "Sistem",
     "Grant access" : "Odobri dostop",
@@ -71,7 +68,6 @@ OC.L10N.register(
     "URL" : "Naslov URL",
     "Remote subfolder" : "Oddaljena podrejena mapa",
     "Secure https://" : "Varni način https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Krajevno",
     "Location" : "Mesto",
     "ownCloud" : "ownCloud",

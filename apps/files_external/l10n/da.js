@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Trin 1 mislykkedes. Undtagelse: %s",
-    "Step 2 failed. Exception: %s" : "Trin 2 mislykkedes. Undtagelse: %s",
     "External storage" : "Eksternt lager",
-    "Google Drive App Configuration" : "Google Drive App konfiguration",
     "Personal" : "Personligt",
     "System" : "System",
     "Grant access" : "Godkend adgang",
@@ -70,7 +67,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Fjernundermappe",
     "Secure https://" : "Sikker https://",
-    "Google Drive" : "Google Drev",
     "Local" : "Lokal",
     "Location" : "Placering",
     "ownCloud" : "ownCloud",

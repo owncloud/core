@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "1단계 실패. 예외: %s",
-    "Step 2 failed. Exception: %s" : "2단계 실패. 예외: %s",
     "External storage" : "외부 저장소",
-    "Google Drive App Configuration" : "Google 드라이브 앱 설정",
     "Personal" : "개인",
     "System" : "시스템",
     "Grant access" : "접근 권한 부여",
@@ -72,7 +69,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "원격 하위 폴더",
     "Secure https://" : "보안 https://",
-    "Google Drive" : "Google 드라이브",
     "Local" : "로컬",
     "Location" : "위치",
     "ownCloud" : "ownCloud",
