@@ -21,6 +21,9 @@ trait Sharing {
 	/** @var int */
 	private $savedShareId = null;
 
+	/** @var int */
+	private $lastShareTime = null;
+
 	/**
 	 * @Given /^as "([^"]*)" creating a share with$/
 	 * @param string $user
@@ -425,6 +428,14 @@ trait Sharing {
 		if ($this->isUserOrGroupInSharedData($user2, $permissions)){
 			return;
 		} else {
+			$time = time();
+			if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
+				// prevent creating two shares with the same "stime" which is based on
+				// seconds, this affects share merging order and could affect expected test
+				// result order
+				sleep(1);
+			}
+			$this->lastShareTime = $time;
 			$this->createShare($user1, $filepath, 0, $user2, null, null, $permissions);
 		}
 		$this->response = $client->get($fullUrl, $options);
