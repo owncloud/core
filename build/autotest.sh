@@ -351,13 +351,6 @@ function execute_tests {
 		echo "Kill the swift docker"
 		tests/objectstore/stop-swift-ceph.sh
 	fi
-
-	if [ ! -z "$DOCKER_CONTAINER_ID" ] ; then
-		echo "Kill the docker $DOCKER_CONTAINER_ID"
-		docker stop $DOCKER_CONTAINER_ID
-		docker rm -f $DOCKER_CONTAINER_ID
-		unset DOCKER_CONTAINER_ID
-	fi
 }
 
 #
