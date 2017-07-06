@@ -231,6 +231,7 @@ class Cache implements ICache {
 	 * @throws \RuntimeException
 	 */
 	public function insert($file, array $data) {
+
 		// normalize file
 		$file = $this->normalize($file);
 
@@ -283,6 +284,13 @@ class Cache implements ICache {
 	 * @param array $data [$key => $value] the metadata to update, only the fields provided in the array will be updated, non-provided values will remain unchanged
 	 */
 	public function update($id, array $data) {
+
+		if(isset($data['parent']) && $data['parent'] === $id) {
+			// Catch the case when we are trying to update the parent to be itself
+			$trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			\OC::$server->getLogger()->error("Trying to set parent of file: $id to itself! Trace: $trace");
+			throw new \InvalidArgumentException('Parent cannot be same as self during filecache update');
+		}
 
 		if (isset($data['path'])) {
 			// normalize path
