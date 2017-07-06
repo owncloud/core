@@ -140,6 +140,8 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\Disable(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Enable(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\LastSeen(\OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\User\ListUsers(\OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\User\ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ResetPassword(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
@@ -150,6 +152,8 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Group\Delete(\OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\Group\AddMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\Group\RemoveMember(\OC::$server->getGroupManager(), \OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\Group\ListGroups(\OC::$server->getGroupManager()));
+	$application->add(new OC\Core\Command\Group\ListGroupMembers(\OC::$server->getGroupManager()));
 
 	$application->add(new OC\Core\Command\Security\ListCertificates(\OC::$server->getCertificateManager(null), \OC::$server->getL10N('core')));
 	$application->add(new OC\Core\Command\Security\ImportCertificate(\OC::$server->getCertificateManager(null)));
