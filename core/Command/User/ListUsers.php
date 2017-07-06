@@ -46,7 +46,7 @@ class ListUsers extends Base {
 			->setName('user:list')
 			->setDescription('list users')
 			->addArgument(
-				'uid',
+				'search-pattern',
 				InputArgument::OPTIONAL,
 				'Restrict the list to users whose User ID contains the string'
 			)
@@ -54,7 +54,7 @@ class ListUsers extends Base {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$userNameSubString = $input->getArgument('uid');
+		$userNameSubString = $input->getArgument('search-pattern');
 		$users = $this->userManager->search($userNameSubString);
 		$users = array_map(function($user) {
 			/** @var IUser $user */

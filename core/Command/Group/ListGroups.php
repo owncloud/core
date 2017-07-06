@@ -46,7 +46,7 @@ class ListGroups extends Base {
 			->setName('group:list')
 			->setDescription('list groups')
 			->addArgument(
-				'group',
+				'search-pattern',
 				InputArgument::OPTIONAL,
 				'Restrict the list to groups whose name contains the string'
 			)
@@ -54,7 +54,7 @@ class ListGroups extends Base {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$groupNameSubString = $input->getArgument('group');
+		$groupNameSubString = $input->getArgument('search-pattern');
 		$groups = $this->groupManager->search($groupNameSubString, null, null, 'management');
 		$groups = array_map(function($group) {
 			/** @var IGroup $group */
