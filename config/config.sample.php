@@ -659,12 +659,6 @@ $CONFIG = array(
 'logtimezone' => 'Europe/Berlin',
 
 /**
- * Append all database queries and parameters to the log file. Use this only for
- * debugging, as your logfile will become huge.
- */
-'log_query' => false,
-
-/**
  * Log successful cron runs.
  */
 'cron_log' => true,
