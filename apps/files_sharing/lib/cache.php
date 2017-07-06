@@ -71,14 +71,6 @@ class Shared_Cache extends CacheJail {
 		);
 	}
 
-	public function getNumericStorageId() {
-		if (isset($this->numericId)) {
-			return $this->numericId;
-		} else {
-			return false;
-		}
-	}
-
 	protected function formatCacheEntry($entry) {
 		$path = $entry['path'];
 		$entry = parent::formatCacheEntry($entry);
