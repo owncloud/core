@@ -23,9 +23,7 @@ namespace OC\Core\Command\Group;
 
 use OC\Core\Command\Base;
 use OCP\IGroupManager;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -45,7 +43,7 @@ class ListGroupMembers extends Base {
 		parent::configure();
 
 		$this
-			->setName('group:listmembers')
+			->setName('group:list-members')
 			->setDescription('list group members')
 			->addArgument(
 				'group',
@@ -59,7 +57,7 @@ class ListGroupMembers extends Base {
 		$groupName = $input->getArgument('group');
 		$group = $this->groupManager->get($groupName);
 		if (!$group) {
-			$output->writeln('<error>Group "' . $groupName . '" does not exist</error>');
+			$output->writeln("<error>Group $groupName does not exist</error>");
 			return 1;
 		}
 
