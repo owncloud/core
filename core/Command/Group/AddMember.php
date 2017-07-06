@@ -44,7 +44,7 @@ class AddMember extends Command {
 
 	protected function configure() {
 		$this
-			->setName('group:addmember')
+			->setName('group:add-member')
 			->setDescription('add members to a group')
 			->addArgument(
 				'group',
