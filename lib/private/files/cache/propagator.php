@@ -53,7 +53,11 @@ class Propagator implements IPropagator {
 		$propagatedEntries = [];
 		while ($parentId !== -1) {
 			$entry = $cache->get($parentId);
-			$propagatedEntries[] = $entry;
+			if (isset($propagatedEntries[$entry['fileid']])) {
+				// potential loop in file cache, aborting
+				break;
+			}
+			$propagatedEntries[$entry['fileid']] = $entry;
 			if (!$entry) {
 				return $propagatedEntries;
 			}
@@ -69,6 +73,6 @@ class Propagator implements IPropagator {
 			$parentId = $entry['parent'];
 		}
 
-		return $propagatedEntries;
+		return array_values($propagatedEntries);
 	}
 }
