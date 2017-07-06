@@ -35,6 +35,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->connection = \OC::$server->getDatabaseConnection();
 
 		$this->repair = new RepairMismatchFileCachePath($this->connection);
+
+		// some other tests aren't cleaning up...
+		$qb = $this->connection->getQueryBuilder();
+		$qb->delete('filecache')->execute();
 	}
 
 	protected function tearDown() {
