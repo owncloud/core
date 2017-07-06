@@ -47,6 +47,7 @@ OC.L10N.register(
     "Forum" : "Foro",
     "Documentation:" : "Documentación:",
     "Cron" : "Cron",
+    "Open documentation" : "Abrir documentación",
     "Execute one task with each page loaded" : "Ejecutá una tarea con cada pagina cargada.",
     "cron.php is registered at a webcron service to call cron.php every 15 minutes over http." : "cron.php está registrado en el servicio webcron para llamarlo cada 15 minutos usando http.",
     "Sharing" : "Compartiendo",
