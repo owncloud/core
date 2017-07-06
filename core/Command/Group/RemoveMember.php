@@ -44,7 +44,7 @@ class RemoveMember extends Command {
 
 	protected function configure() {
 		$this
-			->setName('group:removemember')
+			->setName('group:remove-member')
 			->setDescription('remove member(s) from a group')
 			->addArgument(
 				'group',
