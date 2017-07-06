@@ -24,9 +24,7 @@ namespace OC\Core\Command\User;
 use OC\Core\Command\Base;
 use OCP\IUserManager;
 use OCP\IGroupManager;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -51,7 +49,7 @@ class ListUserGroups extends Base {
 		parent::configure();
 
 		$this
-			->setName('user:listgroups')
+			->setName('user:list-groups')
 			->setDescription('list groups for a user')
 			->addArgument(
 				'uid',
@@ -64,7 +62,7 @@ class ListUserGroups extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
 		if (!$this->userManager->userExists($uid)) {
-			$output->writeln('<error>User "' . $uid . '" does not exist.</error>');
+			$output->writeln("<error>User $uid does not exist.</error>");
 			return 1;
 		}
 
