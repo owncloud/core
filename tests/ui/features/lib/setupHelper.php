@@ -71,7 +71,7 @@ class SetupHelper
 	 */
 	public static function addUserToGroup($ocPath, $groupName, $userName)
 	{
-		return self::runOcc(['group:addmember', '--member '.$userName, $groupName], $ocPath);
+		return self::runOcc(['group:add-member', '--member '.$userName, $groupName], $ocPath);
 	}
 
 	/**
@@ -83,7 +83,7 @@ class SetupHelper
 	 */
 	public static function removeUserFromGroup($ocPath, $groupName, $userName)
 	{
-		return self::runOcc(['group:removemember', '--member '.$userName, $groupName], $ocPath);
+		return self::runOcc(['group:remove-member', '--member '.$userName, $groupName], $ocPath);
 	}
 
 	/**
