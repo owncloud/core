@@ -527,13 +527,6 @@ $CONFIG = array(
  */
 
 /**
- * Checks an app before install whether it uses private APIs instead of the
- * proper public APIs. If this is set to true it will only allow to install or
- * enable apps that pass this check.
- */
-'appcodechecker' => true,
-
-/**
  * Check if ownCloud is up-to-date and shows a notification if a new version is
  * available.
  */
@@ -731,11 +724,6 @@ $CONFIG = array(
        'writable' => true,
      )
    ),
-
-/**
- * @see appcodechecker
- */
-
 
 /**
  * Previews
