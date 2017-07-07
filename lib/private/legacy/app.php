@@ -359,6 +359,9 @@ class OC_App {
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('core');
 		$info = self::getAppInfo($app);
+		if ($info === null) {
+			throw new \Exception("$app can't be enabled since it is not installed.");
+		}
 
 		self::checkAppDependencies($config, $l, $info);
 
