@@ -948,7 +948,7 @@ class DefaultShareProvider implements IShareProvider {
 
 				// Ensure uniquenes of parents
 				if (!isset($shareParents[$shareParent])) {
-					$shareParents[] = $shareParent;
+					$shareParents[$shareParent] = true;
 				} else {
 					throw new ProviderException('Parent of share should be unique');
 				}
