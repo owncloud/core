@@ -27,7 +27,7 @@ $(document).ready(function() {
 						params[key] = value;
 					});
 
-					if (params['code'] !== undefined) {
+					if (params['code'] !== undefined && client_id != '' && client_secret != '') {
 						$('.configuration').trigger('oauth_step2', [{
 							backend_id: $tr.attr('class'),
 							client_id: client_id,
