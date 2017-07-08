@@ -11,8 +11,6 @@ OC.L10N.register(
     "Unable to change password" : "Ni mogoče spremeniti gesla",
     "%s password changed successfully" : "Geslo (%s) je uspešno spremenjeno",
     "Couldn't send reset email. Please contact your administrator." : "Ni mogoče poslati elektronskega naslova za ponastavitev. Stopite v stik s skrbnikom sistema.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "nameščanje in posodabljanje programov prek programske zbirke ali zveznega oblaka",
-    "Federated Cloud Sharing" : "Souporaba zveznega oblaka",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "Program cURL uporablja zastarelo različico %s (%s). Posodobite operacijski sistem, sicer zmožnosti, kot je %s, ne bodo delovale zanesljivo.",
     "A problem occurred, please check your log files (Error: %s)" : "Prišlo je do napake. Preverite dnevniške zapise (napaka: %s).",
     "Migration Completed" : "Selitev je končana",

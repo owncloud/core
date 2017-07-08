@@ -10,8 +10,6 @@ OC.L10N.register(
     "Unable to change password" : "Kunde inte ändra lösenord",
     "%s password changed successfully" : "%s lösenord ändrades",
     "Couldn't send reset email. Please contact your administrator." : "Kunde inte skicka återställningsmail. Vänligen kontakta din administratör.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "installering och uppdatering utav applikationer eller Federate Cloud delning.",
-    "Federated Cloud Sharing" : "Federate Cloud delning",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL använder en föråldrad %s version (%s). Var god uppdatera ditt operativsystem annars kan funktioner som %s sluta fungera pålitligt.",
     "A problem occurred, please check your log files (Error: %s)" : "Ett problem uppstod, var god kontrollera loggfiler (Error: %s)",
     "Migration Completed" : "Migrering Färdigställd",

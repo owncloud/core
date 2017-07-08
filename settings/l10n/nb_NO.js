@@ -11,8 +11,6 @@ OC.L10N.register(
     "Unable to change password" : "Kunne ikke endre passord",
     "%s password changed successfully" : "%s passord ble endret",
     "Couldn't send reset email. Please contact your administrator." : "Klarte ikke å sende e-post for tilbakestilling. Kontakt administratoren.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "installering og oppdatering av apper via app-butikken eller ved deling i Forent sky",
-    "Federated Cloud Sharing" : "Forent sky-deling",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL bruker en utdatert %s-versjon (%s). Vennligst oppdater operativsystemet ditt; ellers vil ikke funksjoner som %s virke korrekt.",
     "A problem occurred, please check your log files (Error: %s)" : "Det oppstod et problem. Sjekk loggfilene (Feil: %s)",
     "Migration Completed" : "Migrering ferdig",

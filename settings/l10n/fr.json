@@ -9,8 +9,6 @@
     "Unable to change password" : "Impossible de modifier le mot de passe",
     "%s password changed successfully" : "Le mot de passe %s a été correctement changé",
     "Couldn't send reset email. Please contact your administrator." : "Impossible d'envoyer le courriel de réinitialisation. Veuillez contacter votre administrateur.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "le partage Federated Cloud ou l'installation et la mise à jour d'applications par l'app store",
-    "Federated Cloud Sharing" : "Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL utilise %s %s, qui est une version obsolète. Veuillez mettre à jour votre système d'exploitation, ou des fonctionnalités telles que %s ne fonctionneront pas correctement.",
     "A problem occurred, please check your log files (Error: %s)" : "Une erreur est survenue, veuillez vérifier vos fichiers de log (Erreur: %s)",
     "Migration Completed" : "Migration terminée",

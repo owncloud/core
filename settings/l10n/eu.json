@@ -5,7 +5,6 @@
     "Wrong admin recovery password. Please check the password and try again." : "Administratzailearen berreskuratze pasahitza ez egokia. Mesedez egiaztatu pasahitza eta saiatu berriz.",
     "Unable to change password" : "Ezin izan da pasahitza aldatu",
     "Couldn't send reset email. Please contact your administrator." : "Ezin da berrezartzeko eposta bidali. Mesedez jarri harremetan zure administradorearekin.",
-    "Federated Cloud Sharing" : "Federatutako Hodei Partekatzea",
     "Group already exists." : "Taldea dagoeneko existitzen da",
     "Unable to add group." : "Ezin izan da taldea gehitu.",
     "Unable to delete group." : "Ezin izan da taldea ezabatu.",

@@ -46,7 +46,6 @@
     "Archives of type %s are not supported" : "%s архиве нису подржане",
     "Failed to open archive when installing app" : "Неуспешно отварање архиве приликом инсталације апликације",
     "App does not provide an info.xml file" : "Апликација не поседује info.xml фајл",
-    "App can't be installed because of not allowed code in the App" : "Апликације не може бити инсталирана због недозвољеног кода у апликацији",
     "App can't be installed because it is not compatible with this version of ownCloud" : "Апликације не може бити инсталирана јер није компатибилна са овом верзијом оунКлауда",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Апликација се не може инсталирати јер садржи ознаку <shipped>тачно</shipped> која није дозвољена за неиспоручене апликације",
     "Apps" : "Апликације",

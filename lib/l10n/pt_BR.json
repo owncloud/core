@@ -53,7 +53,6 @@
     "App does not provide an info.xml file" : "O aplicativo não fornece um arquivo info.xml",
     "App cannot be installed because appinfo file cannot be read." : "O App não pode ser instalado porque o arquivo appinfo não pode ser lido.",
     "Signature could not get checked. Please contact the app developer and check your admin screen." : "A assinatura não pode ser verificada. Por favor entre em contato com o desenvolvedor do aplicativo e verificar sua tela de administração.",
-    "App can't be installed because of not allowed code in the App" : "O aplicativo não pode ser instalado por causa do código não permitido no Aplivativo",
     "App can't be installed because it is not compatible with this version of ownCloud" : "O aplicativo não pode ser instalado porque não é compatível com esta versão do ownCloud",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "O aplicativo não pode ser instalado porque ele contém a marca <shipped>verdadeiro</shipped> que não é permitido para aplicações não embarcadas",
     "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "O aplicativo não pode ser instalado porque a versão em info.xml não é o mesmo que a versão relatada na App Store",

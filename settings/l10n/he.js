@@ -11,8 +11,6 @@ OC.L10N.register(
     "Unable to change password" : "לא ניתן לשנות את הסיסמא",
     "%s password changed successfully" : "סיסמא %s שונתה בהצלחה",
     "Couldn't send reset email. Please contact your administrator." : "לא ניתן היה לשלוח דואר אלקטרוני לאיפוס. יש לפנות למנהל שלך.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "התקנה ועדכון היישום דרך חנות היישומים או ענן שיתוף מאוגד",
-    "Federated Cloud Sharing" : "ענן שיתוף מאוגד",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL משתמש בגרסה %s ישנה (%s). יש לעדכן את מערכת ההפעלה או  שתכונות כדוגמת %s לא יעבדו באופן מהימן.",
     "A problem occurred, please check your log files (Error: %s)" : "אירעה בעיה, יש לבדוק את לוג הקבצים (שגיאה: %s)",
     "Migration Completed" : "המרה הושלמה",

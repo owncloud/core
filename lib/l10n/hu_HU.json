@@ -51,7 +51,6 @@
     "App does not provide an info.xml file" : "Az alkalmazás nem szolgáltatott info.xml file-t",
     "App cannot be installed because appinfo file cannot be read." : "Az alkalmazást nem telepíthető mert az alkalmazás-infó file nem olvasható.",
     "Signature could not get checked. Please contact the app developer and check your admin screen." : "Az aláírás nem ellenőrizhető. Lépj kapcsolatba az alkalmazás fejlesztővel és ellenörízd az admin képernyődet.",
-    "App can't be installed because of not allowed code in the App" : "Az alkalmazást nem lehet telepíteni, mert abban nem engedélyezett programkód szerepel",
     "App can't be installed because it is not compatible with this version of ownCloud" : "Az alkalmazás nem telepíthető, mert nem kompatibilis az ownCloud jelen verziójával.",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Az alkalmazást nem lehet telepíteni, mert tartalmazza a \n<shipped>\ntrue\n</shipped>\ncímkét, ami a nem szállított alkalmazások esetén nem engedélyezett",
     "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "Az alkalmazást nem telepíthető mert a verzió az info.xml-ben nem azonos azzal amit az alkalmazás boltban van feltüntetve.",

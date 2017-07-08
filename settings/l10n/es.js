@@ -11,8 +11,6 @@ OC.L10N.register(
     "Unable to change password" : "No se ha podido cambiar la contraseña",
     "%s password changed successfully" : "Contraseña %s cambiada con exito",
     "Couldn't send reset email. Please contact your administrator." : "No pudo enviarse el correo para restablecer la contraseña. Por favor, contacte con su administrador.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "instalando y actualizando aplicaciones via app store o Nube compartida Federada",
-    "Federated Cloud Sharing" : "Compartido en Cloud Federado",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL está usando una versión desactualizada %s (%s). Por favor, actualice su sistema operativo o funciones tales como %s no funcionará de forma fiable.",
     "A problem occurred, please check your log files (Error: %s)" : "Ocurrió un problema, por favor verifique los archivos de registro (Error: %s)",
     "Migration Completed" : "Migración finalizada",

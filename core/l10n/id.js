@@ -128,6 +128,7 @@ OC.L10N.register(
     "Link" : "Tautan",
     "Edit" : "Sunting",
     "Remove" : "Hapus",
+    "Anyone with the link has access to the file/folder" : "Siapapun yang mengetahui tautan memiliki akses ke berkas/ folder",
     "Choose a password for the public link" : "Tetapkan sandi untuk tautan publik",
     "Filename" : "Nama berkas",
     "Password" : "Sandi",

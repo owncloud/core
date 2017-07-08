@@ -10,7 +10,6 @@ OC.L10N.register(
     "Unable to change password" : "Nie można zmienić hasła",
     "%s password changed successfully" : "%s hasło zmieniono pomyślnie",
     "Couldn't send reset email. Please contact your administrator." : "Nie mogę wysłać maila resetującego. Skontaktuj się z administratorem.",
-    "Federated Cloud Sharing" : "Współdzielenie przez chmurę stowarzyszoną",
     "A problem occurred, please check your log files (Error: %s)" : "Wystąpił problem, sprawdź logi (Błąd: %s)",
     "Migration Completed" : "Migracja Zakończona",
     "Group already exists." : "Grupa już istnieje.",

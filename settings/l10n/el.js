@@ -11,8 +11,6 @@ OC.L10N.register(
     "Unable to change password" : "Αδυναμία αλλαγής συνθηματικού",
     "%s password changed successfully" : "ο %s άλλαξε το συνθηματικό επιτυχώς",
     "Couldn't send reset email. Please contact your administrator." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλώ επικοινωνήστε με το διαχειριστή σας.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "εγκατάσταση και ενημέρωση εφαρμογών μέσω του καταστήματος εφαρμογών ή του ",
-    "Federated Cloud Sharing" : "Διαμοιρασμός σε ομόσπονδα σύννεφα ",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "Το cURL χρησιμοποιεί μια παρωχημένη %s έκδοση (%s). Παρακαλούμε αναβαθμίστε το λειτουργικό σας σύστημα αλλιώς δυνατότητες όπως %s δεν θα δουλέψουν αξιόπιστα.",
     "A problem occurred, please check your log files (Error: %s)" : "Παρουσιάστηκε πρόβλημα, παρακαλώ ελέγξτε τα αρχεία καταγραφής σας (Σφάλμα: %s)",
     "Migration Completed" : "Η μετάβαση ολοκληρώθηκε",

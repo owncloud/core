@@ -45,7 +45,6 @@
     "Archives of type %s are not supported" : "Os arquivos do tipo %s non están admitidos",
     "Failed to open archive when installing app" : "Non foi posíbel abrir o arquivo ao instalar aplicacións",
     "App does not provide an info.xml file" : "A aplicación non fornece un ficheiro info.xml",
-    "App can't be installed because of not allowed code in the App" : "Non é posíbel instalar a aplicación por mor de conter código non permitido",
     "App can't be installed because it is not compatible with this version of ownCloud" : "Non é posíbel instalar a aplicación por non seren compatíbel  con esta versión do ownCloud.",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Non é posíbel instalar a aplicación por conter a etiqueta <shipped>true</shipped> que non está permitida para as aplicacións non enviadas",
     "Apps" : "Aplicacións",

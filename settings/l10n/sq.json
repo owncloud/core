@@ -9,8 +9,6 @@
     "Unable to change password" : "S’arrihet të ndryshohet fjalëkalimi",
     "%s password changed successfully" : "Fjalëkalimi për %s u ndryshua me sukses",
     "Couldn't send reset email. Please contact your administrator." : "S’u dërgua dot email-i i ricaktimit. Ju lutemi, lidhuni me përgjegjësin tuaj.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "instalim dhe përditësim aplikacionesh përmes shitores së aplikacioneve ose Federated Cloud Sharing",
-    "Federated Cloud Sharing" : "Ndarje Në Re të Federuar ",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL-ja po përdor një version %s të vjetruar (%s). Ju lutemi, përditësoni sistemin tuaj operativ ose përndryshe veçori të tilla si %s nuk do të punojnë në mënyrë të qëndrueshme.",
     "A problem occurred, please check your log files (Error: %s)" : "Ndodhi një gabim, ju lutemi, kontrolloni kartelat tuaja regjistër (Error: %s)",
     "Migration Completed" : "Migrimi u Plotësua",
