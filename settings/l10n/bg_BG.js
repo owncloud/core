@@ -121,6 +121,8 @@ OC.L10N.register(
     "Errors and fatal issues" : "Грешки и фатални проблеми",
     "Fatal issues only" : "Само фатални проблеми",
     "Log" : "Лог",
+    "What to log" : "Какво да се записва",
+    "Download logfile (%s)" : "Изтегляне на доклад (1%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Log файла е по-голям от 100 MB. Изтеглянето му може да отнеме време!",
     "None" : "Няма",
     "Login" : "Вход",
