@@ -1142,7 +1142,9 @@ class Server extends ServerContainer implements IServerContainer {
 	 * @return \OCP\ILogger
 	 */
 	public function getLogger() {
-		if ($this->logger === null) {
+		//cache the logger for performance reasons
+		//except when running PHPUNIT tests to make it possible to use getLogger() easily in tests
+		if ($this->logger === null || (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 			$this->logger = $this->query('Logger');
 		}
 		return $this->logger;
