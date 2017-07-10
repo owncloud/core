@@ -1,24 +1,6 @@
 $(document).ready(function(){
 	var params = OC.Util.History.parseUrlQuery();
 
-	// Hack to add a trusted domain
-	if (params.trustDomain) {
-		OC.dialogs.confirm(t('settings', 'Are you really sure you want add "{domain}" as trusted domain?',
-				{domain: params.trustDomain}),
-			t('settings', 'Add trusted domain'), function(answer) {
-				if(answer) {
-					$.ajax({
-						type: 'POST',
-						url: OC.generateUrl('settings/admin/security/trustedDomains'),
-						data: { newTrustedDomain: params.trustDomain }
-					}).done(function() {
-						window.location.replace(OC.generateUrl('settings/admin/security'));
-					});
-				}
-			});
-	}
-
-
 	$('#excludedGroups').each(function (index, element) {
 		OC.Settings.setupGroupsSelect($(element));
 		$(element).change(function(ev) {

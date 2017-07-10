@@ -757,7 +757,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			return $host;
 		} else {
 			$trustedList = $this->config->getSystemValue('trusted_domains', []);
-			if(!empty($trustedList)) {
+			if (!empty($trustedList)) {
 				return $trustedList[0];
 			} else {
 				return '';
