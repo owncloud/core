@@ -729,9 +729,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 
 	/**
-	 * Returns the server host from the headers, or the first configured
-	 * trusted domain if the host isn't in the trusted list
+	 * Returns overwriteHost, if set, or overwrite.cli.host
 	 * @return string Server host
+	 * @throws \Exception
 	 */
 	public function getServerHost() {
 		// overwritehost is always trusted
@@ -739,24 +739,12 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		if ($host !== null) {
 			return $host;
 		}
-
-		// get the host from the headers
-		$host = $this->getInsecureServerHost();
-
-		// Verify that the host is a trusted domain if the trusted domains
-		// are defined
-		// If no trusted domain is provided the first trusted domain is returned
-		$trustedDomainHelper = new TrustedDomainHelper($this->config);
-		if ($trustedDomainHelper->isTrustedDomain($host)) {
-			return $host;
-		} else {
-			$trustedList = $this->config->getSystemValue('trusted_domains', []);
-			if(!empty($trustedList)) {
-				return $trustedList[0];
-			} else {
-				return '';
-			}
+		$overwriteCliUrl = $this->config->getSystemValue('overwrite.cli.url');
+		if ($overwriteCliUrl !== '') {
+			return $overwriteCliUrl;
 		}
+
+		throw new \Exception("The config parameter \"overwrite.cli.url\" is missing");
 	}
 
 	/**
