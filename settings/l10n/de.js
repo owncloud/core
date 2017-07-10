@@ -11,6 +11,7 @@ OC.L10N.register(
     "Unable to change password" : "Passwort konnte nicht geändert werden",
     "%s password changed successfully" : "%s Passwort erfolgreich geändert",
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktiere Deinen Administrator.",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "Das Installieren und Aktualisieren von Apps durch den App-Store oder durch Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL verwendet eine veraltete %s Version (%s). Bitte aktualisiere dein Betriebssystem, da ansonsten Funktionen, wie z.B. %s, nicht zuverlässig funktionieren werden.",
     "A problem occurred, please check your log files (Error: %s)" : "Es ist ein Problem aufgetreten, bitte überprüfe Deine Logdateien (Fehler: %s)",
     "Migration Completed" : "Migration komplett",
