@@ -19,6 +19,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+namespace TestHelpers;
 
 class SetupHelper
 {
@@ -105,7 +106,7 @@ class SetupHelper
 	 * @param string $escaping
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	private static function runOcc($args = [], $ocPath, $escaping = true) {
+	public static function runOcc($args = [], $ocPath, $escaping = true) {
 		if ($escaping === true){
 			$args = array_map(function($arg) {
 				return escapeshellarg($arg);
