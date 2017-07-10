@@ -184,7 +184,7 @@ class LoginController extends Controller {
 		$originalUser = $user;
 		// TODO: Add all the insane error handling
 		$loginResult = $this->userSession->login($user, $password);
-		if ($loginResult !== true) {
+		if ($loginResult !== true && \OC::$server->getMailer()->validateMailAddress($user)) {
 			$users = $this->userManager->getByEmail($user);
 			// we only allow login by email if unique
 			if (count($users) === 1) {

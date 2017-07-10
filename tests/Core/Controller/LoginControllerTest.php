@@ -287,7 +287,6 @@ class LoginControllerTest extends TestCase {
 	}
 
 	public function testLoginWithInvalidCredentials() {
-		$user = $this->createMock(IUser::class);
 		$password = 'secret';
 		$loginPageUrl = 'some url';
 
@@ -303,7 +302,7 @@ class LoginControllerTest extends TestCase {
 			->method('createSessionToken');
 
 		$expected = new RedirectResponse($loginPageUrl);
-		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, ''));
+		$this->assertEquals($expected, $this->loginController->tryLogin('Jane', $password, ''));
 	}
 
 	public function testLoginWithValidCredentials() {
