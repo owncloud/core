@@ -322,7 +322,12 @@ class User_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 		if(is_null($user)) {
 			throw new NoUserException($uid . ' is not a valid user anymore');
 		}
+
 		$path = $user->getHomePath();
+		if ($path === null) {
+			$path = false;
+		}
+
 		$this->access->cacheUserHome($uid, $path);
 
 		return $path;

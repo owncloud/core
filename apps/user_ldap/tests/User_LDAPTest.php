@@ -275,12 +275,18 @@ class User_LDAPTest extends \Test\TestCase {
 		$mapping->expects($this->once())
 			->method('unmap')
 			->will($this->returnValue(true));
-		$access->expects($this->once())
+		$access->expects($this->exactly(2))
 			->method('getUserMapper')
 			->will($this->returnValue($mapping));
+		$access->connection->expects($this->any())
+			->method('getConnectionResource')
+			->will($this->returnCallback(function() {
+				return true;
+			}));
+
 
 		$config = $this->getMock('\OCP\IConfig');
-		$config->expects($this->exactly(2))
+		$config->expects($this->exactly(1))
 			->method('getUserValue')
 			->will($this->onConsecutiveCalls('1', '/var/vhome/jdings/'));
 
@@ -290,7 +296,7 @@ class User_LDAPTest extends \Test\TestCase {
 		$this->assertTrue($result);
 
 		$home = $backend->getHome('jeremy');
-		$this->assertSame($home, '/var/vhome/jdings/');
+		$this->assertFalse($home);
 	}
 
 	/**
@@ -674,9 +680,6 @@ class User_LDAPTest extends \Test\TestCase {
 		$this->assertFalse($result);
 	}
 
-	/**
-	 * @expectedException \OC\User\NoUserException
-	 */
 	public function testGetHomeDeletedUser() {
 		$access = $this->getAccessMock();
 		$backend = new UserLDAP($access, $this->getMock('\OCP\IConfig'));
