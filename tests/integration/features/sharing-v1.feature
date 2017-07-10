@@ -945,7 +945,7 @@ Feature: sharing
 		Given As an "admin"
 		And user "user0" exists
 		And User "user0" deletes file "/textfile0.txt"
-		When User "user0" empties trashbin
+		When user "user0" empties the trashbin
 		Then the HTTP status code should be "200"
 
 	Scenario: orphaned shares
@@ -956,7 +956,7 @@ Feature: sharing
 		And user "user0" created a folder "/common/sub"
 		And file "/common/sub" of user "user0" is shared with user "user1"
 		And User "user0" deletes folder "/common"
-		When User "user0" empties trashbin
+		When user "user0" empties the trashbin
 		Then as "user1" the folder "/sub" does not exist
 
 	Scenario: sharing again an own file while belonging to a group

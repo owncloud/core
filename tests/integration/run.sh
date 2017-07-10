@@ -77,6 +77,7 @@ $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 
 #Enable external storage app
 $OCC config:app:set core enable_external_storage --value=yes
+$OCC config:system:set files_external_allow_create_new_local --value=true
 
 $OCC app:enable testing
 
@@ -101,6 +102,12 @@ elif test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
 elif test "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1"; then
 	env_encryption_enable_user_keys
 	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_userkeys_encryption"
+fi
+
+if test "$BEHAT_FILTER_TAGS"; then
+	BEHAT_FILTER_TAGS="$BEHAT_FILTER_TAGS&&~@skip"
+else
+	BEHAT_FILTER_TAGS="~@skip"
 fi
 
 if test "$BEHAT_FILTER_TAGS"; then

@@ -170,13 +170,22 @@ trait BasicStructure {
 		} else {
 			$options['auth'] = [$this->currentUser, $this->regularUser];
 		}
+
+		if (!empty($this->cookieJar->toArray())) {
+			$options['cookies'] = $this->cookieJar;
+		}
+
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
 			$options['body'] = $fd;
 		}
 
 		try {
-			$this->response = $client->send($client->createRequest($verb, $fullUrl, $options));
+			$request = $client->createRequest($verb, $fullUrl, $options);
+			if (isset($this->requestToken)) {
+				$request->addHeader('requesttoken', $this->requestToken);
+			}
+			$this->response = $client->send($request);
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}
