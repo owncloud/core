@@ -19,44 +19,26 @@
  *
  */
 
-namespace OCA\DAV\Migration;
+namespace OCA\DAV\Migrations;
 
-use OCA\DAV\CalDAV\BirthdayService;
-use OCP\IDBConnection;
 use OCP\Migration\IOutput;
-use OCP\Migration\IRepairStep;
+use OCP\Migration\ISimpleMigration;
 
-class FixBirthdayCalendarComponent implements IRepairStep {
+/**
+ * Fix the calendar components of the system contact birthday calendar
+ */
+class Version20170526100342 implements ISimpleMigration {
 
-	/** @var IDBConnection */
-	private $connection;
-
-	/**
-	 * FixBirthdayCalendarComponent constructor.
-	 *
-	 * @param IDBConnection $connection
-	 */
-	public function __construct(IDBConnection $connection) {
-		$this->connection = $connection;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getName() {
-		return 'Fix component of birthday calendars';
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function run(IOutput $output) {
-		$query = $this->connection->getQueryBuilder();
+	public function run(IOutput $out) {
+		$query = \OC::$server->getDatabaseConnection()->getQueryBuilder();
 		$updated = $query->update('calendars')
 			->set('components', $query->createNamedParameter('VEVENT'))
-			->where($query->expr()->eq('uri', $query->createNamedParameter(BirthdayService::BIRTHDAY_CALENDAR_URI)))
+			->set('calendarorder', $query->createNamedParameter('100'))
+			->where($query->expr()->eq(
+				'uri',
+				$query->createNamedParameter('contact_birthdays')))
 			->execute();
 
-		$output->info("$updated birthday calendars updated.");
+		$out->info("$updated birthday calendars updated.");
 	}
 }
