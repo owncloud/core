@@ -539,7 +539,6 @@ class Access extends LDAPUtility implements user\IUserTools {
 
 			$ocName = $this->dn2ocname($ldapObject['dn'][0], $nameByLDAP, $isUsers);
 			if($ocName) {
-				$ownCloudNames[] = $ocName;
 				if($isUsers) {
 					//cache the user names so it does not need to be retrieved
 					//again later (e.g. sharing dialogue).
@@ -548,7 +547,11 @@ class Access extends LDAPUtility implements user\IUserTools {
 					}
 					$sndName = isset($ldapObject[$sndAttribute][0])
 						? $ldapObject[$sndAttribute][0] : '';
-					$this->cacheUserDisplayName($ocName, $nameByLDAP, $sndName);
+					if ($this->cacheUserDisplayName($ocName, $nameByLDAP, $sndName)) {
+						$ownCloudNames[] = $ocName;
+					}
+				} else {
+					$ownCloudNames[] = $ocName;
 				}
 			}
 		}
@@ -578,12 +581,20 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @param string $ocName the internal ownCloud username
 	 * @param string $displayName the display name
 	 * @param string $displayName2 the second display name
+	 * @return bool true if cached, false otherwise (typically the user is missing)
 	 */
 	public function cacheUserDisplayName($ocName, $displayName, $displayName2 = '') {
 		$user = $this->userManager->get($ocName);
-		$displayName = $user->composeAndStoreDisplayName($displayName, $displayName2);
-		$cacheKeyTrunk = 'getDisplayName';
-		$this->connection->writeToCache($cacheKeyTrunk.$ocName, $displayName);
+		if ($user) {
+			// $user is instanced
+			$displayName = $user->composeAndStoreDisplayName($displayName, $displayName2);
+			$cacheKeyTrunk = 'getDisplayName';
+			$this->connection->writeToCache($cacheKeyTrunk.$ocName, $displayName);
+			return true;
+		} else {
+			// $user is null
+			return false;
+		}
 	}
 
 	/**
