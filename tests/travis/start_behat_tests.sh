@@ -79,9 +79,14 @@ fi
 
 if [ "$SRV_HOST_PORT" == "80" ] || [ -z "$SRV_HOST_PORT" ]
 then
-	BASE_URL="http://$SRV_HOST_NAME/$SRV_HOST_URL"
+	BASE_URL="http://$SRV_HOST_NAME"
 else
-	BASE_URL="http://$SRV_HOST_NAME:$SRV_HOST_PORT/$SRV_HOST_URL"
+	BASE_URL="http://$SRV_HOST_NAME:$SRV_HOST_PORT"
+fi
+
+if [ -n "$SRV_HOST_URL" ]
+then
+	BASE_URL="$BASE_URL/$SRV_HOST_URL"
 fi
 
 if [ "$BROWSER" == "firefox" ]
