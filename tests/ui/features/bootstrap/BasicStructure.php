@@ -125,12 +125,19 @@ trait BasicStructure
 		if (!in_array($user, $this->createdUserNames)) {
 			$this->aRegularUserExists();
 		}
-
+		$this->theUserIsInTheGroup($user, $group);
+		array_push($this->createdGroupNames, $group);
+	}
+	
+	/**
+	 * @Given the user :user is in the group :group
+	 */
+	public function theUserIsInTheGroup($user, $group)
+	{
 		$result=SetupHelper::addUserToGroup($this->ocPath, $group, $user);
 		if ($result["code"] != 0) {
 			throw new Exception("could not add user to group. " . $result["stdOut"] . " " . $result["stdErr"]);
 		}
-		array_push($this->createdGroupNames, $group);
 	}
 
 	/** @BeforeScenario */
