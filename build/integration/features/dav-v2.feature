@@ -3,10 +3,10 @@ Feature: dav-v2
 		Given using api version "1"
 
 	Scenario: moving a file new endpoint way
-		Given using dav path "remote.php/dav"
+		Given using new dav path
 		And As an "admin"
 		And user "user0" exists
-		When User "user0" moves file "/files/user0/textfile0.txt" to "/files/user0/abcde.txt"
+		When User "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		Then the HTTP status code should be "201"
 
 
