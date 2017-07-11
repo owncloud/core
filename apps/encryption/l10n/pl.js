@@ -35,6 +35,7 @@ OC.L10N.register(
     "Default encryption module" : "Domyślny moduł szyfrowania",
     "Encryption App is enabled but your keys are not initialized, please log-out and log-in again" : "Aplikacja szyfrująca jest aktywna, ale twoje klucze nie zostały zainicjowane, prosze wyloguj się i zaloguj ponownie.",
     "Please select an encryption option" : "Zaznacz opcję szyfrowania",
+    "Permanently select this mode" : "Wybierz ten tryb na stałe",
     "Encrypt the home storage" : "Zaszyfruj domowe składowisko danych",
     "Enabling this option encrypts all files stored on the main storage, otherwise only files on external storage will be encrypted" : "Włączenie tej opcji szyfruje wszystkie pliki przechowywane w głównym składowisku danych, w przeciwnym wypadku zaszyfrowane zostaną tylko pliki przechowywane na zewnętrznych składowiskach.",
     "Enable recovery key" : "Włącz klucz odzyskiwania",
