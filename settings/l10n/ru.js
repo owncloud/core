@@ -11,6 +11,7 @@ OC.L10N.register(
     "Unable to change password" : "Невозможно изменить пароль",
     "%s password changed successfully" : "Пароль %s изменён успешно",
     "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "установка и обновление приложений через маркет или Объединение облачных хранилищ",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL использует устаревшую версию %s (%s). Пожалуйста, обновите Вашу операционную систему, иначе такие возможности, как %s, не будут работать надежно.",
     "A problem occurred, please check your log files (Error: %s)" : "Возникла проблема, пожалуйста, проверьте ваши файлы журнала (Ошибка: %s)",
     "Migration Completed" : "Миграция завершена",
