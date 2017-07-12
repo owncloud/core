@@ -55,7 +55,7 @@ class Inactive extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$days = $input->getArgument('days');
-		if(!is_int($days) || $days < 1) {
+		if((!is_int($days) && !ctype_digit($days)) || $days < 1) {
 			throw new InvalidArgumentException('Days must be integer and above zero');
 		}
 
@@ -79,3 +79,4 @@ class Inactive extends Base {
 
 	}
 }
+
