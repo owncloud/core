@@ -102,10 +102,8 @@ class Version20170101010100 implements ISchemaMigration {
 				Type::STRING,
 				[
 					'default' => null,
-					'length' => 255,
-					'customSchemaOptions' => [
-						'collation' => 'utf8_bin'
-					]
+					'notnull' => false,
+					'length' => 255
 				]
 			);
 
@@ -114,10 +112,8 @@ class Version20170101010100 implements ISchemaMigration {
 				Type::STRING,
 				[
 					'default' => null,
-					'length' => 255,
-					'customSchemaOptions' => [
-						'collation' => 'utf8_bin'
-					]
+					'notnull' => false,
+					'length' => 255
 				]
 			);
 
@@ -126,10 +122,8 @@ class Version20170101010100 implements ISchemaMigration {
 				Type::STRING,
 				[
 					'default' => null,
-					'length' => 255,
-					'customSchemaOptions' => [
-						'collation' => 'utf8_bin'
-					]
+					'notnull' => false,
+					'length' => 255
 				]
 			);
 
@@ -175,9 +169,7 @@ class Version20170101010100 implements ISchemaMigration {
 				[
 					'default' => null,
 					'length' => 255,
-					'customSchemaOptions' => [
-						'collation' => 'utf8_bin'
-					]
+					'notnull' => false
 				]
 			);
 
