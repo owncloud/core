@@ -643,7 +643,12 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$commentsTable->addColumn(
 				'id',
-				Type::INTEGER
+				Type::INTEGER,
+				[
+					'unsigned' => true,
+					'autoincrement' => true,
+					'notnull' => true
+				]
 			);
 
 			$commentsTable->addColumn(
@@ -883,7 +888,11 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$mountsTable->addColumn(
 				'id',
-				Type::INTEGER
+				Type::INTEGER,
+				[
+					'autoincrement' => true,
+					'notnull' => true
+				]
 			);
 
 			$mountsTable->addColumn(
@@ -992,7 +1001,12 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagTable->addColumn(
 				'id',
-				Type::INTEGER
+				Type::INTEGER,
+				[
+					'unsigned' => true,
+					'autoincrement' => true,
+					'notnull' => true
+				]
 			);
 
 			$systemTagTable->addColumn(
@@ -1051,7 +1065,7 @@ class Version20170101010100 implements ISchemaMigration {
 				Type::INTEGER,
 				[
 					'default' => 0,
-					'notnull' => false,
+					'notnull' => true,
 					'unsigned' => true
 				]
 			);
