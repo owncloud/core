@@ -122,7 +122,8 @@ class Version20170101010100 implements ISchemaMigration {
 				Type::STRING,
 				[
 					'default' => null,
-					'length' => 255
+					'length' => 255,
+					'notnull' => false
 				]
 			);
 
