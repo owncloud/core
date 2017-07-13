@@ -177,8 +177,7 @@ class OC_Files {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
-			header(\OC::$server->getRequest()->getHttpProtocol() . ' 403 Forbidden');
-			\OC_Template::printErrorPage($l->t('Can\'t read file'), $ex->getMessage());
+			\OC_Template::printErrorPage($l->t('Can\'t read file'), $ex->getMessage(), '403 Forbidden');
 		} catch (\Exception $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);

@@ -319,7 +319,7 @@ class OC_Template extends \OC\Template\Base {
 		* @param string $error_msg The error message to show
 		* @param string $hint An optional hint message - needs to be properly escaped
 		*/
-	public static function printErrorPage( $error_msg, $hint = '') {
+	public static function printErrorPage( $error_msg, $hint = '', $status = null ) {
 		if ($error_msg === $hint) {
 			// If the hint is the same as the message there is no need to display it twice.
 			$hint = '';
@@ -329,6 +329,9 @@ class OC_Template extends \OC\Template\Base {
 			$content = new \OC_Template( '', 'error', 'error', false );
 			$errors = [['error' => \OCP\Util::sanitizeHTML($error_msg), 'hint' => \OCP\Util::sanitizeHTML($hint)]];
 			$content->assign( 'errors', $errors );
+			if ($status !== null) {
+				header(self::getHttpProtocol() . ' ' . $status);
+			}
 			$content->printPage();
 		} catch (\Exception $e) {
 			$logger = \OC::$server->getLogger();
