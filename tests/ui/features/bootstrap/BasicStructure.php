@@ -127,7 +127,6 @@ trait BasicStructure
 			$this->aRegularUserExists();
 		}
 		$this->theUserIsInTheGroup($user, $group);
-		array_push($this->createdGroupNames, $group);
 	}
 	
 	/**
