@@ -259,7 +259,7 @@ class ShareesController extends OCSController  {
 					'label' => $group->getDisplayName(),
 					'value' => [
 						'shareType' => Share::SHARE_TYPE_GROUP,
-						'shareWith' => $gid,
+						'shareWith' => [$gid, $group->getDisplayName()],
 					],
 				];
 			}

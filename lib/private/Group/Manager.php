@@ -147,8 +147,17 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return \OC\Group\Group
 	 */
 	public function get($gid) {
-		if (isset($this->cachedGroups[$gid])) {
-			return $this->cachedGroups[$gid];
+		if(is_array($gid)) {
+			if(is_array($gid[0])) {
+				$gid = array_shift($gid);
+			}
+			if (isset($this->cachedGroups[$gid[0]])) {
+				return $this->cachedGroups[$gid[0]];
+			}
+		} else {
+			if (isset($this->cachedGroups[$gid])) {
+				return $this->cachedGroups[$gid];
+			}
 		}
 		return $this->getGroupObject($gid);
 	}
