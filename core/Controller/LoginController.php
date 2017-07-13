@@ -201,7 +201,7 @@ class LoginController extends Controller {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.login.showLoginForm', $args));
 		}
 		/* @var $loginResult IUser */
-		$loginResult = $this->userManager->get($user);
+		$loginResult = $this->userSession->getUser();
 		// TODO: remove password checks from above and let the user session handle failures
 		// requires https://github.com/owncloud/core/pull/24616
 		$this->userSession->createSessionToken($this->request, $loginResult->getUID(), $user, $password);
