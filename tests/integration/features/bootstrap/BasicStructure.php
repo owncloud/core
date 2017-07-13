@@ -23,12 +23,6 @@ trait BasicStructure {
 	/** @var string */
 	private $baseUrl = '';
 
-	/**
-	 * base URL without the /ocs part
-	 * @var string
-	 */
-	private $baseUrlWithoutOCSAppendix = '';
-
 	/** @var int */
 	private $apiVersion = 1;
 
@@ -65,9 +59,11 @@ trait BasicStructure {
 		if ($testRemoteServerUrl !== false) {
 			$this->remoteBaseUrl = $testRemoteServerUrl;
 		}
-		$this->baseUrlWithoutOCSAppendix = substr($this->baseUrl, 0, -4);
 	}
 
+	/**
+	 * returns the base URL without the /ocs part
+	 */
 	private function baseUrlWithoutOCSAppendix() {
 		return substr($this->baseUrl, 0, -4);
 	}
@@ -365,9 +361,9 @@ trait BasicStructure {
 	 */
 	private function getPasswordForUser($userName) {
 		if ($userName === 'admin') {
-			return $this->adminUser[1];
+			return (string) $this->adminUser[1];
 		} else {
-			return $this->regularUser;
+			return (string) $this->regularUser;
 		}
 	}
 
