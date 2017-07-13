@@ -761,6 +761,32 @@ class Manager implements IManager {
 		return $deletedShares;
 	}
 
+	protected static function formatUnshareHookParams(\OCP\Share\IShare $share) {
+		// Prepare hook
+		$shareType = $share->getShareType();
+		$sharedWith = '';
+		if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
+			$sharedWith = $share->getSharedWith();
+		} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+			$sharedWith = $share->getSharedWith();
+		} else if ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
+			$sharedWith = $share->getSharedWith();
+		}
+
+		$hookParams = [
+			'id'         => $share->getId(),
+			'itemType'   => $share->getNodeType(),
+			'itemSource' => $share->getNodeId(),
+			'shareType'  => $shareType,
+			'shareWith'  => $sharedWith,
+			'itemparent' => method_exists($share, 'getParent') ? $share->getParent() : '',
+			'uidOwner'   => $share->getSharedBy(),
+			'fileSource' => $share->getNodeId(),
+			'fileTarget' => $share->getTarget()
+		];
+		return $hookParams;
+	}
+
 	/**
 	 * Delete a share
 	 *
@@ -776,33 +802,7 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('Share does not have a full id');
 		}
 
-		$formatHookParams = function(\OCP\Share\IShare $share) {
-			// Prepare hook
-			$shareType = $share->getShareType();
-			$sharedWith = '';
-			if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
-				$sharedWith = $share->getSharedWith();
-			} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
-				$sharedWith = $share->getSharedWith();
-			} else if ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
-				$sharedWith = $share->getSharedWith();
-			}
-
-			$hookParams = [
-				'id'         => $share->getId(),
-				'itemType'   => $share->getNodeType(),
-				'itemSource' => $share->getNodeId(),
-				'shareType'  => $shareType,
-				'shareWith'  => $sharedWith,
-				'itemparent' => method_exists($share, 'getParent') ? $share->getParent() : '',
-				'uidOwner'   => $share->getSharedBy(),
-				'fileSource' => $share->getNodeId(),
-				'fileTarget' => $share->getTarget()
-			];
-			return $hookParams;
-		};
-
-		$hookParams = $formatHookParams($share);
+		$hookParams = self::formatUnshareHookParams($share);
 
 		// Emit pre-hook
 		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
@@ -818,9 +818,7 @@ class Manager implements IManager {
 		$deletedShares[] = $share;
 
 		//Format hook info
-		$formattedDeletedShares = array_map(function($share) use ($formatHookParams) {
-			return $formatHookParams($share);
-		}, $deletedShares);
+		$formattedDeletedShares = array_map('self::formatUnshareHookParams', $deletedShares);
 
 		$hookParams['deletedShares'] = $formattedDeletedShares;
 
@@ -843,6 +841,15 @@ class Manager implements IManager {
 		$provider = $this->factory->getProvider($providerId);
 
 		$provider->deleteFromSelf($share, $recipientId);
+
+		// Emit post hook. The parameter data structure is slightly different
+		// from the post_unshare hook to maintain backward compatibility with
+		// Share 1.0: the array contains all the key-value pairs from the old
+		// library plus some new ones.
+		$hookParams = self::formatUnshareHookParams($share);
+		$hookParams['itemTarget'] = $hookParams['fileTarget'];
+		$hookParams['unsharedItems'] = [$hookParams];
+		\OC_Hook::emit('OCP\Share', 'post_unshareFromSelf', $hookParams);
 	}
 
 	/**
