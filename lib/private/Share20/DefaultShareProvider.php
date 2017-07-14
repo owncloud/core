@@ -25,6 +25,7 @@
 namespace OC\Share20;
 
 use OCP\Files\File;
+use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
 use OC\Share20\Exception\InvalidShare;
 use OC\Share20\Exception\ProviderException;
@@ -91,13 +92,13 @@ class DefaultShareProvider implements IShareProvider {
 	/**
 	 * Share a path
 	 *
-	 * @param \OCP\Share\IShare $share
-	 * @return \OCP\Share\IShare The share object
+	 * @param IShare $share
+	 * @return IShare The share object
 	 * @throws ShareNotFound
-	 * @throws InvalidArgumentException if the share validation failed
+	 * @throws \InvalidArgumentException if the share validation failed
 	 * @throws \Exception
 	 */
-	public function create(\OCP\Share\IShare $share) {
+	public function create(IShare $share) {
 		$this->validate($share);
 		$qb = $this->dbConn->getQueryBuilder();
 
@@ -188,11 +189,11 @@ class DefaultShareProvider implements IShareProvider {
 	/**
 	 * Update a share
 	 *
-	 * @param \OCP\Share\IShare $share
-	 * @return \OCP\Share\IShare The share object
-	 * @throws InvalidArgumentException if the share validation failed
+	 * @param IShare $share
+	 * @return IShare The share object
+	 * @throws \InvalidArgumentException if the share validation failed
 	 */
-	public function update(\OCP\Share\IShare $share) {
+	public function update(IShare $share) {
 		$this->validate($share);
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			/*
@@ -261,50 +262,11 @@ class DefaultShareProvider implements IShareProvider {
 	}
 
 	/**
-	 * Get all children of this share
-	 * FIXME: remove once https://github.com/owncloud/core/pull/21660 is in
-	 *
-	 * @param \OCP\Share\IShare $parent
-	 * @return \OCP\Share\IShare[]
-	 */
-	public function getChildren(\OCP\Share\IShare $parent) {
-		$children = [];
-
-		$qb = $this->dbConn->getQueryBuilder();
-		$qb->select('*')
-			->from('share')
-			->where($qb->expr()->eq('parent', $qb->createNamedParameter($parent->getId())))
-			->andWhere(
-				$qb->expr()->in(
-					'share_type',
-					$qb->createNamedParameter([
-						\OCP\Share::SHARE_TYPE_USER,
-						\OCP\Share::SHARE_TYPE_GROUP,
-						\OCP\Share::SHARE_TYPE_LINK,
-					], IQueryBuilder::PARAM_INT_ARRAY)
-				)
-			)
-			->andWhere($qb->expr()->orX(
-				$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
-				$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
-			))
-			->orderBy('id');
-
-		$cursor = $qb->execute();
-		while($data = $cursor->fetch()) {
-			$children[] = $this->createShare($data);
-		}
-		$cursor->closeCursor();
-
-		return $children;
-	}
-
-	/**
 	 * Delete a share
 	 *
-	 * @param \OCP\Share\IShare $share
+	 * @param IShare $share
 	 */
-	public function delete(\OCP\Share\IShare $share) {
+	public function delete(IShare $share) {
 		$qb = $this->dbConn->getQueryBuilder();
 		$qb->delete('share')
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())));
@@ -324,12 +286,12 @@ class DefaultShareProvider implements IShareProvider {
 	 * Unshare a share from the recipient. If this is a group share
 	 * this means we need a special entry in the share db.
 	 *
-	 * @param \OCP\Share\IShare $share
+	 * @param IShare $share
 	 * @param string $recipient UserId of recipient
 	 * @throws BackendError
 	 * @throws ProviderException
 	 */
-	public function deleteFromSelf(\OCP\Share\IShare $share, $recipient) {
+	public function deleteFromSelf(IShare $share, $recipient) {
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 
 			$group = $this->groupManager->get($share->getSharedWith());
@@ -409,7 +371,7 @@ class DefaultShareProvider implements IShareProvider {
 	/**
 	 * @inheritdoc
 	 */
-	public function move(\OCP\Share\IShare $share, $recipient) {
+	public function move(IShare $share, $recipient) {
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			// Just update the target
 			$qb = $this->dbConn->getQueryBuilder();
@@ -626,7 +588,7 @@ class DefaultShareProvider implements IShareProvider {
 	 * Get shares for a given path
 	 *
 	 * @param \OCP\Files\Node $path
-	 * @return \OCP\Share\IShare[]
+	 * @return IShare[]
 	 */
 	public function getSharesByPath(Node $path) {
 		$qb = $this->dbConn->getQueryBuilder();
@@ -796,7 +758,7 @@ class DefaultShareProvider implements IShareProvider {
 	 * Get a share by token
 	 *
 	 * @param string $token
-	 * @return \OCP\Share\IShare
+	 * @return IShare
 	 * @throws ShareNotFound
 	 */
 	public function getShareByToken($token) {
@@ -831,7 +793,7 @@ class DefaultShareProvider implements IShareProvider {
 	 * Create a share object from an database row
 	 *
 	 * @param mixed[] $data
-	 * @return \OCP\Share\IShare
+	 * @return IShare
 	 * @throws InvalidShare
 	 */
 	private function createShare($data) {
@@ -1120,7 +1082,7 @@ class DefaultShareProvider implements IShareProvider {
 	 *
 	 * @param IShare $share share
 	 *
-	 * @throws InvalidArgumentException if the share validation failed
+	 * @throws \InvalidArgumentException if the share validation failed
 	 */
 	private function validate($share) {
 		if (!is_null($share->getName()) && strlen($share->getName()) > 64) {

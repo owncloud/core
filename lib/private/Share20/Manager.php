@@ -742,29 +742,6 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * Delete all the children of this share
-	 * FIXME: remove once https://github.com/owncloud/core/pull/21660 is in
-	 *
-	 * @param \OCP\Share\IShare $share
-	 * @return \OCP\Share\IShare[] List of deleted shares
-	 */
-	protected function deleteChildren(\OCP\Share\IShare $share) {
-		$deletedShares = [];
-
-		$provider = $this->factory->getProviderForType($share->getShareType());
-
-		foreach ($provider->getChildren($share) as $child) {
-			$deletedChildren = $this->deleteChildren($child);
-			$deletedShares = array_merge($deletedShares, $deletedChildren);
-
-			$provider->delete($child);
-			$deletedShares[] = $child;
-		}
-
-		return $deletedShares;
-	}
-
-	/**
 	 * Delete a share
 	 *
 	 * @param \OCP\Share\IShare $share
@@ -809,9 +786,6 @@ class Manager implements IManager {
 
 		// Emit pre-hook
 		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
-
-		// Get all children and delete them as well
-		$deletedShares = $this->deleteChildren($share);
 
 		// Do the actual delete
 		$provider = $this->factory->getProviderForType($share->getShareType());
