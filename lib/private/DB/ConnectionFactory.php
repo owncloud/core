@@ -129,6 +129,10 @@ class ConnectionFactory {
 				$additionalConnectionParams['platform'] = new OCSqlitePlatform();
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
 				break;
+			case 'pgsql':
+			case 'postgresql':
+				$additionalConnectionParams['platform'] = new OCPostgreSqlPlatform();
+				break;
 		}
 		/** @var Connection $connection */
 		$connection = DriverManager::getConnection(
