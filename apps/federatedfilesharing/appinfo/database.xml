@@ -19,13 +19,13 @@ the servers (e.g. permissions change, unshare,...)
 				<name>share_id</name>
 				<type>integer</type>
 				<notnull>true</notnull>
-				<length>4</length>
+				<length>10</length>
 			</field>
 			<field>
 				<name>remote_id</name>
 				<type>integer</type>
 				<notnull>true</notnull>
-				<length>4</length>
+				<length>10</length>
 				<comments>share ID at the remote server</comments>
 			</field>
 			<index>
