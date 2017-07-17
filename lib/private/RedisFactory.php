@@ -22,7 +22,7 @@
 namespace OC;
 
 class RedisFactory {
-	/** @var  \Redis */
+	/** @var \Redis | \RedisCluster */
 	private $instance;
 
 	/** @var  SystemConfig */
@@ -67,6 +67,10 @@ class RedisFactory {
 		}
 	}
 
+	/**
+	 * @return \Redis|\RedisCluster
+	 * @throws \Exception
+	 */
 	public function getInstance() {
 		if (!$this->isAvailable()) {
 			throw new \Exception('Redis support is not available');
