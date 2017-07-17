@@ -35,6 +35,8 @@ class InnoDB implements IRepairStep {
 
 	/**
 	 * Fix mime types
+	 *
+	 * @param IOutput $output
 	 */
 	public function run(IOutput $output) {
 		$connection = \OC::$server->getDatabaseConnection();
@@ -57,10 +59,11 @@ class InnoDB implements IRepairStep {
 	 * @return string[]
 	 */
 	private function getAllMyIsamTables($connection) {
+		$dbPrefix = \OC::$server->getConfig()->getSystemValue("dbtableprefix");
 		$dbName = \OC::$server->getConfig()->getSystemValue("dbname");
 		$result = $connection->fetchArray(
-			"SELECT table_name FROM information_schema.tables WHERE table_schema = ? AND engine = 'MyISAM' AND TABLE_NAME LIKE \"*PREFIX*%\"",
-			[$dbName]
+			"SELECT table_name FROM information_schema.tables WHERE table_schema = ? AND engine = ? AND TABLE_NAME LIKE ?",
+			[$dbName, 'MyISAM', $dbPrefix.'%']
 		);
 
 		return $result;
