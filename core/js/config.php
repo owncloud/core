@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <bjoern@schiessle.org>
@@ -36,6 +37,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 // Set the content type to Javascript
 header("Content-type: text/javascript");
@@ -198,12 +201,17 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 	$array['oc_defaults']['docBaseUrl'] = $defaults->getDocBaseUrl();
 	$array['oc_defaults']['docPlaceholderUrl'] = $defaults->buildDocLinkToKey('PLACEHOLDER');
 }
-$array['oc_appconfig'] = json_encode($array['oc_appconfig']);
-$array['oc_config'] = json_encode($array['oc_config']);
-$array['oc_defaults'] = json_encode($array['oc_defaults']);
 
 // Allow hooks to modify the output values
 OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
+$event = \OC::$server->getEventDispatcher()->dispatch('OCP\Config::js', new GenericEvent());
+foreach ($event->getArguments() as $key => $value) {
+	$array['oc_appconfig'][$key] = $value;
+}
+
+$array['oc_appconfig'] = json_encode($array['oc_appconfig']);
+$array['oc_config'] = json_encode($array['oc_config']);
+$array['oc_defaults'] = json_encode($array['oc_defaults']);
 
 // Echo it
 foreach ($array as  $setting => $value) {

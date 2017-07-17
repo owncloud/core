@@ -94,7 +94,7 @@
 					},
 					config: this._filesConfig,
 					enableUpload: true,
-					maxChunkSize: 10 * 1024 * 1024 // 10 MB
+					maxChunkSize: OC.appConfig.files.max_chunk_size
 				}
 			);
 			this.files.initialize();
