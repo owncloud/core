@@ -1,4 +1,6 @@
 <?php
+
+use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Joas Schilling <coding@schilljs.com>
@@ -58,3 +60,17 @@ $templateManager->registerTemplate('application/vnd.oasis.opendocument.spreadshe
 		\OC::$server->getConfig()
 	);
 });
+
+$eventDispatcher = \OC::$server->getEventDispatcher();
+$eventDispatcher->addListener(
+	'OCP\Config::js',
+	function($event) {
+		if ($event instanceof GenericEvent) {
+			$maxChunkSize = (int)(\OC::$server->getConfig()->getAppValue('files', 'max_chunk_size', (10 * 1024 * 1024)));
+			$event->setArgument('files', [
+				'max_chunk_size' => $maxChunkSize
+			]);
+		}
+	}
+);
+

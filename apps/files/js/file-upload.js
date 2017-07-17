@@ -244,8 +244,8 @@ OC.FileUpload.prototype = {
 			this.data.headers['X-OC-Mtime'] = file.lastModified / 1000;
 		}
 
-		var userName = this.uploader.filesClient.getUserName();
-		var password = this.uploader.filesClient.getPassword();
+		var userName = this.uploader.davClient.getUserName();
+		var password = this.uploader.davClient.getPassword();
 		if (userName) {
 			// copy username/password from DAV client
 			this.data.headers['Authorization'] =
@@ -258,7 +258,7 @@ OC.FileUpload.prototype = {
 			&& this.getFile().size > this.uploader.fileUploadParam.maxChunkSize
 		) {
 			data.isChunked = true;
-			chunkFolderPromise = this.uploader.filesClient.createDirectory(
+			chunkFolderPromise = this.uploader.davClient.createDirectory(
 				'uploads/' + encodeURIComponent(OC.getCurrentUser().uid) + '/' + encodeURIComponent(this.getId())
 			);
 			// TODO: if fails, it means same id already existed, need to retry
@@ -284,9 +284,18 @@ OC.FileUpload.prototype = {
 		}
 
 		var uid = OC.getCurrentUser().uid;
-		return this.uploader.filesClient.move(
+		return this.uploader.davClient.move(
 			'uploads/' + encodeURIComponent(uid) + '/' + encodeURIComponent(this.getId()) + '/.file',
-			'files/' + encodeURIComponent(uid) + '/' + OC.joinPaths(this.getFullPath(), this.getFileName())
+			'files/' + encodeURIComponent(uid) + '/' + OC.joinPaths(this.getFullPath(), this.getFileName()),
+			true,
+			{'X-OC-Mtime': this.getFile().lastModified / 1000}
+		);
+	},
+
+	_deleteChunkFolder: function() {
+		// delete transfer directory for this upload
+		this.uploader.davClient.remove(
+			'uploads/' + encodeURIComponent(OC.getCurrentUser().uid) + '/' + encodeURIComponent(this.getId())
 		);
 	},
 
@@ -295,12 +304,20 @@ OC.FileUpload.prototype = {
 	 */
 	abort: function() {
 		if (this.data.isChunked) {
-			// delete transfer directory for this upload
-			this.uploader.filesClient.remove(
-				'uploads/' + encodeURIComponent(OC.getCurrentUser().uid) + '/' + encodeURIComponent(this.getId())
-			);
+			this._deleteChunkFolder();
 		}
 		this.data.abort();
+		this.deleteUpload();
+	},
+
+	/**
+	 * Fail the upload
+	 */
+	fail: function() {
+		this.deleteUpload();
+		if (this.data.isChunked) {
+			this._deleteChunkFolder();
+		}
 	},
 
 	/**
@@ -398,6 +415,13 @@ OC.Uploader.prototype = _.extend({
 	 * @type OC.Files.Client
 	 */
 	filesClient: null,
+
+	/**
+	 * Webdav client pointing at the root "dav" endpoint
+	 *
+	 * @type OC.Files.Client
+	 */
+	davClient: null,
 
 	/**
 	 * Function that will allow us to know if Ajax uploads are supported
@@ -758,6 +782,13 @@ OC.Uploader.prototype = _.extend({
 
 		this.fileList = options.fileList;
 		this.filesClient = options.filesClient || OC.Files.getClient();
+		this.davClient = new OC.Files.Client({
+			host: this.filesClient.getHost(),
+			root: OC.linkToRemoteBase('dav'),
+			useHTTPS: OC.getProtocol() === 'https',
+			userName: this.filesClient.getUserName(),
+			password: this.filesClient.getPassword()
+		});
 
 		if (options.url) {
 			this.url = options.url;
@@ -970,7 +1001,7 @@ OC.Uploader.prototype = _.extend({
 					}
 
 					if (upload) {
-						upload.deleteUpload();
+						upload.fail();
 					}
 				},
 				/**
@@ -1000,6 +1031,10 @@ OC.Uploader.prototype = _.extend({
 					self.log('stop', e, data);
 				}
 			};
+
+			if (options.maxChunkSize) {
+				this.fileUploadParam.maxChunkSize = options.maxChunkSize;
+			}
 
 			// initialize jquery fileupload (blueimp)
 			var fileupload = this.$uploadEl.fileupload(this.fileUploadParam);
@@ -1091,7 +1126,7 @@ OC.Uploader.prototype = _.extend({
 					// modify the request to adjust it to our own chunking
 					var upload = self.getUpload(data);
 					var range = data.contentRange.split(' ')[1];
-					var chunkId = range.split('/')[0];
+					var chunkId = range.split('/')[0].split('-')[0];
 					data.url = OC.getRootPath() +
 						'/remote.php/dav/uploads' +
 						'/' + encodeURIComponent(OC.getCurrentUser().uid) +
