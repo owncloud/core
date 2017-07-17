@@ -60,6 +60,6 @@ class ListUsers extends Base {
 			/** @var IUser $user */
 			return $user->getDisplayName();
 		}, $users);
-		parent::writeArrayInOutputFormat($input, $output, $users);
+		parent::writeArrayInOutputFormat($input, $output, $users, self::DEFAULT_OUTPUT_PREFIX, true);
 	}
 }
