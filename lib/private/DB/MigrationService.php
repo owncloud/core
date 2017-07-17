@@ -56,7 +56,10 @@ class MigrationService {
 	 * @param IOutput|null $output
 	 * @throws \Exception
 	 */
-	function __construct($appName, IDBConnection $connection, IOutput $output = null, AppLocator $appLocator = null) {
+	function __construct($appName,
+						 IDBConnection $connection,
+						 IOutput $output = null,
+						 AppLocator $appLocator = null) {
 		$this->appName = $appName;
 		$this->connection = $connection;
 		$this->output = $output;
@@ -81,6 +84,9 @@ class MigrationService {
 				throw new \Exception("Could not create migration folder \"{$this->migrationsPath}\"");
 			};
 		}
+
+		// load the app so that app code can be used during migrations
+		\OC_App::loadApp($this->appName);
 	}
 
 	private static function requireOnce($file) {
@@ -196,6 +202,7 @@ class MigrationService {
 
 	/**
 	 * @param string $to
+	 * @return array
 	 */
 	private function getMigrationsToExecute($to) {
 		$knownMigrations = $this->getMigratedVersions();
@@ -215,7 +222,9 @@ class MigrationService {
 	}
 
 	/**
+	 * @param string $m
 	 * @param string[] $knownMigrations
+	 * @return bool
 	 */
 	private function shallBeExecuted($m, $knownMigrations) {
 		if (in_array($m, $knownMigrations)) {
@@ -315,6 +324,7 @@ class MigrationService {
 	}
 
 	/**
+	 * @param string $version
 	 * @return string
 	 */
 	private function getClass($version) {
