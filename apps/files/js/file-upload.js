@@ -291,17 +291,32 @@ OC.FileUpload.prototype = {
 		);
 	},
 
+	_deleteChunkFolder: function() {
+		// delete transfer directory for this upload
+		this.uploader.davClient.remove(
+			'uploads/' + encodeURIComponent(OC.getCurrentUser().uid) + '/' + encodeURIComponent(this.getId())
+		);
+	},
+
 	/**
 	 * Abort the upload
 	 */
 	abort: function() {
 		if (this.data.isChunked) {
-			// delete transfer directory for this upload
-			this.uploader.davClient.remove(
-				'uploads/' + encodeURIComponent(OC.getCurrentUser().uid) + '/' + encodeURIComponent(this.getId())
-			);
+			this._deleteChunkFolder();
 		}
 		this.data.abort();
+		this.deleteUpload();
+	},
+
+	/**
+	 * Fail the upload
+	 */
+	fail: function() {
+		this.deleteUpload();
+		if (this.data.isChunked) {
+			this._deleteChunkFolder();
+		}
 	},
 
 	/**
@@ -985,7 +1000,7 @@ OC.Uploader.prototype = _.extend({
 					}
 
 					if (upload) {
-						upload.deleteUpload();
+						upload.fail();
 					}
 				},
 				/**
