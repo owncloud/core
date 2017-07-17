@@ -49,6 +49,7 @@ use OC\Repair\SearchLuceneTables;
 use OC\Repair\UpdateOutdatedOcsIds;
 use OC\Repair\RepairInvalidShares;
 use OC\Repair\RepairUnmergedShares;
+use OC\Repair\RepairDirectoryMimeType;
 
 class Repair extends BasicEmitter {
 	/**
@@ -109,6 +110,7 @@ class Repair extends BasicEmitter {
 	public static function getRepairSteps() {
 		return [
 			new RepairMimeTypes(\OC::$server->getConfig()),
+			new RepairDirectoryMimeType(\OC::$server->getDatabaseConnection(), \OC::$server->getMimeTypeLoader()),
 			new AssetCache(),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection()),
