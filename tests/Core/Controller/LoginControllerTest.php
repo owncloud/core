@@ -287,7 +287,7 @@ class LoginControllerTest extends TestCase {
 	}
 
 	public function testLoginWithInvalidCredentials() {
-		$user = $this->createMock(IUser::class);
+		$user = 'unknown';
 		$password = 'secret';
 		$loginPageUrl = 'some url';
 
@@ -296,14 +296,14 @@ class LoginControllerTest extends TestCase {
 			->will($this->returnValue(false));
 		$this->urlGenerator->expects($this->once())
 			->method('linkToRoute')
-			->with('core.login.showLoginForm')
+			->with('core.login.showLoginForm', ['user' => $user, 'redirect_url' => '/foo'])
 			->will($this->returnValue($loginPageUrl));
 
 		$this->userSession->expects($this->never())
 			->method('createSessionToken');
 
 		$expected = new RedirectResponse($loginPageUrl);
-		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, ''));
+		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, '/foo'));
 	}
 
 	public function testLoginWithValidCredentials() {
