@@ -181,11 +181,10 @@ class Manager implements ICommentsManager {
 	 * @throws \InvalidArgumentException
 	 */
 	protected function checkRoleParameters($role, $type, $id) {
-		if(
-			   !is_string($type) || empty($type)
-			|| !is_string($id) || empty($id)
+		if (!is_string($type) || empty($type) ||
+		    !is_string($id) || ($id === '')
 		) {
-			throw new \InvalidArgumentException($role . ' parameters must be string and not empty');
+			throw new \InvalidArgumentException($role . ' parameters must be a non-blank string');
 		}
 	}
 
