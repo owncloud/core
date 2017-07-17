@@ -27,14 +27,20 @@ $(document).ready(function() {
 						params[key] = value;
 					});
 
-					if (params['code'] !== undefined) {
+					if (
+						params.code !== undefined
+						&& typeof client_id === "string"
+						&& client_id !== ''
+						&& typeof client_secret === "string"
+						&& client_secret !== ''
+					) {
 						$('.configuration').trigger('oauth_step2', [{
 							backend_id: $tr.attr('class'),
 							client_id: client_id,
 							client_secret: client_secret,
 							redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
 							tr: $tr,
-							code: params['code'] || '',
+							code: params.code || ''
 						}]);
 					}
 				}
@@ -48,14 +54,14 @@ $(document).ready(function() {
 		var client_id = $(this).parent().find('[data-parameter="client_id"]').val();
 		var client_secret = $(this).parent().find('[data-parameter="client_secret"]').val();
 		
-		if (client_id != '' && client_secret != '') {
+		if (client_id !== '' && client_secret !== '') {
 			$('.configuration').trigger('oauth_step1', [{
 				backend_id: tr.attr('class'),
 				client_id: client_id,
 				client_secret: client_secret,
 				redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
 				tr: tr
-			}])
+			}]);
 		}
 	});
 
