@@ -59,7 +59,7 @@ class Manager implements IManager {
 	 * @param IConfig $config
 	 */
 	public function __construct(IRequest $request,
-								IUserSession $session,
+								IUserSession $session = null,
 								IConfig $config) {
 		$this->request = $request;
 		$this->session = $session;
@@ -177,7 +177,7 @@ class Manager implements IManager {
 		}
 
 		if ($event->getAuthor() === null) {
-			if ($this->session->getUser() instanceof IUser) {
+			if ($this->session !== null && $this->session->getUser() instanceof IUser) {
 				$event->setAuthor($this->session->getUser()->getUID());
 			}
 		}
@@ -501,7 +501,7 @@ class Manager implements IManager {
 	public function getCurrentUserId() {
 		if ($this->currentUserId !== null) {
 			return $this->currentUserId;
-		} else if (!$this->session->isLoggedIn()) {
+		} else if ($this->session === null || !$this->session->isLoggedIn()) {
 			return $this->getUserFromToken();
 		} else {
 			return $this->session->getUser()->getUID();
