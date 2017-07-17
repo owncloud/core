@@ -677,10 +677,11 @@
 		 * @param {String} destinationPath destination path
 		 * @param {boolean} [allowOverwrite=false] true to allow overwriting,
 		 * false otherwise
+		 * @param {Object} [headers=null] additional headers
 		 *
 		 * @return {Promise} promise
 		 */
-		move: function(path, destinationPath, allowOverwrite) {
+		move: function(path, destinationPath, allowOverwrite, headers) {
 			if (!path) {
 				throw 'Missing argument "path"';
 			}
@@ -691,9 +692,9 @@
 			var self = this;
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
-			var headers = {
+			headers = _.extend({}, headers, {
 				'Destination' : this._buildUrl(destinationPath)
-			};
+			});
 
 			if (!allowOverwrite) {
 				headers['Overwrite'] = 'F';
