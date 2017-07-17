@@ -789,7 +789,6 @@ OC.Uploader.prototype = _.extend({
 				type: 'PUT',
 				dropZone: options.dropZone, // restrict dropZone to content div
 				autoUpload: false,
-				maxChunkSize: 10 * 1000 * 1000, // 10 MB
 				sequentialUploads: true,
 				//singleFileUploads is on by default, so the data.files array will always have length 1
 				/**
@@ -1015,6 +1014,10 @@ OC.Uploader.prototype = _.extend({
 					self.log('stop', e, data);
 				}
 			};
+
+			if (options.maxChunkSize) {
+				this.fileUploadParam.maxChunkSize = options.maxChunkSize;
+			}
 
 			// initialize jquery fileupload (blueimp)
 			var fileupload = this.$uploadEl.fileupload(this.fileUploadParam);

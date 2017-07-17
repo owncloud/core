@@ -93,7 +93,8 @@
 						direction: $('#defaultFileSortingDirection').val()
 					},
 					config: this._filesConfig,
-					enableUpload: true
+					enableUpload: true,
+					maxChunkSize: 10 * 1024 * 1024 // 10 MB
 				}
 			);
 			this.files.initialize();
