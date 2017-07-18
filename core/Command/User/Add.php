@@ -27,6 +27,7 @@ use OC\Files\Filesystem;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\Mail\IMailer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -41,14 +42,19 @@ class Add extends Command {
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 
+	/** @var IMailer  */
+	protected $mailer;
+
 	/**
 	 * @param IUserManager $userManager
 	 * @param IGroupManager $groupManager
+	 * @param IMailer $mailer
 	 */
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager) {
+	public function __construct(IUserManager $userManager, IGroupManager $groupManager, IMailer $mailer) {
 		parent::__construct();
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
+		$this->mailer = $mailer;
 	}
 
 	protected function configure() {
@@ -93,6 +99,20 @@ class Add extends Command {
 			return 1;
 		}
 
+		// Validate email before we create the user
+		if ($input->getOption('email')) {
+			// Validate first
+			if(!$this->mailer->validateMailAddress($input->getOption('email'))) {
+				// Invalid! Error
+				$output->writeln('<error>Invalid email address supplied</error>');
+				return 1;
+			} else {
+				$email = $input->getOption('email');
+			}
+		} else {
+			$email = null;
+		}
+
 		if ($input->getOption('password-from-env')) {
 			$password = getenv('OC_PASS');
 			if (!$password) {
@@ -135,9 +155,10 @@ class Add extends Command {
 			$output->writeln('Display name set to "' . $user->getDisplayName() . '"');
 		}
 
-		if ($input->getOption('email')) {
-			$user->setEMailAddress($input->getOption('email'));
-			$output->writeln('Email address set to  "' . $user->getEMailAddress() . '"');
+		// Set email if supplied & valid
+		if(!is_null($email)) {
+			$user->setEMailAddress($email);
+			$output->writeln('Email address set to "' . $user->getEMailAddress() . '"');
 		}
 
 		$groups = $input->getOption('group');
