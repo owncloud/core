@@ -320,8 +320,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "Παρουσιάστηκε σφάλμα κατά την επαλήθευση του διακριτικού",
     "You are accessing the server from an untrusted domain." : "Η προσπέλαση του διακομιστή γίνεται από μη έμπιστο τομέα.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Παρακαλώ επικοινωνήστε με το διαχειριστή του συστήματος. Αν είστε ο διαχειριστής, ρυθμίστε την επιλογή \"trusted_domain\" στο αρχείο config/config.php. Μπορείτε να βρείτε παράδειγμα στο αρχείο config/config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Ανάλογα με τις ρυθμίσεις σας, σαν διαχειριστής θα μπορούσατε επίσης να χρησιμοποιήσετε το παρακάτω κουμπί για να εμπιστευθείτε αυτόν τον τομέα.",
-    "Add \"%s\" as trusted domain" : "Προσθήκη \"%s\" ως αξιόπιστου τομέα",
     "App update required" : "Απαιτείται ενημέρωση εφαρμογής",
     "%s will be updated to version %s" : "%s θα αναβαθμιστεί σε έκδοση %s",
     "These apps will be updated:" : "Αυτές οι εφαρμογές θα αναβαθμιστούν:",

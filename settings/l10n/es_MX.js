@@ -52,7 +52,6 @@ OC.L10N.register(
     "Error while uninstalling app" : "Error al desinstalar aplicación",
     "Uninstall" : "Desinstalar",
     "Experimental" : "Experimental",
-    "Add trusted domain" : "Agregar dominio de confianza",
     "Migration in progress. Please wait until the migration is finished" : "Migración en proceso. Por favor espere hasta que la migración haya terminado.",
     "Migration started …" : "Migración iniciada...",
     "Delete" : "Eliminar",

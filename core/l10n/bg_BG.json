@@ -299,8 +299,6 @@
     "An error occurred while verifying the token" : "Настъпи грешка при проверката на токена",
     "You are accessing the server from an untrusted domain." : "Свръзваш се със сървъра от неодобрен домейн.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Моля, свържете се с администратора. Ако Вие сте администраторът на тази инстанция, нагласете \"trusted_domains\" в config/config.php. Примерна конфигурация е показана в config/config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "В зависимост от конфигурацията ти, като администратор може натискайки бутонът по-долу да отбележиш домейнът като сигурен.",
-    "Add \"%s\" as trusted domain" : "Добави \"%s\" като сигурен домейн",
     "App update required" : "Обновяване на приложението е задължително",
     "%s will be updated to version %s" : "%s ще бъде обновено до версия %s",
     "These apps will be updated:" : "Следните приложения ще бъдат обновени:",

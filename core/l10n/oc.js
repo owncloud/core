@@ -278,8 +278,6 @@ OC.L10N.register(
     "Two-step verification" : "Verificacion en doas etapas",
     "Cancel login" : "Anullar la connexion",
     "You are accessing the server from an untrusted domain." : "Accedissètz al servidor a partir d'un domeni pas aprovat.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "En foncion de vòstra configuracion, en tant qu'administrator podètz tanben utilizar lo boton çaijós per aprovar aqueste domeni.",
-    "Add \"%s\" as trusted domain" : "Apondre \"%s\" a la lista dels domenis aprovats",
     "App update required" : "Mesa a jorn de l'aplicacion necessària",
     "%s will be updated to version %s" : "%s serà mes a jorn cap a la version %s.",
     "These apps will be updated:" : "Las aplicacions seguentas seràn mesas a jorn :",

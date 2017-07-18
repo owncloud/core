@@ -249,7 +249,6 @@ OC.L10N.register(
     "Cancel login" : "Login ofbriechen",
     "Please authenticate using the selected factor." : "W.e.g. authentifizéier dech andeems de den ausgewielten Facteur benotz.",
     "You are accessing the server from an untrusted domain." : "Du gräifs vun enger net vertrauensvoller Domän op dëse Server zou.",
-    "Add \"%s\" as trusted domain" : "\"%s\" als zouverlässeg Domän derbäi setzen",
     "App update required" : "App Aktualiséierung néideg",
     "%s will be updated to version %s" : "%s wäert aktualiséiert ginn op d'Versioun %s",
     "These apps will be updated:" : "D!es Apps wäerten aktualiséiert ginn:",

@@ -320,8 +320,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "Es ist ein Fehler bei der Verifizierung des Tokens aufgetreten",
     "You are accessing the server from an untrusted domain." : "Sie greifen von einer nicht vertrauenswürdigen Domain auf den Server zu.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Bitte kontaktieren Sie Ihren Administrator. Wenn Sie Administrator dieser Instanz sind, konfigurieren Sie bitte die „trusted_domain“-Einstellung in config/config.php. Eine Beispielkonfiguration wird unter config/config.sample.php bereitgestellt.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Wenn es Ihre Konfiguration zulässt, können Sie als Administrator gegebenenfalls den Button unten benutzen, um diese Domain als vertrauenswürdig einzustufen.",
-    "Add \"%s\" as trusted domain" : "„%s“ als vertrauenswürdige Domain hinzufügen",
     "App update required" : "App-Update notwendig",
     "%s will be updated to version %s" : "%s wird auf Version %s aktualisiert",
     "These apps will be updated:" : "Diese Apps werden aktualisiert:",

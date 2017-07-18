@@ -320,8 +320,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "เกิดข้อผิดพลาดขณะทำการตรวจสอบโทเค็น",
     "You are accessing the server from an untrusted domain." : "คุณกำลังเข้าถึงเซิร์ฟเวอร์จากโดเมนที่ไม่น่าเชื่อถือ",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "กรุณาติดต่อผู้ดูแลระบบ หากคุณเป็นผู้ดูแลระบบ นี้ตัวอย่างการกำหนดค่า \"trusted_domains\" ใน\nconfig/config.php ตัวอย่างการกำหนดค่ามีอยู่ใน config/config.sample.php",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "ทั้งนี้ขึ้นอยู่กับการกำหนดค่าของคุณ ผู้ดูแลระบบอาจสามารถใช้ปุ่มด้านล่างเพื่อกำหนดให้โดเมนนี้มีความน่าเชื่อถือ",
-    "Add \"%s\" as trusted domain" : "ได้เพิ่ม \"%s\" เป็นโดเมนที่เชื่อถือ",
     "App update required" : "จำเป้นต้องอัพเดทแอพฯ",
     "%s will be updated to version %s" : "%s จะถูกอัพเดทเป็นเวอร์ชัน %s",
     "These apps will be updated:" : "แอพพลิเคชันเหล่านี้จะถูกอัพเดท:",

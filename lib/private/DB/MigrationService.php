@@ -86,7 +86,7 @@ class MigrationService {
 		}
 
 		// load the app so that app code can be used during migrations
-		\OC_App::loadApp($this->appName);
+		\OC_App::loadApp($this->appName, false);
 	}
 
 	private static function requireOnce($file) {

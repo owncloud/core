@@ -192,8 +192,6 @@ OC.L10N.register(
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Kontaktirajte svog administratora sustava ako se ova poruka ponavlja ili sepojavila neočekivano.",
     "Thank you for your patience." : "Hvala vam na strpljenju",
     "You are accessing the server from an untrusted domain." : "Poslužitelju pristupate iz nepouzdane domene.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Ovisno o vašoj konfiguraciji, kao administrator vi biste također mogli koristitigumb dolje za pristup toj domeni.",
-    "Add \"%s\" as trusted domain" : "Dodajte \"%s\" kao pouzdanu domenu.",
     "The theme %s has been disabled." : "Tema %s je onemogućena",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Prije nego li nastavite, molimo osigurajte da su baza podataka, mapa konfiguracije i mapaza podatke sigurnosno kopirani.",
     "Start update" : "Započnite ažuriranje",

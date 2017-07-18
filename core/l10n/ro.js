@@ -246,7 +246,6 @@ OC.L10N.register(
     "Cancel login" : "Anulează autentificarea",
     "Please authenticate using the selected factor." : "Autentifică-te folosind factorul ales.",
     "You are accessing the server from an untrusted domain." : "Accesezi serverul dintr-un domeniu care nu a fost configurat ca fiind de încredere.",
-    "Add \"%s\" as trusted domain" : "Adaugă \"%s\" ca domeniu de încredere",
     "App update required" : "E necesară o actualizare a aplicației",
     "%s will be updated to version %s" : "%s va fi actualizat la versiunea %s",
     "These apps will be updated:" : "Aceste aplicații vor fi actualizate:",

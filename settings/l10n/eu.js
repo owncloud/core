@@ -44,8 +44,6 @@ OC.L10N.register(
     "Uninstalling ...." : "Desinstalatzen ...",
     "Error while uninstalling app" : "Erroea izan da aplikazioa desinstalatzerakoan",
     "Uninstall" : "Desinstalatu",
-    "Are you really sure you want add \"{domain}\" as trusted domain?" : "Ziur zaude gehitu nahi duzula  \"{domain}\" domeinu fidagarri gisa?",
-    "Add trusted domain" : "Gehitu domeinu fidagarria",
     "Valid until {date}" : "{date} arte baliogarria",
     "Delete" : "Ezabatu",
     "Sending..." : "Bidaltzen...",

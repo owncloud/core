@@ -41,8 +41,6 @@
     "Uninstalling ...." : "Atinstalē ....",
     "Error while uninstalling app" : "Kļūda, atinstalējot lietotni",
     "Uninstall" : "Atinstalēt",
-    "Are you really sure you want add \"{domain}\" as trusted domain?" : "Vai esat pārliecināts, ka vēlaties pievienot \"{domain}\" kā uzticamu domēnu?",
-    "Add trusted domain" : "Pievienot uzticamu domēnu",
     "Valid until {date}" : "Valīds līdz {date}",
     "Delete" : "Dzēst",
     "Sending..." : "Sūta...",

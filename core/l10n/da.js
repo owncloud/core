@@ -303,8 +303,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "Der opstod en fejl under kontrollen af token",
     "You are accessing the server from an untrusted domain." : "Du tilgår serveren fra et utroværdigt domæne",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Kontakt din administrator. Hvis du er administrator for denne instans, konfigurer indstillingen \"trusted_domains\" i config / config.php. En eksempel-konfiguration findes i config / config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Afhænger af din konfiguration, da du som administrator eventuelt også er i stand til at gøre brug af knappen nedenfor til at tildele tillid til dette domæne.",
-    "Add \"%s\" as trusted domain" : "Tilføj \"%s\" som et troværdigt domæne",
     "App update required" : "Opdatering af app påkræves",
     "%s will be updated to version %s" : "%s vil blive opdateret til version %s",
     "These apps will be updated:" : "Følgende apps vil blive opdateret:",

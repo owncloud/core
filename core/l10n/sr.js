@@ -225,8 +225,6 @@ OC.L10N.register(
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Контактирајте администратора ако се порука понавља или се неочекивано појавила.",
     "Thank you for your patience." : "Хвала вам на стрпљењу.",
     "You are accessing the server from an untrusted domain." : "Приступате серверу са непоузданог домена.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Зависно од ваших подешавања, као администратор можете употребити дугме испод да потврдите поузданост домена.",
-    "Add \"%s\" as trusted domain" : "Додај „%s“ као поуздан домен",
     "The theme %s has been disabled." : "Тема %s је онемогућена.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Проверите да ли сте направили резервну копију фасцикли са подешавањима и подацима пре него што наставите.",
     "Start update" : "Почни надоградњу",

@@ -201,7 +201,6 @@ OC.L10N.register(
     "New Password" : "رمزعبور جدید",
     "Reset password" : "تنظیم مجدد رمز عبور",
     "Thank you for your patience." : "از صبر شما متشکریم",
-    "Add \"%s\" as trusted domain" : "افزودن \"%s\" به عنوان دامنه مورد اعتماد",
     "App update required" : "نیاز به بروزرسانی برنامه وجود دارد",
     "%s will be updated to version %s" : "%s به نسخه‌ی %s بروزرسانی خواهد شد",
     "These apps will be updated:" : "این برنامه‌ها بروزرسانی شده‌اند:",

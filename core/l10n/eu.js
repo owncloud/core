@@ -198,8 +198,6 @@ OC.L10N.register(
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Jarri harremanetan zure sistema administratzailearekin mezu hau irauten badu edo bat-batean agertu bada.",
     "Thank you for your patience." : "Milesker zure patzientziagatik.",
     "You are accessing the server from an untrusted domain." : "Zerbitzaria domeinu ez fidagarri batetik eskuratzen ari zara.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Zure ezarpenen gorabehera, administratzaile bezala posible duzu ere azpiko botoia erabiltzea fidatzeko domeinu horrekin.",
-    "Add \"%s\" as trusted domain" : "Gehitu \"%s\" domeinu fidagarri gisa",
     "The theme %s has been disabled." : "%s gaia desgaitu da.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Ekin aurretik egiazta ezazu datu basearen, ezarpenen karpetaren eta datuen karpetaren babeskopia duzula.",
     "Start update" : "Hasi eguneraketa",

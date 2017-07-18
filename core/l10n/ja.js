@@ -320,8 +320,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "トークンの検証中にエラーが発生しました",
     "You are accessing the server from an untrusted domain." : "信頼されていないドメインからサーバーにアクセスしています。",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "管理者に問い合わせてください。このサーバーの管理者の場合は、\"trusted_domain\" の設定を config/config.php に設定してください。config/config.sample.php にサンプルの設定方法が記載してあります。",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "環境により、下のボタンで信頼するドメインに追加する必要があるかもしれません。",
-    "Add \"%s\" as trusted domain" : "\"%s\" を信頼するドメイン名に追加",
     "App update required" : "アプリの更新が必要",
     "%s will be updated to version %s" : "%s は バーション %s にアップデートされます",
     "These apps will be updated:" : "次のアプリはアップデートされます：",
