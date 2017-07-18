@@ -33,93 +33,94 @@
 		<?php print_unescaped($_['headers']); ?>
 	</head>
 	<body id="<?php p($_['bodyid']);?>">
-	<?php include('layout.noscript.warning.php'); ?>
-	<div id="notification-container">
-		<div id="notification"></div>
-	</div>
-	<header role="banner"><div id="header">
-			<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
-				id="owncloud" tabindex="1">
-				<div class="logo-icon">
-					<h1 class="hidden-visually">
-						<?php p($theme->getName()); ?>
+		<?php include('layout.noscript.warning.php'); ?>
+		<div id="notification-container">
+			<div id="notification"></div>
+		</div>
+		<header role="banner">
+			<div id="header">
+				<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" id="owncloud" tabindex="1">
+					<h1 class="logo-icon">
+						<span class="own">own</span><span class="cloud">Cloud</span>
 					</h1>
-				</div>
-			</a>
+				</a>
 
-			<a href="#" class="header-appname-container menutoggle" tabindex="2">
-				<h1 class="header-appname">
-					<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
-				</h1>
-				<div class="icon-caret"></div>
-			</a>
+				<a href="#" class="header-appname-container menutoggle" tabindex="2">
+					<button class="burger">
+						<?php echo $l->t('Menu'); ?>
+					</button>
+					<h1 class="header-appname">
+						<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
+					</h1>
+				</a>
 
-			<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
-			<div id="settings">
-				<div id="expand" tabindex="6" role="link" class="menutoggle">
-					<?php if ($_['enableAvatars']): ?>
-					<div class="avatardiv<?php if ($_['userAvatarSet']) { print_unescaped(' avatardiv-shown'); } else { print_unescaped('" style="display: none'); } ?>">
-						<?php if ($_['userAvatarSet']): ?>
-							<img alt="" width="32" height="32"
-							src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>"
-							srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x"
-							>
+				<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+				<div id="settings">
+					<div id="expand" tabindex="6" role="link" class="menutoggle">
+						<?php if ($_['enableAvatars']): ?>
+						<div class="avatardiv<?php if ($_['userAvatarSet']) { print_unescaped(' avatardiv-shown'); } else { print_unescaped('" style="display: none'); } ?>">
+							<?php if ($_['userAvatarSet']): ?>
+								<img alt="" width="32" height="32"
+								src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>"
+								srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x"
+								>
+							<?php endif; ?>
+						</div>
 						<?php endif; ?>
+						<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
 					</div>
-					<?php endif; ?>
-					<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
-
-					<div class="icon-caret"></div>
+					<div id="expanddiv">
+					<ul>
+					<?php foreach($_['settingsnavigation'] as $entry):?>
+						<li>
+							<a href="<?php print_unescaped($entry['href']); ?>"
+								<?php if( $entry["active"] ): ?> class="active"<?php endif; ?>>
+								<img alt="" src="<?php print_unescaped($entry['icon']); ?>">
+								<?php p($entry['name']) ?>
+							</a>
+						</li>
+					<?php endforeach; ?>
+						<li>
+							<a id="logout" <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
+								<img alt="" src="<?php print_unescaped(image_path('', 'actions/logout.svg')); ?>">
+								<?php p($l->t('Log out'));?>
+							</a>
+						</li>
+					</ul>
+					</div>
 				</div>
-				<div id="expanddiv">
-				<ul>
-				<?php foreach($_['settingsnavigation'] as $entry):?>
-					<li>
-						<a href="<?php print_unescaped($entry['href']); ?>"
-							<?php if( $entry["active"] ): ?> class="active"<?php endif; ?>>
-							<img alt="" src="<?php print_unescaped($entry['icon']); ?>">
-							<?php p($entry['name']) ?>
-						</a>
-					</li>
-				<?php endforeach; ?>
-					<li>
-						<a id="logout" <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
-							<img alt="" src="<?php print_unescaped(image_path('', 'actions/logout.svg')); ?>">
-							<?php p($l->t('Log out'));?>
-						</a>
-					</li>
-				</ul>
+
+				<form class="searchbox" action="#" method="post" role="search" novalidate>
+					<label for="searchbox" class="hidden-visually">
+						<?php p($l->t('Search'));?>
+					</label>
+					<input id="searchbox" type="search" name="query"
+						value="" required
+						autocomplete="off" tabindex="5">
+				</form>
+			</div>
+		</header>
+
+		<nav role="navigation">
+			<div id="navigation">
+				<div id="apps">
+					<ul>
+					<?php foreach($_['navigation'] as $entry): ?>
+						<li data-id="<?php p($entry['id']); ?>">
+							<a href="<?php print_unescaped($entry['href']); ?>" tabindex="3"
+								<?php if( $entry['active'] ): ?> class="active"<?php endif; ?>>
+								<img class="app-icon" alt="" src="<?php print_unescaped($entry['icon']); ?>">
+								<div class="icon-loading-dark" style="display:none;"></div>
+								<span>
+									<?php p($entry['name']); ?>
+								</span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+					</ul>
 				</div>
 			</div>
-
-			<form class="searchbox" action="#" method="post" role="search" novalidate>
-				<label for="searchbox" class="hidden-visually">
-					<?php p($l->t('Search'));?>
-				</label>
-				<input id="searchbox" type="search" name="query"
-					value="" required
-					autocomplete="off" tabindex="5">
-			</form>
-		</div></header>
-
-		<nav role="navigation"><div id="navigation">
-			<div id="apps">
-				<ul>
-				<?php foreach($_['navigation'] as $entry): ?>
-					<li data-id="<?php p($entry['id']); ?>">
-						<a href="<?php print_unescaped($entry['href']); ?>" tabindex="3"
-							<?php if( $entry['active'] ): ?> class="active"<?php endif; ?>>
-							<img class="app-icon" alt="" src="<?php print_unescaped($entry['icon']); ?>">
-							<div class="icon-loading-dark" style="display:none;"></div>
-							<span>
-								<?php p($entry['name']); ?>
-							</span>
-						</a>
-					</li>
-				<?php endforeach; ?>
-				</ul>
-			</div>
-		</div></nav>
+		</nav>
 
 		<div id="content-wrapper">
 			<div id="content" class="app-<?php p($_['appid']) ?>" role="main">
