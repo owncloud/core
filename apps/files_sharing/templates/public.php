@@ -60,15 +60,6 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 			</h1>
 		</a>
 
-		<a href="#" class="header-appname-container menutoggle" tabindex="2">
-			<button class="burger">
-				<?php echo $l->t('Menu'); ?>
-			</button>
-			<h1 class="header-appname">
-				<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
-			</h1>
-		</a>
-
 		<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
 		<?php
 			if ($_['canDownload']) {
