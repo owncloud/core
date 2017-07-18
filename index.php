@@ -49,18 +49,22 @@ try {
 	OC::handleRequest();
 
 } catch(\OC\ServiceUnavailableException $ex) {
+	\OC::loadDefaultEnabledAppTheme();
 	\OC::$server->getLogger()->logException($ex, array('app' => 'index'));
 
 	//show the user a detailed error page
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 	OC_Template::printExceptionErrorPage($ex);
 } catch (\OC\HintException $ex) {
+	\OC::loadDefaultEnabledAppTheme();
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 	OC_Template::printErrorPage($ex->getMessage(), $ex->getHint());
 } catch (\OC\User\LoginException $ex) {
+	\OC::loadDefaultEnabledAppTheme();
 	OC_Response::setStatus(OC_Response::STATUS_FORBIDDEN);
 	OC_Template::printErrorPage($ex->getMessage());
 } catch (Exception $ex) {
+	\OC::loadDefaultEnabledAppTheme();
 	try {
 		\OC::$server->getLogger()->logException($ex, array('app' => 'index'));
 
@@ -76,6 +80,7 @@ try {
 		echo('</body></html>');
 	}
 } catch (Error $ex) {
+	\OC::loadDefaultEnabledAppTheme();
 	\OC::$server->getLogger()->logException($ex, array('app' => 'index'));
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	OC_Template::printExceptionErrorPage($ex);
