@@ -316,4 +316,54 @@ class Scanner extends \Test\TestCase {
 		];
 	}
 
+	public function failGetDataProvider() {
+		return [
+			// throws for empty path and "files" in home storage
+			[true, false, '', true],
+			[true, true, '', true],
+			[true, false, 'files', true],
+			[true, true, 'files', true],
+
+			// doesn't throw for federated shares (non-home)
+			[false, true, '', false],
+			[false, true, 'files', false],
+
+			// doesn't throw for external storage (non-home)
+			[false, false, '', false],
+			[false, false, 'files', false],
+
+			// doesn't throw for other paths
+			[true, false, 'other', false],
+
+			// doesn't throw if metadata exists
+			[true, false, 'other', false, []],
+		];
+	}
+
+	/**
+	 * @dataProvider failGetDataProvider
+	 */
+	public function testFailGetData($isHomeStorage, $isSharedStorage, $scanPath, $expectedThrown, $metadata = null) {
+		$this->storage = $this->getMock('\OC\Files\Storage\Storage');
+		$this->storage->method('getCache')->willReturn($this->getMock('\OCP\Files\Cache\ICache'));
+		$this->storage->expects($this->any())
+			->method('getMetaData')
+			->willReturn(null);
+		$this->storage->expects($this->any())
+			->method('instanceOfStorage')
+			->will($this->returnValueMap([
+				['\OCP\Files\IHomeStorage', $isHomeStorage],
+				['\OCA\Files_Sharing\ISharedStorage', $isSharedStorage],
+			]));
+		$this->scanner = new \OC\Files\Cache\Scanner($this->storage);
+		$thrown = false;
+		try {
+			$this->scanner->scanFile($scanPath);
+		} catch (\OCP\Files\StorageNotAvailableException $e) {
+			$thrown = true;
+		}
+
+		$this->assertEquals($expectedThrown, $thrown);
+	}
+
 }
