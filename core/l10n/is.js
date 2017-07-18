@@ -320,8 +320,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "Villa kom upp við að sannreyna teiknið",
     "You are accessing the server from an untrusted domain." : "Þú ert að tengjast þjóninum frá ótreystu léni.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Hafðu samband við kerfisstjóra. Ef þú ert stjórnandi á þessu tilviki, stilltu \"trusted_domains\" setninguna í config/config.php. Dæmi um stillingar má sjá í config/config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Það fer eftir stillingum þínum, sem stjórnandi þá gætir þú einnig notað hnappinn hér fyrir neðan til að treysta þessu léni.",
-    "Add \"%s\" as trusted domain" : "Bæta við \"%s\" sem treystu léni",
     "App update required" : "Forrit þarfnast uppfærslu ",
     "%s will be updated to version %s" : "%s verður uppfært í útgáfu %s.",
     "These apps will be updated:" : "Eftirfarandi forrit verða uppfærð:",

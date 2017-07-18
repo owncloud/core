@@ -230,8 +230,6 @@ OC.L10N.register(
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Contacteu amb l'administrador del sistema si aquest missatge persisteix o apareix inesperadament.",
     "Thank you for your patience." : "Gràcies per la paciència.",
     "You are accessing the server from an untrusted domain." : "Esteu accedint al servidor des d'un domini no fiable",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "En funció de la teva configuració, com a administrador podries utilitzar el botó d'abaix per confiar en aquest domini.",
-    "Add \"%s\" as trusted domain" : "Afegeix \"%s\" com a domini de confiança",
     "App update required" : "Cal que actualitzeu la aplicació",
     "%s will be updated to version %s" : "%s s'actualitzarà a la versió %s",
     "These apps will be updated:" : "Aquestes aplicacions s'actualitzaran:",

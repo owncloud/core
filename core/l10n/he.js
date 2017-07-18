@@ -320,8 +320,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "שגיאה אירעה בזמן אימות המחרוזת",
     "You are accessing the server from an untrusted domain." : "נכנסת לשרת משם מתחם / דומיין שאינו מהימן.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "יש ליצור קשר עם המנהל שלך. אם הנך המנהל של הפעלה זו, יש להגדיר את הגדרות ה- \"trusted_domains\" של config/config.php. דוגמת תצורה ניתן לראות ב- config/config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "בהתאם לתצורה שלך, כמנהל יתכן ותוכל להשתמש בכפתור מטה להפיכת שם המתחם / דומיין למהימן.",
-    "Add \"%s\" as trusted domain" : "הוספת \"%s\" כשם מתחם / דומיין מהימן",
     "App update required" : "נדרש עדכון יישום",
     "%s will be updated to version %s" : "%s יעודכן לגרסה %s",
     "These apps will be updated:" : "יישומים אלו יעודכנו:",

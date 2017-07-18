@@ -187,8 +187,6 @@
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Kontaktirajte Vašeg sistem administratora ako se ova poruka često ili iznenada pojavljuje.",
     "Thank you for your patience." : "Hvala Vam na strpljenju.",
     "You are accessing the server from an untrusted domain." : "Pristupate serveru sa nepouzdanog domena.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "U zavisnosti od Vaše konfiguracije, kao administrator bi ste mogli da upotrebite dugme ispod da podesite da verujete ovom domenu.",
-    "Add \"%s\" as trusted domain" : "Dodaj \"%s\" kao domen od poverenja",
     "The theme %s has been disabled." : "Tema %s će biti onemogućena.",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Molimo Vas da proverite da li su baza podataka, fascikla sa podešavanjima i fascikla sa podacima bekapovani pre nego što nastavite.",
     "Start update" : "Započni osvežavanje",

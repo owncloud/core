@@ -284,8 +284,6 @@
     "Two-step verification" : "Kahe-etapiline kinnitamine",
     "Cancel login" : "Tühista sisselogimine",
     "You are accessing the server from an untrusted domain." : "Sa kasutad serverit usalduseta asukohast",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Sõltuvalt sinu seadetest võib ka administraator kasutada allolevat nuppu, et seda domeeni usaldusväärseks märkida.",
-    "Add \"%s\" as trusted domain" : "Lisa \"%s\" usaldusväärse domeenina",
     "App update required" : "Rakenduse uuendus on nõutud",
     "These apps will be updated:" : "Neid rakendusi uuendatakse:",
     "The theme %s has been disabled." : "Teema %s on keelatud.",

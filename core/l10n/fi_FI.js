@@ -293,8 +293,6 @@ OC.L10N.register(
     "Please authenticate using the selected factor." : "Tunnistaudu käyttäen valittua vahvistusta.",
     "You are accessing the server from an untrusted domain." : "Olet yhteydessä palvelimeen epäluotettavasta verkko-osoitteesta.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Ota yhteys ylläpitoon. Jos olet tämän asennuksen ylläpitäjä, määritä \"trusted_domains\"-asetus config/config.php-tiedostossa. Esimerkkimääritys on tarjolla tiedostossa config/config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Riippuen määrityksistä, ylläpitäjänä saatat kyetä käyttämään alla olevaa painiketta luodaksesi luottamussuhteen tähän toimialueeseen.",
-    "Add \"%s\" as trusted domain" : "Lisää \"%s\" luotetuksi toimialueeksi",
     "App update required" : "Sovelluksen päivittäminen vaaditaan",
     "%s will be updated to version %s" : "%s päivitetään versioon %s",
     "These apps will be updated:" : "Nämä sovellukset päivitetään:",

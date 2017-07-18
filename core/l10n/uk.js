@@ -290,8 +290,6 @@ OC.L10N.register(
     "Please authenticate using the selected factor." : "Будь ласка, пройдіть процедуру аутентифікації за допомогою обраного фактора.",
     "You are accessing the server from an untrusted domain." : "Ви намагаєтеся отримати доступ до сервера з непідтвердженого домену.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Будь ласка, зверніться до адміністратора. Якщо ви є адміністратором цього серверу, налаштуйте опцію \"trusted_domains\" в конфігураційному файлі config/config.php. Приклад конфігурації знаходиться в файлі config/config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Залежно від конфігурації Ви як адміністратор можете додати цей домен у список довірених, використовуйте кнопку нижче.",
-    "Add \"%s\" as trusted domain" : "Додати \"%s\" як довірений домен",
     "App update required" : "Додаток потребує оновлення",
     "%s will be updated to version %s" : "%s буде оновлено до версії %s",
     "These apps will be updated:" : "Ці додатки будуть оновлені:",

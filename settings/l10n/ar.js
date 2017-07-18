@@ -29,7 +29,6 @@ OC.L10N.register(
     "Updated" : "تم التحديث بنجاح",
     "Uninstalling ...." : "جاري إلغاء التثبيت ...",
     "Uninstall" : "ألغاء التثبيت",
-    "Are you really sure you want add \"{domain}\" as trusted domain?" : "هل أنت متأكد انك تريد إضافة \"{domain}\" كنطاق موثوق فيه.",
     "Delete" : "إلغاء",
     "Sending..." : "جاري الارسال ...",
     "Select a profile picture" : "اختر صورة الملف الشخصي ",

@@ -224,8 +224,6 @@
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Póñase en contacto co administrador do sistema se persiste esta mensaxe ou se aparece de forma inesperada.",
     "Thank you for your patience." : "Grazas pola súa paciencia.",
     "You are accessing the server from an untrusted domain." : "Esta accedendo desde un dominio non fiábel.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "Dependendo da súa configuración, como administrador vostede podería utilizar o botón de embaixo para confiar neste dominio.",
-    "Add \"%s\" as trusted domain" : "Engadir «%s» como dominio de confianza",
     "App update required" : "É necesario actualizar a aplicación",
     "%s will be updated to version %s" : "%s actualizarase á versión %s",
     "These apps will be updated:" : "Actualizaranse estas aplicacións:",

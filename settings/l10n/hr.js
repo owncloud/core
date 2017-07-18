@@ -32,8 +32,6 @@ OC.L10N.register(
     "Uninstalling ...." : "Deinstaliranje....",
     "Error while uninstalling app" : "Pogreška pri deinstaliranju app",
     "Uninstall" : "Deinstalirajte",
-    "Are you really sure you want add \"{domain}\" as trusted domain?" : "Jeste li doista sigurni da želite dodati \"{domain}\" kao pouzdanu domenu?",
-    "Add trusted domain" : "Dodajte pouzdanu domenu",
     "Valid until {date}" : "Valid until {date}",
     "Delete" : "Izbrišite",
     "Sending..." : "Slanje...",

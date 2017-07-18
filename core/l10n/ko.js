@@ -318,8 +318,6 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "토큰을 검사하는 중 오류 발생",
     "You are accessing the server from an untrusted domain." : "신뢰할 수 없는 도메인으로 서버에 접근하고 있습니다.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "시스템 관리자에게 연락하십시오. 만약 이 인스턴스의 관리자라면 config/config.php에서 \"trusted_domains\" 설정을 편집하십시오. config/config.sample.php에 있는 예제 설정을 참고하십시오.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "설정에 따라서 관리자 권한으로 아래 단추를 눌러서 이 도메인을 신뢰하도록 설정할 수 있습니다.",
-    "Add \"%s\" as trusted domain" : "\"%s\"을(를) 신뢰할 수 있는 도메인으로 추가",
     "App update required" : "앱 업데이트 필요",
     "%s will be updated to version %s" : "%s 앱을 버전 %s(으)로 업데이트합니다",
     "These apps will be updated:" : "다음 앱을 업데이트합니다:",

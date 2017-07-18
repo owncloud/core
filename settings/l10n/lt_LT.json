@@ -53,8 +53,6 @@
     "Error while uninstalling app" : "Klaida ištrinant programą",
     "Uninstall" : "Ištrinti",
     "Experimental" : "Eksperimentinė",
-    "Are you really sure you want add \"{domain}\" as trusted domain?" : "Ar Jūs tikrai norite pridėti domeną \"{domain}\" į patikimų domenų sąrašą?",
-    "Add trusted domain" : "Pridėti patikimą domeną",
     "Migration in progress. Please wait until the migration is finished" : "Vyksta migracija. Prašome palaukti, kol migracija bus pabaigta.",
     "Migration started …" : "Migravimas prasidėjo...",
     "Valid until {date}" : "Galioja iki {date}",

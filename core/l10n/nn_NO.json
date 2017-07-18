@@ -318,8 +318,6 @@
     "An error occurred while verifying the token" : "Feil ved verifikasjon av symbol.",
     "You are accessing the server from an untrusted domain." : "Du når denne tenaren frå eit domene som ikkje er klarert.",
     "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Kontakt din administrator. Hvis du er administrator for denne tenaren, konfigurer \"trusted_domains\" setting i config/config.php. Eksempel finst i config/config.sample.php.",
-    "Depending on your configuration, as an administrator you might also be able to use the button below to trust this domain." : "AVhengig av oppsett kan du som administrator bruke knappen nedanfor for å stole på dette domenet.",
-    "Add \"%s\" as trusted domain" : "Legg til \"%s\" som godkjent domene",
     "App update required" : "Forbetring av program er påkrevd",
     "%s will be updated to version %s" : "%s vil bli forbetra til versjon %s",
     "These apps will be updated:" : "Desse programma vil bli oppdatert:",
