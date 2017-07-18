@@ -151,4 +151,13 @@ interface IGroupManager {
 	 * @since 8.0.0
 	 */
 	public function isInGroup($userId, $group);
+
+	/**
+	 * Returns the sub admin manager
+	 *
+	 * @since 10.1.0
+	 * @return ISubAdminManager
+	 */
+	public function getSubAdmin();
 }
+

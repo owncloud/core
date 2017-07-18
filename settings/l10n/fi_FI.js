@@ -9,7 +9,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Taustaosa ei tue salasanan vaihtoa, mutta käyttäjän salausavain päivitettiin onnistuneesti.",
     "Unable to change password" : "Salasanan vaihto ei onnistunut",
     "Couldn't send reset email. Please contact your administrator." : "Palautussähköpostin lähettäminen ei onnistunut. Ota yhteys ylläpitäjään.",
-    "Federated Cloud Sharing" : "Federoitu pilvijakaminen",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL käyttää vanhentunutta %s-versiota (%s). Päivitä käyttöjärjestelmäsi tai ominaisuudet kuten %s eivät toimi luotettavasti.",
     "A problem occurred, please check your log files (Error: %s)" : "Tapahtui virhe, tarkista lokitiedostot (Virhe: %s)",
     "Migration Completed" : "Migraatio valmistui",

@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Hapi 1 dështoi. Përjashtim: %s",
-    "Step 2 failed. Exception: %s" : "Hapi 2 dështoi. Përjashtim: %s",
     "External storage" : "Depozitë e jashtme",
-    "Google Drive App Configuration" : "Formësim i Aplikacionit Google Drive",
     "Personal" : "Personale",
     "System" : "Sistem",
     "Grant access" : "Akordoji hyrje",
@@ -72,7 +69,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Nëndosje e largët",
     "Secure https://" : "https:// e sigurt",
-    "Google Drive" : "Google Drive",
     "Local" : "Vendore",
     "Location" : "Vendndodhje",
     "ownCloud" : "ownCloud",

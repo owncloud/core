@@ -8,8 +8,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "A háttér-alrendszer nem támogatja a jelszómódosítást, de felhasználó titkosítási kulcsát sikeresen frissítettük.",
     "Unable to change password" : "Nem sikerült megváltoztatni a jelszót",
     "Couldn't send reset email. Please contact your administrator." : "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "alkalmazások telepítése és frissítése az alkalmazás tárból vagy Szövetséges Felhő Megosztásból",
-    "Federated Cloud Sharing" : "Megosztás Egyesített Felhőben",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL elavult %s verziót (%s) használ. Kérjük, frissítse az operációs rendszerét, vagy egyes funkciók (mint például a %s) megbízhatatlanul fognak működni.",
     "A problem occurred, please check your log files (Error: %s)" : "Probléma történt, kérjük nézd meg a naplófájlokat (Hiba: %s).",
     "Migration Completed" : "Migráció kész!",

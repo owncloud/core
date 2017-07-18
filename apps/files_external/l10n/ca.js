@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "El pas 1 ha fallat. Excepció: %s",
-    "Step 2 failed. Exception: %s" : "El pas 2 ha fallat. Excepció: %s",
     "External storage" : "Emmagatzemament extern",
     "Personal" : "Personal",
     "System" : "Sistema",

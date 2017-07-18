@@ -38,7 +38,6 @@
     "Archives of type %s are not supported" : "%s motako fitxategiak ez dira onartzen",
     "Failed to open archive when installing app" : "Fitxategia irekitzeak huts egin du aplikazioa instalatzerakoan",
     "App does not provide an info.xml file" : "Aplikazioak ez du info.xml fitxategia",
-    "App can't be installed because of not allowed code in the App" : "Aplikazioa ezin da instalatu bertan duen baimendu gabeko kodea dela eta",
     "App can't be installed because it is not compatible with this version of ownCloud" : "Aplikazioa ezin da instalatu ownCloud bertsio honekin bateragarria ez delako",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Aplikazioa ezin da instalatu <shipped>true</shipped> etiketa duelako eta etiketa hau ez da onartzen banaketan ez datozen aplikazioetan",
     "Apps" : "Aplikazioak",

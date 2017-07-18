@@ -45,7 +45,6 @@
     "App does not provide an info.xml file" : "Додаток не має файл info.xml",
     "App cannot be installed because appinfo file cannot be read." : "Додаток не може бути встановлений через те, що файл appinfo не може бути прочитано.",
     "Signature could not get checked. Please contact the app developer and check your admin screen." : "Підпис не може бути перевірено. Будь ласка, зверніться до розробника додатку і перевірте сторінку адміністрування.",
-    "App can't be installed because of not allowed code in the App" : "Неможливо встановити додаток. Він містить заборонений код",
     "App can't be installed because it is not compatible with this version of ownCloud" : "Неможливо встановити додаток, він є несумісним з даною версією ownCloud",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Неможливо встановити додаток, оскільки він містить параметр <shipped>true</shipped> заборонений додаткам, що не входять в поставку ",
     "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "Неможливо встановити додаток. Версія в файлі info.xml не співпадає з заявленою в магазині додатків",

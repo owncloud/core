@@ -527,13 +527,6 @@ $CONFIG = array(
  */
 
 /**
- * Checks an app before install whether it uses private APIs instead of the
- * proper public APIs. If this is set to true it will only allow to install or
- * enable apps that pass this check.
- */
-'appcodechecker' => true,
-
-/**
  * Check if ownCloud is up-to-date and shows a notification if a new version is
  * available.
  */
@@ -659,12 +652,6 @@ $CONFIG = array(
 'logtimezone' => 'Europe/Berlin',
 
 /**
- * Append all database queries and parameters to the log file. Use this only for
- * debugging, as your logfile will become huge.
- */
-'log_query' => false,
-
-/**
  * Log successful cron runs.
  */
 'cron_log' => true,
@@ -703,23 +690,9 @@ $CONFIG = array(
  */
 
 /**
- * When enabled, admins may install apps from the ownCloud app store.
- */
-'appstoreenabled' => true,
-
-/**
  * The URL of the appstore to use.
  */
 'appstoreurl' => 'https://api.owncloud.com/v1',
-
-/**
- * Whether to show experimental apps in the appstore interface
- *
- * Experimental apps are not checked for security issues and are new or known
- * to be unstable and under heavy development. Installing these can cause data
- * loss or security breaches.
- */
-'appstore.experimental.enabled' => false,
 
 /**
  * Use the ``apps_paths`` parameter to set the location of the Apps directory,
@@ -737,11 +710,6 @@ $CONFIG = array(
        'writable' => true,
      )
    ),
-
-/**
- * @see appcodechecker
- */
-
 
 /**
  * Previews
@@ -1254,7 +1222,7 @@ $CONFIG = array(
  * client may not function as expected, and could lead to permanent data loss for
  * clients or other unexpected results.
  */
-'minimum.supported.desktop.version' => '2.0.0',
+'minimum.supported.desktop.version' => '2.2.4',
 
 /**
  * EXPERIMENTAL: option whether to include external storage in quota

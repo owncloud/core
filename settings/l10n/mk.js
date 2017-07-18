@@ -8,7 +8,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Позадината не подржува промена на лозинката, но корисничкиот клуч за енкрипција беше успешно ажуриран.",
     "Unable to change password" : "Вашата лозинка неможе да се смени",
     "Couldn't send reset email. Please contact your administrator." : "Не можам да истпратам порака за ресетирање. Ве молам контактирајте го вашиот администратор.",
-    "Federated Cloud Sharing" : "Федерирано клауд споделување",
     "A problem occurred, please check your log files (Error: %s)" : "Се случи грешка, ве молам проверете ги вашите датотеки за логови (Грешка: %s)",
     "Migration Completed" : "Миграцијата заврши",
     "Group already exists." : "Групата веќе постои.",

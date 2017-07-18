@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "1 žingsnio klaida: %s",
-    "Step 2 failed. Exception: %s" : "2 žingsnio klaida: %s",
     "External storage" : "Išorinė saugykla",
     "Personal" : "Asmeniniai",
     "Grant access" : "Suteikti priėjimą",
@@ -25,7 +23,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Ištrinti katalogą",
     "Secure https://" : "Saugus https://",
-    "Google Drive" : "Google Drive",
     "Location" : "Vieta",
     "ownCloud" : "ownCloud",
     "SFTP" : "SFTP",

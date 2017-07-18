@@ -38,7 +38,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Távoli alkönyvtár",
     "Secure https://" : "Biztonságos https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Helyi",
     "Location" : "Hely",
     "ownCloud" : "ownCloud",

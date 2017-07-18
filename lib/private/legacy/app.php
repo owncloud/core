@@ -369,6 +369,9 @@ class OC_App {
 		$config = \OC::$server->getConfig();
 		$l = \OC::$server->getL10N('core');
 		$info = self::getAppInfo($app);
+		if ($info === null) {
+			throw new \Exception("$app can't be enabled since it is not installed.");
+		}
 
 		self::checkAppDependencies($config, $l, $info);
 
@@ -518,10 +521,6 @@ class OC_App {
 	 * @return string|false
 	 */
 	public static function getInstallPath() {
-		if (\OC::$server->getSystemConfig()->getValue('appstoreenabled', true) == false) {
-			return false;
-		}
-
 		foreach (OC::$APPSROOTS as $dir) {
 			if (isset($dir['writable']) && $dir['writable'] === true) {
 				return $dir['path'];

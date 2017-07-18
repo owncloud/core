@@ -532,7 +532,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 *
 	 * @param string $principalUri
 	 * @param string $calendarUri
-	 * @param array $properties
+	 * @param array $properties (keys must be CalDAV properties not db names)
 	 * @return int
 	 * @throws DAV\Exception
 	 */
@@ -544,7 +544,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			'synctoken'    => 1,
 			'transparent'  => 0,
 			'components'   => 'VEVENT,VTODO',
-			'displayname'  => $calendarUri
+			'displayname'  => $calendarUri,
 		];
 
 		// Default value

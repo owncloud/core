@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "1-й крок невдалий. Виключення: %s",
-    "Step 2 failed. Exception: %s" : "2-й крок невдалий. Виключення: %s",
     "External storage" : "Зовнішнє сховище",
-    "Google Drive App Configuration" : "Налаштування додатку Google Drive",
     "Personal" : "Особисте",
     "System" : "Система",
     "Grant access" : "Дозволити доступ",

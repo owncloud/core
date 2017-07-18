@@ -50,7 +50,6 @@
     "App does not provide an info.xml file" : "היישום לא סיפק קובץ info.xml",
     "App cannot be installed because appinfo file cannot be read." : "היישום לא ניתן להתקנה כיוון שקובץ appinfo לא ניתן לקריאה.",
     "Signature could not get checked. Please contact the app developer and check your admin screen." : "חתימה לא ניתנת לבדיקה. יש ליצור קשר עם מפתח היישום ולבדוק את מסך הניהול.",
-    "App can't be installed because of not allowed code in the App" : "היישום לא ניתן להתקנה בשל קוד אסור ביישום",
     "App can't be installed because it is not compatible with this version of ownCloud" : "היישום לא ניתן להתקנה כיוון שהוא אינו תואם את גרסת ה- ownCloud הזו",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "יישום לא ניתן להתקנה כייון שכולל תווית <shipped>אמת</shipped> tag שאינו מאושר ליישומים שאינם נשלחים",
     "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "לא ניתן להתקין את היישום כיוון שהגרסה בקובץ info.xml אינה תואמת לגרסה שמתקבלת מחנות היישומים",

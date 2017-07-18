@@ -146,6 +146,7 @@ OC.L10N.register(
     "Link" : "Link",
     "Edit" : "Redigér",
     "Remove" : "Fjern",
+    "Anyone with the link has access to the file/folder" : "Alle med linket har adgang til filen/mappen",
     "Copied!" : "Kopieret!",
     "Not supported!" : "Ikke understøttet!",
     "Press ⌘-C to copy." : "Tryk ⌘-C for at kopiere.",

@@ -362,12 +362,6 @@ class Installer {
 			}
 		}
 
-		// check the code for not allowed calls
-		if(!$isShipped && !Installer::checkCode($extractDir)) {
-			OC_Helper::rmdirr($extractDir);
-			throw new \Exception($l->t("App can't be installed because of not allowed code in the App"));
-		}
-
 		// check if the app is compatible with this version of ownCloud
 		if(!OC_App::isAppCompatible(\OCP\Util::getVersion(), $info)) {
 			OC_Helper::rmdirr($extractDir);
@@ -429,16 +423,21 @@ class Installer {
 	public static function removeApp($appId) {
 
 		if(Installer::isDownloaded( $appId )) {
-			$appDir=OC_App::getInstallPath() . '/' . $appId;
+			$appDir = OC_App::getAppPath($appId);
+			if ($appDir === false) {
+				return false;
+			}
+			if(is_dir("$appDir/.git")) {
+				throw new AppAlreadyInstalledException("App <$appId> is a git clone - it will not be deleted.");
+			}
+
 			OC_Helper::rmdirr($appDir);
 
 			return true;
-		}else{
-			\OCP\Util::writeLog('core', 'can\'t remove app '.$appId.'. It is not installed.', \OCP\Util::ERROR);
-
-			return false;
 		}
+		\OCP\Util::writeLog('core', 'can\'t remove app '.$appId.'. It is not installed.', \OCP\Util::ERROR);
 
+		return false;
 	}
 
 	/**
@@ -536,24 +535,7 @@ class Installer {
 	}
 
 	/**
-	 * check the code of an app with some static code checks
-	 * @param string $folder the folder of the app to check
-	 * @return boolean true for app is o.k. and false for app is not o.k.
-	 */
-	public static function checkCode($folder) {
-		// is the code checker enabled?
-		if(!\OC::$server->getConfig()->getSystemValue('appcodechecker', false)) {
-			return true;
-		}
-
-		$codeChecker = new CodeChecker(new PrivateCheck(new EmptyCheck()));
-		$errors = $codeChecker->analyseFolder($folder);
-
-		return empty($errors);
-	}
-
-	/**
-	 * @param $basedir
+	 * @param $script
 	 */
 	private static function includeAppScript($script) {
 		if ( file_exists($script) ){

@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Krok 1 zlyhal. Výnimka: %s",
-    "Step 2 failed. Exception: %s" : "Krok 2 zlyhal. Výnimka: %s",
     "External storage" : "Externé úložisko",
     "Personal" : "Osobné",
     "System" : "Systém",
@@ -52,7 +50,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Vzdialený podpriečinok",
     "Secure https://" : "Zabezpečené https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Lokálny",
     "Location" : "Umiestnenie",
     "ownCloud" : "ownCloud",

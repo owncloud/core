@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Стъпка 1 - неуспешна. Грешка: %s",
-    "Step 2 failed. Exception: %s" : "Стъпка 2 - неуспешна. Грешка: %s",
     "External storage" : "Външно дисково пространство",
-    "Google Drive App Configuration" : "Настройки на Google Drive приложение",
     "Personal" : "Личен",
     "System" : "Системен",
     "Grant access" : "Разреши достъп",
@@ -70,7 +67,6 @@ OC.L10N.register(
     "URL" : "Интернет Адрес",
     "Remote subfolder" : "Външна подпапка",
     "Secure https://" : "Подсигурен https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Локален",
     "Location" : "Местоположение",
     "ownCloud" : "ownCloud",

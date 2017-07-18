@@ -5,7 +5,6 @@
     "Wrong admin recovery password. Please check the password and try again." : "İnzibatçı geriyə qayıdış şifrəsi yalnışdır. Xahiş olunur şifrəni yoxlayıb yenidən təkrar edəsiniz.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Arxa sonluq şifrənin dəyişdirilməsini dəstəkləmir ancaq, istifadəçi şifrələmə açarı uğurla yeniləndi.",
     "Unable to change password" : "Şifrəni dəyişmək olmur",
-    "Federated Cloud Sharing" : "Federal Cloud Paylaşım",
     "Group already exists." : "Qrup artılq mövcduddur.",
     "Unable to add group." : "Qrupu əlavə etmək mümkün deyil. ",
     "Unable to delete group." : "Qrupu silmək mümkün deyil.",

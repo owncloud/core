@@ -16,11 +16,9 @@ script('settings', 'admin-apps');
 		</li>
 		{{/each}}
 
-		<?php if($_['appstoreEnabled']): ?>
-			<li>
-				<a class="app-external" target="_blank" rel="noreferrer" href="https://owncloud.org/dev"><?php p($l->t('Developer documentation'));?> ↗</a>
-			</li>
-		<?php endif; ?>
+		<li>
+			<a class="app-external" target="_blank" rel="noreferrer" href="https://owncloud.org/dev"><?php p($l->t('Developer documentation'));?> ↗</a>
+		</li>
 	</script>
 
 	<script id="app-template" type="text/x-handlebars">

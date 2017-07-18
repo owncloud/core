@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Paso 1 falló. Excepción: %s",
-    "Step 2 failed. Exception: %s" : "Paso 2 falló. Excepción: %s",
     "External storage" : "Almacenamiento externo",
-    "Google Drive App Configuration" : "Configuración de la Aplicación Google Drive",
     "Personal" : "Personal",
     "System" : "Sistema",
     "Grant access" : "Conceder acceso",
@@ -57,7 +54,6 @@ OC.L10N.register(
     "WebDAV" : "WebDAV",
     "URL" : "URL",
     "Remote subfolder" : "Subcarpeta remota",
-    "Google Drive" : "Google Drive",
     "Local" : "Local",
     "Location" : "Ubicación",
     "ownCloud" : "ownCloud",

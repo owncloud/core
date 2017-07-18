@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "L’étape 1 a échoué. Erreur : %s",
-    "Step 2 failed. Exception: %s" : "L’étape 2 a échoué. Erreur : %s",
     "External storage" : "Stockage externe",
-    "Google Drive App Configuration" : "Configuration de l'application Google Drive",
     "Personal" : "Personnel",
     "System" : "Système",
     "Grant access" : "Autoriser l'accès",
@@ -72,7 +69,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Sous-dossier distant",
     "Secure https://" : "Sécurisation https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Local",
     "Location" : "Emplacement",
     "ownCloud" : "ownCloud",

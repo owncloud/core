@@ -1,8 +1,6 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Samm 1 ebaõnnestus. Erind: %s",
-    "Step 2 failed. Exception: %s" : "Samm 2 ebaõnnestus. Erind: %s",
     "External storage" : "Väline andmehoidla",
     "Personal" : "Isiklik",
     "System" : "Süsteem",
@@ -52,7 +50,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Mujahl olev alamkaust",
     "Secure https://" : "Turvaline https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Kohalik",
     "Location" : "Asukoht",
     "ownCloud" : "ownCloud",

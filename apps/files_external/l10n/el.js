@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Το βήμα 1 απέτυχε. Εξαίρεση: %s",
-    "Step 2 failed. Exception: %s" : "Το βήμα 2 απέτυχε. Εξαίρεση: %s",
     "External storage" : "Εξωτερική αποθήκευση",
-    "Google Drive App Configuration" : "Ρυθμίσεις εφαρμογής Google Drive",
     "Personal" : "Προσωπικά",
     "System" : "Σύστημα",
     "Grant access" : "Παροχή πρόσβασης",
@@ -72,7 +69,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Απομακρυσμένος υποφάκελος",
     "Secure https://" : "Ασφαλής σύνδεση https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Τοπικός",
     "Location" : "Τοποθεσία",
     "ownCloud" : "ownCloud",

@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Stap 1 is mislukt. Uitzondering: %s",
-    "Step 2 failed. Exception: %s" : "Stap 2 is mislukt. Uitzondering: %s",
     "External storage" : "Externe opslag",
-    "Google Drive App Configuration" : "Google Drive app configuratie",
     "Personal" : "Persoonlijk",
     "System" : "Systeem",
     "Grant access" : "Sta toegang toe",
@@ -72,7 +69,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Externe submap",
     "Secure https://" : "Secure https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Lokaal",
     "Location" : "Locatie",
     "ownCloud" : "ownCloud",

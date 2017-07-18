@@ -1,10 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "Step 1 failed. Exception: %s" : "Pasu 1 fallíu. Esceición: %s",
-    "Step 2 failed. Exception: %s" : "Pasu 2 fallíu. Esceición: %s",
     "External storage" : "Almacenamientu esternu",
-    "Google Drive App Configuration" : "Configuración d'Aplicación Google Drive",
     "Personal" : "Personal",
     "System" : "Sistema",
     "Grant access" : "Conceder accesu",
@@ -70,7 +67,6 @@ OC.L10N.register(
     "URL" : "URL",
     "Remote subfolder" : "Subcarpeta remota",
     "Secure https://" : "Secure https://",
-    "Google Drive" : "Google Drive",
     "Local" : "Llocal",
     "Location" : "Llocalización",
     "ownCloud" : "ownCloud",

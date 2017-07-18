@@ -48,7 +48,6 @@
     "Archives of type %s are not supported" : "Arsip dengan tipe %s tidak didukung",
     "Failed to open archive when installing app" : "Gagal membuka arsip saat menginstal apl",
     "App does not provide an info.xml file" : "Apl tidak menyediakan berkas info.xml",
-    "App can't be installed because of not allowed code in the App" : "Apl tidak dapat diinstal karena terdapat kode yang tidak diizinkan didalam Apl",
     "App can't be installed because it is not compatible with this version of ownCloud" : "Apl tidak dapat diinstal karena tidak kompatibel dengan versi ownCloud",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Apl tidak dapat diinstal karena mengandung tag <shipped>true</shipped> yang tidak diizinkan untuk apl yang bukan bawaan.",
     "Apps" : "Aplikasi",

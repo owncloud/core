@@ -54,6 +54,7 @@ OC.L10N.register(
     "You shared %1$s via link" : "Udostępniasz %1$s przez link",
     "%2$s shared %1$s with you" : "%2$s współdzieli %1$s z Tobą",
     "%2$s removed the share for %1$s" : "%2$s usunął udział dla %1$s",
+    "Downloaded via public link" : "Pobrano poprzez odnośnik publiczny",
     "Shared via public link" : "Udostępniono poprzez publiczny odnośnik",
     "Removed public link" : "Usunięto publiczny odnośnik",
     "Public link expired" : "Publiczny odnośnik wygasł",

@@ -9,8 +9,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Backend doesn't support password change, but the user's encryption key was successfully updated.",
     "Unable to change password" : "Unable to change password",
     "Couldn't send reset email. Please contact your administrator." : "Couldn't send reset email. Please contact your administrator.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "installing and updating apps via the app store or Federated Cloud Sharing",
-    "Federated Cloud Sharing" : "Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably.",
     "A problem occurred, please check your log files (Error: %s)" : "A problem occurred, please check your log files (Error: %s)",
     "Migration Completed" : "Migration Completed",

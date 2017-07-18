@@ -35,6 +35,7 @@ class LoginContext extends RawMinkContext implements Context
 {
 	private $loginPage;
 	private $filesPage;
+	private $expectedPage;
 	private $featureContext;
 
 	public function __construct(LoginPage $loginPage)
@@ -57,6 +58,24 @@ class LoginContext extends RawMinkContext implements Context
 	{
 		$this->filesPage = $this->loginPage->loginAs($username, $password);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
+	 * @When I login with username :username and invalid password :password
+	 */
+	public function iLoginWithUsernameAndInvalidPassword($username, $password)
+	{
+		$this->loginPage->loginAs($username, $password, 'LoginPage');
+		$this->loginPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
+	 * @When I login with username :username and password :password after a redirect from the :page page
+	 */
+	public function iLoginWithUsernameAndPasswordAfterRedirectFromThePage($username, $password, $page)
+	{
+		$this->expectedPage = $this->loginPage->loginAs($username, $password, str_replace(' ', '', ucwords($page)) . 'Page');
+		$this->expectedPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**

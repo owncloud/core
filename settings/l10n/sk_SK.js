@@ -8,7 +8,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Backend nepodporuje zmenu hesla, ale šifrovací kľúč používateľa bol úspešne zmenený.",
     "Unable to change password" : "Zmena hesla sa nepodarila",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
-    "Federated Cloud Sharing" : "Združené cloudové zdieľanie",
     "A problem occurred, please check your log files (Error: %s)" : "Nastala chyba, skontrolujte prosím váš log súbor (Chyba: %s)",
     "Migration Completed" : "Migrácia ukončená",
     "Group already exists." : "Skupina už existuje.",

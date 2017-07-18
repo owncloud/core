@@ -195,7 +195,7 @@ OC.L10N.register(
     "access control" : "controle de acesso",
     "Could not unshare" : "Não foi possível descompartilhar",
     "Share details could not be loaded for this item." : "Detalhes de compartilhamento não puderam ser carregados para este item.",
-    "No users or groups found for {search}" : "Nenhum usuário grupo encontrado para {search}",
+    "No users or groups found for {search}" : "Nenhum usuário ou grupo encontrados para {search}",
     "No users found for {search}" : "Nenhum usuário encontrado para {search}",
     "An error occurred. Please try again" : "Ocorreu um erro. Por favor tente novamente",
     "{sharee} (group)" : "{sharee} (grupo)",

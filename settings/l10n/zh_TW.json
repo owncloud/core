@@ -6,8 +6,6 @@
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "後端不支援變更密碼，但成功更新使用者的加密金鑰",
     "Unable to change password" : "無法修改密碼",
     "Couldn't send reset email. Please contact your administrator." : "無法寄送重設 email ，請聯絡系統管理員",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "透過應用程式中心或是聯盟式雲端分享來安裝、更新應用程式",
-    "Federated Cloud Sharing" : "聯盟式雲端分享",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL 使用的 %s 版本已經過期 (%s)，請您更新您的作業系統，否則功能如 %s 可能無法正常運作",
     "A problem occurred, please check your log files (Error: %s)" : "出現問題，請您檢查您的記錄檔（錯誤：%s）",
     "Migration Completed" : "遷移已完成",

@@ -8,8 +8,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "A infraestrutura non admite o cambio de contrasinal, mais a chave de cifrado do usuario foi actualizada correctamente.",
     "Unable to change password" : "Non é posíbel cambiar o contrasinal",
     "Couldn't send reset email. Please contact your administrator." : "Non foi posíbel enviar o correo do restabelecemento. Póñase en contacto co administrador.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "instalando e actualizando aplicacións a través da tenda de aplicacións ou da nube federada compartida",
-    "Federated Cloud Sharing" : "Nube federada compartida",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL está utilizando unha versión obsoleta %s (%s). Actualice o seu sistema operativo, caso contrario características como %s non funcionarán de xeito fiábel.",
     "A problem occurred, please check your log files (Error: %s)" : "Ocorreu un problema revise os ficheiros de rexistro (Erro: %s)",
     "Migration Completed" : "Completouse a migración",

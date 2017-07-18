@@ -100,6 +100,7 @@ OC.L10N.register(
     "Edit" : "Editatu",
     "Remove" : "Ezabatu",
     "Choose a password for the public link" : "Aukeratu pasahitz bat esteka publikorako",
+    "Filename" : "Fitxategiaren izena",
     "Password" : "Pasahitza",
     "Name" : "Izena",
     "Allow editing" : "Baimendu editatzea",

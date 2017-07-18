@@ -23,6 +23,7 @@
 namespace Page;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Behat\Mink\Session;
 
 class LoginPage extends OwncloudPage
 {
@@ -30,12 +31,31 @@ class LoginPage extends OwncloudPage
 	 * @var string $path
 	 */
 	protected $path = '/index.php/login';
+	protected $userInputId = "user";
+	protected $passwordInputId = "password";
 
-	public function loginAs($username, $password)
+	public function loginAs($username, $password, $target='FilesPage')
 	{
-		$this->fillField("user", $username);
-		$this->fillField("password", $password);
+		$this->fillField($this->userInputId, $username);
+		$this->fillField($this->passwordInputId, $password);
 		$this->findById("submit")->click();
-		return $this->getPage('FilesPage');
+		return $this->getPage($target);
+	}
+
+	//there is no reliable loading indicator on the login page, so just wait for
+	//the user and password to be there.
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	{
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
+			if (($this->findById($this->userInputId) !== null) &&
+			    ($this->findById($this->passwordInputId) !== null)) {
+				break;
+			}
+			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
+		}
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 }

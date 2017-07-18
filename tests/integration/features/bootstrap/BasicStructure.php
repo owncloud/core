@@ -62,6 +62,13 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns the base URL without the /ocs part
+	 */
+	private function baseUrlWithoutOCSAppendix() {
+		return substr($this->baseUrl, 0, -4);
+	}
+
+	/**
 	 * @Given /^using api version "([^"]*)"$/
 	 * @param string $version
 	 */
@@ -87,12 +94,11 @@ trait BasicStructure {
 		if ($server === 'LOCAL'){
 			$this->baseUrl = $this->localBaseUrl;
 			$this->currentServer = 'LOCAL';
-			return $previousServer;
 		} else {
 			$this->baseUrl = $this->remoteBaseUrl;
 			$this->currentServer = 'REMOTE';
-			return $previousServer;
 		}
+		return $previousServer;
 	}
 
 	/**
@@ -193,7 +199,7 @@ trait BasicStructure {
 	}
 
 	public function isExpectedUrl($possibleUrl, $finalPart){
-		$baseUrlChopped = substr($this->baseUrl, 0, -4);
+		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
 		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
 		return (substr($possibleUrl,0,$endCharacter) == "$baseUrlChopped" . "$finalPart");
 	}
@@ -347,6 +353,18 @@ trait BasicStructure {
 	 */
 	public function fileIsCreatedInLocalStorageWithText($filename, $text) {
 		$this->createFileWithText("local_storage/$filename", $text);
+	}
+
+	/**
+	 * @param string $userName
+	 * @return string
+	 */
+	private function getPasswordForUser($userName) {
+		if ($userName === 'admin') {
+			return (string) $this->adminUser[1];
+		} else {
+			return (string) $this->regularUser;
+		}
 	}
 
 	/**

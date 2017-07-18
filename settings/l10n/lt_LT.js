@@ -9,8 +9,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Vartotojo slaptažodžio pakeitimas negalimas, bet šifravimo raktas atnaujintas sėkmingai.",
     "Unable to change password" : "Nepavyksta pakeisti slaptažodžio",
     "Couldn't send reset email. Please contact your administrator." : "Nepavyko išsiųsti atkūrimo laiško, susisiekite su administratoriumi.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "programų įrašymas ir atnaujinimas naudojantis programų parduotuve arba viešuoju debesiu",
-    "Federated Cloud Sharing" : "Viešas dalijimasis debesiu",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL naudoja pasenusią %s versiją (%s). Pašome atnaujinti serverio operacinę sistemą arba serverio tarnybas, nes %s gali veikti netinkamai",
     "A problem occurred, please check your log files (Error: %s)" : "Iškilo problema, prašome peržiūrėti klaidų išrašus (Klaida: %s)",
     "Migration Completed" : "Migravimas baigtas",

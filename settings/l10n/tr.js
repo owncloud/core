@@ -10,8 +10,6 @@ OC.L10N.register(
     "Unable to change password" : "Parola değiştirilemiyor",
     "%s password changed successfully" : "%s parola başarıyla değiştirildi",
     "Couldn't send reset email. Please contact your administrator." : "Sıfırlama e-postası gönderilemedi. Lütfen yöneticiniz ile iletişime geçin.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "uygulama mağazası ve Birleşmiş Bulut Paylaşımından uygulama kurma ve güncelleme",
-    "Federated Cloud Sharing" : "Birleşmiş Bulut Paylaşımı",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL eskide kalmış bir sürüm %s kullanıyor (%s). Lütfen işletim sisteminizi güncelleyin, aksi halde %s gibi özellikler düzgün çalışmayacaktır.",
     "A problem occurred, please check your log files (Error: %s)" : "Bir problem oluştu, lütfen log dosyalarını kontrol edin (Hata: %s)",
     "Migration Completed" : "Taşınma Tamamlandı",

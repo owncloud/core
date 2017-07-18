@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -290,8 +291,8 @@ class LoginControllerTest extends TestCase {
 		$password = 'secret';
 		$loginPageUrl = 'some url';
 
-		$this->userManager->expects($this->once())
-			->method('checkPassword')
+		$this->userSession->expects($this->once())
+			->method('login')
 			->will($this->returnValue(false));
 		$this->urlGenerator->expects($this->once())
 			->method('linkToRoute')
@@ -311,12 +312,14 @@ class LoginControllerTest extends TestCase {
 		$password = 'secret';
 		$indexPageUrl = 'some url';
 
-		$this->userManager->expects($this->once())
-			->method('checkPassword')
-			->will($this->returnValue($user));
 		$this->userSession->expects($this->once())
 			->method('login')
-			->with($user, $password);
+			->with($user, $password)
+			->will($this->returnValue(true));
+		$this->userManager->expects($this->once())
+			->method('get')
+			->with($user)
+			->will($this->returnValue($user));
 		$this->userSession->expects($this->once())
 			->method('createSessionToken')
 			->with($this->request, $user->getUID(), $user, $password);
@@ -357,9 +360,13 @@ class LoginControllerTest extends TestCase {
 		$originalUrl = 'another%20url';
 		$redirectUrl = 'http://localhost/another url';
 
-		$this->userManager->expects($this->once())
-			->method('checkPassword')
+		$this->userSession->expects($this->once())
+			->method('login')
 			->with('Jane', $password)
+			->will($this->returnValue(true));
+		$this->userManager->expects($this->once())
+			->method('get')
+			->with('Jane')
 			->will($this->returnValue($user));
 		$this->userSession->expects($this->once())
 			->method('createSessionToken')
@@ -386,8 +393,11 @@ class LoginControllerTest extends TestCase {
 		$password = 'secret';
 		$challengeUrl = 'challenge/url';
 
+		$this->userSession->expects($this->once())
+			->method('login')
+			->will($this->returnValue(true));
 		$this->userManager->expects($this->once())
-			->method('checkPassword')
+			->method('get')
 			->will($this->returnValue($user));
 		$this->userSession->expects($this->once())
 			->method('login')
@@ -418,12 +428,12 @@ class LoginControllerTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('john'));
 
-		$this->userManager->expects($this->exactly(2))
-			->method('checkPassword')
+		$this->userSession->expects($this->exactly(2))
+			->method('login')
 			->withConsecutive(
 				['john@doe.com', 'just wrong'],
 				['john', 'just wrong']
-				)
+			)
 			->willReturn(false);
 		
 		$this->userManager->expects($this->once())

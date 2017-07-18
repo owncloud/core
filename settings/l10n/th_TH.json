@@ -9,8 +9,6 @@
     "Unable to change password" : "ไม่สามารถเปลี่ยนรหัสผ่าน",
     "%s password changed successfully" : "เปลี่ยนรหัสผ่าน %s สำเร็จแล้ว",
     "Couldn't send reset email. Please contact your administrator." : "ไม่สามารถส่งข้อมูลการตั้งค่าไปยังอีเมลของคุณ กรุณาติดต่อผู้ดูแลระบบ",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "กำลังติดตั้งและอัพเดทแอพพลิเคชันผ่าแอพสโตร์หรือคลาวด์ในเครือ",
-    "Federated Cloud Sharing" : "แชร์กับคลาวด์สหพันธรัฐ",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "คุณกำลังใช้ cURL %s รุ่นเก่ากว่า (%s)โปรดอัพเดทระบบปฏิบัติการหรือคุณสมบัติเป็น %s เพื่อการทำงานที่มีประสิทธิภาพ",
     "A problem occurred, please check your log files (Error: %s)" : "มีปัญหาเกิดขึ้นโปรดตรวจสอบไฟล์ log ของคุณ (ข้อผิดพลาด: %s)",
     "Migration Completed" : "การโยกย้ายเสร็จสมบูรณ์",

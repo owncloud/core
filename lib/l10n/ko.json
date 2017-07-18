@@ -53,7 +53,6 @@
     "App does not provide an info.xml file" : "앱에서 info.xml 파일이 제공되지 않았습니다.",
     "App cannot be installed because appinfo file cannot be read." : "appinfo 파일을 읽을 수 없어서 앱을 설치할 수 없습니다.",
     "Signature could not get checked. Please contact the app developer and check your admin screen." : "서명을 확인할 수 없습니다. 앱 개발자에게 연락하고 관리자 화면을 다시 확인하십시오.",
-    "App can't be installed because of not allowed code in the App" : "앱에 허용되지 않는 코드가 있어서 앱을 설치할 수 없습니다",
     "App can't be installed because it is not compatible with this version of ownCloud" : "현재 ownCloud 버전과 호환되지 않기 때문에 앱을 설치할 수 없습니다",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "출시되지 않은 앱에 허용되지 않는 <shipped>true</shipped> 태그를 포함하고 있기 때문에 앱을 설치할 수 없습니다",
     "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "앱 스토어에 있는 버전과 info.xml의 버전이 일치하지 않아서 앱을 설치할 수 없습니다",

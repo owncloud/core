@@ -6,8 +6,6 @@
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "L'infrastructura de rèire plan supòrta pas la modification de senhal, mas la clau de chiframent de l'utilizaire es estada mesa a jorn amb succès.",
     "Unable to change password" : "Impossible de modificar lo senhal",
     "Couldn't send reset email. Please contact your administrator." : "Impossible de mandar lo corrièl de reïnicializacion. Contactatz vòstre administrator.",
-    "installing and updating apps via the app store or Federated Cloud Sharing" : "lo partiment Federated Cloud o l'installacion e la mesa a jorn d'aplicacions per l'app store",
-    "Federated Cloud Sharing" : "Federated Cloud Sharing",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL utiliza %s version (%s), qu'es una version obsolèta. Metètz a jorn vòstre sistèma operatiu, o de foncionalitats talas coma %s foncionaràn pas corrèctament.",
     "A problem occurred, please check your log files (Error: %s)" : "Una error s'es produsida, verificatz vòstres fichièrs de log (Error: %s)",
     "Migration Completed" : "Migracion acabada",

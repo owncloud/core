@@ -26,6 +26,7 @@
 
 namespace OCA\DAV\CardDAV;
 
+use OC\Cache\CappedMemoryCache;
 use OCA\DAV\Connector\Sabre\Principal;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCA\DAV\DAV\Sharing\Backend;
@@ -59,6 +60,9 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	/** @var Backend */
 	private $sharingBackend;
 
+	/** @var CappedMemoryCache Cache of card URI to db row ids */
+	private $idCache;
+
 	/** @var array properties to index */
 	public static $indexProperties = [
 			'BDAY', 'UID', 'N', 'FN', 'TITLE', 'ROLE', 'NOTE', 'NICKNAME',
@@ -85,6 +89,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$this->dispatcher = $dispatcher;
 		$this->sharingBackend = new Backend($this->db, $principalBackend, 'addressbook');
 		$this->legacyMode = $legacyMode;
+		$this->idCache = new CappedMemoryCache();
 	}
 
 	/**
@@ -428,7 +433,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 *
 	 * @param mixed $addressBookId
 	 * @param string $cardUri
-	 * @return array
+	 * @return array|false
 	 */
 	function getCard($addressBookId, $cardUri) {
 		$query = $this->db->getQueryBuilder();
@@ -521,6 +526,9 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				'etag' => $query->createNamedParameter($etag),
 			])
 			->execute();
+
+		// Cache the ID so that it can be used for the updateProperties method
+		$this->idCache->set($addressBookId.$cardUri, $query->getLastInsertId());
 
 		$this->addChange($addressBookId, $cardUri, 1);
 		$this->updateProperties($addressBookId, $cardUri, $cardData);
@@ -982,6 +990,11 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @return int
 	 */
 	protected function getCardId($addressBookId, $uri) {
+		// Try to find cardId from own cache to avoid issue with db cluster
+		if($this->idCache->hasKey($addressBookId.$uri)) {
+			return $this->idCache->get($addressBookId.$uri);
+		}
+
 		$query = $this->db->getQueryBuilder();
 		$query->select('id')->from($this->dbCardsTable)
 			->where($query->expr()->eq('uri', $query->createNamedParameter($uri)))

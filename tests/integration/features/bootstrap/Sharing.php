@@ -3,6 +3,7 @@
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
+use TestHelpers\SharingHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -20,6 +21,9 @@ trait Sharing {
 
 	/** @var int */
 	private $savedShareId = null;
+
+	/** @var int */
+	private $lastShareTime = null;
 
 	/**
 	 * @Given /^as "([^"]*)" creating a share with$/
@@ -253,42 +257,21 @@ trait Sharing {
 								$password = null,
 								$permissions = null,
 								$linkName = null) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
-		$client = new Client();
-		$options = [];
-
-		if ($user === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$user, $this->regularUser];
-		}
-		$fd = [];
-		if (!is_null($path)){
-			$fd['path'] = $path;
-		}
-		if (!is_null($shareType)){
-			$fd['shareType'] = $shareType;
-		}
-		if (!is_null($shareWith)){
-			$fd['shareWith'] = $shareWith;
-		}
-		if (!is_null($publicUpload)){
-			$fd['publicUpload'] = $publicUpload;
-		}
-		if (!is_null($password)){
-			$fd['password'] = $password;
-		}
-		if (!is_null($permissions)){
-			$fd['permissions'] = $permissions;
-		}
-		if (!is_null($linkName)){
-			$fd['name'] = $linkName;
-		}
-
-		$options['body'] = $fd;
 
 		try {
-			$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
+			$this->response = SharingHelper::createShare(
+				$this->baseUrlWithoutOCSAppendix(),
+				$user,
+				$this->getPasswordForUser($user),
+				$path,
+				$shareType,
+				$shareWith,
+				$publicUpload,
+				$password,
+				$permissions,
+				$linkName,
+				$this->apiVersion,
+				$this->sharingApiVersion);
 			$this->lastShareData = $this->response->xml();
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
@@ -425,6 +408,14 @@ trait Sharing {
 		if ($this->isUserOrGroupInSharedData($user2, $permissions)){
 			return;
 		} else {
+			$time = time();
+			if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
+				// prevent creating two shares with the same "stime" which is based on
+				// seconds, this affects share merging order and could affect expected test
+				// result order
+				sleep(1);
+			}
+			$this->lastShareTime = $time;
 			$this->createShare($user1, $filepath, 0, $user2, null, null, $permissions);
 		}
 		$this->response = $client->get($fullUrl, $options);
