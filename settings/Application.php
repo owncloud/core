@@ -39,7 +39,6 @@ use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\AuthSettingsController;
 use OC\Settings\Controller\CertificateController;
 use OC\Settings\Controller\CheckSetupController;
-use OC\Settings\Controller\EncryptionController;
 use OC\Settings\Controller\GroupsController;
 use OC\Settings\Controller\LegalSettingsController;
 use OC\Settings\Controller\LogSettingsController;
@@ -87,18 +86,6 @@ class Application extends App {
 				$c->query('Defaults'),
 				$c->query('Mailer'),
 				$c->query('DefaultMailAddress')
-			);
-		});
-		$container->registerService('EncryptionController', function (IContainer $c) {
-			return new EncryptionController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('L10N'),
-				$c->query('Config'),
-				$c->query('DatabaseConnection'),
-				$c->query('UserManager'),
-				new View(),
-				$c->query('Logger')
 			);
 		});
 		$container->registerService('AppSettingsController', function (IContainer $c) {
