@@ -612,7 +612,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	public function getRequestUri() {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
-			$uri = $this->getScriptName() . substr($uri, strlen($this->server['SCRIPT_NAME']));
+			$uri = $this->getScriptName() . substr($uri, strlen($this->getRawScriptName()));
 		}
 		return $uri;
 	}
@@ -620,42 +620,61 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/**
 	 * Get raw PathInfo from request (not urldecoded)
 	 * @throws \Exception
-	 * @return string Path info
+	 * @return string
 	 */
 	public function getRawPathInfo() {
-		$requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
-		// remove too many leading slashes - can be caused by reverse proxy configuration
-		if (strpos($requestUri, '/') === 0) {
-			$requestUri = '/' . ltrim($requestUri, '/');
-		}
+		
+		/** cleans leading slashes and query params before use */
+		$requestUri = $this->getCleanRequestUri();
 
-		$requestUri = preg_replace('%/{2,}%', '/', $requestUri);
+		/** fixes php-fpm proxypassmatch setups - convert script name to only the .php file name */
+		$scriptName = $this->getRawScriptName($requestUri);
 
-		// Remove the query string from REQUEST_URI
-		if ($pos = strpos($requestUri, '?')) {
-			$requestUri = substr($requestUri, 0, $pos);
-		}
+		if(!empty($scriptName) && !empty($requestUri) && strpos($requestUri, $scriptName) !== false) {
+			/** fixes php-fpm sethandler setups - remove script name from path_info */
+			$scriptNameInRequestUri = strpos($requestUri, $scriptName);
+			$position = $scriptNameInRequestUri + strlen($scriptName);//get end position of SCRIPT_NAME
+			$pathInfo = substr($requestUri, $position); // get the remaining path after SCRIPT_NAME for PATH_INFO
 
-		$scriptName = $this->server['SCRIPT_NAME'];
-		$pathInfo = $requestUri;
-
-		// strip off the script name's dir and file name
-		// FIXME: Sabre does not really belong here
-		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($scriptName);
-		if (!empty($path)) {
-			if($path === $pathInfo || strpos($pathInfo, $path.'/') === 0) {
-				$pathInfo = substr($pathInfo, strlen($path));
+		} elseif(!empty($requestUri) && strpos($requestUri, '.php') === false) {
+			
+			if(empty($scriptName) && !empty($requestUri) && $requestUri !== '/') {
+				
+				$scriptName = '/';
+				
+				if(strpos($requestUri, $scriptName) === 0) {
+					$requestUri = ltrim($requestUri, $scriptName);
+					$pathInfo = $requestUri;
+				}
+				
+			} elseif(empty($requestUri)) {
+				
+				$pathInfo = $requestUri;
+				
 			} else {
-				throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
+				/** 
+				* Add script name to the front of requesturi if no 
+				* script name found to pass uri script processing check below
+				*/
+				$pathInfo = $requestUri;
+				$requestUri = $scriptName . $requestUri;
+			}
+
+		} else {
+			
+			$pathInfo = $requestUri;
+			
+			/** stop empty uri with / scriptnames causing errors as this would go to index.php */
+			if(empty($requestUri)) {
+				$requestUri = $scriptName;
 			}
 		}
-		if (strpos($pathInfo, '/'.$name) === 0) {
-			$pathInfo = substr($pathInfo, strlen($name) + 1);
+
+		if(!empty($scriptName) && (strpos($requestUri, $scriptName) === false )) {
+			throw new \Exception("The requested uri($requestUri) cannot be processed by the script '$scriptName')");
 		}
-		if (strpos($pathInfo, $name) === 0) {
-			$pathInfo = substr($pathInfo, strlen($name));
-		}
-		if($pathInfo === false || $pathInfo === '/'){
+		
+		if(!isset($pathInfo) || $pathInfo === false || $pathInfo === '/') {
 			return '';
 		} else {
 			return $pathInfo;
@@ -672,7 +691,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		if($pathInfo !== '') {
 			return $pathInfo;
 		}
-
+		
 		$pathInfo = $this->getRawPathInfo();
 		// following is taken from \Sabre\HTTP\URLUtil::decodePathSegment
 		$pathInfo = rawurldecode($pathInfo);
@@ -693,7 +712,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string the script name
 	 */
 	public function getScriptName() {
-		$name = $this->server['SCRIPT_NAME'];
+		$name = $this->getRawScriptName($this->getCleanRequestUri());
 		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
 			// FIXME: This code is untestable due to __DIR__, also that hardcoded path is really dangerous
@@ -789,5 +808,57 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 		return null;
 	}
+	
+	/**
+	 * Fixes bug in Apache 2.4 / PHP FPM where script_name contains full
+	 * uri not just script name e.g /index.php/app/files instead of expected /index.php 
+	 * @see https://bugs.php.net/bug.php?id=65641
+	 * @param string $requestUri
+	 * @return string
+	 */
+	private function getRawScriptName($requestUri=null) {
+		$scriptName = $this->server['SCRIPT_NAME'];
+		
+		if (strpos($scriptName, '.php') !== false) {
+			
+			$scriptName = DIRECTORY_SEPARATOR . basename($this->server['SCRIPT_FILENAME']);
+			
+			if(!empty($scriptName) && !empty($requestUri) && strpos($requestUri, $scriptName) !== false) {
+				
+				/** fixes php-fpm sethandler setups - remove script name from path_info */
+				$scriptNameInRequestUri = strpos($requestUri, $scriptName);
+				$position = $scriptNameInRequestUri + strlen($scriptName);//get end position of SCRIPT_NAME
+				$scriptName = substr($requestUri, 0, $position);
+			}
 
+		} elseif(strlen($scriptName) === 0) {
+			$scriptName = '/';
+		}
+		
+		return $scriptName;
+	}
+	
+	/**
+	 * Removes leading extra slashes and query params
+	 * @return string
+	 */
+	private function getCleanRequestUri() {
+		$requestUri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '/';
+
+		// remove too many leading slashes - can be caused by reverse proxy configuration
+		if (strpos($requestUri, '/') === 0) {
+			$requestUri = '/' . ltrim($requestUri, '/');
+		}
+
+		$requestUriReplaced = (string) preg_replace('%/{2,}%', '/', $requestUri);
+
+		// Remove the query string from REQUEST_URI
+		$pos = strpos($requestUriReplaced, '?');
+		
+		if ($pos) {
+			$requestUriReplaced = substr($requestUriReplaced, 0, $pos);
+		}
+		
+		return $requestUriReplaced;
+	}
 }
