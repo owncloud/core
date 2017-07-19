@@ -284,4 +284,14 @@ trait BasicStructure
 		//make sure the function always returns a string
 		return (string) $password;
 	}
+
+	/**
+	 * substitutes codes like %base_url% with the value
+	 * @param string $value
+	 * @return string
+	 */
+	public function substituteInLineCodes ($value) {
+		//the only code so far, maybe we will need more one day
+		return str_replace("%base_url%",  $this->getMinkParameter("base_url"), $value);
+	}
 }
