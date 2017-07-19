@@ -32,18 +32,22 @@ class Streamer {
 
 	// streamer instance
 	private $streamerInstance;
-	
-	public function __construct(){
+
+	public function __construct($format = null){
 		/** @var \OCP\IRequest */
 		$request = \OC::$server->getRequest();
-		
-		if ($request->isUserAgent($this->preferTarFor)) {
+	
+		if ($format === 'tar') {
+			$this->streamerInstance = new TarStreamer();
+		} else if ($format === 'zip') {
+			$this->streamerInstance = new ZipStreamer();
+		} else if ($request->isUserAgent($this->preferTarFor)) {
 			$this->streamerInstance = new TarStreamer();
 		} else {
 			$this->streamerInstance = new ZipStreamer(['zip64' => PHP_INT_SIZE !== 4]);
 		}
 	}
-	
+
 	/**
 	 * Send HTTP headers
 	 * @param string $name 
@@ -58,8 +62,9 @@ class Streamer {
 	 * Stream directory recursively
 	 * @param string $dir
 	 * @param string $internalDir
+	 * @param callable $postCallback callback after processing every entry
 	 */
-	public function addDirRecursive($dir, $internalDir='') {
+	public function addDirRecursive($dir, $internalDir='', callable $postCallback) {
 		$dirname = basename($dir);
 		$rootDir = $internalDir . $dirname;
 		if (!empty($rootDir)) {
@@ -78,8 +83,14 @@ class Streamer {
 				$fh = \OC\Files\Filesystem::fopen($file, 'r');
 				$this->addFileFromStream($fh, $internalDir . $filename, $filesize);
 				fclose($fh);
+				if (is_callable($postCallback)) {
+					$postCallback($file);
+				}
 			}elseif(\OC\Files\Filesystem::is_dir($file)) {
 				$this->addDirRecursive($file, $internalDir);
+				if (is_callable($postCallback)) {
+					$postCallback($file);
+				}
 			}
 		}
 	}
