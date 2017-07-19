@@ -9,6 +9,8 @@
 namespace Test\DB;
 
 use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use OC_DB;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
@@ -46,6 +48,7 @@ class DBSchemaTest extends TestCase {
 	protected function tearDown() {
 		unlink($this->schema_file);
 		unlink($this->schema_file2);
+		$this->mockDBPrefix('oc_');
 
 		parent::tearDown();
 	}
@@ -84,6 +87,57 @@ class DBSchemaTest extends TestCase {
 		OC_DB::removeDBStructure($this->schema_file);
 		$this->assertTableNotExist($this->table1);
 		$this->assertTableNotExist($this->table2);
+	}
+
+	public function testSchemaUnchanged() {
+		$dbfile = \OC::$SERVERROOT.'/db_structure.xml';
+		$schema_file = 'static://live_db_scheme';
+
+		$randomPrefix = strtolower($this->getUniqueID('', 2, false) . '_');
+		$content = file_get_contents($dbfile);
+
+		// Add prefix to index names to make them unique for testing (oc_ exists in parallel)
+		$content = str_replace('<name>', '<name>*dbprefix*', $content);
+		$content = str_replace('*dbprefix**dbprefix*', '*dbprefix*', $content);
+		$content = str_replace('*dbprefix*', $randomPrefix, $content);
+
+		// Shorten index names that are too long, now that we added the prefix to make them unique
+		$content = preg_replace_callback('/<name>([a-zA-Z0-9_]{28,})<\/name>/', function($match) use ($randomPrefix) {
+			return $randomPrefix . substr(md5($match[1]), 0, 26);
+		}, $content);
+
+		file_put_contents($schema_file, $content);
+
+		$this->mockDBPrefix($randomPrefix);
+
+		// The method OC_DB::tableExists() adds the prefix itself
+		$this->assertTableNotExist('filecache');
+		\OC_DB::createDbFromStructure($schema_file);
+		$this->assertTableExist('filecache');
+		\OC_DB::updateDbFromStructure($schema_file);
+		$this->assertTableExist('filecache');
+		\OC_DB::removeDBStructure($schema_file);
+		$this->assertTableNotExist('filecache');
+
+		$this->mockDBPrefix('oc_');
+
+		unlink($schema_file);
+		$this->assertTrue(true, 'Asserting that no error occurred when updating with the same schema that is already installed');
+	}
+
+	protected function mockDBPrefix($prefix) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$this->invokePrivate($connection, 'tablePrefix', [$prefix]);
+		/** @var Connection $connection */
+
+		if ($connection->getDatabasePlatform() instanceof OraclePlatform) {
+			$filterExpression = '/^"' . preg_quote($prefix) . '/';
+		} else {
+			$filterExpression = '/^' . preg_quote($prefix) . '/';
+		}
+		$connection->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
+
+		\OC::$server->getConfig()->setSystemValue('dbtableprefix', $prefix);
 	}
 
 	/**
