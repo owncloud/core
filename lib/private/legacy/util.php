@@ -1101,7 +1101,7 @@ class OC_Util {
 			if ($defaultPage) {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
-				$appId = 'files';
+				$appId = null;
 				$defaultApps = explode(',', \OCP\Config::getSystemValue('defaultapp', 'files'));
 				// find the first app that is enabled for the current user
 				foreach ($defaultApps as $defaultApp) {
@@ -1111,11 +1111,21 @@ class OC_Util {
 						break;
 					}
 				}
+				$url = '/settings/personal';
+				if ($appId === null) {
+					$navigationElements = \OC::$server->getNavigationManager()->getAll();
+					if (count($navigationElements) > 0) {
+						$appId = $navigationElements[0]['id'];
+					}
+				}
+				if ($appId !== null) {
+					$url = "/apps/$appId/";
+				}
 
 				if(getenv('front_controller_active') === 'true') {
-					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
+					$location = $urlGenerator->getAbsoluteURL($url);
 				} else {
-					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+					$location = $urlGenerator->getAbsoluteURL("/index.php$url");
 				}
 			}
 		}
