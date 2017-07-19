@@ -56,7 +56,7 @@ class StorageConfigTest extends \Test\TestCase {
 		$storageConfig->setMountPoint('test');
 		$storageConfig->setBackend($backend);
 		$storageConfig->setAuthMechanism($authMech);
-		$storageConfig->setBackendOptions(['user' => 'test', 'password' => 'password123', 'secure' => '1']);
+		$storageConfig->setBackendOptions(['user' => 'test', 'password' => 'password123', 'secure' => true, 'key' => "12345\r\n"]);
 		$storageConfig->setPriority(128);
 		$storageConfig->setApplicableUsers(['user1', 'user2']);
 		$storageConfig->setApplicableGroups(['group1', 'group2']);
@@ -71,6 +71,7 @@ class StorageConfigTest extends \Test\TestCase {
 		$this->assertSame('test', $json['backendOptions']['user']);
 		$this->assertSame('password123', $json['backendOptions']['password']);
 		$this->assertSame(true, $json['backendOptions']['secure']);
+		$this->assertSame('12345', $json['backendOptions']['key']);
 		$this->assertSame(128, $json['priority']);
 		$this->assertSame(['user1', 'user2'], $json['applicableUsers']);
 		$this->assertSame(['group1', 'group2'], $json['applicableGroups']);
