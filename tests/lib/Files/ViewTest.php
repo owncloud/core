@@ -1800,9 +1800,8 @@ class ViewTest extends TestCase {
 		mkdir($realPath . '/files');
 		mkdir($realPath . '/files/dir');
 		file_put_contents($realPath . '/files/test.txt', 'blah');
-		$storage->getScanner()->scan('files');
 
-		$storage->expects($this->once())
+		$storage->expects($this->atLeastOnce())
 			->method($operation)
 			->will($this->returnCallback(
 				function () use ($view, $lockedPath, &$lockTypeDuring, $operation) {
