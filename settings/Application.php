@@ -39,11 +39,9 @@ use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\AuthSettingsController;
 use OC\Settings\Controller\CertificateController;
 use OC\Settings\Controller\CheckSetupController;
-use OC\Settings\Controller\EncryptionController;
 use OC\Settings\Controller\GroupsController;
 use OC\Settings\Controller\LogSettingsController;
 use OC\Settings\Controller\MailSettingsController;
-use OC\Settings\Controller\SecuritySettingsController;
 use OC\Settings\Controller\UsersController;
 use OC\Settings\Middleware\SubadminMiddleware;
 use OCP\AppFramework\App;
@@ -96,18 +94,6 @@ class Application extends App {
 				$c->query('DefaultMailAddress')
 			);
 		});
-		$container->registerService('EncryptionController', function(IContainer $c) {
-			return new EncryptionController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('L10N'),
-				$c->query('Config'),
-				$c->query('DatabaseConnection'),
-				$c->query('UserManager'),
-				new View(),
-				$c->query('Logger')
-			);
-		});
 		$container->registerService('AppSettingsController', function(IContainer $c) {
 			return new AppSettingsController(
 				$c->query('AppName'),
@@ -126,13 +112,6 @@ class Application extends App {
 				$c->query('ServerContainer')->getSession(),
 				$c->query('ServerContainer')->getSecureRandom(),
 				$c->query('UserId')
-			);
-		});
-		$container->registerService('SecuritySettingsController', function(IContainer $c) {
-			return new SecuritySettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('Config')
 			);
 		});
 		$container->registerService('CertificateController', function(IContainer $c) {
