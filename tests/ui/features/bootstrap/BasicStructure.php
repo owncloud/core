@@ -87,12 +87,25 @@ trait BasicStructure
 
 	/**
 	 * @Given these users exist:
-	 * expects a table of users with the heading "|username|password|"
+	 * expects a table of users with the heading "|username|password|displayname|email|"
+	 * displayname & email are optional
 	 */
 	public function theseUsersExist(TableNode $table)
 	{
 		foreach ($table as $row) {
-			$this->createUser($row['username'], $row['password']);
+			if (isset($row['displayname'])) {
+				$displayName = $row['displayname'];
+			} else {
+				$displayName = null;
+			}
+			if (isset($row['email'])) {
+				$email = $row['email'];
+			} else {
+				$email = null;
+			}
+			$this->createUser(
+				$row ['username'], $row ['password'], $displayName, $email
+			);
 		}
 	}
 	
@@ -100,16 +113,25 @@ trait BasicStructure
 	 * creates a single user
 	 * @param string $user
 	 * @param string $password
+	 * @param string $displayName
+	 * @param string $email
 	 * @throws Exception
 	 */
-	private function createUser($user, $password)
+	private function createUser($user, $password,
+		$displayName = null, $email = null)
 	{
 		$user = trim($user);
-		$result = SetupHelper::createUser($this->ocPath, $user, $password);
+		$result = SetupHelper::createUser(
+			$this->ocPath, $user, $password, $displayName, $email
+		);
 		if ($result["code"] != 0) {
 			throw new Exception("could not create user. " . $result["stdOut"] . " " . $result["stdErr"]);
 		}
-		$this->createdUsers[$user] = ["password" => $password];
+		$this->createdUsers [$user] = [ 
+				"password" => $password,
+				"displayname" => $displayName,
+				"email" => $email
+		];
 	}
 	/**
 	 * @Given these groups exist:
