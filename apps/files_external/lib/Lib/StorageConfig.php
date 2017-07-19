@@ -224,6 +224,9 @@ class StorageConfig implements \JsonSerializable {
 					}
 					$backendOptions[$key] = $value;
 				}
+				if(is_string($backendOptions[$key])) {
+					$backendOptions[$key] = str_replace(["\n", "\r"], "", $backendOptions[$key]);
+				}
 			}
 		}
 
