@@ -28,12 +28,23 @@ class SetupHelper
 	 * @param string $ocPath
 	 * @param string $userName
 	 * @param string $password
+	 * @param string $displayName
+	 * @param string $email
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function createUser($ocPath, $userName, $password)
+	public static function createUser(
+		$ocPath, $userName, $password,
+		$displayName = null, $email = null)
 	{
+		$occCommand = ['user:add', '--password-from-env'];
+		if ($displayName !== null) {
+			$occCommand = array_merge($occCommand, ["--display-name", $displayName]);
+		}
+		if ($email !== null) {
+			$occCommand = array_merge($occCommand, ["--email", $email]);
+		}
 		putenv("OC_PASS=".$password);
-		return self::runOcc(['user:add', '--password-from-env', $userName], $ocPath);
+		return self::runOcc(array_merge($occCommand, [$userName]), $ocPath);
 	}
 
 	/**
