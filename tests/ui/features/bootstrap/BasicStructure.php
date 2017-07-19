@@ -22,6 +22,7 @@
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -31,10 +32,16 @@ require_once 'bootstrap.php';
  */
 trait BasicStructure
 {
+	private $adminPassword;
 	private $regularUserPassword;
 	private $regularUserName;
 	private $regularUserNames = array();
-	private $createdUserNames = array();
+	/**
+	 * list of users that were created during test runs
+	 * key is the username value is an array of user attributes
+	 * @var array
+	 */
+	private $createdUsers = array();
 	private $regularGroupName;
 	private $regularGroupNames = array();
 	private $createdGroupNames = array();
@@ -65,12 +72,7 @@ trait BasicStructure
 	 */
 	public function aRegularUserExists()
 	{
-		$user = $this->regularUserName;
-		$result=SetupHelper::createUser($this->ocPath, $user, $this->regularUserPassword);
-		if ($result["code"] != 0) {
-			throw new Exception("could not create user. " . $result["stdOut"] . " " . $result["stdErr"]);
-		}
-		array_push($this->createdUserNames, $user);
+		$this->createUser($this->regularUserName, $this->regularUserPassword);
 	}
 
 	/**
@@ -79,26 +81,75 @@ trait BasicStructure
 	public function regularUsersExist()
 	{
 		foreach ($this->regularUserNames as $user) {
-			$user = trim($user);
-			$result=SetupHelper::createUser($this->ocPath, $user, $this->regularUserPassword);
-			if ($result["code"] != 0) {
-				throw new Exception("could not create user. " . $result["stdOut"] . " " . $result["stdErr"]);
-			}
-			array_push($this->createdUserNames, $user);
+			$this->createUser($user, $this->regularUserPassword);
 		}
 	}
 
+	/**
+	 * @Given these users exist:
+	 * expects a table of users with the heading "|username|password|displayname|email|"
+	 * displayname & email are optional
+	 */
+	public function theseUsersExist(TableNode $table)
+	{
+		foreach ($table as $row) {
+			if (isset($row['displayname'])) {
+				$displayName = $row['displayname'];
+			} else {
+				$displayName = null;
+			}
+			if (isset($row['email'])) {
+				$email = $row['email'];
+			} else {
+				$email = null;
+			}
+			$this->createUser(
+				$row ['username'], $row ['password'], $displayName, $email
+			);
+		}
+	}
+	
+	/**
+	 * creates a single user
+	 * @param string $user
+	 * @param string $password
+	 * @param string $displayName
+	 * @param string $email
+	 * @throws Exception
+	 */
+	private function createUser($user, $password,
+		$displayName = null, $email = null)
+	{
+		$user = trim($user);
+		$result = SetupHelper::createUser(
+			$this->ocPath, $user, $password, $displayName, $email
+		);
+		if ($result["code"] != 0) {
+			throw new Exception("could not create user. " . $result["stdOut"] . " " . $result["stdErr"]);
+		}
+		$this->createdUsers [$user] = [ 
+				"password" => $password,
+				"displayname" => $displayName,
+				"email" => $email
+		];
+	}
+	/**
+	 * @Given these groups exist:
+	 * expects a table of groups with the heading "groupname"
+	 */
+	public function theseGroupsExist(TableNode $table)
+	{
+		foreach ($table as $row) {
+			$this->createGroup($row['groupname']);
+		}
+	}
+	
 	/**
 	 * @Given a regular group exists
 	 */
 	public function aRegularGroupExists()
 	{
-		$group = $this->regularGroupName;
-		$result=SetupHelper::createGroup($this->ocPath, $group);
-		if ($result["code"] != 0) {
-			throw new Exception("could not create group. " . $result["stdOut"] . " " . $result["stdErr"]);
-		}
-		array_push($this->createdGroupNames, $group);
+		$this->createGroup($this->regularGroupName);
 	}
 
 	/**
@@ -107,15 +158,24 @@ trait BasicStructure
 	public function regularGroupsExist()
 	{
 		foreach ($this->regularGroupNames as $group) {
-			$group = trim($group);
-			$result=SetupHelper::createGroup($this->ocPath, $group);
-			if ($result["code"] != 0) {
-				throw new Exception("could not create group. " . $result["stdOut"] . " " . $result["stdErr"]);
-			}
-			array_push($this->createdGroupNames, $group);
+			$this->createGroup($group);
 		}
 	}
 
+	/**
+	 * creates a single group
+	 * @param string $group
+	 * @throws Exception
+	 */
+	private function createGroup($group)
+	{
+		$group = trim($group);
+		$result=SetupHelper::createGroup($this->ocPath, $group);
+		if ($result["code"] != 0) {
+			throw new Exception("could not create group. " . $result["stdOut"] . " " . $result["stdErr"]);
+		}
+		array_push($this->createdGroupNames, $group);
+	}
 	/**
 	 * @Given a regular user is in a regular group
 	 */
@@ -123,7 +183,7 @@ trait BasicStructure
 	{
 		$group = $this->regularGroupName;
 		$user = $this->regularUserName;
-		if (!in_array($user, $this->createdUserNames)) {
+		if (!in_array($user, $this->getCreatedUserNames())) {
 			$this->aRegularUserExists();
 		}
 		$this->theUserIsInTheGroup($user, $group);
@@ -144,25 +204,26 @@ trait BasicStructure
 	public function setUpScenarioGetRegularUsersAndGroups(BeforeScenarioScope $scope)
 	{
 		$suiteParameters = $scope->getEnvironment()->getSuite()->getSettings() ['context'] ['parameters'];
+		$this->adminPassword = (string)$suiteParameters['adminPassword'];
 		$this->regularUserNames = explode(",", $suiteParameters['regularUserNames']);
-		$this->regularUserName = $suiteParameters['regularUserName'];
-		$this->regularUserPassword = $suiteParameters['regularUserPassword'];
+		$this->regularUserName = (string)$suiteParameters['regularUserName'];
+		$this->regularUserPassword = (string)$suiteParameters['regularUserPassword'];
 		$this->regularGroupNames = explode(",", $suiteParameters['regularGroupNames']);
-		$this->regularGroupName = $suiteParameters['regularGroupName'];
+		$this->regularGroupName = (string)$suiteParameters['regularGroupName'];
 		$this->ocPath = rtrim($suiteParameters['ocPath'], '/') . '/';
 	}
 
 	/** @AfterScenario */
 	public function tearDownScenarioDeleteCreatedUsersAndGroups(AfterScenarioScope $scope)
 	{
-		foreach ($this->createdUserNames as $user) {
+		foreach ($this->getCreatedUserNames() as $user) {
 			$result=SetupHelper::deleteUser($this->ocPath, $user);
 			if ($result["code"] != 0) {
 				throw new Exception("could not delete user. " . $result["stdOut"] . " " . $result["stdErr"]);
 			}
 		}
 
-		foreach ($this->createdGroupNames as $group) {
+		foreach ($this->getCreatedGroupNames() as $group) {
 			$result=SetupHelper::deleteGroup($this->ocPath, $group);
 			if ($result["code"] != 0) {
 				throw new Exception("could not delete group. " . $result["stdOut"] . " " . $result["stdErr"]);
@@ -187,7 +248,7 @@ trait BasicStructure
 
 	public function getCreatedUserNames ()
 	{
-		return $this->createdUserNames;
+		return array_keys($this->createdUsers);
 	}
 
 	public function getRegularGroupName ()
@@ -203,5 +264,24 @@ trait BasicStructure
 	public function getCreatedGroupNames ()
 	{
 		return $this->createdGroupNames;
+	}
+
+	/**
+	 *
+	 * @param string $username
+	 * @return string password
+	 */
+	public function getUserPassword ($username)
+	{
+		if ($username === 'admin') {
+			$password = $this->adminPassword;
+		} else {
+			if (!array_key_exists($username, $this->createdUsers)) {
+				throw new Exception("user '$username' was not created by this test run");
+			}
+			$password = $this->createdUsers[$username]['password'];
+		}
+		//make sure the function always returns a string
+		return (string) $password;
 	}
 }
