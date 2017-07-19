@@ -32,6 +32,7 @@ use OCP\IDBConnection;
 use OCP\ILogger;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * Locking provider that stores the locks in the database
@@ -110,12 +111,17 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 *
 	 * @param string $path
 	 * @param int $lock
-	 * @return int number of inserted rows
+	 * @return int number of inserted rows or -1 in case of constraint violation
 	 */
 
 	protected function initLockField($path, $lock = 0) {
 		$expire = $this->getExpireTime();
-		return $this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => $expire], ['key']);
+		try {
+			return $this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => $expire], ['key']);
+		} catch (UniqueConstraintViolationException $e) {
+			// field already exists
+			return -1;
+		}
 	}
 
 	/**

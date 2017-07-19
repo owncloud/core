@@ -22,6 +22,7 @@
 namespace Test\Lock;
 
 use OCP\Lock\ILockingProvider;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * Class DBLockingProvider
@@ -64,7 +65,7 @@ class DBLockingProviderTest extends LockingProvider {
 	/**
 	 * @return \OCP\Lock\ILockingProvider
 	 */
-	protected function getInstance() {
+	protected function createInstance() {
 		$this->connection = \OC::$server->getDatabaseConnection();
 		return new \OC\Lock\DBLockingProvider($this->connection, \OC::$server->getLogger(), $this->timeFactory, 3600);
 	}
@@ -104,4 +105,36 @@ class DBLockingProviderTest extends LockingProvider {
 		$locks = $this->getLockEntries();
 		$this->assertEquals(count($expected), count($locks), json_encode($locks));
 	}
+
+	public function testConcurrentSharedLockConstraintViolation() {
+		$connection1 = $this->getMock('\OCP\IDBConnection');
+		$connection2 = $this->getMock('\OCP\IDBConnection');
+		$instance1 = new \OC\Lock\DBLockingProvider($connection1, \OC::$server->getLogger(), $this->timeFactory, 3600);
+		$instance2 = new \OC\Lock\DBLockingProvider($connection2, \OC::$server->getLogger(), $this->timeFactory, 3600);
+
+		// first instance inserts entry
+		$connection1->expects($this->once())
+			->method('insertIfNotExist')
+			->with('*PREFIX*file_locks', ['key' => 'foo', 'lock' => 1, 'ttl' => $this->currentTime + 3600], ['key'])
+			->will($this->returnValue(1));
+		$connection1->expects($this->never())
+			->method('executeUpdate');
+
+		// second instance fails to insert due to constraint violation
+		$connection2->expects($this->once())
+			->method('insertIfNotExist')
+			->with('*PREFIX*file_locks', ['key' => 'foo', 'lock' => 1, 'ttl' => $this->currentTime + 3600], ['key'])
+			->will($this->throwException(new UniqueConstraintViolationException('dummy', $this->getMock('\Doctrine\DBAL\Driver\DriverException'))));
+		$connection2->expects($this->once())
+			->method('executeUpdate')
+			->with('UPDATE `*PREFIX*file_locks` SET `lock` = `lock` + 1, `ttl` = ? WHERE `key` = ? AND `lock` >= 0', [$this->currentTime + 3600, 'foo'])
+			->will($this->returnValue(1));
+
+		$instance1->acquireLock('foo', ILockingProvider::LOCK_SHARED);
+		$instance2->acquireLock('foo', ILockingProvider::LOCK_SHARED);
+
+		$this->assertTrue($instance1->isLocked('foo', ILockingProvider::LOCK_SHARED));
+		$this->assertTrue($instance2->isLocked('foo', ILockingProvider::LOCK_SHARED));
+	}
+
 }
