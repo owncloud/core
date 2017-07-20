@@ -613,6 +613,15 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
 			$uri = $this->getScriptName() . substr($uri, strlen($this->server['SCRIPT_NAME']));
+		} else {
+			$components = parse_url($uri);
+			$uri = $components['path'];
+			if (isset($components['query'])) {
+				$uri .= '?'.$components['query'];
+			}
+			if (isset($components['fragment'])) {
+				$uri .= '#'.$components['fragment'];
+			}
 		}
 		return $uri;
 	}
