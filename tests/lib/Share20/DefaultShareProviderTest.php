@@ -282,6 +282,12 @@ class DefaultShareProviderTest extends TestCase {
 						['shareOwner', $shareOwnerFolder],
 				]));
 
+		$group = $this->createMock('\OC\Group\Group');
+		$this->groupManager->method('get')
+			->willReturn($group);
+		$group->method('getDisplayName')
+			->willReturn('sharedWith');
+
 		$share = $this->provider->getShareById($id);
 
 		$this->assertEquals($id, $share->getId());
@@ -574,6 +580,11 @@ class DefaultShareProviderTest extends TestCase {
 		$share = $this->createMock(Share\IShare::class);
 		$share->method('getId')->willReturn($id);
 
+		$group = $this->createMock('\OC\Group\Group');
+		$this->groupManager->method('get')
+			->willReturn($group);
+		$group->method('getDisplayName')
+			->willReturn('group1');
 		$children = $this->provider->getChildren($share);
 
 		$this->assertCount(2, $children);
@@ -682,6 +693,12 @@ class DefaultShareProviderTest extends TestCase {
 		$share->setNode($path);
 		$share->setPermissions(1);
 		$share->setTarget('/target');
+
+		$group = $this->createMock('\OC\Group\Group');
+		$this->groupManager->method('get')
+			->willReturn($group);
+		$group->method('getDisplayName')
+			->willReturn('sharedWith');
 
 		$share2 = $this->provider->create($share);
 

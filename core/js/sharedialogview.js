@@ -225,7 +225,12 @@
 							} else if (share.share_type === OC.Share.SHARE_TYPE_GROUP) {
 								groupsLength = groups.length;
 								for (j = 0; j < groupsLength; j++) {
-									if (groups[j].value.shareWith === share.share_with) {
+									if(share.share_with instanceof Array) {
+										if (groups[j].value.shareWith[1] === share.share_with[1]) {
+											groups.splice(j, 1);
+											break;
+										}
+									} else if (groups[j].value.shareWith === share.share_with) {
 										groups.splice(j, 1);
 										break;
 									}
