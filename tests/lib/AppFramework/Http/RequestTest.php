@@ -16,13 +16,14 @@ use OC\Security\CSRF\CsrfTokenManager;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 use OCP\IConfig;
+use Test\TestCase;
 
 /**
  * Class RequestTest
  *
  * @package OC\AppFramework\Http
  */
-class RequestTest extends \Test\TestCase {
+class RequestTest extends TestCase {
 	/** @var string */
 	protected $stream = 'fakeinput://data';
 	/** @var ISecureRandom | \PHPUnit_Framework_MockObject_MockObject */
