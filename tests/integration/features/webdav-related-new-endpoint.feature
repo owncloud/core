@@ -64,6 +64,28 @@ Feature: webdav-related-new-endpoint
 		Then the HTTP status code should be "403"
 		And Downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
+	Scenario: move file into a not-existing folder
+		Given using new dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt"
+		Then the HTTP status code should be "409"
+
+	Scenario: rename a file into an invalid filename
+		Given using new dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" moves file "/welcome.txt" to "/a\\a"
+		Then the HTTP status code should be "400"
+
+	@skip @issue-28441
+	Scenario: rename a file into a banned filename
+		Given using new dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" moves file "/welcome.txt" to "/.htaccess"
+		Then the HTTP status code should be "403"
+
 	Scenario: Copying a file
 		Given using new dav path
 		And As an "admin"
@@ -365,6 +387,21 @@ Feature: webdav-related-new-endpoint
 		And user "user0" created a folder "/testshare"
 		When User "user0" moves folder "/testshare" to "/hola%5Chola"
 		Then the HTTP status code should be "400"
+
+	@skip @issue-28441
+	Scenario: Renaming a folder into a banned name
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" created a folder "/testshare"
+		When User "user0" moves folder "/testshare" to "/.htaccess"
+		Then the HTTP status code should be "403"
+
+	Scenario: Move a folder into a not existing one
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" created a folder "/testshare"
+		When User "user0" moves folder "/testshare" to "/not-existing/testshare"
+		Then the HTTP status code should be "409"
 
 		Scenario: Downloading a file on the new endpoint should serve security headers
 		Given using new dav path
