@@ -1,10 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author davitol <dtoledo@solidgear.es>
- * @author Joas Schilling <coding@schilljs.com>
- * @author Sergio Bertolín <sbertolin@solidgear.es>
- * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -29,6 +25,7 @@ use OCP\App\IAppManager;
 use OCP\Encryption\IManager;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,8 +46,8 @@ class ParallelDecryptAll extends Command {
 	/** @var  bool */
 	protected $wasSingleUserModeEnabled;
 
-	/** @var \OC\Encryption\DecryptAll */
-	protected $decryptAll;
+	/** @var \OC\Encryption\ParallelDecryptAll */
+	protected $parallelDecryptAll;
 
 	/** @var  OutputInterface */
 	protected $output;
@@ -100,15 +97,23 @@ class ParallelDecryptAll extends Command {
 		$this->output = $output;
 		$this->input = $input;
 
-		$this->checkSetup();
 		$user = $input->getArgument('user');
+
+		$this->output->writeln('Preparing module for decryption...');
+		if ($this->parallelDecryptAll->prepareEncryptionModules($user) === false) {
+			return false;
+		}
+
+		$this->checkSetup();
+
 		$output->writeln("Decrypting $user...");
 
 		// Run the decryption
-		$result = $this->decryptAll->decryptAll($input, $output, $user);
-		if ($result === false) {
-			$output->writeln(' aborted.');
-		}
+		$progress = new ProgressBar($this->output);
+		$progress->setFormat(" %message% \n [%bar%]");
+		$this->parallelDecryptAll->decryptUsersFiles($user, $progress, 1);
+
+		return $this->parallelDecryptAll->checkForFailure();
 
 	}
 }
