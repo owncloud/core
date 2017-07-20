@@ -388,6 +388,21 @@ Feature: webdav-related-new-endpoint
 		When User "user0" moves folder "/testshare" to "/hola%5Chola"
 		Then the HTTP status code should be "400"
 
+	@skip @issue-28441
+	Scenario: Renaming a folder into a banned name
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" created a folder "/testshare"
+		When User "user0" moves folder "/testshare" to "/.htaccess"
+		Then the HTTP status code should be "403"
+
+	Scenario: Move a folder into a not existing one
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" created a folder "/testshare"
+		When User "user0" moves folder "/testshare" to "/not-existing/testshare"
+		Then the HTTP status code should be "409"
+
 		Scenario: Downloading a file on the new endpoint should serve security headers
 		Given using new dav path
 		And As an "admin"
