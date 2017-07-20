@@ -64,6 +64,27 @@ Feature: webdav-related-old-endpoint
 		Then the HTTP status code should be "403"
 		And Downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
+	Scenario: move file into a not-existing folder
+		Given using old dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt"
+		Then the HTTP status code should be "409"
+
+	Scenario: rename a file into an invalid filename
+		Given using old dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" moves file "/welcome.txt" to "/a\\a"
+		Then the HTTP status code should be "400"
+
+	Scenario: rename a file into a banned filename
+		Given using old dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" moves file "/welcome.txt" to "/.htaccess"
+		Then the HTTP status code should be "403"
+
 	Scenario: Copying a file
 		Given using old dav path
 		And As an "admin"
