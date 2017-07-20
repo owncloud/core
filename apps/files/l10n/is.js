@@ -78,7 +78,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Villa kom upp við að reyna að uppfæra merkin",
     "A new file or folder has been <strong>created</strong>" : "Skjal eða mappa hefur verið <strong>búin til</strong>",
     "A file or folder has been <strong>changed</strong>" : "Skjali eða möppu hefur verið <strong>breytt</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Takmarka tilkynningar um gerð og breytingar á <strong>eftirlætisskrám</strong> <em>(einungis streymi)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Skjali eða möppu hefur verið  <strong>eytt</strong>",
     "A file or folder has been <strong>restored</strong>" : "Skjal eða mappa hefur verið <strong>endurheimt</strong>",
     "You created %1$s" : "Þú bjóst til %1$s",

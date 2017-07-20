@@ -73,7 +73,6 @@
     "An error occurred while trying to update the tags" : "Prišlo je do napake med posodabljanjem oznak",
     "A new file or folder has been <strong>created</strong>" : "<strong>Ustvarjena</strong> je nova datoteka ali mapa.",
     "A file or folder has been <strong>changed</strong>" : "<strong>Spremenjena</strong> je datoteka ali mapa",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Omeji obvestila o ustvarjanju in spreminjanju <strong>najpogosteje uporabljenih </strong> datotek <em>(omogoči pretok)</em>.",
     "A file or folder has been <strong>deleted</strong>" : "<strong>Izbrisana</strong> je datoteka ali mapa",
     "A file or folder has been <strong>restored</strong>" : "<strong>Obnovljena</strong> je datoteka ali mapa",
     "You created %1$s" : "Ustvarili ste %1$s",

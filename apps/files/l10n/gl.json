@@ -52,7 +52,6 @@
     "An error occurred while trying to update the tags" : "Produciuse un erro ao tentar actualizar as etiquetas",
     "A new file or folder has been <strong>created</strong>" : "<strong>Creouse</strong> un novo ficheiro ou cartafol",
     "A file or folder has been <strong>changed</strong>" : "<strong>Cambiouse</strong> un ficheiro ou cartafol",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Limita as notificacións sobre a creación e modificación dos seus <strong>ficheiros favoritos</strong> <em>(só os fluxos)</em>",
     "A file or folder has been <strong>deleted</strong>" : "<strong>Eliminouse</strong> un ficheiro ou cartafol",
     "A file or folder has been <strong>restored</strong>" : "Foi <strong>restaurado</strong> satisfactoriamente un ficheiro ou cartafol",
     "You created %1$s" : "Creou %1$s",

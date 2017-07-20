@@ -55,7 +55,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Дошло је до грешке при покушају ажурирања ознака",
     "A new file or folder has been <strong>created</strong>" : "Нови фајл или фасцикла су <strong>направљени</strong>",
     "A file or folder has been <strong>changed</strong>" : "Фајл или фасцикла су <strong>измењени</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Ограничи обавештења о стварању и изменама на <strong>омиљене фајлове</strong> <em>(само у записнику)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Фајл или фасцикла су <strong>обрисани</strong>",
     "A file or folder has been <strong>restored</strong>" : "Фајл или фасцикла су <strong>враћени</strong>",
     "You created %1$s" : "Направили сте %1$s",

@@ -73,7 +73,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Una error s'es produsida al moment de la mesa a jorn de las etiquetas",
     "A new file or folder has been <strong>created</strong>" : "Un novèl fichièr o repertòri es estat <strong>creat</strong>",
     "A file or folder has been <strong>changed</strong>" : "Un fichièr o un repertòri es estat <strong>modificat</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Limitar las notifications a çò que concernís la creacion e la modificacion de vòstres <strong>fichièrs favorits</strong> <em>(Flux unicament)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Un fichièr o un repertòri es estat <strong>suprimit</strong>",
     "A file or folder has been <strong>restored</strong>" : "Un fichièr o un repertòri es estat <strong>restablit</strong>",
     "You created %1$s" : "Avètz creat %1$s",

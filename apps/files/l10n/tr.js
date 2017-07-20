@@ -68,7 +68,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Etiketler güncellenmeye çalışılırken bir hata oluştu",
     "A new file or folder has been <strong>created</strong>" : "Yeni bir dosya veya klasör <strong>oluşturuldu</strong>",
     "A file or folder has been <strong>changed</strong>" : "Bir dosya veya klasör <strong>değiştirildi</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "<strong>Sık kullanılan dosyalarınızın</strong> oluşturulma ve değiştirilme hakkındaki bildirimlerini sınırla <em>(Sadece akışta)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Bir dosya veya klasör <strong>silindi</strong>",
     "A file or folder has been <strong>restored</strong>" : "Bir dosya veya klasör <strong>geri alındı</strong>",
     "You created %1$s" : "%1$s dosyasını oluşturdunuz",

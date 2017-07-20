@@ -63,7 +63,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Pri pokuse o aktualizáciu štítkov došlo k chybe",
     "A new file or folder has been <strong>created</strong>" : "Nový súbor alebo priečinok bol <strong>vytvorený</strong>",
     "A file or folder has been <strong>changed</strong>" : "Súbor alebo priečinok bol <strong>zmenený</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Obmedzte upozornenia na vytvorenie a zmeny na vaše <strong>obľúbené súbory</strong> <em>(Len streamy)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Súbor alebo priečinok bol <strong>odstránený</strong>",
     "A file or folder has been <strong>restored</strong>" : "Súbor alebo priečinok bol <strong>obnovený</strong>",
     "You created %1$s" : "Vytvorili ste %1$s",

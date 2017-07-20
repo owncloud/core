@@ -66,7 +66,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "更新標籤時發生錯誤",
     "A new file or folder has been <strong>created</strong>" : "新的檔案或目錄已被 <strong>建立</strong>",
     "A file or folder has been <strong>changed</strong>" : "檔案或目錄已被 <strong>變更</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "僅顯示<strong>已加星號的檔案</strong>的動態通知<em>（僅限訊息串）</em>",
     "A file or folder has been <strong>deleted</strong>" : "檔案或目錄已被 <strong>刪除</strong>",
     "A file or folder has been <strong>restored</strong>" : "檔案或目錄已被 <strong>恢復</strong>",
     "You created %1$s" : "您建立了 %1$s",

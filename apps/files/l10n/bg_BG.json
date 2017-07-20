@@ -71,7 +71,6 @@
     "An error occurred while trying to update the tags" : "Настъпи грешка при опита за промяна на бележките",
     "A new file or folder has been <strong>created</strong>" : "Нов файл или папка беше <strong>създаден/а</strong>",
     "A file or folder has been <strong>changed</strong>" : "Файл или папка беше <strong>променен/а</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Ограничване на известията за създаване и променяне на своите <strong>любими файлове</strong> <em>(Само в потока)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Файл или папка беше <strong>изтрит/а</strong>",
     "A file or folder has been <strong>restored</strong>" : "Файл или папка беше <strong>възстановен/а</strong>",
     "You created %1$s" : "Вие създадохте %1$s.",

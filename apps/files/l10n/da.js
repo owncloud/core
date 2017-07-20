@@ -74,7 +74,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Der opstod en fejl under forsøg på at opdatere mærkerne",
     "A new file or folder has been <strong>created</strong>" : "En ny fil eller mapper er blevet <strong>oprettet</strong>",
     "A file or folder has been <strong>changed</strong>" : "En fil eller mappe er blevet <strong>ændret</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Begræns noter om oprettelse og ændringer af dine <strong>favorit filer</strong> <em>(Kun streaming)</em>",
     "A file or folder has been <strong>deleted</strong>" : "En fil eller mappe er blevet <strong>slettet</strong>",
     "A file or folder has been <strong>restored</strong>" : "En fil eller mappe er blevet <strong>gendannet</strong>",
     "You created %1$s" : "Du oprettede %1$s ",

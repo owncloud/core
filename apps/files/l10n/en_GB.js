@@ -73,7 +73,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "An error occurred whilst trying to update the tags",
     "A new file or folder has been <strong>created</strong>" : "A new file or folder has been <strong>created</strong>",
     "A file or folder has been <strong>changed</strong>" : "A file or folder has been <strong>changed</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Limit notifications about creation and changes to your <strong>favourite files</strong> <em>(Stream only)</em>",
     "A file or folder has been <strong>deleted</strong>" : "A file or folder has been <strong>deleted</strong>",
     "A file or folder has been <strong>restored</strong>" : "A file or folder has been <strong>restored</strong>",
     "You created %1$s" : "You created %1$s",

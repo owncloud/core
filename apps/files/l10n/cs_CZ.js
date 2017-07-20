@@ -78,7 +78,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Při pokusu o úpravu tagů nastala chyba",
     "A new file or folder has been <strong>created</strong>" : "Byl <strong>vytvořen</strong> nový soubor nebo adresář",
     "A file or folder has been <strong>changed</strong>" : "Soubor nebo adresář byl <strong>změněn</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Limit oznámení o tvorbě a změnách vašich <strong>oblíbených souborů</strong> <em>(Pouze streamovat)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Soubor nebo adresář byl <strong>smazán</strong>",
     "A file or folder has been <strong>restored</strong>" : "Soubor nebo adresář byla <strong>obnoven</strong>",
     "You created %1$s" : "Vytvořili jste %1$s",

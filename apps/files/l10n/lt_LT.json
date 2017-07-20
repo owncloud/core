@@ -72,7 +72,6 @@
     "An error occurred while trying to update the tags" : "Bandant atnaujinti žymes įvyko klaida",
     "A new file or folder has been <strong>created</strong>" : "Naujas failas ar aplankas buvo <strong>sukurtas</strong>",
     "A file or folder has been <strong>changed</strong>" : "Failas ar aplankas buvo <strong>pakeistas</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Riboti pranešimus apie sukūrimą ir pokyčius jūsų <strong>mėgiamuose failuose</strong> <em>(Tik srautas)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Failas ar aplankas buvo <strong>ištrintas</strong>",
     "A file or folder has been <strong>restored</strong>" : "Failas ar aplankas buvo <strong>atkurtas</strong>",
     "You created %1$s" : "Jūs sukūrėte %1$s",

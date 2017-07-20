@@ -75,7 +75,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Si è verificato un errore durante il tentativo di aggiornare le etichette",
     "A new file or folder has been <strong>created</strong>" : "Un nuovo file o cartella è stato <strong>creato</strong>",
     "A file or folder has been <strong>changed</strong>" : "Un file o una cartella è stato <strong>modificato</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Limita le notifiche relative alla creazione e alla modifica dei tuoi <strong>file preferiti</strong> <em>(Solo flusso)</em>",
     "A file or folder has been <strong>deleted</strong>" : "Un file o una cartella è stato <strong>eliminato</strong>",
     "A file or folder has been <strong>restored</strong>" : "Un file o una cartella è stato <strong>ripristinato</strong>",
     "You created %1$s" : "Hai creato %1$s",

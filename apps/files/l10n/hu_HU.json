@@ -64,7 +64,6 @@
     "An error occurred while trying to update the tags" : "Hiba történt, miközben megpróbálta frissíteni a címkéket",
     "A new file or folder has been <strong>created</strong>" : "Új fájl vagy könyvtár <strong>létrehozása</strong>",
     "A file or folder has been <strong>changed</strong>" : "Fájl vagy könyvtár <strong>módosítása</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "Szűkítse le az értesítéseket a létrehozásról és a változásokról a <strong>kedvenc fájlok</strong> <em>(Stream only)</em> -ra",
     "A file or folder has been <strong>deleted</strong>" : "Fájl vagy könyvtár <strong>törlése</strong>",
     "A file or folder has been <strong>restored</strong>" : "Fájl vagy könyvtár <strong>visszatöltése</strong>",
     "You created %1$s" : "Létrehoztam: %1$s",

@@ -78,7 +78,6 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "เกิดข้อผิดพลาดขณะที่พยายามจะอัพเดทแท็ก",
     "A new file or folder has been <strong>created</strong>" : "เมื่อมีไฟล์หรือโฟลเดอร์ใหม่ถูก <strong>สร้างขึ้น!</strong>",
     "A file or folder has been <strong>changed</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>เปลี่ยนแปลง!</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "จำกัดการแจ้งเตือนเกี่ยวกับการสร้างและการเปลี่ยนแปลงของคุณ <strong>ไฟล์ที่ชื่นชอบ</strong> <em>(สตรีมเท่านั้น)</em>",
     "A file or folder has been <strong>deleted</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>ลบ</strong>",
     "A file or folder has been <strong>restored</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>กู้คืน</strong>",
     "You created %1$s" : "คุณสร้าง %1$s",
