@@ -115,11 +115,12 @@ class OC_API {
 	 * @param int $authLevel the level of authentication required for the call
 	 * @param array $defaults
 	 * @param array $requirements
+	 * @param boolean $cors whether to enable cors for this route
 	 */
 	public static function register($method, $url, $action, $app,
 				$authLevel = API::USER_AUTH,
 				$defaults = [],
-				$requirements = []) {
+				$requirements = [], $cors = true) {
 		$name = strtolower($method).$url;
 		$name = str_replace(['/', '{', '}'], '_', $name);
 		if(!isset(self::$actions[$name])) {
@@ -133,7 +134,7 @@ class OC_API {
 			self::$actions[$name] = [];
 			OC::$server->getRouter()->useCollection($oldCollection);
 		}
-		self::$actions[$name][] = ['app' => $app, 'action' => $action, 'authlevel' => $authLevel];
+		self::$actions[$name][] = ['app' => $app, 'action' => $action, 'authlevel' => $authLevel, 'cors' => $cors];
 	}
 
 	/**
@@ -179,6 +180,16 @@ class OC_API {
 			];
 		}
 		$response = self::mergeResponses($responses);
+
+		// If CORS is set to active for some method, try to add CORS headers
+		if (self::$actions[$name][0]['cors'] &&
+			!is_null(\OC::$server->getUserSession()->getUser()) &&
+			!is_null(\OC::$server->getRequest()->getHeader('Origin'))) {
+			$requesterDomain = \OC::$server->getRequest()->getHeader('Origin');
+			$userId = \OC::$server->getUserSession()->getUser()->getUID();
+			$response = \OC_Response::setCorsHeaders($userId, $requesterDomain, $response);
+		}
+
 		$format = self::requestedFormat();
 		if (self::$logoutRequired) {
 			\OC::$server->getUserSession()->logout();

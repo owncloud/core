@@ -34,6 +34,7 @@ namespace OC\Settings;
 use OC\Files\View;
 use OC\Server;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Settings\Controller\CorsController;
 use OC\Settings\Controller\SettingsPageController;
 use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\AuthSettingsController;
