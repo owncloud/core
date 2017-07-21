@@ -23,8 +23,14 @@
 namespace OC\Encryption;
 
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ParallelDecryptAll extends DecryptAll {
+
+	public function setInOut($in, $out) {
+		$this->input = $in;
+		$this->output = $out;
+	}
 
 	public function decryptUsersFiles($uid, ProgressBar $progress, $userCount) {
 		parent::decryptUsersFiles($uid, $progress, $userCount);
@@ -34,16 +40,16 @@ class ParallelDecryptAll extends DecryptAll {
 		return parent::prepareEncryptionModules($user);
 	}
 
-	public function checkForFailure() {
+	public function checkForFailure(OutputInterface $output) {
 		if (empty($this->failed)) {
-			$this->output->writeln('all files could be decrypted successfully!');
+			$output->writeln('all files could be decrypted successfully!');
 			return 0;
 		} else {
-			$this->output->writeln('The following files failed to decrypt:');
+			$output->writeln('The following files failed to decrypt:');
 			foreach ($this->failed as $uid => $paths) {
-				$this->output->writeln('    ' . $uid);
+				$output->writeln('    ' . $uid);
 			}
-			$this->output->writeln('');
+			$output->writeln('');
 			return 1;
 		}
 	}

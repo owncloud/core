@@ -59,19 +59,19 @@ class ParallelDecryptAll extends Command {
 	 * @param IManager $encryptionManager
 	 * @param IAppManager $appManager
 	 * @param IConfig $config
-	 * @param \OC\Encryption\DecryptAll $decryptAll
+	 * @param \OC\Encryption\DecryptAll $parallelDecryptAll
 	 */
 	public function __construct(
 		IManager $encryptionManager,
 		IAppManager $appManager,
 		IConfig $config,
-		\OC\Encryption\DecryptAll $decryptAll
+		\OC\Encryption\ParallelDecryptAll $parallelDecryptAll
 	) {
 		parent::__construct();
 		$this->appManager = $appManager;
 		$this->encryptionManager = $encryptionManager;
 		$this->config = $config;
-		$this->decryptAll = $decryptAll;
+		$this->parallelDecryptAll = $parallelDecryptAll;
 	}
 
 	protected function configure() {
@@ -97,6 +97,8 @@ class ParallelDecryptAll extends Command {
 		$this->output = $output;
 		$this->input = $input;
 
+		$this->parallelDecryptAll->setInOut($input, $output);
+
 		$user = $input->getArgument('user');
 
 		$this->output->writeln('Preparing module for decryption...');
@@ -113,7 +115,7 @@ class ParallelDecryptAll extends Command {
 		$progress->setFormat(" %message% \n [%bar%]");
 		$this->parallelDecryptAll->decryptUsersFiles($user, $progress, 1);
 
-		return $this->parallelDecryptAll->checkForFailure();
+		return $this->parallelDecryptAll->checkForFailure($output);
 
 	}
 }

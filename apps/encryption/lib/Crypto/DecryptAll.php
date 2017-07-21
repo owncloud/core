@@ -96,7 +96,7 @@ class DecryptAll {
 					'Do you want to use the users login password to decrypt all files? (y/n) ',
 					false
 				);
-				$useLoginPassword = $this->questionHelper->ask($input, $output, $questionUseLoginPassword);
+				$useLoginPassword = false;//$this->questionHelper->ask($input, $output, $questionUseLoginPassword);
 				if ($useLoginPassword) {
 					$question = new Question('Please enter the user\'s login password: ');
 				} else if ($this->util->isRecoveryEnabledForUser($user) === false) {
@@ -114,10 +114,11 @@ class DecryptAll {
 
 			$question->setHidden(true);
 			$question->setHiddenFallback(false);
-			$password = $this->questionHelper->ask($input, $output, $question);
+		//	$password = $this->questionHelper->ask($input, $output, $question);
 		}
 
-		$privateKey = $this->getPrivateKey($user, $password);
+		$output->writeLn('Got recovery key: '.getenv('OC_RECOVERY'));
+		$privateKey = $this->getPrivateKey($user, getenv('OC_RECOVERY'));
 		if ($privateKey !== false) {
 			$this->updateSession($user, $privateKey);
 			return true;
