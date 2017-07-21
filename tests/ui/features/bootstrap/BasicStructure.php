@@ -287,11 +287,38 @@ trait BasicStructure
 
 	/**
 	 * substitutes codes like %base_url% with the value
+	 * if the given values does not have anything to be substituted its returned unmodified
 	 * @param string $value
 	 * @return string
 	 */
 	public function substituteInLineCodes ($value) {
-		//the only code so far, maybe we will need more one day
-		return str_replace("%base_url%",  $this->getMinkParameter("base_url"), $value);
+		$substitutions = [ 
+			[ 
+				"code" => "%base_url%",
+				"function" => [ 
+					$this,
+					"getMinkParameter" 
+				],
+				"parameter" => [ 
+					"base_url" 
+				] 
+			],
+			[ 
+				"code" => "%regularuser%",
+				"function" => [ 
+					$this,
+					"getRegularUserName" 
+				],
+				"parameter" => [ ] 
+			] 
+		];
+		foreach ($substitutions as $substitution) {
+			$value = str_replace(
+				$substitution["code"],
+				call_user_func_array($substitution["function"], $substitution["parameter"]),
+				$value
+			);
+		}
+		return $value;
 	}
 }
