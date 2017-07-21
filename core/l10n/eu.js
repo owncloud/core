@@ -183,6 +183,7 @@ OC.L10N.register(
     "Finishing …" : "Bukatzen...",
     "Need help?" : "Laguntza behar al duzu?",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Kaixo<br><br>%s-ek %s zurekin partekatu duela jakin dezazun.\nIkusi ezazu: %s",
+    "Menu" : "Menua",
     "Log out" : "Saioa bukatu",
     "Search" : "Bilatu",
     "Server side authentication failed!" : "Zerbitzari aldeko autentifikazioak huts egin du!",

@@ -227,6 +227,7 @@ OC.L10N.register(
     "See the documentation" : "Lihat dokumentasi",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hai,<br><br>hanya memberi tahu jika %s membagikan <strong>%s</strong> dengan Anda.<br><a href=\"%s\">Lihat!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Aplikasi ini memerlukan JavaScript untuk dapat beroperasi dengan benar. Mohon {linkstart}aktifkan JavaScript{linkend} dan muat ulang halaman ini.",
+    "Menu" : "Menu",
     "Log out" : "Keluar",
     "Search" : "Cari",
     "Server side authentication failed!" : "Otentikasi dari sisi server gagal!",

@@ -290,6 +290,7 @@
     "See the documentation" : "ดูได้จากเอกสาร",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "นี่คุณ,<br><br>อยากให้คุณทราบว่า %s ได้แชร์ <strong>%s</strong> กับคุณ <br><a href=\"%s\">คลิกดูที่นี่</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "โปรแกรมนี้ต้องการ JavaScript สำหรับการดำเนินงานที่ถูกต้อง กรุณา {linkstart}เปิดใช้งาน JavaScript{linkend} และโหลดหน้าเว็บ",
+    "Menu" : "เมนู",
     "Log out" : "ออกจากระบบ",
     "Search" : "ค้นหา",
     "Server side authentication failed!" : "การรับรองความถูกต้องจากเซิร์ฟเวอร์ล้มเหลว!",

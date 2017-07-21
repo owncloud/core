@@ -290,6 +290,7 @@
     "See the documentation" : "יש לצפות במסמכי התיעוד",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "הי לך,<br><br>כדאי לך לדעת ש- %s משתף/פת <strong>%s</strong> אתך.<br><a href=\"%s\">לצפייה!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "יישום זה דורש JavaScript לפעולה נכונה. יש {linkstart}לאפשר JavaScript{linkend} ולטעון את העמוד מחדש.",
+    "Menu" : "תפריט",
     "Log out" : "התנתקות",
     "Search" : "חיפוש",
     "Server side authentication failed!" : "אימות לצד שרת נכשל!",

@@ -274,6 +274,7 @@
     "See the documentation" : "Se dokumentationen",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hej med dig,<br><br>Dette er blot for at informere dig om, at %s har delt <strong>%s</strong> med dig.<br><a href=\"%s\">Se det her!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Denne applikation kræver JavaScript for at fungere korrekt. {linkstart}Slå venligst JavaScript til{linkend} og genindlæs siden. ",
+    "Menu" : "Menu",
     "Log out" : "Log ud",
     "Search" : "Søg",
     "Server side authentication failed!" : "Server side godkendelse mislykkedes!",

@@ -267,6 +267,7 @@ OC.L10N.register(
     "See the documentation" : "Tutustu dokumentaatioon",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hei!<br><br>%s jakoi kanssasi kohteen <strong>%s</strong>.<br><a href=\"%s\">Tutustu siihen!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Tämä sovellus vaatii toimiakseen JavaScript-tuen. {linkstart}Ota JavaScript käyttöön{linkend} ja päivitä sivu.",
+    "Menu" : "Valikko",
     "Log out" : "Kirjaudu ulos",
     "Search" : "Etsi",
     "Server side authentication failed!" : "Palvelimen puoleinen tunnistautuminen epäonnistui!",

@@ -253,6 +253,7 @@
     "See the documentation" : "Legir la documentacion",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Bonjorn,<br><br>Vos informam que %s a partejat <strong>%s</strong> amb vos.<br><a href=\"%s\">Clicatz aicí per i accedir !</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Aquesta aplicacion requerís JavaScript per foncionar corrèctament. {linkstart}Activatz JavaScript{linkend} e recargatz la pagina.",
+    "Menu" : "Menú",
     "Log out" : "Se desconnectar",
     "Search" : "Recercar",
     "Server side authentication failed!" : "L'autentificacion sul servidor a fracassat !",

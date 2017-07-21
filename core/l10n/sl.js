@@ -289,6 +289,7 @@ OC.L10N.register(
     "See the documentation" : "Preverite dokumentacijo",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Pozdravljeni,<br><br>uporabnik %s vam je omogočil souporabo <strong>%s</strong>.<br><a href=\"%s\">Oglejte si vsebino!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Program zahteva podporo JavaScript za pravilno delovanje. Med nastavitvami omogočite {linkstart}JavaScript{linkend} in osvežite spletno stran.",
+    "Menu" : "Meni",
     "Log out" : "Odjava",
     "Search" : "Poišči",
     "Server side authentication failed!" : "Overitev s strežnika je spodletela!",

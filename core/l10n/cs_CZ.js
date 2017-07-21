@@ -292,6 +292,7 @@ OC.L10N.register(
     "See the documentation" : "Shlédnout dokumentaci",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Ahoj,<br><br>jen ti dávám vědět, že s tebou %s sdílí <strong>%s</strong>.<br><a href=\"%s\">Zkontroluj to!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Tato aplikace potřebuje pro správnou funkčnost JavaScript. Prosím {linkstart}povolte JavaScript{linkend} a znovu načtěte stránku.",
+    "Menu" : "Menu",
     "Log out" : "Odhlásit se",
     "Search" : "Hledat",
     "Server side authentication failed!" : "Autentizace na serveru selhala!",

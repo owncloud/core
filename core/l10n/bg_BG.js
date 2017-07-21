@@ -274,6 +274,7 @@ OC.L10N.register(
     "See the documentation" : "Разгледайте документацията",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Здрасти,<br><br>само да те уведомя, че %s сподели <strong>%s</strong> с теб.\n<br><a href=\"%s\">Разгледай го!</a><br><br>.",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Това приложение изисква JavaScript, за да функционира правилно. Моля, {linkstart}включи JavaScript{linkend} и презареди страницата.",
+    "Menu" : "Меню",
     "Log out" : "Отписване",
     "Search" : "Търсене",
     "Server side authentication failed!" : "Удостоверяването от страна на сървъра е неуспешно!",

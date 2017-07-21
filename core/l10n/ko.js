@@ -290,6 +290,7 @@ OC.L10N.register(
     "See the documentation" : "문서 보기",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "안녕하세요,<br><br>%s 님이 <strong>%s</strong>을(를) 공유하였음을 알려 드립니다.<br><a href=\"%s\">보러 가기!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "이 프로그램이 올바르게 작동하려면 JavaScript가 필요합니다. {linkstart}JavaScript를 활성화{linkend}한 다음 페이지를 새로 고치십시오.",
+    "Menu" : "메뉴",
     "Log out" : "로그아웃",
     "Search" : "검색",
     "Server side authentication failed!" : "서버 인증 실패!",

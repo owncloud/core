@@ -292,6 +292,7 @@ OC.L10N.register(
     "See the documentation" : "Consulte a documentação",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Olá,<br><br>apenas para informar que %s partilhou <strong>%s</strong> consigo.<br><a href=\"%s\">Consulte aqui!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Esta aplicação requer o JavaScript para funcionar corretamente. Por favor, {linkstart}ative o JavaScript{linkend} e recarregue a página.",
+    "Menu" : "Menu",
     "Log out" : "Terminar sessão",
     "Search" : "Procurar",
     "Server side authentication failed!" : "Autenticação do lado do servidor falhou!",

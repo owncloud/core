@@ -264,6 +264,7 @@ OC.L10N.register(
     "See the documentation" : "Дивіться документацію",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Агов,<br><br>просто повідомляємо вам, що %s поділився »%s« з вами.<br><a href=\"%s\">Перегляньте!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Ця програма вимагає увімкнений JavaScript для коректної роботи. Будь ласка, {linkstart} Увімкніть JavaScript {linkend}  та перезавантажте сторінку.",
+    "Menu" : "Меню",
     "Log out" : "Вихід",
     "Search" : "Пошук",
     "Server side authentication failed!" : "Невдала аутентифікація з сервером!",

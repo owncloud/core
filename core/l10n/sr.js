@@ -209,6 +209,7 @@ OC.L10N.register(
     "See the documentation" : "Погледајте документацију",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Поздрав,<br><br>само вас обавештавам да %s дели <strong>%s</strong> са вама.<br><a href=\"%s\">Погледајте!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Ова апликација захтева Јава скрипт за исправан рад. {linkstart}Омогућите Јава скрипт{linkend} и поново учитајте страницу.",
+    "Menu" : "Мени",
     "Log out" : "Одјава",
     "Search" : "Претражи",
     "Server side authentication failed!" : "Аутентификација на серверу није успела!",

@@ -246,6 +246,7 @@
     "See the documentation" : "閱讀說明文件",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "嗨，<br><br>%s 與你分享了<strong>%s</strong>。<br><a href=\"%s\">檢視</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "這個應用程式需要啟用 Javascript 才能正常運作，請{linkstart}啟用Javascript{linkend}然後重新整理頁面。",
+    "Menu" : "選單",
     "Log out" : "登出",
     "Search" : "搜尋",
     "Server side authentication failed!" : "伺服器端認證失敗！",

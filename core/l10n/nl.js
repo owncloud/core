@@ -292,6 +292,7 @@ OC.L10N.register(
     "See the documentation" : "Zie de documentatie",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hallo,<br><br>%s deelt <strong>%s</strong> met u.<br><a href=\"%s\">Bekijk hier!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Deze applicatie heeft JavaScript nodig. {linkstart}Activeer JavaScript{linkend} en ververs deze pagina.",
+    "Menu" : "Menu",
     "Log out" : "Afmelden",
     "Search" : "Zoeken",
     "Server side authentication failed!" : "Authenticatie bij de server mislukte!",

@@ -290,6 +290,7 @@
     "See the documentation" : "Se dokumentasjonen",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hei,<br><br>Dette er en beskjed om at %s delte <strong>%s</strong> med deg.<br><a href=\"%s\">Vis den!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Denne applikasjonen krever JavaScript for å fungere korrekt. Vennligst {linkstart}aktiver JavaScript{linkend} og last siden på nytt.",
+    "Menu" : "Meny",
     "Log out" : "Logg ut",
     "Search" : "Søk",
     "Server side authentication failed!" : "Autentisering feilet på serveren!",

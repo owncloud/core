@@ -78,6 +78,7 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Es ist ein Fehler beim Aktualisieren der Tags aufgetreten",
     "A new file or folder has been <strong>created</strong>" : "Eine neue Datei oder ein neuer Ordner wurde <strong>erstellt</strong>",
     "A file or folder has been <strong>changed</strong>" : "Eine Datei oder ein Ordner wurde <strong>geändert</strong>",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Benachrichtigungen über Neues und Änderungen auf Ihre <strong>favorisierten Dateien</strong> beschränken",
     "A file or folder has been <strong>deleted</strong>" : "Eine Datei oder ein Ordner wurde <strong>gelöscht</strong>",
     "A file or folder has been <strong>restored</strong>" : "Eine Datei oder ein Ordner wurde <strong>wiederhergestellt</strong>",
     "You created %1$s" : "Sie haben %1$s erstellt",

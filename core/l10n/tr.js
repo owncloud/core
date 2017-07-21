@@ -290,6 +290,7 @@ OC.L10N.register(
     "See the documentation" : "Belgelendirmeye bak",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Merhaba, <br><br>%s kullanıcısının sizinle <strong>%s</strong> paylaşımında bulunduğunu bildirmek istedik.<br><a href=\"%s\">Paylaşımı gör!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Bu uygulama düzgün çalışabilmesi için JavaScript gerektirir. Lütfen {linkstart}JavaScript'i etkinleştirin{linkend} ve sayfayı yeniden yükleyin.",
+    "Menu" : "Menü",
     "Log out" : "Çıkış yap",
     "Search" : "Ara",
     "Server side authentication failed!" : "Sunucu taraflı yetkilendirme başarısız!",

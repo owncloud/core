@@ -224,6 +224,7 @@
     "See the documentation" : "Kuck an der Dokumentatioun",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hallo,<br><br>ech wëll just Bescheed soen dass den/d' %s <strong>%s</strong> mat dir gedeelt huet.<br><a href=\"%s\">Ukucken!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Dës Applikatioun verlaangt JavaScript fir kënne korrekt auszeféieren. W.e.g {linkstart} schalt JavaScript an {linkend} a luet d'Säit nei.",
+    "Menu" : "Menü",
     "Log out" : "Ofmellen",
     "Search" : "Sichen",
     "Server side authentication failed!" : "D'Autentifikatioun vun der Säit vum Server huet net geklappt!",

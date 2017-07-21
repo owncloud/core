@@ -187,6 +187,7 @@ OC.L10N.register(
     "Database host" : "Duomenų bazės serveris",
     "Finish setup" : "Baigti diegimą",
     "Finishing …" : "Baigiama ...",
+    "Menu" : "Meniu",
     "Log out" : "Atsijungti",
     "Search" : "Ieškoti",
     "Server side authentication failed!" : "Autentikacija serveryje nepavyko!",

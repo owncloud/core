@@ -292,6 +292,7 @@ OC.L10N.register(
     "See the documentation" : "Shihni dokumentimin",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Njatjeta,<br><br>thjesht po ju bëjmë të ditur që %s ndau me ju <strong>%s</strong>.<br><a href=\"%s\">Shiheni!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Ky aplikacion lyp JavaScript për punim të saktë. Ju lutemi, {linkstart}aktivizoni JavaScript-in{linkend} dhe ringarkoni faqen.",
+    "Menu" : "Menu",
     "Log out" : "Dilni",
     "Search" : "Kërko",
     "Server side authentication failed!" : "Mirëfilltësimi më anë të shërbyesit dështoi!",

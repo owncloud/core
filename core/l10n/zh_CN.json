@@ -290,6 +290,7 @@
     "See the documentation" : "查看文档",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "嗨、你好,<br><br>只想让你知道 %s 分享了 <strong>%s</strong> 给你。<br><a href=\"%s\">现在查看！</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "对于正确的操作，该应用要求 JavaScript 。请 {linkstart} 打开 JavaScript {linkend} ，然后重新载入页面。",
+    "Menu" : "菜单",
     "Log out" : "注销",
     "Search" : "搜索",
     "Server side authentication failed!" : "服务端验证失败！",

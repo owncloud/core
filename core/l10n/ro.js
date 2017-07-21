@@ -222,6 +222,7 @@ OC.L10N.register(
     "Finishing …" : "Se finalizează...",
     "Need help?" : "Ai nevoie de ajutor?",
     "See the documentation" : "Vezi documentația",
+    "Menu" : "Meniu",
     "Log out" : "Ieșire",
     "Search" : "Căutare",
     "Please contact your administrator." : "Contactează-ți administratorul.",

@@ -292,6 +292,7 @@ OC.L10N.register(
     "See the documentation" : "Kolla dokumentationen",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Hej där,<br><br>ville bara informera dig om att %s delade <strong>%s</strong> med dig.<br><a href=\"%s\">Visa den!</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "Denna applikationen kräver JavaScript för att fungera korrekt. Var god {linkstart}aktivera JavaScript{linkend} och ladda om sidan.",
+    "Menu" : "Meny",
     "Log out" : "Logga ut",
     "Search" : "Sök",
     "Server side authentication failed!" : "Servern misslyckades med autentisering!",

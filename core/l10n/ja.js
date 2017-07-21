@@ -292,6 +292,7 @@ OC.L10N.register(
     "See the documentation" : "ドキュメントを確認してください",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "こんにちは、<br><br>%sがあなたと »%s« を共有したことをお知らせします。<br><a href=\"%s\">それを表示</a><br><br>",
     "This application requires JavaScript for correct operation. Please {linkstart}enable JavaScript{linkend} and reload the page." : "このアプリケーションの動作にはJavaScriptが必要です。\n {linkstart}JavaScriptを有効にし{linkend} 、ページを更新してください。 ",
+    "Menu" : "メニュー",
     "Log out" : "ログアウト",
     "Search" : "検索",
     "Server side authentication failed!" : "サーバーサイドの認証に失敗しました！",

@@ -4,10 +4,12 @@
     "See %s" : "查看 %s",
     "Sample configuration detected" : "示例配置检测",
     "PHP %s or higher is required." : "要求 PHP 版本 %s 或者更高。",
+    "PHP with a version lower than %s is required." : "要求 PHP 的版本低于 %s。",
     "The command line tool %s could not be found" : "命令行工具 %s 未找到",
     "The library %s is not available." : "库文件 %s 不可用",
     "Unknown filetype" : "未知的文件类型",
     "Invalid image" : "无效的图像",
+    "Avatar image is not square" : "Avatar 头像图片非方形",
     "today" : "今天",
     "yesterday" : "昨天",
     "_%n day ago_::_%n days ago_" : ["%n 天前"],
@@ -23,6 +25,7 @@
     "Username and password" : "用户名和密码",
     "Username" : "用户名",
     "Password" : "密码",
+    "Empty filename is not allowed" : "不允许使用空文件名",
     "Dot files are not allowed" : ".文件 不被允许",
     "File name is a reserved word" : "文件名包含敏感字符",
     "File name contains at least one invalid character" : "文件名中存在至少一个非法字符",
@@ -41,6 +44,7 @@
     "General" : "常规",
     "Storage" : "存储",
     "Security" : "安全",
+    "User Authentication" : "用户授权",
     "Encryption" : "加密",
     "Sharing" : "共享",
     "Search" : "搜索",
@@ -110,6 +114,7 @@
     "Please upgrade your database version" : "请升级您的数据库版本",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "请更改权限为 0770 以避免其他用户查看目录。",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "请确保文件根目录下包含有一个名为“.ocdata”的文件。",
-    "Storage is temporarily not available" : "存储临时性不可用"
+    "Storage is temporarily not available" : "存储暂时不可用",
+    "Storage connection timeout. %s" : "存储连接超时。%s"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
