@@ -102,6 +102,12 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 		new \OC\Encryption\DecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View()),
 		new \Symfony\Component\Console\Helper\QuestionHelper())
 	);
+	$application->add(new OC\Core\Command\Encryption\ParallelDecryptAll(
+			\OC::$server->getEncryptionManager(),
+			\OC::$server->getAppManager(),
+			\OC::$server->getConfig(),
+			new \OC\Encryption\ParallelDecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View()))
+	);
 
 	$application->add(new OC\Core\Command\Log\Manage(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Log\OwnCloud(\OC::$server->getConfig()));
