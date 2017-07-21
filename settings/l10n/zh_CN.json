@@ -10,8 +10,6 @@
     "%s password changed successfully" : "%s 密码修改成功",
     "Couldn't send reset email. Please contact your administrator." : "未能成功发送重置邮件，请联系管理员。",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL使用了过时 %s 版本 (%s)。请更新你的操作系统或功能比如 %s 将无法可靠地工作。",
-    "A problem occurred, please check your log files (Error: %s)" : "出现了故障，请检查你的日志文件 (错误: %s)",
-    "Migration Completed" : "迁移完成",
     "Group already exists." : "组已经存在。",
     "Unable to add group." : "无法添加组。",
     "Unable to delete group." : "无法删除组",

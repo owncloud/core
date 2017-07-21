@@ -11,8 +11,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s パスワードは正常に変更されました",
     "Couldn't send reset email. Please contact your administrator." : "リセットメールを送信できませんでした。管理者に問い合わせてください。",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "%s バージョン (%s) の古い cURL を使っています。OSを更新するか、この機能 %s が正しく動くアプリに更新してください。",
-    "A problem occurred, please check your log files (Error: %s)" : "問題が発生しました。ログファイルを確認してください。(Error: %s)",
-    "Migration Completed" : "移行が完了しました",
     "Group already exists." : "グループはすでに存在しています",
     "Unable to add group." : "グループを追加できません",
     "Unable to delete group." : "グループを削除できません",

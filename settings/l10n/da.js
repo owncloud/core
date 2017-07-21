@@ -10,8 +10,6 @@ OC.L10N.register(
     "Unable to change password" : "Kunne ikke ændre kodeord",
     "Couldn't send reset email. Please contact your administrator." : "Der opstod et problem under afsending af e-mailen til nulstilling. Kontakt venligst systemadministratoren.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL bruger en forældet %s version (%s). Husk at opdatere dit styresystem ellers vil funktioner såsom %s ikke fungere pålideligt.",
-    "A problem occurred, please check your log files (Error: %s)" : "Der opstod en fejl - tjek venligst dine logfiler (fejl: %s)",
-    "Migration Completed" : "Overflytning blev fuldført",
     "Group already exists." : "Gruppen findes allerede.",
     "Unable to add group." : "Kan ikke tilføje gruppen.",
     "Unable to delete group." : "Kan ikke slette gruppen.",

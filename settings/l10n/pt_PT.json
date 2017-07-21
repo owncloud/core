@@ -10,8 +10,6 @@
     "%s password changed successfully" : "Palavra-passe de %s alterada com sucesso",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar a mensagem de reposição. Por favor, contacte o seu administrador.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL está a usar uma versão %s desatualizada (%s). Por favor, atualize o seu sistema operativo ou algumas funcionalidades como %s não funcionarão corretamente.",
-    "A problem occurred, please check your log files (Error: %s)" : "Ocorreu um problema. Por favor, verifique os ficheiros de registo (Erro: %s)",
-    "Migration Completed" : "Migração Concluída",
     "Group already exists." : "O grupo já existe.",
     "Unable to add group." : "Impossível adicionar o grupo.",
     "Unable to delete group." : "Impossível eliminar grupo.",

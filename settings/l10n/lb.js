@@ -6,8 +6,6 @@ OC.L10N.register(
     "Authentication error" : "Authentifikatioun's Fehler",
     "Unable to change password" : "Konnt Passwuert net änneren",
     "Couldn't send reset email. Please contact your administrator." : "D'Email fir zeréck ze setzen konnt net geschéckt ginn. W.e.g. kontaktéier däin Administrateur.",
-    "A problem occurred, please check your log files (Error: %s)" : "Et ass e Problem opgetrueden, w.e.g kuckt är Log Fichieren (Feeler: %s)",
-    "Migration Completed" : "D'Migratioun ass erfëllt",
     "Group already exists." : "D'Grupp existéiert schonn",
     "Unable to add group." : "Onmeiglech fir d'Grupp beizefügen.",
     "Unable to delete group." : "Onmeiglech d'Grupp ze läschen.",

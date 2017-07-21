@@ -78,6 +78,7 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Во время обновления тегов возникла ошибка",
     "A new file or folder has been <strong>created</strong>" : "<strong>Создан</strong> новый файл или каталог",
     "A file or folder has been <strong>changed</strong>" : "<strong>Изменён</strong> файл или каталог",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Ограничить уведомления о создании и изменений только вашими <strong>избранными файлами</strong>",
     "A file or folder has been <strong>deleted</strong>" : "<strong>Удален</strong> файл или каталог",
     "A file or folder has been <strong>restored</strong>" : "<strong>Восстановлен</strong> файл или каталог",
     "You created %1$s" : "Вы создали %1$s",

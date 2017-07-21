@@ -10,8 +10,6 @@ OC.L10N.register(
     "Unable to change password" : "Nepavyksta pakeisti slaptažodžio",
     "Couldn't send reset email. Please contact your administrator." : "Nepavyko išsiųsti atkūrimo laiško, susisiekite su administratoriumi.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL naudoja pasenusią %s versiją (%s). Pašome atnaujinti serverio operacinę sistemą arba serverio tarnybas, nes %s gali veikti netinkamai",
-    "A problem occurred, please check your log files (Error: %s)" : "Iškilo problema, prašome peržiūrėti klaidų išrašus (Klaida: %s)",
-    "Migration Completed" : "Migravimas baigtas",
     "Group already exists." : "Grupė jau egzistuoja.",
     "Unable to add group." : "Nepavyko pridėti grupės.",
     "Unable to delete group." : "Nepavyko ištrinti grupės.",

@@ -8,7 +8,6 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Contraseña de recuperación de administrador incorrecta. Por favor compruebe la contraseña e inténtelo de nuevo.",
     "Unable to change password" : "No se ha podido cambiar la contraseña",
     "Couldn't send reset email. Please contact your administrator." : "No se pudo enviar correo de restauración de contraseña. Por favor contacta a tu administrador.",
-    "Migration Completed" : "Migración Completada",
     "Group already exists." : "Este grupo ya existe.",
     "Unable to add group." : "No se pudo agregar el grupo.",
     "Unable to delete group." : "No se pudo eliminar el grupo.",

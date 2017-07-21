@@ -8,8 +8,6 @@
     "Unable to change password" : "Неможливо змінити пароль",
     "Couldn't send reset email. Please contact your administrator." : "Не можу надіслати email для скидання. Будь ласка, зверніться до вашого адміністратора.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL використовує застарілу версію %s (%s). Будь ласка, поновіть вашу операційну систему або функції, такі як %s не працюватимуть надійно.",
-    "A problem occurred, please check your log files (Error: %s)" : "Виникла проблема, будь ласка, перевірте свої файли журналів (Помилка: %s)",
-    "Migration Completed" : "Міграцію завершено",
     "Group already exists." : "Група вже існує.",
     "Unable to add group." : "Неможливо додати групу.",
     "Unable to delete group." : "Неможливо видалити групу.",

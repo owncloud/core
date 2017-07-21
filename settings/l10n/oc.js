@@ -9,8 +9,6 @@ OC.L10N.register(
     "Unable to change password" : "Impossible de modificar lo senhal",
     "Couldn't send reset email. Please contact your administrator." : "Impossible de mandar lo corrièl de reïnicializacion. Contactatz vòstre administrator.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL utiliza %s version (%s), qu'es una version obsolèta. Metètz a jorn vòstre sistèma operatiu, o de foncionalitats talas coma %s foncionaràn pas corrèctament.",
-    "A problem occurred, please check your log files (Error: %s)" : "Una error s'es produsida, verificatz vòstres fichièrs de log (Error: %s)",
-    "Migration Completed" : "Migracion acabada",
     "Group already exists." : "Aqueste grop existís ja.",
     "Unable to add group." : "Impossible d'apondre lo grop.",
     "Unable to delete group." : "Impossible de suprimir lo grop.",

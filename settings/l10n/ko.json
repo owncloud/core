@@ -9,8 +9,6 @@
     "%s password changed successfully" : "%s 암호가 성공적으로 변경됨",
     "Couldn't send reset email. Please contact your administrator." : "재설정 메일을 보낼수 없습니다. 관리자에게 문의하십시오.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL이 오래된 %s 버전을 사용하고 있습니다(%s). 운영 체제나 기능을 업데이트하지 않으면 %s 등을 안정적으로 사용할 수 없습니다.",
-    "A problem occurred, please check your log files (Error: %s)" : "문제가 발생했습니다. 로그 파일을 참조하십시오(오류: %s)",
-    "Migration Completed" : "이전 완료됨",
     "Group already exists." : "그룹이 이미 존재합니다.",
     "Unable to add group." : "그룹을 추가할 수 없습니다.",
     "Unable to delete group." : "그룹을 삭제할 수 없습니다.",
