@@ -28,13 +28,14 @@ namespace OC\AppFramework\Middleware\Security;
 use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
-use OC\User\Session;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
 use OCP\IRequest;
+use OCP\IUserSession;
+use OCP\IConfig;
 
 /**
  * This middleware sets the correct CORS headers on a response if the
@@ -55,21 +56,29 @@ class CORSMiddleware extends Middleware {
 	private $reflector;
 
 	/**
-	 * @var Session
+	 * @var IUserSession
 	 */
 	private $session;
 
 	/**
+	 * @var IConfig
+	 */
+	private $config;
+
+	/**
 	 * @param IRequest $request
 	 * @param ControllerMethodReflector $reflector
-	 * @param Session $session
+	 * @param IUserSession $session
+	 * @param IConfig $config
 	 */
 	public function __construct(IRequest $request,
 								ControllerMethodReflector $reflector,
-								Session $session) {
+								IUserSession $session,
+								IConfig $config) {
 		$this->request = $request;
 		$this->reflector = $reflector;
 		$this->session = $session;
+		$this->config = $config;
 	}
 
 	/**
@@ -114,9 +123,17 @@ class CORSMiddleware extends Middleware {
 	 */
 	public function afterController($controller, $methodName, Response $response){
 		// only react if its a CORS request and if the request sends origin and
+		$userId = null;
+		if (!is_null($this->session->getUser())) {
+			$userId = $this->session->getUser()->getUID();
+		}
 
-		if(isset($this->request->server['HTTP_ORIGIN']) &&
-			$this->reflector->hasAnnotation('CORS')) {
+		if($this->request->getHeader("Origin") !== null &&
+			$this->reflector->hasAnnotation('CORS') && !is_null($userId)) {
+
+			$requesterDomain = $this->request->getHeader("Origin");
+
+			\OC_Response::setCorsHeaders($userId, $requesterDomain, $response, $this->config);
 
 			// allow credentials headers must not be true or CSRF is possible
 			// otherwise
@@ -128,9 +145,6 @@ class CORSMiddleware extends Middleware {
 					throw new SecurityException($msg);
 				}
 			}
-
-			$origin = $this->request->server['HTTP_ORIGIN'];
-			$response->addHeader('Access-Control-Allow-Origin', $origin);
 		}
 		return $response;
 	}
