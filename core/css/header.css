@@ -49,29 +49,41 @@
 #owncloud {
 	position: absolute;
 	top: 0;
-	left: 0;
+	left: -webkit-calc(50% - 75px); /* @TODO: Remove if FF 14 support is dropped */
+	left:    -moz-calc(50% - 75px); /* @TODO: Remove if FF 14 support is dropped */
+	left:         calc(50% - 75px);
 	padding: 5px;
 	padding-bottom: 0;
 	height: 45px; /* header height */
 	box-sizing: border-box;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	opacity: 1;
 }
+
+@media only screen and (max-width: 767px) {
+	#owncloud {
+		display: none;
+	}
+}
+
 #owncloud:focus {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
 	opacity: .75;
 }
 #owncloud:hover,
 #owncloud:active {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	opacity: 1;
 }
 
+#header a,
+#header a * {
+	font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
+	text-decoration: none;
+}
+
 #header .logo {
-	background-image: url('../img/logo-icon.svg');
+	background-image: url('../img/logo.svg');
 	background-repeat: no-repeat;
 	background-size: 175px;
-	background-position: center 30px;
+	background-position: center center;
 	width: 252px;
 	height: 120px;
 	margin: 0 auto;
@@ -82,64 +94,85 @@
 	display: inline-block;
 	background-image: url(../img/logo-icon.svg);
 	background-repeat: no-repeat;
-	width: 62px;
+	background-size: 61px 34px;
+	width: 84px;
 	height: 34px;
+	color: #fff;
+	margin: 0;
+	padding: 0;
+	padding-left: 66px;
+	font-size: 1.04rem;
+	font-weight: 300;
+	line-height: inherit;
 }
 
 #header .header-appname-container {
-	display: inline-block;
+	display: -webkit-flex; // @TODO: Remove if Chrome 18 support is dropped
+	display: -moz-box;     // @TODO: Remove if FF 14 support is dropped
+	display: flex;
 	position: absolute;
-	left: 70px;
-	height: 27px;
-	padding-top: 18px;
-	padding-right: 10px;
+	left: 15px;
+	height: 45px;
+	align-items: center;
 }
 
 /* hover effect for app switcher label */
-.header-appname-container .header-appname,
-.menutoggle .icon-caret {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
-	opacity: .75;
+
+#header #owncloud,
+#header .header-appname-container {
+	opacity: .8;
+	transition: opacity .25s;
 }
-.menutoggle:hover .header-appname,
-.menutoggle:hover .icon-caret,
-.menutoggle:focus .header-appname,
-.menutoggle:focus .icon-caret,
-.menutoggle.active .header-appname,
-.menutoggle.active .icon-caret {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+
+#header #owncloud:hover,
+#header .header-appname-container:hover {
 	opacity: 1;
 }
 
 /* show appname next to logo */
 .header-appname {
-	display: inline-block;
-	position: relative;
 	color: #fff;
-	font-size: 16px;
+	font-size: 1.04rem;
 	font-weight: 300;
 	margin: 0;
-	margin-top: -24px;
-	padding: 7px 0 7px 5px;
-	vertical-align: middle;
-}
-
-#header .icon-caret {
-	display: inline-block;
-	width: 12px;
-	height: 12px;
 	padding: 0;
-	vertical-align: middle;
 }
 
-#header .header-appname-container .icon-caret {
-	margin: -21px 0 0;
+/* show burger indicator next to logo to make clear it is tappable */
+#header .burger {
+	display: inline-block;
+	position: relative;
+	min-width: inherit;
+	width: 14px;
+	height: 10px;
+
+	margin: 0 15px 0 0;
+	padding: 0;
+
+	background: transparent;
+	border: 0 none;
+	border-top: 2px solid #fff;
+	border-bottom: 2px solid #fff;
+	border-radius: 0;
+	text-indent: -9999px;
 }
+
+#header .burger:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: calc(50% - 1px);
+	height: 2px;
+	background-color: #fff;
+}
+
 
 /* do not show menu toggle on public share links as there is no menu */
-#body-public #header .icon-caret {
+#body-public #expand:after {
 	display: none;
 }
+
 
 /* NAVIGATION --------------------------------------------------------------- */
 
@@ -162,7 +195,7 @@
 	z-index: 2000;
 }
 /* arrow look */
-#navigation:after, #expanddiv:after {
+#expanddiv:after {
 	bottom: 100%;
 	border: solid transparent;
 	content: " ";
@@ -177,7 +210,7 @@
 }
 /* position of dropdown arrow */
 #navigation:after {
-	left: 47%;
+	left: 12px;
 }
 #expanddiv:after {
 	right: 15px;
@@ -292,28 +325,52 @@
 
 #settings {
 	float: right;
-	color: #bbb;
 	cursor: pointer;
 }
+
 #settings .icon-loading-small-dark {
 	display: inline-block;
 	margin-bottom: -3px;
 	margin-right: 6px;
 	background-size: 16px 16px;
 }
+
 #expand {
+	position: relative;
 	display: block;
 	padding: 7px 30px 6px 10px;
 	cursor: pointer;
+	color: #bbb;
+	transition: color .25s;
 }
+
 #expand * {
 	cursor: pointer;
 }
+
+#expand:after {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 4px 4px 0 4px;
+	border-color: #bbb transparent transparent transparent;
+	right: 17px;
+	top: 22px;
+	transition: border-color .25s;
+}
+
 #expand:hover,
 #expand:focus,
 #expand:active {
 	color: #fff;
 }
+
+#expand:hover:after {
+	border-color: #fff transparent transparent transparent;
+}
+
 #expand img {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 	opacity: .7;
