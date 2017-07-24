@@ -9,6 +9,7 @@
     "Unable to change password" : "不能更改密码",
     "%s password changed successfully" : "%s 密码修改成功",
     "Couldn't send reset email. Please contact your administrator." : "未能成功发送重置邮件，请联系管理员。",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "正在通过应用商店或联合云共享安装和更新应用",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL使用了过时 %s 版本 (%s)。请更新你的操作系统或功能比如 %s 将无法可靠地工作。",
     "Group already exists." : "组已经存在。",
     "Unable to add group." : "无法添加组。",
