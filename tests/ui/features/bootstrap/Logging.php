@@ -143,13 +143,16 @@ trait Logging
 	/** @AfterScenario */
 	public function tearDownScenarioLogging(AfterScenarioScope $scope)
 	{
-		if ($this->oldLogLevel !== null) {
+		if ($this->oldLogLevel !== null && 
+			$this->oldLogLevel !== LoggingHelper::getLogLevel($this->ocPath)) {
 			LoggingHelper::setLogLevel($this->ocPath, $this->oldLogLevel);
 		}
-		if ($this->oldLogBackend !== null) {
+		if ($this->oldLogBackend !== null &&
+			$this->oldLogBackend !== LoggingHelper::getLogBackend($this->ocPath)) {
 			LoggingHelper::setLogBackend($this->ocPath, $this->oldLogBackend);
 		}
-		if ($this->oldLogTimezone !== null) {
+		if ($this->oldLogTimezone !== null &&
+			$this->oldLogTimezone !== LoggingHelper::getLogTimezone($this->ocPath)) {
 			LoggingHelper::setLogTimezone($this->ocPath, $this->oldLogTimezone);
 		}
 	}
