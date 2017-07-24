@@ -415,6 +415,9 @@ class SessionTest extends TestCase {
 			->method('getSystemValue')
 			->with('token_auth_enforced', false)
 			->will($this->returnValue(false));
+		$manager->expects($this->any())
+			->method('getByEmail')
+			->willReturn([]);
 
 		$this->assertFalse($userSession->logClientIn('unexist', 'doe', $request));
 	}
