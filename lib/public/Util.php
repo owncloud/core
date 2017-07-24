@@ -726,13 +726,15 @@ class Util {
 			'version' => '',
 			'versionstring' => '',
 			'edition' => '',
-			'productname' => ''];
+			'productname' => '',
+			'hostname' => ''];
 
 		if ($includeVersion || (bool) $systemConfig->getValue('version.hide', false) === false) {
 			$values['version'] = implode('.', self::getVersion());
 			$values['versionstring'] = \OC_Util::getVersionString();
 			$values['edition'] = \OC_Util::getEditionString();
 			$values['productname'] = $defaults->getName();
+			$values['hostname'] = gethostname();
 		}
 
 		return $values;
