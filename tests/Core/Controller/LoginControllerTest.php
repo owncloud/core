@@ -318,6 +318,7 @@ class LoginControllerTest extends TestCase {
 
 		$this->userSession->expects($this->never())
 			->method('createSessionToken');
+		$this->userManager->expects($this->any())->method('getByEmail')->willReturn([]);
 
 		$expected = new RedirectResponse($loginPageUrl);
 		$this->assertEquals($expected, $this->loginController->tryLogin($user, $password, '/foo'));
