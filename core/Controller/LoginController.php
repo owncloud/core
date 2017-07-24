@@ -222,17 +222,17 @@ class LoginController extends Controller {
 			}
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.login.showLoginForm', $args));
 		}
-		/* @var $loginResult IUser */
-		$loginResult = $this->userSession->getUser();
+		/* @var $userObject IUser */
+		$userObject = $this->userSession->getUser();
 		// TODO: remove password checks from above and let the user session handle failures
 		// requires https://github.com/owncloud/core/pull/24616
-		$this->userSession->createSessionToken($this->request, $loginResult->getUID(), $user, $password);
+		$this->userSession->createSessionToken($this->request, $userObject->getUID(), $user, $password);
 
 		// User has successfully logged in, now remove the password reset link, when it is available
-		$this->config->deleteUserValue($loginResult->getUID(), 'owncloud', 'lostpassword');
+		$this->config->deleteUserValue($userObject->getUID(), 'owncloud', 'lostpassword');
 
-		if ($this->twoFactorManager->isTwoFactorAuthenticated($loginResult)) {
-			$this->twoFactorManager->prepareTwoFactorLogin($loginResult);
+		if ($this->twoFactorManager->isTwoFactorAuthenticated($userObject)) {
+			$this->twoFactorManager->prepareTwoFactorLogin($userObject);
 			if (!is_null($redirect_url)) {
 				return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge', [
 					'redirect_url' => $redirect_url
