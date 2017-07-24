@@ -119,7 +119,7 @@ class Tags implements \OCP\ITags {
 	* @param array $defaultTags Tags that should be created at construction.
 	* @param boolean $includeShared Whether to include tags for items shared with this user by others.
 	*/
-	public function __construct(TagMapper $mapper, $user, $type, $defaultTags = [], $includeShared = false) {
+	public function __construct(TagMapper $mapper, $user, $type, array $defaultTags = [], $includeShared = false) {
 		$this->mapper = $mapper;
 		$this->user = $user;
 		$this->type = $type;
