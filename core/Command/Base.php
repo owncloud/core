@@ -31,6 +31,7 @@ class Base extends Command {
 	const OUTPUT_FORMAT_PLAIN = 'plain';
 	const OUTPUT_FORMAT_JSON = 'json';
 	const OUTPUT_FORMAT_JSON_PRETTY = 'json_pretty';
+	const DEFAULT_OUTPUT_PREFIX = '  - ';
 
 	protected $defaultOutputFormat = self::OUTPUT_FORMAT_PLAIN;
 
@@ -58,7 +59,7 @@ class Base extends Command {
 	 * @param array $items
 	 * @param string $prefix
 	 */
-	protected function writeArrayInOutputFormat(InputInterface $input, OutputInterface $output, $items, $prefix = '  - ') {
+	protected function writeArrayInOutputFormat(InputInterface $input, OutputInterface $output, $items, $prefix = self::DEFAULT_OUTPUT_PREFIX, $showIntKeys = false) {
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_JSON:
 				$output->writeln(json_encode($items));
@@ -73,7 +74,7 @@ class Base extends Command {
 						$this->writeArrayInOutputFormat($input, $output, $item, '  ' . $prefix);
 						continue;
 					}
-					if (!is_int($key)) {
+					if ($showIntKeys || !is_int($key)) {
 						$value = $this->valueToString($item);
 						if (!is_null($value)) {
 							$output->writeln($prefix . $key . ': ' . $value);
@@ -158,3 +159,4 @@ class Base extends Command {
 		return parent::run($input, $output);
 	}
 }
+
