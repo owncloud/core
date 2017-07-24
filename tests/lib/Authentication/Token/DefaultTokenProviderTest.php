@@ -77,6 +77,7 @@ class DefaultTokenProviderTest extends TestCase {
 		$toInsert->setToken(hash('sha512', $token . '1f4h9s'));
 		$toInsert->setType($type);
 		$toInsert->setLastActivity($this->time);
+		$toInsert->setLastCheck($this->time);
 
 		$this->config->expects($this->any())
 			->method('getSystemValue')

@@ -10,8 +10,6 @@
     "%s password changed successfully" : "%s wachtwoord succesvol gewijzigd.",
     "Couldn't send reset email. Please contact your administrator." : "Kon herstel e-mail niet versturen. Neem contact op met uw beheerder.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cUrl gebruikt een verouderde %s versie (%s). Werk het besturingssysteem bij of functies als %s zullen niet betrouwbaar werken.",
-    "A problem occurred, please check your log files (Error: %s)" : "Er trad een een probleem op, controleer uw logbestanden (Fout: %s).",
-    "Migration Completed" : "Migratie gereed",
     "Group already exists." : "Groep bestaat al.",
     "Unable to add group." : "Kan groep niet toevoegen.",
     "Unable to delete group." : "Kan groep niet verwijderen.",

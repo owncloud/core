@@ -78,6 +78,7 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Se produjo un error al tratar de actualizar las etiquetas",
     "A new file or folder has been <strong>created</strong>" : "Se ha <strong>creado</strong> un nuevo archivo o carpeta",
     "A file or folder has been <strong>changed</strong>" : "Se ha <strong>modificado</strong> un archivo o carpeta",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limita la notificación a la creacción y cambios de sus <strong>archivos favoritos</strong>",
     "A file or folder has been <strong>deleted</strong>" : "Se ha <strong>eliminado</strong> un archivo o carpeta",
     "A file or folder has been <strong>restored</strong>" : "Se ha <strong>restaurado</strong> un archivo o carpeta",
     "You created %1$s" : "Ha creado %1$s",

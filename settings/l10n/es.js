@@ -13,8 +13,6 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "No pudo enviarse el correo para restablecer la contraseña. Por favor, contacte con su administrador.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "instalando y actualizando aplicaciones por medio de: Market o Nube compartida Federada",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL está usando una versión desactualizada %s (%s). Por favor, actualice su sistema operativo o funciones tales como %s no funcionará de forma fiable.",
-    "A problem occurred, please check your log files (Error: %s)" : "Ocurrió un problema, por favor verifique los archivos de registro (Error: %s)",
-    "Migration Completed" : "Migración finalizada",
     "Group already exists." : "El grupo ya existe.",
     "Unable to add group." : "No se pudo agregar el grupo.",
     "Unable to delete group." : "No se pudo eliminar el grupo.",

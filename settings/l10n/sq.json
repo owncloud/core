@@ -10,8 +10,6 @@
     "%s password changed successfully" : "Fjalëkalimi për %s u ndryshua me sukses",
     "Couldn't send reset email. Please contact your administrator." : "S’u dërgua dot email-i i ricaktimit. Ju lutemi, lidhuni me përgjegjësin tuaj.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL-ja po përdor një version %s të vjetruar (%s). Ju lutemi, përditësoni sistemin tuaj operativ ose përndryshe veçori të tilla si %s nuk do të punojnë në mënyrë të qëndrueshme.",
-    "A problem occurred, please check your log files (Error: %s)" : "Ndodhi një gabim, ju lutemi, kontrolloni kartelat tuaja regjistër (Error: %s)",
-    "Migration Completed" : "Migrimi u Plotësua",
     "Group already exists." : "Grupi ekziston tashmë.",
     "Unable to add group." : "S’arrihet të shtohet grup.",
     "Unable to delete group." : "S’arrihet të fshihet grup.",

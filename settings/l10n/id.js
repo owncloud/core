@@ -9,8 +9,6 @@ OC.L10N.register(
     "Unable to change password" : "Tidak dapat mengubah sandi",
     "Couldn't send reset email. Please contact your administrator." : "Tidak dapat mengirim email setel ulang. Silakan hubungi administrator Anda.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL menggunakan versi lawas %s (%s). Silakan perbarui sistem operasi Anda atau fitur-fitur seperti %s tidak akan dapat bekerja dengan benar.",
-    "A problem occurred, please check your log files (Error: %s)" : "Terjadi masalah, mohon periksa berkas log Anda (Kesalahan: %s)",
-    "Migration Completed" : "Migrasi Selesai",
     "Group already exists." : "Grup sudah ada.",
     "Unable to add group." : "Tidak dapat menambah grup.",
     "Unable to delete group." : "Tidak dapat menghapus grup.",

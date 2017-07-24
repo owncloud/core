@@ -11,8 +11,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s lösenord ändrades",
     "Couldn't send reset email. Please contact your administrator." : "Kunde inte skicka återställningsmail. Vänligen kontakta din administratör.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL använder en föråldrad %s version (%s). Var god uppdatera ditt operativsystem annars kan funktioner som %s sluta fungera pålitligt.",
-    "A problem occurred, please check your log files (Error: %s)" : "Ett problem uppstod, var god kontrollera loggfiler (Error: %s)",
-    "Migration Completed" : "Migrering Färdigställd",
     "Group already exists." : "Gruppen finns redan.",
     "Unable to add group." : "Lyckades inte lägga till grupp.",
     "Unable to delete group." : "Lyckades inte radera grupp.",

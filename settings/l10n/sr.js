@@ -8,8 +8,6 @@ OC.L10N.register(
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Позадина не подржава измеу лозинке али кориснички шифрарски кључеви су успешно ажурирани.",
     "Unable to change password" : "Не могу да променим лозинку",
     "Couldn't send reset email. Please contact your administrator." : "Не могу да пошаљем е-пошту за ресетовање лозинке. Контактирајте администратора.",
-    "A problem occurred, please check your log files (Error: %s)" : "Појавио се проблем. Проверите записнике (грешка: %s)",
-    "Migration Completed" : "Пресељење завршено",
     "Group already exists." : "Група већ постоји.",
     "Unable to add group." : "Није могуће додати групу.",
     "Unable to delete group." : "Није могуће обрисати групу.",

@@ -10,8 +10,6 @@ OC.L10N.register(
     "Unable to change password" : "Nun pudo camudase la contraseña",
     "Couldn't send reset email. Please contact your administrator." : "Nun pudo unviase'l corréu de reaniciu. Por favor, contauta col alministrador.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL ta utilizando una versión %s obsoleta (%s). Por favor, actualice'l so sistema operativu o característiques tales como %s nun va funcionar de forma fiable.",
-    "A problem occurred, please check your log files (Error: %s)" : "Hebo un problema, por favor, compruebe los ficheros de rexistru (Fallu: %s)",
-    "Migration Completed" : "Migración Completada",
     "Group already exists." : "El grupu yá esiste",
     "Unable to add group." : "Nun pudo amestase'l grupu",
     "Unable to delete group." : "Nun pudo desaniciase'l grupu",

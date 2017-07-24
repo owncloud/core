@@ -9,8 +9,6 @@ OC.L10N.register(
     "Unable to change password" : "Nem sikerült megváltoztatni a jelszót",
     "Couldn't send reset email. Please contact your administrator." : "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL elavult %s verziót (%s) használ. Kérjük, frissítse az operációs rendszerét, vagy egyes funkciók (mint például a %s) megbízhatatlanul fognak működni.",
-    "A problem occurred, please check your log files (Error: %s)" : "Probléma történt, kérjük nézd meg a naplófájlokat (Hiba: %s).",
-    "Migration Completed" : "Migráció kész!",
     "Group already exists." : "A csoport már létezik.",
     "Unable to add group." : "Nem lehet létrehozni a csoportot.",
     "Unable to delete group." : "Nem lehet törölni a csoportot.",

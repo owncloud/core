@@ -8,7 +8,6 @@ OC.L10N.register(
     "Unable to change password" : "Ei suuda parooli muuta",
     "%s password changed successfully" : "%s parool on muudetud",
     "Couldn't send reset email. Please contact your administrator." : "Ei suutnud lähtestada e-maili. Palun kontakteeru süsteemihalduriga.",
-    "Migration Completed" : "Kolimine on lõpetatud",
     "Group already exists." : "Grupp on juba olemas.",
     "Unable to add group." : "Gruppi lisamine ebaõnnestus.",
     "Unable to delete group." : "Grupi kustutamineebaõnnestus.",

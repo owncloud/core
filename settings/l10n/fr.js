@@ -12,8 +12,6 @@ OC.L10N.register(
     "%s password changed successfully" : "Le mot de passe %s a été correctement changé",
     "Couldn't send reset email. Please contact your administrator." : "Impossible d'envoyer le courriel de réinitialisation. Veuillez contacter votre administrateur.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL utilise %s %s, qui est une version obsolète. Veuillez mettre à jour votre système d'exploitation, ou des fonctionnalités telles que %s ne fonctionneront pas correctement.",
-    "A problem occurred, please check your log files (Error: %s)" : "Une erreur est survenue, veuillez vérifier vos fichiers de log (Erreur: %s)",
-    "Migration Completed" : "Migration terminée",
     "Group already exists." : "Ce groupe existe déjà.",
     "Unable to add group." : "Impossible d'ajouter le groupe.",
     "Unable to delete group." : "Impossible de supprimer le groupe.",

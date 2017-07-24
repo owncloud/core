@@ -8,8 +8,6 @@
     "Unable to change password" : "Unable to change password",
     "Couldn't send reset email. Please contact your administrator." : "Couldn't send reset email. Please contact your administrator.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably.",
-    "A problem occurred, please check your log files (Error: %s)" : "A problem occurred, please check your log files (Error: %s)",
-    "Migration Completed" : "Migration Completed",
     "Group already exists." : "Group already exists.",
     "Unable to add group." : "Unable to add group.",
     "Unable to delete group." : "Unable to delete group.",
