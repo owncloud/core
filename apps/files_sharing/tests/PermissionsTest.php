@@ -117,9 +117,11 @@ class PermissionsTest extends TestCase {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
-		$shares = $this->shareManager->getSharesBy(self::TEST_FILES_SHARING_API_USER1, \OCP\Share::SHARE_TYPE_USER);
-		foreach ($shares as $share) {
-			$this->shareManager->deleteShare($share);
+		if ($this->shareManager) {
+			$shares = $this->shareManager->getSharesBy(self::TEST_FILES_SHARING_API_USER1, \OCP\Share::SHARE_TYPE_USER);
+			foreach ($shares as $share) {
+				$this->shareManager->deleteShare($share);
+			}
 		}
 
 		$this->view->deleteAll('container');
