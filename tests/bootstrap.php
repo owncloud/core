@@ -17,8 +17,6 @@ set_time_limit(0);
 // load all enabled apps
 \OC_App::loadApps();
 
-if (!class_exists('PHPUnit_Framework_TestCase')) {
-	require_once('PHPUnit/Autoload.php');
-}
+PHPUnit_Framework_Error_Deprecated::$enabled = false;
 
 OC_Hook::clear();
