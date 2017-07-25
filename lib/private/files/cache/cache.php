@@ -302,6 +302,12 @@ class Cache implements ICache {
 			$data['name'] = $this->normalize($data['name']);
 		}
 
+		if (isset($data['mimetype']) && $data['mimetype'] !== 'httpd/unix-directory') {
+			$trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			$mime = $data['mimetype'];
+			\OC::$server->getLogger()->warning("Setting mime type of file $id to \"$mime\" Trace: $trace");
+		}
+
 		list($queryParts, $params) = $this->buildParts($data);
 		// duplicate $params because we need the parts twice in the SQL statement
 		// once for the SET part, once in the WHERE clause

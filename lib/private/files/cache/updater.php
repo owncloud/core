@@ -188,10 +188,15 @@ class Updater implements IUpdater {
 		}
 
 		if (pathinfo($source, PATHINFO_EXTENSION) !== pathinfo($target, PATHINFO_EXTENSION)) {
-			// handle mime type change
-			$mimeType = $this->storage->getMimeType($target);
-			$fileId = $this->cache->getId($target);
-			$this->cache->update($fileId, ['mimetype' => $mimeType]);
+			$isTrash = (($sourceStorage->instanceOfStorage('\OCP\Files\IHomeStorage') && explode('/', $source)[0] === 'files_trashbin')
+				|| ($this->storage->instanceOfStorage('\OCP\Files\IHomeStorage') && explode('/', $target)[0] === 'files_trashbin'));
+
+			if (!$isTrash) {
+				// handle mime type change
+				$mimeType = $this->storage->getMimeType($target);
+				$fileId = $this->cache->getId($target);
+				$this->cache->update($fileId, ['mimetype' => $mimeType]);
+			}
 		}
 
 		if ($sourceCache instanceof Cache) {
