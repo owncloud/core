@@ -52,6 +52,7 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Repair\RepairDirectoryMimeType;
 
 class Repair implements IOutput{
 	/* @var IRepairStep[] */
@@ -125,6 +126,7 @@ class Repair implements IOutput{
 	public static function getRepairSteps() {
 		return [
 			new RepairMimeTypes(\OC::$server->getConfig()),
+			new RepairDirectoryMimeType(\OC::$server->getDatabaseConnection(), \OC::$server->getMimeTypeLoader()),
 			new AssetCache(),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()),
