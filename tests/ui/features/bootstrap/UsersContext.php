@@ -76,7 +76,7 @@ class UsersContext extends RawMinkContext implements Context
 	public function quotaOfUserShouldBeSetTo($username, $quota)
 	{
 		$setQuota=trim($this->usersPage->getQuotaOfUser($username));
-		if ($setQuota!==$quota) {
+		if ($setQuota !== $quota) {
 			throw new ExpectationException(
 				'Users quota is set to "'.$setQuota. '" expected "' .
 				$quota . '"', $this->getSession()

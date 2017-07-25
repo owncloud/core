@@ -42,7 +42,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage
 
 	//there is no reliable loading indicator on the personal general settings page, so just wait for
 	//the personal profile panel to be there.
-	public function waitTillPageIsLoaded(Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);

@@ -122,7 +122,7 @@ class FilesContext extends RawMinkContext implements Context
 	 */
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt()
 	{
-		for ($i = 1; $i < $this->filesPage->getSizeOfFileFolderList(); $i ++) {
+		for ($i = 1; $i < $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			$actionMenu = $this->filesPage->findActionMenuByNo($i);
 			$actionMenu->click();
 

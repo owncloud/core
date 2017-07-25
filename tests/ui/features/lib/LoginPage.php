@@ -34,7 +34,7 @@ class LoginPage extends OwncloudPage
 	protected $userInputId = "user";
 	protected $passwordInputId = "password";
 
-	public function loginAs($username, $password, $target='FilesPage')
+	public function loginAs($username, $password, $target = 'FilesPage')
 	{
 		$this->fillField($this->userInputId, $username);
 		$this->fillField($this->passwordInputId, $password);
@@ -44,7 +44,7 @@ class LoginPage extends OwncloudPage
 
 	//there is no reliable loading indicator on the login page, so just wait for
 	//the user and password to be there.
-	public function waitTillPageIsLoaded(Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);

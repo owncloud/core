@@ -113,7 +113,7 @@ class SharingDialog extends OwnCloudPage
 			"xpath", 
 			$this->autocompleteItemsTextXpath
 		);
-		foreach ( $itemElements as $item ) {
+		foreach ($itemElements as $item) {
 			array_push($itemsArray,$item->getText());
 		}
 		return $itemsArray;
@@ -146,7 +146,7 @@ class SharingDialog extends OwnCloudPage
 		);
 		
 		$userFound = false;
-		foreach ( $userElements as $user ) {
+		foreach ($userElements as $user) {
 			if ($user->getText() === $nameToMatch) {
 				$user->click();
 				$this->waitForAjaxCallsToStartAndFinish($session);

@@ -162,7 +162,7 @@ class SharingContext extends RawMinkContext implements Context
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 */
-	public function before (BeforeScenarioScope $scope)
+	public function before(BeforeScenarioScope $scope)
 	{
 		// Get the environment
 		$environment = $scope->getEnvironment();
