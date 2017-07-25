@@ -61,13 +61,13 @@ class FeatureContext extends RawMinkContext implements Context
 	public function notificationsShouldBeDisplayedWithTheText(TableNode $table)
 	{
 		$notifications = $this->owncloudPage->getNotifications();
-		$tableRows=$table->getRows();
+		$tableRows = $table->getRows();
 		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
 			count($tableRows),
 			count($notifications)
 			);
 		
-		$notificationCounter=0;
+		$notificationCounter = 0;
 		foreach ($tableRows as $row) {
 			PHPUnit_Framework_Assert::assertEquals(
 				$row[0],

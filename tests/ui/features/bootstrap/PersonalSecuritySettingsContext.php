@@ -63,11 +63,11 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context
 	 */
 	public function theAppShouldBeListedInTheAppPasswordsList()
 	{
-		$appTr=$this->personalSecuritySettingsPage->getLinkedAppByName(
+		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
 		PHPUnit_Framework_Assert::assertNotEmpty($appTr);
-		$disconnectButton=
+		$disconnectButton =
 			$this->personalSecuritySettingsPage->getDisconnectButton($appTr);
 		PHPUnit_Framework_Assert::assertNotEmpty($disconnectButton);
 	}
@@ -77,7 +77,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context
 	 */
 	public function myUsernameAndTheAppPasswordShouldBeDisplayed()
 	{
-		$result=$this->personalSecuritySettingsPage->getAppPasswordResult();
+		$result = $this->personalSecuritySettingsPage->getAppPasswordResult();
 		PHPUnit_Framework_Assert::assertEquals(
 			$this->personalSecuritySettingsPage->getMyUsername(),
 			$result[0]->getValue()
@@ -88,7 +88,6 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context
 				'/(([A-Z]){5}-){3}([A-Z]){5}/', $result[1]->getValue()
 			)
 		);
-
 	}
 
 }

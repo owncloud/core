@@ -70,7 +70,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage
 	public function getLinkedAppByName($appName)
 	{
 		$appTrs = $this->findAll("xpath", $this->linkedAppsTrXpath);
-		foreach ( $appTrs as $appTr ) {
+		foreach ($appTrs as $appTr) {
 			$app = $appTr->find("xpath", $this->linkedAppNameXpath);
 			if ($app->getText() === $appName) {
 				return $appTr;
