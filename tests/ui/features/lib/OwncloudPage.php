@@ -113,7 +113,7 @@ class OwncloudPage extends Page
 	}
 
 	/**
-	 * finds the own username displayed in the top right corner
+	 * finds the logged-in username displayed in the top right corner
 	 * @return string
 	 */
 	public function getMyUsername() {
