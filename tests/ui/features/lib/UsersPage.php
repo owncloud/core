@@ -46,7 +46,7 @@ class UsersPage extends OwncloudPage
 	{
 		$userTrs = $this->findAll('xpath', $this->userTrXpath);
 
-		foreach ( $userTrs as $userTr ) {
+		foreach ($userTrs as $userTr) {
 			$user = $userTr->find("css", ".name");
 			if ($user->getText() === $username) {
 				return $userTr;
