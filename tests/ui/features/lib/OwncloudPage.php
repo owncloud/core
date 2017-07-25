@@ -32,17 +32,17 @@ use WebDriver\Key;
 class OwncloudPage extends Page
 {
 	protected $userNameDispayId = "expandDisplayName";
-	public function waitTillPageIsLoaded(Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
-			$loadingIndicator=$this->find("css", '.loading');
+			$loadingIndicator = $this->find("css", '.loading');
 			if (!is_null($loadingIndicator)) {
 				$visibility = $this->elementHasCSSValue(
 					$loadingIndicator, 'visibility', 'visible'
 				);
-				if ($visibility===FALSE) {
+				if ($visibility === FALSE) {
 					break;
 				}
 			}
@@ -57,7 +57,7 @@ class OwncloudPage extends Page
 	 * @param string $xpath
 	 * @param int $timeout_msec
 	 */
-	public function waitTillElementIsNull ($xpath, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitTillElementIsNull ($xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -80,7 +80,7 @@ class OwncloudPage extends Page
 	 * @param string $xpath
 	 * @param int $timeout_msec
 	 */
-	public function waitTillElementIsNotNull ($xpath, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitTillElementIsNotNull ($xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -99,13 +99,15 @@ class OwncloudPage extends Page
 		}
 	}
 	
-	public function getNotificationText() {
+	public function getNotificationText()
+	{
 		return $this->findById("notification")->getText();
 	}
 
-	public function getNotifications() {
-		$notificationsText=array();
-		$notifications=$this->findById("notification");
+	public function getNotifications()
+	{
+		$notificationsText = array();
+		$notifications = $this->findById("notification");
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
 			array_push($notificationsText, $notification->getText());
 		}
@@ -116,7 +118,8 @@ class OwncloudPage extends Page
 	 * finds the logged-in username displayed in the top right corner
 	 * @return string
 	 */
-	public function getMyUsername() {
+	public function getMyUsername()
+	{
 		return $this->findById($this->userNameDispayId)->getText();
 	}
 
@@ -124,7 +127,8 @@ class OwncloudPage extends Page
 	 * return the path to the relevant page
 	 * @return string
 	 */
-	public function getPagePath() {
+	public function getPagePath()
+	{
 		return $this->getPath();
 	}
 
@@ -164,7 +168,7 @@ class OwncloudPage extends Page
 	 * @param number $timeout_msec
 	 * @throws \Exception
 	 */
-	public function waitForOutstandingAjaxCalls (Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitForOutstandingAjaxCalls (Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {
@@ -201,7 +205,7 @@ class OwncloudPage extends Page
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 */
-	public function waitForAjaxCallsToStart (Session $session, $timeout_msec=1000)
+	public function waitForAjaxCallsToStart (Session $session, $timeout_msec = 1000)
 	{
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {
@@ -223,12 +227,12 @@ class OwncloudPage extends Page
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 */
-	public function waitForAjaxCallsToStartAndFinish (Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitForAjaxCallsToStartAndFinish (Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$start = microtime(true);
 		$this->waitForAjaxCallsToStart($session);
 		$end = microtime(true);
-		$timeout_msec = $timeout_msec - (($end-$start)*1000);
+		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 
@@ -276,7 +280,8 @@ class OwncloudPage extends Page
 	 * @param string $value
 	 * @throws \Exception
 	 */
-	protected function cleanInputAndSetValue(NodeElement $inputField, $value) {
+	protected function cleanInputAndSetValue(NodeElement $inputField, $value)
+	{
 		$resultValue = $inputField->getValue();
 		$existingValueLength = strlen($resultValue);
 		$deleteSequence = Key::END . str_repeat(Key::BACKSPACE, $existingValueLength);

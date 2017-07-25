@@ -35,7 +35,7 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context
 
 	public function __construct(PersonalGeneralSettingsPage$personalGeneralSettingsPage)
 	{
-		$this->personalGeneralSettingsPage= $personalGeneralSettingsPage;
+		$this->personalGeneralSettingsPage = $personalGeneralSettingsPage;
 	}
 	
 	/**

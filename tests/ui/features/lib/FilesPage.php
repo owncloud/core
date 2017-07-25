@@ -86,7 +86,8 @@ class FilesPage extends OwnCloudPage
 			$this->find("xpath", $this->fileListXpath)->findAll("xpath", "tr")
 		);
 	}
-	public function findActionMenuByNo($number) {
+	public function findActionMenuByNo($number)
+	{
 		$xpath = sprintf($this->fileActionMenuBtnXpathByNo,$number);
 		return $this->find("xpath", $xpath);
 	}
@@ -164,7 +165,7 @@ class FilesPage extends OwnCloudPage
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 */
-	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$session->evaluateScript(
 			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
@@ -272,10 +273,10 @@ class FilesPage extends OwnCloudPage
 
 	private function _renameFile($fromFileName, $toFileName, Session $session)
 	{
-		$fileRow=$this->findFileRowByName($fromFileName, $session);
-		$actionMenuBtn=$this->findFileActionButtonInFileRow($fileRow);
+		$fileRow = $this->findFileRowByName($fromFileName, $session);
+		$actionMenuBtn = $this->findFileActionButtonInFileRow($fileRow);
 		$actionMenuBtn->click();
-		$actionMenu=$this->findFileActionMenuInFileRow($fileRow);
+		$actionMenu = $this->findFileActionMenuInFileRow($fileRow);
 		$renameBtn = $this->findButtonInActionMenu($this->renameActionLabel, $actionMenu);
 		$renameBtn->click();
 		$this->waitTillElementIsNotNull($this->fileRenameInputXpath);
@@ -288,14 +289,15 @@ class FilesPage extends OwnCloudPage
 		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
 	}
 
-	public function findDeleteByNo($number) {
+	public function findDeleteByNo($number)
+	{
 		$xpath = sprintf($this->fileDeleteXpathByNo,$number);
 		return $this->find("xpath", $xpath);
 	}
 
 	//there is no reliable loading indicator on the files page, so wait for
 	//the table or the Empty Folder message to be shown
-	public function waitTillPageIsLoaded(Session $session, $timeout_msec=STANDARDUIWAITTIMEOUTMILLISEC)
+	public function waitTillPageIsLoaded(Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
 	{
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -320,7 +322,7 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function getTooltipOfFile ($fileName, Session $session)
 	{
-		$fileRow=$this->findFileRowByName($fileName, $session);
+		$fileRow = $this->findFileRowByName($fileName, $session);
 		$tooltip = $fileRow->find("xpath", $this->fileTooltipXpath)->getText();
 		if ($tooltip === null) {
 			throw new ElementNotFoundException("could not find tooltip of file '$fileName'");
