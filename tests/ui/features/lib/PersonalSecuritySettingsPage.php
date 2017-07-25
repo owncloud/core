@@ -61,7 +61,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage
 
 	/**
 	 * finds and returns the TR NodeElement of the app
-	 * throws Exception if App could not be found in list
+	 * throws Exception if App could not be found in the list
 	 *
 	 * @param string $appName
 	 * @throws \Exception
