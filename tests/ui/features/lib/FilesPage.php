@@ -59,8 +59,8 @@ class FilesPage extends OwnCloudPage
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
 	/**
-	 * created a folder with the given name.
-	 * If name is not given a random one is choosen
+	 * create a folder with the given name.
+	 * If name is not given a random one is chosen
 	 *
 	 * @param string $name
 	 */
@@ -74,8 +74,8 @@ class FilesPage extends OwnCloudPage
 		try {
 			$this->fillField($this->newFolderNameInputLabel, $name . "\n");
 		} catch (\WebDriver\Exception\NoSuchElement $e) {
-			//this seem to be a bug in MinkSelenium2Driver. Used to work fine in 1.3.1 but now throws this exception
-			//actually all what we need does happen, so we just don't do anything
+			//this seems to be a bug in MinkSelenium2Driver. Used to work fine in 1.3.1 but now throws this exception
+			//actually all that we need does happen, so we just don't do anything
 		}
 		return $name;
 	}
@@ -131,7 +131,7 @@ class FilesPage extends OwnCloudPage
 			}
 			$previousFileCounter = count($fileNameSpans);
 			// scroll to the bottom of the page
-			// we need to scroll because the files app does only load a part of
+			// we need to scroll because the files app only loads a part of
 			// the files in one screen
 			$this->scrollDownAppContent(count($fileNameSpans), $session);
 
@@ -204,7 +204,7 @@ class FilesPage extends OwnCloudPage
 	}
 
 	/**
-	 * Takes a row of a file and finds the File Action in it
+	 * Takes a row of a file and finds the File Action Menu in it
 	 * the File Action Button must be clicked first
 	 * @param \Behat\Mink\Element\NodeElement $fileRow
 	 * @return \Behat\Mink\Element\NodeElement|NULL
