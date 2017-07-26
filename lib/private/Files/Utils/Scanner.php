@@ -196,7 +196,8 @@ class Scanner extends PublicEmitter {
 			}
 
 			// if the home storage isn't writable then the scanner is run as the wrong user
-			if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
+			$isHome = $storage->instanceOfStorage('\OC\Files\Storage\Home');
+			if ($isHome and
 				(!$storage->isCreatable('') or !$storage->isCreatable('files'))
 			) {
 				if ($storage->file_exists('') or $storage->getCache()->inCache('')) {
@@ -211,6 +212,9 @@ class Scanner extends PublicEmitter {
 			if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
 				continue;
 			}
+
+			$this->emit('\OC\Files\Utils\Scanner', 'beforeScanStorage', [$storage]);
+
 			$relativePath = $mount->getInternalPath($dir);
 			$scanner = $storage->getScanner();
 			$scanner->setUseTransactions(false);
@@ -247,6 +251,7 @@ class Scanner extends PublicEmitter {
 			if ($this->useTransaction) {
 				$this->db->commit();
 			}
+			$this->emit('\OC\Files\Utils\Scanner', 'afterScanStorage', [$storage]);
 		}
 	}
 
