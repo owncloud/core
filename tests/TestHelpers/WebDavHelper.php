@@ -87,7 +87,8 @@ class WebDavHelper
 		$body = null,
 		$requestBody = null,
 		$davPathVersionToUse = 1,
-		$type = "files")
+		$type = "files",
+		$sourceIpAddress = null)
 	{
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
@@ -99,6 +100,11 @@ class WebDavHelper
 			$options['body'] = $requestBody;
 		}
 		$options['auth'] = [$user, $password];
+		
+		if (!is_null($sourceIpAddress)) {
+			$options['config'] =
+				[ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
+		}
 		
 		$request = $client->createRequest($method, $fullUrl, $options);
 		if (!is_null($headers)) {
