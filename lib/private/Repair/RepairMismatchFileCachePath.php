@@ -48,6 +48,12 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/** @var int */
 	protected $dirMimePartId;
 
+	/** @var int|null */
+	protected $storageNumericId = null;
+
+	/** @var bool */
+	protected $countOnly = true;
+
 	/**
 	 * @param \OCP\IDBConnection $connection
 	 */
@@ -57,7 +63,29 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	}
 
 	public function getName() {
-		return 'Repair file cache entries with path that does not match parent-child relationships';
+		if ($this->countOnly) {
+			return 'Detect file cache entries with path that does not match parent-child relationships';
+		} else {
+			return 'Repair file cache entries with path that does not match parent-child relationships';
+		}
+	}
+
+	/**
+	 * Sets the numeric id of the storage to process or null to process all.
+	 *
+	 * @param int $storageNumericId numeric id of the storage
+	 */
+	public function setStorageNumericId($storageNumericId) {
+		$this->storageNumericId = $storageNumericId;
+	}
+
+	/**
+	 * Sets whether to actually repair or only count entries
+	 *
+	 * @param bool $countOnly count only
+	 */
+	public function setCountOnly($countOnly) {
+		$this->countOnly = $countOnly;
 	}
 
 	/**
@@ -123,6 +151,13 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			->andWhere($emptyPathExpr)
 			// yes, this was observed in the wild...
 			->andWhere($qb->expr()->neq('fc.fileid', 'fcp.fileid'));
+
+		if ($this->storageNumericId !== null) {
+			// use the source storage of the failed move when filtering
+			$qb->andWhere(
+				$qb->expr()->eq('fc.storage', $qb->createNamedParameter($this->storageNumericId))
+			);
+		}
 	}
 
 	private function countResultsToProcess() {
@@ -133,6 +168,32 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$count = $results->fetchColumn(0);
 		$results->closeCursor();
 		return $count;
+	}
+
+	/**
+	 * Outputs a report about storages that need repairing in the file cache
+	 */
+	private function reportAffectedStorages(IOutput $out) {
+		$qb = $this->connection->getQueryBuilder();
+		$qb->selectDistinct('fc.storage');
+		$this->addQueryConditions($qb);
+
+		// TODO: max results + paginate ?
+		// TODO: join with oc_storages / oc_mounts to deliver user id ?
+
+		$results = $qb->execute();
+		$rows = $results->fetchAll();
+		$results->closeCursor();
+
+		$storageIds = [];
+		foreach ($rows as $row) {
+			$storageIds[] = $row['storage'];
+		}
+
+		if (!empty($storageIds)) {
+			$out->warning('The file cache contains entries with invalid path values for the following storage numeric ids: ' . implode(' ', $storageIds));
+			$out->warning('Please run `occ files:scan --all --repair` to repair all affected storages');
+		}
 	}
 
 	/**
@@ -334,8 +395,15 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			->andWhere(
 				$qb->expr()->orX(
 					$qb->expr()->eq('fc.fileid', 'fc.parent'),
-					$qb->createFunction('NOT EXISTS (' . $qbe->getSQL() . ')'))
-				);
+					$qb->createFunction('NOT EXISTS (' . $qbe->getSQL() . ')')
+				)
+			);
+
+		if ($this->storageNumericId !== null) {
+			// filter by storage but make sure we cover both the potential
+			// source and destination of a failed move
+			$qb->andWhere($qb->expr()->eq('fc.storage', $qb->createNamedParameter($this->storageNumericId)));
+		}
 		$qb->setMaxResults(self::CHUNK_SIZE);
 
 		$totalResultsCount = 0;
@@ -384,24 +452,24 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$this->dirMimeTypeId = $this->mimeLoader->getId('httpd/unix-directory');
 		$this->dirMimePartId = $this->mimeLoader->getId('httpd');
 
-		$out->startProgress($this->countResultsToProcess());
+		if ($this->countOnly) {
+			$this->reportAffectedStorages($out);
+		} else {
+			$brokenPathEntries = $this->countResultsToProcess();
+			$out->startProgress($brokenPathEntries);
 
-		$totalFixed = 0;
+			$totalFixed = 0;
 
-		/*
-		 * This repair itself might overwrite existing target parent entries and create
-		 * orphans where the parent entry of the parent id doesn't exist but the path matches.
-		 * This needs to be repaired by fixEntriesWithNonExistingParentIdEntry(), this is why
-		 * we need to keep this specific order of repair.
-		 */
-		$totalFixed += $this->fixEntriesWithCorrectParentIdButWrongPath($out);
+			/*
+			 * This repair itself might overwrite existing target parent entries and create
+			 * orphans where the parent entry of the parent id doesn't exist but the path matches.
+			 * This needs to be repaired by fixEntriesWithNonExistingParentIdEntry(), this is why
+			 * we need to keep this specific order of repair.
+			 */
+			$totalFixed += $this->fixEntriesWithCorrectParentIdButWrongPath($out);
 
-		$totalFixed += $this->fixEntriesWithNonExistingParentIdEntry($out);
-
-		$out->finishProgress();
-
-		if ($totalFixed > 0) {
-			$out->warning('Please run `occ files:scan --all` once to complete the repair');
+			$totalFixed += $this->fixEntriesWithNonExistingParentIdEntry($out);
+			$out->finishProgress();
 		}
 	}
 }

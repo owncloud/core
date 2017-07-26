@@ -42,6 +42,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 				['httpd/unix-directory', 2],
 			]));
 		$this->repair = new RepairMismatchFileCachePath($this->connection, $mimeLoader);
+		$this->repair->setCountOnly(false);
 	}
 
 	protected function tearDown() {
