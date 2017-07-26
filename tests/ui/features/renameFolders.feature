@@ -35,13 +35,9 @@ Feature: renameFolders
 
 	Scenario: Rename a folder using forbidden characters
 		When I rename the folder "simple-folder" to one of these names
-		|simple/folder   |
 		|simple\folder   |
-		|\\simple/folder |
-		|../simple-folder|
+		|\\simple-folder |
 		Then notifications should be displayed with the text
-		|Could not rename "simple-folder"|
-		|Could not rename "simple-folder"|
 		|Could not rename "simple-folder"|
 		|Could not rename "simple-folder"|
 		And the folder "simple-folder" should be listed
@@ -57,3 +53,20 @@ Feature: renameFolders
 	Scenario: Rename a folder putting a name of a file which already exists
 		When I rename the folder "simple-folder" to "lorem.txt"
 		Then near the folder "simple-folder" a tooltip with the text 'lorem.txt already exists' should be displayed
+
+	Scenario: Rename a folder using forward slash
+		When I rename the folder "simple-folder" to "simple/folder"
+		Then near the folder "simple-folder" a tooltip with the text 'File name cannot contain "/".' should be displayed
+
+	Scenario: Rename a folder to ..
+		When I rename the folder "simple-folder" to ".."
+		Then near the folder "simple-folder" a tooltip with the text '".." is an invalid file name.' should be displayed
+
+	Scenario: Rename a folder to .
+		When I rename the folder "simple-folder" to "."
+		Then near the folder "simple-folder" a tooltip with the text '"." is an invalid file name.' should be displayed
+
+	Scenario: Rename a folder to .part
+		When I rename the folder "simple-folder" to "simple.part"
+		Then near the folder "simple-folder" a tooltip with the text '"simple.part" has a forbidden file type/extension.' should be displayed
+
