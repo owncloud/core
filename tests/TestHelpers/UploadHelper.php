@@ -2,7 +2,7 @@
 /**
  * ownCloud
  *
- * @author Artur Neumann
+ * @author Artur Neumann <artur@jankaritech.com>
  * @copyright 2017 Artur Neumann artur@jankaritech.com
  *
  * This library is free software; you can redistribute it and/or
@@ -23,21 +23,29 @@ namespace TestHelpers;
 
 use GuzzleHttp\Stream\Stream;
 
+/**
+ * Helper for Uploads
+ *
+ * @author Artur Neumann <artur@jankaritech.com>
+ *
+ */
 class UploadHelper
 {
 	/**
 	 * 
-	 * @param string $baseUrl
-	 * URL of owncloud e.g. http://localhost:8080
-	 * should include the subfolder if owncloud runs in a subfolder e.g. http://localhost:8080/owncloud-core
+	 * @param string $baseUrl             URL of owncloud
+	 * e.g. http://localhost:8080
+	 * should include the subfolder if owncloud runs in a subfolder
+	 * e.g. http://localhost:8080/owncloud-core
 	 * @param string $user
 	 * @param string $password
-	 * @param string $source
+	 * @param string $source 
 	 * @param string $destination
-	 * @param array $headers
-	 * @param int $davPathVersionToUse (1|2)
-	 * @param int $chunkingVersion (1|2|null) if set to null chunking will not be used
-	 * @param int $noOfChunks how many chunks do we want to upload
+	 * @param array  $headers
+	 * @param int    $davPathVersionToUse (1|2)
+	 * @param int    $chunkingVersion     (1|2|null)
+	 * if set to null chunking will not be used
+	 * @param int    $noOfChunks          how many chunks do we want to upload
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 */
 	static function upload(
@@ -49,8 +57,9 @@ class UploadHelper
 		$headers = array(),
 		$davPathVersionToUse = 1,
 		$chunkingVersion = null,
-		$noOfChunks = 1)
-	{
+		$noOfChunks = 1
+	) {
+	
 		//simple upload with no chunking
 		if ($chunkingVersion === null) {
 			$data = Stream::factory(fopen($source, 'r'));
@@ -68,7 +77,7 @@ class UploadHelper
 		} else {
 			//prepare chunking
 			$chunks = self::chunkFile($source, $noOfChunks);
-			$chunkingId = 'chunking-' . (string)rand(1000,9999);
+			$chunkingId = 'chunking-' . (string)rand(1000, 9999);
 			$v2ChunksDestination = '/uploads/'.$user.'/'. $chunkingId;
 		}
 		
@@ -136,11 +145,13 @@ class UploadHelper
 	/**
 	 * cut the file in multiple chunks
 	 * returns an array of chunks with the content of the file
+	 *
 	 * @param string $file
 	 * @param number $noOfChunks
-	 * @return string[]
+	 * @return array $string
 	 */
-	static function chunkFile ($file, $noOfChunks = 1) {
+	static function chunkFile($file, $noOfChunks = 1) 
+	{
 		$size = filesize($file);
 		$chunkSize = ceil($size / $noOfChunks);
 		$chunks = [];
