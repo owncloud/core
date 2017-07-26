@@ -59,6 +59,10 @@ describe('OCA.Files.Files tests', function() {
 				'.. ',
 				'. ',
 				' .',
+				'/',
+				'folder/',
+				'/file',
+				'folder/file',
 				'foo.part',
 				'bar.filepart'
 			];

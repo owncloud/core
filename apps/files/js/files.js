@@ -101,6 +101,8 @@
 				throw t('files', '"{name}" is an invalid file name.', {name: name});
 			} else if (trimmedName.length === 0) {
 				throw t('files', 'File name cannot be empty.');
+			} else if (trimmedName.indexOf("/") >= 0) {
+				throw t('files', 'File name cannot contain "/".');
 			} else if (OC.fileIsBlacklisted(trimmedName)) {
 				throw t('files', '"{name}" has a forbidden file type/extension.', {name: name});
 			}
