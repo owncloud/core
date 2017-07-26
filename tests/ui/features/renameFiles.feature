@@ -36,12 +36,10 @@ Feature: renameFiles
 
 	Scenario: Rename a file using forbidden characters
 		When I rename the file "data.zip" to one of these names
-		|lorem/txt  |
 		|.htaccess  |
 		|lorem\txt  |
 		|\\.txt     |
 		Then notifications should be displayed with the text
-		|Could not rename "data.zip"|
 		|Could not rename "data.zip"|
 		|Could not rename "data.zip"|
 		|Could not rename "data.zip"|
@@ -50,3 +48,19 @@ Feature: renameFiles
 	Scenario: Rename a file putting a name of a file which already exists
 		When I rename the file "data.zip" to "lorem.txt"
 		Then near the file "data.zip" a tooltip with the text 'lorem.txt already exists' should be displayed
+
+	Scenario: Rename a file using forward slash
+		When I rename the file "data.zip" to "lorem/txt"
+		Then near the file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed
+
+	Scenario: Rename a file to ..
+		When I rename the file "data.zip" to ".."
+		Then near the file "data.zip" a tooltip with the text '".." is an invalid file name.' should be displayed
+
+	Scenario: Rename a file to .
+		When I rename the file "data.zip" to "."
+		Then near the file "data.zip" a tooltip with the text '"." is an invalid file name.' should be displayed
+
+	Scenario: Rename a file to .part
+		When I rename the file "data.zip" to "data.part"
+		Then near the file "data.zip" a tooltip with the text '"data.part" has a forbidden file type/extension.' should be displayed
