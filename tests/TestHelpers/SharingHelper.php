@@ -55,18 +55,19 @@ class SharingHelper
 		$linkName = null,
 		$expireDate = null,
 		$apiVersion = 1,
-		$sharingApiVersion = 1) {
+		$sharingApiVersion = 1)
+	{
 			$fd = [];
 			$options = [];
 			foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
-				if (!is_string($variableToCheck)){
-					throw new \InvalidArgumentException("mandatory argument missing or wrong type ($variableToCheck => " . gettype($variableToCheck) .")");
+				if (!is_string($variableToCheck)) {
+					throw new \InvalidArgumentException("mandatory argument missing or wrong type ($variableToCheck => " . gettype($variableToCheck) . ")");
 				}
 			}
 			if (!in_array($shareType,[0, 1, 3, 6], true)) {
 				throw new \InvalidArgumentException("invalid share type");
 			}
-			if (!is_null($permissions)){
+			if (!is_null($permissions)) {
 				$permissions = (int) $permissions;
 				if ($permissions < 1 || $permissions > 31) {
 					throw new \InvalidArgumentException("invalid permissions ($permissions)");
@@ -83,16 +84,16 @@ class SharingHelper
 			$fd['path'] = $path;
 			$fd['shareType'] = $shareType;
 	
-			if (!is_null($shareWith)){
+			if (!is_null($shareWith)) {
 				$fd['shareWith'] = $shareWith;
 			}
-			if (!is_null($publicUpload)){
+			if (!is_null($publicUpload)) {
 				$fd['publicUpload'] = (bool) $publicUpload;
 			}
-			if (!is_null($sharePassword)){
+			if (!is_null($sharePassword)) {
 				$fd['password'] = $sharePassword;
 			}
-			if (!is_null($linkName)){
+			if (!is_null($linkName)) {
 				$fd['name'] = $linkName;
 			}
 			

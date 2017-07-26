@@ -44,7 +44,7 @@ class TagsHelper {
 		$tag = self::requestTagByDisplayName(
 			$baseUrl, $taggingUser, $password, $tagName
 		);
-		$tagID = ( int ) $tag ['{http://owncloud.org/ns}id'];
+		$tagID = (int) $tag ['{http://owncloud.org/ns}id'];
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $taggingUser, $password, "PUT",
@@ -136,6 +136,7 @@ class TagsHelper {
 				'userVisible' => $userVisible,
 				'userAssignable' => $userAssignable,
 		];
+
 		if ($groups !== null) {
 			$body['groups'] = $groups;
 		}
@@ -189,7 +190,8 @@ class TagsHelper {
 	 * @throws \Exception
 	 * @return boolean[]
 	 */
-	public static function validateTypeOfTag($type) {
+	public static function validateTypeOfTag($type)
+	{
 		$userVisible = true;
 		$userAssignable = true;
 		switch ($type) {

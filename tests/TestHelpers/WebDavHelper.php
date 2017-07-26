@@ -89,32 +89,32 @@ class WebDavHelper
 		$davPathVersionToUse = 1,
 		$type = "files")
 	{
-			$baseUrl = self::sanitizeUrl($baseUrl, true);
-			$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
-			$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
-			$client = new GClient();
-			
-			$options = [];
-			if (!is_null($requestBody)){
-				$options['body'] = $requestBody;
-			}
-			$options['auth'] = [$user, $password];
-			
-			$request = $client->createRequest($method, $fullUrl, $options);
-			if (!is_null($headers)){
-				foreach ($headers as $key => $value) {
-					if ($request->hasHeader($key) === true) {
-						$request->setHeader($key, $value);
-					} else {
-						$request->addHeader($key, $value);
-					}
+		$baseUrl = self::sanitizeUrl($baseUrl, true);
+		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
+		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
+		$client = new GClient();
+		
+		$options = [];
+		if (!is_null($requestBody)) {
+			$options['body'] = $requestBody;
+		}
+		$options['auth'] = [$user, $password];
+		
+		$request = $client->createRequest($method, $fullUrl, $options);
+		if (!is_null($headers)) {
+			foreach ($headers as $key => $value) {
+				if ($request->hasHeader($key) === true) {
+					$request->setHeader($key, $value);
+				} else {
+					$request->addHeader($key, $value);
 				}
 			}
-			if (!is_null($body)) {
-				$request->setBody($body);
-			}
-			
-			return $client->send($request);
+		}
+		if (!is_null($body)) {
+			$request->setBody($body);
+		}
+		
+		return $client->send($request);
 	}
 
 	/**
