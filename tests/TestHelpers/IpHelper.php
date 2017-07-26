@@ -49,13 +49,13 @@ class IpHelper
 	private static function systemIpv4Addresses()
 	{
 		// IPv4 addresses are like 192.168.12.34
-		return $this->parseIfconfigOutput('/inet addr:([\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})/');
+		return self::parseIfconfigOutput('/inet addr:([\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})/');
 	}
 
 	private static function systemIpv6Addresses()
 	{
 		// IPv6 addresses are like fe80::6e26:388d:7bf:15d1
-		return $this->parseIfconfigOutput('/inet6 addr: ([0123456789abcdef:]+)/');
+		return self::parseIfconfigOutput('/inet6 addr: ([0123456789abcdef:]+)/');
 	}
 
 	private static function ipv4AddressSubnet($ipv4Address, $cidr)
@@ -68,7 +68,7 @@ class IpHelper
 
 	private static function loopbackIpv4Address()
 	{
-		foreach ($this->systemIpv4Addresses() as $ipv4Address) {
+		foreach (self::systemIpv4Addresses() as $ipv4Address) {
 			if (strpos($ipv4Address, self::IPV4_LOOPBACK_ADDRESS_TOP) === 0) {
 				return $ipv4Address;
 			}
@@ -86,9 +86,9 @@ class IpHelper
 	{
 		switch (strtolower($ipAddressFamily)) {
 			case 'ipv4':
-				return $this->loopbackIpv4Address();
+				return self::loopbackIpv4Address();
 			case 'ipv6':
-				return $this->loopbackIpv6Address();
+				return self::loopbackIpv6Address();
 		}
 		
 		throw new Exception("loopbackIpAddress: Invalid IP address family");
@@ -96,7 +96,7 @@ class IpHelper
 
 	private static function loopbackIpv4AddressSubnet($cidr)
 	{
-		return $this->ipv4AddressSubnet($this->loopbackIpv4Address(), $cidr);
+		return self::ipv4AddressSubnet(self::loopbackIpv4Address(), $cidr);
 	}
 
 	private static function loopbackIpv6AddressSubnet($cidr)
@@ -108,9 +108,9 @@ class IpHelper
 	{
 		switch (strtolower($ipAddressFamily)) {
 			case 'ipv4':
-				return $this->loopbackIpv4Address($cidr);
+				return self::loopbackIpv4Address($cidr);
 			case 'ipv6':
-				return $this->loopbackIpv6Address($cidr);
+				return self::loopbackIpv6Address($cidr);
 		}
 		
 		throw new Exception("loopbackIpAddressSubnet: Invalid IP address family");
@@ -118,7 +118,7 @@ class IpHelper
 
 	private static function localIpv4Address()
 	{
-		foreach ($this->systemIpv4Addresses() as $ipv4Address) {
+		foreach (self::systemIpv4Addresses() as $ipv4Address) {
 			if (strpos($ipv4Address, self::IPV4_LOOPBACK_ADDRESS_TOP) !== 0) {
 				return $ipv4Address;
 			}
@@ -129,7 +129,7 @@ class IpHelper
 
 	private static function localIpv6Address()
 	{
-		foreach ($this->systemIpv6Addresses() as $ipv6Address) {
+		foreach (self::systemIpv6Addresses() as $ipv6Address) {
 			if ($ipv6Address !== self::IPV6_LOOPBACK_ADDRESS) {
 				return $ipv6Address;
 			}
@@ -142,9 +142,9 @@ class IpHelper
 	{
 		switch (strtolower($ipAddressFamily)) {
 			case 'ipv4':
-				return $this->localIpv4Address();
+				return self::localIpv4Address();
 			case 'ipv6':
-				return $this->localIpv6Address();
+				return self::localIpv6Address();
 		}
 		
 		throw new Exception("localIpAddress: Invalid IP address family");
@@ -152,22 +152,22 @@ class IpHelper
 
 	private static function localIpv4AddressSubnet($cidr)
 	{
-		return $this->ipv4AddressSubnet($this->localIpv4Address(), $cidr);
+		return self::ipv4AddressSubnet(self::localIpv4Address(), $cidr);
 	}
 
 	private static function localIpv6AddressSubnet($cidr)
 	{
 		// TODO: calculate the bottom address of the subnet based on the CIDR
-		return $this->localIpv6Address();
+		return self::localIpv6Address();
 	}
 
 	private static function localIpAddressSubnet($ipAddressFamily, $cidr)
 	{
 		switch (strtolower($ipAddressFamily)) {
 			case 'ipv4':
-				return $this->localIpv4AddressSubnet($cidr);
+				return self::localIpv4AddressSubnet($cidr);
 			case 'ipv6':
-				return $this->localIpv6AddressSubnet($cidr);
+				return self::localIpv6AddressSubnet($cidr);
 		}
 		
 		throw new Exception("localIpAddressSubnet: Invalid IP address family");
@@ -177,10 +177,10 @@ class IpHelper
 	{
 		switch (strtolower($localOrLoopback)) {
 			case 'local':
-				return $this->localIpAddress($ipAddressFamily);
+				return self::localIpAddress($ipAddressFamily);
 				break;
 			case 'loopback':
-				return $this->loopbackIpAddress($ipAddressFamily);
+				return self::loopbackIpAddress($ipAddressFamily);
 				break;
 			default:
 				throw new Exception("ipAddress: Invalid local or loopback passed");
@@ -192,10 +192,10 @@ class IpHelper
 	{
 		switch (strtolower($localOrLoopback)) {
 			case 'local':
-				return $this->localIpAddressSubnet($ipAddressFamily, $cidr);
+				return self::localIpAddressSubnet($ipAddressFamily, $cidr);
 				break;
 			case 'loopback':
-				return $this->loopbackIpAddressSubnet($ipAddressFamily, $cidr);
+				return self::loopbackIpAddressSubnet($ipAddressFamily, $cidr);
 				break;
 			default:
 				throw new Exception("ipAddressSubnet: Invalid local or loopback passed");
