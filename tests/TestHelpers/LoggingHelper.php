@@ -283,7 +283,7 @@ class LoggingHelper
 		// Close file and return
 		fclose($f);
 		$output = explode("\n", $output);
-		if ($output[count($output)-1] === "") {
+		if ($output[count($output) - 1] === "") {
 			array_pop($output);
 		}
 		if (count($output) > $noOfLinesToRead) {
