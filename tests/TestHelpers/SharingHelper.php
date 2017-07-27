@@ -55,8 +55,8 @@ class SharingHelper
 		$linkName = null,
 		$expireDate = null,
 		$apiVersion = 1,
-		$sharingApiVersion = 1)
-	{
+		$sharingApiVersion = 1
+	) {
 			$fd = [];
 			$options = [];
 			foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {

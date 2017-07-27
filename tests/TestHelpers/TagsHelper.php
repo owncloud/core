@@ -34,9 +34,14 @@ class TagsHelper {
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 */
 	public static function tag(
-		$baseUrl, $taggingUser, $password,
-		$tagName, $fileName, $fileOwner, $davPathVersionToUse = 1)
-	{
+		$baseUrl,
+		$taggingUser,
+		$password,
+		$tagName,
+		$fileName,
+		$fileOwner,
+		$davPathVersionToUse = 1
+	) {
 		$fileID = WebDavHelper::getFileIdForPath(
 			$baseUrl, $fileOwner, $password, $fileName
 		);
@@ -62,8 +67,11 @@ class TagsHelper {
 	 * @return array
 	 */
 	public static function requestTagsForUser(
-		$baseUrl, $user, $password, $withGroups = false)
-	{
+		$baseUrl,
+		$user,
+		$password,
+		$withGroups = false
+	) {
 		$baseUrl = WebDavHelper::sanitizeUrl($baseUrl, true);
 		$client = WebDavHelper::getSabreClient($baseUrl, $user, $password);
 		$properties = [ 
@@ -96,8 +104,8 @@ class TagsHelper {
 		$user,
 		$password,
 		$tagDisplayName,
-		$withGroups = false)
-	{
+		$withGroups = false
+	) {
 		$tagList = self::requestTagsForUser($baseUrl, $user, $password, $withGroups);
 		foreach ($tagList as $path => $tagData) {
 			if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName) {
@@ -128,8 +136,8 @@ class TagsHelper {
 		$userVisible = true,
 		$userAssignable = true,
 		$groups = null,
-		$davPathVersionToUse = 1)
-	{
+		$davPathVersionToUse = 1
+	) {
 		$tagsPath = '/systemtags/';
 		$body = [
 				'name' => $name,
@@ -174,8 +182,8 @@ class TagsHelper {
 		$user,
 		$password,
 		$tagID,
-		$davPathVersionToUse = 1)
-	{
+		$davPathVersionToUse = 1
+	) {
 		$tagsPath = '/systemtags/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $user, $password,

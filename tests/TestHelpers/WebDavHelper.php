@@ -43,8 +43,8 @@ class WebDavHelper
 		$baseUrl,
 		$user,
 		$password,
-		$path)
-	{
+		$path
+	) {
 		$body = Stream::factory('<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
@@ -87,8 +87,8 @@ class WebDavHelper
 		$body = null,
 		$requestBody = null,
 		$davPathVersionToUse = 1,
-		$type = "files")
-	{
+		$type = "files"
+	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);

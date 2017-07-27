@@ -33,9 +33,12 @@ class SetupHelper
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function createUser(
-		$ocPath, $userName, $password,
-		$displayName = null, $email = null)
-	{
+		$ocPath,
+		$userName,
+		$password,
+		$displayName = null,
+		$email = null
+	) {
 		$occCommand = ['user:add', '--password-from-env'];
 		if ($displayName !== null) {
 			$occCommand = array_merge($occCommand, ["--display-name", $displayName]);
