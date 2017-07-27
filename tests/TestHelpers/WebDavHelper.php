@@ -2,7 +2,7 @@
 /**
  * ownCloud
  *
- * @author Artur Neumann
+ * @author Artur Neumann <info@jankaritech.com>
  * @copyright 2017 Artur Neumann artur@jankaritech.com
  *
  * This library is free software; you can redistribute it and/or
@@ -28,10 +28,17 @@ use Sabre\DAV\Client as SClient;
 use GuzzleHttp\Stream\StreamInterface;
 use GuzzleHttp\Stream\Stream;
 
+/**
+ * Helper to make WebDav Requests
+ * 
+ * @author Artur Neumann <info@jankaritech.com>
+ *
+ */
 class WebDavHelper
 {
 	/**
 	 * returns the id of a file
+	 * 
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -45,13 +52,17 @@ class WebDavHelper
 		$password,
 		$path
 	) {
-		$body = Stream::factory('<?xml version="1.0"?>
+		$body = Stream::factory(
+			'<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
     <oc:fileid />
   </d:prop>
-</d:propfind>');
-		$response = self::makeDavRequest($baseUrl, $user, $password, "PROPFIND", $path, null, $body);
+</d:propfind>'
+		);
+		$response = self::makeDavRequest(
+			$baseUrl, $user, $password, "PROPFIND", $path, null, $body
+		);
 		preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
 		if (!isset($matches[1])) {
 			throw new Exception("could not find fileId of $path");
@@ -60,11 +71,11 @@ class WebDavHelper
 	}
 
 	/**
-	 * namespace TestHelpers;
-
+	 * 
 	 * @param string $baseUrl
 	 * URL of owncloud e.g. http://localhost:8080
-	 * should include the subfolder if owncloud runs in a subfolder e.g. http://localhost:8080/owncloud-core
+	 * should include the subfolder if owncloud runs in a subfolder
+	 * e.g. http://localhost:8080/owncloud-core
 	 * @param string $user
 	 * @param string $password
 	 * @param string $method PUT, GET, DELETE, etc.
@@ -119,14 +130,16 @@ class WebDavHelper
 
 	/**
 	 * get the dav path
+	 * 
 	 * @param string $user
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type
 	 * @throws InvalidArgumentException
 	 * @return string
 	 */
-	public static function getDavPath($user, $davPathVersionToUse = 1, $type = "files") 
-	{
+	public static function getDavPath(
+		$user, $davPathVersionToUse = 1, $type = "files"
+	) {
 		if ($davPathVersionToUse === 1) {
 			return "remote.php/webdav/";
 		} elseif ($davPathVersionToUse === 2) {
@@ -137,12 +150,14 @@ class WebDavHelper
 			}
 		} else {
 			throw new InvalidArgumentException(
-				"DAV path version $davPathVersionToUse is unknown");
+				"DAV path version $davPathVersionToUse is unknown"
+			);
 		}
 	}
 
 	/**
 	 * returns a Sabre client
+	 * 
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password

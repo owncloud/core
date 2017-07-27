@@ -2,7 +2,7 @@
 /**
  * ownCloud
  *
- * @author Artur Neumann
+ * @author Artur Neumann <artur@jankaritech.com>
  * @copyright 2017 Artur Neumann artur@jankaritech.com
  *
  * This library is free software; you can redistribute it and/or
@@ -21,9 +21,17 @@
  */
 namespace TestHelpers;
 
-class TagsHelper {
+/**
+ * Helper to administer Tags
+ * 
+ * @author Artur Neumann <artur@jankaritech.com>
+ *
+ */
+class TagsHelper
+{
 	/**
 	 * tags a file
+	 * 
 	 * @param string $baseUrl
 	 * @param string $taggingUser
 	 * @param string $password
@@ -60,6 +68,7 @@ class TagsHelper {
 
 	/**
 	 * get all tags of a user
+	 * 
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -92,6 +101,7 @@ class TagsHelper {
 
 	/**
 	 * find a tag by its name
+	 * 
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -108,7 +118,9 @@ class TagsHelper {
 	) {
 		$tagList = self::requestTagsForUser($baseUrl, $user, $password, $withGroups);
 		foreach ($tagList as $path => $tagData) {
-			if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName) {
+			if (!empty($tagData) 
+				&& $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName
+			) {
 				return $tagData;
 			}
 		}
@@ -159,11 +171,11 @@ class TagsHelper {
 			null,
 			json_encode($body),
 			$davPathVersionToUse,
-			"systemtags");
-
-		$responseHeaders =  $response->getHeaders();
+			"systemtags"
+		);
+		$responseHeaders = $response->getHeaders();
 		$tagUrl = $responseHeaders['Content-Location'][0];
-		$lastTagId = substr($tagUrl, strrpos($tagUrl,'/')+1);
+		$lastTagId = substr($tagUrl, strrpos($tagUrl, '/') + 1);
 		return ['lastTagId' => $lastTagId, 'HTTPResponse' => $response];
 	}
 
@@ -203,17 +215,18 @@ class TagsHelper {
 		$userVisible = true;
 		$userAssignable = true;
 		switch ($type) {
-			case 'normal':
+			case 'normal' :
 				break;
-			case 'not user-assignable':
+			case 'not user-assignable' :
 				$userAssignable = false;
 				break;
-			case 'not user-visible':
+			case 'not user-visible' :
 				$userVisible = false;
 				break;
-			default:
+			default :
 				throw new \Exception('Unsupported type');
 		}
+		
 		return array($userVisible, $userAssignable);
 	}
 }
