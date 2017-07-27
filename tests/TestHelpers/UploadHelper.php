@@ -78,7 +78,7 @@ class UploadHelper
 			//prepare chunking
 			$chunks = self::chunkFile($source, $noOfChunks);
 			$chunkingId = 'chunking-' . (string)rand(1000, 9999);
-			$v2ChunksDestination = '/uploads/'.$user.'/'. $chunkingId;
+			$v2ChunksDestination = '/uploads/' . $user . '/' . $chunkingId;
 		}
 		
 		//prepare chunking version specific stuff
@@ -105,7 +105,7 @@ class UploadHelper
 							count($chunks) . '-' . ( string ) $index;
 				$davRequestType = "files";
 			} elseif ($chunkingVersion === 2) {
-				$filename = $v2ChunksDestination .'/' . (string)($index);
+				$filename = $v2ChunksDestination . '/' . (string)($index);
 				$davRequestType = "uploads";
 			}
 			$result = WebDavHelper::makeDavRequest(
