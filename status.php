@@ -34,7 +34,9 @@ try {
 
 	require_once __DIR__ . '/lib/base.php';
 
-	$values = \OCP\Util::getStatusInfo();
+	# show the version details based on config.php parameter, 
+	# but do not expose the servername in the public via url
+	$values = \OCP\Util::getStatusInfo(null,true);
 
 	if (OC::$CLI) {
 		print_r($values);
