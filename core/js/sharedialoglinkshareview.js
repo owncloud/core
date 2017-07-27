@@ -209,8 +209,8 @@
 				success: function() {
 					if (self.mailView) {
 						// also send out email first
-						self.mailView.sendEmails().then(done).
-						fail(function() {
+						self.mailView.sendEmails().then(done).fail(function() {
+							done();
 							// re-show the popup
 							self.show();
 						});
