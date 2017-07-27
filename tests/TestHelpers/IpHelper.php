@@ -86,6 +86,26 @@ class IpHelper
 	}
 
 	/**
+	 * calculate the base address of the subnet with the given CIDR that contains the given IPv6 address
+	 * @param string $ipv6Address with format like "a:b:c::1"
+	 * @param int $cidr the CIDR "mask" size for the subnet (0 to 128)
+	 * @throws InvalidArgumentException
+	 * @return string IPv6 subnet base address
+	 */
+	private static function ipv6AddressSubnet($ipv6Address, $cidr)
+	{
+		$cidr = (int) $cidr;
+		if (($cidr < 0) || ($cidr > 128)) {
+			throw new \InvalidArgumentException("ipv6AddressSubnet: CIDR $cidr invalid. CIDR must be from 0 to 128");
+		}
+		// TODO: calculate the bottom address of the subnet based on the CIDR
+		$addressMask = ip2long($ipv4Address);
+		$cidrMask = -1 << (128 - $cidr);
+		$netMask = $addressMask & $cidrMask;
+		return long2ip($netMask);
+	}
+
+	/**
 	 * find the first IPv4 address on the local system that is a loopback address
 	 * @throws Exception
 	 * @return string IPv4 loopback address
@@ -241,8 +261,7 @@ class IpHelper
 	 */
 	private static function localIpv6AddressSubnet($cidr)
 	{
-		// TODO: calculate the bottom address of the subnet based on the CIDR
-		return self::localIpv6Address();
+		return self::ipv6AddressSubnet(self::localIpv6Address(), $cidr);
 	}
 
 	/**
