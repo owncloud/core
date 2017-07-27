@@ -184,5 +184,12 @@ try {
 	exit();
 
 } catch (Exception $ex) {
+	// Unlock cron if it was locked
+	if(isset($fp) && is_resource($fp)) {
+		// unlock the file
+		flock($fp, LOCK_UN);
+		fclose($fp);
+	}
+	// Log the cron exception
 	\OCP\Util::writeLog('cron', $ex->getMessage(), \OCP\Util::FATAL);
 }
