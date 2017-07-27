@@ -41,8 +41,13 @@ class IpHelper
 	 */
 	private static function parseIfconfigOutput($regex)
 	{
-		$interfaceConfig = shell_exec('ifconfig');
-		preg_match_all($regex, $interfaceConfig, $matches);
+		$output = [];
+		$return_var = null;
+		exec('ifconfig', $output, $return_var);
+		if ($return_var) {
+			throw new Exception("parseIfconfigOutput: Error {$return_var} calling exec ifconfig");
+		}
+		preg_match_all($regex, implode($output, ' '), $matches);
 		return $matches[1];
 	}
 
@@ -74,7 +79,7 @@ class IpHelper
 			}
 		}
 
-		throw new Exception("No IPv4 loopback address found");
+		throw new Exception("loopbackIpv4Address: No IP address found");
 	}
 
 	private static function loopbackIpv6Address()
@@ -124,7 +129,7 @@ class IpHelper
 			}
 		}
 
-		throw new Exception("No local IPv4 address found");
+		throw new Exception("localIpv4Address: No IP address found");
 	}
 
 	private static function localIpv6Address()
@@ -135,7 +140,7 @@ class IpHelper
 			}
 		}
 
-		throw new Exception("No local IPv6 address found");
+		throw new Exception("localIpv6Address: No IP address found");
 	}
 
 	private static function localIpAddress($ipAddressFamily)
