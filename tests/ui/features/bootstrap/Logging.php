@@ -46,12 +46,12 @@ trait Logging
 		TableNode $expectedLogEntries
 	) {
 		//-1 because getRows gives also the header
-		$linesToRead = count($expectedLogEntries->getRows())-1;
+		$linesToRead = count($expectedLogEntries->getRows()) - 1;
 		$logLines = LoggingHelper::tailFile(
 			LoggingHelper::getLogFilePath($this->ocPath),
 			$linesToRead
 		);
-		$lineNo=0;
+		$lineNo = 0;
 		foreach ($expectedLogEntries as $expectedLogEntry) {
 			$logEntry = json_decode($logLines[$lineNo], true);
 			foreach (array_keys($expectedLogEntry) as $attribute) {
