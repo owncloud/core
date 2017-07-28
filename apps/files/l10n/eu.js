@@ -26,6 +26,8 @@ OC.L10N.register(
     "Pending" : "Zain",
     "Unable to determine date" : "Ezin izan da data zehaztu",
     "Invalid path" : "Baliogabeko bidea",
+    "This operation is forbidden" : "Eragiketa hau debekatuta dago",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Direktoria ez dago eskuragarri; mesedez, log-ak begiratu edo harremanetan jarri administratzailearekin",
     "Could not move \"{file}\"" : "Ezin da mugitu \"{file}\"",
     "Name" : "Izena",
     "Size" : "Tamaina",
