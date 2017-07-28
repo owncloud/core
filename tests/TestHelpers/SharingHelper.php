@@ -29,8 +29,7 @@ use GuzzleHttp\Client as GClient;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class SharingHelper
-{
+class SharingHelper {
 	/**
 	 * 
 	 * @param string $baseUrl baseURL of the ownCloud installation without /ocs.
@@ -72,6 +71,7 @@ class SharingHelper
 		$apiVersion = 1,
 		$sharingApiVersion = 1
 	) {
+		
 		$fd = [];
 		$options = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
@@ -97,7 +97,9 @@ class SharingHelper
 		if (!in_array($apiVersion, [1, 2], true)
 			|| !in_array($sharingApiVersion, [1,2], true)
 		) {
-			throw new \InvalidArgumentException("invalid apiVersion/sharingApiVersion");
+			throw new \InvalidArgumentException(
+				"invalid apiVersion/sharingApiVersion"
+			);
 		}
 		
 		$fullUrl = $baseUrl .

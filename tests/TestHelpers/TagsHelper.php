@@ -27,8 +27,7 @@ namespace TestHelpers;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class TagsHelper
-{
+class TagsHelper {
 	/**
 	 * tags a file
 	 * 
@@ -210,8 +209,7 @@ class TagsHelper
 	 * @throws \Exception
 	 * @return boolean[]
 	 */
-	public static function validateTypeOfTag($type)
-	{
+	public static function validateTypeOfTag($type) {
 		$userVisible = true;
 		$userAssignable = true;
 		switch ($type) {

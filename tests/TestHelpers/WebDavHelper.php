@@ -34,8 +34,7 @@ use GuzzleHttp\Stream\Stream;
  * @author Artur Neumann <info@jankaritech.com>
  *
  */
-class WebDavHelper
-{
+class WebDavHelper {
 	/**
 	 * returns the id of a file
 	 * 
@@ -163,8 +162,7 @@ class WebDavHelper
 	 * @param string $password
 	 * @return \Sabre\DAV\Client
 	 */
-	public static function getSabreClient($baseUrl, $user, $password)
-	{
+	public static function getSabreClient($baseUrl, $user, $password) {
 		$settings = [
 				'baseUri' => $baseUrl,
 				'userName' => $user,
@@ -182,8 +180,7 @@ class WebDavHelper
 	 * @param bool $trailingSlash forces a trailing slash
 	 * @return string
 	 */
-	public static function sanitizeUrl($url, $trailingSlash = false)
-	{
+	public static function sanitizeUrl($url, $trailingSlash = false) {
 		if ($trailingSlash === true) {
 			$url = $url . "/";
 		} else {

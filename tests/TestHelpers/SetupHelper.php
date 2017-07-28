@@ -27,8 +27,7 @@ namespace TestHelpers;
  * @author Artur Neumann <info@jankaritech.com>
  *
  */
-class SetupHelper
-{
+class SetupHelper {
 	/**
 	 * creates a user
 	 * 
@@ -64,8 +63,7 @@ class SetupHelper
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function deleteUser($ocPath, $userName)
-	{
+	public static function deleteUser($ocPath, $userName) {
 		return self::runOcc(['user:delete', $userName], $ocPath);
 	}
 	
@@ -93,8 +91,7 @@ class SetupHelper
 	 * @param string $groupName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function createGroup($ocPath, $groupName)
-	{
+	public static function createGroup($ocPath, $groupName) {
 		return self::runOcc(['group:add', $groupName], $ocPath);
 	}
 
@@ -106,8 +103,7 @@ class SetupHelper
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function addUserToGroup($ocPath, $groupName, $userName)
-	{
+	public static function addUserToGroup($ocPath, $groupName, $userName) {
 		return self::runOcc(
 			['group:add-member', '--member', $userName, $groupName], $ocPath
 		);
@@ -121,8 +117,7 @@ class SetupHelper
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function removeUserFromGroup($ocPath, $groupName, $userName)
-	{
+	public static function removeUserFromGroup($ocPath, $groupName, $userName) {
 		return self::runOcc(
 			['group:remove-member', '--member', $userName, $groupName], $ocPath
 		);
@@ -135,8 +130,7 @@ class SetupHelper
 	 * @param string $groupName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function deleteGroup($ocPath, $groupName)
-	{
+	public static function deleteGroup($ocPath, $groupName) {
 		return self::runOcc(['group:delete', $groupName], $ocPath);
 	}
 
@@ -149,8 +143,7 @@ class SetupHelper
 	 * @param string $escaping
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function runOcc($args, $ocPath, $escaping = true)
-	{
+	public static function runOcc($args, $ocPath, $escaping = true) {
 		if ($escaping === true) {
 			$args = array_map(
 				function ($arg) {
