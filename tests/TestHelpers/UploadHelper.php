@@ -29,8 +29,7 @@ use GuzzleHttp\Stream\Stream;
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
-class UploadHelper
-{
+class UploadHelper {
 	/**
 	 * 
 	 * @param string $baseUrl             URL of owncloud
@@ -150,8 +149,7 @@ class UploadHelper
 	 * @param number $noOfChunks
 	 * @return array $string
 	 */
-	static function chunkFile($file, $noOfChunks = 1) 
-	{
+	static function chunkFile($file, $noOfChunks = 1) { 
 		$size = filesize($file);
 		$chunkSize = ceil($size / $noOfChunks);
 		$chunks = [];
