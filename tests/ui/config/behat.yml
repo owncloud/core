@@ -5,10 +5,10 @@ default:
     SensioLabs\Behat\PageObjectExtension: ~
 
   suites:
-    default:
+    files:
       paths:
-        - %paths.base%/../features
-      context:
+        - %paths.base%/../features/files
+      context: &common_suite_context
         parameters:
           ocPath: ./
           adminPassword: admin
@@ -17,6 +17,16 @@ default:
           regularUserNames: user1,user2,user3,usergrp,grpuser
           regularGroupName: regulargrp
           regularGroupNames: grp1,grp2,grp3,usergrp,grpuser
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+
+    other:
+      paths:
+        - %paths.base%/../features/other
+      context: *common_suite_context
       contexts:
         - FeatureContext:
         - LoginContext:
