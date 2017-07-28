@@ -680,19 +680,6 @@ trait WebDav {
 				}
 			}
 			if ($dav === 'new') {
-				// old chunking style applied to new endpoint 🙈
-				if (!$overwriteMode) {
-					$suffix = '-' . $dav . 'dav-oldchunking';
-				}
-				try {
-					// FIXME: prepending new dav path because the chunking utility functions are messed up
-					$this->userUploadsAFileToWithChunks($user, $source, '/files/' . $user . '/' . ltrim($destination, '/') . $suffix, 'old');
-					$responses[] = $this->response;
-				} catch (ServerException $e) {
-					$responses[] = $e->getResponse();
-				}
-
-				// new chunking style applied to new endpoint
 				if (!$overwriteMode) {
 					$suffix = '-' . $dav . 'dav-newchunking';
 				}
@@ -834,10 +821,14 @@ trait WebDav {
 	 */
 	public function userUploadsChunkedFile($user, $num, $total, $data, $destination)
 	{
-		$num -= 1;
-		$data = \GuzzleHttp\Stream\Stream::factory($data);
-		$file = $destination . '-chunking-42-' . $total . '-' . $num;
-		$this->makeDavRequest($user, 'PUT', $file, ['OC-Chunked' => '1'], $data,  "uploads");
+		try {
+			$num -= 1;
+			$data = \GuzzleHttp\Stream\Stream::factory($data);
+			$file = $destination . '-chunking-42-' . $total . '-' . $num;
+			$this->makeDavRequest($user, 'PUT', $file, ['OC-Chunked' => '1'], $data,  "uploads");
+		} catch (\GuzzleHttp\Exception\RequestException $ex) {
+			$this->response = $ex->getResponse();
+		}
 	}
 
 	/**
@@ -845,8 +836,12 @@ trait WebDav {
 	 */
 	public function userCreatesANewChunkingUploadWithId($user, $id)
 	{
-		$destination = '/uploads/'.$user.'/'.$id;
-		$this->makeDavRequest($user, 'MKCOL', $destination, [], null, "uploads");
+		try {
+			$destination = '/uploads/'.$user.'/'.$id;
+			$this->makeDavRequest($user, 'MKCOL', $destination, [], null, "uploads");
+		} catch (\GuzzleHttp\Exception\RequestException $ex) {
+			$this->response = $ex->getResponse();
+		}
 	}
 
 	/**
@@ -854,9 +849,13 @@ trait WebDav {
 	 */
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id)
 	{
-		$data = \GuzzleHttp\Stream\Stream::factory($data);
-		$destination = '/uploads/'. $user .'/'. $id .'/' . $num;
-		$this->makeDavRequest($user, 'PUT', $destination, [], $data, "uploads");
+		try {
+			$data = \GuzzleHttp\Stream\Stream::factory($data);
+			$destination = '/uploads/'. $user .'/'. $id .'/' . $num;
+			$this->makeDavRequest($user, 'PUT', $destination, [], $data, "uploads");
+		} catch (\GuzzleHttp\Exception\RequestException $ex) {
+			$this->response = $ex->getResponse();
+		}
 	}
 
 	/**
@@ -885,11 +884,15 @@ trait WebDav {
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest)
 	{
-		$source = '/uploads/' . $user . '/' . $id . '/.file';
-		$destination = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user) . $dest;
-		$this->makeDavRequest($user, 'MOVE', $source, [
-			'Destination' => $destination
-		], null, "uploads");
+		try {
+			$source = '/uploads/' . $user . '/' . $id . '/.file';
+			$destination = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user) . $dest;
+			$this->makeDavRequest($user, 'MOVE', $source, [
+				'Destination' => $destination
+			], null, "uploads");
+		} catch (\GuzzleHttp\Exception\RequestException $ex) {
+			$this->response = $ex->getResponse();
+		}
 	}
 
 
