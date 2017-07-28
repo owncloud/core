@@ -22,6 +22,7 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Stream\Stream;
+use PHPUnit_Framework_Assert;
 
 /**
  * Helper for Uploads
@@ -47,7 +48,7 @@ class UploadHelper {
 	 * @param int    $noOfChunks          how many chunks do we want to upload
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 */
-	static function upload(
+	public static function upload(
 		$baseUrl,
 		$user,
 		$password,
@@ -149,7 +150,7 @@ class UploadHelper {
 	 * @param number $noOfChunks
 	 * @return array $string
 	 */
-	static function chunkFile($file, $noOfChunks = 1) { 
+	public static function chunkFile($file, $noOfChunks = 1) { 
 		$size = filesize($file);
 		$chunkSize = ceil($size / $noOfChunks);
 		$chunks = [];
@@ -159,5 +160,43 @@ class UploadHelper {
 		}
 		fclose($fp);
 		return $chunks;
+	}
+
+	/**
+	 * creates a File with a specific size
+	 *
+	 * @param string $name full path of the file to create
+	 * @param int $size
+	 * @return void
+	 */
+	public static function createFileSpecificSize($name, $size) {
+		$file = fopen($name, 'w');
+		fseek($file, max($size - 1, 0), SEEK_CUR);
+		if ($size) {
+			fwrite($file, 'a'); // write a dummy char at SIZE position
+		}
+		fclose($file);
+		PHPUnit_Framework_Assert::assertEquals(
+			1, file_exists($name)
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			$size, filesize($name)
+		);
+	}
+
+	/**
+	 * creates a File with a specific text content
+	 *
+	 * @param string $name full path of the file to create
+	 * @param string $text
+	 * @return void
+	 */
+	public static function createFileWithText($name, $text) {
+		$file = fopen($name, 'w');
+		fwrite($file, $text);
+		fclose($file);
+		PHPUnit_Framework_Assert::assertEquals(
+			1, file_exists($name)
+		);
 	}
 }
