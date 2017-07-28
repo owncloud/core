@@ -44,6 +44,11 @@ try {
 
 	if (!$pathInfo && $request->getParam('service', '') === '') {
 		header('HTTP/1.0 404 Not Found');
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
+			\OCP\Http\HttpEvents::EVENT_404,
+			OC::$server->getRequest()
+		));
 		exit;
 	} elseif ($request->getParam('service', '')) {
 		$service = $request->getParam('service', '');
@@ -54,6 +59,11 @@ try {
 	$file = OCP\Config::getAppValue('core', 'public_' . strip_tags($service));
 	if (is_null($file)) {
 		header('HTTP/1.0 404 Not Found');
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
+			\OCP\Http\HttpEvents::EVENT_404,
+			OC::$server->getRequest()
+		));
 		exit;
 	}
 

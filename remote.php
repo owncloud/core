@@ -123,6 +123,11 @@ try {
 	$request = \OC::$server->getRequest();
 	$pathInfo = $request->getPathInfo();
 	if ($pathInfo === false || $pathInfo === '') {
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
+			\OCP\Http\HttpEvents::EVENT_404,
+			OC::$server->getRequest()
+		));
 		throw new RemoteException('Path not found', OC_Response::STATUS_NOT_FOUND);
 	}
 	if (!$pos = strpos($pathInfo, '/', 1)) {
@@ -133,6 +138,11 @@ try {
 	$file = resolveService($service);
 
 	if(is_null($file)) {
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
+			\OCP\Http\HttpEvents::EVENT_404,
+			OC::$server->getRequest()
+		));
 		throw new RemoteException('Path not found', OC_Response::STATUS_NOT_FOUND);
 	}
 
