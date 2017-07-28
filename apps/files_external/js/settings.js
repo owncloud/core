@@ -692,7 +692,11 @@ MountConfigListView.prototype = _.extend({
 		var self = this;
 		this.$el.find('tbody tr:not(#addMountPoint)').each(function(i, tr) {
 			var authMechanism = $(tr).find('.selectAuthMechanism').val();
-			callback($(tr), authMechanism, self._allAuthMechanisms[authMechanism]['scheme']);
+			if (authMechanism !== undefined) {
+				var onCompletion = jQuery.Deferred();
+				callback($(tr), authMechanism, self._allAuthMechanisms[authMechanism]['scheme'], onCompletion);
+				onCompletion.resolve();
+			}
 		});
 		this.on('selectAuthMechanism', callback);
 	},
@@ -1404,7 +1408,7 @@ OCA.External.Settings.UserStorageConfig = UserStorageConfig;
 OCA.External.Settings.MountConfigListView = MountConfigListView;
 
 /**
- * @namespace OAuth2 namespace which is used to verify a storage adapter 
+ * @namespace OAuth2 namespace which is used to verify a storage adapter
  *            using AuthMechanism as oauth2::oauth2
  */
 OCA.External.Settings.OAuth2 = OCA.External.Settings.OAuth2 || {};
@@ -1413,7 +1417,7 @@ OCA.External.Settings.OAuth2 = OCA.External.Settings.OAuth2 || {};
  * This function sends a request to the given backendUrl and gets the OAuth2 URL
  * for any given backend storage, executes the callback if any, set the data-* parameters
  * of the storage and REDIRECTS the client to Authentication page
- * 
+ *
  * @param  {String}   backendUrl The backend URL to which request will be sent
  * @param  {Object}   data       Keys -> (backend_id, client_id, client_secret, redirect, tr)
  */
@@ -1454,7 +1458,7 @@ OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data) {
  * This function verifies the OAuth2 code returned to the client after verification
  * by sending request to the backend with the given CODE and if the code is verified
  * it sets the data-* params to configured and disables the authorize buttons
- * 
+ *
  * @param  {String}   backendUrl The backend URL to which request will be sent
  * @param  {Object}   data       Keys -> (backend_id, client_id, client_secret, redirect, tr, code)
  * @return {Promise} jQuery Deferred Promise object
@@ -1487,7 +1491,7 @@ OCA.External.Settings.OAuth2.verifyCode = function (backendUrl, data) {
 					deferredObject.resolve(status);
 				});
 			} else {
-				deferredObject.reject(result.data.message); 
+				deferredObject.reject(result.data.message);
 			}
 		}
 	);
