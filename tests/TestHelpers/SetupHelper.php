@@ -2,8 +2,8 @@
 /**
  * ownCloud
  *
- * @author Artur Neumann
- * @copyright 2017 Artur Neumann info@individual-it.net
+ * @author Artur Neumann <info@jankaritech.com>
+ * @copyright 2017 Artur Neumann info@jankaritech.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -21,10 +21,16 @@
  */
 namespace TestHelpers;
 
-class SetupHelper
-{
+/**
+ * Helper to setup UI / Integration tests
+ * 
+ * @author Artur Neumann <info@jankaritech.com>
+ *
+ */
+class SetupHelper {
 	/**
 	 * creates a user
+	 * 
 	 * @param string $ocPath
 	 * @param string $userName
 	 * @param string $password
@@ -33,9 +39,12 @@ class SetupHelper
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function createUser(
-		$ocPath, $userName, $password,
-		$displayName = null, $email = null)
-	{
+		$ocPath,
+		$userName,
+		$password,
+		$displayName = null,
+		$email = null
+	) {
 		$occCommand = ['user:add', '--password-from-env'];
 		if ($displayName !== null) {
 			$occCommand = array_merge($occCommand, ["--display-name", $displayName]);
@@ -43,85 +52,104 @@ class SetupHelper
 		if ($email !== null) {
 			$occCommand = array_merge($occCommand, ["--email", $email]);
 		}
-		putenv("OC_PASS=".$password);
+		putenv("OC_PASS=" . $password);
 		return self::runOcc(array_merge($occCommand, [$userName]), $ocPath);
 	}
 
 	/**
 	 * deletes a user
+	 * 
 	 * @param string $ocPath
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function deleteUser($ocPath, $userName)
-	{
+	public static function deleteUser($ocPath, $userName) {
 		return self::runOcc(['user:delete', $userName], $ocPath);
 	}
-
-	public static function changeUserSetting($ocPath, $userName, $app, $key, $value)
-	{
-		return self::runOcc(['user:setting', '--value '.$value, $userName, $app, $key], $ocPath);
+	
+	/**
+	 * 
+	 * @param string $ocPath
+	 * @param string $userName
+	 * @param string $app
+	 * @param string $key
+	 * @param string $value
+	 * @return string[]
+	 */
+	public static function changeUserSetting(
+		$ocPath, $userName, $app, $key, $value
+	) {
+		return self::runOcc(
+			['user:setting', '--value ' . $value, $userName, $app, $key], $ocPath
+		);
 	}
 
 	/**
 	 * creates a group
+	 * 
 	 * @param string $ocPath
 	 * @param string $groupName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function createGroup($ocPath, $groupName)
-	{
+	public static function createGroup($ocPath, $groupName) {
 		return self::runOcc(['group:add', $groupName], $ocPath);
 	}
 
 	/**
 	 * adds an existing user to a group, creating the group if it does not exist
+	 * 
 	 * @param string $ocPath
 	 * @param string $groupName
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function addUserToGroup($ocPath, $groupName, $userName)
-	{
-		return self::runOcc(['group:add-member', '--member', $userName, $groupName], $ocPath);
+	public static function addUserToGroup($ocPath, $groupName, $userName) {
+		return self::runOcc(
+			['group:add-member', '--member', $userName, $groupName], $ocPath
+		);
 	}
 
 	/**
 	 * removes a user from a group
+	 * 
 	 * @param string $ocPath
 	 * @param string $groupName
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function removeUserFromGroup($ocPath, $groupName, $userName)
-	{
-		return self::runOcc(['group:remove-member', '--member', $userName, $groupName], $ocPath);
+	public static function removeUserFromGroup($ocPath, $groupName, $userName) {
+		return self::runOcc(
+			['group:remove-member', '--member', $userName, $groupName], $ocPath
+		);
 	}
 
 	/**
 	 * deletes a group
+	 * 
 	 * @param string $ocPath
 	 * @param string $groupName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function deleteGroup($ocPath, $groupName)
-	{
+	public static function deleteGroup($ocPath, $groupName) {
 		return self::runOcc(['group:delete', $groupName], $ocPath);
 	}
 
 	/**
 	 * invokes an OCC command
 	 *
-	 * @param array $args anything behind "occ". For example: "files:transfer-ownership"
+	 * @param array $args anything behind "occ".
+	 * For example: "files:transfer-ownership"
 	 * @param string $ocPath
 	 * @param string $escaping
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function runOcc($args = [], $ocPath, $escaping = true) {
-		if ($escaping === true){
-			$args = array_map(function($arg) {
-				return escapeshellarg($arg);
-			}, $args);
+	public static function runOcc($args, $ocPath, $escaping = true) {
+		if ($escaping === true) {
+			$args = array_map(
+				function ($arg) {
+					return escapeshellarg($arg);
+				}, $args
+			);
 		}
 		$args[] = '--no-ansi';
 		$args = implode(' ', $args);
@@ -131,12 +159,17 @@ class SetupHelper
 				1 => ['pipe', 'w'],
 				2 => ['pipe', 'w'],
 		];
-		$process = proc_open('php console.php ' . $args, $descriptor, $pipes, $ocPath);
+		$process = proc_open(
+			'php console.php ' . $args, $descriptor, $pipes, $ocPath
+		);
 		$lastStdOut = stream_get_contents($pipes[1]);
 		$lastStdErr = stream_get_contents($pipes[2]);
 		$lastCode = proc_close($process);
-
-		return ["code" =>$lastCode, "stdOut" => $lastStdOut, "stdErr" => $lastStdErr];
+		return [ 
+			"code" => $lastCode,
+			"stdOut" => $lastStdOut,
+			"stdErr" => $lastStdErr
+		];
 	}
 
 }
