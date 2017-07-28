@@ -112,18 +112,19 @@ class MountProviderTest extends \Test\TestCase {
 			$this->makeMockShare(5, 100, 'user1', '/share4', 31), 
 		];
 
+		$userGroupUserShares = array_merge($userShares, $groupShares);
+
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user1'));
 
-		$this->shareManager->expects($this->at(0))
-			->method('getSharedWith')
-			->with('user1', \OCP\Share::SHARE_TYPE_USER)
-			->will($this->returnValue($userShares));
-		$this->shareManager->expects($this->at(1))
-			->method('getSharedWith')
-			->with('user1', \OCP\Share::SHARE_TYPE_GROUP, null, -1)
-			->will($this->returnValue($groupShares));
+		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
+		$this->shareManager->expects($this->once())
+			->method('getAllSharedWith')
+			->with('user1', $requiredShareTypes, null)
+			->will($this->returnValue($userGroupUserShares));
+		$this->shareManager->expects($this->never())
+			->method('getSharedWith');
 		$this->shareManager->expects($this->any())
 			->method('newShare')
 			->will($this->returnCallback(function() use ($rootFolder, $userManager) {
@@ -311,15 +312,17 @@ class MountProviderTest extends \Test\TestCase {
 		$this->user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('user1'));
+		
+		$userGroupUserShares = array_merge($userShares, $groupShares);
+		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
+		$this->shareManager->expects($this->once())
+			->method('getAllSharedWith')
+			->with('user1', $requiredShareTypes, null)
+			->will($this->returnValue($userGroupUserShares));
 
-		$this->shareManager->expects($this->at(0))
-			->method('getSharedWith')
-			->with('user1', \OCP\Share::SHARE_TYPE_USER)
-			->will($this->returnValue($userShares));
-		$this->shareManager->expects($this->at(1))
-			->method('getSharedWith')
-			->with('user1', \OCP\Share::SHARE_TYPE_GROUP, null, -1)
-			->will($this->returnValue($groupShares));
+		$this->shareManager->expects($this->never())
+			->method('getSharedWith');
+
 		$this->shareManager->expects($this->any())
 			->method('newShare')
 			->will($this->returnCallback(function() use ($rootFolder, $userManager) {

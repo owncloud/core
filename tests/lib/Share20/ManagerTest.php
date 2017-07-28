@@ -2735,6 +2735,41 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->manager->moveShare($share, 'recipient');
 	}
+	
+	public function testGetSharedWith() {
+		$user = $this->createMock(IUser::class);
+
+		$share = $this->manager->newShare();
+		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP)
+			->setId('42')
+			->setProviderId('foo');
+		$this->defaultProvider->method('getSharedWith')->with($user, \OCP\Share::SHARE_TYPE_GROUP, null, -1, 0)->willReturn([$share]);
+
+		$shares = $this->manager->getSharedWith($user, \OCP\Share::SHARE_TYPE_GROUP, null, -1, 0);
+		$this->assertCount(1, $shares);
+		$returnedShare = $shares[0];
+		$this->assertSame($returnedShare->getId(), $share->getId());
+	}
+
+	public function testGetAllSharedWith() {
+		$user = $this->createMock(IUser::class);
+
+		$share1 = $this->manager->newShare();
+		$share1->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setId('42')
+			->setProviderId('foo');
+		$share2 = $this->manager->newShare();
+		$share2->setShareType(\OCP\Share::SHARE_TYPE_GROUP)
+			->setId('43')
+			->setProviderId('foo');
+		$this->defaultProvider->method('getAllSharedWith')
+			->with($user, null)
+			->willReturn([$share1, $share2]);
+
+		$shares = $this->manager->getAllSharedWith($user, [\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER]);
+		$this->assertCount(2, $shares);
+		$this->assertSame($shares, [$share1, $share2]);
+	}
 }
 
 class DummyPassword {

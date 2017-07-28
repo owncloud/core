@@ -5,6 +5,7 @@
  * @author phisch <git@philippschaffrath.de>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -674,6 +675,116 @@ class DefaultShareProvider implements IShareProvider {
 		return true;
 	}
 
+	/*
+	 * Get shared with user shares for the given userId and node
+	 *
+	 * @param string $userId
+	 * @param Node|null $node
+	 * @return DB\QueryBuilder\IQueryBuilder $qb
+	 */
+	public function getSharedWithUserQuery($userId, $node) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('s.*', 'f.fileid', 'f.path')
+			->selectAlias('st.id', 'storage_string_id')
+			->from('share', 's')
+			->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.file_source', 'f.fileid'))
+			->leftJoin('f', 'storages', 'st', $qb->expr()->eq('f.storage', 'st.numeric_id'));
+
+		// Order by id
+		$qb->orderBy('s.id');
+
+		$qb->where($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_USER)))
+			->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($userId)))
+			->andWhere($qb->expr()->orX(
+				$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
+				$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
+			));
+
+		// Filter by node if provided
+		if ($node !== null) {
+			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
+		}
+
+		return $qb;
+	}
+
+	/*
+	 * Get shared with group shares for the given groups and node
+	 *
+	 * @param IGroup[] $groups
+	 * @param Node|null $node
+	 * @return DB\QueryBuilder\IQueryBuilder $qb
+	 */
+	private function getSharedWithGroupQuery($groups, $node) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('s.*', 'f.fileid', 'f.path')
+			->selectAlias('st.id', 'storage_string_id')
+			->from('share', 's')
+			->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.file_source', 'f.fileid'))
+			->leftJoin('f', 'storages', 'st', $qb->expr()->eq('f.storage', 'st.numeric_id'))
+			->orderBy('s.id');
+
+		// Filter by node if provided
+		if ($node !== null) {
+			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
+		}
+
+		$groups = array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
+
+		$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)))
+			->andWhere($qb->expr()->in('share_with', $qb->createNamedParameter(
+				$groups,
+				IQueryBuilder::PARAM_STR_ARRAY
+			)))
+			->andWhere($qb->expr()->orX(
+				$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
+				$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
+			));
+
+		return $qb;
+	}
+
+	/*
+	 * Get shared with group and shared with user shares for the given groups, userId and node
+	 *
+	 * @param IGroup[] $groups
+	 * @param string $userId
+	 * @param Node|null $node
+	 * @return DB\QueryBuilder\IQueryBuilder $qb
+	 */
+	private function getSharedWithUserGroupQuery($groups, $userId, $node) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('s.*', 'f.fileid', 'f.path')
+			->selectAlias('st.id', 'storage_string_id')
+			->from('share', 's')
+			->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.file_source', 'f.fileid'))
+			->leftJoin('f', 'storages', 'st', $qb->expr()->eq('f.storage', 'st.numeric_id'))
+			->orderBy('s.id');
+
+		// Filter by node if provided
+		if ($node !== null) {
+			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
+		}
+
+		$groups = array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
+
+		$qb->andWhere($qb->expr()->orX(
+			$qb->expr()->andX(
+				$qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)),
+				$qb->expr()->in('share_with', $qb->createNamedParameter(
+					$groups,
+					IQueryBuilder::PARAM_STR_ARRAY
+				))
+			),
+			$qb->expr()->andX(
+				$qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_USER)),
+				$qb->expr()->eq('share_with', $qb->createNamedParameter($userId))
+			)
+		));
+
+		return $qb;
+	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -682,34 +793,14 @@ class DefaultShareProvider implements IShareProvider {
 		$shares = [];
 
 		if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
-			//Get shares directly with this user
-			$qb = $this->dbConn->getQueryBuilder();
-			$qb->select('s.*', 'f.fileid', 'f.path')
-				->selectAlias('st.id', 'storage_string_id')
-				->from('share', 's')
-				->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.file_source', 'f.fileid'))
-				->leftJoin('f', 'storages', 'st', $qb->expr()->eq('f.storage', 'st.numeric_id'));
-
-			// Order by id
-			$qb->orderBy('s.id');
+			// Create SharedWithUser query
+			$qb = $this->getSharedWithUserQuery($userId, $node);
 
 			// Set limit and offset
 			if ($limit !== -1) {
 				$qb->setMaxResults($limit);
 			}
 			$qb->setFirstResult($offset);
-
-			$qb->where($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_USER)))
-				->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($userId)))
-				->andWhere($qb->expr()->orX(
-					$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
-					$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
-				));
-
-			// Filter by node if provided
-			if ($node !== null) {
-				$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
-			}
 
 			$cursor = $qb->execute();
 
@@ -736,35 +827,13 @@ class DefaultShareProvider implements IShareProvider {
 					break;
 				}
 
-				$qb = $this->dbConn->getQueryBuilder();
-				$qb->select('s.*', 'f.fileid', 'f.path')
-					->selectAlias('st.id', 'storage_string_id')
-					->from('share', 's')
-					->leftJoin('s', 'filecache', 'f', $qb->expr()->eq('s.file_source', 'f.fileid'))
-					->leftJoin('f', 'storages', 'st', $qb->expr()->eq('f.storage', 'st.numeric_id'))
-					->orderBy('s.id')
-					->setFirstResult(0);
+				// Create SharedWithGroups query
+				$qb = $this->getSharedWithGroupQuery($groups, $node);
+				$qb->setFirstResult(0);
 
 				if ($limit !== -1) {
 					$qb->setMaxResults($limit - count($shares));
 				}
-
-				// Filter by node if provided
-				if ($node !== null) {
-					$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
-				}
-
-				$groups = array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
-
-				$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)))
-					->andWhere($qb->expr()->in('share_with', $qb->createNamedParameter(
-						$groups,
-						IQueryBuilder::PARAM_STR_ARRAY
-					)))
-					->andWhere($qb->expr()->orX(
-						$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
-						$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
-					));
 
 				$cursor = $qb->execute();
 				while($data = $cursor->fetch()) {
@@ -790,6 +859,76 @@ class DefaultShareProvider implements IShareProvider {
 		}
 
 		return $shares;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getAllSharedWith($userId, $node) {
+		// Create array of sharedWith objects (target user -> $userId or group of which user is a member
+		$user = $this->userManager->get($userId);
+
+		// Check if user is member of some groups and chunk them
+		$allGroups = $this->groupManager->getUserGroups($user, 'sharing');
+
+		// Make chunks
+		$sharedWithGroupChunks = array_chunk($allGroups, 100);
+
+		// Check how many group chunks do we need
+		$sharedWithGroupChunksNo = count($sharedWithGroupChunks);
+
+		// If there are not groups, query only user, if there are groups, query both
+		$chunkedResults = [];
+		if ($sharedWithGroupChunksNo === 0) {
+			// There are no groups, query only for user
+			$qb = $this->getSharedWithUserQuery($userId, $node);
+			$cursor = $qb->execute();
+			$chunkedResults[] = $cursor->fetchAll();
+			$cursor->closeCursor();
+		} else {
+			// There are groups, query both for user and for groups
+			$userSharesRetrieved = false;
+			for ($chunkNo = 0; $chunkNo < $sharedWithGroupChunksNo; $chunkNo++) {
+				// Get respective group chunk
+				$groups = $sharedWithGroupChunks[$chunkNo];
+
+				// Check if user shares were already retrieved
+				// One cannot retrieve user shares multiple times, since it will result in duplicated
+				// user shares with each query
+				if ($userSharesRetrieved === false) {
+					$qb = $this->getSharedWithUserGroupQuery($groups, $userId, $node);
+					$userSharesRetrieved = true;
+				} else {
+					$qb = $this->getSharedWithGroupQuery($groups, $node);
+				}
+				$cursor = $qb->execute();
+				$chunkedResults[] = $cursor->fetchAll();
+				$cursor->closeCursor();
+			}
+		}
+
+		$resolvedShares = [];
+		$groupShares = [];
+		foreach($chunkedResults as $resultBatch) {
+			foreach($resultBatch as $data) {
+				if ($this->isAccessibleResult($data)) {
+					$share = $this->createShare($data);
+					if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP){
+						$groupShares[] = $share;
+					} else {
+						$resolvedShares[] = $share;
+					}
+				}
+			}
+		}
+
+		//Resolve all group shares to user specific shares
+		if (!empty($groupShares)) {
+			$resolvedGroupShares = $this->resolveGroupShares($groupShares, $userId);
+			$resolvedShares = array_merge($resolvedShares, $resolvedGroupShares);
+		}
+
+		return $resolvedShares;
 	}
 
 	/**
