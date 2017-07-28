@@ -2,7 +2,7 @@
 /**
  * ownCloud
  *
- * @author Artur Neumann
+ * @author Artur Neumann <artur@jankaritech.com>
  * @copyright 2017 Artur Neumann artur@jankaritech.com
  *
  * This library is free software; you can redistribute it and/or
@@ -21,9 +21,16 @@
  */
 namespace TestHelpers;
 
+/**
+ * Helper to administer Tags
+ * 
+ * @author Artur Neumann <artur@jankaritech.com>
+ *
+ */
 class TagsHelper {
 	/**
 	 * tags a file
+	 * 
 	 * @param string $baseUrl
 	 * @param string $taggingUser
 	 * @param string $password
@@ -34,9 +41,14 @@ class TagsHelper {
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 */
 	public static function tag(
-		$baseUrl, $taggingUser, $password,
-		$tagName, $fileName, $fileOwner, $davPathVersionToUse = 1)
-	{
+		$baseUrl,
+		$taggingUser,
+		$password,
+		$tagName,
+		$fileName,
+		$fileOwner,
+		$davPathVersionToUse = 1
+	) {
 		$fileID = WebDavHelper::getFileIdForPath(
 			$baseUrl, $fileOwner, $password, $fileName
 		);
@@ -44,7 +56,7 @@ class TagsHelper {
 		$tag = self::requestTagByDisplayName(
 			$baseUrl, $taggingUser, $password, $tagName
 		);
-		$tagID = ( int ) $tag ['{http://owncloud.org/ns}id'];
+		$tagID = (int) $tag ['{http://owncloud.org/ns}id'];
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $taggingUser, $password, "PUT",
@@ -55,6 +67,7 @@ class TagsHelper {
 
 	/**
 	 * get all tags of a user
+	 * 
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -62,8 +75,11 @@ class TagsHelper {
 	 * @return array
 	 */
 	public static function requestTagsForUser(
-		$baseUrl, $user, $password, $withGroups = false)
-	{
+		$baseUrl,
+		$user,
+		$password,
+		$withGroups = false
+	) {
 		$baseUrl = WebDavHelper::sanitizeUrl($baseUrl, true);
 		$client = WebDavHelper::getSabreClient($baseUrl, $user, $password);
 		$properties = [ 
@@ -84,6 +100,7 @@ class TagsHelper {
 
 	/**
 	 * find a tag by its name
+	 * 
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -96,11 +113,13 @@ class TagsHelper {
 		$user,
 		$password,
 		$tagDisplayName,
-		$withGroups = false)
-	{
+		$withGroups = false
+	) {
 		$tagList = self::requestTagsForUser($baseUrl, $user, $password, $withGroups);
 		foreach ($tagList as $path => $tagData) {
-			if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName) {
+			if (!empty($tagData) 
+				&& $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName
+			) {
 				return $tagData;
 			}
 		}
@@ -128,14 +147,15 @@ class TagsHelper {
 		$userVisible = true,
 		$userAssignable = true,
 		$groups = null,
-		$davPathVersionToUse = 1)
-	{
+		$davPathVersionToUse = 1
+	) {
 		$tagsPath = '/systemtags/';
 		$body = [
 				'name' => $name,
 				'userVisible' => $userVisible,
 				'userAssignable' => $userAssignable,
 		];
+
 		if ($groups !== null) {
 			$body['groups'] = $groups;
 		}
@@ -150,11 +170,11 @@ class TagsHelper {
 			null,
 			json_encode($body),
 			$davPathVersionToUse,
-			"systemtags");
-
-		$responseHeaders =  $response->getHeaders();
+			"systemtags"
+		);
+		$responseHeaders = $response->getHeaders();
 		$tagUrl = $responseHeaders['Content-Location'][0];
-		$lastTagId = substr($tagUrl, strrpos($tagUrl,'/')+1);
+		$lastTagId = substr($tagUrl, strrpos($tagUrl, '/') + 1);
 		return ['lastTagId' => $lastTagId, 'HTTPResponse' => $response];
 	}
 
@@ -173,8 +193,8 @@ class TagsHelper {
 		$user,
 		$password,
 		$tagID,
-		$davPathVersionToUse = 1)
-	{
+		$davPathVersionToUse = 1
+	) {
 		$tagsPath = '/systemtags/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $user, $password,
@@ -193,17 +213,18 @@ class TagsHelper {
 		$userVisible = true;
 		$userAssignable = true;
 		switch ($type) {
-			case 'normal':
+			case 'normal' :
 				break;
-			case 'not user-assignable':
+			case 'not user-assignable' :
 				$userAssignable = false;
 				break;
-			case 'not user-visible':
+			case 'not user-visible' :
 				$userVisible = false;
 				break;
-			default:
+			default :
 				throw new \Exception('Unsupported type');
 		}
+		
 		return array($userVisible, $userAssignable);
 	}
 }

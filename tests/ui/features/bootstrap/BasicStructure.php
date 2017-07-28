@@ -118,8 +118,9 @@ trait BasicStructure
 	 * @throws Exception
 	 */
 	private function createUser($user, $password,
-		$displayName = null, $email = null)
-	{
+		$displayName = null,
+		$email = null
+	) {
 		$user = trim($user);
 		$result = SetupHelper::createUser(
 			$this->ocPath, $user, $password, $displayName, $email
