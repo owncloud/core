@@ -215,12 +215,15 @@ class Cache implements ICache {
 	 * @throws \RuntimeException
 	 */
 	public function put($file, array $data) {
+		// Begin transation to ensure ACID properties of PUT
+		\OC::$server->getDatabaseConnection()->beginTransaction();
 		if (($id = $this->getId($file)) > -1) {
 			$this->update($id, $data);
-			return $id;
 		} else {
-			return $this->insert($file, $data);
+			$id = $this->insert($file, $data);
 		}
+		\OC::$server->getDatabaseConnection()->commit();
+		return $id;
 	}
 
 	/**
@@ -266,7 +269,7 @@ class Cache implements ICache {
 			'path_hash',
 		])
 		) {
-			return (int)$this->connection->lastInsertId('*PREFIX*filecache');
+			return intval($this->connection->lastInsertId('*PREFIX*filecache'));
 		}
 
 		// The file was created in the mean time
@@ -274,6 +277,7 @@ class Cache implements ICache {
 			$this->update($id, $data);
 			return $id;
 		} else {
+			// This can only happen if operation is not protected by transaction - might signal a bug
 			throw new \RuntimeException('File entry could not be inserted with insertIfNotExist() but could also not be selected with getId() in order to perform an update. Please try again.');
 		}
 	}
@@ -309,8 +313,8 @@ class Cache implements ICache {
 			implode(' <> ? OR ', $queryParts) . ' <> ? OR ' .
 			implode(' IS NULL OR ', $queryParts) . ' IS NULL' .
 			') AND `fileid` = ? ';
-		$this->connection->executeQuery($sql, $params);
 
+		$this->connection->executeQuery($sql, $params);
 	}
 
 	/**
