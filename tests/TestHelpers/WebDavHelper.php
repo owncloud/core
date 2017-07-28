@@ -113,8 +113,8 @@ class WebDavHelper {
 		$options['auth'] = [$user, $password];
 		
 		if (!is_null($sourceIpAddress)) {
-			$options['config'] =
-				[ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
+			$options['config']
+				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
 		
 		$request = $client->createRequest($method, $fullUrl, $options);
