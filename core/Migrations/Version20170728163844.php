@@ -22,6 +22,14 @@ class Version20170728163844 implements ISchemaMigration {
 			['onDelete' => 'CASCADE']
 		);
 
+		// filecache.storage -> storages.numeric_id
+		$fileCacheTable->addForeignKeyConstraint(
+			"{$prefix}storages",
+			["storage"],
+			["numeric_id"],
+			['onDelete' => 'CASCADE']
+		);
+
 		$shareTable = $schema->getTable("{$prefix}share");
 		// share.file_source -> filecache.fileid
 		$shareTable->addForeignKeyConstraint(
@@ -30,5 +38,8 @@ class Version20170728163844 implements ISchemaMigration {
 			["fileid"],
 			['onDelete' => 'CASCADE']
 		);
+
+		// one root to rule them all: workaround for the "-1" file id
+
 	}
 }
