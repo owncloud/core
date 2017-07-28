@@ -25,3 +25,20 @@ default:
         - PersonalSecuritySettingsContext:
         - PersonalGeneralSettingsContext:
         - SharingContext:
+
+    files:
+      paths:
+        - %paths.base%/../features/files
+      context:
+        parameters:
+          ocPath: ./
+          adminPassword: admin
+          regularUserPassword: 123456
+          regularUserName: regularuser
+          regularUserNames: user1,user2,user3,usergrp,grpuser
+          regularGroupName: regulargrp
+          regularGroupNames: grp1,grp2,grp3,usergrp,grpuser
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - FilesContext:
