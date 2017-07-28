@@ -115,7 +115,8 @@ class Encryption extends Wrapper {
 			'unencryptedSize',
 			'encryptionStorage',
 			'headerSize',
-			'signed'
+			'signed',
+			'sourceFileOfRename'
 		];
 	}
 
@@ -155,6 +156,7 @@ class Encryption extends Wrapper {
 								$unencryptedSize,
 								$headerSize,
 								$signed,
+								$sourceFileOfRename = null,
 								$wrapper =  'OC\Files\Stream\Encryption') {
 
 		$context = stream_context_create([
@@ -172,7 +174,8 @@ class Encryption extends Wrapper {
 				'unencryptedSize' => $unencryptedSize,
 				'encryptionStorage' => $encStorage,
 				'headerSize' => $headerSize,
-				'signed' => $signed
+				'signed' => $signed,
+				'sourceFileOfRename' => $sourceFileOfRename
 			]
 		]);
 
@@ -228,7 +231,7 @@ class Encryption extends Wrapper {
 	}
 
 	public function stream_open($path, $mode, $options, &$opened_path) {
-		$this->loadContext('ocencryption');
+		$context = $this->loadContext('ocencryption');
 
 		$this->position = 0;
 		$this->cache = '';
@@ -254,7 +257,7 @@ class Encryption extends Wrapper {
 		}
 
 		$accessList = $this->file->getAccessList($sharePath);
-		$this->newHeader = $this->encryptionModule->begin($this->fullPath, $this->uid, $mode, $this->header, $accessList);
+		$this->newHeader = $this->encryptionModule->begin($this->fullPath, $this->uid, $mode, $this->header, $accessList, $context['sourceFileOfRename']);
 
 		if (
 			$mode === 'w'
