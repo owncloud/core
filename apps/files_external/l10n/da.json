@@ -12,6 +12,7 @@
     "Compatibility with Mac NFD encoding (slow)" : "Kompatibilitet med Mac NFD kodning (langsom)",
     "Admin defined" : "Bestemt af administrator",
     "Saved" : "Gemt",
+    "Disabling external storage will unmount all storages for all users, are you sure ?" : "Deaktivering af ekstern lagring vil skubbe all lagringsenheder ud for alle brugere, er du sikker?",
     "Empty response from the server" : "Svar fra serveren uden data",
     "Couldn't access. Please logout and login to activate this mount point" : "Kunne ikke få adgang. Log ud og log ind for at aktivere dette monteringspunkt",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "Kunne ikke indhente oplysningerne fra ownCloud serveren: {code} {type}",
