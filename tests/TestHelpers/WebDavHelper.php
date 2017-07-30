@@ -84,6 +84,7 @@ class WebDavHelper {
 	 * @param string $requestBody
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type of request
+	 * @param string $sourceIpAddress to initiate the request from
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 * @throws \GuzzleHttp\Exception\BadResponseException
 	 */
@@ -97,7 +98,8 @@ class WebDavHelper {
 		$body = null,
 		$requestBody = null,
 		$davPathVersionToUse = 1,
-		$type = "files"
+		$type = "files",
+		$sourceIpAddress = null
 	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
@@ -109,6 +111,11 @@ class WebDavHelper {
 			$options['body'] = $requestBody;
 		}
 		$options['auth'] = [$user, $password];
+		
+		if (!is_null($sourceIpAddress)) {
+			$options['config']
+				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
+		}
 		
 		$request = $client->createRequest($method, $fullUrl, $options);
 		if (!is_null($headers)) {
