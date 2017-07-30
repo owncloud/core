@@ -14,6 +14,7 @@
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Kan ikke upload {filename} da det er enten en mappe eller indholder 0 bytes.",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Der er ikke tilstrækkeligt friplads. Du uplaoder {size1} men der er kun {size2} tilbage",
     "Target folder \"{dir}\" does not exist any more" : "Mål mappen \"{dir}\" findes ikke mere",
+    "Target folder does not exist any more" : "Målmappe eksisterer ikke mere",
     "Not enough free space" : "Ikke nok ledig plads",
     "Uploading..." : "Uploader...",
     "..." : "...",
