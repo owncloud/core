@@ -35,6 +35,7 @@ use OC\User\User;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -789,15 +790,25 @@ class UsersController extends Controller {
     }
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @param string $id
  	 * @param string $mailAddress
  	 */
 	public function setEmailAddress($id, $mailAddress) {
 		$user = $this->userManager->get($id);
-
-		$user->setEMailAddress($mailAddress);
-		if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
-			$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
+		if($this->isAdmin ||
+			($this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()) &&
+				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user))) {
+			$user->setEMailAddress($mailAddress);
+			if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
+				$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
+			}
+		} else {
+			return new JSONResponse([
+				'error' => 'cannotSetEmailAddress',
+				'message' => 'Cannot set email address for user'
+			], HTTP::STATUS_NOT_FOUND);
 		}
 	}
 
