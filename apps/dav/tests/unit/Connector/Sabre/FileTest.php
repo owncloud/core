@@ -39,6 +39,7 @@ use OCP\Files\LockNotAcquiredException;
 use OCP\Files\NotPermittedException;
 use OCP\Files\Storage;
 use OCP\Files\StorageNotAvailableException;
+use OCP\IConfig;
 use OCP\Lock\LockedException;
 use OCP\Util;
 use Sabre\DAV\Exception;
@@ -92,6 +93,9 @@ class FileTest extends TestCase {
 		parent::tearDown();
 	}
 
+	/**
+	 * @return \PHPUnit_Framework_MockObject_MockObject | Storage
+	 */
 	private function getMockStorage() {
 		$storage = $this->createMock(Storage::class);
 		$storage->expects($this->any())
@@ -177,6 +181,7 @@ class FileTest extends TestCase {
 			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
 			->getMock();
 		Filesystem::mount($storage, [], $this->user . '/');
+		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
 		$view = $this->getMockBuilder(View::class)
 			->setMethods(['getRelativePath', 'resolvePath'])
 			->setConstructorArgs([])

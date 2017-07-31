@@ -30,7 +30,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
-use OC\Files\View;
+use OC\AppFramework\Http\Request;
 use OCP\Files\ForbiddenException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -44,9 +44,6 @@ use \Sabre\HTTP\ResponseInterface;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
 use OCP\IRequest;
-use Sabre\DAV\Exception\BadRequest;
-use OCA\DAV\Connector\Sabre\Directory;
-use OCA\DAV\Upload\FutureFile;
 
 class FilesPlugin extends ServerPlugin {
 
@@ -84,11 +81,6 @@ class FilesPlugin extends ServerPlugin {
 	 * @var bool
 	 */
 	private $isPublic;
-
-	/**
-	 * @var View
-	 */
-	private $fileView;
 
 	/**
 	 * @var bool
@@ -167,7 +159,6 @@ class FilesPlugin extends ServerPlugin {
 			}
 		});
 		$this->server->on('beforeMove', [$this, 'checkMove']);
-		$this->server->on('beforeMove', [$this, 'beforeMoveFutureFile']);
 	}
 
 	/**
@@ -240,9 +231,9 @@ class FilesPlugin extends ServerPlugin {
 			$filename = $node->getName();
 			if ($this->request->isUserAgent(
 				[
-					\OC\AppFramework\Http\Request::USER_AGENT_IE,
-					\OC\AppFramework\Http\Request::USER_AGENT_ANDROID_MOBILE_CHROME,
-					\OC\AppFramework\Http\Request::USER_AGENT_FREEBOX,
+					Request::USER_AGENT_IE,
+					Request::USER_AGENT_ANDROID_MOBILE_CHROME,
+					Request::USER_AGENT_FREEBOX,
 				])) {
 				$response->addHeader('Content-Disposition', 'attachment; filename="' . rawurlencode($filename) . '"');
 			} else {
@@ -418,43 +409,4 @@ class FilesPlugin extends ServerPlugin {
 			}
 		}
 	}
-
-	/**
-	 * Move handler for future file.
-	 *
-	 * This overrides the default move behavior to prevent Sabre
-	 * to delete the target file before moving. Because deleting would
-	 * lose the file id and metadata.
-	 *
-	 * @param string $path source path
-	 * @param string $destination destination path
-	 * @return bool|void false to stop handling, void to skip this handler
-	 */
-	public function beforeMoveFutureFile($path, $destination) {
-		$sourceNode = $this->tree->getNodeForPath($path);
-		if (!$sourceNode instanceof FutureFile) {
-			// skip handling as the source is not a chunked FutureFile
-			return;
-		}
-
-		if (!$this->tree->nodeExists($destination)) {
-			// skip and let the default handler do its work
-			return;
-		}
-
-		// do a move manually, skipping Sabre's default "delete" for existing nodes
-		$this->tree->move($path, $destination);
-
-		// trigger all default events (copied from CorePlugin::move)
-		$this->server->emit('afterMove', [$path, $destination]);
-		$this->server->emit('afterUnbind', [$path]);
-		$this->server->emit('afterBind', [$destination]);
-
-		$response = $this->server->httpResponse;
-		$response->setHeader('Content-Length', '0');
-		$response->setStatus(204);
-
-		return false;
-	}
-
 }

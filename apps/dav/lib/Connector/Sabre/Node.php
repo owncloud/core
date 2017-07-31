@@ -164,6 +164,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 *  Even if the modification time is set to a custom value the access time is set to now.
 	 */
 	public function touch($mtime) {
+		$mtime = $this->sanitizeMtime($mtime);
 		$this->fileView->touch($this->path, $mtime);
 		$this->refreshInfo();
 	}
@@ -369,4 +370,17 @@ abstract class Node implements \Sabre\DAV\INode {
 	public function getFileInfo() {
 		return $this->info;
 	}
+
+	protected function sanitizeMtime ($mtimeFromRequest) {
+		$mtime = (float) $mtimeFromRequest;
+		if ($mtime >= PHP_INT_MAX) {
+			$mtime = PHP_INT_MAX;
+		} elseif ($mtime <= (PHP_INT_MAX*-1)) {
+			$mtime = (PHP_INT_MAX*-1);
+		} else {
+			$mtime = (int) $mtimeFromRequest;
+		}
+		return $mtime;
+	}
+
 }

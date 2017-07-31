@@ -230,9 +230,7 @@ class File extends Node implements IFile {
 
 			// allow sync clients to send the mtime along in a header
 			if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
-				$mtime = $this->sanitizeMtime(
-					$this->request->server ['HTTP_X_OC_MTIME']
-				);
+				$mtime = $this->sanitizeMtime($this->request->server ['HTTP_X_OC_MTIME']);
 				if ($this->fileView->touch($this->path, $mtime)) {
 					header('X-OC-MTime: accepted');
 				}
@@ -614,18 +612,6 @@ class File extends Node implements IFile {
 		}
 
 		throw new \Sabre\DAV\Exception($e->getMessage(), 0, $e);
-	}
-
-	private function sanitizeMtime ($mtimeFromRequest) {
-		$mtime = (float) $mtimeFromRequest;
-		if ($mtime >= PHP_INT_MAX) {
-			$mtime = PHP_INT_MAX;
-		} elseif ($mtime <= (PHP_INT_MAX*-1)) {
-			$mtime = (PHP_INT_MAX*-1);
-		} else {
-			$mtime = (int) $mtimeFromRequest;
-		}
-		return $mtime;
 	}
 
 	/**
