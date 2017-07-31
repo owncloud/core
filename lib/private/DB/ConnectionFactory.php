@@ -130,7 +130,6 @@ class ConnectionFactory {
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
 				break;
 			case 'pgsql':
-			case 'postgresql':
 				$additionalConnectionParams['platform'] = new OCPostgreSqlPlatform();
 				break;
 		}

@@ -21,49 +21,53 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
 
-class OCPostgreSqlPlatform extends \Doctrine\DBAL\Platforms\PostgreSqlPlatform {
+class OCPostgreSqlPlatform extends PostgreSqlPlatform {
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getAlterTableSQL(TableDiff $diff){
-		$sqls = parent::getAlterTableSQL($diff);
-		foreach ($sqls as $index => $sql){
+		$queries = parent::getAlterTableSQL($diff);
+		foreach ($queries as $index => $sql){
 			// BIGSERIAL could not be used in statements altering column type
 			// That's why we replace it with BIGINT 
 			// see https://github.com/owncloud/core/pull/28364#issuecomment-315006853
 			if (preg_match('|(ALTER TABLE\s+\S+\s+ALTER\s+\S+\s+TYPE\s+)(BIGSERIAL)|i', $sql, $matches)){
 				$alterTable = $matches[1];
-				$sqls[$index] = $alterTable . 'BIGINT';
+				$queries[$index] = $alterTable . 'BIGINT';
 			}
 			// Changing integer to bigint kills next autoincrement value
 			// see https://github.com/owncloud/core/pull/28364#issuecomment-315006853
 			if (preg_match('|ALTER TABLE\s+(\S+)\s+ALTER\s+(\S+)\s+DROP DEFAULT|i', $sql, $matches)){
-				$queryTableName = $matches[1];
 				$queryColumnName = $matches[2];
 				$columnDiff = $this->findColumnDiffByName($diff, $queryColumnName);
 				if ($columnDiff){
 					if ($this->shouldSkipDropDefault($columnDiff)){
-						unset($sqls[$index]);
+						unset($queries[$index]);
 						continue;
 					}
 				}
 			}
 		}
 		
-		return $sqls;
+		return $queries;
 	}
-	
+
 	/**
-	 * We should NOT drop next seqence value if
+	 * We should NOT drop next sequence value if
 	 * - type was changed from INTEGER to BIGINT
 	 * - column keeps an autoincrement
 	 * - default value is kept NULL
+	 *
+	 * @param ColumnDiff $columnDiff
+	 * @return bool
 	 */
-	private function shouldSkipDropDefault($columnDiff){
+	private function shouldSkipDropDefault(ColumnDiff $columnDiff){
 		$column = $columnDiff->column;
 		$fromColumn = $columnDiff->fromColumn;
 		return $fromColumn->getType()->getName() === Type::INTEGER
@@ -73,14 +77,19 @@ class OCPostgreSqlPlatform extends \Doctrine\DBAL\Platforms\PostgreSqlPlatform {
 				&& $fromColumn->getAutoincrement()
 				&& $column->getAutoincrement();
 	}
-	
-	private function findColumnDiffByName($diff, $name){
+
+	/**
+	 * @param TableDiff $diff
+	 * @param string $name
+	 * @return  ColumnDiff | false
+	 */
+	private function findColumnDiffByName(TableDiff $diff, $name){
 		foreach ($diff->changedColumns as $columnDiff){
 			$oldColumnName = $columnDiff->getOldColumnName()->getQuotedName($this);
 			if ($oldColumnName === $name){
 				return $columnDiff;
 			}
-			return false;
 		}
+		return false;
 	}
 }
