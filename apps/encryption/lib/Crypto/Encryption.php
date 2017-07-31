@@ -164,12 +164,14 @@ class Encryption implements IEncryptionModule {
 	 * @param string $mode php stream open mode
 	 * @param array $header contains the header data read from the file
 	 * @param array $accessList who has access to the file contains the key 'users' and 'public'
+	 * @param string|null $sourceFileOfRename Either false or the name of source file to be renamed.
+	 * 										This is helpful for revision increment during move operation between storage.
 	 *
 	 * @return array $header contain data as key-value pairs which should be
 	 *                       written to the header, in case of a write operation
 	 *                       or if no additional data is needed return a empty array
 	 */
-	public function begin($path, $user, $mode, array $header, array $accessList) {
+	public function begin($path, $user, $mode, array $header, array $accessList, $sourceFileOfRename = null) {
 		$this->path = $this->getPathToRealFile($path);
 		$this->accessList = $accessList;
 		$this->user = $user;
@@ -189,7 +191,11 @@ class Encryption implements IEncryptionModule {
 		// always use the version from the original file, also part files
 		// need to have a correct version number if they get moved over to the
 		// final location
-		$this->version = (int)$this->keyManager->getVersion($this->stripPartFileExtension($path), new View());
+		if ($sourceFileOfRename !== null) {
+			$this->version = $this->keyManager->getVersion($sourceFileOfRename, new View());
+		} else {
+			$this->version = (int)$this->keyManager->getVersion($this->stripPartFileExtension($path), new View());
+		}
 
 		if (
 			$mode === 'w'
@@ -558,6 +564,9 @@ class Encryption implements IEncryptionModule {
 	 * @since 9.1.0
 	 */
 	public function isReadyForUser($user) {
+		if ($this->util->isMasterKeyEnabled() === true) {
+			return true;
+		}
 		return $this->keyManager->userHasKeys($user);
 	}
 }

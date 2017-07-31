@@ -194,6 +194,14 @@ class TransferOwnership extends Command {
 					$progress->advance();
 					$this->allFiles[] = $fileInfo;
 					if ($fileInfo->isEncrypted()) {
+						if (\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', 0) !== 0) {
+							/**
+							 * We are not going to add this to encryptedFiles array.
+							 * Because its encrypted with masterKey and hence it doesn't
+							 * require user's specific password.
+							 */
+							return true;
+						}
 						$this->encryptedFiles[] = $fileInfo;
 					}
 					return true;
