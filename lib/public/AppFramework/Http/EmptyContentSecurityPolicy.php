@@ -352,7 +352,7 @@ class EmptyContentSecurityPolicy {
 
 		if(!empty($this->allowedFontDomains)) {
 			$policy .= 'font-src ' . implode(' ', $this->allowedFontDomains);
-			$policy .= ' data:;';
+			$policy .= ' data:';
 			$policy .= ';';
 		}
 
