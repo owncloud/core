@@ -63,7 +63,7 @@ class IpHelper {
 	private static function systemIpv4Addresses() {
 		// IPv4 addresses are like 192.168.12.34
 		return self::parseIfconfigOutput(
-			'/inet addr:([\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})/'
+			'/inet\s*(?:addr)?:?\s*([\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})/'
 		);
 	}
 
@@ -72,7 +72,7 @@ class IpHelper {
 	 */
 	private static function systemIpv6Addresses() {
 		// IPv6 addresses are like fe80::6e26:388d:7bf:15d1
-		return self::parseIfconfigOutput('/inet6 addr: ([0123456789abcdef:]+)/');
+		return self::parseIfconfigOutput('/inet6\s*(?:addr)?:?\s+([0123456789abcdef:]+)/');
 	}
 
 	/**
