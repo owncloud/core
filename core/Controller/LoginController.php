@@ -196,8 +196,15 @@ class LoginController extends Controller {
 			$this->session->set('loginMessages', [
 				['invalidpassword'], []
 			]);
+			$args = [];
 			// Read current user and append if possible - we need to return the unmodified user otherwise we will leak the login name
-			$args = !is_null($user) ? ['user' => $originalUser] : [];
+			if (!is_null($user)) {
+				$args['user'] = $originalUser;
+			}
+			// keep the redirect url
+			if (!empty($redirect_url)) {
+				$args['redirect_url'] = $redirect_url;
+			}
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.login.showLoginForm', $args));
 		}
 		// TODO: remove password checks from above and let the user session handle failures
