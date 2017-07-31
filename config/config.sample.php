@@ -1330,6 +1330,16 @@ $CONFIG = array(
 'filelocking.ttl' => 3600,
 
 /**
+ * Number of times to retry acquiring a lock before failing.
+ */
+'filelocking.retries' => 5,
+
+/**
+ * How long to wait between each retries, in milliseconds.
+ */
+'filelocking.retrydelay' => 1000,
+
+/**
  * Memory caching backend for file locking
  *
  * Because most memcache backends can clean values without warning using redis
