@@ -445,26 +445,26 @@ label.infield {
 }
 
 /* Show password toggle */
-#show, #dbpassword {
+#showadminpass, #showdbpass {
 	position: absolute;
 	right: 1em;
 	top: .8em;
 	float: right;
 }
-#show, #dbpassword, #personal-show {
+#showadminpass, #showdbpass, #personal-show {
 	display: none;
 }
-#show + label, #dbpassword + label {
+#showadminpass + label, #showdbpass + label {
 	right: 21px;
 	top: 15px !important;
 	margin: -14px !important;
 	padding: 14px !important;
 }
-#show:checked + label, #dbpassword:checked + label, #personal-show:checked + label {
+#showadminpass:checked + label, #showdbpass:checked + label, #personal-show:checked + label {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 	opacity: .8;
 }
-#show + label, #dbpassword + label, #personal-show + label {
+#showadminpass + label, #showdbpass + label, #personal-show + label {
 	position: absolute !important;
 	height: 20px;
 	width: 24px;
@@ -474,7 +474,7 @@ label.infield {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	opacity: .3;
 }
-#show + label:before, #dbpassword + label:before, #personal-show + label:before {
+#showadminpass + label:before, #showdbpass + label:before, #personal-show + label:before {
 	display: none;
 }
 #pass2, input[name="personal-password-clone"] {
