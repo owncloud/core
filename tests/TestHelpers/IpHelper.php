@@ -36,25 +36,54 @@ class IpHelper {
 	const IPV6_LOOPBACK_ADDRESS_SUBNET = '::0';
 	const IPV4_LOOPBACK_ADDRESS_TOP = '127.';
 	const IPV6_LINK_LOCAL_ADDRESS_TOP = 'fe80';
+	// The docker bridged device does not work as a routable IP address
+	const UNUSABLE_NETWORK_DEVICES_REGEX = 'docker\d';
 	
 	/**
 	 * parse the output of ifconfig to find matching items such as IP addresses
 	 *
-	 * @param string $regex that will match the desired text in the ifconfig output
+	 * @param string $regex matching the desired text in the ifconfig output
+	 * @param string $except regex that matches devices not to be included
 	 * @throws Exception
 	 * @return array of elements that match the inner part of the regex
 	 */
-	private static function parseIfconfigOutput($regex) {
-		$output = [];
+	private static function parseIfconfigOutput($regex, $except = null) {
+		if (!is_null($except)) {
+			// device names are at the start of a line
+			$invalid_device_regex = '/^' . $except . '/';
+		}
+
+		$output_lines = [];
 		$return_var = null;
-		exec('ifconfig', $output, $return_var);
+		exec('ifconfig', $output_lines, $return_var);
 		if ($return_var) {
 			throw new \Exception(
 				"parseIfconfigOutput: Error $return_var calling exec ifconfig"
 			);
 		}
-		preg_match_all($regex, implode($output, ' '), $matches);
-		return $matches[1];
+
+		$valid_network_device = true;
+		$all_matches = [];
+		foreach ($output_lines as $output_line) {
+			if (isset($invalid_device_regex)
+				&& preg_match('/^\w+/', $output_line)
+			) {
+				// line starts with a string like docker0 eth0 lo
+				// this is the start of a set of network device data
+				if (preg_match($invalid_device_regex, $output_line)) {
+					$valid_network_device = false;
+				} else {
+					$valid_network_device = true;
+				}
+			}
+
+			if ($valid_network_device) {
+				if (preg_match_all($regex, $output_line, $matches)) {
+					$all_matches = array_merge($all_matches, $matches[1]);
+				}
+			}
+		}
+		return $all_matches;
 	}
 
 	/**
@@ -63,7 +92,8 @@ class IpHelper {
 	private static function systemIpv4Addresses() {
 		// IPv4 addresses are like 192.168.12.34
 		return self::parseIfconfigOutput(
-			'/inet\s*(?:addr)?:?\s*([\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})/'
+			'/inet\s*(?:addr)?:?\s*([\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})/',
+			self::UNUSABLE_NETWORK_DEVICES_REGEX
 		);
 	}
 
@@ -72,7 +102,10 @@ class IpHelper {
 	 */
 	private static function systemIpv6Addresses() {
 		// IPv6 addresses are like fe80::6e26:388d:7bf:15d1
-		return self::parseIfconfigOutput('/inet6\s*(?:addr)?:?\s+([0123456789abcdef:]+)/');
+		return self::parseIfconfigOutput(
+			'/inet6\s*(?:addr)?:?\s+([0123456789abcdef:]+)/',
+			self::UNUSABLE_NETWORK_DEVICES_REGEX
+		);
 	}
 
 	/**
