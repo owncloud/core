@@ -89,16 +89,40 @@ else
 	fi
 fi
 
-if [ "$SRV_HOST_PORT" == "80" ] || [ -z "$SRV_HOST_PORT" ]
+BASE_URL="http://$SRV_HOST_NAME"
+
+if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
 then
-	BASE_URL="http://$SRV_HOST_NAME"
-else
-	BASE_URL="http://$SRV_HOST_NAME:$SRV_HOST_PORT"
+	BASE_URL="$BASE_URL:$SRV_HOST_PORT"
+fi
+
+IPV4_URL="$BASE_URL"
+
+if [ ! -z "$IPV4_HOST_NAME" ]
+then
+	IPV4_URL="http://$IPV4_HOST_NAME"
+	if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
+	then
+		IPV4_URL="$IPV4_URL:$SRV_HOST_PORT"
+	fi
+fi
+
+IPV6_URL="$BASE_URL"
+
+if [ ! -z "$IPV6_HOST_NAME" ]
+then
+	IPV6_URL="http://$IPV6_HOST_NAME"
+	if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
+	then
+		IPV6_URL="$IPV6_URL:$SRV_HOST_PORT"
+	fi
 fi
 
 if [ -n "$SRV_HOST_URL" ]
 then
 	BASE_URL="$BASE_URL/$SRV_HOST_URL"
+	IPV4_URL="$IPV4_URL/$SRV_HOST_URL"
+	IPV6_URL="$IPV6_URL/$SRV_HOST_URL"
 fi
 
 if [ "$BROWSER" == "firefox" ]
@@ -109,7 +133,9 @@ fi
 EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 
 echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM"
-export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'","selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@localhost:4445/wd/hub"}}}}' 
+export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@localhost:4445/wd/hub"}}}}' 
+export IPV4_URL
+export IPV6_URL
 
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v
 
