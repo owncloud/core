@@ -113,6 +113,9 @@ try{
 } catch (\OCP\Files\NotFoundException $e) {
 	\OC_Response::setStatus(\OC_Response::STATUS_NOT_FOUND);
 	\OCP\Util::writeLog('core-preview', 'Requested file not found', \OCP\Util::WARN);
+} catch (\OCP\Files\ForbiddenException $e) {
+	\OC_Response::setStatus(\OC_Response::STATUS_FORBIDDEN);
+	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
 } catch (\Exception $e) {
 	\OC_Response::setStatus(\OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
