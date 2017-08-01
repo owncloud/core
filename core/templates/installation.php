@@ -35,13 +35,13 @@ script('core', [
 			<label for="adminlogin" class="infield"><?php p($l->t( 'Username' )); ?></label>
 		</p>
 		<p class="groupbottom">
-			<input type="password" name="adminpass" data-typetoggle="#show" id="adminpass"
+			<input type="password" name="adminpass" data-typetoggle="#showadminpass" id="adminpass"
 				placeholder="<?php p($l->t( 'Password' )); ?>"
 				value="<?php p($_['adminpass']); ?>"
 				autocomplete="off" autocapitalize="off" autocorrect="off" required>
 			<label for="adminpass" class="infield"><?php p($l->t( 'Password' )); ?></label>
-			<input type="checkbox" id="show" name="show">
-			<label for="show"></label>
+			<input type="checkbox" id="showadminpass" name="showadminpass">
+			<label for="showadminpass"></label>
 		</p>
 	</fieldset>
 
@@ -98,13 +98,13 @@ script('core', [
 					autocomplete="off" autocapitalize="off" autocorrect="off">
 			</p>
 			<p class="groupmiddle">
-				<input type="password" name="dbpass" id="dbpass" data-typetoggle="#dbpassword"
+				<input type="password" name="dbpass" id="dbpass" data-typetoggle="#showdbpass"
 					placeholder="<?php p($l->t( 'Database password' )); ?>"
 					value="<?php p($_['dbpass']); ?>"
 					autocomplete="off" autocapitalize="off" autocorrect="off">
 				<label for="dbpass" class="infield"><?php p($l->t( 'Database password' )); ?></label>
-				<input type="checkbox" id="dbpassword" name="dbpassword">
-				<label for="dbpassword"></label>
+				<input type="checkbox" id="showdbpass" name="showdbpass">
+				<label for="showdbpass"></label>
 			</p>
 			<p class="groupmiddle">
 				<label for="dbname" class="infield"><?php p($l->t( 'Database name' )); ?></label>
