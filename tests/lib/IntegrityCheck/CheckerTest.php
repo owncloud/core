@@ -571,26 +571,30 @@ class CheckerTest extends TestCase {
         ".user.ini": "8362e2f91924dde144162fe6b6757d88b8e6cd7266fd0e90e32aee37e662b7854384a211ac44e8703fa093833df6d5cceef5426eb141dc2638ff88d245cea3c0",
         "subfolder\/.htaccess": "2c57b1e25050e11dc3ae975832f378c452159f7b69f818e47eeeafadd6ba568517461dcb4d843b90b906cd7c89d161bc1b89dff8e3ae0eb6f5088508c47befd1"
     },
-    "signature": "d6pqYc0pj5hihZK4Pi\/rM9XguY1xK9LEch+jUcxZWwhzOPL4qVHx5LN4FAhEOnr5ZjuhK\/umVEUjieamF4z8tP\/4nnnu2LmRuPMmj6+1tBEwbsKoeg7NiYfYL5h+VSdBePpIZDmjk0tjEpsMtCPhUPAY5vOSSDJ3Xef4KQIpeL6RKIctDcVdO26QWPLFpCo9NK3j91KHuXTcjbAsATDo+oXQzi0CaomBqL6Ft1SU\/Bdes6usgeVWd6mGygZ6zUCLqB4hSi6335xIkkUO1c3NekWksiqTWqdmVIpsTEsIpapx+nE0UFBGc7ZF2rnamg5813g67M5V\/UwhBRcHobMFWfbp73QDUsHcuLCOhamgYh7hbVIlDP7LS2V3kIRLgMLBVwLnvb8LAbaGUsdYGtbfmrhcMK\/jkpGCv0pqUCc4I+1QuVexNEQrdqafwYRnQUsmdFSFaCASYVvgxPrY5jA+y1HwNX5HEc5mMzVORNPhZXUcxWBRUQxUESY5j473DInMQUhq7SLVNAaglxDR1a9M5tQO8engvIJ5eTImLITm0qdefmEvFrxQ0BrrGmPNFYUysrHeNGDhMkGX+JIONj+T4Ht3Z7dr7cfufYDHRaummsTGgRx6206zRSqavsBWL\/Cbzrfu1HhiRagncVcoL40EommJt8lobaKHs3GZ8k861Wo=",
+    "signature": "W98za7+gpWu6W2In2RY6Y3zWHIvBUlrtJnxAJ+VH0YCa/imKmvPNkarS0TMrHu3cB/5SdlAXaj0/slNtaxcMbRT7QInjjvVmX5V4Sruvuw0UyTrA369Uf/4Qd0df+NSPuhpAO7df1URFfSO8ODzyP7Iw2dyEoR9xzAm+NjGbunb+5ArCd1dlnOPiKWRbHyja8fwF+04McfGjHLQ0e8RoeUk5CaXmClEE7hsuQVDqmH9LT3k7vc7jhVWCO2eFebH5i0/nhVGT3XDwy5BpQFt0kdhgztgy13LS5+KB1KFb6/UixMZfrly+SowadR/ovwcZoEm4G2t758HhpwZtHSjQZCfbsyauvPa0jxqRY7LoWjMpw5dfZpetbNJ7hIJV2WOpm3twjSjf7b/MINUWFQbPH4jK6x3bRx3to0lRx58eq0V8NX+M/VpRuteLdVuygMPebjwQu86t1QTi0Rbdf2sWqeHSawGmPYUjWlzrqruSqMdQuj+YjVMz3udEA82R23G92qbdk4kWm3wFDicYLkZLLK9KYygHFp8qW+Y+Zxu9gM3U6j8WypW4ISd0pViQqitQhYWO0VZEe8HinSVLpNyfPahKgWOUSeRgPrSGQGwj1hrL57ukS2Rva2dOOnuprO517P/xvZ+qenWzATVcmhfk63zB04RFSBfh/YLFmk1/r4E=",
     "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEvjCCAqagAwIBAgIUc\/0FxYrsgSs9rDxp03EJmbjN0NwwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIxMDMzM1oXDTE2MTEwMzIxMDMzM1owDzENMAsGA1UEAwwEY29yZTCCAiIwDQYJ\r\nKoZIhvcNAQEBBQADggIPADCCAgoCggIBALb6EgHpkAqZbO5vRO8XSh7G7XGWHw5s\r\niOf4RwPXR6SE9bWZEm\/b72SfWk\/\/J6AbrD8WiOzBuT\/ODy6k5T1arEdHO+Pux0W1\r\nMxYJJI4kH74KKgMpC0SB0Rt+8WrMqV1r3hhJ46df6Xr\/xolP3oD+eLbShPcblhdS\r\nVtkZEkoev8Sh6L2wDCeHDyPxzvj1w2dTdGVO9Kztn0xIlyfEBakqvBWtcxyi3Ln0\r\nklnxlMx3tPDUE4kqvpia9qNiB1AN2PV93eNr5\/2riAzIssMFSCarWCx0AKYb54+d\r\nxLpcYFyqPJ0ydBCkF78DD45RCZet6PNYkdzgbqlUWEGGomkuDoJbBg4wzgzO0D77\r\nH87KFhYW8tKFFvF1V3AHl\/sFQ9tDHaxM9Y0pZ2jPp\/ccdiqnmdkBxBDqsiRvHvVB\r\nCn6qpb4vWGFC7vHOBfYspmEL1zLlKXZv3ezMZEZw7O9ZvUP3VO\/wAtd2vUW8UFiq\r\ns2v1QnNLN6jNh51obcwmrBvWhJy9vQIdtIjQbDxqWTHh1zUSrw9wrlklCBZ\/zrM0\r\ni8nfCFwTxWRxp3H9KoECzO\/zS5R5KIS7s3\/wq\/w9T2Ie4rcecgXwDizwnn0C\/aKc\r\nbDIjujpL1s9HO05pcD\/V3wKcPZ1izymBkmMyIbL52iRVN5FTVHeZdXPpFuq+CTQJ\r\nQ238lC+A\/KOVAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBAGoKTnh8RfJV4sQItVC2\r\nAvfJagkrIqZ3iiQTUBQGTKBsTnAqE1H7QgUSV9vSd+8rgvHkyZsRjmtyR1e3A6Ji\r\noNCXUbExC\/0iCPUqdHZIVb+Lc\/vWuv4ByFMybGPydgtLoEUX2ZrKFWmcgZFDUSRd\r\n9Uj26vtUhCC4bU4jgu6hIrR9IuxOBLQUxGTRZyAcXvj7obqRAEZwFAKQgFpfpqTb\r\nH+kjcbZSaAlLVSF7vBc1syyI8RGYbqpwvtREqJtl5IEIwe6huEqJ3zPnlP2th\/55\r\ncf3Fovj6JJgbb9XFxrdnsOsDOu\/tpnaRWlvv5ib4+SzG5wWFT5UUEo4Wg2STQiiX\r\nuVSRQxK1LE1yg84bs3NZk9FSQh4B8vZVuRr5FaJsZZkwlFlhRO\/\/+TJtXRbyNgsf\r\noMRZGi8DLGU2SGEAHcRH\/QZHq\/XDUWVzdxrSBYcy7GSpT7UDVzGv1rEJUrn5veP1\r\n0KmauAqtiIaYRm4f6YBsn0INcZxzIPZ0p8qFtVZBPeHhvQtvOt0iXI\/XUxEWOa2F\r\nK2EqhErgMK\/N07U1JJJay5tYZRtvkGq46oP\/5kQG8hYST0MDK6VihJoPpvCmAm4E\r\npEYKQ96x6A4EH9Y9mZlYozH\/eqmxPbTK8n89\/p7Ydun4rI+B2iiLnY8REWWy6+UQ\r\nV204fGUkJqW5CrKy3P3XvY9X\r\n-----END CERTIFICATE-----"
 }';
 		$this->environmentHelper
-				->expects($this->any())
-				->method('getServerRoot')
-				->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent'));
+			->expects($this->any())
+			->method('getServerRoot')
+			->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent'));
 		$this->fileAccessHelper
-				->expects($this->once())
-				->method('file_put_contents')
-				->with(
-						\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent/core/signature.json',
-						$this->callback(function ($arg) use ($expectedSignatureFileData) {
-							$this->assertEquals(
-								json_decode($expectedSignatureFileData, true),
-								json_decode($arg, true)
-							);
-							return true;
-						})
-				);
+			->expects($this->any())
+			->method('is_writeable')
+			->willReturn(true);
+		$this->fileAccessHelper
+			->expects($this->once())
+			->method('file_put_contents')
+			->with(
+					\OC::$SERVERROOT . '/tests/data/integritycheck/htaccessWithValidModifiedContent/core/signature.json',
+					$this->callback(function ($arg) use ($expectedSignatureFileData) {
+						$this->assertEquals(
+							json_decode($expectedSignatureFileData, true),
+							json_decode($arg, true)
+						);
+						return true;
+					})
+			);
 
 		$keyBundle = file_get_contents(__DIR__ .'/../../data/integritycheck/core.crt');
 		$rsaPrivateKey = file_get_contents(__DIR__ .'/../../data/integritycheck/core.key');
@@ -683,7 +687,7 @@ class CheckerTest extends TestCase {
         ".user.ini": "8362e2f91924dde144162fe6b6757d88b8e6cd7266fd0e90e32aee37e662b7854384a211ac44e8703fa093833df6d5cceef5426eb141dc2638ff88d245cea3c0",
         "subfolder\/.htaccess": "2c57b1e25050e11dc3ae975832f378c452159f7b69f818e47eeeafadd6ba568517461dcb4d843b90b906cd7c89d161bc1b89dff8e3ae0eb6f5088508c47befd1"
     },
-    "signature": "d6pqYc0pj5hihZK4Pi\/rM9XguY1xK9LEch+jUcxZWwhzOPL4qVHx5LN4FAhEOnr5ZjuhK\/umVEUjieamF4z8tP\/4nnnu2LmRuPMmj6+1tBEwbsKoeg7NiYfYL5h+VSdBePpIZDmjk0tjEpsMtCPhUPAY5vOSSDJ3Xef4KQIpeL6RKIctDcVdO26QWPLFpCo9NK3j91KHuXTcjbAsATDo+oXQzi0CaomBqL6Ft1SU\/Bdes6usgeVWd6mGygZ6zUCLqB4hSi6335xIkkUO1c3NekWksiqTWqdmVIpsTEsIpapx+nE0UFBGc7ZF2rnamg5813g67M5V\/UwhBRcHobMFWfbp73QDUsHcuLCOhamgYh7hbVIlDP7LS2V3kIRLgMLBVwLnvb8LAbaGUsdYGtbfmrhcMK\/jkpGCv0pqUCc4I+1QuVexNEQrdqafwYRnQUsmdFSFaCASYVvgxPrY5jA+y1HwNX5HEc5mMzVORNPhZXUcxWBRUQxUESY5j473DInMQUhq7SLVNAaglxDR1a9M5tQO8engvIJ5eTImLITm0qdefmEvFrxQ0BrrGmPNFYUysrHeNGDhMkGX+JIONj+T4Ht3Z7dr7cfufYDHRaummsTGgRx6206zRSqavsBWL\/Cbzrfu1HhiRagncVcoL40EommJt8lobaKHs3GZ8k861Wo=",
+    "signature": "W98za7+gpWu6W2In2RY6Y3zWHIvBUlrtJnxAJ+VH0YCa/imKmvPNkarS0TMrHu3cB/5SdlAXaj0/slNtaxcMbRT7QInjjvVmX5V4Sruvuw0UyTrA369Uf/4Qd0df+NSPuhpAO7df1URFfSO8ODzyP7Iw2dyEoR9xzAm+NjGbunb+5ArCd1dlnOPiKWRbHyja8fwF+04McfGjHLQ0e8RoeUk5CaXmClEE7hsuQVDqmH9LT3k7vc7jhVWCO2eFebH5i0/nhVGT3XDwy5BpQFt0kdhgztgy13LS5+KB1KFb6/UixMZfrly+SowadR/ovwcZoEm4G2t758HhpwZtHSjQZCfbsyauvPa0jxqRY7LoWjMpw5dfZpetbNJ7hIJV2WOpm3twjSjf7b/MINUWFQbPH4jK6x3bRx3to0lRx58eq0V8NX+M/VpRuteLdVuygMPebjwQu86t1QTi0Rbdf2sWqeHSawGmPYUjWlzrqruSqMdQuj+YjVMz3udEA82R23G92qbdk4kWm3wFDicYLkZLLK9KYygHFp8qW+Y+Zxu9gM3U6j8WypW4ISd0pViQqitQhYWO0VZEe8HinSVLpNyfPahKgWOUSeRgPrSGQGwj1hrL57ukS2Rva2dOOnuprO517P/xvZ+qenWzATVcmhfk63zB04RFSBfh/YLFmk1/r4E=",
     "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIEvjCCAqagAwIBAgIUc\/0FxYrsgSs9rDxp03EJmbjN0NwwDQYJKoZIhvcNAQEF\r\nBQAwIzEhMB8GA1UECgwYb3duQ2xvdWQgQ29kZSBTaWduaW5nIENBMB4XDTE1MTEw\r\nMzIxMDMzM1oXDTE2MTEwMzIxMDMzM1owDzENMAsGA1UEAwwEY29yZTCCAiIwDQYJ\r\nKoZIhvcNAQEBBQADggIPADCCAgoCggIBALb6EgHpkAqZbO5vRO8XSh7G7XGWHw5s\r\niOf4RwPXR6SE9bWZEm\/b72SfWk\/\/J6AbrD8WiOzBuT\/ODy6k5T1arEdHO+Pux0W1\r\nMxYJJI4kH74KKgMpC0SB0Rt+8WrMqV1r3hhJ46df6Xr\/xolP3oD+eLbShPcblhdS\r\nVtkZEkoev8Sh6L2wDCeHDyPxzvj1w2dTdGVO9Kztn0xIlyfEBakqvBWtcxyi3Ln0\r\nklnxlMx3tPDUE4kqvpia9qNiB1AN2PV93eNr5\/2riAzIssMFSCarWCx0AKYb54+d\r\nxLpcYFyqPJ0ydBCkF78DD45RCZet6PNYkdzgbqlUWEGGomkuDoJbBg4wzgzO0D77\r\nH87KFhYW8tKFFvF1V3AHl\/sFQ9tDHaxM9Y0pZ2jPp\/ccdiqnmdkBxBDqsiRvHvVB\r\nCn6qpb4vWGFC7vHOBfYspmEL1zLlKXZv3ezMZEZw7O9ZvUP3VO\/wAtd2vUW8UFiq\r\ns2v1QnNLN6jNh51obcwmrBvWhJy9vQIdtIjQbDxqWTHh1zUSrw9wrlklCBZ\/zrM0\r\ni8nfCFwTxWRxp3H9KoECzO\/zS5R5KIS7s3\/wq\/w9T2Ie4rcecgXwDizwnn0C\/aKc\r\nbDIjujpL1s9HO05pcD\/V3wKcPZ1izymBkmMyIbL52iRVN5FTVHeZdXPpFuq+CTQJ\r\nQ238lC+A\/KOVAgMBAAEwDQYJKoZIhvcNAQEFBQADggIBAGoKTnh8RfJV4sQItVC2\r\nAvfJagkrIqZ3iiQTUBQGTKBsTnAqE1H7QgUSV9vSd+8rgvHkyZsRjmtyR1e3A6Ji\r\noNCXUbExC\/0iCPUqdHZIVb+Lc\/vWuv4ByFMybGPydgtLoEUX2ZrKFWmcgZFDUSRd\r\n9Uj26vtUhCC4bU4jgu6hIrR9IuxOBLQUxGTRZyAcXvj7obqRAEZwFAKQgFpfpqTb\r\nH+kjcbZSaAlLVSF7vBc1syyI8RGYbqpwvtREqJtl5IEIwe6huEqJ3zPnlP2th\/55\r\ncf3Fovj6JJgbb9XFxrdnsOsDOu\/tpnaRWlvv5ib4+SzG5wWFT5UUEo4Wg2STQiiX\r\nuVSRQxK1LE1yg84bs3NZk9FSQh4B8vZVuRr5FaJsZZkwlFlhRO\/\/+TJtXRbyNgsf\r\noMRZGi8DLGU2SGEAHcRH\/QZHq\/XDUWVzdxrSBYcy7GSpT7UDVzGv1rEJUrn5veP1\r\n0KmauAqtiIaYRm4f6YBsn0INcZxzIPZ0p8qFtVZBPeHhvQtvOt0iXI\/XUxEWOa2F\r\nK2EqhErgMK\/N07U1JJJay5tYZRtvkGq46oP\/5kQG8hYST0MDK6VihJoPpvCmAm4E\r\npEYKQ96x6A4EH9Y9mZlYozH\/eqmxPbTK8n89\/p7Ydun4rI+B2iiLnY8REWWy6+UQ\r\nV204fGUkJqW5CrKy3P3XvY9X\r\n-----END CERTIFICATE-----"
 }';
 		$this->fileAccessHelper
