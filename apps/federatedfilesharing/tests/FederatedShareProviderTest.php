@@ -462,6 +462,11 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		];
 	}
 
+	public function testGetAllSharedWith() {
+		$shares = $this->provider->getAllSharedWith('shared', null);
+		$this->assertCount(0, $shares);
+	}
+
 
 	public function testGetAllSharesByNodes() {
 		$node = $this->createMock('\OCP\Files\File');
