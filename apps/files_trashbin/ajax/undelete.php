@@ -28,7 +28,9 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 \OC::$server->getSession()->close();
 
-$files = $_POST['files'];
+if (isset($_POST['files'])) {
+	$files = $_POST['files'];
+}
 $dir = '/';
 if (isset($_POST['dir'])) {
 	$dir = rtrim((string)$_POST['dir'], '/'). '/';
