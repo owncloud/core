@@ -32,6 +32,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
@@ -117,9 +118,25 @@ class DecryptAll extends Command {
 			'user for which you want to decrypt all files (optional)',
 			''
 		);
+
+		$this->addOption(
+			'method',
+			'm',
+			InputOption::VALUE_OPTIONAL,
+			'Passed to the encryption module'
+		);
+
+		$this->addOption(
+			'continue',
+			'c',
+			InputOption::VALUE_OPTIONAL,
+			'Whether to ask for permission to continue'
+		);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+
+		$confirmed = $input->hasOption('continue');
 
 		try {
 			if ($this->encryptionManager->isEnabled() === true) {
@@ -145,7 +162,7 @@ class DecryptAll extends Command {
 			$output->writeln('Please make sure that no user access his files during this process!');
 			$output->writeln('');
 			$question = new ConfirmationQuestion('Do you really want to continue? (y/n) ', false);
-			if ($this->questionHelper->ask($input, $output, $question)) {
+			if ($confirmed || $this->questionHelper->ask($input, $output, $question)) {
 				$this->forceSingleUserAndTrashbin();
 				$user = $input->getArgument('user');
 				$result = $this->decryptAll->decryptAll($input, $output, $user);
