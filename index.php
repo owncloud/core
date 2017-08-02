@@ -63,6 +63,10 @@ try {
 	\OC::loadDefaultEnabledAppTheme();
 	OC_Response::setStatus(OC_Response::STATUS_FORBIDDEN);
 	OC_Template::printErrorPage($ex->getMessage());
+} catch (\OCP\Files\ForbiddenException $ex) {
+	\OC::loadDefaultEnabledAppTheme();
+	OC_Response::setStatus(OC_Response::STATUS_FORBIDDEN);
+	OC_Template::printErrorPage($ex->getMessage());
 } catch (Exception $ex) {
 	\OC::loadDefaultEnabledAppTheme();
 	try {
