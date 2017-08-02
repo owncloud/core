@@ -613,6 +613,20 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
 			$uri = $this->getScriptName() . substr($uri, strlen($this->server['SCRIPT_NAME']));
+		} else {
+			$components = parse_url($uri);
+			if ($components === false) {
+				// due to https://bugs.php.net/bug.php?id=70942 we have to add a
+				// fake schema and host to successfully extract path, query and fragment
+				$components = parse_url("http://localhost$uri");
+			}
+			$uri = $components['path'];
+			if (isset($components['query'])) {
+				$uri .= '?'.$components['query'];
+			}
+			if (isset($components['fragment'])) {
+				$uri .= '#'.$components['fragment'];
+			}
 		}
 		return $uri;
 	}

@@ -16,13 +16,14 @@ use OC\Security\CSRF\CsrfTokenManager;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 use OCP\IConfig;
+use Test\TestCase;
 
 /**
  * Class RequestTest
  *
  * @package OC\AppFramework\Http
  */
-class RequestTest extends \Test\TestCase {
+class RequestTest extends TestCase {
 	/** @var string */
 	protected $stream = 'fakeinput://data';
 	/** @var ISecureRandom | \PHPUnit_Framework_MockObject_MockObject */
@@ -1337,7 +1338,22 @@ class RequestTest extends \Test\TestCase {
 		];
 	}
 
-	public function testGetRequestUriWithoutOverwrite() {
+	public function providesUri() {
+		return[
+			['/test.php', '/test.php'],
+			['/remote.php/dav/files/user0/test_folder:5', '/remote.php/dav/files/user0/test_folder:5'],
+			['/remote.php/dav/files/admin/welcome.txt', 'http://localhost:8080/remote.php/dav/files/admin/welcome.txt'],
+			['/path?arg=value#anchor', 'http://username:password@hostname:9090/path?arg=value#anchor'],
+			['/path:5?arg=value#anchor', 'http://username:password@hostname:9090/path:5?arg=value#anchor'],
+			['', ''],
+			['/test.php', '/test.php'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesUri
+	 */
+	public function testGetRequestUriWithoutOverwrite($expectedUri, $requestUri) {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
@@ -1347,7 +1363,7 @@ class RequestTest extends \Test\TestCase {
 		$request = new Request(
 			[
 				'server' => [
-					'REQUEST_URI' => '/test.php'
+					'REQUEST_URI' => $requestUri
 				]
 			],
 			$this->secureRandom,
@@ -1356,7 +1372,7 @@ class RequestTest extends \Test\TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('/test.php', $request->getRequestUri());
+		$this->assertSame($expectedUri, $request->getRequestUri());
 	}
 
 	public function providesGetRequestUriWithOverwriteData() {
