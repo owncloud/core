@@ -450,4 +450,25 @@ class Notification implements INotification {
 			$this->getObjectId() !== ''
 		;
 	}
+
+	/**
+	 * Icon is an absolute URL to an image to be displayed in the notifications
+	 *
+	 * @return string
+	 * @since 10.0.3
+	 */
+	public function getIcon() {
+		return $this->icon;
+	}
+
+	/**
+	 * @param string $icon
+	 * @since 10.0.3
+	 */
+	public function setIcon($icon) {
+		if (!is_string($icon)) {
+			throw new \InvalidArgumentException('$icon has an invalid value');
+		}
+		$this->icon = $icon;
+	}
 }
