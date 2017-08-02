@@ -43,11 +43,16 @@ use OC\Repair\RepairMismatchFileCachePath;
 use OC\Migration\ConsoleOutput;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
+use OCP\Files\IMimeTypeLoader;
 
 class Scan extends Base {
 
 	/** @var IUserManager $userManager */
 	private $userManager;
+	/** @var ILockingProvider */
+	private $lockingProvider;
+	/** @var IMimeTypeLoader */
+	private $mimeTypeLoader;
 	/** @var float */
 	protected $execTime = 0;
 	/** @var int */
@@ -55,8 +60,14 @@ class Scan extends Base {
 	/** @var int */
 	protected $filesCounter = 0;
 
-	public function __construct(IUserManager $userManager) {
+	public function __construct(
+		IUserManager $userManager,
+		ILockingProvider $lockingProvider,
+		IMimeTypeLoader $mimeTypeLoader
+	) {
 		$this->userManager = $userManager;
+		$this->lockingProvider = $lockingProvider;
+		$this->mimeTypeLoader = $mimeTypeLoader;
 		parent::__construct();
 	}
 
@@ -122,25 +133,23 @@ class Scan extends Base {
 		$scanner = new \OC\Files\Utils\Scanner($user, $connection, \OC::$server->getLogger());
 		if ($shouldRepair) {
 			$scanner->listen('\OC\Files\Utils\Scanner', 'beforeScanStorage', function ($storage) use ($output, $connection) {
-				$lockingProvider = \OC::$server->getLockingProvider();
 				try {
 					// FIXME: this will lock the storage even if there is nothing to repair
-					$storage->acquireLock('', ILockingProvider::LOCK_EXCLUSIVE, $lockingProvider);
+					$storage->acquireLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
 				} catch (OCP\Lock\LockedException $e) {
 					$output->writeln("\t<error>Storage \"" . $storage->getCache()->getNumericStorageId() . '" cannot be repaired as it is currently in use, please try again later</error>');
 					return;
 				}
 				try {
-					// TODO: use DI
 					$repairStep = new RepairMismatchFileCachePath(
 						$connection,
-						\OC::$server->getMimeTypeLoader()
+						$mimeTypeLoader
 					);
 					$repairStep->setStorageNumericId($storage->getCache()->getNumericStorageId());
 					$repairStep->setCountOnly(false);
 					$repairStep->run(new ConsoleOutput($output));
 				} finally {
-					$storage->releaseLock('', ILockingProvider::LOCK_EXCLUSIVE, $lockingProvider);
+					$storage->releaseLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
 				}
 			});
 		}
