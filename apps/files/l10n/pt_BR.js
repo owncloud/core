@@ -21,6 +21,7 @@ OC.L10N.register(
     "Uploading..." : "Enviando...",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} de {totalSize} ({bitrate})",
+    "Error when assembling chunks, status code {status}" : "Erro ao montar partes do todo, código de status {status}",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Envio de arquivo em andamento. Sair da página agora resultará no cancelamento do envio.",
     "Actions" : "Ações",
     "Download" : "Baixar",
