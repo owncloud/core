@@ -220,4 +220,18 @@ interface INotification {
 	 * @since 9.0.0
 	 */
 	public function isValidParsed();
+
+	/**
+	 * Icon is an absolute URL to an image to be displayed in the notifications
+	 *
+	 * @return string
+	 * @since 10.0.3
+	 */
+	public function getIcon();
+
+	/**
+	 * @param string $icon
+	 * @since 10.0.3
+	 */
+	public function setIcon($icon);
 }
