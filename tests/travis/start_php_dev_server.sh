@@ -36,7 +36,6 @@ ps -p $serverPID  > /dev/null 2>&1
 if [ $? -eq 1 ] ; then
 	echo "could not start PHP development webserver"
 	ERROR_STARTING_SERVER=true
-	# exit 1
 else
 	echo "started PHP dev. webserver with PID $serverPID"
 fi
