@@ -102,8 +102,13 @@ class DecryptAll {
 		} else {
 			$this->output->writeln('Files for following users couldn\'t be decrypted, ');
 			$this->output->writeln('maybe the user is not set up in a way that supports this operation: ');
-			foreach ($this->failed as $uid => $paths) {
+			foreach ($this->failed as $uid => $data) {
 				$this->output->writeln('    ' . $uid);
+				foreach ($data as $failure) {
+					$path = $failure['path'];
+					$message = $failure['exception']->getMessage();
+					$this->output->writeLn("           $path - $message");
+				}
 			}
 			$this->output->writeln('');
 		}
@@ -233,9 +238,9 @@ class DecryptAll {
 						}
 					} catch (\Exception $e) {
 						if (isset($this->failed[$uid])) {
-							$this->failed[$uid][] = $path;
+							$this->failed[$uid][] = ['path' => $path, 'exception' => $e];
 						} else {
-							$this->failed[$uid] = [$path];
+							$this->failed[$uid] = [['path' => $path, 'exception' => $e]];
 						}
 					}
 				}
