@@ -60,6 +60,10 @@ try {
 } catch (\OC\User\LoginException $ex) {
 	OC_Response::setStatus(OC_Response::STATUS_FORBIDDEN);
 	OC_Template::printErrorPage($ex->getMessage());
+} catch (\OCP\Files\ForbiddenException $ex) {
+	\OC::loadDefaultEnabledAppTheme();
+	OC_Response::setStatus(OC_Response::STATUS_FORBIDDEN);
+	OC_Template::printErrorPage($ex->getMessage());
 } catch (Exception $ex) {
 	try {
 		\OC::$server->getLogger()->logException($ex, array('app' => 'index'));
