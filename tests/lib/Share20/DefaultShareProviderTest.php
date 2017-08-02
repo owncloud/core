@@ -1180,6 +1180,262 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals(Share::SHARE_TYPE_GROUP, $share->getShareType());
 	}
 
+	/**
+	 * @dataProvider storageAndFileNameProvider
+	 */
+	public function testGetAllShared($storageStringId, $fileName1, $fileName2) {
+		$storageId = $this->createTestStorageEntry($storageStringId);
+		$fileId1 = $this->createTestFileEntry($fileName1, $storageId);
+		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
+		$id0 = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user1',
+			'file', $fileId1, 'myTarget', 31, null, null, null);
+		$id1 = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'group0', 'user1', 'user1',
+			'file', $fileId2, 'myTarget', 31, null, null, null);
+		$id2 = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user0', 'user1', 'user1',
+			'file', $fileId2, 'myTarget', 31, null, null, null);
+
+		$user0 = $this->createMock(IUser::class);
+		$user0->method('getUID')->willReturn('user0');
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+
+		$this->userManager->method('get')->willReturnMap([
+			['user0', $user0],
+			['user1', $user1],
+		]);
+
+		$group0 = $this->createMock(IGroup::class);
+		$group0->method('getGID')->willReturn('group0');
+
+		$this->groupManager->method('get')->with('group0')->willReturn($group0);
+		$this->groupManager->method('getUserGroups')->with($user0)->willReturn([$group0]);
+
+		$this->rootFolder->method('getUserFolder')->with('user1')->will($this->returnSelf());
+		$node1 = $this->createMock(File::class);
+		$node1->method('getId')->willReturn($fileId1);
+		$node2 = $this->createMock(File::class);
+		$node2->method('getId')->willReturn($fileId2);
+		$this->rootFolder->method('getById')->willReturnCallback(function ($id) use ($node1, $node2) {
+			if($node1->getId() === $id){
+				return [$node1];
+			}
+			return [$node2];
+		});
+
+		// Check targeting specific node with $node1
+		$recShares = $this->provider->getAllSharedWith('user0', $node1);
+		$this->assertCount(1, $recShares);
+		$share = $recShares[0];
+		$this->assertEquals($id0, $share->getId());
+		$this->assertSame('user0', $share->getSharedWith());
+		$this->assertSame('user1', $share->getShareOwner());
+		$this->assertSame('user1', $share->getSharedBy());
+		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
+		$shareNode = $share->getNode();
+		$this->assertSame($node1, $shareNode);
+
+		// Check targeting specific node with $node2
+		$recShares = $this->provider->getAllSharedWith('user0', $node2);
+		$this->assertCount(2, $recShares);
+		foreach($recShares as $share) {
+			if ($share->getShareType() === Share::SHARE_TYPE_USER) {
+				$this->assertEquals($id2, $share->getId());
+				$this->assertSame('user0', $share->getSharedWith());
+				$this->assertSame('user1', $share->getShareOwner());
+				$this->assertSame('user1', $share->getSharedBy());
+				$shareNode = $share->getNode();
+				$this->assertSame($node2, $shareNode);
+			} else {
+				$this->assertEquals($id1, $share->getId());
+				$this->assertSame('group0', $share->getSharedWith());
+				$this->assertSame('user1', $share->getShareOwner());
+				$this->assertSame('user1', $share->getSharedBy());
+				$shareNode = $share->getNode();
+				$this->assertSame($node2, $shareNode);
+			}
+		}
+
+		// Check targeting all nodes with null
+		$recShares = $this->provider->getAllSharedWith('user0', null);
+		$this->assertCount(3, $recShares);
+	}
+
+	/**
+	 * Check scenario with group and user of the same name
+	 *
+	 * 1. create two users "user1" and "user2"
+	 * 2. create a user "meow" (don't add to any group)
+	 * 3. add user "user1" in group "meow"
+	 * 4. login as "user2"
+	 * 5. create a folder "for_meow_user" and share with the user "meow"
+	 * 6. create another folder "for_meow_group" and share with the group "meow"
+	 * 7. login as "user1": only "for_meow_group" must appear
+	 * 8. login as "meow": only "for_meow_user" must appear
+	 *
+	 * @dataProvider storageAndFileNameProvider
+	 */
+	public function testGetAllSharedSameUserGroup($storageStringId, $fileName1, $fileName2) {
+		$storageId = $this->createTestStorageEntry($storageStringId);
+
+		// 1. create two users "user1" and "user2"
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+		$user2 = $this->createMock(IUser::class);
+		$user2->method('getUID')->willReturn('user2');
+
+		// 2. create a user "meow" (don't add to any group)
+		$userMeow = $this->createMock(IUser::class);
+		$userMeow->method('getUID')->willReturn('meow');
+
+		// 3. add user "user1" in group "meow"
+		$groupMeow = $this->createMock(IGroup::class);
+		$groupMeow->method('getGID')->willReturn('meow');
+
+		$this->groupManager->method('get')->with('meow')->willReturn($groupMeow);
+		$this->groupManager->method('getUserGroups')->willReturnCallback(function ($user) use ($groupMeow) {
+			$userUID = $user->getUID();
+			if($userUID === 'user1'){
+				return [$groupMeow];
+			}
+			return [];
+		});
+
+		// 4. login as "user2"
+		// 5. create a file $fileName1 and share with the user "meow"
+		$fileId1 = $this->createTestFileEntry($fileName1, $storageId);
+		$id1 = $this->addShareToDB(Share::SHARE_TYPE_USER, 'meow', 'user2', 'user2',
+			'file', $fileId1, 'for_meow_user', 31, null, null, null);
+
+		// 6. create another folder "for_meow_group" and share with the group "meow"
+		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
+		$id2 = $this->addShareToDB(Share::SHARE_TYPE_GROUP, 'meow', 'user2', 'user2',
+			'file', $fileId2, 'for_meow_group', 31, null, null, null);
+
+		// Setup mocking
+		$this->userManager->method('get')->willReturnMap([
+			['user1', $user1],
+			['user2', $user2],
+			['meow', $userMeow],
+		]);
+
+		$this->rootFolder->method('getUserFolder')->with('user2')->will($this->returnSelf());
+		$node1 = $this->createMock(File::class);
+		$node1->method('getId')->willReturn($fileId1);
+		$node2 = $this->createMock(File::class);
+		$node2->method('getId')->willReturn($fileId2);
+		$this->rootFolder->method('getById')->willReturnCallback(function ($id) use ($node1, $node2) {
+			if($node1->getId() === $id){
+				return [$node1];
+			}
+			return [$node2];
+		});
+
+		$recShares = $this->provider->getAllSharedWith('meow', null);
+		$this->assertCount(1, $recShares);
+		$share = $recShares[0];
+		$this->assertEquals($id1, $share->getId());
+		$this->assertSame('meow', $share->getSharedWith());
+		$this->assertSame('user2', $share->getShareOwner());
+		$this->assertSame('user2', $share->getSharedBy());
+		$this->assertEquals(Share::SHARE_TYPE_USER, $share->getShareType());
+		$shareNode = $share->getNode();
+		$this->assertSame($node1, $shareNode);
+
+		$recShares = $this->provider->getAllSharedWith('user1', null);
+		$this->assertCount(1, $recShares);
+		$share = $recShares[0];
+		$this->assertEquals($id2, $share->getId());
+		$this->assertSame('meow', $share->getSharedWith());
+		$this->assertSame('user2', $share->getShareOwner());
+		$this->assertSame('user2', $share->getSharedBy());
+		$this->assertEquals(Share::SHARE_TYPE_GROUP, $share->getShareType());
+		$shareNode = $share->getNode();
+		$this->assertSame($node2, $shareNode);
+
+		$recShares = $this->provider->getAllSharedWith('user2', null);
+		$this->assertCount(0, $recShares);
+	}
+
+	/**
+	 * Check scenario with group chunking
+	 *
+	 * User user1 will share file to user2 and other file to 205 groups, in which user2 is member
+	 *
+	 * @dataProvider storageAndFileNameProvider
+	 */
+	public function testGetAllSharedGroupChunking($storageStringId, $fileName1, $fileName2) {
+		$storageId = $this->createTestStorageEntry($storageStringId);
+
+		$user1 = $this->createMock(IUser::class);
+		$user1->method('getUID')->willReturn('user1');
+		$user2 = $this->createMock(IUser::class);
+		$user2->method('getUID')->willReturn('user2');
+
+		$fileId1 = $this->createTestFileEntry($fileName1, $storageId);
+		$idUser = $this->addShareToDB(Share::SHARE_TYPE_USER, 'user2', 'user1', 'user1',
+			'file', $fileId1, 'for_meow_user', 31, null, null, null);
+
+		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
+		for($i = 0; $i < 205; $i++) {
+			$groupId = 'group'.$i;
+			$group = $this->createMock(IGroup::class);
+			$group->method('getGID')->willReturn($groupId);
+			$groupArray[] = $group;
+			$idGroups[] = $this->addShareToDB(Share::SHARE_TYPE_GROUP, $groupId, 'user1', 'user1',
+				'file', $fileId2, 'target'.$groupId, 31, null, null, null);
+		}
+
+		$this->groupManager->method('get')->with('group')->willReturn($group);
+		$this->groupManager->method('getUserGroups')->willReturnCallback(function ($user) use ($groupArray) {
+			$userUID = $user->getUID();
+			if($userUID === 'user2'){
+				return $groupArray;
+			}
+			return [];
+		});
+
+		// Setup mocking
+		$this->userManager->method('get')->willReturnMap([
+			['user1', $user1],
+			['user2', $user2],
+		]);
+
+		$this->rootFolder->method('getUserFolder')->with('user1')->will($this->returnSelf());
+		$node1 = $this->createMock(File::class);
+		$node1->method('getId')->willReturn($fileId1);
+		$node2 = $this->createMock(File::class);
+		$node2->method('getId')->willReturn($fileId2);
+		$this->rootFolder->method('getById')->willReturnCallback(function ($id) use ($node1, $node2) {
+			if($node1->getId() === $id){
+				return [$node1];
+			}
+			return [$node2];
+		});
+
+		$recShares = $this->provider->getAllSharedWith('user1', null);
+		$this->assertCount(0, $recShares);
+
+		$recShares = $this->provider->getAllSharedWith('user2', null);
+		$this->assertCount(206, $recShares);
+		foreach($recShares as $share) {
+			if ($share->getShareType() === Share::SHARE_TYPE_USER) {
+				$this->assertEquals($idUser, $share->getId());
+				$this->assertSame('user2', $share->getSharedWith());
+				$this->assertSame('user1', $share->getShareOwner());
+				$this->assertSame('user1', $share->getSharedBy());
+				$shareNode = $share->getNode();
+				$this->assertSame($node1, $shareNode);
+			} else {
+				$this->assertContains($share->getId(), $idGroups);
+				$this->assertStringStartsWith('group', $share->getSharedWith());
+				$this->assertSame('user1', $share->getShareOwner());
+				$this->assertSame('user1', $share->getSharedBy());
+				$shareNode = $share->getNode();
+				$this->assertSame($node2, $shareNode);
+			}
+		}
+	}
+
 	public function shareTypesProvider() {
 		return [
 			[Share::SHARE_TYPE_USER, false],

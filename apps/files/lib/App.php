@@ -44,4 +44,10 @@ class App {
 		return self::$navigationManager;
 	}
 
+	public static function extendJsConfig($array) {
+		$maxChunkSize = (int)(\OC::$server->getConfig()->getAppValue('files', 'max_chunk_size', (10 * 1024 * 1024)));
+		$array['array']['oc_appconfig']['files'] = [
+			'max_chunk_size' => $maxChunkSize
+		];
+	}
 }

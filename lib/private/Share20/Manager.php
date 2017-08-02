@@ -115,6 +115,23 @@ class Manager implements IManager {
 	}
 
 	/**
+	 * @param int[] $shareTypes - ref \OC\Share\Constants[]
+	 * @return int[] $providerIdMap e.g. { "ocinternal" => { 0, 1 }[2] }[1]
+	 */
+	private function shareTypeToProviderMap($shareTypes) {
+		$providerIdMap = [];
+		foreach ($shareTypes as $shareType) {
+			// Get provider and its ID, at this point provider is cached at IProviderFactory instance
+			$provider = $this->factory->getProviderForType($shareType);
+			$providerId = $provider->identifier();
+
+			// Create a key -> multi value map
+			$providerIdMap[$providerId][] = $shareType;
+		}
+		return $providerIdMap;
+	}
+
+	/**
 	 * Convert from a full share id to a tuple (providerId, shareId)
 	 *
 	 * @param string $id
@@ -884,7 +901,6 @@ class Manager implements IManager {
 		$provider->move($share, $recipientId);
 	}
 
-
 	/**
 	 * @inheritdoc
 	 */
@@ -895,18 +911,8 @@ class Manager implements IManager {
 		}
 		// This will ensure that if there are multiple share providers for the same share type, we will execute it in batches
 		$shares = array();
-		$providerIdMap = array();
-		foreach ($shareTypes as $shareType) {
-			// Get provider and its ID, at this point provider is cached at IProviderFactory instance
-			$provider = $this->factory->getProviderForType($shareType);
-			$providerId = $provider->identifier();
 
-			// Create a key -> multi value map
-			if (!isset($providerIdMap[$providerId])) {
-				$providerIdMap[$providerId] = array();
-			}
-			array_push($providerIdMap[$providerId], $shareType);
-		}
+		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
 
 		$today = new \DateTime();
 		foreach ($providerIdMap as $providerId => $shareTypeArray) {
@@ -1011,6 +1017,27 @@ class Manager implements IManager {
 		return $provider->getSharedWith($userId, $shareType, $node, $limit, $offset);
 	}
 
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getAllSharedWith($userId, $shareTypes, $node = null) {
+		$shares = [];
+		
+		// Aggregate all required $shareTypes by mapping provider to supported shareTypes
+		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
+		foreach ($providerIdMap as $providerId => $shareTypeArray) {
+			// Get provider from cache
+			$provider = $this->factory->getProvider($providerId);
+			
+			// Obtain all shares for all the supported provider types
+			$queriedShares = $provider->getAllSharedWith($userId, $node);
+			$shares = array_merge($shares, $queriedShares);
+		}
+
+		return $shares;
+	}
+	
 	/**
 	 * @inheritdoc
 	 */
