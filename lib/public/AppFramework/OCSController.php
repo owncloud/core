@@ -105,10 +105,12 @@ abstract class OCSController extends ApiController {
 			$params[$key] = $value;
 		}
 
+		$isV2 = substr($this->request->getScriptName(), -11) === '/ocs/v2.php';
+
 		$resp = new OCSResponse(
 			$format, $params['statuscode'],
 			$params['message'], $params['data'],
-			$params['itemscount'], $params['itemsperpage']
+			$params['itemscount'], $params['itemsperpage'], $isV2
 		);
 		if (isset($data['headers'])) {
 			foreach ($data['headers'] as $key => $value) {
