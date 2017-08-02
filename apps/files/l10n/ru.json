@@ -58,6 +58,7 @@
     "New" : "Новый",
     "\"{name}\" is an invalid file name." : "\"{name}\" это неправильное имя файла.",
     "File name cannot be empty." : "Имя файла не может быть пустым.",
+    "File name cannot contain \"/\"." : "Имя файла не может содержать символ \"/\".",
     "\"{name}\" has a forbidden file type/extension." : "У «{name}» запрещённый тип/расширение файла.",
     "Storage of {owner} is full, files can not be updated or synced anymore!" : "Хранилище {owner} переполнено, файлы больше не могут быть обновлены или синхронизированы!",
     "Your storage is full, files can not be updated or synced anymore!" : "Ваше хранилище заполнено, произведите очистку перед загрузкой новых файлов.",
