@@ -29,8 +29,7 @@
  */
 
 namespace OCP\AppFramework\Http;
-
-use OCP\AppFramework\Http;
+use OC\OCS\Result;
 
 /**
  * A renderer for OCS responses
@@ -44,26 +43,30 @@ class OCSResponse extends Response {
 	private $message;
 	private $itemscount;
 	private $itemsperpage;
+	private $isV2;
 
 	/**
 	 * generates the xml or json response for the API call from an multidimenional data array.
+	 *
 	 * @param string $format
 	 * @param int $statuscode
 	 * @param string $message
 	 * @param array $data
 	 * @param int|string $itemscount
 	 * @param int|string $itemsperpage
+	 * @param bool $isV2
 	 * @since 8.1.0
 	 */
 	public function __construct($format, $statuscode, $message,
 								$data=[], $itemscount='',
-								$itemsperpage='') {
+								$itemsperpage='', $isV2 = false) {
 		$this->format = $format;
 		$this->statuscode = $statuscode;
 		$this->message = $message;
 		$this->data = $data;
 		$this->itemscount = $itemscount;
 		$this->itemsperpage = $itemsperpage;
+		$this->isV2 = $isV2;
 
 		// set the correct header based on the format parameter
 		if ($format === 'json') {
@@ -82,11 +85,15 @@ class OCSResponse extends Response {
 	 * @since 8.1.0
 	 */
 	public function render() {
-		$r = new \OC_OCS_Result($this->data, $this->statuscode, $this->message);
+		$r = new Result($this->data, $this->statuscode, $this->message);
 		$r->setTotalItems($this->itemscount);
 		$r->setItemsPerPage($this->itemsperpage);
+		$meta = $r->getMeta();
+		if ($this->isV2 && $this->statuscode === 200) {
+			$meta['status'] = 'ok';
+		}
 
-		return \OC_API::renderResult($this->format, $r->getMeta(), $r->getData());
+		return \OC_API::renderResult($this->format, $meta, $r->getData());
 	}
 
 	/**
