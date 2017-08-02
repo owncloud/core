@@ -117,18 +117,29 @@ class RepairMismatchFileCachePathTest extends TestCase {
 	public function repairCasesProvider() {
 		return [
 			// same storage, different target dir
-			[1, 1, 'target'],
+			[1, 1, 'target', false, null],
+			[1, 1, 'target', false, [1]],
 			// different storage, same target dir name
-			[1, 2, 'source'],
+			[1, 2, 'source', false, null],
+			[1, 2, 'source', false, [1, 2]],
+			[1, 2, 'source', false, [2, 1]],
 			// different storage, different target dir
-			[1, 2, 'target'],
+			[1, 2, 'target', false, null],
+			[1, 2, 'target', false, [1, 2]],
+			[1, 2, 'target', false, [2, 1]],
 
 			// same storage, different target dir, target exists
-			[1, 1, 'target', true],
+			[1, 1, 'target', true, null],
+			[1, 1, 'target', true, [1, 2]],
+			[1, 1, 'target', true, [2, 1]],
 			// different storage, same target dir name, target exists
-			[1, 2, 'source', true],
+			[1, 2, 'source', true, null],
+			[1, 2, 'source', true, [1, 2]],
+			[1, 2, 'source', true, [2, 1]],
 			// different storage, different target dir, target exists
-			[1, 2, 'target', true],
+			[1, 2, 'target', true, null],
+			[1, 2, 'target', true, [1, 2]],
+			[1, 2, 'target', true, [2, 1]],
 		];
 	}
 
@@ -137,7 +148,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 	 *
 	 * @dataProvider repairCasesProvider
 	 */
-	public function testRepairEntry($sourceStorageId, $targetStorageId, $targetDir, $targetExists = false) {
+	public function testRepairEntry($sourceStorageId, $targetStorageId, $targetDir, $targetExists, $repairStoragesOrder) {
 		/*
 		 * Tree:
 		 *
@@ -195,7 +206,16 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$doNotTouchId = $this->createFileCacheEntry($sourceStorageId, 'files/source/do_not_touch', $sourceId);
 
 		$outputMock = $this->createMock(IOutput::class);
-		$this->repair->run($outputMock);
+		if (is_null($repairStoragesOrder)) {
+			// no storage selected, full repair
+			$this->repair->setStorageNumericId(null);
+			$this->repair->run($outputMock);
+		} else {
+			foreach ($repairStoragesOrder as $storageId) {
+				$this->repair->setStorageNumericId($storageId);
+				$this->repair->run($outputMock);
+			}
+		}
 
 		$entry = $this->getFileCacheEntry($movedId);
 		$this->assertEquals($targetId, $entry['parent']);
@@ -294,6 +314,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->setFileCacheEntryParent($refChild3Id, $refChild3ChildId);
 
 		$outputMock = $this->createMock(IOutput::class);
+		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
 
 		// self-referencing updated
@@ -385,6 +406,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$wrongParentId = $this->createFileCacheEntry($storageId, 'files/wrongparent', $nonExistingParentId);
 
 		$outputMock = $this->createMock(IOutput::class);
+		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
 
 		// wrong parent root reparented to actual root
@@ -414,13 +436,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 	 */
 	public function testRepairDetachedSubtree() {
 		/**
-		 * other:
-		 *     - files/missingdir/orphaned1 (orphaned entry as "missingdir" is missing)
-		 *     - missingdir/missingdir1/orphaned2 (orphaned entry two levels up to root)
-		 *     - noroot (orphaned entry on a storage that has no root entry)
+		 * - files/missingdir/orphaned1 (orphaned entry as "missingdir" is missing)
+		 * - missingdir/missingdir1/orphaned2 (orphaned entry two levels up to root)
 		 */
 		$storageId = 1;
-		$storageId2 = 2;
 		$rootId1 = $this->createFileCacheEntry($storageId, '');
 		$baseId1 = $this->createFileCacheEntry($storageId, 'files', $rootId1);
 
@@ -430,10 +449,8 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$nonExistingParentId2 = $this->createNonExistingId();
 		$orphanedId2 = $this->createFileCacheEntry($storageId, 'missingdir/missingdir1/orphaned2', $nonExistingParentId2);
 
-		$nonExistingParentId3 = $this->createNonExistingId();
-		$orphanedId3 = $this->createFileCacheEntry($storageId2, 'noroot', $nonExistingParentId3);
-
 		$outputMock = $this->createMock(IOutput::class);
+		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
 
 		// orphaned entry reattached
@@ -477,18 +494,34 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('', $entry['path']);
 		$this->assertEquals(md5(''), $entry['path_hash']);
+	}
+
+	/**
+	 * Test repair missing root
+	 */
+	public function testRepairMissingRoot() {
+		/**
+		 * - noroot (orphaned entry on a storage that has no root entry)
+		 */
+		$storageId = 1;
+		$nonExistingParentId = $this->createNonExistingId();
+		$orphanedId = $this->createFileCacheEntry($storageId, 'noroot', $nonExistingParentId);
+
+		$outputMock = $this->createMock(IOutput::class);
+		$this->repair->setStorageNumericId($storageId);
+		$this->repair->run($outputMock);
 
 		// orphaned entry with no root reattached
-		$entry = $this->getFileCacheEntry($orphanedId3);
+		$entry = $this->getFileCacheEntry($orphanedId);
 		$this->assertTrue(isset($entry['parent']));
-		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('noroot', $entry['path']);
 		$this->assertEquals(md5('noroot'), $entry['path_hash']);
 
 		// recreated root entry
 		$entry = $this->getFileCacheEntry($entry['parent']);
 		$this->assertEquals(-1, $entry['parent']);
-		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('', $entry['path']);
 		$this->assertEquals(md5(''), $entry['path_hash']);
 	}
