@@ -157,4 +157,8 @@ class SystemConfig {
 
 		return $value;
 	}
+
+	public function isReadOnly() {
+		return $this->config->isReadOnly();
+	}
 }

@@ -657,12 +657,4 @@ class OC_Helper {
 		return ['free' => $free, 'used' => $used, 'total' => $total, 'relative' => $relative];
 
 	}
-
-	/**
-	 * Returns whether the config file is set manually to read-only
-	 * @return bool
-	 */
-	public static function isReadOnlyConfigEnabled() {
-		return \OC::$server->getConfig()->getSystemValue('config_is_read_only', false);
-	}
 }
