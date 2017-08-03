@@ -47,10 +47,6 @@ class Helper  {
 		return (bool) \OC_Helper::findBinaryPath($path);
 	}
 
-	public function isReadOnlyConfigEnabled() {
-		return \OC_Helper::isReadOnlyConfigEnabled();
-	}
-
 	public function isAnnotationsWorking() {
 		return \OC_Util::isAnnotationsWorking();
 	}

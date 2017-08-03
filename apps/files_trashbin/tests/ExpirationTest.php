@@ -223,7 +223,8 @@ class ExpirationTest extends \Test\TestCase {
 						'deleteUserValue',
 						'deleteAllUserValues',
 						'deleteAppFromAllUsers',
-						'getUsersForUserValue'
+						'getUsersForUserValue',
+						'isSystemConfigReadOnly'
 					]
 				)
 				->getMock()

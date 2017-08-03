@@ -31,7 +31,6 @@ namespace OC;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OC\Cache\CappedMemoryCache;
 use OCP\IDBConnection;
-use OCP\PreConditionNotMetException;
 
 /**
  * Class to combine all the configuration options ownCloud offers
@@ -444,5 +443,16 @@ class AllConfig implements \OCP\IConfig {
 		$query->closeCursor();
 
 		return $userIDs;
+	}
+
+	/**
+	 * In some environments the system config file is readonly. Find out if this
+	 * is the case.
+	 *
+	 * @return boolean
+	 * @since 10.0.3
+	 */
+	public function isSystemConfigReadOnly() {
+		return $this->systemConfig->isReadOnly();
 	}
 }
