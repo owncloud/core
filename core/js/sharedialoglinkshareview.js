@@ -209,8 +209,8 @@
 				success: function() {
 					if (self.mailView) {
 						// also send out email first
-						self.mailView.sendEmails().then(done).
-						fail(function() {
+						self.mailView.sendEmails().then(done).fail(function() {
+							done();
 							// re-show the popup
 							self.show();
 						});
@@ -244,7 +244,7 @@
 			var isPasswordSet = !!this.model.get('encryptedPassword');
 
 			// only show email field for new shares and if enabled globally
-			var showEmailField = this.model.isNew() && this.configModel.isMailPublicNotificationEnabled();
+			var showEmailField = this.configModel.isMailPublicNotificationEnabled();
 
 			this.$el.html(this.template({
 				cid: this.cid,
