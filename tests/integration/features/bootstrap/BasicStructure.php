@@ -390,5 +390,16 @@ trait BasicStructure {
 			$file->isDir() ?  rmdir($file) : unlink($file);
 		}
 	}
+
+	/**
+	 * @BeforeSuite
+	 */
+	public static function useBigFileIDs(){
+		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = ['admin','admin'];
+		$response = $client->send($client->createRequest('post', $fullUrl, $options));
+	}
 }
 
