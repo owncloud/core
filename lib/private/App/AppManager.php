@@ -58,25 +58,18 @@ class AppManager implements IAppManager {
 
 	/** @var \OCP\IUserSession */
 	private $userSession;
-
 	/** @var \OCP\IAppConfig */
 	private $appConfig;
-
 	/** @var \OCP\IGroupManager */
 	private $groupManager;
-
 	/** @var \OCP\ICacheFactory */
 	private $memCacheFactory;
-
 	/** @var string[] $appId => $enabled */
 	private $installedAppsCache;
-
 	/** @var string[] */
 	private $shippedApps;
-
 	/** @var string[] */
 	private $alwaysEnabled;
-
 	/** @var EventDispatcherInterface */
 	private $dispatcher;
 
@@ -212,6 +205,7 @@ class AppManager implements IAppManager {
 	 * Enable an app for every user
 	 *
 	 * @param string $appId
+	 * @throws \Exception
 	 */
 	public function enableApp($appId) {
 		if(OC_App::getAppPath($appId) === false) {
@@ -429,5 +423,19 @@ class AppManager implements IAppManager {
 		$appInfo = Installer::checkAppsIntegrity($data, $appCodeDir, $path);
 		Files::rmdirr($appCodeDir);
 		return $appInfo;
+	}
+
+	/**
+	 * Indicates if app installation is supported. Usually it is but in certain
+	 * environments it is disallowed because of hardening. In a clustered setup
+	 * apps need to be installed on each cluster node which is out of scope of
+	 * ownCloud itself.
+	 *
+	 * @return bool
+	 * @since 10.0.3
+	 */
+	public function canInstall() {
+		$appsFolder = OC_App::getInstallPath();
+		return $appsFolder !== null && is_writable($appsFolder) && is_readable($appsFolder);
 	}
 }
