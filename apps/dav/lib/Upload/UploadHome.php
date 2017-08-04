@@ -29,6 +29,8 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\ICollection;
 
 class UploadHome implements ICollection {
+	private $principalInfo;
+
 	/**
 	 * UploadHome constructor.
 	 *
@@ -81,7 +83,11 @@ class UploadHome implements ICollection {
 	 */
 	private function impl() {
 		$rootView = new View();
-		$user = \OC::$server->getUserSession()->getUser();
+		if (isset($this->principalInfo['user'])) {
+			$user = $this->principalInfo['user'];
+		} else {
+			$user = \OC::$server->getUserSession()->getUser();
+		}
 		Filesystem::initMountPoints($user->getUID());
 		if (!$rootView->file_exists('/' . $user->getUID() . '/uploads')) {
 			$rootView->mkdir('/' . $user->getUID() . '/uploads');
