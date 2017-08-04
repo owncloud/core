@@ -59,7 +59,7 @@ $eventDispatcher->addListener(
 });
 
 $config = \OC::$server->getConfig();
-if ($config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
+if (class_exists('OCA\Files\App') && $config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
 
 	\OCA\Files\App::getNavigationManager()->add(function () {
 		$l = \OC::$server->getL10N('files_sharing');
