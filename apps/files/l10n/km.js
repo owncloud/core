@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "មិន​ស្គាល់​កំហុស",
-    "Saved" : "បាន​រក្សាទុក",
     "Close" : "បិទ",
     "Upload cancelled." : "បាន​បោះបង់​ការ​ផ្ទុក​ឡើង។",
     "Uploading..." : "កំពុងដាក់បញ្ចូល...",
@@ -28,8 +27,6 @@ OC.L10N.register(
     "%2$s changed %1$s" : "%2$s បាន​ផ្លាស់​ប្ដូរ %1$s",
     "You deleted %1$s" : "អ្នក​បាន​លុប %1$s",
     "%2$s deleted %1$s" : "%2$s បាន​លុប %1$s",
-    "Maximum upload size" : "ទំហំ​ផ្ទុកឡើង​ជា​អតិបរមា",
-    "Save" : "រក្សាទុក",
     "Settings" : "ការកំណត់",
     "WebDAV" : "WebDAV",
     "Upload too large" : "ផ្ទុក​ឡើង​ធំ​ពេក",

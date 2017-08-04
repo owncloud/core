@@ -23,7 +23,6 @@ OC.L10N.register(
     "Folder" : "قىسقۇچ",
     "New folder" : "يېڭى قىسقۇچ",
     "Upload" : "يۈكلە",
-    "Save" : "ساقلا",
     "Settings" : "تەڭشەكلەر",
     "WebDAV" : "WebDAV",
     "Upload too large" : "يۈكلەندىغىنى بەك چوڭ",

@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Unknown error" : "Անհայտ սխալ",
     "All files" : "Բոլոր ֆայլերը",
-    "Saved" : "Պահված",
     "File could not be found" : "Ֆայլը չգտնվեց",
     "Home" : "Գլխավոր էջ",
     "Close" : "Փակել",
@@ -50,7 +49,6 @@ OC.L10N.register(
     "Changed by %2$s" : "Փոխվել է %2$sի կողմից",
     "Deleted by %2$s" : "Ջնջվել է %2$sի կողմից",
     "Restored by %2$s" : "Վերականգնվել է %2$sի կողմից",
-    "Save" : "Պահպանել",
     "Settings" : "Կարգավորումներ",
     "WebDAV" : "WebDAV",
     "No files in here" : "Ֆայլեր չկան այստեղ",

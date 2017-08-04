@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Unknown error" : "Et ass en onbekannte Fehler opgetrueden",
     "All files" : "All d'Fichieren",
-    "Saved" : "Gespäichert",
     "Home" : "Doheem",
     "Close" : "Zoumaachen",
     "Favorites" : "Favoriten",
@@ -30,10 +29,6 @@ OC.L10N.register(
     "New folder" : "Neien Dossier",
     "Upload" : "Eroplueden",
     "Upload (max. %s)" : "Eroplueden (max. %s)",
-    "File handling" : "Fichier handling",
-    "Maximum upload size" : "Maximum Upload Gréisst ",
-    "max. possible: " : "max. méiglech:",
-    "Save" : "Späicheren",
     "Settings" : "Astellungen",
     "No files in here" : "Hei sinn keng Fichieren",
     "No entries found in this folder" : "Keng Elementer an dësem Dossier fonnt",

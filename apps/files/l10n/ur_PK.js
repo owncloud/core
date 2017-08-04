@@ -9,7 +9,6 @@ OC.L10N.register(
     "Unshare" : "شئیرنگ ختم کریں",
     "Files" : "فائلیں",
     "Name" : "اسم",
-    "Save" : "حفظ",
     "Settings" : "ترتیبات"
 },
 "nplurals=2; plural=(n != 1);");

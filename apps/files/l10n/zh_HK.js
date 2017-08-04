@@ -3,7 +3,6 @@ OC.L10N.register(
     {
     "Unknown error" : "不明錯誤",
     "All files" : "所有文件",
-    "Saved" : "已儲存",
     "Home" : "主頁",
     "Close" : "關閉",
     "Download" : "下載",
@@ -28,7 +27,6 @@ OC.L10N.register(
     "%2$s changed %1$s" : "%2$s 改變了 %1$s",
     "You deleted %1$s" : "你刪除了%1$s",
     "%2$s deleted %1$s" : "%2$s 刪除了 %1$s",
-    "Save" : "儲存",
     "Settings" : "設定",
     "WebDAV" : "WebDAV"
 },

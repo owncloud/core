@@ -9,7 +9,6 @@ OC.L10N.register(
     "Name" : "ناو",
     "Folder" : "بوخچه",
     "Upload" : "بارکردن",
-    "Save" : "پاشکه‌وتکردن",
     "Settings" : "ڕێکخستنه‌کان"
 },
 "nplurals=2; plural=(n != 1);");

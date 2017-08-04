@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Error Incognite",
-    "Saved" : "Salveguardate",
     "Home" : "Domo",
     "Close" : "Clauder",
     "Uploading..." : "Incargante...",
@@ -35,8 +34,6 @@ OC.L10N.register(
     "You restored %1$s" : "Tu restabiliva %1$s",
     "%2$s restored %1$s" : "%2$s restabilite %1$s",
     "Upload (max. %s)" : "Incargar (max. %s)",
-    "Maximum upload size" : "Dimension maxime de incargamento",
-    "Save" : "Salveguardar",
     "Settings" : "Configurationes",
     "Upload too large" : "Incargamento troppo longe",
     "Text file" : "File de texto"

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Saved" : "সংরক্ষিত",
     "Close" : "বন্ধ",
     "Uploading..." : "আপলোডইং ...",
     "Download" : "ডাউনলোড করুন",
@@ -23,7 +22,6 @@ OC.L10N.register(
     "%2$s changed %1$s" : "%2$s পরিবর্তন করেছে %1$s কে",
     "You deleted %1$s" : "আপনি %1$s কে মুছেছেন",
     "%2$s deleted %1$s" : "%2$s মুছেছে %1$s কে",
-    "Save" : "সেভ",
     "Settings" : "সেটিংস"
 },
 "nplurals=2; plural=(n != 1);");

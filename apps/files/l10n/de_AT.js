@@ -20,7 +20,6 @@ OC.L10N.register(
     "%2$s changed %1$s" : "%2$s änderte %1$s",
     "You deleted %1$s" : "Du hast %1$s gelöscht",
     "%2$s deleted %1$s" : "%2$s löschte %1$s",
-    "Save" : "Speichern",
     "Settings" : "Einstellungen"
 },
 "nplurals=2; plural=(n != 1);");
