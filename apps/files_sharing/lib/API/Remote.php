@@ -26,6 +26,7 @@ namespace OCA\Files_Sharing\API;
 use OC\Files\Filesystem;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\External\Manager;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Remote {
 
@@ -74,7 +75,18 @@ class Remote {
 			\OC_User::getUser()
 		);
 
+		$shareInfo = $externalManager->getShare($params['id']);
+
 		if ($externalManager->acceptShare((int) $params['id'])) {
+			$dispatcher = \OC::$server->getEventDispatcher();
+			$event = new GenericEvent(null,
+				['shareAcceptedFrom' => $shareInfo['owner'],
+					'sharedAcceptedBy' => $shareInfo['user'],
+					'sharedItem' => $shareInfo['name'],
+					'remoteUrl' => $shareInfo['remote']
+				]
+			);
+			$dispatcher->dispatch('remoteshare.accepted', $event);
 			return new \OC_OCS_Result();
 		}
 
@@ -105,7 +117,18 @@ class Remote {
 			\OC_User::getUser()
 		);
 
+		$shareInfo = $externalManager->getShare($params['id']);
+
 		if ($externalManager->declineShare((int) $params['id'])) {
+			$dispatcher = \OC::$server->getEventDispatcher();
+			$event = new GenericEvent(null,
+				['shareAcceptedFrom' => $shareInfo['owner'],
+					'sharedAcceptedBy' => $shareInfo['user'],
+					'sharedItem' => $shareInfo['name'],
+					'remoteUrl' => $shareInfo['remote']
+				]
+			);
+			$dispatcher->dispatch('remoteshare.declined', $event);
 			return new \OC_OCS_Result();
 		}
 
