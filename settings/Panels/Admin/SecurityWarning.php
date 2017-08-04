@@ -68,7 +68,7 @@ class SecurityWarning implements ISettings {
 		// warn if php is not setup properly to get system variables with getenv
 		$path = getenv('PATH');
 		$template->assign('getenvServerNotWorking', empty($path));
-		$template->assign('readOnlyConfigEnabled', $this->helper->isReadOnlyConfigEnabled());
+		$template->assign('readOnlyConfigEnabled', $this->config->isSystemConfigReadOnly());
 		$template->assign('isAnnotationsWorking', $this->helper->isAnnotationsWorking());
 		try {
 			if ($this->dbconnection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {

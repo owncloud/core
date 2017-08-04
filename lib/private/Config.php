@@ -105,6 +105,9 @@ class Config {
 	 *                       If value is null, the config key will be deleted
 	 */
 	public function setValues(array $configs) {
+		if ($this->isReadOnly()) {
+			throw new \Exception('Config file is read only.');
+		}
 		$needsUpdate = false;
 		foreach ($configs as $key => $value) {
 			if ($value !== null) {
@@ -127,6 +130,9 @@ class Config {
 	 * @param mixed $value value
 	 */
 	public function setValue($key, $value) {
+		if ($this->isReadOnly()) {
+			throw new \Exception('Config file is read only.');
+		}
 		if ($this->set($key, $value)) {
 			// Write changes
 			$this->writeData();
@@ -155,6 +161,9 @@ class Config {
 	 * @param string $key
 	 */
 	public function deleteKey($key) {
+		if ($this->isReadOnly()) {
+			throw new \Exception('Config file is read only.');
+		}
 		if ($this->delete($key)) {
 			// Write changes
 			$this->writeData();
@@ -271,6 +280,13 @@ class Config {
 			// But if that doesn't work, clear the whole cache.
 			\OC_Util::clearOpcodeCache();
 		}
+	}
+
+	public function isReadOnly() {
+		if (!$this->getValue('installed', false)) {
+			return false;
+		}
+		return $this->getValue('config_is_read_only', false);
 	}
 }
 

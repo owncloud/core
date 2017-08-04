@@ -715,7 +715,7 @@ class OC_Util {
 		}
 
 		// Check if config folder is writable.
-		if(!OC_Helper::isReadOnlyConfigEnabled()) {
+		if(!\OC::$server->getConfig()->isSystemConfigReadOnly()) {
 			if (!is_writable(OC::$configDir) or !is_readable(OC::$configDir)) {
 				$errors[] = [
 					'error' => $l->t('Cannot write into "config" directory'),
@@ -726,19 +726,6 @@ class OC_Util {
 			}
 		}
 
-		// Check if there is a writable install folder.
-		if (OC_App::getInstallPath() === null
-			|| !is_writable(OC_App::getInstallPath())
-			|| !is_readable(OC_App::getInstallPath())
-		) {
-			$errors[] = [
-				'error' => $l->t('Cannot write into "apps" directory'),
-				'hint' => $l->t('This can usually be fixed by '
-					. '%sgiving the webserver write access to the apps directory%s'
-					. ' or disabling the appstore in the config file.',
-					['<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank" rel="noreferrer">', '</a>'])
-			];
-		}
 		// Create root dir.
 		if ($config->getSystemValue('installed', false)) {
 			if (!is_dir($CONFIG_DATADIRECTORY)) {
