@@ -7,6 +7,7 @@
     <author>Bjoern Schiessle, Roeland Jago Douma</author>
     <version>0.3.0</version>
     <namespace>FederatedFileSharing</namespace>
+    <use-migrations>true</use-migrations>
     <category>other</category>
     <dependencies>
 		<owncloud min-version="10.0" max-version="10.0" />
