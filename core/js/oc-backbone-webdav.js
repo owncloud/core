@@ -185,6 +185,16 @@
 			convertModelAttributesToDavProperties(model.changed, options.davProperties),
 			headers
 		).then(function(result) {
+			if (result.status === 207 && result.body && result.body.length > 0) {
+				if (_.find(result.body[0].propStat, function(propStat) {
+					var statusCode = parseInt(propStat.status.split(' ')[1], 10);
+					return statusCode >= 400;
+				})) {
+					// in REST, validation errors are usually represented with 422 Unprocessable Entity,
+					result.status = 422;
+				}
+			}
+
 			if (isSuccessStatus(result.status)) {
 				if (_.isFunction(options.success)) {
 					// pass the object's own values because the server

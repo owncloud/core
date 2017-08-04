@@ -271,14 +271,69 @@ describe('Backbone Webdav extension', function() {
 				.toEqual('XMLHttpRequest');
 
 			deferredRequest.resolve({
-				status: 201,
-				body: ''
+				status: 207,
+				body: [{
+					href: 'http://example.com/owncloud/remote.php/test/123',
+					propStat: [{
+						status: 'HTTP/1.1 200 OK',
+						properties: {
+							'{http://owncloud.org/ns}first-name': '',
+							'{http://owncloud.org/ns}age-name': '',
+							'{http://owncloud.org/ns}married': ''
+						}
+					}]
+				}]
 			});
 
 			expect(model.id).toEqual('123');
 			expect(model.get('firstName')).toEqual('Hey');
 			expect(model.get('age')).toEqual(33);
 			expect(model.get('married')).toEqual(true);
+		});
+
+		it('calls error callback with status code 422 in case of failed PROPPATCH properties', function() {
+			var successHandler = sinon.stub();
+			var errorHandler = sinon.stub();
+			var model = new TestModel({
+				id: '123',
+				firstName: 'Hello',
+				lastName: 'World',
+				age: 32,
+				married: false
+			});
+
+			model.save({
+				firstName: 'Hey',
+				lastName: 'low'
+			}, {
+				success: successHandler,
+				error: errorHandler
+			});
+
+			deferredRequest.resolve({
+				status: 207,
+				body: [{
+					href: 'http://example.com/owncloud/remote.php/test/123',
+					propStat: [{
+						status: 'HTTP/1.1 200 OK',
+						properties: {
+							'{http://owncloud.org/ns}last-name': ''
+						}
+					}, {
+						status: 'HTTP/1.1 403 Forbidden',
+						properties: {
+							'{http://owncloud.org/ns}first-name': ''
+						}
+					}]
+				}]
+			});
+
+			expect(davClientPropPatchStub.calledOnce).toEqual(true);
+
+			expect(successHandler.notCalled).toEqual(true);
+			expect(errorHandler.calledOnce).toEqual(true);
+			expect(errorHandler.getCall(0).args[0]).toEqual(model);
+			expect(errorHandler.getCall(0).args[1].status).toEqual(422);
 		});
 
 		it('uses PROPFIND to fetch single model', function() {
@@ -774,7 +829,11 @@ describe('Backbone Webdav extension', function() {
 
 			deferredRequest.resolve({
 				status: 201,
-				body: '',
+				body: [{
+					propStat: {
+						status: 'HTTP/1.1 200 OK'
+					}
+				}],
 				xhr: {
 					getResponseHeader: _.noop
 				}
