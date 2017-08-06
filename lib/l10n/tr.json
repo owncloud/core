@@ -138,8 +138,6 @@
     "Unknown user" : "Bilinmeyen kullanıcı",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "Yüklü veritabanı sürücüsü (sqlite, mysql veya postgresql) yok.",
     "Cannot write into \"config\" directory" : "\"config\" dizinine yazılamıyor",
-    "Cannot write into \"apps\" directory" : "\"apps\" dizinine yazılamıyor",
-    "This can usually be fixed by %sgiving the webserver write access to the apps directory%s or disabling the appstore in the config file." : "Bu genellikle, %sweb sunucusuna apps dizinine yazma erişimi verilerek%s veya yapılandırma dosyasında appstore (uygulama mağazası) devre dışı bırakılarak çözülebilir.",
     "This can usually be fixed by <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">giving the webserver write access to the root directory</a>." : "Bu genellikle, <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">web sunucusuna kök dizinine yazma erişimi verilerek</a> çözülebilir.",
     "Permissions can usually be fixed by %sgiving the webserver write access to the root directory%s." : "İzinler genellikle, %sweb sunucusuna kök dizinine yazma erişimi verilerek%s çözülebilir",
     "Setting locale to %s failed" : "Dili %s olarak ayarlama başarısız",

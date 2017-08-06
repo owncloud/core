@@ -88,7 +88,6 @@
     "Token expired. Please reload page." : "Token expirat. Te rugăm să reîncarci pagina.",
     "Unknown user" : "Utilizator necunoscut",
     "Cannot write into \"config\" directory" : "Nu se poate scrie în folderul \"config\"",
-    "Cannot write into \"apps\" directory" : "Nu se poate scrie în folderul \"apps\"",
     "PHP module %s not installed." : "Modulul PHP %s nu este instalat.",
     "PHP modules have been installed, but they are still listed as missing?" : "Modulele PHP au fost instalate, dar apar ca lipsind?",
     "PostgreSQL >= 9 required" : "Este necesară versiunea 9 sau mai mare a PostgreSQL",

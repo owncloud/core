@@ -138,8 +138,6 @@
     "Unknown user" : "Usuariu desconocíu",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "Nun hai controladores de bases de datos  (sqlite, mysql, o postgresql)",
     "Cannot write into \"config\" directory" : "Nun pue escribise nel direutoriu \"config\"",
-    "Cannot write into \"apps\" directory" : "Nun pue escribise nel direutoriu \"apps\"",
-    "This can usually be fixed by %sgiving the webserver write access to the apps directory%s or disabling the appstore in the config file." : "Esto pue iguase %sdando permisos d'escritura al sirvidor Web nel direutoriu%s d'apps o deshabilitando la tienda d'apps nel ficheru de configuración.",
     "This can usually be fixed by <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">giving the webserver write access to the root directory</a>." : "Esto pue iguase davezu <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">dándo-y accesu d'escritura al direutoriu raigañu</a>.",
     "Permissions can usually be fixed by %sgiving the webserver write access to the root directory%s." : "Davezu los permisos puen iguase %sdándo-y al sirvidor web accesu d'escritura al direutoriu raigañu%s.",
     "Setting locale to %s failed" : "Falló l'activación del idioma %s",

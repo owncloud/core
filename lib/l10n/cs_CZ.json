@@ -142,8 +142,6 @@
     "Unknown user" : "Neznámý uživatel",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "Nejsou instalovány ovladače databází (sqlite, mysql nebo postresql).",
     "Cannot write into \"config\" directory" : "Nelze zapisovat do adresáře \"config\"",
-    "Cannot write into \"apps\" directory" : "Nelze zapisovat do adresáře \"apps\"",
-    "This can usually be fixed by %sgiving the webserver write access to the apps directory%s or disabling the appstore in the config file." : "To lze obvykle vyřešit %spovolením zápisu webovému serveru do adresáře apps%s nebo zakázáním appstore v konfiguračním souboru.",
     "Cannot create \"data\" directory" : "Nelze vytvořit \"data\" adresář",
     "This can usually be fixed by <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">giving the webserver write access to the root directory</a>." : "Toto může být obvykle opraveno <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">nastavením přístupových práv webového serveru pro zápis do kořenového adresáře</a>.",
     "Permissions can usually be fixed by %sgiving the webserver write access to the root directory%s." : "Oprávnění lze obvykle napravit %spovolením zápisu webovému serveru do kořenového adresáře%s.",

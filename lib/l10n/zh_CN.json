@@ -102,7 +102,6 @@
     "Unknown user" : "未知用户",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "没有安装数据库驱动 (SQLite、MySQL 或 PostgreSQL)。",
     "Cannot write into \"config\" directory" : "无法写入“config”目录",
-    "Cannot write into \"apps\" directory" : "无法写入“apps”目录",
     "Setting locale to %s failed" : "设置语言为 %s 失败",
     "Please ask your server administrator to install the module." : "请联系服务器管理员安装模块。",
     "PHP module %s not installed." : "PHP %s 模块未安装。",

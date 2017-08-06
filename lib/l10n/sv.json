@@ -139,8 +139,6 @@
     "Unknown user" : "Okänd användare",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "Inga databasdrivrutiner (sqlite, mysql, eller postgresql) installerade.",
     "Cannot write into \"config\" directory" : "Kan inte skriva till \"config\" katalogen",
-    "Cannot write into \"apps\" directory" : "Kan inte skriva till \"apps\" katalogen!",
-    "This can usually be fixed by %sgiving the webserver write access to the apps directory%s or disabling the appstore in the config file." : "Detta kan vanligtvis åtgärdas genom att %s ger webbservern skrivrättigheter till applikationskatalogen %s eller stänga av app-butik i konfigurationsfilen.",
     "Cannot create \"data\" directory" : "Kan inte skapa mappen \"data\"",
     "Permissions can usually be fixed by %sgiving the webserver write access to the root directory%s." : "Rättigheterna kan vanligtvis åtgärdas genom att %s ger webbservern skrivrättigheter till rootkatalogen %s.",
     "Setting locale to %s failed" : "Sätta locale till %s misslyckades",

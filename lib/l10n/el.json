@@ -140,8 +140,6 @@
     "Unknown user" : "Άγνωστος χρήστης",
     "No database drivers (sqlite, mysql, or postgresql) installed." : "Δεν βρέθηκαν εγκατεστημένοι οδηγοί βάσεων δεδομένων (sqlite, mysql, or postgresql).",
     "Cannot write into \"config\" directory" : "Αδυναμία εγγραφής στον κατάλογο \"config\"",
-    "Cannot write into \"apps\" directory" : "Αδυναμία εγγραφής στον κατάλογο \"apps\"",
-    "This can usually be fixed by %sgiving the webserver write access to the apps directory%s or disabling the appstore in the config file." : "Αυτό μπορεί συνήθως να διορθωθεί %sδίνοντας διακαιώματα εγγραφής για τον κατάλογο εφαρμογών στο διακομιστή δικτύου%s ή απενεργοποιώντας το κέντρο εφαρμογών στο αρχείο config.",
     "Cannot create \"data\" directory" : "Αδυναμία δημιουργίας καταλόγου \"data\"",
     "This can usually be fixed by <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">giving the webserver write access to the root directory</a>." : "Αυτό μπορεί συνήθως να διορθωθεί <a href=\"%s\" target=\"_blank\" rel=\"noreferrer\">δίνοντας δικαιώματα εγγραφής για το βασικό κατάλογο στο διακομιστή δικτύου</a>",
     "Permissions can usually be fixed by %sgiving the webserver write access to the root directory%s." : "Τα δικαιώματα πρόσβασης μπορούν συνήθως να διορθωθούν %sδίνοντας δικαιώματα εγγραφής για τον βασικό κατάλογο στο διακομιστή δικτύου%s.",
