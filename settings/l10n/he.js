@@ -208,6 +208,8 @@ OC.L10N.register(
     "SSL/TLS" : "SSL/TLS",
     "STARTTLS" : "STARTTLS",
     "Email server" : "שרת דואר אלקטרוני",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "קובץ ה- config הנו לקריאה בלבד. יש להסדיר את ההתקנה על ידי עריכת קובץ ה- config באופן ידני.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "בהתקנת clustered יש לוודא סנכרון קובץ config.php בין כל הנקודות.",
     "This is used for sending out notifications." : "משתמשים בזה כדי לשלוח הודעות.",
     "Send mode" : "מצב שליחה",
     "Encryption" : "הצפנה",

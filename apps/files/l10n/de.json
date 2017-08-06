@@ -17,6 +17,7 @@
     "Uploading..." : "Hochladen…",
     "..." : "...",
     "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} von {totalSize} ({bitrate})",
+    "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Dateiupload läuft. Wenn Du die Seite jetzt verlässt, wird der Upload abgebrochen.",
     "Actions" : "Aktionen",
     "Download" : "Herunterladen",

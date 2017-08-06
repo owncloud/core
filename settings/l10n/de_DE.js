@@ -208,6 +208,8 @@ OC.L10N.register(
     "SSL/TLS" : "SSL/TLS",
     "STARTTLS" : "STARTTLS",
     "Email server" : "E-Mail-Server",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Die Konfigurationsdatei ist schreibgeschützt. Bitte passen Sie Ihre Einstellungen durch manuelle Bearbeitung der Konfigurationsdatei selbst an.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "In einem gruppierten Umgebung stellen Sie bitte sicher, dass die config.php-Datei über alle Knoten synchronisiert wird.",
     "This is used for sending out notifications." : "Dies wird für das Senden von Benachrichtigungen verwendet.",
     "Send mode" : "Sendemodus",
     "Encryption" : "Verschlüsselung",
