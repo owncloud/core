@@ -351,7 +351,7 @@ class FileTest extends TestCase {
 
 	public function legalMtimeProvider() {
 		return [
-			"string" => [ 
+			"string" => [
 					'HTTP_X_OC_MTIME' => "string",
 					'expected result' => 0
 			],
@@ -359,7 +359,7 @@ class FileTest extends TestCase {
 					'HTTP_X_OC_MTIME' => "34",
 					'expected result' => 34
 			],
-			"castable string (float)" => [ 
+			"castable string (float)" => [
 					'HTTP_X_OC_MTIME' => "34.56",
 					'expected result' => 34
 			],
@@ -1079,7 +1079,7 @@ class FileTest extends TestCase {
 
 	/**
 	 * returns an array of file information filesize, mtime, filetype,  mimetype
-	 * 
+	 *
 	 * @param string $path
 	 * @param View $userView
 	 * @return array
@@ -1101,11 +1101,14 @@ class FileTest extends TestCase {
 	 */
 	public function testGetFopenFails() {
 		$view = $this->getMockBuilder(View::class)
-			->setMethods(['fopen'])
+			->setMethods(['fopen', 'file_exists'])
 			->getMock();
 		$view->expects($this->atLeastOnce())
 			->method('fopen')
 			->will($this->returnValue(false));
+		$view->expects($this->atLeastOnce())
+			->method('file_exists')
+			->will($this->returnValue(true));
 
 		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
 			'permissions' => Constants::PERMISSION_ALL
@@ -1121,11 +1124,14 @@ class FileTest extends TestCase {
 	 */
 	public function testGetFopenThrows() {
 		$view = $this->getMockBuilder(View::class)
-			->setMethods(['fopen'])
+			->setMethods(['fopen', 'file_exists'])
 			->getMock();
 		$view->expects($this->atLeastOnce())
 			->method('fopen')
 			->willThrowException(new ForbiddenException('', true));
+		$view->expects($this->atLeastOnce())
+			->method('file_exists')
+			->will($this->returnValue(true));
 
 		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
 			'permissions' => Constants::PERMISSION_ALL
@@ -1148,6 +1154,50 @@ class FileTest extends TestCase {
 
 		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
 			'permissions' => Constants::PERMISSION_CREATE // no read perm
+		], null);
+
+		$file = new File($view, $info);
+
+		$file->get();
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\NotFound
+	 */
+	public function testGetThrowsIfFileNotExists() {
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['fopen', 'file_exists'])
+			->getMock();
+		$view->expects($this->never())
+			->method('fopen');
+		$view->expects($this->atLeastOnce())
+			->method('file_exists')
+			->will($this->returnValue(false));
+
+		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_ALL
+		], null);
+
+		$file = new File($view, $info);
+
+		$file->get();
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\NotFound
+	 */
+	public function testGetThrowsIfNoPermissionsAndFileNotExists() {
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['fopen', 'file_exists'])
+			->getMock();
+		$view->expects($this->never())
+			->method('fopen');
+		$view->expects($this->any())
+			->method('file_exists')
+			->will($this->returnValue(false));
+
+		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_CREATE
 		], null);
 
 		$file = new File($view, $info);
