@@ -156,4 +156,14 @@ interface IAppManager {
 	 */
 	public function readAppPackage($path);
 
+	/**
+	 * Indicates if app installation is supported. Usually it is but in certain
+	 * environments it is disallowed because of hardening. In a clustered setup
+	 * apps need to be installed on each cluster node which is out of scope of
+	 * ownCloud itself.
+	 *
+	 * @return bool
+	 * @since 10.0.3
+	 */
+	public function canInstall();
 }

@@ -91,7 +91,12 @@ class Installer {
 
 		$info = self::checkAppsIntegrity($data, $extractDir, $path);
 		$appId = OC_App::cleanAppId($info['id']);
-		$basedir = OC_App::getInstallPath().'/'.$appId;
+		$appsFolder = OC_App::getInstallPath();
+
+		if ($appsFolder === null || !is_writable($appsFolder)) {
+			throw new \Exception('Apps folder is not writable');
+		}
+		$basedir = "$appsFolder/$appId";
 		//check if the destination directory already exists
 		if(is_dir($basedir)) {
 			OC_Helper::rmdirr($extractDir);
