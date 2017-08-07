@@ -166,6 +166,21 @@ class LoginController extends Controller {
 			$parameters['user_autofocus'] = true;
 		}
 
+		/**
+		 * If redirect_url is not empty and remember_login is null and
+		 * user not logged in and check if the string
+		 * webroot+"/index.php/f/" is in redirect_url then
+		 * user is trying to access files for which he needs to login.
+		 */
+
+		if ((!empty($redirect_url)) and ($remember_login === null) and
+			($this->userSession->isLoggedIn() === false) and
+			(strpos($this->urlGenerator->getAbsoluteURL(urldecode($redirect_url)),
+				$this->urlGenerator->getAbsoluteURL('/index.php/f/')) !== false)) {
+
+			$parameters['accessLink'] = true;
+		}
+
 		return new TemplateResponse(
 			$this->appName, 'login', $parameters, 'guest'
 		);
