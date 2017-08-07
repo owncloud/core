@@ -319,11 +319,12 @@ class File extends Node implements IFile {
 	public function get() {
 		//throw exception if encryption is disabled but files are still encrypted
 		try {
-			if (!$this->info->isReadable()) {
+			$viewPath = ltrim($this->path, '/');
+			if (!$this->info->isReadable() || !$this->fileView->file_exists($viewPath)) {
 				// do a if the file did not exist
 				throw new NotFound();
 			}
-			$res = $this->fileView->fopen(ltrim($this->path, '/'), 'rb');
+			$res = $this->fileView->fopen($viewPath, 'rb');
 			if ($res === false) {
 				throw new ServiceUnavailable("Could not open file");
 			}
