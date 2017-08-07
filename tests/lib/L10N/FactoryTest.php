@@ -428,31 +428,4 @@ class FactoryTest extends TestCase {
 		$factory = $this->getFactory();
 		$this->assertSame($expected, $this->invokePrivate($factory, 'findL10nDir', [$app]));
 	}
-
-	public function dataCreatePluralFunction() {
-		return [
-			['nplurals=2; plural=(n != 1);', 0, 1],
-			['nplurals=2; plural=(n != 1);', 1, 0],
-			['nplurals=2; plural=(n != 1);', 2, 1],
-			['nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;', 0, 2],
-			['nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;', 1, 0],
-			['nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;', 2, 1],
-			['nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;', 3, 1],
-			['nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;', 4, 1],
-			['nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;', 5, 2],
-		];
-	}
-
-	/**
-	 * @dataProvider dataCreatePluralFunction
-	 *
-	 * @param string $function
-	 * @param int $count
-	 * @param int $expected
-	 */
-	public function testCreatePluralFunction($function, $count, $expected) {
-		$factory = $this->getFactory();
-		$fn = $factory->createPluralFunction($function);
-		$this->assertEquals($expected, $fn($count));
-	}
 }
