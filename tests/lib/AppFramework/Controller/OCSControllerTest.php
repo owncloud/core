@@ -191,7 +191,7 @@ class OCSControllerTest extends TestCase {
 			$this->createMock(ISecureRandom::class),
 			$configMock
 		));
-		$expected = '{"ocs":{"meta":{"status":"failure","statuscode":200,"message":"OK",' .
+		$expected = '{"ocs":{"meta":{"status":"ok","statuscode":200,"message":"OK",' .
 		            '"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';
 		$params = [
 			'data' => [
