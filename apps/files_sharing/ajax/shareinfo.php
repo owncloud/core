@@ -25,7 +25,16 @@
  *
  */
 
+/**
+ * @deprecated fetches all metadata, kept for compatibility with older instances
+ */
+
 OCP\JSON::checkAppEnabled('files_sharing');
+
+OC::$server->getLogger()->warning(
+	'Deprecated api access from '.OC::$server->getRequest()->getRemoteAddress().
+	'. Ask remote to upgrade.', ['app' => 'files_sharing']
+);
 
 if (!isset($_GET['t'])) {
 	\OC_Response::setStatus(400); //400 Bad Request
@@ -101,4 +110,4 @@ if ($rootInfo->getType() === 'dir') {
 	$result['children'] = getChildInfo($rootInfo, $rootView, $sharePermissions);
 }
 
-OCP\JSON::success(['data' => $result]);
+OCP\JSON::success(['data' => $result, 'message' => 'DEPRECATED API']);

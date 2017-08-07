@@ -122,31 +122,28 @@ try {
 	\OCP\JSON::error(['data' => ['message' => $l->t('Storage not valid')]]);
 	exit();
 }
-$result = $storage->file_exists('');
-if ($result) {
-	try {
-		$storage->getScanner()->scanAll();
-		\OCP\JSON::success();
-	} catch (\OCP\Files\StorageInvalidException $e) {
+
+try {
+	$result = $storage->file_exists('');
+	if (!$result) {
+		$externalManager->removeShare($mount->getMountPoint());
 		\OCP\Util::writeLog(
 			'files_sharing',
-			'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+			'Couldn\'t add remote share',
 			\OCP\Util::DEBUG
 		);
-		\OCP\JSON::error(['data' => ['message' => $l->t('Storage not valid')]]);
-	} catch (\Exception $e) {
-		\OCP\Util::writeLog(
-			'files_sharing',
-			'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
-			\OCP\Util::DEBUG
-		);
-		\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add remote share')]]);
 	}
-} else {
-	$externalManager->removeShare($mount->getMountPoint());
+} catch (\OCP\Files\StorageInvalidException $e) {
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Couldn\'t add remote share',
+		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		\OCP\Util::DEBUG
+	);
+	\OCP\JSON::error(['data' => ['message' => $l->t('Storage not valid')]]);
+} catch (\Exception $e) {
+	\OCP\Util::writeLog(
+		'files_sharing',
+		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add remote share')]]);
