@@ -132,6 +132,11 @@ fi
 
 EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 
+#Set up personalized skeleton
+OCC=./occ
+PREVIOUS_SKELETON_DIR=$($OCC config:system:get skeletondirectory)
+$OCC config:system:set skeletondirectory --value="$(pwd)/tests/ui/skeleton" >/dev/null
+
 echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM"
 export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@localhost:4445/wd/hub"}}}}' 
 export IPV4_URL
@@ -163,6 +168,13 @@ then
 		cat "$DRY_RUN_FILE"
 	fi
 	rm -f "$DRY_RUN_FILE"
+fi
+
+# Put back personalized skeleton
+if test "A$PREVIOUS_SKELETON_DIR" = "A"; then
+	$OCC config:system:delete skeletondirectory >/dev/null
+else
+	$OCC config:system:set skeletondirectory --value="$PREVIOUS_SKELETON_DIR" >/dev/null
 fi
 
 if [ ! -z "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ] && [ -e /tmp/saucelabs_sessionid ]

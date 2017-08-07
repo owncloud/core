@@ -73,6 +73,7 @@ export TEST_SERVER_URL="http://localhost:$PORT/ocs/"
 export TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
 
 #Set up personalized skeleton
+PREVIOUS_SKELETON_DIR=$($OCC config:system:get skeletondirectory)
 $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 
 #Enable external storage app
@@ -133,6 +134,12 @@ $OCC config:app:set core enable_external_storage --value=no
 
 $OCC app:disable testing
 
+# Put back personalized skeleton
+if test "A$PREVIOUS_SKELETON_DIR" = "A"; then
+	$OCC config:system:delete skeletondirectory
+else
+	$OCC config:system:set skeletondirectory --value="$PREVIOUS_SKELETON_DIR"
+fi
 
 # Clear storage folder
 rm -Rf work/local_storage/*
