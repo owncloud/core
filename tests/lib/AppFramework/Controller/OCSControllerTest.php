@@ -156,4 +156,33 @@ class OCSControllerTest extends \Test\TestCase {
 		];
 	}
 
+	public function testStatusCodeMapping() {
+		$configMock = $this->getMock('\OCP\IConfig');
+		$configMock->method('getSystemValue')->willReturn('');
+		$controller = new ChildOCSController('app', new Request(
+			[
+				'urlParams' => [
+					'format' => 'json',
+				],
+				'server' => [
+					'SCRIPT_NAME' => '/ocs/v2.php',
+					'SCRIPT_FILENAME' => 'v2.php',
+				],
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$configMock
+		));
+		$expected = '{"ocs":{"meta":{"status":"ok","statuscode":200,"message":"OK",' .
+		            '"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';
+		$params = [
+			'data' => [
+				'test' => 'hi'
+			],
+			'statuscode' => 100
+		];
+
+		$out = $controller->buildResponse($params, 'json')->render();
+		$this->assertEquals($expected, $out);
+	}
+
 }
