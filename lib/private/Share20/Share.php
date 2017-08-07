@@ -148,7 +148,7 @@ class Share implements \OCP\Share\IShare {
 		if ($this->node === null) {
 
 			if ($this->shareOwner === null || $this->fileId === null) {
-				throw new NotFoundException();
+				throw new NotFoundException("Unknown owner and fileid for shareid:{$this->getId()}, target:{$this->getTarget()}.");
 			}
 
 			// for federated shares the owner can be a remote user, in this
@@ -161,7 +161,7 @@ class Share implements \OCP\Share\IShare {
 
 			$nodes = $userFolder->getById($this->fileId);
 			if (empty($nodes)) {
-				throw new NotFoundException();
+				throw new NotFoundException("Unknown fileid:{$this->fileId}, target:{$this->getTarget()}.");
 			}
 
 			$this->node = $nodes[0];

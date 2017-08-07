@@ -299,6 +299,6 @@ class ViewController extends Controller {
 			}
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index', $params));
 		}
-		throw new \OCP\Files\NotFoundException();
+		throw new \OCP\Files\NotFoundException("Unknown fileid:$fileId");
 	}
 }

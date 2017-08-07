@@ -330,7 +330,7 @@ class Storage extends DAV implements ISharedStorage {
 				throw new ForbiddenException();
 			}
 			if ($e->getCode() === Http::STATUS_NOT_FOUND) {
-				throw new NotFoundException();
+				throw new NotFoundException("$url not found", 0, $e);
 			}
 			// throw this to be on the safe side: the share will still be visible
 			// in the UI in case the failure is intermittent, and the user will

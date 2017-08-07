@@ -30,38 +30,38 @@ class NonExistingFile extends File {
 	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function rename($newPath) {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 
 	public function delete() {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 
 	public function copy($newPath) {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 
 	public function touch($mtime = null) {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 
 	public function getId() {
 		if ($this->fileInfo) {
 			return parent::getId();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
 	public function stat() {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 
 	public function getMTime() {
 		if ($this->fileInfo) {
 			return parent::getMTime();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
@@ -69,7 +69,7 @@ class NonExistingFile extends File {
 		if ($this->fileInfo) {
 			return parent::getSize();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
@@ -77,7 +77,7 @@ class NonExistingFile extends File {
 		if ($this->fileInfo) {
 			return parent::getEtag();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
@@ -85,7 +85,7 @@ class NonExistingFile extends File {
 		if ($this->fileInfo) {
 			return parent::getPermissions();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
@@ -93,7 +93,7 @@ class NonExistingFile extends File {
 		if ($this->fileInfo) {
 			return parent::isReadable();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
@@ -101,7 +101,7 @@ class NonExistingFile extends File {
 		if ($this->fileInfo) {
 			return parent::isUpdateable();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
@@ -109,7 +109,7 @@ class NonExistingFile extends File {
 		if ($this->fileInfo) {
 			return parent::isDeletable();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
@@ -117,27 +117,27 @@ class NonExistingFile extends File {
 		if ($this->fileInfo) {
 			return parent::isShareable();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
 	public function getContent() {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 
 	public function putContent($data) {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 
 	public function getMimeType() {
 		if ($this->fileInfo) {
 			return parent::getMimeType();
 		} else {
-			throw new NotFoundException();
+			throw new NotFoundException("{$this->path} not found.");
 		}
 	}
 
 	public function fopen($mode) {
-		throw new NotFoundException();
+		throw new NotFoundException("{$this->path} not found.");
 	}
 }

@@ -272,13 +272,13 @@ class ShareController extends Controller {
 		}
 
 		if (!$this->validateShare($share)) {
-			throw new NotFoundException();
+			throw new NotFoundException("Unknown fileid:{$share->getNodeId()}, target:{$share->getTarget()}");
 		}
 		// We can't get the path of a file share
 		try {
 			if ($share->getNode() instanceof \OCP\Files\File && $path !== '') {
 				$this->emitAccessShareHook($share, 404, 'Share not found');
-				throw new NotFoundException();
+				throw new NotFoundException("Unknown fileid:{$share->getNodeId()}, target:{$share->getTarget()}");
 			}
 		} catch (\Exception $e) {
 			$this->emitAccessShareHook($share, 404, 'Share not found');
@@ -294,7 +294,7 @@ class ShareController extends Controller {
 				$path = $rootFolder->get($path);
 			} catch (\OCP\Files\NotFoundException $e) {
 				$this->emitAccessShareHook($share, 404, 'Share not found');
-				throw new NotFoundException();
+				throw new NotFoundException("Unknown fileid:{$share->getNodeId()}, target:{$share->getTarget()}", $e->getCode(), $e);
 			}
 		}
 
@@ -409,7 +409,7 @@ class ShareController extends Controller {
 		$originalSharePath = $userFolder->getRelativePath($share->getNode()->getPath());
 
 		if (!$this->validateShare($share)) {
-			throw new NotFoundException();
+			throw new NotFoundException("Unknown fileid:{$share->getNodeId()}, target:{$share->getTarget()}");
 		}
 
 		// Single file share

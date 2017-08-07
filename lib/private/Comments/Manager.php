@@ -241,7 +241,7 @@ class Manager implements ICommentsManager {
 		$data = $resultStatement->fetch();
 		$resultStatement->closeCursor();
 		if(!$data) {
-			throw new NotFoundException();
+			throw new NotFoundException("Comment $id not found.");
 		}
 
 		$comment = new Comment($this->normalizeDatabaseData($data));
