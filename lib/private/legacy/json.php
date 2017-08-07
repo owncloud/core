@@ -29,6 +29,8 @@
  *
  */
 
+use OC\L10N\L10NString;
+
 /**
  * Class OC_JSON
  * @deprecated Use a AppFramework JSONResponse instead
@@ -150,10 +152,10 @@ class OC_JSON{
 	}
 
 	/**
-	 * Convert OC_L10N_String to string, for use in json encodings
+	 * Convert \OC\L10N\String to string, for use in json encodings
 	 */
 	protected static function to_string(&$value) {
-		if ($value instanceof OC_L10N_String) {
+		if ($value instanceof L10NString) {
 			$value = (string)$value;
 		}
 	}
