@@ -25,6 +25,7 @@
 
 namespace OCA\Files\Tests\Controller;
 
+use OC\L10N\L10NString;
 use OCA\Files\Controller\ViewController;
 use OCP\AppFramework\Http;
 use OCP\IUser;
@@ -185,7 +186,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files',
 				'script' => 'list.php',
 				'order' => 0,
-				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files'), 'All files', []),
+				'name' => new L10NString(\OC::$server->getL10NFactory()->get('files'), 'All files', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -203,7 +204,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 10,
-				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared with you', []),
+				'name' => new L10NString(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared with you', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -212,7 +213,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 15,
-				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared with others', []),
+				'name' => new L10NString(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared with others', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -221,7 +222,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 20,
-				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared by link', []),
+				'name' => new L10NString(\OC::$server->getL10NFactory()->get('files_sharing'), 'Shared by link', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -230,7 +231,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'systemtags',
 				'script' => 'list.php',
 				'order' => 25,
-				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('systemtags'), 'Tags', []),
+				'name' => new L10NString(\OC::$server->getL10NFactory()->get('systemtags'), 'Tags', []),
 				'active' => false,
 				'icon' => '',
 			],
@@ -239,7 +240,7 @@ class ViewControllerTest extends TestCase {
 				'appname' => 'files_trashbin',
 				'script' => 'list.php',
 				'order' => 50,
-				'name' => new \OC_L10N_String(\OC::$server->getL10NFactory()->get('files_trashbin'), 'Deleted files', []),
+				'name' => new L10NString(\OC::$server->getL10NFactory()->get('files_trashbin'), 'Deleted files', []),
 				'active' => false,
 				'icon' => '',
 			],

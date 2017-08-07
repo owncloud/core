@@ -25,8 +25,11 @@
  *
  */
 
-class OC_L10N_String implements JsonSerializable {
-	/** @var \OC\L10N\L10N */
+namespace OC\L10N;
+use JsonSerializable;
+
+class L10NString implements JsonSerializable {
+	/** @var L10N */
 	protected $l10n;
 
 	/** @var string */
@@ -39,7 +42,7 @@ class OC_L10N_String implements JsonSerializable {
 	protected $count;
 
 	/**
-	 * @param \OC\L10N\L10N $l10n
+	 * @param L10N $l10n
 	 * @param string|string[] $text
 	 * @param array $parameters
 	 * @param int $count
@@ -55,12 +58,11 @@ class OC_L10N_String implements JsonSerializable {
 		$translations = $this->l10n->getTranslations();
 
 		$text = $this->text;
-		if(array_key_exists($this->text, $translations)) {
-			if(is_array($translations[$this->text])) {
+		if (array_key_exists($this->text, $translations)) {
+			if (is_array($translations[$this->text])) {
 				$id = $this->l10n->computePlural($this->count);
 				$text = $translations[$this->text][$id];
-			}
-			else{
+			} else {
 				$text = $translations[$this->text];
 			}
 		}
