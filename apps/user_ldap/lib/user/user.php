@@ -25,6 +25,7 @@
 
 namespace OCA\user_ldap\lib\user;
 
+use OC\Cache\CappedMemoryCache;
 use OCA\user_ldap\lib\user\IUserTools;
 use OCA\user_ldap\lib\Connection;
 use OCA\user_ldap\lib\FilesystemHelper;
@@ -87,6 +88,11 @@ class User {
 	 * @var string
 	 */
 	protected $avatarImage;
+
+	/**
+	 * @var int|null
+	 */
+	protected $refreshCache = null;
 
 	/**
 	 * DB config keys for user preferences
@@ -353,8 +359,11 @@ class User {
 	 * @return null
 	 */
 	public function markRefreshTime() {
+		// Also save this refresh time in the cache to avoid relying on the DB in clustered environments
+		$now = time();
+		$this->refreshCache = $now;
 		$this->config->setUserValue(
-			$this->uid, 'user_ldap', self::USER_PREFKEY_LASTREFRESH, time());
+			$this->uid, 'user_ldap', self::USER_PREFKEY_LASTREFRESH, $now);
 	}
 
 	/**
@@ -364,8 +373,14 @@ class User {
 	 * @return bool
 	 */
 	private function needsRefresh() {
-		$lastChecked = $this->config->getUserValue($this->uid, 'user_ldap',
-			self::USER_PREFKEY_LASTREFRESH, 0);
+		// See if we can get the value from the cache instead of the DB
+		if($this->refreshCache === null) {
+			// Then we dont have this cached, check the DB
+			$lastChecked = $this->config->getUserValue($this->uid, 'user_ldap',
+				self::USER_PREFKEY_LASTREFRESH, 0);
+		} else {
+			$lastChecked = $this->refreshCache;
+		}
 
 		//TODO make interval configurable
 		if((time() - intval($lastChecked)) < 86400 ) {
