@@ -31,7 +31,7 @@
         "php": ">=5.4.1",
         "doctrine/dbal": "^2.5",
         "mcnetic/zipstreamer": "^1.0",
-        "phpseclib/phpseclib": "2.0.3",
+        "phpseclib/phpseclib": "^2.0",
         "rackspace/php-opencloud": "v1.9.2",
         "jeremeamia/superclosure": "2.1.0",
         "bantu/ini-get-wrapper": "v1.0.1",
