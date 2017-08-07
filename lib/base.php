@@ -235,7 +235,7 @@ class OC {
 
 		// Check if config is writable
 		$configFileWritable = is_writable($configFilePath);
-		if (!$configFileWritable && !OC_Helper::isReadOnlyConfigEnabled()
+		if (!$configFileWritable && !\OC::$server->getConfig()->isSystemConfigReadOnly()
 			|| !$configFileWritable && self::checkUpgrade(false)) {
 
 			$urlGenerator = \OC::$server->getURLGenerator();

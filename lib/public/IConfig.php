@@ -223,4 +223,13 @@ interface IConfig {
 	 * @since 8.0.0
 	 */
 	public function getUsersForUserValue($appName, $key, $value);
+
+	/**
+	 * In some environments the system config file is readonly. Find out if this
+	 * is the case.
+	 *
+	 * @return boolean
+	 * @since 10.0.3
+	 */
+	public function isSystemConfigReadOnly();
 }
