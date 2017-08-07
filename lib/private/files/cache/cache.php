@@ -231,6 +231,7 @@ class Cache implements ICache {
 	 * @throws \RuntimeException
 	 */
 	public function insert($file, array $data) {
+
 		// normalize file
 		$file = $this->normalize($file);
 
@@ -284,6 +285,13 @@ class Cache implements ICache {
 	 */
 	public function update($id, array $data) {
 
+		if(isset($data['parent']) && $data['parent'] === $id) {
+			// Catch the case when we are trying to update the parent to be itself
+			$trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			\OC::$server->getLogger()->error("Trying to set parent of file: $id to itself! Trace: $trace");
+			throw new \InvalidArgumentException('Parent cannot be same as self during filecache update');
+		}
+
 		if (isset($data['path'])) {
 			// normalize path
 			$data['path'] = $this->normalize($data['path']);
@@ -292,6 +300,12 @@ class Cache implements ICache {
 		if (isset($data['name'])) {
 			// normalize path
 			$data['name'] = $this->normalize($data['name']);
+		}
+
+		if (isset($data['mimetype']) && $data['mimetype'] !== 'httpd/unix-directory') {
+			$trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			$mime = $data['mimetype'];
+			\OC::$server->getLogger()->warning("Setting mime type of file $id to \"$mime\" Trace: $trace");
 		}
 
 		list($queryParts, $params) = $this->buildParts($data);
