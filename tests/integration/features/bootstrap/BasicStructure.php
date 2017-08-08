@@ -356,6 +356,14 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given file :filename is deleted in local storage
+	 * @param string $filename
+	 */
+	public function fileIsDeletedInLocalStorage($filename) {
+		unlink("work/local_storage/$filename");
+	}
+
+	/**
 	 * @param string $userName
 	 * @return string
 	 */
