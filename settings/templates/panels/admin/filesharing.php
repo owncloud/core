@@ -60,6 +60,11 @@
 		<label for="allowGroupSharing"><?php p($l->t('Allow sharing with groups'));?></label><br />
 	</p>
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
+		<input type="checkbox" name="shareapi_default_permissions" id="shareApiDefaultPermissions" class="checkbox"
+			   value="31" <?php if ($_['shareapiDefaultPermissions'] === 31) print_unescaped('checked="checked"'); ?> />
+		<label for="shareApiDefaultPermissions"><?php p($l->t('Newly created local shares are read-write by default'));?></label><br/>
+	</p>
+	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
 		<input type="checkbox" name="shareapi_only_share_with_group_members" id="onlyShareWithGroupMembers" class="checkbox"
 			   value="1" <?php if ($_['onlyShareWithGroupMembers']) print_unescaped('checked="checked"'); ?> />
 		<label for="onlyShareWithGroupMembers"><?php p($l->t('Restrict users to only share with users in their groups'));?></label><br/>
