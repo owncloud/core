@@ -198,6 +198,10 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 	$array['oc_config']['versionstring'] = OC_Util::getVersionString();
 	$array['oc_defaults']['docBaseUrl'] = $defaults->getDocBaseUrl();
 	$array['oc_defaults']['docPlaceholderUrl'] = $defaults->buildDocLinkToKey('PLACEHOLDER');
+	$caps = \OC::$server->getCapabilitiesManager()->getCapabilities();
+	// remove status.php info as we already have the version above
+	unset($caps['core']['status']);
+	$array['oc_capabilities'] = json_encode($caps);
 }
 
 // Allow hooks to modify the output values
