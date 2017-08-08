@@ -273,7 +273,7 @@ class DAV extends Common {
 				);
 				$this->statCache->set($path, $response);
 			} catch (ClientHttpException $e) {
-				if ($e->getHttpStatus() === 404) {
+				if ($e->getHttpStatus() === Http::STATUS_NOT_FOUND) {
 					$this->statCache->clear($path . '/');
 					$this->statCache->set($path, false);
 					return false;
@@ -352,7 +352,7 @@ class DAV extends Common {
 							]);
 				} catch (RequestException $e) {
 					if ($e->getResponse() instanceof ResponseInterface
-						&& $e->getResponse()->getStatusCode() === 404) {
+						&& $e->getResponse()->getStatusCode() === Http::STATUS_NOT_FOUND) {
 						return false;
 					} else {
 						throw $e;
@@ -656,7 +656,7 @@ class DAV extends Common {
 			$response = $this->client->request($method, $this->encodePath($path), $body);
 			return $response['statusCode'] == $expected;
 		} catch (ClientHttpException $e) {
-			if ($e->getHttpStatus() === 404 && $method === 'DELETE') {
+			if ($e->getHttpStatus() === Http::STATUS_NOT_FOUND && $method === 'DELETE') {
 				$this->statCache->clear($path . '/');
 				$this->statCache->set($path, false);
 				return false;
@@ -769,7 +769,7 @@ class DAV extends Common {
 			if ($response === false) {
 				if ($path === '') {
 					// if root is gone it means the storage is not available
-					throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
+					throw new StorageNotAvailableException('remote root vanished');
 				}
 				return false;
 			}
