@@ -44,13 +44,13 @@ class Version20170804201125 implements ISchemaMigration {
 			$table->addColumn('type', 'string', [
 				'length' => 4,
 				'notnull' => false,
-				'default' => ''
+				'default' => null
 			]);
 
 			$table->addColumn('mime', 'string', [
 				'length' => 255,
 				'notnull' => false,
-				'default' => ''
+				'default' => null
 			]);
 
 			$table->setPrimaryKey(['auto_id']);
