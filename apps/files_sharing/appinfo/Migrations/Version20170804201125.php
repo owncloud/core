@@ -20,7 +20,7 @@ class Version20170804201125 implements ISchemaMigration {
 			$table->addColumn('remote', 'string', [
 				'notnull' => true,
 				'length' => 512,
-				'default' => '',
+				'default' => null,
 				'comment' => 'Url of the remote owncloud instance'
 			]);
 
@@ -40,7 +40,7 @@ class Version20170804201125 implements ISchemaMigration {
 			$table->addColumn('password', 'string', [
 				'length' => 64,
 				'notnull' => false,
-				'default' => '',
+				'default' => null,
 				'comment' => 'Optional password for the public share'
 			]);
 
