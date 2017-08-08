@@ -56,6 +56,7 @@
  *
  */
 
+use OCP\Files\Storage\IStorage;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
@@ -107,9 +108,14 @@ class OC_Util {
 			$segments = explode('\\', $name);
 			OC_App::loadApp(strtolower($segments[1]));
 		}
-		$config['arguments']['objectstore'] = new $config['class']($config['arguments']);
-		// mount with plain / root object store implementation
-		$config['class'] = '\OC\Files\ObjectStore\ObjectStoreStorage';
+		$objectStoreImpl = new $config['class']($config['arguments']);
+		if ($objectStoreImpl instanceof \OCP\Files\ObjectStore\IObjectStore) {
+			$config['arguments']['objectstore'] = new $config['class']($config['arguments']);
+			// mount with plain / root object store implementation
+			$config['class'] = '\OC\Files\ObjectStore\ObjectStoreStorage';
+		} else if(!$objectStoreImpl instanceof IStorage) {
+			throw new Exception("Objectstore class must either implement IStorage or IObjectStore");
+		}
 
 		// mount object storage as root
 		\OC\Files\Filesystem::initMountManager();
@@ -181,7 +187,7 @@ class OC_Util {
 		});
 
 		// install storage checksum wrapper
-		\OC\Files\Filesystem::addStorageWrapper('oc_checksum', function ($mountPoint, \OCP\Files\Storage\IStorage $storage) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_checksum', function ($mountPoint, IStorage $storage) {
 			if (!$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 				return new \OC\Files\Storage\Wrapper\Checksum(['storage' => $storage]);
 			}
