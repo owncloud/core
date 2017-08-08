@@ -49,3 +49,13 @@ Feature: external-storage
     And as "user0" the file "/local_storage/foo2/textfile0.txt" does not exist
     And as "user1" the file "/local.txt" exists
 
+  Scenario: Download a file that exists in filecache but not storage fails with 404
+    Given user "user0" exists
+    And As an "user0"
+    And user "user0" created a folder "/local_storage/foo3"
+    And User "user0" moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
+    And file "foo3/textfile0.txt" is deleted in local storage
+    When Downloading file "local_storage/foo3/textfile0.txt"
+    Then the HTTP status code should be "404"
+    And as "user0" the file "local_storage/foo3/textfile0.txt" does not exist
+
