@@ -181,9 +181,13 @@ class Util {
 			self::$shareManager = \OC::$server->getShareManager();
 		}
 
-		$user = \OC::$server->getUserSession()->getUser();
-		if ($user !== null) {
-			$user = $user->getUID();
+		$userSession = \OC::$server->getUserSession();
+		// session is null while installing OC
+		if (!is_null($userSession)){
+			$user = $userSession->getUser();
+			if ($user !== null) {
+				$user = $user->getUID();
+			}
 		}
 
 		return self::$shareManager->sharingDisabledForUser($user);
