@@ -398,7 +398,7 @@ class FilesPlugin extends ServerPlugin {
 	 */
 	public function sendFileIdHeader($filePath, \Sabre\DAV\INode $node = null) {
 		// chunked upload handling
-		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+		if (\OC_FileChunking::isWebdavChunk()) {
 			list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($filePath);
 			$info = \OC_FileChunking::decodeName($name);
 			if (!empty($info)) {

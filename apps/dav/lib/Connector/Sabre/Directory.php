@@ -42,6 +42,7 @@ use Sabre\DAV\INode;
 use Sabre\DAV\Exception\BadRequest;
 use OC\Files\Mount\MoveableMount;
 use Sabre\DAV\IFile;
+use OCA\DAV\Upload\FutureFile;
 
 class Directory extends \OCA\DAV\Connector\Sabre\Node
 	implements \Sabre\DAV\ICollection, \Sabre\DAV\IQuota, \Sabre\DAV\IMoveTarget {
@@ -125,18 +126,21 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 				throw new \Sabre\DAV\Exception\Forbidden();
 			}
 
-			// for chunked upload also updating a existing file is a "createFile"
-			// because we create all the chunks before re-assemble them to the existing file.
-			if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+			$info = false;
+			if (\OC_FileChunking::isWebdavChunk()) {
+				// For chunked upload also updating a existing file is a "createFile"
+				// because we create all the chunks before re-assemble them to the existing file.
 
-				// exit if we can't create a new file and we don't updatable existing file
+				// exit if we can't create a new file and we don't update existing file
 				$chunkInfo = \OC_FileChunking::decodeName($name);
 				if (!$this->fileView->isCreatable($this->path) &&
 					!$this->fileView->isUpdatable($this->path . '/' . $chunkInfo['name'])
 				) {
 					throw new \Sabre\DAV\Exception\Forbidden();
 				}
-
+			} else if (FutureFile::isFutureFile()) {
+				// Future file (chunked upload) requires fileinfo
+				$info = $this->fileView->getFileInfo($this->path . '/' . $name);
 			} else {
 				// For non-chunked upload it is enough to check if we can create a new file
 				if (!$this->fileView->isCreatable($this->path)) {
@@ -148,8 +152,10 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 
 			$path = $this->fileView->getAbsolutePath($this->path) . '/' . $name;
 
-			// use a dummy FileInfo which is acceptable here since it will be refreshed after the put is complete
-			$info = new \OC\Files\FileInfo($path, null, null, [], null);
+			if (!$info) {
+				// use a dummy FileInfo which is acceptable here since it will be refreshed after the put is complete
+				$info = new \OC\Files\FileInfo($path, null, null, [], null);
+			}
 
 			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
 			$node->acquireLock(ILockingProvider::LOCK_SHARED);
