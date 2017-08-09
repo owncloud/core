@@ -76,7 +76,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 * @return string path to real file
 	 */
 	private function resolveChunkFile($path) {
-		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+		if (\OC_FileChunking::isWebdavChunk()) {
 			// resolve to real file name to find the proper node
 			list($dir, $name) = \Sabre\HTTP\URLUtil::splitPath($path);
 			if ($dir == '/' || $dir == '.') {

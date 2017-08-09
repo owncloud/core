@@ -43,20 +43,20 @@ class UploadFolder implements ICollection {
 	}
 
 	function getChild($name) {
-		if ($name === '.file') {
-			return new FutureFile($this->node, '.file');
+		if ($name === FutureFile::getFutureFileName()) {
+			return new FutureFile($this->node, FutureFile::getFutureFileName());
 		}
 		return $this->node->getChild($name);
 	}
 
 	function getChildren() {
 		$children = $this->node->getChildren();
-		$children[] = new FutureFile($this->node, '.file');
+		$children[] = new FutureFile($this->node, FutureFile::getFutureFileName());
 		return $children;
 	}
 
 	function childExists($name) {
-		if ($name === '.file') {
+		if ($name === FutureFile::getFutureFileName()) {
 			return true;
 		}
 		return $this->node->childExists($name);
