@@ -333,9 +333,8 @@ class LoginControllerTest extends TestCase {
 			->method('login')
 			->with($user, $password)
 			->will($this->returnValue(true));
-		$this->userManager->expects($this->once())
-			->method('get')
-			->with($user)
+		$this->userSession->expects($this->once())
+			->method('getUser')
 			->will($this->returnValue($user));
 		$this->userSession->expects($this->once())
 			->method('createSessionToken')
@@ -381,9 +380,8 @@ class LoginControllerTest extends TestCase {
 			->method('login')
 			->with('Jane', $password)
 			->will($this->returnValue(true));
-		$this->userManager->expects($this->once())
-			->method('get')
-			->with('Jane')
+		$this->userSession->expects($this->once())
+			->method('getUser')
 			->will($this->returnValue($user));
 		$this->userSession->expects($this->once())
 			->method('createSessionToken')
@@ -413,8 +411,8 @@ class LoginControllerTest extends TestCase {
 		$this->userSession->expects($this->once())
 			->method('login')
 			->will($this->returnValue(true));
-		$this->userManager->expects($this->once())
-			->method('get')
+		$this->userSession->expects($this->once())
+			->method('getUser')
 			->will($this->returnValue($user));
 		$this->userSession->expects($this->once())
 			->method('login')
