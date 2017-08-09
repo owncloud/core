@@ -128,7 +128,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			'error',
 			[
 				'errors' => [
-					['error' => 'Couldn\'t reset password because the token is invalid'],
+					['error' => 'Could not reset password because the token is invalid'],
 				]
 			],
 			'guest');
@@ -159,7 +159,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			'error',
 			[
 				'errors' => [
-					['error' => 'Couldn\'t reset password because the token is invalid'],
+					['error' => 'Could not reset password because the token does not match'],
 				]
 			],
 			'guest');
@@ -193,7 +193,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			'error',
 			[
 				'errors' => [
-					['error' => 'Couldn\'t reset password because the token is expired'],
+					['error' => 'Could not reset password because the token expired'],
 				]
 			],
 			'guest');
@@ -452,7 +452,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$response = $this->lostController->setPassword('wrongToken', $userName, 'NewPassword', true);
 		$expectedResponse = [
 			'status' => 'error',
-			'msg' => 'Couldn\'t reset password because the token is invalid'
+			'msg' => 'Could not reset password because the token is invalid'
 		];
 		$this->assertSame($expectedResponse, $response);
 
@@ -546,7 +546,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$response = $this->lostController->setPassword('TheOnlyAndOnlyOneTokenToResetThePassword', 'ValidTokenUser', 'NewPassword', true);
 		$expectedResponse = [
 			'status' => 'error',
-			'msg' => 'Couldn\'t reset password because the token is expired',
+			'msg' => 'Could not reset password because the token expired',
 		];
 		$this->assertSame($expectedResponse, $response);
 	}
@@ -568,7 +568,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$response = $this->lostController->setPassword('TheOnlyAndOnlyOneTokenToResetThePassword', 'ValidTokenUser', 'NewPassword', true);
 		$expectedResponse = [
 			'status' => 'error',
-			'msg' => 'Couldn\'t reset password because the token is invalid',
+			'msg' => 'Could not reset password because the token is invalid',
 		];
 		$this->assertSame($expectedResponse, $response);
 	}
@@ -598,7 +598,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$response = $this->lostController->setPassword('TheOnlyAndOnlyOneTokenToResetThePassword', 'ValidTokenUser', 'NewPassword', true);
 		$expectedResponse = [
 			'status' => 'error',
-			'msg' => 'Couldn\'t reset password because the token is expired',
+			'msg' => 'Could not reset password because the token expired',
 		];
 		$this->assertSame($expectedResponse, $response);
 	}
@@ -613,7 +613,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$response = $this->lostController->setPassword('', 'ValidTokenUser', 'NewPassword', true);
 		$expectedResponse = [
 			'status' => 'error',
-			'msg' => 'Couldn\'t reset password because the token is invalid'
+			'msg' => 'Could not reset password because the token is invalid'
 			];
 		$this->assertSame($expectedResponse, $response);
 	}
