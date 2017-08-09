@@ -288,7 +288,10 @@ OC.FileUpload.prototype = {
 			'uploads/' + encodeURIComponent(uid) + '/' + encodeURIComponent(this.getId()) + '/.file',
 			'files/' + encodeURIComponent(uid) + '/' + OC.joinPaths(this.getFullPath(), this.getFileName()),
 			true,
-			{'X-OC-Mtime': this.getFile().lastModified / 1000}
+			{
+				'X-OC-Mtime': this.getFile().lastModified / 1000,
+				'OC-Total-Size': this.getFile().size
+			}
 		);
 	},
 
@@ -1126,6 +1129,7 @@ OC.Uploader.prototype = _.extend({
 					var upload = self.getUpload(data);
 					var range = data.contentRange.split(' ')[1];
 					var chunkId = range.split('/')[0].split('-')[0];
+					chunkId = (chunkId / data.maxChunkSize)+1;
 					data.url = OC.getRootPath() +
 						'/remote.php/dav/uploads' +
 						'/' + encodeURIComponent(OC.getCurrentUser().uid) +
