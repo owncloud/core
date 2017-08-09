@@ -22,6 +22,7 @@
 
 namespace OC\Files\Mount;
 
+use OC\Files\ObjectStore\HomeObjectStoreStorage;
 use OCP\Files\Config\IHomeMountProvider;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
@@ -50,7 +51,7 @@ class ObjectHomeMountProvider implements IHomeMountProvider {
 	 *
 	 * @param IUser $user
 	 * @param IStorageFactory $loader
-	 * @return \OCP\Files\Mount\IMountPoint[]
+	 * @return \OCP\Files\Mount\IMountPoint
 	 */
 	public function getHomeMountForUser(IUser $user, IStorageFactory $loader) {
 
@@ -62,8 +63,9 @@ class ObjectHomeMountProvider implements IHomeMountProvider {
 		if ($config === null) {
 			return null;
 		}
+		$homeStorageClass = isset($config['homeClass']) ? $config['homeClass'] : HomeObjectStoreStorage::class;
 
-		return new MountPoint('\OC\Files\ObjectStore\HomeObjectStoreStorage', '/' . $user->getUID(), $config['arguments'], $loader);
+		return new MountPoint($homeStorageClass, '/' . $user->getUID(), $config['arguments'], $loader);
 	}
 
 	/**

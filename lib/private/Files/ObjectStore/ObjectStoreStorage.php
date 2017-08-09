@@ -34,9 +34,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	/**
 	 * @var array
 	 */
-	private static $tmpFiles = [];
+	protected static $tmpFiles = [];
 	/**
-	 * @var \OCP\Files\ObjectStore\IObjectStore $objectStore
+	 * @var IObjectStore $objectStore
 	 */
 	protected $objectStore;
 	/**

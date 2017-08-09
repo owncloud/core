@@ -56,6 +56,7 @@
  *
  */
 
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OCP\Files\Storage\IStorage;
 use OCP\IConfig;
 use OCP\IGroupManager;
@@ -112,7 +113,7 @@ class OC_Util {
 		if ($objectStoreImpl instanceof \OCP\Files\ObjectStore\IObjectStore) {
 			$config['arguments']['objectstore'] = new $config['class']($config['arguments']);
 			// mount with plain / root object store implementation
-			$config['class'] = '\OC\Files\ObjectStore\ObjectStoreStorage';
+			$config['class'] = ObjectStoreStorage::class;
 		} else if(!$objectStoreImpl instanceof IStorage) {
 			throw new Exception("Objectstore class must either implement IStorage or IObjectStore");
 		}
