@@ -1058,6 +1058,14 @@ $CONFIG = array(
 'cache_chunk_gc_ttl' => 86400, // 60*60*24 = 1 day
 
 /**
+ * Location of the chunk folder, defaults to ``data/$user/uploads`` where
+ * ``$user`` is the current user. When specified, the format will change to
+ * ``$dav.chunk_base_dir/$user`` where ``$dav.chunk_base_dir`` is the configured
+ * cache directory and ``$user`` is the user.
+ */
+'dav.chunk_base_dir' => '',
+
+/**
  * Using Object Store with ownCloud
  */
 

@@ -23,6 +23,7 @@
 
 use OCA\DAV\AppInfo\Application;
 use OCA\DAV\CardDAV\CardDavBackend;
+use OCA\DAV\Upload\ChunkLocationProvider;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 $app = new Application();
@@ -53,3 +54,6 @@ $cm->register(function() use ($cm, $app) {
 		$app->setupContactsProvider($cm, $user->getUID());
 	}
 });
+
+\OC::$server->getMountProviderCollection()
+	->registerProvider(new ChunkLocationProvider(\OC::$server->getConfig()));
