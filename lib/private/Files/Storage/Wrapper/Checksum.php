@@ -149,6 +149,22 @@ class Checksum extends Wrapper {
 	}
 
 	/**
+	 * check if the file metadata should not be fetched
+	 * NOTE: files with a '.part' extension are ignored as well!
+	 *       prevents unfinished put requests to fetch metadata which does not exists
+	 *
+	 * @param string $file
+	 * @return boolean
+	 */
+	public static function isPartialFile($file) {
+		if (pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * @param string $path
 	 * @param string $data
 	 * @return bool
@@ -168,7 +184,11 @@ class Checksum extends Wrapper {
 	 * @return array
 	 */
 	public function getMetaData($path) {
-		$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
+		// Check if it is partial file. Partial file metadata are only checksums
+		$parentMetaData = [];
+		if(!self::isPartialFile($path)) {
+			$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
+		}
 		$parentMetaData['checksum'] = self::getChecksumsInDbFormat($path);
 
 		if (!isset($parentMetaData['mimetype'])) {
