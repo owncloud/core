@@ -301,6 +301,7 @@
     "Log in" : "Přihlásit",
     "Wrong password. Reset it?" : "Nesprávné heslo. Resetovat?",
     "Wrong password." : "Chybné heslo.",
+    "You are trying to access a private link. Please log in first." : "Pokoušíte se získat přístup k soukromému odkazu. Prosím nejdříve se přihlaste.",
     "Stay logged in" : "Neodhlašovat",
     "Alternative Logins" : "Alternativní přihlášení",
     "Use the following link to reset your password: {link}" : "Heslo obnovíte použitím následujícího odkazu: {link}",

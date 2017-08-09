@@ -301,6 +301,7 @@
     "Log in" : "Entrar",
     "Wrong password. Reset it?" : "Senha incorreta. Redefini-la?",
     "Wrong password." : "Senha errada",
+    "You are trying to access a private link. Please log in first." : "Você está tentando acessar um linque privado. Por favor, faça o login primeiro.",
     "Stay logged in" : "Permaneça logado",
     "Alternative Logins" : "Logins Alternativos",
     "Use the following link to reset your password: {link}" : "Use o seguinte link para redefinir sua senha: {link}",

@@ -93,6 +93,7 @@ OC.L10N.register(
     "Changed by %2$s" : "Modificado por %2$s",
     "Deleted by %2$s" : "Deletado por %2$s",
     "Restored by %2$s" : "Restaurado por %2$s",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Você não tem permissões para acessar este arquivo/pasta - Entre em contato com o proprietário para compartilhá-lo com você.",
     "Upload (max. %s)" : "Envio (max. %s)",
     "Settings" : "Configurações",
     "Show hidden files" : "Mostrar arquivos escondidos",

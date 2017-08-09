@@ -303,6 +303,7 @@ OC.L10N.register(
     "Log in" : "כניסה",
     "Wrong password. Reset it?" : "סיסמא שגוייה. האם לאפס אותה?",
     "Wrong password." : "סיסמא שגוייה.",
+    "You are trying to access a private link. Please log in first." : "הנך מנסה לגשת לקישור פרטי. יש להתחבר תחילה.",
     "Stay logged in" : "השאר מחובר",
     "Alternative Logins" : "כניסות אלטרנטיביות",
     "Use the following link to reset your password: {link}" : "יש להשתמש בקישור הבא כדי לאפס את הססמה שלך: {link}",

@@ -91,6 +91,7 @@
     "Changed by %2$s" : "שונו על ידי %2$s",
     "Deleted by %2$s" : "נמחקו על ידי %2$s",
     "Restored by %2$s" : "שוחזרו על ידי %2$s",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "אין לך הרשאות לגשת לקובץ/תיקייה - יש ליצור קשר עם הבעלים לשיתופם איתך.",
     "Upload (max. %s)" : "העלאה (מקסימום %s)",
     "Settings" : "הגדרות",
     "Show hidden files" : "הצגת קבצים נסתרים",

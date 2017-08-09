@@ -206,6 +206,8 @@
     "SSL/TLS" : "SSL/TLS",
     "STARTTLS" : "STARTTLS",
     "Email server" : "Почтовый сервер",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Файл конфигурации доступен только для чтения. Пожалуйста поправьте настройки путём редактирования файла конфигурации вручную.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "В кластерной конфигурации пожалуйста убедитесь, что файл config.php синхронизирован во всех узлах.",
     "This is used for sending out notifications." : "Используется для отправки уведомлений.",
     "Send mode" : "Способ отправки",
     "Encryption" : "Шифрование",

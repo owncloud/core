@@ -303,6 +303,7 @@ OC.L10N.register(
     "Log in" : "Войти",
     "Wrong password. Reset it?" : "Неправильный пароль. Сбросить его?",
     "Wrong password." : "Неправильный пароль.",
+    "You are trying to access a private link. Please log in first." : "Вы пытаетесь получить доступ по личной ссылке. Пожалуйста, сначала войдите.",
     "Stay logged in" : "Оставаться в системе",
     "Alternative Logins" : "Альтернативные имена пользователя",
     "Use the following link to reset your password: {link}" : "Используйте следующую ссылку чтобы сбросить пароль: {link}",

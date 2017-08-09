@@ -303,6 +303,7 @@ OC.L10N.register(
     "Log in" : "Iniciar sesión",
     "Wrong password. Reset it?" : "Contraseña incorrecta. ¿Restablecerla?",
     "Wrong password." : "Contraseña incorrecta.",
+    "You are trying to access a private link. Please log in first." : "Estás intentando acceder a un enlace privado. Por favor, inicia sesión primero.",
     "Stay logged in" : "Permanecer autenticado",
     "Alternative Logins" : "Inicios de sesión alternativos",
     "Use the following link to reset your password: {link}" : "Utilice el siguiente enlace para restablecer su contraseña: {link}",
