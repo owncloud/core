@@ -17,77 +17,48 @@
  * You should have received a copy of the GNU Affero General Public License, version 3,
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-namespace OC\Theme;
+namespace OCP\Theme;
 
-use OCP\Theme\ITheme;
-
-class Theme implements ITheme {
-
-	/**
-	 * @var string
-	 */
-	private $name;
+/**
+ * The representation of a Theme.
+ * @package OCP\Theme
+ * @since 10.0.1
+ */
+interface ITheme {
 
 	/**
-	 * @var string
+	 * @return string
+	 * @since 10.0.1
 	 */
-	private $directory;
+	public function getName();
 
 	/**
-	 * @var string
+	 * @return string
+	 * @since 10.0.1
 	 */
-	private $webPath;
+	public function getDirectory();
+
+	/**
+	 * @return string
+	 * @since 10.0.1
+	 */
+	public function getWebPath();
 
 	/**
 	 * @param string $name
-	 * @param string $directory
-	 * @param string $webPath
+	 * @since 10.0.1
 	 */
-	public function __construct($name = '', $directory = '', $webPath = '') {
-		$this->name = $name;
-		$this->directory = $directory;
-		$this->webPath = $webPath;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDirectory() {
-		return $this->directory;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getWebPath() {
-		return $this->webPath;
-	}
-
-	/**
-	 * @param string $name
-	 */
-	public function setName($name) {
-		$this->name = $name;
-	}
+	public function setName($name);
 
 	/**
 	 * @param string $directory
+	 * @since 10.0.1
 	 */
-	public function setDirectory($directory) {
-		$this->directory = $directory;
-	}
+	public function setDirectory($directory);
 
 	/**
 	 * @param string $webPath
+	 * @since 10.0.1
 	 */
-	public function setWebPath($webPath) {
-		$this->webPath = $webPath;
-	}
+	public function setWebPath($webPath);
 }

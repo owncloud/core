@@ -30,7 +30,7 @@
 
 namespace OC\Template;
 
-use OC\Theme\Theme;
+use OCP\Theme\ITheme;
 
 class Base {
 	/**
@@ -49,7 +49,7 @@ class Base {
 	private $l10n;
 
 	/**
-	 * @var Theme
+	 * @var ITheme
 	 */
 	protected $theme;
 
@@ -62,7 +62,7 @@ class Base {
 	 * @param string $template
 	 * @param string $requestToken
 	 * @param \OCP\IL10N $l10n
-	 * @param Theme $theme
+	 * @param ITheme $theme
 	 * @param \OC_Defaults $themeDefaults
 	 */
 	public function __construct($template, $requestToken, $l10n, $theme, $themeDefaults) {
@@ -77,7 +77,7 @@ class Base {
 	/**
 	 * @param string $serverRoot
 	 * @param string|false $app_dir
-	 * @param Theme $theme
+	 * @param ITheme $theme
 	 * @param string $app
 	 * @return string[]
 	 */
@@ -97,7 +97,7 @@ class Base {
 
 	/**
 	 * @param string $serverRoot
-	 * @param Theme $theme
+	 * @param ITheme $theme
 	 * @return string[]
 	 */
 	protected function getCoreTemplateDirs($theme, $serverRoot) {
