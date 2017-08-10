@@ -35,11 +35,15 @@ use OCP\Files\External\Service\IUserGlobalStoragesService;
 use OCP\Files\External\IStorageConfig;
 use OC\Files\Storage\FailedStorage;
 use OCP\Files\StorageNotAvailableException;
+use OCP\IConfig;
 
 /**
  * Make the old files_external config work with the new public mount config api
  */
 class ConfigAdapter implements IMountProvider {
+
+	/** @var IConfig */
+	private $config;
 
 	/** @var IUserStoragesService */
 	private $userStoragesService;
@@ -52,9 +56,11 @@ class ConfigAdapter implements IMountProvider {
 	 * @param IUserGlobalStoragesService $userGlobalStoragesService
 	 */
 	public function __construct(
+		IConfig $config,
 		IUserStoragesService $userStoragesService,
 		IUserGlobalStoragesService $userGlobalStoragesService
 	) {
+		$this->config = $config;
 		$this->userStoragesService = $userStoragesService;
 		$this->userGlobalStoragesService = $userGlobalStoragesService;
 	}
@@ -146,6 +152,7 @@ class ConfigAdapter implements IMountProvider {
 			$mounts[$storage->getMountPoint()] = $mount;
 		}
 
+		$allowUserMountSharing = $this->config->getAppValue('core', 'allow_user_mount_sharing', 'yes') === 'yes';
 		foreach ($this->userStoragesService->getStorages() as $storage) {
 			try {
 				$this->prepareStorageConfig($storage, $user);
@@ -155,6 +162,11 @@ class ConfigAdapter implements IMountProvider {
 				$impl = new FailedStorage(['exception' => $e]);
 			}
 
+			$mountOptions = $storage->getMountOptions();
+			if (!$allowUserMountSharing) {
+				$mountOptions['enable_sharing'] = false;
+			}
+
 			$mount = new PersonalMount(
 				$this->userStoragesService,
 				$storage->getId(),
@@ -162,7 +174,7 @@ class ConfigAdapter implements IMountProvider {
 				'/' . $user->getUID() . '/files' . $storage->getMountPoint(),
 				null,
 				$loader,
-				$storage->getMountOptions()
+				$mountOptions
 			);
 			$mounts[$storage->getMountPoint()] = $mount;
 		}

@@ -67,6 +67,8 @@ class Admin implements ISettings {
 		$tmpl->assign('authMechanisms', $this->backendService->getAuthMechanisms());
 		$tmpl->assign('dependencies', \OC_Mount_Config::dependencyMessage($this->backendService->getBackends()));
 		$tmpl->assign('allowUserMounting', $this->backendService->isUserMountingAllowed());
+		$tmpl->assign('allowUserMountSharing', $this->config->getAppValue('core', 'allow_user_mount_sharing', 'yes') === 'yes');
+
 		return $tmpl;
 	}
 

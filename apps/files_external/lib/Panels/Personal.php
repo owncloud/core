@@ -68,6 +68,7 @@ class Personal implements ISettings {
 		$tmpl->assign('backends', $this->backendService->getAvailableBackends());
 		$tmpl->assign('authMechanisms', $this->backendService->getAuthMechanisms());
 		$tmpl->assign('allowUserMounting', $enabled);
+		$tmpl->assign('allowUserMountSharing', $this->config->getAppValue('core', 'allow_user_mount_sharing', 'yes') === 'yes');
 		return $tmpl;
     }
 
