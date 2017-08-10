@@ -895,6 +895,23 @@ trait WebDav {
 		}
 	}
 
+	/**
+	 * @Then user :user moves new chunk file with id :id to :dest with size :size
+	 */
+	public function userMovesNewChunkFileWithIdToMychunkedfileWithSize($user, $id, $dest, $size)
+	{
+		$source = '/uploads/' . $user . '/' . $id . '/.file';
+		$destination = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user) . $dest;
+
+		try {
+			$this->response = $this->makeDavRequest($user, 'MOVE', $source, [
+				'Destination' => $destination,
+				'OC-Total-Length' => $size
+			], null, "uploads");
+		} catch(\GuzzleHttp\Exception\BadResponseException $ex) {
+			$this->response = $ex->getResponse();
+		}
+	}
 
 	/**
 	 * @Given /^Downloading file "([^"]*)" as "([^"]*)"$/
