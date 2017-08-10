@@ -115,24 +115,6 @@ Feature: checksums
     And user "user0" downloads the file "/myChecksumFileCopy.txt"
     Then The header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
 
-  Scenario: Uploading a chunked file with checksum should return the checksum in the propfind using new dav path
-    Given using new dav path
-    And user "user0" exists
-    And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
-    And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
-    And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
-    When user "user0" request the checksum of "/myChecksumFile.txt" via propfind
-    Then The webdav checksum should match "SHA1:acfa6b1565f9710d4d497c6035d5c069bd35a8e8 MD5:45a72715acdd5019c5be30bdbb75233e ADLER32:1ecd03df"
-
-  Scenario: Uploading a chunked file with checksum should return the checksum in the download header using new dav path
-    Given using new dav path
-    And user "user0" exists
-    And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
-    And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
-    And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
-    When user "user0" downloads the file "/myChecksumFile.txt"
-    Then The header checksum should match "SHA1:acfa6b1565f9710d4d497c6035d5c069bd35a8e8"
-
   @local_storage
   Scenario: Downloading a file from local storage has correct checksum using new dav path
     Given using new dav path
@@ -183,3 +165,10 @@ Feature: checksums
     Then The following headers should be set
             | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
 
+  ## Validation Plugin or Old Endpoint Specific
+
+  Scenario: Uploading a old method chunked file with checksum should fail using new dav path
+    Given using new dav path
+    And user "user0" exists
+    When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
+    Then the HTTP status code should be "503"

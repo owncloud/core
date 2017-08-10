@@ -50,6 +50,7 @@ use Sabre\DAV\Auth\Plugin;
 use OCA\DAV\Connector\Sabre\TagsPlugin;
 use OCA\DAV\AppInfo\PluginManager;
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
+use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
 
 class Server {
 
@@ -80,6 +81,7 @@ class Server {
 
 		$config = \OC::$server->getConfig();
 		$this->server->addPlugin(new MaintenancePlugin($config));
+		$this->server->addPlugin(new ValidateRequestPlugin('dav'));
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$authPlugin = new Plugin();
 		$authPlugin->addBackend(new PublicAuth());
