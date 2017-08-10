@@ -24,6 +24,12 @@ timestampedNode('SLAVE') {
         	'''
 	}
 
+    stage 'make dist'
+        sh '''
+        phpenv local 5.6
+        make dist
+        '''
+
     stage 'phpunit/7.0/mysqlmb4'
         executeAndReport('tests/autotest-results-sqlite.xml') {
 	        sh '''
