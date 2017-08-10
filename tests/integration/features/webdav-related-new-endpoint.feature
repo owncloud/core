@@ -548,3 +548,35 @@ Feature: webdav-related-new-endpoint
 		And as "user1" the folder "/folderB/ONE/TWO" exists
 		And User "user1" checks id of file "/folderB/ONE"
 
+   ## Validation Plugin or Old Endpoint Specific
+
+	Scenario: New chunked upload MKDIR using old dav path should fail
+		Given using old dav path
+		And user "user0" exists
+		When user "user0" creates a new chunking upload with id "chunking-42"
+		Then the HTTP status code should be "409"
+
+	Scenario: New chunked upload PUT using old dav path should fail
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		When using old dav path
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		Then the HTTP status code should be "404"
+
+	Scenario: New chunked upload MOVE using old dav path should fail
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		When using old dav path
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
+		Then the HTTP status code should be "404"
+
+	Scenario: Upload to new dav path using old way should fail
+		Given using new dav path
+		And user "user0" exists
+		When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
+		Then the HTTP status code should be "503"

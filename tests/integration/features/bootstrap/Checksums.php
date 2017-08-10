@@ -159,14 +159,18 @@ trait Checksums {
 	 * @param string $checksum
 	 */
 	public function userUploadsChunkFileOfWithToWithChecksum($user, $num, $total, $data, $destination, $checksum) {
-		$num -= 1;
-		$data = \GuzzleHttp\Stream\Stream::factory($data);
-		$file = $destination . '-chunking-42-' . $total . '-' . $num;
-		$this->response = $this->makeDavRequest($user,
-							  'PUT',
-							  $file,
-							  ['OC-Checksum' => $checksum, 'OC-Chunked' => '1'],
-							  $data,
-							  "files");
+		try {
+			$num -= 1;
+			$data = \GuzzleHttp\Stream\Stream::factory($data);
+			$file = $destination . '-chunking-42-' . $total . '-' . $num;
+			$this->response = $this->makeDavRequest($user,
+								  'PUT',
+								  $file,
+								  ['OC-Checksum' => $checksum, 'OC-Chunked' => '1'],
+								  $data,
+								  "files");
+		} catch (\GuzzleHttp\Exception\RequestException $ex) {
+			$this->response = $ex->getResponse();
+		}
 	}
 }
