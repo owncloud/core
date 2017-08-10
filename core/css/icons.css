@@ -432,3 +432,12 @@ img.icon-loading-small-dark, object.icon-loading-small-dark, video.icon-loading-
 .icon-social-googleplus {
 	background-image: url('../img/social/social-googleplus.svg');
 }
+
+/* apps icons */
+.icon-shield {
+	background-image: url('../img/apps/shield.svg')
+}
+
+.icon-workflow {
+	background-image: url('../img/apps/workflow.svg')
+}
