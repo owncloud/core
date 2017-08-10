@@ -496,7 +496,7 @@ MountOptionsDropdown.prototype = {
 		}
 
 		var $el = $(template({
-			mountOptionsEncodingLabel: t('files_external', 'Compatibility with Mac NFD encoding (slow)')
+			mountOptionsEncodingLabel: t('files_external', 'Compatibility with Mac NFD encoding (slow)'),
 		}));
 		this.$el = $el;
 
@@ -654,7 +654,6 @@ MountConfigListView.prototype = _.extend({
 	 * @param {int} [options.userListLimit] page size in applicable users dropdown
 	 */
 	initialize: function($el, options) {
-		var self = this;
 		this.$el = $el;
 		this._isPersonal = ($el.data('admin') !== true);
 		if (this._isPersonal) {
@@ -668,6 +667,7 @@ MountConfigListView.prototype = _.extend({
 		}
 
 		this._encryptionEnabled = options.encryptionEnabled;
+		this._allowUserMountSharing = options.allowUserMountSharing;
 
 		// read the backend config that was carefully crammed
 		// into the data-configurations attribute of the select
@@ -1272,12 +1272,15 @@ MountConfigListView.prototype = _.extend({
 		var visibleOptions = [
 			'previews',
 			'filesystem_check_changes',
-			'enable_sharing',
 			'encoding_compatibility'
 		];
 		if (this._encryptionEnabled) {
 			visibleOptions.push('encrypt');
 		}
+		if (!this._isPersonal || this._allowUserMountSharing) {
+			visibleOptions.push('enable_sharing');
+		}
+
 		dropDown.show($toggle, storage.mountOptions || [], visibleOptions);
 		$('body').on('mouseup.mountOptionsDropdown', function(event) {
 			var $target = $(event.target);
@@ -1308,7 +1311,8 @@ $(document).ready(function() {
 	var enabled = $('#files_external').attr('data-encryption-enabled');
 	var encryptionEnabled = (enabled ==='true')? true: false;
 	var mountConfigListView = new MountConfigListView($('#externalStorage'), {
-		encryptionEnabled: encryptionEnabled
+		encryptionEnabled: encryptionEnabled,
+		allowUserMountSharing: (parseInt($('#allowUserMountSharing').val(), 10) === 1)
 	});
 	mountConfigListView.loadStorages();
 
@@ -1326,6 +1330,13 @@ $(document).ready(function() {
 			$('#userMountingBackends').addClass('hidden');
 		}
 		OC.msg.finishedSaving('#userMountingMsg', {status: 'success', data: {message: t('files_external', 'Saved')}});
+	});
+
+	var $allowUserMountSharing = $('#allowUserMountSharing');
+	$allowUserMountSharing.bind('change', function() {
+		OC.msg.startSaving('#userMountSharingMsg');
+		OC.AppConfig.setValue('core', 'allow_user_mount_sharing', this.checked ? 'yes' : 'no');
+		OC.msg.finishedSaving('#userMountSharingMsg', {status: 'success', data: {message: t('files_external', 'Saved')}});
 	});
 
 	$('input[name="allowUserMountingBackends\\[\\]"]').bind('change', function() {

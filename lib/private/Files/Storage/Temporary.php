@@ -44,4 +44,8 @@ class Temporary extends Local{
 	public function getDataDir() {
 		return $this->datadir;
 	}
+
+	public function getAvailability() {
+		return ['available' => true, 'last_checked' => 0];
+	}
 }

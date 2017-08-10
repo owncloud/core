@@ -152,7 +152,14 @@
 				<?php endif; ?>
 				<?php $i++; ?>
 			<?php endforeach; ?>
+			<br/>
+			<input type="checkbox" name="allowUserMountSharing" id="allowUserMountSharing" class="checkbox"
+				value="1" <?php if ($_['allowUserMountSharing'] === 'yes') print_unescaped(' checked="checked"'); ?> />
+			<label for="allowUserMountSharing"><?php p($l->t('Allow sharing on user-mounted external storages')); ?></label> <span id="userMountSharingMsg" class="msg"></span>
 		</p>
+	<?php else: ?>
+		<input type="hidden" name="allowUserMountSharing" id="allowUserMountSharing"
+			value="<?php p($_['allowUserMountSharing']) ?>" />
 	<?php endif; ?>
 	</div>
 </form>
