@@ -4,6 +4,8 @@ OC.L10N.register(
     "Personal" : "Persoonlik",
     "Username" : "Gebruikersnaam",
     "Password" : "Wagwoord",
-    "Share" : "Deel"
+    "Location" : "Ligging",
+    "Share" : "Deel",
+    "Name" : "Naam"
 },
 "nplurals=2; plural=(n != 1);");

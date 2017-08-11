@@ -30,6 +30,7 @@ OC.L10N.register(
     "Email sent" : "ईमेल भेज दिया गया है ",
     "Share" : "साझा करें",
     "Warning" : "चेतावनी ",
+    "Delete" : "हटाना",
     "Add" : "डाले",
     "Personal" : "यक्तिगत",
     "Users" : "उपयोगकर्ता",

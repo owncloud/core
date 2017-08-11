@@ -1,5 +1,11 @@
 { "translations": {
+    "Close" : "Sluit",
+    "Download" : "Laai Af",
     "Unshare" : "Deel terug neem",
+    "Invalid path" : "Ongeldige pad",
+    "Name" : "Naam",
+    "Size" : "Grootte",
+    "Favorite" : "Gunsteling",
     "Folder" : "Omslag",
     "Settings" : "Instellings"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

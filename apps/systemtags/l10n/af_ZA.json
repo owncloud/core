@@ -1,5 +1,5 @@
 { "translations": {
-    "Error" : "Fout",
-    "Name" : "Naam"
+    "Name" : "Naam",
+    "Size" : "Grootte"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

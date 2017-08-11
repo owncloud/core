@@ -4,6 +4,8 @@ OC.L10N.register(
     "Cancel" : "Kanseleer",
     "Share" : "Deel",
     "Password" : "Wagwoord",
-    "Expiration date" : "Verval datum"
+    "Name" : "Naam",
+    "Expiration date" : "Verval datum",
+    "Download" : "Laai Af"
 },
 "nplurals=2; plural=(n != 1);");
