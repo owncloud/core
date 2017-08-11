@@ -229,7 +229,7 @@ function execute_tests {
 
 		DATABASEHOST=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" "$DOCKER_CONTAINER_ID")
 
-		echo "Waiting for MySQL(utf8mb4) initialisation ..."
+		echo "Waiting for MySQL(utf8mb4) initialisation of container $DOCKER_CONTAINER_ID ..."
 
 		if ! apps/files_external/tests/env/wait-for-connection $DATABASEHOST 3306 600; then
 			echo "[ERROR] Waited 600 seconds, no response" >&2
