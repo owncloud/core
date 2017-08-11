@@ -175,10 +175,10 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	}
 
 	/**
-	 * @return int
+	 * @inheritdoc
 	 */
 	public function getSize() {
-		return isset($this->data['size']) ? intval($this->data['size']) : 0;
+		return is_numeric($this->data['size']) ? strval($this->data['size']) : "0";
 	}
 
 	/**
@@ -338,6 +338,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 			$this->childEtags[] = $relativeEntryPath . '/' . $data['etag'] . $permissions;
 		}
 	}
+
 
 	/**
 	 * @inheritdoc

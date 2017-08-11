@@ -72,10 +72,12 @@ interface FileInfo {
 	public function getEtag();
 
 	/**
-	 * Get the size in bytes for the file or folder
+	 * Get the size in bytes for the file or folder. The return value
+	 * should be numeric string (validated by is_numeric() function) and
+	 * return "0" in case of non-numeric value.
 	 *
-	 * @return int
-	 * @since 7.0.0
+	 * @return string
+	 * @since 10.0.0
 	 */
 	public function getSize();
 
