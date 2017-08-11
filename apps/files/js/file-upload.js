@@ -284,11 +284,17 @@ OC.FileUpload.prototype = {
 		}
 
 		var uid = OC.getCurrentUser().uid;
+		var mtime = this.getFile().lastModified;
+		var headers = {};
+		if (mtime) {
+			headers['X-OC-Mtime'] = mtime / 1000;
+		}
+
 		return this.uploader.davClient.move(
 			'uploads/' + encodeURIComponent(uid) + '/' + encodeURIComponent(this.getId()) + '/.file',
 			'files/' + encodeURIComponent(uid) + '/' + OC.joinPaths(this.getFullPath(), this.getFileName()),
 			true,
-			{'X-OC-Mtime': this.getFile().lastModified / 1000}
+			headers
 		);
 	},
 
