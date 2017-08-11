@@ -22,43 +22,43 @@ namespace OCP\Theme;
 /**
  * The representation of a Theme.
  * @package OCP\Theme
- * @since 10.0.1
+ * @since 10.0.3
  */
 interface ITheme {
 
 	/**
 	 * @return string
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function getName();
 
 	/**
 	 * @return string
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function getDirectory();
 
 	/**
 	 * @return string
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function getWebPath();
 
 	/**
 	 * @param string $name
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function setName($name);
 
 	/**
 	 * @param string $directory
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function setDirectory($directory);
 
 	/**
 	 * @param string $webPath
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function setWebPath($webPath);
 }

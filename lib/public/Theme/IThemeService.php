@@ -21,28 +21,28 @@ namespace OCP\Theme;
 
 /**
  * @package OCP\Theme
- * @since 10.0.1
+ * @since 10.0.3
  */
 interface IThemeService {
 
 	/**
 	 * Returns the currently active theme.
 	 * @return ITheme
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function getTheme();
 
 	/**
 	 * Sets an app as the active theme.
 	 * @param string $themeName
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function setAppTheme($themeName = '');
 
 	/**
 	 * Gets legacy and app themes as an array of ITheme's.
 	 * @return ITheme[]
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function getAllThemes();
 
@@ -51,7 +51,7 @@ interface IThemeService {
 	 * with that name.
 	 * @param string $themeName
 	 * @return ITheme|false
-	 * @since 10.0.1
+	 * @since 10.0.3
 	 */
 	public function findTheme($themeName);
 }
