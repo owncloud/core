@@ -203,7 +203,8 @@ class UserMountCache implements IUserMountCache {
 			$builder = $this->connection->getQueryBuilder();
 			$query = $builder->select('storage_id', 'root_id', 'user_id', 'mount_point')
 				->from('mounts')
-				->where($builder->expr()->eq('user_id', $builder->createPositionalParameter($user->getUID())));
+				->where($builder->expr()->eq('user_id', $builder->createPositionalParameter($user->getUID())))
+				->orderBy('storage_id');
 
 			$rows = $query->execute()->fetchAll();
 
