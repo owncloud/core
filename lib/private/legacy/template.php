@@ -37,7 +37,7 @@
  */
 
 use OC\TemplateLayout;
-use OC\Theme\Theme;
+use OCP\Theme\ITheme;
 
 require_once __DIR__.'/template/functions.php';
 
@@ -183,7 +183,7 @@ class OC_Template extends \OC\Template\Base {
 	 *
 	 * Will select the template file for the selected theme.
 	 * Checking all the possible locations.
-	 * @param Theme $theme
+	 * @param ITheme $theme
 	 * @param string $app
 	 * @return string
 	 */
