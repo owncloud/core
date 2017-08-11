@@ -27,6 +27,7 @@ namespace OC\Core\Command\App;
 use OC\Core\Command\Base;
 use OCP\App\IAppManager;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -49,6 +50,11 @@ class ListApps extends Base {
 		$this
 			->setName('app:list')
 			->setDescription('List all available apps')
+			->addArgument(
+				'search-pattern',
+				InputArgument::OPTIONAL,
+				'Restrict the list of apps to those whose name matches the given regular expression'
+			)
 			->addOption(
 				'shipped',
 				null,
@@ -59,6 +65,8 @@ class ListApps extends Base {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		$appNameSubString = $input->getArgument('search-pattern');
+
 		if ($input->getOption('shipped') === 'true' || $input->getOption('shipped') === 'false'){
 			$shippedFilter = $input->getOption('shipped') === 'true';
 		} else {
@@ -74,6 +82,11 @@ class ListApps extends Base {
 			if ($shippedFilter !== null && \OC_App::isShipped($app) !== $shippedFilter){
 				continue;
 			}
+
+			if ($appNameSubString !== null && !preg_match('/' . $appNameSubString . '/', $app)) {
+				continue;
+			}
+			
 			if ($this->manager->isInstalled($app)) {
 				$enabledApps[] = $app;
 			} else {
@@ -104,11 +117,15 @@ class ListApps extends Base {
 	protected function writeAppList(InputInterface $input, OutputInterface $output, $items) {
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_PLAIN:
-				$output->writeln('Enabled:');
-				parent::writeArrayInOutputFormat($input, $output, $items['enabled']);
+				if (count($items['enabled'])) {
+					$output->writeln('Enabled:');
+					parent::writeArrayInOutputFormat($input, $output, $items['enabled']);
+				}
 
-				$output->writeln('Disabled:');
-				parent::writeArrayInOutputFormat($input, $output, $items['disabled']);
+				if (count($items['disabled'])) {
+					$output->writeln('Disabled:');
+					parent::writeArrayInOutputFormat($input, $output, $items['disabled']);
+				}
 			break;
 
 			default:
