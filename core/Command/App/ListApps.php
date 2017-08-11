@@ -53,7 +53,7 @@ class ListApps extends Base {
 			->addArgument(
 				'search-pattern',
 				InputArgument::OPTIONAL,
-				'Restrict the list to apps whose name matches the given regular expression'
+				'Restrict the list of apps to those whose name matches the given regular expression'
 			)
 			->addOption(
 				'shipped',
