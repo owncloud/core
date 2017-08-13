@@ -134,7 +134,7 @@ EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 
 #Set up personalized skeleton
 OCC=./occ
-PREVIOUS_SKELETON_DIR=$($OCC config:system:get skeletondirectory)
+PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
 $OCC config:system:set skeletondirectory --value="$(pwd)/tests/ui/skeleton" >/dev/null
 
 echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM"

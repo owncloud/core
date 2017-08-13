@@ -73,14 +73,14 @@ export TEST_SERVER_URL="http://localhost:$PORT/ocs/"
 export TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
 
 #Set up personalized skeleton
-PREVIOUS_SKELETON_DIR=$($OCC config:system:get skeletondirectory)
+PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
 $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 
 #Enable external storage app
 $OCC config:app:set core enable_external_storage --value=yes
 $OCC config:system:set files_external_allow_create_new_local --value=true
 
-PREVIOUS_TESTING_APP_STATUS=$($OCC app:list "^testing$")
+PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
 if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
 then
 	$OCC app:enable testing
