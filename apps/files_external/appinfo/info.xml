@@ -18,7 +18,7 @@
 		<filesystem/>
 	</types>
 	<ocsid>166048</ocsid>
-
+	<use-migrations>true</use-migrations>
 	<namespace>Files_External</namespace>
 
 	<dependencies>
