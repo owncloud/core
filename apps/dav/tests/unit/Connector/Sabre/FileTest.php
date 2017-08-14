@@ -349,15 +349,6 @@ class FileTest extends TestCase {
 		$this->assertNotEmpty($this->doPut('/foo.txt'));
 	}
 
-	/**
-	 * Determine if the underlying storage supports a negative mtime value
-	 *
-	 * @return boolean true if negative mtime is supported
-	 */
-	private function supportsNegativeMtime() {
-		return !(getenv("RUN_OBJECTSTORE_TESTS") !== false);
-	}
-
 	public function legalMtimeProvider() {
 		return [
 			"string" => [
@@ -402,11 +393,11 @@ class FileTest extends TestCase {
 			],
 			"negative int" => [
 					'HTTP_X_OC_MTIME' => -34,
-					'expected result' => ($this->supportsNegativeMtime() ? -34 : 0)
+					'expected result' => -34
 			],
 			"negative float" => [
 					'HTTP_X_OC_MTIME' => -34.43,
-					'expected result' => ($this->supportsNegativeMtime() ? -34 : 0)
+					'expected result' => -34
 			],
 		];
 	}
