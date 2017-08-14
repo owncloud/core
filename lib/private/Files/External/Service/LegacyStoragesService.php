@@ -17,38 +17,41 @@
  *
  * You should have received a copy of the GNU Affero General Public License, version 3,
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
- *
  */
 
 namespace OC\Files\External\Service;
+use OC\Files\External\LegacyUtil;
 use OC\Files\External\StorageConfig;
 use OCP\Files\External\IStoragesBackendService;
+use OCP\Util;
 
 /**
  * Read mount config from legacy mount.json
  */
 class LegacyStoragesService {
-	/** @var IStoragesBackendService */
+	/**
+	 * @var IStoragesBackendService
+	 */
 	protected $backendService;
 
 	/**
-	 * LegacyStoragesService constructor.
-	 *
+	 * @var LegacyUtil
+	 */
+	private $legacyUtil;
+
+	/**
 	 * @param IStoragesBackendService $backendService
 	 */
 	public function __construct(IStoragesBackendService $backendService) {
 		$this->backendService = $backendService;
+		$this->legacyUtil = new LegacyUtil();
 	}
 
-
 	/**
-	 * Read legacy config data
-	 *
 	 * @return array list of mount configs
 	 */
 	protected function readLegacyConfig() {
-		$mountConfig = new \OC_Mount_Config();
-		return $mountConfig->readData();
+		return $this->legacyUtil->readData();
 	}
 
 	/**
@@ -90,13 +93,14 @@ class LegacyStoragesService {
 			$storageOptions['priority'] = $backend->getPriority();
 		}
 		$storageConfig->setPriority($storageOptions['priority']);
-		if ($mountType === \OC_Mount_Config::MOUNT_TYPE_USER) {
+
+		if ($mountType === LegacyUtil::MOUNT_TYPE_USER) {
 			$applicableUsers = $storageConfig->getApplicableUsers();
 			if ($applicable !== 'all') {
 				$applicableUsers[] = $applicable;
 				$storageConfig->setApplicableUsers($applicableUsers);
 			}
-		} else if ($mountType === \OC_Mount_Config::MOUNT_TYPE_GROUP) {
+		} else if ($mountType === LegacyUtil::MOUNT_TYPE_GROUP) {
 			$applicableGroups = $storageConfig->getApplicableGroups();
 			$applicableGroups[] = $applicable;
 			$storageConfig->setApplicableGroups($applicableGroups);
@@ -151,10 +155,10 @@ class LegacyStoragesService {
 					$parts = explode('/', ltrim($rootMountPath, '/'), 3);
 					if (count($parts) < 3) {
 						// something went wrong, skip
-						\OCP\Util::writeLog(
+						Util::writeLog(
 							'files_external',
 							'Could not parse mount point "' . $rootMountPath . '"',
-							\OCP\Util::ERROR
+							Util::ERROR
 						);
 						continue;
 					}
@@ -179,7 +183,7 @@ class LegacyStoragesService {
 						// but at this point we don't know the max-id, so use
 						// first group it by config hash
 						$storageOptions['mountpoint'] = $rootMountPath;
-						$configId = \OC_Mount_Config::makeConfigHash($storageOptions);
+						$configId = LegacyUtil::makeConfigHash($storageOptions);
 						if (isset($storagesWithConfigHash[$configId])) {
 							$currentStorage = $storagesWithConfigHash[$configId];
 						}
@@ -202,11 +206,11 @@ class LegacyStoragesService {
 							$storagesWithConfigHash[$configId] = $currentStorage;
 						}
 					} catch (\UnexpectedValueException $e) {
-						// dont die if a storage backend doesn't exist
-						\OCP\Util::writeLog(
+						// don't die if a storage backend doesn't exist
+						Util::writeLog(
 							'files_external',
 							'Could not load storage: "' . $e->getMessage() . '"',
-							\OCP\Util::ERROR
+							Util::ERROR
 						);
 					}
 				}
