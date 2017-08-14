@@ -281,7 +281,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			'.' => true,
 		];
 
-		if ($dh = opendir($dataDir)) {
+		if ($dh = @opendir($dataDir)) {
 			while (($file = readdir($dh)) !== false) {
 				if (!isset($knownEntries[$file])) {
 					self::tearDownAfterClassCleanStrayDataUnlinkDir($dataDir . '/' . $file);
@@ -297,21 +297,23 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	 * @param string $dir
 	 */
 	static protected function tearDownAfterClassCleanStrayDataUnlinkDir($dir) {
-		if ($dh = @opendir($dir)) {
-			while (($file = readdir($dh)) !== false) {
-				if (\OC\Files\Filesystem::isIgnoredDir($file)) {
-					continue;
+		if (is_dir($dir)) {
+			if ($dh = @opendir($dir)) {
+				while (($file = readdir($dh)) !== false) {
+					if (\OC\Files\Filesystem::isIgnoredDir($file)) {
+						continue;
+					}
+					$path = $dir . '/' . $file;
+					if (is_dir($path)) {
+						self::tearDownAfterClassCleanStrayDataUnlinkDir($path);
+					} else {
+						@unlink($path);
+					}
 				}
-				$path = $dir . '/' . $file;
-				if (is_dir($path)) {
-					self::tearDownAfterClassCleanStrayDataUnlinkDir($path);
-				} else {
-					@unlink($path);
-				}
+				closedir($dh);
 			}
-			closedir($dh);
+			@rmdir($dir);
 		}
-		@rmdir($dir);
 	}
 
 	/**
