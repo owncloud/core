@@ -159,6 +159,10 @@ class UploadHelper {
 			$chunks[] = fread($fp, $chunkSize);
 		}
 		fclose($fp);
+		if (count($chunks) === 0) {
+			// chunk an empty file
+			$chunks[] = '';
+		}
 		return $chunks;
 	}
 
