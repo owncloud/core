@@ -325,7 +325,11 @@ class FileTest extends TestCase {
 			null
 		);
 
-		$file = new File($view, $info, null, $request);
+		/** @var File | \PHPUnit_Framework_MockObject_MockObject $file */
+		$file = $this->getMockBuilder(File::class)
+			->setConstructorArgs([$view, $info, null, $request])
+			->setMethods(['header'])
+			->getMock();
 
 		// beforeMethod locks
 		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
@@ -351,7 +355,7 @@ class FileTest extends TestCase {
 	 * @return boolean true if negative mtime is supported
 	 */
 	private function supportsNegativeMtime() {
-		return (getenv("PRIMARY_STORAGE_CONFIG") !== "swift");
+		return !(getenv("RUN_OBJECTSTORE_TESTS") !== false);
 	}
 
 	public function legalMtimeProvider() {
@@ -409,8 +413,6 @@ class FileTest extends TestCase {
 
 	/**
 	 * Test putting a file with string Mtime
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
 	 * @dataProvider legalMtimeProvider
 	 */
 	public function testPutSingleFileLegalMtime($requestMtime, $resultMtime) {
@@ -426,8 +428,6 @@ class FileTest extends TestCase {
 
 	/**
 	 * Test putting a file with string Mtime using chunking
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
 	 * @dataProvider legalMtimeProvider
 	 */
 	public function testChunkedPutLegalMtime($requestMtime, $resultMtime) {
