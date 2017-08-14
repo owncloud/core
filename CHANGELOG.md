@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- It is now possible to upgrade from 8.2.11 directly to 10 - [#28655](https://github.com/owncloud/core/issues/28655) [#28673](https://github.com/owncloud/core/pull/28673)
 - Added extra check in case of missing home storage - [#28504](https://github.com/owncloud/core/issues/28504)
 - Added Shield and Workflow icons - [#28588](https://github.com/owncloud/core/issues/28588)
 - Enable chunking for big files in web UI when logged in - [#28547](https://github.com/owncloud/core/issues/28547)
@@ -13,12 +14,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added occ user:inactive command to list inactive users - [#28294](https://github.com/owncloud/core/issues/28294)
 - Added internal setting for the periodic credentials validity check - [#28298](https://github.com/owncloud/core/issues/28298)
 - Added jquery events for external storage settings UI when using OAuth - [#28210](https://github.com/owncloud/core/issues/28210)
+- Added public IThemeService which allows apps like the theme editor to interact with the current theme - [#28647](https://github.com/owncloud/core/issues/28647)
 
 ### Changed
 - Transfer ownership now works with master key encryption - [#28537](https://github.com/owncloud/core/issues/28537)
 - Reenable medial search by default - [#28064](https://github.com/owncloud/core/issues/28064)
 - The LoginController now emits "preLogin" hook signal before a failed login - [#28631](https://github.com/owncloud/core/issues/28631)
 - All columns that use the fileid have been changed to bigint (64-bits) - [#28581](https://github.com/owncloud/core/issues/28581)
+- Added search pattern for the occ app:list command - [#28653](https://github.com/owncloud/core/issues/28653)
 
 ### Deprecated
 ### Removed
@@ -28,6 +31,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Using old chunking protocol on new DAV endpoint is now disallowed - [#28637](https://github.com/owncloud/core/issues/28637)
 
 ### Fixed
+- Fix issue with folder sizes on 32-bit systems - [#28654](https://github.com/owncloud/core/issues/28654)
+- Prevent certificate manager to access FS too early, fixes 8.2 to 10 migration issue - [#28668](https://github.com/owncloud/core/pull/28668)
 - Return 404 instead of 500 when accessing a file that existed in filecache but not on disk - [#28618](https://github.com/owncloud/core/issues/28618)
 - Added cache for new card uri-id mapping to fix db cluster execution - [#28308](https://github.com/owncloud/core/issues/28308)
 - Detect PROPPATCH failure by parsing multistatus in Backbone Webdav adapter - [#28628](https://github.com/owncloud/core/issues/28628)
