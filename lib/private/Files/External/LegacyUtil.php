@@ -308,4 +308,26 @@ class LegacyUtil {
 		$cipher->setKey(\OC::$server->getConfig()->getSystemValue('passwordsalt', null));
 		return $cipher;
 	}
+
+	/**
+	 * Computes a hash based on the given configuration.
+	 * This is mostly used to find out whether configurations
+	 * are the same.
+	 *
+	 * @param array $config
+	 * @return string
+	 */
+	public static function makeConfigHash($config) {
+		$data = json_encode(
+			array(
+				'c' => $config['backend'],
+				'a' => $config['authMechanism'],
+				'm' => $config['mountpoint'],
+				'o' => $config['options'],
+				'p' => isset($config['priority']) ? $config['priority'] : -1,
+				'mo' => isset($config['mountOptions']) ? $config['mountOptions'] : [],
+			)
+		);
+		return hash('md5', $data);
+	}
 }
