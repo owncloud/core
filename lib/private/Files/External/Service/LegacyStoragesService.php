@@ -78,7 +78,8 @@ class LegacyStoragesService {
 		if (isset($storageOptions['authMechanism']) && $storageOptions['authMechanism'] !== 'builtin::builtin') {
 			$authMechanism = $this->backendService->getAuthMechanism($storageOptions['authMechanism']);
 		} else {
-			$authMechanism = $backend->getLegacyAuthMechanism($storageOptions);
+			$authMechanisms = $this->backendService->getAuthMechanisms();
+			$authMechanism = $authMechanisms[0];
 			$storageOptions['authMechanism'] = 'null'; // to make error handling easier
 		}
 		if (!$authMechanism) {
