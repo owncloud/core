@@ -40,6 +40,23 @@ class FutureFile implements \Sabre\DAV\IFile {
 	/** @var string */
 	private $name;
 
+	static public function getFutureFileName() {
+		return '.file';
+	}
+
+	static public function isFutureFile() {
+		$davUploadsTarget = '/dav/uploads';
+
+		// Check if pathinfo starts with dav uploads target and basename is future file basename
+		if (isset($_SERVER['PATH_INFO'])
+			&& pathinfo($_SERVER['PATH_INFO'], PATHINFO_BASENAME) === FutureFile::getFutureFileName()
+			&& (strpos($_SERVER['PATH_INFO'], $davUploadsTarget) === 0)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * @param Directory $root
 	 * @param string $name
