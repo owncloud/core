@@ -32,16 +32,16 @@ use OCP\Migration\IOutput;
  */
 class Version20170814051424 implements ISimpleMigration {
 
-    /**
-     * @param IOutput $out
-     */
-    public function run(IOutput $out) {
+	/**
+	 * @param IOutput $out
+	 */
+	public function run(IOutput $out) {
 
 		/** @var GlobalStoragesService $globalStoragesService */
-    	$globalStoragesService = \OC::$server->query('GlobalStoragesService');
-    	$legacyStoragesService = new LegacyStoragesService(\OC::$server->getStoragesBackendService());
+		$globalStoragesService = \OC::$server->query('GlobalStoragesService');
+		$legacyStoragesService = new LegacyStoragesService(\OC::$server->getStoragesBackendService());
 
-    	$legacyStorages = $legacyStoragesService->getAllStorages();
+		$legacyStorages = $legacyStoragesService->getAllStorages();
 
 		foreach ($legacyStorages as $legacyStorage) {
 			try {
@@ -59,5 +59,5 @@ class Version20170814051424 implements ISimpleMigration {
 				);
 			}
 		}
-    }
+	}
 }
