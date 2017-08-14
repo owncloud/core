@@ -2,7 +2,8 @@
 
 COMMIT_RANGE="$1"
 
-BASE_URL="https://github.com/owncloud/core/issues/"
+REPO=`git remote -v | grep -m 1 "(push)" | sed -e "s/.*github.com[:/]\(.*\)\.git.*/\1/"`
+BASE_URL="https://github.com/$REPO/issues/"
 
 if test -z "$1"; then
 	echo "This script builds changelog entries based on merge commits within the given range" >&2
