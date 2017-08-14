@@ -17,14 +17,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Transfer ownership now works with master key encryption - [#28537](https://github.com/owncloud/core/issues/28537)
 - Reenable medial search by default - [#28064](https://github.com/owncloud/core/issues/28064)
+- The LoginController now emits "preLogin" hook signal before a failed login - [#28631](https://github.com/owncloud/core/issues/28631)
+- All columns that use the fileid have been changed to bigint (64-bits) - [#28581](https://github.com/owncloud/core/issues/28581)
 
 ### Deprecated
 ### Removed
 - Remove themes folder from Makefile - [#28617](https://github.com/owncloud/core/issues/28617)
 - Remove unused Windows checks - [#28612](https://github.com/owncloud/core/issues/28612)
 - Do not allow slash in filename when renaming in the frontend (unintended "feature") - [#28490](https://github.com/owncloud/core/issues/28490)
+- Using old chunking protocol on new DAV endpoint is now disallowed - [#28637](https://github.com/owncloud/core/issues/28637)
 
 ### Fixed
+- Return 404 instead of 500 when accessing a file that existed in filecache but not on disk - [#28618](https://github.com/owncloud/core/issues/28618)
+- Added cache for new card uri-id mapping to fix db cluster execution - [#28308](https://github.com/owncloud/core/issues/28308)
+- Detect PROPPATCH failure by parsing multistatus in Backbone Webdav adapter - [#28628](https://github.com/owncloud/core/issues/28628)
+- Add check for empty result in storage memcache - [#28548](https://github.com/owncloud/core/issues/28548)
+- Optimized upload - do not fetch metadata for part file during checksuming - [#28633](https://github.com/owncloud/core/issues/28633)
+- Error messages from the server on upload are now displayed in the web UI instead of generic messages - [#28635](https://github.com/owncloud/core/issues/28635)
 - Remove initial scanning overhead to speed up federated shares with lots of entries - [#28604](https://github.com/owncloud/core/issues/28604)
 - Fix error message when accessing of non-existing file on external storage - [#28613](https://github.com/owncloud/core/issues/28613)
 - Don't set email if invalid in user:add command - [#28577](https://github.com/owncloud/core/issues/28577)
