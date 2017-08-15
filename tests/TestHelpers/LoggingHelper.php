@@ -57,7 +57,7 @@ class LoggingHelper {
 	}
 	
 	/**
-	 * returns the currently set log level [debug, info, warning, error]
+	 * returns the currently set log level [debug, info, warning, error, fatal]
 	 * 
 	 * @param string $ocPath
 	 * @throws \Exception
@@ -80,13 +80,13 @@ class LoggingHelper {
 	/**
 	 * 
 	 * @param string $ocPath
-	 * @param string $logLevel (debug|info|warning|error)
+	 * @param string $logLevel (debug|info|warning|error|fatal)
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
 	 */
 	public static function setLogLevel($ocPath, $logLevel) {
-		if (!in_array($logLevel, ["debug", "info", "warning", "error"])) {
+		if (!in_array($logLevel, ["debug", "info", "warning", "error", "fatal"])) {
 			throw new \InvalidArgumentException("invalid log level");
 		}
 		$result = SetupHelper::runOcc(["log:manage", "--level=$logLevel"], $ocPath);
