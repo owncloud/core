@@ -303,6 +303,7 @@ OC.L10N.register(
     "Log in" : "登录",
     "Wrong password. Reset it?" : "密码错误。要重置么？",
     "Wrong password." : "密码错误",
+    "You are trying to access a private link. Please log in first." : "您在尝试访问私有链接，请先登录。",
     "Stay logged in" : "保持登录",
     "Alternative Logins" : "其他登录方式",
     "Use the following link to reset your password: {link}" : "使用以下链接重置您的密码：{link}",

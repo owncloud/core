@@ -4,8 +4,12 @@ OC.L10N.register(
     "Personal" : "Persoonlik",
     "Username" : "Gebruikersnaam",
     "Password" : "Wagwoord",
+    "Port" : "Poort",
     "Location" : "Ligging",
+    "Host" : "Gasheer",
+    "Root" : "Wortel",
     "Share" : "Deel",
-    "Name" : "Naam"
+    "Name" : "Naam",
+    "Delete" : "Skrap"
 },
 "nplurals=2; plural=(n != 1);");

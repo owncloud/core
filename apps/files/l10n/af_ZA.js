@@ -3,7 +3,9 @@ OC.L10N.register(
     {
     "Close" : "Sluit",
     "Download" : "Laai Af",
+    "Delete" : "Skrap",
     "Unshare" : "Deel terug neem",
+    "Files" : "Lêers",
     "Invalid path" : "Ongeldige pad",
     "Name" : "Naam",
     "Size" : "Grootte",

@@ -1,4 +1,5 @@
 { "translations": {
+    "Delete" : "Skrap",
     "Error" : "Fout",
     "Name" : "Naam"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -1,0 +1,7 @@
+{ "translations": {
+    "Versions" : "Weergawes",
+    "_%n byte_::_%n bytes_" : ["%n greep","%n grepe"],
+    "No other versions available" : "Geen ander weergawes beskikbaar",
+    "More versions..." : "Nog weergawes…"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
+}
