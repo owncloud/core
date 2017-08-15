@@ -25,6 +25,7 @@
  */
 
 namespace OC\DB;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * This handles the way we use to write queries, into something that can be
@@ -92,13 +93,13 @@ class Adapter {
 		if (empty($compare)) {
 			$compare = array_keys($input);
 		}
-		$query = 'INSERT INTO `' .$table . '` (`'
+		$query = 'INSERT INTO `' . $table . '` (`'
 			. implode('`,`', array_keys($input)) . '`) SELECT '
-			. str_repeat('?,', count($input)-1).'? ' // Is there a prettier alternative?
+			. str_repeat('?,', count($input) - 1) . '? ' // Is there a prettier alternative?
 			. 'FROM `' . $table . '` WHERE ';
 
 		$inserts = array_values($input);
-		foreach($compare as $key) {
+		foreach ($compare as $key) {
 			$query .= '`' . $key . '`';
 			if (is_null($input[$key])) {
 				$query .= ' IS NULL AND ';
@@ -109,7 +110,68 @@ class Adapter {
 		}
 		$query = substr($query, 0, strlen($query) - 5);
 		$query .= ' HAVING COUNT(*) = 0';
-
 		return $this->conn->executeUpdate($query, $inserts);
+	}
+
+	/**
+	 * Inserts, or updates a row into the database. Returns the inserted or updated rows
+	 * @param $table string table name including **PREFIX**
+	 * @param $input array the key=>value pairs to insert into the db row
+	 * @param $compare array columns that should be compared
+	 * @return int the number of rows affected by the operation
+	 */
+	public function upsert($table, $input, $compare = null) {
+		$this->conn->beginTransaction();
+		$done = false;
+		$rows = 0;
+
+		if (empty($compare)) {
+			$compare = array_keys($input);
+		}
+
+		// Construct the update query
+		$updateQuery = 'UPDATE `' . $table . '` SET ';
+		$updateQuery .= '`' . implode('`  = ?, `', array_keys($input)) . '` = ?  WHERE';
+		$updateParams = array_values($input);
+		foreach ($compare as $key) {
+			$updateQuery .= '`' . $key . '`';
+			if (is_null($input[$key])) {
+				$updateQuery .= ' IS NULL AND ';
+			} else {
+				$updateParams[] = $input[$key];
+				$updateQuery .= ' = ? AND ';
+			}
+		}
+		// Remove the last ' AND ' from the query
+		$updateQuery = substr($updateQuery, 0, strlen($updateQuery) - 5);
+
+		$count = 0;
+		$maxTry = 10;
+		while(!$done && $count < $maxTry) {
+			// Try to update
+			if($rows = $this->conn->executeUpdate($updateQuery, $updateParams)) {
+				// We altered some rows, return
+				$done = true;
+			} else {
+				// Try the insert
+				$this->conn->beginTransaction();
+				try {
+					$rows = $this->conn->insert($table, $input);
+					$done = $rows > 0;
+				} catch (UniqueConstraintViolationException $e) {
+					// Catch the unique violation and try the loop again
+					$count++;
+				}
+				$this->conn->commit();
+			}
+		}
+
+		if($count === $maxTry) {
+			throw new \RuntimeException("DB upsert failed after $maxTry attempts. Query $query");
+		}
+
+		$this->conn->commit();
+		return $rows;
+
 	}
 }

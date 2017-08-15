@@ -249,6 +249,21 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		return $this->adapter->insertIfNotExist($table, $input, $compare);
 	}
 
+	/**
+	 * Attempt to update a row, else insert a new one
+	 *
+	 * @param string $table The table name (will replace *PREFIX* with the actual prefix)
+	 * @param array $input data that should be inserted into the table  (column name => value)
+	 * @param array|null $compare List of values that should be checked for "if not exists"
+	 *				If this is null or an empty array, all keys of $input will be compared
+	 *				Please note: text fields (clob) must not be used in the compare array
+	 * @return int number of affected rows
+	 * @throws \Doctrine\DBAL\DBALException
+	 */
+	public function upsert($table, $input, array $compare = null) {
+		return $this->adapter->upsert($table, $input, $compare);
+	}
+
 	private function getType($value) {
 		if (is_bool($value)) {
 			return IQueryBuilder::PARAM_BOOL;
