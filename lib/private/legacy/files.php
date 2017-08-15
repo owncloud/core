@@ -176,8 +176,12 @@ class OC_Files {
 		} catch (\OCP\Files\ForbiddenException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
-			$l = \OC::$server->getL10N('core');
-			\OC_Template::printErrorPage($l->t('File cannot be read'), $ex->getMessage(), 403);
+			$displayedMessage = $ex->getMessage();
+			if (strlen($displayedMessage) === 0) {
+				$l = \OC::$server->getL10N('core');
+				$displayedMessage = $l->t('File cannot be read');
+			}
+			\OC_Template::printErrorPage($displayedMessage, '', 403);
 		} catch (\Exception $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
