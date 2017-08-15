@@ -108,7 +108,6 @@
     "Settings" : "Axustes",
     "Users" : "Usuarios",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Non é posíbel instalar a aplicación «%s» por mor de non cumprirse as dependencias: %s",
-    "web services under your control" : "servizos web baixo o seu control",
     "File is currently busy, please try again later" : "O ficheiro está ocupado neste momento, tenteo máis tarde.",
     "Can't read file" : "Non é posíbel ler o ficheiro",
     "Application is not enabled" : "A aplicación non está activada",

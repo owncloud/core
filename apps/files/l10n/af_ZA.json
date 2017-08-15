@@ -1,12 +1,14 @@
 { "translations": {
     "Close" : "Sluit",
     "Download" : "Laai Af",
+    "Rename" : "Hernoem",
     "Delete" : "Skrap",
     "Unshare" : "Deel terug neem",
     "Files" : "Lêers",
     "Invalid path" : "Ongeldige pad",
     "Name" : "Naam",
     "Size" : "Grootte",
+    "Path" : "Pad",
     "Favorite" : "Gunsteling",
     "Folder" : "Omslag",
     "Settings" : "Instellings"

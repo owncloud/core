@@ -118,7 +118,7 @@
     "Settings" : "設定",
     "Users" : "使用者",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "應用程式 \"%s\" 無法被安裝，下列的相依性並不是完整的: %s",
-    "web services under your control" : "由您控制的網路服務",
+    "A safe home for all your data" : "安心存放資料的空間",
     "File is currently busy, please try again later" : "檔案目前忙碌中，請稍候再試",
     "Can't read file" : "無法讀取檔案",
     "Application is not enabled" : "應用程式未啟用",

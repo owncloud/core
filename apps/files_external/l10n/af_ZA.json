@@ -8,6 +8,7 @@
     "Root" : "Wortel",
     "Share" : "Deel",
     "Name" : "Naam",
+    "Configuration" : "Opstelling",
     "Delete" : "Skrap"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

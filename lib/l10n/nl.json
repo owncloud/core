@@ -134,7 +134,7 @@
     "Settings" : "Instellingen",
     "Users" : "Gebruikers",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "App \"%s\" kan niet worden geïnstalleerd, omdat de volgende afhankelijkheden niet zijn ingevuld: %s",
-    "web services under your control" : "Webdiensten in eigen beheer",
+    "A safe home for all your data" : "Een veilig thuis voor al uw gegevens",
     "File is currently busy, please try again later" : "Bestandsverwerking bezig, probeer het later opnieuw",
     "Can't read file" : "Kan bestand niet lezen",
     "Application is not enabled" : "De applicatie is niet actief",

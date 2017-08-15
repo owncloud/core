@@ -10,6 +10,7 @@ OC.L10N.register(
     "Root" : "Wortel",
     "Share" : "Deel",
     "Name" : "Naam",
+    "Configuration" : "Opstelling",
     "Delete" : "Skrap"
 },
 "nplurals=2; plural=(n != 1);");

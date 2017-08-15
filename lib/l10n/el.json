@@ -131,7 +131,7 @@
     "Settings" : "Ρυθμίσεις",
     "Users" : "Χρήστες",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Αυτή η εφαρμογή  %s δεν μπορεί να εγκατασταθεί διότι δεν πληρούνται  οι ακόλουθες εξαρτήσεις:  %s",
-    "web services under your control" : "υπηρεσίες δικτύου υπό τον έλεγχό σας",
+    "A safe home for all your data" : "Ένα ασφαλές μέρος για τα δεδομένα σας.",
     "File is currently busy, please try again later" : "Το αρχείο χρησιμοποιείται αυτή τη στιγμή, παρακαλώ προσπαθήστε αργότερα",
     "Can't read file" : "Αδυναμία ανάγνωσης αρχείου",
     "Application is not enabled" : "Δεν ενεργοποιήθηκε η εφαρμογή",

@@ -134,7 +134,7 @@
     "Settings" : "Configurações",
     "Users" : "Usuários",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "App \"%s\" não pode ser instalado porque as seguintes dependências não foram cumpridas: %s",
-    "web services under your control" : "serviços web sob seu controle",
+    "A safe home for all your data" : "Um lugar seguro para todos os seus dados",
     "File is currently busy, please try again later" : "O arquivo está ocupado, tente novamente mais tarde",
     "Can't read file" : "Não é possível ler arquivo",
     "Application is not enabled" : "Aplicação não está habilitada",

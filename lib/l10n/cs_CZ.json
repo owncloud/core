@@ -133,7 +133,7 @@
     "Settings" : "Nastavení",
     "Users" : "Uživatelé",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Aplikaci \"%s\" nelze nainstalovat, protože nejsou splněny následující závislosti: %s",
-    "web services under your control" : "webové služby pod vlastní kontrolou",
+    "A safe home for all your data" : "Bezpečné místo pro všechna vaše data",
     "File is currently busy, please try again later" : "Soubor je používán, zkus to později",
     "Can't read file" : "Nelze přečíst soubor",
     "Application is not enabled" : "Aplikace není povolena",

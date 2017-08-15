@@ -134,7 +134,7 @@
     "Settings" : "Einstellungen",
     "Users" : "Benutzer",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Die App „%s“ kann nicht installiert werden, da die folgenden Abhängigkeiten nicht erfüllt sind: %s",
-    "web services under your control" : "Web-Dienste unter Deiner Kontrolle",
+    "A safe home for all your data" : "Ein sicherer Speicherplatz für deine ganzen Daten.",
     "File is currently busy, please try again later" : "Die Datei ist zur Zeit in Benutzung, bitte versuche es später noch einmal",
     "Can't read file" : "Datei kann nicht gelesen werden",
     "Application is not enabled" : "Die App ist nicht aktiviert",
