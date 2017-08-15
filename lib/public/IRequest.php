@@ -164,6 +164,14 @@ interface IRequest {
 	public function getRemoteAddress();
 
 	/**
+	 * Returns the server address.
+	 *
+	 * @return string|false server IP address or false if not found or not a valid IP
+	 * @since 10.0.3
+	 */
+	public function getServerAddress();
+
+	/**
 	 * Returns the server protocol. It respects reverse proxy servers and load
 	 * balancers.
 	 *
