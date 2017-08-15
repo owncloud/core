@@ -2702,7 +2702,7 @@
 					return false;
 				}
 
-				var dropTarget = $(e.originalEvent.target);
+				var dropTarget = $(e.originalEvent.delegatedEvent.target);
 				// check if dropped inside this container and not another one
 				if (dropTarget.length
 					&& !self.$el.is(dropTarget) // dropped on list directly
