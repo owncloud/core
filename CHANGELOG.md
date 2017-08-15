@@ -31,48 +31,63 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Using old chunking protocol on new DAV endpoint is now disallowed - [#28637](https://github.com/owncloud/core/issues/28637)
 
 ### Fixed
-- Theme is now properly loaded when displaying full page error messages - [#28622](https://github.com/owncloud/core/pull/28622)
+#### Platform
 - Fix issue with folder sizes on 32-bit systems - [#28654](https://github.com/owncloud/core/issues/28654)
-- Prevent certificate manager to access FS too early, fixes 8.2 to 10 migration issue - [#28668](https://github.com/owncloud/core/pull/28668)
-- Return 404 instead of 500 when accessing a file that existed in filecache but not on disk - [#28618](https://github.com/owncloud/core/issues/28618)
-- Added cache for new card uri-id mapping to fix db cluster execution - [#28308](https://github.com/owncloud/core/issues/28308)
-- Detect PROPPATCH failure by parsing multistatus in Backbone Webdav adapter - [#28628](https://github.com/owncloud/core/issues/28628)
-- Add check for empty result in storage memcache - [#28548](https://github.com/owncloud/core/issues/28548)
-- Optimized upload - do not fetch metadata for part file during checksuming - [#28633](https://github.com/owncloud/core/issues/28633)
-- Error messages from the server on upload are now displayed in the web UI instead of generic messages - [#28635](https://github.com/owncloud/core/issues/28635)
-- Remove initial scanning overhead to speed up federated shares with lots of entries - [#28604](https://github.com/owncloud/core/issues/28604)
-- Fix error message when accessing of non-existing file on external storage - [#28613](https://github.com/owncloud/core/issues/28613)
-- Don't set email if invalid in user:add command - [#28577](https://github.com/owncloud/core/issues/28577)
-- Proper message shown when accessing unreachable private links - [#28600](https://github.com/owncloud/core/issues/28600)
-- Fix length of account search term column which broke installs on some DB setups - [#28576](https://github.com/owncloud/core/issues/28576)
-- Fix column lengths on migrations table to fix index - [#28254](https://github.com/owncloud/core/issues/28254)
-- Properly set the status text in OCS API v2 calls - [#28595](https://github.com/owncloud/core/issues/28595)
-- Data was not properly set in case of OCS Result object - [#28198](https://github.com/owncloud/core/issues/28198)
-- Only use IndexIgnore in htaccess if mod_autoindex.c is enabled/loaded - [#28591](https://github.com/owncloud/core/issues/28591)
-- Better support of read only config file and apps folder - [#28594](https://github.com/owncloud/core/issues/28594) [#28601](https://github.com/owncloud/core/issues/28601)
-- Optimize shares retrieval logic with complex scenarios - [#28524](https://github.com/owncloud/core/issues/28524)
-- Keep redirect information when logging in with wrong password - [#28511](https://github.com/owncloud/core/issues/28511)
-- Group admins can now properly edit members' email addresses - [#28366](https://github.com/owncloud/core/issues/28366)
-- Fixed OAuth frontend logic when connecting to external storage - [#28496](https://github.com/owncloud/core/issues/28496) [#28400](https://github.com/owncloud/core/issues/28400)
-- Fixed some repeated duplicate key errors relate to oc_preferences table - [#28486](https://github.com/owncloud/core/issues/28486)
-- Allow user "0" as in comments - [#28422](https://github.com/owncloud/core/issues/28422)
 - Fix null error in ActivityManager on some setups - [#28420](https://github.com/owncloud/core/issues/28420)
 - Load app code before running app specific migrations - [#28391](https://github.com/owncloud/core/issues/28391)
-- Add migration step to fix birthday calendars - [#28338](https://github.com/owncloud/core/issues/28338)
-- Fix rare error that happens when mounting invalid shares - [#28342](https://github.com/owncloud/core/issues/28342)
+- Prevent certificate manager to access FS too early, fixes 8.2 to 10 migration issue - [#28668](https://github.com/owncloud/core/pull/28668)
+- Clustering: Better support of read only config file and apps folder - [#28594](https://github.com/owncloud/core/issues/28594) [#28601](https://github.com/owncloud/core/issues/28601)
+- Only use IndexIgnore in htaccess if mod_autoindex.c is enabled/loaded - [#28591](https://github.com/owncloud/core/issues/28591)
 - Fix app enable of not existing app - [#28317](https://github.com/owncloud/core/issues/28317)
-- Fix quota handling on new Webdav endpoint (affects desktop client 2.2+) - [#28261](https://github.com/owncloud/core/issues/28261)
-- Optimize query logger - [#28220](https://github.com/owncloud/core/issues/28220)
-- Fix mounting Webdav as drive in Windows 10 - [#28243](https://github.com/owncloud/core/issues/28243)
-- Improved search performance for federated instance users - [#28209](https://github.com/owncloud/core/issues/28209)
-- Fix "notify user" checkbox in share panel - [#28237](https://github.com/owncloud/core/issues/28237)
-- Make sure passed upload mtime is always an int - [#28186](https://github.com/owncloud/core/issues/28186)
-- Prevent file cache inconsistencies when moving a subtree in or out of a share - [#28219](https://github.com/owncloud/core/issues/28219)
+- Keep redirect information when logging in with wrong password - [#28511](https://github.com/owncloud/core/issues/28511)
 - Use SwiftMailer antiflood plugin to reconnect after multiple emails sent - [#28180](https://github.com/owncloud/core/issues/28180)
+- Theme is now properly loaded when displaying full page error messages - [#28622](https://github.com/owncloud/core/pull/28622)
+
+#### Database
+- All columns that use the fileid have been changed to bigint (64-bits) - [#28581](https://github.com/owncloud/core/issues/28581)
+- Fix length of account search term column which broke installs on some DB setups - [#28576](https://github.com/owncloud/core/issues/28576)
+- Fix column lengths on migrations table to fix index - [#28254](https://github.com/owncloud/core/issues/28254)
+- Fixed some repeated duplicate key errors relate to oc_preferences table - [#28486](https://github.com/owncloud/core/issues/28486)
+- Add migration step to fix birthday calendars - [#28338](https://github.com/owncloud/core/issues/28338)
+- Added cache for new card uri-id mapping to fix db cluster execution - [#28308](https://github.com/owncloud/core/issues/28308)
+
+#### Performance
+- Optimized upload - do not fetch metadata for part file during checksuming - [#28633](https://github.com/owncloud/core/issues/28633)
+- Optimize shares retrieval logic with complex scenarios - [#28524](https://github.com/owncloud/core/issues/28524)
+- Optimize query logger - [#28220](https://github.com/owncloud/core/issues/28220)
+- Remove initial scanning overhead to speed up federated shares with lots of entries - [#28604](https://github.com/owncloud/core/issues/28604)
 - Improve contact search performance - [#28042](https://github.com/owncloud/core/issues/28042)
+- Improved search performance for federated instance users - [#28209](https://github.com/owncloud/core/issues/28209)
+
+#### Filesystem / storage
+- Prevent creating file cache inconsistencies when moving a subtree in or out of a share - [#28219](https://github.com/owncloud/core/issues/28219)
+- Add check for empty result in storage memcache - [#28548](https://github.com/owncloud/core/issues/28548)
+- Fix error message when accessing of non-existing file on external storage - [#28613](https://github.com/owncloud/core/issues/28613)
+- Fixed OAuth frontend logic when connecting to external storage - [#28496](https://github.com/owncloud/core/issues/28496) [#28400](https://github.com/owncloud/core/issues/28400)
+- Fix quota handling on new Webdav endpoint (affects desktop client 2.2+) - [#28261](https://github.com/owncloud/core/issues/28261)
+- Fix mounting Webdav as drive in Windows 10 - [#28243](https://github.com/owncloud/core/issues/28243)
+- Fix rare error that happens when mounting invalid shares - [#28342](https://github.com/owncloud/core/issues/28342)
+- Make sure passed upload mtime is always an int - [#28186](https://github.com/owncloud/core/issues/28186)
+
+#### Sharing
+- Creating link shares now doesn't forget "Allow editing" permission any more - [#28065](https://github.com/owncloud/core/issues/28065)
+- Fix "notify user" checkbox in share panel - [#28237](https://github.com/owncloud/core/issues/28237)
+- Proper message shown when accessing unreachable private links - [#28600](https://github.com/owncloud/core/issues/28600)
+
+#### User management
+- Don't set email if invalid in user:add command - [#28577](https://github.com/owncloud/core/issues/28577)
+- Group admins can now properly edit members' email addresses - [#28366](https://github.com/owncloud/core/issues/28366)
+
+#### API related
+- Detect PROPPATCH failure by parsing multistatus in Backbone Webdav adapter - [#28628](https://github.com/owncloud/core/issues/28628)
+- Error messages from the server on upload are now displayed in the web UI instead of generic messages - [#28635](https://github.com/owncloud/core/issues/28635)
+- Properly set the status text in OCS API v2 calls - [#28595](https://github.com/owncloud/core/issues/28595)
+- Data was not properly set in case of OCS Result object - [#28198](https://github.com/owncloud/core/issues/28198)
+
+#### Other
 - Make new text file tooltip messages update properly - [#28151](https://github.com/owncloud/core/issues/28151)
 - Fix trashbin preview icons - [#28158](https://github.com/owncloud/core/issues/28158)
-- Creating link shares now doesn't forget "Allow editing" permission any more - [#28065](https://github.com/owncloud/core/issues/28065)
+- Allow user "0" as in comments - [#28422](https://github.com/owncloud/core/issues/28422)
 
 ## [10.0.2] - 2017-06-30
 
