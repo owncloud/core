@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added occ user:inactive command to list inactive users - [#28294](https://github.com/owncloud/core/issues/28294)
 - Added internal setting for the periodic credentials validity check - [#28298](https://github.com/owncloud/core/issues/28298)
 - Added jquery events for external storage settings UI when using OAuth - [#28210](https://github.com/owncloud/core/issues/28210)
-- Added public IThemeService which allows apps like the theme editor to interact with the current theme - [#28647](https://github.com/owncloud/core/issues/28647)
+- Added public IThemeService which allows apps like the template editor to interact with the current theme - [#28647](https://github.com/owncloud/core/issues/28647)
 
 ### Changed
 - Transfer ownership now works with master key encryption - [#28537](https://github.com/owncloud/core/issues/28537)
@@ -25,9 +25,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Deprecated
 ### Removed
-- Remove themes folder from Makefile - [#28617](https://github.com/owncloud/core/issues/28617)
-- Remove unused Windows checks - [#28612](https://github.com/owncloud/core/issues/28612)
-- Do not allow slash in filename when renaming in the frontend (unintended "feature") - [#28490](https://github.com/owncloud/core/issues/28490)
+- Removed "themes" folder - [#28617](https://github.com/owncloud/core/issues/28617)
+- Removed unused Windows checks - [#28612](https://github.com/owncloud/core/issues/28612)
+- Slash in filename when renaming is not allowed any more in the frontend (unintended "feature") - [#28490](https://github.com/owncloud/core/issues/28490)
 - Using old chunking protocol on new DAV endpoint is now disallowed - [#28637](https://github.com/owncloud/core/issues/28637)
 
 ### Fixed
