@@ -232,7 +232,7 @@ class File extends Node implements IFile {
 			if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
 				$mtime = $this->sanitizeMtime($this->request->server ['HTTP_X_OC_MTIME']);
 				if ($this->fileView->touch($this->path, $mtime)) {
-					header('X-OC-MTime: accepted');
+					$this->header('X-OC-MTime: accepted');
 				}
 			}
 			
@@ -486,7 +486,7 @@ class File extends Node implements IFile {
 						$this->request->server ['HTTP_X_OC_MTIME']
 					);
 					if ($targetStorage->touch($targetInternalPath, $mtime)) {
-						header('X-OC-MTime: accepted');
+						$this->header('X-OC-MTime: accepted');
 					}
 				}
 
@@ -638,5 +638,9 @@ class File extends Node implements IFile {
 		}
 
 		return '';
+	}
+
+	protected function header($string) {
+		\header($string);
 	}
 }
