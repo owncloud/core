@@ -132,6 +132,80 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - [minor] "local link" was renamed to "private link" - [#27594](https://github.com/owncloud/core/issues/27594)
 - [minor] Fix column sorting in public file list page - [#27308](https://github.com/owncloud/core/issues/27308)
 
+## 10.0.0 - 2017-04-26
+
+### Added
+#### General
+
+- Allows users to add the app to the Android homescreen: [#25438](https://github.com/owncloud/core/pull/25438)
+- Compatible with PHP 7.1: [#25436](https://github.com/owncloud/core/pull/25346)
+- MySQL 4-byte UTF8 support: (utf8mb4 for e.g. Emoticons) [#17978](https://github.com/owncloud/core/pull/17978)
+- Admin, personal pages and app management are now merged together into a single "Settings" entry: [#26449](https://github.com/owncloud/core/pull/26449)
+- Admin page displays the output of the server's status.php: [#27238](https://github.com/owncloud/core/pull/27238)
+- Also allow using email address for password recovery: [#27168](https://github.com/owncloud/core/pull/27168)
+- Ability to disable password reset: [#27440](https://github.com/owncloud/core/issues/27440)
+- Support Redis Cluster: [#26407](https://github.com/owncloud/core/pull/26407)
+- ownCloud log entry reorder: [#27562](https://github.com/owncloud/core/pull/27562)
+- ownCloud log file rules to split into separate files: [#27443](https://github.com/owncloud/core/pull/27443)
+- occ scanner optimized memory usage for large scans by using autocommits: [owncloud/core/27527](https://github.com/owncloud/core/pull/27527)
+- Third party apps are not disabled anymore when upgrading
+
+#### Filesystem
+
+- Ability to exclude folders from being processed, like snapshot folders: [#19235](https://github.com/owncloud/core/pull/19235)
+- Checksum is computed on the fly and verified (File integrity checking): [#26655](https://github.com/owncloud/core/issues/26655) / [Technical Documentation](https://github.com/owncloud/documentation/issues/2964)
+
+#### Files App
+
+- Share Link can be copied to the clipboard [#25418](https://github.com/owncloud/core/pull/25418)
+- Display version sizes in versions panel [#26511](https://github.com/owncloud/core/pull/26511)
+- Transfer ownership now works for individual folders [#27343](https://github.com/owncloud/core/pull/27343)
+- Favorite star indicator now visible in the file lists related to sharing (ex: "Shared with you") [#19753](https://github.com/owncloud/core/issues/19753)
+
+#### User management
+
+- Ability to disable users in the users page (enable column first under cog icon) [#27333](https://github.com/owncloud/core/pull/27333)
+- When changing personal email, an email confirmation is now sent [#7326](https://github.com/owncloud/core/issues/7326)
+- When password is changed through any means, the user will now receive an email [#27498](https://github.com/owncloud/core/pull/27498)
+- Change user preferences through OCC [#24770](https://github.com/owncloud/core/issues/24770)
+
+#### External storage
+
+- "Local" storage type can now be disabled by sysadmin in config.php [#26653](https://github.com/owncloud/core/issues/26653)
+- External storage backends must use [core external storage API](https://doc.owncloud.org/server/10.0/developer_manual/app/extstorage.html) to work without "files_external" [#18160](https://github.com/owncloud/core/issues/18160)
+- FTP external storage moved to a separate app [files_external_ftp](https://github.com/owncloud/files_external_ftp)
+
+#### Dav App
+
+- CalDAV calendar public sharing [#25351](https://github.com/owncloud/core/pull/25351)
+
+#### Sharing
+
+- Support for multiple link shares: [#27337](https://github.com/owncloud/core/pull/27337)
+- When a recipient moves a file or folder out of a received share, the owner now receives a backup in their trashbin: [#27042](https://github.com/owncloud/core/pull/27042)
+- User avatars now visible in sharing autocomplete dropdown: [#25976](https://github.com/owncloud/core/pull/25976)
+
+#### For developers
+
+- Users from all user backends are now stored in a central account table, improves performance by reducing recurring backend traffic: [#23558](https://github.com/owncloud/core/issues/23558)
+- Added event whenever a user is enabled or disabled: [#23970](https://github.com/owncloud/core/issues/23970)
+- Added first login event: [#26206](https://github.com/owncloud/core/pull/26206)
+- Added postLogout hook: [#27048](https://github.com/owncloud/core/pull/27048)
+- New column in oc_jobs table to store last duration: [#27144](https://github.com/owncloud/core/pull/27144)
+- Ability to specify offset and limit when doing a REPORT query on a files endpoint: [#26507](https://github.com/owncloud/core/pull/26507)
+- Avatar API via WebDAV https://github.com/owncloud/core/pull/26872
+- Improve return value support for two factor auth providers API - [#26593](https://github.com/owncloud/core/issues/26593)
+- Apps can now register Sabre plugins in info.xml: [#26195](https://github.com/owncloud/core/issues/26195)
+- REPORT method for files endpoint now allows searching for favorites: [#26099](https://github.com/owncloud/core/pull/26099)
+- Group backends can now return group display names (partial support, only used by sharing autocomplete): [#26750](https://github.com/owncloud/core/pull/26750)
+
+### Changed
+
+- status.php now returns whether an instance requires a DB update: [#26209](https://github.com/owncloud/core/pull/26209)
+- config option to hide server version in status.php [#27473](https://github.com/owncloud/core/pull/27473)
+- provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
+- web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
+
 [Unreleased]: https://github.com/owncloud/core/compare/v10.0.2...stable10
 [10.0.2]: https://github.com/owncloud/core/compare/v10.0.1...v10.0.2
 [10.0.1]: https://github.com/owncloud/core/compare/v10.0.0...v10.0.1
