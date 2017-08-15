@@ -69,7 +69,7 @@ class Client implements IClient {
 			// If the instance is not yet setup we need to use the static path as
 			// $this->certificateManager->getAbsoluteBundlePath() tries to instantiiate
 			// a view
-			if ($this->config->getSystemValue('installed', false)) {
+			if ($this->config->getSystemValue('installed', false) && !\OCP\Util::needUpgrade()) {
 				$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath(null));
 			} else {
 				$this->client->setDefaultOption('verify', \OC::$SERVERROOT . '/resources/config/ca-bundle.crt');

@@ -13,12 +13,12 @@
 		<admin>admin-external-storage</admin>
 	</documentation>
 	<rememberlogin>false</rememberlogin>
-	<version>0.7.0</version>
+	<version>0.7.1</version>
 	<types>
 		<filesystem/>
 	</types>
 	<ocsid>166048</ocsid>
-
+	<use-migrations>true</use-migrations>
 	<namespace>Files_External</namespace>
 
 	<dependencies>
