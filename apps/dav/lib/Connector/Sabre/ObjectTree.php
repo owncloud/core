@@ -76,7 +76,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 * @return string path to real file
 	 */
 	private function resolveChunkFile($path) {
-		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+		if (\OC_FileChunking::isWebdavChunk()) {
 			// resolve to real file name to find the proper node
 			list($dir, $name) = \Sabre\HTTP\URLUtil::splitPath($path);
 			if ($dir == '/' || $dir == '.') {
@@ -97,6 +97,22 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 	public function cacheNode(Node $node) {
 		$this->cache[trim($node->getPath(), '/')] = $node;
+	}
+
+	/**
+	 * This function allows you to check if a node exists.
+	 *
+	 * @param string $path
+	 * @return bool
+	 */
+	function nodeExists($path) {
+		$path = trim($path, '/');
+		if (isset($this->cache[$path]) && $this->cache[$path] === false){
+			// Node is not existing, as it was explicitely set in the cache
+			// Next call to getNodeForPath will create cache instance and unset the cached value
+			return false;
+		}
+		return parent::nodeExists($path);
 	}
 
 	/**
@@ -122,7 +138,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 		$path = trim($path, '/');
 
-		if (isset($this->cache[$path])) {
+		if (isset($this->cache[$path]) && $this->cache[$path] !== false) {
 			return $this->cache[$path];
 		}
 
@@ -179,6 +195,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		}
 
 		if (!$info) {
+			$this->cache[$path] = false;
 			throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
 		}
 

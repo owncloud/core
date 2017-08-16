@@ -120,7 +120,7 @@ class File extends Node implements IFile {
 		$this->verifyPath();
 
 		// chunked handling
-		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+		if (\OC_FileChunking::isWebdavChunk()) {
 			try {
 				return $this->createFileChunked($data);
 			} catch (\Exception $e) {

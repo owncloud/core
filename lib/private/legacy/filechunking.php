@@ -39,6 +39,13 @@ class OC_FileChunking {
 	 */
 	protected $ttl;
 
+	static public function isWebdavChunk() {
+		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+			return true;
+		}
+		return false;
+	}
+
 	static public function decodeName($name) {
 		preg_match('/(?P<name>.*)-chunking-(?P<transferid>\d+)-(?P<chunkcount>\d+)-(?P<index>\d+)/', $name, $matches);
 		return $matches;
