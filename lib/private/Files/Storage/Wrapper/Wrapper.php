@@ -283,6 +283,10 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 		return $this->getWrapperStorage()->copy($path1, $path2);
 	}
 
+	public function copyCustom($path1, $path2, $getDecryptedFile = false) {
+		return $this->getWrapperStorage()->copyCustom($path1, $path2, $getDecryptedFile);
+	}
+
 	/**
 	 * see http://php.net/manual/en/function.fopen.php
 	 *
