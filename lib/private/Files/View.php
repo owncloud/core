@@ -94,6 +94,7 @@ class View {
 
 	private $userManager;
 
+
 	/**
 	 * @param string $root
 	 * @throws \Exception If $root contains an invalid path
