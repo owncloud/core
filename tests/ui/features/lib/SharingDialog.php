@@ -38,6 +38,7 @@ class SharingDialog extends OwnCloudPage
 	protected $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
 	protected $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
 	protected $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
+	protected $shareWithCloseXpath = "/..//*[@class='close icon-close']";
 	protected $suffixToIdentifyGroups = " (group)";
 
 	/**
@@ -155,7 +156,7 @@ class SharingDialog extends OwnCloudPage
 				break;
 			}
 		}
-		
+
 		if ($userFound !== true) {
 			throw new ElementNotFoundException("could not share with '$name'");
 		}
@@ -214,5 +215,13 @@ class SharingDialog extends OwnCloudPage
 			throw new ElementNotFoundException("could not find share-with-tooltip");
 		}
 		return $shareWithTooltip->getText();
+	}
+
+	/**
+	 * closes the sharing dialog panel
+	 */
+	public function closeSharingDialog()
+	{
+		$this->find("xpath", $this->shareWithCloseXpath)->click();
 	}
 }
