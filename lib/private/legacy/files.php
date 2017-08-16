@@ -177,13 +177,13 @@ class OC_Files {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
-			\OC_Template::printErrorPage($l->t('Can\'t read file'), $ex->getMessage(), 403);
+			\OC_Template::printErrorPage($l->t('File cannot be read'), $ex->getMessage(), 403);
 		} catch (\Exception $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
 			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
-			\OC_Template::printErrorPage($l->t('Can\'t read file'), $hint);
+			\OC_Template::printErrorPage($l->t('File cannot be read'), $hint);
 		}
 	}
 
