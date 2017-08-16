@@ -174,6 +174,9 @@ class UploadHelper {
 	 * @return void
 	 */
 	public static function createFileSpecificSize($name, $size) {
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'w');
 		fseek($file, max($size - 1, 0), SEEK_CUR);
 		if ($size) {
