@@ -336,7 +336,7 @@ describe('OCA.External.Settings tests', function() {
 				expect($td.find('.dropdown').length).toEqual(0);
 			});
 
-			it('doesnt show the encryption option when encryption is disabled', function () {
+			it('does not show the encryption option when encryption is disabled', function () {
 				view._encryptionEnabled = false;
 				$td.find('img').click();
 
@@ -374,6 +374,41 @@ describe('OCA.External.Settings tests', function() {
 					filesystem_check_changes: 0,
 					encoding_compatibility: false
 				});
+			});
+
+			it('does not show the sharing option when sharing is disabled for user shares', function () {
+				var testCases = [
+					{
+						personal: false,
+						sharingAllowed: false,
+						expectedVisible: true
+					},
+					{
+						personal: true,
+						sharingAllowed: false,
+						expectedVisible: false
+					},
+					{
+						personal: true,
+						sharingAllowed: true,
+						expectedVisible: true
+					},
+				];
+
+				_.each(testCases, function(testCase) {
+					view._isPersonal = testCase.personal;
+					view._allowUserMountSharing = testCase.sharingAllowed;
+
+					$td.find('img').click();
+
+					expect($td.find('.dropdown [name=enable_sharing]:visible').length)
+						.toEqual(testCase.expectedVisible ? 1 : 0);
+
+					$('body').mouseup();
+
+					expect($td.find('.dropdown').length).toEqual(0);
+				});
+
 			});
 		});
 	});
