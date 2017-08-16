@@ -43,6 +43,7 @@ use OC\Migration\ConsoleOutput;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Files\IMimeTypeLoader;
+use OCP\IConfig;
 
 class Scan extends Base {
 
@@ -52,6 +53,8 @@ class Scan extends Base {
 	private $lockingProvider;
 	/** @var IMimeTypeLoader */
 	private $mimeTypeLoader;
+	/** @var IConfig */
+	private $config;
 	/** @var float */
 	protected $execTime = 0;
 	/** @var int */
@@ -62,11 +65,13 @@ class Scan extends Base {
 	public function __construct(
 		IUserManager $userManager,
 		ILockingProvider $lockingProvider,
- 		IMimeTypeLoader $mimeTypeLoader
+ 		IMimeTypeLoader $mimeTypeLoader,
+		IConfig $config
 	) {
 		$this->userManager = $userManager;
 		$this->lockingProvider = $lockingProvider;
 		$this->mimeTypeLoader = $mimeTypeLoader;
+		$this->config = $config;
 		parent::__construct();
 	}
 
@@ -111,6 +116,22 @@ class Scan extends Base {
 				InputOption::VALUE_NONE,
 				'will repair detached filecache entries (slow)'
 			);
+	}
+
+	/**
+	 * Repair all storages at once
+	 *
+	 * @param OutputInterface $output
+	 */
+	protected function repairAll(OutputInterface $output) {
+		$connection = $this->reconnectToDatabase($output);
+		$repairStep = new RepairMismatchFileCachePath(
+			$connection,
+			$this->mimeTypeLoader
+		);
+		$repairStep->setStorageNumericId(null);
+		$repairStep->setCountOnly(false);
+		$repairStep->run(new ConsoleOutput($output));
 	}
 
 	protected function scanFiles($user, $path, $verbose, OutputInterface $output, $shouldRepair = false) {
@@ -192,12 +213,28 @@ class Scan extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
+
+		if ($input->getOption('repair')) {
+			$shouldRepairStoragesIndividually = true;
+		}
+
 		if ($inputPath) {
 			$inputPath = '/' . trim($inputPath, '/');
 			list (, $user,) = explode('/', $inputPath, 3);
 			$users = array($user);
 		} else if ($input->getOption('all')) {
-			$users = $this->userManager->search('');
+			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
+			// is enabled to prevent concurrent user access
+			if ($input->getOption('repair') && ($this->config->getSystemValue('singleuser', false) || $this->config->getSystemValue('maintenance', false))) {
+				// repair all storages at once
+				$this->repairAll($output);
+				// don't fix individually
+				$shouldRepairStoragesIndividually = false;
+			} else {
+				$output->writeln("<error>Repairing every storage individually is slower than repairing in bulk</error>");
+				$output->writeln("<error>To repair in bulk, please switch to single user mode first: occ maintenance:singleuser --on</error>");
+				$users = $this->userManager->search('');
+			}
 		} else {
 			$users = $input->getArgument('user_id');
 		}
@@ -244,7 +281,7 @@ class Scan extends Base {
 				if ($verbose) {$output->writeln(""); }
 				$output->writeln("Starting scan for user $user_count out of $users_total ($user)");
 				# full: printout data if $verbose was set
-				$this->scanFiles($user, $path, $verbose, $output, $input->getOption('repair'));
+				$this->scanFiles($user, $path, $verbose, $output, $shouldRepairStoragesIndividually);
 			} else {
 				$output->writeln("<error>Unknown user $user_count $user</error>");
 			}
