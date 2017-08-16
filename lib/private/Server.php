@@ -556,6 +556,7 @@ class Server extends ServerContainer implements IServerContainer {
 			// external storage
 			if ($config->getAppValue('core', 'enable_external_storage', 'no') === 'yes') {
 				$manager->registerProvider(new \OC\Files\External\ConfigAdapter(
+					$c->query('AllConfig'),
 					$c->query('UserStoragesService'),
 					$c->query('UserGlobalStoragesService')
 				));
