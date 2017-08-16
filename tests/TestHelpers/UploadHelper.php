@@ -91,7 +91,7 @@ class UploadHelper {
 				$password,
 				'MKCOL',
 				$v2ChunksDestination,
-				[], null, null,
+				$headers, null, null,
 				$davPathVersionToUse,
 				"uploads"
 			);
