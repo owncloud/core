@@ -19,7 +19,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Transfer ownership now works with master key encryption - [#28537](https://github.com/owncloud/core/issues/28537)
 - Reenable medial search by default - [#28064](https://github.com/owncloud/core/issues/28064)
-- The LoginController now emits "preLogin" hook signal before a failed login - [#28631](https://github.com/owncloud/core/issues/28631)
+- The LoginController now emits "failedLogin" hook signal after a failed login - [#28631](https://github.com/owncloud/core/issues/28631)
 - All columns that use the fileid have been changed to bigint (64-bits) - [#28581](https://github.com/owncloud/core/issues/28581)
 - Added search pattern for the occ app:list command - [#28653](https://github.com/owncloud/core/issues/28653)
 
