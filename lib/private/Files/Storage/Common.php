@@ -170,7 +170,7 @@ abstract class Common implements Storage, ILockingStorage {
 
 	public function filemtime($path) {
 		$stat = $this->stat($path);
-		if (isset($stat['mtime']) && $stat['mtime'] > 0) {
+		if (isset($stat['mtime'])) {
 			return $stat['mtime'];
 		} else {
 			return 0;
