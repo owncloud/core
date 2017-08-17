@@ -131,14 +131,19 @@ class OC_FileChunking {
 
 	/**
 	 * Returns the size of the chunks already present
+	 * 
+	 * @param array $ignoreChunks array of chunk ids that should be
+	 * ignored for the calculation
 	 * @return integer size in bytes
 	 */
-	public function getCurrentSize() {
+	public function getCurrentSize($ignoreChunks = []) {
 		$cache = $this->getCache();
 		$prefix = $this->getPrefix();
 		$total = 0;
 		for ($i = 0; $i < $this->info['chunkcount']; $i++) {
-			$total += $cache->size($prefix.$i);
+			if (!in_array($i, $ignoreChunks)) {
+				$total += $cache->size($prefix . $i);
+			}
 		}
 		return $total;
 	}
