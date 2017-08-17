@@ -219,9 +219,14 @@ class SharingDialog extends OwnCloudPage
 
 	/**
 	 * closes the sharing dialog panel
+	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
 	public function closeSharingDialog()
 	{
-		$this->find("xpath", $this->shareWithCloseXpath)->click();
+		$shareDialogCloseButton = $this->find("xpath", $this->shareWithCloseXpath);
+		if ($shareDialogCloseButton === null) {
+			throw new ElementNotFoundException("could not find share-dialog-close-button");
+		}
+		$shareDialogCloseButton->click();
 	}
 }
