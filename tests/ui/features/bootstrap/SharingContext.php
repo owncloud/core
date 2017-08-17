@@ -55,6 +55,7 @@ class SharingContext extends RawMinkContext implements Context
 			$folder, $this->getSession()
 		);
 		$this->sharingDialog->shareWithUser($user, $this->getSession());
+		$this->iCloseTheShareDialog();
 	}
 
 	/**
@@ -67,6 +68,7 @@ class SharingContext extends RawMinkContext implements Context
 			$folder, $this->getSession()
 		);
 		$this->sharingDialog->shareWithGroup($group, $this->getSession());
+		$this->iCloseTheShareDialog();
 	}
 
 	/**
@@ -78,6 +80,14 @@ class SharingContext extends RawMinkContext implements Context
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$name, $this->getSession()
 		);
+	}
+
+	/**
+	 * @Given I close the share dialog
+	 */
+	public function iCloseTheShareDialog()
+	{
+		$this->sharingDialog->closeSharingDialog();
 	}
 
 	/**
