@@ -29,9 +29,12 @@
  *
  */
 
+
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
+
+use OCP\Session\Exceptions\SessionNotAvailableException;
 
 /**
  * Interface ISession
