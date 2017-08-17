@@ -23,6 +23,7 @@ namespace OC\User;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\UserInterface;
 
@@ -137,9 +138,13 @@ class SyncService {
 		if ($hasKey) {
 			$a->setLastLogin($value);
 		}
-		list($hasKey, $value) = $this->readUserConfig($uid, 'settings', 'email');
-		if ($hasKey) {
-			$a->setEmail($value);
+		if ($this->backend instanceof IProvidesEMailBackend) {
+			$a->setEmail($this->backend->getEMailAddress($uid));
+		} else {
+			list($hasKey, $value) = $this->readUserConfig($uid, 'settings', 'email');
+			if ($hasKey) {
+				$a->setEmail($value);
+			}
 		}
 		list($hasKey, $value) = $this->readUserConfig($uid, 'files', 'quota');
 		if ($hasKey) {
