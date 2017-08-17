@@ -191,7 +191,7 @@
 			var sections = path.split('/');
 			var i;
 			for (i = 0; i < sections.length; i++) {
-				sections[i] = encodeURIComponent(sections[i]);
+				sections[i] = encodeURI(sections[i]);
 			}
 			path = sections.join('/');
 			return path;
@@ -837,7 +837,7 @@
 
 		var client = new OC.Files.Client({
 			host: OC.getHost(),
-			root: OC.linkToRemoteBase('dav') + '/files/' + encodeURIComponent(OC.getCurrentUser().uid) + '/',
+			root: OC.linkToRemoteBase('dav') + '/files/' + encodeURI(OC.getCurrentUser().uid) + '/',
 			useHTTPS: OC.getProtocol() === 'https'
 		});
 		OC.Files._defaultClient = client;

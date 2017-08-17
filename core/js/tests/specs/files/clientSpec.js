@@ -868,4 +868,42 @@ describe('OC.Files.Client tests', function() {
 			// TODO
 		});
 	});
+
+	describe('default client', function() {
+		var getCurrentUserStub;
+		var propFindStub;
+		var getHostStub;
+		var getProtocolStub;
+		var getRootPathStub;
+
+		beforeEach(function() {
+			getProtocolStub = sinon.stub(OC, 'getProtocol').returns('https');
+			getHostStub = sinon.stub(OC, 'getHost').returns('somehost:8080');
+			getRootPathStub = sinon.stub(OC, 'getRootPath').returns('/owncloud');
+			getCurrentUserStub = sinon.stub(OC, 'getCurrentUser');
+			getCurrentUserStub.returns({
+				uid: 'test@test'
+			});
+			propFindStub = sinon.stub(dav.Client.prototype, 'propFind');
+			propFindStub.returns($.Deferred().promise());
+			delete OC.Files._defaultClient;
+		});
+		afterEach(function() { 
+			getProtocolStub.restore();
+			getHostStub.restore();
+			getRootPathStub.restore();
+			propFindStub.restore();
+			getCurrentUserStub.restore();
+		});
+
+		it('returns default client based on current user', function() {
+			var client = OC.Files.getClient();
+
+			client.getFolderContents('path/to space/a@b');
+
+			expect(propFindStub.calledOnce).toEqual(true);
+			expect(propFindStub.getCall(0).args[0])
+				.toEqual('https://somehost:8080/owncloud/remote.php/dav/files/test@test/path/to%20space/a@b');
+		});
+	});
 });
