@@ -25,6 +25,7 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
+use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 
 /**
@@ -146,9 +147,13 @@ class SyncService {
 				$a->setEmail($value);
 			}
 		}
-		list($hasKey, $value) = $this->readUserConfig($uid, 'files', 'quota');
-		if ($hasKey) {
-			$a->setQuota($value);
+		if ($this->backend instanceof IProvidesQuotaBackend) {
+			$a->setQuota($this->backend->getQuota($uid));
+		} else {
+			list($hasKey, $value) = $this->readUserConfig($uid, 'files', 'quota');
+			if ($hasKey) {
+				$a->setQuota($value);
+			}
 		}
 		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
 			$home = $this->backend->getHome($uid);
