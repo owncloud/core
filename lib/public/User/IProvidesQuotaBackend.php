@@ -36,7 +36,7 @@ interface IProvidesQuotaBackend {
 	 * Get a users quota
 	 *
 	 * @param string $uid The username
-	 * @return string
+	 * @return string|null
 	 * @since 10.0
 	 */
 	public function getQuota($uid);

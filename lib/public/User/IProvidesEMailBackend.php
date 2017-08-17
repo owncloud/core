@@ -36,7 +36,7 @@ interface IProvidesEMailBackend {
 	 * Get a users email address
 	 *
 	 * @param string $uid The username
-	 * @return string
+	 * @return string|null
 	 * @since 10.0
 	 */
 	public function getEMailAddress($uid);

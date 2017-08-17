@@ -123,10 +123,10 @@ abstract class Backend implements UserInterface {
 	/**
 	* get the user's home directory
 	* @param string $uid the username
-	* @return boolean
+	* @return string|null
 	*/
 	public function getHome($uid) {
-		return false;
+		return null;
 	}
 
 	/**
