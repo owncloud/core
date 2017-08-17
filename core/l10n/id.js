@@ -134,6 +134,7 @@ OC.L10N.register(
     "Password" : "Sandi",
     "Name" : "Nama",
     "Allow editing" : "Izinkan penyuntingan",
+    "Show file listing" : "Tampilkan daftar file",
     "Save" : "Simpan",
     "Error while sending notification" : "Kesalahan ketika mengirim notifikasi",
     "Sending ..." : "Mengirim ...",

@@ -136,7 +136,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "앱 \"%s\"의 다음 의존성을 만족하지 못하므로 설치할 수 없습니다: %s",
     "A safe home for all your data" : "내 모든 데이터 안전 저장소",
     "File is currently busy, please try again later" : "파일이 현재 사용 중, 나중에 다시 시도하십시오",
-    "Can't read file" : "파일을 읽을 수 없음",
     "Application is not enabled" : "앱이 활성화되지 않았습니다",
     "Authentication error" : "인증 오류",
     "Token expired. Please reload page." : "토큰이 만료되었습니다. 페이지를 새로 고치십시오.",

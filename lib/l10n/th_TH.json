@@ -136,7 +136,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "แอพฯ \"%s\" ไม่สามารถติดตั้งเพราะไม่ได้ปฏิบัติตามการอ้างอิงต่อไปนี้: %s",
     "A safe home for all your data" : "ปลอดภัยสำหรับสำหรับข้อมูลทั้งหมดของคุณ",
     "File is currently busy, please try again later" : "ขณะนี้ไฟล์กำลังใช้งานอยู่ โปรดลองอีกครั้งในภายหลัง",
-    "Can't read file" : "ไม่สามารถอ่านไฟล์",
     "Application is not enabled" : "แอพพลิเคชั่นดังกล่าวยังไม่ได้เปิดใช้งาน",
     "Authentication error" : "เกิดข้อผิดพลาดในสิทธิ์การเข้าใช้งาน",
     "Token expired. Please reload page." : "รหัสยืนยันความถูกต้องหมดอายุแล้ว กรุณาโหลดหน้าเว็บใหม่อีกครั้ง",

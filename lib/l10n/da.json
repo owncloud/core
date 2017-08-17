@@ -136,7 +136,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "App'en \"%s\" kan ikke installeres, da følgende krav ikke er opfyldt: %s ",
     "A safe home for all your data" : "Et sikkert sted til dine data",
     "File is currently busy, please try again later" : "Filen er i øjeblikket optaget - forsøg igen senere",
-    "Can't read file" : "Kan ikke læse filen",
     "Application is not enabled" : "Programmet er ikke aktiveret",
     "Authentication error" : "Adgangsfejl",
     "Token expired. Please reload page." : "Adgang er udløbet. Genindlæs siden.",

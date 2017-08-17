@@ -123,7 +123,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Додаток \"%s\" не може бути встановлений, так як наступні залежності не виконано: %s",
     "A safe home for all your data" : "Безпечне місце для усієї вашої інформації.",
     "File is currently busy, please try again later" : "Файл на разі зайнятий, будь ласка, спробуйте пізніше",
-    "Can't read file" : "Не можливо прочитати файл",
     "Application is not enabled" : "Додаток не увімкнений",
     "Authentication error" : "Помилка автентифікації",
     "Token expired. Please reload page." : "Строк дії токена скінчився. Будь ласка, перезавантажте сторінку.",

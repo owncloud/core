@@ -136,7 +136,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Programa \"%s\" ni mogoče namestiti zaradi nerešenih odvisnosti: %s",
     "A safe home for all your data" : "Varno mesto za vse pomembne podatke",
     "File is currently busy, please try again later" : "Datoteka je trenutno v uporabi. Poskusite znova kasneje.",
-    "Can't read file" : "Datoteke ni mogoče prebrati.",
     "Application is not enabled" : "Program ni omogočen",
     "Authentication error" : "Napaka overjanja",
     "Token expired. Please reload page." : "Žeton je potekel. Stran je treba ponovno naložiti.",

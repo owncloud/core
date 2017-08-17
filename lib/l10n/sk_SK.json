@@ -130,7 +130,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Aplikáciu \"%s\" nie je možné inštalovať, pretože nie sú splnené nasledovné závislosti: %s",
     "A safe home for all your data" : "Bezpečný domov pre všetky vaše dáta",
     "File is currently busy, please try again later" : "Súbor sa práve používa, skúste prosím neskôr",
-    "Can't read file" : "Nemožno čítať súbor.",
     "Application is not enabled" : "Aplikácia nie je zapnutá",
     "Authentication error" : "Chyba autentifikácie",
     "Token expired. Please reload page." : "Token vypršal. Obnovte, prosím, stránku.",

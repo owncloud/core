@@ -129,7 +129,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Приложение \"%s\" не може да бъде инсталирано, защото следните зависимости не са изпълнени: %s",
     "A safe home for all your data" : "Сигурен дом за цялата всичките Ви данни",
     "File is currently busy, please try again later" : "В момента файлът е зает, моля, опитайте по-късно",
-    "Can't read file" : "Неуспешно прочитане на файл",
     "Application is not enabled" : "Приложението не е включено",
     "Authentication error" : "Проблем с идентификацията",
     "Token expired. Please reload page." : "Изтекла сесия. Моля, презареди страницата.",

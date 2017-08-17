@@ -117,7 +117,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Sovelluksen \"%s\" asennus ei onnistu, koska seuraavia riippuvuuksia ei ole täytetty: %s",
     "A safe home for all your data" : "Turvallinen koti tiedoillesi",
     "File is currently busy, please try again later" : "Tiedosto on parhaillaan käytössä, yritä myöhemmin uudelleen",
-    "Can't read file" : "Tiedostoa ei voi lukea",
     "Application is not enabled" : "Sovellusta ei ole otettu käyttöön",
     "Authentication error" : "Tunnistautumisvirhe",
     "Token expired. Please reload page." : "Valtuutus vanheni. Lataa sivu uudelleen.",

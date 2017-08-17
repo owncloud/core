@@ -115,7 +115,6 @@
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Aplikasi \"%s\" tidak dapat diinstal karena dependensi berikut belum terpenuhi: %s",
     "A safe home for all your data" : "Sebuah rumah yang aman untuk semua data Anda",
     "File is currently busy, please try again later" : "Berkas sedang sibuk, mohon coba lagi nanti",
-    "Can't read file" : "Tidak dapat membaca berkas",
     "Application is not enabled" : "Aplikasi tidak diaktifkan",
     "Authentication error" : "Galat saat otentikasi",
     "Token expired. Please reload page." : "Token sudah kedaluwarsa. Silakan muat ulang halaman.",
