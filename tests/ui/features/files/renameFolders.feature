@@ -35,12 +35,17 @@ Feature: renameFolders
 
 	Scenario: Rename a folder using forbidden characters
 		When I rename the folder "simple-folder" to one of these names
-		|.htaccess       |
 		|simple\folder   |
 		|\\simple-folder |
 		Then notifications should be displayed with the text
 		|Could not rename "simple-folder"|
 		|Could not rename "simple-folder"|
+		And the folder "simple-folder" should be listed
+
+	Scenario: Rename a folder to a forbidden name
+		When I rename the folder "simple-folder" to one of these names
+		|.htaccess       |
+		Then notifications should be displayed with the text
 		|Could not rename "simple-folder"|
 		And the folder "simple-folder" should be listed
 
