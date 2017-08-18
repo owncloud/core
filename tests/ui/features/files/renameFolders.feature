@@ -44,6 +44,13 @@ Feature: renameFolders
 		|Could not rename "simple-folder"|
 		And the folder "simple-folder" should be listed
 
+	Scenario: Rename a folder to a forbidden name
+		When I rename the folder "simple-folder" to one of these names
+		|.htaccess       |
+		Then notifications should be displayed with the text
+		|Could not rename "simple-folder"|
+		And the folder "simple-folder" should be listed
+
 	Scenario: Rename a folder putting a name of a file which already exists
 		When I rename the folder "simple-folder" to "lorem.txt"
 		Then near the folder "simple-folder" a tooltip with the text 'lorem.txt already exists' should be displayed
