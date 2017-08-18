@@ -523,6 +523,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 				$this->fixEntriesWithNonExistingParentIdEntry($out);
 			}
 			$out->finishProgress();
+			$out->info('');
 		}
 	}
 }
