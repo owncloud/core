@@ -254,4 +254,11 @@ class Db implements IDb {
 	public function allows4ByteCharacters() {
 		return $this->connection->allows4ByteCharacters();
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function upsert($table, $input, array $compare = null) {
+		return $this->connection->upsert($table, $input, $compare);
+	}
 }

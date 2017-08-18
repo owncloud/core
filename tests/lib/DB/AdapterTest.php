@@ -21,7 +21,8 @@
  */
 
 namespace Test\DB;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\DriverException;
 use OC\DB\Adapter;
 use OCP\IDBConnection;
 
@@ -39,72 +40,140 @@ class AdapterTest extends \Test\TestCase {
 	/** @var IDBConnection  */
 	protected $conn;
 
-	protected $testTable = 'testdbadapter';
-
 	public function __construct() {
 		$this->conn = \OC::$server->getDatabaseConnection();
 		$this->adapter = new Adapter($this->conn);
 		parent::__construct();
 	}
 
-	public function setUp() {
-		// Create a dummy table
-		$toSchema = $this->conn->createSchema();
-
-		if(!$toSchema->hasTable($this->conn->getPrefix() . $this->testTable)) {
-			$table = $toSchema->createTable($this->conn->getPrefix() . $this->testTable);
-			$table->addColumn('id', Type::BIGINT, [
-				'autoincrement' => true,
-				'unsigned' => true,
-				'notnull' => true,
-			]);
-			$table->addColumn('val1', Type::TEXT, [
-				'notnull' => true,
-			]);
-			$table->setPrimaryKey(['id']);
-			$this->conn->migrateToSchema($toSchema);
-		}
-	}
-
 	public function tearDown() {
-		// Drop the test table
-		$toSchema = $this->conn->createSchema();
+		// remove columns from the appconfig table
+		$this->conn->prepare('DELETE FROM *PREFIX*appconfig WHERE `appid` LIKE ?')->execute(['testadapter-%']);
+	}
 
-		if($toSchema->hasTable($this->conn->getPrefix() . $this->testTable)) {
-			$table = $toSchema->dropTable($this->conn->getPrefix() . $this->testTable);
-			$this->conn->migrateToSchema($toSchema);
+	/**
+	 * Helper to insert a row
+	 * Checks one was inserted
+	 * @param array associative array of columns and values to insert
+	 */
+	public function insertRow($data) {
+		$table = $this->conn->getPrefix() . 'appconfig';
+		$data['appid'] = uniqid('testadapter-');
+		$query = "INSERT INTO $table";
+		$query .= "(" . implode(',', array_keys($data)) .')';
+		$query .= ' VALUES (' . str_repeat('?, ', count($data)-1) . '?)';
+		$rows = $this->conn->executeUpdate($query, array_values($data));
+		$this->assertEquals(1, $rows);
+	}
+
+	/**
+	 * Helper to delete a row
+	 */
+	public function deleteRow($where) {
+		$table = $this->conn->getPrefix() . 'appconfig';
+		$params = [];
+		$query = "DELETE FROM $table WHERE ";
+		foreach($where as $col => $val) {
+			$query .= "`?` = `?`, ";
+			$params[] = $col;
+			$params[] = $val;
 		}
+		$rows = $this->conn->executeUpdate($query, $params);
+		$this->assertEquals(1, $rows);
+		return $rows;
 	}
 
 	/**
-	 * Use upsert to insert a row into the database
+	 * Use upsert to insert a row into the database when nothing exists
+	 * Should fail to update, and insert a new row
 	 */
-	public function testUpsertWithNoValuePresent() {
-		$rows = $this->adapter->upsert($this->conn->getPrefix() . $this->testTable, ['val1' => 'test']);
+	public function testUpsertWithNoRowPresent() {
+		// Insert or update a new row
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test1', 'configkey' => 'test1']);
 		$this->assertEquals(1, $rows);
+		$this->assertRowExists('test1', 'test1');
 	}
 
 	/**
-	 * Use upsert to update an existing row in the database
+	 * Use upsert to insert a row into the database when row exists
+	 * Should update row
 	 */
-	public function testUpsertToUpdateRow() {
-		$row1 = [];
-		$row2 = [];
-		$rows = $this->conn->insert($this->conn->getPrefix() . $this->testTable, ['val1' => 'test']);
+	public function testUpsertWithRowPresent() {
+		// Insert row
+		$this->insertRow(['configvalue' => 'test2', 'configkey' => 'test2']);
+		// Update it
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test2-updated', 'configkey' => 'test2-updated']);
 		$this->assertEquals(1, $rows);
-		$rows = $this->adapter->upsert($this->conn->getPrefix() . $this->testTable, ['val1' => 'test-updated']);
-		$this->assertEquals(1, $rows);
-		// Now cehck the value of this column for this row
+		$this->assertRowExists('test2-updated', 'test2-updated');
+
 	}
 
-	public function testUpsertToUpdateWithCompare() {
-		$row1 = [];
-		$row2 = [];
+	/**
+	 * Use upsert to insert a row into the database when row exists, using compare col
+	 * Should update row
+	 */
+	public function testUpsertWithRowPresentUsingCompare() {
+		// Insert row
+		$this->insertRow(['configvalue' => 'test3', 'configkey' => 'test3']);
+		// Update it
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test3-updated', 'configkey' => 'test3-updated'], ['configvalue']);
+		$this->assertEquals(1, $rows);
+		$this->assertRowExists('test3-updated', 'test3-updated');
+
 	}
 
-	public function testUpsertToUpdateWithCompareNoMatches() {
-		$row1 = [];
-		$row2 = [];
+	public function testUpsertCatchDeadlockAndThrowsException() {
+		$mockConn = $this->createMock(IDBConnection::class);
+
+		$ex = $this->createMock(DriverException::class);
+		$ex->expects($this->exactly(10))->method('getErrorCode')->willReturn(1213);
+		$e = new \Doctrine\DBAL\Exception\DriverException('1213', $ex);
+		$mockConn->expects($this->exactly(10))->method('executeUpdate')->willThrowException($e);
+
+		$this->expectException(\RuntimeException::class);
+
+		// Run
+		$adapter = new Adapter($mockConn);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+	}
+
+	public function testUpsertCatchExceptionAndThrowImmediately() {
+		$mockConn = $this->createMock(IDBConnection::class);
+
+		$e = new DBALException();
+		$mockConn->expects($this->exactly(1))->method('executeUpdate')->willThrowException($e);
+
+		$this->expectException(DBALException::class);
+
+		// Run
+		$adapter = new Adapter($mockConn);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+
+	}
+
+	public function testUpsertAndThrowOtherDriverExceptions() {
+		$mockConn = $this->createMock(IDBConnection::class);
+
+		$ex = $this->createMock(DriverException::class);
+		$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
+		$e = new \Doctrine\DBAL\Exception\DriverException('1214', $ex);
+		$mockConn->expects($this->exactly(1))->method('executeUpdate')->willThrowException($e);
+
+		$this->expectException(\Doctrine\DBAL\Exception\DriverException::class);
+
+		// Run
+		$adapter = new Adapter($mockConn);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+	}
+
+	private function assertRowExists($key, $value) {
+		$query = $this->conn->getQueryBuilder();
+		$result = $query->select('*')
+			->from('*PREFIX*appconfig')
+			->where($query->expr()->eq('configvalue', $query->createNamedParameter($value)))
+			->where($query->expr()->eq('configkey', $query->createNamedParameter($key)))
+			->execute();
+		$this->assertCount(1, $result->fetchAll());
 	}
 
 }
