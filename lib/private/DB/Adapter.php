@@ -6,6 +6,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -121,6 +122,7 @@ class Adapter {
 	 * @param $input array the key=>value pairs to insert into the db row
 	 * @param $compare array columns that should be compared
 	 * @return int the number of rows affected by the operation
+	 * @throws \Exception
 	 */
 	public function upsert($table, $input, $compare = null) {
 		$this->conn->beginTransaction();
@@ -133,7 +135,7 @@ class Adapter {
 
 		// Construct the update query
 		$updateQuery = 'UPDATE `' . $table . '` SET ';
-		$updateQuery .= '`' . implode('`  = ?, `', array_keys($input)) . '` = ?  WHERE';
+		$updateQuery .= '`' . implode('`  = ?, `', array_keys($input)) . '` = ?  WHERE ';
 		$updateParams = array_values($input);
 		foreach ($compare as $key) {
 			$updateQuery .= '`' . $key . '`';
@@ -147,8 +149,10 @@ class Adapter {
 		// Remove the last ' AND ' from the query
 		$updateQuery = substr($updateQuery, 0, strlen($updateQuery) - 5);
 
+		$rows = 0;
 		$count = 0;
 		$maxTry = 10;
+
 		while (!$done && $count < $maxTry) {
 			// Try to update
 			try {
@@ -158,6 +162,9 @@ class Adapter {
 				if ($e->getErrorCode() == 1213) {
 					$count++;
 					continue;
+				} else {
+					// We should catch other exceptions up the stack
+					throw $e;
 				}
 			}
 			if ($rows > 0) {
@@ -173,6 +180,7 @@ class Adapter {
 					// Catch the unique violation and try the loop again
 					$count++;
 				}
+				// Other exceptions are not caught, they should be caught up the stack
 				$this->conn->commit();
 			}
 		}
