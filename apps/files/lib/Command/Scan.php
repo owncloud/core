@@ -238,9 +238,7 @@ class Scan extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
-		if ($input->getOption('repair')) {
-			$shouldRepairStoragesIndividually = true;
-		}
+		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
 
 		if ($inputPath) {
 			$inputPath = '/' . trim($inputPath, '/');
@@ -304,7 +302,8 @@ class Scan extends Base {
 			if ($this->userManager->userExists($user)) {
 				# add an extra line when verbose is set to optical separate users
 				if ($verbose) {$output->writeln(""); }
-				$output->writeln("Starting scan for user $user_count out of $users_total ($user)");
+				$r = $shouldRepairStoragesIndividually ? ' (and repair)' : '';
+				$output->writeln("Starting scan$r for user $user_count out of $users_total ($user)");
 				# full: printout data if $verbose was set
 				$this->scanFiles($user, $path, $verbose, $output, $input->getOption('unscanned'), $shouldRepairStoragesIndividually);
 			} else {
