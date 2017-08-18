@@ -109,6 +109,6 @@ class RedisFactory {
 	public function isAvailable() {
 		return extension_loaded('redis')
 		&& (version_compare(phpversion('redis'), '2.2.5', '>=')
-		|| strcmp(phpversion('redis'), 'develop')==0);
+		|| strcmp(phpversion('redis'), 'develop')==0); // Using a developing Version?
 	}
 }
