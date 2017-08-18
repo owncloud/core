@@ -43,7 +43,13 @@ Feature: renameFiles
 		|Could not rename "data.zip"|
 		And the file "data.zip" should be listed
 
-	@skip @issue-28441
+	Scenario: Rename a file to a forbidden name
+		When I rename the file "data.zip" to one of these names
+		|.htaccess  |
+		Then notifications should be displayed with the text
+		|Could not rename "data.zip"|
+		And the file "data.zip" should be listed
+
 	Scenario: Rename a file to a forbidden name
 		When I rename the file "data.zip" to one of these names
 		|.htaccess  |

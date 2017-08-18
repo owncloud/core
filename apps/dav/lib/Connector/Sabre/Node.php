@@ -126,11 +126,22 @@ abstract class Node implements \Sabre\DAV\INode {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
+		// verify path of the source
+		$this->verifyPath();
+
 		list($parentPath,) = \Sabre\HTTP\URLUtil::splitPath($this->path);
 		list(, $newName) = \Sabre\HTTP\URLUtil::splitPath($name);
 
-		// verify path of the target
-		$this->verifyPath();
+		// verify path of target
+		if (\OC\Files\Filesystem::isForbiddenFileOrDir($parentPath . '/' . $newName)) {
+			throw new \Sabre\DAV\Exception\Forbidden();
+		}
+
+		try {
+			$this->fileView->verifyPath($parentPath, $newName);
+		} catch (\OCP\Files\InvalidPathException $ex) {
+			throw new InvalidPath($ex->getMessage());
+		}
 
 		$newPath = $parentPath . '/' . $newName;
 
