@@ -44,9 +44,65 @@ class FutureFileTest extends \Test\TestCase {
 		$this->assertEquals(12121212, $f->getLastModified());
 	}
 
-	public function testGetSize() {
+	/**
+	 * data provider for testGetSize
+	 * [[array of chunksizes], [chunk names to ignore], expected size]
+	 * 
+	 * @return array[][]|number[][]|number[][][]
+	 */ 
+	public function dataGetSize() {
+		return [
+			[[1, 2, 3], [ ], 6],
+			[[100, 200, 300], [ ], 600],
+			[[1, 2, 0, 4], [ ], 7],
+			[[10, 20, 30, 40], [2], 70],
+			[[10, 20, 30, 40], [0, 3], 50],
+			[[10, 20, 30, 40], [0, 2, 3], 20],
+			[[10, 20, 30, 40, 50], [0, 4], 90],
+		];
+	} 
+
+	/**
+	 * @dataProvider dataGetSize
+	 * @param array $chunkSizes
+	 * @param array $ignoreChunks
+	 * @param int $expected
+	 * @return void
+	 */
+	public function testGetSize(
+		array $chunkSizes, array $ignoreChunks, $expected
+	) {
 		$f = $this->mockFutureFile();
-		$this->assertEquals(0, $f->getSize());
+		foreach ($chunkSizes as $name => $size) {
+			$node = $this->getMockBuilder('\Sabre\DAV\INode')
+				->disableOriginalConstructor()
+				->setMethods(
+					['delete', 'getSize', 'getName', 'setName', 'getLastModified']
+				)
+				->getMock();
+
+			$node->expects($this->any())
+				->method('getSize')
+				->willReturn($size);
+
+			$node->expects($this->any())
+				->method('getName')
+				->willReturn($name);
+
+			$nodes[] = $node;
+		}
+
+		$d = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Directory')
+			->disableOriginalConstructor()
+			->setMethods(['getChildren'])
+			->getMock();
+
+		$d->expects($this->any())
+			->method('getChildren')
+			->willReturn($nodes);
+
+		$f = new \OCA\DAV\Upload\FutureFile($d, 'foo.txt');
+		$this->assertEquals($expected, $f->getSize($ignoreChunks));
 	}
 
 	public function testGet() {

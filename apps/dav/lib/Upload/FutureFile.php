@@ -96,14 +96,28 @@ class FutureFile implements \Sabre\DAV\IFile {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Returns the size of the node, in bytes
+	 *
+	 * @param array $ignoreChildren array of names of children that should be
+	 * ignored for the calculation
+	 * @return int
 	 */
-	function getSize() {
+	function getSize($ignoreChildren = []) {
 		$children = $this->root->getChildren();
-		$sizes = array_map(function($node) {
-			/** @var IFile $node */
-			return $node->getSize();
-		}, $children);
+		for ($i = count($children) - 1; $i >= 0; $i--) {
+			if (in_array($children[$i]->getName(), $ignoreChildren)) {
+				unset($children[$i]);
+			}
+		}
+		$sizes = array_map(
+			function ($node) {
+				/**
+				 * @var IFile $node
+				 */
+				return $node->getSize();
+			},
+			$children
+		);
 
 		return array_sum($sizes);
 	}
