@@ -84,7 +84,7 @@ $this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.p
 $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
-$this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
+$this->create('settings_ajax_changegroupname', '/settings/ajax/changegroupname.php')
 	->actionInclude('settings/ajax/changegroupname.php');
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
