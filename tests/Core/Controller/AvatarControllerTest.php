@@ -26,6 +26,7 @@ use OC\NotSquareException;
 use OCP\AppFramework\Http;
 use OCP\Files\File;
 use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IAvatarManager;
 use OCP\IL10N;
@@ -69,7 +70,7 @@ class AvatarControllerTest extends TestCase {
 	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
 	private $userSession;
 	/** @var Folder | \PHPUnit_Framework_MockObject_MockObject */
-	private $userFolder;
+	private $rootFolder;
 	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
 	private $logger;
 
@@ -78,18 +79,18 @@ class AvatarControllerTest extends TestCase {
 		$this->createUser('userid', 'pass');
 		$this->loginAsUser('userid');
 		
-		$this->avatarManager = $this->createMock('OCP\IAvatarManager');
-		$this->cache = $this->getMockBuilder('OC\Cache\File')->disableOriginalConstructor()->getMock();
-		$this->l10N = $this->createMock('OCP\IL10N');
+		$this->avatarManager = $this->createMock(IAvatarManager::class);
+		$this->cache = $this->getMockBuilder(\OC\Cache\File::class)->disableOriginalConstructor()->getMock();
+		$this->l10N = $this->createMock(IL10N::class);
 		$this->l10N->expects($this->any())->method('t')->will($this->returnArgument(0));
-		$this->userManager = $this->createMock('OCP\IUserManager');
-		$this->userSession = $this->createMock('OCP\IUserSession');
-		$this->request = $this->createMock('OCP\IRequest');
-		$this->userFolder = $this->createMock('OCP\Files\Folder');
-		$this->logger = $this->createMock('OCP\ILogger');
+		$this->userManager = $this->createMock(IUserManager::class);
+		$this->userSession = $this->createMock(IUserSession::class);
+		$this->request = $this->createMock(IRequest::class);
+		$this->rootFolder = $this->createMock(IRootFolder::class);
+		$this->logger = $this->createMock(ILogger::class);
 
-		$this->avatarMock = $this->createMock('OCP\IAvatar');
-		$this->userMock = $this->createMock('OCP\IUser');
+		$this->avatarMock = $this->createMock(IAvatar::class);
+		$this->userMock = $this->createMock(IUser::class);
 
 		$this->avatarController = $this->getMockBuilder(AvatarController::class)
 			->setMethods(['isUploadFile'])
@@ -101,7 +102,7 @@ class AvatarControllerTest extends TestCase {
 				$this->l10N,
 				$this->userManager,
 				$this->userSession,
-				$this->userFolder,
+				$this->rootFolder,
 				$this->logger])
 			->getMock();
 		$this->avatarController
@@ -338,10 +339,13 @@ class AvatarControllerTest extends TestCase {
 	 */
 	public function testPostAvatarFromFile() {
 		//Mock node API call
+		$userFolder = $this->createMock(Folder::class);
 		$file = $this->getMockBuilder('OCP\Files\File')
 			->disableOriginalConstructor()->getMock();
 		$file->expects($this->any())->method('getContent')->willReturn(file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.jpg'));
-		$this->userFolder->expects($this->once())->method('get')->willReturn($file);
+		$userFolder->expects($this->once())->method('get')->willReturn($file);
+
+		$this->rootFolder->expects($this->once())->method('getUserFolder')->willReturn($userFolder);
 
 		//Create request return
 		$response = $this->avatarController->postAvatar('avatar.jpg');
@@ -354,12 +358,14 @@ class AvatarControllerTest extends TestCase {
 	 * Test posting avatar from existing folder
 	 */
 	public function testPostAvatarFromNoFile() {
+		$userFolder = $this->createMock(Folder::class);
 		$file = $this->createMock('OCP\Files\Node');
-		$this->userFolder
+		$userFolder
 			->expects($this->once())
 			->method('get')
 			->with('folder')
 			->willReturn($file);
+		$this->rootFolder->expects($this->once())->method('getUserFolder')->willReturn($userFolder);
 
 		//Create request return
 		$response = $this->avatarController->postAvatar('folder');
@@ -375,10 +381,12 @@ class AvatarControllerTest extends TestCase {
 		$this->cache->expects($this->once())
 			->method('set')
 			->will($this->throwException(new \Exception("foo")));
+		$userFolder = $this->createMock(Folder::class);
 		$file = $this->getMockBuilder('OCP\Files\File')
 			->disableOriginalConstructor()->getMock();
 		$file->expects($this->any())->method('getContent')->willReturn(file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.jpg'));
-		$this->userFolder->expects($this->once())->method('get')->willReturn($file);
+		$userFolder->expects($this->once())->method('get')->willReturn($file);
+		$this->rootFolder->expects($this->once())->method('getUserFolder')->willReturn($userFolder);
 
 		$this->logger->expects($this->once())
 			->method('logException')
