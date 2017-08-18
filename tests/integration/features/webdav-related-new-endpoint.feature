@@ -78,7 +78,6 @@ Feature: webdav-related-new-endpoint
 		When User "user0" moves file "/welcome.txt" to "/a\\a"
 		Then the HTTP status code should be "400"
 
-	@skip @issue-28441
 	Scenario: rename a file into a banned filename
 		Given using new dav path
 		And user "user0" exists
@@ -388,7 +387,6 @@ Feature: webdav-related-new-endpoint
 		When User "user0" moves folder "/testshare" to "/hola%5Chola"
 		Then the HTTP status code should be "400"
 
-	@skip @issue-28441
 	Scenario: Renaming a folder into a banned name
 		Given using new dav path
 		And user "user0" exists
