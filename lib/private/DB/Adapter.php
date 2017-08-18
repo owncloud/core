@@ -25,6 +25,7 @@
  */
 
 namespace OC\DB;
+use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
@@ -149,7 +150,16 @@ class Adapter {
 		$maxTry = 10;
 		while(!$done && $count < $maxTry) {
 			// Try to update
-			if($rows = $this->conn->executeUpdate($updateQuery, $updateParams)) {
+			try {
+				$rows = $this->conn->executeUpdate($updateQuery, $updateParams);
+			} catch (DriverException $e) {
+				// Skip deadlock and retry
+				if($e->getErrorCode() == 1213) {
+					$count++;
+					continue;
+				}
+			}
+			if($rows > 0) {
 				// We altered some rows, return
 				$done = true;
 			} else {
@@ -167,7 +177,7 @@ class Adapter {
 		}
 
 		if($count === $maxTry) {
-			throw new \RuntimeException("DB upsert failed after $maxTry attempts. Query $query");
+			throw new \RuntimeException("DB upsert failed after $maxTry attempts. Query $updateQuery");
 		}
 
 		$this->conn->commit();
