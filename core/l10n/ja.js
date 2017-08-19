@@ -1,7 +1,7 @@
 OC.L10N.register(
     "core",
     {
-    "Please select a file." : "ファイルを選択してください。",
+    "Please select a file." : "ファイルを選択してください。c",
     "File is too big" : "ファイルが大きすぎます",
     "Invalid file provided" : "無効なファイルが提供されました",
     "No image or file provided" : "画像もしくはファイルが提供されていません",
@@ -12,6 +12,9 @@ OC.L10N.register(
     "No crop data provided" : "クロップデータは提供されません",
     "No valid crop data provided" : "有効なクロップデータは提供されません",
     "Crop is not square" : "クロップが正方形ではありません",
+    "Could not reset password because the token is invalid" : "トークンが無効なためパスワードのリセットができませんでした",
+    "Could not reset password because the token expired" : "トークンが期限切れのためパスワードのリセットができませんでした",
+    "Could not reset password because the token does not match" : "トークンが一致しないためパスワードのリセットができませんでした",
     "%s password changed successfully" : "%s パスワードは正常に変更されました",
     "%s password reset" : "%s パスワードリセット",
     "Couldn't send reset email. Please contact your administrator." : "リセットメールを送信できませんでした。管理者に問い合わせてください。",
