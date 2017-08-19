@@ -8,8 +8,6 @@
     "An error occurred. Please contact your admin." : "A apărut o eroare. Te rugăm să contactezi administratorul.",
     "No temporary profile picture available, try again" : "Nu este disponibilă nicio imagine temporară a profilului, încearcă din nou",
     "Crop is not square" : "Selecția nu este pătrată",
-    "Couldn't reset password because the token is invalid" : "Parola nu a putut fi resetată deoarece token-ul este invalid",
-    "Couldn't reset password because the token is expired" : "Parola nu a putut fi resetată deoarece token-ul a expirat",
     "%s password reset" : "%s resetare parola",
     "Couldn't send reset email. Please contact your administrator." : "Expedierea email-ului de resetare a eşuat. Vă rugăm să contactaţi administratorul dvs.",
     "Couldn't send mail to following users: %s " : "Nu s-a putut trimite mesajul către următorii utilizatori: %s",

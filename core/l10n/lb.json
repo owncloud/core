@@ -7,8 +7,6 @@
     "Invalid image" : "Ongültegt Bild",
     "An error occurred. Please contact your admin." : "Et ass e Feeler opgetrueden. W.e.g. kontaktéier däin Administrateur.",
     "No temporary profile picture available, try again" : "Et ass keen temporäert Profilbild verfügbar, versich et nach emol.",
-    "Couldn't reset password because the token is invalid" : "D'Passwuert konnt net zeréck gesat ginn well den Token ongülteg ass",
-    "Couldn't reset password because the token is expired" : "D'Passwuert konnt net zeréck gesat ginn well den Token ofgelaf ass",
     "%s password reset" : "%s Passwuert ass nei gesat",
     "Couldn't send reset email. Please contact your administrator." : "D'Email fir zeréck ze setzen konnt net geschéckt ginn. W.e.g. kontaktéier däin Administrateur.",
     "Couldn't send mail to following users: %s " : "D'Email fir de folgende Benotzer konnt net geschéckt ginn: %s",

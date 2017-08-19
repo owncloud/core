@@ -10,8 +10,6 @@
     "No crop data provided" : "Dáta pre orezanie neboli zadané",
     "No valid crop data provided" : "Neplatné dáta pre orezanie neboli zadané",
     "Crop is not square" : "Orezanie nie je štvorcové",
-    "Couldn't reset password because the token is invalid" : "Nemožno zmeniť heslo pre neplatnosť tokenu.",
-    "Couldn't reset password because the token is expired" : "Nepodarilo sa obnoviť heslo, pretože platnosť tokenu uplynula.",
     "%s password reset" : "reset hesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
     "Couldn't send mail to following users: %s " : "Nebolo možné odoslať email týmto používateľom: %s ",

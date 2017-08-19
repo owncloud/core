@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Aucune donnée de recadrage fournie",
     "No valid crop data provided" : "Données de recadrage non valides",
     "Crop is not square" : "Le recadrage n'est pas carré",
-    "Couldn't reset password because the token is invalid" : "Impossible de réinitialiser le mot de passe car le jeton n'est pas valable.",
-    "Couldn't reset password because the token is expired" : "Impossible de réinitialiser le mot de passe car le jeton a expiré.",
     "%s password changed successfully" : "Le mot de passe %s a été correctement changé",
     "%s password reset" : "Réinitialisation de votre mot de passe %s",
     "Couldn't send reset email. Please contact your administrator." : "Impossible d'envoyer le courriel de réinitialisation. Veuillez contacter votre administrateur.",

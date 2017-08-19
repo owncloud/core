@@ -6,7 +6,6 @@ OC.L10N.register(
     "Invalid image" : "Baliogabeko irudia",
     "No temporary profile picture available, try again" : "Ez dago behin-behineko profil irudirik, saiatu berriro",
     "No crop data provided" : "Ez da ebaketarako daturik zehaztu",
-    "Couldn't reset password because the token is invalid" : "Ezin izan da pasahitza berrezarri tokena baliogabea delako",
     "%s password reset" : "%s pasahitza berrezarri",
     "Couldn't send reset email. Please contact your administrator." : "Ezin da berrezartzeko eposta bidali. Mesedez jarri harremetan zure administradorearekin.",
     "Couldn't send mail to following users: %s " : "Ezin izan da posta bidali hurrengo erabiltzaileei: %s",

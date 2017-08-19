@@ -10,7 +10,6 @@ OC.L10N.register(
     "No crop data provided" : "Non indicou como recortar",
     "No valid crop data provided" : "Os datos cortados fornecidos non son válidos",
     "Crop is not square" : "O corte non é cadrado",
-    "Couldn't reset password because the token is invalid" : "No, foi posíbel restabelecer o contrasinal, a marca non é correcta",
     "%s password reset" : "Restabelecer o contrasinal %s",
     "Couldn't send reset email. Please contact your administrator." : "Non foi posíbel enviar o correo do restabelecemento. Póñase en contacto co administrador.",
     "Couldn't send mail to following users: %s " : "Non é posíbel enviar correo aos usuarios seguintes: %s",

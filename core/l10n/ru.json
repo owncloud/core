@@ -10,8 +10,6 @@
     "No crop data provided" : "Не указана информация о кадрировании",
     "No valid crop data provided" : "Не указаны корректные данные о кадрировании",
     "Crop is not square" : "Кадр не является квадратом",
-    "Couldn't reset password because the token is invalid" : "Не удалось сбросить пароль из-за неверного токена",
-    "Couldn't reset password because the token is expired" : "Не удалось сбросить пароль, так как срок действия токена истек.",
     "%s password changed successfully" : "Пароль %s изменён успешно",
     "%s password reset" : "Сброс пароля %s",
     "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",

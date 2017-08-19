@@ -8,7 +8,6 @@
     "No crop data provided" : "Нема података о опсецању",
     "No valid crop data provided" : "Нема података о опсецању",
     "Crop is not square" : "Опсецање није квадрат",
-    "Couldn't reset password because the token is invalid" : "Није могуће ресетовати лозинку јер je токен неважећи",
     "%s password reset" : "%s лозинка ресетована",
     "Couldn't send reset email. Please contact your administrator." : "Не могу да пошаљем е-пошту за ресетовање лозинке. Контактирајте администратора.",
     "Couldn't send mail to following users: %s " : "Не могу да пошаљем е-пошту следећим корисницима: %s ",

@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Nun s'apurrió'l retayu de datos",
     "No valid crop data provided" : "El retayu de datos apurríu nun ye válidu",
     "Crop is not square" : "El retayu nun ye cuadráu",
-    "Couldn't reset password because the token is invalid" : "Nun pudo reaniciase la contraseña porque'l token ye inválidu",
-    "Couldn't reset password because the token is expired" : "Nun pudo reaniciase la contraseña porque'l token ye inválidu",
     "%s password reset" : "%s restablecer contraseña",
     "Couldn't send reset email. Please contact your administrator." : "Nun pudo unviase'l corréu de reaniciu. Por favor, contauta col alministrador.",
     "Couldn't send mail to following users: %s " : "Nun pudo unviase'l corréu a los usuarios siguientes: %s",

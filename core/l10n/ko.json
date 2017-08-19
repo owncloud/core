@@ -10,8 +10,6 @@
     "No crop data provided" : "선택된 데이터가 없습니다.",
     "No valid crop data provided" : "올바른 잘라내기 데이터가 지정되지 않음",
     "Crop is not square" : "잘라내는 영역이 사각형이 아님",
-    "Couldn't reset password because the token is invalid" : "토큰이 잘못되었기 때문에 암호를 초기화할 수 없습니다",
-    "Couldn't reset password because the token is expired" : "토큰이 만료되어 암호를 초기화할 수 없습니다",
     "%s password changed successfully" : "%s 암호가 성공적으로 변경됨",
     "%s password reset" : "%s 암호 재설정",
     "Couldn't send reset email. Please contact your administrator." : "재설정 메일을 보낼 수 없습니다. 관리자에게 문의하십시오.",

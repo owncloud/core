@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Ingen beskjeringsdata gjeve",
     "No valid crop data provided" : "Ingen beskjeringsdata gjeve",
     "Crop is not square" : "Beskjeringa er ikkje kvadratisk",
-    "Couldn't reset password because the token is invalid" : "Kunne ikkje nullstilla passordet sidan tokenet er ugyldig",
-    "Couldn't reset password because the token is expired" : "Kunne ikkje nullstilla passordet sidan tokenet er utløpt",
     "%s password changed successfully" : "%spassord er endra",
     "%s password reset" : "%s passordnullstilling",
     "Couldn't send reset email. Please contact your administrator." : "Kunne ikkje senda e-post for nullstilling, kontakt administratoren.",

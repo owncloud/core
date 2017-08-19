@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Липсват данни за изрязването",
     "No valid crop data provided" : "Невалидни данни за изрязването",
     "Crop is not square" : "Орязването не в квадратна форма",
-    "Couldn't reset password because the token is invalid" : "Промяната на паролата е невъзможно, защото връзката за удостоверение не е валидна",
-    "Couldn't reset password because the token is expired" : "Неуспешно възстановяване на паролата, защото ключа е изтекъл",
     "%s password reset" : "Паролата на %s е променена.",
     "Couldn't send reset email. Please contact your administrator." : "Изпращането на електронна поща е неуспешно. Моля, свържете се с вашия администратор.",
     "Couldn't send mail to following users: %s " : "Неуспешно изпращане на имейл до следните потребители: %s.",

@@ -10,8 +10,6 @@
     "No crop data provided" : "Не вказана інформація про кадрування",
     "No valid crop data provided" : "Не вказані коректні дані про кадрування",
     "Crop is not square" : "Кадр не є квадратом",
-    "Couldn't reset password because the token is invalid" : "Неможливо скинути пароль, бо маркер є недійсним",
-    "Couldn't reset password because the token is expired" : "Неможливо скинути пароль, бо маркер застарів",
     "%s password reset" : "%s скидання паролю",
     "Couldn't send reset email. Please contact your administrator." : "Не можу надіслати email для скидання. Будь ласка, зверніться до вашого адміністратора.",
     "Couldn't send mail to following users: %s " : "Неможливо надіслати листа наступним користувачам: %s ",

@@ -10,8 +10,6 @@
     "No crop data provided" : "Renek data kepotong diwenehno",
     "No valid crop data provided" : "Renek data kepotong kang bener diwenehno",
     "Crop is not square" : "Potongan ora kotak",
-    "Couldn't reset password because the token is invalid" : "Ora iso reset sandi amargo token salah",
-    "Couldn't reset password because the token is expired" : "Ora iso reset sandi amargo token kadaluarso",
     "%s password reset" : "%s sandi direset",
     "Couldn't send reset email. Please contact your administrator." : "Ora iso ngirim reset email. Tulung celuk administratormu.",
     "Couldn't send mail to following users: %s " : "Ora iso ngirim email kanggo pengguna: %s",

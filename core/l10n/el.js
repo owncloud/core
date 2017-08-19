@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Δεν δόθηκαν δεδομένα περικοπής",
     "No valid crop data provided" : "Έχουν δοθεί μη έγκυρα δεδομένα περικοπής",
     "Crop is not square" : "Η περικοπή δεν εχει τετραγωνικό σχήμα",
-    "Couldn't reset password because the token is invalid" : "Αδυναμία επαναφοράς κωδικού πρόσβασης καθώς το τεκμήριο είναι άκυρο",
-    "Couldn't reset password because the token is expired" : "Αδυναμία επαναφοράς κωδικού πρόσβασης επειδή το token έχει λήξει",
     "%s password changed successfully" : "ο %s άλλαξε το συνθηματικό επιτυχώς",
     "%s password reset" : "%s επαναφορά κωδικού πρόσβασης",
     "Couldn't send reset email. Please contact your administrator." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλώ επικοινωνήστε με το διαχειριστή σας.",

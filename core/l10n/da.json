@@ -10,8 +10,6 @@
     "No crop data provided" : "Ingen beskæringsdata give",
     "No valid crop data provided" : "Der er ikke angivet gyldige data om beskæring",
     "Crop is not square" : "Beskæringen er ikke kvadratisk",
-    "Couldn't reset password because the token is invalid" : "Kunne ikke nulstille kodeordet, fordi symboludtrykket er ugyldigt",
-    "Couldn't reset password because the token is expired" : "Kunne ikke nulstille kodeord, da tokenet er udløbet",
     "%s password changed successfully" : "App %s succesfuldt opdateret",
     "%s password reset" : "%s adgangskode nulstillet",
     "Couldn't send reset email. Please contact your administrator." : "Der opstod et problem under afsending af e-mailen til nulstilling. Kontakt venligst systemadministratoren.",

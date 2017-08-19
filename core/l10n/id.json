@@ -9,8 +9,6 @@
     "No crop data provided" : "Tidak ada data krop tersedia",
     "No valid crop data provided" : "Tidak ada data valid untuk dipangkas",
     "Crop is not square" : "Pangkas ini tidak persegi",
-    "Couldn't reset password because the token is invalid" : "Tidak dapat menyetel ulang sandi karena token tidak sah",
-    "Couldn't reset password because the token is expired" : "Tidak dapat menyetel ulang sandi karena token telah kadaluarsa",
     "%s password reset" : "%s sandi disetel ulang",
     "Couldn't send reset email. Please contact your administrator." : "Tidak dapat mengirim email setel ulang. Silakan hubungi administrator Anda.",
     "Couldn't send mail to following users: %s " : "Tidak dapat mengirim Email ke pengguna berikut: %s",

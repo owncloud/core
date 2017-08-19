@@ -10,8 +10,6 @@
     "No crop data provided" : "S’u dhanë të dhëna qethjeje",
     "No valid crop data provided" : "S’u dhanë të dhëna qethjeje të vlefshme",
     "Crop is not square" : "Qethja s’është katrore",
-    "Couldn't reset password because the token is invalid" : "S’u ricaktua dot fjalëkalimi, ngaqë token-i është i pavlefshëm",
-    "Couldn't reset password because the token is expired" : "S’u ricaktua dot fjalëkalimi, ngaqë token-i ka skaduar",
     "%s password changed successfully" : "Fjalëkalimi për %s u ndryshua me sukses",
     "%s password reset" : "U ricaktua fjalëkalimi për %s",
     "Couldn't send reset email. Please contact your administrator." : "S’u dërgua dot email-i i ricaktimit. Ju lutemi, lidhuni me përgjegjësin tuaj.",

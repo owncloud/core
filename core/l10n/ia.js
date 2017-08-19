@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Nulle datos de retalio fornite",
     "No valid crop data provided" : "Nulle datos de retalio valide fornite",
     "Crop is not square" : "Le retalio non es quadrate",
-    "Couldn't reset password because the token is invalid" : "Impossibile reinitialisar le contrasigno perque le indicio non es valide",
-    "Couldn't reset password because the token is expired" : "Impossibile reinitialisar le contrasigno perque le indicio ha expirate",
     "%s password reset" : "%s contrasigno re-fixate",
     "Couldn't send reset email. Please contact your administrator." : "Non poteva inviar le message de reinitialisation. Per favor contacta tu administrator.",
     "Couldn't send mail to following users: %s " : "Non poteva inviar e-mail al usatores sequente: %s",

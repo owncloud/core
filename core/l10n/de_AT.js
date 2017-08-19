@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Keine Beschnittdaten zur Verfügung gestellt",
     "No valid crop data provided" : "Keine gültigen Zuschnittdaten zur Verfügung gestellt",
     "Crop is not square" : "Zuschnitt ist nicht quadratisch",
-    "Couldn't reset password because the token is invalid" : "Das Passwort konnte aufgrund eines ungültigen Tokens nicht zurückgesetzt werden",
-    "Couldn't reset password because the token is expired" : "Das Passwort konnte nicht zurückgesetzt werden, da der Token abgelaufen ist",
     "%s password reset" : "%s-Passwort zurücksetzen",
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktiere Deinen Administrator.",
     "Couldn't send mail to following users: %s " : "Die E-Mail konnte nicht an folgende Benutzer gesendet werden: %s",

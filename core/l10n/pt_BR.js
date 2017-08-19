@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Nenhum dado para coleta foi fornecido",
     "No valid crop data provided" : "Nenhum dado recortado válido",
     "Crop is not square" : "Recorte não é quadrado",
-    "Couldn't reset password because the token is invalid" : "Não foi possível redefinir a senha porque o token é inválido",
-    "Couldn't reset password because the token is expired" : "Não foi possível redefinir a senha porque o token expirou",
     "%s password changed successfully" : "%s senha alterada com sucesso",
     "%s password reset" : "%s redefinir senha",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar e-mail de redefinição. Por favor, contate o administrador.",

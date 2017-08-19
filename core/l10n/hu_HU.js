@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Vágáshoz nincs adat megadva",
     "No valid crop data provided" : "Nem lett valós levágási adat megadva",
     "Crop is not square" : "Levágás nem négyzet alakú",
-    "Couldn't reset password because the token is invalid" : "Nem lehet a jelszót törölni, mert a token érvénytelen.",
-    "Couldn't reset password because the token is expired" : "Nem lehet a jelszót törölni, mert a token lejárt.",
     "%s password reset" : "%s jelszó visszaállítás",
     "Couldn't send reset email. Please contact your administrator." : "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával.",
     "Couldn't send mail to following users: %s " : "Nem sikerült e-mailt küldeni a következő felhasználóknak: %s",

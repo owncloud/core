@@ -10,8 +10,6 @@
     "No crop data provided" : "Ingen beskjæringsinformasjon angitt",
     "No valid crop data provided" : "Ingen gyldige beskjæringsdata oppgitt",
     "Crop is not square" : "Beskjæringen er ikke kvadratisk",
-    "Couldn't reset password because the token is invalid" : "Klarte ikke å tilbakestille passordet fordi token er ugyldig.",
-    "Couldn't reset password because the token is expired" : "Klarte ikke å tilbakestille passordet fordi token er utløpt.",
     "%s password changed successfully" : "%s passord ble endret",
     "%s password reset" : "%s tilbakestilling av passord",
     "Couldn't send reset email. Please contact your administrator." : "Klarte ikke å sende e-post for tilbakestilling. Kontakt administratoren.",

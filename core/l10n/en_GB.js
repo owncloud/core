@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "No crop data provided",
     "No valid crop data provided" : "No valid crop data provided",
     "Crop is not square" : "Crop is not square",
-    "Couldn't reset password because the token is invalid" : "Couldn't reset password because the token is invalid",
-    "Couldn't reset password because the token is expired" : "Couldn't reset password because the token is expired",
     "%s password reset" : "%s password reset",
     "Couldn't send reset email. Please contact your administrator." : "Couldn't send reset email. Please contact your administrator.",
     "Couldn't send mail to following users: %s " : "Couldn't send mail to following users: %s ",

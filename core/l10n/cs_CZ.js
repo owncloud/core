@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Nebyla poskytnuta data pro oříznutí obrázku",
     "No valid crop data provided" : "Nebyla poskytnuta platná data pro oříznutí obrázku",
     "Crop is not square" : "Ořez není čtvercový",
-    "Couldn't reset password because the token is invalid" : "Heslo nebylo změněno kvůli neplatnému tokenu",
-    "Couldn't reset password because the token is expired" : "Heslo nebylo změněno z důvodu vypršení tokenu",
     "%s password changed successfully" : "%s heslo bylo změněno vpořádku",
     "%s password reset" : "reset hesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Nepodařilo se odeslat email pro změnu hesla. Kontaktujte svého správce systému.",

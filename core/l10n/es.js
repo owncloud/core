@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "No se proporcionó datos del recorte",
     "No valid crop data provided" : "Recorte inválido",
     "Crop is not square" : "El recorte no es cuadrado",
-    "Couldn't reset password because the token is invalid" : "No se puede restablecer la contraseña porque el vale de identificación es inválido.",
-    "Couldn't reset password because the token is expired" : "No se puede restablecer la contraseña porque el vale de identificación ha caducado.",
     "%s password changed successfully" : "Contraseña %s cambiada con exito",
     "%s password reset" : "%s restablecer contraseña",
     "Couldn't send reset email. Please contact your administrator." : "No pudo enviarse el correo para restablecer la contraseña. Por favor, contacte con su administrador.",

@@ -6,7 +6,6 @@ OC.L10N.register(
     "Invalid image" : "ಅಸಾಮರ್ಥ್ಯ ಚಿತ್ರ",
     "No temporary profile picture available, try again" : "﻿ಯಾವುದೇ ತಾತ್ಕಾಲಿಕ ವ್ಯಕ್ತಿ ಚಿತ್ರ ದೊರಕುತ್ತಿಲ್ಲ, ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
     "No crop data provided" : "﻿ಸುಕ್ಕು  ಒದಗಿಸಿದ ಮಾಹಿತಿ ",
-    "Couldn't reset password because the token is invalid" : "﻿ಚಿಹ್ನೆ ಅಮಾನ್ಯವಾಗಿದೆ, ಗುಪ್ತಪದ ಮರುಹೊಂದಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",
     "%s password reset" : "%s ಗುಪ್ತ ಪದವನ್ನು ಮರುಹೊಂದಿಸಿ",
     "Couldn't send reset email. Please contact your administrator." : "﻿ರೀಸೆಟ್ ಇಮೇಲ್ ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
     "Couldn't send mail to following users: %s " : "﻿ಕೆಳಗಿನ ಬಳಕೆದಾರರಿಗೆ ಈ-ಮೇಲ್ ಕಳುಹಿಸಿ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ: %s",

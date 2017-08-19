@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Brak danych do przycięcia",
     "No valid crop data provided" : "Brak danych do przycięcia",
     "Crop is not square" : "Przycięcie nie jest prostokątem",
-    "Couldn't reset password because the token is invalid" : "Nie można zresetować hasła, ponieważ token jest niepoprawny",
-    "Couldn't reset password because the token is expired" : "Nie można zresetować hasła, ponieważ token wygasł",
     "%s password changed successfully" : "%s hasło zmieniono pomyślnie",
     "%s password reset" : "%s reset hasła",
     "Couldn't send reset email. Please contact your administrator." : "Nie mogę wysłać maila resetującego. Skontaktuj się z administratorem.",

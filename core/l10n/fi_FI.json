@@ -10,8 +10,6 @@
     "No crop data provided" : "Puutteellinen tieto",
     "No valid crop data provided" : "Kelvollisia leikkaustietoja ei määritetty",
     "Crop is not square" : "Leikkaus ei ole neliö",
-    "Couldn't reset password because the token is invalid" : "Salasanaa ei voitu palauttaa koska valtuutus on virheellinen",
-    "Couldn't reset password because the token is expired" : "Salasanan palauttaminen ei onnistunut, koska valtuutus on vanhentunut",
     "%s password reset" : "%s salasanan palautus",
     "Couldn't send reset email. Please contact your administrator." : "Palautussähköpostin lähettäminen ei onnistunut. Ota yhteys ylläpitäjään.",
     "Couldn't send mail to following users: %s " : "Sähköpostin lähetys seuraaville käyttäjille epäonnistui: %s",

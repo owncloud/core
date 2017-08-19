@@ -111,6 +111,7 @@ OC.L10N.register(
     "Advanced settings" : "הגדרות מתקדמות",
     "Delete" : "מחיקה",
     "Allow users to mount external storage" : "מאפשר למשתמשים לחבר אחסון חיצוני",
-    "Allow users to mount the following external storage" : "מאפשר למשתמשים לחבר אחסון חיצוני הבא"
+    "Allow users to mount the following external storage" : "מאפשר למשתמשים לחבר אחסון חיצוני הבא",
+    "Allow sharing on user-mounted external storages" : "הפעלת שיתוף של זיכרונות התקן-משתמש חיצוניים"
 },
 "nplurals=2; plural=(n != 1);");

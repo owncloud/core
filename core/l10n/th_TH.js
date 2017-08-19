@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "ไม่มีการครอบตัดข้อมูลที่ระบุ",
     "No valid crop data provided" : "ไม่ได้ระบุข้อมูลการครอบตัดที่ถูกต้อง",
     "Crop is not square" : "การครอบตัดไม่เป็นสี่เหลี่ยม",
-    "Couldn't reset password because the token is invalid" : "ไม่สามารถตั้งรหัสผ่านใหม่เพราะโทเค็นไม่ถูกต้อง",
-    "Couldn't reset password because the token is expired" : "ไม่สามารถตั้งค่ารหัสผ่านเพราะโทเค็นหมดอายุ",
     "%s password changed successfully" : "เปลี่ยนรหัสผ่าน %s สำเร็จแล้ว",
     "%s password reset" : "%s ตั้งรหัสผ่านใหม่",
     "Couldn't send reset email. Please contact your administrator." : "ไม่สามารถส่งข้อมูลการตั้งค่าไปยังอีเมลของคุณ กรุณาติดต่อผู้ดูแลระบบ",

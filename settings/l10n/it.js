@@ -303,7 +303,7 @@ OC.L10N.register(
     "Everyone" : "Chiunque",
     "Admins" : "Amministratori",
     "Default Quota" : "Quota predefinita",
-    "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")" : "Digita la quota di archiviazione (ad es.: \"512 MB\" or \"12 GB\")",
+    "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")" : "Digita la quota di archiviazione (ad es.: \"512 MB\" o \"12 GB\")",
     "Other" : "Altro",
     "Full Name" : "Nome completo",
     "Group Admin for" : "Gruppo di amministrazione per",

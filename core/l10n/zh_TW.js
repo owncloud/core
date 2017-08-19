@@ -12,8 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "未設定剪裁",
     "No valid crop data provided" : "未提供有效的剪裁設定",
     "Crop is not square" : "剪裁設定不是正方形",
-    "Couldn't reset password because the token is invalid" : "無法重設密碼因為 token 無效",
-    "Couldn't reset password because the token is expired" : "無法重設密碼，因為 token 過期",
     "%s password reset" : "%s 密碼重設",
     "Couldn't send reset email. Please contact your administrator." : "無法寄送重設 email ，請聯絡系統管理員",
     "Couldn't send mail to following users: %s " : "無法寄送郵件給這些使用者：%s",

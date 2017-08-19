@@ -12,7 +12,6 @@ OC.L10N.register(
     "No crop data provided" : "Lõikeandmeid ei leitud",
     "No valid crop data provided" : "Korrektseid lõikeandmeid ei leitud",
     "Crop is not square" : "Lõikamine pole ruudukujuline",
-    "Couldn't reset password because the token is invalid" : "Ei saanud parooli taastada, kuna märgend on vigane",
     "%s password changed successfully" : "%s parool on muudetud",
     "%s password reset" : "%s parooli lähtestus",
     "Couldn't send reset email. Please contact your administrator." : "Ei suutnud lähtestada e-maili. Palun kontakteeru süsteemihalduriga.",
