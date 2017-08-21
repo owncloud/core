@@ -159,18 +159,18 @@ class LostController extends Controller {
 		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
 		if(count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
-			throw new \Exception($this->l10n->t('Couldn\'t reset password because the token is invalid'));
+			throw new \Exception($this->l10n->t('Could not reset password because the token is invalid'));
 		}
 
 		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12) ||
 			$user->getLastLogin() > $splittedToken[0]) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
-			throw new \Exception($this->l10n->t('Couldn\'t reset password because the token is expired'));
+			throw new \Exception($this->l10n->t('Could not reset password because the token expired'));
 		}
 
 		if (!hash_equals($splittedToken[1], $token)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
-			throw new \Exception($this->l10n->t('Couldn\'t reset password because the token is invalid'));
+			throw new \Exception($this->l10n->t('Could not reset password because the token does not match'));
 		}
 	}
 
