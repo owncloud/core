@@ -1,6 +1,5 @@
 <?php
 $CONFIG = [
-	'appstoreenabled' => false,
 	'apps_paths' => [
 		[
 			'path'		=> OC::$SERVERROOT . '/apps',
@@ -17,4 +16,7 @@ if (is_dir(OC::$SERVERROOT.'/apps2')) {
 		'url' => '/apps2',
 		'writable' => false,
 	];
+}
+if (getenv("TC") === "selenium") {
+	$CONFIG['skeletondirectory'] = OC::$SERVERROOT . '/tests/ui/skeleton';
 }
