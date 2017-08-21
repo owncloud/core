@@ -171,7 +171,8 @@ describe('OC.Files.Client tests', function() {
 			'<?xml version="1.0" encoding="utf-8"?>' +
 			'<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns">' +
 			makeResponseBlock(
-			'/owncloud/remote.php/webdav/path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/',
+			// NOTE: Sabre DAV doesn't encode "@" sign in href response, but JS does, we still need to properly match
+			'/owncloud/remote.php/webdav/path/to%20sp@ce/%E6%96%87%E4%BB%B6%E5%A4%B9/',
 			{
 				'd:getlastmodified': 'Fri, 10 Jul 2015 10:00:05 GMT',
 				'd:getetag': '"56cfcabd79abb"',
@@ -187,7 +188,7 @@ describe('OC.Files.Client tests', function() {
 			]
 			) +
 			makeResponseBlock(
-			'/owncloud/remote.php/webdav/path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt',
+			'/owncloud/remote.php/webdav/path/to%20sp@ce/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt',
 			{
 				'd:getlastmodified': 'Fri, 10 Jul 2015 13:38:05 GMT',
 				'd:getetag': '"559fcabd79a38"',
@@ -203,7 +204,7 @@ describe('OC.Files.Client tests', function() {
 			]
 			) +
 			makeResponseBlock(
-			'/owncloud/remote.php/webdav/path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/sub',
+			'/owncloud/remote.php/webdav/path/to%20sp@ce/%E6%96%87%E4%BB%B6%E5%A4%B9/sub',
 			{
 				'd:getlastmodified': 'Fri, 10 Jul 2015 14:00:00 GMT',
 				'd:getetag': '"66cfcabd79abb"',
@@ -222,11 +223,11 @@ describe('OC.Files.Client tests', function() {
 		);
 
 		it('sends PROPFIND with explicit properties to get file list', function() {
-			client.getFolderContents('path/to space/文件夹');
+			client.getFolderContents('path/to sp@ce/文件夹');
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('PROPFIND');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9');
 			expect(requestStub.lastCall.args[2].Depth).toEqual(1);
 
 			var props = getRequestedProperties(requestStub.lastCall.args[3]);
@@ -250,7 +251,7 @@ describe('OC.Files.Client tests', function() {
 			expect(requestStub.lastCall.args[1]).toEqual(baseUrl);
 		});
 		it('parses the result list into a FileInfo array', function() {
-			var promise = client.getFolderContents('path/to space/文件夹');
+			var promise = client.getFolderContents('path/to sp@ce/文件夹');
 
 			expect(requestStub.calledOnce).toEqual(true);
 
@@ -269,7 +270,7 @@ describe('OC.Files.Client tests', function() {
 				var info = response[0];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
 				expect(info.id).toEqual(51);
-				expect(info.path).toEqual('/path/to space/文件夹');
+				expect(info.path).toEqual('/path/to sp@ce/文件夹');
 				expect(info.name).toEqual('One.txt');
 				expect(info.permissions).toEqual(27);
 				expect(info.size).toEqual(250);
@@ -281,7 +282,7 @@ describe('OC.Files.Client tests', function() {
 				info = response[1];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
 				expect(info.id).toEqual(15);
-				expect(info.path).toEqual('/path/to space/文件夹');
+				expect(info.path).toEqual('/path/to sp@ce/文件夹');
 				expect(info.name).toEqual('sub');
 				expect(info.permissions).toEqual(31);
 				expect(info.size).toEqual(100);
@@ -291,7 +292,7 @@ describe('OC.Files.Client tests', function() {
 			});
 		});
 		it('returns parent node in result if specified', function() {
-			var promise = client.getFolderContents('path/to space/文件夹', {includeParent: true});
+			var promise = client.getFolderContents('path/to sp@ce/文件夹', {includeParent: true});
 
 			expect(requestStub.calledOnce).toEqual(true);
 
@@ -310,7 +311,7 @@ describe('OC.Files.Client tests', function() {
 				var info = response[0];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
 				expect(info.id).toEqual(11);
-				expect(info.path).toEqual('/path/to space');
+				expect(info.path).toEqual('/path/to sp@ce');
 				expect(info.name).toEqual('文件夹');
 				expect(info.permissions).toEqual(31);
 				expect(info.size).toEqual(120);
@@ -324,7 +325,7 @@ describe('OC.Files.Client tests', function() {
 			});
 		});
 		it('rejects promise when an error occurred', function() {
-			var promise = client.getFolderContents('path/to space/文件夹', {includeParent: true});
+			var promise = client.getFolderContents('path/to sp@ce/文件夹', {includeParent: true});
 			respondAndCheckError(promise, 404);
 		});
 		it('throws exception if arguments are missing', function() {
@@ -339,7 +340,7 @@ describe('OC.Files.Client tests', function() {
 			'<?xml version="1.0" encoding="utf-8"?>' +
 			'<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns">' +
 			makeResponseBlock(
-			'/owncloud/remote.php/webdav/path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/',
+			'/owncloud/remote.php/webdav/path/to%20sp@ce/%E6%96%87%E4%BB%B6%E5%A4%B9/',
 			{
 				'd:getlastmodified': 'Fri, 10 Jul 2015 10:00:05 GMT',
 				'd:getetag': '"56cfcabd79abb"',
@@ -355,7 +356,7 @@ describe('OC.Files.Client tests', function() {
 			]
 			) +
 			makeResponseBlock(
-			'/owncloud/remote.php/webdav/path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt',
+			'/owncloud/remote.php/webdav/path/to%20sp@ce/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt',
 			{
 				'd:getlastmodified': 'Fri, 10 Jul 2015 13:38:05 GMT',
 				'd:getetag': '"559fcabd79a38"',
@@ -371,7 +372,7 @@ describe('OC.Files.Client tests', function() {
 			]
 			) +
 			makeResponseBlock(
-			'/owncloud/remote.php/webdav/path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/sub',
+			'/owncloud/remote.php/webdav/path/to%20sp@ce/%E6%96%87%E4%BB%B6%E5%A4%B9/sub',
 			{
 				'd:getlastmodified': 'Fri, 10 Jul 2015 14:00:00 GMT',
 				'd:getetag': '"66cfcabd79abb"',
@@ -489,7 +490,7 @@ describe('OC.Files.Client tests', function() {
 			'<?xml version="1.0" encoding="utf-8"?>' +
 			'<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns">' +
 			makeResponseBlock(
-			'/owncloud/remote.php/webdav/path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/',
+			'/owncloud/remote.php/webdav/path/to%20sp@ce/%E6%96%87%E4%BB%B6%E5%A4%B9/',
 			{
 				'd:getlastmodified': 'Fri, 10 Jul 2015 10:00:05 GMT',
 				'd:getetag': '"56cfcabd79abb"',
@@ -508,11 +509,11 @@ describe('OC.Files.Client tests', function() {
 		);
 
 		it('sends PROPFIND with zero depth to get single file info', function() {
-			client.getFileInfo('path/to space/文件夹');
+			client.getFileInfo('path/to sp@ce/文件夹');
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('PROPFIND');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9');
 			expect(requestStub.lastCall.args[2].Depth).toEqual(0);
 
 			var props = getRequestedProperties(requestStub.lastCall.args[3]);
@@ -526,7 +527,7 @@ describe('OC.Files.Client tests', function() {
 			expect(props).toContain('{http://owncloud.org/ns}permissions');
 		});
 		it('parses the result into a FileInfo', function() {
-			var promise = client.getFileInfo('path/to space/文件夹');
+			var promise = client.getFileInfo('path/to sp@ce/文件夹');
 
 			expect(requestStub.calledOnce).toEqual(true);
 
@@ -542,7 +543,7 @@ describe('OC.Files.Client tests', function() {
 				var info = response;
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
 				expect(info.id).toEqual(11);
-				expect(info.path).toEqual('/path/to space');
+				expect(info.path).toEqual('/path/to sp@ce');
 				expect(info.name).toEqual('文件夹');
 				expect(info.permissions).toEqual(31);
 				expect(info.size).toEqual(120);
@@ -600,7 +601,7 @@ describe('OC.Files.Client tests', function() {
 			});
 		});
 		it('rejects promise when an error occurred', function() {
-			var promise = client.getFileInfo('path/to space/文件夹');
+			var promise = client.getFileInfo('path/to sp@ce/文件夹');
 			respondAndCheckError(promise, 404);
 		});
 		it('throws exception if arguments are missing', function() {
@@ -712,11 +713,11 @@ describe('OC.Files.Client tests', function() {
 
 	describe('get file contents', function() {
 		it('returns file contents', function() {
-			var promise = client.getFileContents('path/to space/文件夹/One.txt');
+			var promise = client.getFileContents('path/to sp@ce/文件夹/One.txt');
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('GET');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
 
 			requestDeferred.resolve({
 				status: 200,
@@ -729,7 +730,7 @@ describe('OC.Files.Client tests', function() {
 			});
 		});
 		it('rejects promise when an error occurred', function() {
-			var promise = client.getFileContents('path/to space/文件夹/One.txt');
+			var promise = client.getFileContents('path/to sp@ce/文件夹/One.txt');
 			respondAndCheckError(promise, 409);
 		});
 		it('throws exception if arguments are missing', function() {
@@ -740,13 +741,13 @@ describe('OC.Files.Client tests', function() {
 	describe('put file contents', function() {
 		it('sends PUT with file contents', function() {
 			var promise = client.putFileContents(
-					'path/to space/文件夹/One.txt',
+					'path/to sp@ce/文件夹/One.txt',
 					'some contents'
 			);
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('PUT');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
 			expect(requestStub.lastCall.args[2]['If-None-Match']).toEqual('*');
 			expect(requestStub.lastCall.args[2]['Content-Type']).toEqual('text/plain;charset=utf-8');
 			expect(requestStub.lastCall.args[3]).toEqual('some contents');
@@ -755,7 +756,7 @@ describe('OC.Files.Client tests', function() {
 		});
 		it('sends PUT with file contents with headers matching options', function() {
 			var promise = client.putFileContents(
-					'path/to space/文件夹/One.txt',
+					'path/to sp@ce/文件夹/One.txt',
 					'some contents',
 					{
 						overwrite: false,
@@ -765,7 +766,7 @@ describe('OC.Files.Client tests', function() {
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('PUT');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
 			expect(requestStub.lastCall.args[2]['If-None-Match']).not.toBeDefined();
 			expect(requestStub.lastCall.args[2]['Content-Type']).toEqual('text/markdown');
 			expect(requestStub.lastCall.args[3]).toEqual('some contents');
@@ -774,7 +775,7 @@ describe('OC.Files.Client tests', function() {
 		});
 		it('rejects promise when an error occurred', function() {
 			var promise = client.putFileContents(
-					'path/to space/文件夹/One.txt',
+					'path/to sp@ce/文件夹/One.txt',
 					'some contents'
 			);
 			respondAndCheckError(promise, 409);
@@ -786,16 +787,16 @@ describe('OC.Files.Client tests', function() {
 
 	describe('create directory', function() {
 		it('sends MKCOL with specified path', function() {
-			var promise = client.createDirectory('path/to space/文件夹/new dir');
+			var promise = client.createDirectory('path/to sp@ce/文件夹/new dir');
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('MKCOL');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/new%20dir');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9/new%20dir');
 
 			respondAndCheckStatus(promise, 201);
 		});
 		it('rejects promise when an error occurred', function() {
-			var promise = client.createDirectory('path/to space/文件夹/new dir');
+			var promise = client.createDirectory('path/to sp@ce/文件夹/new dir');
 			respondAndCheckError(promise, 404);
 		});
 		it('throws exception if arguments are missing', function() {
@@ -805,16 +806,16 @@ describe('OC.Files.Client tests', function() {
 
 	describe('deletion', function() {
 		it('sends DELETE with specified path', function() {
-			var promise = client.remove('path/to space/文件夹');
+			var promise = client.remove('path/to sp@ce/文件夹');
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('DELETE');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9');
 
 			respondAndCheckStatus(promise, 201);
 		});
 		it('rejects promise when an error occurred', function() {
-			var promise = client.remove('path/to space/文件夹');
+			var promise = client.remove('path/to sp@ce/文件夹');
 			respondAndCheckError(promise, 404);
 		});
 		it('throws exception if arguments are missing', function() {
@@ -825,15 +826,15 @@ describe('OC.Files.Client tests', function() {
 	describe('move', function() {
 		it('sends MOVE with specified paths with fail on overwrite by default', function() {
 			var promise = client.move(
-					'path/to space/文件夹',
-					'path/to space/anotherdir/文件夹'
+					'path/to sp@ce/文件夹',
+					'path/to sp@ce/anotherdir/文件夹'
 			);
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('MOVE');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9');
 			expect(requestStub.lastCall.args[2].Destination)
-				.toEqual(baseUrl + 'path/to%20space/anotherdir/%E6%96%87%E4%BB%B6%E5%A4%B9');
+				.toEqual(baseUrl + 'path/to%20sp%40ce/anotherdir/%E6%96%87%E4%BB%B6%E5%A4%B9');
 			expect(requestStub.lastCall.args[2].Overwrite)
 				.toEqual('F');
 
@@ -841,16 +842,16 @@ describe('OC.Files.Client tests', function() {
 		});
 		it('sends MOVE with silent overwrite mode when specified', function() {
 			var promise = client.move(
-					'path/to space/文件夹',
-					'path/to space/anotherdir/文件夹',
+					'path/to sp@ce/文件夹',
+					'path/to sp@ce/anotherdir/文件夹',
 					{allowOverwrite: true}
 			);
 
 			expect(requestStub.calledOnce).toEqual(true);
 			expect(requestStub.lastCall.args[0]).toEqual('MOVE');
-			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9');
+			expect(requestStub.lastCall.args[1]).toEqual(baseUrl + 'path/to%20sp%40ce/%E6%96%87%E4%BB%B6%E5%A4%B9');
 			expect(requestStub.lastCall.args[2].Destination)
-				.toEqual(baseUrl + 'path/to%20space/anotherdir/%E6%96%87%E4%BB%B6%E5%A4%B9');
+				.toEqual(baseUrl + 'path/to%20sp%40ce/anotherdir/%E6%96%87%E4%BB%B6%E5%A4%B9');
 			expect(requestStub.lastCall.args[2].Overwrite)
 				.not.toBeDefined();
 
@@ -858,8 +859,8 @@ describe('OC.Files.Client tests', function() {
 		});
 		it('rejects promise when an error occurred', function() {
 			var promise = client.move(
-					'path/to space/文件夹',
-					'path/to space/anotherdir/文件夹',
+					'path/to sp@ce/文件夹',
+					'path/to sp@ce/anotherdir/文件夹',
 					{allowOverwrite: true}
 			);
 			respondAndCheckError(promise, 404);
@@ -882,7 +883,7 @@ describe('OC.Files.Client tests', function() {
 			getRootPathStub = sinon.stub(OC, 'getRootPath').returns('/owncloud');
 			getCurrentUserStub = sinon.stub(OC, 'getCurrentUser');
 			getCurrentUserStub.returns({
-				uid: 'test@test'
+				uid: 'test@#?%test'
 			});
 			propFindStub = sinon.stub(dav.Client.prototype, 'propFind');
 			propFindStub.returns($.Deferred().promise());
@@ -899,11 +900,11 @@ describe('OC.Files.Client tests', function() {
 		it('returns default client based on current user', function() {
 			var client = OC.Files.getClient();
 
-			client.getFolderContents('path/to space/a@b');
+			client.getFolderContents('path/to sp@ce/a@b#?%/x');
 
 			expect(propFindStub.calledOnce).toEqual(true);
 			expect(propFindStub.getCall(0).args[0])
-				.toEqual('https://somehost:8080/owncloud/remote.php/dav/files/test@test/path/to%20space/a@b');
+				.toEqual('https://somehost:8080/owncloud/remote.php/dav/files/test%40%23%3F%25test/path/to%20sp%40ce/a%40b%23%3F%25/x');
 		});
 	});
 });
