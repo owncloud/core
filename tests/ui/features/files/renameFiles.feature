@@ -9,10 +9,10 @@ Feature: renameFiles
 		When I rename the file "lorem.txt" to <to_file_name>
 		Then the file <to_file_name> should be listed
 		Examples:
-		|to_file_name  |
-		|'लोरेम।तयक्स्त $%&'    |
-		|'"quotes1"'   |
-		|"'quotes2'"   |
+		|to_file_name    |
+		|'लोरेम।तयक्स्त? $%#&@' |
+		|'"quotes1"'     |
+		|"'quotes2'"     |
 
 		
 	Scenario Outline: Rename a file that has special characters in its name
@@ -33,6 +33,9 @@ Feature: renameFiles
 		When I rename the file '"double"quotes.txt' to "no-double-quotes.txt"
 		And the page is reloaded
 		Then the file "no-double-quotes.txt" should be listed
+		When I rename the file 'no-double-quotes.txt' to "hash#And&QuestionMark?At@Filename.txt"
+		And the page is reloaded
+		Then the file "hash#And&QuestionMark?At@Filename.txt" should be listed
 
 	Scenario: Rename a file using forbidden characters
 		When I rename the file "data.zip" to one of these names
