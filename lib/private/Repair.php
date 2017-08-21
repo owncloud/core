@@ -179,7 +179,7 @@ class Repair implements IOutput{
 			new Collation(\OC::$server->getConfig(), $connection),
 			new SqliteAutoincrement($connection),
 			new SearchLuceneTables(),
-			new Apps(\OC::$server->getAppManager(), \OC::$server->getEventDispatcher(), \OC::$server->getConfig()),
+			new Apps(\OC::$server->getAppManager(), \OC::$server->getEventDispatcher(), \OC::$server->getConfig(), new \OC_Defaults()),
 		];
 
 		//There is no need to delete all previews on every single update
