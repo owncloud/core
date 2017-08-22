@@ -203,12 +203,18 @@ class Setup {
 			\OC\Setup::protectDataDirectory();
 		}
 
-		if (\OC_Util::runningOnMac()) {
+		if (!\OC_Util::runningOnLinux()) {
+			if (\OC_Util::runningOnMac()) {
+				$os = "Mac OS X";
+			} else {
+				$os = PHP_OS;
+			}
+
 			$errors[] = [
 				'error' => $this->l10n->t(
-					'Mac OS X is not supported and %s will not work properly on this platform. ' .
+					'%s is not supported and %s will not work properly on this platform. ' .
 					'Use it at your own risk! ',
-					$this->defaults->getName()
+					array($os, $this->defaults->getName())
 				),
 				'hint' => $this->l10n->t('For the best results, please consider using a GNU/Linux server instead.')
 			];
