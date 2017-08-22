@@ -21,6 +21,7 @@
 
 namespace Tests\Settings\Controller;
 
+use GuzzleHttp\Exception\ClientException;
 use OC\Settings\Controller\CheckSetupController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
@@ -452,6 +453,7 @@ class CheckSetupControllerTest extends TestCase {
 			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
+		/** @var ClientException | \PHPUnit_Framework_MockObject_MockObject $exception */
 		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
 			->disableOriginalConstructor()->getMock();
 		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
@@ -486,6 +488,7 @@ class CheckSetupControllerTest extends TestCase {
 			->will($this->returnValue(['ssl_version' => 'NSS/1.0.2b']));
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
+		/** @var ClientException | \PHPUnit_Framework_MockObject_MockObject $exception */
 		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
 			->disableOriginalConstructor()->getMock();
 		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
