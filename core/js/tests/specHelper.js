@@ -182,6 +182,7 @@ window.isPhantom = /phantom/i.test(navigator.userAgent);
 		// reset pop state handlers
 		OC.Util.History._handlers = [];
 
+		$(window).off('beforeunload');
 	});
 })();
 
