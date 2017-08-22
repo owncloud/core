@@ -1253,12 +1253,30 @@ class OC_Util {
 	}
 
 	/**
+	 * Checks whether the server is running on Linux
+	 *
+	 * @return bool true if running on Linux, false otherwise
+	 */
+	public static function runningOnLinux() {
+		return (strtolower(substr(PHP_OS, 0, 5)) === 'linux');
+	}
+
+	/**
 	 * Checks whether the server is running on Mac OS X
 	 *
 	 * @return bool true if running on Mac OS X, false otherwise
 	 */
 	public static function runningOnMac() {
-		return (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN');
+		return (strtolower(substr(PHP_OS, 0, 6)) === 'darwin');
+	}
+
+	/**
+	 * Checks whether the server is running on BSD
+	 *
+	 * @return bool true if running on BSD, false otherwise
+	 */
+	public static function runningOnBSD() {
+		return (strpos(strtolower(PHP_OS), 'bsd') !== false);
 	}
 
 	/**

@@ -142,19 +142,12 @@ class LargeFileHelper {
 	*/
 	public function getFileSizeViaExec($filename) {
 		if (\OC_Helper::is_function_enabled('exec')) {
-			$os = strtolower(php_uname('s'));
 			$arg = escapeshellarg($filename);
 			$result = null;
-			if (strpos($os, 'linux') !== false) {
+			if (\OC_Util::runningOnLinux()) {
 				$result = $this->exec("stat -c %s $arg");
-			} else if (strpos($os, 'bsd') !== false || strpos($os, 'darwin') !== false) {
+			} else if (\OC_Util::runningOnBSD() || \OC_Util::runningOnMac()) {
 				$result = $this->exec("stat -f %z $arg");
-			} else if (strpos($os, 'win') !== false) {
-				$result = $this->exec("for %F in ($arg) do @echo %~zF");
-				if (is_null($result)) {
-					// PowerShell
-					$result = $this->exec("(Get-Item $arg).length");
-				}
 			}
 			return $result;
 		}
