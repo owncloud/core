@@ -4,6 +4,8 @@ OC.L10N.register(
     "Wrong password" : "Verkeerde wagwoord",
     "The new password can not be the same as the previous one" : "Die nuwe wagwoord mag nie dieselfde as die vorige een wees nie",
     "Couldn't send reset email. Please contact your administrator." : "Die herstel epos kon nie gestuur word nie. Kontak asseblief die stelsel administrateur.",
+    "Saved" : "Bewaar",
+    "All" : "Alle",
     "Delete" : "Skrap",
     "So-so password" : "So-so wagwoord",
     "never" : "nooit",
@@ -40,6 +42,7 @@ OC.L10N.register(
     "Group" : "Groep",
     "Everyone" : "Almal",
     "Admins" : "Admins",
-    "Other" : "Ander"
+    "Other" : "Ander",
+    "Default" : "Verstek"
 },
 "nplurals=2; plural=(n != 1);");

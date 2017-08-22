@@ -10,9 +10,12 @@ OC.L10N.register(
     "Invalid path" : "Ongeldige pad",
     "Name" : "Naam",
     "Size" : "Grootte",
+    "File name cannot be empty." : "Lêernaam mag nie leeg wees nie.",
     "Path" : "Pad",
     "Favorite" : "Gunsteling",
     "Folder" : "Omslag",
+    "Upload" : "Laai Op",
+    "Upload (max. %s)" : "Laai op (maks. %s)",
     "Settings" : "Instellings"
 },
 "nplurals=2; plural=(n != 1);");
