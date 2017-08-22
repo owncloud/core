@@ -180,7 +180,12 @@ class Local extends \OC\Files\Storage\Common {
 			return false;
 		}
 		if (PHP_INT_SIZE === 4) {
-			return (int) exec ('stat -c %Y '. escapeshellarg ($fullPath));
+			if (\OC_Util::runningOnLinux()) {
+				return (int) exec ('stat -c %Y '. escapeshellarg ($fullPath));
+			} else if (\OC_Util::runningOnBSD() || \OC_Util::runningOnMac()) {
+				return (int) exec ('stat -f %m '. escapeshellarg ($fullPath));
+			}
+			return false;
 		}
 		return filemtime($fullPath);
 	}
