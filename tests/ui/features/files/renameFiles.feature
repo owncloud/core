@@ -14,7 +14,6 @@ Feature: renameFiles
 		|'"quotes1"'     |
 		|"'quotes2'"     |
 
-		
 	Scenario Outline: Rename a file that has special characters in its name
 		When I rename the file <from_name> to <to_name>
 		Then the file <to_name> should be listed
@@ -36,6 +35,26 @@ Feature: renameFiles
 		When I rename the file 'no-double-quotes.txt' to "hash#And&QuestionMark?At@Filename.txt"
 		And the page is reloaded
 		Then the file "hash#And&QuestionMark?At@Filename.txt" should be listed
+
+	Scenario: Rename a file using spaces at front and/or back of file name and type
+		When I rename the file "lorem.txt" to " space at start"
+		And the page is reloaded
+		Then the file " space at start" should be listed
+		When I rename the file " space at start" to "space at end "
+		And the page is reloaded
+		Then the file "space at end " should be listed
+		When I rename the file "space at end " to "space at end .txt"
+		And the page is reloaded
+		Then the file "space at end .txt" should be listed
+		When I rename the file "space at end .txt" to "space at end. lis"
+		And the page is reloaded
+		Then the file "space at end. lis" should be listed
+		When I rename the file "space at end. lis" to "space at end.log "
+		And the page is reloaded
+		Then the file "space at end.log " should be listed
+		When I rename the file "space at end.log " to "  multiple   space    all     over   .  dat  "
+		And the page is reloaded
+		Then the file "  multiple   space    all     over   .  dat  " should be listed
 
 	Scenario: Rename a file using forbidden characters
 		When I rename the file "data.zip" to one of these names
