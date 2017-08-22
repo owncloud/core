@@ -259,7 +259,7 @@ OC.FileUpload.prototype = {
 		) {
 			data.isChunked = true;
 			chunkFolderPromise = this.uploader.davClient.createDirectory(
-				'uploads/' + encodeURIComponent(OC.getCurrentUser().uid) + '/' + encodeURIComponent(this.getId())
+				'uploads/' + OC.getCurrentUser().uid + '/' + this.getId()
 			);
 			// TODO: if fails, it means same id already existed, need to retry
 		} else {
@@ -296,8 +296,8 @@ OC.FileUpload.prototype = {
 		}
 
 		return this.uploader.davClient.move(
-			'uploads/' + encodeURIComponent(uid) + '/' + encodeURIComponent(this.getId()) + '/.file',
-			'files/' + encodeURIComponent(uid) + '/' + OC.joinPaths(this.getFullPath(), this.getFileName()),
+			'uploads/' + uid + '/' + this.getId() + '/.file',
+			'files/' + uid + '/' + OC.joinPaths(this.getFullPath(), this.getFileName()),
 			true,
 			headers
 		);
@@ -306,7 +306,7 @@ OC.FileUpload.prototype = {
 	_deleteChunkFolder: function() {
 		// delete transfer directory for this upload
 		this.uploader.davClient.remove(
-			'uploads/' + encodeURIComponent(OC.getCurrentUser().uid) + '/' + encodeURIComponent(this.getId())
+			'uploads/' + OC.getCurrentUser().uid + '/' + this.getId()
 		);
 	},
 

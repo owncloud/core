@@ -45,8 +45,19 @@ class FilesContext extends RawMinkContext implements Context
 	public function iAmOnTheFilesPage()
 	{
 		$this->filesPage->open();
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
 
+	
+	/**
+	 * @When I create a folder with the name :name
+	 * 
+	 * @param string $name
+	 * @return void
+	 */
+	public function createAFolder($name) {
+		$this->filesPage->createFolder($name);
+	}
 	/**
 	 * @Given the list of files\/folders does not fit in one browser page
 	 */
