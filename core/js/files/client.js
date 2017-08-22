@@ -43,6 +43,9 @@
 			};
 		this._baseUrl = url;
 
+		this._rootSections = _.filter(this._root.split('/'), function(section) { return section !== '';});
+		this._rootSections = _.map(this._rootSections, window.decodeURIComponent);
+
 		var clientOptions = {
 			baseUrl: this._baseUrl,
 			xmlNamespaces: {
@@ -191,7 +194,7 @@
 			var sections = path.split('/');
 			var i;
 			for (i = 0; i < sections.length; i++) {
-				sections[i] = encodeURI(sections[i]);
+				sections[i] = encodeURIComponent(sections[i]);
 			}
 			path = sections.join('/');
 			return path;
@@ -241,6 +244,33 @@
 		},
 
 		/**
+		 * Parse sub-path from href
+		 *
+		 * @param {String} path href path
+		 * @return {String} sub-path section
+		 */
+		_extractPath: function(path) {
+			var pathSections = path.split('/');
+			pathSections = _.filter(pathSections, function(section) { return section !== '';});
+
+			var i = 0;
+			for (i = 0; i < this._rootSections.length; i++) {
+				if (this._rootSections[i] !== decodeURIComponent(pathSections[i])) {
+					// mismatch
+					return null;
+				}
+			}
+
+			// build the sub-path from the remaining sections
+			var subPath = '';
+			while (i < pathSections.length) {
+				subPath += '/' + decodeURIComponent(pathSections[i]);
+				i++;
+			}
+			return subPath;
+		},
+
+		/**
 		 * Parse Webdav result
 		 *
 		 * @param {Object} response XML object
@@ -248,16 +278,11 @@
 		 * @return {Array.<FileInfo>} array of file info
 		 */
 		_parseFileInfo: function(response) {
-			var path = response.href;
-			if (path.substr(0, this._root.length) === this._root) {
-				path = path.substr(this._root.length);
+			var path = this._extractPath(response.href);
+			// invalid subpath
+			if (path === null) {
+				return null;
 			}
-
-			if (path.charAt(path.length - 1) === '/') {
-				path = path.substr(0, path.length - 1);
-			}
-
-			path = decodeURIComponent(path);
 
 			if (response.propStat.length === 0 || response.propStat[0].status !== 'HTTP/1.1 200 OK') {
 				return null;
@@ -356,9 +381,14 @@
 		 */
 		_parseResult: function(responses) {
 			var self = this;
-			return _.map(responses, function(response) {
-				return self._parseFileInfo(response);
-			});
+			var fileInfos = [];
+			for (var i = 0; i < responses.length; i++) {
+				var fileInfo = self._parseFileInfo(responses[i]);
+				if (fileInfo !== null) {
+					fileInfos.push(fileInfo);
+				}
+			}
+			return fileInfos;
 		},
 
 		/**
@@ -837,7 +867,7 @@
 
 		var client = new OC.Files.Client({
 			host: OC.getHost(),
-			root: OC.linkToRemoteBase('dav') + '/files/' + encodeURI(OC.getCurrentUser().uid) + '/',
+			root: OC.linkToRemoteBase('dav') + '/files/' + encodeURIComponent(OC.getCurrentUser().uid) + '/',
 			useHTTPS: OC.getProtocol() === 'https'
 		});
 		OC.Files._defaultClient = client;
