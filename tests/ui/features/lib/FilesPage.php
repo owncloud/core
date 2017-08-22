@@ -43,6 +43,7 @@ class FilesPage extends OwnCloudPage
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
 	protected $fileNamesXpath = "//span[@class='nametext']";
+	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileRowFromNameXpath = "/../../..";
 	protected $fileActionXpath = "//a[@data-action='%s']";
 	protected $fileRenameInputXpath = "//input[contains(@class,'filename')]";
@@ -80,12 +81,18 @@ class FilesPage extends OwnCloudPage
 		return $name;
 	}
 
+	/**
+	 * @return int the number of files and folders listed on the page
+	 */
 	public function getSizeOfFileFolderList()
 	{
 		return count(
-			$this->find("xpath", $this->fileListXpath)->findAll("xpath", "tr")
+			$this->find("xpath", $this->fileListXpath)->findAll(
+				"xpath", $this->fileNamesXpath
+			)
 		);
 	}
+
 	public function findActionMenuByNo($number)
 	{
 		$xpath = sprintf($this->fileActionMenuBtnXpathByNo,$number);
@@ -102,45 +109,43 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function findFileRowByName($name, Session $session)
 	{
-		$appContentHeight = 0;
-		$previousFileCounter = 0;
-		$fileNameSpans = array();
+		$previousFileCount = 0;
+		$currentFileCount = null;
 
-		$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
-			"xpath", $this->fileNamesXpath
-		);
-		//loop to keep on scrolling down to load not viewed files
-		//when the file count is not increasing, the file is not there
-		while ($previousFileCounter < count($fileNameSpans)) {
-			//check every file if the name is the one we are searching for
-			//but no need to check names that we checked already ($previousFileCounter)
-			for ($fileCounter = $previousFileCounter;
-				$fileCounter < count($fileNameSpans);
-				$fileCounter ++) {
-				//found the file
-				if ($fileNameSpans[$fileCounter]->getText() === $name ||
-					strip_tags($fileNameSpans[$fileCounter]->getHtml()) === $name) {
-					$fileRow = $fileNameSpans[$fileCounter]->find(
-						"xpath", $this->fileRowFromNameXpath
-					);
-					if ($fileRow === null) {
-						throw new ElementNotFoundException("could not find fileRow with xpath '" . $this->fileRowFromNameXpath . "'");
-					} else {
-						return $fileRow;
-					}
-				}
-			}
-			$previousFileCounter = count($fileNameSpans);
-			// scroll to the bottom of the page
-			// we need to scroll because the files app only loads a part of
-			// the files in one screen
-			$this->scrollDownAppContent(count($fileNameSpans), $session);
-
-			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
-				"xpath", $this->fileNamesXpath
-			);
+		if (strstr($name, "'") === false) {
+			$quotedName = "'" . $name . "'";
+		} else {
+			$quotedName = '"' . $name . '"';
 		}
-		throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
+
+		//loop to keep on scrolling down to load not viewed files
+		//when the scroll does not retrieve any new files, the file is not there
+		do {
+			$fileNameMatch = $this->find("xpath", $this->fileListXpath)->find(
+				"xpath", sprintf($this->fileNameMatchXpath, $quotedName)
+			);
+
+			if (is_null($fileNameMatch)) {
+				if (is_null($currentFileCount)) {
+					$currentFileCount = $this->getSizeOfFileFolderList();
+				}
+				$previousFileCount = $currentFileCount;
+				$this->scrollDownAppContent($session);
+				$currentFileCount = $this->getSizeOfFileFolderList();
+			}
+		} while (is_null($fileNameMatch) && ($currentFileCount > $previousFileCount));
+
+		if (is_null($fileNameMatch)) {
+			throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
+		}
+
+		$fileRow = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
+
+		if (is_null($fileRow)) {
+			throw new ElementNotFoundException("could not find fileRow with xpath '" . $this->fileRowFromNameXpath . "'");
+		}
+
+		return $fileRow;
 	}
 
 	/**
@@ -160,32 +165,15 @@ class FilesPage extends OwnCloudPage
 
 	/**
 	 * scrolls down the file list, to load not yet displayed files
-	 * @param int $numberOfFilesOld how many files were listed before the scroll.
-	 * So we can guess how long to wait for the loading of new files to finish
 	 * @param Session $session
-	 * @param int $timeout_msec
 	 */
-	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
+	public function scrollDownAppContent (Session $session)
 	{
 		$session->evaluateScript(
 			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
 		);
 
-		// there is no loading indicator here, so we are going to wait until we have
-		// more files than before
-		$currentTime = microtime(true);
-		$end = $currentTime + ($timeout_msec / 1000);
-		while ($currentTime <= $end) {
-			$this->waitForOutstandingAjaxCalls($session);
-			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
-				"xpath", $this->fileNamesXpath
-			);
-			if (count($fileNameSpans) >= $numberOfFilesOld) {
-				break;
-			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
-		}
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 
 	/**
