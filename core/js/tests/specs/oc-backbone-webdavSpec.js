@@ -243,97 +243,164 @@ describe('Backbone Webdav extension', function() {
 			});
 		});
 
-		it('makes a PROPPATCH request to update model', function() {
-			var model = new TestModel({
-				id: '123',
-				firstName: 'Hello',
-				lastName: 'World',
-				age: 32,
-				married: false
-			});
-
-			model.save({
-				firstName: 'Hey',
-				age: 33,
-				married: true
-			});
-
-			expect(davClientPropPatchStub.calledOnce).toEqual(true);
-			expect(davClientPropPatchStub.getCall(0).args[0])
-				.toEqual('http://example.com/owncloud/remote.php/test/123');
-			expect(davClientPropPatchStub.getCall(0).args[1])
-				.toEqual({
-					'{http://owncloud.org/ns}first-name': 'Hey',
-					'{http://owncloud.org/ns}age': '33',
-					'{http://owncloud.org/ns}married': 'true'
+		describe('updating', function() {
+			it('makes a PROPPATCH request to update model', function() {
+				var model = new TestModel({
+					id: '123',
+					firstName: 'Hello',
+					lastName: 'World',
+					age: 32,
+					married: false
 				});
-			expect(davClientPropPatchStub.getCall(0).args[2]['X-Requested-With'])
-				.toEqual('XMLHttpRequest');
 
-			deferredRequest.resolve({
-				status: 207,
-				body: [{
-					href: 'http://example.com/owncloud/remote.php/test/123',
-					propStat: [{
-						status: 'HTTP/1.1 200 OK',
-						properties: {
-							'{http://owncloud.org/ns}first-name': '',
-							'{http://owncloud.org/ns}age-name': '',
-							'{http://owncloud.org/ns}married': ''
-						}
+				model.save({
+					firstName: 'Hey',
+					age: 33,
+					married: true
+				});
+
+				expect(davClientPropPatchStub.calledOnce).toEqual(true);
+				expect(davClientPropPatchStub.getCall(0).args[0])
+					.toEqual('http://example.com/owncloud/remote.php/test/123');
+				expect(davClientPropPatchStub.getCall(0).args[1])
+					.toEqual({
+						'{http://owncloud.org/ns}first-name': 'Hey',
+						'{http://owncloud.org/ns}age': '33',
+						'{http://owncloud.org/ns}married': 'true'
+					});
+				expect(davClientPropPatchStub.getCall(0).args[2]['X-Requested-With'])
+					.toEqual('XMLHttpRequest');
+
+				deferredRequest.resolve({
+					status: 207,
+					body: [{
+						href: 'http://example.com/owncloud/remote.php/test/123',
+						propStat: [{
+							status: 'HTTP/1.1 200 OK',
+							properties: {
+								'{http://owncloud.org/ns}first-name': '',
+								'{http://owncloud.org/ns}age-name': '',
+								'{http://owncloud.org/ns}married': ''
+							}
+						}]
 					}]
-				}]
+				});
+
+				expect(model.id).toEqual('123');
+				expect(model.get('firstName')).toEqual('Hey');
+				expect(model.get('age')).toEqual(33);
+				expect(model.get('married')).toEqual(true);
 			});
 
-			expect(model.id).toEqual('123');
-			expect(model.get('firstName')).toEqual('Hey');
-			expect(model.get('age')).toEqual(33);
-			expect(model.get('married')).toEqual(true);
-		});
+			it('calls error callback with status code 422 in case of failed PROPPATCH properties', function() {
+				var successHandler = sinon.stub();
+				var errorHandler = sinon.stub();
+				var model = new TestModel({
+					id: '123',
+					firstName: 'Hello',
+					lastName: 'World',
+					age: 32,
+					married: false
+				});
 
-		it('calls error callback with status code 422 in case of failed PROPPATCH properties', function() {
-			var successHandler = sinon.stub();
-			var errorHandler = sinon.stub();
-			var model = new TestModel({
-				id: '123',
-				firstName: 'Hello',
-				lastName: 'World',
-				age: 32,
-				married: false
+				model.save({
+					firstName: 'Hey',
+					lastName: 'low'
+				}, {
+					success: successHandler,
+					error: errorHandler
+				});
+
+				deferredRequest.resolve({
+					status: 207,
+					body: [{
+						href: 'http://example.com/owncloud/remote.php/test/123',
+						propStat: [{
+							status: 'HTTP/1.1 200 OK',
+							properties: {
+								'{http://owncloud.org/ns}last-name': ''
+							}
+						}, {
+							status: 'HTTP/1.1 403 Forbidden',
+							properties: {
+								'{http://owncloud.org/ns}first-name': ''
+							}
+						}]
+					}]
+				});
+
+				expect(davClientPropPatchStub.calledOnce).toEqual(true);
+
+				expect(successHandler.notCalled).toEqual(true);
+				expect(errorHandler.calledOnce).toEqual(true);
+				expect(errorHandler.getCall(0).args[0]).toEqual(model);
+				expect(errorHandler.getCall(0).args[1].status).toEqual(422);
 			});
 
-			model.save({
-				firstName: 'Hey',
-				lastName: 'low'
-			}, {
-				success: successHandler,
-				error: errorHandler
-			});
-
-			deferredRequest.resolve({
-				status: 207,
-				body: [{
-					href: 'http://example.com/owncloud/remote.php/test/123',
-					propStat: [{
-						status: 'HTTP/1.1 200 OK',
-						properties: {
-							'{http://owncloud.org/ns}last-name': ''
-						}
+			it('calls error handler if error status in PROPPATCH response', function() {
+				testMethodError(function(success, error) {
+					var model = new TestModel();
+					model.save({
+						firstName: 'Hey'
 					}, {
-						status: 'HTTP/1.1 403 Forbidden',
-						properties: {
-							'{http://owncloud.org/ns}first-name': ''
-						}
-					}]
-				}]
+						success: success,
+						error: error
+					});
+				});
 			});
 
-			expect(davClientPropPatchStub.calledOnce).toEqual(true);
+			it('sends all data when using wait flag', function() {
+				var successHandler = sinon.stub();
+				var errorHandler = sinon.stub();
+				var model = new TestModel({
+					id: '123',
+					firstName: 'Hello',
+					lastName: 'World',
+					age: 32,
+					married: false
+				});
 
-			expect(successHandler.notCalled).toEqual(true);
-			expect(errorHandler.calledOnce).toEqual(true);
-			expect(errorHandler.getCall(0).args[0]).toEqual(model);
-			expect(errorHandler.getCall(0).args[1].status).toEqual(422);
+				model.save({
+					firstName: 'Hey',
+					lastName: 'low'
+				}, {
+					wait: true,
+					success: successHandler,
+					error: errorHandler
+				});
+
+				// attributes not updated yet
+				expect(model.get('firstName')).toEqual('Hello');
+
+				deferredRequest.resolve({
+					status: 207,
+					body: [{
+						href: 'http://example.com/owncloud/remote.php/test/123',
+						propStat: [{
+							status: 'HTTP/1.1 200 OK',
+							properties: {
+								'{http://owncloud.org/ns}first-name': '',
+								'{http://owncloud.org/ns}last-name': ''
+							}
+						}]
+					}]
+				});
+
+
+				expect(davClientPropPatchStub.calledOnce).toEqual(true);
+				// just resends everything
+				expect(davClientPropPatchStub.getCall(0).args[1])
+					.toEqual({
+						'{http://owncloud.org/ns}first-name': 'Hey',
+						'{http://owncloud.org/ns}last-name': 'low',
+						'{http://owncloud.org/ns}age': '32',
+						'{http://owncloud.org/ns}married': 'false',
+					});
+
+				expect(model.get('firstName')).toEqual('Hey');
+				expect(successHandler.calledOnce).toEqual(true);
+				expect(errorHandler.notCalled).toEqual(true);
+			});
 		});
 
 		it('uses PROPFIND to fetch single model', function() {
@@ -424,17 +491,6 @@ describe('Backbone Webdav extension', function() {
 			testMethodError(function(success, error) {
 				var model = new TestModel();
 				model.fetch({
-					success: success,
-					error: error
-				});
-			});
-		});
-		it('calls error handler if error status in PROPPATCH response', function() {
-			testMethodError(function(success, error) {
-				var model = new TestModel();
-				model.save({
-					firstName: 'Hey'
-				}, {
 					success: success,
 					error: error
 				});
