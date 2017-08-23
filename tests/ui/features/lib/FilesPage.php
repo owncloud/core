@@ -274,12 +274,16 @@ class FilesPage extends OwnCloudPage
 	/**
 	 * renames a file
 	 * @param string|array $fromFileName
-	 * @param string $toFileName
+	 * @param string|array $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
 	 */
 	public function renameFile($fromFileName, $toFileName, Session $session, $maxRetries = 5)
 	{
+		if (is_array($toFileName)) {
+			$toFileName = implode($toFileName);
+		}
+
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
 				$this->_renameFile($fromFileName, $toFileName, $session);

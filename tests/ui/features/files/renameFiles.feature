@@ -57,12 +57,21 @@ Feature: renameFiles
 		Then the file "  multiple   space    all     over   .  dat  " should be listed
 
 	Scenario: Rename a file using both double and single quotes
-		When I rename the file "lorem" plus ".txt" to "First 'single' " plus 'then "double".txt'
+		When I rename the following file to
+			|from-name-parts |to-name-parts         |
+			|lorem.txt       |First 'single' quotes |
+			|                |-then "double".txt    |
 		And the page is reloaded
-		Then the file "First 'single' " plus 'then "double".txt' should be listed
-		When I rename the file "First 'single' " plus 'then "double".txt' to "loremz" plus ".dat"
+		Then the following file should be listed
+			|name-parts            |
+			|First 'single' quotes |
+			|-then "double".txt    |
+		When I rename the following file to
+			|from-name-parts       |to-name-parts |
+			|First 'single' quotes |loremz.dat    |
+			|-then "double".txt    |              |
 		And the page is reloaded
-		Then the file "loremz" plus ".dat" should be listed
+		Then the file "loremz.dat" should be listed
 
 	Scenario: Rename a file using forbidden characters
 		When I rename the file "data.zip" to one of these names
