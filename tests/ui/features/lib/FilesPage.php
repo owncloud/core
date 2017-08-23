@@ -132,32 +132,38 @@ class FilesPage extends OwnCloudPage
 	/**
 	 * finds the complete row of the file
 	 *
+	 * @param string|array $name
 	 * @param Session $session
-	 * @param string $namePartA
-	 * @param string $namePartB
 	 * @return \Behat\Mink\Element\NodeElement|NULL
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function findFileRowByName(Session $session, $namePartA, $namePartB = '')
+	public function findFileRowByName($name, Session $session)
 	{
 		$previousFileCount = 0;
 		$currentFileCount = null;
 
-		// Concatenating a possible 2 separate parts of the file name allows
-		// one part to contain single quotes and other the other to contain
-		// double quotes.
-		$xpathQuotedName =
-			"concat(" .
-			$this->quotedText($namePartA) .
-			"," .
-			$this->quotedText($namePartB) .
-			")";
+		if (is_array($name)) {
+			// Concatenating separate parts of the file name allows
+			// some parts to contain single quotes and the others to contain
+			// double quotes.
+			$comma = '';
+			$xpathString = "concat(";
+
+			foreach ($name as $nameComponent) {
+				$xpathString .= $comma . $this->quotedText($nameComponent);
+				$comma = ',';
+			}
+			$xpathString .= ")";
+			$name = implode($name);
+		} else {
+			$xpathString = $this->quotedText($name);
+		}
 
 		//loop to keep on scrolling down to load not viewed files
 		//when the scroll does not retrieve any new files, the file is not there
 		do {
 			$fileNameMatch = $this->find("xpath", $this->fileListXpath)->find(
-				"xpath", sprintf($this->fileNameMatchXpath, $xpathQuotedName)
+				"xpath", sprintf($this->fileNameMatchXpath, $xpathString)
 			);
 
 			if (is_null($fileNameMatch)) {
@@ -171,7 +177,7 @@ class FilesPage extends OwnCloudPage
 		} while (is_null($fileNameMatch) && ($currentFileCount > $previousFileCount));
 
 		if (is_null($fileNameMatch)) {
-			throw new ElementNotFoundException("could not find file with the name '" . $namePartA . $namePartB ."'");
+			throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
 		}
 
 		$fileRow = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
@@ -192,7 +198,7 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function openSharingDialog ($name, Session $session)
 	{
-		$fileRow = $this->findFileRowByName($session, $name);
+		$fileRow = $this->findFileRowByName($name, $session);
 		$fileRow->find("xpath", $this->shareBtnXpath)->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
 		return $this->getPage("SharingDialog");
@@ -267,17 +273,16 @@ class FilesPage extends OwnCloudPage
 
 	/**
 	 * renames a file
-	 * @param string $fromFileNamePartA
-	 * @param string $fromFileNamePartB
+	 * @param string|array $fromFileName
 	 * @param string $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
 	 */
-	public function renameFile($fromFileNamePartA, $fromFileNamePartB, $toFileName, Session $session, $maxRetries = 5)
+	public function renameFile($fromFileName, $toFileName, Session $session, $maxRetries = 5)
 	{
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
-				$this->_renameFile($fromFileNamePartA, $fromFileNamePartB, $toFileName, $session);
+				$this->_renameFile($fromFileName, $toFileName, $session);
 				break;
 			} catch (\Exception $e) {
 				error_log(
@@ -295,9 +300,9 @@ class FilesPage extends OwnCloudPage
 		}
 	}
 
-	private function _renameFile($fromFileNamePartA, $fromFileNamePartB, $toFileName, Session $session)
+	private function _renameFile($fromFileName, $toFileName, Session $session)
 	{
-		$fileRow = $this->findFileRowByName($session, $fromFileNamePartA, $fromFileNamePartB);
+		$fileRow = $this->findFileRowByName($fromFileName, $session);
 		$actionMenuBtn = $this->findFileActionButtonInFileRow($fileRow);
 		$actionMenuBtn->click();
 		$actionMenu = $this->findFileActionMenuInFileRow($fileRow);
@@ -346,7 +351,7 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function getTooltipOfFile ($fileName, Session $session)
 	{
-		$fileRow = $this->findFileRowByName($session, $fileName);
+		$fileRow = $this->findFileRowByName($fileName, $session);
 		$tooltip = $fileRow->find("xpath", $this->fileTooltipXpath)->getText();
 		if ($tooltip === null) {
 			throw new ElementNotFoundException("could not find tooltip of file '$fileName'");
