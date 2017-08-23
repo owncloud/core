@@ -47,6 +47,14 @@ Feature: renameFolders
 		And the page is reloaded
 		Then the folder "  multiple   spaces    all     over   " should be listed
 
+	Scenario: Rename a folder using both double and single quotes
+		When I rename the folder "simple" plus "-folder" to "First 'single' " plus 'then "double"'
+		And the page is reloaded
+		Then the folder "First 'single' " plus 'then "double"' should be listed
+		When I rename the folder "First 'single' " plus 'then "double"' to "a normal " plus "folder"
+		And the page is reloaded
+		Then the folder "a normal " plus "folder" should be listed
+
 	Scenario: Rename a folder using forbidden characters
 		When I rename the folder "simple-folder" to one of these names
 		|simple\folder   |
