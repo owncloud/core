@@ -64,6 +64,7 @@ class FilesPage extends OwnCloudPage
 	 * If name is not given a random one is chosen
 	 *
 	 * @param string $name
+	 * @return string name of the created file
 	 */
 	public function createFolder($name = null)
 	{
@@ -93,6 +94,35 @@ class FilesPage extends OwnCloudPage
 		);
 	}
 
+	/**
+	 * Surround the text with single or double quotes, whichever does not
+	 * already appear in the text. If the text contains both single and
+	 * double quotes, then throw an InvalidArgumentException.
+	 *
+	 * The returned string is intended for use as part of an xpath (v1).
+	 * xpath (v1) has no way to escape the quote character within a string
+	 * literal. So there is no way to directly use a string containing
+	 * both single and double quotes.
+	 *
+	 * @param string $text
+	 * @return string the text surrounded by single or double quotes
+	 * @throws \InvalidArgumentException
+	 */
+	public function quotedText($text)
+	{
+		if (strstr($text, "'") === false) {
+			return "'" . $text . "'";
+		} else if (strstr($text, '"') === false) {
+			return '"' . $text . '"';
+		} else {
+			// The text contains both single and double quotes.
+			// With current xpath v1 there is no way to encode that.
+			throw new \InvalidArgumentException(
+				"mixing both single and double quotes is unsupported - '" . $text ."'"
+			);
+		}
+	}
+
 	public function findActionMenuByNo($number)
 	{
 		$xpath = sprintf($this->fileActionMenuBtnXpathByNo,$number);
@@ -102,27 +132,32 @@ class FilesPage extends OwnCloudPage
 	/**
 	 * finds the complete row of the file
 	 *
-	 * @param string $name
 	 * @param Session $session
+	 * @param string $namePartA
+	 * @param string $namePartB
 	 * @return \Behat\Mink\Element\NodeElement|NULL
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function findFileRowByName($name, Session $session)
+	public function findFileRowByName(Session $session, $namePartA, $namePartB = '')
 	{
 		$previousFileCount = 0;
 		$currentFileCount = null;
 
-		if (strstr($name, "'") === false) {
-			$quotedName = "'" . $name . "'";
-		} else {
-			$quotedName = '"' . $name . '"';
-		}
+		// Concatenating a possible 2 separate parts of the file name allows
+		// one part to contain single quotes and other the other to contain
+		// double quotes.
+		$xpathQuotedName =
+			"concat(" .
+			$this->quotedText($namePartA) .
+			"," .
+			$this->quotedText($namePartB) .
+			")";
 
 		//loop to keep on scrolling down to load not viewed files
 		//when the scroll does not retrieve any new files, the file is not there
 		do {
 			$fileNameMatch = $this->find("xpath", $this->fileListXpath)->find(
-				"xpath", sprintf($this->fileNameMatchXpath, $quotedName)
+				"xpath", sprintf($this->fileNameMatchXpath, $xpathQuotedName)
 			);
 
 			if (is_null($fileNameMatch)) {
@@ -136,7 +171,7 @@ class FilesPage extends OwnCloudPage
 		} while (is_null($fileNameMatch) && ($currentFileCount > $previousFileCount));
 
 		if (is_null($fileNameMatch)) {
-			throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
+			throw new ElementNotFoundException("could not find file with the name '" . $namePartA . $namePartB ."'");
 		}
 
 		$fileRow = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
@@ -157,7 +192,7 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function openSharingDialog ($name, Session $session)
 	{
-		$fileRow = $this->findFileRowByName($name, $session);
+		$fileRow = $this->findFileRowByName($session, $name);
 		$fileRow->find("xpath", $this->shareBtnXpath)->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
 		return $this->getPage("SharingDialog");
@@ -232,16 +267,17 @@ class FilesPage extends OwnCloudPage
 
 	/**
 	 * renames a file
-	 * @param string $fromFileName
+	 * @param string $fromFileNamePartA
+	 * @param string $fromFileNamePartB
 	 * @param string $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
 	 */
-	public function renameFile($fromFileName, $toFileName, Session $session, $maxRetries = 5)
+	public function renameFile($fromFileNamePartA, $fromFileNamePartB, $toFileName, Session $session, $maxRetries = 5)
 	{
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
-				$this->_renameFile($fromFileName, $toFileName, $session);
+				$this->_renameFile($fromFileNamePartA, $fromFileNamePartB, $toFileName, $session);
 				break;
 			} catch (\Exception $e) {
 				error_log(
@@ -259,9 +295,9 @@ class FilesPage extends OwnCloudPage
 		}
 	}
 
-	private function _renameFile($fromFileName, $toFileName, Session $session)
+	private function _renameFile($fromFileNamePartA, $fromFileNamePartB, $toFileName, Session $session)
 	{
-		$fileRow = $this->findFileRowByName($fromFileName, $session);
+		$fileRow = $this->findFileRowByName($session, $fromFileNamePartA, $fromFileNamePartB);
 		$actionMenuBtn = $this->findFileActionButtonInFileRow($fileRow);
 		$actionMenuBtn->click();
 		$actionMenu = $this->findFileActionMenuInFileRow($fileRow);
@@ -310,7 +346,7 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function getTooltipOfFile ($fileName, Session $session)
 	{
-		$fileRow = $this->findFileRowByName($fileName, $session);
+		$fileRow = $this->findFileRowByName($session, $fileName);
 		$tooltip = $fileRow->find("xpath", $this->fileTooltipXpath)->getText();
 		if ($tooltip === null) {
 			throw new ElementNotFoundException("could not find tooltip of file '$fileName'");

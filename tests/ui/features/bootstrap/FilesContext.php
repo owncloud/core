@@ -93,7 +93,16 @@ class FilesContext extends RawMinkContext implements Context
 	public function iRenameTheFileFolderTo($fromName, $toName)
 	{
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->renameFile($fromName, $toName, $this->getSession());
+		$this->filesPage->renameFile($fromName, '', $toName, $this->getSession());
+	}
+
+	/**
+	 * @Given I rename the file/folder :fromNamePartA plus :fromNamePartB to :toNamePartA plus :toNamePartB
+	 */
+	public function iRenameTheFileFolderFromPlusToPlus($fromNamePartA, $fromNamePartB, $toNamePartA, $toNamePartB)
+	{
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->filesPage->renameFile($fromNamePartA, $fromNamePartB, $toNamePartA . $toNamePartB, $this->getSession());
 	}
 
 	/**
@@ -103,7 +112,7 @@ class FilesContext extends RawMinkContext implements Context
 	{
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		foreach ($table->getRows() as $row) {
-			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
+			$this->filesPage->renameFile($fromName, '', $row[0], $this->getSession());
 		}
 		
 	}
@@ -114,7 +123,17 @@ class FilesContext extends RawMinkContext implements Context
 	public function theFileFolderShouldBeListed($name)
 	{
 		PHPUnit_Framework_Assert::assertNotNull(
-			$this->filesPage->findFileRowByName($name, $this->getSession())
+			$this->filesPage->findFileRowByName($this->getSession(), $name)
+		);
+	}
+
+	/**
+	 * @Then the file/folder :namePartA plus :namePartB should be listed
+	 */
+	public function theFileFolderPlusShouldBeListed($namePartA, $namePartB)
+	{
+		PHPUnit_Framework_Assert::assertNotNull(
+			$this->filesPage->findFileRowByName($this->getSession(), $namePartA, $namePartB)
 		);
 	}
 
