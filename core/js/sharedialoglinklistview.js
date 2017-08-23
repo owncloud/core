@@ -21,21 +21,21 @@
 			'<span class="link-entry--icon icon-public-white"></span>' +
 			'<span class="link-entry--title">{{linkTitle}}</span>' +
 			'<div class="minify"><input id="linkText-{{../cid}}-{{id}}" class="linkText" type="text" readonly="readonly" value="{{link}}" /></div>' +
-			'<div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{../cid}}-{{id}}">' +
+			'<div class="link-entry--icon-button clipboardButton" data-clipboard-target="#linkText-{{../cid}}-{{id}}" title="{{../copyToClipboardText}}">' +
 			'	<span class="icon icon-clippy-dark"></span>' +
 			'	<span class="hidden">{{../copyToClipboardText}}</span>' +
 			'</div>' +
-			'<div class="link-entry--icon-button editLink">' +
+			'<div class="link-entry--icon-button editLink" title="{{../editLinkText}}">' +
 			'	<span class="icon icon-settings-dark"></span>' +
 			'	<span class="hidden">{{../editLinkText}}</span>' +
 			'</div>' +
 			'{{#if ../socialShareEnabled}}' +
-			'<div class="link-entry--icon-button shareLink">' +
+			'<div class="link-entry--icon-button shareLink" title="{{../shareText}}">' +
 			'	<span class="icon icon-share"></span>' +
 			'	<span class="hidden">{{../shareText}}</span>' +
 			'</div>' +
 			'{{/if}}' +
-			'<div class="link-entry--icon-button removeLink">' +
+			'<div class="link-entry--icon-button removeLink"  title="{{../removeLinkText}}">' +
 			'	<span class="icon icon-delete"></span>' +
 			'	<span class="hidden">{{../removeLinkText}}</span>' +
 			'</div>' +
@@ -241,7 +241,7 @@
 				addLinkText: t('core', 'Create public link'),
 				editLinkText: t('core', 'Edit'),
 				removeLinkText: t('core', 'Remove'),
-				copyToClipboardText: t('core', 'Click to copy to clipboard'),
+				copyToClipboardText: t('core', 'Copy to clipboard'),
 				shareText: t('core', 'Social share'),
 				socialShareEnabled: this.configModel.isSocialShareEnabled(),
 				noShares: !this.collection.length,
@@ -250,7 +250,7 @@
 				shares: this.collection.map(_.bind(this._formatItem, this))
 			}));
 
-			this.$el.find('.has-tooltip').tooltip();
+			this.$el.find('[title]').tooltip();
 
 			var clipboard = new Clipboard('#' + this.id + ' .clipboardButton');
 			clipboard.on('success', function (e) {
