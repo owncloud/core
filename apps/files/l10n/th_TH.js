@@ -93,6 +93,7 @@ OC.L10N.register(
     "Changed by %2$s" : "เปลี่ยนแปลงโดย %2$s",
     "Deleted by %2$s" : "ลบโดย %2$s",
     "Restored by %2$s" : "กู้คืนโดย %2$s",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "คุณไม่มีสิทธิ์เข้าถึงไฟล์/โฟลเดอร์นี้ - โปรดติดต่อเจ้าของเพื่อเปิดแชร์ให้กับคุณ",
     "Upload (max. %s)" : "อัพโหลด (สูงสุด %s)",
     "Settings" : "ตั้งค่า",
     "Show hidden files" : "แสดงไฟล์ที่ซ่อนอยู่",

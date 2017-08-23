@@ -72,6 +72,7 @@ OC.L10N.register(
     "Edit" : "Wysig",
     "Remove" : "Verwyder",
     "Choose a password for the public link" : "Kies ’n wagwoord vir die openbare skakel",
+    "Filename" : "Lêernaam",
     "Password" : "Wagwoord",
     "Name" : "Naam",
     "Allow editing" : "Staan wysiging toe",

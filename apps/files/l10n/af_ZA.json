@@ -1,5 +1,6 @@
 { "translations": {
     "Close" : "Sluit",
+    "..." : "…",
     "Download" : "Laai Af",
     "Rename" : "Hernoem",
     "Delete" : "Skrap",
@@ -12,6 +13,7 @@
     "Path" : "Pad",
     "Favorite" : "Gunsteling",
     "Folder" : "Omslag",
+    "New folder" : "Nuwe vouer",
     "Upload" : "Laai Op",
     "Upload (max. %s)" : "Laai op (maks. %s)",
     "Settings" : "Instellings"

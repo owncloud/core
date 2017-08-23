@@ -111,6 +111,7 @@ OC.L10N.register(
     "Advanced settings" : "ตั้งค่าขั้นสูง",
     "Delete" : "ลบ",
     "Allow users to mount external storage" : "อนุญาตให้ผู้ใช้ติดตั้งการจัดเก็บข้อมูลภายนอก",
-    "Allow users to mount the following external storage" : "อนุญาตให้ผู้ใช้ติดตั้งจัดเก็บข้อมูลภายนอกต่อไปนี้"
+    "Allow users to mount the following external storage" : "อนุญาตให้ผู้ใช้ติดตั้งจัดเก็บข้อมูลภายนอกต่อไปนี้",
+    "Allow sharing on user-mounted external storages" : "อนุญาตให้แชร์การจัดเก็บข้อมูลภายนอกของผู้ใช้"
 },
 "nplurals=1; plural=0;");

@@ -2,6 +2,7 @@ OC.L10N.register(
     "files",
     {
     "Close" : "Sluit",
+    "..." : "…",
     "Download" : "Laai Af",
     "Rename" : "Hernoem",
     "Delete" : "Skrap",
@@ -14,6 +15,7 @@ OC.L10N.register(
     "Path" : "Pad",
     "Favorite" : "Gunsteling",
     "Folder" : "Omslag",
+    "New folder" : "Nuwe vouer",
     "Upload" : "Laai Op",
     "Upload (max. %s)" : "Laai op (maks. %s)",
     "Settings" : "Instellings"

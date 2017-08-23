@@ -10,6 +10,7 @@ OC.L10N.register(
     "So-so password" : "So-so wagwoord",
     "never" : "nooit",
     "days" : "dae",
+    "None" : "Geen",
     "Port" : "Poort",
     "Tips & tricks" : "Wenke & truuks",
     "Android app" : "Android-toep",
