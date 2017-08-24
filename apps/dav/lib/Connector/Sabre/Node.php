@@ -394,4 +394,8 @@ abstract class Node implements \Sabre\DAV\INode {
 		return $mtime;
 	}
 
+	public function getView() {
+		return $this->fileView;
+	}
+
 }
