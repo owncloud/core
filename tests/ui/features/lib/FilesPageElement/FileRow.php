@@ -48,6 +48,7 @@ class FileRow extends OwnCloudPage {
 	protected $fileRenameInputXpath = "//input[contains(@class,'filename')]";
 	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
 	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
+	protected $thumbnailXpath = "//*[@class='thumbnail']";
 	
 	/**
 	 * sets the NodeElement for the current file row
@@ -113,7 +114,23 @@ class FileRow extends OwnCloudPage {
 		$actionMenu->setElement($actionMenuElement);
 		return $actionMenu;
 	}
-	
+
+	/**
+	 * finds and returns the share button element
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function findSharingButton() {
+		$shareBtn = $this->rowElement->find("xpath", $this->shareBtnXpath);
+		if (is_null($shareBtn)) {
+			throw new ElementNotFoundException(
+				"could not find sharing button in fileRow"
+			);
+		}
+		return $shareBtn;
+	}
+
 	/**
 	 * opens the sharing dialog
 	 * 
@@ -121,13 +138,7 @@ class FileRow extends OwnCloudPage {
 	 * @return SharingDialog
 	 */
 	public function openSharingDialog() {
-		$shareBtn = $this->rowElement->find("xpath", $this->shareBtnXpath);
-		if (is_null($shareBtn)) {
-			throw new ElementNotFoundException(
-				"could not find sharing button in fileRow"
-			);
-		}
-		$shareBtn->click();
+		$this->findSharingButton()->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
 		return $this->getPage("FilesPageElement\\SharingDialog");
 	}
@@ -180,6 +191,21 @@ class FileRow extends OwnCloudPage {
 		return $element;
 	}
 
+	/**
+	 * finds and returns the thumbnail of the file
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function findThumbnail() {
+		$thumbnail = $this->rowElement->find("xpath", $this->thumbnailXpath);
+		if (is_null($thumbnail)) {
+			throw new ElementNotFoundException(
+				"could not find thumbnail of file " . $this->name
+			);
+		}
+		return $thumbnail;
+	}
 	/**
 	 * returns the tooltip text
 	 * 

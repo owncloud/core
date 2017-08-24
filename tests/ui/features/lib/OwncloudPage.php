@@ -114,6 +114,10 @@ class OwncloudPage extends Page
 		return $notificationsText;
 	}
 
+	public function openSettingsMenu () {
+		$this->findById($this->userNameDispayId)->click();
+		return $this->getPage("OwncloudPageElement\\SettingsMenu");
+	}
 	/**
 	 * finds the logged-in username displayed in the top right corner
 	 * @return string

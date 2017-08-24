@@ -68,6 +68,14 @@ trait BasicStructure
 	}
 
 	/**
+	 * @When I logout
+	 */
+	public function iLogout() {
+		$settingsMenu = $this->owncloudPage->openSettingsMenu();
+		$settingsMenu->logout();
+	}
+	
+	/**
 	 * @Given a regular user exists
 	 */
 	public function aRegularUserExists()
