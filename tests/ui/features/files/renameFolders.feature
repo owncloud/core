@@ -36,6 +36,34 @@ Feature: renameFolders
 		And the page is reloaded
 		Then the folder "hash#And&QuestionMark?At@FolderName" should be listed
 
+	Scenario: Rename a folder using spaces at front and/or back of the name
+		When I rename the folder "simple-folder" to " space at start"
+		And the page is reloaded
+		Then the folder " space at start" should be listed
+		When I rename the folder " space at start" to "space at end "
+		And the page is reloaded
+		Then the folder "space at end " should be listed
+		When I rename the folder "space at end " to "  multiple   spaces    all     over   "
+		And the page is reloaded
+		Then the folder "  multiple   spaces    all     over   " should be listed
+
+	Scenario: Rename a folder using both double and single quotes
+		When I rename the following folder to
+			|from-name-parts |to-name-parts        |
+			|simple-folder  |First 'single' quotes |
+			|               |-then "double"        |
+		And the page is reloaded
+		Then the following folder should be listed
+			|name-parts            |
+			|First 'single' quotes |
+			|-then "double"        |
+		When I rename the following folder to
+			|from-name-parts       |to-name-parts   |
+			|First 'single' quotes |a normal folder |
+			|-then "double"        |                |
+		And the page is reloaded
+		Then the folder "a normal folder" should be listed
+
 	Scenario: Rename a folder using forbidden characters
 		When I rename the folder "simple-folder" to one of these names
 		|simple\folder   |
