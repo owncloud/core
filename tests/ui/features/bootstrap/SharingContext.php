@@ -24,7 +24,6 @@ use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Page\FilesPage;
-use Page\SharingDialog;
 
 require_once 'bootstrap.php';
 

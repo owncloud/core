@@ -71,16 +71,16 @@ class FilesContext extends RawMinkContext implements Context
 		if ($itemsCount > 0) {
 			$lastItemCoordinates = $this->filesPage->getCoordinatesOfElement(
 				$this->getSession(),
-				$this->filesPage->findActionMenuByNo($itemsCount)
+				$this->filesPage->findFileActionsMenuBtnByNo($itemsCount)
 			);
 		}
-
+		
 		while ($windowHeight > $lastItemCoordinates['top']) {
 			$this->filesPage->createFolder();
 			$itemsCount = $this->filesPage->getSizeOfFileFolderList();
 			$lastItemCoordinates = $this->filesPage->getCoordinatesOfElement(
 				$this->getSession(),
-				$this->filesPage->findActionMenuByNo($itemsCount)
+				$this->filesPage->findFileActionsMenuBtnByNo($itemsCount)
 			);
 		}
 		$this->getSession()->reload();
@@ -169,21 +169,24 @@ class FilesContext extends RawMinkContext implements Context
 	 */
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt()
 	{
-		for ($i = 1; $i < $this->filesPage->getSizeOfFileFolderList(); $i++) {
-			$actionMenu = $this->filesPage->findActionMenuByNo($i);
-			$actionMenu->click();
+		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
+			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
 
 			$windowHeight = $this->filesPage->getWindowHeight(
 				$this->getSession()
 			);
 
+			$deleteBtn = $actionMenu->findButton(
+				$actionMenu->getDeleteActionLabel()
+			);
 			$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
-				$this->getSession(), $this->filesPage->findDeleteByNo($i)
+				$this->getSession(), $deleteBtn
 			);
 			PHPUnit_Framework_Assert::assertLessThan(
 				$windowHeight, $deleteBtnCoordinates ["top"]
 			);
-			$actionMenu->click();
+			//this will close the menu again
+			$this->filesPage->clickFileActionsMenuBtnByNo($i);
 		}
 	}
 }
