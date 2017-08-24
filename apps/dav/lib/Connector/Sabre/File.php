@@ -453,8 +453,8 @@ class File extends Node implements IFile {
 					/** @var \OC\Files\Storage\Storage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
 
-
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
+					$this->tryReconnectIfDBConnectionTimedOut();
 
 					if (!self::isChecksumValid($partStorage, $partInternalPath)) {
 						throw new BadRequest('The computed checksum does not match the one received from the client.');
@@ -478,6 +478,7 @@ class File extends Node implements IFile {
 				} else {
 					// assemble directly into the final file
 					$chunk_handler->file_assemble($targetStorage, $targetInternalPath);
+					$this->tryReconnectIfDBConnectionTimedOut();
 				}
 
 				// allow sync clients to send the mtime along in a header
@@ -526,6 +527,24 @@ class File extends Node implements IFile {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Checks if the database connection is still alive and tries to reconnect unless we are in a transaction.
+	 * @throws Exception if connection was lost during a transaction
+	 * TODO move this to the IDBConnection?
+	 */
+	private function tryReconnectIfDBConnectionTimedOut() {
+		$conn = \OC::$server->getDatabaseConnection();
+		if ( $conn->ping() === false ) {
+			if ( ! $conn->inTransaction() ) {
+				$conn->close();
+				$conn->connect();
+			} else {
+				throw new Exception('A long file assembly caused the database connection to timeout during a transaction. Try increasing the database connection timeout.');
+			}
+		}
+
 	}
 
 	/**

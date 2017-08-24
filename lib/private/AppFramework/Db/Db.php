@@ -254,4 +254,11 @@ class Db implements IDb {
 	public function allows4ByteCharacters() {
 		return $this->connection->allows4ByteCharacters();
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function ping() {
+		return $this->connection->ping();
+	}
 }
