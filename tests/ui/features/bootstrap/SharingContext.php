@@ -167,6 +167,50 @@ class SharingContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @Then /^the (file|folder) "([^"]*)" should be marked as shared(?: with "([^"]*)")? by "([^"]*)"$/
+	 * @return void
+	 */
+	public function theFileFolderShouldBeMarkedAsSharedBy(
+		$fileOrFolder, $itemName, $sharedWithGroup, $sharerName
+	) {
+		//close any open sharing dialog
+		//if there is no dialog open and we try to close it
+		//an exception will be thrown, but we do not care
+		try {
+			$this->filesPage->closeSharingDialog();
+		} catch (Exception $e) {
+		}
+		
+		$row = $this->filesPage->findFileRowByName($itemName, $this->getSession());
+		$sharingBtn = $row->findSharingButton();
+		PHPUnit_Framework_Assert::assertSame(
+			$sharerName, $sharingBtn->getText()
+		);
+		$sharingDialog = $this->filesPage->openSharingDialog(
+			$itemName, $this->getSession()
+		);
+		PHPUnit_Framework_Assert::assertSame(
+			$sharerName, $sharingDialog->getSharerName()
+		);
+		if ($fileOrFolder === "folder") {
+			PHPUnit_Framework_Assert::assertContains(
+				"folder-shared.svg",
+				$row->findThumbnail()->getAttribute("style")
+			);
+			PHPUnit_Framework_Assert::assertContains(
+				"folder-shared.svg",
+				$sharingDialog->findThumbnail()->getAttribute("style")
+			);
+		}
+		if ($sharedWithGroup !== "") {
+			PHPUnit_Framework_Assert::assertSame(
+				$sharedWithGroup,
+				$sharingDialog->getSharedWithGroupName()
+			);
+		}
+	}
+
+	/**
 	 * @BeforeScenario
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
