@@ -97,6 +97,24 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @Given I rename the following file/folder to
+	 * @param TableNode $namePartsTable table of parts of the from and to file names
+	 * table headings: must be: |from-name-parts |to-name-parts |
+	 */
+	public function iRenameTheFollowingFileFolderTo(TableNode $namePartsTable)
+	{
+		$fromNameParts = [];
+		$toNameParts = [];
+
+		foreach ($namePartsTable as $namePartsRow) {
+			$fromNameParts[] = $namePartsRow['from-name-parts'];
+			$toNameParts[] = $namePartsRow['to-name-parts'];
+		}
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->filesPage->renameFile($fromNameParts, $toNameParts, $this->getSession());
+	}
+
+	/**
 	 * @When I rename the file/folder :fromName to one of these names
 	 */
 	public function iRenameTheFileToOneOfThisNames($fromName, TableNode $table)
@@ -115,6 +133,24 @@ class FilesContext extends RawMinkContext implements Context
 	{
 		PHPUnit_Framework_Assert::assertNotNull(
 			$this->filesPage->findFileRowByName($name, $this->getSession())
+		);
+	}
+
+	/**
+	 * @Then the following file/folder should be listed
+	 * @param TableNode $namePartsTable table of parts of the file name
+	 * table headings: must be: |name-parts |
+	 */
+	public function theFollowingFileFolderShouldBeListed(TableNode $namePartsTable)
+	{
+		$fileNameParts = [];
+
+		foreach ($namePartsTable as $namePartsRow) {
+			$fileNameParts[] = $namePartsRow['name-parts'];
+		}
+
+		PHPUnit_Framework_Assert::assertNotNull(
+			$this->filesPage->findFileRowByName($fileNameParts, $this->getSession())
 		);
 	}
 

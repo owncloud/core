@@ -43,6 +43,7 @@ class FilesPage extends OwnCloudPage
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
 	protected $fileNamesXpath = "//span[@class='nametext']";
+	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileRowFromNameXpath = "/../../..";
 	protected $fileActionXpath = "//a[@data-action='%s']";
 	protected $fileRenameInputXpath = "//input[contains(@class,'filename')]";
@@ -63,6 +64,7 @@ class FilesPage extends OwnCloudPage
 	 * If name is not given a random one is chosen
 	 *
 	 * @param string $name
+	 * @return string name of the created file
 	 */
 	public function createFolder($name = null)
 	{
@@ -80,12 +82,47 @@ class FilesPage extends OwnCloudPage
 		return $name;
 	}
 
+	/**
+	 * @return int the number of files and folders listed on the page
+	 */
 	public function getSizeOfFileFolderList()
 	{
 		return count(
-			$this->find("xpath", $this->fileListXpath)->findAll("xpath", "tr")
+			$this->find("xpath", $this->fileListXpath)->findAll(
+				"xpath", $this->fileNamesXpath
+			)
 		);
 	}
+
+	/**
+	 * Surround the text with single or double quotes, whichever does not
+	 * already appear in the text. If the text contains both single and
+	 * double quotes, then throw an InvalidArgumentException.
+	 *
+	 * The returned string is intended for use as part of an xpath (v1).
+	 * xpath (v1) has no way to escape the quote character within a string
+	 * literal. So there is no way to directly use a string containing
+	 * both single and double quotes.
+	 *
+	 * @param string $text
+	 * @return string the text surrounded by single or double quotes
+	 * @throws \InvalidArgumentException
+	 */
+	public function quotedText($text)
+	{
+		if (strstr($text, "'") === false) {
+			return "'" . $text . "'";
+		} else if (strstr($text, '"') === false) {
+			return '"' . $text . '"';
+		} else {
+			// The text contains both single and double quotes.
+			// With current xpath v1 there is no way to encode that.
+			throw new \InvalidArgumentException(
+				"mixing both single and double quotes is unsupported - '" . $text ."'"
+			);
+		}
+	}
+
 	public function findActionMenuByNo($number)
 	{
 		$xpath = sprintf($this->fileActionMenuBtnXpathByNo,$number);
@@ -95,52 +132,61 @@ class FilesPage extends OwnCloudPage
 	/**
 	 * finds the complete row of the file
 	 *
-	 * @param string $name
+	 * @param string|array $name
 	 * @param Session $session
 	 * @return \Behat\Mink\Element\NodeElement|NULL
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
 	public function findFileRowByName($name, Session $session)
 	{
-		$appContentHeight = 0;
-		$previousFileCounter = 0;
-		$fileNameSpans = array();
+		$previousFileCount = 0;
+		$currentFileCount = null;
 
-		$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
-			"xpath", $this->fileNamesXpath
-		);
-		//loop to keep on scrolling down to load not viewed files
-		//when the file count is not increasing, the file is not there
-		while ($previousFileCounter < count($fileNameSpans)) {
-			//check every file if the name is the one we are searching for
-			//but no need to check names that we checked already ($previousFileCounter)
-			for ($fileCounter = $previousFileCounter;
-				$fileCounter < count($fileNameSpans);
-				$fileCounter ++) {
-				//found the file
-				if ($fileNameSpans[$fileCounter]->getText() === $name ||
-					strip_tags($fileNameSpans[$fileCounter]->getHtml()) === $name) {
-					$fileRow = $fileNameSpans[$fileCounter]->find(
-						"xpath", $this->fileRowFromNameXpath
-					);
-					if ($fileRow === null) {
-						throw new ElementNotFoundException("could not find fileRow with xpath '" . $this->fileRowFromNameXpath . "'");
-					} else {
-						return $fileRow;
-					}
-				}
+		if (is_array($name)) {
+			// Concatenating separate parts of the file name allows
+			// some parts to contain single quotes and the others to contain
+			// double quotes.
+			$comma = '';
+			$xpathString = "concat(";
+
+			foreach ($name as $nameComponent) {
+				$xpathString .= $comma . $this->quotedText($nameComponent);
+				$comma = ',';
 			}
-			$previousFileCounter = count($fileNameSpans);
-			// scroll to the bottom of the page
-			// we need to scroll because the files app only loads a part of
-			// the files in one screen
-			$this->scrollDownAppContent(count($fileNameSpans), $session);
-
-			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
-				"xpath", $this->fileNamesXpath
-			);
+			$xpathString .= ")";
+			$name = implode($name);
+		} else {
+			$xpathString = $this->quotedText($name);
 		}
-		throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
+
+		//loop to keep on scrolling down to load not viewed files
+		//when the scroll does not retrieve any new files, the file is not there
+		do {
+			$fileNameMatch = $this->find("xpath", $this->fileListXpath)->find(
+				"xpath", sprintf($this->fileNameMatchXpath, $xpathString)
+			);
+
+			if (is_null($fileNameMatch)) {
+				if (is_null($currentFileCount)) {
+					$currentFileCount = $this->getSizeOfFileFolderList();
+				}
+				$previousFileCount = $currentFileCount;
+				$this->scrollDownAppContent($session);
+				$currentFileCount = $this->getSizeOfFileFolderList();
+			}
+		} while (is_null($fileNameMatch) && ($currentFileCount > $previousFileCount));
+
+		if (is_null($fileNameMatch)) {
+			throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
+		}
+
+		$fileRow = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
+
+		if (is_null($fileRow)) {
+			throw new ElementNotFoundException("could not find fileRow with xpath '" . $this->fileRowFromNameXpath . "'");
+		}
+
+		return $fileRow;
 	}
 
 	/**
@@ -160,32 +206,15 @@ class FilesPage extends OwnCloudPage
 
 	/**
 	 * scrolls down the file list, to load not yet displayed files
-	 * @param int $numberOfFilesOld how many files were listed before the scroll.
-	 * So we can guess how long to wait for the loading of new files to finish
 	 * @param Session $session
-	 * @param int $timeout_msec
 	 */
-	public function scrollDownAppContent ($numberOfFilesOld, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
+	public function scrollDownAppContent (Session $session)
 	{
 		$session->evaluateScript(
 			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
 		);
 
-		// there is no loading indicator here, so we are going to wait until we have
-		// more files than before
-		$currentTime = microtime(true);
-		$end = $currentTime + ($timeout_msec / 1000);
-		while ($currentTime <= $end) {
-			$this->waitForOutstandingAjaxCalls($session);
-			$fileNameSpans = $this->find("xpath", $this->fileListXpath)->findAll(
-				"xpath", $this->fileNamesXpath
-			);
-			if (count($fileNameSpans) >= $numberOfFilesOld) {
-				break;
-			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
-		}
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 
 	/**
@@ -244,13 +273,17 @@ class FilesPage extends OwnCloudPage
 
 	/**
 	 * renames a file
-	 * @param string $fromFileName
-	 * @param string $toFileName
+	 * @param string|array $fromFileName
+	 * @param string|array $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
 	 */
 	public function renameFile($fromFileName, $toFileName, Session $session, $maxRetries = 5)
 	{
+		if (is_array($toFileName)) {
+			$toFileName = implode($toFileName);
+		}
+
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
 				$this->_renameFile($fromFileName, $toFileName, $session);
