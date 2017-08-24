@@ -1253,12 +1253,19 @@ class OC_Util {
 	}
 
 	/**
-	 * Checks whether the server is running on Mac OS X
+	 * Checks whether the server is running on the given OS type
 	 *
-	 * @return bool true if running on Mac OS X, false otherwise
+	 * @param string $osType linux|mac|bsd etc
+	 * @return bool true if running on that OS type, false otherwise
 	 */
-	public static function runningOnMac() {
-		return (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN');
+	public static function runningOn($osType) {
+		$osType = strtolower($osType) === 'mac' ? 'darwin' : strtolower($osType);
+
+		if ($osType === 'bsd') {
+			return (strpos(strtolower(PHP_OS), $osType) !== false);
+		} else {
+			return (strtolower(substr(PHP_OS, 0, strlen($osType))) === $osType);
+		}
 	}
 
 	/**
