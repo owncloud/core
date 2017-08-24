@@ -45,6 +45,12 @@ class SharingDialog extends OwncloudPage {
 	protected $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
 	protected $shareWithCloseXpath = "/..//*[@class='close icon-close']";
 	protected $suffixToIdentifyGroups = " (group)";
+	protected $sharerInformationXpath = ".//*[@class='reshare']";
+	protected $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
+	protected $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
+	protected $thumbnailFromContainerXpath = "/a";
+	
+	protected $sharedWithGroupAndSharerName = null;
 
 	/**
 	 * 
@@ -173,7 +179,7 @@ class SharingDialog extends OwncloudPage {
 		}
 
 		if ($userFound !== true) {
-			throw new ElementNotFoundException("could not share with '$name'");
+			throw new ElementNotFoundException("could not share with '$nameToMatch'");
 		}
 	}
 
@@ -245,6 +251,94 @@ class SharingDialog extends OwncloudPage {
 			throw new ElementNotFoundException("could not find share-with-tooltip");
 		}
 		return $shareWithTooltip->getText();
+	}
+
+	/**
+	 * gets the Element with the information about who has shared the current file/folder
+	 * this Element will contain the Avatar and some text
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function findSharerInformationItem() {
+		$sharerInformation = $this->find("xpath", $this->sharerInformationXpath);
+		if (is_null($sharerInformation)) {
+			throw new ElementNotFoundException("could not find sharer information");
+		}
+		return $sharerInformation;
+	}
+
+	/**
+	 * gets the group that the file/folder was shared with
+	 * and the user that shared it
+	 * 
+	 * @throws \Exception
+	 * @return array ["sharedWithGroup" => string, "sharer" => string]
+	 */
+	public function getSharedWithGroupAndSharerName() {
+		if (is_null($this->sharedWithGroupAndSharerName)) {
+			$text = $this->findSharerInformationItem()->getText();
+			if (preg_match("/" . $this->sharedWithAndByRegEx . "/", $text, $matches)) {
+				$this->sharedWithGroupAndSharerName = [ 
+					"sharedWithGroup" => $matches [1],
+					"sharer" => $matches [2] 
+				];
+			} else {
+				throw new \Exception(
+					"could not find shared with group or sharer name"
+				);
+			}
+		}
+		return $this->sharedWithGroupAndSharerName;
+	}
+
+	/**
+	 * gets the group that the file/folder was shared with
+	 * 
+	 * @return mixed
+	 */
+	public function getSharedWithGroupName() {
+		return $this->getSharedWithGroupAndSharerName()["sharedWithGroup"];
+	}
+
+	/**
+	 * gets the display name of the user that has shared the current file/folder
+	 * 
+	 * @throws \Exception
+	 * @return string
+	 */
+	public function getSharerName() {
+		return $this->getSharedWithGroupAndSharerName()["sharer"];
+	}
+
+	/**
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement of the whole container holding the
+	 * thumbnail
+	 */
+	public function findThumbnailContainer() {
+		$thumbnailContainer = $this->find("xpath", $this->thumbnailContainerXpath);
+		if (is_null($thumbnailContainer)) {
+			throw new ElementNotFoundException("could not find thumbnailContainer");
+		}
+		return $thumbnailContainer;
+	}
+
+	/**
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function findThumbnail() {
+		$thumbnailContainer = $this->findThumbnailContainer();
+		$thumbnail = $thumbnailContainer->find(
+			"xpath", $this->thumbnailFromContainerXpath
+		);
+		if (is_null($thumbnail)) {
+			throw new ElementNotFoundException("could not find thumbnail");
+		}
+		return $thumbnail;
 	}
 
 	/**

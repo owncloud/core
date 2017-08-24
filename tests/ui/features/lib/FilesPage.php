@@ -202,6 +202,17 @@ class FilesPage extends OwnCloudPage
 	}
 
 	/**
+	 * closes an open sharing dialog
+	 * 
+	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * if no sharing dialog is open
+	 * @return void
+	 */
+	public function closeSharingDialog() {
+		$this->getPage('FilesPageElement\\SharingDialog')->closeSharingDialog();
+	}
+
+	/**
 	 * scrolls down the file list, to load not yet displayed files
 	 * 
 	 * @param Session $session
