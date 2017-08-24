@@ -1,5 +1,4 @@
 <?php
-
 /**
 * ownCloud
 *
@@ -23,6 +22,9 @@
 
 namespace Page;
 
+use Page\FilesPageElement\FileRow;
+use Page\FilesPageElement\SharingDialog;
+use Page\FilesPageElement\FileActionsMenu;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
@@ -45,16 +47,9 @@ class FilesPage extends OwnCloudPage
 	protected $fileNamesXpath = "//span[@class='nametext']";
 	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileRowFromNameXpath = "/../../..";
-	protected $fileActionXpath = "//a[@data-action='%s']";
-	protected $fileRenameInputXpath = "//input[contains(@class,'filename')]";
-	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
-	protected $appContentId ="app-content";
-	protected $renameActionLabel = "Rename";
-	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
+	protected $appContentId = "app-content";
 	//TODO make simpler, only ID .//*[@id='fileList']
 	protected $fileListXpath = ".//div[@id='app-content-files']//tbody[@id='fileList']";
-	protected $fileDeleteXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='Delete']";
-	protected $shareBtnXpath = "//a[@data-action='Share']";
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
 
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -134,7 +129,7 @@ class FilesPage extends OwnCloudPage
 	 *
 	 * @param string|array $name
 	 * @param Session $session
-	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 * @return FileRow
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
 	public function findFileRowByName($name, Session $session)
@@ -180,32 +175,35 @@ class FilesPage extends OwnCloudPage
 			throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
 		}
 
-		$fileRow = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
+		$fileRowElement = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
 
-		if (is_null($fileRow)) {
-			throw new ElementNotFoundException("could not find fileRow with xpath '" . $this->fileRowFromNameXpath . "'");
+		if (is_null($fileRowElement)) {
+			throw new ElementNotFoundException(
+				"could not find fileRow with xpath '" . $this->fileRowFromNameXpath . "'"
+			);
 		}
-
+		$fileRow = $this->getPage('FilesPageElement\\FileRow');
+		$fileRow->setElement($fileRowElement);
+		$fileRow->setName($name);
 		return $fileRow;
 	}
 
 	/**
 	 * opens the sharing dialog for a given file/folder name
 	 * returns the SharingDialog Object
-	 * @param string $name
+	 * 
+	 * @param string $fileName
 	 * @param Session $session
 	 * @return SharingDialog
 	 */
-	public function openSharingDialog ($name, Session $session)
-	{
-		$fileRow = $this->findFileRowByName($name, $session);
-		$fileRow->find("xpath", $this->shareBtnXpath)->click();
-		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
-		return $this->getPage("SharingDialog");
+	public function openSharingDialog($fileName, Session $session) {
+		$fileRow = $this->findFileRowByName($fileName, $session);
+		return $fileRow->openSharingDialog();
 	}
 
 	/**
 	 * scrolls down the file list, to load not yet displayed files
+	 * 
 	 * @param Session $session
 	 */
 	public function scrollDownAppContent (Session $session)
@@ -218,56 +216,19 @@ class FilesPage extends OwnCloudPage
 	}
 
 	/**
-	 * Takes a row of a file and finds the Action Button in it
-	 * @param \Behat\Mink\Element\NodeElement $fileRow
-	 * @return \Behat\Mink\Element\NodeElement|NULL
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
-	 */
-	public function findFileActionButtonInFileRow (\Behat\Mink\Element\NodeElement $fileRow)
-	{
-		$actionButton = $fileRow->find("xpath", $this->fileActionMenuBtnXpath);
-		if ($actionButton === null) {
-			throw new ElementNotFoundException("could not find actionButton in fileRow");
-		} else {
-			return $actionButton;
-		}
-	}
-
-	/**
-	 * Takes a row of a file and finds the File Action Menu in it
+	 * Finds the open File Action Menu
 	 * the File Action Button must be clicked first
-	 * @param \Behat\Mink\Element\NodeElement $fileRow
-	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 * 
+	 * @return \Behat\Mink\Element\NodeElement
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function findFileActionMenuInFileRow (\Behat\Mink\Element\NodeElement $fileRow)
-	{
+	public function findFileActionMenuElement() {
 		$this->waitTillElementIsNotNull($this->fileActionMenuXpath);
-		$actionMenu = $fileRow->find("xpath", $this->fileActionMenuXpath);
+		$actionMenu = $this->find("xpath", $this->fileActionMenuXpath);
 		if ($actionMenu === null) {
-			throw new ElementNotFoundException("could not find actionMenu in fileRow");
+			throw new ElementNotFoundException("could not find open fileActionMenu");
 		} else {
 			return $actionMenu;
-		}
-	}
-
-	/**
-	 * finds the actual action link in the action menu
-	 * @param string $action
-	 * @param \Behat\Mink\Element\NodeElement $actionMenu
-	 * @return \Behat\Mink\Element\NodeElement|NULL
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
-	 */
-	public function findButtonInActionMenu ($action, \Behat\Mink\Element\NodeElement $actionMenu)
-	{
-		$this->waitTillElementIsNotNull(sprintf($this->fileActionXpath, $action));
-		$button = $actionMenu->find("xpath",
-			sprintf($this->fileActionXpath, $action)
-		);
-		if ($button === null) {
-			throw new ElementNotFoundException("could not find button '$action' in action Menu");
-		} else {
-			return $button;
 		}
 	}
 
@@ -286,7 +247,8 @@ class FilesPage extends OwnCloudPage
 
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
-				$this->_renameFile($fromFileName, $toFileName, $session);
+				$fileRow = $this->findFileRowByName($fromFileName, $session);
+				$fileRow->rename($toFileName);
 				break;
 			} catch (\Exception $e) {
 				error_log(
@@ -304,28 +266,42 @@ class FilesPage extends OwnCloudPage
 		}
 	}
 
-	private function _renameFile($fromFileName, $toFileName, Session $session)
-	{
-		$fileRow = $this->findFileRowByName($fromFileName, $session);
-		$actionMenuBtn = $this->findFileActionButtonInFileRow($fileRow);
-		$actionMenuBtn->click();
-		$actionMenu = $this->findFileActionMenuInFileRow($fileRow);
-		$renameBtn = $this->findButtonInActionMenu($this->renameActionLabel, $actionMenu);
-		$renameBtn->click();
-		$this->waitTillElementIsNotNull($this->fileRenameInputXpath);
-		$inputField = $fileRow->find("xpath", $this->fileRenameInputXpath);
-		if ($inputField === null) {
-			throw new ElementNotFoundException("could not find input field");
+	/**
+	 * 
+	 * @param int $number
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function findFileActionsMenuBtnByNo($number) {
+		$xpath = sprintf($this->fileActionMenuBtnXpathByNo, $number);
+		$actionMenuBtn = $this->find("xpath", $xpath);
+		if ($actionMenuBtn === null) {
+			throw new ElementNotFoundException("could not find action menu button of file #$number");
 		}
-		$this->cleanInputAndSetValue($inputField, $toFileName);
-		$inputField->blur();
-		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
+		return $actionMenuBtn;
 	}
 
-	public function findDeleteByNo($number)
-	{
-		$xpath = sprintf($this->fileDeleteXpathByNo,$number);
-		return $this->find("xpath", $xpath);
+	/**
+	 * 
+	 * @param int $number
+	 * @return void
+	 */
+	public function clickFileActionsMenuBtnByNo($number) {
+		
+		$this->findFileActionsMenuBtnByNo($number)->click();
+	}
+
+	/**
+	 * 
+	 * @param int $number
+	 * @return FileActionsMenu
+	 */
+	public function openFileActionsMenuByNo($number) {
+		$this->clickFileActionsMenuBtnByNo($number);
+		$actionMenuElement = $this->findFileActionMenuElement();
+		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
+		$actionMenu->setElement($actionMenuElement);
+		return $actionMenu;
 	}
 
 	//there is no reliable loading indicator on the files page, so wait for
@@ -356,12 +332,7 @@ class FilesPage extends OwnCloudPage
 	public function getTooltipOfFile ($fileName, Session $session)
 	{
 		$fileRow = $this->findFileRowByName($fileName, $session);
-		$tooltip = $fileRow->find("xpath", $this->fileTooltipXpath)->getText();
-		if ($tooltip === null) {
-			throw new ElementNotFoundException("could not find tooltip of file '$fileName'");
-		} else {
-			return $tooltip;
-		}
+		return $fileRow->getTooltip();
 	}
 
 	/**
