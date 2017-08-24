@@ -296,6 +296,10 @@ class Tags implements \OCP\ITags {
 
 		if(!is_null($result)) {
 			while( $row = $result->fetchRow()) {
+				if ( !array_key_exists('objid', $row) ) {
+					\OC::$server->getLogger()->error("Unexpected row for getIdsForTag($tag):".print_r($row, true), ['app'=>'debug']);
+					throw new \OutOfBoundsException('An internal error occured, please try again');
+				}
 				$id = (int)$row['objid'];
 
 				if ($this->includeShared) {
@@ -524,6 +528,10 @@ class Tags implements \OCP\ITags {
 				$stmt = \OCP\DB::prepare('DELETE FROM `' . self::RELATION_TABLE . '` '
 					. 'WHERE `categoryid` = ?');
 				while( $row = $result->fetchRow()) {
+					if ( !array_key_exists('id', $row) ) {
+						\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."(".print_r($arguments, true)."):".print_r($row, true), ['app'=>'debug']);
+						throw new \OutOfBoundsException('An internal error occured, please try again');
+					}
 					try {
 						$stmt->execute(array($row['id']));
 					} catch(\Exception $e) {

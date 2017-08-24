@@ -179,6 +179,10 @@ class Share extends Constants {
 				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 			} else {
 				while ($row = $result->fetchRow()) {
+					if ( !array_key_exists('share_with', $row) || !array_key_exists('file_source', $row) || !array_key_exists('file_target', $row) ) {
+						\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($path, $ownerUser, ...)#1:".print_r($row, true), ['app'=>'debug']);
+						throw new \OutOfBoundsException('An internal error occurred, please try again');
+					}
 					$shares[] = $row['share_with'];
 					if ($returnUserPaths) {
 						$fileTargets[(int) $row['file_source']][$row['share_with']] = $row;
@@ -201,6 +205,10 @@ class Share extends Constants {
 				\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 			} else {
 				while ($row = $result->fetchRow()) {
+					if ( !array_key_exists('share_with', $row) || !array_key_exists('file_source', $row) || !array_key_exists('file_target', $row) ) {
+						\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($path, $ownerUser, ...)#2:".print_r($row, true), ['app'=>'debug']);
+						throw new \OutOfBoundsException('An internal error occurred, please try again');
+					}
 					$usersInGroup = \OC_Group::usersInGroup($row['share_with']);
 					$shares = array_merge($shares, $usersInGroup);
 					if ($returnUserPaths) {
@@ -229,7 +237,15 @@ class Share extends Constants {
 				if (\OCP\DB::isError($result)) {
 					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 				} else {
-					if ($result->fetchRow()) {
+					if ($row = $result->fetchRow()) {
+						if ($unexpected = $result->fetchRow()) {
+							\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($path, $ownerUser, ...)#1:".print_r($unexpected, true), ['app'=>'debug']);
+							throw new \LengthException('An internal error occurred, please try again');
+						}
+						if ( !array_key_exists('share_with', $row) ) {
+							\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($path, $ownerUser, ...)#3:".print_r($row, true), ['app'=>'debug']);
+							throw new \OutOfBoundsException('An internal error occurred, please try again');
+						}
 						$publicShare = true;
 					}
 				}
@@ -248,7 +264,15 @@ class Share extends Constants {
 				if (\OCP\DB::isError($result)) {
 					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 				} else {
-					if ($result->fetchRow()) {
+					if ($row = $result->fetchRow()) {
+						if ($unexpected = $result->fetchRow()) {
+							\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($path, $ownerUser, ...)#2:".print_r($unexpected, true), ['app'=>'debug']);
+							throw new \LengthException('An internal error occurred, please try again');
+						}
+						if ( !array_key_exists('share_with', $row) ) {
+							\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($path, $ownerUser, ...)#4:".print_r($row, true), ['app'=>'debug']);
+							throw new \OutOfBoundsException('An internal error occurred, please try again');
+						}
 						$remoteShare = true;
 					}
 				}
@@ -284,6 +308,10 @@ class Share extends Constants {
 					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 				} else {
 					while ($row = $result->fetchRow()) {
+						if ( !array_key_exists('fileid', $row) ||  !array_key_exists('path', $row) ) {
+							\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($path, $ownerUser, ...)#5:".print_r($row, true), ['app'=>'debug']);
+							throw new \OutOfBoundsException('An internal error occurred, please try again');
+						}
 						foreach ($fileTargets[$row['fileid']] as $uid => $shareData) {
 							$sharedPath = $shareData['file_target'];
 							$sharedPath .= substr($path, strlen($row['path']) -5);
@@ -498,8 +526,16 @@ class Share extends Constants {
 		if ($result === false) {
 			\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage() . ', token=' . $token, \OCP\Util::ERROR);
 		}
-		$row = $result->fetchRow();
-		if ($row === false) {
+		if( $row = $result->fetchRow() ) {
+			if ($unexpected = $result->fetchRow()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($token, $checkPasswordProtection):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('token', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($token, $checkPasswordProtection):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
+		} else {
 			return false;
 		}
 		if (is_array($row) and self::expireItem($row)) {
@@ -525,9 +561,21 @@ class Share extends Constants {
 			$parent = $linkItem['parent'];
 			while (isset($parent)) {
 				$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `id` = ?', 1);
-				$item = $query->execute(array($parent))->fetchRow();
-				if (isset($item['parent'])) {
-					$parent = $item['parent'];
+				$result = $query->execute(array($parent));
+				if ( $item = $result->fetchRow() ) {
+					if ($unexpected = $result->fetchRow()) {
+						\OC::$server->getLogger()->error("Too many rows for " . __METHOD__ . "(" . print_r($linkItem, true) . "):" . print_r($unexpected, true), ['app' => 'debug']);
+						throw new \LengthException('An internal error occurred, please try again');
+					}
+					if (!array_key_exists('parent', $item)) {
+						\OC::$server->getLogger()->error("Unexpected row for " . __METHOD__ . "(" . print_r($linkItem, true) . "):" . print_r($item, true), ['app' => 'debug']);
+						throw new \OutOfBoundsException('An internal error occurred, please try again');
+					}
+					if (isset($item['parent'])) {
+						$parent = $item['parent'];
+					} else {
+						return $item;
+					}
 				} else {
 					return $item;
 				}
@@ -950,6 +998,10 @@ class Share extends Constants {
 		$shares = array();
 		// Add each owner's shares to the array of all shares for this item.
 		while ($row = $result->fetchRow()) {
+			if ( !array_key_exists('uid_owner', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($itemType, $itemSource):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$shares = array_merge($shares, self::getItems($itemType, $itemSource, null, null, $row['uid_owner']));
 		}
 		if (!empty($shares)) {
@@ -1817,6 +1869,14 @@ class Share extends Constants {
 			if ($fileDependent && !self::isFileReachable($row['path'], $row['storage_id'])) {
 				continue;
 			}
+			if (    !array_key_exists('share_type', $row)
+				||  !array_key_exists('share_with', $row)
+				||  !array_key_exists('uid_owner', $row)
+				||  !array_key_exists('stime', $row)
+			) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($itemType, ...):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			if ($row['share_type'] == self::$shareTypeGroupUserUnique && isset($items[$row['parent']])) {
 				$row['share_type'] = self::SHARE_TYPE_GROUP;
 				$row['unique_name'] = true; // remember that we use a unique name for this user
@@ -1866,12 +1926,15 @@ class Share extends Constants {
 				if (isset($row['parent'])) {
 					$query = \OC_DB::prepare('SELECT `file_target` FROM `*PREFIX*share` WHERE `id` = ?');
 					$parentResult = $query->execute(array($row['parent']));
-					if ($result === false) {
-						\OCP\Util::writeLog('OCP\Share', 'Can\'t select parent: ' .
-							\OC_DB::getErrorMessage() . ', select=' . $select . ' where=' . $where,
-							\OCP\Util::ERROR);
-					} else {
-						$parentRow = $parentResult->fetchRow();
+					if ($parentRow = $parentResult->fetchRow()) {
+						if ($unexpected = $parentResult->fetchRow()) {
+							\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($itemType, ...):".print_r($unexpected, true), ['app'=>'debug']);
+							throw new \LengthException('An internal error occurred, please try again');
+						}
+						if ( !array_key_exists('file_target', $parentRow) ) {
+							\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($itemType, ...):".print_r($parentRow, true), ['app'=>'debug']);
+							throw new \OutOfBoundsException('An internal error occurred, please try again');
+						}
 						$tmpPath = $parentRow['file_target'];
 						// find the right position where the row path continues from the target path
 						$pos = strrpos($row['path'], $parentRow['file_target']);
@@ -1881,6 +1944,10 @@ class Share extends Constants {
 							$tmpPath = $tmpPath . '/' . $pathPart;
 						}
 						$row['path'] = $tmpPath;
+					} else {
+						\OCP\Util::writeLog('OCP\Share', 'Can\'t select parent: ' .
+							\OC_DB::getErrorMessage() . ', select=' . $select . ' where=' . $where,
+							\OCP\Util::ERROR);
 					}
 				} else {
 					if (!isset($mounts[$row['storage']])) {
@@ -2458,6 +2525,10 @@ class Share extends Constants {
 		$query = \OC_DB::prepare('SELECT `id` FROM `*PREFIX*share` WHERE `share_type` = ?');
 		$result = $query->execute(array(self::SHARE_TYPE_LINK));
 		while ($item = $result->fetchRow()) {
+			if ( !array_key_exists('id', $item) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."():".print_r($item, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			Helper::delete($item['id']);
 		}
 	}

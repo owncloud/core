@@ -41,6 +41,11 @@ class AppConfig implements IAppConfig {
 	 */
 	protected $conn;
 
+	/**
+	 * @var bool
+	 */
+	protected $configLoaded;
+
 	private $cache = array();
 
 	/**
@@ -274,13 +279,16 @@ class AppConfig implements IAppConfig {
 		$result = $sql->execute();
 
 		while ($row = $result->fetch()) {
+			if ( !array_key_exists('appid', $row) || !array_key_exists('configkey', $row) || !array_key_exists('configvalue', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."():".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			if (!isset($this->cache[$row['appid']])) {
 				$this->cache[$row['appid']] = [];
 			}
 
 			$this->cache[$row['appid']][$row['configkey']] = $row['configvalue'];
 		}
-		$result->closeCursor();
 
 		$this->configLoaded = true;
 	}

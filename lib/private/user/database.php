@@ -180,6 +180,10 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 			. $searchLike .' ORDER BY `uid` ASC', $limit, $offset);
 		$result = $query->execute($parameters);
 		while ($row = $result->fetchRow()) {
+			if ( !array_key_exists('uid', $row) || !array_key_exists('displayname', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($search, $limit, $offset):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$displayNames[$row['uid']] = $row['displayname'];
 		}
 
@@ -201,6 +205,14 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 
 		$row = $result->fetchRow();
 		if ($row) {
+			if ($unexpected = $result->fetchRow()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($uid, ...):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('uid', $row) || !array_key_exists('password', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($uid, ...):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$storedHash = $row['password'];
 			$newHash = '';
 			if(\OC::$server->getHasher()->verify($password, $storedHash, $newHash)) {
@@ -224,16 +236,23 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 	private function loadUser($uid) {
 		// if not in cache (false is a valid value)
 		if (!isset($this->cache[$uid]) && $this->cache[$uid] !== false) {
-			$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
-			$result = $query->execute(array($uid));
 
-			if ($result === false) {
-				\OCP\Util::writeLog('core', OC_DB::getErrorMessage(), \OCP\Util::ERROR);
-				return false;
-			}
+			$qb = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+			$result = $qb->select(['uid', 'displayname'])
+				->from('users')
+				->where($qb->expr()->eq($qb->createFunction('LOWER(`uid`)'), $qb->createNamedParameter(strtolower($uid))))
+				->execute();
 
 			// "uid" is primary key, so there can only be a single result
-			if ($row = $result->fetchRow()) {
+			if ( $row = $result->fetch() ) {
+				if ($unexpected = $result->fetch()) {
+					\OC::$server->getLogger()->error("Too many rows for " . __METHOD__ . "($uid):" . print_r($unexpected, true), ['app' => 'debug']);
+					throw new \LengthException('An internal error occurred, please try again');
+				}
+				if ( !array_key_exists('uid', $row) || !array_key_exists('displayname', $row) ) {
+					\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($uid):".print_r($row, true), ['app'=>'debug']);
+					throw new \OutOfBoundsException('An internal error occured, please try again');
+				}
 				$this->cache[$uid]['uid'] = $row['uid'];
 				$this->cache[$uid]['displayname'] = $row['displayname'];
 			} else {
@@ -265,6 +284,10 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 		$result = $query->execute($parameters);
 		$users = array();
 		while ($row = $result->fetchRow()) {
+			if ( !array_key_exists('uid', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($search, $limit, $offset):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$users[] = $row['uid'];
 		}
 		return $users;

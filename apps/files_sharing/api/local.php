@@ -635,6 +635,10 @@ class Local {
 			return null;
 		}
 		if ($share = $result->fetchRow()) {
+			if ($unexpected = $result->fetchRow()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($shareID):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
 			return $share;
 		}
 

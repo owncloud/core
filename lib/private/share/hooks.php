@@ -45,6 +45,10 @@ class Hooks extends \OC\Share\Constants {
 		$query = \OC_DB::prepare('SELECT `id` FROM `*PREFIX*share` WHERE `uid_owner` = ?');
 		$result = $query->execute(array($arguments['uid']));
 		while ($item = $result->fetchRow()) {
+			if ( !array_key_exists('id', $item) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."(".print_r($arguments, true)."):".print_r($item, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			Helper::delete($item['id']);
 		}
 	}
@@ -171,6 +175,10 @@ class Hooks extends \OC\Share\Constants {
 		$result = \OC_DB::executeAudited($sql, array(self::SHARE_TYPE_GROUP, $arguments['gid'],
 			self::$shareTypeGroupUserUnique, $arguments['uid']));
 		while ($item = $result->fetchRow()) {
+			if ( !array_key_exists('id', $item) || !array_key_exists('share_type', $item) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."(".print_r($arguments, true)."):".print_r($item, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			if ($item['share_type'] == self::SHARE_TYPE_GROUP) {
 				// Delete all reshares by this user of the group share
 				Helper::delete($item['id'], true, $arguments['uid']);
@@ -188,6 +196,10 @@ class Hooks extends \OC\Share\Constants {
 		$sql = 'SELECT `id` FROM `*PREFIX*share` WHERE `share_type` = ? AND `share_with` = ?';
 		$result = \OC_DB::executeAudited($sql, array(self::SHARE_TYPE_GROUP, $arguments['gid']));
 		while ($item = $result->fetchRow()) {
+			if ( !array_key_exists('id', $item) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."(".print_r($arguments, true)."):".print_r($item, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			Helper::delete($item['id']);
 		}
 	}

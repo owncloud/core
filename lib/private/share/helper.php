@@ -111,6 +111,17 @@ class Helper extends \OC\Share\Constants {
 			// Reset parents array, only go through loop again if items are found
 			$parents = array();
 			while ($item = $result->fetchRow()) {
+				if (   !array_key_exists('id', $item)
+					|| !array_key_exists('share_with', $item)
+					|| !array_key_exists('item_type', $item)
+					|| !array_key_exists('share_type', $item)
+					|| !array_key_exists('item_target', $item)
+					|| !array_key_exists('file_target', $item)
+					|| !array_key_exists('parent', $item)
+				) {
+					\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($parent, $excludeParent, $uidOwner, $newParent, $excludeGroupChildren):".print_r($item, true), ['app'=>'debug']);
+					throw new \OutOfBoundsException('An internal error occurred, please try again');
+				}
 				$tmpItem = array(
 					'id' => $item['id'],
 					'shareWith' => $item['share_with'],

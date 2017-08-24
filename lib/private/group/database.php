@@ -220,6 +220,10 @@ class OC_Group_Database extends OC_Group_Backend {
 
 		$groups = [];
 		while( $row = $cursor->fetch()) {
+			if ( !array_key_exists('gid', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($uid):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$groups[] = $row["gid"];
 			$this->groupCache[$row['gid']] = $row['gid'];
 		}
@@ -249,6 +253,10 @@ class OC_Group_Database extends OC_Group_Backend {
 		$result = $stmt->execute($parameters);
 		$groups = array();
 		while ($row = $result->fetchRow()) {
+			if ( !array_key_exists('gid', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($search, $limit, $offset):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$groups[] = $row['gid'];
 		}
 		return $groups;
@@ -272,14 +280,21 @@ class OC_Group_Database extends OC_Group_Backend {
 			->from('groups')
 			->where($qb->expr()->eq('gid', $qb->createNamedParameter($gid)))
 			->execute();
-		$result = $cursor->fetch();
-		$cursor->closeCursor();
 
-		if ($result !== false) {
+		if ($row = $cursor->fetch()) {
+			if ($unexpected = $cursor->fetch()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($gid):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if (!array_key_exists('gid', $row)) {
+				\OC::$server->getLogger()->error("Unexpected row for " . __METHOD__ . "($gid):" . print_r($row, true), ['app' => 'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$this->groupCache[$gid] = $gid;
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	/**
@@ -304,6 +319,10 @@ class OC_Group_Database extends OC_Group_Backend {
 		$result = $stmt->execute($parameters);
 		$users = array();
 		while ($row = $result->fetchRow()) {
+			if ( !array_key_exists('uid', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($gid, $search, $limit, $offset):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$users[] = $row['uid'];
 		}
 		return $users;

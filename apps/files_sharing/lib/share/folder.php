@@ -68,10 +68,19 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 	private function getParentId($child) {
 		$query = \OCP\DB::prepare('SELECT `parent` FROM `*PREFIX*filecache` WHERE `fileid` = ?');
 		$result = $query->execute(array($child));
-		$row = $result->fetchRow();
-		$parent = ($row) ? $row['parent'] : null;
+		if ($row = $result->fetchRow()) {
+			if ($unexpected = $result->fetchRow()) {
+				\OC::$server->getLogger()->error("Too many rows for " . __METHOD__ . "($child):" . print_r($unexpected, true), ['app' => 'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if (!array_key_exists('parent', $row)) {
+				\OC::$server->getLogger()->error("Unexpected row for " . __METHOD__ . "($child):" . print_r($row, true), ['app' => 'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
+			return $row['parent'];
+		}
 
-		return $parent;
+		return null;
 	}
 
 	public function getChildren($itemSource) {
@@ -80,6 +89,14 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 		$query = \OCP\DB::prepare('SELECT `id` FROM `*PREFIX*mimetypes` WHERE `mimetype` = ?');
 		$result = $query->execute(array('httpd/unix-directory'));
 		if ($row = $result->fetchRow()) {
+			if ($unexpected = $result->fetchRow()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($itemSource):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('id', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($itemSource)#1:".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$mimetype = $row['id'];
 		} else {
 			$mimetype = -1;
@@ -91,6 +108,10 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 			$result = $query->execute();
 			$parents = array();
 			while ($file = $result->fetchRow()) {
+				if ( !array_key_exists('fileid', $file) || !array_key_exists('name', $file) || !array_key_exists('mimetype', $file) ) {
+					\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($itemSource)#2:".print_r($file, true), ['app'=>'debug']);
+					throw new \OutOfBoundsException('An internal error occured, please try again');
+				}
 				$children[] = array('source' => $file['fileid'], 'file_path' => $file['name']);
 				// If a child folder is found look inside it
 				if ($file['mimetype'] == $mimetype) {

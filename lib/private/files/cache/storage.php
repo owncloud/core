@@ -151,7 +151,19 @@ class Storage {
 	private static function getStorageByIdFromDb($storageId) {
 		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
 		$result = \OC_DB::executeAudited($sql, array($storageId));
-		return $result->fetchRow();
+		if($row = $result->fetchRow()) {
+			if ($unexpected = $result->fetchRow()) {
+				\OC::$server->getLogger()->error("Too many rows for " . __METHOD__ . "($storageId):" . print_r($unexpected, true), ['app' => 'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if (!array_key_exists('id', $row) || !array_key_exists('numeric_id', $row)) {
+				\OC::$server->getLogger()->error("Unexpected row for " . __METHOD__ . "($storageId):" . print_r($row, true), ['app' => 'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
+			return $row;
+		} else {
+			return null;
+		}
 	}
 
 	private static function unsetCache($storageId) {
@@ -196,6 +208,14 @@ class Storage {
 		$sql = 'SELECT `id` FROM `*PREFIX*storages` WHERE `numeric_id` = ?';
 		$result = \OC_DB::executeAudited($sql, array($numericId));
 		if ($row = $result->fetchRow()) {
+			if ($unexpected = $result->fetchRow()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($numericId):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if (!array_key_exists('id', $row)) {
+				\OC::$server->getLogger()->error("Unexpected row for " . __METHOD__ . "($numericId):" . print_r($row, true), ['app' => 'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			return $row['id'];
 		} else {
 			return null;

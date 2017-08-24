@@ -340,6 +340,10 @@ class AllConfig implements \OCP\IConfig {
 		$query = 'SELECT `appid`, `configkey`, `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?';
 		$result = $this->connection->executeQuery($query, array($userId));
 		while ($row = $result->fetch()) {
+			if ( !array_key_exists('appid', $row) || !array_key_exists('configkey', $row) || !array_key_exists('configvalue', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($userId):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$appId = $row['appid'];
 			if (!isset($data[$appId])) {
 				$data[$appId] = array();

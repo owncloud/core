@@ -213,6 +213,10 @@ class Server2Server {
 		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share_external` WHERE `remote_id` = ? AND `share_token` = ?');
 		$query->execute(array($id, $token));
 		$share = $query->fetchRow();
+		if ($unexpected = $query->fetchRow()) {
+			\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."(".print_r($params, true)."):".print_r($unexpected, true), ['app'=>'debug']);
+			throw new \LengthException('An internal error occurred, please try again');
+		}
 
 		if ($token && $id && !empty($share)) {
 
@@ -261,8 +265,12 @@ class Server2Server {
 	 */
 	private function getShare($id, $token) {
 		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `id` = ? AND `token` = ? AND `share_type` = ?');
-		$query->execute(array($id, $token, \OCP\Share::SHARE_TYPE_REMOTE));
-		$share = $query->fetchRow();
+		$result = $query->execute(array($id, $token, \OCP\Share::SHARE_TYPE_REMOTE));
+		$share = $result->fetchRow();
+		if ($unexpected = $result->fetchRow()) {
+			\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($id, $token):".print_r($unexpected, true), ['app'=>'debug']);
+			throw new \LengthException('An internal error occurred, please try again');
+		}
 
 		return $share;
 	}
