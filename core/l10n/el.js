@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "Δημιουργία δημόσιου συνδέσμου",
     "Edit" : "Επεξεργασία",
     "Remove" : "Αφαίρεση",
-    "Click to copy to clipboard" : "Κάντε κλικ για αντιγραφή στο πρόχειρο",
+    "Copy to clipboard" : "Αντιγραφή στο πρόχειρο",
     "Social share" : "Διαμοιρασμός σε κοινωνικά δίκτυα",
     "There are currently no link shares, you can create one" : "Δεν υπάρχουν προς στιγμήν σύνδεσμοι κοινόχρηστων, μπορείτε να δημιουργήσετε έναν",
     "Anyone with the link has access to the file/folder" : "Οποιοσδήποτε με τη σύνδεση έχει πρόσβαση στο αρχείο / φάκελο",

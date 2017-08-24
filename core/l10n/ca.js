@@ -117,6 +117,7 @@ OC.L10N.register(
     "Link" : "Enllaç",
     "Edit" : "Editar",
     "Remove" : "Elimina",
+    "Copy to clipboard" : "Copia al porta-papers",
     "Choose a password for the public link" : "Escolliu una contrasenya per l'enllaç públic",
     "Filename" : "Nom del fitxer",
     "Password" : "Contrasenya",

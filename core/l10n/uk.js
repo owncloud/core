@@ -138,6 +138,7 @@ OC.L10N.register(
     "Link" : "Посилання",
     "Edit" : "Редагувати",
     "Remove" : "Видалити",
+    "Copy to clipboard" : "Копіювати в буфер обміну",
     "Anyone with the link has access to the file/folder" : "Будь хто з цім посиланням має доступ до файлу/теки",
     "Copied!" : "Скопійовано!",
     "Not supported!" : "Не підтримується!",

@@ -1,4 +1,5 @@
 { "translations": {
+    "Server added to the list of trusted ownClouds" : "Servidor añadido a la lista de confianza de ownCloud",
     "Add" : "Agregar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

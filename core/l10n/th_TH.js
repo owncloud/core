@@ -153,7 +153,6 @@ OC.L10N.register(
     "Create public link" : "สร้างลิงก์สาธารณะ",
     "Edit" : "แก้ไข",
     "Remove" : "ลบออก",
-    "Click to copy to clipboard" : "คลิกเพื่อคัดลอกไปยังคลิปบอร์ด",
     "Social share" : "แชร์ไปยังเครือข่ายทางสังคม",
     "There are currently no link shares, you can create one" : "ขณะนี้ยังไม่มีการแชร์ลิงก์ใดๆ",
     "Anyone with the link has access to the file/folder" : "ทุกคนที่มีลิงก์สามารถเข้าถึงไฟล์หรือโฟลเดอร์ได้",

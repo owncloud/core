@@ -94,6 +94,7 @@ OC.L10N.register(
     "Link" : "Ligilo",
     "Edit" : "Redakti",
     "Remove" : "Forigi",
+    "Copy to clipboard" : "Kopii al tondejo",
     "Choose a password for the public link" : "Elektu pasvorton por la publika ligilo",
     "Filename" : "Dosiernomo",
     "Password" : "Pasvorto",

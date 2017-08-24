@@ -126,6 +126,7 @@ OC.L10N.register(
     "Link" : "Tautan",
     "Edit" : "Sunting",
     "Remove" : "Hapus",
+    "Copy to clipboard" : "Salin ke klipbor",
     "Anyone with the link has access to the file/folder" : "Siapapun yang mengetahui tautan memiliki akses ke berkas/ folder",
     "Choose a password for the public link" : "Tetapkan sandi untuk tautan publik",
     "Filename" : "Nama berkas",

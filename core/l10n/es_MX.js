@@ -98,6 +98,7 @@ OC.L10N.register(
     "Link" : "Enlace",
     "Edit" : "Editar",
     "Remove" : "Borrar",
+    "Copy to clipboard" : "Copiar al portapapeles",
     "Choose a password for the public link" : "Establece una contraseña para el enlace público",
     "Filename" : "Nombre de archivo",
     "Password" : "Contraseña",

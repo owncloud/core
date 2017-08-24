@@ -98,6 +98,7 @@ OC.L10N.register(
     "Link" : "Esteka",
     "Edit" : "Editatu",
     "Remove" : "Ezabatu",
+    "Copy to clipboard" : "Kopiatu arbelera",
     "Choose a password for the public link" : "Aukeratu pasahitz bat esteka publikorako",
     "Filename" : "Fitxategiaren izena",
     "Password" : "Pasahitza",

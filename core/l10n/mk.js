@@ -117,6 +117,7 @@ OC.L10N.register(
     "Link" : "Линк",
     "Edit" : "Уреди",
     "Remove" : "Отстрани",
+    "Copy to clipboard" : "Копирај во clipboard",
     "Choose a password for the public link" : "Одбери лозинка за јавниот линк",
     "Password" : "Лозинка",
     "Name" : "Име",

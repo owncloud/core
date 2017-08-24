@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "External storage" : "Almacenamiento externo",
     "Personal" : "Personal",
+    "System" : "Sistema",
     "Grant access" : "Permitir acceso",
     "Saved" : "Guardado",
     "Username" : "Nombre de usuario",

@@ -146,7 +146,7 @@ OC.L10N.register(
     "Create public link" : "Utwórz link publiczny",
     "Edit" : "Edytuj",
     "Remove" : "Usuń",
-    "Click to copy to clipboard" : "Kliknij żeby skopiować do schowka",
+    "Copy to clipboard" : "Skopiuj do schowka",
     "Social share" : "Społeczny udział",
     "There are currently no link shares, you can create one" : "Aktualnie brak udostępnianych linków, możesz stworzyć jakiś.",
     "Anyone with the link has access to the file/folder" : "Każdy posiadający link ma dostęp do pliku/katalogu.",

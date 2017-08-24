@@ -10,6 +10,7 @@ OC.L10N.register(
     "test email settings" : "Configuración de correo de prueba.",
     "Email sent" : "e-mail mandado",
     "You need to set your user email before being able to send test emails." : "Necesita especificar el usuario de correo electrónico antes de poder enviar correos electrónicos de prueba.",
+    "Invalid mail address" : "Dirección de correo inválida",
     "Your full name has been changed." : "Su nombre completo ha sido cambiado.",
     "Unable to change full name" : "Imposible cambiar el nombre completo",
     "APCu" : "APCu",

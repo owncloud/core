@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "Skapa publik länk",
     "Edit" : "Ändra",
     "Remove" : "Radera",
-    "Click to copy to clipboard" : "Tryck för att kopiera till urklipp",
+    "Copy to clipboard" : "Kopiera till urklippshanteraren",
     "Social share" : "Social delning",
     "There are currently no link shares, you can create one" : "Det finns inga länkdelningar, men du kan skapa en",
     "Anyone with the link has access to the file/folder" : "Vem som helst med länken kan komma åt filen eller mappen",

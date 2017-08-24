@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "공개 링크 만들기",
     "Edit" : "편집",
     "Remove" : "삭제",
-    "Click to copy to clipboard" : "클립보드에 복사하려면 누르십시오",
+    "Copy to clipboard" : "클립보드로 복사",
     "Social share" : "소셜 공유",
     "There are currently no link shares, you can create one" : "링크 공유가 없습니다. 만들 수 있습니다",
     "Anyone with the link has access to the file/folder" : "링크가 있는 모든 사용자는 파일/폴더에 접근할 수 있습니다",

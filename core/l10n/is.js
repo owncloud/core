@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "Búa til opinberan tengil",
     "Edit" : "Breyta",
     "Remove" : "Fjarlægja",
-    "Click to copy to clipboard" : "Smelltu til að afrita á klippispjald",
+    "Copy to clipboard" : "Afrita á klippispjald",
     "Social share" : "Deiling á samfélagsmiðlum",
     "There are currently no link shares, you can create one" : "Það eru engir tenglar á sameignir, þú getur búið til slíkt",
     "Anyone with the link has access to the file/folder" : "Hver sá sem hefur aðgang að skránni/möppunni",

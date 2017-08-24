@@ -117,6 +117,7 @@ OC.L10N.register(
     "Link" : "Веза",
     "Edit" : "Уреди",
     "Remove" : "Уклони",
+    "Copy to clipboard" : "Копирај у клипборд",
     "Choose a password for the public link" : "Одредите лозинку за јавну везу",
     "Filename" : "Назив фајла",
     "Password" : "Лозинка",

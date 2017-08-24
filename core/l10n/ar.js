@@ -84,6 +84,7 @@ OC.L10N.register(
     "Link" : "الرابط",
     "Edit" : "تعديل",
     "Remove" : "حذف",
+    "Copy to clipboard" : "نسخ إلى الحافظة",
     "Choose a password for the public link" : "اختر كلمة مرور للرابط العام",
     "Filename" : "اسم الملف",
     "Password" : "كلمة المرور",

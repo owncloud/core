@@ -1,6 +1,8 @@
 OC.L10N.register(
     "core",
     {
+    "Please select a file." : "Por favor seleccione un archivo.",
+    "File is too big" : "El archivo es demasiado grande",
     "No image or file provided" : "No se ha proveído de una imágen o archivo.",
     "Unknown filetype" : "Tipo de archivo desconocido",
     "Invalid image" : "Imagen inválida",
@@ -123,6 +125,9 @@ OC.L10N.register(
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "¡Hola!\n\nsólo te quería decir que %s acaba de compartir %s contigo.\nVerlo: %s\n\n",
     "The share will expire on %s." : "El compartir expirará en %s.",
     "Cheers!" : "¡Saludos!",
+    "Technical details" : "Detalles técnicos",
+    "Remote Address: %s" : "Dirección Remota: %s",
+    "Request ID: %s" : "ID requiriente: %s",
     "Create an <strong>admin account</strong>" : "Crear una <strong>cuenta de administrador</strong>",
     "Username" : "Nombre de usuario",
     "Data folder" : "Directorio de almacenamiento",

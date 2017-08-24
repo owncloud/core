@@ -144,6 +144,7 @@ OC.L10N.register(
     "Link" : "Link",
     "Edit" : "Edit",
     "Remove" : "Remove",
+    "Copy to clipboard" : "Copy to clipboard",
     "Copied!" : "Copied!",
     "Not supported!" : "Not supported!",
     "Press ⌘-C to copy." : "Press ⌘-C to copy.",

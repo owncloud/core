@@ -153,7 +153,7 @@ OC.L10N.register(
     "Create public link" : "公開リンクを作成",
     "Edit" : "編集",
     "Remove" : "削除",
-    "Click to copy to clipboard" : "クリックしてクリップボードにコピー",
+    "Copy to clipboard" : "クリップボードにコピー",
     "Social share" : "共有",
     "There are currently no link shares, you can create one" : "共有可能なリンクを作成できます",
     "Anyone with the link has access to the file/folder" : "リンクを知っている人はファイル/フォルダにアクセスできます",

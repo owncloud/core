@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "Krijoni lidhje publike",
     "Edit" : "Përpunoni",
     "Remove" : "Hiqe",
-    "Click to copy to clipboard" : "Klikoni që të kopjohet në të papastër",
+    "Copy to clipboard" : "Kopjoje në të papastër",
     "Social share" : "Ndarje në rrjete shoqërore",
     "There are currently no link shares, you can create one" : "Deri këtu s’ka ndarje lidhjesh, mund të krijoni një të tillë",
     "Anyone with the link has access to the file/folder" : "Cilido që zotëron lidhjen, ka hyrje te kartela/dosja",

@@ -144,6 +144,7 @@ OC.L10N.register(
     "Link" : "Връзка",
     "Edit" : "Редакция",
     "Remove" : "Премахване",
+    "Copy to clipboard" : "Копирай",
     "Copied!" : "Копирано!",
     "Not supported!" : "Не се поддържа!",
     "Press ⌘-C to copy." : "Натиснете ⌘-C, за да копирате.",

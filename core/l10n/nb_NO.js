@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "Opprett offentlig lenke",
     "Edit" : "Endre",
     "Remove" : "Fjern",
-    "Click to copy to clipboard" : "Klikk for å kopiere til utklippstavlen",
+    "Copy to clipboard" : "Kopier til utklippstavlen",
     "Social share" : "Deling på sosiale nettverk",
     "There are currently no link shares, you can create one" : "Det er for øyeblikket ingen lenke-delinger. Du kan opprette en",
     "Anyone with the link has access to the file/folder" : "Alle med linken har tilgang til filen/mappen",

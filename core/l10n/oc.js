@@ -133,6 +133,7 @@ OC.L10N.register(
     "Link" : "Ligam",
     "Edit" : "Modificar",
     "Remove" : "Suprimir",
+    "Copy to clipboard" : "Copiar dins lo quichapapièrs",
     "Copied!" : "Copiat !",
     "Not supported!" : "Pas suportat !",
     "Press ⌘-C to copy." : "Quichar sus ⌘-C per copiar.",

@@ -48,6 +48,7 @@ OC.L10N.register(
     "Error" : "خاتالىق",
     "Edit" : "تەھرىر",
     "Remove" : "چىقىرىۋەت",
+    "Copy to clipboard" : "چاپلاش تاختىسىغا كۆچۈر",
     "Password" : "ئىم",
     "Name" : "ئاتى",
     "Save" : "ساقلا",

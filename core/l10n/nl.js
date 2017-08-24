@@ -153,7 +153,7 @@ OC.L10N.register(
     "Create public link" : "Creëer openbare link",
     "Edit" : "Bewerk",
     "Remove" : "Verwijder",
-    "Click to copy to clipboard" : "Klik om te kopiëren naar klembord",
+    "Copy to clipboard" : "Kopiëren naar klembord",
     "Social share" : "Sociaal delen",
     "There are currently no link shares, you can create one" : "Er zijn momenteel geen gedeelde links, u kunt er een aanmaken",
     "Anyone with the link has access to the file/folder" : "Iedereen met de link heeft toegang tot het bestand of de map",

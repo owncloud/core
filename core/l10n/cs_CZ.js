@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "Vytvoření veřejného odkazu",
     "Edit" : "Upravit",
     "Remove" : "Odstranit",
-    "Click to copy to clipboard" : "Zkopírovat do schránky",
+    "Copy to clipboard" : "Zkopírovat do schránky",
     "Social share" : "Sociální sdílení",
     "There are currently no link shares, you can create one" : "Momentálně zde nejsou sdílené odkazy, můžete jeden vytvořit",
     "Anyone with the link has access to the file/folder" : "Kdokoliv, kdo má odkaz, může přistupovat k tomuto souboru/složce",

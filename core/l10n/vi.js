@@ -76,6 +76,7 @@ OC.L10N.register(
     "Expiration date" : "Ngày kết thúc",
     "Edit" : "Sửa",
     "Remove" : "Xóa",
+    "Copy to clipboard" : "Sao chép vào clipboard",
     "Password" : "Mật khẩu",
     "Name" : "Tên",
     "Save" : "Lưu",

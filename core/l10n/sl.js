@@ -153,7 +153,7 @@ OC.L10N.register(
     "Create public link" : "Ustvari javno povezavo",
     "Edit" : "Uredi",
     "Remove" : "Odstrani",
-    "Click to copy to clipboard" : "Kliknite za kopiranje v odložišče",
+    "Copy to clipboard" : "Kopiraj v odložišče",
     "Anyone with the link has access to the file/folder" : "Vsak, ki ima povezavo ima dostop do datoteke ali mape",
     "Copied!" : "Kopirano!",
     "Not supported!" : "Možnost ni podprta!",

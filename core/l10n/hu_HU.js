@@ -144,6 +144,7 @@ OC.L10N.register(
     "Link" : "Hivatkozás",
     "Edit" : "Szerkesztés",
     "Remove" : "Eltávolítás",
+    "Copy to clipboard" : "Másold a vágólapra",
     "Choose a password for the public link" : "Válasszon egy jelszót a nyilvános linkhez",
     "Filename" : "Fájlnév",
     "Password" : "Jelszó",

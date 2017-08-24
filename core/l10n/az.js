@@ -64,6 +64,7 @@ OC.L10N.register(
     "Expiration" : "Vaxtın bitməsi",
     "Edit" : "Dəyişiklik et",
     "Remove" : "Sil",
+    "Copy to clipboard" : "Buferə nüsxələ",
     "Password" : "Şifrə",
     "Name" : "Ad",
     "Save" : "Saxla",

@@ -136,6 +136,7 @@ OC.L10N.register(
     "Link" : "Linkki",
     "Edit" : "Muokkaa",
     "Remove" : "Poista",
+    "Copy to clipboard" : "Kopioi leikepöydälle",
     "Copied!" : "Kopioitu!",
     "Not supported!" : "Ei tuettu!",
     "Press ⌘-C to copy." : "Paina ⌘-C kopioidaksesi.",

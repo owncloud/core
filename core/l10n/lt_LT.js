@@ -111,6 +111,7 @@ OC.L10N.register(
     "Link" : "Nuoroda",
     "Edit" : "Redaguoti",
     "Remove" : "Pašalinti",
+    "Copy to clipboard" : "Kopijuoti į talpyklę",
     "Copied!" : "Nukopijuota!",
     "Choose a password for the public link" : "Viešos nuorodos slaptažodis",
     "Password required" : "Reikalingas slaptažodis",

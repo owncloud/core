@@ -131,6 +131,7 @@ OC.L10N.register(
     "Link" : "連結",
     "Edit" : "編輯",
     "Remove" : "移除",
+    "Copy to clipboard" : "複製到剪貼簿",
     "Choose a password for the public link" : "為公開連結選一個密碼",
     "Filename" : "檔案名稱",
     "Password" : "密碼",

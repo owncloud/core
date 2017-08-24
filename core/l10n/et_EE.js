@@ -134,7 +134,7 @@ OC.L10N.register(
     "Create public link" : "Loo avalik link",
     "Edit" : "Muuda",
     "Remove" : "Eemalda",
-    "Click to copy to clipboard" : "Kliki, et link lõikelauale kopeerida",
+    "Copy to clipboard" : "Kopeeri lõikepuhvrisse",
     "Social share" : "Sotsiaalvõrgustikus jagamine",
     "Copied!" : "Kopeeritud!",
     "Not supported!" : "Pole toetatud!",

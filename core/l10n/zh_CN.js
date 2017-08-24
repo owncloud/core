@@ -150,7 +150,7 @@ OC.L10N.register(
     "Create public link" : "创建公共链接",
     "Edit" : "编辑",
     "Remove" : "移除",
-    "Click to copy to clipboard" : "点击复制到剪贴板 ",
+    "Copy to clipboard" : "复制到剪贴板 ",
     "Social share" : "社交分享",
     "There are currently no link shares, you can create one" : "目前没有共享链接，您可以创建一个",
     "Anyone with the link has access to the file/folder" : "任何查看此链接的人都可以访问文件、文件夹",

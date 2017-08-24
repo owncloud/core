@@ -67,6 +67,7 @@ OC.L10N.register(
     "Expiration date" : "ពេល​ផុត​កំណត់",
     "Edit" : "កែប្រែ",
     "Remove" : "ដកចេញ",
+    "Copy to clipboard" : "ចម្លង​ទៅ​ឃ្លីបបត",
     "Password" : "ពាក្យសម្ងាត់",
     "Name" : "ឈ្មោះ",
     "Save" : "រក្សាទុក",

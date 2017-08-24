@@ -144,6 +144,7 @@ OC.L10N.register(
     "Link" : "Enllaz",
     "Edit" : "Editar",
     "Remove" : "Desaniciar",
+    "Copy to clipboard" : "Copiar al cartafueyu",
     "Copied!" : "¡Copiáu!",
     "Not supported!" : "¡Non soportáu!",
     "Press ⌘-C to copy." : "Calca ⌘-C pa copiar",

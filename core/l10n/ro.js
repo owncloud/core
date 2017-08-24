@@ -122,6 +122,7 @@ OC.L10N.register(
     "Link" : "Legătură",
     "Edit" : "Editează",
     "Remove" : "Șterge",
+    "Copy to clipboard" : "Copiază în clipboard",
     "Choose a password for the public link" : "Alege o parolă pentru acest link public",
     "Filename" : "Nume fișier",
     "Password" : "Parolă",

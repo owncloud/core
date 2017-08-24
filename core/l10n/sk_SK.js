@@ -144,6 +144,7 @@ OC.L10N.register(
     "Link" : "Odkaz",
     "Edit" : "Upraviť",
     "Remove" : "Odobrať",
+    "Copy to clipboard" : "Skopírovať do schránky",
     "Copied!" : "Skopírované!",
     "Not supported!" : "Nepodporované!",
     "Press ⌘-C to copy." : "Skopírujte stlačením ⌘-C.",

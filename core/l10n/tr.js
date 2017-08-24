@@ -149,7 +149,6 @@ OC.L10N.register(
     "Create public link" : "Herkese açık bağlantı oluştur",
     "Edit" : "Düzenle",
     "Remove" : "Kaldır",
-    "Click to copy to clipboard" : "Panoya kopyalamak için tıkla",
     "Social share" : "Sosyal paylaşım",
     "There are currently no link shares, you can create one" : "Şu anda paylaşım bağlantısı yok, bir tane oluşturabilirsiniz",
     "Anyone with the link has access to the file/folder" : "Dosya/klasör linkine sahip Herkes erişebilir ",
