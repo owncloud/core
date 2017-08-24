@@ -61,7 +61,7 @@ class Scan extends Base {
 
 		$this
 			->setName('files:scan')
-			->setDescription('rescan filesystem')
+			->setDescription('Scans the filesystem for new files and updates the file cache accordingly.')
 			->addArgument(
 				'user_id',
 				InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
