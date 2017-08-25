@@ -1,7 +1,9 @@
 OC.L10N.register(
     "files",
     {
+    "Unknown error" : "Onbekende fout",
     "Close" : "Sluit",
+    "Favorites" : "Gunstelinge",
     "..." : "…",
     "Download" : "Laai Af",
     "Rename" : "Hernoem",
@@ -9,8 +11,16 @@ OC.L10N.register(
     "Unshare" : "Deel terug neem",
     "Files" : "Lêers",
     "Invalid path" : "Ongeldige pad",
+    "This operation is forbidden" : "Hierdie bewerking is verbode",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Hierdie gids is onbeskikbaar, gaan die logs na of kontak die stelseladministrateur",
+    "Could not move \"{file}\", target exists" : "Kon nie “{file}” skuif nie, teiken bestaan",
+    "Could not move \"{file}\"" : "Kon nie “{file}” skuif nie",
+    "Could not create file \"{file}\"" : "Kon nie lêer “{file}” skep nie",
+    "Could not create file \"{file}\" because it already exists" : "Kon nie ’n lêer “{file}” skep nie omdat dit reeds bestaan",
     "Name" : "Naam",
     "Size" : "Grootte",
+    "New" : "Nuut",
+    "\"{name}\" is an invalid file name." : "“{naam}” is ’n ongeldige lêernaam.",
     "File name cannot be empty." : "Lêernaam mag nie leeg wees nie.",
     "Path" : "Pad",
     "Favorite" : "Gunsteling",
@@ -18,6 +28,10 @@ OC.L10N.register(
     "New folder" : "Nuwe vouer",
     "Upload" : "Laai Op",
     "Upload (max. %s)" : "Laai op (maks. %s)",
-    "Settings" : "Instellings"
+    "Settings" : "Instellings",
+    "No entries found in this folder" : "Geen inskrywings in hierdie vouer gevind",
+    "Select all" : "Kies alle",
+    "Text file" : "Tekslêer",
+    "New text file.txt" : "Nuwe tekslêer.txt"
 },
 "nplurals=2; plural=(n != 1);");

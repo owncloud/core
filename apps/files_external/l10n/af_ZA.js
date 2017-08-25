@@ -7,6 +7,7 @@ OC.L10N.register(
     "Password" : "Wagwoord",
     "Save" : "Bewaar",
     "Port" : "Poort",
+    "URL" : "Bronadres",
     "Local" : "Lokaal",
     "Location" : "Ligging",
     "Host" : "Gasheer",

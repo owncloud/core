@@ -153,6 +153,7 @@ OC.L10N.register(
     "Create public link" : "יצירת קישור ציבורי",
     "Edit" : "עריכה",
     "Remove" : "הסרה",
+    "Copy to clipboard" : "העתקה ללוח הגזירים",
     "Social share" : "שיתוף לרשת חברתית",
     "There are currently no link shares, you can create one" : "אין כרגע שיתופי קישורים, ניתן ליצור קישור",
     "Anyone with the link has access to the file/folder" : "כל מי שיש בידיו את הקישור יכול להיכנס לקובץ/תיקייה",

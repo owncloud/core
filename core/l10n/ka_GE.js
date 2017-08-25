@@ -57,6 +57,7 @@ OC.L10N.register(
     "Expiration date" : "ვადის გასვლის დრო",
     "Edit" : "რედაქტირება",
     "Remove" : "წაშლა",
+    "Copy to clipboard" : "კოპირებულია ქლიპბორდში ",
     "Password" : "პაროლი",
     "Name" : "სახელი",
     "Save" : "შენახვა",

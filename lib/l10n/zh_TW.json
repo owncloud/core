@@ -67,7 +67,6 @@
     "You need to enter either an existing account or the administrator." : "您必須輸入一個現有的帳號或管理員帳號。",
     "Offending command was: \"%s\", name: %s, password: %s" : "有問題的指令是：\"%s\" ，使用者：\"%s\"，密碼：\"%s\"",
     "PostgreSQL username and/or password not valid" : "PostgreSQL 用戶名和/或密碼無效",
-    "Mac OS X is not supported and %s will not work properly on this platform. Use it at your own risk! " : "不支援 Mac OS X 而且 %s 在這個平台上面無法正常運作，請自行衡量風險！",
     "For the best results, please consider using a GNU/Linux server instead." : "請考慮使用 GNU/Linux 伺服器以取得最好的效果",
     "It seems that this %s instance is running on a 32-bit PHP environment and the open_basedir has been configured in php.ini. This will lead to problems with files over 4 GB and is highly discouraged." : "看起來 %s 是在32位元的PHP環境運行，而php.ini 有設置 open_basedir這個參數，當檔案大小超過4GB時，可能會發生問題，強烈建議您更改設定。",
     "Please remove the open_basedir setting within your php.ini or switch to 64-bit PHP." : "請移除 php.ini 中的 open_basedir 設定，或是改用64位元的PHP",

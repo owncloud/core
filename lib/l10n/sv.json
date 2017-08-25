@@ -79,7 +79,6 @@
     "You need to enter either an existing account or the administrator." : "Du måste antingen ange ett befintligt konto eller administratör.",
     "Offending command was: \"%s\", name: %s, password: %s" : "Det felande kommandot var: \"%s\", name: %s, password: %s",
     "PostgreSQL username and/or password not valid" : "PostgreSQL-användarnamnet och/eller lösenordet är felaktigt",
-    "Mac OS X is not supported and %s will not work properly on this platform. Use it at your own risk! " : "Mac OS X stöds inte och %s kommer inte att fungera korrekt på denna plattform. Använd på egen risk!",
     "For the best results, please consider using a GNU/Linux server instead." : "För bästa resultat, överväg att använda en GNU/Linux server istället.",
     "Please remove the open_basedir setting within your php.ini or switch to 64-bit PHP." : "Ta bort inställningen open_basedir i din php.ini-fil eller byt till 64-bitars PHP.",
     "Set an admin username." : "Ange ett användarnamn för administratören.",
