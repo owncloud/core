@@ -48,7 +48,16 @@ class FilesContext extends RawMinkContext implements Context
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
 
-	
+
+	/**
+	 * @When the files page is reloaded
+	 */
+	public function theFilesPageIsReloaded()
+	{
+		$this->getSession()->reload();
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+	}
+
 	/**
 	 * @When I create a folder with the name :name
 	 * 
@@ -57,6 +66,7 @@ class FilesContext extends RawMinkContext implements Context
 	 */
 	public function createAFolder($name) {
 		$this->filesPage->createFolder($name);
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
 	/**
 	 * @Given the list of files\/folders does not fit in one browser page
@@ -83,8 +93,7 @@ class FilesContext extends RawMinkContext implements Context
 				$this->filesPage->findFileActionsMenuBtnByNo($itemsCount)
 			);
 		}
-		$this->getSession()->reload();
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->theFilesPageIsReloaded();
 	}
 
 	/**
