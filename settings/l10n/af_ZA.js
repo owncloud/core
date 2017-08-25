@@ -9,6 +9,7 @@ OC.L10N.register(
     "All" : "Alle",
     "Delete" : "Skrap",
     "So-so password" : "So-so wagwoord",
+    "Groups" : "Groepe",
     "never" : "nooit",
     "Cheers!" : "Groete!",
     "days" : "dae",

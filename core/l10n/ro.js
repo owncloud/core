@@ -10,6 +10,7 @@ OC.L10N.register(
     "An error occurred. Please contact your admin." : "A apărut o eroare. Te rugăm să contactezi administratorul.",
     "No temporary profile picture available, try again" : "Nu este disponibilă nicio imagine temporară a profilului, încearcă din nou",
     "Crop is not square" : "Selecția nu este pătrată",
+    "%s password changed successfully" : "parola %s a fost schimbată cu succes",
     "%s password reset" : "%s resetare parola",
     "Couldn't send reset email. Please contact your administrator." : "Expedierea email-ului de resetare a eşuat. Vă rugăm să contactaţi administratorul dvs.",
     "Couldn't send mail to following users: %s " : "Nu s-a putut trimite mesajul către următorii utilizatori: %s",

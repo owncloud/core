@@ -16,6 +16,8 @@ OC.L10N.register(
     "Saved" : "Lagret",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "Deaktivering av ekstern lagring vil koble fra alle eksterne lagre for alle brukere. Er du sikker?",
     "Disable external storage" : "Deaktiver ekstern lagring",
+    "No URL provided by backend " : "Ingen URL oppgitt av tener",
+    "Error getting OAuth2 URL for " : "Feil ved henting av OAuth2 URL for",
     "Empty response from the server" : "Tomt svar fra serveren",
     "Couldn't access. Please logout and login to activate this mount point" : "Fikk ikke tilgang. Vennligst logg ut og inn igjen for å aktivere dette oppkoblingspunktet.",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "Klarte ikke å hente informasjon fra ownCloud-serveren: {code} {type}",
@@ -109,6 +111,7 @@ OC.L10N.register(
     "Advanced settings" : "Avanserte innstillinger",
     "Delete" : "Slett",
     "Allow users to mount external storage" : "Tillat at brukere kobler opp eksterne lagre",
-    "Allow users to mount the following external storage" : "Tillat brukere å koble opp følgende eksterne lagring"
+    "Allow users to mount the following external storage" : "Tillat brukere å koble opp følgende eksterne lagring",
+    "Allow sharing on user-mounted external storages" : "Tillat deling av brukers tilkoblede eksterne lager"
 },
 "nplurals=2; plural=(n != 1);");
