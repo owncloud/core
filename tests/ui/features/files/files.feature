@@ -13,7 +13,7 @@ Feature: files
 	Scenario Outline: Create a folder using special characters
 		When I create a folder with the name <folder_name>
 		Then the folder <folder_name> should be listed
-		And the page is reloaded
+		And the files page is reloaded
 		Then the folder <folder_name> should be listed
 		Examples:
 		|folder_name    |
