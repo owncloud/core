@@ -24,36 +24,36 @@ Feature: renameFiles
 
 	Scenario: Rename a file using special characters and check its existence after page reload
 		When I rename the file "lorem.txt" to "लोरेम।तयक्स्त $%&"
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "लोरेम।तयक्स्त $%&" should be listed
 		When I rename the file "लोरेम।तयक्स्त $%&" to '"double"quotes.txt'
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file '"double"quotes.txt' should be listed
 		When I rename the file '"double"quotes.txt' to "no-double-quotes.txt"
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "no-double-quotes.txt" should be listed
 		When I rename the file 'no-double-quotes.txt' to "hash#And&QuestionMark?At@Filename.txt"
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "hash#And&QuestionMark?At@Filename.txt" should be listed
 
 	Scenario: Rename a file using spaces at front and/or back of file name and type
 		When I rename the file "lorem.txt" to " space at start"
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file " space at start" should be listed
 		When I rename the file " space at start" to "space at end "
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "space at end " should be listed
 		When I rename the file "space at end " to "space at end .txt"
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "space at end .txt" should be listed
 		When I rename the file "space at end .txt" to "space at end. lis"
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "space at end. lis" should be listed
 		When I rename the file "space at end. lis" to "space at end.log "
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "space at end.log " should be listed
 		When I rename the file "space at end.log " to "  multiple   space    all     over   .  dat  "
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "  multiple   space    all     over   .  dat  " should be listed
 
 	Scenario: Rename a file using both double and single quotes
@@ -61,7 +61,7 @@ Feature: renameFiles
 			|from-name-parts |to-name-parts         |
 			|lorem.txt       |First 'single' quotes |
 			|                |-then "double".txt    |
-		And the page is reloaded
+		And the files page is reloaded
 		Then the following file should be listed
 			|name-parts            |
 			|First 'single' quotes |
@@ -70,7 +70,7 @@ Feature: renameFiles
 			|from-name-parts       |to-name-parts |
 			|First 'single' quotes |loremz.dat    |
 			|-then "double".txt    |              |
-		And the page is reloaded
+		And the files page is reloaded
 		Then the file "loremz.dat" should be listed
 
 	Scenario: Rename a file using forbidden characters

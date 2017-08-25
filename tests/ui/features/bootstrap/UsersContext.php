@@ -62,9 +62,9 @@ class UsersContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the page is reloaded
+	 * @When the users page is reloaded
 	 */
-	public function pageIsReloaded()
+	public function theUsersPageIsReloaded()
 	{
 		$this->getSession()->reload();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
