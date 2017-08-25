@@ -114,7 +114,9 @@ class Helper {
 			$entry['id'] = $id++;
 			$entry['etag'] = $entry['mtime']; // add fake etag, it is only needed to identify the preview image
 			$entry['permissions'] = \OCP\Constants::PERMISSION_READ;
-			$entry['mimetype'] = \OC::$server->getMimeTypeDetector()->detectPath($entry['name']);
+			if ($entry['mimetype'] !== 'httpd/unix-directory') {
+				$entry['mimetype'] = \OC::$server->getMimeTypeDetector()->detectPath($entry['name']);
+			}
 			$files[] = $entry;
 		}
 		return $files;
