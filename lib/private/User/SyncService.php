@@ -23,6 +23,7 @@ namespace OC\User;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\User\IProvidesAvatarBackend;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesQuotaBackend;
@@ -100,24 +101,29 @@ class SyncService {
 			// update existing and insert new users
 			foreach ($users as $uid) {
 				try {
-					$a = $this->mapper->getByUid($uid);
-					if ($a->getBackend() !== $this->backendClass) {
-						$this->logger->warning(
-							"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
-							['app' => self::class]
-						);
-						continue;
+					try {
+						$a = $this->mapper->getByUid($uid);
+						if ($a->getBackend() !== $this->backendClass) {
+							$this->logger->warning(
+								"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
+								['app' => self::class]
+							);
+							continue;
+						}
+						$a = $this->setupAccount($a, $uid);
+						$this->mapper->update($a);
+					} catch (DoesNotExistException $ex) {
+						$a = $this->createNewAccount($uid);
+						$this->setupAccount($a, $uid);
+						$this->mapper->insert($a);
 					}
-					$a = $this->setupAccount($a, $uid);
-					$this->mapper->update($a);
-				} catch(DoesNotExistException $ex) {
-					$a = $this->createNewAccount($uid);
-					$this->setupAccount($a, $uid);
-					$this->mapper->insert($a);
+					// clean the user's preferences
+					$this->cleanPreferences($uid);
+				} catch (\OutOfBoundsException $e) {
+					// if an attribute could not be determined
+					// continue syncing other users
+					$this->logger->logException($e,	['app' => self::class]);
 				}
-				// clean the user's preferences
-				$this->cleanPreferences($uid);
-
 				// call the callback
 				$callback($uid);
 			}
@@ -129,6 +135,7 @@ class SyncService {
 	 * @param Account $a
 	 * @param string $uid
 	 * @return Account
+	 * @throws \OutOfBoundsException if a property could not be determined as expected
 	 */
 	public function setupAccount(Account $a, $uid) {
 		list($hasKey, $value) = $this->readUserConfig($uid, 'core', 'enabled');
@@ -172,6 +179,14 @@ class SyncService {
 		// Check if backend supplies an additional search string
 		if ($this->backend instanceof IProvidesExtendedSearchBackend) {
 			$a->setSearchTerms($this->backend->getSearchTerms($uid));
+		}
+		// If avatars are enabled sync it if enabled and backend supports it (slow)
+		if ($this->backend instanceof IProvidesAvatarBackend
+			&& $this->config->getSystemValue('enable_avatars', true) === true
+			&& $this->config->getSystemValue('accounts.sync.avatars', true) === true
+		) {
+			$avatar = \OC::$server->getAvatarManager()->getAvatar($uid);
+			$avatar->set($this->backend->getAvatar($uid));
 		}
 		return $a;
 	}

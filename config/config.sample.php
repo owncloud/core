@@ -265,6 +265,13 @@ $CONFIG = array(
 'accounts.enable_medial_search' => true,
 
 /**
+ * Syncing avatars might be slow, because it takes roughly half a second to
+ * parse the data, crop and save the image. To skip syncing avatars when running
+ * occ user:sync set this to false. The avatar will still be updated on login.
+ */
+'accounts.sync.avatars' => false,
+
+/**
  * Mail Parameters
  *
  * These configure the email settings for ownCloud notifications and password

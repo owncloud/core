@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -24,22 +24,25 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP\User;
 
+use OCP\IImage;
+
 /**
- * Interface IProvidesQuotaBackend
+ * Interface IProvidesAvatarBackend
  *
+ * TODO update these backend interface names to be consistent and readable
  * @package OCP\User
- * @since 10.0
+ * @since 10.0.3
  */
-interface IProvidesQuotaBackend {
+interface IProvidesAvatarBackend {
 
 	/**
-	 * Get a users quota
+	 * Get avatar for a users account
 	 *
 	 * @param string $uid The username
-	 * @return string
-	 * @throws \OutOfBoundsException if the quota could not be determined as expected
-	 * @since 10.0
+	 * @return IImage
+	 * @throws \OutOfBoundsException if the avatar could not be determined as expected
+	 * @since 10.0.3
 	 */
-	public function getQuota($uid);
+	public function getAvatar($uid);
 }
 
