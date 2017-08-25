@@ -37,6 +37,7 @@ interface IProvidesEMailBackend {
 	 *
 	 * @param string $uid The username
 	 * @return string|null
+	 * @throws \OutOfBoundsException if the email could not be determined as expected
 	 * @since 10.0
 	 */
 	public function getEMailAddress($uid);
