@@ -217,7 +217,8 @@
 			if (e && e.itemId) {
 				params = {
 					view: e.itemId,
-					dir: '/'
+					dir: '/',
+					force: true
 				};
 				this._changeUrl(params.view, params.dir);
 				OC.Apps.hideAppSidebar($('.detailsView'));
