@@ -299,6 +299,7 @@
     "Log in" : "Logg inn",
     "Wrong password. Reset it?" : "Feil passord. Nullstille det?",
     "Wrong password." : "Feil passord.",
+    "You are trying to access a private link. Please log in first." : "Du prøver å få tilgang til en privat lenke. Vennligst logg inn først. ",
     "Stay logged in" : "Forbli innlogget",
     "Alternative Logins" : "Alternative innlogginger",
     "Use the following link to reset your password: {link}" : "Bruk følgende lenke for å tilbakestille passordet ditt: {link}",
