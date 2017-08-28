@@ -859,55 +859,42 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user uploads new chunk file :num with :data to id :id with checksum :checksum
-	 */
-	public function userUploadsNewChunkFileOfWithToIdWithChecksum($user, $num, $data, $id, $checksum)
-	{
-		try {
-			$data = \GuzzleHttp\Stream\Stream::factory($data);
-			$destination = '/uploads/' . $user . '/' . $id . '/' . $num;
-			$this->makeDavRequest(
-				$user,
-				'PUT',
-				$destination,
-				['OC-Checksum' => $checksum],
-				$data,
-				"uploads"
-			);
-		} catch (\GuzzleHttp\Exception\BadResponseException $ex) {
-			$this->response = $ex->getResponse();
-		}
-	}
-
-	/**
 	 * @Given user :user moves new chunk file with id :id to :dest
 	 */
-	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest)
-	{
-		try {
-			$source = '/uploads/' . $user . '/' . $id . '/.file';
-			$destination = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user) . $dest;
-			$this->makeDavRequest($user, 'MOVE', $source, [
-				'Destination' => $destination
-			], null, "uploads");
-		} catch (\GuzzleHttp\Exception\RequestException $ex) {
-			$this->response = $ex->getResponse();
-		}
+	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest) {
+		$this->moveNewDavChunkToFinalFile($user, $id, $dest, []);
 	}
 
 	/**
 	 * @Then user :user moves new chunk file with id :id to :dest with size :size
 	 */
-	public function userMovesNewChunkFileWithIdToMychunkedfileWithSize($user, $id, $dest, $size)
-	{
+	public function userMovesNewChunkFileWithIdToMychunkedfileWithSize($user, $id, $dest, $size) {
+		$this->moveNewDavChunkToFinalFile($user, $id, $dest, ['OC-Total-Length' => $size]);
+	}
+
+	/**
+	 * @Then user :user moves new chunk file with id :id to :dest with checksum :checksum
+	 */
+	public function userMovesNewChunkFileWithIdToMychunkedfileWithChecksum($user, $id, $dest, $checksum) {
+		$this->moveNewDavChunkToFinalFile($user, $id, $dest, ['OC-Checksum' => $checksum]);
+	}
+
+	/**
+	 * Move chunked new dav file to final file
+	 *
+	 * @param string $user user
+	 * @param string $id upload id
+	 * @param string $dest destination path
+	 * @param array $headers extra headers
+	 */
+	private function moveNewDavChunkToFinalFile($user, $id, $dest, $headers) {
 		$source = '/uploads/' . $user . '/' . $id . '/.file';
 		$destination = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user) . $dest;
 
+		$headers['Destination'] = $destination;
+
 		try {
-			$this->response = $this->makeDavRequest($user, 'MOVE', $source, [
-				'Destination' => $destination,
-				'OC-Total-Length' => $size
-			], null, "uploads");
+			$this->response = $this->makeDavRequest($user, 'MOVE', $source, $headers, null, "uploads");
 		} catch(\GuzzleHttp\Exception\BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}

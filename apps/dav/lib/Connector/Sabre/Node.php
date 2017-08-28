@@ -393,5 +393,4 @@ abstract class Node implements \Sabre\DAV\INode {
 		}
 		return $mtime;
 	}
-
 }
