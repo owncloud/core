@@ -167,6 +167,20 @@ class OwncloudPage extends Page
 	}
 
 	/**
+	 * scrolls to a position in a specified element
+	 * 
+	 * @param string $jQuerySelector e.g. "#app-content"
+	 * @param int|string $position number or JS function that returns a number
+	 * @param Session $session
+	 * @return void
+	 */
+	public function scrollToPosition($jQuerySelector, $position, Session $session) {
+		$session->evaluateScript(
+			'$("' . $jQuerySelector . '").scrollTop(' . $position . ');'
+		);
+	}
+
+	/**
 	 * waits till all ajax calls are finished (jQuery.active === 0)
 	 * @param Session $session
 	 * @param number $timeout_msec
