@@ -836,10 +836,11 @@ class View {
 	 * @param string $path1 source path
 	 * @param string $path2 target path
 	 * @param bool $preserveMtime whether to preserve mtime on the copy
+	 * @param bool $getDecryptedFile whether to keep a decrypted file
 	 *
 	 * @return bool|mixed
 	 */
-	public function copy($path1, $path2, $preserveMtime = false) {
+	public function copy($path1, $path2, $preserveMtime = false, $getDecryptedFile = false) {
 		$absolutePath1 = Filesystem::normalizePath($this->getAbsolutePath($path1));
 		$absolutePath2 = Filesystem::normalizePath($this->getAbsolutePath($path2));
 		$result = false;
@@ -889,7 +890,7 @@ class View {
 
 					if ($mount1->getMountPoint() == $mount2->getMountPoint()) {
 						if ($storage1) {
-							$result = $storage1->copy($internalPath1, $internalPath2);
+							$result = $storage1->copy($internalPath1, $internalPath2, $getDecryptedFile);
 						} else {
 							$result = false;
 						}

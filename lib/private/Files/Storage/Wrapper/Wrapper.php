@@ -277,10 +277,11 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	 *
 	 * @param string $path1
 	 * @param string $path2
+	 * @param bool $getDecryptedFile
 	 * @return bool
 	 */
-	public function copy($path1, $path2) {
-		return $this->getWrapperStorage()->copy($path1, $path2);
+	public function copy($path1, $path2, $getDecryptedFile = false) {
+		return $this->getWrapperStorage()->copy($path1, $path2, $getDecryptedFile);
 	}
 
 	/**
