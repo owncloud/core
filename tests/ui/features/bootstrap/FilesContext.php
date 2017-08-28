@@ -187,6 +187,17 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When I open the file/folder :name
+	 * @param string $name
+	 * @return void
+	 */
+	public function iOpenTheFolder($name) {
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->filesPage->openFile($name, $this->getSession());
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
 	 * @Then the file/folder :name should be listed
 	 * @param string $name
 	 * @return void
