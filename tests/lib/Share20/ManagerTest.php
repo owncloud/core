@@ -1785,6 +1785,7 @@ class ManagerTest extends \Test\TestCase {
 			'itemTarget' => '/target',
 			'fileTarget' => '/target',
 			'shareWith' => null,
+			'passwordEnabled' => true,
 		];
 
 		$hookListner->expects($this->once())
