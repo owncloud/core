@@ -24,10 +24,16 @@
 
 namespace OCA\Files\Command;
 
+use OC\Encryption\CustomEncryptionWrapper;
+use OC\Encryption\Manager;
+use OC\Files\CustomView;
 use OC\Files\Filesystem;
+use OC\Files\Storage\Wrapper\Wrapper;
 use OC\Files\View;
+use OC\Memcache\ArrayCache;
 use OCP\Files\FileInfo;
 use OCP\Files\Mount\IMountManager;
+use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
@@ -48,6 +54,12 @@ class TransferOwnership extends Command {
 
 	/** @var IMountManager */
 	private $mountManager;
+
+	/** @var Manager  */
+	private $encryptionManager;
+
+	/** @var ILogger  */
+	private  $logger;
 
 	/** @var FileInfo[] */
 	private $allFiles = [];
@@ -70,10 +82,12 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $finalTarget;
 
-	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager) {
+	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->mountManager = $mountManager;
+		$this->encryptionManager = $encryptionManager;
+		$this->logger = $logger;
 		parent::__construct();
 	}
 
@@ -249,7 +263,7 @@ class TransferOwnership extends Command {
 	 * @param OutputInterface $output
 	 */
 	protected function transfer(OutputInterface $output) {
-		$view = new View();
+		$view = new CustomView();
 		$output->writeln("Transferring files to $this->finalTarget ...");
 		$sourcePath = (strlen($this->inputPath) > 0) ? $this->inputPath : "$this->sourceUser/files";
 		// This change will help user to transfer the folder specified using --path option.
@@ -260,7 +274,19 @@ class TransferOwnership extends Command {
 				$this->finalTarget = $this->finalTarget . '/' . basename($sourcePath);
 			}
 		}
-		$view->rename($sourcePath, $this->finalTarget);
+		/**
+		 * If encryption is enabled and masterkey is the option selected
+		 * kindly use the CustomView wrapper.
+		 */
+		if ($this->encryptionManager->isEnabled() &&
+			\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', 0) !== 0) {
+			$customEncryptionWrapper = new CustomEncryptionWrapper(new ArrayCache(), \OC::$server->getEncryptionManager(), \OC::$server->getLogger());
+			Filesystem::addStorageWrapper('oc_customencryption', [$customEncryptionWrapper, 'wrapCustomStorage'], 2);
+			//A new wrapper for view.
+			$view->renameCustom($sourcePath, $this->finalTarget);
+		} else {
+			$view->rename($sourcePath, $this->finalTarget);
+		}
 		if (!is_dir("$this->sourceUser/files")) {
 			// because the files folder is moved away we need to recreate it
 			$view->mkdir("$this->sourceUser/files");
