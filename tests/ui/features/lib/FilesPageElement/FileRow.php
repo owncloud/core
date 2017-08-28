@@ -50,6 +50,7 @@ class FileRow extends OwnCloudPage {
 	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
 	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
 	protected $thumbnailXpath = "//*[@class='thumbnail']";
+	protected $fileLinkXpath = "//span[@class='nametext']";
 	
 	/**
 	 * sets the NodeElement for the current file row
@@ -234,5 +235,30 @@ class FileRow extends OwnCloudPage {
 	 */
 	public function selectForBatchAction() {
 		$this->findThumbnail()->click();
+	}
+
+	/**
+	 * find and return the link to the file/folder
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function findFileLink() {
+		$linkElement = $this->rowElement->find("xpath", $this->fileLinkXpath);
+		if (is_null($linkElement)) {
+			throw new ElementNotFoundException(
+				"could not find link to " . $this->name
+			);
+		}
+		return $linkElement;
+	}
+
+	/**
+	 * opens the current file or folder by clicking on the link
+	 * 
+	 * @return void
+	 */
+	public function openFileFolder() {
+		$this->findFileLink()->click();
 	}
 }

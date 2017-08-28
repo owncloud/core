@@ -247,6 +247,17 @@ class FilesPage extends OwnCloudPage
 	}
 
 	/**
+	 * opens a file or navigates into a folder
+	 * 
+	 * @param string $name
+	 * @param Session $session
+	 * @return void
+	 */
+	public function openFile($name, Session $session) {
+		$fileRow = $this->findFileRowByName($name, $session);
+		$fileRow->openFileFolder();
+	}
+	/**
 	 * renames a file
 	 * @param string|array $fromFileName
 	 * @param string|array $toFileName
