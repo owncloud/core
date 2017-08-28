@@ -166,7 +166,15 @@ class ShareesController extends OCSController  {
 		$lowerSearch = strtolower($search);
 		foreach ($users as $uid => $user) {
 			/* @var $user IUser */
-			if (strtolower($uid) === $lowerSearch || strtolower($user->getDisplayName()) === $lowerSearch || strtolower($user->getEMailAddress()) === $lowerSearch) {
+			if (
+				// Check if the uid is the same
+				strtolower($uid) === $lowerSearch
+				// Check if exact display name
+				|| strtolower($user->getDisplayName()) === $lowerSearch
+				// Check if exact first email
+				|| strtolower($user->getEMailAddress()) === $lowerSearch
+				// Check for exact search term matches (when mail attributes configured as search terms + no enumeration)
+				|| in_array($lowerSearch, array_map('strtolower', $user->getSearchTerms()))) {
 				if (strtolower($uid) === $lowerSearch) {
 					$foundUserById = true;
 				}
