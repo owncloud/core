@@ -26,6 +26,7 @@ namespace Page\FilesPageElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Session;
 
 /**
  * Object of a row on the FilesPage
@@ -167,12 +168,22 @@ class FileRow extends OwnCloudPage {
 	 */
 	public function rename($toName) {
 		$actionMenu = $this->openFileActionsMenu();
-		$actionMenu->rename($this->fileRenameInputXpath);
+		$actionMenu->rename();
 		$this->waitTillElementIsNotNull($this->fileRenameInputXpath);
 		$inputField = $this->findRenameInputField();
 		$this->cleanInputAndSetValue($inputField, $toName);
 		$inputField->blur();
 		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
+	}
+
+	/**
+	 * deletes the file
+	 *
+	 * @return void
+	 */
+	public function delete() {
+		$actionMenu = $this->openFileActionsMenu();
+		$actionMenu->delete();
 	}
 
 	/**
@@ -192,6 +203,15 @@ class FileRow extends OwnCloudPage {
 	}
 
 	/**
+	 * returns the tooltip text
+	 *
+	 * @return string
+	 */
+	public function getTooltip() {
+		return $this->findTooltipElement()->getText();
+	}
+
+	/**
 	 * finds and returns the thumbnail of the file
 	 * 
 	 * @throws ElementNotFoundException
@@ -206,12 +226,13 @@ class FileRow extends OwnCloudPage {
 		}
 		return $thumbnail;
 	}
+
 	/**
-	 * returns the tooltip text
+	 * selects this row for batch action e.g. download or delete
 	 * 
-	 * @return string
+	 * @return void
 	 */
-	public function getTooltip() {
-		return $this->findTooltipElement()->getText();
+	public function selectForBatchAction() {
+		$this->findThumbnail()->click();
 	}
 }

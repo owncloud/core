@@ -76,7 +76,8 @@ class FileActionsMenu extends OwnCloudPage {
 	 * @return void
 	 */
 	public function delete() {
-		;
+		$deleteBtn = $this->findButton($this->deleteActionLabel);
+		$deleteBtn->click();
 	}
 	
 	/**

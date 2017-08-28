@@ -51,6 +51,7 @@ class FilesPage extends OwnCloudPage
 	//TODO make simpler, only ID .//*[@id='fileList']
 	protected $fileListXpath = ".//div[@id='app-content-files']//tbody[@id='fileList']";
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
+	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
@@ -136,6 +137,7 @@ class FilesPage extends OwnCloudPage
 	{
 		$previousFileCount = 0;
 		$currentFileCount = null;
+		$this->scrollToPosition('#' . $this->appContentId, 0, $session);
 
 		if (is_array($name)) {
 			// Concatenating separate parts of the file name allows
@@ -219,10 +221,11 @@ class FilesPage extends OwnCloudPage
 	 */
 	public function scrollDownAppContent (Session $session)
 	{
-		$session->evaluateScript(
-			'$("#' . $this->appContentId . '").scrollTop($("#' . $this->appContentId . '")[0].scrollHeight);'
+		$this->scrollToPosition(
+			'#' . $this->appContentId,
+			'$("#' . $this->appContentId . '")[0].scrollHeight',
+			$session
 		);
-
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 
@@ -279,6 +282,55 @@ class FilesPage extends OwnCloudPage
 
 	/**
 	 * 
+	 * @param string $name
+	 * @param Session $session
+	 * @return void
+	 */
+	public function deleteFile($name, Session $session) {
+		$row = $this->findFileRowByName($name, $session);
+		$row->delete();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function findDeleteAllSelectedFilesBtn() {
+		$deleteAllSelectedBtn = $this->find(
+			"xpath", $this->deleteAllSelectedBtnXpath
+		);
+		if (is_null($deleteAllSelectedBtn)) {
+			throw new ElementNotFoundException(
+				"could not find button to delete all selected files"
+			);
+		}
+		return $deleteAllSelectedBtn;
+	}
+
+	/**
+	 * 
+	 * @param Session $session
+	 * @return void
+	 */
+	public function deleteAllSelectedFiles(Session $session) {
+		$this->findDeleteAllSelectedFilesBtn()->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+	
+	/**
+	 * 
+	 * @param string $name
+	 * @param Session $session
+	 * @return void
+	 */
+	public function selectFileForBatchAction($name, Session $session) {
+		$row = $this->findFileRowByName($name, $session);
+		$row->selectForBatchAction();
+	}
+	/**
+	 * 
 	 * @param int $number
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
@@ -298,7 +350,6 @@ class FilesPage extends OwnCloudPage
 	 * @return void
 	 */
 	public function clickFileActionsMenuBtnByNo($number) {
-		
 		$this->findFileActionsMenuBtnByNo($number)->click();
 	}
 

@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 require_once 'bootstrap.php';
 
@@ -136,7 +137,59 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When I delete the file/folder :name
+	 * @param string $name
+	 * @return void
+	 */
+	public function iDeleteTheFile($name) {
+		$session = $this->getSession();
+		$this->filesPage->waitTillPageIsLoaded($session);
+		$this->filesPage->deleteFile($name, $session);
+	}
+
+	/**
+	 * @When I delete the following file/folder
+	 * @param TableNode $namePartsTable table of parts of the file name
+	 * table headings: must be: |name-parts |
+	 * @return void
+	 */
+	public function iDeleteTheFollowingFile(TableNode $namePartsTable) {
+		$fileNameParts = [];
+		
+		foreach ($namePartsTable as $namePartsRow) {
+			$fileNameParts[] = $namePartsRow['name-parts'];
+		}
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->filesPage->deleteFile($fileNameParts, $this->getSession());
+	}
+
+	/**
+	 * @When I batch delete the marked files
+	 * @return void
+	 */
+	public function iBatchDeleteTheMarkedFiles() {
+		$this->filesPage->deleteAllSelectedFiles($this->getSession());
+	}
+
+	/**
+	 * @When I mark these files for batch action
+	 * @param TableNode $files table of file names
+	 * table headings: must be: |name|
+	 * @return void
+	 */
+	public function iMarkTheseFilesForBatchAction(TableNode $files) {
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		foreach ($files as $file) {
+			$this->filesPage->selectFileForBatchAction(
+				$file['name'], $this->getSession()
+			);
+		}
+	}
+
+	/**
 	 * @Then the file/folder :name should be listed
+	 * @param string $name
+	 * @return void
 	 */
 	public function theFileFolderShouldBeListed($name)
 	{
@@ -146,21 +199,47 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then the following file/folder should be listed
+	 * @Then the file/folder :name should not be listed
+	 * @param string $name
+	 * @return void
+	 */
+	public function theFileFolderShouldNotBeListed($name) {
+		$message = null;
+		try {
+			$this->filesPage->findFileRowByName($name, $this->getSession());
+		} catch (ElementNotFoundException $e) {
+			$message = $e->getMessage();
+		}
+		if (is_array($name)) {
+			$name = implode($name);
+		}
+		PHPUnit_Framework_Assert::assertEquals(
+			"could not find file with the name '" . $name . "'",
+			$message
+		);
+	}
+
+	/**
+	 * @Then /^the following (?:file|folder) should (not|)\s?be listed$/
+	 * @param string $shouldOrNot
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 * table headings: must be: |name-parts |
 	 */
-	public function theFollowingFileFolderShouldBeListed(TableNode $namePartsTable)
-	{
+	public function theFollowingFileFolderShouldBeListed(
+		$shouldOrNot, TableNode $namePartsTable
+	) {
+		$should = ($shouldOrNot !== "not");
 		$fileNameParts = [];
 
 		foreach ($namePartsTable as $namePartsRow) {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
 
-		PHPUnit_Framework_Assert::assertNotNull(
-			$this->filesPage->findFileRowByName($fileNameParts, $this->getSession())
-		);
+		if ($should) {
+			$this->theFileFolderShouldBeListed($fileNameParts);
+		} else {
+			$this->theFileFolderShouldNotBeListed($fileNameParts);
+		}
 	}
 
 	/**
