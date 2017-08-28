@@ -323,9 +323,11 @@
 			if (!this._loadingOnce) {
 				this._loadingOnce = true;
 				// the first time, focus on the share field after the spinner disappeared
-				_.defer(function() {
-					self.$('.shareWithField').focus();
-				});
+				if (!bowser.msie) {
+					_.defer(function() {
+						self.$('.shareWithField').focus();
+					});
+				}
 			}
 		},
 
