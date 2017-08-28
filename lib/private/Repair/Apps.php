@@ -115,7 +115,6 @@ class Apps implements IRepairStep {
 			$output->info('No internet connection available - no app updates will be taken from the marketplace.');
 			$output->info("How to update apps in such situation please see $link");
 			$this->appManager->disableApp('market');
-			return;
 		}
 		$appsToUpgrade = $this->getAppsToUpgrade();
 		$failedCompatibleApps = [];
