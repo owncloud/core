@@ -252,12 +252,20 @@
 	}
 
 	function callMethod(client, options, model, headers) {
-		headers['Content-Type'] = 'application/json';
+		var data = options.data;
+		if (_.isObject(data)) {
+			headers['Content-Type'] = 'application/json';
+			data = JSON.stringify(data);
+		} else if (_.isString(data) && data.substr(0, 6) === '<?xml ') {
+			headers['Content-Type'] = 'application/xml';
+		} else {
+			headers['Content-Type'] = 'text/plain';
+		}
 		return client.request(
 			options.type,
 			options.url,
 			headers,
-			JSON.stringify(options.data)
+			data
 		).then(function(result) {
 			if (!isSuccessStatus(result.status)) {
 				if (_.isFunction(options.error)) {
