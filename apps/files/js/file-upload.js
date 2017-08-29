@@ -346,7 +346,7 @@ OC.FileUpload.prototype = {
 			if (response.errorThrown === 'timeout') {
 				return {
 					status: 0,
-					message: t('core', 'Upload timeout')
+					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
 				};
 			}
 
@@ -379,12 +379,12 @@ OC.FileUpload.prototype = {
 				// timeout (IE11)
 				return {
 					status: 0,
-					message: t('core', 'Upload timeout')
+					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
 				};
 			}
 			return {
 				status: response.jqXHR.status,
-				message: t('core', 'Unknown error: ') + response.jqXHR.statusText
+				message: t('core', 'Unknown error "{error}" uploading file "{file}"', {error: response.jqXHR.statusText, file: this.getFileName()})
 			};
 		}
 		return response;
