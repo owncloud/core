@@ -137,3 +137,9 @@ es6-promise/dist/*
 
 # base64
 base64/*min.js
+
+# bowser
+
+bowser/*
+!bowser/LICENSE
+!bowser/src/
