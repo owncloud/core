@@ -898,5 +898,72 @@ describe('Backbone Webdav extension', function() {
 			expect(model.isNew()).toEqual(false);
 		});
 	});
+
+	describe('custom method', function() {
+		var TestModel;
+
+		beforeEach(function() {
+			TestModel = OC.Backbone.Model.extend({
+				url: 'http://example.com/owncloud/remote.php/test/1',
+				sync: OC.Backbone.davSync,
+				customCall: function(data, options) {
+					options = _.extend({}, options);
+					options.data = data;
+					return this.sync('REPORT', this, options);
+				}
+			});
+		});
+
+		it('serializes JSON if a JS object is passed as data', function() {
+			var model = new TestModel();
+			model.customCall({someData: '123'});
+
+			expect(davClientRequestStub.calledOnce).toEqual(true);
+			expect(davClientRequestStub.getCall(0).args[0])
+				.toEqual('REPORT');
+			expect(davClientRequestStub.getCall(0).args[1])
+				.toEqual('http://example.com/owncloud/remote.php/test/1');
+			expect(davClientRequestStub.getCall(0).args[2]['Content-Type'])
+				.toEqual('application/json');
+			expect(davClientRequestStub.getCall(0).args[2]['X-Requested-With'])
+				.toEqual('XMLHttpRequest');
+			expect(davClientRequestStub.getCall(0).args[3])
+				.toEqual(JSON.stringify({someData: '123'}));
+		});
+		it('does not serializes JSON if a string is passed as data', function() {
+			var model = new TestModel();
+			model.customCall('whatever');
+
+			expect(davClientRequestStub.calledOnce).toEqual(true);
+			expect(davClientRequestStub.getCall(0).args[0])
+				.toEqual('REPORT');
+			expect(davClientRequestStub.getCall(0).args[1])
+				.toEqual('http://example.com/owncloud/remote.php/test/1');
+			expect(davClientRequestStub.getCall(0).args[2]['Content-Type'])
+				.toEqual('text/plain');
+			expect(davClientRequestStub.getCall(0).args[2]['X-Requested-With'])
+				.toEqual('XMLHttpRequest');
+			expect(davClientRequestStub.getCall(0).args[3])
+				.toEqual('whatever');
+		});
+		it('sends XML mime type when passed data string is XML', function() {
+			var model = new TestModel();
+			var body = '<?xml version="1.0" encoding="utf-8" ?>';
+			body += '<root></root>';
+			model.customCall(body);
+
+			expect(davClientRequestStub.calledOnce).toEqual(true);
+			expect(davClientRequestStub.getCall(0).args[0])
+				.toEqual('REPORT');
+			expect(davClientRequestStub.getCall(0).args[1])
+				.toEqual('http://example.com/owncloud/remote.php/test/1');
+			expect(davClientRequestStub.getCall(0).args[2]['Content-Type'])
+				.toEqual('application/xml');
+			expect(davClientRequestStub.getCall(0).args[2]['X-Requested-With'])
+				.toEqual('XMLHttpRequest');
+			expect(davClientRequestStub.getCall(0).args[3])
+				.toEqual(body);
+		});
+	});
 });
 
