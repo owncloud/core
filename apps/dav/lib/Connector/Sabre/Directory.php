@@ -461,4 +461,14 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 
 		return true;
 	}
+
+	/**
+	 * Create a file directly, bypassing the hooks
+	 *
+	 * @param string $name name
+	 * @param resource $data data
+	 */
+	public function createFileDirectly($name, $data) {
+		$this->fileView->file_put_contents($this->getPath() . '/' .  $name, $data);
+	}
 }

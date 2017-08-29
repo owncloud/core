@@ -34,8 +34,8 @@ class UploadFolder implements ICollection {
 	}
 
 	function createFile($name, $data = null) {
-		// TODO: verify name - should be a simple number
-		$this->node->createFile($name, $data);
+		// need to bypass hooks for individual chunks
+		$this->node->createFileDirectly($name, $data);
 	}
 
 	function createDirectory($name) {
