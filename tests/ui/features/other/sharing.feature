@@ -25,6 +25,9 @@ Feature: Sharing
 		And the folder "simple-folder (2)" should be marked as shared by "User Two"
 		And the file "testimage (2).jpg" should be listed
 		And the file "testimage (2).jpg" should be marked as shared by "User Two"
+		And I open the folder "simple-folder (2)"
+		Then the file "lorem.txt" should be listed
+		But the folder "simple-folder (2)" should not be listed
 
 	Scenario: share a folder with an internal group
 		And I logout
