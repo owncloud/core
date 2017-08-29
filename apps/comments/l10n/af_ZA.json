@@ -1,5 +1,6 @@
 { "translations": {
     "Cancel" : "Kanselleer",
-    "Save" : "Bewaar"
+    "Save" : "Bewaar",
+    "Comment" : "Kommentaar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

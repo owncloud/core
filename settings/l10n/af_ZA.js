@@ -12,6 +12,7 @@ OC.L10N.register(
     "Groups" : "Groepe",
     "never" : "nooit",
     "Cheers!" : "Groete!",
+    "Open documentation" : "Open dokumentasie",
     "days" : "dae",
     "What to log" : "Wat om te log",
     "Download logfile (%s)" : "Laai loglêer af (%s)",

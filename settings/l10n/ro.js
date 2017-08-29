@@ -165,6 +165,7 @@ OC.L10N.register(
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Fișierul cu loguri este mai mare de 100 MB. Descărcarea acestuia ar putea dura ceva timp!",
     "None" : "Niciuna",
     "Login" : "Autentificare",
+    "Plain" : "Simplu",
     "NT LAN Manager" : "NT LAN Manager",
     "SSL/TLS" : "SSL/TLS",
     "STARTTLS" : "STARTTLS",
