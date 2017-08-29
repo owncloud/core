@@ -139,6 +139,7 @@ class Encryption extends Wrapper {
 	 * @param int $unencryptedSize
 	 * @param int $headerSize
 	 * @param bool $signed
+	 * @param null|string $sourceFileOfRename
 	 * @param string $wrapper stream wrapper class
 	 * @return resource
 	 *
