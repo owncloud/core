@@ -34,6 +34,15 @@ require_once 'bootstrap.php';
 class FilesContext extends RawMinkContext implements Context
 {
 	private $filesPage;
+	
+	/**
+	 * Table of all files and folders that should have been deleted stored so
+	 * that other steps can use the list to check if the deletion happened correctly
+	 * table headings: must be: |name|
+	 * 
+	 * @var TableNode
+	 */
+	private $deletedElementsTable;
 
 	public function __construct(FilesPage $filesPage)
 	{
@@ -161,6 +170,50 @@ class FilesContext extends RawMinkContext implements Context
 		}
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->filesPage->deleteFile($fileNameParts, $this->getSession());
+	}
+
+	/**
+	 * @When I delete the elements
+	 * @param TableNode $table table of file names
+	 * table headings: must be: |name|
+	 * @return void
+	 */
+	public function iDeleteTheElements(TableNode $table) {
+		$this->deletedElementsTable = $table;
+		foreach ($this->deletedElementsTable as $file) {
+			$this->iDeleteTheFile($file['name']);
+		}
+	}
+
+	/**
+	 * @Then the deleted elements should not be listed
+	 * @return void
+	 */
+	public function theDeletedElementsShouldNotBeListed() {
+		foreach ($this->deletedElementsTable as $file) {
+			$this->theFileFolderShouldNotBeListed($file['name']);
+		}
+	}
+
+	/**
+	 * @Then the deleted elements should not be listed after a page reload
+	 * @return void
+	 */
+	public function theDeletedElementsShouldNotBeListedAfterPageReload() {
+		$this->theFilesPageIsReloaded();
+		$this->theDeletedElementsShouldNotBeListed();
+	}
+
+	/**
+	 * @When I batch delete these files
+	 * @param TableNode $files table of file names
+	 * table headings: must be: |name|
+	 * @return void
+	 */
+	public function iBatchDeleteTheseFiles(TableNode $files) {
+		$this->deletedElementsTable = $files;
+		$this->iMarkTheseFilesForBatchAction($files);
+		$this->iBatchDeleteTheMarkedFiles();
 	}
 
 	/**
