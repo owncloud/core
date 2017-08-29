@@ -644,6 +644,7 @@ class Manager implements IManager {
 			'shareWith' => $share->getSharedWith(),
 			'itemTarget' => $share->getTarget(),
 			'fileTarget' => $share->getTarget(),
+			'passwordEnabled' => (!is_null($share->getPassword()) and ($share->getPassword() !== '')),
 		];
 
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
