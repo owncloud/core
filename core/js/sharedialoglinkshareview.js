@@ -128,7 +128,9 @@
 					this.model.saveLinkShare();
 				} else {
 					this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
-					this.$el.find('.linkPassText').focus();
+					if (bowser.ios) {
+						this.$el.find('.linkPassText').focus();
+					}
 				}
 			} else {
 				if (this.model.get('linkShare').isLinkShare) {
@@ -152,7 +154,7 @@
 				this.model.saveLinkShare({
 					password: ''
 				});
-			} else {
+			} else if (bowser.ios) {
 				this.$el.find('.linkPassText').focus();
 			}
 		},
