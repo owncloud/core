@@ -36,6 +36,7 @@ class CloudController extends OCSController {
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @CORS
 	 *
 	 * @return array
 	 */
@@ -49,7 +50,7 @@ class CloudController extends OCSController {
 			'string' => \OC_Util::getVersionString(),
 			'edition' => \OC_Util::getEditionString(),
 		];
-			
+
 		$result['capabilities'] = \OC::$server->getCapabilitiesManager()->getCapabilities();
 
 		return ['data' => $result];
@@ -58,6 +59,7 @@ class CloudController extends OCSController {
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
+	 * @CORS
 	 *
 	 * @return array
 	 */

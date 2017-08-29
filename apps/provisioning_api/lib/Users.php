@@ -100,7 +100,7 @@ class Users {
 			}
 
 			if($offset === null) {
-				$offset = 0; 
+				$offset = 0;
 			}
 
 			$users = [];
@@ -153,7 +153,7 @@ class Users {
 				return new Result(null, 106, 'no group specified (required for subadmins)');
 			}
 		}
-		
+
 		try {
 			$newUser = $this->userManager->createUser($userId, $password);
 			$this->logger->info('Successful addUser call with userid: '.$userId, ['app' => 'ocs_api']);
@@ -219,7 +219,7 @@ class Users {
 		return new Result($data);
 	}
 
-	/** 
+	/**
 	 * edit users
 	 *
 	 * @param array $parameters
@@ -440,7 +440,7 @@ class Users {
 				return new Result(null, 997);
 			}
 		}
-		
+
 	}
 
 	/**

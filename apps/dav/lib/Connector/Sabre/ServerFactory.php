@@ -100,6 +100,7 @@ class ServerFactory {
 		$server->setBaseUri($baseUri);
 
 		// Load plugins
+		$server->addPlugin(new \OCA\DAV\Connector\Sabre\CorsPlugin($this->userSession));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\MaintenancePlugin($this->config));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ValidateRequestPlugin('webdav'));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin($this->config));

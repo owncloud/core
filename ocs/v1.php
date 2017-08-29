@@ -105,4 +105,3 @@ try {
 } catch (Exception $ex) {
 	OC_API::respond($ex->getResult(), OC_API::requestedFormat());
 }
-
