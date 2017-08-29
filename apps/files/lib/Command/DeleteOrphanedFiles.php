@@ -49,7 +49,7 @@ class DeleteOrphanedFiles extends Command {
 	protected function configure() {
 		$this
 			->setName('files:cleanup')
-			->setDescription('cleanup filecache');
+			->setDescription('Deletes orphaned file cache entries.');
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output) {
