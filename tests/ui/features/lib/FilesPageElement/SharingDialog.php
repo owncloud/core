@@ -49,6 +49,9 @@ class SharingDialog extends OwncloudPage {
 	protected $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
 	protected $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
 	protected $thumbnailFromContainerXpath = "/a";
+	protected $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
+	protected $permissionLabelXpath = ".//label[@for='%s']";
+	protected $showCrudsXpath = ".//*[@class='showCruds']";
 	
 	protected $sharedWithGroupAndSharerName = null;
 
@@ -137,32 +140,12 @@ class SharingDialog extends OwncloudPage {
 	 * @param string $nameToType what to type in the share with field
 	 * @param string $nameToMatch what exact item to select
 	 * @param Session $session
-	 * @param bool $canShare not implemented yet
-	 * @param bool $canEdit not implemented yet
-	 * @param bool $createPermission not implemented yet
-	 * @param bool $changePermission not implemented yet
-	 * @param bool $deletePermission not implemented yet
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return void
 	 */
 	private function shareWithUserOrGroup(
-		$nameToType,
-		$nameToMatch,
-		Session $session,
-		$canShare = true,
-		$canEdit = true,
-		$createPermission = true,
-		$changePermission = true,
-		$deletePermission = true
+		$nameToType, $nameToMatch, Session $session
 	) {
-		if ($canShare !== true
-			|| $canEdit !== true
-			|| $createPermission !== true
-			|| $changePermission !== true
-			|| $deletePermission !== true
-		) {
-				throw new \Exception("this function is not implemented");
-		}
 		$autocompleteNodeElement = $this->fillShareWithField($nameToType, $session);
 		$userElements = $autocompleteNodeElement->findAll(
 			"xpath", $this->autocompleteItemsTextXpath
@@ -195,47 +178,93 @@ class SharingDialog extends OwncloudPage {
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return void
 	 */
-	public function shareWithUser(
-		$name,
-		Session $session,
-		$canShare = true,
-		$canEdit = true,
-		$createPermission = true,
-		$changePermission = true,
-		$deletePermission = true
-	) {
-		return $this->shareWithUserOrGroup(
-			$name, $name, $session, $canShare, $canEdit, $createPermission,
-			$changePermission, $deletePermission
-		);
+	public function shareWithUser($name, Session $session) {
+		return $this->shareWithUserOrGroup($name, $name, $session);
 	}
 
 	/**
 	 *
 	 * @param string $name
 	 * @param Session $session
-	 * @param bool $canShare not implemented yet
-	 * @param bool $canEdit not implemented yet
-	 * @param bool $createPermission not implemented yet
-	 * @param bool $changePermission not implemented yet
-	 * @param bool $deletePermission not implemented yet
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return void
 	 */
-	public function shareWithGroup(
-		$name,
-		Session $session,
-		$canShare = true,
-		$canEdit = true,
-		$createPermission = true,
-		$changePermission = true,
-		$deletePermission = true
-	) {
+	public function shareWithGroup($name, Session $session) {
 		return $this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyGroups, $session,
-			$canShare, $canEdit, $createPermission, $changePermission,
-			$deletePermission
+			$name, $name . $this->suffixToIdentifyGroups, $session
 		);
+	}
+
+	/**
+	 * 
+	 * @param string $shareReceiverName
+	 * @param array $permissions [['permission' => 'yes|no']]
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function setSharingPermissions(
+		$shareReceiverName,
+		$permissions
+	) {
+		$permissionsField = $this->find(
+			"xpath",
+			sprintf($this->permissionsFieldByUserName, $shareReceiverName)
+		);
+		if (is_null($permissionsField)) {
+			throw new ElementNotFoundException(
+				"could not find share permissions field for user "
+				. $shareReceiverName
+			);
+		}
+		$showCrudsBtn = $permissionsField->find("xpath", $this->showCrudsXpath);
+		if (is_null($showCrudsBtn)) {
+			throw new ElementNotFoundException(
+				"could not find show-cruds button for user "
+				. $shareReceiverName
+			);
+		}
+		foreach ($permissions as $permission => $value) {
+			//the additional permission disappear again after they are changed
+			//so we need to open them again and again
+			$showCrudsBtn->click();
+			$value = strtolower($value);
+			
+			//to find where to click is a little bit complicated
+			//just setting the checkbox does not work
+			//because the actual checkbox is not visible (left: -10000px;)
+			//so we first find the checkbox, then get its id and find the label
+			//that is associated with that id, that label is finally what we click
+			$permissionCheckBox = $permissionsField->findField($permission);
+			if (is_null($permissionCheckBox)) {
+				throw new ElementNotFoundException(
+					"could not find the permission check box for permission " .
+					"'$permission' and user '$shareReceiverName'"
+				);
+			}
+			$checkBoxId = $permissionCheckBox->getAttribute("id");
+			if (is_null($checkBoxId)) {
+				throw new ElementNotFoundException(
+					"could not find the id of the permission check box of permission " .
+					"'$permission' and user '$shareReceiverName'"
+				);
+			}
+			$permissionLabel = $permissionsField->find(
+				"xpath", sprintf($this->permissionLabelXpath, $checkBoxId)
+			);
+			
+			if (is_null($permissionLabel)) {
+				throw new ElementNotFoundException(
+					"could not find the label of the permission check box of permission " .
+					"'$permission' and user '$shareReceiverName'"
+				);
+			}
+
+			if (($value === "yes" && !$permissionCheckBox->isChecked())
+				|| ($value === "no" && $permissionCheckBox->isChecked())
+			) {
+				$permissionLabel->click();
+			}
+		}
 	}
 
 	/**
