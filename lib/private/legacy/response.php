@@ -291,7 +291,7 @@ class OC_Response {
 			$config = \OC::$server->getConfig();
 		}
 		$allowedDomains = json_decode($config->getUserValue($userId, 'core', 'domains'));
-		if (in_array($domain, $allowedDomains)) {
+		if (is_array($allowedDomains) && in_array($domain, $allowedDomains)) {
 			// TODO: infer allowed verbs from existing known routes
 			$allHeaders['Access-Control-Allow-Headers'] = ["authorization", "OCS-APIREQUEST", "Origin", "X-Requested-With", "Content-Type", "Access-Control-Allow-Origin"];
 			$allHeaders['Access-Control-Allow-Origin'] = [$domain];
