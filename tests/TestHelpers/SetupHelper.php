@@ -135,10 +135,60 @@ class SetupHelper {
 	}
 
 	/**
+	 * enables an app
+	 *
+	 * @param string $ocPath
+	 * @param string $appName
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 */
+	public static function enableApp($ocPath, $appName) {
+		return self::runOcc(['app:enable', $appName], $ocPath);
+	}
+
+	/**
+	 * disables an app
+	 *
+	 * @param string $ocPath
+	 * @param string $appName
+	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 */
+	public static function disableApp($ocPath, $appName) {
+		return self::runOcc(['app:disable', $appName], $ocPath);
+	}
+
+	/**
+	 * checks if an app is currently enabled
+	 *
+	 * @param string $ocPath
+	 * @param string $appName
+	 * @return boolean true if enabled, false if disabled or not existing
+	 */
+	public static function isAppEnabled($ocPath, $appName) {
+		$result =  self::runOcc(['app:list', '^' . $appName . '$'], $ocPath);
+		return strtolower(substr($result['stdOut'], 0, 7)) === 'enabled';
+	}
+
+	/**
+	 * lists app status (enabled or disabled)
+	 *
+	 * @param string $ocPath
+	 * @param string $appName
+	 * @return boolean true if the app needed to be enabled, false otherwise
+	 */
+	public static function enableAppIfNotEnabled($ocPath, $appName) {
+		if (!self::isAppEnabled($ocPath, $appName)) {
+			self::enableApp($ocPath, $appName);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * invokes an OCC command
 	 *
 	 * @param array $args anything behind "occ".
-	 * For example: "files:transfer-ownership"
+	 *                    For example: "files:transfer-ownership"
 	 * @param string $ocPath
 	 * @param string $escaping
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
