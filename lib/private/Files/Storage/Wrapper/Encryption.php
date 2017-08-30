@@ -86,6 +86,11 @@ class Encryption extends Wrapper {
 	/** @var  ArrayCache */
 	private $arrayCache;
 
+	/** @var array which has information of sourcePath during rename operation */
+	private $sourcePath;
+
+	private static $disableWriteEncryption = false;
+
 	/**
 	 * @param array $parameters
 	 * @param IManager $encryptionManager
@@ -201,16 +206,18 @@ class Encryption extends Wrapper {
 	 */
 	public function file_get_contents($path) {
 
-		$encryptionModule = $this->getEncryptionModule($path);
+		if ($this->encryptionManager->isEnabled() !== false) {
+			$encryptionModule = $this->getEncryptionModule($path);
 
-		if ($encryptionModule) {
-			$handle = $this->fopen($path, "r");
-			if (!$handle) {
-				return false;
+			if ($encryptionModule) {
+				$handle = $this->fopen($path, "r");
+				if (!$handle) {
+					return false;
+				}
+				$data = stream_get_contents($handle);
+				fclose($handle);
+				return $data;
 			}
-			$data = stream_get_contents($handle);
-			fclose($handle);
-			return $data;
 		}
 		return $this->storage->file_get_contents($path);
 	}
@@ -358,12 +365,11 @@ class Encryption extends Wrapper {
 	 *
 	 * @param string $path
 	 * @param string $mode
-	 * @param string|null $sourceFileOfRename
 	 * @return resource|bool
 	 * @throws GenericEncryptionException
 	 * @throws ModuleDoesNotExistsException
 	 */
-	public function fopen($path, $mode, $sourceFileOfRename = null) {
+	public function fopen($path, $mode) {
 
 		// check if the file is stored in the array cache, this means that we
 		// copy a file over to the versions folder, in this case we don't want to
@@ -451,14 +457,33 @@ class Encryption extends Wrapper {
 			}
 
 			if ($shouldEncrypt === true && $encryptionModule !== null) {
+				/**
+				 * The check of $disableWriteEncryption, required to get the file in the decrypted state.
+				 * It will help us get the normal file handler. And hence we can re-encrypt
+				 * the file when necessary, later. The true/false of $getDecryptedFile decides whether
+				 * to keep the file decrypted or not. The intention is to get the data decrypt
+				 * for write mode.
+				 */
+				if (self::$disableWriteEncryption && ($mode !== 'r')) {
+					return $this->getWrapperStorage()->fopen($path, $mode);
+				}
+
 				$headerSize = $this->getHeaderSize($path);
 				$source = $this->storage->fopen($path, $mode);
 				if (!is_resource($source)) {
 					return false;
 				}
+
+				if (isset($this->sourcePath[$path])) {
+					$sourceFileOfRename = $this->sourcePath[$path];
+				} else {
+					$sourceFileOfRename = null;
+				}
 				$handle = \OC\Files\Stream\Encryption::wrap($source, $path, $fullPath, $header,
 					$this->uid, $encryptionModule, $this->storage, $this, $this->util, $this->fileHelper, $mode,
 					$size, $unencryptedSize, $headerSize, $signed, $sourceFileOfRename);
+				unset($this->sourcePath[$path]);
+
 				return $handle;
 			}
 
@@ -622,6 +647,15 @@ class Encryption extends Wrapper {
 		return $result;
 	}
 
+	/**
+	 * Set the flag to true, so that the file would be
+	 * in the decrypted state.
+	 *
+	 * @param $isDisabled bool
+	 */
+	public static function setDisableWriteEncryption($isDisabled) {
+		self::$disableWriteEncryption = $isDisabled;
+	}
 
 	/**
 	 * @param Storage $sourceStorage
@@ -748,10 +782,11 @@ class Encryption extends Wrapper {
 				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
 				if ($isRename) {
 					$absSourcePath = Filesystem::normalizePath($sourceStorage->getOwner($sourceInternalPath). '/' . $sourceInternalPath);
-					$target = $this->fopen($targetInternalPath, 'w', $absSourcePath);
+					$this->sourcePath[$targetInternalPath] = $absSourcePath;
 				} else {
-					$target = $this->fopen($targetInternalPath, 'w');
+					unset($this->sourcePath[$targetInternalPath]);
 				}
+				$target = $this->fopen($targetInternalPath, 'w');
 				list(, $result) = \OC_Helper::streamCopy($source, $target);
 				fclose($source);
 				fclose($target);
