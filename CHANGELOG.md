@@ -15,18 +15,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added internal setting for the periodic credentials validity check - [#28298](https://github.com/owncloud/core/issues/28298)
 - Added jquery events for external storage settings UI when using OAuth - [#28210](https://github.com/owncloud/core/issues/28210)
 - Added public IThemeService which allows apps like the template editor to interact with the current theme - [#28647](https://github.com/owncloud/core/issues/28647)
+- Added "passwordEnabled" field to hook data of link shares - [#28827](https://github.com/owncloud/core/issues/28827)
+- Add new option to disable sharing in every user-mounted external storages - [#28706](https://github.com/owncloud/core/issues/28706)
 
 ### Changed
-- Transfer ownership now works with master key encryption - [#28537](https://github.com/owncloud/core/issues/28537)
+- Transfer ownership now works with master key encryption - [#28537](https://github.com/owncloud/core/issues/28537) [#28845](https://github.com/owncloud/core/issues/28845)
 - Reenable medial search by default - [#28064](https://github.com/owncloud/core/issues/28064)
 - The LoginController now emits "failedLogin" hook signal after a failed login - [#28631](https://github.com/owncloud/core/issues/28631)
 - All columns that use the fileid have been changed to bigint (64-bits) - [#28581](https://github.com/owncloud/core/issues/28581)
 - Added search pattern for the occ app:list command - [#28653](https://github.com/owncloud/core/issues/28653)
+- Allow phpredis develop branch - [#28717](https://github.com/owncloud/core/issues/28717)
+- Default minimum desktop version in config.php is now 2.2.4 - [#28540](https://github.com/owncloud/core/issues/28540)
+- Reallow negative mtimes by default in storage implementations - [#28697](https://github.com/owncloud/core/issues/28697)
 
 ### Deprecated
 ### Removed
 - Removed "themes" folder - [#28617](https://github.com/owncloud/core/issues/28617)
 - Removed unused Windows checks - [#28612](https://github.com/owncloud/core/issues/28612)
+- Removed "appstoreenabled" from config.php - [#28714](https://github.com/owncloud/core/issues/28714)
 - Slash in filename when renaming is not allowed any more in the frontend (unintended "feature") - [#28490](https://github.com/owncloud/core/issues/28490)
 - Using old chunking protocol on new DAV endpoint is now disallowed - [#28637](https://github.com/owncloud/core/issues/28637)
 
@@ -42,6 +48,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Keep redirect information when logging in with wrong password - [#28511](https://github.com/owncloud/core/issues/28511)
 - Use SwiftMailer antiflood plugin to reconnect after multiple emails sent - [#28180](https://github.com/owncloud/core/issues/28180)
 - Theme is now properly loaded when displaying full page error messages - [#28622](https://github.com/owncloud/core/pull/28622)
+- Adjusted warning for PHP 5.5 EOL - [#28765](https://github.com/owncloud/core/issues/28765)
+- Don't enable market app on upgrade from OC < 10 if "appstoreenabled" was false in config.php - [#28757](https://github.com/owncloud/core/issues/28757)
+- Use different CSS comment style for IE11 support - [#28752](https://github.com/owncloud/core/issues/28752)
+- Adjust default slogan - [#28724](https://github.com/owncloud/core/issues/28724)
+- Catch filecache inconsistencies instead of logging warnings - [#28710](https://github.com/owncloud/core/issues/28710)
 
 #### Database
 - All columns that use the fileid have been changed to bigint (64-bits) - [#28581](https://github.com/owncloud/core/issues/28581)
@@ -52,14 +63,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added cache for new card uri-id mapping to fix db cluster execution - [#28308](https://github.com/owncloud/core/issues/28308)
 
 #### Performance
-- Optimized upload - do not fetch metadata for part file during checksuming - [#28633](https://github.com/owncloud/core/issues/28633)
+- Optimize upload - don't fetch info of non-existing file - [#28704](https://github.com/owncloud/core/issues/28704)
+- Optimize upload - don't check if file exists if already known - [#28704](https://github.com/owncloud/core/issues/28704)
+- Optimize upload - do not fetch metadata for part file during checksuming - [#28633](https://github.com/owncloud/core/issues/28633)
 - Optimize shares retrieval logic with complex scenarios - [#28524](https://github.com/owncloud/core/issues/28524)
 - Optimize query logger - [#28220](https://github.com/owncloud/core/issues/28220)
 - Remove initial scanning overhead to speed up federated shares with lots of entries - [#28604](https://github.com/owncloud/core/issues/28604)
 - Improve contact search performance - [#28042](https://github.com/owncloud/core/issues/28042)
 - Improved search performance for federated instance users - [#28209](https://github.com/owncloud/core/issues/28209)
+- Add database index on "oc_share.share_with" column - [#28856](https://github.com/owncloud/core/issues/28856)
 
 #### Filesystem / storage
+- Don't trigger hooks for every new dav chunk, only for final file - [#28817](https://github.com/owncloud/core/issues/28817)
 - Prevent creating file cache inconsistencies when moving a subtree in or out of a share - [#28219](https://github.com/owncloud/core/issues/28219)
 - Add check for empty result in storage memcache - [#28548](https://github.com/owncloud/core/issues/28548)
 - Fix error message when accessing of non-existing file on external storage - [#28613](https://github.com/owncloud/core/issues/28613)
@@ -67,27 +82,49 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix quota handling on new Webdav endpoint (affects desktop client 2.2+) - [#28261](https://github.com/owncloud/core/issues/28261)
 - Fix mounting Webdav as drive in Windows 10 - [#28243](https://github.com/owncloud/core/issues/28243)
 - Fix rare error that happens when mounting invalid shares - [#28342](https://github.com/owncloud/core/issues/28342)
+- Handle BSD case for 32 bit filemtime and install warning - [#28790](https://github.com/owncloud/core/issues/28790)
+- Properly check target rename path in new dav endpoint - [#28737](https://github.com/owncloud/core/issues/28737)
+
+#### Files app
 - Make sure passed upload mtime is always an int - [#28186](https://github.com/owncloud/core/issues/28186)
+- Fix directory mime type in trashbin list - [#28803](https://github.com/owncloud/core/issues/28803)
+- Switch web UI to new dav endpoint, includes encoding fixes - [#28769](https://github.com/owncloud/core/issues/28769)
+- Properly highlight files when opening private link - [#28681](https://github.com/owncloud/core/issues/28681)
 
 #### Sharing
 - Creating link shares now doesn't forget "Allow editing" permission any more - [#28065](https://github.com/owncloud/core/issues/28065)
 - Fix "notify user" checkbox in share panel - [#28237](https://github.com/owncloud/core/issues/28237)
 - Proper message shown when accessing unreachable private links - [#28600](https://github.com/owncloud/core/issues/28600)
+- Fix exact search term match for LDAP in share autocomplete - [#28851](https://github.com/owncloud/core/issues/28851)
+- Add tooltip to public shares panel - [#28781](https://github.com/owncloud/core/issues/28781)
+- Validate share link password even if unchanged when updating share - [#28713](https://github.com/owncloud/core/issues/28713)
+- Fix DiscoveryManager error during upgrade by untangling federated share app dependencies - [#28858](https://github.com/owncloud/core/pull/28858)
 
 #### User management
 - Don't set email if invalid in user:add command - [#28577](https://github.com/owncloud/core/issues/28577)
 - Group admins can now properly edit members' email addresses - [#28366](https://github.com/owncloud/core/issues/28366)
+- Fixed "settings_ajax_changegroupname" typo in route name - [#28746](https://github.com/owncloud/core/issues/28746)
+- Use IProvidesEMailBackend to fix syncing with LDAP backend - [#28736](https://github.com/owncloud/core/issues/28736)
 
 #### API related
+- Make Backbone PROPPATCH work with options.wait mode - [#28791](https://github.com/owncloud/core/issues/28791) [#28837](https://github.com/owncloud/core/issues/28837)
 - Detect PROPPATCH failure by parsing multistatus in Backbone Webdav adapter - [#28628](https://github.com/owncloud/core/issues/28628)
 - Error messages from the server on upload are now displayed in the web UI instead of generic messages - [#28635](https://github.com/owncloud/core/issues/28635)
 - Properly set the status text in OCS API v2 calls - [#28595](https://github.com/owncloud/core/issues/28595)
 - Data was not properly set in case of OCS Result object - [#28198](https://github.com/owncloud/core/issues/28198)
 
 #### Other
+- Only reload file list when switching navigation sections - [#28843](https://github.com/owncloud/core/issues/28843)
 - Make new text file tooltip messages update properly - [#28151](https://github.com/owncloud/core/issues/28151)
 - Fix trashbin preview icons - [#28158](https://github.com/owncloud/core/issues/28158)
 - Allow user "0" as in comments - [#28422](https://github.com/owncloud/core/issues/28422)
+- Better description for occ files:scan command - [#28839](https://github.com/owncloud/core/issues/28839)
+- Better description for occ files:cleanup command - [#28841](https://github.com/owncloud/core/issues/28841)
+- Reworded upgrade message for admin with big instance - [#28828](https://github.com/owncloud/core/issues/28828)
+- Make lost password errors distinguishable - [#28756](https://github.com/owncloud/core/issues/28756)
+- Add height to menutoggler - [#28723](https://github.com/owncloud/core/issues/28723)
+- Remove apostrophe from full page file read error text - [#28702](https://github.com/owncloud/core/issues/28702)
+- Added missing "fatal" log level to occ log:manage level command - [#28683](https://github.com/owncloud/core/issues/28683)
 
 ## [10.0.2] - 2017-06-30
 
