@@ -764,6 +764,7 @@ OC.Uploader.prototype = _.extend({
 
 	_hideProgressBar: function() {
 		var self = this;
+		window.clearInterval(this._progressBarInterval);
 		$('#uploadprogresswrapper .stop').fadeOut();
 		$('#uploadprogressbar').fadeOut(function() {
 			self.$uploadEl.trigger(new $.Event('resized'));
@@ -773,6 +774,28 @@ OC.Uploader.prototype = _.extend({
 	_showProgressBar: function() {
 		$('#uploadprogressbar').fadeIn();
 		this.$uploadEl.trigger(new $.Event('resized'));
+		if (this._progressBarInterval) {
+			window.clearInterval(this._progressBarInterval);
+		}
+		this._progressBarInterval = window.setInterval(_.bind(this._updateProgressBar, this), 1000);
+		this._lastProgress = 0;
+		this._lastProgressStalledSeconds = 0;
+	},
+	
+	_updateProgressBar: function() {
+		var progress = parseInt($('#uploadprogressbar').attr('data-loaded'), 10);
+		var total = parseInt($('#uploadprogressbar').attr('data-total'), 10);
+		if (progress !== this._lastProgress) {
+			this._lastProgress = progress;
+			this._lastProgressStalledSeconds = 0;
+		} else {
+			if (this._lastProgressStalledSeconds < 1) {
+				this._lastProgressStalledSeconds++;
+			} else if (progress >= total) {
+				// change message if we stalled at 100%
+				$('#uploadprogressbar .label .desktop').text(t('core', 'Processing files...'));
+			}
+		}
 	},
 
 	/**
@@ -1127,6 +1150,8 @@ OC.Uploader.prototype = _.extend({
 					}
 					var smoothRemainingSeconds = (bufferTotal / bufferSize); //seconds
 					var h = moment.duration(smoothRemainingSeconds, "seconds").humanize();
+					$('#uploadprogressbar').attr('data-loaded', data.loaded);
+					$('#uploadprogressbar').attr('data-total', data.total);
 					$('#uploadprogressbar .label .mobile').text(h);
 					$('#uploadprogressbar .label .desktop').text(h);
 					$('#uploadprogressbar').attr('original-title',
@@ -1170,7 +1195,10 @@ OC.Uploader.prototype = _.extend({
 				fileupload.on('fileuploaddone', function(e, data) {
 					var upload = self.getUpload(data);
 					upload.done().then(function() {
-						self._hideProgressBar();
+						// don't hide if there are more files to process
+						if (!self.isProcessing()) {
+							self._hideProgressBar();
+						}
 						self.trigger('done', e, upload);
 					}).fail(function(status, response) {
 						var message = response.message;
