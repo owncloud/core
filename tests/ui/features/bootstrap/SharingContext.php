@@ -23,7 +23,9 @@
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 require_once 'bootstrap.php';
 
@@ -95,6 +97,24 @@ class SharingContext extends RawMinkContext implements Context
 	public function iTypeInTheShareWithField($input)
 	{
 		$this->sharingDialog->fillShareWithField($input, $this->getSession());
+	}
+
+	/**
+	 * @Given the sharing permissions of :userName for :fileName are set to
+	 * @param string $userName
+	 * @param string $fileName
+	 * @param TableNode $permissionsTable table with two columns and no heading
+	 * first column one of the permissions (share|edit|create|change|delete)
+	 * second column yes|no
+	 * not mentioned permissions will not be touched
+	 */
+	public function theSharingPermissionsOfAreSetTo(
+		$userName, $fileName, TableNode $permissionsTable
+	) {
+		$this->theShareDialogForTheFileFolderIsOpen($fileName);
+		$this->sharingDialog->setSharingPermissions(
+			$userName, $permissionsTable->getRowsHash()
+		);
 	}
 
 	/**
@@ -206,6 +226,21 @@ class SharingContext extends RawMinkContext implements Context
 			PHPUnit_Framework_Assert::assertSame(
 				$sharedWithGroup,
 				$sharingDialog->getSharedWithGroupName()
+			);
+		}
+	}
+
+	/**
+	 * @Then it should not be possible to share the file/folder :name
+	 * @return void
+	 */
+	public function itShouldNotBePossibleToShare($name) {
+		try {
+			$this->theFileFolderIsSharedWithTheUser($name, null);
+		} catch (ElementNotFoundException $e) {
+			PHPUnit_Framework_Assert::assertSame(
+				'could not find share-with-field',
+				$e->getMessage()
 			);
 		}
 	}
