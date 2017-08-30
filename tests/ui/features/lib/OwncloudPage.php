@@ -79,9 +79,11 @@ class OwncloudPage extends Page
 	 *
 	 * @param string $xpath
 	 * @param int $timeout_msec
+	 * @return void
 	 */
-	public function waitTillElementIsNotNull ($xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
-	{
+	public function waitTillElementIsNotNull(
+		$xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+	) {
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
@@ -94,8 +96,8 @@ class OwncloudPage extends Page
 				}
 			} catch (WebDriverException $e) {
 				usleep(STANDARDSLEEPTIMEMICROSEC);
-				$currentTime = microtime(true);
 			}
+			$currentTime = microtime(true);
 		}
 	}
 	
