@@ -329,7 +329,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "For å unngå tidsavbrudd ved store installasjoner, kan du i stedet kjøre følgende kommando fra installasjonsmappen:",
     "Detailed logs" : "Detaljerte logger",
     "Update needed" : "Oppdatering kreves",
-    "Please use the command line updater because you have a big instance." : "Vennligst bruk kommandolinje-oppdatering fordi du har en stor instans.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "For hjelp, se  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentasjonen</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denne %s-instansen er for øyeblikket i vedlikeholdsmodus, noe som kan vare en stund.",
     "This page will refresh itself when the %s instance is available again." : "Denne siden vil bli lastet på nytt når %s-instansen er tilgjengelig igjen."

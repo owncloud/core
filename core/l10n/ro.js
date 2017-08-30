@@ -254,7 +254,6 @@ OC.L10N.register(
     "Start update" : "Începe actualizarea",
     "Detailed logs" : "Loguri detaliate",
     "Update needed" : "E necesară actualizarea",
-    "Please use the command line updater because you have a big instance." : "Folosește actualizarea din linia de comandă deoarece ai o instanță mare.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Instanța %s este acum în modul de mentenanță, ceea ce ar putea dura o vreme.",
     "This page will refresh itself when the %s instance is available again." : "Această pagină se va reîmprospăta atunci când %s instance e disponibil din nou."
 },

@@ -72,6 +72,7 @@ OC.L10N.register(
     "Link" : "Skakel",
     "Edit" : "Wysig",
     "Remove" : "Verwyder",
+    "Copy to clipboard" : "Kopieer na knipbord",
     "Choose a password for the public link" : "Kies ’n wagwoord vir die openbare skakel",
     "Filename" : "Lêernaam",
     "Password" : "Wagwoord",

@@ -332,7 +332,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Om time-outs tijdens grotere installaties te voorkomen, kunt u in plaats hiervan de volgende opdracht geven vanaf uw installatiedirectory:",
     "Detailed logs" : "Gedetailleerde logs",
     "Update needed" : "Update vereist",
-    "Please use the command line updater because you have a big instance." : "Gebruik de commandoregel updater, omdat u een grote ownCloud hebt.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Voor hulp, lees de <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentatie</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Deze %s staat momenteel in de onderhoudsstand, dat kan enige tijd duren.",
     "This page will refresh itself when the %s instance is available again." : "Deze pagina wordt ververst als de %s-installatie weer beschikbaar is."

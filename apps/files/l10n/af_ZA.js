@@ -2,6 +2,7 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Onbekende fout",
+    "Home" : "Tuis",
     "Close" : "Sluit",
     "Favorites" : "Gunstelinge",
     "..." : "…",

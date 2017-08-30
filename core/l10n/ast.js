@@ -304,7 +304,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Pa evitar tiempos d'espera con instalaciones más grandes, nel so llugar puede executar el siguiente comandu dende'l directoriu d'instalación:",
     "Detailed logs" : "Rexistros detallaos",
     "Update needed" : "Anovamientu necesariu",
-    "Please use the command line updater because you have a big instance." : "Por favor, usa l'actualización de llínea de comandos porque ties una instancia grande.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pa llograr sofitu, consulte la  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentación</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instancia %s  ta anguaño en mou de mantenimientu, polo que pue tardar un pocoñín.",
     "This page will refresh itself when the %s instance is available again." : "Esta páxina va anovase sola cuando la instancia %s tea disponible de nueves."

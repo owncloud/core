@@ -331,7 +331,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "大規模なサイトの場合、ブラウザーがタイムアウトする可能性があるため、インストールディレクトリで以下のコマンドを実行することもできます。",
     "Detailed logs" : "詳細ログ",
     "Update needed" : "更新が必要です",
-    "Please use the command line updater because you have a big instance." : "データ量が大きいため、コマンドラインでの更新を利用してください。",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "不明な場合、<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">ドキュメント</a>を参照してください。",
     "This %s instance is currently in maintenance mode, which may take a while." : "このサーバー %s は現在メンテナンスモードです。しばらくお待ちください。",
     "This page will refresh itself when the %s instance is available again." : "この画面は、サーバー %s の再起動後に自動的に更新されます。"

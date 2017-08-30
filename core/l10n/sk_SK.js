@@ -304,7 +304,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Aby nedošlo k vypršaniu časového limitu vo väčších inštaláciách, môžete namiesto toho použiť nasledujúci príkaz z inštalačného priečinka:",
     "Detailed logs" : "Podrobné záznamy",
     "Update needed" : "Je potrebná aktualizácia",
-    "Please use the command line updater because you have a big instance." : "Prosím, použite aktualizáciu z príkazového riadka, pretože vaša inštalácia je veľká.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pomoc nájdete v  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentácii</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Táto %s inštancia je v súčasnej dobe v režime údržby. Počkajte prosím.",
     "This page will refresh itself when the %s instance is available again." : "Táto stránka sa obnoví sama hneď ako bude %s inštancia znovu dostupná."

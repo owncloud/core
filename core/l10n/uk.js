@@ -299,7 +299,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Щоб уникнути затримок у великих встановленнях, ви можете виконати наступну команду в каталозі встановлення:",
     "Detailed logs" : "Деталізований журнал",
     "Update needed" : "Оновлення необхідно",
-    "Please use the command line updater because you have a big instance." : "Просимо запустити процес оновлення з командного рядка, оскільки ви маєте багато даних.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "За допомогою зверніться до <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документації</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Цей %s знаходиться в режимі технічного обслуговування, яке може зайняти деякий час.",
     "This page will refresh itself when the %s instance is available again." : "Ця сторінка автоматично перезавантажиться коли екземпляр %s стане знову доступний."

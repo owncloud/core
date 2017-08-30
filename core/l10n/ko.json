@@ -327,7 +327,6 @@
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "큰 파일을 설치하는 경우 시간이 초과될 수 있으므로, 설치 디렉터리에서 다음 명령을 실행하셔도 됩니다:",
     "Detailed logs" : "자세한 로그",
     "Update needed" : "업데이트 필요함",
-    "Please use the command line updater because you have a big instance." : "현재 인스턴스 크기가 크기 때문에 명령행 업데이터를 사용하십시오.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "도움말을 보려면 <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">문서</a>를 참조하십시오.",
     "This %s instance is currently in maintenance mode, which may take a while." : "이 %s 인스턴스는 현재 점검 모드입니다. 시간이 걸릴 수도 있습니다.",
     "This page will refresh itself when the %s instance is available again." : "%s 인스턴스를 다시 사용할 수 있으면 자동으로 새로 고칩니다."

@@ -328,7 +328,6 @@
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Za razreševanje časovnih zahtev večjih namestitev lahko uporabite ukaz iz namestitvene mape:",
     "Detailed logs" : "Podrobni dnevniški zapisi",
     "Update needed" : "Zahtevana je posodobitev",
-    "Please use the command line updater because you have a big instance." : "Posodobitev večjih namestitev je priporočljivo izvesti prek ukazne vrstice.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Za več podrobnosti si oglejte <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentacijo</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Strežnik %s je trenutno v načinu vzdrževanja, kar lahko traja.",
     "This page will refresh itself when the %s instance is available again." : "Stran bo osvežena ko bo %s spet na voljo."

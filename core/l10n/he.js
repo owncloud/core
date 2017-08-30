@@ -332,7 +332,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "למניעת פסקי זמן בהתקנות גדולות, ניתן במקום להריץ את הפקודה הבאה בתיקיית ההתקנה שלך:",
     "Detailed logs" : "לוג פרטים",
     "Update needed" : "עדכון נדרש",
-    "Please use the command line updater because you have a big instance." : "יש להשתמש בעדכון על בסיס שורת פקודה כיוון שמדובר בעדכון גדול.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "לעזרה, ניתן לצפות ב<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">מסמכי התיעוד</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "הפעלה %s זו כרגע במצב אחזקה, שתמשך זמן מה.",
     "This page will refresh itself when the %s instance is available again." : "עמוד זה ירענן את עצמו כשהפעלת %s תהיה זמינה שוב."

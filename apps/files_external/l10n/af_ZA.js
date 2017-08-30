@@ -6,6 +6,7 @@ OC.L10N.register(
     "Username" : "Gebruikersnaam",
     "Password" : "Wagwoord",
     "Save" : "Bewaar",
+    "API key" : "API-sleutel",
     "Port" : "Poort",
     "URL" : "Bronadres",
     "Local" : "Lokaal",

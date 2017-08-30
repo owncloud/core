@@ -327,7 +327,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "For å unngå tidsavbrot på store førekomstar, bruk fyljande kommando frå mappe med installasjon:",
     "Detailed logs" : "Detaljert logg",
     "Update needed" : "Forbetring trengs",
-    "Please use the command line updater because you have a big instance." : "Ver venleg og bruk kommando linje forbedring fordi du har ein stor førekomst",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "For hjelp, sjå <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentasjon</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denne %s førekomst er i forbetrings modus som kan ta ei stund.",
     "This page will refresh itself when the %s instance is available again." : "Denne sida vil lastast på ny når %s førekomsten er tilgjengeleg att."

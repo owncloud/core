@@ -11,6 +11,8 @@ OC.L10N.register(
     "So-so password" : "So-so wagwoord",
     "Groups" : "Groepe",
     "never" : "nooit",
+    "enabled" : "geaktiveer",
+    "disabled" : "gedeaktiveer",
     "Cheers!" : "Groete!",
     "Open documentation" : "Open dokumentasie",
     "days" : "dae",

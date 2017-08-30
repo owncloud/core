@@ -308,7 +308,6 @@
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "За да избегнеш таймаутове при по-големи инсталации, можеш да изпълниш следните команди в инсталанционната директория:",
     "Detailed logs" : "Подробни доклади",
     "Update needed" : "Нужно е обновяване",
-    "Please use the command line updater because you have a big instance." : "Тъй като имате голяма инстанция, моля, изпозлвайте командния ред за обновяване.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "За помощ, разгледайте <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "В момента този %s се обновява, а това може да отнеме време.",
     "This page will refresh itself when the %s instance is available again." : "Тази страница ще се опресни автоматично, когато %s е отново на линия."

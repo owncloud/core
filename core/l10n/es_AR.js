@@ -82,6 +82,7 @@ OC.L10N.register(
     "Set expiration date" : "Asignar fecha de vencimiento",
     "Expiration" : "Vencimiento",
     "Expiration date" : "Fecha de vencimiento",
+    "Remove link" : "Eliminar enlace",
     "Link" : "Enlace",
     "Edit" : "Editar",
     "Remove" : "Borrar",

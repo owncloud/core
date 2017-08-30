@@ -322,7 +322,6 @@
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Aby uniknąć timeout-ów przy większych instalacjach, możesz zamiast tego uruchomić następującą komendę w katalogu Twojej instalacji:",
     "Detailed logs" : "Szczegółowe logi",
     "Update needed" : "Wymagana aktualizacja",
-    "Please use the command line updater because you have a big instance." : "Ze względu na rozmiar Twojej instalacji użyj programu do aktualizacji z linii poleceń.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Aby uzyskać pomoc, zajrzyj do <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentacji</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Ta %s instancja jest obecnie w trybie serwisowym, co może potrwać chwilę.",
     "This page will refresh itself when the %s instance is available again." : "Strona odświeży się gdy instancja %s będzie ponownie dostępna."

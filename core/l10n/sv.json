@@ -326,7 +326,6 @@
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "För att undvika timeout vid större installationer kan du istället köra följande kommando från din installationskatalog:",
     "Detailed logs" : "Detaljerade loggar",
     "Update needed" : "Uppdatering krävs",
-    "Please use the command line updater because you have a big instance." : "Vänligen använd den kommandotolksbaserade uppdateringen eftersom du har en stor instans.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "För hjälp, se <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentationen</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denna %s instans befinner sig för närvarande i underhållsläge, vilket kan ta ett tag.",
     "This page will refresh itself when the %s instance is available again." : "Denna sida uppdaterar sig själv när %s instansen är tillgänglig igen."

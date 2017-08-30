@@ -328,7 +328,6 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Για να αποφύγετε τη λήξη χρόνου με μεγαλύτερες εγκαταστάσεις, μπορείτε αντί αυτού να εκτελέσετε την ακόλουθη εντολή στον κατάλογο εγκατάστασης:",
     "Detailed logs" : "Λεπτομερές ιστορικό",
     "Update needed" : "Απαιτείται ενημέρωση",
-    "Please use the command line updater because you have a big instance." : "Παρακαλώ χρησιμοποιήστε την ενημέρωση μέσω γραμμής εντολών διότι έχετε μεγάλη εγκατάσταση.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Για βοήθεια, δείτε στην  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">τεκμηρίωση</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Αυτή %s η εγκατάσταση είναι σε κατάσταση συντήρησης, η οποία μπορεί να διαρκέσει κάποιο χρόνο.",
     "This page will refresh itself when the %s instance is available again." : "Αυτή η σελίδα θα ανανεωθεί από μόνη της όταν η %s εγκατάσταση είναι διαθέσιμη ξανά."
