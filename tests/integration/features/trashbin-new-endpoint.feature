@@ -121,7 +121,7 @@ Feature: trashbin-new-endpoint
 		And as "user0" the folder with original path "/textfile0.txt" exists in trash
 
 	@local_storage
-	@no_encryption
+	@no_default_encryption
 	Scenario: Deleting a folder into external storage moves it to the trashbin
 		Given As an "admin"
 		And invoking occ with "files:scan --all"
@@ -132,7 +132,7 @@ Feature: trashbin-new-endpoint
 		Then as "user0" the folder with original path "/local_storage/tmp" exists in trash
 
 	@local_storage
-	@no_encryption
+	@no_default_encryption
 	Scenario: Deleting a file into external storage moves it to the trashbin and can be restored
 		Given As an "admin"
 		And invoking occ with "files:scan --all"

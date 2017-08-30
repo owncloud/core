@@ -385,7 +385,7 @@ class Encryption extends Wrapper {
 		$header = $this->getHeader($path);
 		$signed = (isset($header['signed']) && $header['signed'] === 'true') ? true : false;
 		$fullPath = $this->getFullPath($path);
-		$encryptionModuleId = ($encryptionEnabled) ? $this->util->getEncryptionModuleId($header): "";
+		$encryptionModuleId = $this->util->getEncryptionModuleId($header);
 
 		if ($this->util->isExcluded($fullPath) === false) {
 
@@ -712,7 +712,9 @@ class Encryption extends Wrapper {
 			 * incremented version of source file, for the destination file.
 			 */
 			$encryptedVersion = $sourceStorage->getCache()->get($sourceInternalPath)['encryptedVersion'];
-			$cacheInformation['encryptedVersion'] = $encryptedVersion + 1;
+			if ($this->encryptionManager->isEnabled()) {
+				$cacheInformation['encryptedVersion'] = $encryptedVersion + 1;
+			}
 			$sourceStorage->getCache()->put($sourceInternalPath, $cacheInformation);
 		} else {
 			$this->getCache()->put($targetInternalPath, $cacheInformation);
@@ -781,8 +783,7 @@ class Encryption extends Wrapper {
 			try {
 				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
 				if ($isRename) {
-					$absSourcePath = Filesystem::normalizePath($sourceStorage->getOwner($sourceInternalPath). '/' . $sourceInternalPath);
-					$this->sourcePath[$targetInternalPath] = $absSourcePath;
+					$this->sourcePath[$targetInternalPath] = $sourceStorage->getFullPath($sourceInternalPath);
 				} else {
 					unset($this->sourcePath[$targetInternalPath]);
 				}
