@@ -317,6 +317,22 @@ class FilesContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @Then it should not be possible to delete the file/folder :name
+	 * @param string $name
+	 * @return void
+	 */
+	public function itShouldNotBePossibleToDelete($name) {
+		try {
+			$this->iDeleteTheFile($name);
+		} catch (ElementNotFoundException $e) {
+			PHPUnit_Framework_Assert::assertSame(
+				"could not find button 'Delete' in action Menu",
+				$e->getMessage()
+			);
+		}
+	}
+
+	/**
 	 * @Then the filesactionmenu should be completely visible after clicking on it
 	 */
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt()
