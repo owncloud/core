@@ -51,9 +51,9 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 <input type="hidden" name="filesize" value="<?php p($_['nonHumanFileSize']); ?>" id="filesize">
 <input type="hidden" name="maxSizeAnimateGif" value="<?php p($_['maxSizeAnimateGif']); ?>" id="maxSizeAnimateGif">
 
-
 <header>
-	<div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
+	<div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>" data-protected="<?php p($_['protected']) ?>"
+		 data-owner-display-name="<?php p($_['displayName']) ?>" data-owner="<?php p($_['owner']) ?>" data-name="<?php p($_['filename']) ?>">
 		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" title="" id="owncloud">
 			<h1 class="logo-icon">
 				<span class="own">own</span><span class="cloud">Cloud</span>
@@ -66,18 +66,6 @@ OCP\Util::addHeader('meta', ['property' => "og:image", 'content' => $_['previewI
 		?>
 		<div class="header-right">
 			<span id="details">
-				<?php
-				if ($_['server2serversharing']) {
-					?>
-					<span id="save" data-protected="<?php p($_['protected']) ?>"
-						  data-owner-display-name="<?php p($_['displayName']) ?>" data-owner="<?php p($_['owner']) ?>" data-name="<?php p($_['filename']) ?>">
-					<button id="save-button"><?php p($l->t('Add to your ownCloud')) ?></button>
-					<form class="save-form hidden" action="#">
-						<input type="text" id="remote_address" placeholder="example.com/owncloud"/>
-						<button id="save-button-confirm" class="icon-confirm svg" disabled></button>
-					</form>
-				</span>
-				<?php } ?>
 				<a href="<?php p($_['downloadURL']); ?>" id="download" class="button">
 					<img class="svg" alt="" src="<?php print_unescaped(image_path("core", "actions/download.svg")); ?>"/>
 					<span id="download-text"><?php p($l->t('Download'))?></span>

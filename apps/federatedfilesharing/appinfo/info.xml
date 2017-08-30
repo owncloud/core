@@ -9,6 +9,9 @@
     <namespace>FederatedFileSharing</namespace>
     <use-migrations>true</use-migrations>
     <category>other</category>
+    <types>
+        <filesystem/>
+    </types>
     <dependencies>
 		<owncloud min-version="10.0.2.4" max-version="10.0" />
     </dependencies>

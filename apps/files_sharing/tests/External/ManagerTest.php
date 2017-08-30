@@ -25,10 +25,13 @@
 namespace OCA\Files_Sharing\Tests\External;
 
 use OC\Files\Storage\StorageFactory;
-use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
 use OCA\Files_Sharing\Tests\TestCase;
+use OCP\Share\Events\AcceptShare;
+use OCP\Share\Events\DeclineShare;
+use OCP\Share\Events\ShareEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\Traits\UserTrait;
 
 /**
@@ -48,7 +51,7 @@ class ManagerTest extends TestCase {
 	private $mountManager;
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	private $httpHelper;
+	private $eventDispatcher;
 
 	private $uid;
 
@@ -65,19 +68,15 @@ class ManagerTest extends TestCase {
 		$this->createUser($this->uid);
 		$this->user = \OC::$server->getUserManager()->get($this->uid);
 		$this->mountManager = new \OC\Files\Mount\Manager();
-		$this->httpHelper = $httpHelper = $this->getMockBuilder('\OC\HTTPHelper')->disableOriginalConstructor()->getMock();
-		$discoveryManager = new DiscoveryManager(
-			\OC::$server->getMemCacheFactory(),
-			\OC::$server->getHTTPClientService()
-		);
-		/** @var \OC\HTTPHelper $httpHelper */
+		$this->eventDispatcher = $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+
+		/** @var EventDispatcherInterface $eventDispatcher */
 		$this->manager = new Manager(
 			\OC::$server->getDatabaseConnection(),
 			$this->mountManager,
 			new StorageFactory(),
-			$httpHelper,
 			\OC::$server->getNotificationManager(),
-			$discoveryManager,
+			$eventDispatcher,
 			$this->uid
 		);
 		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), function() {
@@ -131,9 +130,11 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 
-		$this->httpHelper->expects($this->at(0))
-			->method('post')
-			->with($this->stringStartsWith('http://localhost/ocs/v1.php/cloud/shares/' . $openShares[0]['remote_id']), $this->anything());
+		$this->eventDispatcher->expects($this->at(0))
+			->method('dispatch')
+			->with(AcceptShare::class, $this->callback(function($event) use ($openShares) {
+				return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class); }
+				));
 
 		// Accept the first share
 		$this->manager->acceptShare($openShares[0]['id']);
@@ -166,9 +167,11 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 
-		$this->httpHelper->expects($this->at(0))
-			->method('post')
-			->with($this->stringStartsWith('http://localhost/ocs/v1.php/cloud/shares/' . $openShares[1]['remote_id'] . '/decline'), $this->anything());
+		$this->eventDispatcher->expects($this->at(0))
+			->method('dispatch')
+			->with(DeclineShare::class, $this->callback(function($event) use ($openShares) {
+				return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class); }
+			));
 
 		// Decline the third share
 		$this->manager->declineShare($openShares[1]['id']);
@@ -193,12 +196,16 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 
-		$this->httpHelper->expects($this->at(0))
-			->method('post')
-			->with($this->stringStartsWith('http://localhost/ocs/v1.php/cloud/shares/' . $openShares[0]['remote_id'] . '/decline'), $this->anything());
-		$this->httpHelper->expects($this->at(1))
-			->method('post')
-			->with($this->stringStartsWith('http://localhost/ocs/v1.php/cloud/shares/' . $acceptedShares[0]['remote_id'] . '/decline'), $this->anything());
+		$this->eventDispatcher->expects($this->at(0))
+			->method('dispatch')
+			->with(DeclineShare::class, $this->callback(function($event) use ($openShares) {
+				return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class); }
+			));
+		$this->eventDispatcher->expects($this->at(1))
+			->method('dispatch')
+			->with(DeclineShare::class, $this->callback(function($event) use ($acceptedShares) {
+				return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class); }
+			));
 
 		$this->manager->removeUserShares($this->uid);
 		$this->assertEmpty(self::invokePrivate($this->manager, 'getShares', [null]), 'Asserting all shares for the user have been deleted');
@@ -208,6 +215,14 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount($shareData1['name']);
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
+	}
+
+	/**
+	 * Verify that a share event matches a given share
+	 *
+	 */
+	protected function verifyShareEvent(ShareEvent $event, $share, $expectedClass) {
+		return $share['remote_id'] == $event->getRemoteId() && get_class($event) === $expectedClass;
 	}
 
 	/**

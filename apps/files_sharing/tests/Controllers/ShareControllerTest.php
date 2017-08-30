@@ -362,7 +362,6 @@ class ShareControllerTest extends \Test\TestCase {
 			'mimetype' => 'text/plain',
 			'dirToken' => 'token',
 			'sharingToken' => 'token',
-			'server2serversharing' => true,
 			'protected' => 'true',
 			'dir' => '',
 			'downloadURL' => null,
