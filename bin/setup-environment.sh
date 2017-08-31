@@ -45,16 +45,56 @@ function check_permissions()
   echo 'User & group permissions pass.'
 }
 
-function install_required_packages()
+function which_distro()
 {
   case "$( grep -Eoi 'Debian|SUSE|Ubuntu' /etc/issue )" in 
+    "SUSE") 
+      echo "SUSE"
+      ;;
+    "Ubuntu") 
+      echo "Ubuntu"
+      ;;
+  esac
+
+  redhat_release_file=/etc/redhat-release
+
+  # Need to do a bit more work to detect RedHat-based distributions
+  if [ -e "$redhat_release_file" ]; then
+    case "$( grep -Eoi 'CentOS' $redhat_release_file )" in 
+      "CentOS") 
+        echo "CentOS"
+        ;;
+    esac
+  fi
+}
+
+function install_required_packages()
+{
+  case "$( which_distro )" in 
     "SUSE") echo "Installing required packages on SUSE"
       install_required_suse_packages
       ;;
     "Ubuntu"|"Debian") echo "Installing required packages on Ubuntu/Debian"
       install_required_ubuntu_debian_packages
       ;;
+    "CentOS") echo "Installing required packages on Centos"
+      install_required_centos_packages
+      ;;
   esac
+}
+
+function install_required_centos_packages()
+{
+  sudo yum update -q -y
+  sudo yum --enablerepo=cr -q -y install wget make nodejs unzip git npm bzip2 file
+  
+  # Install PhantomJS - see https://www.bonusbits.com/wiki/HowTo:Install_PhantomJS_on_CentOS
+  # It's not in the official repos, so needs to be installed independently.
+  sudo yum install fontconfig freetype freetype-devel fontconfig-devel libstdc++
+  sudo mkdir -p /opt/phantomjs
+  wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 
+  sudo tar -jxvf phantomjs-2.1.1-linux-x86_64.tar.bz2 --strip-components 1 --directory /opt/phantomjs/
+  sudo ln -s /opt/phantomjs/bin/phantomjs /usr/bin/phantomjs
 }
 
 function install_required_suse_packages()
@@ -110,10 +150,10 @@ then
      exit $#
    fi
 
-   if grep -Eq 'Debian|Ubuntu|SUSE' /etc/issue; then 
+   if which_distro; then 
      main "$1" "$2"
    else
-     echo 'Currently, only Debian, Ubuntu, and SUSE distributions are supported'
+     echo 'Currently, only Debian, Ubuntu, SUSE, and CentOS distributions are supported'
      echo 'Others are planned to be supported in the future.'
      exit -1
    fi
