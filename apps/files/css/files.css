@@ -315,6 +315,8 @@ table td.filename .nametext, .uploadtext, .modified, .column-last>span:first-chi
 
 /* TODO fix usability bug (accidental file/folder selection) */
 table td.filename .nametext {
+	position: absolute;
+	left: 55px;
 	padding: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -322,8 +324,6 @@ table td.filename .nametext {
 	height: 100%;
 }
 .has-favorites #fileList td.filename a.name {
-	display: flex;
-	justify-content: space-between;
 	left: 50px;
 	margin-right: 50px;
 }
@@ -513,6 +513,8 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 
 /* File actions */
 .fileactions {
+	position: absolute;
+	right: 0;
 }
 
 .busy .fileactions, .busy .action {
@@ -844,4 +846,29 @@ html.ie8 #controls .button.new {
 .canDrop,
 #filestable tbody tr.canDrop {
   background-color: rgba(255, 255, 140, 1);
+}
+
+/* Default files-list incl. sharing */
+
+#app-content-files table td.filename .nametext,
+#app-content-sharingin table td.filename .nametext,
+#app-content-sharingout table td.filename .nametext {
+	position: static;
+	left: inherit;
+}
+
+#app-content-files.has-favorites #fileList td.filename a.name,
+#app-content-sharingin.has-favorites #fileList td.filename a.name,
+#app-content-sharingout.has-favorites #fileList td.filename a.name {
+	display: flex;
+	justify-content: space-between;
+	left: 50px;
+	margin-right: 50px;
+}
+
+#app-content-files .fileactions,
+#app-content-sharingin .fileactions,
+#app-content-sharingout .fileactions {
+	position: inherit;
+	right: inherit;
 }
