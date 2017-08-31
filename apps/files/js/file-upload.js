@@ -251,6 +251,7 @@ OC.FileUpload.prototype = {
 			this.data.headers['Authorization'] =
 				'Basic ' + btoa(userName + ':' + (password || ''));
 		}
+		this.data.headers['requesttoken'] = OC.requestToken;
 
 		var chunkFolderPromise;
 		if ($.support.blobSlice
