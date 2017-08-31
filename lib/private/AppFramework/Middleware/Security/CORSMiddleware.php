@@ -82,35 +82,6 @@ class CORSMiddleware extends Middleware {
 	}
 
 	/**
-	 * This is being run in normal order before the controller is being
-	 * called which allows several modifications and checks
-	 *
-	 * @param Controller $controller the controller that is being called
-	 * @param string $methodName the name of the method that will be called on
-	 *                           the controller
-	 * @throws SecurityException
-	 * @since 6.0.0
-	 */
-	public function beforeController($controller, $methodName){
-		// ensure that @CORS annotated API routes are not used in conjunction
-		// with session authentication since this enables CSRF attack vectors
-		if ($this->reflector->hasAnnotation('CORS') &&
-			!$this->reflector->hasAnnotation('PublicPage'))  {
-			$user = $this->request->server['PHP_AUTH_USER'];
-			$pass = $this->request->server['PHP_AUTH_PW'];
-
-			$this->session->logout();
-			try {
-				if (!$this->session->logClientIn($user, $pass, $this->request)) {
-					throw new SecurityException('CORS requires basic auth', Http::STATUS_UNAUTHORIZED);
-				}
-			} catch (PasswordLoginForbiddenException $ex) {
-				throw new SecurityException('Password login forbidden, use token instead', Http::STATUS_UNAUTHORIZED);
-			}
-		}
-	}
-
-	/**
 	 * This is being run after a successful controllermethod call and allows
 	 * the manipulation of a Response object. The middleware is run in reverse order
 	 *
