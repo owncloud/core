@@ -528,7 +528,8 @@ $CONFIG = array(
 
 /**
  * Check if ownCloud is up-to-date and shows a notification if a new version is
- * available.
+ * available. This option is only applicable to ownCloud core. It is not
+ * applicable to app updates.
  */
 'updatechecker' => true,
 
