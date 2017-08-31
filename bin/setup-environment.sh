@@ -51,18 +51,7 @@ function install_required_packages()
   sudo apt-get -y -q update
 
   # Auto-install the required dependencies with a minimum of output
-  sudo apt-get install -y -q wget make npm nodejs unzip git
-}
-
-function fix_nodejs_binary()
-{
-  nodejs=$( which nodejs )
-
-  if [ -z "$( which node )" ]; then
-    echo 'Node is installed, but not correctly set in the system path.'
-    echo 'Linking ' "$nodejs" ' to /usr/bin/node'
-    sudo ln -s "$nodejs" /usr/bin/node
-  fi
+  sudo apt-get install -y -q wget make npm nodejs nodejs-legacy unzip git
 }
 
 function main()
@@ -89,7 +78,6 @@ function main()
   echo 'Preparing ownCloud development environment'
 
   install_required_packages
-  fix_nodejs_binary
 
   # Install the required third-party packages
   make
