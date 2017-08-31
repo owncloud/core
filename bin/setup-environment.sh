@@ -47,11 +47,27 @@ function check_permissions()
 
 function install_required_packages()
 {
-  # Ensure that Apt’s cache is up to date
-  sudo apt-get -y -q update
+  case "$( grep -Eoi 'Debian|SUSE|Ubuntu' /etc/issue )" in 
+    "SUSE") echo "Installing required packages on SUSE"
+      install_required_suse_packages
+      ;;
+    "Ubuntu"|"Debian") echo "Installing required packages on Ubuntu/Debian"
+      install_required_ubuntu_debian_packages
+      ;;
+  esac
+}
 
-  # Auto-install the required dependencies with a minimum of output
-  sudo apt-get install -y -q wget make npm nodejs nodejs-legacy unzip git
+function install_required_suse_packages()
+{
+  sudo zypper --quiet --non-interactive install wget make nodejs6 \
+    nodejs-common unzip git npm6 phantomjs
+}
+
+function install_required_ubuntu_debian_packages()
+{
+  sudo apt-get -y -q update && \
+    apt-get install -y -q wget make npm \
+      nodejs nodejs-legacy unzip git
 }
 
 function main()
@@ -94,10 +110,10 @@ then
      exit $#
    fi
 
-   if [ $( grep -E 'Debian|Ubuntu' /etc/issue ) ]; then 
+   if grep -Eq 'Debian|Ubuntu|SUSE' /etc/issue; then 
      main "$1" "$2"
    else
-     echo 'Currently, only Debian-based distributions are supported'
+     echo 'Currently, only Debian, Ubuntu, and SUSE distributions are supported'
      echo 'Others are planned to be supported in the future.'
      exit -1
    fi
