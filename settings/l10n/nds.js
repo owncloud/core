@@ -13,6 +13,7 @@ OC.L10N.register(
     "Enable encryption" : "Verschlüsselung aktivieren",
     "None" : "Keine(r)",
     "Port" : "Port",
+    "Domain" : "Domäne",
     "Cancel" : "Abbrechen",
     "Password" : "Passwort",
     "Name" : "Name",

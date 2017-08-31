@@ -234,6 +234,8 @@ OC.L10N.register(
     "Android app" : "Android app",
     "iOS app" : "iOS app",
     "Show First Run Wizard again" : "Show First Run Wizard again",
+    "Domain" : "Domain",
+    "Add" : "Add",
     "Profile picture" : "Profile picture",
     "Upload new" : "Upload new",
     "Select from Files" : "Select from Files",

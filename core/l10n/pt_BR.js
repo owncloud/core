@@ -332,6 +332,8 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Para evitar tempos de espera com instalações maiores, você pode em vez disso executar o seguinte comando a partir do diretório de instalação:",
     "Detailed logs" : "Logs detalhados",
     "Update needed" : "Atualização necessária",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Parece que sua instância pode hospedar muitos arquivos e/ou usuários. Para garantir um processo de atualização suave, use o atualizador da linha de comando (atualização do occ).",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "A atualização automática está desativada no config.php. Para atualizar sua instância, use o atualizador da linha de comando (atualização do occ).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Para obter ajuda, consulte a  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentação</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instância %s está em modo de manutenção, o que pode demorar um pouco.",
     "This page will refresh itself when the %s instance is available again." : "Esta página será atualizada automaticamente quando esta instância %s estiver disponível novamente."

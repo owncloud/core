@@ -58,7 +58,6 @@ OC.L10N.register(
     "the item was removed" : "acest articol a fost șters",
     "the link expired" : "linkul a expirat",
     "sharing is disabled" : "Partajare este oprită",
-    "Add to your ownCloud" : "Adaugă propriul tău ownCloud",
     "Download" : "Descarcă",
     "Download %s" : "Descarcă %s",
     "Direct link" : "Legătură directă"

@@ -162,6 +162,8 @@ OC.L10N.register(
     "Android app" : "اپ اندروید",
     "iOS app" : "اپ iOS",
     "Show First Run Wizard again" : "راهبری کمکی اجرای اول را دوباره نمایش بده",
+    "Domain" : "دامنه",
+    "Add" : "افزودن",
     "Profile picture" : "تصویر پروفایل",
     "Upload new" : "بارگذاری جدید",
     "Remove image" : "تصویر پاک شود",

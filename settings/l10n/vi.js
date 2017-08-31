@@ -41,6 +41,7 @@ OC.L10N.register(
     "Security & setup warnings" : "Bảo mật và thiết lập cảnh báo",
     "Get the apps to sync your files" : "Nhận ứng dụng để đồng bộ file của bạn",
     "Show First Run Wizard again" : "Hiện lại việc chạy đồ thuật khởi đầu",
+    "Add" : "Thêm",
     "Profile picture" : "Ảnh hồ sơ",
     "Upload new" : "Tải lên",
     "Remove image" : "Xóa ",

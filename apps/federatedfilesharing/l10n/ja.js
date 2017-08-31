@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "サーバー連携共有",
+    "Add to your ownCloud" : "ownCloud に追加",
     "Invalid Federated Cloud ID" : "クラウド連携IDが無効です",
     "Sharing %s failed, because this item is already shared with %s" : "%s を共有できませんでした。このアイテムはすでに %s に共有されています。",
     "Not allowed to create a federated share with the same user" : "同じユーザーではサーバー連携共有は作成できません",

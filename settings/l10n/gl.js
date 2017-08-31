@@ -191,6 +191,7 @@ OC.L10N.register(
     "Android app" : "Aplicación Android",
     "iOS app" : "Aplicación iOS",
     "Show First Run Wizard again" : "Amosar o axudante da primeira execución outra vez",
+    "Add" : "Engadir",
     "Profile picture" : "Imaxe do perfil",
     "Upload new" : "Novo envío",
     "Remove image" : "Retirar a imaxe",

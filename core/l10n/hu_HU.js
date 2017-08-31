@@ -187,6 +187,7 @@ OC.L10N.register(
     "Error removing share" : "Hiba a megosztás törlésekor",
     "Warning" : "Figyelmeztetés",
     "Non-existing tag #{tag}" : "Nem létező címke #{tag}",
+    "restricted" : "korlátozott",
     "invisible" : "láthatatlan",
     "({scope})" : "({scope})",
     "Delete" : "Törlés",

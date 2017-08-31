@@ -243,6 +243,8 @@ OC.L10N.register(
     "Android app" : "Android-app",
     "iOS app" : "iOS-app",
     "Show First Run Wizard again" : "Visa Första uppstarts-guiden igen",
+    "Domain" : "Domän",
+    "Add" : "Lägg till",
     "Profile picture" : "Profilbild",
     "Upload new" : "Ladda upp ny",
     "Select from Files" : "Välj från Filer",

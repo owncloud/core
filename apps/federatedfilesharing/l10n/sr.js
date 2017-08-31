@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Здружено дељење",
+    "Add to your ownCloud" : "Додај у свој облак",
     "Invalid Federated Cloud ID" : "Неисправан ИД Здруженог облака",
     "Sharing %s failed, because this item is already shared with %s" : "Дељење %s није успело зато што се ова ставка већ дели са %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Дељење %s није успело, није могуће пронаћи %s, можда сервер тренутно није доступан.",

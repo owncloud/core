@@ -110,7 +110,6 @@ OC.L10N.register(
     "sharing is disabled" : "slökkt er á skráadeilingu",
     "For more info, please ask the person who sent this link." : "Til að vita meira skaltu hafa samband við þann sem sendi þér þennan tengil.",
     "%s is publicly shared" : "%s er deilt opinberlega",
-    "Add to your ownCloud" : "Bæta í þitt eigið ownCloud",
     "Download" : "Niðurhal",
     "Download %s" : "Sækja %s",
     "Direct link" : "Beinn tengill"

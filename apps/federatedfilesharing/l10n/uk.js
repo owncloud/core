@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Додати до вашого ownCloud",
     "Invalid Federated Cloud ID" : "Неправильний Об'єднаний Хмарний Ідентіфікатор ",
     "Sharing %s failed, because this item is already shared with %s" : "Не вдалося поділитися %s, оскільки файл вже в загальному доступі з %s",
     "File is already shared with %s" : "Доступ до файлу вже надано %s",

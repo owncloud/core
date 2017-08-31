@@ -106,7 +106,6 @@ OC.L10N.register(
     "sharing is disabled" : "共有は無効になっています",
     "For more info, please ask the person who sent this link." : "不明な点は、こちらのリンクの提供者に確認をお願いします。",
     "%s is publicly shared" : "%s は公開共有されています",
-    "Add to your ownCloud" : "ownCloud に追加",
     "Download" : "ダウンロード",
     "Download %s" : "%s をダウンロード",
     "Direct link" : "リンク"

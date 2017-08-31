@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Thêm vào ownCloud của bạn",
     "File is already shared with %s" : "File đã được chia sẻ với %s",
     "Accept" : "Đồng ý",
     "Decline" : "Từ chối",

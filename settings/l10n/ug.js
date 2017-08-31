@@ -30,6 +30,7 @@ OC.L10N.register(
     "Encryption" : "شىفىرلاش",
     "Server address" : "مۇلازىمېتىر ئادرىسى",
     "Port" : "ئېغىز",
+    "Add" : "قوش",
     "Cancel" : "ۋاز كەچ",
     "Email" : "تورخەت",
     "Your email address" : "تورخەت ئادرېسىڭىز",

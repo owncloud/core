@@ -256,6 +256,8 @@
     "iOS app" : "iOS-forrit",
     "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "Ef þú vilt styðja við verkefnið\n\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">taktu þátt í þróuninni</a>\n\t\teða\n\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">láttu orð út ganga</a>!",
     "Show First Run Wizard again" : "Birta Fyrsta-skiptis-leiðarvísinn aftur",
+    "Domain" : "Lén",
+    "Add" : "Bæta við",
     "Profile picture" : "Einkennismynd",
     "Upload new" : "Senda inn nýtt",
     "Select from Files" : "Veldu skrár",

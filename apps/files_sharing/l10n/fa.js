@@ -106,7 +106,6 @@ OC.L10N.register(
     "sharing is disabled" : "قابلیت اشتراک گذاری غیرفعال است",
     "For more info, please ask the person who sent this link." : "برای اطلاعات بیشتر، لطفا از شخصی که این پیوند را ارسال کرده سوال بفرمایید.",
     "%s is publicly shared" : "%s به اشتراک عمومی گذاشته شده است",
-    "Add to your ownCloud" : "افزودن به ownCloud شما",
     "Download" : "دانلود",
     "Download %s" : "دانلود %s",
     "Direct link" : "پیوند مستقیم"

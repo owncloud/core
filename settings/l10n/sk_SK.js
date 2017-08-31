@@ -180,6 +180,8 @@ OC.L10N.register(
     "Android app" : "Android aplikácia",
     "iOS app" : "iOS aplikácia",
     "Show First Run Wizard again" : "Znovu zobraziť sprievodcu prvým spustením",
+    "Domain" : "Doména",
+    "Add" : "Pridať",
     "Profile picture" : "Avatar",
     "Upload new" : "Nahrať nový",
     "Remove image" : "Zmazať obrázok",

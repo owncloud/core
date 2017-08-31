@@ -110,7 +110,6 @@ OC.L10N.register(
     "sharing is disabled" : "השיתוף נוטרל",
     "For more info, please ask the person who sent this link." : "למידע נוסף, יש לפנות לשולח קישור זה.",
     "%s is publicly shared" : "%s בשיתוף ציבורי",
-    "Add to your ownCloud" : "הוספה ל- ownCloud שלך",
     "Download" : "הורדה",
     "Download %s" : "הורדה %s",
     "Direct link" : "קישור ישיר"

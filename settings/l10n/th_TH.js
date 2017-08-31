@@ -260,6 +260,8 @@ OC.L10N.register(
     "iOS app" : "แอพฯ IOS",
     "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "หากคุณต้องการสนับสนุนโครงการสามารถ\n<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">เข้าร่วมการพัฒนา</a>\nหรือ\n<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">บอกต่อคนที่คุณรู้จัก</a>!",
     "Show First Run Wizard again" : "แสดงหน้าจอวิซาร์ดนำทางเริ่มต้นอีกครั้ง",
+    "Domain" : "โดเมน",
+    "Add" : "เพิ่ม",
     "Profile picture" : "รูปภาพโปรไฟล์",
     "Upload new" : "อัพโหลดรูปใหม่",
     "Select from Files" : "เลือกจากไฟล์ที่มีอยู่",

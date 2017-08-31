@@ -202,6 +202,8 @@ OC.L10N.register(
     "Android app" : "Aplicacion Android",
     "iOS app" : "Aplicacion iOS",
     "Show First Run Wizard again" : "Reveire la fenèstra d'acuèlh afichada al moment de vòstra primièra connexion",
+    "Domain" : "Domeni",
+    "Add" : "Apondre",
     "Profile picture" : "Fòto de perfil",
     "Upload new" : "Novèla dempuèi vòstre ordenador",
     "Remove image" : "Suprimir l'imatge",

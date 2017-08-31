@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Federated Delning",
+    "Add to your ownCloud" : "Lägg till i din ownCloud",
     "Invalid Federated Cloud ID" : "Ogiltig Federerad Cloud-ID",
     "Sharing %s failed, because this item is already shared with %s" : "Delning %s misslyckades därför att objektet redan är delat med %s",
     "Not allowed to create a federated share with the same user" : "Ej tillåtet att skapa en federerad delning med samma användare",

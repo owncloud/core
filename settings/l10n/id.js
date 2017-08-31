@@ -201,6 +201,8 @@ OC.L10N.register(
     "Android app" : "Aplikasi Android",
     "iOS app" : "Aplikasi iOS",
     "Show First Run Wizard again" : "Tampilkan Penuntun Konfigurasi Awal",
+    "Domain" : "Domain",
+    "Add" : "Tambah",
     "Profile picture" : "Foto profil",
     "Upload new" : "Unggah baru",
     "Remove image" : "Hapus gambar",

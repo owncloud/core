@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Partajare federalizată",
+    "Add to your ownCloud" : "Adaugă propriul tău ownCloud",
     "Invalid Federated Cloud ID" : "ID invalid cloud federalizat",
     "Sharing %s failed, because this item is already shared with %s" : "Partajarea %s a eșuat deoarece acest element este deja partajat cu %s",
     "Not allowed to create a federated share with the same user" : "Nu este permisă crearea unei partajări federalizate cu acelaşi utilizator",

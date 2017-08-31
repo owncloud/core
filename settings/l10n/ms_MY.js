@@ -13,6 +13,7 @@ OC.L10N.register(
     "Log" : "Log",
     "Login" : "Log masuk",
     "Server address" : "Alamat pelayan",
+    "Add" : "Tambah",
     "Profile picture" : "Gambar profil",
     "Cancel" : "Batal",
     "Email" : "Email",

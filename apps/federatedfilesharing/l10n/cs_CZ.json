@@ -1,5 +1,6 @@
 { "translations": {
     "Federated sharing" : "Propojené sdílení",
+    "Add to your ownCloud" : "Přidat do svého ownCloudu",
     "Invalid Federated Cloud ID" : "Neplatné sdružené cloud ID",
     "Sharing %s failed, because this item is already shared with %s" : "Sdílení položky %s selhalo, protože položka již je s uživatelem %s sdílena",
     "Not allowed to create a federated share with the same user" : "Není povoleno vytvořit propojené sdílení s tím samým uživatelem",

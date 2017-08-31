@@ -110,6 +110,7 @@ OC.L10N.register(
     "Android app" : "Android lietotne",
     "iOS app" : "iOS lietotne",
     "Show First Run Wizard again" : "Vēlreiz rādīt pirmās palaišanas vedni",
+    "Add" : "Pievienot",
     "Profile picture" : "Profila attēls",
     "Upload new" : "Ielādēt jaunu",
     "Remove image" : "Novākt attēlu",

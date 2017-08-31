@@ -21,6 +21,7 @@ OC.L10N.register(
     "Desktop client" : "Desktop klijent",
     "Android app" : "Android aplikacija",
     "iOS app" : "iOS aplikacija",
+    "Add" : "Dodaj",
     "Cancel" : "Otkaži",
     "Email" : "E-mail",
     "Password" : "Lozinka",

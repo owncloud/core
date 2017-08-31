@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "שיתוף מאוגד",
+    "Add to your ownCloud" : "הוספה ל- ownCloud שלך",
     "Invalid Federated Cloud ID" : "זיהוי ענן מאוגד לא חוקי",
     "Sharing %s failed, because this item is already shared with %s" : "שיתוף %s נכשל, כיוון שפריט זה כבר משותף עם %s",
     "Not allowed to create a federated share with the same user" : "אסור ליצור שיתוף מאוגד עם אותו משתמש",

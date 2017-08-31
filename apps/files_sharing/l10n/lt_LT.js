@@ -68,7 +68,6 @@ OC.L10N.register(
     "the link expired" : "baigėsi nuorodos galiojimo laikas",
     "sharing is disabled" : "dalinimasis yra išjungtas",
     "For more info, please ask the person who sent this link." : "Dėl tikslesnės informacijos susisiekite su asmeniu atsiuntusiu nuorodą.",
-    "Add to your ownCloud" : "Pridėti prie tavo ownCloud",
     "Download" : "Atsisiųsti",
     "Download %s" : "Atsiųsti %s",
     "Direct link" : "Tiesioginė nuoroda"

@@ -76,6 +76,7 @@ OC.L10N.register(
     "This means that there might be problems with certain characters in file names." : "هذا يعني انه من الممكن ان يكون هناك مشكلة في بعض الاحرف في اسم الملف.",
     "Get the apps to sync your files" : "احصل على التطبيقات لمزامنة ملفاتك",
     "Show First Run Wizard again" : "ابدأ خطوات بداية التشغيل من جديد",
+    "Add" : "اضف",
     "Profile picture" : "صورة الملف الشخصي",
     "Upload new" : "رفع الان",
     "Remove image" : "إزالة الصورة",

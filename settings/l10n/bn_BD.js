@@ -48,6 +48,7 @@ OC.L10N.register(
     "Send email" : "ইমেইল পাঠান ",
     "Get the apps to sync your files" : "আপনার ফাইলসমূহ সিংক করতে অ্যাপস নিন",
     "Show First Run Wizard again" : "প্রথমবার চালানোর যাদুকর পূনরায় প্রদর্শন কর",
+    "Add" : "যোগ কর",
     "Cancel" : "বাতির",
     "Email" : "ইমেইল",
     "Your email address" : "আপনার ই-মেইল ঠিকানা",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Egyesített megosztás",
+    "Add to your ownCloud" : "Adjuk hozzá a saját ownCloudunkhoz",
     "Invalid Federated Cloud ID" : "Érvénytelen Egyesített Felhő Azonosító",
     "Sharing %s failed, because this item is already shared with %s" : "%s megosztása nem sikerült, mert ez már meg van osztva vele: %s",
     "Not allowed to create a federated share with the same user" : "Azonos felhasználóval nem lehet létrehozni egyesített megosztást",

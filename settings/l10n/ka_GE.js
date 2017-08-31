@@ -39,6 +39,7 @@ OC.L10N.register(
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "PHP მოდული 'fileinfo' არ არსებობს. ჩვენ გირჩევთ რომ აუცილებლად ჩართოთ ეს მოდული, რომ მიიღოთ კარგი შედეგები mime-type–ს აღმოჩენისას.",
     "Get the apps to sync your files" : "აპლიკაცია ფაილების სინქრონიზაციისთვის",
     "Show First Run Wizard again" : "მაჩვენე თავიდან გაშვებული ვიზარდი",
+    "Add" : "დამატება",
     "Cancel" : "უარყოფა",
     "Email" : "იმეილი",
     "Your email address" : "თქვენი იმეილ მისამართი",

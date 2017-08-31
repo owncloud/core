@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Додади во вашиот ownCloud",
     "Accept" : "Прифати",
     "Decline" : "Одбиј",
     "Federated Cloud Sharing" : "Федерирано клауд споделување",

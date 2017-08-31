@@ -239,6 +239,8 @@ OC.L10N.register(
     "Android app" : "Androidアプリ",
     "iOS app" : "iOSアプリ",
     "Show First Run Wizard again" : "初回ウィザードを再表示する",
+    "Domain" : "ドメイン",
+    "Add" : "追加",
     "Profile picture" : "プロフィール画像",
     "Upload new" : "新たにアップロード",
     "Select from Files" : "ファイルから選択",

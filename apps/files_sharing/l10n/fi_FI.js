@@ -91,7 +91,6 @@ OC.L10N.register(
     "sharing is disabled" : "jakaminen on poistettu käytöstä",
     "For more info, please ask the person who sent this link." : "Kysy lisätietoja henkilöltä, jolta sait linkin.",
     "%s is publicly shared" : "%s on jaettu julkisesti",
-    "Add to your ownCloud" : "Lisää ownCloudiisi",
     "Download" : "Lataa",
     "Download %s" : "Lataa %s",
     "Direct link" : "Suora linkki"

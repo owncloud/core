@@ -219,6 +219,8 @@ OC.L10N.register(
     "Android app" : "Android applikáció",
     "iOS app" : "IOS applikáció",
     "Show First Run Wizard again" : "Nézzük meg újra az első bejelentkezéskori segítséget!",
+    "Domain" : "Domain",
+    "Add" : "Hozzáadás",
     "Profile picture" : "Profilkép",
     "Upload new" : "Új feltöltése",
     "Select from Files" : "Kiválasztás a Fájlkból",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Souporaba v zveznem oblaku",
+    "Add to your ownCloud" : "Dodaj v svoj oblak ownCloud",
     "Invalid Federated Cloud ID" : "Neveljaven ID zveznega oblaka ownCloud",
     "Sharing %s failed, because this item is already shared with %s" : "Nastavljanje souporabe %s je spodletelo, ker je ima uporabnik %s predmet že v souporabi.",
     "Not allowed to create a federated share with the same user" : "Ni dovoljeno ustvariti souporabe zveznega oblaka z istim uporabnikom",

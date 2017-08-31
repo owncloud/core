@@ -1,5 +1,6 @@
 { "translations": {
     "Federated sharing" : "แบ่งปันกับสหพันธรัฐ",
+    "Add to your ownCloud" : "เพิ่มลงใน ownCloud ของคุณ",
     "Invalid Federated Cloud ID" : "ไอดีคลาวด์ในเครือไม่ถูกต้อง",
     "Sharing %s failed, because this item is already shared with %s" : "การแชร์ %s ล้มเหลวเพราะรายการนี้ถูกแชร์กับ %s",
     "Not allowed to create a federated share with the same user" : "ไม่อนุญาตให้สร้างแชร์สหพันธรัฐกับผู้ใช้เดียวกัน",

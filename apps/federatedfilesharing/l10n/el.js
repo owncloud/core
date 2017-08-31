@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Ομόσπονδος διαμοιρασμός",
+    "Add to your ownCloud" : "Προσθήκη στο ownCloud σου",
     "Invalid Federated Cloud ID" : "Μη έγκυρο Federated Cloud ID",
     "Sharing %s failed, because this item is already shared with %s" : "Ο διαμοιρασμός του %s απέτυχε, γιατί το αντικείμενο είναι διαμοιρασμένο ήδη με τον χρήστη %s",
     "Not allowed to create a federated share with the same user" : "Δεν είναι επιτρεπτή η δημιουργία ομόσπονδου διαμοιρασμού με τον ίδιο διακομιστή χρήστη",

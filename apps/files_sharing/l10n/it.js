@@ -110,7 +110,6 @@ OC.L10N.register(
     "sharing is disabled" : "la condivisione è disabilitata",
     "For more info, please ask the person who sent this link." : "Per ulteriori informazioni, chiedi alla persona che ti ha inviato il collegamento.",
     "%s is publicly shared" : "%s è condiviso pubblicamente",
-    "Add to your ownCloud" : "Aggiungi al tuo ownCloud",
     "Download" : "Scarica",
     "Download %s" : "Scarica %s",
     "Direct link" : "Collegamento diretto"

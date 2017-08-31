@@ -242,6 +242,8 @@ OC.L10N.register(
     "Android app" : "Applicazione Android",
     "iOS app" : "Applicazione iOS",
     "Show First Run Wizard again" : "Mostra nuovamente la procedura di primo avvio",
+    "Domain" : "Dominio",
+    "Add" : "Aggiungi",
     "Profile picture" : "Immagine del profilo",
     "Upload new" : "Carica nuova",
     "Select from Files" : "Seleziona da file",

@@ -330,6 +330,8 @@
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "למניעת פסקי זמן בהתקנות גדולות, ניתן במקום להריץ את הפקודה הבאה בתיקיית ההתקנה שלך:",
     "Detailed logs" : "לוג פרטים",
     "Update needed" : "עדכון נדרש",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "נראה שההרצה שלך יכולה לארח מספר רב של קבצים ו/או משתמשים. להבטחת תהליך שדרוג חלק, מומלץ להשתמש בעדכון המבוסס על שורת פקודה (שדרוג occ).",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "עדכון אוטומטי מנוטרל בקובץ config.php. לשדרוג ההרצה שלך, יש להשתמש בעדכון המבוסס על שורת פקודה (שדרוג occ).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "לעזרה, ניתן לצפות ב<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">מסמכי התיעוד</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "הפעלה %s זו כרגע במצב אחזקה, שתמשך זמן מה.",
     "This page will refresh itself when the %s instance is available again." : "עמוד זה ירענן את עצמו כשהפעלת %s תהיה זמינה שוב."

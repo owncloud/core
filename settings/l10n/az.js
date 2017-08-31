@@ -154,6 +154,7 @@ OC.L10N.register(
     "Android app" : "Android proqramı",
     "iOS app" : "iOS proqramı",
     "Show First Run Wizard again" : "İlk işəsalma sehirbazını yenidən göstər",
+    "Add" : "Əlavə etmək",
     "Profile picture" : "Profil şəkli",
     "Upload new" : "Yenisini yüklə",
     "Remove image" : "Şəkili sil",

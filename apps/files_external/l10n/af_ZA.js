@@ -14,6 +14,7 @@ OC.L10N.register(
     "Host" : "Gasheer",
     "Root" : "Wortel",
     "Share" : "Deel",
+    "Domain" : "Domein",
     "Name" : "Naam",
     "Configuration" : "Opstelling",
     "Delete" : "Skrap"

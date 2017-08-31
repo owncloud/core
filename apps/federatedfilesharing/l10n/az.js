@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Öz ownCloud-nuza əlavə edin",
     "Federated Cloud Sharing" : "Federal Cloud Paylaşım",
     "Open documentation" : "Sənədləri aç",
     "Allow users on this server to send shares to other servers" : "Bu serverdən digər serverlərə istifadəçilər tərəfindən paylaşımın göndərilməsinə izin vermək",

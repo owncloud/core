@@ -131,6 +131,7 @@ OC.L10N.register(
     "Android app" : "Android aplikacija",
     "iOS app" : "iOS aplikacija",
     "Show First Run Wizard again" : "Opet pokažite First Run Wizard",
+    "Add" : "Dodaj",
     "Profile picture" : "Slika profila",
     "Upload new" : "Učitaj novu",
     "Remove image" : "Ukloni sliku",

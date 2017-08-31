@@ -247,6 +247,8 @@ OC.L10N.register(
     "iOS app" : "Program za iOS",
     "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "Če želite podpreti projekt\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">se pridružite razvijalcem</a>,\n\t\t\tali pa le \n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">razširite dober glas</a>!",
     "Show First Run Wizard again" : "Zaženi čarovnika prvega zagona",
+    "Domain" : "Domena",
+    "Add" : "Dodaj",
     "Profile picture" : "Slika profila",
     "Upload new" : "Pošlji novo",
     "Select from Files" : "Izbor iz datotek",

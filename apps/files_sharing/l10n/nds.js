@@ -8,7 +8,6 @@ OC.L10N.register(
     "Password" : "Passwort",
     "Name" : "Name",
     "Expiration date" : "Auslaufdatum",
-    "Add to your ownCloud" : "Zu deiner ownCloud hinzufügen",
     "Download" : "Download"
 },
 "nplurals=2; plural=(n != 1);");

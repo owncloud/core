@@ -198,6 +198,8 @@ OC.L10N.register(
     "Desktop client" : "Client Desktop",
     "Android app" : "Aplicatie Android",
     "iOS app" : "Aplicație iOS",
+    "Domain" : "Domeniu",
+    "Add" : "Adaugă",
     "Profile picture" : "Imagine de profil",
     "Upload new" : "Încarcă una nouă",
     "Select from Files" : "Alege din Fișiere",

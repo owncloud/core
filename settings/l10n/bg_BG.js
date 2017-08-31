@@ -161,6 +161,8 @@ OC.L10N.register(
     "Android app" : "Андроид приложение",
     "iOS app" : "iOS приложение",
     "Show First Run Wizard again" : "Покажи Настройките за Първоначално Зареждане отново",
+    "Domain" : "Домейн",
+    "Add" : "Добави",
     "Profile picture" : "Аватар",
     "Upload new" : "Качи нов",
     "Remove image" : "Премахни изображението",

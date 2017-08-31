@@ -34,6 +34,7 @@ OC.L10N.register(
     "SMTP Password" : "SMTP 密碼",
     "Android app" : "Android 應用程式",
     "iOS app" : "iOS 應用程式",
+    "Add" : "新增",
     "Remove image" : "刪除圖片",
     "Cancel" : "取消",
     "Email" : "電郵",

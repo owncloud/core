@@ -12,7 +12,6 @@ OC.L10N.register(
     "Reasons might be:" : "Moontlike redes is:",
     "the item was removed" : "die item is verwyder",
     "sharing is disabled" : "deling is gedeaktiveer",
-    "Add to your ownCloud" : "Voeg tot u ownCloud toe",
     "Download" : "Laai Af"
 },
 "nplurals=2; plural=(n != 1);");

@@ -177,6 +177,7 @@ OC.L10N.register(
     "Android app" : "aplicació para Android",
     "iOS app" : "aplicació para iOS",
     "Show First Run Wizard again" : "Torna a mostrar l'assistent de primera execució",
+    "Add" : "Afegeix",
     "Profile picture" : "Foto de perfil",
     "Upload new" : "Puja'n una de nova",
     "Remove image" : "Elimina imatge",

@@ -68,7 +68,6 @@ OC.L10N.register(
     "the link expired" : "lejárt a link érvényességi ideje",
     "sharing is disabled" : "letiltásra került a megosztás",
     "For more info, please ask the person who sent this link." : "További információért forduljon ahhoz, aki ezt a linket küldte Önnek!",
-    "Add to your ownCloud" : "Adjuk hozzá a saját ownCloudunkhoz",
     "Download" : "Letöltés",
     "Download %s" : "%s letöltése",
     "Direct link" : "Közvetlen link"

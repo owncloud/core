@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Pridať do svojho ownCloudu",
     "Invalid Federated Cloud ID" : "Neplatné združené Cloud ID",
     "Sharing %s failed, because this item is already shared with %s" : "Zdieľanie %s zlyhalo, pretože táto položka už je zdieľaná s %s",
     "Not allowed to create a federated share with the same user" : "Nie je dovolené vytvoriť feredované zdieľanie s rovnakým používateľom.",

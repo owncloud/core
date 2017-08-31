@@ -194,6 +194,7 @@ OC.L10N.register(
     "Android app" : "Android-додаток",
     "iOS app" : "iOS додаток",
     "Show First Run Wizard again" : "Показувати Майстер Налаштувань знову",
+    "Add" : "Додати",
     "Profile picture" : "Зображення облікового запису",
     "Upload new" : "Завантажити нове",
     "Remove image" : "Видалити зображення",

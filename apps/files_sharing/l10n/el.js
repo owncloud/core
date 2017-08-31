@@ -110,7 +110,6 @@ OC.L10N.register(
     "sharing is disabled" : "ο διαμοιρασμός απενεργοποιήθηκε",
     "For more info, please ask the person who sent this link." : "Για περισσότερες πληροφορίες, παρακαλώ ρωτήστε το άτομο που σας έστειλε αυτόν τον σύνδεσμο.",
     "%s is publicly shared" : "Το %s είναι κοινόχρηστο δημοσίως",
-    "Add to your ownCloud" : "Προσθήκη στο ownCloud σου",
     "Download" : "Λήψη",
     "Download %s" : "Λήψη %s",
     "Direct link" : "Άμεσος σύνδεσμος"

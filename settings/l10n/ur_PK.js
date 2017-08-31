@@ -10,6 +10,7 @@ OC.L10N.register(
     "Good password" : "اچھا پاسورڈ",
     "Strong password" : "مضبوط پاسورڈ",
     "Cheers!" : "واہ!",
+    "Add" : "شامل کریں",
     "Cancel" : "منسوخ کریں",
     "Password" : "پاسورڈ",
     "New password" : "نیا پاسورڈ",

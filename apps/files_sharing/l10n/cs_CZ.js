@@ -108,7 +108,6 @@ OC.L10N.register(
     "sharing is disabled" : "sdílení je zakázané",
     "For more info, please ask the person who sent this link." : "Pro více informací kontaktujte osobu, která vám zaslala tento odkaz.",
     "%s is publicly shared" : "%s je veřejně sdílen",
-    "Add to your ownCloud" : "Přidat do svého ownCloudu",
     "Download" : "Stáhnout",
     "Download %s" : "Stáhnout %s",
     "Direct link" : "Přímý odkaz"

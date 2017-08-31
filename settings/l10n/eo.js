@@ -100,6 +100,7 @@ OC.L10N.register(
     "Desktop client" : "Labortabla kliento",
     "Android app" : "Android-aplikaĵo",
     "iOS app" : "iOS-aplikaĵo",
+    "Add" : "Aldoni",
     "Profile picture" : "Profila bildo",
     "Upload new" : "Alŝuti novan",
     "Select from Files" : "Elekti el Dosieroj",

@@ -49,6 +49,7 @@
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "ខ្វះ​ម៉ូឌុល 'fileinfo' ។ យើង​សូម​ណែនាំ​ឲ្យ​បើក​ម៉ូឌុល​នេះ ដើម្បី​ទទួល​បាន​លទ្ធផល​ល្អ​នៃ​ការ​សម្គាល់​ប្រភេទ mime ។",
     "Get the apps to sync your files" : "ដាក់​អោយកម្មវិធីផ្សេងៗ ​ធ្វើសមកាលកម្ម​ឯកសារ​អ្នក",
     "Show First Run Wizard again" : "បង្ហាញ First Run Wizard ម្តង​ទៀត",
+    "Add" : "បន្ថែម",
     "Profile picture" : "រូបភាព​ប្រវត្តិរូប",
     "Upload new" : "ផ្ទុកឡើង​ថ្មី",
     "Remove image" : "ដក​រូបភាព​ចេញ",

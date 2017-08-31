@@ -257,6 +257,8 @@ OC.L10N.register(
     "iOS app" : "iOS 应用",
     "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "如果您想支持此项目\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">加入开发</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">分享</a>!",
     "Show First Run Wizard again" : "再次显示首次运行向导",
+    "Domain" : "域名",
+    "Add" : "增加",
     "Profile picture" : "联系人图片",
     "Upload new" : "上传新的",
     "Select from Files" : "选择文件",

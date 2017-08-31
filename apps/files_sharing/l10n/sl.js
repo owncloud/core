@@ -109,7 +109,6 @@ OC.L10N.register(
     "sharing is disabled" : "souporaba je onemogočena.",
     "For more info, please ask the person who sent this link." : "Za več podrobnosti stopite v stik s pošiljateljem te povezave.",
     "%s is publicly shared" : "%s je v javni souporabi",
-    "Add to your ownCloud" : "Dodaj v svoj oblak ownCloud",
     "Download" : "Prejmi",
     "Download %s" : "Prejmi %s",
     "Direct link" : "Neposredna povezava"

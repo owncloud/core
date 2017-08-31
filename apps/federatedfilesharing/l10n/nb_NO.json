@@ -1,5 +1,6 @@
 { "translations": {
     "Federated sharing" : "Forent deling",
+    "Add to your ownCloud" : "Legg til i din ownCloud",
     "Invalid Federated Cloud ID" : "Ugyldig ID for forent sky",
     "Sharing %s failed, because this item is already shared with %s" : "Deling av %s feilet, fordi dette elementet allerede er delt med %s",
     "Not allowed to create a federated share with the same user" : "Ikke tillatt å opprette en forent deling med den samme brukeren",

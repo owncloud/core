@@ -228,6 +228,8 @@ OC.L10N.register(
     "Android app" : "Aplicación d'Android",
     "iOS app" : "Aplicación d'iOS",
     "Show First Run Wizard again" : "Amosar nuevamente l'Encontu d'execución inicial",
+    "Domain" : "Dominiu",
+    "Add" : "Amestar",
     "Profile picture" : "Semeya de perfil",
     "Upload new" : "Xubir otra",
     "Select from Files" : "Esbillar dende Ficheros",

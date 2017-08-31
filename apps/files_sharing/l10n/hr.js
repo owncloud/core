@@ -35,7 +35,6 @@ OC.L10N.register(
     "the link expired" : "veza je istekla",
     "sharing is disabled" : "dijeljenje je onemogućeno",
     "For more info, please ask the person who sent this link." : "Za više informacija, molimo obratite se osobi koja je ovu vezu poslala.",
-    "Add to your ownCloud" : "Dodajte svome ownCloud",
     "Download" : "Preuzmite",
     "Download %s" : "Preuzmite %s",
     "Direct link" : "Izravna veza"

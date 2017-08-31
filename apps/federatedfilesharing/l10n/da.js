@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Datafællesskabsdeling",
+    "Add to your ownCloud" : "Tilføj til din ownCload",
     "Invalid Federated Cloud ID" : "Ugyldigt Federated Cloud ID",
     "Sharing %s failed, because this item is already shared with %s" : "Der skete en fejl ved deling af %s, objektet er allerede delt med %s",
     "Not allowed to create a federated share with the same user" : "Det er ikke tilladt at danne et datafællesskab med samme bruger",

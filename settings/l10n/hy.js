@@ -45,6 +45,7 @@ OC.L10N.register(
     "Send email" : "Ուղարկել նամակ",
     "Android app" : "Android ափփ",
     "iOS app" : "iOS ափփ",
+    "Add" : "Ավելացնել",
     "Cancel" : "Չեղարկել",
     "Full name" : "Լրիվ անուն",
     "Email" : "Էլ. հասցե",

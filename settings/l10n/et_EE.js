@@ -171,6 +171,8 @@ OC.L10N.register(
     "Android app" : "Androidi rakendus",
     "iOS app" : "iOS-i rakendus",
     "Show First Run Wizard again" : "Näita veelkord Esmase Käivituse Juhendajat",
+    "Domain" : "Domeen",
+    "Add" : "Lisa",
     "Profile picture" : "Profiili pilt",
     "Upload new" : "Laadi uus üles",
     "Remove image" : "Eemalda pilt",

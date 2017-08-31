@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Authentication error" : "ခွင့်ပြုချက်မအောင်မြင်",
     "Invalid request" : "တောင်းဆိုချက်မမှန်ကန်ပါ",
+    "Add" : "ပေါင်းထည့်",
     "Cancel" : "ပယ်ဖျက်မည်",
     "Password" : "စကားဝှက်",
     "New password" : "စကားဝှက်အသစ်",

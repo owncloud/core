@@ -231,6 +231,8 @@ OC.L10N.register(
     "Android app" : "Android uygulaması",
     "iOS app" : "iOS uygulaması",
     "Show First Run Wizard again" : "İlk Çalıştırma Sihirbazı'nı yeniden göster",
+    "Domain" : "Alan adı",
+    "Add" : "Ekle",
     "Profile picture" : "Profil resmi",
     "Upload new" : "Yeni yükle",
     "Select from Files" : "Dosyalardan seç",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "联合云共享",
+    "Add to your ownCloud" : "添加到您的云空间",
     "Invalid Federated Cloud ID" : "联合云ID不正确",
     "Sharing %s failed, because this item is already shared with %s" : "共享 %s 失败，因为它已经共享给 %s",
     "Not allowed to create a federated share with the same user" : "不能给你自己分享文件",

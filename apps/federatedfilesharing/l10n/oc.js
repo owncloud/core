@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Federated sharing",
+    "Add to your ownCloud" : "Apondre a vòstre ownCloud",
     "Invalid Federated Cloud ID" : "ID Federated Cloud incorrècte",
     "Sharing %s failed, because this item is already shared with %s" : "Lo partiment de %s a fracassat perque aqueste objècte es ja partejat amb %s",
     "Not allowed to create a federated share with the same user" : "Pas autorizat a crear un partiment federat amb lo meteis utilizaire",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Stowarzyszone udostępnianie",
+    "Add to your ownCloud" : "Dodaj do twojego ownCloud",
     "Invalid Federated Cloud ID" : "Niewłaściwe ID stowarzyszonej chmury",
     "Sharing %s failed, because this item is already shared with %s" : "Współdzielenie %s nie powiodło się, ponieważ element jest już współdzielony z %s",
     "File is already shared with %s" : "Plik jest już współdzielony z %s",

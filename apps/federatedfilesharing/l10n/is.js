@@ -2,6 +2,7 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Deiling milli þjóna",
+    "Add to your ownCloud" : "Bæta í þitt eigið ownCloud",
     "Invalid Federated Cloud ID" : "Ógilt skýjasambandsauðkenni (Federated Cloud ID)",
     "Sharing %s failed, because this item is already shared with %s" : "Deiling %s mistókst, því þessu atriði er þegar deilt með %s",
     "Not allowed to create a federated share with the same user" : "Ekki er heimilt að búa til skýjasambandssameign með sama notanda",

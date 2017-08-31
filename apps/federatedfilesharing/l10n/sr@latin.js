@@ -1,6 +1,7 @@
 OC.L10N.register(
     "federatedfilesharing",
     {
+    "Add to your ownCloud" : "Dodaj na svoj ownCloud",
     "Allow users on this server to send shares to other servers" : "Dozvoli korisnicima na ovom serveru da šalju deljene resurse na druge servere",
     "Allow users on this server to receive shares from other servers" : "Dozvoli korisnicima na ovom serveru da primaju deljene resurse sa drugih servera"
 },

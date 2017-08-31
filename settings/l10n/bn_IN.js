@@ -4,6 +4,7 @@ OC.L10N.register(
     "Saved" : "সংরক্ষিত",
     "Delete" : "মুছে ফেলা",
     "Get the apps to sync your files" : "আপনার ফাইল সিঙ্ক করার অ্যাপ পান",
+    "Add" : "যোগ করা",
     "Cancel" : "বাতিল করা",
     "Name" : "নাম",
     "Error" : "ভুল"

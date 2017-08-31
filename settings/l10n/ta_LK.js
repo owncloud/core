@@ -18,6 +18,7 @@ OC.L10N.register(
     "Server address" : "சேவையக முகவரி",
     "Port" : "துறை ",
     "Credentials" : "சான்று ஆவணங்கள்",
+    "Add" : "சேர்க்க",
     "Cancel" : "இரத்து செய்க",
     "Email" : "மின்னஞ்சல்",
     "Your email address" : "உங்களுடைய மின்னஞ்சல் முகவரி",

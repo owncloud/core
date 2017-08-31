@@ -136,6 +136,8 @@ OC.L10N.register(
     "Android app" : "Android programa",
     "iOS app" : "iOS programa",
     "Show First Run Wizard again" : "Rodyti pirmo karto vedlį dar kartą",
+    "Domain" : "Domenas",
+    "Add" : "Pridėti",
     "Profile picture" : "Profilio paveikslėlis",
     "Upload new" : "Įkelti naują",
     "Remove image" : "Pašalinti paveikslėlį",

@@ -110,7 +110,6 @@ OC.L10N.register(
     "sharing is disabled" : "deling er deaktivert",
     "For more info, please ask the person who sent this link." : "For mer informasjon, spør personen som sendte lenken.",
     "%s is publicly shared" : "%s er offentlig delt",
-    "Add to your ownCloud" : "Legg til i din ownCloud",
     "Download" : "Last ned",
     "Download %s" : "Last ned %s",
     "Direct link" : "Direkte lenke"

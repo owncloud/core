@@ -180,6 +180,7 @@ OC.L10N.register(
     "Desktop client" : "Desktop Client",
     "Android app" : "Android-App",
     "iOS app" : "iOS-App",
+    "Add" : "Dobäisetzen",
     "Profile picture" : "Profil Foto",
     "Upload new" : "Nei eroplueden",
     "Select from Files" : "Aus de Fichieren wielen",

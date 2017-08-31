@@ -110,7 +110,6 @@ OC.L10N.register(
     "sharing is disabled" : "общий доступ отключён",
     "For more info, please ask the person who sent this link." : "Для получения дополнительной информации, свяжитесь с тем, кто отправил вам эту ссылку.",
     "%s is publicly shared" : "%s доступен публично",
-    "Add to your ownCloud" : "Добавить в свой ownCloud",
     "Download" : "Скачать",
     "Download %s" : "Скачать %s",
     "Direct link" : "Прямая ссылка"
