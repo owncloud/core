@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 ## 
-## Usage: setup-environment.sh 
+## Usage: setup-environment.sh <webserver user> <owncloud install dir>
 ##
 ## This script will setup an ownCloud development environment on a Debian-Linux
 ## distribution. 
