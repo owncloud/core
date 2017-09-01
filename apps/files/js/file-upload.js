@@ -251,6 +251,7 @@ OC.FileUpload.prototype = {
 			this.data.headers['Authorization'] =
 				'Basic ' + btoa(userName + ':' + (password || ''));
 		}
+		this.data.headers['requesttoken'] = OC.requestToken;
 
 		var chunkFolderPromise;
 		if ($.support.blobSlice
@@ -1195,11 +1196,15 @@ OC.Uploader.prototype = _.extend({
 				fileupload.on('fileuploaddone', function(e, data) {
 					var upload = self.getUpload(data);
 					upload.done().then(function() {
-						// don't hide if there are more files to process
-						if (!self.isProcessing()) {
-							self._hideProgressBar();
-						}
 						self.trigger('done', e, upload);
+						// defer because sometimes the current upload is still in pending
+						// state but frees itself afterwards
+						_.defer(function() {
+							// don't hide if there are more files to process
+							if (!self.isProcessing()) {
+								self._hideProgressBar();
+							}
+						});
 					}).fail(function(status, response) {
 						var message = response.message;
 						self._hideProgressBar();
