@@ -2649,7 +2649,9 @@ describe('OCA.Files.FileList tests', function() {
 			function dropOn($target, data) {
 				var eventData = {
 					originalEvent: {
-						target: $target
+						delegatedEvent: {
+							target: $target
+						}
 					}
 				};
 				uploader.trigger('drop', eventData, data || {});
