@@ -121,7 +121,7 @@ Feature: trashbin-new-endpoint
 		And as "user0" the folder with original path "/textfile0.txt" exists in trash
 
 	@local_storage
-	@no_encryption
+	@no_default_encryption
 	Scenario: Deleting a folder into external storage moves it to the trashbin
 		Given As an "admin"
 		And invoking occ with "files:scan --all"
@@ -132,7 +132,7 @@ Feature: trashbin-new-endpoint
 		Then as "user0" the folder with original path "/local_storage/tmp" exists in trash
 
 	@local_storage
-	@no_encryption
+	@no_default_encryption
 	Scenario: Deleting a file into external storage moves it to the trashbin and can be restored
 		Given As an "admin"
 		And invoking occ with "files:scan --all"
@@ -148,3 +148,19 @@ Feature: trashbin-new-endpoint
 			| /local_storage/ |
 			| /local_storage/tmp/ |
 			| /local_storage/tmp/textfile0.txt |
+
+	@local_storage
+	@no_default_encryption
+	Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored
+		Given As an "admin"
+		And invoking occ with "files:scan --all"
+		And user "user0" exists
+		And user "user0" created a folder "/local_storage/tmp"
+		And User "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
+		And user "user0" uploads chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
+		And User "user0" deletes file "/local_storage/tmp/textfile0.txt"
+		And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" exists in trash
+		And Logging in using web as "user0"
+		When as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" is restored
+		Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" does not exist in trash
+		And Downloaded content when downloading file "/local_storage/tmp/textfile0.txt" with range "bytes=0-1" should be "AA"
