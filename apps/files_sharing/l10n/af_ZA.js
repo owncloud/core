@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "Kanseleer",
     "Share" : "Deel",
+    "Sharing" : "Deling",
     "This share is password-protected" : "Hierdie deling word met ’n wagwoord beskerm",
     "The password is wrong. Try again." : "ie wagwoord is verkeerd. Probeer weer.",
     "Password" : "Wagwoord",

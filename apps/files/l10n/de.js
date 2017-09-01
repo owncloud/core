@@ -11,6 +11,7 @@ OC.L10N.register(
     "Favorites" : "Favoriten",
     "Could not create folder \"{dir}\"" : "Der Ordner konnte nicht erstellt werden \"{dir}\"",
     "Upload cancelled." : "Upload abgebrochen.",
+    "Processing files..." : "Verarbeite Dateien...",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Die Datei {filename} kann nicht hochgeladen werden, da sie entweder ein Verzeichnis oder 0 Bytes groß ist",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Nicht genügend freier Speicherplatz, du möchtest {size1} hochladen, es sind jedoch nur noch {size2} verfügbar.",
     "Target folder \"{dir}\" does not exist any more" : "Zielverzeichnis \"{dir}\" existiert nicht mehr",

@@ -16,6 +16,7 @@ OC.L10N.register(
     "Share" : "Deel",
     "Domain" : "Domein",
     "Name" : "Naam",
+    "Enable encryption" : "Aktiveer enkripsie",
     "Configuration" : "Opstelling",
     "Delete" : "Skrap"
 },
