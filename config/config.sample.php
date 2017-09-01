@@ -1371,6 +1371,11 @@ $CONFIG = array(
 'upgrade.disable-web' => false,
 
 /**
+ * Automatic update of market apps, set to "false" to disable.
+ */
+'upgrade.automatic-app-update' => true,
+
+/**
  * Set this ownCloud instance to debugging mode
  *
  * Only enable this for local development and not in production environments

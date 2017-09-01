@@ -114,7 +114,7 @@ class Apps implements IRepairStep {
 			$link = $this->defaults->buildDocLinkToKey('admin-marketplace-apps');
 			$output->info('No internet connection available - no app updates will be taken from the marketplace.');
 			$output->info("How to update apps in such situation please see $link");
-			return;
+			$this->appManager->disableApp('market');
 		}
 		$appsToUpgrade = $this->getAppsToUpgrade();
 		$failedCompatibleApps = [];
@@ -124,6 +124,14 @@ class Apps implements IRepairStep {
 
 		// fix market app state
 		$shallContactMarketplace = $this->fixMarketAppState($output);
+
+		// market might be enabled but admin does not want to automatically update apps through it
+		// (they might want to manually click through the updates in the web UI so keeping the
+		// market enabled here is a legitimate use case)
+		if ($this->config->getSystemValue('upgrade.automatic-app-update', true) !== true) {
+			$shallContactMarketplace = false;
+		}
+
 		if ($shallContactMarketplace) {
 			// Check if we can use the marketplace to update apps as needed?
 			if ($this->appManager->isEnabledForUser('market')) {
@@ -167,7 +175,8 @@ class Apps implements IRepairStep {
 				}
 			} else {
 				// No market available, output error and continue attempt
-				$output->warning('Market app is unavailable for updating of apps. Enable with: occ app:enable market');
+				$link = $this->defaults->buildDocLinkToKey('admin-marketplace-apps');
+				$output->warning("Market app is unavailable for updating of apps. Please update manually, see $link");
 			}
 		}
 
@@ -178,9 +187,11 @@ class Apps implements IRepairStep {
 			// fail
 			$output->warning('You have incompatible or missing apps enabled that could not be found or updated via the marketplace.');
 			$output->warning(
-				'please install app manually with tarball or disable them with:'
+				'Please install or update the following apps manually or disable them with:'
 				. $this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps))
 			);
+			$link = $this->defaults->buildDocLinkToKey('admin-marketplace-apps');
+			$output->warning("For manually updating, see $link");
 
 			throw new RepairException('Upgrade is not possible');
 		} elseif ($hasNotUpdatedCompatibleApps) {
@@ -314,6 +325,7 @@ class Apps implements IRepairStep {
 			$output->info("Please note that the market app is not recommended for clustered setups - see $link");
 			return false;
 		}
+
 		// Then we need to enable the market app to support app updates / downloads during upgrade
 		$output->info('Enabling market app to assist with update');
 		$this->appManager->enableApp('market');
