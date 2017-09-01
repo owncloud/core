@@ -36,6 +36,7 @@ use OCP\Share\IManager;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\Exceptions\GenericShareException;
 use OCP\Lock\ILockingProvider;
+use OCP\IConfig;
 
 /**
  * Class Share20OCS
@@ -60,6 +61,8 @@ class Share20OCS {
 	private $currentUser;
 	/** @var IL10N */
 	private $l;
+	/** @var IConfig */
+	private $config;
 
 	/**
 	 * Share20OCS constructor.
@@ -71,6 +74,8 @@ class Share20OCS {
 	 * @param IRootFolder $rootFolder
 	 * @param IURLGenerator $urlGenerator
 	 * @param IUser $currentUser
+	 * @param IL10N $l10n
+	 * @param IConfig $config
 	 */
 	public function __construct(
 			IManager $shareManager,
@@ -80,7 +85,8 @@ class Share20OCS {
 			IRootFolder $rootFolder,
 			IURLGenerator $urlGenerator,
 			IUser $currentUser,
-			IL10N $l10n
+			IL10N $l10n,
+			IConfig $config
 	) {
 		$this->shareManager = $shareManager;
 		$this->userManager = $userManager;
@@ -90,6 +96,7 @@ class Share20OCS {
 		$this->urlGenerator = $urlGenerator;
 		$this->currentUser = $currentUser;
 		$this->l = $l10n;
+		$this->config = $config;
 	}
 
 	/**
@@ -270,10 +277,17 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 404, 'Could not create share');
 		}
 
+		$shareType = (int)$this->request->getParam('shareType', '-1');
+
 		// Parse permissions (if available)
 		$permissions = $this->request->getParam('permissions', null);
 		if ($permissions === null) {
-			$permissions = \OCP\Constants::PERMISSION_ALL;
+			if ($shareType !== \OCP\Share::SHARE_TYPE_LINK) {
+				$permissions = $this->config->getAppValue('core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL);
+				$permissions |= \OCP\Constants::PERMISSION_READ;
+			} else {
+				$permissions = \OCP\Constants::PERMISSION_ALL;
+			}
 		} else {
 			$permissions = (int)$permissions;
 		}
@@ -286,8 +300,6 @@ class Share20OCS {
 		if ($permissions === 0) {
 			return new \OC\OCS\Result(null, 400, $this->l->t('Cannot remove all permissions'));
 		}
-
-		$shareType = (int)$this->request->getParam('shareType', '-1');
 
 		// link shares can have create-only without read (anonymous upload)
 		if ($shareType !== \OCP\Share::SHARE_TYPE_LINK && $permissions !== \OCP\Constants::PERMISSION_CREATE) {
