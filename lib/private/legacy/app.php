@@ -136,6 +136,26 @@ class OC_App {
 				$davUser = \OC::$server->getUserSession()->getSession()->get(\OCA\DAV\Connector\Sabre\Auth::DAV_AUTHENTICATED);
 				if (is_null($davUser)) {
 					\OC::$server->getUserSession()->validateSession();
+				} else {
+					$request = \OC::$server->getRequest();
+					$userSession = \OC::$server->getUserSession();
+					/** @var \OC\Authentication\Token\DefaultTokenProvider $tokenProvider */
+					$tokenProvider = \OC::$server->query('\OC\Authentication\Token\DefaultTokenProvider');
+					$token = null;
+					try {
+						$token = $tokenProvider->getToken($userSession->getSession()->getId());
+					} catch (\Exception $ex) {
+						$password = null;
+						if (isset($_SERVER['PHP_AUTH_PW'])) {
+							$password = $_SERVER['PHP_AUTH_PW'];
+						}
+
+						$userSession->createSessionToken($request, $userSession->getUser()->getUID(), $userSession->getLoginName(), $password);
+					}
+
+					if ($token) {
+						$tokenProvider->updateToken($token);
+					}
 				}
 			}
 		}
