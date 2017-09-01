@@ -168,7 +168,15 @@ class AuthSettingsController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function destroy($id) {
+
 		$user = $this->userManager->get($this->uid);
+		$currentToken = $this->tokenProvider->getToken($this->session->getId());
+
+		if ($currentToken && ($currentToken->getId() === intval($id))) {
+			return (new JSONResponse())->setStatus(Http::STATUS_CONFLICT);
+		}
+
+
 		if (is_null($user)) {
 			return [];
 		}
