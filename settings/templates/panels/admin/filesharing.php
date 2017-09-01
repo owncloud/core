@@ -60,9 +60,16 @@
 		<label for="allowGroupSharing"><?php p($l->t('Allow sharing with groups'));?></label><br />
 	</p>
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
-		<input type="checkbox" name="shareapi_default_permissions" id="shareApiDefaultPermissions" class="checkbox"
-			   value="31" <?php if ($_['shareapiDefaultPermissions'] === 31) print_unescaped('checked="checked"'); ?> />
-		<label for="shareApiDefaultPermissions"><?php p($l->t('Newly created local shares are read-write by default'));?></label><br/>
+		<input type="hidden" name="shareapi_default_permissions" id="shareApiDefaultPermissions" class="checkbox"
+		value="<?php p($_['shareApiDefaultPermissions']) ?>" />
+		<?php p($l->t('Default local share permissions'));?>
+	</p>
+	<p id="shareApiDefaultPermissionsSection" class="indent <?php if ($_['shareAPIEnabled'] === 'no') p('hidden'); ?>">
+		<?php foreach ($_['shareApiDefaultPermissionsCheckboxes'] as $perm): ?>
+		<input type="checkbox" name="shareapi_default_permission_<?php p($perm['id']) ?>" id="shareapi_default_permission_<?php p($perm['id']) ?>"
+			class="noautosave checkbox" value="<?php p($perm['value']) ?>" <?php if (($_['shareApiDefaultPermissions'] & $perm['value']) !== 0) print_unescaped('checked="checked"'); ?> />
+		<label for="shareapi_default_permission_<?php p($perm['id']) ?>"><?php p($perm['label']);?></label><br/>
+		<?php endforeach ?>
 	</p>
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
 		<input type="checkbox" name="shareapi_only_share_with_group_members" id="onlyShareWithGroupMembers" class="checkbox"
@@ -80,7 +87,7 @@
 		<label for="shareapiExcludeGroups"><?php p($l->t('Exclude groups from sharing'));?></label><br/>
 	</p>
 	<p id="selectExcludedGroups" class="indent <?php if (!$_['shareExcludeGroups'] || $_['shareAPIEnabled'] === 'no') p('hidden'); ?>">
-		<input name="shareapi_exclude_groups_list" type="hidden" id="excludedGroups" value="<?php p($_['shareExcludedGroupsList']) ?>" style="width: 400px"/>
+		<input name="shareapi_exclude_groups_list" class="noautosave" type="hidden" id="excludedGroups" value="<?php p($_['shareExcludedGroupsList']) ?>" style="width: 400px"/>
 		<br />
 		<em><?php p($l->t('These groups will still be able to receive shares, but not to initiate them.')); ?></em>
 	</p>
