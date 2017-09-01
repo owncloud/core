@@ -276,7 +276,7 @@ class SettingsManager implements ISettingsManager {
 				$this->urlGenerator,
 				$this->certificateManager),
 			Encryption::class => new Encryption(),
-			FileSharing::class => new FileSharing($this->config, $this->helper),
+			FileSharing::class => new FileSharing($this->config, $this->helper, $this->l),
 			Logging::class => new Logging($this->config, $this->urlGenerator, $this->helper),
 			Mail::class => new Mail($this->config, $this->helper),
 			SecurityWarning::class => new SecurityWarning(
