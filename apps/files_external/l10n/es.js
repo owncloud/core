@@ -111,6 +111,7 @@ OC.L10N.register(
     "Advanced settings" : "Configuración avanzada",
     "Delete" : "Eliminar",
     "Allow users to mount external storage" : "Permitir a los usuarios montar un almacenamiento externo",
-    "Allow users to mount the following external storage" : "Permitir a los usuarios montar el siguiente almacenamiento externo"
+    "Allow users to mount the following external storage" : "Permitir a los usuarios montar el siguiente almacenamiento externo",
+    "Allow sharing on user-mounted external storages" : "permite compartir de almacenamiento externo montado por el usuario"
 },
 "nplurals=2; plural=(n != 1);");
