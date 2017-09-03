@@ -48,7 +48,7 @@ trait Logging
 		//-1 because getRows gives also the header
 		$linesToRead = count($expectedLogEntries->getRows()) - 1;
 		$logLines = LoggingHelper::tailFile(
-			LoggingHelper::getLogFilePath($this->ocPath),
+			LoggingHelper::getLogFilePath(),
 			$linesToRead
 		);
 		$lineNo = 0;
@@ -89,7 +89,7 @@ trait Logging
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(TableNode $logEntriesExpectedNotToExist)
 	{
-		$logLines = file(LoggingHelper::getLogFilePath($this->ocPath));
+		$logLines = file(LoggingHelper::getLogFilePath());
 		foreach ($logLines as $logLine) {
 			$logEntries = json_decode($logLine, true);
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
@@ -123,7 +123,7 @@ trait Logging
 	 */
 	public function owncloudLogLevelIsSetTo($logLevel)
 	{
-		LoggingHelper::setLogLevel($this->ocPath, $logLevel);
+		LoggingHelper::setLogLevel($logLevel);
 	}
 
 	/**
@@ -133,7 +133,7 @@ trait Logging
 	 */
 	public function owncloudLogBackendIsSetTo($backend)
 	{
-		LoggingHelper::setLogBackend($this->ocPath, $backend);
+		LoggingHelper::setLogBackend($backend);
 	}
 
 	/**
@@ -143,7 +143,7 @@ trait Logging
 	 */
 	public function owncloudLogTimezoneIsSetTo($timezone)
 	{
-		LoggingHelper::setLogTimezone($this->ocPath, $timezone);
+		LoggingHelper::setLogTimezone($timezone);
 	}
 
 	/**
@@ -152,7 +152,7 @@ trait Logging
 	 */
 	public function theOwncloudLogIsCleared()
 	{
-		LoggingHelper::clearLogFile($this->ocPath);
+		LoggingHelper::clearLogFile();
 	}
 
 	/**
@@ -164,9 +164,9 @@ trait Logging
 	 */
 	public function setUpScenarioLogging(BeforeScenarioScope $scope)
 	{
-		$this->oldLogLevel = LoggingHelper::getLogLevel($this->ocPath);
-		$this->oldLogBackend = LoggingHelper::getLogBackend($this->ocPath);
-		$this->oldLogTimezone = LoggingHelper::getLogTimezone($this->ocPath);
+		$this->oldLogLevel = LoggingHelper::getLogLevel();
+		$this->oldLogBackend = LoggingHelper::getLogBackend();
+		$this->oldLogTimezone = LoggingHelper::getLogTimezone();
 	}
 
 	/**
@@ -179,19 +179,19 @@ trait Logging
 	public function tearDownScenarioLogging(AfterScenarioScope $scope)
 	{
 		if ($this->oldLogLevel !== null
-			&& $this->oldLogLevel !== LoggingHelper::getLogLevel($this->ocPath)
+			&& $this->oldLogLevel !== LoggingHelper::getLogLevel()
 		) {
-			LoggingHelper::setLogLevel($this->ocPath, $this->oldLogLevel);
+			LoggingHelper::setLogLevel($this->oldLogLevel);
 		}
 		if ($this->oldLogBackend !== null
-			&& $this->oldLogBackend !== LoggingHelper::getLogBackend($this->ocPath)
+			&& $this->oldLogBackend !== LoggingHelper::getLogBackend()
 		) {
-			LoggingHelper::setLogBackend($this->ocPath, $this->oldLogBackend);
+			LoggingHelper::setLogBackend($this->oldLogBackend);
 		}
 		if ($this->oldLogTimezone !== null
-			&& $this->oldLogTimezone !== LoggingHelper::getLogTimezone($this->ocPath)
+			&& $this->oldLogTimezone !== LoggingHelper::getLogTimezone()
 		) {
-			LoggingHelper::setLogTimezone($this->ocPath, $this->oldLogTimezone);
+			LoggingHelper::setLogTimezone($this->oldLogTimezone);
 		}
 	}
 }

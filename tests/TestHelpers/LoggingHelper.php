@@ -31,12 +31,11 @@ class LoggingHelper {
 	/**
 	 * returns the log file path
 	 * 
-	 * @param string $ocPath
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogFilePath($ocPath) {
-		$result = SetupHelper::runOcc(['log:owncloud'], $ocPath);
+	public static function getLogFilePath() {
+		$result = SetupHelper::runOcc(['log:owncloud']);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get owncloud log file information" .
@@ -55,16 +54,15 @@ class LoggingHelper {
 		}
 		return $matches[2];
 	}
-	
+
 	/**
 	 * returns the currently set log level [debug, info, warning, error, fatal]
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogLevel($ocPath) {
-		$result = SetupHelper::runOcc(["log:manage"], $ocPath);
+	public static function getLogLevel() {
+		$result = SetupHelper::runOcc(["log:manage"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get log level " . $result ["stdOut"] . " " .
@@ -79,17 +77,16 @@ class LoggingHelper {
 
 	/**
 	 * 
-	 * @param string $ocPath
 	 * @param string $logLevel (debug|info|warning|error|fatal)
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
 	 */
-	public static function setLogLevel($ocPath, $logLevel) {
+	public static function setLogLevel($logLevel) {
 		if (!in_array($logLevel, ["debug", "info", "warning", "error", "fatal"])) {
 			throw new \InvalidArgumentException("invalid log level");
 		}
-		$result = SetupHelper::runOcc(["log:manage", "--level=$logLevel"], $ocPath);
+		$result = SetupHelper::runOcc(["log:manage", "--level=$logLevel"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not set log level " . $result ["stdOut"] . " " .
@@ -100,13 +97,12 @@ class LoggingHelper {
 
 	/**
 	 * returns the currently set logging backend (owncloud|syslog|errorlog)
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogBackend($ocPath) {
-		$result = SetupHelper::runOcc(["log:manage"], $ocPath);
+	public static function getLogBackend() {
+		$result = SetupHelper::runOcc(["log:manage"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get log backend " . $result ["stdOut"] . " " .
@@ -125,17 +121,16 @@ class LoggingHelper {
 
 	/**
 	 * 
-	 * @param string $ocPath
 	 * @param string $backend (owncloud|syslog|errorlog)
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
 	 */
-	public static function setLogBackend($ocPath, $backend) {
+	public static function setLogBackend($backend) {
 		if (!in_array($backend, ["owncloud", "syslog", "errorlog"])) {
 			throw new \InvalidArgumentException("invalid log backend");
 		}
-		$result = SetupHelper::runOcc(["log:manage", "--backend=$backend"], $ocPath);
+		$result = SetupHelper::runOcc(["log:manage", "--backend=$backend"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not set log backend " . $result ["stdOut"] . " " .
@@ -146,13 +141,12 @@ class LoggingHelper {
 
 	/**
 	 * returns the currently set logging timezone
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogTimezone($ocPath) {
-		$result = SetupHelper::runOcc(["log:manage"], $ocPath);
+	public static function getLogTimezone() {
+		$result = SetupHelper::runOcc(["log:manage"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get log timezone " . $result ["stdOut"] . " " .
@@ -169,16 +163,13 @@ class LoggingHelper {
 	}
 
 	/**
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $timezone
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function setLogTimezone($ocPath, $timezone) {
-		$result = SetupHelper::runOcc(
-			["log:manage", "--timezone=$timezone"], $ocPath
-		);
+	public static function setLogTimezone($timezone) {
+		$result = SetupHelper::runOcc(["log:manage", "--timezone=$timezone"]);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not set log timezone " . $result ["stdOut"] . " " .
@@ -189,12 +180,11 @@ class LoggingHelper {
 
 	/**
 	 * 
-	 * @param string $ocPath
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function clearLogFile($ocPath) {
-		$fp = fopen(self::getLogFilePath($ocPath), 'w');
+	public static function clearLogFile() {
+		$fp = fopen(self::getLogFilePath(), 'w');
 		if ($fp === false) {
 			throw new \Exception("could not clear the log file");
 		}
