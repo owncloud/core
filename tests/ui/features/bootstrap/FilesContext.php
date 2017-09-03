@@ -1,24 +1,24 @@
 <?php
 /**
-* ownCloud
-*
-* @author Artur Neumann
-* @copyright 2017 Artur Neumann info@individual-it.net
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * ownCloud
+ *
+ * @author Artur Neumann <artur@jankaritech.com>
+ * @copyright 2017 Artur Neumann artur@jankaritech.com
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License,
+ * as published by the Free Software Foundation;
+ * either version 3 of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -31,8 +31,8 @@ require_once 'bootstrap.php';
 /**
  * Files context.
  */
-class FilesContext extends RawMinkContext implements Context
-{
+class FilesContext extends RawMinkContext implements Context {
+
 	private $filesPage;
 	
 	/**
@@ -44,16 +44,20 @@ class FilesContext extends RawMinkContext implements Context
 	 */
 	private $deletedElementsTable;
 
-	public function __construct(FilesPage $filesPage)
-	{
+	/**
+	 * FilesContext constructor.
+	 *
+	 * @param FilesPage $filesPage
+	 */
+	public function __construct(FilesPage $filesPage) {
 		$this->filesPage = $filesPage;
 	}
 
 	/**
 	 * @Given I am on the files page
+	 * @return void
 	 */
-	public function iAmOnTheFilesPage()
-	{
+	public function iAmOnTheFilesPage() {
 		$this->filesPage->open();
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
@@ -61,9 +65,9 @@ class FilesContext extends RawMinkContext implements Context
 
 	/**
 	 * @When the files page is reloaded
+	 * @return void
 	 */
-	public function theFilesPageIsReloaded()
-	{
+	public function theFilesPageIsReloaded() {
 		$this->getSession()->reload();
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
@@ -78,11 +82,12 @@ class FilesContext extends RawMinkContext implements Context
 		$this->filesPage->createFolder($name);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
+
 	/**
 	 * @Given the list of files\/folders does not fit in one browser page
+	 * @return void
 	 */
-	public function theListOfFilesFoldersDoesNotFitInOneBrowserPage()
-	{
+	public function theListOfFilesFoldersDoesNotFitInOneBrowserPage() {
 		$windowHeight = $this->filesPage->getWindowHeight(
 			$this->getSession()
 		);
@@ -108,9 +113,11 @@ class FilesContext extends RawMinkContext implements Context
 
 	/**
 	 * @Given I rename the file/folder :fromName to :toName
+	 * @param string $fromName
+	 * @param string $toName
+	 * @return void
 	 */
-	public function iRenameTheFileFolderTo($fromName, $toName)
-	{
+	public function iRenameTheFileFolderTo($fromName, $toName) {
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->filesPage->renameFile($fromName, $toName, $this->getSession());
 	}
@@ -118,10 +125,11 @@ class FilesContext extends RawMinkContext implements Context
 	/**
 	 * @Given I rename the following file/folder to
 	 * @param TableNode $namePartsTable table of parts of the from and to file names
-	 * table headings: must be: |from-name-parts |to-name-parts |
+	 *                                  table headings: must be:
+	 *                                  |from-name-parts |to-name-parts |
+	 * @return void
 	 */
-	public function iRenameTheFollowingFileFolderTo(TableNode $namePartsTable)
-	{
+	public function iRenameTheFollowingFileFolderTo(TableNode $namePartsTable) {
 		$fromNameParts = [];
 		$toNameParts = [];
 
@@ -130,14 +138,20 @@ class FilesContext extends RawMinkContext implements Context
 			$toNameParts[] = $namePartsRow['to-name-parts'];
 		}
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->renameFile($fromNameParts, $toNameParts, $this->getSession());
+		$this->filesPage->renameFile(
+			$fromNameParts,
+			$toNameParts,
+			$this->getSession()
+		);
 	}
 
 	/**
 	 * @When I rename the file/folder :fromName to one of these names
+	 * @param string $fromName
+	 * @param TableNode $table
+	 * @return void
 	 */
-	public function iRenameTheFileToOneOfThisNames($fromName, TableNode $table)
-	{
+	public function iRenameTheFileToOneOfThisNames($fromName, TableNode $table) {
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		foreach ($table->getRows() as $row) {
 			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
@@ -159,7 +173,7 @@ class FilesContext extends RawMinkContext implements Context
 	/**
 	 * @When I delete the following file/folder
 	 * @param TableNode $namePartsTable table of parts of the file name
-	 * table headings: must be: |name-parts |
+	 *                                  table headings: must be: |name-parts |
 	 * @return void
 	 */
 	public function iDeleteTheFollowingFile(TableNode $namePartsTable) {
@@ -175,7 +189,7 @@ class FilesContext extends RawMinkContext implements Context
 	/**
 	 * @When I delete the elements
 	 * @param TableNode $table table of file names
-	 * table headings: must be: |name|
+	 *                         table headings: must be: |name|
 	 * @return void
 	 */
 	public function iDeleteTheElements(TableNode $table) {
@@ -207,7 +221,7 @@ class FilesContext extends RawMinkContext implements Context
 	/**
 	 * @When I batch delete these files
 	 * @param TableNode $files table of file names
-	 * table headings: must be: |name|
+	 *                         table headings: must be: |name|
 	 * @return void
 	 */
 	public function iBatchDeleteTheseFiles(TableNode $files) {
@@ -227,7 +241,7 @@ class FilesContext extends RawMinkContext implements Context
 	/**
 	 * @When I mark these files for batch action
 	 * @param TableNode $files table of file names
-	 * table headings: must be: |name|
+	 *                         table headings: must be: |name|
 	 * @return void
 	 */
 	public function iMarkTheseFilesForBatchAction(TableNode $files) {
@@ -255,8 +269,7 @@ class FilesContext extends RawMinkContext implements Context
 	 * @param string $name
 	 * @return void
 	 */
-	public function theFileFolderShouldBeListed($name)
-	{
+	public function theFileFolderShouldBeListed($name) {
 		PHPUnit_Framework_Assert::assertNotNull(
 			$this->filesPage->findFileRowByName($name, $this->getSession())
 		);
@@ -287,7 +300,8 @@ class FilesContext extends RawMinkContext implements Context
 	 * @Then /^the following (?:file|folder) should (not|)\s?be listed$/
 	 * @param string $shouldOrNot
 	 * @param TableNode $namePartsTable table of parts of the file name
-	 * table headings: must be: |name-parts |
+	 *                                  table headings: must be: |name-parts |
+	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListed(
 		$shouldOrNot, TableNode $namePartsTable
@@ -308,10 +322,16 @@ class FilesContext extends RawMinkContext implements Context
 
 	/**
 	 * @Then near the file/folder :name a tooltip with the text :toolTipText should be displayed
+	 * @param string $name
+	 * @param string $toolTipText
+	 * @return void
 	 */
-	public function nearTheFileATooltipWithTheTextShouldBeDisplayed($name, $toolTipText)
-	{
-		PHPUnit_Framework_Assert::assertEquals($toolTipText, 
+	public function nearTheFileATooltipWithTheTextShouldBeDisplayed(
+		$name,
+		$toolTipText
+	) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$toolTipText, 
 			$this->filesPage->getTooltipOfFile($name, $this->getSession())
 		);
 	}
@@ -334,9 +354,9 @@ class FilesContext extends RawMinkContext implements Context
 
 	/**
 	 * @Then the filesactionmenu should be completely visible after clicking on it
+	 * @return void
 	 */
-	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt()
-	{
+	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt() {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
 

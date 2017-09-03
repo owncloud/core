@@ -6,18 +6,18 @@
  * @author Artur Neumann <artur@jankaritech.com>
  * @copyright 2017 Artur Neumann artur@jankaritech.com
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License,
+ * as published by the Free Software Foundation;
+ * either version 3 of the License, or any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>
  *
  */
 
@@ -92,9 +92,14 @@ class SharingDialog extends OwncloudPage {
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
 	public function getAutocompleteNodeElement() {
-		$autocompleteNodeElement = $this->find("xpath", $this->shareWithAutocompleteListXpath);
+		$autocompleteNodeElement = $this->find(
+			"xpath",
+			$this->shareWithAutocompleteListXpath
+		);
 		if ($autocompleteNodeElement === null) {
-			throw new ElementNotFoundException("could not find autocompleteNodeElement");
+			throw new ElementNotFoundException(
+				"could not find autocompleteNodeElement"
+			);
 		}
 		return $autocompleteNodeElement;
 	}
@@ -162,7 +167,9 @@ class SharingDialog extends OwncloudPage {
 		}
 
 		if ($userFound !== true) {
-			throw new ElementNotFoundException("could not share with '$nameToMatch'");
+			throw new ElementNotFoundException(
+				"could not share with '$nameToMatch'"
+			);
 		}
 	}
 
@@ -170,11 +177,6 @@ class SharingDialog extends OwncloudPage {
 	 * 
 	 * @param string $name
 	 * @param Session $session
-	 * @param bool $canShare not implemented yet
-	 * @param bool $canEdit not implemented yet
-	 * @param bool $createPermission not implemented yet
-	 * @param bool $changePermission not implemented yet
-	 * @param bool $deletePermission not implemented yet
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return void
 	 */
@@ -244,8 +246,8 @@ class SharingDialog extends OwncloudPage {
 			$checkBoxId = $permissionCheckBox->getAttribute("id");
 			if (is_null($checkBoxId)) {
 				throw new ElementNotFoundException(
-					"could not find the id of the permission check box of permission " .
-					"'$permission' and user '$shareReceiverName'"
+					"could not find the id of the permission check box of " .
+					"permission '$permission' and user '$shareReceiverName'"
 				);
 			}
 			$permissionLabel = $permissionsField->find(
@@ -254,8 +256,8 @@ class SharingDialog extends OwncloudPage {
 			
 			if (is_null($permissionLabel)) {
 				throw new ElementNotFoundException(
-					"could not find the label of the permission check box of permission " .
-					"'$permission' and user '$shareReceiverName'"
+					"could not find the label of the permission check box of " .
+					"permission '$permission' and user '$shareReceiverName'"
 				);
 			}
 
@@ -275,7 +277,9 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function getShareWithTooltip() {
 		$shareWithField = $this->_findShareWithField();
-		$shareWithTooltip = $shareWithField->find("xpath", $this->shareWithTooltipXpath);
+		$shareWithTooltip = $shareWithField->find(
+			"xpath", $this->shareWithTooltipXpath
+		);
 		if ($shareWithTooltip === null) {
 			throw new ElementNotFoundException("could not find share-with-tooltip");
 		}
@@ -283,8 +287,8 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * gets the Element with the information about who has shared the current file/folder
-	 * this Element will contain the Avatar and some text
+	 * gets the Element with the information about who has shared the current
+	 * file/folder. This Element will contain the Avatar and some text.
 	 * 
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
@@ -379,7 +383,9 @@ class SharingDialog extends OwncloudPage {
 	public function closeSharingDialog() {
 		$shareDialogCloseButton = $this->find("xpath", $this->shareWithCloseXpath);
 		if ($shareDialogCloseButton === null) {
-			throw new ElementNotFoundException("could not find share-dialog-close-button");
+			throw new ElementNotFoundException(
+				"could not find share-dialog-close-button"
+			);
 		}
 		$shareDialogCloseButton->click();
 	}
