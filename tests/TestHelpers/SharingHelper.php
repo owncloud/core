@@ -5,18 +5,18 @@
  * @author Artur Neumann <artur@jankaritech.com>
  * @copyright 2017 Artur Neumann artur@jankaritech.com
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License,
+ * as published by the Free Software Foundation;
+ * either version 3 of the License, or any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>
  *
  */
 namespace TestHelpers;
@@ -37,21 +37,24 @@ class SharingHelper {
 	 * @param string $password password of the user that creates the share.
 	 * @param string $path The path to the file or folder which should be shared.
 	 * @param int $shareType The type of the share. This can be one of:
-	 * 0 = user, 1 = group, 3 = public link, 6 = federated cloud share.
+	 *                       0 = user, 1 = group, 3 = public link,
+	 *                       6 = federated cloud share.
 	 * @param string $shareWith The user or group id with which the file should
-	 * be shared.
+	 *                          be shared.
 	 * @param boolean $publicUpload Whether to allow public upload to a public
-	 * shared folder.
+	 *                              shared folder.
 	 * @param string $sharePassword The password to protect the public link
-	 * share with.
+	 *                              share with.
 	 * @param int $permissions The permissions to set on the share.
-	 * 1 = read; 2 = update; 4 = create; 8 = delete; 16 = share; 31 = all
-	 * (default: 31, for public shares: 1)
+	 *                         1 = read; 2 = update; 4 = create; 8 = delete;
+	 *                         16 = share; 31 = all
+	 *                         (default: 31, for public shares: 1)
 	 * @param string $linkName A (human-readable) name for the share,
-	 * which can be up to 64 characters in length.
+	 *                         which can be up to 64 characters in length.
 	 * @param string $expireDate **NOT IMPLEMENTED**
-	 * An expire date for public link shares. This argument expects a date string
-	 * in the following format 'YYYY-MM-DD'.
+	 *                           An expire date for public link shares.
+	 *                           This argument expects a date string
+	 *                           in the format 'YYYY-MM-DD'.
 	 * @param number $apiVersion
 	 * @param number $sharingApiVersion
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
@@ -103,7 +106,7 @@ class SharingHelper {
 		}
 		
 		$fullUrl = $baseUrl .
-				"/ocs/v{$apiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
+			"/ocs/v{$apiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
 		$client = new GClient();
 		$options['auth'] = [$user, $password];
 		$fd['path'] = $path;
