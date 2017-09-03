@@ -20,6 +20,8 @@
  *
  */
 namespace TestHelpers;
+use Behat\Testwork\Hook\Scope\HookScope;
+use Exception;
 
 /**
  * Helper to setup UI / Integration tests
@@ -28,10 +30,15 @@ namespace TestHelpers;
  *
  */
 class SetupHelper {
+
+	/**
+	 * @var boolean
+	 */
+	private static $ocPath = null;
+
 	/**
 	 * creates a user
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $userName
 	 * @param string $password
 	 * @param string $displayName
@@ -39,7 +46,6 @@ class SetupHelper {
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function createUser(
-		$ocPath,
 		$userName,
 		$password,
 		$displayName = null,
@@ -53,23 +59,21 @@ class SetupHelper {
 			$occCommand = array_merge($occCommand, ["--email", $email]);
 		}
 		putenv("OC_PASS=" . $password);
-		return self::runOcc(array_merge($occCommand, [$userName]), $ocPath);
+		return self::runOcc(array_merge($occCommand, [$userName]));
 	}
 
 	/**
 	 * deletes a user
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function deleteUser($ocPath, $userName) {
-		return self::runOcc(['user:delete', $userName], $ocPath);
+	public static function deleteUser($userName) {
+		return self::runOcc(['user:delete', $userName]);
 	}
-	
+
 	/**
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $userName
 	 * @param string $app
 	 * @param string $key
@@ -77,107 +81,134 @@ class SetupHelper {
 	 * @return string[]
 	 */
 	public static function changeUserSetting(
-		$ocPath, $userName, $app, $key, $value
+		$userName, $app, $key, $value
 	) {
 		return self::runOcc(
-			['user:setting', '--value ' . $value, $userName, $app, $key], $ocPath
+			['user:setting', '--value ' . $value, $userName, $app, $key]
 		);
 	}
 
 	/**
 	 * creates a group
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $groupName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function createGroup($ocPath, $groupName) {
-		return self::runOcc(['group:add', $groupName], $ocPath);
+	public static function createGroup($groupName) {
+		return self::runOcc(['group:add', $groupName]);
 	}
 
 	/**
 	 * adds an existing user to a group, creating the group if it does not exist
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $groupName
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function addUserToGroup($ocPath, $groupName, $userName) {
+	public static function addUserToGroup($groupName, $userName) {
 		return self::runOcc(
-			['group:add-member', '--member', $userName, $groupName], $ocPath
+			['group:add-member', '--member', $userName, $groupName]
 		);
 	}
 
 	/**
 	 * removes a user from a group
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $groupName
 	 * @param string $userName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function removeUserFromGroup($ocPath, $groupName, $userName) {
+	public static function removeUserFromGroup($groupName, $userName) {
 		return self::runOcc(
-			['group:remove-member', '--member', $userName, $groupName], $ocPath
+			['group:remove-member', '--member', $userName, $groupName]
 		);
 	}
 
 	/**
 	 * deletes a group
-	 * 
-	 * @param string $ocPath
+	 *
 	 * @param string $groupName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function deleteGroup($ocPath, $groupName) {
-		return self::runOcc(['group:delete', $groupName], $ocPath);
+	public static function deleteGroup($groupName) {
+		return self::runOcc(['group:delete', $groupName]);
+	}
+
+	/**
+	 *
+	 * @param HookScope $scope
+	 * @return array of suite context parameters
+	 */
+	public static function getSuiteParameters(HookScope $scope) {
+		return $scope->getEnvironment()->getSuite()
+			->getSettings() ['context'] ['parameters'];
+	}
+
+	/**
+	 *
+	 * @param HookScope $scope
+	 * @return void
+	 */
+	public static function setOcPath(HookScope $scope) {
+		$suiteParameters = self::getSuiteParameters($scope);
+		self::$ocPath = rtrim($suiteParameters['ocPath'], '/') . '/';
+	}
+
+	/**
+	 *
+	 * @return string path to ownCloud folder
+	 * @throws Exception if ocPath has not been set yet
+	 */
+	public static function getOcPath() {
+		if (is_null(self::$ocPath)) {
+			throw new Exception(
+				"getOcPath called before ocPath is set by setOcPath"
+			);
+		}
+
+		return self::$ocPath;
 	}
 
 	/**
 	 * enables an app
 	 *
-	 * @param string $ocPath
 	 * @param string $appName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function enableApp($ocPath, $appName) {
-		return self::runOcc(['app:enable', $appName], $ocPath);
+	public static function enableApp($appName) {
+		return self::runOcc(['app:enable', $appName]);
 	}
 
 	/**
 	 * disables an app
 	 *
-	 * @param string $ocPath
 	 * @param string $appName
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function disableApp($ocPath, $appName) {
-		return self::runOcc(['app:disable', $appName], $ocPath);
+	public static function disableApp($appName) {
+		return self::runOcc(['app:disable', $appName]);
 	}
 
 	/**
 	 * checks if an app is currently enabled
 	 *
-	 * @param string $ocPath
 	 * @param string $appName
-	 * @return boolean true if enabled, false if disabled or not existing
+	 * @return bool true if enabled, false if disabled or not existing
 	 */
-	public static function isAppEnabled($ocPath, $appName) {
-		$result =  self::runOcc(['app:list', '^' . $appName . '$'], $ocPath);
+	public static function isAppEnabled($appName) {
+		$result = self::runOcc(['app:list', '^' . $appName . '$']);
 		return strtolower(substr($result['stdOut'], 0, 7)) === 'enabled';
 	}
 
 	/**
 	 * lists app status (enabled or disabled)
 	 *
-	 * @param string $ocPath
 	 * @param string $appName
-	 * @return boolean true if the app needed to be enabled, false otherwise
+	 * @return bool true if the app needed to be enabled, false otherwise
 	 */
-	public static function enableAppIfNotEnabled($ocPath, $appName) {
-		if (!self::isAppEnabled($ocPath, $appName)) {
-			self::enableApp($ocPath, $appName);
+	public static function enableAppIfNotEnabled($appName) {
+		if (!self::isAppEnabled($appName)) {
+			self::enableApp($appName);
 			return true;
 		}
 
@@ -189,11 +220,10 @@ class SetupHelper {
 	 *
 	 * @param array $args anything behind "occ".
 	 *                    For example: "files:transfer-ownership"
-	 * @param string $ocPath
-	 * @param string $escaping
+	 * @param bool $escaping
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function runOcc($args, $ocPath, $escaping = true) {
+	public static function runOcc($args, $escaping = true) {
 		if ($escaping === true) {
 			$args = array_map(
 				function ($arg) {
@@ -210,7 +240,10 @@ class SetupHelper {
 				2 => ['pipe', 'w'],
 		];
 		$process = proc_open(
-			'php console.php ' . $args, $descriptor, $pipes, $ocPath
+			'php console.php ' . $args,
+			$descriptor,
+			$pipes,
+			self::getOcPath()
 		);
 		$lastStdOut = stream_get_contents($pipes[1]);
 		$lastStdErr = stream_get_contents($pipes[2]);

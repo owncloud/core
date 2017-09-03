@@ -45,7 +45,6 @@ trait BasicStructure
 	private $regularGroupName;
 	private $regularGroupNames = array();
 	private $createdGroupNames = array();
-	private $ocPath;
 
 	/**
 	 * @Given I am logged in as admin
@@ -131,7 +130,7 @@ trait BasicStructure
 	) {
 		$user = trim($user);
 		$result = SetupHelper::createUser(
-			$this->ocPath, $user, $password, $displayName, $email
+			$user, $password, $displayName, $email
 		);
 		if ($result["code"] != 0) {
 			throw new Exception("could not create user. " . $result["stdOut"] . " " . $result["stdErr"]);
@@ -179,7 +178,7 @@ trait BasicStructure
 	private function createGroup($group)
 	{
 		$group = trim($group);
-		$result = SetupHelper::createGroup($this->ocPath, $group);
+		$result = SetupHelper::createGroup($group);
 		if ($result["code"] != 0) {
 			throw new Exception("could not create group. " . $result["stdOut"] . " " . $result["stdErr"]);
 		}
@@ -203,7 +202,7 @@ trait BasicStructure
 	 */
 	public function theUserIsInTheGroup($user, $group)
 	{
-		$result = SetupHelper::addUserToGroup($this->ocPath, $group, $user);
+		$result = SetupHelper::addUserToGroup($group, $user);
 		if ($result["code"] != 0) {
 			throw new Exception("could not add user to group. " . $result["stdOut"] . " " . $result["stdErr"]);
 		}
@@ -212,28 +211,28 @@ trait BasicStructure
 	/** @BeforeScenario */
 	public function setUpScenarioGetRegularUsersAndGroups(BeforeScenarioScope $scope)
 	{
-		$suiteParameters = $scope->getEnvironment()->getSuite()->getSettings() ['context'] ['parameters'];
+		SetupHelper::setOcPath($scope);
+		$suiteParameters = SetupHelper::getSuiteParameters($scope);
 		$this->adminPassword = (string)$suiteParameters['adminPassword'];
 		$this->regularUserNames = explode(",", $suiteParameters['regularUserNames']);
 		$this->regularUserName = (string)$suiteParameters['regularUserName'];
 		$this->regularUserPassword = (string)$suiteParameters['regularUserPassword'];
 		$this->regularGroupNames = explode(",", $suiteParameters['regularGroupNames']);
 		$this->regularGroupName = (string)$suiteParameters['regularGroupName'];
-		$this->ocPath = rtrim($suiteParameters['ocPath'], '/') . '/';
 	}
 
 	/** @AfterScenario */
 	public function tearDownScenarioDeleteCreatedUsersAndGroups(AfterScenarioScope $scope)
 	{
 		foreach ($this->getCreatedUserNames() as $user) {
-			$result = SetupHelper::deleteUser($this->ocPath, $user);
+			$result = SetupHelper::deleteUser($user);
 			if ($result["code"] != 0) {
 				throw new Exception("could not delete user. " . $result["stdOut"] . " " . $result["stdErr"]);
 			}
 		}
 
 		foreach ($this->getCreatedGroupNames() as $group) {
-			$result = SetupHelper::deleteGroup($this->ocPath, $group);
+			$result = SetupHelper::deleteGroup($group);
 			if ($result["code"] != 0) {
 				throw new Exception("could not delete group. " . $result["stdOut"] . " " . $result["stdErr"]);
 			}
