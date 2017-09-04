@@ -123,7 +123,8 @@ class ApiTest extends TestCase {
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),
 			$currentUser,
-			$l
+			$l,
+			\OC::$server->getConfig()
 		);
 	}
 

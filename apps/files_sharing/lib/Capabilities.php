@@ -78,6 +78,8 @@ class Capabilities implements ICapability {
 			$res['resharing'] = $this->config->getAppValue('core', 'shareapi_allow_resharing', 'yes') === 'yes';
 
 			$res['group_sharing'] = $this->config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes') === 'yes';
+
+			$res['default_permissions'] = (int)$this->config->getAppValue('core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL);
 		}
 
 		//Federated sharing

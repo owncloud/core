@@ -36,6 +36,7 @@ use OCP\Files\IRootFolder;
 use OCP\Lock\LockedException;
 use OCP\Share;
 use Test\TestCase;
+use OCP\IConfig;
 
 /**
  * Class Share20OCSTest
@@ -96,6 +97,12 @@ class Share20OCSTest extends TestCase {
 				return vsprintf($text, $parameters);
 			}));
 
+		$this->config = $this->createMock(IConfig::class);
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL, \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE]
+			]));
+
 		$this->ocs = new Share20OCS(
 			$this->shareManager,
 			$this->groupManager,
@@ -104,7 +111,8 @@ class Share20OCSTest extends TestCase {
 			$this->rootFolder,
 			$this->urlGenerator,
 			$this->currentUser,
-			$this->l
+			$this->l,
+			$this->config
 		);
 	}
 
@@ -119,6 +127,7 @@ class Share20OCSTest extends TestCase {
 				$this->urlGenerator,
 				$this->currentUser,
 				$this->l,
+				$this->config,
 			])->setMethods(['formatShare'])
 			->getMock();
 	}
@@ -425,6 +434,7 @@ class Share20OCSTest extends TestCase {
 					$this->urlGenerator,
 					$this->currentUser,
 					$this->l,
+					$this->config,
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
@@ -751,6 +761,7 @@ class Share20OCSTest extends TestCase {
 				$this->urlGenerator,
 				$this->currentUser,
 				$this->l,
+				$this->config,
 			])->setMethods(['formatShare'])
 			->getMock();
 
@@ -867,6 +878,7 @@ class Share20OCSTest extends TestCase {
 				$this->urlGenerator,
 				$this->currentUser,
 				$this->l,
+				$this->config,
 			])->setMethods(['formatShare'])
 			->getMock();
 
@@ -1403,6 +1415,7 @@ class Share20OCSTest extends TestCase {
 				$this->urlGenerator,
 				$this->currentUser,
 				$this->l,
+				$this->config,
 			])->setMethods(['formatShare'])
 			->getMock();
 
@@ -2678,7 +2691,8 @@ class Share20OCSTest extends TestCase {
 			$this->rootFolder,
 			$this->urlGenerator,
 			$this->currentUser,
-			$this->l
+			$this->l,
+			$this->config
 		);
 	}
 
