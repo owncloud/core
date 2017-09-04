@@ -32,6 +32,7 @@ use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\RequestHandler;
 use OCP\IUserManager;
 use OCP\Share\IShare;
+use OC\HTTPHelper;
 
 /**
  * Class RequestHandlerTest
@@ -67,6 +68,9 @@ class RequestHandlerTest extends TestCase {
 
 	/** @var  IShare | \PHPUnit_Framework_MockObject_MockObject */
 	private $share;
+
+	/** @var HTTPHelper */
+	private $oldHttpHelper;
 
 	protected function setUp() {
 		parent::setUp();
