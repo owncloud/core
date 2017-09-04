@@ -253,6 +253,9 @@ OC.FileUpload.prototype = {
 		}
 		this.data.headers['requesttoken'] = OC.requestToken;
 
+		// prevent global error handler to kick in on timeout
+		this.data.allowAuthErrors = true;
+
 		var chunkFolderPromise;
 		if ($.support.blobSlice
 			&& this.uploader.fileUploadParam.maxChunkSize
@@ -340,6 +343,13 @@ OC.FileUpload.prototype = {
 	getResponse: function() {
 		var response = this.data.response();
 		if (response.errorThrown) {
+			if (response.errorThrown === 'timeout') {
+				return {
+					status: 0,
+					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
+				};
+			}
+
 			// attempt parsing Sabre exception is available
 			var xml = response.jqXHR.responseXML;
 			if (xml.documentElement.localName === 'error' && xml.documentElement.namespaceURI === 'DAV:') {
@@ -362,8 +372,20 @@ OC.FileUpload.prototype = {
 				// likely due to internal server error
 				response = {status: 500};
 			}
-		} else {
+		} else if (response.result) {
 			response = response.result;
+		} else {
+			if (response.jqXHR.status === 0 && response.jqXHR.statusText === 'error') {
+				// timeout (IE11)
+				return {
+					status: 0,
+					message: t('core', 'Upload timeout for file "{file}"', {file: this.getFileName()})
+				};
+			}
+			return {
+				status: response.jqXHR.status,
+				message: t('core', 'Unknown error "{error}" uploading file "{file}"', {error: response.jqXHR.statusText, file: this.getFileName()})
+			};
 		}
 		return response;
 	},
