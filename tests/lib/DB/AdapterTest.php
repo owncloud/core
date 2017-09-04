@@ -59,7 +59,7 @@ class AdapterTest extends \Test\TestCase {
 	public function insertRow($data) {
 		$table = $this->conn->getPrefix() . 'appconfig';
 		$data['appid'] = uniqid('testadapter-');
-		$query = "INSERT INTO $table";
+		$query = "INSERT INTO $table ";
 		$query .= "(" . implode(',', array_keys($data)) .')';
 		$query .= ' VALUES (' . str_repeat('?, ', count($data)-1) . '?)';
 		$rows = $this->conn->executeUpdate($query, array_values($data));
