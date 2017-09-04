@@ -77,7 +77,7 @@ class FileSharing implements ISettings {
 			],
 			[
 				'id' => 'canupdate',
-				'label' => $this->l->t('Update'),
+				'label' => $this->l->t('Change'),
 				'value' => \OCP\Constants::PERMISSION_UPDATE
 			],
 			[
