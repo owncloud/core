@@ -200,6 +200,28 @@ class Storage extends Wrapper {
 	}
 
 	/**
+	 * Retain the encryption keys
+	 *
+	 * @param $filename
+	 * @param $owner
+	 * @param $ownerPath
+	 * @param $timestamp
+	 * @param $sourceStorage
+	 * @return bool
+	 */
+
+	public function retainKeys($filename, $owner, $ownerPath, $timestamp, $sourceStorage) {
+		if (\OC::$server->getEncryptionManager()->isEnabled()) {
+			if ($sourceStorage !== null) {
+				$sourcePath = '/' . $owner . '/files_trashbin/files/'. $filename . '.d' . $timestamp;
+				$targetPath = '/' . $owner . '/files/' . $ownerPath;
+				return $sourceStorage->copyKeys($sourcePath, $targetPath);
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Setup the storate wrapper callback
 	 */
 	public static function setupStorage() {
