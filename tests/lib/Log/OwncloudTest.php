@@ -72,7 +72,7 @@ class OwncloudTest extends TestCase
 		# check timestamp has microseconds part
 		$values = (array) json_decode($line);
 		$microseconds = $values['time'];
-		$this->assertNotEquals(0, $microseconds);
+		$this->assertRegExp('/^\d{6}$/', $microseconds);
 		
 	}
 
