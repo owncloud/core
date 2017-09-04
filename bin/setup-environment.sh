@@ -40,38 +40,52 @@ function check_permissions()
 
 function which_distro()
 {
-  case "$( grep -Eoi 'Debian|SUSE|Ubuntu' /etc/issue )" in 
-    "SUSE") 
-      echo "SUSE"
-      ;;
-    "Ubuntu") 
-      echo "Ubuntu"
-      ;;
-  esac
+  echo $( grep '^ID=' /etc/os-release ) | awk '{split($0,array,"=")} END { print array[2] }'
+}
 
-  redhat_release_file=/etc/redhat-release
-
-  # Need to do a bit more work to detect RedHat-based distributions
-  if [ -e "$redhat_release_file" ]; then
-    case "$( grep -Eoi 'CentOS' $redhat_release_file )" in 
-      "CentOS") 
-        echo "CentOS"
-        ;;
-    esac
-  fi
+function distro_version()
+{
+  echo $( grep '^VERSION_ID=' /etc/os-release ) | awk '{split($0,array,"=")} END { print array[2] }' | tr -d '""'
 }
 
 function install_required_packages()
 {
+  version=$( distro_version )
+
   case "$( which_distro )" in 
-    "SUSE") echo "Installing required packages on SUSE"
-      install_required_suse_packages
+    "sles") 
+      if [ "$version" == "12" ] || [ "$version" == "12 SP1" ]; then
+        echo "Installing required packages on SUSE Linux Enterprise Server $version"
+        install_required_suse_packages
+      else
+        echo "Only version 12 & 12 SP1 of SUSE Linux Enterprise Server are supported."
+      fi;
       ;;
-    "Ubuntu"|"Debian") echo "Installing required packages on Ubuntu/Debian"
-      install_required_ubuntu_debian_packages
+    "debian") 
+      if [ "$version" == 7 ] || [ "$version" == 8 ]; then
+        echo "Installing required packages on Debian $version"
+        install_required_ubuntu_debian_packages
+      else
+        echo "Sorry, but Debian $version is not supported."
+        echo "Only versions 7 & 8 of Debian are supported."
+      fi;
       ;;
-    "CentOS") echo "Installing required packages on Centos"
-      install_required_centos_packages
+    "ubuntu") 
+      if [ "$version" == "14.04" ] || [ "$version" == "16.04" ]; then
+        echo "Installing required packages on Ubuntu $version"
+        install_required_ubuntu_debian_packages
+      else
+        echo "Sorry, but Ubuntu $version is not supported."
+        echo "Only versions 14.04 & 16.04 of Ubuntu are supported."
+      fi;
+      ;;
+    "centos") 
+      if [ "$version" == "6.5" ] || [ "$version" == "7" ]; then
+        echo "Installing required packages on CentOS $version"
+        install_required_centos_packages
+      else
+        echo "Only versions 6.5 and 7 of CentOS are supported."
+      fi;
       ;;
   esac
 }
