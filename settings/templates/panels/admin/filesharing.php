@@ -59,18 +59,6 @@
 			   value="1" <?php if ($_['allowGroupSharing'] === 'yes') print_unescaped('checked="checked"'); ?> />
 		<label for="allowGroupSharing"><?php p($l->t('Allow sharing with groups'));?></label><br />
 	</p>
-	<p class="nocheckbox <?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
-		<input type="hidden" name="shareapi_default_permissions" id="shareApiDefaultPermissions" class="checkbox"
-		value="<?php p($_['shareApiDefaultPermissions']) ?>" />
-		<?php p($l->t('Default local share permissions'));?>
-	</p>
-	<p id="shareApiDefaultPermissionsSection" class="indent <?php if ($_['shareAPIEnabled'] === 'no') p('hidden'); ?>">
-		<?php foreach ($_['shareApiDefaultPermissionsCheckboxes'] as $perm): ?>
-		<input type="checkbox" name="shareapi_default_permission_<?php p($perm['id']) ?>" id="shareapi_default_permission_<?php p($perm['id']) ?>"
-			class="noautosave checkbox" value="<?php p($perm['value']) ?>" <?php if (($_['shareApiDefaultPermissions'] & $perm['value']) !== 0) print_unescaped('checked="checked"'); ?> />
-		<label for="shareapi_default_permission_<?php p($perm['id']) ?>"><?php p($perm['label']);?></label>
-		<?php endforeach ?>
-	</p>
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
 		<input type="checkbox" name="shareapi_only_share_with_group_members" id="onlyShareWithGroupMembers" class="checkbox"
 			   value="1" <?php if ($_['onlyShareWithGroupMembers']) print_unescaped('checked="checked"'); ?> />
@@ -100,5 +88,17 @@
 		<input type="checkbox" name="shareapi_share_dialog_user_enumeration_group_members" value="1" id="shareapi_share_dialog_user_enumeration_group_members" class="checkbox"
 			<?php if ($_['shareDialogUserEnumerationGroupMembers'] === 'yes') print_unescaped('checked="checked"'); ?> />
 		<label for="shareapi_share_dialog_user_enumeration_group_members"><?php p($l->t('Restrict enumeration to group members'));?></label><br />
+	</p>
+	<p class="nocheckbox <?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
+		<input type="hidden" name="shareapi_default_permissions" id="shareApiDefaultPermissions" class="checkbox"
+		value="<?php p($_['shareApiDefaultPermissions']) ?>" />
+		<?php p($l->t('Default user and group share permissions'));?>
+	</p>
+	<p id="shareApiDefaultPermissionsSection" class="indent <?php if ($_['shareAPIEnabled'] === 'no') p('hidden'); ?>">
+		<?php foreach ($_['shareApiDefaultPermissionsCheckboxes'] as $perm): ?>
+		<input type="checkbox" name="shareapi_default_permission_<?php p($perm['id']) ?>" id="shareapi_default_permission_<?php p($perm['id']) ?>"
+			class="noautosave checkbox" value="<?php p($perm['value']) ?>" <?php if (($_['shareApiDefaultPermissions'] & $perm['value']) !== 0) print_unescaped('checked="checked"'); ?> />
+		<label for="shareapi_default_permission_<?php p($perm['id']) ?>"><?php p($perm['label']);?></label>
+		<?php endforeach ?>
 	</p>
 </div>
