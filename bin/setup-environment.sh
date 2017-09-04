@@ -10,13 +10,6 @@ set -euo pipefail
 IFS=$'\n\t'
 REQUIRED_ARGS=2
 
-if [ "$( whoami )" == 'root' ]
-then
-  echo 'Do not run this script as root.'
-  echo 'Please run it as your webserver user.'
-  exit -1
-fi;
-
 ## ---------------------------------------------------- ##
 ## Variables
 ## ---------------------------------------------------- ##
