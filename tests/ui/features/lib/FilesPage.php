@@ -1,24 +1,24 @@
 <?php
 /**
-* ownCloud
-*
-* @author Artur Neumann
-* @copyright 2017 Artur Neumann info@individual-it.net
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * ownCloud
+ *
+ * @author Artur Neumann <artur@jankaritech.com>
+ * @copyright 2017 Artur Neumann artur@jankaritech.com
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License,
+ * as published by the Free Software Foundation;
+ * either version 3 of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 namespace Page;
 
@@ -29,8 +29,11 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageExce
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
 
-class FilesPage extends OwnCloudPage
-{
+/**
+ * Files page.
+ */
+class FilesPage extends OwnCloudPage {
+
 	/**
 	 *
 	 * @var string $path
@@ -62,8 +65,7 @@ class FilesPage extends OwnCloudPage
 	 * @param string $name
 	 * @return string name of the created file
 	 */
-	public function createFolder($name = null)
-	{
+	public function createFolder($name = null) {
 		if ($name === null) {
 			$name = substr(str_shuffle($this->strForNormalFileName), 0, 8);
 		}
@@ -72,8 +74,9 @@ class FilesPage extends OwnCloudPage
 		try {
 			$this->fillField($this->newFolderNameInputLabel, $name . "\n");
 		} catch (\WebDriver\Exception\NoSuchElement $e) {
-			//this seems to be a bug in MinkSelenium2Driver. Used to work fine in 1.3.1 but now throws this exception
-			//actually all that we need does happen, so we just don't do anything
+			// this seems to be a bug in MinkSelenium2Driver.
+			// Used to work fine in 1.3.1 but now throws this exception
+			// Actually all that we need does happen, so we just don't do anything
 		}
 		return $name;
 	}
@@ -81,8 +84,7 @@ class FilesPage extends OwnCloudPage
 	/**
 	 * @return int the number of files and folders listed on the page
 	 */
-	public function getSizeOfFileFolderList()
-	{
+	public function getSizeOfFileFolderList() {
 		return count(
 			$this->find("xpath", $this->fileListXpath)->findAll(
 				"xpath", $this->fileNamesXpath
@@ -104,8 +106,7 @@ class FilesPage extends OwnCloudPage
 	 * @return string the text surrounded by single or double quotes
 	 * @throws \InvalidArgumentException
 	 */
-	public function quotedText($text)
-	{
+	public function quotedText($text) {
 		if (strstr($text, "'") === false) {
 			return "'" . $text . "'";
 		} else if (strstr($text, '"') === false) {
@@ -114,14 +115,18 @@ class FilesPage extends OwnCloudPage
 			// The text contains both single and double quotes.
 			// With current xpath v1 there is no way to encode that.
 			throw new \InvalidArgumentException(
-				"mixing both single and double quotes is unsupported - '" . $text ."'"
+				"mixing both single and double quotes is unsupported - '"
+				. $text . "'"
 			);
 		}
 	}
 
-	public function findActionMenuByNo($number)
-	{
-		$xpath = sprintf($this->fileActionMenuBtnXpathByNo,$number);
+	/**
+	 * @param int $number
+	 * @return \Behat\Mink\Element\NodeElement|null
+	 */
+	public function findActionMenuByNo($number) {
+		$xpath = sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		return $this->find("xpath", $xpath);
 	}
 
@@ -133,8 +138,7 @@ class FilesPage extends OwnCloudPage
 	 * @return FileRow
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function findFileRowByName($name, Session $session)
-	{
+	public function findFileRowByName($name, Session $session) {
 		$previousFileCount = 0;
 		$currentFileCount = null;
 		$this->scrollToPosition('#' . $this->appContentId, 0, $session);
@@ -171,17 +175,23 @@ class FilesPage extends OwnCloudPage
 				$this->scrollDownAppContent($session);
 				$currentFileCount = $this->getSizeOfFileFolderList();
 			}
-		} while (is_null($fileNameMatch) && ($currentFileCount > $previousFileCount));
+		} while (
+			is_null($fileNameMatch)
+			&& ($currentFileCount > $previousFileCount)
+		);
 
 		if (is_null($fileNameMatch)) {
-			throw new ElementNotFoundException("could not find file with the name '" . $name ."'");
+			throw new ElementNotFoundException(
+				"could not find file with the name '" . $name . "'"
+			);
 		}
 
 		$fileRowElement = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
 
 		if (is_null($fileRowElement)) {
 			throw new ElementNotFoundException(
-				"could not find fileRow with xpath '" . $this->fileRowFromNameXpath . "'"
+				"could not find fileRow with xpath '"
+				. $this->fileRowFromNameXpath . "'"
 			);
 		}
 		$fileRow = $this->getPage('FilesPageElement\\FileRow');
@@ -218,9 +228,9 @@ class FilesPage extends OwnCloudPage
 	 * scrolls down the file list, to load not yet displayed files
 	 * 
 	 * @param Session $session
+	 * @return void
 	 */
-	public function scrollDownAppContent (Session $session)
-	{
+	public function scrollDownAppContent(Session $session) {
 		$this->scrollToPosition(
 			'#' . $this->appContentId,
 			'$("#' . $this->appContentId . '")[0].scrollHeight',
@@ -259,13 +269,19 @@ class FilesPage extends OwnCloudPage
 	}
 	/**
 	 * renames a file
+	 *
 	 * @param string|array $fromFileName
 	 * @param string|array $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
+	 * @return void
 	 */
-	public function renameFile($fromFileName, $toFileName, Session $session, $maxRetries = 5)
-	{
+	public function renameFile(
+		$fromFileName,
+		$toFileName,
+		Session $session,
+		$maxRetries = 5
+	) {
 		if (is_array($toFileName)) {
 			$toFileName = implode($toFileName);
 		}
@@ -350,7 +366,9 @@ class FilesPage extends OwnCloudPage
 		$xpath = sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		$actionMenuBtn = $this->find("xpath", $xpath);
 		if ($actionMenuBtn === null) {
-			throw new ElementNotFoundException("could not find action menu button of file #$number");
+			throw new ElementNotFoundException(
+				"could not find action menu button of file #$number"
+			);
 		}
 		return $actionMenuBtn;
 	}
@@ -377,16 +395,29 @@ class FilesPage extends OwnCloudPage
 		return $actionMenu;
 	}
 
-	//there is no reliable loading indicator on the files page, so wait for
-	//the table or the Empty Folder message to be shown
-	public function waitTillPageIsLoaded(Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC)
-	{
+	/**
+	 * there is no reliable loading indicator on the files page, so wait for
+	 * the table or the Empty Folder message to be shown
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @return void
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+	) {
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->findById("fileList");
-			if ($fileList !== null && ($fileList->has("xpath", "//a") || ! $this->find("xpath",
-				$this->emptyContentXpath)->hasClass("hidden"))) {
+			if ($fileList !== null
+				&& ($fileList->has("xpath", "//a")
+				|| ! $this->find(
+					"xpath",
+					$this->emptyContentXpath
+				)->hasClass("hidden"))
+			) {
 				break;
 			}
 			usleep(STANDARDSLEEPTIMEMICROSEC);
@@ -396,14 +427,15 @@ class FilesPage extends OwnCloudPage
 	}
 
 	/**
-	 * returns the tooltip that is displayed next to the filename if something is wrong
+	 * returns the tooltip that is displayed next to the filename
+	 * if something is wrong
+	 *
 	 * @param string $fileName
 	 * @param Session $session
 	 * @return string
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
-	public function getTooltipOfFile ($fileName, Session $session)
-	{
+	public function getTooltipOfFile($fileName, Session $session) {
 		$fileRow = $this->findFileRowByName($fileName, $session);
 		return $fileRow->getTooltip();
 	}
@@ -412,22 +444,29 @@ class FilesPage extends OwnCloudPage
 	 * same as the original open() function but with a more slack
 	 * URL verification as oC adds some extra parameters to the URL e.g.
 	 * "files/?dir=/&fileid=2"
-	 * {@inheritDoc}
+	 *
+	 * @param array $urlParameters
+	 * @return FilesPage
 	 * @see \SensioLabs\Behat\PageObjectExtension\PageObject\Page::open()
 	 */
-	public function open(array $urlParameters = array())
-	{
+	public function open(array $urlParameters = array()) {
 		$url = $this->getUrl($urlParameters);
 
 		$this->getDriver()->visit($url);
 
 		$this->verifyResponse();
-		if (strpos($this->getDriver()->getCurrentUrl(),
-			$this->getUrl($urlParameters)) === false) {
+		if (strpos(
+			$this->getDriver()->getCurrentUrl(),
+			$this->getUrl($urlParameters)
+		) === false
+		) {
 			throw new UnexpectedPageException(
-				sprintf('Expected to be on "%s" but found "%s" instead',
+				sprintf(
+					'Expected to be on "%s" but found "%s" instead',
 					$this->getUrl($urlParameters),
-					$this->getDriver()->getCurrentUrl()));
+					$this->getDriver()->getCurrentUrl()
+				)
+			);
 		}
 		$this->verifyPage();
 
