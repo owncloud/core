@@ -165,6 +165,19 @@ class Server {
 			$user = $userSession->getUser();
 			if (!is_null($user)) {
 				$view = \OC\Files\Filesystem::getView();
+
+				$requestUri = $this->server->getRequestUri();
+				if (strpos($requestUri, 'files/') === 0) {
+					$actualPath = explode('/', $requestUri);
+					array_shift($actualPath);
+					array_shift($actualPath);
+					$actualPath = implode('/', $actualPath);
+					list($storage, $internalPath) = $view->resolvePath($actualPath);
+
+					// limit the watcher to the queries path
+					$storage->getWatcher($internalPath)->setBasePath($internalPath);
+				}
+
 				$this->server->addPlugin(
 					new FilesPlugin(
 						$this->server->tree,

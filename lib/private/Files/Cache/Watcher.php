@@ -52,6 +52,11 @@ class Watcher implements IWatcher {
 	protected $scanner;
 
 	/**
+	 * @var string
+	 */
+	protected $basePath = '';
+
+	/**
 	 * @param \OC\Files\Storage\Storage $storage
 	 */
 	public function __construct(\OC\Files\Storage\Storage $storage) {
@@ -121,6 +126,10 @@ class Watcher implements IWatcher {
 	 * @return bool
 	 */
 	public function needsUpdate($path, $cachedData) {
+		// skip anything outside of basePath when set
+		if ($this->basePath !== '' && substr(trim($path, '/'), 0, strlen($this->basePath)) !== $this->basePath) {
+			return false;
+		}
 		if ($this->watchPolicy === self::CHECK_ALWAYS or ($this->watchPolicy === self::CHECK_ONCE and array_search($path, $this->checkedPaths) === false)) {
 			$this->checkedPaths[] = $path;
 			return $this->storage->hasUpdated($path, $cachedData['storage_mtime']);
@@ -140,5 +149,14 @@ class Watcher implements IWatcher {
 				$this->cache->remove($entry['path']);
 			}
 		}
+	}
+
+	/**
+	 * Set base path to watch. Do not watch anything outside of this.
+	 *
+	 * @param string $path
+	 */
+	public function setBasePath($path) {
+		$this->basePath = trim($path, '/');
 	}
 }

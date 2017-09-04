@@ -79,4 +79,12 @@ interface IWatcher {
 	 * @since 9.0.0
 	 */
 	public function cleanFolder($path);
+
+	/**
+	 * Set base path to watch. Do not watch anything outside of this.
+	 *
+	 * @param string $path
+	 * @since 10.0.3
+	 */
+	public function setBasePath($path);
 }
