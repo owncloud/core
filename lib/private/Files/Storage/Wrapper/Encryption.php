@@ -1029,6 +1029,18 @@ class Encryption extends Wrapper {
 	}
 
 	/**
+	 *
+	 * delete file keys of the file
+	 *
+	 * @param $path path of the file key to delete
+	 * @return bool
+	 */
+	protected function deleteAllFileKeys($path) {
+		$fullPath = $this->getFullPath($path);
+		return $this->keyStorage->deleteAllFileKeys($fullPath);
+	}
+
+	/**
 	 * check if path points to a files version
 	 *
 	 * @param $path
