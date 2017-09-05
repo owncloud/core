@@ -21,6 +21,7 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 
@@ -35,6 +36,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 
 	private $usersPage;
+	private $featureContext;
 
 	/**
 	 * UsersContext constructor.
@@ -43,6 +45,17 @@ class UsersContext extends RawMinkContext implements Context {
 	 */
 	public function __construct(UsersPage $usersPage) {
 		$this->usersPage = $usersPage;
+	}
+
+	/**
+	 * substitute codes like "%regularuser%" with the actual name of the user
+	 *
+	 * @param string $username
+	 * @return string
+	 * @Transform :username
+	 */
+	public function checkUsername($username) {
+		return $this->featureContext->substituteInLineCodes($username);
 	}
 
 	/**
@@ -93,5 +106,19 @@ class UsersContext extends RawMinkContext implements Context {
 				$quota . '"', $this->getSession()
 			);
 		}
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 *
+	 * @param BeforeScenarioScope $scope
+	 * @return void
+	 * @BeforeScenario
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

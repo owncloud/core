@@ -1,11 +1,14 @@
 Feature: users
 
+	Background:
+		Given a regular user exists
+		And I am logged in as admin
+
 	Scenario Outline: change quota to a valid value
-		Given I am logged in as admin
-		And quota of user "admin" is set to "<start_quota>"
-		When quota of user "admin" is changed to "<wished_quota>"
+		And quota of user "%regularuser%" is set to "<start_quota>"
+		When quota of user "%regularuser%" is changed to "<wished_quota>"
 		And the users page is reloaded
-		Then quota of user "admin" should be set to "<expected_quota>"
+		Then quota of user "%regularuser%" should be set to "<expected_quota>"
 
 		Examples:
 		|start_quota|wished_quota|expected_quota|
@@ -19,10 +22,9 @@ Feature: users
 		|Unlimited  |45Kb        |45 KB         |
 
 	Scenario Outline: change quota to an invalid value
-		Given I am logged in as admin
-		When quota of user "admin" is changed to "<wished_quota>"
+		When quota of user "%regularuser%" is changed to "<wished_quota>"
 		Then a notification should be displayed with the text 'Invalid quota value "<wished_quota>"'
-		Then quota of user "admin" should be set to "Default"
+		Then quota of user "%regularuser%" should be set to "Default"
 
 		Examples:
 		|wished_quota|
