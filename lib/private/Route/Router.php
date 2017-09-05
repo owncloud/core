@@ -219,6 +219,14 @@ class Router implements IRouter {
 		return $this->collectionName;
 	}
 
+	/**
+	 * returns the current collections
+	 *
+	 * @return RouteCollection[] collections
+	 */
+	public function getCollections() {
+		return $this->collections;
+	}
 
 	/**
 	 * Create a \OC\Route\Route.
