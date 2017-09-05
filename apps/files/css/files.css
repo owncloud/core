@@ -847,3 +847,28 @@ html.ie8 #controls .button.new {
 #filestable tbody tr.canDrop {
   background-color: rgba(255, 255, 140, 1);
 }
+
+/* Default files-list incl. sharing */
+
+#app-content-files table td.filename .nametext,
+#app-content-sharingin table td.filename .nametext,
+#app-content-sharingout table td.filename .nametext {
+	position: static;
+	left: inherit;
+}
+
+#app-content-files.has-favorites #fileList td.filename a.name,
+#app-content-sharingin.has-favorites #fileList td.filename a.name,
+#app-content-sharingout.has-favorites #fileList td.filename a.name {
+	display: flex;
+	justify-content: space-between;
+	left: 50px;
+	margin-right: 50px;
+}
+
+#app-content-files .fileactions,
+#app-content-sharingin .fileactions,
+#app-content-sharingout .fileactions {
+	position: inherit;
+	right: inherit;
+}
