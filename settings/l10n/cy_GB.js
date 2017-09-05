@@ -3,8 +3,8 @@ OC.L10N.register(
     {
     "Authentication error" : "Gwall dilysu",
     "Email sent" : "Anfonwyd yr e-bost",
-    "Invalid request" : "Cais annilys",
     "Delete" : "Dileu",
+    "Invalid request" : "Cais annilys",
     "Groups" : "Grwpiau",
     "undo" : "dadwneud",
     "never" : "byth",

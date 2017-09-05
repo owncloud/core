@@ -2,12 +2,13 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "Ralat pengesahan",
+    "Create" : "Buat",
+    "Delete" : "Padam",
     "__language_name__" : "_nama_bahasa_",
     "Language changed" : "Bahasa diubah",
     "Invalid request" : "Permintaan tidak sah",
     "Disable" : "Nyahaktif",
     "Enable" : "Aktif",
-    "Delete" : "Padam",
     "Groups" : "Kumpulan",
     "never" : "jangan",
     "Log" : "Log",
@@ -30,7 +31,6 @@ OC.L10N.register(
     "Personal" : "Peribadi",
     "Admin" : "Admin",
     "Error" : "Ralat",
-    "Create" : "Buat",
     "Default Quota" : "Kuota Lalai",
     "Other" : "Lain",
     "Quota" : "Kuota"

@@ -2,6 +2,8 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
+    "Create" : "قۇر",
+    "Delete" : "ئۆچۈر",
     "__language_name__" : "ئۇيغۇرچە",
     "Language changed" : "تىل ئۆزگەردى",
     "Invalid request" : "ئىناۋەتسىز ئىلتىماس",
@@ -13,7 +15,6 @@ OC.L10N.register(
     "Updating...." : "يېڭىلاۋاتىدۇ…",
     "Error while updating app" : "ئەپنى يېڭىلاۋاتقاندا خاتالىق كۆرۈلدى",
     "Updated" : "يېڭىلاندى",
-    "Delete" : "ئۆچۈر",
     "Groups" : "گۇرۇپپا",
     "undo" : "يېنىۋال",
     "never" : "ھەرگىز",
@@ -47,7 +48,6 @@ OC.L10N.register(
     "Version" : "نەشرى",
     "Personal" : "شەخسىي",
     "Error" : "خاتالىق",
-    "Create" : "قۇر",
     "Other" : "باشقا",
     "set new password" : "يېڭى ئىم تەڭشە",
     "Default" : "كۆڭۈلدىكى"

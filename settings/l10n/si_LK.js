@@ -2,12 +2,13 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "සත්‍යාපන දෝෂයක්",
+    "Create" : "තනන්න",
+    "Delete" : "මකා දමන්න",
     "Language changed" : "භාෂාව ාවනස් කිරීම",
     "Invalid request" : "අවලංගු අයැදුමක්",
     "All" : "සියල්ල",
     "Disable" : "අක්‍රිය කරන්න",
     "Enable" : "සක්‍රිය කරන්න",
-    "Delete" : "මකා දමන්න",
     "Groups" : "කණ්ඩායම්",
     "undo" : "නිෂ්ප්‍රභ කරන්න",
     "never" : "කවදාවත්",
@@ -35,7 +36,6 @@ OC.L10N.register(
     "Personal" : "පෞද්ගලික",
     "Admin" : "පරිපාලක",
     "Error" : "දෝෂයක්",
-    "Create" : "තනන්න",
     "Default Quota" : "සාමාන්‍ය සලාකය",
     "Other" : "වෙනත්",
     "Quota" : "සලාකය"
