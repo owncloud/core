@@ -188,6 +188,8 @@ class Util {
 			if ($user !== null) {
 				$user = $user->getUID();
 			}
+		} else {
+			$user = null;
 		}
 
 		return self::$shareManager->sharingDisabledForUser($user);
