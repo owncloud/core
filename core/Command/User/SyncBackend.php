@@ -124,7 +124,6 @@ class SyncBackend extends Command {
 
 		$syncService = new SyncService($this->accountMapper, $backend, $this->config, $this->logger);
 
-		$p = new ProgressBar($output);
 
 		$output->writeln("Insert new and update existing users ...");
 		$uid = $input->getOption('userid');
@@ -137,11 +136,12 @@ class SyncBackend extends Command {
 			if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
 				$max = $backend->countUsers();
 			}
-			$p->start($max);
-			$syncService->run($p, $output);
-			$p->finish();
+			$syncService->run($output, $max);
 		} else {
-			$syncService->syncUsers([$uid], $p, $output);
+			$p = new ProgressBar($output, 1);
+			$p->start();
+			$syncService->syncUsers([$uid], $output, $p);
+			$p->finish();
 		}
 		$output->writeln('');
 		$output->writeln('');

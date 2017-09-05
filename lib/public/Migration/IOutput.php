@@ -55,7 +55,6 @@ interface IOutput {
 	public function advance($step = 1, $description = '');
 
 	/**
-	 * @param int $max
 	 * @since 9.1.0
 	 */
 	public function finishProgress();

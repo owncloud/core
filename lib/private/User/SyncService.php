@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -91,25 +92,30 @@ class SyncService {
 	}
 
 	/**
-	 * @param \Closure $callback is called for every user to progress display
+	 * @param OutputInterface $output
+	 * @param int $maxUsers for the progress bar
 	 */
-	public function run(ProgressBar $progressBar, OutputInterface $output) {
+	public function run(OutputInterface $output, $maxUsers = 0) {
+		$progressBar = new ProgressBar($output, $maxUsers);
+		$progressBar->start();
 		$limit = 500;
 		$offset = 0;
 		do {
+			$progressBar->advance();
 			$users = $this->backend->getUsers('', $limit, $offset);
 
 			// update existing and insert new users
-			$this->syncUsers($users, $progressBar, $output);
+			$this->syncUsers($users, $output, $progressBar);
 
 			$offset += $limit;
 		} while(count($users) >= $limit);
+		$progressBar->finish();
 	}
 
 	/**
 	 * @param string[] $users array of user ids to sync
 	 */
-	public function syncUsers(array $users, ProgressBar $progressBar = null, OutputInterface $output = null) {
+	public function syncUsers(array $users, OutputInterface $output = null, ProgressBar $progressBar = null) {
 		foreach ($users as $uid) {
 			if ($output) {
 				$start = microtime(true);
@@ -239,9 +245,11 @@ class SyncService {
 	}
 
 	/**
+	 * These attributes are now stored in the appconfig table
 	 * @param string $uid
 	 */
 	private function cleanPreferences($uid) {
+		// TODO use a single query to delete these from the preferences table
 		$this->config->deleteUserValue($uid, 'core', 'enabled');
 		$this->config->deleteUserValue($uid, 'login', 'lastLogin');
 		$this->config->deleteUserValue($uid, 'settings', 'email');
