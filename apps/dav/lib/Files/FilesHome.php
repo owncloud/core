@@ -21,11 +21,13 @@
  */
 namespace OCA\DAV\Files;
 
-use OCA\DAV\Connector\Sabre\Directory;
+use OCA\DAV\Connector\Sabre\ObjectTree;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\HTTP\URLUtil;
+use Sabre\DAV\ICollection;
+use OCA\DAV\Connector\Sabre\Directory;
 
-class FilesHome extends Directory {
+class FilesHome extends ObjectTree implements ICollection {
 
 	/**
 	 * @var array
@@ -38,10 +40,37 @@ class FilesHome extends Directory {
 	 * @param array $principalInfo
 	 */
 	public function __construct($principalInfo) {
+		parent::__construct();
 		$this->principalInfo = $principalInfo;
 		$view = \OC\Files\Filesystem::getView();
 		$rootInfo = $view->getFileInfo('');
-		parent::__construct($view, $rootInfo);
+		$rootNode = new Directory($view, $rootInfo, $this);
+		$this->init($rootNode, $view, \OC::$server->getMountManager());
+
+	}
+
+	function createFile($name, $data = null) {
+		return $this->rootNode->createFile($name, $data);
+	}
+
+	function createDirectory($name) {
+		return $this->rootNode->createDirectory($name);
+	}
+
+	function getChild($name) {
+		return $this->rootNode->getChild($name);
+	}
+
+	function getChildren() {
+		return $this->rootNode->getChildren();
+	}
+
+	function childExists($name) {
+		return $this->rootNode->childExists($name);
+	}
+
+	function getLastModified() {
+		return $this->rootNode->getLastModified();
 	}
 
 	function delete() {
