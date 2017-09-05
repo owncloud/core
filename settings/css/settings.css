@@ -483,14 +483,22 @@ table.grid td.date{
 
 #shareAPI p { padding-bottom: 0.8em; }
 #shareAPI input#shareapiExpireAfterNDays {width: 25px;}
+#shareAPI .nocheckbox {
+	padding-left: 20px;
+}
 #shareAPI .indent {
 	padding-left: 28px;
 }
 #shareAPI .double-indent {
 	padding-left: 56px;
 }
+#shareAPI
 #fileSharingSettings h2 {
 	display: inline-block;
+}
+
+#shareApiDefaultPermissionsSection label {
+	margin-right: 20px;
 }
 
 /* correctly display help icons next to headings */

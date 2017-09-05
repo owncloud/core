@@ -25,6 +25,7 @@ use OC\Settings\Panels\Helper;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
+use OCP\IL10N;
 
 class FileSharing implements ISettings {
 
@@ -32,10 +33,13 @@ class FileSharing implements ISettings {
 	protected $config;
 	/** @var Helper */
 	protected $helper;
+	/** @var IL10N */
+	protected $l;
 
-	public function __construct(IConfig $config, Helper $helper) {
+	public function __construct(IConfig $config, Helper $helper, IL10N $l) {
 		$this->config = $config;
 		$this->helper = $helper;
+		$this->l = $l;
 	}
 
 	public function getPriority() {
@@ -64,6 +68,31 @@ class FileSharing implements ISettings {
 		$template->assign('shareExcludedGroupsList', !is_null($excludedGroupsList) ? implode('|', $excludedGroupsList) : '');
 		$template->assign('shareExpireAfterNDays', $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
 		$template->assign('shareEnforceExpireDate', $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
+
+		$permList = [
+			[
+				'id' => 'cancreate',
+				'label' => $this->l->t('Create'),
+				'value' => \OCP\Constants::PERMISSION_CREATE
+			],
+			[
+				'id' => 'canupdate',
+				'label' => $this->l->t('Change'),
+				'value' => \OCP\Constants::PERMISSION_UPDATE
+			],
+			[
+				'id' => 'candelete',
+				'label' => $this->l->t('Delete'),
+				'value' => \OCP\Constants::PERMISSION_DELETE
+			],
+			[
+				'id' => 'canshare',
+				'label' => $this->l->t('Share'),
+				'value' => \OCP\Constants::PERMISSION_SHARE
+			],
+		];
+		$template->assign('shareApiDefaultPermissions', $this->config->getAppValue('core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL));
+		$template->assign('shareApiDefaultPermissionsCheckboxes', $permList);
 		return $template;
 	}
 
