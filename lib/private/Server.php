@@ -1191,6 +1191,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 * Returns a router for generating and matching urls
 	 *
 	 * @return \OCP\Route\IRouter
+	 * @since 7.0.0
+	 * @deprecated 9.0.0
 	 */
 	public function getRouter() {
 		return $this->query('Router');
