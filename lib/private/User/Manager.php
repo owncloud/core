@@ -33,6 +33,7 @@
 
 namespace OC\User;
 
+use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\ILogger;
@@ -63,8 +64,8 @@ class Manager extends PublicEmitter implements IUserManager {
 	/** @var UserInterface[] $backends */
 	private $backends = [];
 
-	/** @var User[] $cachedUsers */
-	private $cachedUsers = [];
+	/** @var CappedMemoryCache $cachedUsers */
+	private $cachedUsers;
 
 	/** @var IConfig $config */
 	private $config;
@@ -84,6 +85,7 @@ class Manager extends PublicEmitter implements IUserManager {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->accountMapper = $accountMapper;
+		$this->cachedUsers = new CappedMemoryCache();
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
 			/** @var \OC\User\User $user */
@@ -102,6 +104,7 @@ class Manager extends PublicEmitter implements IUserManager {
 		$return = [$this->accountMapper, $this->backends];
 		$this->accountMapper = $mapper;
 		$this->backends = $backends;
+		$this->cachedUsers->clear();
 
 		return $return;
 	}
@@ -129,7 +132,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \OCP\UserInterface $backend
 	 */
 	public function removeBackend($backend) {
-		$this->cachedUsers = [];
+		$this->cachedUsers->clear();
 		unset($this->backends[get_class($backend)]);
 	}
 
@@ -137,7 +140,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * remove all user backends
 	 */
 	public function clearBackends() {
-		$this->cachedUsers = [];
+		$this->cachedUsers->clear();
 		$this->backends = [];
 	}
 
@@ -148,15 +151,16 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
 	 */
 	public function get($uid) {
-		if (isset($this->cachedUsers[$uid])) { //check the cache first to prevent having to loop over the backends
-			return $this->cachedUsers[$uid];
-		}
-		if (is_null($uid)){
+		if (is_null($uid) || !is_string($uid)) {
 			return null;
+		}
+		if ($this->cachedUsers->hasKey($uid)) { //check the cache first to prevent having to loop over the backends
+			return $this->cachedUsers->get($uid);
 		}
 		try {
 			$account = $this->accountMapper->getByUid($uid);
 			if (is_null($account)) {
+				$this->cachedUsers->set($uid, null);
 				return null;
 			}
 			return $this->getUserObject($account);
@@ -173,13 +177,13 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User
 	 */
 	protected function getUserObject(Account $account, $cacheUser = true) {
-		if (isset($this->cachedUsers[$account->getUserId()])) {
-			return $this->cachedUsers[$account->getUserId()];
+		if ($this->cachedUsers->hasKey($account->getUserId())) {
+			return $this->cachedUsers->get($account->getUserId());
 		}
 
 		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher() );
 		if ($cacheUser) {
-			$this->cachedUsers[$account->getUserId()] = $user;
+			$this->cachedUsers->set($account->getUserId(), $user);
 		}
 		return $user;
 	}
@@ -219,6 +223,7 @@ class Manager extends PublicEmitter implements IUserManager {
 					} catch(DoesNotExistException $ex) {
 						$account = $this->newAccount($uid, $backend);
 					}
+					$this->cachedUsers->remove($account->getUserId());
 					// TODO always sync account with backend here to update displayname, email, search terms, home etc. user_ldap currently updates user metadata on login, core should take care of updating accounts on a successful login
 					return $this->getUserObject($account);
 				}
@@ -333,6 +338,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			if ($backend->implementsActions(Backend::CREATE_USER)) {
 				$backend->createUser($uid, $password);
 				$account = $this->newAccount($uid, $backend);
+				$this->cachedUsers->remove($account->getUserId());
 				$user = $this->getUserObject($account);
 				$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
 				return $user;
@@ -349,6 +355,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function createUserFromBackend($uid, $password, $backend) {
 		$this->emit('\OC\User', 'preCreateUser', [$uid, '']);
 		$account = $this->newAccount($uid, $backend);
+		$this->cachedUsers->remove($account->getUserId());
 		$user = $this->getUserObject($account);
 		$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
 		return $user;
