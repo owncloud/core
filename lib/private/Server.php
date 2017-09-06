@@ -687,7 +687,7 @@ class Server extends ServerContainer implements IServerContainer {
 			return new EventDispatcher();
 		});
 		$this->registerService('CryptoWrapper', function (Server $c) {
-			// FIXME: Instantiiated here due to cyclic dependency
+			// FIXME: Instantiated here due to cyclic dependency
 			$request = new Request(
 				[
 					'get' => $_GET,
@@ -701,7 +701,8 @@ class Server extends ServerContainer implements IServerContainer {
 						: null,
 				],
 				$c->getSecureRandom(),
-				$c->getConfig()
+				$c->getConfig(),
+				$c->getCsrfTokenManager()
 			);
 
 			return new CryptoWrapper(
