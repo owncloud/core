@@ -531,4 +531,10 @@ interface IServerContainer {
 	 * @since 8.0.0
 	 */
 	public function getDateTimeFormatter();
+
+    /**
+     * @return \OCP\Theme\IThemeService
+     * @since 10.0.3
+     */
+	public function getThemeService();
 }
