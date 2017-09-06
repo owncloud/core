@@ -338,8 +338,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		});
 
 		$this->registerService('OCP\Theme\IThemeService', function($c) {
-		    return $this->getServer()->getThemeService();
-        });
+			return $this->getServer()->getThemeService();
+		});
 
 
 		/**
