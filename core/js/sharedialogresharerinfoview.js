@@ -99,10 +99,6 @@
 				);
 			}
 
-			// console.log(this.model);
-			console.log(this.model.getFileOwner());
-
-
 			this.$el.html(reshareTemplate({
 				avatarEnabled: this.configModel.areAvatarsEnabled(),
 				reshareOwner: this.model.getReshareOwner(),
