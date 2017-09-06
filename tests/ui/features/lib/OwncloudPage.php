@@ -227,9 +227,10 @@ class OwncloudPage extends Page {
 	 * @return Array
 	 */
 	public function getCoordinatesOfElement($session, $element) {
+		$elementXpath = str_replace('"', '\"', $element->getXpath());
 		return $session->evaluateScript(
 			'return document.evaluate( "' .
-			$element->getXpath() .
+			$elementXpath .
 			'",document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)' .
 			'.singleNodeValue.getBoundingClientRect();'
 		);
@@ -248,8 +249,36 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * get the current offset of a specified element
+	 *
+	 * @param string $jQuerySelector e.g. "#app-content"
+	 * @param Session $session
+	 * @return float current scroll position in pixels
+	 */
+	public function getOffsetBySelector($jQuerySelector, Session $session) {
+		return $session->evaluateScript(
+			'return $("' . $jQuerySelector . '").offset().top;'
+		);
+	}
+
+	/**
+	 * get the current scroll position of a specified element
+	 * seems to return 0 all the time ???
+	 * when I thought it would tell where the scroll bar is.
+	 *
+	 * @param string $jQuerySelector e.g. "#app-content"
+	 * @param Session $session
+	 * @return float current scroll position in pixels
+	 */
+	public function getScrollPosition($jQuerySelector, Session $session) {
+		return $session->evaluateScript(
+			'return $("' . $jQuerySelector . '").scrollTop();'
+		);
+	}
+
+	/**
 	 * scrolls to a position in a specified element
-	 * 
+	 *
 	 * @param string $jQuerySelector e.g. "#app-content"
 	 * @param int|string $position number or JS function that returns a number
 	 * @param Session $session
@@ -258,6 +287,19 @@ class OwncloudPage extends Page {
 	public function scrollToPosition($jQuerySelector, $position, Session $session) {
 		$session->evaluateScript(
 			'$("' . $jQuerySelector . '").scrollTop(' . $position . ');'
+		);
+	}
+
+	/**
+	 * scrolls the specified element into view
+	 *
+	 * @param string $jQuerySelector e.g. "#app-content"
+	 * @param Session $session
+	 * @return void
+	 */
+	public function scrollIntoView($jQuerySelector, Session $session) {
+		$session->evaluateScript(
+			'$("' . $jQuerySelector . '")[0].scrollIntoView();'
 		);
 	}
 
