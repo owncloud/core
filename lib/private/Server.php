@@ -92,6 +92,7 @@ use OCP\ILogger;
 use OCP\IServerContainer;
 use OCP\ISession;
 use OCP\Security\IContentSecurityPolicyManager;
+use OCP\Theme\IThemeService;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OC\Files\External\StoragesBackendService;
@@ -1508,4 +1509,11 @@ class Server extends ServerContainer implements IServerContainer {
 		return $this->query('ShareManager');
 	}
 
+    /**
+     * @return IThemeService
+     */
+    public function getThemeService()
+    {
+        return $this->query('\OCP\Theme\IThemeService');
+    }
 }
