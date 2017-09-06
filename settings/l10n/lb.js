@@ -27,6 +27,7 @@ OC.L10N.register(
     "Unable to change full name" : "Onméiglech de ganzen Numm ze änneren.",
     "Create" : "Erstellen",
     "Delete" : "Läschen",
+    "Share" : "Deelen",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "__language_name__",

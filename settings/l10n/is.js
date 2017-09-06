@@ -44,6 +44,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Get ekki virkjað/afvirkjað notanda.",
     "Create" : "Búa til",
     "Delete" : "Eyða",
+    "Share" : "deilt",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Íslenska",

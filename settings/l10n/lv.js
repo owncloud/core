@@ -25,6 +25,7 @@ OC.L10N.register(
     "Unable to change full name" : "Nav iespējams nomainīt jūsu pilno vārdu",
     "Create" : "Izveidot",
     "Delete" : "Dzēst",
+    "Share" : "Dalīties",
     "__language_name__" : "__valodas_nosaukums__",
     "Language changed" : "Valoda tika nomainīta",
     "Invalid request" : "Nederīgs vaicājums",

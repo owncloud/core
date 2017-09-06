@@ -26,6 +26,7 @@ OC.L10N.register(
     "Unable to change full name" : "Ezin izan da izena aldatu",
     "Create" : "Sortu",
     "Delete" : "Ezabatu",
+    "Share" : "Partekatu",
     "__language_name__" : "Euskara",
     "Language changed" : "Hizkuntza aldatuta",
     "Invalid request" : "Baliogabeko eskaera",

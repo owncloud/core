@@ -15,6 +15,7 @@ OC.L10N.register(
     "Unable to change full name" : "Puno ime nije moguće promijeniti.",
     "Create" : "Kreirajte",
     "Delete" : "Izbrišite",
+    "Share" : "Dijeljenje",
     "__language_name__" : "__jezik_naziv___",
     "Language changed" : "Promjena jezika",
     "Invalid request" : "Zahtjev neispravan",

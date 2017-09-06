@@ -44,6 +44,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Невозможно включить/выключить пользователя.",
     "Create" : "Создать",
     "Delete" : "Удалить",
+    "Share" : "Общий доступ",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Русский",

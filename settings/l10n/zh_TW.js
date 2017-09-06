@@ -30,6 +30,7 @@ OC.L10N.register(
     "Unable to change full name" : "無法變更全名",
     "Create" : "建立",
     "Delete" : "刪除",
+    "Share" : "分享",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "__language_name__",

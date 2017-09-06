@@ -14,6 +14,7 @@ OC.L10N.register(
     "Unable to change full name" : "Չկարողացա փոխել լրիվ անունը",
     "Create" : "Ստեղծել",
     "Delete" : "Ջնջել",
+    "Share" : "Կիսվել",
     "Language changed" : "Լեզուն փոխվեց",
     "Invalid request" : "Անվավեր հայց",
     "Unknown user" : "Անհայտ օգտատեր",

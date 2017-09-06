@@ -5,6 +5,7 @@ OC.L10N.register(
     "Authentication error" : "Нотолгооны алдаа",
     "Your full name has been changed." : "Таны бүтэн нэр солигдлоо.",
     "Unable to change full name" : "Бүтэн нэр солих боломжгүй байна",
+    "Share" : "Түгээх",
     "Language changed" : "Хэл солигдлоо",
     "Invalid request" : "Буруу хүсэлт",
     "Admins can't remove themself from the admin group" : "Админууд өөрсдийгөө Админ бүлгээс хасаж чадахгүй",

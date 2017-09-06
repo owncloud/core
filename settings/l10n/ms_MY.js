@@ -4,6 +4,7 @@ OC.L10N.register(
     "Authentication error" : "Ralat pengesahan",
     "Create" : "Buat",
     "Delete" : "Padam",
+    "Share" : "Kongsi",
     "__language_name__" : "_nama_bahasa_",
     "Language changed" : "Bahasa diubah",
     "Invalid request" : "Permintaan tidak sah",

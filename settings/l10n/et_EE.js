@@ -27,6 +27,7 @@ OC.L10N.register(
     "Unable to change full name" : "Täispika nime muutmine ebaõnnestus",
     "Create" : "Lisa",
     "Delete" : "Kustuta",
+    "Share" : "Jaga",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Eesti",

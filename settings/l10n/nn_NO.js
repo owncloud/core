@@ -11,6 +11,7 @@ OC.L10N.register(
     "Email sent" : "E-post sendt",
     "Create" : "Lag",
     "Delete" : "Slett",
+    "Share" : "Del",
     "__language_name__" : "Nynorsk",
     "Language changed" : "Språk endra",
     "Invalid request" : "Ugyldig førespurnad",

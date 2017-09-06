@@ -13,6 +13,7 @@ OC.L10N.register(
     "Invalid user" : "Ongeldige gebruiker",
     "Create" : "Skep",
     "Delete" : "Skrap",
+    "Share" : "Deel",
     "__language_name__" : "__taalnaam__",
     "Language changed" : "Taal is verander",
     "Invalid request" : "Ongeldige versoek",

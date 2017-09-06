@@ -4,6 +4,7 @@ OC.L10N.register(
     "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
     "Create" : "قۇر",
     "Delete" : "ئۆچۈر",
+    "Share" : "ھەمبەھىر",
     "__language_name__" : "ئۇيغۇرچە",
     "Language changed" : "تىل ئۆزگەردى",
     "Invalid request" : "ئىناۋەتسىز ئىلتىماس",

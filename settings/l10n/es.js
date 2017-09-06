@@ -44,6 +44,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "No es posible habilitar / deshabilitar el usuario",
     "Create" : "Crear",
     "Delete" : "Eliminar",
+    "Share" : "Compartir",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Castellano",

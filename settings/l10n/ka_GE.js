@@ -5,6 +5,7 @@ OC.L10N.register(
     "Email sent" : "იმეილი გაიგზავნა",
     "Create" : "შექმნა",
     "Delete" : "წაშლა",
+    "Share" : "გაზიარება",
     "__language_name__" : "__language_name__",
     "Language changed" : "ენა შეცვლილია",
     "Invalid request" : "არასწორი მოთხოვნა",

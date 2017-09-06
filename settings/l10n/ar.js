@@ -14,6 +14,7 @@ OC.L10N.register(
     "Unable to change full name" : "لم يتم التمكن من تغيير اسمك الكامل",
     "Create" : "انشئ",
     "Delete" : "إلغاء",
+    "Share" : "شارك",
     "__language_name__" : "__language_name__",
     "Language changed" : "تم تغيير اللغة",
     "Invalid request" : "طلب غير مفهوم",

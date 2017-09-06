@@ -5,6 +5,7 @@ OC.L10N.register(
     "Saved" : "Gespeichert",
     "Email sent" : "eMail gesendet",
     "Delete" : "Löschen",
+    "Share" : "Teilen",
     "Very weak password" : "Sehr schwaches Passwort",
     "Weak password" : "Schwaches Passwort",
     "So-so password" : "Mittelstarkes Passwort",

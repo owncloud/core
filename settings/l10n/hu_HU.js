@@ -30,6 +30,7 @@ OC.L10N.register(
     "Unable to change full name" : "Nem sikerült megváltoztatni a teljes nevét",
     "Create" : "Létrehozás",
     "Delete" : "Törlés",
+    "Share" : "Megosztás",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "__language_name__",

@@ -41,6 +41,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Imposibil de activat/dezactivat utilizator.",
     "Create" : "Crează",
     "Delete" : "Șterge",
+    "Share" : "Partajează",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "_language_name_",

@@ -7,6 +7,8 @@
     "Home" : "Home",
     "Close" : "Schließen",
     "Favorites" : "Favoriten",
+    "Upload timeout for file \"{file}\"" : "Zeitüberschreitung beim Hochladen der Datei \"{file}\"",
+    "Unknown error \"{error}\" uploading file \"{file}\"" : "Unbekannter Fehler \"{error}\" beim Hochladen der Datei \"{file}\"",
     "Could not create folder \"{dir}\"" : "Der Ordner konnte nicht erstellt werden \"{dir}\"",
     "Upload cancelled." : "Upload abgebrochen.",
     "Processing files..." : "Verarbeite Dateien…",

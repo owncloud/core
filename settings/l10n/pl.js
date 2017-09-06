@@ -33,6 +33,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Nie można odblokować/zablokować użytkownika.",
     "Create" : "Utwórz",
     "Delete" : "Usuń",
+    "Share" : "Udostępnij",
     "Redis" : "Redis",
     "__language_name__" : "polski",
     "Language changed" : "Zmieniono język",

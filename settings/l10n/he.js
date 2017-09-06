@@ -44,6 +44,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "לא ניתן היה לנטרל / לבטל ניטרול משתמש.",
     "Create" : "יצירה",
     "Delete" : "מחיקה",
+    "Share" : "שיתוף",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "עברית",

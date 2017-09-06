@@ -1,6 +1,7 @@
 OC.L10N.register(
     "settings",
     {
+    "Share" : "I-share",
     "Cancel" : "I-cancel",
     "Password" : "Password",
     "Change password" : "Palitan ang password",

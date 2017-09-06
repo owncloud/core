@@ -33,6 +33,7 @@
     "Unable to change full name" : "전체 이름을 변경할 수 없음",
     "Create" : "만들기",
     "Delete" : "삭제",
+    "Share" : "공유",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "한국어",

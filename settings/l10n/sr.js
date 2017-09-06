@@ -29,6 +29,7 @@ OC.L10N.register(
     "Unable to change full name" : "Не могу да променим пуно име",
     "Create" : "Направи",
     "Delete" : "Обриши",
+    "Share" : "Дељење",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Српски",

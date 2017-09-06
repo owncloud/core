@@ -43,6 +43,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Kan ikke aktivere/deaktivere bruker.",
     "Create" : "Opprett",
     "Delete" : "Slett",
+    "Share" : "Delt ressurs",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "__language_name__",

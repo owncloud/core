@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Email sent" : "ارسال شدہ ای میل ",
     "Delete" : "حذف کریں",
+    "Share" : "اشتراک",
     "Invalid request" : "غلط درخواست",
     "Very weak password" : "بہت کمزور پاسورڈ",
     "Weak password" : "کمزور پاسورڈ",

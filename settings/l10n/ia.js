@@ -7,6 +7,7 @@ OC.L10N.register(
     "Email sent" : "Message de e-posta inviate",
     "Create" : "Crear",
     "Delete" : "Deler",
+    "Share" : "Compartir",
     "__language_name__" : "Interlingua",
     "Language changed" : "Linguage cambiate",
     "Invalid request" : "Requesta invalide",

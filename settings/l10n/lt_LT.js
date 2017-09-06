@@ -30,6 +30,7 @@ OC.L10N.register(
     "Unable to change full name" : "Nepavyko pakeisti pilno vardo",
     "Create" : "Sukurti",
     "Delete" : "Ištrinti",
+    "Share" : "Dalintis",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Lietuvių",

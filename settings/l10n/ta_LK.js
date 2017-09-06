@@ -4,6 +4,7 @@ OC.L10N.register(
     "Authentication error" : "அத்தாட்சிப்படுத்தலில் வழு",
     "Create" : "உருவாக்குக",
     "Delete" : "நீக்குக",
+    "Share" : "பகிர்வு",
     "__language_name__" : "_மொழி_பெயர்_",
     "Language changed" : "மொழி மாற்றப்பட்டது",
     "Invalid request" : "செல்லுபடியற்ற வேண்டுகோள்",

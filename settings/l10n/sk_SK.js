@@ -29,6 +29,7 @@ OC.L10N.register(
     "Unable to change full name" : "Nemožno zmeniť meno a priezvisko",
     "Create" : "Vytvoriť",
     "Delete" : "Zmazať",
+    "Share" : "Zdieľať",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Slovensky",

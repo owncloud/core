@@ -15,6 +15,7 @@ OC.L10N.register(
     "Unable to change full name" : "Imposible cambiar el nombre completo",
     "Create" : "Crear",
     "Delete" : "Borrar",
+    "Share" : "Compartir",
     "APCu" : "APCu",
     "__language_name__" : "Castellano (Argentina)",
     "Language changed" : "Idioma cambiado",

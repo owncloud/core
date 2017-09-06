@@ -1,6 +1,7 @@
 OC.L10N.register(
     "settings",
     {
+    "Share" : "هاوبەشی کردن",
     "Invalid request" : "داواکارى نادروستە",
     "All" : "هەمووی",
     "Enable" : "چالاککردن",

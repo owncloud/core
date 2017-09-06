@@ -35,6 +35,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Kunde inte aktivera/avaktivera användaren.",
     "Create" : "Skapa",
     "Delete" : "Radera",
+    "Share" : "Dela",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "__language_name__",

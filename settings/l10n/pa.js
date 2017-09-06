@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Delete" : "ਹਟਾਓ",
+    "Share" : "ਸਾਂਝਾ ਕਰੋ",
     "__language_name__" : "__ਭਾਸ਼ਾ_ਨਾਂ__",
     "Language changed" : "ਭਾਸ਼ਾ ਬਦਲੀ",
     "Please wait...." : "...ਉਡੀਕੋ ਜੀ",

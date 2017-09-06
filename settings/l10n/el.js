@@ -43,6 +43,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Αδυναμία ενεργοποίησης/απενεργοποίησης χρήστη.",
     "Create" : "Δημιουργία",
     "Delete" : "Διαγραφή",
+    "Share" : "Μοιράσου",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "__όνομα_γλώσσας__",

@@ -7,6 +7,7 @@ OC.L10N.register(
     "Email sent" : "Email poslat",
     "Create" : "Napravi",
     "Delete" : "Obriši",
+    "Share" : "Deljenje",
     "Language changed" : "Jezik je izmenjen",
     "Invalid request" : "Neispravan zahtev",
     "Very weak password" : "Veoma slaba lozinka",

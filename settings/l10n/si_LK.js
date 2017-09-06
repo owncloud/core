@@ -4,6 +4,7 @@ OC.L10N.register(
     "Authentication error" : "සත්‍යාපන දෝෂයක්",
     "Create" : "තනන්න",
     "Delete" : "මකා දමන්න",
+    "Share" : "බෙදා හදා ගන්න",
     "Language changed" : "භාෂාව ාවනස් කිරීම",
     "Invalid request" : "අවලංගු අයැදුමක්",
     "All" : "සියල්ල",

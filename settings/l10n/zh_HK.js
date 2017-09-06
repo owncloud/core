@@ -7,6 +7,7 @@ OC.L10N.register(
     "Email sent" : "郵件已傳",
     "Create" : "新增",
     "Delete" : "刪除",
+    "Share" : "分享",
     "All" : "所有",
     "Enabled" : "啟用",
     "Not enabled" : "未啟用",

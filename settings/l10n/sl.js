@@ -37,6 +37,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "Ni mogoče omogočiti/onemogočiti dostopa uporabnika.",
     "Create" : "Ustvari",
     "Delete" : "Izbriši",
+    "Share" : "Souporaba",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "Slovenščina",

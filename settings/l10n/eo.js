@@ -12,6 +12,7 @@ OC.L10N.register(
     "Unable to change full name" : "Ne eblis ŝanĝi la plenan nomon",
     "Create" : "Krei",
     "Delete" : "Forigi",
+    "Share" : "Kunhavigi",
     "__language_name__" : "Esperanto",
     "Language changed" : "La lingvo estas ŝanĝita",
     "Invalid request" : "Nevalida peto",

@@ -44,6 +44,7 @@ OC.L10N.register(
     "Unable to enable/disable user." : "无法启用/禁用用户。",
     "Create" : "创建",
     "Delete" : "删除",
+    "Share" : "共享",
     "APCu" : "APCu",
     "Redis" : "Redis",
     "__language_name__" : "简体中文",

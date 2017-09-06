@@ -4,6 +4,7 @@ OC.L10N.register(
     "Authentication error" : "Gwall dilysu",
     "Email sent" : "Anfonwyd yr e-bost",
     "Delete" : "Dileu",
+    "Share" : "Rhannu",
     "Invalid request" : "Cais annilys",
     "Groups" : "Grwpiau",
     "undo" : "dadwneud",

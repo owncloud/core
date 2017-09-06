@@ -31,6 +31,7 @@ OC.L10N.register(
     "Unable to change full name" : "Неможливо змінити повне ім'я",
     "Create" : "Створити",
     "Delete" : "Видалити",
+    "Share" : "Поділитися",
     "Redis" : "Redis",
     "__language_name__" : "__language_name__",
     "Language changed" : "Мову змінено",

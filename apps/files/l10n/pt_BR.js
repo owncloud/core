@@ -9,6 +9,8 @@ OC.L10N.register(
     "Home" : "Home",
     "Close" : "Fechar",
     "Favorites" : "Favoritos",
+    "Upload timeout for file \"{file}\"" : "Tempo de envio do arquivo \"{file}\" expirou",
+    "Unknown error \"{error}\" uploading file \"{file}\"" : "Erro \"{error}\" desconhecido no envio do arquivo \"{file}\"",
     "Could not create folder \"{dir}\"" : "Não foi possível criar a pasta \"{dir}\"",
     "Upload cancelled." : "Envio cancelado.",
     "Processing files..." : "Processando arquivos...",
