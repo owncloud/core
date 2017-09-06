@@ -173,9 +173,10 @@ class OwncloudPage extends Page {
 	 * @return Array
 	 */
 	public function getCoordinatesOfElement($session, $element) {
+		$elementXpath = str_replace('"', '\"', $element->getXpath());
 		return $session->evaluateScript(
 			'return document.evaluate( "' .
-			$element->getXpath() .
+			$elementXpath .
 			'",document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)' .
 			'.singleNodeValue.getBoundingClientRect();'
 		);
@@ -204,6 +205,19 @@ class OwncloudPage extends Page {
 	public function scrollToPosition($jQuerySelector, $position, Session $session) {
 		$session->evaluateScript(
 			'$("' . $jQuerySelector . '").scrollTop(' . $position . ');'
+		);
+	}
+
+	/**
+	 * scrolls the specified element into view
+	 *
+	 * @param string $jQuerySelector e.g. "#app-content"
+	 * @param Session $session
+	 * @return void
+	 */
+	public function scrollIntoView($jQuerySelector, Session $session) {
+		$session->evaluateScript(
+			'$("' . $jQuerySelector . '")[0].scrollIntoView();'
 		);
 	}
 
