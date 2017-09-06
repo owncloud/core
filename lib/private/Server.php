@@ -1509,11 +1509,10 @@ class Server extends ServerContainer implements IServerContainer {
 		return $this->query('ShareManager');
 	}
 
-    /**
-     * @return IThemeService
-     */
-    public function getThemeService()
-    {
-        return $this->query('\OCP\Theme\IThemeService');
-    }
+	/**
+	 * @return IThemeService
+	 */
+	public function getThemeService() {
+		return $this->query('\OCP\Theme\IThemeService');
+	}
 }
