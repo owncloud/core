@@ -131,7 +131,7 @@ class FilesPage extends OwnCloudPage {
 	}
 
 	/**
-	 * finds the complete row of the file
+	 * finds the complete row of the file and scrolls the row into view
 	 *
 	 * @param string|array $name
 	 * @param Session $session
@@ -194,6 +194,13 @@ class FilesPage extends OwnCloudPage {
 				. $this->fileRowFromNameXpath . "'"
 			);
 		}
+
+		// We might have scrolled past the element, so bring it into view
+		$this->scrollIntoView(
+			'#' . $this->appContentId,
+			$session
+		);
+
 		$fileRow = $this->getPage('FilesPageElement\\FileRow');
 		$fileRow->setElement($fileRowElement);
 		$fileRow->setName($name);
