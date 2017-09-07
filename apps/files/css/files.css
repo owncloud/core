@@ -680,6 +680,82 @@ html.ie8 .column-mtime .selectedActions {
 	opacity: 1 !important;
 }
 
+#fileList .shared-with-recipient:not(:last-of-type):after {
+	content: ",";
+	margin-right: 5px;
+}
+
+#fileList .shared-with-recipient {
+	display: inline-block;
+}
+
+.shared-with-hidden-count {
+	font-style: normal;
+}
+
+@media only screen and (min-width: 1500px) {
+
+	#fileList .shared-with-recipient:nth-child(n+4) {
+		width: 0;
+		height: 0;
+		opacity: 0;
+		display: block;
+		float: left;
+		counter-increment: shared-with-recipient;
+	}
+
+	#fileList .shared-with-recipient:nth-child(3):after {
+		display: none;
+	}
+
+	#fileList .shared-with-recipient:nth-child(3) ~ .shared-with-hidden-count:after {
+		content: "+" counter(shared-with-recipient);
+		margin-left: 3px;
+	}
+
+}
+
+@media only screen and (min-width: 1366px) and (max-width: 1499px){
+
+	#fileList .shared-with-recipient:nth-child(n+3) {
+		width: 0;
+		height: 0;
+		opacity: 0;
+		display: block;
+		float: left;
+		counter-increment: shared-with-recipient;
+	}
+
+	#fileList .shared-with-recipient:nth-child23):after {
+		display: none;
+	}
+
+	#fileList .shared-with-recipient:nth-child23) ~ .shared-with-hidden-count:after {
+		content: "+" counter(shared-with-recipient);
+		margin-left: 3px;
+	}
+}
+
+@media only screen and (min-width: 0px) and (max-width: 1365px){
+
+	#fileList .shared-with-recipient:nth-child(n+2) {
+		width: 0;
+		height: 0;
+		opacity: 0;
+		display: block;
+		float: left;
+		counter-increment: shared-with-recipient;
+	}
+
+	#fileList .shared-with-recipient:first-child:after {
+		display: none;
+	}
+
+	#fileList .shared-with-recipient:nth-child(2) ~ .shared-with-hidden-count:after {
+		content: "+" counter(shared-with-recipient);
+		margin-left: 3px;
+	}
+}
 
 #selectedActionsList a.download.disabled,
 #fileList tr a.action.action-download.disabled {
@@ -694,7 +770,6 @@ html.ie8 .column-mtime .selectedActions {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	filter: alpha(opacity=30);
 	opacity: .3;
-	/* add whitespace to bottom of files list to correctly show dropdowns */
 	height: 300px;
 }
 .summary:hover,
@@ -703,6 +778,7 @@ html.ie8 .column-mtime .selectedActions {
 table tr.summary td {
 	background-color: transparent;
 }
+
 .summary td {
 	border-bottom: none;
 	vertical-align: top;

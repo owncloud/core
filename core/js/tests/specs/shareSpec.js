@@ -151,7 +151,7 @@ describe('OC.Share tests', function() {
 			});
 		});
 
-		describe('displaying the recipoients', function() {
+		describe('displaying the recipients', function() {
 			function checkRecipients(input, output, title) {
 				var $action;
 
@@ -216,24 +216,24 @@ describe('OC.Share tests', function() {
 			it('display multiple remote recipients', function() {
 				checkRecipients(
 					'One@someserver.com, two@otherserver.com',
-					'Shared with One@…, two@…',
+					'Shared with One@… two@…',
 					['One@someserver.com', 'two@otherserver.com']
 				);
 				checkRecipients(
 					'One@someserver.com/, two@otherserver.com',
-					'Shared with One@…, two@…',
+					'Shared with One@… two@…',
 					['One@someserver.com', 'two@otherserver.com']
 				);
 				checkRecipients(
 					'One@someserver.com/root/of/owncloud, two@otherserver.com',
-					'Shared with One@…, two@…',
+					'Shared with One@… two@…',
 					['One@someserver.com', 'two@otherserver.com']
 				);
 			});
 			it('display mixed recipients', function() {
 				checkRecipients(
 					'One, two@otherserver.com',
-					'Shared with One, two@…',
+					'Shared with One two@…',
 					['two@otherserver.com']
 				);
 			});

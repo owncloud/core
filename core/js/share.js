@@ -242,7 +242,7 @@ OC.Share = _.extend(OC.Share || {}, {
 		var _parent = this;
 		return $.map(recipients, function(recipient) {
 			recipient = _parent._formatRemoteShare(recipient);
-			return recipient;
+			return '<span class="shared-with-recipient">' + recipient + '</span>';
 		});
 	},
 	/**
@@ -296,11 +296,15 @@ OC.Share = _.extend(OC.Share || {}, {
 			// even if reshared, only show "Shared by"
 			if (owner) {
 				message = this._formatRemoteShare(owner);
+				action.html('<span class="shared-by"> ' + message + '</span>').prepend(icon);
 			}
 			else if (recipients) {
-				message = t('core', 'Shared with {recipients}', {recipients: this._formatShareList(recipients.split(", ")).join(", ")}, 0, {escape: false});
+				message = t('core', 'Shared with {recipients}', {recipients: this._formatShareList(recipients.split(", ")).join(' ')}, 0, {escape: false});
+				action.html('<span class="shared-with"> ' + message + '<i class="shared-with-hidden-count" aria-hidden="true"></i></span>').prepend(icon);
 			}
-			action.html('<span> ' + message + '</span>').prepend(icon);
+			else {
+				action.html('<span>' + message + '</span>').prepend(icon);
+			}
 			if (owner || recipients) {
 				action.find('.remoteAddress').tipsy({gravity: 's'});
 			}

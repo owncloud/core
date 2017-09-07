@@ -166,7 +166,7 @@ describe('OCA.Sharing.Util tests', function() {
 			}]);
 			$tr = fileList.$el.find('tbody tr:first');
 			$action = $tr.find('.action-share');
-			expect($action.find('>span').text().trim()).toEqual('Shared with User One, User Two');
+			expect($action.find('>span').text().trim()).toEqual('Shared with User One User Two');
 			expect($action.find('.icon').hasClass('icon-share')).toEqual(true);
 			expect($action.find('.icon').hasClass('icon-public')).toEqual(false);
 			expect(OC.basename(getImageUrl($tr.find('.filename .thumbnail')))).toEqual('folder-shared.svg');
@@ -271,9 +271,9 @@ describe('OCA.Sharing.Util tests', function() {
 				]
 			});
 
-			expect($tr.attr('data-share-recipients')).toEqual('Group One, Group Two, User One, User Two');
+			expect($tr.attr('data-share-recipients')).toEqual('User One, User Two, Group One, Group Two');
 
-			expect($action.find('>span').text().trim()).toEqual('Shared with Group One, Group Two, User One, User Two');
+			expect($action.find('>span').text().trim()).toEqual('Shared with User One User Two Group One Group Two');
 			expect($action.find('.icon').hasClass('icon-share')).toEqual(true);
 			expect($action.find('.icon').hasClass('icon-public')).toEqual(false);
 		});
@@ -304,9 +304,8 @@ describe('OCA.Sharing.Util tests', function() {
 				]
 			});
 
-			expect($tr.attr('data-share-recipients')).toEqual('User One, User Three, User Two');
+			expect($tr.attr('data-share-recipients')).toEqual('User One, User Two, User Three');
 
-			expect($action.find('>span').text().trim()).toEqual('Shared with User One, User Three, User Two');
 			expect($action.find('.icon').hasClass('icon-share')).toEqual(true);
 			expect($action.find('.icon').hasClass('icon-public')).toEqual(false);
 		});
@@ -398,53 +397,7 @@ describe('OCA.Sharing.Util tests', function() {
 			expect($action.find('.icon').hasClass('icon-public')).toEqual(false);
 		});
 	});
-	describe('formatRecipients', function() {
-		it('returns a single recipient when one passed', function() {
-			expect(OCA.Sharing.Util.formatRecipients(['User one']))
-				.toEqual('User one');
-		});
-		it('returns two recipients when two passed', function() {
-			expect(OCA.Sharing.Util.formatRecipients(['User one', 'User two']))
-				.toEqual('User one, User two');
-		});
-		it('returns four recipients with plus when five passed', function() {
-			var recipients = [
-				'User one',
-				'User two',
-				'User three',
-				'User four',
-				'User five'
-			];
-			expect(OCA.Sharing.Util.formatRecipients(recipients))
-				.toEqual('User four, User one, User three, User two, +1');
-		});
-		it('returns four recipients with plus when ten passed', function() {
-			var recipients = [
-				'User one',
-				'User two',
-				'User three',
-				'User four',
-				'User five',
-				'User six',
-				'User seven',
-				'User eight',
-				'User nine',
-				'User ten'
-			];
-			expect(OCA.Sharing.Util.formatRecipients(recipients))
-				.toEqual('User four, User one, User three, User two, +6');
-		});
-		it('returns four recipients with plus when four passed with counter', function() {
-			var recipients = [
-				'User one',
-				'User two',
-				'User three',
-				'User four'
-			];
-			expect(OCA.Sharing.Util.formatRecipients(recipients, 10))
-				.toEqual('User four, User one, User three, User two, +6');
-		});
-	});
+
 	describe('Excluded lists', function() {
 		function createListThenAttach(listId) {
 			var fileActions = new OCA.Files.FileActions();
