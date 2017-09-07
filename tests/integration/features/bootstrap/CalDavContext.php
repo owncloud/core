@@ -31,7 +31,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	private $client;
 	/** @var ResponseInterface */
 	private $response;
-	/** @var string */
+	/** @var array */
 	private $responseXml = '';
 
 	/**
@@ -94,12 +94,12 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Then The CalDAV HTTP status code should be :code
+	 * @Then the CalDAV HTTP status code should be :code
 	 * @param int $code
 	 * @throws \Exception
 	 */
 	public function theCaldavHttpStatusCodeShouldBe($code) {
-		if((int)$code !== $this->response->getStatusCode()) {
+		if ((int)$code !== $this->response->getStatusCode()) {
 			throw new \Exception(
 				sprintf(
 					'Expected %s got %s',
@@ -110,7 +110,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		}
 
 		$body = $this->response->getBody()->getContents();
-		if($body && substr($body, 0, 1) === '<') {
+		if ($body && substr($body, 0, 1) === '<') {
 			$reader = new Sabre\Xml\Reader();
 			$reader->xml($body);
 			$this->responseXml = $reader->parse();
@@ -118,14 +118,14 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Then The exception is :message
+	 * @Then the exception is :message
 	 * @param string $message
 	 * @throws \Exception
 	 */
 	public function theExceptionIs($message) {
 		$result = $this->responseXml['value'][0]['value'];
 
-		if($message !== $result) {
+		if ($message !== $result) {
 			throw new \Exception(
 				sprintf(
 					'Expected %s got %s',
@@ -137,14 +137,14 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Then The error message is :message
+	 * @Then the error message is :message
 	 * @param string $message
 	 * @throws \Exception
 	 */
 	public function theErrorMessageIs($message) {
 		$result = $this->responseXml['value'][1]['value'];
 
-		if($message !== $result) {
+		if ($message !== $result) {
 			throw new \Exception(
 				sprintf(
 					'Expected %s got %s',
