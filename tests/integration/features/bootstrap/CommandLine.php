@@ -32,7 +32,8 @@ trait CommandLine {
 	/**
 	 * Invokes an OCC command
 	 *
-	 * @param string OCC command, the part behind "occ". For example: "files:transfer-ownership"
+	 * @param array $args of the occ command
+	 * @param bool $escaping
 	 * @return int exit code
 	 */
 	public function runOcc($args = [], $escaping = true) {
@@ -70,7 +71,7 @@ trait CommandLine {
 	public function findExceptions() {
 		$exceptions = [];
 		$captureNext = false;
-		// the exception text usually appears after an "[Exception"] row
+		// the exception text usually appears after an "[Exception]" row
 		foreach (explode("\n", $this->lastStdErr) as $line) {
 			if (preg_match('/\[Exception\]/', $line)) {
 				$captureNext = true;
@@ -94,9 +95,8 @@ trait CommandLine {
 	 */
 	public function findLines($input, $text) {
 		$results = [];
-		// the exception text usually appears after an "[Exception"] row
 		foreach (explode("\n", $input) as $line) {
-			if (strpos($line, $text) >= 0) {
+			if (strpos($line, $text) !== false) {
 				$results[] = $line;
 			}
 		}
@@ -150,7 +150,7 @@ trait CommandLine {
 	public function theCommandOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdOut, $text);
 		if (empty($lines)) {
-			throw new \Exception('The command did not output the expected text on stdout "' . $exceptionText . '"');
+			throw new \Exception('The command did not output the expected text on stdout "' . $text . '"');
 		}
 	}
 
@@ -160,7 +160,7 @@ trait CommandLine {
 	public function theCommandErrorOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdErr, $text);
 		if (empty($lines)) {
-			throw new \Exception('The command did not output the expected text on stderr "' . $exceptionText . '"');
+			throw new \Exception('The command did not output the expected text on stderr "' . $text . '"');
 		}
 	}
 }
