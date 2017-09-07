@@ -6,9 +6,9 @@ Feature: tags
     Given user "user0" exists
     When "user0" creates a "normal" tag with name "<tag_name>"
     Then the HTTP status code should be "201"
-    And The following tags should exist for "admin"
+    And the following tags should exist for "admin"
       |<tag_name>|normal|
-    And The following tags should exist for "user0"
+    And the following tags should exist for "user0"
       |<tag_name>|normal|
 
   Examples:
@@ -44,7 +44,7 @@ Feature: tags
     Given user "user0" exists
     And "admin" creates a "normal" tag with name "<tag_name>"
     When "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName"
-    And The following tags should exist for "admin"
+    And the following tags should exist for "admin"
       |AnotherTagName|normal|
 
   Examples:
@@ -56,14 +56,14 @@ Feature: tags
     Given user "user0" exists
     And "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName"
-    And The following tags should exist for "admin"
+    And the following tags should exist for "admin"
       |JustARegularTagName|not user-assignable|
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given user "user0" exists
     And "admin" creates a "not user-visible" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName"
-    And The following tags should exist for "admin"
+    And the following tags should exist for "admin"
       |JustARegularTagName|not user-visible|
 
   Scenario: Editing tag groups as admin should work
@@ -90,7 +90,7 @@ Feature: tags
     And "admin" creates a "not user-assignable" tag with name "JustARegularTagName"
     When "user0" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "403"
-    And The following tags should exist for "admin"
+    And the following tags should exist for "admin"
       |JustARegularTagName|not user-assignable|
 
   Scenario: Deleting a not user-visible tag as regular user should fail
@@ -98,7 +98,7 @@ Feature: tags
     And "admin" creates a "not user-visible" tag with name "JustARegularTagName"
     When "user0" deletes the tag with name "JustARegularTagName"
     Then the HTTP status code should be "404"
-    And The following tags should exist for "admin"
+    And the following tags should exist for "admin"
       |JustARegularTagName|not user-visible|
 
   Scenario: Deleting a not user-assignable tag as admin should work
@@ -289,7 +289,7 @@ Feature: tags
     And file "/myFileToTag.txt" of user "user0" is shared with user "another_admin"
     And "another_admin" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
     And "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
-    And As "user0" remove all shares from the file named "/myFileToTag.txt"
+    And as "user0" remove all shares from the file named "/myFileToTag.txt"
     When "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "404"
 
@@ -345,7 +345,7 @@ Feature: tags
     And file "/myFileToTag.txt" of user "user0" is shared with user "another_admin"
     And "another_admin" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0"
     And "user0" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
-    And As "user0" remove all shares from the file named "/myFileToTag.txt"
+    And as "user0" remove all shares from the file named "/myFileToTag.txt"
     When "admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0"
     Then the HTTP status code should be "404"
 

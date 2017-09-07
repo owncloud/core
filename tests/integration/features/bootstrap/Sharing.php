@@ -1,7 +1,6 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
 use TestHelpers\SharingHelper;
 
@@ -42,7 +41,7 @@ trait Sharing {
 
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
-			if (array_key_exists('expireDate', $fd)){
+			if (array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
 				$fd['expireDate'] = date('Y-m-d', strtotime($dateModification));
 			}
@@ -67,10 +66,10 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^Public shared file "([^"]*)" cannot be downloaded$/
+	 * @When /^public shared file "([^"]*)" cannot be downloaded$/
 	 * @param string $fileName
 	 */
-	public function publicSharedFileCannotDownload($path){
+	public function publicSharedFileCannotDownload($path) {
 		$token = $this->getLastShareToken();
 		$fullUrl = substr($this->baseUrl, 0, -4) . "public.php/webdav/" . rawurlencode(ltrim($path, '/'));
 
@@ -92,13 +91,12 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^Public shared file "([^"]*)" can be downloaded$/
+	 * @Then /^public shared file "([^"]*)" can be downloaded$/
 	 */
 	public function checkPublicSharedFile($filename) {
-		if (count($this->lastShareData->data->element) > 0){
+		if (count($this->lastShareData->data->element) > 0) {
 			$url = $this->lastShareData->data[0]->url;
-		}
-		else{
+		} else {
 			$url = $this->lastShareData->data->url;
 		}
 		$fullUrl = $url . "/download";
@@ -106,7 +104,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^Public shared file "([^"]*)" with password "([^"]*)" can be downloaded$/
+	 * @Then /^public shared file "([^"]*)" with password "([^"]*)" can be downloaded$/
 	 */
 	public function checkPublicSharedFileWithPassword($filename, $password) {
 		$token = $this->getLastShareToken();
@@ -198,7 +196,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^Adding expiration date to last share$/
+	 * @When /^adding expiration date to last share$/
 	 */
 	public function addingExpirationDate() {
 		$share_id = (string) $this->lastShareData->data[0]->id;
@@ -217,7 +215,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^Updating last share with$/
+	 * @When /^updating last share with$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 */
 	public function updatingLastShare($body) {
@@ -233,7 +231,7 @@ trait Sharing {
 
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
-			if (array_key_exists('expireDate', $fd)){
+			if (array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
 				$fd['expireDate'] = date('Y-m-d', strtotime($dateModification));
 			}
@@ -278,42 +276,35 @@ trait Sharing {
 		}
 	}
 
-	public function isFieldInResponse($field, $contentExpected){
+	public function isFieldInResponse($field, $contentExpected) {
 		$data = $this->response->xml()->data[0];
-		if ((string)$field == 'expiration'){
+		if ((string)$field == 'expiration') {
 			$contentExpected = date('Y-m-d', strtotime($contentExpected)) . " 00:00:00";
 		}
-		if (count($data->element) > 0){
-			foreach($data as $element) {
-				if ($contentExpected == "A_TOKEN"){
+		if (count($data->element) > 0) {
+			foreach ($data as $element) {
+				if ($contentExpected == "A_TOKEN") {
 					return (strlen((string)$element->$field) == 15);
-				}
-				elseif ($contentExpected == "A_NUMBER"){
+				} elseif ($contentExpected == "A_NUMBER") {
 					return is_numeric((string)$element->$field);
-				}
-				elseif($contentExpected == "AN_URL"){
+				} elseif ($contentExpected == "AN_URL") {
 					return $this->isExpectedUrl((string)$element->$field, "index.php/s/");
-				}
-				elseif ((string)$element->$field == $contentExpected){
+				} elseif ((string)$element->$field == $contentExpected) {
 					return True;
-				}
-				else{
+				} else {
 					print($element->$field);
 				}
 			}
 
 			return False;
 		} else {
-			if ($contentExpected == "A_TOKEN"){
+			if ($contentExpected == "A_TOKEN") {
 					return (strlen((string)$data->$field) == 15);
-			}
-			elseif ($contentExpected == "A_NUMBER"){
+			} elseif ($contentExpected == "A_NUMBER") {
 					return is_numeric((string)$data->$field);
-			}
-			elseif($contentExpected == "AN_URL"){
+			} elseif ($contentExpected == "AN_URL") {
 					return $this->isExpectedUrl((string)$data->$field, "index.php/s/");
-			}
-			elseif ($data->$field == $contentExpected){
+			} elseif ($data->$field == $contentExpected) {
 					return True;
 			}
 			return False;
@@ -321,67 +312,67 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^File "([^"]*)" should be included in the response$/
+	 * @Then /^file "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $filename
 	 */
-	public function checkSharedFileInResponse($filename){
+	public function checkSharedFileInResponse($filename) {
 		$filename = ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(True, $this->isFieldInResponse('file_target', "/$filename"));
 	}
 
 	/**
-	 * @Then /^File "([^"]*)" should not be included in the response$/
+	 * @Then /^file "([^"]*)" should not be included in the response$/
 	 *
 	 * @param string $filename
 	 */
-	public function checkSharedFileNotInResponse($filename){
+	public function checkSharedFileNotInResponse($filename) {
 		$filename = ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(False, $this->isFieldInResponse('file_target', "/$filename"));
 	}
 
 	/**
-	 * @Then /^File "([^"]*)" should be included as path in the response$/
+	 * @Then /^file "([^"]*)" should be included as path in the response$/
 	 *
 	 * @param string $filename
 	 */
-	public function checkSharedFileAsPathInResponse($filename){
+	public function checkSharedFileAsPathInResponse($filename) {
 		$filename = ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(True, $this->isFieldInResponse('path', "/$filename"));
 	}
 
 	/**
-	 * @Then /^File "([^"]*)" should not be included as path in the response$/
+	 * @Then /^file "([^"]*)" should not be included as path in the response$/
 	 *
 	 * @param string $filename
 	 */
-	public function checkSharedFileAsPathNotInResponse($filename){
+	public function checkSharedFileAsPathNotInResponse($filename) {
 		$filename = ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(False, $this->isFieldInResponse('path', "/$filename"));
 	}
 
 	/**
-	 * @Then /^User "([^"]*)" should be included in the response$/
+	 * @Then /^user "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $user
 	 */
-	public function checkSharedUserInResponse($user){
+	public function checkSharedUserInResponse($user) {
 		PHPUnit_Framework_Assert::assertEquals(True, $this->isFieldInResponse('share_with', "$user"));
 	}
 
 	/**
-	 * @Then /^User "([^"]*)" should not be included in the response$/
+	 * @Then /^user "([^"]*)" should not be included in the response$/
 	 *
 	 * @param string $user
 	 */
-	public function checkSharedUserNotInResponse($user){
+	public function checkSharedUserNotInResponse($user) {
 		PHPUnit_Framework_Assert::assertEquals(False, $this->isFieldInResponse('share_with', "$user"));
 	}
 
-	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null){
+	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null) {
 		$data = $this->response->xml()->data[0];
-		foreach($data as $element) {
-			if ($element->share_with == $userOrGroup && ($permissions === null || $permissions == $element->permissions)){
+		foreach ($data as $element) {
+			if ($element->share_with == $userOrGroup && ($permissions === null || $permissions == $element->permissions)) {
 				return True;
 			}
 		}
@@ -395,7 +386,7 @@ trait Sharing {
 	 * @param string $user1
 	 * @param string $user2
 	 */
-	public function assureFileIsShared($entry, $filepath, $user1, $user2, $withPerms = null, $permissions = null){
+	public function assureFileIsShared($entry, $filepath, $user1, $user2, $withPerms = null, $permissions = null) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
@@ -405,7 +396,7 @@ trait Sharing {
 			$options['auth'] = [$user1, $this->regularUser];
 		}
 		$this->response = $client->get($fullUrl, $options);
-		if ($this->isUserOrGroupInSharedData($user2, $permissions)){
+		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
 		} else {
 			$time = time();
@@ -429,7 +420,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function assureFileIsSharedWithGroup($entry, $filepath, $user, $group, $withPerms = null, $permissions = null){
+	public function assureFileIsSharedWithGroup($entry, $filepath, $user, $group, $withPerms = null, $permissions = null) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
@@ -439,7 +430,7 @@ trait Sharing {
 			$options['auth'] = [$user, $this->regularUser];
 		}
 		$this->response = $client->get($fullUrl, $options);
-		if ($this->isUserOrGroupInSharedData($group, $permissions)){
+		if ($this->isUserOrGroupInSharedData($group, $permissions)) {
 			return;
 		} else {
 			$this->createShare($user, $filepath, 1, $group, null, null, $permissions);
@@ -449,18 +440,18 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^Deleting last share$/
+	 * @When /^deleting last share$/
 	 */
-	public function deletingLastShare(){
+	public function deletingLastShare() {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->sendingToWith("DELETE", $url, null);
 	}
 
 	/**
-	 * @When /^Getting info of last share$/
+	 * @When /^getting info of last share$/
 	 */
-	public function gettingInfoOfLastShare(){
+	public function gettingInfoOfLastShare() {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->sendingToWith("GET", $url, null);
@@ -469,9 +460,9 @@ trait Sharing {
 	/**
 	 * @Then /^last share_id is included in the answer$/
 	 */
-	public function checkingLastShareIDIsIncluded(){
+	public function checkingLastShareIDIsIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
-		if (!$this->isFieldInResponse('id', $share_id)){
+		if (!$this->isFieldInResponse('id', $share_id)) {
 			PHPUnit_Framework_Assert::fail("Share id $share_id not found in response");
 		}
 	}
@@ -479,9 +470,9 @@ trait Sharing {
 	/**
 	 * @Then /^last share_id is not included in the answer$/
 	 */
-	public function checkingLastShareIDIsNotIncluded(){
+	public function checkingLastShareIDIsNotIncluded() {
 		$share_id = $this->lastShareData->data[0]->id;
-		if ($this->isFieldInResponse('id', $share_id)){
+		if ($this->isFieldInResponse('id', $share_id)) {
 			PHPUnit_Framework_Assert::fail("Share id $share_id has been found in response");
 		}
 	}
@@ -489,29 +480,29 @@ trait Sharing {
 	/**
 	 * @Then /^the response contains ([0-9]+) entries$/
 	 */
-	public function checkingTheResponseEntriesCount($count){
+	public function checkingTheResponseEntriesCount($count) {
 		$actualCount = count($this->response->xml()->data[0]);
 		PHPUnit_Framework_Assert::assertEquals($count, $actualCount);
 	}
 
 	/**
-	 * @Then /^Share fields of last share match with$/
+	 * @Then /^share fields of last share match with$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 */
-	public function checkShareFields($body){
+	public function checkShareFields($body) {
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
 
-			foreach($fd as $field => $value) {
-				if (substr($field, 0, 10 ) === "share_with"){
+			foreach ($fd as $field => $value) {
+				if (substr($field, 0, 10 ) === "share_with") {
 					$value = str_replace("REMOTE", substr($this->remoteBaseUrl, 0, -5), $value);
 					$value = str_replace("LOCAL", substr($this->localBaseUrl, 0, -5), $value);
 				}
-				if (substr($field, 0, 6 ) === "remote"){
+				if (substr($field, 0, 6 ) === "remote") {
 					$value = str_replace("REMOTE", substr($this->remoteBaseUrl, 0, -4), $value);
 					$value = str_replace("LOCAL", substr($this->localBaseUrl, 0, -4), $value);
 				}
-				if (!$this->isFieldInResponse($field, $value)){
+				if (!$this->isFieldInResponse($field, $value)) {
 					PHPUnit_Framework_Assert::fail("$field" . " doesn't have value " . "$value");
 				}
 			}
@@ -519,7 +510,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then As :user remove all shares from the file named :fileName
+	 * @Then as :user remove all shares from the file named :fileName
 	 */
 	public function asRemoveAllSharesFromTheFileNamed($user, $fileName) {
 		$url = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
@@ -538,7 +529,7 @@ trait Sharing {
 		);
 		$json = json_decode($res->getBody()->getContents(), true);
 		$deleted = false;
-		foreach($json['ocs']['data'] as $data) {
+		foreach ($json['ocs']['data'] as $data) {
 			if (stripslashes($data['path']) === $fileName) {
 				$id = $data['id'];
 				$client->delete(
@@ -557,7 +548,7 @@ trait Sharing {
 			}
 		}
 
-		if($deleted === false) {
+		if ($deleted === false) {
 			throw new \Exception("Could not delete file $fileName");
 		}
 	}
@@ -605,7 +596,7 @@ trait Sharing {
 	 * @param string $path
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 */
-	public function checkPublicShares($user, $type, $path, $TableNode){
+	public function checkPublicShares($user, $type, $path, $TableNode) {
 		$dataResponded = $this->getShares($user, $path);
 
 		if ($TableNode instanceof \Behat\Gherkin\Node\TableNode) {
@@ -617,7 +608,7 @@ trait Sharing {
 				return 0;
 			}
 
-			foreach($elementRows as $expectedElementsArray) {
+			foreach ($elementRows as $expectedElementsArray) {
 				//0 path, 1 permissions, 2 name
 				$nameFound = false;
 				foreach ($dataResponded as $elementResponded) {
@@ -636,7 +627,7 @@ trait Sharing {
 	public function getPublicShareIDByName($user, $path, $name) {
 		$dataResponded = $this->getShares($user, $path);
 		foreach ($dataResponded as $elementResponded) {
-			if ((string)$elementResponded->name[0] === $name){
+			if ((string)$elementResponded->name[0] === $name) {
 				return (int)$elementResponded->id[0];
 			}
 		}
@@ -650,14 +641,14 @@ trait Sharing {
 	 * @param string $type
 	 * @param string $path
 	 */
-	public function deletingPublicShareNamed($user, $name, $type, $path){
+	public function deletingPublicShareNamed($user, $name, $type, $path) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->sendingToWith("DELETE", $url, null);
 	}
 
 	private function getLastShareToken() {
-		if (count($this->lastShareData->data->element) > 0){
+		if (count($this->lastShareData->data->element) > 0) {
 			return $this->lastShareData->data[0]->token;
 		}
 

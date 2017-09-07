@@ -31,7 +31,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	private $client;
 	/** @var ResponseInterface */
 	private $response;
-	/** @var string */
+	/** @var array */
 	private $responseXml = '';
 
 	/**
@@ -40,7 +40,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	public function __construct($baseUrl) {
 		$this->baseUrl = $baseUrl;
 
-		// in case of ci deployment we take the server url from the environment
+		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = getenv('TEST_SERVER_URL');
 		if ($testServerUrl !== false) {
 			$this->baseUrl = substr($testServerUrl, 0, -5);
@@ -52,7 +52,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$this->client = new Client();
 		$this->responseXml = '';
 	}
-
 
 	/** @AfterScenario @carddav*/
 	public function afterScenario() {
@@ -69,7 +68,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {}
 	}
-
 
 	/**
 	 * @When :user requests addressbook :addressBook with statuscode :statusCode
@@ -163,14 +161,14 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When The CardDAV exception is :message
+	 * @When the CardDAV exception is :message
 	 * @param string $message
 	 * @throws \Exception
 	 */
 	public function theCarddavExceptionIs($message) {
 		$result = $this->responseXml['value'][0]['value'];
 
-		if($message !== $result) {
+		if ($message !== $result) {
 			throw new \Exception(
 				sprintf(
 					'Expected %s got %s',
@@ -182,14 +180,14 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When The CardDAV error message is :arg1
+	 * @When the CardDAV error message is :arg1
 	 * @param string $message
 	 * @throws \Exception
 	 */
 	public function theCarddavErrorMessageIs($message) {
 		$result = $this->responseXml['value'][1]['value'];
 
-		if($message !== $result) {
+		if ($message !== $result) {
 			throw new \Exception(
 				sprintf(
 					'Expected %s got %s',

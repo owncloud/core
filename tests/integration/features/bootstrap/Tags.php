@@ -60,7 +60,7 @@ trait Tags {
 		$userVisible = ($userAttributes[0]) ? 'true' : 'false';
 		$userAssignable = ($userAttributes[1]) ? 'true' : 'false';
 		if (($tagData['{http://owncloud.org/ns}user-visible'] !== $userVisible) ||
-			($tagData['{http://owncloud.org/ns}user-assignable'] !== $userAssignable)){
+			($tagData['{http://owncloud.org/ns}user-assignable'] !== $userAssignable)) {
 				PHPUnit_Framework_Assert::fail("tag $tagDisplayName is not of type $type");
 		}
 	}
@@ -108,13 +108,13 @@ trait Tags {
 	}
 
 	/**
-	 * @Then The following tags should exist for :user
+	 * @Then the following tags should exist for :user
 	 * @param string $user
 	 * @param TableNode $table
 	 * @throws \Exception
 	 */
-	public function theFollowingTagsShouldExistFor($user, TableNode $table){
-		foreach($table->getRowsHash() as $rowDisplayName => $rowType) {
+	public function theFollowingTagsShouldExistFor($user, TableNode $table) {
+		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
 			if (is_null($tagData)) {
 				PHPUnit_Framework_Assert::fail("tag $rowDisplayName is not in propfind answer");
@@ -130,13 +130,13 @@ trait Tags {
 	 * @param TableNode $table
 	 * @throws \Exception
 	 */
-	public function tagShouldNotExistForUser($tagDisplayName, $user){
+	public function tagShouldNotExistForUser($tagDisplayName, $user) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
 		PHPUnit_Framework_Assert::assertNull($tagData, "tag $tagDisplayName is in propfind answer");
 	}
 
 	/**
-	 * @Then the user :user :can assign The :type tag with name :tagDisplayName
+	 * @Then the user :user :can assign the :type tag with name :tagDisplayName
 	 */
 	public function theUserCanAssignTheTag($user, $can, $type, $tagDisplayName) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
@@ -171,7 +171,7 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function tagsShouldExistFor($count, $user)  {
-		if((int)$count !== count($this->requestTagsForUser($user))) {
+		if ((int)$count !== count($this->requestTagsForUser($user))) {
 			throw new \Exception("Expected $count tags, got ".count($this->requestTagsForUser($user)));
 		}
 	}
@@ -190,7 +190,7 @@ trait Tags {
 	 * @param string $tagDisplayName
 	 * @param string $properties optional
 	 */
-	private function sendProppatchToSystemtags($user, $tagDisplayName, $properties = null){
+	private function sendProppatchToSystemtags($user, $tagDisplayName, $properties = null) {
 		$client = $this->getSabreClient($user);
 		$client->setThrowExceptions(true);
 		$appPath = '/systemtags/';
@@ -240,7 +240,7 @@ trait Tags {
 	 * @param string $user
 	 * @param string $groupName
 	 */
-	public function userDeletesTag($user, $name){
+	public function userDeletesTag($user, $name) {
 		$tagID = $this->findTagIdByName($name);
 		try {
 			$this->response = TagsHelper::deleteTag(
@@ -270,7 +270,7 @@ trait Tags {
 	}
 
 	private function requestTagsForFile($user, $fileName, $sharingUser = null) {
-		if (!is_null($sharingUser)){
+		if (!is_null($sharingUser)) {
 			$fileID = $this->getFileIdForPath($sharingUser, $fileName);
 		} else {
 			$fileID = $this->getFileIdForPath($user, $fileName);
@@ -285,9 +285,9 @@ trait Tags {
 					  ];
 		$appPath = '/systemtags-relations/files/';
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->davPath . $appPath . $fileID;
-		try{
+		try {
 			$response = $client->propfind($fullUrl, $properties, 1);
-		}catch (Sabre\HTTP\ClientHttpException $e) {
+		} catch (Sabre\HTTP\ClientHttpException $e) {
 			$response = $e->getResponse();
 		}
 		$this->response = $response;
@@ -315,11 +315,11 @@ trait Tags {
 	public function sharedByHasTheFollowingTags($fileName, $sharedOrOwnedBy, $sharingUser, TableNode $table) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
 		//Check if we are looking for no tags
-		if ((!is_array($tagList)) && ($table->getRowAsString(0) === '|  |')){
+		if ((!is_array($tagList)) && ($table->getRowAsString(0) === '|  |')) {
 			return true;
 		}
 		array_shift($tagList);
-		foreach($table->getRowsHash() as $rowDisplayName => $rowType) {
+		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$found = false;
 			foreach ($tagList as $path => $tagData) {
 				if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $rowDisplayName) {
@@ -374,7 +374,7 @@ trait Tags {
 	 */
 	public function cleanupTags()
 	{
-		foreach($this->createdTags as $tagID) {
+		foreach ($this->createdTags as $tagID) {
 			try {
 				$this->response = TagsHelper::deleteTag(
 					$this->baseUrlWithoutOCSAppendix(),
