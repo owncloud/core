@@ -14,9 +14,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added occ user:inactive command to list inactive users - [#28294](https://github.com/owncloud/core/issues/28294)
 - Added internal setting for the periodic credentials validity check - [#28298](https://github.com/owncloud/core/issues/28298)
 - Added jquery events for external storage settings UI when using OAuth - [#28210](https://github.com/owncloud/core/issues/28210)
-- Added public IThemeService which allows apps like the template editor to interact with the current theme - [#28647](https://github.com/owncloud/core/issues/28647)
+- Added public IThemeService which allows apps like the template editor to interact with the current theme - [#28647](https://github.com/owncloud/core/issues/28647) [#28926](https://github.com/owncloud/core/issues/28926)
 - Added "passwordEnabled" field to hook data of link shares - [#28827](https://github.com/owncloud/core/issues/28827)
 - Add new option to disable sharing in every user-mounted external storages - [#28706](https://github.com/owncloud/core/issues/28706)
+- Added default user and group share permissions - [#28903](https://github.com/owncloud/core/issues/28903)
+- Added occ command to list routes - [#28907](https://github.com/owncloud/core/issues/28907)
+- Added mime types for m3u, m3u8, pls mappings to audio streams - [#28885](https://github.com/owncloud/core/issues/28885)
 
 ### Changed
 - Transfer ownership now works with master key encryption - [#28537](https://github.com/owncloud/core/issues/28537) [#28845](https://github.com/owncloud/core/issues/28845)
@@ -53,6 +56,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Use different CSS comment style for IE11 support - [#28752](https://github.com/owncloud/core/issues/28752)
 - Adjust default slogan - [#28724](https://github.com/owncloud/core/issues/28724)
 - Catch filecache inconsistencies instead of logging warnings - [#28710](https://github.com/owncloud/core/issues/28710)
+- Check for null when traversing app passwords table rows - [#28894](https://github.com/owncloud/core/issues/28894)
+- Improve market upgrade messages + new switch - [#28871](https://github.com/owncloud/core/issues/28871)
+- Make occ upgrade verbose by default - [#28876](https://github.com/owncloud/core/issues/28876)
+- Add more information to updatechecker config doc - [#28867](https://github.com/owncloud/core/issues/28867)
 
 #### Database
 - All columns that use the fileid have been changed to bigint (64-bits) - [#28581](https://github.com/owncloud/core/issues/28581)
@@ -84,12 +91,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix rare error that happens when mounting invalid shares - [#28342](https://github.com/owncloud/core/issues/28342)
 - Handle BSD case for 32 bit filemtime and install warning - [#28790](https://github.com/owncloud/core/issues/28790)
 - Properly check target rename path in new dav endpoint - [#28737](https://github.com/owncloud/core/issues/28737)
+- Increment required only when encryption is enabled - [#28880](https://github.com/owncloud/core/issues/28880)
 
 #### Files app
 - Make sure passed upload mtime is always an int - [#28186](https://github.com/owncloud/core/issues/28186)
 - Fix directory mime type in trashbin list - [#28803](https://github.com/owncloud/core/issues/28803)
-- Switch web UI to new dav endpoint, includes encoding fixes - [#28769](https://github.com/owncloud/core/issues/28769)
 - Properly highlight files when opening private link - [#28681](https://github.com/owncloud/core/issues/28681)
+- Fix overlapping selectively in default fileslist - [#28906](https://github.com/owncloud/core/issues/28906)
+- Better timeout detection in web UI uploads + chunked uploads - [#28896](https://github.com/owncloud/core/issues/28896)
+- Fix getting drop target when dragging from file manager  - [#28882](https://github.com/owncloud/core/issues/28882)
+- Improve file upload progress bar - [#28861](https://github.com/owncloud/core/issues/28861)
 
 #### Sharing
 - Creating link shares now doesn't forget "Allow editing" permission any more - [#28065](https://github.com/owncloud/core/issues/28065)
