@@ -904,7 +904,7 @@ describe('OC.Files.Client tests', function() {
 
 			expect(propFindStub.calledOnce).toEqual(true);
 			expect(propFindStub.getCall(0).args[0])
-				.toEqual('https://somehost:8080/owncloud/remote.php/webdav/path/to%20sp%40ce/a%40b%23%3F%25/x');
+				.toEqual('https://somehost:8080/owncloud/remote.php/dav/files/test%40%23%3F%25test/path/to%20sp%40ce/a%40b%23%3F%25/x');
 		});
 	});
 });
