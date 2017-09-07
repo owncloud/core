@@ -308,7 +308,7 @@ OC.L10N.register(
     "No panels for this section." : "Ingen paneler for denne seksjonen.",
     "Show enabled/disabled option" : "Vis valg for aktiv/inaktiv",
     "Show storage location" : "Vis lagringssted",
-    "Show last log in" : "Vis site innlogging",
+    "Show last log in" : "Vis siste innlogging",
     "Show user backend" : "Vis bruker-server",
     "Send email to new user" : "Send e-post til ny bruker",
     "Show email address" : "Vis e-postadresse",
