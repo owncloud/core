@@ -644,6 +644,13 @@ class OC {
 			self::$server->getSession()->set('user_id', '');
 		}
 
+
+		$tempDir = $systemConfig->getValue('tempdirectory', null);
+		if ($tempDir !== null) {
+			// attempt setting temporary dir
+			@ini_set('upload_tmp_dir', $tempDir);
+		}
+
 		// Subscribe to the hook
 		\OCP\Util::connectHook(
 			'\OCA\Files_Sharing\API\Server2Server',
