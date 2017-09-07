@@ -169,10 +169,10 @@ describe('OC.Share.ShareDialogView', function() {
 			});
 
 			it('test correct function calls', function() {
-				expect(avatarStub.calledTwice).toEqual(true);
+				expect(avatarStub.calledThrice).toEqual(true);
 				expect(placeholderStub.calledTwice).toEqual(true);
 				expect(dialog.$('.shareWithList').children().length).toEqual(3);
-				expect(dialog.$('.avatar').length).toEqual(4);
+				expect(dialog.$('.avatar').length).toEqual(5);
 			});
 
 			it('test avatar owner', function() {
@@ -182,7 +182,7 @@ describe('OC.Share.ShareDialogView', function() {
 			});
 
 			it('test avatar user', function() {
-				var args = avatarStub.getCall(1).args;
+				var args = avatarStub.getCall(2).args;
 				expect(args.length).toEqual(2);
 				expect(args[0]).toEqual('user1');
 			});
