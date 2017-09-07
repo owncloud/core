@@ -12,7 +12,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Moving a file
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -21,7 +20,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Moving and overwriting a file old way
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/textfile0.txt"
@@ -30,7 +28,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Moving a file to a folder with no permissions
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -48,7 +45,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Moving a file to overwrite a file in a folder with no permissions
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -87,7 +83,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Copying a file
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -96,7 +91,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Copying and overwriting a file
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" copies file "/welcome.txt" to "/textfile1.txt"
@@ -105,7 +99,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Copying a file to a folder with no permissions
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -123,7 +116,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Copying a file to overwrite a file into a folder with no permissions
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -141,7 +133,8 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: download a file with range
 		Given using old dav path
-		And as an "admin"
+		And user "user0" exists
+		And as an "user0"
 		When downloading file "/welcome.txt" with range "bytes=51-77"
 		Then downloaded content should be "example file for developers"
 
@@ -222,8 +215,6 @@ Feature: webdav-related-old-endpoint
 			| shareType | 3 |
 		And downloading last public shared file inside a folder "/parent.txt" with range "bytes=1-7"
 		Then downloaded content should be "wnCloud"
-
-
 
 	Scenario: A file that is not shared does not have a share-types property
 		Given using old dav path
@@ -329,7 +320,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Removing everything of a folder
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -390,7 +380,8 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Downloading a file on the old endpoint should serve security headers
 		Given using old dav path
-		And as an "admin"
+		And user "user0" exists
+		And as an "user0"
 		When downloading file "/welcome.txt"
 		Then the following headers should be set
 			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
@@ -405,33 +396,36 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Doing a GET with a web login should work without CSRF token on the old backend
 		Given using old dav path
-		And logging in using web as "admin"
+		And user "user0" exists
+		And logging in using web as "user0"
 		When sending a "GET" to "/remote.php/webdav/welcome.txt" without requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a GET with a web login should work with CSRF token on the old backend
 		Given using old dav path
-		And logging in using web as "admin"
+		And user "user0" exists
+		And logging in using web as "user0"
 		When sending a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the old backend
 		Given using old dav path
-		And logging in using web as "admin"
+		And user "user0" exists
+		And logging in using web as "user0"
 		When sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" without requesttoken
 		Then the HTTP status code should be "401"
 
 	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the old backend
 		Given using old dav path
-		And logging in using web as "admin"
+		And user "user0" exists
+		And logging in using web as "user0"
 		When sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken
 		Then the HTTP status code should be "207"
 
 	Scenario: Setting custom DAV property and reading it
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/testcustomprop.txt"
@@ -441,7 +435,6 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Setting custom DAV property and reading it after the file is renamed
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/testcustompropwithmove.txt"
@@ -452,7 +445,6 @@ Feature: webdav-related-old-endpoint
 		
 	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
 		Given using old dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user0"

@@ -12,7 +12,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Moving a file
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -21,7 +20,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Moving and overwriting a file
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/textfile0.txt"
@@ -30,7 +28,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Moving a file to a folder with no permissions
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -48,7 +45,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Moving a file to overwrite a file in a folder with no permissions
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -87,7 +83,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Copying a file
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -96,7 +91,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Copying and overwriting a file
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" copies file "/welcome.txt" to "/textfile1.txt"
@@ -105,7 +99,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Copying a file to a folder with no permissions
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -123,7 +116,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Copying a file to overwrite a file into a folder with no permissions
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -141,7 +133,8 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: download a file with range
 		Given using new dav path
-		And as an "admin"
+		And user "user0" exists
+		And as an "user0"
 		When downloading file "/welcome.txt" with range "bytes=51-77"
 		Then downloaded content should be "example file for developers"
 
@@ -225,7 +218,8 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Downloading a file on the new endpoint should serve security headers
 		Given using new dav path
-		And as an "admin"
+		And user "user0" exists
+		And as an "user0"
 		When downloading file "/welcome.txt"
 		Then the following headers should be set
 			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
@@ -342,7 +336,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Removing everything of a folder
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -401,9 +394,10 @@ Feature: webdav-related-new-endpoint
 		When user "user0" moves folder "/testshare" to "/not-existing/testshare"
 		Then the HTTP status code should be "409"
 
-		Scenario: Downloading a file on the new endpoint should serve security headers
+	Scenario: Downloading a file on the new endpoint should serve security headers
 		Given using new dav path
-		And as an "admin"
+		And user "user0" exists
+		And as an "user0"
 		When downloading file "/welcome.txt"
 		Then the following headers should be set
 			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
@@ -417,30 +411,33 @@ Feature: webdav-related-new-endpoint
 		And downloaded content should start with "Welcome to your ownCloud account!"
 
 	Scenario: Doing a GET with a web login should work without CSRF token on the new backend
-		Given logging in using web as "admin"
-		When sending a "GET" to "/remote.php/dav/files/admin/welcome.txt" without requesttoken
+		Given user "user0" exists
+		And logging in using web as "user0"
+		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		Then the HTTP status code should be "200"
 
 	Scenario: Doing a GET with a web login should work with CSRF token on the new backend
-		Given logging in using web as "admin"
-		When sending a "GET" to "/remote.php/dav/files/admin/welcome.txt" with requesttoken
+		Given user "user0" exists
+		And logging in using web as "user0"
+		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		Then the HTTP status code should be "200"
 
 	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the new backend
-		Given logging in using web as "admin"
-		When sending a "PROPFIND" to "/remote.php/dav/files/admin/welcome.txt" without requesttoken
+		Given user "user0" exists
+		And logging in using web as "user0"
+		When sending a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
 		Then the HTTP status code should be "401"
 
 	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the new backend
-		Given logging in using web as "admin"
-		When sending a "PROPFIND" to "/remote.php/dav/files/admin/welcome.txt" with requesttoken
+		Given user "user0" exists
+		And logging in using web as "user0"
+		When sending a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then the HTTP status code should be "207"
 
 	Scenario: Setting custom DAV property and reading it
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/testcustomprop.txt"
@@ -450,7 +447,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Setting custom DAV property and reading it after the file is renamed
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/testcustompropwithmove.txt"
@@ -461,7 +457,6 @@ Feature: webdav-related-new-endpoint
 		
 	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
 		Given using new dav path
-		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user0"
