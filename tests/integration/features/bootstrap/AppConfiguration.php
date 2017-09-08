@@ -1,9 +1,6 @@
 <?php
 
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Message\ResponseInterface;
-
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -69,7 +66,7 @@ trait AppConfiguration {
 	/**
 	 * @BeforeScenario
 	 */
-	public function prepareParametersBeforeScenario(){
+	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = 'admin';
 		$this->resetAppConfigs();

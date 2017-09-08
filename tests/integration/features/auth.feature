@@ -2,7 +2,7 @@ Feature: auth
 
 	Background:
 		Given user "user0" exists
-		Given a new client token is used
+		And a new client token is used
 
 
 	# FILES APP

@@ -6,7 +6,6 @@ use GuzzleHttp\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
-
 /**
  * Features context.
  */

@@ -37,7 +37,7 @@ trait CommandLine {
 	 * @return int exit code
 	 */
 	public function runOcc($args = [], $escaping = true) {
-		if ($escaping === true){
+		if ($escaping === true) {
 			$args = array_map(function($arg) {
 				return escapeshellarg($arg);
 			}, $args);
