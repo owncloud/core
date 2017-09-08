@@ -372,6 +372,12 @@ class Local extends Common {
 		if ($realPath) {
 			$realPath = $realPath . '/';
 		}
+
+		// Is broken symlink?
+		if (is_link($fullPath) && !file_exists($fullPath)) {
+			throw new ForbiddenException("$fullPath is a broken/dead symlink", false);
+		}
+
 		if (substr($realPath, 0, $this->dataDirLength) === $this->realDataDir) {
 			return $fullPath;
 		} else {
