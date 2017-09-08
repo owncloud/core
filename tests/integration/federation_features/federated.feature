@@ -221,12 +221,3 @@ Feature: federated
 		Then using server "LOCAL"
 		And as an "user0"
 		And etag of element "/PARENT" of user "user0" has changed
-
-
-
-
-
-
-
-
-

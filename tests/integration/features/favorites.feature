@@ -153,4 +153,3 @@ Feature: favorite
         Then user "user0" in folder "/subfolder" should have favorited the following elements from offset 3 and limit 2
             | /subfolder/textfile2.txt |
             | /subfolder/textfile3.txt |
-

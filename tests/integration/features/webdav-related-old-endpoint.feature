@@ -170,9 +170,9 @@ Feature: webdav-related-old-endpoint
 		  | shareType | 0 |
 		  | permissions | 31 |
 		  | shareWith | user0 |
-		Then as "user0" gets properties of folder "/testquota" with
+		When as "user0" gets properties of folder "/testquota" with
 		  |{DAV:}quota-available-bytes|
-		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota when quota is set and a file was uploaded
 		Given using old dav path
@@ -507,4 +507,3 @@ Feature: webdav-related-old-endpoint
 		And as "user1" the folder "/folderB/ONE" exists
 		And as "user1" the folder "/folderB/ONE/TWO" exists
 		And user "user1" checks id of file "/folderB/ONE"
-

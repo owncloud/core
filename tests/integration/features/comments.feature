@@ -15,7 +15,7 @@ Feature: Comments
     And user "user1" exists
     And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
     And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
-    And user "user1" comments with content "A comment from sharee" on file "/myFileToComment.txt"
+    When user "user1" comments with content "A comment from sharee" on file "/myFileToComment.txt"
     And user "user0" comments with content "A comment from sharer" on file "/myFileToComment.txt"
     And the HTTP status code should be "201"
     Then user "user1" should have the following comments on file "/myFileToComment.txt"

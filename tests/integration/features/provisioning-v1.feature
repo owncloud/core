@@ -213,7 +213,7 @@ Feature: provisioning
 		When sending "GET" to "/cloud/users/brand-new-user/subadmins"
 		Then subadmin groups returned are
 			| new-group |
-		Then the OCS status code should be "100"
+		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
 	Scenario: Getting subadmin groups of a user which do not exist
@@ -249,7 +249,7 @@ Feature: provisioning
 		And user "brand-new-user" is subadmin of group "new-group"
 		When sending "DELETE" to "/cloud/users/brand-new-user/subadmins" with
 			| groupid | new-group |
-		And the OCS status code should be "100"
+		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
 	Scenario: Delete a user
@@ -346,7 +346,7 @@ Feature: provisioning
 		And as an "subadmin"
 		When sending "PUT" to "/cloud/users/user1/disable"
 		Then the OCS status code should be "100"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 		And as an "admin"
 		And user "user1" is disabled
 
@@ -362,7 +362,7 @@ Feature: provisioning
 		And as an "subadmin"
 		When sending "PUT" to "/cloud/users/user1/disable"
 		Then the OCS status code should be "997"
-		Then the HTTP status code should be "401"
+		And the HTTP status code should be "401"
 		And as an "admin"
 		And user "user1" is enabled
 
@@ -378,7 +378,7 @@ Feature: provisioning
 		And as an "subadmin"
 		When sending "PUT" to "/cloud/users/another-admin/disable"
 		Then the OCS status code should be "997"
-		Then the HTTP status code should be "401"
+		And the HTTP status code should be "401"
 		And as an "admin"
 		And user "another-admin" is enabled
 
@@ -388,7 +388,7 @@ Feature: provisioning
 		And user "another-admin" belongs to group "admin"
 		When sending "PUT" to "/cloud/users/another-admin/disable"
 		Then the OCS status code should be "100"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 		And user "another-admin" is disabled
 
 	Scenario: Admin can enable another admin user
@@ -398,7 +398,7 @@ Feature: provisioning
 		And assure user "another-admin" is disabled
 		When sending "PUT" to "/cloud/users/another-admin/enable"
 		Then the OCS status code should be "100"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 		And user "another-admin" is enabled
 
 	Scenario: Admin can disable subadmins in the same group
@@ -410,7 +410,7 @@ Feature: provisioning
 		And assure user "subadmin" is subadmin of group "new-group"
 		When sending "PUT" to "/cloud/users/subadmin/disable"
 		Then the OCS status code should be "100"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 		And user "subadmin" is disabled
 
 	Scenario: Admin can enable subadmins in the same group
@@ -423,7 +423,7 @@ Feature: provisioning
 		And assure user "another-admin" is disabled
 		When sending "PUT" to "/cloud/users/subadmin/disable"
 		Then the OCS status code should be "100"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 		And user "subadmin" is disabled
 
 	Scenario: Admin user cannot disable himself
@@ -479,7 +479,7 @@ Feature: provisioning
 		And as an "subadmin"
 		When sending "PUT" to "/cloud/users/subadmin/disable"
 		Then the OCS status code should be "101"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 		And as an "admin"
 		And user "subadmin" is enabled
 
@@ -492,7 +492,7 @@ Feature: provisioning
 		And assure user "subadmin" is disabled
 		And as an "subadmin"
 		When sending "PUT" to "/cloud/users/subadmin/enabled"
-		And as an "admin"
+		Then as an "admin"
 		And user "subadmin" is disabled
 
 	Scenario: a subadmin can add users to groups the subadmin is responsible for
@@ -568,7 +568,7 @@ Feature: provisioning
 		And assure user "user0" is disabled
 		And as an "user0"
 		When sending "GET" with exact url to "/index.php/apps/files"
-		And the HTTP status code should be "403"
+		Then the HTTP status code should be "403"
 
 	Scenario: Edit a user email twice
 		Given as an "admin"
@@ -588,5 +588,3 @@ Feature: provisioning
 		And the HTTP status code should be "200"
 		And user attributes match with
 			| email | brand-new-user@example.com |
-
-

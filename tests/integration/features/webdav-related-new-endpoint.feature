@@ -170,9 +170,9 @@ Feature: webdav-related-new-endpoint
 		  | shareType | 0 |
 		  | permissions | 31 |
 		  | shareWith | user0 |
-		Then as "user0" gets properties of folder "/testquota" with
+		When as "user0" gets properties of folder "/testquota" with
 		  |{DAV:}quota-available-bytes|
-		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota when quota is set and a file was uploaded
 		Given using new dav path
@@ -415,14 +415,14 @@ Feature: webdav-related-new-endpoint
 		And logging in using web as "user0"
 		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 
 	Scenario: Doing a GET with a web login should work with CSRF token on the new backend
 		Given user "user0" exists
 		And logging in using web as "user0"
 		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
-		Then the HTTP status code should be "200"
+		And the HTTP status code should be "200"
 
 	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the new backend
 		Given user "user0" exists

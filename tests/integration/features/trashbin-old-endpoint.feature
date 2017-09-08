@@ -86,7 +86,7 @@ Feature: trashbin-new-endpoint
 		And logging in using web as "user0"
 		When as "user0" the folder with original path "/textfile0.txt" is restored
 		Then as "user0" the folder with original path "/textfile0.txt" does not exist in trash
-		Then user "user0" should see following elements
+		And user "user0" should see following elements
 			| /FOLDER/ |
 			| /PARENT/ |
 			| /PARENT/parent.txt |
