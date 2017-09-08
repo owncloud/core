@@ -21,6 +21,7 @@
 		'    {{sharedByText}}' +
 		'</span>' +
 		'{{#if reshareNotOwner}}' +
+	    	'<br>' +
 		'<span class="fileowner">' +
 		'    {{#if avatarEnabled}}' +
 		'    <div class="avatar" data-userName="{{fileOwner}}"></div>' +
