@@ -305,4 +305,3 @@ Feature: sharees
 		And "groups" sharees returned is empty
 		And "exact remotes" sharees returned is empty
 		And "remotes" sharees returned is empty
-

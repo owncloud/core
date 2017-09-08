@@ -11,8 +11,8 @@ Feature: caldav
 	@caldav
 	Scenario: Accessing a not shared calendar of another user
 		Given user "user0" exists
-		Given "admin" creates a calendar named "MyCalendar"
-		Given the CalDAV HTTP status code should be "201"
+		And "admin" creates a calendar named "MyCalendar"
+		And the CalDAV HTTP status code should be "201"
 		When "user0" requests calendar "admin/MyCalendar"
 		Then the CalDAV HTTP status code should be "404"
 		And the exception is "Sabre\DAV\Exception\NotFound"

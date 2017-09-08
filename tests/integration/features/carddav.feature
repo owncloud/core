@@ -9,7 +9,7 @@ Feature: carddav
   @carddav
   Scenario: Accessing a not shared addressbook of another user
     Given user "user0" exists
-    Given "admin" creates an addressbook named "MyAddressbook" with statuscode "201"
+    And "admin" creates an addressbook named "MyAddressbook" with statuscode "201"
     When "user0" requests addressbook "admin/MyAddressbook" with statuscode "404"
     And the CardDAV exception is "Sabre\DAV\Exception\NotFound"
     And the CardDAV error message is "Addressbook with name 'MyAddressbook' could not be found"

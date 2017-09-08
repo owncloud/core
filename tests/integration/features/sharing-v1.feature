@@ -27,7 +27,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Creating a new share with user who already received a share through their group
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "sharing-group" exists
 		And user "user1" belongs to group "sharing-group"
@@ -442,7 +442,7 @@ Feature: sharing
 		And last share_id is not included in the answer
 
 	Scenario: Sharee can see the group share
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group0" exists
 		And user "user1" belongs to group "group0"
@@ -454,7 +454,7 @@ Feature: sharing
 		And last share_id is included in the answer
 
 	Scenario: User is not allowed to reshare file
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user2" exists
 		And as an "user0"
@@ -473,7 +473,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: User is not allowed to reshare file with more permissions
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user2" exists
 		And as an "user0"
@@ -502,7 +502,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Share of folder and sub-folder to same user - core#20645
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group0" exists
 		And user "user1" belongs to group "group0"
@@ -517,7 +517,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Share a file by multiple channels and download from sub-folder
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user2" exists
 		And group "group0" exists
@@ -537,7 +537,7 @@ Feature: sharing
 			| /common/sub/textfile0.txt |
 
 	Scenario: Share a file by multiple channels and download from direct file share
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user2" exists
 		And group "group0" exists
@@ -556,7 +556,7 @@ Feature: sharing
 			| /common/sub/textfile0.txt |
 
 	Scenario: Delete all group shares
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group1" exists
 		And user "user1" belongs to group "group1"
@@ -580,7 +580,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Keep usergroup shares (#22143)
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user2" exists
 		And group "group" exists
@@ -799,7 +799,7 @@ Feature: sharing
 		And as "user1" the folder "/merge-test-outside (2)" does not exist
 
 	Scenario: Merging shares for recipient when shared from outside with group and member with different permissions
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group1" exists
 		And user "user1" belongs to group "group1"
@@ -812,7 +812,7 @@ Feature: sharing
 		And as "user1" the folder "/merge-test-outside-perms (2)" does not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group1" exists
 		And group "group2" exists
@@ -825,7 +825,7 @@ Feature: sharing
 		And as "user1" the folder "/merge-test-outside-twogroups (2)" does not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups with different permissions
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group1" exists
 		And group "group2" exists
@@ -840,7 +840,7 @@ Feature: sharing
 		And as "user1" the folder "/merge-test-outside-twogroups-perms (2)" does not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups and member
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group1" exists
 		And group "group2" exists
@@ -856,7 +856,7 @@ Feature: sharing
 		And as "user1" the folder "/merge-test-outside-twogroups-member-perms (2)" does not exist
 
 	Scenario: Merging shares for recipient when shared from inside with group
-		And user "user0" exists
+		Given user "user0" exists
 		And group "group1" exists
 		And user "user0" belongs to group "group1"
 		And user "user0" created a folder "/merge-test-inside-group"
@@ -865,7 +865,7 @@ Feature: sharing
 		And as "user0" the folder "/merge-test-inside-group (2)" does not exist
 
 	Scenario: Merging shares for recipient when shared from inside with two groups
-		And user "user0" exists
+		Given user "user0" exists
 		And group "group1" exists
 		And group "group2" exists
 		And user "user0" belongs to group "group1"
@@ -878,7 +878,7 @@ Feature: sharing
 		And as "user0" the folder "/merge-test-inside-twogroups (3)" does not exist
 
 	Scenario: Merging shares for recipient when shared from inside with group with less permissions
-		And user "user0" exists
+		Given user "user0" exists
 		And group "group1" exists
 		And group "group2" exists
 		And user "user0" belongs to group "group1"
@@ -893,7 +893,7 @@ Feature: sharing
 		And as "user0" the folder "/merge-test-inside-twogroups-perms (3)" does not exist
 
 	Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group1" exists
 		And user "user1" belongs to group "group1"
@@ -907,7 +907,7 @@ Feature: sharing
 		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" does not exist
 
 	Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group1" exists
 		And user "user1" belongs to group "group1"
@@ -921,13 +921,13 @@ Feature: sharing
 		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" does not exist
 
 	Scenario: Emptying trashbin
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user0" deletes file "/textfile0.txt"
 		When user "user0" empties the trashbin
 		Then the HTTP status code should be "200"
 
 	Scenario: orphaned shares
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/common"
 		And user "user0" created a folder "/common/sub"
@@ -968,7 +968,7 @@ Feature: sharing
 
 	Scenario: sharing subfolder when parent already shared with group of sharer
 		Given user "user0" exists
-		Given user "user1" exists
+		And user "user1" exists
 		And group "sharing-group" exists
 		And user "user0" belongs to group "sharing-group"
 		And user "user0" created a folder "/test"
@@ -985,10 +985,10 @@ Feature: sharing
 
 	Scenario: sharing subfolder of already shared folder, GET result is correct
 		Given user "user0" exists
-		Given user "user1" exists
-		Given user "user2" exists
-		Given user "user3" exists
-		Given user "user4" exists
+		And user "user1" exists
+		And user "user2" exists
+		And user "user3" exists
+		And user "user4" exists
 		And user "user0" created a folder "/folder1"
 		And file "/folder1" of user "user0" is shared with user "user1"
 		And file "/folder1" of user "user0" is shared with user "user2"
@@ -1008,7 +1008,7 @@ Feature: sharing
 		And file "/folder1/folder2" should be included as path in the response
 
 	Scenario: unshare from self
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "sharing-group" exists
 		And user "user0" belongs to group "sharing-group"
@@ -1064,7 +1064,7 @@ Feature: sharing
 		Then the OCS status code should be "400"
 
 	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And as an "user0"
 		And user "user0" created a folder "/test"
@@ -1080,7 +1080,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And as an "user0"
 		And user "user0" created a folder "/test"
@@ -1096,7 +1096,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And as an "user0"
 		And user "user0" created a folder "/test"
@@ -1112,7 +1112,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And as an "user0"
 		And user "user0" created a folder "/test"
@@ -1128,7 +1128,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Creating a link share with no specified permissions defaults to read permissions
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user0" created a folder "/afolder"
 		And as an "user0"
 		And creating a share with
@@ -1142,7 +1142,7 @@ Feature: sharing
 			| permissions | 1 |
 
 	Scenario: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
-		And parameter "shareapi_allow_public_upload" of app "core" is set to "no"
+		Given parameter "shareapi_allow_public_upload" of app "core" is set to "no"
 		And user "user0" exists
 		And user "user0" created a folder "/afolder"
 		And as an "user0"
@@ -1157,7 +1157,7 @@ Feature: sharing
 			| permissions | 1 |
 
 	Scenario: Creating a link share with edit permissions keeps it
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user0" created a folder "/afolder"
 		And as an "user0"
 		And creating a share with
@@ -1172,7 +1172,7 @@ Feature: sharing
 			| permissions | 15 |
 
 	Scenario: resharing using a public link with read only permissions is not allowed
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And as an "user0"
 		And user "user0" created a folder "/test"
@@ -1186,7 +1186,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: resharing using a public link with read and write permissions only is not allowed
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And as an "user0"
 		And user "user0" created a folder "/test"
@@ -1200,7 +1200,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: deleting a file out of a share as recipient creates a backup for the owner
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/shared"
 		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -1212,7 +1212,7 @@ Feature: sharing
 		And as "user1" the file "/shared_file.txt" exists in trash
 
 	Scenario: deleting a folder out of a share as recipient creates a backup for the owner
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/shared"
 		And user "user0" created a folder "/shared/sub"
@@ -1227,7 +1227,7 @@ Feature: sharing
 		And as "user1" the file "/sub/shared_file.txt" exists in trash
 
 	Scenario: moving a file into a share as recipient
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/shared"
 		And folder "/shared" of user "user0" is shared with user "user1"
@@ -1236,7 +1236,7 @@ Feature: sharing
 		And as "user0" the file "/shared/shared_file.txt" exists
 
 	Scenario: moving a file out of a share as recipient creates a backup for the owner
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/shared"
 		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
@@ -1248,7 +1248,7 @@ Feature: sharing
 		And as "user0" the file "/shared_file.txt" exists in trash
 
 	Scenario: moving a folder out of a share as recipient creates a backup for the owner
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/shared"
 		And user "user0" created a folder "/shared/sub"
@@ -1262,7 +1262,7 @@ Feature: sharing
 		And as "user0" the file "/sub/shared_file.txt" exists in trash
 
 	Scenario: User's own shares reshared to him don't appear when getting "shared with me" shares
-		And user "user0" exists
+		Given user "user0" exists
 		And user "user1" exists
 		And group "group0" exists
 		And user "user0" belongs to group "group0"

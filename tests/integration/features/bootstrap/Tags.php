@@ -154,7 +154,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Then The :type tag with name :tagName has the groups :groups
+	 * @Then the :type tag with name :tagName has the groups :groups
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
 		$tagData = $this->requestTagByDisplayName('admin', $tagName, true);

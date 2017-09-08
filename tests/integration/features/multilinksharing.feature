@@ -2,7 +2,7 @@ Feature: multilinksharing
 
 	Background:
 		Given using api version "1"
-		Given using old dav path
+		And using old dav path
 
 	Scenario: Creating three public shares of a folder
 		Given user "user0" exists

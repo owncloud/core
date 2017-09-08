@@ -60,7 +60,7 @@ Feature: checksums
     And user "user0" exists
     And file "prueba_cksum.txt" with text "Test file for checksums" is created in local storage
     When user "user0" downloads the file "/local_storage/prueba_cksum.txt"
-    When user "user0" downloads the file "/local_storage/prueba_cksum.txt"
+    And user "user0" downloads the file "/local_storage/prueba_cksum.txt"
     Then the header checksum should match "SHA1:a35b7605c8f586d735435535c337adc066c2ccb6"
 
   Scenario: Uploading a file with checksum should work using new dav path
@@ -121,13 +121,13 @@ Feature: checksums
     And user "user0" exists
     And file "prueba_cksum.txt" with text "Test file for checksums" is created in local storage
     When user "user0" downloads the file "/local_storage/prueba_cksum.txt"
-    When user "user0" downloads the file "/local_storage/prueba_cksum.txt"
+    And user "user0" downloads the file "/local_storage/prueba_cksum.txt"
     Then the header checksum should match "SHA1:a35b7605c8f586d735435535c337adc066c2ccb6"
 
   Scenario: Upload new dav chunked file where checksum matches
     Given using new dav path
     And user "user0" exists
-    And user "user0" creates a new chunking upload with id "chunking-42"
+    When user "user0" creates a new chunking upload with id "chunking-42"
     And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
     And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with checksum "SHA1:5d84d61b03fdacf813640f5242d309721e0629b1"
@@ -136,7 +136,7 @@ Feature: checksums
   Scenario: Upload new dav chunked file where checksum does not match
     Given using new dav path
     And user "user0" exists
-    And user "user0" creates a new chunking upload with id "chunking-42"
+    When user "user0" creates a new chunking upload with id "chunking-42"
     And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
     And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
     And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with checksum "SHA1:f005ba11"
@@ -144,21 +144,21 @@ Feature: checksums
 
   Scenario: Upload a file where checksum does not match
     Given using old dav path
-    Given user "user0" exists
+    And user "user0" exists
     And file "/chksumtst.txt"  does not exist for user "user0"
-    And user "user0" uploads file with checksum "SHA1:f005ba11" and content "Some Text" to "/chksumtst.txt"
+    When user "user0" uploads file with checksum "SHA1:f005ba11" and content "Some Text" to "/chksumtst.txt"
     Then the HTTP status code should be "400"
 
   Scenario: Upload a file where checksum does match
     Given using old dav path
-    Given user "user0" exists
+    And user "user0" exists
     And file "/chksumtst.txt"  does not exist for user "user0"
-    And user "user0" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt"
+    When user "user0" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt"
     Then the HTTP status code should be "201"
 
   Scenario: Uploaded file should have the same checksum when downloaded
     Given using old dav path
-    Given user "user0" exists
+    And user "user0" exists
     And file "/chksumtst.txt"  does not exist for user "user0"
     And user "user0" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt"
     When downloading file "/chksumtst.txt" as "user0"
@@ -168,7 +168,7 @@ Feature: checksums
   @local_storage
   Scenario: Uploaded file to external storage should have the same checksum when downloaded
     Given using old dav path
-    Given user "user0" exists
+    And user "user0" exists
     And file "/local_storage/chksumtst.txt"  does not exist for user "user0"
     And user "user0" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/local_storage/chksumtst.txt"
     When downloading file "/local_storage/chksumtst.txt" as "user0"
