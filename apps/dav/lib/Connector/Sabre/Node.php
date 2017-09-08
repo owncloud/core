@@ -34,7 +34,9 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OCP\Files\ForbiddenException;
 use OC\Files\Mount\MoveableMount;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
@@ -145,7 +147,11 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		$newPath = $parentPath . '/' . $newName;
 
-		$this->fileView->rename($this->path, $newPath);
+		try {
+			$this->fileView->rename($this->path, $newPath);
+		} catch (ForbiddenException $ex) { 
+			throw new Forbidden($ex->getMessage(), $ex->getRetry());
+		} 
 
 		$this->path = $newPath;
 
