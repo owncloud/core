@@ -9,6 +9,8 @@ OC.L10N.register(
     "Home" : "Particular",
     "Close" : "Cerrar",
     "Favorites" : "Favoritos",
+    "Upload timeout for file \"{file}\"" : "TimeOut de subida del archivo \"{file}\"",
+    "Unknown error \"{error}\" uploading file \"{file}\"" : "Error desconocido \"{error}\" subiendo el archivo \"{file}\"",
     "Could not create folder \"{dir}\"" : "No se pudo crear la carpeta «{dir}»",
     "Upload cancelled." : "Subida cancelada.",
     "Processing files..." : "Procesando archivos ...",
