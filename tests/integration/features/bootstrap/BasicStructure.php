@@ -47,7 +47,7 @@ trait BasicStructure {
 		$this->currentServer = 'LOCAL';
 		$this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
 
-		// in case of ci deployment we take the server url from the environment
+		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = getenv('TEST_SERVER_URL');
 		if ($testServerUrl !== false) {
 			$this->baseUrl = $testServerUrl;
@@ -77,7 +77,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given /^As an "([^"]*)"$/
+	 * @Given /^as an "([^"]*)"$/
 	 * @param string $user
 	 */
 	public function asAn($user) {
@@ -85,13 +85,13 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given /^Using server "(LOCAL|REMOTE)"$/
+	 * @Given /^using server "(LOCAL|REMOTE)"$/
 	 * @param string $server
 	 * @return string Previous used server
 	 */
 	public function usingServer($server) {
 		$previousServer = $this->currentServer;
-		if ($server === 'LOCAL'){
+		if ($server === 'LOCAL') {
 			$this->baseUrl = $this->localBaseUrl;
 			$this->currentServer = 'LOCAL';
 		} else {
@@ -125,7 +125,7 @@ trait BasicStructure {
 	 * @param array $arrayOfArrays
 	 * @return array
 	 */
-	public function simplifyArray($arrayOfArrays){
+	public function simplifyArray($arrayOfArrays) {
 		$a = array_map(function($subArray) { return $subArray[0]; }, $arrayOfArrays);
 		return $a;
 	}
@@ -198,7 +198,7 @@ trait BasicStructure {
 		}
 	}
 
-	public function isExpectedUrl($possibleUrl, $finalPart){
+	public function isExpectedUrl($possibleUrl, $finalPart) {
 		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
 		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
 		return (substr($possibleUrl,0,$endCharacter) == "$baseUrlChopped" . "$finalPart");
@@ -228,7 +228,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given Logging in using web as :user
+	 * @Given logging in using web as :user
 	 * @param string $user
 	 */
 	public function loggingInUsingWebAs($user) {
@@ -261,7 +261,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When Sending a :method to :url with requesttoken
+	 * @When sending a :method to :url with requesttoken
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -285,7 +285,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When Sending a :method to :url without requesttoken
+	 * @When sending a :method to :url without requesttoken
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -307,14 +307,14 @@ trait BasicStructure {
 		}
 	}
 
-	public static function removeFile($path, $filename){
+	public static function removeFile($path, $filename) {
 		if (file_exists("$path" . "$filename")) {
 			unlink("$path" . "$filename");
 		}
 	}
 
 	/**
-	 * @Given User :user modifies text of :filename with text :text
+	 * @Given user :user modifies text of :filename with text :text
 	 * @param string $user
 	 * @param string $filename
 	 * @param string $text
@@ -324,14 +324,14 @@ trait BasicStructure {
 		file_put_contents($this->getUserHome($user) . "/files" . "$filename", "$text");
 	}
 
-	public function createFileSpecificSize($name, $size){
+	public function createFileSpecificSize($name, $size) {
 		$file = fopen("work/" . "$name", 'w');
 		fseek($file, $size - 1 ,SEEK_CUR);
 		fwrite($file,'a'); // write a dummy char at SIZE position
 		fclose($file);
 	}
 
-	public function createFileWithText($name, $text){
+	public function createFileWithText($name, $text) {
 		$file = fopen("work/" . "$name", 'w');
 		fwrite($file, $text);
 		fclose($file);
@@ -378,7 +378,7 @@ trait BasicStructure {
 	/**
 	 * @BeforeScenario @local_storage
 	 */
-	public static function removeFilesFromLocalStorageBefore(){
+	public static function removeFilesFromLocalStorageBefore() {
 		$dir = "./work/local_storage/";
 		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
 		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
@@ -390,7 +390,7 @@ trait BasicStructure {
 	/**
 	 * @AfterScenario @local_storage
 	 */
-	public static function removeFilesFromLocalStorageAfter(){
+	public static function removeFilesFromLocalStorageAfter() {
 		$dir = "./work/local_storage/";
 		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
 		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
@@ -402,12 +402,12 @@ trait BasicStructure {
 	/**
 	 * @BeforeSuite
 	 */
-	public static function useBigFileIDs(){
+	public static function useBigFileIDs() {
 		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = ['admin','admin'];
-		$response = $client->send($client->createRequest('post', $fullUrl, $options));
+		$client->send($client->createRequest('post', $fullUrl, $options));
 	}
 }
 

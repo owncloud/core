@@ -1,9 +1,6 @@
 <?php
 
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Message\ResponseInterface;
-
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 

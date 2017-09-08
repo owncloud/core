@@ -75,7 +75,7 @@ trait Provisioning {
 							];
 
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
-		if ($this->currentServer === 'LOCAL'){
+		if ($this->currentServer === 'LOCAL') {
 			$this->createdUsers[$user] = $user;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteUsers[$user] = $user;
@@ -121,7 +121,7 @@ trait Provisioning {
 		$this->currentUser = $previous_user;
 	}
 
-	public function userExists($user){
+	public function userExists($user) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
@@ -183,7 +183,7 @@ trait Provisioning {
 
 		if (array_key_exists($group, $respondedArray)) {
 			return True;
-		} else{
+		} else {
 			return False;
 		}
 	}
@@ -193,11 +193,11 @@ trait Provisioning {
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function assureUserBelongsToGroup($user, $group){
+	public function assureUserBelongsToGroup($user, $group) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = "admin";
 
-		if (!$this->userBelongsToGroup($user, $group)){
+		if (!$this->userBelongsToGroup($user, $group)) {
 			$this->addingUserToGroup($user, $group);
 		}
 
@@ -242,7 +242,7 @@ trait Provisioning {
 							];
 
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
-		if ($this->currentServer === 'LOCAL'){
+		if ($this->currentServer === 'LOCAL') {
 			$this->createdGroups[$group] = $group;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteGroups[$group] = $group;
@@ -264,7 +264,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^Deleting the user "([^"]*)"$/
+	 * @When /^deleting the user "([^"]*)"$/
 	 * @param string $user
 	 */
 	public function deletingTheUser($user) {
@@ -279,7 +279,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^Deleting the group "([^"]*)"$/
+	 * @When /^deleting the group "([^"]*)"$/
 	 * @param string $group
 	 */
 	public function deletingTheGroup($group) {
@@ -294,7 +294,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^Add user "([^"]*)" to the group "([^"]*)"$/
+	 * @Given /^add user "([^"]*)" to the group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -306,7 +306,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^User "([^"]*)" is added to the group "([^"]*)"$/
+	 * @When /^user "([^"]*)" is added to the group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -397,7 +397,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^Assure user "([^"]*)" is subadmin of group "([^"]*)"$/
+	 * @Given /^assure user "([^"]*)" is subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -652,6 +652,22 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^user attributes match with$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 */
+	public function checkUserAttributes($body) {
+		$data = $this->response->xml()->data[0];
+		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+			$fd = $body->getRowsHash();
+			foreach ($fd as $field => $value) {
+				if ($data->$field != $value) {
+					PHPUnit_Framework_Assert::fail("$field" . " has value " . "$data->$field");
+				}
+			}
+		}
+	}
+
+	/**
 	 * @BeforeScenario
 	 * @AfterScenario
 	 */
@@ -659,11 +675,11 @@ trait Provisioning {
 	{
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
-		foreach($this->createdUsers as $user) {	
+		foreach ($this->createdUsers as $user) {
 			$this->deleteUser($user);
 		}
 		$this->usingServer('REMOTE');
-		foreach($this->createdRemoteUsers as $remoteUser) {
+		foreach ($this->createdRemoteUsers as $remoteUser) {
 			$this->deleteUser($remoteUser);
 		}
 		$this->usingServer($previousServer);
@@ -677,11 +693,11 @@ trait Provisioning {
 	{
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
-		foreach($this->createdGroups as $group) {
+		foreach ($this->createdGroups as $group) {
 			$this->deleteGroup($group);
 		}
 		$this->usingServer('REMOTE');
-		foreach($this->createdRemoteGroups as $remoteGroup) {
+		foreach ($this->createdRemoteGroups as $remoteGroup) {
 			$this->deleteUser($remoteGroup);
 		}
 		$this->usingServer($previousServer);

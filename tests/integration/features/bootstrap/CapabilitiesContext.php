@@ -2,10 +2,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -21,18 +17,18 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	 * @Then /^fields of capabilities match with$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $formData
 	 */
-	public function checkCapabilitiesResponse(\Behat\Gherkin\Node\TableNode $formData){
+	public function checkCapabilitiesResponse(\Behat\Gherkin\Node\TableNode $formData) {
 		$capabilitiesXML = $this->response->xml()->data->capabilities;
 
 		foreach ($formData->getHash() as $row) {
 			$path_to_element = explode('@@@', $row['path_to_element']);
 			$answeredValue = $capabilitiesXML->{$row['capability']};
-			for ($i = 0; $i < count($path_to_element); $i++){
+			for ($i = 0; $i < count($path_to_element); $i++) {
 				$answeredValue = $answeredValue->{$path_to_element[$i]};
 			}
 			$answeredValue = (string)$answeredValue;
 			PHPUnit_Framework_Assert::assertEquals(
-				$row['value']==="EMPTY" ? '' : $row['value'],
+				$row['value'] === "EMPTY" ? '' : $row['value'],
 				$answeredValue,
 				"Failed field " . $row['capability'] . " " . $row['path_to_element']
 			);
