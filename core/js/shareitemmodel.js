@@ -285,6 +285,20 @@
 		/**
 		 * @returns {string}
 		 */
+		getFileOwner: function() {
+			return this.get('reshare').uid_file_owner;
+		},
+
+		/**
+		 * @returns {string}
+		 */
+		getFileOwnerDisplayname: function() {
+			return this.get('reshare').displayname_file_owner;
+		},
+
+		/**
+		 * @returns {string}
+		 */
 		getReshareOwner: function() {
 			return this.get('reshare').uid_owner;
 		},

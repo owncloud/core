@@ -19,8 +19,17 @@
 		'    <div class="avatar" data-userName="{{reshareOwner}}"></div>' +
 		'    {{/if}}' +
 		'    {{sharedByText}}' +
-		'</span><br/>'
-		;
+		'</span>' +
+		'{{#if reshareNotOwner}}' +
+	    	'<br>' +
+		'<span class="fileowner">' +
+		'    {{#if avatarEnabled}}' +
+		'    <div class="avatar" data-userName="{{fileOwner}}"></div>' +
+		'    {{/if}}' +
+		'    {{fileOwnerText}}' +
+		'</span>' +
+		'{{/if}}' +
+		'<br/>';
 
 	/**
 	 * @class OCA.Share.ShareDialogView
@@ -72,6 +81,7 @@
 
 			var reshareTemplate = this.template();
 			var ownerDisplayName = this.model.getReshareOwnerDisplayname();
+			var fileOwnerText = t('core', 'Owner: {owner}', { owner: this.model.getFileOwnerDisplayname() });
 			var sharedByText = '';
 			if (this.model.getReshareType() === OC.Share.SHARE_TYPE_GROUP) {
 				sharedByText = t(
@@ -93,7 +103,10 @@
 			this.$el.html(reshareTemplate({
 				avatarEnabled: this.configModel.areAvatarsEnabled(),
 				reshareOwner: this.model.getReshareOwner(),
-				sharedByText: sharedByText
+				sharedByText: sharedByText,
+				fileOwner: this.model.getFileOwner(),
+				fileOwnerText: fileOwnerText,
+				reshareNotOwner: this.model.getReshareOwner() != this.model.getFileOwner()
 			}));
 
 			if(this.configModel.areAvatarsEnabled()) {

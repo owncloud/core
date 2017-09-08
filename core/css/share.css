@@ -155,7 +155,7 @@ a.unshare {
 	width:12px;
 }
 
-.reshare,#link label,
+.fileowner,.reshare,#link label,
 #expiration label {
 	display: inline-block;
 	padding: 6px 4px;
