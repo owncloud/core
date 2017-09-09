@@ -332,6 +332,8 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Чтобы избежать тайм-аутов в крупных установках, вместо этого можно выполнить следующую команду в каталоге установки:",
     "Detailed logs" : "Подбробные логи",
     "Update needed" : "Требуется обновление",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Возможно, что ваш экземпляр может содержать много файлов и/или пользователей. Чтобы обеспечить плавный процесс обновления, используйте обновление через командную строку(occ upgrade).",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Автоматическое обновление отключается в config.php. Для обновления вашего экземпляра, пожалуйста, используйте командную строку(occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Для помощи, ознакомьтесь с  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацией</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Этот сервер %s находится в режиме технического обслуживания, которое может занять некоторое время.",
     "This page will refresh itself when the %s instance is available again." : "Эта страница автоматически обновится, когда сервер %s снова станет доступен."
