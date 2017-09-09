@@ -182,6 +182,7 @@ OC.L10N.register(
     "Email sent" : "E-Mail wurde verschickt",
     "Email link to person" : "Link per E-Mail verschicken",
     "Send link via email" : "Link als E-Mail verschicken",
+    "Owner: {owner}" : "Besitzer: {owner}",
     "Shared with you and the group {group} by {owner}" : "{owner} hat dies mit Dir und der Gruppe {group} geteilt",
     "Shared with you by {owner}" : "{owner} hat dies mit Dir geteilt",
     "group" : "Gruppe",
