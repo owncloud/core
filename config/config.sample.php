@@ -164,6 +164,14 @@ $CONFIG = array(
 'defaultapp' => 'files',
 
 /**
+ * Set the default app path to open on login. For example if the default app is
+ * "external", set this to /1/ to default to the first External Site.  You can
+ * use a comma-separated list of paths to match up with the apps in defaultapp.
+ * e.g. if defaultapp='external,files' defaultapp_path='/1/,/?dir=accounting'
+ */
+'defaultapp_path' => '',
+
+/**
  * ``true`` enables the Help menu item in the user menu (top right of the
  * ownCloud Web interface). ``false`` removes the Help item.
  */

@@ -27,6 +27,7 @@
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Nick Sweeting <git@nicksweeting.com>
  * @author Philipp Schaffrath <github@philippschaffrath.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <robin@mccorkell.me.uk>
@@ -1089,20 +1090,33 @@ class OC_Util {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
 				$appId = 'files';
-				$defaultApps = explode(',', \OCP\Config::getSystemValue('defaultapp', 'files'));
+				$appPath = '/';
+				$defaultApps = explode(',', \OCP\Config::getSystemValue('defaultapp', $appId));
+				$defaultAppPaths = explode(',', \OCP\Config::getSystemValue('defaultapp_path', $appPath));
+
 				// find the first app that is enabled for the current user
-				foreach ($defaultApps as $defaultApp) {
+				foreach ($defaultApps as $idx=>$defaultApp) {
 					$defaultApp = OC_App::cleanAppId(strip_tags($defaultApp));
+					// if app has a corresponding path, use it, otherwise default to /
+					if (isset($defaultAppPaths[$idx]) && $defaultAppPaths[$idx] !== '') {
+						$defaultAppPath = strip_tags($defaultAppPaths[$idx]);
+					} else {
+						$defaultAppPath = '/';
+					}
 					if (static::getAppManager()->isEnabledForUser($defaultApp)) {
 						$appId = $defaultApp;
+						$appPath = $defaultAppPath;
 						break;
 					}
 				}
-
-				if(getenv('front_controller_active') === 'true') {
-					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
+				if ($appId === 'external' && $appPath === '/') {
+					// correct external/ to external/1/ if custom path wasn't specified
+					$appPath = '/1/';
+				}
+				if (getenv('front_controller_active') === 'true') {
+					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . $appPath);
 				} else {
-					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . $appPath);
 				}
 			}
 		}
