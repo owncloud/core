@@ -653,12 +653,78 @@ trait Sharing {
 		return $this->lastShareData->data->token;
 	}
 
-	protected function resetCommonSharingAppConfigs() {
+	protected function setupCommonSharingConfigs() {
 		$this->modifyServerConfig('core', 'shareapi_enabled', 'yes');
 		$this->modifyServerConfig('core', 'shareapi_allow_links', 'yes');
 		$this->modifyServerConfig('core', 'shareapi_allow_public_upload', 'yes');
 		$this->modifyServerConfig('core', 'shareapi_allow_group_sharing', 'yes');
 		$this->modifyServerConfig('core', 'shareapi_only_share_with_group_members', 'no');
+		$this->modifyServerConfig('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes');
+		$this->modifyServerConfig('core', 'shareapi_share_dialog_user_enumeration_group_members', 'no');
+	}
+
+	protected function restoreCommonSharingConfigs() {
+		$this->resetCapability(
+			'files_sharing',
+			'api_enabled',
+			'core',
+			'shareapi_enabled'
+		);
+		$this->resetCapability(
+			'files_sharing',
+			'public@@@enabled',
+			'core',
+			'shareapi_allow_links'
+		);
+		$this->resetCapability(
+			'files_sharing',
+			'public@@@upload',
+			'core',
+			'shareapi_allow_public_upload'
+		);
+		$this->resetCapability(
+			'files_sharing',
+			'group_sharing',
+			'core',
+			'shareapi_allow_group_sharing'
+		);
+		$this->resetCapability(
+			'files_sharing',
+			'share_with_group_members_only',
+			'core',
+			'shareapi_only_share_with_group_members'
+		);
+		$this->resetCapability(
+			'files_sharing',
+			'user_enumeration@@@enabled',
+			'core',
+			'shareapi_allow_share_dialog_user_enumeration'
+		);
+		$this->resetCapability(
+			'files_sharing',
+			'user_enumeration@@@group_members_only',
+			'core',
+			'shareapi_share_dialog_user_enumeration_group_members'
+		);
+	}
+
+	protected function setupCommonFederationConfigs() {
+		$this->modifyServerConfig('files_sharing', 'outgoing_server2server_share_enabled', 'yes');
+		$this->modifyServerConfig('files_sharing', 'incoming_server2server_share_enabled', 'yes');
+	}
+
+	protected function restoreCommonFederationConfigs() {
+		$this->resetCapability(
+			'federation',
+			'outgoing',
+			'files_sharing',
+			'outgoing_server2server_share_enabled'
+		);
+		$this->resetCapability(
+			'federation',
+			'incoming',
+			'files_sharing',
+			'incoming_server2server_share_enabled'
+		);
 	}
 }
-

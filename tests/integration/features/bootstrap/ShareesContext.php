@@ -63,11 +63,18 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 		return $sharees;
 	}
 
-	protected function resetAppConfigs() {
-		$this->resetCommonSharingAppConfigs();
-		$this->modifyServerConfig('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes');
-		$this->modifyServerConfig('core', 'shareapi_share_dialog_user_enumeration_group_members', 'no');
-		$this->modifyServerConfig('files_sharing', 'outgoing_server2server_share_enabled', 'yes');
-		$this->modifyServerConfig('files_sharing', 'incoming_server2server_share_enabled', 'yes');
+	protected function setupAppConfigs() {
+		// Remember the current capabilities
+		$this->getCapabilitiesCheckResponse();
+		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
+		// Set the required starting values for testing
+		$this->setupCommonSharingConfigs();
+		$this->setupCommonFederationConfigs();
+	}
+
+	protected function restoreAppConfigs() {
+		// Restore the previous capabilities settings
+		$this->restoreCommonSharingConfigs();
+		$this->restoreCommonFederationConfigs();
 	}
 }
