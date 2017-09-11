@@ -2,6 +2,7 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Onbekende fout",
+    "All files" : "Alle lêers",
     "Home" : "Tuis",
     "Close" : "Sluit",
     "Favorites" : "Gunstelinge",
@@ -11,6 +12,7 @@ OC.L10N.register(
     "Delete" : "Skrap",
     "Unshare" : "Deel terug neem",
     "Files" : "Lêers",
+    "Details" : "Details",
     "Invalid path" : "Ongeldige pad",
     "This operation is forbidden" : "Hierdie bewerking is verbode",
     "This directory is unavailable, please check the logs or contact the administrator" : "Hierdie gids is onbeskikbaar, gaan die logs na of kontak die stelseladministrateur",

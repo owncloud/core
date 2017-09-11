@@ -180,6 +180,7 @@
     "Email sent" : "E-mail enviado",
     "Email link to person" : "Enviar link por e-mail",
     "Send link via email" : "Enviar link por email",
+    "Owner: {owner}" : "Proprietário: {owner}",
     "Shared with you and the group {group} by {owner}" : "Compartilhado com você e com o grupo {group} por {owner}",
     "Shared with you by {owner}" : "Compartilhado com você por {owner}",
     "group" : "grupo",

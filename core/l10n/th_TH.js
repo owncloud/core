@@ -182,6 +182,7 @@ OC.L10N.register(
     "Email sent" : "ส่งอีเมลแล้ว",
     "Email link to person" : "ส่งลิงก์ให้ทางอีเมล",
     "Send link via email" : "ส่งลิงก์ผ่านทางอีเมล",
+    "Owner: {owner}" : "เจ้าของ: {owner}",
     "Shared with you and the group {group} by {owner}" : "ได้แชร์ให้กับคุณ และกลุ่ม {group} โดย {owner}",
     "Shared with you by {owner}" : "ถูกแชร์ให้กับคุณโดย {owner}",
     "group" : "กลุ่มผู้ใช้งาน",
@@ -332,6 +333,8 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "เพื่อหลีกเลี่ยงการหมดเวลากับการติดตั้งขนาดใหญ่ คุณสามารถเรียกใช้คำสั่งต่อไปนี้จากไดเรกทอรีการติดตั้งของคุณ:",
     "Detailed logs" : "รายละเอียดการบันทึก",
     "Update needed" : "การปรับปรุงที่จำเป็น",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "ดูเหมือนว่าอินสแตนซ์ของคุณอาจมีโฮสต์ ไฟล์หรือผู้ใช้จำนวนมากเพื่อให้แน่ใจว่ากระบวนการอัพเกรดทำงานได้ปกติดี โปรดใช้คำสั่งอัพเดท (occ upgrade)",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "การอัพเดทโดยอัตโนมัติถูกปิดใช้งานใน config.php เพื่ออัพเกรดอินสแตนซ์ของคุณโปรดใช้คำสั่งอัพเดท (occ upgrade)",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : " สำหรับข้อมูลเพิ่มเติมสามารถดูได้จาก <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">เอกสาร</a>",
     "This %s instance is currently in maintenance mode, which may take a while." : "%s กำลังอยู่ในโหมดการบำรุงรักษาซึ่งอาจใช้เวลาสักครู่",
     "This page will refresh itself when the %s instance is available again." : "หน้านี้จะรีเฟรชตัวเองเมื่อ %s สามารถใช้ได้อีกครั้ง"
