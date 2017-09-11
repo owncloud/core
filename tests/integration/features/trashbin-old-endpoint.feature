@@ -113,8 +113,8 @@ Feature: trashbin-new-endpoint
 	@local_storage
 	@no_default_encryption
 	Scenario: Deleting a folder into external storage moves it to the trashbin
-		Given invoking occ with "files:scan --all"
-		And user "user0" exists
+		Given user "user0" exists
+		And invoking occ with "files:scan --all"
 		And user "user0" created a folder "/local_storage/tmp"
 		And user "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
 		When user "user0" deletes folder "/local_storage/tmp"
@@ -123,8 +123,8 @@ Feature: trashbin-new-endpoint
 	@local_storage
 	@no_default_encryption
 	Scenario: Deleting a file into external storage moves it to the trashbin and can be restored
-		Given invoking occ with "files:scan --all"
-		And user "user0" exists
+		Given user "user0" exists
+		And invoking occ with "files:scan --all"
 		And user "user0" created a folder "/local_storage/tmp"
 		And user "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
 		And user "user0" deletes file "/local_storage/tmp/textfile0.txt"
@@ -140,8 +140,8 @@ Feature: trashbin-new-endpoint
 	@local_storage
 	@no_default_encryption
 	Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored
-		Given invoking occ with "files:scan --all"
-		And user "user0" exists
+		Given user "user0" exists
+		And invoking occ with "files:scan --all"
 		And user "user0" created a folder "/local_storage/tmp"
 		And user "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
 		And user "user0" uploads chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
