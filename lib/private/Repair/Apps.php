@@ -171,7 +171,7 @@ class Apps implements IRepairStep {
 
 					$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
 				} catch (AppManagerException $e) {
-					$output->warning('No connection to marketplace: ' . $e->getPrevious());
+					$output->warning($e->getMessage());
 				}
 			} else {
 				// No market available, output error and continue attempt
