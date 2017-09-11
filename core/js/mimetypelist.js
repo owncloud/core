@@ -108,7 +108,5 @@ OC.MimeTypeList={
     "x-office-presentation",
     "x-office-spreadsheet"
 ],
-	themes: {
-    "example": []
-}
+	themes: []
 };
