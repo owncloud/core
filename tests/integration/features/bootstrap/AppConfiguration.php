@@ -11,6 +11,9 @@ trait AppConfiguration {
 	/** @var ResponseInterface */
 	private $response = null;
 
+	/** @var string the original capabilities in XML format */
+	private $savedCapabilitiesXml;
+
 	abstract public function sendingTo($verb, $url);
 	abstract public function sendingToWith($verb, $url, $body);
 	abstract public function theOCSStatusCodeShouldBe($statusCode);
@@ -29,6 +32,103 @@ trait AppConfiguration {
 		$this->modifyServerConfig($app, $parameter, $value);
 
 		$this->currentUser = $user;
+	}
+
+	/**
+	 * @Then the capabilities setting of :capabilitiesApp path :capabilitiesPath is :expectedValue
+	 * @param string $capabilitiesApp the name of the "app" in the capabilities response
+	 * @param string $capabilitiesPath the path to the element
+	 * @param string $expectedValue
+	 */
+	public function theCapabilitiesSettingOfAppParameterIs(
+		$capabilitiesApp,
+		$capabilitiesPath,
+		$expectedValue
+	) {
+		$this->getCapabilitiesCheckResponse();
+
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedValue,
+			$this->getAppParameter($capabilitiesApp, $capabilitiesPath)
+		);
+	}
+
+	/**
+	 * @param string $capabilitiesApp the name of the "app" in the capabilities response
+	 * @param string $capabilitiesPath the path to the element
+	 * @return string
+	 */
+	public function getAppParameter(
+		$capabilitiesApp,
+		$capabilitiesPath
+	) {
+		$answeredValue = $this->getParameterValueFromXml(
+			$this->getCapabilitiesXml(),
+			$capabilitiesApp,
+			$capabilitiesPath
+		);
+
+		return (string)$answeredValue;
+	}
+
+	/**
+	 * @When the capabilities are retrieved
+	 * @return void
+	 */
+	public function getCapabilitiesCheckResponse() {
+		$this->sendingTo('GET', '/cloud/capabilities');
+
+		PHPUnit_Framework_Assert::assertEquals(
+			200,
+			$this->response->getStatusCode()
+		);
+	}
+
+	/**
+	 * @return string latest retrieved capabilities in XML format
+	 */
+	public function getCapabilitiesXml() {
+		return $this->getResponseXml()->data->capabilities;
+	}
+
+	/**
+	 * @param string $xml of the capabilities
+	 * @param string $capabilitiesApp the name of the "app" in the capabilities response
+	 * @param string $capabilitiesPath the path to the element
+	 * @return string
+	 */
+	public function getParameterValueFromXml(
+		$xml,
+		$capabilitiesApp,
+		$capabilitiesPath
+	) {
+		$path_to_element = explode('@@@', $capabilitiesPath);
+		$answeredValue = $xml->{$capabilitiesApp};
+
+		for ($i = 0; $i < count($path_to_element); $i++) {
+			$answeredValue = $answeredValue->{$path_to_element[$i]};
+		}
+
+		return (string)$answeredValue;
+	}
+
+	/**
+	 * @param string $capabilitiesApp the name of the "app" in the capabilities response
+	 * @param string $capabilitiesParameter the name of the parameter in the capabilities response
+	 * @param string $testingApp the name of the "app" as understood by "testing"
+	 * @param string $testingParameter the name of the parameter as understood by "testing"
+	 * @return void
+	 */
+	public function resetCapability($capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter) {
+		$savedValue = $this->getParameterValueFromXml(
+			$this->savedCapabilitiesXml,
+			$capabilitiesApp,
+			$capabilitiesParameter);
+
+		$this->modifyServerConfig(
+			$testingApp,
+			$testingParameter,
+			$savedValue ? 'yes' : 'no');
 	}
 
 	/**
@@ -61,7 +161,9 @@ trait AppConfiguration {
 		}
 	}
 
-	abstract protected function resetAppConfigs();
+	abstract protected function setupAppConfigs();
+
+	abstract protected function restoreAppConfigs();
 
 	/**
 	 * @BeforeScenario
@@ -69,7 +171,17 @@ trait AppConfiguration {
 	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = 'admin';
-		$this->resetAppConfigs();
+		$this->setupAppConfigs();
+		$this->currentUser = $user;
+	}
+
+	/**
+	 * @AfterScenario
+	 */
+	public function restoreParametersAfterScenario() {
+		$user = $this->currentUser;
+		$this->currentUser = 'admin';
+		$this->restoreAppConfigs();
 		$this->currentUser = $user;
 	}
 }
