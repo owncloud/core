@@ -254,8 +254,8 @@ class Scan extends Base {
 				// don't fix individually
 				$shouldRepairStoragesIndividually = false;
 			} else {
-				$output->writeln("<error>Repairing every storage individually is slower than repairing in bulk</error>");
-				$output->writeln("<error>To repair in bulk, please switch to single user mode first: occ maintenance:singleuser --on</error>");
+				$output->writeln("<comment>Repairing every storage individually is slower than repairing in bulk</comment>");
+				$output->writeln("<comment>To repair in bulk, please switch to single user mode first: occ maintenance:singleuser --on</comment>");
 			}
 			$users = $this->userManager->search('');
 		} else {
