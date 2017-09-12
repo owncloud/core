@@ -232,7 +232,9 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 		if (!empty($storageIds)) {
 			$out->warning('The file cache contains entries with invalid path values for the following storage numeric ids: ' . implode(' ', $storageIds));
-			$out->warning('Please run `occ files:scan --all --repair` to repair all affected storages');
+			$out->warning('Please run `occ files:scan --all --repair` to repair'
+			.'all affected storages or run `occ files:scan userid --repair for '
+			.'each user with affected storages');
 		}
 	}
 
