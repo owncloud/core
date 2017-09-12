@@ -60,6 +60,7 @@ $(document).ready(function(){
 		$('#encryptionAPI div#EncryptionWarning').toggleClass('hidden');
 		$('#encryptionAPI div#EncryptionSettingsArea').toggleClass('hidden');
 		OC.AppConfig.setValue('core', 'encryption_enabled', 'yes');
+		OC.AppConfig.setValue('encryption', 'userSpecificKey', '1');
 		$('#enableEncryption').attr('disabled', 'disabled');
 	});
 
