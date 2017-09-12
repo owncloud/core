@@ -25,7 +25,6 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 //class CommentsContext implements \Behat\Behat\Context\Context {
 
 trait Comments {
-	use Sharing;
 
 	/** @var int */
 	private $lastCommentId;
