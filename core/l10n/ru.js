@@ -182,6 +182,7 @@ OC.L10N.register(
     "Email sent" : "Письмо отправлено",
     "Email link to person" : "Отправить ссылку по электронной почте",
     "Send link via email" : "Отправить ссылку по электронной почте",
+    "Owner: {owner}" : "Владелец: {owner}",
     "Shared with you and the group {group} by {owner}" : "{owner} поделился с вами и группой {group} ",
     "Shared with you by {owner}" : "С вами поделился {owner} ",
     "group" : "группа",
