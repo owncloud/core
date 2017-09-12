@@ -30,27 +30,36 @@
  */
 namespace OCA\DAV\Connector\Sabre;
 
+use OC\Files\FileInfo;
+use OC\Files\Filesystem;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCP\Files\ForbiddenException;
+use OCP\Files\InvalidPathException;
+use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
-use Sabre\DAV\Exception\Locked;
-use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\Locked as SabreLocked;
+use Sabre\DAV\Exception\NotFound as SabreNotFound;
+use Sabre\DAV\Exception\ServiceUnavailable as SabreServiceUnavailable;
+use Sabre\DAV\Exception\Forbidden as SabreForbidden;
+use Sabre\DAV\ICollection;
+use Sabre\DAV\IMoveTarget;
 use Sabre\DAV\INode;
 use Sabre\DAV\Exception\BadRequest;
 use OC\Files\Mount\MoveableMount;
 use Sabre\DAV\IFile;
 use OCA\DAV\Upload\FutureFile;
+use Sabre\DAV\IQuota;
+use Sabre\HTTP\URLUtil;
 
-class Directory extends \OCA\DAV\Connector\Sabre\Node
-	implements \Sabre\DAV\ICollection, \Sabre\DAV\IQuota, \Sabre\DAV\IMoveTarget {
+class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 
 	/**
 	 * Cached directory content
 	 *
-	 * @var \OCP\Files\FileInfo[]
+	 * @var INode[]
 	 */
 	private $dirContent;
 
@@ -108,22 +117,22 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 * @throws InvalidPath
 	 * @throws \Sabre\DAV\Exception
 	 * @throws \Sabre\DAV\Exception\BadRequest
-	 * @throws \Sabre\DAV\Exception\Forbidden
-	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
+	 * @throws SabreForbidden
+	 * @throws ServiceUnavailable
 	 */
 	public function createFile($name, $data = null) {
 
 		# the check here is necessary, because createFile uses put covered in sabre/file.php 
 		# and not touch covered in files/view.php
-		if (\OC\Files\Filesystem::isForbiddenFileOrDir($name)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+		if (Filesystem::isForbiddenFileOrDir($name)) {
+			throw new SabreForbidden();
 		}
 
 		try {
 			# the check here is necessary, because createFile uses put covered in sabre/file.php 
 			# and not touch covered in files/view.php
-			if (\OC\Files\Filesystem::isForbiddenFileOrDir($name)) {
-				throw new \Sabre\DAV\Exception\Forbidden();
+			if (Filesystem::isForbiddenFileOrDir($name)) {
+				throw new SabreForbidden();
 			}
 
 			$info = false;
@@ -136,7 +145,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 				if (!$this->fileView->isCreatable($this->path) &&
 					!$this->fileView->isUpdatable($this->path . '/' . $chunkInfo['name'])
 				) {
-					throw new \Sabre\DAV\Exception\Forbidden();
+					throw new SabreForbidden();
 				}
 			} else if (FutureFile::isFutureFile()) {
 				// Future file (chunked upload) requires fileinfo
@@ -144,7 +153,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			} else {
 				// For non-chunked upload it is enough to check if we can create a new file
 				if (!$this->fileView->isCreatable($this->path)) {
-					throw new \Sabre\DAV\Exception\Forbidden();
+					throw new SabreForbidden();
 				}
 			}
 
@@ -154,15 +163,15 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 
 			if (!$info) {
 				// use a dummy FileInfo which is acceptable here since it will be refreshed after the put is complete
-				$info = new \OC\Files\FileInfo($path, null, null, [], null);
+				$info = new FileInfo($path, null, null, [], null);
 			}
 
-			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
+			$node = new File($this->fileView, $info);
 			$node->acquireLock(ILockingProvider::LOCK_SHARED);
 			return $node->put($data);
-		} catch (\OCP\Files\StorageNotAvailableException $e) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
-		} catch (\OCP\Files\InvalidPathException $ex) {
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
+		} catch (InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());
 		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
@@ -177,34 +186,34 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 * @param string $name
 	 * @throws FileLocked
 	 * @throws InvalidPath
-	 * @throws \Sabre\DAV\Exception\Forbidden
-	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
+	 * @throws SabreForbidden
+	 * @throws SabreServiceUnavailable
 	 */
 	public function createDirectory($name) {
 
 		# the check here is necessary, because createDirectory does not use the methods in files/view.php
-		if (\OC\Files\Filesystem::isForbiddenFileOrDir($name)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+		if (Filesystem::isForbiddenFileOrDir($name)) {
+			throw new SabreForbidden();
 		}
 
 		try {
 			# the check here is necessary, because createDirectory does not use the methods in files/view.php
-			if (\OC\Files\Filesystem::isForbiddenFileOrDir($name)) {
-				throw new \Sabre\DAV\Exception\Forbidden();
+			if (Filesystem::isForbiddenFileOrDir($name)) {
+				throw new SabreForbidden();
 			}
 
 			if (!$this->info->isCreatable()) {
-				throw new \Sabre\DAV\Exception\Forbidden();
+				throw new SabreForbidden();
 			}
 
 			$this->fileView->verifyPath($this->path, $name);
 			$newPath = $this->path . '/' . $name;
 			if (!$this->fileView->mkdir($newPath)) {
-				throw new \Sabre\DAV\Exception\Forbidden('Could not create directory ' . $newPath);
+				throw new SabreForbidden('Could not create directory ' . $newPath);
 			}
-		} catch (\OCP\Files\StorageNotAvailableException $e) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
-		} catch (\OCP\Files\InvalidPathException $ex) {
+		} catch (StorageNotAvailableException $e) {
+			throw new SabreServiceUnavailable($e->getMessage());
+		} catch (InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());
 		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
@@ -220,13 +229,14 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 * @param \OCP\Files\FileInfo $info
 	 * @return \Sabre\DAV\INode
 	 * @throws InvalidPath
-	 * @throws \Sabre\DAV\Exception\NotFound
-	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
+	 * @throws SabreNotFound
+	 * @throws SabreServiceUnavailable
+	 * @throws SabreForbidden
 	 */
 	public function getChild($name, $info = null) {
 		if (!$this->info->isReadable()) {
 			// avoid detecting files through this way
-			throw new NotFound();
+			throw new SabreNotFound();
 		}
 
 		$path = $this->path . '/' . $name;
@@ -234,23 +244,23 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			try {
 				$this->fileView->verifyPath($this->path, $name);
 				$info = $this->fileView->getFileInfo($path);
-			} catch (\OCP\Files\StorageNotAvailableException $e) {
-				throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
-			} catch (\OCP\Files\InvalidPathException $ex) {
+			} catch (StorageNotAvailableException $e) {
+				throw new SabreServiceUnavailable($e->getMessage());
+			} catch (InvalidPathException $ex) {
 				throw new InvalidPath($ex->getMessage());
 			} catch (ForbiddenException $e) {
-				throw new \Sabre\DAV\Exception\Forbidden();
+				throw new SabreForbidden();
 			}
 		}
 
 		if (!$info) {
-			throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
+			throw new SabreNotFound('File with name ' . $path . ' could not be located');
 		}
 
 		if ($info['mimetype'] == 'httpd/unix-directory') {
-			$node = new \OCA\DAV\Connector\Sabre\Directory($this->fileView, $info, $this->tree, $this->shareManager);
+			$node = new Directory($this->fileView, $info, $this->tree, $this->shareManager);
 		} else {
-			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info, $this->shareManager);
+			$node = new File($this->fileView, $info, $this->shareManager);
 		}
 		if ($this->tree) {
 			$this->tree->cacheNode($node);
@@ -262,6 +272,8 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 * Returns an array with all the child nodes
 	 *
 	 * @return \Sabre\DAV\INode[]
+	 * @throws Forbidden
+	 * @throws SabreLocked
 	 */
 	public function getChildren() {
 		if (!is_null($this->dirContent)) {
@@ -275,7 +287,7 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			}
 			$folderContent = $this->fileView->getDirectoryContent($this->path);
 		} catch (LockedException $e) {
-			throw new Locked();
+			throw new SabreLocked();
 		}
 
 		$nodes = [];
@@ -311,18 +323,18 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 	 *
 	 * @return void
 	 * @throws FileLocked
-	 * @throws \Sabre\DAV\Exception\Forbidden
+	 * @throws SabreForbidden
 	 */
 	public function delete() {
 
 		if ($this->path === '' || $this->path === '/' || !$this->info->isDeletable()) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+			throw new SabreForbidden();
 		}
 
 		try {
 			if (!$this->fileView->rmdir($this->path)) {
 				// assume it wasn't possible to remove due to permission issue
-				throw new \Sabre\DAV\Exception\Forbidden();
+				throw new SabreForbidden();
 			}
 		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
@@ -352,31 +364,37 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 				$free
 			];
 			return $this->quotaInfo;
-		} catch (\OCP\Files\StorageNotAvailableException $e) {
+		} catch (StorageNotAvailableException $e) {
 			return [0, 0];
 		}
 	}
 
-    /**
-     * Moves a node into this collection.
-     *
-     * It is up to the implementors to:
-     *   1. Create the new resource.
-     *   2. Remove the old resource.
-     *   3. Transfer any properties or other data.
-     *
-     * Generally you should make very sure that your collection can easily move
-     * the move.
-     *
-     * If you don't, just return false, which will trigger sabre/dav to handle
-     * the move itself. If you return true from this function, the assumption
-     * is that the move was successful.
-     *
-     * @param string $targetName New local file/collection name.
-     * @param string $fullSourcePath Full path to source node
-     * @param INode $sourceNode Source node itself
-     * @return bool
-     */
+	/**
+	 * Moves a node into this collection.
+	 *
+	 * It is up to the implementors to:
+	 *   1. Create the new resource.
+	 *   2. Remove the old resource.
+	 *   3. Transfer any properties or other data.
+	 *
+	 * Generally you should make very sure that your collection can easily move
+	 * the move.
+	 *
+	 * If you don't, just return false, which will trigger sabre/dav to handle
+	 * the move itself. If you return true from this function, the assumption
+	 * is that the move was successful.
+	 *
+	 * @param string $targetName New local file/collection name.
+	 * @param string $fullSourcePath Full path to source node
+	 * @param INode $sourceNode Source node itself
+	 * @return bool
+	 * @throws BadRequest
+	 * @throws SabreServiceUnavailable
+	 * @throws SabreForbidden
+	 * @throws Forbidden
+	 * @throws FileLocked
+	 * @throws InvalidPath
+	 */
 	public function moveInto($targetName, $fullSourcePath, INode $sourceNode) {
 		if (!$sourceNode instanceof Node) {
 			// it's a file of another kind, like FutureFile
@@ -388,14 +406,14 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 		}
 
 		if (!$this->fileView) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable('filesystem not setup');
+			throw new SabreServiceUnavailable('filesystem not setup');
 		}
 
 		$destinationPath = $this->getPath() . '/' . $targetName;
 
 		# check the destination path, for source see below
-		if (\OC\Files\Filesystem::isForbiddenFileOrDir($destinationPath)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
+		if (Filesystem::isForbiddenFileOrDir($destinationPath)) {
+			throw new SabreForbidden();
 		}
 
 		$targetNodeExists = $this->childExists($targetName);
@@ -403,10 +421,10 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 		// at getNodeForPath we also check the path for isForbiddenFileOrDir
 		// with that we have covered both source and destination
 		if ($sourceNode instanceof Directory && $targetNodeExists) {
-			throw new \Sabre\DAV\Exception\Forbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
+			throw new SabreForbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
 		}
 
-		list($sourceDir,) = \Sabre\HTTP\URLUtil::splitPath($sourceNode->getPath());
+		list($sourceDir,) = URLUtil::splitPath($sourceNode->getPath());
 		$destinationDir = $this->getPath();
 
 		$sourcePath = $sourceNode->getPath();
@@ -424,11 +442,11 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 			if ($targetNodeExists || $sameFolder) {
 				// note that renaming a share mount point is always allowed
 				if (!$this->fileView->isUpdatable($destinationDir) && !$isMovableMount) {
-					throw new \Sabre\DAV\Exception\Forbidden();
+					throw new SabreForbidden();
 				}
 			} else {
 				if (!$this->fileView->isCreatable($destinationDir)) {
-					throw new \Sabre\DAV\Exception\Forbidden();
+					throw new SabreForbidden();
 				}
 			}
 
@@ -436,23 +454,23 @@ class Directory extends \OCA\DAV\Connector\Sabre\Node
 				// moving to a different folder, source will be gone, like a deletion
 				// note that moving a share mount point is always allowed
 				if (!$this->fileView->isDeletable($sourcePath) && !$isMovableMount) {
-					throw new \Sabre\DAV\Exception\Forbidden();
+					throw new SabreForbidden();
 				}
 			}
 
 			$fileName = basename($destinationPath);
 			try {
 				$this->fileView->verifyPath($destinationDir, $fileName);
-			} catch (\OCP\Files\InvalidPathException $ex) {
+			} catch (InvalidPathException $ex) {
 				throw new InvalidPath($ex->getMessage());
 			}
 
 			$renameOkay = $this->fileView->rename($sourcePath, $destinationPath);
 			if (!$renameOkay) {
-				throw new \Sabre\DAV\Exception\Forbidden('');
+				throw new SabreForbidden('');
 			}
 		} catch (StorageNotAvailableException $e) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+			throw new SabreServiceUnavailable($e->getMessage());
 		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
