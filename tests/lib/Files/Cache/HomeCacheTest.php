@@ -136,4 +136,16 @@ class HomeCacheTest extends \Test\TestCase {
 
 		$this->assertFalse($this->cache->inCache($dir1));
 	}
+
+	public function testGetIncompleteFalse() {
+		$fileData[''] = ['size' => -1, 'mtime' => 20, 'mimetype' => 'httpd/unix-directory'];
+		$fileData['files'] = ['size' => -1, 'mtime' => 20, 'mimetype' => 'httpd/unix-directory'];
+		$fileData['files/a'] = ['size' => -1, 'mtime' => 20, 'mimetype' => 'httpd/unix-directory'];
+
+		$this->cache->put('', $fileData['']);
+		$this->cache->put('files', $fileData['files']);
+		$this->cache->put('files/a', $fileData['files/a']);
+
+		$this->assertFalse($this->cache->getIncomplete());
+	}
 }
