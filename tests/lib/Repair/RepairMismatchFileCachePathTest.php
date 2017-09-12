@@ -261,12 +261,6 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->assertEquals('files/source/do_not_touch', $entry['path']);
 		$this->assertEquals(md5('files/source/do_not_touch'), $entry['path_hash']);
 
-		// root entry left alone
-		$entry = $this->getFileCacheEntry($rootId1);
-		$this->assertEquals(-1, $entry['parent']);
-		$this->assertEquals((string)$sourceStorageId, $entry['storage']);
-		$this->assertEquals('', $entry['path']);
-		$this->assertEquals(md5(''), $entry['path_hash']);
 	}
 
 	/**
@@ -274,12 +268,16 @@ class RepairMismatchFileCachePathTest extends TestCase {
 	 */
 	public function testRepairSelfReferencing() {
 		/**
+		 * This is the storage tree that is created
+		 * (alongside a normal storage, without corruption, but same structure)
+		 *
+		 *
 		 * Self-referencing:
 		 *     - files/all_your_zombies (parent=fileid must be reparented)
 		 *
 		 * Referencing child one level:
 		 *     - files/ref_child1 (parent=fileid of the child)
-		 *     - files/ref_child1/child (parent=fileid of the child)
+		 *     - files/ref_child1/child
 		 *
 		 * Referencing child two levels:
 		 *     - files/ref_child2/ (parent=fileid of the child's child)
@@ -289,7 +287,13 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		 * Referencing child two levels detached:
 		 *     - detached/ref_child3/ (parent=fileid of the child, "detached" has no entry)
 		 *     - detached/ref_child3/child
+		 *
+		 * Normal files that should be untouched
+		 *     - files/untouched_folder
+		 *     - files/untouched.file
 		 */
+
+		// Test, corrupt storage
 		$storageId = 1;
 		$rootId1 = $this->createFileCacheEntry($storageId, '');
 		$baseId1 = $this->createFileCacheEntry($storageId, 'files', $rootId1);
@@ -308,10 +312,38 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		// make it reference its own sub child
 		$this->setFileCacheEntryParent($refChild2Id, $refChild2ChildChildId);
 
-		$refChild3Id = $this->createFileCacheEntry($storageId, 'detached/ref_child3', $baseId1);
+		$willBeOverwritten = -1;
+		$refChild3Id = $this->createFileCacheEntry($storageId, 'detached/ref_child3', $willBeOverwritten);
 		$refChild3ChildId = $this->createFileCacheEntry($storageId, 'detached/ref_child3/child', $refChild3Id);
 		// make it reference its own child
 		$this->setFileCacheEntryParent($refChild3Id, $refChild3ChildId);
+
+		$untouchedFileId = $this->createFileCacheEntry($storageId, 'files/untouched.file', $baseId1);
+		$untouchedFolderId = $this->createFileCacheEntry($storageId, 'files/untouched_folder', $baseId1);
+		// End correct storage
+
+		// Parallel, correct, but identical storage - used to check for storage isolation and query scope
+		$storageId2 = 2;
+		$rootId2 = $this->createFileCacheEntry($storageId2, '');
+		$baseId2 = $this->createFileCacheEntry($storageId2, 'files', $rootId2);
+
+		$selfRefId_parallel = $this->createFileCacheEntry($storageId2, 'files/all_your_zombies', $baseId2);
+
+		$refChild1Id_parallel = $this->createFileCacheEntry($storageId2, 'files/ref_child1', $baseId2);
+		$refChild1ChildId_parallel = $this->createFileCacheEntry($storageId2, 'files/ref_child1/child', $refChild1Id_parallel);
+
+		$refChild2Id_parallel = $this->createFileCacheEntry($storageId2, 'files/ref_child2', $baseId2);
+		$refChild2ChildId_parallel = $this->createFileCacheEntry($storageId2, 'files/ref_child2/child', $refChild2Id_parallel);
+		$refChild2ChildChildId_parallel = $this->createFileCacheEntry($storageId2, 'files/ref_child2/child/child', $refChild2ChildId_parallel);
+
+		$refChild3DetachedId_parallel = $this->createFileCacheEntry($storageId2, 'detached', $rootId2);
+		$refChild3Id_parallel = $this->createFileCacheEntry($storageId2, 'detached/ref_child3', $refChild3DetachedId_parallel);
+		$refChild3ChildId_parallel = $this->createFileCacheEntry($storageId2, 'detached/ref_child3/child', $refChild3Id_parallel);
+
+		$untouchedFileId_parallel = $this->createFileCacheEntry($storageId2, 'files/untouched.file', $baseId2);
+		$untouchedFolderId_parallel = $this->createFileCacheEntry($storageId2, 'files/untouched_folder', $baseId2);
+		// End parallel storage
+
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
@@ -386,7 +418,105 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('detached', $entry['path']);
 		$this->assertEquals(md5('detached'), $entry['path_hash']);
+
+		// untouched file and folder are untouched
+		$entry = $this->getFileCacheEntry($untouchedFileId);
+		$this->assertEquals($baseId1, $entry['parent']);
+		$this->assertEquals((string)$storageId, $entry['storage']);
+		$this->assertEquals('files/untouched.file', $entry['path']);
+		$this->assertEquals(md5('files/untouched.file'), $entry['path_hash']);
+		$entry = $this->getFileCacheEntry($untouchedFolderId);
+		$this->assertEquals($baseId1, $entry['parent']);
+		$this->assertEquals((string)$storageId, $entry['storage']);
+		$this->assertEquals('files/untouched_folder', $entry['path']);
+		$this->assertEquals(md5('files/untouched_folder'), $entry['path_hash']);
+
+		// check that parallel storage is untouched
+		// self-referencing updated
+		$entry = $this->getFileCacheEntry($selfRefId_parallel);
+		$this->assertEquals($baseId2, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/all_your_zombies', $entry['path']);
+		$this->assertEquals(md5('files/all_your_zombies'), $entry['path_hash']);
+
+		// ref child 1 case was reparented to "files"
+		$entry = $this->getFileCacheEntry($refChild1Id_parallel);
+		$this->assertEquals($baseId2, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/ref_child1', $entry['path']);
+		$this->assertEquals(md5('files/ref_child1'), $entry['path_hash']);
+
+		// ref child 1 child left alone
+		$entry = $this->getFileCacheEntry($refChild1ChildId_parallel);
+		$this->assertEquals($refChild1Id_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/ref_child1/child', $entry['path']);
+		$this->assertEquals(md5('files/ref_child1/child'), $entry['path_hash']);
+
+		// ref child 2 case was reparented to "files"
+		$entry = $this->getFileCacheEntry($refChild2Id_parallel);
+		$this->assertEquals($baseId2, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/ref_child2', $entry['path']);
+		$this->assertEquals(md5('files/ref_child2'), $entry['path_hash']);
+
+		// ref child 2 child left alone
+		$entry = $this->getFileCacheEntry($refChild2ChildId_parallel);
+		$this->assertEquals($refChild2Id_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/ref_child2/child', $entry['path']);
+		$this->assertEquals(md5('files/ref_child2/child'), $entry['path_hash']);
+
+		// ref child 2 child child left alone
+		$entry = $this->getFileCacheEntry($refChild2ChildChildId_parallel);
+		$this->assertEquals($refChild2ChildId_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/ref_child2/child/child', $entry['path']);
+		$this->assertEquals(md5('files/ref_child2/child/child'), $entry['path_hash']);
+
+		// root entry left alone
+		$entry = $this->getFileCacheEntry($rootId2);
+		$this->assertEquals(-1, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('', $entry['path']);
+		$this->assertEquals(md5(''), $entry['path_hash']);
+
+		// ref child 3 child left alone
+		$entry = $this->getFileCacheEntry($refChild3ChildId_parallel);
+		$this->assertEquals($refChild3Id_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('detached/ref_child3/child', $entry['path']);
+		$this->assertEquals(md5('detached/ref_child3/child'), $entry['path_hash']);
+
+		// ref child 3 case was reparented to a new "detached" entry
+		$entry = $this->getFileCacheEntry($refChild3Id_parallel);
+		$this->assertTrue(isset($entry['parent']));
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('detached/ref_child3', $entry['path']);
+		$this->assertEquals(md5('detached/ref_child3'), $entry['path_hash']);
+
+		// entry "detached" was untouched
+		$entry = $this->getFileCacheEntry($entry['parent']);
+		$this->assertEquals($rootId2, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('detached', $entry['path']);
+		$this->assertEquals(md5('detached'), $entry['path_hash']);
+
+		// untouched file and folder are untouched
+		$entry = $this->getFileCacheEntry($untouchedFileId_parallel);
+		$this->assertEquals($baseId2, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/untouched.file', $entry['path']);
+		$this->assertEquals(md5('files/untouched.file'), $entry['path_hash']);
+		$entry = $this->getFileCacheEntry($untouchedFolderId_parallel);
+		$this->assertEquals($baseId2, $entry['parent']);
+		$this->assertEquals((string)$storageId2, $entry['storage']);
+		$this->assertEquals('files/untouched_folder', $entry['path']);
+		$this->assertEquals(md5('files/untouched_folder'), $entry['path_hash']);
+
+		// end testing parallel storage
 	}
+
 
 	/**
 	 * Test repair wrong parent id
@@ -439,6 +569,8 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		 * - files/missingdir/orphaned1 (orphaned entry as "missingdir" is missing)
 		 * - missingdir/missingdir1/orphaned2 (orphaned entry two levels up to root)
 		 */
+
+		// Corrupt storage
 		$storageId = 1;
 		$rootId1 = $this->createFileCacheEntry($storageId, '');
 		$baseId1 = $this->createFileCacheEntry($storageId, 'files', $rootId1);
@@ -448,6 +580,18 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$nonExistingParentId2 = $this->createNonExistingId();
 		$orphanedId2 = $this->createFileCacheEntry($storageId, 'missingdir/missingdir1/orphaned2', $nonExistingParentId2);
+		// end corrupt storage
+
+		// Parallel test storage
+		$storageId_parallel = 2;
+		$rootId1_parallel = $this->createFileCacheEntry($storageId_parallel, '');
+		$baseId1_parallel = $this->createFileCacheEntry($storageId_parallel, 'files', $rootId1_parallel);
+		$notOrphanedFolder_parallel = $this->createFileCacheEntry($storageId_parallel, 'files/missingdir', $baseId1_parallel);
+		$notOrphanedId1_parallel = $this->createFileCacheEntry($storageId_parallel, 'files/missingdir/orphaned1', $notOrphanedFolder_parallel);
+		$notOrphanedFolder2_parallel = $this->createFileCacheEntry($storageId_parallel, 'missingdir', $rootId1_parallel);
+		$notOrphanedFolderChild2_parallel = $this->createFileCacheEntry($storageId_parallel, 'missingdir/missingdir1', $notOrphanedFolder2_parallel);
+		$notOrphanedId2_parallel = $this->createFileCacheEntry($storageId_parallel, 'missingdir/missingdir1/orphaned2', $notOrphanedFolder2_parallel);
+		// end parallel test storage
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
@@ -494,6 +638,49 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('', $entry['path']);
 		$this->assertEquals(md5(''), $entry['path_hash']);
+
+		// now check the parallel storage is intact
+		// orphaned entry reattached
+		$entry = $this->getFileCacheEntry($notOrphanedId1_parallel);
+		$this->assertEquals($notOrphanedFolder_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId_parallel, $entry['storage']);
+		$this->assertEquals('files/missingdir/orphaned1', $entry['path']);
+		$this->assertEquals(md5('files/missingdir/orphaned1'), $entry['path_hash']);
+
+		// not orphaned folder still exists
+		$entry = $this->getFileCacheEntry($notOrphanedFolder_parallel);
+		$this->assertEquals($baseId1_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId_parallel, $entry['storage']);
+		$this->assertEquals('files/missingdir', $entry['path']);
+		$this->assertEquals(md5('files/missingdir'), $entry['path_hash']);
+
+		// not orphaned entry still exits
+		$entry = $this->getFileCacheEntry($notOrphanedId2_parallel);
+		$this->assertEquals($notOrphanedFolder2_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId_parallel, $entry['storage']);
+		$this->assertEquals('missingdir/missingdir1/orphaned2', $entry['path']);
+		$this->assertEquals(md5('missingdir/missingdir1/orphaned2'), $entry['path_hash']);
+
+		// non existing id exists now
+		$entry = $this->getFileCacheEntry($notOrphanedFolderChild2_parallel);
+		$this->assertEquals($notOrphanedFolder2_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId_parallel, $entry['storage']);
+		$this->assertEquals('missingdir/missingdir1', $entry['path']);
+		$this->assertEquals(md5('missingdir/missingdir1'), $entry['path_hash']);
+
+		// non existing id parent exists now
+		$entry = $this->getFileCacheEntry($notOrphanedFolder2_parallel);
+		$this->assertEquals($rootId1_parallel, $entry['parent']);
+		$this->assertEquals((string)$storageId_parallel, $entry['storage']);
+		$this->assertEquals('missingdir', $entry['path']);
+		$this->assertEquals(md5('missingdir'), $entry['path_hash']);
+
+		// root entry left alone
+		$entry = $this->getFileCacheEntry($rootId1_parallel);
+		$this->assertEquals(-1, $entry['parent']);
+		$this->assertEquals((string)$storageId_parallel, $entry['storage']);
+		$this->assertEquals('', $entry['path']);
+		$this->assertEquals(md5(''), $entry['path_hash']);
 	}
 
 	/**
@@ -506,6 +693,12 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$storageId = 1;
 		$nonExistingParentId = $this->createNonExistingId();
 		$orphanedId = $this->createFileCacheEntry($storageId, 'noroot', $nonExistingParentId);
+
+		// Test parallel storage which should be untouched by the repair operation
+		$testStorageId = 2;
+		$baseId = $this->createFileCacheEntry($testStorageId, '');
+		$noRootid = $this->createFileCacheEntry($testStorageId, 'noroot', $baseId);
+
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
@@ -522,6 +715,18 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$entry = $this->getFileCacheEntry($entry['parent']);
 		$this->assertEquals(-1, $entry['parent']);
 		$this->assertEquals((string)$storageId, $entry['storage']);
+		$this->assertEquals('', $entry['path']);
+		$this->assertEquals(md5(''), $entry['path_hash']);
+
+		// Check that the parallel test storage is still intact
+		$entry = $this->getFileCacheEntry($noRootid);
+		$this->assertEquals($baseId, $entry['parent']);
+		$this->assertEquals((string)$testStorageId, $entry['storage']);
+		$this->assertEquals('noroot', $entry['path']);
+		$this->assertEquals(md5('noroot'), $entry['path_hash']);
+		$entry = $this->getFileCacheEntry($baseId);
+		$this->assertEquals(-1, $entry['parent']);
+		$this->assertEquals((string)$testStorageId, $entry['storage']);
 		$this->assertEquals('', $entry['path']);
 		$this->assertEquals(md5(''), $entry['path_hash']);
 	}
