@@ -516,3 +516,23 @@ Feature: webdav-related-old-endpoint
 		And as "user1" the folder "/folderB/ONE/TWO" exists
 		And User "user1" checks id of file "/folderB/ONE"
 
+	Scenario: Copying file to a path with extension .part should not be possible
+		Given using new dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" copies file "/welcome.txt" to "/welcome.part"
+		Then the HTTP status code should be "400"
+
+	Scenario: Uploading file to path with extension .part should not be possible
+		Given using new dav path
+		And user "user0" exists
+		And As an "user0"
+		And User "user0" uploads file "data/textfile.txt" to "/textfile.part"
+		Then the HTTP status code should be "400"
+
+	Scenario: Renaming a file to a path with extension .part should not be possible
+		Given using new dav path
+		And user "user0" exists
+		And As an "user0"
+		When User "user0" moves file "/welcome.txt" to "/welcome.part"
+		Then the HTTP status code should be "400"
