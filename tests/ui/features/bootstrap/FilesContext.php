@@ -25,6 +25,8 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use Page\TrashbinPage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 require_once 'bootstrap.php';
 
@@ -34,6 +36,7 @@ require_once 'bootstrap.php';
 class FilesContext extends RawMinkContext implements Context {
 
 	private $filesPage;
+	private $trashbinPage;
 	
 	/**
 	 * Table of all files and folders that should have been deleted stored so
@@ -49,7 +52,10 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param FilesPage $filesPage
 	 */
-	public function __construct(FilesPage $filesPage) {
+	public function __construct(
+		FilesPage $filesPage, TrashbinPage $trashbinPage
+	) {
+		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
 	}
 
@@ -219,6 +225,19 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the deleted elements should be listed in the trashbin
+	 * @return void
+	 */
+	public function theDeletedElementsShouldBeListedInTheTrashbin() {
+		$this->trashbinPage->open();
+		$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
+		
+		foreach ($this->deletedElementsTable as $file) {
+			$this->theFileFolderShouldBeListed($file['name'], $this->trashbinPage);
+		}
+	}
+
+	/**
 	 * @When I batch delete these files
 	 * @param TableNode $files table of file names
 	 *                         table headings: must be: |name|
@@ -267,23 +286,33 @@ class FilesContext extends RawMinkContext implements Context {
 	/**
 	 * @Then the file/folder :name should be listed
 	 * @param string $name
+	 * @param PageObject|null $pageObject if null $this->filesPage will be used
 	 * @return void
 	 */
-	public function theFileFolderShouldBeListed($name) {
+	public function theFileFolderShouldBeListed(
+		$name, $pageObject = null
+	) {
+		if (is_null($pageObject)) {
+			$pageObject = $this->filesPage;
+		}
 		PHPUnit_Framework_Assert::assertNotNull(
-			$this->filesPage->findFileRowByName($name, $this->getSession())
+			$pageObject->findFileRowByName($name, $this->getSession())
 		);
 	}
 
 	/**
 	 * @Then the file/folder :name should not be listed
 	 * @param string $name
+	 * @param PageObject|null $pageObject if null $this->filesPage will be used
 	 * @return void
 	 */
-	public function theFileFolderShouldNotBeListed($name) {
+	public function theFileFolderShouldNotBeListed($name, $pageObject = null) {
 		$message = null;
+		if (is_null($pageObject)) {
+			$pageObject = $this->filesPage;
+		}
 		try {
-			$this->filesPage->findFileRowByName($name, $this->getSession());
+			$pageObject->findFileRowByName($name, $this->getSession());
 		} catch (ElementNotFoundException $e) {
 			$message = $e->getMessage();
 		}
@@ -297,14 +326,15 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the following (?:file|folder) should (not|)\s?be listed$/
+	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(in the trashbin|)$/
 	 * @param string $shouldOrNot
+	 * @param string $trashbin
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
 	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListed(
-		$shouldOrNot, TableNode $namePartsTable
+		$shouldOrNot, $trashbin, TableNode $namePartsTable
 	) {
 		$should = ($shouldOrNot !== "not");
 		$fileNameParts = [];
@@ -313,10 +343,17 @@ class FilesContext extends RawMinkContext implements Context {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
 
-		if ($should) {
-			$this->theFileFolderShouldBeListed($fileNameParts);
+		if ($trashbin !== "") {
+			$this->trashbinPage->open();
+			$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
+			$pageObject = $this->trashbinPage;
 		} else {
-			$this->theFileFolderShouldNotBeListed($fileNameParts);
+			$pageObject = $this->filesPage;
+		}
+		if ($should) {
+			$this->theFileFolderShouldBeListed($fileNameParts, $pageObject);
+		} else {
+			$this->theFileFolderShouldNotBeListed($fileNameParts, $pageObject);
 		}
 	}
 
