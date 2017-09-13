@@ -14,6 +14,7 @@ Feature: delete
 		| strängé filename (duplicate #2).txt |
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
+		But the deleted elements should be listed in the trashbin
 
 	Scenario: Delete a file with problematic characters
 		When I rename the following file to
@@ -48,6 +49,12 @@ Feature: delete
 			| "double" quotes |
 			| question?       |
 			| &and#hash       |
+		But the following file should be listed in the trashbin
+			| name-parts      |
+			| 'single'        |
+			| "double" quotes |
+			| question?       |
+			| &and#hash       |
 	
 	Scenario: Delete multiple files at once
 		When I batch delete these files
@@ -57,3 +64,4 @@ Feature: delete
 		| simple-folder |
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
+		But the deleted elements should be listed in the trashbin
