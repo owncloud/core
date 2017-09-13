@@ -2,11 +2,11 @@ default:
   autoload:
     '': %paths.base%/../features/bootstrap
   suites:
-    federation:
+    capabilities:
       paths:
-        - %paths.base%/../federation_features
+        - %paths.base%/../capabilities_features
       contexts:
-        - FederationContext:
+        - CapabilitiesContext:
             baseUrl:  http://localhost:8080/ocs/
             admin:
               - admin
