@@ -32,6 +32,7 @@ namespace OCA\DAV\Connector\Sabre;
 
 use OC\AppFramework\Http\Request;
 use OCP\Files\ForbiddenException;
+use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\IFile;
@@ -168,12 +169,18 @@ class FilesPlugin extends ServerPlugin {
 	 * @param string $destination destination path
 	 * @throws Forbidden
 	 * @throws NotFound
+	 * @throws BadRequest
 	 */
 	function checkMove($source, $destination) {
 		$sourceNode = $this->tree->getNodeForPath($source);
 		if (!$sourceNode instanceof Node) {
 			return;
 		}
+
+		if (pathinfo($destination, PATHINFO_EXTENSION) == 'part') {
+			throw new BadRequest("A file can`t have the extension part, because .part is used by ownCloud internally.");
+		}
+
 		list($sourceDir,) = \Sabre\HTTP\URLUtil::splitPath($source);
 		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destination);
 
