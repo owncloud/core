@@ -2,11 +2,11 @@ default:
   autoload:
     '': %paths.base%/../features/bootstrap
   suites:
-    capabilities:
+    sharees:
       paths:
-        - %paths.base%/../capabilities_features
+        - %paths.base%/../sharees_features
       contexts:
-        - CapabilitiesContext:
+        - ShareesContext:
             baseUrl:  http://localhost:8080/ocs/
             admin:
               - admin
