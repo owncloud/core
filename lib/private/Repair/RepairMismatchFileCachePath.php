@@ -21,10 +21,11 @@
 
 namespace OC\Repair;
 
+use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
-use OCP\DB\QueryBuilder\IQueryBuilder;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
@@ -121,7 +122,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$out->advance(1, $text);
 	}
 
-	private function addQueryConditionsParentIdWrongPath($qb, $storageNumericId) {
+	private function addQueryConditionsParentIdWrongPath($qb) {
 		// thanks, VicDeo!
 		if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
 			$concatFunction = $qb->createFunction("CONCAT(fcp.path, '/', fc.name)");
@@ -399,7 +400,14 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 		$qb->insert('filecache')->values($values);
 		$qb->execute();
-		return $this->connection->lastInsertId('*PREFIX*filecache');
+
+		// If we reused the fileid then this is the id to return
+		if($reuseFileId !== null) {
+			return $reuseFileId;
+		} else {
+			// Else we inserted a new row with auto generated id, use that
+			return $this->connection->lastInsertId('*PREFIX*filecache');
+		}
 	}
 
 	/**
