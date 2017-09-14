@@ -90,6 +90,9 @@ interface IDBConnection {
 
 	/**
 	 * Used to get the id of the just inserted element
+	 * Note: On postgres platform, this will return the last sequence id which
+	 * may not be the id last inserted if you were reinserting a previously
+	 * used auto_increment id.
 	 * @param string $table the name of the table where we inserted the item
 	 * @return int the id of the inserted element
 	 * @since 6.0.0
