@@ -11,7 +11,6 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 class CapabilitiesContext implements Context, SnippetAcceptingContext {
 
 	use BasicStructure;
-	use AppConfiguration;
 
 	/**
 	 * @Then /^fields of capabilities match with$/
@@ -37,9 +36,7 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	}
 
 	protected function resetAppConfigs() {
-		$this->modifyServerConfig('core', 'shareapi_enabled', 'yes');
-		$this->modifyServerConfig('core', 'shareapi_allow_links', 'yes');
-		$this->modifyServerConfig('core', 'shareapi_allow_public_upload', 'yes');
+		$this->resetCommonSharingAppConfigs();
 		$this->modifyServerConfig('core', 'shareapi_allow_resharing', 'yes');
 		$this->modifyServerConfig('files_sharing', 'outgoing_server2server_share_enabled', 'yes');
 		$this->modifyServerConfig('files_sharing', 'incoming_server2server_share_enabled', 'yes');
@@ -47,6 +44,5 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 		$this->modifyServerConfig('core', 'shareapi_allow_public_notification', 'no');
 		$this->modifyServerConfig('core', 'shareapi_default_expire_date', 'no');
 		$this->modifyServerConfig('core', 'shareapi_enforce_expire_date', 'no');
-		$this->modifyServerConfig('core', 'shareapi_allow_group_sharing', 'yes');
 	}
 }

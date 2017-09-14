@@ -4,13 +4,14 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
+require_once 'bootstrap.php';
 
 /**
  * Federation context.
  */
 class FederationContext implements Context, SnippetAcceptingContext {
 
-	use WebDav;
+	use BasicStructure;
 
 	/**
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
@@ -48,5 +49,10 @@ class FederationContext implements Context, SnippetAcceptingContext {
 		$this->theHTTPStatusCodeShouldBe('200');
 		$this->theOCSStatusCodeShouldBe('100');
 		$this->usingServer($previous);
+	}
+
+	protected function resetAppConfigs() {
+		$this->modifyServerConfig('files_sharing', 'outgoing_server2server_share_enabled', 'yes');
+		$this->modifyServerConfig('files_sharing', 'incoming_server2server_share_enabled', 'yes');
 	}
 }

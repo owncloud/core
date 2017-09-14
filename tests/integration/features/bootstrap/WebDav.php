@@ -10,7 +10,6 @@ use TestHelpers\WebDavHelper;
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 trait WebDav {
-	use Sharing;
 
 	/** @var string*/
 	private $davPath = "remote.php/webdav";
