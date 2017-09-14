@@ -57,6 +57,7 @@ class Capabilities implements ICapability {
 				'preferredUploadType' => 'SHA1'
 			],
 			'files' => [
+				'privateLinks' => true,
 				'bigfilechunking' => true,
 				'blacklisted_files' => $this->config->getSystemValue('blacklisted_files', ['.htaccess']),
 			],
