@@ -9,6 +9,8 @@ OC.L10N.register(
     "Home" : "בית",
     "Close" : "סגירה",
     "Favorites" : "מועדפים",
+    "Upload timeout for file \"{file}\"" : "פסק זמן בזמן העלאה של קובץ \"{file}\"",
+    "Unknown error \"{error}\" uploading file \"{file}\"" : "שגיאה לא ידועה \"{error}\" בזמן העלאת קובץ \"{file}\"",
     "Could not create folder \"{dir}\"" : "לא ניתן ליצור את התיקייה \"{dir}\"",
     "Upload cancelled." : "ההעלאה בוטלה.",
     "Processing files..." : "מעבד קבצים...",
