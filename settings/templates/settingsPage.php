@@ -21,37 +21,28 @@ style('settings', 'settings');
 <div id="app-navigation">
 	<ul class="with-icon">
 		<li class="divider"><?php p($l->t('Personal')); ?></li>
-		<?php foreach($_['personalNav'] as $item) {
-			$active = $item['active'] ? ' active ' : '';
-			print_unescaped(
-				sprintf(
-					"<li><a class=\"svg %s %s\" href='%s'>%s</a></li>",
-					$active,
-					'icon-'.\OCP\Util::sanitizeHTML($item['icon']),
-					\OCP\Util::sanitizeHTML($item['link']),
-					\OCP\Util::sanitizeHTML($item['name'])
-				)
-			);
-		}
-		if(!empty($_['adminNav'])) { ?>
+		<?php foreach($_['personalNav'] as $item): ?>
+		<li>
+			<?php if (strpos($item['icon'], '/', 1) !== false): ?>
+				<a class="svg <?php $item['active'] ? p(' active ') : p('') ?>" style="background-image: url(<?php p($item['icon']) ?>)" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
+			<?php else: ?>
+				<a class="svg <?php $item['active'] ? p(' active ') : p('') ?> icon-<?php p($item['icon']) ?>" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
+			<?php endif; ?>
+		</li>
+		<?php endforeach; ?>
 
+		<?php if (!empty($_['adminNav'])): ?>
 			<li class="divider"><?php p($l->t('Admin')); ?></li>
-			<?php
-
-			foreach ($_['adminNav'] as $item) {
-				$active = $item['active'] ? ' active ' : '';
-				print_unescaped(
-					sprintf(
-						"<li><a class=\"svg %s %s\" href='%s'>%s</a></li>",
-						$active,
-						'icon-'.\OCP\Util::sanitizeHTML($item['icon']),
-						\OCP\Util::sanitizeHTML($item['link']),
-						\OCP\Util::sanitizeHTML($item['name'])
-					)
-				);
-			}
-		}
-		?>
+			<?php foreach($_['adminNav'] as $item): ?>
+				<li>
+					<?php if (strpos($item['icon'], '/', 1) !== false): ?>
+						<a class="svg <?php $item['active'] ? p(' active ') : p('') ?>" style="background-image: url(<?php p($item['icon']) ?>)" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
+					<?php else: ?>
+						<a class="svg <?php $item['active'] ? p(' active ') : p('') ?> icon-<?php p($item['icon']) ?>" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
+					<?php endif; ?>
+				</li>
+			<?php endforeach; ?>
+		<?php endif; ?>
 	</ul>
 </div>
 <div id="app-content">

@@ -205,7 +205,6 @@ class SettingsManager implements ISettingsManager {
 				new Section('workflow', $this->l->t('Workflows & Tags'), 85, 'workflows'),
 				new Section('sharing', $this->l->t('Sharing'), 80, 'share'),
 				new Section('search', $this->l->t('Search'), 75, 'search'),
-				new Section('updates', $this->l->t('Updates'), 20, 'update'),
 				new Section('help', $this->l->t('Help & Tips'), -5, 'info'),
 				new Section('additional', $this->l->t('Additional'), -10, 'more'),
 			];
