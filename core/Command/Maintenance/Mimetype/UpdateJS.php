@@ -122,15 +122,17 @@ class UpdateJS extends Command {
 	private function getLegacyThemes() {
 		$themes = [];
 
-		$legacyThemeDirectories = new \DirectoryIterator(\OC::$SERVERROOT . '/themes/');
+		if (is_dir(\OC::$SERVERROOT . '/themes/')) {
+			$legacyThemeDirectories = new \DirectoryIterator(\OC::$SERVERROOT . '/themes/');
 
-		foreach($legacyThemeDirectories as $legacyThemeDirectory) {
-			if ($legacyThemeDirectory->isFile() || $legacyThemeDirectory->isDot()) {
-				continue;
+			foreach($legacyThemeDirectories as $legacyThemeDirectory) {
+				if ($legacyThemeDirectory->isFile() || $legacyThemeDirectory->isDot()) {
+					continue;
+				}
+				$themes[$legacyThemeDirectory->getFilename()] = $this->getFileTypeIcons(
+					$legacyThemeDirectory->getPathname()
+				);
 			}
-			$themes[$legacyThemeDirectory->getFilename()] = $this->getFileTypeIcons(
-				$legacyThemeDirectory->getPathname()
-			);
 		}
 
 		return $themes;

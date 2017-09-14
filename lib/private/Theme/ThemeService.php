@@ -166,17 +166,19 @@ class ThemeService implements IThemeService {
 	 */
 	private function getAllLegacyThemes() {
 		$themes = [];
-		if ($handle = opendir(\OC::$SERVERROOT . '/themes')) {
-			while (false !== ($entry = readdir($handle))) {
-				if ($entry === '.' || $entry === '..') {
-					continue;
+		if (is_dir(\OC::$SERVERROOT . '/themes')) {
+			if ($handle = opendir(\OC::$SERVERROOT . '/themes')) {
+				while (false !== ($entry = readdir($handle))) {
+					if ($entry === '.' || $entry === '..') {
+						continue;
+					}
+					if (is_dir(\OC::$SERVERROOT . '/themes/' . $entry)) {
+						$themes[$entry] = $this->makeTheme($entry, false);
+					}
 				}
-				if (is_dir(\OC::$SERVERROOT . '/themes/' . $entry)) {
-					$themes[$entry] = $this->makeTheme($entry, false);
-				}
+				closedir($handle);
+				return $themes;
 			}
-			closedir($handle);
-			return $themes;
 		}
 		return $themes;
 	}
