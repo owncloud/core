@@ -117,13 +117,6 @@ class File extends Node implements IFile {
 			throw new ServiceUnavailable("File is not updatable: " . $e->getMessage());
 		}
 
-		if (pathinfo($this->getFileInfo()->getPath(), PATHINFO_EXTENSION) == 'part') {
-			throw new BadRequest(
-				'Can`t upload files with extension .part because this extension is used internally by owncloud.'
-			);
-		}
-
-
 			// verify path of the target
 		$this->verifyPath();
 

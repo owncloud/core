@@ -177,10 +177,6 @@ class FilesPlugin extends ServerPlugin {
 			return;
 		}
 
-		if (pathinfo($destination, PATHINFO_EXTENSION) == 'part') {
-			throw new BadRequest("A file can`t have the extension part, because .part is used by ownCloud internally.");
-		}
-
 		list($sourceDir,) = \Sabre\HTTP\URLUtil::splitPath($source);
 		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destination);
 

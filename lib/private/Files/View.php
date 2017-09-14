@@ -1798,6 +1798,12 @@ class View {
 			throw new InvalidPathException($l10n->t('Dot files are not allowed'));
 		}
 
+		if (pathinfo($fileName, PATHINFO_EXTENSION) == 'part') {
+			throw new InvalidPathException(
+				'Can`t upload files with extension .part because this extension is used internally by owncloud.'
+			);
+		}
+
 		if (!\OC::$server->getDatabaseConnection()->allows4ByteCharacters()) {
 			// verify database - e.g. mysql only 3-byte chars
 			if (preg_match('%(?:
