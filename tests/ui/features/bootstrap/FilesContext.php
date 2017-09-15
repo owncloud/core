@@ -39,13 +39,22 @@ class FilesContext extends RawMinkContext implements Context {
 	private $trashbinPage;
 	
 	/**
-	 * Table of all files and folders that should have been deleted stored so
+	 * Table of all files and folders that should have been deleted, stored so
 	 * that other steps can use the list to check if the deletion happened correctly
 	 * table headings: must be: |name|
 	 * 
 	 * @var TableNode
 	 */
-	private $deletedElementsTable;
+	private $deletedElementsTable = null;
+	
+	/**
+	 * Table of all files and folders that should have been moved, stored so
+	 * that other steps can use the list to check if the moving happened correctly
+	 * table headings: must be: |name|
+	 *
+	 * @var TableNode
+	 */
+	private $movedElementsTable = null;
 
 	/**
 	 * FilesContext constructor.
@@ -206,22 +215,86 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the deleted elements should not be listed
+	 * @When I move the file/folder :name into the folder :destination
+	 * @param string $name
+	 * @param string $destination
 	 * @return void
 	 */
-	public function theDeletedElementsShouldNotBeListed() {
-		foreach ($this->deletedElementsTable as $file) {
-			$this->theFileFolderShouldNotBeListed($file['name']);
+	public function iMoveTheFileFolderTo($name, $destination) {
+		$this->filesPage->moveFileTo($name, $destination, $this->getSession());
+	}
+
+	/**
+	 * @When I move the following file/folder to
+	 * @param TableNode $namePartsTable table of parts of the from and to file names
+	 *                                  table headings: must be:
+	 *                                  |item-to-move-name-parts |destination-name-parts |
+	 * @return void
+	 */
+	public function iMoveTheFollowingFileFolderTo(TableNode $namePartsTable) {
+		$itemToMoveNameParts = [];
+		$destinationNameParts = [];
+		
+		foreach ($namePartsTable as $namePartsRow) {
+			$itemToMoveNameParts[] = $namePartsRow['item-to-move-name-parts'];
+			$destinationNameParts[] = $namePartsRow['destination-name-parts'];
+		}
+		$this->iMoveTheFileFolderTo($itemToMoveNameParts, $destinationNameParts);
+	}
+
+	/**
+	 * @When I batch move these files/folders into the folder :folderName
+	 * @param string $folderName
+	 * @param TableNode $files table of file names
+	 *                         table headings: must be: |name|
+	 * @return void
+	 */
+	public function iBatchMoveTheseFilesIntoTheFolder(
+		$folderName, TableNode $files
+	) {
+		$this->iMarkTheseFilesForBatchAction($files);
+		$firstFileName = $files->getRow(1)[0];
+		$this->iMoveTheFileFolderTo($firstFileName, $folderName);
+		$this->movedElementsTable = $files;
+	}
+
+	/**
+	 * @Then /^the (?:deleted|moved) elements should (not|)\s?be listed$/
+	 * @param string $shouldOrNot
+	 * @return void
+	 */
+	public function theDeletedMovedElementsShouldBeListed($shouldOrNot) {
+		$should = ($shouldOrNot !== "not");
+		if (!is_null($this->deletedElementsTable)) {
+			foreach ($this->deletedElementsTable as $file) {
+				if ($should) {
+					$this->theFileFolderShouldBeListed($file['name']);
+				} else {
+					$this->theFileFolderShouldNotBeListed($file['name']);
+				}
+			}
+		}
+		if (!is_null($this->movedElementsTable)) {
+			foreach ($this->movedElementsTable as $file) {
+				if ($should) {
+					$this->theFileFolderShouldBeListed($file['name']);
+				} else {
+					$this->theFileFolderShouldNotBeListed($file['name']);
+				}
+			}
 		}
 	}
 
 	/**
-	 * @Then the deleted elements should not be listed after a page reload
+	 * @Then /^the (?:deleted|moved) elements should (not|)\s?be listed after a page reload$/
+	 * @param string $shouldOrNot
 	 * @return void
 	 */
-	public function theDeletedElementsShouldNotBeListedAfterPageReload() {
+	public function theDeletedMovedElementsShouldBeListedAfterPageReload(
+		$shouldOrNot
+	) {
 		$this->theFilesPageIsReloaded();
-		$this->theDeletedElementsShouldNotBeListed();
+		$this->theDeletedMovedElementsShouldBeListed($shouldOrNot);
 	}
 
 	/**
@@ -322,6 +395,58 @@ class FilesContext extends RawMinkContext implements Context {
 		PHPUnit_Framework_Assert::assertEquals(
 			"could not find file with the name '" . $name . "'",
 			$message
+		);
+	}
+
+	/**
+	 * @Then the file/folder :itemToBeListed should be listed in the folder :folderName
+	 * @param string $itemToBeListed item to look for
+	 * @param string $folderName folder to look in
+	 * @return void
+	 */
+	public function theFileFolderShouldBeListedInTheFolder(
+		$itemToBeListed, $folderName
+	) {
+		$this->iOpenTheFolder($folderName);
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->theFileFolderShouldBeListed($itemToBeListed);
+	}
+
+	/**
+	 * @Then /^the moved elements should (not|)\s?be listed in the folder ['"](.*)['"]$/
+	 * @param string $shouldOrNot
+	 * @param string $folderName
+	 * @return void
+	 */
+	public function theMovedElementsShouldBeListedInTheFolder(
+		$shouldOrNot, $folderName
+	) {
+		$this->iOpenTheFolder($folderName);
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->theDeletedMovedElementsShouldBeListed($shouldOrNot);
+	}
+
+	/**
+	 * @Then /^the following (?:file|folder|item) should (not|)\s?be listed in the following folder$/
+	 * @param string $shouldOrNot
+	 * @param TableNode $namePartsTable table of parts of the file name
+	 *                                  table headings: must be: | item-name-parts | folder-name-parts |
+	 * @return void
+	 */
+	public function theFollowingFileFolderShouldBeListedInTheFollowingFolder(
+		$shouldOrNot, TableNode $namePartsTable
+	) {
+		$toBeListedTableArray[] = ["name-parts"];
+		foreach ($namePartsTable as $namePartsRow) {
+			$folderNameParts[] = $namePartsRow['folder-name-parts'];
+			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
+		}
+		$this->iOpenTheFolder($folderNameParts);
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		
+		$toBeListedTable = new TableNode($toBeListedTableArray);
+		$this->theFollowingFileFolderShouldBeListed(
+			$shouldOrNot, "", $toBeListedTable
 		);
 	}
 

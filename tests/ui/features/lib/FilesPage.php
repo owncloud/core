@@ -130,6 +130,21 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * moves a file or folder into an other folder by drag and drop
+	 * 
+	 * @param string|array $name
+	 * @param string|array $destination
+	 * @param Session $session
+	 * @return void
+	 */
+	public function moveFileTo($name, $destination, Session $session) {
+		$toMoveFileRow = $this->findFileRowByName($name, $session);
+		$destinationFileRow = $this->findFileRowByName($destination, $session);
+		$toMoveFileRow->findFileLink()->dragTo($destinationFileRow->findFileLink());
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
 	 * returns the tooltip that is displayed next to the filename
 	 * if something is wrong
 	 *
