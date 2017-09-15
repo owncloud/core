@@ -119,7 +119,7 @@
     "Error creating user: {message}" : "ข้อผิดพลาดในการสร้างผู้ใช้: {message}",
     "A valid password must be provided" : "จะต้องระบุรหัสผ่านที่ถูกต้อง",
     "A valid email must be provided" : "จะต้องระบุอีเมลที่ถูกต้อง",
-    "Use the following link to confirm your changes to the email address: {link}" : "ใช้ลิงก์ต่อไปนี้เพื่อยืนยันการเปลี่ยนแปลงของคุณตามที่อยู่อีเมล: {link}",
+    "Use the following link to confirm your changes to the email address: {link}" : "ใช้ลิงค์ต่อไปนี้เพื่อยืนยันการเปลี่ยนแปลงของคุณตามที่อยู่อีเมล: {link}",
     "Email address changed to {mailAddress} successfully." : "เปลี่ยนที่อยู่อีเมลเป็น {mailAddress} เรียบร้อยแล้ว",
     "Hey there,<br><br>just letting you know that you now have an %s account.<br><br>Your username: %s<br>Access it: <a href=\"%s\">%s</a><br><br>" : "นี่คุณ<br><br>อยากจะแจ้งให้คุณทราบว่าขณะนี้คุณมีบัญชี %s<br><br>ชื่อผู้ใช้ของคุณคือ: %s<br>เข้าไปงานได้ที่: <a href=\"%s\">%s</a><br><br>",
     "Cheers!" : "ไชโย!",
