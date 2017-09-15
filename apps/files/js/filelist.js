@@ -146,12 +146,6 @@
 		_filter: '',
 
 		/**
-		 * File to be highlighted in view
-		 * @type String
-		 */
-		_scrollTo: null,
-
-		/**
 		 * @type Backbone.Model
 		 */
 		_filesConfig: undefined,
@@ -215,9 +209,7 @@
 			if (this.initialized) {
 				return;
 			}
-			if (options.scrollTo) {
-				this._scrollTo = options.scrollTo;
-			}
+
 			if (options.config) {
 				this._filesConfig = options.config;
 			} else if (!_.isUndefined(OCA.Files) && !_.isUndefined(OCA.Files.App)) {
@@ -338,6 +330,12 @@
 			this.$el.find('.selectedActions a').tooltip({placement:'top'});
 
 			this.$container.on('scroll', _.bind(this._onScroll, this));
+
+			if (options.scrollTo) {
+				this.$fileList.one('updated', function() {
+					self.scrollTo(options.scrollTo);
+				});
+			}
 
 			if (options.enableUpload) {
 				// TODO: auto-create this element
@@ -1029,13 +1027,6 @@
 			_.defer(function() {
 				self.$el.closest('#app-content').trigger(jQuery.Event('apprendered'));
 			});
-
-			if (this._scrollTo) {
-				this.$fileList.on('updated', function() {
-					self.scrollTo(self._scrollTo);
-					self._scrollTo = null;
-				});
-			}
 		},
 
 		/**
