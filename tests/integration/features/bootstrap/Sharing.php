@@ -9,8 +9,6 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 
 trait Sharing {
-	use Provisioning;
-	use AppConfiguration;
 
 	/** @var int */
 	private $sharingApiVersion = 1;
@@ -655,8 +653,12 @@ trait Sharing {
 		return $this->lastShareData->data->token;
 	}
 
-	protected function resetAppConfigs() {
+	protected function resetCommonSharingAppConfigs() {
+		$this->modifyServerConfig('core', 'shareapi_enabled', 'yes');
+		$this->modifyServerConfig('core', 'shareapi_allow_links', 'yes');
 		$this->modifyServerConfig('core', 'shareapi_allow_public_upload', 'yes');
+		$this->modifyServerConfig('core', 'shareapi_allow_group_sharing', 'yes');
+		$this->modifyServerConfig('core', 'shareapi_only_share_with_group_members', 'no');
 	}
 }
 

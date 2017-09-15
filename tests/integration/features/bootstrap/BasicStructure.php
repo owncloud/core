@@ -7,12 +7,16 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 trait BasicStructure {
 
+	use AppConfiguration;
 	use Auth;
-	use Trashbin;
 	use Checksums;
 	use Comments;
 	use MailTool;
+	use Provisioning;
+	use Sharing;
 	use Tags;
+	use Trashbin;
+	use WebDav;
 
 	/** @var string */
 	private $currentUser = '';
