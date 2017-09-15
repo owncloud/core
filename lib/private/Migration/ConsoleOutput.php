@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -49,16 +50,18 @@ class ConsoleOutput implements IOutput {
 
 	/**
 	 * @param string $message
+	 * @param bool $newline
 	 */
-	public function info($message) {
-		$this->output->writeln("<info>$message</info>");
+	public function info($message, $newline = true) {
+		$this->output->write("<info>$message</info>", $newline);
 	}
 
 	/**
 	 * @param string $message
+	 * @param bool $newline
 	 */
-	public function warning($message) {
-		$this->output->writeln("<comment>$message</comment>");
+	public function warning($message, $newline = true) {
+		$this->output->write("<comment>$message</comment>", $newline);
 	}
 
 	/**
@@ -77,13 +80,16 @@ class ConsoleOutput implements IOutput {
 	 * @param string $description
 	 */
 	public function advance($step = 1, $description = '') {
-		if (!is_null($this->progressBar)) {
+		if (is_null($this->progressBar)) {
 			$this->progressBar = new ProgressBar($this->output);
 			$this->progressBar->start();
 		}
 		$this->progressBar->advance($step);
 	}
 
+	/**
+	 * @since 9.1.0
+	 */
 	public function finishProgress() {
 		if (is_null($this->progressBar)) {
 			return;

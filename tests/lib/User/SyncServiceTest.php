@@ -21,10 +21,10 @@
  */
 namespace Test\User;
 
-
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\SyncService;
+use OC\User\SyncServiceCallback;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -98,33 +98,76 @@ class SyncServiceTest extends TestCase {
 		$a1->setUserId('user1');
 		$a1->setBackend(get_class($this->backend));
 
-		$a2 = new Account();
-		$a2->setUserId('user2');
-		$a2->setBackend(get_class($this->backend));
-
-		$this->mapper->expects($this->exactly(2))
+		$this->mapper->expects($this->exactly(1))
 			->method('getByUid')
-			->withConsecutive(
-				[$this->equalTo('user1')], [$this->equalTo('user2')]
-			)
-			->willReturnOnConsecutiveCalls($a1,	$a2);
-		$this->mapper->expects($this->exactly(2))
+			->with($this->equalTo('user1'))
+			->willReturn($a1);
+
+		$this->mapper->expects($this->exactly(1))
 			->method('update');
 
+		/** @var SyncServiceCallback|\PHPUnit_Framework_MockObject_MockObject $callback */
+		$callback = $this->createMock(SyncServiceCallback::class);
+		$callback->expects($this->once())
+			->method('startSync');
+		$callback->expects($this->once())
+			->method('endUpdated')
+			->with($a1);
+
 		$s = new SyncService($this->mapper, $this->backend, $this->config, $this->logger);
-		$s->syncUsers(['user1', 'user2']);
+		$s->syncUser('user1', $callback);
 	}
 
 	public function testSyncUsersNotExistingIsInserted() {
-		$this->mapper->expects($this->exactly(2))
+		$this->mapper->expects($this->exactly(1))
 			->method('getByUid')
 			->willThrowException(
 				new DoesNotExistException('User does not exist')
 			);
-		$this->mapper->expects($this->exactly(2))
-			->method('insert');
+
+
+		$a1 = new Account();
+		$a1->setUserId('user1');
+		$a1->setBackend('\Some\Mismatching\UserBackend');
+
+		$this->mapper->expects($this->once())
+			->method('insert')
+			->willReturn($a1);
+
+		/** @var SyncServiceCallback|\PHPUnit_Framework_MockObject_MockObject $callback */
+		$callback = $this->createMock(SyncServiceCallback::class);
+		$callback->expects($this->once())
+			->method('startSync');
+		$callback->expects($this->once())
+			->method('endCreated');
 
 		$s = new SyncService($this->mapper, $this->backend, $this->config, $this->logger);
-		$s->syncUsers(['user1', 'user2']);
+		$s->syncUser('user1', $callback);
+	}
+
+	/**
+	 * @expectedException  \OC\User\BackendMismatchException
+	 */
+	public function testSyncUserBackendMismatch() {
+		$a1 = new Account();
+		$a1->setUserId('user1');
+		$a1->setBackend('\Some\Mismatching\UserBackend');
+
+		$this->mapper->expects($this->exactly(1))
+			->method('getByUid')
+			->with($this->equalTo('user1'))
+			->willReturn($a1);
+		$this->mapper->expects($this->never())
+			->method('insert');
+		$this->mapper->expects($this->never())
+			->method('update');
+
+		/** @var SyncServiceCallback|\PHPUnit_Framework_MockObject_MockObject $callback */
+		$callback = $this->createMock(SyncServiceCallback::class);
+		$callback->expects($this->once())
+			->method('startSync');
+
+		$s = new SyncService($this->mapper, $this->backend, $this->config, $this->logger);
+		$s->syncUser('user1', $callback);
 	}
 }

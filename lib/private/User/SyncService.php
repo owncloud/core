@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -28,8 +28,6 @@ use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class SyncService
@@ -92,79 +90,54 @@ class SyncService {
 	}
 
 	/**
-	 * @param OutputInterface $output
-	 * @param int $maxUsers for the progress bar
+	 * @param SyncServiceCallback $callback methods are called for every user to progress display
 	 */
-	public function run(OutputInterface $output, $maxUsers = 0) {
-		$progressBar = new ProgressBar($output, $maxUsers);
-		$progressBar->start();
+	public function run(SyncServiceCallback $callback) {
 		$limit = 500;
 		$offset = 0;
 		do {
-			$progressBar->advance();
 			$users = $this->backend->getUsers('', $limit, $offset);
 
-			// update existing and insert new users
-			$this->syncUsers($users, $output, $progressBar);
+			foreach ($users as $uid) {
+				try {
+					$this->syncUser($uid, $callback);
+				} catch (BackendMismatchException $ex) {
+					$callback->onBackendMismatchException($ex);
+					continue;
+				}
+			}
 
 			$offset += $limit;
 		} while(count($users) >= $limit);
-		$progressBar->finish();
 	}
 
 	/**
-	 * @param string[] $users array of user ids to sync
+	 * update existing and insert new users
+	 * @param string $uid user ids to sync
+	 * @param SyncServiceCallback $callback methods are called for every user to progress display
+	 * @throws BackendMismatchException if a uid is already used by another backend
 	 */
-	public function syncUsers(array $users, OutputInterface $output = null, ProgressBar $progressBar = null) {
-		foreach ($users as $uid) {
-			if ($output) {
-				$start = microtime(true);
-				$output->write("Syncing $uid: ", false, OutputInterface::VERBOSITY_VERBOSE);
-			}
+	public function syncUser($uid, SyncServiceCallback $callback) {
+			$callback->startSync($uid);
 			try {
-				$a = $this->mapper->getByUid($uid);
-				if ($a->getBackend() !== $this->backendClass) {
-					$message = "already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.";
-					if ($output) {
-						$output->writeln($message, OutputInterface::VERBOSITY_VERBOSE);
-					}
-					$this->logger->warning("User <$uid> $message", ['app' => self::class]);
-					continue;
+				$account = $this->mapper->getByUid($uid);
+				if ($account->getBackend() !== $this->backendClass) {
+					throw new BackendMismatchException($account, $this->backendClass);
 				}
-				$a = $this->setupAccount($a, $uid);
-				$this->mapper->update($a);
-				$action = 'updated';  // for logging
+				$account = $this->setupAccount($account, $uid);
+				$this->mapper->update($account);
+				// clean the user's preferences
+				$this->cleanPreferences($uid); // TODO always?
+				$callback->endUpdated($account);
 			} catch (DoesNotExistException $ex) {
-				$a = $this->createNewAccount($uid);
-				$this->setupAccount($a, $uid);
-				$this->mapper->insert($a);
-				$action = 'created'; // for logging
+				$account = $this->createNewAccount($uid);
+				$this->setupAccount($account, $uid);
+				/** @var Account $account */
+				$this->mapper->insert($account); // will the id be set in this account or do we need the return value?
+				// clean the user's preferences
+				$this->cleanPreferences($uid); // TODO always?
+				$callback->endCreated($account);
 			}
-			// clean the user's preferences
-			$this->cleanPreferences($uid);
-
-			// log if possible
-			if ($progressBar && $output) {
-				$delta = microtime(true)-$start;
-				if ($output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
-					$progressBar->advance();
-				} else if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
-					$output->writeln("$action ($delta)");
-				} else if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-					$a = $this->mapper->getByUid($a->getUserId());
-					$output->writeln("$action ".json_encode([
-							'id' => $a->getId(),
-							'backend' => $a->getBackend(),
-							'userId' => $a->getUserId(),
-							'displayName' => $a->getDisplayName(),
-							'email' => $a->getEmail(),
-							'home' => $a->getHome(),
-							'lastLogin' => $a->getLastLogin(),
-							'quota' => $a->getQuota(),
-						]). " ($delta)");
-				}
-			}
-		}
 	}
 
 	/**
@@ -249,7 +222,7 @@ class SyncService {
 	 * @param string $uid
 	 */
 	private function cleanPreferences($uid) {
-		// TODO use a single query to delete these from the preferences table
+		// FIXME use a single query to delete these from the preferences table
 		$this->config->deleteUserValue($uid, 'core', 'enabled');
 		$this->config->deleteUserValue($uid, 'login', 'lastLogin');
 		$this->config->deleteUserValue($uid, 'settings', 'email');
