@@ -169,7 +169,7 @@ class SyncBackend extends Command {
 		array $validActions
 	) {
 
-		$output->writeln("Analysing synced users ...");
+		$output->writeln("Analyzing synced users ...");
 		$consoleOutput->startProgress($this->accountMapper->getUserCount(false));
 		$unknownUsers = $syncService->getNoLongerExistingUsers(function () use ($consoleOutput) {
 			$consoleOutput->advance();
@@ -219,7 +219,7 @@ class SyncBackend extends Command {
 		array $validActions
 	) {
 
-		$output->writeln("Analysing {$uid} ...");
+		$output->writeln("Analyzing {$uid} ...");
 		if (!$backend->userExists($uid)) {
 			$this->handleUnknownUsers([$uid], $input, $output, $missingAccountsAction, $validActions);
 		} else {
