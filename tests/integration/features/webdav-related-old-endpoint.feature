@@ -507,3 +507,14 @@ Feature: webdav-related-old-endpoint
 		And as "user1" the folder "/folderB/ONE" exists
 		And as "user1" the folder "/folderB/ONE/TWO" exists
 		And user "user1" checks id of file "/folderB/ONE"
+
+
+	Scenario: Retrieving private link
+		Given using old dav path
+		And user "user0" exists
+		And as an "user0"
+		And user "user0" uploads file "data/textfile.txt" to "/somefile.txt"
+		Then as "user0" gets properties of file "/somefile.txt" with
+			|{http://owncloud.org/ns}privatelink|
+		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
+
