@@ -113,7 +113,9 @@ elif test "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1"; then
 fi
 
 if test "$BEHAT_FILTER_TAGS"; then
-	BEHAT_FILTER_TAGS="$BEHAT_FILTER_TAGS&&~@skip"
+    if [[ $BEHAT_FILTER_TAGS != *@skip* ]]; then
+    	BEHAT_FILTER_TAGS="$BEHAT_FILTER_TAGS&&~@skip"
+   	fi
 else
 	BEHAT_FILTER_TAGS="~@skip"
 fi
