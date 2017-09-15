@@ -127,7 +127,9 @@ fi
 
 if [ "$BROWSER" == "firefox" ]
 then
-	EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1",'
+	#set screen resolution so that hopefully dragable elements will be visible
+	#FF gives problems if the destination element is not visible
+	EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1","screenResolution":"1920x1080",'
 fi
 
 EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
