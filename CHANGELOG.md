@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [10.0.3]
 ### Added
 - It is now possible to upgrade from 8.2.11 directly to 10 - [#28655](https://github.com/owncloud/core/issues/28655) [#28673](https://github.com/owncloud/core/pull/28673)
 - Added extra check in case of missing home storage - [#28504](https://github.com/owncloud/core/issues/28504)
@@ -33,7 +33,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Deprecated
 ### Removed
-- Removed "themes" folder - [#28617](https://github.com/owncloud/core/issues/28617)
+- Removed "themes" folder - [#28617](https://github.com/owncloud/core/issues/28617) [#28999](https://github.com/owncloud/core/issues/28999)
 - Removed unused Windows checks - [#28612](https://github.com/owncloud/core/issues/28612)
 - Removed "appstoreenabled" from config.php - [#28714](https://github.com/owncloud/core/issues/28714)
 - Slash in filename when renaming is not allowed any more in the frontend (unintended "feature") - [#28490](https://github.com/owncloud/core/issues/28490)
@@ -269,7 +269,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.2...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.3...stable10
+[10.0.3]: https://github.com/owncloud/core/compare/v10.0.2...v10.0.3
 [10.0.2]: https://github.com/owncloud/core/compare/v10.0.1...v10.0.2
 [10.0.1]: https://github.com/owncloud/core/compare/v10.0.0...v10.0.1
 
