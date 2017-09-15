@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [10.0.3]
+## [10.0.3] - 2017-09-15
 ### Added
 - It is now possible to upgrade from 8.2.11 directly to 10 - [#28655](https://github.com/owncloud/core/issues/28655) [#28673](https://github.com/owncloud/core/pull/28673)
 - Added extra check in case of missing home storage - [#28504](https://github.com/owncloud/core/issues/28504)
