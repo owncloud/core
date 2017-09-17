@@ -23,6 +23,16 @@ default:
         - UsersContext:
         - FilesContext:
 
+    trashbin:
+      paths:
+        - %paths.base%/../features/trashbin
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+
     other:
       paths:
         - %paths.base%/../features/other

@@ -50,7 +50,7 @@ script:
   - sh -c "if [ '$TEST_DAV' = '1' ]; then echo \"Testing DAV\"; fi"
 
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/script.sh; fi"
-  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_behat_tests.sh; fi"
+  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_ui_tests.sh; fi"
 
 matrix:
   include:
@@ -67,6 +67,12 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="trashbin" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="47.0" BEHAT_SUITE="other" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=0
       addons:
         apt: *common_apt
@@ -74,6 +80,12 @@ matrix:
         sauce_connect: true
     - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="47.0" BEHAT_SUITE="files" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="47.0" BEHAT_SUITE="trashbin" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -105,37 +117,7 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="26" BEHAT_SUITE="other" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=1
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="26" BEHAT_SUITE="files" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=1
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="48.0" BEHAT_SUITE="other" PLATFORM=Linux TEST_DAV=0 CRON_ONLY=1
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="48.0" BEHAT_SUITE="files" PLATFORM=Linux TEST_DAV=0 CRON_ONLY=1
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="14.0" BEHAT_SUITE="other" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=1
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 5.6
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="14.0" BEHAT_SUITE="files" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=1
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="trashbin" PLATFORM="Windows 10" TEST_DAV=0 CRON_ONLY=1
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -148,6 +130,12 @@ matrix:
         sauce_connect: true
     - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="files" PLATFORM="Windows 7" TEST_DAV=0 CRON_ONLY=1
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="trashbin" PLATFORM="Windows 7" TEST_DAV=0 CRON_ONLY=1
       addons:
         apt: *common_apt
         hosts: *common_hosts
