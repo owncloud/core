@@ -6,8 +6,8 @@ Feature: renameFiles
 		And I am on the files page
 
 	Scenario: Rename a file that has special characters in its name
-		When I rename the file "'single'quotes.txt" to "single-quotes.txt"
-		Then the file "single-quotes.txt" should be listed
+		When I rename the file "'single'quotes.txt" to "no-single-quotes.txt"
+		Then the file "no-single-quotes.txt" should be listed
 
 	Scenario: Rename a file using special characters and check its existence after page reload
 		When I rename the file "lorem.txt" to "लोरेम।तयक्स्त $%&"
