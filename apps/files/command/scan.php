@@ -39,7 +39,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 use OC\Repair\RepairMismatchFileCachePath;
-use OC\Migration\ConsoleOutput;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Files\IMimeTypeLoader;
@@ -154,7 +153,7 @@ class Scan extends Base {
 					);
 					$repairStep->setStorageNumericId($storage->getCache()->getNumericStorageId());
 					$repairStep->setCountOnly(false);
-					$repairStep->run(new ConsoleOutput($output));
+					$repairStep->run();
 				} finally {
 					$storage->releaseLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
 				}
