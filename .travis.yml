@@ -126,22 +126,19 @@ matrix:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
-    - if: type = cron
-      php: 5.6
+    - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="other" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
-    - if: type = cron
-      php: 5.6
+    - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="files" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
-    - if: type = cron
-      php: 5.6
+    - php: 5.6
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="trashbin" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
