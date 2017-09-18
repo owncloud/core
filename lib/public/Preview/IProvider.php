@@ -21,6 +21,8 @@
  */
 namespace OCP\Preview;
 
+use OCP\Files\File;
+
 /**
  * Interface IProvider
  *
@@ -46,13 +48,12 @@ interface IProvider {
 	/**
 	 * get thumbnail for file at path $path
 	 *
-	 * @param string $path Path of file
+	 * @param File $path Path of file
 	 * @param int $maxX The maximum X size of the thumbnail. It can be smaller depending on the shape of the image
 	 * @param int $maxY The maximum Y size of the thumbnail. It can be smaller depending on the shape of the image
 	 * @param bool $scalingup Disable/Enable upscaling of previews
-	 * @param \OC\Files\View $fileview fileview object of user folder
 	 * @return bool|\OCP\IImage false if no preview was generated
 	 * @since 8.1.0
 	 */
-	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview);
+	public function getThumbnail($path, $maxX, $maxY, $scalingup);
 }

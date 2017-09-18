@@ -39,6 +39,7 @@ use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
+use OCA\DAV\Files\IFileNode;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Files\EntityTooLargeException;
 use OCP\Files\ForbiddenException;
@@ -58,7 +59,7 @@ use Sabre\DAV\IFile;
 use Sabre\DAV\Exception\NotFound;
 use OC\AppFramework\Http\Request;
 
-class File extends Node implements IFile {
+class File extends Node implements IFile, IFileNode {
 
 	protected $request;
 	
@@ -642,5 +643,12 @@ class File extends Node implements IFile {
 
 	protected function header($string) {
 		\header($string);
+	}
+
+	/**
+	 * @return \OCP\Files\Node
+	 */
+	public function getNode() {
+		return \OC::$server->getRootFolder()->get($this->getFileInfo()->getPath());
 	}
 }
