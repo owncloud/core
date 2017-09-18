@@ -50,7 +50,7 @@ script:
   - sh -c "if [ '$TEST_DAV' = '1' ]; then echo \"Testing DAV\"; fi"
 
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/script.sh; fi"
-  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_behat_tests.sh; fi"
+  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_ui_tests.sh; fi"
 
 matrix:
   include:
