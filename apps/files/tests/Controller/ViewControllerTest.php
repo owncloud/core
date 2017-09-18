@@ -86,21 +86,21 @@ class ViewControllerTest extends TestCase {
 		$this->rootFolder = $this->createMock('\OCP\Files\Folder');
 		$this->viewController = $this->getMockBuilder('\OCA\Files\Controller\ViewController')
 			->setConstructorArgs([
-			'files',
-			$this->request,
-			$this->urlGenerator,
-			$this->l10n,
-			$this->config,
-			$this->eventDispatcher,
-			$this->userSession,
-			$this->appManager,
-			$this->rootFolder
-		])
-		->setMethods([
-			'getStorageInfo',
-			'renderScript'
-		])
-		->getMock();
+				'files',
+				$this->request,
+				$this->urlGenerator,
+				$this->l10n,
+				$this->config,
+				$this->eventDispatcher,
+				$this->userSession,
+				$this->appManager,
+				$this->rootFolder
+			])
+			->setMethods([
+				'getStorageInfo',
+				'renderScript'
+			])
+			->getMock();
 	}
 
 	public function testIndexWithIE8RedirectAndDirDefined() {
@@ -199,7 +199,7 @@ class ViewControllerTest extends TestCase {
 				'icon' => '',
 			],
 			[
-			'id' => 'sharingin',
+				'id' => 'sharingin',
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 10,
@@ -208,7 +208,7 @@ class ViewControllerTest extends TestCase {
 				'icon' => '',
 			],
 			[
-			'id' => 'sharingout',
+				'id' => 'sharingout',
 				'appname' => 'files_sharing',
 				'script' => 'list.php',
 				'order' => 15,
