@@ -8,6 +8,8 @@ Feature: renameFiles
 	Scenario Outline: Rename a file using special characters
 		When I rename the file "lorem.txt" to <to_file_name>
 		Then the file <to_file_name> should be listed
+		And the files page is reloaded
+		Then the file <to_file_name> should be listed
 		Examples:
 		|to_file_name    |
 		|'लोरेम।तयक्स्त? $%#&@' |
@@ -16,6 +18,8 @@ Feature: renameFiles
 
 	Scenario Outline: Rename a file that has special characters in its name
 		When I rename the file <from_name> to <to_name>
+		Then the file <to_name> should be listed
+		And the files page is reloaded
 		Then the file <to_name> should be listed
 		Examples:
 		|from_name                            |to_name                              |
