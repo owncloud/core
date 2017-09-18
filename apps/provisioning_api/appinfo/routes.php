@@ -40,6 +40,7 @@ $users = new Users(
 	\OC::$server->getLogger(),
 	\OC::$server->getTwoFactorAuthManager()
 );
+
 API::register('get', '/cloud/users', [$users, 'getUsers'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('post', '/cloud/users', [$users, 'addUser'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('get', '/cloud/users/{userid}', [$users, 'getUser'], 'provisioning_api', API::USER_AUTH);
@@ -60,6 +61,7 @@ $groups = new Groups(
 	\OC::$server->getUserSession(),
 	\OC::$server->getRequest()
 );
+
 API::register('get', '/cloud/groups', [$groups, 'getGroups'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('post', '/cloud/groups', [$groups, 'addGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('get', '/cloud/groups/{groupid}', [$groups, 'getGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
@@ -68,6 +70,7 @@ API::register('get', '/cloud/groups/{groupid}/subadmins', [$groups, 'getSubAdmin
 
 // Apps
 $apps = new Apps(\OC::$server->getAppManager());
+
 API::register('get', '/cloud/apps', [$apps, 'getApps'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('get', '/cloud/apps/{appid}', [$apps, 'getAppInfo'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('post', '/cloud/apps/{appid}', [$apps, 'enable'], 'provisioning_api', API::ADMIN_AUTH);

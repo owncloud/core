@@ -252,7 +252,7 @@ class OC_Response {
 			. 'frame-src *; '
 			. 'img-src * data: blob:; '
 			. 'font-src \'self\' data:; '
-			. 'media-src *; ' 
+			. 'media-src *; '
 			. 'connect-src *';
 		header('Content-Security-Policy:' . $policy);
 
@@ -266,6 +266,82 @@ class OC_Response {
 			header('X-Download-Options: noopen'); // https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
 			header('X-Permitted-Cross-Domain-Policies: none'); // https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html
 		}
+	}
+
+	/**
+	 * This function adds the CORS headers if the requester domain is white-listed
+	 *
+	 * @param string $userId
+	 * @param string $domain
+	 * @param Sabre\HTTP\ResponseInterface $response
+	 * @param \OCP\IConfig $config
+	 * @param Array $headers
+	 *
+	 * Format of $headers:
+	 * Array [
+	 *     "Access-Control-Allow-Headers": ["a", "b", "c"],
+	 *     "Access-Control-Allow-Origin": ["a", "b", "c"],
+	 *     "Access-Control-Allow-Methods": ["a", "b", "c"]
+	 * ]
+	 *
+	 * @return Sabre\HTTP\ResponseInterface $response
+	 */
+	public static function setCorsHeaders($userId, $domain, $response, $config = null, $headers = []) {
+		if (is_null($config)) {
+			$config = \OC::$server->getConfig();
+		}
+		$allowedDomains = json_decode($config->getUserValue($userId, 'core', 'domains'));
+		if (is_array($allowedDomains) && in_array($domain, $allowedDomains)) {
+			// TODO: infer allowed verbs from existing known routes
+			$allHeaders['Access-Control-Allow-Headers'] = ["authorization", "OCS-APIREQUEST", "Origin", "X-Requested-With", "Content-Type", "Access-Control-Allow-Origin"];
+			$allHeaders['Access-Control-Allow-Origin'] = [$domain];
+			$allHeaders['Access-Control-Allow-Methods'] =["GET", "OPTIONS", "POST", "PUT", "DELETE", "MKCOL", "PROPFIND", "PATCH", "PROPPATCH", "REPORT"];
+
+			foreach ($headers as $key => $value) {
+				if (array_key_exists($key, $allHeaders)) {
+					$allHeaders[$key] = array_merge($allHeaders[$key], $value);
+				}
+			}
+
+			foreach ($allHeaders as $key => $value) {
+				$response->addHeader($key, implode(",", $value));
+			}
+		}
+		return $response;
+	}
+
+	/**
+	 * This function adds the CORS headers for all domains
+	 *
+	 * @param Sabre\HTTP\ResponseInterface $response
+	 * @param Array $headers
+	 *
+	 * Format of $headers:
+	 * Array [
+	 *     "Access-Control-Allow-Headers": ["a", "b", "c"],
+	 *     "Access-Control-Allow-Origin": ["a", "b", "c"],
+	 *     "Access-Control-Allow-Methods": ["a", "b", "c"]
+	 * ]
+	 *
+	 * @return Sabre\HTTP\ResponseInterface $response
+	 */
+	public static function setOptionsRequestHeaders($response, $headers = []) {
+		// TODO: infer allowed verbs from existing known routes
+		$allHeaders['Access-Control-Allow-Headers'] = ["authorization", "OCS-APIREQUEST", "Origin", "X-Requested-With", "Content-Type", "Access-Control-Allow-Origin"];
+		$allHeaders['Access-Control-Allow-Origin'] = ['*'];
+		$allHeaders['Access-Control-Allow-Methods'] =["GET", "OPTIONS", "POST", "PUT", "DELETE", "MKCOL", "PROPFIND", "PATCH", "PROPPATCH", "REPORT"];
+
+		foreach ($headers as $key => $value) {
+			if (array_key_exists($key, $allHeaders)) {
+				$allHeaders[$key] = array_merge($allHeaders[$key], $value);
+			}
+		}
+
+		foreach ($allHeaders as $key => $value) {
+			$response->addHeader($key, implode(",", $value));
+		}
+
+		return $response;
 	}
 
 }

@@ -364,7 +364,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return new CORSMiddleware(
 				$c['Request'],
 				$c['ControllerMethodReflector'],
-				$c['OCP\IUserSession']
+				$c['OCP\IUserSession'],
+				$c['OCP\IConfig']
 			);
 		});
 

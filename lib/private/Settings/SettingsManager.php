@@ -46,6 +46,7 @@ use OC\Settings\Panels\Admin\Legacy as LegacyAdmin;
 use OC\Settings\Panels\Personal\Clients;
 use OC\Settings\Panels\Personal\Version;
 use OC\Settings\Panels\Personal\Tokens;
+use OC\Settings\Panels\Personal\Cors;
 use OC\Settings\Panels\Personal\Quota;
 use OC\Settings\Panels\Admin\BackgroundJobs;
 use OC\Settings\Panels\Admin\Certificates;
@@ -246,6 +247,7 @@ class SettingsManager implements ISettingsManager {
 				LegacyPersonal::class,
 				Version::class,
 				Tokens::class,
+				Cors::class,
 				Quota::class
 			];
 		}
@@ -268,6 +270,10 @@ class SettingsManager implements ISettingsManager {
 			Clients::class => new Clients($this->config, $this->defaults),
 			Version::class => new Version(),
 			Tokens::class => new Tokens(),
+			Cors::class => new Cors(
+				$this->userSession,
+				$this->urlGenerator,
+				$this->config),
 			Quota::class => new Quota($this->helper),
 			// Admin
 			BackgroundJobs::class => new BackgroundJobs($this->config),
