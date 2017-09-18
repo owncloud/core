@@ -138,6 +138,8 @@ class Test_Trashbin extends \Test\TestCase {
 		$this->rootView->deleteAll('/' . self::TEST_TRASHBIN_USER2 . '/files');
 		$this->rootView->deleteAll($this->trashRoot1);
 		$this->rootView->deleteAll($this->trashRoot2);
+		$this->rootView->mkdir(self::TEST_TRASHBIN_USER1 . '/files/');
+		$this->rootView->mkdir(self::TEST_TRASHBIN_USER2 . '/files/');
 
 		// clear trash table
 		$connection = \OC::$server->getDatabaseConnection();
