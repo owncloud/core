@@ -103,8 +103,13 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		// delete target if exists
 		$qb = $this->connection->getQueryBuilder();
 		$qb->delete('filecache')
-			->where($qb->expr()->eq('storage', $qb->createNamedParameter($correctStorageNumericId)))
-			->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($correctPath)));
+			->where($qb->expr()->eq('storage', $qb->createNamedParameter($correctStorageNumericId)));
+
+		if ($correctPath === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			$qb->andWhere($qb->expr()->isNull('path'));
+		} else {
+			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($correctPath)));
+		}
 		$entryExisted = $qb->execute() > 0;
 
 		$qb = $this->connection->getQueryBuilder();
@@ -363,8 +368,13 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			// from oc_filecache
 			->from('filecache')
 			// where storage=$storage and path='$parentPath'
-			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storageId)))
-			->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($path)));
+			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storageId)));
+
+		if ($path === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			$qb->andWhere($qb->expr()->isNull('path'));
+		} else {
+			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($path)));
+		}
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
 		$results->closeCursor();
