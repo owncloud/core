@@ -23,7 +23,6 @@
 namespace OCA\Files_Sharing\Tests;
 
 use OCA\Files_Sharing\Capabilities;
-use OCA\Files_Sharing\Tests\TestCase;
 
 /**
  * Class CapabilitiesTest
@@ -34,7 +33,7 @@ class CapabilitiesTest extends \Test\TestCase {
 
 	/**
 	 * Test for the general part in each return statement and assert.
-	 * Strip of the general part on the way.
+	 * Strip off the general part on the way.
 	 *
 	 * @param string[] $data Capabilities
 	 * @return string[]
@@ -45,7 +44,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	}
 
 	/**
-	 * Create a mock config object and insert the values in $map tot the getAppValue
+	 * Create a mock config object and insert the values in $map to the getAppValue
 	 * function. Then obtain the capabilities and extract the first few
 	 * levels in the array
 	 *
@@ -187,6 +186,25 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertFalse($result['public']['send_mail']);
 	}
 
+	public function testLinkSocial_Share() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+			['core', 'shareapi_allow_social_share', 'yes', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['public']['social_share']);
+	}
+	public function testLinkNoSocial_Share() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+			['core', 'shareapi_allow_social_share', 'yes', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['public']['social_share']);
+	}
+
 	public function testUserSendMail() {
 		$map = [
 			['core', 'shareapi_enabled', 'yes', 'yes'],
@@ -259,6 +277,62 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertTrue($result['group_sharing']);
+	}
+
+	public function testNoShareWithGroupMembersOnly() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_only_share_with_group_members', 'yes', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['share_with_group_members_only']);
+	}
+
+	public function testShareWithGroupMembersOnly() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_only_share_with_group_members', 'yes', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['share_with_group_members_only']);
+	}
+
+	public function testNoUserEnumeration() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_share_dialog_user_enumeration', 'yes', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['user_enumeration']['enabled']);
+	}
+
+	public function testUserEnumeration() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_share_dialog_user_enumeration', 'yes', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['user_enumeration']['enabled']);
+	}
+
+	public function testUserEnumerationNoGroupMembersOnly() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_share_dialog_user_enumeration', 'yes', 'yes'],
+			['core', 'shareapi_share_dialog_user_enumeration_group_members', 'no', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['user_enumeration']['group_members_only']);
+	}
+
+	public function testUserEnumerationGroupMembersOnly() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_share_dialog_user_enumeration', 'yes', 'yes'],
+			['core', 'shareapi_share_dialog_user_enumeration_group_members', 'no', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['user_enumeration']['group_members_only']);
 	}
 
 	public function testFederatedSharingIncomming() {
