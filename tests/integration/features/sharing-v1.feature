@@ -892,6 +892,7 @@ Feature: sharing
 		And as "user0" the folder "/merge-test-inside-twogroups-perms (2)" does not exist
 		And as "user0" the folder "/merge-test-inside-twogroups-perms (3)" does not exist
 
+	@skip @issue-29016
 	Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
 		Given user "user0" exists
 		And user "user1" exists
