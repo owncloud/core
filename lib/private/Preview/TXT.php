@@ -43,8 +43,8 @@ class TXT extends Provider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
-		$stream = $fileview->fopen($path, 'r');
+	public function getThumbnail($file, $maxX, $maxY, $scalingup) {
+		$stream = $file->fopen('r');
 		$content = stream_get_contents($stream,3000);
 		fclose($stream);
 
