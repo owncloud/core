@@ -61,6 +61,7 @@ class FilesPlugin extends ServerPlugin {
 	const OWNER_DISPLAY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}owner-display-name';
 	const CHECKSUMS_PROPERTYNAME = '{http://owncloud.org/ns}checksums';
 	const DATA_FINGERPRINT_PROPERTYNAME = '{http://owncloud.org/ns}data-fingerprint';
+	const PRIVATE_LINK_PROPERTYNAME = '{http://owncloud.org/ns}privatelink';
 
 	/**
 	 * Reference to main server object
@@ -140,6 +141,7 @@ class FilesPlugin extends ServerPlugin {
 		$server->protectedProperties[] = self::OWNER_DISPLAY_NAME_PROPERTYNAME;
 		$server->protectedProperties[] = self::CHECKSUMS_PROPERTYNAME;
 		$server->protectedProperties[] = self::DATA_FINGERPRINT_PROPERTYNAME;
+		$server->protectedProperties[] = self::PRIVATE_LINK_PROPERTYNAME;
 
 		// normally these cannot be changed (RFC4918), but we want them modifiable through PROPPATCH
 		$allowedProperties = ['{DAV:}getetag'];
@@ -307,6 +309,11 @@ class FilesPlugin extends ServerPlugin {
 			});
 			$propFind->handle(self::SIZE_PROPERTYNAME, function() use ($node) {
 				return $node->getSize();
+			});
+
+			$propFind->handle(self::PRIVATE_LINK_PROPERTYNAME, function() use ($node) {
+				return \OC::$server->getURLGenerator()
+					->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileId' => $node->getInternalFileId()]);
 			});
 		}
 

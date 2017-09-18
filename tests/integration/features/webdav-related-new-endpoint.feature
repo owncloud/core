@@ -593,3 +593,12 @@ Feature: webdav-related-new-endpoint
 		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
 		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 15
 		Then the HTTP status code should be "201"
+
+	Scenario: Retrieving private link
+		Given using new dav path
+		And user "user0" exists
+		And as an "user0"
+		And user "user0" uploads file "data/textfile.txt" to "/somefile.txt"
+		Then as "user0" gets properties of file "/somefile.txt" with
+			|{http://owncloud.org/ns}privatelink|
+		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"

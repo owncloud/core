@@ -394,6 +394,36 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the single response should contain a property :key with value like :regex
+	 * @param string $key
+	 * @param string $regex
+	 * @throws \Exception
+	 */
+	public function theSingleResponseShouldContainAPropertyWithValueLike($key, $regex) {
+		$keys = $this->response;
+		if (!array_key_exists($key, $keys)) {
+			throw new \Exception("Cannot find property \"$key\" with \"$regex\"");
+		}
+
+		$value = $keys[$key];
+		if ($value instanceof ResourceType) {
+			$value = $value->getValue();
+			if (empty($value)) {
+				$value = '';
+			} else {
+				$value = $value[0];
+			}
+		}
+
+		if (preg_match($regex, $value)) {
+			return 0;
+		} else {
+			throw new \Exception("Property \"$key\" found with value \"$value\", expected \"$regex\"");
+		}
+	}
+
+
+	/**
 	 * @Then the response should contain a share-types property with
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table)
