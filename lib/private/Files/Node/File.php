@@ -26,9 +26,11 @@
 
 namespace OC\Files\Node;
 
+use OCP\Files\IPreviewNode;
 use OCP\Files\NotPermittedException;
+use OCP\IImage;
 
-class File extends Node implements \OCP\Files\File {
+class File extends Node implements \OCP\Files\File, IPreviewNode {
 	/**
 	 * Creates a Folder that represents a non-existing path
 	 *
@@ -137,5 +139,27 @@ class File extends Node implements \OCP\Files\File {
 	 */
 	public function getChecksum() {
 		return $this->getFileInfo()->getChecksum();
+	}
+
+	/**
+	 * @param array $options
+	 * @return IImage
+	 * @since 10.1.0
+	 */
+	public function getThumbnail($options) {
+		$maxX = array_key_exists('x', $options) ? (int)$options['x'] : 32;
+		$maxY = array_key_exists('y', $options) ? (int)$options['y'] : 32;
+		$scalingUp = array_key_exists('scalingup', $options) ? (bool)$options['scalingup'] : true;
+		$keepAspect = array_key_exists('a', $options) ? true : false;
+		$mode = array_key_exists('mode', $options) ? $options['mode'] : 'fill';
+
+		$preview = new \OC\Preview();
+		$preview->setFile($this->getInternalPath(), $this->getFileInfo());
+		$preview->setMaxX($maxX);
+		$preview->setMaxY($maxY);
+		$preview->setScalingUp($scalingUp);
+		$preview->setMode($mode);
+		$preview->setKeepAspect($keepAspect);
+		return $preview->getPreview();
 	}
 }
