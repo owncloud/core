@@ -164,10 +164,10 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				view.render();
 				expect(view.$('.mailView input').length).toEqual(1);
 			});
-			it('does not render email field for existing shares', function() {
+			it('renders email field for existing shares', function() {
 				isMailEnabledStub.returns(true);
 				view.render();
-				expect(view.$('.mailView input').length).toEqual(0);
+				expect(view.$('.mailView input').length).toEqual(1);
 			});
 			it('does not render email field when disallowed globally', function() {
 				isMailEnabledStub.returns(false);

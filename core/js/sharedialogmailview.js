@@ -16,7 +16,7 @@
 	var TEMPLATE = 
 			'<form id="emailPrivateLink" class="emailPrivateLinkForm oneline">' +
 			'    <label for="emailPrivateLinkField-{{cid}}">{{mailLabel}}</label>' +
-			'    <input id="emailPrivateLinkField-{{cid}}" class="emailField" value="{{email}}" placeholder="{{mailPrivatePlaceholder}}" type="text" />' +
+			'    <input id="emailPrivateLinkField-{{cid}}" class="emailField" value="{{email}}" placeholder="{{mailPrivatePlaceholder}}" type="email" />' +
 			'</form>'
 		;
 	
@@ -55,6 +55,10 @@
 			var itemType = this.itemModel.get('itemType');
 			var itemSource = this.itemModel.get('itemSource');
 
+			if (!this.validateEmail(recipientEmail)) {
+				deferred.reject();
+			}
+
 			$.post(
 				OC.generateUrl('core/ajax/share.php'), {
 					action: 'email',
@@ -79,6 +83,9 @@
 			return deferred.promise();
 		},
 
+		validateEmail: function (email) {
+			return email.match(/([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/);
+		},
 
 		sendEmails: function() {
 			var $emailField = this.$el.find('.emailField');
