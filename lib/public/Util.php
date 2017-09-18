@@ -717,7 +717,7 @@ class Util {
 	 * @return array
 	 * @since 10.0
 	 */
-	public static function getStatusInfo($includeVersion = false) {
+	public static function getStatusInfo($includeVersion = false, $serverHide = false) {
 		$systemConfig = \OC::$server->getSystemConfig();
 
 		$installed = (bool) $systemConfig->getValue('installed', false);
@@ -734,12 +734,18 @@ class Util {
 			'edition' => '',
 			'productname' => ''];
 
+		# expose version and servername details 
 		if ($includeVersion || (bool) $systemConfig->getValue('version.hide', false) === false) {
 			$values['version'] = implode('.', self::getVersion());
 			$values['versionstring'] = \OC_Util::getVersionString();
 			$values['edition'] = \OC_Util::getEditionString();
 			$values['productname'] = $defaults->getName();
+			# expose the servername only if allowed via version, but never when called via status.php
+			if ($serverHide === false) {
+				$values['hostname'] = gethostname();
+			}
 		}
+
 
 		return $values;
 	}
