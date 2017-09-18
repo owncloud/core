@@ -23,9 +23,8 @@ namespace OC\Repair;
 
 use OC\Hooks\BasicEmitter;
 use OCP\ILogger;
-use OCP\Migration\IOutput;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
 
@@ -102,8 +101,13 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 		// delete target if exists
 		$qb = $this->connection->getQueryBuilder();
 		$qb->delete('filecache')
-			->where($qb->expr()->eq('storage', $qb->createNamedParameter($correctStorageNumericId)))
-			->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($correctPath)));
+			->where($qb->expr()->eq('storage', $qb->createNamedParameter($correctStorageNumericId)));
+
+		if ($correctPath === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			$qb->andWhere($qb->expr()->isNull('path'));
+		} else {
+			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($correctPath)));
+		}
 		$entryExisted = $qb->execute() > 0;
 
 		$qb = $this->connection->getQueryBuilder();
@@ -362,8 +366,14 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 			// from oc_filecache
 			->from('filecache')
 			// where storage=$storage and path='$parentPath'
-			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storageId)))
-			->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($path)));
+			->where($qb->expr()->eq('storage', $qb->createNamedParameter($storageId)));
+
+
+		if ($path === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			$qb->andWhere($qb->expr()->isNull('path'));
+		} else {
+			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($path)));
+		}
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
 		$results->closeCursor();
