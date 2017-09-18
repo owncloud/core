@@ -87,6 +87,7 @@ class Application {
 		if ($input->getOption('no-warnings')) {
 			$output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
 		}
+		$input = new ArgvInput();
 		try {
 			require_once __DIR__ . '/../../../core/register_command.php';
 			if ($this->config->getSystemValue('installed', false)) {
@@ -116,13 +117,14 @@ class Application {
 					}
 				}
 			} else {
-				$output->writeln("ownCloud is not installed - only a limited number of commands are available");
+				if ($input->getFirstArgument() !== 'maintenance:install') {
+					$output->writeln("ownCloud is not installed - only a limited number of commands are available");
+				}
 			}
 		} catch (NeedsUpdateException $ex) {
 			$output->writeln("ownCloud or one of the apps require upgrade - only a limited number of commands are available");
 			$output->writeln("You may use your browser or the occ upgrade command to do the upgrade");
 		};
-		$input = new ArgvInput();
 		if ($input->getFirstArgument() !== 'check') {
 			$errors = \OC_Util::checkServer(\OC::$server->getConfig());
 			if (!empty($errors)) {
