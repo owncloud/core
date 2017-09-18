@@ -21,10 +21,9 @@
 
 namespace OC\Repair;
 
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
-use OCP\DB\QueryBuilder\IQueryBuilder;
+use OC\Hooks\BasicEmitter;
+use OCP\ILogger;
 use OCP\Migration\IOutput;
-use OCP\Migration\IRepairStep;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\IMimeTypeLoader;
@@ -33,7 +32,7 @@ use OCP\IDBConnection;
 /**
  * Repairs file cache entry which path do not match the parent-child relationship
  */
-class RepairMismatchFileCachePath implements IRepairStep {
+class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep {
 
 	const CHUNK_SIZE = 10000;
 
@@ -92,14 +91,14 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/**
 	 * Fixes the broken entry's path.
 	 *
-	 * @param IOutput $out repair output
+	 * @param LogOutput $out repair output
 	 * @param int $fileId file id of the entry to fix
 	 * @param string $wrongPath wrong path of the entry to fix
 	 * @param int $correctStorageNumericId numeric idea of the correct storage
 	 * @param string $correctPath value to which to set the path of the entry 
 	 * @return bool true for success
 	 */
-	private function fixEntryPath(IOutput $out, $fileId, $wrongPath, $correctStorageNumericId, $correctPath) {
+	private function fixEntryPath(LogOutput $out, $fileId, $wrongPath, $correctStorageNumericId, $correctPath) {
 		// delete target if exists
 		$qb = $this->connection->getQueryBuilder();
 		$qb->delete('filecache')
@@ -214,7 +213,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/**
 	 * Outputs a report about storages with wrong path that need repairing in the file cache
 	 */
-	private function reportAffectedStoragesParentIdWrongPath(IOutput $out) {
+	private function reportAffectedStoragesParentIdWrongPath(LogOutput $out) {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->selectDistinct('fc.storage');
 		$this->addQueryConditionsParentIdWrongPath($qb);
@@ -242,7 +241,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/**
 	 * Outputs a report about storages with non existing parents that need repairing in the file cache
 	 */
-	private function reportAffectedStoragesNonExistingParentIdEntry(IOutput $out) {
+	private function reportAffectedStoragesNonExistingParentIdEntry(LogOutput $out) {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->selectDistinct('fc.storage');
 		$this->addQueryConditionsNonExistingParentIdEntry($qb);
@@ -269,11 +268,11 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * Repair all entries for which the parent entry exists but the path
 	 * value doesn't match the parent's path.
 	 *
-	 * @param IOutput $out
+	 * @param LogOutput $out
 	 * @param int|null $storageNumericId storage to fix or null for all
 	 * @return int[] storage numeric ids that were targets to a move and needs further fixing
 	 */
-	private function fixEntriesWithCorrectParentIdButWrongPath(IOutput $out, $storageNumericId = null) {
+	private function fixEntriesWithCorrectParentIdButWrongPath(LogOutput $out, $storageNumericId = null) {
 		$totalResultsCount = 0;
 		$affectedStorages = [$storageNumericId => true];
 
@@ -413,7 +412,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/**
 	 * Fixes the broken entry's path.
 	 *
-	 * @param IOutput $out repair output
+	 * @param LogOutput $out repair output
 	 * @param int $storageId storage id of the entry to fix
 	 * @param int $fileId file id of the entry to fix
 	 * @param string $path path from the entry to fix
@@ -422,7 +421,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * false if it doesn't
 	 * @return bool true if the entry was fixed, false otherwise
 	 */
-	private function fixEntryParent(IOutput $out, $storageId, $fileId, $path, $wrongParentId, $parentIdExists = false) {
+	private function fixEntryParent(LogOutput $out, $storageId, $fileId, $path, $wrongParentId, $parentIdExists = false) {
 		if (!$parentIdExists) {
 			// if the parent doesn't exist, let us reuse its id in case there is metadata to salvage
 			$correctParentId = $this->getOrCreateEntry($storageId, dirname($path), $wrongParentId);
@@ -451,11 +450,11 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * Repair entries where the parent id doesn't point to any existing entry
 	 * by finding the actual parent entry matching the entry's path dirname.
 	 * 
-	 * @param IOutput $out output
+	 * @param LogOutput $out output
 	 * @param int|null $storageNumericId storage to fix or null for all
 	 * @return int number of results that were fixed
 	 */
-	private function fixEntriesWithNonExistingParentIdEntry(IOutput $out, $storageNumericId = null) {
+	private function fixEntriesWithNonExistingParentIdEntry(LogOutput $out, $storageNumericId = null) {
 		$qb = $this->connection->getQueryBuilder();
 		$this->addQueryConditionsNonExistingParentIdEntry($qb, $storageNumericId);
 		$qb->setMaxResults(self::CHUNK_SIZE);
@@ -498,10 +497,10 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 	/**
 	 * Run the repair step
-	 *
-	 * @param IOutput $out output
 	 */
-	public function run(IOutput $out) {
+	public function run() {
+		
+		$out = new LogOutput(\OC::$server->getLogger());
 
 		$this->dirMimeTypeId = $this->mimeLoader->getId('httpd/unix-directory');
 		$this->dirMimePartId = $this->mimeLoader->getId('httpd');
@@ -535,5 +534,23 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$out->finishProgress();
 			$out->info('');
 		}
+	}
+}
+
+class LogOutput {
+	/**
+	 * @var ILogger
+	 */
+	protected $logger;
+	public function __construct(ILogger $logger) {
+		$this->logger = $logger;
+	}
+	public function info($message) {
+		$this->logger->info($message);
+	}
+	public function finishProgress() {}
+	public function startProgress() {}
+	public function warning($message) {
+		$this->logger->warning($message);
 	}
 }
