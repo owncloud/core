@@ -413,6 +413,20 @@ class RepairMismatchFileCachePath implements IRepairStep {
 
 		// If we reused the fileid then this is the id to return
 		if($reuseFileId !== null) {
+			// with Oracle, the trigger gets in the way and does not let us specify
+			// a fileid value on insert
+			if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+				$lastFileId = $this->connection->lastInsertId('*PREFIX*filecache');
+				if ($reuseFileId !== $lastFileId) {
+					// use update to set it directly
+					$qb = $this->connection->getQueryBuilder();
+					$qb->update('filecache')
+						->set('fileid', $qb->createNamedParameter($reuseFileId))
+						->where($qb->expr()->eq('fileid', $qb->createNamedParameter($lastFileId)));
+					$qb->execute();
+				}
+			}
+
 			return $reuseFileId;
 		} else {
 			// Else we inserted a new row with auto generated id, use that
