@@ -48,6 +48,15 @@ class UsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given I am on the users page
+	 * @return void
+	 */
+	public function iAmOnTheUsersPage() {
+		$this->usersPage->open();
+		$this->usersPage->waitTillPageIsLoaded($this->getSession());
+	}
+	
+	/**
 	 * substitute codes like "%regularuser%" with the actual name of the user
 	 *
 	 * @param string $username
@@ -59,26 +68,12 @@ class UsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given quota of user :username is set to :quota
+	 * @Given quota of user :username is set/changed to :quota
 	 * @param string $username
 	 * @param string $quota
 	 * @return void
 	 */
 	public function quotaOfUserIsSetTo($username, $quota) {
-		$this->usersPage->open();
-		$this->usersPage->waitTillPageIsLoaded($this->getSession());
-		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
-	}
-
-	/**
-	 * @When quota of user :username is changed to :quota
-	 * @param string $username
-	 * @param string $quota
-	 * @return void
-	 */
-	public function quotaOfUserIsChangedTo($username, $quota) {
-		$this->usersPage->open();
-		$this->usersPage->waitTillPageIsLoaded($this->getSession());
 		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
 

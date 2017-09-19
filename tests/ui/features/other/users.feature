@@ -3,6 +3,7 @@ Feature: users
 	Background:
 		Given a regular user exists
 		And I am logged in as admin
+		And I am on the users page
 
 	Scenario Outline: change quota to a valid value
 		And quota of user "%regularuser%" is set to "<start_quota>"
