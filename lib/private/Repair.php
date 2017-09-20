@@ -53,6 +53,7 @@ use OCP\Migration\IRepairStep;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OC\Repair\MoveAvatarOutsideHome;
+use OC\Repair\RepairMismatchFileCachePath;
 
 class Repair implements IOutput{
 	/* @var IRepairStep[] */
@@ -126,6 +127,7 @@ class Repair implements IOutput{
 	public static function getRepairSteps() {
 		return [
 			new RepairMimeTypes(\OC::$server->getConfig()),
+			new RepairMismatchFileCachePath(\OC::$server->getDatabaseConnection(), \OC::$server->getMimeTypeLoader()),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()),
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
