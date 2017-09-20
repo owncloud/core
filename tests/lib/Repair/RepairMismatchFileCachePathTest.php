@@ -10,8 +10,8 @@ namespace Test\Repair;
 
 
 use OC\Repair\RepairMismatchFileCachePath;
-use OCP\Migration\IOutput;
-use OCP\Migration\IRepairStep;
+use \OC\RepairStep;
+use \OCP\IDBConnection;
 use Test\TestCase;
 use OCP\Files\IMimeTypeLoader;
 
@@ -24,10 +24,10 @@ use OCP\Files\IMimeTypeLoader;
  */
 class RepairMismatchFileCachePathTest extends TestCase {
 
-	/** @var IRepairStep */
+	/** @var RepairStep */
 	private $repair;
 
-	/** @var \OCP\IDBConnection */
+	/** @var IDBConnection */
 	private $connection;
 
 	protected function setUp() {
@@ -205,15 +205,14 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$doNotTouchId = $this->createFileCacheEntry($sourceStorageId, 'files/source/do_not_touch', $sourceId);
 
-		$outputMock = $this->createMock(IOutput::class);
 		if (is_null($repairStoragesOrder)) {
 			// no storage selected, full repair
 			$this->repair->setStorageNumericId(null);
-			$this->repair->run($outputMock);
+			$this->repair->run();
 		} else {
 			foreach ($repairStoragesOrder as $storageId) {
 				$this->repair->setStorageNumericId($storageId);
-				$this->repair->run($outputMock);
+				$this->repair->run();
 			}
 		}
 
@@ -345,9 +344,8 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		// End parallel storage
 
 
-		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
-		$this->repair->run($outputMock);
+		$this->repair->run();
 
 		// self-referencing updated
 		$entry = $this->getFileCacheEntry($selfRefId);
@@ -535,9 +533,8 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$wrongParentRootId = $this->createFileCacheEntry($storageId, 'wrongparentroot', $nonExistingParentId);
 		$wrongParentId = $this->createFileCacheEntry($storageId, 'files/wrongparent', $nonExistingParentId);
 
-		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
-		$this->repair->run($outputMock);
+		$this->repair->run();
 
 		// wrong parent root reparented to actual root
 		$entry = $this->getFileCacheEntry($wrongParentRootId);
@@ -593,13 +590,12 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$notOrphanedId2_parallel = $this->createFileCacheEntry($storageId_parallel, 'missingdir/missingdir1/orphaned2', $notOrphanedFolder2_parallel);
 		// end parallel test storage
 
-		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
-		$this->repair->run($outputMock);
+		$this->repair->run();
 
 		// orphaned entry reattached
 		$entry = $this->getFileCacheEntry($orphanedId1);
-		$this->assertEquals($nonExistingParentId, $entry['parent']); // this row fails, $entry['parent'] seems to equal a similar but different value
+		$this->assertEquals($nonExistingParentId, $entry['parent']);
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('files/missingdir/orphaned1', $entry['path']);
 		$this->assertEquals(md5('files/missingdir/orphaned1'), $entry['path_hash']);
@@ -700,9 +696,8 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$noRootid = $this->createFileCacheEntry($testStorageId, 'noroot', $baseId);
 
 
-		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
-		$this->repair->run($outputMock);
+		$this->repair->run();
 
 		// orphaned entry with no root reattached
 		$entry = $this->getFileCacheEntry($orphanedId);
@@ -713,7 +708,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// recreated root entry
 		$entry = $this->getFileCacheEntry($entry['parent']);
-		$this->assertEquals(-1, $entry['parent']); // this row fails, it appears to get attached to another entry, not the root (fileid ~ 4000)
+		$this->assertEquals(-1, $entry['parent']);
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('', $entry['path']);
 		$this->assertEquals(md5(''), $entry['path_hash']);
