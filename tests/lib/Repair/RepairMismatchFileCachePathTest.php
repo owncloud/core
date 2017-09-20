@@ -599,7 +599,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// orphaned entry reattached
 		$entry = $this->getFileCacheEntry($orphanedId1);
-		$this->assertEquals($nonExistingParentId, $entry['parent']); // this row fails, $entry['parent'] seems to equal a similar but different value
+		$this->assertEquals($nonExistingParentId, $entry['parent']);
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('files/missingdir/orphaned1', $entry['path']);
 		$this->assertEquals(md5('files/missingdir/orphaned1'), $entry['path_hash']);
@@ -713,7 +713,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// recreated root entry
 		$entry = $this->getFileCacheEntry($entry['parent']);
-		$this->assertEquals(-1, $entry['parent']); // this row fails, it appears to get attached to another entry, not the root (fileid ~ 4000)
+		$this->assertEquals(-1, $entry['parent']);
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('', $entry['path']);
 		$this->assertEquals(md5(''), $entry['path_hash']);
