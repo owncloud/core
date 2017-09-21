@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 
@@ -75,6 +76,37 @@ class UsersContext extends RawMinkContext implements Context {
 	 */
 	public function quotaOfUserIsSetTo($username, $quota) {
 		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
+	}
+
+	/**
+	 * @When /^I create a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is member of these groups)?$/
+	 * @param string $username
+	 * @param string $password
+	 * @param string $email
+	 * @param TableNode $groupsTable table of groups with a heading | group |
+	 * @return void
+	 */
+	public function iCreateAUserInTheGUI(
+		$username, $password, $email=null, TableNode $groupsTable=null
+	) {
+		if (!is_null($groupsTable)) {
+			$groups = $groupsTable->getColumn(0);
+			//get rid of the header
+			unset($groups[0]);
+		} else {
+			$groups = null;
+		}
+		$this->usersPage->createUser(
+			$this->getSession(), $username, $password, $email, $groups
+		);
+		$this->featureContext->addUserToCreatedUsersList(
+			$username, $password, $email
+		);
+		if (is_array($groups)) {
+			foreach ($groups as $group) {
+				$this->featureContext->addGroupToCreatedGroupsList($group);
+			}
+		}
 	}
 
 	/**
