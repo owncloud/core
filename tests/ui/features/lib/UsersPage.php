@@ -25,6 +25,7 @@ namespace Page;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Users page.
@@ -45,7 +46,21 @@ class UsersPage extends OwncloudPage {
 
 	protected $manualQuotaInputXpath = "//input[contains(@data-original-title," .
 										"'Please enter storage quota')]";
-
+	protected $settingsBtnXpath = ".//*[@id='app-settings-header']/button";
+	protected $settingContentId = "app-settings-content";
+	protected $labelMailOnUserCreateXpath = ".//label[@for='CheckboxMailOnUserCreate']";
+	protected $settingByTextXpath = ".//*[@id='userlistoptions']//label[normalize-space()='%s']";
+	protected $newUserUsernameFieldId = "newusername";
+	protected $newUserPasswordFieldId = "newuserpassword";
+	protected $newUserEmailFieldId = "newemail";
+	protected $createUserBtnXpath = ".//*[@id='newuser']/input[@type='submit']";
+	protected $newUserGroupsDropDownXpath = ".//*[@id='newuser']//div[@class='groupsListContainer multiselect button']";
+	protected $newUserGroupsDropDownListTag = "li";
+	protected $newUserGroupsSelectedClass = "selected";
+	protected $newUserGroupsListXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']";
+	protected $newUserGroupXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//label[@title='%s']/..";
+	protected $newUserAddGroupBtnXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//li[@title='add group']";
+	protected $createGroupWithNewUserInputXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//input[@type='text']";
 	/**
 	 * @param string $username
 	 * @return NodeElement for the requested user in the table
@@ -75,6 +90,145 @@ class UsersPage extends OwncloudPage {
 		);
 
 		return $selectField->getText();
+	}
+
+	/**
+	 * Open the settings menu
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function openSettingsMenu() {
+		$settingsBtn = $this->find("xpath", $this->settingsBtnXpath);
+		if (is_null($settingsBtn)) {
+			throw new ElementNotFoundException("cannot find settings button");
+		}
+		$settingsBtn->click();
+	}
+
+	/**
+	 * sets a setting in the settings menu
+	 * 
+	 * @param string $setting the human readable setting string
+	 * @param boolean $value
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function setSetting($setting, $value = true) {
+		$settingContent = $this->findById($this->settingContentId);
+		if (is_null($settingContent)) {
+			throw new ElementNotFoundException("cannot find setting content");
+		}
+		if (!$settingContent->isVisible()) {
+			$this->openSettingsMenu();
+		}
+		$settingLabel = $this->find(
+			"xpath", sprintf($this->settingByTextXpath, $setting)
+		);
+		if (is_null($settingLabel)) {
+			throw new ElementNotFoundException(
+				"cannot find setting '" . $setting . "'"
+			);
+		}
+		//the checkbox is not visible, but we need it to find the status
+		$checkBoxId = $settingLabel->getAttribute("for");
+		$checkBox = $this->findById($checkBoxId);
+		if (is_null($checkBox)) {
+			throw new ElementNotFoundException(
+				"cannot find checkbox with the id '" . $checkBoxId . "'"
+			);
+		}
+		if ($checkBox->isChecked() !== $value) {
+			$settingLabel->click();
+		}
+	}
+
+	/**
+	 * creates a user and adds it to the required groups
+	 * if group does not exist it will be created
+	 * 
+	 * @param Session $session
+	 * @param string $username
+	 * @param string $password
+	 * @param string $email
+	 * @param string[] $groups
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function createUser(
+		Session $session, $username, $password, $email = null, $groups = null
+	) {
+		$this->fillField($this->newUserUsernameFieldId, $username);
+		$this->fillField($this->newUserPasswordFieldId, $password);
+		$this->setSetting("Send email to new user", !is_null($email));
+		if (!is_null($email)) {
+			$this->fillField($this->newUserEmailFieldId, $email);
+		}
+		$createUserBtn = $this->find("xpath", $this->createUserBtnXpath);
+		if (is_null($createUserBtn)) {
+			throw new ElementNotFoundException(
+				"cannot find create user button"
+			);
+		}
+		$newUserGroupsDropDown = $this->find(
+			"xpath", $this->newUserGroupsDropDownXpath
+		);
+		if (is_null($newUserGroupsDropDown)) {
+			throw new ElementNotFoundException(
+				"cannot find groups dropdown for new user"
+			);
+		}
+		$newUserGroupsDropDown->click();
+		$groupDropDownList = $this->find("xpath", $this->newUserGroupsListXpath);
+		$groupsInDropDown = $groupDropDownList->findAll(
+			"xpath", $this->newUserGroupsDropDownListTag
+		);
+		
+		//uncheck all selected groups
+		foreach ($groupsInDropDown as $groupLi) {
+			if ($groupLi->getAttribute("class") === $this->newUserGroupsSelectedClass) {
+				$groupLi->click();
+			}
+		}
+		
+		//now select all groups that we need to have
+		if (is_array($groups)) {
+			foreach ($groups as $group) {
+				$groupItem = $this->find(
+					"xpath", sprintf($this->newUserGroupXpath, $group)
+				);
+				if (!is_null($groupItem)) {
+					$groupItem->click();
+				} else {
+					$newUserAddGroupBtn = $this->find(
+						"xpath", $this->newUserAddGroupBtnXpath
+					);
+					if (is_null($newUserAddGroupBtn)) {
+						throw new ElementNotFoundException(
+							"cannot find add-group button while creating a new user"
+						);
+					}
+					$newUserAddGroupBtn->click();
+					$createUserInput = $this->find(
+						"xpath", $this->createGroupWithNewUserInputXpath
+					);
+					if (is_null($createUserInput)) {
+						throw new ElementNotFoundException(
+							"cannot find add-group input while creating a new user"
+						);
+					}
+					try {
+						$createUserInput->setValue($group . "\n");
+					} catch (\WebDriver\Exception\NoSuchElement $e) {
+						// this seems to be a bug in MinkSelenium2Driver.
+						// Actually all that we need does happen, so we just don't do anything
+					}
+				}
+			}
+		}
+		
+		$createUserBtn->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**
