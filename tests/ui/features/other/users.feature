@@ -34,3 +34,10 @@ Feature: users
 		|30/40GB     |
 		|30/40       |
 		|3+56 B      |
+
+	Scenario: create simple user
+		When I create a user with the name "guiusr1" and the password "pwd"
+		And I logout
+		And I login with username "guiusr1" and password "pwd"
+		Then I should be redirected to a page with the title "Files - ownCloud"
+		

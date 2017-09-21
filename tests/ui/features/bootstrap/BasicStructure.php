@@ -147,11 +147,7 @@ trait BasicStructure {
 				. $result["stdOut"] . " " . $result["stdErr"]
 			);
 		}
-		$this->createdUsers [$user] = [ 
-				"password" => $password,
-				"displayname" => $displayName,
-				"email" => $email
-		];
+		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
 	}
 
 	/**
@@ -200,7 +196,7 @@ trait BasicStructure {
 				. $result["stdOut"] . " " . $result["stdErr"]
 			);
 		}
-		array_push($this->createdGroupNames, $group);
+		$this->addGroupToCreatedGroupsList($group);
 	}
 	/**
 	 * @Given a regular user is in a regular group
@@ -333,6 +329,41 @@ trait BasicStructure {
 	 */
 	public function getCreatedGroupNames() {
 		return $this->createdGroupNames;
+	}
+
+	/**
+	 * adds a user to the list of users that were created during test runs
+	 * makes it possible to use this list in other test steps 
+	 * or to delete them at the end of the test
+	 * 
+	 * @param string $user
+	 * @param string $password
+	 * @param string $displayName
+	 * @param string $email
+	 * @return void
+	 */
+	public function addUserToCreatedUsersList(
+		$user, $password, $displayName = null, $email = null
+	) {
+		$this->createdUsers [$user] = [
+			"password" => $password,
+			"displayname" => $displayName,
+			"email" => $email
+		];
+	}
+
+	/**
+	 * adds a group to the list of groups that were created during test runs
+	 * makes it possible to use this list in other test steps
+	 * or to delete them at the end of the test
+	 * 
+	 * @param string $group
+	 * @return void
+	 */
+	public function addGroupToCreatedGroupsList($group) {
+		if (!in_array($group, $this->createdGroupNames)) {
+			array_push($this->createdGroupNames, $group);
+		}
 	}
 
 	/**
