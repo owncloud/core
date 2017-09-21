@@ -121,6 +121,9 @@ class DecryptAllTest extends TestCase {
 			->setMethods(['prepareEncryptionModules', 'decryptAllUsersFiles'])
 			->getMock();
 
+
+		\OC::$server->getAppConfig()->setValue('encryption', 'useMasterKey', '1');
+
 		$instance->expects($this->once())
 			->method('prepareEncryptionModules')
 			->with($user)
@@ -135,6 +138,8 @@ class DecryptAllTest extends TestCase {
 		}
 
 		$instance->decryptAll($this->inputInterface, $this->outputInterface, $user);
+
+		\OC::$server->getAppConfig()->deleteKey('encryption', 'useMasterKey');
 	}
 
 	/**
