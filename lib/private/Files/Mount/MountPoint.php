@@ -131,16 +131,20 @@ class MountPoint implements IMountPoint {
 	 */
 	private function createStorage() {
 		if ($this->invalidStorage) {
+			\OC::$server->getLogger()->debug("createStorage() on an invalid storage");
 			return null;
 		}
 
 		if (class_exists($this->class)) {
 			try {
-				return $this->loader->getInstance($this, $this->class, $this->arguments);
+				$storage = $this->loader->getInstance($this, $this->class, $this->arguments);
+				\OC::$server->getLogger()->debug("storageLoader returned a null instance");
+				return $storage;
 			} catch (\Exception $exception) {
 				$this->invalidStorage = true;
 				if ($this->mountPoint === '/') {
 					// the root storage could not be initialized, show the user!
+					\OC::$server->getLogger()->debug("createInstance on root mount point failed");
 					throw new \Exception('The root storage could not be initialized. Please contact your local administrator.', $exception->getCode(), $exception);
 				} else {
 					\OCP\Util::writeLog('core', $exception->getMessage(), \OCP\Util::ERROR);
