@@ -190,7 +190,7 @@ class Upgrade extends Command {
 				$output->writeln('<info>Installing shipped apps</info>');
 			});
 			$updater->listen('\OC\Updater', 'upgradedAppStoreApp', function ($app) use($output) {
-				$output->writeln('<info>Updated app: <$app></info>');
+				$output->writeln("<info>Updated app: <$app></info>");
 			});
 			$updater->listen('\OC\Updater', 'maintenanceEnabled', function () use($output) {
 				$output->writeln('<info>Turned on maintenance mode</info>');
