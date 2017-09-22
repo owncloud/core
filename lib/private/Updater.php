@@ -229,12 +229,8 @@ class Updater extends BasicEmitter {
 			throw new \Exception($e->getMessage());
 		}
 
-		// update all shipped apps
-		$disabledApps = $this->checkAppsRequirements();
+		// update all apps
 		$this->doAppUpgrade();
-
-		// upgrade appstore apps
-		$this->upgradeAppStoreApps($disabledApps);
 
 		// install new shipped apps on upgrade
 		OC_App::loadApps('authentication');
@@ -319,55 +315,6 @@ class Updater extends BasicEmitter {
 				}
 			}
 		}
-	}
-
-	/**
-	 * check if the current enabled apps are compatible with the current
-	 * ownCloud version. disable them if not.
-	 * This is important if you upgrade ownCloud and have non ported 3rd
-	 * party apps installed.
-	 *
-	 * @return array
-	 * @throws \Exception
-	 */
-	private function checkAppsRequirements() {
-		$apps = OC_App::getEnabledApps();
-		$version = Util::getVersion();
-		$disabledApps = [];
-		foreach ($apps as $app) {
-			// check if the app is compatible with this version of ownCloud
-			$info = OC_App::getAppInfo($app);
-			if(!OC_App::isAppCompatible($version, $info)) {
-				$disabledApps = OC_App::disable($app);
-				$this->emit('\OC\Updater', 'incompatibleAppDisabled', [$app]);
-			}
-		}
-		return $disabledApps;
-	}
-
-
-	/**
-	 * @param array $disabledApps
-	 * @throws \Exception
-	 */
-	private function upgradeAppStoreApps(array $disabledApps) {
-
-		//
-		// TODO: integrate market app in here
-		//
-
-//		foreach($disabledApps as $app) {
-//			try {
-//				if (Installer::isUpdateAvailable($app)) {
-//					$ocsId = \OC::$server->getConfig()->getAppValue($app, 'ocsid', '');
-//
-//					$this->emit('\OC\Updater', 'upgradeAppStoreApp', [$app]);
-//					Installer::updateAppByOCSId($ocsId);
-//				}
-//			} catch (\Exception $ex) {
-//				$this->log->logException($ex, ['app' => 'core']);
-//			}
-//		}
 	}
 
 	/**
