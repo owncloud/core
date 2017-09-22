@@ -385,7 +385,7 @@ class MigrationService {
 	 * @param string $version
 	 */
 	public function executeStep($version) {
-
+		\OC::$server->getLogger()->debug("Executing migration step ".$version." for app: ".$this->appName);
 		$instance = $this->createInstance($version);
 		if ($instance instanceof ISimpleMigration) {
 			$instance->run($this->output);

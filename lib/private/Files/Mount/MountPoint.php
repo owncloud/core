@@ -32,6 +32,7 @@ use \OC\Files\Filesystem;
 use OC\Files\Storage\StorageFactory;
 use OC\Files\Storage\Storage;
 use OCP\Files\Mount\IMountPoint;
+use OCP\Files\StorageNotAvailableException;
 
 class MountPoint implements IMountPoint {
 	/**
@@ -159,6 +160,9 @@ class MountPoint implements IMountPoint {
 	public function getStorage() {
 		if (is_null($this->storage)) {
 			$this->storage = $this->createStorage();
+			if(is_null($this->storage)) {
+				\OC::$server->getLogger()->debug("Storage instance can not be instantiated");
+			}
 		}
 		return $this->storage;
 	}
@@ -171,6 +175,7 @@ class MountPoint implements IMountPoint {
 			if (is_null($this->storage)) {
 				$storage = $this->createStorage(); //FIXME: start using exceptions
 				if (is_null($storage)) {
+					\OC::$server->getLogger()->debug("Storage returned as null for getStorageId");
 					return null;
 				}
 
