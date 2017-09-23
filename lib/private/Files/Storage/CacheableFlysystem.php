@@ -47,7 +47,11 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 		if ($location === '') {
 			$location = '/';
 		}
+		return $location;
+	}
 
+	public function buildPath($path) {
+		$location = parent::buildPath($path);
 		if ($this->isCaseInsensitiveStorage) {
 			$location = strtolower($location);
 		}
@@ -60,13 +64,14 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	 * @param  string $path Path to file/folder
 	 * @return array|boolean
 	 */
-	public function getFlysystemMetadata($path) {
+	public function getFlysystemMetadata($path, $overRideCache = false) {
 		$location = $this->getCacheLocation($path);
-		if (!isset($this->cacheContents[$location])) {
+		if (!isset($this->cacheContents[$location]) || $overRideCache) {
 			try {
 				$this->cacheContents[$location] = $this->flysystem->getMetadata($location);
 			} catch (FileNotFoundException $e) {
-				$this->cacheContents[$location] = false;
+				// do not store this info in cache as it might interfere with Upload process
+                return false;
 			}
 		}
 		return $this->cacheContents[$location];
@@ -85,20 +90,12 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	}
 
 	/**
-	 * Check for existence of file/folder for the given path
-	 * @param  string  $path Path to file/folder
-	 * @return boolean
-	 */
-	public function hasPath($path) {
-		return (bool) $this->getFlysystemMetadata($path);
-	}
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function opendir($path) {
 		try {
-			$content = $this->flysystem->listContents($this->buildPath($path));
+			$location = $this->buildPath($path);
+			$content = $this->flysystem->listContents($location);
 			$this->updateCache($content);
 		} catch (FileNotFoundException $e) {
 			return false;
@@ -112,8 +109,17 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function file_exists($path) {
-		return $this->hasPath($path);
+	public function fopen($path, $mode) {
+		switch ($mode) {
+			case 'r':
+			case 'rb':
+				return parent::fopen($path, $mode);
+
+			default:
+				unset($this->cacheContents[$this->getCacheLocation($path)]);
+				return parent::fopen($path, $mode);
+		}
+		return false;
 	}
 
 	/**
