@@ -176,9 +176,14 @@
 
 		_addAppPassword: function() {
 			var _this = this;
-			this._toggleAddingToken(true);
 
 			var deviceName = this._tokenName.val();
+			if (!deviceName) {
+				OC.Notification.showTemporary(t('core', 'Empty app name is not allowed.'));
+				return;
+			}
+
+			this._toggleAddingToken(true);
 			var creatingToken = $.ajax(OC.generateUrl('/settings/personal/authtokens'), {
 				method: 'POST',
 				data: {

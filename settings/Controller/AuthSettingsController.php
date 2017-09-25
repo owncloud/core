@@ -74,7 +74,7 @@ class AuthSettingsController extends Controller {
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
 	 *
-	 * @return JSONResponse
+	 * @return JSONResponse | array
 	 */
 	public function index() {
 		$user = $this->userManager->get($this->uid);
@@ -109,7 +109,8 @@ class AuthSettingsController extends Controller {
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
 	 *
-	 * @return JSONResponse
+	 * @param string $name
+	 * @return JSONResponse | array
 	 */
 	public function create($name) {
 		try {
@@ -126,18 +127,19 @@ class AuthSettingsController extends Controller {
 			} catch (PasswordlessTokenException $ex) {
 				$password = null;
 			}
+			$token = $this->generateRandomDeviceToken();
+			$deviceToken = $this->tokenProvider->generateToken($token, $this->uid, $loginName, $password, $name, IToken::PERMANENT_TOKEN);
+
+			return [
+				'token' => $token,
+				'loginName' => $loginName,
+				'deviceToken' => $deviceToken
+			];
+		} catch (\InvalidArgumentException $ex) {
+			return $this->getServiceNotAvailableResponse();
 		} catch (InvalidTokenException $ex) {
 			return $this->getServiceNotAvailableResponse();
 		}
-
-		$token = $this->generateRandomDeviceToken();
-		$deviceToken = $this->tokenProvider->generateToken($token, $this->uid, $loginName, $password, $name, IToken::PERMANENT_TOKEN);
-
-		return [
-			'token' => $token,
-			'loginName' => $loginName,
-			'deviceToken' => $deviceToken
-		];
 	}
 
 	private function getServiceNotAvailableResponse() {
@@ -165,7 +167,7 @@ class AuthSettingsController extends Controller {
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
 	 *
-	 * @return JSONResponse
+	 * @return JSONResponse | array
 	 */
 	public function destroy($id) {
 
