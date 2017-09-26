@@ -218,7 +218,7 @@ class FilesPageBasic extends OwnCloudPage {
 	public function deleteFile($name, Session $session) {
 		$row = $this->findFileRowByName($name, $session);
 		$row->delete();
-		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 
 	/**

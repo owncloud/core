@@ -387,6 +387,17 @@ trait BasicStructure {
 	}
 
 	/**
+	 * gets the base url but without "http(s)://" in front of it
+	 * 
+	 * @return string
+	 */
+	public function getBaseUrlWithoutScheme() {
+		return preg_replace(
+			"(^https?://)", "", $this->getMinkParameter('base_url')
+		);
+	}
+
+	/**
 	 * substitutes codes like %base_url% with the value
 	 * if the given value does not have anything to be substituted
 	 * then it is returned unmodified
@@ -405,6 +416,21 @@ trait BasicStructure {
 				"parameter" => [ 
 					"base_url" 
 				] 
+			],
+			[
+				"code" => "%remote_server%",
+				"function" => "getenv",
+				"parameter" => [
+					"REMOTE_FED_BASE_URL"
+				]
+			],
+			[
+				"code" => "%local_server%",
+				"function" => [
+					$this,
+					"getBaseUrlWithoutScheme"
+				],
+				"parameter" => [ ]
 			],
 			[ 
 				"code" => "%regularuser%",
