@@ -90,10 +90,16 @@ else
 fi
 
 BASE_URL="http://$SRV_HOST_NAME"
+REMOTE_FED_BASE_URL=$REMOTE_FED_SRV_HOST_NAME
 
 if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
 then
 	BASE_URL="$BASE_URL:$SRV_HOST_PORT"
+fi
+
+if [ ! -z "$REMOTE_FED_SRV_HOST_PORT" ] && [ "$REMOTE_FED_SRV_HOST_PORT" != "80" ]
+then
+	REMOTE_FED_BASE_URL="$REMOTE_FED_BASE_URL:$REMOTE_FED_SRV_HOST_PORT"
 fi
 
 IPV4_URL="$BASE_URL"
@@ -125,6 +131,11 @@ then
 	IPV6_URL="$IPV6_URL/$SRV_HOST_URL"
 fi
 
+if [ -n "$REMOTE_FED_SRV_HOST_URL" ]
+then
+	REMOTE_FED_BASE_URL="$REMOTE_FED_BASE_URL/$REMOTE_FED_SRV_HOST_URL"
+fi
+
 if [ "$BROWSER" == "firefox" ]
 then
 	#set screen resolution so that hopefully dragable elements will be visible
@@ -143,6 +154,7 @@ echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM"
 export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@localhost:4445/wd/hub"}}}}' 
 export IPV4_URL
 export IPV6_URL
+export REMOTE_FED_BASE_URL
 
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v
 
