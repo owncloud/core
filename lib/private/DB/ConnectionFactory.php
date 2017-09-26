@@ -29,6 +29,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
 use Doctrine\DBAL\Event\Listeners\SQLSessionInit;
+use Doctrine\DBAL\Events;
 use OC\SystemConfig;
 
 /**
@@ -116,6 +117,10 @@ class ConnectionFactory {
 			case 'mysql':
 				$eventManager->addEventSubscriber(
 					new SQLSessionInit("SET SESSION AUTOCOMMIT=1"));
+				$eventManager->addEventListener(
+					Events::onSchemaColumnDefinition,
+					new MySqlSchemaColumnDefinitionListener()
+				);
 				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);
