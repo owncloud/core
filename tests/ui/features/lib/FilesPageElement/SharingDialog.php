@@ -45,6 +45,7 @@ class SharingDialog extends OwncloudPage {
 	protected $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
 	protected $shareWithCloseXpath = "/..//*[@class='close icon-close']";
 	protected $suffixToIdentifyGroups = " (group)";
+	protected $suffixToIdentifyRemoteUsers = " (remote)";
 	protected $sharerInformationXpath = ".//*[@class='reshare']";
 	protected $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
 	protected $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
@@ -182,6 +183,19 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function shareWithUser($name, Session $session) {
 		return $this->shareWithUserOrGroup($name, $name, $session);
+	}
+
+	/**
+	 *
+	 * @param string $name
+	 * @param Session $session
+	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @return void
+	 */
+	public function shareWithRemoteUser($name, Session $session) {
+		return $this->shareWithUserOrGroup(
+			$name, $name . $this->suffixToIdentifyRemoteUsers, $session
+		);
 	}
 
 	/**

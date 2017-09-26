@@ -28,13 +28,22 @@ use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use WebDriver\Exception as WebDriverException;
 use WebDriver\Key;
+use Page\OwncloudPageElement\OCDialog;
 
 /**
  * Owncloud page.
  */
 class OwncloudPage extends Page {
 
-	protected $userNameDispayId = "expandDisplayName";
+	protected $userNameDisplayId = "expandDisplayName";
+	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
+	
+	/**
+	 * used to store the unchanged path string when $path gets changed
+	 * 
+	 * @var string
+	 */
+	protected $originalPath = null;
 
 	/**
 	 * @param Session $session
@@ -139,12 +148,32 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * Get all open oc dialogs
+	 *
+	 * @return OCDialog[]
+	 */
+	public function getOcDialogs() {
+		$ocDialogs = [];
+		$ocDialogElements = $this->findAll("xpath", $this->ocDialogXpath);
+		foreach ($ocDialogElements as $element) {
+			/**
+			 * 
+			 * @var \Page\OwncloudPageElement\OCDialog $ocDialog
+			 */
+			$ocDialog = $this->getPage("OwncloudPageElement\\OCDialog");
+			$ocDialog->setElement($element);
+			$ocDialogs[] = $ocDialog;
+		}
+		return $ocDialogs;
+	}
+	
+	/**
 	 * Open the settings menu
 	 *
 	 * @return Page
 	 */
 	public function openSettingsMenu() {
-		$this->findById($this->userNameDispayId)->click();
+		$this->findById($this->userNameDisplayId)->click();
 		return $this->getPage("OwncloudPageElement\\SettingsMenu");
 	}
 	/**
@@ -153,7 +182,7 @@ class OwncloudPage extends Page {
 	 * @return string
 	 */
 	public function getMyUsername() {
-		return $this->findById($this->userNameDispayId)->getText();
+		return $this->findById($this->userNameDisplayId)->getText();
 	}
 
 	/**
@@ -163,6 +192,31 @@ class OwncloudPage extends Page {
 	 */
 	public function getPagePath() {
 		return $this->getPath();
+	}
+
+	/**
+	 *
+	 * @param string $path
+	 * @return void
+	 */
+	public function setPagePath($path) {
+		if ($this->originalPath === null) {
+			$this->originalPath = $this->path;
+		}
+		$this->path = $path;
+	}
+
+	/**
+	 * returns the unchanged path
+	 * 
+	 * @return string
+	 */
+	public function getOriginalPath() {
+		if ($this->originalPath !== null) {
+			return $this->originalPath;
+		} else {
+			return $this->getPath();
+		}
 	}
 
 	/**

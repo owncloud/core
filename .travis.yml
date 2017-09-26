@@ -16,6 +16,8 @@ env:
     - TC=litmus-v2
     - SRV_HOST_NAME=owncloud
     - SRV_HOST_PORT=8889
+    - REMOTE_FED_SRV_HOST_NAME=owncloud
+    - REMOTE_FED_SRV_HOST_PORT=8989
   matrix:
     - DB=sqlite
 
