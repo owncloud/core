@@ -54,6 +54,7 @@ class OwncloudPage extends Page {
 		Session $session,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
+		$timeout_msec = max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
@@ -82,6 +83,7 @@ class OwncloudPage extends Page {
 		$xpath,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
+		$timeout_msec = max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
@@ -107,6 +109,7 @@ class OwncloudPage extends Page {
 	public function waitTillElementIsNotNull(
 		$xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
+		$timeout_msec = max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
@@ -342,6 +345,7 @@ class OwncloudPage extends Page {
 		$this->waitForAjaxCallsToStart($session);
 		$end = microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
+		$timeout_msec = max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 

@@ -34,3 +34,5 @@ const STANDARDSLEEPTIMEMICROSEC = STANDARDSLEEPTIMEMILLISEC * 1000;
 
 // Default timeout for use in code that needs to wait for the UI
 const STANDARDUIWAITTIMEOUTMILLISEC = 10000;
+// Minimum timeout for use in code that needs to wait for the UI
+const MINIMUMUIWAITTIMEOUTMILLISEC = 500;
