@@ -21,6 +21,7 @@ Feature: users
 		|Unlimited  |5B          |5 B           |
 		|Unlimited  |55kB        |55 KB         |
 		|Unlimited  |45Kb        |45 KB         |
+		|Unlimited  |0 Kb        |0 B           |
 
 	Scenario Outline: change quota to an invalid value
 		When quota of user "%regularuser%" is changed to "<wished_quota>"
@@ -34,6 +35,7 @@ Feature: users
 		|30/40GB     |
 		|30/40       |
 		|3+56 B      |
+		|-1 B        |
 
 	Scenario: create simple user
 		When I create a user with the name "guiusr1" and the password "pwd"
