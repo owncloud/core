@@ -87,6 +87,7 @@ use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
+use OC\Group\GroupMapper;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IServerContainer;
@@ -232,13 +233,16 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService('AccountMapper', function(Server $c) {
 			return new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), new AccountTermMapper($c->getDatabaseConnection()));
 		});
+		$this->registerService('GroupMapper', function(Server $c) {
+			return new GroupMapper($c->getDatabaseConnection());
+		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
 			$logger = $c->getLogger();
 			return new \OC\User\Manager($config, $logger, $c->getAccountMapper());
 		});
 		$this->registerService('GroupManager', function (Server $c) {
-			$groupManager = new \OC\Group\Manager($this->getUserManager());
+			$groupManager = new \OC\Group\Manager($this->getUserManager(), $c->getGroupMapper());
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
 				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
 			});
@@ -973,6 +977,13 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getAccountMapper() {
 		return $this->query('AccountMapper');
+	}
+
+	/**
+	 * @return \OC\Group\GroupMapper
+	 */
+	public function getGroupMapper() {
+		return $this->query('GroupMapper');
 	}
 
 	/**
