@@ -264,6 +264,10 @@ class OC_App {
 			$types = [$types];
 		}
 		$appTypes = self::getAppTypes($app);
+		if (count($appTypes) === 0) {
+			self::setAppTypes($app);
+			$appTypes = self::getAppTypes($app);
+		}
 		foreach ($types as $type) {
 			if (array_search($type, $appTypes) !== false) {
 				return true;
@@ -302,6 +306,7 @@ class OC_App {
 
 		if (isset($appData['types'])) {
 			$appTypes = implode(',', $appData['types']);
+			self::$appTypes[$app] = $appTypes;
 		} else {
 			$appTypes = '';
 		}

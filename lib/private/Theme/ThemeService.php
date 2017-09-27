@@ -153,7 +153,8 @@ class ThemeService implements IThemeService {
 	 */
 	private function getAllAppThemes() {
 		$themes = [];
-		foreach (\OC::$server->getAppManager()->getAllApps() as $app) {
+
+		foreach (\OC_App::getAllApps() as $app) {
 			if (\OC_App::isType($app, 'theme')) {
 				$themes[$app] = $this->makeTheme($app);
 			}
