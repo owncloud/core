@@ -15,6 +15,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author voxsim <Simon Vocella>
+ * @authod Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -38,6 +39,8 @@ namespace OC\Group;
 use OC\Hooks\PublicEmitter;
 use OCP\GroupInterface;
 use OCP\IGroupManager;
+use OC\Group\GroupMapper;
+use OC\Group\Database;
 
 /**
  * Class Manager
@@ -55,34 +58,30 @@ use OCP\IGroupManager;
  * @package OC\Group
  */
 class Manager extends PublicEmitter implements IGroupManager {
-	/**
-	 * @var GroupInterface[] $backends
-	 */
+	/** @var GroupInterface[] $backends */
 	private $backends = [];
 
-	/**
-	 * @var \OC\User\Manager $userManager
-	 */
+	/** @var \OC\User\Manager $userManager */
 	private $userManager;
 
-	/**
-	 * @var \OC\Group\Group[]
-	 */
+	/** @var \OC\Group\Group[] */
 	private $cachedGroups = [];
 
-	/**
-	 * @var \OC\Group\Group[]
-	 */
+	/** @var \OC\Group\Group[] */
 	private $cachedUserGroups = [];
 
 	/** @var \OC\SubAdmin */
 	private $subAdmin = null;
 
+	/** @var \OC\Group\GroupMapper */
+	private $groupMapper;
+
 	/**
 	 * @param \OC\User\Manager $userManager
 	 */
-	public function __construct(\OC\User\Manager $userManager) {
+	public function __construct(\OC\User\Manager $userManager, \OC\Group\GroupMapper $groupMapper) {
 		$this->userManager = $userManager;
+		$this->groupMapper = $groupMapper;
 		$cachedGroups = & $this->cachedGroups;
 		$cachedUserGroups = & $this->cachedUserGroups;
 		$this->listen('\OC\Group', 'postDelete', function ($group) use (&$cachedGroups, &$cachedUserGroups) {
@@ -136,7 +135,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 		$this->backends = [];
 		$this->clearCaches();
 	}
-	
+
 	protected function clearCaches() {
 		$this->cachedGroups = [];
 		$this->cachedUserGroups = [];
@@ -210,6 +209,21 @@ class Manager extends PublicEmitter implements IGroupManager {
 			}
 			return null;
 		}
+	}
+
+
+	/**
+	 * @param string $gid
+	 * @param string $backendClass
+	 * @return BackendGroup|\OCP\AppFramework\Db\Entity
+	 */
+	private function createBackendGroup($gid, $backendClass) {
+		$account = new BackendGroup();
+		$account->setGroupId($gid);
+		$account->setDisplayName($gid);
+		$account->setBackend($backendClass);
+		$account = $this->groupMapper->insert($account);
+		return $account;
 	}
 
 	/**
