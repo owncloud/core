@@ -86,6 +86,41 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then dialogs should be displayed
+	 * @param TableNode $table of expected dialogs format must be:
+	 *                  | title | content |
+	 * @return void
+	 */
+	public function dialogsShouldBeDisplayed(TableNode $table) {
+		$dialogs = $this->owncloudPage->getOcDialogs();
+		$expectedDialogs = $table->getHash();
+		//we iterate first through the real dialogs because that way we can
+		//save time by calling getMessage() & getTitle() only once
+		foreach ($dialogs as $dialog) {
+			$content = $dialog->getMessage();
+			$title = $dialog->getTitle();
+			for ($dialogI = 0; $dialogI < count($expectedDialogs); $dialogI++) {
+				$expectedDialogs[$dialogI]['content'] = $this->substituteInLineCodes(
+					$expectedDialogs[$dialogI]['content']
+				);
+				if ($expectedDialogs[$dialogI]['content'] === $content
+					&& $expectedDialogs[$dialogI]['title'] === $title
+				) {
+						$expectedDialogs[$dialogI]['found'] = true;
+				}
+			}
+		}
+		foreach ($expectedDialogs as $expectedDialog) {
+			PHPUnit_Framework_Assert::assertArrayHasKey(
+				"found",
+				$expectedDialog,
+				"could not find dialog with title '" . $expectedDialog['title'] .
+				"' and content '" . $expectedDialog['content'] . "'"
+			);
+		}
+	}
+
+	/**
 	 * @Then I should be redirected to a page with the title :title
 	 * @param string $title
 	 * @return void

@@ -185,6 +185,7 @@ class FileRow extends OwnCloudPage {
 	public function delete() {
 		$actionMenu = $this->openFileActionsMenu();
 		$actionMenu->delete();
+		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
 	}
 
 	/**

@@ -67,6 +67,24 @@ class LoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When I login with username :username and password :password to :server
+	 * @param string $username
+	 * @param string $password
+	 * @param string $server
+	 * @return void
+	 */
+	public function iLoginWithUsernameAndPasswordToSrv(
+		$username, $password, $server
+	) {
+		$server = $this->featureContext->substituteInLineCodes($server);
+		$this->loginPage->setPagePath(
+			$server . $this->loginPage->getOriginalPath()
+		);
+		$this->loginPage->open();
+		$this->iLoginWithUsernameAndPassword($username, $password);
+	}
+
+	/**
 	 * @When I login with username :username and invalid password :password
 	 * @param string $username
 	 * @param string $password
