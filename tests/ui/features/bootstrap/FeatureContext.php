@@ -93,20 +93,30 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function dialogsShouldBeDisplayed(TableNode $table) {
 		$dialogs = $this->owncloudPage->getOcDialogs();
-		$dialogCounter = 0;
-		foreach ($table as $expectedDialog) {
-			PHPUnit_Framework_Assert::assertEquals(
-				$expectedDialog['title'],
-				$dialogs[$dialogCounter]->getTitle()
+		$expectedDialogs = $table->getHash();
+		//we iterate first through the real dialogs because that way we can
+		//save time by calling getMessage() & getTitle() only once
+		foreach ($dialogs as $dialog) {
+			$content = $dialog->getMessage();
+			$title = $dialog->getTitle();
+			for ($dialogI = 0; $dialogI < count($expectedDialogs); $dialogI++) {
+				$expectedDialogs[$dialogI]['content'] = $this->substituteInLineCodes(
+					$expectedDialogs[$dialogI]['content']
+				);
+				if ($expectedDialogs[$dialogI]['content'] === $content
+					&& $expectedDialogs[$dialogI]['title'] === $title
+				) {
+						$expectedDialogs[$dialogI]['found'] = true;
+				}
+			}
+		}
+		foreach ($expectedDialogs as $expectedDialog) {
+			PHPUnit_Framework_Assert::assertArrayHasKey(
+				"found",
+				$expectedDialog,
+				"could not find dialog with title '" . $expectedDialog['title'] .
+				"' and content '" . $expectedDialog['content'] . "'"
 			);
-			$expectedDialog['content'] = $this->substituteInLineCodes(
-				$expectedDialog['content']
-			);
-			PHPUnit_Framework_Assert::assertEquals(
-				$expectedDialog['content'],
-				$dialogs[$dialogCounter]->getMessage()
-			);
-			$dialogCounter++;
 		}
 	}
 
