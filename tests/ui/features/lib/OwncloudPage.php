@@ -227,9 +227,11 @@ class OwncloudPage extends Page {
 	 * @return Array
 	 */
 	public function getCoordinatesOfElement($session, $element) {
+		$elementXpath = str_replace('"', '\"', $element->getXpath());
+
 		return $session->evaluateScript(
 			'return document.evaluate( "' .
-			$element->getXpath() .
+			$elementXpath .
 			'",document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)' .
 			'.singleNodeValue.getBoundingClientRect();'
 		);
