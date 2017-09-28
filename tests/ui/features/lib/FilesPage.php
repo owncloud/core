@@ -130,6 +130,25 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * Returns the same <0, 0, >0 as strcmp()
+	 * But the names can be in pieces in an array or as plain strings
+	 *
+	 * @param string|array $name1
+	 * @param string|array $name2
+	 * @return int
+	 */
+	public function strcmpNames($name1, $name2) {
+		if (is_array($name1)) {
+			$name1 = implode($name1);
+		}
+		if (is_array($name2)) {
+			$name2 = implode($name2);
+		}
+
+		return strcmp($name1, $name2);
+	}
+
+	/**
 	 * moves a file or folder into an other folder by drag and drop
 	 * 
 	 * @param string|array $name
@@ -138,8 +157,17 @@ class FilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo($name, $destination, Session $session) {
-		$toMoveFileRow = $this->findFileRowByName($name, $session);
-		$destinationFileRow = $this->findFileRowByName($destination, $session);
+		// The "top" item needs to be found last, so that it is at the top
+		// of the displayed scroll window and the other file will be somewhere
+		// below it. dragTo does not work when trying to drag somewhere that
+		// is up the list out of view.
+		if ($this->strcmpNames($destination, $name) < 0) {
+			$toMoveFileRow = $this->findFileRowByName($name, $session);
+			$destinationFileRow = $this->findFileRowByName($destination, $session);
+		} else {
+			$destinationFileRow = $this->findFileRowByName($destination, $session);
+			$toMoveFileRow = $this->findFileRowByName($name, $session);
+		}
 		$toMoveFileRow->findFileLink()->dragTo($destinationFileRow->findFileLink());
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}

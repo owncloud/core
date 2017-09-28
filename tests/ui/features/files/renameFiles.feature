@@ -44,16 +44,16 @@ Feature: renameFiles
 		When I rename the file "lorem.txt" to " space at start"
 		And the files page is reloaded
 		Then the file " space at start" should be listed
-		When I rename the file " space at start" to "space at end "
+		When I rename the file " space at start" to "fspace at end "
 		And the files page is reloaded
-		Then the file "space at end " should be listed
-		When I rename the file "space at end " to "space at end .txt"
+		Then the file "fspace at end " should be listed
+		When I rename the file "fspace at end " to "zspace at end .txt"
 		And the files page is reloaded
-		Then the file "space at end .txt" should be listed
-		When I rename the file "space at end .txt" to "space at end. lis"
+		Then the file "zspace at end .txt" should be listed
+		When I rename the file "zspace at end .txt" to "aspace at end. lis"
 		And the files page is reloaded
-		Then the file "space at end. lis" should be listed
-		When I rename the file "space at end. lis" to "space at end.log "
+		Then the file "aspace at end. lis" should be listed
+		When I rename the file "aspace at end. lis" to "space at end.log "
 		And the files page is reloaded
 		Then the file "space at end.log " should be listed
 		When I rename the file "space at end.log " to "  multiple   space    all     over   .  dat  "
