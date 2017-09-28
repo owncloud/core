@@ -1,5 +1,5 @@
 <?php
-namespace OCA\dav\Migrations;
+namespace OC\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
@@ -8,7 +8,7 @@ use OCP\Migration\ISchemaMigration;
 /**
  * changes mtime fields to be able to store 64bit time stamps
  */
-class Version20170607100912 implements ISchemaMigration {
+class Version20170928120000 implements ISchemaMigration {
 
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
