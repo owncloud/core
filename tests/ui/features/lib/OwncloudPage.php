@@ -342,6 +342,7 @@ class OwncloudPage extends Page {
 		$this->waitForAjaxCallsToStart($session);
 		$end = microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
+		$timeout_msec = max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 
