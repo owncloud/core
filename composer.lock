@@ -37,6 +37,66 @@
             "time": "2014-09-15T13:12:35+00:00"
         },
         {
+            "name": "deepdiver/zipstreamer",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DeepDiver1975/PHPZipStreamer.git",
+                "reference": "96813f84abde82a93dbf0739005648ebd030a93c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DeepDiver1975/PHPZipStreamer/zipball/96813f84abde82a93dbf0739005648ebd030a93c",
+                "reference": "96813f84abde82a93dbf0739005648ebd030a93c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZipStreamer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolai Ehemann",
+                    "email": "en@enlightened.de",
+                    "role": "Author/Maintainer"
+                },
+                {
+                    "name": "André Rothe",
+                    "email": "arothe@zks.uni-leipzig.de",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Lukas Reschke",
+                    "email": "lukas@owncloud.com",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Thomas Müller",
+                    "email": "thomas.mueller@tmit.eu",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "Stream zip files without i/o overhead",
+            "homepage": "https://github.com/DeepDiver1975/PHPZipStreamer",
+            "keywords": [
+                "stream",
+                "zip"
+            ],
+            "time": "2017-09-28T09:23:17+00:00"
+        },
+        {
             "name": "deepdiver1975/tarstreamer",
             "version": "v0.1.0",
             "source": {
@@ -1172,58 +1232,6 @@
                 "tags"
             ],
             "time": "2016-04-04T09:34:50+00:00"
-        },
-        {
-            "name": "mcnetic/zipstreamer",
-            "version": "v1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/McNetic/PHPZipStreamer.git",
-                "reference": "e57c198486242476587d04844084adbe8330581d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/McNetic/PHPZipStreamer/zipball/e57c198486242476587d04844084adbe8330581d",
-                "reference": "e57c198486242476587d04844084adbe8330581d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ZipStreamer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolai Ehemann",
-                    "email": "en@enlightened.de",
-                    "role": "Author/Maintainer"
-                },
-                {
-                    "name": "André Rothe",
-                    "email": "arothe@zks.uni-leipzig.de",
-                    "role": "Contributor"
-                },
-                {
-                    "name": "Lukas Reschke",
-                    "email": "lukas@owncloud.com",
-                    "role": "Contributor"
-                }
-            ],
-            "description": "Stream zip files without i/o overhead",
-            "homepage": "https://github.com/McNetic/PHPZipStreamer",
-            "keywords": [
-                "stream",
-                "zip"
-            ],
-            "time": "2016-02-17T22:47:09+00:00"
         },
         {
             "name": "natxet/CssMin",
@@ -3346,7 +3354,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-02-06 08:22:23"
+            "time": "2017-02-06T08:22:23+00:00"
         },
         {
             "name": "behat/transliterator",
