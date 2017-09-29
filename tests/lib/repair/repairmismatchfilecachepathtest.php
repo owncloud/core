@@ -8,12 +8,9 @@
 
 namespace Test\Repair;
 
-
 use OC\Repair\RepairMismatchFileCachePath;
-use \OC\RepairStep;
 use \OCP\IDBConnection;
 use Test\TestCase;
-use OCP\Files\IMimeTypeLoader;
 
 /**
  * Tests for repairing mismatch file cache paths
@@ -24,7 +21,7 @@ use OCP\Files\IMimeTypeLoader;
  */
 class RepairMismatchFileCachePathTest extends TestCase {
 
-	/** @var RepairStep */
+	/** @var RepairMismatchFileCachePath */
 	private $repair;
 
 	/** @var IDBConnection */
@@ -35,7 +32,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 
-		$mimeLoader = $this->getMockBuilder(IMimeTypeLoader::class)->getMock();
+		$mimeLoader = $this->getMockBuilder('OCP\Files\IMimeTypeLoader')->getMock();
 		$mimeLoader->method('getId')
 			->will($this->returnValueMap([
 				['httpd', 1],
