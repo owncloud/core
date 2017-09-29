@@ -19,10 +19,11 @@
 		<admin>admin-encryption</admin>
 	</documentation>
 	<rememberlogin>false</rememberlogin>
-	<version>1.3.0</version>
+	<version>1.3.1</version>
 	<types>
 		<filesystem/>
 	</types>
+	<use-migrations>true</use-migrations>
 	<dependencies>
 		<lib>openssl</lib>
 		<owncloud min-version="10.0" max-version="10.0" />
