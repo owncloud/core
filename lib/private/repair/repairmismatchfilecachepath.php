@@ -559,6 +559,7 @@ class LogOutput {
 		$this->logger->info($message);
 	}
 	public function finishProgress() {}
+	public function advance() {}
 	public function startProgress() {}
 	public function warning($message) {
 		$this->logger->warning($message);
