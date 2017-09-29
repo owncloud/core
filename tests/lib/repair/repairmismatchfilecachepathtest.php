@@ -35,7 +35,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 
-		$mimeLoader = $this->createMock(IMimeTypeLoader::class);
+		$mimeLoader = $this->getMockBuilder(IMimeTypeLoader::class)->getMock();
 		$mimeLoader->method('getId')
 			->will($this->returnValueMap([
 				['httpd', 1],
