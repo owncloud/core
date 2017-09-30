@@ -260,6 +260,7 @@ OC.L10N.register(
     "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "Εάν θέλετε να υποστηρίξετε το έργο\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">συμμετέχετε στην ανάπτυξη</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">συμμετέχετε στην διάδωση</a>!",
     "Show First Run Wizard again" : "Προβολή Οδηγού Πρώτης Εκτέλεσης ξανά",
     "Domain" : "Τομέας",
+    "Add Domain" : "Προσθήκη τομέα",
     "Add" : "Προσθήκη",
     "Profile picture" : "Φωτογραφία προφίλ",
     "Upload new" : "Μεταφόρτωση νέου",
