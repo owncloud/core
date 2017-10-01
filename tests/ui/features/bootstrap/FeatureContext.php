@@ -21,11 +21,13 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Page\OwncloudPage;
 use Page\LoginPage;
+use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
 
@@ -38,6 +40,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	private $owncloudPage;
 	private $loginPage;
+	private $oldCSRFSetting = null;
 
 	/**
 	 * FeatureContext constructor.
@@ -139,8 +142,25 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function setUpSuite(BeforeScenarioScope $scope) {
+		SetupHelper::setOcPath($scope);
 		$jobId = $this->getSessionId($scope);
 		file_put_contents("/tmp/saucelabs_sessionid", $jobId);
+		if ($this->oldCSRFSetting === null) {
+			$oldCSRFSetting = SetupHelper::runOcc(
+				['config:system:get', 'csrf.disabled']
+			)['stdOut'];
+			$this->oldCSRFSetting = trim($oldCSRFSetting);
+		}
+		SetupHelper::runOcc(
+			[ 
+				'config:system:set',
+				'csrf.disabled',
+				'--type',
+				'boolean',
+				'--value',
+				'true' 
+			]
+		);
 	}
 
 	/**
@@ -152,5 +172,30 @@ class FeatureContext extends RawMinkContext implements Context {
 		$parts = explode('/', $url);
 		$sessionId = array_pop($parts);
 		return $sessionId;
+	}
+
+	/**
+	 * After Scenario. Sets back old settings
+	 *
+	 * @param AfterScenarioScope $scope
+	 * @AfterScenario
+	 * @return void
+	 */
+	public function tearDownSuite(AfterScenarioScope $scope) {
+		if ($this->oldCSRFSetting === "") {
+			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
+		} elseif ($this->oldCSRFSetting !== null) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'csrf.disabled',
+					'--type',
+					'boolean',
+					'--value',
+					$this->oldCSRFSetting
+				]
+			);
+		}
+
 	}
 }

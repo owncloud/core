@@ -135,13 +135,43 @@ class FilesPage extends FilesPageBasic {
 	 * @param string|array $name
 	 * @param string|array $destination
 	 * @param Session $session
+	 * @param int $maxRetries
 	 * @return void
 	 */
-	public function moveFileTo($name, $destination, Session $session) {
+	public function moveFileTo(
+		$name, $destination, Session $session, $maxRetries = 5
+	) {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
-		$toMoveFileRow->findFileLink()->dragTo($destinationFileRow->findFileLink());
-		$this->waitForAjaxCallsToStartAndFinish($session);
+		
+		$session->executeScript(
+			'
+			jQuery.countXHRRequests = 0;
+			(function(open) {
+				XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
+					jQuery.countXHRRequests++;
+					open.call(this, method, url, async, user, pass);
+				};
+			})(XMLHttpRequest.prototype.open);
+			'
+		);
+		$countXHRRequests = 0;
+		$retryCounter = 0;
+		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
+			$toMoveFileRow->findFileLink()->dragTo($destinationFileRow->findFileLink());
+			$this->waitForAjaxCallsToStartAndFinish($session);
+			$countXHRRequests = $session->evaluateScript("jQuery.countXHRRequests");
+			if ($countXHRRequests === 0) {
+				error_log("Error while moving file file");
+			} else {
+				break;
+			}
+		}
+		if ($retryCounter > 0) {
+			$message = "INFORMATION: retried to move file " . $retryCounter . " times";
+			echo $message;
+			error_log($message);
+		}
 	}
 
 	/**
