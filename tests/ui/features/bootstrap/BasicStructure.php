@@ -236,7 +236,6 @@ trait BasicStructure {
 	public function setUpScenarioGetRegularUsersAndGroups(
 		BeforeScenarioScope $scope
 	) {
-		SetupHelper::setOcPath($scope);
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
 		$this->adminPassword = (string)$suiteParameters['adminPassword'];
 		$this->regularUserNames = explode(

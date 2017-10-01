@@ -368,6 +368,7 @@ class FilesContext extends RawMinkContext implements Context {
 		if (is_null($pageObject)) {
 			$pageObject = $this->filesPage;
 		}
+		$pageObject->waitTillPageIsLoaded($this->getSession());
 		PHPUnit_Framework_Assert::assertNotNull(
 			$pageObject->findFileRowByName($name, $this->getSession())
 		);
