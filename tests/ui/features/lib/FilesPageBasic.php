@@ -43,6 +43,8 @@ class FilesPageBasic extends OwnCloudPage {
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
 	protected $fileRowFromNameXpath = "/../../..";
 	protected $appContentId = "app-content";
+	protected $appContentFilesContainerId = "app-content-files";
+	protected $controlsId = "controls";
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 
@@ -131,18 +133,27 @@ class FilesPageBasic extends OwnCloudPage {
 			$fileNameMatch = $this->find("xpath", $this->fileListXpath)->find(
 				"xpath", sprintf($this->fileNameMatchXpath, $xpathString)
 			);
-
-			if (is_null($fileNameMatch)) {
+			
+			if (is_null($fileNameMatch) || !$fileNameMatch->isVisible()) {
 				if (is_null($currentFileCount)) {
 					$currentFileCount = $this->getSizeOfFileFolderList();
 				}
 				$previousFileCount = $currentFileCount;
 				$this->scrollDownAppContent($session);
 				$currentFileCount = $this->getSizeOfFileFolderList();
+				$spaceLeftTillBottom = (int) $session->evaluateScript(
+					'$("#' . $this->appContentFilesContainerId . '").height() ' .
+					'- (' .
+					'    $("#' . $this->appContentId . '").height() ' .
+					'    +$("#' . $this->appContentId . '").scrollTop()' .
+					'  )'
+				);
+			} else {
+				$fileNameMatch->focus();
 			}
 		} while (
-			is_null($fileNameMatch)
-			&& ($currentFileCount > $previousFileCount)
+			(is_null($fileNameMatch) || !$fileNameMatch->isVisible())
+			&& ($currentFileCount > $previousFileCount || $spaceLeftTillBottom > 0)
 		);
 
 		if (is_null($fileNameMatch)) {
@@ -174,7 +185,9 @@ class FilesPageBasic extends OwnCloudPage {
 	public function scrollDownAppContent(Session $session) {
 		$this->scrollToPosition(
 			'#' . $this->appContentId,
-			'$("#' . $this->appContentId . '")[0].scrollHeight',
+			'$("#' . $this->appContentId . '").scrollTop() + $("#' .
+			$this->appContentId . '").height() - $("#' .
+			$this->controlsId . '").height()',
 			$session
 		);
 		$this->waitForOutstandingAjaxCalls($session);
