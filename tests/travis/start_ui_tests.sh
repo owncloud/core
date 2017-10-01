@@ -9,6 +9,11 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+#save the current language and set the language to "C"
+#we want to have it all in english to be able to parse outputs
+OLD_LANG=$LANG
+export LANG=C
+
 # Look for command line options for:
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
@@ -143,6 +148,12 @@ then
 	EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1","screenResolution":"1920x1080",'
 fi
 
+
+if [ "$BROWSER" == "internet explorer" ]
+then
+	EXTRA_CAPABILITIES='"iedriverVersion": "3.4.0","requiresWindowFocus":true,"screenResolution":"1920x1080",'
+fi
+
 EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 
 #Set up personalized skeleton
@@ -150,15 +161,17 @@ OCC=./occ
 PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
 $OCC config:system:set skeletondirectory --value="$(pwd)/tests/ui/skeleton" >/dev/null
 
-echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM"
+TEST_LOG_FILE=$(mktemp)
+
+echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM" | tee $TEST_LOG_FILE
 export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@localhost:4445/wd/hub"}}}}' 
 export IPV4_URL
 export IPV6_URL
 export REMOTE_FED_BASE_URL
 
-lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v
+lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 
-if [ $? -eq 0 ]
+if [ ${PIPESTATUS[0]} -eq 0 ]
 then
 	PASSED=true
 else
@@ -179,7 +192,7 @@ then
 	else
 		echo ""
 		echo "The following tests were skipped because they are tagged @skip:"
-		cat "$DRY_RUN_FILE"
+		cat "$DRY_RUN_FILE" | tee -a $TEST_LOG_FILE
 	fi
 	rm -f "$DRY_RUN_FILE"
 fi
@@ -194,10 +207,21 @@ fi
 if [ ! -z "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ] && [ -e /tmp/saucelabs_sessionid ]
 then
 	SAUCELABS_SESSIONID=`cat /tmp/saucelabs_sessionid`
-	curl -X PUT -s -d "{\"passed\": $PASSED}" -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCELABS_SESSIONID
+	curl -X PUT -s -d "{\"passed\": $PASSED}" -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCELABS_SESSIONID 2>&1 | tee -a $TEST_LOG_FILE 
 
-	printf "\n${RED}SAUCELABS RESULTS:${BLUE} https://saucelabs.com/jobs/$SAUCELABS_SESSIONID\n${NC}"
+	printf "\n${RED}SAUCELABS RESULTS:${BLUE} https://saucelabs.com/jobs/$SAUCELABS_SESSIONID\n${NC}" | tee -a $TEST_LOG_FILE
 fi
+
+#upload log file for later analysis
+if [ "$PASSED" = false ] && [ ! -z "$REPORTING_WEBDAV_USER" ] && [ ! -z "$REPORTING_WEBDAV_PWD" ] && [ ! -z "$REPORTING_WEBDAV_URL" ]
+then
+	curl -u $REPORTING_WEBDAV_USER:$REPORTING_WEBDAV_PWD -T $TEST_LOG_FILE $REPORTING_WEBDAV_URL/"$TRAVIS_JOB_NUMBER"_`date "+%F_%T"`.log
+fi
+
+#reset the original language
+export LANG=$OLD_LANG
+
+rm -f "$TEST_LOG_FILE"
 
 if [ "$PASSED" = true ]
 then

@@ -23,6 +23,26 @@ default:
         - UsersContext:
         - FilesContext:
 
+    moveFilesFolders:
+      paths:
+        - %paths.base%/../features/moveFilesFolders
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+
+    renameFilesFolders:
+      paths:
+        - %paths.base%/../features/renameFilesFolders
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+
     trashbin:
       paths:
         - %paths.base%/../features/trashbin
@@ -32,6 +52,17 @@ default:
         - LoginContext:
         - UsersContext:
         - FilesContext:
+
+    sharing:
+      paths:
+        - %paths.base%/../features/sharing
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+        - SharingContext:
 
     other:
       paths:
@@ -44,4 +75,3 @@ default:
         - FilesContext:
         - PersonalSecuritySettingsContext:
         - PersonalGeneralSettingsContext:
-        - SharingContext:
