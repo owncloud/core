@@ -67,6 +67,12 @@ class User implements IUser {
 	/** @var AccountMapper */
 	private $mapper;
 
+	/** @var \OC\Group\Manager  */
+	private $groupManager;
+
+	/** @var Session  */
+	private $userSession;
+
 	/**
 	 * User constructor.
 	 *
@@ -76,9 +82,12 @@ class User implements IUser {
 	 * @param IConfig|null $config
 	 * @param null $urlGenerator
 	 * @param EventDispatcher|null $eventDispatcher
+	 * @param \OC\Group\Manager|null $groupManager
+	 * @param Session|null $userSession
 	 */
 	public function __construct(Account $account, AccountMapper $mapper, $emitter = null, IConfig $config = null,
-								$urlGenerator = null, EventDispatcher $eventDispatcher = null
+								$urlGenerator = null, EventDispatcher $eventDispatcher = null,
+								\OC\Group\Manager $groupManager = null, Session $userSession = null
 	) {
 		$this->account = $account;
 		$this->mapper = $mapper;
@@ -91,6 +100,14 @@ class User implements IUser {
 		$this->urlGenerator = $urlGenerator;
 		if (is_null($this->urlGenerator)) {
 			$this->urlGenerator = \OC::$server->getURLGenerator();
+		}
+		$this->groupManager = $groupManager;
+		if (is_null($this->groupManager)) {
+			$this->groupManager = \OC::$server->getGroupManager();
+		}
+		$this->userSession = $userSession;
+		if (is_null($this->userSession)) {
+			$this->userSession = \OC::$server->getUserSession();
 		}
 	}
 
@@ -307,7 +324,9 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function canChangeDisplayName() {
-		if ($this->config->getSystemValue('allow_user_to_change_display_name') === false) {
+		if (($this->config->getSystemValue('allow_user_to_change_display_name') === false) &&
+			(!$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) &&
+			(!$this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()))) {
 			return false;
 		}
 		$backend = $this->account->getBackendInstance();
