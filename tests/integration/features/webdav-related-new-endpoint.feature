@@ -454,7 +454,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
 		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
-		
+
 	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
 		Given using new dav path
 		And user "user0" exists
@@ -470,6 +470,16 @@ Feature: webdav-related-new-endpoint
 		And as an "user1"
 		When as "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
+
+	Scenario: Setting custom DAV property using a new endpoint and reading it using an old endpoint
+		Given using new dav path
+		And user "user0" exists
+		And as an "user0"
+		And user "user0" uploads file "data/textfile.txt" to "/testnewold.txt"
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"
+		And using old dav path
+		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "lucky"
 
 	## Specific scenarios for new endpoint	
 

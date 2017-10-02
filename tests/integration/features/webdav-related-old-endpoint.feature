@@ -459,6 +459,16 @@ Feature: webdav-related-old-endpoint
 		When as "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
 
+	Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
+		Given using old dav path
+		And user "user0" exists
+		And as an "user0"
+		And user "user0" uploads file "data/textfile.txt" to "/testoldnew.txt"
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt" to "constant"
+		And using new dav path
+		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "constant"
+
 	### Scenarios specific to old endpoint
 
 	Scenario: Upload chunked file asc
