@@ -12,6 +12,7 @@ OC.L10N.register(
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Imposible cargar {filename} puesto que es un directoro o tiene 0 bytes.",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "No hay suficiente espacio libre. Quiere subir {size1} pero solo quedan {size2}",
     "Uploading..." : "Subiendo...",
+    "..." : "...",
     "File upload is in progress. Leaving the page now will cancel the upload." : "La subida del archivo está en proceso. Si salís de la página ahora, la subida se cancelará.",
     "Actions" : "Acciones",
     "Download" : "Descargar",

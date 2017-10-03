@@ -12,6 +12,8 @@ OC.L10N.register(
     "No crop data provided" : "没有提供相应数据",
     "No valid crop data provided" : "没有提供有效的裁剪数据",
     "Crop is not square" : "裁剪的不是正方形",
+    "Could not reset password because the token is invalid" : "无法重置密码，因为该令牌无效。",
+    "Could not reset password because the token expired" : "无法重置密码，因为该令牌已过期。",
     "%s password changed successfully" : "%s 密码修改成功",
     "%s password reset" : "重置 %s 的密码",
     "Couldn't send reset email. Please contact your administrator." : "未能成功发送重置邮件，请联系管理员。",
