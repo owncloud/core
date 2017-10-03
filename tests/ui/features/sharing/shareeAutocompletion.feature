@@ -1,3 +1,4 @@
+@insulated
 Feature: Sharee - autocompletion
 
 	Background:

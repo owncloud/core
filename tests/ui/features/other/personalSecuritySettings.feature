@@ -1,3 +1,4 @@
+@insulated
 Feature: personalSecuritySettings
 
 	Scenario: create new app password
