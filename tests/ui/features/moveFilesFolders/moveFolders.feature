@@ -1,3 +1,4 @@
+@insulated
 Feature: moveFolders
 
 	Background:

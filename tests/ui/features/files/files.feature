@@ -1,3 +1,4 @@
+@insulated
 Feature: files
 
 	Background:
