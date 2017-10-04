@@ -182,6 +182,27 @@ class Storage implements IStorage {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+
+	public function deleteAltUserStorageKeys($uid) {
+		if (\OC::$server->getEncryptionManager()->isEnabled()) {
+			/**
+			 * If the key storage is not the default
+			 * location, then we need to remove the keys
+			 * in the alternate key location
+			 */
+			$keyStorageRoot = $this->util->getKeyStorageRoot();
+			if ($keyStorageRoot !== '') {
+				$this->view->rmdir($keyStorageRoot . '/' . $uid);
+				return true;
+			}
+
+			return false;
+		}
+	}
+
+	/**
 	 * construct path to users key
 	 *
 	 * @param string $encryptionModuleId
