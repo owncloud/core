@@ -22,6 +22,7 @@
 namespace OCA\DAV\Files;
 
 use Doctrine\DBAL\Connection;
+use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\Node;
 use OCP\IDBConnection;
 use OCP\IUser;
@@ -29,6 +30,9 @@ use Sabre\DAV\PropertyStorage\Backend\BackendInterface;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Tree;
+use Sabre\Dav\Exception\Forbidden;
+use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\ServiceUnavailable;
 
 class CustomPropertiesBackend implements BackendInterface {
 
@@ -93,6 +97,31 @@ class CustomPropertiesBackend implements BackendInterface {
 	 * @return void
 	 */
 	public function propFind($path, PropFind $propFind) {
+		try {
+			$node = $this->tree->getNodeForPath($path);
+			if (!($node instanceof Node)) {
+				return;
+			}
+		} catch (ServiceUnavailable $e) {
+			// might happen for unavailable mount points, skip
+			return;
+		} catch (Forbidden $e) {
+			// might happen for excluded mount points, skip
+			return;
+		} catch (NotFound $e) {
+			// in some rare (buggy) cases the node might not be found,
+			// we catch the exception to prevent breaking the whole list with a 404
+			// (soft fail)
+			\OC::$server->getLogger()->warning(
+				'Could not get node for path: "{path}" : {$message}',
+				[
+					'app' => 'dav',
+					'path' => $path,
+					'message' => $e->getMessage(),
+				]
+			);
+			return;
+		}
 
 		$requestedProps = $propFind->get404Properties();
 
@@ -106,8 +135,14 @@ class CustomPropertiesBackend implements BackendInterface {
 			return;
 		}
 
-		$fileId = $this->getFileIdByPath($path);
-		$props = $this->getProperties($fileId, $requestedProps);
+		if ($node instanceof Directory
+			&& $propFind->getDepth() !== 0
+		) {
+			// note: pre-fetching only supported for depth <= 1
+			$this->loadChildrenProperties($node, $requestedProps);
+		}
+
+		$props = $this->getProperties($node, $requestedProps);
 		foreach ($props as $propName => $propValue) {
 			$propFind->set($propName, $propValue);
 		}
@@ -122,9 +157,13 @@ class CustomPropertiesBackend implements BackendInterface {
 	 * @return void
 	 */
 	public function propPatch($path, PropPatch $propPatch) {
-		$propPatch->handleRemaining(function($changedProps) use ($path) {
-			$fileId = $this->getFileIdByPath($path);
-			return $this->updateProperties($fileId, $changedProps);
+		$node = $this->tree->getNodeForPath($path);
+		if (!($node instanceof Node)) {
+			return;
+		}
+
+		$propPatch->handleRemaining(function($changedProps) use ($node) {
+			return $this->updateProperties($node, $changedProps);
 		});
 	}
 
@@ -135,13 +174,14 @@ class CustomPropertiesBackend implements BackendInterface {
 	 */
 	public function delete($path) {
 		$fileId = $this->getFileIdByPath($path);
-		$statement = $this->connection->prepare(
-			'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?'
-		);
-		$statement->execute([$fileId]);
-		$statement->closeCursor();
-
-		unset($this->cache[$fileId]);
+		if ($fileId) {
+			$statement = $this->connection->prepare(
+				'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?'
+			);
+			$statement->execute([$fileId]);
+			$statement->closeCursor();
+			unset($this->cache[$fileId]);
+		}
 	}
 
 	/**
@@ -158,7 +198,7 @@ class CustomPropertiesBackend implements BackendInterface {
 
 	/**
 	 * Returns a list of properties for this nodes.;
-	 * @param int $fileId
+	 * @param Node $node
 	 * @param array $requestedProperties requested properties or empty array for "all"
 	 * @return array
 	 * @note The properties list is a list of propertynames the client
@@ -166,7 +206,8 @@ class CustomPropertiesBackend implements BackendInterface {
 	 * http://www.example.org/namespace#author If the array is empty, all
 	 * properties should be returned
 	 */
-	private function getProperties($fileId, array $requestedProperties) {
+	private function getProperties(Node $node, array $requestedProperties) {
+		$fileId = $node->getId();
 		if (isset($this->cache[$fileId])) {
 			return $this->cache[$fileId];
 		}
@@ -204,13 +245,13 @@ class CustomPropertiesBackend implements BackendInterface {
 	/**
 	 * Update properties
 	 *
-	 * @param int $fileId node for which to update properties
+	 * @param Node $node node for which to update properties
 	 * @param array $properties array of properties to update
 	 *
 	 * @return bool
 	 */
-	private function updateProperties($fileId, $properties) {
-
+	private function updateProperties($node, $properties) {
+		$fileId = $node->getId();
 		$deleteStatement = 'DELETE FROM `*PREFIX*properties`' .
 			' WHERE `fileid` = ? AND `propertyname` = ?';
 
@@ -221,7 +262,7 @@ class CustomPropertiesBackend implements BackendInterface {
 			' WHERE `fileid` = ? AND `propertyname` = ?';
 
 		// TODO: use "insert or update" strategy ?
-		$existing = $this->getProperties($fileId, []);
+		$existing = $this->getProperties($node, []);
 		$this->connection->beginTransaction();
 		foreach ($properties as $propertyName => $propertyValue) {
 			// If it was null, we need to delete the property
@@ -262,8 +303,53 @@ class CustomPropertiesBackend implements BackendInterface {
 	}
 
 	/**
+	 * Bulk load properties for directory children
+	 *
+	 * @param Directory $node
+	 * @param array $requestedProperties requested properties
+	 *
+	 * @return void
+	 */
+	private function loadChildrenProperties(Directory $node, $requestedProperties) {
+		$fileId = $node->getId();
+
+		if (isset($this->cache[$fileId])) {
+			// we already loaded them at some point
+			return;
+		}
+
+		$childNodes = $node->getChildren();
+		$childrenIds = [];
+		// pre-fill cache
+		foreach ($childNodes as $childNode) {
+			$childId = $childNode->getId();
+			if ($childId) {
+				$childrenIds[] = $childId;
+				$this->cache[$childId] = [];
+			}
+		}
+
+		$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` IN (?)';
+		$sql .= ' AND `propertyname` in (?) ORDER BY `propertyname`';
+
+		$result = $this->connection->executeQuery(
+			$sql,
+			[$childrenIds, $requestedProperties],
+			[Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
+		);
+
+		$props = [];
+		while ($row = $result->fetch()) {
+			$props[$row['propertyname']] = $row['propertyvalue'];
+			$this->cache[$row['fileid']] = $props;
+		}
+
+		$result->closeCursor();
+	}
+
+	/**
 	 * @param string $filePath
-	 * @return int
+	 * @return int | null
 	 */
 	private function getFileIdByPath($filePath){
 		if (!$this->tree->nodeExists($filePath)) {
