@@ -28,6 +28,7 @@ namespace OC\Files\ObjectStore;
 use Icewind\Streams\IteratorDirectory;
 use OC\Files\Cache\CacheEntry;
 use OC\Files\Storage\Common;
+use OC\Files\Stream\Close;
 use OCP\Constants;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
@@ -303,7 +304,7 @@ class ObjectStoreStorage extends Common {
 					$ext = '';
 				}
 				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
-				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
+				Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
 					\file_put_contents($tmpFile, $source);
@@ -351,9 +352,9 @@ class ObjectStoreStorage extends Common {
 		$stat = $this->stat($path);
 		if (\is_array($stat)) {
 			return $stat['mimetype'];
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	public function touch($path, $mtime = null) {
@@ -422,10 +423,14 @@ class ObjectStoreStorage extends Common {
 		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 		$stat['etag'] = $this->getETag($path);
 
-		$fileId = $this->getCache()->put($path, $stat);
+		$stat['fileid'] = $this->getCache()->put($path, $stat);
 		try {
 			//upload to object storage
-			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
+			$storageStats = $this->objectStore->writeObject($this->getURN($stat['fileid']), \fopen($tmpFile, 'r'));
+			if (isset($storageStats['etag'])) {
+				$stat['etag'] = $storageStats['etag'];
+				$this->getCache()->update($stat['fileid'], $stat);
+			}
 		} catch (\Exception $ex) {
 			$this->getCache()->remove($path);
 			Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), Util::ERROR);
