@@ -34,7 +34,7 @@ $(document).ready(function() {
 						&& typeof client_secret === "string"
 						&& client_secret !== ''
 					) {
-						$('.configuration').trigger('oauth_step2', [{
+						$tr.find('.configuration').trigger('oauth_step2', [{
 							backend_id: $tr.attr('class'),
 							client_id: client_id,
 							client_secret: client_secret,
@@ -55,12 +55,21 @@ $(document).ready(function() {
 		var client_secret = $(this).parent().find('[data-parameter="client_secret"]').val();
 		
 		if (client_id !== '' && client_secret !== '') {
-			$('.configuration').trigger('oauth_step1', [{
+			var button = $(event.target);
+			button.prop('disabled', true);
+
+			var onCompletion = $.Deferred();
+			onCompletion.fail(function() {
+				button.prop('disabled', false);
+			});
+
+			tr.find('.configuration').trigger('oauth_step1', [{
 				backend_id: tr.attr('class'),
 				client_id: client_id,
 				client_secret: client_secret,
 				redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
-				tr: tr
+				tr: tr,
+				onCompletion: onCompletion
 			}]);
 		}
 	});
