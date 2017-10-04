@@ -457,7 +457,8 @@ class Installer {
 		$errors = [];
 		foreach(\OC::$APPSROOTS as $app_dir) {
 			if($dir = opendir( $app_dir['path'] )) {
-				while( false !== ( $filename = readdir( $dir ))) {
+				$nodes = scandir($dir);
+				foreach($nodes as $filename) {
 					if( substr( $filename, 0, 1 ) != '.' and is_dir($app_dir['path']."/$filename") ) {
 						if( file_exists( $app_dir['path']."/$filename/appinfo/info.xml" )) {
 							if(!Installer::isInstalled($filename)) {
