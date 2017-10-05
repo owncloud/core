@@ -55,6 +55,11 @@
  */
 
 use OCP\IRequest;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 require_once 'public/Constants.php';
 
@@ -118,6 +123,11 @@ class OC {
 	 * @var \OC\Config
 	 */
 	private static $config = null;
+
+	/**
+	 * @var Container
+	 */
+	public static $container;
 
 	/**
 	 * @throws \RuntimeException when the 3rdparty directory is missing or
@@ -843,10 +853,39 @@ class OC {
 		}
 	}
 
+	private static function initializeContainer() {
+		// TODO: debug variable should be provided through the index php and set to false by default
+		$debug = true;
+		$cacheFile = __DIR__ . '/../cache/container.php';
+
+		$containerConfigCache = new \Symfony\Component\Config\ConfigCache($cacheFile, $debug);
+
+		if (!$containerConfigCache->isFresh()) {
+			$containerBuilder = new ContainerBuilder();
+			$yamlFileLoader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__ . '/../config'));
+			$yamlFileLoader->load('config.yml');
+
+			$containerBuilder->compile();
+
+			$dumper = new PhpDumper($containerBuilder);
+
+			$containerConfigCache->write(
+				$dumper->dump(array('class' => 'OwnCloudContainer')),
+				$containerBuilder->getResources()
+			);
+		}
+
+		require_once $cacheFile;
+
+		self::$container = new OwnCloudContainer();
+	}
+
 	/**
 	 * Handle the request
 	 */
 	public static function handleRequest() {
+
+		self::initializeContainer();
 
 		\OC::$server->getEventLogger()->start('handle_request', 'Handle request');
 		$systemConfig = \OC::$server->getSystemConfig();
