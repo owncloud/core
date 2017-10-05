@@ -1452,13 +1452,17 @@ OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data) {
 						OC.dialogs.alert('Auth URL not set',
 							t('files_external', 'No URL provided by backend ' + data['backend_id'])
 						);
-						if (data['onCompletion']) {
-							data['onCompletion'].reject();
-						}
+						$tr.trigger('oauth_step1_finished', [{
+							success: false,
+							tr: $tr,
+							data: data
+						}]);
 					} else {
-						if (data['onCompletion']) {
-							data['onCompletion'].resolve();
-						}
+						$tr.trigger('oauth_step1_finished', [{
+							success: true,
+							tr: $tr,
+							data: data
+						}]);
 						window.location = result.data.url;
 					}
 				});
@@ -1466,9 +1470,11 @@ OCA.External.Settings.OAuth2.getAuthUrl = function (backendUrl, data) {
 				OC.dialogs.alert(result.data.message,
 					t('files_external', 'Error getting OAuth2 URL for ' + data['backend_id'])
 				);
-				if (data['onCompletion']) {
-					data['onCompletion'].reject();
-				}
+				$tr.trigger('oauth_step1_finished', [{
+					success: false,
+					tr: $tr,
+					data: data
+				}]);
 			}
 		}
 	);

@@ -58,9 +58,10 @@ $(document).ready(function() {
 			var button = $(event.target);
 			button.prop('disabled', true);
 
-			var onCompletion = $.Deferred();
-			onCompletion.fail(function() {
-				button.prop('disabled', false);
+			tr.one('oauth_step1_finished', function(event, data){
+				if (!data['success']) {
+					button.prop('disabled', false);
+				}
 			});
 
 			tr.find('.configuration').trigger('oauth_step1', [{
@@ -68,8 +69,7 @@ $(document).ready(function() {
 				client_id: client_id,
 				client_secret: client_secret,
 				redirect: location.protocol + '//' + location.host + location.pathname + '?sectionid=storage',
-				tr: tr,
-				onCompletion: onCompletion
+				tr: tr
 			}]);
 		}
 	});
