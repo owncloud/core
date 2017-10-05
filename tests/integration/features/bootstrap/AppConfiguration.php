@@ -1,6 +1,6 @@
 <?php
 
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
