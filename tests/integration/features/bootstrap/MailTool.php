@@ -21,6 +21,7 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 
 trait MailTool {
 
@@ -32,11 +33,13 @@ trait MailTool {
 	public function getEmails() {
 		$fullUrl = $this->mailhogUrl;
 		$client = new Client();
-		$options = ['headers' => ['Content-Type' => 'application/json']];
 		try {
-			$this->response = $client->send(
-				$client->createRequest('GET', $fullUrl, $options)
+			$request = new Request(
+				'GET',
+				$fullUrl,
+				['Content-Type' => 'application/json']
 			);
+			$this->response = $client->send($request, $options);
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}

@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -24,20 +25,27 @@ trait Auth {
 
 	private function sendRequest($url, $method, $authHeader = null, $useCookies = false) {
 		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
+		$options = [];
 		try {
+			$headers = [
+				'OCS_APIREQUEST' => 'true',
+				'requesttoken' => $this->requestToken
+			];
+			if ($authHeader) {
+				$headers['Authorization'] = $authHeader;
+			}
 			if ($useCookies) {
-				$request = $this->client->createRequest($method, $fullUrl, [
+				$options = [
 				    'cookies' => $this->cookieJar,
-				]);
-			} else {
-				$request = $this->client->createRequest($method, $fullUrl);
+				];
 			}
 			if ($authHeader) {
-				$request->setHeader('Authorization', $authHeader);
+				$headers['Authorization'] = $authHeader;
 			}
-			$request->setHeader('OCS_APIREQUEST', 'true');
-			$request->setHeader('requesttoken', $this->requestToken);
-			$this->response = $this->client->send($request);
+			$headers['OCS_APIREQUEST'] = 'true';
+			$headers['requesttoken'] = $this->requestToken;
+			$request = new Request($method, $fullUrl, $headers);
+			$this->response = $this->client->send($request, $options);
 		} catch (ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -103,12 +111,12 @@ trait Auth {
 		$client = new Client();
 		$response = $client->post(
 			$loginUrl, [
-		    'body' => [
-			'user' => 'user0',
-			'password' => '123456',
-			'requesttoken' => $this->requestToken,
-		    ],
-		    'cookies' => $this->cookieJar,
+				'form_params' => [
+					'user' => 'user0',
+					'password' => '123456',
+					'requesttoken' => $this->requestToken,
+				],
+				'cookies' => $this->cookieJar,
 			]
 		);
 		$this->extracRequestTokenFromResponse($response);
