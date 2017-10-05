@@ -812,7 +812,9 @@ MountConfigListView.prototype = _.extend({
 
 		// FIXME: Replace with a proper Handlebar template
 		var $tr = this.$el.find('tr#addMountPoint');
-		this.$el.find('tbody').append($tr.clone());
+		var $trCloned = $tr.clone();
+		$trCloned.find('td.mountPoint input').removeAttr('disabled');
+		this.$el.find('tbody').append($trCloned);
 
 		$tr.data('storageConfig', storageConfig);
 		$tr.show();
@@ -820,7 +822,6 @@ MountConfigListView.prototype = _.extend({
 		$tr.find('td.mountOptionsToggle').removeClass('hidden');
 		$tr.find('td').last().removeAttr('style');
 		$tr.removeAttr('id');
-		$tr.find('select#selectBackend');
 		addSelect2($tr.find('.applicableUsers'), this._userListLimit);
 
 		if (storageConfig.id) {
