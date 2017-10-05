@@ -73,21 +73,7 @@
 					return false;
 				}
 			});
-			$(window).resize(function() {
-				self.parent = self.$dialog.parent().length > 0 ? self.$dialog.parent() : $('body');
-				var pos = self.parent.position();
-				self.$dialog.css({
-					left: pos.left + ($(window).innerWidth() - self.$dialog.outerWidth())/2,
-					top: pos.top + ($(window).innerHeight() - self.$dialog.outerHeight())/2,
-					width: Math.min(self.options.width, $(window).innerWidth() - 20 ),
-					height: Math.min(self.options.height, $(window).innerHeight() - 20)
-				});
-				// set sizes of content
-				self._setSizes();
-			});
-
 			this._setOptions(this.options);
-			$(window).trigger('resize');
 			this._createOverlay();
 		},
 		_init: function() {
@@ -106,7 +92,6 @@
 							+ '</h3>');
 						this.$title = $title.prependTo(this.$dialog);
 					}
-					this._setSizes();
 					break;
 				case 'buttons':
 					if(this.$buttonrow) {
@@ -141,7 +126,6 @@
 							self.$buttonrow.find('button').removeClass('primary');
 							$(this).addClass('primary');
 						});
-					this._setSizes();
 					break;
 				case 'closeButton':
 					if(value) {
