@@ -50,7 +50,7 @@ try {
 	if ($percent >= 75) {
 		$color = 'green';
 	}
-	$content = \file_get_contents("https://img.shields.io/badge/coverage-$percent%-$color.svg");
+	$content = \file_get_contents("https://img.shields.io/badge/coverage-$percent%25-$color.svg");
 	\file_put_contents('coverage.svg', $content);
 } catch (Exception $ex) {
 	echo $ex->getMessage() . PHP_EOL;
