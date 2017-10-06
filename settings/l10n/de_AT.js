@@ -28,6 +28,7 @@ OC.L10N.register(
     "Personal" : "Persönlich",
     "Admin" : "Administration",
     "Error" : "Fehler",
+    "Group" : "Gruppe",
     "Other" : "Anderes"
 },
 "nplurals=2; plural=(n != 1);");

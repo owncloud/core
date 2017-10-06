@@ -123,6 +123,7 @@ OC.L10N.register(
     "Set expiration date" : "Atur tanggal kedaluwarsa",
     "Expiration" : "Kedaluwarsa",
     "Expiration date" : "Tanggal kedaluwarsa",
+    "Remove link" : "Hapus tautan",
     "Link" : "Tautan",
     "Edit" : "Sunting",
     "Remove" : "Hapus",

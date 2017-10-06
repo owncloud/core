@@ -26,6 +26,7 @@
     "Personal" : "Persönlich",
     "Admin" : "Administration",
     "Error" : "Fehler",
+    "Group" : "Gruppe",
     "Other" : "Anderes"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
