@@ -169,4 +169,14 @@ interface IStorage {
 	 */
 	public function copyKeys($source, $target);
 
+	/**
+	 * delete user keys from alternate storage location when
+	 * a user is deleted
+	 *
+	 * @param $uid
+	 * @return boolean
+	 * @since 10.0.4
+	 */
+	public function deleteAltUserStorageKeys($uid);
+
 }
