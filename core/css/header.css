@@ -49,9 +49,8 @@
 #owncloud {
 	position: absolute;
 	top: 0;
-	left: -webkit-calc(50% - 75px); /* @TODO: Remove if FF 14 support is dropped */
-	left:    -moz-calc(50% - 75px); /* @TODO: Remove if FF 14 support is dropped */
-	left:         calc(50% - 75px);
+	left: 50%;
+	transform: translateX(-50%);
 	padding: 5px;
 	padding-bottom: 0;
 	height: 45px; /* header height */
@@ -95,7 +94,6 @@
 	background-image: url(../img/logo-icon.svg);
 	background-repeat: no-repeat;
 	background-size: 61px 34px;
-	width: 84px;
 	height: 34px;
 	color: #fff;
 	margin: 0;

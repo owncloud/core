@@ -41,10 +41,9 @@
 			<div id="header">
 				<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" id="owncloud" tabindex="1">
 					<h1 class="logo-icon">
-						<span class="own">own</span><span class="cloud">Cloud</span>
+						<?php p($theme->getName()); ?>
 					</h1>
 				</a>
-
 				<a href="#" class="header-appname-container menutoggle" tabindex="2">
 					<button class="burger">
 						<?php echo $l->t('Menu'); ?>
@@ -53,7 +52,6 @@
 						<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
 					</h1>
 				</a>
-
 				<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
 				<div id="settings">
 					<div id="expand" tabindex="6" role="link" class="menutoggle">
