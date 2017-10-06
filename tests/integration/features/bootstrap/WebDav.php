@@ -15,8 +15,6 @@ trait WebDav {
 	private $davPath = "remote.php/webdav";
 	/** @var boolean*/
 	private $usingOldDavPath = true;
-	/** @var ResponseInterface */
-	private $response;
 	/** @var ResponseInterface[] */
 	private $uploadResponses;
 	/** @var map with user as key and another map as value, which has path as key and etag as value */
