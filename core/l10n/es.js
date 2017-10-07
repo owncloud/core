@@ -202,7 +202,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Ha ocurrido un error. Por favor inténtelo de nuevo",
     "{sharee} (group)" : "{sharee} (grupo)",
     "{sharee} (at {server})" : "{sharee} (en {server})",
-    "{sharee} (remote)" : "{sharee} (remoto)",
+    "{sharee} (federated)" : "{sharee} (remoto)",
     "Share" : "Compartir",
     "User and Groups" : "Usuarios y grupos",
     "Public Links" : "Enlaces Publicos",

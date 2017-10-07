@@ -202,7 +202,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Det oppstod en feil. Prøv igjen",
     "{sharee} (group)" : "{sharee} (gruppe)",
     "{sharee} (at {server})" : "{sharee} (på {server})",
-    "{sharee} (remote)" : "{sharee} (ekstern)",
+    "{sharee} (federated)" : "{sharee} (ekstern)",
     "Share" : "Del",
     "User and Groups" : "Bruker og grupper",
     "Public Links" : "Offentlige lenker",

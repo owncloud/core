@@ -294,7 +294,7 @@
 						server: item.value.server
 					});
 				} else {
-					text = t('core', '{sharee} (remote)', {
+					text = t('core', '{sharee} (federated)', {
 						sharee: text
 					});
 				}

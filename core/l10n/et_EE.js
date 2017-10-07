@@ -178,7 +178,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Tekkis tõrge. Palu proovi uuesti",
     "{sharee} (group)" : "{sharee} (group)",
     "{sharee} (at {server})" : "{sharee} (serveris {server})",
-    "{sharee} (remote)" : "{sharee} (mujal serveris)",
+    "{sharee} (federated)" : "{sharee} (mujal serveris)",
     "Share" : "Jaga",
     "User and Groups" : "Kasutajad ja grupid",
     "Public Links" : "Avalikud lingid",

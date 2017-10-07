@@ -196,7 +196,7 @@
     "An error occurred. Please try again" : "오류가 발생했습니다. 다시 시도하십시오",
     "{sharee} (group)" : "{sharee}(그룹)",
     "{sharee} (at {server})" : "{sharee}({server}에 있음)",
-    "{sharee} (remote)" : "{sharee}(원격)",
+    "{sharee} (federated)" : "{sharee}(원격)",
     "Share" : "공유",
     "User and Groups" : "사용자와 그룹",
     "Public Links" : "공개 링크",

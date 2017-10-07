@@ -174,7 +174,7 @@
     "An error occurred. Please try again" : "Hiba történt. Kérjük, próbálja meg újra!",
     "{sharee} (group)" : "{sharee} (csoport)",
     "{sharee} (at {server})" : "{sharee} ({server} szerveren)",
-    "{sharee} (remote)" : "{sharee} (távoli)",
+    "{sharee} (federated)" : "{sharee} (távoli)",
     "Share" : "Megosztás",
     "Resharing is not allowed" : "Ezt az állományt csak a tulajdonosa oszthatja meg másokkal",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Megosztás más ownCloud szerverekkel, a következő formátum használatával felhasználó@példa.hu/owncloud",

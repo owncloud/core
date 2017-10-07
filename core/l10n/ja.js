@@ -201,7 +201,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "エラーが発生しました。もう一度実行してください。",
     "{sharee} (group)" : "{sharee} (グループ)",
     "{sharee} (at {server})" : "{sharee} ({server} で)",
-    "{sharee} (remote)" : "{sharee} (リモート)",
+    "{sharee} (federated)" : "{sharee} (リモート)",
     "Share" : "共有",
     "User and Groups" : "ユーザーとグループ",
     "Public Links" : "公開リンク",

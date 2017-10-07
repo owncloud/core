@@ -160,7 +160,7 @@ OC.L10N.register(
     "No users found for {search}" : "沒有使用者符合 {search}",
     "{sharee} (group)" : "{sharee} （群組）",
     "{sharee} (at {server})" : "{sharee} （在 {server}）",
-    "{sharee} (remote)" : "{sharee} （遠端）",
+    "{sharee} (federated)" : "{sharee} （遠端）",
     "Share" : "分享",
     "Resharing is not allowed" : "不允許重新分享",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "與其他在ownCloud上的人們分享，請使用此格式 username@example.com/owncloud",

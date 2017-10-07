@@ -197,7 +197,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Bir hata oluştu. Lütfen yeniden deneyin",
     "{sharee} (group)" : "{sharee} (grup)",
     "{sharee} (at {server})" : "{sharee} ({server} üzerinde)",
-    "{sharee} (remote)" : "{sharee} (uzak)",
+    "{sharee} (federated)" : "{sharee} (uzak)",
     "Share" : "Paylaş",
     "User and Groups" : "Kullanıcı ve Gruplar",
     "Public Links" : "Herkese açık bağlantılar",

@@ -198,7 +198,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Παρουσιάστηκε σφάλμα. Παρακαλώ δοκιμάστε ξανά",
     "{sharee} (group)" : "{sharee} (ομάδα)",
     "{sharee} (at {server})" : "{sharee} (στον {server})",
-    "{sharee} (remote)" : "{sharee} (απομακρυσμένο)",
+    "{sharee} (federated)" : "{sharee} (απομακρυσμένο)",
     "Share" : "Διαμοιρασμός",
     "User and Groups" : "Χρήστης και Ομάδες",
     "Public Links" : "Δημόσιοι σύνδεσμοι",

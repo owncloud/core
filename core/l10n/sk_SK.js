@@ -179,7 +179,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Nastala chyba. Prosím, skúste to znovu.",
     "{sharee} (group)" : "{sharee} (skupina)",
     "{sharee} (at {server})" : "{sharee} (na {server})",
-    "{sharee} (remote)" : "{sharee} (vzdialený)",
+    "{sharee} (federated)" : "{sharee} (vzdialený)",
     "Share" : "Zdieľať",
     "Resharing is not allowed" : "Zdieľanie už zdieľanej položky nie je povolené",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Zdieľať s ľuďmi na iných serveroch ownClouds pomocou syntaxe používateľ@doména.com/owncloud",
