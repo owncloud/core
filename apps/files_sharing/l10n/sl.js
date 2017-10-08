@@ -12,6 +12,7 @@ OC.L10N.register(
     "Shared with others" : "V souporabi  z drugimi",
     "Shared by link" : "V souporabi prek povezave",
     "Anonymous upload" : "Brezimno pošiljanje v oblak",
+    "Click to select files or use drag & drop to upload" : "Kliknite za izbor datotek oziroma uporabite možnost povleci in spusti za pošiljanje v oblak ...",
     "Uploaded files" : "Datoteke, poslane v oblak",
     "Uploading..." : "Poteka pošiljanje ...",
     "Nothing shared with you yet" : "Datotek drugih uporabnikov še ni v souporabi",

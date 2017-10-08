@@ -4,6 +4,7 @@ OC.L10N.register(
     "Could not revert: %s" : "Nem sikerült átállni a változatra: %s",
     "Versions" : "Az állományok korábbi változatai",
     "Failed to revert {file} to revision {timestamp}." : "Nem sikerült a(z) {file} állományt erre visszaállítani: {timestamp}.",
+    "_%n byte_::_%n bytes_" : ["%n bájt","%n bájt"],
     "Restore" : "Visszaállítás",
     "No other versions available" : "Az állománynak nincs több változata",
     "More versions..." : "További változatok..."

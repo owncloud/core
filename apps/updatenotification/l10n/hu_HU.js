@@ -9,6 +9,7 @@ OC.L10N.register(
     "Updater" : "Frissítéskezelő",
     "A new version is available: %s" : "Új verzió érhető el: %s",
     "Open updater" : "Frissítő megnyitása",
+    "Show changelog" : "Változások napló mutatása",
     "Your version is up to date." : "Verzió frissítve.",
     "Checked on %s" : "Ellenőrizve: %s",
     "Update channel:" : "Frissítési csatorna:",

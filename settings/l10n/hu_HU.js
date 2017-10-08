@@ -7,6 +7,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Hibás admin helyreállítási jelszó. Ellenőrizze a jelszót és próbálja újra!",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "A háttér-alrendszer nem támogatja a jelszómódosítást, de felhasználó titkosítási kulcsát sikeresen frissítettük.",
     "Unable to change password" : "Nem sikerült megváltoztatni a jelszót",
+    "%s password changed successfully" : "%s jelszó sikeresen megváltozott",
     "Couldn't send reset email. Please contact your administrator." : "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL elavult %s verziót (%s) használ. Kérjük, frissítse az operációs rendszerét, vagy egyes funkciók (mint például a %s) megbízhatatlanul fognak működni.",
     "Group already exists." : "A csoport már létezik.",

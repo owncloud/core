@@ -15,6 +15,7 @@ OC.L10N.register(
     "Admin defined" : "Skrbnik je določen",
     "Saved" : "Shranjeno",
     "Disable external storage" : "Onemogoči zunanjo shrambo",
+    "Error getting OAuth2 URL for " : "Napaka pridobivanja naslova URL OAuth2 za",
     "Empty response from the server" : "S strežnika je prejet odziv brez vsebine.",
     "Couldn't access. Please logout and login to activate this mount point" : "Dostop ni mogoč. Za priklop točke se odjavite in ponovno prijavite.",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "Ni mogoče pridobiti podrobnosti s strežnika ownCloud:{koda} {vrsta}",
