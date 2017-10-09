@@ -246,9 +246,9 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function restoreParametersAfterScenario() {
-		$user = $this->currentUser;
-		$this->currentUser = 'admin';
-		$this->restoreAppConfigs();
-		$this->currentUser = $user;
+		//$user = $this->currentUser;
+		//$this->currentUser = 'admin';
+		//$this->restoreAppConfigs();
+		//$this->currentUser = $user;
 	}
 }
