@@ -29,6 +29,9 @@
 
 \OC::$server->getSearch()->registerProvider('OC\Search\Provider\File', ['apps' => ['files']]);
 
+// instantiate to make sure services get registered
+$app = new \OCA\Files\AppInfo\Application();
+
 $templateManager = \OC_Helper::getFileTemplateManager();
 $templateManager->registerTemplate('text/html', 'core/templates/filetemplates/template.html');
 $templateManager->registerTemplate('application/vnd.oasis.opendocument.presentation', 'core/templates/filetemplates/template.odp');
