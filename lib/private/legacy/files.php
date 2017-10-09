@@ -183,7 +183,7 @@ class OC_Files {
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
 			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
-			\OC_Template::printErrorPage($l->t('File cannot be read'), $hint);
+			\OC_Template::printErrorPage($l->t('File cannot be read'), htmlspecialchars($hint, ENT_QUOTES));
 		}
 	}
 

@@ -328,7 +328,7 @@ class OC_Template extends \OC\Template\Base {
 
 		try {
 			$content = new \OC_Template( '', 'error', 'error', false );
-			$errors = [['error' => \OCP\Util::sanitizeHTML($error_msg), 'hint' => \OCP\Util::sanitizeHTML($hint)]];
+			$errors = [['error' => $error_msg, 'hint' => $hint]];
 			$content->assign( 'errors', $errors );
 			if ($httpStatusCode !== null) {
 				http_response_code((int)$httpStatusCode);
