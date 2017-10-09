@@ -74,24 +74,8 @@ class DavProperties extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$this->output = $output;
-		$output->writeln("Creating the additional column on the oc_properties table");
 
-		// Add the column
-		try {
-			$sql = "ALTER TABLE *PREFIX*properties ADD `fileid` BIGINT(20) NULL";
-			$this->connection->executeQuery($sql);
-		} catch (NonUniqueFieldNameException $e) {
-			$output->writeln("Column already appear to exist");
-		}
-
-		$output->writeln("Adding fileid index to oc_properties table");
-		// Add the index
-		try {
-			$sql = "CREATE INDEX fileid_index ON *PREFIX*properties (`fileid`)";
-			$this->connection->executeQuery($sql);
-		} catch (DriverException $e) {
-			$output->writeln("Exception adding index - potentially already exists");
-		}
+		$this->fixDatabase();
 
 		// Get the statements to run
 		$output->writeln("Computing the statements that need executing");
@@ -133,6 +117,27 @@ class DavProperties extends Command {
 		$output->writeln("Finished");
 
 
+	}
+
+	protected function fixDatabase() {
+		$this->output->writeln("Creating the additional column on the oc_properties table");
+
+		// Add the column
+		try {
+			$sql = "ALTER TABLE `*PREFIX*properties` ADD `fileid` BIGINT NULL";
+			$this->connection->executeQuery($sql);
+		} catch (NonUniqueFieldNameException $e) {
+			$this->output->writeln("Column already appear to exist");
+		}
+
+		$this->output->writeln("Adding fileid index to oc_properties table");
+		// Add the index
+		try {
+			$sql = "CREATE INDEX fileid_index ON `*PREFIX*properties` (`fileid`)";
+			$this->connection->executeQuery($sql);
+		} catch (DriverException $e) {
+			$this->output->writeln("Exception adding index - potentially already exists");
+		}
 	}
 
 	/**
@@ -194,7 +199,6 @@ class DavProperties extends Command {
 	 * @return array
 	 */
 	public function getSqlStatements(IDBConnection $connection, $limit) {
-
 		$statements = [];
 
 		$qb = $connection->getQueryBuilder();
@@ -217,9 +221,15 @@ class DavProperties extends Command {
 			->orderBy('userid')
 			->addOrderBy('propertypath');
 
+
 		if($limit !== 0) {
 			$qb->setMaxResults($limit);
+		} else {
+			$qb->setMaxResults(null);
 		}
+
+		$this->output->writeLn($qb->getSQL());
+
 
 		$selectResult = $qb->execute();
 		$bar = new ProgressBar($this->output, $selectResult->rowCount());
