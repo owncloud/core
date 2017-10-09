@@ -179,7 +179,7 @@ trait AppConfiguration {
 			$this->modifyServerConfig(
 				$testingApp,
 				$testingParameter,
-				$savedValue ? 'yes' : 'no'
+				$savedState ? 'yes' : 'no'
 			);
 		}
 	}
