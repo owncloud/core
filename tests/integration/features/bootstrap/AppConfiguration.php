@@ -147,25 +147,41 @@ trait AppConfiguration {
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesParameter the parameter name in the
 	 *                                      capabilities response
-	 * @param string $testingApp the "app" name as understood by "testing"
-	 * @param string $testingParameter the parameter name as understood by
-	 *                                 "testing"
-	 * @return void
+	 * @return boolean
 	 */
-	public function resetCapability(
-		$capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter
-	) {
-		$savedValue = $this->getParameterValueFromXml(
+	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
+		return $this->getParameterValueFromXml(
 			$this->savedCapabilitiesXml,
 			$capabilitiesApp,
 			$capabilitiesParameter
 		);
+	}
 
-		$this->modifyServerConfig(
-			$testingApp,
-			$testingParameter,
-			$savedValue ? 'yes' : 'no'
+	/**
+	 * @param string $capabilitiesApp the "app" name in the capabilities response
+	 * @param string $capabilitiesParameter the parameter name in the
+	 *                                      capabilities response
+	 * @param string $testingApp the "app" name as understood by "testing"
+	 * @param string $testingParameter the parameter name as understood by
+	 *                                 "testing"
+	 * @param boolean $testingState the on|off state the parameter was set to for the test
+	 * @return void
+	 */
+	public function resetCapability(
+		$capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter, $testingState
+	) {
+		$savedState = $this->wasCapabilitySet(
+			$capabilitiesApp,
+			$capabilitiesParameter
 		);
+
+		if ($savedState !== $testingState) {
+			$this->modifyServerConfig(
+				$testingApp,
+				$testingParameter,
+				$savedState ? 'yes' : 'no'
+			);
+		}
 	}
 
 	/**

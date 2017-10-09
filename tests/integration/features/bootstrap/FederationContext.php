@@ -97,7 +97,9 @@ class FederationContext implements Context, SnippetAcceptingContext {
 		// Set the required starting values for testing
 		$this->setupCommonSharingConfigs();
 		$this->setupCommonFederationConfigs();
-		$this->modifyServerConfig('core', 'shareapi_allow_resharing', 'yes');
+		if (!$this->wasCapabilitySet('files_sharing', 'resharing')) {
+			$this->modifyServerConfig('core', 'shareapi_allow_resharing', 'yes');
+		}
 	}
 
 	/**
@@ -110,7 +112,8 @@ class FederationContext implements Context, SnippetAcceptingContext {
 			'files_sharing',
 			'resharing',
 			'core',
-			'shareapi_allow_resharing'
+			'shareapi_allow_resharing',
+			true
 		);
 	}
 }
