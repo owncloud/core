@@ -20,21 +20,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\DAV\Tests\unit\Files;
 
-/**
- * Copyright (c) 2015 Vincent Petry <pvince81@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
- */
+namespace OCA\DAV\Tests\unit\DAV;
+
+use \OCA\DAV\DAV\CustomPropertiesBackend;
 
 /**
  * Class CustomPropertiesBackend
  *
  * @group DB
  *
- * @package OCA\DAV\Tests\unit\Files
+ * @package OCA\DAV\Tests\unit\DAV
  */
 class CustomPropertiesBackendTest extends \Test\TestCase {
 
@@ -49,7 +45,7 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 	private $tree;
 
 	/**
-	 * @var \OCA\DAV\Files\CustomPropertiesBackend
+	 * @var CustomPropertiesBackend
 	 */
 	private $plugin;
 
@@ -75,7 +71,7 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue($userId));
 
-		$this->plugin = new \OCA\DAV\Files\CustomPropertiesBackend(
+		$this->plugin = new CustomPropertiesBackend(
 			$this->tree,
 			\OC::$server->getDatabaseConnection(),
 			$this->user

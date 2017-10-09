@@ -29,7 +29,7 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OCA\DAV\Files\BrowserErrorPagePlugin;
-use OCA\DAV\Files\CustomPropertiesBackend;
+use OCA\DAV\DAV\CustomPropertiesBackend;
 use OCP\Files\Mount\IMountManager;
 use OCP\IConfig;
 use OCP\IDBConnection;

@@ -42,7 +42,7 @@ use OCA\DAV\Connector\Sabre\SharesPlugin;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
-use OCA\DAV\Files\CustomPropertiesBackend;
+use OCA\DAV\DAV\CustomPropertiesBackend;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
 use OCP\IRequest;
