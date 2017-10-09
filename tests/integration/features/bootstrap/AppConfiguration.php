@@ -5,11 +5,6 @@ use GuzzleHttp\Message\ResponseInterface;
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 trait AppConfiguration {
-	/** @var string */
-	private $currentUser = '';
-
-	/** @var ResponseInterface */
-	private $response = null;
 
 	abstract public function sendingTo($verb, $url);
 	abstract public function sendingToWith($verb, $url, $body);
