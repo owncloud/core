@@ -473,6 +473,7 @@ class Installer {
 									  && \OC::$server->getConfig()->getAppValue($filename, 'enabled') !== 'no') {
 									if ($softErrors) {
 										try {
+											\OC::$server->getLogger()->info("Installing app: ".$filename);
 											Installer::installShippedApp($filename);
 										} catch (\Doctrine\DBAL\Exception\TableExistsException $e) {
 											$errors[$filename] = $e;

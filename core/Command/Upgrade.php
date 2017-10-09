@@ -182,8 +182,16 @@ class Upgrade extends Command {
 			$dispatcher->addListener('\OC\Repair::info', $repairListener);
 			$dispatcher->addListener('\OC\Repair::warning', $repairListener);
 			$dispatcher->addListener('\OC\Repair::error', $repairListener);
-			
 
+			$updater->listen('\OC\Updater', 'loadingAuthApps', function () use($output) {
+				$output->writeln('<info>Loading authentication apps</info>');
+			});
+			$updater->listen('\OC\Updater', 'installingShippedApps', function () use($output) {
+				$output->writeln('<info>Installing shipped apps</info>');
+			});
+			$updater->listen('\OC\Updater', 'upgradedAppStoreApp', function ($app) use($output) {
+				$output->writeln("<info>Updated app: <$app></info>");
+			});
 			$updater->listen('\OC\Updater', 'maintenanceEnabled', function () use($output) {
 				$output->writeln('<info>Turned on maintenance mode</info>');
 			});

@@ -112,6 +112,7 @@ class Version20170202213905 implements ISqlMigration {
 			return null;
 		}
 
+		\OC::$server->getLogger()->debug("Loading propertypath attribute for user folder for user: $userId");
 		$node = \OC::$server->getUserFolder($userId)->get($entry['propertypath']);
 		if ($node instanceof Node && $node->getId()) {
 			$fileId = $node->getId();

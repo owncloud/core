@@ -237,7 +237,9 @@ class Updater extends BasicEmitter {
 		$this->upgradeAppStoreApps($disabledApps);
 
 		// install new shipped apps on upgrade
+		$this->emit('\OC\Updater', 'loadingAuthApps');
 		OC_App::loadApps('authentication');
+		$this->emit('\OC\Updater', 'installingShippedApps');
 		$errors = Installer::installShippedApps(true);
 		foreach ($errors as $appId => $exception) {
 			/** @var \Exception $exception */
@@ -385,6 +387,8 @@ class Updater extends BasicEmitter {
 					self::class . '::upgradeAppStoreApps',
 					new GenericEvent($app)
 				);
+				$this->emit('\OC\Updater', 'upgradedAppStoreApp', [$app]);
+
 			} catch (\Exception $ex) {
 				$this->log->logException($ex, ['app' => 'core']);
 			}
