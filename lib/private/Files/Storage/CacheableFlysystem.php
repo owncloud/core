@@ -32,6 +32,7 @@ use Icewind\Streams\IteratorDirectory;
 abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	/**
 	 * Stores the results in cache for the current request to prevent multiple requests to the API
+	 *
 	 * @var array
 	 */
 	protected $cacheContents = [];
@@ -39,6 +40,7 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	/**
 	 * Get the location which will be used as a key in cache
 	 * If Storage is not case sensitive then convert the key to lowercase
+	 *
 	 * @param  string $path Path to file/folder
 	 * @return string
 	 */
@@ -61,6 +63,7 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	/**
 	 * Check if Cache Contains the data for given path, if not then get the data
 	 * from flysystem and store it in cache for this request lifetime
+	 *
 	 * @param  string $path Path to file/folder
 	 * @return array|boolean
 	 */
@@ -71,7 +74,7 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 				$this->cacheContents[$location] = $this->flysystem->getMetadata($location);
 			} catch (FileNotFoundException $e) {
 				// do not store this info in cache as it might interfere with Upload process
-                return false;
+				return false;
 			}
 		}
 		return $this->cacheContents[$location];
@@ -80,6 +83,7 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	/**
 	 * Store the list of files/folders in the cache so that subsequent requests in the
 	 * same request life cycle does not call the flysystem API
+	 *
 	 * @param  array $contents Return value of $this->flysystem->listContents
 	 */
 	public function updateCache($contents) {
