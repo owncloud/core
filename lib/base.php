@@ -499,7 +499,7 @@ class OC {
 		spl_autoload_register([self::$loader, 'load']);
 		$loaderEnd = microtime(true);
 
-		self::$CLI = (php_sapi_name() == 'cli');
+		self::$CLI = (in_array(php_sapi_name(), ['cli', 'phpdbg']));
 
 		// setup 3rdparty autoloader
 		$vendorAutoLoad = OC::$SERVERROOT . '/lib/composer/autoload.php';
