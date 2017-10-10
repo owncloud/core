@@ -29,7 +29,7 @@ use Icewind\Streams\IteratorDirectory;
  *
  * To use: subclass and call $this->buildFlysystem with the flysystem adapter of choice
  */
-abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
+abstract class CacheableFlysystem extends \OCP\Files\Storage\FlysystemStorageAdapter {
 	/**
 	 * Stores the results in cache for the current request to prevent multiple requests to the API
 	 *
@@ -65,6 +65,7 @@ abstract class CacheableFlysystem extends \OC\Files\Storage\Flysystem {
 	 * from flysystem and store it in cache for this request lifetime
 	 *
 	 * @param  string $path Path to file/folder
+	 * @param boolean $overRideCache Whether to fetch the contents from Cache or directly from the API
 	 * @return array|boolean
 	 */
 	public function getFlysystemMetadata($path, $overRideCache = false) {
