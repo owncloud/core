@@ -193,6 +193,8 @@ trait AppConfiguration {
 					'testingParameter' => $testingParameter,
 					'savedState' => $savedState
 				];
+
+			var_dump($savedState);
 		}
 	}
 
