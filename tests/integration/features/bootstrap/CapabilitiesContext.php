@@ -59,76 +59,46 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @return void
 	 */
-	protected function setupAppConfigs() {
-		// Remember the current capabilities
-		$this->getCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
+	protected function resetAppConfigs() {
 		// Set the required starting values for testing
 		$this->setupCommonSharingConfigs();
 		$this->setupCommonFederationConfigs();
-		if (!$this->wasCapabilitySet('files_sharing', 'resharing')) {
-			$this->modifyServerConfig('core', 'shareapi_allow_resharing', 'yes');
-		}
-		if ($this->wasCapabilitySet('files_sharing', 'public@@@password@@@enforced')) {
-			$this->modifyServerConfig('core', 'shareapi_enforce_links_password', 'no');
-		}
-		if ($this->wasCapabilitySet('files_sharing', 'public@@@send_mail')) {
-			$this->modifyServerConfig('core', 'shareapi_allow_public_notification', 'no');
-		}
-		if (!$this->wasCapabilitySet('files_sharing', 'public@@@social_share')) {
-			$this->modifyServerConfig('core', 'shareapi_allow_social_share', 'yes');
-		}
-		if ($this->wasCapabilitySet('files_sharing', 'public@@@expire_date@@@enabled')) {
-			$this->modifyServerConfig('core', 'shareapi_default_expire_date', 'no');
-		}
-		if ($this->wasCapabilitySet('files_sharing', 'public@@@expire_date@@@enforced')) {
-			$this->modifyServerConfig('core', 'shareapi_enforce_expire_date', 'no');
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function restoreAppConfigs() {
-		// Restore the previous capabilities settings
-		$this->restoreCommonSharingConfigs();
-		$this->restoreCommonFederationConfigs();
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'resharing',
 			'core',
 			'shareapi_allow_resharing',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'public@@@password@@@enforced',
 			'core',
 			'shareapi_enforce_links_password',
 			false
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'public@@@send_mail',
 			'core',
 			'shareapi_allow_public_notification',
 			false
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'public@@@social_share',
 			'core',
 			'shareapi_allow_social_share',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'public@@@expire_date@@@enabled',
 			'core',
 			'shareapi_default_expire_date',
 			false
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'public@@@expire_date@@@enforced',
 			'core',
