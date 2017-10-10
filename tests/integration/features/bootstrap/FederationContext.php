@@ -91,6 +91,7 @@ class FederationContext implements Context, SnippetAcceptingContext {
 	 * @return void
 	 */
 	protected function resetAppConfigs() {
+		echo "FederationContext resetAppConfigs\n";
 		// Remember the current capabilities
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();

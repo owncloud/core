@@ -38,6 +38,7 @@ class FeatureContext implements Context, SnippetAcceptingContext {
 	 * @return void
 	 */
 	protected function resetAppConfigs() {
+		echo "FeatureContext resetAppConfigs\n";
 		// Remember the current capabilities
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
