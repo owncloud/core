@@ -42,7 +42,8 @@ use OCA\DAV\Connector\Sabre\SharesPlugin;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
-use OCA\DAV\DAV\CustomPropertiesBackend;
+use OCA\DAV\DAV\FileCustomPropertiesBackend;
+use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
 use OCP\IRequest;
@@ -58,6 +59,9 @@ class Server {
 
 	/** @var IRequest */
 	private $request;
+
+	/** @var Connector\Sabre\Server  */
+	public $server;
 
 	public function __construct(IRequest $request, $baseUri) {
 		$this->request = $request;
@@ -175,15 +179,31 @@ class Server {
 					)
 				);
 
-				$this->server->addPlugin(
-					new \Sabre\DAV\PropertyStorage\Plugin(
-						new CustomPropertiesBackend(
-							$this->server->tree,
-							\OC::$server->getDatabaseConnection(),
-							\OC::$server->getUserSession()->getUser()
-						)
+				$filePropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
+					new FileCustomPropertiesBackend(
+						$this->server->tree,
+						\OC::$server->getDatabaseConnection(),
+						\OC::$server->getUserSession()->getUser()
 					)
 				);
+				$filePropertiesPlugin->pathFilter = function($path) {
+					// oh yes, we could set custom properties on the user's storage root
+					return strpos($path, 'files/') === 0;
+				};
+				$this->server->addPlugin($filePropertiesPlugin);
+
+				$miscPropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
+					new MiscCustomPropertiesBackend(
+						$this->server->tree,
+						\OC::$server->getDatabaseConnection(),
+						\OC::$server->getUserSession()->getUser()
+					)
+				);
+				$miscPropertiesPlugin->pathFilter = function($path) {
+					return strpos($path, 'files/') !== 0;
+				};
+				$this->server->addPlugin($miscPropertiesPlugin);
+
 				if (!is_null($view)) {
 					$this->server->addPlugin(
 						new QuotaPlugin($view));

@@ -23,16 +23,16 @@
 
 namespace OCA\DAV\Tests\unit\DAV;
 
-use \OCA\DAV\DAV\CustomPropertiesBackend;
+use \OCA\DAV\DAV\FileCustomPropertiesBackend;
 
 /**
- * Class CustomPropertiesBackend
+ * Class FileCustomPropertiesBackendTest
  *
  * @group DB
  *
  * @package OCA\DAV\Tests\unit\DAV
  */
-class CustomPropertiesBackendTest extends \Test\TestCase {
+class FileCustomPropertiesBackendTest extends \Test\TestCase {
 
 	/**
 	 * @var \Sabre\DAV\Server
@@ -45,7 +45,7 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 	private $tree;
 
 	/**
-	 * @var CustomPropertiesBackend
+	 * @var FileCustomPropertiesBackend
 	 */
 	private $plugin;
 
@@ -71,7 +71,7 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue($userId));
 
-		$this->plugin = new CustomPropertiesBackend(
+		$this->plugin = new FileCustomPropertiesBackend(
 			$this->tree,
 			\OC::$server->getDatabaseConnection(),
 			$this->user
