@@ -60,9 +60,6 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	 * @return void
 	 */
 	protected function resetAppConfigs() {
-		// Remember the current capabilities
-		$this->getCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$this->setupCommonSharingConfigs();
 		$this->setupCommonFederationConfigs();

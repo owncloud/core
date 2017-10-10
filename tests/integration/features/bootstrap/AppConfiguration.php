@@ -170,7 +170,7 @@ trait AppConfiguration {
 	 * @param string $testingParameter the parameter name as understood by
 	 *                                 "testing"
 	 * @param boolean $testingState the on|off state the parameter must be set to for the test
-	 * @return void
+	 * @return boolean true if the capability needed to be set
 	 */
 	public function setCapability(
 		$capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter, $testingState
@@ -193,7 +193,10 @@ trait AppConfiguration {
 					'testingParameter' => $testingParameter,
 					'savedState' => $savedState
 				];
+			return true;
 		}
+		
+		return false;
 	}
 
 	/**

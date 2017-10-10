@@ -876,20 +876,34 @@ trait Sharing {
 	 * @return void
 	 */
 	protected function setupCommonSharingConfigs() {
-		$this->setCapability(
+		// Remember the current capabilities
+		$this->getCapabilitiesCheckResponse();
+		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
+		
+		// Set major capabilities
+		$sharingChanged = $this->setCapability(
 			'files_sharing',
 			'api_enabled',
 			'core',
 			'shareapi_enabled',
 			true
 		);
-		$this->setCapability(
+		$allowLinksChanged = $this->setCapability(
 			'files_sharing',
 			'public@@@enabled',
 			'core',
 			'shareapi_allow_links',
 			true
 		);
+
+		if ($sharingChanged || $allowLinksChanged) {
+			// Remember the current capabilities again
+			// Because the above two settings also set a "default"
+			// group of sub-settings that may now have changed
+			$this->getCapabilitiesCheckResponse();
+			$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
+		}
+		
 		$this->setCapability(
 			'files_sharing',
 			'public@@@upload',
