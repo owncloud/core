@@ -193,8 +193,6 @@ trait AppConfiguration {
 					'testingParameter' => $testingParameter,
 					'savedState' => $savedState
 				];
-
-			var_dump($savedState);
 		}
 	}
 
@@ -278,8 +276,6 @@ trait AppConfiguration {
 				$capabilitiesChange['savedState'] ? 'yes' : 'no'
 			);
 		}
-
-		echo "Restored capabilities count: " . count($this->savedCapabilitiesChanges) . "\n";
 		
 		$this->currentUser = $user;
 	}
