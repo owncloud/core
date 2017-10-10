@@ -35,6 +35,11 @@ trait AppConfiguration {
 	 * @var string the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
+	
+	/**
+	 * @var array the changes made to capabilities for the test scenario
+	 */
+	private $savedCapabilitiesChanges = [];
 
 	/**
 	 * @param string $verb
@@ -164,10 +169,10 @@ trait AppConfiguration {
 	 * @param string $testingApp the "app" name as understood by "testing"
 	 * @param string $testingParameter the parameter name as understood by
 	 *                                 "testing"
-	 * @param boolean $testingState the on|off state the parameter was set to for the test
+	 * @param boolean $testingState the on|off state the parameter must be set to for the test
 	 * @return void
 	 */
-	public function resetCapability(
+	public function setCapability(
 		$capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter, $testingState
 	) {
 		$savedState = $this->wasCapabilitySet(
@@ -179,8 +184,15 @@ trait AppConfiguration {
 			$this->modifyServerConfig(
 				$testingApp,
 				$testingParameter,
-				$savedState ? 'yes' : 'no'
+				$testingState ? 'yes' : 'no'
 			);
+
+			$this->savedCapabilitiesChanges[] =
+				[
+					'testingApp' => $testingApp,
+					'testingParameter' => $testingParameter,
+					'savedState' => $savedState
+				];
 		}
 	}
 
@@ -236,15 +248,7 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	abstract protected function setupAppConfigs();
-
-	/**
-	 * Restore any app config state.
-	 * This will be called before each scenario.
-	 *
-	 * @return void
-	 */
-	abstract protected function restoreAppConfigs();
+	abstract protected function resetAppConfigs();
 
 	/**
 	 * @BeforeScenario
@@ -253,7 +257,7 @@ trait AppConfiguration {
 	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = 'admin';
-		$this->setupAppConfigs();
+		$this->resetAppConfigs();
 		$this->currentUser = $user;
 	}
 
@@ -264,7 +268,15 @@ trait AppConfiguration {
 	public function restoreParametersAfterScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = 'admin';
-		$this->restoreAppConfigs();
+
+		foreach ($this->savedCapabilitiesChanges as $capabilitiesChange) {
+			$this->modifyServerConfig(
+				$capabilitiesChange['testingApp'],
+				$capabilitiesChange['testingParameter'],
+				$capabilitiesChange['savedState'] ? 'yes' : 'no'
+			);
+		}
+
 		$this->currentUser = $user;
 	}
 }
