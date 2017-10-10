@@ -299,7 +299,7 @@ class UtilTest extends \Test\TestCase {
 	 *
 	 * @dataProvider defaultAppsProvider
 	 */
-	function testDefaultApps($defaultAppConfig, $expectedPath, $enabledApps) {
+	function testDefaultApps($defaultAppConfig, $defaultAppPathConfig, $expectedPath, $enabledApps) {
 		$oldDefaultApps = \OCP\Config::getSystemValue('defaultapp', '');
 		// CLI is doing messy stuff with the webroot, so need to work it around
 		$oldWebRoot = \OC::$WEBROOT;
@@ -316,6 +316,7 @@ class UtilTest extends \Test\TestCase {
 		// need to set a user id to make sure enabled apps are read from cache
 		\OC_User::setUserId($this->getUniqueID());
 		\OCP\Config::setSystemValue('defaultapp', $defaultAppConfig);
+		\OCP\Config::setSystemValue('defaultapp_path', $defaultAppPathConfig);
 		$this->assertEquals('http://localhost/' . $expectedPath, Dummy_OC_Util::getDefaultPageUrl());
 
 		// restore old state
@@ -326,28 +327,60 @@ class UtilTest extends \Test\TestCase {
 
 	function defaultAppsProvider() {
 		return [
-			// none specified, default to files
+			// neither app nor path specified, default to /files/
 			[
+				'',
 				'',
 				'index.php/apps/files/',
 				['files'],
 			],
-			// unexisting or inaccessible app specified, default to files
+			// non-existant or inaccessible app specified, default to /files/
 			[
 				'unexist',
+				'',
 				'index.php/apps/files/',
 				['files'],
 			],
-			// non-standard app
+			// non-standard app with no path specified
 			[
 				'calendar',
+				'',
 				'index.php/apps/calendar/',
 				['files', 'calendar'],
 			],
-			// non-standard app with fallback
+			// non-standard app with fallback and no paths specified
 			[
 				'contacts,calendar',
+				'',
 				'index.php/apps/calendar/',
+				['files', 'calendar'],
+			],
+			// files app with manual app path specified
+			[
+				'files',
+				'/?dir=/testfolder',
+				'index.php/apps/files/?dir=/testfolder',
+				['files'],
+			],
+			// external app with manual app path specified
+			[
+				'external',
+				'/3/',
+				'index.php/apps/external/3/',
+				['external'],
+			],
+			// external app with path / corrected to /1/ automatically
+			[
+				'external',
+				'/',
+				'index.php/apps/external/1/',
+				['external'],
+			],
+			// non-standard app with fallback and custom paths specified
+			[
+				'contacts,calendar',
+				'/?view=1,/?view=2',
+				'index.php/apps/calendar/?view=2',
 				['files', 'calendar'],
 			],
 		];
