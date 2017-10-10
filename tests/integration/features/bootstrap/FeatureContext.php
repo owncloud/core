@@ -37,19 +37,11 @@ class FeatureContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @return void
 	 */
-	protected function setupAppConfigs() {
+	protected function resetAppConfigs() {
 		// Remember the current capabilities
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$this->setupCommonSharingConfigs();
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function restoreAppConfigs() {
-		// Restore the previous capabilities settings
-		$this->restoreCommonSharingConfigs();
 	}
 }
