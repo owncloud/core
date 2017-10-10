@@ -876,90 +876,49 @@ trait Sharing {
 	 * @return void
 	 */
 	protected function setupCommonSharingConfigs() {
-		if (!$this->wasCapabilitySet('files_sharing', 'api_enabled')) {
-			$this->modifyServerConfig(
-				'core', 'shareapi_enabled', 'yes'
-			);
-		}
-		if (!$this->wasCapabilitySet('files_sharing', 'public@@@enabled')) {
-			$this->modifyServerConfig(
-				'core', 'shareapi_allow_links', 'yes'
-			);
-		}
-		if (!$this->wasCapabilitySet('files_sharing', 'public@@@upload')) {
-			$this->modifyServerConfig(
-				'core', 'shareapi_allow_public_upload', 'yes'
-			);
-		}
-		if (!$this->wasCapabilitySet('files_sharing', 'group_sharing')) {
-			$this->modifyServerConfig(
-				'core', 'shareapi_allow_group_sharing', 'yes'
-			);
-		}
-		if ($this->wasCapabilitySet('files_sharing', 'share_with_group_members_only')) {
-			$this->modifyServerConfig(
-				'core', 'shareapi_only_share_with_group_members', 'no'
-			);
-		}
-		if (!$this->wasCapabilitySet('files_sharing', 'user_enumeration@@@enabled')) {
-			$this->modifyServerConfig(
-				'core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'
-			);
-		}
-		if ($this->wasCapabilitySet('files_sharing', 'user_enumeration@@@group_members_only')) {
-			$this->modifyServerConfig(
-				'core', 'shareapi_share_dialog_user_enumeration_group_members', 'no'
-			);
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function restoreCommonSharingConfigs() {
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'api_enabled',
 			'core',
 			'shareapi_enabled',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'public@@@enabled',
 			'core',
 			'shareapi_allow_links',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'public@@@upload',
 			'core',
 			'shareapi_allow_public_upload',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'group_sharing',
 			'core',
 			'shareapi_allow_group_sharing',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'share_with_group_members_only',
 			'core',
 			'shareapi_only_share_with_group_members',
 			false
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'user_enumeration@@@enabled',
 			'core',
 			'shareapi_allow_share_dialog_user_enumeration',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'user_enumeration@@@group_members_only',
 			'core',
@@ -972,30 +931,14 @@ trait Sharing {
 	 * @return void
 	 */
 	protected function setupCommonFederationConfigs() {
-		if (!$this->wasCapabilitySet('federation', 'outgoing')) {
-			$this->modifyServerConfig(
-				'files_sharing', 'outgoing_server2server_share_enabled', 'yes'
-			);
-		}
-		if (!$this->wasCapabilitySet('federation', 'incoming')) {
-			$this->modifyServerConfig(
-				'files_sharing', 'incoming_server2server_share_enabled', 'yes'
-			);
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function restoreCommonFederationConfigs() {
-		$this->resetCapability(
+		$this->setCapability(
 			'federation',
 			'outgoing',
 			'files_sharing',
 			'outgoing_server2server_share_enabled',
 			true
 		);
-		$this->resetCapability(
+		$this->setCapability(
 			'federation',
 			'incoming',
 			'files_sharing',
