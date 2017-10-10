@@ -277,6 +277,8 @@ trait AppConfiguration {
 			);
 		}
 
+		echo "Restored capabilities count: " . count($this->savedCapabilitiesChanges) . "\n";
+		
 		$this->currentUser = $user;
 	}
 }
