@@ -26,5 +26,6 @@
 		<command>OCA\DAV\Command\CreateCalendar</command>
 		<command>OCA\DAV\Command\SyncBirthdayCalendar</command>
 		<command>OCA\DAV\Command\SyncSystemAddressBook</command>
+		<command>OCA\DAV\Command\CleanupChunks</command>
 	</commands>
 </info>
