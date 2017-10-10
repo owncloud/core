@@ -155,7 +155,7 @@ trait AppConfiguration {
 	 * @return boolean
 	 */
 	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
-		return $this->getParameterValueFromXml(
+		return (bool) $this->getParameterValueFromXml(
 			$this->savedCapabilitiesXml,
 			$capabilitiesApp,
 			$capabilitiesParameter
@@ -180,13 +180,17 @@ trait AppConfiguration {
 			$capabilitiesParameter
 		);
 
-		if ($savedState !== $testingState) {
-			$this->modifyServerConfig(
-				$testingApp,
-				$testingParameter,
-				$testingState ? 'yes' : 'no'
-			);
+		// Always set the config value, because sometimes enabling one config
+		// also changes some sub-settings. So the "interim" state as we set
+		// the config values could be unexpectedly different from the original
+		// saved state.
+		$this->modifyServerConfig(
+			$testingApp,
+			$testingParameter,
+			$testingState ? 'yes' : 'no'
+		);
 
+		if ($savedState !== $testingState) {
 			$this->savedCapabilitiesChanges[] =
 				[
 					'testingApp' => $testingApp,
