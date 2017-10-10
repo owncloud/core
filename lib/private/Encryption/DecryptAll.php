@@ -90,8 +90,10 @@ class DecryptAll {
 		}
 
 		$this->output->writeln('prepare encryption modules...');
-		if ($this->prepareEncryptionModules($user) === false) {
-			return false;
+		if (\OC::$server->getAppConfig()->getValue('encryption', 'useMasterKey', '0') !== '0') {
+			if ($this->prepareEncryptionModules($user) === false) {
+				return false;
+			}
 		}
 		$this->output->writeln(' done.');
 
@@ -183,6 +185,11 @@ class DecryptAll {
 		$userNo = 1;
 		foreach ($userList as $uid) {
 			$userCount = "$uid ($userNo of $numberOfUsers)";
+			if (\OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '0') !== '0') {
+				if ($this->prepareEncryptionModules($uid) === false) {
+					return false;
+				}
+			}
 			$this->decryptUsersFiles($uid, $progress, $userCount);
 			$userNo++;
 		}
@@ -255,7 +262,9 @@ class DecryptAll {
 		$target = $path . '.decrypted.' . $this->getTimestamp();
 
 		try {
+			\OC\Files\Storage\Wrapper\Encryption::setDisableWriteEncryption(true);
 			$this->rootView->copy($source, $target);
+			\OC\Files\Storage\Wrapper\Encryption::setDisableWriteEncryption(false);
 			$this->rootView->rename($target, $source);
 		} catch (DecryptionFailedException $e) {
 			if ($this->rootView->file_exists($target)) {
