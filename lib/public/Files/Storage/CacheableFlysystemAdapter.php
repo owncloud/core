@@ -25,7 +25,7 @@ namespace OCP\Files\Storage;
  * Public Cacheable storage adapter to be extended to connect to
  * flysystem adapters
  *
- * @since 10.0.x
+ * @since 10.0.4
  */
 abstract class CacheableFlysystemAdapter extends \OC\Files\Storage\CacheableFlysystem {
 	/**
@@ -33,14 +33,4 @@ abstract class CacheableFlysystemAdapter extends \OC\Files\Storage\CacheableFlys
 	 * @var boolean
 	 */
 	protected $isCaseInsensitiveStorage = false;
-
-	/**
-	 * Get the identifier for the storage,
-	 * the returned id should be the same for every storage object that is created with the same parameters
-	 * and two storage objects with the same id should refer to two storages that display the same files.
-	 *
-	 * @return string storage id
-	 * @since 10.0
-	 */
-	abstract public function getId();
 }
