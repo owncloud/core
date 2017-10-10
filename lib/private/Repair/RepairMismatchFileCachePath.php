@@ -108,7 +108,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		if ($correctPath === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($correctPath)));
+			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(md5($correctPath))));
 		}
 		$entryExisted = $qb->execute() > 0;
 
@@ -373,7 +373,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		if ($path === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($path)));
+			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(md5($path))));
 		}
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
