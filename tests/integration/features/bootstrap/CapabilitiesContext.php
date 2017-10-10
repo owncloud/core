@@ -61,6 +61,9 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	 */
 	protected function resetAppConfigs() {
 		echo "CapabilitiesContext resetAppConfigs\n";
+		// Remember the current capabilities
+		$this->getCapabilitiesCheckResponse();
+		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		$this->setCapability(
 			'files_sharing',
 			'api_enabled',
