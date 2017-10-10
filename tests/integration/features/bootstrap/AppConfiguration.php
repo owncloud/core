@@ -155,7 +155,7 @@ trait AppConfiguration {
 	 * @return boolean
 	 */
 	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
-		return $this->getParameterValueFromXml(
+		return (bool) $this->getParameterValueFromXml(
 			$this->savedCapabilitiesXml,
 			$capabilitiesApp,
 			$capabilitiesParameter
