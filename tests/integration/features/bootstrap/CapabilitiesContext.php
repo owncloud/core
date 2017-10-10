@@ -74,6 +74,16 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 		// Remember the current capabilities
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
+		$this->setCapability(
+			'files_sharing',
+			'public@@@enabled',
+			'core',
+			'shareapi_allow_links',
+			true
+		);
+		// Remember the current capabilities
+		$this->getCapabilitiesCheckResponse();
+		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$this->setupCommonSharingConfigs();
 		$this->setupCommonFederationConfigs();
