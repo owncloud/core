@@ -90,25 +90,14 @@ class FederationContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @return void
 	 */
-	protected function setupAppConfigs() {
+	protected function resetAppConfigs() {
 		// Remember the current capabilities
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$this->setupCommonSharingConfigs();
 		$this->setupCommonFederationConfigs();
-		if (!$this->wasCapabilitySet('files_sharing', 'resharing')) {
-			$this->modifyServerConfig('core', 'shareapi_allow_resharing', 'yes');
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function restoreAppConfigs() {
-		$this->restoreCommonSharingConfigs();
-		$this->restoreCommonFederationConfigs();
-		$this->resetCapability(
+		$this->setCapability(
 			'files_sharing',
 			'resharing',
 			'core',
