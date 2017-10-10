@@ -181,7 +181,7 @@ trait AppConfiguration {
 		);
 
 		echo "setCapability:testingApp:".$testingApp." testingParameter:".$testingParameter." savedState:".$savedState." testingState".$testingState."\n";
-		if ($savedState !== $testingState) {
+		if ($savedState === $testingState) {
 			echo "modifyServerConfig\n";
 			$this->modifyServerConfig(
 				$testingApp,
