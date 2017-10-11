@@ -29,7 +29,6 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
-use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCP\Files\Mount\IMountManager;
 use OCP\IConfig;
@@ -181,32 +180,15 @@ class ServerFactory {
 				));
 
 				// custom properties plugin must be the last one
-				$filePropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
-					new FileCustomPropertiesBackend(
-						$objectTree,
-						$this->databaseConnection,
-						$this->userSession->getUser()
+				$server->addPlugin(
+					new \Sabre\DAV\PropertyStorage\Plugin(
+						new FileCustomPropertiesBackend(
+							$objectTree,
+							$this->databaseConnection,
+							$this->userSession->getUser()
+						)
 					)
 				);
-				$filePropertiesPlugin->pathFilter = function($path) {
-					$pathInfo = $this->request->getPathInfo();
-					// matches '/webdav', '/webdav/', '/webdav/adcd' but not '/webdavabcd'
-					return preg_match('!^/webdav(/|\z)!', $pathInfo);
-				};
-				$server->addPlugin($filePropertiesPlugin);
-
-				$miscPropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
-					new MiscCustomPropertiesBackend(
-						$objectTree,
-						$this->databaseConnection,
-						$this->userSession->getUser()
-					)
-				);
-				$miscPropertiesPlugin->pathFilter = function($path) {
-					$pathInfo = $this->request->getPathInfo();
-					return preg_match('!^/webdav(/|\z)!', $pathInfo);
-				};
-				$server->addPlugin($miscPropertiesPlugin);
 			}
 			$server->addPlugin(new \OCA\DAV\Connector\Sabre\CopyEtagHeaderPlugin());
 		}, 30); // priority 30: after auth (10) and acl(20), before lock(50) and handling the request
