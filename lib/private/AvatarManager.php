@@ -86,8 +86,6 @@ class AvatarManager implements IAvatarManager {
 			throw new \Exception('user does not exist');
 		}
 
-		$userId = $user->getUID();
-
 		$avatarsFolder = $this->getAvatarFolder($user);
 		return new Avatar($avatarsFolder, $this->l, $user, $this->logger);
 	}

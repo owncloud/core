@@ -29,6 +29,7 @@
 
 namespace OC\Files\Node;
 
+use OC\Files\Meta\MetaRootNode;
 use OC\Files\Mount\Manager;
 use OC\Files\Mount\MountPoint;
 use OC\User\NoUserException;
@@ -180,6 +181,10 @@ class Root extends Folder implements IRootFolder {
 		$path = $this->normalizePath($path);
 		if ($this->isValidPath($path)) {
 			$fullPath = $this->getFullPath($path);
+			$virtualNode = $this->resolveVirtualNode($fullPath);
+			if ($virtualNode !== null) {
+				return $virtualNode;
+			}
 			$fileInfo = $this->view->getFileInfo($fullPath);
 			if ($fileInfo) {
 				return $this->createNode($fullPath, $fileInfo);
@@ -366,5 +371,19 @@ class Root extends Folder implements IRootFolder {
 
 		return $folder;
 
+	}
+
+	private function resolveVirtualNode($fullPath) {
+		$pieces = explode('/', $fullPath);
+		if ($pieces[1] !== 'meta') {
+			return null;
+		}
+		array_shift($pieces);
+		array_shift($pieces);
+		$node = new MetaRootNode();
+		if (empty($pieces)) {
+			return $node;
+		}
+		return $node->get(implode('/', $pieces));
 	}
 }
