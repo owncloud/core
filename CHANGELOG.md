@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048)
 - Refactor set and reset of capabilities - [#29200](https://github.com/owncloud/core/issues/29200)
-- All amazon locations support v4 now - v3 depreceated - [#29153](https://github.com/owncloud/core/issues/29153)
+- All amazon locations support v4 now - v3 deprecated - [#29153](https://github.com/owncloud/core/issues/29153)
 - Modified time value of files is now 64 bits long - [#28961](https://github.com/owncloud/core/issues/28961)
 
 ### Deprecated
