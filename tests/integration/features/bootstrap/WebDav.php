@@ -16,9 +16,9 @@ trait WebDav {
 	private $davPath = "remote.php/webdav";
 	/** @var boolean*/
 	private $usingOldDavPath = true;
-	/** @var ResponseInterface[] */
+	/** @var array with keys 'response' ResponseInterface[] and 'upload_type' string text describing the type of upload */
 	private $uploadResponses;
-	/** @var map with user as key and another map as value, which has path as key and etag as value */
+	/** @var array map with user as key and another map as value, which has path as key and etag as value */
 	private $storedETAG = NULL;
 	/** @var integer */
 	private $storedFileID = NULL;
@@ -702,10 +702,15 @@ trait WebDav {
 					$suffix = '-' . $dav . 'dav-regular';
 				}
 				$this->userUploadsAFileTo($user, $source, $destination . $suffix);
-				$responses[] = $this->response;
+				$response = $this->response;
 			} catch (ServerException $e) {
-				$responses[] = $e->getResponse();
+				$response = $e->getResponse();
 			}
+
+			$responses[] = [
+				'response' => $response,
+				'upload_type' => $dav . ' regular'
+			];
 
 			// old chunking upload
 			if ($dav === 'old') {
@@ -714,21 +719,33 @@ trait WebDav {
 				}
 				try {
 					$this->userUploadsAFileToWithChunks($user, $source, $destination . $suffix, 'old');
-					$responses[] = $this->response;
+					$response = $this->response;
 				} catch (ServerException $e) {
-					$responses[] = $e->getResponse();
+					$response = $e->getResponse();
 				}
+
+				$responses[] = [
+					'response' => $response,
+					'upload_type' => $dav . ' chunking'
+				];
 			}
+
+			// new chunking upload
 			if ($dav === 'new') {
 				if (!$overwriteMode) {
 					$suffix = '-' . $dav . 'dav-newchunking';
 				}
 				try {
 					$this->userUploadsAFileToWithChunks($user, $source, $destination . $suffix, 'new');
-					$responses[] = $this->response;
+					$response = $this->response;
 				} catch (ServerException $e) {
-					$responses[] = $e->getResponse();
+					$response = $e->getResponse();
 				}
+
+				$responses[] = [
+					'response' => $response,
+					'upload_type' => $dav . ' chunking'
+				];
 			}
 		}
 
@@ -743,8 +760,8 @@ trait WebDav {
 		foreach ($this->uploadResponses as $response) {
 			PHPUnit_Framework_Assert::assertEquals(
 				$statusCode,
-				$response->getStatusCode(),
-				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
+				$response['response']->getStatusCode(),
+				'Response for dav upload ' . $response['upload_type'] . ' did not return expected status code'
 			);
 		}
 	}
@@ -887,7 +904,6 @@ trait WebDav {
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id)
 	{
 		try {
-			$data = \GuzzleHttp\Stream\Stream::factory($data);
 			$destination = '/uploads/'. $user .'/'. $id .'/' . $num;
 			$this->makeDavRequest($user, 'PUT', $destination, [], $data, "uploads");
 		} catch (\GuzzleHttp\Exception\RequestException $ex) {
