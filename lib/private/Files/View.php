@@ -1799,10 +1799,11 @@ class View {
 			throw new InvalidPathException($l10n->t('Dot files are not allowed'));
 		}
 
+		$matches = [];
 
 		if (preg_match('/' . FileInfo::BLACKLIST_FILES_REGEX . '/', $fileName) !== 0) {
 			throw new InvalidPathException(
-				'Can`t upload files with extension .part because this extension is used internally by owncloud.'
+				"Can`t upload files with extension {$matches[0]} because these extensions are reserved for internal use."
 			);
 		}
 
