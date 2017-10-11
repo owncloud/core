@@ -59,3 +59,11 @@ Feature: external-storage
     Then the HTTP status code should be "404"
     And as "user0" the file "local_storage/foo3/textfile0.txt" does not exist
 
+  @local_storage
+  Scenario: Upload a file to external storage while quota is set on home storage
+    Given user "user0" exists
+    And user "user0" has a quota of "1 B"
+    And as an "user0"
+    When user "user0" uploads file "data/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms
+    Then the HTTP status code of all upload responses should be "201"
+    And as "user0" the file "local_storage/textquota.txt" exists
