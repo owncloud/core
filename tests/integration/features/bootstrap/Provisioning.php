@@ -656,7 +656,7 @@ trait Provisioning {
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 */
 	public function checkUserAttributes($body) {
-		$data = $this->response->xml()->data[0];
+		$data = $this->getResponseXml()->data[0];
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
 			foreach ($fd as $field => $value) {

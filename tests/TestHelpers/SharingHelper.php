@@ -126,8 +126,8 @@ class SharingHelper {
 			$fd['name'] = $linkName;
 		}
 		
-		$options['body'] = $fd;
-		
+		$options['form_params'] = $fd;
+
 		return $client->send(new Request("POST", $fullUrl), $options);
 	}
 }
