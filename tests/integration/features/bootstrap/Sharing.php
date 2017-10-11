@@ -637,7 +637,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkingTheResponseEntriesCount($count) {
-		$actualCount = count($this->responseXml()->data[0]);
+		$actualCount = count($this->getResponseXml()->data[0]);
 		PHPUnit_Framework_Assert::assertEquals($count, $actualCount);
 	}
 
