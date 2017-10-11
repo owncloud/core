@@ -60,9 +60,11 @@ class RSA extends AuthMechanism {
 	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
 		$auth = new RSACrypt();
 		$auth->setPassword($this->config->getSystemValue('secret', ''));
-		if (!$auth->loadKey($storage->getBackendOption('private_key'))) {
+		$privateKey =  $storage->getBackendOption('private_key');
+		if (!$auth->loadKey($privateKey)) {
 			throw new \RuntimeException('unable to load private key');
 		}
+		$storage->setBackendOption('private_key', base64_encode($privateKey));
 		$storage->setBackendOption('public_key_auth', $auth);
 	}
 
