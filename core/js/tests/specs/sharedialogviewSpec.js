@@ -279,7 +279,7 @@ describe('OC.Share.ShareDialogView', function() {
 				jsonData
 			);
 
-			expect(response.calledWithExactly([
+			expect(response.getCall(0).args[0]).toEqual([
 				{
 					"label": "Peter A.",
 					"value": {
@@ -301,7 +301,8 @@ describe('OC.Share.ShareDialogView', function() {
 						"shareWith": "Petra"
 					}
 				}
-			])).toEqual(true);
+			]);
+			expect(response.getCall(0).args[1].ocs).toBeDefined();
 		});
 		it('triggers autocomplete display and focus with data when ajax search succeeds', function () {
 			dialog.render();
@@ -331,7 +332,7 @@ describe('OC.Share.ShareDialogView', function() {
 					{'Content-Type': 'application/json'},
 					jsonData
 			);
-			expect(response.calledWithExactly(JSON.parse(jsonData).ocs.data.users)).toEqual(true);
+			expect(response.getCall(0).args[0]).toEqual(JSON.parse(jsonData).ocs.data.users);
 			expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 		});
 
@@ -379,10 +380,10 @@ describe('OC.Share.ShareDialogView', function() {
 					{'Content-Type': 'application/json'},
 					jsonData
 				);
-				expect(response.calledWithExactly([{
+				expect(response.getCall(0).args[0]).toEqual([{
 					'label': 'bobby',
 					'value': {'shareType': 0, 'shareWith': 'imbob'}
-				}])).toEqual(true);
+				}]);
 				expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 			});
 
@@ -437,10 +438,10 @@ describe('OC.Share.ShareDialogView', function() {
 					{'Content-Type': 'application/json'},
 					jsonData
 				);
-				expect(response.calledWithExactly([{
+				expect(response.getCall(0).args[0]).toEqual([{
 					'label': 'bobby',
 					'value': {'shareType': 0, 'shareWith': 'imbob'}
-				}])).toEqual(true);
+				}]);
 				expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 			});
 
@@ -517,10 +518,10 @@ describe('OC.Share.ShareDialogView', function() {
 						{'Content-Type': 'application/json'},
 						jsonData
 					);
-					expect(response.calledWithExactly([{
+					expect(response.getCall(0).args[0]).toEqual([{
 						'label': 'bobby',
 						'value': {'shareType': OC.Share.SHARE_TYPE_USER, 'shareWith': 'imbob'}
-					}])).toEqual(true);
+					}]);
 					expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 				});
 
@@ -567,10 +568,10 @@ describe('OC.Share.ShareDialogView', function() {
 						{'Content-Type': 'application/json'},
 						jsonData
 					);
-					expect(response.calledWithExactly([{
+					expect(response.getCall(0).args[0]).toEqual([{
 						'label': 'group2',
 						'value': {'shareType': OC.Share.SHARE_TYPE_GROUP, 'shareWith': 'group2'}
-					}])).toEqual(true);
+					}]);
 					expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 				});
 
@@ -617,10 +618,10 @@ describe('OC.Share.ShareDialogView', function() {
 						{'Content-Type': 'application/json'},
 						jsonData
 					);
-					expect(response.calledWithExactly([{
+					expect(response.getCall(0).args[0]).toEqual([{
 						'label': 'foo2@bar.com/baz',
 						'value': {'shareType': OC.Share.SHARE_TYPE_REMOTE, 'shareWith': 'foo2@bar.com/baz'}
-					}])).toEqual(true);
+					}]);
 					expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
 				});
 			});
@@ -643,7 +644,8 @@ describe('OC.Share.ShareDialogView', function() {
 					{'Content-Type': 'application/json'},
 					jsonData
 			);
-			expect(response.calledWithExactly()).toEqual(true);
+			expect(response.getCall(0).args[0]).not.toBeDefined();
+			expect(response.getCall(0).args[1].ocs).toBeDefined();
 		});
 
 		it('throws a notification when the ajax search lookup fails', function () {
