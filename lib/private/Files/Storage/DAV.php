@@ -50,6 +50,8 @@ use Sabre\DAV\Client;
 use Sabre\DAV\Xml\Property\ResourceType;
 use Sabre\HTTP\ClientException;
 use Sabre\HTTP\ClientHttpException;
+use Sabre\DAV\Exception\InsufficientStorage;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 /**
  * Class DAV
@@ -355,7 +357,7 @@ class DAV extends Common {
 						&& $e->getResponse()->getStatusCode() === Http::STATUS_NOT_FOUND) {
 						return false;
 					} else {
-						throw $e;
+						$this->convertException($e);
 					}
 				}
 
@@ -503,14 +505,17 @@ class DAV extends Common {
 		$this->statCache->remove($target);
 		$source = fopen($path, 'r');
 
-		$this->httpClientService
-			->newClient()
-			->put($this->createBaseUri() . $this->encodePath($target), [
-				'body' => $source,
-				'auth' => [$this->user, $this->password]
-			]);
-
 		$this->removeCachedFile($target);
+		try {
+			$this->httpClientService
+				->newClient()
+				->put($this->createBaseUri() . $this->encodePath($target), [
+					'body' => $source,
+					'auth' => [$this->user, $this->password]
+				]);
+		} catch (\Exception $e) {
+			$this->convertException($e);
+		}
 	}
 
 	/** {@inheritdoc} */
@@ -828,18 +833,15 @@ class DAV extends Common {
 		\OC::$server->getLogger()->logException($e);
 		Util::writeLog('files_external', $e->getMessage(), Util::ERROR);
 		if ($e instanceof ClientHttpException) {
-			if ($e->getHttpStatus() === Http::STATUS_LOCKED) {
-				throw new \OCP\Lock\LockedException($path);
-			}
-			if ($e->getHttpStatus() === Http::STATUS_UNAUTHORIZED) {
-				// either password was changed or was invalid all along
-				throw new StorageInvalidException(get_class($e) . ': ' . $e->getMessage());
-			} else if ($e->getHttpStatus() === Http::STATUS_METHOD_NOT_ALLOWED) {
+			if ($e->getHttpStatus() === Http::STATUS_METHOD_NOT_ALLOWED) {
 				// ignore exception for MethodNotAllowed, false will be returned
 				return;
 			}
-			throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
-		} else if ($e instanceof ClientException) {
+			$this->throwByStatusCode($e->getHttpStatus(), $path);
+		} else if ($e instanceof \GuzzleHttp\Exception\ClientException || $e instanceof \GuzzleHttp\Exception\ServerException) {
+			if ($e->getResponse() instanceof ResponseInterface) {
+				$this->throwByStatusCode($e->getResponse()->getStatusCode());
+			}
 			// connection timeout or refused, server could be temporarily down
 			throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
 		} else if ($e instanceof \InvalidArgumentException) {
@@ -852,6 +854,28 @@ class DAV extends Common {
 		}
 
 		// TODO: only log for now, but in the future need to wrap/rethrow exception
+	}
+
+	/**
+	 * Throw exception by status code
+	 *
+	 * @param int $statusCode status code
+	 * @param string $path optional path for some exceptions
+	 * @throws \Exception Sabre or ownCloud exceptions
+	 */
+	private function throwByStatusCode($statusCode, $path = '') {
+		switch ($statusCode) {
+			case Http::STATUS_LOCKED:
+				throw new \OCP\Lock\LockedException($path);
+			case Http::STATUS_UNAUTHORIZED:
+				// either password was changed or was invalid all along
+				throw new StorageInvalidException(get_class($e) . ': ' . $e->getMessage());
+			case Http::STATUS_INSUFFICIENT_STORAGE:
+				throw new InsufficientStorage();
+			case Http::STATUS_FORBIDDEN:
+				throw new Forbidden();
+		}
+		throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
 	}
 }
 
