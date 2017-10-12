@@ -436,7 +436,13 @@ class OC_API {
 	private static function toXML($array, $writer) {
 		foreach($array as $k => $v) {
 			if ($k[0] === '@') {
-				$writer->writeAttribute(substr($k, 1), $v);
+				if (is_array($v)) {
+					foreach ($v as $name => $value) {
+						$writer->writeAttribute($name, $value);
+					}
+				} else {
+					$writer->writeAttribute(substr($k, 1), $v);
+				}
 				continue;
 			} else if (is_numeric($k)) {
 				$k = 'element';
