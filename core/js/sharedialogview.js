@@ -251,7 +251,7 @@
 							$('.shareWithField').removeClass('error')
 								.tooltip('hide')
 								.autocomplete("option", "autoFocus", true);
-							response(suggestions);
+							response(suggestions, result);
 						} else {
 							var title = t('core', 'No users or groups found for {search}', {search: $('.shareWithField').val()});
 							if (!view.configModel.get('allowGroupSharing')) {
@@ -266,10 +266,10 @@
 								})
 								.tooltip('fixTitle')
 								.tooltip('show');
-							response();
+							response(undefined, result);
 						}
 					} else {
-						response();
+						response(undefined, result);
 					}
 				}
 			).fail(function() {
