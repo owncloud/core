@@ -38,7 +38,7 @@ use GuzzleHttp\Message\ResponseInterface;
 use OC\Files\Filesystem;
 use OC\Files\Stream\Close;
 use Icewind\Streams\IteratorDirectory;
-use OC\MemCache\ArrayCache;
+use OC\Memcache\ArrayCache;
 use OCP\AppFramework\Http;
 use OCP\Constants;
 use OCP\Files;
