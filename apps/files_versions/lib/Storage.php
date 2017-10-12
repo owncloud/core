@@ -461,6 +461,7 @@ class Storage {
 						$versions[$key]['path'] = Filesystem::normalizePath($pathinfo['dirname'] . '/' . $filename);
 						$versions[$key]['name'] = $versionedFile;
 						$versions[$key]['size'] = $view->filesize($dir . '/' . $entryName);
+						$versions[$key]['storage_location'] = "$dir/$entryName";
 					}
 				}
 			}
