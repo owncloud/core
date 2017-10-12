@@ -493,4 +493,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			}
 		}
 	}
+
+	public function getCurrentUser() {
+		$processUser = posix_getpwuid(posix_geteuid());
+		return $processUser['name'];
+	}
+
 }

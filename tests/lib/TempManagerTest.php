@@ -138,6 +138,9 @@ class TempManagerTest extends \Test\TestCase {
 	}
 
 	public function testLogCantCreateFile() {
+		if ($this->getCurrentUser() === 'root') {
+			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
+		}
 		$logger = $this->createMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
 		chmod($this->baseDir, 0500);
@@ -148,6 +151,9 @@ class TempManagerTest extends \Test\TestCase {
 	}
 
 	public function testLogCantCreateFolder() {
+		if ($this->getCurrentUser() === 'root') {
+			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
+		}
 		$logger = $this->createMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
 		chmod($this->baseDir, 0500);
