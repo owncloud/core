@@ -168,8 +168,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 
 		var page = $('#app-' + app.id);
 
-		// image loading kung-fu (IE doesn't properly scale SVGs, so disable app icons)
-		if (app.preview && !OC.Util.isIE()) {
+		if (app.preview) {
 			var currentImage = new Image();
 			currentImage.src = app.preview;
 

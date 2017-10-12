@@ -25,7 +25,7 @@ script('settings', 'admin-apps');
 	<script id="app-template" type="text/x-handlebars">
 		<div class="section" id="app-{{id}}">
 		{{#if preview}}
-		<div class="app-image{{#if previewAsIcon}} app-image-icon{{/if}} hidden">
+		<div class="app-image{{#if previewAsIcon}} app-image-icon{{/if}}">
 		</div>
 		{{/if}}
 		<h2 class="app-name">
