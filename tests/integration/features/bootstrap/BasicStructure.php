@@ -125,6 +125,45 @@ trait BasicStructure {
 	}
 
 	/**
+	 * Parses the xml answer to get the requested key and sub-key
+	 *
+	 * @param ResponseInterface $response
+	 * @param string $key1
+	 * @param string $key2
+	 * @return string
+	 */
+	public function getXMLKey1Key2Value($response, $key1, $key2) {
+		return $response->xml()->$key1->$key2;
+	}
+
+	/**
+	 * Parses the xml answer to get the requested key sequence
+	 *
+	 * @param ResponseInterface $response
+	 * @param string $key1
+	 * @param string $key2
+	 * @param string $key3
+	 * @return string
+	 */
+	public function getXMLKey1Key2Key3Value($response, $key1, $key2, $key3) {
+		return $response->xml()->$key1->$key2->$key3;
+	}
+
+	/**
+	 * Parses the xml answer to get the requested attribute value
+	 *
+	 * @param ResponseInterface $response
+	 * @param string $key1
+	 * @param string $key2
+	 * @param string $key3
+	 * @param string $attribute
+	 * @return string
+	 */
+	public function getXMLKey1Key2Key3AttributeValue($response, $key1, $key2, $key3, $attribute) {
+		return (string) $response->xml()->$key1->$key2->$key3->attributes()->$attribute;
+	}
+
+	/**
 	 * This function is needed to use a vertical fashion in the gherkin tables.
 	 * @param array $arrayOfArrays
 	 * @return array
@@ -222,6 +261,49 @@ trait BasicStructure {
 	 */
 	public function theHTTPStatusCodeShouldBe($statusCode) {
 		PHPUnit_Framework_Assert::assertEquals($statusCode, $this->response->getStatusCode());
+	}
+
+	/**
+	 * @Then /^the XML "([^"]*)" "([^"]*)" value should be "([^"]*)"$/
+	 * @param string $key1
+	 * @param string $key2
+	 * @param string $idText
+	 */
+	public function theXMLKey1Key2ValueShouldBe($key1, $key2, $idText) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$idText,
+			$this->getXMLKey1Key2Value($this->response, $key1, $key2)
+		);
+	}
+
+	/**
+	 * @Then /^the XML "([^"]*)" "([^"]*)" "([^"]*)" value should be "([^"]*)"$/
+	 * @param string $key1
+	 * @param string $key2
+	 * @param string $key3
+	 * @param string $idText
+	 */
+	public function theXMLKey1Key2Key3ValueShouldBe($key1, $key2, $key3, $idText) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$idText,
+			$this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3)
+		);
+	}
+
+	/**
+	 * @Then /^the XML "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" attribute value should be a valid version string$/
+	 * @param string $key1
+	 * @param string $key2
+	 * @param string $key3
+	 * @param string $attribute
+	 * @param string $idText
+	 */
+	public function theXMLKey1Key2AttributeValueShouldBe($key1, $key2, $key3, $attribute) {
+		$value = $this->getXMLKey1Key2Key3AttributeValue($this->response, $key1, $key2, $key3, $attribute);
+		PHPUnit_Framework_Assert::assertTrue(
+			version_compare($value, '0.0.1') >= 0,
+			'attribute ' . $attribute . ' value ' . $value . ' is not a valid version string'
+		);
 	}
 
 	/**
