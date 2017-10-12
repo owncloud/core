@@ -44,11 +44,14 @@ use OC\Files\Cache\Scanner;
 use OC\Files\Cache\Updater;
 use OC\Files\Filesystem;
 use OC\Files\Cache\Watcher;
+use OCP\Constants;
+use OCP\Files\FileInfo;
 use OCP\Files\FileNameTooLongException;
 use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\ReservedWordException;
 use OCP\Files\Storage\ILockingStorage;
+use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -62,7 +65,7 @@ use OCP\Lock\ILockingProvider;
  * Some \OC\Files\Storage\Common methods call functions which are first defined
  * in classes which extend it, e.g. $this->stat() .
  */
-abstract class Common implements Storage, ILockingStorage {
+abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 
 	use LocalTempFileTrait;
 
@@ -151,19 +154,19 @@ abstract class Common implements Storage, ILockingStorage {
 	public function getPermissions($path) {
 		$permissions = 0;
 		if ($this->isCreatable($path)) {
-			$permissions |= \OCP\Constants::PERMISSION_CREATE;
+			$permissions |= Constants::PERMISSION_CREATE;
 		}
 		if ($this->isReadable($path)) {
-			$permissions |= \OCP\Constants::PERMISSION_READ;
+			$permissions |= Constants::PERMISSION_READ;
 		}
 		if ($this->isUpdatable($path)) {
-			$permissions |= \OCP\Constants::PERMISSION_UPDATE;
+			$permissions |= Constants::PERMISSION_UPDATE;
 		}
 		if ($this->isDeletable($path)) {
-			$permissions |= \OCP\Constants::PERMISSION_DELETE;
+			$permissions |= Constants::PERMISSION_DELETE;
 		}
 		if ($this->isSharable($path)) {
-			$permissions |= \OCP\Constants::PERMISSION_SHARE;
+			$permissions |= Constants::PERMISSION_SHARE;
 		}
 		return $permissions;
 	}
@@ -259,7 +262,7 @@ abstract class Common implements Storage, ILockingStorage {
 		$dh = $this->opendir($path);
 		if (is_resource($dh)) {
 			while (($file = readdir($dh)) !== false) {
-				if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
+				if (!Filesystem::isIgnoredDir($file)) {
 					if ($this->is_dir($path . '/' . $file)) {
 						mkdir($target . '/' . $file);
 						$this->addLocalFolder($path . '/' . $file, $target . '/' . $file);
@@ -282,7 +285,7 @@ abstract class Common implements Storage, ILockingStorage {
 		$dh = $this->opendir($dir);
 		if (is_resource($dh)) {
 			while (($item = readdir($dh)) !== false) {
-				if (\OC\Files\Filesystem::isIgnoredDir($item)) continue;
+				if (Filesystem::isIgnoredDir($item)) continue;
 				if (strstr(strtolower($item), strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
 				}
@@ -446,7 +449,7 @@ abstract class Common implements Storage, ILockingStorage {
 	 * @return int|false
 	 */
 	public function free_space($path) {
-		return \OCP\Files\FileInfo::SPACE_UNKNOWN;
+		return FileInfo::SPACE_UNKNOWN;
 	}
 
 	/**
@@ -620,7 +623,7 @@ abstract class Common implements Storage, ILockingStorage {
 	 */
 	public function getMetaData($path) {
 		$permissions = $this->getPermissions($path);
-		if (!$permissions & \OCP\Constants::PERMISSION_READ) {
+		if (!$permissions & Constants::PERMISSION_READ) {
 			//can't read, nothing we can do
 			return null;
 		}
@@ -684,5 +687,51 @@ abstract class Common implements Storage, ILockingStorage {
 	 */
 	public function setAvailability($isAvailable) {
 		$this->getStorageCache()->setAvailability($isAvailable);
+	}
+	public function getVersions($internalPath) {
+		// KISS implementation
+		if (!\OC_App::isEnabled('files_versions')) {
+			return [];
+		}
+		$p = $this->convertInternalPathToGlobalPath($internalPath);
+
+		return array_values(
+			\OCA\Files_Versions\Storage::getVersions($this->getOwner($internalPath), $p));
+	}
+
+	public function getVersion($internalPath, $versionId) {
+		$versions = $this->getVersions($internalPath);
+		$versions = array_filter($versions, function ($version) use($versionId){
+			return $version['version'] === $versionId;
+		});
+		return array_shift($versions);
+	}
+
+	public function getContentOfVersion($internalPath, $versionId) {
+		$v = $this->getVersion($internalPath, $versionId);
+		return $this->file_get_contents($v['storage_location']);
+	}
+
+	public function restoreVersion($internalPath, $versionId) {
+		// KISS implementation
+		if (!\OC_App::isEnabled('files_versions')) {
+			return;
+		}
+		$p = $this->convertInternalPathToGlobalPath($internalPath);
+		\OCA\Files_Versions\Storage::rollback($p, $versionId);
+	}
+
+	/**
+	 * @param $internalPath
+	 * @return array|string
+	 */
+	private function convertInternalPathToGlobalPath($internalPath) {
+		$mount = \OC::$server->getMountManager()->findByStorageId($this->getId());
+		$p = $mount[0]->getMountPoint() . $internalPath;
+		$p = explode('/', ltrim($p, '/'));
+		array_shift($p);
+		array_shift($p);
+		$p = implode('/', $p);
+		return $p;
 	}
 }
