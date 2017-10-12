@@ -1,0 +1,222 @@
+workspace:
+  base: /drone
+  path: src
+
+clone:
+  git:
+    image: plugins/git
+    depth: 1
+
+pipeline:
+  restore:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+    restore: true
+    when:
+      local: false
+      event: [push, pull_request]
+      branch: [master, stable10, stable9.1, stable9]
+
+  composer:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/composer-install.sh
+    when:
+      event: [push, pull_request]
+      branch: [master, stable10, stable9.1, stable9]
+
+
+  npm:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/npm-install.sh
+    when:
+      event: [push, pull_request]
+      branch: [master, stable10, stable9.1, stable9]
+
+  bower:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/bower-install.sh
+    when:
+      event: [push, pull_request]
+      branch: [master, stable10, stable9.1, stable9]
+
+  rebuild:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+    rebuild: true
+    mount:
+      - lib/composer
+      - core/vendor
+      - build/node_modules
+    when:
+      local: false
+      event: [ push ]
+      branch: [ master, stable10, stable9.1, stable9 ]
+
+  flush:
+    image: plugins/s3-cache:1
+    pull: true
+    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+    flush: true
+    flush_age: 14
+    when:
+      local: false
+      event: [push]
+      branch: [master, stable10, stable9.1, stable9]
+
+  coverage:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    group: test
+    environment:
+      - PHP_VERSION=${PHP_VERSION}
+      - DB_TYPE=${DB_TYPE}
+    commands:
+      - ./tests/drone/test-coverage.sh
+    when:
+      event: [push, pull_request]
+      branch: [master, stable10, stable9.1, stable9]
+      matrix:
+        TEST_SUITE: coverage
+
+  codecov:
+    image: plugins/codecov:1
+    secrets: [codecov_token]
+    pull: true
+    files:
+     - tests/autotest-clover-${DB_TYPE}.xml
+    when:
+      event: [push, pull_request]
+      branch: [master, stable10, stable9.1, stable9]
+      matrix:
+        TEST_SUITE: coverage
+
+services:
+  mariadb:
+    image: mariadb:10.3
+    environment:
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+      - MYSQL_ROOT_PASSWORD=owncloud
+    when:
+      matrix:
+        DB_TYPE: mariadb
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+      - MYSQL_ROOT_PASSWORD=owncloud
+    when:
+      matrix:
+        DB_TYPE: mysql
+
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=owncloud
+      - POSTGRES_PASSWORD=owncloud
+      - POSTGRES_DB=owncloud
+    when:
+      matrix:
+        DB_TYPE: postgres
+
+  # oracle:
+  #   image: oracle:x.x
+  #   environment:
+  #     - ORACLE_USER=owncloud
+  #     - ORACLE_PASSWORD=owncloud
+  #     - ORACLE_DB=owncloud
+  #   when:
+  #     matrix:
+  #       DB_TYPE: oracle
+
+matrix:
+  include:
+#    # PHP 5.6
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: mysql
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: postgres
+#      TEST_SUITE: phpunit
+#    # - PHP_VERSION: 5.6
+#    #   DB_TYPE: oracle
+#    #   TEST_SUITE: phpunit
+#
+#    # PHP 7.0
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: mysql
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: postgres
+#      TEST_SUITE: phpunit
+#    # - PHP_VERSION: 7.0
+#    #   DB_TYPE: oracle
+#    #   TEST_SUITE: phpunit
+#
+#    # PHP 7.1
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: mysql
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: postgres
+#      TEST_SUITE: phpunit
+#    # - PHP_VERSION: 7.1
+#    #   DB_TYPE: oracle
+#    #   TEST_SUITE: phpunit
+#
+#    # PHP 7.2
+#    - PHP_VERSION: 7.2
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.2
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.2
+#      DB_TYPE: mysql
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.2
+#      DB_TYPE: postgres
+#      TEST_SUITE: phpunit
+#    # - PHP_VERSION: 7.2
+#    #   DB_TYPE: oracle
+#    #   TEST_SUITE: phpunit
+#
+#    # Integration
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: sqlite
+#      TEST_SUITE: integration
+
+    # Code Coverage Computation
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: coverage
