@@ -21,6 +21,7 @@
 
 namespace OCA\DAV\Migrations;
 
+use OC\Files\Filesystem;
 use \OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Node;
 use OCP\IDBConnection;
@@ -67,6 +68,9 @@ class Version20170202213905 implements ISqlMigration {
 			->setMaxResults(null)
 			->select('userid', 'propertypath')
 			->from('properties', 'props')
+			// Only pick rows that have null entries - so we can pre-migrate this
+			// with an OCC command in order to reduce upgrade time
+			->where($qb->expr()->isNull('fileid'))
 			->groupBy('userid')
 			->addGroupBy('propertypath')
 			->orderBy('userid')
@@ -112,10 +116,20 @@ class Version20170202213905 implements ISqlMigration {
 			return null;
 		}
 
-		$node = \OC::$server->getUserFolder($userId)->get($entry['propertypath']);
-		if ($node instanceof Node && $node->getId()) {
-			$fileId = $node->getId();
-			$updateQuery = $this->getRepairQuery($qb, $fileId, $userId, $entry['propertypath']);
+		// Get the user folder (sets up mounts etc)
+		$userFolder = \OC::$server->getUserFolder($userId);
+
+		if(is_null($userFolder)) {
+			\OC::$server->getLogger()->error("User: $userId returned a null userFolder - cannot migrate oc_properties");
+			return null;
+		}
+
+		/** @var $storage \OC\Files\Storage\Storage */
+		$path = $userFolder->getPath() . substr($entry['propertypath'], 1, strlen($entry['propertypath']));
+		list($storage, $internalPath) = Filesystem::resolvePath($path);
+		$id = $storage->getCache()->getId($internalPath);
+		if ($id !== -1) {
+			$updateQuery = $this->getRepairQuery($qb, $id, $userId, $entry['propertypath']);
 			return $updateQuery->getSQL();
 		}
 		return null;
