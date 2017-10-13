@@ -24,40 +24,59 @@ trait Provisioning {
 	 * @param string $user
 	 */
 	public function assureUserExists($user) {
-		try {
-			$this->userExists($user);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		if ( !$this->userExists($user) ) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = "admin";
 			$this->creatingTheUser($user);
 			$this->currentUser = $previous_user;
 		}
-		$this->userExists($user);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" already exists$/
+	 * @param string $user
+	 */
+	public function userAlreadyExists($user) {
+		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" does not already exist$/
+	 * @param string $user
+	 */
+	public function userDoesNotAlreadyExist($user) {
+		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
+	}
+
+	/**
+	 * @Then /^group "([^"]*)" already exists$/
+	 * @param string $group
+	 */
+	public function groupAlreadyExists($group) {
+		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
+	}
+
+	/**
+	 * @Then /^group "([^"]*)" does not already exist$/
+	 * @param string $group
+	 */
+	public function groupDoesNotAlreadyExist($group) {
+		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 	}
 
 	/**
 	 * @Given /^user "([^"]*)" does not exist$/
 	 * @param string $user
 	 */
-	public function userDoesNotExist($user) {
-		try {
-			$this->userExists($user);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
-			$this->response = $ex->getResponse();
-			PHPUnit_Framework_Assert::assertEquals(404, $ex->getResponse()->getStatusCode());
-			return;
+	public function assureUserDoesNotExist($user) {
+		if ($this->userExists($user)) {
+			$previous_user = $this->currentUser;
+			$this->currentUser = "admin";
+			$this->deletingTheUser($user);
+			$this->currentUser = $previous_user;
 		}
-		$previous_user = $this->currentUser;
-		$this->currentUser = "admin";
-		$this->deletingTheUser($user);
-		$this->currentUser = $previous_user;
-		try {
-			$this->userExists($user);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
-			$this->response = $ex->getResponse();
-			PHPUnit_Framework_Assert::assertEquals(404, $ex->getResponse()->getStatusCode());
-		}
+		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 	}
 
 	public function creatingTheUser($user) {
@@ -92,7 +111,7 @@ trait Provisioning {
 		$previous_user = $this->currentUser;
 		$this->currentUser = "admin";
 		$this->creatingTheUser($user);
-		$this->userExists($user);
+		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
 		$this->currentUser = $previous_user;
 	}
 
@@ -100,7 +119,7 @@ trait Provisioning {
 		$previous_user = $this->currentUser;
 		$this->currentUser = "admin";
 		$this->deletingTheUser($user);
-		$this->userDoesNotExist($user);
+		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 		$this->currentUser = $previous_user;
 	}
 
@@ -108,7 +127,7 @@ trait Provisioning {
 		$previous_user = $this->currentUser;
 		$this->currentUser = "admin";
 		$this->creatingTheGroup($group);
-		$this->groupExists($group);
+		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 		$this->currentUser = $previous_user;
 	}
 
@@ -116,7 +135,7 @@ trait Provisioning {
 		$previous_user = $this->currentUser;
 		$this->currentUser = "admin";
 		$this->deletingTheGroup($group);
-		$this->groupDoesNotExist($group);
+		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 		$this->currentUser = $previous_user;
 	}
 
@@ -125,8 +144,13 @@ trait Provisioning {
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->adminUser;
-
-		$this->response = $client->get($fullUrl, $options);
+		try {
+			$this->response = $client->get($fullUrl, $options);
+			return True;
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+			return False;
+		}
 	}
 
 	/**
@@ -298,10 +322,9 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function addUserToGroup($user, $group) {
-		$this->userExists($user);
-		$this->groupExists($group);
+		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
+		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 		$this->addingUserToGroup($user, $group);
-
 	}
 
 	/**
@@ -324,14 +347,18 @@ trait Provisioning {
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
 	}
 
-
 	public function groupExists($group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->adminUser;
-
-		$this->response = $client->get($fullUrl, $options);
+		try {
+			$this->response = $client->get($fullUrl, $options);
+			return True;
+		} catch (\GuzzleHttp\Exception\ClientException $e) {
+			$this->response = $e->getResponse();
+			return False;
+		}
 	}
 
 	/**
@@ -339,40 +366,27 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function assureGroupExists($group) {
-		try {
-			$this->groupExists($group);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		if (!$this->groupExists($group)) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = "admin";
 			$this->creatingTheGroup($group);
 			$this->currentUser = $previous_user;
 		}
-		$this->groupExists($group);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 	}
 
 	/**
 	 * @Given /^group "([^"]*)" does not exist$/
 	 * @param string $group
 	 */
-	public function groupDoesNotExist($group) {
-		try {
-			$this->groupExists($group);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
-			$this->response = $ex->getResponse();
-			PHPUnit_Framework_Assert::assertEquals(404, $ex->getResponse()->getStatusCode());
-			return;
+	public function assureGroupDoesNotExist($group) {
+		if ($this->groupExists($group)) {
+			$previous_user = $this->currentUser;
+			$this->currentUser = "admin";
+			$this->deletingTheGroup($group);
+			$this->currentUser = $previous_user;
 		}
-		$previous_user = $this->currentUser;
-		$this->currentUser = "admin";
-		$this->deletingTheGroup($group);
-		$this->currentUser = $previous_user;
-		try {
-			$this->groupExists($group);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
-			$this->response = $ex->getResponse();
-			PHPUnit_Framework_Assert::assertEquals(404, $ex->getResponse()->getStatusCode());
-		}
+		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 	}
 
 	/**
