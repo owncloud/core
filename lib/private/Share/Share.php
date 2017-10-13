@@ -652,6 +652,7 @@ class Share extends Constants {
 
 		$uidOwner = \OC_User::getUser();
 		$shareWithinGroupOnly = self::shareWithGroupMembersOnly();
+		$shareWithMembershipGroupOnly = self::shareWithMembershipGroupOnly();
 
 		if (is_null($itemSourceName)) {
 			$itemSourceName = $itemSource;
@@ -770,7 +771,7 @@ class Share extends Constants {
 				\OCP\Util::writeLog('OCP\Share', sprintf($message, $itemSourceName, $shareWith), \OCP\Util::DEBUG);
 				throw new \Exception($message_t);
 			}
-			if ($shareWithinGroupOnly && !\OC::$server->getGroupManager()->inGroup($uidOwner, $shareWith)) {
+			if ($shareWithMembershipGroupOnly && !\OC::$server->getGroupManager()->inGroup($uidOwner, $shareWith)) {
 				$message = 'Sharing %s failed, because '
 					.'%s is not a member of the group %s';
 				$message_t = $l->t('Sharing %s failed, because %s is not a member of the group %s', [$itemSourceName, $uidOwner, $shareWith]);
@@ -2755,6 +2756,15 @@ class Share extends Constants {
 	}
 
 	/**
+	 * check if user can only share with groups he's member of
+	 * @return bool
+	 */
+	public static function shareWithMembershipGroupOnly() {
+		$value = \OC::$server->getAppConfig()->getValue('core', 'shareapi_only_share_with_membership_groups', 'no');
+		return ($value === 'yes') ? true : false;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public static function isDefaultExpireDateEnabled() {
@@ -2804,7 +2814,7 @@ class Share extends Constants {
 
 	/**
 	 * @param IConfig $config
-	 * @return bool 
+	 * @return bool
 	 */
 	public static function enforcePassword(IConfig $config) {
 		$enforcePassword = $config->getAppValue('core', 'shareapi_enforce_links_password', 'no');

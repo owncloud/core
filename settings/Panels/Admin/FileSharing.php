@@ -58,6 +58,7 @@ class FileSharing implements ISettings {
 		$template->assign('allowSocialShare', $this->config->getAppValue('core', 'shareapi_allow_social_share', 'yes'));
 		$template->assign('allowGroupSharing', $this->config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes'));
 		$template->assign('onlyShareWithGroupMembers', $this->helper->shareWithGroupMembersOnly());
+		$template->assign('onlyShareWithMembershipGroups', $this->config->getAppValue('core', 'shareapi_only_share_with_membership_groups', 'no') === 'yes');
 		$template->assign('allowMailNotification', $this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'no'));
 		$template->assign('allowShareDialogUserEnumeration', $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
 		$template->assign('shareDialogUserEnumerationGroupMembers', $this->config->getAppValue('core', 'shareapi_share_dialog_user_enumeration_group_members', 'no'));
