@@ -27,6 +27,14 @@ use Doctrine\DBAL\Connection;
 use OCA\DAV\Connector\Sabre\Directory;
 use Sabre\DAV\INode;
 
+/**
+ * Class FileCustomPropertiesBackend
+ *
+ * Provides ability to store/retrieve custom file properties via DAV
+ * into oc_properties DB table using fileId as a reference to the file
+ *
+ * @package OCA\DAV\DAV
+ */
 class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 
 	const SELECT_BY_ID_STMT = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';

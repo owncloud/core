@@ -24,6 +24,15 @@ namespace OCA\DAV\DAV;
 use Doctrine\DBAL\Connection;
 use Sabre\DAV\INode;
 
+/**
+ * Class MiscCustomPropertiesBackend
+ *
+ * Provides ability to store/retrieve custom properties
+ * for card/calendar/whatever (excluding files)
+ * via DAV server into oc_dav_properties DB table using propertypath as a reference to the item
+ *
+ * @package OCA\DAV\DAV
+ */
 class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 
 	const SELECT_BY_PATH_STMT = 'SELECT * FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
