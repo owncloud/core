@@ -8,69 +8,6 @@ clone:
     depth: 1
 
 pipeline:
-  restore:
-    image: plugins/s3-cache:1
-    pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
-    restore: true
-    when:
-      local: false
-      event: [push, pull_request]
-      branch: [master, stable10, stable9.1, stable9]
-
-  composer:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - ./tests/drone/composer-install.sh
-    when:
-      event: [push, pull_request]
-      branch: [master, stable10, stable9.1, stable9]
-
-
-  npm:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - ./tests/drone/npm-install.sh
-    when:
-      event: [push, pull_request]
-      branch: [master, stable10, stable9.1, stable9]
-
-  bower:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - ./tests/drone/bower-install.sh
-    when:
-      event: [push, pull_request]
-      branch: [master, stable10, stable9.1, stable9]
-
-  rebuild:
-    image: plugins/s3-cache:1
-    pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
-    rebuild: true
-    mount:
-      - lib/composer
-      - core/vendor
-      - build/node_modules
-    when:
-      local: false
-      event: [ push ]
-      branch: [ master, stable10, stable9.1, stable9 ]
-
-  flush:
-    image: plugins/s3-cache:1
-    pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
-    flush: true
-    flush_age: 14
-    when:
-      local: false
-      event: [push]
-      branch: [master, stable10, stable9.1, stable9]
-
   coverage:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
