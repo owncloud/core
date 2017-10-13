@@ -44,5 +44,8 @@ fi
 ./occ app:enable federation
 ./occ app:enable federatedfilesharing
 
-exec phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
+curl -O -L https://phar.phpunit.de/phpunit-4.8.phar
+chmod a+x phpunit-4.8.phar
+
+exec phpdbg -d memory_limit=4096M -rr ./phpunit-4.8.phar --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
 
