@@ -13,7 +13,7 @@ namespace Test;
  *
  * @group DB
  */
-class UtilCheckServerTest extends \Test\TestCase {
+class UtilCheckServerTest extends TestCase {
 
 	private $datadir;
 
@@ -144,6 +144,10 @@ class UtilCheckServerTest extends \Test\TestCase {
 	 * Tests an error is given when the datadir is not writable
 	 */
 	public function testDataDirNotWritable() {
+		if ($this->getCurrentUser() === 'root') {
+			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
+		}
+
 		chmod($this->datadir, 0300);
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => true,
