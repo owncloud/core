@@ -154,6 +154,6 @@ matrix:
 #      TEST_SUITE: integration
 
     # Code Coverage Computation
-    - PHP_VERSION: 7.1
+    - PHP_VERSION: 7.0
       DB_TYPE: sqlite
       TEST_SUITE: coverage
