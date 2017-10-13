@@ -29,6 +29,7 @@ namespace OC\Encryption;
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Files\View;
 use \OCP\Encryption\IEncryptionModule;
+use OCP\ILogger;
 use OCP\IUserManager;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,6 +55,9 @@ class DecryptAll {
 	/** @var  array files which couldn't be decrypted */
 	protected $failed;
 
+	/** @var ILogger */
+	protected $logger;
+
 	/**
 	 * @param Manager $encryptionManager
 	 * @param IUserManager $userManager
@@ -62,12 +66,14 @@ class DecryptAll {
 	public function __construct(
 		Manager $encryptionManager,
 		IUserManager $userManager,
-		View $rootView
+		View $rootView,
+		ILogger $logger
 	) {
 		$this->encryptionManager = $encryptionManager;
 		$this->userManager = $userManager;
 		$this->rootView = $rootView;
 		$this->failed = [];
+		$this->logger = $logger;
 	}
 
 	/**
@@ -239,6 +245,10 @@ class DecryptAll {
 							}
 						}
 					} catch (\Exception $e) {
+						$this->logger->logException($e, [
+							'message' => "Exception trying to decrypt file <$path> for user <$uid>",
+							'app' => __CLASS__
+						]);
 						if (isset($this->failed[$uid])) {
 							$this->failed[$uid][] = $path;
 						} else {
