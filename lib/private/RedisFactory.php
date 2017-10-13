@@ -57,7 +57,7 @@ class RedisFactory {
 			$timeout = 0.0; // unlimited
 		}
 
-		$this->instance->connect($host, $port, $timeout);
+		@$this->instance->connect($host, $port, $timeout);
 		if (isset($config['password']) && $config['password'] !== '') {
 			$this->instance->auth($config['password']);
 		}

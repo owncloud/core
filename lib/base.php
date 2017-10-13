@@ -498,7 +498,7 @@ class OC {
 		spl_autoload_register(array(self::$loader, 'load'));
 		$loaderEnd = microtime(true);
 
-		self::$CLI = (php_sapi_name() == 'cli');
+		self::$CLI = (in_array(php_sapi_name(), ['cli', 'phpdbg']));
 
 		// Add default composer PSR-4 autoloader
 		self::$composerAutoloader = require_once OC::$SERVERROOT . '/lib/composer/autoload.php';
