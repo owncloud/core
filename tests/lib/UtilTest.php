@@ -414,7 +414,7 @@ class UtilTest extends \Test\TestCase {
 		$this->assertNotEmpty($errors);
 	}
 
-	public function testCopySceletonDirectory() {
+	public function testCopySkeletonDirectory() {
 		$this->expectException(HintException::class);
 
 		$config = \OC::$server->getConfig();
