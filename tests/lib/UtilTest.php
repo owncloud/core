@@ -8,6 +8,7 @@
 
 namespace Test;
 
+use \OC\HintException;
 use OC_Util;
 
 /**
@@ -411,6 +412,19 @@ class UtilTest extends \Test\TestCase {
 
 		$errors = \OC_Util::checkDataDirectoryValidity('relative/path');
 		$this->assertNotEmpty($errors);
+	}
+
+	public function testCopySceletonDirectory() {
+		$this->expectException(HintException::class);
+
+		$config = \OC::$server->getConfig();
+		$config->setSystemValue('skeletondirectory','\/not\existing\/Directory');
+		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
+		$userFolder = \OC::$server->getUserFolder($user);
+
+		\OC_Util::copySkeleton($config, $userFolder);
+
+		$config->deleteSystemValue('skeletondirectory');
 	}
 
 	protected function setUp() {
