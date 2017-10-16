@@ -29,6 +29,7 @@ namespace OC\DB;
 
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 
 /**
  * This handles the way we use to write queries, into something that can be
@@ -138,7 +139,11 @@ class Adapter {
 		$updateQuery .= '`' . implode('`  = ?, `', array_keys($input)) . '` = ?  WHERE ';
 		$updateParams = array_values($input);
 		foreach ($compare as $key) {
-			$updateQuery .= '`' . $key . '`';
+			if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
+				$updateQuery .= 'to_char(`' . $key . '`)';
+			} else {
+				$updateQuery .= '`' . $key . '`';
+			}
 			if (is_null($input[$key])) {
 				$updateQuery .= ' IS NULL AND ';
 			} else {
