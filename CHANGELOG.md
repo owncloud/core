@@ -4,6 +4,44 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+### Added
+- Added "occ dav:cleanup-chunks" command to clean up expired uploads - [#29180](https://github.com/owncloud/core/issues/29180)
+- Added "occ files:scan" repair mode to repair mismatch filecache paths - [#29074](https://github.com/owncloud/core/issues/29074)
+- Detailed mode for "occ security:routes" - [#29095](https://github.com/owncloud/core/issues/29095)
+- Webdav property to retrieve a private link to files or folders - [#29041](https://github.com/owncloud/core/issues/29041)
+- CORS support for public API routes - [#28852](https://github.com/owncloud/core/issues/28852)
+- More "files_sharing" capabilities entries - [#29040](https://github.com/owncloud/core/issues/29040)
+- Display server name in admin page, don't show in status.php - [#28938](https://github.com/owncloud/core/issues/28938)
+- Validate public link mail on the client side - [#29042](https://github.com/owncloud/core/issues/29042)
+
+### Changed
+- Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048)
+- Refactor set and reset of capabilities - [#29200](https://github.com/owncloud/core/issues/29200)
+- All amazon locations support v4 now - v3 deprecated - [#29153](https://github.com/owncloud/core/issues/29153)
+- Modified time value of files is now 64 bits long - [#28961](https://github.com/owncloud/core/issues/28961)
+
+### Deprecated
+### Removed
+- Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
+- Remove unused FTP code - [#29186](https://github.com/owncloud/core/issues/29186)
+
+### Fixed
+- SFTP key pair mode now works again - [#29156](https://github.com/owncloud/core/issues/29156)
+- Use correct class namespace for ownCloud ext storage - [#28935](https://github.com/owncloud/core/issues/28935)
+- Handle case of empty folder in userDeletesEverythingInFolder - [#29163](https://github.com/owncloud/core/issues/29163)
+- Fix generated zip file to avoid errors with some zip tools - [#29149](https://github.com/owncloud/core/issues/29149)
+- Fix position of dialog boxes - [#29133](https://github.com/owncloud/core/issues/29133)
+- Move 64bit mtime migration from dav to core - [#29121](https://github.com/owncloud/core/issues/29121)
+- Allow 0 byte quota to be entered on UI - [#29113](https://github.com/owncloud/core/issues/29113)
+- Don't display warning about limited commands when running maintenance:install - [#28968](https://github.com/owncloud/core/issues/28968)
+- Handle no user session in isSharingDisabledForUser() - [#28915](https://github.com/owncloud/core/issues/28915)
+- Fix icon format for federated cloud sharing - [#28972](https://github.com/owncloud/core/issues/28972)
+- Fix for decrypting user specific keys - [#29189](https://github.com/owncloud/core/issues/29189)
+- Remove alternate keys storage during user delete - [#29155](https://github.com/owncloud/core/issues/29155)
+- Fix error logs due to deletion of keys - [#28934](https://github.com/owncloud/core/issues/28934)
+- Fix encryption panel to properly detect current mode after upgrade to ownCloud 10 - [#29049](https://github.com/owncloud/core/issues/29049)
+
 ## [10.0.3] - 2017-09-15
 ### Added
 - It is now possible to upgrade from 8.2.11 directly to 10 - [#28655](https://github.com/owncloud/core/issues/28655) [#28673](https://github.com/owncloud/core/pull/28673)
