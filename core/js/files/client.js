@@ -410,6 +410,9 @@
 		 */
 		_getSabreException: function(response) {
 			var result = {};
+			if (!response.body) {
+				return result;
+			}
 			var xml = response.xhr.responseXML;
 			var messages = xml.getElementsByTagNameNS('http://sabredav.org/ns', 'message');
 			var exceptions = xml.getElementsByTagNameNS('http://sabredav.org/ns', 'exception');
@@ -704,7 +707,7 @@
 			return promise;
 		},
 
-		_moveOrCopy: function(operation, path, destinationPath, allowOverwrite, headers) {
+		_moveOrCopy: function(operation, path, destinationPath, allowOverwrite, headers, options) {
 			if (!path) {
 				throw 'Missing argument "path"';
 			}
@@ -718,8 +721,12 @@
 			var self = this;
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
+			options = _.extend({
+				'pathIsUrl' : false,
+				'destinationPathIsUrl' : false
+			}, options);
 			headers = _.extend({}, headers, {
-				'Destination' : this._buildUrl(destinationPath)
+				'Destination' : options.destinationPathIsUrl ? destinationPath : this._buildUrl(destinationPath)
 			});
 
 			if (!allowOverwrite) {
@@ -728,7 +735,7 @@
 
 			this._client.request(
 				operation,
-				this._buildUrl(path),
+				options.pathIsUrl ? path : this._buildUrl(path),
 				headers
 			).then(
 				function(result) {
@@ -776,8 +783,8 @@
 		 *
 		 * @return {Promise} promise
 		 */
-		move: function(path, destinationPath, allowOverwrite, headers) {
-			return this._moveOrCopy('MOVE', path, destinationPath, allowOverwrite, headers);
+		move: function(path, destinationPath, allowOverwrite, headers, options) {
+			return this._moveOrCopy('MOVE', path, destinationPath, allowOverwrite, headers, options);
 		},
 
 		/**
@@ -792,8 +799,8 @@
 		 * @return {Promise} promise
 		 * @since 10.1.0
 		 */
-		copy: function(path, destinationPath, allowOverwrite, headers) {
-			return this._moveOrCopy('COPY', path, destinationPath, allowOverwrite, headers);
+		copy: function(path, destinationPath, allowOverwrite, headers, options) {
+			return this._moveOrCopy('COPY', path, destinationPath, allowOverwrite, headers, options);
 		},
 
 		/**
