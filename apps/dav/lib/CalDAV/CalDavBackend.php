@@ -349,6 +349,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @param string $calendarUri
 	 * @param array $properties
 	 * @return int
+	 * @throws DAV\Exception
 	 */
 	function createCalendar($principalUri, $calendarUri, array $properties) {
 		$values = [
