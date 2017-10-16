@@ -913,6 +913,13 @@ trait Sharing {
 		);
 		$this->setCapability(
 			'files_sharing',
+			'share_with_membership_groups_only',
+			'core',
+			'shareapi_only_share_with_membership_groups',
+			false
+		);
+		$this->setCapability(
+			'files_sharing',
 			'user_enumeration@@@enabled',
 			'core',
 			'shareapi_allow_share_dialog_user_enumeration',
