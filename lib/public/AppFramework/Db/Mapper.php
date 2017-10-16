@@ -5,6 +5,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -32,15 +33,16 @@ use OCP\IDb;
 
 
 /**
- * Simple parent class for inheriting your data access layer from. This class
- * may be subject to change in the future
+ * This class defines set of queries which might be used in order to map Entity class
+ * onto database layer. This class inherits from Access, which provides physical execution of the
+ * defined queries.
+ *
  * @since 7.0.0
  */
-abstract class Mapper {
+abstract class Mapper extends Access {
 
 	protected $tableName;
 	protected $entityClass;
-	protected $db;
 
 	/**
 	 * @param IDBConnection $db Instance of the Db abstraction layer
@@ -50,7 +52,7 @@ abstract class Mapper {
 	 * @since 7.0.0
 	 */
 	public function __construct(IDBConnection $db, $tableName, $entityClass=null){
-		$this->db = $db;
+		parent::__construct($db);
 		$this->tableName = '*PREFIX*' . $tableName;
 
 		// if not given set the entity name to the class without the mapper part
@@ -121,7 +123,7 @@ abstract class Mapper {
 		}
 
 		$sql = 'INSERT INTO `' . $this->tableName . '`(' .
-				$columns . ') VALUES(' . $values . ')';
+			$columns . ') VALUES(' . $values . ')';
 
 		$stmt = $this->execute($sql, $params);
 
@@ -182,7 +184,7 @@ abstract class Mapper {
 		}
 
 		$sql = 'UPDATE `' . $this->tableName . '` SET ' .
-				$columns . ' WHERE `id` = ?';
+			$columns . ' WHERE `id` = ?';
 		$params[] = $id;
 
 		$stmt = $this->execute($sql, $params);
@@ -190,79 +192,6 @@ abstract class Mapper {
 
 		return $entity;
 	}
-
-	/**
-	 * Checks if an array is associative
-	 * @param array $array
-	 * @return bool true if associative
-	 * @since 8.1.0
-	 */
-	private function isAssocArray(array $array) {
-		return array_values($array) !== $array;
-	}
-
-	/**
-	 * Returns the correct PDO constant based on the value type
-	 * @param $value
-	 * @return int PDO constant
-	 * @since 8.1.0
-	 */
-	private function getPDOType($value) {
-		switch (gettype($value)) {
-			case 'integer':
-				return \PDO::PARAM_INT;
-			case 'boolean':
-				return \PDO::PARAM_BOOL;
-			default:
-				return \PDO::PARAM_STR;
-		}
-	}
-
-
-	/**
-	 * Runs an sql query
-	 * @param string $sql the prepare string
-	 * @param array $params the params which should replace the ? in the sql query
-	 * @param int $limit the maximum number of rows
-	 * @param int $offset from which row we want to start
-	 * @return \PDOStatement the database query result
-	 * @since 7.0.0
-	 */
-	protected function execute($sql, array $params=[], $limit=null, $offset=null) {
-		if ($this->db instanceof IDb) {
-			$query = $this->db->prepareQuery($sql, $limit, $offset);
-		} else {
-			$query = $this->db->prepare($sql, $limit, $offset);
-		}
-
-		if ($this->isAssocArray($params)) {
-			foreach ($params as $key => $param) {
-				$pdoConstant = $this->getPDOType($param);
-				$query->bindValue($key, $param, $pdoConstant);
-			}
-		} else {
-			$index = 1;  // bindParam is 1 indexed
-			foreach ($params as $param) {
-				$pdoConstant = $this->getPDOType($param);
-				$query->bindValue($index, $param, $pdoConstant);
-				$index++;
-			}
-		}
-
-		$result = $query->execute();
-
-		// this is only for backwards compatibility reasons and can be removed
-		// in owncloud 10. IDb returns a StatementWrapper from execute, PDO,
-		// Doctrine and IDbConnection don't so this needs to be done in order
-		// to stay backwards compatible for the things that rely on the
-		// StatementWrapper being returned
-		if ($result instanceof \OC_DB_StatementWrapper) {
-			return $result;
-		}
-
-		return $query;
-	}
-
 
 	/**
 	 * Returns an db result and throws exceptions when there are more or less
@@ -305,26 +234,6 @@ abstract class Mapper {
 			return $row;
 		}
 	}
-
-	/**
-	 * Builds an error message by prepending the $msg to an error message which
-	 * has the parameters
-	 * @see findEntity
-	 * @param string $sql the sql query
-	 * @param array $params the parameters of the sql query
-	 * @param int $limit the maximum number of rows
-	 * @param int $offset from which row we want to start
-	 * @return string formatted error message string
-	 * @since 9.1.0
-	 */
-	private function buildDebugMessage($msg, $sql, array $params=[], $limit=null, $offset=null) {
-		return $msg .
-					': query "' .	$sql . '"; ' .
-					'parameters ' . print_r($params, true) . '; ' .
-					'limit "' . $limit . '"; '.
-					'offset "' . $offset . '"';
-	}
-
 
 	/**
 	 * Creates an entity from a row. Automatically determines the entity class
