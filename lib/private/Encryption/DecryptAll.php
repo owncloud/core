@@ -62,6 +62,7 @@ class DecryptAll {
 	 * @param Manager $encryptionManager
 	 * @param IUserManager $userManager
 	 * @param View $rootView
+	 * @param ILogger $logger
 	 */
 	public function __construct(
 		Manager $encryptionManager,
@@ -147,6 +148,7 @@ class DecryptAll {
 	 * iterate over all user and encrypt their files
 	 *
 	 * @param string $user which users files should be decrypted, default = all users
+	 * @return bool
 	 */
 	protected function decryptAllUsersFiles($user = '') {
 
@@ -204,7 +206,7 @@ class DecryptAll {
 		$progress->finish();
 
 		$this->output->writeln("\n\n");
-
+		return true;
 	}
 
 	/**
