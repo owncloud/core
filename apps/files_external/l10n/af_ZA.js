@@ -8,6 +8,7 @@ OC.L10N.register(
     "Save" : "Bewaar",
     "API key" : "API-sleutel",
     "Port" : "Poort",
+    "WebDAV" : "WebDAV",
     "URL" : "Bronadres",
     "Local" : "Lokaal",
     "Location" : "Ligging",
