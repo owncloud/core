@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
+use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -406,11 +407,12 @@ trait BasicStructure {
 	/**
 	 * @BeforeSuite
 	 */
-	public static function useBigFileIDs() {
+	public static function useBigFileIDs(BeforeSuiteScope $scope) {
 		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
 		$client = new Client();
 		$options = [];
-		$options['auth'] = ['admin','admin'];
+		$adminCredentials = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['admin'];
+		$options['auth'] = $adminCredentials;
 		$client->send($client->createRequest('post', $fullUrl, $options));
 	}
 }
