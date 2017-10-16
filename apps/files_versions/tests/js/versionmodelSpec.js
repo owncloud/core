@@ -7,6 +7,8 @@
  * See the COPYING-README file.
  *
  */
+
+/* global dav */
 describe('OCA.Versions.VersionModel', function() {
 	var VersionModel = OCA.Versions.VersionModel;
 	var model;
@@ -18,10 +20,12 @@ describe('OCA.Versions.VersionModel', function() {
 	beforeEach(function() {
 		model = new VersionModel({
 			id: 10000000,
+			fileId: 10000000,
 			timestamp: 10000000,
 			fullPath: '/subdir/some file.txt',
 			name: 'some file.txt',
-			size: 150
+			size: 150,
+			versionId: 123456789
 		});
 		currentUserStub = sinon.stub(OC, 'getCurrentUser').returns({uid: 'user0'});
 
@@ -44,8 +48,8 @@ describe('OCA.Versions.VersionModel', function() {
 	});
 	it('returns the download url', function() {
 		expect(model.getDownloadUrl())
-			.toEqual(OC.generateUrl('/apps/files_versions/download.php') +
-					'?file=%2Fsubdir%2Fsome%20file.txt&revision=10000000'
+			.toEqual(
+				OC.linkToRemoteBase('dav') + '/meta/10000000/v/123456789'
 			);
 	});
 	describe('reverting', function() {
@@ -61,27 +65,27 @@ describe('OCA.Versions.VersionModel', function() {
 			model.on('revert', revertEventStub);
 			model.on('error', errorStub);
 		});
+		
 		it('tells the server to revert when calling the revert method', function() {
 			model.revert({
 				success: successStub
 			});
 
-			expect(fakeServer.requests.length).toEqual(1);
-			expect(fakeServer.requests[0].url)
-				.toEqual(
-					OC.generateUrl('/apps/files_versions/ajax/rollbackVersion.php') +
-					'?file=%2Fsubdir%2Fsome+file.txt&revision=10000000'
-				);
-
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({
-					status: 'success',
-				})
+			expect(requestStub.calledOnce).toEqual(true);
+			expect(requestStub.getCall(0).args[0]).toEqual('COPY');
+			expect(requestStub.getCall(0).args[1]).toEqual(
+					'/owncloud/remote.php/dav/meta/10000000/v/123456789'
+			);
+			expect(requestStub.getCall(0).args[2]['Destination']).toEqual(
+				OC.TestUtil.buildAbsoluteUrl('/owncloud/remote.php/dav/files/user0/subdir/some%20file.txt')
 			);
 
-			expect(revertEventStub.calledOnce).toEqual(true);
+			requestDeferred.resolve({
+				status: 204,
+				body: ''
+			});
+
+			expect(revertEventStub.called).toEqual(true);
 			expect(successStub.calledOnce).toEqual(true);
 			expect(errorStub.notCalled).toEqual(true);
 		});
@@ -90,14 +94,12 @@ describe('OCA.Versions.VersionModel', function() {
 				success: successStub
 			});
 
-			expect(fakeServer.requests.length).toEqual(1);
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({
-					status: 'error',
-				})
-			);
+			expect(requestStub.calledOnce).toEqual(true);
+
+			requestDeferred.resolve({
+				status: 400,
+				body: ''
+			});
 
 			expect(revertEventStub.notCalled).toEqual(true);
 			expect(successStub.notCalled).toEqual(true);

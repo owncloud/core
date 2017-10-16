@@ -27,7 +27,6 @@ use OC\Files\Node\AbstractFile;
 use OC\Files\Node\File;
 use OCP\Files\IRootFolder;
 use OCP\Files\Storage\IVersionedStorage;
-use OCP\Files\NotPermittedException;
 use OCP\Files\Storage;
 
 /**
@@ -103,11 +102,11 @@ class MetaFileVersionNode extends AbstractFile {
 		$target = $this->root->get($targetPath);
 		if ($target instanceof File && $target->getId() === $this->parent->getId()) {
 			$this->storage->restoreVersion($this->internalPath, $this->versionId);
-			return;
+			return true;
 		}
 
 		// for now we only allow restoring of a version
-		throw new NotPermittedException();
+		return false;
 	}
 
 	public function getMTime() {

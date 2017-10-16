@@ -115,6 +115,4 @@ class CopyPluginTest extends TestCase {
 		$returnValue = $this->plugin->httpCopy($this->request, $this->response);
 		$this->assertFalse($returnValue);
 	}
-
-
 }

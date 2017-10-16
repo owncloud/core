@@ -35,10 +35,3 @@ function() {
 	require_once __DIR__ . '/../ajax/preview.php';
 });
 
-$this->create('files_versions_download', 'download.php')
-	->actionInclude('files_versions/download.php');
-$this->create('files_versions_ajax_getVersions', 'ajax/getVersions.php')
-	->actionInclude('files_versions/ajax/getVersions.php');
-$this->create('files_versions_ajax_rollbackVersion', 'ajax/rollbackVersion.php')
-	->actionInclude('files_versions/ajax/rollbackVersion.php');
-
