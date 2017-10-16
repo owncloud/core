@@ -75,6 +75,7 @@ Feature: sharees
 	Scenario: Search only with group members - no group as non-member
 		Given as an "Sharee1"
 		And parameter "shareapi_only_share_with_group_members" of app "core" is set to "yes"
+		And parameter "shareapi_only_share_with_membership_groups" of app "core" is set to "yes"
 		When getting sharees for
 			| search | sharee |
 			| itemType | file |
