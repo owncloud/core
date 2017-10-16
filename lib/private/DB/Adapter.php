@@ -190,8 +190,10 @@ class Adapter {
 			}
 		}
 
+		// Pass through failures correctly
 		if ($count === $maxTry) {
-			throw new \RuntimeException("DB upsert failed after $maxTry attempts. Query $updateQuery");
+			$params = implode(',', $input);
+			throw new \RuntimeException("DB upsert failed after $maxTry attempts. Query: $updateQuery. Params: $params");
 		}
 
 		$this->conn->commit();
