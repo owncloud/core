@@ -48,37 +48,45 @@ class AdapterTest extends \Test\TestCase {
 
 	public function tearDown() {
 		// remove columns from the appconfig table
-		$this->conn->prepare('DELETE FROM *PREFIX*appconfig WHERE `appid` LIKE ?')->execute(['testadapter-%']);
+		$qb = $this->conn->getQueryBuilder();
+		$qb->delete('*PREFIX*appconfig')
+			->where(
+				$qb->expr()->eq(
+					'appid',
+					$qb->expr()->literal('testadapter')))
+			->execute();
 	}
 
 	/**
 	 * Helper to insert a row
 	 * Checks one was inserted
-	 * @param array associative array of columns and values to insert
+	 * @param array $data associative array of columns and values to insert
 	 */
 	public function insertRow($data) {
-		$table = $this->conn->getPrefix() . 'appconfig';
-		$data['appid'] = uniqid('testadapter-');
-		$query = "INSERT INTO $table ";
-		$query .= "(" . implode(',', array_keys($data)) .')';
-		$query .= ' VALUES (' . str_repeat('?, ', count($data)-1) . '?)';
-		$rows = $this->conn->executeUpdate($query, array_values($data));
+		$qb = $this->conn->getQueryBuilder();
+		$qb->insert('appconfig');
+		$data['appid'] = 'testadapter';
+		foreach($data as $col => $val) {
+			$qb->setValue($col, $qb->createParameter($col))
+				->setParameter($col, $val);
+		}
+		$rows = $qb->execute();
 		$this->assertEquals(1, $rows);
 	}
 
 	/**
 	 * Helper to delete a row
+	 * @param array $where associative array of columns and values to check
+	 * @return int number of rows changed
 	 */
 	public function deleteRow($where) {
-		$table = $this->conn->getPrefix() . 'appconfig';
-		$params = [];
-		$query = "DELETE FROM $table WHERE ";
-		foreach($where as $col => $val) {
-			$query .= "`?` = `?`, ";
-			$params[] = $col;
-			$params[] = $val;
-		}
-		$rows = $this->conn->executeUpdate($query, $params);
+		$qb = $this->conn->getQueryBuilder();
+		$rows = $qb->delete('appconfig')
+			->where(
+				$qb->expr()->eq(
+					'appid',
+					$qb->expr()->literal('testadapter')))
+			->execute();
 		$this->assertEquals(1, $rows);
 		return $rows;
 	}
@@ -89,7 +97,7 @@ class AdapterTest extends \Test\TestCase {
 	 */
 	public function testUpsertWithNoRowPresent() {
 		// Insert or update a new row
-		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test1', 'configkey' => 'test1']);
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test1', 'configkey' => 'test1']);
 		$this->assertEquals(1, $rows);
 		$this->assertRowExists('test1', 'test1');
 	}
@@ -100,11 +108,11 @@ class AdapterTest extends \Test\TestCase {
 	 */
 	public function testUpsertWithRowPresent() {
 		// Insert row
-		$this->insertRow(['configvalue' => 'test2', 'configkey' => 'test2']);
+		$this->insertRow(['configvalue' => 'test2', 'configkey' => 'test2-key']);
 		// Update it
-		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test2-updated', 'configkey' => 'test2-updated']);
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test2-newval', 'configkey' => 'test2-key']);
 		$this->assertEquals(1, $rows);
-		$this->assertRowExists('test2-updated', 'test2-updated');
+		$this->assertRowExists('test2-key', 'test2-newval');
 
 	}
 
@@ -114,11 +122,11 @@ class AdapterTest extends \Test\TestCase {
 	 */
 	public function testUpsertWithRowPresentUsingCompare() {
 		// Insert row
-		$this->insertRow(['configvalue' => 'test3', 'configkey' => 'test3']);
+		$this->insertRow(['configvalue' => 'test3', 'configkey' => 'test3-key']);
 		// Update it
-		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test3-updated', 'configkey' => 'test3-updated'], ['configvalue']);
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test3-updated', 'configkey' => 'test3'], ['configvalue']);
 		$this->assertEquals(1, $rows);
-		$this->assertRowExists('test3-updated', 'test3-updated');
+		$this->assertRowExists('test3-key', 'test3-updated');
 
 	}
 
@@ -134,7 +142,7 @@ class AdapterTest extends \Test\TestCase {
 
 		// Run
 		$adapter = new Adapter($mockConn);
-		$rows = $adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
 	}
 
 	public function testUpsertCatchExceptionAndThrowImmediately() {
@@ -147,7 +155,7 @@ class AdapterTest extends \Test\TestCase {
 
 		// Run
 		$adapter = new Adapter($mockConn);
-		$rows = $adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
 
 	}
 
@@ -163,7 +171,7 @@ class AdapterTest extends \Test\TestCase {
 
 		// Run
 		$adapter = new Adapter($mockConn);
-		$rows = $adapter->upsert('*PREFIX*appconfig', ['configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
 	}
 
 	private function assertRowExists($key, $value) {
