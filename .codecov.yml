@@ -1,0 +1,5 @@
+codecov:
+  ci:
+    - drone.owncloud.com
+    - !jenkins.owncloud.org
+    - !travisci
