@@ -86,6 +86,11 @@ $CONFIG = array(
 'version.hide' => false,
 
 /**
+ * Optionally, show the hostname of the server in status.php. Defaults to hidden
+ */
+'show_server_hostname' => false,
+
+/**
  * Identifies the database used with this installation. See also config option
  * ``supportedDatabases``
  *
