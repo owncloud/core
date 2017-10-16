@@ -750,13 +750,13 @@ describe('OCA.Files.FileList tests', function() {
 			doRename();
 
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('Tu_after_three.txt').find('.thumbnail')))
-				.toEqual(OC.imagePath('core', 'loading.gif'));
+				.toEqual(OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', 'loading.gif')));
 
 			deferredRename.reject(409);
 
 			expect(fileList.findFileEl('One.txt').length).toEqual(1);
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('One.txt').find('.thumbnail')))
-				.toEqual(OC.imagePath('core', 'filetypes/text.svg'));
+				.toEqual(OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', 'filetypes/text.svg')));
 		});
 	});
 	describe('Moving files', function() {
@@ -838,7 +838,7 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.move('One.txt', '/somedir');
 
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('One.txt').find('.thumbnail')))
-				.toEqual(OC.imagePath('core', 'loading.gif'));
+				.toEqual(OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', 'loading.gif')));
 
 			expect(moveStub.calledOnce).toEqual(true);
 
@@ -850,7 +850,7 @@ describe('OCA.Files.FileList tests', function() {
 			expect(notificationStub.getCall(0).args[0]).toEqual('Could not move "One.txt"');
 
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('One.txt').find('.thumbnail')))
-				.toEqual(OC.imagePath('core', 'filetypes/text.svg'));
+				.toEqual(OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', 'filetypes/text.svg')));
 		});
 	});
 	describe('Update file', function() {
@@ -1249,7 +1249,8 @@ describe('OCA.Files.FileList tests', function() {
 			};
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
-			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/file.svg');
+			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/file.svg'));
 			// tries to load preview
 			expect(previewLoadStub.calledOnce).toEqual(true);
 		});
@@ -1261,7 +1262,8 @@ describe('OCA.Files.FileList tests', function() {
 
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
-			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/folder.svg');
+			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/folder.svg'));
 			// no preview since it's a directory
 			expect(previewLoadStub.notCalled).toEqual(true);
 		});
@@ -1274,7 +1276,8 @@ describe('OCA.Files.FileList tests', function() {
 			});
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
-			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/application-pdf.svg');
+			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/application-pdf.svg'));
 			// try loading preview
 			expect(previewLoadStub.calledOnce).toEqual(true);
 		});
@@ -1286,7 +1289,8 @@ describe('OCA.Files.FileList tests', function() {
 
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
-			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/application-pdf.svg');
+			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/application-pdf.svg'));
 			// try loading preview
 			expect(previewLoadStub.calledOnce).toEqual(true);
 		});
@@ -1299,7 +1303,8 @@ describe('OCA.Files.FileList tests', function() {
 
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
-			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/folder-alt.svg');
+			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/folder-alt.svg'));
 			// do not load preview for folders
 			expect(previewLoadStub.notCalled).toEqual(true);
 		});
@@ -1311,11 +1316,13 @@ describe('OCA.Files.FileList tests', function() {
 			var $tr = fileList.add(fileData);
 			var $td = $tr.find('td.filename');
 			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail')))
-				.toEqual(OC.webroot + '/core/img/filetypes/file.svg');
+				.toEqual(
+					OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/file.svg'));
 			expect(previewLoadStub.calledOnce).toEqual(true);
 			// third argument is callback
 			previewLoadStub.getCall(0).args[0].callback(OC.webroot + '/somepath.png');
-			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(OC.webroot + '/somepath.png');
+			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/somepath.png'));
 		});
 		it('does not render preview for directories', function() {
 			var fileData = {
@@ -1325,7 +1332,8 @@ describe('OCA.Files.FileList tests', function() {
 			};
 			var $tr = fileList.add(fileData);
 			var $td = $tr.find('td.filename');
-			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(OC.webroot + '/core/img/filetypes/folder.svg');
+			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/folder.svg'));
 			expect(previewLoadStub.notCalled).toEqual(true);
 		});
 		it('render external storage icon for external storage root', function() {
@@ -1337,7 +1345,8 @@ describe('OCA.Files.FileList tests', function() {
 			};
 			var $tr = fileList.add(fileData);
 			var $td = $tr.find('td.filename');
-			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(OC.webroot + '/core/img/filetypes/folder-external.svg');
+			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/folder-external.svg'));
 			expect(previewLoadStub.notCalled).toEqual(true);
 		});
 		it('render external storage icon for external storage subdir', function() {
@@ -1349,7 +1358,8 @@ describe('OCA.Files.FileList tests', function() {
 			};
 			var $tr = fileList.add(fileData);
 			var $td = $tr.find('td.filename');
-			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(OC.webroot + '/core/img/filetypes/folder-external.svg');
+			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(
+				OC.TestUtil.buildAbsoluteUrl(OC.webroot + '/core/img/filetypes/folder-external.svg'));
 			expect(previewLoadStub.notCalled).toEqual(true);
 			// default icon override
 			expect($tr.attr('data-icon')).toEqual(OC.webroot + '/core/img/filetypes/folder-external.svg');
@@ -2892,12 +2902,14 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.showFileBusyState('Two.jpg', true);
 			expect($tr.hasClass('busy')).toEqual(true);
 			expect(OC.TestUtil.getImageUrl($tr.find('.thumbnail')))
-				.toEqual(OC.imagePath('core', 'loading.gif'));
+				.toEqual(
+					OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', 'loading.gif')));
 
 			fileList.showFileBusyState('Two.jpg', false);
 			expect($tr.hasClass('busy')).toEqual(false);
 			expect(OC.TestUtil.getImageUrl($tr.find('.thumbnail')))
-				.toEqual(OC.imagePath('core', 'filetypes/image.svg'));
+				.toEqual(
+					OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', 'filetypes/image.svg')));
 		});
 		it('accepts multiple input formats', function() {
 			_.each([
