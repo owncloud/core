@@ -6,27 +6,37 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- Added support for eml mimetype - [#29204](https://github.com/owncloud/core/issues/29204)
 - Added "occ dav:cleanup-chunks" command to clean up expired uploads - [#29180](https://github.com/owncloud/core/issues/29180)
-- Added "occ files:scan" repair mode to repair mismatch filecache paths - [#29074](https://github.com/owncloud/core/issues/29074)
+- Added "occ files:scan" repair mode to repair mismatch filecache paths - [#29074](https://github.com/owncloud/core/issues/29074) [#29232](https://github.com/owncloud/core/issues/29232)
 - Detailed mode for "occ security:routes" - [#29095](https://github.com/owncloud/core/issues/29095)
 - Webdav property to retrieve a private link to files or folders - [#29041](https://github.com/owncloud/core/issues/29041)
 - CORS support for public API routes - [#28852](https://github.com/owncloud/core/issues/28852)
 - More "files_sharing" capabilities entries - [#29040](https://github.com/owncloud/core/issues/29040)
 - Display server name in admin page, don't show in status.php - [#28938](https://github.com/owncloud/core/issues/28938)
 - Validate public link mail on the client side - [#29042](https://github.com/owncloud/core/issues/29042)
+- Expose XHR response in share dialog autocomplete callback for extensions - [#29231](https://github.com/owncloud/core/issues/29231)
 
 ### Changed
 - Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048)
 - Refactor set and reset of capabilities - [#29200](https://github.com/owncloud/core/issues/29200)
 - All amazon locations support v4 now - v3 deprecated - [#29153](https://github.com/owncloud/core/issues/29153)
 - Modified time value of files is now 64 bits long - [#28961](https://github.com/owncloud/core/issues/28961)
+- User names must now be at least 3 characters long - [#29237](https://github.com/owncloud/core/issues/29237)
 
 ### Deprecated
 ### Removed
 - Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
 - Remove unused FTP code - [#29186](https://github.com/owncloud/core/issues/29186)
+- Remove app store related code obsoleted by market - [#29249](https://github.com/owncloud/core/issues/29249)
 
 ### Fixed
+- Corrected namespace for OC\Memcache\ArrayCache which caused errors on some environments - [#29219](https://github.com/owncloud/core/issues/29219)
+- External storage Javascript code from apps is now loaded correctly (fixes Dropbox app and others) - [#29225](https://github.com/owncloud/core/issues/29225)
+- Use product name from theme - [#29251](https://github.com/owncloud/core/issues/29251)
+- Make sure the external storage folder name is editable when returning from OAuth authorization - [#29253](https://github.com/owncloud/core/issues/29253)
+- Fix duplicate external storage config that appear sometimes when returning from OAuth authorization - [#29254](https://github.com/owncloud/core/issues/29254)
+- Log exceptions in decrypt-all command - [#29248](https://github.com/owncloud/core/issues/29248)
 - SFTP key pair mode now works again - [#29156](https://github.com/owncloud/core/issues/29156)
 - Use correct class namespace for ownCloud ext storage - [#28935](https://github.com/owncloud/core/issues/28935)
 - Handle case of empty folder in userDeletesEverythingInFolder - [#29163](https://github.com/owncloud/core/issues/29163)
