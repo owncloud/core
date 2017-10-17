@@ -99,7 +99,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 		\OC::$server->getEncryptionManager(),
 		\OC::$server->getAppManager(),
 		\OC::$server->getConfig(),
-		new \OC\Encryption\DecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View()),
+		new \OC\Encryption\DecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View(), \OC::$server->getLogger()),
 		new \Symfony\Component\Console\Helper\QuestionHelper())
 	);
 
