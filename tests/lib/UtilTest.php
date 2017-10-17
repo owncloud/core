@@ -414,11 +414,19 @@ class UtilTest extends \Test\TestCase {
 		$this->assertNotEmpty($errors);
 	}
 
+	/**
+	 * @expectedException HintException
+	 *
+	 * @throws HintException
+	 */
 	public function testCopySkeletonDirectory() {
+		$notExistingDirectory = '/not/existing/Directory';
+
 		$this->expectException(HintException::class);
+		$this->expectExceptionMessage('The skeleton folder '.$notExistingDirectory.' is not accessible');
 
 		$config = \OC::$server->getConfig();
-		$config->setSystemValue('skeletondirectory','\/not\existing\/Directory');
+		$config->setSystemValue('skeletondirectory',$notExistingDirectory);
 		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
 		$userFolder = \OC::$server->getUserFolder($user);
 
