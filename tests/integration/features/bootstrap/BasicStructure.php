@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
+use Behat\Gherkin\Node\PyStringNode;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -377,6 +378,30 @@ trait BasicStructure {
 		} else {
 			return (string) $this->regularUser;
 		}
+	}
+
+	/**
+	 * @When requesting status.php
+	 */
+	public function getStatusPhp(){
+		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "status.php";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = $this->adminUser;
+		try {
+			$this->response = $client->send($client->createRequest('GET', $fullUrl, $options));
+		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+			$this->response = $ex->getResponse();
+		}
+	}
+
+	/**
+	 * @Then the json responded should match with
+	 */
+	public function jsonRespondedShouldMatch(PyStringNode $jsonExpected) {
+		$jsonExpectedEncoded = json_encode($jsonExpected->getRaw());
+		$jsonRespondedEncoded = json_encode((string) $this->response->getBody());
+		PHPUnit\Framework\Assert::assertEquals($jsonExpectedEncoded, $jsonRespondedEncoded);
 	}
 
 	/**
