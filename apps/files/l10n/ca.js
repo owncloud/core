@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Emmagatzematge temporalment no disponible",
     "Storage invalid" : "Emmagatzemament no vàlid",
     "Unknown error" : "Error desconegut",
     "All files" : "Tots els fitxers",

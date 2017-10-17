@@ -83,6 +83,7 @@
     "Help" : "Ajuda",
     "Settings" : "Configuració",
     "Users" : "Usuaris",
+    "A safe home for all your data" : "Una llar segura per a les seves dades",
     "Application is not enabled" : "L'aplicació no està habilitada",
     "Authentication error" : "Error d'autenticació",
     "Token expired. Please reload page." : "El testimoni ha expirat. Torneu a carregar la pàgina.",
@@ -101,6 +102,7 @@
     "Please upgrade your database version" : "Actualitzeu la versió de la base de dades",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Canvieu els permisos a 0770 per tal que la carpeta no es pugui llistar per altres usuaris.",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Comproveu que la carpeta de dades contingui un fitxer \".ocdata\" a la seva arrel.",
-    "Could not obtain lock type %d on \"%s\"." : "No s'ha pogut obtenir un bloqueig tipus %d a \"%s\"."
+    "Could not obtain lock type %d on \"%s\"." : "No s'ha pogut obtenir un bloqueig tipus %d a \"%s\".",
+    "Storage is temporarily not available" : "Emmagatzemament temporalment no disponible"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

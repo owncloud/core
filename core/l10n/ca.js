@@ -1,6 +1,7 @@
 OC.L10N.register(
     "core",
     {
+    "Please select a file." : "Si us plau, selecciona un fitxer",
     "File is too big" : "El fitxer és massa gran",
     "Invalid file provided" : "L'arxiu proporcionat no és vàlid",
     "No image or file provided" : "No s'han proporcionat imatges o fitxers",
