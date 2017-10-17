@@ -75,6 +75,7 @@ OC.MimeTypeList={
     "application/zip": "package/x-generic",
     "database": "file",
     "httpd/unix-directory": "dir",
+    "message/rfc822": "text",
     "text/css": "text/code",
     "text/csv": "x-office/spreadsheet",
     "text/html": "text/code",
@@ -108,7 +109,5 @@ OC.MimeTypeList={
     "x-office-presentation",
     "x-office-spreadsheet"
 ],
-	themes: {
-    "example": []
-}
+	themes: []
 };
