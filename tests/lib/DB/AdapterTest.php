@@ -24,6 +24,8 @@ namespace Test\DB;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\DriverException;
 use OC\DB\Adapter;
+use OCP\DB\QueryBuilder\IExpressionBuilder;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
 /**
@@ -132,14 +134,20 @@ class AdapterTest extends \Test\TestCase {
 
 	public function testUpsertCatchDeadlockAndThrowsException() {
 		$mockConn = $this->createMock(IDBConnection::class);
-
+		$qb = $this->createMock(IQueryBuilder::class);
+		$qb->expects($this->exactly(6))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
+		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
+		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
+		// Make a deadlock driver exception
 		$ex = $this->createMock(DriverException::class);
-		$ex->expects($this->exactly(10))->method('getErrorCode')->willReturn(1213);
+		$ex->expects($this->exactly(5))->method('getErrorCode')->willReturn(1213);
+		// Wrap the exception in a doctrine exception
 		$e = new \Doctrine\DBAL\Exception\DriverException('1213', $ex);
-		$mockConn->expects($this->exactly(10))->method('executeUpdate')->willThrowException($e);
-
+		// Should be called 5 times for maxTry then kick out the exception
+		$qb->expects($this->exactly(5))->method('execute')->willThrowException($e);
+		$mockConn->expects($this->exactly(2))->method('getQueryBuilder')->willReturn($qb);
+		// expect a runtime exception because of a deadlock
 		$this->expectException(\RuntimeException::class);
-
 		// Run
 		$adapter = new Adapter($mockConn);
 		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
@@ -147,31 +155,44 @@ class AdapterTest extends \Test\TestCase {
 
 	public function testUpsertCatchExceptionAndThrowImmediately() {
 		$mockConn = $this->createMock(IDBConnection::class);
-
+		$qb = $this->createMock(IQueryBuilder::class);
+		$qb->expects($this->exactly(6))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
+		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
+		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
+		// Make random dbal exception which should be throw immediately, not retried
 		$e = new DBALException();
-		$mockConn->expects($this->exactly(1))->method('executeUpdate')->willThrowException($e);
-
+		// Should be called 5 times for maxTry then kick out the exception
+		$qb->expects($this->exactly(1))->method('execute')->willThrowException($e);
+		$mockConn->expects($this->exactly(2))->method('getQueryBuilder')->willReturn($qb);
+		// expect the dbal exception straight away
 		$this->expectException(DBALException::class);
-
 		// Run
 		$adapter = new Adapter($mockConn);
 		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
 
 	}
 
+
 	public function testUpsertAndThrowOtherDriverExceptions() {
 		$mockConn = $this->createMock(IDBConnection::class);
-
+		$qb = $this->createMock(IQueryBuilder::class);
+		$qb->expects($this->exactly(6))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
+		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
+		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
+		// Make a deadlock driver exception
 		$ex = $this->createMock(DriverException::class);
 		$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
+		// Wrap the exception in a doctrine exception
 		$e = new \Doctrine\DBAL\Exception\DriverException('1214', $ex);
-		$mockConn->expects($this->exactly(1))->method('executeUpdate')->willThrowException($e);
-
+		// Should be called 5 times for maxTry then kick out the exception
+		$qb->expects($this->exactly(1))->method('execute')->willThrowException($e);
+		$mockConn->expects($this->exactly(2))->method('getQueryBuilder')->willReturn($qb);
+		// expect a driver exception - not deadlock
 		$this->expectException(\Doctrine\DBAL\Exception\DriverException::class);
-
 		// Run
 		$adapter = new Adapter($mockConn);
 		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+
 	}
 
 	private function assertRowExists($key, $value) {
