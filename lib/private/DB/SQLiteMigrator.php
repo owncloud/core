@@ -30,16 +30,22 @@ use Doctrine\DBAL\Types\BigIntType;
 use Doctrine\DBAL\Types\Type;
 
 class SQLiteMigrator extends Migrator {
+
+	/**
+	 * @return Schema
+	 */
+	public function createSchema() {
+		$this->registerAdditionalMappings($this->connection);
+		return parent::createSchema();
+	}
+
 	/**
 	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
 	 * @return \Doctrine\DBAL\Schema\SchemaDiff
 	 */
 	protected function getDiff(Schema $targetSchema, \Doctrine\DBAL\Connection $connection) {
-		$platform = $connection->getDatabasePlatform();
-		$platform->registerDoctrineTypeMapping('tinyint unsigned', 'integer');
-		$platform->registerDoctrineTypeMapping('smallint unsigned', 'integer');
-		$platform->registerDoctrineTypeMapping('varchar ', 'string');
+		$this->registerAdditionalMappings($connection);
 
 		// with sqlite autoincrement columns is of type integer
 		foreach ($targetSchema->getTables() as $table) {
@@ -51,5 +57,15 @@ class SQLiteMigrator extends Migrator {
 		}
 
 		return parent::getDiff($targetSchema, $connection);
+	}
+
+	/**
+	 * @param \Doctrine\DBAL\Connection $connection
+	 */
+	private function registerAdditionalMappings(\Doctrine\DBAL\Connection $connection) {
+		$platform = $connection->getDatabasePlatform();
+		$platform->registerDoctrineTypeMapping('tinyint unsigned', 'integer');
+		$platform->registerDoctrineTypeMapping('smallint unsigned', 'integer');
+		$platform->registerDoctrineTypeMapping('varchar ', 'string');
 	}
 }
