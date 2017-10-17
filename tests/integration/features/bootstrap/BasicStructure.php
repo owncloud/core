@@ -18,6 +18,7 @@ trait BasicStructure {
 	use Tags;
 	use Trashbin;
 	use WebDav;
+	use CommandLine;
 
 	/** @var string */
 	private $currentUser = '';
@@ -40,7 +41,7 @@ trait BasicStructure {
 	/** @var string */
 	private $requestToken;
 
-	public function __construct($baseUrl, $admin, $regular_user_password, $mailhog_url) {
+	public function __construct($baseUrl, $admin, $regular_user_password, $mailhog_url, $oc_path) {
 
 		// Initialize your context here
 		$this->baseUrl = $baseUrl;
@@ -51,6 +52,7 @@ trait BasicStructure {
 		$this->remoteBaseUrl = $this->baseUrl;
 		$this->currentServer = 'LOCAL';
 		$this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
+		$this->ocPath = $oc_path;
 
 		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = getenv('TEST_SERVER_URL');
@@ -401,6 +403,25 @@ trait BasicStructure {
 	public function jsonRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedEncoded = json_encode($jsonExpected->getRaw());
 		$jsonRespondedEncoded = json_encode((string) $this->response->getBody());
+		PHPUnit\Framework\Assert::assertEquals($jsonExpectedEncoded, $jsonRespondedEncoded);
+	}
+
+	/**
+	 * @Then the status.php with versions fixed responded should match with
+	 */
+	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
+		$jsonExpectedDecoded = json_decode($jsonExpected->getRaw(), true);
+		$jsonRespondedEncoded = json_encode(json_decode($this->response->getBody(), true));
+		if ($this->runOcc(['status']) === 0) {
+			$output = preg_split("/[\s]+/", $this->lastStdOut);
+			$version = $output[6];
+			$versionString = $output[9];
+			$jsonExpectedDecoded['version'] = $version;
+			$jsonExpectedDecoded['versionstring'] = $versionString;
+			$jsonExpectedEncoded = json_encode($jsonExpectedDecoded);
+		} else {
+			PHPUnit_Framework_Assert::fail('Cannot get version variables from occ');
+		}
 		PHPUnit\Framework\Assert::assertEquals($jsonExpectedEncoded, $jsonRespondedEncoded);
 	}
 
