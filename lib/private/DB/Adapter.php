@@ -122,47 +122,62 @@ class Adapter {
 	 * @param $input array the key=>value pairs to insert into the db row
 	 * @param $compare array columns that should be compared
 	 * @return int the number of rows affected by the operation
-	 * @throws \Exception
+	 * @throws DriverException|\RuntimeException
 	 */
 	public function upsert($table, $input, $compare = null) {
 		$this->conn->beginTransaction();
 		$done = false;
-		$rows = 0;
 
 		if (empty($compare)) {
 			$compare = array_keys($input);
 		}
 
 		// Construct the update query
-		$updateQuery = 'UPDATE `' . $table . '` SET ';
-		$updateQuery .= '`' . implode('`  = ?, `', array_keys($input)) . '` = ?  WHERE ';
-		$updateParams = array_values($input);
-		foreach ($compare as $key) {
-			if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
-				$updateQuery .= 'to_char(`' . $key . '`)';
-			} else {
-				$updateQuery .= '`' . $key . '`';
-			}
+		$qbu = $this->conn->getQueryBuilder();
+		$qbu->update($table);
+		foreach($input as $col => $val) {
+			$qbu->set($col, $qbu->createParameter($col))
+			->setParameter($col, $val);
+		}
+		foreach($compare as $key) {
 			if (is_null($input[$key])) {
-				$updateQuery .= ' IS NULL AND ';
+				$qbu->where($qbu->expr()->isNull($key));
 			} else {
-				$updateParams[] = $input[$key];
-				$updateQuery .= ' = ? AND ';
+				if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
+					$qbu->where(
+						$qbu->expr()->eq(
+							// needs to cast to char in order to compare with char
+							$qbu->createFunction('to_char(`'.$key.'`)'),
+							$qbu->expr()->literal($input[$key])));
+				} else {
+					$qbu->where(
+						$qbu->expr()->eq(
+							$key,
+							$qbu->expr()->literal($input[$key])));
+				}
 			}
 		}
-		// Remove the last ' AND ' from the query
-		$updateQuery = substr($updateQuery, 0, strlen($updateQuery) - 5);
+
+		// Construct the insert query
+		$qbi = $this->conn->getQueryBuilder();
+		$qbi->insert($table);
+		foreach($input as $c => $v) {
+			$qbi->setValue($c, $qbi->createParameter($c))
+				->setParameter($c, $v);
+		}
 
 		$rows = 0;
 		$count = 0;
-		$maxTry = 10;
+		// Attempt 5 times before failing the upsert
+		$maxTry = 5;
 
 		while(!$done && $count < $maxTry) {
-			// Try to update
 			try {
-				$rows = $this->conn->executeUpdate($updateQuery, $updateParams);
+				// Try to update
+				$rows = $qbu->execute();
 			} catch (DriverException $e) {
 				// Skip deadlock and retry
+				// @TODO when we update to DBAL 2.6 we can use DeadlockExceptions here
 				if($e->getErrorCode() == 1213) {
 					$count++;
 					continue;
@@ -178,7 +193,8 @@ class Adapter {
 				// Try the insert
 				$this->conn->beginTransaction();
 				try {
-					$rows = $this->conn->insert($table, $input);
+					// Execute the insert query
+					$rows = $qbi->execute();
 					$done = $rows > 0;
 				} catch (UniqueConstraintViolationException $e) {
 					// Catch the unique violation and try the loop again
@@ -192,7 +208,9 @@ class Adapter {
 		// Pass through failures correctly
 		if($count === $maxTry) {
 			$params = implode(',', $input);
-			throw new \RuntimeException("DB upsert failed after $maxTry attempts. Query: $updateQuery. Params: $params");
+			$updateQuery = $qbu->getSQL();
+			$insertQuery = isset($qbi) ? $qbi->getSQL() : "N/A";
+			throw new \RuntimeException("DB upsert failed after $count attempts. UpdateQuery: $updateQuery InsertQuery: $insertQuery");
 		}
 
 		$this->conn->commit();
