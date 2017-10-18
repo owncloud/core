@@ -328,6 +328,7 @@ class FilesPageBasic extends OwnCloudPage {
 		while ($currentTime <= $end) {
 			$fileList = $this->findById("fileList");
 			if ($fileList !== null
+				&& $fileList->isVisible()
 				&& ($fileList->has("xpath", "//a")
 				|| ! $this->find(
 					"xpath",

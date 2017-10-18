@@ -9,6 +9,15 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+#Functions to compare version strings
+verlte() {
+	[ "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
+}
+
+verlt() {
+	[ "$1" = "$2" ] && return 1 || verlte $1 $2
+}
+
 #save the current language and set the language to "C"
 #we want to have it all in english to be able to parse outputs
 OLD_LANG=$LANG
@@ -69,18 +78,28 @@ fi
 
 BEHAT_TAG_OPTION="--tags"
 
-if [ "$BROWSER" == "internet explorer" ]
+#we need to skip some tests in certain browsers
+#and also skip tests if tags were given in the call of this script
+if [ "$BROWSER" == "internet explorer" ] || ([ "$BROWSER" == "firefox" ] && verlt "47.0" "$BROWSER_VERSION")
 then
+	BROWSER_IN_CAPITALS=${BROWSER//[[:blank:]]/}
+	BROWSER_IN_CAPITALS=${BROWSER_IN_CAPITALS^^}
+	
+	if [ "$BROWSER" == "firefox" ]
+	then
+		BROWSER_IN_CAPITALS="$BROWSER_IN_CAPITALS"47+
+	fi
+	
 	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
 	then
 		if [ -z "$BEHAT_TAGS" ]
 		then
-			BEHAT_TAGS='~@skipOnIE'
+			BEHAT_TAGS='~@skipOn'$BROWSER_IN_CAPITALS
 		else
-			BEHAT_TAGS="$BEHAT_TAGS&&~@skipOnIE"
+			BEHAT_TAGS="$BEHAT_TAGS&&~@skipOn"$BROWSER_IN_CAPITALS
 		fi
 	else
-		BEHAT_TAGS='~@skip&&~@skipOnIE'
+		BEHAT_TAGS='~@skip&&~@skipOn'$BROWSER_IN_CAPITALS
 	fi
 else
 	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
@@ -145,7 +164,13 @@ if [ "$BROWSER" == "firefox" ]
 then
 	#set screen resolution so that hopefully dragable elements will be visible
 	#FF gives problems if the destination element is not visible
-	EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1","screenResolution":"1920x1080",'
+	EXTRA_CAPABILITIES='"browserVersion":"'$BROWSER_VERSION'","screenResolution":"1920x1080",'
+	
+	#FF 47 needs a specific selenium version
+	if verlte "$BROWSER_VERSION" "47.0"
+	then
+		EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1",'$EXTRA_CAPABILITIES
+	fi
 fi
 
 
