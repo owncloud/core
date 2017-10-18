@@ -30,6 +30,7 @@ default:
               - admin
             regular_user_password: 123456
             mailhog_url: http://127.0.0.1:8025/api/v2/messages
+            oc_path: ../../
     capabilities:
       paths:
         - %paths.base%/../capabilities_features
@@ -41,6 +42,7 @@ default:
               - admin
             regular_user_password: 123456
             mailhog_url: http://127.0.0.1:8025/api/v2/messages
+            oc_path: ../../
     sharees:
       paths:
         - %paths.base%/../sharees_features
@@ -52,6 +54,7 @@ default:
               - admin
             regular_user_password: 123456
             mailhog_url: http://127.0.0.1:8025/api/v2/messages
+            oc_path: ../../
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
