@@ -70,6 +70,8 @@ use OCP\IUserManager;
 
 class Filesystem {
 
+	public static $debug = false;
+
 	/**
 	 * @var Mount\Manager $mounts
 	 */
@@ -392,6 +394,9 @@ class Filesystem {
 	 * @throws \OC\User\NoUserException if the user is not available
 	 */
 	public static function initMountPoints($user = '') {
+		if (self::$debug) {
+			\OCP\Util::writeLog('DEBUG', 'initMountPonts for user ' . $user, \OCP\Util::DEBUG);
+		}
 		if ($user == '') {
 			$user = \OC_User::getUser();
 		}
