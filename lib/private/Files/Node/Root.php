@@ -30,9 +30,9 @@
 namespace OC\Files\Node;
 
 use OC\Files\Meta\MetaRootNode;
-use OC\Files\Mount\Manager;
 use OC\Files\Mount\MountPoint;
 use OC\User\NoUserException;
+use OCP\Constants;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OC\Hooks\PublicEmitter;
@@ -289,7 +289,7 @@ class Root extends Folder implements IRootFolder {
 	 * @return int
 	 */
 	public function getPermissions() {
-		return \OCP\Constants::PERMISSION_CREATE;
+		return Constants::PERMISSION_CREATE;
 	}
 
 	/**
@@ -340,6 +340,7 @@ class Root extends Folder implements IRootFolder {
 	 *
 	 * @param String $userId user ID
 	 * @return \OCP\Files\Folder
+	 * @throws NoUserException
 	 */
 	public function getUserFolder($userId) {
 		$userObject = \OC::$server->getUserManager()->get($userId);
@@ -380,7 +381,7 @@ class Root extends Folder implements IRootFolder {
 		}
 		array_shift($pieces);
 		array_shift($pieces);
-		$node = new MetaRootNode();
+		$node = new MetaRootNode($this);
 		if (empty($pieces)) {
 			return $node;
 		}

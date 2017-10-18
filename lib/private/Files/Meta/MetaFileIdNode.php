@@ -25,6 +25,7 @@ namespace OC\Files\Meta;
 use OC\Files\Node\AbstractFolder;
 use OCP\Constants;
 use OCP\Files\FileInfo;
+use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 
 /**
@@ -38,6 +39,8 @@ class MetaFileIdNode extends AbstractFolder {
 	private $fileId;
 	/** @var MetaRootNode */
 	private $parentNode;
+	/** @var IRootFolder */
+	private $root;
 
 	/**
 	 * MetaFileIdNode constructor.
@@ -45,9 +48,10 @@ class MetaFileIdNode extends AbstractFolder {
 	 * @param MetaRootNode $parentNode
 	 * @param int $fileId
 	 */
-	public function __construct(MetaRootNode $parentNode, $fileId) {
+	public function __construct(MetaRootNode $parentNode, IRootFolder $root, $fileId) {
 		$this->parentNode = $parentNode;
 		$this->fileId = $fileId;
+		$this->root = $root;
 	}
 
 	/**
@@ -76,7 +80,7 @@ class MetaFileIdNode extends AbstractFolder {
 	 */
 	public function getDirectoryListing() {
 		return [
-			new MetaVersionCollection($this->fileId)
+			new MetaVersionCollection($this->fileId, $this->root)
 		];
 	}
 
@@ -87,7 +91,7 @@ class MetaFileIdNode extends AbstractFolder {
 		$pieces = explode('/', $path);
 		if($pieces[0] === 'v') {
 			array_shift($pieces);
-			$node = new MetaVersionCollection($this->fileId);
+			$node = new MetaVersionCollection($this->fileId, $this->root);
 			if (empty($pieces)) {
 				return $node;
 			}

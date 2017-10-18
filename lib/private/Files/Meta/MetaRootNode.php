@@ -26,6 +26,7 @@ namespace OC\Files\Meta;
 use OC\Files\Node\AbstractFolder;
 use OCP\Constants;
 use OCP\Files\FileInfo;
+use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 
 /**
@@ -35,6 +36,12 @@ use OCP\Files\NotFoundException;
  */
 class MetaRootNode extends AbstractFolder {
 
+	/** @var IRootFolder */
+	private $rootFolder;
+
+	public function __construct(IRootFolder $rootFolder) {
+		$this->rootFolder = $rootFolder;
+	}
 	/**
 	 * @inheritdoc
 	 */
@@ -72,12 +79,12 @@ class MetaRootNode extends AbstractFolder {
 		$fileId = (int)$pieces[0];
 
 		// check if file exists
-		if (empty(\OC::$server->getRootFolder()->getById($fileId))) {
+		if (empty($this->rootFolder->getById($fileId))) {
 			throw new NotFoundException();
 		}
 
 		array_shift($pieces);
-		$node = new MetaFileIdNode($this, $fileId);
+		$node = new MetaFileIdNode($this, $this->rootFolder, $fileId);
 		if (empty($pieces)) {
 			return $node;
 		}

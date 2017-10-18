@@ -24,6 +24,7 @@ namespace OC\Files\Meta;
 
 
 use OC\Files\Node\AbstractFolder;
+use OCP\Files\IRootFolder;
 use OCP\Files\Storage\IVersionedStorage;
 use OC\Files\View;
 use OCP\Files\NotFoundException;
@@ -39,14 +40,18 @@ class MetaVersionCollection extends AbstractFolder {
 
 	/** @var int */
 	private $fileId;
+	/** @var IRootFolder */
+	private $root;
 
 	/**
 	 * MetaVersionCollection constructor.
 	 *
 	 * @param int $fileId
+	 * @param IRootFolder $root
 	 */
-	public function __construct($fileId) {
+	public function __construct($fileId, IRootFolder $root) {
 		$this->fileId = $fileId;
+		$this->root = $root;
 	}
 
 	/**
@@ -77,7 +82,7 @@ class MetaVersionCollection extends AbstractFolder {
 		/** @var IVersionedStorage | Storage $storage */
 		$versions = $storage->getVersions($internalPath);
 		return array_map(function($version) use ($storage, $internalPath) {
-			return new MetaFileVersionNode($this, $version['version'],$storage, $internalPath);
+			return new MetaFileVersionNode($this, $this->root, $version['version'],$storage, $internalPath);
 		}, $versions);
 	}
 
@@ -102,7 +107,7 @@ class MetaVersionCollection extends AbstractFolder {
 		if ($version === null) {
 			throw new NotFoundException();
 		}
-		return new MetaFileVersionNode($this, $version['version'], $storage, $internalPath);
+		return new MetaFileVersionNode($this, $this->root, $version['version'], $storage, $internalPath);
 	}
 
 	/**
