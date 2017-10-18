@@ -106,7 +106,8 @@ class RootCollection extends SimpleCollection {
 				$systemTagCollection,
 				$systemTagRelationsCollection,
 				$uploadCollection,
-				$avatarCollection
+				$avatarCollection,
+				new \OCA\DAV\Meta\RootCollection(\OC::$server->getRootFolder())
 		];
 
 		parent::__construct('root', $children);
