@@ -20,23 +20,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\DAV\Tests\unit\Connector\Sabre;
+
+namespace OCA\DAV\Tests\unit\DAV;
+
+use \OCA\DAV\DAV\FileCustomPropertiesBackend;
 
 /**
- * Copyright (c) 2015 Vincent Petry <pvince81@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
- */
-
-/**
- * Class CustomPropertiesBackend
+ * Class FileCustomPropertiesBackendTest
  *
  * @group DB
  *
- * @package OCA\DAV\Tests\unit\Connector\Sabre
+ * @package OCA\DAV\Tests\unit\DAV
  */
-class CustomPropertiesBackendTest extends \Test\TestCase {
+class FileCustomPropertiesBackendTest extends \Test\TestCase {
 
 	/**
 	 * @var \Sabre\DAV\Server
@@ -49,7 +45,7 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 	private $tree;
 
 	/**
-	 * @var \OCA\DAV\Connector\Sabre\CustomPropertiesBackend
+	 * @var FileCustomPropertiesBackend
 	 */
 	private $plugin;
 
@@ -75,7 +71,7 @@ class CustomPropertiesBackendTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue($userId));
 
-		$this->plugin = new \OCA\DAV\Connector\Sabre\CustomPropertiesBackend(
+		$this->plugin = new FileCustomPropertiesBackend(
 			$this->tree,
 			\OC::$server->getDatabaseConnection(),
 			$this->user

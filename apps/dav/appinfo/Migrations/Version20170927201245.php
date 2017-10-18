@@ -23,14 +23,14 @@ namespace OCA\DAV\Migrations;
 
 use OCP\Migration\ISchemaMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Type;
 
 /*
- * Drop property_index index if exists
- * Drop userid and propertypath columns
- * Add NOT NULL constraint to fileid column
+ * Create dav_properties table that stores properties
+ * of non-fs items (calendar/contacts) by path
  */
 
-class Version20170202220512 implements ISchemaMigration {
+class Version20170927201245 implements ISchemaMigration {
 
 	/**
 	 * @param Schema $schema
@@ -38,21 +38,29 @@ class Version20170202220512 implements ISchemaMigration {
 	 */
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
-
-		$table = $schema->getTable("${prefix}properties");
-		if ($table->hasIndex('property_index')) {
-			$table->dropIndex('property_index');
+		if (!$schema->hasTable("${prefix}dav_properties")){
+			$table = $schema->createTable("${prefix}dav_properties");
+			$table->addColumn('id', Type::BIGINT, [
+				'autoincrement' => true,
+				'notnull' => true,
+				'length' => 20,
+			]);
+			$table->addColumn('propertypath', Type::STRING, [
+				'notnull' => true,
+				'length' => 255,
+				'default' => '',
+			]);
+			$table->addColumn('propertyname', Type::STRING, [
+				'notnull' => true,
+				'length' => 255,
+				'default' => '',
+			]);
+			$table->addColumn('propertyvalue', Type::STRING, [
+				'notnull' => true,
+				'length' => 255,
+			]);
+			$table->setPrimaryKey(['id']);
+			$table->addIndex(['propertypath'], 'propertypath_index');
 		}
-		if ($table->hasColumn('userid')) {
-			$table->dropColumn('userid');
-		}
-		if ($table->hasColumn('propertypath')) {
-			$table->dropColumn('propertypath');
-		}
-		$table->changeColumn('fileid', [
-			'notnull' => false,
-			'unsigned' => true,
-			'length' => 20,
-		]);
 	}
 }
