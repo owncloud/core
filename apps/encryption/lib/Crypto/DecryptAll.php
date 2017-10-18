@@ -80,46 +80,65 @@ class DecryptAll {
 	 */
 	public function prepare(InputInterface $input, OutputInterface $output, $user) {
 
-		$question = new Question('Please enter the recovery key password: ');
+		// We need to setup the module with everything it needs in order to decrypt user data
+		// This could be using master key or user key encryption
+		// and could also be for a single user or multiple users
 
+		// First lets work out the mode
 		if($this->util->isMasterKeyEnabled()) {
-			$output->writeln('Use master key to decrypt all files');
+			$output->writeln('Using master key for decryption');
 			$user = $this->keyManager->getMasterKeyId();
 			$password =$this->keyManager->getMasterKeyPassword();
 		} else {
-			$recoveryKeyId = $this->keyManager->getRecoveryKeyId();
-			if (!empty($user)) {
-				$output->writeln('You can only decrypt the users files if you know');
-				$output->writeln('the users password or if he activated the recovery key.');
-				$output->writeln('');
-				$questionUseLoginPassword = new ConfirmationQuestion(
-					'Do you want to use the users login password to decrypt all files? (y/n) ',
-					false
-				);
-				$useLoginPassword = $this->questionHelper->ask($input, $output, $questionUseLoginPassword);
-				if ($useLoginPassword) {
-					$question = new Question('Please enter the user\'s login password: ');
-				} else if ($this->util->isRecoveryEnabledForUser($user) === false) {
-					$output->writeln('No recovery key available for user ' . $user);
-					return false;
+			$output->writeln("Configuring encryption module for decryption with user based keys");
+			// We must be using user key - now finish the prep
+			// Must either be using recovery keys, or just decrypting one user and know their password
+
+			// Check a method has been passed
+			if(!$input->hasOption('method') && !in_array($input->getOption('method'),['recovery', 'password'])) {
+				$output->writeln('A method must be supplied when decrypting from user-key state');
+				return false;
+			}
+			if(empty($user)) {
+				// all users, so only recovery is possible
+				if($input->getOption('method')==='recovery' && !empty(getenv('OC_RECOVERY_KEY'))) {
+					// Then we can attempt to use this for all of the users
+					$output->writeln('Attempting to use recovery key from environment for all users. Users must have enabled recovery keys for this to work.');
+					$password = getenv('OC_RECOVERY_KEY');
+					$recoveryKeyId = $this->keyManager->getRecoveryKeyId();
 				} else {
-					$user = $recoveryKeyId;
+					$output->writeLn('Recovery key is the only supported method for decrypting all users in one command. The key is read from OC_RECOVERY_KEY.');
+					return false;
 				}
 			} else {
-				$output->writeln('You can only decrypt the files of all users if the');
-				$output->writeln('recovery key is enabled by the admin and activated by the users.');
-				$output->writeln('');
-				$user = $recoveryKeyId;
+				// Specific user, password is an option here
+				if($input->getOption('method')==='recovery' && !empty(getenv('OC_RECOVERY_KEY'))) {
+					// Then we can attempt to use this for all of the users
+					$output->writeln('Attempting to use recovery key from environment: OC_RECOVERY_KEY');
+					$password = getenv('OC_RECOVERY_KEY');
+					$output->writeln("Using key:".$password);
+					$recoveryKeyId = $this->keyManager->getRecoveryKeyId();
+					$user = $recoveryKeyId;
+				} elseif($input->getOption('method')==='password' && !empty(getenv('OC_PASSWORD'))) {
+					$output->writeln('Attempting to use users password from environment: OC_PASSWORD');
+					// Then we want to use the users password and it has been supplied
+					$password = getenv('OC_PASSWORD');
+					if(!$this->util->isRecoveryEnabledForUser($user)) {
+						$output->writeln("<error>No recovery key available for user: $user </error>");
+						return false;
+					}
+					$recoveryKeyId = $this->keyManager->getRecoveryKeyId();
+				} else {
+					$output->writeln("<error>Ensure you have set either OC_RECOVERY_KEY or OC_PASSWORD to use for decryption</error>");
+					return false;
+				}
 			}
-
-			$question->setHidden(true);
-			$question->setHiddenFallback(false);
-			$password = $this->questionHelper->ask($input, $output, $question);
 		}
 
 		$privateKey = $this->getPrivateKey($user, $password);
 		if ($privateKey !== false) {
 			$this->updateSession($user, $privateKey);
+			$output->writeLn('Setup encryption module ready for decryption');
 			return true;
 		} else {
 			$output->writeln('Could not decrypt private key, maybe you entered the wrong password?');
