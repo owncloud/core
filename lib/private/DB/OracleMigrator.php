@@ -29,7 +29,7 @@ use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
-class OracleMigrator extends NoCheckMigrator {
+class OracleMigrator extends Migrator {
 
 	/**
 	 * Quote a column's name but changing the name requires recreating
