@@ -91,6 +91,16 @@ pipeline:
       matrix:
         TEST_SUITE: coverage
 
+  javascript:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    group: test
+    commands:
+      - ./tests/drone/test-javascript.sh
+    when:
+      matrix:
+        TEST_SUITE: phpunit
+
 services:
   mariadb:
     image: mariadb:10.3
@@ -213,3 +223,7 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: coverage
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
