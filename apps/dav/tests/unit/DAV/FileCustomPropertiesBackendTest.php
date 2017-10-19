@@ -23,7 +23,9 @@
 
 namespace OCA\DAV\Tests\unit\DAV;
 
-use \OCA\DAV\DAV\FileCustomPropertiesBackend;
+use OCA\DAV\DAV\FileCustomPropertiesBackend;
+use Sabre\DAV\PropFind;
+use Sabre\DAV\SimpleCollection;
 
 /**
  * Class FileCustomPropertiesBackendTest
@@ -138,6 +140,43 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->assertEquals(200, $result['customprop2']);
 	}
 
+	
+	/**
+	 * Test getting properties when node has no fileId
+	 * Should fail gracefully with no error
+	 */
+	public function testGetPropertiesForCollection() {
+		$node = $this->getMockBuilder(SimpleCollection::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$node->expects($this->any())
+			->method('getPath')
+			->will($this->returnValue('/dummypath'));
+			
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->with('/dummypath')
+			->will($this->returnValue($node));
+
+		$propFind = new PropFind(
+			'/dummypath',
+			[
+				'customprop',
+				'customprop2',
+				'unsetprop',
+			],
+			0
+		);
+
+		$this->plugin->propFind(
+			'/dummypath',
+			$propFind
+		);
+
+		$this->assertNull($propFind->get('customprop'));
+	}
+
 	/**
 	 * Test that propFind on a missing file soft fails
 	 */
@@ -152,7 +191,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->with('/dummypath')
 			->will($this->throwException(new \Sabre\DAV\Exception\ServiceUnavailable()));
 
-		$propFind = new \Sabre\DAV\PropFind(
+		$propFind = new PropFind(
 			'/dummypath',
 			[
 				'customprop',
@@ -188,7 +227,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 
 		$this->applyDefaultProps();
 
-		$propFind = new \Sabre\DAV\PropFind(
+		$propFind = new PropFind(
 			'/dummypath',
 			[
 				'customprop',
@@ -258,13 +297,13 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			'unsetprop',
 		];
 
-		$propFindRoot = new \Sabre\DAV\PropFind(
+		$propFindRoot = new PropFind(
 			'/dummypath',
 			$propNames,
 			1
 		);
 
-		$propFindSub = new \Sabre\DAV\PropFind(
+		$propFindSub = new PropFind(
 			'/dummypath/test.txt',
 			$propNames,
 			0
