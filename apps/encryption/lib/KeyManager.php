@@ -132,19 +132,7 @@ class KeyManager {
 				$this->recoveryKeyId);
 		}
 
-		$this->publicShareKeyId = $this->config->getAppValue('encryption',
-			'publicShareKeyId');
-		if (empty($this->publicShareKeyId)) {
-			$this->publicShareKeyId = 'pubShare_' . substr(md5(time()), 0, 8);
-			$this->config->setAppValue('encryption', 'publicShareKeyId', $this->publicShareKeyId);
-		}
-
-		$this->masterKeyId = $this->config->getAppValue('encryption',
-			'masterKeyId');
-		if (empty($this->masterKeyId)) {
-			$this->masterKeyId = 'master_' . substr(md5(time()), 0, 8);
-			$this->config->setAppValue('encryption', 'masterKeyId', $this->masterKeyId);
-		}
+		$this->setPublicShareKeyIDAndMasterKeyId();
 
 		$this->keyId = $userSession && $userSession->isLoggedIn() ? $userSession->getUser()->getUID() : false;
 		$this->log = $log;
@@ -701,6 +689,9 @@ class KeyManager {
 	 * @return string
 	 */
 	public function getMasterKeyId() {
+		if($this->config->getAppValue('encryption', 'masterKeyId') !== $this->masterKeyId) {
+			$this->masterKeyId = $this->config->getAppValue('encryption', 'masterKeyId');
+		}
 		return $this->masterKeyId;
 	}
 
@@ -712,4 +703,23 @@ class KeyManager {
 	public function getPublicMasterKey() {
 		return $this->keyStorage->getSystemUserKey($this->masterKeyId . '.publicKey', Encryption::ID);
 	}
+
+	/**
+	 * set publicShareKeyId and masterKeyId if not set
+	 */
+	public function setPublicShareKeyIDAndMasterKeyId() {
+		$this->publicShareKeyId = $this->config->getAppValue('encryption',
+			'publicShareKeyId');
+		if (is_null($this->publicShareKeyId) || ($this->publicShareKeyId === '')) {
+			$this->publicShareKeyId = 'pubShare_' . substr(md5(time()), 0, 8);
+			$this->config->setAppValue('encryption', 'publicShareKeyId', $this->publicShareKeyId);
+		}
+
+		$this->masterKeyId = $this->config->getAppValue('encryption',
+			'masterKeyId');
+		if (is_null($this->masterKeyId) || ($this->masterKeyId === '')) {
+			$this->masterKeyId = 'master_' . substr(md5(time()), 0, 8);
+			$this->config->setAppValue('encryption', 'masterKeyId', $this->masterKeyId);
+		}
+ 	}
 }

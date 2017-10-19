@@ -30,6 +30,7 @@
 	</dependencies>
 	<commands>
 		<command>OCA\Encryption\Command\SelectEncryptionType</command>
+		<command>OCA\Encryption\Command\RecreateMasterKey</command>
 		<command>OCA\Encryption\Command\MigrateKeys</command>
 	</commands>
 	<settings>

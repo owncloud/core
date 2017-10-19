@@ -93,7 +93,7 @@ class DecryptAll {
 				$output->writeln('the users password or if he activated the recovery key.');
 				$output->writeln('');
 				$questionUseLoginPassword = new ConfirmationQuestion(
-					'Do you want to use the users login password to decrypt all files? (y/n) ',
+					'Do you want to use the user: ' . $user . ' login password to decrypt all files? (y/n) ',
 					false
 				);
 				$useLoginPassword = $this->questionHelper->ask($input, $output, $questionUseLoginPassword);

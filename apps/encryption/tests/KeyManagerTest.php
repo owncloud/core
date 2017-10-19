@@ -75,7 +75,7 @@ class KeyManagerTest extends TestCase {
 		$this->configMock = $this->createMock('OCP\IConfig');
 		$this->configMock->expects($this->any())
 			->method('getAppValue')
-			->willReturn($this->systemKeyId);
+			->will($this->returnCallback(array($this, 'returnAppValue')));
 		$this->userMock = $this->createMock('OCP\IUserSession');
 		$this->sessionMock = $this->getMockBuilder('OCA\Encryption\Session')
 			->disableOriginalConstructor()
@@ -93,6 +93,15 @@ class KeyManagerTest extends TestCase {
 			$this->sessionMock,
 			$this->logMock,
 			$this->utilMock);
+	}
+
+	public function returnAppValue() {
+		$args = func_get_args();
+		if($args[1] === 'masterKeyId') {
+			return 'masterKeyId';
+		} else {
+			return 'systemKeyId';
+		}
 	}
 
 	public function testDeleteShareKey() {
@@ -499,16 +508,48 @@ class KeyManagerTest extends TestCase {
 	}
 
 	public function testGetMasterKeyId() {
-		$this->assertSame('systemKeyId', $this->instance->getMasterKeyId());
+		$localConfigMock = $this->createMock('OCP\IConfig');
+		$localConfigMock->expects($this->any())
+			->method('getAppValue')
+			->willReturn($this->systemKeyId);
+		$instance = $this->getMockBuilder('OCA\Encryption\KeyManager')
+			->setConstructorArgs(
+				[
+					$this->keyStorageMock,
+					$this->cryptMock,
+					$localConfigMock,
+					$this->userMock,
+					$this->sessionMock,
+					$this->logMock,
+					$this->utilMock
+				]
+			)->setMethods()->getMock();
+		$this->assertSame('systemKeyId', $instance->getMasterKeyId());
 	}
 
 	public function testGetPublicMasterKey() {
+		$localConfigMock = $this->createMock('OCP\IConfig');
+		$localConfigMock->expects($this->any())
+			->method('getAppValue')
+			->willReturn($this->systemKeyId);
+		$instance = $this->getMockBuilder('OCA\Encryption\KeyManager')
+			->setConstructorArgs(
+				[
+					$this->keyStorageMock,
+					$this->cryptMock,
+					$localConfigMock,
+					$this->userMock,
+					$this->sessionMock,
+					$this->logMock,
+					$this->utilMock
+				]
+			)->setMethods()->getMock();
 		$this->keyStorageMock->expects($this->once())->method('getSystemUserKey')
 			->with('systemKeyId.publicKey', \OCA\Encryption\Crypto\Encryption::ID)
 			->willReturn(true);
 
 		$this->assertTrue(
-			$this->instance->getPublicMasterKey()
+			$instance->getPublicMasterKey()
 		);
 	}
 
@@ -538,13 +579,19 @@ class KeyManagerTest extends TestCase {
 	 */
 	public function testValidateMasterKey($masterKey) {
 
+		$localConfigMock = $this->createMock('OCP\IConfig');
+		$returnVal = ($masterKey) ? 'masterKeyId' : $this->systemKeyId;
+		$localConfigMock->expects($this->any())
+			->method('getAppValue')
+			->willReturn($returnVal);
+
 		/** @var \OCA\Encryption\KeyManager | \PHPUnit_Framework_MockObject_MockObject $instance */
 		$instance = $this->getMockBuilder('OCA\Encryption\KeyManager')
 			->setConstructorArgs(
 				[
 					$this->keyStorageMock,
 					$this->cryptMock,
-					$this->configMock,
+					$localConfigMock,
 					$this->userMock,
 					$this->sessionMock,
 					$this->logMock,

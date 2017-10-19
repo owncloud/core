@@ -293,6 +293,7 @@ class EncryptAll {
 		$target = $path . '.encrypted.' . time();
 
 		try {
+			$this->keyManager->setVersion($source, 0, $this->rootView);
 			$this->rootView->copy($source, $target);
 			$this->rootView->rename($target, $source);
 		} catch (DecryptionFailedException $e) {
