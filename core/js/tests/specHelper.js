@@ -87,8 +87,7 @@ window.firstDay = 0;
 /* jshint camelcase: false */
 window.oc_debug = true;
 window.oc_isadmin = false;
-// FIXME: oc_webroot is supposed to be only the path!!!
-window.oc_webroot = location.href + '/';
+window.oc_webroot = '/owncloud';
 window.oc_appswebroots = {
 	"files": window.oc_webroot + '/apps/files/'
 };
@@ -137,6 +136,9 @@ window.isPhantom = /phantom/i.test(navigator.userAgent);
 				return url;
 			}
 			return r[1];
+		},
+		buildAbsoluteUrl: function(relativeUrl) {
+			return window.location.protocol + '//' + window.location.host + relativeUrl;
 		}
 	};
 

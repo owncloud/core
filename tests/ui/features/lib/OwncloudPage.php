@@ -258,7 +258,7 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function scrollToPosition($jQuerySelector, $position, Session $session) {
-		$session->evaluateScript(
+		$session->executeScript(
 			'$("' . $jQuerySelector . '").scrollTop(' . $position . ');'
 		);
 	}

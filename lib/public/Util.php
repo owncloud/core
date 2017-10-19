@@ -726,9 +726,9 @@ class Util {
 		# for description and defaults
 		$defaults = new \OCP\Defaults();
 		$values = [
-			'installed'=> $installed ? 'true' : 'false',
-			'maintenance' => $maintenance ? 'true' : 'false',
-			'needsDbUpgrade' => self::needUpgrade() ? 'true' : 'false',
+			'installed'=> $installed ? true : false,
+			'maintenance' => $maintenance ? true : false,
+			'needsDbUpgrade' => self::needUpgrade() ? true : false,
 			'version' => '',
 			'versionstring' => '',
 			'edition' => '',
@@ -745,7 +745,6 @@ class Util {
 				$values['hostname'] = gethostname();
 			}
 		}
-
 
 		return $values;
 	}

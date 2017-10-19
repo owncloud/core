@@ -46,4 +46,9 @@ class SqliteMigrationTest extends \Test\TestCase {
 		$this->assertTrue(true);
 	}
 
+	public function testCreateSchemaWithNonOcTables() {
+		$this->connection->createSchema();
+		$this->assertTrue(true);
+	}
+
 }

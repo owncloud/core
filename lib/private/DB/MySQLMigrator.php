@@ -29,14 +29,20 @@ use Doctrine\DBAL\Schema\Table;
 
 class MySQLMigrator extends Migrator {
 	/**
+	 * @return Schema
+	 */
+	public function createSchema() {
+		$this->registerAdditionalMappings($this->connection);
+		return parent::createSchema();
+	}
+
+	/**
 	 * @param Schema $targetSchema
 	 * @param \Doctrine\DBAL\Connection $connection
 	 * @return \Doctrine\DBAL\Schema\SchemaDiff
 	 */
 	protected function getDiff(Schema $targetSchema, \Doctrine\DBAL\Connection $connection) {
-		$platform = $connection->getDatabasePlatform();
-		$platform->registerDoctrineTypeMapping('enum', 'string');
-		$platform->registerDoctrineTypeMapping('bit', 'string');
+		$this->registerAdditionalMappings($connection);
 
 		$schemaDiff = parent::getDiff($targetSchema, $connection);
 
@@ -50,26 +56,34 @@ class MySQLMigrator extends Migrator {
 
 		return $schemaDiff;
 	}
-	
-        /**
-         * Speed up migration test by disabling autocommit and unique indexes check
-         *
-         * @param \Doctrine\DBAL\Schema\Table $table
-         * @throws \OC\DB\MigrationException
-         */
-        protected function checkTableMigrate(Table $table) {
-                $this->connection->exec('SET autocommit=0');
-                $this->connection->exec('SET unique_checks=0');
 
-                try {
-                        parent::checkTableMigrate($table);
-                } catch (\Exception $e) {
-                        $this->connection->exec('SET unique_checks=1');
-                        $this->connection->exec('SET autocommit=1');
-                        throw new MigrationException($table->getName(), $e->getMessage());
-                }
-                $this->connection->exec('SET unique_checks=1');
-                $this->connection->exec('SET autocommit=1');
-        }
+	/**
+	 * Speed up migration test by disabling autocommit and unique indexes check
+	 *
+	 * @param \Doctrine\DBAL\Schema\Table $table
+	 * @throws \OC\DB\MigrationException
+	 */
+	protected function checkTableMigrate(Table $table) {
+		$this->connection->exec('SET autocommit=0');
+		$this->connection->exec('SET unique_checks=0');
 
+		try {
+			parent::checkTableMigrate($table);
+		} catch (\Exception $e) {
+			$this->connection->exec('SET unique_checks=1');
+			$this->connection->exec('SET autocommit=1');
+			throw new MigrationException($table->getName(), $e->getMessage());
+		}
+		$this->connection->exec('SET unique_checks=1');
+		$this->connection->exec('SET autocommit=1');
+	}
+
+	/**
+	 * @param \Doctrine\DBAL\Connection $connection
+	 */
+	private function registerAdditionalMappings(\Doctrine\DBAL\Connection $connection){
+		$platform = $connection->getDatabasePlatform();
+		$platform->registerDoctrineTypeMapping('enum', 'string');
+		$platform->registerDoctrineTypeMapping('bit', 'string');
+	}
 }

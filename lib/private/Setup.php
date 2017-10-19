@@ -63,6 +63,8 @@ class Setup {
 	 * @param IConfig $config
 	 * @param IniGetWrapper $iniWrapper
 	 * @param \OC_Defaults $defaults
+	 * @param ILogger $logger
+	 * @param ISecureRandom $random
 	 */
 	function __construct(IConfig $config,
 						 IniGetWrapper $iniWrapper,

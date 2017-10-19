@@ -36,6 +36,7 @@ use OCP\UserInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 
@@ -258,10 +259,18 @@ class DecryptAllTest extends TestCase {
 		];
 	}
 
-	public function testDecryptUsersFiles() {
-		$storage = $this->getMockBuilder(SharedStorage::class)
-			->disableOriginalConstructor()
-			->getMock();
+	public function providesData() {
+		return[
+			[true],
+			[false]
+		];
+	}
+	/**
+	 * @param $throwsExceptionInDecrypt
+	 * @dataProvider providesData
+	 */
+	public function testDecryptUsersFiles($throwsExceptionInDecrypt) {
+		$storage = $this->createMock(SharedStorage::class);
 
 		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject  $instance */
 		$instance = $this->getMockBuilder(DecryptAll::class)
@@ -301,18 +310,23 @@ class DecryptAllTest extends TestCase {
 				}
 			);
 
-		$instance->expects($this->at(0))
-			->method('decryptFile')
-			->with('/user1/files/bar');
-		$instance->expects($this->at(1))
-			->method('decryptFile')
-			->with('/user1/files/foo/subfile');
+		if ($throwsExceptionInDecrypt) {
+			$instance->expects($this->at(0))
+				->method('decryptFile')
+				->with('/user1/files/bar')
+				->willThrowException(new \Exception());
+		} else {
+			$instance->expects($this->at(0))
+				->method('decryptFile')
+				->with('/user1/files/bar');
+			$instance->expects($this->at(1))
+				->method('decryptFile')
+				->with('/user1/files/foo/subfile');
+		}
 
-		$progressBar = $this->getMockBuilder(ProgressBar::class)
-			->disableOriginalConstructor()->getMock();
+		$progressBar = new ProgressBar(new NullOutput());
 
 		$this->invokePrivate($instance, 'decryptUsersFiles', ['user1', $progressBar, '']);
-
 	}
 
 	public function testDecryptFile() {
