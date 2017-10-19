@@ -5,6 +5,7 @@ Feature: moveFiles
 		And I am logged in as a regular user
 		And I am on the files page
 
+	@skipOnFIREFOX47+
 	Scenario: move a file into a folder
 		When I move the file "data.zip" into the folder "simple-empty-folder"
 		Then the file "data.zip" should not be listed
@@ -18,6 +19,7 @@ Feature: moveFiles
 		Then the file "strängé filename (duplicate #2).txt" should not be listed
 		But the file "strängé filename (duplicate #2).txt" should be listed in the folder "strängé नेपाली folder empty"
 
+	@skipOnFIREFOX47+
 	Scenario: move a file into a folder where a file with the same name already exists
 		When I move the file "data.zip" into the folder "simple-folder"
 		And I move the file "data.zip" into the folder "strängé नेपाली folder"
@@ -29,6 +31,7 @@ Feature: moveFiles
 		And the file "data.zip" should be listed
 		And the file "strängé filename (duplicate #2).txt" should be listed
 
+	@skipOnFIREFOX47+
 	Scenario: Move multiple files at once
 		When I batch move these files into the folder "simple-empty-folder"
 		| name        |
@@ -39,6 +42,7 @@ Feature: moveFiles
 		And the moved elements should not be listed after a page reload
 		But the moved elements should be listed in the folder "simple-empty-folder"
 
+	@skipOnFIREFOX47+
 	Scenario: move a file into a folder (problematic characters)
 		When I rename the following file to
 			| from-name-parts         | to-name-parts          |
