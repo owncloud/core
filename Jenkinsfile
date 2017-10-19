@@ -9,11 +9,6 @@ timestampedNode('SLAVE') {
         checkout scm
         sh '''composer install'''
 
-    stage 'JavaScript Testing'
-        executeAndReport('tests/autotest-results-js.xml') {
-            sh '''make test-js'''
-        }
-
     stage 'PHPUnit 7.1/sqlite'
         executeAndReport('tests/autotest-results-sqlite.xml') {
 	        sh '''
