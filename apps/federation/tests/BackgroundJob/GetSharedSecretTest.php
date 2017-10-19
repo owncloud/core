@@ -26,7 +26,6 @@ namespace OCA\Federation\Tests\BackgroundJob;
 
 
 use OCA\Federation\BackgroundJob\GetSharedSecret;
-use OCA\Files_Sharing\Tests\TestCase;
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
 use OCP\AppFramework\Http;
@@ -35,6 +34,7 @@ use OCP\Http\Client\IClient;
 use OCP\Http\Client\IResponse;
 use OCP\ILogger;
 use OCP\IURLGenerator;
+use Test\TestCase;
 
 /**
  * Class GetSharedSecretTest
