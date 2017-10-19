@@ -25,6 +25,12 @@ namespace OCA\DAV\Meta;
 
 use Sabre\DAV\File;
 
+/**
+ * Class MetaFile
+ * This is a Sabre based implementation of a file living in the /meta resource.
+ *
+ * @package OCA\DAV\Meta
+ */
 class MetaFile extends File {
 
 	/** @var \OCP\Files\File */
