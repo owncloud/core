@@ -62,11 +62,6 @@ class Storage extends DAV implements ISharedStorage {
 	public function __construct($options) {
 		$this->memcacheFactory = \OC::$server->getMemCacheFactory();
 		$this->httpClient = \OC::$server->getHTTPClientService();
-		$discoveryManager = new DiscoveryManager(
-			$this->memcacheFactory,
-			\OC::$server->getHTTPClientService()
-		);
-
 		$this->manager = $options['manager'];
 		$this->certificateManager = $options['certificateManager'];
 		$this->remote = $options['remote'];
@@ -79,18 +74,44 @@ class Storage extends DAV implements ISharedStorage {
 			$root = '';
 		}
 		$secure = $protocol === 'https';
-		$root = rtrim($root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		$this->mountPoint = $options['mountpoint'];
 		$this->token = $options['token'];
 		parent::__construct([
 			'secure' => $secure,
 			'host' => $host,
+			// root will be adjusted lazily in init() with discovery manager
 			'root' => $root,
 			'user' => $options['token'],
 			'password' => (string)$options['password'],
 			// Federated sharing always uses BASIC auth
 			'authType' => Client::AUTH_BASIC
 		]);
+	}
+
+	protected function init() {
+		if ($this->ready) {
+			return;
+		}
+		$discoveryManager = new DiscoveryManager(
+			$this->memcacheFactory,
+			\OC::$server->getHTTPClientService()
+		);
+
+		$this->root = rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
+		if (!$this->root || $this->root[0] !== '/') {
+			$this->root = '/' . $this->root;
+		}
+		if (substr($this->root, -1, 1) !== '/') {
+			$this->root .= '/';
+		}
+		parent::init();
+	}
+
+	/** {@inheritdoc} */
+	public function createBaseUri() {
+		// require lazy-initializing root to return correct value
+		$this->init();
+		return parent::createBaseUri();
 	}
 
 	public function getWatcher($path = '', $storage = null) {
