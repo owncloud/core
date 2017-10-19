@@ -1,11 +1,8 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author scolebrook <scolebrook@mac.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,27 +19,25 @@
  *
  */
 
-namespace OCA\DAV\Connector\Sabre;
 
-use OCA\DAV\DAV\CopyPlugin;
+namespace OCA\DAV\Files;
+
 
 /**
- * Class \OCA\DAV\Connector\Sabre\Server
+ * Interface ICopySource
+ * This interface allows special handling of copy operations based on the copy source.
+ * This gives the developer the freedom to implement a more efficient copy operation.
  *
- * This class overrides some methods from @see \Sabre\DAV\Server.
- *
- * @see \Sabre\DAV\Server
+ * @package OCA\DAV\Files
  */
-class Server extends \Sabre\DAV\Server {
+interface ICopySource {
 
 	/**
-	 * @see \Sabre\DAV\Server
-	 * @throws \Sabre\DAV\Exception
+	 * Copies the source to the given destination.
+	 * If the operation was not successful false is returned.
+	 *
+	 * @param string $destinationPath
+	 * @return boolean
 	 */
-	public function __construct($treeOrNode = null) {
-		parent::__construct($treeOrNode);
-		self::$exposeVersion = false;
-		$this->enablePropfindDepthInfinity = true;
-		$this->addPlugin(new CopyPlugin());
-	}
+	public function copy($destinationPath);
 }

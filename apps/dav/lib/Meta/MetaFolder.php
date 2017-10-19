@@ -28,6 +28,12 @@ use OCP\Files\Folder;
 use OCP\Files\Node;
 use Sabre\DAV\Collection;
 
+/**
+ * Class MetaFolder
+ * This is a Sabre based implementation of a folder living in the /meta resource.
+ *
+ * @package OCA\DAV\Meta
+ */
 class MetaFolder extends Collection {
 
 	/** @var Folder */
@@ -48,7 +54,7 @@ class MetaFolder extends Collection {
 	function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
 		return array_map(function($node) {
-			return static::nodeFactory($node);
+			return $this->nodeFactory($node);
 		}, $nodes);
 	}
 
@@ -59,7 +65,7 @@ class MetaFolder extends Collection {
 		return $this->folder->getName();
 	}
 
-	public static function nodeFactory(Node $node) {
+	private function nodeFactory(Node $node) {
 		if ($node instanceof Folder) {
 			return new MetaFolder($node);
 		}
