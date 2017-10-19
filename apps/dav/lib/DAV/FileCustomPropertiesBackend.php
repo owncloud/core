@@ -25,6 +25,7 @@ namespace OCA\DAV\DAV;
 
 use Doctrine\DBAL\Connection;
 use OCA\DAV\Connector\Sabre\Directory;
+use OCA\DAV\Connector\Sabre\Node;
 use Sabre\DAV\INode;
 
 /**
@@ -199,6 +200,18 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		}
 
 		$result->closeCursor();
+	}
+
+	/**
+	 * @param string $path
+	 * @return INode|null
+	 */
+	protected function getNodeForPath($path){
+		$node = parent::getNodeForPath($path);
+		if (!$node instanceof Node) {
+			return null;
+		}
+		return $node;
 	}
 
 }
