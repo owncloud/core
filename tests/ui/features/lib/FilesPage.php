@@ -25,6 +25,7 @@ namespace Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use Page\FilesPageElement\SharingDialog;
 use Behat\Mink\Session;
+use WebDriver\Key;
 
 /**
  * Files page.
@@ -56,7 +57,7 @@ class FilesPage extends FilesPageBasic {
 		$this->find("xpath", $this->newFileFolderButtonXpath)->click();
 		$this->find("xpath", $this->newFolderButtonXpath)->click();
 		try {
-			$this->fillField($this->newFolderNameInputLabel, $name . "\n");
+			$this->fillField($this->newFolderNameInputLabel, $name . Key::ENTER);
 		} catch (\WebDriver\Exception\NoSuchElement $e) {
 			// this seems to be a bug in MinkSelenium2Driver.
 			// Used to work fine in 1.3.1 but now throws this exception

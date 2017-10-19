@@ -14,9 +14,9 @@ default:
           adminPassword: admin
           regularUserPassword: 123456
           regularUserName: regularuser
-          regularUserNames: user1,user2,user3,usergrp,grpuser
+          regularUserNames: user1,user2,user3,usergrp
           regularGroupName: regulargrp
-          regularGroupNames: grp1,grp2,grp3,usergrp,grpuser
+          regularGroupNames: grp1,grp2,grp3,grpuser
       contexts:
         - FeatureContext:
         - LoginContext:
