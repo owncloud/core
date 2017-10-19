@@ -163,4 +163,73 @@ trait CommandLine {
 			throw new \Exception('The command did not output the expected text on stderr "' . $text . '"');
 		}
 	}
+
+	private $lastTransferPath;
+
+	private function findLastTransferFolderForUser($sourceUser, $targetUser) {
+		$foundPaths = [];
+		$results = $this->listFolder($targetUser, '', 1);
+		foreach ($results as $path => $data) {
+			$path = rawurldecode($path);
+			$parts = explode(' ', $path);
+			if (basename($parts[0]) !== 'transferred') {
+				continue;
+			}
+			if (isset($parts[2]) && $parts[2] === $sourceUser) {
+				// store timestamp as key
+				$foundPaths[] = [
+					'date' => strtotime(trim($parts[4], '/')),
+					'path' => $path,
+				];
+			}
+		}
+
+		if (empty($foundPaths)) {
+			return null;
+		}
+
+		usort($foundPaths, function($a, $b) {
+			return $a['date'] - $b['date'];
+		});
+
+		$davPath = rtrim($this->getDavFilesPath($targetUser), '/');
+
+		$foundPath = end($foundPaths)['path'];
+		// strip dav path
+		return substr($foundPath, strlen($davPath) + 1);
+	}
+
+	/**
+	 * @When /^transferring ownership from "([^"]+)" to "([^"]+)"/
+	 */
+	public function transferringOwnership($user1, $user2) {
+		if ($this->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
+			$this->lastTransferPath = $this->findLastTransferFolderForUser($user1, $user2);
+		} else {
+			// failure
+			$this->lastTransferPath = null;
+		}
+	}
+
+	/**
+	 * @When /^transferring ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"/
+	 */
+	public function transferringOwnershipPath($path, $user1, $user2) {
+		$path = '--path=' . $path;
+		if ($this->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
+			$this->lastTransferPath = $this->findLastTransferFolderForUser($user1, $user2);
+		} else {
+			// failure
+			$this->lastTransferPath = null;
+		}
+	}
+
+	/**
+	 * @When /^using received transfer folder of "([^"]+)" as dav path$/
+	 */
+	public function usingTransferFolderAsDavPath($user) {
+		$davPath = $this->getDavFilesPath($user);
+		$davPath = rtrim($davPath, '/') . $this->lastTransferPath;
+		$this->usingDavPath($davPath);
+	}
 }
