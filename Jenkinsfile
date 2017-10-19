@@ -173,8 +173,12 @@ void executeAndReport(String testResultLocation, def body) {
     def failed = false
     // We're wrapping this in a timeout - if it takes longer, kill it.
     try {
-        timeout(time: 120, unit: 'MINUTES') {
-            body.call()
+        def timeoutMinutes = 120
+        if (env.STAGE_NAME == 'Integration Testing') {
+            timeoutMinutes = 240
+        }
+        timeout(time: timeoutMinutes, unit: 'MINUTES') {
+                body.call()
         }
     } catch (Exception e) {
         failed = true
