@@ -62,14 +62,14 @@ abstract class Office implements IProvider2 {
 		//create imagick object from pdf
 		$pdfPreview = null;
 		try {
-			list($dirname, , , $filename) = array_values(pathinfo($absPath));
-			$pdfPreview = $dirname . '/' . $filename . '.pdf';
+			$pathInfo = pathinfo($absPath);
+			$pdfPreview = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.pdf';
 
 			$pdf = new \imagick($pdfPreview . '[0]');
 			$pdf->setImageFormat('jpg');
 		} catch (\Exception $e) {
 			unlink($absPath);
-			unlink($pdfPreview);
+			@unlink($pdfPreview);
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 			return false;
 		}
