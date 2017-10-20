@@ -8,6 +8,7 @@
     "An error occurred. Please contact your admin." : "'n Fout het voorgekom. Kontak asseblief jou stelsel administrateur.",
     "No temporary profile picture available, try again" : "Geen tydelike profiel foto beskikbaar nie, probeer weer",
     "No crop data provided" : "Geen \"crop\" data verskaf",
+    "%s password changed successfully" : "%s wagwoord suksesvol verander",
     "%s password reset" : "%s wagwoord herstel",
     "Couldn't send reset email. Please contact your administrator." : "Die herstel epos kon nie gestuur word nie. Kontak asseblief die stelsel administrateur.",
     "Couldn't send mail to following users: %s " : "Kon nie e-pos aan die volgende gebruikers stuur nie: %s",

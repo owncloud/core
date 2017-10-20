@@ -53,7 +53,7 @@ OC.L10N.register(
     "Name" : "ชื่อ",
     "Size" : "ขนาด",
     "Modified" : "แก้ไขเมื่อ",
-    "_%n folder_::_%n folders_" : ["%n โฟลเดอร์"],
+    "_%n folder_::_%n folders_" : ["คุณมี %n โฟลเดอร์"],
     "_%n file_::_%n files_" : ["%n ไฟล์"],
     "{dirs} and {files}" : "{dirs} และ {files}",
     "_including %n hidden_::_including %n hidden_" : ["รวมทั้ง %n ไฟล์ที่ซ่อนอยู่"],
