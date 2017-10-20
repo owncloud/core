@@ -25,7 +25,10 @@
  */
 namespace OC\Preview;
 
-class TXT extends Provider {
+use OCP\Files\File;
+use OCP\Preview\IProvider2;
+
+class TXT implements IProvider2 {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -36,14 +39,7 @@ class TXT extends Provider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function isAvailable(\OCP\Files\FileInfo $file) {
-		return $file->getSize() > 0;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getThumbnail($file, $maxX, $maxY, $scalingup) {
+	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$content = $file->fopen('r');
 		$content = stream_get_contents($content,3000);
 
@@ -88,5 +84,16 @@ class TXT extends Provider {
 		$image = new \OC_Image($image);
 
 		return $image->valid() ? $image : false;
+	}
+
+	/**
+	 * Check if a preview can be generated for $path
+	 *
+	 * @param File $file
+	 * @return bool
+	 * @since 10.1.0
+	 */
+	public function isAvailable(File $file) {
+		return $file->getSize() > 0;
 	}
 }

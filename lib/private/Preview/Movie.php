@@ -25,7 +25,10 @@
  */
 namespace OC\Preview;
 
-class Movie extends Provider {
+use OCP\Files\File;
+use OCP\Preview\IProvider2;
+
+class Movie implements IProvider2 {
 	public static $avconvBinary;
 	public static $ffmpegBinary;
 	public static $atomicParsleyBinary;
@@ -46,23 +49,22 @@ class Movie extends Provider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
+	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		// TODO: use proc_open() and stream the source file ?
 
-		$fileInfo = $fileview->getFileInfo($path);
-		$useFileDirectly = (!$fileInfo->isEncrypted() && !$fileInfo->isMounted());
-
+		$useFileDirectly = (!$file->isEncrypted() && !$file->isMounted());
 		if ($useFileDirectly) {
-			$absPath = $fileview->getLocalFile($path);
+			$absPath = $file->getStorage()->getLocalFile($file->getInternalPath());
 		} else {
 			$absPath = \OC::$server->getTempManager()->getTemporaryFile();
 
-			$handle = $fileview->fopen($path, 'rb');
+			$handle = $file->fopen('rb');
 
 			// we better use 5MB (1024 * 1024 * 5 = 5242880) instead of 1MB.
 			// in some cases 1MB was no enough to generate thumbnail
 			$firstmb = stream_get_contents($handle, 5242880);
 			file_put_contents($absPath, $firstmb);
+			fclose($handle);
 		}
 
 		$result = $this->generateThumbNail($maxX, $maxY, $absPath, 5);
@@ -173,5 +175,16 @@ class Movie extends Provider {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Check if a preview can be generated for $path
+	 *
+	 * @param File $file
+	 * @return bool
+	 * @since 10.1.0
+	 */
+	public function isAvailable(File $file) {
+		return true;
 	}
 }
