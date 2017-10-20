@@ -154,7 +154,7 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 		$mode = array_key_exists('mode', $options) ? $options['mode'] : 'fill';
 
 		$preview = new \OC\Preview();
-		$preview->setFile($this->getInternalPath(), $this->getFileInfo());
+		$preview->setFile($this);
 		$preview->setMaxX($maxX);
 		$preview->setMaxY($maxY);
 		$preview->setScalingUp($scalingUp);

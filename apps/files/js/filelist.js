@@ -1718,7 +1718,11 @@
 			urlSpec.x = Math.ceil(urlSpec.x);
 			urlSpec.y = Math.ceil(urlSpec.y);
 			urlSpec.forceIcon = 0;
-			return OC.generateUrl('/core/preview.png?') + $.param(urlSpec);
+			var file = urlSpec.file;
+			delete urlSpec.file;
+			urlSpec.preview = 1;
+
+			return OC.linkToRemoteBase('dav') + '/files/' + OC.getCurrentUser().uid  + '/' + file + '?' + $.param(urlSpec);
 		},
 
 		/**
