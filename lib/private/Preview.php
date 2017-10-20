@@ -32,10 +32,11 @@
 namespace OC;
 
 use OC\Files\View;
-use OC\Preview\Provider;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
+use OCP\Preview\IProvider2;
+use OCP\Util;
 
 class Preview {
 	//the thumbnail folder
@@ -143,7 +144,7 @@ class Preview {
 			&& \OC::$server->getConfig()
 				->getSystemValue('enable_previews', true)
 		) {
-			\OCP\Util::writeLog('core', 'No preview providers exist', \OCP\Util::ERROR);
+			Util::writeLog('core', 'No preview providers exist', Util::ERROR);
 			throw new \Exception('No preview providers');
 		}
 	}
@@ -360,13 +361,13 @@ class Preview {
 	public function isFileValid() {
 		$file = $this->getFile();
 		if ($file === null) {
-			\OCP\Util::writeLog('core', 'No filename passed', \OCP\Util::DEBUG);
+			Util::writeLog('core', 'No filename passed', Util::DEBUG);
 
 			return false;
 		}
 
 		if (!$this->getFileInfo() instanceof FileInfo) {
-			\OCP\Util::writeLog('core', 'File:"' . $file->getPath() . '" not found', \OCP\Util::DEBUG);
+			Util::writeLog('core', 'File:"' . $file->getPath() . '" not found', Util::DEBUG);
 
 			return false;
 		}
@@ -832,8 +833,8 @@ class Preview {
 	private function resizeAndStore() {
 		$image = $this->preview;
 		if (!($image instanceof \OCP\IImage)) {
-			\OCP\Util::writeLog(
-				'core', '$this->preview is not an instance of \OCP\IImage', \OCP\Util::DEBUG
+			Util::writeLog(
+				'core', '$this->preview is not an instance of \OCP\IImage', Util::DEBUG
 			);
 
 			return;
@@ -933,9 +934,9 @@ class Preview {
 		// We cap when upscaling
 		if (!is_null($maxScaleFactor)) {
 			if ($factor > $maxScaleFactor) {
-				\OCP\Util::writeLog(
+				Util::writeLog(
 					'core', 'scale factor reduced from ' . $factor . ' to ' . $maxScaleFactor,
-					\OCP\Util::DEBUG
+					Util::DEBUG
 				);
 				$factor = $maxScaleFactor;
 			}
@@ -1024,9 +1025,9 @@ class Preview {
 	 */
 	private function storePreview($previewWidth, $previewHeight) {
 		if (empty($previewWidth) || empty($previewHeight)) {
-			\OCP\Util::writeLog(
+			Util::writeLog(
 				'core', 'Cannot save preview of dimension ' . $previewWidth . 'x' . $previewHeight,
-				\OCP\Util::DEBUG
+				Util::DEBUG
 			);
 
 		} else {
@@ -1107,17 +1108,16 @@ class Preview {
 
 			foreach ($providers as $closure) {
 				$provider = $closure();
-				if (!($provider instanceof \OCP\Preview\IProvider2)) {
+				if (!($provider instanceof IProvider2)) {
 					continue;
 				}
 
-				\OCP\Util::writeLog(
+				Util::writeLog(
 					'core', 'Generating preview for "' . $file->getPath() . '" with "' . get_class($provider)
-					. '"', \OCP\Util::DEBUG
+					. '"', Util::DEBUG
 				);
 
-				/** @var $provider Provider */
-				$preview = $provider->getThumbnail($file, $this->configMaxWidth, $this->configMaxHeight, $scalingUp = false);
+				$preview = $provider->getThumbnail($file, $this->configMaxWidth, $this->configMaxHeight, false);
 
 				if (!($preview instanceof \OCP\IImage)) {
 					continue;
@@ -1206,8 +1206,8 @@ class Preview {
 	private function limitMaxDim($dim, $maxDim, $dimName) {
 		if (!is_null($maxDim)) {
 			if ($dim > $maxDim) {
-				\OCP\Util::writeLog(
-					'core', $dimName . ' reduced from ' . $dim . ' to ' . $maxDim, \OCP\Util::DEBUG
+				Util::writeLog(
+					'core', $dimName . ' reduced from ' . $dim . ' to ' . $maxDim, Util::DEBUG
 				);
 				$dim = $maxDim;
 			}
@@ -1220,14 +1220,14 @@ class Preview {
 	 * @param array $args
 	 */
 	public static function post_write($args) {
-		self::post_delete($args, 'files/');
+//		self::post_delete($args, 'files/');
 	}
 
 	/**
 	 * @param array $args
 	 */
 	public static function prepare_delete_files($args) {
-		self::prepare_delete($args, 'files/');
+//		self::prepare_delete($args, 'files/');
 	}
 
 	/**
@@ -1296,14 +1296,14 @@ class Preview {
 	 * @param array $args
 	 */
 	public static function post_delete_files($args) {
-		self::post_delete($args, 'files/');
+//		self::post_delete($args, 'files/');
 	}
 
 	/**
 	 * @param array $args
 	 */
 	public static function post_delete_versions($args) {
-		self::post_delete($args, 'files/');
+//		self::post_delete($args, 'files/');
 	}
 
 	/**
