@@ -84,4 +84,13 @@ class HomeCache extends Cache {
 		}
 		return $data;
 	}
+
+	/**
+	 * Returns false because the home cache shouldn't have any relevant incomplete entries.
+	 *
+	 * @return false
+	 */
+	public function getIncomplete() {
+		return false;
+	}
 }
