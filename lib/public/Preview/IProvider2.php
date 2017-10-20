@@ -3,7 +3,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,39 +21,39 @@
  */
 namespace OCP\Preview;
 
+use OCP\Files\File;
+
 /**
- * Interface IProvider
+ * Interface IProvider2
  *
  * @package OCP\Preview
- * @since 8.1.0
- * @deprecated 10.1.0
+ * @since 10.1.0
  */
-interface IProvider {
+interface IProvider2 {
 	/**
 	 * @return string Regex with the mimetypes that are supported by this provider
-	 * @since 8.1.0
+	 * @since 10.1.0
 	 */
 	public function getMimeType();
 
 	/**
 	 * Check if a preview can be generated for $path
 	 *
-	 * @param \OCP\Files\FileInfo $file
+	 * @param File $file
 	 * @return bool
-	 * @since 8.1.0
+	 * @since 10.1.0
 	 */
-	public function isAvailable(\OCP\Files\FileInfo $file);
+	public function isAvailable(File $file);
 
 	/**
 	 * get thumbnail for file at path $path
 	 *
-	 * @param string $path Path of file
+	 * @param File $file Path of file
 	 * @param int $maxX The maximum X size of the thumbnail. It can be smaller depending on the shape of the image
 	 * @param int $maxY The maximum Y size of the thumbnail. It can be smaller depending on the shape of the image
-	 * @param bool $scalingup Disable/Enable upscaling of previews
-	 * @param \OC\Files\View $fileview fileview object of user folder
+	 * @param bool $scalingUp Disable/Enable upscaling of previews
 	 * @return bool|\OCP\IImage false if no preview was generated
-	 * @since 8.1.0
+	 * @since 10.1.0
 	 */
-	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview);
+	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp);
 }

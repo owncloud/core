@@ -24,19 +24,31 @@
  */
 namespace OC\Preview;
 
-abstract class Office extends Provider {
+use OCP\Files\File;
+use OCP\Preview\IProvider2;
+
+abstract class Office implements IProvider2 {
 	private $cmd;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
+	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$this->initCmd();
 		if (is_null($this->cmd)) {
 			return false;
 		}
 
-		$absPath = $fileview->toTmpFile($path);
+		$useFileDirectly = (!$file->isEncrypted() && !$file->isMounted());
+		if ($useFileDirectly) {
+			$absPath = $file->getStorage()->getLocalFile($file->getInternalPath());
+		} else {
+			$absPath = \OC::$server->getTempManager()->getTemporaryFile();
+
+			$handle = $file->fopen('rb');
+			file_put_contents($absPath, $handle);
+			fclose($handle);
+		}
 
 		$tmpDir = \OC::$server->getTempManager()->getTempBaseDir();
 
@@ -75,6 +87,13 @@ abstract class Office extends Provider {
 		}
 		return false;
 
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function isAvailable(File $file) {
+		return true;
 	}
 
 	private function initCmd() {
