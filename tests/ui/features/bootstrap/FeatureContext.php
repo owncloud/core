@@ -28,6 +28,7 @@ use Behat\Gherkin\Node\TableNode;
 use Page\OwncloudPage;
 use Page\LoginPage;
 use TestHelpers\SetupHelper;
+use OC\Setup;
 
 require_once 'bootstrap.php';
 
@@ -134,6 +135,37 @@ class FeatureContext extends RawMinkContext implements Context {
 			'xpath', './/title'
 		)->getHtml();
 		PHPUnit_Framework_Assert::assertEquals($title, trim($actualTitle));
+	}
+
+	/**
+	 * @Then the group named :name should not exist
+	 * @return void
+	 */
+	public function theGroupNamedShouldNotExist($name) {
+		if (in_array($name, SetupHelper::getGroups(), true)) {
+			throw new Exception("group '" . $name . "' exists but should not");
+		}
+	}
+
+	/**
+	 * @Then /^these groups should (not|)\s?exist:$/
+	 * expects a table of groups with the heading "groupname"
+	 * @param string $shouldOrNot (not|)
+	 * @param TableNode $table
+	 * @return void
+	 */
+	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		$groups = SetupHelper::getGroups();
+		foreach ($table as $row) {
+			if (in_array($row['groupname'], $groups, true) !== $should) {
+				throw new Exception(
+					"group '" . $row['groupname'] .
+					"' does" . ($should ? " not" : "") .
+					" exist but should" . ($should ? "" : " not")
+				);
+			}
+		}
 	}
 
 	/**

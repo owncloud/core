@@ -135,6 +135,13 @@ class SetupHelper {
 	}
 
 	/**
+	 * 
+	 * @return string[]
+	 */
+	public static function getGroups() {
+		return json_decode(self::runOcc(['group:list', '--output=json'])['stdOut']);
+	}
+	/**
 	 *
 	 * @param HookScope $scope
 	 * @return array of suite context parameters

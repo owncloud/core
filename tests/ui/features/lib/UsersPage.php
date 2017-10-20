@@ -24,7 +24,6 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -61,6 +60,7 @@ class UsersPage extends OwncloudPage {
 	protected $newUserGroupXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//label[@title='%s']/..";
 	protected $newUserAddGroupBtnXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//li[@title='add group']";
 	protected $createGroupWithNewUserInputXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//input[@type='text']";
+	protected $groupListId = "usergrouplist";
 	/**
 	 * @param string $username
 	 * @return NodeElement for the requested user in the table
@@ -254,5 +254,47 @@ class UsersPage extends OwncloudPage {
 			$selectOption->click();
 		}
 		$this->waitForOutstandingAjaxCalls($session);
+	}
+
+	/**
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return \Page\UserPageElement\GroupList
+	 */
+	private function getGroupListElement() {
+		$groupListElement = $this->findById($this->groupListId);
+		if ($groupListElement === null) {
+			throw new ElementNotFoundException("cannot find group list element");
+		}
+		
+		/**
+		 * 
+		 * @var \Page\UserPageElement\GroupList $groupList
+		 */
+		$groupList = $this->getPage("UserPageElement\\GroupList");
+		$groupList->setElement($groupListElement);
+		return $groupList;
+	}
+
+	/**
+	 * returns all group names as an array
+	 * 
+	 * @return string[]
+	 */
+	public function getAllGroups() {
+		$groupList = $this->getGroupListElement();
+		return $groupList->namesToArray();
+	}
+
+	/**
+	 * 
+	 * @param string $name
+	 * @param Session $session
+	 * @return void
+	 */
+	public function deleteGroup($name, Session $session) {
+		$groupList = $this->getGroupListElement();
+		$groupList->deleteGroup($name);
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 }

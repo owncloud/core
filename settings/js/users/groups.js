@@ -19,6 +19,7 @@ GroupList = {
 		var $li = $userGroupList.find('.isgroup:last-child').clone();
 		$li
 			.data('gid', gid)
+			.attr('data-gid', gid)
 			.find('.groupname').text(gid);
 		GroupList.setUserCount($li, usercount);
 
@@ -294,7 +295,7 @@ GroupList = {
 	},
 
 	getElementGID: function (element) {
-		return ($(element).closest('li').data('gid') || '').toString();
+		return ($(element).closest('li').attr('data-gid') || '').toString();
 	},
 	getEveryoneCount: function () {
 		$.ajax({
