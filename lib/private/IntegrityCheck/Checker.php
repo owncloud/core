@@ -179,22 +179,6 @@ class Checker {
 				continue;
 			}
 
-			$exclusionList = [
-				'/core/js/mimetypelist.js'
-			];
-
-			$found = false;
-			foreach ($exclusionList as $entry) {
-				if($filename === $this->environmentHelper->getServerRoot() . $entry) {
-					$found = true;
-					break;
-				}
-			}
-
-			if ($found) {
-				continue;
-			}
-
 			// The .user.ini and the .htaccess file of ownCloud can contain some
 			// custom modifications such as for example the maximum upload size
 			// to ensure that this will not lead to false positives this will
