@@ -312,7 +312,7 @@ class OwncloudPage extends Page {
 	 * @param int $timeout_msec
 	 * @return void
 	 */
-	public function waitForAjaxCallsToStart(Session $session, $timeout_msec = 1000) {
+	public function waitForAjaxCallsToStart(Session $session, $timeout_msec = 2000) {
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {
 			throw new \InvalidArgumentException("negative or zero timeout");
