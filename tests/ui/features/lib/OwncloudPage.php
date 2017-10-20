@@ -406,4 +406,33 @@ class OwncloudPage extends Page {
 			throw new \Exception("value of input field is not what we expect");
 		}
 	}
+
+	/**
+	 * Surround the text with single or double quotes, whichever does not
+	 * already appear in the text. If the text contains both single and
+	 * double quotes, then throw an InvalidArgumentException.
+	 *
+	 * The returned string is intended for use as part of an xpath (v1).
+	 * xpath (v1) has no way to escape the quote character within a string
+	 * literal. So there is no way to directly use a string containing
+	 * both single and double quotes.
+	 *
+	 * @param string $text
+	 * @return string the text surrounded by single or double quotes
+	 * @throws \InvalidArgumentException
+	 */
+	public function quotedText($text) {
+		if (strstr($text, "'") === false) {
+			return "'" . $text . "'";
+		} else if (strstr($text, '"') === false) {
+			return '"' . $text . '"';
+		} else {
+			// The text contains both single and double quotes.
+			// With current xpath v1 there is no way to encode that.
+			throw new \InvalidArgumentException(
+				"mixing both single and double quotes is unsupported - '"
+				. $text . "'"
+			);
+		}
+	}
 }

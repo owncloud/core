@@ -37,6 +37,10 @@ class UsersContext extends RawMinkContext implements Context {
 
 
 	private $usersPage;
+	/**
+	 * 
+	 * @var FeatureContext
+	 */
 	private $featureContext;
 
 	/**
@@ -105,6 +109,59 @@ class UsersContext extends RawMinkContext implements Context {
 		if (is_array($groups)) {
 			foreach ($groups as $group) {
 				$this->featureContext->addGroupToCreatedGroupsList($group);
+			}
+		}
+	}
+
+	/**
+	 * @When I delete the group named :name
+	 * @return void
+	 */
+	public function iDeleteTheGroupNamed($name) {
+		$this->usersPage->deleteGroup($name, $this->getSession());
+		$this->featureContext->deleteGroupFromCreatedGroupsList($name);
+	}
+
+	/**
+	 * @When I delete these groups:
+	 * expects a table of groups with the heading "groupname"
+	 * @param TableNode $table
+	 * @return void
+	 */
+	public function iDeleteTheseGroups(TableNode $table) {
+		foreach ($table as $row) {
+			$this->iDeleteTheGroupNamed($row['groupname']);
+		}
+	}
+
+	/**
+	 * @Then the group named :name should not be listed
+	 * @param string $name
+	 * @return void
+	 */
+	public function theGroupNamedShouldNotBeListed($name) {
+		if (in_array($name, $this->usersPage->getAllGroups(), true)) {
+			throw new Exception("group '" . $name . "' is listed but should not");
+		}
+	}
+
+	/**
+	 * @Then /^these groups should (not|)\s?be listed:$/
+	 * expects a table of groups with the heading "groupname"
+	 * @param string $shouldOrNot (not|)
+	 * @param TableNode $table
+	 * @return void
+	 */
+	public function theseGroupsShouldBeListed($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		$groups = $this->usersPage->getAllGroups();
+		foreach ($table as $row) {
+			if (in_array($row['groupname'], $groups, true) !== $should) {
+				throw new Exception(
+					"group '" . $row['groupname'] .
+					"' is" . ($should ? " not" : "") .
+					" listed but should" . ($should ? "" : " not") . " be"
+				);
 			}
 		}
 	}
