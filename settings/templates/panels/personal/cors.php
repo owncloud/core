@@ -21,7 +21,7 @@ script('settings', 'panels/cors');
 ?>
 
 <div class="section" id="cors">
-	<h2 class="app-name"><?php p($l->t('CORS')); ?></h2>
+	<h2 class="app-name">CORS</h2>
 
     <h3><?php p($l->t('White-listed Domains')); ?></h3>
     <p id="noDomains">
