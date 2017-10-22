@@ -394,7 +394,7 @@ class OC_Util {
 
 		$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
 
-		if(!is_dir($skeletonDirectory))  {
+		if (!is_dir($skeletonDirectory))  {
 			throw new OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
 		}
 

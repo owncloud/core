@@ -416,17 +416,11 @@ class UtilTest extends \Test\TestCase {
 
 	/**
 	 * @expectedException HintException
-	 *
-	 * @throws HintException
+	 * @expectedExceptionMessage The skeleton folder /not/existing/Directory is not accessible
 	 */
 	public function testCopySkeletonDirectory() {
-		$notExistingDirectory = '/not/existing/Directory';
-
-		$this->expectException(HintException::class);
-		$this->expectExceptionMessage('The skeleton folder '.$notExistingDirectory.' is not accessible');
-
 		$config = \OC::$server->getConfig();
-		$config->setSystemValue('skeletondirectory',$notExistingDirectory);
+		$config->setSystemValue('skeletondirectory', '/not/existing/Directory');
 		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
 		$userFolder = \OC::$server->getUserFolder($user);
 
