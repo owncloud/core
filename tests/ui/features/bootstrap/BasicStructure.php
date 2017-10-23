@@ -360,8 +360,22 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function addGroupToCreatedGroupsList($group) {
-		if (!in_array($group, $this->createdGroupNames)) {
+		if (!in_array($group, $this->createdGroupNames, true)) {
 			array_push($this->createdGroupNames, $group);
+		}
+	}
+
+	/**
+	 * deletes a group from the lists of groups that were created during test runs
+	 * useful if a group got created during the setup phase but got deleted in a
+	 * test run. We don't want to try to delete this group again in the tear-down phase
+	 * 
+	 * @param string $group
+	 * @return void
+	 */
+	public function deleteGroupFromCreatedGroupsList($group) {
+		if (($key = array_search($group, $this->createdGroupNames, true)) !== false) {
+			unset($this->createdGroupNames[$key]);
 		}
 	}
 
