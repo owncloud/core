@@ -151,8 +151,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->getMock();
 
 		$node->expects($this->any())
-			->method('getPath')
-			->will($this->returnValue('/dummypath'));
+			->method('getName')
+			->will($this->returnValue('dummypath'));
 			
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
