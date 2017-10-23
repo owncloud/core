@@ -25,7 +25,7 @@ use Test\TestCase;
 use OCP\Http\Client\IClientService;
 use OCP\Http\Client\IClient;
 use Sabre\DAV\Client;
-use OCP\Http\Client\IWebdavClientService;
+use OCP\Http\Client\IWebDavClientService;
 use Sabre\HTTP\ClientHttpException;
 use OCP\Lock\LockedException;
 use OCP\AppFramework\Http;
@@ -50,37 +50,37 @@ use OC\Files\Cache\Cache;
 class DavTest extends TestCase {
 
 	/**
-	 * @var DAV
+	 * @var DAV | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $instance;
 
 	/**
-	 * @var IClientService
+	 * @var IClientService | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $httpClientService;
 
 	/**
-	 * @var IWebdavClientService
+	 * @var IWebDavClientService | \PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $webdavClientService;
+	private $webDavClientService;
 
 	/**
-	 * @var Client
+	 * @var Client | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $davClient;
 
 	/**
-	 * @var IClient
+	 * @var IClient | \PHPUnit_Framework_MockObject_MockObject
 	 **/
 	private $httpClient;
 
 	/**
-	 * @var ITimeFactory
+	 * @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $timeFactory;
 
 	/**
-	 * @var Cache
+	 * @var Cache | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $cache;
 
@@ -90,8 +90,8 @@ class DavTest extends TestCase {
 		$this->httpClientService = $this->createMock(IClientService::class);
 		$this->overwriteService('HttpClientService', $this->httpClientService);
 
-		$this->webdavClientService = $this->createMock(IWebdavClientService::class);
-		$this->overwriteService('WebdavClientService', $this->webdavClientService);
+		$this->webDavClientService = $this->createMock(IWebDavClientService::class);
+		$this->overwriteService('WebDavClientService', $this->webDavClientService);
 
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
 		$this->overwriteService('TimeFactory', $this->timeFactory);
@@ -100,7 +100,7 @@ class DavTest extends TestCase {
 		$this->httpClientService->method('newClient')->willReturn($this->httpClient);
 
 		$this->davClient = $this->createMock(Client::class);
-		$this->webdavClientService->method('newClient')->willReturn($this->davClient);
+		$this->webDavClientService->method('newClient')->willReturn($this->davClient);
 
 		$this->instance = $this->getMockBuilder(\OC\Files\Storage\DAV::class)
 			->setConstructorArgs([[
@@ -119,7 +119,7 @@ class DavTest extends TestCase {
 
 	protected function tearDown() {
 		$this->restoreService('HttpClientService');
-		$this->restoreService('WebdavClientService');
+		$this->restoreService('WebDavClientService');
 		$this->restoreService('TimeFactory');
 		parent::tearDown();
 	}
@@ -128,7 +128,7 @@ class DavTest extends TestCase {
 		$this->assertEquals('webdav::davuser@davhost//davroot/', $this->instance->getId());
 	}
 
-	public function instantiateWebdavClientDataProvider() {
+	public function instantiateWebDavClientDataProvider() {
 		return [
 			[false, 'http'],
 			[true, 'https'],
@@ -136,13 +136,13 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider instantiateWebdavClientDataProvider
+	 * @dataProvider instantiateWebDavClientDataProvider
 	 */
-	public function testInstantiateWebdavClient($secure, $protocol) {
-		$this->restoreService('WebdavClientService');
-		$this->webdavClientService = $this->createMock(IWebdavClientService::class);
-		$this->overwriteService('WebdavClientService', $this->webdavClientService);
-		$this->webdavClientService->expects($this->once())
+	public function testInstantiateWebDavClient($secure, $protocol) {
+		$this->restoreService('WebDavClientService');
+		$this->webDavClientService = $this->createMock(IWebDavClientService::class);
+		$this->overwriteService('WebDavClientService', $this->webDavClientService);
+		$this->webDavClientService->expects($this->once())
 			->method('newClient')
 			->with([
 				'baseUri' => $protocol . '://davhost/davroot/',
@@ -187,7 +187,7 @@ class DavTest extends TestCase {
 	 * @dataProvider invalidConfigDataProvider
 	 * @expectedException \InvalidArgumentException
 	 */
-	public function testInstantiateWebdavClientInvalidConfig($params) {
+	public function testInstantiateWebDavClientInvalidConfig($params) {
 		new \OC\Files\Storage\DAV($params);
 	}
 
@@ -1273,7 +1273,7 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\StorageNotAvailableException
+	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testHasUpdatedRootPathNotfound() {
 		$this->davClient->expects($this->once())
@@ -1284,7 +1284,7 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\StorageNotAvailableException
+	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testHasUpdatedRootPathMethodNotAllowed() {
 		$this->davClient->expects($this->once())
@@ -1295,7 +1295,7 @@ class DavTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException OCP\Files\StorageNotAvailableException
+	 * @expectedException \OCP\Files\StorageNotAvailableException
 	 */
 	public function testHasUpdatedMethodNotAllowed() {
 		$this->davClient->expects($this->once())
