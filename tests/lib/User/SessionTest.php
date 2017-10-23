@@ -947,4 +947,35 @@ class SessionTest extends TestCase {
 		$userSession->updateSessionTokenPassword($password);
 	}
 
+	public function testCancelLogout() {
+		/** @var ISession | \PHPUnit_Framework_MockObject_MockObject $session */
+		$session = $this->createMock(Memory::class);
+		$session->expects($this->once())
+			->method('set')
+			->with('user_id', 'foo');
+
+		/** @var Manager $manager */
+		$manager = $this->createMock(Manager::class);
+
+		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('foo'));
+
+		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession->setUser($user);
+
+
+		$called['cancel'] = false;
+
+		\OC::$server->getEventDispatcher()->addListener('\OC\User\Session::pre_logout', function ($event) use (&$called) {
+			$called['cancel'] = true;
+			$event['cancel'] = $called['cancel'];
+		});
+
+		$this->assertEquals(true, $userSession->logout());
+	}
+
+
 }
