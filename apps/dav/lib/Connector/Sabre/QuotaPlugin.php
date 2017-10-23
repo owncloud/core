@@ -163,7 +163,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				$path = rtrim($parentPath, '/') . '/' . $info['name'];
 			}
 			$freeSpace = $this->getFreeSpace($path);
-			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $length > $freeSpace) {
+			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && $length > $freeSpace) {
 				if (isset($chunkHandler)) {
 					$chunkHandler->cleanup();
 				}

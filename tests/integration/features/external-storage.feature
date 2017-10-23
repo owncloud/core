@@ -62,6 +62,7 @@ Feature: external-storage
   @local_storage
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "user0" exists
+    And as an "admin"
     And user "user0" has a quota of "1 B"
     And as an "user0"
     When user "user0" uploads file "data/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms

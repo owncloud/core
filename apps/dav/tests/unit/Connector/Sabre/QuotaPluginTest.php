@@ -116,6 +116,11 @@ class QuotaPluginTest extends TestCase {
 			[-2, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
 			[-2, ['CONTENT-LENGTH' => '512']],
 			[-2, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
+			// \OCP\Files\FileInfo::SPACE-UNLIMITED = -3
+			[-3, []],
+			[-3, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[-3, ['CONTENT-LENGTH' => '512']],
+			[-3, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
 		];
 	}
 
@@ -159,6 +164,13 @@ class QuotaPluginTest extends TestCase {
 			[-2, 128, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
 			[-2, 128, ['CONTENT-LENGTH' => '512']],
 			[-2, 128, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
+			// \OCP\Files\FileInfo::SPACE-UNLIMITED = -3
+			[-3, 0, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[-3, 0, ['CONTENT-LENGTH' => '512']],
+			[-3, 0, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
+			[-3, 128, ['X-EXPECTED-ENTITY-LENGTH' => '1024']],
+			[-3, 128, ['CONTENT-LENGTH' => '512']],
+			[-3, 128, ['OC-TOTAL-LENGTH' => '1024', 'CONTENT-LENGTH' => '512']],
 		];
 	}
 
