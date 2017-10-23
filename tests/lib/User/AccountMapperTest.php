@@ -120,11 +120,32 @@ class AccountMapperTest extends TestCase {
 		$this->assertEquals("TestFind2", array_shift($result)->getUserId());
 	}
 
+	public function findByEmailDataProvider() {
+		return [
+			['test3@find.tld'],
+			['Test3@find.tld'],
+			['test3@Find.tld'],
+		];
+	}
+
 	/**
 	 * find by email
+	 *
+	 * @dataProvider findByEmailDataProvider
 	 */
-	public function testFindByEmail() {
-		$result= $this->mapper->find('test3@find.tld');
+	public function testFindByEmail($email) {
+		$result = $this->mapper->find($email);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
+	}
+
+	/**
+	 * get by email
+	 *
+	 * @dataProvider findByEmailDataProvider
+	 */
+	public function testGetByEmail($email) {
+		$result = $this->mapper->getByEmail($email);
 		$this->assertEquals(1, count($result));
 		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
 	}
