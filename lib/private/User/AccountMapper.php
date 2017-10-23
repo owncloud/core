@@ -108,9 +108,11 @@ class AccountMapper extends Mapper {
 			throw new \InvalidArgumentException('$email must be defined');
 		}
 		$qb = $this->db->getQueryBuilder();
+		// RFC 5321 says that only domain name is case insensitive, but in practice
+		// it's the whole email
 		$qb->select('*')
 			->from($this->getTableName())
-			->where($qb->expr()->eq('email', $qb->createNamedParameter($email)));
+			->where($qb->expr()->eq($qb->createFunction('LOWER(`email`)'), $qb->createFunction('LOWER(' . $qb->createNamedParameter($email) . ')')));
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters());
 	}
