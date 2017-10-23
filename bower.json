@@ -33,6 +33,7 @@
     "base64": "0.3.0",
     "clipboard": "1.5.12",
     "browser-update": "^2.0.1",
-    "bowser": "browser#^1.6.0"
+    "bowser": "browser#^1.6.0",
+    "showdown": "^1.7.1"
   }
 }
