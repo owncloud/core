@@ -598,6 +598,7 @@ Feature: sharing
 		Given using old dav path
 		And user "user0" exists
 		And user "user1" exists
+		And as an "admin"
 		And user "user1" has a quota of "0"
 		And user "user0" moved file "/welcome.txt" to "/myfile.txt"
 		And file "myfile.txt" of user "user0" is shared with user "user1"
