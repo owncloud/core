@@ -40,6 +40,8 @@ OC.L10N.register(
     "All" : "Alle",
     "Enabled" : "Geaktiveer",
     "Please wait...." : "Wag asb. …",
+    "Disable" : "Deaktiveer",
+    "Enable" : "Aktiveer",
     "Updating...." : "Werk tans by…",
     "Error while updating app" : "Fout tydens toepinstallasie",
     "Updated" : "Bygewerk",

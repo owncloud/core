@@ -129,6 +129,7 @@
     "Finish setup" : "Maak opstelling klaar",
     "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" : "Halo daar,<br><br>wou jou net laat weet dat %s <strong>%s</strong> met jou gedeel het.<br><a href=\"%s\">Sien alles!</a><br><br>",
     "Log out" : "Teken uit",
+    "Search" : "Soek",
     "Log in" : "Teken aan",
     "Alternative Logins" : "Alternatiewe aantekeninge",
     "Use the following link to reset your password: {link}" : "Gebruik die volgende skakel om jou wagwoord te herstel: {link}",
