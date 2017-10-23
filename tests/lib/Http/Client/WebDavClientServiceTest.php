@@ -23,14 +23,14 @@ namespace Test\Http\Client;
 
 use OCP\IConfig;
 use OCP\ICertificateManager;
-use OC\Http\Client\WebdavClientService;
+use OC\Http\Client\WebDavClientService;
 use Sabre\DAV\Client;
 use OCP\ITempManager;
 
 /**
- * Class WebdavClientServiceTest
+ * Class WebDavClientServiceTest
  */
-class WebdavClientServiceTest extends \Test\TestCase {
+class WebDavClientServiceTest extends \Test\TestCase {
 	/**
 	 * @var ITempManager
 	 */
@@ -52,7 +52,7 @@ class WebdavClientServiceTest extends \Test\TestCase {
 		$certificateManager->method('getAbsoluteBundlePath')
 			->willReturn($this->tempManager->getTemporaryFolder());
 
-		$clientService = new WebdavClientService($config, $certificateManager);
+		$clientService = new WebDavClientService($config, $certificateManager);
 
 		$client = $clientService->newClient([
 			'baseUri' => 'https://davhost/davroot/',
@@ -73,7 +73,7 @@ class WebdavClientServiceTest extends \Test\TestCase {
 		$certificateManager->method('getAbsoluteBundlePath')
 			->willReturn($this->tempManager->getTemporaryFolder());
 
-		$clientService = new WebdavClientService($config, $certificateManager);
+		$clientService = new WebDavClientService($config, $certificateManager);
 
 		$client = $clientService->newClient([
 			'baseUri' => 'https://davhost/davroot/',
@@ -89,7 +89,7 @@ class WebdavClientServiceTest extends \Test\TestCase {
 		$certificateManager->method('getAbsoluteBundlePath')
 			->willReturn($this->tempManager->getTemporaryFolder() . '/unexist');
 
-		$clientService = new WebdavClientService($config, $certificateManager);
+		$clientService = new WebDavClientService($config, $certificateManager);
 
 		$client = $clientService->newClient([
 			'baseUri' => 'https://davhost/davroot/',

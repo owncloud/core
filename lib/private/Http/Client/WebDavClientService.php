@@ -19,18 +19,37 @@
  *
  */
 
-namespace OCP\Http\Client;
+namespace OC\Http\Client;
 
-use Sabre\HTTP\Client;
+use OCP\Http\Client\IWebDavClientService;
+use OCP\IConfig;
+use OCP\ICertificateManager;
+use Sabre\DAV\Client;
 
 /**
- * Interface IWebdavClientService
+ * Class WebDavClientService
  *
- * @package OCP\Http
- * @since 10.0.4
+ * @package OC\Http
  */
-interface IWebdavClientService {
+class WebDavClientService implements IWebDavClientService {
+	/** @var IConfig */
+	private $config;
+	/** @var ICertificateManager */
+	private $certificateManager;
+
 	/**
+	 * @param IConfig $config
+	 * @param ICertificateManager $certificateManager
+	 */
+	public function __construct(IConfig $config,
+								ICertificateManager $certificateManager) {
+		$this->config = $config;
+		$this->certificateManager = $certificateManager;
+	}
+
+	/**
+	 * Instantiate new Sabre client
+	 *
 	 * Settings are provided through the 'settings' argument. The following
 	 * settings are supported:
 	 *
@@ -48,9 +67,31 @@ interface IWebdavClientService {
 	 *
 	 *  Encoding is a bitmap with one of the ENCODING constants.
 	 *
-	 * @param $settings Sabre client settings
+	 * @param array $settings Sabre client settings
 	 * @return Client
-	 * @since 10.0.4
 	 */
-	public function newClient($settings);
+	public function newClient($settings) {
+		if (!isset($settings['proxy'])) {
+			$proxy = $this->config->getSystemValue('proxy', '');
+			if($proxy !== '') {
+				$settings['proxy'] = $proxy;
+			}
+		}
+
+		$certPath = null;
+		if (strpos($settings['baseUri'], 'https') === 0) {
+			$certPath = $this->certificateManager->getAbsoluteBundlePath();
+			if (!file_exists($certPath)) {
+				$certPath = null;
+			}
+		}
+
+		$client = new Client($settings);
+		$client->setThrowExceptions(true);
+
+		if ($certPath !== null) {
+			$client->addCurlSetting(CURLOPT_CAINFO, $certPath);
+		}
+		return $client;
+	}
 }

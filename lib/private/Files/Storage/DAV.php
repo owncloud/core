@@ -83,8 +83,8 @@ class DAV extends Common {
 	/** @var \OCP\Http\Client\IClientService */
 	private $httpClientService;
 
-	/** @var \OCP\Http\Client\IWebdavClientService */
-	private $webdavClientService;
+	/** @var \OCP\Http\Client\IWebDavClientService */
+	private $webDavClientService;
 
 	/**
 	 * @param array $params
@@ -93,7 +93,7 @@ class DAV extends Common {
 	public function __construct($params) {
 		$this->statCache = new ArrayCache();
 		$this->httpClientService = \OC::$server->getHTTPClientService();
-		$this->webdavClientService = \OC::$server->getWebdavClientService();
+		$this->webDavClientService = \OC::$server->getWebDavClientService();
 		if (isset($params['host']) && isset($params['user']) && isset($params['password'])) {
 			$host = $params['host'];
 			//remove leading http[s], will be generated in createBaseUri()
@@ -141,7 +141,7 @@ class DAV extends Common {
 			$settings['authType'] = $this->authType;
 		}
 
-		$this->client = $this->webdavClientService->newClient($settings);
+		$this->client = $this->webDavClientService->newClient($settings);
 	}
 
 	/**
