@@ -38,9 +38,8 @@
 
 namespace OC;
 
-use OC\App\CodeChecker\CodeChecker;
-use OC\App\CodeChecker\EmptyCheck;
-use OC\App\CodeChecker\PrivateCheck;
+use Doctrine\DBAL\Exception\TableExistsException;
+use OC\DB\MigrationService;
 use OC_App;
 use OC_DB;
 use OC_Helper;
@@ -420,8 +419,9 @@ class Installer {
 
 	/**
 	 * Removes an app
-	 * @param string $name name of the application to remove
+	 * @param string $appId name of the application to remove
 	 * @return boolean
+	 * @throws AppAlreadyInstalledException
 	 *
 	 *
 	 * This function works as follows
@@ -451,6 +451,37 @@ class Installer {
 		return false;
 	}
 
+	protected static function getShippedApps() {
+		$shippedApps = [];
+		foreach(\OC::$APPSROOTS as $app_dir) {
+			if($dir = opendir( $app_dir['path'] )) {
+				$nodes = scandir($app_dir['path']);
+				foreach($nodes as $filename) {
+					if( substr( $filename, 0, 1 ) != '.' and is_dir($app_dir['path']."/$filename") ) {
+						if( file_exists( $app_dir['path']."/$filename/appinfo/info.xml" )) {
+							if(!Installer::isInstalled($filename)) {
+								$info=OC_App::getAppInfo($filename);
+								$enabled = isset($info['default_enable']);
+								if (($enabled || in_array($filename, \OC::$server->getAppManager()->getAlwaysEnabledApps()))
+									&& \OC::$server->getConfig()->getAppValue($filename, 'enabled') !== 'no') {
+									$shippedApps[] = $filename;
+								}
+							}
+						}
+					}
+				}
+				closedir( $dir );
+			}
+		}
+
+
+		// Fix the order - make files first
+		$shippedApps = array_diff($shippedApps,['files', 'dav']);
+		array_unshift($shippedApps, 'dav');
+		array_unshift($shippedApps, 'files');
+		return $shippedApps;
+	}
+
 	/**
 	 * Installs shipped apps
 	 *
@@ -461,45 +492,37 @@ class Installer {
 	 */
 	public static function installShippedApps($softErrors = false) {
 		$errors = [];
-		foreach(\OC::$APPSROOTS as $app_dir) {
-			if($dir = opendir( $app_dir['path'] )) {
-				while( false !== ( $filename = readdir( $dir ))) {
-					if( substr( $filename, 0, 1 ) != '.' and is_dir($app_dir['path']."/$filename") ) {
-						if( file_exists( $app_dir['path']."/$filename/appinfo/info.xml" )) {
-							if(!Installer::isInstalled($filename)) {
-								$info=OC_App::getAppInfo($filename);
-								$enabled = isset($info['default_enable']);
-								if (($enabled || in_array($filename, \OC::$server->getAppManager()->getAlwaysEnabledApps()))
-									  && \OC::$server->getConfig()->getAppValue($filename, 'enabled') !== 'no') {
-									if ($softErrors) {
-										try {
-											Installer::installShippedApp($filename);
-										} catch (\Doctrine\DBAL\Exception\TableExistsException $e) {
-											$errors[$filename] = $e;
-											continue;
-										}
-									} else {
-										Installer::installShippedApp($filename);
-									}
-									\OC::$server->getConfig()->setAppValue($filename, 'enabled', 'yes');
-								}
-							}
-						}
+		$appsToInstall = Installer::getShippedApps();
+
+		foreach($appsToInstall as $appToInstall) {
+			if(!Installer::isInstalled($appToInstall)) {
+				if ($softErrors) {
+					try {
+						Installer::installShippedApp($appToInstall);
+					} catch (TableExistsException $e) {
+						\OC::$server->getLogger()->logException($e, ['app' => __CLASS__]);
+						$errors[$appToInstall] = $e;
+						continue;
 					}
+				} else {
+					Installer::installShippedApp($appToInstall);
 				}
-				closedir( $dir );
+				\OC::$server->getConfig()->setAppValue($appToInstall, 'enabled', 'yes');
 			}
 		}
 
 		return $errors;
+
 	}
 
 	/**
 	 * install an app already placed in the app folder
 	 * @param string $app id of the app to install
-	 * @return integer
+	 * @return integer|false
 	 */
 	public static function installShippedApp($app) {
+
+		\OC::$server->getLogger()->info('Attempting to install shipped app: '.$app);
 
 		$info = OC_App::getAppInfo($app);
 		if (is_null($info)) {
@@ -509,20 +532,25 @@ class Installer {
 		//install the database
 		$appPath = OC_App::getAppPath($app);
 		if (isset($info['use-migrations']) && $info['use-migrations'] === 'true') {
-			$ms = new \OC\DB\MigrationService($app, \OC::$server->getDatabaseConnection());
+			\OC::$server->getLogger()->debug('Running app database migrations');
+			$ms = new MigrationService($app, \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		} else {
 			if(is_file($appPath.'/appinfo/database.xml')) {
+				\OC::$server->getLogger()->debug('Create app database from schema file');
 				OC_DB::createDbFromStructure($appPath . '/appinfo/database.xml');
 			}
 		}
 
 		//run appinfo/install.php
 		\OC_App::registerAutoloading($app, $appPath);
+
+		\OC::$server->getLogger()->debug('Running app install script');
 		self::includeAppScript("$appPath/appinfo/install.php");
 
 		\OC_App::setupBackgroundJobs($info['background-jobs']);
 
+		\OC::$server->getLogger()->debug('Running app install repair steps');
 		OC_App::executeRepairSteps($app, $info['repair-steps']['install']);
 
 		$config = \OC::$server->getConfig();
