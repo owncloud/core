@@ -37,16 +37,16 @@ class FilesContext extends RawMinkContext implements Context {
 
 	private $filesPage;
 	private $trashbinPage;
-	
+
 	/**
 	 * Table of all files and folders that should have been deleted, stored so
 	 * that other steps can use the list to check if the deletion happened correctly
 	 * table headings: must be: |name|
-	 * 
+	 *
 	 * @var TableNode
 	 */
 	private $deletedElementsTable = null;
-	
+
 	/**
 	 * Table of all files and folders that should have been moved, stored so
 	 * that other steps can use the list to check if the moving happened correctly
@@ -60,6 +60,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * FilesContext constructor.
 	 *
 	 * @param FilesPage $filesPage
+	 * @param TrashbinPage $trashbinPage
 	 */
 	public function __construct(
 		FilesPage $filesPage, TrashbinPage $trashbinPage
@@ -89,7 +90,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I create a folder with the name :name
-	 * 
+	 *
 	 * @param string $name
 	 * @return void
 	 */
@@ -114,7 +115,7 @@ class FilesContext extends RawMinkContext implements Context {
 				$this->filesPage->findFileActionsMenuBtnByNo($itemsCount)
 			);
 		}
-		
+
 		while ($windowHeight > $lastItemCoordinates['top']) {
 			$this->filesPage->createFolder();
 			$itemsCount = $this->filesPage->getSizeOfFileFolderList();
@@ -171,7 +172,7 @@ class FilesContext extends RawMinkContext implements Context {
 		foreach ($table->getRows() as $row) {
 			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
 		}
-		
+
 	}
 
 	/**
@@ -193,7 +194,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 */
 	public function iDeleteTheFollowingFile(TableNode $namePartsTable) {
 		$fileNameParts = [];
-		
+
 		foreach ($namePartsTable as $namePartsRow) {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
@@ -216,8 +217,8 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I move the file/folder :name into the folder :destination
-	 * @param string $name
-	 * @param string $destination
+	 * @param string|array $name
+	 * @param string|array $destination
 	 * @return void
 	 */
 	public function iMoveTheFileFolderTo($name, $destination) {
@@ -234,7 +235,7 @@ class FilesContext extends RawMinkContext implements Context {
 	public function iMoveTheFollowingFileFolderTo(TableNode $namePartsTable) {
 		$itemToMoveNameParts = [];
 		$destinationNameParts = [];
-		
+
 		foreach ($namePartsTable as $namePartsRow) {
 			$itemToMoveNameParts[] = $namePartsRow['item-to-move-name-parts'];
 			$destinationNameParts[] = $namePartsRow['destination-name-parts'];
@@ -304,7 +305,7 @@ class FilesContext extends RawMinkContext implements Context {
 	public function theDeletedElementsShouldBeListedInTheTrashbin() {
 		$this->trashbinPage->open();
 		$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
-		
+
 		foreach ($this->deletedElementsTable as $file) {
 			$this->theFileFolderShouldBeListed($file['name'], $this->trashbinPage);
 		}
@@ -347,7 +348,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I open the file/folder :name
-	 * @param string $name
+	 * @param string|array $name
 	 * @return void
 	 */
 	public function iOpenTheFolder($name) {
@@ -358,7 +359,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then the file/folder :name should be listed
-	 * @param string $name
+	 * @param string|array $name
 	 * @param PageObject|null $pageObject if null $this->filesPage will be used
 	 * @return void
 	 */
@@ -376,7 +377,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then the file/folder :name should not be listed
-	 * @param string $name
+	 * @param string|array $name
 	 * @param PageObject|null $pageObject if null $this->filesPage will be used
 	 * @return void
 	 */
@@ -438,13 +439,14 @@ class FilesContext extends RawMinkContext implements Context {
 		$shouldOrNot, TableNode $namePartsTable
 	) {
 		$toBeListedTableArray[] = ["name-parts"];
+		$folderNameParts = [];
 		foreach ($namePartsTable as $namePartsRow) {
 			$folderNameParts[] = $namePartsRow['folder-name-parts'];
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
 		}
 		$this->iOpenTheFolder($folderNameParts);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		
+
 		$toBeListedTable = new TableNode($toBeListedTableArray);
 		$this->theFollowingFileFolderShouldBeListed(
 			$shouldOrNot, "", $toBeListedTable
@@ -494,7 +496,7 @@ class FilesContext extends RawMinkContext implements Context {
 		$toolTipText
 	) {
 		PHPUnit_Framework_Assert::assertEquals(
-			$toolTipText, 
+			$toolTipText,
 			$this->filesPage->getTooltipOfFile($name, $this->getSession())
 		);
 	}

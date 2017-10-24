@@ -21,7 +21,6 @@
  */
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use TestHelpers\SetupHelper;
 
@@ -53,8 +52,8 @@ trait BasicStructure {
 	 */
 	public function iAmLoggedInAsAdmin() {
 		$this->loginPage->open();
-		$this->filesPage = $this->loginPage->loginAs("admin", "admin");
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$nextPage = $this->loginPage->loginAs("admin", "admin");
+		$nextPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -63,11 +62,11 @@ trait BasicStructure {
 	 */
 	public function iAmLoggedInAsARegularUser() {
 		$this->loginPage->open();
-		$this->filesPage = $this->loginPage->loginAs(
+		$nextPage = $this->loginPage->loginAs(
 			$this->regularUserName,
 			$this->regularUserPassword
 		);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$nextPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -77,8 +76,9 @@ trait BasicStructure {
 	public function iLogout() {
 		$settingsMenu = $this->owncloudPage->openSettingsMenu();
 		$settingsMenu->logout();
+		$this->loginPage->waitTillPageIsLoaded($this->getSession());
 	}
-	
+
 	/**
 	 * @Given a regular user exists
 	 * @return void
@@ -122,7 +122,7 @@ trait BasicStructure {
 			);
 		}
 	}
-	
+
 	/**
 	 * creates a single user
 	 *
@@ -133,9 +133,8 @@ trait BasicStructure {
 	 * @return void
 	 * @throws Exception
 	 */
-	private function createUser($user, $password,
-		$displayName = null,
-		$email = null
+	private function createUser(
+		$user, $password, $displayName = null, $email = null
 	) {
 		$user = trim($user);
 		$result = SetupHelper::createUser(
@@ -161,7 +160,7 @@ trait BasicStructure {
 			$this->createGroup($row['groupname']);
 		}
 	}
-	
+
 	/**
 	 * @Given a regular group exists
 	 * @return void
@@ -252,14 +251,11 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @param AfterScenarioScope $scope
 	 * @return void
 	 * @throws Exception
 	 * @AfterScenario
 	 */
-	public function tearDownScenarioDeleteCreatedUsersAndGroups(
-		AfterScenarioScope $scope
-	) {
+	public function tearDownScenarioDeleteCreatedUsersAndGroups() {
 		foreach ($this->getCreatedUserNames() as $user) {
 			$result = SetupHelper::deleteUser($user);
 			if ($result["code"] != 0) {
@@ -332,9 +328,9 @@ trait BasicStructure {
 
 	/**
 	 * adds a user to the list of users that were created during test runs
-	 * makes it possible to use this list in other test steps 
+	 * makes it possible to use this list in other test steps
 	 * or to delete them at the end of the test
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $password
 	 * @param string $displayName
@@ -355,7 +351,7 @@ trait BasicStructure {
 	 * adds a group to the list of groups that were created during test runs
 	 * makes it possible to use this list in other test steps
 	 * or to delete them at the end of the test
-	 * 
+	 *
 	 * @param string $group
 	 * @return void
 	 */
@@ -369,7 +365,7 @@ trait BasicStructure {
 	 * deletes a group from the lists of groups that were created during test runs
 	 * useful if a group got created during the setup phase but got deleted in a
 	 * test run. We don't want to try to delete this group again in the tear-down phase
-	 * 
+	 *
 	 * @param string $group
 	 * @return void
 	 */
@@ -383,6 +379,7 @@ trait BasicStructure {
 	 *
 	 * @param string $username
 	 * @return string password
+	 * @throws Exception
 	 */
 	public function getUserPassword($username) {
 		if ($username === 'admin') {
@@ -401,7 +398,7 @@ trait BasicStructure {
 
 	/**
 	 * gets the base url but without "http(s)://" in front of it
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getBaseUrlWithoutScheme() {
@@ -419,16 +416,16 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function substituteInLineCodes($value) {
-		$substitutions = [ 
-			[ 
+		$substitutions = [
+			[
 				"code" => "%base_url%",
-				"function" => [ 
+				"function" => [
 					$this,
-					"getMinkParameter" 
+					"getMinkParameter"
 				],
-				"parameter" => [ 
-					"base_url" 
-				] 
+				"parameter" => [
+					"base_url"
+				]
 			],
 			[
 				"code" => "%remote_server%",
@@ -445,14 +442,14 @@ trait BasicStructure {
 				],
 				"parameter" => [ ]
 			],
-			[ 
+			[
 				"code" => "%regularuser%",
-				"function" => [ 
+				"function" => [
 					$this,
-					"getRegularUserName" 
+					"getRegularUserName"
 				],
-				"parameter" => [ ] 
-			] 
+				"parameter" => [ ]
+			]
 		];
 		foreach ($substitutions as $substitution) {
 			$value = str_replace(

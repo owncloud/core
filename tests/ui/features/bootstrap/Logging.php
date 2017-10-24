@@ -20,8 +20,6 @@
  *
  */
 use TestHelpers\LoggingHelper;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 
 /**
@@ -32,7 +30,7 @@ trait Logging {
 	private $oldLogLevel = null;
 	private $oldLogBackend = null;
 	private $oldLogTimezone = null;
-	
+
 	/**
 	 * checks for specific rows in the log file.
 	 * order of the table has to be the same as in the log file
@@ -60,8 +58,8 @@ trait Logging {
 			foreach (array_keys($expectedLogEntry) as $attribute) {
 				$expectedLogEntry [$attribute]
 					= $this->featureContext->substituteInLineCodes(
-						$expectedLogEntry [$attribute]
-					);
+					$expectedLogEntry [$attribute]
+				);
 				PHPUnit_Framework_Assert::assertArrayHasKey(
 					$attribute, $logEntry,
 					"could not find attribute: '" . $attribute .
@@ -81,9 +79,9 @@ trait Logging {
 	/**
 	 * fails if there is at least one line in the log file that matches all
 	 * given attributes
-	 * attributes in the table that are empty will match any value in the 
+	 * attributes in the table that are empty will match any value in the
 	 * corresponding attribute in the log file
-	 * 
+	 *
 	 * @param TableNode $logEntriesExpectedNotToExist table with headings that
 	 *                                                correspond to the json
 	 *                                                keys in the log entry
@@ -102,11 +100,11 @@ trait Logging {
 				foreach (array_keys($logEntryExpectedNotToExist) as $attribute) {
 					$logEntryExpectedNotToExist [$attribute]
 						= $this->featureContext->substituteInLineCodes(
-							$logEntryExpectedNotToExist [$attribute]
-						);
-					if (isset($logEntries [$attribute]) 
+						$logEntryExpectedNotToExist [$attribute]
+					);
+					if (isset($logEntries [$attribute])
 						&& ($logEntryExpectedNotToExist [$attribute] === ""
-						|| $logEntryExpectedNotToExist [$attribute] === $logEntries [$attribute])
+							|| $logEntryExpectedNotToExist [$attribute] === $logEntries [$attribute])
 					) {
 						$match = true;
 					} else {
@@ -159,12 +157,11 @@ trait Logging {
 
 	/**
 	 * Before Scenario for logging. Saves current log settings
-	 * 
-	 * @param BeforeScenarioScope $scope
-	 * @BeforeScenario
+	 *
 	 * @return void
+	 * @BeforeScenario
 	 */
-	public function setUpScenarioLogging(BeforeScenarioScope $scope) {
+	public function setUpScenarioLogging() {
 		$this->oldLogLevel = LoggingHelper::getLogLevel();
 		$this->oldLogBackend = LoggingHelper::getLogBackend();
 		$this->oldLogTimezone = LoggingHelper::getLogTimezone();
@@ -172,12 +169,11 @@ trait Logging {
 
 	/**
 	 * After Scenario for logging. Sets back old log settings
-	 * 
-	 * @param AfterScenarioScope $scope
-	 * @AfterScenario
+	 *
 	 * @return void
+	 * @AfterScenario
 	 */
-	public function tearDownScenarioLogging(AfterScenarioScope $scope) {
+	public function tearDownScenarioLogging() {
 		if ($this->oldLogLevel !== null
 			&& $this->oldLogLevel !== LoggingHelper::getLogLevel()
 		) {

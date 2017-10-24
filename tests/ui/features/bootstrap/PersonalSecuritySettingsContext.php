@@ -40,7 +40,6 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context 
 	 * PersonalSecuritySettingsContext constructor.
 	 *
 	 * @param PersonalSecuritySettingsPage $personalSecuritySettingsPage
-	 * @return void
 	 */
 	public function __construct(
 		PersonalSecuritySettingsPage $personalSecuritySettingsPage
