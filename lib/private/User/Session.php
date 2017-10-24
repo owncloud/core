@@ -418,6 +418,10 @@ class Session implements IUserSession, Emitter {
 					'Skeleton not created due to missing write permission'
 				);
 			}
+			catch(\OC\HintException $hintEx) {
+				// only if Skeleton no existing Dir
+				\OC::$server->getLogger()->error($hintEx->getMessage());
+			}
 
 			// trigger any other initialization
 			\OC::$server->getEventDispatcher()->dispatch(IUser::class . '::firstLogin', new GenericEvent($this->getUser()));
