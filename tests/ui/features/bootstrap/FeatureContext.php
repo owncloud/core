@@ -59,7 +59,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function aNotificationShouldBeDisplayedWithTheText($notificationText) {
 		PHPUnit_Framework_Assert::assertEquals(
-			$notificationText, $this->owncloudPage->getNotificationText()
+			$notificationText, trim($this->owncloudPage->getNotificationText())
 		);
 	}
 
@@ -80,7 +80,7 @@ class FeatureContext extends RawMinkContext implements Context {
 		foreach ($tableRows as $row) {
 			PHPUnit_Framework_Assert::assertEquals(
 				$row[0],
-				$notifications[$notificationCounter]
+				trim($notifications[$notificationCounter])
 			);
 			$notificationCounter++;
 		}
