@@ -38,7 +38,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 	private $usersPage;
 	/**
-	 * 
+	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
@@ -60,7 +60,7 @@ class UsersContext extends RawMinkContext implements Context {
 		$this->usersPage->open();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
 	}
-	
+
 	/**
 	 * substitute codes like "%regularuser%" with the actual name of the user
 	 *
@@ -115,6 +115,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I delete the group named :name
+	 * @param string $name
 	 * @return void
 	 */
 	public function iDeleteTheGroupNamed($name) {
@@ -138,6 +139,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * @Then the group named :name should not be listed
 	 * @param string $name
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theGroupNamedShouldNotBeListed($name) {
 		if (in_array($name, $this->usersPage->getAllGroups(), true)) {
@@ -148,9 +150,11 @@ class UsersContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^these groups should (not|)\s?be listed:$/
 	 * expects a table of groups with the heading "groupname"
+	 *
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $table
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theseGroupsShouldBeListed($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");

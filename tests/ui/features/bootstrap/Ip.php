@@ -20,7 +20,6 @@
  *
  */
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\IpHelper;
 
 /**
@@ -31,15 +30,15 @@ trait Ip {
 	/**
 	 * The local source IP address from which to initiate API actions.
 	 * Defaults to system-selected address matching IP address family and scope.
-	 * 
+	 *
 	 * @var string
 	 */
 	private $sourceIpAddress = null;
-		
+
 	/**
 	 * The base URL parameter to use with the source IP address.
 	 * Accesses the server on IPv4 or IPv6 matching the source IP.
-	 * 
+	 *
 	 * @var string
 	 */
 	private $baseUrlForSourceIp = null;
@@ -47,7 +46,7 @@ trait Ip {
 	private $ipv4Url;
 	private $ipv6Url;
 	private $baseUrl;
-		
+
 	/**
 	 * @When the client accesses the server from a :networkScope :ipAddressFamily address
 	 * @param string $networkScope (loopback|routable)
@@ -81,10 +80,9 @@ trait Ip {
 
 	/**
 	 * @BeforeScenario
-	 * @param BeforeScenarioScope $scope
 	 * @return void
 	 */
-	public function setUpScenarioGetIpUrls(BeforeScenarioScope $scope) {
+	public function setUpScenarioGetIpUrls() {
 		$this->ipv4Url = getenv('IPV4_URL');
 		$this->ipv6Url = getenv('IPV6_URL');
 		$this->baseUrl = $this->getMinkParameter("base_url");
