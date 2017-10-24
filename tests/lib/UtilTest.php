@@ -420,7 +420,9 @@ class UtilTest extends \Test\TestCase {
 	public function testCopySkeletonDirectory() {
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', '/not/existing/Directory');
-		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
+		$userId = $this->getUniqueID('user_');
+		$user = \OC::$server->getUserManager()->createUser($userId, 'password');
+		\OC_Util::setupFS($user);
 		$userFolder = \OC::$server->getUserFolder($user);
 
 		\OC_Util::copySkeleton($config, $userFolder);
