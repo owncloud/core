@@ -184,7 +184,7 @@ class FilesPage extends FilesPageBasic {
 			$this->waitForAjaxCallsToStartAndFinish($session);
 			$countXHRRequests = $session->evaluateScript("jQuery.countXHRRequests");
 			if ($countXHRRequests === 0) {
-				error_log("Error while moving file file");
+				error_log("Error while moving file");
 			} else {
 				break;
 			}
