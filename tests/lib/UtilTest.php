@@ -8,7 +8,6 @@
 
 namespace Test;
 
-use \OC\HintException;
 use OC_Util;
 
 /**
@@ -415,7 +414,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException HintException
+	 * @expectedException \OC\HintException
 	 * @expectedExceptionMessage The skeleton folder /not/existing/Directory is not accessible
 	 */
 	public function testCopySkeletonDirectory() {
