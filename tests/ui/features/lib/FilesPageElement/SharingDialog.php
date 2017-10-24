@@ -23,6 +23,7 @@
 
 namespace Page\FilesPageElement;
 
+use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
@@ -43,7 +44,7 @@ class SharingDialog extends OwncloudPage {
 	protected $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
 	protected $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
 	protected $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
-	protected $shareWithCloseXpath = "/..//*[@class='close icon-close']";
+	protected $shareWithCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
 	protected $suffixToIdentifyGroups = " (group)";
 	protected $suffixToIdentifyRemoteUsers = " (remote)";
 	protected $sharerInformationXpath = ".//*[@class='reshare']";
@@ -53,13 +54,13 @@ class SharingDialog extends OwncloudPage {
 	protected $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
 	protected $permissionLabelXpath = ".//label[@for='%s']";
 	protected $showCrudsXpath = ".//*[@class='showCruds']";
-	
+
 	protected $sharedWithGroupAndSharerName = null;
 
 	/**
-	 * 
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 *
+	 * @throws ElementNotFoundException
+	 * @return NodeElement|NULL
 	 */
 	private function _findShareWithField() {
 		$shareWithField = $this->find("xpath", $this->shareWithFieldXpath);
@@ -68,14 +69,14 @@ class SharingDialog extends OwncloudPage {
 		}
 		return $shareWithField;
 	}
+
 	/**
 	 * fills the "share-with" input field
-	 * 
+	 *
 	 * @param string $input
 	 * @param Session $session
-	 * @param number $timeout_msec how long to wait till the autocomplete comes back
-	 * @return \Behat\Mink\Element\NodeElement AutocompleteElement
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @param int $timeout_msec how long to wait till the autocomplete comes back
+	 * @return NodeElement AutocompleteElement
 	 */
 	public function fillShareWithField(
 		$input, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
@@ -88,9 +89,9 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * gets the NodeElement of the autocomplete list
-	 * 
-	 * @return \Behat\Mink\Element\NodeElement
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 *
+	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function getAutocompleteNodeElement() {
 		$autocompleteNodeElement = $this->find(
@@ -107,7 +108,7 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * returns the group names as they could appear in an autocomplete list
-	 * 
+	 *
 	 * @param string|array $groupNames
 	 * @return array
 	 */
@@ -125,14 +126,14 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * gets the items (users, groups) listed in the autocomplete list as an array
-	 * 
+	 *
 	 * @return array
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 */
 	public function getAutocompleteItemsList() {
 		$itemsArray = array();
 		$itemElements = $this->getAutocompleteNodeElement()->findAll(
-			"xpath", 
+			"xpath",
 			$this->autocompleteItemsTextXpath
 		);
 		foreach ($itemElements as $item) {
@@ -142,11 +143,11 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $nameToType what to type in the share with field
 	 * @param string $nameToMatch what exact item to select
 	 * @param Session $session
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	private function shareWithUserOrGroup(
@@ -156,7 +157,7 @@ class SharingDialog extends OwncloudPage {
 		$userElements = $autocompleteNodeElement->findAll(
 			"xpath", $this->autocompleteItemsTextXpath
 		);
-		
+
 		$userFound = false;
 		foreach ($userElements as $user) {
 			if ($user->getText() === $nameToMatch) {
@@ -175,25 +176,25 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 * @param Session $session
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function shareWithUser($name, Session $session) {
-		return $this->shareWithUserOrGroup($name, $name, $session);
+		$this->shareWithUserOrGroup($name, $name, $session);
 	}
 
 	/**
 	 *
 	 * @param string $name
 	 * @param Session $session
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function shareWithRemoteUser($name, Session $session) {
-		return $this->shareWithUserOrGroup(
+		$this->shareWithUserOrGroup(
 			$name, $name . $this->suffixToIdentifyRemoteUsers, $session
 		);
 	}
@@ -202,17 +203,17 @@ class SharingDialog extends OwncloudPage {
 	 *
 	 * @param string $name
 	 * @param Session $session
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function shareWithGroup($name, Session $session) {
-		return $this->shareWithUserOrGroup(
+		$this->shareWithUserOrGroup(
 			$name, $name . $this->suffixToIdentifyGroups, $session
 		);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
 	 * @throws ElementNotFoundException
@@ -244,7 +245,7 @@ class SharingDialog extends OwncloudPage {
 			//so we need to open them again and again
 			$showCrudsBtn->click();
 			$value = strtolower($value);
-			
+
 			//to find where to click is a little bit complicated
 			//just setting the checkbox does not work
 			//because the actual checkbox is not visible (left: -10000px;)
@@ -267,7 +268,7 @@ class SharingDialog extends OwncloudPage {
 			$permissionLabel = $permissionsField->find(
 				"xpath", sprintf($this->permissionLabelXpath, $checkBoxId)
 			);
-			
+
 			if (is_null($permissionLabel)) {
 				throw new ElementNotFoundException(
 					"could not find the label of the permission check box of " .
@@ -285,8 +286,8 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * gets the text of the tooltip associated with the "share-with" input
-	 * 
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 *
+	 * @throws ElementNotFoundException
 	 * @return string
 	 */
 	public function getShareWithTooltip() {
@@ -303,9 +304,9 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 * gets the Element with the information about who has shared the current
 	 * file/folder. This Element will contain the Avatar and some text.
-	 * 
+	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findSharerInformationItem() {
 		$sharerInformation = $this->find("xpath", $this->sharerInformationXpath);
@@ -318,7 +319,7 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 * gets the group that the file/folder was shared with
 	 * and the user that shared it
-	 * 
+	 *
 	 * @throws \Exception
 	 * @return array ["sharedWithGroup" => string, "sharer" => string]
 	 */
@@ -326,9 +327,9 @@ class SharingDialog extends OwncloudPage {
 		if (is_null($this->sharedWithGroupAndSharerName)) {
 			$text = $this->findSharerInformationItem()->getText();
 			if (preg_match("/" . $this->sharedWithAndByRegEx . "/", $text, $matches)) {
-				$this->sharedWithGroupAndSharerName = [ 
+				$this->sharedWithGroupAndSharerName = [
 					"sharedWithGroup" => $matches [1],
-					"sharer" => $matches [2] 
+					"sharer" => $matches [2]
 				];
 			} else {
 				throw new \Exception(
@@ -341,7 +342,7 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * gets the group that the file/folder was shared with
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getSharedWithGroupName() {
@@ -350,7 +351,7 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * gets the display name of the user that has shared the current file/folder
-	 * 
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
@@ -359,10 +360,9 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement of the whole container holding the
-	 * thumbnail
+	 * @return NodeElement of the whole container holding the thumbnail
 	 */
 	public function findThumbnailContainer() {
 		$thumbnailContainer = $this->find("xpath", $this->thumbnailContainerXpath);
@@ -373,9 +373,9 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findThumbnail() {
 		$thumbnailContainer = $this->findThumbnailContainer();
@@ -390,8 +390,8 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 * closes the sharing dialog panel
-	 * 
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 *
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function closeSharingDialog() {

@@ -37,14 +37,13 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	 * PersonalGeneralSettingsContext constructor.
 	 *
 	 * @param PersonalGeneralSettingsPage $personalGeneralSettingsPage
-	 * @return void
 	 */
 	public function __construct(
 		PersonalGeneralSettingsPage$personalGeneralSettingsPage
 	) {
 		$this->personalGeneralSettingsPage = $personalGeneralSettingsPage;
 	}
-	
+
 	/**
 	 * @Given I am on the personal general settings page
 	 * @return void
@@ -55,7 +54,7 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 			$this->getSession()
 		);
 	}
-	
+
 	/**
 	 * @Given I go to the personal general settings page
 	 * @return void

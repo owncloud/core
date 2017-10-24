@@ -26,7 +26,6 @@ namespace Page\FilesPageElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Session;
 
 /**
  * Object of a row on the FilesPage
@@ -36,10 +35,10 @@ class FileRow extends OwnCloudPage {
 	 * @var NodeElement of this row
 	 */
 	protected $rowElement;
-	
+
 	/**
 	 * name of the file
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $name;
@@ -51,7 +50,7 @@ class FileRow extends OwnCloudPage {
 	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
 	protected $thumbnailXpath = "//*[@class='thumbnail']";
 	protected $fileLinkXpath = "//span[@class='nametext']";
-	
+
 	/**
 	 * sets the NodeElement for the current file row
 	 * a little bit like __construct() but as we access this "sub-page-object"
@@ -66,7 +65,7 @@ class FileRow extends OwnCloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 * @return void
 	 */
@@ -76,7 +75,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * finds the Action Button
-	 * 
+	 *
 	 * @return \Behat\Mink\Element\NodeElement
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
@@ -94,17 +93,17 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * finds and clicks the file actions button
-	 * 
+	 *
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return void
 	 */
 	public function clickFileActionButton() {
 		$this->findFileActionButton()->click();
 	}
-	
+
 	/**
 	 * opens the file action menu
-	 * 
+	 *
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return FileActionsMenu
 	 */
@@ -119,7 +118,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * finds and returns the share button element
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -135,7 +134,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * opens the sharing dialog
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return SharingDialog
 	 */
@@ -147,7 +146,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * finds the input field to rename the file/folder
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -163,7 +162,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * renames the file
-	 * 
+	 *
 	 * @param string $toName
 	 * @return void
 	 */
@@ -190,7 +189,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * finds and returns the tooltip element
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -215,7 +214,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * finds and returns the thumbnail of the file
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -231,7 +230,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * selects this row for batch action e.g. download or delete
-	 * 
+	 *
 	 * @return void
 	 */
 	public function selectForBatchAction() {
@@ -240,7 +239,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * find and return the link to the file/folder
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -256,7 +255,7 @@ class FileRow extends OwnCloudPage {
 
 	/**
 	 * opens the current file or folder by clicking on the link
-	 * 
+	 *
 	 * @return void
 	 */
 	public function openFileFolder() {
