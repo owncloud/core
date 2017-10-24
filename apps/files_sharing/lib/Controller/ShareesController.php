@@ -103,6 +103,11 @@ class ShareesController extends OCSController  {
 	protected $reachedEndFor = [];
 
 	/**
+	 * @var string
+	 */
+	protected $additionalInfoField;
+
+	/**
 	 * @param IGroupManager $groupManager
 	 * @param IUserManager $userManager
 	 * @param IManager $contactsManager
@@ -134,6 +139,7 @@ class ShareesController extends OCSController  {
 		$this->request = $request;
 		$this->logger = $logger;
 		$this->shareManager = $shareManager;
+		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 	}
 
 	/**
@@ -169,6 +175,18 @@ class ShareesController extends OCSController  {
 		$lowerSearch = strtolower($search);
 		foreach ($users as $uid => $user) {
 			/* @var $user IUser */
+			$entry = [
+				'label' => $user->getDisplayName(),
+				'value' => [
+					'shareType' => Share::SHARE_TYPE_USER,
+					'shareWith' => $uid,
+				],
+			];
+			$additionalInfo = $this->getAdditionalUserInfo($user);
+			if ($additionalInfo !== null) {
+				$entry['value']['shareWithAdditionalInfo'] = $additionalInfo;
+			}
+
 			if (
 				// Check if the uid is the same
 				strtolower($uid) === $lowerSearch
@@ -181,21 +199,9 @@ class ShareesController extends OCSController  {
 				if (strtolower($uid) === $lowerSearch) {
 					$foundUserById = true;
 				}
-				$this->result['exact']['users'][] = [
-					'label' => $user->getDisplayName(),
-					'value' => [
-						'shareType' => Share::SHARE_TYPE_USER,
-						'shareWith' => $uid,
-					],
-				];
+				$this->result['exact']['users'][] = $entry;
 			} else {
-				$this->result['users'][] = [
-					'label' => $user->getDisplayName(),
-					'value' => [
-						'shareType' => Share::SHARE_TYPE_USER,
-						'shareWith' => $uid,
-					],
-				];
+				$this->result['users'][] = $entry;
 			}
 		}
 
@@ -213,13 +219,18 @@ class ShareesController extends OCSController  {
 				}
 
 				if ($addUser) {
-					array_push($this->result['exact']['users'], [
+					$entry = [
 						'label' => $user->getDisplayName(),
 						'value' => [
 							'shareType' => Share::SHARE_TYPE_USER,
 							'shareWith' => $user->getUID(),
 						],
-					]);
+					];
+					$additionalInfo = $this->getAdditionalUserInfo($user);
+					if ($additionalInfo !== null) {
+						$entry['value']['shareWithAdditionalInfo'] = $additionalInfo;
+					}
+					array_push($this->result['exact']['users'], $entry);
 				}
 			}
 		}
@@ -227,6 +238,21 @@ class ShareesController extends OCSController  {
 		if (!$this->shareeEnumeration) {
 			$this->result['users'] = [];
 		}
+	}
+
+	/**
+	 * Returns the additional info to display behind the display name as configured.
+	 *
+	 * @param IUser $user user for which to retrieve the additional info
+	 * @return string|null additional info or null if none to be displayed
+	 */
+	protected function getAdditionalUserInfo(IUser $user) {
+		if ($this->additionalInfoField === 'email') {
+			return $user->getEMailAddress();
+		} else if ($this->additionalInfoField === 'id') {
+			return $user->getUID();
+		}
+		return null;
 	}
 
 	/**

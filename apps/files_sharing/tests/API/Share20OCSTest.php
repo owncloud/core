@@ -305,6 +305,7 @@ class Share20OCSTest extends TestCase {
 			'share_type' => Share::SHARE_TYPE_USER,
 			'share_with' => 'userId',
 			'share_with_displayname' => 'userDisplay',
+			'share_with_additional_info' => null,
 			'uid_owner' => 'initiatorId',
 			'displayname_owner' => 'initiatorDisplay',
 			'item_type' => 'file',
@@ -2295,8 +2296,8 @@ class Share20OCSTest extends TestCase {
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
-	
-	public function dataFormatShare() {
+
+	private function getMockFileFolder() {
 		$file = $this->createMock('\OCP\Files\File');
 		$folder = $this->createMock('\OCP\Files\Folder');
 		$parent = $this->createMock('\OCP\Files\Folder');
@@ -2323,6 +2324,11 @@ class Share20OCSTest extends TestCase {
 		$file->method('getStorage')->willReturn($storage);
 		$folder->method('getStorage')->willReturn($storage);
 
+		return [$file, $folder];
+	}
+
+	public function dataFormatShare() {
+		list($file, $folder) = $this->getMockFileFolder();
 		$owner = $this->createMock('\OCP\IUser');
 		$owner->method('getDisplayName')->willReturn('ownerDN');
 		$initiator = $this->createMock('\OCP\IUser');
@@ -2396,6 +2402,7 @@ class Share20OCSTest extends TestCase {
 				'file_target' => 'myTarget',
 				'share_with' => 'recipient',
 				'share_with_displayname' => 'recipientDN',
+				'share_with_additional_info' => null,
 				'mail_send' => 0,
 				'mimetype' => 'myMimeType',
 			], $share, [
@@ -2740,5 +2747,79 @@ class Share20OCSTest extends TestCase {
 		$result = $ocs->updateShare('my:id');
 
 		$this->assertEquals($expected, $result);
+	}
+
+	public function additionalInfoDataProvider() {
+		return [
+			['', null],
+			['unsupported', null],
+			['email', 'email@example.com'],
+			['id', 'recipient_id'],
+		];
+	}
+
+	/**
+	 * @dataProvider additionalInfoDataProvider
+	 */
+	public function testGetShareAdditionalInfo($configValue, $expectedInfo) {
+		$config = $this->createMock(IConfig::class);
+		$config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL, \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE],
+				['core', 'user_additional_info_field', '', $configValue],
+			]));
+
+		$initiator = $this->createMock(IUser::class);
+		$recipient = $this->createMock(IUser::class);
+		$owner = $this->createMock(IUser::class);
+		$this->userManager->method('get')->will($this->returnValueMap([
+			['initiator', $initiator],
+			['recipient', $recipient],
+			['owner', $owner],
+		]));
+
+		$recipient->method('getUID')->willReturn('recipient_id');
+		$recipient->method('getEMailAddress')->willReturn('email@example.com');
+
+		$ocs = new Share20OCS(
+			$this->shareManager,
+			$this->groupManager,
+			$this->userManager,
+			$this->request,
+			$this->rootFolder,
+			$this->urlGenerator,
+			$this->currentUser,
+			$this->l,
+			$config
+		);
+
+		list($file,) = $this->getMockFileFolder();
+
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setShareType(Share::SHARE_TYPE_USER)
+			->setSharedWith('recipient')
+			->setSharedBy('initiator')
+			->setShareOwner('owner')
+			->setPermissions(\OCP\Constants::PERMISSION_READ)
+			->setNode($file)
+			->setShareTime(new \DateTime('2000-01-01T00:01:02'))
+			->setTarget('myTarget')
+			->setId(42);
+
+		$this->rootFolder->method('getUserFolder')
+			->with($this->currentUser->getUID())
+			->will($this->returnSelf());
+
+		$this->rootFolder->method('getById')
+			->with($share->getNodeId())
+			->willReturn([$share->getNode()]);
+
+		$this->rootFolder->method('getRelativePath')
+			->with($share->getNode()->getPath())
+			->will($this->returnArgument(0));
+
+		$result = $this->invokePrivate($ocs, 'formatShare', [$share]);
+
+		$this->assertEquals($expectedInfo, $result['share_with_additional_info']);
 	}
 }
