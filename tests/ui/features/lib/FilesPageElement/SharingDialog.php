@@ -151,23 +151,34 @@ class SharingDialog extends OwncloudPage {
 	 * @return void
 	 */
 	private function shareWithUserOrGroup(
-		$nameToType, $nameToMatch, Session $session
+		$nameToType, $nameToMatch, Session $session, $maxRetries = 5
 	) {
-		$autocompleteNodeElement = $this->fillShareWithField($nameToType, $session);
-		$userElements = $autocompleteNodeElement->findAll(
-			"xpath", $this->autocompleteItemsTextXpath
-		);
-
-		$userFound = false;
-		foreach ($userElements as $user) {
-			if ($user->getText() === $nameToMatch) {
-				$user->click();
-				$this->waitForAjaxCallsToStartAndFinish($session);
-				$userFound = true;
+		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
+			$autocompleteNodeElement = $this->fillShareWithField($nameToType, $session);
+			$userElements = $autocompleteNodeElement->findAll(
+				"xpath", $this->autocompleteItemsTextXpath
+			);
+	
+			$userFound = false;
+			foreach ($userElements as $user) {
+				if ($user->getText() === $nameToMatch) {
+					$user->click();
+					$this->waitForAjaxCallsToStartAndFinish($session);
+					$userFound = true;
+					break;
+				}
+			}
+			if ($userFound === true) {
 				break;
+			} else {
+				error_log("Error while sharing file");
 			}
 		}
-
+		if ($retryCounter > 0) {
+			$message = "INFORMATION: retried to share file " . $retryCounter . " times";
+			echo $message;
+			error_log($message);
+		}
 		if ($userFound !== true) {
 			throw new ElementNotFoundException(
 				"could not share with '$nameToMatch'"
