@@ -21,14 +21,12 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Page\OwncloudPage;
 use Page\LoginPage;
 use TestHelpers\SetupHelper;
-use OC\Setup;
 
 require_once 'bootstrap.php';
 
@@ -48,7 +46,6 @@ class FeatureContext extends RawMinkContext implements Context {
 	 *
 	 * @param OwncloudPage $owncloudPage
 	 * @param LoginPage $loginPage
-	 * @return void
 	 */
 	public function __construct(OwncloudPage $owncloudPage, LoginPage $loginPage) {
 		$this->owncloudPage = $owncloudPage;
@@ -62,7 +59,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function aNotificationShouldBeDisplayedWithTheText($notificationText) {
 		PHPUnit_Framework_Assert::assertEquals(
-			$notificationText, $this->owncloudPage->getNotificationText()
+			$notificationText, trim($this->owncloudPage->getNotificationText())
 		);
 	}
 
@@ -78,12 +75,12 @@ class FeatureContext extends RawMinkContext implements Context {
 			count($tableRows),
 			count($notifications)
 		);
-		
+
 		$notificationCounter = 0;
 		foreach ($tableRows as $row) {
 			PHPUnit_Framework_Assert::assertEquals(
 				$row[0],
-				$notifications[$notificationCounter]
+				trim($notifications[$notificationCounter])
 			);
 			$notificationCounter++;
 		}
@@ -92,7 +89,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * @Then dialogs should be displayed
 	 * @param TableNode $table of expected dialogs format must be:
-	 *                  | title | content |
+	 *                         | title | content |
 	 * @return void
 	 */
 	public function dialogsShouldBeDisplayed(TableNode $table) {
@@ -110,7 +107,7 @@ class FeatureContext extends RawMinkContext implements Context {
 				if ($expectedDialogs[$dialogI]['content'] === $content
 					&& $expectedDialogs[$dialogI]['title'] === $title
 				) {
-						$expectedDialogs[$dialogI]['found'] = true;
+					$expectedDialogs[$dialogI]['found'] = true;
 				}
 			}
 		}
@@ -139,7 +136,9 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then the group named :name should not exist
+	 * @param string $name
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theGroupNamedShouldNotExist($name) {
 		if (in_array($name, SetupHelper::getGroups(), true)) {
@@ -150,9 +149,11 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^these groups should (not|)\s?exist:$/
 	 * expects a table of groups with the heading "groupname"
+	 *
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $table
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
@@ -175,7 +176,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function setUpSuite(BeforeScenarioScope $scope) {
 		SetupHelper::setOcPath($scope);
-		$jobId = $this->getSessionId($scope);
+		$jobId = $this->getSessionId();
 		file_put_contents("/tmp/saucelabs_sessionid", $jobId);
 		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = SetupHelper::runOcc(
@@ -184,22 +185,21 @@ class FeatureContext extends RawMinkContext implements Context {
 			$this->oldCSRFSetting = trim($oldCSRFSetting);
 		}
 		SetupHelper::runOcc(
-			[ 
+			[
 				'config:system:set',
 				'csrf.disabled',
 				'--type',
 				'boolean',
 				'--value',
-				'true' 
+				'true'
 			]
 		);
 	}
 
 	/**
-	 * @param BeforeScenarioScope $scope
 	 * @return string
 	 */
-	public function getSessionId(BeforeScenarioScope $scope) {
+	public function getSessionId() {
 		$url = $this->getSession()->getDriver()->getWebDriverSession()->getUrl();
 		$parts = explode('/', $url);
 		$sessionId = array_pop($parts);
@@ -209,11 +209,10 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. Sets back old settings
 	 *
-	 * @param AfterScenarioScope $scope
-	 * @AfterScenario
 	 * @return void
+	 * @AfterScenario
 	 */
-	public function tearDownSuite(AfterScenarioScope $scope) {
+	public function tearDownSuite() {
 		if ($this->oldCSRFSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
 		} elseif ($this->oldCSRFSetting !== null) {

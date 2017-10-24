@@ -24,7 +24,9 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Page\UserPageElement\GroupList;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use WebDriver\Exception\NoSuchElement;
 
 /**
  * Users page.
@@ -43,8 +45,7 @@ class UsersPage extends OwncloudPage {
 
 	protected $quotaOptionXpath = "//option[contains(text(), '%s')]";
 
-	protected $manualQuotaInputXpath = "//input[contains(@data-original-title," .
-										"'Please enter storage quota')]";
+	protected $manualQuotaInputXpath = "//input[contains(@data-original-title,'Please enter storage quota')]";
 	protected $settingsBtnXpath = ".//*[@id='app-settings-header']/button";
 	protected $settingContentId = "app-settings-content";
 	protected $labelMailOnUserCreateXpath = ".//label[@for='CheckboxMailOnUserCreate']";
@@ -94,7 +95,7 @@ class UsersPage extends OwncloudPage {
 
 	/**
 	 * Open the settings menu
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -108,7 +109,7 @@ class UsersPage extends OwncloudPage {
 
 	/**
 	 * sets a setting in the settings menu
-	 * 
+	 *
 	 * @param string $setting the human readable setting string
 	 * @param boolean $value
 	 * @throws ElementNotFoundException
@@ -146,7 +147,7 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * creates a user and adds it to the required groups
 	 * if group does not exist it will be created
-	 * 
+	 *
 	 * @param Session $session
 	 * @param string $username
 	 * @param string $password
@@ -183,14 +184,14 @@ class UsersPage extends OwncloudPage {
 		$groupsInDropDown = $groupDropDownList->findAll(
 			"xpath", $this->newUserGroupsDropDownListTag
 		);
-		
+
 		//uncheck all selected groups
 		foreach ($groupsInDropDown as $groupLi) {
 			if ($groupLi->getAttribute("class") === $this->newUserGroupsSelectedClass) {
 				$groupLi->click();
 			}
 		}
-		
+
 		//now select all groups that we need to have
 		if (is_array($groups)) {
 			foreach ($groups as $group) {
@@ -219,14 +220,14 @@ class UsersPage extends OwncloudPage {
 					}
 					try {
 						$createUserInput->setValue($group . "\n");
-					} catch (\WebDriver\Exception\NoSuchElement $e) {
+					} catch (NoSuchElement $e) {
 						// this seems to be a bug in MinkSelenium2Driver.
 						// Actually all that we need does happen, so we just don't do anything
 					}
 				}
 			}
 		}
-		
+
 		$createUserBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -257,19 +258,19 @@ class UsersPage extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
-	 * @return \Page\UserPageElement\GroupList
+	 * @return GroupList
 	 */
 	private function getGroupListElement() {
 		$groupListElement = $this->findById($this->groupListId);
 		if ($groupListElement === null) {
 			throw new ElementNotFoundException("cannot find group list element");
 		}
-		
+
 		/**
-		 * 
-		 * @var \Page\UserPageElement\GroupList $groupList
+		 *
+		 * @var GroupList $groupList
 		 */
 		$groupList = $this->getPage("UserPageElement\\GroupList");
 		$groupList->setElement($groupListElement);
@@ -278,7 +279,7 @@ class UsersPage extends OwncloudPage {
 
 	/**
 	 * returns all group names as an array
-	 * 
+	 *
 	 * @return string[]
 	 */
 	public function getAllGroups() {
@@ -287,7 +288,7 @@ class UsersPage extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 * @param Session $session
 	 * @return void

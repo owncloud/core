@@ -26,7 +26,7 @@ use InvalidArgumentException;
 
 /**
  * Helper to to get run-time IP addresses and make IP calculations
- * 
+ *
  * @author Phillip Davis <phil@jankaritech.com>
  *
  */
@@ -38,7 +38,7 @@ class IpHelper {
 	const IPV6_LINK_LOCAL_ADDRESS_TOP = 'fe80';
 	// The docker bridged device does not work as a routable IP address
 	const UNUSABLE_NETWORK_DEVICES_REGEX = 'docker\d';
-	
+
 	/**
 	 * parse the output of ifconfig to find matching items such as IP addresses
 	 *
@@ -168,11 +168,11 @@ class IpHelper {
 		for ($i = 0; $length = strlen($hexString), $i < $length; $i++) {
 			$binNumber .= sprintf('%04d', decbin(hexdec($hexString[$i])));
 		}
-		
+
 		// Set all the values past the end of the CIDR to "0"
 		// ("masking" the binary string value)
 		$binNumber = substr($binNumber, 0, $cidr) . str_repeat("0", 128 - $cidr);
-		
+
 		// Convert it back to a hex string
 		$hexSubnetBase = "";
 		foreach (str_split($binNumber, 4) as $binString) {
@@ -225,7 +225,7 @@ class IpHelper {
 			case 'ipv6':
 				return self::loopbackIpv6Address();
 		}
-		
+
 		throw new \InvalidArgumentException(
 			"loopbackIpAddress: Invalid IP address family"
 		);
@@ -233,43 +233,20 @@ class IpHelper {
 
 	/**
 	 * calculate the base address of the subnet with the given CIDR
-	 * that contains the loopback IPv4 address
-	 *
-	 * @param int $cidr the CIDR "mask" size for the subnet
-	 * @return string IPv4 loopback subnet base address
-	 */
-	private static function loopbackIpv4AddressSubnet($cidr) {
-		return self::ipv4AddressSubnet(self::loopbackIpv4Address(), $cidr);
-	}
-
-	/**
-	 * calculate the base address of the subnet with the given CIDR
-	 * that contains the loopback IPv6 address
-	 *
-	 * @param int $cidr the CIDR "mask" size for the subnet
-	 * @return string IPv6 loopback subnet base address
-	 */
-	private static function loopbackIpv6AddressSubnet($cidr) {
-		return self::IPV6_LOOPBACK_ADDRESS_SUBNET;
-	}
-
-	/**
-	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the loopback address of the given IP address family
 	 *
 	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
-	 * @param int $cidr the CIDR "mask" size for the subnet
 	 * @throws InvalidArgumentException
 	 * @return string IP of loopback subnet base address
 	 */
-	private static function loopbackIpAddressSubnet($ipAddressFamily, $cidr) {
+	private static function loopbackIpAddressSubnet($ipAddressFamily) {
 		switch (strtolower($ipAddressFamily)) {
 			case 'ipv4':
-				return self::loopbackIpv4Address($cidr);
+				return self::loopbackIpv4Address();
 			case 'ipv6':
-				return self::loopbackIpv6Address($cidr);
+				return self::loopbackIpv6Address();
 		}
-		
+
 		throw new \InvalidArgumentException(
 			"loopbackIpAddressSubnet: Invalid IP address family"
 		);
@@ -331,7 +308,7 @@ class IpHelper {
 			case 'ipv6':
 				return self::routeableIpv6Address();
 		}
-		
+
 		throw new \InvalidArgumentException(
 			"routableIpAddress: Invalid IP address family"
 		);
@@ -375,7 +352,7 @@ class IpHelper {
 			case 'ipv6':
 				return self::routeableIpv6AddressSubnet($cidr);
 		}
-		
+
 		throw new \InvalidArgumentException(
 			"routableIpAddressSubnet: Invalid IP address family"
 		);
@@ -425,7 +402,7 @@ class IpHelper {
 				return self::routableIpAddressSubnet($ipAddressFamily, $cidr);
 				break;
 			case 'loopback':
-				return self::loopbackIpAddressSubnet($ipAddressFamily, $cidr);
+				return self::loopbackIpAddressSubnet($ipAddressFamily);
 				break;
 			default:
 				throw new \InvalidArgumentException(

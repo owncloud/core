@@ -25,13 +25,13 @@ use GuzzleHttp\Client as GClient;
 
 /**
  * manage Shares via OCS API
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
 class SharingHelper {
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl baseURL of the ownCloud installation without /ocs.
 	 * @param string $user user that creates the share.
 	 * @param string $password password of the user that creates the share.
@@ -55,8 +55,8 @@ class SharingHelper {
 	 *                           An expire date for public link shares.
 	 *                           This argument expects a date string
 	 *                           in the format 'YYYY-MM-DD'.
-	 * @param number $apiVersion
-	 * @param number $sharingApiVersion
+	 * @param int $apiVersion
+	 * @param int $sharingApiVersion
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 */
 	public static function createShare(
@@ -74,14 +74,14 @@ class SharingHelper {
 		$apiVersion = 1,
 		$sharingApiVersion = 1
 	) {
-		
+
 		$fd = [];
 		$options = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
 			if (!is_string($variableToCheck)) {
 				throw new \InvalidArgumentException(
 					"mandatory argument missing or wrong type ($variableToCheck => "
-					 . gettype($variableToCheck) . ")"
+					. gettype($variableToCheck) . ")"
 				);
 			}
 		}
@@ -104,7 +104,7 @@ class SharingHelper {
 				"invalid apiVersion/sharingApiVersion"
 			);
 		}
-		
+
 		$fullUrl = $baseUrl .
 			"/ocs/v{$apiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
 		$client = new GClient();
@@ -124,9 +124,9 @@ class SharingHelper {
 		if (!is_null($linkName)) {
 			$fd['name'] = $linkName;
 		}
-		
+
 		$options['body'] = $fd;
-		
+
 		return $client->send($client->createRequest("POST", $fullUrl, $options));
 	}
 }

@@ -22,7 +22,7 @@
  */
 namespace Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Behat\Mink\Element\NodeElement;
 
 /**
  * Personal Security Settings page.
@@ -72,7 +72,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 *
 	 * @param string $appName
 	 * @throws \Exception
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function getLinkedAppByName($appName) {
 		$appTrs = $this->findAll("xpath", $this->linkedAppsTrXpath);
@@ -89,10 +89,10 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * Takes a TR NodeElement and looks for the disconnect button in it
 	 * returns the NodeElement of the button if found, else NULL
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $tr
-	 * @return \Behat\Mink\Element\NodeElement|NULL
+	 * @param NodeElement $tr
+	 * @return NodeElement|NULL
 	 */
-	public function getDisconnectButton(\Behat\Mink\Element\NodeElement $tr) {
+	public function getDisconnectButton(NodeElement $tr) {
 		return $tr->find("xpath", $this->disconnectButtonXpath);
 	}
 
@@ -100,12 +100,12 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * finds the result fields of the new app password and
 	 * returns an array of [login-name,password]
 	 *
-	 * @return \Behat\Mink\Element\NodeElement[]|NULL[]
+	 * @return NodeElement[]|NULL[]
 	 */
 	public function getAppPasswordResult() {
 		return array (
-				$this->findField("new-app-login-name"),
-				$this->findField("new-app-password")
+			$this->findField("new-app-login-name"),
+			$this->findField("new-app-password")
 		);
 	}
 }

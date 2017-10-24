@@ -21,7 +21,8 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Message\FutureResponse;
+use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * Helper for Downloads
@@ -31,7 +32,7 @@ use GuzzleHttp\Stream\Stream;
  */
 class DownloadHelper {
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl URL of owncloud
 	 *                        e.g. http://localhost:8080
 	 *                        should include the subfolder
@@ -43,7 +44,7 @@ class DownloadHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return FutureResponse|ResponseInterface|NULL
 	 */
 	public static function download(
 		$baseUrl,

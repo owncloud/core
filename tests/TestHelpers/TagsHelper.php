@@ -23,14 +23,14 @@ namespace TestHelpers;
 
 /**
  * Helper to administer Tags
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
 class TagsHelper {
 	/**
 	 * tags a file
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $taggingUser
 	 * @param string $password
@@ -52,7 +52,7 @@ class TagsHelper {
 		$fileID = WebDavHelper::getFileIdForPath(
 			$baseUrl, $fileOwner, $password, $fileName
 		);
-		
+
 		$tag = self::requestTagByDisplayName(
 			$baseUrl, $taggingUser, $password, $tagName
 		);
@@ -67,11 +67,11 @@ class TagsHelper {
 
 	/**
 	 * get all tags of a user
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
-	 * @param string $withGroups
+	 * @param bool $withGroups
 	 * @return array
 	 */
 	public static function requestTagsForUser(
@@ -82,12 +82,12 @@ class TagsHelper {
 	) {
 		$baseUrl = WebDavHelper::sanitizeUrl($baseUrl, true);
 		$client = WebDavHelper::getSabreClient($baseUrl, $user, $password);
-		$properties = [ 
-				'{http://owncloud.org/ns}id',
-				'{http://owncloud.org/ns}display-name',
-				'{http://owncloud.org/ns}user-visible',
-				'{http://owncloud.org/ns}user-assignable',
-				'{http://owncloud.org/ns}can-assign' 
+		$properties = [
+			'{http://owncloud.org/ns}id',
+			'{http://owncloud.org/ns}display-name',
+			'{http://owncloud.org/ns}user-visible',
+			'{http://owncloud.org/ns}user-assignable',
+			'{http://owncloud.org/ns}can-assign'
 		];
 		if ($withGroups) {
 			array_push($properties, '{http://owncloud.org/ns}groups');
@@ -102,12 +102,12 @@ class TagsHelper {
 
 	/**
 	 * find a tag by its name
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
 	 * @param string $tagDisplayName
-	 * @param string $withGroups
+	 * @param bool $withGroups
 	 * @return array
 	 */
 	public static function requestTagByDisplayName(
@@ -119,7 +119,7 @@ class TagsHelper {
 	) {
 		$tagList = self::requestTagsForUser($baseUrl, $user, $password, $withGroups);
 		foreach ($tagList as $path => $tagData) {
-			if (!empty($tagData) 
+			if (!empty($tagData)
 				&& $tagData['{http://owncloud.org/ns}display-name'] === $tagDisplayName
 			) {
 				return $tagData;
@@ -153,15 +153,15 @@ class TagsHelper {
 	) {
 		$tagsPath = '/systemtags/';
 		$body = [
-				'name' => $name,
-				'userVisible' => $userVisible,
-				'userAssignable' => $userAssignable,
+			'name' => $name,
+			'userVisible' => $userVisible,
+			'userAssignable' => $userAssignable,
 		];
 
 		if ($groups !== null) {
 			$body['groups'] = $groups;
 		}
-		
+
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl,
 			$user,
@@ -181,7 +181,7 @@ class TagsHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -206,7 +206,7 @@ class TagsHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $type
 	 * @throws \Exception
 	 * @return boolean[]
@@ -226,7 +226,7 @@ class TagsHelper {
 			default :
 				throw new \Exception('Unsupported type');
 		}
-		
+
 		return array($userVisible, $userAssignable);
 	}
 }
