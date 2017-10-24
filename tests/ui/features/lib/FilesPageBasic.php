@@ -30,14 +30,13 @@ use Behat\Mink\Session;
 /**
  * Common elements/methods for all Files Pages
  */
-class FilesPageBasic extends OwnCloudPage {
+abstract class FilesPageBasic extends OwnCloudPage {
 
 	/**
 	 *
 	 * @var string $path
 	 */
 	protected $emptyContentXpath = ".//*[@id='emptycontent']";
-
 	protected $fileActionMenuBtnXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
@@ -49,13 +48,32 @@ class FilesPageBasic extends OwnCloudPage {
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 
 	/**
+	 * @return string
+	 */
+	abstract protected function getFileListXpath();
+
+	/**
+	 * @return string
+	 */
+	abstract protected function getFileNamesXpath();
+
+	/**
+	 * @return string
+	 */
+	abstract protected function getFileNameMatchXpath();
+
+	/**
 	 * @return int the number of files and folders listed on the page
 	 */
 	public function getSizeOfFileFolderList() {
+		$fileListElement = $this->find("xpath", $this->getFileListXpath());
+
+		if (is_null($fileListElement)) {
+			return 0;
+		}
+
 		return count(
-			$this->find("xpath", $this->fileListXpath)->findAll(
-				"xpath", $this->fileNamesXpath
-			)
+			$fileListElement->findAll("xpath", $this->getFileNamesXpath())
 		);
 	}
 
@@ -74,7 +92,7 @@ class FilesPageBasic extends OwnCloudPage {
 	 * @param string|array $name
 	 * @param Session $session
 	 * @return FileRow
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 */
 	public function findFileRowByName($name, Session $session) {
 		$previousFileCount = 0;
@@ -101,10 +119,18 @@ class FilesPageBasic extends OwnCloudPage {
 		//loop to keep on scrolling down to load not viewed files
 		//when the scroll does not retrieve any new files, the file is not there
 		do {
-			$fileNameMatch = $this->find("xpath", $this->fileListXpath)->find(
-				"xpath", sprintf($this->fileNameMatchXpath, $xpathString)
+			$fileListElement = $this->waitTillElementIsNotNull($this->getFileListXpath());
+
+			if ($fileListElement === null) {
+				throw new ElementNotFoundException(
+					"findFileRowByName:could not find fileListXpath"
+				);
+			}
+
+			$fileNameMatch = $fileListElement->find(
+				"xpath", sprintf($this->getFileNameMatchXpath(), $xpathString)
 			);
-			
+
 			if (is_null($fileNameMatch) || !$fileNameMatch->isVisible()) {
 				if (is_null($currentFileCount)) {
 					$currentFileCount = $this->getSizeOfFileFolderList();
@@ -148,8 +174,8 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * scrolls down the file list, to loaBasicd not yet displayed files
-	 * 
+	 * scrolls down the file list, to load not yet displayed files
+	 *
 	 * @param Session $session
 	 * @return void
 	 */
@@ -167,13 +193,12 @@ class FilesPageBasic extends OwnCloudPage {
 	/**
 	 * Finds the open File Action Menu
 	 * the File Action Button must be clicked first
-	 * 
+	 *
 	 * @return \Behat\Mink\Element\NodeElement
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 */
 	public function findFileActionMenuElement() {
-		$this->waitTillElementIsNotNull($this->fileActionMenuXpath);
-		$actionMenu = $this->find("xpath", $this->fileActionMenuXpath);
+		$actionMenu = $this->waitTillElementIsNotNull($this->fileActionMenuXpath);
 		if ($actionMenu === null) {
 			throw new ElementNotFoundException("could not find open fileActionMenu");
 		} else {
@@ -183,8 +208,8 @@ class FilesPageBasic extends OwnCloudPage {
 
 	/**
 	 * opens a file or navigates into a folder
-	 * 
-	 * @param string $name
+	 *
+	 * @param string|array $name
 	 * @param Session $session
 	 * @return void
 	 */
@@ -194,8 +219,8 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * 
-	 * @param string $name
+	 *
+	 * @param string|array $name
 	 * @param Session $session
 	 * @return void
 	 */
@@ -206,7 +231,7 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -223,7 +248,7 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param Session $session
 	 * @return void
 	 */
@@ -233,7 +258,7 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 * @param Session $session
 	 * @return void
@@ -244,7 +269,7 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param int $number
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
@@ -261,7 +286,7 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param int $number
 	 * @return void
 	 */
@@ -270,7 +295,7 @@ class FilesPageBasic extends OwnCloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param int $number
 	 * @return FileActionsMenu
 	 */
@@ -297,20 +322,36 @@ class FilesPageBasic extends OwnCloudPage {
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
-			$fileList = $this->findById("fileList");
+			$fileList = $this->find('xpath', $this->getFileListXpath());
 			if ($fileList !== null
 				&& $fileList->isVisible()
-				&& ($fileList->has("xpath", "//a")
-				|| ! $this->find(
+			) {
+				if ($fileList->has("xpath", "//a")) {
+					break;
+				}
+
+				$emptyContentElement = $this->find(
 					"xpath",
 					$this->emptyContentXpath
-				)->hasClass("hidden"))
-			) {
-				break;
+				);
+
+				if ($emptyContentElement !== null) {
+					if (!$emptyContentElement->hasClass("hidden")) {
+						break;
+					}
+				}
 			}
+
 			usleep(STANDARDSLEEPTIMEMICROSEC);
 			$currentTime = microtime(true);
 		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				"FilesPageBasic:waitTillPageIsLoaded:timeout waiting for page to load"
+			);
+		}
+
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 }
