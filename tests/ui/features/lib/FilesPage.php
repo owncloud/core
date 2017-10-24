@@ -25,6 +25,7 @@ namespace Page;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use Page\FilesPageElement\SharingDialog;
 use Behat\Mink\Session;
+use WebDriver\Exception\NoSuchElement;
 use WebDriver\Key;
 
 /**
@@ -40,9 +41,30 @@ class FilesPage extends FilesPageBasic {
 	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
 	protected $newFolderButtonXpath = './/div[contains(@class, "newFileMenu")]//a[@data-templatename="New folder"]';
 	protected $newFolderNameInputLabel = 'New folder';
-	
+
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-	
+
+	/**
+	 * @return string
+	 */
+	protected function getFileListXpath() {
+		return $this->fileListXpath;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getFileNamesXpath() {
+		return $this->fileNamesXpath;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getFileNameMatchXpath() {
+		return $this->fileNameMatchXpath;
+	}
+
 	/**
 	 * create a folder with the given name.
 	 * If name is not given a random one is chosen
@@ -58,7 +80,7 @@ class FilesPage extends FilesPageBasic {
 		$this->find("xpath", $this->newFolderButtonXpath)->click();
 		try {
 			$this->fillField($this->newFolderNameInputLabel, $name . Key::ENTER);
-		} catch (\WebDriver\Exception\NoSuchElement $e) {
+		} catch (NoSuchElement $e) {
 			// this seems to be a bug in MinkSelenium2Driver.
 			// Used to work fine in 1.3.1 but now throws this exception
 			// Actually all that we need does happen, so we just don't do anything
@@ -108,7 +130,7 @@ class FilesPage extends FilesPageBasic {
 		if (is_array($toFileName)) {
 			$toFileName = implode($toFileName);
 		}
-		
+
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
 				$fileRow = $this->findFileRowByName($fromFileName, $session);
@@ -132,7 +154,7 @@ class FilesPage extends FilesPageBasic {
 
 	/**
 	 * moves a file or folder into an other folder by drag and drop
-	 * 
+	 *
 	 * @param string|array $name
 	 * @param string|array $destination
 	 * @param Session $session
@@ -144,7 +166,7 @@ class FilesPage extends FilesPageBasic {
 	) {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
-		
+
 		$session->executeScript(
 			'
 			jQuery.countXHRRequests = 0;
@@ -156,8 +178,7 @@ class FilesPage extends FilesPageBasic {
 			})(XMLHttpRequest.prototype.open);
 			'
 		);
-		$countXHRRequests = 0;
-		$retryCounter = 0;
+
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
 			$toMoveFileRow->findFileLink()->dragTo($destinationFileRow->findFileLink());
 			$this->waitForAjaxCallsToStartAndFinish($session);
@@ -200,9 +221,9 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function open(array $urlParameters = array()) {
 		$url = $this->getUrl($urlParameters);
-		
+
 		$this->getDriver()->visit($url);
-		
+
 		$this->verifyResponse();
 		if (strpos(
 			$this->getDriver()->getCurrentUrl(),

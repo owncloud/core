@@ -65,7 +65,7 @@ class LoginPage extends OwncloudPage {
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
-			if (($this->findById($this->userInputId) !== null) 
+			if (($this->findById($this->userInputId) !== null)
 				&& ($this->findById($this->passwordInputId) !== null)
 			) {
 				break;
@@ -73,6 +73,13 @@ class LoginPage extends OwncloudPage {
 			usleep(STANDARDSLEEPTIMEMICROSEC);
 			$currentTime = microtime(true);
 		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				"LoginPage:waitTillPageIsLoaded:timeout waiting for page to load"
+			);
+		}
+
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 }

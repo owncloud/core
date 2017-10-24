@@ -22,7 +22,6 @@
  */
 namespace Page;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Session;
 
 /**
@@ -67,6 +66,13 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 			usleep(STANDARDSLEEPTIMEMICROSEC);
 			$currentTime = microtime(true);
 		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				"PersonalGeneralSettingsPage:waitTillPageIsLoaded:timeout waiting for page to load"
+			);
+		}
+
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 }

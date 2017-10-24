@@ -35,6 +35,7 @@ trait BasicStructure {
 	private $regularUserPassword;
 	private $regularUserName;
 	private $regularUserNames = array();
+	
 	/**
 	 * list of users that were created during test runs
 	 * key is the username value is an array of user attributes

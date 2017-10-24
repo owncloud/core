@@ -23,6 +23,7 @@
 
 namespace Page;
 
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
@@ -37,10 +38,10 @@ class OwncloudPage extends Page {
 
 	protected $userNameDisplayId = "expandDisplayName";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
-	
+
 	/**
 	 * used to store the unchanged path string when $path gets changed
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $originalPath = null;
@@ -69,6 +70,13 @@ class OwncloudPage extends Page {
 			usleep(STANDARDSLEEPTIMEMICROSEC);
 			$currentTime = microtime(true);
 		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				"OwncloudPage:waitTillPageIsLoaded:timeout waiting for page to load"
+			);
+		}
+
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 
@@ -102,7 +110,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param string $xpath
 	 * @param int $timeout_msec
-	 * @return void
+	 * @return NodeElement|null
 	 */
 	public function waitTillElementIsNotNull(
 		$xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
@@ -111,36 +119,58 @@ class OwncloudPage extends Page {
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
+				/**
+				 * @var NodeElement $element
+				 */
 				$element = $this->find("xpath", $xpath);
 				if ($element === null || !$element->isValid()) {
 					usleep(STANDARDSLEEPTIMEMICROSEC);
 				} else {
-					break;
+					return $element;
 				}
 			} catch (WebDriverException $e) {
 				usleep(STANDARDSLEEPTIMEMICROSEC);
 			}
 			$currentTime = microtime(true);
 		}
+
+		return null;
 	}
 
 	/**
 	 * Get the text of the first notification
 	 *
+	 * @throws ElementNotFoundException
 	 * @return string
 	 */
 	public function getNotificationText() {
-		return $this->findById("notification")->getText();
+		$notificationElement = $this->findById("notification");
+
+		if ($notificationElement === null) {
+			throw new ElementNotFoundException(
+				"getNotificationText:could not find notification element"
+			);
+		}
+
+		return $notificationElement->getText();
 	}
 
 	/**
 	 * Get the text of any notifications
 	 *
+	 * @throws ElementNotFoundException
 	 * @return array
 	 */
 	public function getNotifications() {
 		$notificationsText = array();
 		$notifications = $this->findById("notification");
+
+		if ($notifications === null) {
+			throw new ElementNotFoundException(
+				"getNotifications:could not find notification element"
+			);
+		}
+
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
 			array_push($notificationsText, $notification->getText());
 		}
@@ -157,7 +187,7 @@ class OwncloudPage extends Page {
 		$ocDialogElements = $this->findAll("xpath", $this->ocDialogXpath);
 		foreach ($ocDialogElements as $element) {
 			/**
-			 * 
+			 *
 			 * @var \Page\OwncloudPageElement\OCDialog $ocDialog
 			 */
 			$ocDialog = $this->getPage("OwncloudPageElement\\OCDialog");
@@ -166,23 +196,42 @@ class OwncloudPage extends Page {
 		}
 		return $ocDialogs;
 	}
-	
+
 	/**
 	 * Open the settings menu
 	 *
+	 * @throws ElementNotFoundException
 	 * @return Page
 	 */
 	public function openSettingsMenu() {
-		$this->findById($this->userNameDisplayId)->click();
+		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
+
+		if ($userNameDisplayElement === null) {
+			throw new ElementNotFoundException(
+				"openSettingsMenu:could not find userNameDisplay element"
+			);
+		}
+
+		$userNameDisplayElement->click();
+
 		return $this->getPage("OwncloudPageElement\\SettingsMenu");
 	}
 	/**
 	 * finds the logged-in username displayed in the top right corner
 	 *
+	 * @throws ElementNotFoundException
 	 * @return string
 	 */
 	public function getMyUsername() {
-		return $this->findById($this->userNameDisplayId)->getText();
+		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
+
+		if ($userNameDisplayElement === null) {
+			throw new ElementNotFoundException(
+				"getMyUsername:could not find userNameDisplay element"
+			);
+		}
+
+		return $userNameDisplayElement->getText();
 	}
 
 	/**
@@ -208,7 +257,7 @@ class OwncloudPage extends Page {
 
 	/**
 	 * returns the unchanged path
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getOriginalPath() {
@@ -224,7 +273,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param NodeElement $element
-	 * @return Array
+	 * @return array
 	 */
 	public function getCoordinatesOfElement($session, $element) {
 		$elementXpath = str_replace('"', '\"', $element->getXpath());
@@ -241,7 +290,7 @@ class OwncloudPage extends Page {
 	 * Gets the Window Height
 	 *
 	 * @param Session $session
-	 * @return Array
+	 * @return int
 	 */
 	public function getWindowHeight($session) {
 		return $session->evaluateScript(
@@ -251,7 +300,7 @@ class OwncloudPage extends Page {
 
 	/**
 	 * scrolls to a position in a specified element
-	 * 
+	 *
 	 * @param string $jQuerySelector e.g. "#app-content"
 	 * @param int|string $position number or JS function that returns a number
 	 * @param Session $session
@@ -259,7 +308,7 @@ class OwncloudPage extends Page {
 	 */
 	public function scrollToPosition($jQuerySelector, $position, Session $session) {
 		$session->executeScript(
-			'$("' . $jQuerySelector . '").scrollTop(' . $position . ');'
+			'jQuery("' . $jQuerySelector . '").scrollTop(' . $position . ');'
 		);
 	}
 
@@ -267,8 +316,7 @@ class OwncloudPage extends Page {
 	 * waits till all ajax calls are finished (jQuery.active === 0)
 	 *
 	 * @param Session $session
-	 * @param number $timeout_msec
-	 * @throws \Exception
+	 * @param int $timeout_msec
 	 * @return void
 	 */
 	public function waitForOutstandingAjaxCalls(
@@ -381,13 +429,13 @@ class OwncloudPage extends Page {
 
 		return $exists;
 	}
-	
+
 	/**
 	 * sends an END key and then BACKSPACEs to delete the current value
 	 * then sends the new value
-	 * checks the set value and sends the Escape key + throws an exception 
+	 * checks the set value and sends the Escape key + throws an exception
 	 * if the value is not set correctly
-	 * 
+	 *
 	 * @param NodeElement $inputField
 	 * @param string $value
 	 * @throws \Exception

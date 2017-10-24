@@ -58,8 +58,8 @@ trait Logging {
 			foreach (array_keys($expectedLogEntry) as $attribute) {
 				$expectedLogEntry [$attribute]
 					= $this->featureContext->substituteInLineCodes(
-					$expectedLogEntry [$attribute]
-				);
+						$expectedLogEntry [$attribute]
+					);
 				PHPUnit_Framework_Assert::assertArrayHasKey(
 					$attribute, $logEntry,
 					"could not find attribute: '" . $attribute .
@@ -100,11 +100,11 @@ trait Logging {
 				foreach (array_keys($logEntryExpectedNotToExist) as $attribute) {
 					$logEntryExpectedNotToExist [$attribute]
 						= $this->featureContext->substituteInLineCodes(
-						$logEntryExpectedNotToExist [$attribute]
-					);
+							$logEntryExpectedNotToExist [$attribute]
+						);
 					if (isset($logEntries [$attribute])
 						&& ($logEntryExpectedNotToExist [$attribute] === ""
-							|| $logEntryExpectedNotToExist [$attribute] === $logEntries [$attribute])
+						|| $logEntryExpectedNotToExist [$attribute] === $logEntries [$attribute])
 					) {
 						$match = true;
 					} else {
