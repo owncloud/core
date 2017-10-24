@@ -63,6 +63,15 @@
 	vertical-align: middle;
 }
 
+.share-autocomplete-item .autocomplete-item-displayname {
+	margin-right: 5px;
+}
+
+.share-autocomplete-item .autocomplete-item-additional-info,
+#shareWithList .user-additional-info {
+	color: #888;
+}
+
 #shareWithList {
 	list-style-type:none;
 	padding:8px;

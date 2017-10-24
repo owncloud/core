@@ -65,6 +65,11 @@ class Share20OCS {
 	private $config;
 
 	/**
+	 * @var string
+	 */
+	protected $additionalInfoField;
+
+	/**
 	 * Share20OCS constructor.
 	 *
 	 * @param IManager $shareManager
@@ -97,6 +102,22 @@ class Share20OCS {
 		$this->currentUser = $currentUser;
 		$this->l = $l10n;
 		$this->config = $config;
+		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
+	}
+
+	/**
+	 * Returns the additional info to display behind the display name as configured.
+	 *
+	 * @param IUser $user user for which to retrieve the additional info
+	 * @return string|null additional info or null if none to be displayed
+	 */
+	protected function getAdditionalUserInfo(IUser $user) {
+		if ($this->additionalInfoField === 'email') {
+			return $user->getEMailAddress();
+		} else if ($this->additionalInfoField === 'id') {
+			return $user->getUID();
+		}
+		return null;
 	}
 
 	/**
@@ -151,6 +172,9 @@ class Share20OCS {
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $sharedWith !== null ? $sharedWith->getDisplayName() : $share->getSharedWith();
+			if ($sharedWith !== null) {
+				$result['share_with_additional_info'] = $this->getAdditionalUserInfo($sharedWith);
+			}
 		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$group = $this->groupManager->get($share->getSharedWith());
 			$result['share_with'] = $share->getSharedWith();

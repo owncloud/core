@@ -94,6 +94,7 @@ class FileSharing implements ISettings {
 		];
 		$template->assign('shareApiDefaultPermissions', $this->config->getAppValue('core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL));
 		$template->assign('shareApiDefaultPermissionsCheckboxes', $permList);
+		$template->assign('coreUserAdditionalInfo', $this->config->getAppValue('core', 'user_additional_info_field', ''));
 		return $template;
 	}
 

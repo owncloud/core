@@ -668,6 +668,24 @@ describe('OC.Share.ShareDialogView', function() {
 				expect(el.hasClass('group')).toEqual(true);
 			});
 
+			it('renders user element', function() {
+				dialog.render();
+				var el = dialog.autocompleteRenderItem(
+						$("<ul></ul>"),
+						{
+							label: "User One",
+							value: {
+								shareType: OC.Share.SHARE_TYPE_USER,
+								shareWithAdditionalInfo: 'user@example.com'
+							}
+						}
+				);
+				expect(el.is('li')).toEqual(true);
+				expect(el.hasClass('user')).toEqual(true);
+				expect(el.find('.autocomplete-item-displayname').text()).toEqual('User One');
+				expect(el.find('.autocomplete-item-additional-info').text()).toEqual('(user@example.com)');
+			});
+
 			it('renders a remote element', function() {
 				dialog.render();
 				var el = dialog.autocompleteRenderItem(

@@ -22,6 +22,9 @@
 			'<div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
 			'{{/if}}' +
 			'<span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
+			'{{#if shareWithAdditionalInfo}}' +
+			'<span class="has-tooltip user-additional-info">({{shareWithAdditionalInfo}})</span>' +
+			'{{/if}}' +
 			'{{#if mailNotificationEnabled}}  {{#unless isRemoteShare}}' +
 			'<span class="shareOption">' +
 			'{{#unless wasMailSent}}' +
@@ -117,6 +120,7 @@
 			var shareWith = this.model.getShareWith(shareIndex);
 			var shareWithDisplayName = this.model.getShareWithDisplayName(shareIndex);
 			var shareType = this.model.getShareType(shareIndex);
+			var shareWithAdditionalInfo = this.model.getShareWithAdditionalInfo(shareIndex);
 
 			var hasPermissionOverride = {};
 			if (shareType === OC.Share.SHARE_TYPE_GROUP) {
@@ -135,6 +139,7 @@
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
+				shareWithAdditionalInfo: shareWithAdditionalInfo,
 				shareType: shareType,
 				shareId: this.model.get('shares')[shareIndex].id,
 				modSeed: shareType !== OC.Share.SHARE_TYPE_USER,
