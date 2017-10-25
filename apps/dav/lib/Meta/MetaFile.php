@@ -48,6 +48,13 @@ class MetaFile extends File {
 		return $this->file->getName();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	function getSize() {
+		return $this->file->getSize();
+	}
+
 	public function get() {
 		// FIXME: use fopen and return the stream
 		return $this->file->getContent();

@@ -882,6 +882,86 @@ trait WebDav {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $path
+	 * @param int $folderDepth
+	 * @param array|null $properties
+	 *
+	 * @return array|\Sabre\HTTP\ResponseInterface
+	 */
+	public function listVersionFolder(
+		$user, $path, $folderDepth, $properties = null
+	) {
+		$client = $this->getSabreClient($user);
+		if (!$properties) {
+			$properties = [
+				'{DAV:}getetag'
+			];
+		}
+		try {
+			$response = $client->propfind(
+				$this->makeSabrePathNotForFiles($path), $properties, $folderDepth
+			);
+		} catch (Sabre\HTTP\ClientHttpException $e) {
+			$response = $e->getResponse();
+		}
+		return $response;
+	}
+	/**
+	 * @Then the version folder of file :path for user :user should contain :count element(s)
+	 *
+	 * @param string $path
+	 * @param string $user
+	 * @param int $count
+	 *
+	 * @return void
+	 */
+	public function theVersionFolderOfFilehouldContainElements(
+		$path, $user, $count
+	) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
+		PHPUnit_Framework_Assert::assertEquals($count, count($elements) - 1);
+	}
+	/**
+	 * @Then the version folder of fileId :fileId for user :user should contain :count element(s)
+	 *
+	 * @param int $fileId
+	 * @param string $user
+	 * @param int $count
+	 *
+	 * @return void
+	 */
+	public function theVersionFolderOfFileIdShouldContainElements(
+		$fileId, $user, $count
+	) {
+		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
+		PHPUnit_Framework_Assert::assertEquals($count, count($elements) - 1);
+	}
+	/**
+	 * @Then the content length of file :path with version index :index for user :user in versions folder should be :length
+	 *
+	 * @param string $path
+	 * @param int $index
+	 * @param string $user
+	 * @param int $length
+	 *
+	 * @return void
+	 */
+	public function theContentLengthOfFileForUserInVersionsFolderIs(
+		$path, $index, $user, $length
+	) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$elements = $this->listVersionFolder(
+			$user, '/meta/' . $fileId . '/v', 1, ['{DAV:}getcontentlength']
+		);
+		$elements = array_values($elements);
+		PHPUnit_Framework_Assert::assertEquals(
+			$length, $elements[$index]['{DAV:}getcontentlength']
+		);
+	}
+
+	/**
 	 * Returns the elements of a report command
 	 *
 	 * @param string $user

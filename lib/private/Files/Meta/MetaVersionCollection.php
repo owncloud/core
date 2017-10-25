@@ -82,7 +82,7 @@ class MetaVersionCollection extends AbstractFolder {
 		/** @var IVersionedStorage | Storage $storage */
 		$versions = $storage->getVersions($internalPath);
 		return array_map(function($version) use ($storage, $internalPath) {
-			return new MetaFileVersionNode($this, $this->root, $version['version'],$storage, $internalPath);
+			return new MetaFileVersionNode($this, $this->root, $version, $storage, $internalPath);
 		}, $versions);
 	}
 
@@ -107,7 +107,7 @@ class MetaVersionCollection extends AbstractFolder {
 		if ($version === null) {
 			throw new NotFoundException();
 		}
-		return new MetaFileVersionNode($this, $this->root, $version['version'], $storage, $internalPath);
+		return new MetaFileVersionNode($this, $this->root, $version, $storage, $internalPath);
 	}
 
 	/**

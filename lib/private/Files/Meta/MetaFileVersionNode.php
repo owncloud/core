@@ -40,6 +40,8 @@ class MetaFileVersionNode extends AbstractFile {
 
 	/** @var string */
 	private $versionId;
+	/** @var int */
+	private $size;
 	/** @var MetaVersionCollection */
 	private $parent;
 	/** @var IVersionedStorage */
@@ -54,15 +56,16 @@ class MetaFileVersionNode extends AbstractFile {
 	 *
 	 * @param MetaVersionCollection $parent
 	 * @param IRootFolder $root
-	 * @param string $versionId
+	 * @param array $version
 	 * @param Storage $storage
 	 * @param string $internalPath
 	 */
 	public function __construct(MetaVersionCollection $parent,
 								IRootFolder $root,
-								$versionId, Storage $storage, $internalPath) {
+								$version, Storage $storage, $internalPath) {
 		$this->parent = $parent;
-		$this->versionId = $versionId;
+		$this->versionId = $version['version'];
+		$this->size = $version['size'];
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
 		$this->root = $root;
@@ -73,6 +76,13 @@ class MetaFileVersionNode extends AbstractFile {
 	 */
 	public function getName() {
 		return $this->versionId;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getSize() {
+		return $this->size;
 	}
 
 	/**
