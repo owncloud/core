@@ -77,29 +77,27 @@ class AdapterTest extends \Test\TestCase {
 	}
 
 	/**
-	 * Helper to delete a row
-	 * @param array $where associative array of columns and values to check
-	 * @return int number of rows changed
+	 * Helper method to check that a test row does exist in the database
+	 * @param $key
+	 * @param $value
 	 */
-	public function deleteRow($where) {
-		$qb = $this->conn->getQueryBuilder();
-		$rows = $qb->delete('appconfig')
-			->where(
-				$qb->expr()->eq(
-					'appid',
-					$qb->expr()->literal('testadapter')))
+	private function assertRowExists($key, $value) {
+		$query = $this->conn->getQueryBuilder();
+		$result = $query->select('*')
+			->from('*PREFIX*appconfig')
+			->where($query->expr()->eq('configvalue', $query->createNamedParameter($value)))
+			->where($query->expr()->eq('configkey', $query->createNamedParameter($key)))
 			->execute();
-		$this->assertEquals(1, $rows);
-		return $rows;
+		$this->assertCount(1, $result->fetchAll());
 	}
 
 	/**
 	 * Use upsert to insert a row into the database when nothing exists
-	 * Should fail to update, and insert a new row
+	 * Should fail to update (does not exist), and insert a new row
 	 */
 	public function testUpsertWithNoRowPresent() {
 		// Insert or update a new row
-		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test1', 'configkey' => 'test1']);
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test1', 'configkey' => 'test1'], ['appid', 'configkey']);
 		$this->assertEquals(1, $rows);
 		$this->assertRowExists('test1', 'test1');
 	}
@@ -112,30 +110,25 @@ class AdapterTest extends \Test\TestCase {
 		// Insert row
 		$this->insertRow(['configvalue' => 'test2', 'configkey' => 'test2-key']);
 		// Update it
-		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test2-newval', 'configkey' => 'test2-key']);
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test2-newval', 'configkey' => 'test2-key'], ['appid', 'configkey']);
 		$this->assertEquals(1, $rows);
 		$this->assertRowExists('test2-key', 'test2-newval');
 
 	}
 
-	/**
-	 * Use upsert to insert a row into the database when row exists, using compare col
-	 * Should update row
-	 */
-	public function testUpsertWithRowPresentUsingCompare() {
+	public function testUpsertWhenCompareColumnValueIsEmpty() {
 		// Insert row
-		$this->insertRow(['configvalue' => 'test3', 'configkey' => 'test3-key']);
+		$this->insertRow(['configvalue' => '', 'configkey' => 'test5-key']);
 		// Update it
-		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test3-updated', 'configkey' => 'test3'], ['configvalue']);
+		$rows = $this->adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => '', 'configkey' => 'test5-key'], ['appid', 'configkey', 'configvalue']);
 		$this->assertEquals(1, $rows);
-		$this->assertRowExists('test3-key', 'test3-updated');
-
+		$this->assertRowExists('test5-key', '');
 	}
 
 	public function testUpsertCatchDeadlockAndThrowsException() {
 		$mockConn = $this->createMock(IDBConnection::class);
 		$qb = $this->createMock(IQueryBuilder::class);
-		$qb->expects($this->exactly(6))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
+		$qb->expects($this->exactly(4))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
@@ -150,13 +143,13 @@ class AdapterTest extends \Test\TestCase {
 		$this->expectException(\RuntimeException::class);
 		// Run
 		$adapter = new Adapter($mockConn);
-		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated'], ['appid', 'configkey']);
 	}
 
 	public function testUpsertCatchExceptionAndThrowImmediately() {
 		$mockConn = $this->createMock(IDBConnection::class);
 		$qb = $this->createMock(IQueryBuilder::class);
-		$qb->expects($this->exactly(6))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
+		$qb->expects($this->exactly(4))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make random dbal exception which should be throw immediately, not retried
@@ -168,7 +161,7 @@ class AdapterTest extends \Test\TestCase {
 		$this->expectException(DBALException::class);
 		// Run
 		$adapter = new Adapter($mockConn);
-		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated'], ['appid', 'configkey']);
 
 	}
 
@@ -176,13 +169,14 @@ class AdapterTest extends \Test\TestCase {
 	public function testUpsertAndThrowOtherDriverExceptions() {
 		$mockConn = $this->createMock(IDBConnection::class);
 		$qb = $this->createMock(IQueryBuilder::class);
-		$qb->expects($this->exactly(6))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
+		$qb->expects($this->exactly(4))->method('expr')->willReturn($this->createMock(IExpressionBuilder::class));
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
 		$ex = $this->createMock(DriverException::class);
 		$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
 		// Wrap the exception in a doctrine exception
+		/** @var  DriverException|\PHPUnit_Framework_MockObject_MockObject $ex */
 		$e = new \Doctrine\DBAL\Exception\DriverException('1214', $ex);
 		// Should be called 5 times for maxTry then kick out the exception
 		$qb->expects($this->exactly(1))->method('execute')->willThrowException($e);
@@ -191,18 +185,8 @@ class AdapterTest extends \Test\TestCase {
 		$this->expectException(\Doctrine\DBAL\Exception\DriverException::class);
 		// Run
 		$adapter = new Adapter($mockConn);
-		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated']);
+		$rows = $adapter->upsert('*PREFIX*appconfig', ['appid' => 'testadapter', 'configvalue' => 'test4-updated', 'configkey' => 'test4-updated'], ['appid', 'configkey']);
 
-	}
-
-	private function assertRowExists($key, $value) {
-		$query = $this->conn->getQueryBuilder();
-		$result = $query->select('*')
-			->from('*PREFIX*appconfig')
-			->where($query->expr()->eq('configvalue', $query->createNamedParameter($value)))
-			->where($query->expr()->eq('configkey', $query->createNamedParameter($key)))
-			->execute();
-		$this->assertCount(1, $result->fetchAll());
 	}
 
 }
