@@ -496,11 +496,13 @@ trait BasicStructure {
 		$jsonExpectedDecoded = json_decode($jsonExpected->getRaw(), true);
 		$jsonRespondedEncoded = json_encode(json_decode($this->response->getBody(), true));
 		if ($this->runOcc(['status']) === 0) {
-			$output = preg_split("/[\s]+/", $this->lastStdOut);
-			$version = $output[6];
-			$versionString = $output[9];
-			$jsonExpectedDecoded['version'] = $version;
-			$jsonExpectedDecoded['versionstring'] = $versionString;
+			$output = explode("- ", $this->lastStdOut);
+			$version = explode(": ", $output[2]);
+			PHPUnit_Framework_Assert::assertEquals("version", $version[0]);
+			$versionString = explode(": ", $output[3]);
+			PHPUnit_Framework_Assert::assertEquals("versionstring", $versionString[0]);
+			$jsonExpectedDecoded['version'] = trim($version[1]);
+			$jsonExpectedDecoded['versionstring'] = trim($versionString[1]);
 			$jsonExpectedEncoded = json_encode($jsonExpectedDecoded);
 		} else {
 			PHPUnit_Framework_Assert::fail('Cannot get version variables from occ');
