@@ -35,6 +35,7 @@ class TrashbinPage extends FilesPageBasic {
 	protected $fileNamesXpath = "//span[contains(@class,'nametext')]";
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-trashbin']//tbody[@id='fileList']";
+	protected $emptyContentXpath = ".//div[@id='app-content-trashbin']//*[@id='emptycontent']";
 
 	/**
 	 * @return string
@@ -55,5 +56,12 @@ class TrashbinPage extends FilesPageBasic {
 	 */
 	protected function getFileNameMatchXpath() {
 		return $this->fileNameMatchXpath;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getEmptyContentXpath() {
+		return $this->emptyContentXpath;
 	}
 }

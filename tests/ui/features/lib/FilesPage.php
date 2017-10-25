@@ -38,6 +38,7 @@ class FilesPage extends FilesPageBasic {
 	//we need @id='app-content-files' because id='fileList' is used multiple times
 	//see https://github.com/owncloud/core/issues/27870
 	protected $fileListXpath = ".//div[@id='app-content-files']//tbody[@id='fileList']";
+	protected $emptyContentXpath = ".//div[@id='app-content-files']//div[@id='emptycontent']";
 	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
 	protected $newFolderButtonXpath = './/div[contains(@class, "newFileMenu")]//a[@data-templatename="New folder"]';
 	protected $newFolderNameInputLabel = 'New folder';
@@ -63,6 +64,13 @@ class FilesPage extends FilesPageBasic {
 	 */
 	protected function getFileNameMatchXpath() {
 		return $this->fileNameMatchXpath;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getEmptyContentXpath() {
+		return $this->emptyContentXpath;
 	}
 
 	/**
