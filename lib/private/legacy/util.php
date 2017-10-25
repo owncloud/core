@@ -388,10 +388,15 @@ class OC_Util {
 	 *
 	 * @param String $userId
 	 * @param \OCP\Files\Folder $userDirectory
+	 * @throws \OC\HintException
 	 */
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
 
 		$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
+
+		if (!is_dir($skeletonDirectory))  {
+			throw new \OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
+		}
 
 		if (!empty($skeletonDirectory)) {
 			\OCP\Util::writeLog(
