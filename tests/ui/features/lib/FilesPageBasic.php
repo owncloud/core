@@ -32,11 +32,6 @@ use Behat\Mink\Session;
  */
 abstract class FilesPageBasic extends OwnCloudPage {
 
-	/**
-	 *
-	 * @var string $path
-	 */
-	protected $emptyContentXpath = ".//*[@id='emptycontent']";
 	protected $fileActionMenuBtnXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
@@ -61,6 +56,11 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 * @return string
 	 */
 	abstract protected function getFileNameMatchXpath();
+
+	/**
+	 * @return string
+	 */
+	abstract protected function getEmptyContentXpath();
 
 	/**
 	 * @return int the number of files and folders listed on the page
@@ -323,16 +323,17 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
-			if ($fileList !== null
-				&& $fileList->isVisible()
-			) {
-				if ($fileList->has("xpath", "//a")) {
+
+			if ($fileList !== null) {
+				if ($fileList->isVisible()
+					&& $fileList->has("xpath", "//a")
+				) {
 					break;
 				}
 
 				$emptyContentElement = $this->find(
 					"xpath",
-					$this->emptyContentXpath
+					$this->getEmptyContentXpath()
 				);
 
 				if ($emptyContentElement !== null) {
