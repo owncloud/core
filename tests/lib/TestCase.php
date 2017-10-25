@@ -43,6 +43,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	/** @var bool */
 	static private $wasDatabaseAllowed = false;
 
+	/** @var string */
+	static private $lastTest = '';
+
 	/** @var array */
 	protected $services = [];
 
@@ -127,6 +130,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() {
+		// store testname in static attr for use in class teardown
+		self::$lastTest = get_class($this) . ':' . $this->getName();
+
 		// restore database connection
 		if (!$this->IsDatabaseAccessAllowed()) {
 			\OC::$server->registerService('DatabaseConnection', function () {
@@ -212,6 +218,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	public static function tearDownAfterClass() {
+		// fail if still in a transaction after test run
+		if(self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()->inTransaction()) {
+			// Right now we have no way to fail and continue - so throw exception with the bad test case
+			throw new \RuntimeException('Stray transaction detected: last test executed: '.self::$lastTest);
+		}
+
 		if (!self::$wasDatabaseAllowed && self::$realDatabase !== null) {
 			// in case an error is thrown in a test, PHPUnit jumps straight to tearDownAfterClass,
 			// so we need the database again
