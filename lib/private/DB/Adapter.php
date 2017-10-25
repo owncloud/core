@@ -121,11 +121,11 @@ class Adapter {
 	 * Inserts, or updates a row into the database. Returns the inserted or updated rows
 	 * @param $table string table name including **PREFIX**
 	 * @param $input array the key=>value pairs to insert into the db row
-	 * @param $compare array columns that should be compared
+	 * @param $compare array columns that should be compared to look for existing arrays
 	 * @return int the number of rows affected by the operation
 	 * @throws DriverException|\RuntimeException
 	 */
-	public function upsert($table, $input, $compare = null) {
+	public function upsert($table, $input, $compare) {
 
 		$this->conn->beginTransaction();
 		$done = false;
@@ -143,16 +143,16 @@ class Adapter {
 		}
 		foreach($compare as $key) {
 			if (is_null($input[$key])) {
-				$qbu->where($qbu->expr()->isNull($key));
+				$qbu->andWhere($qbu->expr()->isNull($key));
 			} else {
 				if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
-					$qbu->where(
+					$qbu->andWhere(
 						$qbu->expr()->eq(
 							// needs to cast to char in order to compare with char
-							$qbu->createFunction('to_char(`'.$key.'`)'),
+							$qbu->createFunction('to_char(`'.$key.'`)'), // TODO does this handle empty strings on oracle correclty
 							$qbu->expr()->literal($input[$key])));
 				} else {
-					$qbu->where(
+					$qbu->andWhere(
 						$qbu->expr()->eq(
 							$key,
 							$qbu->expr()->literal($input[$key])));
@@ -187,6 +187,7 @@ class Adapter {
 					continue;
 				} else {
 					// We should catch other exceptions up the stack
+					$this->conn->rollBack();
 					throw $e;
 				}
 			}
@@ -213,7 +214,7 @@ class Adapter {
 		if ($count === $maxTry) {
 			$params = implode(',', $input);
 			$updateQuery = $qbu->getSQL();
-			$insertQuery = isset($qbi) ? $qbi->getSQL() : "N/A";
+			$insertQuery = $qbi->getSQL();
 			throw new \RuntimeException("DB upsert failed after $count attempts. UpdateQuery: $updateQuery InsertQuery: $insertQuery");
 		}
 
