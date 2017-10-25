@@ -220,8 +220,18 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	public static function tearDownAfterClass() {
 		// fail if still in a transaction after test run
 		if(self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()->inTransaction()) {
-			// Right now we have no way to fail and continue - so throw exception with the bad test case
-			throw new \RuntimeException('Stray transaction detected: last test executed: '.self::$lastTest);
+			// This is bad. But we cannot fail the unit test since we are already
+			// outside of it. We cannot throw an exception since this hides
+			// potentially the real cause of this issue. So let's just output
+			// something to the console so it is apparent.
+			echo 'Stray transaction after test: ' . self::$lastTest;
+			// attempt to reset it so you can continue running testing unaffected
+			try {
+				\OC::$server->getDatabaseConnection()->commit();
+			} catch (\Exception $e) {}
+			try {
+				\OC::$server->getDatabaseConnection()->rollBack();
+			} catch (\Exception $e) {}
 		}
 
 		if (!self::$wasDatabaseAllowed && self::$realDatabase !== null) {
