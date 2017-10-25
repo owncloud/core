@@ -417,6 +417,9 @@ class Session implements IUserSession, Emitter {
 				\OC::$server->getLogger()->warning(
 					'Skeleton not created due to missing write permission'
 				);
+			} catch(\OC\HintException $hintEx) {
+				// only if Skeleton no existing Dir
+				\OC::$server->getLogger()->error($hintEx->getMessage());
 			}
 
 			// trigger any other initialization
@@ -829,7 +832,7 @@ class Session implements IUserSession, Emitter {
 			try {
 				$this->tokenProvider->invalidateToken($this->session->getId());
 			} catch (SessionNotAvailableException $ex) {
-				
+
 			}
 		}
 		$this->setUser(null);
