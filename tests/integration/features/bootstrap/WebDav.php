@@ -488,6 +488,48 @@ trait WebDav {
 		return $response;
 	}
 
+	public function listVersionFolder($user, $path, $folderDepth, $properties = null) {
+		$client = $this->getSabreClient($user);
+		if (!$properties) {
+			$properties = [
+				'{DAV:}getetag'
+			];
+		}
+
+		try {
+			$response = $client->propfind($this->makeSabrePathNotForFiles($path), $properties, $folderDepth);
+		} catch (Sabre\HTTP\ClientHttpException $e) {
+			$response = $e->getResponse();
+		}
+		return $response;
+	}
+
+	/**
+	 * @Then the version folder of file :path for user :user contains :count elements
+	 * @param $path
+	 * @param $count
+	 * @param $user
+	 */
+	public function theVersionFolderOfFileContainsElements($path, $user, $count) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$elements = $this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1);
+		PHPUnit_Framework_Assert::assertEquals($count, count($elements)-1);
+	}
+
+	/**
+	 * @Then the content length of file :path with version index :index for user :user in versions folder is :length
+	 * @param $path
+	 * @param $index
+	 * @param $user
+	 * @param $length
+	 */
+	public function theContentLengthOfFileForUserInVersionsFolderIs($path, $index, $user, $length) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$elements = $this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1, ['{DAV:}getcontentlength']);
+		$elements = array_values($elements);
+		PHPUnit_Framework_Assert::assertEquals($length, $elements[1]['{DAV:}getcontentlength']);
+	}
+
 	/* Returns the elements of a report command
 	 * @param string $user
 	 * @param string $path
