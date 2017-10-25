@@ -6,15 +6,21 @@ Feature: renameFiles
 		And I am on the files page
 
 	Scenario Outline: Rename a file using special characters
-		When I rename the file "lorem.txt" to <to_file_name>
-		Then the file <to_file_name> should be listed
+		When I rename the following file to
+			|from-name-parts |to-name-parts  |
+			|lorem.txt       |<to_file_name> |
+		Then the following file should be listed
+			|name-parts     |
+			|<to_file_name> |
 		And the files page is reloaded
-		Then the file <to_file_name> should be listed
+		Then the following file should be listed
+			|name-parts     |
+			|<to_file_name> |
 		Examples:
-		|to_file_name    |
-		|'लोरेम।तयक्स्त? $%#&@' |
-		|'"quotes1"'     |
-		|"'quotes2'"     |
+		|to_file_name |
+		|लोरेम।तयक्स्त? $%#&@ |
+		|"quotes1"    |
+		|'quotes2'    |
 
 	Scenario Outline: Rename a file that has special characters in its name
 		When I rename the file <from_name> to <to_name>
@@ -32,7 +38,9 @@ Feature: renameFiles
 		Then the file "लोरेम।तयक्स्त $%&" should be listed
 		When I rename the file "लोरेम।तयक्स्त $%&" to '"double"quotes.txt'
 		And the files page is reloaded
-		Then the file '"double"quotes.txt' should be listed
+		Then the following file should be listed
+			|name-parts         |
+			|"double"quotes.txt |
 		When I rename the file '"double"quotes.txt' to "no-double-quotes.txt"
 		And the files page is reloaded
 		Then the file "no-double-quotes.txt" should be listed

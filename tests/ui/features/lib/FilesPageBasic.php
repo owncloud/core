@@ -100,17 +100,22 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		$this->scrollToPosition('#' . $this->appContentId, 0, $session);
 
 		if (is_array($name)) {
-			// Concatenating separate parts of the file name allows
-			// some parts to contain single quotes and the others to contain
-			// double quotes.
-			$comma = '';
-			$xpathString = "concat(";
+			if (count($name) === 1) {
+				$xpathString = $this->quotedText($name[0]);
+			} else {
+				// Concatenating separate parts of the file name allows
+				// some parts to contain single quotes and the others to contain
+				// double quotes.
+				$comma = '';
+				$xpathString = "concat(";
 
-			foreach ($name as $nameComponent) {
-				$xpathString .= $comma . $this->quotedText($nameComponent);
-				$comma = ',';
+				foreach ($name as $nameComponent) {
+					$xpathString .= $comma . $this->quotedText($nameComponent);
+					$comma = ',';
+				}
+				$xpathString .= ")";
 			}
-			$xpathString .= ")";
+
 			$name = implode($name);
 		} else {
 			$xpathString = $this->quotedText($name);
