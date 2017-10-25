@@ -125,6 +125,7 @@ class Adapter {
 	 * @throws DriverException|\RuntimeException
 	 */
 	public function upsert($table, $input, $compare = null) {
+
 		$this->conn->beginTransaction();
 		$done = false;
 
