@@ -65,3 +65,14 @@ Feature: delete
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
 		But the deleted elements should be listed in the trashbin
+
+	Scenario: Delete an empty folder
+		When I create a folder with the name "my-empty-folder"
+		And I create a folder with the name "my-other-empty-folder"
+		And I delete the folder "my-empty-folder"
+		Then the folder "my-other-empty-folder" should be listed
+		But the folder "my-empty-folder" should not be listed
+		And the folder "my-empty-folder" should be listed in the trashbin
+		But the folder "my-other-empty-folder" should not be listed in the trashbin
+		When I open the trashbin folder "my-empty-folder"
+		Then there are no files/folders listed

@@ -49,7 +49,7 @@ class FileRow extends OwnCloudPage {
 	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
 	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
 	protected $thumbnailXpath = "//*[@class='thumbnail']";
-	protected $fileLinkXpath = "//span[@class='nametext']";
+	protected $fileLinkXpath = "//span[contains(@class,'nametext')]";
 
 	/**
 	 * sets the NodeElement for the current file row

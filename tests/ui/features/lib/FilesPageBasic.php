@@ -32,11 +32,6 @@ use Behat\Mink\Session;
  */
 abstract class FilesPageBasic extends OwnCloudPage {
 
-	/**
-	 *
-	 * @var string $path
-	 */
-	protected $emptyContentXpath = ".//*[@id='emptycontent']";
 	protected $fileActionMenuBtnXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
@@ -61,6 +56,11 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 * @return string
 	 */
 	abstract protected function getFileNameMatchXpath();
+
+	/**
+	 * @return string
+	 */
+	abstract protected function getEmptyContentXpath();
 
 	/**
 	 * @return int the number of files and folders listed on the page
@@ -100,17 +100,22 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		$this->scrollToPosition('#' . $this->appContentId, 0, $session);
 
 		if (is_array($name)) {
-			// Concatenating separate parts of the file name allows
-			// some parts to contain single quotes and the others to contain
-			// double quotes.
-			$comma = '';
-			$xpathString = "concat(";
+			if (count($name) === 1) {
+				$xpathString = $this->quotedText($name[0]);
+			} else {
+				// Concatenating separate parts of the file name allows
+				// some parts to contain single quotes and the others to contain
+				// double quotes.
+				$comma = '';
+				$xpathString = "concat(";
 
-			foreach ($name as $nameComponent) {
-				$xpathString .= $comma . $this->quotedText($nameComponent);
-				$comma = ',';
+				foreach ($name as $nameComponent) {
+					$xpathString .= $comma . $this->quotedText($nameComponent);
+					$comma = ',';
+				}
+				$xpathString .= ")";
 			}
-			$xpathString .= ")";
+
 			$name = implode($name);
 		} else {
 			$xpathString = $this->quotedText($name);
@@ -323,16 +328,17 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
-			if ($fileList !== null
-				&& $fileList->isVisible()
-			) {
-				if ($fileList->has("xpath", "//a")) {
+
+			if ($fileList !== null) {
+				if ($fileList->isVisible()
+					&& $fileList->has("xpath", "//a")
+				) {
 					break;
 				}
 
 				$emptyContentElement = $this->find(
 					"xpath",
-					$this->emptyContentXpath
+					$this->getEmptyContentXpath()
 				);
 
 				if ($emptyContentElement !== null) {
