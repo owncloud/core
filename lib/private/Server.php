@@ -100,7 +100,7 @@ use OC\Files\External\Service\UserStoragesService;
 use OC\Files\External\Service\UserGlobalStoragesService;
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\Service\DBConfigService;
-use OC\Http\Client\WebdavClientService;
+use OC\Http\Client\WebDavClientService;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -501,10 +501,10 @@ class Server extends ServerContainer implements IServerContainer {
 				new \OC\Security\CertificateManager($uid, new View(), $c->getConfig())
 			);
 		});
-		$this->registerService('WebdavClientService', function (Server $c) {
+		$this->registerService('WebDavClientService', function (Server $c) {
 			$user = \OC_User::getUser();
 			$uid = $user ? $user : null;
-			return new WebdavClientService(
+			return new WebDavClientService(
 				$c->getConfig(),
 				new \OC\Security\CertificateManager($uid, new View(), $c->getConfig())
 			);
@@ -1285,10 +1285,10 @@ class Server extends ServerContainer implements IServerContainer {
 	/**
 	 * Returns an instance of the Webdav client service
 	 *
-	 * @return \OCP\Http\Client\IWebdavClientService
+	 * @return \OCP\Http\Client\IWebDavClientService
 	 */
-	public function getWebdavClientService() {
-		return $this->query('WebdavClientService');
+	public function getWebDavClientService() {
+		return $this->query('WebDavClientService');
 	}
 
 	/**
