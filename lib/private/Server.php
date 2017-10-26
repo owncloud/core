@@ -101,6 +101,7 @@ use OC\Files\External\Service\UserGlobalStoragesService;
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\Service\DBConfigService;
 use OC\Http\Client\WebdavClientService;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Server
@@ -321,6 +322,10 @@ class Server extends ServerContainer implements IServerContainer {
 			$userSession->listen('\OC\User', 'postLogin', function ($user, $password) {
 				/** @var $user \OC\User\User */
 				\OC_Hook::emit('OC_User', 'post_login', ['run' => true, 'uid' => $user->getUID(), 'password' => $password]);
+			});
+			$userSession->listen('\OC\User', 'preLogout', function () {
+				$event = new GenericEvent(null, []);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\Session::pre_logout', $event);
 			});
 			$userSession->listen('\OC\User', 'logout', function () {
 				\OC_Hook::emit('OC_User', 'logout', []);

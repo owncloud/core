@@ -57,6 +57,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -821,8 +822,21 @@ class Session implements IUserSession, Emitter {
 
 	/**
 	 * logout the user from the session
+	 *
+	 * @return bool
 	 */
 	public function logout() {
+
+		$event = new GenericEvent(null, ['cancel' => false]);
+		$eventDispatcher = \OC::$server->getEventDispatcher();
+		$eventDispatcher->dispatch('\OC\User\Session::pre_logout', $event);
+
+		$this->manager->emit('\OC\User', 'preLogout');
+
+		if ($event['cancel'] === true) {
+			return true;
+		}
+
 		$this->manager->emit('\OC\User', 'logout');
 		$user = $this->getUser();
 		if (!is_null($user)) {
