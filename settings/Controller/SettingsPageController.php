@@ -107,6 +107,29 @@ class SettingsPageController extends Controller {
 	}
 
 	/**
+	 * Gets the icon for the settings panel. The idea is
+	 * to get either URL or the icon name ( for backward
+	 * compatibility ). The icons returned will be svg
+	 * format and no other formats are supported.
+	 *
+	 * @param \OCP\Settings\ISection $section
+	 * @return string
+	 */
+
+	protected function getIconForSettingsPanel($section) {
+		$icon = $section->getIconName() . '.svg';
+		$appPath = \OC_App::getAppPath($section->getID());
+
+		if (file_exists($appPath . '/img/' . $icon)) {
+			$icon = $this->urlGenerator->imagePath($section->getID(), $icon);
+		} else {
+			$icon = $section->getIconName();
+		}
+
+		return $icon;
+	}
+
+	/**
 	 * Gets an array used to generate the navigation in the UI
 	 * @param array $sections array of ISections
 	 * @param string $currentSectionID
@@ -117,6 +140,9 @@ class SettingsPageController extends Controller {
 		$nav = [];
 		// Iterate through sections and get id, name and see if currently active
 		foreach($sections as $section) {
+
+			$icon = $this->getIconForSettingsPanel($section);
+
 			$nav[] = [
 				'id' => $section->getID(),
 				'link' => $this->urlGenerator->linkToRoute(
@@ -125,7 +151,7 @@ class SettingsPageController extends Controller {
 				),
 				'name' => ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
-				'icon' => $section->getIconName()
+				'icon' => $icon
 			];
 		}
 		return $nav;
