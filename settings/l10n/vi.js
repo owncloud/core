@@ -2,6 +2,8 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "Lỗi xác thực",
+    "%s password changed successfully" : "%smật khẩu đã được thay đổi thành công",
+    "Couldn't send reset email. Please contact your administrator." : "Không thể gửi email đặt lại. Vui lòng liên hệ với quản trị viên của bạn.",
     "Saved" : "Đã lưu",
     "Email sent" : "Email đã được gửi",
     "Your full name has been changed." : "Họ và tên đã được thay đổi.",
