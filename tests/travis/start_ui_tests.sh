@@ -203,6 +203,21 @@ else
 	PASSED=false
 fi
 
+if [ "$PASSED" = false ]
+then
+	PASSED=true
+	FAILED_FEATURES=`awk '/Failed scenarios:/',0 $TEST_LOG_FILE | grep feature`
+	for FEATURE in $FAILED_FEATURES
+		do
+			echo rerun failed tests: $FEATURE
+			lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
+			if [ ${PIPESTATUS[0]} -ne 0 ]
+			then
+				PASSED=false
+			fi
+		done
+fi
+
 if [ "$BEHAT_TAGS_OPTION_FOUND" != true ]
 then
 	# The behat run above specified to skip scenarios tagged @skip
