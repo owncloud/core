@@ -1,5 +1,8 @@
 @insulated
-Feature: moveFiles
+Feature: move Files
+As a user
+I want to move files
+So that I can organise my data structure
 
 	Background:
 		Given a regular user exists

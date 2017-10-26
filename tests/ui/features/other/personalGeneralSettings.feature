@@ -1,5 +1,8 @@
 @insulated
 Feature: personalGeneralSettings
+As a user
+I want to change the ownCloud User Interface to my preferred settings
+So that I can personalise the User Interface
 
 	Scenario: change language
 		Given a regular user exists
