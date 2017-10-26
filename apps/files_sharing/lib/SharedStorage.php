@@ -99,16 +99,31 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 		}
 		$this->initialized = true;
 		try {
+			if (Filesystem::$debug) {
+				$share = $this->groupedShares[0];
+				$info = [
+					'groupedShares' => count($this->groupedShares),
+					'shareId' => $share->getId(),
+					'shareOwner' => $share->getShareOwner(),
+					'shareType' => $share->getShareType(),
+					'sharedWith' => $share->getSharedWith(),
+					'fileid' => $share->getNodeId()
+				];
+				\OCP\Util::writeLog('DEBUG', 'SharedStorage::init: ' . json_encode($info), \OCP\Util::DEBUG);
+			}
 			Filesystem::initMountPoints($this->superShare->getShareOwner());
 			$sourcePath = $this->ownerView->getPath($this->superShare->getNodeId(), false);
+
 			list($this->sourceStorage, $sourceInternalPath) = $this->ownerView->resolvePath($sourcePath);
 			$this->sourceRootInfo = $this->sourceStorage->getCache()->get($sourceInternalPath);
 			// adjust jail
 			$this->rootPath = $sourceInternalPath;
 		} catch (NotFoundException $e) {
 			// original file not accessible or deleted, set FailedStorage
+			\OCP\Util::writeLog('DEBUG', 'SharedStorage::init: NotFoundException', \OCP\Util::DEBUG);
 			$this->sourceStorage = new FailedStorage(['exception' => $e]);
 		} catch (NoUserException $e) {
+			\OCP\Util::writeLog('DEBUG', 'SharedStorage::init: NoUserException', \OCP\Util::DEBUG);
 			// sharer user deleted, set FailedStorage
 			$this->sourceStorage = new FailedStorage(['exception' => $e]);
 		} catch (\Exception $e) {

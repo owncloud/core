@@ -146,6 +146,26 @@ class SharedMount extends MountPoint implements MoveableMount {
 
 		$i = 2;
 		while ($view->file_exists($path) || $mountpointExists($path)) {
+			// output debug info for range of 2 and 5 in case there is useful info, no point in logging higher values
+			if (Filesystem::$debug && $i >= 2 && $i <= 5) {
+				\OCP\Util::writeLog('DEBUG', 'bad while: $i=' . $i, \OCP\Util::DEBUG);
+				\OCP\Util::writeLog('DEBUG', 'bad while: file_exists for "' . $path . '" : ' . $view->file_exists($path), \OCP\Util::DEBUG);
+				\OCP\Util::writeLog('DEBUG', 'bad while: mountpointExists for "' . $path . '" : ' . $mountpointExists($path), \OCP\Util::DEBUG);
+				$ms = [];
+				foreach ($mountpoints as $mountpoint) {
+					$share = $mountpoint->getShare();
+					$m = [
+						'class' => get_class($mountpoint),
+						'mountpoint' => $mountpoint->getMountPoint(),
+						'storageRootId' => $mountpoint->getStorageRootId(),
+						'shareId' => $share->getId(),
+						'shareOwner' => $share->getShareOwner(),
+						'sharedWith' => $share->getSharedWith(),
+					];
+					$ms[] = $m;
+				}
+				\OCP\Util::writeLog('DEBUG', 'mount points: ' . json_encode($ms), \OCP\Util::DEBUG);
+			}
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
 		}

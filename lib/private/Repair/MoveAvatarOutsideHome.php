@@ -104,6 +104,8 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	private function moveAvatars(IOutput $out, IUser $user) {
 		$userId = $user->getUID();
 
+		\OCP\Util::writeLog('DEBUG', 'moving avatars for user: ' . $userId, \OCP\Util::DEBUG);
+		\OC\Files\Filesystem::$debug = true;
 		\OC\Files\Filesystem::initMountPoints($userId);
 
 		// call get instead of getUserFolder to avoid needless skeleton copy
@@ -123,6 +125,7 @@ class MoveAvatarOutsideHome implements IRepairStep {
 		}
 
 		\OC_Util::tearDownFS();
+		\OC\Files\Filesystem::$debug = false;
 	}
 
 	/**
