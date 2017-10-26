@@ -2,6 +2,8 @@ workspace:
   base: /drone
   path: src
 
+branches: [master, stable10, stable9.1, stable9]
+
 clone:
   git:
     image: plugins/git
@@ -19,7 +21,6 @@ pipeline:
       - ./tests/drone/test-coverage.sh
     when:
       event: [push, pull_request]
-      branch: [master, stable10, stable9.1, stable9]
       matrix:
         TEST_SUITE: coverage
 
@@ -31,7 +32,6 @@ pipeline:
      - tests/autotest-clover-${DB_TYPE}.xml
     when:
       event: [push, pull_request]
-      branch: [master, stable10, stable9.1, stable9]
       matrix:
         TEST_SUITE: coverage
 
