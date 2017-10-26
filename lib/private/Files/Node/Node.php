@@ -424,4 +424,8 @@ class Node implements \OCP\Files\Node {
 			throw new NotPermittedException('No permission to move to path ' . $targetPath);
 		}
 	}
+
+	public function getView() {
+		return $this->view;
+	}
 }
