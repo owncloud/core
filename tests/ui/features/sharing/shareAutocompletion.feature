@@ -1,11 +1,13 @@
 @insulated
-Feature: Sharee - autocompletion
+Feature: Share names - Autocompletion
+As a user
+I want to share files, with minimal typing, to the right people or groups
+So that I can efficiently share my files with other users or groups
 
 	Background:
 		Given regular users exist
 		And a regular user exists
 		And regular groups exist
-		And a regular group exists
 		And I am logged in as a regular user
 		And I am on the files page
 		

@@ -1,5 +1,8 @@
 @insulated
 Feature: renameFolders
+As a user
+I want to rename folders
+So that I can organise my data structure
 
 	Background:
 		Given a regular user exists
