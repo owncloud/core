@@ -141,7 +141,7 @@ class Adapter {
 			->setParameter($col, $val);
 		}
 		foreach($compare as $key) {
-			if (is_null($input[$key])) {
+			if (is_null($input[$key]) || ($input[$key] === '' && $this->conn->getDatabasePlatform() instanceof OraclePlatform)) {
 				$qbu->andWhere($qbu->expr()->isNull($key));
 			} else {
 				if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
