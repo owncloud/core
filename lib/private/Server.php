@@ -100,6 +100,7 @@ use OC\Files\External\Service\UserStoragesService;
 use OC\Files\External\Service\UserGlobalStoragesService;
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\Service\DBConfigService;
+use OC\Http\Client\WebDavClientService;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -275,6 +276,10 @@ class Server extends ServerContainer implements IServerContainer {
 			return new \OC\Authentication\Token\DefaultTokenProvider($mapper, $crypto, $config, $logger, $timeFactory);
 		});
 		$this->registerAlias('OC\Authentication\Token\IProvider', 'OC\Authentication\Token\DefaultTokenProvider');
+		$this->registerService('TimeFactory', function() {
+			return new TimeFactory();
+		});
+		$this->registerAlias('OCP\AppFramework\Utility\ITimeFactory', 'TimeFactory');
 		$this->registerService('UserSession', function (Server $c) {
 			$manager = $c->getUserManager();
 			$session = new \OC\Session\Memory('');
@@ -492,6 +497,14 @@ class Server extends ServerContainer implements IServerContainer {
 			$user = \OC_User::getUser();
 			$uid = $user ? $user : null;
 			return new ClientService(
+				$c->getConfig(),
+				new \OC\Security\CertificateManager($uid, new View(), $c->getConfig())
+			);
+		});
+		$this->registerService('WebDavClientService', function (Server $c) {
+			$user = \OC_User::getUser();
+			$uid = $user ? $user : null;
+			return new WebDavClientService(
 				$c->getConfig(),
 				new \OC\Security\CertificateManager($uid, new View(), $c->getConfig())
 			);
@@ -1270,6 +1283,15 @@ class Server extends ServerContainer implements IServerContainer {
 	}
 
 	/**
+	 * Returns an instance of the Webdav client service
+	 *
+	 * @return \OCP\Http\Client\IWebDavClientService
+	 */
+	public function getWebDavClientService() {
+		return $this->query('WebDavClientService');
+	}
+
+	/**
 	 * Create a new event source
 	 *
 	 * @return \OCP\IEventSource
@@ -1521,5 +1543,12 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getThemeService() {
 		return $this->query('\OCP\Theme\IThemeService');
+	}
+
+	/**
+	 * @return ITimeFactory
+	 */
+	public function getTimeFactory() {
+		return $this->query('\OCP\AppFramework\Utility\ITimeFactory');
 	}
 }

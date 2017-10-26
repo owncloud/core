@@ -222,16 +222,32 @@ Feature: federated
 		And as an "user0"
 		And etag of element "/PARENT" of user "user0" has changed
 
-	@local_storage
 	Scenario: Upload file to received federated share while quota is set on home storage
 		Given using server "REMOTE"
+		And as an "admin"
 		And user "user1" exists
+		And user "user1" has a quota of "20 B"
 		And using server "LOCAL"
 		And user "user0" exists
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/textfile.txt" to "/PARENT/testquota.txt" with all mechanisms
+		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "201"
-		And as "user0" the file "/PARENT/textquota.txt" exists
+		And using server "LOCAL"
+		And as "user0" the file "/PARENT (2)/textquota.txt" exists
+
+	Scenario: Upload file to received federated share while quota is set on remote storage
+		Given using server "REMOTE"
+		And as an "admin"
+		And user "user1" exists
+		And using server "LOCAL"
+		And as an "admin"
+		And user "user0" exists
+		And user "user0" has a quota of "20 B"
+		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
+		And user "user1" from server "REMOTE" accepts last pending share
+		And using server "REMOTE"
+		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms
+		Then the HTTP status code of all upload responses should be "507"
 
