@@ -1,5 +1,8 @@
 @insulated
 Feature: renameFolders
+As a user
+I want to rename folders
+So that I can organise my data structure
 
 	Background:
 		Given a regular user exists
@@ -99,4 +102,3 @@ Feature: renameFolders
 	Scenario: Rename a folder to .part
 		When I rename the folder "simple-folder" to "simple.part"
 		Then near the folder "simple-folder" a tooltip with the text '"simple.part" has a forbidden file type/extension.' should be displayed
-

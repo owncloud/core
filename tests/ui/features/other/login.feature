@@ -1,10 +1,26 @@
 @insulated
-Feature: login
+Feature: login users
+As a user
+I want to be able to log into my account
+So that I have access to my files
+
+As an admin
+I want only authorised users to log in
+So that unauthorised access is impossible
 
 	Scenario: simple user login
 		Given a regular user exists
 		And I am on the login page
 		When I login as a regular user with a correct password
+		Then I should be redirected to a page with the title "Files - ownCloud"
+	
+	Scenario: create simple user
+		Given a regular user exists
+		And I am logged in as admin
+		And I am on the users page
+		When I create a user with the name "guiusr1" and the password "pwd"
+		And I logout
+		And I login with username "guiusr1" and password "pwd"
 		Then I should be redirected to a page with the title "Files - ownCloud"
 
 	Scenario: admin login
