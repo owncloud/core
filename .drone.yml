@@ -101,6 +101,19 @@ pipeline:
       matrix:
         TEST_SUITE: phpunit
 
+  phpunit:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    group: test
+    environment:
+      - PHP_VERSION=${PHP_VERSION}
+      - DB_TYPE=${DB_TYPE}
+    commands:
+      - ./tests/drone/test-phpunit.sh
+    when:
+      matrix:
+        TEST_SUITE: phpunit
+
 services:
   mariadb:
     image: mariadb:10.3
@@ -146,73 +159,73 @@ services:
 
 matrix:
   include:
-#    # PHP 5.6
-#    - PHP_VERSION: 5.6
-#      DB_TYPE: sqlite
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 5.6
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 5.6
-#      DB_TYPE: mysql
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 5.6
-#      DB_TYPE: postgres
-#      TEST_SUITE: phpunit
-#    # - PHP_VERSION: 5.6
-#    #   DB_TYPE: oracle
-#    #   TEST_SUITE: phpunit
-#
-#    # PHP 7.0
-#    - PHP_VERSION: 7.0
-#      DB_TYPE: sqlite
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.0
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.0
-#      DB_TYPE: mysql
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.0
-#      DB_TYPE: postgres
-#      TEST_SUITE: phpunit
-#    # - PHP_VERSION: 7.0
-#    #   DB_TYPE: oracle
-#    #   TEST_SUITE: phpunit
-#
-#    # PHP 7.1
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: sqlite
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: mysql
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: postgres
-#      TEST_SUITE: phpunit
-#    # - PHP_VERSION: 7.1
-#    #   DB_TYPE: oracle
-#    #   TEST_SUITE: phpunit
-#
-#    # PHP 7.2
-#    - PHP_VERSION: 7.2
-#      DB_TYPE: sqlite
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.2
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.2
-#      DB_TYPE: mysql
-#      TEST_SUITE: phpunit
-#    - PHP_VERSION: 7.2
-#      DB_TYPE: postgres
-#      TEST_SUITE: phpunit
-#    # - PHP_VERSION: 7.2
-#    #   DB_TYPE: oracle
-#    #   TEST_SUITE: phpunit
+    # PHP 5.6
+    #- PHP_VERSION: 5.6
+    #  DB_TYPE: sqlite
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 5.6
+    #  DB_TYPE: mariadb
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 5.6
+    #  DB_TYPE: mysql
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 5.6
+    #  DB_TYPE: postgres
+    #  TEST_SUITE: phpunit
+    # - PHP_VERSION: 5.6
+    #   DB_TYPE: oracle
+    #   TEST_SUITE: phpunit
+
+    # PHP 7.0
+    #- PHP_VERSION: 7.0
+    #  DB_TYPE: sqlite
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.0
+    #  DB_TYPE: mariadb
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.0
+    #  DB_TYPE: mysql
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.0
+    #  DB_TYPE: postgres
+    #  TEST_SUITE: phpunit
+    # - PHP_VERSION: 7.0
+    #   DB_TYPE: oracle
+    #   TEST_SUITE: phpunit
+
+    # PHP 7.1
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.1
+    #  DB_TYPE: mariadb
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.1
+    #  DB_TYPE: mysql
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.1
+    #  DB_TYPE: postgres
+    #  TEST_SUITE: phpunit
+    # - PHP_VERSION: 7.1
+    #   DB_TYPE: oracle
+    #   TEST_SUITE: phpunit
+
+    # PHP 7.2
+    #- PHP_VERSION: 7.2
+    #  DB_TYPE: sqlite
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.2
+    #  DB_TYPE: mariadb
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.2
+    #  DB_TYPE: mysql
+    #  TEST_SUITE: phpunit
+    #- PHP_VERSION: 7.2
+    #  DB_TYPE: postgres
+    #  TEST_SUITE: phpunit
+    # - PHP_VERSION: 7.2
+    #   DB_TYPE: oracle
+    #   TEST_SUITE: phpunit
 #
 #    # Integration
 #    - PHP_VERSION: 7.1
@@ -223,7 +236,3 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: coverage
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit

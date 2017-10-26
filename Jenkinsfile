@@ -9,16 +9,6 @@ timestampedNode('SLAVE') {
         checkout scm
         sh '''composer install'''
 
-    stage 'PHPUnit 7.1/sqlite'
-        executeAndReport('tests/autotest-results-sqlite.xml') {
-	        sh '''
-        	export NOCOVERAGE=1
-        	unset USEDOCKER
-        	phpenv local 7.1
-		make test-php TEST_DATABASE=sqlite
-        	'''
-	}
-
     stage 'make dist'
         sh '''
         phpenv local 5.6
@@ -26,7 +16,7 @@ timestampedNode('SLAVE') {
         '''
 
     stage 'phpunit/7.0/mysqlmb4'
-        executeAndReport('tests/autotest-results-sqlite.xml') {
+        executeAndReport('tests/autotest-results-mysqlmb4.xml') {
 	        sh '''
         	export NOCOVERAGE=1
         	unset USEDOCKER
