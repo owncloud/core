@@ -11,21 +11,15 @@ Feature: files
 		Then the filesactionmenu should be completely visible after clicking on it
 
 	Scenario Outline: Create a folder using special characters
-		When I create a folder with the following name
-			| name-parts      |
-			| <folder_name>   |
-		Then the following folder should be listed
-			| name-parts      |
-			| <folder_name>   |
+		When I create a folder with the name <folder_name>
+		Then the folder <folder_name> should be listed
 		And the files page is reloaded
-		Then the following folder should be listed
-			| name-parts      |
-			| <folder_name>   |
+		Then the folder <folder_name> should be listed
 		Examples:
 		|folder_name    |
-		|सिमप्ले फोल्देर $%#?&@|
-		|"somequotes1"|
-		|'somequotes2'|
+		|'सिमप्ले फोल्देर $%#?&@'|
+		|'"somequotes1"'|
+		|"'somequotes2'"|
 
 	Scenario: Create a folder inside another folder
 		When I create a folder with the name "top-folder"
