@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added support for eml mimetype - [#29204](https://github.com/owncloud/core/issues/29204)
 - Added "occ dav:cleanup-chunks" command to clean up expired uploads - [#29180](https://github.com/owncloud/core/issues/29180)
 - Added "occ files:scan" repair mode to repair mismatch filecache paths - [#29074](https://github.com/owncloud/core/issues/29074) [#29232](https://github.com/owncloud/core/issues/29232)
+- Added occ command to change/recreate master-key - [#29260](https://github.com/owncloud/core/issues/29260)
 - Detailed mode for "occ security:routes" - [#29095](https://github.com/owncloud/core/issues/29095)
 - Webdav property to retrieve a private link to files or folders - [#29041](https://github.com/owncloud/core/issues/29041)
 - CORS support for public API routes - [#28852](https://github.com/owncloud/core/issues/28852)
@@ -16,19 +17,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Display server name in admin page, don't show in status.php - [#28938](https://github.com/owncloud/core/issues/28938)
 - Validate public link mail on the client side - [#29042](https://github.com/owncloud/core/issues/29042)
 - Expose XHR response in share dialog autocomplete callback for extensions - [#29231](https://github.com/owncloud/core/issues/29231)
+- Let apps provide icons for settings sections - [#29358](https://github.com/owncloud/core/issues/29358)
+- Added cancellable prehooks for logout operation - [#29352](https://github.com/owncloud/core/issues/29352)
+- Markdown support for app descriptions in apps settings panel - [#29333](https://github.com/owncloud/core/issues/29333)
 
 ### Changed
-- Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048)
+- Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048) [#29316](https://github.com/owncloud/core/issues/29316)
 - Refactor set and reset of capabilities - [#29200](https://github.com/owncloud/core/issues/29200)
 - All amazon locations support v4 now - v3 deprecated - [#29153](https://github.com/owncloud/core/issues/29153)
 - Modified time value of files is now 64 bits long - [#28961](https://github.com/owncloud/core/issues/28961)
 - User names must now be at least 3 characters long - [#29237](https://github.com/owncloud/core/issues/29237)
+- AccountMapper get by email is now case insensitive - [#29341](https://github.com/owncloud/core/issues/29341)
 
-### Deprecated
 ### Removed
 - Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
 - Remove unused FTP code - [#29186](https://github.com/owncloud/core/issues/29186)
-- Remove app store related code obsoleted by market - [#29249](https://github.com/owncloud/core/issues/29249)
+- Remove app store related code obsoleted by market app - [#29249](https://github.com/owncloud/core/issues/29249)
 
 ### Fixed
 - Corrected namespace for OC\Memcache\ArrayCache which caused errors on some environments - [#29219](https://github.com/owncloud/core/issues/29219)
@@ -51,6 +55,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove alternate keys storage during user delete - [#29155](https://github.com/owncloud/core/issues/29155)
 - Fix error logs due to deletion of keys - [#28934](https://github.com/owncloud/core/issues/28934)
 - Fix encryption panel to properly detect current mode after upgrade to ownCloud 10 - [#29049](https://github.com/owncloud/core/issues/29049)
+- Fix quota check when uploading to federated shares - [#29325](https://github.com/owncloud/core/issues/29325)
+- Fix issue when mounting another encrypted ownCloud - [#29360](https://github.com/owncloud/core/issues/29360)
+- AccountMapper get by email is now case insensitive - [#29341](https://github.com/owncloud/core/issues/29341)
+- Fix order of apps to be deterministic during install process - [#29267](https://github.com/owncloud/core/issues/29267)
+- Only initiate connection to federated share when necessary - [#29314](https://github.com/owncloud/core/issues/29314)
+- Allow group named "0" to be deleted - [#29323](https://github.com/owncloud/core/issues/29323)
+- Do not translate CORS header in settings page - [#29313](https://github.com/owncloud/core/issues/29313)
+- Disable background scan for home storage/cache - [#29306](https://github.com/owncloud/core/issues/29306)
+- Fixed double escaping in full page error messages - [#29304](https://github.com/owncloud/core/issues/29304)
+- Updated davclient.js which fixes issue whenever an app extends Array prototype - [#29305](https://github.com/owncloud/core/issues/29305)
+- Fix OCS apps API to correctly include attributes into generated XML - [#29303](https://github.com/owncloud/core/issues/29303)
+- Make enum type mapping work with migrations - [#29268](https://github.com/owncloud/core/issues/29268)
+- Handle invalid storage when getting storage root id - [#29278](https://github.com/owncloud/core/issues/29278)
+- Fix storing/retrieval for dav properties of non files - [#29273](https://github.com/owncloud/core/issues/29273)
+- Remove double quotes from boolean values in status.php output - [#29271](https://github.com/owncloud/core/issues/29271)
+- Tidy code in DAV related classes - [#29272](https://github.com/owncloud/core/issues/29272)
 
 ## [10.0.3] - 2017-09-15
 ### Added
