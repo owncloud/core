@@ -1718,7 +1718,7 @@
 			urlSpec.x = Math.ceil(urlSpec.x);
 			urlSpec.y = Math.ceil(urlSpec.y);
 			urlSpec.forceIcon = 0;
-			var file = urlSpec.file;
+			var file = encodeURIComponent(urlSpec.file);
 			delete urlSpec.file;
 			urlSpec.preview = 1;
 

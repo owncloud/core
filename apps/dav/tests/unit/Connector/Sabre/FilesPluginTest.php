@@ -560,13 +560,17 @@ class FilesPluginTest extends TestCase {
 			->will($this->returnValue($isClumsyAgent));
 
 		$response
-			->expects($this->exactly(3))
+			->expects($this->exactly(2))
 			->method('addHeader')
 			->withConsecutive(
-				['Content-Disposition', $contentDispositionHeader],
 				['OC-Checksum', 'abcdefghijkl'],
 				['X-Accel-Buffering', 'no']
 			);
+
+		$response
+			->expects($this->once())
+			->method('setHeader')
+			->with('Content-Disposition', $contentDispositionHeader);
 
 		$this->plugin->httpGet($request, $response);
 	}

@@ -60,6 +60,8 @@ class PreviewPlugin extends ServerPlugin {
 	 * @param ResponseInterface $response
 	 * @return bool
 	 * @throws NotFound
+	 * @throws \Sabre\DAVACL\Exception\NeedPrivileges
+	 * @throws \Sabre\DAV\Exception\NotAuthenticated
 	 */
 	function httpGet(RequestInterface $request, ResponseInterface $response) {
 
@@ -87,7 +89,7 @@ class PreviewPlugin extends ServerPlugin {
 
 		if ($image = $fileNode->getThumbnail($queryParams)) {
 			if ($image === null || !$image->valid()) {
-				return false;
+				throw new NotFound();
 			}
 			$type = $image->mimeType();
 			if (!in_array($type, ['image/png', 'image/jpeg', 'image/gif'])) {
@@ -104,8 +106,11 @@ class PreviewPlugin extends ServerPlugin {
 
 			$response->setHeader('Content-Type', $type);
 			$response->setHeader('Content-Disposition', 'attachment');
-			$response->setStatus(200);
+			// cache 24h
+			$response->setHeader('Cache-Control', 'max-age=86400, must-revalidate');
+			$response->setHeader('Expires', gmdate ("D, d M Y H:i:s", time() + 86400) . " GMT");
 
+			$response->setStatus(200);
 			$response->setBody($imageData);
 
 			// Returning false to break the event chain
