@@ -24,8 +24,10 @@
 			'<span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
 			'{{#if mailNotificationEnabled}}  {{#unless isRemoteShare}}' +
 			'<span class="shareOption">' +
-			'<input id="mail-{{cid}}-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
-			'<label for="mail-{{cid}}-{{shareWith}}">{{notifyByMailLabel}}</label>' +
+			'{{#unless wasMailSent}}' +
+			'<span class="mailNotificationSpinner icon-loading-small hidden"></span>' +
+			'<input id="mail-{{cid}}-{{shareWith}}" type="button" name="mailNotification" value="{{notifyByMailLabel}}" class="mailNotification checkbox" />' +
+			'{{/unless}}' +
 			'</span>' +
 			'{{/unless}} {{/if}}' +
 			'{{#if isResharingAllowed}} {{#if sharePermissionPossible}}' +
@@ -287,7 +289,23 @@
 			var shareType = $li.data('share-type');
 			var shareWith = $li.attr('data-share-with');
 
-			this.model.sendNotificationForShare(shareType, shareWith, $target.is(':checked'));
+			var $loading = $target.prev('.icon-loading-small');
+
+			$target.addClass('hidden');
+			$loading.removeClass('hidden');
+
+			this.model.sendNotificationForShare(shareType, shareWith, true).then(function(result) {
+				if (result.status === 'success') {
+					OC.Notification.showTemporary(t('core', 'Email notification was sent!'));
+					$target.remove();
+				} else {
+					// sending was successful but some users might not have any email address
+					OC.dialogs.alert(t('core', result.data.message), t('core', 'Email notification not sent'));
+				}
+
+				$target.removeClass('hidden');
+				$loading.addClass('hidden');
+			});
 		}
 	});
 

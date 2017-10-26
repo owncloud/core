@@ -101,6 +101,12 @@
   margin-top: 20px;
 }
 
+.shareTabView .shareWithList .mailNotificationSpinner {
+	position: relative;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
 .subTabHeaders .tabHeaders {
   margin-left: 0px;
   margin-right: 0px;

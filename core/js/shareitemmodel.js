@@ -426,12 +426,6 @@
 					shareType: shareType,
 					itemSource: itemSource,
 					itemType: itemType
-				},
-				function(result) {
-					if (result.status !== 'success') {
-						// FIXME: a model should not show dialogs
-						OC.dialogs.alert(t('core', result.data.message), t('core', 'Warning'));
-					}
 				}
 			);
 		},
