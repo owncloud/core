@@ -41,8 +41,8 @@ describe('OCA.Versions.VersionModel', function() {
 	});
 	it('returns the preview url', function() {
 		expect(model.getPreviewUrl())
-			.toEqual(OC.generateUrl('/apps/files_versions/preview') +
-					'?file=%2Fsubdir%2Fsome%20file.txt&version=10000000'
+			.toEqual(
+				OC.linkToRemoteBase('dav') + '/meta/10000000/v/123456789?preview'
 			);
 	});
 	it('returns the download url', function() {

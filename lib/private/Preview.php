@@ -31,6 +31,7 @@
  */
 namespace OC;
 
+use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
@@ -1237,12 +1238,19 @@ class Preview {
 	 * @param string $prefix
 	 */
 	public static function prepare_delete(array $args, $prefix = '') {
-		$path = $args['path'];
-		if (substr($path, 0, 1) === '/') {
-			$path = substr($path, 1);
+		$path = Files\Filesystem::normalizePath($args['path']);
+		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
+		if ($user === false) {
+			$user = Filesystem::getOwner($path);
 		}
-		$node = \OC::$server->getUserFolder()->get($path);
-		self::addPathToDeleteFileMapper($node->getPath(), $node);
+
+		$userFolder = \OC::$server->getUserFolder($user);
+		if ($userFolder === null) {
+			return;
+		}
+
+		$node = $userFolder->get($path);
+		self::addPathToDeleteFileMapper($path, $node);
 		if ($node->getType() === FileInfo::TYPE_FOLDER) {
 			$children = self::getAllChildren($node);
 			self::$deleteChildrenMapper[$node->getPath()] = $children;
@@ -1301,16 +1309,13 @@ class Preview {
 	 */
 	public static function post_delete($args, $prefix = '') {
 		$path = Files\Filesystem::normalizePath($args['path']);
-		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
-
-		$view = new View('/' . $user . '/' . $prefix);
-		$absPath = Files\Filesystem::normalizePath($view->getAbsolutePath($path));
-		if (!isset(self::$deleteFileMapper[$absPath])) {
+		if (!isset(self::$deleteFileMapper[$path])) {
 			return;
 		}
-		$node = self::$deleteFileMapper[$absPath];
 
-		$preview = new Preview($user, $prefix, $node);
+		/** @var FileInfo $node */
+		$node = self::$deleteFileMapper[$path];
+		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
 		$preview->deleteAllPreviews();
 	}
 

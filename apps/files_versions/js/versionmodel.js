@@ -46,12 +46,9 @@
 		},
 
 		getPreviewUrl: function() {
-			var url = OC.generateUrl('/apps/files_versions/preview');
-			var params = {
-				file: this.get('fullPath'),
-				version: this.get('timestamp')
-			};
-			return url + '?' + OC.buildQueryString(params);
+			return OC.linkToRemoteBase('dav') + '/meta/' +
+				encodeURIComponent(this.get('fileId')) + '/v/' +
+				encodeURIComponent(this.get('id')) + '?preview';
 		},
 
 		getDownloadUrl: function() {

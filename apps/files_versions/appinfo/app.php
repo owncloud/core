@@ -24,3 +24,5 @@
 \OCP\Util::addStyle('files_versions', 'versions');
 
 \OCA\Files_Versions\Hooks::connectHooks();
+
+$application = new \OCA\Files_Versions\AppInfo\Application();

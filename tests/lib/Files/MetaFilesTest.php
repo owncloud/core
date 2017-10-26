@@ -31,6 +31,7 @@ use OC\Files\Node\File;
 use OC\Files\View;
 use OCA\Files_Versions\Hooks;
 use OCP\Files\Folder;
+use OCP\IImage;
 use Test\TestCase;
 use Test\Traits\UserTrait;
 
@@ -48,6 +49,12 @@ class MetaFilesTest extends TestCase {
 		parent::tearDown();
 	}
 
+	/**
+	 * @throws \Exception
+	 * @throws \OCP\Files\ForbiddenException
+	 * @throws \OCP\Files\NotFoundException
+	 * @throws \OCP\Files\NotPermittedException
+	 */
 	public function testMetaInNodeAPI() {
 		// workaround: re-setup versions hooks
 		Hooks::connectHooks();
@@ -102,9 +109,10 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals([], $metaNodeOfFile->getHeaders());
 		$this->assertEquals($file, $metaNodeOfFile->getContentDispositionFileName());
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
-		$this->assertEquals($info->getMTime(), $metaNodeOfFile->getMTime());
-		$this->assertTrue(is_string($metaNodeOfFile->getEtag()));
+		$this->assertInternalType('string', $metaNodeOfFile->getEtag());
 		$this->assertTrue(strlen($metaNodeOfFile->getEtag()) > 0);
+		$thumbnail = $metaNodeOfFile->getThumbnail([]);
+		$this->assertInstanceOf(IImage::class, $thumbnail);
 
 		/** @var MetaFileVersionNode $metaNodeOfFile */
 		$this->assertEquals('1234', $metaNodeOfFile->getContent());
