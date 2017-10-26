@@ -6,21 +6,15 @@ Feature: renameFolders
 		And I am on the files page
 
 	Scenario Outline: Rename a folder using special characters
-		When I rename the following folder to
-			|from-name-parts |to-name-parts    |
-			|simple-folder   |<to_folder_name> |
-		Then the following folder should be listed
-			|name-parts       |
-			|<to_folder_name> |
+		When I rename the folder "simple-folder" to <to_folder_name>
+		Then the folder <to_folder_name> should be listed
 		And the files page is reloaded
-		Then the following folder should be listed
-			|name-parts       |
-			|<to_folder_name> |
+		Then the folder <to_folder_name> should be listed
 		Examples:
 		|to_folder_name |
-		|सिमप्ले फोल्देर$%#?&@ |
-		|"quotes1"      |
-		|'quotes2'      |
+		|'सिमप्ले फोल्देर$%#?&@' |
+		|'"quotes1"'    |
+		|"'quotes2'"    |
 
 	Scenario Outline: Rename a folder that has special characters in its name
 		When I rename the folder <from_name> to <to_name>
@@ -38,9 +32,7 @@ Feature: renameFolders
 		Then the folder "लोरेम।तयक्स्त $%&" should be listed
 		When I rename the folder "लोरेम।तयक्स्त $%&" to '"double"quotes'
 		And the files page is reloaded
-		Then the following folder should be listed
-			|name-parts      |
-			|"double"quotes  |
+		Then the folder '"double"quotes' should be listed
 		When I rename the folder '"double"quotes' to "no-double-quotes"
 		And the files page is reloaded
 		Then the folder "no-double-quotes" should be listed
