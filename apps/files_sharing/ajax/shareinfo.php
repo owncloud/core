@@ -31,11 +31,6 @@
 
 OCP\JSON::checkAppEnabled('files_sharing');
 
-OC::$server->getLogger()->warning(
-	'Deprecated api access from '.OC::$server->getRequest()->getRemoteAddress().
-	'. Ask remote to upgrade.', ['app' => 'files_sharing']
-);
-
 if (!isset($_GET['t'])) {
 	\OC_Response::setStatus(400); //400 Bad Request
 	exit;
