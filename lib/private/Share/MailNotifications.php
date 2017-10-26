@@ -102,7 +102,7 @@ class MailNotifications {
 			$recipientDisplayName = $recipient->getDisplayName();
 			$to = $recipient->getEMailAddress();
 
-			if ($to === '') {
+			if ($to === null || $to === '') {
 				$noMail[] = $recipientDisplayName;
 				continue;
 			}

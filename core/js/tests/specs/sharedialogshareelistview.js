@@ -137,7 +137,8 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			expect(listView.$el.find('li.cruds').hasClass('hidden')).toEqual(false);
 		});
 
-		it('sends notification to user when checkbox clicked', function () {
+		it('sends notification to user when button clicked', function () {
+			var notifStub = sinon.stub(OC.Notification, 'show');
 			shareModel.set('shares', [{
 				id: 100,
 				item_source: 123,
@@ -147,10 +148,46 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 				share_with_displayname: 'User One'
 			}]);
 			listView.render();
-			var notificationStub = sinon.stub(listView.model, 'sendNotificationForShare');
+			var deferred = new $.Deferred();
+			var notificationStub = sinon.stub(listView.model, 'sendNotificationForShare').returns(deferred.promise());
+			listView.$el.find("input[name='mailNotification']").click();
+			// spinner appears
+			expect(listView.$el.find('.mailNotificationSpinner').hasClass('hidden')).toEqual(false);
+			expect(notificationStub.called).toEqual(true);
+			notificationStub.restore();
+
+			deferred.resolve({status: 'success'});
+			expect(notifStub.calledOnce).toEqual(true);
+			notifStub.restore();
+
+			// button is removed
+			expect(listView.$el.find("input[name='mailNotification']").length).toEqual(0);
+
+		});
+		it('displays error if email notification not sent', function () {
+			var notifStub = sinon.stub(OC.dialogs, 'alert');
+			shareModel.set('shares', [{
+				id: 100,
+				item_source: 123,
+				permissions: 1,
+				share_type: OC.Share.SHARE_TYPE_USER,
+				share_with: 'user1',
+				share_with_displayname: 'User One'
+			}]);
+			listView.render();
+			var deferred = new $.Deferred();
+			var notificationStub = sinon.stub(listView.model, 'sendNotificationForShare').returns(deferred.promise());
 			listView.$el.find("input[name='mailNotification']").click();
 			expect(notificationStub.called).toEqual(true);
 			notificationStub.restore();
+
+			deferred.resolve({status: 'error', data: {message: 'message'}});
+			expect(notifStub.calledOnce).toEqual(true);
+			notifStub.restore();
+
+			// button is still there
+			expect(listView.$el.find("input[name='mailNotification']").length).toEqual(1);
+			expect(listView.$el.find("input[name='mailNotification']").hasClass('hidden')).toEqual(false);
 		});
 
 	});

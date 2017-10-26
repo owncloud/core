@@ -131,7 +131,11 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			);
 			$result = $mailNotification->sendInternalShareMail($recipientList, $itemSource, $itemType);
 
-			\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
+			// if we were able to send to at least one recipient, mark as sent
+			// allowing the user to resend would spam users who already got a notification
+			if (count($result) < count($recipientList)) {
+				\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, true);
+			}
 
 			if (empty($result)) {
 				OCP\JSON::success();

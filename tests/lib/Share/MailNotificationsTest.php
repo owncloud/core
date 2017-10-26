@@ -71,7 +71,7 @@ class MailNotificationsTest extends TestCase {
 			}));
 
 		$this->defaults
-				->expects($this->once())
+				->expects($this->any())
 				->method('getName')
 				->will($this->returnValue('UnitTestCloud'));
 
@@ -255,6 +255,57 @@ class MailNotificationsTest extends TestCase {
 		$recipientList = [$recipient];
 		$result = $mailNotifications->sendInternalShareMail($recipientList, '3', 'file');
 		$this->assertSame([], $result);
+
+	}
+
+	public function emptinessProvider() {
+		return [
+			[null],
+			[''],
+		];
+	}
+
+	/**
+	 * @dataProvider emptinessProvider
+	 */
+	public function testSendInternalShareMailNoMail($emptiness) {
+		/** @var MailNotifications | \PHPUnit_Framework_MockObject_MockObject $mailNotifications */
+		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
+			->setMethods(['getItemSharedWithUser'])
+			->setConstructorArgs([
+				$this->user,
+				$this->l10n,
+				$this->mailer,
+				$this->logger,
+				$this->defaults,
+				$this->urlGenerator
+			])
+			->getMock();
+
+		$recipient = $this->getMockBuilder('\OCP\IUser')
+				->disableOriginalConstructor()->getMock();
+		$recipient
+				->expects($this->once())
+				->method('getEMailAddress')
+				->willReturn($emptiness);
+		$recipient
+				->expects($this->once())
+				->method('getDisplayName')
+				->willReturn('No mail 1');
+		$recipient2 = $this->getMockBuilder('\OCP\IUser')
+				->disableOriginalConstructor()->getMock();
+		$recipient2
+				->expects($this->once())
+				->method('getEMailAddress')
+				->willReturn('');
+		$recipient2
+				->expects($this->once())
+				->method('getDisplayName')
+				->willReturn('No mail 2');
+
+		$recipientList = [$recipient, $recipient2];
+		$result = $mailNotifications->sendInternalShareMail($recipientList, '3', 'file');
+		$this->assertSame(['No mail 1', 'No mail 2'], $result);
 
 	}
 
