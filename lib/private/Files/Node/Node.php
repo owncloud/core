@@ -425,4 +425,7 @@ class Node implements \OCP\Files\Node {
 		}
 	}
 
+	public function getView() {
+		return $this->view;
+	}
 }

@@ -35,6 +35,7 @@ class PublicAuth implements BackendInterface {
 	public function __construct() {
 		$this->publicURLs = [
 			'public-calendars',
+			'public-files',
 			'principals/system/public'
 		];
 	}
