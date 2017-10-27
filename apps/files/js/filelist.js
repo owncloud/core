@@ -1967,25 +1967,26 @@
 
 				self.filesClient[method](source, target)
 					.done(function() {
-						// if still viewing the same directory
+						// refetch info for any parent dir of source or target, if visible.
+						// this is needed mostly to update the size column
+
+						var promises = [];
+						promises = promises.concat(self._refreshPathSections(OC.dirname(source)));
+						promises = promises.concat(self._refreshPathSections(targetPath));
 						var currentDir = OC.joinPaths(self.getCurrentDirectory(), '/');
 						if (currentDir === dir) {
-							// recalculate folder size
 							if (!copy) {
-								var oldFile = self.findFileEl(target);
-								var newFile = self.findFileEl(targetFileName);
-								var oldSize = oldFile.data('size');
-								var newSize = oldSize + newFile.data('size');
-								oldFile.data('size', newSize);
-								oldFile.find('td.filesize').text(OC.Util.humanFileSize(newSize));
 								self.remove(fileName);
 							}
 						}
 						if (currentDir === targetPath) {
-							// moved/copied something into the current dir ?
-							self.addAndFetchFileInfo(OC.joinPaths(targetPath, targetFileName), '');
+							// moved/copied something into the current dir, refresh that element
+							promises.push(self.addAndFetchFileInfo(OC.joinPaths(targetPath, targetFileName), ''));
 						}
-						deferred.resolve();
+
+						$.when.apply($, promises).then(function() {
+							deferred.resolve();
+						});
 					})
 					.fail(function(status) {
 						if (status === 412) {
@@ -2024,14 +2025,62 @@
 			return $.when.apply($, promises).then(function() {
 				if (!copy) {
 					OC.Notification.showTemporary(
-						t('files', 'Files were successfully moved')
+						t('files', 'Entries were successfully moved')
 					);
 				} else {
 					OC.Notification.showTemporary(
-						t('files', 'Files were successfully copied')
+						t('files', 'Entries were successfully copied')
 					);
 				}
 			});
+		},
+
+		/**
+		 * Array of unresolved promises cached from _refreshPathSections.
+		 * This is used to debounce the calls.
+		 *
+		 * @type {Array.<Promise>}
+		 */
+		_refreshPathSectionsPromises: [],
+
+		/**
+		 * Consider the given path or its parents modified, so refresh any of
+		 * its sections if visible in the list.
+		 *
+		 * This will call addAndFetchFileInfo on every section of the given path.
+		 *
+		 * @param {String} path path to refresh
+		 * @return {Array.<Promise>}
+		 */
+		_refreshPathSections: function(path) {
+			if (path === '' || path === '/') {
+				return [];
+			}
+			var allSections = path.split('/');
+
+			var promises = [];
+			var sections = [];
+			var self = this;
+			for (var i = 0; i < allSections.length; i++) {
+				if (allSections[i] === '') {
+					continue;
+				}
+				sections.push(allSections[i]);
+				var promise;
+				if (this._refreshPathSectionsPromises[sections]) {
+					// use cached promise
+					promise = this._refreshPathSectionsPromises[sections];
+				} else {
+					promise = this.addAndFetchFileInfo(OC.joinPaths.apply(OC.joinPaths, sections), '');
+					promise.then(function() {
+						// remove from cache after resolution
+						delete self._refreshPathSectionsPromises[sections];
+					});
+				}
+				this._refreshPathSectionsPromises[sections] = promise;
+				promises.push(promise);
+			}
+			return promises;
 		},
 
 		/**
@@ -2868,6 +2917,7 @@
 				}
 
 				var fileName = upload.getFileName();
+				// TODO: use _refreshPathSections and put the debounce there
 				var fetchInfoPromise = self.addAndFetchFileInfo(fileName, upload.getFullPath());
 				if (!self._uploads) {
 					self._uploads = {};
