@@ -388,10 +388,15 @@ class OC_Util {
 	 *
 	 * @param String $userId
 	 * @param \OCP\Files\Folder $userDirectory
+	 * @throws \OC\HintException
 	 */
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
 
 		$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
+
+		if (!is_dir($skeletonDirectory))  {
+			throw new \OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
+		}
 
 		if (!empty($skeletonDirectory)) {
 			\OCP\Util::writeLog(
@@ -458,8 +463,8 @@ class OC_Util {
 	}
 
 	/**
-	 * @description get the current installed edition of ownCloud. 
-	 * There is the community edition that returns "Community" and 
+	 * @description get the current installed edition of ownCloud.
+	 * There is the community edition that returns "Community" and
 	 * the enterprise edition that returns "Enterprise".
 	 * @return string
 	 */
@@ -569,7 +574,7 @@ class OC_Util {
 	 *
 	 * @param string $application application id
 	 * @param string $languageCode language code, defaults to the current language
-	 * @param bool $prepend prepend the Script to the beginning of the list 
+	 * @param bool $prepend prepend the Script to the beginning of the list
 	 */
 	public static function addTranslations($application, $languageCode = null, $prepend = false) {
 		if (is_null($languageCode)) {
@@ -614,7 +619,7 @@ class OC_Util {
 	 *
 	 * @param string $application application id
 	 * @param bool $prepend prepend the file to the beginning of the list
-	 * @param string $path 
+	 * @param string $path
 	 * @param string $type (script or style)
 	 * @return void
 	 */
