@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Files\PublicFiles;
-
 
 use OCP\Share\IShare;
 use Sabre\DAV\File;
@@ -35,11 +33,14 @@ use Sabre\DAVACL\IACL;
  * @package OCA\DAV\Meta
  */
 class SharedFile extends File implements IACL {
-
 	use ACLTrait;
 
 	/** @var \OCP\Files\File */
 	private $file;
+	/**
+	 * @var IShare
+	 */
+	private $share;
 
 	/**
 	 * MetaFolder constructor.
@@ -49,13 +50,18 @@ class SharedFile extends File implements IACL {
 	 */
 	public function __construct(\OCP\Files\File $file, IShare $share) {
 		$this->file = $file;
+		$this->share = $share;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	function getName() {
+	public function getName() {
 		return $this->file->getName();
+	}
+
+	public function get() {
+		return $this->file->fopen('r');
 	}
 
 	public function getSize() {
@@ -70,11 +76,11 @@ class SharedFile extends File implements IACL {
 		return $this->file->getETag();
 	}
 
-	function getLastModified() {
+	public function getLastModified() {
 		return $this->file->getMTime();
 	}
 
-	function delete() {
+	public function delete() {
 		// TODO: check permissions - via ACL?
 		$this->file->delete();
 	}
@@ -83,11 +89,11 @@ class SharedFile extends File implements IACL {
 //		$this->file->setName($name);
 //	}
 
-	function getOwner() {
+	public function getOwner() {
 		return '';
 	}
 
-	function getACL() {
+	public function getACL() {
 		return [
 			[
 				'privilege' => '{DAV:}all',
@@ -100,5 +106,9 @@ class SharedFile extends File implements IACL {
 				'protected' => true,
 			]
 		];
+	}
+
+	public function getShare() {
+		return $this->share;
 	}
 }

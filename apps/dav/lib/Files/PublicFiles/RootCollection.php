@@ -46,7 +46,7 @@ class RootCollection extends Collection {
 	 */
 	public $disableListing = false;
 
-	function __construct() {
+	public function __construct() {
 		$this->l10n = \OC::$server->getL10N('dav');
 		$this->shareManager = \OC::$server->getShareManager();
 	}
@@ -54,18 +54,17 @@ class RootCollection extends Collection {
 	/**
 	 * @inheritdoc
 	 */
-	function getName() {
+	public function getName() {
 		return 'public-files';
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	function getChild($name) {
+	public function getChild($name) {
 		try {
 			$share = $this->shareManager->getShareByToken($name);
 			$password = $share->getPassword();
-			// TODO: check password
 			return new ShareNode($share);
 		} catch (ShareNotFound $ex) {
 			throw new NotFound();
@@ -75,13 +74,13 @@ class RootCollection extends Collection {
 	/**
 	 * @inheritdoc
 	 */
-	function getChildren() {
+	public function getChildren() {
 		if ($this->disableListing) {
 			throw new MethodNotAllowed('Listing members of this collection is disabled');
 		}
 
 		$shares = $this->shareManager->getAllSharedWith(null, [Constants::SHARE_TYPE_LINK]);
-		return array_map(function(IShare $share) {
+		return \array_map(function (IShare $share) {
 			return new ShareNode($share);
 		}, $shares);
 	}
