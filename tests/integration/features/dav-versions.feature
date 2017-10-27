@@ -15,7 +15,7 @@ Feature: dav-versions
     When user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
     Then user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" contains "1" elements
-    And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder is "100"
+    And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder is "8"
 
   Scenario: Remove a file
     Given user "user0" exists
