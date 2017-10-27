@@ -101,4 +101,9 @@ class SharedFile extends File implements IACL {
 			]
 		];
 	}
+
+	function getShare() {
+		return $this->share;
+	}
+
 }

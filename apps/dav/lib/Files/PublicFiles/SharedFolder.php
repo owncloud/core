@@ -125,4 +125,8 @@ class SharedFolder extends Collection implements IACL {
 		return $acl;
 	}
 
+	function getShare() {
+		return $this->share;
+	}
+
 }

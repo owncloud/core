@@ -65,7 +65,6 @@ class RootCollection extends Collection {
 		try {
 			$share = $this->shareManager->getShareByToken($name);
 			$password = $share->getPassword();
-			// TODO: check password
 			return new ShareNode($share);
 		} catch (ShareNotFound $ex) {
 			throw new NotFound();

@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Thomas Citharel <tcit@tcit.fr>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -18,22 +18,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\DAV\DAV;
+namespace OCA\DAV\Files\PublicFiles;
 
-use Sabre\DAV\Auth\Backend\BackendInterface;
+use OCP\Share\IManager;
+use OCP\Share\IShare;
+use Sabre\DAV\Auth\Backend\AbstractBasic;
+use Sabre\DAV\Server;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
-class PublicAuth implements BackendInterface {
+class PublicSharingAuth extends AbstractBasic {
 
-	/** @var string[] */
-	private $publicURLs;
+	/** @var Server */
+	private $server;
+	/** @var IShare */
+	private $share;
+	/** @var IManager */
+	private $shareManager;
 
-	public function __construct() {
-		$this->publicURLs = [
-			'public-calendars',
-			'principals/system/public'
-		];
+	/**
+	 * PublicSharingAuth constructor.
+	 *
+	 * @param Server $server
+	 */
+	public function __construct(Server $server, IManager $manager) {
+		$this->server = $server;
+		$this->shareManager = $manager;
+		$this->principalPrefix = 'principals/system/';
+		$this->setRealm('owncloud/share');
 	}
 
 	/**
@@ -66,10 +78,17 @@ class PublicAuth implements BackendInterface {
 	 */
 	function check(RequestInterface $request, ResponseInterface $response) {
 
-		if ($this->isRequestPublic($request)) {
+		$node = $this->server->tree->getNodeForPath($request->getPath());
+		if (!$node instanceof ShareNode && !$node instanceof SharedFile && !$node instanceof SharedFolder) {
 			return [true, "principals/system/public"];
 		}
-		return [false, "No public access to this resource."];
+		$this->share = $node->getShare();
+		$password = $this->share->getPassword();
+		if ($password === null) {
+			return [true, "principals/system/public"];
+		}
+
+		return parent::check($request, $response);
 	}
 
 	/**
@@ -79,14 +98,19 @@ class PublicAuth implements BackendInterface {
 	}
 
 	/**
-	 * @param RequestInterface $request
+	 * Validates a username and password
+	 *
+	 * This method should return true or false depending on if login
+	 * succeeded.
+	 *
+	 * @param string $username
+	 * @param string $password
 	 * @return bool
 	 */
-	private function isRequestPublic(RequestInterface $request) {
-		$url = $request->getPath();
-		$matchingUrls = array_filter($this->publicURLs, function ($publicUrl) use ($url) {
-			return strpos($url, $publicUrl, 0) === 0;
-		});
-		return !empty($matchingUrls);
+	protected function validateUserPass($username, $password) {
+		if ($username !== 'public') {
+			return false;
+		}
+		return $this->shareManager->checkPassword($this->share, $password);
 	}
 }

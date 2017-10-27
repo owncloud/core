@@ -52,4 +52,8 @@ class ShareNode extends Collection {
 	function getName() {
 		return $this->share->getToken();
 	}
+
+	function getShare() {
+		return $this->share;
+	}
 }
