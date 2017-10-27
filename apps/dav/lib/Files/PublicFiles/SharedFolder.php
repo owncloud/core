@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Files\PublicFiles;
-
 
 use OCP\Constants;
 use OCP\Files\File;
@@ -59,9 +57,9 @@ class SharedFolder extends Collection implements IACL {
 	/**
 	 * @inheritdoc
 	 */
-	function getChildren() {
+	public function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
-		return array_map(function($node) {
+		return \array_map(function ($node) {
 			return $this->nodeFactory($node);
 		}, $nodes);
 	}
@@ -69,22 +67,21 @@ class SharedFolder extends Collection implements IACL {
 	/**
 	 * @inheritdoc
 	 */
-	function getName() {
+	public function getName() {
 		return $this->folder->getName();
 	}
 
-	function getLastModified() {
+	public function getLastModified() {
 		return $this->folder->getMTime();
 	}
 
-	function createDirectory($name) {
+	public function createDirectory($name) {
 		$this->folder->newFolder($name);
 	}
 
-	function createFile($name, $data = null) {
+	public function createFile($name, $data = null) {
 		$file = $this->folder->newFile($name);
 		$file->putContent($data);
-
 	}
 
 	private function nodeFactory(Node $node) {
@@ -97,7 +94,7 @@ class SharedFolder extends Collection implements IACL {
 		throw new \InvalidArgumentException();
 	}
 
-	function getACL() {
+	public function getACL() {
 		$acl = [
 			[
 				'privilege' => '{DAV:}all',
@@ -125,4 +122,7 @@ class SharedFolder extends Collection implements IACL {
 		return $acl;
 	}
 
+	public function getShare() {
+		return $this->share;
+	}
 }

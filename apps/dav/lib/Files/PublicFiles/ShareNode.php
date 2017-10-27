@@ -8,7 +8,6 @@
 
 namespace OCA\DAV\Files\PublicFiles;
 
-
 use OCP\Files\FileInfo;
 use OCP\Files\Node;
 use OCP\Share\IShare;
@@ -28,13 +27,13 @@ class ShareNode extends Collection {
 	 *
 	 * @return INode[]
 	 */
-	function getChildren() {
+	public function getChildren() {
 		if ($this->share->getNodeType() === 'folder') {
 			$nodes = $this->share->getNode()->getDirectoryListing();
 		} else {
 			$nodes = [$this->share->getNode()];
 		}
-		return array_map(function(Node $node) {
+		return \array_map(function (Node $node) {
 			if ($node->getType() === FileInfo::TYPE_FOLDER) {
 				return new SharedFolder($node, $this->share);
 			}
@@ -49,7 +48,11 @@ class ShareNode extends Collection {
 	 *
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return $this->share->getToken();
+	}
+
+	public function getShare() {
+		return $this->share;
 	}
 }
