@@ -40,7 +40,6 @@
     "Encryption" : "Šifriranje",
     "Sharing" : "Dijeljenje zajedničkih resursa",
     "Search" : "pretraži",
-    "Updates" : "nadogradnje",
     "%s enter the database username." : "%s unesite naziva korisnika baze podataka.",
     "%s enter the database name." : "%s unesite naziv baze podataka",
     "%s you may not use dots in the database name" : "%s ne smijete koristiti točke u nazivu baze podataka",

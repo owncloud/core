@@ -16,7 +16,6 @@
     "Encryption" : "Kryptering",
     "Sharing" : "Deling",
     "Search" : "Søk",
-    "Updates" : "Oppdateringar",
     "Invalid Federated Cloud ID" : "Ugyldig id for klarert skydeling (Federated Cloud ID)",
     "%s shared »%s« with you" : "%s delte «%s» med deg",
     "Sharing %s failed, because this item is already shared with %s" : "Deling %s feila fordi det allereie er delt med %s",

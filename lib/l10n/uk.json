@@ -55,7 +55,6 @@
     "Encryption" : "Шифрування",
     "Sharing" : "Спільний доступ",
     "Search" : "Пошук",
-    "Updates" : "Оновлення",
     "%s enter the database username and name." : "%s введіть назву бази даних та ім'я користувача.",
     "%s enter the database username." : "%s введіть ім'я користувача бази даних.",
     "%s enter the database name." : "%s введіть назву бази даних.",

@@ -38,7 +38,6 @@
     "Encryption" : "Šifravimas",
     "Sharing" : "Dalijimasis",
     "Search" : "Ieškoti",
-    "Updates" : "Atnaujinimai",
     "%s enter the database username." : "%s įrašykite duombazės naudotojo vardą.",
     "%s enter the database name." : "%s įrašykite duombazės pavadinimą.",
     "%s you may not use dots in the database name" : "%s negalite naudoti taškų duombazės pavadinime",

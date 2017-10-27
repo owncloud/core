@@ -31,7 +31,6 @@
     "Encryption" : "Encriptación",
     "Sharing" : "Compartiendo",
     "Search" : "Buscar",
-    "Updates" : "Actualizaciones",
     "%s enter the database username." : "%s Entrá el usuario de la base de datos",
     "%s enter the database name." : "%s Entrá el nombre de la base de datos.",
     "%s you may not use dots in the database name" : "%s no podés usar puntos en el nombre de la base de datos",

@@ -55,7 +55,6 @@
     "Encryption" : "Шифровање",
     "Sharing" : "Дељење",
     "Search" : "Тражи",
-    "Updates" : "Ажурирања",
     "%s enter the database username." : "%s унеси корисничко име базе података.",
     "%s enter the database name." : "%s унеси име базе података.",
     "%s you may not use dots in the database name" : "%s не можете користити тачке у имену базе података",

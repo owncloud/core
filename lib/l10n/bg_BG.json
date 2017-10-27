@@ -60,7 +60,6 @@
     "Encryption" : "Криптиране",
     "Sharing" : "Споделяне",
     "Search" : "Търсене",
-    "Updates" : "Обновления",
     "%s enter the database username and name." : "%s въведете потребителско име и името за базата с данни.",
     "%s enter the database username." : "%s въведи потребителско име за базата данни.",
     "%s enter the database name." : "%s въведи име на базата данни.",

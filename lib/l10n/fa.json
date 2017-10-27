@@ -40,7 +40,6 @@
     "Encryption" : "رمزگذاری",
     "Sharing" : "اشتراک گذاری",
     "Search" : "جست‌و‌جو",
-    "Updates" : "به روز رسانی ها",
     "%s enter the database username." : "%s نام کاربری پایگاه داده را وارد نمایید.",
     "%s enter the database name." : "%s نام پایگاه داده را وارد نمایید.",
     "%s you may not use dots in the database name" : "%s شما نباید از نقطه در نام پایگاه داده استفاده نمایید.",
