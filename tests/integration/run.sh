@@ -117,7 +117,7 @@ if test "$BEHAT_FILTER_TAGS"; then
     	BEHAT_FILTER_TAGS="$BEHAT_FILTER_TAGS&&~@skip"
    	fi
 else
-	BEHAT_FILTER_TAGS="~@skip"
+	BEHAT_FILTER_TAGS="~@skip&&~@masterkey_encryption"
 fi
 
 if test "$BEHAT_FILTER_TAGS"; then
