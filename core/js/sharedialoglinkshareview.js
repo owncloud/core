@@ -23,13 +23,20 @@
 				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
 			'</div>' +
 			'{{#if publicUploadPossible}}' +
-			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
-				'<input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicUploadCheckbox" {{#if publicUploadChecked}}checked="checked"{{/if}} />' +
-				'<label for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
+			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="1" name="publicPermissions" id="sharingDialogAllowPublicRead-{{cid}}" class="checkbox publicPermissions publicReadCheckbox" {{#if publicReadSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicRead-{{cid}}">{{publicReadLabel}}</label>' +
+				'<p>{{publicReadDescription}}</p>' +
 			'</div>' +
-			'<div id="showListingWrapper-{{cid}}" class="public-link-modal--item">' +
-				'<input type="checkbox" value="1" name="showListing" id="sharingDialogShowListing-{{cid}}" class="checkbox showListingCheckbox" {{#if showListingChecked}}checked="checked"{{/if}} />' +
-				'<label for="sharingDialogShowListing-{{cid}}">{{showListingLabel}}</label>' +
+			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="15" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions publicReadWriteCheckbox" {{#if publicReadWriteSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
+				'<p>{{publicReadWriteDescription}}</p>' +
+			'</div>' +
+			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
+				'<input type="radio" value="4" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions publicUploadCheckbox" {{#if publicUploadSelected}}checked{{/if}} />' +
+				'<label class="bold" for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
+				'<p>{{publicUploadDescription}}</p>' +
 			'</div>' +
 			'{{/if}}' +
 			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
@@ -69,10 +76,6 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		events: {
-			'click .publicUploadCheckbox': '_updateCheckboxes'
-		},
-
 		initialize: function (options) {
 			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
@@ -89,16 +92,6 @@
 			OC.Plugins.attach('OCA.Share.ShareDialogLinkShareView', this);
 		},
 
-		_updateCheckboxes: function() {
-			var publicUploadAllowed = this.$('.publicUploadCheckbox').is(':checked');
-			if (!publicUploadAllowed) {
-				this.$('.showListingCheckbox').prop('checked', true);
-				this.$('.showListingCheckbox').prop('disabled', true);
-			} else {
-				this.$('.showListingCheckbox').prop('disabled', false);
-			}
-		},
-
 		/**
 		 * Returns the selected permissions as read from the checkboxes or
 		 * the absence thereof.
@@ -106,29 +99,8 @@
 		 * @return {int} permissions
 		 */
 		_getPermissions: function() {
-			var $showListingCheckbox = this.$('.showListingCheckbox');
-			var $publicUploadCheckbox = this.$('.publicUploadCheckbox');
-			var allowListing = (!$showListingCheckbox.length || $showListingCheckbox.is(':checked'));
-			var permissions = 0;
-
-			// if the checkbox is missing, default to checked
-			if (allowListing) {
-				permissions |= OC.PERMISSION_READ;
-			}
-
-			// if the checkbox is missing it is the equivalent of unchecked
-			if ($publicUploadCheckbox.is(':checked')) {
-				if (allowListing) {
-					permissions |= OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE;
-				} else {
-					// without listing only file creation is allowed, no overwrite nor delete
-					permissions |= OC.PERMISSION_CREATE;
-				}
-			} else {
-				// ignore listing perm, allow reading
-				permissions |= OC.PERMISSION_READ;
-			}
-
+			var $permissionRadio = this.$('input[name="publicPermissions"]:checked');
+			var permissions      = $permissionRadio.val();
 			return permissions;
 		},
 
@@ -248,18 +220,28 @@
 
 			this.$el.html(this.template({
 				cid: this.cid,
-				fileNameLabel : t('core', 'Filename'),
-				passwordLabel: t('core', 'Password'),
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
 				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink'),
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
-				publicUploadPossible: this._isPublicUploadPossible(),
-				publicUploadChecked: this.model.canCreate(),
-				publicUploadLabel: t('core', 'Allow editing'),
-				showListingChecked: this.model.canRead(),
-				showListingLabel: t('core', 'Show file listing'),
+
+				fileNameLabel              : t('core', 'Filename'),
+				passwordLabel              : t('core', 'Password'),
+
+				publicUploadPossible       : this._isPublicUploadPossible(),
+				publicUploadSelected       : this.model.get('permissions') === 4,
+				publicUploadLabel          : t('core', 'Upload only (File Drop)'),
+				publicUploadDescription    : t('core', 'Receive files from others without revealing the contents of the folder.'),
+
+				publicReadSelected         : this.model.get('permissions') === 1,
+				publicReadLabel            : t('core', 'Read only'),
+				publicReadDescription      : t('core', 'Users can view and download contents.'),
+
+				publicReadWriteSelected    : this.model.get('permissions') === 15,
+				publicReadWriteLabel       : t('core', 'Read & Write'),
+				publicReadWriteDescription : t('core', 'Users can view, download, edit and upload contents.'),
+
 				isMailEnabled: showEmailField
 			}));
 
@@ -279,8 +261,6 @@
 
 			this.expirationView.render();
 			this.$('.expirationDateContainer').append(this.expirationView.$el);
-
-			this._updateCheckboxes();
 
 			this.delegateEvents();
 
@@ -368,7 +348,7 @@
 			});
 		}
 
-	});
+});
 
 	OC.Share.ShareDialogLinkShareView = ShareDialogLinkShareView;
 
