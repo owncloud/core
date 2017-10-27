@@ -240,7 +240,7 @@ class RecreateMasterKey extends Command {
 	}
 
 	protected function decryptAllUsers(InputInterface $input, OutputInterface $output) {
-		$this->decryptAll = new DecryptAll($this->encryptionManager, $this->userManager, $this->rootView);
+		$this->decryptAll = new DecryptAll($this->encryptionManager, $this->userManager, $this->rootView, $this->logger);
 		$this->decryptAll->decryptAll($input,$output);
 	}
 
