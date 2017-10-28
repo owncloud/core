@@ -157,11 +157,11 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			app.previewAsIcon = true;
 		}
 
-		if ($.isArray(app.author)) {
+		if (_.isArray(app.author)) {
 			app.author = app.author.join(', ');
 		}
 
-		if (typeof app.author === 'object' && app.author['@value'] !== 'undefined') {
+		if (_.isObject(app.author) && app.author['@value'] !== 'undefined') {
 			app.author = app.author['@value'];
 		}
 
@@ -494,6 +494,9 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			}
 			if (_.isArray(app.author)) {
 				return app.author.join(' ').toLowerCase().indexOf(query) !== -1;
+			}
+			if (_.isObject(app.author) && app.author['@value'] !== 'undefined') {
+				return app.author['@value'].toLowerCase().indexOf(query) !== -1;
 			}
 			return app.author.toLowerCase().indexOf(query) !== -1;
 		}));
