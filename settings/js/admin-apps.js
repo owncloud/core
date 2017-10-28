@@ -10,7 +10,7 @@ Handlebars.registerHelper('score', function() {
 	return new Handlebars.SafeString('');
 });
 Handlebars.registerHelper('level', function() {
-	if(typeof this.level !== 'undefined') {
+	if(!_.isUndefined(this.level)) {
 		if(this.level === 200) {
 			return new Handlebars.SafeString('<span class="official icon-checkmark">' + t('settings', 'Official') + '</span>');
 		} else if(this.level === 100) {
@@ -147,7 +147,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			var source   = $("#app-template").html();
 			template = Handlebars.compile(source);
 		}
-		if (typeof app === 'string') {
+		if (_.isString(app)) {
 			app = OC.Settings.Apps.State.apps[app];
 		}
 		app.firstExperimental = firstExperimental;
@@ -161,7 +161,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			app.author = app.author.join(', ');
 		}
 
-		if (_.isObject(app.author) && app.author['@value'] !== 'undefined') {
+		if (_.isObject(app.author) && !_.isUndefined(app.author['@value'])) {
 			app.author = app.author['@value'];
 		}
 
