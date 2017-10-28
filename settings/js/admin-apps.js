@@ -157,6 +157,14 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			app.previewAsIcon = true;
 		}
 
+		if ($.isArray(app.author)) {
+			app.author = app.author.join(', ');
+		}
+
+		if (typeof app.author === 'object' && app.author['@value'] !== 'undefined') {
+			app.author = app.author['@value'];
+		}
+
 		var html = template(app);
 		if (selector) {
 			selector.html(html);
