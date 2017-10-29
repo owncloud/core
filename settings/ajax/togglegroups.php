@@ -68,7 +68,7 @@ $l = \OC::$server->getL10N('settings');
 $action = "add";
 
 // Toggle group
-if( \OC::$server->getGroupManager()->inGroup( $username, $group )) {
+if( \OC::$server->getGroupManager()->isInGroup( $username, $group )) {
 	$action = "remove";
 	$targetGroupObject->removeUser($targetUserObject);
 	$usersInGroup = $targetGroupObject->getUsers();
