@@ -495,7 +495,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			if (_.isArray(app.author)) {
 				return app.author.join(' ').toLowerCase().indexOf(query) !== -1;
 			}
-			if (_.isObject(app.author) && app.author['@value'] !== 'undefined') {
+			if (_.isObject(app.author) && !_.isUndefined(app.author['@value'])) {
 				return app.author['@value'].toLowerCase().indexOf(query) !== -1;
 			}
 			return app.author.toLowerCase().indexOf(query) !== -1;
