@@ -225,7 +225,7 @@ class OC_Util {
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(true);
 
 		// Make users storage readonly if he is a guest or in a read_only group
-
+		$readOnlyGroupMemberships = [];
 		$isGuest = \OC::$server->getConfig()->getUserValue(
 			$user,
 			'owncloud',
@@ -240,19 +240,18 @@ class OC_Util {
 				'[]'
 			), true);
 
-			if (!is_array($readOnlyGroups)) {
-				$readOnlyGroups = [];
+			// Find read only groups that are also user groups
+			if (is_array($readOnlyGroups) && !empty($readOnlyGroups)) {
+				// FIXME: move this functionality to group manager to resolve intersection on DB level
+				$userGroups = array_keys(
+					\OC::$server->getGroupManager()->getUserIdGroups($user)
+				);
+
+				$readOnlyGroupMemberships = array_intersect(
+					$readOnlyGroups,
+					$userGroups
+				);
 			}
-
-
-			$userGroups = array_keys(
-				\OC::$server->getGroupManager()->getUserIdGroups($user)
-			);
-
-			$readOnlyGroupMemberships = array_intersect(
-				$readOnlyGroups,
-				$userGroups
-			);
 		}
 
 

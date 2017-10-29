@@ -442,6 +442,7 @@ class Filesystem {
 
 		// Chance to mount for other storages
 		if ($userObject) {
+			// TODO: Optimize me please after central group table
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
 			array_walk($mounts, [self::$mounts, 'addMount']);
 			$mounts[] = $homeMount;
