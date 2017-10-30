@@ -229,7 +229,7 @@ describe('OC.Share.ShareDialogView', function() {
 		});
 	});
 	describe('autocompletion of users', function() {
-		it('is sorted naturally', function () {
+		xit('is sorted naturally', function () {
 			dialog.render();
 			var response = sinon.stub();
 			dialog.autocompleteHandler({term: 'p'}, response);
