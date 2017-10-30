@@ -119,6 +119,16 @@ describe('OC.Upload tests', function() {
 			expect(upload).toBeDefined();
 			expect(upload.getFileName()).toEqual('test.txt');
 		});
+		it('clear leaves pending uploads', function() {
+			uploader._uploads = {
+				'abc': {name: 'a job well done.txt', isDone: true},
+				'def': {name: 'whatevs.txt'}
+			};
+
+			uploader.clear();
+
+			expect(uploader._uploads).toEqual({'def': {name: 'whatevs.txt'}});
+		});
 	});
 	describe('Upload conflicts', function() {
 		var conflictDialogStub;

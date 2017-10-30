@@ -37,12 +37,11 @@ OC.FileUpload = function(uploader, data) {
 	if (!data) {
 		throw 'Missing "data" argument in OC.FileUpload constructor';
 	}
-	var path = '';
+	var basePath = '';
 	if (this.uploader.fileList) {
-		path = OC.joinPaths(this.uploader.fileList.getCurrentDirectory(), this.getFile().name);
-	} else {
-		path = this.getFile().name;
+		basePath = this.uploader.fileList.getCurrentDirectory();
 	}
+	var path = OC.joinPaths(basePath, this.getFile().relativePath || '', this.getFile().name);
 	this.id = 'web-file-upload-' + md5(path) + '-' + (new Date()).getTime();
 };
 OC.FileUpload.CONFLICT_MODE_DETECT = 0;
@@ -622,7 +621,13 @@ OC.Uploader.prototype = _.extend({
 	 * Clear uploads
 	 */
 	clear: function() {
-		this._uploads = {};
+		var remainingUploads = {};
+		_.each(this._uploads, function(upload, key) {
+			if (!upload.isDone) {
+				remainingUploads[key] = upload;
+			}
+		});
+		this._uploads = remainingUploads;
 		this._knownDirs = {};
 	},
 	/**
@@ -1092,6 +1097,7 @@ OC.Uploader.prototype = _.extend({
 					var upload = self.getUpload(data);
 					var that = $(this);
 					self.log('done', e, upload);
+					upload.isDone = true;
 
 					var status = upload.getResponseStatus();
 					if (status < 200 || status >= 300) {
