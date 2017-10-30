@@ -31,7 +31,6 @@ require_once 'bootstrap.php';
  */
 trait BasicStructure {
 
-	private $adminPassword;
 	private $regularUserPassword;
 	private $regularUserName;
 	private $regularUserNames = array();
@@ -237,7 +236,6 @@ trait BasicStructure {
 		BeforeScenarioScope $scope
 	) {
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
-		$this->adminPassword = (string)$suiteParameters['adminPassword'];
 		$this->regularUserNames = explode(
 			",",
 			$suiteParameters['regularUserNames']

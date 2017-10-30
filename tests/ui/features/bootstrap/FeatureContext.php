@@ -28,6 +28,7 @@ use Behat\Gherkin\Node\TableNode;
 use Page\OwncloudPage;
 use Page\LoginPage;
 use TestHelpers\SetupHelper;
+use TestHelpers\AppConfigHelper;
 
 require_once 'bootstrap.php';
 
@@ -38,10 +39,21 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	use BasicStructure;
 
+	private $adminPassword;
 	private $owncloudPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
-
+	
+	/**
+	 * @var string the original capabilities in XML format
+	 */
+	private $savedCapabilitiesXml;
+	
+	/**
+	 * @var array the changes made to capabilities for the test scenario
+	 */
+	private $savedCapabilitiesChanges = [];
+	
 	/**
 	 * FeatureContext constructor.
 	 *
@@ -171,12 +183,89 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" is (disabled|enabled)$/
+	 * @param string $setting
+	 * @param string $section
+	 * @param string $value
+	 * @return void
+	 */
+	public function settingInSectionIs($setting, $section, $value) {
+		$capabilities = [ 
+			'sharing' => [ 
+				'Allow apps to use the Share API' => [ 
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'api_enabled',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_enabled',
+				]
+			] 
+		];
+		if ($value === "enabled") {
+			$value = true;
+		} elseif ($value === "disabled") {
+			$value = false;
+		} else {
+			throw new InvalidArgumentException("$value can only be 'disabled' or 'enabled'");
+		}
+		
+		$capability = $capabilities[strtolower($section)][$setting];
+		$change = AppConfigHelper::setCapability(
+			$this->getMinkParameter('base_url'),
+			"admin",
+			$this->getUserPassword("admin"),
+			$capability['capabilitiesApp'],
+			$capability['capabilitiesParameter'],
+			$capability['testingApp'],
+			$capability['testingParameter'],
+			$value,
+			$this->getSavedCapabilitiesXml()
+		);
+		$this->addToSavedCapabilitiesChanges($change);
+
+	}
+
+	/**
+	 * returns the saved capabilities as XML
+	 * 
+	 * @return string
+	 */
+	public function getSavedCapabilitiesXml() {
+		return $this->savedCapabilitiesXml;
+	}
+
+	/**
+	 * adds a capability to the list of changed capabilities
+	 * 
+	 * @param array $change
+	 *        [
+	 *         'testingApp' => string,
+	 *         'testingParameter' => string,
+	 *         'savedState' => bool
+	 *        ]
+	 * @return void
+	 */
+	public function addToSavedCapabilitiesChanges($change) {
+		if (sizeof($change) > 0) {
+			$this->savedCapabilitiesChanges[] = $change;
+		}
+	}
+
+	/**
 	 * @BeforeScenario
 	 * @param BeforeScenarioScope $scope
 	 * @return void
 	 */
 	public function setUpSuite(BeforeScenarioScope $scope) {
 		SetupHelper::setOcPath($scope);
+		$suiteParameters = SetupHelper::getSuiteParameters($scope);
+		$this->adminPassword = (string)$suiteParameters['adminPassword'];
+		
+		$response = AppConfigHelper::getCapabilities(
+			$this->getMinkParameter('base_url'), "admin", $this->adminPassword
+		);
+		$this->savedCapabilitiesXml = AppConfigHelper::getCapabilitiesXml(
+			$response
+		);
 		if (is_null($this->oldCSRFSetting)) {
 			$oldCSRFSetting = SetupHelper::runOcc(
 				['config:system:get', 'csrf.disabled']
@@ -212,6 +301,17 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @AfterScenario
 	 */
 	public function tearDownSuite() {
+		foreach ($this->savedCapabilitiesChanges as $capabilitiesChange) {
+			AppConfigHelper::modifyServerConfig(
+				$this->getMinkParameter('base_url'),
+				"admin",
+				$this->adminPassword,
+				$capabilitiesChange['testingApp'],
+				$capabilitiesChange['testingParameter'],
+				$capabilitiesChange['savedState'] ? 'yes' : 'no'
+			);
+		}
+		
 		if ($this->oldCSRFSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
 		} elseif (!is_null($this->oldCSRFSetting)) {
