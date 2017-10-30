@@ -421,7 +421,7 @@ class Manager implements IManager {
 		}
 
 		// Verify if the user can share with this group
-		if ($this->shareWithGroupMembersOnly()) {
+		if ($this->shareWithMembershipGroupOnly()) {
 			$sharedBy = $this->userManager->get($share->getSharedBy());
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
 			if (is_null($sharedWith) || !$sharedWith->inGroup($sharedBy)) {
@@ -1302,6 +1302,14 @@ class Manager implements IManager {
 	 */
 	public function shareWithGroupMembersOnly() {
 		return $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'no') === 'yes';
+	}
+
+	/**
+	 * check if user can only share with groups he's member of
+	 * @return bool
+	 */
+	public function shareWithMembershipGroupOnly() {
+		return $this->config->getAppValue('core', 'shareapi_only_share_with_membership_groups', 'no') === 'yes';
 	}
 
 	/**

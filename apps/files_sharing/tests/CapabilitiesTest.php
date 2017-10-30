@@ -297,6 +297,24 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertTrue($result['share_with_group_members_only']);
 	}
 
+	public function testNoShareWithMembershipGroupsOnly() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_only_share_with_membership_groups', 'yes', 'no'],
+		];
+		$result = $this->getResults($map);
+		$this->assertFalse($result['share_with_membership_groups_only']);
+	}
+
+	public function testShareWithMembershipGroupsOnly() {
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_only_share_with_membership_groups', 'yes', 'yes'],
+		];
+		$result = $this->getResults($map);
+		$this->assertTrue($result['share_with_membership_groups_only']);
+	}
+
 	public function testNoUserEnumeration() {
 		$map = [
 			['core', 'shareapi_enabled', 'yes', 'yes'],

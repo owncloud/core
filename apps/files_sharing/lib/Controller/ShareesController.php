@@ -74,6 +74,9 @@ class ShareesController extends OCSController  {
 	protected $shareWithGroupOnly = false;
 
 	/** @var bool */
+	protected $shareWithMembershipGroupOnly = false;
+
+	/** @var bool */
 	protected $shareeEnumeration = true;
 
 	/** @var bool */
@@ -240,7 +243,7 @@ class ShareesController extends OCSController  {
 		}
 
 		$userGroups =  [];
-		if (!empty($groups) && ($this->shareWithGroupOnly || $this->shareeEnumerationGroupMembers)) {
+		if (!empty($groups) && ($this->shareWithMembershipGroupOnly || $this->shareeEnumerationGroupMembers)) {
 			// Intersect all the groups that match with the groups this user is a member of
 			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser(), 'sharing');
 			$userGroups = array_map(function (IGroup $group) { return $group->getGID(); }, $userGroups);
@@ -277,7 +280,7 @@ class ShareesController extends OCSController  {
 			// On page one we try if the search result has a direct hit on the
 			// user id and if so, we add that to the exact match list
 			$group = $this->groupManager->get($search);
-			if ($group instanceof IGroup && (!$this->shareWithGroupOnly || in_array($group->getGID(), $userGroups))) {
+			if ($group instanceof IGroup && (!$this->shareWithMembershipGroupOnly || in_array($group->getGID(), $userGroups))) {
 				array_push($this->result['exact']['groups'], [
 					'label' => $group->getDisplayName(),
 					'value' => [
@@ -524,6 +527,7 @@ class ShareesController extends OCSController  {
 		}
 
 		$this->shareWithGroupOnly = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'no') === 'yes';
+		$this->shareWithMembershipGroupOnly = $this->config->getAppValue('core', 'shareapi_only_share_with_membership_groups', 'no') === 'yes';
 		$this->shareeEnumeration = $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';
 		if ($this->shareeEnumeration) {
 			$this->shareeEnumerationGroupMembers = $this->config->getAppValue('core', 'shareapi_share_dialog_user_enumeration_group_members', 'no') === 'yes';

@@ -65,6 +65,11 @@
 		<label for="onlyShareWithGroupMembers"><?php p($l->t('Restrict users to only share with users in their groups'));?></label><br/>
 	</p>
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
+		<input type="checkbox" name="shareapi_only_share_with_membership_groups" id="onlyShareWithMembershipGroups" class="checkbox"
+			   value="1" <?php if ($_['onlyShareWithMembershipGroups']) print_unescaped('checked="checked"'); ?> />
+		<label for="onlyShareWithMembershipGroups"><?php p($l->t('Restrict users to only share with groups they are member of'));?></label><br/>
+	</p>
+	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
 		<input type="checkbox" name="shareapi_allow_mail_notification" id="allowMailNotification" class="checkbox"
 			   value="1" <?php if ($_['allowMailNotification'] === 'yes') print_unescaped('checked="checked"'); ?> />
 		<label for="allowMailNotification"><?php p($l->t('Allow users to send mail notification for shared files to other users'));?></label><br/>
