@@ -22,19 +22,19 @@
 				'<label class="public-link-modal--label">Link Name</label>' +
 				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
 			'</div>' +
-			'{{#if publicUploadPossible}}' +
 			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="1" name="publicPermissions" id="sharingDialogAllowPublicRead-{{cid}}" class="checkbox publicPermissions publicReadCheckbox" {{#if publicReadSelected}}checked{{/if}} />' +
+				'<input type="radio" value="{{publicReadValue}}" name="publicPermissions" id="sharingDialogAllowPublicRead-{{cid}}" class="checkbox publicPermissions" {{#if publicReadSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicRead-{{cid}}">{{publicReadLabel}}</label>' +
 				'<p>{{publicReadDescription}}</p>' +
 			'</div>' +
+			'{{#if publicUploadPossible}}' +
 			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="15" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions publicReadWriteCheckbox" {{#if publicReadWriteSelected}}checked{{/if}} />' +
+				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
 				'<p>{{publicReadWriteDescription}}</p>' +
 			'</div>' +
 			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
-				'<input type="radio" value="4" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions publicUploadCheckbox" {{#if publicUploadSelected}}checked{{/if}} />' +
+				'<input type="radio" value="{{publicUploadValue}}" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
 				'<p>{{publicUploadDescription}}</p>' +
 			'</div>' +
@@ -99,9 +99,9 @@
 		 * @return {int} permissions
 		 */
 		_getPermissions: function() {
-			var $permissionRadio = this.$('input[name="publicPermissions"]:checked');
-			var permissions      = $permissionRadio.val();
-			return permissions;
+			var permissions = this.$('input[name="publicPermissions"]:checked').val();
+
+			return (permissions) ? permissions : OC.PERMISSION_READ;
 		},
 
 		_save: function () {
@@ -230,17 +230,21 @@
 				passwordLabel              : t('core', 'Password'),
 
 				publicUploadPossible       : this._isPublicUploadPossible(),
-				publicUploadSelected       : this.model.get('permissions') === 4,
+
 				publicUploadLabel          : t('core', 'Upload only (File Drop)'),
 				publicUploadDescription    : t('core', 'Receive files from others without revealing the contents of the folder.'),
+				publicUploadValue          : OC.PERMISSION_CREATE,
+				publicUploadSelected       : this.model.get('permissions') === OC.PERMISSION_CREATE,
 
-				publicReadSelected         : this.model.get('permissions') === 1,
 				publicReadLabel            : t('core', 'Read only'),
 				publicReadDescription      : t('core', 'Users can view and download contents.'),
+				publicReadValue            : OC.PERMISSION_READ,
+				publicReadSelected         : this.model.get('permissions') === OC.PERMISSION_READ,
 
-				publicReadWriteSelected    : this.model.get('permissions') === 15,
 				publicReadWriteLabel       : t('core', 'Read & Write'),
 				publicReadWriteDescription : t('core', 'Users can view, download, edit and upload contents.'),
+				publicReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
+				publicReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE),
 
 				isMailEnabled: showEmailField
 			}));
