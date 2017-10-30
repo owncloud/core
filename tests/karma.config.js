@@ -238,9 +238,9 @@ module.exports = function(config) {
 
 		proxies: {
 			// prevent warnings for images
-			'/context.html//core/img/': 'http://localhost:9876/base/core/img/',
-			'/context.html//core/css/': 'http://localhost:9876/base/core/css/',
-			'/context.html//core/fonts/': 'http://localhost:9876/base/core/fonts/'
+			'/owncloud/core/img/': 'http://localhost:9876/base/core/img/',
+			'/owncloud/core/css/': 'http://localhost:9876/base/core/css/',
+			'/owncloud/core/fonts/': 'http://localhost:9876/base/core/fonts/'
 		},
 
 		// test results reporter to use
