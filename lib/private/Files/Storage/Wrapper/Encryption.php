@@ -891,10 +891,15 @@ class Encryption extends Wrapper {
 	 * read first block of encrypted file, typically this will contain the
 	 * encryption header
 	 *
-	 * @param string $path
+	 * @param string|resource $path
 	 * @return string
 	 */
 	protected function readFirstBlock($path) {
+		if (is_resource($path)) {
+			$firstBlock = fread($path, $this->util->getHeaderSize());
+			rewind($path);
+			return $firstBlock;
+		}
 		$firstBlock = '';
 		if ($this->storage->file_exists($path)) {
 			$handle = $this->storage->fopen($path, 'r');
@@ -907,14 +912,16 @@ class Encryption extends Wrapper {
 	/**
 	 * return header size of given file
 	 *
-	 * @param string $path
+	 * @param string|resource $path
 	 * @return int
 	 */
 	protected function getHeaderSize($path) {
 		$headerSize = 0;
-		$realFile = $this->util->stripPartialFileExtension($path);
-		if ($this->storage->file_exists($realFile)) {
-			$path = $realFile;
+		if (!is_resource($path)) {
+			$realFile = $this->util->stripPartialFileExtension($path);
+			if ($this->storage->file_exists($realFile)) {
+				$path = $realFile;
+			}
 		}
 		$firstBlock = $this->readFirstBlock($path);
 
@@ -956,14 +963,18 @@ class Encryption extends Wrapper {
 	/**
 	 * read header from file
 	 *
-	 * @param string $path
+	 * @param string|resource $path
 	 * @return array
 	 */
 	protected function getHeader($path) {
-		$realFile = $this->util->stripPartialFileExtension($path);
-		$exists = $this->storage->file_exists($realFile);
-		if ($exists) {
-			$path = $realFile;
+		if (is_resource($path)) {
+			$exists = false;
+		} else {
+			$realFile = $this->util->stripPartialFileExtension($path);
+			$exists = $this->storage->file_exists($realFile);
+			if ($exists) {
+				$path = $realFile;
+			}
 		}
 
 		$firstBlock = $this->readFirstBlock($path);

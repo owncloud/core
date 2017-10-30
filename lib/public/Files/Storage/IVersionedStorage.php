@@ -50,22 +50,14 @@ interface IVersionedStorage {
 	public function getVersion($internalPath, $versionId);
 
 	/**
-	 * Get the content of a given version of a given file as string
+	 * Get the content of a given version of a given file as stream resource
 	 *
-	 * @param string $internalPath
-	 * @param string $versionId
-	 * @return string
-	 * @since 10.1.0
-	 */
-	public function getContentOfVersion($internalPath, $versionId);
-
-	/**
 	 * @param string $internalPath
 	 * @param string $versionId
 	 * @return resource
 	 * @since 10.1.0
 	 */
-	public function getContentOfVersionAsStream($internalPath, $versionId);
+	public function getContentOfVersion($internalPath, $versionId);
 
 	/**
 	 * Restore the given version of a given file

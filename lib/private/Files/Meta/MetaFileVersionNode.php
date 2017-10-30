@@ -89,7 +89,11 @@ class MetaFileVersionNode extends AbstractFile {
 	 * @inheritdoc
 	 */
 	public function getContent() {
-		return $this->storage->getContentOfVersion($this->internalPath, $this->versionId);
+		$handle = $this->fopen('r+');
+		$data = stream_get_contents($handle);
+		fclose($handle);
+
+		return $data;
 	}
 
 	/**

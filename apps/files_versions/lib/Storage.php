@@ -466,6 +466,7 @@ class Storage {
 						$versions[$key]['timestamp'] = $timestamp;
 						$versions[$key]['etag'] = $view->getETag($dir . '/' . $entryName);
 						$versions[$key]['storage_location'] = "$dir/$entryName";
+						$versions[$key]['owner'] = $uid;
 					}
 				}
 			}
@@ -837,6 +838,11 @@ class Storage {
 			self::$application = new Application();
 		}
 		return self::$application->getContainer()->query('Expiration');
+	}
+
+	public static function getContentOfVersion($uid, $storage_location) {
+		$users_view = new View('/'.$uid);
+		return $users_view->fopen($storage_location, 'r');
 	}
 
 }
