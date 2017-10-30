@@ -93,11 +93,22 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 
 		$sharees = [];
 		foreach ($elements[$shareeType] as $element) {
-			$sharees[] = [
-				$element['label'],
-				$element['value']['shareType'],
-				$element['value']['shareWith']
-			];
+			if (is_int(key($element))) {
+				// this is a list of elements instead of just one item, so return the list
+				foreach ($element as $innerItem) {
+					$sharees[] = [
+						$innerItem['label'],
+						$innerItem['value']['shareType'],
+						$innerItem['value']['shareWith']
+					];
+				}
+			} else {
+				$sharees[] = [
+					$element['label'],
+					$element['value']['shareType'],
+					$element['value']['shareWith']
+				];
+			}
 		}
 		return $sharees;
 	}
