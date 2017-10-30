@@ -23,8 +23,6 @@
 namespace OCA\DAV\Meta;
 
 
-use OCP\Files\Folder;
-use Sabre\DAV\Collection;
 use Sabre\DAV\File;
 
 class MetaFile extends File {
@@ -55,8 +53,28 @@ class MetaFile extends File {
 		return $this->file->getSize();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function get() {
-		// FIXME: use fopen and return the stream
-		return $this->file->getContent();
+		return $this->file->fopen('r');
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getContentType() {
+		return $this->file->getMimeType();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getLastModified() {
+		return $this->file->getMTime();
+	}
+
+	public function getETag() {
+		return $this->file->getEtag();
 	}
 }

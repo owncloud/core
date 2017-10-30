@@ -40,8 +40,6 @@ class MetaFileVersionNode extends AbstractFile {
 
 	/** @var string */
 	private $versionId;
-	/** @var int */
-	private $size;
 	/** @var MetaVersionCollection */
 	private $parent;
 	/** @var IVersionedStorage */
@@ -50,6 +48,8 @@ class MetaFileVersionNode extends AbstractFile {
 	private $internalPath;
 	/** @var IRootFolder */
 	private $root;
+	/** @var array */
+	private $versionInfo;
 
 	/**
 	 * MetaFileVersionNode constructor.
@@ -62,10 +62,10 @@ class MetaFileVersionNode extends AbstractFile {
 	 */
 	public function __construct(MetaVersionCollection $parent,
 								IRootFolder $root,
-								$version, Storage $storage, $internalPath) {
+								array $version, Storage $storage, $internalPath) {
 		$this->parent = $parent;
 		$this->versionId = $version['version'];
-		$this->size = $version['size'];
+		$this->versionInfo = $version;
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
 		$this->root = $root;
@@ -82,7 +82,7 @@ class MetaFileVersionNode extends AbstractFile {
 	 * @inheritdoc
 	 */
 	public function getSize() {
-		return $this->size;
+		return isset($this->versionInfo['size']) ? $this->versionInfo['size'] : null;
 	}
 
 	/**
@@ -104,5 +104,21 @@ class MetaFileVersionNode extends AbstractFile {
 
 		// for now we only allow restoring of a version
 		throw new NotPermittedException();
+	}
+
+	public function getMTime() {
+		return isset($this->versionInfo['timestamp']) ? $this->versionInfo['timestamp'] : null;
+	}
+
+	public function getMimetype() {
+		return isset($this->versionInfo['mime-type']) ? $this->versionInfo['mime-type'] : 'application/octet-stream';
+	}
+
+	public function getEtag() {
+		return isset($this->versionInfo['etag']) ? $this->versionInfo['etag'] : null;
+	}
+
+	public function fopen($mode) {
+		return $this->storage->getContentOfVersion($this->internalPath, $this->versionId);
 	}
 }
