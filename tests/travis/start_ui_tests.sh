@@ -196,7 +196,9 @@ export REMOTE_FED_BASE_URL
 
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 
-if [ ${PIPESTATUS[0]} -eq 0 ]
+BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
+
+if [ $BEHAT_EXIT_STATUS -eq 0 ]
 then
 	PASSED=true
 else
@@ -205,17 +207,31 @@ fi
 
 if [ "$PASSED" = false ]
 then
+	echo test run failed with exit status: $BEHAT_EXIT_STATUS
 	PASSED=true
-	FAILED_FEATURES=`awk '/Failed scenarios:/',0 $TEST_LOG_FILE | grep feature`
-	for FEATURE in $FAILED_FEATURES
+	SOME_SCENARIO_RERUN=false
+	FAILED_SCENARIOS=`awk '/Failed scenarios:/',0 $TEST_LOG_FILE | grep feature`
+	for FEATURE in $FAILED_SCENARIOS
 		do
+			SOME_SCENARIO_RERUN=true
 			echo rerun failed tests: $FEATURE
 			lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
-			if [ ${PIPESTATUS[0]} -ne 0 ]
+			BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
+			if [ $BEHAT_EXIT_STATUS -ne 0 ]
 			then
+				echo test rerun failed with exit status: $BEHAT_EXIT_STATUS
 				PASSED=false
 			fi
 		done
+
+	if [ "$SOME_SCENARIO_RERUN" = false ]
+	then
+		# If the original Behat had a fatal PHP error and exited directly with
+		# a "bad" exit code, then it may not have even logged a summary of the
+		# failed scenarios. In that case there was an error and no scenarios
+		# have been rerun. So PASSED needs to be false.
+		PASSED=false
+	fi
 fi
 
 if [ "$BEHAT_TAGS_OPTION_FOUND" != true ]
