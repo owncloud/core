@@ -110,6 +110,8 @@ class VersioningTest extends \Test\TestCase {
 			$this->rootView->deleteAll(self::TEST_VERSIONS_USER2 . '/files/');
 			$this->rootView->deleteAll(self::TEST_VERSIONS_USER . '/files_versions/');
 			$this->rootView->deleteAll(self::TEST_VERSIONS_USER2 . '/files_versions/');
+			$this->rootView->mkdir(self::TEST_VERSIONS_USER . '/files/');
+			$this->rootView->mkdir(self::TEST_VERSIONS_USER2 . '/files/');
 		}
 
 		\OC_Hook::clear();
