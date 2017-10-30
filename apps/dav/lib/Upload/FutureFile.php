@@ -39,6 +39,10 @@ class FutureFile implements \Sabre\DAV\IFile {
 	private $root;
 	/** @var string */
 	private $name;
+	/** @var IFile */
+	private $backingFile = null;
+	/** @var string */
+	private $fileLength = 0;
 
 	static public function getFutureFileName() {
 		return '.file';
@@ -78,7 +82,9 @@ class FutureFile implements \Sabre\DAV\IFile {
 	 */
 	function get() {
 		$nodes = $this->root->getChildren();
-		return AssemblyStream::wrap($nodes);
+		return $this->backingFile && $this->fileLength ?
+			AssemblyStreamZsync::wrap($nodes, $this->backingFile, $this->fileLength) :
+			AssemblyStream::wrap($nodes);
 	}
 
 	/**
@@ -134,5 +140,19 @@ class FutureFile implements \Sabre\DAV\IFile {
 	 */
 	function getLastModified() {
 		return $this->root->getLastModified();
+	}
+
+	/**
+	 * @param IFile $file
+	 */
+	function setBackingFile(IFile $file) {
+		$this->backingFile = $file;
+	}
+
+	/**
+	 * @param string $fileLength
+	 */
+	function setFileLength($fileLength) {
+		$this->fileLength = $fileLength;
 	}
 }

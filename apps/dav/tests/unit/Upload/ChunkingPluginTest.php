@@ -29,9 +29,11 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 use OCA\DAV\Upload\FutureFile;
 use OCA\DAV\Connector\Sabre\Directory;
+use OC\Files\View;
+use OCP\Files\NotFoundException;
 
 class ChunkingPluginTest extends TestCase {
-
+	const TEST_CHUNKING_USER1 = "test-chunking-user1";
 
 	/**
 	 * @var \Sabre\DAV\Server | \PHPUnit_Framework_MockObject_MockObject
@@ -42,6 +44,11 @@ class ChunkingPluginTest extends TestCase {
 	 * @var \Sabre\DAV\Tree | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $tree;
+
+	/**
+	 * @var \OC\Files\Node\Folder | \PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $dir;
 
 	/**
 	 * @var ChunkingPlugin
@@ -62,9 +69,19 @@ class ChunkingPluginTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->server->tree = $this->tree;
-		$this->plugin = new ChunkingPlugin();
+		$this->dir = $this->createMock('\OC\Files\Node\Folder');
+		$dir = $this->createMock('\OC\Files\Node\Folder');
+		$dir->expects($this->once())
+			->method('get')
+			->with('files_zsync')
+			->will($this->throwException(new NotFoundException));
+		$dir->expects($this->once())
+			->method('newFolder')
+			->with('files_zsync')
+			->willReturn($this->dir);
 
+		$this->server->tree = $this->tree;
+		$this->plugin = new ChunkingPlugin($dir, self::TEST_CHUNKING_USER1);
 		$this->request = $this->createMock(RequestInterface::class);
 		$this->response = $this->createMock(ResponseInterface::class);
 		$this->server->httpRequest = $this->request;
@@ -96,34 +113,36 @@ class ChunkingPluginTest extends TestCase {
 			->method('getNodeForPath')
 			->with('source')
 			->will($this->returnValue($sourceNode));
-		$this->tree->expects($this->any())
+		$this->tree->expects($this->exactly(2))
 			->method('nodeExists')
-			->with('target')
-			->will($this->returnValue(false));
-		$this->response->expects($this->never())
-			->method('setStatus');
+			->withConsecutive(['target'], ['source'])
+			->willReturnOnConsecutiveCalls($this->returnValue(false), $this->returnValue(false));
+		$this->response->expects($this->once())
+			->method('setStatus')
+			->with(201);
 		$this->request->expects($this->once())
 			->method('getHeader')
 			->with('OC-Total-Length')
 			->willReturn(4);
 
-		$this->assertNull($this->plugin->beforeMove('source', 'target'));
+		$this->assertFalse($this->plugin->beforeMove('source', 'target'));
 	}
 
 	public function testBeforeMoveFutureFileMoveIt() {
 		$sourceNode = $this->createMock(FutureFile::class);
+		$targetNode = $this->createMock('\Sabre\DAV\IFile');
 		$sourceNode->expects($this->once())
 			->method('getSize')
 			->willReturn(4);
 
-		$this->tree->expects($this->any())
+		$this->tree->expects($this->exactly(2))
 			->method('getNodeForPath')
-			->with('source')
-			->will($this->returnValue($sourceNode));
-		$this->tree->expects($this->any())
+			->withConsecutive(['source'], ['target'])
+			->willReturnOnConsecutiveCalls($this->returnValue($sourceNode), $this->returnValue($targetNode));
+		$this->tree->expects($this->exactly(2))
 			->method('nodeExists')
-			->with('target')
-			->will($this->returnValue(true));
+			->withConsecutive(['target'], ['source'])
+			->willReturnOnConsecutiveCalls($this->returnValue(true), $this->returnValue(false));
 		$this->tree->expects($this->once())
 			->method('move')
 			->with('source', 'target');
@@ -134,12 +153,85 @@ class ChunkingPluginTest extends TestCase {
 		$this->response->expects($this->once())
 			->method('setStatus')
 			->with(204);
-		$this->request->expects($this->once())
+		$this->request->expects($this->exactly(2))
 			->method('getHeader')
-			->with('OC-Total-Length')
-			->willReturn('4');
+			->withConsecutive(['OC-Total-Length'], ['OC-Total-File-Length'])
+			->willReturn(4);
 
 		$this->assertFalse($this->plugin->beforeMove('source', 'target'));
+	}
+
+	public function testBeforeMoveFutureFileMoveItWithZsync() {
+		$sourceNode = $this->createMock(FutureFile::class);
+		$targetNode = $this->createMock(\Sabre\DAV\IFile::class);
+		$file = $this->createMock('\OC\Files\Node\File');
+		$dir = $this->createMock('\OC\Files\Node\Folder');
+
+		$stream = fopen('php://memory', 'w+');
+		fwrite($stream, 'bar');
+		rewind($stream);
+
+		$target = 'files/'.self::TEST_CHUNKING_USER1.'/target';
+
+		$targetNode->expects($this->once())
+			->method('get')
+			->willReturn($stream);
+
+		$targetNode->expects($this->any())
+			->method('getSize')
+			->willReturn(3);
+
+		$sourceNode->expects($this->once())
+			->method('getSize')
+			->willReturn(4);
+
+		$this->tree->expects($this->exactly(3))
+			->method('getNodeForPath')
+			->withConsecutive(['source/.file'],
+			                  [$target],
+			                  ['source/.zsync'])
+			->willReturnOnConsecutiveCalls($this->returnValue($sourceNode),
+			                               $this->returnValue($targetNode),
+			                               $this->returnValue($targetNode));
+		$this->tree->expects($this->exactly(2))
+			->method('nodeExists')
+			->withConsecutive([$target], ['source/.zsync'])
+			->willReturnOnConsecutiveCalls($this->returnValue(true), $this->returnValue(true));
+		$this->tree->expects($this->once())
+			->method('move')
+			->with('source/.file', $target);
+
+		$this->dir->expects($this->once())
+			->method('get')
+			->with('.')
+			->will($this->throwException(new NotFoundException));
+		$this->dir->expects($this->once())
+			->method('newFolder')
+			->with('.')
+			->willReturn($dir);
+
+		$dir->expects($this->once())
+			->method('newFile')
+			->with('target.zsync')
+			->willReturn($file);
+
+		$file->expects($this->once())
+			->method('putContent')
+			->with('bar')
+			->willReturn(true);
+
+		$this->response->expects($this->once())
+			->method('setHeader')
+			->with('Content-Length', '0');
+		$this->response->expects($this->once())
+			->method('setStatus')
+			->with(204);
+		$this->request->expects($this->exactly(2))
+			->method('getHeader')
+			->withConsecutive(['OC-Total-Length'], ['OC-Total-File-Length'])
+			->willReturn(4);
+
+		$this->assertFalse($this->plugin->beforeMove('source/.file', $target));
 	}
 
 	/**
@@ -160,6 +252,20 @@ class ChunkingPluginTest extends TestCase {
 			->method('getHeader')
 			->with('OC-Total-Length')
 			->willReturn('4');
+
+		$this->assertFalse($this->plugin->beforeMove('source', 'target'));
+	}
+
+	public function testBeforeMoveSizeIsNull() {
+		$sourceNode = $this->createMock(FutureFile::class);
+		$this->tree->expects($this->any())
+			->method('getNodeForPath')
+			->with('source')
+			->will($this->returnValue($sourceNode));
+		$this->request->expects($this->once())
+			->method('getHeader')
+			->with('OC-Total-Length')
+			->willReturn(null);
 
 		$this->assertFalse($this->plugin->beforeMove('source', 'target'));
 	}

@@ -59,7 +59,12 @@ $application->registerRoutes(
 				'url' => '/',
 				'verb' => 'GET',
 			],
-
+			[
+				'name' => 'zsync_api#show',
+				'url' => '/api/v1/zsync/{path}',
+				'verb' => 'GET',
+				'requirements' => ['path' => '.+']
+			],
 		]
 	]
 );

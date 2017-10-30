@@ -27,6 +27,7 @@ use OCA\DAV\Connector\Sabre\File;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
+use OCP\Files\NotFoundException;
 
 class ChunkingPlugin extends ServerPlugin {
 
@@ -34,6 +35,19 @@ class ChunkingPlugin extends ServerPlugin {
 	private $server;
 	/** @var FutureFile */
 	private $sourceNode;
+	/** @var \OC\Files\Node\Folder */
+	private $zsyncFolder;
+	/** @var string */
+	private $userId;
+
+	public function __construct($userRootFolder, $userId) {
+		$this->userId = $userId;
+		try {
+			$this->zsyncFolder = $userRootFolder->get('files_zsync');
+		} catch (NotFoundException $e) {
+			$this->zsyncFolder = $userRootFolder->newFolder('files_zsync');
+		}
+	}
 
 	/**
 	 * @inheritdoc
@@ -70,22 +84,56 @@ class ChunkingPlugin extends ServerPlugin {
 	 * @return bool|void false to stop handling, void to skip this handler
 	 */
 	public function performMove($path, $destination) {
-		if (!$this->server->tree->nodeExists($destination)) {
-			// skip and let the default handler do its work
-			return;
+		$response = $this->server->httpResponse;
+		$response->setHeader('Content-Length', '0');
+
+		// set backingFile which is needed by AssemblyStreamZsync
+		if ($this->server->tree->nodeExists($destination)) {
+			$response->setStatus(204);
+			$backingFile = $this->server->tree->getNodeForPath($destination);
+			$this->sourceNode->setBackingFile($backingFile);
+			$fileLength = $this->server->httpRequest->getHeader('OC-Total-File-Length');
+			$this->sourceNode->setFileLength($fileLength);
+		} else {
+			$response->setStatus(201);
+		}
+
+		// get .zsync contents before deletion
+		$zsyncData = '';
+		$zsyncPath = preg_replace('/\.file$/', '.zsync', $path);
+		if ($this->server->tree->nodeExists($zsyncPath)) {
+			$zsyncNode = $this->server->tree->getNodeForPath($zsyncPath);
+			$zsyncHandle = $zsyncNode->get();
+			while (!feof($zsyncHandle)) {
+				$zsyncData .= fread($zsyncHandle, $zsyncNode->getSize());
+			}
+			fclose($zsyncHandle);
 		}
 
 		// do a move manually, skipping Sabre's default "delete" for existing nodes
 		$this->server->tree->move($path, $destination);
 
+		// create/update .zsync file
+		if ($zsyncData) {
+			$prefix = 'files/' . $this->userId . '/';
+			$zsyncPath = substr($destination, strlen($prefix)) . ".zsync";
+			$zsyncDir = dirname($zsyncPath);
+			$zsyncBase = basename($zsyncPath);
+
+			try {
+				$this->zsyncFolder = $this->zsyncFolder->get($zsyncDir);
+			} catch (NotFoundException $e) {
+				$this->zsyncFolder = $this->zsyncFolder->newFolder($zsyncDir);
+			}
+
+			$zsyncFile = $this->zsyncFolder->newFile($zsyncBase);
+			$zsyncFile->putContent($zsyncData);
+		}
+
 		// trigger all default events (copied from CorePlugin::move)
 		$this->server->emit('afterMove', [$path, $destination]);
 		$this->server->emit('afterUnbind', [$path]);
 		$this->server->emit('afterBind', [$destination]);
-
-		$response = $this->server->httpResponse;
-		$response->setHeader('Content-Length', '0');
-		$response->setStatus(204);
 
 		return false;
 	}

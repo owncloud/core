@@ -62,4 +62,4 @@ $templateManager->registerTemplate('application/vnd.oasis.opendocument.spreadshe
 	);
 });
 
-\OCP\Util::connectHook('\OCP\Config', 'js', '\OCA\Files\App', 'extendJsConfig');
+\OCA\Files\Hooks::connectHooks();
