@@ -66,7 +66,7 @@ class FileActionsMenu extends OwnCloudPage {
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
 		$renameBtn->click();
-		if ($xpathToWaitFor !== null) {
+		if (!is_null($xpathToWaitFor)) {
 			$this->waitTillElementIsNotNull($xpathToWaitFor, $timeout_msec);
 		}
 	}
@@ -94,7 +94,7 @@ class FileActionsMenu extends OwnCloudPage {
 			"xpath",
 			sprintf($this->fileActionXpath, $action)
 		);
-		if ($button === null) {
+		if (is_null($button)) {
 			throw new ElementNotFoundException(
 				"could not find button '$action' in action Menu"
 			);
