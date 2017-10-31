@@ -174,17 +174,17 @@ trait Logging {
 	 * @AfterScenario
 	 */
 	public function tearDownScenarioLogging() {
-		if ($this->oldLogLevel !== null
+		if (!is_null($this->oldLogLevel)
 			&& $this->oldLogLevel !== LoggingHelper::getLogLevel()
 		) {
 			LoggingHelper::setLogLevel($this->oldLogLevel);
 		}
-		if ($this->oldLogBackend !== null
+		if (!is_null($this->oldLogBackend)
 			&& $this->oldLogBackend !== LoggingHelper::getLogBackend()
 		) {
 			LoggingHelper::setLogBackend($this->oldLogBackend);
 		}
-		if ($this->oldLogTimezone !== null
+		if (!is_null($this->oldLogTimezone)
 			&& $this->oldLogTimezone !== LoggingHelper::getLogTimezone()
 		) {
 			LoggingHelper::setLogTimezone($this->oldLogTimezone);

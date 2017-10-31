@@ -245,7 +245,7 @@ class UsersPage extends OwncloudPage {
 		$selectOption = $selectField->find(
 			'xpath', sprintf($this->quotaOptionXpath, $quota)
 		);
-		if ($selectOption === null) {
+		if (is_null($selectOption)) {
 			$selectOption = $selectField->find(
 				'xpath', sprintf($this->quotaOptionXpath, "Other")
 			);
@@ -264,7 +264,7 @@ class UsersPage extends OwncloudPage {
 	 */
 	private function getGroupListElement() {
 		$groupListElement = $this->findById($this->groupListId);
-		if ($groupListElement === null) {
+		if (is_null($groupListElement)) {
 			throw new ElementNotFoundException("cannot find group list element");
 		}
 

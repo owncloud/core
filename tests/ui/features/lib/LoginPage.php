@@ -65,8 +65,8 @@ class LoginPage extends OwncloudPage {
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
-			if (($this->findById($this->userInputId) !== null)
-				&& ($this->findById($this->passwordInputId) !== null)
+			if ((!is_null($this->findById($this->userInputId)))
+				&& (!is_null($this->findById($this->passwordInputId)))
 			) {
 				break;
 			}

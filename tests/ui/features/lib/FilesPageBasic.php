@@ -126,7 +126,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		do {
 			$fileListElement = $this->waitTillElementIsNotNull($this->getFileListXpath());
 
-			if ($fileListElement === null) {
+			if (is_null($fileListElement)) {
 				throw new ElementNotFoundException(
 					"findFileRowByName:could not find fileListXpath"
 				);
@@ -204,7 +204,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 */
 	public function findFileActionMenuElement() {
 		$actionMenu = $this->waitTillElementIsNotNull($this->fileActionMenuXpath);
-		if ($actionMenu === null) {
+		if (is_null($actionMenu)) {
 			throw new ElementNotFoundException("could not find open fileActionMenu");
 		} else {
 			return $actionMenu;
@@ -282,7 +282,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	public function findFileActionsMenuBtnByNo($number) {
 		$xpath = sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		$actionMenuBtn = $this->find("xpath", $xpath);
-		if ($actionMenuBtn === null) {
+		if (is_null($actionMenuBtn)) {
 			throw new ElementNotFoundException(
 				"could not find action menu button of file #$number"
 			);
@@ -329,7 +329,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 
-			if ($fileList !== null) {
+			if (!is_null($fileList)) {
 				if ($fileList->isVisible()
 					&& $fileList->has("xpath", "//a")
 				) {
@@ -341,7 +341,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 					$this->getEmptyContentXpath()
 				);
 
-				if ($emptyContentElement !== null) {
+				if (!is_null($emptyContentElement)) {
 					if (!$emptyContentElement->hasClass("hidden")) {
 						break;
 					}

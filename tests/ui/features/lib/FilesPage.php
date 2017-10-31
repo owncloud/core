@@ -81,7 +81,7 @@ class FilesPage extends FilesPageBasic {
 	 * @return string name of the created file
 	 */
 	public function createFolder($name = null) {
-		if ($name === null) {
+		if (is_null($name)) {
 			$name = substr(str_shuffle($this->strForNormalFileName), 0, 8);
 		}
 		$this->find("xpath", $this->newFileFolderButtonXpath)->click();

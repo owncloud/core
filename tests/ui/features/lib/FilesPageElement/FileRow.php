@@ -83,7 +83,7 @@ class FileRow extends OwnCloudPage {
 		$actionButton = $this->rowElement->find(
 			"xpath", $this->fileActionMenuBtnXpath
 		);
-		if ($actionButton === null) {
+		if (is_null($actionButton)) {
 			throw new ElementNotFoundException(
 				"could not find actionButton in fileRow"
 			);
@@ -154,7 +154,7 @@ class FileRow extends OwnCloudPage {
 		$inputField = $this->rowElement->find(
 			"xpath", $this->fileRenameInputXpath
 		);
-		if ($inputField === null) {
+		if (is_null($inputField)) {
 			throw new ElementNotFoundException("could not find input field");
 		}
 		return $inputField;
@@ -195,7 +195,7 @@ class FileRow extends OwnCloudPage {
 	 */
 	public function findTooltipElement() {
 		$element = $this->rowElement->find("xpath", $this->fileTooltipXpath);
-		if ($element === null) {
+		if (is_null($element)) {
 			throw new ElementNotFoundException(
 				"could not find tooltip element of file " . $this->name
 			);
