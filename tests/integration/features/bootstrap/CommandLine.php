@@ -212,6 +212,15 @@ trait CommandLine {
 	}
 
 	/**
+	 * @When /^recreating masterkey by deleting old one and encrypting the filesystem/
+	 */
+	public function recreateMasterKey() {
+		if ($this->runOcc(['encryption:recreate-master-key', '-y']) === 0) {
+			return $this->lastCode;
+		}
+	}
+
+	/**
 	 * @When /^transferring ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"/
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
