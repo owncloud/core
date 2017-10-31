@@ -146,7 +146,6 @@ class Server {
 		));
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
-		$this->server->addPlugin(new ChunkingPlugin());
 
 		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
 		// we do not provide locking we emulate it using a fake locking plugin.
@@ -168,6 +167,14 @@ class Server {
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
 			if (!is_null($user)) {
+				$rootFolder =  \OC::$server->getRootFolder();
+				$this->server->addPlugin(
+					new ChunkingPlugin(
+						$rootFolder->get($user->getUID()),
+						$user->getUID()
+					)
+				);
+
 				$view = \OC\Files\Filesystem::getView();
 				$this->server->addPlugin(
 					new FilesPlugin(

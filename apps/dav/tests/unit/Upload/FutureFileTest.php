@@ -55,6 +55,16 @@ class FutureFileTest extends \Test\TestCase {
 		$this->assertTrue(is_resource($stream));
 	}
 
+	public function testGetZsync() {
+		$file = $this->createMock('Sabre\DAV\IFile');
+		$f = $this->mockFutureFile();
+		$f->setBackingFile($file);
+		$f->setFileLength(1231);
+		$stream = $f->get();
+		$this->assertTrue(is_resource($stream));
+
+	}
+
 	public function testDelete() {
 		$d = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Directory')
 			->disableOriginalConstructor()
@@ -90,7 +100,7 @@ class FutureFileTest extends \Test\TestCase {
 	private function mockFutureFile() {
 		$d = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Directory')
 			->disableOriginalConstructor()
-			->setMethods(['getETag', 'getLastModified', 'getChildren'])
+			->setMethods(['getETag', 'getLastModified', 'getChildren', 'childExists'])
 			->getMock();
 
 		$d->expects($this->any())
@@ -104,6 +114,10 @@ class FutureFileTest extends \Test\TestCase {
 		$d->expects($this->any())
 			->method('getChildren')
 			->willReturn([]);
+
+		$d->expects($this->any())
+			->method('childExists')
+			->willReturn(true);
 
 		return new \OCA\DAV\Upload\FutureFile($d, 'foo.txt');
 	}

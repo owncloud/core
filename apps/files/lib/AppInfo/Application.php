@@ -26,6 +26,7 @@ namespace OCA\Files\AppInfo;
 
 use OCA\Files\Controller\ApiController;
 use OCA\Files\Controller\ViewController;
+use OCA\Files\Controller\ZsyncApiController;
 use OCP\AppFramework\App;
 use \OCA\Files\Service\TagService;
 use \OCP\IContainer;
@@ -62,6 +63,15 @@ class Application extends App {
 				$server->getUserSession(),
 				$server->getAppManager(),
 				$server->getRootFolder()
+			);
+		});
+
+		$container->registerService('ZsyncApiController', function (IContainer $c) use ($server) {
+			return new ZsyncApiController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$server->getUserSession(),
+				$c->query('ServerContainer')->getRootFolder()
 			);
 		});
 
