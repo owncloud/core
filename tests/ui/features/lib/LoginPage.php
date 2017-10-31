@@ -22,6 +22,7 @@
 
 namespace Page;
 
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Session;
 
@@ -36,17 +37,30 @@ class LoginPage extends OwncloudPage {
 	protected $path = '/index.php/login';
 	protected $userInputId = "user";
 	protected $passwordInputId = "password";
+	protected $submitLoginId = "submit";
 
 	/**
 	 * @param string $username
 	 * @param string $password
 	 * @param string $target
+	 * @throws ElementNotFoundException
 	 * @return Page
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
 		$this->fillField($this->userInputId, $username);
 		$this->fillField($this->passwordInputId, $password);
-		$this->findById("submit")->click();
+		$submitElement = $this->findById($this->submitLoginId);
+
+		if ($submitElement === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->submitLoginId " .
+				"could not find login submit button"
+			);
+		}
+
+		$submitElement->click();
+
 		return $this->getPage($target);
 	}
 
@@ -65,8 +79,8 @@ class LoginPage extends OwncloudPage {
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
-			if (($this->findById($this->userInputId) !== null)
-				&& ($this->findById($this->passwordInputId) !== null)
+			if ((!is_null($this->findById($this->userInputId)))
+				&& (!is_null($this->findById($this->passwordInputId)))
 			) {
 				break;
 			}
@@ -76,7 +90,7 @@ class LoginPage extends OwncloudPage {
 
 		if ($currentTime > $end) {
 			throw new \Exception(
-				"LoginPage:waitTillPageIsLoaded:timeout waiting for page to load"
+				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
 

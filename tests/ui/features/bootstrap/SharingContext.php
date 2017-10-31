@@ -290,7 +290,7 @@ class SharingContext extends RawMinkContext implements Context {
 		try {
 			$this->theFileFolderIsSharedWithTheUser($name, null, null);
 		} catch (ElementNotFoundException $e) {
-			PHPUnit_Framework_Assert::assertSame(
+			PHPUnit_Framework_Assert::assertContains(
 				'could not find share-with-field',
 				$e->getMessage()
 			);

@@ -178,7 +178,7 @@ class FeatureContext extends RawMinkContext implements Context {
 		SetupHelper::setOcPath($scope);
 		$jobId = $this->getSessionId();
 		file_put_contents("/tmp/saucelabs_sessionid", $jobId);
-		if ($this->oldCSRFSetting === null) {
+		if (is_null($this->oldCSRFSetting)) {
 			$oldCSRFSetting = SetupHelper::runOcc(
 				['config:system:get', 'csrf.disabled']
 			)['stdOut'];
@@ -215,7 +215,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	public function tearDownSuite() {
 		if ($this->oldCSRFSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
-		} elseif ($this->oldCSRFSetting !== null) {
+		} elseif (!is_null($this->oldCSRFSetting)) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',

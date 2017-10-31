@@ -64,8 +64,11 @@ class SharingDialog extends OwncloudPage {
 	 */
 	private function _findShareWithField() {
 		$shareWithField = $this->find("xpath", $this->shareWithFieldXpath);
-		if ($shareWithField === null) {
-			throw new ElementNotFoundException("could not find share-with-field");
+		if (is_null($shareWithField)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->shareWithFieldXpath could not find share-with-field"
+			);
 		}
 		return $shareWithField;
 	}
@@ -98,8 +101,10 @@ class SharingDialog extends OwncloudPage {
 			"xpath",
 			$this->shareWithAutocompleteListXpath
 		);
-		if ($autocompleteNodeElement === null) {
+		if (is_null($autocompleteNodeElement)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->shareWithAutocompleteListXpath " .
 				"could not find autocompleteNodeElement"
 			);
 		}
@@ -181,7 +186,7 @@ class SharingDialog extends OwncloudPage {
 		}
 		if ($userFound !== true) {
 			throw new ElementNotFoundException(
-				"could not share with '$nameToMatch'"
+				__METHOD__ . " could not share with '$nameToMatch'"
 			);
 		}
 	}
@@ -234,20 +239,20 @@ class SharingDialog extends OwncloudPage {
 		$shareReceiverName,
 		$permissions
 	) {
-		$permissionsField = $this->find(
-			"xpath",
-			sprintf($this->permissionsFieldByUserName, $shareReceiverName)
-		);
+		$xpathLocator = sprintf($this->permissionsFieldByUserName, $shareReceiverName);
+		$permissionsField = $this->find("xpath", $xpathLocator);
 		if (is_null($permissionsField)) {
 			throw new ElementNotFoundException(
-				"could not find share permissions field for user "
+				__METHOD__
+				. " xpath $xpathLocator could not find share permissions field for user "
 				. $shareReceiverName
 			);
 		}
 		$showCrudsBtn = $permissionsField->find("xpath", $this->showCrudsXpath);
 		if (is_null($showCrudsBtn)) {
 			throw new ElementNotFoundException(
-				"could not find show-cruds button for user "
+				__METHOD__
+				. " xpath $this->showCrudsXpath could not find show-cruds button for user "
 				. $shareReceiverName
 			);
 		}
@@ -265,6 +270,7 @@ class SharingDialog extends OwncloudPage {
 			$permissionCheckBox = $permissionsField->findField($permission);
 			if (is_null($permissionCheckBox)) {
 				throw new ElementNotFoundException(
+					__METHOD__ .
 					"could not find the permission check box for permission " .
 					"'$permission' and user '$shareReceiverName'"
 				);
@@ -272,16 +278,19 @@ class SharingDialog extends OwncloudPage {
 			$checkBoxId = $permissionCheckBox->getAttribute("id");
 			if (is_null($checkBoxId)) {
 				throw new ElementNotFoundException(
+					__METHOD__ .
 					"could not find the id of the permission check box of " .
 					"permission '$permission' and user '$shareReceiverName'"
 				);
 			}
-			$permissionLabel = $permissionsField->find(
-				"xpath", sprintf($this->permissionLabelXpath, $checkBoxId)
-			);
+
+			$xpathLocator = sprintf($this->permissionLabelXpath, $checkBoxId);
+			$permissionLabel = $permissionsField->find("xpath", $xpathLocator);
 
 			if (is_null($permissionLabel)) {
 				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $xpathLocator " .
 					"could not find the label of the permission check box of " .
 					"permission '$permission' and user '$shareReceiverName'"
 				);
@@ -306,8 +315,12 @@ class SharingDialog extends OwncloudPage {
 		$shareWithTooltip = $shareWithField->find(
 			"xpath", $this->shareWithTooltipXpath
 		);
-		if ($shareWithTooltip === null) {
-			throw new ElementNotFoundException("could not find share-with-tooltip");
+		if (is_null($shareWithTooltip)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->shareWithTooltipXpath " .
+				"could not find share-with-tooltip"
+			);
 		}
 		return $shareWithTooltip->getText();
 	}
@@ -322,7 +335,11 @@ class SharingDialog extends OwncloudPage {
 	public function findSharerInformationItem() {
 		$sharerInformation = $this->find("xpath", $this->sharerInformationXpath);
 		if (is_null($sharerInformation)) {
-			throw new ElementNotFoundException("could not find sharer information");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->sharerInformationXpath " .
+				"could not find sharer information"
+			);
 		}
 		return $sharerInformation;
 	}
@@ -344,6 +361,7 @@ class SharingDialog extends OwncloudPage {
 				];
 			} else {
 				throw new \Exception(
+					__METHOD__ .
 					"could not find shared with group or sharer name"
 				);
 			}
@@ -378,7 +396,11 @@ class SharingDialog extends OwncloudPage {
 	public function findThumbnailContainer() {
 		$thumbnailContainer = $this->find("xpath", $this->thumbnailContainerXpath);
 		if (is_null($thumbnailContainer)) {
-			throw new ElementNotFoundException("could not find thumbnailContainer");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->thumbnailContainerXpath " .
+				"could not find thumbnailContainer"
+			);
 		}
 		return $thumbnailContainer;
 	}
@@ -394,7 +416,11 @@ class SharingDialog extends OwncloudPage {
 			"xpath", $this->thumbnailFromContainerXpath
 		);
 		if (is_null($thumbnail)) {
-			throw new ElementNotFoundException("could not find thumbnail");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->thumbnailFromContainerXpath " .
+				"could not find thumbnail"
+			);
 		}
 		return $thumbnail;
 	}
@@ -407,8 +433,10 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function closeSharingDialog() {
 		$shareDialogCloseButton = $this->find("xpath", $this->shareWithCloseXpath);
-		if ($shareDialogCloseButton === null) {
+		if (is_null($shareDialogCloseButton)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->shareWithCloseXpath " .
 				"could not find share-dialog-close-button"
 			);
 		}

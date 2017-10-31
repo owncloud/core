@@ -158,7 +158,7 @@ class TagsHelper {
 			'userAssignable' => $userAssignable,
 		];
 
-		if ($groups !== null) {
+		if (!is_null($groups)) {
 			$body['groups'] = $groups;
 		}
 
