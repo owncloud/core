@@ -68,7 +68,11 @@ class OCDialog extends OwncloudPage {
 	public function getTitle() {
 		$title = $this->dialogElement->find("xpath", $this->titleClassXpath);
 		if (is_null($title)) {
-			throw new ElementNotFoundException("could not find title");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->titleClassXpath " .
+				"could not find title"
+			);
 		}
 		return $title->getText();
 	}
@@ -81,7 +85,11 @@ class OCDialog extends OwncloudPage {
 	public function getMessage() {
 		$contentElement = $this->dialogElement->find("xpath", $this->contentClassXpath);
 		if (is_null($contentElement)) {
-			throw new ElementNotFoundException("could not find content element");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->contentClassXpath " .
+				"could not find content element"
+			);
 		}
 		return $contentElement->getText();
 	}
@@ -98,7 +106,11 @@ class OCDialog extends OwncloudPage {
 			"xpath", $this->primaryButtonXpath
 		);
 		if (is_null($primaryButton)) {
-			throw new ElementNotFoundException("could not find primary button");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->primaryButtonXpath " .
+				"could not find primary button"
+			);
 		}
 		$primaryButton->click();
 		$this->waitForOutstandingAjaxCalls($session);

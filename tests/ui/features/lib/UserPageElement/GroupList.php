@@ -62,11 +62,16 @@ class GroupList extends OwncloudPage {
 	 */
 	public function selectGroup($name) {
 		$name = $this->quotedText($name);
+		$xpathLocator = sprintf($this->groupLiXpath, $name);
 		$groupLi = $this->groupListElement->find(
-			"xpath", sprintf($this->groupLiXpath, $name)
+			"xpath", $xpathLocator
 		);
 		if (is_null($groupLi)) {
-			throw new ElementNotFoundException("cannot find group list element");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpathLocator " .
+				"cannot find group list element"
+			);
 		}
 		$groupLi->click();
 		return $groupLi;
@@ -83,7 +88,11 @@ class GroupList extends OwncloudPage {
 		$groupLi = $this->selectGroup($name);
 		$deleteButton = $groupLi->find("xpath", $this->deleteBtnXpath);
 		if (is_null($deleteButton)) {
-			throw new ElementNotFoundException("cannot find delete button");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->deleteBtnXpath " .
+				"cannot find delete button"
+			);
 		}
 		$deleteButton->click();
 	}

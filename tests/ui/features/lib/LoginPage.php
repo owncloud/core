@@ -76,7 +76,7 @@ class LoginPage extends OwncloudPage {
 
 		if ($currentTime > $end) {
 			throw new \Exception(
-				"LoginPage:waitTillPageIsLoaded:timeout waiting for page to load"
+				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
 

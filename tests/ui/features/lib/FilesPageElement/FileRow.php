@@ -85,7 +85,8 @@ class FileRow extends OwnCloudPage {
 		);
 		if (is_null($actionButton)) {
 			throw new ElementNotFoundException(
-				"could not find actionButton in fileRow"
+				__METHOD__ .
+				" xpath $this->fileActionMenuBtnXpath could not find actionButton in fileRow"
 			);
 		}
 		return $actionButton;
@@ -126,7 +127,8 @@ class FileRow extends OwnCloudPage {
 		$shareBtn = $this->rowElement->find("xpath", $this->shareBtnXpath);
 		if (is_null($shareBtn)) {
 			throw new ElementNotFoundException(
-				"could not find sharing button in fileRow"
+				__METHOD__ .
+				" xpath $this->shareBtnXpath could not find sharing button in fileRow"
 			);
 		}
 		return $shareBtn;
@@ -155,7 +157,10 @@ class FileRow extends OwnCloudPage {
 			"xpath", $this->fileRenameInputXpath
 		);
 		if (is_null($inputField)) {
-			throw new ElementNotFoundException("could not find input field");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->fileRenameInputXpath could not find rename input field in fileRow"
+			);
 		}
 		return $inputField;
 	}
@@ -197,7 +202,9 @@ class FileRow extends OwnCloudPage {
 		$element = $this->rowElement->find("xpath", $this->fileTooltipXpath);
 		if (is_null($element)) {
 			throw new ElementNotFoundException(
-				"could not find tooltip element of file " . $this->name
+				__METHOD__ .
+				" xpath $this->fileTooltipXpath could not find tooltip element of file " .
+				$this->name
 			);
 		}
 		return $element;
@@ -222,7 +229,9 @@ class FileRow extends OwnCloudPage {
 		$thumbnail = $this->rowElement->find("xpath", $this->thumbnailXpath);
 		if (is_null($thumbnail)) {
 			throw new ElementNotFoundException(
-				"could not find thumbnail of file " . $this->name
+				__METHOD__ .
+				" xpath $this->thumbnailXpath could not find thumbnail of file " .
+				$this->name
 			);
 		}
 		return $thumbnail;
@@ -247,7 +256,9 @@ class FileRow extends OwnCloudPage {
 		$linkElement = $this->rowElement->find("xpath", $this->fileLinkXpath);
 		if (is_null($linkElement)) {
 			throw new ElementNotFoundException(
-				"could not find link to " . $this->name
+				__METHOD__ .
+				" xpath $this->fileLinkXpath could not find link to " .
+				$this->name
 			);
 		}
 		return $linkElement;
