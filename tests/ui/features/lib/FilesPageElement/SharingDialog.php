@@ -64,7 +64,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	private function _findShareWithField() {
 		$shareWithField = $this->find("xpath", $this->shareWithFieldXpath);
-		if ($shareWithField === null) {
+		if (is_null($shareWithField)) {
 			throw new ElementNotFoundException("could not find share-with-field");
 		}
 		return $shareWithField;
@@ -98,7 +98,7 @@ class SharingDialog extends OwncloudPage {
 			"xpath",
 			$this->shareWithAutocompleteListXpath
 		);
-		if ($autocompleteNodeElement === null) {
+		if (is_null($autocompleteNodeElement)) {
 			throw new ElementNotFoundException(
 				"could not find autocompleteNodeElement"
 			);
@@ -306,7 +306,7 @@ class SharingDialog extends OwncloudPage {
 		$shareWithTooltip = $shareWithField->find(
 			"xpath", $this->shareWithTooltipXpath
 		);
-		if ($shareWithTooltip === null) {
+		if (is_null($shareWithTooltip)) {
 			throw new ElementNotFoundException("could not find share-with-tooltip");
 		}
 		return $shareWithTooltip->getText();
@@ -407,7 +407,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function closeSharingDialog() {
 		$shareDialogCloseButton = $this->find("xpath", $this->shareWithCloseXpath);
-		if ($shareDialogCloseButton === null) {
+		if (is_null($shareDialogCloseButton)) {
 			throw new ElementNotFoundException(
 				"could not find share-dialog-close-button"
 			);

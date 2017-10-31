@@ -65,7 +65,7 @@ class GroupList extends OwncloudPage {
 		$groupLi = $this->groupListElement->find(
 			"xpath", sprintf($this->groupLiXpath, $name)
 		);
-		if ($groupLi === null) {
+		if (is_null($groupLi)) {
 			throw new ElementNotFoundException("cannot find group list element");
 		}
 		$groupLi->click();
@@ -82,7 +82,7 @@ class GroupList extends OwncloudPage {
 	public function deleteGroup($name) {
 		$groupLi = $this->selectGroup($name);
 		$deleteButton = $groupLi->find("xpath", $this->deleteBtnXpath);
-		if ($deleteButton === null) {
+		if (is_null($deleteButton)) {
 			throw new ElementNotFoundException("cannot find delete button");
 		}
 		$deleteButton->click();
