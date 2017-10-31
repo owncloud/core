@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Element\NodeElement;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Personal Security Settings page.
@@ -47,14 +48,36 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * create a new app password for the app named $appName
 	 *
 	 * @param string $appName
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function createNewAppPassword($appName) {
 		$this->fillField($this->appPasswordNameInputId, $appName);
-		$this->findById($this->createNewAppPasswordButtonId)->click();
 		$createNewAppPasswordButton = $this->findById(
 			$this->createNewAppPasswordButtonId
 		);
+
+		if ($createNewAppPasswordButton === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->createNewAppPasswordButtonId " .
+				"could not find create new app password button (1)"
+			);
+		}
+
+		$createNewAppPasswordButton->click();
+
+		$createNewAppPasswordButton = $this->findById(
+			$this->createNewAppPasswordButtonId
+		);
+
+		if ($createNewAppPasswordButton === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->createNewAppPasswordButtonId " .
+				"could not find create new app password button (2)"
+			);
+		}
 
 		while (strpos(
 			$createNewAppPasswordButton->getAttribute("class"),

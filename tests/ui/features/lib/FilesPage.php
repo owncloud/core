@@ -22,6 +22,7 @@
 
 namespace Page;
 
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use Page\FilesPageElement\SharingDialog;
 use Behat\Mink\Session;
@@ -78,14 +79,38 @@ class FilesPage extends FilesPageBasic {
 	 * If name is not given a random one is chosen
 	 *
 	 * @param string $name
+	 * @throws ElementNotFoundException
 	 * @return string name of the created file
 	 */
 	public function createFolder($name = null) {
 		if (is_null($name)) {
 			$name = substr(str_shuffle($this->strForNormalFileName), 0, 8);
 		}
-		$this->find("xpath", $this->newFileFolderButtonXpath)->click();
-		$this->find("xpath", $this->newFolderButtonXpath)->click();
+
+		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
+
+		if ($newButtonElement === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->newFileFolderButtonXpath " .
+				"could not find new file-folder button"
+			);
+		}
+
+		$newButtonElement->click();
+
+		$newFolderButtonElement = $this->find("xpath", $this->newFolderButtonXpath);
+
+		if ($newFolderButtonElement === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->newFolderButtonXpath " .
+				"could not find new folder button"
+			);
+		}
+
+		$newFolderButtonElement->click();
+
 		try {
 			$this->fillField($this->newFolderNameInputLabel, $name . Key::ENTER);
 		} catch (NoSuchElement $e) {

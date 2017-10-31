@@ -41,7 +41,11 @@ class SettingsMenu extends OwncloudPage {
 	public function logout() {
 		$logoutButton = $this->findById($this->logoutButtonId);
 		if (is_null($logoutButton)) {
-			throw new ElementNotFoundException("could not find logout button");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->logoutButtonId " .
+				"could not find logout button"
+			);
 		}
 		$logoutButton->click();
 	}
