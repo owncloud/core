@@ -52,10 +52,10 @@ class SetupHelper {
 		$email = null
 	) {
 		$occCommand = ['user:add', '--password-from-env'];
-		if ($displayName !== null) {
+		if (!is_null($displayName)) {
 			$occCommand = array_merge($occCommand, ["--display-name", $displayName]);
 		}
-		if ($email !== null) {
+		if (!is_null($email)) {
 			$occCommand = array_merge($occCommand, ["--email", $email]);
 		}
 		putenv("OC_PASS=" . $password);

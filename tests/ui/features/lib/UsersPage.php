@@ -102,7 +102,11 @@ class UsersPage extends OwncloudPage {
 	public function openSettingsMenu() {
 		$settingsBtn = $this->find("xpath", $this->settingsBtnXpath);
 		if (is_null($settingsBtn)) {
-			throw new ElementNotFoundException("cannot find settings button");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->settingsBtnXpath " .
+				"cannot find settings button"
+			);
 		}
 		$settingsBtn->click();
 	}
@@ -118,16 +122,22 @@ class UsersPage extends OwncloudPage {
 	public function setSetting($setting, $value = true) {
 		$settingContent = $this->findById($this->settingContentId);
 		if (is_null($settingContent)) {
-			throw new ElementNotFoundException("cannot find setting content");
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->settingContentId " .
+				"cannot find setting content"
+			);
 		}
 		if (!$settingContent->isVisible()) {
 			$this->openSettingsMenu();
 		}
-		$settingLabel = $this->find(
-			"xpath", sprintf($this->settingByTextXpath, $setting)
-		);
+
+		$xpathLocator = sprintf($this->settingByTextXpath, $setting);
+		$settingLabel = $this->find("xpath", $xpathLocator);
 		if (is_null($settingLabel)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpathLocator " .
 				"cannot find setting '" . $setting . "'"
 			);
 		}
@@ -136,6 +146,7 @@ class UsersPage extends OwncloudPage {
 		$checkBox = $this->findById($checkBoxId);
 		if (is_null($checkBox)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
 				"cannot find checkbox with the id '" . $checkBoxId . "'"
 			);
 		}
@@ -168,6 +179,8 @@ class UsersPage extends OwncloudPage {
 		$createUserBtn = $this->find("xpath", $this->createUserBtnXpath);
 		if (is_null($createUserBtn)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->createUserBtnXpath " .
 				"cannot find create user button"
 			);
 		}
@@ -176,6 +189,8 @@ class UsersPage extends OwncloudPage {
 		);
 		if (is_null($newUserGroupsDropDown)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->newUserGroupsDropDownXpath " .
 				"cannot find groups dropdown for new user"
 			);
 		}
@@ -206,6 +221,8 @@ class UsersPage extends OwncloudPage {
 					);
 					if (is_null($newUserAddGroupBtn)) {
 						throw new ElementNotFoundException(
+							__METHOD__ .
+							" xpath $this->newUserAddGroupBtnXpath " .
 							"cannot find add-group button while creating a new user"
 						);
 					}
@@ -215,6 +232,8 @@ class UsersPage extends OwncloudPage {
 					);
 					if (is_null($createUserInput)) {
 						throw new ElementNotFoundException(
+							__METHOD__ .
+							" xpath $this->createGroupWithNewUserInputXpath " .
 							"cannot find add-group input while creating a new user"
 						);
 					}
@@ -245,7 +264,7 @@ class UsersPage extends OwncloudPage {
 		$selectOption = $selectField->find(
 			'xpath', sprintf($this->quotaOptionXpath, $quota)
 		);
-		if ($selectOption === null) {
+		if (is_null($selectOption)) {
 			$selectOption = $selectField->find(
 				'xpath', sprintf($this->quotaOptionXpath, "Other")
 			);
@@ -264,8 +283,12 @@ class UsersPage extends OwncloudPage {
 	 */
 	private function getGroupListElement() {
 		$groupListElement = $this->findById($this->groupListId);
-		if ($groupListElement === null) {
-			throw new ElementNotFoundException("cannot find group list element");
+		if (is_null($groupListElement)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->groupListId " .
+				"cannot find group list element"
+			);
 		}
 
 		/**

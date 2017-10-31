@@ -37,6 +37,7 @@ use Page\OwncloudPageElement\OCDialog;
 class OwncloudPage extends Page {
 
 	protected $userNameDisplayId = "expandDisplayName";
+	protected $notificationId = "notification";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
 
 	/**
@@ -73,7 +74,7 @@ class OwncloudPage extends Page {
 
 		if ($currentTime > $end) {
 			throw new \Exception(
-				"OwncloudPage:waitTillPageIsLoaded:timeout waiting for page to load"
+				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
 
@@ -98,7 +99,7 @@ class OwncloudPage extends Page {
 			} catch (WebDriverException $e) {
 				break;
 			}
-			if ($element === null) {
+			if (is_null($element)) {
 				break;
 			}
 			usleep(STANDARDSLEEPTIMEMICROSEC);
@@ -123,7 +124,7 @@ class OwncloudPage extends Page {
 				 * @var NodeElement $element
 				 */
 				$element = $this->find("xpath", $xpath);
-				if ($element === null || !$element->isValid()) {
+				if (is_null($element) || !$element->isValid()) {
 					usleep(STANDARDSLEEPTIMEMICROSEC);
 				} else {
 					return $element;
@@ -144,11 +145,11 @@ class OwncloudPage extends Page {
 	 * @return string
 	 */
 	public function getNotificationText() {
-		$notificationElement = $this->findById("notification");
+		$notificationElement = $this->findById($this->notificationId);
 
-		if ($notificationElement === null) {
+		if (is_null($notificationElement)) {
 			throw new ElementNotFoundException(
-				"getNotificationText:could not find notification element"
+				__METHOD__ . " could not find element with id $this->notificationId"
 			);
 		}
 
@@ -163,11 +164,11 @@ class OwncloudPage extends Page {
 	 */
 	public function getNotifications() {
 		$notificationsText = array();
-		$notifications = $this->findById("notification");
+		$notifications = $this->findById($this->notificationId);
 
-		if ($notifications === null) {
+		if (is_null($notifications)) {
 			throw new ElementNotFoundException(
-				"getNotifications:could not find notification element"
+				__METHOD__ . " could not find element with id $this->notificationId"
 			);
 		}
 
@@ -206,9 +207,9 @@ class OwncloudPage extends Page {
 	public function openSettingsMenu() {
 		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
 
-		if ($userNameDisplayElement === null) {
+		if (is_null($userNameDisplayElement)) {
 			throw new ElementNotFoundException(
-				"openSettingsMenu:could not find userNameDisplay element"
+				__METHOD__ . " could not find element with id $this->userNameDisplayId"
 			);
 		}
 
@@ -225,9 +226,9 @@ class OwncloudPage extends Page {
 	public function getMyUsername() {
 		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
 
-		if ($userNameDisplayElement === null) {
+		if (is_null($userNameDisplayElement)) {
 			throw new ElementNotFoundException(
-				"getMyUsername:could not find userNameDisplay element"
+				__METHOD__ . " could not find element with id $this->userNameDisplayId"
 			);
 		}
 
@@ -249,7 +250,7 @@ class OwncloudPage extends Page {
 	 * @return void
 	 */
 	public function setPagePath($path) {
-		if ($this->originalPath === null) {
+		if (is_null($this->originalPath)) {
 			$this->originalPath = $this->path;
 		}
 		$this->path = $path;
@@ -261,7 +262,7 @@ class OwncloudPage extends Page {
 	 * @return string
 	 */
 	public function getOriginalPath() {
-		if ($this->originalPath !== null) {
+		if (!is_null($this->originalPath)) {
 			return $this->originalPath;
 		} else {
 			return $this->getPath();
