@@ -108,7 +108,7 @@ class GroupList extends OwncloudPage {
 		);
 		$allGroups = [];
 		foreach ($allGroupElements as $element) {
-			$allGroups[] = $element->getText();
+			$allGroups[] = $this->getTrimmedText($element);
 		}
 		return $allGroups;
 	}

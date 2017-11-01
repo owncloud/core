@@ -72,7 +72,7 @@ class UsersPage extends OwncloudPage {
 
 		foreach ($userTrs as $userTr) {
 			$user = $userTr->find("css", ".name");
-			if ($user->getText() === $username) {
+			if ($this->getTrimmedText($user) === $username) {
 				return $userTr;
 			}
 		}
@@ -107,7 +107,7 @@ class UsersPage extends OwncloudPage {
 			);
 		}
 
-		return $selectField->getText();
+		return $this->getTrimmedText($selectField);
 	}
 
 	/**
