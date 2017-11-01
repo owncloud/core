@@ -157,7 +157,7 @@ class Scan extends Base {
 				try {
 					// FIXME: this will lock the storage even if there is nothing to repair
 					$storage->acquireLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
-				} catch (OCP\Lock\LockedException $e) {
+				} catch (LockedException $e) {
 					$output->writeln("\t<error>Storage \"" . $storage->getCache()->getNumericStorageId() . '" cannot be repaired as it is currently in use, please try again later</error>');
 					return;
 				}

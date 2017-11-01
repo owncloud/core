@@ -35,7 +35,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 
-		$mimeLoader = $this->createMock(IMimeTypeLoader::class);
+		$mimeLoader = $this->getMockBuilder(IMimeTypeLoader::class)->getMock();
 		$mimeLoader->method('getId')
 			->will($this->returnValueMap([
 				['httpd', 1],
@@ -205,7 +205,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$doNotTouchId = $this->createFileCacheEntry($sourceStorageId, 'files/source/do_not_touch', $sourceId);
 
-		$outputMock = $this->createMock(IOutput::class);
+		$outputMock = $this->getMockBuilder(IOutput::class)->getMock();
 		if (is_null($repairStoragesOrder)) {
 			// no storage selected, full repair
 			$this->repair->setStorageNumericId(null);
@@ -345,7 +345,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		// End parallel storage
 
 
-		$outputMock = $this->createMock(IOutput::class);
+		$outputMock = $this->getMockBuilder(IOutput::class)->getMock();
 		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
 
@@ -535,7 +535,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$wrongParentRootId = $this->createFileCacheEntry($storageId, 'wrongparentroot', $nonExistingParentId);
 		$wrongParentId = $this->createFileCacheEntry($storageId, 'files/wrongparent', $nonExistingParentId);
 
-		$outputMock = $this->createMock(IOutput::class);
+		$outputMock = $this->getMockBuilder(IOutput::class)->getMock();
 		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
 
@@ -593,7 +593,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$notOrphanedId2_parallel = $this->createFileCacheEntry($storageId_parallel, 'missingdir/missingdir1/orphaned2', $notOrphanedFolder2_parallel);
 		// end parallel test storage
 
-		$outputMock = $this->createMock(IOutput::class);
+		$outputMock = $this->getMockBuilder(IOutput::class)->getMock();
 		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
 
@@ -700,7 +700,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$noRootid = $this->createFileCacheEntry($testStorageId, 'noroot', $baseId);
 
 
-		$outputMock = $this->createMock(IOutput::class);
+		$outputMock = $this->getMockBuilder(IOutput::class)->getMock();
 		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
 
