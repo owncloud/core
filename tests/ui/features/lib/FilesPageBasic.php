@@ -26,6 +26,8 @@ use Page\FilesPageElement\FileRow;
 use Page\FilesPageElement\FileActionsMenu;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
+use WebDriver\Exception\NoSuchElement;
+use WebDriver\Exception\StaleElementReference;
 
 /**
  * Common elements/methods for all Files Pages
@@ -97,6 +99,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	public function findFileRowByName($name, Session $session) {
 		$previousFileCount = 0;
 		$currentFileCount = null;
+		$spaceLeftTillBottom = 0;
 		$this->scrollToPosition('#' . $this->appContentId, 0, $session);
 
 		if (is_array($name)) {
@@ -138,7 +141,29 @@ abstract class FilesPageBasic extends OwnCloudPage {
 				"xpath", sprintf($this->getFileNameMatchXpath(), $xpathString)
 			);
 
-			if (is_null($fileNameMatch) || !$fileNameMatch->isVisible()) {
+			if (is_null($fileNameMatch)) {
+				$fileNameMatchIsVisible = false;
+			} else {
+				try {
+					$fileNameMatchIsVisible = $fileNameMatch->isVisible();
+				} catch (NoSuchElement $e) {
+					// Somehow on Edge this can throw NoSuchElement even though
+					// we just found the file name.
+					// TODO: Edge - if it keeps happening then find out why.
+					error_log(
+						__METHOD__
+						. " NoSuchElement while doing fileNameMatch->isVisible()"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+					);
+					$fileNameMatchIsVisible = false;
+				}
+			}
+
+			if ($fileNameMatchIsVisible) {
+				$fileNameMatch->focus();
+			} else {
 				if (is_null($currentFileCount)) {
 					$currentFileCount = $this->getSizeOfFileFolderList();
 				}
@@ -152,11 +177,9 @@ abstract class FilesPageBasic extends OwnCloudPage {
 					'    +$("#' . $this->appContentId . '").scrollTop()' .
 					'  )'
 				);
-			} else {
-				$fileNameMatch->focus();
 			}
 		} while (
-			(is_null($fileNameMatch) || !$fileNameMatch->isVisible())
+			!$fileNameMatchIsVisible
 			&& ($currentFileCount > $previousFileCount || $spaceLeftTillBottom > 0)
 		);
 
@@ -342,7 +365,35 @@ abstract class FilesPageBasic extends OwnCloudPage {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 
 			if (!is_null($fileList)) {
-				if ($fileList->isVisible()
+				try {
+					$fileListIsVisible = $fileList->isVisible();
+				} catch (NoSuchElement $e) {
+					// Somehow on Edge this can throw NoSuchElement even though
+					// we just found the file list.
+					// TODO: Edge - if it keeps happening then find out why.
+					error_log(
+						__METHOD__
+						. " NoSuchElement while doing fileList->isVisible()"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+					);
+					$fileListIsVisible = false;
+				} catch (StaleElementReference $e) {
+					// Somehow on Edge this can throw StaleElementReference even though
+					// we just found the file list.
+					// TODO: Edge - if it keeps happening then find out why.
+					error_log(
+						__METHOD__
+						. " StaleElementReference while doing fileList->isVisible()"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+					);
+					$fileListIsVisible = false;
+				}
+				
+				if ($fileListIsVisible
 					&& $fileList->has("xpath", "//a")
 				) {
 					break;
