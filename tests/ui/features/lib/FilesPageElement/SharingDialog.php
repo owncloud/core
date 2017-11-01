@@ -142,7 +142,7 @@ class SharingDialog extends OwncloudPage {
 			$this->autocompleteItemsTextXpath
 		);
 		foreach ($itemElements as $item) {
-			array_push($itemsArray, $item->getText());
+			array_push($itemsArray, $this->getTrimmedText($item));
 		}
 		return $itemsArray;
 	}
@@ -166,7 +166,7 @@ class SharingDialog extends OwncloudPage {
 	
 			$userFound = false;
 			foreach ($userElements as $user) {
-				if ($user->getText() === $nameToMatch) {
+				if ($this->getTrimmedText($user) === $nameToMatch) {
 					$user->click();
 					$this->waitForAjaxCallsToStartAndFinish($session);
 					$userFound = true;
@@ -322,7 +322,7 @@ class SharingDialog extends OwncloudPage {
 				"could not find share-with-tooltip"
 			);
 		}
-		return $shareWithTooltip->getText();
+		return $this->getTrimmedText($shareWithTooltip);
 	}
 
 	/**
@@ -353,7 +353,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function getSharedWithGroupAndSharerName() {
 		if (is_null($this->sharedWithGroupAndSharerName)) {
-			$text = $this->findSharerInformationItem()->getText();
+			$text = $this->getTrimmedText($this->findSharerInformationItem());
 			if (preg_match("/" . $this->sharedWithAndByRegEx . "/", $text, $matches)) {
 				$this->sharedWithGroupAndSharerName = [
 					"sharedWithGroup" => $matches [1],

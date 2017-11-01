@@ -74,7 +74,7 @@ class OCDialog extends OwncloudPage {
 				"could not find title"
 			);
 		}
-		return $title->getText();
+		return $this->getTrimmedText($title);
 	}
 
 	/**
@@ -91,7 +91,7 @@ class OCDialog extends OwncloudPage {
 				"could not find content element"
 			);
 		}
-		return $contentElement->getText();
+		return $this->getTrimmedText($contentElement);
 	}
 
 	/**

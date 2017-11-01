@@ -153,7 +153,7 @@ class OwncloudPage extends Page {
 			);
 		}
 
-		return $notificationElement->getText();
+		return $this->getTrimmedText($notificationElement);
 	}
 
 	/**
@@ -173,7 +173,7 @@ class OwncloudPage extends Page {
 		}
 
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
-			array_push($notificationsText, $notification->getText());
+			array_push($notificationsText, $this->getTrimmedText($notification));
 		}
 		return $notificationsText;
 	}
@@ -232,7 +232,7 @@ class OwncloudPage extends Page {
 			);
 		}
 
-		return $userNameDisplayElement->getText();
+		return $this->getTrimmedText($userNameDisplayElement);
 	}
 
 	/**
@@ -454,6 +454,19 @@ class OwncloudPage extends Page {
 			$inputField->keyUp(27); //send escape
 			throw new \Exception("value of input field is not what we expect");
 		}
+	}
+
+	/**
+	 * Edge often returns whitespace before or after element text.
+	 * This is a convenient wrapper to ensure that text is trimmed
+	 * before using it in tests.
+	 *
+	 * @param NodeElement $element
+	 * @throws \Exception
+	 * @return string text of the element with any whitespace trimmed
+	 */
+	public function getTrimmedText(NodeElement $element) {
+		return trim($element->getText());
 	}
 
 	/**
