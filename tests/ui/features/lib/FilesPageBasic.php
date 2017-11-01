@@ -126,9 +126,11 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		do {
 			$fileListElement = $this->waitTillElementIsNotNull($this->getFileListXpath());
 
-			if ($fileListElement === null) {
+			if (is_null($fileListElement)) {
 				throw new ElementNotFoundException(
-					"findFileRowByName:could not find fileListXpath"
+					__METHOD__ .
+					" xpath " . $this->getFileListXpath() .
+					" could not find file list"
 				);
 			}
 
@@ -160,7 +162,8 @@ abstract class FilesPageBasic extends OwnCloudPage {
 
 		if (is_null($fileNameMatch)) {
 			throw new ElementNotFoundException(
-				"could not find file with the name '" . $name . "'"
+				__METHOD__ .
+				" could not find file with the name '" . $name . "'"
 			);
 		}
 
@@ -168,8 +171,9 @@ abstract class FilesPageBasic extends OwnCloudPage {
 
 		if (is_null($fileRowElement)) {
 			throw new ElementNotFoundException(
-				"could not find fileRow with xpath '"
-				. $this->fileRowFromNameXpath . "'"
+				__METHOD__ .
+				" xpath $this->fileRowFromNameXpath " .
+				"could not find file row"
 			);
 		}
 		$fileRow = $this->getPage('FilesPageElement\\FileRow');
@@ -204,8 +208,12 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 */
 	public function findFileActionMenuElement() {
 		$actionMenu = $this->waitTillElementIsNotNull($this->fileActionMenuXpath);
-		if ($actionMenu === null) {
-			throw new ElementNotFoundException("could not find open fileActionMenu");
+		if (is_null($actionMenu)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->fileActionMenuXpath " .
+				"could not find open fileActionMenu"
+			);
 		} else {
 			return $actionMenu;
 		}
@@ -246,6 +254,8 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		);
 		if (is_null($deleteAllSelectedBtn)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->deleteAllSelectedBtnXpath " .
 				"could not find button to delete all selected files"
 			);
 		}
@@ -280,10 +290,12 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
 	public function findFileActionsMenuBtnByNo($number) {
-		$xpath = sprintf($this->fileActionMenuBtnXpathByNo, $number);
-		$actionMenuBtn = $this->find("xpath", $xpath);
-		if ($actionMenuBtn === null) {
+		$xpathLocator = sprintf($this->fileActionMenuBtnXpathByNo, $number);
+		$actionMenuBtn = $this->find("xpath", $xpathLocator);
+		if (is_null($actionMenuBtn)) {
 			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $xpathLocator " .
 				"could not find action menu button of file #$number"
 			);
 		}
@@ -329,7 +341,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		while ($currentTime <= $end) {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 
-			if ($fileList !== null) {
+			if (!is_null($fileList)) {
 				if ($fileList->isVisible()
 					&& $fileList->has("xpath", "//a")
 				) {
@@ -341,7 +353,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 					$this->getEmptyContentXpath()
 				);
 
-				if ($emptyContentElement !== null) {
+				if (!is_null($emptyContentElement)) {
 					if (!$emptyContentElement->hasClass("hidden")) {
 						break;
 					}
@@ -354,7 +366,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 
 		if ($currentTime > $end) {
 			throw new \Exception(
-				"FilesPageBasic:waitTillPageIsLoaded:timeout waiting for page to load"
+				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
 

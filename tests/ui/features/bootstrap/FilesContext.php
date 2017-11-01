@@ -453,7 +453,7 @@ class FilesContext extends RawMinkContext implements Context {
 				$name = implode($name);
 			}
 
-			PHPUnit_Framework_Assert::assertEquals(
+			PHPUnit_Framework_Assert::assertContains(
 				"could not find file with the name '" . $name . "'",
 				$message
 			);
@@ -558,7 +558,7 @@ class FilesContext extends RawMinkContext implements Context {
 		try {
 			$this->iDeleteTheFile($name);
 		} catch (ElementNotFoundException $e) {
-			PHPUnit_Framework_Assert::assertSame(
+			PHPUnit_Framework_Assert::assertContains(
 				"could not find button 'Delete' in action Menu",
 				$e->getMessage()
 			);
