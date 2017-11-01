@@ -21,8 +21,6 @@
 
 namespace OC\Repair;
 
-use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
-use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
@@ -56,7 +54,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	protected $countOnly = true;
 
 	/**
-	 * @param \OCP\IDBConnection $connection
+	 * @param IDBConnection $connection
+	 * @param IMimeTypeLoader $mimeLoader
 	 */
 	public function __construct(IDBConnection $connection, IMimeTypeLoader $mimeLoader) {
 		$this->connection = $connection;
