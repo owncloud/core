@@ -2647,10 +2647,15 @@ class Share20OCSTest extends TestCase {
 			->with('files_sharing.sharecontroller.showShare', ['token' => 'myToken'])
 			->willReturn('myLink');
 
-
-		$this->rootFolder->method('getUserFolder')
-			->with($this->currentUser->getUID())
-			->will($this->returnSelf());
+		if ($share->getShareType() === 6) {
+			$this->rootFolder->method('getUserFolder')
+				->with($share->getSharedBy())
+				->will($this->returnSelf());
+		} else {
+			$this->rootFolder->method('getUserFolder')
+				->with($this->currentUser->getUID())
+				->will($this->returnSelf());
+		}
 
 		if (!$exception) {
 			$this->rootFolder->method('getById')

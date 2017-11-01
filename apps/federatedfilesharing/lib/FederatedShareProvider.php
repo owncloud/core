@@ -734,9 +734,68 @@ class FederatedShareProvider implements IShareProvider {
 	}
 
 	/**
+	 * Get the id's of share_with from the share table
+	 * @param $share_with
+	 * @return array
+	 */
+	private function getAllShareIds($share_with) {
+		$qb = $this->dbConnection->getQueryBuilder();
+		$qb->select('file_source')
+			->from('share');
+
+		// Order by id
+		$qb->orderBy('id');
+
+		$qb->where($qb->expr()->eq('share_with', $qb->createNamedParameter($share_with)));
+
+		return $qb->execute()->fetchAll();
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function getSharedWith($userId, $shareType, $node, $limit, $offset) {
+		/**
+		 * Fix me. This is a wierd work around
+		 *
+		 * 1) Extract id
+		 * 2) Extract share_with user id
+		 */
+
+		/**
+		 * Set id to 0. This would make at the max query to return empty result.
+		 */
+		$id = 0;
+		if ($node !== null) {
+			$nodePath = explode('/', $node->getPath());
+			$file = array_pop($nodePath);
+			/**
+			 * Calculate the share_with. Unfortunately the userid doesn't
+			 * match with the ones expected. And expected something like
+			 * user@localhost/foo
+			 */
+			$sharedwith = explode('@', $node->getOwner()->getDisplayName());
+			$tempOwner = $sharedwith[0];
+			$sharedwith[0] = $nodePath[1];
+			$sharedwith = implode('@', $sharedwith);
+			$sharedwith = rtrim($sharedwith, '/');
+			/**
+			 * Get all the id's of share_with from the oc_share table
+			 */
+			$shareWithIds = $this->getAllShareIds($sharedwith);
+			foreach ($shareWithIds as $sharewithId) {
+				//$nodeFromId = \OC::$server->getRootFolder()->getUserFolder($tempOwner)->getById($sharewithId['file_source']);
+				$nodeFromId = $this->rootFolder->getUserFolder($tempOwner)->getById($sharewithId['file_source']);
+				if (count($nodeFromId) > 0) {
+					$fileToVerify = explode('/', $nodeFromId[0]->getPath());
+					$fileToVerify = array_pop($fileToVerify);
+					if ($fileToVerify === $file) {
+						$id = $sharewithId['file_source'];
+						break;
+					}
+				}
+			}
+		}
 		/** @var IShare[] $shares */
 		$shares = [];
 
@@ -755,11 +814,15 @@ class FederatedShareProvider implements IShareProvider {
 		$qb->setFirstResult($offset);
 
 		$qb->where($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
-		$qb->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($userId)));
+		if (isset($sharedwith)) {
+			$qb->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($sharedwith)));
+		} else {
+			$qb->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($userId)));
+		}
 
 		// Filter by node if provided
 		if ($node !== null) {
-			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
+			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($id)));
 		}
 
 		$cursor = $qb->execute();

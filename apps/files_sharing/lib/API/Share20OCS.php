@@ -124,8 +124,13 @@ class Share20OCS {
 			'displayname_file_owner' => $shareOwner !== null ? $shareOwner->getDisplayName() : $share->getShareOwner(),
 		];
 
-		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$nodes = $userFolder->getById($share->getNodeId());
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE) {
+			$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
+		} else {
+			$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		}
+		$nodeId = $share->getNodeId();
+		$nodes = $userFolder->getById($nodeId);
 
 		if (empty($nodes)) {
 			throw new NotFoundException();
@@ -453,8 +458,9 @@ class Share20OCS {
 	private function getSharedWithMe($node = null, $includeTags) {
 		$userShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, -1, 0);
 		$groupShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0);
+		$remoteShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_REMOTE, $node, -1, 0);
 
-		$shares = array_merge($userShares, $groupShares);
+		$shares = array_merge($userShares, $groupShares, $remoteShares);
 
 		$shares = array_filter($shares, function(IShare $share) {
 			return $share->getShareOwner() !== $this->currentUser->getUID();
@@ -795,6 +801,10 @@ class Share20OCS {
 			if (!is_null($sharedWith) && $sharedWith->inGroup($this->currentUser)) {
 				return true;
 			}
+		}
+
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE) {
+			return true;
 		}
 
 		return false;
