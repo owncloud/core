@@ -27,6 +27,7 @@ use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
+use WebDriver\Exception\UnknownError;
 
 /**
  * The Sharing Dialog
@@ -458,6 +459,22 @@ class SharingDialog extends OwncloudPage {
 				"could not find share-dialog-close-button"
 			);
 		}
-		$shareDialogCloseButton->click();
+
+		try {
+			$shareDialogCloseButton->click();
+		} catch (UnknownError $e) {
+			// Edge often throws UnknownError 'Invalid Argument' when trying to
+			// click the close button, even though the button was found above.
+			// Ignore it for now. Many tests could keep working without having
+			// closed the share dialog.
+			// TODO: Edge - if it keeps happening then find out why.
+			error_log(
+				__METHOD__
+				. " UnknownError while doing shareDialogCloseButton->click()"
+				. "\n-------------------------\n"
+				. $e->getMessage()
+				. "\n-------------------------\n"
+			);
+		}
 	}
 }
