@@ -74,6 +74,7 @@ pipeline:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
     commands:
+      - env
       - ./tests/drone/test-coverage.sh
     when:
       event: [push, pull_request]
@@ -86,8 +87,10 @@ pipeline:
     pull: true
     files:
      - tests/autotest-clover-${DB_TYPE}.xml
+    flags:
+     - unit_tests
+    debug: true
     when:
-      event: [push, pull_request]
       matrix:
         TEST_SUITE: coverage
 
@@ -253,4 +256,8 @@ matrix:
 
     - PHP_VERSION: 7.1
       DB_TYPE: mariadb
+      TEST_SUITE: coverage
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: mysql
       TEST_SUITE: coverage
