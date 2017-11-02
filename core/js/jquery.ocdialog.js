@@ -10,12 +10,6 @@
 		_create: function() {
 			var self = this;
 
-			this.originalCss = {
-				display: this.element[0].style.display,
-				width: this.element[0].style.width,
-				height: this.element[0].style.height
-			};
-
 			this.originalTitle = this.element.attr('title');
 			this.options.title = this.options.title || this.originalTitle;
 
@@ -28,11 +22,6 @@
 				.insertBefore(this.element);
 			this.$dialog.append(this.element.detach());
 			this.element.removeAttr('title').addClass('oc-dialog-content').appendTo(this.$dialog);
-
-			this.$dialog.css({
-				display: 'inline-block',
-				position: 'fixed'
-			});
 
 			$(document).on('keydown keyup', function(event) {
 				if (
@@ -138,12 +127,6 @@
 						this.$dialog.find('.oc-dialog-close').remove();
 					}
 					break;
-				case 'width':
-					this.$dialog.css('width', value);
-					break;
-				case 'height':
-					this.$dialog.css('height', value);
-					break;
 				case 'close':
 					this.closeCB = value;
 					break;
@@ -154,27 +137,6 @@
 		_setOptions: function(options) {
 			//this._super(options);
 			$.Widget.prototype._setOptions.apply(this, arguments);
-		},
-		_setSizes: function() {
-			// var content_height = this.$dialog.height();
-			// if(this.$title) {
-			// 	content_height -= this.$title.outerHeight(true);
-			// }
-			// if(this.$buttonrow) {
-			// 	content_height -= this.$buttonrow.outerHeight(true);
-			// }
-			// this.parent = this.$dialog.parent().length > 0 ? this.$dialog.parent() : $('body');
-			// content_height = Math.min(content_height, this.parent.height()-20);
-			// if (content_height> 0) {
-			// 	this.element.css({
-			// 		height: content_height + 'px',
-			// 		width: this.$dialog.innerWidth()-20 + 'px'
-			// 	});
-			// } else {
-			// 	this.element.css({
-			// 		width : this.$dialog.innerWidth() - 20 + 'px'
-			// 	});
-			// }
 		},
 		_createOverlay: function() {
 			if(!this.options.modal) {
