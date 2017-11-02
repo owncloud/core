@@ -23,6 +23,9 @@
 
 namespace OCA\DAV\Tests\unit\DAV;
 
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\SimpleCollection;
@@ -78,7 +81,6 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			\OC::$server->getDatabaseConnection(),
 			$this->user
 		);
-		
 		
 		$connection = \OC::$server->getDatabaseConnection();
 		$qb = $connection->getQueryBuilder();
@@ -358,5 +360,63 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 
 		$result = $propPatch->getResult();
 		$this->assertEquals(204, $result['customprop']);
+	}
+
+	public function slicesProvider() {
+		$emptyFileIds = [];
+		$fiveFileIds = [1, 2, 3, 4, 5];
+		$thousandFileIds = [];
+		for ($i=0;$i<1000;$i++){
+			$thousandFileIds[] = $i;
+		}
+
+		$sqlitePlatform = new SqlitePlatform();
+		$mysqlPlatform = new MySqlPlatform();
+
+		return [
+			[$emptyFileIds, 0, $sqlitePlatform, []],
+			[$emptyFileIds, 5, $sqlitePlatform, []],
+			[$fiveFileIds, 0, $sqlitePlatform, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 5, $sqlitePlatform, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 994, $sqlitePlatform, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 995, $sqlitePlatform, [ 0 => [1,2,3,4] , 1 => [5]]],
+			[$thousandFileIds, 0, $sqlitePlatform, array_chunk($thousandFileIds, 999)],
+			[$thousandFileIds, 5, $sqlitePlatform, array_chunk($thousandFileIds, 994)],
+
+			[$emptyFileIds, 0, $mysqlPlatform, []],
+			[$emptyFileIds, 5, $mysqlPlatform, []],
+			[$fiveFileIds, 0, $mysqlPlatform, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 5, $mysqlPlatform, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 994, $mysqlPlatform, [ 0 => $fiveFileIds]],
+			[$fiveFileIds, 995, $mysqlPlatform, [0 => $fiveFileIds]],
+			[$thousandFileIds, 0, $mysqlPlatform, [0 => $thousandFileIds]],
+			[$thousandFileIds, 5, $mysqlPlatform, [0 => $thousandFileIds]],
+		];
+	}
+
+	/**
+	 * @dataProvider slicesProvider
+	 * @param $toSlice
+	 * @param $otherPlaceholdersCount
+	 * @param AbstractPlatform $platform
+	 * @param $expected
+	 */
+	public function testGetChunks($toSlice, $otherPlaceholdersCount, AbstractPlatform $platform, $expected) {
+		$dbConnectionMock = $this->getMockBuilder(\OCP\IDBConnection::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dbConnectionMock->expects($this->any())
+			->method('getDatabasePlatform')
+			->will($this->returnValue($platform));
+
+		$this->plugin = new FileCustomPropertiesBackend(
+			$this->tree,
+			$dbConnectionMock,
+			$this->user
+		);
+
+		$actual = $this->invokePrivate($this->plugin, 'getChunks', [$toSlice, $otherPlaceholdersCount]);
+		$this->assertEquals($expected, $actual);
 	}
 }
