@@ -24,6 +24,10 @@
 
 namespace Test;
 
+use OC\Config;
+use OC\Server;
+use OCA\Comments\Dav\CommentsPlugin;
+
 /**
  * Class Server
  *
@@ -32,14 +36,14 @@ namespace Test;
  * @package Test
  */
 class ServerTest extends \Test\TestCase {
-	/** @var \OC\Server */
+	/** @var Server */
 	protected $server;
 
 
 	public function setUp() {
 		parent::setUp();
-		$config = new \OC\Config(\OC::$configDir);
-		$this->server = new \OC\Server('', $config);
+		$config = new Config(\OC::$configDir);
+		$this->server = new Server('', $config);
 	}
 
 	public function dataTestQuery() {
@@ -193,5 +197,25 @@ class ServerTest extends \Test\TestCase {
 		$this->assertInstanceOf('\OCP\Comments\ICommentsManager', $manager);
 
 		$config->setSystemValue('comments.managerFactory', $defaultManagerFactory);
+	}
+
+	/**
+	 * @dataProvider providesServiceLoader
+	 */
+	public function testServiceLoader($xmlPath, $expects) {
+		if ($expects === false) {
+			$this->expectException(\Exception::class);
+			iterator_to_array($this->server->load($xmlPath));
+		} else {
+			$iter = iterator_to_array($this->server->load($xmlPath));
+			$this->assertInstanceOf($expects, $iter[0]);
+		}
+	}
+
+	public function providesServiceLoader() {
+		return [
+			[['name'], false],
+			[['sabre', 'plugins'], CommentsPlugin::class]
+		];
 	}
 }
