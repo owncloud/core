@@ -800,12 +800,8 @@ class Preview {
 		if (is_null($this->preview)) {
 			$this->getPreview();
 		}
-		if ($this->preview instanceof \OCP\IImage) {
-			if ($this->preview->valid()) {
-				\OCP\Response::enableCaching(3600 * 24); // 24 hours
-			} else {
-				$this->getMimeIcon();
-			}
+		if ($this->preview instanceof \OCP\IImage && $this->preview->valid()) {
+			\OCP\Response::enableCaching(3600 * 24); // 24 hours
 			$this->preview->show($mimeTypeForHeaders);
 		}
 	}
@@ -1167,22 +1163,6 @@ class Preview {
 		if ($preview) {
 			$this->resizeAndStore($fileId);
 		}
-	}
-
-	/**
-	 * Defines the media icon, for the media type of the original file, as the preview
-	 */
-	private function getMimeIcon() {
-		$image = new \OC_Image();
-		$mimeIconWebPath = \OC::$server->getMimeTypeDetector()->mimeTypeIcon($this->mimeType);
-		if (empty(\OC::$WEBROOT)) {
-			$mimeIconServerPath = \OC::$SERVERROOT . $mimeIconWebPath;
-		} else {
-			$mimeIconServerPath = str_replace(\OC::$WEBROOT, \OC::$SERVERROOT, $mimeIconWebPath);
-		}
-		$image->loadFromFile($mimeIconServerPath);
-
-		$this->preview = $image;
 	}
 
 	/**
