@@ -40,6 +40,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
 use OCP\Files\Storage\IStorage;
+use Test\Traits\UserTrait;
 
 /**
  * Class DecryptAllTest
@@ -50,6 +51,7 @@ use OCP\Files\Storage\IStorage;
  */
 class DecryptAllTest extends TestCase {
 
+	use UserTrait;
 	/** @var \PHPUnit_Framework_MockObject_MockObject | IUserManager */
 	protected $userManager;
 
@@ -210,6 +212,37 @@ class DecryptAllTest extends TestCase {
 		);
 	}
 
+	public function testNoUsersSeen() {
+		static::createUser('user1', 'user1');
+		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject |  $instance */
+		$instance = $this->getMockBuilder(DecryptAll::class)
+			->setConstructorArgs(
+				[
+					$this->encryptionManager,
+					$this->userManager,
+					$this->view,
+					$this->logger
+				]
+			)
+			->setMethods(['decryptUsersFiles'])
+			->getMock();
+
+		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
+		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
+
+
+		$function = function (IUser $user)  {
+			$users[] = $user->getUID();
+		};
+
+		$this->userManager->expects($this->once())
+			->method('countSeenUsers')
+			->willReturn(0);
+
+		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', []);
+		$this->assertEquals(false, $result);
+	}
+
 	/**
 	 * @dataProvider dataTestDecryptAllUsersFiles
 	 */
@@ -231,13 +264,22 @@ class DecryptAllTest extends TestCase {
 		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
 		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
 
+
+		$function = function (IUser $user)  {
+			$users[] = $user->getUID();
+		};
+
 		if (empty($user)) {
+			$progress = new ProgressBar($this->outputInterface);
 			$this->userManager->expects($this->once())
-				->method('getBackends')
-				->willReturn([$this->userInterface]);
-			$this->userInterface->expects($this->any())
-				->method('getUsers')
-				->willReturn(['user1', 'user2']);
+				->method('countSeenUsers')
+				->willReturn(2);
+			$this->userManager->expects($this->once())
+				->method('callForSeenUsers')
+				->will($this->returnCallback(function() use ($instance, $progress) {
+					$this->invokePrivate($instance, 'decryptUsersFiles', ['user1', $progress, '']);
+					$this->invokePrivate($instance, 'decryptUsersFiles', ['user2', $progress, '']);
+			}));
 			$instance->expects($this->at(0))
 				->method('decryptUsersFiles')
 				->with('user1');
@@ -250,7 +292,8 @@ class DecryptAllTest extends TestCase {
 				->with($user);
 		}
 
-		$this->invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
+		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
+		$this->assertEquals(true, $result);
 	}
 
 	public function dataTestDecryptAllUsersFiles() {

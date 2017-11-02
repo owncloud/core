@@ -164,6 +164,9 @@ class DecryptAll {
 		if ($user === '') {
 			$userNo = 1;
 			$numberOfUsers = $this->userManager->countSeenUsers();
+			if ($numberOfUsers === 0) {
+				return false;
+			}
 			$this->userManager->callForSeenUsers(function(IUser $user) use ($progress, &$userNo, $numberOfUsers) {
 				$this->decryptUsersFiles(
 					$user->getUID(),
