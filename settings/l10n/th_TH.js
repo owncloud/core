@@ -191,6 +191,7 @@ OC.L10N.register(
     "Allow resharing" : "อนุญาตให้แชร์ข้อมูลซ้ำอีกครั้งได้",
     "Allow sharing with groups" : "อนุญาตให้แชร์กับกลุ่ม",
     "Restrict users to only share with users in their groups" : "จำกัดให้ผู้ใช้สามารถแชร์กับผู้ใช้ในกลุ่มของพวกเขาเท่านั้น",
+    "Restrict users to only share with groups they are member of" : "จำกัดผู้ใช้เพื่อแชร์เฉพาะกับกลุ่มที่เป็นสมาชิกของ",
     "Allow users to send mail notification for shared files to other users" : "อนุญาตให้ผู้ใช้ส่งการแจ้งเตือนทางอีเมลสำหรับไฟล์ที่แชร์กับผู้ใช้คนอื่นๆ",
     "Exclude groups from sharing" : "ไม่รวมกลุ่มที่กำลังแชร์",
     "These groups will still be able to receive shares, but not to initiate them." : "กลุ่มนี้จะยังคงสามารถได้รับการแชร์ แต่พวกเขาจะไม่รู้จักมัน",
