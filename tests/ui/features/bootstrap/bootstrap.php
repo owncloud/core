@@ -32,6 +32,8 @@ $classLoader->register();
 const STANDARDSLEEPTIMEMILLISEC = 10;
 const STANDARDSLEEPTIMEMICROSEC = STANDARDSLEEPTIMEMILLISEC * 1000;
 
+// Long timeout for use in code that needs to wait for known slow UI
+const LONGUIWAITTIMEOUTMILLISEC = 20000;
 // Default timeout for use in code that needs to wait for the UI
 const STANDARDUIWAITTIMEOUTMILLISEC = 10000;
 // Minimum timeout for use in code that needs to wait for the UI
