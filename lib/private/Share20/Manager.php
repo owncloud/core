@@ -947,6 +947,17 @@ class Manager implements IManager {
 		return $shares;
 	}
 
+	public function acceptShare(\OCP\Share\IShare $share, $recipientId) {
+		if ($share->getShareType() !== \OCP\Share::SHARE_TYPE_GROUP) {
+			throw new \InvalidArgumentException('(re-)Accepting shares only implemeneted for group shares');
+		}
+
+		list($providerId, ) = $this->splitFullId($share->getFullId());
+		$provider = $this->factory->getProvider($providerId);
+
+		$provider->accept($share, $recipientId);
+	}
+
 	/**
 	 * @inheritdoc
 	 */
