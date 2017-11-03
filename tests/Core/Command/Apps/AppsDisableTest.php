@@ -23,18 +23,16 @@
 namespace Tests\Core\Command\Config;
 
 
-use OC\Core\Command\App\Enable;
+use OC\Core\Command\App\Disable;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
-use Test\Traits\UserTrait;
 
 /**
- * Class AppsEnableTest
+ * Class AppsDisableTest
  *
  * @group DB
  */
-class AppsEnableTest extends TestCase {
-	use UserTrait;
+class AppsDisableTest extends TestCase {
 
 	/** @var CommandTester */
 	private $commandTester;
@@ -42,8 +40,10 @@ class AppsEnableTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$command = new Enable(\OC::$server->getAppManager());
+		$command = new Disable(\OC::$server->getAppManager());
 		$this->commandTester = new CommandTester($command);
+
+		\OC_App::enable('testing');
 	}
 
 	/**
@@ -51,11 +51,8 @@ class AppsEnableTest extends TestCase {
 	 * @param $appId
 	 * @param $expectedOutput
 	 */
-	public function testCommandInput($appId, $expectedOutput, $group = null) {
+	public function testCommandInput($appId, $expectedOutput) {
 		$input = ['app-id' => $appId];
-		if ($group !== null) {
-			$input['--groups'] = [$group];
-		}
 		$this->commandTester->execute($input);
 		$output = $this->commandTester->getDisplay();
 		$this->assertContains($expectedOutput, $output);
@@ -63,10 +60,9 @@ class AppsEnableTest extends TestCase {
 
 	public function providesAppIds() {
 		return [
-			['testing', 'testing enabled'],
-			['hui-buh', 'hui-buh not found'],
-			['theme-example', 'theme-example enabled for groups: admin', 'admin'],
-			['hui-buh', 'hui-buh not found', 'admin'],
+			['testing', 'testing disabled'],
+			['hui-buh', 'No such app enabled: hui-buh'],
+			['files', 'files can\'t be disabled.'],
 		];
 	}
 }
