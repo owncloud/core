@@ -52,7 +52,15 @@
 
 .share-autocomplete-item {
 	display: flex;
+	max-width: 220px;
 }
+
+@media (min-width: 1152px) {
+	.share-autocomplete-item {
+		max-width: 20vw;
+	}
+}
+
 .share-autocomplete-item .autocomplete-item-text {
 	margin-left: 10px;
 	margin-right: 10px;
@@ -65,6 +73,10 @@
 
 .share-autocomplete-item .autocomplete-item-displayname {
 	margin-right: 5px;
+}
+
+.share-autocomplete-item .avatardiv {
+	flex-shrink: 0;
 }
 
 .share-autocomplete-item .autocomplete-item-additional-info,
