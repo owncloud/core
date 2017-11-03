@@ -23,6 +23,8 @@
  */
 
 use GuzzleHttp\Message\ResponseInterface;
+use TestHelpers\AppConfigHelper;
+use TestHelpers\OcsApiHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -175,28 +177,20 @@ trait AppConfiguration {
 	public function setCapability(
 		$capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter, $testingState
 	) {
-		$savedState = $this->wasCapabilitySet(
+		$savedCapabilitiesChanges = AppConfigHelper::setCapability(
+			$this->baseUrlWithoutOCSAppendix(),
+			$this->adminUser[0],
+			$this->adminUser[1],
 			$capabilitiesApp,
-			$capabilitiesParameter
-		);
-
-		// Always set the config value, because sometimes enabling one config
-		// also changes some sub-settings. So the "interim" state as we set
-		// the config values could be unexpectedly different from the original
-		// saved state.
-		$this->modifyServerConfig(
+			$capabilitiesParameter,
 			$testingApp,
 			$testingParameter,
-			$testingState ? 'yes' : 'no'
+			$testingState,
+			$this->savedCapabilitiesXml
 		);
-
-		if ($savedState !== $testingState) {
-			$this->savedCapabilitiesChanges[] =
-				[
-					'testingApp' => $testingApp,
-					'testingParameter' => $testingParameter,
-					'savedState' => $savedState
-				];
+		
+		if (sizeof($savedCapabilitiesChanges) > 0) {
+			$this->savedCapabilitiesChanges[] = $savedCapabilitiesChanges;
 		}
 	}
 
@@ -207,16 +201,15 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	protected function modifyServerConfig($app, $parameter, $value) {
-		$body = new \Behat\Gherkin\Node\TableNode([['value', $value]]);
-		$this->sendingToWith(
-			'post',
-			"/apps/testing/api/v1/app/{$app}/{$parameter}",
-			$body
+		AppConfigHelper::modifyServerConfig(
+			$this->baseUrlWithoutOCSAppendix(),
+			$this->adminUser[0],
+			$this->adminUser[1],
+			$app,
+			$parameter,
+			$value,
+			$this->apiVersion
 		);
-		$this->theHTTPStatusCodeShouldBe('200');
-		if ($this->apiVersion == 1) {
-			$this->theOCSStatusCodeShouldBe('100');
-		}
 	}
 
 	/**
