@@ -127,7 +127,7 @@ services:
         DB_TYPE: mariadb
 
   mysql:
-    image: mysql:5.7
+    image: mysql:5.5
     environment:
       - MYSQL_USER=owncloud
       - MYSQL_PASSWORD=owncloud
@@ -183,9 +183,9 @@ matrix:
     #- PHP_VERSION: 7.0
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.0
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
+    - PHP_VERSION: 7.0
+      DB_TYPE: mysql
+      TEST_SUITE: phpunit
     #- PHP_VERSION: 7.0
     #  DB_TYPE: postgres
     #  TEST_SUITE: phpunit
