@@ -24,6 +24,8 @@
 namespace OCA\DAV\DAV;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\Node;
 use Sabre\DAV\INode;
@@ -187,19 +189,20 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` IN (?)';
 		$sql .= ' AND `propertyname` in (?) ORDER BY `propertyname`';
 
-		$result = $this->connection->executeQuery(
-			$sql,
-			[$childrenIds, $requestedProperties],
-			[Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
-		);
-
+		$fileIdChunks = $this->getChunks($childrenIds, count($requestedProperties));
 		$props = [];
-		while ($row = $result->fetch()) {
-			$props[$row['propertyname']] = $row['propertyvalue'];
-			$this->offsetSet($row['fileid'], $props);
+		foreach ($fileIdChunks as $chunk) {
+			$result = $this->connection->executeQuery(
+				$sql,
+				[$chunk, $requestedProperties],
+				[Connection::PARAM_STR_ARRAY, Connection::PARAM_STR_ARRAY]
+			);
+			while ($row = $result->fetch()) {
+				$props[$row['propertyname']] = $row['propertyvalue'];
+				$this->offsetSet($row['fileid'], $props);
+			}
+			$result->closeCursor();
 		}
-
-		$result->closeCursor();
 	}
 
 	/**
@@ -212,6 +215,27 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			return null;
 		}
 		return $node;
+	}
+
+	/**
+	 * Chunk items from a single dimension array into a bidimensional array
+	 * that has a limit of items for the second dimension
+	 * This limit equals to 999 by default
+	 * and is decreased by $otherPlaceholdersCount
+	 *
+	 * @param int[] $toSlice
+	 * @param int $otherPlaceholdersCount
+	 * @return array
+	 */
+	private function getChunks($toSlice, $otherPlaceholdersCount = 0) {
+		$databasePlatform = $this->connection->getDatabasePlatform();
+		if ($databasePlatform instanceof OraclePlatform || $databasePlatform instanceof SqlitePlatform) {
+			$slicer = 999 - $otherPlaceholdersCount;
+			$slices = array_chunk($toSlice, $slicer);
+		} else {
+			$slices = count($toSlice) ? [ 0 => $toSlice] : [];
+		}
+		return $slices;
 	}
 
 }
