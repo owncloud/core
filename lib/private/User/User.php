@@ -434,7 +434,7 @@ class User implements IUser {
 	}
 
 	public function triggerChange($feature, $value = null) {
-		if ($this->emitter) {
+		if ($this->emitter && in_array($feature, $this->account->getUpdatedFields())) {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);
 		}
 	}
