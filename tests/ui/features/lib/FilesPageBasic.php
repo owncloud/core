@@ -334,7 +334,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
 	) {
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
