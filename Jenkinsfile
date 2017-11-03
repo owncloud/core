@@ -19,17 +19,6 @@ timestampedNode('SLAVE') {
         make dist
         '''
 
-    stage 'phpunit/7.0/mysqlmb4'
-        currentStage = 'phpunit/7.0/mysqlmb4'
-        executeAndReport('tests/autotest-results-mysqlmb4.xml', currentStage) {
-	        sh '''
-        	export NOCOVERAGE=1
-        	unset USEDOCKER
-        	phpenv local 7.0
-		make test-php TEST_DATABASE=mysqlmb4
-        	'''
-	}
-
     stage 'PHPUnit 7.0/sqlite'
         currentStage = 'PHPUnit 7.0/sqlite'
         executeAndReport('tests/autotest-results-sqlite.xml', currentStage) {
