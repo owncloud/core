@@ -101,7 +101,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 		$appTrs = $this->findAll("xpath", $this->linkedAppsTrXpath);
 		foreach ($appTrs as $appTr) {
 			$app = $appTr->find("xpath", $this->linkedAppNameXpath);
-			if (!is_null($app) && ($app->getText() === $appName)) {
+			if (!is_null($app) && ($this->getTrimmedText($app) === $appName)) {
 				return $appTr;
 			}
 		}

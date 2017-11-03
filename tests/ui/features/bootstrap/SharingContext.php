@@ -255,7 +255,7 @@ class SharingContext extends RawMinkContext implements Context {
 		$row = $this->filesPage->findFileRowByName($itemName, $this->getSession());
 		$sharingBtn = $row->findSharingButton();
 		PHPUnit_Framework_Assert::assertSame(
-			$sharerName, $sharingBtn->getText()
+			$sharerName, $this->filesPage->getTrimmedText($sharingBtn)
 		);
 		$sharingDialog = $this->filesPage->openSharingDialog(
 			$itemName, $this->getSession()
