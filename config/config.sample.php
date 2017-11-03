@@ -1210,6 +1210,18 @@ $CONFIG = array(
 		'~snapshot',
 	),
 /**
+ * Exclude directories from the integrity checker command
+ */
+'integrity.excluded.files' =>
+	array (
+		'.DS_Store',
+		'Thumbs.db',
+		'.directory',
+		'.webapp',
+		'.htaccess',
+		'.user.ini',
+	),
+/**
  * Define a default folder for shared files and folders other than root.
  */
 'share_folder' => '/',
