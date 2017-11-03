@@ -45,6 +45,16 @@
 	width: 100%;
 }
 
+#filestable thead {
+	position: fixed;
+	z-index: 10;
+}
+
+#filestable tbody,
+#filestable tfoot {
+	transform: translateY(50px);
+}
+
 #filestable.has-controls {
 	top: 44px;
 }
