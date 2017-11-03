@@ -24,7 +24,6 @@ namespace OC\Http\Client;
 use OCP\Http\Client\IWebDavClientService;
 use OCP\IConfig;
 use OCP\ICertificateManager;
-use Sabre\DAV\Client;
 
 /**
  * Class WebDavClientService
@@ -86,7 +85,7 @@ class WebDavClientService implements IWebDavClientService {
 			}
 		}
 
-		$client = new Client($settings);
+		$client = new \Sabre\DAV\Client($settings);
 		$client->setThrowExceptions(true);
 
 		if ($certPath !== null) {
