@@ -135,18 +135,18 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			publicUploadConfigStub.returns(true);
 			view.render();
 			expect(view.$('[name=linkName]').val()).toEqual('first link');
-			expect(view.$('.publicUploadCheckbox').prop('checked')).toEqual(false);
+			expect(view.$('.publicPermissions').prop('checked')).toEqual(true);
 			expect(view.$('.linkPassText').val()).toEqual('');
 			expect(view.$('.expirationDate').val()).toEqual('');
 
 			model.set({
 				password: 'set',
 				expireDate: '2017-10-12',
-				permissions: OC.PERMISSION_ALL
+				permissions: OC.PERMISSION_CREATE
 			});
 			view.render();
 
-			expect(view.$('.publicUploadCheckbox').prop('checked')).toEqual(true);
+			expect(parseInt(view.$('.publicPermissions:checked').val())).toBe(OC.PERMISSION_CREATE);
 			expect(view.$('.linkPassText').val()).toEqual('');
 			expect(view.$('.expirationDate').val()).toEqual('12-10-2017');
 		});
@@ -208,37 +208,15 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 					permissions: OC.PERMISSION_READ | OC.PERMISSION_CREATE
 				});
 				view.render();
-				expect(view.$('.showListingCheckbox').length).toEqual(1);
-				expect(view.$('.showListingCheckbox').is(':checked')).toEqual(true);
-				expect(view.$('.showListingCheckbox').is(':disabled')).toEqual(false);
+				expect(view.$('.publicPermissions').length).toEqual(3);
 			});
-			it('renders listing checkbox disabled when public upload is disallowed by user', function() {
+			it('renders checkbox disabled when public upload is disallowed by user', function() {
 				publicUploadConfigStub.returns(true);
 				model.set({
 					permissions: OC.PERMISSION_READ
 				});
 				view.render();
-				expect(view.$('.showListingCheckbox').length).toEqual(1);
-				expect(view.$('.showListingCheckbox').is(':checked')).toEqual(true);
-				expect(view.$('.showListingCheckbox').is(':disabled')).toEqual(true);
-			});
-			it('disables listing checkbox when ticking public upload', function() {
-				publicUploadConfigStub.returns(true);
-				model.set({
-					permissions: OC.PERMISSION_CREATE
-				});
-				view.render();
-
-				expect(view.$('.showListingCheckbox').length).toEqual(1);
-				expect(view.$('.showListingCheckbox').is(':checked')).toEqual(false);
-				expect(view.$('.showListingCheckbox').is(':disabled')).toEqual(false);
-
-				expect(view.$('.publicUploadCheckbox').length).toEqual(1);
-				expect(view.$('.publicUploadCheckbox').is(':checked')).toEqual(true);
-				view.$('.publicUploadCheckbox').trigger(new $.Event('click'));
-				expect(view.$('.publicUploadCheckbox').is(':checked')).toEqual(false);
-				expect(view.$('.showListingCheckbox').is(':checked')).toEqual(true);
-				expect(view.$('.showListingCheckbox').is(':disabled')).toEqual(true);
+				expect(view.$('.showListingCheckbox').length).toEqual(0);
 			});
 		});
 		describe('password logic', function() {
@@ -293,7 +271,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				name: 'first link',
 				expireDate: '',
 				password: 'newpassword',
-				permissions: OC.PERMISSION_READ,
+				permissions: OC.PERMISSION_READ.toString(),
 				shareType: OC.Share.SHARE_TYPE_LINK
 			});
 		});
@@ -306,7 +284,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			expect(saveStub.getCall(0).args[0]).toEqual({
 				name: 'first link',
 				expireDate: '',
-				permissions: OC.PERMISSION_READ,
+				permissions: OC.PERMISSION_READ.toString(),
 				shareType: OC.Share.SHARE_TYPE_LINK
 			});
 		});
@@ -394,30 +372,22 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			});
 
 			var dataProvider = [
-				// globally enabled
-				[true, true, true, OC.PERMISSION_READ | OC.PERMISSION_CREATE | OC.PERMISSION_UPDATE | OC.PERMISSION_DELETE],
-				[true, true, false, OC.PERMISSION_CREATE],
-				[true, false, true, OC.PERMISSION_READ],
-				[true, false, false, OC.PERMISSION_READ],
-
-				// globally disabled, permission stays regardless
-				[false, false, false, OC.PERMISSION_READ],
-				[false, true, false, OC.PERMISSION_READ],
-				[false, true, false, OC.PERMISSION_READ],
-				[false, true, true, OC.PERMISSION_READ],
+				[true, OC.PERMISSION_READ | OC.PERMISSION_CREATE | OC.PERMISSION_UPDATE | OC.PERMISSION_DELETE],
+				[true, OC.PERMISSION_CREATE],
+				[true, OC.PERMISSION_READ],
+				[false, OC.PERMISSION_READ], // globally disabled, permission stays regardless
 			];
 
-			function testPermissions(globalEnabled, uploadChecked, listingChecked, expectedPerms) {
+			function testPermissions(globalEnabled, expectedPerms) {
+				expectedPerms = expectedPerms.toString();
 				it('sets permissions to ' + expectedPerms +
 					' if global enabled is ' + globalEnabled +
-					' and public upload checkbox is ' + uploadChecked +
-					' and listing checkbox is ' + listingChecked, function() {
+					' and corresponding radiobutton is checked', function() {
 
 					publicUploadConfigStub.returns(globalEnabled);
 					view.render();
 
-					view.$('.publicUploadCheckbox').prop('checked', uploadChecked);
-					view.$('.showListingCheckbox').prop('checked', listingChecked);
+					view.$('input[name="publicPermissions"]:checked').val(expectedPerms);
 
 					view._save();
 
