@@ -24,6 +24,10 @@ else
       wait-for-it mysql:3306
       DB=mysql
       ;;
+    mysqlmb4)
+      wait-for-it mysqlmb4:3306
+      DB=mysql
+      ;;
     postgres)
       wait-for-it postgres:5432
       DB=pgsql

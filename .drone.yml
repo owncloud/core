@@ -137,6 +137,17 @@ services:
       matrix:
         DB_TYPE: mysql
 
+  mysqlmb4:
+    image: mysql:5.7
+    environment:
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+      - MYSQL_ROOT_PASSWORD=owncloud
+    when:
+      matrix:
+        DB_TYPE: mysqlmb4
+
   postgres:
     image: postgres:9.6
     environment:
@@ -185,6 +196,9 @@ matrix:
     #  TEST_SUITE: phpunit
     - PHP_VERSION: 7.0
       DB_TYPE: mysql
+      TEST_SUITE: phpunit
+    - PHP_VERSION: 7.0
+      DB_TYPE: mysqlmb4
       TEST_SUITE: phpunit
     #- PHP_VERSION: 7.0
     #  DB_TYPE: postgres
