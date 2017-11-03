@@ -216,7 +216,7 @@ class FileRow extends OwnCloudPage {
 	 * @return string
 	 */
 	public function getTooltip() {
-		return $this->findTooltipElement()->getText();
+		return $this->getTrimmedText($this->findTooltipElement());
 	}
 
 	/**
