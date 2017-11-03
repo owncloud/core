@@ -993,7 +993,12 @@ describe('Core base tests', function() {
 			var $rows = $el.find('.row');
 			expect($rows.length).toEqual(2);
 
+			// when called without arguments, a warning to be logged
+			// to ask devs to adjust their usage of the API.
+			// we stub it to avoid polluting the actual console
+			var warnStub = sinon.stub(console, 'warn');
 			OC.Notification.hide();
+			warnStub.restore();
 
 			$rows = $el.find('.row');
 			expect($rows.length).toEqual(1);
