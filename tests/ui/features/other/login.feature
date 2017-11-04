@@ -1,3 +1,4 @@
+@insulated
 Feature: login
 
 	Scenario: simple user login
