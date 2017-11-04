@@ -88,6 +88,16 @@ Feature: renameFiles
 		|Could not rename "data.zip"|
 		And the file "data.zip" should be listed
 
+	Scenario: Rename the last file in a folder
+		When I rename the file "testimagelarge.svg" to "atestimagelarge.svg"
+		And the files page is reloaded
+		Then the file "atestimagelarge.svg" should be listed
+
+	Scenario: Rename a file to become the last file in a folder
+		When I rename the file "lorem.txt" to "zzz.txt"
+		And the files page is reloaded
+		Then the file "zzz.txt" should be listed
+
 	Scenario: Rename a file putting a name of a file which already exists
 		When I rename the file "data.zip" to "lorem.txt"
 		Then near the file "data.zip" a tooltip with the text 'lorem.txt already exists' should be displayed
