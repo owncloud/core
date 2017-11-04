@@ -76,3 +76,8 @@ Feature: delete
 		But the folder "my-other-empty-folder" should not be listed in the trashbin
 		When I open the trashbin folder "my-empty-folder"
 		Then there are no files/folders listed
+
+	Scenario: Delete the last file in a folder
+		When I delete the file "testimagelarge.svg"
+		Then the file "testimagelarge.svg" should not be listed
+		But the file "testimagelarge.svg" should be listed in the trashbin
