@@ -1,3 +1,4 @@
+@insulated
 Feature: personalGeneralSettings
 
 	Scenario: change language

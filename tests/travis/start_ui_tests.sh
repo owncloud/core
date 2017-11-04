@@ -260,14 +260,6 @@ else
 	$OCC config:system:set skeletondirectory --value="$PREVIOUS_SKELETON_DIR" >/dev/null
 fi
 
-if [ ! -z "$SAUCE_USERNAME" ] && [ ! -z "$SAUCE_ACCESS_KEY" ] && [ -e /tmp/saucelabs_sessionid ]
-then
-	SAUCELABS_SESSIONID=`cat /tmp/saucelabs_sessionid`
-	curl -X PUT -s -d "{\"passed\": $PASSED}" -u $SAUCE_USERNAME:$SAUCE_ACCESS_KEY https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/$SAUCELABS_SESSIONID 2>&1 | tee -a $TEST_LOG_FILE 
-
-	printf "\n${RED}SAUCELABS RESULTS:${BLUE} https://saucelabs.com/jobs/$SAUCELABS_SESSIONID\n${NC}" | tee -a $TEST_LOG_FILE
-fi
-
 #upload log file for later analysis
 if [ "$PASSED" = false ] && [ ! -z "$REPORTING_WEBDAV_USER" ] && [ ! -z "$REPORTING_WEBDAV_PWD" ] && [ ! -z "$REPORTING_WEBDAV_URL" ]
 then

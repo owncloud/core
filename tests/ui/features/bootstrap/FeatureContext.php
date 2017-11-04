@@ -21,6 +21,7 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
@@ -176,8 +177,6 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function setUpSuite(BeforeScenarioScope $scope) {
 		SetupHelper::setOcPath($scope);
-		$jobId = $this->getSessionId();
-		file_put_contents("/tmp/saucelabs_sessionid", $jobId);
 		if (is_null($this->oldCSRFSetting)) {
 			$oldCSRFSetting = SetupHelper::runOcc(
 				['config:system:get', 'csrf.disabled']
@@ -227,6 +226,30 @@ class FeatureContext extends RawMinkContext implements Context {
 				]
 			);
 		}
+	}
 
+	/**
+	 * After Scenario. Report the pass/fail status to SauceLabs.
+	 *
+	 * @return void
+	 * @AfterScenario
+	 */
+	public function reportResult(AfterScenarioScope $afterScenarioScope) {
+		if ($afterScenarioScope->getTestResult()->isPassed()) {
+			$passOrFail = "pass";
+			$passed = "true";
+		} else {
+			$passOrFail = "fail";
+			$passed = "false";
+		}
+
+		$jobId = $this->getSessionId();
+		$sauceUsername = getenv('SAUCE_USERNAME');
+		$sauceAccessKey = getenv('SAUCE_ACCESS_KEY');
+
+		if ($sauceUsername && $sauceAccessKey) {
+			error_log("SAUCELABS RESULT: ($passOrFail) https://saucelabs.com/jobs/$jobId");
+			exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
+		}
 	}
 }
