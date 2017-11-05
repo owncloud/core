@@ -191,6 +191,7 @@ OC.L10N.register(
     "Allow resharing" : "Разрешить повторное открытие общего доступа",
     "Allow sharing with groups" : "Разрешить общий доступ для групп",
     "Restrict users to only share with users in their groups" : "Разрешить пользователям делиться только с членами их групп",
+    "Restrict users to only share with groups they are member of" : "Ограничить возможность предоставления доступа только теми группами, членом которых является пользователь",
     "Allow users to send mail notification for shared files to other users" : "Разрешить пользователям отправлять оповещение других пользователей об открытии доступа к файлам",
     "Exclude groups from sharing" : "Исключить группы из общего доступа",
     "These groups will still be able to receive shares, but not to initiate them." : "Эти группы смогут получать общие ресурсы, но не могут их создавать.",

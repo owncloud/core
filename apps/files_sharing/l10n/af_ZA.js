@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Uploading..." : "Laai tans op…",
     "Cancel" : "Kanseleer",
     "Share" : "Deel",
     "Sharing" : "Deling",

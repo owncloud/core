@@ -6,6 +6,7 @@ OC.L10N.register(
     "Home" : "Tuis",
     "Close" : "Sluit",
     "Favorites" : "Gunstelinge",
+    "Uploading..." : "Laai tans op…",
     "..." : "…",
     "Actions" : "Aksies",
     "Download" : "Laai Af",

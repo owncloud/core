@@ -191,6 +191,7 @@ OC.L10N.register(
     "Allow resharing" : "Permitir recompartilhamento",
     "Allow sharing with groups" : "Permitir o compartilhamento com grupos",
     "Restrict users to only share with users in their groups" : "Restringir os usuários a compartilhar somente com os usuários em seus grupos",
+    "Restrict users to only share with groups they are member of" : "Restrinja os usuários para compartilhar somente com grupos de que são membros",
     "Allow users to send mail notification for shared files to other users" : "Permitir aos usuários enviar notificação de email de arquivos compartilhados para outros usuários",
     "Exclude groups from sharing" : "Excluir grupos de compartilhamento",
     "These groups will still be able to receive shares, but not to initiate them." : "Esses grupos ainda serão capazes de receber compartilhamentos, mas não para iniciá-los.",
