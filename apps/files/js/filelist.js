@@ -537,10 +537,16 @@
 				actionsWidth += $(action).outerWidth();
 			});
 
+			var customWidth = 0;
+			// custom controls
+			this.$el.find('#controls>div:not(.actions):not(.breadcrumb):not(.hidden)').each(function(index, el) {
+				customWidth += $(el).outerWidth();
+			});
+
 			// subtract app navigation toggle when visible
 			containerWidth -= $('#app-navigation-toggle').width();
 
-			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - 10);
+			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - customWidth - 10);
 
 			this.$table.find('>thead').width($('#app-content').width() - OC.Util.getScrollBarWidth());
 		},
