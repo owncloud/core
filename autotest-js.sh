@@ -21,6 +21,8 @@ fi
 
 echo "Node version: "$(node -v)
 
+rm -Rf $PREFIX/node_modules
+
 # update/install test packages
 mkdir -p "$PREFIX" && $NPM install --link --prefix "$PREFIX" || exit 3
 
