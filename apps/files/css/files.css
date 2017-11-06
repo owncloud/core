@@ -41,22 +41,19 @@
 
 /* FILE TABLE */
 #filestable {
+	top: 50px;
 	position: relative;
 	width: 100%;
 }
 
 #filestable thead {
+	transform: translateY(-50px);
 	position: fixed;
 	z-index: 10;
 }
 
-#filestable tbody,
-#filestable tfoot {
-	transform: translateY(50px);
-}
-
 #filestable.has-controls {
-	top: 44px;
+	top: 94px;
 }
 
 /* make sure there's enough room for the file actions */
@@ -621,7 +618,7 @@ html.ie8 .column-mtime .selectedActions {
 }
 
 #fileList .popovermenu {
-	margin-right: -5px;
+	transform: translate(22px, 5px);
 }
 .ie8 #fileList .popovermenu {
 	margin-top: -10px;
