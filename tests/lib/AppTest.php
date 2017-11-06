@@ -506,7 +506,9 @@ class AppTest extends \Test\TestCase {
 			return $appConfig;
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
-			return new \OC\App\AppManager($c->getUserSession(), $appConfig, $c->getGroupManager(), $c->getMemCacheFactory(), $c->getEventDispatcher());
+			return new \OC\App\AppManager($c->getUserSession(), $appConfig,
+				$c->getGroupManager(), $c->getMemCacheFactory(),
+				$c->getEventDispatcher(), $c->getConfig());
 		});
 	}
 
@@ -518,7 +520,9 @@ class AppTest extends \Test\TestCase {
 			return new \OC\AppConfig($c->getDatabaseConnection());
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
-			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(), $c->getGroupManager(), $c->getMemCacheFactory(), $c->getEventDispatcher());
+			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(),
+				$c->getGroupManager(), $c->getMemCacheFactory(),
+				$c->getEventDispatcher(), $c->getConfig());
 		});
 
 		// Remove the cache of the mocked apps list with a forceRefresh

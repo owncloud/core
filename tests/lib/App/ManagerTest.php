@@ -9,8 +9,16 @@
 
 namespace Test\App;
 
+use OC\App\AppManager;
 use OC\Group\Group;
+use OCP\App\IAppManager;
+use OCP\IAppConfig;
+use OCP\ICache;
+use OCP\ICacheFactory;
+use OCP\IConfig;
+use OCP\IGroupManager;
 use OCP\IUser;
+use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 
@@ -21,12 +29,30 @@ use Test\TestCase;
  * @group DB
  */
 class ManagerTest extends TestCase {
+
+	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
+	protected $userSession;
+	/** @var IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
+	protected $groupManager;
+	/** @var IAppConfig */
+	protected $appConfig;
+	/** @var ICache | \PHPUnit_Framework_MockObject_MockObject */
+	protected $cache;
+	/** @var ICacheFactory | \PHPUnit_Framework_MockObject_MockObject */
+	protected $cacheFactory;
+	/** @var IAppManager */
+	protected $manager;
+	/** @var  EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	protected $eventDispatcher;
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	private $config;
+
 	/**
-	 * @return \OCP\IAppConfig | \PHPUnit_Framework_MockObject_MockObject
+	 * @return IAppConfig | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getAppConfig() {
 		$appConfig = [];
-		$config = $this->getMockBuilder('\OCP\IAppConfig')
+		$config = $this->getMockBuilder(IAppConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,41 +88,23 @@ class ManagerTest extends TestCase {
 		return $config;
 	}
 
-	/** @var \OCP\IUserSession | \PHPUnit_Framework_MockObject_MockObject */
-	protected $userSession;
-
-	/** @var \OCP\IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
-	protected $groupManager;
-
-	/** @var \OCP\IAppConfig */
-	protected $appConfig;
-
-	/** @var \OCP\ICache | \PHPUnit_Framework_MockObject_MockObject */
-	protected $cache;
-
-	/** @var \OCP\ICacheFactory | \PHPUnit_Framework_MockObject_MockObject */
-	protected $cacheFactory;
-
-	/** @var \OCP\App\IAppManager */
-	protected $manager;
-
-	/** @var  EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
-	protected $eventDispatcher;
-
 	protected function setUp() {
 		parent::setUp();
 
-		$this->userSession = $this->createMock('\OCP\IUserSession');
-		$this->groupManager = $this->createMock('\OCP\IGroupManager');
+		$this->userSession = $this->createMock(IUserSession::class);
+		$this->config = $this->createMock(IConfig::class);
+		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->appConfig = $this->getAppConfig();
-		$this->cacheFactory = $this->createMock('\OCP\ICacheFactory');
-		$this->cache = $this->createMock('\OCP\ICache');
-		$this->eventDispatcher = $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+		$this->cacheFactory = $this->createMock(ICacheFactory::class);
+		$this->cache = $this->createMock(ICache::class);
+		$this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 		$this->cacheFactory->expects($this->any())
 			->method('create')
 			->with('settings')
 			->willReturn($this->cache);
-		$this->manager = new \OC\App\AppManager($this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher);
+		$this->manager = new AppManager($this->userSession, $this->appConfig,
+			$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
+			$this->config);
 	}
 
 	protected function expectClearCache() {
@@ -164,10 +172,11 @@ class ManagerTest extends TestCase {
 		];
 		$this->expectClearCache();
 
-		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
+		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
-				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher
+				$this->userSession, $this->appConfig, $this->groupManager,
+				$this->cacheFactory, $this->eventDispatcher, $this->config
 			])
 			->setMethods([
 				'getAppInfo'
@@ -207,10 +216,11 @@ class ManagerTest extends TestCase {
 			new Group('group2', [], null)
 		];
 
-		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
+		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
-				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher
+				$this->userSession, $this->appConfig, $this->groupManager,
+				$this->cacheFactory, $this->eventDispatcher, $this->config
 			])
 			->setMethods([
 				'getAppInfo'
@@ -333,7 +343,8 @@ class ManagerTest extends TestCase {
 
 	public function testGetAppsNeedingUpgrade() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
-			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher])
+			->setConstructorArgs([$this->userSession, $this->appConfig,
+				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
 			->setMethods(['getAppInfo'])
 			->getMock();
 
@@ -375,7 +386,8 @@ class ManagerTest extends TestCase {
 
 	public function testGetIncompatibleApps() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
-			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher])
+			->setConstructorArgs([$this->userSession, $this->appConfig,
+				$this->groupManager, $this->cacheFactory, $this->eventDispatcher, $this->config])
 			->setMethods(['getAppInfo'])
 			->getMock();
 
@@ -407,5 +419,22 @@ class ManagerTest extends TestCase {
 		$this->assertCount(2, $apps);
 		$this->assertEquals('test1', $apps[0]['id']);
 		$this->assertEquals('test3', $apps[1]['id']);
+	}
+
+	/**
+	 * @dataProvider providesDataForCanInstall
+	 * @param bool $canInstall
+	 * @param string $opsMode
+	 */
+	public function testCanInstall($canInstall, $opsMode) {
+		$this->config->expects($this->once())->method('getSystemValue')->willReturn($opsMode);
+		$this->assertEquals($canInstall, $this->manager->canInstall());
+	}
+
+	public function providesDataForCanInstall() {
+		return [
+			[true, 'single-instance'],
+			[false, 'clustered-instance'],
+		];
 	}
 }
