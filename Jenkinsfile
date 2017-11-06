@@ -41,17 +41,6 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'PHPUnit 5.6/pgsql'
-        currentStage = 'PHPUnit 5.6/pgsql'
-        executeAndReport('tests/autotest-results-pgsql.xml', currentStage) {
-            sh '''
-            export NOCOVERAGE=1
-            unset USEDOCKER
-            phpenv local 5.6
-            make test-php TEST_DATABASE=pgsql
-            '''
-        }
-
     stage 'PHPUnit 7.0/oci'
         currentStage = 'PHPUnit 7.0/oci'
         executeAndReport('tests/autotest-results-oci.xml', currentStage) {
