@@ -286,6 +286,10 @@ class Config {
 		if (!$this->getValue('installed', false)) {
 			return false;
 		}
+		if ($this->getValue('operation.mode', 'single-instance') !== 'single-instance') {
+			return false;
+		}
+
 		return $this->getValue('config_is_read_only', false);
 	}
 }
