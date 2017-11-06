@@ -189,8 +189,7 @@
 			if(this.originalTitle) {
 				this.element.attr('title', this.originalTitle);
 			}
-			this.element.removeClass('oc-dialog-content')
-					.css(this.originalCss).detach().insertBefore(this.$dialog);
+			this.element.removeClass('oc-dialog-content').detach().insertBefore(this.$dialog);
 			this.$dialog.remove();
 		}
 	});
