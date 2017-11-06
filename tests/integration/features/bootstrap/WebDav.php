@@ -188,6 +188,7 @@ trait WebDav {
 	 * @param string $content
 	 */
 	public function downloadedContentShouldBe($content) {
+		die();
 		PHPUnit_Framework_Assert::assertEquals($content, (string)$this->response->getBody());
 	}
 
@@ -528,6 +529,20 @@ trait WebDav {
 		$elements = $this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1, ['{DAV:}getcontentlength']);
 		$elements = array_values($elements);
 		PHPUnit_Framework_Assert::assertEquals($length, $elements[1]['{DAV:}getcontentlength']);
+	}
+
+	/**
+	 * @When user :user restores version nr :versionIndex of file :path
+	 * @param $user
+	 * @param $versionIndex
+	 * @param $path
+	 */
+	public function userRestoresVersionNrOfFile($user, $versionIndex, $path) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$client = $this->getSabreClient($user);
+		$versions = array_keys($this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1));
+		var_dump($versions[1], $this->makeSabrePath($user, $path));die();
+		$client->request('COPY', $versions[1], null, ['Destination' => $this->makeSabrePath($user, $path)]);
 	}
 
 	/* Returns the elements of a report command
