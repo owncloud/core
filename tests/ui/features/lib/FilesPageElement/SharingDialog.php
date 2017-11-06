@@ -152,11 +152,13 @@ class SharingDialog extends OwncloudPage {
 	 * @param string $nameToType what to type in the share with field
 	 * @param string $nameToMatch what exact item to select
 	 * @param Session $session
+	 * @param int $maxRetries
+	 * @param boolean $quiet
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	private function shareWithUserOrGroup(
-		$nameToType, $nameToMatch, Session $session, $maxRetries = 5
+		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
 	) {
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
 			$autocompleteNodeElement = $this->fillShareWithField($nameToType, $session);
@@ -175,11 +177,11 @@ class SharingDialog extends OwncloudPage {
 			}
 			if ($userFound === true) {
 				break;
-			} else {
+			} elseif ($quiet === false) {
 				error_log("Error while sharing file");
 			}
 		}
-		if ($retryCounter > 0) {
+		if ($retryCounter > 0 && $quiet === false) {
 			$message = "INFORMATION: retried to share file " . $retryCounter . " times";
 			echo $message;
 			error_log($message);
@@ -195,23 +197,16 @@ class SharingDialog extends OwncloudPage {
 	 *
 	 * @param string $name
 	 * @param Session $session
+	 * @param int $maxRetries
+	 * @param boolean $quiet
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	public function shareWithUser($name, Session $session) {
-		$this->shareWithUserOrGroup($name, $name, $session);
-	}
-
-	/**
-	 *
-	 * @param string $name
-	 * @param Session $session
-	 * @throws ElementNotFoundException
-	 * @return void
-	 */
-	public function shareWithRemoteUser($name, Session $session) {
+	public function shareWithUser(
+		$name, Session $session, $maxRetries = 5, $quiet = false
+	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyRemoteUsers, $session
+			$name, $name, $session, $maxRetries, $quiet
 		);
 	}
 
@@ -219,12 +214,35 @@ class SharingDialog extends OwncloudPage {
 	 *
 	 * @param string $name
 	 * @param Session $session
+	 * @param int $maxRetries
+	 * @param boolean $quiet
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
-	public function shareWithGroup($name, Session $session) {
+	public function shareWithRemoteUser(
+		$name, Session $session, $maxRetries = 5, $quiet = false
+	) {
 		$this->shareWithUserOrGroup(
-			$name, $name . $this->suffixToIdentifyGroups, $session
+			$name, $name . $this->suffixToIdentifyRemoteUsers,
+			$session, $maxRetries, $quiet
+		);
+	}
+
+	/**
+	 *
+	 * @param string $name
+	 * @param Session $session
+	 * @param int $maxRetries
+	 * @param boolean $quiet
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function shareWithGroup(
+		$name, Session $session, $maxRetries = 5, $quiet = false
+	) {
+		$this->shareWithUserOrGroup(
+			$name, $name . $this->suffixToIdentifyGroups,
+			$session, $maxRetries, $quiet
 		);
 	}
 

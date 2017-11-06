@@ -55,6 +55,47 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $savedCapabilitiesChanges = [];
 	
 	/**
+	 * table of capabilities to map the human readable terms from the settings page
+	 * to terms in the capabilities XML and testing app
+	 * 
+	 * @var array
+	 */
+	private $capabilities = [ 
+		'sharing' => [ 
+			'Allow apps to use the Share API' => [ 
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'api_enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enabled' 
+			],
+			'Allow resharing' => [
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'resharing',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_resharing',
+			],
+			'Allow sharing with groups' => [
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group_sharing',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_group_sharing',
+			],
+			'Restrict users to only share with users in their groups' => [ 
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'share_with_group_members_only',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_only_share_with_group_members'
+			],
+			'Restrict users to only share with groups they are member of' => [ 
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'share_with_membership_groups_only',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_only_share_with_membership_groups'
+			]
+		] 
+	];
+	
+	/**
 	 * FeatureContext constructor.
 	 *
 	 * @param OwncloudPage $owncloudPage
@@ -190,16 +231,6 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function settingInSectionIs($setting, $section, $value) {
-		$capabilities = [ 
-			'sharing' => [ 
-				'Allow apps to use the Share API' => [ 
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'api_enabled',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_enabled',
-				]
-			] 
-		];
 		if ($value === "enabled") {
 			$value = true;
 		} elseif ($value === "disabled") {
@@ -208,7 +239,7 @@ class FeatureContext extends RawMinkContext implements Context {
 			throw new InvalidArgumentException("$value can only be 'disabled' or 'enabled'");
 		}
 		
-		$capability = $capabilities[strtolower($section)][$setting];
+		$capability = $this->capabilities[strtolower($section)][$setting];
 		$change = AppConfigHelper::setCapability(
 			$this->getMinkParameter('base_url'),
 			"admin",
