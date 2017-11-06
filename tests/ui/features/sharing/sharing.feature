@@ -48,14 +48,6 @@ Feature: Sharing
 		And the file "testimage (2).jpg" should be listed
 		And the file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three"
 
-	Scenario: share a folder with another internal user and prohibit resharing
-		When the folder "simple-folder" is shared with the user "User One"
-		And the sharing permissions of "User One" for "simple-folder" are set to
-		| share | no |
-		And I logout
-		And I login with username "user1" and password "1234"
-		Then it should not be possible to share the folder "simple-folder (2)"
-
 	Scenario: share a folder with another internal user and prohibit deleting
 		When the folder "simple-folder" is shared with the user "User One"
 		And the sharing permissions of "User One" for "simple-folder" are set to
