@@ -5,18 +5,23 @@
  */
 
 timestampedNode('SLAVE') {
+    def currentStage = ''
+
     stage 'Checkout'
+        currentStage = 'Checkout'
         checkout scm
         sh '''composer install'''
 
     stage 'make dist'
+        currentStage = 'make dist'
         sh '''
         phpenv local 5.6
         make dist
         '''
 
     stage 'phpunit/7.0/mysqlmb4'
-        executeAndReport('tests/autotest-results-mysqlmb4.xml') {
+        currentStage = 'phpunit/7.0/mysqlmb4'
+        executeAndReport('tests/autotest-results-mysqlmb4.xml', currentStage) {
 	        sh '''
         	export NOCOVERAGE=1
         	unset USEDOCKER
@@ -26,7 +31,8 @@ timestampedNode('SLAVE') {
 	}
 
     stage 'PHPUnit 7.0/sqlite'
-        executeAndReport('tests/autotest-results-sqlite.xml') {
+        currentStage = 'PHPUnit 7.0/sqlite'
+        executeAndReport('tests/autotest-results-sqlite.xml', currentStage) {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
@@ -36,7 +42,8 @@ timestampedNode('SLAVE') {
         }
 
     stage 'PHPUnit 5.6/pgsql'
-        executeAndReport('tests/autotest-results-pgsql.xml') {
+        currentStage = 'PHPUnit 5.6/pgsql'
+        executeAndReport('tests/autotest-results-pgsql.xml', currentStage) {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
@@ -46,7 +53,8 @@ timestampedNode('SLAVE') {
         }
 
     stage 'PHPUnit 7.0/oci'
-        executeAndReport('tests/autotest-results-oci.xml') {
+        currentStage = 'PHPUnit 7.0/oci'
+        executeAndReport('tests/autotest-results-oci.xml', currentStage) {
             sh '''
             export NOCOVERAGE=1
             unset USEDOCKER
@@ -56,7 +64,8 @@ timestampedNode('SLAVE') {
         }
 
     stage 'Files External: webdav'
-        executeAndReport('tests/autotest-external-results-sqlite-webdav-ownCloud.xml') {
+        currentStage = 'Files External: webdav'
+        executeAndReport('tests/autotest-external-results-sqlite-webdav-ownCloud.xml', currentStage) {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
@@ -65,7 +74,8 @@ timestampedNode('SLAVE') {
         }
 
     stage 'Files External: SMB/SAMBA'
-        executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
+        currentStage = 'Files External: SMB/SAMBA'
+        executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml', currentStage) {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
@@ -74,7 +84,8 @@ timestampedNode('SLAVE') {
         }
 
     stage 'Files External: swift/ceph'
-        executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
+        currentStage = 'Files External: swift/ceph'
+        executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml', currentStage) {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
@@ -83,7 +94,8 @@ timestampedNode('SLAVE') {
         }
 
     stage 'Files External: SMB/WINDOWS'
-        executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
+        currentStage = 'Files External: SMB/WINDOWS'
+        executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml', currentStage) {
             sh '''phpenv local 7.0
             export NOCOVERAGE=1
             unset USEDOCKER
@@ -94,7 +106,8 @@ timestampedNode('SLAVE') {
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
     stage 'Primary Objectstore: swift'
-        executeAndReport('tests/autotest-results-mysql.xml') {
+        currentStage = 'Primary Objectstore: swift'
+        executeAndReport('tests/autotest-results-mysql.xml', currentStage) {
             sh '''phpenv local 7.0
 
             export NOCOVERAGE=1
@@ -108,7 +121,8 @@ timestampedNode('SLAVE') {
         }
 
 	stage 'Integration Testing'
-		executeAndReport('tests/integration/output/*.xml') {
+        currentStage = 'Integration Testing'
+		executeAndReport('tests/integration/output/*.xml', currentStage) {
 			sh '''phpenv local 7.0
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
@@ -118,8 +132,9 @@ timestampedNode('SLAVE') {
 		}
 
 	stage 'Integration Testing Encrypted'
+        currentStage = 'Integration Testing Encrypted'
 		if (isOnReleaseBranch()) {
-				executeAndReport('tests/integration/output/*.xml') {
+				executeAndReport('tests/integration/output/*.xml', currentStage) {
 					sh '''phpenv local 7.0
 					rm -rf config/config.php data/*
 					./occ maintenance:install --admin-pass=admin
@@ -131,8 +146,9 @@ timestampedNode('SLAVE') {
 
 
 	stage 'Integration Testing Encrypted with master key'
+        currentStage = 'Integration Testing Encrypted with master key'
 		if (isOnReleaseBranch()) {
-				executeAndReport('tests/integration/output/*.xml') {
+				executeAndReport('tests/integration/output/*.xml', currentStage) {
 					sh '''phpenv local 7.0
 					rm -rf config/config.php data/*
 					./occ maintenance:install --admin-pass=admin
@@ -152,12 +168,12 @@ def isOnReleaseBranch ()  {
     return false
 }
 
-void executeAndReport(String testResultLocation, def body) {
+void executeAndReport(String testResultLocation, String stage, def body) {
     def failed = false
     // We're wrapping this in a timeout - if it takes longer, kill it.
     try {
         def timeoutMinutes = 120
-        if (env.STAGE_NAME == 'Integration Testing') {
+        if (stage.startsWith('Integration Testing')) {
             timeoutMinutes = 240
         }
         timeout(time: timeoutMinutes, unit: 'MINUTES') {
