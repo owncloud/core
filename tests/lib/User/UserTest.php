@@ -9,14 +9,18 @@
 
 namespace Test\User;
 
+use OC\Group\Manager;
 use OC\Hooks\PublicEmitter;
+use OC\SubAdmin;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Backend;
 use OC\User\Database;
+use OC\User\Session;
 use OC\User\User;
 use OCP\IConfig;
 use OCP\IURLGenerator;
+use OCP\IUser;
 use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Test\TestCase;
@@ -44,6 +48,12 @@ class UserTest extends TestCase {
 	private $eventDispatcher;
 	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
 	private $urlGenerator;
+	/** @var  Manager | \PHPUnit_Framework_MockObject_MockObject */
+	private $groupManager;
+	/** @var  SubAdmin | \PHPUnit_Framework_MockObject_MockObject */
+	private $subAdmin;
+	/** @var  Session | \PHPUnit_Framework_MockObject_MockObject */
+	private $sessionUser;
 
 	public function setUp() {
 		parent::setUp();
@@ -57,6 +67,9 @@ class UserTest extends TestCase {
 			->setMethods(['getAbsoluteURL'])
 			->disableOriginalConstructor()
 			->getMock();
+		$this->groupManager = $this->createMock('\OC\Group\Manager');
+		$this->subAdmin = $this->createMock('\OC\SubAdmin');
+		$this->sessionUser = $this->createMock(Session::class);
 
 		$this->user = new User($this->account, $this->accountMapper, $this->emitter, $this->config, $this->urlGenerator, $this->eventDispatcher);
 	}
@@ -169,6 +182,67 @@ class UserTest extends TestCase {
 			[true, true],
 			[false, false]
 		];
+	}
+
+	public function providesAdminOrSubAdmin() {
+		return [
+			[false, false, false, false],
+			[true, false, true, true],
+			[true, true, true, true],
+			[true, true, true, true]
+		];
+	}
+
+	/**
+	 * @dataProvider providesAdminOrSubAdmin
+	 * @param $isAdmin
+	 * @param $isSubaDmin
+	 * @param $expected
+	 * @param $implements
+	 */
+	public function testAdminSubadminCanChangeDisplayName($isAdmin, $isSubaDmin, $expected, $implements) {
+
+		$this->config->method('getSystemValue')
+			->with('allow_user_to_change_display_name')
+			->willReturn(false);
+
+		$user = $this->createMock('\OCP\IUser');
+		$user->method('getUID')->willReturn('admin');
+
+		$subAdmin = $this->createMock(SubAdmin::class);
+		$subAdmin->method('isSubAdmin')->willReturn($isSubaDmin);
+
+		$this->sessionUser->method('getUser')
+			->willReturn($user);
+
+		$this->groupManager->method('isAdmin')->willReturn($isAdmin);
+		$this->groupManager->method('getSubAdmin')->willReturn($subAdmin);
+
+		$backend = $this->getMockBuilder(Database::class)
+			->setMethods(['implementsActions'])
+			->getMock();
+
+		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		$account = $this->getMockBuilder(Account::class)
+			->setMethods(['getBackendInstance', 'getDisplayName', 'setDisplayName'])
+			->getMock();
+		$account->expects($this->any())->method('getBackendInstance')->willReturn($backend);
+		$account->expects($this->any())->method('getDisplayName')->willReturn('admin');
+		$account->expects($this->any())->method('setDisplayName')->willReturn($implements);
+
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnCallback(function ($actions) use ($implements) {
+				if ($actions === Backend::SET_DISPLAYNAME) {
+					return $implements;
+				} else {
+					return false;
+				}
+			}));
+
+		$user = new User($account, $this->accountMapper, null, $this->config, null, null, $this->groupManager, $this->sessionUser);
+
+		$this->assertEquals($expected, $user->canChangeDisplayName());
 	}
 	/**
 	 * @dataProvider providesChangeDisplayName
