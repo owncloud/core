@@ -138,7 +138,7 @@ services:
         DB_TYPE: mysql
 
   postgres:
-    image: postgres:9.6
+    image: postgres:9.4
     environment:
       - POSTGRES_USER=owncloud
       - POSTGRES_PASSWORD=owncloud
@@ -169,9 +169,9 @@ matrix:
     #- PHP_VERSION: 5.6
     #  DB_TYPE: mysql
     #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
+    - PHP_VERSION: 5.6
+      DB_TYPE: postgres
+      TEST_SUITE: phpunit
     # - PHP_VERSION: 5.6
     #   DB_TYPE: oracle
     #   TEST_SUITE: phpunit
