@@ -25,6 +25,7 @@ Feature: FederationSharing
 		When I open the folder "simple-folder (2)"
 		Then the file "lorem.txt" should be listed
 
+	@skipOnMICROSOFTEDGE
 	Scenario: share a folder with an remote user and prohibit deleting
 		When the folder "simple-folder" is shared with the remote user "user1@%remote_server%"
 		And the sharing permissions of "user1@%remote_server% (remote)" for "simple-folder" are set to

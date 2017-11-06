@@ -22,6 +22,7 @@ I would like to be able to forbid a user that received a share from me to share 
 		And I logout
 		And I login with username "user2" and password "1234"
 
+	@skipOnMICROSOFTEDGE
 	Scenario: share a folder with another internal user and prohibit resharing
 		And the setting "Allow resharing" in the section "Sharing" is enabled
 		And I am on the files page
