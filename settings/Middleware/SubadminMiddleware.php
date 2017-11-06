@@ -29,6 +29,8 @@ use OC\AppFramework\Middleware\Security\Exceptions\NotAdminException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Middleware;
+use OCP\IGroupManager;
+use OCP\IUserSession;
 
 /**
  * Verifies whether an user has at least subadmin rights.
@@ -37,19 +39,24 @@ use OCP\AppFramework\Middleware;
  * @package OC\Settings\Middleware
  */
 class SubadminMiddleware extends Middleware {
-	/** @var bool */
-	protected $isSubAdmin;
+	/** @var IUserSession */
+	private $userSession;
+	/** @var IGroupManager */
+	private $groupManager;
 	/** @var ControllerMethodReflector */
 	protected $reflector;
 
 	/**
 	 * @param ControllerMethodReflector $reflector
-	 * @param bool $isSubAdmin
+	 * @param IGroupManager $groupManager
+	 * @param IUserSession $userSession
 	 */
 	public function __construct(ControllerMethodReflector $reflector,
-								$isSubAdmin) {
+								IGroupManager $groupManager,
+								IUserSession $userSession) {
 		$this->reflector = $reflector;
-		$this->isSubAdmin = $isSubAdmin;
+		$this->groupManager = $groupManager;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -60,7 +67,17 @@ class SubadminMiddleware extends Middleware {
 	 */
 	public function beforeController($controller, $methodName) {
 		if(!$this->reflector->hasAnnotation('NoSubadminRequired')) {
-			if(!$this->isSubAdmin) {
+			// Check if current user (active and not in incognito mode)
+			// can manage users
+			$hasUserManagementPrivileges = false;
+			$activeUser = $this->userSession->getUser();
+			if($activeUser !== null) {
+				//Admin and SubAdmins are allowed to access user management
+				$hasUserManagementPrivileges = $this->groupManager->isAdmin($activeUser->getUID())
+					|| $this->groupManager->getSubAdmin()->isSubAdmin($activeUser);
+			}
+
+			if(!$hasUserManagementPrivileges) {
 				throw new NotAdminException('Logged in user must be a subadmin');
 			}
 		}

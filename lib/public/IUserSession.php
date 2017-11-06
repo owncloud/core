@@ -65,7 +65,8 @@ interface IUserSession {
 	public function setUser($user);
 
 	/**
-	 * get the current active user
+	 * Get the current active user. If user is in incognito mode, user is not
+	 * considered as active
 	 *
 	 * @return \OCP\IUser|null Current user, otherwise null
 	 * @since 8.0.0
