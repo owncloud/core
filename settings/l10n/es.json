@@ -189,6 +189,7 @@
     "Allow resharing" : "Permitir recompartición",
     "Allow sharing with groups" : "Permitir compartir con grupos",
     "Restrict users to only share with users in their groups" : "Restringe a los usuarios a compartir solo con otros usuarios en sus grupos",
+    "Restrict users to only share with groups they are member of" : "Restrinja a los usuarios compartir sólo con grupos de los que son miembros",
     "Allow users to send mail notification for shared files to other users" : "Permitir a los usuarios enviar notificaciones por correo electrónico de los archivos compartidos a otros usuarios",
     "Exclude groups from sharing" : "Excluye grupos de compartir",
     "These groups will still be able to receive shares, but not to initiate them." : "Estos grupos aún podrán recibir contenidos compartidos, pero no podrán, pero no podrán iniciarlos.",
