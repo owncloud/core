@@ -21,6 +21,8 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Event\SchemaColumnDefinitionEventArgs;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
@@ -51,10 +53,18 @@ class MySqlSchemaColumnDefinitionListener{
 			$this->_platform = \OC::$server->getDatabaseConnection()->getDatabasePlatform();
 		}
 
-		$tableColumn = $eventArgs->getTableColumn();
-		$eventArgs->preventDefault();
-		$column = $this->_getPortableTableColumnDefinition($tableColumn);
-		$eventArgs->setColumn($column);
+		$version = \OC::$server->getDatabaseConnection()->getDatabaseVersionString();
+		$mariadb = false !== stripos($version, 'mariadb');
+		if ($mariadb && version_compare($this->getMariaDbMysqlVersionNumber($version), '10.2.7', '>=')) {
+			$tableColumn = $eventArgs->getTableColumn();
+			try {
+				$column = $this->_getPortableTableColumnDefinition($tableColumn);
+				$eventArgs->preventDefault();
+				$eventArgs->setColumn($column);
+			} catch (DBALException $e){
+				// Pass
+			}
+		}
 	}
 
 	
@@ -163,12 +173,15 @@ class MySqlSchemaColumnDefinitionListener{
 
 		$length = ((int) $length == 0) ? null : (int) $length;
 
+		$default = isset($tableColumn['default']) ? $tableColumn['default'] : null;
+		$columnDefault = $this->getMariaDb1027ColumnDefault($default);
+
 		$options = array(
 			'length'		=> $length,
 			'unsigned'	  => (bool) (strpos($tableColumn['type'], 'unsigned') !== false),
 			'fixed'		 => (bool) $fixed,
 			// This line was changed to fix breaking change introduced in MariaDB 10.2.6
-			'default'	   => isset($tableColumn['default']) && !($tableColumn['default'] === 'NULL' && $tableColumn['null'] === 'YES') ? $tableColumn['default'] : null,
+			'default'	   => $columnDefault,
 			'notnull'	   => (bool) ($tableColumn['null'] != 'YES'),
 			'scale'		 => null,
 			'precision'	 => null,
@@ -191,4 +204,50 @@ class MySqlSchemaColumnDefinitionListener{
 
 		return $column;
 	}
+
+	/**
+	 * Return Doctrine/Mysql-compatible column default values for MariaDB 10.2.7+ servers.
+	 *
+	 * - Since MariaDb 10.2.7 column defaults stored in information_schema are now quoted
+	 *   to distinguish them from expressions (see MDEV-10134).
+	 * - Note: Quoted 'NULL' is not enforced by Maria, it is technically possible to have
+	 *   null in some circumstances (see https://jira.mariadb.org/browse/MDEV-14053)
+	 *
+	 * @link https://mariadb.com/kb/en/library/information-schema-columns-table/
+	 * @link https://jira.mariadb.org/browse/MDEV-13132
+	 *
+	 * @param null|string $columnDefault default value as stored in information_schema for MariaDB >= 10.2.7
+	 * @return string
+	 */
+	private function getMariaDb1027ColumnDefault($columnDefault)
+	{
+		if ($columnDefault === 'NULL' || $columnDefault === null) {
+			return null;
+		}
+		if ($columnDefault[0] === "'") {
+			return preg_replace('/^\'(.*)\'$/', '$1', $columnDefault);
+		}
+
+		return $columnDefault;
+	}
+
+	/**
+	 * Detect MariaDB server version, including hack for some mariadb distributions
+	 * that starts with the prefix '5.5.5-'
+	 *
+	 * @param string $versionString Version string as returned by mariadb server, i.e. '5.5.5-Mariadb-10.0.8-xenial'
+	 * @return string
+	 * @throws DBALException
+	 */
+	private function getMariaDbMysqlVersionNumber($versionString)
+	{
+		if ( !preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
+			throw DBALException::invalidPlatformVersionSpecified(
+				$versionString,
+				'^(?:5\.5\.5-)?(mariadb-)?<major_version>.<minor_version>.<patch_version>'
+			);
+		}
+		return $versionParts['major'] . '.' . $versionParts['minor'] . '.' . $versionParts['patch'];
+	}
+
 }

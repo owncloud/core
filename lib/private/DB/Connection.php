@@ -33,6 +33,7 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
@@ -438,5 +439,28 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Returns the version of the related platform if applicable.
+	 *
+	 * Returns null if either the driver is not capable to create version
+	 * specific platform instances, no explicit server version was specified
+	 * or the underlying driver connection cannot determine the platform
+	 * version without having to query it (performance reasons).
+	 *
+	 * @return null|string
+	 */
+	public function getDatabaseVersionString()
+	{
+		// Automatic platform version detection.
+		if ($this->_conn instanceof ServerInfoAwareConnection &&
+			! $this->_conn->requiresQueryForServerVersion()
+		) {
+			return $this->_conn->getServerVersion();
+		}
+
+		// Unable to detect platform version.
+		return null;
 	}
 }
