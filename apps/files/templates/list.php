@@ -7,7 +7,6 @@
 				<input type="button" class="stop icon-close" style="display:none" value="" />
 			</div>
 		</div>
-		<div id="file_action_panel"></div>
 		<div class="notCreatable notPublic hidden">
 			<?php p($l->t('You don’t have permission to upload or create files here'))?>
 		</div>
