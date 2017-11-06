@@ -109,5 +109,10 @@ $(document).ready(function(){
 		return false;
 	});
 
-
+	var $additionalInfo = $('#coreUserAdditionalInfo');
+	$additionalInfo.val($additionalInfo.attr('data-value'));
+	$additionalInfo.change(function(ev) {
+		$(this).attr('data-value', $(this).val());
+		OC.AppConfig.setValue('core', $(this).attr('name'), $(this).val());
+	});
 });

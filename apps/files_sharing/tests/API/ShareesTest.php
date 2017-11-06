@@ -140,7 +140,7 @@ class ShareesTest extends TestCase {
 
 		$user->expects($this->any())
 			->method('getEMailAddress')
-			->willReturn(null);
+			->willReturn($email);
 
 		$user->expects($this->any())
 			->method('getSearchTerms')
@@ -443,11 +443,19 @@ class ShareesTest extends TestCase {
 				[],
 				// fuzzy match expected
 				[
-					['label' => 'Another One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'another1']],
+					[
+						'label' => 'Another One',
+						'value' => [
+							'shareType' => Share::SHARE_TYPE_USER,
+							'shareWith' => 'another1',
+							'shareWithAdditionalInfo' => 'another1'
+						]
+					],
 				],
 				true,
 				false,
 				true,
+				'id'
 			],
 			[
 				// pick user directly by name
@@ -464,13 +472,21 @@ class ShareesTest extends TestCase {
 				],
 				// exact expected
 				[
-					['label' => 'Another One', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'another1']],
+					[
+						'label' => 'Another One',
+						'value' => [
+							'shareType' => Share::SHARE_TYPE_USER,
+							'shareWith' => 'another1',
+							'shareWithAdditionalInfo' => 'email@example.com'
+						]
+					],
 				],
 				// fuzzy match expected
 				[],
 				true,
-				$this->getUserMock('another1', 'Another One'),
+				$this->getUserMock('another1', 'Another One', 'email@example.com'),
 				true,
+				'email'
 			],
 		];
 	}
@@ -488,6 +504,7 @@ class ShareesTest extends TestCase {
 	 * @param bool $reachedEnd
 	 * @param mixed $singleUser false for testing search or user mock when we are testing a direct match
 	 * @param mixed $shareeEnumerationGroupMembers restrict enumeration to group members
+	 * @param mixed $additionalUserInfoField
 	 */
 	public function testGetUsers(
 		$searchTerm,
@@ -499,8 +516,26 @@ class ShareesTest extends TestCase {
 		$expected,
 		$reachedEnd,
 		$singleUser,
-		$shareeEnumerationGroupMembers = false
+		$shareeEnumerationGroupMembers = false,
+		$additionalUserInfoField = null
 	) {
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->with('core', 'user_additional_info_field', '')
+			->willReturn($additionalUserInfoField);
+
+		$this->sharees = new ShareesController(
+			'files_sharing',
+			$this->request,
+			$this->groupManager,
+			$this->userManager,
+			$this->contactsManager,
+			$this->config,
+			$this->session,
+			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
+			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
+			$this->shareManager
+		);
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
 		$this->invokePrivate($this->sharees, 'shareWithGroupOnly', [$shareWithGroupOnly]);
@@ -1437,9 +1472,6 @@ class ShareesTest extends TestCase {
 	 * @param string $message
 	 */
 	public function testSearchInvalid($message, $search = '', $itemType = null, $page = 1, $perPage = 200) {
-		$this->config->expects($this->never())
-			->method('getAppValue');
-
 		/** @var ShareesController | \PHPUnit_Framework_MockObject_MockObject $sharees */
 		$sharees = $this->getMockBuilder(ShareesController::class)
 			->setConstructorArgs([

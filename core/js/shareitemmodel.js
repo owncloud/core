@@ -372,6 +372,19 @@
 			return share.share_with_displayname;
 		},
 
+		/**
+		 * @param shareIndex
+		 * @returns {string}
+		 */
+		getShareWithAdditionalInfo: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return share.share_with_additional_info;
+		},
+
 		getShareType: function(shareIndex) {
 			/** @type OC.Share.Types.ShareInfo **/
 			var share = this.get('shares')[shareIndex];
