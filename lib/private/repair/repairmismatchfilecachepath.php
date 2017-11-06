@@ -106,7 +106,7 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 		if ($correctPath === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($correctPath)));
+			$qb->andWhere($qb->expr()->eq('path_hash', md5($qb->createNamedParameter($correctPath))));
 		}
 		$entryExisted = $qb->execute() > 0;
 
@@ -372,7 +372,7 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 		if ($path === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path', $qb->createNamedParameter($path)));
+			$qb->andWhere($qb->expr()->eq('path_hash', md5($qb->createNamedParameter($path))));
 		}
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
