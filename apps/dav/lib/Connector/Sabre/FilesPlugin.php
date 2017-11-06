@@ -251,6 +251,9 @@ class FilesPlugin extends ServerPlugin {
 			if ($checksum !== null && $checksum !== '') {
 				$response->addHeader('OC-Checksum', $checksum);
 			}
+			// disable nginx buffering so big downloads through ownCloud won't
+			// cause memory problems in the nginx process.
+			$response->addHeader('X-Accel-Buffering', 'no');
 		}
 	}
 
