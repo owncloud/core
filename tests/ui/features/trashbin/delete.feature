@@ -77,3 +77,8 @@ Feature: delete
 		But the folder "my-other-empty-folder" should not be listed in the trashbin
 		When I open the trashbin folder "my-empty-folder"
 		Then there are no files/folders listed
+
+	Scenario: Delete the last file in a folder
+		When I delete the file "zzzz-must-be-last-file-in-folder.txt"
+		Then the file "zzzz-must-be-last-file-in-folder.txt" should not be listed
+		But the file "zzzz-must-be-last-file-in-folder.txt" should be listed in the trashbin
