@@ -48,8 +48,12 @@
 
 #filestable thead {
 	transform: translateY(-50px);
-	position: fixed;
+	position: absolute;
 	z-index: 10;
+}
+
+body:not(.snapjs-left) #filestable thead {
+	position: fixed;
 }
 
 #filestable.has-controls {
