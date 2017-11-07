@@ -48,6 +48,7 @@ Feature: Sharing
 		And the file "testimage (2).jpg" should be listed
 		And the file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three"
 
+	@skipOnMICROSOFTEDGE
 	Scenario: share a folder with another internal user and prohibit deleting
 		When the folder "simple-folder" is shared with the user "User One"
 		And the sharing permissions of "User One" for "simple-folder" are set to
