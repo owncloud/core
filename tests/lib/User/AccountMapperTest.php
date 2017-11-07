@@ -49,7 +49,9 @@ class AccountMapperTest extends TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		$mapper = \OC::$server->getAccountMapper();
+
+		$termMapper = new AccountTermMapper(\OC::$server->getDatabaseConnection());
+		$mapper = new AccountMapper(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection(), $termMapper);
 
 		\OC::$server->getDatabaseConnection()->beginTransaction();
 

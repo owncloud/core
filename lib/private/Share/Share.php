@@ -773,7 +773,7 @@ class Share extends Constants {
 				\OCP\Util::writeLog('OCP\Share', sprintf($message, $itemSourceName, $shareWith), \OCP\Util::DEBUG);
 				throw new \Exception($message_t);
 			}
-			if ($shareWithMembershipGroupOnly && !\OC::$server->getGroupManager()->inGroup($uidOwner, $shareWith)) {
+			if ($shareWithMembershipGroupOnly && !\OC::$server->getGroupManager()->isInGroup($uidOwner, $shareWith)) {
 				$message = 'Sharing %s failed, because '
 					.'%s is not a member of the group %s';
 				$message_t = $l->t('Sharing %s failed, because %s is not a member of the group %s', [$itemSourceName, $uidOwner, $shareWith]);
@@ -1053,7 +1053,7 @@ class Share extends Constants {
 				$itemUnshared = true;
 				break;
 			} elseif ((int)$share['share_type'] === \OCP\Share::SHARE_TYPE_GROUP) {
-				if (\OC::$server->getGroupManager()->inGroup($uid, $share['share_with'])) {
+				if (\OC::$server->getGroupManager()->isInGroup($uid, $share['share_with'])) {
 					$groupShare = $share;
 				}
 			} elseif ((int)$share['share_type'] === self::$shareTypeGroupUserUnique &&

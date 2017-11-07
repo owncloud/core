@@ -22,7 +22,6 @@
 namespace OC\Group;
 
 use OCP\AppFramework\Db\Entity;
-use OCP\GroupInterface;
 
 /**
  * Class BackendGroup

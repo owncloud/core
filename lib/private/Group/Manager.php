@@ -211,21 +211,6 @@ class Manager extends PublicEmitter implements IGroupManager {
 		}
 	}
 
-
-	/**
-	 * @param string $gid
-	 * @param string $backendClass
-	 * @return BackendGroup|\OCP\AppFramework\Db\Entity
-	 */
-	private function createBackendGroup($gid, $backendClass) {
-		$account = new BackendGroup();
-		$account->setGroupId($gid);
-		$account->setDisplayName($gid);
-		$account->setBackend($backendClass);
-		$account = $this->groupMapper->insert($account);
-		return $account;
-	}
-
 	/**
 	 * @param string $search search string
 	 * @param int|null $limit limit
@@ -479,14 +464,5 @@ class Manager extends PublicEmitter implements IGroupManager {
 		}
 
 		return $this->subAdmin;
-	}
-
-	public function inGroup($uid, $gid) {
-		$group = $this->get($gid);
-		$user = $this->userManager->get($uid);
-		if ($group and $user) {
-			return $group->inGroup($user);
-		}
-		return false;
 	}
 }

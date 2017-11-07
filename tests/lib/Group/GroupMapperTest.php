@@ -33,7 +33,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
  *
  * @group DB
  *
- * @package Test\User
+ * @package Test\Group
  */
 class GroupMapperTest extends TestCase {
 
@@ -48,19 +48,18 @@ class GroupMapperTest extends TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		$mapper = \OC::$server->getGroupMapper();
+		$mapper = new GroupMapper(\OC::$server->getDatabaseConnection());
 
-		// create test users
+		// create test groups
 		for ($i = 1; $i <= 4; $i++) {
-			try {
-				$backendGroup = $mapper->getGroup("TestFind$i");
+			$backendGroup = $mapper->getGroup("testgroup$i");
+			if (!is_null($backendGroup)) {
 				$mapper->delete($backendGroup);
-			} catch (DoesNotExistException $ex) {
 			}
 
 			$backendGroup = new BackendGroup();
-			$backendGroup->setGroupId("TestFind$i");
-			$backendGroup->setDisplayName("TestFind$i");
+			$backendGroup->setGroupId("testgroup$i");
+			$backendGroup->setDisplayName("TestGroup$i");
 			$backendGroup->setBackend(self::class);
 
 			$mapper->insert($backendGroup);
@@ -88,7 +87,7 @@ class GroupMapperTest extends TestCase {
 	 * find one record without lowercase
 	 */
 	public function testGet() {
-		$result = $this->mapper->getGroup("TestFind1");
+		$result = $this->mapper->getGroup("testgroup1");
 		$this->assertInstanceOf(BackendGroup::class, $result);
 	}
 
@@ -97,41 +96,40 @@ class GroupMapperTest extends TestCase {
 	 */
 	public function testInsert() {
 		$backendGroup = new BackendGroup();
-		$backendGroup->setGroupId("TestFind5");
-		$backendGroup->setDisplayName("TestFind5");
+		$backendGroup->setGroupId("testgroup5");
+		$backendGroup->setDisplayName("TestGroup5");
 		$backendGroup->setBackend(self::class);
 
 		$this->mapper->insert($backendGroup);
-		$result = $this->mapper->getGroup("TestFind5");
+		$result = $this->mapper->getGroup("testgroup5");
 		$this->assertInstanceOf(BackendGroup::class, $result);
 	}
 
 	/**
-	 * find nothing because of lower case
-	 *
-	 * @expectedException \OCP\AppFramework\Db\DoesNotExistException
+	 * find nothing because of upper case
 	 */
 	public function testGetNone() {
-		$this->mapper->getGroup("testfind1");
+		$groupBackend = $this->mapper->getGroup("TestGroup1");
+		$this->assertNull($groupBackend);
 	}
-
 
 	/**
 	 * find all, use lower case
 	 */
 	public function testFindAll() {
-		$result = $this->mapper->search('group_id',"testfind", null, null);
+		$result = $this->mapper->search('group_id',"testgroup", null, null);
 		$this->assertEquals(5, count($result));
 	}
-
 
 	/**
 	 * find by userid, use lower case
 	 */
 	public function testFindByGroupId() {
-		$result = $this->mapper->search('group_id',"testfind1", null, null);
+		$result = $this->mapper->search('group_id',"testgroup1", null, null);
 		$this->assertEquals(1, count($result));
-		$this->assertEquals("TestFind1", array_shift($result)->getGroupId());
+		$group = array_shift($result);
+		$this->assertEquals("testgroup1", $group->getGroupId());
+		$this->assertEquals("TestGroup1", $group->getDisplayName());
 	}
 
 	/**
@@ -140,7 +138,7 @@ class GroupMapperTest extends TestCase {
 	public function testFindLimitAndOffset() {
 		$result = $this->mapper->search('group_id','Test', 2, 2);
 		$this->assertEquals(2, count($result));
-		$this->assertEquals("TestFind3", array_shift($result)->getGroupId());
-		$this->assertEquals("TestFind4", array_shift($result)->getGroupId());
+		$this->assertEquals("TestGroup3", array_shift($result)->getDisplayName());
+		$this->assertEquals("TestGroup4", array_shift($result)->getDisplayName());
 	}
 }

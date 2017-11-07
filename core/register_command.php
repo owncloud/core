@@ -31,6 +31,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+use OC\User\AccountMapper;
+use OC\User\AccountTermMapper;
 
 /** @var $application Symfony\Component\Console\Application */
 $application->add(new OC\Core\Command\Status);
@@ -147,7 +149,10 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\ResetPassword(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
 	$application->add(new OC\Core\Command\User\Modify(\OC::$server->getUserManager(), \OC::$server->getMailer()));
-	$application->add(new OC\Core\Command\User\SyncBackend(\OC::$server->getAccountMapper(), \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
+
+	$termMapper = new AccountTermMapper(\OC::$server->getDatabaseConnection());
+	$accountMapper = new AccountMapper(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection(), $termMapper);
+	$application->add(new OC\Core\Command\User\SyncBackend($accountMapper, \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
 	$application->add(new \OC\Core\Command\User\Inactive(\OC::$server->getUserManager()));
 
 	$application->add(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager()));
