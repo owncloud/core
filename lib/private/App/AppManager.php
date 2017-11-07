@@ -37,6 +37,7 @@ use OCP\App\ManagerEvent;
 use OCP\Files;
 use OCP\IAppConfig;
 use OCP\ICacheFactory;
+use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -72,6 +73,8 @@ class AppManager implements IAppManager {
 	private $alwaysEnabled;
 	/** @var EventDispatcherInterface */
 	private $dispatcher;
+	/** @var IConfig */
+	private $config;
 
 	/**
 	 * @param IUserSession $userSession
@@ -79,17 +82,20 @@ class AppManager implements IAppManager {
 	 * @param IGroupManager $groupManager
 	 * @param ICacheFactory $memCacheFactory
 	 * @param EventDispatcherInterface $dispatcher
+	 * @param IConfig $config
 	 */
 	public function __construct(IUserSession $userSession = null,
 								IAppConfig $appConfig,
 								IGroupManager $groupManager,
 								ICacheFactory $memCacheFactory,
-								EventDispatcherInterface $dispatcher) {
+								EventDispatcherInterface $dispatcher,
+								IConfig $config) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
 		$this->groupManager = $groupManager;
 		$this->memCacheFactory = $memCacheFactory;
 		$this->dispatcher = $dispatcher;
+		$this->config = $config;
 	}
 
 	/**
@@ -435,6 +441,10 @@ class AppManager implements IAppManager {
 	 * @since 10.0.3
 	 */
 	public function canInstall() {
+		if ($this->config->getSystemValue('operation.mode', 'single-instance') !== 'single-instance') {
+			return false;
+		}
+
 		$appsFolder = OC_App::getInstallPath();
 		return $appsFolder !== null && is_writable($appsFolder) && is_readable($appsFolder);
 	}

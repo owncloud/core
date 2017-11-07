@@ -581,6 +581,15 @@ $CONFIG = array(
 'config_is_read_only' => false,
 
 /**
+ * This defines the mode of operations. The default value is 'single-instance'
+ * which means that ownCloud is running on a single node, which might be the
+ * most common operations mode. The only other possible value for now is
+ * 'clustered-instance' which means that ownCloud is running on at least 2
+ * nodes. The mode of operations has various impact on the behavior of ownCloud.
+ */
+'operation.mode' => 'single-instance',
+
+/**
  * Logging
  */
 
