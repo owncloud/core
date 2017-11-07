@@ -38,11 +38,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
+use OC\Repair\RepairMismatchFileCachePath;
+use OCP\Lock\ILockingProvider;
+use OCP\Lock\LockedException;
+use OCP\Files\IMimeTypeLoader;
+use OCP\IConfig;
 
 class Scan extends Base {
 
 	/** @var IUserManager $userManager */
 	private $userManager;
+	/** @var ILockingProvider */
+	private $lockingProvider;
+	/** @var IMimeTypeLoader */
+	private $mimeTypeLoader;
+	/** @var IConfig */
+	private $config;
 	/** @var float */
 	protected $execTime = 0;
 	/** @var int */
@@ -50,8 +61,16 @@ class Scan extends Base {
 	/** @var int */
 	protected $filesCounter = 0;
 
-	public function __construct(IUserManager $userManager) {
+	public function __construct(
+		IUserManager $userManager,
+		ILockingProvider $lockingProvider,
+ 		IMimeTypeLoader $mimeTypeLoader,
+		IConfig $config
+	) {
 		$this->userManager = $userManager;
+		$this->lockingProvider = $lockingProvider;
+		$this->mimeTypeLoader = $mimeTypeLoader;
+		$this->config = $config;
 		parent::__construct();
 	}
 
@@ -89,12 +108,65 @@ class Scan extends Base {
 				null,
 				InputOption::VALUE_NONE,
 				'will rescan all files of all known users'
+			)
+			->addOption(
+				'repair',
+				null,
+				InputOption::VALUE_NONE,
+				'will repair detached filecache entries (slow)'
 			);
 	}
 
-	protected function scanFiles($user, $path, $verbose, OutputInterface $output) {
+	/**
+	 * Repair all storages at once
+	 *
+	 * @param OutputInterface $output
+	 */
+	protected function repairAll(OutputInterface $output) {
+		$connection = $this->reconnectToDatabase($output);
+		$repairStep = new RepairMismatchFileCachePath(
+			$connection,
+			$this->mimeTypeLoader
+		);
+		$repairStep->setStorageNumericId(null);
+		$repairStep->setCountOnly(false);
+		$repairStep->run(new ConsoleOutput($output));
+	}
+
+	protected function scanFiles($user, $path, $verbose, OutputInterface $output, $shouldRepair = false) {
 		$connection = $this->reconnectToDatabase($output);
 		$scanner = new \OC\Files\Utils\Scanner($user, $connection, \OC::$server->getLogger());
+
+		if ($shouldRepair) {
+			$scanner->listen('\OC\Files\Utils\Scanner', 'beforeScanStorage', function ($storage) use ($output, $connection) {
+				try {
+					// FIXME: this will lock the storage even if there is nothing to repair
+					$storage->acquireLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
+				} catch (LockedException $e) {
+					$output->writeln("\t<error>Storage \"" . $storage->getCache()->getNumericStorageId() . '" cannot be repaired as it is currently in use, please try again later</error>');
+					return;
+				}
+				$stored = false;
+				try {
+					$repairStep = new RepairMismatchFileCachePath(
+						$connection,
+						$this->mimeTypeLoader
+					);
+					$repairStep->setStorageNumericId($storage->getCache()->getNumericStorageId());
+					$repairStep->setCountOnly(false);
+					$repairStep->run();
+				} catch (\Exception $e) {
+					$stored = $e;
+				}
+
+				// Release the lock first
+				$storage->releaseLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
+				// Now throw the exception for handling elsewhere
+				if($stored) {
+					throw $stored;
+				}
+			});
+		}
 		# check on each file/folder if there was a user interrupt (ctrl-c) and throw an exception
 		# printout and count
 		if ($verbose) {
@@ -132,7 +204,7 @@ class Scan extends Base {
 		}
 
 		try {
-			$scanner->scan($path);
+			$scanner->scan($path, $shouldRepair);
 		} catch (ForbiddenException $e) {
 			$output->writeln("<error>Home storage for user $user not writable</error>");
 			$output->writeln("Make sure you're running the scan command only as the user the web server runs as");
@@ -148,12 +220,26 @@ class Scan extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
+
+		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
+
 		if ($inputPath) {
 			$inputPath = '/' . trim($inputPath, '/');
 			list (, $user,) = explode('/', $inputPath, 3);
 			$users = array($user);
 		} else if ($input->getOption('all')) {
-			$users = $this->userManager->search('');
+			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
+			// is enabled to prevent concurrent user access
+			if ($input->getOption('repair') && ($this->config->getSystemValue('singleuser', false) || $this->config->getSystemValue('maintenance', false))) {
+				// repair all storages at once
+				$this->repairAll($output);
+				// don't fix individually
+				$shouldRepairStoragesIndividually = false;
+			} else {
+				$output->writeln("<comment>Repairing every storage individually is slower than repairing in bulk</comment>");
+				$output->writeln("<comment>To repair in bulk, please switch to single user mode first: occ maintenance:singleuser --on</comment>");
+				$users = $this->userManager->search('');
+			}
 		} else {
 			$users = $input->getArgument('user_id');
 		}
@@ -198,9 +284,10 @@ class Scan extends Base {
 			if ($this->userManager->userExists($user)) {
 				# add an extra line when verbose is set to optical separate users
 				if ($verbose) {$output->writeln(""); }
-				$output->writeln("Starting scan for user $user_count out of $users_total ($user)");
+				$r = $shouldRepairStoragesIndividually ? ' (and repair)' : '';
+				$output->writeln("Starting scan$r for user $user_count out of $users_total ($user)");
 				# full: printout data if $verbose was set
-				$this->scanFiles($user, $path, $verbose, $output);
+				$this->scanFiles($user, $path, $verbose, $output, $shouldRepairStoragesIndividually);
 			} else {
 				$output->writeln("<error>Unknown user $user_count $user</error>");
 			}
