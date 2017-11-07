@@ -69,6 +69,13 @@ class Application extends App {
 			);
 		});
 
+		$container->registerService('OCP\Lock\ILockingProvider', function(IContainer $c)  {
+			return $c->query('ServerContainer')->getLockingProvider();
+		});
+		$container->registerService('OCP\Files\IMimeTypeLoader', function(IContainer $c)  {
+			return $c->query('ServerContainer')->getMimeTypeLoader();
+		});
+
 		/*
 		 * Register capabilities
 		 */
