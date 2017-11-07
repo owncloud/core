@@ -92,6 +92,41 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 		updateShareStub.restore();
 	});
 
+	describe('rendering', function() {
+		it('Renders shares', function() {
+			shareModel.set('shares', [{
+					id: 100,
+					item_source: 123,
+					permissions: 1,
+					share_type: OC.Share.SHARE_TYPE_USER,
+					share_with: 'user1',
+					share_with_displayname: 'User One',
+					share_with_additional_info: 'user1@example.com'
+				}, {
+					id: 101,
+					item_source: 123,
+					permissions: 1,
+					share_type: OC.Share.SHARE_TYPE_GROUP,
+					share_with: 'group1',
+					share_with_displayname: 'Group One'
+				}]
+			);
+			listView.render();
+
+			expect(listView.$('li').length).toEqual(2);
+
+			var $li = listView.$('li').eq(0);
+			expect($li.attr('data-share-id')).toEqual('100');
+			expect($li.find('.username').text()).toEqual('User One');
+			expect($li.find('.user-additional-info').text()).toEqual('(user1@example.com)');
+
+			$li = listView.$('li').eq(1);
+			expect($li.attr('data-share-id')).toEqual('101');
+			expect($li.find('.username').text()).toEqual('Group One (group)');
+			expect($li.find('.user-additional-info').length).toEqual(0);
+		});
+	});
+
 	describe('Manages checkbox events correctly', function () {
 		it('Checks cruds boxes when edit box checked', function () {
 			shareModel.set('shares', [{

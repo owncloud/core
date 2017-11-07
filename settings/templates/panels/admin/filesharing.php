@@ -106,4 +106,12 @@
 		<label for="shareapi_default_permission_<?php p($perm['id']) ?>"><?php p($perm['label']);?></label>
 		<?php endforeach ?>
 	</p>
+	<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
+		<label for="coreUserAdditionalInfo"><?php p($l->t('Extra field to display in autocomplete results'));?></label><br/>
+		<select name="user_additional_info_field" id="coreUserAdditionalInfo" data-value="<?php p($_['coreUserAdditionalInfo']) ?>">
+			<option value=''><?php p($l->t('None')) ?></option>
+			<option value='id'><?php p($l->t('User ID')) ?></option>
+			<option value='email'><?php p($l->t('Email address')) ?></option>
+		</select>
+	</p>
 </div>
