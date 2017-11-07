@@ -1,3 +1,4 @@
+@insulated
 Feature: restrict resharing
 
 As admin
