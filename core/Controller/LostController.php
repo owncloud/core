@@ -40,6 +40,7 @@ use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
 use \OC_Defaults;
+use OC\User\Session;
 
 /**
  * Class LostController
@@ -73,6 +74,8 @@ class LostController extends Controller {
 	protected $timeFactory;
 	/** @var ILogger */
 	protected $logger;
+	/** @var Session */
+	private $userSession;
 
 	/**
 	 * @param string $appName
@@ -88,6 +91,7 @@ class LostController extends Controller {
 	 * @param IMailer $mailer
 	 * @param ITimeFactory $timeFactory
 	 * @param ILogger $logger
+	 * @param Session $userSession
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -101,7 +105,8 @@ class LostController extends Controller {
 								$isDataEncrypted,
 								IMailer $mailer,
 								ITimeFactory $timeFactory,
-								ILogger $logger) {
+								ILogger $logger,
+								Session $userSession) {
 		parent::__construct($appName, $request);
 		$this->urlGenerator = $urlGenerator;
 		$this->userManager = $userManager;
@@ -114,6 +119,7 @@ class LostController extends Controller {
 		$this->mailer = $mailer;
 		$this->timeFactory = $timeFactory;
 		$this->logger = $logger;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -240,6 +246,8 @@ class LostController extends Controller {
 			return $this->error($e->getMessage());
 		}
 
+		$this->logout();
+
 		return $this->success();
 	}
 
@@ -338,6 +346,14 @@ class LostController extends Controller {
 		}
 
 		return true;
+	}
+
+	private function logout() {
+		$loginToken = $this->request->getCookie('oc_token');
+		if (!is_null($loginToken)) {
+			$this->config->deleteUserValue($this->userSession->getUser()->getUID(), 'login_token', $loginToken);
+		}
+		$this->userSession->logout();
 	}
 
 }

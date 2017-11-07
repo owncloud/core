@@ -33,6 +33,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
+use OC\User\Session;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
@@ -66,6 +67,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 	private $request;
 	/** @var ILogger */
 	private $logger;
+	/** @var Session */
+	private $userSession;
 
 	protected function setUp() {
 
@@ -103,6 +106,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->logger = $this->getMockBuilder('OCP\ILogger')
 			->disableOriginalConstructor()->getMock();
+		$this->userSession = $this->getMockBuilder('OC\User\Session')
+			->disableOriginalConstructor()->getMock();
 		$this->lostController = new LostController(
 			'Core',
 			$this->request,
@@ -116,7 +121,8 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 			true,
 			$this->mailer,
 			$this->timeFactory,
-			$this->logger
+			$this->logger,
+			$this->userSession
 		);
 	}
 
