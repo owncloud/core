@@ -48,13 +48,24 @@
 
 #filestable thead {
 	transform: translateY(-50px);
-	position: absolute;
+	position: fixed;
 	z-index: 10;
 }
 
 body:not(.snapjs-left) #filestable thead {
 	position: fixed;
 }
+
+/* IE 11 only */
+@media all and (-ms-high-contrast:none) {
+
+	.snapjs-left #controls,
+	.snapjs-left #app-navigation-toggle,
+	.snapjs-left #filestable thead {
+		position: absolute;
+	}
+}
+
 
 #filestable.has-controls {
 	top: 94px;
