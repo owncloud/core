@@ -46,8 +46,6 @@ use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
-use OC\Diagnostics\NullEventLogger;
-use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Config\UserMountCacheListener;
@@ -87,13 +85,10 @@ use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
-<<<<<<< a277026a993f935b8cb8667ebfcb7d910138e39d
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
-=======
 use OC\Group\GroupMapper;
->>>>>>> implement group entity and group entity mapper (+ new table migration and unit tests)
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IServerContainer;
@@ -239,19 +234,16 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				return $c->getRootFolder();
 			});
 		});
-		$this->registerService('AccountMapper', function(Server $c) {
-			return new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), new AccountTermMapper($c->getDatabaseConnection()));
-		});
-		$this->registerService('GroupMapper', function(Server $c) {
-			return new GroupMapper($c->getDatabaseConnection());
-		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
 			$logger = $c->getLogger();
-			return new \OC\User\Manager($config, $logger, $c->getAccountMapper());
+			$termMapper = new AccountTermMapper($c->getDatabaseConnection());
+			$accountMapper = new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), $termMapper);
+			return new \OC\User\Manager($config, $logger, $accountMapper);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
-			$groupManager = new \OC\Group\Manager($this->getUserManager(), $c->getGroupMapper());
+			$groupMapper = new GroupMapper($c->getDatabaseConnection());
+			$groupManager = new \OC\Group\Manager($this->getUserManager(), $groupMapper);
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
 				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
 			});
@@ -997,20 +989,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 */
 	public function getUserManager() {
 		return $this->query('UserManager');
-	}
-
-	/**
-	 * @return \OC\User\AccountMapper
-	 */
-	public function getAccountMapper() {
-		return $this->query('AccountMapper');
-	}
-
-	/**
-	 * @return \OC\Group\GroupMapper
-	 */
-	public function getGroupMapper() {
-		return $this->query('GroupMapper');
 	}
 
 	/**
