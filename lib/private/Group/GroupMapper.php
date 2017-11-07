@@ -24,6 +24,7 @@ namespace OC\Group;
 use OC\Group\BackendGroup;
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
+use OCP\AppFramework\Db\DoesNotExistException;
 
 class GroupMapper extends Mapper {
 
@@ -32,8 +33,10 @@ class GroupMapper extends Mapper {
 	}
 
 	/**
+	 * Return backend group object or null in case does not exists
+	 *
 	 * @param string $gid
-	 * @return BackendGroup
+	 * @return BackendGroup|null
 	 */
 	public function getGroup($gid) {
 		$qb = $this->db->getQueryBuilder();
@@ -41,9 +44,13 @@ class GroupMapper extends Mapper {
 			->from($this->getTableName())
 			->where($qb->expr()->eq('group_id', $qb->createNamedParameter($gid)));
 
-		/** @var BackendGroup $backendGroup */
-		$backendGroup = $this->findEntity($qb->getSQL(), $qb->getParameters());
-		return $backendGroup;
+		try {
+			/** @var BackendGroup $backendGroup */
+			$backendGroup = $this->findEntity($qb->getSQL(), $qb->getParameters());
+			return $backendGroup;
+		} catch (DoesNotExistException $ex) {
+			return null;
+		}
 	}
 
 	/**
@@ -62,5 +69,4 @@ class GroupMapper extends Mapper {
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
-
 }
