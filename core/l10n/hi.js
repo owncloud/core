@@ -29,7 +29,6 @@ OC.L10N.register(
     "Sending ..." : "भेजा जा रहा है",
     "Email sent" : "ईमेल भेज दिया गया है ",
     "Share" : "साझा करें",
-    "Warning" : "चेतावनी ",
     "Delete" : "हटाना",
     "Add" : "डाले",
     "Personal" : "यक्तिगत",

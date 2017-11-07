@@ -187,7 +187,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Compartir con usuarios o grupos...",
     "Share with users or remote users…" : "Compartir con usuarios o usuarios remotos...",
     "Error removing share" : "Fallu desaniciando compartición",
-    "Warning" : "Avisu",
     "Non-existing tag #{tag}" : "Nun esiste la etiqueta #{tag}",
     "restricted" : "torgáu",
     "invisible" : "invisible",

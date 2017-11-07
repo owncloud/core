@@ -193,7 +193,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Jaa käyttäjien tai ryhmien kanssa…",
     "Share with users or remote users…" : "Jaa käyttäjien tai etäkäyttäjien kanssa…",
     "Error removing share" : "Virhe jakoa poistaessa",
-    "Warning" : "Varoitus",
     "Non-existing tag #{tag}" : "Ei olemassa oleva tunniste #{tag}",
     "restricted" : "rajoitettu",
     "invisible" : "näkymätön",

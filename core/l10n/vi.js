@@ -112,7 +112,6 @@ OC.L10N.register(
     "access control" : "quản lý truy cập",
     "Share" : "Chia sẻ",
     "Resharing is not allowed" : "Chia sẻ lại không được cho phép",
-    "Warning" : "Cảnh báo",
     "Delete" : "Xóa",
     "Rename" : "Sửa tên",
     "The object type is not specified." : "Loại đối tượng không được chỉ định.",

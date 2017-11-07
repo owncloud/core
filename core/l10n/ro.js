@@ -159,7 +159,6 @@ OC.L10N.register(
     "Share with users…" : "Partajează cu utilizatori...",
     "Share with users or groups…" : "Partajează cu utilizatori sau grupuri...",
     "Error removing share" : "Eroare la înlăturarea elementului partajat",
-    "Warning" : "Atenție",
     "Non-existing tag #{tag}" : "Etichetă inexistentă #{tag}",
     "restricted" : "restricționat",
     "invisible" : "invizibil",

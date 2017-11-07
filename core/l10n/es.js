@@ -217,7 +217,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Compartir con usuarios o grupos...",
     "Share with users or remote users…" : "Compartir con usuarios o usuarios remotos...",
     "Error removing share" : "Error quitando el comparto",
-    "Warning" : "Precaución",
     "Non-existing tag #{tag}" : "Categoría #{tag} no existente",
     "restricted" : "Restringido",
     "invisible" : "invisible",

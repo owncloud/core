@@ -4,6 +4,7 @@ OC.L10N.register(
     "Username" : "Хэрэглэгчийн нэр",
     "Password" : "Нууц үг",
     "Save" : "Хадгалах",
-    "Share" : "Түгээх"
+    "Share" : "Түгээх",
+    "Delete" : "Устгах"
 },
 "nplurals=2; plural=(n != 1);");

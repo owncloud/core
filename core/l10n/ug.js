@@ -56,7 +56,6 @@ OC.L10N.register(
     "Unshare" : "ھەمبەھىرلىمە",
     "delete" : "ئۆچۈر",
     "Share" : "ھەمبەھىر",
-    "Warning" : "ئاگاھلاندۇرۇش",
     "Delete" : "ئۆچۈر",
     "Rename" : "ئات ئۆزگەرت",
     "Add" : "قوش",

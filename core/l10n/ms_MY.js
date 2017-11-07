@@ -55,7 +55,6 @@ OC.L10N.register(
     "can share" : "boleh berkongsi",
     "can edit" : "boleh mengubah",
     "Share" : "Kongsi",
-    "Warning" : "Amaran",
     "Delete" : "Padam",
     "Rename" : "Namakan",
     "Add" : "Tambah",

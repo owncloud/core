@@ -106,7 +106,6 @@ OC.L10N.register(
     "access control" : "control de acceso",
     "Share" : "Compartir",
     "Resharing is not allowed" : "No se permite volver a compartir",
-    "Warning" : "Atención",
     "Delete" : "Borrar",
     "Rename" : "Cambiar nombre",
     "The object type is not specified." : "El tipo de objeto no está especificado. ",

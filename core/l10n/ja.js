@@ -210,7 +210,6 @@ OC.L10N.register(
     "Share with users or groups…" : "ユーザーもしくはグループと共有...",
     "Share with users or remote users…" : "ユーザーもしくはリモートユーザーと共有 ...",
     "Error removing share" : "共有の削除エラー",
-    "Warning" : "警告",
     "Non-existing tag #{tag}" : "存在しないタグ#{tag}",
     "restricted" : "制限済",
     "invisible" : "不可視",

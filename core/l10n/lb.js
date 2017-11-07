@@ -152,7 +152,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Mat Benotzer oder Gruppen deelen...",
     "Share with users or remote users…" : "Mat Benotzer oder mat Benotzer op Distanz deelen ...",
     "Error removing share" : "Fehler beim Läschen vum Bäitrag",
-    "Warning" : "Warnung",
     "restricted" : "Ageschränkt",
     "invisible" : "Onsiichtbar",
     "Delete" : "Läschen",

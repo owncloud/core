@@ -177,7 +177,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Mit Benutzern oder Gruppen teilen…",
     "Share with users or remote users…" : "Mit Benutzern oder entfernten Benutzern teilen…",
     "Error removing share" : "Fehler beim Entfernen der Freigabe",
-    "Warning" : "Warnung",
     "Non-existing tag #{tag}" : "Nicht vorhandener Tag #{tag}",
     "invisible" : "unsichtbar",
     "({scope})" : "({scope})",

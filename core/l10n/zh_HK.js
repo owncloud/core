@@ -73,7 +73,6 @@ OC.L10N.register(
     "create" : "新增",
     "delete" : "刪除",
     "Share" : "分享",
-    "Warning" : "警告",
     "Delete" : "刪除",
     "Rename" : "重新命名",
     "Add" : "加入",

@@ -209,7 +209,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Compartilhe com os utilizadores ou grupos...",
     "Share with users or remote users…" : "Compartilhe com os utilizadores ou utilizadores remotos...",
     "Error removing share" : "Erro ao remover partilha",
-    "Warning" : "Aviso",
     "Non-existing tag #{tag}" : "Etiqueta não existente #{tag}",
     "restricted" : "limitado",
     "invisible" : "invisível",

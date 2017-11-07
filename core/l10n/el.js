@@ -207,7 +207,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Διαμοιρασμός με χρήστες ή ομάδες...",
     "Share with users or remote users…" : "Διαμοιρασμός με χρήστες ή απομακρυσμένους χρήστες...",
     "Error removing share" : "Σφάλμα αφαίρεσης κοινόχρηστου φακέλου",
-    "Warning" : "Προειδοποίηση",
     "Non-existing tag #{tag}" : "Η ετικέτα #{tag} δεν υπάρχει",
     "restricted" : "περιορισμένο",
     "invisible" : "αόρατο",

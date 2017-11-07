@@ -210,7 +210,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Delen met gebruikers of groepen...",
     "Share with users or remote users…" : "Delen met gebruikers of externe gebruikers...",
     "Error removing share" : "Fout bij verwijderen share",
-    "Warning" : "Waarschuwing",
     "Non-existing tag #{tag}" : "Niet bestaande tag #{tag}",
     "restricted" : "beperkt",
     "invisible" : "onzichtbaar",

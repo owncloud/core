@@ -141,7 +141,6 @@ OC.L10N.register(
     "Share" : "Compartir",
     "Resharing is not allowed" : "Non se permite volver compartir",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Comparta con outra xente ou con outros ownClouds empregando a sintaxe «nomeusuario@exemplo.com/ouwncloud»",
-    "Warning" : "Aviso",
     "Delete" : "Eliminar",
     "Rename" : "Renomear",
     "The object type is not specified." : "Non se especificou o tipo de obxecto.",

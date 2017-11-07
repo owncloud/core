@@ -90,7 +90,6 @@ OC.L10N.register(
     "access control" : "piekļuves vadība",
     "Share" : "Dalīties",
     "Resharing is not allowed" : "Atkārtota dalīšanās nav atļauta",
-    "Warning" : "Brīdinājums",
     "Delete" : "Dzēst",
     "Rename" : "Pārsaukt",
     "The object type is not specified." : "Nav norādīts objekta tips.",

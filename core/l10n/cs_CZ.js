@@ -207,7 +207,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Sdílet s uživateli nebo skupinami...",
     "Share with users or remote users…" : "Sdílet s uživateli nebo vzdálenými uživateli...",
     "Error removing share" : "Chyba při odstraňování sdílení",
-    "Warning" : "Varování",
     "Non-existing tag #{tag}" : "Neexistující tag #{tag}",
     "restricted" : "omezeno",
     "invisible" : "neviditelný",

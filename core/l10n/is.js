@@ -207,7 +207,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Deila með notendum eða hópum...",
     "Share with users or remote users…" : "Deila með notendum, hópa eða fjartengdum notendum...",
     "Error removing share" : "Villa við að fjarlægja sameign",
-    "Warning" : "Aðvörun",
     "Non-existing tag #{tag}" : "Merki sem er ekki til #{tag}",
     "restricted" : "takmarkaður aðgangur",
     "invisible" : "ósýnilegt",

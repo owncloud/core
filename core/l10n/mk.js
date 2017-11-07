@@ -139,7 +139,6 @@ OC.L10N.register(
     "access control" : "контрола на пристап",
     "Share" : "Сподели",
     "Resharing is not allowed" : "Повторно споделување не е дозволено",
-    "Warning" : "Предупредување",
     "invisible" : "невидлив",
     "Delete" : "Избриши",
     "Rename" : "Преименувај",

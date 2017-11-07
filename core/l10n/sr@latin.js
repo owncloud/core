@@ -117,7 +117,6 @@ OC.L10N.register(
     "access control" : "kontrola pristupa",
     "Share" : "Podeli",
     "Resharing is not allowed" : "Dalje deljenje nije dozvoljeno",
-    "Warning" : "Upozorenje",
     "Delete" : "Obriši",
     "Rename" : "Preimenuj",
     "The object type is not specified." : "Tip objekta nije zadan.",

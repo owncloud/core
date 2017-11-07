@@ -33,7 +33,6 @@ OC.L10N.register(
     "Password" : "సంకేతపదం",
     "Save" : "భద్రపరచు",
     "delete" : "తొలగించు",
-    "Warning" : "హెచ్చరిక",
     "Delete" : "తొలగించు",
     "Add" : "చేర్చు",
     "Personal" : "వ్యక్తిగతం",

@@ -74,7 +74,6 @@ OC.L10N.register(
     "access control" : "დაშვების კონტროლი",
     "Share" : "გაზიარება",
     "Resharing is not allowed" : "მეორეჯერ გაზიარება არ არის დაშვებული",
-    "Warning" : "გაფრთხილება",
     "Delete" : "წაშლა",
     "Rename" : "გადარქმევა",
     "The object type is not specified." : "ობიექტის ტიპი არ არის მითითებული.",

@@ -211,7 +211,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Megosztás felhasználókkal vagy csoportokkal...",
     "Share with users or remote users…" : "Megosztás felhasználókkal vagy távoli felhasználókkal...",
     "Error removing share" : "Hiba a megosztás törlésekor",
-    "Warning" : "Figyelmeztetés",
     "Non-existing tag #{tag}" : "Nem létező címke #{tag}",
     "restricted" : "korlátozott",
     "invisible" : "láthatatlan",

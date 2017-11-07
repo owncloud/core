@@ -95,7 +95,6 @@ OC.L10N.register(
     "change" : "փոխել",
     "delete" : "ջնջել",
     "Share" : "Կիսվել",
-    "Warning" : "Զգուշացում",
     "Non-existing tag #{tag}" : "Գոյություն չունեցող պիտակ #{tag}",
     "restricted" : "սահմանափակ",
     "invisible" : "անտեսանելի",

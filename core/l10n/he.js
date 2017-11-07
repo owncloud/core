@@ -211,7 +211,6 @@ OC.L10N.register(
     "Share with users or groups…" : "שיתוף עם משתמשים או קבוצות...",
     "Share with users or remote users…" : "שיתוף עם משתמשים או משתמשים מרוחקים...",
     "Error removing share" : "שגיאה בזמן הסרת שיתוף",
-    "Warning" : "אזהרה",
     "Non-existing tag #{tag}" : "תגית לא קיימת #{tag}",
     "restricted" : "מוגבל",
     "invisible" : "בלתי גלוי",

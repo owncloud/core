@@ -181,7 +181,6 @@ OC.L10N.register(
     "Share with users, groups or remote users…" : "Deel met gebruikers, groepe of afstandsgebruikers…",
     "Share with users or groups…" : "Deel met gebruikers of groepe…",
     "Share with users or remote users…" : "Deel met gebruikers of afstandsgebruikers…",
-    "Warning" : "Waarskuwing",
     "Non-existing tag #{tag}" : "Niebestaande merkie #{tag}",
     "restricted" : "beperk",
     "invisible" : "onsigbaar",

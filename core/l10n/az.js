@@ -75,7 +75,6 @@ OC.L10N.register(
     "can edit" : "dəyişmək olar",
     "delete" : "sil",
     "Share" : "Yayımla",
-    "Warning" : "Xəbərdarlıq",
     "Delete" : "Sil",
     "Rename" : "Adı dəyiş",
     "Add" : "Əlavə etmək",

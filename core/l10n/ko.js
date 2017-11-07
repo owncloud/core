@@ -207,7 +207,6 @@ OC.L10N.register(
     "Share with users or groups…" : "사용자 및 그룹과 공유…",
     "Share with users or remote users…" : "사용자 및 원격 사용자와 공유…",
     "Error removing share" : "공유 삭제 중 오류 발생",
-    "Warning" : "경고",
     "Non-existing tag #{tag}" : "존재하지 않는 태그 #{tag}",
     "restricted" : "제한됨",
     "invisible" : "보이지 않음",

@@ -211,7 +211,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Del med brukere eller grupper...",
     "Share with users or remote users…" : "Del med brukere eller eksterne brukere...",
     "Error removing share" : "Feil ved fjerning av deling",
-    "Warning" : "Advarsel",
     "Non-existing tag #{tag}" : "Ikke-eksisterende stikkord #{tag}",
     "restricted" : "begrenset",
     "invisible" : "usynlig",

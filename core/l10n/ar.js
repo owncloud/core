@@ -107,7 +107,6 @@ OC.L10N.register(
     "access control" : "ضبط الوصول",
     "Share" : "شارك",
     "Resharing is not allowed" : "لا يسمح بعملية إعادة المشاركة",
-    "Warning" : "تحذير",
     "Delete" : "إلغاء",
     "Rename" : "إعادة التسمية",
     "The object type is not specified." : "نوع العنصر غير محدد.",

@@ -187,7 +187,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Sprístupniť používateľom alebo skupinám...",
     "Share with users or remote users…" : "Sprístupniť používateľom alebo vzdialeným používateľom...",
     "Error removing share" : "Chyba pri rušení sprístupnenia",
-    "Warning" : "Varovanie",
     "Non-existing tag #{tag}" : "Neexistujúca značka #{tag}",
     "restricted" : "obmedzené",
     "invisible" : "neviditeľný",

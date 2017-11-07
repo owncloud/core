@@ -207,7 +207,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Współdziel z użytkownikami lub grupami...",
     "Share with users or remote users…" : "Współdziel z użytkownikami lub zdalnymi użytkownikami...",
     "Error removing share" : "Błąd podczas usuwania współdzielenia",
-    "Warning" : "Ostrzeżenie",
     "Non-existing tag #{tag}" : "Znacznik #{tag} nie istnieje",
     "restricted" : "ograniczone",
     "invisible" : "niewidoczny",

@@ -71,7 +71,6 @@ OC.L10N.register(
     "access control" : "rheolaeth mynediad",
     "Share" : "Rhannu",
     "Resharing is not allowed" : "Does dim hawl ail-rannu",
-    "Warning" : "Rhybudd",
     "Delete" : "Dileu",
     "Rename" : "Ailenwi",
     "The object type is not specified." : "Nid yw'r math o wrthrych wedi cael ei nodi.",

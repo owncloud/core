@@ -217,7 +217,6 @@ OC.L10N.register(
     "Share with users or groups…" : "แชร์กับผู้ใช้หรือกลุ่ม ...",
     "Share with users or remote users…" : "แชร์กับผู้ใช้หรือผู้ใช้โดยการรีโมท ...",
     "Error removing share" : "พบข้อผิดพลาดในรายการที่แชร์ออก",
-    "Warning" : "คำเตือน",
     "Non-existing tag #{tag}" : "ไม่มีแท็กนี้อยู่ #{tag}",
     "restricted" : "ถูกจำกัด",
     "invisible" : "จะมองไม่เห็น",

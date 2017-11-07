@@ -119,7 +119,6 @@ OC.L10N.register(
     "Share" : "Podijelite",
     "Resharing is not allowed" : "Ponovno dijeljenje nije dopušteno",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Podijelite sa korisnicima drugoga ownClouda koristeći format korisnickoime@primjer.com/owncloud",
-    "Warning" : "Upozorenje",
     "Delete" : "Izbrišite",
     "Rename" : "Preimenujte",
     "The object type is not specified." : "Vrsta objekta nije specificirana.",

@@ -122,7 +122,6 @@ OC.L10N.register(
     "access control" : "control de acceso",
     "Share" : "Compartir",
     "Resharing is not allowed" : "No se permite compartir de nuevo",
-    "Warning" : "Precaución",
     "restricted" : "restringido",
     "invisible" : "invisible",
     "({scope})" : "({scope})",

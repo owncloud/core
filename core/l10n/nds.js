@@ -121,7 +121,6 @@ OC.L10N.register(
     "delete" : "Löschen",
     "Share" : "Teilen",
     "Resharing is not allowed" : "Weiterteilen ist nicht erlaubt",
-    "Warning" : "Warnung",
     "Delete" : "Löschen",
     "Personal" : "Persönlich",
     "Username" : "Benutzername"

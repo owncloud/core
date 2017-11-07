@@ -186,7 +186,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Jaga kasutajate või gruppidega...",
     "Share with users or remote users…" : "Jaga kasutajate või kaugkasutajatega...",
     "Error removing share" : "Jagamise eemaldamisel tekkis tõrge",
-    "Warning" : "Hoiatus",
     "Non-existing tag #{tag}" : "Silti #{tag} pole olemas",
     "restricted" : "piiratud",
     "invisible" : "nähtamatu",

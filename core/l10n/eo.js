@@ -126,7 +126,6 @@ OC.L10N.register(
     "Resharing is not allowed" : "Rekunhavigo ne permesatas",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Kunhaviki kun homoj en aliaj ownCloud-oj uzante la sintakson uzantonomo@ekzemplo.com/owncloud",
     "Error removing share" : "Eraris forigo de kunhavigo",
-    "Warning" : "Averto",
     "Non-existing tag #{tag}" : "Ne ekzistas etikedo #{tag}",
     "invisible" : "nevidebla",
     "({scope})" : "({scope})",

@@ -10,7 +10,6 @@ OC.L10N.register(
     "Name" : "নাম",
     "Save" : "সেভ",
     "Share" : "শেয়ার",
-    "Warning" : "সতর্কীকরণ",
     "Delete" : "মুছে ফেলা",
     "Rename" : "পুনঃনামকরণ",
     "Add" : "যোগ করা",

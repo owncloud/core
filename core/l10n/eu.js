@@ -122,7 +122,6 @@ OC.L10N.register(
     "Share" : "Elkarbanatu",
     "Resharing is not allowed" : "Berriz elkarbanatzea ez dago baimendua",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Partekatu beste ownClud-en jendearekin sintaxi honekin erabiltzaleizena@adibidea.com/owncloud",
-    "Warning" : "Abisua",
     "Delete" : "Ezabatu",
     "Rename" : "Berrizendatu",
     "The object type is not specified." : "Objetu mota ez dago zehaztuta.",

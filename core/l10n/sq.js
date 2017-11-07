@@ -207,7 +207,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Ndajeni me përdorues ose grupe…",
     "Share with users or remote users…" : "Ndajeni me përdorues ose përdorues të largët…",
     "Error removing share" : "Gabim në heqjen e ndarjes",
-    "Warning" : "Kujdes",
     "Non-existing tag #{tag}" : "Etiketë #{tag} që s’ekziston",
     "restricted" : "e kufizuar",
     "invisible" : "e padukshme",

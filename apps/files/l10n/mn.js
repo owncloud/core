@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Delete" : "Устгах",
     "Files" : "Файлууд",
     "Upload" : "Байршуулах",
     "A new file or folder has been <strong>created</strong>" : "Файл эсвэл хавтас амжилттай <strong>үүсгэгдлээ</strong>",

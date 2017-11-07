@@ -207,7 +207,6 @@ OC.L10N.register(
     "Share with users or groups…" : "Del med brukar enn gruppe...",
     "Share with users or remote users…" : "Del med brukar enn ekstern brukar...",
     "Error removing share" : "Feil ved fjerning av deling",
-    "Warning" : "Åtvaring",
     "Non-existing tag #{tag}" : "Merke finst ikkje #{tag}",
     "restricted" : "avgrensa",
     "invisible" : "usynleg",
