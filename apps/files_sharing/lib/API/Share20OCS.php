@@ -67,7 +67,7 @@ class Share20OCS {
 	/**
 	 * @var string
 	 */
-	protected $additionalInfoField;
+	private $additionalInfoField;
 
 	/**
 	 * Share20OCS constructor.
@@ -111,7 +111,7 @@ class Share20OCS {
 	 * @param IUser $user user for which to retrieve the additional info
 	 * @return string|null additional info or null if none to be displayed
 	 */
-	protected function getAdditionalUserInfo(IUser $user) {
+	private function getAdditionalUserInfo(IUser $user) {
 		if ($this->additionalInfoField === 'email') {
 			return $user->getEMailAddress();
 		} else if ($this->additionalInfoField === 'id') {
