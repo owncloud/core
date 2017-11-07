@@ -60,12 +60,13 @@ class Application extends App {
 				$server->getRootFolder()
 			);
 		});
-		$container->registerService('ExternalSharesController', function (SimpleContainer $c) {
+		$container->registerService('ExternalSharesController', function (SimpleContainer $c) use ($server) {
 			return new ExternalSharesController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('ExternalManager'),
-				$c->query('HttpClientService')
+				$c->query('HttpClientService'),
+				$server->getEventDispatcher()
 			);
 		});
 
