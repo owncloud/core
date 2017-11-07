@@ -28,9 +28,11 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\Http\Client\IClientService;
 use OCP\IRequest;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ExternalShareControllerTest
+ * @group DB
  *
  * @package OCA\Files_Sharing\Controllers
  */
@@ -60,7 +62,8 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			'files_sharing',
 			$this->request,
 			$this->externalManager,
-			$this->clientService
+			$this->clientService,
+			\OC::$server->getEventDispatcher()
 		);
 	}
 
@@ -79,7 +82,15 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->method('acceptShare')
 			->with(4);
 
+		$called = array();
+		\OC::$server->getEventDispatcher()->addListener('remoteshare.accepted', function ($event) use (&$called) {
+			$called[] = 'remoteshare.accepted';
+			array_push($called, $event);
+		});
 		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create(4));
+
+		$this->assertSame('remoteshare.accepted', $called[0]);
+		$this->assertTrue($called[1] instanceof GenericEvent);
 	}
 
 	public function testDestroy() {
@@ -88,7 +99,16 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->method('declineShare')
 			->with(4);
 
+		$called = array();
+		\OC::$server->getEventDispatcher()->addListener('remoteshare.declined', function ($event) use (&$called) {
+			$called[] = 'remoteshare.declined';
+			array_push($called, $event);
+		});
+
 		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy(4));
+
+		$this->assertSame('remoteshare.declined', $called[0]);
+		$this->assertTrue($called[1] instanceof GenericEvent);
 	}
 
 	public function testRemoteWithValidHttps() {

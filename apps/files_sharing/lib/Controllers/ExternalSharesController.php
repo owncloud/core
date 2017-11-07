@@ -30,6 +30,8 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\Http\Client\IClientService;
 use OCP\AppFramework\Http\DataResponse;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ExternalSharesController
@@ -42,20 +44,29 @@ class ExternalSharesController extends Controller {
 	private $externalManager;
 	/** @var IClientService */
 	private $clientService;
+	/**
+	 * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+	 */
+	private $dispatcher;
 
 	/**
+	 * ExternalSharesController constructor.
+	 *
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param \OCA\Files_Sharing\External\Manager $externalManager
 	 * @param IClientService $clientService
+	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct($appName,
 								IRequest $request,
 								\OCA\Files_Sharing\External\Manager $externalManager,
-								IClientService $clientService) {
+								IClientService $clientService,
+								EventDispatcherInterface $eventDispatcher) {
 		parent::__construct($appName, $request);
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
+		$this->dispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -76,6 +87,16 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function create($id) {
+		$shareInfo = $this->externalManager->getShare($id);
+		$event = new GenericEvent(null,
+			[
+				'shareAcceptedFrom' => $shareInfo['owner'],
+				'sharedAcceptedBy' => $shareInfo['user'],
+				'sharedItem' => $shareInfo['name'],
+				'remoteUrl' => $shareInfo['remote']
+			]
+		);
+		$this->dispatcher->dispatch('remoteshare.accepted', $event);
 		$this->externalManager->acceptShare($id);
 		return new JSONResponse();
 	}
@@ -88,6 +109,16 @@ class ExternalSharesController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function destroy($id) {
+		$shareInfo = $this->externalManager->getShare($id);
+		$event = new GenericEvent(null,
+			[
+				'shareAcceptedFrom' => $shareInfo['owner'],
+				'sharedAcceptedBy' => $shareInfo['user'],
+				'sharedItem' => $shareInfo['name'],
+				'remoteUrl' => $shareInfo['remote']
+			]
+		);
+		$this->dispatcher->dispatch('remoteshare.declined', $event);
 		$this->externalManager->declineShare($id);
 		return new JSONResponse();
 	}
