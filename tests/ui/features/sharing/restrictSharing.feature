@@ -1,3 +1,4 @@
+@insulated
 Feature: restrict Sharing
 
 As admin
