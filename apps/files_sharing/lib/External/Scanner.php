@@ -69,7 +69,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		} catch (StorageInvalidException $e) {
 			$this->storage->checkStorageAvailability();
 		} catch (StorageNotAvailableException $e) {
-			$this->storage->checkStorageAvailability();
+			//$this->storage->checkStorageAvailability();
 		}
 	}
 

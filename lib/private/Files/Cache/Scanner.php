@@ -150,6 +150,12 @@ class Scanner extends BasicEmitter implements IScanner {
 				$data = $this->getData($file);
 			} catch (ForbiddenException $e) {
 				return null;
+			} catch (\Exception $e) {
+				// unlock first
+				if ($this->storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+					$this->storage->releaseLock($file, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
+				}
+				throw $e;
 			}
 
 			if ($data) {
