@@ -34,6 +34,7 @@
 				<directory suffix=".php">../tests</directory>
 				<directory suffix=".php">../build</directory>
 				<directory suffix=".php">../lib/composer</directory>
+				<file>../config/config.sample.php</file>
 			</exclude>
 		</whitelist>
 	</filter>
