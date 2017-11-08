@@ -154,7 +154,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Value($response, $key1, $key2) {
-		return $response->xml()->$key1->$key2;
+		return $this->getResponseXml($response)->$key1->$key2;
 	}
 
 	/**
@@ -167,7 +167,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Key3Value($response, $key1, $key2, $key3) {
-		return $response->xml()->$key1->$key2->$key3;
+		return $this->getResponseXml($response)->$key1->$key2->$key3;
 	}
 
 	/**
@@ -181,7 +181,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getXMLKey1Key2Key3AttributeValue($response, $key1, $key2, $key3, $attribute) {
-		return (string) $response->xml()->$key1->$key2->$key3->attributes()->$attribute;
+		return (string) $this->getResponseXml($response)->$key1->$key2->$key3->attributes()->$attribute;
 	}
 
 	/**
@@ -498,7 +498,7 @@ trait BasicStructure {
 		$options = [];
 		$options['auth'] = $this->adminUser;
 		try {
-			$this->response = $client->send($client->createRequest('GET', $fullUrl, $options));
+			$this->response = $client->send(new Request('GET', $fullUrl), $options);
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
 			$this->response = $ex->getResponse();
 		}

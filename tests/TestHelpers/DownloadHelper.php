@@ -21,8 +21,7 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\FutureResponse;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Helper for Downloads
@@ -44,7 +43,7 @@ class DownloadHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface|NULL
 	 */
 	public static function download(
 		$baseUrl,

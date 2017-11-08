@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Helper for move and copy files
  *
@@ -43,7 +45,7 @@ class MoveCopyHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface|NULL
 	 */
 	public static function copy(
 		$baseUrl,
@@ -75,7 +77,7 @@ class MoveCopyHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface|NULL
 	 */
 	public static function move(
 		$baseUrl,
@@ -108,7 +110,7 @@ class MoveCopyHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface|NULL
 	 */
 	private static function copyOrMove(
 		$baseUrl,
