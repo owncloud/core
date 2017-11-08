@@ -1218,7 +1218,6 @@ class OC_Util {
 	 * @return bool
 	 */
 	public static function isSetLocaleWorking() {
-		\Patchwork\Utf8\Bootup::initLocale();
 		if ('' === basename('§')) {
 			return false;
 		}
