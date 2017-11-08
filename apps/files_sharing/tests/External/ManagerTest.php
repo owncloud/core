@@ -24,6 +24,8 @@
 
 namespace OCA\Files_Sharing\Tests\External;
 
+use League\Flysystem\MountManager;
+use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\StorageFactory;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
@@ -32,6 +34,7 @@ use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
 use OCP\Share\Events\ShareEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\Traits\UserTrait;
 
 /**
@@ -264,5 +267,84 @@ class ManagerTest extends TestCase {
 
 	private function getFullPath($path) {
 		return '/' . $this->uid . '/files' . $path;
+	}
+
+	public function testRemoveShare() {
+		/*$shareData1 = [
+			'remote' => 'http://localhost',
+			'token' => 'token1',
+			'password' => '',
+			'name' => '/SharedFolder',
+			'owner' => 'foobar',
+			'accepted' => false,
+			'user' => $this->uid,
+		];
+		$shareData2 = $shareData1;
+		$shareData2['token'] = 'token2';
+		$shareData3 = $shareData1;
+		$shareData3['token'] = 'token3';
+
+		// Add a share for "user"
+		$this->assertSame(null, call_user_func_array([$this->manager, 'addShare'], $shareData1));
+		$openShares = $this->manager->getOpenShares();
+		$this->assertCount(1, $openShares);
+		$this->assertExternalShareEntry($shareData1, $openShares[0], 1, '{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
+
+		$this->setupMounts();
+		$this->assertNotMount('SharedFolder');
+		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');*/
+
+
+		$this->mountManager = $this->createMock(\OC\Files\Mount\Manager::class);
+		$idbConnection = $this->createMock(\OCP\IDBConnection::class);
+		$prepare = $this->createMock(\Doctrine\DBAL\Driver\Statement::class);
+		$prepare->method('execute')
+			->willReturn(true);
+		$idbConnection->method('prepare')
+			->willReturn($prepare);
+		$storageFactory = $this->createMock(\OCP\Files\Storage\IStorageFactory::class);
+		$this->manager = new Manager(
+			$idbConnection,
+			$this->mountManager,
+			$storageFactory,
+			\OC::$server->getNotificationManager(),
+			\OC::$server->getEventDispatcher(),
+			$this->uid
+		);
+
+		$mountpointobj = $this->createMock(\OC\Files\Mount\MountPoint::class);
+		$this->mountManager->method('find')
+			->willReturn($mountpointobj);
+		$storage = $this->createMock(\OC\Files\Storage\Storage::class);
+		$fileCache = $this->createMock(\OC\Files\Cache\Cache::class);
+		$storage->method('getCache')
+			->willReturn($fileCache);
+		$mountpointobj->method('getStorage')
+			->willReturn($storage);
+
+		$iqueryBuilder = $this->createMock(\OCP\DB\QueryBuilder\IQueryBuilder::class);
+		$iqueryBuilder->method('select')
+			->willReturn($iqueryBuilder);
+		$iqueryBuilder->method('from')
+			->willReturn($iqueryBuilder);
+		$iqueryBuilder->method('where')
+			->willReturn($iqueryBuilder);
+		$iqueryBuilder->method('delete')
+			->willReturn($iqueryBuilder);
+		$expressionBuilder = $this->createMock(\OCP\DB\QueryBuilder\IExpressionBuilder::class);
+		$iqueryBuilder->method('expr')
+			->willReturn($expressionBuilder);
+		$idbConnection->method('getQueryBuilder')
+			->willReturn($iqueryBuilder);
+
+		$called = array();
+		\OC::$server->getEventDispatcher()->addListener('\OCA\Files_Sharing::unshareEvent', function($event) use (&$called) {
+			$called[] = '\OCA\Files_Sharing::unshareEvent';
+			array_push($called, $event);
+		});
+
+		$this->manager->removeShare('/SharedFolder');
+		$this->assertSame('\OCA\Files_Sharing::unshareEvent', $called[0]);
+		$this->assertArrayHasKey('user', $called[1]);
 	}
 }

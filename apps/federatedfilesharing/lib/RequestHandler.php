@@ -34,6 +34,8 @@ use OCP\IDBConnection;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\Share;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class RequestHandler
@@ -65,6 +67,9 @@ class RequestHandler {
 	/** @var  IUserManager */
 	private $userManager;
 
+	/** @var EventDispatcherInterface  */
+	private $eventDispatcher;
+
 	/** @var string */
 	private $shareTable = 'share';
 
@@ -78,6 +83,7 @@ class RequestHandler {
 	 * @param Notifications $notifications
 	 * @param AddressHandler $addressHandler
 	 * @param IUserManager $userManager
+	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct(FederatedShareProvider $federatedShareProvider,
 								IDBConnection $connection,
@@ -85,7 +91,8 @@ class RequestHandler {
 								IRequest $request,
 								Notifications $notifications,
 								AddressHandler $addressHandler,
-								IUserManager $userManager
+								IUserManager $userManager,
+								EventDispatcherInterface $eventDispatcher
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->connection = $connection;
@@ -94,6 +101,7 @@ class RequestHandler {
 		$this->notifications = $notifications;
 		$this->addressHandler = $addressHandler;
 		$this->userManager = $userManager;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -165,6 +173,10 @@ class RequestHandler {
 					$sharedByFederatedId = $ownerFederatedId;
 				}
 
+				$event = new GenericEvent(null, ['name' => $name, 'targetuser' => $sharedByFederatedId,
+								'owner' => $owner, 'sharewith' => $shareWith,
+								'sharedby' => $sharedBy, 'remoteid' => $remoteId]);
+				$this->eventDispatcher->dispatch('\OCA\FederatedFileSharing::remote_shareReceived', $event);
 				\OC::$server->getActivityManager()->publishActivity(
 					Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_RECEIVED, [$ownerFederatedId, trim($name, '/')], '', [],
 					'', '', $shareWith, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_LOW);
