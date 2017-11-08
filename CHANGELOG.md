@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Adding mode of operations - either single-instance or clus… - [#29492](https://github.com/owncloud/core/issues/29492)
 - Added support for MariaDB 10.2.7+ - [#29240](https://github.com/owncloud/core/issues/29240)
 - Admins can now exclude files from integrity check in config.php - [#29460](https://github.com/owncloud/core/issues/29460)
+- Use X-Request-ID header as request id if provided by client, useful for logging - [#29434](https://github.com/owncloud/core/issues/29434)
 
 ### Changed
 - Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048) [#29316](https://github.com/owncloud/core/issues/29316)
@@ -37,9 +38,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - AccountMapper get by email is now case insensitive - [#29341](https://github.com/owncloud/core/issues/29341)
 - Remove deprecated federated share API warning as it needlessly pollutes logs - [#29364](https://github.com/owncloud/core/issues/29364)
 - Improve UI for public link sharing permissions for folders - [#29413](https://github.com/owncloud/core/issues/29413)
-- Use X-Request-ID header as request id if provided by client, useful for logging - [#29434](https://github.com/owncloud/core/issues/29434)
 - Replace notify user for local shares with button - [#29463](https://github.com/owncloud/core/issues/29463)
-- Log out currently user after submitting form in password reset page - [#29464](https://github.com/owncloud/core/issues/29464)
+- Log out current user after submitting form in password reset page - [#29464](https://github.com/owncloud/core/issues/29464)
 
 ### Removed
 - Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
