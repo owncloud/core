@@ -161,6 +161,7 @@ class Scan extends Base {
 					$output->writeln("\t<error>Storage \"" . $storage->getCache()->getNumericStorageId() . '" cannot be repaired as it is currently in use, please try again later</error>');
 					return;
 				}
+				$stored = null;
 				try {
 					$repairStep = new RepairMismatchFileCachePath(
 						$connection,
@@ -169,8 +170,12 @@ class Scan extends Base {
 					$repairStep->setStorageNumericId($storage->getCache()->getNumericStorageId());
 					$repairStep->setCountOnly(false);
 					$repairStep->run(new ConsoleOutput($output));
-				} finally {
-					$storage->releaseLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
+				} catch (\Exception $e) {
+					$stored = $e;
+				}
+				$storage->releaseLock('', ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
+				if($stored) {
+					throw $stored;
 				}
 			});
 		}
