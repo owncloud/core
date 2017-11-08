@@ -117,11 +117,6 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 			->set('storage', $qb->createNamedParameter($correctStorageNumericId))
 			->where($qb->expr()->eq('fileid', $qb->createNamedParameter($fileId)));
 		$qb->execute();
-
-		$text = "Fixed file cache entry with fileid $fileId, set wrong path \"$wrongPath\" to \"$correctPath\"";
-		if ($entryExisted) {
-			$text = " (replaced an existing entry)";
-		}
 	}
 
 	private function addQueryConditionsParentIdWrongPath($qb) {
@@ -233,6 +228,16 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 			$storageIds[] = $row['storage'];
 		}
 
+		if (!empty($storageIds)) {
+			$this->emit('\OC\Repair', 'warning', array(
+				'The file cache contains entries with invalid path values for the following storage numeric ids: ' . implode(' ', $storageIds)
+			));
+			$this->emit('\OC\Repair', 'warning', array(
+				'Please run `occ files:scan --all --repair` to repair ' .
+				'all affected storages or run `occ files:scan userid --repair for ' .
+				'each user with affected storages'
+			));
+		}
 	}
 
 	/**
@@ -255,6 +260,14 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 			$storageIds[] = $row['storage'];
 		}
 
+		if (!empty($storageIds)) {
+			$this->emit('\OC\Repair', 'warning', array(
+				'The file cache contains entries where the parent id does not point to any existing entry for the following storage numeric ids: ' . implode(' ', $storageIds)
+			));
+			$this->emit('\OC\Repair', 'warning', array(
+				'Please run `occ files:scan --all --repair` to repair all affected storages'
+			));
+		}
 	}
 
 	/**
@@ -325,6 +338,10 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 			// note: this is not pagination but repeating the query over and over again
 			// until all possible entries were fixed
 		} while ($lastResultsCount > 0);
+
+		if ($totalResultsCount > 0) {
+			$this->emit('\OC\Repair', 'info', array("Fixed $totalResultsCount file cache entries with wrong path"));
+		}
 
 		return array_keys($affectedStorages);
 	}
@@ -487,6 +504,10 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 			// until all possible entries were fixed
 		} while ($lastResultsCount > 0);
 
+		if ($totalResultsCount > 0) {
+			$this->emit('\OC\Repair', 'info', array("Fixed $totalResultsCount file cache entries with wrong parent"));
+		}
+
 		return $totalResultsCount;
 	}
 
@@ -504,7 +525,6 @@ class RepairMismatchFileCachePath extends BasicEmitter implements \OC\RepairStep
 		} else {
 			$brokenPathEntries = $this->countResultsToProcessParentIdWrongPath($this->storageNumericId);
 			$brokenParentIdEntries = $this->countResultsToProcessNonExistingParentIdEntry($this->storageNumericId);
-			$out->startProgress($brokenPathEntries + $brokenParentIdEntries);
 
 			$totalFixed = 0;
 
