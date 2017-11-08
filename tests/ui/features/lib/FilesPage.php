@@ -109,7 +109,20 @@ class FilesPage extends FilesPageBasic {
 			);
 		}
 
-		$newFolderButtonElement->click();
+		try {
+			$newFolderButtonElement->click();
+		} catch (NoSuchElement $e) {
+			// Edge sometimes reports NoSuchElement even though we just found it.
+			// Log the event and continue, because maybe the button was clicked.
+			// TODO: Edge - if it keeps happening then find out why.
+			error_log(
+				__METHOD__
+				. " NoSuchElement while doing newFolderButtonElement->click()"
+				. "\n-------------------------\n"
+				. $e->getMessage()
+				. "\n-------------------------\n"
+			);
+		}
 
 		try {
 			$this->fillField($this->newFolderNameInputLabel, $name . Key::ENTER);

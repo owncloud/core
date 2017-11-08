@@ -145,7 +145,24 @@ class UsersPage extends OwncloudPage {
 				"could not find setting content"
 			);
 		}
-		if (!$settingContent->isVisible()) {
+
+		try {
+			$settingContentIsVisible = $settingContent->isVisible();
+		} catch (NoSuchElement $e) {
+			// Somehow on Edge this can throw NoSuchElement even though
+			// we just found the element.
+			// TODO: Edge - if it keeps happening then find out why.
+			error_log(
+				__METHOD__
+				. " NoSuchElement while doing settingContent->isVisible()"
+				. "\n-------------------------\n"
+				. $e->getMessage()
+				. "\n-------------------------\n"
+			);
+			$settingContentIsVisible = false;
+		}
+
+		if (!$settingContentIsVisible) {
 			$this->openSettingsMenu();
 		}
 
