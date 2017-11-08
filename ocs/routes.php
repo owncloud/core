@@ -101,7 +101,8 @@ if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
 		\OC::$server->getRequest(),
 		$notification,
 		$addressHandler,
-		\OC::$server->getUserManager()
+		\OC::$server->getUserManager(),
+		\OC::$server->getEventDispatcher()
 	);
 	API::register('post',
 		'/cloud/shares',

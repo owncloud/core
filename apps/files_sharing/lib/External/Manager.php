@@ -35,6 +35,7 @@ use OCP\Notification\IManager;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Manager {
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
@@ -205,6 +206,9 @@ class Manager {
 				AcceptShare::class,	new AcceptShare($share)
 			);
 
+			$event = new GenericEvent(null, ['sharedItem' => $share['name'], 'shareAcceptedFrom' => $share['owner'],
+				'remoteUrl' => $share['remote']]);
+			$this->eventDispatcher->dispatch('remoteshare.accepted',$event);
 			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
 
 			$this->processNotification($id);
@@ -233,6 +237,10 @@ class Manager {
 				DeclineShare::class,
 				new DeclineShare($share)
 			);
+
+			$event = new GenericEvent(null, ['sharedItem' => $share['name'], 'shareAcceptedFrom' => $share['owner'],
+				'remoteUrl' => $share['remote']]);
+			$this->eventDispatcher->dispatch('remoteshare.declined',$event);
 
 			$this->processNotification($id);
 			return true;
@@ -342,6 +350,8 @@ class Manager {
 
 		if($result) {
 			$this->removeReShares($id);
+			$event = new GenericEvent(null, ['user' => $this->uid, 'targetmount' => $mountPoint]);
+			$this->eventDispatcher->dispatch('\OCA\Files_Sharing::unshareEvent', $event);
 		}
 
 		return $result;
