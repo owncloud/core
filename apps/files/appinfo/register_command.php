@@ -25,8 +25,11 @@ $dbConnection = \OC::$server->getDatabaseConnection();
 $userManager = OC::$server->getUserManager();
 $shareManager = \OC::$server->getShareManager();
 $mountManager = \OC::$server->getMountManager();
+$lockingProvider = \OC::$server->getLockingProvider();
+$mimeTypeLoader = \OC::$server->getMimeTypeLoader();
+$config = \OC::$server->getConfig();
 
 /** @var Symfony\Component\Console\Application $application */
-$application->add(new OCA\Files\Command\Scan($userManager));
+$application->add(new OCA\Files\Command\Scan($userManager, $lockingProvider, $mimeTypeLoader, $config));
 $application->add(new OCA\Files\Command\DeleteOrphanedFiles($dbConnection));
 $application->add(new OCA\Files\Command\TransferOwnership($userManager, $shareManager, $mountManager));
