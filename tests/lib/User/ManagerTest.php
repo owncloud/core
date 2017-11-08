@@ -18,6 +18,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 /**
@@ -45,7 +46,7 @@ class ManagerTest extends TestCase {
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
 		$this->accountTermMapper = $this->createMock(AccountTermMapper::class);
-		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->accountTermMapper);
+		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, \OC::$server->getEventDispatcher());
 	}
 
 	public function testGetBackends() {
@@ -208,9 +209,17 @@ class ManagerTest extends TestCase {
 		// count other users in the db before adding our own
 		$countBefore = $this->manager->countUsers(true);
 
+		$calledEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('\OC\User\Manager::createUser', function ($event) use (&$calledEvent) {
+			$calledEvent[] = '\OC\User\Manager::createUser';
+			array_push($calledEvent, $event);
+		});
 		//Add test users
 		$user1 = $this->manager->createUser('testseencount1', 'testseencount1');
 		$user1->updateLastLoginTimestamp();
+		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
+		$this->assertArrayHasKey('uid', $calledEvent[1]);
+		$this->assertEquals('testseencount1', $calledEvent[1]['uid']);
 
 		$user2 = $this->manager->createUser('testseencount2', 'testseencount2');
 		$user2->updateLastLoginTimestamp();

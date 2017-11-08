@@ -57,10 +57,14 @@ use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Exception\NotFound;
 use OC\AppFramework\Http\Request;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class File extends Node implements IFile {
 
 	protected $request;
+
+	private $eventDispatcher;
 	
 	/**
 	 * Sets up the node, expects a full path name
@@ -69,11 +73,16 @@ class File extends Node implements IFile {
 	 * @param \OCP\Files\FileInfo $info
 	 * @param \OCP\Share\IManager $shareManager
 	 */
-	public function __construct($view, $info, $shareManager = null, Request $request = null) {
+	public function __construct($view, $info, $shareManager = null, Request $request = null, EventDispatcherInterface $eventDispatcher = null) {
 		if (isset($request)) {
 			$this->request = $request;
 		} else {
 			$this->request = \OC::$server->getRequest();
+		}
+		if (isset($eventDispatcher)) {
+			$this->eventDispatcher = $eventDispatcher;
+		} else {
+			$this->eventDispatcher = \OC::$server->getEventDispatcher();
 		}
 		parent::__construct($view, $info, $shareManager);
 	}
@@ -294,9 +303,11 @@ class File extends Node implements IFile {
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
 		if (!$exists) {
-			\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_post_create, [
-				\OC\Files\Filesystem::signal_param_path => $hookPath
+			$event = new GenericEvent(null, [
+				'path' => $hookPath,
+				'fileinfo' => Filesystem::getView()->getFileInfo($path)
 			]);
+			$this->eventDispatcher->dispatch('\OC\Filesystem::create', $event);
 		} else {
 			\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_post_update, [
 				\OC\Files\Filesystem::signal_param_path => $hookPath

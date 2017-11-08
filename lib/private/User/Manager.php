@@ -43,6 +43,7 @@ use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -74,13 +75,14 @@ class Manager extends PublicEmitter implements IUserManager {
 
 	/** @var AccountMapper */
 	private $accountMapper;
+	private $eventDispatcher;
 
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 * @param AccountMapper $accountMapper
 	 */
-	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper) {
+	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper, EventDispatcherInterface $eventDispatcher = null) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->accountMapper = $accountMapper;
@@ -89,6 +91,11 @@ class Manager extends PublicEmitter implements IUserManager {
 			/** @var \OC\User\User $user */
 			unset($cachedUsers[$user->getUID()]);
 		});
+		if ($eventDispatcher === null) {
+			$this->eventDispatcher = \OC::$server->getEventDispatcher();
+		} else {
+			$this->eventDispatcher = $eventDispatcher;
+		}
 	}
 
 	/**
@@ -334,7 +341,8 @@ class Manager extends PublicEmitter implements IUserManager {
 				$backend->createUser($uid, $password);
 				$account = $this->newAccount($uid, $backend);
 				$user = $this->getUserObject($account);
-				$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
+				$event = new GenericEvent(null, ['uid' => $user->getUID(), 'password' => $password]);
+				$this->eventDispatcher->dispatch('\OC\User\Manager::createUser', $event);
 				return $user;
 			}
 		}

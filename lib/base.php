@@ -759,7 +759,8 @@ class OC {
 		if ($enabled) {
 			\OCP\Util::connectHook('OCP\Share', 'post_shared', 'OC\Encryption\HookManager', 'postShared');
 			\OCP\Util::connectHook('OCP\Share', 'post_unshare', 'OC\Encryption\HookManager', 'postUnshared');
-			\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC\Encryption\HookManager', 'postRename');
+			//\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC\Encryption\HookManager', 'postRename');
+			OC::$server->getEventDispatcher()->addListener(Filesystem::signal_post_rename, [\OC\Encryption\HookManager::class, 'postRename']);
 			\OCP\Util::connectHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', 'OC\Encryption\HookManager', 'postRestore');
 		}
 	}
@@ -782,7 +783,8 @@ class OC {
 	public static function registerFilesystemHooks() {
 		// Check for blacklisted files
 		OC_Hook::connect('OC_Filesystem', 'write', 'OC\Files\Filesystem', 'isForbiddenFileOrDir_Hook');
-		OC_Hook::connect('OC_Filesystem', 'rename', 'OC\Files\Filesystem', 'isForbiddenFileOrDir_Hook');
+		//OC_Hook::connect('OC_Filesystem', 'rename', 'OC\Files\Filesystem', 'isForbiddenFileOrDir_Hook');
+		OC::$server->getEventDispatcher()->addListener('\OC\Filesystem::rename', [\OC\Files\Filesystem::class, 'isForbiddenFileOrDir_Hook']);
 	}
 
 	/**

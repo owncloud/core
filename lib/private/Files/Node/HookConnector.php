@@ -63,11 +63,15 @@ class HookConnector {
 		Util::connectHook('OC_Filesystem', 'delete', $this, 'delete');
 		Util::connectHook('OC_Filesystem', 'post_delete', $this, 'postDelete');
 
-		Util::connectHook('OC_Filesystem', 'rename', $this, 'rename');
-		Util::connectHook('OC_Filesystem', 'post_rename', $this, 'postRename');
+		//Util::connectHook('OC_Filesystem', 'rename', $this, 'rename');
+		\OC::$server->getEventDispatcher()->addListener('\OC\Filesystem::rename', [$this, 'rename']);
+		//Util::connectHook('OC_Filesystem', 'post_rename', $this, 'postRename');
+		\OC::$server->getEventDispatcher()->addListener(Filesystem::signal_post_rename, [$this, 'postRename']);
 
-		Util::connectHook('OC_Filesystem', 'copy', $this, 'copy');
-		Util::connectHook('OC_Filesystem', 'post_copy', $this, 'postCopy');
+		//Util::connectHook('OC_Filesystem', 'copy', $this, 'copy');
+		\OC::$server->getEventDispatcher()->addListener('\OC\Filesystem::copy', [$this, 'copy']);
+		//Util::connectHook('OC_Filesystem', 'post_copy', $this, 'postCopy');
+		\OC::$server->getEventDispatcher()->addListener('post_copy', [$this, 'postCopy']);
 
 		Util::connectHook('OC_Filesystem', 'touch', $this, 'touch');
 		Util::connectHook('OC_Filesystem', 'post_touch', $this, 'postTouch');

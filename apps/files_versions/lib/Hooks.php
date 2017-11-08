@@ -32,6 +32,8 @@
 
 namespace OCA\Files_Versions;
 
+use OC\Files\Filesystem;
+
 class Hooks {
 
 	public static function connectHooks() {
@@ -40,9 +42,11 @@ class Hooks {
 		// Listen to delete and rename signals
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', 'OCA\Files_Versions\Hooks', 'remove_hook');
 		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Versions\Hooks', 'pre_remove_hook');
-		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Files_Versions\Hooks', 'rename_hook');
+		//\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Files_Versions\Hooks', 'rename_hook');
+		\OC::$server->getEventDispatcher()->addListener(Filesystem::signal_post_rename, [\OCA\Files_Versions\Hooks::class, 'rename_hook']);
 		\OCP\Util::connectHook('OC_Filesystem', 'post_copy', 'OCA\Files_Versions\Hooks', 'copy_hook');
-		\OCP\Util::connectHook('OC_Filesystem', 'rename', 'OCA\Files_Versions\Hooks', 'pre_renameOrCopy_hook');
+		//\OCP\Util::connectHook('OC_Filesystem', 'rename', 'OCA\Files_Versions\Hooks', 'pre_renameOrCopy_hook');
+		\OC::$server->getEventDispatcher()->addListener('\OC\Filesystem::rename', [\OCA\Files_Versions\Hooks::class, 'pre_renameOrCopy_hook']);
 		\OCP\Util::connectHook('OC_Filesystem', 'copy', 'OCA\Files_Versions\Hooks', 'pre_renameOrCopy_hook');
 
 		$eventDispatcher = \OC::$server->getEventDispatcher();
