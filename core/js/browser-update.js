@@ -10,7 +10,7 @@ $(document).ready(function() {
 
 	// You can Customize here
 	window.$buoop = {
-		vs: { i: 10, f: 45, o: 0, s: 8, c: 45 },
+		vs: { i: 10, f: 54, o: 0, s: 9, c: 60 },
 		reminder: 0,                  // after how many hours should the message reappear
 		test: false,                    // true = always show the bar (for testing)
 		newwindow: true,                // open link in new window/tab
