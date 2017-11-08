@@ -200,6 +200,8 @@ OC.L10N.register(
     "delete" : "eliminar",
     "access control" : "control de acceso",
     "Could not unshare" : "No se puede quitar el comparto",
+    "Email notification was sent!" : "¡Se ha enviado una notificación por correo electrónico!",
+    "Email notification not sent" : "No se ha enviado la notificación por correo electrónico",
     "Share details could not be loaded for this item." : "No se han podido cargar los detalles de compartición para este elemento.",
     "No users or groups found for {search}" : "No se han encontrado usuarios ni grupos para {search}",
     "No users found for {search}" : "No se han encontrado usuarios para {search}",
