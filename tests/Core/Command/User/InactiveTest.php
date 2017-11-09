@@ -88,7 +88,7 @@ class InactiveTest extends TestCase {
 			'no users' => [[], 10, 0],
 			'1 recent user, excluded' => [[$this->dummyUser(time()-2*24*60*60)], 10, 0],
 			'1 recent user, included' => [[$this->dummyUser(time()-2*24*60*60)], 1, 1],
-			'2 users 1 includd' => [
+			'2 users 1 included' => [
 				[
 					$this->dummyUser(time()-5*24*60*60),
 					$this->dummyUser(time()-10*24*60*60)
