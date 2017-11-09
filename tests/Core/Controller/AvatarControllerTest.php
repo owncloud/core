@@ -297,7 +297,7 @@ class AvatarControllerTest extends TestCase {
 	}
 
 	/**
-	 * Test invalid post os an avatar using POST
+	 * Test invalid post of an avatar using POST
 	 */
 	public function testPostAvatarInvalidFile() {
 		//Create request return
@@ -449,7 +449,7 @@ class AvatarControllerTest extends TestCase {
 
 
 	/**
-	 * Check for proper reply on proper crop argument
+	 * Check response when avatar is too big
 	 */
 	public function testFileTooBig() {
 		$fileName = \OC::$SERVERROOT.'/tests/data/testimage.jpg';
