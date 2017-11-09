@@ -15,16 +15,6 @@ timestampedNode('SLAVE') {
         make dist
         '''
 
-    stage 'PHPUnit 7.0/sqlite'
-        executeAndReport('tests/autotest-results-sqlite.xml') {
-            sh '''
-            export NOCOVERAGE=1
-            unset USEDOCKER
-            phpenv local 7.0
-            make test-php TEST_DATABASE=sqlite
-            '''
-        }
-
     stage 'PHPUnit 7.0/oci'
         executeAndReport('tests/autotest-results-oci.xml') {
             sh '''
