@@ -20,8 +20,6 @@
  */
  
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -40,9 +38,8 @@ class AppManagementContext implements  Context {
 	 *
 	 * Enable the testing app before the first scenario of the feature and
 	 * reset the configs before each scenario
-	 * @param BeforeScenarioScope $event
 	 */
-	public function prepareParameters(BeforeScenarioScope $event) {
+	public function prepareParameters() {
 		include_once __DIR__ . '/../../../../lib/base.php';
 		$this->oldAppPath = \OC::$server->getConfig()->getSystemValue('apps_paths', null);
 	}
@@ -51,9 +48,8 @@ class AppManagementContext implements  Context {
 	 * @AfterScenario
 	 *
 	 * Reset the values after the last scenario of the feature and disable the testing app
-	 * @param AfterScenarioScope $event
 	 */
-	public function undoChangingParameters(AfterScenarioScope $event) {
+	public function undoChangingParameters() {
 		if (!is_null($this->oldAppPath)) {
 			\OC::$server->getConfig()->setSystemValue('apps_paths', $this->oldAppPath);
 		} else {
