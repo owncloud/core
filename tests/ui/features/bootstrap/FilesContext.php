@@ -21,12 +21,15 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
+use OC\Core\Command\Log\OwnCloud;
+use Page\OwncloudPage;
 
 require_once 'bootstrap.php';
 
@@ -57,6 +60,12 @@ class FilesContext extends RawMinkContext implements Context {
 	private $movedElementsTable = null;
 
 	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+	
+	/**
 	 * FilesContext constructor.
 	 *
 	 * @param FilesPage $filesPage
@@ -67,6 +76,20 @@ class FilesContext extends RawMinkContext implements Context {
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
+	}
+
+	/**
+	 * returns the set page object from FeatureContext::getCurrentPageObject()
+	 * or if that is null the files page object
+	 * 
+	 * @return OwncloudPage
+	 */
+	private function getCurrentPageObject() {
+		$pageObject = $this->featureContext->getCurrentPageObject();
+		if (is_null($pageObject)) {
+			$pageObject = $this->filesPage;
+		}
+		return $pageObject;
 	}
 
 	/**
@@ -85,7 +108,8 @@ class FilesContext extends RawMinkContext implements Context {
 	 */
 	public function theFilesPageIsReloaded() {
 		$this->getSession()->reload();
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -218,9 +242,10 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iDeleteTheFile($name) {
+		$pageObject = $this->getCurrentPageObject();
 		$session = $this->getSession();
-		$this->filesPage->waitTillPageIsLoaded($session);
-		$this->filesPage->deleteFile($name, $session);
+		$pageObject->waitTillPageIsLoaded($session);
+		$pageObject->deleteFile($name, $session);
 	}
 
 	/**
@@ -401,7 +426,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string|array $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
 	 * @param string|null $trashbin
-	 * @param PageObject|null $pageObject if null $this->filesPage will be used
+	 * @param PageObject|null $pageObject if null $this->featureContext->currentPageObject will be used
 	 * @return void
 	 */
 	public function theFileFolderShouldBeListed(
@@ -431,9 +456,7 @@ class FilesContext extends RawMinkContext implements Context {
 			$this->trashbinPage->open();
 			$pageObject = $this->trashbinPage;
 		} else {
-			if (is_null($pageObject)) {
-				$pageObject = $this->filesPage;
-			}
+			$pageObject = $this->getCurrentPageObject();
 		}
 
 		$pageObject->waitTillPageIsLoaded($this->getSession());
@@ -589,5 +612,19 @@ class FilesContext extends RawMinkContext implements Context {
 			//this will close the menu again
 			$this->filesPage->clickFileActionsMenuBtnByNo($i);
 		}
+	}
+
+	/**
+	 * @BeforeScenario
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 * @param BeforeScenarioScope $scope
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }
