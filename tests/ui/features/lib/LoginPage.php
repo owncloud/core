@@ -71,6 +71,7 @@ class LoginPage extends OwncloudPage {
 	 * @param Session $session
 	 * @param int $timeout_msec
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,

@@ -54,6 +54,10 @@ trait Tags {
 		}
 	}
 
+	/**
+	 * @param array $tagData
+	 * @param string $type
+	 */
 	private function assertTypeOfTag($tagData, $type) {
 		$userAttributes = TagsHelper::validateTypeOfTag($type);
 		$tagDisplayName = $tagData['{http://owncloud.org/ns}display-name'];
@@ -88,6 +92,11 @@ trait Tags {
 		$this->createTag($user, TagsHelper::validateTypeOfTag($type)[0], TagsHelper::validateTypeOfTag($type)[1], $name, $groups);
 	}
 
+	/**
+	 * @param string $user
+	 * @param bool $withGroups
+	 * @return array
+	 */
 	public function requestTagsForUser($user, $withGroups = false) {
 		$this->response = TagsHelper:: requestTagsForUser(
 			$this->baseUrlWithoutOCSAppendix(),
@@ -98,6 +107,12 @@ trait Tags {
 		return $this->response;
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $tagDisplayName
+	 * @param bool $withGroups
+	 * @return array|null
+	 */
 	public function requestTagByDisplayName($user, $tagDisplayName, $withGroups = false) {
 		$tagList = $this->requestTagsForUser($user, $withGroups);
 		foreach ($tagList as $path => $tagData) {
@@ -105,6 +120,7 @@ trait Tags {
 				return $tagData;
 			}
 		}
+		return null;
 	}
 
 	/**
@@ -256,6 +272,12 @@ trait Tags {
 		unset($this->createdTags[$tagID]);
 	}
 
+	/**
+	 * @param string $taggingUser
+	 * @param string $tagName
+	 * @param string $fileName
+	 * @param string $fileOwner
+	 */
 	private function tag($taggingUser, $tagName, $fileName, $fileOwner) {
 		try {
 			$this->response = TagsHelper::tag(
@@ -269,6 +291,12 @@ trait Tags {
 		}
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $fileName
+	 * @param string|null $sharingUser
+	 * @return \Sabre\HTTP\ResponseInterface
+	 */
 	private function requestTagsForFile($user, $fileName, $sharingUser = null) {
 		if (!is_null($sharingUser)) {
 			$fileID = $this->getFileIdForPath($sharingUser, $fileName);
@@ -319,8 +347,8 @@ trait Tags {
 			return true;
 		}
 		array_shift($tagList);
+		$found = false;
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
-			$found = false;
 			foreach ($tagList as $path => $tagData) {
 				if (!empty($tagData) && $tagData['{http://owncloud.org/ns}display-name'] === $rowDisplayName) {
 					$found = true;
@@ -332,6 +360,7 @@ trait Tags {
 					PHPUnit_Framework_Assert::fail("tag $rowDisplayName is not in propfind answer");
 			}
 		}
+		return $found;
 	}
 
 	/**
@@ -346,6 +375,12 @@ trait Tags {
 		$this->sharedByHasTheFollowingTags($fileName, 'shared', $user, $table);
 	}
 
+	/**
+	 * @param string $untaggingUser
+	 * @param string $tagName
+	 * @param string $fileName
+	 * @param string $fileOwner
+	 */
 	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
 		$fileID = $this->getFileIdForPath($fileOwner, $fileName);
 		$tagID = $this->findTagIdByName($tagName);
