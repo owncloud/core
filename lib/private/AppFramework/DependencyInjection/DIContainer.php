@@ -443,7 +443,7 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 	 * @return boolean
 	 */
 	function isLoggedIn() {
-		return \OC_User::isLoggedIn();
+		return $this->getServer()->getUserSession()->isLoggedIn();
 	}
 
 	/**

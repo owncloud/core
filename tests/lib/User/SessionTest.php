@@ -13,12 +13,14 @@ use OC\AppFramework\Http\Request;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OC\Authentication\Token\DefaultToken;
+use OC\Authentication\Token\DefaultTokenProvider;
 use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
 use OC\Security\CSRF\CsrfTokenManager;
 use OC\Session\Memory;
 use OC\User\Manager;
 use OC\User\Session;
+use OCP\App\IServiceLoader;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -35,14 +37,16 @@ use Test\TestCase;
  */
 class SessionTest extends TestCase {
 
-	/** @var \OCP\AppFramework\Utility\ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
 	private $timeFactory;
 
-	/** @var \OC\Authentication\Token\DefaultTokenProvider | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var DefaultTokenProvider | \PHPUnit_Framework_MockObject_MockObject */
 	protected $tokenProvider;
 
-	/** @var \OCP\IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
+	/** @var IServiceLoader */
+	private $serviceLoader;
 
 	protected function setUp() {
 		parent::setUp();
@@ -53,6 +57,7 @@ class SessionTest extends TestCase {
 			->will($this->returnValue(10000));
 		$this->tokenProvider = $this->createMock(IProvider::class);
 		$this->config = $this->createMock(IConfig::class);
+		$this->serviceLoader = $this->createMock(IServiceLoader::class);
 	}
 
 	public function testGetUser() {
@@ -109,7 +114,8 @@ class SessionTest extends TestCase {
 			->with($expectedUser->getUID())
 			->will($this->returnValue($expectedUser));
 
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$user = $userSession->getUser();
 		$this->assertSame($expectedUser, $user);
 		$userSession->validateSession();
@@ -135,7 +141,7 @@ class SessionTest extends TestCase {
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | Session $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods([
 				'getUser'
 			])
@@ -164,7 +170,8 @@ class SessionTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('foo'));
 
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$userSession->setUser($user);
 	}
 
@@ -222,7 +229,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods([
 				'prepareUserLogin'
 			])
@@ -263,7 +270,8 @@ class SessionTest extends TestCase {
 			->with('foo', 'bar')
 			->will($this->returnValue($user));
 
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$userSession->login('foo', 'bar');
 	}
 
@@ -272,7 +280,8 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(Memory::class);
 		/** @var Manager | \PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->createMock(Manager::class);
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 
 		$user = $this->createMock(IUser::class);
 
@@ -303,7 +312,8 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(Memory::class);
 		/** @var Manager | \PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->createMock(Manager::class);
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 
 		$session->expects($this->never())
 			->method('set');
@@ -331,7 +341,8 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(Memory::class);
 		/** @var Manager | \PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->createMock(Manager::class);
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$username = 'user123';
 		$token = new DefaultToken();
 		$token->setLoginName($username);
@@ -366,7 +377,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods(['login', 'supportsCookies', 'createSessionToken', 'getUser'])
 			->getMock();
 
@@ -392,7 +403,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods(['login', 'supportsCookies', 'createSessionToken', 'getUser'])
 			->getMock();
 
@@ -418,7 +429,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods(['isTokenPassword', 'login', 'supportsCookies', 'createSessionToken', 'getUser'])
 			->getMock();
 
@@ -450,7 +461,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods(['login', 'isTwoFactorEnforced'])
 			->getMock();
 
@@ -508,7 +519,7 @@ class SessionTest extends TestCase {
 			//override, otherwise tests will fail because of setcookie()
 			->setMethods(['setMagicInCookie'])
 			//there  are passed as parameters to the constructor
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->getMock();
 
 		$granted = $userSession->loginWithCookie('foo', $token);
@@ -542,7 +553,8 @@ class SessionTest extends TestCase {
 		$token = 'goodToken';
 		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
 
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$granted = $userSession->loginWithCookie('foo', 'badToken');
 
 		$this->assertSame($granted, false);
@@ -574,7 +586,8 @@ class SessionTest extends TestCase {
 		$token = 'goodToken';
 		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
 
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$granted = $userSession->loginWithCookie('foo', $token);
 
 		$this->assertSame($granted, false);
@@ -602,7 +615,7 @@ class SessionTest extends TestCase {
 		$session->set('user_id', 'foo');
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods([
 				'validateSession'
 			])
@@ -624,7 +637,8 @@ class SessionTest extends TestCase {
 		/** @var ISession | \PHPUnit_Framework_MockObject_MockObject $session */
 		$session = $this->createMock(ISession::class);
 		$user = $this->createMock(IUser::class);
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 
 		$random = $this->createMock(ISecureRandom::class);
 		$config = $this->createMock(IConfig::class);
@@ -671,7 +685,8 @@ class SessionTest extends TestCase {
 		/** @var IToken | \PHPUnit_Framework_MockObject_MockObject $token */
 		$token = $this->createMock(IToken::class);
 		$user = $this->createMock(IUser::class);
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 
 		$random = $this->createMock(ISecureRandom::class);
 		$config = $this->createMock(IConfig::class);
@@ -720,7 +735,8 @@ class SessionTest extends TestCase {
 			->getMock();
 		/** @var ISession | \PHPUnit_Framework_MockObject_MockObject $session */
 		$session = $this->createMock(ISession::class);
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		/** @var IRequest $request */
 		$request = $this->createMock(IRequest::class);
 
@@ -752,7 +768,7 @@ class SessionTest extends TestCase {
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
 			->setMethods(['logout'])
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->serviceLoader])
 			->getMock();
 		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
 		$request = $this->createMock(IRequest::class);
@@ -784,7 +800,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config])
+			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods(['logout'])
 			->getMock();
 
@@ -833,7 +849,7 @@ class SessionTest extends TestCase {
 		$tokenProvider = $this->createMock(IProvider::class);
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config])
+			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config, $this->serviceLoader])
 			->setMethods(['logout'])
 			->getMock();
 
@@ -879,7 +895,8 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
-		$userSession = new Session($userManager, $session, $timeFactory, $tokenProvider, $this->config);
+		$userSession = new Session($userManager, $session, $timeFactory,
+			$tokenProvider, $this->config, $this->serviceLoader);
 
 		$password = '123456';
 		$sessionId ='session1234';
@@ -908,7 +925,8 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
-		$userSession = new Session($userManager, $session, $timeFactory, $tokenProvider, $this->config);
+		$userSession = new Session($userManager, $session, $timeFactory,
+			$tokenProvider, $this->config, $this->serviceLoader);
 
 		$session->expects($this->once())
 			->method('getId')
@@ -926,7 +944,8 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
-		$userSession = new Session($userManager, $session, $timeFactory, $tokenProvider, $this->config);
+		$userSession = new Session($userManager, $session, $timeFactory,
+			$tokenProvider, $this->config, $this->serviceLoader);
 
 		$password = '123456';
 		$sessionId ='session1234';
@@ -963,7 +982,8 @@ class SessionTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('foo'));
 
-		$userSession = new Session($manager, $session, $this->timeFactory, $this->tokenProvider, $this->config);
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$userSession->setUser($user);
 
 

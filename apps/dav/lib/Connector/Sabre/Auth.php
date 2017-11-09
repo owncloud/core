@@ -113,6 +113,7 @@ class Auth extends AbstractBasic {
 			return false;
 		}
 		if ($this->userSession->isLoggedIn() &&
+			$this->userSession->verifyAuthHeaders($this->request) &&
 			$this->isDavAuthenticated($this->userSession->getUser()->getUID())
 		) {
 			\OC_Util::setupFS($this->userSession->getUser()->getUID());

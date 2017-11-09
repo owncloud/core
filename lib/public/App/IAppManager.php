@@ -81,11 +81,11 @@ interface IAppManager {
 	/**
 	 * List all apps enabled for a user
 	 *
-	 * @param \OCP\IUser $user
+	 * @param \OCP\IUser|null $user
 	 * @return string[]
 	 * @since 8.1.0
 	 */
-	public function getEnabledAppsForUser(IUser $user);
+	public function getEnabledAppsForUser(IUser $user = null);
 
 	/**
 	 * List all installed apps

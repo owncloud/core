@@ -27,10 +27,15 @@
  */
 namespace OC\Core\Controller;
 
+use OC\AppFramework\Http\Request;
+use OC\Cache\File;
+use OC\Files\Filesystem;
+use OC\NotSquareException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IAvatarManager;
 use OCP\ILogger;
@@ -38,7 +43,6 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
-use OCP\Files\Folder;
 
 /**
  * Class AvatarController
@@ -50,7 +54,7 @@ class AvatarController extends Controller {
 	/** @var IAvatarManager */
 	protected $avatarManager;
 
-	/** @var \OC\Cache\File */
+	/** @var File */
 	protected $cache;
 
 	/** @var IL10N */
@@ -62,8 +66,8 @@ class AvatarController extends Controller {
 	/** @var IUserSession */
 	protected $userSession;
 
-	/** @var Folder */
-	protected $userFolder;
+	/** @var IRootFolder */
+	protected $rootFolder;
 
 	/** @var ILogger */
 	protected $logger;
@@ -72,21 +76,21 @@ class AvatarController extends Controller {
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param IAvatarManager $avatarManager
-	 * @param \OC\Cache\File $cache
+	 * @param File $cache
 	 * @param IL10N $l10n
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
-	 * @param Folder $userFolder
+	 * @param IRootFolder $rootFolder
 	 * @param ILogger $logger
 	 */
 	public function __construct($appName,
 								IRequest $request,
 								IAvatarManager $avatarManager,
-								\OC\Cache\File $cache,
+								File $cache,
 								IL10N $l10n,
 								IUserManager $userManager,
 								IUserSession $userSession,
-								Folder $userFolder,
+								IRootFolder $rootFolder,
 								ILogger $logger) {
 		parent::__construct($appName, $request);
 
@@ -95,7 +99,7 @@ class AvatarController extends Controller {
 		$this->l = $l10n;
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
-		$this->userFolder = $userFolder;
+		$this->rootFolder = $rootFolder;
 		$this->logger = $logger;
 	}
 
@@ -153,14 +157,14 @@ class AvatarController extends Controller {
 		$files = $this->request->getUploadedFile('files');
 
 		$headers = [];
-		if ($this->request->isUserAgent([\OC\AppFramework\Http\Request::USER_AGENT_IE_8])) {
+		if ($this->request->isUserAgent([Request::USER_AGENT_IE_8])) {
 			// due to upload iframe workaround, need to set content-type to text/plain
 			$headers['Content-Type'] = 'text/plain';
 		}
 
 		if (isset($path)) {
 			$path = stripslashes($path);
-			$node = $this->userFolder->get($path);
+			$node = $this->rootFolder->getUserFolder($userId)->get($path);
 			if (!($node instanceof \OCP\Files\File)) {
 				return new DataResponse(['data' => ['message' => $this->l->t('Please select a file.')]], Http::STATUS_OK, $headers);
 			}
@@ -176,7 +180,7 @@ class AvatarController extends Controller {
 			if (
 				$files['error'][0] === 0 &&
 				$this->isUploadFile($files['tmp_name'][0]) &&
-				!\OC\Files\Filesystem::isForbiddenFileOrDir($files['tmp_name'][0])
+				!Filesystem::isForbiddenFileOrDir($files['tmp_name'][0])
 			) {
 				if ($files['size'][0] > 20*1024*1024) {
 					return new DataResponse(
@@ -317,7 +321,7 @@ class AvatarController extends Controller {
 			// Clean up
 			$this->cache->remove('tmpAvatar');
 			return new DataResponse(['status' => 'success']);
-		} catch (\OC\NotSquareException $e) {
+		} catch (NotSquareException $e) {
 			return new DataResponse(['data' => ['message' => $this->l->t('Crop is not square')]],
 									Http::STATUS_BAD_REQUEST);
 		} catch (\Exception $e) {

@@ -350,28 +350,31 @@ class OC_API {
 		}
 
 		// reuse existing login
-		$loggedIn = \OC::$server->getUserSession()->isLoggedIn();
+		$userSession = \OC::$server->getUserSession();
+		$request = \OC::$server->getRequest();
+		$loggedIn = $userSession->isLoggedIn();
 		if ($loggedIn === true) {
 			if (\OC::$server->getTwoFactorAuthManager()->needsSecondFactor()) {
 				// Do not allow access to OCS until the 2FA challenge was solved successfully
 				return false;
 			}
-			$ocsApiRequest = isset($_SERVER['HTTP_OCS_APIREQUEST']) ? $_SERVER['HTTP_OCS_APIREQUEST'] === 'true' : false;
-			if ($ocsApiRequest) {
+			if ($userSession->verifyAuthHeaders($request)) {
+				$ocsApiRequest = isset($_SERVER['HTTP_OCS_APIREQUEST']) ? $_SERVER['HTTP_OCS_APIREQUEST'] === 'true' : false;
+				if ($ocsApiRequest) {
 
-				// initialize the user's filesystem
-				\OC_Util::setupFS(\OC_User::getUser());
-				self::$isLoggedIn = true;
+					// initialize the user's filesystem
+					\OC_Util::setupFS(\OC_User::getUser());
+					self::$isLoggedIn = true;
 
-				return OC_User::getUser();
+					return OC_User::getUser();
+				}
+
+				return false;
 			}
-			return false;
 		}
 
 		// basic auth - because OC_User::login will create a new session we shall only try to login
 		// if user and pass are set
-		$userSession = \OC::$server->getUserSession();
-		$request = \OC::$server->getRequest();
 		try {
 			if (OC_User::handleApacheAuth()) {
 				self::$logoutRequired = false;
