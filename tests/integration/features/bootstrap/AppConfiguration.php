@@ -22,9 +22,7 @@
  *
  */
 
-use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\AppConfigHelper;
-use TestHelpers\OcsApiHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
