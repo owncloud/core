@@ -10,7 +10,6 @@
 
 namespace Tests\Settings\Controller;
 
-use OC\Group\Group;
 use OC\Group\MetaData;
 use \OC\Settings\Application;
 use OC\Settings\Controller\GroupsController;

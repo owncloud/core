@@ -17,7 +17,7 @@ trait WebDav {
 	private $usingOldDavPath = true;
 	/** @var ResponseInterface[] */
 	private $uploadResponses;
-	/** @var map with user as key and another map as value, which has path as key and etag as value */
+	/** @var array map with user as key and another map as value, which has path as key and etag as value */
 	private $storedETAG = NULL;
 	/** @var integer */
 	private $storedFileID = NULL;
@@ -1152,8 +1152,7 @@ trait WebDav {
 	 * @Given /^user "([^"]*)" stores id of file "([^"]*)"$/
 	 * @param string $user
 	 * @param string $path
-	 * @param string $fileid
-	 * @return int
+	 * @return void
 	 */
 	public function userStoresFileIdForPath($user, $path) {
 		$this->storedFileID = $this->getFileIdForPath($user, $path);
@@ -1163,8 +1162,7 @@ trait WebDav {
 	 * @Given /^user "([^"]*)" checks id of file "([^"]*)"$/
 	 * @param string $user
 	 * @param string $path
-	 * @param string $fileid
-	 * @return int
+	 * @return void
 	 */
 	public function userChecksFileIdForPath($user, $path) {
 		$currentFileID = $this->getFileIdForPath($user, $path);
