@@ -524,7 +524,13 @@ class Connection extends LDAPUtility {
 				) {
 					$this->doConnect($this->configuration->ldapHost,
 						$this->configuration->ldapPort);
-					$bindStatus = $this->bind();
+					if ($this->ldap->isResource($this->ldapConnectionRes)) {
+						$bindStatus = @$this->ldap->bind($this->ldapConnectionRes,
+								$this->configuration->ldapAgentName,
+								$this->configuration->ldapAgentPassword);
+					} else {
+						$bindStatus = false;
+					}
 					$error = $this->ldap->isResource($this->ldapConnectionRes) ?
 						$this->ldap->errno($this->ldapConnectionRes) : -1;
 				}
@@ -544,7 +550,13 @@ class Connection extends LDAPUtility {
 			{
 				$this->doConnect($this->configuration->ldapBackupHost,
 								 $this->configuration->ldapBackupPort);
-				$bindStatus = $this->bind();
+				if ($this->ldap->isResource($this->ldapConnectionRes)) {
+					$bindStatus = @$this->ldap->bind($this->ldapConnectionRes,
+							$this->configuration->ldapAgentName,
+							$this->configuration->ldapAgentPassword);
+				} else {
+					$bindStatus = false;
+				}
 				if($bindStatus && $error === -1 && !$this->getFromCache('overrideMainServer')) {
 					//when bind to backup server succeeded and failed to main server,
 					//skip contacting him until next cache refresh
@@ -581,20 +593,15 @@ class Connection extends LDAPUtility {
 	 * Binds to LDAP
 	 */
 	public function bind() {
-		static $getConnectionResourceAttempt = false;
 		if(!$this->configuration->ldapConfigurationActive) {
 			return false;
 		}
-		if($getConnectionResourceAttempt) {
-			$getConnectionResourceAttempt = false;
-			return false;
-		}
-		$getConnectionResourceAttempt = true;
+
 		$cr = $this->getConnectionResource();
-		$getConnectionResourceAttempt = false;
 		if(!$this->ldap->isResource($cr)) {
 			return false;
 		}
+
 		$ldapLogin = @$this->ldap->bind($cr,
 										$this->configuration->ldapAgentName,
 										$this->configuration->ldapAgentPassword);
