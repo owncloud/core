@@ -17,12 +17,12 @@ So that the user is forced to obey the policies of the server operator
 		And I login with username "user1" and password "1234"
 
 	Scenario: simple sharing by public link
-		And I create a new public link for the folder "simple-folder"
+		When I create a new public link for the folder "simple-folder"
 		And I access the last created public link
 		Then the file "lorem.txt" should be listed
 
 	Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
-		And I create a new public link for the folder "simple-folder" with
+		When I create a new public link for the folder "simple-folder" with
 		| permission | Read & Write |
 		And I access the last created public link
 		And I delete the elements
@@ -35,7 +35,7 @@ So that the user is forced to obey the policies of the server operator
 		And the deleted elements should not be listed after a page reload
 
 	Scenario: creating a public link with read permissions only makes it impossible to delete files via the link
-		And I create a new public link for the folder "simple-folder" with
+		When I create a new public link for the folder "simple-folder" with
 		| permission | Read |
 		And I access the last created public link
 		Then it should not be possible to delete the file "lorem.txt"

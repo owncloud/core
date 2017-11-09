@@ -18,7 +18,7 @@ Feature: Sharing
 		And I login with username "user2" and password "1234"
 
 	Scenario: share a file & folder with another internal user
-		And the folder "simple-folder" is shared with the user "User One"
+		When the folder "simple-folder" is shared with the user "User One"
 		And the file "testimage.jpg" is shared with the user "User One"
 		And I logout
 		And I login with username "user1" and password "1234"
@@ -33,7 +33,7 @@ Feature: Sharing
 	Scenario: share a folder with an internal group
 		And I logout
 		And I login with username "user3" and password "1234"
-		And the folder "simple-folder" is shared with the group "grp1"
+		When the folder "simple-folder" is shared with the group "grp1"
 		And the file "testimage.jpg" is shared with the group "grp1"
 		And I logout
 		And I login with username "user1" and password "1234"
