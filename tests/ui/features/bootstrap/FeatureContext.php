@@ -45,6 +45,12 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $oldCSRFSetting = null;
 	
 	/**
+	 * 
+	 * @var Page\OwncloudPage
+	 */
+	private $currentPageObject = null;
+	
+	/**
 	 * @var string the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
@@ -104,6 +110,23 @@ class FeatureContext extends RawMinkContext implements Context {
 	public function __construct(OwncloudPage $owncloudPage, LoginPage $loginPage) {
 		$this->owncloudPage = $owncloudPage;
 		$this->loginPage = $loginPage;
+	}
+
+	/**
+	 * 
+	 * @param OwncloudPage $pageObject
+	 * @return void
+	 */
+	public function setCurrentPageObject(OwncloudPage $pageObject) {
+		$this->currentPageObject = $pageObject;
+	}
+
+	/**
+	 * 
+	 * @return OwncloudPage
+	 */
+	public function getCurrentPageObject() {
+		return $this->currentPageObject;
 	}
 
 	/**
