@@ -25,6 +25,7 @@ namespace OCA\DAV\Meta;
 
 use OC\Files\Meta\MetaFileVersionNode;
 use OCA\DAV\Files\ICopySource;
+use OCA\DAV\Files\IProvidesAdditionalHeaders;
 use Sabre\DAV\File;
 
 /**
@@ -33,7 +34,7 @@ use Sabre\DAV\File;
  *
  * @package OCA\DAV\Meta
  */
-class MetaFile extends File implements ICopySource {
+class MetaFile extends File implements ICopySource, IProvidesAdditionalHeaders {
 
 	/** @var \OCP\Files\File */
 	private $file;
@@ -82,14 +83,40 @@ class MetaFile extends File implements ICopySource {
 		return $this->file->getMTime();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getETag() {
 		return $this->file->getEtag();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function copy($path) {
 		if ($this->file instanceof MetaFileVersionNode) {
 			return $this->file->copy($path);
 		}
 		return false;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getHeaders() {
+		if ($this->file instanceof \OCP\Files\IProvidesAdditionalHeaders) {
+			return $this->file->getHeaders();
+		}
+		return [];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getContentDispositionFileName() {
+		if ($this->file instanceof \OCP\Files\IProvidesAdditionalHeaders) {
+			return $this->file->getContentDispositionFileName();
+		}
+		return $this->getName();
 	}
 }

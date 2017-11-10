@@ -25,6 +25,7 @@ namespace OC\Files\Meta;
 
 use OC\Files\Node\AbstractFile;
 use OC\Files\Node\File;
+use OCP\Files\IProvidesAdditionalHeaders;
 use OCP\Files\IRootFolder;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Files\Storage;
@@ -35,7 +36,7 @@ use OCP\Files\Storage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile {
+class MetaFileVersionNode extends AbstractFile implements IProvidesAdditionalHeaders {
 
 	/** @var string */
 	private $versionId;
@@ -124,4 +125,19 @@ class MetaFileVersionNode extends AbstractFile {
 	public function fopen($mode) {
 		return $this->storage->getContentOfVersion($this->internalPath, $this->versionId);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getHeaders() {
+		return [];
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getContentDispositionFileName() {
+		return basename($this->internalPath);
+	}
+
 }
