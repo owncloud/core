@@ -43,6 +43,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Replace notify user for local shares with button - [#29463](https://github.com/owncloud/core/issues/29463)
 - Log out current user after submitting form in password reset page - [#29464](https://github.com/owncloud/core/issues/29464)
 - Update minimum supported browser versions - [#29507](https://github.com/owncloud/core/issues/29507)
+- Admins can now change display name even when its modification is disallowed for regular users - [#29442](https://github.com/owncloud/core/issues/29442)
 
 ### Removed
 - Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
@@ -58,7 +59,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Log exceptions in decrypt-all command - [#29248](https://github.com/owncloud/core/issues/29248)
 - SFTP key pair mode now works again - [#29156](https://github.com/owncloud/core/issues/29156)
 - Use correct class namespace for ownCloud ext storage - [#28935](https://github.com/owncloud/core/issues/28935)
-- Handle case of empty folder in userDeletesEverythingInFolder - [#29163](https://github.com/owncloud/core/issues/29163)
 - Fix generated zip file to avoid errors with some zip tools - [#29149](https://github.com/owncloud/core/issues/29149)
 - Fix position of dialog boxes - [#29133](https://github.com/owncloud/core/issues/29133) [#29467](https://github.com/owncloud/core/issues/29467)
 - Move 64bit mtime migration from dav to core - [#29121](https://github.com/owncloud/core/issues/29121)
@@ -92,7 +92,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix failure when checking integrity signature for non-existing files - [#29433](https://github.com/owncloud/core/issues/29433)
 - Prevent uploading of part files through WebDav - [#29432](https://github.com/owncloud/core/issues/29432)
 - Only trigger "changeUser" event if account object really changed - [#29429](https://github.com/owncloud/core/issues/29429)
-- Admins can now change display name even when its modification is disallowed for regular users - [#29442](https://github.com/owncloud/core/issues/29442)
 - Only load app type once in app manager classes - [#29428](https://github.com/owncloud/core/issues/29428)
 - Use efficient startsWith implementation in server container - [#29427](https://github.com/owncloud/core/issues/29427)
 - Fix race condition in browser when uploading folder tree - [#29435](https://github.com/owncloud/core/issues/29435)
