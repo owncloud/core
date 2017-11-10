@@ -27,7 +27,7 @@ Feature: users
 	Scenario Outline: change quota to an invalid value
 		When quota of user "%regularuser%" is changed to "<wished_quota>"
 		Then a notification should be displayed with the text 'Invalid quota value "<wished_quota>"'
-		Then quota of user "%regularuser%" should be set to "Default"
+		And quota of user "%regularuser%" should be set to "Default"
 
 		Examples:
 		|wished_quota|
