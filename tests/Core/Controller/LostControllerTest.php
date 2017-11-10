@@ -174,8 +174,6 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function testResetFormExpiredToken() {
-		$userId = 'ValidTokenUser';
-		$token = '12345:TheOnlyAndOnlyOneTokenToResetThePassword';
 		$user = $this->getMockBuilder('\OCP\IUser')
 			->disableOriginalConstructor()->getMock();
 		$this->userManager
@@ -207,8 +205,6 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResetFormValidToken() {
-		$userId = 'ValidTokenUser';
-		$token = '12345:TheOnlyAndOnlyOneTokenToResetThePassword';
 		$user = $this->getMockBuilder('\OCP\IUser')
 			->disableOriginalConstructor()->getMock();
 		$user
@@ -247,7 +243,7 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
-	public function testEmailUnsucessful() {
+	public function testEmailUnsuccessful() {
 		$existingUser = 'ExistingUser1';
 		$nonExistingUser = 'NonExistingUser';
 		$this->userManager
