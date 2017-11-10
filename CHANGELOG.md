@@ -20,6 +20,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Let apps provide icons for settings sections - [#29358](https://github.com/owncloud/core/issues/29358)
 - Added cancellable prehooks for logout operation - [#29352](https://github.com/owncloud/core/issues/29352)
 - Markdown support for app descriptions in apps settings panel - [#29333](https://github.com/owncloud/core/issues/29333)
+- Add option to allow user to share only with the groups they belong to - [#29391](https://github.com/owncloud/core/issues/29391)
+- Cacheable storage adapter for use by Flysystem based external storage backends - [#29414](https://github.com/owncloud/core/issues/29414)
+- Add user additional info field for share autocomplete  - [#29457](https://github.com/owncloud/core/issues/29457)
+- Add dispatcher event for remote fed shares - [#29482](https://github.com/owncloud/core/issues/29482)
+- Adding mode of operations - either single-instance or clus… - [#29492](https://github.com/owncloud/core/issues/29492)
+- Added support for MariaDB 10.2.7+ - [#29240](https://github.com/owncloud/core/issues/29240)
+- Admins can now exclude files from integrity check in config.php - [#29460](https://github.com/owncloud/core/issues/29460)
+- Use X-Request-ID header as request id if provided by client, useful for logging - [#29434](https://github.com/owncloud/core/issues/29434)
+- Added authentication headers verification to validate the session - [#29525](https://github.com/owncloud/core/issues/29525)
+- Added IServiceLoader on server container to load app service classes from XML tags in info.xml - [#29525](https://github.com/owncloud/core/issues/29525)
 
 ### Changed
 - Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048) [#29316](https://github.com/owncloud/core/issues/29316)
@@ -28,6 +38,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Modified time value of files is now 64 bits long - [#28961](https://github.com/owncloud/core/issues/28961)
 - User names must now be at least 3 characters long - [#29237](https://github.com/owncloud/core/issues/29237)
 - AccountMapper get by email is now case insensitive - [#29341](https://github.com/owncloud/core/issues/29341)
+- Remove deprecated federated share API warning as it needlessly pollutes logs - [#29364](https://github.com/owncloud/core/issues/29364)
+- Improve UI for public link sharing permissions for folders - [#29413](https://github.com/owncloud/core/issues/29413)
+- Replace notify user for local shares with button - [#29463](https://github.com/owncloud/core/issues/29463)
+- Log out current user after submitting form in password reset page - [#29464](https://github.com/owncloud/core/issues/29464)
+- Update minimum supported browser versions - [#29507](https://github.com/owncloud/core/issues/29507)
 
 ### Removed
 - Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
@@ -45,7 +60,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Use correct class namespace for ownCloud ext storage - [#28935](https://github.com/owncloud/core/issues/28935)
 - Handle case of empty folder in userDeletesEverythingInFolder - [#29163](https://github.com/owncloud/core/issues/29163)
 - Fix generated zip file to avoid errors with some zip tools - [#29149](https://github.com/owncloud/core/issues/29149)
-- Fix position of dialog boxes - [#29133](https://github.com/owncloud/core/issues/29133)
+- Fix position of dialog boxes - [#29133](https://github.com/owncloud/core/issues/29133) [#29467](https://github.com/owncloud/core/issues/29467)
 - Move 64bit mtime migration from dav to core - [#29121](https://github.com/owncloud/core/issues/29121)
 - Allow 0 byte quota to be entered on UI - [#29113](https://github.com/owncloud/core/issues/29113)
 - Don't display warning about limited commands when running maintenance:install - [#28968](https://github.com/owncloud/core/issues/28968)
@@ -55,7 +70,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove alternate keys storage during user delete - [#29155](https://github.com/owncloud/core/issues/29155)
 - Fix error logs due to deletion of keys - [#28934](https://github.com/owncloud/core/issues/28934)
 - Fix encryption panel to properly detect current mode after upgrade to ownCloud 10 - [#29049](https://github.com/owncloud/core/issues/29049)
-- Fix quota check when uploading to federated shares - [#29325](https://github.com/owncloud/core/issues/29325)
+- Fix quota check when uploading to federated shares - [#29325](https://github.com/owncloud/core/issues/29325) [#29424](https://github.com/owncloud/core/issues/29424)
 - Fix issue when mounting another encrypted ownCloud - [#29360](https://github.com/owncloud/core/issues/29360)
 - AccountMapper get by email is now case insensitive - [#29341](https://github.com/owncloud/core/issues/29341)
 - Fix order of apps to be deterministic during install process - [#29267](https://github.com/owncloud/core/issues/29267)
@@ -71,6 +86,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix storing/retrieval for dav properties of non files - [#29273](https://github.com/owncloud/core/issues/29273)
 - Remove double quotes from boolean values in status.php output - [#29271](https://github.com/owncloud/core/issues/29271)
 - Tidy code in DAV related classes - [#29272](https://github.com/owncloud/core/issues/29272)
+- Fix the missing argument to DecryptAll - [#29371](https://github.com/owncloud/core/issues/29371)
+- Skip copying skeleton files if skeleton dir is not accessible - [#29379](https://github.com/owncloud/core/issues/29379)
+- Use chunked DB query when preloading directory content for DAV properties - [#29416](https://github.com/owncloud/core/issues/29416)
+- Fix failure when checking integrity signature for non-existing files - [#29433](https://github.com/owncloud/core/issues/29433)
+- Prevent uploading of part files through WebDav - [#29432](https://github.com/owncloud/core/issues/29432)
+- Only trigger "changeUser" event if account object really changed - [#29429](https://github.com/owncloud/core/issues/29429)
+- Admins can now change display name even when its modification is disallowed for regular users - [#29442](https://github.com/owncloud/core/issues/29442)
+- Only load app type once in app manager classes - [#29428](https://github.com/owncloud/core/issues/29428)
+- Use efficient startsWith implementation in server container - [#29427](https://github.com/owncloud/core/issues/29427)
+- Fix race condition in browser when uploading folder tree - [#29435](https://github.com/owncloud/core/issues/29435)
+- Disable nginx buffering for file downloads to avoid huge memory usage in some scenarios - [#29403](https://github.com/owncloud/core/issues/29403)
+- Fix many issues related to session removal - [#28879](https://github.com/owncloud/core/issues/28879)
+
 
 ## [10.0.3] - 2017-09-15
 ### Added
