@@ -198,6 +198,8 @@
     "delete" : "удалить",
     "access control" : "контроль доступа",
     "Could not unshare" : "Не удалось отменить доступ",
+    "Email notification was sent!" : "Уведомление почтой было отправлено!",
+    "Email notification not sent" : "Уведомление почтой не было отправлено",
     "Share details could not be loaded for this item." : "Не удалось загрузить информацию об общем доступе для этого элемента.",
     "No users or groups found for {search}" : "Не найдено пользователей или групп по запросу {search}",
     "No users found for {search}" : "Не найдено пользователей по запросу {search}",

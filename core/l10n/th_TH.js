@@ -200,6 +200,8 @@ OC.L10N.register(
     "delete" : "ลบ",
     "access control" : "ควบคุมการเข้าถึง",
     "Could not unshare" : "ไม่สามารถยกเลิกการแชร์ได้",
+    "Email notification was sent!" : "ส่งการแจ้งเตือนทางอีเมลแล้ว!",
+    "Email notification not sent" : "ไม่ได้ส่งการแจ้งเตือนทางอีเมล",
     "Share details could not be loaded for this item." : "รายละเอียดการแชร์ไม่สามารถโหลดสำหรับรายการนี้",
     "No users or groups found for {search}" : "ไม่พบผู้ใช้หรือกลุ่มที่มีชื่อว่า {search}",
     "No users found for {search}" : "ไม่พบผู้ใช้ {search}",
