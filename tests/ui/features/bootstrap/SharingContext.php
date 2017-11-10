@@ -27,6 +27,7 @@ use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use Page\PublicLinkFilesPage;
 
 require_once 'bootstrap.php';
 
@@ -36,6 +37,7 @@ require_once 'bootstrap.php';
 class SharingContext extends RawMinkContext implements Context {
 
 	private $filesPage;
+	private $publicLinkFilesPage;
 	private $sharingDialog;
 	private $regularUserName;
 	private $regularUserNames;
@@ -46,14 +48,35 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
+	
+	/**
+	 * 
+	 * @var FilesContext
+	 */
+	private $filesContext;
+	private $createdPublicLinks = [];
 
 	/**
 	 * SharingContext constructor.
 	 *
 	 * @param FilesPage $filesPage
+	 * @param PublicLinkFilesPage $publicLinkFilesPage
 	 */
-	public function __construct(FilesPage $filesPage) {
+	public function __construct(
+		FilesPage $filesPage, PublicLinkFilesPage $publicLinkFilesPage
+	) {
 		$this->filesPage = $filesPage;
+		$this->publicLinkFilesPage = $publicLinkFilesPage;
+	}
+
+	/**
+	 * 
+	 * @param string $name
+	 * @param string $url
+	 * @return void
+	 */
+	private function addToListOfCreatedPublicLinks($name, $url) {
+		$this->createdPublicLinks[] = ["name" => $name, "url" => $url];
 	}
 
 	/**
@@ -121,7 +144,77 @@ class SharingContext extends RawMinkContext implements Context {
 			$name, $this->getSession()
 		);
 	}
-
+	/**
+	 * @Given I create a new public link for the file/folder :name
+	 * @param string $name
+	 * @return void
+	 */
+	public function iCreateANewPublicLinkFor($name) {
+		$this->iCreateANewPublicLinkForWith($name);
+	}
+	/**
+	 * @Given I create a new public link for the file/folder :name with
+	 * @param string $name
+	 * @param TableNode $settings table with the settings and no header
+	 *                            possible settings: name, permission,
+	 *                                               password, expiration, email
+	 *                            the permissions values has to be written exactly
+	 *                            the way its written in the UI
+	 * @return void
+	 */
+	public function iCreateANewPublicLinkForWith(
+		$name, TableNode $settings = null
+	) {
+		$this->filesPage->waitTillPageIsloaded($this->getSession());
+		//close any open sharing dialog
+		//if there is no dialog open and we try to close it
+		//an exception will be thrown, but we do not care
+		try {
+			$this->filesPage->closeSharingDialog();
+		} catch (Exception $e) {
+		}
+		$this->sharingDialog = $this->filesPage->openSharingDialog(
+			$name, $this->getSession()
+		);
+		$publicShareTab = $this->sharingDialog->openPublicShareTab();
+		if (!is_null($settings)) {
+			$settingsArray = $settings->getRowsHash();
+			if (!isset($settingsArray['name'])) {
+				$settingsArray['name'] = null;
+			}
+			if (!isset($settingsArray['permission'])) {
+				$settingsArray['permission'] = null;
+			}
+			if (!isset($settingsArray['password'])) {
+				$settingsArray['password'] = null;
+			}
+			if (!isset($settingsArray['expiration'])) {
+				$settingsArray['expiration'] = null;
+			}
+			if (!isset($settingsArray['email'])) {
+				$settingsArray['email'] = null;
+			}
+			$linkName = $publicShareTab->createLink(
+				$this->getSession(),
+				$settingsArray ['name'],
+				$settingsArray ['permission'],
+				$settingsArray ['password'],
+				$settingsArray ['expiration'],
+				$settingsArray ['email']
+			);
+			if (!is_null($settingsArray['name'])) {
+				PHPUnit_Framework_Assert::assertSame(
+					$settingsArray ['name'], $linkName,
+					"set and retrieved public link names are not the same"
+				);
+			}
+		} else {
+			$linkName = $publicShareTab->createLink($this->getSession());
+		}
+		$linkUrl = $publicShareTab->getLinkUrl($linkName);
+		$this->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+	}
+	
 	/**
 	 * @Given I close the share dialog
 	 * @return void
@@ -169,6 +262,23 @@ class SharingContext extends RawMinkContext implements Context {
 		foreach (array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
 			$ocDialog->accept($this->getSession());
 		}
+	}
+
+	/**
+	 * @When I access the last created public link
+	 * @return void
+	 */
+	public function iAccessTheLastCreatedPublicLink() {
+		$lastCreatedLink = end($this->createdPublicLinks);
+		$path = str_replace(
+			$this->getMinkParameter('base_url'),
+			"",
+			$lastCreatedLink['url']
+		);
+		$this->publicLinkFilesPage->setPagePath($path);
+		$this->publicLinkFilesPage->open();
+		$this->publicLinkFilesPage->waitTillPageIsLoaded($this->getSession());
+		$this->featureContext->setCurrentPageObject($this->publicLinkFilesPage);
 	}
 
 	/**
@@ -352,6 +462,7 @@ class SharingContext extends RawMinkContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->filesContext = $environment->getContext('FilesContext');
 		$this->regularUserNames = $this->featureContext->getRegularUserNames();
 		$this->regularUserName = $this->featureContext->getRegularUserName();
 		$this->regularGroupNames = $this->featureContext->getRegularGroupNames();
