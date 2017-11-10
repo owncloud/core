@@ -58,7 +58,8 @@ class MetaFilesTest extends TestCase {
 		$this->loginAsUser($userId);
 
 		// create file
-		$fileName = "$userId/files/" . $this->getUniqueID('file') . '.txt';
+		$file = $this->getUniqueID('file') . '.txt';
+		$fileName = "$userId/files/$file";
 		$view = new View();
 		$view->file_put_contents($fileName, '1234');
 		$info = $view->getFileInfo($fileName);
@@ -87,10 +88,13 @@ class MetaFilesTest extends TestCase {
 		$this->assertInstanceOf(MetaFileVersionNode::class, $children[0]);
 
 		$versionId = $children[0]->getName();
+		/** @var MetaFileVersionNode $metaNodeOfFile */
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}/v/$versionId");
 		$this->assertInstanceOf(MetaFileVersionNode::class, $metaNodeOfFile);
 		$this->assertEquals($versionId, $metaNodeOfFile->getName());
 		$this->assertEquals(4, $metaNodeOfFile->getSize());
+		$this->assertEquals([], $metaNodeOfFile->getHeaders());
+		$this->assertEquals($file, $metaNodeOfFile->getContentDispositionFileName());
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
 		$this->assertEquals($info->getMTime(), $metaNodeOfFile->getMTime());
 		$this->assertTrue(is_string($metaNodeOfFile->getMTime()));
