@@ -87,10 +87,14 @@ use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
+use OCP\App\IServiceLoader;
+use OCP\AppFramework\QueryException;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IServerContainer;
 use OCP\ISession;
+use OCP\IUser;
 use OCP\Security\IContentSecurityPolicyManager;
 use OCP\Theme\IThemeService;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -110,7 +114,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * TODO: hookup all manager classes
  */
-class Server extends ServerContainer implements IServerContainer {
+class Server extends ServerContainer implements IServerContainer, IServiceLoader {
 	/** @var string */
 	private $webRoot;
 
@@ -292,7 +296,8 @@ class Server extends ServerContainer implements IServerContainer {
 				$defaultTokenProvider = null;
 			}
 
-			$userSession = new \OC\User\Session($manager, $session, $timeFactory, $defaultTokenProvider, $c->getConfig());
+			$userSession = new \OC\User\Session($manager, $session, $timeFactory,
+				$defaultTokenProvider, $c->getConfig(), $this);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
 			});
@@ -1551,5 +1556,47 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getTimeFactory() {
 		return $this->query('\OCP\AppFramework\Utility\ITimeFactory');
+	}
+
+	/**
+	 * @return IServiceLoader
+	 */
+	public function getServiceLoader() {
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function load(array $xmlPath, IUser $user = null) {
+		$appManager = $this->getAppManager();
+		$allApps = $appManager->getEnabledAppsForUser($user);
+
+		foreach ($allApps as $appId) {
+			$info = $appManager->getAppInfo($appId);
+			if ($info === null) {
+				$info = [];
+			}
+
+			foreach($xmlPath as $xml) {
+				$info = isset($info[$xml]) ? $info[$xml] : [];
+			}
+			if (!is_array($info)) {
+				$info = [$info];
+			}
+
+			foreach ($info as $class) {
+				try {
+					if (!\OC_App::isAppLoaded($appId)) {
+						\OC_App::loadApp($appId);
+					}
+
+					yield $this->query($class);
+
+				} catch (QueryException $exc) {
+					throw new \Exception("Could not load service $class");
+				}
+			}
+		}
 	}
 }

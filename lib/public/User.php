@@ -111,7 +111,7 @@ class User {
 	 * @since 5.0.0
 	 */
 	public static function userExists( $uid, $excludingBackend = null ) {
-		return \OC_User::userExists( $uid, $excludingBackend );
+		return \OC_User::userExists( $uid);
 	}
 	/**
 	 * Logs the user out including all the session data
