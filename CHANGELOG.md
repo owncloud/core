@@ -28,6 +28,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added support for MariaDB 10.2.7+ - [#29240](https://github.com/owncloud/core/issues/29240)
 - Admins can now exclude files from integrity check in config.php - [#29460](https://github.com/owncloud/core/issues/29460)
 - Use X-Request-ID header as request id if provided by client, useful for logging - [#29434](https://github.com/owncloud/core/issues/29434)
+- Added authentication headers verification to validate the session - [#29525](https://github.com/owncloud/core/issues/29525)
+- Added IServiceLoader on server container to load app service classes from XML tags in info.xml - [#29525](https://github.com/owncloud/core/issues/29525)
 
 ### Changed
 - Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048) [#29316](https://github.com/owncloud/core/issues/29316)
@@ -40,6 +42,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Improve UI for public link sharing permissions for folders - [#29413](https://github.com/owncloud/core/issues/29413)
 - Replace notify user for local shares with button - [#29463](https://github.com/owncloud/core/issues/29463)
 - Log out current user after submitting form in password reset page - [#29464](https://github.com/owncloud/core/issues/29464)
+- Update minimum supported browser versions - [#29507](https://github.com/owncloud/core/issues/29507)
 
 ### Removed
 - Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
@@ -94,6 +97,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Use efficient startsWith implementation in server container - [#29427](https://github.com/owncloud/core/issues/29427)
 - Fix race condition in browser when uploading folder tree - [#29435](https://github.com/owncloud/core/issues/29435)
 - Disable nginx buffering for file downloads to avoid huge memory usage in some scenarios - [#29403](https://github.com/owncloud/core/issues/29403)
+- Fix many issues related to session removal - [#28879](https://github.com/owncloud/core/issues/28879)
+
 
 ## [10.0.3] - 2017-09-15
 ### Added
