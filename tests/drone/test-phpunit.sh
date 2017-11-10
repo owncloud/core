@@ -32,6 +32,10 @@ else
       wait-for-it postgres:5432
       DB=pgsql
       ;;
+    oracle)
+      wait-for-it oracle:49161
+      DB=oci
+      ;;
     *)
       echo "Unsupported database type!"
       exit 1

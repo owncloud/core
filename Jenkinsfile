@@ -19,27 +19,6 @@ timestampedNode('SLAVE') {
         make dist
         '''
 
-    stage 'PHPUnit 7.0/oci'
-        currentStage = 'PHPUnit 7.0/oci'
-        executeAndReport('tests/autotest-results-oci.xml', currentStage) {
-            sh '''
-            export NOCOVERAGE=1
-            unset USEDOCKER
-            phpenv local 5.6
-            make test-php TEST_DATABASE=oci
-            '''
-        }
-
-    stage 'Files External: webdav'
-        currentStage = 'Files External: webdav'
-        executeAndReport('tests/autotest-external-results-sqlite-webdav-ownCloud.xml', currentStage) {
-            sh '''phpenv local 7.0
-            export NOCOVERAGE=1
-            unset USEDOCKER
-            make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
-            '''
-        }
-
     stage 'Files External: SMB/SAMBA'
         currentStage = 'Files External: SMB/SAMBA'
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml', currentStage) {
