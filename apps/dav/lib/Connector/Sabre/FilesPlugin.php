@@ -31,6 +31,8 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\AppFramework\Http\Request;
+use OCA\DAV\Files\IProvidesAdditionalHeaders;
+use OCA\DAV\Meta\MetaFile;
 use OCP\Files\ForbiddenException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -254,6 +256,10 @@ class FilesPlugin extends ServerPlugin {
 			// disable nginx buffering so big downloads through ownCloud won't
 			// cause memory problems in the nginx process.
 			$response->addHeader('X-Accel-Buffering', 'no');
+		}
+
+		if ($node instanceof IProvidesAdditionalHeaders) {
+			$response->addHeaders($node->getHeaders());
 		}
 	}
 

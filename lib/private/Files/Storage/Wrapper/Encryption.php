@@ -222,6 +222,15 @@ class Encryption extends Wrapper {
 		return $this->storage->file_get_contents($path);
 	}
 
+	public function getContentOfVersion($internalPath, $versionId) {
+		$v = $this->storage->getVersion($internalPath, $versionId);
+		if ($this->encryptionManager->isEnabled() !== false) {
+			return $this->fopen($v['storage_location'], 'r+');
+		}
+
+		return $this->storage->getContentOfVersion($internalPath, $versionId);
+	}
+
 	/**
 	 * see http://php.net/manual/en/function.file_put_contents.php
 	 *
