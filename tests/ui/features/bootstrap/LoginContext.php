@@ -77,10 +77,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPassword($username, $password) {
-		$this->filesPage = $this->loginPage->loginAs($username, $password);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->featureContext->setCurrentUser($username);
-		$this->featureContext->setCurrentServer(null);
+		$this->filesPage = $this->featureContext->loginAs($username, $password);
 	}
 
 	/**
@@ -139,14 +136,11 @@ class LoginContext extends RawMinkContext implements Context {
 		$password,
 		$page
 	) {
-		$this->expectedPage = $this->loginPage->loginAs(
+		$this->expectedPage = $this->featureContext->loginAs(
 			$username,
 			$password,
 			str_replace(' ', '', ucwords($page)) . 'Page'
 		);
-		$this->expectedPage->waitTillPageIsLoaded($this->getSession());
-		$this->featureContext->setCurrentUser($username);
-		$this->featureContext->setCurrentServer(null);
 	}
 
 	/**
@@ -154,14 +148,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iLoginAsARegularUserWithACorrectPassword() {
-		$username = $this->featureContext->getRegularUserName();
-		$this->filesPage = $this->loginPage->loginAs(
-			$username,
-			$this->featureContext->getRegularUserPassword()
-		);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->featureContext->setCurrentUser($username);
-		$this->featureContext->setCurrentServer(null);
+		$this->filesPage = $this->featureContext->loginAsARegularUser();
 	}
 
 	/**
