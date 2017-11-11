@@ -29,6 +29,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 use Page\TrashbinPage;
 use Page\OwncloudPage;
 use Page\FilesPageElement\ConflictDialog;
+use TestHelpers\DeleteHelper;
 use TestHelpers\DownloadHelper;
 
 require_once 'bootstrap.php';
@@ -309,6 +310,23 @@ class FilesContext extends RawMinkContext implements Context {
 		}
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->filesPage->deleteFile($fileNameParts, $this->getSession());
+	}
+
+	/**
+	 * @Given the following files/folders are deleted
+	 * @param TableNode $namePartsTable table headings: must be: |name|
+	 * @return void
+	 */
+	public function theFollowingFilesFoldersAreDeleted(TableNode $table) {
+		foreach ($table as $file) {
+			$username = $this->featureContext->getCurrentUser();
+			DeleteHelper::delete(
+				$this->featureContext->getCurrentServer(),
+				$username,
+				$this->featureContext->getUserPassword($username),
+				$file['name']
+			);
+		}
 	}
 
 	/**
