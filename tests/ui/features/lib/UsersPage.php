@@ -88,7 +88,7 @@ class UsersPage extends OwncloudPage {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
 
-		if ($selectField === null) {
+		if (is_null($selectField)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->quotaSelectXpath " .
@@ -99,7 +99,7 @@ class UsersPage extends OwncloudPage {
 		$xpathLocator = "//option[@value='" . $selectField->getValue() . "']";
 		$selectField = $selectField->find('xpath', $xpathLocator);
 
-		if ($selectField === null) {
+		if (is_null($selectField)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathLocator " .

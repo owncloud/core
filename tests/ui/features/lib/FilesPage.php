@@ -89,7 +89,7 @@ class FilesPage extends FilesPageBasic {
 
 		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
 
-		if ($newButtonElement === null) {
+		if (is_null($newButtonElement)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFileFolderButtonXpath " .
@@ -101,7 +101,7 @@ class FilesPage extends FilesPageBasic {
 
 		$newFolderButtonElement = $this->find("xpath", $this->newFolderButtonXpath);
 
-		if ($newFolderButtonElement === null) {
+		if (is_null($newFolderButtonElement)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFolderButtonXpath " .
