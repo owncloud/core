@@ -284,7 +284,7 @@ class LostController extends Controller {
 	 * @throws \Exception
 	 * @return boolean
 	 */
-	protected function sendEmail($user) {
+	public function sendEmail($user) {
 		if ($this->userManager->userExists($user)) {
 			$userObject = $this->userManager->get($user);
 			$email = $userObject->getEMailAddress();

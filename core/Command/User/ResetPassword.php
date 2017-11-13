@@ -27,6 +27,7 @@
 
 namespace OC\Core\Command\User;
 
+use OC\Core\Controller\LostController;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,11 +38,21 @@ use Symfony\Component\Console\Question\Question;
 
 class ResetPassword extends Command {
 
-	/** @var IUserManager */
+	/**
+	 * @var IUserManager
+	 */
 	protected $userManager;
 
-	public function __construct(IUserManager $userManager) {
+	/**
+	 * @var LostController
+	 */
+	protected $lostController;
+
+	public function __construct(
+		IUserManager $userManager,
+		LostController $lostController) {
 		$this->userManager = $userManager;
+		$this->lostController = $lostController;
 		parent::__construct();
 	}
 
@@ -60,6 +71,12 @@ class ResetPassword extends Command {
 				InputOption::VALUE_NONE,
 				'read password from environment variable OC_PASS'
 			)
+			->addOption(
+				'via-email',
+				null,
+				InputOption::VALUE_NONE,
+				'send user an email with password reset link'
+			)
 		;
 	}
 
@@ -72,6 +89,24 @@ class ResetPassword extends Command {
 			$output->writeln('<error>User does not exist</error>');
 			return 1;
 		}
+
+		// Try reset via link
+		if($input->getOption('via-email')) {
+			// Does this user have an email
+			if($user->getEMailAddress() === null) {
+				$output->writeln('<error>User does not have an email</error>');
+				return 1;
+			}
+			try {
+				$this->lostController->sendEmail($user->getUID());
+				$output->writeln('Done');
+				return 0;
+			} catch (\Exception $e) {
+				$output->writeln('<error>Error whilst sending reset email. Check logs</error>');
+				return 1;
+			}
+		}
+
 
 		if ($input->getOption('password-from-env')) {
 			$password = getenv('OC_PASS');

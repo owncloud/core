@@ -143,7 +143,24 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\ListUsers(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager()));
-	$application->add(new OC\Core\Command\User\ResetPassword(\OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\User\ResetPassword(
+		\OC::$server->getUserManager(),
+		new \OC\Core\Controller\LostController(
+			'core',
+			\OC::$server->getRequest(),
+			\OC::$server->getURLGenerator(),
+			\OC::$server->getUserManager(),
+			new OC_Defaults(),
+			\OC::$server->getL10N('core'),
+			\OC::$server->getConfig(),
+			\OC::$server->getSecureRandom(),
+			\OCP\Util::getDefaultEmailAddress('passwordreset-noreply'),
+			\OC::$server->getEncryptionManager()->isEnabled(),
+			\OC::$server->getMailer(),
+			\OC::$server->getTimeFactory(),
+			\OC::$server->getLogger(),
+			\OC::$server->getUserSession()
+		)));
 	$application->add(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
 	$application->add(new OC\Core\Command\User\SyncBackend(\OC::$server->getAccountMapper(), \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
 	$application->add(new \OC\Core\Command\User\Inactive(\OC::$server->getUserManager()));
