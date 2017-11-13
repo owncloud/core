@@ -157,7 +157,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 * @param TableNode $settings table with the settings and no header
 	 *                            possible settings: name, permission,
-	 *                                               password, expiration, email
+	 *                            password, expiration, email
 	 *                            the permissions values has to be written exactly
 	 *                            the way its written in the UI
 	 * @return void
@@ -417,7 +417,9 @@ class SharingContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^it should not be possible to share the (?:file|folder) "([^"]*)"(?: with "([^"]*)")?$/
 	 * @param string $fileName
+	 * @param string|null $shareWith
 	 * @return void
+	 * @throws Exception
 	 */
 	public function itShouldNotBePossibleToShare($fileName, $shareWith = null) {
 		$sharingWasPossible = false;
