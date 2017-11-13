@@ -27,8 +27,6 @@ use Behat\Gherkin\Node\TableNode;
 use Page\FilesPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\TrashbinPage;
-use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
-use OC\Core\Command\Log\OwnCloud;
 use Page\OwncloudPage;
 
 require_once 'bootstrap.php';
@@ -97,10 +95,24 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iAmOnTheFilesPage() {
-		$this->filesPage->open();
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		if (!$this->filesPage->isOpen()) {
+			$this->filesPage->open();
+			$this->filesPage->waitTillPageIsLoaded($this->getSession());
+			$this->featureContext->setCurrentPageObject($this->filesPage);
+		}
 	}
 
+	/**
+	 * @Given I am on the trashbin page
+	 * @return void
+	 */
+	public function iAmOnTheTrashbinPage() {
+		if (!$this->trashbinPage->isOpen()) {
+			$this->trashbinPage->open();
+			$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
+			$this->featureContext->setCurrentPageObject($this->trashbinPage);
+		}
+	}
 
 	/**
 	 * @When the files page is reloaded
@@ -356,11 +368,10 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theDeletedElementsShouldBeListedInTheTrashbin() {
-		$this->trashbinPage->open();
-		$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
+		$this->iAmOnTheTrashbinPage();
 
 		foreach ($this->deletedElementsTable as $file) {
-			$this->checkIfFileFolderIsListed($file['name'], "", $this->trashbinPage);
+			$this->checkIfFileFolderIsListed($file['name'], "", "trashbin");
 		}
 	}
 
@@ -422,43 +433,39 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(in the trashbin|)$/
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|)$/
 	 * @param string|array $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
-	 * @param string|null $trashbin
-	 * @param PageObject|null $pageObject if null $this->featureContext->currentPageObject will be used
+	 * @param string $typeOfFilesPage
 	 * @return void
 	 */
 	public function theFileFolderShouldBeListed(
-		$name, $shouldOrNot, $trashbin = "", $pageObject = null
+		$name, $shouldOrNot, $typeOfFilesPage = ""
 	) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$this->checkIfFileFolderIsListed(
-			trim($name, $name[0]), $shouldOrNot, $trashbin, $pageObject
+			trim($name, $name[0]), $shouldOrNot, $typeOfFilesPage
 		);
 	}
 
 	/**
 	 * @param string|array $name
 	 * @param string $shouldOrNot
-	 * @param string|null $trashbin
-	 * @param PageObject|null $pageObject if null $this->filesPage will be used
+	 * @param string $typeOfFilesPage
 	 * @return void
 	 */
 	public function checkIfFileFolderIsListed(
-		$name, $shouldOrNot, $trashbin = "", $pageObject = null
+		$name, $shouldOrNot, $typeOfFilesPage = ""
 	) {
 		$should = ($shouldOrNot !== "not");
 		$message = null;
 
-		if ($trashbin !== "") {
-			$this->trashbinPage->open();
-			$pageObject = $this->trashbinPage;
-		} else {
-			$pageObject = $this->getCurrentPageObject();
+		if ($typeOfFilesPage === "trashbin") {
+			$this->iAmOnTheTrashbinPage();
 		}
 
+		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 
 		try {
@@ -537,15 +544,15 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(in the trashbin|)$/
+	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(trashbin|)$/
 	 * @param string $shouldOrNot
-	 * @param string $trashbin
+	 * @param string $typeOfFilesPage
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
 	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListed(
-		$shouldOrNot, $trashbin, TableNode $namePartsTable
+		$shouldOrNot, $typeOfFilesPage, TableNode $namePartsTable
 	) {
 		$fileNameParts = [];
 
@@ -553,7 +560,7 @@ class FilesContext extends RawMinkContext implements Context {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
 
-		$this->checkIfFileFolderIsListed($fileNameParts, $shouldOrNot, $trashbin);
+		$this->checkIfFileFolderIsListed($fileNameParts, $shouldOrNot, $typeOfFilesPage);
 	}
 
 	/**

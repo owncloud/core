@@ -385,6 +385,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. Report the pass/fail status to SauceLabs.
 	 *
+	 * @param AfterScenarioScope $afterScenarioScope
 	 * @return void
 	 * @AfterScenario
 	 */
