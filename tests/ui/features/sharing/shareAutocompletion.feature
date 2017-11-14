@@ -1,5 +1,5 @@
 @insulated
-Feature: Share names - Autocompletion
+Feature: Autocompletion of share-with names
 As a user
 I want to share files, with minimal typing, to the right people or groups
 So that I can efficiently share my files with other users or groups

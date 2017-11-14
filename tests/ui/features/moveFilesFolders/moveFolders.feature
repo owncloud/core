@@ -1,5 +1,5 @@
 @insulated
-Feature: move Folders
+Feature: move folders
 As a user
 I want to move folders
 So that I can organise my data structure

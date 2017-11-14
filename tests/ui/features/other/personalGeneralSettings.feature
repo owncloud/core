@@ -1,5 +1,5 @@
 @insulated
-Feature: personalGeneralSettings
+Feature: personal general settings
 As a user
 I want to change the ownCloud User Interface to my preferred settings
 So that I can personalise the User Interface
