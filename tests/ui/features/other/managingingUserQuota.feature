@@ -1,8 +1,8 @@
 @insulated
-Feature: manageUserQuota
+Feature: manage user quota
 As an admin
 I want to manage user quota
-So that users only take up a certain amount of space
+So that users can only take up a certain amount of storage space
 
 	Background:
 		Given a regular user exists

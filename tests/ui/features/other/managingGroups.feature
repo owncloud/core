@@ -1,4 +1,4 @@
-Features: manageGroups
+Feature: manage groups
 As an admin
 I want to manage groups
 So that access to resources can be controlled more effectively
