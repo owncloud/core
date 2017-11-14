@@ -33,7 +33,7 @@ else
       DB=pgsql
       ;;
     oracle)
-      wait-for-it oracle:49161
+      wait-for-it oracle:1521
       DB=oci
       ;;
     *)
