@@ -266,6 +266,17 @@ class SMB extends Common {
 			$this->removeFromCache($this->root . $source);
 			$this->removeFromCache($this->root . $target);
 			$this->swallow(__FUNCTION__, $e);
+		} catch (Exception $e) {
+			// Icewind\SMB\Exception\Exception, not a plain exception
+			if ($e->getCode() === 22) {
+				$this->unlink($target);
+				$result = $this->share->rename($this->root . $source, $this->root . $target);
+				$this->removeFromCache($this->root . $source);
+				$this->removeFromCache($this->root . $target);
+			} else {
+				$result = false;
+			}
+			$this->swallow(__FUNCTION__, $e);
 		} catch (\Exception $e) {
 			$this->swallow(__FUNCTION__, $e);
 			$result = false;
