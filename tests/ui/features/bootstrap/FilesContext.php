@@ -127,7 +127,7 @@ class FilesContext extends RawMinkContext implements Context {
 	/**
 	 * @When /^I create a folder with the name ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
-	 * @param string|array $name enclosed in single or double quotes
+	 * @param string $name enclosed in single or double quotes
 	 * @return void
 	 */
 	public function iCreateAFolder($name) {
@@ -411,41 +411,55 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When I open the file/folder :name
-	 * @param string|array $name
+	 * @When /^I open the (trashbin|)\s?(?:file|folder) ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @param string $typeOfFilesPage
+	 * @param string $name enclosed in single or double quotes
 	 * @return void
 	 */
-	public function iOpenTheFolder($name) {
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesPage->openFile($name, $this->getSession());
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+	public function iOpenTheFolderNamed($typeOfFilesPage, $name) {
+		// The capturing groups of the regex include the quotes at each
+		// end of the captured string, so trim them.
+		$this->iOpenTheFolder($typeOfFilesPage, trim($name, $name[0]));
 	}
 
 	/**
-	 * @When I open the trashbin file/folder :name
+	 * @param string $typeOfFilesPage
 	 * @param string|array $name
 	 * @return void
 	 */
-	public function iOpenTheTrashbinFolder($name) {
-		$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
-		$this->trashbinPage->openFile($name, $this->getSession());
-		$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
+	public function iOpenTheFolder($typeOfFilesPage, $name) {
+		if ($typeOfFilesPage === "trashbin") {
+			$this->iAmOnTheTrashbinPage();
+		}
+
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->openFile($name, $this->getSession());
+		$pageObject->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|)$/
-	 * @param string|array $name enclosed in single or double quotes
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
+	 * @param string $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
+	 * @param string $folder
 	 * @return void
 	 */
 	public function theFileFolderShouldBeListed(
-		$name, $shouldOrNot, $typeOfFilesPage = ""
+		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
 	) {
-		// The capturing group of the regex always includes the quotes at each
+		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
+		if ($folder !== "") {
+			$folder = trim($folder, $folder[0]);
+		}
+
 		$this->checkIfFileFolderIsListed(
-			trim($name, $name[0]), $shouldOrNot, $typeOfFilesPage
+			trim($name, $name[0]),
+			$shouldOrNot,
+			$typeOfFilesPage,
+			$folder
 		);
 	}
 
@@ -453,10 +467,11 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string|array $name
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
+	 * @param string $folder
 	 * @return void
 	 */
 	public function checkIfFileFolderIsListed(
-		$name, $shouldOrNot, $typeOfFilesPage = ""
+		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
 	) {
 		$should = ($shouldOrNot !== "not");
 		$message = null;
@@ -467,6 +482,10 @@ class FilesContext extends RawMinkContext implements Context {
 
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
+
+		if ($folder !== "") {
+			$this->iOpenTheFolder($typeOfFilesPage, $folder);
+		}
 
 		try {
 			$fileRowElement = $pageObject->findFileRowByName($name, $this->getSession());
@@ -491,20 +510,6 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the file/folder :itemToBeListed should be listed in the folder :folderName
-	 * @param string $itemToBeListed item to look for
-	 * @param string $folderName folder to look in
-	 * @return void
-	 */
-	public function theFileFolderShouldBeListedInTheFolder(
-		$itemToBeListed, $folderName
-	) {
-		$this->iOpenTheFolder($folderName);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
-		$this->checkIfFileFolderIsListed($itemToBeListed, "");
-	}
-
-	/**
 	 * @Then /^the moved elements should (not|)\s?be listed in the folder ['"](.*)['"]$/
 	 * @param string $shouldOrNot
 	 * @param string $folderName
@@ -513,7 +518,7 @@ class FilesContext extends RawMinkContext implements Context {
 	public function theMovedElementsShouldBeListedInTheFolder(
 		$shouldOrNot, $folderName
 	) {
-		$this->iOpenTheFolder($folderName);
+		$this->iOpenTheFolder("", $folderName);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->theDeletedMovedElementsShouldBeListed($shouldOrNot);
 	}
@@ -534,25 +539,26 @@ class FilesContext extends RawMinkContext implements Context {
 			$folderNameParts[] = $namePartsRow['folder-name-parts'];
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
 		}
-		$this->iOpenTheFolder($folderNameParts);
+		$this->iOpenTheFolder("", $folderNameParts);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 
 		$toBeListedTable = new TableNode($toBeListedTableArray);
 		$this->theFollowingFileFolderShouldBeListed(
-			$shouldOrNot, "", $toBeListedTable
+			$shouldOrNot, "", "", $toBeListedTable
 		);
 	}
 
 	/**
-	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(trashbin|)$/
+	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(trashbin|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
+	 * @param string $folder
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
 	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListed(
-		$shouldOrNot, $typeOfFilesPage, TableNode $namePartsTable
+		$shouldOrNot, $typeOfFilesPage, $folder = "", TableNode $namePartsTable
 	) {
 		$fileNameParts = [];
 
@@ -560,7 +566,18 @@ class FilesContext extends RawMinkContext implements Context {
 			$fileNameParts[] = $namePartsRow['name-parts'];
 		}
 
-		$this->checkIfFileFolderIsListed($fileNameParts, $shouldOrNot, $typeOfFilesPage);
+		// The capturing groups of the regex include the quotes at each
+		// end of the captured string, so trim them.
+		if ($folder !== "") {
+			$folder = trim($folder, $folder[0]);
+		}
+
+		$this->checkIfFileFolderIsListed(
+			$fileNameParts,
+			$shouldOrNot,
+			$typeOfFilesPage,
+			$folder
+		);
 	}
 
 	/**
