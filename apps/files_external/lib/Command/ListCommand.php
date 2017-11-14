@@ -34,6 +34,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use OCP\Files\External\Backend\InvalidBackend;
+use OCP\Files\External\Auth\InvalidAuth;
 
 class ListCommand extends Base {
 	/**
@@ -192,7 +194,11 @@ class ListCommand extends Base {
 				'enable_sharing' => false,
 				'encoding_compatibility' => false
 			];
-			$rows = array_map(function (IStorageConfig $config) use ($userId, $defaultMountOptions, $full) {
+			$countInvalid = 0;
+			$rows = array_map(function (IStorageConfig $config) use ($userId, $defaultMountOptions, $full, &$countInvalid) {
+				if ($config->getBackend() instanceof InvalidBackend || $config->getAuthMechanism() instanceof InvalidAuth) {
+					$countInvalid++;
+				}
 				$storageConfig = $config->getBackendOptions();
 				$keys = array_keys($storageConfig);
 				$values = array_values($storageConfig);
@@ -256,6 +262,14 @@ class ListCommand extends Base {
 			$table->setHeaders($headers);
 			$table->setRows($rows);
 			$table->render();
+
+			if ($countInvalid > 0) {
+				$output->writeln(
+					"<error>Number of invalid storages found: $countInvalid.\n" .
+					"The listed configuration details are likely incomplete.\n" .
+					"Please make sure that all related apps that provide these storages are enabled or delete these.</error>"
+				);
+			}
 		}
 	}
 

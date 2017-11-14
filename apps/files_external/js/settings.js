@@ -809,6 +809,19 @@ MountConfigListView.prototype = _.extend({
 	newStorage: function(storageConfig, onCompletion) {
 		var mountPoint = storageConfig.mountPoint;
 		var backend = this._allBackends[storageConfig.backend];
+		var isInvalidAuth = false;
+
+		if (!backend) {
+			backend = {
+				name: 'Unknown backend: ' + storageConfig.backend,
+				invalid: true
+			};
+		}
+		if (backend && storageConfig.authMechanism && !this._allAuthMechanisms[storageConfig.authMechanism]) {
+			// mark invalid to prevent editing
+			backend.invalid = true;
+			isInvalidAuth = true;
+		}
 
 		// FIXME: Replace with a proper Handlebar template
 		var $tr = this.$el.find('tr#addMountPoint');
@@ -835,6 +848,26 @@ MountConfigListView.prototype = _.extend({
 		$tr.find('.mountPoint input').val(mountPoint);
 		$tr.addClass(backend.identifier);
 		$tr.find('.backend').data('identifier', backend.identifier);
+
+		if (backend.invalid || isInvalidAuth) {
+			$tr.addClass('invalid');
+			$tr.find('[name=mountPoint]').prop('disabled', true);
+			$tr.find('.applicable,.mountOptionsToggle').empty();
+			this.updateStatus($tr, false, 'Unknown backend: ' + backend.name);
+			if (isInvalidAuth) {
+				$tr.find('td.authentication').append('<span class="error-invalid">' +
+					t('files_external', 'Unknown auth backend "{b}"', {b: storageConfig.authMechanism}) +
+					'</span>'
+				);
+			}
+
+			$tr.find('td.configuration').append('<span class="error-invalid">' +
+				t('files_external', 'Please make sure that the app that provides this backend is installed and enabled') +
+				'</span>'
+			);
+
+			return $tr;
+		}
 
 		var selectAuthMechanism = $('<select class="selectAuthMechanism"></select>');
 		var neededVisibility = (this._isPersonal) ? StorageConfig.Visibility.PERSONAL : StorageConfig.Visibility.ADMIN;
