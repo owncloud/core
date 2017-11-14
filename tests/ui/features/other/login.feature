@@ -14,7 +14,7 @@ So that unauthorised access is impossible
 		When I login as a regular user with a correct password
 		Then I should be redirected to a page with the title "Files - ownCloud"
 	
-	Scenario: create simple user
+	Scenario: use the webUI to create a simple user
 		Given a regular user exists
 		And I am logged in as admin
 		And I am on the users page

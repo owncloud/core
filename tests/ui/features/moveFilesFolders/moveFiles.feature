@@ -1,5 +1,5 @@
 @insulated
-Feature: move Files
+Feature: move files
 As a user
 I want to move files
 So that I can organise my data structure

@@ -1,7 +1,7 @@
 @insulated
-Feature: FederationSharing with external users
+Feature: Federation Sharing - sharing with users on other cloud storages
 As a user
-I want to share files with any other user
+I want to share files with any users on other cloud storages
 So that other users have access to these files
 
 	Background:

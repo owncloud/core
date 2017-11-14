@@ -2,7 +2,7 @@
 Feature: deleting files and folders
 As a user
 I want to delete files and folders
-So that I do not fill up my ownCloud space with junk
+So that I can keep my filing system clean and tidy
 
 	Background:
 		Given a regular user exists

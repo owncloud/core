@@ -1,5 +1,5 @@
 @insulated
-Feature: renameFolders
+Feature: rename folders
 As a user
 I want to rename folders
 So that I can organise my data structure

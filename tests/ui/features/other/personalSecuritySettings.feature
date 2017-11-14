@@ -1,5 +1,8 @@
 @insulated
-Feature: personalSecuritySettings
+Feature: personal security settings
+As a user
+I want to be able to manage security settings for my account
+So that I can enable, allow and deny access to and from other storage systems or resources
 
 	Scenario: create new app password
 		Given I am logged in as admin
