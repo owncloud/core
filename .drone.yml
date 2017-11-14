@@ -180,9 +180,6 @@ services:
 
   oracle:
     image: deepdiver/docker-oracle-xe-11g
-    ports:
-      - 49160:22
-      - 49161:1521
     environment:
        - ORACLE_USER=system
        - ORACLE_PASSWORD=oracle
