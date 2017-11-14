@@ -30,6 +30,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Use X-Request-ID header as request id if provided by client, useful for logging - [#29434](https://github.com/owncloud/core/issues/29434)
 - Added authentication headers verification to validate the session - [#29525](https://github.com/owncloud/core/issues/29525)
 - Added IServiceLoader on server container to load app service classes from XML tags in info.xml - [#29525](https://github.com/owncloud/core/issues/29525)
+- Trigger events for federated shares - [#29566](https://github.com/owncloud/core/issues/29566)
 
 ### Changed
 - Exclude mimetypelist.js from integrity check - [#29048](https://github.com/owncloud/core/issues/29048) [#29316](https://github.com/owncloud/core/issues/29316)
@@ -97,7 +98,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix race condition in browser when uploading folder tree - [#29435](https://github.com/owncloud/core/issues/29435)
 - Disable nginx buffering for file downloads to avoid huge memory usage in some scenarios - [#29403](https://github.com/owncloud/core/issues/29403)
 - Fix many issues related to session removal - [#28879](https://github.com/owncloud/core/issues/28879)
-
+- Fix SMB to better detect when overwriting through rename - [#29564](https://github.com/owncloud/core/issues/29564)
 
 ## [10.0.3] - 2017-09-15
 ### Added
