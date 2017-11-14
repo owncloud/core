@@ -10,6 +10,7 @@
     "No crop data provided" : "Kesme verisi sağlanmamış",
     "No valid crop data provided" : "Geçerli kırpma verisi sağlanmadı",
     "Crop is not square" : "Kırpma kare değil",
+    "Could not reset password because the token is invalid" : "Belirteç geçersiz olduğundan parola sıfırlanamadı",
     "%s password changed successfully" : "%s parola başarıyla değiştirildi",
     "%s password reset" : "%s parola sıfırlama",
     "Couldn't send reset email. Please contact your administrator." : "Sıfırlama e-postası gönderilemedi. Lütfen yöneticiniz ile iletişime geçin.",

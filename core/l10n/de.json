@@ -198,6 +198,8 @@
     "delete" : "löschen",
     "access control" : "Zugriffskontrolle",
     "Could not unshare" : "Freigabe konnte nicht entfernt werden",
+    "Email notification was sent!" : "Mail-Benachrichtigung wurde versendet!",
+    "Email notification not sent" : "Mail-Benachrichtigung wurde nicht versendet",
     "Share details could not be loaded for this item." : "Details der geteilten Freigabe konnten nicht geladen werden zu diesem Eintrag.",
     "No users or groups found for {search}" : "Kein Benutzer oder Gruppen gefunden für {search}",
     "No users found for {search}" : "Kein Benutzer gefunden für {search}",

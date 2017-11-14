@@ -200,6 +200,8 @@ OC.L10N.register(
     "delete" : "löschen",
     "access control" : "Zugriffskontrolle",
     "Could not unshare" : "Freigabe konnte nicht aufgehoben werden",
+    "Email notification was sent!" : "Mail-Benachrichtigung wurde versendet!",
+    "Email notification not sent" : "Mail-Benachrichtigung wurde nicht versendet",
     "Share details could not be loaded for this item." : "Die Freigabedetails konnten für dieses Element nicht geladen werden.",
     "No users or groups found for {search}" : "Keine Benutzer oder Gruppen für {search} gefunden",
     "No users found for {search}" : "Keine Benutzer für {search} gefunden",

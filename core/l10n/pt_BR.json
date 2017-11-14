@@ -198,6 +198,8 @@
     "delete" : "remover",
     "access control" : "controle de acesso",
     "Could not unshare" : "Não foi possível descompartilhar",
+    "Email notification was sent!" : "Notificação de e-mail foi enviada!",
+    "Email notification not sent" : "Notificação de e-mail não enviada",
     "Share details could not be loaded for this item." : "Detalhes de compartilhamento não puderam ser carregados para este item.",
     "No users or groups found for {search}" : "Nenhum usuário ou grupo encontrados para {search}",
     "No users found for {search}" : "Nenhum usuário encontrado para {search}",
