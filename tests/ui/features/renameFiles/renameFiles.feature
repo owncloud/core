@@ -1,5 +1,8 @@
 @insulated
-Feature: renameFiles
+Feature: rename files
+As a user
+I want to rename files
+So that I can organise my data structure
 
 	Background:
 		Given a regular user exists
