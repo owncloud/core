@@ -18,7 +18,6 @@ So that I can keep my filing system clean and tidy
 		| strängé filename (duplicate #2).txt |
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
-		But the deleted elements should be listed in the trashbin
 
 	Scenario: Delete a file with problematic characters
 		When I rename the following file to
@@ -53,13 +52,7 @@ So that I can keep my filing system clean and tidy
 			| "double" quotes |
 			| question?       |
 			| &and#hash       |
-		But the following file should be listed in the trashbin
-			| name-parts      |
-			| 'single'        |
-			| "double" quotes |
-			| question?       |
-			| &and#hash       |
-	
+
 	Scenario: Delete multiple files at once
 		When I batch delete these files
 		| name          |
@@ -68,7 +61,6 @@ So that I can keep my filing system clean and tidy
 		| simple-folder |
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
-		But the deleted elements should be listed in the trashbin
 
 	Scenario: Delete an empty folder
 		When I create a folder with the name "my-empty-folder"
@@ -76,12 +68,7 @@ So that I can keep my filing system clean and tidy
 		And I delete the folder "my-empty-folder"
 		Then the folder "my-other-empty-folder" should be listed
 		But the folder "my-empty-folder" should not be listed
-		And the folder "my-empty-folder" should be listed in the trashbin
-		But the folder "my-other-empty-folder" should not be listed in the trashbin
-		When I open the trashbin folder "my-empty-folder"
-		Then there are no files/folders listed
 
 	Scenario: Delete the last file in a folder
 		When I delete the file "zzzz-must-be-last-file-in-folder.txt"
 		Then the file "zzzz-must-be-last-file-in-folder.txt" should not be listed
-		But the file "zzzz-must-be-last-file-in-folder.txt" should be listed in the trashbin
