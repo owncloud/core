@@ -361,15 +361,6 @@ class View {
 	}
 
 	/**
-	 * @param $handle
-	 * @return mixed
-	 */
-	public function readdir($handle) {
-		$fsLocal = new Storage\Local(['datadir' => '/']);
-		return $fsLocal->readdir($handle);
-	}
-
-	/**
 	 * @param string $path
 	 * @return bool|mixed
 	 */
