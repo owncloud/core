@@ -1,8 +1,7 @@
 @insulated
-Feature: disable Sharing
-
-As admin
-I would like to be able to disable the sharing function
+Feature: disable sharing
+As an admin
+I want to be able to disable the sharing function
 So that users cannot share files
 
 	Background:

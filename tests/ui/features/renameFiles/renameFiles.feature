@@ -1,5 +1,8 @@
 @insulated
-Feature: renameFiles
+Feature: rename files
+As a user
+I want to rename files
+So that I can organise my data structure
 
 	Background:
 		Given a regular user exists
@@ -118,4 +121,3 @@ Feature: renameFiles
 	Scenario: Rename a file to .part
 		When I rename the file "data.zip" to "data.part"
 		Then near the file "data.zip" a tooltip with the text '"data.part" has a forbidden file type/extension.' should be displayed
-
