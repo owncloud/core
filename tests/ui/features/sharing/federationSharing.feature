@@ -1,5 +1,8 @@
 @insulated
-Feature: FederationSharing
+Feature: Federation Sharing - sharing with users on other cloud storages
+As a user
+I want to share files with any users on other cloud storages
+So that other users have access to these files
 
 	Background:
 		Given these users exist:
@@ -50,4 +53,3 @@ Feature: FederationSharing
 		Then the file "renamed file.txt" should be listed
 		But the file "lorem.txt" should not be listed
 		And the file "data.zip" should not be listed
-		

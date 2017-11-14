@@ -1,8 +1,7 @@
 @insulated
 Feature: restrict Sharing
-
-As admin
-I would like to be able to restrict the sharing function
+As an admin
+I want to be able to restrict the sharing function
 So that users can only share files with specific users and groups
 
 	Background:

@@ -1,13 +1,12 @@
 @insulated
 Feature: Share by public link
-
-As an user
-I would like to share files through a public link
-So that users, who do not have an account on my oC server can access them
+As a user
+I want to share files through a publicly accessible link
+So that users who do not have an account on my ownCloud server can access them
 
 As an admin
-I would like to limit the ability of a user to share files/folders through a public link
-So that the user is forced to obey the policies of the server operator
+I want to limit the ability of a user to share files/folders through a publicly accessible link
+So that public sharing is limited according to organization policy
 
 	Background:
 		Given these users exist:
