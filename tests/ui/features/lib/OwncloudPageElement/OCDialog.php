@@ -40,6 +40,7 @@ class OCDialog extends OwncloudPage {
 	protected $dialogElement;
 	protected $titleClassXpath = ".//*[@class='oc-dialog-title']";
 	protected $contentClassXpath = ".//*[@class='oc-dialog-content']";
+	protected $buttonByLabelXpath = "//button[.='%s']";
 	/**
 	 * the accept button, regardless of the label
 	 * 
@@ -60,6 +61,14 @@ class OCDialog extends OwncloudPage {
 		$this->dialogElement = $dialogElement;
 	}
 
+	/**
+	 * returns the Element that was set by setElement()
+	 * 
+	 * @return \Behat\Mink\Element\NodeElement
+	 */
+	public function getOwnElement() {
+		return $this->dialogElement;
+	}
 	/**
 	 * 
 	 * @throws ElementNotFoundException
@@ -113,6 +122,28 @@ class OCDialog extends OwncloudPage {
 			);
 		}
 		$primaryButton->click();
+		$this->waitForOutstandingAjaxCalls($session);
+	}
+
+	/**
+	 * clicks the button with the given label
+	 * 
+	 * @param Session $session
+	 * @param string $label
+	 * @return void
+	 */
+	public function clickButton(Session $session, $label) {
+		$button = $this->dialogElement->find(
+			"xpath", sprintf($this->buttonByLabelXpath, $label)
+		);
+		if (is_null($button)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath " . sprintf($this->buttonByLabelXpath, $label) .
+				" could not find button with the given label"
+			);
+		}
+		$button->click();
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 }
