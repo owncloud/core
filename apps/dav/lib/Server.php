@@ -50,8 +50,10 @@ use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\PreviewPlugin;
+use OCA\DAV\Files\ZsyncPlugin;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
+use OCA\DAV\Upload\ChunkingPluginZsync;
 use OCP\IRequest;
 use OCP\SabrePluginEvent;
 use Sabre\CardDAV\VCFExportPlugin;
@@ -191,7 +193,16 @@ class Server {
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
 			if (!is_null($user)) {
-				$view = Filesystem::getView();
+				$userHomeView = new \OC\Files\View('/'.$user->getUID());
+				$this->server->addPlugin(
+					new ChunkingPluginZsync($userHomeView)
+				);
+
+				$this->server->addPlugin(
+					new ZsyncPlugin($userHomeView)
+				);
+
+				$view = \OC\Files\Filesystem::getView();
 				$this->server->addPlugin(
 					new FilesPlugin(
 						$this->server->tree,
