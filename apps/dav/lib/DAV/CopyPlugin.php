@@ -22,8 +22,10 @@
 
 namespace OCA\DAV\DAV;
 
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Files\ICopySource;
+use OCP\Files\ForbiddenException;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
@@ -60,36 +62,42 @@ class CopyPlugin extends ServerPlugin {
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
 	 * @return bool
+	 * @throws Forbidden
 	 */
 	function httpCopy(RequestInterface $request, ResponseInterface $response) {
 
-		$path = $request->getPath();
+		try {
 
-		$copyInfo = $this->server->getCopyAndMoveInfo($request);
-		$sourceNode = $this->server->tree->getNodeForPath($path);
-		$destinationNode = $copyInfo['destinationNode'];
-		if (!$copyInfo['destinationExists'] || !$destinationNode instanceof File || !$sourceNode instanceof IFile) {
-			return true;
+			$path = $request->getPath();
+
+			$copyInfo = $this->server->getCopyAndMoveInfo($request);
+			$sourceNode = $this->server->tree->getNodeForPath($path);
+			$destinationNode = $copyInfo['destinationNode'];
+			if (!$copyInfo['destinationExists'] || !$destinationNode instanceof File || !$sourceNode instanceof IFile) {
+				return true;
+			}
+
+			if (!$this->server->emit('beforeBind', [$copyInfo['destination']])) return false;
+
+			$copySuccess = false;
+			if ($sourceNode instanceof ICopySource) {
+				$copySuccess = $sourceNode->copy($destinationNode->getFileInfo()->getPath());
+			}
+			if (!$copySuccess) {
+				$destinationNode->put($sourceNode->get());
+			}
+
+			$this->server->emit('afterBind', [$copyInfo['destination']]);
+
+			$response->setHeader('Content-Length', '0');
+			$response->setStatus(204);
+
+			// Sending back false will interrupt the event chain and tell the server
+			// we've handled this method.
+			return false;
+		} catch (ForbiddenException $ex) {
+			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		}
-
-		if (!$this->server->emit('beforeBind', [$copyInfo['destination']])) return false;
-
-		$copySuccess = false;
-		if ($sourceNode instanceof ICopySource) {
-			$copySuccess = $sourceNode->copy($destinationNode->getFileInfo()->getPath());
-		}
-		if (!$copySuccess) {
-			$destinationNode->put($sourceNode->get());
-		}
-
-		$this->server->emit('afterBind', [$copyInfo['destination']]);
-
-		$response->setHeader('Content-Length', '0');
-		$response->setStatus(204);
-
-		// Sending back false will interrupt the event chain and tell the server
-		// we've handled this method.
-		return false;
 	}
 
 }

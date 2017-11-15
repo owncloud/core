@@ -309,68 +309,53 @@ class Storage {
 
 	}
 
-	/**
-	 * Rollback to an old version of a file.
-	 *
-	 * @param string $file file name
-	 * @param int $revision revision timestamp
-	 */
-	public static function rollback($file, $revision) {
 
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
-			// add expected leading slash
-			$file = '/' . ltrim($file, '/');
-			list($uid, $filename) = self::getUidAndFilename($file);
-			if ($uid === null || trim($filename, '/') === '') {
-				return false;
-			}
-			$users_view = new View('/'.$uid);
-			$files_view = new View('/'. User::getUser().'/files');
-
-			if (!$files_view->isUpdatable($filename)) {
-				return false;
-			}
-
-			$versionCreated = false;
-
-			//first create a new version
-			$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
-			if (!$users_view->file_exists($version)) {
-				$users_view->copy('files'.$filename, 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename));
-				$versionCreated = true;
-			}
-
-			$fileToRestore =  'files_versions' . $filename . '.v' . $revision;
-
-			// Restore encrypted version of the old file for the newly restored file
-			// This has to happen manually here since the file is manually copied below
-			$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
-			$oldFileInfo = $users_view->getFileInfo($fileToRestore);
-			$newFileInfo = $files_view->getFileInfo($filename);
-			$cache = $newFileInfo->getStorage()->getCache();
-			$cache->update(
-				$newFileInfo->getId(), [
-					'encrypted' => $oldVersion,
-					'encryptedVersion' => $oldVersion,
-					'size' => $oldFileInfo->getSize()
-				]
-			);
-
-			// rollback
-			if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
-				$files_view->touch($file, $revision);
-				Storage::scheduleExpire($uid, $file);
-				\OC_Hook::emit('\OCP\Versions', 'rollback', [
-					'path' => $filename,
-					'revision' => $revision,
-				]);
-				return true;
-			} else if ($versionCreated) {
-				self::deleteVersion($users_view, $version);
-			}
+	public static function restoreVersion($uid, $filename, $fileToRestore, $revision) {
+		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
+			return false;
 		}
-		return false;
+		$users_view = new View('/'.$uid);
+		if (!$users_view->isUpdatable("/files$filename")) {
+			return false;
+		}
 
+		$versionCreated = false;
+
+		//first create a new version
+		$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
+		if (!$users_view->file_exists($version)) {
+			$users_view->copy('files'.$filename, 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename));
+			$versionCreated = true;
+		}
+
+		// Restore encrypted version of the old file for the newly restored file
+		// This has to happen manually here since the file is manually copied below
+		$oldVersion = $users_view->getFileInfo($fileToRestore)->getEncryptedVersion();
+		$oldFileInfo = $users_view->getFileInfo($fileToRestore);
+		$newFileInfo = $users_view->getFileInfo("/files$filename");
+		$cache = $newFileInfo->getStorage()->getCache();
+		$cache->update(
+			$newFileInfo->getId(), [
+				'encrypted' => $oldVersion,
+				'encryptedVersion' => $oldVersion,
+				'size' => $oldFileInfo->getSize()
+			]
+		);
+
+		// rollback
+		if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
+			$users_view->touch("/files$filename", $revision);
+			Storage::scheduleExpire($uid, $filename);
+			\OC_Hook::emit('\OCP\Versions', 'rollback', [
+				'path' => $filename,
+				'user' => $uid,
+				'revision' => $revision,
+			]);
+			return true;
+		} else if ($versionCreated) {
+			self::deleteVersion($users_view, $version);
+		}
+		return true;
 	}
 
 	/**

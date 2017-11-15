@@ -25,6 +25,7 @@ namespace OC\Files\Meta;
 
 use OC\Files\Node\AbstractFile;
 use OC\Files\Node\File;
+use OCP\Files\ForbiddenException;
 use OCP\Files\IProvidesAdditionalHeaders;
 use OCP\Files\IRootFolder;
 use OCP\Files\Storage\IVersionedStorage;
@@ -102,6 +103,9 @@ class MetaFileVersionNode extends AbstractFile implements IProvidesAdditionalHea
 	public function copy($targetPath) {
 		$target = $this->root->get($targetPath);
 		if ($target instanceof File && $target->getId() === $this->parent->getId()) {
+			if (!$target->isUpdateable()) {
+				throw new ForbiddenException("Cannot write to $targetPath", false);
+			}
 			$this->storage->restoreVersion($this->internalPath, $this->versionId);
 			return true;
 		}
