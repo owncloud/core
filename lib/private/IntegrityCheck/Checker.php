@@ -107,11 +107,7 @@ class Checker {
 		 * applicable for very specific scenarios and we should not advertise it
 		 * too prominent. So please do not add it to config.sample.php.
 		 */
-		if ($this->config !== null) {
-			$isIntegrityCheckDisabled = $this->config->getSystemValue('integrity.check.disabled', false);
-		} else {
-			$isIntegrityCheckDisabled = false;
-		}
+		$isIntegrityCheckDisabled = $this->getSystemValue('integrity.check.disabled', false);
 		if ($isIntegrityCheckDisabled === true) {
 			return false;
 		}
@@ -383,7 +379,7 @@ class Checker {
 		}
 
 		//Exclude files which shouldn't fall for comparison
-		$excludeFiles = $this->config->getSystemValue('integrity.excluded.files', []);
+		$excludeFiles = $this->getSystemValue('integrity.excluded.files', []);
 
 		// Compare the list of files which are not identical
 		$currentInstanceHashes = $this->generateHashes($this->getFolderIterator($basePath), $basePath);
@@ -447,10 +443,7 @@ class Checker {
 			return json_decode($cachedResults, true);
 		}
 
-		if ($this->config !== null) {
-			return json_decode($this->config->getAppValue('core', self::CACHE_KEY, '{}'), true);
-		}
-		return [];
+		return json_decode($this->getAppValue(self::CACHE_KEY, '{}'), true);
 	}
 
 	/**
@@ -465,9 +458,8 @@ class Checker {
 		if(!empty($result)) {
 			$resultArray[$scope] = $result;
 		}
-		if ($this->config !== null) {
-			$this->config->setAppValue('core', self::CACHE_KEY, json_encode($resultArray));
-		}
+
+		$this->setAppValue(self::CACHE_KEY, json_encode($resultArray));
 		$this->cache->set(self::CACHE_KEY, json_encode($resultArray));
 	}
 
@@ -476,8 +468,55 @@ class Checker {
 	 * Clean previous results for a proper rescanning. Otherwise
 	 */
 	private function cleanResults() {
-		$this->config->deleteAppValue('core', self::CACHE_KEY);
+		$this->deleteAppValue(self::CACHE_KEY);
 		$this->cache->remove(self::CACHE_KEY);
+	}
+
+	/**
+	 * Sanity wrapper for getSystemValue
+	 * @param string $key
+	 * @param string $default
+	 * @return string
+	 */
+	private function getSystemValue($key, $default = '') {
+		if ($this->config !== null) {
+			return $this->config->getSystemValue($key, $default);
+		}
+		return $default;
+	}
+
+	/**
+	 * Sanity wrapper for getAppValue
+	 * @param string $key
+	 * @param string $default
+	 * @return string
+	 */
+	private function getAppValue($key, $default = '') {
+		if ($this->config !== null) {
+			return $this->config->getAppValue('core', $key, $default);
+		}
+		return $default;
+	}
+
+	/**
+	 * Sanity wrapper for setAppValue
+	 * @param string $key
+	 * @param string $value
+	 */
+	private function setAppValue($key, $value) {
+		if ($this->config !== null) {
+			$this->config->setAppValue('core', $key, $value);
+		}
+	}
+
+	/**
+	 * Sanity wrapper for deleteAppValue
+	 * @param string $key
+	 */
+	private function deleteAppValue($key) {
+		if ($this->config !== null) {
+			$this->config->deleteAppValue('core', $key);
+		}
 	}
 
 	/**
@@ -594,10 +633,13 @@ class Checker {
 	public function runInstanceVerification() {
 		$this->cleanResults();
 		$this->verifyCoreSignature();
+
+		// FIXME: appManager === null means ownCloud is not installed. We check all apps in this case
+		$forceCheckAllApps = is_null($this->appManager);
 		$appIds = $this->appLocator->getAllApps();
-		foreach($appIds as $appId) {
+		foreach ($appIds as $appId) {
 			// If an application is shipped a valid signature is required
-			$isShipped = $this->appManager->isShipped($appId);
+			$isShipped = $forceCheckAllApps || $this->appManager->isShipped($appId);
 			$appNeedsToBeChecked = false;
 			if ($isShipped) {
 				$appNeedsToBeChecked = true;
@@ -606,7 +648,7 @@ class Checker {
 				$appNeedsToBeChecked = true;
 			}
 
-			if($appNeedsToBeChecked) {
+			if ($appNeedsToBeChecked) {
 				$this->verifyAppSignature($appId);
 			}
 		}
