@@ -734,9 +734,9 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	public function restoreVersion($internalPath, $versionId) {
 		// KISS implementation
 		if (!\OC_App::isEnabled('files_versions')) {
-			return;
+			return false;
 		}
-		list ($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
-		\OCA\Files_Versions\Storage::rollback($filename, $versionId);
+		$v = $this->getVersion($internalPath, $versionId);
+		return \OCA\Files_Versions\Storage::restoreVersion($v['owner'], $v['path'], $v['storage_location'], $versionId);
 	}
 }

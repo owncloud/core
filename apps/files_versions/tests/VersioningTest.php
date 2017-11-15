@@ -128,7 +128,6 @@ class VersioningTest extends TestCase {
 		parent::tearDown();
 	}
 
-
 	public function testMoveFileIntoSharedFolderAsRecipient() {
 
 		\OC\Files\Filesystem::mkdir('folder1');
@@ -685,7 +684,7 @@ class VersioningTest extends TestCase {
 
 	/**
 	 * @param string $hookName name of hook called
-	 * @param string $params variable to receive parameters provided by hook
+	 * @param array $params variable to receive parameters provided by hook
 	 */
 	private function connectMockHooks($hookName, &$params) {
 		if ($hookName === null) {
@@ -744,16 +743,14 @@ class VersioningTest extends TestCase {
 		$this->connectMockHooks('rollback', $params);
 
 		$v = $oldVersions["$t2#test.txt"];
-		$this->assertTrue(\OCA\Files_Versions\Storage::rollback($v['path'], $t2));
+		$this->assertTrue(\OCA\Files_Versions\Storage::restoreVersion(self::TEST_VERSIONS_USER, $v['path'], $v['storage_location'], $t2));
 		$expectedParams = [
 			'path' => '/sub/test.txt',
-			'user' => $this->user1,
+			'user' => self::TEST_VERSIONS_USER,
 			'revision' => $t2
 		];
 
-		$this->assertEquals($expectedParams['path'], $params['path']);
-		$this->assertTrue(array_key_exists('revision', $params));
-		$this->assertTrue($params['revision'] > 0);
+		$this->assertEquals($expectedParams, $params);
 
 		$this->assertEquals('version2', $this->rootView->file_get_contents($filePath));
 		$info2 = $this->rootView->getFileInfo($filePath);

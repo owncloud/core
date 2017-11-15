@@ -1334,8 +1334,9 @@ class Preview {
 	 */
 	public static function post_delete($args, $prefix = '') {
 		$path = Files\Filesystem::normalizePath($args['path']);
+		$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
 
-		$preview = new Preview(\OC_User::getUser(), $prefix, $path);
+		$preview = new Preview($user, $prefix, $path);
 		$preview->deleteAllPreviews();
 	}
 
