@@ -103,6 +103,9 @@ class WebDavHelper {
 	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
+		//replace # and ? in the path, Guzzle will not encode them
+		$path = str_replace("#", "%23", $path);
+		$path = str_replace("?", "%3F", $path);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 		$client = new GClient();
 		
@@ -116,7 +119,7 @@ class WebDavHelper {
 			$options['config']
 				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
-		
+
 		$request = $client->createRequest($method, $fullUrl, $options);
 		if (!is_null($headers)) {
 			foreach ($headers as $key => $value) {

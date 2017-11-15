@@ -195,7 +195,8 @@ EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 
 #Set up personalized skeleton
 PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
-$OCC config:system:set skeletondirectory --value="$(pwd)/tests/ui/skeleton" >/dev/null
+export SKELETON_DIR=$(pwd)/tests/ui/skeleton
+$OCC config:system:set skeletondirectory --value="$SKELETON_DIR" >/dev/null
 
 TEST_LOG_FILE=$(mktemp)
 
@@ -204,6 +205,7 @@ export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": 
 export IPV4_URL
 export IPV6_URL
 export REMOTE_FED_BASE_URL
+export FILES_FOR_UPLOAD="$(pwd)/tests/ui/filesForUpload/"
 
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 

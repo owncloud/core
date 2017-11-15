@@ -15,7 +15,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | simple-folder                       |
       | lorem.txt                           |
       | strängé नेपाली folder                  |
-      | strängé filename (duplicate #2).txt |
+      | strängé filename (duplicate #2 &).txt |
     Then the deleted elements should be listed in the trashbin
     And the file "lorem.txt" should be listed in the trashbin folder "simple-folder"
 

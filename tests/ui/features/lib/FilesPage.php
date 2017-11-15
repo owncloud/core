@@ -43,7 +43,7 @@ class FilesPage extends FilesPageBasic {
 	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
 	protected $newFolderButtonXpath = './/div[contains(@class, "newFileMenu")]//a[@data-templatename="New folder"]';
 	protected $newFolderNameInputLabel = 'New folder';
-
+	protected $fileUploadInputId = "file_upload_start";
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
 	/**
@@ -132,6 +132,25 @@ class FilesPage extends FilesPageBasic {
 			// Actually all that we need does happen, so we just don't do anything
 		}
 		return $name;
+	}
+
+	/**
+	 * 
+	 * @param Session $session
+	 * @param string $name
+	 * @return void
+	 */
+	public function uploadFile(Session $session, $name) {
+		$uploadField = $this->findById($this->fileUploadInputId);
+		if (is_null($uploadField)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->fileUploadInputId " .
+				"could not find file upload input field"
+			);
+		}
+		$uploadField->attachFile(getenv("FILES_FOR_UPLOAD") . $name);
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**

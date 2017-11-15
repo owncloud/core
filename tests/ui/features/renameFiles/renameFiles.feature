@@ -27,7 +27,7 @@ So that I can organise my data structure
 		Then the file <to_name> should be listed
 		Examples:
 		|from_name                            |to_name                              |
-		|"strängé filename (duplicate #2).txt"|"strängé filename (duplicate #3).txt"|
+		|"strängé filename (duplicate #2 &).txt"|"strängé filename (duplicate #3).txt"|
 		|"'single'quotes.txt"                 |"single-quotes.txt"                  |
 
 	Scenario: Rename a file using special characters and check its existence after page reload
