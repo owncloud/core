@@ -18,10 +18,6 @@ So that users can only share files with specific users and groups
 		And the user "user2" is in the group "grp1"
 		And the user "user3" is in the group "grp2"
 		And I am on the login page
-		And I login with username "user1" and password "1234"
-		And I logout
-		And I login with username "user3" and password "1234"
-		And I logout
 		And I login with username "user2" and password "1234"
 		
 	Scenario: Restrict users to only share with users in their groups
