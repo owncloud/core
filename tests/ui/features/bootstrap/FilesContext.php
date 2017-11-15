@@ -28,6 +28,8 @@ use Page\FilesPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\TrashbinPage;
 use Page\OwncloudPage;
+use Page\FilesPageElement\ConflictDialog;
+use TestHelpers\DownloadHelper;
 
 require_once 'bootstrap.php';
 
@@ -38,7 +40,11 @@ class FilesContext extends RawMinkContext implements Context {
 
 	private $filesPage;
 	private $trashbinPage;
-
+	/**
+	 * 
+	 * @var ConflictDialog
+	 */
+	private $conflictDialog;
 	/**
 	 * Table of all files and folders that should have been deleted, stored so
 	 * that other steps can use the list to check if the deletion happened correctly
@@ -58,22 +64,35 @@ class FilesContext extends RawMinkContext implements Context {
 	private $movedElementsTable = null;
 
 	/**
+	 * variable to remember in which folder we are currently working
+	 * 
+	 * @var string
+	 */
+	private $currentFolder = "";
+
+	/**
 	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
-	
+	private $uploadConflictDialogTitle = "file conflict";
+
 	/**
 	 * FilesContext constructor.
 	 *
 	 * @param FilesPage $filesPage
 	 * @param TrashbinPage $trashbinPage
+	 * @param ConflictDialog $conflictDialog
+	 * @return void
 	 */
 	public function __construct(
-		FilesPage $filesPage, TrashbinPage $trashbinPage
+		FilesPage $filesPage,
+		TrashbinPage $trashbinPage,
+		ConflictDialog $conflictDialog
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
+		$this->conflictDialog = $conflictDialog;
 	}
 
 	/**
@@ -334,6 +353,51 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When I upload the file :name
+	 * @param string $name
+	 * @return void
+	 */
+	public function iUploadTheFile($name) {
+		$this->filesPage->uploadFile($this->getSession(), $name);
+	}
+
+	/**
+	 * @When /^I choose to keep the (new|existing) files$/
+	 * @param string $choice
+	 */
+	public function choiceInUploadConflict($choice) {
+		$dialogs = $this->filesPage->getOcDialogs();
+		foreach ($dialogs as $dialog) {
+			$isConflictDialog = strstr(
+				$dialog->getTitle(), $this->uploadConflictDialogTitle
+			);
+			if ($isConflictDialog !== false) {
+				$this->conflictDialog->setElement($dialog->getOwnElement());
+				break;
+			}
+		}
+		if ($choice === "new") {
+			$this->conflictDialog->keepNewFiles();
+		} elseif ($choice === "existing") {
+			$this->conflictDialog->keepExistingFiles();
+		} else {
+			throw new Exception("the choice can only be 'new' or 'existing'");
+		}
+		
+	}
+
+	/**
+	 * @When I click the :label button
+	 * @return void
+	 */
+	public function iClickTheButton($label) {
+		$dialogs = $this->filesPage->getOcDialogs();
+		$dialog = end($dialogs);
+		$this->conflictDialog->setElement($dialog->getOwnElement());
+		$this->conflictDialog->clickButton($this->getSession(), $label);
+	}
+
+	/**
 	 * @Then /^the (?:deleted|moved) elements should (not|)\s?be listed$/
 	 * @param string $shouldOrNot
 	 * @return void
@@ -411,33 +475,42 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^I open the (trashbin|)\s?(?:file|folder) ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @When /^I open the (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*"))$/
 	 * @param string $typeOfFilesPage
+	 * @param string $fileOrFolder 
 	 * @param string $name enclosed in single or double quotes
 	 * @return void
 	 */
-	public function iOpenTheFolderNamed($typeOfFilesPage, $name) {
+	public function iOpenTheFolderNamed($typeOfFilesPage, $fileOrFolder, $name) {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$this->iOpenTheFolder($typeOfFilesPage, trim($name, $name[0]));
+		$this->iOpenTheFolder($typeOfFilesPage, $fileOrFolder, trim($name, $name[0]));
 	}
 
 	/**
 	 * @param string $typeOfFilesPage
+	 * @param string $fileOrFolder 
 	 * @param string|array $name
 	 * @return void
 	 */
-	public function iOpenTheFolder($typeOfFilesPage, $name) {
+	public function iOpenTheFolder($typeOfFilesPage, $fileOrFolder, $name) {
 		if ($typeOfFilesPage === "trashbin") {
 			$this->iAmOnTheTrashbinPage();
 		}
-
+		if ($fileOrFolder === "folder") {
+			if (is_array($name)) {
+				$this->currentFolder .= "/" . implode($name);
+			} else {
+				$this->currentFolder .= "/" . $name;
+			}
+		}
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 		$pageObject->openFile($name, $this->getSession());
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 	}
-
+	
+	
 	/**
 	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
 	 * @param string $name enclosed in single or double quotes
@@ -475,16 +548,13 @@ class FilesContext extends RawMinkContext implements Context {
 	) {
 		$should = ($shouldOrNot !== "not");
 		$message = null;
-
 		if ($typeOfFilesPage === "trashbin") {
 			$this->iAmOnTheTrashbinPage();
 		}
-
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
-
 		if ($folder !== "") {
-			$this->iOpenTheFolder($typeOfFilesPage, $folder);
+			$this->iOpenTheFolder($typeOfFilesPage, "folder", $folder);
 		}
 
 		try {
@@ -494,14 +564,12 @@ class FilesContext extends RawMinkContext implements Context {
 			$message = $e->getMessage();
 			$fileRowElement = null;
 		}
-
 		if ($should) {
 			PHPUnit_Framework_Assert::assertNotNull($fileRowElement);
 		} else {
 			if (is_array($name)) {
 				$name = implode($name);
 			}
-
 			PHPUnit_Framework_Assert::assertContains(
 				"could not find file with the name '" . $name . "'",
 				$message
@@ -518,7 +586,7 @@ class FilesContext extends RawMinkContext implements Context {
 	public function theMovedElementsShouldBeListedInTheFolder(
 		$shouldOrNot, $folderName
 	) {
-		$this->iOpenTheFolder("", $folderName);
+		$this->iOpenTheFolder("", "folder", $folderName);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->theDeletedMovedElementsShouldBeListed($shouldOrNot);
 	}
@@ -539,7 +607,7 @@ class FilesContext extends RawMinkContext implements Context {
 			$folderNameParts[] = $namePartsRow['folder-name-parts'];
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
 		}
-		$this->iOpenTheFolder("", $folderNameParts);
+		$this->iOpenTheFolder("", "folder",$folderNameParts);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 
 		$toBeListedTable = new TableNode($toBeListedTableArray);
@@ -636,6 +704,58 @@ class FilesContext extends RawMinkContext implements Context {
 			//this will close the menu again
 			$this->filesPage->clickFileActionsMenuBtnByNo($i);
 		}
+	}
+
+	/**
+	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should be the same as the local ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @param string $remoteFile enclosed in single or double quotes
+	 * @param string $localFile enclosed in single or double quotes
+	 * @return void
+	 */
+	public function theContentOfShouldBeTheSameAsTheLocal($remoteFile, $localFile) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
+		$localFile = getenv("FILES_FOR_UPLOAD") . "/" . trim($localFile, $localFile[0]);
+		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
+	}
+
+	/**
+	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should not have changed$/
+	 * @param string $fileName
+	 * @return void
+	 */
+	public function theContentOfShouldNotHaveChanged($fileName) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$fileName = trim($fileName, $fileName[0]);
+		$remoteFile = $this->currentFolder . "/" . $fileName;
+		$localFile = getenv("SKELETON_DIR") . "/" . $fileName;
+		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
+	}
+
+	/**
+	 * Asserts that the content of a remote and a local file is the same
+	 * uses the current user to download the remote file
+	 * 
+	 * @param string $remoteFile
+	 * @param string $localFile
+	 * @return void
+	 */
+	private function assertContentOfRemoteAndLocalFileIsSame(
+		$remoteFile, $localFile
+	) {
+		$username = $this->featureContext->getCurrentUser();
+		$result = DownloadHelper::download(
+			$this->getMinkParameter("base_url"),
+			$username,
+			$this->featureContext->getUserPassword($username),
+			$remoteFile
+		);
+		
+		PHPUnit_Framework_Assert::assertSame(
+			file_get_contents($localFile), $result->getBody()->getContents()
+		);
 	}
 
 	/**
