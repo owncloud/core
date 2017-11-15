@@ -38,22 +38,22 @@ use Sabre\DAV\Exception\BadRequest;
 class AssemblyStream implements \Icewind\Streams\File {
 
 	/** @var resource */
-	private $context;
+	protected $context;
 
 	/** @var IFile[] */
-	private $nodes;
+	protected $nodes;
 
 	/** @var int */
-	private $pos = 0;
+	protected $pos = 0;
 
 	/** @var array */
-	private $sortedNodes;
+	protected $sortedNodes;
 
 	/** @var int */
-	private $size;
+	protected $size;
 
 	/** @var resource */
-	private $currentStream = null;
+	protected $currentStream = null;
 
 	/**
 	 * @param string $path
@@ -79,6 +79,9 @@ class AssemblyStream implements \Icewind\Streams\File {
 		foreach ($this->nodes as $node) {
 			$size = $node->getSize();
 			$name = $node->getName();
+			// ignore .zsync metadata file
+			if (!strcmp($name,".zsync"))
+				continue;
 			$this->sortedNodes[$name] = ['node' => $node, 'start' => $start, 'end' => $start + $size];
 			$start += $size;
 			$this->size = $start;
@@ -241,7 +244,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 	 *
 	 * @throws \BadMethodCallException
 	 */
-	public static function wrap(array $nodes) {
+	public static function wrap(array $nodes, IFile $backingFile = null, $length = null) {
 		$context = \stream_context_create([
 			'assembly' => [
 				'nodes' => $nodes]
@@ -261,7 +264,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 	 * @param $pos
 	 * @return IFile | null
 	 */
-	private function getNodeForPosition($pos) {
+	protected function getNodeForPosition($pos) {
 		foreach ($this->sortedNodes as $node) {
 			if ($pos >= $node['start'] && $pos < $node['end']) {
 				return [$node['node'], $pos - $node['start']];
@@ -274,7 +277,7 @@ class AssemblyStream implements \Icewind\Streams\File {
 	 * @param IFile $node
 	 * @return resource
 	 */
-	private function getStream(IFile $node) {
+	protected function getStream(IFile $node) {
 		$data = $node->get();
 		if (\is_resource($data)) {
 			return $data;

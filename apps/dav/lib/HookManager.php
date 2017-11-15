@@ -27,8 +27,10 @@ use OCA\DAV\CardDAV\CardDavBackend;
 use OCA\DAV\CardDAV\SyncService;
 use OCP\IL10N;
 use OCP\IUser;
+use OCP\User;
 use OCP\IUserManager;
 use OCP\Util;
+use OC\Files\View;
 
 class HookManager {
 
@@ -85,6 +87,23 @@ class HookManager {
 			'changeUser',
 			$this,
 			'changeUser');
+
+		Util::connectHook('OC_Filesystem',
+			'post_copy',
+			$this,
+			'copyZsyncMetadata');
+		Util::connectHook('OC_Filesystem',
+			'write',
+			$this,
+			'deleteZsyncMetadata');
+		Util::connectHook('OC_Filesystem',
+			'delete',
+			$this,
+			'deleteZsyncMetadata');
+		Util::connectHook('\OCP\Versions',
+			'rollback',
+			$this,
+			'deleteZsyncMetadata');
 	}
 
 	public function postCreateUser($params) {
@@ -140,6 +159,68 @@ class HookManager {
 						'{DAV:}displayname' => $this->l10n->t('Contacts')]);
 				} catch (\Exception $ex) {
 					\OC::$server->getLogger()->logException($ex);
+				}
+			}
+		}
+	}
+
+	public function deleteZsyncMetadata($params) {
+		$view = new View('/'.User::getUser());
+		$path = $params[\OC\Files\Filesystem::signal_param_path];
+		$path = 'files/' . ltrim($path, '/');
+
+		/* if a file then just delete zsync metadata for file */
+		if ($view->is_file($path)) {
+			$info = $view->getFileInfo($path);
+			if ($view->file_exists('files_zsync/'.$info->getId()))
+				$view->unlink('files_zsync/'.$info->getId());
+		} else if ($view->is_dir($path)) {
+		/* if a folder then iteratively delete all zsync metadata for all files in folder, including subdirs */
+			$array[] = $path;
+			while (count($array)) {
+				$current = array_pop($array);
+				$handle = $view->opendir($current);
+				while (($entry = readdir($handle)) !== false) {
+					if($entry[0]!='.' and $view->is_dir($current.'/'.$entry)) {
+						$array[] = $current.'/'.$entry;
+					} else if ($view->is_file($current.'/'.$entry)) {
+						$info = $view->getFileInfo($current.'/'.$entry);
+						if ($view->file_exists('files_zsync/'.$info->getId()))
+							$view->unlink('files_zsync/'.$info->getId());
+					}
+				}
+			}
+		}
+	}
+
+	public function copyZsyncMetadata($params) {
+		$view = new View('/'.User::getUser());
+		$from = $params[\OC\Files\Filesystem::signal_param_oldpath];
+		$from = 'files/' . ltrim($from, '/');
+		$to = $params[\OC\Files\Filesystem::signal_param_newpath];
+		$to = 'files/' . ltrim($to, '/');
+
+		/* if a file then just copy zsync metadata for file */
+		if ($view->is_file($from)) {
+			$info_from = $view->getFileInfo($from);
+			$info_to = $view->getFileInfo($to);
+			if ($view->file_exists('files_zsync/'.$info_from->getId()))
+				$view->copy('files_zsync/'.$info_from->getId(), 'files_zsync/'.$info_to->getId());
+		} else if ($view->is_dir($from)) {
+		/* if a folder then iteratively copy all zsync metadata for all files in folder, including subdirs */
+			$array[] = [$from, $to];
+			while (count($array)) {
+				list($from_current, $to_current) = array_pop($array);
+				$handle = $view->opendir($from_current);
+				while (($entry = readdir($handle)) !== false) {
+					if($entry[0]!='.' and $view->is_dir($from_current.'/'.$entry)) {
+						$array[] = [$from_current.'/'.$entry, $to_current.'/'.$entry];
+					} else if ($view->is_file($from_current.'/'.$entry)) {
+						$info_from = $view->getFileInfo($from_current.'/'.$entry);
+						$info_to = $view->getFileInfo($to_current.'/'.$entry);
+						if ($view->file_exists('files_zsync/'.$info_from->getId()))
+							$view->copy('files_zsync/'.$info_from->getId(), 'files_zsync/'.$info_to->getId());
+					}
 				}
 			}
 		}

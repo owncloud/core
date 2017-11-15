@@ -43,7 +43,8 @@ class Capabilities implements ICapability {
 				'chunking' => '1.0',
 				'reports' => [
 					'search-files',
-				]
+				],
+				'zsync' => '1.0',
 			]
 		];
 
