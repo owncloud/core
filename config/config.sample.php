@@ -1241,7 +1241,7 @@ $CONFIG = array(
 		'~snapshot',
 	),
 /**
- * Exclude directories from the integrity checker command
+ * Exclude files from the integrity checker command
  */
 'integrity.excluded.files' =>
 	array (
