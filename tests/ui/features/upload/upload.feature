@@ -27,7 +27,8 @@ So that I can store files in ownCloud
 		When I upload the file "lorem.txt"
 		And I choose to keep the new files
 		And I click the "Continue" button
-		Then the file "lorem.txt" should be listed
+		Then no dialog should be displayed
+		And the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should be the same as the local "lorem.txt"
 		But the file "lorem (2).txt" should not be listed
 
@@ -36,7 +37,8 @@ So that I can store files in ownCloud
 		And I choose to keep the new files
 		And I choose to keep the existing files
 		And I click the "Continue" button
-		Then the file "lorem.txt" should be listed
+		Then no dialog should be displayed
+		And the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should not have changed
 		And the file "lorem (2).txt" should be listed
 		And the content of "lorem (2).txt" should be the same as the local "lorem.txt"
@@ -44,6 +46,7 @@ So that I can store files in ownCloud
 	Scenario: cancel conflict dialog
 		When I upload the file "lorem.txt"
 		And I click the "Cancel" button
-		Then the file "lorem.txt" should be listed
+		Then no dialog should be displayed
+		And the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should not have changed
 		And the file "lorem (2).txt" should not be listed
