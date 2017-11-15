@@ -19,7 +19,7 @@
  *
  */
 
-namespace Tests\Core\Command\Group;
+namespace Tests\Core\Command\TwoFactorAuth;
 
 use OC\Core\Command\TwoFactorAuth\Enable;
 use Symfony\Component\Console\Tester\CommandTester;
