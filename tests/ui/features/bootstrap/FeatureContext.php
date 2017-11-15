@@ -180,37 +180,58 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then dialogs should be displayed
-	 * @param TableNode $table of expected dialogs format must be:
-	 *                         | title | content |
+	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed$/
+	 * @param int|string|null $count
+	 * @param TableNode|null $table of expected dialogs format must be:
+	 *                              | title | content |
 	 * @return void
 	 */
-	public function dialogsShouldBeDisplayed(TableNode $table) {
+	public function dialogsShouldBeDisplayed(
+		$count = null, TableNode $table = null
+	) {
 		$dialogs = $this->owncloudPage->getOcDialogs();
-		$expectedDialogs = $table->getHash();
-		//we iterate first through the real dialogs because that way we can
-		//save time by calling getMessage() & getTitle() only once
-		foreach ($dialogs as $dialog) {
-			$content = $dialog->getMessage();
-			$title = $dialog->getTitle();
-			for ($dialogI = 0; $dialogI < count($expectedDialogs); $dialogI++) {
-				$expectedDialogs[$dialogI]['content'] = $this->substituteInLineCodes(
-					$expectedDialogs[$dialogI]['content']
-				);
-				if ($expectedDialogs[$dialogI]['content'] === $content
-					&& $expectedDialogs[$dialogI]['title'] === $title
-				) {
-					$expectedDialogs[$dialogI]['found'] = true;
+		//check if the correct number of dialogs are open
+		if ($count !== null) {
+			if ($count === "no") {
+				$count = 0;
+			} else {
+				$count = (int) $count;
+			}
+			$currentTime = microtime(true);
+			$end = $currentTime + (STANDARDUIWAITTIMEOUTMILLISEC / 1000);
+			while ($currentTime <= $end && ($count !== count($dialogs))) {
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = microtime(true);
+				$dialogs = $this->owncloudPage->getOcDialogs();
+			}
+			PHPUnit_Framework_Assert::assertEquals($count, count($dialogs));
+		}
+		if ($table !== null) {
+			$expectedDialogs = $table->getHash();
+			//we iterate first through the real dialogs because that way we can
+			//save time by calling getMessage() & getTitle() only once
+			foreach ($dialogs as $dialog) {
+				$content = $dialog->getMessage();
+				$title = $dialog->getTitle();
+				for ($dialogI = 0; $dialogI < count($expectedDialogs); $dialogI++) {
+					$expectedDialogs[$dialogI]['content'] = $this->substituteInLineCodes(
+						$expectedDialogs[$dialogI]['content']
+					);
+					if ($expectedDialogs[$dialogI]['content'] === $content
+						&& $expectedDialogs[$dialogI]['title'] === $title
+					) {
+						$expectedDialogs[$dialogI]['found'] = true;
+					}
 				}
 			}
-		}
-		foreach ($expectedDialogs as $expectedDialog) {
-			PHPUnit_Framework_Assert::assertArrayHasKey(
-				"found",
-				$expectedDialog,
-				"could not find dialog with title '" . $expectedDialog['title'] .
-				"' and content '" . $expectedDialog['content'] . "'"
-			);
+			foreach ($expectedDialogs as $expectedDialog) {
+				PHPUnit_Framework_Assert::assertArrayHasKey(
+					"found",
+					$expectedDialog,
+					"could not find dialog with title '" . $expectedDialog['title'] .
+					"' and content '" . $expectedDialog['content'] . "'"
+				);
+			}
 		}
 	}
 
