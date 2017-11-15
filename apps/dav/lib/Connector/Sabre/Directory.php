@@ -51,6 +51,7 @@ use Sabre\DAV\Exception\BadRequest;
 use OC\Files\Mount\MoveableMount;
 use Sabre\DAV\IFile;
 use OCA\DAV\Upload\FutureFile;
+use OCA\DAV\Upload\FutureFileZsync;
 use Sabre\DAV\IQuota;
 use Sabre\HTTP\URLUtil;
 
@@ -147,7 +148,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				) {
 					throw new SabreForbidden();
 				}
-			} else if (FutureFile::isFutureFile()) {
+			} else if (FutureFile::isFutureFile() or FutureFileZsync::isFutureFile()) {
 				// Future file (chunked upload) requires fileinfo
 				$info = $this->fileView->getFileInfo($this->path . '/' . $name);
 			} else {
