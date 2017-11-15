@@ -9,7 +9,7 @@ I want only authorised users to log in
 So that unauthorised access is impossible
 
 	Scenario: simple user login
-		Given a regular user exists
+		Given a regular user exists but is not initialized
 		And I am on the login page
 		When I login as a regular user with a correct password
 		Then I should be redirected to a page with the title "Files - ownCloud"

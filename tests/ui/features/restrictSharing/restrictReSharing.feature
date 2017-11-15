@@ -17,8 +17,6 @@ I want to be able to forbid a user that received a share from me to share it fur
 		And the user "user1" is in the group "grp1"
 		And the user "user2" is in the group "grp1"
 		And I am on the login page
-		And I login with username "user1" and password "1234"
-		And I logout
 		And I login with username "user2" and password "1234"
 
 	@skipOnMICROSOFTEDGE

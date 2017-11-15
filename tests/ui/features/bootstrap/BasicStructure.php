@@ -22,6 +22,7 @@
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use TestHelpers\DownloadHelper;
 use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
@@ -80,32 +81,48 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given a regular user exists
+	 * @Given /^a regular user exists\s?(but is not initialized|)$/
+	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @return void
 	 */
-	public function aRegularUserExists() {
-		$this->createUser($this->regularUserName, $this->regularUserPassword);
+	public function aRegularUserExists($doNotInitialize) {
+		$this->createUser(
+			$this->regularUserName,
+			$this->regularUserPassword,
+			null,
+			null,
+			($doNotInitialize === "")
+		);
 	}
 
 	/**
-	 * @Given regular users exist
+	 * @Given /^regular users exist\s?(but are not initialized|)$/
+	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @return void
 	 */
-	public function regularUsersExist() {
+	public function regularUsersExist($doNotInitialize) {
 		foreach ($this->regularUserNames as $user) {
-			$this->createUser($user, $this->regularUserPassword);
+			$this->createUser(
+				$user,
+				$this->regularUserPassword,
+				null,
+				null,
+				($doNotInitialize === "")
+			);
 		}
 	}
 
 	/**
-	 * @Given these users exist:
+	 * @Given /^these users exist\s?(but are not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * displayname & email are optional
+	 *
+	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @param TableNode $table
 	 * @return void
 	 */
-	public function theseUsersExist(TableNode $table) {
+	public function theseUsersExist($doNotInitialize, TableNode $table) {
 		foreach ($table as $row) {
 			if (isset($row['displayname'])) {
 				$displayName = $row['displayname'];
@@ -118,7 +135,11 @@ trait BasicStructure {
 				$email = null;
 			}
 			$this->createUser(
-				$row ['username'], $row ['password'], $displayName, $email
+				$row ['username'],
+				$row ['password'],
+				$displayName,
+				$email,
+				($doNotInitialize === "")
 			);
 		}
 	}
@@ -130,11 +151,12 @@ trait BasicStructure {
 	 * @param string $password
 	 * @param string $displayName
 	 * @param string $email
+	 * @param bool $initialize initialize the user skeleton files etc
 	 * @return void
 	 * @throws Exception
 	 */
 	private function createUser(
-		$user, $password, $displayName = null, $email = null
+		$user, $password, $displayName = null, $email = null, $initialize = true
 	) {
 		$user = trim($user);
 		$result = SetupHelper::createUser(
@@ -144,6 +166,16 @@ trait BasicStructure {
 			throw new Exception(
 				"could not create user. "
 				. $result["stdOut"] . " " . $result["stdErr"]
+			);
+		}
+		if ($initialize) {
+			// Download a skeleton file. That will force the server to fully
+			// initialize the user, including their skeleton files.
+			DownloadHelper::download(
+				$this->getMinkParameter("base_url"),
+				$user,
+				$password,
+				"lorem.txt"
 			);
 		}
 		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
