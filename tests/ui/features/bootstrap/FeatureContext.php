@@ -43,7 +43,8 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $owncloudPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
-	
+	private $currentUser = null;
+
 	/**
 	 * 
 	 * @var Page\OwncloudPage
@@ -101,6 +102,21 @@ class FeatureContext extends RawMinkContext implements Context {
 		] 
 	];
 	
+	/**
+	 * @return string
+	 */
+	public function getCurrentUser() {
+		return $this->currentUser;
+	}
+
+	/**
+	 * @param string $currentUser
+	 * @return void
+	 */
+	public function setCurrentUser($currentUser) {
+		$this->currentUser = $currentUser;
+	}
+
 	/**
 	 * FeatureContext constructor.
 	 *

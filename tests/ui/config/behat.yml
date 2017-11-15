@@ -74,6 +74,16 @@ default:
         - FilesContext:
         - SharingContext:
 
+    upload:
+      paths:
+        - %paths.base%/../features/upload
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+
     restrictSharing:
       paths:
         - %paths.base%/../features/restrictSharing

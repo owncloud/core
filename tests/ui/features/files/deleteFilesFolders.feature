@@ -15,7 +15,7 @@ So that I can keep my filing system clean and tidy
 		| simple-folder                       |
 		| lorem.txt                           |
 		| strängé नेपाली folder                  |
-		| strängé filename (duplicate #2).txt |
+		| strängé filename (duplicate #2 &).txt |
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
 

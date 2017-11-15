@@ -28,7 +28,7 @@ So that public sharing is limited according to organization policy
 		| name                                 |
 		| simple-empty-folder                  |
 		| lorem.txt                            |
-		| strängé filename (duplicate #2).txt  |
+		| strängé filename (duplicate #2 &).txt  |
 		| zzzz-must-be-last-file-in-folder.txt |
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
