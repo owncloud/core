@@ -12,6 +12,7 @@
     "Reasons might be:" : "Moontlike redes is:",
     "the item was removed" : "die item is verwyder",
     "sharing is disabled" : "deling is gedeaktiveer",
-    "Download" : "Laai Af"
+    "Download" : "Laai Af",
+    "Download %s" : "Laai %s Af"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
