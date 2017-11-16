@@ -29,6 +29,8 @@
 	 * @param {Object} [options.scrollContainer] scrollable container, defaults to $(window)
 	 * @param {Object} [options.dragOptions] drag options, disabled by default
 	 * @param {Object} [options.folderDropOptions] folder drop options, disabled by default
+	 * @param {Object} [options.enableDragging=false] whether to enable dragging
+	 * @param {Object} [options.enableDropping=false] whether to enable dropping
 	 * @param {boolean} [options.detailsViewEnabled=true] whether to enable details view
 	 * @param {boolean} [options.enableUpload=false] whether to enable uploader
 	 * @param {OC.Files.Client} [options.filesClient] files client to use
@@ -220,11 +222,15 @@
 				});
 			}
 
-			if (options.dragOptions) {
+			if (!_.isUndefined(options.dragOptions)) {
 				this._dragOptions = options.dragOptions;
+			} else if (options.enableDragging) {
+				this._dragOptions = this._setupDragOptions();
 			}
-			if (options.folderDropOptions) {
+			if (!_.isUndefined(options.folderDropOptions)) {
 				this._folderDropOptions = options.folderDropOptions;
+			} else if (options.enableDropping) {
+				this._folderDropOptions = this._setupFolderDropOptions();
 			}
 			if (options.filesClient) {
 				this.filesClient = options.filesClient;
@@ -292,12 +298,7 @@
 			// if dropping on folders is allowed, then also allow on breadcrumbs
 			if (this._folderDropOptions) {
 				breadcrumbOptions.onDrop = _.bind(this._onDropOnBreadCrumb, this);
-				breadcrumbOptions.onOver = function() {
-					self.$el.find('td.filename.ui-droppable').droppable('disable');
-				}
-				breadcrumbOptions.onOut = function() {
-					self.$el.find('td.filename.ui-droppable').droppable('enable');
-				}
+				self.$container.droppable(this._folderDropOptions);
 			}
 			this.breadcrumb = new OCA.Files.BreadCrumb(breadcrumbOptions);
 
@@ -823,15 +824,16 @@
 				return;
 			}
 
-			var files = this.getSelectedFiles();
-			if (files.length === 0) {
-				// single one selected without checkbox?
-				files = _.map(ui.helper.find('tr'), function(el) {
-					return self.elementToFile($(el));
-				});
-			}
+			var files = _.map(ui.helper.find('tr'), function(el) {
+				return self.elementToFile($(el));
+			});
 
-			this.move(_.pluck(files, 'name'), targetPath);
+			// FIXME: now assuming that all dropped files come from the same folder!
+			if (event.ctrlKey) {
+				this.copy(_.pluck(files, 'name'), targetPath, files[0].path);
+			} else {
+				this.move(_.pluck(files, 'name'), targetPath, files[0].path);
+			}
 
 			// re-enable td elements to be droppable
 			// sometimes the filename drop handler is still called after re-enable,
@@ -1427,7 +1429,7 @@
 			this._setCurrentDir(targetDir, changeUrl, fileId);
 			// discard finished uploads list, we'll get it through a regular reload
 			this._uploads = {};
-			this.reload().then(function(success){
+			return this.reload().then(function(success){
 				if (!success) {
 					self.changeDirectory(currentDir, true);
 				}
@@ -1898,63 +1900,187 @@
 			}
 			return index;
 		},
+
+
+		/**
+		 * Moves files to a given target folder.
+		 *
+		 * @param {Array.<String>} fileNames array of file names to move
+		 * @param {String} targetPath absolute target path
+		 * @param {String} [baseDir] directory to prefix for all file names, defaults to current directory
+		 */
+		move: function(fileNames, targetPath, baseDir) {
+			return this._moveOrCopy(fileNames, targetPath, baseDir, false);
+		},
+
+		/**
+		 * Copies files to a given target folder.
+		 *
+		 * @param {Array.<String>} fileNames array of file names to copy
+		 * @param {String} targetPath absolute target path
+		 * @param {String} [baseDir] directory to prefix for all file names, defaults to current directory
+		 */
+		copy: function(fileNames, targetPath, baseDir) {
+			return this._moveOrCopy(fileNames, targetPath, baseDir, true);
+		},
+
 		/**
 		 * Moves a file to a given target folder.
 		 *
 		 * @param fileNames array of file names to move
 		 * @param targetPath absolute target path
+		 * @param {String} [baseDir] directory to prefix for all file names
+		 * @param {bool} [copy=false] whether to copy instead of move
 		 */
-		move: function(fileNames, targetPath) {
+		_moveOrCopy: function(fileNames, targetPath, baseDir, copy) {
 			var self = this;
-			var dir = this.getCurrentDirectory();
+			var dir = baseDir;
+			if (_.isUndefined(dir)) {
+				dir = this.getCurrentDirectory();
+			}
 			if (dir.charAt(dir.length - 1) !== '/') {
 				dir += '/';
 			}
-			var target = OC.basename(targetPath);
 			if (!_.isArray(fileNames)) {
 				fileNames = [fileNames];
 			}
-			_.each(fileNames, function(fileName) {
+			var promises = _.map(fileNames, function(fileName) {
 				var $tr = self.findFileEl(fileName);
+				var targetFileName = fileName;
 				self.showFileBusyState($tr, true);
 				if (targetPath.charAt(targetPath.length - 1) !== '/') {
 					// make sure we move the files into the target dir,
 					// not overwrite it
 					targetPath = targetPath + '/';
 				}
-				self.filesClient.move(dir + fileName, targetPath + fileName)
-					.done(function() {
-						// if still viewing the same directory
-						if (OC.joinPaths(self.getCurrentDirectory(), '/') === dir) {
-							// recalculate folder size
-							var oldFile = self.findFileEl(target);
-							var newFile = self.findFileEl(fileName);
-							var oldSize = oldFile.data('size');
-							var newSize = oldSize + newFile.data('size');
-							oldFile.data('size', newSize);
-							oldFile.find('td.filesize').text(OC.Util.humanFileSize(newSize));
 
-							// TODO: also update entry in FileList.files
-							self.remove(fileName);
+				// copying a file/folder to the same directory as source ?
+				if (copy && dir === targetPath && dir === OC.joinPaths(self.getCurrentDirectory(), '/')) {
+					// autorename target name based on client-side list
+					targetFileName = self.getUniqueName(targetFileName);
+				}
+
+				var method = copy ? 'copy' : 'move';
+				var source = OC.joinPaths(dir, fileName);
+				var target = OC.joinPaths(targetPath, targetFileName);
+				var deferred = $.Deferred();
+
+				self.filesClient[method](source, target)
+					.done(function() {
+						// refetch info for any parent dir of source or target, if visible.
+						// this is needed mostly to update the size column
+
+						var promises = [];
+						promises = promises.concat(self._refreshPathSections(OC.dirname(source)));
+						promises = promises.concat(self._refreshPathSections(targetPath));
+						var currentDir = OC.joinPaths(self.getCurrentDirectory(), '/');
+						if (currentDir === dir) {
+							if (!copy) {
+								self.remove(fileName);
+							}
 						}
+						if (currentDir === targetPath) {
+							// moved/copied something into the current dir, refresh that element
+							promises.push(self.addAndFetchFileInfo(OC.joinPaths(targetPath, targetFileName), ''));
+						}
+
+						$.when.apply($, promises).then(function() {
+							deferred.resolve();
+						});
 					})
 					.fail(function(status) {
 						if (status === 412) {
 							// TODO: some day here we should invoke the conflict dialog
-							OC.Notification.show(t('files', 'Could not move "{file}", target exists', 
-								{file: fileName}), {type: 'error'}
-							);
+							if (!copy) {
+								OC.Notification.showTemporary(
+									t('files', 'Could not move "{file}", target exists',
+										{file: fileName}, {type: 'error'})
+								);
+							} else {
+								OC.Notification.showTemporary(
+									t('files', 'Could not copy "{file}", target exists',
+										{file: fileName}, {type: 'error'})
+								);
+							}
 						} else {
-							OC.Notification.show(t('files', 'Could not move "{file}"', 
-								{file: fileName}), {type: 'error'}
-							);
+							if (!copy) {
+								OC.Notification.showTemporary(
+									t('files', 'Could not move "{file}"',
+										{file: fileName}, {type: 'error'})
+								);
+							} else {
+								OC.Notification.showTemporary(
+									t('files', 'Could not copy "{file}"',
+										{file: fileName}, {type: 'error'})
+								);
+							}
 						}
+						deferred.reject();
 					})
 					.always(function() {
 						self.showFileBusyState($tr, false);
 					});
+				return deferred.promise();
 			});
+			return $.when.apply($, promises).then(function() {
+				if (!copy) {
+					OC.Notification.showTemporary(
+						t('files', 'Entries were successfully moved')
+					);
+				} else {
+					OC.Notification.showTemporary(
+						t('files', 'Entries were successfully copied')
+					);
+				}
+			});
+		},
 
+		/**
+		 * Array of unresolved promises cached from _refreshPathSections.
+		 * This is used to debounce the calls.
+		 *
+		 * @type {Array.<Promise>}
+		 */
+		_refreshPathSectionsPromises: [],
+
+		/**
+		 * Consider the given path or its parents modified, so refresh any of
+		 * its sections if visible in the list.
+		 *
+		 * This will call addAndFetchFileInfo on every section of the given path.
+		 *
+		 * @param {String} path path to refresh
+		 * @return {Array.<Promise>}
+		 */
+		_refreshPathSections: function(path) {
+			if (path === '' || path === '/') {
+				return [];
+			}
+			var allSections = path.split('/');
+
+			var promises = [];
+			var sections = [];
+			var self = this;
+			for (var i = 0; i < allSections.length; i++) {
+				if (allSections[i] === '') {
+					continue;
+				}
+				sections.push(allSections[i]);
+				var promise;
+				if (this._refreshPathSectionsPromises[sections]) {
+					// use cached promise
+					promise = this._refreshPathSectionsPromises[sections];
+				} else {
+					promise = this.addAndFetchFileInfo(OC.joinPaths.apply(OC.joinPaths, sections), '');
+					promise.then(function() {
+						// remove from cache after resolution
+						delete self._refreshPathSectionsPromises[sections];
+					});
+				}
+				this._refreshPathSectionsPromises[sections] = promise;
+				promises.push(promise);
+			}
+			return promises;
 		},
 
 		/**
@@ -2791,6 +2917,7 @@
 				}
 
 				var fileName = upload.getFileName();
+				// TODO: use _refreshPathSections and put the debounce there
 				var fetchInfoPromise = self.addAndFetchFileInfo(fileName, upload.getFullPath());
 				if (!self._uploads) {
 					self._uploads = {};
@@ -2963,6 +3090,239 @@
 			if (this._detailsView) {
 				this._detailsView.addDetailView(detailView);
 			}
+		},
+
+		_setupDragOptions: function() {
+			var self = this;
+			var dragHoldTimer = null;
+			var $dragOriginal;
+
+			function dragHold() {
+				var $hoverEl = self.$el.find('.canDrop');
+				if (!$hoverEl.length || $hoverEl.hasClass('dragging')) {
+					return;
+				}
+
+				var targetDir = null;
+				if ($hoverEl.hasClass('crumb')) {
+					// hover on breadcrumb
+					targetDir = $hoverEl.attr('data-dir');
+				} else if ($hoverEl.is('tr') && $hoverEl.closest('#filestable').length) {
+					// hover on table row
+					if ($hoverEl.attr('data-mime') === 'httpd/unix-directory') {
+						targetDir = OC.joinPaths($hoverEl.attr('data-path'), $hoverEl.attr('data-file'));
+					}
+				}
+
+				if (targetDir !== null && targetDir !== self.getCurrentDirectory()) {
+					// prevent original destruction
+					$dragOriginal.detach();
+					$dragOriginal.draggable('option', 'refreshPositions', true);
+					self.changeDirectory(targetDir).then(function() {
+						// set to false for performance
+						setTimeout(function() {
+							if (!$dragOriginal) {
+								return;
+							}
+							$dragOriginal.draggable('option', 'refreshPositions', false);
+						}, 1000);
+					});
+				}
+			}
+
+			var dragHoldDelay = 1000;
+			var dragOptions = {
+				refreshPositions: false,
+				revert: 'invalid',
+				revertDuration: 300,
+				opacity: 0.7,
+				zIndex: 100,
+				appendTo: 'body',
+				cursorAt: { left: 24, top: 18 },
+				helper: _.bind(this._createDragShadow, this),
+				cursor: 'move',
+
+				start: function(ev, ui){
+					var $helper = $(ui.helper);
+					var $selectedFiles = self.$table.find('td.filename input:checkbox:checked');
+					if (!$selectedFiles.length) {
+						$selectedFiles = $(this);
+					}
+					var $tr = $selectedFiles.closest('tr');
+					$tr.addClass('animate-opacity dragging');
+					$tr.filter('.ui-droppable').droppable('disable');
+					$dragOriginal = $(this);
+					$('body').on('keydown.dragfiles, keyup.dragfiles', function(ev) {
+						$helper.toggleClass('copy-mode', ev.ctrlKey);
+					});
+
+				},
+				stop: function() {
+					$('body').off('keydown.dragfiles, keyup.dragfiles');
+					if (dragHoldTimer) {
+						clearTimeout(dragHoldTimer);
+					}
+					var $selectedFiles = self.$table.find('td.filename input:checkbox:checked');
+					if (!$selectedFiles.length) {
+						$selectedFiles = $(this);
+					}
+					var $tr = $selectedFiles.closest('tr');
+					$tr.removeClass('dragging');
+					$tr.filter('.ui-droppable').droppable('enable');
+					setTimeout(function() {
+						$tr.removeClass('animate-opacity');
+					}, 300);
+					$dragOriginal = null;
+				},
+				drag: function(event, ui) {
+					var scrollingArea = self.$container;
+					var currentScrollTop = $(scrollingArea).scrollTop();
+					var scrollArea = Math.min(Math.floor($(window).innerHeight() / 2), 100);
+
+					// every time the user moves, reset the hold timer
+					if (dragHoldTimer) {
+						clearTimeout(dragHoldTimer);
+					}
+					dragHoldTimer = setTimeout(dragHold, dragHoldDelay);
+
+					// auto-scroll when reaching the top or bottom of the screen while dragging
+					var bottom = $(window).innerHeight() - scrollArea;
+					var top = $(window).scrollTop() + scrollArea;
+					if (event.pageY < top) {
+						$('html, body').animate({
+
+							scrollTop: $(scrollingArea).scrollTop(currentScrollTop - 10)
+						}, 400);
+
+					} else if (event.pageY > bottom) {
+						$('html, body').animate({
+							scrollTop: $(scrollingArea).scrollTop(currentScrollTop + 10)
+						}, 400);
+					}
+				}
+			};
+			// sane browsers support using the distance option
+			if ( $('html.ie').length === 0) {
+				dragOptions.distance = 20;
+			}
+			return dragOptions;
+		},
+
+		_setupFolderDropOptions: function() {
+			var self = this;
+
+			return {
+				hoverClass: "canDrop",
+				drop: function(event, ui) {
+					var $target = $(event.target);
+					// don't allow moving a file into a selected folder
+					if ($target.parents('tr').find('td input:first').prop('checked') === true) {
+						return false;
+					}
+
+					var targetPath = null;
+
+					// dropped directly on table
+					if ($target.is(self.$container)) {
+						targetPath = self.getCurrentDirectory();
+						if ((self.getDirectoryPermissions() & OC.PERMISSION_CREATE) === 0) {
+							self._showPermissionDeniedNotification();
+							return false;
+						}
+					} else {
+						var $tr = $target.closest('tr');
+						if (($tr.data('permissions') & OC.PERMISSION_CREATE) === 0) {
+							self._showPermissionDeniedNotification();
+							return false;
+						}
+						targetPath = OC.joinPaths(self.getCurrentDirectory(), $tr.data('file'));
+					}
+
+					var files = _.map(ui.helper.find('tr'), function(el) {
+						return self.elementToFile($(el));
+					});
+
+					if (!event.ctrlKey) {
+						// remove files moved to the same target as they already are
+						// this can happen when a drop event is caught both by a file row
+						// and the main container
+						files = _.filter(files, function(file) {
+							return file.path !== targetPath;
+						});
+					}
+
+					if (!files.length) {
+						return;
+					}
+
+					// FIXME: now assuming that all dropped files come from the same folder!
+					if (event.ctrlKey) {
+						self.copy(_.pluck(files, 'name'), targetPath, files[0].path);
+					} else {
+						self.move(_.pluck(files, 'name'), targetPath, files[0].path);
+					}
+				},
+				tolerance: 'pointer',
+				greedy: true
+			};
+		},
+
+		_createDragShadow: function(event) {
+			var self = this;
+			//select dragged file
+			var isDragSelected = $(event.target).parents('tr').find('td input:first').prop('checked');
+			if (!isDragSelected) {
+				//select dragged file
+				this._selectFileEl($(event.target).parents('tr:first'), true, false);
+			}
+
+			// do not show drag shadow for too many files
+			var selectedFiles = _.first(this.getSelectedFiles(), this.pageSize());
+			selectedFiles = _.sortBy(selectedFiles, this._fileInfoCompare);
+
+			if (!isDragSelected && selectedFiles.length === 1) {
+				//revert the selection
+				this._selectFileEl($(event.target).parents('tr:first'), false, false);
+			}
+
+			// build dragshadow
+			var $dragshadow = $(
+				'<div class="files-dragshadow">' +
+					'<div class="icon icon-add"></div>' +
+					'<table></table>' +
+				'</div>');
+			var $table = $dragshadow.find('table');
+			var $tbody = $('<tbody></tbody>');
+			$table.append($tbody);
+
+			var dir = this.getCurrentDirectory();
+
+			$(selectedFiles).each(function(i,elem) {
+				// TODO: refactor this with the table row creation code
+				var $newtr = $('<tr/>')
+					.attr('data-path', dir)
+					.attr('data-file', elem.name)
+					.attr('data-origin', elem.origin);
+				$newtr.append($('<td class="filename" />').text(elem.name).css('background-size', 32));
+				$newtr.append($('<td class="size" />').text(OC.Util.humanFileSize(elem.size)));
+				$tbody.append($newtr);
+				if (elem.mime === 'httpd/unix-directory') {
+					$newtr.find('td.filename')
+						.css('background-image', 'url(' + OC.imagePath('core', 'filetypes/folder.png') + ')');
+				} else {
+					var path = dir + '/' + elem.name;
+					self.lazyLoadPreview({
+						path: path,
+						mime: elem.mimetype,
+						callback: function(previewpath) {
+							$newtr.find('td.filename').css('background-image', 'url(' + previewpath + ')');
+						},
+						etag: elem.etag
+					});
+				}
+			});
+
+			return $dragshadow;
 		}
 	};
 

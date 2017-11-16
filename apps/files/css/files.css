@@ -715,16 +715,25 @@ table tr.summary td {
 	margin-left: 90px;
 }
 
-table.dragshadow {
+.files-dragshadow table {
 	width:auto;
 }
-table.dragshadow td.filename {
+.files-dragshadow table td.filename {
 	padding-left:60px;
 	padding-right:16px;
 	height: 36px;
 }
-table.dragshadow td.size {
+.files-dragshadow table td.size {
 	padding-right:8px;
+}
+.files-dragshadow>.icon {
+	position: absolute;
+	left: -20px;
+	top: 9px;
+	visibility: hidden;
+}
+.files-dragshadow.copy-mode>.icon {
+	visibility: visible;
 }
 #upgrade {
 	width: 400px;
@@ -843,7 +852,7 @@ html.ie8 #controls .button.new {
 	margin-bottom: 2px;
 }
 
-.canDrop,
+.crumb.canDrop,
 #filestable tbody tr.canDrop {
   background-color: rgba(255, 255, 140, 1);
 }

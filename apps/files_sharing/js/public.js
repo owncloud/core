@@ -9,7 +9,6 @@
  */
 
 /* global FileActions, Files, FileList */
-/* global dragOptions, folderDropOptions */
 if (!OCA.Sharing) {
 	OCA.Sharing = {};
 }
@@ -67,11 +66,11 @@ OCA.Sharing.PublicApp = {
 				{
 					id: 'files.public',
 					scrollContainer: $('#content-wrapper'),
-					dragOptions: dragOptions,
-					folderDropOptions: folderDropOptions,
 					fileActions: fileActions,
 					detailsViewEnabled: false,
 					filesClient: filesClient,
+					enableDragging: true,
+					enableDropping: true,
 					enableUpload: true
 				}
 			);

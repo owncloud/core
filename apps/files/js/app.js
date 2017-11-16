@@ -82,9 +82,9 @@
 			this.fileList = new OCA.Files.FileList(
 				$('#app-content-files'), {
 					scrollContainer: $('#app-content'),
-					dragOptions: dragOptions,
-					folderDropOptions: folderDropOptions,
 					fileActions: fileActions,
+					enableDragging: true,
+					enableDropping: true,
 					allowLegacyActions: true,
 					scrollTo: urlParams.scrollto,
 					filesClient: OC.Files.getClient(),
