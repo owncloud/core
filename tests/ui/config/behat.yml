@@ -63,9 +63,20 @@ default:
         - UsersContext:
         - FilesContext:
 
-    sharing:
+    sharingInternalGroupsUsers:
       paths:
-        - %paths.base%/../features/sharing
+        - %paths.base%/../features/sharingInternalGroupsUsers
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+        - SharingContext:
+
+    sharingExternalOther:
+      paths:
+        - %paths.base%/../features/sharingExternalOther
       context: *common_suite_context
       contexts:
         - FeatureContext:

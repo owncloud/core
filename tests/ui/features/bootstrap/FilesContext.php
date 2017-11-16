@@ -280,7 +280,11 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When I delete the file/folder :name
+	 * for a folder or individual file that is shared, the receiver of the share
+	 * has an "Unshare" entry in the file actions menu. Clicking it works just
+	 * like delete.
+	 *
+	 * @When I delete/unshare the file/folder :name
 	 * @param string $name
 	 * @return void
 	 */
@@ -362,6 +366,29 @@ class FilesContext extends RawMinkContext implements Context {
 		$firstFileName = $files->getRow(1)[0];
 		$this->iMoveTheFileFolderTo($firstFileName, $folderName);
 		$this->movedElementsTable = $files;
+	}
+
+	/**
+	 * @When I upload overwriting the file :name
+	 * @param string $name
+	 * @return void
+	 */
+	public function iUploadOverwritingTheFile($name) {
+		$this->iUploadTheFile($name);
+		$this->choiceInUploadConflict("new");
+		$this->iClickTheButton("Continue");
+	}
+
+	/**
+	 * @When I upload the file :name keeping both new and existing files
+	 * @param string $name
+	 * @return void
+	 */
+	public function iUploadTheFileKeepingNewExisting($name) {
+		$this->iUploadTheFile($name);
+		$this->choiceInUploadConflict("new");
+		$this->choiceInUploadConflict("existing");
+		$this->iClickTheButton("Continue");
 	}
 
 	/**
@@ -720,17 +747,39 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should be the same as the local ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be the same as the original ((?:'[^']*')|(?:"[^"]*"))$/
 	 * @param string $remoteFile enclosed in single or double quotes
+	 * @param string $shouldOrNot
+	 * @param string $originalFile enclosed in single or double quotes
+	 * @return void
+	 */
+	public function theContentOfShouldBeTheSameAsTheOriginal(
+		$remoteFile, $shouldOrNot, $originalFile
+	) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
+		$originalFile = getenv("SKELETON_DIR") . "/" . trim($originalFile, $originalFile[0]);
+		$shouldBeSame = ($shouldOrNot !== "not");
+		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $originalFile, $shouldBeSame);
+	}
+
+	/**
+	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be the same as the local ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @param string $remoteFile enclosed in single or double quotes
+	 * @param string $shouldOrNot
 	 * @param string $localFile enclosed in single or double quotes
 	 * @return void
 	 */
-	public function theContentOfShouldBeTheSameAsTheLocal($remoteFile, $localFile) {
+	public function theContentOfShouldBeTheSameAsTheLocal(
+		$remoteFile, $shouldOrNot, $localFile
+	) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
 		$localFile = getenv("FILES_FOR_UPLOAD") . "/" . trim($localFile, $localFile[0]);
-		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
+		$shouldBeSame = ($shouldOrNot !== "not");
+		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile, $shouldBeSame);
 	}
 
 	/**
@@ -743,20 +792,28 @@ class FilesContext extends RawMinkContext implements Context {
 		// end of the captured string, so trim them.
 		$fileName = trim($fileName, $fileName[0]);
 		$remoteFile = $this->currentFolder . "/" . $fileName;
-		$localFile = getenv("SKELETON_DIR") . "/" . $fileName;
+		if ($this->currentFolder !== "") {
+			$subFolderPath = $this->currentFolder . "/";
+		} else {
+			$subFolderPath = "";
+		}
+		$localFile = getenv("SKELETON_DIR") . "/" . $subFolderPath . $fileName;
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
 	}
 
 	/**
 	 * Asserts that the content of a remote and a local file is the same
+	 * or is different
 	 * uses the current user to download the remote file
-	 * 
+	 *
 	 * @param string $remoteFile
 	 * @param string $localFile
+	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
+	 *                     otherwise check that the file contents are different
 	 * @return void
 	 */
 	private function assertContentOfRemoteAndLocalFileIsSame(
-		$remoteFile, $localFile
+		$remoteFile, $localFile, $shouldBeSame = true
 	) {
 		$username = $this->featureContext->getCurrentUser();
 		$result = DownloadHelper::download(
@@ -765,10 +822,15 @@ class FilesContext extends RawMinkContext implements Context {
 			$this->featureContext->getUserPassword($username),
 			$remoteFile
 		);
-		
-		PHPUnit_Framework_Assert::assertSame(
-			file_get_contents($localFile), $result->getBody()->getContents()
-		);
+
+		$localContent = file_get_contents($localFile);
+		$downloadedContent = $result->getBody()->getContents();
+
+		if ($shouldBeSame) {
+			PHPUnit_Framework_Assert::assertSame($localContent, $downloadedContent);
+		} else {
+			PHPUnit_Framework_Assert::assertNotSame($localContent, $downloadedContent);
+		}
 	}
 
 	/**
