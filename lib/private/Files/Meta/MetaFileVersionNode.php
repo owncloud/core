@@ -25,9 +25,9 @@ namespace OC\Files\Meta;
 
 use OC\Files\Node\AbstractFile;
 use OC\Files\Node\File;
+use OCP\Files\IProvidesAdditionalHeaders;
 use OCP\Files\IRootFolder;
 use OCP\Files\Storage\IVersionedStorage;
-use OCP\Files\NotPermittedException;
 use OCP\Files\Storage;
 
 /**
@@ -36,7 +36,7 @@ use OCP\Files\Storage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile {
+class MetaFileVersionNode extends AbstractFile implements IProvidesAdditionalHeaders {
 
 	/** @var string */
 	private $versionId;
@@ -103,11 +103,11 @@ class MetaFileVersionNode extends AbstractFile {
 		$target = $this->root->get($targetPath);
 		if ($target instanceof File && $target->getId() === $this->parent->getId()) {
 			$this->storage->restoreVersion($this->internalPath, $this->versionId);
-			return;
+			return true;
 		}
 
 		// for now we only allow restoring of a version
-		throw new NotPermittedException();
+		return false;
 	}
 
 	public function getMTime() {
@@ -124,5 +124,15 @@ class MetaFileVersionNode extends AbstractFile {
 
 	public function fopen($mode) {
 		return $this->storage->getContentOfVersion($this->internalPath, $this->versionId);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getHeaders() {
+		$fileName = basename($this->internalPath);
+		return [
+			'Content-Disposition' => 'attachment; filename="' . rawurlencode($fileName) . '"'
+		];
 	}
 }

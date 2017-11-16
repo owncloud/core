@@ -37,8 +37,6 @@
 		'<ul class="versions"></ul>' +
 		'<div class="clear-float"></div>' +
 		'<div class="empty hidden">{{emptyResultLabel}}</div>' +
-		'<input type="button" class="showMoreVersions hidden" value="{{moreVersionsLabel}}"' +
-		' name="show-more-versions" id="show-more-versions" />' +
 		'<div class="loading hidden" style="height: 50px"></div>';
 
 	/**
@@ -54,8 +52,7 @@
 		$versionsContainer: null,
 
 		events: {
-			'click .revertVersion': '_onClickRevertVersion',
-			'click .showMoreVersions': '_onClickShowMoreVersions'
+			'click .revertVersion': '_onClickRevertVersion'
 		},
 
 		initialize: function() {
@@ -73,19 +70,14 @@
 		},
 
 		nextPage: function() {
-			if (this._loading || !this.collection.hasMoreResults()) {
+			if (this._loading) {
 				return;
 			}
 
 			if (this.collection.getFileInfo() && this.collection.getFileInfo().isDirectory()) {
 				return;
 			}
-			this.collection.fetchNext();
-		},
-
-		_onClickShowMoreVersions: function(ev) {
-			ev.preventDefault();
-			this.nextPage();
+			this.collection.fetch();
 		},
 
 		_onClickRevertVersion: function(ev) {
@@ -100,8 +92,6 @@
 			ev.preventDefault();
 			revision = $target.attr('data-revision');
 
-			this.$el.find('.versions, .showMoreVersions').addClass('hidden');
-
 			var versionModel = this.collection.get(revision);
 			versionModel.revert({
 				success: function() {
@@ -109,7 +99,7 @@
 					self.$versionsContainer.empty();
 					self.collection.setFileInfo(fileInfoModel);
 					self.collection.reset([], {silent: true});
-					self.collection.fetchNext();
+					self.collection.fetch();
 
 					self.$el.find('.versions').removeClass('hidden');
 
@@ -151,13 +141,11 @@
 
 		_onRequest: function() {
 			this._toggleLoading(true);
-			this.$el.find('.showMoreVersions').addClass('hidden');
 		},
 
 		_onEndRequest: function() {
 			this._toggleLoading(false);
 			this.$el.find('.empty').toggleClass('hidden', !!this.collection.length);
-			this.$el.find('.showMoreVersions').toggleClass('hidden', !this.collection.hasMoreResults());
 		},
 
 		_onAddModel: function(model) {
@@ -218,7 +206,6 @@
 		render: function() {
 			this.$el.html(this.template({
 				emptyResultLabel: t('files_versions', 'No other versions available'),
-				moreVersionsLabel: t('files_versions', 'More versions...')
 			}));
 			this.$el.find('.has-tooltip').tooltip();
 			this.$versionsContainer = this.$el.find('ul.versions');

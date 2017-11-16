@@ -1,12 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@statuscode.ch>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -25,13 +19,25 @@
  *
  */
 
-namespace OCA\Files_Versions\AppInfo;
 
-$application = new Application();
+namespace OCA\DAV\Files;
 
-/** @var $this \OCP\Route\IRouter */
-$this->create('core_ajax_versions_preview', '/preview')->action(
-function() {
-	require_once __DIR__ . '/../ajax/preview.php';
-});
 
+/**
+ * Interface ICopySource
+ * This interface allows special handling of copy operations based on the copy source.
+ * This gives the developer the freedom to implement a more efficient copy operation.
+ *
+ * @package OCA\DAV\Files
+ */
+interface ICopySource {
+
+	/**
+	 * Copies the source to the given destination.
+	 * If the operation was not successful false is returned.
+	 *
+	 * @param string $destinationPath
+	 * @return boolean
+	 */
+	public function copy($destinationPath);
+}
