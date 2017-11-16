@@ -10,8 +10,6 @@ So that other users have access to these files
 		|user1   |1234    |User One   |u1@oc.com.np|
 		|user2   |1234    |User Two   |u2@oc.com.np|
 		And I am on the login page
-		And I login with username "user1" and password "1234"
-		And I logout
 		And I login with username "user2" and password "1234"
 
 	Scenario: test the single steps of federation sharing

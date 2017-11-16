@@ -16,11 +16,9 @@ So that those groups and users can access the files and folders
 		And the user "user1" is in the group "grp1"
 		And the user "user2" is in the group "grp1"
 		And I am on the login page
-		And I login with username "user1" and password "1234"
-		And I logout
-		And I login with username "user2" and password "1234"
 
 	Scenario: share a file & folder with another internal user
+		And I login with username "user2" and password "1234"
 		When the folder "simple-folder" is shared with the user "User One"
 		And the file "testimage.jpg" is shared with the user "User One"
 		And I logout
@@ -34,7 +32,6 @@ So that those groups and users can access the files and folders
 		But the folder "simple-folder (2)" should not be listed
 
 	Scenario: share a folder with an internal group
-		And I logout
 		And I login with username "user3" and password "1234"
 		When the folder "simple-folder" is shared with the group "grp1"
 		And the file "testimage.jpg" is shared with the group "grp1"
@@ -53,6 +50,7 @@ So that those groups and users can access the files and folders
 
 	@skipOnMICROSOFTEDGE
 	Scenario: share a folder with another internal user and prohibit deleting
+		And I login with username "user2" and password "1234"
 		When the folder "simple-folder" is shared with the user "User One"
 		And the sharing permissions of "User One" for "simple-folder" are set to
 		| delete | no |
