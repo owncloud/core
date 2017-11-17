@@ -215,6 +215,8 @@ class FilesPage extends FilesPageBasic {
 			echo $message;
 			error_log($message);
 		}
+
+		$this->waitTillFileRowsAreReady($session);
 	}
 
 	/**
