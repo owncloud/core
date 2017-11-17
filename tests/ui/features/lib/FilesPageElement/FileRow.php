@@ -74,6 +74,16 @@ class FileRow extends OwnCloudPage {
 	}
 
 	/**
+	 * checks if the file row is busy,
+	 * for example waiting for a rename to be finished
+	 *
+	 * @return boolean
+	 */
+	public function isBusy() {
+		return $this->rowElement->hasClass('busy');
+	}
+
+	/**
 	 * finds the Action Button
 	 *
 	 * @return \Behat\Mink\Element\NodeElement
