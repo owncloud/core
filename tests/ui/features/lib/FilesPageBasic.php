@@ -37,6 +37,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	protected $fileActionMenuBtnXpathByNo = ".//*[@id='fileList']/tr[%d]//a[@data-action='menu']";
 	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
 	protected $fileActionMenuXpath = "//div[contains(@class,'fileActionsMenu')]";
+	protected $fileRowsBusyXpath = "//tr[contains(@class,'busy')]";
 	protected $fileRowFromNameXpath = "/../../..";
 	protected $appContentId = "app-content";
 	protected $appContentFilesContainerId = "app-content-files";
@@ -422,5 +423,42 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		}
 
 		$this->waitForOutstandingAjaxCalls($session);
+	}
+
+	/**
+	 * when files have changes in progress to the server (e.g. rename or delete)
+	 * then the corresponding rows of the file list are marked as busy.
+	 * this function waits until no rows are busy, or it times out
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 * @return void
+	 */
+	public function waitTillFileRowsAreReady(
+		Session $session,
+		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
+	) {
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
+			$fileList = $this->find('xpath', $this->getFileListXpath());
+
+			if (!is_null($fileList)) {
+				$busyFileRows = $fileList->findAll('xpath', $this->fileRowsBusyXpath);
+
+				if (count($busyFileRows) === 0) {
+					break;
+				}
+			}
+
+			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
+		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				__METHOD__ . " timeout waiting for file rows to be ready"
+			);
+		}
 	}
 }
