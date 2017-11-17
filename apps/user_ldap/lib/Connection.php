@@ -527,18 +527,20 @@ class Connection extends LDAPUtility {
 					|| (!$this->configuration->ldapOverrideMainServer
 					&& !$this->getFromCache('overrideMainServer'))
 				) {
-					$this->doConnect($this->configuration->ldapHost,
-						$this->configuration->ldapPort);
-					if(@$this->ldap->bind(
-						$this->ldapConnectionRes,
-						$this->configuration->ldapAgentName,
-						$this->configuration->ldapAgentPassword)
+					if ($this->doConnect(
+							$this->configuration->ldapBackupHost,
+							$this->configuration->ldapBackupPort)
+						&& @$this->ldap->bind(
+							$this->ldapConnectionRes,
+							$this->configuration->ldapAgentName,
+							$this->configuration->ldapAgentPassword)
 					) {
 						return true;
 					} else {
 						Util::writeLog('user_ldap',
 							'Bind failed: ' . $this->getLDAP()->errno($this->ldapConnectionRes) . ': ' . $this->getLDAP()->error($this->ldapConnectionRes),
-							Util::WARN);
+							Util::DEBUG); // log only in debug mod because this is triggered by wrong passwords
+						$this->ldapConnectionRes = null;
 					}
 				}
 			} catch (ServerNotAvailableException $e) {
@@ -551,27 +553,30 @@ class Connection extends LDAPUtility {
 			Util::writeLog('user_ldap',
 				'Trying to connect to backup server '.$this->configuration->ldapBackupHost.':'.$this->configuration->ldapBackupPort,
 				Util::DEBUG);
-			$this->doConnect($this->configuration->ldapBackupHost,
-				$this->configuration->ldapBackupPort);
-			if (@$this->ldap->bind(
-				$this->ldapConnectionRes,
-				$this->configuration->ldapAgentName,
-				$this->configuration->ldapAgentPassword)
+			if ($this->doConnect(
+					$this->configuration->ldapBackupHost,
+					$this->configuration->ldapBackupPort)
+				&& @$this->ldap->bind(
+					$this->ldapConnectionRes,
+					$this->configuration->ldapAgentName,
+					$this->configuration->ldapAgentPassword)
 			) {
 				if (!$this->getFromCache('overrideMainServer')) {
 					//when bind to backup server succeeded and failed to main server,
 					//skip contacting him until next cache refresh
 					$this->writeToCache('overrideMainServer', true);
 				}
+				return true;
+			} else {
+				Util::writeLog(
+					'user_ldap',
+					'Bind to backup server failed: ' . $this->getLDAP()->errno($this->ldapConnectionRes) . ': ' . $this->getLDAP()->error($this->ldapConnectionRes),
+					Util::DEBUG);
+				$this->ldapConnectionRes = null;
 			}
-			return true;
-		} else {
-			Util::writeLog(
-				'user_ldap',
-				'Bind to backup server failed: ' . $this->getLDAP()->errno($this->ldapConnectionRes) . ': ' . $this->getLDAP()->error($this->ldapConnectionRes),
-				Util::ERROR);
 			return false;
 		}
+		return null;
 	}
 
 	/**
