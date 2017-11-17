@@ -1,12 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <bjoern@schiessle.org>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@statuscode.ch>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -25,13 +19,26 @@
  *
  */
 
-namespace OCA\Files_Versions\AppInfo;
 
-$application = new Application();
+namespace OCA\DAV\Files;
 
-/** @var $this \OCP\Route\IRouter */
-$this->create('core_ajax_versions_preview', '/preview')->action(
-function() {
-	require_once __DIR__ . '/../ajax/preview.php';
-});
 
+/**
+ * Interface IProvidesAdditionalHeaders
+ * This interface allows to add additional headers to the response
+ *
+ * @package OCA\DAV\Files
+ */
+interface IProvidesAdditionalHeaders {
+
+	/**
+	 * @return array
+	 */
+	public function getHeaders();
+
+	/**
+	 * @return string
+	 */
+	public function getContentDispositionFileName();
+
+}
