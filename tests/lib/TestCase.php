@@ -521,4 +521,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		return $processUser['name'];
 	}
 
+	/**
+	 * @param string $string
+	 * @return bool|resource
+	 */
+	protected function createStreamFor($string) {
+		$stream = fopen('php://memory', 'r+');
+		fwrite($stream, $string);
+		rewind($stream);
+		return $stream;
+	}
+
 }

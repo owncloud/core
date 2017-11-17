@@ -38,19 +38,17 @@
 		parse: function(result) {
 			var fullPath = this._fileInfo.getFullPath();
 			var fileId = this._fileInfo.get('id');
-			var results = _.map(result, function(version) {
-				var revision = parseInt(version.id, 10);
+			return _.map(result, function(version) {
+				var revision = version.id;
 				return {
 					id: revision,
 					name: revision,
 					fullPath: fullPath,
-					timestamp: revision,
-					versionId: revision,
+					timestamp: moment(new Date(version['{DAV:}getlastmodified'])).format('X'),
 					size: version['{DAV:}getcontentlength'],
 					fileId: fileId
 				};
 			});
-			return results;
 		}
 	});
 
