@@ -110,6 +110,18 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * reset any context remembered about where we are or what we have done on
+	 * the files-like pages
+	 *
+	 * @return void
+	 */
+	public function resetFilesContext() {
+		$this->currentFolder = "";
+		$this->deletedElementsTable = null;
+		$this->movedElementsTable = null;
+	}
+
+	/**
 	 * @Given I am on the files page
 	 * @return void
 	 */
