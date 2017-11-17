@@ -289,7 +289,8 @@ class SettingsManager implements ISettingsManager {
 				$this->config,
 				$this->dbconnection,
 				$this->helper,
-				$this->lockingProvider),
+				$this->lockingProvider,
+				$this->urlGenerator),
 			Tips::class => new Tips(),
 			LegacyAdmin::class => new LegacyAdmin($this->helper),
 			Apps::class => new Apps($this->config)

@@ -29,6 +29,7 @@ use OCP\IL10N;
 use OCP\Lock\ILockingProvider;
 use OCP\Settings\ISettings;
 use OCP\Template;
+use OCP\IURLGenerator;
 
 class SecurityWarning implements ISettings {
 
@@ -42,17 +43,21 @@ class SecurityWarning implements ISettings {
 	protected $helper;
 	/** @var ILockingProvider */
 	protected $lockingProvider;
+	/** @var IURLGenerator */
+	protected $urlGenerator;
 
 	public function __construct(IL10N $l,
 								IConfig $config,
 								IDBConnection $dbconnection,
 								Helper $helper,
-								ILockingProvider $lockingProvider) {
+								ILockingProvider $lockingProvider,
+								IURLGenerator $urlGenerator) {
 		$this->l = $l;
 		$this->config = $config;
 		$this->dbconnection = $dbconnection;
 		$this->helper = $helper;
 		$this->lockingProvider = $lockingProvider;
+		$this->urlGenerator = $urlGenerator;
 	}
 
 	public function getPriority() {
@@ -115,6 +120,8 @@ class SecurityWarning implements ISettings {
 		$template->assign('backgroundjobs_mode', $this->config->getAppValue('core', 'backgroundjobs_mode', 'ajax'));
 		$template->assign('cronErrors', $this->config->getAppValue('core', 'cronErrors'));
 		$template->assign('checkForWorkingWellKnownSetup', $this->config->getSystemValue('check_for_working_wellknown_setup', true));
+		$cliUrl = rtrim($this->config->getSystemValue('overwrite.cli.url'), '/');
+		$template->assign('cliUrl', $cliUrl);
 		return $template;
 	}
 

@@ -296,6 +296,28 @@
 			}
 
 			return messages;
+		},
+
+		checkCliUrl: function(cliUrl) {
+			var deferred = $.Deferred();
+			var afterCall = function(result, status) {
+				var messages = [];
+				if (status === 'error' || _.isUndefined(result.installed)) {
+					messages.push({
+						msg: t('core', 'Please check the "overwrite.cli.url" setting: it must point to a server URL accessible from the outside as it will be used in emails, notifications, etc'),
+						type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+					});
+				}
+				deferred.resolve(messages);
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: cliUrl + '/status.php',
+				allowAuthErrors: true
+			}).then(afterCall, afterCall);
+
+			return deferred.promise();
 		}
 	};
 })();
