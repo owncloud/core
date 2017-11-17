@@ -33,6 +33,7 @@ use Exception;
 use OC\AppFramework\Http\Request;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\TwoFactorAuth\Manager;
+use OC\User\LoginException;
 use OC\User\Session;
 use OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden;
 use OCP\IRequest;
@@ -149,6 +150,8 @@ class Auth extends AbstractBasic {
 		try {
 			$result = $this->auth($request, $response);
 			return $result;
+		} catch (LoginException $e) {
+			throw new NotAuthenticated($e->getMessage(), $e->getCode(), $e);
 		} catch (NotAuthenticated $e) {
 			throw $e;
 		} catch (Exception $e) {
