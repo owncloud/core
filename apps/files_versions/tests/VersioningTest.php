@@ -35,7 +35,9 @@ namespace OCA\Files_Versions\Tests;
 
 require_once __DIR__ . '/../appinfo/app.php';
 
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Temporary;
+use OCP\Files\Storage;
 use Test\TestCase;
 
 /**
@@ -873,6 +875,8 @@ class VersioningTest extends TestCase {
 	 * @param string $path
 	 */
 	private function createAndCheckVersions(\OC\Files\View $view, $path) {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
+
 		$view->file_put_contents($path, 'test file');
 		$view->file_put_contents($path, 'version 1');
 		$view->file_put_contents($path, 'version 2');
@@ -918,6 +922,13 @@ class VersioningTest extends TestCase {
 		\OC::$server->getUserFolder($user);
 	}
 
+	private function markTestSkippedIfStorageHasOwnVersioning() {
+		/** @var Storage $storage */
+		list($storage, $internalPath) = $this->rootView->resolvePath(self::USERS_VERSIONS_ROOT);
+		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
+			$this->markTestSkipped();
+		}
+	}
 }
 
 // extend the original class to make it possible to test protected methods

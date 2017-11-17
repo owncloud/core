@@ -28,9 +28,11 @@
 
 namespace OCA\Files_Trashbin\Tests;
 
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
+use OCP\Files\Storage;
 use Test\TestCase;
 use Test\Traits\UserTrait;
 
@@ -299,6 +301,7 @@ class StorageTest extends TestCase {
 	 * Test that deleted versions properly land in the trashbin.
 	 */
 	public function testDeleteVersionsOfFile() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		// trigger a version (multiple would not work because of the expire logic)
@@ -328,6 +331,7 @@ class StorageTest extends TestCase {
 	 * Test that deleted versions properly land in the trashbin.
 	 */
 	public function testDeleteVersionsOfFolder() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		// trigger a version (multiple would not work because of the expire logic)
@@ -363,6 +367,7 @@ class StorageTest extends TestCase {
 	 * Test that deleted versions properly land in the trashbin when deleting as share recipient.
 	 */
 	public function testDeleteVersionsOfFileAsRecipient() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		$this->userView->mkdir('share');
@@ -415,6 +420,7 @@ class StorageTest extends TestCase {
 	 * Test that deleted versions properly land in the trashbin when deleting as share recipient.
 	 */
 	public function testDeleteVersionsOfFolderAsRecipient() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		$this->userView->mkdir('share');
@@ -483,6 +489,7 @@ class StorageTest extends TestCase {
 	 * unlink() which should NOT trigger the version deletion logic.
 	 */
 	public function testKeepFileAndVersionsWhenMovingFileBetweenStorages() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		$storage2 = new Temporary([]);
@@ -524,6 +531,7 @@ class StorageTest extends TestCase {
 	 * unlink() which should NOT trigger the version deletion logic.
 	 */
 	public function testKeepFileAndVersionsWhenMovingFolderBetweenStorages() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		$storage2 = new Temporary([]);
@@ -564,6 +572,7 @@ class StorageTest extends TestCase {
 	 * out of the shared folder
 	 */
 	public function testOwnerBackupWhenMovingFileOutOfShare() {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
 		\OCA\Files_Versions\Hooks::connectHooks();
 
 		$this->userView->mkdir('share');
@@ -744,6 +753,14 @@ class StorageTest extends TestCase {
 			$this->markTestSkipped('Skipping since the current home storage backend requires the user to logged in');
 		} else {
 			$this->userView->unlink('test.txt');
+		}
+	}
+
+	private function markTestSkippedIfStorageHasOwnVersioning() {
+		/** @var Storage $storage */
+		list($storage, $internalPath) = $this->userView->resolvePath('folder/inside.txt');
+		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
+			$this->markTestSkipped();
 		}
 	}
 }

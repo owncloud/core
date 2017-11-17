@@ -696,7 +696,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		list ($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
 
 		return array_map(function ($version) use ($internalPath) {
-			$version['mime-type'] = $this->getMimeType($internalPath);
+			$version['mimetype'] = $this->getMimeType($internalPath);
 			return $version;
 		}, array_values(
 			\OCA\Files_Versions\Storage::getVersions($uid, $filename)));
@@ -738,5 +738,10 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		}
 		$v = $this->getVersion($internalPath, $versionId);
 		return \OCA\Files_Versions\Storage::restoreVersion($v['owner'], $v['path'], $v['storage_location'], $versionId);
+	}
+
+	public function saveVersion($internalPath) {
+		// returning false here will trigger the fallback implementation
+		return false;
 	}
 }

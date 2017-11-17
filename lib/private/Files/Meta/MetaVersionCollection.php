@@ -81,9 +81,13 @@ class MetaVersionCollection extends AbstractFolder {
 		}
 		/** @var IVersionedStorage | Storage $storage */
 		$versions = $storage->getVersions($internalPath);
-		return array_map(function($version) use ($storage, $internalPath) {
+		return array_values(array_map(function($version) use ($storage, $internalPath, $view, $path) {
+			if (!isset($version['mimetype'])) {
+				$version['mimetype'] = $view->getMimeType($path);
+			}
+
 			return new MetaFileVersionNode($this, $this->root, $version, $storage, $internalPath);
-		}, $versions);
+		}, $versions));
 	}
 
 	/**
@@ -107,6 +111,9 @@ class MetaVersionCollection extends AbstractFolder {
 		if ($version === null) {
 			throw new NotFoundException();
 		}
+		if (!isset($version['mimetype'])) {
+			$version['mimetype'] = $view->getMimeType($path);
+		}
 		return new MetaFileVersionNode($this, $this->root, $version, $storage, $internalPath);
 	}
 
@@ -119,5 +126,9 @@ class MetaVersionCollection extends AbstractFolder {
 
 	public function getName() {
 		return "v";
+	}
+
+	public function getPath() {
+		return "/meta/{$this->fileId}/v";
 	}
 }

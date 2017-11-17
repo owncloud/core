@@ -10,7 +10,7 @@
 
 (function() {
 	var TEMPLATE_ITEM =
-		'<li data-revision="{{timestamp}}">' +
+		'<li data-revision="{{versionId}}">' +
 		'<div>' +
 		'<div class="preview-container">' +
 		'<img class="preview" src="{{previewUrl}}"/>' +
@@ -186,6 +186,7 @@
 			var timestamp = version.get('timestamp') * 1000;
 			var size = version.has('size') ? version.get('size') : 0;
 			return _.extend({
+				versionId: version.get('id'),
 				formattedTimestamp: OC.Util.formatDate(timestamp),
 				relativeTimestamp: OC.Util.relativeModifiedDate(timestamp),
 				humanReadableSize: OC.Util.humanFileSize(size, true),

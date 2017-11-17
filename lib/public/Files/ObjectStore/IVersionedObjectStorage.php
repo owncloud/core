@@ -20,60 +20,59 @@
  */
 
 
-namespace OCP\Files\Storage;
+namespace OCP\Files\ObjectStore;
 
 /**
- * Interface IVersionedStorage - storage layer to access version of a file
+ * Interface IVersionedObjectStorage - storage layer to access version of an
+ * object living in an object store
  *
- * @package OCP\Files\Storage
+ * @package OCP\Files\ObjectStore
  * @since 10.0.5
  */
-interface IVersionedStorage {
+interface IVersionedObjectStorage {
 
 	/**
 	 * List all versions for the given file
 	 *
-	 * @param string $internalPath
+	 * @param string $urn the unified resource name used to identify the object
 	 * @return array
 	 * @since 10.0.5
 	 */
-	public function getVersions($internalPath);
+	public function getVersions($urn);
 
 	/**
 	 * Get one explicit version for the given file
 	 *
-	 * @param string $internalPath
+	 * @param string $urn the unified resource name used to identify the object
 	 * @param string $versionId
 	 * @return array
 	 * @since 10.0.5
 	 */
-	public function getVersion($internalPath, $versionId);
+	public function getVersion($urn, $versionId);
 
 	/**
 	 * Get the content of a given version of a given file as stream resource
 	 *
-	 * @param string $internalPath
+	 * @param string $urn the unified resource name used to identify the object
 	 * @param string $versionId
 	 * @return resource
 	 * @since 10.0.5
 	 */
-	public function getContentOfVersion($internalPath, $versionId);
+	public function getContentOfVersion($urn, $versionId);
 
 	/**
 	 * Restore the given version of a given file
 	 *
-	 * @param string $internalPath
+	 * @param string $urn the unified resource name used to identify the object
 	 * @param string $versionId
 	 * @return boolean
 	 * @since 10.0.5
 	 */
-	public function restoreVersion($internalPath, $versionId);
+	public function restoreVersion($urn, $versionId);
 
 	/**
 	 * Tells the storage to explicitly create a version of a given file
-	 *
-	 * @param string $internalPath
-	 * @return bool
+	 * @return boolean
 	 * @since 10.0.5
 	 */
 	public function saveVersion($internalPath);

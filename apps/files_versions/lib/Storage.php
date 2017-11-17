@@ -46,6 +46,7 @@ use OC\Files\View;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
 use OCP\Files\NotFoundException;
+use OCP\Files\Storage\IVersionedStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\User;
 
@@ -174,7 +175,16 @@ class Storage {
 			}
 
 			list($uid, $filename) = self::getUidAndFilename($filename);
+			/** @var \OCP\Files\Storage\IStorage $storage */
+			list($storage, $internalPath) = Filesystem::resolvePath($filename);
+			if ($storage->instanceOfStorage(IVersionedStorage::class)) {
+				/** @var IVersionedStorage $storage */
+				if ($storage->saveVersion($internalPath)) {
+					return true;
+				}
+			}
 
+			// fallback implementation below - need to go into class Common
 			$files_view = new View('/'.$uid .'/files');
 			$users_view = new View('/'.$uid);
 

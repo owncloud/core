@@ -19,13 +19,12 @@ describe('OCA.Versions.VersionModel', function() {
 
 	beforeEach(function() {
 		model = new VersionModel({
-			id: 10000000,
+			id: 123456789,
 			fileId: 10000000,
 			timestamp: 10000000,
 			fullPath: '/subdir/some file.txt',
 			name: 'some file.txt',
 			size: 150,
-			versionId: 123456789
 		});
 		currentUserStub = sinon.stub(OC, 'getCurrentUser').returns({uid: 'user0'});
 

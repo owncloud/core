@@ -57,7 +57,7 @@
 		getDownloadUrl: function() {
 			return OC.linkToRemoteBase('dav') + '/meta/' +
 				encodeURIComponent(this.get('fileId')) + '/v/' +
-				encodeURIComponent(this.get('versionId'));
+				encodeURIComponent(this.get('id'));
 		}
 	});
 

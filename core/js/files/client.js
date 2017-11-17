@@ -797,7 +797,7 @@
 		 * @param {Object} [headers=null] additional headers
 		 *
 		 * @return {Promise} promise
-		 * @since 10.1.0
+		 * @since 10.0.5
 		 */
 		copy: function(path, destinationPath, allowOverwrite, headers, options) {
 			return this._moveOrCopy('COPY', path, destinationPath, allowOverwrite, headers, options);
