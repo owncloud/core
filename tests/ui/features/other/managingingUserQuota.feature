@@ -5,7 +5,7 @@ I want to manage user quota
 So that users can only take up a certain amount of storage space
 
 	Background:
-		Given a regular user exists
+		Given a regular user exists but is not initialized
 		And I am logged in as admin
 		And I am on the users page
 
