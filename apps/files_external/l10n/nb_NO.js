@@ -12,6 +12,8 @@ OC.L10N.register(
     "All users. Type to select user or group." : "Alle brukere. Tast for å velge bruker eller gruppe.",
     "(group)" : "(gruppe)",
     "Compatibility with Mac NFD encoding (slow)" : "Kompatibilitet med Mac NFD-koding (treg)",
+    "Unknown auth backend \"{b}\"" : "Ukjent auth backend \"{b}\"",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Vennligst sikre at programmet som tilbyr denne tjenesten er installert og tilgjengelig.",
     "Admin defined" : "Admin-definert",
     "Saved" : "Lagret",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "Deaktivering av ekstern lagring vil koble fra alle eksterne lagre for alle brukere. Er du sikker?",
