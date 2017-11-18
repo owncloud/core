@@ -5,7 +5,7 @@ I want to share files, with minimal typing, to the right people or groups
 So that I can efficiently share my files with other users or groups
 
 	Background:
-		Given regular users exist
+		Given regular users exist but are not initialized
 		And a regular user exists
 		And regular groups exist
 		And I am logged in as a regular user

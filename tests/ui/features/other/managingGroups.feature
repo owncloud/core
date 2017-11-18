@@ -4,7 +4,7 @@ I want to manage groups
 So that access to resources can be controlled more effectively
 
 	Background:
-		Given a regular user exists
+		Given a regular user exists but is not initialized
 		And I am logged in as admin
 		And I am on the users page
 
