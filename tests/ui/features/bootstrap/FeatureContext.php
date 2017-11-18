@@ -46,6 +46,12 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $currentUser = null;
 
 	/**
+	 *
+	 * @var FilesContext
+	 */
+	private $filesContext;
+
+	/**
 	 * 
 	 * @var Page\OwncloudPage
 	 */
@@ -347,6 +353,11 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function setUpSuite(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->filesContext = $environment->getContext('FilesContext');
+
 		SetupHelper::setOcPath($scope);
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
 		$this->adminPassword = (string)$suiteParameters['adminPassword'];
