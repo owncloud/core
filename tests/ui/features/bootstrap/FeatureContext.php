@@ -29,6 +29,7 @@ use Page\OwncloudPage;
 use Page\LoginPage;
 use TestHelpers\SetupHelper;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\UploadHelper;
 
 require_once 'bootstrap.php';
 
@@ -44,6 +45,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $loginPage;
 	private $oldCSRFSetting = null;
 	private $currentUser = null;
+	private $createdFiles = [];
 
 	/**
 	 *
@@ -322,6 +324,23 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given a file with the size of :size bytes and the name :name exists
+	 * @param int $size if not int given it will be cast to int
+	 * @param string $name
+	 * @throws InvalidArgumentException
+	 */
+	public function aFileWithSizeAndNameExists($size, $name) {
+		$fullPath = getenv("FILES_FOR_UPLOAD") . $name;
+		if (file_exists($fullPath)) {
+			throw new InvalidArgumentException(
+				__METHOD__ . " could not create '$fullPath' file exists"
+			);
+		}
+		UploadHelper::createFileSpecificSize($fullPath, (int)$size);
+		$this->createdFiles[] = $fullPath;
+	}
+
+	/**
 	 * returns the saved capabilities as XML
 	 * 
 	 * @return string
@@ -427,6 +446,10 @@ class FeatureContext extends RawMinkContext implements Context {
 					$this->oldCSRFSetting
 				]
 			);
+		}
+		
+		foreach ($this->createdFiles as $file) {
+			unlink($file);
 		}
 	}
 

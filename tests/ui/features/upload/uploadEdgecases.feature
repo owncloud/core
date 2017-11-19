@@ -26,8 +26,9 @@ that is not academically correct but saves a lot of time
 		And the content of "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt" should be the same as the local "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt"
 
 	Scenario Outline: upload a new file into a sub folder
+		And a file with the size of "3000" bytes and the name "0" exists
 		When I open the folder <folder-to-upload-to>
-		When I upload the file "0"
+		And I upload the file "0"
 		Then the file "0" should be listed
 		And the content of "0" should be the same as the local "0"
 		When I upload the file "new-'single'quotes.txt"
@@ -79,7 +80,6 @@ that is not academically correct but saves a lot of time
 		And the content of "strängé filename (duplicate #2 &).txt" should not have changed
 		And the file "strängé filename (duplicate #2 &) (2).txt" should be listed
 		And the content of "strängé filename (duplicate #2 &) (2).txt" should be the same as the local "strängé filename (duplicate #2 &).txt"
-		
 		When I upload the file "zzzz-must-be-last-file-in-folder.txt"
 		And I choose to keep the new files
 		And I choose to keep the existing files
@@ -88,3 +88,23 @@ that is not academically correct but saves a lot of time
 		And the content of "zzzz-must-be-last-file-in-folder.txt" should not have changed
 		And the file "zzzz-must-be-last-file-in-folder (2).txt" should be listed
 		And the content of "zzzz-must-be-last-file-in-folder (2).txt" should be the same as the local "zzzz-must-be-last-file-in-folder.txt"
+
+	Scenario Outline: chunking upload using difficult names
+		And a file with the size of "30000000" bytes and the name <file-name> exists
+		When I upload the file <file-name>
+		Then the file <file-name> should be listed
+		And the content of <file-name> should be the same as the local <file-name>
+		Examples:
+		|file-name|
+		|"&#"     |
+		|"TIÄFÜ"  |
+		
+	#this test should be intergrated into the previous scenario after fixing the issue
+	#uploading into "simple-folder" because there is a folder called "0" in the root
+	@skip @issue-29599
+	Scenario: Upload a file called "0" using chunking
+		And a file with the size of "30000000" bytes and the name "0" exists
+		When I open the folder "simple-folder"
+		And I upload the file "0"
+		Then the file "0" should be listed
+		And the content of "0" should be the same as the local "0"
