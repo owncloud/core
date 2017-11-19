@@ -104,8 +104,8 @@ class WebDavHelper {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
 		//replace # and ? in the path, Guzzle will not encode them
-		$path = str_replace("#", "%23", $path);
-		$path = str_replace("?", "%3F", $path);
+		$urlSpecialChar = [['#', '?'],['%23', '%3F']];
+		$path = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 		$client = new GClient();
 		
@@ -123,6 +123,10 @@ class WebDavHelper {
 		$request = $client->createRequest($method, $fullUrl, $options);
 		if (!is_null($headers)) {
 			foreach ($headers as $key => $value) {
+				//? and # need to be encoded in the Destination URL
+				if ($key === "Destination") {
+					$value = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $value);
+				}
 				if ($request->hasHeader($key) === true) {
 					$request->setHeader($key, $value);
 				} else {
