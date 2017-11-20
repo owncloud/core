@@ -247,15 +247,17 @@ class Scan extends Base {
 		} else if ($input->getOption('all')) {
 			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
 			// is enabled to prevent concurrent user access
-			if ($input->getOption('repair') &&
-				($this->config->getSystemValue('singleuser', false) || $this->config->getSystemValue('maintenance', false))) {
-				// repair all storages at once
-				$this->repairAll($output);
-				// don't fix individually
-				$shouldRepairStoragesIndividually = false;
-			} else {
-				$output->writeln("<comment>Repairing every storage individually is slower than repairing in bulk</comment>");
-				$output->writeln("<comment>To repair in bulk, please switch to single user mode first: occ maintenance:singleuser --on</comment>");
+			if ($input->getOption('repair')) {
+				if ($this->config->getSystemValue('singleuser', false) || $this->config->getSystemValue('maintenance', false)) {
+					// repair all storages at once
+					$this->repairAll($output);
+					// don't fix individually
+					$shouldRepairStoragesIndividually = false;
+				} else {
+					$output->writeln("<comment>Please switch to single user mode to repair all storages: occ maintenance:singleuser --on</comment>");
+					$output->writeln("<comment>Alternatively, you can specify a user to repair. Please note that this is slower than repairing in bulk</comment>");
+					return 1;
+				}
 			}
 			$users = $this->userManager->search('');
 		} else {
