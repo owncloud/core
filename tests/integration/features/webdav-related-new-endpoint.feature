@@ -604,6 +604,36 @@ Feature: webdav-related-new-endpoint
 		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 15
 		Then the HTTP status code should be "201"
 
+	Scenario Outline: Upload files with difficult names using new chunking
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>"
+		When as an "user0"
+		And downloading file "/<file-name>"
+		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Examples:
+		|file-name|
+		|&#?      |
+		|TIÄFÜ    |
+
+	#this test should be intergrated into the previous scenario after fixing the issue
+	@skip @issue-29599
+	Scenario: Upload a file called "0" using new chunking
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/0"
+		When as an "user0"
+		And downloading file "/0"
+		Then downloaded content should be "AAAAABBBBBCCCCC"
+		
 	Scenario: Retrieving private link
 		Given using new dav path
 		And user "user0" exists
