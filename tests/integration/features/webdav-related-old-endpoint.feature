@@ -498,6 +498,20 @@ Feature: webdav-related-old-endpoint
 		And downloading file "/myChunkedFile.txt"
 		Then downloaded content should be "AAAAABBBBBCCCCC"
 
+	Scenario Outline: Chunked upload files with difficult name
+		Given user "user0" exists
+		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/<file-name>"
+		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/<file-name>"
+		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/<file-name>"
+		When as an "user0"
+		And downloading file "/<file-name>"
+		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Examples:
+		|file-name|
+		|0        |
+		|&#?      |
+		|TIÄFÜ    |
+
 	Scenario: Checking file id after a move between received shares
 		Given using old dav path
 		And user "user0" exists

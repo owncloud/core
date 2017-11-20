@@ -44,6 +44,7 @@ class FilesPage extends FilesPageBasic {
 	protected $newFolderButtonXpath = './/div[contains(@class, "newFileMenu")]//a[@data-templatename="New folder"]';
 	protected $newFolderNameInputLabel = 'New folder';
 	protected $fileUploadInputId = "file_upload_start";
+	protected $uploadProgressbarLabelXpath = "//div[@id='uploadprogressbar']/em";
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
 	/**
@@ -135,7 +136,7 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param Session $session
 	 * @param string $name
 	 * @return void
@@ -151,6 +152,7 @@ class FilesPage extends FilesPageBasic {
 		}
 		$uploadField->attachFile(getenv("FILES_FOR_UPLOAD") . $name);
 		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->waitForUploadProgressbarToFinish();
 	}
 
 	/**
@@ -307,5 +309,33 @@ class FilesPage extends FilesPageBasic {
 		}
 		$this->verifyPage();
 		return $this;
+	}
+
+	/**
+	 * waits till the upload progressbar is not visible anymore
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function waitForUploadProgressbarToFinish() {
+		$uploadProgressbar = $this->find(
+			"xpath", $this->uploadProgressbarLabelXpath
+		);
+		if (is_null($uploadProgressbar)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->uploadProgressbarLabelXpath " .
+				"could not find upload progressbar"
+			);
+		}
+		$currentTime = microtime(true);
+		$end = $currentTime + (STANDARDUIWAITTIMEOUTMILLISEC / 1000);
+		while ($uploadProgressbar->isVisible()) {
+			if ($currentTime > $end) {
+				break;
+			}
+			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
+		}
 	}
 }

@@ -17,6 +17,21 @@ So that I can store files in ownCloud
 		Then the file "new-lorem.txt" should be listed
 		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
+	Scenario: chunking upload
+		And a file with the size of "30000000" bytes and the name "big-video.mp4" exists
+		When I upload the file "big-video.mp4"
+		Then the file "big-video.mp4" should be listed
+		And the content of "big-video.mp4" should be the same as the local "big-video.mp4"
+
+	Scenario: conflict with a chunked file
+		And a file with the size of "30000000" bytes and the name "big-video.mp4" exists
+		When I rename the file "lorem.txt" to "big-video.mp4"
+		And I upload the file "big-video.mp4"
+		And I choose to keep the new files
+		And I click the "Continue" button
+		Then the file "big-video.mp4" should be listed
+		And the content of "big-video.mp4" should be the same as the local "big-video.mp4"
+
 	Scenario: upload a new file into a sub folder
 		When I open the folder "simple-folder"
 		And I upload the file "new-lorem.txt"

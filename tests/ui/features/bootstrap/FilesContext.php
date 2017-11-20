@@ -407,6 +407,7 @@ class FilesContext extends RawMinkContext implements Context {
 		$dialog = end($dialogs);
 		$this->conflictDialog->setElement($dialog->getOwnElement());
 		$this->conflictDialog->clickButton($this->getSession(), $label);
+		$this->filesPage->waitForUploadProgressbarToFinish();
 	}
 
 	/**
