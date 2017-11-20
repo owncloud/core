@@ -517,6 +517,16 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the version folder of fileId :fileId contains :count elements
+	 * @param int $count
+	 * @param int $fileId
+	 */
+	public function theVersionFolderOfFileIdContainsElements($fileId, $count) {
+		$elements = $this->listVersionFolder($this->currentUser, '/meta/'.$fileId.'/v', 1);
+		PHPUnit_Framework_Assert::assertEquals($count, count($elements)-1);
+	}
+
+	/**
 	 * @Then the content length of file :path with version index :index for user :user in versions folder is :length
 	 * @param $path
 	 * @param $index
@@ -527,7 +537,7 @@ trait WebDav {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$elements = $this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1, ['{DAV:}getcontentlength']);
 		$elements = array_values($elements);
-		PHPUnit_Framework_Assert::assertEquals($length, $elements[1]['{DAV:}getcontentlength']);
+		PHPUnit_Framework_Assert::assertEquals($length, $elements[$index]['{DAV:}getcontentlength']);
 	}
 
 	/* Returns the elements of a report command
@@ -802,6 +812,7 @@ trait WebDav {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
 		try {
 			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
+			return $this->response->getHeader('oc-fileid');
 		} catch (\GuzzleHttp\Exception\ServerException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
@@ -1168,4 +1179,18 @@ trait WebDav {
 		$currentFileID = $this->getFileIdForPath($user, $path);
 		PHPUnit_Framework_Assert::assertEquals($currentFileID, $this->storedFileID);
 	}
+
+	/**
+	 * @When user :user restores version index :versionIndex of file :path
+	 * @param string $user
+	 * @param int $versionIndex
+	 * @param string $path
+	 */
+	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$client = $this->getSabreClient($user);
+		$versions = array_keys($this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1));
+		$client->request('COPY', $versions[$versionIndex], null, ['Destination' => $this->makeSabrePath($user, $path)]);
+	}
+
 }
