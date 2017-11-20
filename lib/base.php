@@ -562,7 +562,6 @@ class OC {
 		self::registerAutoloaderCache();
 
 		// initialize intl fallback is necessary
-		\Patchwork\Utf8\Bootup::initIntl();
 		OC_Util::isSetLocaleWorking();
 
 		if (!defined('PHPUNIT_RUN')) {
