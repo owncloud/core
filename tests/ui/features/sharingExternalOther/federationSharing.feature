@@ -15,8 +15,7 @@ So that other users have access to these files
 	Scenario: test the single steps of federation sharing
 		When the folder "simple-folder" is shared with the remote user "user1@%remote_server%"
 		And the folder "simple-empty-folder" is shared with the remote user "user1@%remote_server%"
-		And I logout
-		And I login with username "user1" and password "1234" to "http://%remote_server%"
+		And I relogin with username "user1" and password "1234" to "http://%remote_server%"
 		Then dialogs should be displayed
 		| title        | content                                                                              |
 		| Remote share | Do you want to add the remote share /simple-folder from user2@%local_server%/?       |
@@ -31,22 +30,19 @@ So that other users have access to these files
 		When the folder "simple-folder" is shared with the remote user "user1@%remote_server%"
 		And the sharing permissions of "user1@%remote_server% (remote)" for "simple-folder" are set to
 		| delete | no |
-		And I logout
-		And I login with username "user1" and password "1234" to "http://%remote_server%"
+		And I relogin with username "user1" and password "1234" to "http://%remote_server%"
 		And the offered remote shares are accepted
 		And I open the folder "simple-folder (2)"
 		Then it should not be possible to delete the file "lorem.txt"
 
 	Scenario: rename and delete files in a received share
 		When the folder "simple-folder" is shared with the remote user "user1@%remote_server%"
-		And I logout
-		And I login with username "user1" and password "1234" to "http://%remote_server%"
+		And I relogin with username "user1" and password "1234" to "http://%remote_server%"
 		And the offered remote shares are accepted
 		And I open the folder "simple-folder (2)"
 		And I rename the file "lorem.txt" to "renamed file.txt"
 		And I delete the file "data.zip"
-		And I logout
-		And I login with username "user2" and password "1234" to "%base_url%"
+		And I relogin with username "user2" and password "1234" to "%base_url%"
 		And I open the folder "simple-folder"
 		Then the file "renamed file.txt" should be listed
 		But the file "lorem.txt" should not be listed
