@@ -60,6 +60,17 @@ class LoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When I relogin with username :username and password :password
+	 * @param string $username
+	 * @param string $password
+	 * @return void
+	 */
+	public function iReloginWithUsernameAndPassword($username, $password) {
+		$this->featureContext->iLogout();
+		$this->iLoginWithUsernameAndPassword($username, $password);
+	}
+
+	/**
 	 * @When I login with username :username and password :password
 	 * @param string $username
 	 * @param string $password
@@ -69,6 +80,20 @@ class LoginContext extends RawMinkContext implements Context {
 		$this->filesPage = $this->loginPage->loginAs($username, $password);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->featureContext->setCurrentUser($username);
+	}
+
+	/**
+	 * @When I relogin with username :username and password :password to :server
+	 * @param string $username
+	 * @param string $password
+	 * @param string $server
+	 * @return void
+	 */
+	public function iReloginWithUsernameAndPasswordToSrv(
+		$username, $password, $server
+	) {
+		$this->featureContext->iLogout();
+		$this->iLoginWithUsernameAndPasswordToSrv($username, $password, $server);
 	}
 
 	/**
