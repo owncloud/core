@@ -28,6 +28,7 @@ namespace OC\Files\ObjectStore;
 use Icewind\Streams\IteratorDirectory;
 use OC\Files\Cache\CacheEntry;
 use OCP\Files\NotFoundException;
+use OCA\DAV\Upload\AssemblyStream;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
 
@@ -386,6 +387,43 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			}
 		}
 		return true;
+	}
+
+	public function write($path, $data) {
+		$stat = $this->stat($path);
+		if (empty($stat)) {
+			// create new file
+			$stat = [
+				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
+			];
+		}
+		// update stat with new data
+		$mTime = \time();
+		$stat['mtime'] = $mTime;
+		$stat['storage_mtime'] = $mTime;
+		// FIXME mimetype detect() only works with real files, for now works with known file endings
+		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($path);
+		$stat['etag'] = $this->getETag($path);
+
+		$context = \stream_get_meta_data($data);
+		if (isset($context['wrapper_data']) && $context['wrapper_data'] instanceof AssemblyStream) {
+			/** @var AssemblyStream $assemblyStream */
+			$assemblyStream = $context['wrapper_data'];
+			$stat['size'] = $assemblyStream->getSize();
+		} else {
+			$stat['size'] = \filesize($data);
+		}
+
+		$fileId = $this->getCache()->put($path, $stat);
+
+		try {
+			//upload to object storage
+			$this->objectStore->writeObject($this->getURN($fileId), $data);
+		} catch (\Exception $ex) {
+			$this->getCache()->remove($path);
+			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+			throw $ex; // make this bubble up
+		}
 	}
 
 	public function writeBack($tmpFile) {

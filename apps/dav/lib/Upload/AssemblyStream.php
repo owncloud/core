@@ -277,4 +277,12 @@ class AssemblyStream implements \Icewind\Streams\File {
 
 		return \fopen('data://text/plain,' . $data, 'r');
 	}
+
+	public function getNodes() {
+		return $this->nodes;
+	}
+
+	public function getSize() {
+		return $this->size;
+	}
 }

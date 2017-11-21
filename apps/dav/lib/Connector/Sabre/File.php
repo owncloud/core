@@ -35,12 +35,14 @@ namespace OCA\DAV\Connector\Sabre;
 
 use OC\AppFramework\Http\Request;
 use OC\Files\Filesystem;
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Storage;
 use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
 use OCA\DAV\Files\IFileNode;
+use OCA\DAV\Upload\FutureFile;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\EntityTooLargeException;
@@ -50,6 +52,7 @@ use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\LockNotAcquiredException;
 use OCP\Files\NotPermittedException;
+use OCP\Files\Storage\IChunkedStorage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
@@ -159,14 +162,20 @@ class File extends Node implements IFile, IFileNode {
 		/** @var \OC\Files\Storage\Storage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		try {
-			$target = $partStorage->fopen($internalPartPath, 'wb');
-			if ($target === false) {
-				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
-				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
-				throw new Exception('Could not write file contents');
+			if (FutureFile::isFutureFile() && $partStorage->instanceOfStorage(ObjectStoreStorage::class)) {
+				// get rid of any temp streams in between
+				/** @var $partStorage ObjectStoreStorage */
+				list($count, $result) = $partStorage->write($internalPartPath, $data);
+			} else {
+				$target = $partStorage->fopen($internalPartPath, 'wb');
+				if ($target === false) {
+					\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
+					// because we have no clue about the cause we can only throw back a 500/Internal Server Error
+					throw new Exception('Could not write file contents');
+				}
+				list($count, $result) = \OC_Helper::streamCopy($data, $target);
+				\fclose($target);
 			}
-			list($count, $result) = \OC_Helper::streamCopy($data, $target);
-			\fclose($target);
 
 			if (!self::isChecksumValid($partStorage, $internalPartPath)) {
 				throw new BadRequest('The computed checksum does not match the one received from the client.');
