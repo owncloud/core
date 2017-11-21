@@ -24,6 +24,7 @@ So that other users have access to these files
 		Then the folder "simple-folder (2)" should be listed
 		When I open the folder "simple-folder (2)"
 		Then the file "lorem.txt" should be listed
+		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
 
 	@skipOnMICROSOFTEDGE
 	Scenario: share a folder with an remote user and prohibit deleting
@@ -40,10 +41,17 @@ So that other users have access to these files
 		And I relogin with username "user1" and password "1234" to "http://%remote_server%"
 		And the offered remote shares are accepted
 		And I open the folder "simple-folder (2)"
-		And I rename the file "lorem.txt" to "renamed file.txt"
+		And I upload overwriting the file "lorem.txt"
+		And I upload the file "new-lorem.txt"
+		And I rename the file "lorem-big.txt" to "renamed file.txt"
 		And I delete the file "data.zip"
 		And I relogin with username "user2" and password "1234" to "%base_url%"
 		And I open the folder "simple-folder"
-		Then the file "renamed file.txt" should be listed
-		But the file "lorem.txt" should not be listed
+		Then the file "lorem.txt" should be listed
+		And the content of "lorem.txt" should be the same as the local "lorem.txt"
+		And the file "new-lorem.txt" should be listed
+		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
+		And the file "renamed file.txt" should be listed
+		And the content of "renamed file.txt" should be the same as the original "simple-folder/lorem-big.txt"
+		But the file "lorem-big.txt" should not be listed
 		And the file "data.zip" should not be listed
