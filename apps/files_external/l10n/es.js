@@ -12,6 +12,8 @@ OC.L10N.register(
     "All users. Type to select user or group." : "Todos los usuarios. Teclee para seleccionar un usuario o grupo.",
     "(group)" : "(grupo)",
     "Compatibility with Mac NFD encoding (slow)" : "Compatibilidad con codificación Mac MFD (lento)",
+    "Unknown auth backend \"{b}\"" : "Mecanismo de autentificación desconocido \"{b}\"",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Por favor asegurese de que la app que proporciona el mecanismo de autentificación esta instalada y habilitada.",
     "Admin defined" : "Admin definido",
     "Saved" : "Guardado",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "Inhabilitar el almacenamiento externo desmontará todos los almacenes para todos los usuarios. ¿Estás seguro?",
