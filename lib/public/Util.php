@@ -722,8 +722,10 @@ class Util {
 
 		$installed = (bool) $systemConfig->getValue('installed', false);
 		$maintenance = (bool) $systemConfig->getValue('maintenance', false);
-		# see core/lib/private/legacy/defaults.php and core/themes/example/defaults.php
-		# for description and defaults
+		\OC_App::loadApps(['theme']);
+
+		// see core/lib/private/legacy/defaults.php and core/themes/example/defaults.php
+		// for description and defaults
 		$defaults = new \OCP\Defaults();
 		$values = [
 			'installed'=> $installed ? true : false,
@@ -734,13 +736,13 @@ class Util {
 			'edition' => '',
 			'productname' => ''];
 
-		# expose version and servername details 
+		// expose version and servername details
 		if ($includeVersion || (bool) $systemConfig->getValue('version.hide', false) === false) {
 			$values['version'] = implode('.', self::getVersion());
 			$values['versionstring'] = \OC_Util::getVersionString();
 			$values['edition'] = \OC_Util::getEditionString();
 			$values['productname'] = $defaults->getName();
-			# expose the servername only if allowed via version, but never when called via status.php
+			// expose the servername only if allowed via version, but never when called via status.php
 			if ($serverHide === false) {
 				$values['hostname'] = gethostname();
 			}
