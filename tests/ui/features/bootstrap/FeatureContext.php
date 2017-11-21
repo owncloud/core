@@ -348,6 +348,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @param int $size if not int given it will be cast to int
 	 * @param string $name
 	 * @throws InvalidArgumentException
+	 * @return void
 	 */
 	public function aFileWithSizeAndNameExists($size, $name) {
 		$fullPath = getenv("FILES_FOR_UPLOAD") . $name;

@@ -23,9 +23,13 @@
 
 namespace Page\FilesPageElement;
 
-use Behat\Mink\Exception\ElementNotFoundException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
 
+/**
+ * Object for the conflict dialog that appears when uploading a file that
+ * already exists.
+ */
 class ConflictDialog extends OCDialog {
 	private $keepNewFilesCheckXpath = "//label[@for='checkbox-allnewfiles']";
 	private $keepExistingFilesCheckXpath = "//label[@for='checkbox-allexistingfiles']";
