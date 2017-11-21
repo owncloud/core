@@ -817,7 +817,7 @@ class FilesContext extends RawMinkContext implements Context {
 	) {
 		$username = $this->featureContext->getCurrentUser();
 		$result = DownloadHelper::download(
-			$this->getMinkParameter("base_url"),
+			$this->featureContext->getCurrentServer(),
 			$username,
 			$this->featureContext->getUserPassword($username),
 			$remoteFile
