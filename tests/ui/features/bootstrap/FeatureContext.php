@@ -45,6 +45,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $loginPage;
 	private $oldCSRFSetting = null;
 	private $currentUser = null;
+	private $currentServer = null;
 	private $createdFiles = [];
 
 	/**
@@ -123,6 +124,25 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function setCurrentUser($currentUser) {
 		$this->currentUser = $currentUser;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentServer() {
+		if (is_null($this->currentServer)) {
+			return $this->getMinkParameter("base_url");
+		}
+
+		return $this->currentServer;
+	}
+
+	/**
+	 * @param string $currentServer
+	 * @return void
+	 */
+	public function setCurrentServer($currentServer) {
+		$this->currentServer = $currentServer;
 	}
 
 	/**
@@ -328,6 +348,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @param int $size if not int given it will be cast to int
 	 * @param string $name
 	 * @throws InvalidArgumentException
+	 * @return void
 	 */
 	public function aFileWithSizeAndNameExists($size, $name) {
 		$fullPath = getenv("FILES_FOR_UPLOAD") . $name;

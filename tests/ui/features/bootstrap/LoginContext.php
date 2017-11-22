@@ -80,6 +80,7 @@ class LoginContext extends RawMinkContext implements Context {
 		$this->filesPage = $this->loginPage->loginAs($username, $password);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->featureContext->setCurrentUser($username);
+		$this->featureContext->setCurrentServer(null);
 	}
 
 	/**
@@ -112,6 +113,7 @@ class LoginContext extends RawMinkContext implements Context {
 		);
 		$this->loginPage->open();
 		$this->iLoginWithUsernameAndPassword($username, $password);
+		$this->featureContext->setCurrentServer($server);
 	}
 
 	/**
@@ -144,6 +146,7 @@ class LoginContext extends RawMinkContext implements Context {
 		);
 		$this->expectedPage->waitTillPageIsLoaded($this->getSession());
 		$this->featureContext->setCurrentUser($username);
+		$this->featureContext->setCurrentServer(null);
 	}
 
 	/**
@@ -158,6 +161,7 @@ class LoginContext extends RawMinkContext implements Context {
 		);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->featureContext->setCurrentUser($username);
+		$this->featureContext->setCurrentServer(null);
 	}
 
 	/**

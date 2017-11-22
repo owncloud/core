@@ -403,6 +403,7 @@ class FilesContext extends RawMinkContext implements Context {
 	/**
 	 * @When /^I choose to keep the (new|existing) files$/
 	 * @param string $choice
+	 * @return void
 	 */
 	public function choiceInUploadConflict($choice) {
 		$dialogs = $this->filesPage->getOcDialogs();
@@ -427,6 +428,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I click the :label button
+	 * @param string $label
 	 * @return void
 	 */
 	public function iClickTheButton($label) {
@@ -647,7 +649,7 @@ class FilesContext extends RawMinkContext implements Context {
 			$folderNameParts[] = $namePartsRow['folder-name-parts'];
 			$toBeListedTableArray[] = [$namePartsRow['item-name-parts']];
 		}
-		$this->iOpenTheFolder("", "folder",$folderNameParts);
+		$this->iOpenTheFolder("", "folder", $folderNameParts);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 
 		$toBeListedTable = new TableNode($toBeListedTableArray);
@@ -809,7 +811,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $remoteFile
 	 * @param string $localFile
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
-	 *                     otherwise check that the file contents are different
+	 *                           otherwise check that the file contents are different
 	 * @return void
 	 */
 	private function assertContentOfRemoteAndLocalFileIsSame(
@@ -817,7 +819,7 @@ class FilesContext extends RawMinkContext implements Context {
 	) {
 		$username = $this->featureContext->getCurrentUser();
 		$result = DownloadHelper::download(
-			$this->getMinkParameter("base_url"),
+			$this->featureContext->getCurrentServer(),
 			$username,
 			$this->featureContext->getUserPassword($username),
 			$remoteFile
