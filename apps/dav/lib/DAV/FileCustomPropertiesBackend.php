@@ -49,12 +49,23 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	const DELETE_BY_ID_AND_NAME_STMT = 'DELETE FROM `*PREFIX*properties`'
 	. ' WHERE `fileid` = ? AND `propertyname` = ?';
 
+	private $moveSource = null;
+
 	/**
 	 * This method is called after a node is deleted.
 	 *
 	 * @param string $path path of node for which to delete properties
 	 */
 	public function delete($path) {
+		$moveSource = $this->moveSource;
+		$this->moveSource = null;
+
+		if ($moveSource === $path) {
+			// trying to delete a file that has been moved -> ignoring because the file
+			// exists in another path
+			return;
+		}
+
 		$node = $this->getNodeForPath($path);
 		if (is_null($node)) {
 			return;
@@ -77,6 +88,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	public function move($source, $destination) {
 		// Part of interface. We don't care about move because it doesn't affect fileId
+		$this->moveSource = $source;
 	}
 
 	/**
