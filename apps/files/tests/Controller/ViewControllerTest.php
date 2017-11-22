@@ -178,6 +178,13 @@ class ViewControllerTest extends TestCase {
 			->method('getAppValue')
 			->will($this->returnArgument(2));
 
+		$this->urlGenerator->method('linkTo')
+			->with('', 'remote.php')
+			->willReturn('/owncloud/remote.php');
+		$this->urlGenerator->method('getAbsoluteUrl')
+			->with('/owncloud/remote.php/dav/files/' . $this->user->getUID() . '/')
+			->willReturn('http://example.org/owncloud/remote.php/dav/files/' . $this->user->getUID() . '/');
+
 		$nav = new Template('files', 'appnavigation');
 		$nav->assign('navigationItems', [
 			[
@@ -244,6 +251,7 @@ class ViewControllerTest extends TestCase {
 				'icon' => '',
 			],
 		]);
+		$nav->assign('webdavUrl', 'http://example.org/owncloud/remote.php/dav/files/' . $this->user->getUID() . '/');
 
 		$expected = new Http\TemplateResponse(
 			'files',
