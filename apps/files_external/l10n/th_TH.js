@@ -12,6 +12,8 @@ OC.L10N.register(
     "All users. Type to select user or group." : "ผู้ใช้ทุกคน พิมพ์เพื่อเลือกผู้ใช้หรือกลุ่ม",
     "(group)" : "(กลุ่ม)",
     "Compatibility with Mac NFD encoding (slow)" : "ความเข้ากันได้กับการเข้ารหัส Mac NFS (ช้า)",
+    "Unknown auth backend \"{b}\"" : "พบใบรับรองแบ็กเอนด์ ที่ไม่รู้จัก \"{b}\"",
+    "Please make sure that the app that provides this backend is installed and enabled" : "โปรดตรวจสอบว่ามีการติดตั้งและเปิดใช้แอพฯสำหรับแบ็กเอนด์นี้แล้ว",
     "Admin defined" : "ถูกกำหนดโดยผู้ดูแลระบบ",
     "Saved" : "บันทึกแล้ว",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "หากปิดการใช้งานการจัดเก็บข้อมูลภายนอก ข้อมูลของผู้ใช้ทั้งหมดจะถูกยกเลิกการต่อเชื่อม คุณแน่ใจ?",
