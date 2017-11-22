@@ -212,11 +212,14 @@ class ViewController extends Controller {
 			]
 		);
 
+		$user = $this->userSession->getUser()->getUID();
+
 		$navItems = \OCA\Files\App::getNavigationManager()->getAll();
 		usort($navItems, function($item1, $item2) {
 			return $item1['order'] - $item2['order'];
 		});
 		$nav->assign('navigationItems', $navItems);
+		$nav->assign('webdavUrl', $this->urlGenerator->getAbsoluteUrl($this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . $user . '/'));
 
 		$contentItems = [];
 
@@ -243,7 +246,6 @@ class ViewController extends Controller {
 		$params['mailPublicNotificationEnabled'] = $this->config->getAppValue('core', 'shareapi_allow_public_notification', 'no');
 		$params['socialShareEnabled'] = $this->config->getAppValue('core', 'shareapi_allow_social_share', 'yes');
 		$params['allowShareWithLink'] = $this->config->getAppValue('core', 'shareapi_allow_links', 'yes');
-		$user = $this->userSession->getUser()->getUID();
 		$params['defaultFileSorting'] = $this->config->getUserValue($user, 'files', 'file_sorting', 'name');
 		$params['defaultFileSortingDirection'] = $this->config->getUserValue($user, 'files', 'file_sorting_direction', 'asc');
 		$showHidden = (bool) $this->config->getUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', false);
