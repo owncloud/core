@@ -46,6 +46,7 @@ use OCP\Lock\LockedException;
 use OCP\Util;
 use Sabre\DAV\Exception;
 use Sabre\DAV\Exception\BadRequest;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\HookHelper;
 use Test\TestCase;
 
@@ -346,7 +347,15 @@ class FileTest extends TestCase {
 	 * Test putting a single file
 	 */
 	public function testPutSingleFile() {
+		$calledAfterEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.aftercreate', function ($event) use (&$calledAfterEvent) {
+			$calledAfterEvent[] = 'file.aftercreate';
+			$calledAfterEvent[] = $event;
+		});
 		$this->assertNotEmpty($this->doPut('/foo.txt'));
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
+		$this->assertArrayHasKey('path', $calledAfterEvent[1]);
+		$this->assertEquals('file.aftercreate', $calledAfterEvent[0]);
 	}
 
 	public function legalMtimeProvider() {

@@ -47,6 +47,7 @@ use OCA\DAV\Connector\Sabre\Auth;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\IAuthModule;
+use OCP\Events\EventEmitterTrait;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -80,6 +81,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class Session implements IUserSession, Emitter {
 
+	use EventEmitterTrait;
 	/** @var IUserManager | PublicEmitter $manager */
 	private $manager;
 
@@ -464,31 +466,33 @@ class Session implements IUserSession, Emitter {
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
 	 */
 	private function loginWithPassword($uid, $password) {
-		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
-		$user = $this->manager->checkPassword($uid, $password);
-		if ($user === false) {
-			$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
-			return false;
-		}
+		return $this->emittingCall(function () use (&$uid, &$password) {
+			$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
+			$user = $this->manager->checkPassword($uid, $password);
+			if ($user === false) {
+				$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
+				return false;
+			}
 
-		if ($user->isEnabled()) {
-			$this->setUser($user);
-			$this->setLoginName($uid);
-			$firstTimeLogin = $user->updateLastLoginTimestamp();
-			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
-			if ($this->isLoggedIn()) {
-				$this->prepareUserLogin($firstTimeLogin);
-				return true;
+			if ($user->isEnabled()) {
+				$this->setUser($user);
+				$this->setLoginName($uid);
+				$firstTimeLogin = $user->updateLastLoginTimestamp();
+				$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+				if ($this->isLoggedIn()) {
+					$this->prepareUserLogin($firstTimeLogin);
+					return true;
+				} else {
+					// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+					throw new LoginException($message);
+				}
 			} else {
 				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+				$message = \OC::$server->getL10N('lib')->t('User disabled');
 				throw new LoginException($message);
 			}
-		} else {
-			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-			$message = \OC::$server->getL10N('lib')->t('User disabled');
-			throw new LoginException($message);
-		}
+		}, ['before' => ['uid' => $uid, 'password' => $password], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'login');
 	}
 
 	/**
@@ -735,30 +739,32 @@ class Session implements IUserSession, Emitter {
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
 	 */
 	private function loginUser($user, $password) {
-		if (is_null($user)) {
-			return false;
-		}
+		return $this->emittingCall(function () use (&$user, &$password) {
+			if (is_null($user)) {
+				return false;
+			}
 
-		$this->manager->emit('\OC\User', 'preLogin', [$user, $password]);
+			$this->manager->emit('\OC\User', 'preLogin', [$user, $password]);
 
-		if (!$user->isEnabled()) {
-			$message = \OC::$server->getL10N('lib')->t('User disabled');
-			throw new LoginException($message);
-		}
+			if (!$user->isEnabled()) {
+				$message = \OC::$server->getL10N('lib')->t('User disabled');
+				throw new LoginException($message);
+			}
 
-		$this->setUser($user);
-		$this->setLoginName($user->getDisplayName());
+			$this->setUser($user);
+			$this->setLoginName($user->getDisplayName());
 
-		$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
-		if ($this->isLoggedIn()) {
-			$this->prepareUserLogin(false);
-		} else {
-			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-			throw new LoginException($message);
-		}
+			if ($this->isLoggedIn()) {
+				$this->prepareUserLogin(false);
+			} else {
+				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+				throw new LoginException($message);
+			}
 
-		return true;
+			return true;
+		}, ['before' => ['uid' => $user, 'password' => $password], 'after' => ['uid' => $user, 'password' => $password]], 'user', 'login');
 	}
 
 	/**
@@ -802,31 +808,32 @@ class Session implements IUserSession, Emitter {
 	 * @return bool
 	 */
 	public function logout() {
+		return $this->emittingCall(function () {
+			$event = new GenericEvent(null, ['cancel' => false]);
+			$eventDispatcher = \OC::$server->getEventDispatcher();
+			$eventDispatcher->dispatch('\OC\User\Session::pre_logout', $event);
 
-		$event = new GenericEvent(null, ['cancel' => false]);
-		$eventDispatcher = \OC::$server->getEventDispatcher();
-		$eventDispatcher->dispatch('\OC\User\Session::pre_logout', $event);
+			$this->manager->emit('\OC\User', 'preLogout');
 
-		$this->manager->emit('\OC\User', 'preLogout');
-
-		if ($event['cancel'] === true) {
-			return true;
-		}
-
-		$this->manager->emit('\OC\User', 'logout');
-		$user = $this->getUser();
-		if (!is_null($user)) {
-			try {
-				$this->tokenProvider->invalidateToken($this->session->getId());
-			} catch (SessionNotAvailableException $ex) {
-
+			if ($event['cancel'] === true) {
+				return true;
 			}
-		}
-		$this->setUser(null);
-		$this->setLoginName(null);
-		$this->unsetMagicInCookie();
-		$this->session->clear();
-		$this->manager->emit('\OC\User', 'postLogout');
+
+			$this->manager->emit('\OC\User', 'logout');
+			$user = $this->getUser();
+			if (!is_null($user)) {
+				try {
+					$this->tokenProvider->invalidateToken($this->session->getId());
+				} catch (SessionNotAvailableException $ex) {
+
+				}
+			}
+			$this->setUser(null);
+			$this->setLoginName(null);
+			$this->unsetMagicInCookie();
+			$this->session->clear();
+			$this->manager->emit('\OC\User', 'postLogout');
+		}, ['before' => ['uid' => ''], 'after' => []], 'user', 'logout');
 	}
 
 	/**

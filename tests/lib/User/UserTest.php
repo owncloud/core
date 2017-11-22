@@ -22,6 +22,7 @@ use OCP\IConfig;
 use OCP\IURLGenerator;
 use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 /**
@@ -90,6 +91,11 @@ class UserTest extends TestCase {
 			->method('deleteUserValue')
 			->with('foo', 'owncloud', 'lostpassword');
 
+		$calledEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('user.aftersetpassword', function ($event) use (&$calledEvent) {
+			$calledEvent[] = 'user.aftersetpassword';
+			$calledEvent[] = $event;
+		});
 		$backend = $this->createMock(IChangePasswordBackend::class);
 		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
 		$account = $this->createMock(Account::class);
@@ -97,9 +103,17 @@ class UserTest extends TestCase {
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
 		$backend->expects($this->once())->method('setPassword')->with('foo', 'bar')->willReturn(true);
 
-		$this->user = new User($account, $this->accountMapper, null, $this->config);
+		$ocHook = new \OC_Hook();
+
+		$this->user = new User($account, $this->accountMapper, $ocHook, $this->config, null, \OC::$server->getEventDispatcher());
 		$this->assertTrue($this->user->setPassword('bar',''));
 		$this->assertTrue($this->user->canChangePassword());
+
+		$this->assertArrayHasKey('user', $calledEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
+		$this->assertEquals('user.aftersetpassword', $calledEvent[0]);
+		$this->assertArrayHasKey('password', $calledEvent[1]);
+		$this->assertArrayHasKey('recoveryPassword', $calledEvent[1]);
 
 	}
 	public function testSetPasswordNotSupported() {
@@ -335,10 +349,19 @@ class UserTest extends TestCase {
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
 		$backend->expects($this->once())->method('setPassword')->with('foo', 'bar')->willReturn(true);
 
-		$this->user = new User($account, $this->accountMapper, $emitter, $this->config);
+		$this->user = new User($account, $this->accountMapper, $emitter, $this->config, null, \OC::$server->getEventDispatcher());
+
+		$calledEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('user.aftersetpassword', function ($event) use (&$calledEvent) {
+			$calledEvent[] = 'user.aftersetpassword';
+			$calledEvent[] = $event;
+		});
 
 		$this->user->setPassword('bar','');
 		$this->assertEquals(2, $hooksCalled);
+		$this->assertArrayHasKey('user', $calledEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
+		$this->assertEquals('user.aftersetpassword', $calledEvent[0]);
 	}
 
 	public function testDeleteHooks() {
