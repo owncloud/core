@@ -24,6 +24,10 @@ else
       wait-for-it mysql:3306
       DB=mysql
       ;;
+    mysqlmb4)
+      wait-for-it mysqlmb4:3306
+      DB=mysql
+      ;;
     postgres)
       wait-for-it postgres:5432
       DB=pgsql
@@ -43,9 +47,35 @@ fi
 ./occ app:enable provisioning_api
 ./occ app:enable federation
 ./occ app:enable federatedfilesharing
+./occ app:enable files_external
 
-if [[ -z ${FILES_EXTERNAL_TYPE} ]]; then
-  exec phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
+if [[ "${DB_TYPE}" == "none" || "${DB_TYPE}" == "sqlite" ]]; then
+  GROUP=""
 else
-  exec phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}.xml
+  GROUP="--group DB"
 fi
+
+
+case "${FILES_EXTERNAL_TYPE}" in
+    webdav)
+      wait-for-it owncloud_external:80
+       cat > config/config.webdav.php <<DELIM
+ <?php
+ return array(
+     'run'=>true,
+     'host'=>'owncloud_external:80/owncloud/remote.php/webdav/',
+     'user'=>'admin',
+     'password'=>'admin',
+     'root'=>'',
+     'wait'=> 0
+ );
+DELIM
+      ;;
+    *)
+      echo "Unsupported files external type!"
+      exit 1
+      ;;
+  esac
+
+exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}.xml --coverage-html tests/coverage-external-html-${DB_TYPE} --log-junit tests/autotest-external-results-${DB_TYPE}.xml
+

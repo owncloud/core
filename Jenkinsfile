@@ -25,15 +25,6 @@ timestampedNode('SLAVE') {
             '''
         }
 
-    stage 'Files External: webdav'
-        executeAndReport('tests/autotest-external-results-sqlite-webdav-ownCloud.xml') {
-            sh '''phpenv local 7.0
-            export NOCOVERAGE=1
-            unset USEDOCKER
-            make test-external TEST_EXTERNAL_ENV=webdav-ownCloud
-            '''
-        }
-
     stage 'Files External: SMB/SAMBA'
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
             sh '''phpenv local 7.0

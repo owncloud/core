@@ -114,6 +114,19 @@ pipeline:
       matrix:
         TEST_SUITE: phpunit
 
+  files_external:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    group: test
+    environment:
+      - PHP_VERSION=${PHP_VERSION}
+      - DB_TYPE=${DB_TYPE}
+    commands:
+      - ./tests/drone/test-files-external.sh
+    when:
+      matrix:
+        TEST_SUITE: files_external
+
 services:
   mariadb:
     image: mariadb:10.2
@@ -157,6 +170,12 @@ services:
     when:
       matrix:
         DB_TYPE: postgres
+
+  owncloud_external:
+    image: owncloud/server:latest
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: webdav
 
   # oracle:
   #   image: oracle:x.x
@@ -211,6 +230,10 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: files_external
+      FILES_EXTERNAL_TYPE: webdav
     #- PHP_VERSION: 7.1
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
@@ -254,3 +277,8 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: mariadb
       TEST_SUITE: coverage
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: coverage
+      FILES_EXTERNAL_TYPE: webdav
