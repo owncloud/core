@@ -261,21 +261,19 @@ class Cache implements ICache {
 			return trim($item, "`");
 		}, $queryParts);
 		$values = array_combine($queryParts, $params);
-		if (\OC::$server->getDatabaseConnection()->insertIfNotExist('*PREFIX*filecache', $values, [
-			'storage',
-			'path_hash',
-		])
-		) {
-			return (int)$this->connection->lastInsertId('*PREFIX*filecache');
-		}
+		// Update or insert this to the filecache
+		\OC::$server->getDatabaseConnection()->upsert(
+			'*PREFIX*filecache',
+			$values,
+			[
+				'storage',
+				'path_hash',
+			]
+		);
+		// Now return the id for this row - crappy that we have to select here
+		// GetID should already return a value if upsert returned a positive value
+		return (int)$this->getId($file);
 
-		// The file was created in the mean time
-		if (($id = $this->getId($file)) > -1) {
-			$this->update($id, $data);
-			return $id;
-		} else {
-			throw new \RuntimeException('File entry could not be inserted with insertIfNotExist() but could also not be selected with getId() in order to perform an update. Please try again.');
-		}
 	}
 
 	/**
