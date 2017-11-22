@@ -35,6 +35,7 @@
 
 namespace OC\Files\Cache;
 
+use OC\Cache\CappedMemoryCache;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
 use \OCP\Files\IMimeTypeLoader;
@@ -79,6 +80,11 @@ class Cache implements ICache {
 	protected $connection;
 
 	/**
+	 * @var CappedMemoryCache
+	 */
+	public static $metaDataCache = null;
+
+	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
 	 */
 	public function __construct($storage) {
@@ -94,6 +100,10 @@ class Cache implements ICache {
 		$this->storageCache = new Storage($storage);
 		$this->mimetypeLoader = \OC::$server->getMimeTypeLoader();
 		$this->connection = \OC::$server->getDatabaseConnection();
+
+		if (self::$metaDataCache === null) {
+			self::$metaDataCache = new CappedMemoryCache(2048);
+		}
 	}
 
 	/**
@@ -112,6 +122,15 @@ class Cache implements ICache {
 	 * @return ICacheEntry|false the cache entry as array of false if the file is not found in the cache
 	 */
 	public function get($file) {
+		$key = $this->getNumericStorageId().'-get-'.$file;
+		if (self::$metaDataCache->hasKey($key)) { // use hasKey to also cache false
+			$entry = self::$metaDataCache->get($key);
+			if ($entry instanceof ICacheEntry) {
+				$entry = clone $entry; // clone to prevent changes affecting our cached clone
+			}
+			return $entry;
+		}
+
 		if (is_string($file) or $file == '') {
 			// normalize file
 			$file = $this->normalize($file);
@@ -128,35 +147,19 @@ class Cache implements ICache {
 		$result = $this->connection->executeQuery($sql, $params);
 		$data = $result->fetch();
 
-		//FIXME hide this HACK in the next database layer, or just use doctrine and get rid of MDB2 and PDO
-		//PDO returns false, MDB2 returns null, oracle always uses MDB2, so convert null to false
-		if ($data === null) {
-			$data = false;
-		}
-
-		//merge partial data
-		if (!$data and is_string($file)) {
-			if (isset($this->partial[$file])) {
-				$data = $this->partial[$file];
-			}
-			return $data;
+		if ($data) {
+			$this->fixTypes($data);
+			$entry = new CacheEntry($data);
+			self::$metaDataCache->set($key, clone $entry);
+			$getIdkey = $this->getNumericStorageId().'-getId-'.$data['path'];
+			self::$metaDataCache->set($getIdkey, 0 + $data['fileid']);
+			$getPathByIdkey = $this->getNumericStorageId().'-getPathById-'.$data['fileid'];
+			self::$metaDataCache->set($getPathByIdkey, $data['path']);
+		} else if (is_string($file) && isset($this->partial[$file])) {
+				$entry = $this->partial[$file]; // return, no need cache partial entries
 		} else {
-			//fix types
-			$data['fileid'] = (int)$data['fileid'];
-			$data['parent'] = (int)$data['parent'];
-			$data['size'] = 0 + $data['size'];
-			$data['mtime'] = (int)$data['mtime'];
-			$data['storage_mtime'] = (int)$data['storage_mtime'];
-			$data['encryptedVersion'] = (int)$data['encrypted'];
-			$data['encrypted'] = (bool)$data['encrypted'];
-			$data['storage'] = $this->storageId;
-			$data['mimetype'] = $this->mimetypeLoader->getMimetypeById($data['mimetype']);
-			$data['mimepart'] = $this->mimetypeLoader->getMimetypeById($data['mimepart']);
-			if ($data['storage_mtime'] == 0) {
-				$data['storage_mtime'] = $data['mtime'];
-			}
-			$data['permissions'] = (int)$data['permissions'];
-			return new CacheEntry($data);
+			$entry = false;
+			self::$metaDataCache->set($key, $entry);
 		}
 	}
 
@@ -185,22 +188,42 @@ class Cache implements ICache {
 			$result = $this->connection->executeQuery($sql, [$fileId]);
 			$files = $result->fetchAll();
 			foreach ($files as &$file) {
-				$file['mimetype'] = $this->mimetypeLoader->getMimetypeById($file['mimetype']);
-				$file['mimepart'] = $this->mimetypeLoader->getMimetypeById($file['mimepart']);
-				if ($file['storage_mtime'] == 0) {
-					$file['storage_mtime'] = $file['mtime'];
-				}
-				$file['permissions'] = (int)$file['permissions'];
-				$file['mtime'] = (int)$file['mtime'];
-				$file['storage_mtime'] = (int)$file['storage_mtime'];
-				$file['size'] = 0 + $file['size'];
+				$this->fixTypes($file);
 			}
 			return array_map(function (array $data) {
-				return new CacheEntry($data);
+				$entry = new CacheEntry($data);
+				$getKey = $this->getNumericStorageId().'-get-'.$data['path'];
+				self::$metaDataCache->set($getKey, clone $entry);
+				$getKey = $this->getNumericStorageId().'-get-'.$data['fileid'];
+				self::$metaDataCache->set($getKey, clone $entry);
+				$getIdkey = $this->getNumericStorageId().'-getId-'.$data['path'];
+				self::$metaDataCache->set($getIdkey, 0 + $data['fileid']);
+				$getPathByIdkey = $this->getNumericStorageId().'-getPathById-'.$data['fileid'];
+				self::$metaDataCache->set($getPathByIdkey, $data['path']);
+				return $entry;
 			}, $files);
 		} else {
 			return array();
 		}
+	}
+
+	private function fixTypes(array &$data) {
+		$data['fileid'] = 0 + $data['fileid'];
+		$data['parent'] = 0 + $data['parent'];
+		$data['size'] = 0 + $data['size'];
+		$data['mtime'] = (int)$data['mtime'];
+		$data['encryptedVersion'] = (int)$data['encrypted'];
+		$data['encrypted'] = (bool)$data['encrypted'];
+		$data['storage'] = $this->storageId;
+		$data['mimetype'] = $this->mimetypeLoader->getMimetypeById($data['mimetype']);
+		$data['mimepart'] = $this->mimetypeLoader->getMimetypeById($data['mimepart']);
+		if (isset($data['storage_mtime'])) {
+			$data['storage_mtime'] = (int)$data['storage_mtime'];
+			if ($data['storage_mtime'] === 0) {
+				$data['storage_mtime'] = $data['mtime'];
+			}
+		}
+		$data['permissions'] = (int)$data['permissions'];
 	}
 
 	/**
@@ -231,6 +254,8 @@ class Cache implements ICache {
 	 * @throws \RuntimeException
 	 */
 	public function insert($file, array $data) {
+		self::$metaDataCache->clear();
+
 		// normalize file
 		$file = $this->normalize($file);
 
@@ -283,7 +308,6 @@ class Cache implements ICache {
 	 * @param array $data [$key => $value] the metadata to update, only the fields provided in the array will be updated, non-provided values will remain unchanged
 	 */
 	public function update($id, array $data) {
-
 		if (isset($data['path'])) {
 			// normalize path
 			$data['path'] = $this->normalize($data['path']);
@@ -309,6 +333,7 @@ class Cache implements ICache {
 			') AND `fileid` = ? ';
 		$this->connection->executeQuery($sql, $params);
 
+		self::$metaDataCache->clear();
 	}
 
 	/**
@@ -375,16 +400,26 @@ class Cache implements ICache {
 	public function getId($file) {
 		// normalize file
 		$file = $this->normalize($file);
+		$key = $this->getNumericStorageId().'-getId-'.$file;
+		$id = self::$metaDataCache->get($key);
+		if (is_numeric($id)) {
+			return $id;
+		}
 
 		$pathHash = md5($file);
 
 		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
 		$result = $this->connection->executeQuery($sql, array($this->getNumericStorageId(), $pathHash));
 		if ($row = $result->fetch()) {
-			return $row['fileid'];
+			$id = 0 + $row['fileid'];
+			$getPathByIdkey = $this->getNumericStorageId().'-getPathById-'.$id;
+			self::$metaDataCache->set($getPathByIdkey, $file);
 		} else {
-			return -1;
+			$id = -1;
 		}
+		self::$metaDataCache->set($key, $id);
+
+		return $id;
 	}
 
 	/**
@@ -434,6 +469,7 @@ class Cache implements ICache {
 		if ($entry['mimetype'] === 'httpd/unix-directory') {
 			$this->removeChildren($entry);
 		}
+		self::$metaDataCache->clear();
 	}
 
 	/**
@@ -462,6 +498,7 @@ class Cache implements ICache {
 		}
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `parent` = ?';
 		$this->connection->executeQuery($sql, array($entry['fileid']));
+		self::$metaDataCache->clear();
 	}
 
 	/**
@@ -537,12 +574,14 @@ class Cache implements ICache {
 		} else {
 			$this->moveFromCacheFallback($sourceCache, $sourcePath, $targetPath);
 		}
+		self::$metaDataCache->clear();
 	}
 
 	/**
 	 * remove all entries for files that are stored on the storage from the cache
 	 */
 	public function clear() {
+		self::$metaDataCache->clear();
 		Storage::remove($this->storageId);
 	}
 
@@ -603,8 +642,7 @@ class Cache implements ICache {
 
 		$files = [];
 		while ($row = $result->fetch()) {
-			$row['mimetype'] = $this->mimetypeLoader->getMimetypeById($row['mimetype']);
-			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
+			$this->fixTypes($row);
 			$files[] = $row;
 		}
 		return array_map(function(array $data) {
@@ -631,8 +669,7 @@ class Cache implements ICache {
 		$result = $this->connection->executeQuery($sql, array($mimetype, $this->getNumericStorageId()));
 		$files = array();
 		while ($row = $result->fetch()) {
-			$row['mimetype'] = $this->mimetypeLoader->getMimetypeById($row['mimetype']);
-			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
+			$this->fixTypes($row);
 			$files[] = $row;
 		}
 		return array_map(function (array $data) {
@@ -680,6 +717,7 @@ class Cache implements ICache {
 		);
 		$files = array();
 		while ($row = $result->fetch()) {
+			$this->fixTypes($row);
 			$files[] = $row;
 		}
 		return array_map(function (array $data) {
@@ -788,17 +826,26 @@ class Cache implements ICache {
 	 * @return string|null the path of the file (relative to the storage) or null if a file with the given id does not exists within this cache
 	 */
 	public function getPathById($id) {
+		$key = $this->getNumericStorageId().'-getPathById-'.$id;
+		if (self::$metaDataCache->hasKey($key)) { // use hasKey to also cache null
+			return self::$metaDataCache->get($key);
+		}
 		$sql = 'SELECT `path` FROM `*PREFIX*filecache` WHERE `fileid` = ? AND `storage` = ?';
-		$result = $this->connection->executeQuery($sql, array($id, $this->getNumericStorageId()));
+		$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
 		if ($row = $result->fetch()) {
 			// Oracle stores empty strings as null...
 			if ($row['path'] === null) {
-				return '';
+				$path = '';
+			} else {
+				$path = $row['path'];
 			}
-			return $row['path'];
+			$getPathByIdkey = $this->getNumericStorageId().'-getId-'.$path;
+			self::$metaDataCache->set($getPathByIdkey, 0 + $id);
 		} else {
-			return null;
+			$path = null;
 		}
+		self::$metaDataCache->set($key, $path);
+		return $path;
 	}
 
 	/**
@@ -813,16 +860,15 @@ class Cache implements ICache {
 	static public function getById($id) {
 		$connection = \OC::$server->getDatabaseConnection();
 		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
-		$result = $connection->executeQuery($sql, array($id));
+		$result = $connection->executeQuery($sql, [$id]);
 		if ($row = $result->fetch()) {
 			$numericId = $row['storage'];
 			$path = $row['path'];
 		} else {
 			return null;
 		}
-
 		if ($id = Storage::getStorageId($numericId)) {
-			return array($id, $path);
+			return [$id, $path];
 		} else {
 			return null;
 		}
