@@ -189,11 +189,23 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 			$parent = $source['parent'];
 			while (isset($parent)) {
 				$query = \OCP\DB::prepare('SELECT `parent`, `uid_owner` FROM `*PREFIX*share` WHERE `id` = ?', 1);
-				$item = $query->execute(array($parent))->fetchRow();
-				if (isset($item['parent'])) {
-					$parent = $item['parent'];
+				$result = $query->execute(array($parent));
+				if($item = $result->fetchRow()) {
+					if ($unexpected = $result->fetchRow()) {
+						\OC::$server->getLogger()->error("Too many rows for " . __METHOD__ . "(" . print_r($source, true) . "):" . print_r($unexpected, true), ['app' => 'debug']);
+						throw new \LengthException('An internal error occurred, please try again');
+					}
+					if (!array_key_exists('parent', $item) || !array_key_exists('uid_owner', $item)) {
+						\OC::$server->getLogger()->error("Unexpected row for " . __METHOD__ . "(" . print_r($source, true) . "):" . print_r($item, true), ['app' => 'debug']);
+						throw new \OutOfBoundsException('An internal error occurred, please try again');
+					}
+					if (isset($item['parent'])) {
+						$parent = $item['parent'];
+					} else {
+						$fileOwner = $item['uid_owner'];
+						break;
+					}
 				} else {
-					$fileOwner = $item['uid_owner'];
 					break;
 				}
 			}

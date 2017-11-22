@@ -115,6 +115,10 @@ class Trashbin {
 		$result = $query->execute(array($user));
 		$array = array();
 		while ($row = $result->fetchRow()) {
+			if ( !array_key_exists('id', $row) || !array_key_exists('timestamp', $row) || !array_key_exists('location', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($user):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			if (isset($array[$row['id']])) {
 				$array[$row['id']][$row['timestamp']] = $row['location'];
 			} else {

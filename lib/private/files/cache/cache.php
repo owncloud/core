@@ -127,6 +127,10 @@ class Cache implements ICache {
 				FROM `*PREFIX*filecache` ' . $where;
 		$result = $this->connection->executeQuery($sql, $params);
 		$data = $result->fetch();
+		if ($unexpected = $result->fetch()) {
+			\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($file):".print_r($unexpected, true), ['app'=>'debug']);
+			throw new \LengthException('An internal error occurred, please try again');
+		}
 
 		//FIXME hide this HACK in the next database layer, or just use doctrine and get rid of MDB2 and PDO
 		//PDO returns false, MDB2 returns null, oracle always uses MDB2, so convert null to false
@@ -135,12 +139,25 @@ class Cache implements ICache {
 		}
 
 		//merge partial data
-		if (!$data and is_string($file)) {
-			if (isset($this->partial[$file])) {
-				$data = $this->partial[$file];
+		if($data) {
+			if (   !array_key_exists('fileid', $data)
+				|| !array_key_exists('storage', $data)
+				|| !array_key_exists('path', $data)
+				|| !array_key_exists('parent', $data)
+				|| !array_key_exists('name', $data)
+				|| !array_key_exists('mimetype', $data)
+				|| !array_key_exists('mimepart', $data)
+				|| !array_key_exists('size', $data)
+				|| !array_key_exists('mtime', $data)
+				|| !array_key_exists('storage_mtime', $data)
+				|| !array_key_exists('encrypted', $data)
+				|| !array_key_exists('etag', $data)
+				|| !array_key_exists('permissions', $data)
+				|| !array_key_exists('checksum', $data)
+			) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($file):".print_r($data, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
 			}
-			return $data;
-		} else {
 			//fix types
 			$data['fileid'] = (int)$data['fileid'];
 			$data['parent'] = (int)$data['parent'];
@@ -157,6 +174,13 @@ class Cache implements ICache {
 			}
 			$data['permissions'] = (int)$data['permissions'];
 			return new CacheEntry($data);
+		} else if (!$data and is_string($file)) {
+			if (isset($this->partial[$file])) {
+				$data = $this->partial[$file];
+			}
+			return $data;
+		} else {
+			return false;
 		}
 	}
 
@@ -231,6 +255,7 @@ class Cache implements ICache {
 	 * @throws \RuntimeException
 	 */
 	public function insert($file, array $data) {
+
 		// normalize file
 		$file = $this->normalize($file);
 
@@ -284,6 +309,13 @@ class Cache implements ICache {
 	 */
 	public function update($id, array $data) {
 
+		if(isset($data['parent']) && $data['parent'] === $id) {
+			// Catch the case when we are trying to update the parent to be itself
+			$trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			\OC::$server->getLogger()->error("Trying to set parent of file: $id to itself! Trace: $trace");
+			throw new \InvalidArgumentException('Parent cannot be same as self during filecache update');
+		}
+
 		if (isset($data['path'])) {
 			// normalize path
 			$data['path'] = $this->normalize($data['path']);
@@ -292,6 +324,12 @@ class Cache implements ICache {
 		if (isset($data['name'])) {
 			// normalize path
 			$data['name'] = $this->normalize($data['name']);
+		}
+
+		if (isset($data['mimetype']) && $data['mimetype'] !== 'httpd/unix-directory') {
+			$trace = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			$mime = $data['mimetype'];
+			\OC::$server->getLogger()->warning("Setting mime type of file $id to \"$mime\" Trace: $trace");
 		}
 
 		list($queryParts, $params) = $this->buildParts($data);
@@ -381,6 +419,14 @@ class Cache implements ICache {
 		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
 		$result = $this->connection->executeQuery($sql, array($this->getNumericStorageId(), $pathHash));
 		if ($row = $result->fetch()) {
+			if ($unexpected = $result->fetch()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($file):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('fileid', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($file):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			return $row['fileid'];
 		} else {
 			return -1;
@@ -566,6 +612,14 @@ class Cache implements ICache {
 		$sql = 'SELECT `size` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
 		$result = $this->connection->executeQuery($sql, array($this->getNumericStorageId(), $pathHash));
 		if ($row = $result->fetch()) {
+			if ($unexpected = $result->fetch()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($file):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('size', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($file):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			if ((int)$row['size'] === -1) {
 				return self::SHALLOW;
 			} else {
@@ -603,6 +657,23 @@ class Cache implements ICache {
 
 		$files = [];
 		while ($row = $result->fetch()) {
+			if (   !array_key_exists('fileid', $row)
+				|| !array_key_exists('storage', $row)
+				|| !array_key_exists('path', $row)
+				|| !array_key_exists('parent', $row)
+				|| !array_key_exists('name', $row)
+				|| !array_key_exists('mimetype', $row)
+				|| !array_key_exists('mimepart', $row)
+				|| !array_key_exists('size', $row)
+				|| !array_key_exists('mtime', $row)
+				|| !array_key_exists('encrypted', $row)
+				|| !array_key_exists('etag', $row)
+				|| !array_key_exists('permissions', $row)
+				|| !array_key_exists('checksum', $row)
+			) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($pattern):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$row['mimetype'] = $this->mimetypeLoader->getMimetypeById($row['mimetype']);
 			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
 			$files[] = $row;
@@ -631,6 +702,23 @@ class Cache implements ICache {
 		$result = $this->connection->executeQuery($sql, array($mimetype, $this->getNumericStorageId()));
 		$files = array();
 		while ($row = $result->fetch()) {
+			if (   !array_key_exists('fileid', $row)
+				|| !array_key_exists('storage', $row)
+				|| !array_key_exists('path', $row)
+				|| !array_key_exists('parent', $row)
+				|| !array_key_exists('name', $row)
+				|| !array_key_exists('mimetype', $row)
+				|| !array_key_exists('mimepart', $row)
+				|| !array_key_exists('size', $row)
+				|| !array_key_exists('mtime', $row)
+				|| !array_key_exists('encrypted', $row)
+				|| !array_key_exists('etag', $row)
+				|| !array_key_exists('permissions', $row)
+				|| !array_key_exists('checksum', $row)
+			) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($mimetype):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$row['mimetype'] = $this->mimetypeLoader->getMimetypeById($row['mimetype']);
 			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
 			$files[] = $row;
@@ -680,6 +768,23 @@ class Cache implements ICache {
 		);
 		$files = array();
 		while ($row = $result->fetch()) {
+			if (   !array_key_exists('fileid', $row)
+				|| !array_key_exists('storage', $row)
+				|| !array_key_exists('path', $row)
+				|| !array_key_exists('parent', $row)
+				|| !array_key_exists('name', $row)
+				|| !array_key_exists('mimetype', $row)
+				|| !array_key_exists('mimepart', $row)
+				|| !array_key_exists('size', $row)
+				|| !array_key_exists('mtime', $row)
+				|| !array_key_exists('encrypted', $row)
+				|| !array_key_exists('etag', $row)
+				|| !array_key_exists('permissions', $row)
+				|| !array_key_exists('checksum', $row)
+			) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($tag, $userId):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$files[] = $row;
 		}
 		return array_map(function (array $data) {
@@ -723,7 +828,10 @@ class Cache implements ICache {
 				'WHERE `parent` = ? AND `storage` = ?';
 			$result = $this->connection->executeQuery($sql, array($id, $this->getNumericStorageId()));
 			if ($row = $result->fetch()) {
-				$result->closeCursor();
+				if ($unexpected = $result->fetch()) {
+					\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($path, ".print_r($entry, true)."):".print_r($unexpected, true), ['app'=>'debug']);
+					throw new \LengthException('An internal error occurred, please try again');
+				}
 				list($sum, $min) = array_values($row);
 				$sum = 0 + $sum;
 				$min = 0 + $min;
@@ -756,6 +864,10 @@ class Cache implements ICache {
 		$result = $this->connection->executeQuery($sql, array($this->getNumericStorageId()));
 		$ids = array();
 		while ($row = $result->fetch()) {
+			if ( !array_key_exists('fileid', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."():".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$ids[] = $row['fileid'];
 		}
 		return $ids;
@@ -775,6 +887,14 @@ class Cache implements ICache {
 			. ' WHERE `storage` = ? AND `size` = -1 ORDER BY `fileid` DESC', 1);
 		$query->execute([$this->getNumericStorageId()]);
 		if ($row = $query->fetch()) {
+			if ($unexpected = $query->fetch()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."():".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('path', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."():".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			return $row['path'];
 		} else {
 			return false;
@@ -791,6 +911,14 @@ class Cache implements ICache {
 		$sql = 'SELECT `path` FROM `*PREFIX*filecache` WHERE `fileid` = ? AND `storage` = ?';
 		$result = $this->connection->executeQuery($sql, array($id, $this->getNumericStorageId()));
 		if ($row = $result->fetch()) {
+			if ($unexpected = $result->fetch()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."():".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('path', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($id):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			// Oracle stores empty strings as null...
 			if ($row['path'] === null) {
 				return '';
@@ -815,6 +943,14 @@ class Cache implements ICache {
 		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		$result = $connection->executeQuery($sql, array($id));
 		if ($row = $result->fetch()) {
+			if ($unexpected = $result->fetch()) {
+				\OC::$server->getLogger()->error("Too many rows for ".__METHOD__."($id):".print_r($unexpected, true), ['app'=>'debug']);
+				throw new \LengthException('An internal error occurred, please try again');
+			}
+			if ( !array_key_exists('storage', $row) || !array_key_exists('path', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."($id):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occurred, please try again');
+			}
 			$numericId = $row['storage'];
 			$path = $row['path'];
 		} else {

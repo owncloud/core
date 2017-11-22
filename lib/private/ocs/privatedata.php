@@ -50,6 +50,10 @@ class OC_OCS_Privatedata {
 		
 		$xml = array();
 		while ($row = $result->fetchRow()) {
+			if ( !array_key_exists('key', $row) || !array_key_exists('app', $row) || !array_key_exists('value', $row) ) {
+				\OC::$server->getLogger()->error("Unexpected row for ".__METHOD__."(".print_r($parameters, true)."):".print_r($row, true), ['app'=>'debug']);
+				throw new \OutOfBoundsException('An internal error occured, please try again');
+			}
 			$data=array();
 			$data['key']=$row['key'];
 			$data['app']=$row['app'];
