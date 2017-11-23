@@ -52,7 +52,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 *
 	 * @var FilesContext
 	 */
-	private $filesContext;
+	private $filesContext = null;
 
 	/**
 	 * 
@@ -396,7 +396,14 @@ class FeatureContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->filesContext = $environment->getContext('FilesContext');
+		try {
+			$this->filesContext = $environment->getContext('FilesContext');
+		} catch (Exception $e) {
+			//we don't care if the context cannot be found
+			//if the developer forgets to include it the test will fail anyway
+			//but by ignoring this error we do not force every UI test suite
+			//to include FilesContext
+		}
 
 		SetupHelper::setOcPath($scope);
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
