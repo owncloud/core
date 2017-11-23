@@ -53,8 +53,7 @@ trait BasicStructure {
 	 */
 	public function iAmLoggedInAsAdmin() {
 		$this->loginPage->open();
-		$nextPage = $this->loginPage->loginAs("admin", "admin");
-		$nextPage->waitTillPageIsLoaded($this->getSession());
+		$this->loginAs("admin", "admin");
 	}
 
 	/**
@@ -63,11 +62,35 @@ trait BasicStructure {
 	 */
 	public function iAmLoggedInAsARegularUser() {
 		$this->loginPage->open();
+		$this->loginAsARegularUser();
+	}
+
+	/**
+	 * @return Page\OwncloudPage
+	 */
+	public function loginAsARegularUser() {
+		return $this->loginAs(
+			$this->getRegularUserName(),
+			$this->getRegularUserPassword()
+		);
+	}
+
+	/**
+	 * @param string $username
+	 * @param string $password
+	 * @param string $target
+	 * @return \Page\OwncloudPage
+	 */
+	public function loginAs($username, $password, $target = 'FilesPage') {
 		$nextPage = $this->loginPage->loginAs(
-			$this->regularUserName,
-			$this->regularUserPassword
+			$username,
+			$password,
+			$target
 		);
 		$nextPage->waitTillPageIsLoaded($this->getSession());
+		$this->setCurrentUser($username);
+		$this->setCurrentServer(null);
+		return $nextPage;
 	}
 
 	/**
@@ -86,10 +109,10 @@ trait BasicStructure {
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @return void
 	 */
-	public function aRegularUserExists($doNotInitialize) {
+	public function aRegularUserExists($doNotInitialize = "") {
 		$this->createUser(
-			$this->regularUserName,
-			$this->regularUserPassword,
+			$this->getRegularUserName(),
+			$this->getRegularUserPassword(),
 			null,
 			null,
 			($doNotInitialize === "")
@@ -102,10 +125,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function regularUsersExist($doNotInitialize) {
-		foreach ($this->regularUserNames as $user) {
+		foreach ($this->getRegularUserNames() as $user) {
 			$this->createUser(
 				$user,
-				$this->regularUserPassword,
+				$this->getRegularUserPassword(),
 				null,
 				null,
 				($doNotInitialize === "")
@@ -235,8 +258,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function aRegularUserIsInARegularGroup() {
-		$group = $this->regularGroupName;
-		$user = $this->regularUserName;
+		$group = $this->getRegularGroupName();
+		$user = $this->getRegularUserName();
 		if (!in_array($user, $this->getCreatedUserNames())) {
 			$this->aRegularUserExists();
 		}
