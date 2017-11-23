@@ -101,7 +101,9 @@ trait BasicStructure {
 		$settingsMenu = $this->owncloudPage->openSettingsMenu();
 		$settingsMenu->logout();
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
-		$this->filesContext->resetFilesContext();
+		if ($this->filesContext !== null) {
+			$this->filesContext->resetFilesContext();
+		}
 	}
 
 	/**
