@@ -69,9 +69,8 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getDatabaseConnection(),
 		\OC\Files\Filesystem::getMountManager(),
 		\OC\Files\Filesystem::getLoader(),
-		\OC::$server->getHTTPHelper(),
 		\OC::$server->getNotificationManager(),
-		$discoveryManager,
+		\OC::$server->getEventDispatcher(),
 		\OC::$server->getUserSession()->getUser()->getUID()
 );
 
