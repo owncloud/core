@@ -10,6 +10,24 @@ clone:
     depth: 1
 
 pipeline:
+  composer:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/composer-install.sh
+
+  npm:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/npm-install.sh
+
+  bower:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/bower-install.sh
+
   coverage:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -20,7 +38,6 @@ pipeline:
     commands:
       - ./tests/drone/test-coverage.sh
     when:
-      event: [push, pull_request]
       matrix:
         TEST_SUITE: coverage
 
@@ -31,7 +48,6 @@ pipeline:
     files:
      - tests/autotest-clover-${DB_TYPE}.xml
     when:
-      event: [push, pull_request]
       matrix:
         TEST_SUITE: coverage
 
