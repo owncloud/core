@@ -22,12 +22,6 @@ pipeline:
     commands:
       - ./tests/drone/npm-install.sh
 
-  bower:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - ./tests/drone/bower-install.sh
-
   coverage:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
