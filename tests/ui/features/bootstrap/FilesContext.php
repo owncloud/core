@@ -425,6 +425,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 */
 	public function choiceInUploadConflict($choice) {
 		$dialogs = $this->filesPage->getOcDialogs();
+		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
 			$isConflictDialog = strstr(
 				$dialog->getTitle(), $this->uploadConflictDialogTitle
@@ -434,14 +435,22 @@ class FilesContext extends RawMinkContext implements Context {
 				break;
 			}
 		}
+		if ($isConflictDialog === false) {
+			throw new Exception(
+				__METHOD__ .
+				" file upload conflict dialog expected but not found"
+			);
+		}
 		if ($choice === "new") {
 			$this->conflictDialog->keepNewFiles();
 		} elseif ($choice === "existing") {
 			$this->conflictDialog->keepExistingFiles();
 		} else {
-			throw new Exception("the choice can only be 'new' or 'existing'");
+			throw new Exception(
+				__METHOD__ .
+				" the choice can only be 'new' or 'existing'"
+			);
 		}
-		
 	}
 
 	/**
