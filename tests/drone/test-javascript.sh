@@ -6,4 +6,5 @@ if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   exit 1
 fi
 
-exec ./build/node_modules/.bin/karma start tests/karma.config.js --single-run
+./autotest-js.sh
+
