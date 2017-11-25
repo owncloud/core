@@ -2044,11 +2044,7 @@
 						// mark as loading (temp element)
 						self.showFileBusyState(tr, true);
 						tr.attr('data-file', newName);
-						var basename = newName;
-						if (newName.indexOf('.') > 0 && tr.data('type') !== 'dir') {
-							basename = newName.substr(0, newName.lastIndexOf('.'));
-						}
-						td.find('a.name span.nametext').text(basename);
+						td.find('a.name span.nametext').text(newName);
 						td.children('a.name').show();
 
 						var path = tr.attr('data-path') || self.getCurrentDirectory();
