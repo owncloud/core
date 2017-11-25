@@ -252,8 +252,6 @@
     "Cheers!" : "Parabéns!",
     "Internal Server Error" : "Erro Interno do Servidor",
     "The server encountered an internal error and was unable to complete your request." : "O servidor encontrou um erro interno e não conseguiu concluir o seu pedido.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Entra em contacto com o administrador do servidor se este erro aparecer várias vezes, inclui também os detalhes técnicos abaixo no seu contacto.",
-    "More details can be found in the server log." : "Mais detalhes podem ser encontrados no log do servidor.",
     "Technical details" : "Detalhes técnicos",
     "Remote Address: %s" : "Endereço remoto: %s",
     "Request ID: %s" : "Id. do pedido: %s",

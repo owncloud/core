@@ -227,8 +227,6 @@ OC.L10N.register(
     "Cheers!" : "Terekest!",
     "Internal Server Error" : "Serveri sisemine viga",
     "The server encountered an internal error and was unable to complete your request." : "Serveris tekkis sisemine tõrge ja sinu päringu täitmine ebaõnnestus.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Kui seda veateadet näidatakse mitu korda, siis palun võta ühendust serveri administraatoriga. Palun lisa alla aruandesse tehnilised üksikasjad.",
-    "More details can be found in the server log." : "Lisainfot võib leida serveri logist.",
     "Technical details" : "Tehnilised andmed",
     "Remote Address: %s" : "Kaugaadress: %s",
     "Request ID: %s" : "Päringu ID: %s",

@@ -250,8 +250,6 @@
     "Cheers!" : "Pozdrawiam!",
     "Internal Server Error" : "Błąd wewnętrzny serwera",
     "The server encountered an internal error and was unable to complete your request." : "Serwer napotkał błąd wewnętrzny i nie był w stanie ukończyć Twojego żądania.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Proszę skontaktować się z administratorem jeśli ten błąd będzie się pojawiał wielokrotnie, proszę do zgłoszenia dołączyć szczegóły techniczne opisane poniżej.",
-    "More details can be found in the server log." : "Więcej szczegółów można znaleźć w logu serwera.",
     "Technical details" : "Szczegóły techniczne",
     "Remote Address: %s" : "Adres zdalny: %s",
     "Request ID: %s" : "ID żądania: %s",

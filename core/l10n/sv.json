@@ -250,8 +250,6 @@
     "Cheers!" : "Ha de fint!",
     "Internal Server Error" : "Internt serverfel",
     "The server encountered an internal error and was unable to complete your request." : "Servern påträffade ett internt fel och lmisslyckades att slutföra din begäran.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Vänligen kontakta serveradministratören om detta fel återkommer flera gånger, vänligen inkludera nedanstående tekniska detaljeri din felrapport.",
-    "More details can be found in the server log." : "Mer detaljer återfinns i serverns logg.",
     "Technical details" : "Tekniska detaljer",
     "Remote Address: %s" : "Fjärradress: %s",
     "Request ID: %s" : "Begärd ID: %s",

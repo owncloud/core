@@ -252,8 +252,6 @@ OC.L10N.register(
     "Cheers!" : "감사합니다!",
     "Internal Server Error" : "내부 서버 오류",
     "The server encountered an internal error and was unable to complete your request." : "서버에 내부 오류가 발생하여 요청을 처리할 수 없었습니다.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "이 오류가 여러 번 발생한다면 서버 관리자에게 연락해 주시고, 아래 기술적인 정보를 포함해 주십시오.",
-    "More details can be found in the server log." : "서버 로그에서 자세한 정보를 찾을 수 있습니다.",
     "Technical details" : "기술 정보",
     "Remote Address: %s" : "원격 주소: %s",
     "Request ID: %s" : "요청 ID: %s",

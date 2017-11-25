@@ -254,8 +254,6 @@
     "Cheers!" : "干杯！",
     "Internal Server Error" : "内部服务器错误",
     "The server encountered an internal error and was unable to complete your request." : "服务器发送一个内部错误并且无法完成你的请求。",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "请联系服务器管理员，如果多次出现这个错误，请把下面的技术细节包含在您的报告里。",
-    "More details can be found in the server log." : "更多细节能在服务器日志中找到。",
     "Technical details" : "技术细节",
     "Remote Address: %s" : "远程地址： %s",
     "Request ID: %s" : "请求 ID: %s",

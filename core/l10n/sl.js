@@ -256,8 +256,6 @@ OC.L10N.register(
     "Cheers!" : "Lep pozdrav!",
     "Internal Server Error" : "Notranja  napaka strežnika",
     "The server encountered an internal error and was unable to complete your request." : "Prišlo je do notranje napake, zato ni mogoče končati zahteve.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Stopite v stik s skrbnikom sistema, če se napaka pojavlja pogosto. V poročilo vključite tudi tehnične podatke v dnevniški datoteki.",
-    "More details can be found in the server log." : "Več podrobnosti je zabeleženih v dnevniku strežnika.",
     "Technical details" : "Tehnične podrobnosti",
     "Remote Address: %s" : "Oddaljen naslov: %s",
     "Request ID: %s" : "ID zahteve: %s",

@@ -189,8 +189,6 @@
     "Cheers!" : "Horee!",
     "Internal Server Error" : "Kesalahan Server Internal",
     "The server encountered an internal error and was unable to complete your request." : "Server mengalami kesalahan internal dan tidak dapat menyelesaikan permintaan Anda.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Silahkan hubungi administrator server jika kesalahan ini muncul kembali berulang kali, harap sertakan rincian teknis di bawah ini dalam laporan Anda.",
-    "More details can be found in the server log." : "Rincian lebih lengkap dapat ditemukan di log server.",
     "Technical details" : "Rincian teknis",
     "Remote Address: %s" : "Alamat remote: %s",
     "Request ID: %s" : "ID Permintaan: %s",

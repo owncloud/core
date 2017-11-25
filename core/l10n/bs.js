@@ -136,7 +136,6 @@ OC.L10N.register(
     "The share will expire on %s." : "Podijeljeni resurs će isteći na %s.",
     "Cheers!" : "Cheers!",
     "Internal Server Error" : "Unutarnja Server Greška",
-    "More details can be found in the server log." : "Više detalja se mogu naći u server zapisu (log).",
     "Technical details" : "Tehnički detalji",
     "Request ID: %s" : "Zahtjevaj ID: %s",
     "Code: %s" : "Kod (Code): %s",

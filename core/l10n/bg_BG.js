@@ -236,8 +236,6 @@ OC.L10N.register(
     "Cheers!" : "Поздрави!",
     "Internal Server Error" : "Вътрешна системна грешка",
     "The server encountered an internal error and was unable to complete your request." : "Сървърът се натъкна на вътрешна грешка и неуспя да завърши заявката.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Моля, свържете се със сървърния администратор, ако тази грешка се появи отново. Също така Ви Молим да включите техническите данни, показани в доклада по-долу.",
-    "More details can be found in the server log." : "Повече детайли могат да бъдат намерени в сървърния журнал.",
     "Technical details" : "Технически подробности",
     "Remote Address: %s" : "Отдалечен адрес: %s",
     "Request ID: %s" : "ID на заявка: %s",

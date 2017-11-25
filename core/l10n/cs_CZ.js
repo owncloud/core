@@ -252,8 +252,6 @@ OC.L10N.register(
     "Cheers!" : "Ať slouží!",
     "Internal Server Error" : "Vnitřní chyba serveru",
     "The server encountered an internal error and was unable to complete your request." : "Server zaznamenal interní chybu a nebyl schopen dokončit váš požadavek.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Kontaktujte prosím správce serveru, pokud se bude tato chyba opakovat. Připojte do svého hlášení níže zobrazené technické detaily.",
-    "More details can be found in the server log." : "Více podrobností k nalezení v serverovém logu.",
     "Technical details" : "Technické detaily",
     "Remote Address: %s" : "Vzdálená adresa: %s",
     "Request ID: %s" : "ID požadavku: %s",

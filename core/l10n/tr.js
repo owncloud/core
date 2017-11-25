@@ -252,8 +252,6 @@ OC.L10N.register(
     "Cheers!" : "Hoşça kalın!",
     "Internal Server Error" : "Dahili Sunucu Hatası",
     "The server encountered an internal error and was unable to complete your request." : "Sunucu dahili bir hatayla karşılaştı ve isteğinizi tamamlayamadı.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Eğer bu hata birden çok kez oluştuysa, lütfen sunucu yöneticisine aşağıdaki teknik ayrıntılar ile birlikte iletişime geçin.",
-    "More details can be found in the server log." : "Daha fazla ayrıntı sunucu günlüğünde bulanabilir.",
     "Technical details" : "Teknik ayrıntılar",
     "Remote Address: %s" : "Uzak Adres: %s",
     "Request ID: %s" : "İstek Kimliği: %s",

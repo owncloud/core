@@ -264,8 +264,6 @@ OC.L10N.register(
     "Cheers!" : "Skål!",
     "Internal Server Error" : "Intern feil i tenaren",
     "The server encountered an internal error and was unable to complete your request." : "Tenaren fekk ein intern feil og kan ikkje fullføre din førespurnad.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Ver venleg å kontakt administrator vhis denne feilen oppstår fleire gonger, ver venleg å ta med tekniske detaljar nedanfor i din henvendelse.",
-    "More details can be found in the server log." : "Meir delajar i logg til tenaren.",
     "Technical details" : "Tekniske detaljer",
     "Remote Address: %s" : "Ekstern adresse %s",
     "Request ID: %s" : "Førespurnad ID %s",

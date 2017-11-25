@@ -252,8 +252,6 @@ OC.L10N.register(
     "Cheers!" : "Til hamingju!",
     "Internal Server Error" : "Innri villa",
     "The server encountered an internal error and was unable to complete your request." : "Innri villa kom upp á þjóninum og ekki náðist að afgreiða beiðnina.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Hafðu samband við kerfisstjóra ef þessi villa birtist oft aftur, láttu þá tæknilegu upplýsingarnar hér að neðan fylgja með.",
-    "More details can be found in the server log." : "Nánari upplýsingar er að finna í atburðaskrá (annál) þjónsins.",
     "Technical details" : "Tæknilegar upplýsingar",
     "Remote Address: %s" : "fjartengt vistfang: %s",
     "Request ID: %s" : "Beiðni um auðkenni: %s",

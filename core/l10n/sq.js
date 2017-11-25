@@ -252,8 +252,6 @@ OC.L10N.register(
     "Cheers!" : "Gëzuar!",
     "Internal Server Error" : "Gabim i Brendshëm Shërbyesi",
     "The server encountered an internal error and was unable to complete your request." : "Shërbyesi hasi një gabim të brendshëm dhe s’qe në gjendje të plotësojë kërkesën tuaj.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Nëse ky gabim shfaqet shumë herë, ju lutemi, lidhuni me përgjegjësin e shërbyesit, dhe përfshini hollësitë teknike më poshtë në njoftimin tuaj.",
-    "More details can be found in the server log." : "Më tepër hollësi mund të gjenden në regjistrin e shërbyesit.",
     "Technical details" : "Hollësi teknike",
     "Remote Address: %s" : "Adresë e Largët: %s",
     "Request ID: %s" : "ID Kërkese: %s",

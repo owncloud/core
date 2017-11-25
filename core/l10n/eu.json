@@ -174,8 +174,6 @@
     "Cheers!" : "Ongi izan!",
     "Internal Server Error" : "Zerbitzariaren Barne Errorea",
     "The server encountered an internal error and was unable to complete your request." : "Zerbitzariak barne errore bat izan du eta ez da gai izan zure eskaria osatzeko.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Mesedez harremanetan jarri zerbitzariaren kudeatzailearekin errore hau aldi askotan agertzekotan, mesedez gehitu beheko zehaztapen teknikoak zure txostenean.",
-    "More details can be found in the server log." : "Zehaztapen gehiago zerbitzariaren egunerokoan aurki daitezke.",
     "Technical details" : "Arazo teknikoak",
     "Remote Address: %s" : "Urruneko Helbidea: %s",
     "Request ID: %s" : "Eskariaren IDa: %s",

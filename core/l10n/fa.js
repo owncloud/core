@@ -161,7 +161,6 @@ OC.L10N.register(
     "The share will expire on %s." : "اشتراک‌گذاری در %s منقضی خواهد شد.",
     "Cheers!" : "سلامتی!",
     "Internal Server Error" : "خطای داخلی سرور",
-    "More details can be found in the server log." : "جزئیات بیشتر در لاگ سرور قابل مشاهده خواهد بود.",
     "Technical details" : "جزئیات فنی",
     "Remote Address: %s" : "آدرس راه‌دور: %s",
     "Request ID: %s" : "ID درخواست: %s",

@@ -171,8 +171,6 @@
     "Cheers!" : "Здраво!",
     "Internal Server Error" : "Унутрашња грешка сервера",
     "The server encountered an internal error and was unable to complete your request." : "Због интерне грешке на серверу, ваш захтев није могао бити довршен.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Контактирајте администратора ако се грешка понови и укључите у извештај техничке појединости наведене испод.",
-    "More details can be found in the server log." : "Више детаља се може наћи у дневнику сервера.",
     "Technical details" : "Технички детаљи",
     "Remote Address: %s" : "Удаљена адреса: %s",
     "Request ID: %s" : "ИД захтева: %s",

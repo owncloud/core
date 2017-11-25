@@ -238,8 +238,6 @@ OC.L10N.register(
     "Cheers!" : "Kiitos!",
     "Internal Server Error" : "Sisäinen palvelinvirhe",
     "The server encountered an internal error and was unable to complete your request." : "Palvelin kohtasi sisäisen virheen, eikä pystynyt viimeistelmään pyyntöäsi.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Ota yhteys palvelimen ylläpitäjään, jos tämä virhe ilmenee useita kertoja. Lisää yhteydenottoosi alla olevat tekniset tiedot.",
-    "More details can be found in the server log." : "Lisätietoja on palvelimen lokitiedostossa.",
     "Technical details" : "Tekniset tiedot",
     "Remote Address: %s" : "Etäosoite: %s",
     "Request ID: %s" : "Pyynnön tunniste: %s",

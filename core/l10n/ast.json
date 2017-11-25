@@ -230,8 +230,6 @@
     "Cheers!" : "¡Salú!",
     "Internal Server Error" : "Fallu de Sirvidor Internu",
     "The server encountered an internal error and was unable to complete your request." : "El sirvidor atopó un erru internu y nun pudo completar la so solicitú.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Por favor, póngase en contactu col alministrador del sirvidor si esti erru vuelve apaecer delles vegaes, por favor incluya los detalles técnicos nel so informe.",
-    "More details can be found in the server log." : "Puede atopar más detalles nel rexistru del servidor. ",
     "Technical details" : "Detalles teúnicos",
     "Remote Address: %s" : "Accesu Remotu: %s",
     "Request ID: %s" : "Solicitú d'ID: %s",

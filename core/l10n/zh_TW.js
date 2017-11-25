@@ -214,8 +214,6 @@ OC.L10N.register(
     "Cheers!" : "太棒了！",
     "Internal Server Error" : "內部伺服器錯誤",
     "The server encountered an internal error and was unable to complete your request." : "伺服器遭遇內部錯誤，無法完成您的要求",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "如果這個錯誤重複出現，請聯絡系統管理員，並附上以下的錯誤細節",
-    "More details can be found in the server log." : "伺服器記錄檔裡面有更多細節",
     "Technical details" : "技術細節",
     "Remote Address: %s" : "遠端位置：%s",
     "Request ID: %s" : "請求編號：%s",

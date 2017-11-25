@@ -237,8 +237,6 @@ OC.L10N.register(
     "Cheers!" : "Cheers!",
     "Internal Server Error" : "Internal Server Error",
     "The server encountered an internal error and was unable to complete your request." : "The server encountered an internal error and was unable to complete your request.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report.",
-    "More details can be found in the server log." : "More details can be found in the server log.",
     "Technical details" : "Technical details",
     "Remote Address: %s" : "Remote Address: %s",
     "Request ID: %s" : "Request ID: %s",

@@ -231,8 +231,6 @@
     "Cheers!" : "Acclamationes!",
     "Internal Server Error" : "Error interne del servitor",
     "The server encountered an internal error and was unable to complete your request." : "Le servitor ha incontrate un error interne e non ha potite complir tu requesta.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Per favor contacta le administrator del servitor si iste error reappare plure vices e include le detalios technic sequente in tu reporto.",
-    "More details can be found in the server log." : "Plus detalios se trova in le registro del servitor.",
     "Technical details" : "Detalios technic",
     "Remote Address: %s" : "Adresse remote: %s",
     "Request ID: %s" : "ID de requesta: %s",

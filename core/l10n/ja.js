@@ -255,8 +255,6 @@ OC.L10N.register(
     "Cheers!" : "それでは！",
     "Internal Server Error" : "内部サーバーエラー",
     "The server encountered an internal error and was unable to complete your request." : "サーバー内でエラーが発生したため、リクエストを完了できませんでした。",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "このエラーが繰り返し表示されるようであれば、以下の技術情報を添付してサーバー管理者に問い合わせてください。",
-    "More details can be found in the server log." : "詳細は、サーバーのログを確認してください。",
     "Technical details" : "技術詳細",
     "Remote Address: %s" : "リモートアドレス: %s",
     "Request ID: %s" : "リクエスト ID: %s",

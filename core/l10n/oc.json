@@ -216,8 +216,6 @@
     "Cheers!" : "A lèu !",
     "Internal Server Error" : "Error intèrna del servidor",
     "The server encountered an internal error and was unable to complete your request." : "Lo servidor a rencontrat una error intèrna e es incapable d'executar vòstra requèsta.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Contactatz l'administrator del servidor se aquesta error apareis mantun còp. Jonhètz los detalhs tecnics a vòstre rapòrt.",
-    "More details can be found in the server log." : "Lo fichièr jornal del servidor pòt provesir mai d'entresenhas.",
     "Technical details" : "Enstresenhas tecnicas",
     "Remote Address: %s" : "Adreça distanta : %s",
     "Request ID: %s" : "ID de la demanda : %s",

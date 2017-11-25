@@ -145,8 +145,6 @@
     "Cheers!" : "U zdravlje!",
     "Internal Server Error" : "Interna Serverska Greška",
     "The server encountered an internal error and was unable to complete your request." : "Server je naišao na internu grešku i nije mogao da završi obradu Vašeg upita.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Molimo Vas da kontaktirate administratora servera ako se ova greška ponavlja, molimo da uključite tehničke podatke dole u Vašem izveštaju.",
-    "More details can be found in the server log." : "Više detalja se može naći u serverovom logu - zapisniku.",
     "Technical details" : "Tehnički detalji",
     "Remote Address: %s" : "Udaljena adresa: %s",
     "Request ID: %s" : "ID zahteva: %s",

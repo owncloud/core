@@ -264,8 +264,6 @@ OC.L10N.register(
     "Cheers!" : "Saudações!",
     "Internal Server Error" : "Erro Interno do Servidor",
     "The server encountered an internal error and was unable to complete your request." : "O servidor encontrou um erro interno e não conseguiu concluir o seu pedido.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Entre em contato com o administrador do servidor se este erro reaparece várias vezes, por favor, inclua os detalhes técnicos abaixo em seu relatório.",
-    "More details can be found in the server log." : "Mais detalhes podem ser encontrados no log do servidor.",
     "Technical details" : "Detalhes técnicos",
     "Remote Address: %s" : "Endereço Remoto: %s",
     "Request ID: %s" : "ID do Pedido: %s",

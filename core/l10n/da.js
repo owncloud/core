@@ -252,8 +252,6 @@ OC.L10N.register(
     "Cheers!" : "Hav en fortsat god dag.",
     "Internal Server Error" : "Intern serverfejl",
     "The server encountered an internal error and was unable to complete your request." : "Servern stødte på en intern fejl og var ikke i stand til at fuldføre din forespørgsel.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Kontakt venligst serveradministratoren, hvis denne fejl gentager sig flere gange - medtag venligst de tekniske detaljer nedenfor i din rapport.",
-    "More details can be found in the server log." : "Flere detaljer kan fås i serverloggen.",
     "Technical details" : "Tekniske detaljer",
     "Remote Address: %s" : "Fjernadresse: %s",
     "Request ID: %s" : "Forespørgsels-ID: %s",

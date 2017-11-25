@@ -150,8 +150,6 @@ OC.L10N.register(
     "Cheers!" : "Cheers!",
     "Internal Server Error" : "Pogreška poslužitelja.",
     "The server encountered an internal error and was unable to complete your request." : "Poslužitelj je naišao na grešku i nije u mogućnosti izvršiti Vaš zahtjev.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Molimo kontaktirajte svojeg administratora ako se ova greška učestalo pojavljuje, molimo da uključite i tehničke detalje ispod u svojem izvješću.",
-    "More details can be found in the server log." : "Više podatake može se naći u logovima na poslužitelju.",
     "Technical details" : "Tehnički detalji",
     "Remote Address: %s" : "Udaljena adresa: %s",
     "Request ID: %s" : "Zahtjev ID: %s",

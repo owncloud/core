@@ -189,8 +189,6 @@ OC.L10N.register(
     "Cheers!" : "Prost!",
     "Internal Server Error" : "Interne Server Feeler",
     "The server encountered an internal error and was unable to complete your request." : "De Server huet en interne Feeler festgestallt an konnt deng Ufro net ëmsetzen",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "W.e.g. kontaktéier de Server Administrateur wann dëse Feeler e puer Mol optrëtt an sëtz d'technesch Detailer an de Rapport derbäi.",
-    "More details can be found in the server log." : "Méi Detailer kënnen am Server Log fonnt ginn.",
     "Technical details" : "Technesch Detailer",
     "Remote Address: %s" : "D'Adress op Distanz: %s",
     "Request ID: %s" : "ID ufroen: %s",

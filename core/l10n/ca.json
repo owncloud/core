@@ -173,8 +173,6 @@
     "Cheers!" : "Salut!",
     "Internal Server Error" : "Error Intern del Servidor",
     "The server encountered an internal error and was unable to complete your request." : "El servidor ha trobat un error intern i no pot finalitzar la teva petició.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Per favor, posi's en contacte amb l'administrador del servidor si aquest error torna a aparèixer diverses vegades, per favor inclogui els detalls tècnics de baix en el seu informe.",
-    "More details can be found in the server log." : "Pots trobar més detalls al llistat del servidor.",
     "Technical details" : "Detalls tècnics",
     "Remote Address: %s" : "Adreça remota: %s",
     "Request ID: %s" : "Sol·licitud ID: %s ",

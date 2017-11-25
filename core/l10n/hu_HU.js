@@ -256,8 +256,6 @@ OC.L10N.register(
     "Cheers!" : "Üdv.",
     "Internal Server Error" : "Belső szerver hiba",
     "The server encountered an internal error and was unable to complete your request." : "A szerver belső hibával találkozott és nem tudja teljesíteni a kérést.",
-    "Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report." : "Kérjük keresse fel a szerver rendszergazdáját, ha ez a hiba ismételten, többször előfordulna. Kérjük, mellékelje a technikai részleteket a lenti jelentésbe.",
-    "More details can be found in the server log." : "További részletek a szerver naplóban találhatók.",
     "Technical details" : "Technikai adatok",
     "Remote Address: %s" : "Távoli cím: %s",
     "Request ID: %s" : "Kérelem azonosító: %s",
