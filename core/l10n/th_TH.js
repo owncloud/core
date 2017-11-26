@@ -264,6 +264,8 @@ OC.L10N.register(
     "Cheers!" : "ไชโย!",
     "Internal Server Error" : "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์",
     "The server encountered an internal error and was unable to complete your request." : "พบข้อผิดพลาดภายในเซิร์ฟเวอร์และไม่สามารถดำเนินการตามคำขอของคุณ",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "โปรดติดต่อผู้ดูแลระบบเซิร์ฟเวอร์หากเกิดข้อผิดพลาดนี้อีก และกรอกรายละเอียดในรายงานของคุณ",
+    "More details can be found in the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">server log</a>." : "สามารถอ่านรายละเอียดเพิ่มเติมได้ที่ <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">บันทึกของเซิร์ฟเวอร์</a>",
     "Technical details" : "รายละเอียดทางเทคนิค",
     "Remote Address: %s" : "ที่อยู่รีโมท: %s",
     "Request ID: %s" : "คำขอ ID: %s",
