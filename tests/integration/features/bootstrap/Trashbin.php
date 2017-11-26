@@ -19,8 +19,6 @@
  *
  */
 
-use GuzzleHttp\Client;
-
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 /**

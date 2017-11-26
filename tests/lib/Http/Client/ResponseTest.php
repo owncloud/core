@@ -8,7 +8,6 @@
 
 namespace Test\Http\Client;
 
-use Guzzle\Stream\Stream;
 use OC\Http\Client\Response;
 use Psr\Http\Message\ResponseInterface;
 
