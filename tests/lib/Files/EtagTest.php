@@ -10,7 +10,6 @@ namespace Test\Files;
 
 use OC\Files\Filesystem;
 use OC\Files\Utils\Scanner;
-use OCP\Share;
 use Test\Traits\UserTrait;
 
 /**

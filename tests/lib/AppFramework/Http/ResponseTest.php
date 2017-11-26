@@ -27,9 +27,9 @@ namespace Test\AppFramework\Http;
 
 use DateTime;
 use DateTimeZone;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\Response;
-use OCP\AppFramework\Http;
 use Test\TestCase;
 
 

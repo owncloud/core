@@ -14,13 +14,13 @@ namespace Test\AppFramework\Middleware\Security;
 
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Middleware\Security\CORSMiddleware;
-use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
+use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
-use OCP\IUserSession;
-use OCP\IUser;
 use OCP\IConfig;
+use OCP\IUser;
+use OCP\IUserSession;
 
 
 /**

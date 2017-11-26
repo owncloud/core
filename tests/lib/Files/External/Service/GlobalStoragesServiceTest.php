@@ -23,8 +23,8 @@
  */
 namespace Test\Files\External\Service;
 
-use \OC\Files\Filesystem;
-use \OC\Files\External\Service\GlobalStoragesService;
+use OC\Files\External\Service\GlobalStoragesService;
+use OC\Files\Filesystem;
 use OCP\Files\External\IStorageConfig;
 
 /**

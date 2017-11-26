@@ -23,14 +23,14 @@ namespace Tests\Settings\Controller;
 
 use OC\Settings\Controller\CorsController;
 use OCP\AppFramework\Http\JSONResponse;
-use Test\TestCase;
-use OCP\IRequest;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\IRequest;
+use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
-use OCP\IURLGenerator;
-use OCP\AppFramework\Http\RedirectResponse;
+use Test\TestCase;
 
 /**
  * Class CorsControllerTest

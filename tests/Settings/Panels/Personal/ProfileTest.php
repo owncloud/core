@@ -13,9 +13,9 @@ namespace Tests\Settings\Panels\Personal;
 use OC\Settings\Panels\Personal\Profile;
 use OCP\IConfig;
 use OCP\IGroupManager;
+use OCP\IUser;
 use OCP\IUserSession;
 use OCP\L10N\IFactory;
-use OCP\IUser;
 
 /**
 * @package Tests\Settings\Panels\Personal

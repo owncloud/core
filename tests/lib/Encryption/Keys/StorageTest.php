@@ -26,10 +26,10 @@ namespace Test\Encryption\Keys;
 use OC\Encryption\Keys\Storage;
 use OC\Encryption\Util;
 use OC\Files\View;
-use Test\TestCase;
-use Test\Traits\UserTrait;
 use OCP\IUser;
 use OCP\IUserSession;
+use Test\TestCase;
+use Test\Traits\UserTrait;
 
 /**
  * Class StorageTest

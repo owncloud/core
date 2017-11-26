@@ -6,7 +6,6 @@ use OC\Encryption\Util;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\User\Manager;
-use OCP\IUserManager;
 use Test\Files\Storage\Storage;
 
 class EncryptionTest extends Storage {

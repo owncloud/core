@@ -20,8 +20,8 @@
  */
 namespace Test\Files\External;
 
-use OCP\Files\External\IStoragesBackendService;
 use OC\Files\External\StoragesBackendService;
+use OCP\Files\External\IStoragesBackendService;
 
 class StoragesBackendServiceTest extends \Test\TestCase {
 

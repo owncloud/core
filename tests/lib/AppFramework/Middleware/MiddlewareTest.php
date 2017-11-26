@@ -25,8 +25,8 @@
 namespace Test\AppFramework\Middleware;
 
 use OC\AppFramework\Http\Request;
-use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Http\Response;
+use OCP\AppFramework\Middleware;
 
 class ChildMiddleware extends Middleware {};
 
