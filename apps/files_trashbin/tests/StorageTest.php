@@ -28,9 +28,9 @@
 
 namespace OCA\Files_Trashbin\Tests;
 
+use OC\Files\Filesystem;
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Temporary;
-use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Files\Storage;
 use Test\TestCase;
