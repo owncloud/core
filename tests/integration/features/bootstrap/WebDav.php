@@ -1,10 +1,10 @@
 <?php
 
 use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Message\ResponseInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
-use GuzzleHttp\Exception\ServerException;
 use TestHelpers\WebDavHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';

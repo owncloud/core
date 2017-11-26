@@ -23,10 +23,10 @@ namespace TestHelpers;
 
 use Exception;
 use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Stream\StreamInterface;
 use InvalidArgumentException;
 use Sabre\DAV\Client as SClient;
-use GuzzleHttp\Stream\StreamInterface;
-use GuzzleHttp\Stream\Stream;
 
 /**
  * Helper to make WebDav Requests
