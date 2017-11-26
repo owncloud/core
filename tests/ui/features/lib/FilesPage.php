@@ -22,10 +22,10 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
+use Page\FilesPageElement\SharingDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
-use Page\FilesPageElement\SharingDialog;
-use Behat\Mink\Session;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Key;
 

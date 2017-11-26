@@ -24,10 +24,10 @@
 namespace Page\FilesPageElement\SharingDialogElement;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Session;
+use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use Exception;
-use Behat\Mink\Session;
 
 /**
  * The Public link tab of the Sharing Dialog

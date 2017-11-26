@@ -24,8 +24,8 @@
 namespace Page\OwncloudPageElement;
 
 use Behat\Mink\Element\NodeElement;
-use Page\OwncloudPage;
 use Behat\Mink\Session;
+use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**

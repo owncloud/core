@@ -23,9 +23,9 @@
 
 namespace Page\FilesPageElement;
 
+use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use Behat\Mink\Element\NodeElement;
 
 /**
  * Object of a row on the FilesPage
