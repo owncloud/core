@@ -23,13 +23,13 @@
 
 namespace Page;
 
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Session;
+use Page\OwncloudPageElement\OCDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Behat\Mink\Session;
-use Behat\Mink\Element\NodeElement;
 use WebDriver\Exception as WebDriverException;
 use WebDriver\Key;
-use Page\OwncloudPageElement\OCDialog;
 
 /**
  * Owncloud page.

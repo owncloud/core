@@ -22,7 +22,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-
 use Page\PersonalSecuritySettingsPage;
 
 require_once 'bootstrap.php';

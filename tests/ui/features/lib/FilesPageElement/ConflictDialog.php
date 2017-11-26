@@ -23,8 +23,8 @@
 
 namespace Page\FilesPageElement;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Page\OwncloudPageElement\OCDialog;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Object for the conflict dialog that appears when uploading a file that
