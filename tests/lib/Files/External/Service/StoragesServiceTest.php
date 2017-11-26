@@ -25,6 +25,8 @@ namespace Test\Files\External\Service;
 
 use OC\Files\Cache\Storage;
 use OC\Files\External\Service\StoragesService;
+use OC\Files\External\StorageConfig;
+use OC\Files\Filesystem;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\NotFoundException;
 use Test\TestCase;
