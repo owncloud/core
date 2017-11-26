@@ -23,15 +23,12 @@
  */
 namespace Test\Files\External\Service;
 
-use OC\Files\External\StorageConfig;
-use OC\Files\External\Service\StoragesService;
 use OC\Files\External\Service\UserGlobalStoragesService;
+use OC\Files\External\StorageConfig;
+use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\External\Service\IUserGlobalStoragesService;
-
-use OCP\Files\External\NotFoundException;
 use OCP\IUser;
-
 use Test\Traits\UserTrait;
 
 /**

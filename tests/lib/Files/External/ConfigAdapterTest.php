@@ -20,19 +20,18 @@
  */
 namespace Test\Files\External;
 
-use OCP\Files\External\Service\IUserStoragesService;
-use OCP\Files\External\Service\IUserGlobalStoragesService;
-use OCP\IUser;
 use OC\Files\External\ConfigAdapter;
-use OCP\IConfig;
-use OC\Files\External\Service\UserStoragesService;
+use OC\Files\External\PersonalMount;
 use OC\Files\External\Service\UserGlobalStoragesService;
-use OCP\Files\External\IStorageConfig;
+use OC\Files\External\Service\UserStoragesService;
+use OC\Files\Storage\StorageFactory;
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Backend\Backend;
-use OC\Files\External\PersonalMount;
-use OC\Files\Mount\MountPoint;
-use OC\Files\Storage\StorageFactory;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\Service\IUserGlobalStoragesService;
+use OCP\Files\External\Service\IUserStoragesService;
+use OCP\IConfig;
+use OCP\IUser;
 
 class ConfigAdapterTest extends \Test\TestCase {
 

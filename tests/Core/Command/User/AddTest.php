@@ -22,11 +22,12 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Add;
+use OC\User\User;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 use Test\Traits\UserTrait;
-use \OC\User\User;
+
 /**
  * Class AddTest
  *

@@ -22,7 +22,7 @@
 
 namespace Test\Files\External;
 
-use \OCP\Files\External\DefinitionParameter as Param;
+use OCP\Files\External\DefinitionParameter as Param;
 
 class DefinitionParameterTest extends \Test\TestCase {
 

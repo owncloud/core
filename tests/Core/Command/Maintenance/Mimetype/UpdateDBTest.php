@@ -22,9 +22,9 @@
 namespace Tests\Core\Command\Maintenance\Mimetype;
 
 use OC\Core\Command\Maintenance\Mimetype\UpdateDB;
-use Test\TestCase;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Files\IMimeTypeLoader;
+use Test\TestCase;
 
 class UpdateDBTest extends TestCase {
 	/** @var IMimeTypeDetector */

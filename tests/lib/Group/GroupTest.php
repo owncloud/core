@@ -9,7 +9,6 @@
 
 namespace Test\Group;
 
-use OC\User\User;
 use OCP\IUser;
 
 class GroupTest extends \Test\TestCase {

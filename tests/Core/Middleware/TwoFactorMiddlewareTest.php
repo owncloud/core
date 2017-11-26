@@ -22,8 +22,8 @@
 
 namespace Test\Core\Middleware;
 
-use OC\Core\Middleware\TwoFactorMiddleware;
 use OC\AppFramework\Http\Request;
+use OC\Core\Middleware\TwoFactorMiddleware;
 use Test\TestCase;
 
 class TwoFactorMiddlewareTest extends TestCase {

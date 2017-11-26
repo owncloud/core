@@ -21,8 +21,6 @@
 
 namespace Test\Files\External\Backend;
 
-use \OCP\Files\External\Backend\Backend;
-
 class BackendTest extends \Test\TestCase {
 
 	public function testJsonSerialization() {

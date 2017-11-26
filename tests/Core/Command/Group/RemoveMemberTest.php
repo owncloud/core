@@ -25,6 +25,7 @@ use OC\Core\Command\Group\RemoveMember;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 use Test\Traits\UserTrait;
+
 /**
  * Class RemoveMemberTest
  *

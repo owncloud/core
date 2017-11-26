@@ -8,7 +8,7 @@
 
 namespace Test\Security;
 
-use \OC\Security\CertificateManager;
+use OC\Security\CertificateManager;
 
 /**
  * Class CertificateManagerTest

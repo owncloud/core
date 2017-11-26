@@ -24,8 +24,8 @@ namespace Test\Group;
 
 use OC\Group\Database;
 use OC\User\Manager;
-use OCP\IUser;
 use OCP\GroupInterface;
+use OCP\IUser;
 
 class ManagerTest extends \Test\TestCase {
 	private function getTestUser($userId) {

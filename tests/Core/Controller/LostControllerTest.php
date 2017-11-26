@@ -22,6 +22,7 @@
 namespace Tests\Core\Controller;
 
 use OC\Core\Controller\LostController;
+use OC\User\Session;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
@@ -33,7 +34,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
-use OC\User\Session;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**

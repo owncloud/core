@@ -22,10 +22,10 @@
 
 namespace Test;
 
+use OC\IntegrityCheck\Checker;
 use OC\Updater;
 use OCP\IConfig;
 use OCP\ILogger;
-use OC\IntegrityCheck\Checker;
 
 class UpdaterTest extends TestCase {
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */

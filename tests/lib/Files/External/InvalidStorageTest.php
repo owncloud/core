@@ -20,8 +20,8 @@
  */
 namespace Test\Files\External;
 
-use Test\TestCase;
 use OC\Files\External\InvalidStorage;
+use Test\TestCase;
 
 class InvalidStorageTest extends TestCase {
 

@@ -22,7 +22,9 @@
 namespace Tests\Settings\Controller;
 
 use GuzzleHttp\Exception\ClientException;
+use OC\IntegrityCheck\Checker;
 use OC\Settings\Controller\CheckSetupController;
+use OC_Util;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\DataResponse;
@@ -32,9 +34,7 @@ use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
-use OC_Util;
 use Test\TestCase;
-use OC\IntegrityCheck\Checker;
 
 /**
  * Class CheckSetupControllerTest
