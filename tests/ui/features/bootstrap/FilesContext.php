@@ -22,13 +22,13 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
-use Page\TrashbinPage;
-use Page\OwncloudPage;
 use Page\FilesPageElement\ConflictDialog;
+use Page\OwncloudPage;
+use Page\TrashbinPage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\DownloadHelper;
 

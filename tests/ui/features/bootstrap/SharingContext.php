@@ -21,13 +21,13 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
+use Page\PublicLinkFilesPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
-use Page\PublicLinkFilesPage;
 
 require_once 'bootstrap.php';
 

@@ -22,10 +22,10 @@
 
 namespace Page;
 
-use Page\FilesPageElement\FileRow;
-use Page\FilesPageElement\FileActionsMenu;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
+use Page\FilesPageElement\FileActionsMenu;
+use Page\FilesPageElement\FileRow;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
 

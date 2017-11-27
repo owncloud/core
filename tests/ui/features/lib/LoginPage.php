@@ -22,9 +22,9 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Behat\Mink\Session;
 
 /**
  * Login page.
