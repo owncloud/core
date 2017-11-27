@@ -410,7 +410,7 @@ class FeatureContext extends RawMinkContext implements Context {
 		$this->adminPassword = (string)$suiteParameters['adminPassword'];
 		
 		$response = AppConfigHelper::getCapabilities(
-			$this->getMinkParameter('base_url'), "admin", $this->adminPassword
+			$this->getMinkParameter('base_url'), "admin", $this->getUserPassword("admin")
 		);
 		$this->savedCapabilitiesXml = AppConfigHelper::getCapabilitiesXml(
 			$response
@@ -454,7 +454,7 @@ class FeatureContext extends RawMinkContext implements Context {
 			AppConfigHelper::modifyServerConfig(
 				$this->getMinkParameter('base_url'),
 				"admin",
-				$this->adminPassword,
+				$this->getUserPassword("admin"),
 				$capabilitiesChange['testingApp'],
 				$capabilitiesChange['testingParameter'],
 				$capabilitiesChange['savedState'] ? 'yes' : 'no'
