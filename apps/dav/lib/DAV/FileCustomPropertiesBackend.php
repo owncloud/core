@@ -49,6 +49,11 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	const DELETE_BY_ID_AND_NAME_STMT = 'DELETE FROM `*PREFIX*properties`'
 	. ' WHERE `fileid` = ? AND `propertyname` = ?';
 
+	/**
+	 * @var string the source path of a move action.
+	 * This is set during a move so the delete action can know if a move has been called before
+	 * in order to not fetch the source node again (which would cause an error)
+	 */
 	private $moveSource = null;
 
 	/**
