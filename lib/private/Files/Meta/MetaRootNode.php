@@ -118,7 +118,7 @@ class MetaRootNode extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function getPath() {
-		return $this->getName();
+		return '/meta';
 	}
 
 	/**

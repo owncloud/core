@@ -69,15 +69,21 @@ class MetaFilesTest extends TestCase {
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta");
 		$this->assertInstanceOf(MetaRootNode::class, $metaNodeOfFile);
 		$this->assertEquals([], $metaNodeOfFile->getDirectoryListing());
+		$this->assertEquals("/meta", $metaNodeOfFile->getPath());
+		$this->assertEquals("meta", $metaNodeOfFile->getName());
 
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}");
 		$this->assertInstanceOf(MetaFileIdNode::class, $metaNodeOfFile);
+		$this->assertEquals("/meta/{$info->getId()}", $metaNodeOfFile->getPath());
+		$this->assertEquals("{$info->getId()}", $metaNodeOfFile->getName());
 		$children = $metaNodeOfFile->getDirectoryListing();
 		$this->assertEquals(1, count($children));
 		$this->assertInstanceOf(MetaVersionCollection::class, $children[0]);
 
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}/v");
 		$this->assertInstanceOf(MetaVersionCollection::class, $metaNodeOfFile);
+		$this->assertEquals("/meta/{$info->getId()}/v", $metaNodeOfFile->getPath());
+		$this->assertEquals("v", $metaNodeOfFile->getName());
 		$children = $metaNodeOfFile->getDirectoryListing();
 		$this->assertEquals(0, count($children));
 
@@ -97,8 +103,8 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals($file, $metaNodeOfFile->getContentDispositionFileName());
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
 		$this->assertEquals($info->getMTime(), $metaNodeOfFile->getMTime());
-		$this->assertTrue(is_string($metaNodeOfFile->getMTime()));
-		$this->assertTrue(strlen($metaNodeOfFile->getMTime()) > 0);
+		$this->assertTrue(is_string($metaNodeOfFile->getEtag()));
+		$this->assertTrue(strlen($metaNodeOfFile->getEtag()) > 0);
 
 		/** @var MetaFileVersionNode $metaNodeOfFile */
 		$this->assertEquals('1234', $metaNodeOfFile->getContent());
