@@ -53,7 +53,7 @@ trait BasicStructure {
 	 */
 	public function iAmLoggedInAsAdmin() {
 		$this->loginPage->open();
-		$this->loginAs("admin", "admin");
+		$this->loginAs("admin", $this->getUserPassword("admin"));
 	}
 
 	/**
