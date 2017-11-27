@@ -262,6 +262,8 @@
     "Cheers!" : "¡Saludos!",
     "Internal Server Error" : "Error interno del servidor",
     "The server encountered an internal error and was unable to complete your request." : "El servidor ha encontrado un error y no puede completar la solicitud.",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Por favor, ponte en contacto con el administrador del servidor si este error aparece más veces, e incluye los detalles técnicos en tu informe a continuación.",
+    "More details can be found in the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">server log</a>." : "Se pueden encontrar más detalles en el <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">registro del servidor</a>.",
     "Technical details" : "Detalles técnicos",
     "Remote Address: %s" : "Dirección remota: %s",
     "Request ID: %s" : "ID de la solicitud: %s",
