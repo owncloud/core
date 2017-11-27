@@ -389,12 +389,15 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$stat['mtime'] = $mTime;
 		$stat['storage_mtime'] = $mTime;
 		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
-		$stat['etag'] = $this->getETag($path);
+//		$stat['etag'] = $this->getETag($path);
 
 		$fileId = $this->getCache()->put($path, $stat);
 		try {
 			//upload to object storage
-			$this->objectStore->writeObject($this->getURN($fileId), fopen($tmpFile, 'r'));
+			$result = $this->objectStore->writeObject($this->getURN($fileId), fopen($tmpFile, 'r'));
+			$stat['etag'] = $result['etag'];
+			$stat['versionId'] = $result['versionId'];
+			$this->getCache()->update($fileId, $stat);
 		} catch (\Exception $ex) {
 			$this->getCache()->remove($path);
 			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
