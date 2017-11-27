@@ -23,9 +23,8 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
-
+use Behat\MinkExtension\Context\RawMinkContext;
 use Page\UsersPage;
 
 require_once 'bootstrap.php';

@@ -23,7 +23,6 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-
 use Page\LoginPage;
 
 require_once 'bootstrap.php';

@@ -23,12 +23,12 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
-use Page\OwncloudPage;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
-use TestHelpers\SetupHelper;
+use Page\OwncloudPage;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 
 require_once 'bootstrap.php';
