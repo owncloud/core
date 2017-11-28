@@ -41,7 +41,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $expirationDateLabelXpath = ".//label[contains(text(), 'Expiration')]";
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
 	private $emailInputXpath = ".//input[@type='email']";
-	private $saveButtonXpath = ".//button[contains(text(), 'Save')]";
+	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
 	
 
 	/**
@@ -184,11 +184,11 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 */
 	public function save() {
-		$saveButton = $this->popupElement->find("xpath", $this->saveButtonXpath);
+		$saveButton = $this->popupElement->find("xpath", $this->shareButtonXpath);
 		if (is_null($saveButton)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->saveButtonXpath" .
+				" xpath $this->shareButtonXpath" .
 				" could not find save button of the public link popup"
 			);
 		}
