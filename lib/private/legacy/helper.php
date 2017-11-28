@@ -169,7 +169,7 @@ class OC_Helper {
 			return false;
 		}
 
-		if (isset($matches[5])) {
+		if (!empty($matches[5])) {
 			$bytes *= $bytesArray[$matches[5]];
 		}
 
