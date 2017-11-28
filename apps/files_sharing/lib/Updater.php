@@ -78,7 +78,7 @@ class Updater {
 		//Ownership is moved over
 		foreach ($shares as $share) {
 			/** @var \OCP\Share\IShare $share */
-			if ($share->getShareWith() !== $newOwner) {
+			if ($share->getSharedWith() !== $newOwner) {
 				$share->setShareOwner($newOwner);
 				$shareManager->updateShare($share);
 			} else {
