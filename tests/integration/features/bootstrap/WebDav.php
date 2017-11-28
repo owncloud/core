@@ -740,6 +740,21 @@ trait WebDav {
 	}
 
 	/**
+	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
+	 *
+	 * @Then as :user the files uploaded to :destination with all mechanisms exist
+	 * @param string $user
+	 * @param string $destination
+	 */
+	public function filesUploadedToWithAllMechanismsExist($user, $destination) {
+		foreach (['old', 'new'] as $davVersion) {
+			foreach ([$davVersion . 'dav-regular', $davVersion . 'dav-' . $davVersion . 'chunking'] as $suffix) {
+				$this->asTheFileOrFolderExists($user, 'file', $destination . '-' . $suffix);
+			}
+		}
+	}
+
+	/**
 	 * @When User :user adds a file of :bytes bytes to :destination
 	 * @param string $user
 	 * @param string $bytes
