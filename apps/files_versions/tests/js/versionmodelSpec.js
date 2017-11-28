@@ -11,6 +11,10 @@ describe('OCA.Versions.VersionModel', function() {
 	var VersionModel = OCA.Versions.VersionModel;
 	var model;
 
+	var requestStub;
+	var requestDeferred;
+	var currentUserStub;
+
 	beforeEach(function() {
 		model = new VersionModel({
 			id: 10000000,
@@ -19,6 +23,14 @@ describe('OCA.Versions.VersionModel', function() {
 			name: 'some file.txt',
 			size: 150
 		});
+		currentUserStub = sinon.stub(OC, 'getCurrentUser').returns({uid: 'user0'});
+
+		requestDeferred = new $.Deferred();
+		requestStub = sinon.stub(dav.Client.prototype, 'request').returns(requestDeferred.promise());
+	});
+	afterEach(function() {
+		currentUserStub.restore();
+		requestStub.restore();
 	});
 
 	it('returns the full path', function() {
@@ -93,4 +105,3 @@ describe('OCA.Versions.VersionModel', function() {
 		});
 	});
 });
-

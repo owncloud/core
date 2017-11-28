@@ -28,7 +28,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 	var view;
 
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
-	var PASSWORD_PLACEHOLDER_MESSAGE = 'Choose a password for the public link';
+	var PASSWORD_PLACEHOLDER_MESSAGE = 'Choose a password';
 
 	beforeEach(function() {
 		configModel = new OC.Share.ShareConfigModel();

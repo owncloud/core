@@ -207,6 +207,15 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 	// remove status.php info as we already have the version above
 	unset($caps['core']['status']);
 	$array['oc_capabilities'] = json_encode($caps);
+
+	$user = \OC::$server->getUserSession()->getUser();
+	if ($user !== null) {
+		$array['oc_user'] = json_encode([
+			'uid' => $user->getUID(),
+			'displayName' => $user->getDisplayName(),
+			'email' => $user->getEMailAddress()
+		]);
+	}
 }
 
 // Allow hooks to modify the output values
