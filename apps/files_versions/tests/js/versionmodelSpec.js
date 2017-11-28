@@ -15,6 +15,7 @@ describe('OCA.Versions.VersionModel', function() {
 
 	var requestStub;
 	var requestDeferred;
+	var currentUserStub;
 
 	beforeEach(function() {
 		model = new VersionModel({
@@ -25,12 +26,13 @@ describe('OCA.Versions.VersionModel', function() {
 			name: 'some file.txt',
 			size: 150,
 		});
-		OC.currentUser = 'user0';
+		currentUserStub = sinon.stub(OC, 'getCurrentUser').returns({uid: 'user0'});
 
 		requestDeferred = new $.Deferred();
 		requestStub = sinon.stub(dav.Client.prototype, 'request').returns(requestDeferred.promise());
 	});
 	afterEach(function() { 
+		currentUserStub.restore();
 		requestStub.restore();
 	});
 

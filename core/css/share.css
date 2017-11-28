@@ -209,3 +209,23 @@ a.showCruds:hover,a.unshare:hover {
 	padding-top: 12px;
 	color: #999;
 }
+
+/* Private Link share Form */
+
+.emailPrivateLinkForm {
+	position: relative;
+}
+
+.emailPrivateLinkForm--send-indicator {
+	z-index: 2;
+	/* overriding default padding */
+	padding: 5px 15px !important;
+}
+
+.emailPrivateLinkForm--addAddressButton {
+	position: absolute;
+	right: 13px;
+	margin-top: -30px;
+	z-index: 1;
+	color: #999;
+}

@@ -14,7 +14,7 @@
 	}
 
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
-	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
+	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password');
 	var TEMPLATE =
 		'<div class="error-message-global hidden"></div>' +
 		'<div class="public-link-modal">'+
@@ -194,11 +194,8 @@
 				success: function() {
 					if (self.mailView) {
 						// also send out email first
-						self.mailView.sendEmails().then(done).fail(function() {
-							done();
-							// re-show the popup
-							self.show();
-						});
+						// do not resolve on errors
+						self.mailView.sendEmails().then(done);
 					} else {
 						done();
 					}
@@ -243,7 +240,7 @@
 
 				publicUploadPossible       : this._isPublicUploadPossible(),
 
-				publicUploadLabel          : t('core', 'Upload only (File Drop)'),
+				publicUploadLabel          : t('core', 'Upload only') + ' (File Drop)',
 				publicUploadDescription    : t('core', 'Receive files from others without revealing the contents of the folder.'),
 				publicUploadValue          : OC.PERMISSION_CREATE,
 				publicUploadSelected       : this.model.get('permissions') === OC.PERMISSION_CREATE,
@@ -326,18 +323,27 @@
 			var self = this;
 			var title = t('files_sharing', 'Edit link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
 			var buttons = [{
-				text: t('core', 'Save'),
-				click: _.bind(this._onClickSave, this),
-				defaultButton: true
-			}, {
 				text: t('core', 'Cancel'),
 				click: _.bind(this._onClickCancel, this)
 			}];
 
 			if (this.model.isNew()) {
 				title = t('files_sharing', 'Create link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
+				buttons.unshift({
+					text: t('core', 'Share'),
+					click: _.bind(this._onClickSave, this),
+					defaultButton: true
+				})
 			}
-			else if (this.model.get('encryptedPassword')) {
+			else {
+				buttons.unshift({
+					text: t('core', 'Save'),
+					click: _.bind(this._onClickSave, this),
+					defaultButton: true
+				})
+			}
+
+			if (this.model.get('encryptedPassword')) {
 				buttons.push({
 					classes: 'removePassword -float-left',
 					text: t('core', 'Remove password'),
