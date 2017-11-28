@@ -1,14 +1,16 @@
 <?php
 namespace OC\Migrations;
 
-use OC\User\Account;
+use OC\Migration\OutputAdapter;
+use OC\Migration\SimpleOutput;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OC\User\Database;
 use OC\User\SyncService;
-use OCP\IConfig;
+use OC\User\SyncServiceCallback;
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
+use OCP\Util;
 
 class Version20170221114437 implements ISimpleMigration {
 
@@ -26,9 +28,10 @@ class Version20170221114437 implements ISimpleMigration {
 		// insert/update known users
 		$out->info("Insert new users ...");
 		$out->startProgress($backend->countUsers());
-		$syncService->run(function () use ($out) {
-			$out->advance();
-		});
+		$syncService->run(new SyncServiceCallback(
+			$out,
+			(int)$config->getSystemValue('loglevel', Util::WARN)
+		));
 		$out->finishProgress();
 	}
 }

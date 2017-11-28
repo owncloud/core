@@ -3,6 +3,7 @@
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -205,15 +206,20 @@ class Repair implements IOutput{
 		}
 	}
 
-	public function info($string) {
+	/**
+	 * @param string $message
+	 * @param bool $newline ignored for emitting
+	 */
+	public function info($message, $newline = true) {
 		// for now just emit as we did in the past
-		$this->emit('\OC\Repair', 'info', [$string]);
+		$this->emit('\OC\Repair', 'info', [$message]);
 	}
 
 	/**
 	 * @param string $message
+	 * @param bool $newline ignored for emitting
 	 */
-	public function warning($message) {
+	public function warning($message, $newline = true) {
 		// for now just emit as we did in the past
 		$this->emit('\OC\Repair', 'warning', [$message]);
 	}
@@ -236,7 +242,7 @@ class Repair implements IOutput{
 	}
 
 	/**
-	 * @param int $max
+	 * @since 9.1.0
 	 */
 	public function finishProgress() {
 		// for now just emit as we did in the past

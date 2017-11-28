@@ -1,8 +1,6 @@
 <?php
 /**
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -20,46 +18,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCP\Migration;
 
-/**
- * Interface IOutput
- *
- * @package OCP\Migration
- * @since 9.1.0
- */
-interface IOutput {
+namespace OC\User;
+
+class BackendMismatchException extends \Exception {
 
 	/**
-	 * @param string $message
-	 * @param bool $newline
-	 * @since 9.1.0
+	 * BackendMismatchException constructor.
+	 *
+	 * @param Account $account
+	 * @param string $expectedBackendClass
 	 */
-	public function info($message, $newline = true);
-
-	/**
-	 * @param string $message
-	 * @param bool $newline
-	 * @since 9.1.0
-	 */
-	public function warning($message, $newline = true);
-
-	/**
-	 * @param int $max
-	 * @since 9.1.0
-	 */
-	public function startProgress($max = 0);
-
-	/**
-	 * @param int $step
-	 * @param string $description
-	 * @since 9.1.0
-	 */
-	public function advance($step = 1, $description = '');
-
-	/**
-	 * @since 9.1.0
-	 */
-	public function finishProgress();
-
+	public function __construct(Account $account, $expectedBackendClass) {
+		$message = "User <{$expectedBackendClass}::{$account->getUserId()}>"
+			."  already provided by <{$account->getBackend()}>, skipping.";
+		parent::__construct($message);
+	}
 }

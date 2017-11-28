@@ -200,7 +200,11 @@ class AccountMapper extends Mapper {
 		return $return;
 	}
 
-	public function getUserCount($hasLoggedIn) {
+	/**
+	 * @param bool $hasLoggedIn
+	 * @return int
+	 */
+	public function getUserCount($hasLoggedIn = false) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select([$qb->createFunction('count(*) as `count`')])
 			->from($this->getTableName());

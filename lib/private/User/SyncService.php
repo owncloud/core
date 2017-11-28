@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -89,40 +90,54 @@ class SyncService {
 	}
 
 	/**
-	 * @param \Closure $callback is called for every user to progress display
+	 * @param SyncServiceCallback $callback methods are called for every user to progress display
 	 */
-	public function run(\Closure $callback) {
+	public function run(SyncServiceCallback $callback) {
 		$limit = 500;
 		$offset = 0;
 		do {
 			$users = $this->backend->getUsers('', $limit, $offset);
 
-			// update existing and insert new users
 			foreach ($users as $uid) {
 				try {
-					$a = $this->mapper->getByUid($uid);
-					if ($a->getBackend() !== $this->backendClass) {
-						$this->logger->warning(
-							"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
-							['app' => self::class]
-						);
-						continue;
-					}
-					$a = $this->setupAccount($a, $uid);
-					$this->mapper->update($a);
-				} catch(DoesNotExistException $ex) {
-					$a = $this->createNewAccount($uid);
-					$this->setupAccount($a, $uid);
-					$this->mapper->insert($a);
+					$this->syncUser($uid, $callback);
+				} catch (BackendMismatchException $ex) {
+					$callback->onBackendMismatchException($ex);
+					continue;
 				}
-				// clean the user's preferences
-				$this->cleanPreferences($uid);
-
-				// call the callback
-				$callback($uid);
 			}
+
 			$offset += $limit;
 		} while(count($users) >= $limit);
+	}
+
+	/**
+	 * update existing and insert new users
+	 * @param string $uid user ids to sync
+	 * @param SyncServiceCallback $callback methods are called for every user to progress display
+	 * @throws BackendMismatchException if a uid is already used by another backend
+	 */
+	public function syncUser($uid, SyncServiceCallback $callback) {
+			$callback->startSync($uid);
+			try {
+				$account = $this->mapper->getByUid($uid);
+				if ($account->getBackend() !== $this->backendClass) {
+					throw new BackendMismatchException($account, $this->backendClass);
+				}
+				$account = $this->setupAccount($account, $uid);
+				$this->mapper->update($account);
+				// clean the user's preferences
+				$this->cleanPreferences($uid); // TODO always?
+				$callback->endUpdated($account);
+			} catch (DoesNotExistException $ex) {
+				$account = $this->createNewAccount($uid);
+				$this->setupAccount($account, $uid);
+				/** @var Account $account */
+				$this->mapper->insert($account); // will the id be set in this account or do we need the return value?
+				// clean the user's preferences
+				$this->cleanPreferences($uid); // TODO always?
+				$callback->endCreated($account);
+			}
 	}
 
 	/**
@@ -203,9 +218,11 @@ class SyncService {
 	}
 
 	/**
+	 * These attributes are now stored in the appconfig table
 	 * @param string $uid
 	 */
 	private function cleanPreferences($uid) {
+		// FIXME use a single query to delete these from the preferences table
 		$this->config->deleteUserValue($uid, 'core', 'enabled');
 		$this->config->deleteUserValue($uid, 'login', 'lastLogin');
 		$this->config->deleteUserValue($uid, 'settings', 'email');

@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
@@ -47,17 +48,19 @@ class SimpleOutput implements IOutput {
 
 	/**
 	 * @param string $message
+	 * @param bool $newline always true because ILogger always uses newlines
 	 * @since 9.1.0
 	 */
-	public function info($message) {
+	public function info($message, $newline = true) {
 		$this->logger->info($message, ['app' => $this->appName]);
 	}
 
 	/**
 	 * @param string $message
+	 * @param bool $newline always true because ILogger always uses newlines
 	 * @since 9.1.0
 	 */
-	public function warning($message) {
+	public function warning($message, $newline = true) {
 		$this->logger->warning($message, ['app' => $this->appName]);
 	}
 
