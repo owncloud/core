@@ -77,5 +77,5 @@ DELIM
       ;;
   esac
 
-exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}.xml --coverage-html tests/coverage-external-html-${DB_TYPE} --log-junit tests/autotest-external-results-${DB_TYPE}.xml
+exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}.xml
 
