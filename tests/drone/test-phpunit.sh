@@ -54,5 +54,5 @@ else
   GROUP="--group DB"
 fi
 
-exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml --coverage-html tests/coverage-html-${DB_TYPE} --log-junit tests/autotest-results-${DB_TYPE}.xml
+exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-${DB_TYPE}.xml
 
