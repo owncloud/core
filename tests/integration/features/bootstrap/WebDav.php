@@ -354,6 +354,9 @@ trait WebDav {
 	 */
 	public function asTheFileOrFolderExists($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
+		if (!is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
+			throw new \Exception($entry . ' "' . $path . '" expected to exist but not found');
+		}
 	}
 
 	/**
