@@ -453,6 +453,20 @@ Feature: sharing
 		And the HTTP status code should be "200"
 		And last share_id is included in the answer
 
+	Scenario: Sharee can modify the group shared file
+		Given user "user0" exists
+		And user "user1" exists
+		And group "group0" exists
+		And user "user1" belongs to group "group0"
+		And file "textfile0.txt" of user "user0" is shared with group "group0"
+		When user "user1" uploads file with content "bartext" to "/textfile0.txt"
+		And as an "user1"
+		And downloading file "/textfile0.txt"
+		Then downloaded content should be "bartext"
+		And as an "user0"
+		And downloading file "/textfile0.txt"
+		Then downloaded content should be "bartext"
+
 	Scenario: User is not allowed to reshare file
 		Given user "user0" exists
 		And user "user1" exists
