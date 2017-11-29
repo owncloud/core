@@ -139,12 +139,13 @@ class OC_Helper {
 	 * Inspired by: http://www.php.net/manual/en/function.filesize.php#92418
 	 */
 	public static function computerFileSize($str) {
-		$str = strtolower($str);
-		if (is_numeric($str)) {
-			return floatval($str);
+		if (!is_string($str)) {
+			return false;
 		}
 
-		$bytes_array = [
+		$str = trim(strtolower($str));
+
+		$bytesArray = [
 			'b' => 1,
 			'k' => 1024,
 			'kb' => 1024,
@@ -158,12 +159,18 @@ class OC_Helper {
 			'p' => 1024 * 1024 * 1024 * 1024 * 1024,
 		];
 
-		$bytes = floatval($str);
-
-		if (preg_match('#([kmgtp]?b?)$#si', $str, $matches) && !empty($bytes_array[$matches[1]])) {
-			$bytes *= $bytes_array[$matches[1]];
-		} else {
+		preg_match('/^([0-9]*)(\.([0-9]+))?( +)?([kmgtp]?b?)$/i', $str, $matches);
+		if(empty($matches)) {
 			return false;
+		}
+
+		$bytes = floatval($str);
+		if (!is_finite($bytes)) {
+			return false;
+		}
+
+		if (!empty($matches[5])) {
+			$bytes *= $bytesArray[$matches[5]];
 		}
 
 		$bytes = round($bytes);
