@@ -235,7 +235,7 @@ Feature: federated
 		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "201"
 		And using server "LOCAL"
-		And as "user0" the file "/PARENT (2)/textquota.txt" exists
+		And as "user0" the files uploaded to "/PARENT/testquota.txt" with all mechanisms exist
 
 	Scenario: Upload file to received federated share while quota is set on remote storage
 		Given using server "REMOTE"
