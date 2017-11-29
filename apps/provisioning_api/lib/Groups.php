@@ -130,7 +130,7 @@ class Groups{
 	public function addGroup($parameters) {
 		// Validate name
 		$groupId = $this->request->getParam('groupid', '');
-		if(empty($groupId)){
+		if(($groupId === '') || is_null($groupId) || ($groupId === false)){
 			\OCP\Util::writeLog('provisioning_api', 'Group name not supplied', \OCP\Util::ERROR);
 			return new OC_OCS_Result(null, 101, 'Invalid group name');
 		}
