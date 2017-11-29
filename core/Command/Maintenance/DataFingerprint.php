@@ -44,7 +44,7 @@ class DataFingerprint extends Command {
 	protected function configure() {
 		$this
 			->setName('maintenance:data-fingerprint')
-			->setDescription('update the systems data-fingerprint after a backup is restored');
+			->setDescription('Update the systems data-fingerprint after a backup is restored.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

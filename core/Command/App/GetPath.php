@@ -32,11 +32,11 @@ class GetPath extends Base {
 
 		$this
 			->setName('app:getpath')
-			->setDescription('Get an absolute path to the app directory')
+			->setDescription('Get the absolute path to the app directory.')
 			->addArgument(
 				'app',
 				InputArgument::REQUIRED,
-				'Name of the app'
+				'The name of the app.'
 			)
 		;
 	}

@@ -53,24 +53,24 @@ class CheckCode extends Command {
 	protected function configure() {
 		$this
 			->setName('app:check-code')
-			->setDescription('check code to be compliant')
+			->setDescription('Check code compliance.')
 			->addArgument(
 				'app-id',
 				InputArgument::REQUIRED,
-				'check the specified app'
+				'Check the specified app.'
 			)
 			->addOption(
 				'checker',
 				'c',
 				InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-				'enable the specified checker(s)',
+				'Enable the specified checker(s).',
 				[ 'private', 'deprecation', 'strong-comparison' ]
 			)
 			->addOption(
 				'--skip-validate-info',
 				null,
 				InputOption::VALUE_NONE,
-				'skips the info.xml/version check'
+				'Skip the info.xml/version check.'
 			);
 	}
 

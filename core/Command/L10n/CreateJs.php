@@ -39,12 +39,12 @@ class CreateJs extends Command {
 			->addArgument(
 				'app',
 				InputOption::VALUE_REQUIRED,
-				'name of the app'
+				'The name of the app.'
 			)
 			->addArgument(
 				'lang',
 				InputOption::VALUE_OPTIONAL,
-				'name of the language'
+				'The name of the language.'
 			);
 	}
 

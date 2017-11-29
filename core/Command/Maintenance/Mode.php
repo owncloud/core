@@ -42,18 +42,18 @@ class Mode extends Command {
 	protected function configure() {
 		$this
 			->setName('maintenance:mode')
-			->setDescription('set maintenance mode')
+			->setDescription('Set maintenance mode.')
 			->addOption(
 				'on',
 				null,
 				InputOption::VALUE_NONE,
-				'enable maintenance mode'
+				'Enable maintenance mode.'
 			)
 			->addOption(
 				'off',
 				null,
 				InputOption::VALUE_NONE,
-				'disable maintenance mode'
+				'Disable maintenance mode.'
 			);
 	}
 

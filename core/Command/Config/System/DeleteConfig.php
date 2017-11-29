@@ -45,17 +45,17 @@ class DeleteConfig extends Base {
 
 		$this
 			->setName('config:system:delete')
-			->setDescription('Delete a system config value')
+			->setDescription('Delete a system config value.')
 			->addArgument(
 				'name',
 				InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-				'Name of the config to delete, specify multiple for array parameter'
+				'Name of the config to delete, specify multiple for array parameter.'
 			)
 			->addOption(
 				'error-if-not-exists',
 				null,
 				InputOption::VALUE_NONE,
-				'Checks whether the config exists before deleting it'
+				'Checks whether the config exists before deleting it.'
 			)
 		;
 	}

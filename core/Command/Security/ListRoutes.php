@@ -46,7 +46,7 @@ class ListRoutes extends Base {
 	protected function configure() {
 		$this
 			->setName('security:routes')
-			->setDescription('list used routes')
+			->setDescription('List used routes.')
 			->addOption('with-details', 'd', InputOption::VALUE_NONE);
 		parent::configure();
 	}

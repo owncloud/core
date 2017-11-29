@@ -44,7 +44,7 @@ class UpdateJS extends Command {
 	protected function configure() {
 		$this
 			->setName('maintenance:mimetype:update-js')
-			->setDescription('Update mimetypelist.js');
+			->setDescription('Update mimetypelist.js.');
 	}
 
 	/**

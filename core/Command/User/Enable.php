@@ -43,11 +43,11 @@ class Enable extends Command {
 	protected function configure() {
 		$this
 			->setName('user:enable')
-			->setDescription('enables the specified user')
+			->setDescription('Enables the specified user.')
 			->addArgument(
 				'uid',
 				InputArgument::REQUIRED,
-				'the username'
+				'The username.'
 			);
 	}
 

@@ -44,11 +44,11 @@ class ListGroups extends Base {
 
 		$this
 			->setName('group:list')
-			->setDescription('list groups')
+			->setDescription('List groups.')
 			->addArgument(
 				'search-pattern',
 				InputArgument::OPTIONAL,
-				'Restrict the list to groups whose name contains the string'
+				'Restrict the list to groups whose name contains the string.'
 			)
 		;
 	}

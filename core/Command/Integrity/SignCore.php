@@ -57,9 +57,9 @@ class SignCore extends Command {
 		$this
 			->setName('integrity:sign-core')
 			->setDescription('Sign core using a private key.')
-			->addOption('privateKey', null, InputOption::VALUE_REQUIRED, 'Path to private key to use for signing')
-			->addOption('certificate', null, InputOption::VALUE_REQUIRED, 'Path to certificate to use for signing')
-			->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path of core to sign');
+			->addOption('privateKey', null, InputOption::VALUE_REQUIRED, 'Path to private key to use for signing.')
+			->addOption('certificate', null, InputOption::VALUE_REQUIRED, 'Path to certificate to use for signing.')
+			->addOption('path', null, InputOption::VALUE_REQUIRED, 'Path of core to sign.');
 	}
 
 	/**

@@ -44,11 +44,11 @@ class Import extends Command {
 	protected function configure() {
 		$this
 			->setName('config:import')
-			->setDescription('Import a list of configs')
+			->setDescription('Import a list of configs.')
 			->addArgument(
 				'file',
 				InputArgument::OPTIONAL,
-				'File with the json array to import'
+				'File with the JSON array to import.'
 			)
 		;
 	}
