@@ -1280,3 +1280,64 @@ Feature: sharing
 		And the HTTP status code should be "200"
 		And last share_id is not included in the answer
 
+	Scenario: Share ownership change after moving a shared file outside of an outer share
+		Given user "user0" exists
+		And user "user1" exists
+		And user "user2" exists
+		And user "user0" created a folder "/folder1"
+		And user "user0" created a folder "/folder1/folder2"
+		And user "user1" created a folder "/moved-out"
+		And folder "/folder1" of user "user0" is shared with user "user1" with permissions 31
+		And folder "/folder1/folder2" of user "user1" is shared with user "user2" with permissions 31
+		And as an "user1"
+		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2"
+		And getting info of last share
+		Then share fields of last share match with
+			| id | A_NUMBER |
+			| item_type | folder |
+			| item_source | A_NUMBER |
+			| share_type | 0 |
+			| file_source | A_NUMBER |
+			| file_target | /folder2 |
+			| permissions | 31 |
+			| stime | A_NUMBER |
+			| storage | A_NUMBER |
+			| mail_send | 0 |
+			| uid_owner | user1 |
+			| storage_id | home::user1 |
+			| file_parent | A_NUMBER |
+			| displayname_owner | user1 |
+			| mimetype | httpd/unix-directory |
+		And as "user0" the folder "/folder1/folder2" does not exist
+		And as "user2" the folder "/folder2" exists
+
+	Scenario: Share ownership change after moving a shared file to another share
+		Given user "user0" exists
+		And user "user1" exists
+		And user "user2" exists
+		And user "user0" created a folder "/user0-folder"
+		And user "user0" created a folder "/user0-folder/folder2"
+		And user "user2" created a folder "/user2-folder"
+		And folder "/user0-folder" of user "user0" is shared with user "user1" with permissions 31
+		And folder "/user2-folder" of user "user2" is shared with user "user1" with permissions 31
+		And as an "user1"
+		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2"
+		And getting info of last share
+		Then share fields of last share match with
+			| id | A_NUMBER |
+			| item_type | folder |
+			| item_source | A_NUMBER |
+			| share_type | 0 |
+			| file_source | A_NUMBER |
+			| file_target | /user2-folder |
+			| permissions | 31 |
+			| stime | A_NUMBER |
+			| storage | A_NUMBER |
+			| mail_send | 0 |
+			| uid_owner | user2 |
+			| file_parent | A_NUMBER |
+			| displayname_owner | user2 |
+			| mimetype | httpd/unix-directory |
+		And as "user0" the folder "/user0-folder/folder2" does not exist
+		And as "user2" the folder "/user2-folder/folder2" exists
+
