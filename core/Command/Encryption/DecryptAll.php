@@ -105,7 +105,7 @@ class DecryptAll extends Command {
 		parent::configure();
 
 		$this->setName('encryption:decrypt-all');
-		$this->setDescription('Disable server-side encryption and decrypt all files');
+		$this->setDescription('Disable server-side encryption and decrypt all files.');
 		$this->setHelp(
 			'This will disable server-side encryption and decrypt all files for '
 			. 'all users if it is supported by your encryption module. '
@@ -114,7 +114,7 @@ class DecryptAll extends Command {
 		$this->addArgument(
 			'user',
 			InputArgument::OPTIONAL,
-			'user for which you want to decrypt all files (optional)',
+			'User for whom you want to decrypt all files (optional).',
 			''
 		);
 	}

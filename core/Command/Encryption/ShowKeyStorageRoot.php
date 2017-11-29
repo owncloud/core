@@ -44,7 +44,7 @@ class ShowKeyStorageRoot extends Command{
 		parent::configure();
 		$this
 			->setName('encryption:show-key-storage-root')
-			->setDescription('Show current key storage root');
+			->setDescription('Show current key storage root.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

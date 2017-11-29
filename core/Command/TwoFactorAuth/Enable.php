@@ -46,7 +46,7 @@ class Enable extends Base {
 		parent::configure();
 
 		$this->setName('twofactorauth:enable');
-		$this->setDescription('Enable two-factor authentication for a user');
+		$this->setDescription('Enable two-factor authentication for a user.');
 		$this->addArgument('uid', InputArgument::REQUIRED);
 	}
 

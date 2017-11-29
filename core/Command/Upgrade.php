@@ -68,12 +68,12 @@ class Upgrade extends Command {
 	protected function configure() {
 		$this
 			->setName('upgrade')
-			->setDescription('run upgrade routines after installation of a new release. The release has to be installed before.')
+			->setDescription('Run upgrade routines after upgrading to a new release.')
 			->addOption(
 				'--no-app-disable',
 				null,
 				InputOption::VALUE_NONE,
-				'skips the disable of third party apps'
+				'Skip disabling of third party apps.'
 			);
 	}
 

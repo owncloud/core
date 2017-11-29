@@ -44,11 +44,11 @@ class ListUsers extends Base {
 
 		$this
 			->setName('user:list')
-			->setDescription('list users')
+			->setDescription('List users.')
 			->addArgument(
 				'search-pattern',
 				InputArgument::OPTIONAL,
-				'Restrict the list to users whose User ID contains the string'
+				'Restrict the list to users whose user ID contains the optional search pattern.'
 			)
 		;
 	}

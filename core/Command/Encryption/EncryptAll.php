@@ -94,7 +94,7 @@ class EncryptAll extends Command {
 		parent::configure();
 
 		$this->setName('encryption:encrypt-all');
-		$this->setDescription('Encrypt all files for all users');
+		$this->setDescription('Encrypt all files for all users.');
 		$this->setHelp(
 			'This will encrypt all files for all users. '
 			. 'Please make sure that no user access his files during this process!'

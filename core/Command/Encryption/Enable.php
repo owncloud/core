@@ -48,7 +48,7 @@ class Enable extends Command {
 	protected function configure() {
 		$this
 			->setName('encryption:enable')
-			->setDescription('Enable encryption')
+			->setDescription('Enable encryption.')
 		;
 	}
 

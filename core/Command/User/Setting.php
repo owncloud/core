@@ -56,16 +56,16 @@ class Setting extends Base {
 		parent::configure();
 		$this
 			->setName('user:setting')
-			->setDescription('Read and modify user settings')
+			->setDescription('Read and modify user settings.')
 			->addArgument(
 				'uid',
 				InputArgument::REQUIRED,
-				'User ID used to login'
+				'User ID used to login.'
 			)
 			->addArgument(
 				'app',
 				InputArgument::OPTIONAL,
-				'Restrict the settings to a given app',
+				'Restrict the settings to a given app.',
 				''
 			)
 			->addArgument(
@@ -78,7 +78,7 @@ class Setting extends Base {
 				'ignore-missing-user',
 				null,
 				InputOption::VALUE_NONE,
-				'Use this option to ignore errors when the user does not exist'
+				'Use this option to ignore errors when the user does not exist.'
 			)
 
 			// Get
@@ -86,7 +86,7 @@ class Setting extends Base {
 				'default-value',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'(Only applicable on get) If no default value is set and the config does not exist, the command will exit with 1'
+				'If no default value is set and the config does not exist, the command will exit with 1. Only applicable on get.'
 			)
 
 			// Set
@@ -94,13 +94,13 @@ class Setting extends Base {
 				'value',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'The new value of the setting'
+				'The new value of the setting.'
 			)
 			->addOption(
 				'update-only',
 				null,
 				InputOption::VALUE_NONE,
-				'Only updates the value, if it is not set before, it is not being added'
+				'Only updates the value, if it is not set before, it is not being added.'
 			)
 
 			// Delete
@@ -108,13 +108,13 @@ class Setting extends Base {
 				'delete',
 				null,
 				InputOption::VALUE_NONE,
-				'Specify this option to delete the config'
+				'Specify this option to delete the config.'
 			)
 			->addOption(
 				'error-if-not-exists',
 				null,
 				InputOption::VALUE_NONE,
-				'Checks whether the setting exists before deleting it'
+				'Checks whether the setting exists before deleting it.'
 			)
 		;
 	}

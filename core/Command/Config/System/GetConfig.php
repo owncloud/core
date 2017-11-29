@@ -45,17 +45,17 @@ class GetConfig extends Base {
 
 		$this
 			->setName('config:system:get')
-			->setDescription('Get a system config value')
+			->setDescription('Get a system config value.')
 			->addArgument(
 				'name',
 				InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-				'Name of the config to get, specify multiple for array parameter'
+				'Name of the config to get. Specify multiple for array parameter.'
 			)
 			->addOption(
 				'default-value',
 				null,
 				InputOption::VALUE_OPTIONAL,
-				'If no default value is set and the config does not exist, the command will exit with 1'
+				'If no default value is set and the config does not exist, the command will exit with 1.'
 			)
 		;
 	}
