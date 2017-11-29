@@ -137,7 +137,7 @@ class AppConfigHelper {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
-	 * @return ResponseInterface|null
+	 * @return ResponseInterface
 	 */
 	public static function getCapabilities($baseUrl, $user, $password) {
 		$response = OcsApiHelper::sendRequest(

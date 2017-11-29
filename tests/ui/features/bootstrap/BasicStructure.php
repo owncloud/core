@@ -24,6 +24,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use TestHelpers\DownloadHelper;
 use TestHelpers\SetupHelper;
+use TestHelpers\UserHelper;
 
 require_once 'bootstrap.php';
 
@@ -178,33 +179,61 @@ trait BasicStructure {
 	 * @param string $displayName
 	 * @param string $email
 	 * @param bool $initialize initialize the user skeleton files etc
+	 * @param string $method how to create the user api|occ
 	 * @return void
 	 * @throws Exception
 	 */
 	private function createUser(
-		$user, $password, $displayName = null, $email = null, $initialize = true
+		$user, $password, $displayName = null, $email = null, $initialize = true,
+		$method = "api"
 	) {
 		$user = trim($user);
-		$result = SetupHelper::createUser(
-			$user, $password, $displayName, $email
-		);
-		if ($result["code"] != 0) {
-			throw new Exception(
-				"could not create user. "
-				. $result["stdOut"] . " " . $result["stdErr"]
-			);
+		$method = trim(strtolower($method));
+		$baseUrl = $this->getMinkParameter("base_url");
+		switch ($method) {
+			case "api":
+				$results = UserHelper::createUser(
+					$baseUrl, $user, $password, "admin",
+					$this->getUserPassword("admin"),
+					$displayName, $email
+				);
+				foreach ($results as $result) {
+					if ($result->getStatusCode() !== 200) {
+						throw new Exception(
+							"could not create user. "
+							. $result->getStatusCode() . " " . $result->getBody()
+						);
+					}
+				}
+				break;
+			case "occ":
+				$result = SetupHelper::createUser(
+					$user, $password, $displayName, $email
+				);
+				if ($result["code"] != 0) {
+					throw new Exception(
+						"could not create user. "
+						. $result["stdOut"] . " " . $result["stdErr"]
+					);
+				}
+				break;
+			default:
+				throw new InvalidArgumentException(
+					"Invalid method to create a user"
+				);
 		}
+
+		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
 		if ($initialize) {
 			// Download a skeleton file. That will force the server to fully
 			// initialize the user, including their skeleton files.
 			DownloadHelper::download(
-				$this->getMinkParameter("base_url"),
+				$baseUrl,
 				$user,
 				$password,
 				"lorem.txt"
 			);
 		}
-		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
 	}
 
 	/**
@@ -241,17 +270,39 @@ trait BasicStructure {
 	 * creates a single group
 	 *
 	 * @param string $group
+	 * @param string $method how to create the group api|occ
 	 * @return void
 	 * @throws Exception
 	 */
-	private function createGroup($group) {
+	private function createGroup($group, $method = "api") {
 		$group = trim($group);
-		$result = SetupHelper::createGroup($group);
-		if ($result["code"] != 0) {
-			throw new Exception(
-				"could not create group. "
-				. $result["stdOut"] . " " . $result["stdErr"]
-			);
+		$method = trim(strtolower($method));
+		switch ($method) {
+			case "api":
+				$result = UserHelper::createGroup(
+					$this->getMinkParameter("base_url"),
+					$group, "admin", $this->getUserPassword("admin")
+				);
+				if ($result->getStatusCode() !== 200) {
+					throw new Exception(
+						"could not create group. "
+						. $result->getStatusCode() . " " . $result->getBody()
+					);
+				}
+				break;
+			case "occ":
+				$result = SetupHelper::createGroup($group);
+				if ($result["code"] != 0) {
+					throw new Exception(
+						"could not create group. "
+						. $result["stdOut"] . " " . $result["stdErr"]
+					);
+				}
+				break;
+			default:
+				throw new InvalidArgumentException(
+					"Invalid method to create a group"
+				);
 		}
 		$this->addGroupToCreatedGroupsList($group);
 	}
@@ -272,16 +323,38 @@ trait BasicStructure {
 	 * @Given the user :user is in the group :group
 	 * @param string $user
 	 * @param string $group
+	 * @param string $method how to add the user to the group api|occ
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserIsInTheGroup($user, $group) {
-		$result = SetupHelper::addUserToGroup($group, $user);
-		if ($result["code"] != 0) {
-			throw new Exception(
-				"could not add user to group. "
-				. $result["stdOut"] . " " . $result["stdErr"]
-			);
+	public function theUserIsInTheGroup($user, $group, $method = "api") {
+		$method = trim(strtolower($method));
+		switch ($method) {
+			case "api":
+				$result = UserHelper::addUserToGroup(
+					$this->getMinkParameter("base_url"), 
+					$user, $group, "admin", $this->getUserPassword("admin")
+				);
+				if ($result->getStatusCode() !== 200) {
+					throw new Exception(
+						"could not add user to group. "
+						. $result->getStatusCode() . " " . $result->getBody()
+					);
+				}
+				break;
+			case "occ":
+				$result = SetupHelper::addUserToGroup($group, $user);
+				if ($result["code"] != 0) {
+					throw new Exception(
+						"could not add user to group. "
+						. $result["stdOut"] . " " . $result["stdErr"]
+					);
+				}
+				break;
+			default:
+				throw new InvalidArgumentException(
+					"Invalid method to add a user to a group"
+				);
 		}
 	}
 
@@ -313,22 +386,35 @@ trait BasicStructure {
 	 * @AfterScenario
 	 */
 	public function tearDownScenarioDeleteCreatedUsersAndGroups() {
+		$baseUrl = $this->getMinkParameter("base_url");
 		foreach ($this->getCreatedUserNames() as $user) {
-			$result = SetupHelper::deleteUser($user);
-			if ($result["code"] != 0) {
+			$result = UserHelper::deleteUser(
+				$baseUrl,
+				$user,
+				"admin",
+				$this->getUserPassword("admin")
+			);
+			
+			if ($result->getStatusCode() !== 200) {
 				throw new Exception(
 					"could not delete user. "
-					. $result["stdOut"] . " " . $result["stdErr"]
+					. $result->getStatusCode() . " " . $result->getBody()
 				);
 			}
 		}
 
 		foreach ($this->getCreatedGroupNames() as $group) {
-			$result = SetupHelper::deleteGroup($group);
-			if ($result["code"] != 0) {
+			$result = UserHelper::deleteGroup(
+				$baseUrl,
+				$group,
+				"admin",
+				$this->getUserPassword("admin")
+			);
+			
+			if ($result->getStatusCode() !== 200) {
 				throw new Exception(
 					"could not delete group. "
-					. $result["stdOut"] . " " . $result["stdErr"]
+					. $result->getStatusCode() . " " . $result->getBody()
 				);
 			}
 		}
