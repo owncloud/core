@@ -33,7 +33,7 @@ class Status extends Base {
 
 		$this
 			->setName('status')
-			->setDescription('show some status information')
+			->setDescription('Show status information.')
 		;
 	}
 

@@ -50,11 +50,11 @@ class ListUserGroups extends Base {
 
 		$this
 			->setName('user:list-groups')
-			->setDescription('list groups for a user')
+			->setDescription("Lists the groups a user belongs to")
 			->addArgument(
 				'uid',
 				InputArgument::REQUIRED,
-				'User ID'
+				'User ID.'
 			)
 		;
 	}

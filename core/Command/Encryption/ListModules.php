@@ -44,7 +44,7 @@ class ListModules extends Base {
 
 		$this
 			->setName('encryption:list-modules')
-			->setDescription('List all available encryption modules')
+			->setDescription('List all available encryption modules.')
 		;
 	}
 

@@ -73,11 +73,11 @@ class ChangeKeyStorageRoot extends Command {
 		parent::configure();
 		$this
 			->setName('encryption:change-key-storage-root')
-			->setDescription('Change key storage root')
+			->setDescription('Change key storage root.')
 			->addArgument(
 				'newRoot',
 				InputArgument::OPTIONAL,
-				'new root of the key storage relative to the data folder'
+				'New root of the key storage relative to the data folder.'
 			);
 	}
 

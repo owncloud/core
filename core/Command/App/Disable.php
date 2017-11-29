@@ -46,11 +46,11 @@ class Disable extends Command {
 	protected function configure() {
 		$this
 			->setName('app:disable')
-			->setDescription('disable an app')
+			->setDescription('Disable an app.')
 			->addArgument(
 				'app-id',
 				InputArgument::REQUIRED,
-				'disable the specified app'
+				'Disable the specified app.'
 			);
 	}
 

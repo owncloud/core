@@ -46,7 +46,7 @@ class Disable extends Base {
 		parent::configure();
 
 		$this->setName('twofactorauth:disable');
-		$this->setDescription('Disable two-factor authentication for a user');
+		$this->setDescription('Disable two-factor authentication for a user.');
 		$this->addArgument('uid', InputArgument::REQUIRED);
 	}
 

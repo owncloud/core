@@ -33,7 +33,7 @@ class UpdateHtaccess extends Command {
 	protected function configure() {
 		$this
 			->setName('maintenance:update:htaccess')
-			->setDescription('Updates the .htaccess file');
+			->setDescription('Updates the .htaccess file.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

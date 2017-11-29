@@ -43,11 +43,11 @@ class Add extends Command {
 	protected function configure() {
 		$this
 			->setName('group:add')
-			->setDescription('adds a group')
+			->setDescription('Adds a group.')
 			->addArgument(
 				'group',
 				InputArgument::REQUIRED,
-				'Name of the group'
+				'Name of the group.'
 			);
 	}
 

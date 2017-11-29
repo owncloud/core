@@ -45,11 +45,11 @@ class Delete extends Command {
 	protected function configure() {
 		$this
 			->setName('user:delete')
-			->setDescription('deletes the specified user')
+			->setDescription('Deletes the specified user.')
 			->addArgument(
 				'uid',
 				InputArgument::REQUIRED,
-				'the username'
+				'The username.'
 			);
 	}
 
