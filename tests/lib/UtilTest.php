@@ -516,6 +516,12 @@ class UtilTest extends \Test\TestCase {
 			'myApp/vendor/myFancyCSSFile2',
 		], \OC_Util::$styles);
 	}
+	
+	public function testGetStatusInfo() {
+		$statusInfo = \OCP\Util::getStatusInfo();
+		$this->assertArrayHasKey('productname', $statusInfo);
+		$this->assertEquals($statusInfo['productname'], 'ownCloud');
+	}
 }
 
 /**
