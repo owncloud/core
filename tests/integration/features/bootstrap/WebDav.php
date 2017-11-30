@@ -354,6 +354,9 @@ trait WebDav {
 	 */
 	public function asTheFileOrFolderExists($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
+		if (!is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
+			throw new \Exception($entry . ' "' . $path . '" expected to exist but not found');
+		}
 	}
 
 	/**
@@ -733,6 +736,21 @@ trait WebDav {
 				$response->getStatusCode(),
 				'Response for ' . $response->getEffectiveUrl() . ' did not return expected status code'
 			);
+		}
+	}
+
+	/**
+	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
+	 *
+	 * @Then as :user the files uploaded to :destination with all mechanisms exist
+	 * @param string $user
+	 * @param string $destination
+	 */
+	public function filesUploadedToWithAllMechanismsExist($user, $destination) {
+		foreach (['old', 'new'] as $davVersion) {
+			foreach ([$davVersion . 'dav-regular', $davVersion . 'dav-' . $davVersion . 'chunking'] as $suffix) {
+				$this->asTheFileOrFolderExists($user, 'file', $destination . '-' . $suffix);
+			}
 		}
 	}
 

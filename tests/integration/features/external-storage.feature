@@ -67,4 +67,4 @@ Feature: external-storage
     And as an "user0"
     When user "user0" uploads file "data/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms
     Then the HTTP status code of all upload responses should be "201"
-    And as "user0" the file "local_storage/textquota.txt" exists
+    And as "user0" the files uploaded to "/local_storage/testquota.txt" with all mechanisms exist
