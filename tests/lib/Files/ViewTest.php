@@ -1897,6 +1897,33 @@ class ViewTest extends TestCase {
 		}
 	}
 
+	public function testPutWithRun() {
+		$view = new View('/' . $this->user . '/files/');
+
+		$path = 'test_file_put_contents.txt';
+		$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+			->setMethods(['fopen'])
+			->getMock();
+
+		Filesystem::mount($storage, [], $this->user . '/');
+		$storage->mkdir('files');
+
+		$this->connectMockHooks('write', $view, $path, $lockTypePre, $lockTypePost);
+
+		$calledCreateAllowedRun = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeCreate', function (GenericEvent $event) use (&$calledCreateAllowedRun) {
+			$calledCreateAllowedRun[] = 'file.beforeCreate';
+			$event->setArgument('run', false);
+			$calledCreateAllowedRun[] = $event;
+		});
+
+		// do operation
+		$view->file_put_contents($path, fopen('php://temp1', 'r+'));
+		$this->assertEquals('file.beforeCreate', $calledCreateAllowedRun[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledCreateAllowedRun[1]);
+		$this->assertFalse($calledCreateAllowedRun[1]->getArgument('run'));
+	}
+
 	/**
 	 * Test locks for file_put_content with stream.
 	 * This code path uses $storage->fopen instead
@@ -1926,12 +1953,32 @@ class ViewTest extends TestCase {
 
 		$this->assertNull($this->getFileLockType($view, $path), 'File not locked before operation');
 
+		$calledCreateAllowedRun = [];
+		$calledWriteAllowedRun = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeCreate', function (GenericEvent $event) use (&$calledCreateAllowedRun) {
+			$calledCreateAllowedRun[] = 'file.beforeCreate';
+			$event->setArgument('run', true);
+			$calledCreateAllowedRun[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('file.beforeWrite', function (GenericEvent $event) use (&$calledWriteAllowedRun) {
+			$calledWriteAllowedRun[] = 'file.beforeWrite';
+			$event->setArgument('run', true);
+			$calledWriteAllowedRun[] = $event;
+		});
+
 		// do operation
 		$view->file_put_contents($path, fopen('php://temp', 'r+'));
 
 		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypePre, 'File locked properly during pre-hook');
 		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypePost, 'File locked properly during post-hook');
 		$this->assertEquals(ILockingProvider::LOCK_EXCLUSIVE, $lockTypeDuring, 'File locked properly during operation');
+
+		$this->assertInstanceOf(GenericEvent::class, $calledCreateAllowedRun[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledWriteAllowedRun[1]);
+		$this->assertArrayHasKey('run', $calledCreateAllowedRun[1]);
+		$this->assertArrayHasKey('run', $calledWriteAllowedRun[1]);
+		$this->assertEquals('file.beforeWrite', $calledWriteAllowedRun[0]);
+		$this->assertEquals('file.beforeCreate', $calledCreateAllowedRun[0]);
 
 		$this->assertNull($this->getFileLockType($view, $path));
 	}
