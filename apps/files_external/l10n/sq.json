@@ -10,10 +10,14 @@
     "All users. Type to select user or group." : "Krejt përdoruesit. Shtypni që të përzgjidhet përdorues ose grup.",
     "(group)" : "(grup)",
     "Compatibility with Mac NFD encoding (slow)" : "Pëerputhshmëri me kodim Mac NFD (e ngadaltë)",
+    "Unknown auth backend \"{b}\"" : "Program i panjohur mirëfilltësimi \"{b}\"",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Ju lutemi, garantoni që aplikacioni që furnizon këtë program është i instaluar dhe i aktivizuar",
     "Admin defined" : "Përcaktuar nga përgjegjësi",
     "Saved" : "U ruajt",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "Çaktivizimi i depozitës së jashtme do të sjellë çmontimin e krejt depozitave për krejt përdoruesit, jeni i sigurt?",
     "Disable external storage" : "Çaktivizo depozitë të jashtme",
+    "No URL provided by backend " : "S’u dha URL nga pjesa e brendshme e programit",
+    "Error getting OAuth2 URL for " : "Gabim në marrje URL-je OAuth2 për",
     "Empty response from the server" : "Përgjigje e zbrazët prej shërbyesit",
     "Couldn't access. Please logout and login to activate this mount point" : "S’fut dot. Ju lutemi, dilni dhe hyni që të aktivizohet kjo pikë montimi",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "S’u morën dot të dhëna nga shërbyesi ownCloud: {code} {type}",
@@ -107,6 +111,7 @@
     "Advanced settings" : "Rregullime të mëtejshme",
     "Delete" : "Fshije",
     "Allow users to mount external storage" : "Lejoju përdoruesve të montojnë depozita të jashtme",
-    "Allow users to mount the following external storage" : "Lejoju përdoruesve të montojnë depozitën e jashtme vijuese"
+    "Allow users to mount the following external storage" : "Lejoju përdoruesve të montojnë depozitën e jashtme vijuese",
+    "Allow sharing on user-mounted external storages" : "Lejo ndarje me të tjerë që nga depo të jashtme të montuara nga përdorues"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
