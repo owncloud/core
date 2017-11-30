@@ -50,6 +50,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove AvatarPermissions repair step - [#29202](https://github.com/owncloud/core/issues/29202)
 - Remove unused FTP code - [#29186](https://github.com/owncloud/core/issues/29186)
 - Remove app store related code obsoleted by market app - [#29249](https://github.com/owncloud/core/issues/29249)
+- Remove a route to removed script - [#29553](https://github.com/owncloud/core/issues/29553)
 
 ### Fixed
 - Corrected namespace for OC\Memcache\ArrayCache which caused errors on some environments - [#29219](https://github.com/owncloud/core/issues/29219)
@@ -99,6 +100,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Disable nginx buffering for file downloads to avoid huge memory usage in some scenarios - [#29403](https://github.com/owncloud/core/issues/29403)
 - Fix many issues related to session removal - [#28879](https://github.com/owncloud/core/issues/28879)
 - Fix SMB to better detect when overwriting through rename - [#29564](https://github.com/owncloud/core/issues/29564)
+- Fix files scan repair in bulk warning - [#29631](https://github.com/owncloud/core/issues/29631)
+- Fix federated share import from public link - [#29677](https://github.com/owncloud/core/issues/29677)
 
 ## [10.0.3] - 2017-09-15
 ### Added
