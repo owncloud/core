@@ -225,8 +225,8 @@ class DecryptAll {
 		while ($root = array_pop($directories)) {
 			$content = $this->rootView->getDirectoryContent($root);
 			foreach ($content as $file) {
-				// only decrypt files owned by the user
-				if($file->getStorage()->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
+				// only decrypt files owned by the user, exclude incoming local shares, and incoming federated shares
+				if ($file->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
 						continue;
 				}
 				$path = $root . '/' . $file['name'];
