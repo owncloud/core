@@ -14,6 +14,7 @@ use \OC\Settings\Application;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
+use \OCP\IUser;
 
 /**
  * @group DB
@@ -91,7 +92,19 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testIndexAdmin() {
-		$this->container['IsAdmin'] = true;
+		$user = $this->getMockBuilder(IUser::class)
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
 
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
@@ -291,12 +304,18 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testIndexSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 
@@ -402,13 +421,13 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['GroupManager']
 			->expects($this->at(2))
 			->method('displayNamesInGroup')
-			->with('SubGroup2', 'pattern')
-			->will($this->returnValue(['foo' => 'M. Foo', 'admin' => 'S. Admin']));
-		$this->container['GroupManager']
-			->expects($this->at(1))
-			->method('displayNamesInGroup')
 			->with('SubGroup1', 'pattern')
 			->will($this->returnValue(['bar' => 'B. Ar']));
+		$this->container['GroupManager']
+			->expects($this->at(3))
+			->method('displayNamesInGroup')
+			->with('SubGroup2', 'pattern')
+			->will($this->returnValue(['foo' => 'M. Foo', 'admin' => 'S. Admin']));
 		$this->container['GroupManager']
 			->expects($this->exactly(3))
 			->method('getUserGroupIds')
@@ -517,7 +536,20 @@ class UsersControllerTest extends \Test\TestCase {
 	 * to test for subadmins. Thus the test always assumes you have admin permissions...
 	 */
 	public function testIndexWithSearch() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
@@ -690,7 +722,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testIndexWithBackend() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
@@ -771,7 +816,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testIndexWithBackendNoUser() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$this->container['UserManager']
 			->expects($this->once())
@@ -789,7 +847,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreateSuccessfulWithoutGroupAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
@@ -844,11 +915,18 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreateSuccessfulWithoutGroupSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 
@@ -934,7 +1012,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreateSuccessfulWithGroupAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
@@ -1018,15 +1109,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreateSuccessfulWithGroupSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
-		$user = $this->getMockBuilder('\OC\User\User')
-			->disableOriginalConstructor()->getMock();
 		$newUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$newUser
@@ -1057,12 +1153,12 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('createUser')
 			->will($this->returnValue($newUser));
 		$this->container['GroupManager']
-			->expects($this->at(0))
+			->expects($this->at(1))
 			->method('get')
 			->with('SubGroup1')
 			->will($this->returnValue($subGroup1));
 		$this->container['GroupManager']
-			->expects($this->at(4))
+			->expects($this->at(5))
 			->method('get')
 			->with('SubGroup1')
 			->will($this->returnValue($subGroup1));
@@ -1115,7 +1211,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreateUnsuccessfulAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$this->container['UserManager']
 			->method('createUser')
@@ -1132,7 +1241,11 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testCreateUnsuccessfulSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
@@ -1140,7 +1253,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue('username'));
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 
@@ -1183,12 +1296,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDestroySelfAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -1209,12 +1325,16 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDestroySelfSubadmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -1235,12 +1355,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDestroyAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('Admin'));
 		$toDeleteUser = $this->getMockBuilder('\OC\User\User')
@@ -1271,11 +1394,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDestroySubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -1324,12 +1451,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDestroyUnsuccessfulAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('Admin'));
 		$toDeleteUser = $this->getMockBuilder('\OC\User\User')
@@ -1360,11 +1490,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDestroyUnsuccessfulSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -1411,12 +1545,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDestroyNotAccessibleToSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -1462,7 +1599,20 @@ class UsersControllerTest extends \Test\TestCase {
 	 * test if an invalid mail result in a failure response
 	 */
 	public function testCreateUnsuccessfulWithInvalidEmailAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$expectedResponse = new DataResponse([
 				'message' => 'Invalid mail address',
@@ -1477,7 +1627,21 @@ class UsersControllerTest extends \Test\TestCase {
 	 * test if a valid mail result in a successful mail send
 	 */
 	public function testCreateSuccessfulWithValidEmailAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
+
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
 		$message
@@ -1614,7 +1778,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testRestorePossibleWithoutEncryption() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		list($user, $expectedResult) = $this->mockUser();
 
@@ -1635,7 +1812,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testRestorePossibleWithAdminAndUserRestore() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		list($user, $expectedResult) = $this->mockUser();
 
@@ -1684,7 +1874,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testRestoreNotPossibleWithoutAdminRestore() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		list($user, $expectedResult) = $this->mockUser();
 
@@ -1714,7 +1917,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testRestoreNotPossibleWithoutUserRestore() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		list($user, $expectedResult) = $this->mockUser();
 
@@ -1765,7 +1981,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testNoAvatar() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		list($user, $expectedResult) = $this->mockUser();
 
@@ -1813,7 +2042,10 @@ class UsersControllerTest extends \Test\TestCase {
 	 * @param bool $responseCode
 	 */
 	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $canChangeDisplayName, $responseCode) {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
@@ -1912,7 +2144,20 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testStatsAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
+		$this->container['UserSession']
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
 
 		$this->container['UserManager']
 			->expects($this->at(0))
@@ -1933,13 +2178,18 @@ class UsersControllerTest extends \Test\TestCase {
 	 * when a user appears in several groups.
 	 */
 	public function testStatsSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
-
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('user'));
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 
@@ -1985,7 +2235,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$user->method('getUID')->willReturn('userName');
 
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->willReturn($user);
 
@@ -2044,7 +2294,7 @@ class UsersControllerTest extends \Test\TestCase {
 	 */
 	public function testSetDisplayName($currentUser, $editUser, $isAdmin, $isSubAdmin, $valid) {
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->willReturn($currentUser);
 		$this->container['UserManager']
@@ -2111,7 +2361,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$user->method('getDisplayName')->willReturn('oldDisplayName');
 
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->willReturn($user);
 		$this->container['UserManager']
@@ -2132,7 +2382,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('getSubAdmin')
 			->willReturn($subadmin);
 		$this->container['GroupManager']
-			->expects($this->once())
+			->expects($this->any())
 			->method('isAdmin')
 			->with($user->getUID())
 			->willReturn(false);
@@ -2165,7 +2415,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->with($userId)
 			->will($this->returnValue($userObject));
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($diffUserObject));
 		$this->container['Logger']
@@ -2194,7 +2444,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->with($userId)
 			->will($this->returnValue($userObject));
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($userObject));
 		$this->container['Logger']
@@ -2212,11 +2462,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 	
 	public function testDisableSelfAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -2236,11 +2490,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testEnableSelfAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -2260,11 +2518,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDisableSelfSubadmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -2284,11 +2546,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testEnableSelfSubadmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -2309,11 +2575,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDisableAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('Admin'));
 		$toDisableUser = $this->getMockBuilder('\OC\User\User')
@@ -2340,11 +2610,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testEnableAdmin() {
-		$this->container['IsAdmin'] = true;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('Admin'));
 		$toEnableUser = $this->getMockBuilder('\OC\User\User')
@@ -2371,11 +2645,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testDisableSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -2418,11 +2696,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testEnableSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -2465,11 +2747,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 	
 	public function testDisableNotAccessibleToSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']
@@ -2509,11 +2795,15 @@ class UsersControllerTest extends \Test\TestCase {
 	}
 
 	public function testEnableNotAccessibleToSubAdmin() {
-		$this->container['IsAdmin'] = false;
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('myself'));
 		$this->container['UserSession']

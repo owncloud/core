@@ -1057,19 +1057,20 @@ class OC_Util {
 	}
 
 	/**
-	 * Check if the user is a subadmin, redirects to home if not
+	 * Check if the user has administration privileges, redirects to home if not
 	 *
 	 * @return null|boolean $groups where the current user is subadmin
 	 */
 	public static function checkSubAdminUser() {
 		OC_Util::checkLoggedIn();
+		$hasUserManagementPrivileges = false;
 		$userObject = \OC::$server->getUserSession()->getUser();
-		$isSubAdmin = false;
 		if($userObject !== null) {
-			$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
+			//Admin and SubAdmins are allowed to access user management
+			$hasUserManagementPrivileges = \OC::$server->getGroupManager()->isAdmin($userObject->getUID())
+				|| \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
 		}
-
-		if (!$isSubAdmin) {
+		if (!$hasUserManagementPrivileges) {
 			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}

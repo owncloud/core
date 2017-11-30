@@ -196,19 +196,33 @@ class SubAdminTest extends TestCase {
 
 	public function testIsSubAdmin() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
-		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 
+		// There is an orphaned group of which users[0] is subadmin of
+		$this->assertNull($this->groupManager->get('orphanedGroup'));
+
+		// Unfortunetelly in this implementation of subadmin manager,
+		// sub admin will say that user is sub admin, however
+		// getSubAdminsGroups will correctly filter out groups which are orphaned
 		$this->assertTrue($subAdmin->isSubAdmin($this->users[0]));
+		$this->assertEmpty($subAdmin->getSubAdminsGroups($this->users[0]));
+
+		// User users[0] is not a subadmin
 		$this->assertFalse($subAdmin->isSubAdmin($this->users[1]));
 
-		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
+		$this->assertTrue($subAdmin->createSubAdmin($this->users[1], $this->groups[0]));
+		$this->assertTrue($subAdmin->isSubAdmin($this->users[1]));
+
+		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[1], $this->groups[0]));
+		$this->assertFalse($subAdmin->isSubAdmin($this->users[1]));
 	}
 
 	public function testIsSubAdminAsAdmin() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
-		$this->groupManager->get('admin')->addUser($this->users[0]);
+		$this->groupManager->get('admin')->addUser($this->users[1]);
 
-		$this->assertTrue($subAdmin->isSubAdmin($this->users[0]));
+		// User is not subadmin, but is admin
+		$this->assertFalse($subAdmin->isSubAdmin($this->users[1]));
+		$this->assertTrue($this->groupManager->isAdmin($this->users[1]->getUID()));
 	}
 
 	public function testIsUserAccessible() {

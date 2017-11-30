@@ -15,6 +15,9 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\Settings\Middleware\SubadminMiddleware;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
+use \OCP\IGroupManager;
+use \OCP\ISubAdminManager;
+use \OCP\IUserSession;
 
 /**
  * Verifies whether an user has at least subadmin rights.
@@ -24,22 +27,49 @@ use OCP\AppFramework\Http\TemplateResponse;
  */
 class SubadminMiddlewareTest extends \Test\TestCase {
 	/** @var SubadminMiddleware */
-	private $subadminMiddlewareAsSubAdmin;
-	/** @var SubadminMiddleware */
 	private $subadminMiddleware;
 	/** @var ControllerMethodReflector */
 	private $reflector;
 	/** @var Controller */
 	private $controller;
+	/** @var \OCP\IGroupManager */
+	private $groupManager;
+	/** @var \OCP\ISubAdminManager */
+	private $subadminManager;
+	/** @var \OCP\IUserSession */
+	private $session;
 
 	protected function setUp() {
-		$this->reflector = $this->getMockBuilder('\OC\AppFramework\Utility\ControllerMethodReflector')
-			->disableOriginalConstructor()->getMock();
-		$this->controller = $this->getMockBuilder('\OCP\AppFramework\Controller')
+		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
 			->disableOriginalConstructor()->getMock();
 
-		$this->subadminMiddlewareAsSubAdmin = new SubadminMiddleware($this->reflector, true);
-		$this->subadminMiddleware = new SubadminMiddleware($this->reflector, false);
+		$this->subadminManager = $this->getMockBuilder(ISubAdminManager::class)
+			->disableOriginalConstructor()->getMock();
+		$this->groupManager->expects($this->any())
+			->method('getSubAdmin')
+			->will($this->returnValue($this->subadminManager));
+		$this->groupManager->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(false));
+
+		$this->session = $this->getMockBuilder(IUserSession::class)
+			->disableOriginalConstructor()->getMock();
+		$user = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()->getMock();
+		$user->expects($this->any())
+			->method('getUID')
+			->will($this->returnValue('foo'));
+		$this->session
+			->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($user));
+
+		$this->reflector = $this->getMockBuilder(ControllerMethodReflector::class)
+			->disableOriginalConstructor()->getMock();
+		$this->controller = $this->getMockBuilder(Controller::class)
+			->disableOriginalConstructor()->getMock();
+
+		$this->subadminMiddleware = new SubadminMiddleware($this->reflector, $this->groupManager, $this->session);
 	}
 
 	/**
@@ -51,6 +81,10 @@ class SubadminMiddlewareTest extends \Test\TestCase {
 			->method('hasAnnotation')
 			->with('NoSubadminRequired')
 			->will($this->returnValue(false));
+
+		$this->subadminManager->expects($this->any())
+			->method('isSubAdmin')
+			->will($this->returnValue(false));
 		$this->subadminMiddleware->beforeController($this->controller, 'foo');
 	}
 
@@ -61,6 +95,10 @@ class SubadminMiddlewareTest extends \Test\TestCase {
 			->method('hasAnnotation')
 			->with('NoSubadminRequired')
 			->will($this->returnValue(true));
+
+		$this->subadminManager->expects($this->any())
+			->method('isSubAdmin')
+			->will($this->returnValue(false));
 		$this->subadminMiddleware->beforeController($this->controller, 'foo');
 	}
 
@@ -70,7 +108,11 @@ class SubadminMiddlewareTest extends \Test\TestCase {
 			->method('hasAnnotation')
 			->with('NoSubadminRequired')
 			->will($this->returnValue(false));
-		$this->subadminMiddlewareAsSubAdmin->beforeController($this->controller, 'foo');
+
+		$this->subadminManager->expects($this->any())
+			->method('isSubAdmin')
+			->will($this->returnValue(true));
+		$this->subadminMiddleware->beforeController($this->controller, 'foo');
 	}
 
 	public function testBeforeControllerAsSubAdminWithExemption() {
@@ -79,7 +121,11 @@ class SubadminMiddlewareTest extends \Test\TestCase {
 			->method('hasAnnotation')
 			->with('NoSubadminRequired')
 			->will($this->returnValue(true));
-		$this->subadminMiddlewareAsSubAdmin->beforeController($this->controller, 'foo');
+
+		$this->subadminManager->expects($this->any())
+			->method('isSubAdmin')
+			->will($this->returnValue(true));
+		$this->subadminMiddleware->beforeController($this->controller, 'foo');
 	}
 
 	public function testAfterNotAdminException() {

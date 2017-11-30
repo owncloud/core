@@ -182,7 +182,8 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * get the current active user
+	 * Get the current active user. If user is in incognito mode, user is not
+	 * considered as active
 	 *
 	 * @return IUser|null Current user, otherwise null
 	 */

@@ -97,7 +97,6 @@ class UsersController extends Controller {
 	 * @param IUserSession $userSession
 	 * @param IConfig $config
 	 * @param ISecureRandom $secureRandom
-	 * @param $isAdmin
 	 * @param IL10N $l10n
 	 * @param ILogger $log
 	 * @param \OC_Defaults $defaults
@@ -115,7 +114,6 @@ class UsersController extends Controller {
 								IUserSession $userSession,
 								IConfig $config,
 								ISecureRandom $secureRandom,
-								$isAdmin,
 								IL10N $l10n,
 								ILogger $log,
 								\OC_Defaults $defaults,
@@ -130,7 +128,6 @@ class UsersController extends Controller {
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->config = $config;
-		$this->isAdmin = $isAdmin;
 		$this->l10n = $l10n;
 		$this->secureRandom = $secureRandom;
 		$this->log = $log;
@@ -140,6 +137,7 @@ class UsersController extends Controller {
 		$this->fromMailAddress = $fromMailAddress;
 		$this->urlGenerator = $urlGenerator;
 		$this->avatarManager = $avatarManager;
+		$this->isAdmin = $this->isAdmin();
 
 		// check for encryption state - TODO see formatUserForIndex
 		$this->isEncryptionAppEnabled = $appManager->isEnabledForUser('encryption');
@@ -797,6 +795,8 @@ class UsersController extends Controller {
  	 */
 	public function setEmailAddress($id, $mailAddress) {
 		$user = $this->userManager->get($id);
+
+		// Only Admin and SubAdmins are allowed to set email
 		if($this->isAdmin ||
 			($this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()) &&
 				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user))) {
@@ -930,5 +930,15 @@ class UsersController extends Controller {
 			],
 			Http::STATUS_OK
 		);
+	}
+
+	private function isAdmin() {
+		// Check if current user (active and not in incognito mode)
+		// is an admin
+		$activeUser = $this->userSession->getUser();
+		if($activeUser !== null) {
+			return $this->groupManager->isAdmin($activeUser->getUID());
+		}
+		return false;
 	}
 }

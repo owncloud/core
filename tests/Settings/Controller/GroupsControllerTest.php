@@ -30,20 +30,28 @@ class GroupsControllerTest extends \Test\TestCase {
 	protected function setUp() {
 		$app = new Application();
 		$this->container = $app->getContainer();
+
 		$this->container['AppName'] = 'settings';
+
 		$this->container['GroupManager'] = $this->getMockBuilder('\OCP\IGroupManager')
 			->disableOriginalConstructor()->getMock();
+		$this->container['GroupManager']
+			->expects($this->any())
+			->method('isAdmin')
+			->will($this->returnValue(true));
+
 		$this->container['UserSession'] = $this->getMockBuilder('\OC\User\Session')
 			->disableOriginalConstructor()->getMock();
+
 		$this->container['L10N'] = $this->getMockBuilder('\OCP\IL10N')
 			->disableOriginalConstructor()->getMock();
-		$this->container['IsAdmin'] = true;
 		$this->container['L10N']
 			->expects($this->any())
 					->method('t')
 					->will($this->returnCallback(function($text, $parameters = []) {
 							return vsprintf($text, $parameters);
 					}));
+
 		$this->groupsController = $this->container['GroupsController'];
 
 	}
@@ -95,11 +103,10 @@ class GroupsControllerTest extends \Test\TestCase {
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
-		$user
-			->expects($this->once())
+		$user->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('MyAdminUser'));
 		$this->container['GroupManager']
@@ -188,11 +195,11 @@ class GroupsControllerTest extends \Test\TestCase {
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$this->container['UserSession']
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($user));
 		$user
-			->expects($this->once())
+			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('MyAdminUser'));
 		$this->container['GroupManager']

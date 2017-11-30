@@ -309,22 +309,24 @@ class OC_API {
 				// User required
 				return self::loginUser();
 			case API::SUBADMIN_AUTH:
-				// Check for subadmin
+				// Check for subadmin privilages
 				$user = self::loginUser();
 				if(!$user) {
 					return false;
 				} else {
-					$userObject = \OC::$server->getUserSession()->getUser();
-					if($userObject === null) {
-						return false;
-					}
-					$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
-					$admin = OC_User::isAdminUser($user);
-					if($isSubAdmin || $admin) {
+					// Check whether user is an admin, since admin has
+					// subadmin privileges
+					if (OC_User::isAdminUser($user)) {
 						return true;
-					} else {
-						return false;
 					}
+
+					// Check whether user is a subadmin
+					$userObject = \OC::$server->getUserSession()->getUser();
+					if($userObject != null && \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject)) {
+						return true;
+					}
+
+					return false;
 				}
 			case API::ADMIN_AUTH:
 				// Check for admin

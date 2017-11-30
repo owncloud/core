@@ -495,13 +495,14 @@ class OC_App {
 				"icon" => $urlGenerator->imagePath("settings", "admin.svg")
 			];
 
-			//SubAdmins are also allowed to access user management
+			$hasUserManagementPrivileges = false;
 			$userObject = \OC::$server->getUserSession()->getUser();
-			$isSubAdmin = false;
 			if($userObject !== null) {
-				$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
+				//Admin and SubAdmins are allowed to access user management
+				$hasUserManagementPrivileges = \OC::$server->getGroupManager()->isAdmin($userObject->getUID())
+					|| \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
 			}
-			if ($isSubAdmin) {
+			if ($hasUserManagementPrivileges) {
 				// admin users menu
 				$settings[] = [
 					"id" => "core_users",

@@ -324,6 +324,7 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function canChangeDisplayName() {
+		// Only Admin and SubAdmins are allowed to change display name
 		if (($this->config->getSystemValue('allow_user_to_change_display_name') === false) &&
 			(!$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) &&
 			(!$this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()))) {
