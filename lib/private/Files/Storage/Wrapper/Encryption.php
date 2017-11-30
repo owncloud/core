@@ -793,6 +793,7 @@ class Encryption extends Wrapper {
 				fclose($source);
 				fclose($target);
 			} catch (\Exception $e) {
+				Encryption::setDisableWriteEncryption(false);
 				fclose($source);
 				fclose($target);
 				throw $e;
