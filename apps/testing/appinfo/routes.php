@@ -25,6 +25,7 @@ use OCA\Testing\Config;
 use OCA\Testing\BigFileID;
 use OCA\Testing\Locking\Provisioning;
 use OCP\API;
+use OCA\Testing\Occ;
 
 $config = new Config(
 	\OC::$server->getConfig(),
@@ -69,6 +70,16 @@ API::register(
 	'post',
 	'/apps/testing/api/v1/increasefileid',
 	[$bigFileID, 'increaseFileIDsBeyondMax32bits'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
+$occ = new Occ(\OC::$server->getRequest());
+
+API::register(
+	'post',
+	'/apps/testing/api/v1/occ',
+	[$occ, 'execute'],
 	'testing',
 	API::ADMIN_AUTH
 );
