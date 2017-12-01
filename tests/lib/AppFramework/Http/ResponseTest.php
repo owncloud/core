@@ -192,7 +192,7 @@ class ResponseTest extends TestCase {
 
 
 	public function testRenderReturnNullByDefault(){
-		$this->assertEquals(null, $this->childResponse->render());
+		$this->assertNull($this->childResponse->render());
 	}
 
 

@@ -440,7 +440,7 @@ class ManagerTest extends TestCase {
 		$this->assertTrue($saveSuccessful);
 		$this->assertTrue($comment->getId() !== '');
 		$this->assertTrue($comment->getId() !== '0');
-		$this->assertTrue(!is_null($comment->getCreationDateTime()));
+		$this->assertNotNull($comment->getCreationDateTime());
 
 		$loadedComment = $manager->get($comment->getId());
 		$this->assertSame($comment->getMessage(), $loadedComment->getMessage());

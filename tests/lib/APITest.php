@@ -193,7 +193,7 @@ class APITest extends \Test\TestCase {
 		} elseif ($resultStatusCode === 998) {
 			$this->assertEquals('message2', $resultMeta['message']);
 		} elseif ($resultStatusCode === 100) {
-			$this->assertEquals(null, $resultMeta['message']);
+			$this->assertNull($resultMeta['message']);
 		}
 
 	}
