@@ -368,6 +368,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new \OC\L10N\Factory(
 				$c->getConfig(),
 				$c->getRequest(),
+				$c->getThemeService(),
 				$c->getUserSession(),
 				\OC::$SERVERROOT
 			);
