@@ -328,7 +328,6 @@ OC.L10N.register(
     "Please authenticate using the selected factor." : "Por favor, autenticar utilizando el factor seleccionado.",
     "An error occurred while verifying the token" : "Ocurrió un error mientras se verificaba el \"token\".",
     "You are accessing the server from an untrusted domain." : "Está accediendo al servidor desde un dominio inseguro.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Contacte con su administrador. Si usted es el administrador, configure \"trusted_domains\" en config/config.php. En config/config.sample.php se encuentra un ejemplo para la configuración.",
     "App update required" : "Es necesaria una actualización en la aplicación",
     "%s will be updated to version %s" : "%s será actualizada a la versión %s",
     "These apps will be updated:" : "Estas aplicaciones serán actualizadas:",

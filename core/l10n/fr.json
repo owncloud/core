@@ -316,7 +316,6 @@
     "Please authenticate using the selected factor." : "Veuillez vous identifier en utilisant le facteur sélectionné.",
     "An error occurred while verifying the token" : "Une erreur est survenue lors de la vérification du token",
     "You are accessing the server from an untrusted domain." : "Vous accédez au serveur à partir d'un domaine non approuvé.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Veuillez contacter votre administrateur. Si vous être l'administrateur de cette instance, configurez la variable \"trusted_domains\" dans le fichier config/config.php. Un exemple de configuration est fournit dans le fichier config/config.sample.php.",
     "App update required" : "Mise à jour de l'application nécessaire",
     "%s will be updated to version %s" : "%s sera mis à jour vers la version %s.",
     "These apps will be updated:" : "Les applications suivantes seront mises à jour:",

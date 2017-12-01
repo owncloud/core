@@ -328,7 +328,6 @@ OC.L10N.register(
     "Please authenticate using the selected factor." : "Ju lutemi, bëni mirëfilltësimin duke përdorur faktorin e përzgjedhur.",
     "An error occurred while verifying the token" : "Ndodhi një gabim gjatë verifikimit të token-it",
     "You are accessing the server from an untrusted domain." : "Po hyni në shërbyes nga një përkatësi jo e besuar.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Ju lutemi, lidhuni me përgjegjësin tuaj. Nëse jeni një përgjegjës në këtë instancë, formësoni rregullimin \"trusted_domains\" te config/config.php. Një formësim shembull jepet te config/config.sample.php.",
     "App update required" : "Lypset përditësim aplikacioni",
     "%s will be updated to version %s" : "%s do të përditësohet me versionin %s",
     "These apps will be updated:" : "Do të përditësohen këto aplikacione:",

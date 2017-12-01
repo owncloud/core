@@ -295,7 +295,6 @@
     "Please authenticate using the selected factor." : "Please authenticate using the selected factor.",
     "An error occurred while verifying the token" : "An error occurred while verifying the token",
     "You are accessing the server from an untrusted domain." : "You are accessing the server from an untrusted domain.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php.",
     "App update required" : "App update required",
     "%s will be updated to version %s" : "%s will be updated to version %s",
     "These apps will be updated:" : "These apps will be updated:",

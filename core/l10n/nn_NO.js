@@ -326,7 +326,6 @@ OC.L10N.register(
     "Please authenticate using the selected factor." : "Ver venleg å autentiser med vald faktor.",
     "An error occurred while verifying the token" : "Feil ved verifikasjon av symbol.",
     "You are accessing the server from an untrusted domain." : "Du når denne tenaren frå eit domene som ikkje er klarert.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Kontakt din administrator. Hvis du er administrator for denne tenaren, konfigurer \"trusted_domains\" setting i config/config.php. Eksempel finst i config/config.sample.php.",
     "App update required" : "Forbetring av program er påkrevd",
     "%s will be updated to version %s" : "%s vil bli forbetra til versjon %s",
     "These apps will be updated:" : "Desse programma vil bli oppdatert:",

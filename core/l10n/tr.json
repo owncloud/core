@@ -310,7 +310,6 @@
     "Please authenticate using the selected factor." : "Lütfen seçilen yöntemle kimlik doğrulaması yapın.",
     "An error occurred while verifying the token" : "Jeton onaylanırken bir hata oluştu",
     "You are accessing the server from an untrusted domain." : "Sunucuya güvenilmeyen bir alan adından ulaşıyorsunuz.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Lütfen yöneticiniz ile iletişime geçin. Eğer bu örneğin bir yöneticisi iseniz, config/config.php dosyası içerisindeki \"trusted_domain\" ayarını yapılandırın. Bu yapılandırmanın bir örneği config/config.sample.php dosyasında verilmiştir.",
     "App update required" : "Uygulama güncellemesi gerekli",
     "%s will be updated to version %s" : "%s, %s sürümüne güncellenecek",
     "These apps will be updated:" : "Bu uygulamalar güncellenecek:",

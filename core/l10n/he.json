@@ -316,7 +316,6 @@
     "Please authenticate using the selected factor." : "יש לאמת באמצעות גורם נבחר.",
     "An error occurred while verifying the token" : "שגיאה אירעה בזמן אימות המחרוזת",
     "You are accessing the server from an untrusted domain." : "נכנסת לשרת משם מתחם / דומיין שאינו מהימן.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "יש ליצור קשר עם המנהל שלך. אם הנך המנהל של הפעלה זו, יש להגדיר את הגדרות ה- \"trusted_domains\" של config/config.php. דוגמת תצורה ניתן לראות ב- config/config.sample.php.",
     "App update required" : "נדרש עדכון יישום",
     "%s will be updated to version %s" : "%s יעודכן לגרסה %s",
     "These apps will be updated:" : "יישומים אלו יעודכנו:",

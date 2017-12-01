@@ -290,7 +290,6 @@ OC.L10N.register(
     "Cancel login" : "Encaboxar aniciu de sesión",
     "Please authenticate using the selected factor." : "Por favor autentificate usando'l factor escoyíu.",
     "You are accessing the server from an untrusted domain." : "Tas accediendo al sirvidor dende un dominiu non confiáu.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Por favor, contauta col alministrador. Si yes l'alministrador d'esta instancia, configura l'axuste \"trusted_domain\" en config/config.php. Hai un exemplu en config/config.sample.php.",
     "App update required" : "Actualización de l'aplicación riquida",
     "%s will be updated to version %s" : "%s anovaráse a la versión %s",
     "These apps will be updated:" : "Estes aplicaciones van anovase:",

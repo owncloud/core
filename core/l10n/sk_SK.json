@@ -288,7 +288,6 @@
     "Cancel login" : "Zrušiť prihlásenie",
     "Please authenticate using the selected factor." : "Prosím, overte svoju totožnosť vybraným krokom.",
     "You are accessing the server from an untrusted domain." : "Pristupujete na server v nedôveryhodnej doméne.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Kontaktujte administrátora. Ak ste administrátorom tejto inštancie, nakonfigurujte správne nastavenie „trusted_domains“ v config/config.php. Vzorová konfigurácia je uvedená v config/config.sample.php.",
     "App update required" : "Je nutná aktualizácia aplikácie",
     "%s will be updated to version %s" : "%s bude zaktualizovaný na verziu %s.",
     "These apps will be updated:" : "Tieto aplikácie budú aktualizované:",

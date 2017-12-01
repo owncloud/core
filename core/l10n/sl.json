@@ -316,7 +316,6 @@
     "Please authenticate using the selected factor." : "Overite z uporabo izbranega faktorja.",
     "An error occurred while verifying the token" : "Prišlo je do napake med preverjanjem žetona",
     "You are accessing the server from an untrusted domain." : "Trenutno je vzpostavljena povezava s strežnikom prek ne-varne domene.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Stopite v stik s skrbnikom ali pa nastavite možnost \"varna_domena\" v datoteki config/config.php. Primer nastavitve je razložen v datoteki config/config.sample.php.",
     "App update required" : "Zahtevana je posodobitev programa",
     "%s will be updated to version %s" : "%s bo posodobljen na različico %s.",
     "These apps will be updated:" : "Posodobljeni bodo naslednji vstavki:",

@@ -318,7 +318,6 @@ OC.L10N.register(
     "Please authenticate using the selected factor." : "Kérjük a bejelentkezéshez használja a kiválasztott faktort.",
     "An error occurred while verifying the token" : "Egy hiba merült fel a token érvényesítése közben",
     "You are accessing the server from an untrusted domain." : "A kiszolgálót nem megbízható domain névvel éri el.",
-    "Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domains\" setting in config/config.php. An example configuration is provided in config/config.sample.php." : "Kérjük keresse fel a rendszergazdát! Ha ennek a telepítésnek Ön a rendszergazdája, akkor állítsa be a config/config.php állományban a \"trusted_domain\" paramétert! A config/config.sample.php állományban talál példát a beállításra.",
     "App update required" : "Alkalmazás frissítése szükséges",
     "%s will be updated to version %s" : "%s frissítve lesz erre a verzióra: %s",
     "These apps will be updated:" : "A következő alkalmazások lesznek frissítve:",
