@@ -143,6 +143,9 @@
 				$userBackends = array_filter($_['backends'], function($backend) {
 					return $backend->isAllowedVisibleFor(IStoragesBackendService::VISIBILITY_PERSONAL);
 				});
+				uasort($userBackends, function($a, $b) {
+					return strcasecmp($a->getText(), $b->getText());
+				});
 			?>
 			<?php $i = 0; foreach ($userBackends as $backend): ?>
 				<?php if ($deprecateTo = $backend->getDeprecateTo()): ?>
