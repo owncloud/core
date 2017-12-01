@@ -188,6 +188,10 @@ class Checksum extends Wrapper {
 		$parentMetaData = [];
 		if(!self::isPartialFile($path)) {
 			$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
+			// can be null if entry does not exist
+			if (is_null($parentMetaData)) {
+				return null;
+			}
 		}
 		$parentMetaData['checksum'] = self::getChecksumsInDbFormat($path);
 
