@@ -72,6 +72,7 @@ class CorsControllerTest extends TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->config->method('getUserValue')->willReturn('["http:\/\/www.test.com"]');
 		$this->config->method('setUserValue')->willReturn(true);
+		$this->config->method('deleteUserValue')->willReturn(true);
 
 		$this->corsController = new CorsController(
 			'core',
@@ -155,7 +156,7 @@ class CorsControllerTest extends TestCase {
 		// the error message that invalid domain ID passed, would never be triggered
 		$this->config
 			->expects($this->once())
-			->method("setUserValue");
+			->method("deleteUserValue");
 
 		// The argument for removing domain is the ID of the white-listed domain
 		// and not the domain itself
