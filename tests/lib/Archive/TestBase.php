@@ -60,7 +60,7 @@ abstract class TestBase extends \Test\TestCase {
 
 		$tmpFile=\OCP\Files::tmpFile('.txt');
 		$this->instance->extractFile('lorem.txt', $tmpFile);
-		$this->assertEquals(file_get_contents($textFile), file_get_contents($tmpFile));
+		$this->assertFileEquals($textFile, $tmpFile);
 	}
 
 	public function testWrite() {
@@ -114,10 +114,10 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance=$this->getExisting();
 		$tmpDir=\OCP\Files::tmpFolder();
 		$this->instance->extract($tmpDir);
-		$this->assertEquals(true, file_exists($tmpDir.'lorem.txt'));
-		$this->assertEquals(true, file_exists($tmpDir.'dir/lorem.txt'));
-		$this->assertEquals(true, file_exists($tmpDir.'logo-wide.png'));
-		$this->assertEquals(file_get_contents($dir.'/lorem.txt'), file_get_contents($tmpDir.'lorem.txt'));
+		$this->assertFileExists($tmpDir.'lorem.txt');
+		$this->assertFileExists($tmpDir.'dir/lorem.txt');
+		$this->assertFileExists($tmpDir.'logo-wide.png');
+		$this->assertFileEquals($dir.'/lorem.txt', $tmpDir.'lorem.txt');
 		\OCP\Files::rmdirr($tmpDir);
 	}
 	public function testMoveRemove() {

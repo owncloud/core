@@ -21,7 +21,7 @@ trait WebDav {
 	private $storedETAG = NULL;
 	/** @var integer */
 	private $storedFileID = NULL;
-	
+
 	/**
 	 * a variable that contains the dav path without "remote.php/(web)dav"
 	 * when setting $this->davPath directly by usingDavPath()
@@ -282,7 +282,7 @@ trait WebDav {
 		}
 		$this->response = $this->listFolder($user, $path, 0, $properties);
 	}
-	
+
 	/**
 	 * @Given as :arg1 gets a custom property :arg2 of file :arg3
 	 * @param string $user
@@ -313,7 +313,7 @@ trait WebDav {
 		];
 		$client->proppatch($this->makeSabrePath($user, $path), $properties);
 	}
-	
+
 	/**
 	 * @Then /^the response should contain a custom "([^"]*)" property with "([^"]*)"$/
 	 * @param string $propertyName
@@ -329,7 +329,7 @@ trait WebDav {
 			throw new \Exception("\"$propertyName\" has a value \"${keys[$propertyName]}\" but \"$propertyValue\" expected");
 		}
 	}
-	
+
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" does not exist$/
 	 * @param string $user
@@ -703,7 +703,7 @@ trait WebDav {
 	 * @param string $destination
 	 */
 	public function userUploadsAFileToWithAllMechanisms($user, $source, $destination) {
-		$this->uploadResponses = $this->uploadWithAllMechanisms($user, $source, $destination, false); 
+		$this->uploadResponses = $this->uploadWithAllMechanisms($user, $source, $destination, false);
 	}
 
 	/**
@@ -715,7 +715,7 @@ trait WebDav {
 	 * @param string $destination
 	 */
 	public function userOverwritesAFileToWithAllMechanisms($user, $source, $destination) {
-		$this->uploadResponses = $this->uploadWithAllMechanisms($user, $source, $destination, true); 
+		$this->uploadResponses = $this->uploadWithAllMechanisms($user, $source, $destination, true);
 	}
 
 	/**
@@ -815,7 +815,7 @@ trait WebDav {
 	public function userAddsAFileTo($user, $bytes, $destination) {
 		$filename = "filespecificSize.txt";
 		$this->createFileSpecificSize($filename, $bytes);
-		PHPUnit_Framework_Assert::assertEquals(1, file_exists("work/$filename"));
+		PHPUnit_Framework_Assert::assertFileExists("work/$filename");
 		$this->userUploadsAFileTo($user, "work/$filename", $destination);
 		$this->removeFile("work/", $filename);
 		$expectedElements = new \Behat\Gherkin\Node\TableNode([["$destination"]]);

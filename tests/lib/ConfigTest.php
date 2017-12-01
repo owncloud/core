@@ -41,9 +41,9 @@ class ConfigTest extends TestCase {
 
 	public function testGetValue() {
 		$this->assertSame('bar', $this->config->getValue('foo'));
-		$this->assertSame(null, $this->config->getValue('bar'));
+		$this->assertNull($this->config->getValue('bar'));
 		$this->assertSame('moo', $this->config->getValue('bar', 'moo'));
-		$this->assertSame(false, $this->config->getValue('alcohol_free', 'someBogusValue'));
+		$this->assertFalse($this->config->getValue('alcohol_free', 'someBogusValue'));
 		$this->assertSame(['Appenzeller', 'Guinness', 'Kölsch'], $this->config->getValue('beers', 'someBogusValue'));
 		$this->assertSame(['Appenzeller', 'Guinness', 'Kölsch'], $this->config->getValue('beers'));
 	}

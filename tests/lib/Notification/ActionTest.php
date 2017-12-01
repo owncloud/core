@@ -183,7 +183,7 @@ class ActionTest extends TestCase {
 	 * @param bool $primary
 	 */
 	public function testSetPrimary($primary) {
-		$this->assertSame(false, $this->action->isPrimary());
+		$this->assertFalse($this->action->isPrimary());
 		$this->assertSame($this->action, $this->action->setPrimary($primary));
 		$this->assertSame($primary, $this->action->isPrimary());
 	}

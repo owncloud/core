@@ -428,7 +428,7 @@ class ManagerTest extends TestCase {
 				// The following values can not be used via publishActivity()
 				$this->assertLessThanOrEqual(time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertGreaterThanOrEqual(time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
-				$this->assertSame(null, $event->getAuthor(), 'Author not set correctly');
+				$this->assertNull($event->getAuthor(), 'Author not set correctly');
 				$this->assertSame('', $event->getObjectType(), 'Object type should not be set');
 				$this->assertSame(0, $event->getObjectId(), 'Object ID should not be set');
 			});

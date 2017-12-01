@@ -46,7 +46,7 @@ class TestEntity extends Entity {
 	protected $preName;
 
 	public function __construct($name=null){
-		$this->addType('testId', 'integer');		
+		$this->addType('testId', 'integer');
 		$this->name = $name;
 	}
 };
@@ -73,7 +73,7 @@ class EntityTest extends \Test\TestCase {
 
 	public function testFromRow(){
 		$row = [
-			'pre_name' => 'john', 
+			'pre_name' => 'john',
 			'email' => 'john@something.com'
 		];
 		$this->entity = TestEntity::fromRow($row);
@@ -93,21 +93,21 @@ class EntityTest extends \Test\TestCase {
 
 	public function testColumnToPropertyNoReplacement(){
 		$column = 'my';
-		$this->assertEquals('my', 
+		$this->assertEquals('my',
 			$this->entity->columnToProperty($column));
 	}
 
 
 	public function testColumnToProperty(){
 		$column = 'my_attribute';
-		$this->assertEquals('myAttribute', 
+		$this->assertEquals('myAttribute',
 			$this->entity->columnToProperty($column));
 	}
 
 
 	public function testPropertyToColumnNoReplacement(){
 		$property = 'my';
-		$this->assertEquals('my', 
+		$this->assertEquals('my',
 			$this->entity->propertyToColumn($property));
 	}
 
@@ -197,7 +197,7 @@ class EntityTest extends \Test\TestCase {
 	public function testSetterDoesNotCastOnNull() {
 		$entity = new TestEntity();
 		$entity->setId(null);
-		$this->assertSame(null, $entity->getId());
+		$this->assertNull($entity->getId());
 	}
 
 
