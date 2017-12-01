@@ -32,7 +32,7 @@ class AvatarTest extends \Test\TestCase {
 	}
 
 	public function testGetNoAvatar() {
-		$this->assertEquals(false, $this->avatar->get());
+		$this->assertFalse( $this->avatar->get());
 	}
 
 	public function testGetAvatarSizeMatch() {

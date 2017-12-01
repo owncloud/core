@@ -117,7 +117,7 @@ class DBConfigServiceTest extends TestCase {
 		$this->dbConfig->removeMount($id);
 
 		$mount = $this->dbConfig->getMountById($id);
-		$this->assertEquals(null, $mount);
+		$this->assertNull($mount);
 	}
 
 	public function testRemoveApplicable() {

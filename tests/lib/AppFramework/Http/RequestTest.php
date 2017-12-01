@@ -78,7 +78,7 @@ class RequestTest extends TestCase {
 		// Only testing 'get', but same approach for post, files etc.
 		$this->assertSame('Joey', $request->get['nickname']);
 		// Always returns null if variable not set.
-		$this->assertSame(null, $request->{'flickname'});
+		$this->assertNull($request->{'flickname'});
 
 	}
 
@@ -297,7 +297,7 @@ class RequestTest extends TestCase {
 		$result = $request->patch;
 
 		$this->assertSame('John Q. Public', $result['name']);
-		$this->assertSame(null, $result['nickname']);
+		$this->assertNull($result['nickname']);
 	}
 
 	public function testPutStream() {
