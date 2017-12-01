@@ -27,6 +27,7 @@
 
 namespace OC\L10N;
 
+use OC\Theme\Theme;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IUserSession;
@@ -295,12 +296,24 @@ class Factory implements IFactory {
 			$languageFiles[] = $transFile;
 		}
 
-		// merge with translations from theme
+		// merge with translations from themes
+		$relativePath = substr($transFile, strlen($this->serverRoot));
+
+		// legacy themes
 		$theme = $this->config->getSystemValue('theme');
 		if (!empty($theme)) {
-			$transFile = $this->serverRoot . '/themes/' . $theme . substr($transFile, strlen($this->serverRoot));
-			if (file_exists($transFile)) {
-				$languageFiles[] = $transFile;
+			$legacyThemeTransFile = $this->serverRoot . '/themes/' . $theme . $relativePath;
+			if (file_exists($legacyThemeTransFile)) {
+				$languageFiles[] = $legacyThemeTransFile;
+			}
+		}
+
+		// merge translations from app-themes
+		$theme = \OC::$server->getThemeService()->getTheme();
+		if ($theme instanceof Theme && $theme->getDirectory() !== '' ) {
+			$themeTransFile = $this->serverRoot . '/' . $theme->getDirectory() . $relativePath;
+			if (file_exists($themeTransFile)) {
+				$languageFiles[] = $themeTransFile;
 			}
 		}
 

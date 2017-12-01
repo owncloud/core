@@ -580,6 +580,7 @@ class OC {
 		\OC::$server->getEventLogger()->start('init_session', 'Initialize session');
 		OC_App::loadApps(['session']);
 		if (!self::$CLI) {
+			\OC_App::loadApps(['theme']);
 			self::initSession();
 		}
 		\OC::$server->getEventLogger()->end('init_session');
