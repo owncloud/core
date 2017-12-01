@@ -279,11 +279,11 @@ class LegacyHelperTest extends \Test\TestCase {
 		file_put_contents($baseDir . 'a1/b/test two.txt', 'Hello file two!');
 		\OC_Helper::rmdirr($baseDir . 'a');
 
-		$this->assertFalse(file_exists($baseDir . 'a'));
-		$this->assertTrue(file_exists($baseDir . 'a1'));
+		$this->assertFileNotExists($baseDir . 'a');
+		$this->assertFileExists($baseDir . 'a1');
 
 		\OC_Helper::rmdirr($baseDir);
-		$this->assertFalse(file_exists($baseDir));
+		$this->assertFileNotExists($baseDir);
 	}
 
 	/**

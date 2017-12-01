@@ -277,7 +277,7 @@ class AllConfigTest extends \Test\TestCase {
 		$config = $this->getConfig();
 
 		$this->assertEquals('', $config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset'));
-		$this->assertEquals(null, $config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset', null));
+		$this->assertNull($config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset', null));
 		$this->assertEquals('foobar', $config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset', 'foobar'));
 	}
 

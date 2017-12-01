@@ -46,12 +46,12 @@ class LegacyEmitterTest extends BasicEmitterTest {
 	public function testLegacyHook() {
 		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitterTest', 'staticLegacyCallBack');
 		$this->emitter->emitEvent('Test', 'test');
-		$this->assertEquals(true, self::$emitted);
+		$this->assertTrue(self::$emitted);
 	}
 
 	public function testLegacyArguments() {
 		\OC_Hook::connect('Test', 'test', '\Test\Hooks\LegacyEmitterTest', 'staticLegacyArgumentsCallBack');
 		$this->emitter->emitEvent('Test', 'test', ['foo' => 'foo', 'bar' => 'bar']);
-		$this->assertEquals(true, self::$emitted);
+		$this->assertTrue(self::$emitted);
 	}
 }

@@ -1175,7 +1175,7 @@ class CheckerTest extends TestCase {
 				->will($this->returnValue(true));
 
 		$result = $this->invokePrivate($this->checker, 'isCodeCheckEnforced');
-		$this->assertSame(false, $result);
+		$this->assertFalse($result);
 	}
 
 	public function testCertRevocation() {
