@@ -49,7 +49,7 @@ use OC\Repair\RepairUnmergedShares;
 use OCP\AppFramework\QueryException;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OC\Repair\MoveAvatarOutsideHome;
 use OC\Repair\RepairMismatchFileCachePath;
@@ -57,7 +57,7 @@ use OC\Repair\RepairMismatchFileCachePath;
 class Repair implements IOutput{
 	/* @var IRepairStep[] */
 	private $repairSteps;
-	/** @var EventDispatcher */
+	/** @var EventDispatcherInterface */
 	private $dispatcher;
 	/** @var string */
 	private $currentStep;
@@ -66,9 +66,9 @@ class Repair implements IOutput{
 	 * Creates a new repair step runner
 	 *
 	 * @param IRepairStep[] $repairSteps array of RepairStep instances
-	 * @param EventDispatcher $dispatcher
+	 * @param EventDispatcherInterface $dispatcher
 	 */
-	public function __construct($repairSteps = [], EventDispatcher $dispatcher = null) {
+	public function __construct($repairSteps = [], EventDispatcherInterface $dispatcher = null) {
 		$this->repairSteps = $repairSteps;
 		$this->dispatcher = $dispatcher;
 	}

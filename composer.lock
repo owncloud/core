@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6edd6f4b4a3ac739dce4175bd1c9ae6",
+    "content-hash": "27ce19b9abd248b296f67adcc575612d",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1114,6 +1114,55 @@
                 "tokenizer"
             ],
             "time": "2015-03-11T20:06:43+00:00"
+        },
+        {
+            "name": "jmikola/wildcard-event-dispatcher",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jmikola/WildcardEventDispatcher.git",
+                "reference": "19dc115e9433853caa44f9f567cfde357f1fe6ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jmikola/WildcardEventDispatcher/zipball/19dc115e9433853caa44f9f567cfde357f1fe6ee",
+                "reference": "19dc115e9433853caa44f9f567cfde357f1fe6ee",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/event-dispatcher": "^2.3 || ^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Jmikola": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Mikola",
+                    "email": "jmikola@gmail.com"
+                }
+            ],
+            "description": "Event dispatcher with support for wildcard patterns inspired by AMQP topic exchanges.",
+            "homepage": "https://github.com/jmikola/WildcardEventDispatcher",
+            "keywords": [
+                "AMQP",
+                "dispatcher",
+                "event",
+                "event dispatcher"
+            ],
+            "time": "2016-09-14T19:37:00+00:00"
         },
         {
             "name": "league/flysystem",

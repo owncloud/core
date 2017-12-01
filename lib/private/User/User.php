@@ -41,7 +41,7 @@ use OCP\IUser;
 use OCP\IConfig;
 use OCP\IUserBackend;
 use OCP\User\IChangePasswordBackend;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class User implements IUser {
@@ -61,7 +61,7 @@ class User implements IUser {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	/** @var EventDispatcher */
+	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
 
 	/** @var AccountMapper */
@@ -81,12 +81,12 @@ class User implements IUser {
 	 * @param null $emitter
 	 * @param IConfig|null $config
 	 * @param null $urlGenerator
-	 * @param EventDispatcher|null $eventDispatcher
+	 * @param EventDispatcherInterface|null $eventDispatcher
 	 * @param \OC\Group\Manager|null $groupManager
 	 * @param Session|null $userSession
 	 */
 	public function __construct(Account $account, AccountMapper $mapper, $emitter = null, IConfig $config = null,
-								$urlGenerator = null, EventDispatcher $eventDispatcher = null,
+								$urlGenerator = null, EventDispatcherInterface $eventDispatcher = null,
 								\OC\Group\Manager $groupManager = null, Session $userSession = null
 	) {
 		$this->account = $account;

@@ -37,7 +37,7 @@ use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use OCP\IConfig;
 use OCP\Security\ISecureRandom;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Migrator {
@@ -51,7 +51,7 @@ class Migrator {
 	/** @var IConfig */
 	protected $config;
 
-	/** @var EventDispatcher  */
+	/** @var EventDispatcherInterface  */
 	private $dispatcher;
 
 	/** @var bool */
@@ -61,12 +61,12 @@ class Migrator {
 	 * @param \Doctrine\DBAL\Connection|Connection $connection
 	 * @param ISecureRandom $random
 	 * @param IConfig $config
-	 * @param EventDispatcher $dispatcher
+	 * @param EventDispatcherInterface $dispatcher
 	 */
 	public function __construct(\Doctrine\DBAL\Connection $connection,
 								ISecureRandom $random,
 								IConfig $config,
-								EventDispatcher $dispatcher = null) {
+								EventDispatcherInterface $dispatcher = null) {
 		$this->connection = $connection;
 		$this->random = $random;
 		$this->config = $config;
