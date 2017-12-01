@@ -95,7 +95,7 @@ class SessionStorageTest extends \Test\TestCase {
 			->method('exists')
 			->with('requesttoken')
 			->willReturn(true);
-		$this->assertSame(true, $this->sessionStorage->hasToken());
+		$this->assertTrue($this->sessionStorage->hasToken());
 	}
 
 	public function testHasTokenWithoutExistingToken() {
@@ -104,6 +104,6 @@ class SessionStorageTest extends \Test\TestCase {
 			->method('exists')
 			->with('requesttoken')
 			->willReturn(false);
-		$this->assertSame(false, $this->sessionStorage->hasToken());
+		$this->assertFalse($this->sessionStorage->hasToken());
 	}
 }

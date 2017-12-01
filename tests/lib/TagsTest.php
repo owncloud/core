@@ -126,7 +126,7 @@ class TagsTest extends TestCase {
 		$tagMaps = $tagger->getTags();
 		$this->assertCount(4, $tagMaps, 'Not all tags added');
 		foreach($tagMaps as $tagMap) {
-			$this->assertEquals(null, $tagMap['id']);
+			$this->assertNull($tagMap['id']);
 		}
 
 		// As addMultiple has been called without $sync=true, the tags aren't

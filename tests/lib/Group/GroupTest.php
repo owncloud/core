@@ -382,7 +382,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->count('2');
 
-		$this->assertSame(false, $users);
+		$this->assertFalse($users);
 	}
 
 	public function testDelete() {

@@ -140,7 +140,7 @@ abstract class Provider extends \Test\TestCase {
 		$preview = $provider->getThumbnail($this->imgPath, $this->maxWidth, $this->maxHeight, $this->scalingUp, $this->rootView);
 
 		$this->assertNotEquals(false, $preview);
-		$this->assertEquals(true, $preview->valid());
+		$this->assertTrue($preview->valid());
 
 		return $preview;
 	}
