@@ -141,7 +141,7 @@ class ManagerTest extends TestCase {
 		$this->accountMapper->expects($this->once())->method('find')
 			->with('fo')->willReturn([$a0, $a1]);
 		$result = $this->manager->find('fo');
-		$this->assertEquals(2, count($result));
+		$this->assertCount(2, $result);
 		$this->assertEquals('foo', array_shift($result)->getUID());
 		$this->assertEquals('foob', array_shift($result)->getUID());
 	}
@@ -154,7 +154,7 @@ class ManagerTest extends TestCase {
 		$this->accountMapper->expects($this->once())->method('search')
 			->with('user_id', 'fo')->willReturn([$a0, $a1]);
 		$result = $this->manager->search('fo');
-		$this->assertEquals(2, count($result));
+		$this->assertCount(2, $result);
 		$this->assertEquals('afoo', array_shift($result)->getUID());
 		$this->assertEquals('foo', array_shift($result)->getUID());
 	}
@@ -169,7 +169,7 @@ class ManagerTest extends TestCase {
 		$this->accountMapper->expects($this->once())->method('search')
 			->with('user_id', 'fo', 3, 1)->willReturn([$a0, $a1, $a2]);
 		$result = $this->manager->search('fo', 3, 1);
-		$this->assertEquals(3, count($result));
+		$this->assertCount(3, $result);
 		$this->assertEquals('foo1', array_shift($result)->getUID());
 		$this->assertEquals('foo2', array_shift($result)->getUID());
 		$this->assertEquals('foo3', array_shift($result)->getUID());

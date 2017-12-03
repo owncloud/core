@@ -220,7 +220,7 @@ class EntityTest extends \Test\TestCase {
 	public function testFieldsNotMarkedUpdatedIfNothingChanges() {
 		$entity = new TestEntity('hey');
 		$entity->setName('hey');
-		$this->assertEquals(0, count($entity->getUpdatedFields()));
+		$this->assertCount(0, $entity->getUpdatedFields());
 	}
 
 

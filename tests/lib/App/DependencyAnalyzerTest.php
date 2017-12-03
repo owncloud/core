@@ -95,7 +95,7 @@ class DependencyAnalyzerTest extends TestCase {
 		}
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertTrue(is_array($missing));
+		$this->assertInternalType('array', $missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -114,7 +114,7 @@ class DependencyAnalyzerTest extends TestCase {
 		}
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertTrue(is_array($missing));
+		$this->assertInternalType('array', $missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -134,7 +134,7 @@ class DependencyAnalyzerTest extends TestCase {
 		}
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertTrue(is_array($missing));
+		$this->assertInternalType('array', $missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -154,7 +154,7 @@ class DependencyAnalyzerTest extends TestCase {
 
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertTrue(is_array($missing));
+		$this->assertInternalType('array', $missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -173,7 +173,7 @@ class DependencyAnalyzerTest extends TestCase {
 
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertTrue(is_array($missing));
+		$this->assertInternalType('array', $missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 
@@ -192,7 +192,7 @@ class DependencyAnalyzerTest extends TestCase {
 
 		$missing = $this->analyser->analyze($app);
 
-		$this->assertTrue(is_array($missing));
+		$this->assertInternalType('array', $missing);
 		$this->assertEquals($expectedMissing, $missing);
 	}
 

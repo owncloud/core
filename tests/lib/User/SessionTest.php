@@ -524,7 +524,7 @@ class SessionTest extends TestCase {
 
 		$granted = $userSession->loginWithCookie('foo', $token);
 
-		$this->assertSame($granted, true);
+		$this->assertTrue($granted);
 	}
 
 	public function testRememberLoginInvalidToken() {
@@ -557,7 +557,7 @@ class SessionTest extends TestCase {
 			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$granted = $userSession->loginWithCookie('foo', 'badToken');
 
-		$this->assertSame($granted, false);
+		$this->assertFalse($granted);
 	}
 
 	public function testRememberLoginInvalidUser() {
@@ -590,7 +590,7 @@ class SessionTest extends TestCase {
 			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$granted = $userSession->loginWithCookie('foo', $token);
 
-		$this->assertSame($granted, false);
+		$this->assertFalse($granted);
 	}
 
 	public function testActiveUserAfterSetSession() {

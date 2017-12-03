@@ -41,10 +41,10 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertEquals($rootMount, $this->manager->find('/'));
 		$this->assertEquals($mount1, $this->manager->find('/foo/bar'));
 
-		$this->assertEquals(1, count($this->manager->findIn('/')));
+		$this->assertCount(1, $this->manager->findIn('/'));
 		$mount2 = new \OC\Files\Mount\MountPoint(new Temporary([]), '/bar');
 		$this->manager->addMount($mount2);
-		$this->assertEquals(2, count($this->manager->findIn('/')));
+		$this->assertCount(2, $this->manager->findIn('/'));
 
 		$id = $mount1->getStorageId();
 		$this->assertEquals([$mount1], $this->manager->findByStorageId($id));

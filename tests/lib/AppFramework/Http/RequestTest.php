@@ -67,7 +67,7 @@ class RequestTest extends TestCase {
 		);
 
 		// Countable
-		$this->assertSame(2, count($request));
+		$this->assertCount(2, $request);
 		// Array access
 		$this->assertSame('Joey', $request['nickname']);
 		// "Magic" accessors
@@ -99,7 +99,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame(3, count($request));
+		$this->assertCount(3, $request);
 		$this->assertSame('Janey', $request->{'nickname'});
 		$this->assertSame('Johnny Weissmüller', $request->{'name'});
 	}
