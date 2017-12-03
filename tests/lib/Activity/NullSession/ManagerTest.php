@@ -98,17 +98,17 @@ class ManagerTest extends TestCase {
 
 	public function testNotificationTypes() {
 		$result = $this->activityManager->getNotificationTypes('en');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(2, sizeof($result));
 	}
 
 	public function testDefaultTypes() {
 		$result = $this->activityManager->getDefaultTypes('stream');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(1, sizeof($result));
 
 		$result = $this->activityManager->getDefaultTypes('email');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(0, sizeof($result));
 	}
 
@@ -157,11 +157,11 @@ class ManagerTest extends TestCase {
 
 	public function testFilterNotificationTypes() {
 		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'fv01');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(3, sizeof($result));
 
 		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'InvalidFilter');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(4, sizeof($result));
 	}
 

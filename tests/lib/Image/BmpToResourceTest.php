@@ -111,7 +111,7 @@ class BmpToResourceTest extends TestCase {
 		$colorTableBin = hex2bin(str_replace(' ', '', $colorTableHex));
 		$stub = $this->getReadFileStub([$colorTableBin]);
 		$colorTable = self::invokePrivate($stub, 'readColorTable', [$colors]);
-		$this->assertEquals(2, count($colorTable));
+		$this->assertCount(2, $colorTable);
 		$this->assertEquals([0 => 0x32ff0a, 1 => 0xef5634], $colorTable);
 	}
 

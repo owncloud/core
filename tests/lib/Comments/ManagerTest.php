@@ -224,7 +224,7 @@ class ManagerTest extends TestCase {
 		$manager = $this->getManager();
 		$comments = $manager->getForObject('files', 'file64');
 
-		$this->assertTrue(is_array($comments));
+		$this->assertInternalType('array', $comments);
 		$this->assertSame(count($comments), 1);
 		$this->assertTrue($comments[0] instanceof \OCP\Comments\IComment);
 		$this->assertSame($comments[0]->getMessage(), 'nice one');
@@ -244,7 +244,7 @@ class ManagerTest extends TestCase {
 		do {
 			$comments = $manager->getForObject('files', 'file64', 3, $offset);
 
-			$this->assertTrue(is_array($comments));
+			$this->assertInternalType('array', $comments);
 			foreach($comments as $comment) {
 				$this->assertTrue($comment instanceof \OCP\Comments\IComment);
 				$this->assertSame($comment->getMessage(), 'nice one');
@@ -283,7 +283,7 @@ class ManagerTest extends TestCase {
 		do {
 			$comments = $manager->getForObject('files', 'file64', 3, $offset, new \DateTime('-4 hours'));
 
-			$this->assertTrue(is_array($comments));
+			$this->assertInternalType('array', $comments);
 			foreach($comments as $comment) {
 				$this->assertTrue($comment instanceof \OCP\Comments\IComment);
 				$this->assertSame($comment->getMessage(), 'nice one');

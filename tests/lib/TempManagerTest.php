@@ -70,7 +70,7 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertTrue(is_writable($file));
 
 		file_put_contents($file, 'bar');
-		$this->assertEquals('bar', file_get_contents($file));
+		$this->assertStringEqualsFile($file, 'bar');
 	}
 
 	public function testGetFolder() {
@@ -81,7 +81,7 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertTrue(is_writable($folder));
 
 		file_put_contents($folder . 'foo.txt', 'bar');
-		$this->assertEquals('bar', file_get_contents($folder . 'foo.txt'));
+		$this->assertStringEqualsFile($folder . 'foo.txt', 'bar');
 	}
 
 	public function testCleanFiles() {

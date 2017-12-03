@@ -34,7 +34,7 @@ class LegacyTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertTrue(is_integer($this->panel->getPriority()));
+		$this->assertInternalType('int', $this->panel->getPriority());
 		$this->assertTrue($this->panel->getPriority() < 50);
         $this->assertTrue($this->panel->getPriority() > -50);
 	}

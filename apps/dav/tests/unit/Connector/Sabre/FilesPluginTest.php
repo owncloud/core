@@ -204,7 +204,7 @@ class FilesPluginTest extends TestCase {
 		$this->assertEquals('"abc"', $propFind->get(self::GETETAG_PROPERTYNAME));
 		$this->assertEquals('00000123instanceid', $propFind->get(self::FILEID_PROPERTYNAME));
 		$this->assertEquals('123', $propFind->get(self::INTERNAL_FILEID_PROPERTYNAME));
-		$this->assertEquals(null, $propFind->get(self::SIZE_PROPERTYNAME));
+		$this->assertNull($propFind->get(self::SIZE_PROPERTYNAME));
 		$this->assertEquals('DWCKMSR', $propFind->get(self::PERMISSIONS_PROPERTYNAME));
 		$this->assertEquals('http://example.com/', $propFind->get(self::DOWNLOADURL_PROPERTYNAME));
 		$this->assertEquals('foo', $propFind->get(self::OWNER_ID_PROPERTYNAME));
@@ -234,7 +234,7 @@ class FilesPluginTest extends TestCase {
 			$node
 		);
 
-		$this->assertEquals(null, $propFind->get(self::DOWNLOADURL_PROPERTYNAME));
+		$this->assertNull($propFind->get(self::DOWNLOADURL_PROPERTYNAME));
 	}
 
 	public function testGetPublicPermissions() {
@@ -297,7 +297,7 @@ class FilesPluginTest extends TestCase {
 		$this->assertEquals('00000123instanceid', $propFind->get(self::FILEID_PROPERTYNAME));
 		$this->assertEquals(1025, $propFind->get(self::SIZE_PROPERTYNAME));
 		$this->assertEquals('DWCKMSR', $propFind->get(self::PERMISSIONS_PROPERTYNAME));
-		$this->assertEquals(null, $propFind->get(self::DOWNLOADURL_PROPERTYNAME));
+		$this->assertNull($propFind->get(self::DOWNLOADURL_PROPERTYNAME));
 		$this->assertEquals('my_fingerprint', $propFind->get(self::DATA_FINGERPRINT_PROPERTYNAME));
 		$this->assertEquals([self::DOWNLOADURL_PROPERTYNAME], $propFind->get404Properties());
 	}

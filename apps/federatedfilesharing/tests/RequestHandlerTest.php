@@ -63,7 +63,7 @@ class RequestHandlerTest extends TestCase {
 
 	/** @var  \OCA\FederatedFileSharing\AddressHandler | PHPUnit_Framework_MockObject_MockObject */
 	private $addressHandler;
-	
+
 	/** @var  IUserManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $userManager;
 
@@ -101,7 +101,7 @@ class RequestHandlerTest extends TestCase {
 		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')
 			->disableOriginalConstructor()->getMock();
 		$this->userManager = $this->createMock('OCP\IUserManager');
-		
+
 		$this->registerHttpHelper($httpHelperMock);
 
 		$this->s2s = new RequestHandler(
@@ -381,7 +381,7 @@ class RequestHandlerTest extends TestCase {
 		if ($found) {
 			$this->assertEquals($expected, $result);
 		} else {
-			$this->assertSame(false, $result);
+			$this->assertFalse($result);
 		}
 	}
 
