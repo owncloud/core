@@ -118,7 +118,7 @@ class SystemTagManagerTest extends TestCase {
 		$this->assertCount(count($testTags), $tagList);
 
 		foreach ($testTagsById as $testTagId => $testTag) {
-			$this->assertTrue(isset($tagList[$testTagId]));
+			$this->assertArrayHasKey($testTagId, $tagList);
 			$this->assertSameTag($tagList[$testTagId], $testTag);
 		}
 	}
@@ -231,7 +231,7 @@ class SystemTagManagerTest extends TestCase {
 		$this->assertCount(count($testTagsById), $tagList);
 
 		foreach ($testTagsById as $testTagId => $testTag) {
-			$this->assertTrue(isset($tagList[$testTagId]));
+			$this->assertArrayHasKey($testTagId, $tagList);
 			$this->assertSameTag($tagList[$testTagId], $testTag);
 		}
 	}

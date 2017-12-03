@@ -55,7 +55,7 @@ class FolderTest extends NodeTest {
 
 		$node = new Folder($root, $view, '/bar/foo');
 		$children = $node->getDirectoryListing();
-		$this->assertEquals(2, count($children));
+		$this->assertCount(2, $children);
 		$this->assertInstanceOf('\OC\Files\Node\File', $children[0]);
 		$this->assertInstanceOf('\OC\Files\Node\Folder', $children[1]);
 		$this->assertEquals('asd', $children[0]->getName());
@@ -309,7 +309,7 @@ class FolderTest extends NodeTest {
 
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->search('qw');
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals('/bar/foo/qwerty', $result[0]->getPath());
 	}
 
@@ -363,7 +363,7 @@ class FolderTest extends NodeTest {
 			->will($this->returnValue($mount));
 
 		$result = $root->search('qw');
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals('/foo', $result[0]->getPath());
 	}
 
@@ -413,7 +413,7 @@ class FolderTest extends NodeTest {
 
 		$node = new Folder($root, $view, '/bar');
 		$result = $node->search('qw');
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals('/bar/foo/qwerty', $result[0]->getPath());
 	}
 
@@ -464,7 +464,7 @@ class FolderTest extends NodeTest {
 
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->searchByTag('tag1', 'user1');
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals('/bar/foo/qwerty', $result[0]->getPath());
 	}
 
@@ -538,7 +538,7 @@ class FolderTest extends NodeTest {
 
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->search('qw');
-		$this->assertEquals(2, count($result));
+		$this->assertCount(2, $result);
 	}
 
 	public function testIsSubNode() {
@@ -594,7 +594,7 @@ class FolderTest extends NodeTest {
 
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->getById(1);
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals('/bar/foo/qwerty', $result[0]->getPath());
 	}
 
@@ -682,7 +682,7 @@ class FolderTest extends NodeTest {
 
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->getById(1);
-		$this->assertEquals(2, count($result));
+		$this->assertCount(2, $result);
 		$this->assertEquals('/bar/foo/qwerty', $result[0]->getPath());
 		$this->assertEquals('/bar/foo/asd/foo/qwerty', $result[1]->getPath());
 	}

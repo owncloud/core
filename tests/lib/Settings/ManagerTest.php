@@ -78,7 +78,7 @@ class SettingsManagerTest extends TestCase {
 
 	public function testGetBuiltInPanel() {
 		$panel = $this->settingsManager->getBuiltInPanel('OC\Settings\Panels\Personal\Profile');
-		$this->assertNotEquals(false, $panel);
+		$this->assertNotFalse($panel);
 		$this->assertEquals('OC\Settings\Panels\Personal\Profile', get_class($panel));
 	}
 

@@ -140,7 +140,7 @@ class SharedStorageTest extends TestCase {
 		// create part file
 		$result = $user2View->file_put_contents($this->folder . '/foo.txt.part', 'some test data');
 
-		$this->assertTrue(is_int($result));
+		$this->assertInternalType('int', $result);
 		// rename part file to real file
 		$result = $user2View->rename($this->folder . '/foo.txt.part', $this->folder . '/foo.txt');
 
@@ -283,7 +283,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertFalse($user2View->rename($this->folder . '/test-create.txt', $this->folder . '/newtarget.txt'));
 		$this->assertFalse($user2View->file_exists($this->folder . '/newtarget.txt'));
 
-		// rename file not allowed if target exists 
+		// rename file not allowed if target exists
 		$this->assertFalse($user2View->rename($this->folder . '/newtarget.txt', $this->folder . '/existing.txt'));
 
 		// overwriting file not allowed

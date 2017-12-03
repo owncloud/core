@@ -51,7 +51,7 @@ class StreamWrappersTest extends \Test\TestCase {
 			$result[] = $file;
 			$this->assertContains($file, $items);
 		}
-		$this->assertEquals(count($items), count($result));
+		$this->assertCount(count($items), $result);
 	}
 
 	public function testCloseStream() {

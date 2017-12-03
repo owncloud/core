@@ -208,7 +208,7 @@ class ShareTest extends \Test\TestCase {
 	protected function shareUserTestFileAsLink() {
 		\OC_User::setUserId($this->user1);
 		$result = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertTrue(is_string($result));
+		$this->assertInternalType('string', $result);
 	}
 
 	/**
@@ -364,9 +364,9 @@ class ShareTest extends \Test\TestCase {
 
 		\OC_User::setUserId($this->user2);
 		$to_test = \OCP\Share::getItemsSharedWith('test', Backend::FORMAT_TARGET);
-		$this->assertEquals(2, count($to_test));
-		$this->assertTrue(in_array('test.txt', $to_test));
-		$this->assertTrue(in_array('test1.txt', $to_test));
+		$this->assertCount(2, $to_test);
+		$this->assertContains('test.txt', $to_test);
+		$this->assertContains('test1.txt', $to_test);
 
 		// Unshare from self
 		$this->assertTrue(\OCP\Share::unshareFromSelf('test', 'test.txt'));
@@ -383,9 +383,9 @@ class ShareTest extends \Test\TestCase {
 
 		\OC_User::setUserId($this->user2);
 		$to_test = \OCP\Share::getItemsSharedWith('test', Backend::FORMAT_TARGET);
-		$this->assertEquals(2, count($to_test));
-		$this->assertTrue(in_array('test.txt', $to_test));
-		$this->assertTrue(in_array('test1.txt', $to_test));
+		$this->assertCount(2, $to_test);
+		$this->assertContains('test.txt', $to_test);
+		$this->assertContains('test1.txt', $to_test);
 
 		// Remove user
 		\OC_User::setUserId($this->user1);
@@ -410,7 +410,7 @@ class ShareTest extends \Test\TestCase {
 		$query->execute();
 
 		$shares = \OCP\Share::getItemsShared('test');
-		$this->assertSame(1, count($shares));
+		$this->assertCount(1, $shares);
 		$share = reset($shares);
 		$this->assertSame(\OCP\Share::SHARE_TYPE_USER, $share['share_type']);
 	}
@@ -445,7 +445,7 @@ class ShareTest extends \Test\TestCase {
 		);
 
 		$shares = \OCP\Share::getItemsShared('test');
-		$this->assertSame(2, count($shares));
+		$this->assertCount(2, $shares);
 
 	}
 
@@ -532,7 +532,7 @@ class ShareTest extends \Test\TestCase {
 				$targetUser,
 				Backend::FORMAT_TARGET
 			);
-			$this->assertEquals(1, count($items));
+			$this->assertCount(1, $items);
 		}
 
 		\OC_User::setUserId($this->user5);
@@ -551,7 +551,7 @@ class ShareTest extends \Test\TestCase {
 				$targetUser,
 				Backend::FORMAT_TARGET
 			);
-			$this->assertEquals(0, count($items));
+			$this->assertCount(0, $items);
 		}
 	}
 
@@ -623,23 +623,23 @@ class ShareTest extends \Test\TestCase {
 
 
 		$result1 = \OCP\Share::getItemSharedWithUser('test', 99, $this->user2, $this->user1);
-		$this->assertSame(1, count($result1));
+		$this->assertCount(1, $result1);
 		$this->verifyResult($result1, ['target1']);
 
 		$result2 = \OCP\Share::getItemSharedWithUser('test', 99, null, $this->user1);
-		$this->assertSame(2, count($result2));
+		$this->assertCount(2, $result2);
 		$this->verifyResult($result2, ['target1', 'target2']);
 
 		$result3 = \OCP\Share::getItemSharedWithUser('test', 99, $this->user3);
-		$this->assertSame(2, count($result3));
+		$this->assertCount(2, $result3);
 		$this->verifyResult($result3, ['target3', 'target4']);
 
 		$result4 = \OCP\Share::getItemSharedWithUser('test', 99, null, null);
-		$this->assertSame(5, count($result4)); // 5 because target4 appears twice
+		$this->assertCount(5, $result4); // 5 because target4 appears twice
 		$this->verifyResult($result4, ['target1', 'target2', 'target3', 'target4']);
 
 		$result6 = \OCP\Share::getItemSharedWithUser('test', 99, $this->user6, null);
-		$this->assertSame(1, count($result6));
+		$this->assertCount(1, $result6);
 		$this->verifyResult($result6, ['target4']);
 	}
 
@@ -661,24 +661,24 @@ class ShareTest extends \Test\TestCase {
 
 		// user2 is in group1 and group2
 		$result1 = \OCP\Share::getItemSharedWithUser('test', 99, $this->user2, $this->user1);
-		$this->assertSame(2, count($result1));
+		$this->assertCount(2, $result1);
 		$this->verifyResult($result1, ['target1', 'target2']);
 
 		$result2 = \OCP\Share::getItemSharedWithUser('test', 99, null, $this->user1);
-		$this->assertSame(2, count($result2));
+		$this->assertCount(2, $result2);
 		$this->verifyResult($result2, ['target1', 'target2']);
 
 		// user3 is in group1 and group2
 		$result3 = \OCP\Share::getItemSharedWithUser('test', 99, $this->user3);
-		$this->assertSame(3, count($result3));
+		$this->assertCount(3, $result3);
 		$this->verifyResult($result3, ['target1', 'target3', 'target4']);
 
 		$result4 = \OCP\Share::getItemSharedWithUser('test', 99, null, null);
-		$this->assertSame(4, count($result4));
+		$this->assertCount(4, $result4);
 		$this->verifyResult($result4, ['target1', 'target2', 'target3', 'target4']);
 
 		$result6 = \OCP\Share::getItemSharedWithUser('test', 99, $this->user6, null);
-		$this->assertSame(0, count($result6));
+		$this->assertCount(0, $result6);
 	}
 
 	public function verifyResult($result, $expected) {
@@ -1421,7 +1421,7 @@ class ShareTest extends \Test\TestCase {
 		//User 2 shares as link
 		\OC_User::setUserId($this->user2);
 		$result = \OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_LINK, null, \OCP\Constants::PERMISSION_READ);
-		$this->assertTrue(is_string($result));
+		$this->assertInternalType('string', $result);
 
 		//Check if expire date is correct
 		$result = \OCP\Share::getItemShared('test', 'test.txt');

@@ -138,11 +138,11 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 
 		$storages = $this->service->getAllStorages();
 		if ($isVisible) {
-			$this->assertEquals(1, count($storages));
+			$this->assertCount(1, $storages);
 			$retrievedStorage = $this->service->getStorage($newStorage->getId());
 			$this->assertEquals('/mountpoint', $retrievedStorage->getMountPoint());
 		} else {
-			$this->assertEquals(0, count($storages));
+			$this->assertCount(0, $storages);
 
 			try {
 				$this->service->getStorage($newStorage->getId());

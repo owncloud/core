@@ -89,7 +89,7 @@ class CleanUpTest extends TestCase {
 			->from($this->trashTable)
 			->execute()
 			->fetchAll();
-		$this->assertSame(10, count($result));
+		$this->assertCount(10, $result);
 	}
 
 	/**
@@ -122,7 +122,7 @@ class CleanUpTest extends TestCase {
 			$result = $query->select('user')
 				->from($this->trashTable)
 				->execute()->fetchAll();
-			$this->assertSame(5, count($result));
+			$this->assertCount(5, $result);
 			foreach ($result as $r) {
 				$this->assertSame('user1', $r['user']);
 			}
@@ -134,7 +134,7 @@ class CleanUpTest extends TestCase {
 				->from($this->trashTable)
 				->execute()
 				->fetchAll();
-			$this->assertSame(10, count($result));
+			$this->assertCount(10, $result);
 		}
 
 	}
@@ -157,7 +157,7 @@ class CleanUpTest extends TestCase {
 		$instance->expects($this->exactly(count($userIds)))
 			->method('removeDeletedFiles')
 			->willReturnCallback(function ($user) use ($userIds) {
-				$this->assertTrue(in_array($user, $userIds));
+				$this->assertContains($user, $userIds);
 			});
 		$this->userManager->expects($this->exactly(count($userIds)))
 			->method('userExists')->willReturn(true);
@@ -189,7 +189,7 @@ class CleanUpTest extends TestCase {
 		$instance->expects($this->exactly(count($backendUsers)))
 			->method('removeDeletedFiles')
 			->willReturnCallback(function ($user) use ($backendUsers) {
-				$this->assertTrue(in_array($user, $backendUsers));
+				$this->assertContains($user, $backendUsers);
 			});
 		$inputInterface = $this->getMockBuilder('\Symfony\Component\Console\Input\InputInterface')
 			->disableOriginalConstructor()->getMock();

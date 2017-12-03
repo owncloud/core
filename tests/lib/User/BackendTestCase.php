@@ -56,19 +56,19 @@ abstract class BackendTestCase extends \Test\TestCase {
 		$this->backend->createUser($name1, '');
 		$count=count($this->backend->getUsers())-$startCount;
 		$this->assertEquals(1, $count);
-		$this->assertTrue((array_search($name1, $this->backend->getUsers())!==false));
-		$this->assertFalse((array_search($name2, $this->backend->getUsers())!==false));
+		$this->assertContains($name1, $this->backend->getUsers());
+		$this->assertNotContains($name2, $this->backend->getUsers());
 		$this->backend->createUser($name2, '');
 		$count=count($this->backend->getUsers())-$startCount;
 		$this->assertEquals(2, $count);
-		$this->assertTrue((array_search($name1, $this->backend->getUsers())!==false));
-		$this->assertTrue((array_search($name2, $this->backend->getUsers())!==false));
+		$this->assertContains($name1, $this->backend->getUsers());
+		$this->assertContains($name2, $this->backend->getUsers());
 
 		$this->backend->deleteUser($name2);
 		$count=count($this->backend->getUsers())-$startCount;
 		$this->assertEquals(1, $count);
-		$this->assertTrue((array_search($name1, $this->backend->getUsers())!==false));
-		$this->assertFalse((array_search($name2, $this->backend->getUsers())!==false));
+		$this->assertContains($name1, $this->backend->getUsers());
+		$this->assertNotContains($name2, $this->backend->getUsers());
 	}
 
 	public function testLogin() {
@@ -110,9 +110,9 @@ abstract class BackendTestCase extends \Test\TestCase {
 		$this->backend->createUser($name3, 'pass3');
 
 		$result = $this->backend->getUsers($prefix);
-		$this->assertSame(2, count($result), json_encode($result));
+		$this->assertCount(2, $result, json_encode($result));
 
 		$result = $this->backend->getDisplayNames($prefix);
-		$this->assertSame(2, count($result));
+		$this->assertCount(2, $result);
 	}
 }
