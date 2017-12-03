@@ -9,10 +9,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added support for eml mimetype - [#29204](https://github.com/owncloud/core/issues/29204)
 - Added "occ dav:cleanup-chunks" command to clean up expired uploads - [#29180](https://github.com/owncloud/core/issues/29180)
 - Added "occ files:scan" repair mode to repair mismatch filecache paths - [#29074](https://github.com/owncloud/core/issues/29074) [#29232](https://github.com/owncloud/core/issues/29232)
-- Added occ command to change/recreate master-key - [#29260](https://github.com/owncloud/core/issues/29260)
+- Added occ command to change/recreate master-key - [#29260](https://github.com/owncloud/core/issues/29260) [#29735](https://github.com/owncloud/core/issues/29735)
 - Detailed mode for "occ security:routes" - [#29095](https://github.com/owncloud/core/issues/29095)
 - Webdav property to retrieve a private link to files or folders - [#29041](https://github.com/owncloud/core/issues/29041)
-- CORS support for public API routes - [#28852](https://github.com/owncloud/core/issues/28852)
+- CORS support for public API routes - [#28852](https://github.com/owncloud/core/issues/28852) [#29741](https://github.com/owncloud/core/issues/29741) [#29749](https://github.com/owncloud/core/issues/29749)
 - More "files_sharing" capabilities entries - [#29040](https://github.com/owncloud/core/issues/29040)
 - Display server name in admin page, don't show in status.php - [#28938](https://github.com/owncloud/core/issues/28938)
 - Validate public link mail on the client side - [#29042](https://github.com/owncloud/core/issues/29042)
@@ -102,6 +102,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fix SMB to better detect when overwriting through rename - [#29564](https://github.com/owncloud/core/issues/29564)
 - Fix files scan repair in bulk warning - [#29631](https://github.com/owncloud/core/issues/29631)
 - Fix federated share import from public link - [#29677](https://github.com/owncloud/core/issues/29677)
+- Fix status.php to properly display product name - [#29728](https://github.com/owncloud/core/issues/29728)
+- Sort allowed storages checkbox list - [#29746](https://github.com/owncloud/core/issues/29746)
 
 ## [10.0.3] - 2017-09-15
 ### Added
