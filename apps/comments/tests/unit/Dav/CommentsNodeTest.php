@@ -132,7 +132,7 @@ class CommentsNodeTest extends \Test\TestCase {
 	}
 
 	public function testGetLastModified() {
-		$this->assertSame($this->node->getLastModified(), null);
+		$this->assertNull($this->node->getLastModified());
 	}
 
 	public function testUpdateComment() {
@@ -421,11 +421,11 @@ class CommentsNodeTest extends \Test\TestCase {
 		$properties = $this->node->getProperties(null);
 
 		foreach($properties as $name => $value) {
-			$this->assertTrue(array_key_exists($name, $expected));
+			$this->assertArrayHasKey($name, $expected);
 			$this->assertSame($expected[$name], $value);
 			unset($expected[$name]);
 		}
-		$this->assertTrue(empty($expected));
+		$this->assertEmpty($expected);
 	}
 
 	public function readCommentProvider() {
@@ -459,7 +459,7 @@ class CommentsNodeTest extends \Test\TestCase {
 
 		$properties = $this->node->getProperties(null);
 
-		$this->assertTrue(array_key_exists(CommentNode::PROPERTY_NAME_UNREAD, $properties));
+		$this->assertArrayHasKey(CommentNode::PROPERTY_NAME_UNREAD, $properties);
 		$this->assertSame($properties[CommentNode::PROPERTY_NAME_UNREAD], $expected);
 	}
 }

@@ -67,12 +67,12 @@ class RequestTest extends TestCase {
 		);
 
 		// Countable
-		$this->assertSame(2, count($request));
+		$this->assertCount(2, $request);
 		// Array access
 		$this->assertSame('Joey', $request['nickname']);
 		// "Magic" accessors
 		$this->assertSame('Joey', $request->{'nickname'});
-		$this->assertTrue(isset($request['nickname']));
+		$this->assertArrayHasKey('nickname', $request);
 		$this->assertTrue(isset($request->{'nickname'}));
 		$this->assertFalse(isset($request->{'flickname'}));
 		// Only testing 'get', but same approach for post, files etc.
@@ -99,7 +99,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame(3, count($request));
+		$this->assertCount(3, $request);
 		$this->assertSame('Janey', $request->{'nickname'});
 		$this->assertSame('Johnny Weissmüller', $request->{'name'});
 	}

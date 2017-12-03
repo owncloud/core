@@ -99,7 +99,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 
 		$response = $middleware->afterController($this, __FUNCTION__, new Response());
 		$headers = $response->getHeaders();
-		$this->assertFalse(array_key_exists('Access-Control-Allow-Origin', $headers));
+		$this->assertArrayNotHasKey('Access-Control-Allow-Origin', $headers);
 	}
 
 
@@ -122,7 +122,7 @@ class CORSMiddlewareTest extends \Test\TestCase {
 
 		$response = $middleware->afterController($this, __FUNCTION__, new Response());
 		$headers = $response->getHeaders();
-		$this->assertFalse(array_key_exists('Access-Control-Allow-Origin', $headers));
+		$this->assertArrayNotHasKey('Access-Control-Allow-Origin', $headers);
 	}
 
 

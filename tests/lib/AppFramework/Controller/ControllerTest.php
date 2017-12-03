@@ -136,7 +136,7 @@ class ControllerTest extends TestCase {
 
 
 	public function testRender(){
-		$this->assertTrue($this->controller->render('') instanceof TemplateResponse);
+		$this->assertInstanceOf(TemplateResponse::class, $this->controller->render(''));
 	}
 
 
@@ -152,8 +152,8 @@ class ControllerTest extends TestCase {
 		$headers = ['one', 'two'];
 		$response = $this->controller->render('', [], '', $headers);
 
-		$this->assertTrue(in_array($headers[0], $response->getHeaders()));
-		$this->assertTrue(in_array($headers[1], $response->getHeaders()));
+		$this->assertContains($headers[0], $response->getHeaders());
+		$this->assertContains($headers[1], $response->getHeaders());
 	}
 
 

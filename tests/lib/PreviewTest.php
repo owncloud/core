@@ -333,7 +333,7 @@ class PreviewTest extends TestCase {
 		$this->assertFalse($this->rootView->is_dir($thumbnailFolder));
 
 		$image = $preview->getPreview();
-		$this->assertNotSame(false, $image);
+		$this->assertNotFalse($image);
 
 		$maxThumbCacheFile = $this->buildCachePath(
 			$sampleFileId, $this->maxPreviewWidth, $this->maxPreviewHeight, true, '-max'
@@ -425,7 +425,7 @@ class PreviewTest extends TestCase {
 
 		// We try to deleted the preview
 		$preview->deletePreview();
-		$this->assertNotSame(false, $preview->isCached($fileId));
+		$this->assertNotFalse($preview->isCached($fileId));
 
 		$preview->deleteAllPreviews();
 	}
@@ -483,7 +483,7 @@ class PreviewTest extends TestCase {
 		$preview = $this->createPreview($previewWidth, $previewHeight);
 
 		$image = $preview->getPreview();
-		$this->assertNotSame(false, $image);
+		$this->assertNotFalse($image);
 
 		list($expectedWidth, $expectedHeight) =
 			$this->simulatePreviewDimensions($previewWidth, $previewHeight);
@@ -637,7 +637,7 @@ class PreviewTest extends TestCase {
 		$preview = $this->createPreview($previewWidth, $previewHeight);
 
 		$image = $preview->getPreview();
-		$this->assertNotSame(false, $image);
+		$this->assertNotFalse($image);
 
 		// A thumbnail of the asked dimensions should also have been created (within the constraints of the max preview)
 		list($limitedPreviewWidth, $limitedPreviewHeight) =
@@ -663,7 +663,7 @@ class PreviewTest extends TestCase {
 		$this->assertSame($expectedCachedBigger, $isCached);
 
 		$image = $preview->getPreview();
-		$this->assertNotSame(false, $image);
+		$this->assertNotFalse($image);
 	}
 
 	/**

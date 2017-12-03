@@ -76,7 +76,7 @@ class EntityTypeCollectionTest extends \Test\TestCase {
 		$this->childMap[17] = true;
 
 		$ec = $this->collection->getChild('17');
-		$this->assertTrue($ec instanceof EntityCollectionImplemantation);
+		$this->assertInstanceOf(EntityCollectionImplemantation::class, $ec);
 	}
 
 	/**

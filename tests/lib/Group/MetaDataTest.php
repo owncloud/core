@@ -78,8 +78,8 @@ class MetaDataTest extends \Test\TestCase {
 
 		list($adminGroups, $ordinaryGroups) = $this->groupMetadata->get();
 
-		$this->assertSame(1, count($adminGroups));
-		$this->assertSame(2, count($ordinaryGroups));
+		$this->assertCount(1, $adminGroups);
+		$this->assertCount(2, $ordinaryGroups);
 
 		$this->assertSame('g2', $ordinaryGroups[0]['name']);
 		// user count is not loaded
@@ -98,8 +98,8 @@ class MetaDataTest extends \Test\TestCase {
 
 		list($adminGroups, $ordinaryGroups) = $this->groupMetadata->get();
 
-		$this->assertSame(1, count($adminGroups));
-		$this->assertSame(2, count($ordinaryGroups));
+		$this->assertCount(1, $adminGroups);
+		$this->assertCount(2, $ordinaryGroups);
 
 		$this->assertSame('g3', $ordinaryGroups[0]['name']);
 		$this->assertSame(5, $ordinaryGroups[0]['usercount']);

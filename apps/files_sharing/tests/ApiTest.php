@@ -239,7 +239,7 @@ class ApiTest extends TestCase {
 		$data = $result->getData();
 		$this->assertEquals(1, $data['permissions']);
 		$this->assertEmpty($data['expiration']);
-		$this->assertTrue(is_string($data['token']));
+		$this->assertInternalType('string', $data['token']);
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);
@@ -275,7 +275,7 @@ class ApiTest extends TestCase {
 			$data['permissions']
 		);
 		$this->assertEmpty($data['expiration']);
-		$this->assertTrue(is_string($data['token']));
+		$this->assertInternalType('string', $data['token']);
 
 		// check for correct link
 		$url = \OC::$server->getURLGenerator()->getAbsoluteURL('/index.php/s/' . $data['token']);
@@ -440,7 +440,7 @@ class ApiTest extends TestCase {
 		$result = $ocs->getShares();
 
 		$this->assertTrue($result->succeeded());
-		$this->assertTrue(count($result->getData()) === 1);
+		$this->assertCount(1, $result->getData());
 
 		$this->shareManager->deleteShare($share);
 	}
@@ -469,7 +469,7 @@ class ApiTest extends TestCase {
 		$result = $ocs->getShares();
 
 		$this->assertTrue($result->succeeded());
-		$this->assertTrue(count($result->getData()) === 2);
+		$this->assertCount(2, $result->getData());
 
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
@@ -491,7 +491,7 @@ class ApiTest extends TestCase {
 		$data = $result->getData();
 
 		// check if we have a token
-		$this->assertTrue(is_string($data['token']));
+		$this->assertInternalType('string', $data['token']);
 		$id = $data['id'];
 
 		// check for correct link
@@ -559,7 +559,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		// test should return one share created from testCreateShare()
-		$this->assertTrue(count($result->getData()) === 2);
+		$this->assertCount(2, $result->getData());
 
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
@@ -594,7 +594,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		// test should return one share
-		$this->assertTrue(count($result->getData()) === 1);
+		$this->assertCount(1, $result->getData());
 
 		// now also ask for the reshares
 		$request = $this->createRequest(['path' => $this->filename, 'reshares' => 'true']);
@@ -632,7 +632,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		// test should return one share created from testCreateShare()
-		$this->assertEquals(1, count($result->getData()));
+		$this->assertCount(1, $result->getData());
 
 		$this->shareManager->deleteShare($share1);
 	}
@@ -665,7 +665,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		// test should return one share within $this->folder
-		$this->assertTrue(count($result->getData()) === 1);
+		$this->assertCount(1, $result->getData());
 
 		$this->shareManager->deleteShare($share1);
 		$this->shareManager->deleteShare($share2);
@@ -1264,12 +1264,12 @@ class ApiTest extends TestCase {
 
 		// move mount point to the folder "localDir"
 		$result = $view->rename($this->folder, 'localDir/'.$this->folder);
-		$this->assertTrue($result !== false);
+		$this->assertNotFalse($result);
 
 		// try to share "localDir"
 		$fileInfo2 = $view->getFileInfo('localDir');
 
-		$this->assertTrue($fileInfo2 instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf(\OC\Files\FileInfo::class, $fileInfo2);
 
 		$pass = true;
 		try {
@@ -1289,7 +1289,7 @@ class ApiTest extends TestCase {
 		//cleanup
 
 		$result = $view->rename('localDir/' . $this->folder, $this->folder);
-		$this->assertTrue($result !== false);
+		$this->assertNotFalse($result);
 		$view->unlink('localDir');
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
@@ -1397,10 +1397,10 @@ class ApiTest extends TestCase {
 		$expireDate = date($dateFormat, $now + 2 * 24 * 60 * 60);
 
 		$info = \OC\Files\Filesystem::getFileInfo($this->filename);
-		$this->assertTrue($info instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf(\OC\Files\FileInfo::class, $info);
 
 		$result = Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_LINK, null, Constants::PERMISSION_READ);
-		$this->assertTrue(is_string($result));
+		$this->assertInternalType('string', $result);
 
 		$result = Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2, 31);
 		$this->assertTrue($result);
@@ -1420,8 +1420,8 @@ class ApiTest extends TestCase {
 		// now the link share should expire because of enforced default expire date
 		// the user share should still exist
 		$result = Share::getItemShared('file', $info->getId());
-		$this->assertTrue(is_array($result));
-		$this->assertSame(1, count($result));
+		$this->assertInternalType('array', $result);
+		$this->assertCount(1, $result);
 		$share = reset($result);
 		$this->assertSame(Share::SHARE_TYPE_USER, $share['share_type']);
 
@@ -1468,7 +1468,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertTrue(is_string($data['token']));
+		$this->assertInternalType('string', $data['token']);
 		$this->assertEquals($date, substr($data['expiration'], 0, 10));
 
 		// check for correct link
@@ -1502,7 +1502,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		$data = $result->getData();
-		$this->assertTrue(is_string($data['token']));
+		$this->assertInternalType('string', $data['token']);
 		$this->assertEquals($date->format('Y-m-d') . ' 00:00:00', $data['expiration']);
 
 		// check for correct link

@@ -109,7 +109,7 @@ class CleanupTest extends TestCase {
 		$instance->expects($this->exactly(count($userIds)))
 			->method('deleteVersions')
 			->willReturnCallback(function ($user) use ($userIds) {
-				$this->assertTrue(in_array($user, $userIds));
+				$this->assertContains($user, $userIds);
 			});
 
 		$this->userManager->expects($this->exactly(count($userIds)))
@@ -148,7 +148,7 @@ class CleanupTest extends TestCase {
 		$instance->expects($this->exactly(count($backendUsers)))
 			->method('deleteVersions')
 			->willReturnCallback(function ($user) use ($backendUsers) {
-				$this->assertTrue(in_array($user, $backendUsers));
+				$this->assertContains($user, $backendUsers);
 			});
 
 		$inputInterface = $this->getMockBuilder('\Symfony\Component\Console\Input\InputInterface')

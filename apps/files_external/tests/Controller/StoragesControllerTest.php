@@ -168,7 +168,7 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 
 		$data = $response->getData();
 		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
-		$this->assertEquals(null, $data);
+		$this->assertNull($data);
 	}
 
 	public function testUpdateStorage() {

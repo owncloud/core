@@ -91,7 +91,7 @@ class ExternalStorageTest extends \Test\TestCase {
 
 	public function testIfTestReturnsTheValue() {
 		$result = $this->getTestStorage('https://remoteserver')->test();
-		$this->assertSame(true, $result);
+		$this->assertTrue($result);
 	}
 }
 

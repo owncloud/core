@@ -598,16 +598,19 @@ class VersioningTest extends TestCase {
 
 		$this->assertCount(2, $newVersions, 'Additional version created');
 
-		$this->assertTrue(
-			isset($newVersions[$t0 . '#' . 'test.txt']),
+		$this->assertArrayHasKey(
+			$t0 . '#' . 'test.txt',
+			$newVersions,
 			'A version was created for the file before restoration'
 		);
-		$this->assertTrue(
-			isset($newVersions[$t1 . '#' . 'test.txt']),
+		$this->assertArrayHasKey(
+			$t1 . '#' . 'test.txt',
+			$newVersions,
 			'Untouched version is still there'
 		);
-		$this->assertFalse(
-			isset($newVersions[$t2 . '#' . 'test.txt']),
+		$this->assertArrayNotHasKey(
+			$t2 . '#' . 'test.txt',
+			$newVersions,
 			'Restored version is not in the list any more'
 		);
 	}

@@ -195,7 +195,7 @@ class TrashbinTest extends TestCase {
 		Filesystem::unlink($folder . 'user1-3.txt');
 
 		$filesInTrash = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'name');
-		$this->assertSame(3, count($filesInTrash));
+		$this->assertCount(3, $filesInTrash);
 
 		// every second file will get a date in the past so that it will get expired
 		$this->manipulateDeleteTime($filesInTrash, $this->trashRoot1, $expiredDate);
@@ -214,7 +214,7 @@ class TrashbinTest extends TestCase {
 		Filesystem::unlink('user2-2.txt');
 
 		$filesInTrashUser2 = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER2, 'name');
-		$this->assertSame(2, count($filesInTrashUser2));
+		$this->assertCount(2, $filesInTrashUser2);
 
 		// every second file will get a date in the past so that it will get expired
 		$this->manipulateDeleteTime($filesInTrashUser2, $this->trashRoot2, $expiredDate);
@@ -257,7 +257,7 @@ class TrashbinTest extends TestCase {
 
 		//make sure that files are in the trash bin
 		$filesInTrash = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'name');
-		$this->assertSame(3, count($filesInTrash));
+		$this->assertCount(3, $filesInTrash);
 
 		// every second file will get a date in the past so that it will get expired
 		$manipulatedList = $this->manipulateDeleteTime($filesInTrash, $this->trashRoot1, $expiredDate);
@@ -270,13 +270,13 @@ class TrashbinTest extends TestCase {
 
 		// only file2.txt should be left
 		$remainingFiles = array_slice($manipulatedList, $count);
-		$this->assertSame(1, count($remainingFiles));
+		$this->assertCount(1, $remainingFiles);
 		$remainingFile = reset($remainingFiles);
 		$this->assertSame('file2.txt', $remainingFile['name']);
 
 		// check that file1.txt and file3.txt was really deleted
 		$newTrashContent = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
-		$this->assertSame(1, count($newTrashContent));
+		$this->assertCount(1, $newTrashContent);
 		$element = reset($newTrashContent);
 		$this->assertSame('file2.txt', $element['name']);
 	}
@@ -289,7 +289,7 @@ class TrashbinTest extends TestCase {
 	 * @param string[] $expected
 	 */
 	private function verifyArray($result, $expected) {
-		$this->assertSame(count($expected), count($result));
+		$this->assertCount(count($expected), $result);
 		foreach ($expected as $expectedFile) {
 			$found = false;
 			foreach ($result as $fileInTrash) {
@@ -347,7 +347,7 @@ class TrashbinTest extends TestCase {
 
 		//make sure that files are in the trash bin
 		$filesInTrash = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'mtime');
-		$this->assertSame(3, count($filesInTrash));
+		$this->assertCount(3, $filesInTrash);
 
 		$testClass = new TrashbinForTesting();
 		$sizeOfDeletedFiles = $testClass->dummyDeleteFiles($filesInTrash, -8);
@@ -356,7 +356,7 @@ class TrashbinTest extends TestCase {
 		$this->assertSame(10, $sizeOfDeletedFiles);
 
 		$newTrashContent = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
-		$this->assertSame(1, count($newTrashContent));
+		$this->assertCount(1, $newTrashContent);
 		$element = reset($newTrashContent);
 		$this->assertSame('file1.txt', $element['name']);
 	}

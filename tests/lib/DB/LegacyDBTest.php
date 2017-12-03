@@ -152,7 +152,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$query = OC_DB::prepare('SELECT * FROM `*PREFIX*'.$this->table3.'`');
 		$result = $query->execute();
 		$this->assertTrue((bool)$result);
-		$this->assertEquals(4, count($result->fetchAll()));
+		$this->assertCount(4, $result->fetchAll());
 	}
 
 	public function testInsertIfNotExistNull() {
@@ -174,7 +174,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$query = OC_DB::prepare('SELECT * FROM `*PREFIX*'.$this->table2.'`');
 		$result = $query->execute();
 		$this->assertTrue((bool)$result);
-		$this->assertEquals(2, count($result->fetchAll()));
+		$this->assertCount(2, $result->fetchAll());
 	}
 
 	public function testInsertIfNotExistDonTOverwrite() {
@@ -190,7 +190,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$result = $query->execute([$uri]);
 		$this->assertTrue((bool)$result);
 		$rowset = $result->fetchAll();
-		$this->assertEquals(1, count($rowset));
+		$this->assertCount(1, $rowset);
 		$this->assertArrayHasKey('carddata', $rowset[0]);
 		$this->assertEquals($carddata, $rowset[0]['carddata']);
 
@@ -208,7 +208,7 @@ class LegacyDBTest extends \Test\TestCase {
 		// Test that previously inserted data isn't overwritten
 		// And that a new row hasn't been inserted.
 		$rowset = $result->fetchAll();
-		$this->assertEquals(1, count($rowset));
+		$this->assertCount(1, $rowset);
 		$this->assertArrayHasKey('carddata', $rowset[0]);
 		$this->assertEquals($carddata, $rowset[0]['carddata']);
 	}
